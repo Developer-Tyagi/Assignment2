@@ -5,7 +5,6 @@
 
 // Configuration for your app
 // https://quasar.dev/quasar-cli/quasar-conf-js
-/* eslint-env node */
 
 module.exports = function (/* ctx */) {
   return {
@@ -63,12 +62,6 @@ module.exports = function (/* ctx */) {
 
       // https://quasar.dev/quasar-cli/handling-webpack
       extendWebpack (cfg) {
-cfg.module.rules.push({
-          enforce: 'pre',
-          test: /\.(js|vue)$/,
-          loader: 'eslint-loader',
-          exclude: /node_modules/
-        })
       },
     },
 
@@ -94,13 +87,11 @@ cfg.module.rules.push({
       // (like functional components as one of the examples),
       // you can manually specify Quasar components/directives to be available everywhere:
       //
-      components: [
-        'QFooter'
-      ],
+      // components: [],
       // directives: [],
 
       // Quasar plugins
-      plugins: ['Dialog']
+      plugins: []
     },
 
     // animations: 'all', // --- includes all animations
@@ -119,7 +110,7 @@ cfg.module.rules.push({
       manifest: {
         name: `claimguru`,
         short_name: `claimguru`,
-        description: `Claimguru initial version`,
+        description: `Mobile and Web UI for claimguru`,
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#ffffff',
@@ -184,7 +175,7 @@ cfg.module.rules.push({
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'claimguruinitial'
+        appId: 'claimguru-ui'
       },
 
       // More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration
