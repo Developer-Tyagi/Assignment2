@@ -9,8 +9,8 @@ const routes = [
       { path: '/index', component: () => import('pages/Index.vue')},
       { path: '/dashboard', component: () => import('pages/Dashboard.vue')},
       { path: '/leads', component: () => import('pages/Leads.vue')},
-      { path: '/addLead', component: () => import('pages/AddLead.vue')},
-      { path: '/addLeadDetails', component: () => import('pages/AddLeadDetails.vue')}
+      { path: '/add-lead', component: () => import('pages/AddLead.vue')},
+      { path: '/add-lead-details', component: () => import('pages/AddLeadDetails.vue')}
     ]
   },
 
