@@ -19,7 +19,11 @@
           class="text-grey-1"
           style="font-size:15px"
         >
-          <q-item-section>{{link.title}}</q-item-section>
+          <q-item-section>
+            {{link.title}}
+            <br />
+            {{link.description}}
+          </q-item-section>
         </q-item>
       </q-list>
     </div>
@@ -31,19 +35,23 @@ import EssentialLink from "components/EssentialLink.vue";
 const linksData = [
   {
     title: "Leads",
-    link: "/leads"
+    link: "/leads",
+    description: "View Lead Dashboard, all leads and add new lead."
   },
   {
     title: "Clients",
-    link: "/"
+    link: "/",
+    description: "View Lead Clients, all leads and add new clients."
   },
   {
     title: "Claims",
-    link: "/"
+    link: "/",
+    description: "View Lead Claims, all leads and add new claims."
   },
   {
     title: "My Schedule",
-    link: "/"
+    link: "/",
+    description: "View Schedule all leads and add/edit schedule."
   }
 ];
 
