@@ -3,9 +3,9 @@
     <div>
       <q-icon name="account_box" size="xl" color="orange"></q-icon>
       <b>
-        <span style="font-size:24px">Username</span>
+        <span style="font-size:24px">John Doe</span>
       </b>
-      <br />user@claimguru.com
+      <br />john.doe@claimguru.com
     </div>
     <div class="q-pa-md">
       <q-list bordered separator>
@@ -40,18 +40,23 @@ const linksData = [
   },
   {
     title: "Clients",
-    link: "/",
+    link: "/dashboard",
     description: "View Lead Clients, all leads and add new clients."
   },
   {
     title: "Claims",
-    link: "/",
+    link: "/dashboard",
     description: "View Lead Claims, all leads and add new claims."
   },
   {
-    title: "My Schedule",
-    link: "/",
-    description: "View Schedule all leads and add/edit schedule."
+    title: "Vendors",
+    link: "/dashboard",
+    description: "View Schedule all vendors."
+  },
+  {
+    title: "Settings",
+    link: "/dashboard",
+    description: "Setup My Schedule, Type of Inspection."
   }
 ];
 
