@@ -1,7 +1,8 @@
 <template>
   <q-page>
     <h5>ADD NEW LEAD</h5>
-    <q-option-group v-model="panel" inline :options="addLeadTabs"></q-option-group>
+    <q-btn round icon="keyboard_backspace" @click="gotoLeads"></q-btn>
+    <q-option-group v-model="panel" inline-label :options="addLeadTabs"></q-option-group>
     <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
       <q-tab-panels v-model="panel" animated class="shadow-2 rounded-borders">
         <q-tab-panel name="primary">
@@ -39,9 +40,12 @@
           <br />
           <q-toggle v-model="isScheduling" label="Is automatic scheduling needed?" left-label></q-toggle>
         </q-tab-panel>
-        <q-tab-panel name="other">
-          <q-input v-model="notes" type="textarea" label="Notes" />
+        <q-tab-panel name="notesRemarks">
+          <label>Notes</label>
+          <q-input v-model="notes" type="textarea" />
           <br />
+        </q-tab-panel>
+        <q-tab-panel name="source">
           <h6>Lead Source</h6>
           <label>Additional info good to know</label>
           <p>{{leadSource}}</p>
@@ -68,7 +72,7 @@
               <q-item-section>
                 <q-item-label>Vendor</q-item-label>
                 <div v-if="leadSource==='vendor'">
-                  <q-select
+                  <!--<q-select
                     v-model="vendorSelected"
                     :options="vendorsList"
                     label="Select vendor"
@@ -81,7 +85,8 @@
                         </q-item-section>
                       </q-item>
                     </template>
-                  </q-select>
+                  </q-select>-->
+                  <q-input v-model="vendorSelected" @click="gotoVendors" />
                 </div>
               </q-item-section>
             </q-item>
@@ -163,6 +168,9 @@ export default {
     this.getVendors();
   },
   methods: {
+    gotoVendors() {
+      this.$router.push("/vendors");
+    },
     onSubmit() {
       console.log("entering in submit");
       // Hardcoding api end point for testing.
@@ -249,6 +257,9 @@ export default {
     },
     onReset() {
       this.$router.push("/leads");
+    },
+    gotoLeads() {
+      this.$router.push("/leads");
     }
   },
   data() {
@@ -257,7 +268,8 @@ export default {
         { value: "primary", label: "PRIMARY CONTACT" },
         { value: "lossDetails", label: "LOSS DETAILS" },
         { value: "insurance", label: "INSURANCE & SCHEDULING" },
-        { value: "other", label: "NOTES & SOURCE" }
+        { value: "notesRemarks", label: "NOTES" },
+        { value: "source", label: "SOURCE" }
       ],
       panel: "primary",
       isOrg: false,
@@ -285,7 +297,7 @@ export default {
       referral: "",
       advertisement: "",
       google: "",
-      other: "",
+      notesRemarks: "",
       dateofLoss: "",
       clientSelected: "",
       vendorSelected: "",
