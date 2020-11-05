@@ -1,14 +1,13 @@
 <template>
-    <q-layout>
+  <q-layout view="lhr lpR lfr">
     <q-page-container>
-      <q-page>
-        <router-view />
-      </q-page>
+      <router-view />
     </q-page-container>
   </q-layout>
 </template>
+
 <script>
 export default {
-    name: 'AuthLayout'
-}
+  name: "AuthLayout",
+};
 </script>
