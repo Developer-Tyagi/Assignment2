@@ -21,7 +21,7 @@
         >
           <q-item-section>
             {{link.title}}
-            <br />
+            <br/>
             {{link.description}}
           </q-item-section>
         </q-item>

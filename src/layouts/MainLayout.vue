@@ -1,63 +1,136 @@
 <template>
   <q-layout view="lhr lpR lfr">
     <q-header>
-      <q-toolbar>
+      <q-toolbar class="row">
         <q-btn
           flat
           dense
           round
+          class="color-grey"
           icon="menu"
           aria-label="Menu"
-          @click="isLeftSidePanelOpen = !isLeftSidePanelOpen">
+          @click="isLeftSidePanelOpen = !isLeftSidePanelOpen"
+        >
         </q-btn>
-        <div class="text-uppercase text-bold">{{currentRoute}}</div>
+        <div class="text-uppercase text-bold text-black q-mx-auto">
+          {{ currentRoute }}
+        </div>
+        <q-btn
+          flat
+          dense
+          round
+          class="color-grey"
+          icon="search"
+          aria-label="Search"
+          @click="isLeftSidePanelOpen = !isLeftSidePanelOpen"
+        >
+        </q-btn>
       </q-toolbar>
     </q-header>
     <q-drawer
-        v-model="isLeftSidePanelOpen"
-        show-if-above
-        :width="400"
-        :breakpoint="600"
-        content-class="bg-side-panel">
-        <q-scroll-area style="height: calc(100% - 150px); margin-top: 150px; border-right: 1px solid #ddd">
-          <q-list padding>
-            <q-item clickable v-ripple>
-              <q-item-section avatar>
-                <q-icon name="inbox" />
-              </q-item-section>
-
+      v-model="isLeftSidePanelOpen"
+      show-if-above
+      :width="350"
+      :breakpoint="600"
+      content-class="bg-side-panel"
+    >
+      <div style="height: calc(150px)" class="q-px-xl q-pt-xl">
+        <div class="row">
+          <q-avatar
+            rounded
+            size="54px"
+            font-size="42px"
+            color="yellow-9"
+            text-color="white"
+            icon="face"
+          />
+          <div class="column text-white q-pa-sm q-ml-sm">
+            <div class="text-capitalize">animesh singh mahra</div>
+            <div>animeshmahra@gmail.com</div>
+          </div>
+        </div>
+      </div>
+      <q-scroll-area style="height: calc(100% - 250px)">
+        <div class="q-px-xl">
+          <q-list separator dark>
+            <q-item
+              clickable
+              v-ripple
+              v-for="link in linksData"
+              :key="link.title"
+              :to="link.link"
+              v-bind="link"
+              class="text-grey-1"
+              style="font-size: 15px"
+            >
               <q-item-section>
-                Inbox
+                {{ link.title }}
+                <br />
+                {{ link.description }}
               </q-item-section>
             </q-item>
           </q-list>
-        </q-scroll-area>
-
-        <q-img class="absolute-top" src="https://cdn.quasar.dev/img/material.png" style="height: 150px">
-          <div class="absolute-bottom bg-transparent">
-            <q-avatar size="56px" class="q-mb-sm">
-              <img src="https://cdn.quasar.dev/img/boy-avatar.png">
-            </q-avatar>
-            <div class="text-weight-bold">Razvan Stoenescu</div>
-            <div>@rstoenescu</div>
-          </div>
-        </q-img>
+        </div>
+      </q-scroll-area>
+      <div style="height: 100px" class="q-px-xl">
+        <q-btn
+          class="q-px-xl q-py-xs full-width"
+          color="orange"
+          label="LOGOUT"
+          @click="logout()"
+        />
+      </div>
     </q-drawer>
     <q-page-container>
-      <router-view />
+      <q-page>
+        <router-view />
+      </q-page>
     </q-page-container>
   </q-layout>
 </template>
 
 <script>
 export default {
-  
-  name: 'MainLayout',
-  data () {
+  name: "MainLayout",
+  data() {
     return {
-      isLeftSidePanelOpen : false,
-      currentRoute : (this.$router.currentRoute.path).substring(1) 
-    }
-  }
+      isLeftSidePanelOpen: false,
+      currentRoute: this.$router.currentRoute.path.substring(1),
+      linksData: [
+        {
+          title: "Leads",
+          link: "/leads",
+          description: "View Lead Dashboard, all leads and add new lead.",
+        },
+        {
+          title: "Clients",
+          link: "/clients",
+          description: "View Lead Clients, all leads and add new clients.",
+        },
+        {
+          title: "Claims",
+          link: "/claims",
+          description: "View Lead Claims, all leads and add new claims.",
+        },
+        {
+          title: "Vendors",
+          link: "/vendors",
+          description: "View Schedule all vendors.",
+        },
+        {
+          title: "Settings",
+          link: "/settings",
+          description: "Setup My Schedule, Type of Inspection.",
+        },
+      ],
+    };
+  },
+
+  methods: {
+    logout() {
+      localStorage.removeItem("token");
+      this.$router.push("/login");
+    },
+  },
 };
 </script>
