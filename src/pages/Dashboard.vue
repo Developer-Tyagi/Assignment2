@@ -1,9 +1,5 @@
 <template>
-  <q-page>
-    <h5>
-      <q-icon name="menu" @click="openMenu"></q-icon>Dashboard
-    </h5>
-  </q-page>
+  <div>hi dashboard</div>
 </template>
 <script>
 export default {
