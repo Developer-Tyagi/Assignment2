@@ -37,7 +37,6 @@
             <q-item-section>
               <q-item-label>{{lead.attributes.primaryContact.fname}} {{lead.attributes.primaryContact.lname}}</q-item-label>
               <q-item-label caption lines="1">{{lead.attributes.primaryContact.email}}</q-item-label>
-              <q-item-label caption lines="1">{{lead.attributes.primaryContact.phoneNumber.number}}</q-item-label>
             </q-item-section>
             <q-item-section side top>
               <div v-if="lead.attributes.lastVisted===''">
@@ -80,7 +79,6 @@
             <q-item-section>
               <q-item-label>{{lead.attributes.primaryContact.fname}} {{lead.attributes.primaryContact.lname}}</q-item-label>
               <q-item-label caption lines="1">{{lead.attributes.primaryContact.email}}</q-item-label>
-              <q-item-label caption lines="1">{{lead.attributes.primaryContact.phoneNumber.number}}</q-item-label>
             </q-item-section>
             <q-item-section side top>
               <div v-if="lead.attributes.lastVisted===''">
