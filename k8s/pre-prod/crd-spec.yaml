@@ -1,0 +1,84 @@
+---
+# Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ui
+  labels:
+    name: ui
+    project: claimguru
+    version: "CI_COMMIT_SHORT_SHA"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: ui
+      project: claimguru
+  template:
+    metadata:
+      labels:
+        name: ui
+        project: claimguru
+        version: "CI_COMMIT_SHORT_SHA"
+    spec:
+      securityContext: {}
+      containers:
+        - name: ui
+          securityContext: {}
+          image: DOCKER_IMAGE
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: ui-config
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: 150
+            initialDelaySeconds: 2
+          resources: {}
+---
+# Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: ui
+  labels:
+    name: ui
+    project: claimguru
+    version: "CI_COMMIT_SHORT_SHA"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    name: ui
+    project: claimguru
+---
+# Virtual Service
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: ui
+  labels:
+    name: ui
+    project: claimguru
+    version: "CI_COMMIT_SHORT_SHA"
+spec:
+  hosts:
+    - claimguru.cilalabs.dev
+  gateways:
+    - istio-system/claimguru-gateway
+  http:
+    - match:
+        - uri:
+            prefix: "/"
+      route:
+        - destination:
+            host: ui
