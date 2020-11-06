@@ -44,8 +44,8 @@ export default {
           "https://56564994-ccad-41d5-989e-839ceca5232d.mock.pstmn.io/v1/clients",
           {
             headers: {
-              "Content-Type": "application/vnd.api+json",
-              Accept: "application/vnd.api+json",
+              "Content-Type": "application/json",
+              Accept: "application/json",
               Authorization: ""
             }
           }

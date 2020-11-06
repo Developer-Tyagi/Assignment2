@@ -138,16 +138,12 @@ export default {
     getLeads: function(event) {
       // API endpoint is hardcoded for testing.
       axios
-        .get(
-          "https://56564994-ccad-41d5-989e-839ceca5232d.mock.pstmn.io/v1/leads",
-          {
-            headers: {
-              "Content-Type": "application/vnd.api+json",
-              Accept: "application/vnd.api+json",
-              Authorization: ""
-            }
+        .get("https://api.claimguru.cilalabs.dev/v1/leads", {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json"
           }
-        )
+        })
         .then(
           response => {
             console.log(response);
