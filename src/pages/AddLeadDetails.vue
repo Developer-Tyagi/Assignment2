@@ -181,17 +181,17 @@ export default {
             data: {
               type: "leads",
               attributes: {
-                isOrganization: false,
+                //isOrganization: false,
                 primaryContact: {
                   fname: this.fname,
                   lname: this.lname,
-                  email: this.email,
-                  phoneNumber: {
+                  email: this.email
+                  /* phoneNumber: {
                     type: "home",
                     number: this.phone
-                  }
-                },
-                lossLocation: {
+                  }*/
+                }
+                /*lossLocation: {
                   addressCountry: this.country,
                   addressLocality: this.city,
                   addressRegion: this.state,
@@ -203,7 +203,7 @@ export default {
                 carrier: this.lossDesc,
                 policyNumber: this.policyNumber,
                 isAutomaticScheduling: this.isScheduling,
-                dateofLoss: ""
+                dateofLoss: ""*/
               }
             }
           },
