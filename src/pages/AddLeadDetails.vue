@@ -164,7 +164,6 @@ export default {
     QDatetime
   },
   mounted() {
-    console.log("Hello");
     this.getVendors();
   },
   methods: {
@@ -176,7 +175,8 @@ export default {
       // Hardcoding api end point for testing.
       axios
         .post(
-          "https://56564994-ccad-41d5-989e-839ceca5232d.mock.pstmn.io/v1/leads",
+          // "https://56564994-ccad-41d5-989e-839ceca5232d.mock.pstmn.io/v1/leads",
+          "https://api.claimguru.cilalabs.dev/v1/leads",
           {
             data: {
               type: "leads",
@@ -209,19 +209,20 @@ export default {
           },
           {
             headers: {
-              "Content-Type": "application/vnd.api+json",
-              Accept: "application/vnd.api+json"
+              "Content-Type": "application/json",
+              Accept: "application/json"
             }
           }
         )
         .then(responseData => {
           console.log(this.email);
+          console.log(this.lossDesc);
           console.log("Successfully added lead");
         })
         .catch(function(error) {
           console.log("Error :  " + error);
         });
-      console.log("exiting in submit");
+      this.$router.push("/leads");
     },
     onReset() {
       this.$router.push("/leads");
@@ -250,10 +251,6 @@ export default {
             this.showError("Sorry, Couldn't retrieve profile data");
           }
         );
-    },
-    onSubmit() {
-      console.log(this.clientSelected.label);
-      this.$router.push("/add-lead-details");
     },
     onReset() {
       this.$router.push("/leads");
