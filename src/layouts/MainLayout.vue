@@ -2,8 +2,8 @@
   <q-layout view="lhr lpR lfr">
     <CustomQHeader
       @drawerSwitch="switchDrawer($event)"
-      v-bind:sidePanel="isLeftSidePanelOpen"
-    ></CustomQHeader>
+      :sidePanel="isLeftSidePanelOpen"
+    />
     <q-drawer
       v-model="isLeftSidePanelOpen"
       show-if-above
@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import CustomQHeader from "../components/custom-components/CustomQHeader";
+import CustomQHeader from "components/CustomQHeader";
 
 export default {
   name: "MainLayout",
@@ -133,3 +133,7 @@ export default {
   },
 };
 </script>
+<style lang="sass">
+.bg-side-panel
+  background-color: $sidePanel
+</style>

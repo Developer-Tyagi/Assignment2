@@ -17,7 +17,12 @@
               <q-icon name="person_outline" color="orange" />
             </template>
           </q-input>
-          <q-input v-model="userpwd" placeholder="Password" borderless>
+          <q-input
+            v-model="userpwd"
+            placeholder="Password"
+            type="password"
+            borderless
+          >
             <template v-slot:prepend>
               <q-icon name="lock_outline" color="orange" />
             </template>
@@ -38,6 +43,13 @@
 </template>
 <script>
 export default {
+  name: "Login",
+  data() {
+    return {
+      username: "",
+      userpwd: "",
+    };
+  },
   methods: {
     loginUser() {
       if (this.username == this.userpwd && this.username.length) {
@@ -46,12 +58,7 @@ export default {
       }
     },
   },
-  data() {
-    return {
-      username: "",
-      userpwd: "",
-    };
-  },
+
   beforeMount() {
     if (localStorage.getItem("token")) {
       this.$router.push("/dashboard");
@@ -63,6 +70,7 @@ export default {
 input::placeholder {
   color: #aeaeae;
 }
-input:focus {
+.bg-login {
+  background-color: #ededed;
 }
 </style>

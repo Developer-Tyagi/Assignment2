@@ -25,5 +25,7 @@
 </template>
 
 <script>
-export default {};
+export default {
+  name: "Settings",
+};
 </script>

@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import CustomQHeader from "../components/custom-components/CustomQHeader";
+import CustomQHeader from "components/CustomQHeader";
 
 export default {
   name: "SettingsLayout",

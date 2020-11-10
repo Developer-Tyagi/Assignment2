@@ -1,8 +1,8 @@
 <template>
-  <q-header bordered>
-    <q-toolbar class="row">
+  <q-header bordered class="bg-white">
+    <q-toolbar class="row bg-white">
       <q-btn
-        v-if="currentRouteName == 'dashboard'"
+        v-if="$route.name == 'dashboard'"
         flat
         dense
         class="color-grey"
@@ -12,17 +12,17 @@
       >
       </q-btn>
       <q-btn
-        v-else="currentRouteName != 'dashboard'"
+        v-else="$route.name != 'dashboard'"
         flat
         dense
         class="color-grey"
         icon="arrow_back"
         aria-label="Back"
-        @click="backToLastNavigation"
+        @click="onBackToLastNavigation"
       >
       </q-btn>
       <div class="text-uppercase text-bold text-black q-mx-auto">
-        {{ currentRouteName }}
+        {{ $route.name }}
       </div>
       <q-btn
         v-if="icon"
@@ -30,8 +30,8 @@
         dense
         round
         class="color-grey"
-        v-bind:icon="icon"
-        v-bind:aria-label="label"
+        :[icon]="icon"
+        :[aria-label]="label"
         @click="this.$emit('myEvent')"
       >
       </q-btn>
@@ -63,25 +63,19 @@ export default {
   },
 
   watch: {
-    sidePanel: function (newVal, oldVal) {
+    sidePanel(newVal) {
       this.isLeftSidePanelOpen = newVal;
     },
   },
 
   methods: {
-    backToLastNavigation() {
+    onBackToLastNavigation() {
       this.$router.go(-1);
     },
 
     onMenuButtonClick() {
       this.isLeftSidePanelOpen = !this.isLeftSidePanelOpen;
       this.$emit("drawerSwitch", this.isLeftSidePanelOpen);
-    },
-  },
-
-  computed: {
-    currentRouteName() {
-      return this.$router.history.current.path.substring(1);
     },
   },
 };
