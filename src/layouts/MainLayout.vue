@@ -1,38 +1,16 @@
 <template>
   <q-layout view="lhr lpR lfr">
-    <q-header>
-      <q-toolbar class="row">
-        <q-btn
-          flat
-          dense
-          round
-          class="color-grey"
-          icon="menu"
-          aria-label="Menu"
-          @click="isLeftSidePanelOpen = !isLeftSidePanelOpen"
-        >
-        </q-btn>
-        <div class="text-uppercase text-bold text-black q-mx-auto">
-          {{ currentRoute }}
-        </div>
-        <q-btn
-          flat
-          dense
-          round
-          class="color-grey"
-          icon="search"
-          aria-label="Search"
-          @click="isLeftSidePanelOpen = !isLeftSidePanelOpen"
-        >
-        </q-btn>
-      </q-toolbar>
-    </q-header>
+    <CustomQHeader
+      @drawerSwitch="switchDrawer($event)"
+      v-bind:sidePanel="isLeftSidePanelOpen"
+    ></CustomQHeader>
     <q-drawer
       v-model="isLeftSidePanelOpen"
       show-if-above
       :width="350"
       :breakpoint="600"
       content-class="bg-side-panel"
+      @hide="onMenuHide()"
     >
       <div style="height: calc(150px)" class="q-px-xl q-pt-xl">
         <div class="row">
@@ -82,20 +60,19 @@
       </div>
     </q-drawer>
     <q-page-container>
-      <q-page>
-        <router-view />
-      </q-page>
+      <router-view />
     </q-page-container>
   </q-layout>
 </template>
 
 <script>
+import CustomQHeader from "../components/custom-components/CustomQHeader";
+
 export default {
   name: "MainLayout",
   data() {
     return {
       isLeftSidePanelOpen: false,
-      currentRoute: this.$router.currentRoute.path.substring(1),
       linksData: [
         {
           title: "Leads",
@@ -130,6 +107,28 @@ export default {
     logout() {
       localStorage.removeItem("token");
       this.$router.push("/login");
+    },
+
+    backToLastNavigation() {
+      this.$router.go(-1);
+    },
+
+    switchDrawer(event) {
+      this.isLeftSidePanelOpen = event;
+    },
+
+    onMenuHide() {
+      this.isLeftSidePanelOpen = false;
+    },
+  },
+
+  components: {
+    CustomQHeader,
+  },
+
+  computed: {
+    currentRouteName() {
+      return this.$router.history.current.path.substring(1);
     },
   },
 };
