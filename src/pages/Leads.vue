@@ -37,7 +37,6 @@
             <q-item-section>
               <q-item-label>{{lead.attributes.primaryContact.fname}} {{lead.attributes.primaryContact.lname}}</q-item-label>
               <q-item-label caption lines="1">{{lead.attributes.primaryContact.email}}</q-item-label>
-              <q-item-label caption lines="1">{{lead.attributes.primaryContact.phoneNumber.number}}</q-item-label>
             </q-item-section>
             <q-item-section side top>
               <div v-if="lead.attributes.lastVisted===''">
@@ -80,7 +79,6 @@
             <q-item-section>
               <q-item-label>{{lead.attributes.primaryContact.fname}} {{lead.attributes.primaryContact.lname}}</q-item-label>
               <q-item-label caption lines="1">{{lead.attributes.primaryContact.email}}</q-item-label>
-              <q-item-label caption lines="1">{{lead.attributes.primaryContact.phoneNumber.number}}</q-item-label>
             </q-item-section>
             <q-item-section side top>
               <div v-if="lead.attributes.lastVisted===''">
@@ -138,16 +136,12 @@ export default {
     getLeads: function(event) {
       // API endpoint is hardcoded for testing.
       axios
-        .get(
-          "https://56564994-ccad-41d5-989e-839ceca5232d.mock.pstmn.io/v1/leads",
-          {
-            headers: {
-              "Content-Type": "application/vnd.api+json",
-              Accept: "application/vnd.api+json",
-              Authorization: ""
-            }
+        .get("https://api.claimguru.cilalabs.dev/v1/leads", {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json"
           }
-        )
+        })
         .then(
           response => {
             console.log(response);

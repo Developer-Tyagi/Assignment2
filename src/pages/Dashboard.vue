@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
   <q-page class="q-px-sm q-py-md">
     <q-card>
       <q-card-section class="row">
@@ -66,6 +67,13 @@
         </q-card-section>
       </q-card>
     </div>
+=======
+  <q-page>
+    <h5>
+      <q-icon name="menu" @click="openMenu"></q-icon>Dashboard
+    </h5>
+    <h6>Dashboard is under construction</h6>
+>>>>>>> master
   </q-page>
 </template>
 <script>
