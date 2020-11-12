@@ -31,9 +31,9 @@
             color="secondary"
             label="Login"
             class="full-width q-my-md"
-            @click="loginUser"
+            @click="onLogin"
           ></q-btn>
-          <a href="" style="color: #d64d25; text-decoration: none"
+          <a href style="color: #d64d25; text-decoration: none"
             >Forgot Password</a
           >
         </div>
@@ -42,6 +42,9 @@
   </q-page-container>
 </template>
 <script>
+import axios from "axios";
+import { Notify } from "quasar";
+
 export default {
   name: "Login",
   data() {
@@ -51,11 +54,47 @@ export default {
     };
   },
   methods: {
-    loginUser() {
-      if (this.username == this.userpwd && this.username.length) {
-        localStorage.setItem("token", JSON.stringify(this.username));
-        this.$router.push("/dashboard");
-      }
+    onLogin() {
+      axios
+        .post(
+          "https://api.claimguru.cilalabs.dev/v1/users/login",
+          {
+            data: {
+              type: "users",
+              attributes: {
+                email: this.username,
+                password: this.userpwd,
+              },
+            },
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+          }
+        )
+        .then((response) => {
+          localStorage.setItem(
+            "token",
+            JSON.stringify(response["data"]["data"]["idToken"])
+          );
+          this.$router.push("/dashboard");
+        })
+        .catch(() => {
+          this.showNotification();
+          this.userpwd = "";
+        });
+    },
+
+    showNotification() {
+      this.userpwd = "";
+      this.$q.notify({
+        message: "Please check your credentials",
+        icon: "announcement",
+        position: "top",
+        timeout: 2000,
+      });
     },
   },
 
