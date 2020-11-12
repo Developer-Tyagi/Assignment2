@@ -421,7 +421,6 @@ export default {
       this.$router.push("/leads");
     },
     getVendors() {
-      console.log("in get vendors");
       // API endpoint is hardcoded for testing.
       axios
         .get(
@@ -439,7 +438,6 @@ export default {
             this.vendorsList = response["data"]["data"];
           },
           (error) => {
-            console.log(error);
             this.showForm = false;
             this.showError("Sorry, Couldn't retrieve profile data");
           }
