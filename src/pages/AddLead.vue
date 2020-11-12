@@ -1,14 +1,19 @@
 <template>
   <q-page>
-    <h5>Add New Lead</h5>
-
-    <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
-      <q-toggle v-model="isNewLead" label="Is this a new lead?" left-label color="orange"></q-toggle>
+    <div class="q-pa-lg column" style="height: calc(100vh - 81px)">
+      <div class="row">
+        <p class="q-mx-none q-my-auto">Is this a new lead?</p>
+        <q-toggle
+          v-model="isNewLead"
+          left-label
+          color="orange"
+          class="q-ml-auto"
+        ></q-toggle>
+      </div>
       <div v-if="!isNewLead">
         <q-separator></q-separator>
         <br />
         <p>If client already exists, select from list below</p>
-
         <q-select
           v-model="clientSelected"
           :options="clientsList"
@@ -20,24 +25,28 @@
           <template v-slot:option="scope">
             <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
               <q-item-section>
-                <q-item-label v-html="scope.opt.attributes.primaryContact.fname"></q-item-label>
+                <q-item-label
+                  v-html="scope.opt.attributes.primaryContact.fname"
+                ></q-item-label>
               </q-item-section>
             </q-item>
           </template>
         </q-select>
       </div>
-      <div>
-        <q-btn label="Back" type="reset" color="primary" flat class="q-ml-sm"></q-btn>
-        <q-btn label="Next" type="submit" color="primary"></q-btn>
-      </div>
-    </q-form>
+      <q-btn
+        label="Continue"
+        color="primary"
+        class="full-width q-mt-auto"
+        @click="onContinue"
+      ></q-btn>
+    </div>
   </q-page>
 </template>
 <script>
 import axios from "axios";
 export default {
   methods: {
-    getClients: function(event) {
+    getClients() {
       // API endpoint is hardcoded for testing.
       axios
         .get(
@@ -46,28 +55,23 @@ export default {
             headers: {
               "Content-Type": "application/json",
               Accept: "application/json",
-              Authorization: ""
-            }
+              Authorization: "",
+            },
           }
         )
         .then(
-          response => {
+          (response) => {
             this.clientsList = response["data"]["data"];
           },
-          error => {
-            console.log(error);
+          (error) => {
             this.showForm = false;
             this.showError("Sorry, Couldn't retrieve clients data");
           }
         );
     },
-    onSubmit() {
-      console.log(this.clientSelected.label);
+    onContinue() {
       this.$router.push("/add-lead-details");
     },
-    onReset() {
-      this.$router.push("/leads");
-    }
   },
   mounted() {
     this.getClients();
@@ -75,10 +79,10 @@ export default {
   data() {
     return {
       clientSelected: "",
-      isNewLead: false,
-      clientsList: []
+      isNewLead: true,
+      clientsList: [],
     };
-  }
+  },
 };
 </script>
 <style>

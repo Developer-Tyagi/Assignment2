@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import leadStore from './leadStore'
+import lead from './lead'
 Vue.use(Vuex)
 
 /*
@@ -12,7 +12,7 @@ Vue.use(Vuex)
 export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
-      leadStore
+      lead
     },
 
     // enable strict mode (adds overhead!)
