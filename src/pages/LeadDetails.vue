@@ -112,7 +112,6 @@ export default {
         )
         .then(
           (response) => {
-            console.log(response["data"]["data"]["attributes"]);
             this.lead = response["data"]["data"]["attributes"];
           },
           (error) => {

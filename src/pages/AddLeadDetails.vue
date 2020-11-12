@@ -19,12 +19,7 @@
     </q-tabs>
 
     <q-separator />
-    <q-form
-      @submit="onSubmit"
-      @reset="onReset"
-      class="q-gutter-md"
-      style="height: calc(100vh - 89px)"
-    >
+    <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md" style="">
       <q-tab-panels v-model="selectedTab" animated>
         <q-tab-panel name="primary">
           <q-input v-model="primaryDetails.firstName" label="First Name" />
@@ -60,7 +55,11 @@
 
         <q-tab-panel name="lossDetails">
           <label>Loss Details</label>
-          <!-- <q-datetime v-model="lossDetails.dateOfLoss" type="datetime" /> -->
+          <q-input
+            v-model="lossDetails.dateOfLoss"
+            type="date"
+            placeholder="Date of Loss"
+          />
           <q-input
             v-model="lossDetails.lossDesc"
             label="Brief description of loss"
@@ -276,6 +275,7 @@
 </template>
 <script>
 import axios from "axios";
+import { date } from "quasar";
 import countries from "src/utils/country";
 
 export default {
@@ -355,6 +355,43 @@ export default {
       this.$router.push("/vendors");
     },
     onSubmit() {
+      let formattedString = date.formatDate(
+        this.lossDetails.dateOfLoss,
+        "YYYY-MM-DDTHH:mm:ssZ"
+      );
+      let payload = {
+        isOrganization: this.primaryDetails.isOrganisation,
+        primaryContact: {
+          fname: this.primaryDetails.firstName,
+          lname: this.primaryDetails.lastName,
+          email: this.primaryDetails.email,
+          phoneNumber: [],
+        },
+        lossLocation: {
+          addressCountry: this.lossDetails.country,
+          addressLocality: this.lossDetails.city,
+          addressRegion: this.lossDetails.state,
+          postOfficeBoxNumber: "",
+          postalCode: this.lossDetails.postalCode,
+          streetAddress: this.lossDetails.address1,
+        },
+        lossDesc: this.lossDetails.lossDesc,
+        dateofLoss: formattedString,
+        carrier: this.insuranceDetails.carrierName,
+        policyNumber: this.insuranceDetails.policyNumber,
+        isAutomaticScheduling: this.schedulingDetails.isAutomaticScheduling,
+        notes: this.notes,
+      };
+      if (payload[this.primaryDetails.isOrganisation]) {
+        payload[organizationName] = this.primaryDetails.organisationName;
+      }
+      if (this.primaryDetails.phoneNumber) {
+        payload.primaryContact["phoneNumber"].push({
+          type: this.primaryDetails.phoneType,
+          number: this.primaryDetails.phoneNumber,
+        });
+      }
+
       // Hardcoding api end point for testing.
       axios
         .post(
@@ -362,38 +399,7 @@ export default {
           {
             data: {
               type: "leads",
-              attributes: {
-                isOrganization: this.primaryDetails.isOrganisation,
-                organizationName: this.primaryDetails.isOrganisation
-                  ? this.primaryDetails.organisationName
-                  : "",
-                primaryContact: {
-                  fname: this.primaryDetails.firstName,
-                  lname: this.primaryDetails.lastName,
-                  email: this.primaryDetails.email,
-                  phoneNumber: [
-                    {
-                      type: this.primaryDetails.phoneType,
-                      number: this.primaryDetails.phoneNumber,
-                    },
-                  ],
-                },
-                lossLocation: {
-                  addressCountry: this.lossDetails.country,
-                  addressLocality: this.lossDetails.city,
-                  addressRegion: this.lossDetails.state,
-                  postOfficeBoxNumber: "",
-                  postalCode: this.lossDetails.postalCode,
-                  streetAddress: this.lossDetails.address1,
-                },
-
-                lossDesc: this.lossDesc,
-                carrier: this.insuranceDetails.carrierName,
-                policyNumber: this.insuranceDetails.policyNumber,
-                isAutomaticScheduling: this.schedulingDetails
-                  .isAutomaticScheduling,
-                dateofLoss: this.lossDetails.dateOfLoss,
-              },
+              attributes: payload,
             },
           },
           {
