@@ -17,53 +17,64 @@
               <q-icon name="person_outline" color="orange" />
             </template>
           </q-input>
-          <q-input
-            v-model="userpwd"
-            placeholder="Password"
-            type="password"
-            borderless
-          >
+          <q-input v-model="userpwd" placeholder="Password" type="password" borderless>
             <template v-slot:prepend>
               <q-icon name="lock_outline" color="orange" />
             </template>
           </q-input>
-          <q-btn
-            color="secondary"
-            label="Login"
-            class="full-width q-my-md"
-            @click="loginUser"
-          ></q-btn>
-          <a href="" style="color: #d64d25; text-decoration: none"
-            >Forgot Password</a
-          >
+          <q-btn color="secondary" label="Login" class="full-width q-my-md" @click="loginUser"></q-btn>
+          <a href style="color: #d64d25; text-decoration: none">Forgot Password</a>
         </div>
       </div>
     </q-page>
   </q-page-container>
 </template>
 <script>
+import axios from "axios";
 export default {
   name: "Login",
   data() {
     return {
       username: "",
-      userpwd: "",
+      userpwd: ""
     };
   },
   methods: {
     loginUser() {
-      if (this.username == this.userpwd && this.username.length) {
-        localStorage.setItem("token", JSON.stringify(this.username));
-        this.$router.push("/dashboard");
-      }
-    },
+      axios
+        .post(
+          "https://api.claimguru.cilalabs.dev/v1/users/login",
+          {
+            data: {
+              type: "users",
+              attributes: {
+                email: this.username,
+                password: this.userpwd
+              }
+            }
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json"
+            }
+          }
+        )
+        .then(responseData => {
+          localStorage.setItem("token", JSON.stringify(this.username));
+          this.$router.push("/dashboard");
+        })
+        .catch(function(error) {
+          console.log("Error :  " + error);
+        });
+    }
   },
 
   beforeMount() {
     if (localStorage.getItem("token")) {
       this.$router.push("/dashboard");
     }
-  },
+  }
 };
 </script>
 <style>
