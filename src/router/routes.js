@@ -11,18 +11,27 @@ const routes = [
     children: [
       { path: "dashboard", name: 'dashboard', component: () => import("pages/Dashboard.vue") },
       { path: "index", component: () => import("pages/Index.vue") },
-      { path: "leads", name: 'leads', component: () => import("pages/Leads.vue") },
-      { path: "add-lead", name: 'add new leads', component: () => import("pages/AddLead.vue") },
       { path: "vendors", component: () => import("pages/Vendors.vue") },
-      { path: "details/:id", name: "lead details", component: () => import("pages/LeadDetails.vue") },
-      { path: "add-lead-details", name: 'add new lead', component: () => import("pages/AddLeadDetails.vue") },
       { path: '', redirect: 'dashboard' },
     ],
   },
   {
     path: "",
     component: () => import("layouts/AuthLayout.vue"),
-    children: [{ path: "login", component: () => import("pages/Login.vue") }]
+    children: [
+      { path: "login", component: () => import("pages/Login.vue") }
+    ]
+  },
+  {
+    path: "",
+    component: () => import("layouts/LeadLayout.vue"),
+    children: [
+      { path: "leads", name: 'leads', component: () => import("pages/Leads.vue") },
+      { path: "add-lead", name: 'add new leads', component: () => import("pages/AddLead.vue") },
+      { path: "details/:id", name: "lead details", component: () => import("pages/LeadDetails.vue") },
+      { path: "add-lead-details", name: 'add new lead', component: () => import("pages/AddLeadDetails.vue") },
+
+    ]
   },
   {
     path: "/settings",

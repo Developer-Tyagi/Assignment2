@@ -1,143 +1,187 @@
 <template>
-  <q-page padding>
-    <div class="row q-px-md">
-      <q-btn
-        round
-        color="orange"
-        icon="add"
-        class="q-ml-auto"
-        @click="addLead"
-      ></q-btn>
+  <q-page style="padding-top: 0; height: 100vh">
+    <q-header bordered class="bg-white">
+      <q-toolbar class="row bg-white">
+        <q-btn
+          flat
+          dense
+          class="color-grey"
+          icon="arrow_back"
+          aria-label="Back"
+          @click="$router.push('/dashboard')"
+        >
+        </q-btn>
+        <div
+          class="text-uppercase text-bold text-black q-mx-auto"
+          v-if="!openSearchInput"
+        >
+          {{ $route.name }}
+        </div>
+        <img
+          src="~assets/search.svg"
+          alt="Search icon"
+          @click="openSearchInput = true"
+          style="margin: 0"
+          v-if="
+            (activeLeads.length > 0 || archivedLeads.length > 0) &&
+            !openSearchInput
+          "
+        />
+        <img
+          src="~assets/add.svg"
+          alt=""
+          @click="addLead"
+          style="margin: 0 0 0 20px"
+          v-if="!openSearchInput"
+        />
+        <q-input
+          v-model="searchText"
+          v-if="openSearchInput"
+          placeholder="Search for leads"
+          style="width: 80%; margin: 0 10%"
+          clearable
+          @input="filterLeads(false, $event)"
+          @clear="filterLeads(true)"
+        >
+        </q-input>
+      </q-toolbar>
+    </q-header>
+    <div style="padding-top: 51px" class="full-height row">
+      <div
+        class="full-width"
+        v-if="activeLeads.length > 0 || archivedLeads.length > 0"
+      >
+        <q-tabs
+          v-model="panel"
+          dense
+          class="q-mt-md"
+          active-color="primary"
+          indicator-color="primary"
+          align="justify"
+          narrow-indicator
+        >
+          <q-tab
+            name="newLeads"
+            label="New Leads"
+            class="text-capitalize"
+          ></q-tab>
+          <q-tab
+            name="oldLeads"
+            label="Old Leads"
+            class="text-capitalize"
+          ></q-tab>
+        </q-tabs>
+        <q-tab-panels v-model="panel" animated>
+          <q-tab-panel name="newLeads" class="q-pa-none">
+            <q-list>
+              <q-item
+                @click="onLeadListClick(lead)"
+                v-for="lead in activeLeads"
+                :key="lead.id"
+                clickable
+                v-ripple
+                class="lead-list-item"
+              >
+                <q-item-section>
+                  <div class="row">
+                    <span
+                      >{{ lead.attributes.primaryContact.fname }}
+                      {{ lead.attributes.primaryContact.lname }}</span
+                    >
+                    <span class="q-ml-auto">Visting On</span>
+                  </div>
+                  <div class="row">
+                    <span
+                      >Mob:
+                      <span
+                        v-if="
+                          lead.attributes.primaryContact.phoneNumber &&
+                          lead.attributes.primaryContact.phoneNumber.length
+                        "
+                      >
+                        {{
+                          lead.attributes.primaryContact.phoneNumber[0].number
+                        }}
+                      </span>
+                    </span>
+                    <span class="q-ml-auto">DD/MM/YYYY</span>
+                  </div>
+                  <div>
+                    Date of Loss:
+                    {{
+                      lead.attributes.dateofLoss &&
+                      lead.attributes.dateofLoss | moment("DD/MM/YYYY")
+                    }}
+                  </div>
+                  <div class="q-mt-md row">
+                    <span>New Lead in Inspection</span>
+                    <span class="q-ml-auto">
+                      <q-icon name="restore_page"></q-icon>
+                    </span>
+                  </div>
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-tab-panel>
+          <q-tab-panel name="oldLeads" class="q-pa-none">
+            <q-list>
+              <q-item
+                @click="onLeadListClick(lead)"
+                v-for="lead in archivedLeads"
+                :key="lead.id"
+                clickable
+                v-ripple
+                class="lead-list-item"
+              >
+                <q-item-section>
+                  <div class="row">
+                    <span
+                      >{{ lead.attributes.primaryContact.fname }}
+                      {{ lead.attributes.primaryContact.lname }}</span
+                    >
+                    <span class="q-ml-auto">Visting On</span>
+                  </div>
+                  <div class="row">
+                    <span
+                      >Mob:
+                      <span
+                        v-if="
+                          lead.attributes.primaryContact.phoneNumber &&
+                          lead.attributes.primaryContact.phoneNumber.length
+                        "
+                      >
+                        {{
+                          lead.attributes.primaryContact.phoneNumber[0].number
+                        }}
+                      </span>
+                    </span>
+                    <span class="q-ml-auto">DD/MM/YYYY</span>
+                  </div>
+                  <div class="q-mt-md row">
+                    <span>New Lead in Inspection</span>
+                    <span class="q-ml-auto">
+                      <q-icon name="restore_page"></q-icon>
+                    </span>
+                  </div>
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-tab-panel>
+        </q-tab-panels>
+      </div>
+      <div v-else class="full-height q-ma-auto">
+        <div style="color: #666666" class="text-center">
+          You haven't added a Lead yet.
+        </div>
+        <img
+          src="~assets/add.svg"
+          alt="add_icon"
+          width="80px"
+          height="80px"
+          @click="addLead"
+        />
+      </div>
     </div>
-    <q-tabs
-      v-model="panel"
-      dense
-      class="text-grey"
-      active-color="primary"
-      indicator-color="primary"
-      align="justify"
-      narrow-indicator
-    >
-      <q-tab name="newLeads" label="New Leads"></q-tab>
-      <q-tab name="oldLeads" label="Old Leads"></q-tab>
-    </q-tabs>
-    <q-separator></q-separator>
-    <q-tab-panels v-model="panel" animated>
-      <q-tab-panel name="newLeads">
-        <q-list bordered separator>
-          <q-item
-            @click="onLeadListClick(lead)"
-            v-for="lead in leadsData"
-            :key="lead.id"
-            class="q-my-sm"
-            clickable
-            v-ripple
-          >
-            <q-item-section avatar>
-              <q-avatar color="primary" text-color="white">{{
-                lead.attributes.primaryContact.fname.charAt(0)
-              }}</q-avatar>
-            </q-item-section>
-            <q-item-section>
-              <q-item-label
-                >{{ lead.attributes.primaryContact.fname }}
-                {{ lead.attributes.primaryContact.lname }}</q-item-label
-              >
-              <q-item-label caption lines="1">{{
-                lead.attributes.primaryContact.email
-              }}</q-item-label>
-            </q-item-section>
-            <q-item-section side top>
-              <div v-if="lead.attributes.lastVisted === ''">
-                <small>
-                  <q-item-label>Schedule to visit</q-item-label>
-                </small>
-
-                <q-icon name="sync" color="red"></q-icon>
-              </div>
-              <div v-else>
-                <small>
-                  <q-item-label
-                    >Visited on {{ lead.attributes.lastVisted }}</q-item-label
-                  >
-                </small>
-                <q-icon name="sync" color="green"></q-icon>
-              </div>
-              <div>
-                <q-icon
-                  name="insert_invitation"
-                  color="blue"
-                  size="md"
-                ></q-icon>
-                <q-icon
-                  name="library_books"
-                  color="black"
-                  size="md"
-                  @click="takeNotes"
-                ></q-icon>
-              </div>
-            </q-item-section>
-          </q-item>
-        </q-list>
-      </q-tab-panel>
-      <q-tab-panel name="oldLeads">
-        <q-list bordered separator>
-          <q-item
-            @click="onLeadListClick(lead)"
-            v-for="lead in leadsData"
-            :key="lead.id"
-            class="q-my-sm"
-            clickable
-            v-ripple
-          >
-            <q-item-section avatar>
-              <q-avatar color="primary" text-color="white">{{
-                lead.attributes.primaryContact.fname.charAt(0)
-              }}</q-avatar>
-            </q-item-section>
-            <q-item-section>
-              <q-item-label
-                >{{ lead.attributes.primaryContact.fname }}
-                {{ lead.attributes.primaryContact.lname }}</q-item-label
-              >
-              <q-item-label caption lines="1">{{
-                lead.attributes.primaryContact.email
-              }}</q-item-label>
-            </q-item-section>
-            <q-item-section side top>
-              <div v-if="lead.attributes.lastVisted === ''">
-                <small>
-                  <q-item-label>Schedule to visit</q-item-label>
-                </small>
-
-                <q-icon name="sync" color="red"></q-icon>
-              </div>
-              <div v-else>
-                <small>
-                  <q-item-label
-                    >Visited on {{ lead.attributes.lastVisted }}</q-item-label
-                  >
-                </small>
-                <q-icon name="sync" color="green"></q-icon>
-              </div>
-              <div>
-                <q-icon
-                  name="insert_invitation"
-                  color="blue"
-                  size="md"
-                ></q-icon>
-                <q-icon
-                  name="library_books"
-                  color="black"
-                  size="md"
-                  @click="takeNotes"
-                ></q-icon>
-              </div>
-            </q-item-section>
-          </q-item>
-        </q-list>
-      </q-tab-panel>
-    </q-tab-panels>
   </q-page>
 </template>
 
@@ -145,30 +189,58 @@
 import { mapGetters } from "vuex";
 import { mapActions } from "vuex";
 import axios from "axios";
+import moment from "moment";
+
 export default {
   name: "Leads",
+  data() {
+    return {
+      openSearchInput: false,
+      searchText: "",
+      leadTabs: [
+        { value: "newLeads", label: "New Leads" },
+        { value: "oldLeads", label: "Old Leads" },
+      ],
+      panel: "newLeads",
+      // Initialize the leads json
+      activeLeads: [
+        {
+          type: "",
+          id: "",
+          attributes: {
+            isOrganization: true,
+            organizationName: "",
+            primaryContact: {
+              fname: "",
+              lname: "",
+              email: "",
+              phoneNumber: [
+                {
+                  type: "",
+                  number: "",
+                },
+              ],
+            },
+            lastVisted: "",
+            visited: [],
+          },
+        },
+      ],
+      archivedLeads: [],
+    };
+  },
   computed: {
-    ...mapGetters("lead", ["leads"]),
+    // ...mapGetters("lead", ["leads"]),
+    formatDate(value) {
+      if (value) {
+        return moment(String(value)).format("MM/DD/YYYY");
+      }
+    },
   },
   methods: {
-    ...mapActions("lead", ["updateName"]),
-    takeNotes() {
-      this.$q
-        .dialog({
-          title: "Notes",
-          message: "Write relevant information about this new lead.",
-        })
-        .onOk(() => {
-          console.log("OK");
-        })
-        .onCancel(() => {
-          console.log("Cancel");
-        })
-        .onDismiss(() => {
-          console.log("I am triggered on both OK and Cancel");
-        });
-    },
-    getLeads() {
+    // ...mapActions("lead", ["updateName"]),
+
+    getActiveLeads() {
       // API endpoint is hardcoded for testing.
       axios
         .get("https://api.claimguru.cilalabs.dev/v1/leads", {
@@ -179,16 +251,34 @@ export default {
         })
         .then(
           (response) => {
-            console.log(response);
-            this.leadsData = response["data"]["data"];
+            this.activeLeads = response["data"]["data"];
+            this.copyActiveLeads = JSON.stringify(this.activeLeads);
+            this.getArchivedLeads();
           },
           (error) => {
-            console.log(error);
             this.showForm = false;
-            this.showError("Sorry, Couldn't retrieve profile data");
           }
         );
     },
+
+    getArchivedLeads() {
+      axios
+        .get("https://api.claimguru.cilalabs.dev/v1/leads?archive=true", {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        })
+        .then(
+          (response) => {
+            this.archivedLeads = response["data"]["data"];
+          },
+          (error) => {
+            this.showForm = false;
+          }
+        );
+    },
+
     addLead() {
       this.$router.push("/add-lead");
     },
@@ -200,51 +290,50 @@ export default {
       // });
       this.$router.push("/details/" + lead.id);
     },
+
+    filterLeads(closeModel, event) {
+      if (event) {
+        const pattern = new RegExp(event, "i");
+        this.activeLeads = this.activeLeads.filter((val) => {
+          return (
+            pattern.test(val.attributes.primaryContact.fname) ||
+            pattern.test(val.attributes.primaryContact.lname)
+          );
+        });
+      } else {
+        this.activeLeads = JSON.parse(this.copyActiveLeads);
+        this.openSearchInput = false;
+      }
+    },
   },
+
   mounted() {
-    this.getLeads();
-  },
-  data() {
-    return {
-      leadTabs: [
-        { value: "newLeads", label: "New Leads" },
-        { value: "oldLeads", label: "Old Leads" },
-      ],
-      panel: "newLeads",
-      // Initialize the leads json
-      leadsData: [
-        {
-          type: "",
-          id: "",
-          attributes: {
-            isOrganization: true,
-            organizationName: "",
-            primaryContact: {
-              fname: "",
-              lname: "",
-              email: "",
-              phoneNumber: {
-                type: "",
-                number: "",
-              },
-            },
-            lastVisted: "",
-            visited: [],
-            leadTabs: "newLeadTab",
-          },
-        },
-      ],
-    };
+    this.getActiveLeads();
   },
 };
 </script>
-
-<style>
+<style lang="scss" scoped>
+* {
+  color: #333333;
+}
 img {
   display: block;
   margin-bottom: auto;
   margin-top: auto;
   margin-left: auto;
   margin-right: auto;
+}
+
+.q-tab {
+  padding: 0;
+}
+
+.q-tab__content {
+  width: 100%;
+}
+
+.lead-list-item {
+  background-color: #f4f4f4;
+  border-bottom: 4px solid white;
 }
 </style>

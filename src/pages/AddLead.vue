@@ -1,44 +1,65 @@
 <template>
   <q-page>
-    <div class="q-pa-lg column" style="height: calc(100vh - 81px)">
-      <div class="row">
-        <p class="q-mx-none q-my-auto">Is this a new lead?</p>
-        <q-toggle
-          v-model="isNewLead"
-          left-label
-          color="orange"
-          class="q-ml-auto"
-        ></q-toggle>
-      </div>
-      <div v-if="!isNewLead">
-        <q-separator></q-separator>
-        <br />
-        <p>If client already exists, select from list below</p>
-        <q-select
-          v-model="clientSelected"
-          :options="clientsList"
-          clearable
-          key="id"
-          option-value="id"
-          label="Select existing client"
+    <q-header bordered class="bg-white">
+      <q-toolbar class="row bg-white">
+        <q-btn
+          flat
+          dense
+          class="color-grey"
+          icon="arrow_back"
+          aria-label="Back"
+          @click="$router.push('/leads')"
         >
-          <template v-slot:option="scope">
-            <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
-              <q-item-section>
-                <q-item-label
-                  v-html="scope.opt.attributes.primaryContact.fname"
-                ></q-item-label>
-              </q-item-section>
-            </q-item>
-          </template>
-        </q-select>
+        </q-btn>
+        <div
+          class="text-uppercase text-bold text-black q-mx-auto"
+          v-if="!openSearchInput"
+        >
+          {{ $route.name }}
+        </div>
+      </q-toolbar>
+    </q-header>
+    <div style="padding-top: 51px">
+      <div class="q-pa-lg column" style="height: calc(100vh - 81px)">
+        <div class="row">
+          <p class="q-mx-none q-my-auto">Is this a new lead?</p>
+          <q-toggle
+            v-model="isNewLead"
+            left-label
+            color="orange"
+            class="q-ml-auto"
+          ></q-toggle>
+        </div>
+        <div v-if="!isNewLead">
+          <q-separator></q-separator>
+          <br />
+          <p>If client already exists, select from list below</p>
+          <q-select
+            v-model="clientSelected"
+            :options="clientsList"
+            clearable
+            key="id"
+            option-value="id"
+            label="Select existing client"
+          >
+            <template v-slot:option="scope">
+              <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                <q-item-section>
+                  <q-item-label
+                    v-html="scope.opt.attributes.primaryContact.fname"
+                  ></q-item-label>
+                </q-item-section>
+              </q-item>
+            </template>
+          </q-select>
+        </div>
+        <q-btn
+          label="Continue"
+          color="primary"
+          class="full-width q-mt-auto"
+          @click="onContinue"
+        ></q-btn>
       </div>
-      <q-btn
-        label="Continue"
-        color="primary"
-        class="full-width q-mt-auto"
-        @click="onContinue"
-      ></q-btn>
     </div>
   </q-page>
 </template>
