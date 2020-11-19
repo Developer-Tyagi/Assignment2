@@ -76,7 +76,7 @@ export default {
       linksData: [
         {
           title: "Leads",
-          link: "/leads",
+          link: "/leads-dashboard",
           description: "View Lead Dashboard, all leads and add new lead.",
         },
         {
