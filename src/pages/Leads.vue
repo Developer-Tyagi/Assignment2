@@ -101,14 +101,18 @@
                         }}
                       </span>
                     </span>
-                    <span class="q-ml-auto">DD/MM/YYYY</span>
+                    <span class="q-ml-auto" v-if="lead.attributes.lastVisted">
+                      {{ lead.attributes.lastVisted | moment("DD/MM/YYYY") }}
+                    </span>
+                    <span v-else class="q-ml-auto"> - </span>
                   </div>
                   <div>
                     Date of Loss:
-                    {{
+                    <span v-if="lead.attributes.dateofLoss">{{
                       lead.attributes.dateofLoss &&
                       lead.attributes.dateofLoss | moment("DD/MM/YYYY")
-                    }}
+                    }}</span>
+                    <span v-else> - </span>
                   </div>
                   <div class="q-mt-md row">
                     <span>New Lead in Inspection</span>
@@ -152,7 +156,7 @@
                         }}
                       </span>
                     </span>
-                    <span class="q-ml-auto">DD/MM/YYYY</span>
+                    <span class="q-ml-auto">{{}}</span>
                   </div>
                   <div class="q-mt-md row">
                     <span>New Lead in Inspection</span>

@@ -35,7 +35,7 @@
       </div>
       <div class="q-pa-sm">
         <q-card>
-          <!-- <bar-chart></bar-chart> -->
+          <!-- <bar-chart>-->
         </q-card>
       </div>
     </div>
