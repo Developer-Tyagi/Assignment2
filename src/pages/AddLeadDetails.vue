@@ -11,10 +11,7 @@
           @click="$router.push('/leads')"
         >
         </q-btn>
-        <div
-          class="text-uppercase text-bold text-black q-mx-auto"
-          v-if="!openSearchInput"
-        >
+        <div class="text-uppercase text-bold text-black q-mx-auto">
           {{ $route.name }}
         </div>
       </q-toolbar>
@@ -38,20 +35,55 @@
       </q-tabs>
 
       <q-separator />
-      <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md" style="">
+      <q-form @submit.prevent.stop="onSubmit" class="q-gutter-md" style="">
         <q-tab-panels v-model="selectedTab" animated>
           <q-tab-panel name="primary">
-            <q-input v-model="primaryDetails.firstName" label="First Name" />
-            <q-input v-model="primaryDetails.lastName" label="Last Name" />
+            <q-input
+              v-model="primaryDetails.firstName"
+              label="First Name"
+              lazy-rules
+              :rules="[
+                (val) =>
+                  (val && val.length > 0) || 'Please fill the first name',
+              ]"
+            />
+            <q-input
+              v-model="primaryDetails.lastName"
+              label="Last Name"
+              lazy-rules
+              :rules="[
+                (val) => (val && val.length > 0) || 'Please fill the last name',
+              ]"
+            />
             <div class="row">
-              <q-input v-model="primaryDetails.phoneNumber" label="Phone" />
+              <q-input
+                v-model="primaryDetails.phoneNumber"
+                label="Phone"
+                type="number"
+                lazy-rules
+                :rules="[
+                  (val) =>
+                    (val && val.length > 7) || 'Please fill the phone number',
+                ]"
+                style="width: 65%"
+              />
               <q-select
                 v-model="primaryDetails.selectedContactType"
                 :options="primaryDetails.contactType"
                 label="Mobile"
+                lazy-rules
+                :rules="[(val) => (val && val.length > 0) || '']"
+                style="width: 30%; margin-left: auto"
               ></q-select>
             </div>
-            <q-input v-model="primaryDetails.email" label="Email" />
+            <q-input
+              v-model="primaryDetails.email"
+              label="Email"
+              lazy-rules
+              :rules="[
+                (val) => (val && val.length > 0) || 'Please fill the email ',
+              ]"
+            />
 
             <div class="row">
               <p class="q-mx-none q-my-auto">
@@ -68,6 +100,12 @@
               <q-input
                 v-model="primaryDetails.organisationName"
                 label="Organization Name"
+                lazy-rules
+                :rules="[
+                  (val) =>
+                    (val && val.length > 0) ||
+                    'Please fill the organization name ',
+                ]"
               />
             </div>
           </q-tab-panel>
@@ -78,10 +116,20 @@
               v-model="lossDetails.dateOfLoss"
               type="date"
               placeholder="Date of Loss"
+              lazy-rules
+              :rules="[
+                (val) =>
+                  (val && val.length > 0) || 'Please fill the date of loss ',
+              ]"
             />
             <q-input
               v-model="lossDetails.lossDesc"
               label="Brief description of loss"
+              lazy-rules
+              :rules="[
+                (val) =>
+                  (val && val.length > 0) || 'Please fill the loss description',
+              ]"
             />
             <br />
             <label>Loss Location</label>
@@ -90,16 +138,45 @@
               :options="countries"
               label="Country"
               @input="onCountrySelect(lossDetails.country)"
+              lazy-rules
+              :rules="[
+                (val) => (val && val.length > 0) || 'Please fill the country',
+              ]"
             ></q-select>
-            <q-input v-model="lossDetails.address1" label="Address1" />
+            <q-input
+              v-model="lossDetails.address1"
+              label="Address1"
+              lazy-rules
+              :rules="[
+                (val) => (val && val.length > 0) || 'Please fill the address',
+              ]"
+            />
             <q-input v-model="lossDetails.address2" label="Address2" />
-            <q-input v-model="lossDetails.city" label="City"></q-input>
+            <q-input
+              v-model="lossDetails.city"
+              label="City"
+              lazy-rules
+              :rules="[
+                (val) => (val && val.length > 0) || 'Please fill the city',
+              ]"
+            ></q-input>
             <q-select
               v-model="lossDetails.state"
               :options="states"
               label="State"
+              lazy-rules
+              :rules="[
+                (val) => (val && val.length > 0) || 'Please fill the state',
+              ]"
             ></q-select>
-            <q-input v-model="lossDetails.postalCode" label="ZIP Code" />
+            <q-input
+              v-model="lossDetails.postalCode"
+              label="ZIP Code"
+              lazy-rules
+              :rules="[
+                (val) => (val && val.length > 0) || 'Please fill the zip code',
+              ]"
+            />
           </q-tab-panel>
 
           <q-tab-panel name="insurance">
@@ -235,7 +312,14 @@
 
           <q-tab-panel name="notes">
             <p>Write relevent inforimation about this New Lead</p>
-            <q-input v-model="notes" type="input" />
+            <q-input
+              v-model="notes"
+              type="input"
+              lazy-rules
+              :rules="[
+                (val) => (val && val.length > 0) || 'Please fill the notes',
+              ]"
+            />
           </q-tab-panel>
 
           <q-tab-panel name="scheduling">
@@ -247,12 +331,14 @@
             ></q-toggle>
             <q-select
               v-model="schedulingDetails.inspectionType"
-              :options="[]"
+              :options="inspectionTypes"
               label="Type of Inspection"
+              option-label="id"
+              @input="onInspectionTypesSelect()"
             ></q-select>
             <q-select
               v-model="schedulingDetails.subInspectionType"
-              :options="[]"
+              :options="subInspectionTypes"
               label="Sub Type of Inspection"
             ></q-select>
             <q-input
@@ -302,6 +388,8 @@ export default {
     return {
       countries: [],
       states: [],
+      inspectionTypes: [],
+      subInspectionTypes: [],
       step: 1,
       tabs: [
         { value: "primary", label: "PRIMARY CONTACT" },
@@ -329,7 +417,7 @@ export default {
         address2: "",
         city: "",
         state: "",
-        country: "",
+        country: "United States",
         postalCode: "",
       },
       insuranceDetails: {
@@ -373,11 +461,42 @@ export default {
 
   created() {
     this.countries = addressService.getCountries();
+    this.onCountrySelect("United States");
+    this.getInspectionType();
   },
 
   methods: {
     onCountrySelect(country) {
       this.states = addressService.getStates(country);
+    },
+
+    // onInspectionTypesSelect() {
+    //   this.subInspectionTypes = this.inspectionTypes.filter(
+    //     (types) => types.id === this.schedulingDetails.inspectionType.id
+    //   );
+    // },
+
+    getInspectionType() {
+      // Hardcoding api end point for testing.
+      axios
+        .get(
+          "https://56564994-ccad-41d5-989e-839ceca5232d.mock.pstmn.io/v1/inspections",
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+              Authorization: "",
+            },
+          }
+        )
+        .then(
+          (response) => {
+            this.inspectionTypes = response["data"]["data"];
+          },
+          (error) => {
+            this.showForm = false;
+          }
+        );
     },
 
     gotoVendors() {
@@ -438,12 +557,8 @@ export default {
             },
           }
         )
-        .then((responseData) => {
-          console.log("Successfully added lead");
-        })
-        .catch(function (error) {
-          console.log("Error :  " + error);
-        });
+        .then((responseData) => {})
+        .catch(function (error) {});
       this.$router.push("/leads");
     },
     onReset() {

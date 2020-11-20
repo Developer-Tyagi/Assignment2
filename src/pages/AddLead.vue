@@ -11,10 +11,7 @@
           @click="$router.push('/leads')"
         >
         </q-btn>
-        <div
-          class="text-uppercase text-bold text-black q-mx-auto"
-          v-if="!openSearchInput"
-        >
+        <div class="text-uppercase text-bold text-black q-mx-auto">
           {{ $route.name }}
         </div>
       </q-toolbar>
