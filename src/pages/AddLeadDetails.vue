@@ -2,19 +2,12 @@
   <q-page>
     <q-header bordered class="bg-white">
       <q-toolbar class="row bg-white">
-        <q-btn
-          flat
-          dense
-          class="color-grey"
-          icon="arrow_back"
-          aria-label="Back"
-          @click="$router.push('/leads')"
-        >
-        </q-btn>
-        <div
-          class="text-uppercase text-bold text-black q-mx-auto"
-          v-if="!openSearchInput"
-        >
+        <img
+          src="~assets/left-arrow.svg"
+          alt="back-arrow"
+          @click="$router.push('/add-lead')"
+        />
+        <div class="text-uppercase text-bold text-black q-mx-auto">
           {{ $route.name }}
         </div>
       </q-toolbar>
@@ -38,21 +31,26 @@
       </q-tabs>
 
       <q-separator />
-      <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md" style="">
-        <q-tab-panels v-model="selectedTab" animated>
-          <q-tab-panel name="primary">
+
+      <q-tab-panels v-model="selectedTab" animated>
+        <q-tab-panel name="primary">
+          <q-card class="q-pa-md">
             <q-input v-model="primaryDetails.firstName" label="First Name" />
             <q-input v-model="primaryDetails.lastName" label="Last Name" />
             <div class="row">
-              <q-input v-model="primaryDetails.phoneNumber" label="Phone" />
+              <q-input
+                v-model="primaryDetails.phoneNumber"
+                label="Phone"
+                style="width: 65%"
+              />
               <q-select
                 v-model="primaryDetails.selectedContactType"
                 :options="primaryDetails.contactType"
                 label="Mobile"
+                style="width: 30%; margin-left: 10px"
               ></q-select>
             </div>
             <q-input v-model="primaryDetails.email" label="Email" />
-
             <div class="row">
               <p class="q-mx-none q-my-auto">
                 Is policy holder an organization ?
@@ -70,213 +68,214 @@
                 label="Organization Name"
               />
             </div>
-          </q-tab-panel>
+          </q-card>
+        </q-tab-panel>
 
-          <q-tab-panel name="lossDetails">
-            <label>Loss Details</label>
-            <q-input
-              v-model="lossDetails.dateOfLoss"
-              type="date"
-              placeholder="Date of Loss"
-            />
-            <q-input
-              v-model="lossDetails.lossDesc"
-              label="Brief description of loss"
-            />
-            <br />
-            <label>Loss Location</label>
-            <q-select
-              v-model="lossDetails.country"
-              :options="countries"
-              label="Country"
-              @input="onCountrySelect(lossDetails.country)"
-            ></q-select>
-            <q-input v-model="lossDetails.address1" label="Address1" />
-            <q-input v-model="lossDetails.address2" label="Address2" />
-            <q-input v-model="lossDetails.city" label="City"></q-input>
-            <q-select
-              v-model="lossDetails.state"
-              :options="states"
-              label="State"
-            ></q-select>
-            <q-input v-model="lossDetails.postalCode" label="ZIP Code" />
-          </q-tab-panel>
+        <q-tab-panel name="lossDetails">
+          <label>Loss Details</label>
+          <q-input
+            v-model="lossDetails.dateOfLoss"
+            type="date"
+            placeholder="Date of Loss"
+          />
+          <q-input
+            v-model="lossDetails.lossDesc"
+            label="Brief description of loss"
+          />
+          <br />
+          <label>Loss Location</label>
+          <q-select
+            v-model="lossDetails.country"
+            :options="countries"
+            label="Country"
+            @input="onCountrySelect(lossDetails.country)"
+          ></q-select>
+          <q-input v-model="lossDetails.address1" label="Address1" />
+          <q-input v-model="lossDetails.address2" label="Address2" />
+          <q-input v-model="lossDetails.city" label="City"></q-input>
+          <q-select
+            v-model="lossDetails.state"
+            :options="states"
+            label="State"
+          ></q-select>
+          <q-input v-model="lossDetails.postalCode" label="ZIP Code" />
+        </q-tab-panel>
 
-          <q-tab-panel name="insurance">
-            <label>Insurance Details</label>
-            <q-input
-              v-model="insuranceDetails.carrierName"
-              label="Carrier Name"
-            />
-            <q-input
-              v-model="insuranceDetails.policyNumber"
-              label="Policy Number"
-            />
-            <br />
-          </q-tab-panel>
+        <q-tab-panel name="insurance">
+          <label>Insurance Details</label>
+          <q-input
+            v-model="insuranceDetails.carrierName"
+            label="Carrier Name"
+          />
+          <q-input
+            v-model="insuranceDetails.policyNumber"
+            label="Policy Number"
+          />
+          <br />
+        </q-tab-panel>
 
-          <q-tab-panel name="source">
-            <label>Lead Source</label>
-            <p>Additional info good to know</p>
-            <q-list>
-              <q-item tag="label" v-ripple>
-                <q-item-section avatar>
-                  <q-radio
-                    v-model="sourceDetails.sourceType"
-                    val="priorClient"
-                  ></q-radio>
-                </q-item-section>
-                <q-item-section>
-                  <q-item-label>Prior Client</q-item-label>
-                  <div v-if="sourceDetails.sourceType === 'priorClient'">
-                    <q-select
-                      v-model="sourceDetails.sourceDetails"
-                      :options="clientsList"
-                      label="Select existing client"
-                    ></q-select>
-                  </div>
-                </q-item-section>
-              </q-item>
-              <q-item tag="label" v-ripple>
-                <q-item-section avatar>
-                  <q-radio
-                    v-model="sourceDetails.sourceType"
-                    val="vendor"
-                  ></q-radio>
-                </q-item-section>
-                <q-item-section>
-                  <q-item-label>Vendor</q-item-label>
-                  <div v-if="sourceDetails.sourceType === 'vendor'">
-                    <q-input v-model="vendorSelected" @click="gotoVendors" />
-                  </div>
-                </q-item-section>
-              </q-item>
-              <q-item tag="label" v-ripple>
-                <q-item-section avatar>
-                  <q-radio
-                    v-model="sourceDetails.sourceType"
-                    val="affliate"
-                  ></q-radio>
-                </q-item-section>
-                <q-item-section>
-                  <q-item-label>Affliate</q-item-label>
-                  <div v-if="sourceDetails.sourceType === 'affliate'">
-                    <q-select
-                      v-model="sourceDetails.sourceDetails"
-                      :options="clientsList"
-                      label="Select affliate"
-                    ></q-select>
-                  </div>
-                </q-item-section>
-              </q-item>
-              <q-item tag="label" v-ripple>
-                <q-item-section avatar>
-                  <q-radio
-                    v-model="sourceDetails.sourceType"
-                    val="referral"
-                  ></q-radio>
-                </q-item-section>
-                <q-item-section>
-                  <q-item-label>Referral</q-item-label>
-                  <div v-if="sourceDetails.sourceType === 'referral'">
-                    <q-select
-                      v-model="sourceDetails.sourceDetails"
-                      :options="clientsList"
-                      label="Select referral"
-                    ></q-select>
-                  </div>
-                </q-item-section>
-              </q-item>
-              <q-item tag="label" v-ripple>
-                <q-item-section avatar>
-                  <q-radio
-                    v-model="sourceDetails.sourceType"
-                    val="advertisement"
-                  ></q-radio>
-                </q-item-section>
-                <q-item-section>
-                  <q-item-label>Advertisement</q-item-label>
-                  <div v-if="sourceDetails.sourceType === 'advertisement'">
-                    <q-select
-                      v-model="sourceDetails.sourceDetails"
-                      :options="clientsList"
-                      label="Select advertisement"
-                    ></q-select>
-                  </div>
-                </q-item-section>
-              </q-item>
-              <q-item tag="label" v-ripple>
-                <q-item-section avatar>
-                  <q-radio
-                    v-model="sourceDetails.sourceType"
-                    val="google"
-                  ></q-radio>
-                </q-item-section>
-                <q-item-section>
-                  <q-item-label>Google</q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-item tag="label" v-ripple>
-                <q-item-section avatar>
-                  <q-radio
-                    v-model="sourceDetails.sourceType"
-                    val="other"
-                  ></q-radio>
-                </q-item-section>
-                <q-item-section>
-                  <q-item-label>Other</q-item-label>
-                  <div v-if="sourceDetails.sourceType === 'other'">
-                    <q-input v-model="sourceDetails.sourceDetails" />
-                  </div>
-                </q-item-section>
-              </q-item>
-            </q-list>
-          </q-tab-panel>
+        <q-tab-panel name="source">
+          <label>Lead Source</label>
+          <p>Additional info good to know</p>
+          <q-list>
+            <q-item tag="label" v-ripple>
+              <q-item-section avatar>
+                <q-radio
+                  v-model="sourceDetails.sourceType"
+                  val="priorClient"
+                ></q-radio>
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>Prior Client</q-item-label>
+                <div v-if="sourceDetails.sourceType === 'priorClient'">
+                  <q-select
+                    v-model="sourceDetails.sourceDetails"
+                    :options="clientsList"
+                    label="Select existing client"
+                  ></q-select>
+                </div>
+              </q-item-section>
+            </q-item>
+            <q-item tag="label" v-ripple>
+              <q-item-section avatar>
+                <q-radio
+                  v-model="sourceDetails.sourceType"
+                  val="vendor"
+                ></q-radio>
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>Vendor</q-item-label>
+                <div v-if="sourceDetails.sourceType === 'vendor'">
+                  <q-input v-model="vendorSelected" @click="gotoVendors" />
+                </div>
+              </q-item-section>
+            </q-item>
+            <q-item tag="label" v-ripple>
+              <q-item-section avatar>
+                <q-radio
+                  v-model="sourceDetails.sourceType"
+                  val="affliate"
+                ></q-radio>
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>Affliate</q-item-label>
+                <div v-if="sourceDetails.sourceType === 'affliate'">
+                  <q-select
+                    v-model="sourceDetails.sourceDetails"
+                    :options="clientsList"
+                    label="Select affliate"
+                  ></q-select>
+                </div>
+              </q-item-section>
+            </q-item>
+            <q-item tag="label" v-ripple>
+              <q-item-section avatar>
+                <q-radio
+                  v-model="sourceDetails.sourceType"
+                  val="referral"
+                ></q-radio>
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>Referral</q-item-label>
+                <div v-if="sourceDetails.sourceType === 'referral'">
+                  <q-select
+                    v-model="sourceDetails.sourceDetails"
+                    :options="clientsList"
+                    label="Select referral"
+                  ></q-select>
+                </div>
+              </q-item-section>
+            </q-item>
+            <q-item tag="label" v-ripple>
+              <q-item-section avatar>
+                <q-radio
+                  v-model="sourceDetails.sourceType"
+                  val="advertisement"
+                ></q-radio>
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>Advertisement</q-item-label>
+                <div v-if="sourceDetails.sourceType === 'advertisement'">
+                  <q-select
+                    v-model="sourceDetails.sourceDetails"
+                    :options="clientsList"
+                    label="Select advertisement"
+                  ></q-select>
+                </div>
+              </q-item-section>
+            </q-item>
+            <q-item tag="label" v-ripple>
+              <q-item-section avatar>
+                <q-radio
+                  v-model="sourceDetails.sourceType"
+                  val="google"
+                ></q-radio>
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>Google</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item tag="label" v-ripple>
+              <q-item-section avatar>
+                <q-radio
+                  v-model="sourceDetails.sourceType"
+                  val="other"
+                ></q-radio>
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>Other</q-item-label>
+                <div v-if="sourceDetails.sourceType === 'other'">
+                  <q-input v-model="sourceDetails.sourceDetails" />
+                </div>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-tab-panel>
 
-          <q-tab-panel name="notes">
-            <p>Write relevent inforimation about this New Lead</p>
-            <q-input v-model="notes" type="input" />
-          </q-tab-panel>
+        <q-tab-panel name="notes">
+          <p>Write relevent inforimation about this New Lead</p>
+          <q-input v-model="notes" type="input" />
+        </q-tab-panel>
 
-          <q-tab-panel name="scheduling">
-            <p>Scheduling</p>
-            <q-toggle
-              v-model="schedulingDetails.isAutomaticScheduling"
-              label="Is automatic scheduling needed?"
-              left-label
-            ></q-toggle>
-            <q-select
-              v-model="schedulingDetails.inspectionType"
-              :options="[]"
-              label="Type of Inspection"
-            ></q-select>
-            <q-select
-              v-model="schedulingDetails.subInspectionType"
-              :options="[]"
-              label="Sub Type of Inspection"
-            ></q-select>
-            <q-input
-              v-model="schedulingDetails.inspectionDuration"
-              label="Duration of Inspection"
-            />
-          </q-tab-panel>
-        </q-tab-panels>
-        <div class="q-pa-md">
-          <q-btn
-            label="Back"
-            type="reset"
-            color="primary"
-            style="width: 50%"
-            flat
-          ></q-btn>
-          <q-btn
-            label="Add Lead"
-            type="submit"
-            style="width: 50%"
-            color="primary"
-          ></q-btn>
+        <q-tab-panel name="scheduling">
+          <p>Scheduling</p>
+          <q-toggle
+            v-model="schedulingDetails.isAutomaticScheduling"
+            label="Is automatic scheduling needed?"
+            left-label
+          ></q-toggle>
+          <q-select
+            v-model="schedulingDetails.inspectionType"
+            :options="[]"
+            label="Type of Inspection"
+          ></q-select>
+          <q-select
+            v-model="schedulingDetails.subInspectionType"
+            :options="[]"
+            label="Sub Type of Inspection"
+          ></q-select>
+          <q-input
+            v-model="schedulingDetails.inspectionDuration"
+            label="Duration of Inspection"
+          />
+        </q-tab-panel>
+      </q-tab-panels>
+      <div class="row q-pa-md">
+        <div class="row">
+          <q-card @click="">
+            <q-icon name="west" color="orange" size="xl"></q-icon>
+          </q-card>
+          <span style="margin: auto 10px">Back</span>
         </div>
-      </q-form>
+        <div class="row q-ml-auto">
+          <span style="margin: auto 10px">{{
+            selectedTab == "scheduling" ? "Add Lead" : "Next"
+          }}</span>
+          <q-card @click="">
+            <q-icon name="arrow_right_alt" color="orange" size="xl"></q-icon>
+          </q-card>
+        </div>
+      </div>
     </div>
 
     <!-- <div class="stepper">

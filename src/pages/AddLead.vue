@@ -2,14 +2,12 @@
   <q-page>
     <q-header bordered class="bg-white">
       <q-toolbar class="row bg-white">
-        <q-btn
-          flat
-          dense
-          class="color-grey"
-          icon="arrow_back"
-          aria-label="Back"
-          @click="$router.push('/leads')"
-        >
+        <img
+          src="~assets/left-arrow.svg"
+          alt="back-arrow"
+          @click="$router.push('/leads-dashboard')"
+          style="margin: auto 0"
+        />
         </q-btn>
         <div class="text-uppercase text-bold text-black q-mx-auto">
           {{ $route.name }}
@@ -81,12 +79,10 @@ export default {
           (response) => {
             this.clientsList = response["data"]["data"];
           },
-          (error) => {
-            this.showForm = false;
-            this.showError("Sorry, Couldn't retrieve clients data");
-          }
+          (error) => {}
         );
     },
+
     onContinue() {
       this.$router.push("/add-lead-details");
     },

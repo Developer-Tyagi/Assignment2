@@ -2,15 +2,12 @@
   <q-page style="padding-top: 0; height: 100vh">
     <q-header bordered class="bg-white">
       <q-toolbar class="row bg-white">
-        <q-btn
-          flat
-          dense
-          class="color-grey"
-          icon="arrow_back"
-          aria-label="Back"
-          @click="$router.push('/dashboard')"
-        >
-        </q-btn>
+        <img
+          src="~assets/left-arrow.svg"
+          alt="back-arrow"
+          @click="$router.push('/leads-dashboard')"
+          style="margin: auto 0"
+        />
         <div
           class="text-uppercase text-bold text-black q-mx-auto"
           v-if="!openSearchInput"
