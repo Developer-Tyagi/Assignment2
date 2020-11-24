@@ -33,15 +33,22 @@
           <div class="text">Dead Leads</div>
         </q-card>
       </div>
-      <div class="q-pa-sm">
+      <div class="q-pa-md" style="height: calc(100vh - (176px + 51px))">
         <q-card>
-          <!-- <bar-chart>-->
+          <div class="q-pa-xl">
+            <div style="font-size: 16px; font-weight: bold; text-align: center">
+              Lead Phase Chart
+            </div>
+            <div style="color: #999999; font-size: 14px; text-align: center">
+              Last 30 Days
+            </div>
+          </div>
+          <BarChartComponent :chartData="datacollection" :options="options" />
         </q-card>
       </div>
     </div>
   </q-page>
 </template>
-
 <style lang="scss" scoped>
 .my-card {
   display: flex;
@@ -64,5 +71,75 @@
 </style>
 
 <script>
-export default {};
+import BarChartComponent from "components/BarChart";
+
+export default {
+  components: {
+    BarChartComponent,
+  },
+  data() {
+    return {
+      datacollection: {},
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        legend: {
+          display: false,
+        },
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true,
+              },
+              gridLines: {
+                display: true,
+              },
+            },
+          ],
+          xAxes: [
+            {
+              ticks: {
+                beginAtZero: true,
+              },
+              gridLines: {
+                display: false,
+              },
+            },
+          ],
+        },
+      },
+    };
+  },
+  mounted() {
+    this.fillData();
+  },
+  methods: {
+    fillData() {
+      this.datacollection = {
+        labels: [
+          "New Lead",
+          "Scheduled",
+          "Visited",
+          "Follow up ",
+          "Leads Converted",
+          "Dead Leads",
+        ],
+        datasets: [
+          {
+            backgroundColor: "#1B2854",
+            data: [5, 8, 15, 10, 7, 3],
+          },
+        ],
+      };
+    },
+  },
+  computed: {
+    myStyles() {
+      return {
+        height: "600px",
+      };
+    },
+  },
+};
 </script>
