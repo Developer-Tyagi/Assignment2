@@ -76,7 +76,7 @@
                 v-for="lead in activeLeads"
                 :key="lead.id"
               >
-                <div class="button-left">
+                <div class="button-left" @click="onArchiveButtonClick(lead.id)">
                   <div class="button-yellow">
                     <span class="text-white q-my-auto q-mx-auto">Archive</span>
                   </div>
@@ -155,12 +155,11 @@
           <q-tab-panel name="oldLeads" class="q-pa-none">
             <q-list>
               <q-item
-                @click="onLeadListClick(lead)"
                 v-for="lead in archivedLeads"
                 :key="lead.id"
                 clickable
                 v-ripple
-                class="lead-list-item"
+                class="lead-list-details"
               >
                 <q-item-section>
                   <div class="row">
@@ -330,7 +329,6 @@ export default {
     },
 
     onListSwipe(info, lead) {
-      console.log(lead);
       if (info.direction == "left") {
         if (lead["isLeftOptionOpen"]) {
           lead["isLeftOptionOpen"] = false;
@@ -348,7 +346,31 @@ export default {
           lead["isRightOptionOpen"] = false;
         }
       }
-      console.log(lead.isLeftOptionOpen, lead.isRightOptionOpen);
+      //@ToDO: need to find a solution for this.
+      this.$forceUpdate();
+    },
+
+    onArchiveButtonClick(leadId) {
+      axios
+        .delete(`https://api.claimguru.cilalabs.dev/v1/leads/${leadId}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        })
+        .then(
+          (response) => {
+            let index = this.activeLeads.findIndex(
+              (item) => item.id === leadId
+            );
+            this.archivedLeads.push(this.activeLeads[index]);
+            this.activeLeads.splice(index, 1);
+            this.oldLeadsLabel = "Old Leads - " + this.archivedLeads.length;
+          },
+          (error) => {
+            this.$q.notify("error");
+          }
+        );
     },
   },
 
@@ -365,7 +387,7 @@ export default {
     position: absolute
     z-index: 1
     top: 0
-    right: 0
+    width: 200px
     left: 0
     bottom: 0
     display: flex
@@ -376,7 +398,7 @@ export default {
     z-index: 1
     top: 0
     right: 0
-    left: 0
+    width: 200px
     bottom: 0
     display: flex
     justify-content: flex-end
