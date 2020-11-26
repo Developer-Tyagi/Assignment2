@@ -70,7 +70,7 @@
         </q-tabs>
         <q-tab-panels v-model="panel" animated>
           <q-tab-panel name="newLeads" class="q-pa-none">
-            <q-list>
+            <q-list style="overflow-x: hidden">
               <div
                 class="lead-list-item"
                 v-for="lead in activeLeads"
@@ -346,8 +346,8 @@ export default {
           lead["isRightOptionOpen"] = false;
         }
       }
-      //@ToDO: need to find a solution for this.
-      this.$forceUpdate();
+      let index = this.activeLeads.findIndex((item) => item.id === lead.id);
+      this.$set(this.activeLeads, index, lead);
     },
 
     onArchiveButtonClick(leadId) {
