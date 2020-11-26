@@ -68,7 +68,9 @@
                 label="Email"
                 lazy-rules
                 :rules="[
-                  (val) => (val && val.length > 0) || 'Please fill the email ',
+                  (val) =>
+                    validateEmail(val) ||
+                    'You have entered an invalid email address!',
                 ]"
               />
 
@@ -592,6 +594,14 @@ export default {
     },
     gotoLeads() {
       this.$router.push("/leads");
+    },
+
+    validateEmail(mail) {
+      const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+      if (regex.test(mail)) {
+        return true;
+      }
+      return false;
     },
   },
 };
