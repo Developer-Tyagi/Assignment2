@@ -5,21 +5,25 @@
       <q-btn round icon="search" @click="addVendor"></q-btn>
       <q-btn round color="orange" icon="add" @click="addVendor"></q-btn>
     </div>
-    <h5>{{message}}</h5>
+    <h5>{{ message }}</h5>
     <p>Filter</p>
-    <q-option-group v-model="panel" inline :options="vendorTypes"></q-option-group>
+    <q-option-group
+      v-model="panel"
+      inline
+      :options="vendorTypes"
+    ></q-option-group>
     <q-tab-panels v-model="panel" animated class="shadow-2 rounded-borders">
       <q-tab-panel name="plumbers">
         <q-list bordered separator>
           <q-item
-            v-for="(vendor) in vendorsData"
+            v-for="vendor in vendorsData"
             :key="vendor.id"
             class="q-my-sm"
             clickable
             v-ripple
           >
             <q-item-section>
-              <q-item-label>{{vendor.attributes.name}}</q-item-label>
+              <q-item-label>{{ vendor.attributes.name }}</q-item-label>
             </q-item-section>
           </q-item>
         </q-list>
@@ -36,7 +40,7 @@ export default {
   name: "Leads",
 
   methods: {
-    getVendors: function(event) {
+    getVendors: function (event) {
       // API endpoint is hardcoded for testing.
       axios
         .get(
@@ -45,29 +49,23 @@ export default {
             headers: {
               "Content-Type": "application/json",
               Accept: "application/json",
-              Authorization: ""
-            }
+              Authorization: "",
+            },
           }
         )
         .then(
-          response => {
+          (response) => {
             this.vendorsData = response["data"]["data"];
           },
-          error => {
-            console.log(error);
-            this.showForm = false;
-            this.showError("Sorry, Couldn't retrieve profile data");
-          }
+          (error) => {}
         );
     },
-    getVendorTypes: function(event) {
-      this.vendorsData.forEach(function(vendor) {
-        console.log(vendor.attributes.type);
-      });
+    getVendorTypes: function (event) {
+      this.vendorsData.forEach(function (vendor) {});
     },
     addVendor() {
       this.$router.push("/add-lead");
-    }
+    },
   },
   mounted() {
     this.getVendors();
@@ -81,11 +79,11 @@ export default {
         { value: "plumbers", label: "Plumbers" },
         { value: "lossDetails", label: "Water Mitigation" },
         { value: "insurance", label: "Electrians" },
-        { value: "other", label: "NOTES & SOURCE" }
+        { value: "other", label: "NOTES & SOURCE" },
       ],
-      panel: "primary"
+      panel: "primary",
     };
-  }
+  },
 };
 </script>
 

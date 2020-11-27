@@ -2,15 +2,12 @@
   <q-page style="padding-top: 0; height: 100vh">
     <q-header bordered class="bg-white">
       <q-toolbar class="row bg-white">
-        <q-btn
-          flat
-          dense
-          class="color-grey"
-          icon="arrow_back"
-          aria-label="Back"
-          @click="$router.push('/dashboard')"
-        >
-        </q-btn>
+        <img
+          src="~assets/left-arrow.svg"
+          alt="back-arrow"
+          @click="$router.push('/leads-dashboard')"
+          style="margin: auto 0"
+        />
         <div
           class="text-uppercase text-bold text-black q-mx-auto"
           v-if="!openSearchInput"
@@ -62,76 +59,107 @@
         >
           <q-tab
             name="newLeads"
-            label="New Leads"
+            :label="newLeadsLabel"
             class="text-capitalize"
           ></q-tab>
           <q-tab
             name="oldLeads"
-            label="Old Leads"
+            :label="oldLeadsLabel"
             class="text-capitalize"
           ></q-tab>
         </q-tabs>
         <q-tab-panels v-model="panel" animated>
           <q-tab-panel name="newLeads" class="q-pa-none">
-            <q-list>
-              <q-item
-                @click="onLeadListClick(lead)"
+            <q-list style="overflow-x: hidden">
+              <div
+                class="lead-list-item"
                 v-for="lead in activeLeads"
                 :key="lead.id"
-                clickable
-                v-ripple
-                class="lead-list-item"
               >
-                <q-item-section>
-                  <div class="row">
-                    <span
-                      >{{ lead.attributes.primaryContact.fname }}
-                      {{ lead.attributes.primaryContact.lname }}</span
-                    >
-                    <span class="q-ml-auto">Visting On</span>
+                <div class="button-left" @click="onArchiveButtonClick(lead.id)">
+                  <div class="button-yellow">
+                    <span class="text-white q-my-auto q-mx-auto">Archive</span>
                   </div>
-                  <div class="row">
-                    <span
-                      >Mob:
+                </div>
+                <q-item
+                  @click="onLeadListClick(lead)"
+                  clickable
+                  v-ripple
+                  class="lead-list-details"
+                  v-touch-swipe.mouse:6e-3:150:50="
+                    (data) => onListSwipe(data, lead)
+                  "
+                  :class="{
+                    swipeRight: lead.isLeftOptionOpen,
+                    swipeLeft: lead.isRightOptionOpen,
+                  }"
+                >
+                  <q-item-section>
+                    <div class="row">
                       <span
-                        v-if="
-                          lead.attributes.primaryContact.phoneNumber &&
-                          lead.attributes.primaryContact.phoneNumber.length
-                        "
+                        >{{ lead.attributes.primaryContact.fname }}
+                        {{ lead.attributes.primaryContact.lname }}</span
                       >
-                        {{
-                          lead.attributes.primaryContact.phoneNumber[0].number
-                        }}
+                      <span class="q-ml-auto">Visting On</span>
+                    </div>
+                    <div class="row">
+                      <span
+                        >Mob:
+                        <span
+                          v-if="
+                            lead.attributes.primaryContact.phoneNumber &&
+                            lead.attributes.primaryContact.phoneNumber.length
+                          "
+                        >
+                          {{
+                            lead.attributes.primaryContact.phoneNumber[0].number
+                          }}
+                        </span>
                       </span>
-                    </span>
-                    <span class="q-ml-auto">DD/MM/YYYY</span>
+                      <span class="q-ml-auto" v-if="lead.attributes.lastVisted">
+                        {{ lead.attributes.lastVisted | moment("DD/MM/YYYY") }}
+                      </span>
+                      <span v-else class="q-ml-auto"> - </span>
+                    </div>
+                    <div>
+                      Date of Loss:
+                      <span v-if="lead.attributes.dateofLoss">{{
+                        lead.attributes.dateofLoss &&
+                        lead.attributes.dateofLoss | moment("DD/MM/YYYY")
+                      }}</span>
+                      <span v-else> - </span>
+                    </div>
+                    <div class="q-mt-md row">
+                      <span>New Lead in Inspection</span>
+                      <span class="q-ml-auto">
+                        <q-icon name="restore_page"></q-icon>
+                      </span>
+                    </div>
+                  </q-item-section>
+                </q-item>
+                <div class="button-right">
+                  <div class="button-yellow">
+                    <span class="text-white q-my-auto q-mx-auto"
+                      >Schedule Visit</span
+                    >
                   </div>
-                  <div>
-                    Date of Loss:
-                    {{
-                      lead.attributes.dateofLoss &&
-                      lead.attributes.dateofLoss | moment("DD/MM/YYYY")
-                    }}
+                  <div class="button-orange">
+                    <span class="text-white q-my-auto q-mx-auto"
+                      >Create Client</span
+                    >
                   </div>
-                  <div class="q-mt-md row">
-                    <span>New Lead in Inspection</span>
-                    <span class="q-ml-auto">
-                      <q-icon name="restore_page"></q-icon>
-                    </span>
-                  </div>
-                </q-item-section>
-              </q-item>
+                </div>
+              </div>
             </q-list>
           </q-tab-panel>
           <q-tab-panel name="oldLeads" class="q-pa-none">
             <q-list>
               <q-item
-                @click="onLeadListClick(lead)"
                 v-for="lead in archivedLeads"
                 :key="lead.id"
                 clickable
                 v-ripple
-                class="lead-list-item"
+                class="lead-list-details"
               >
                 <q-item-section>
                   <div class="row">
@@ -155,7 +183,18 @@
                         }}
                       </span>
                     </span>
-                    <span class="q-ml-auto">DD/MM/YYYY</span>
+                    <span class="q-ml-auto" v-if="lead.attributes.lastVisted">
+                      {{ lead.attributes.lastVisted | moment("DD/MM/YYYY") }}
+                    </span>
+                    <span v-else class="q-ml-auto"> - </span>
+                  </div>
+                  <div>
+                    Date of Loss:
+                    <span v-if="lead.attributes.dateofLoss">{{
+                      lead.attributes.dateofLoss &&
+                      lead.attributes.dateofLoss | moment("DD/MM/YYYY")
+                    }}</span>
+                    <span v-else> - </span>
                   </div>
                   <div class="q-mt-md row">
                     <span>New Lead in Inspection</span>
@@ -169,8 +208,8 @@
           </q-tab-panel>
         </q-tab-panels>
       </div>
-      <div v-else class="full-height q-ma-auto">
-        <div style="color: #666666" class="text-center">
+      <div v-else class="full-height full-width column">
+        <div style="color: #666666" class="text-center q-mt-auto">
           You haven't added a Lead yet.
         </div>
         <img
@@ -179,6 +218,7 @@
           width="80px"
           height="80px"
           @click="addLead"
+          style="margin-top: 10px"
         />
       </div>
     </div>
@@ -195,6 +235,8 @@ export default {
   name: "Leads",
   data() {
     return {
+      oldLeadsLabel: "",
+      newLeadsLabel: "",
       openSearchInput: false,
       searchText: "",
       leadTabs: [
@@ -203,29 +245,7 @@ export default {
       ],
       panel: "newLeads",
       // Initialize the leads json
-      activeLeads: [
-        {
-          type: "",
-          id: "",
-          attributes: {
-            isOrganization: true,
-            organizationName: "",
-            primaryContact: {
-              fname: "",
-              lname: "",
-              email: "",
-              phoneNumber: [
-                {
-                  type: "",
-                  number: "",
-                },
-              ],
-            },
-            lastVisted: "",
-            visited: [],
-          },
-        },
-      ],
+      activeLeads: [],
       archivedLeads: [],
     };
   },
@@ -253,6 +273,7 @@ export default {
           (response) => {
             this.activeLeads = response["data"]["data"];
             this.copyActiveLeads = JSON.stringify(this.activeLeads);
+            this.newLeadsLabel = "New Leads - " + this.activeLeads.length;
             this.getArchivedLeads();
           },
           (error) => {
@@ -272,6 +293,7 @@ export default {
         .then(
           (response) => {
             this.archivedLeads = response["data"]["data"];
+            this.oldLeadsLabel = "Old Leads - " + this.archivedLeads.length;
           },
           (error) => {
             this.showForm = false;
@@ -305,6 +327,51 @@ export default {
         this.openSearchInput = false;
       }
     },
+
+    onListSwipe(info, lead) {
+      if (info.direction == "left") {
+        if (lead["isLeftOptionOpen"]) {
+          lead["isLeftOptionOpen"] = false;
+          lead["isRightOptionOpen"] = false;
+        } else {
+          lead["isLeftOptionOpen"] = false;
+          lead["isRightOptionOpen"] = true;
+        }
+      } else if (info.direction == "right") {
+        if (lead.isRightOptionOpen) {
+          lead["isLeftOptionOpen"] = false;
+          lead["isRightOptionOpen"] = false;
+        } else {
+          lead["isLeftOptionOpen"] = true;
+          lead["isRightOptionOpen"] = false;
+        }
+      }
+      let index = this.activeLeads.findIndex((item) => item.id === lead.id);
+      this.$set(this.activeLeads, index, lead);
+    },
+
+    onArchiveButtonClick(leadId) {
+      axios
+        .delete(`https://api.claimguru.cilalabs.dev/v1/leads/${leadId}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        })
+        .then(
+          (response) => {
+            let index = this.activeLeads.findIndex(
+              (item) => item.id === leadId
+            );
+            this.archivedLeads.push(this.activeLeads[index]);
+            this.activeLeads.splice(index, 1);
+            this.oldLeadsLabel = "Old Leads - " + this.archivedLeads.length;
+          },
+          (error) => {
+            this.$q.notify("error");
+          }
+        );
+    },
   },
 
   mounted() {
@@ -312,6 +379,57 @@ export default {
   },
 };
 </script>
+<style lang="sass">
+.lead-list-item
+  position: relative
+
+  .button-left
+    position: absolute
+    z-index: 1
+    top: 0
+    width: 200px
+    left: 0
+    bottom: 0
+    display: flex
+    justify-content: flex-start
+
+  .button-right
+    position: absolute
+    z-index: 1
+    top: 0
+    right: 0
+    width: 200px
+    bottom: 0
+    display: flex
+    justify-content: flex-end
+
+  .button-orange
+    margin: 0
+    padding: 0
+    border: none
+    display: flex
+    flex-direction: column
+    width: 100px
+    height: calc(100% - 4px)
+    background-color: #F05A26
+
+  .button-yellow
+    margin: 0
+    padding: 0
+    display: flex
+    flex-direction: column
+    border: none
+    width: 100px
+    height: calc(100% - 4px)
+    background-color: #ECA74C
+
+  .swipeRight
+    transform: translateX(100px)
+    transition: all 600ms ease-out
+  .swipeLeft
+    transition: all 1200ms ease-out
+    transform: translateX(-200px)
+</style>
 <style lang="scss" scoped>
 * {
   color: #333333;
@@ -324,16 +442,20 @@ img {
   margin-right: auto;
 }
 
-.q-tab {
-  padding: 0;
-}
-
-.q-tab__content {
-  width: 100%;
-}
-
-.lead-list-item {
+.lead-list-details {
   background-color: #f4f4f4;
   border-bottom: 4px solid white;
+  position: relative;
+  z-index: 2;
+  transition: all 1200ms ease-out;
+}
+</style>
+<style lang="scss">
+.q-tab {
+  padding: 0;
+
+  .q-tab__content {
+    width: 100% !important;
+  }
 }
 </style>

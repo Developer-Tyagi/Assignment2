@@ -26,6 +26,7 @@ const routes = [
     path: "",
     component: () => import("layouts/LeadLayout.vue"),
     children: [
+      { path: "leads-dashboard", name: 'leads dashboard', component: () => import("pages/LeadsDashboard.vue") },
       { path: "leads", name: 'leads', component: () => import("pages/Leads.vue") },
       { path: "add-lead", name: 'add new leads', component: () => import("pages/AddLead.vue") },
       { path: "details/:id", name: "lead details", component: () => import("pages/LeadDetails.vue") },

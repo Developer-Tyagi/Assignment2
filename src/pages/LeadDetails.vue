@@ -1,55 +1,74 @@
 <template>
-  <q-page class="q-pa-md" style="height: calc(100vh - 81px)">
-    <div class="column full-height">
-      <div>
-        <p class="heading">Policy Holder Details</p>
-        <p class="text">
-          {{ lead.primaryContact.fname }} {{ lead.primaryContact.lname }}
-        </p>
-        <p class="text">
-          Mobile:
-          <span v-if="lead.primaryContact.phoneNumber">{{
-            lead.primaryContact.phoneNumber[0].number
-          }}</span
-          ><span v-else> - </span>
-        </p>
-        <p class="text">Email: {{ lead.primaryContact.email }}</p>
+  <q-page style="padding-top: 0; height: 100vh">
+    <q-header bordered class="bg-white">
+      <q-toolbar class="row bg-white">
+        <img
+          src="~assets/left-arrow.svg"
+          alt="back-arrow"
+          @click="$router.push('/leads')"
+          style="margin: auto 0"
+        />
+        <div class="text-uppercase text-bold text-black q-mx-auto">
+          {{ $route.name }}
+        </div>
+      </q-toolbar>
+    </q-header>
+    <div style="padding-top: 51px" class="full-height row">
+      <q-card class="q-pa-md q-ma-md" style="width: 100%">
+        <div>
+          <q-icon name="create" color="primary" class="edit-icon"></q-icon>
+          <p class="heading">Policy Holder Details</p>
+          <p class="texts">
+            {{ lead.primaryContact.fname }} {{ lead.primaryContact.lname }}
+          </p>
+          <p class="texts">
+            Mobile:
+            <span v-if="lead.primaryContact.phoneNumber">{{
+              lead.primaryContact.phoneNumber[0].number
+            }}</span
+            ><span v-else> - </span>
+          </p>
+          <p class="texts">Email: {{ lead.primaryContact.email }}</p>
 
-        <p class="heading">Loss Address</p>
-        <p class="text">{{ lead.lossLocation.streetAddress }}</p>
-        <p class="text">{{ lead.lossLocation.addressRegion }}</p>
-        <p class="text">
-          {{ lead.lossLocation.addressRegion }}-{{
-            lead.lossLocation.postalCode
-          }}
-        </p>
-        <p class="text">{{ lead.lossLocation.addressCountry }}</p>
+          <p class="heading">Loss Address</p>
+          <p class="texts">{{ lead.lossLocation.streetAddress }}</p>
+          <p class="texts">{{ lead.lossLocation.addressRegion }}</p>
+          <p class="texts">
+            {{ lead.lossLocation.addressRegion }}-{{
+              lead.lossLocation.postalCode
+            }}
+          </p>
+          <p class="texts">{{ lead.lossLocation.addressCountry }}</p>
 
-        <p class="heading">Loss Details</p>
+          <p class="heading">Loss Details</p>
 
-        <p class="text">Date of Loss &nbsp;&nbsp;{{ lead.dateOfLoss }}</p>
-        <p class="text">Description &nbsp;&nbsp;{{ lead.lossDesc }}</p>
+          <p class="texts">Date of Loss &nbsp;&nbsp;{{ lead.dateOfLoss }}</p>
+          <p class="texts">Description &nbsp;&nbsp;{{ lead.lossDesc }}</p>
 
-        <p class="heading">Policy Details</p>
-        <p class="text">Carrier Name &nbsp;&nbsp;{{ lead.carrier }}</p>
-        <p class="text">Policy No &nbsp;&nbsp;{{ lead.policyNumber }}</p>
+          <p class="heading">Policy Details</p>
+          <p class="texts">Carrier Name &nbsp;&nbsp;{{ lead.carrier }}</p>
+          <p class="texts">Policy No &nbsp;&nbsp;{{ lead.policyNumber }}</p>
 
-        <p class="heading">Inspection Type</p>
-        <p class="text"></p>
+          <p class="heading">Inspection Type</p>
+          <p class="texts"></p>
 
-        <p class="heading">Lead Source</p>
-        <p class="text"></p>
+          <p class="heading">Lead Source</p>
+          <p class="texts"></p>
 
-        <p class="heading">Loss Site Visiting On</p>
-        <p class="text"></p>
+          <p class="heading">Loss Site Visiting On</p>
+          <p class="texts"></p>
 
-        <p class="heading">Notes</p>
-        <p class="text">{{ lead.notes }}</p>
-      </div>
+          <p class="heading">Notes</p>
+          <p class="texts">{{ lead.notes }}</p>
+        </div>
+      </q-card>
+
       <q-btn
         label="Schedule Visit"
-        class="full-width q-mt-auto"
+        class="q-my-auto q-mx-lg text-capitalize"
+        style="width: 100%"
         color="primary"
+        size="md"
       ></q-btn>
     </div>
   </q-page>
@@ -123,13 +142,20 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.edit-icon {
+  position: absolute;
+  right: 20px;
+  font-size: 20px;
+}
+
 .heading {
   font-weight: bold;
   margin: 16px 0 8px 0;
 }
 
-.text {
+.texts {
   margin-bottom: 0;
   font-size: 12px;
+  text-align: left;
 }
 </style>
