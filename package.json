@@ -16,7 +16,10 @@
     "country-region-data": "^1.6.0",
     "mongodb-stitch-browser-sdk": "^4.8.0",
     "node-fetch": "^2.6.1",
-    "quasar": "^1.0.0"
+    "quasar": "^1.0.0",
+    "axios-auth-refresh": "^3.0.0",
+    "jsonapi-serializer": "^3.6.6",
+    "qs": "^6.9.4"
   },
   "devDependencies": {
     "@quasar/app": "^2.0.0",

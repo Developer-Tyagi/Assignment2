@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import lead from './lead'
+import common from './common'
+import user from './user'
 Vue.use(Vuex)
 
 /*
@@ -12,7 +14,9 @@ Vue.use(Vuex)
 export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
-      lead
+      lead,
+      common,
+      user
     },
 
     // enable strict mode (adds overhead!)
