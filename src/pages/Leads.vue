@@ -250,7 +250,6 @@ export default {
     };
   },
   computed: {
-    // ...mapGetters("lead", ["leads"]),
     formatDate(value) {
       if (value) {
         return moment(String(value)).format("MM/DD/YYYY");
@@ -258,8 +257,6 @@ export default {
     },
   },
   methods: {
-    // ...mapActions("lead", ["updateName"]),
-
     getActiveLeads() {
       // API endpoint is hardcoded for testing.
       axios

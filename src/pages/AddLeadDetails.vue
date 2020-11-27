@@ -267,7 +267,7 @@
             <div class="row q-pt-md">
               <div>
                 <q-btn
-                  @click="$refs.stepper.previous()"
+                  type="reset"
                   icon="keyboard_backspace"
                   text-color="primary"
                   padding="md"
@@ -306,7 +306,7 @@
             <div class="row q-pt-md">
               <div>
                 <q-btn
-                  @click="$refs.stepper.previous()"
+                  type="reset"
                   icon="keyboard_backspace"
                   text-color="primary"
                   padding="md"
@@ -353,27 +353,28 @@
                 label="Duration of Inspection"
               />
             </q-card>
+            <div class="row q-pt-md">
+              <div>
+                <q-btn
+                  icon="keyboard_backspace"
+                  text-color="primary"
+                  padding="md"
+                  type="reset"
+                />
+                <span class="q-ml-md text-color-grey">Back</span>
+              </div>
+              <div class="q-ml-auto">
+                <span class="q-mr-md text-color-grey"> Add Lead</span>
+                <q-btn
+                  class="rotate-180"
+                  icon="keyboard_backspace"
+                  text-color="primary"
+                  padding="md"
+                  type="submit"
+                />
+              </div>
+            </div>
           </q-form>
-          <div class="row q-pt-md">
-            <div>
-              <q-btn
-                icon="keyboard_backspace"
-                text-color="primary"
-                padding="md"
-              />
-              <span class="q-ml-md text-color-grey">Back</span>
-            </div>
-            <div class="q-ml-auto">
-              <span class="q-mr-md text-color-grey"> Add Lead</span>
-              <q-btn
-                class="rotate-180"
-                icon="keyboard_backspace"
-                text-color="primary"
-                padding="md"
-                type="submit"
-              />
-            </div>
-          </div>
         </q-step>
       </q-stepper>
     </div>
@@ -507,7 +508,6 @@ export default {
       this.$router.push("/vendors");
     },
     onSubmit() {
-      console.log("hi");
       let formattedString = date.formatDate(
         this.lossDetails.dateOfLoss,
         "YYYY-MM-DDTHH:mm:ssZ"
