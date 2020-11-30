@@ -202,7 +202,7 @@ export default {
         { value: "oldLeads", label: "Old Leads" },
       ],
       panel: "newLeads",
-      // Initialize the leads json
+
       activeLeads: [
         {
           type: "",
