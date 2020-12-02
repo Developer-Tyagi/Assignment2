@@ -12,7 +12,7 @@
           />
         </div>
         <div class="column" style="height: 40vh">
-          <q-input v-model="login.username" placeholder="Username" borderless>
+          <q-input v-model="login.email" placeholder="Username" borderless>
             <template v-slot:prepend>
               <q-icon name="person_outline" color="orange" />
             </template>
@@ -50,7 +50,7 @@ export default {
   data() {
     return {
       login: {
-        username: "",
+        email: "",
         password: "",
       },
     };
@@ -67,17 +67,9 @@ export default {
           },
         },
       };
-      this.userLogin(loginData);
-    },
-
-    showNotification() {
-      this.userpwd = "";
-      this.$q.notify({
-        message: "Please check your credentials",
-        icon: "announcement",
-        position: "top",
-        timeout: 2000,
-      });
+      if (this.login.email && this.login.password) {
+        this.userLogin(loginData);
+      }
     },
   },
 

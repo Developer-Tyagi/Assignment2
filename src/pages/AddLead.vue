@@ -2,19 +2,14 @@
   <q-page>
     <q-header bordered class="bg-white">
       <q-toolbar class="row bg-white">
-        <q-btn
-          flat
-          dense
-          class="color-grey"
-          icon="arrow_back"
-          aria-label="Back"
+        <img
+          src="~assets/left-arrow.svg"
+          alt="back-arrow"
           @click="$router.push('/leads')"
-        >
+          style="margin: auto 0"
+        />
         </q-btn>
-        <div
-          class="text-uppercase text-bold text-black q-mx-auto"
-          v-if="!openSearchInput"
-        >
+        <div class="text-uppercase text-bold text-black q-mx-auto">
           {{ $route.name }}
         </div>
       </q-toolbar>
@@ -27,13 +22,13 @@
             v-model="isNewLead"
             left-label
             color="orange"
-            class="q-ml-auto"
+            class="q-ml-auto "
           ></q-toggle>
         </div>
         <div v-if="!isNewLead">
           <q-separator></q-separator>
           <br />
-          <p>If client already exists, select from list below</p>
+          <p style="color:#666666;opacity:50%;font-size:12px">If client already exists, select from list below</p>
           <q-select
             v-model="clientSelected"
             :options="clientsList"
@@ -56,8 +51,10 @@
         <q-btn
           label="Continue"
           color="primary"
-          class="full-width q-mt-auto"
+          class="full-width q-mt-auto text-capitalize"
           @click="onContinue"
+          icon-right="arrow_right_alt"
+          size="'xl'"
         ></q-btn>
       </div>
     </div>
@@ -65,38 +62,15 @@
 </template>
 <script>
 import axios from "axios";
+
 export default {
   methods: {
-    getClients() {
-      // API endpoint is hardcoded for testing.
-      axios
-        .get(
-          "https://56564994-ccad-41d5-989e-839ceca5232d.mock.pstmn.io/v1/clients",
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-              Authorization: "",
-            },
-          }
-        )
-        .then(
-          (response) => {
-            this.clientsList = response["data"]["data"];
-          },
-          (error) => {
-            this.showForm = false;
-            this.showError("Sorry, Couldn't retrieve clients data");
-          }
-        );
-    },
     onContinue() {
       this.$router.push("/add-lead-details");
     },
   },
-  mounted() {
-    this.getClients();
-  },
+
+  mounted() {},
   data() {
     return {
       clientSelected: "",

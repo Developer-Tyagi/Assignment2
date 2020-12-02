@@ -1,6 +1,7 @@
-export default function () {
+export default function() {
     return {
         showLoading: false,
-        notification: null
+        notification: null,
+        inspectionTypes: []
     }
 }

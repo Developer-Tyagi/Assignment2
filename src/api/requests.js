@@ -5,6 +5,8 @@ import axios from 'axios';
 
 // const Authorization = getToken();
 const baseURL = `https://api.claimguru.cilalabs.dev/v1`;
+//for InspectionType
+// const baseURL = `https://56564994-ccad-41d5-989e-839ceca5232d.mock.pstmn.io/v1`;
 
 const axiosInstance = axios.create({
     baseURL,
@@ -16,15 +18,15 @@ const axiosInstance = axios.create({
     // paramsSerializer: params => {
     //   return qs.stringify(params, { arrayFormat: 'brackets' });
     // },
-    // transformResponse: [
-    //   apiData => {
-    //     if (apiData && apiData !== '') {
-    //       const { data } = JSON.parse(apiData);
-    //       return data;
-    //     }
-    //     return apiData;
-    //   }
-    // ]
+    transformResponse: [
+        apiData => {
+            if (apiData && apiData !== '') {
+                const { data } = JSON.parse(apiData);
+                return data;
+            }
+            return apiData;
+        }
+    ]
 });
 
 const request = {
@@ -36,4 +38,4 @@ const request = {
     delWithData: (url, data) => axiosInstance.delete(url, { data })
 };
 
-export default request; 
+export default request;

@@ -1,4 +1,4 @@
-import { Serializer, Deserializer } from 'jsonapi-serializer';
+// import { Serializer, Deserializer } from 'jsonapi-serializer';
 
 export function apiDeserialize(data) {
     return new Deserializer({ keyForAttribute: 'camelCase' }).deserialize(
@@ -15,7 +15,6 @@ export function buildApiData(type, attributes) {
     return {
         data: {
             type,
-            id: attributes.id,
             attributes
         }
     };
