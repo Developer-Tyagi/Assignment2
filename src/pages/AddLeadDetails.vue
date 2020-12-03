@@ -393,7 +393,7 @@ export default {
       countries: [],
       states: [],
       subInspectionTypes: [],
-      step: 6,
+      step: 1,
       leadSources: [
         {
           value: "",
