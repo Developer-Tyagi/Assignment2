@@ -20,11 +20,11 @@
             font-size="42px"
             color="yellow-9"
             text-color="white"
-            icon="face"
+            icon="user"
           />
           <div class="column text-white q-pa-sm q-ml-sm">
             <div class="text-capitalize">animesh singh mahra</div>
-            <div>animeshmahra@gmail.com</div>
+            <div style="font-size: 11px; opacity: 80%">View Profile</div>
           </div>
         </div>
       </div>
@@ -38,13 +38,13 @@
               :key="link.title"
               :to="link.link"
               v-bind="link"
-              class="text-grey-1"
-              style="font-size: 15px"
+              class="q-px-none"
             >
               <q-item-section>
-                {{ link.title }}
-                <br />
-                {{ link.description }}
+                <p class="title">{{ link.title }}</p>
+                <p class="description">
+                  {{ link.description }}
+                </p>
               </q-item-section>
             </q-item>
           </q-list>
@@ -53,10 +53,13 @@
       <div style="height: 100px" class="q-px-xl">
         <q-btn
           class="q-px-xl q-py-xs full-width"
-          color="orange"
+          color="primary"
           label="LOGOUT"
           @click="logout()"
         />
+        <p class="text-white q-mt-md" style="opacity: 50%; font-size: 12px">
+          Claimguru Version 1.0
+        </p>
       </div>
     </q-drawer>
     <q-page-container>
@@ -77,27 +80,33 @@ export default {
         {
           title: "Leads",
           link: "/leads-dashboard",
-          description: "View Lead Dashboard, all leads and add new lead.",
+          description: "View Lead Dashboard, Add New Lead and Manage Leads.",
         },
         {
           title: "Clients",
           link: "/clients",
-          description: "View Lead Clients, all leads and add new clients.",
+          description: "View, Add and Manage Clients.",
         },
         {
           title: "Claims",
           link: "/claims",
-          description: "View Lead Claims, all leads and add new claims.",
+          description: "View, Add and Manage Claims.",
+        },
+        {
+          title: "Companies",
+          link: "/companies",
+          description:
+            "View Insurance and Mortgage Companies, Add and Manage New Companies.",
         },
         {
           title: "Vendors",
           link: "/vendors",
-          description: "View Schedule all vendors.",
+          description: "View, Add and Manage all types of Vendors.",
         },
         {
           title: "Settings",
           link: "/settings",
-          description: "Setup My Schedule, Type of Inspection.",
+          description: "Setup My Schedule, Type of Inspection etc.",
         },
       ],
     };
@@ -133,7 +142,15 @@ export default {
   },
 };
 </script>
-<style lang="sass">
+<style lang="sass" >
 .bg-side-panel
   background-color: $sidePanel
+.title
+  font-size: 16px
+  font-weight: bold
+  margin-bottom: 0
+.description
+  opacity: 70%
+  font-size: 12px
+  margin-bottom: 0
 </style>
