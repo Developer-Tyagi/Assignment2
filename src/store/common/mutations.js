@@ -7,5 +7,5 @@ export function setNotification(state, value) {
 }
 
 export function setInspectionTypes(state, inspectionTypes) {
-    state.inspectionTypes = inspectionTypes.map(inspectionType => ({...inspectionType.attributes, id: inspectionType.id }));
+    state.inspectionTypes = inspectionTypes.map(inspectionType => ({...inspectionType.relationships, ...inspectionType.attributes, id: inspectionType.id }));
 }

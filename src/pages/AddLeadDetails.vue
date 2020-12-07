@@ -257,12 +257,19 @@
                   :label="source.label"
                 />
                 <q-input
+                  v-if="source.placeholder && source.value != 'vendor'"
                   style="margin-left: 40px"
-                  v-if="source.placeholder"
                   type="text"
                   :placeholder="source.placeholder"
                   v-model="sourceDetails.sourceDetails"
                 />
+                <q-select
+                  v-if="source.value == 'vendor'"
+                  style="margin-left: 40px"
+                  v-model="sourceDetails.sourceDetails"
+                  :options="vendors"
+                  :label="source.placeholder"
+                ></q-select>
               </div>
             </q-card>
             <div class="row q-pt-md">
@@ -339,7 +346,6 @@
                 v-model="schedulingDetails.inspectionType"
                 :options="inspectionTypes"
                 label="Type of Inspection"
-                option-label="id"
                 @input="onInspectionTypesSelect()"
               ></q-select>
               <q-select
@@ -393,7 +399,7 @@ export default {
       countries: [],
       states: [],
       subInspectionTypes: [],
-      step: 1,
+      step: 4,
       leadSources: [
         {
           value: "",
@@ -456,19 +462,19 @@ export default {
         isAutomaticScheduling: false,
         inspectionType: "New Lead Inspection",
         subInspectionType: "",
-        inspectionDuration: "",
+        inspectionDuration: "1",
       },
       notes: "",
       vendorSelected: "",
       clientsList: [],
-      vendorsList: [],
     };
   },
 
   created() {
     this.countries = addressService.getCountries();
     this.onCountrySelect("United States");
-    this.getInspectionTypes();
+    // this.getInspectionTypes();
+    this.getVendors();
   },
 
   watch: {
@@ -481,14 +487,18 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["inspectionTypes"]),
+    ...mapGetters(["inspectionTypes", "vendors"]),
   },
 
   methods: {
-    ...mapActions(["addLeads", "getInspectionTypes"]),
+    ...mapActions(["addLeads", "getInspectionTypes", "getVendors"]),
 
     onCountrySelect(country) {
       this.states = addressService.getStates(country);
+    },
+
+    onInspectionTypesSelect() {
+      console.log(this.inspectionTypes);
     },
 
     onSubmit() {
@@ -518,6 +528,10 @@ export default {
         policyNumber: this.insuranceDetails.policyNumber,
         isAutomaticScheduling: this.schedulingDetails.isAutomaticScheduling,
         notes: this.notes,
+        inspectionInfo: {
+          id: "edaffe6e-24d4-11eb-adc1-0242ac120001",
+          duration: this.schedulingDetails.inspectionDuration,
+        },
       };
       if (payload[this.primaryDetails.isOrganisation]) {
         payload[organizationName] = this.primaryDetails.organisationName;
