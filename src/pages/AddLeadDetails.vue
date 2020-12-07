@@ -399,7 +399,7 @@ export default {
       countries: [],
       states: [],
       subInspectionTypes: [],
-      step: 4,
+      step: 1,
       leadSources: [
         {
           value: "",
