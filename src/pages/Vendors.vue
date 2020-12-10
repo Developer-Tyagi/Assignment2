@@ -1,95 +1,122 @@
 <template>
-  <q-page padding>
-    <q-btn round icon="keyboard_backspace" @click="addVendor"></q-btn>
-    <div class="addVendor">
-      <q-btn round icon="search" @click="addVendor"></q-btn>
-      <q-btn round color="orange" icon="add" @click="addVendor"></q-btn>
+  <q-page style="padding-top: 0; height: 100vh">
+    <q-header bordered class="bg-white">
+      <q-toolbar class="row bg-white">
+        <img
+          src="~assets/left-arrow.svg"
+          alt="back-arrow"
+          @click="$router.push('/dashboard')"
+          style="margin: auto 0"
+        />
+        <div
+          class="text-uppercase text-bold text-black q-mx-auto"
+          v-if="!openSearchInput"
+        >
+          {{ $route.name }}
+        </div>
+        <!-- <img
+          src="~assets/search.svg"
+          alt="Search icon"
+          @click="openSearchInput = true"
+          style="margin: 0"
+          v-if="vendors.length && !openSearchInput"
+        /> -->
+        <img
+          src="~assets/add.svg"
+          alt=""
+          @click="addVendor"
+          style="margin: 0 0 0 20px"
+          v-if="!openSearchInput"
+        />
+        <q-input
+          v-model="searchText"
+          v-if="openSearchInput"
+          placeholder="Search for leads"
+          style="width: 80%; margin: 0 10%"
+        >
+        </q-input>
+      </q-toolbar>
+    </q-header>
+    <div class="vendors-filter">
+      <span class="filter-text">Filter</span>
+      <div class="custom-chip" v-for="type in vendorTypes">
+        {{ type.label }}
+      </div>
     </div>
-    <h5>{{ message }}</h5>
-    <p>Filter</p>
-    <q-option-group
-      v-model="panel"
-      inline
-      :options="vendorTypes"
-    ></q-option-group>
-    <q-tab-panels v-model="panel" animated class="shadow-2 rounded-borders">
-      <q-tab-panel name="plumbers">
-        <q-list bordered separator>
-          <q-item
-            v-for="vendor in vendorsData"
-            :key="vendor.id"
-            class="q-my-sm"
-            clickable
-            v-ripple
-          >
-            <q-item-section>
-              <q-item-label>{{ vendor.attributes.name }}</q-item-label>
-            </q-item-section>
-          </q-item>
-        </q-list>
-      </q-tab-panel>
-    </q-tab-panels>
+    <div>
+      <div v-for="vendor in vendors" :key="vendor.id" class="vendor-list-item">
+        {{ vendor.name }}
+      </div>
+    </div>
   </q-page>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import { mapActions } from "vuex";
-import axios from "axios";
+import { mapActions, mapGetters } from "vuex";
 export default {
-  name: "Leads",
-
-  methods: {
-    getVendors: function (event) {
-      // API endpoint is hardcoded for testing.
-      axios
-        .get(
-          "https://56564994-ccad-41d5-989e-839ceca5232d.mock.pstmn.io/v1/vendors",
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-              Authorization: "",
-            },
-          }
-        )
-        .then(
-          (response) => {
-            this.vendorsData = response["data"]["data"];
-          },
-          (error) => {}
-        );
-    },
-    getVendorTypes: function (event) {
-      this.vendorsData.forEach(function (vendor) {});
-    },
-    addVendor() {
-      this.$router.push("/add-lead");
-    },
-  },
-  mounted() {
-    this.getVendors();
-    this.getVendorTypes();
-  },
+  name: "Vendors",
   data() {
     return {
-      message: "Vendors",
-      vendorsData: [],
+      openSearchInput: false,
+      searchText: "",
       vendorTypes: [
+        { value: "association", label: "Association" },
         { value: "plumbers", label: "Plumbers" },
         { value: "lossDetails", label: "Water Mitigation" },
-        { value: "insurance", label: "Electrians" },
-        { value: "other", label: "NOTES & SOURCE" },
+        { value: "electrians", label: "Electrians" },
+        { value: "electrians", label: "Electrians" },
+        { value: "electrians", label: "Electrians" },
       ],
-      panel: "primary",
     };
+  },
+
+  computed: {
+    ...mapGetters(["vendors"]),
+  },
+
+  created() {
+    this.getVendors();
+  },
+
+  methods: {
+    ...mapActions(["getVendors"]),
+
+    addVendor() {
+      this.$router.push("/add-vendor");
+    },
   },
 };
 </script>
 
-<style>
-.addVendor {
-  position: absolute;
-  right: 20px;
+<style lang="scss">
+.vendors-filter {
+  width: 100%;
+  overflow-x: scroll;
+  padding: 67px 0 16px 16px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid lightgray;
+
+  .custom-chip {
+    border: 1px solid #eca74c;
+    border-radius: 3px;
+    color: #999999;
+    font-size: 12px;
+    text-align: center;
+    padding: 5px;
+    margin: 0 10px;
+    white-space: nowrap;
+  }
+  .filter-text {
+    color: #666666;
+    font-weight: bold;
+    font-size: 12px;
+  }
+}
+.vendor-list-item {
+  color: #666666;
+  padding: 20px;
+  border-bottom: 1px solid lightgray;
+  text-transform: capitalize;
 }
 </style>

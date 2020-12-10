@@ -13,11 +13,7 @@ const routes = [{
                 component: () =>
                     import ("pages/Dashboard.vue")
             },
-            {
-                path: "vendors",
-                component: () =>
-                    import ("pages/Vendors.vue")
-            },
+
             { path: '', redirect: 'dashboard' },
         ],
     },
@@ -71,6 +67,24 @@ const routes = [{
     },
     {
         path: "",
+        component: () =>
+            import ("layouts/VendorsLayout.vue"),
+        children: [{
+                path: "vendors",
+                name: 'vendors',
+                component: () =>
+                    import ("pages/Vendors.vue")
+            },
+            {
+                path: "add-vendor",
+                name: 'add new vendor',
+                component: () =>
+                    import ("pages/AddVendor.vue")
+            },
+        ]
+    },
+    {
+        path: "/settings",
         component: () =>
             import ("layouts/SettingsLayout.vue"),
         children: [{

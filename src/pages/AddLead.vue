@@ -15,7 +15,7 @@
       </q-toolbar>
     </q-header>
     <div style="padding-top: 51px">
-      <div class="q-pa-lg column" style="height: calc(100vh - 81px)">
+      <div class="q-pa-lg column" style="height: calc(100vh - 51px)">
         <div class="row">
           <p class="q-mx-none q-my-auto">Is this a new lead?</p>
           <q-toggle

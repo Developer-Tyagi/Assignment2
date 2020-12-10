@@ -249,7 +249,7 @@
         <q-step :name="4" :done="step > 4" title="Lead Source">
           <q-form @submit="step++" @reset="step--">
             <q-card class="q-pa-md form-card">
-              <span class="stepper-heading">Choose Lead Source (Optional)</span>
+              <span class="stepper-heading">Choose Lead Source</span>
               <div v-for="source in leadSources">
                 <q-radio
                   v-model="sourceDetails.sourceType"
@@ -257,18 +257,29 @@
                   :label="source.label"
                 />
                 <q-input
-                  v-if="source.placeholder && source.value != 'vendor'"
+                  v-if="
+                    source.placeholder &&
+                    source.value != 'vendor' &&
+                    sourceDetails.sourceType == source.value
+                  "
                   style="margin-left: 40px"
                   type="text"
                   :placeholder="source.placeholder"
                   v-model="sourceDetails.sourceDetails"
                 />
                 <q-select
-                  v-if="source.value == 'vendor'"
+                  v-if="
+                    source.value == 'vendor' &&
+                    sourceDetails.sourceType == source.value
+                  "
                   style="margin-left: 40px"
                   v-model="sourceDetails.sourceDetails"
                   :options="vendors"
+                  option-label="name"
+                  option-value="name"
+                  emit-value
                   :label="source.placeholder"
+                  @popup-show="onClickingOnVendorSelect"
                 ></q-select>
               </div>
             </q-card>
@@ -346,12 +357,18 @@
                 v-model="schedulingDetails.inspectionType"
                 :options="inspectionTypes"
                 label="Type of Inspection"
+                option-label="name"
+                option-value="name"
+                emit-value
                 @input="onInspectionTypesSelect()"
               ></q-select>
               <q-select
-                v-if="schedulingDetails.inspectionType != 'New Lead Inspection'"
+                v-if="showSubInspectionType"
                 v-model="schedulingDetails.subInspectionType"
                 :options="subInspectionTypes"
+                option-label="name"
+                option-value="id"
+                emit-value
                 label="Sub Type of Inspection"
               ></q-select>
               <q-input
@@ -399,6 +416,7 @@ export default {
       countries: [],
       states: [],
       subInspectionTypes: [],
+      showSubInspectionType: false,
       step: 1,
       leadSources: [
         {
@@ -472,9 +490,19 @@ export default {
 
   created() {
     this.countries = addressService.getCountries();
-    this.onCountrySelect("United States");
+    // this.getVendors();
     // this.getInspectionTypes();
-    this.getVendors();
+    this.onCountrySelect("United States");
+
+    if (localStorage.getItem("leadDetails")) {
+      const details = JSON.parse(localStorage.getItem("leadDetails"));
+
+      this.primaryDetails = details.primaryDetails;
+      this.lossDetails = details.lossDetails;
+      this.insuranceDetails = details.insuranceDetails;
+      this.step = 4;
+    } else {
+    }
   },
 
   watch: {
@@ -498,7 +526,18 @@ export default {
     },
 
     onInspectionTypesSelect() {
-      console.log(this.inspectionTypes);
+      let selectedInspectionType = this.inspectionTypes.find(
+        (type) => type.name === this.schedulingDetails.inspectionType
+      );
+      if (selectedInspectionType.subtypes.data.length > 1) {
+        this.subInspectionTypes = selectedInspectionType.subtypes.data;
+        console.log(this.subInspectionTypes);
+        this.showSubInspectionType = true;
+      } else {
+        console.log(selectedInspectionType);
+        this.showSubInspectionType = false;
+        this.schedulingDetails.duration = 1;
+      }
     },
 
     onSubmit() {
@@ -529,7 +568,7 @@ export default {
         isAutomaticScheduling: this.schedulingDetails.isAutomaticScheduling,
         notes: this.notes,
         inspectionInfo: {
-          id: "edaffe6e-24d4-11eb-adc1-0242ac120001",
+          id: "",
           duration: this.schedulingDetails.inspectionDuration,
         },
       };
@@ -542,10 +581,23 @@ export default {
           number: this.primaryDetails.phoneNumber,
         });
       }
+      localStorage.removeItem("leadDetails");
       this.addLeads(payload);
     },
 
     validateEmail,
+
+    onClickingOnVendorSelect() {
+      if (!this.vendors.length) {
+        let leadsDetails = {
+          primaryDetails: this.primaryDetails,
+          lossDetails: this.lossDetails,
+          insuranceDetails: this.insuranceDetails,
+        };
+        localStorage.setItem("leadDetails", JSON.stringify(leadsDetails));
+        this.$router.push("/vendors");
+      }
+    },
   },
 };
 </script>
