@@ -1,45 +1,77 @@
 <template>
-  <q-layout>
-    <q-page-container>
-      <q-page>
-        <div v-if="!inspections.length">
-          <h6>You haven't added Inspection yet.</h6>
-          <q-icon name="add_circle_outline" style="font-size: 100px" />
-        </div>
-        <div v-else></div>
-        <q-btn
-          label="Bottom"
-          icon="keyboard_arrow_down"
-          color="primary"
-          @click="open('bottom')"
+  <q-page  style="padding-top: 0; height: 100vh">
+    <q-header bordered class="bg-white">
+      <q-toolbar class="row bg-white">
+        <img
+          src="~assets/left-arrow.svg"
+          alt="back-arrow"
+          @click="$router.push('/settings')"
+          style="margin: auto 0"
         />
-        <q-dialog v-model="dialog" :position="position">
-          <q-card class="full-width full-height">
-            <q-card-section class="row items-center no-wrap">
-              <div></div>
-            </q-card-section>
-          </q-card>
-        </q-dialog>
-      </q-page>
-    </q-page-container>
-  </q-layout>
+        <div
+          class="text-uppercase text-bold text-black q-mx-auto"
+        >
+          {{ $route.name }}
+        </div>
+        <img
+          src="~assets/add.svg"
+          alt=""
+          @click="$router.push('/add-inspection-type')"
+        />
+        </q-input>
+      </q-toolbar>
+    </q-header>
+    <div style="padding-top: 51px" class="full-height column">
+        <div style="color: #666666" class="text-center q-mt-auto">
+          You haven't added Inspection yet.
+        </div>
+        <img
+          src="~assets/add.svg"
+          alt="add_icon"
+          width="80px"
+          height="80px"
+          @click="$router.push('/add-inspection-type')"
+          style="margin-top: 10px"
+          class="q-mb-auto q-mx-auto"
+        />
+        <!-- @click="dialog = true" -->
+      </div>
+    </div>
+    <!-- <q-dialog
+      v-model="dialog"
+      persistent
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card class="bg-primary text-white">
+        <q-bar>
+          <q-space />
+          <q-btn dense flat icon="close" v-close-popup>
+            <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
+          </q-btn>
+        </q-bar>
+
+      </q-card>
+    </q-dialog> -->
+  </q-page>
+ 
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
+
 export default {
   data() {
     return {
-      inspections: [],
-      dialog: false,
-      position: "top",
+      dialog: false
     };
   },
 
+  computed: {},
+
   methods: {
-    open(position) {
-      this.position = position;
-      this.dialog = true;
-    },
+    
   },
 };
 </script>  
