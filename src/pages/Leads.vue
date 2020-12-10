@@ -19,10 +19,7 @@
           alt="Search icon"
           @click="openSearchInput = true"
           style="margin: 0"
-          v-if="
-            (activeLeads.length > 0 || archivedLeads.length > 0) &&
-            !openSearchInput
-          "
+          v-if="(activeLeads.length || archiveLeads.length) && !openSearchInput"
         />
         <img
           src="~assets/add.svg"
@@ -44,10 +41,7 @@
       </q-toolbar>
     </q-header>
     <div style="padding-top: 51px" class="full-height row">
-      <div
-        class="full-width"
-        v-if="activeLeads.length > 0 || archivedLeads.length > 0"
-      >
+      <div class="full-width" v-if="activeLeads.length || archiveLeads.length">
         <q-tabs
           v-model="panel"
           dense
@@ -59,12 +53,12 @@
         >
           <q-tab
             name="newLeads"
-            :label="newLeadsLabel"
+            :label="`Active Leads-${activeLeads.length}`"
             class="text-capitalize"
           ></q-tab>
           <q-tab
             name="oldLeads"
-            :label="oldLeadsLabel"
+            :label="`Old Leads-${archiveLeads.length}`"
             class="text-capitalize"
           ></q-tab>
         </q-tabs>
@@ -97,8 +91,8 @@
                   <q-item-section>
                     <div class="row">
                       <span
-                        >{{ lead.attributes.primaryContact.fname }}
-                        {{ lead.attributes.primaryContact.lname }}</span
+                        >{{ lead["primaryContact"]["fname"] }}
+                        {{ lead["primaryContact"]["lname"] }}</span
                       >
                       <span class="q-ml-auto">Visting On</span>
                     </div>
@@ -107,25 +101,23 @@
                         >Mob:
                         <span
                           v-if="
-                            lead.attributes.primaryContact.phoneNumber &&
-                            lead.attributes.primaryContact.phoneNumber.length
+                            lead.primaryContact.phoneNumber &&
+                            lead.primaryContact.phoneNumber.length
                           "
                         >
-                          {{
-                            lead.attributes.primaryContact.phoneNumber[0].number
-                          }}
+                          {{ lead.primaryContact.phoneNumber[0].number }}
                         </span>
                       </span>
-                      <span class="q-ml-auto" v-if="lead.attributes.lastVisted">
-                        {{ lead.attributes.lastVisted | moment("DD/MM/YYYY") }}
+                      <span class="q-ml-auto" v-if="lead.lastVisted">
+                        {{ lead.lastVisted | moment("DD/MM/YYYY") }}
                       </span>
                       <span v-else class="q-ml-auto"> - </span>
                     </div>
                     <div>
                       Date of Loss:
-                      <span v-if="lead.attributes.dateofLoss">{{
-                        lead.attributes.dateofLoss &&
-                        lead.attributes.dateofLoss | moment("DD/MM/YYYY")
+                      <span v-if="lead.dateofLoss">{{
+                        lead.dateofLoss &&
+                        lead.dateofLoss | moment("DD/MM/YYYY")
                       }}</span>
                       <span v-else> - </span>
                     </div>
@@ -155,7 +147,7 @@
           <q-tab-panel name="oldLeads" class="q-pa-none">
             <q-list>
               <q-item
-                v-for="lead in archivedLeads"
+                v-for="lead in archiveLeads"
                 :key="lead.id"
                 clickable
                 v-ripple
@@ -164,8 +156,8 @@
                 <q-item-section>
                   <div class="row">
                     <span
-                      >{{ lead.attributes.primaryContact.fname }}
-                      {{ lead.attributes.primaryContact.lname }}</span
+                      >{{ lead.primaryContact.fname }}
+                      {{ lead.primaryContact.lname }}</span
                     >
                     <span class="q-ml-auto">Visting On</span>
                   </div>
@@ -174,25 +166,22 @@
                       >Mob:
                       <span
                         v-if="
-                          lead.attributes.primaryContact.phoneNumber &&
-                          lead.attributes.primaryContact.phoneNumber.length
+                          lead.primaryContact.phoneNumber &&
+                          lead.primaryContact.phoneNumber.length
                         "
                       >
-                        {{
-                          lead.attributes.primaryContact.phoneNumber[0].number
-                        }}
+                        {{ lead.primaryContact.phoneNumber[0].number }}
                       </span>
                     </span>
-                    <span class="q-ml-auto" v-if="lead.attributes.lastVisted">
-                      {{ lead.attributes.lastVisted | moment("DD/MM/YYYY") }}
+                    <span class="q-ml-auto" v-if="lead.lastVisted">
+                      {{ lead.lastVisted | moment("DD/MM/YYYY") }}
                     </span>
                     <span v-else class="q-ml-auto"> - </span>
                   </div>
                   <div>
                     Date of Loss:
-                    <span v-if="lead.attributes.dateofLoss">{{
-                      lead.attributes.dateofLoss &&
-                      lead.attributes.dateofLoss | moment("DD/MM/YYYY")
+                    <span v-if="lead.dateofLoss">{{
+                      lead.dateofLoss && lead.dateofLoss | moment("DD/MM/YYYY")
                     }}</span>
                     <span v-else> - </span>
                   </div>
@@ -235,78 +224,37 @@ export default {
   name: "Leads",
   data() {
     return {
-      oldLeadsLabel: "",
-      newLeadsLabel: "",
       openSearchInput: false,
       searchText: "",
-      leadTabs: [
-        { value: "newLeads", label: "New Leads" },
-        { value: "oldLeads", label: "Old Leads" },
-      ],
       panel: "newLeads",
-      // Initialize the leads json
-      activeLeads: [],
-      archivedLeads: [],
     };
   },
+
   computed: {
+    ...mapGetters(["activeLeads", "archiveLeads"]),
     formatDate(value) {
       if (value) {
         return moment(String(value)).format("MM/DD/YYYY");
       }
     },
   },
-  methods: {
-    getActiveLeads() {
-      // API endpoint is hardcoded for testing.
-      axios
-        .get("https://api.claimguru.cilalabs.dev/v1/leads", {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        })
-        .then(
-          (response) => {
-            this.activeLeads = response["data"]["data"];
-            this.copyActiveLeads = JSON.stringify(this.activeLeads);
-            this.newLeadsLabel = "New Leads - " + this.activeLeads.length;
-            this.getArchivedLeads();
-          },
-          (error) => {
-            this.showForm = false;
-          }
-        );
-    },
 
-    getArchivedLeads() {
-      axios
-        .get("https://api.claimguru.cilalabs.dev/v1/leads?archive=true", {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        })
-        .then(
-          (response) => {
-            this.archivedLeads = response["data"]["data"];
-            this.oldLeadsLabel = "Old Leads - " + this.archivedLeads.length;
-          },
-          (error) => {
-            this.showForm = false;
-          }
-        );
-    },
+  created() {
+    this.getActiveLeadsList();
+    this.getArchiveLeadsList();
+  },
+  methods: {
+    ...mapActions([
+      "getActiveLeadsList",
+      "getArchiveLeadsList",
+      "addLeadToArchiveList",
+    ]),
 
     addLead() {
       this.$router.push("/add-lead");
     },
 
     onLeadListClick(lead) {
-      // updateName({
-      //   id: lead.id,
-      //   updates: { type: lead.attributes.primaryContact.email },
-      // });
       this.$router.push("/details/" + lead.id);
     },
 
@@ -315,8 +263,8 @@ export default {
         const pattern = new RegExp(event, "i");
         this.activeLeads = this.activeLeads.filter((val) => {
           return (
-            pattern.test(val.attributes.primaryContact.fname) ||
-            pattern.test(val.attributes.primaryContact.lname)
+            pattern.test(val.primaryContact.fname) ||
+            pattern.test(val.primaryContact.lname)
           );
         });
       } else {
@@ -348,31 +296,8 @@ export default {
     },
 
     onArchiveButtonClick(leadId) {
-      axios
-        .delete(`https://api.claimguru.cilalabs.dev/v1/leads/${leadId}`, {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        })
-        .then(
-          (response) => {
-            let index = this.activeLeads.findIndex(
-              (item) => item.id === leadId
-            );
-            this.archivedLeads.push(this.activeLeads[index]);
-            this.activeLeads.splice(index, 1);
-            this.oldLeadsLabel = "Old Leads - " + this.archivedLeads.length;
-          },
-          (error) => {
-            this.$q.notify("error");
-          }
-        );
+      this.addLeadToArchiveList(leadId);
     },
-  },
-
-  mounted() {
-    this.getActiveLeads();
   },
 };
 </script>

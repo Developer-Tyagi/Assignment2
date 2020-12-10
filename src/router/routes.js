@@ -1,24 +1,17 @@
+import { getToken } from '@utils/auth.js';
+
 const routes = [{
         path: "",
         component: () =>
             import ("layouts/MainLayout.vue"),
         beforeEnter: (to, from, next) => {
-            if (!localStorage.getItem('token')) {
-                next({ path: "login" })
-            } else {
-                next();
-            }
+            !getToken() ? next({ name: 'login' }) : next();
         },
         children: [{
                 path: "dashboard",
                 name: 'dashboard',
                 component: () =>
                     import ("pages/Dashboard.vue")
-            },
-            {
-                path: "index",
-                component: () =>
-                    import ("pages/Index.vue")
             },
             {
                 path: "vendors",
@@ -34,6 +27,7 @@ const routes = [{
             import ("layouts/AuthLayout.vue"),
         children: [{
             path: "login",
+            name: "login",
             component: () =>
                 import ("pages/Login.vue")
         }]

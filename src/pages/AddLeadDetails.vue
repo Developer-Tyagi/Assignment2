@@ -16,9 +16,9 @@
       <q-stepper
         v-model="step"
         ref="stepper"
-        contracted
         color="primary"
         animated
+        alternative-labels
       >
         <q-step :name="1" :done="step > 1" title="Primary Contact">
           <q-form @submit="step++">
@@ -257,11 +257,19 @@
                   :label="source.label"
                 />
                 <q-input
-                  v-if="source.placeholder"
+                  v-if="source.placeholder && source.value != 'vendor'"
+                  style="margin-left: 40px"
                   type="text"
                   :placeholder="source.placeholder"
                   v-model="sourceDetails.sourceDetails"
                 />
+                <q-select
+                  v-if="source.value == 'vendor'"
+                  style="margin-left: 40px"
+                  v-model="sourceDetails.sourceDetails"
+                  :options="vendors"
+                  :label="source.placeholder"
+                ></q-select>
               </div>
             </q-card>
             <div class="row q-pt-md">
@@ -291,9 +299,7 @@
         <q-step :name="5" :done="step > 5" title="Notes">
           <q-form @submit="step++" @reset="step--">
             <q-card class="q-pa-md form-card">
-              <p class="text-color-light-grey">
-                Write relevent inforimation about this New Lead
-              </p>
+              <p class="text-color-light-grey">Last Notes</p>
               <q-input
                 v-model="notes"
                 type="input"
@@ -340,10 +346,10 @@
                 v-model="schedulingDetails.inspectionType"
                 :options="inspectionTypes"
                 label="Type of Inspection"
-                option-label="id"
                 @input="onInspectionTypesSelect()"
               ></q-select>
               <q-select
+                v-if="schedulingDetails.inspectionType != 'New Lead Inspection'"
                 v-model="schedulingDetails.subInspectionType"
                 :options="subInspectionTypes"
                 label="Sub Type of Inspection"
@@ -381,9 +387,10 @@
   </q-page>
 </template>
 <script>
-import axios from "axios";
+import { mapActions, mapGetters } from "vuex";
 import { date } from "quasar";
-import AddressService from "src/utils/country";
+import AddressService from "@utils/country";
+import { validateEmail } from "@utils/validation";
 const addressService = new AddressService();
 
 export default {
@@ -391,10 +398,14 @@ export default {
     return {
       countries: [],
       states: [],
-      inspectionTypes: [],
       subInspectionTypes: [],
       step: 1,
       leadSources: [
+        {
+          value: "",
+          label: "None",
+        },
+
         {
           value: "priorClient",
           label: "Prior Client",
@@ -449,64 +460,47 @@ export default {
       },
       schedulingDetails: {
         isAutomaticScheduling: false,
-        inspectionType: "",
+        inspectionType: "New Lead Inspection",
         subInspectionType: "",
-        inspectionDuration: "",
+        inspectionDuration: "1",
       },
       notes: "",
       vendorSelected: "",
-      // Hardcoding this as still api for this in not avialable.
       clientsList: [],
-      vendorsList: [],
     };
-  },
-  mounted() {
-    this.getVendors();
   },
 
   created() {
     this.countries = addressService.getCountries();
     this.onCountrySelect("United States");
-    this.getInspectionType();
+    // this.getInspectionTypes();
+    this.getVendors();
+  },
+
+  watch: {
+    step(newVal, oldVal) {
+      if (newVal == 6) {
+        document.getElementsByClassName("q-stepper__header").scrollLeft = 100;
+      } else {
+      }
+    },
+  },
+
+  computed: {
+    ...mapGetters(["inspectionTypes", "vendors"]),
   },
 
   methods: {
+    ...mapActions(["addLeads", "getInspectionTypes", "getVendors"]),
+
     onCountrySelect(country) {
       this.states = addressService.getStates(country);
     },
 
-    // onInspectionTypesSelect() {
-    //   this.subInspectionTypes = this.inspectionTypes.filter(
-    //     (types) => types.id === this.schedulingDetails.inspectionType.id
-    //   );
-    // },
-
-    getInspectionType() {
-      // Hardcoding api end point for testing.
-      axios
-        .get(
-          "https://56564994-ccad-41d5-989e-839ceca5232d.mock.pstmn.io/v1/inspections",
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-              Authorization: "",
-            },
-          }
-        )
-        .then(
-          (response) => {
-            this.inspectionTypes = response["data"]["data"];
-          },
-          (error) => {
-            this.showForm = false;
-          }
-        );
+    onInspectionTypesSelect() {
+      console.log(this.inspectionTypes);
     },
 
-    gotoVendors() {
-      this.$router.push("/vendors");
-    },
     onSubmit() {
       let formattedString = date.formatDate(
         this.lossDetails.dateOfLoss,
@@ -534,6 +528,10 @@ export default {
         policyNumber: this.insuranceDetails.policyNumber,
         isAutomaticScheduling: this.schedulingDetails.isAutomaticScheduling,
         notes: this.notes,
+        inspectionInfo: {
+          id: "edaffe6e-24d4-11eb-adc1-0242ac120001",
+          duration: this.schedulingDetails.inspectionDuration,
+        },
       };
       if (payload[this.primaryDetails.isOrganisation]) {
         payload[organizationName] = this.primaryDetails.organisationName;
@@ -544,65 +542,10 @@ export default {
           number: this.primaryDetails.phoneNumber,
         });
       }
-
-      // Hardcoding api end point for testing.
-      axios
-        .post(
-          "https://api.claimguru.cilalabs.dev/v1/leads",
-          {
-            data: {
-              type: "leads",
-              attributes: payload,
-            },
-          },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-            },
-          }
-        )
-        .then((responseData) => {})
-        .catch(function (error) {});
-      this.$router.push("/leads");
-    },
-    getVendors() {
-      // API endpoint is hardcoded for testing.
-      axios
-        .get(
-          "https://56564994-ccad-41d5-989e-839ceca5232d.mock.pstmn.io/v1/vendors",
-          {
-            headers: {
-              "Content-Type": "application/vnd.api+json",
-              Accept: "application/vnd.api+json",
-              Authorization: "",
-            },
-          }
-        )
-        .then(
-          (response) => {
-            this.vendorsList = response["data"]["data"];
-          },
-          (error) => {
-            this.showForm = false;
-            this.showError("Sorry, Couldn't retrieve profile data");
-          }
-        );
-    },
-    onReset() {
-      this.$router.push("/leads");
-    },
-    gotoLeads() {
-      this.$router.push("/leads");
+      this.addLeads(payload);
     },
 
-    validateEmail(mail) {
-      const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-      if (regex.test(mail)) {
-        return true;
-      }
-      return false;
-    },
+    validateEmail,
   },
 };
 </script>
@@ -610,12 +553,38 @@ export default {
 <style lang="scss">
 .q-stepper {
   box-shadow: none;
+
+  .q-stepper__header {
+    flex-wrap: nowrap;
+    overflow: auto;
+  }
+  .q-stepper__tab {
+    width: 80px;
+  }
+
+  .q-stepper__tab--active {
+    .q-stepper__title {
+      color: #333333;
+    }
+  }
   .q-stepper__step-inner {
     padding: 10px;
   }
 
   .q-stepper__nav {
     padding: 24px;
+  }
+  .q-stepper__dot {
+    font-size: 12px;
+    width: 20px;
+    min-width: 20px;
+    height: 20px;
+  }
+
+  .q-stepper__title {
+    color: #cccccc;
+    font-size: 10px;
+    text-align: center;
   }
 }
 
