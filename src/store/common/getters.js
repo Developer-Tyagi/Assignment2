@@ -4,6 +4,4 @@ export const notification = state => state.notification;
 
 export const contactType = state => state.contactType;
 
-export const inspectionTypes = (function(state) {
-    return state.inspectionTypes.map(type => type)
-});
+export const inspectionTypes = state => state.inspectionTypes.map(type => type);

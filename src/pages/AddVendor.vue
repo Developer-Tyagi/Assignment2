@@ -8,14 +8,13 @@
           @click="$router.push('/vendors')"
           style="margin: auto 0"
         />
-        </q-btn>
         <div class="text-uppercase text-bold text-black q-mx-auto">
           {{ $route.name }}
         </div>
       </q-toolbar>
     </q-header>
     <div style="padding-top: 51px">
-      <q-form @submit="" class="q-pa-lg" style="height: calc(100vh - 51px)" ref="vendorForm">
+      <q-form class="q-pa-lg" style="height: calc(100vh - 51px)" ref="vendorForm">
         <div
           class="full-width"
           style="
@@ -31,8 +30,8 @@
             v-model="vendor.industry"
             :options="industryTypes"
             label="Vendor Industry"
-          >
-          </q-select>
+          />
+          
           <p class="form-heading">Company's Contact Person Details</p>
           <q-input v-model="vendor.contact.fname" label="First Name" />
           <q-input v-model="vendor.contact.lname" label="Last Name" />
@@ -48,7 +47,7 @@
               :options="contactType"
               label="Type"
               style="width: 30%; margin-left: auto"
-            ></q-select>
+            />
           </div>
           <q-input v-model="vendor.contact.email" label="Email" />
           <p class="form-heading">Company's Address</p>
@@ -65,7 +64,7 @@
             v-model="vendor.address.addressRegion"
             :options="states"
             label="State"
-          ></q-select>
+          />
           <q-input
             v-model="vendor.address.postalCode"
             label="ZIP Code"
@@ -77,7 +76,7 @@
             @input="onCountrySelect(vendor.address.addressCountry)"
             lazy-rules
             :rules="[(val) => (val && val.length > 0) || '']"
-          ></q-select>
+          />
           <p class="form-heading">Company's Phone & Website</p>
           <div class="row">
             <q-input
@@ -91,7 +90,7 @@
               :options="contactType"
               label="Type1"
               style="width: 30%; margin-left: auto"
-            ></q-select>
+            />
           </div>
           <div class="row">
             <q-input
@@ -105,7 +104,7 @@
               :options="contactType"
               label="Type2"
               style="width: 30%; margin-left: auto"
-            ></q-select>
+            />
           </div>
           <q-input v-model="vendor.info.website" label="Website" />
           <q-input v-model="vendor.info.notes" label="Notes" />
