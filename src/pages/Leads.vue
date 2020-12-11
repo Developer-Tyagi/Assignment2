@@ -19,7 +19,7 @@
           alt="Search icon"
           @click="openSearchInput = true"
           style="margin: 0"
-          v-if="(activeLeads.length || archiveLeads.length) && !openSearchInput"
+          v-if="(activeLeads.length || archivedLeads.length) && !openSearchInput"
         />
         <img
           src="~assets/add.svg"
@@ -41,7 +41,7 @@
       </q-toolbar>
     </q-header>
     <div style="padding-top: 51px" class="full-height row">
-      <div class="full-width" v-if="activeLeads.length || archiveLeads.length">
+      <div class="full-width" v-if="activeLeads.length || archivedLeads.length">
         <q-tabs
           v-model="panel"
           dense
@@ -58,7 +58,7 @@
           ></q-tab>
           <q-tab
             name="oldLeads"
-            :label="`Old Leads-${archiveLeads.length}`"
+            :label="`Old Leads-${archivedLeads.length}`"
             class="text-capitalize"
           ></q-tab>
         </q-tabs>
@@ -147,7 +147,7 @@
           <q-tab-panel name="oldLeads" class="q-pa-none">
             <q-list>
               <q-item
-                v-for="lead in archiveLeads"
+                v-for="lead in archivedLeads"
                 :key="lead.id"
                 clickable
                 v-ripple
@@ -231,7 +231,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["activeLeads", "archiveLeads"]),
+    ...mapGetters(["activeLeads", "archivedLeads"]),
     formatDate(value) {
       if (value) {
         return moment(String(value)).format("MM/DD/YYYY");
@@ -241,12 +241,12 @@ export default {
 
   created() {
     this.getActiveLeadsList();
-    this.getArchiveLeadsList();
+    this.getArchivedLeadsList();
   },
   methods: {
     ...mapActions([
       "getActiveLeadsList",
-      "getArchiveLeadsList",
+      "getArchivedLeadsList",
       "addLeadToArchiveList",
     ]),
 
@@ -274,7 +274,7 @@ export default {
     },
 
     onListSwipe(info, lead) {
-      if (info.direction == "left") {
+      if (info.direction === "left") {
         if (lead["isLeftOptionOpen"]) {
           lead["isLeftOptionOpen"] = false;
           lead["isRightOptionOpen"] = false;
@@ -282,7 +282,7 @@ export default {
           lead["isLeftOptionOpen"] = false;
           lead["isRightOptionOpen"] = true;
         }
-      } else if (info.direction == "right") {
+      } else if (info.direction === "right") {
         if (lead.isRightOptionOpen) {
           lead["isLeftOptionOpen"] = false;
           lead["isRightOptionOpen"] = false;

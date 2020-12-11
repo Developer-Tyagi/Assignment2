@@ -61,7 +61,7 @@
                   lazy-rules
                   :rules="[(val) => (val && val.length > 0) || '']"
                   style="width: 30%; margin-left: auto"
-                ></q-select>
+                />
               </div>
               <q-input
                 v-model="primaryDetails.email"
@@ -148,7 +148,7 @@
                 :rules="[
                   (val) => (val && val.length > 0) || 'Please fill the country',
                 ]"
-              ></q-select>
+              />
               <q-input
                 v-model="lossDetails.address1"
                 label="Address1"
@@ -174,7 +174,7 @@
                 :rules="[
                   (val) => (val && val.length > 0) || 'Please fill the state',
                 ]"
-              ></q-select>
+              />
               <q-input
                 v-model="lossDetails.postalCode"
                 label="ZIP Code"
@@ -264,12 +264,12 @@
                   v-model="sourceDetails.sourceDetails"
                 />
                 <q-select
-                  v-if="source.value == 'vendor'"
+                  v-if="source.value === 'vendor'"
                   style="margin-left: 40px"
                   v-model="sourceDetails.sourceDetails"
                   :options="vendors"
                   :label="source.placeholder"
-                ></q-select>
+                />
               </div>
             </q-card>
             <div class="row q-pt-md">
@@ -347,13 +347,13 @@
                 :options="inspectionTypes"
                 label="Type of Inspection"
                 @input="onInspectionTypesSelect()"
-              ></q-select>
+              />
               <q-select
                 v-if="schedulingDetails.inspectionType != 'New Lead Inspection'"
                 v-model="schedulingDetails.subInspectionType"
                 :options="subInspectionTypes"
                 label="Sub Type of Inspection"
-              ></q-select>
+              />
               <q-input
                 v-model="schedulingDetails.inspectionDuration"
                 label="Duration of Inspection"
@@ -473,13 +473,13 @@ export default {
   created() {
     this.countries = addressService.getCountries();
     this.onCountrySelect("United States");
-    // this.getInspectionTypes();
+    this.getInspectionTypes();
     this.getVendors();
   },
 
   watch: {
     step(newVal, oldVal) {
-      if (newVal == 6) {
+      if (newVal === 6) {
         document.getElementsByClassName("q-stepper__header").scrollLeft = 100;
       } else {
       }
