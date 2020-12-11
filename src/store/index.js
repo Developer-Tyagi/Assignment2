@@ -5,6 +5,7 @@ import leads from './leads'
 import vendors from './vendors'
 import common from './common'
 import user from './user'
+import settings from './settings'
 Vue.use(Vuex)
 
 /*
@@ -18,7 +19,8 @@ export default function( /* { ssrContext } */ ) {
             leads,
             common,
             user,
-            vendors
+            vendors,
+            settings
         },
 
         // enable strict mode (adds overhead!)

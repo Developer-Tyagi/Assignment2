@@ -5,7 +5,7 @@ import axios from 'axios';
 
 // const Authorization = getToken();
 const baseURL = `https://api.claimguru.cilalabs.dev/v1`;
-//for InspectionType
+//for dummy apis
 // const baseURL = `https://56564994-ccad-41d5-989e-839ceca5232d.mock.pstmn.io/v1`;
 
 const axiosInstance = axios.create({

@@ -15,7 +15,7 @@
       </q-toolbar>
     </q-header>
     <div style="padding-top: 51px">
-      <q-form @submit="" class="q-pa-lg" style="height: calc(100vh - 51px)" ref="vendorForm">
+      <q-form class="q-pa-lg" style="height: calc(100vh - 51px)" ref="vendorForm">
         <div
           class="full-width"
           style="

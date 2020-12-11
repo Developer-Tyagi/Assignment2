@@ -84,7 +84,7 @@ const routes = [{
         ]
     },
     {
-        path: "/settings",
+        path: "",
         component: () =>
             import ("layouts/SettingsLayout.vue"),
         children: [{

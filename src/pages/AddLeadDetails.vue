@@ -373,7 +373,7 @@
               ></q-select>
               <q-input
                 v-model="schedulingDetails.inspectionDuration"
-                label="Duration of Inspection"
+                label="Duration of Inspection (in hours)"
               />
             </q-card>
             <div class="row q-pt-md">
@@ -417,7 +417,7 @@ export default {
       states: [],
       subInspectionTypes: [],
       showSubInspectionType: false,
-      step: 1,
+      step: 6,
       leadSources: [
         {
           value: "",
@@ -478,9 +478,9 @@ export default {
       },
       schedulingDetails: {
         isAutomaticScheduling: false,
-        inspectionType: "New Lead Inspection",
+        inspectionType: "",
         subInspectionType: "",
-        inspectionDuration: "1",
+        inspectionDuration: "",
       },
       notes: "",
       vendorSelected: "",
@@ -491,7 +491,7 @@ export default {
   created() {
     this.countries = addressService.getCountries();
     // this.getVendors();
-    // this.getInspectionTypes();
+    this.getInspectionTypes();
     this.onCountrySelect("United States");
 
     if (localStorage.getItem("leadDetails")) {
@@ -529,14 +529,13 @@ export default {
       let selectedInspectionType = this.inspectionTypes.find(
         (type) => type.name === this.schedulingDetails.inspectionType
       );
-      if (selectedInspectionType.subtypes.data.length > 1) {
-        this.subInspectionTypes = selectedInspectionType.subtypes.data;
-        console.log(this.subInspectionTypes);
+      console.log(selectedInspectionType)
+      if (selectedInspectionType.subtypes.length > 1) {
+        this.subInspectionTypes = selectedInspectionType.subtypes;
         this.showSubInspectionType = true;
       } else {
-        console.log(selectedInspectionType);
         this.showSubInspectionType = false;
-        this.schedulingDetails.duration = 1;
+        // this.schedulingDetails.duration = selectedInspectionType.subtypes[0].duration;
       }
     },
 
