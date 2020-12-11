@@ -12,13 +12,13 @@
           />
         </div>
         <div class="column" style="height: 40vh">
-          <q-input v-model="username" placeholder="Username" borderless>
+          <q-input v-model="login.email" placeholder="Username" borderless>
             <template v-slot:prepend>
               <q-icon name="person_outline" color="orange" />
             </template>
           </q-input>
           <q-input
-            v-model="userpwd"
+            v-model="login.password"
             placeholder="Password"
             type="password"
             borderless
@@ -31,7 +31,7 @@
             color="secondary"
             label="Login"
             class="full-width q-my-md"
-            @click="onLogin"
+            @click="onUserLogin"
           ></q-btn>
           <a href style="color: #d64d25; text-decoration: none"
             >Forgot Password</a
@@ -44,57 +44,32 @@
 <script>
 import axios from "axios";
 import { Notify } from "quasar";
-
+import { mapActions } from "vuex";
 export default {
   name: "Login",
   data() {
     return {
-      username: "",
-      userpwd: "",
+      login: {
+        email: "",
+        password: "",
+      },
     };
   },
   methods: {
-    onLogin() {
-      axios
-        .post(
-          "https://api.claimguru.cilalabs.dev/v1/users/login",
-          {
-            data: {
-              type: "users",
-              attributes: {
-                email: this.username,
-                password: this.userpwd,
-              },
-            },
-          },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-            },
-          }
-        )
-        .then((response) => {
-          localStorage.setItem(
-            "token",
-            JSON.stringify(response["data"]["data"]["idToken"])
-          );
-          this.$router.push("/dashboard");
-        })
-        .catch(() => {
-          this.showNotification();
-          this.userpwd = "";
-        });
-    },
+    ...mapActions(["userLogin"]),
 
-    showNotification() {
-      this.userpwd = "";
-      this.$q.notify({
-        message: "Please check your credentials",
-        icon: "announcement",
-        position: "top",
-        timeout: 2000,
-      });
+    onUserLogin() {
+      const loginData = {
+        data: {
+          type: "users",
+          attributes: {
+            ...this.login,
+          },
+        },
+      };
+      if (this.login.email && this.login.password) {
+        this.userLogin(loginData);
+      }
     },
   },
 
@@ -105,7 +80,7 @@ export default {
   },
 };
 </script>
-<style>
+<style lang="scss" scoped>
 input::placeholder {
   color: #aeaeae;
 }

@@ -22,7 +22,7 @@
             v-model="isNewLead"
             left-label
             color="orange"
-            class="q-ml-auto q-pb-lg"
+            class="q-ml-auto "
           ></q-toggle>
         </div>
         <div v-if="!isNewLead">
@@ -62,36 +62,15 @@
 </template>
 <script>
 import axios from "axios";
+
 export default {
   methods: {
-    getClients() {
-      // API endpoint is hardcoded for testing.
-      axios
-        .get(
-          "https://56564994-ccad-41d5-989e-839ceca5232d.mock.pstmn.io/v1/clients",
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-              Authorization: "",
-            },
-          }
-        )
-        .then(
-          (response) => {
-            this.clientsList = response["data"]["data"];
-          },
-          (error) => {}
-        );
-    },
-
     onContinue() {
       this.$router.push("/add-lead-details");
     },
   },
-  mounted() {
-    this.getClients();
-  },
+
+  mounted() {},
   data() {
     return {
       clientSelected: "",

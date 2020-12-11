@@ -1,7 +1,10 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import lead from './lead'
+import leads from './leads'
+import vendors from './vendors'
+import common from './common'
+import user from './user'
 Vue.use(Vuex)
 
 /*
@@ -9,16 +12,19 @@ Vue.use(Vuex)
  * directly export the Store instantiation
  */
 
-export default function (/* { ssrContext } */) {
-  const Store = new Vuex.Store({
-    modules: {
-      lead
-    },
+export default function( /* { ssrContext } */ ) {
+    const Store = new Vuex.Store({
+        modules: {
+            leads,
+            common,
+            user,
+            vendors
+        },
 
-    // enable strict mode (adds overhead!)
-    // for dev mode only
-    strict: process.env.DEV
-  })
+        // enable strict mode (adds overhead!)
+        // for dev mode only
+        // strict: process.env.DEV
+    })
 
-  return Store
+    return Store
 }
