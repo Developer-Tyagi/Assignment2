@@ -249,7 +249,7 @@
         <q-step :name="4" :done="step > 4" title="Lead Source">
           <q-form @submit="step++" @reset="step--">
             <q-card class="q-pa-md form-card">
-              <span class="stepper-heading">Choose Lead Source</span>
+              <span class="stepper-heading">Choose Lead Source {{sourceDetails.sourceType}}</span>
               <div v-for="source in leadSources" :key="source.value">
                 <q-radio
                   v-model="sourceDetails.sourceType"
@@ -266,17 +266,17 @@
                   type="text"
                   :placeholder="source.placeholder"
                   v-model="sourceDetails.sourceDetails"
-                  @popup-show="onClickingOnVendorSelect"
                 />
                 <q-select
-                  v-if="source.value === 'vendor'"
+                  v-if="sourceDetails.sourceType == 'vendor' && source.value == 'vendor'"
                   style="margin-left: 40px"
                   v-model="sourceDetails.sourceDetails"
                   :options="vendors"
                   option-label="name"
-                  option-value="name"
+                  option-value="value"
                   emit-value
                   :label="source.placeholder"
+                  @popup-show="onClickingOnVendorSelect"
                 />
               </div>
             </q-card>
@@ -414,7 +414,7 @@ export default {
       states: [],
       subInspectionTypes: [],
       showSubInspectionType: false,
-      step: 1,
+      step: 4,
       leadSources: [
         {
           value: "",

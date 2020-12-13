@@ -39,8 +39,8 @@
     </q-header>
     <div class="vendors-filter">
       <span class="filter-text">Filter</span>
-      <div class="custom-chip" v-for="type in vendorTypes">
-        {{ type.label }}
+      <div class="custom-chip" v-for="industry in vendorIndustries" :key="industry.id">
+        {{ industry.name }}
       </div>
     </div>
     <div>
@@ -71,15 +71,16 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["vendors"]),
+    ...mapGetters(["vendors","vendorIndustries"]),
   },
 
   created() {
+    // this.getVendorIndustries();
     this.getVendors();
   },
 
   methods: {
-    ...mapActions(["getVendors"]),
+    ...mapActions(["getVendors","getVendorIndustries"]),
 
     addVendor() {
       this.$router.push("/add-vendor");
