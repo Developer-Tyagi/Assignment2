@@ -4,7 +4,7 @@ import axios from 'axios';
 // import { setToken, getToken } from '@utils/auth';
 
 // const Authorization = getToken();
-const baseURL = `${process.env.API}/v1`;
+const baseURL = `https://api.claimguru.cilalabs.dev/v1`;
 //for mock apis
 // const baseURL = `https://56564994-ccad-41d5-989e-839ceca5232d.mock.pstmn.io/v1`;
 

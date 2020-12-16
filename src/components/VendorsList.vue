@@ -6,9 +6,10 @@
                     <q-icon name="search" />
                 </template>
             </q-input>
-            <div class="q-ml-auto row" @click="filterDialog = true">
-                <img src="~assets/filter.svg"  >Filters
+            <div v-if="!params.industry" class="q-ml-auto row" @click="filterDialog = true">
+                <img src="~assets/filter.svg">Filters
             </div>
+            <q-btn v-else class="q-ml-auto" color="white" text-color="grey"  @click="clearFilter()" flat dense style="font-weight: 400">Clear</q-btn> 
         </div>
         <div>
             <div v-for="vendor in vendors" :key="vendor.id" class="vendor-list-item" @click="selectVendor(vendor)">
@@ -93,6 +94,12 @@ export default {
             vendor.selected = true;
             this.$emit('selectedVendor', vendor)
         }    
+    },
+
+    clearFilter(){
+        this.params.industry = ""
+        this.selectedFilter = ""
+        this.getVendors(this.params);
     }
   },    
 }

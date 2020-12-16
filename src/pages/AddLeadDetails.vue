@@ -257,12 +257,18 @@
                   option-value="value"
                   emit-value
                   map-options
+
                 />
                 <q-input
                   v-if="sourceDetails.type != 'vendor' && sourceDetails.type != ''  && sourceDetails.type != 'google' "
                   type="text"
                   placeholder="Enter Source details"
                   v-model="sourceDetails.details"
+                  lazy-rules
+                  :rules="[
+                  (val) =>
+                    (val && val.length > 0) || '',
+                ]"
                 />                  
                 <div v-else-if="sourceDetails.type == 'vendor'"
                 class="custom-select" @click="vendorsListDialog = true">
@@ -490,43 +496,6 @@ export default {
       notes: "",
       vendorSelected: "",
       industryTypes: ["Association"],
-      vendor: {
-        name: "",
-        industry: "",
-        contact: {
-          fname: "",
-          lname: "",
-          email: "",
-          phoneNumber: [
-            {
-              type: "mobile",
-              number: "",
-            },
-          ],
-        },
-        address: {
-          addressCountry: "United States",
-          addressLocality: "",
-          addressRegion: "",
-          postOfficeBoxNumber: "",
-          postalCode: "",
-          streetAddress: "",
-        },
-        info: {
-          phoneNumbers: [
-            {
-              type: "pager",
-              number: "",
-            },
-            {
-              type: "mobile",
-              number: "",
-            },
-          ],
-          website: "",
-          notes: "",
-        },
-      },
     };
       
     
@@ -605,10 +574,11 @@ export default {
           id: "",
           duration: this.schedulingDetails.inspectionDuration,
         },
-        leadSource: {
-                id:"",
-                type:"clients"
-            },
+        leadSource:{
+          id:"",
+          type:this.sourceDetails.type,
+          details:""
+        }
       };
       if (payload[this.primaryDetails.isOrganisation]) {
         payload[organizationName] = this.primaryDetails.organisationName;
@@ -619,7 +589,11 @@ export default {
           number: this.primaryDetails.phoneNumber,
         });
       }
-      localStorage.removeItem("leadDetails");
+      if(this.sourceDetails.type == 'vendor'){
+        payload.leadSource.id = this.sourceDetails.id
+      } else{
+        payload.leadSource.details = this.sourceDetails.details
+      }
       this.addLeads(payload);
     },
 
@@ -630,7 +604,6 @@ export default {
     },
 
     addSelectedVendor(e){
-      console.log(e)
       this.sourceDetails = {
         id: e.id,
         type: 'vendor',
