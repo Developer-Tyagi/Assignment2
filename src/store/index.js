@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 import leads from './leads'
 import vendors from './vendors'
 import common from './common'
+import clients from './clients'
 import user from './user'
 Vue.use(Vuex)
 
@@ -18,7 +19,8 @@ export default function( /* { ssrContext } */ ) {
             leads,
             common,
             user,
-            vendors
+            vendors,
+            clients
         },
 
         // enable strict mode (adds overhead!)

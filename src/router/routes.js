@@ -57,7 +57,7 @@ const routes = [{
                     import ("pages/LeadDetails.vue")
             },
             {
-                path: "add-lead-details",
+                path: "add-lead-details/:id?",
                 name: 'add new lead',
                 component: () =>
                     import ("pages/AddLeadDetails.vue")

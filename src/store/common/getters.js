@@ -4,4 +4,6 @@ export const notification = state => state.notification;
 
 export const contactType = state => state.contactType;
 
+export const leadSources = state => state.leadSources;
+
 export const inspectionTypes = state => state.inspectionTypes.map(type => type);

@@ -2,10 +2,10 @@ import request from '@api';
 import { buildApiData } from '@utils/api';
 
 
-export async function getVendors({ commit, dispatch }) {
+export async function getVendors({ commit, dispatch }, params) {
     dispatch('setLoading', true);
     try {
-        const { data } = await request.get('/vendors');
+        const { data } = await request.get('/vendors', params);
         commit('setvendors', data);
         dispatch('setLoading', false);
     } catch (e) {
@@ -23,7 +23,6 @@ export async function addVendor({ dispatch, state }, payload) {
     try {
         const { data } = await request.post('/vendors', buildApiData('vendors', payload));
         dispatch('setLoading', false);
-        this.$router.push("/vendors")
     } catch (e) {
         console.log(e);
         dispatch('setLoading', false);
