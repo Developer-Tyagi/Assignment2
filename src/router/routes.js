@@ -103,14 +103,7 @@ const routes = [{
                 name: 'type of inspections',
                 component: () =>
                     import ("pages/InspectionTypes.vue")
-            },
-            {
-                path: 'add-inspection-type',
-                name: 'add new inspection',
-                component: () =>
-                    import ("pages/AddInspectionType.vue")
             }
-
         ]
     },
 

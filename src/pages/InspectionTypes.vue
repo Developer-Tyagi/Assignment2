@@ -60,7 +60,7 @@
           <div style="height: calc(100% - 50px); ">
           <q-card
             class="inspection-card"
-            v-for="(subtype, index) in inspectionType.subtypes"
+            v-for="(subtype, index) in inspectionType.subtypes" :key="index"
           >
             <q-input
               v-model="inspectionType.name"
