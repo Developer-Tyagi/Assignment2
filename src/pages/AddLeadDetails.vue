@@ -78,15 +78,15 @@
                   Is policy holder an organization ?
                 </p>
                 <q-toggle
-                  v-model="primaryDetails.isOrganisation"
+                  v-model="primaryDetails.isOrganization"
                   left-label
                   color="orange"
                   class="q-ml-auto"
                 ></q-toggle>
               </div>
-              <div v-if="primaryDetails.isOrganisation">
+              <div v-if="primaryDetails.isOrganization">
                 <q-input
-                  v-model="primaryDetails.organisationName"
+                  v-model="primaryDetails.organizationName"
                   label="Organization Name"
                   lazy-rules
                   :rules="[
@@ -257,7 +257,7 @@
                   option-value="value"
                   emit-value
                   map-options
-
+                  @input="onChangingSourceType()"
                 />
                 <q-input
                   v-if="sourceDetails.type != 'vendor' && sourceDetails.type != ''  && sourceDetails.type != 'google' "
@@ -462,8 +462,8 @@ export default {
       vendorsListDialog:false,
       step: 1,
       primaryDetails: {
-        isOrganisation: false,
-        organisationName: "",
+        isOrganization: false,
+        organizationName: "",
         firstName: "",
         lastName: "",
         email: "",
@@ -511,9 +511,9 @@ export default {
       this.primaryDetails.email =  selectedClient.primaryContact.email
       this.primaryDetails.phoneNumber = selectedClient.primaryContact.phoneNumber[0].number
       this.primaryDetails.selectedContactType = selectedClient.primaryContact.phoneNumber[0].type
-      this.primaryDetails.isOrganisation = selectedClient.isOrganization
-      if(this.primaryDetails.isOrganisation){
-        this.primaryDetails.organisationName = selectedClient.organizationName
+      this.primaryDetails.isOrganization = selectedClient.isOrganization
+      if(this.primaryDetails.isOrganization){
+        this.primaryDetails.organizationName = selectedClient.organizationName
       }     
     }
     this.countries = addressService.getCountries();
@@ -559,7 +559,7 @@ export default {
         "YYYY-MM-DDTHH:mm:ssZ"
       );
       let payload = {
-        isOrganization: this.primaryDetails.isOrganisation,
+        isOrganization: this.primaryDetails.isOrganization,
         primaryContact: {
           fname: this.primaryDetails.firstName,
           lname: this.primaryDetails.lastName,
@@ -590,8 +590,8 @@ export default {
           details:""
         }
       };
-      if (payload[this.primaryDetails.isOrganisation]) {
-        payload[organizationName] = this.primaryDetails.organisationName;
+      if (payload[isOrganization]) {
+        payload[organizationName] = this.primaryDetails.organizationName;
       }
       if (this.primaryDetails.phoneNumber) {
         payload.primaryContact["phoneNumber"].push({
@@ -611,6 +611,11 @@ export default {
 
     closeVendorsList(){
       this.vendorsListDialog = false
+    },
+
+    onChangingSourceType(){
+      this.sourceDetails.id = "",
+      this.sourceDetails.details = ""
     },
 
     addSelectedVendor(e){

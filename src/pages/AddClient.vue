@@ -10,13 +10,7 @@
         />
         <div class="text-uppercase text-bold text-black q-mx-auto">
           {{ $route.name }}
-        </div>
-        <img
-          src="~assets/add.svg"
-          alt=""
-          @click="addClient"
-          style="margin: auto 0"
-        />        
+        </div>      
       </q-toolbar>
     </q-header>
     </q-page> 
