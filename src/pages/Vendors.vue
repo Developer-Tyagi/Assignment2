@@ -1,95 +1,55 @@
 <template>
-  <q-page padding>
-    <q-btn round icon="keyboard_backspace" @click="addVendor"></q-btn>
-    <div class="addVendor">
-      <q-btn round icon="search" @click="addVendor"></q-btn>
-      <q-btn round color="orange" icon="add" @click="addVendor"></q-btn>
-    </div>
-    <h5>{{ message }}</h5>
-    <p>Filter</p>
-    <q-option-group
-      v-model="panel"
-      inline
-      :options="vendorTypes"
-    ></q-option-group>
-    <q-tab-panels v-model="panel" animated class="shadow-2 rounded-borders">
-      <q-tab-panel name="plumbers">
-        <q-list bordered separator>
-          <q-item
-            v-for="vendor in vendorsData"
-            :key="vendor.id"
-            class="q-my-sm"
-            clickable
-            v-ripple
-          >
-            <q-item-section>
-              <q-item-label>{{ vendor.attributes.name }}</q-item-label>
-            </q-item-section>
-          </q-item>
-        </q-list>
-      </q-tab-panel>
-    </q-tab-panels>
+  <q-page style="padding-top: 0; height: 100vh">
+    <q-header bordered class="bg-white">
+      <q-toolbar class="row bg-white">
+        <img
+          src="~assets/left-arrow.svg"
+          alt="back-arrow"
+          @click="$router.push('/dashboard')"
+          style="margin: auto 0"
+        />
+        <div
+          class="text-uppercase text-bold text-black q-mx-auto"
+        >
+          {{ $route.name }}
+        </div>
+        <img
+          src="~assets/add.svg"
+          alt=""
+          @click="addVendorDialog = true"
+          style="margin: 0 0 0 20px"
+        />
+      </q-toolbar>
+    </q-header>
+    <VendorsList ref="list" :selective="false"/>
+    <q-dialog
+      v-model="addVendorDialog"
+      persistent
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"     
+    >
+    <q-card>
+      <AddVendor @closeDialog="closeAddVendorDialog"/>
+    </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import { mapActions } from "vuex";
-import axios from "axios";
+import VendorsList from 'components/VendorsList';
+import AddVendor from 'components/AddVendor'
 export default {
-  name: "Leads",
-
-  methods: {
-    getVendors: function (event) {
-      // API endpoint is hardcoded for testing.
-      axios
-        .get(
-          "https://56564994-ccad-41d5-989e-839ceca5232d.mock.pstmn.io/v1/vendors",
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-              Authorization: "",
-            },
-          }
-        )
-        .then(
-          (response) => {
-            this.vendorsData = response["data"]["data"];
-          },
-          (error) => {}
-        );
-    },
-    getVendorTypes: function (event) {
-      this.vendorsData.forEach(function (vendor) {});
-    },
-    addVendor() {
-      this.$router.push("/add-lead");
-    },
-  },
-  mounted() {
-    this.getVendors();
-    this.getVendorTypes();
-  },
-  data() {
-    return {
-      message: "Vendors",
-      vendorsData: [],
-      vendorTypes: [
-        { value: "plumbers", label: "Plumbers" },
-        { value: "lossDetails", label: "Water Mitigation" },
-        { value: "insurance", label: "Electrians" },
-        { value: "other", label: "NOTES & SOURCE" },
-      ],
-      panel: "primary",
-    };
-  },
+  name: "Vendors",
+  components: { VendorsList, AddVendor },
+  data(){ return { addVendorDialog : false }},
+  methods:{
+    closeAddVendorDialog(e){
+      this.addVendorDialog = false;
+      if(e){
+        this.$refs.list.getVendors()
+      }
+    }
+  }
 };
 </script>
-
-<style>
-.addVendor {
-  position: absolute;
-  right: 20px;
-}
-</style>

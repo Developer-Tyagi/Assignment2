@@ -1,11 +1,11 @@
 <template>
-  <q-page>
+     <q-page class="bg-white full-width">
      <q-header bordered class="bg-white">
       <q-toolbar class="row bg-white">
         <img
-          src="~assets/left-arrow.svg"
+          src="~assets/close.svg"
           alt="back-arrow"
-          @click="$router.push('/vendors')"
+          @click="closeDialog(false)"
           style="margin: auto 0"
         />
         <div class="text-uppercase text-bold text-black q-mx-auto">
@@ -25,13 +25,12 @@
         >
           <q-input v-model="vendor.name" label="Vendor Company Name" lazy-rules
               :rules="[(val) => (val && val.length ) || '']"/>
-
           <q-select
             v-model="vendor.industry"
-            :options="industryTypes"
+            :options="vendorIndustries"
             label="Vendor Industry"
-          />
-          
+            option-label="name"
+          />          
           <p class="form-heading">Company's Contact Person Details</p>
           <q-input v-model="vendor.contact.fname" label="First Name" />
           <q-input v-model="vendor.contact.lname" label="Last Name" />
@@ -120,11 +119,15 @@
     </div>
   </q-page>
 </template>
+
+
 <script>
 import AddressService from "@utils/country";
 const addressService = new AddressService();
 import { mapGetters, mapActions } from "vuex";
+
 export default {
+  name: "AddVendor",
   data() {
     return {
       industryTypes: ["Association"],
@@ -171,11 +174,16 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["contactType"]),
+    ...mapGetters(["contactType","vendorIndustries"]),
+  },
+
+  created(){
+  this.getVendorIndustries();
   },
 
   methods: {
-    ...mapActions(["addVendor"]),
+    ...mapActions(["addVendor","getVendorIndustries"]),
+
     onCountrySelect(country) {
       this.states = addressService.getStates(country);
     },
@@ -183,17 +191,24 @@ export default {
     onAddVendorButtonClick() {
       this.$refs.vendorForm.validate().then(async (success) => {
         if (success) {
-          this.addVendor(this.vendor);
+          this.addVendor(this.vendor).then( async =>{
+            this.closeDialog(true)
+          })
         }
       });
     },
+
+    
+    closeDialog(flag){
+      this.$emit('closeDialog', flag)
+    }
   },
 
   created() {
     this.countries = addressService.getCountries();
     this.onCountrySelect("United States");
   },
-};
+}
 </script>
 <style lang="scss" scoped>
 .form-heading {
@@ -208,3 +223,4 @@ export default {
   background: transparent; /* make scrollbar transparent */
 }
 </style>
+

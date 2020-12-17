@@ -1,0 +1,1 @@
+export const inspectionTypes = state => state.inspectionTypes.map(type => type);

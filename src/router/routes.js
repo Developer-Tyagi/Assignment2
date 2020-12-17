@@ -13,11 +13,7 @@ const routes = [{
                 component: () =>
                     import ("pages/Dashboard.vue")
             },
-            {
-                path: "vendors",
-                component: () =>
-                    import ("pages/Vendors.vue")
-            },
+
             { path: '', redirect: 'dashboard' },
         ],
     },
@@ -61,7 +57,7 @@ const routes = [{
                     import ("pages/LeadDetails.vue")
             },
             {
-                path: "add-lead-details",
+                path: "add-lead-details/:id?",
                 name: 'add new lead',
                 component: () =>
                     import ("pages/AddLeadDetails.vue")
@@ -70,11 +66,30 @@ const routes = [{
         ]
     },
     {
-        path: "/settings",
+        path: "",
+        component: () =>
+            import ("layouts/VendorsLayout.vue"),
+        children: [{
+                path: "vendors",
+                name: 'vendors',
+                component: () =>
+                    import ("pages/Vendors.vue")
+            },
+            {
+                path: "add-vendor",
+                name: 'add new vendor',
+                component: () =>
+                    import ("pages/AddVendor.vue")
+            },
+        ]
+    },
+    {
+        path: "",
         component: () =>
             import ("layouts/SettingsLayout.vue"),
         children: [{
-                path: "",
+                path: "settings",
+                name: "settings",
                 component: () =>
                     import ("pages/Settings.vue")
             },
@@ -84,7 +99,8 @@ const routes = [{
                     import ("pages/PreferredDistance.vue")
             },
             {
-                path: 'inspection',
+                path: 'inspection-types',
+                name: 'type of inspections',
                 component: () =>
                     import ("pages/InspectionTypes.vue")
             }

@@ -67,7 +67,7 @@
 
 <script>
 import CustomQHeader from "components/CustomQHeader";
-
+import { removeToken } from "@utils/auth";
 export default {
   name: "MainLayout",
   data() {
@@ -105,10 +105,12 @@ export default {
 
   methods: {
     logout() {
-      localStorage.removeItem("token");
+      this.removeToken();
       this.$router.push("/login");
     },
 
+    removeToken,
+    
     backToLastNavigation() {
       this.$router.go(-1);
     },
