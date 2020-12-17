@@ -365,10 +365,12 @@
                 option-value="id"
                 emit-value
                 label="Sub Type of Inspection"
+                @input="onSubInspectionTypesSelect()"
+                map-options
               />
               <q-input
                 v-model="schedulingDetails.inspectionDuration"
-                label="Duration of Inspection"
+                label="Duration of Inspection (in hours)"
               />
             </q-card>
             <div class="row q-pt-md">
@@ -458,7 +460,7 @@ export default {
       showSubInspectionType: false,
       addVendorDialog:false,
       vendorsListDialog:false,
-      step: 4,
+      step: 6,
       primaryDetails: {
         isOrganisation: false,
         organisationName: "",
@@ -489,9 +491,9 @@ export default {
       },
       schedulingDetails: {
         isAutomaticScheduling: false,
-        inspectionType: "New Lead Inspection",
+        inspectionType: "",
         subInspectionType: "",
-        inspectionDuration: "1",
+        inspectionDuration: "",
       },
       notes: "",
       vendorSelected: "",
@@ -534,13 +536,21 @@ export default {
       let selectedInspectionType = this.inspectionTypes.find(
         (type) => type.name === this.schedulingDetails.inspectionType
       );
-      if (selectedInspectionType.subtypes.data.length > 1) {
-        this.subInspectionTypes = selectedInspectionType.subtypes.data;
+      if (selectedInspectionType.subtypes.length > 1) {
+        this.subInspectionTypes = selectedInspectionType.subtypes;
+        this.schedulingDetails.subInspectionType = ""
+        this.schedulingDetails.inspectionDuration = ""
         this.showSubInspectionType = true;
       } else {
         this.showSubInspectionType = false;
-        this.schedulingDetails.duration = 1;
+        this.schedulingDetails.subInspectionType = selectedInspectionType.subtypes[0].id
+        this.schedulingDetails.inspectionDuration = selectedInspectionType.subtypes[0].duration;
       }
+    },
+
+    onSubInspectionTypesSelect(){
+        const index = this.subInspectionTypes.findIndex(val => val.id == this.schedulingDetails.subInspectionType)
+        this.schedulingDetails.inspectionDuration = this.subInspectionTypes[index].duration;
     },
 
     onSubmit() {
@@ -571,7 +581,7 @@ export default {
         isAutomaticScheduling: this.schedulingDetails.isAutomaticScheduling,
         notes: this.notes,
         inspectionInfo: {
-          id: "",
+          id: this.schedulingDetails.subInspectionType,
           duration: this.schedulingDetails.inspectionDuration,
         },
         leadSource:{

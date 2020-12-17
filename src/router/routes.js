@@ -84,11 +84,12 @@ const routes = [{
         ]
     },
     {
-        path: "/settings",
+        path: "",
         component: () =>
             import ("layouts/SettingsLayout.vue"),
         children: [{
-                path: "",
+                path: "settings",
+                name: "settings",
                 component: () =>
                     import ("pages/Settings.vue")
             },
@@ -98,10 +99,18 @@ const routes = [{
                     import ("pages/PreferredDistance.vue")
             },
             {
-                path: 'inspection',
+                path: 'inspection-types',
+                name: 'type of inspections',
                 component: () =>
                     import ("pages/InspectionTypes.vue")
+            },
+            {
+                path: 'add-inspection-type',
+                name: 'add new inspection',
+                component: () =>
+                    import ("pages/AddInspectionType.vue")
             }
+
         ]
     },
 

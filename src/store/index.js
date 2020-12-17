@@ -6,6 +6,7 @@ import vendors from './vendors'
 import common from './common'
 import clients from './clients'
 import user from './user'
+import settings from './settings'
 Vue.use(Vuex)
 
 /*
@@ -20,7 +21,8 @@ export default function( /* { ssrContext } */ ) {
             common,
             user,
             vendors,
-            clients
+            clients,
+            settings
         },
 
         // enable strict mode (adds overhead!)

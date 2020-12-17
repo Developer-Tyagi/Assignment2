@@ -2,7 +2,6 @@ export default function() {
     return {
         showLoading: false,
         notification: null,
-        inspectionTypes: [],
         contactType: ["phone", "mobile", "pager"],
         leadSources: [{ value: "", name: "None" },
             { value: "client", name: "Prior Client" },
