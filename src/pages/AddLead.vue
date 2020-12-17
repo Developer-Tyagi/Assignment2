@@ -8,7 +8,6 @@
           @click="$router.push('/leads')"
           style="margin: auto 0"
         />
-        </q-btn>
         <div class="text-uppercase text-bold text-black q-mx-auto">
           {{ $route.name }}
         </div>
