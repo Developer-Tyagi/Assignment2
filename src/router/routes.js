@@ -86,6 +86,25 @@ const routes = [{
     {
         path: "",
         component: () =>
+            import ("layouts/ClientLayout.vue"),
+        children: [{
+                path: "clients",
+                name: 'clients',
+                component: () =>
+                    import ("pages/Clients.vue")
+            },
+            {
+                path: "add-client",
+                name: 'add new client',
+                component: () =>
+                    import ("pages/AddClient.vue")
+            },
+        ]
+    },
+
+    {
+        path: "",
+        component: () =>
             import ("layouts/SettingsLayout.vue"),
         children: [{
                 path: "settings",
