@@ -58,35 +58,39 @@
         </q-bar>
         <div class="q-pa-md column" style="height: calc(100% - 51px)">
           <div style="height: calc(100% - 50px); ">
-          <q-card
-            class="inspection-card"
-            v-for="(subtype, index) in inspectionType.subtypes" :key="index"
-          >
-            <q-input
-              v-model="inspectionType.name"
-              placeholder="Type of Inspection"
-              v-if="index == 0"
-            />
-            <q-input
-              placeholder="Sub Type of Inspection"
-              v-model="inspectionType.subtypes[index].name"
-            />
-            <div class="slider-div">
-              <label>Duration(hr)</label>
-              <q-slider
-                v-model="inspectionType.subtypes[index].duration"
-                label-always
-                markers
-                :min="0"
-                :max="4"
-                :step="0.5"
+            <q-card
+              class="inspection-card"
+              v-for="(subtype, index) in inspectionType.subtypes"
+              :key="index"
+            >
+              <q-input
+                v-model="inspectionType.name"
+                placeholder="Type of Inspection"
+                v-if="index == 0"
               />
-            </div>
-          </q-card>
+              <q-input
+                placeholder="Sub Type of Inspection"
+                v-model="inspectionType.subtypes[index].name"
+              />
+              <div class="slider-div">
+                <label>Duration(hr)</label>
+                <q-slider
+                  v-model="inspectionType.subtypes[index].duration"
+                  label-always
+                  markers
+                  :min="0"
+                  :max="4"
+                  :step="0.5"
+                />
+              </div>
+            </q-card>
 
-          <div @click="onAddSubTypeButtonClick" class="q-pa-md text-capitalize">
-            + another subtype of inspection
-          </div>
+            <div
+              @click="onAddSubTypeButtonClick"
+              class="q-pa-md text-capitalize"
+            >
+              + another subtype of inspection
+            </div>
           </div>
           <q-btn
             label="save"
@@ -114,10 +118,10 @@ export default {
           {
             name: "",
             duration: 1,
-            unit: "hour",
-          },
-        ],
-      },
+            unit: "hour"
+          }
+        ]
+      }
     };
   },
 
@@ -125,28 +129,28 @@ export default {
     this.getInspectionTypes();
   },
   computed: {
-    ...mapGetters(["inspectionTypes"]),
+    ...mapGetters(["inspectionTypes"])
   },
 
   methods: {
-    ...mapActions([
-      "getInspectionTypes",
-      "addInspectionTypes",
-    ]),
+    ...mapActions(["getInspectionTypes", "addInspectionTypes"]),
 
     onAddSubTypeButtonClick() {
-      const length = this.inspectionType.subtypes.length
-      if (this.inspectionType.subtypes[length -1].name && this.inspectionType.name) {
+      const length = this.inspectionType.subtypes.length;
+      if (
+        this.inspectionType.subtypes[length - 1].name &&
+        this.inspectionType.name
+      ) {
         this.inspectionType.subtypes.push({
           name: "",
           duration: 0,
-          unit: "hour",
+          unit: "hour"
         });
       } else {
         this.$q.notify({
           message: "Please fill the above details first",
           position: "top",
-          type: 'negative',
+          type: "negative"
         });
       }
     },
@@ -155,27 +159,28 @@ export default {
       if (!this.inspectionType.subtypes[0].name) {
         this.inspectionType.subtypes[0].name = this.inspectionType.name;
       }
-      this.addInspectionTypes(this.inspectionType);
-      this.closeInspetionDialog();
-       this.getInspectionTypes();
+      this.addInspectionTypes(this.inspectionType).then(() => {
+        this.closeInspetionDialog();
+        this.getInspectionTypes();
+      });
     },
 
-    closeInspetionDialog(){
-      this.addInspectionDialog =false; 
-      this.inspectionType= {
+    closeInspetionDialog() {
+      this.addInspectionDialog = false;
+      this.inspectionType = {
         name: "",
         subtypes: [
           {
             name: "",
             duration: 1,
-            unit: "hour",
-          },
-        ],
+            unit: "hour"
+          }
+        ]
+      };
     }
-    }
-  },
+  }
 };
-</script>  
+</script>
 <style lang="scss" scoped>
 .inspection-list-item {
   color: #666666;
@@ -188,25 +193,25 @@ export default {
   height: 50px;
 }
 
-.inspection-card{
-    padding: 16px 24px;
-    margin-top :20px ;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    &:first-child{
-        margin-top: 0px;
-    }
+.inspection-card {
+  padding: 16px 24px;
+  margin-top: 20px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  &:first-child {
+    margin-top: 0px;
+  }
 
-    .slider-div {
+  .slider-div {
     height: 80px;
     margin-top: 10px;
 
-    .q-slider{
-        margin-top: 30px;
+    .q-slider {
+      margin-top: 30px;
     }
-}
-// ::-webkit-scrollbar {
-//   width: 0px;
-//   background: transparent; /* make scrollbar transparent */
-// }
+  }
+  // ::-webkit-scrollbar {
+  //   width: 0px;
+  //   background: transparent; /* make scrollbar transparent */
+  // }
 }
 </style>
