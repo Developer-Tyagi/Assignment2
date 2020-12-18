@@ -604,16 +604,17 @@ export default {
     },
 
     onChangingSourceType() {
-      (this.sourceDetails.id = ""), (this.sourceDetails.details = "");
+      this.sourceDetails.id = "";
+      this.sourceDetails.details = "";
     },
 
     addSelectedVendor(e) {
-      (this.sourceDetails = {
+      this.sourceDetails = {
         id: e.id,
         type: "vendor",
         details: e.name
-      }),
-        this.closeVendorsList();
+      };
+      this.closeVendorsList();
     },
 
     closeAddVendorDialog(e) {
