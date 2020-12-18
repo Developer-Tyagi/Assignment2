@@ -597,11 +597,11 @@ export default {
       this.addLeads(payload);
     },
 
-    validateEmail,
-
     closeVendorsList() {
       this.vendorsListDialog = false;
     },
+
+    validateEmail,
 
     onChangingSourceType() {
       this.sourceDetails.id = "";
