@@ -548,7 +548,7 @@ export default {
         this.lossDetails.dateOfLoss,
         "YYYY-MM-DDTHH:mm:ssZ"
       );
-      const payload = {
+      let payload = {
         isOrganization: this.primaryDetails.isOrganization,
         primaryContact: {
           fname: this.primaryDetails.firstName,
@@ -580,8 +580,8 @@ export default {
           details: ""
         }
       };
-      if (payload[isOrganization]) {
-        payload[organizationName] = this.primaryDetails.organizationName;
+      if (payload["isOrganization"]) {
+        payload["organizationName"] = this.primaryDetails.organizationName;
       }
       if (this.primaryDetails.phoneNumber) {
         payload.primaryContact["phoneNumber"].push({
