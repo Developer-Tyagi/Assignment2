@@ -3,7 +3,6 @@
     <CustomHeader
       @backButton="$router.push('/dashboard')"
       @addButton="addClient"
-      :showAddButton="true"
     />
     <div class="clients" v-if="clients.length">
       <div class="actions-div">

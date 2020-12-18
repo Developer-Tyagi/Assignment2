@@ -350,7 +350,7 @@
                 v-model="schedulingDetails.isAutomaticScheduling"
                 label="Is automatic scheduling needed?"
                 left-label
-              />
+              ></q-toggle>
               <q-select
                 v-model="schedulingDetails.inspectionType"
                 :options="inspectionTypes"
@@ -459,7 +459,6 @@ const addressService = new AddressService();
 
 export default {
   components: { VendorsList, AddVendor },
-
   data() {
     return {
       countries: [],
@@ -509,6 +508,32 @@ export default {
     };
   },
 
+  created() {
+    if (this.$route.params.id) {
+      let selectedClient = this.clients.find(
+        client => client.id === this.$route.params.id
+      );
+      this.primaryDetails.firstName = selectedClient.primaryContact.fname;
+      this.primaryDetails.lastName = selectedClient.primaryContact.lname;
+      this.primaryDetails.email = selectedClient.primaryContact.email;
+      this.primaryDetails.phoneNumber =
+        selectedClient.primaryContact.phoneNumber[0].number;
+      this.primaryDetails.selectedContactType =
+        selectedClient.primaryContact.phoneNumber[0].type;
+      this.primaryDetails.isOrganization = selectedClient.isOrganization;
+      if (this.primaryDetails.isOrganization) {
+        this.primaryDetails.organizationName = selectedClient.organizationName;
+      }
+    }
+    this.countries = addressService.getCountries();
+    this.getInspectionTypes();
+    this.onCountrySelect("United States");
+  },
+
+  computed: {
+    ...mapGetters(["clients", "inspectionTypes", "contactType", "leadSources"])
+  },
+
   methods: {
     ...mapActions(["addLeads", "getInspectionTypes", "addVendor"]),
 
@@ -517,7 +542,7 @@ export default {
     },
 
     onInspectionTypesSelect() {
-      const selectedInspectionType = this.inspectionTypes.find(
+      let selectedInspectionType = this.inspectionTypes.find(
         type => type.name === this.schedulingDetails.inspectionType
       );
       if (selectedInspectionType.subtypes.length > 1) {
@@ -548,7 +573,7 @@ export default {
         this.lossDetails.dateOfLoss,
         "YYYY-MM-DDTHH:mm:ssZ"
       );
-      const payload = {
+      let payload = {
         isOrganization: this.primaryDetails.isOrganization,
         primaryContact: {
           fname: this.primaryDetails.firstName,
@@ -623,33 +648,6 @@ export default {
         this.$refs.list.getVendors();
       }
     }
-  },
-
-  computed: {
-    ...mapGetters(["clients", "inspectionTypes", "contactType", "leadSources"])
-  },
-
-  created() {
-    // TODO : Have to change primary details object, so that selected client can be assigned as it is.
-    if (this.$route.params.id) {
-      let selectedClient = this.clients.find(
-        client => client.id === this.$route.params.id
-      );
-      this.primaryDetails.firstName = selectedClient.primaryContact.fname;
-      this.primaryDetails.lastName = selectedClient.primaryContact.lname;
-      this.primaryDetails.email = selectedClient.primaryContact.email;
-      this.primaryDetails.phoneNumber =
-        selectedClient.primaryContact.phoneNumber[0].number;
-      this.primaryDetails.selectedContactType =
-        selectedClient.primaryContact.phoneNumber[0].type;
-      this.primaryDetails.isOrganization = selectedClient.isOrganization;
-      if (this.primaryDetails.isOrganization) {
-        this.primaryDetails.organizationName = selectedClient.organizationName;
-      }
-    }
-    this.countries = addressService.getCountries();
-    this.getInspectionTypes();
-    this.onCountrySelect("United States");
   }
 };
 </script>

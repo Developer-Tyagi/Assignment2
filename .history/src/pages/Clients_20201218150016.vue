@@ -1,10 +1,22 @@
 <template>
   <q-page style="padding-top: 0; height: 100vh">
-    <CustomHeader
-      @backButton="$router.push('/dashboard')"
-      @addButton="addClient"
-      :showAddButton="true"
-    />
+    <q-header bordered class="bg-white">
+      <q-toolbar class="row bg-white">
+        <q-btn @click="$router.push('/dashboard')" flat>
+          <img
+            src="~assets/left-arrow.svg"
+            alt="back-arrow"
+            style="margin: auto 0"
+          />
+        </q-btn>
+        <div class="text-uppercase text-bold text-black q-mx-auto">
+          {{ $route.name }}
+        </div>
+        <q-btn @click="addClient">
+          <img src="~assets/add.svg" alt="" style="margin: auto 0" />
+        </q-btn>
+      </q-toolbar>
+    </q-header>
     <div class="clients" v-if="clients.length">
       <div class="actions-div">
         <q-input
@@ -63,12 +75,11 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
-import CustomHeader from "components/CustomHeader";
+import { mapGetters } from "vuex";
+import { mapActions } from "vuex";
 
 export default {
   name: "Clients",
-  components: { CustomHeader },
   data() {
     return {
       searchText: ""

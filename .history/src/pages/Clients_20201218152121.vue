@@ -1,10 +1,6 @@
 <template>
   <q-page style="padding-top: 0; height: 100vh">
-    <CustomHeader
-      @backButton="$router.push('/dashboard')"
-      @addButton="addClient"
-      :showAddButton="true"
-    />
+    <CustomHeader @backButton="$router.push('/dashboard')" />
     <div class="clients" v-if="clients.length">
       <div class="actions-div">
         <q-input

@@ -1,10 +1,7 @@
 <template>
   <q-page style="padding-top: 0; height: 100vh">
-    <CustomHeader
-      @backButton="$router.push('/dashboard')"
-      @addButton="addClient"
-      :showAddButton="true"
-    />
+    <CustomHeader @backButton="$router.push('/dashboard')"
+    @addButton="$router.push("/add-client")" />
     <div class="clients" v-if="clients.length">
       <div class="actions-div">
         <q-input
@@ -84,11 +81,7 @@ export default {
     this.getClients();
   },
   methods: {
-    ...mapActions(["getClients"]),
-
-    addClient() {
-      this.$router.push("/add-client");
-    }
+    ...mapActions(["getClients"])
   }
 };
 </script>

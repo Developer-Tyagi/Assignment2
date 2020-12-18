@@ -2,7 +2,6 @@
   <q-page style="padding-top: 0; height: 100vh">
     <CustomHeader
       @backButton="$router.push('/dashboard')"
-      :showAddButton="false"
     />
       </q-toolbar>
     </q-header>

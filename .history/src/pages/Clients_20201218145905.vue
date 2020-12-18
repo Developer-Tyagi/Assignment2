@@ -1,10 +1,24 @@
 <template>
   <q-page style="padding-top: 0; height: 100vh">
-    <CustomHeader
-      @backButton="$router.push('/dashboard')"
-      @addButton="addClient"
-      :showAddButton="true"
-    />
+    <q-header bordered class="bg-white">
+      <q-toolbar class="row bg-white">
+        <q-btn @click="$router.push('/dashboard')" flat>
+        <img
+          src="~assets/left-arrow.svg"
+          alt="back-arrow"
+          style="margin: auto 0"
+        />
+        <div class="text-uppercase text-bold text-black q-mx-auto">
+          {{ $route.name }}
+        </div>
+        <img
+          src="~assets/add.svg"
+          alt=""
+          @click="addClient"
+          style="margin: auto 0"
+        />
+      </q-toolbar>
+    </q-header>
     <div class="clients" v-if="clients.length">
       <div class="actions-div">
         <q-input
@@ -63,21 +77,20 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
-import CustomHeader from "components/CustomHeader";
+import { mapGetters } from "vuex";
+import { mapActions } from "vuex";
 
 export default {
   name: "Clients",
-  components: { CustomHeader },
   data() {
     return {
-      searchText: ""
+      searchText: "",
       // clients: [1, 2, 3, 4, 5, 6, 7, 8, 9],
     };
   },
 
   computed: {
-    ...mapGetters(["clients"])
+    ...mapGetters(["clients"]),
   },
 
   created() {
@@ -88,8 +101,8 @@ export default {
 
     addClient() {
       this.$router.push("/add-client");
-    }
-  }
+    },
+  },
 };
 </script>
 

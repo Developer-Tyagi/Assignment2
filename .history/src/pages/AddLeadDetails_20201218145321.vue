@@ -459,7 +459,6 @@ const addressService = new AddressService();
 
 export default {
   components: { VendorsList, AddVendor },
-
   data() {
     return {
       countries: [],
@@ -517,7 +516,7 @@ export default {
     },
 
     onInspectionTypesSelect() {
-      const selectedInspectionType = this.inspectionTypes.find(
+      let selectedInspectionType = this.inspectionTypes.find(
         type => type.name === this.schedulingDetails.inspectionType
       );
       if (selectedInspectionType.subtypes.length > 1) {
@@ -548,7 +547,7 @@ export default {
         this.lossDetails.dateOfLoss,
         "YYYY-MM-DDTHH:mm:ssZ"
       );
-      const payload = {
+      let payload = {
         isOrganization: this.primaryDetails.isOrganization,
         primaryContact: {
           fname: this.primaryDetails.firstName,
@@ -630,7 +629,6 @@ export default {
   },
 
   created() {
-    // TODO : Have to change primary details object, so that selected client can be assigned as it is.
     if (this.$route.params.id) {
       let selectedClient = this.clients.find(
         client => client.id === this.$route.params.id

@@ -1,10 +1,6 @@
 <template>
   <q-page style="padding-top: 0; height: 100vh">
-    <CustomHeader
-      @backButton="$router.push('/dashboard')"
-      @addButton="addClient"
-      :showAddButton="true"
-    />
+    <q-header @backButton="$router.push('/clients')" />
     <div class="clients" v-if="clients.length">
       <div class="actions-div">
         <q-input
@@ -63,12 +59,11 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
-import CustomHeader from "components/CustomHeader";
+import { mapGetters } from "vuex";
+import { mapActions } from "vuex";
 
 export default {
   name: "Clients",
-  components: { CustomHeader },
   data() {
     return {
       searchText: ""
