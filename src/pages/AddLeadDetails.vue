@@ -580,8 +580,8 @@ export default {
           details: ""
         }
       };
-      if (payload[isOrganization]) {
-        payload[organizationName] = this.primaryDetails.organizationName;
+      if (payload["isOrganization"]) {
+        payload["organizationName"] = this.primaryDetails.organizationName;
       }
       if (this.primaryDetails.phoneNumber) {
         payload.primaryContact["phoneNumber"].push({
@@ -597,11 +597,11 @@ export default {
       this.addLeads(payload);
     },
 
-    validateEmail,
-
     closeVendorsList() {
       this.vendorsListDialog = false;
     },
+
+    validateEmail,
 
     onChangingSourceType() {
       this.sourceDetails.id = "";
