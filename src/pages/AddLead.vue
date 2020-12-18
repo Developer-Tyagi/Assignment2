@@ -22,12 +22,14 @@
             left-label
             color="orange"
             class="q-ml-auto "
-          ></q-toggle>
+          />
         </div>
         <div v-if="!isNewLead">
           <q-separator></q-separator>
           <br />
-          <p style="color:#666666;opacity:50%;font-size:12px">If client already exists, select from list below</p>
+          <p style="color:#666666;opacity:50%;font-size:12px">
+            If client already exists, select from list below
+          </p>
           <q-select
             v-model="selectedClient"
             :options="clients"
@@ -52,39 +54,35 @@
   </q-page>
 </template>
 <script>
-import {mapActions, mapGetters} from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
-
   data() {
     return {
       selectedClient: "",
-      isNewLead: true,
+      isNewLead: true
     };
   },
 
-  created(){
+  created() {
     this.getClients();
   },
 
-  computed:{
+  computed: {
     ...mapGetters(["clients"])
   },
 
   methods: {
-
     ...mapActions(["getClients"]),
 
     onContinue() {
-      if(this.selectedClient){
-        this.$router.push({path: `/add-lead-details/${this.selectedClient}`});
+      if (this.selectedClient) {
+        this.$router.push({ path: `/add-lead-details/${this.selectedClient}` });
       } else {
-        this.$router.push({path: `/add-lead-details`});
+        this.$router.push({ path: `/add-lead-details` });
       }
-      
-    },
-  },
+    }
+  }
 };
 </script>
-<style>
-</style>
+<style></style>
