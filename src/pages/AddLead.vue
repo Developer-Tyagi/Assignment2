@@ -8,14 +8,13 @@
           @click="$router.push('/leads')"
           style="margin: auto 0"
         />
-        </q-btn>
         <div class="text-uppercase text-bold text-black q-mx-auto">
           {{ $route.name }}
         </div>
       </q-toolbar>
     </q-header>
     <div style="padding-top: 51px">
-      <div class="q-pa-lg column" style="height: calc(100vh - 81px)">
+      <div class="q-pa-lg column" style="height: calc(100vh - 51px)">
         <div class="row">
           <p class="q-mx-none q-my-auto">Is this a new lead?</p>
           <q-toggle
@@ -23,30 +22,24 @@
             left-label
             color="orange"
             class="q-ml-auto "
-          ></q-toggle>
+          />
         </div>
         <div v-if="!isNewLead">
           <q-separator></q-separator>
           <br />
-          <p style="color:#666666;opacity:50%;font-size:12px">If client already exists, select from list below</p>
+          <p style="color:#666666;opacity:50%;font-size:12px">
+            If client already exists, select from list below
+          </p>
           <q-select
-            v-model="clientSelected"
-            :options="clientsList"
+            v-model="selectedClient"
+            :options="clients"
             clearable
-            key="id"
+            option-label="name"
             option-value="id"
+            emit-value
             label="Select existing client"
-          >
-            <template v-slot:option="scope">
-              <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
-                <q-item-section>
-                  <q-item-label
-                    v-html="scope.opt.attributes.primaryContact.fname"
-                  ></q-item-label>
-                </q-item-section>
-              </q-item>
-            </template>
-          </q-select>
+            map-options
+          />
         </div>
         <q-btn
           label="Continue"
@@ -61,24 +54,35 @@
   </q-page>
 </template>
 <script>
-import axios from "axios";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
-  methods: {
-    onContinue() {
-      this.$router.push("/add-lead-details");
-    },
-  },
-
-  mounted() {},
   data() {
     return {
-      clientSelected: "",
-      isNewLead: true,
-      clientsList: [],
+      selectedClient: "",
+      isNewLead: true
     };
   },
+
+  created() {
+    this.getClients();
+  },
+
+  computed: {
+    ...mapGetters(["clients"])
+  },
+
+  methods: {
+    ...mapActions(["getClients"]),
+
+    onContinue() {
+      if (this.selectedClient) {
+        this.$router.push({ path: `/add-lead-details/${this.selectedClient}` });
+      } else {
+        this.$router.push({ path: `/add-lead-details` });
+      }
+    }
+  }
 };
 </script>
-<style>
-</style>
+<style></style>

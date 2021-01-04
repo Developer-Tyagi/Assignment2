@@ -2,7 +2,7 @@
   <q-header bordered class="bg-white">
     <q-toolbar class="row bg-white">
       <q-btn
-        v-if="$route.name == 'dashboard'"
+        v-if="$route.name === 'dashboard'"
         flat
         dense
         class="color-grey"
@@ -12,7 +12,7 @@
       >
       </q-btn>
       <q-btn
-        v-else="$route.name != 'dashboard'"
+        v-else-if="$route.name !== 'dashboard'"
         flat
         dense
         class="color-grey"

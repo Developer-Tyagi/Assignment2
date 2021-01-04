@@ -18,11 +18,11 @@ export async function getActiveLeadsList({ commit, dispatch }) {
     }
 }
 
-export async function getArchiveLeadsList({ commit, dispatch }) {
+export async function getArchivedLeadsList({ commit, dispatch }) {
     dispatch('setLoading', true);
     try {
         const { data } = await request.get('/leads?archive=true');
-        commit('setArchiveLeads', data);
+        commit('setArchivedLeads', data);
         dispatch('setLoading', false);
     } catch (e) {
         console.log(e);

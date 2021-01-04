@@ -49,7 +49,7 @@
     <div class="q-mt-sm">
       <div class="q-pa-sm">
         <span>Claims Watch List</span>
-        <span class="float-right" @click="">See all</span>
+        <span class="float-right" >See all</span>
       </div>
       <q-card class="q-mt-sm">
         <q-card-section>

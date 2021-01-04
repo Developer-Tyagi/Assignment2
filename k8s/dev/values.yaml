@@ -4,3 +4,4 @@ metadata:
   name: ui-config
 data:
   API: "https://api.claimguru.cilalabs.dev"  
+  DOMAIN: "claimguru.cilalabs.dev"

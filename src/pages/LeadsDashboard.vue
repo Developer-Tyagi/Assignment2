@@ -35,7 +35,7 @@
       </div>
       <div class="q-pa-md" style="height: calc(100vh - (176px + 51px))">
         <q-card>
-          <div class="q-pa-xl">
+          <div class="q-pa-lg">
             <div style="font-size: 16px; font-weight: bold; text-align: center">
               Lead Phase Chart
             </div>
