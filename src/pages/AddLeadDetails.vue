@@ -417,6 +417,7 @@
               @click="vendorsListDialog = false"
               style="margin: auto 0"
             />
+
             <div class="text-uppercase text-bold text-black q-mx-auto">
               Vendors
             </div>

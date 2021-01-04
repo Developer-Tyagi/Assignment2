@@ -86,7 +86,7 @@ const routes = [
       },
       {
         path: "add-client",
-        name: "add new client",
+        name: "create client",
         component: () => import("pages/AddClient.vue")
       }
     ]
