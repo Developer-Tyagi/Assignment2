@@ -1,6 +1,6 @@
 <template>
   <q-page>
-     <q-header bordered class="bg-white">
+    <q-header bordered class="bg-white">
       <q-toolbar class="row bg-white">
         <img
           src="~assets/left-arrow.svg"
@@ -14,7 +14,11 @@
       </q-toolbar>
     </q-header>
     <div style="padding-top: 51px">
-      <q-form class="q-pa-lg" style="height: calc(100vh - 51px)" ref="vendorForm">
+      <q-form
+        class="q-pa-lg"
+        style="height: calc(100vh - 51px)"
+        ref="vendorForm"
+      >
         <div
           class="full-width"
           style="
@@ -23,15 +27,19 @@
             margin-bottom: 10px;
           "
         >
-          <q-input v-model="vendor.name" label="Vendor Company Name" lazy-rules
-              :rules="[(val) => (val && val.length ) || '']"/>
+          <q-input
+            v-model="vendor.name"
+            label="Vendor Company Name"
+            lazy-rules
+            :rules="[val => (val && val.length) || '']"
+          />
 
           <q-select
             v-model="vendor.industry"
             :options="industryTypes"
             label="Vendor Industry"
           />
-          
+
           <p class="form-heading">Company's Contact Person Details</p>
           <q-input v-model="vendor.contact.fname" label="First Name" />
           <q-input v-model="vendor.contact.lname" label="Last Name" />
@@ -65,17 +73,14 @@
             :options="states"
             label="State"
           />
-          <q-input
-            v-model="vendor.address.postalCode"
-            label="ZIP Code"
-          />
+          <q-input v-model="vendor.address.postalCode" label="ZIP Code" />
           <q-select
             v-model="vendor.address.addressCountry"
             :options="countries"
             label="Country"
             @input="onCountrySelect(vendor.address.addressCountry)"
             lazy-rules
-            :rules="[(val) => (val && val.length > 0) || '']"
+            :rules="[val => (val && val.length > 0) || '']"
           />
           <p class="form-heading">Company's Phone & Website</p>
           <div class="row">
@@ -140,9 +145,9 @@ export default {
           phoneNumber: [
             {
               type: "mobile",
-              number: "",
-            },
-          ],
+              number: ""
+            }
+          ]
         },
         address: {
           addressCountry: "United States",
@@ -150,28 +155,28 @@ export default {
           addressRegion: "",
           postOfficeBoxNumber: "",
           postalCode: "",
-          streetAddress: "",
+          streetAddress: ""
         },
         info: {
           phoneNumbers: [
             {
               type: "pager",
-              number: "",
+              number: ""
             },
             {
               type: "mobile",
-              number: "",
-            },
+              number: ""
+            }
           ],
           website: "",
-          notes: "",
-        },
-      },
+          notes: ""
+        }
+      }
     };
   },
 
   computed: {
-    ...mapGetters(["contactType"]),
+    ...mapGetters(["contactType"])
   },
 
   methods: {
@@ -181,18 +186,18 @@ export default {
     },
 
     onAddVendorButtonClick() {
-      this.$refs.vendorForm.validate().then(async (success) => {
+      this.$refs.vendorForm.validate().then(async success => {
         if (success) {
           this.addVendor(this.vendor);
         }
       });
-    },
+    }
   },
 
   created() {
     this.countries = addressService.getCountries();
     this.onCountrySelect("United States");
-  },
+  }
 };
 </script>
 <style lang="scss" scoped>
