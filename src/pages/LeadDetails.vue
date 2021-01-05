@@ -1,18 +1,6 @@
 <template>
   <q-page style="padding-top: 0; height: 100vh">
-    <q-header bordered class="bg-white">
-      <q-toolbar class="row bg-white">
-        <img
-          src="~assets/left-arrow.svg"
-          alt="back-arrow"
-          @click="$router.push('/leads')"
-          style="margin: auto 0"
-        />
-        <div class="text-uppercase text-bold text-black q-mx-auto">
-          {{ $route.name }}
-        </div>
-      </q-toolbar>
-    </q-header>
+    <CustomHeader @backButton="$router.push('/leads')" :showAddButton="false" />
     <div style="padding-top: 51px" class="full-height row">
       <q-card class="q-pa-md q-ma-md" style="width: 100%">
         <div>
@@ -75,6 +63,7 @@
 </template>
 <script>
 import axios from "axios";
+import CustomHeader from "components/CustomHeader";
 export default {
   data() {
     return {
@@ -88,9 +77,9 @@ export default {
           phoneNumber: [
             {
               type: "",
-              number: "",
-            },
-          ],
+              number: ""
+            }
+          ]
         },
         lastVisted: "",
         visited: [],
@@ -100,18 +89,20 @@ export default {
           addressRegion: "",
           postOfficeBoxNumber: "",
           postalCode: "",
-          streetAddress: "",
+          streetAddress: ""
         },
         lossDesc: "",
         dateOfLoss: "",
         carrier: "",
         policyNumber: "",
         isAutomaticScheduling: false,
-        notes: "",
-      },
+        notes: ""
+      }
     };
   },
-
+  components: {
+    CustomHeader
+  },
   mounted() {
     this.getLead();
   },
@@ -125,20 +116,20 @@ export default {
             headers: {
               "Content-Type": "application/json",
               Accept: "application/json",
-              Authorization: "",
-            },
+              Authorization: ""
+            }
           }
         )
         .then(
-          (response) => {
+          response => {
             this.lead = response["data"]["data"]["attributes"];
           },
-          (error) => {
+          error => {
             this.showError("Sorry, Couldn't retrieve lead data");
           }
         );
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>

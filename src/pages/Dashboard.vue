@@ -1,5 +1,5 @@
 <template>
-  <q-page class="q-px-sm q-py-md">
+  <q-page class="q-px-md q-py-md">
     <q-card>
       <q-card-section class="row">
         <div class="col-3">
@@ -49,7 +49,7 @@
     <div class="q-mt-sm">
       <div class="q-pa-sm">
         <span>Claims Watch List</span>
-        <span class="float-right" >See all</span>
+        <span class="float-right">See all</span>
       </div>
       <q-card class="q-mt-sm">
         <q-card-section>
@@ -70,7 +70,7 @@
 </template>
 <script>
 export default {
-  methods: {},
+  methods: {}
 };
 </script>
 <style>

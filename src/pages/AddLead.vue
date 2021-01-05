@@ -1,18 +1,6 @@
 <template>
   <q-page>
-    <q-header bordered class="bg-white">
-      <q-toolbar class="row bg-white">
-        <img
-          src="~assets/left-arrow.svg"
-          alt="back-arrow"
-          @click="$router.push('/leads')"
-          style="margin: auto 0"
-        />
-        <div class="text-uppercase text-bold text-black q-mx-auto">
-          {{ $route.name }}
-        </div>
-      </q-toolbar>
-    </q-header>
+    <CustomHeader @backButton="$router.push('/leads')" :showAddButton="false" />
     <div style="padding-top: 51px">
       <div class="q-pa-lg column" style="height: calc(100vh - 51px)">
         <div class="row">
@@ -55,13 +43,17 @@
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
-
+import CustomHeader from "components/CustomHeader";
 export default {
   data() {
     return {
       selectedClient: "",
       isNewLead: true
     };
+  },
+
+  components: {
+    CustomHeader
   },
 
   created() {

@@ -1,17 +1,9 @@
 <template>
   <q-page>
-    <q-header bordered class="bg-white">
-      <q-toolbar class="row bg-white">
-        <img
-          src="~assets/left-arrow.svg"
-          alt="back-arrow"
-          @click="$router.push('/add-lead')"
-        />
-        <div class="text-uppercase text-bold text-black q-mx-auto">
-          {{ $route.name }}
-        </div>
-      </q-toolbar>
-    </q-header>
+    <CustomHeader
+      @backButton="$router.push('/add-lead')"
+      :showAddButton="false"
+    />
     <div style="padding-top: 51px">
       <q-stepper
         v-model="step"
@@ -455,10 +447,11 @@ import { validateEmail } from "@utils/validation";
 import { leadSource } from "src/store/common/getters";
 import VendorsList from "components/VendorsList";
 import AddVendor from "components/AddVendor";
+import CustomHeader from "components/CustomHeader";
 const addressService = new AddressService();
 
 export default {
-  components: { VendorsList, AddVendor },
+  components: { VendorsList, AddVendor, CustomHeader },
 
   data() {
     return {

@@ -4,8 +4,6 @@
       @backButton="$router.push('/dashboard')"
       :showAddButton="false"
     />
-      </q-toolbar>
-    </q-header>
   </q-page>
 </template>
 

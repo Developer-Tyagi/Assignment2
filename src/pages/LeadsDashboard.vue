@@ -1,24 +1,10 @@
 <template>
   <q-page>
-    <q-header bordered class="bg-white">
-      <q-toolbar class="row bg-white">
-        <img
-          src="~assets/left-arrow.svg"
-          alt="back-arrow"
-          @click="$router.push('/dashboard')"
-        />
-        <div class="text-uppercase text-bold text-black q-mx-auto">
-          {{ $route.name }}
-        </div>
-        <img
-          src="~assets/bell.svg"
-          alt="back-arrow"
-          class="clickable"
-          @click="$router.push('/dashboard')"
-        />
-      </q-toolbar>
-    </q-header>
-    <div style="padding-top: 51px">
+    <CustomHeader
+      @backButton="$router.push('/dashboard')"
+      :showAddButton="false"
+    />
+    <div style="padding-top: 51px; height: calc(100vh); overflow: auto">
       <div class="row q-pa-sm">
         <q-card dark class="my-card" @click="$router.push('/leads')">
           <div class="value">0</div>
@@ -33,7 +19,7 @@
           <div class="text">Dead Leads</div>
         </q-card>
       </div>
-      <div class="q-pa-md" style="height: calc(100vh - (176px + 51px))">
+      <div class="q-pa-md">
         <q-card>
           <div class="q-pa-lg">
             <div style="font-size: 16px; font-weight: bold; text-align: center">
@@ -72,10 +58,12 @@
 
 <script>
 import BarChartComponent from "components/BarChart";
+import CustomHeader from "components/CustomHeader";
 
 export default {
   components: {
     BarChartComponent,
+    CustomHeader
   },
   data() {
     return {
@@ -84,31 +72,31 @@ export default {
         responsive: true,
         maintainAspectRatio: false,
         legend: {
-          display: false,
+          display: false
         },
         scales: {
           yAxes: [
             {
               ticks: {
-                beginAtZero: true,
+                beginAtZero: true
               },
               gridLines: {
-                display: true,
-              },
-            },
+                display: true
+              }
+            }
           ],
           xAxes: [
             {
               ticks: {
-                beginAtZero: true,
+                beginAtZero: true
               },
               gridLines: {
-                display: false,
-              },
-            },
-          ],
-        },
-      },
+                display: false
+              }
+            }
+          ]
+        }
+      }
     };
   },
   mounted() {
@@ -123,23 +111,23 @@ export default {
           "Visited",
           "Follow up ",
           "Leads Converted",
-          "Dead Leads",
+          "Dead Leads"
         ],
         datasets: [
           {
             backgroundColor: "#1B2854",
-            data: [5, 8, 15, 10, 7, 3],
-          },
-        ],
+            data: [5, 8, 15, 10, 7, 3]
+          }
+        ]
       };
-    },
+    }
   },
   computed: {
     myStyles() {
       return {
-        height: "600px",
+        height: "600px"
       };
-    },
-  },
+    }
+  }
 };
 </script>

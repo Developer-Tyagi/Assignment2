@@ -3,7 +3,7 @@ import { getToken } from "@utils/auth.js";
 const routes = [
   {
     path: "",
-    component: () => import("layouts/MainLayout.vue"),
+    component: () => import("layouts/DashboardLayout.vue"),
     beforeEnter: (to, from, next) => {
       !getToken() ? next({ name: "login" }) : next();
     },

@@ -18,8 +18,8 @@
             height="90"
           />
         </div>
-        <div class="column" style="height: 50vh">
-          <div class="row" style="height: 10vh">
+        <div class="column">
+          <div class="row">
             <img src="~assets/icon_user.svg" class="q-mr-lg" />
             <q-input
               class="login-input"
@@ -29,7 +29,7 @@
             />
             <q-separator />
           </div>
-          <div class="row" style="height: 10vh">
+          <div class="row">
             <img src="~assets/lock.svg" class="q-mr-lg" />
             <q-input
               class="login-input"
@@ -40,7 +40,7 @@
             />
             <q-separator />
           </div>
-          <div style="height: 10vh">
+          <div>
             <q-btn
               color="secondary"
               label="Login"
@@ -60,14 +60,15 @@
 import axios from "axios";
 import { Notify } from "quasar";
 import { mapActions } from "vuex";
+import { getToken } from "@utils/auth";
 export default {
   name: "Login",
   data() {
     return {
       login: {
         email: "",
-        password: "",
-      },
+        password: ""
+      }
     };
   },
   methods: {
@@ -78,21 +79,21 @@ export default {
         data: {
           type: "users",
           attributes: {
-            ...this.login,
-          },
-        },
+            ...this.login
+          }
+        }
       };
       if (this.login.email && this.login.password) {
         this.userLogin(loginData);
       }
-    },
+    }
   },
 
   beforeMount() {
-    if (localStorage.getItem("token")) {
+    if (getToken()) {
       this.$router.push("/dashboard");
     }
-  },
+  }
 };
 </script>
 <style lang="scss" scoped>

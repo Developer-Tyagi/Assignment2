@@ -1,19 +1,39 @@
 <template>
   <q-layout view="lhr lpR lfr">
-    <CustomQHeader
-      @drawerSwitch="switchDrawer($event)"
-      :sidePanel="isLeftSidePanelOpen"
-    />
+    <q-header bordered class="bg-white">
+      <q-toolbar class="row bg-white">
+        <q-btn
+          flat
+          dense
+          class="color-grey"
+          icon="menu"
+          aria-label="Menu"
+          @click="onMenuButtonClick"
+        >
+        </q-btn>
+        <div class="text-uppercase text-bold text-black q-mx-auto">
+          {{ $route.name }}
+        </div>
+        <q-btn
+          flat
+          dense
+          class="color-grey invisible"
+          icon="menu"
+          aria-label="Menu"
+          @click="onMenuButtonClick"
+        >
+        </q-btn>
+      </q-toolbar>
+    </q-header>
     <q-drawer
       v-model="isLeftSidePanelOpen"
-      show-if-above
-      :width="350"
+      :width="intViewportWidth"
       :breakpoint="600"
       content-class="bg-side-panel"
       @hide="onMenuHide()"
     >
-      <div style="height: calc(150px)" class="q-px-xl q-pt-xl">
-        <div class="row">
+      <div style="height: calc(120px)" class="q-px-xl q-pt-xl">
+        <div class="row no-wrap">
           <q-avatar
             rounded
             size="54px"
@@ -22,13 +42,18 @@
             text-color="white"
             icon="user"
           />
-          <div class="column text-white q-pa-sm q-ml-sm">
-            <div class="text-capitalize">animesh singh mahra</div>
+          <div
+            class="column text-white q-pa-sm q-ml-sm"
+            style="width: calc(100% - 54px);"
+          >
+            <div class="text-capitalize ellipsis full-width">
+              {{ user.name || "Unknown" }}
+            </div>
             <div style="font-size: 11px; opacity: 80%">View Profile</div>
           </div>
         </div>
       </div>
-      <q-scroll-area style="height: calc(100% - 250px)">
+      <q-scroll-area style="height: calc(100% - 220px)">
         <div class="q-px-xl">
           <q-list separator dark>
             <q-item
@@ -69,46 +94,49 @@
 </template>
 
 <script>
-import CustomQHeader from "components/CustomQHeader";
 import { removeToken } from "@utils/auth";
 export default {
-  name: "MainLayout",
+  name: "DashboardLayout",
   data() {
     return {
+      user: {
+        name: ""
+      },
       isLeftSidePanelOpen: false,
+      intViewportWidth: 0,
       linksData: [
         {
           title: "Leads",
           link: "/leads-dashboard",
-          description: "View Lead Dashboard, Add New Lead and Manage Leads.",
+          description: "View Lead Dashboard, Add New Lead and Manage Leads."
         },
         {
           title: "Clients",
           link: "/clients",
-          description: "View, Add and Manage Clients.",
+          description: "View, Add and Manage Clients."
         },
-        {
-          title: "Claims",
-          link: "/claims",
-          description: "View, Add and Manage Claims.",
-        },
-        {
-          title: "Companies",
-          link: "/companies",
-          description:
-            "View Insurance and Mortgage Companies, Add and Manage New Companies.",
-        },
+        // {
+        //   title: "Claims",
+        //   link: "/claims",
+        //   description: "View, Add and Manage Claims."
+        // },
+        // {
+        //   title: "Companies",
+        //   link: "/companies",
+        //   description:
+        //     "View Insurance and Mortgage Companies, Add and Manage New Companies."
+        // },
         {
           title: "Vendors",
           link: "/vendors",
-          description: "View, Add and Manage all types of Vendors.",
+          description: "View, Add and Manage all types of Vendors."
         },
         {
           title: "Settings",
           link: "/settings",
-          description: "Setup My Schedule, Type of Inspection etc.",
-        },
-      ],
+          description: "Setup My Schedule, Type of Inspection etc."
+        }
+      ]
     };
   },
 
@@ -119,32 +147,32 @@ export default {
     },
 
     removeToken,
-    
-    backToLastNavigation() {
-      this.$router.go(-1);
-    },
 
-    switchDrawer(event) {
-      this.isLeftSidePanelOpen = event;
+    onMenuButtonClick() {
+      this.isLeftSidePanelOpen = !this.isLeftSidePanelOpen;
     },
 
     onMenuHide() {
       this.isLeftSidePanelOpen = false;
-    },
-  },
-
-  components: {
-    CustomQHeader,
+    }
   },
 
   computed: {
     currentRouteName() {
       return this.$router.history.current.path.substring(1);
-    },
+    }
   },
+
+  created() {
+    if (window.innerWidth * 0.9 < 400) {
+      this.intViewportWidth = window.innerWidth * 0.9;
+    } else {
+      this.intViewportWidth = 400;
+    }
+  }
 };
 </script>
-<style lang="sass" >
+<style lang="sass">
 .bg-side-panel
   background-color: $sidePanel
 .title
