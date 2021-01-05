@@ -19,7 +19,9 @@
           alt="Search icon"
           @click="openSearchInput = true"
           style="margin: 0"
-          v-if="(activeLeads.length || archivedLeads.length) && !openSearchInput"
+          v-if="
+            (activeLeads.length || archivedLeads.length) && !openSearchInput
+          "
         />
         <img
           src="~assets/add.svg"
@@ -81,11 +83,11 @@
                   v-ripple
                   class="lead-list-details"
                   v-touch-swipe.mouse:6e-3:150:50="
-                    (data) => onListSwipe(data, lead)
+                    data => onListSwipe(data, lead)
                   "
                   :class="{
                     swipeRight: lead.isLeftOptionOpen,
-                    swipeLeft: lead.isRightOptionOpen,
+                    swipeLeft: lead.isRightOptionOpen
                   }"
                 >
                   <q-item-section>
@@ -102,7 +104,13 @@
                         <span
                           v-if="
                             lead.primaryContact.phoneNumber &&
-                            lead.primaryContact.phoneNumber.length
+                              lead.primaryContact.phoneNumber.length
+                          "
+                          @click="
+                            onPhoneNumberClick(
+                              lead.primaryContact.phoneNumber[0].number,
+                              $event
+                            )
                           "
                         >
                           {{ lead.primaryContact.phoneNumber[0].number }}
@@ -117,7 +125,7 @@
                       Date of Loss:
                       <span v-if="lead.dateofLoss">{{
                         lead.dateofLoss &&
-                        lead.dateofLoss | moment("DD/MM/YYYY")
+                          lead.dateofLoss | moment("DD/MM/YYYY")
                       }}</span>
                       <span v-else> - </span>
                     </div>
@@ -167,7 +175,7 @@
                       <span
                         v-if="
                           lead.primaryContact.phoneNumber &&
-                          lead.primaryContact.phoneNumber.length
+                            lead.primaryContact.phoneNumber.length
                         "
                       >
                         {{ lead.primaryContact.phoneNumber[0].number }}
@@ -226,7 +234,7 @@ export default {
     return {
       openSearchInput: false,
       searchText: "",
-      panel: "newLeads",
+      panel: "newLeads"
     };
   },
 
@@ -236,7 +244,7 @@ export default {
       if (value) {
         return moment(String(value)).format("MM/DD/YYYY");
       }
-    },
+    }
   },
 
   created() {
@@ -247,7 +255,7 @@ export default {
     ...mapActions([
       "getActiveLeadsList",
       "getArchivedLeadsList",
-      "addLeadToArchiveList",
+      "addLeadToArchiveList"
     ]),
 
     addLead() {
@@ -261,7 +269,7 @@ export default {
     filterLeads(closeModel, event) {
       if (event) {
         const pattern = new RegExp(event, "i");
-        this.activeLeads = this.activeLeads.filter((val) => {
+        this.activeLeads = this.activeLeads.filter(val => {
           return (
             pattern.test(val.primaryContact.fname) ||
             pattern.test(val.primaryContact.lname)
@@ -291,14 +299,21 @@ export default {
           lead["isRightOptionOpen"] = false;
         }
       }
-      let index = this.activeLeads.findIndex((item) => item.id === lead.id);
+      let index = this.activeLeads.findIndex(item => item.id === lead.id);
       this.$set(this.activeLeads, index, lead);
     },
 
     onArchiveButtonClick(leadId) {
       this.addLeadToArchiveList(leadId);
     },
-  },
+
+    onPhoneNumberClick(number, e) {
+      e.stopPropagation();
+      if (number) {
+        window.open("tel:" + number);
+      }
+    }
+  }
 };
 </script>
 <style lang="sass">
