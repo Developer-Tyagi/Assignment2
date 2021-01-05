@@ -464,7 +464,7 @@ export default {
       showSubInspectionType: false,
       addVendorDialog: false,
       vendorsListDialog: false,
-      step: 5,
+      step: 1,
       primaryDetails: {
         isOrganization: false,
         organizationName: "",

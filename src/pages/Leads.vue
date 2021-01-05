@@ -223,9 +223,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import { mapActions } from "vuex";
-import axios from "axios";
+import { mapGetters, mapActions } from "vuex";
 import moment from "moment";
 
 export default {
