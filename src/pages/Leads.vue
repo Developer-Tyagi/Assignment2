@@ -93,8 +93,8 @@
                   <q-item-section>
                     <div class="row">
                       <span
-                        >{{ lead["primaryContact"]["fname"] }}
-                        {{ lead["primaryContact"]["lname"] }}</span
+                        >{{ lead.primaryContact.fname }}
+                        {{ lead.primaryContact.lname }}</span
                       >
                       <span class="q-ml-auto">Visting On</span>
                     </div>
