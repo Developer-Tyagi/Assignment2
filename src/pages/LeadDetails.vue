@@ -75,6 +75,7 @@
 </template>
 <script>
 import axios from "axios";
+
 export default {
   data() {
     return {
@@ -88,9 +89,9 @@ export default {
           phoneNumber: [
             {
               type: "",
-              number: "",
-            },
-          ],
+              number: ""
+            }
+          ]
         },
         lastVisted: "",
         visited: [],
@@ -100,15 +101,15 @@ export default {
           addressRegion: "",
           postOfficeBoxNumber: "",
           postalCode: "",
-          streetAddress: "",
+          streetAddress: ""
         },
         lossDesc: "",
         dateOfLoss: "",
         carrier: "",
         policyNumber: "",
         isAutomaticScheduling: false,
-        notes: "",
-      },
+        notes: ""
+      }
     };
   },
 
@@ -125,20 +126,20 @@ export default {
             headers: {
               "Content-Type": "application/json",
               Accept: "application/json",
-              Authorization: "",
-            },
+              Authorization: ""
+            }
           }
         )
         .then(
-          (response) => {
+          response => {
             this.lead = response["data"]["data"]["attributes"];
           },
-          (error) => {
+          error => {
             this.showError("Sorry, Couldn't retrieve lead data");
           }
         );
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>
