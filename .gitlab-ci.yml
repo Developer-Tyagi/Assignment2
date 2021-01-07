@@ -42,6 +42,7 @@ review_deploy:
     SOPS_KMS: projects/pre-prod-286801/locations/global/keyRings/sops/cryptoKeys/sops-key
   script:
     - echo "$SERVICE_ACCOUNT_KEY" > /tmp/key.json
+    - echo $CI_MERGE_REQUEST_ID
     - kubectl version
     - kubectl create namespace ${KUBE_NAMESPACE} --dry-run -o yaml | kubectl apply -f -
     - kubectl label namespace ${KUBE_NAMESPACE} istio-injection=enabled --dry-run -o yaml | kubectl apply -f -
