@@ -1,6 +1,6 @@
 <template>
-     <q-page class="bg-white full-width">
-     <q-header bordered class="bg-white">
+  <q-page class="bg-white full-width">
+    <q-header bordered class="bg-white">
       <q-toolbar class="row bg-white">
         <img
           src="~assets/close.svg"
@@ -14,7 +14,11 @@
       </q-toolbar>
     </q-header>
     <div style="padding-top: 51px">
-      <q-form class="q-pa-lg" style="height: calc(100vh - 51px)" ref="vendorForm">
+      <q-form
+        class="q-pa-lg"
+        style="height: calc(100vh - 51px)"
+        ref="vendorForm"
+      >
         <div
           class="full-width"
           style="
@@ -23,32 +27,49 @@
             margin-bottom: 10px;
           "
         >
-          <q-input v-model="vendor.name" label="Vendor Company Name" lazy-rules
-              :rules="[(val) => (val && val.length ) || '']"/>
+          <q-input
+            v-model="vendor.name"
+            label="Vendor Company Name"
+            lazy-rules
+            :rules="[val => (val && val.length) || '']"
+          />
           <q-select
-            v-model="vendor.industry"
+            v-model="vendor.industry.name"
             :options="vendorIndustries"
             label="Vendor Industry"
             option-label="name"
-          />          
+            option-value="name"
+            @input="setVendorIndustryName()"
+            emit-value
+          />
           <p class="form-heading">Company's Contact Person Details</p>
-          <q-input v-model="vendor.contact.fname" label="First Name" />
-          <q-input v-model="vendor.contact.lname" label="Last Name" />
+          <q-select
+            v-model="vendor.contact[0].honorific.title"
+            :options="titleType"
+            label="Title"
+          />
+          <q-input v-model="vendor.contact[0].fname" label="First Name" />
+          <q-input v-model="vendor.contact[0].lname" label="Last Name" />
           <div class="row">
-            <q-input
-              v-model="vendor.contact.phoneNumber[0].number"
-              label="Phone"
-              type="number"
-              style="width: 65%"
-            />
             <q-select
-              v-model="vendor.contact.phoneNumber[0].type"
+              v-model="vendor.contact[0].phoneNumber.type"
               :options="contactType"
               label="Type"
-              style="width: 30%; margin-left: auto"
+              style="width:50%;"
+            />
+            <q-input
+              v-model="vendor.contact[0].phoneNumber.number"
+              label="Phone"
+              type="number"
+              style="width: 65%,margin-left: auto;"
             />
           </div>
-          <q-input v-model="vendor.contact.email" label="Email" />
+          <q-input
+            v-model="vendor.contact[0].email"
+            type="email"
+            label="Email"
+          />
+
           <p class="form-heading">Company's Address</p>
           <q-input v-model="vendor.address.streetAddress" label="Address1" />
           <q-input
@@ -64,46 +85,47 @@
             :options="states"
             label="State"
           />
-          <q-input
-            v-model="vendor.address.postalCode"
-            label="ZIP Code"
-          />
+          <q-input v-model="vendor.address.postalCode" label="ZIP Code" />
           <q-select
             v-model="vendor.address.addressCountry"
             :options="countries"
             label="Country"
             @input="onCountrySelect(vendor.address.addressCountry)"
             lazy-rules
-            :rules="[(val) => (val && val.length > 0) || '']"
+            :rules="[val => (val && val.length > 0) || '']"
           />
           <p class="form-heading">Company's Phone & Website</p>
-          <div class="row">
-            <q-input
-              v-model="vendor.info.phoneNumbers[0].number"
-              label="Phone1"
-              type="number"
-              style="width: 65%"
-            />
+          <div v-for="(contactInfo, index) in vendor.contact" v-if="index >= 1">
+            <q-input v-model="contactInfo.fname" label="First Name" />
+            <q-input v-model="contactInfo.lname" label="LastName" />
             <q-select
-              v-model="vendor.info.phoneNumbers[0].type"
-              :options="contactType"
-              label="Type1"
-              style="width: 30%; margin-left: auto"
+              v-model="contactInfo.honorific.title"
+              :options="titleType"
+              label="Title"
+            />
+
+            <div class="row">
+              <q-select
+                v-model="contactInfo.phoneNumber.type"
+                :options="contactType"
+                label="Type1"
+                style="width: 50%;"
+              />
+              <q-input
+                v-model="contactInfo.phoneNumber.phone"
+                label="Phone1"
+                type="number"
+                style="width: 50%"
+              />
+            </div>
+            <q-input
+              v-model="contactInfo.email"
+              novalidate="true"
+              label="email"
             />
           </div>
-          <div class="row">
-            <q-input
-              v-model="vendor.info.phoneNumbers[1].number"
-              label="Phone2"
-              type="number"
-              style="width: 65%"
-            />
-            <q-select
-              v-model="vendor.info.phoneNumbers[1].type"
-              :options="contactType"
-              label="Type2"
-              style="width: 30%; margin-left: auto"
-            />
+          <div @click="addAnotherContact" class="q-pa-md text-capitalize">
+            + another
           </div>
           <q-input v-model="vendor.info.website" label="Website" />
           <q-input v-model="vendor.info.notes" label="Notes" />
@@ -120,11 +142,11 @@
   </q-page>
 </template>
 
-
 <script>
 import AddressService from "@utils/country";
 const addressService = new AddressService();
 import { mapGetters, mapActions } from "vuex";
+import { getVendorIndustries } from "src/store/vendors/actions";
 
 export default {
   name: "AddVendor",
@@ -135,80 +157,147 @@ export default {
       states: [],
       vendor: {
         name: "",
-        industry: "",
-        contact: {
-          fname: "",
-          lname: "",
-          email: "",
-          phoneNumber: [
-            {
-              type: "mobile",
-              number: "",
+        industry: { name: "", id: "" },
+
+        contact: [
+          {
+            fname: "",
+            lname: "",
+            email: "",
+            honorific: {
+              id: "",
+              title: ""
             },
-          ],
-        },
+            phoneNumber: [
+              {
+                type: "mobile",
+                phone: ""
+              }
+            ],
+            isPrimary: true
+          },
+          {
+            fname: "",
+            lname: "",
+            email: "",
+            honorific: {
+              id: "",
+              title: ""
+            },
+            phoneNumber: [
+              {
+                type: "mobile",
+                phone: ""
+              }
+            ]
+          }
+        ],
+
         address: {
           addressCountry: "United States",
           addressLocality: "",
           addressRegion: "",
           postOfficeBoxNumber: "",
           postalCode: "",
-          streetAddress: "",
+          streetAddress: ""
         },
         info: {
-          phoneNumbers: [
-            {
-              type: "pager",
-              number: "",
-            },
-            {
-              type: "mobile",
-              number: "",
-            },
-          ],
           website: "",
-          notes: "",
-        },
-      },
+          notes: ""
+        }
+      }
     };
   },
 
   computed: {
-    ...mapGetters(["contactType","vendorIndustries"]),
+    ...mapGetters(["contactType", "vendorIndustries", "titleType"])
   },
 
-  created(){
-  this.getVendorIndustries();
+  created() {
+    this.getVendorIndustries();
+    this.getTitle();
   },
 
   methods: {
-    ...mapActions(["addVendor","getVendorIndustries"]),
+    ...mapActions(["addVendor", "getVendorIndustries"]),
+    method(vendorIndustries) {
+      let placeFound = vendorIndustries.find(m =>
+        m.types.includes(this.vendor.industry.name)
+      );
+      if (placeFound) {
+        return placeFound.id;
+      }
+      return "I up!";
+    },
+    setVendorIndustryName() {
+      var ids = this.vendor.industry.name;
+      var result = this.vendorIndustries.find(obj => {
+        return obj.name === ids;
+      });
+      var industryName = result.name;
+      var industryId = result.id;
+      console.log(result.id);
+      console.log(result.name);
+      this.vendor.industry.name = industryName;
+      this.vendor.industry.id = industryId;
+    },
+
+    addAnotherContact() {
+      const len = this.vendor.contact.length;
+      if (
+        this.vendor.contact[len - 1].fname &&
+        this.vendor.contact[len - 1].phoneNumber
+      ) {
+        this.vendor.contact.push({
+          fname: "",
+          lname: "",
+          email: "",
+          honorific: {
+            id: "",
+            title: ""
+          },
+          phoneNumber: [
+            {
+              type: "mobile",
+              phone: ""
+            }
+          ]
+        });
+      } else {
+        this.$q.notify({
+          message: "Please fill the above details first",
+          position: "top",
+          type: "negative"
+        });
+      }
+    },
 
     onCountrySelect(country) {
       this.states = addressService.getStates(country);
     },
 
     onAddVendorButtonClick() {
-      this.$refs.vendorForm.validate().then(async (success) => {
+      console.log(this.vendor, 1);
+      this.$refs.vendorForm.validate().then(async success => {
         if (success) {
-          this.addVendor(this.vendor).then( async =>{
-            this.closeDialog(true)
-          })
+          console.log(this.vendor);
+          //this.addVendor(this.vendor).then(async => {
+          //this.closeDialog(true);
+          //});ge
         }
       });
     },
 
-    
-    closeDialog(flag){
-      this.$emit('closeDialog', flag)
+    closeDialog(flag) {
+      this.$emit("closeDialog", flag);
     }
   },
 
   created() {
     this.countries = addressService.getCountries();
     this.onCountrySelect("United States");
-  },
-}
+  }
+};
 </script>
 <style lang="scss" scoped>
 .form-heading {
@@ -223,4 +312,3 @@ export default {
   background: transparent; /* make scrollbar transparent */
 }
 </style>
-
