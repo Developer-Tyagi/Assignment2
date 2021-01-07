@@ -290,10 +290,13 @@
                 label="Client Type"
               />
               <br />
-              <div style="font-size: 20px;font-weight:bold">
-                Insured Details
-              </div>
-              <q-input v-model="insuredDetails.fname" label="First Name" />
+            <span class="stepper-heading">Insured Details</span>
+              <q-input v-model="insuredDetails.fname" 
+                   lazy-rules
+                :rules="[
+                  val => (val && val.length > 0) || 'Please fill the first name'
+                ]"
+              label="First Name" />
               <q-input v-model="insuredDetails.lname" label="Last Name" />
               <div class="row">
                 <q-select
@@ -306,13 +309,8 @@
                   v-model="insuredDetails.phone"
                   label="Phone"
                   type="number"
-                  lazy-rules
-                  :rules="[
-                    val =>
-                      (val && val.length > 0) ||
-                      'You have entered an invalid Phone!'
-                  ]"
-                  style="width: 65%"
+                 
+                  style="width: 65%;margin-left:auto"
                 /> </div>
                 <q-input
                 v-model="insuredDetails.email"
@@ -332,7 +330,7 @@
               </div>
               <br />
               <div v-if="isThereaCoInsuredToggle" style="font-size:20px;">
-                <p style="font-weight: bold">Co-Insured Details</p>
+                <span class="stepper-heading">Co-insured Details</span>
                 <q-input v-model="coInsuredDetails.fname" label="First Name" />
                 <q-input v-model="coInsuredDetails.lname" label="Last Name" />
             <div class="row">
@@ -340,7 +338,7 @@
                     v-model="coInsuredDetails.type"
                     :options="coInsuredTypes"
                     label="Type"
-                    style="width: 30%;"
+                style="width: 30%;margin-left:auto "
                   />
                   <q-input
                     v-model="coInsuredDetails.phone"
@@ -352,7 +350,7 @@
                         (val && val.length > 0) ||
                         'You have entered an invalid Phone!'
                     ]"
-                    style="width: 65%"
+                    style="width:65%;margin-left:auto"
                   />
                 </div>
                 <q-input
@@ -388,6 +386,7 @@
                   <q-input
                     v-model="addAditionalPhoneNumber.phone2"
                     label="Phone2"
+                    style="width:65%;margin-left:auto"
                   />
                   </div>
                 <div class="row">
@@ -400,13 +399,12 @@
                   <q-input
                     v-model="addAditionalPhoneNumber.phone3"
                     label="Phone3"
+                    style="width:65%;margin-left:auto"
                   />
                 </div>
               </div>
               <br />
-              <div style="font-size:20px;font-weight: bold">
-                Address Details
-              </div>
+              <span class="stepper-heading">Address Details</span>
               <q-input
                 v-model="addressDetails.streetNumber"
                 label="Street Number"
@@ -439,19 +437,21 @@
               <div v-if="tenantOccupiedToggle">
                 <q-input v-model="tanentOccupied.name" label="Tenant Name" />
                 <div class="row">
-                  <q-input v-model="tanentOccupied.phone" label="Phone" />
                   <q-select
                     v-model="tanentOccupied.type"
                     :options="tenantOccupiedTypes"
                     label="Type"
-                    style="width: 30%; margin-left: auto"
+                    style="width: 30%;"
                   />
+                  <q-input v-model="tanentOccupied.phone" label="Phone" style="width:65%; margin-left: auto"/>
+                  
                 </div>
               </div>
               <br />
             </div>
           </div>
 <q-btn
+          @click="saveButtonInClientInfo"
             label="Save"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
@@ -857,9 +857,9 @@
               label="Date of Birth of Primary Mortgagee"
             /><br />
 
-            <div style="font-size:15px;font-weight: bold">
-              Last 4 Primary Mortgagee's Social Security Numbers
-            </div>
+             <span class="stepper-heading">
+              Last 4 Primary Mortgagee's Social Security<br> Numbers
+            </span>
             <q-input
               v-model="mortgageDetails.socialSecurityNumber1"
               label="Social Security Number 1"
@@ -1119,8 +1119,9 @@
 <script>
 import CustomHeader from "components/CustomHeader";
 import { validateEmail } from "@utils/validation";
+import {mapActions} from "vuex"
 export default {
-  name: "AddClient",
+  name: "addClient",
   components: { CustomHeader },
   data() {
     return {
@@ -1140,7 +1141,7 @@ export default {
         lname: "",
         phone: "",
         type: "",
-        email: ""
+        email: "",
       },
       coInsuredDetails: {
         fname: "",
@@ -1171,6 +1172,7 @@ export default {
         phone: "",
         type: ""
       },
+      
       mailingAddressDetails: {
         streetNumber: "",
         apartmentNumber: "",
@@ -1275,7 +1277,94 @@ export default {
       documentsDialog: false
     };
   },
+
   methods: {
+    ...mapActions (["addClient"]),
+  saveButtonInClientInfo() {
+   
+      const payload = {
+        attributes: {
+         isOrganization:false,
+        isOrganizationPolicyholder: false,
+        },
+       
+        source: {
+          id: "",
+          type: this.client.type,
+          detail: this.client.sourceOfLead,
+        },
+        type: {
+           id: "",
+          name:"",
+        },
+      
+        insuredInfo: {
+          primary:{
+            fname: this.insuredDetails.fname,
+            lname: this.insuredDetails.lname,
+            email: this.insuredDetails.email,
+            phoneNumber : [
+              {
+                type: this.insuredDetails.type,
+                number: this.insuredDetails.phone,
+              }
+            ]
+          },
+       
+          secondary:{
+          fname: this.coInsuredDetails.fname,
+          lname: this.coInsuredDetails.lname,
+          email : this.coInsuredDetails.email,
+          phoneNumber: [
+            {
+              type:  this.coInsuredDetails.type,
+              number: this.coInsuredDetails.phone,
+            }
+          ]
+          },
+          address: {
+               addressCountry: this.addressDetails.state,
+               addressLocality: this.addressDetails.city,
+                 addressRegion: this.addressDetails.apartmentNumber,
+                  postOfficeBoxNumber: "",
+                    postalCode: this.addressDetails.zip,
+                    streetAddress:  this.addressDetails.streetNumber,
+                    dropBox:this.gateDropbox.info,
+          },
+            mailingAddress: {
+                    addressCountry: "",
+                    addressLocality: "",
+                    addressRegion: "",
+                    postOfficeBoxNumber: "",
+                    postalCode: "",
+                    streetAddress: "",
+                    dropBoxInfo: "",
+                },
+                 phoneNumbers: [
+                    {
+                        type: this.addAditionalPhoneNumber.type1,
+                        number: this.addAditionalPhoneNumber.phone2,
+                    },
+                    {
+                       type: this.addAditionalPhoneNumber.type2,
+     
+                   number: this.addAditionalPhoneNumber.phone3,
+                    },
+
+                 ],
+                  tenantInfo: {
+                    name:  this.tanentOccupied.name,
+                    phoneNumber: {
+                        type:  this.tanentOccupied.type,
+                        number: this.tanentOccupied.phone,
+                    }
+                }
+         },
+     
+      }
+    console.log(payload)
+    this.addClient(payload)
+    },
     saveButtonClick() {},
     validateEmail
   }
@@ -1289,5 +1378,10 @@ export default {
 ::-webkit-scrollbar {
   width: 0px;
   background: transparent; /* make scrollbar transparent */
+}
+.stepper-heading {
+  color: #333333;
+  font-weight: bold;
+  font-size: 14px;
 }
 </style>

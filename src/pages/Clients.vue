@@ -33,14 +33,22 @@
         >
       </div>
       <div class="clients-list">
-        <div class="q-px-md q-pt-sm" v-for="client in clients" :key="client">
+        <div class="q-px-md q-pt-sm" v-for="client in clients" :key="client.id">
           <div class="client-list-item">
             <div class="row">
-              <span>John Smith</span
-              ><q-icon class="q-ml-auto" size="sm" name="more_vert"></q-icon>
+              <span>
+                {{ client["insuredInfo"]["primary"]["fname"] }}
+                {{ client["insuredInfo"]["primary"]["lname"] }}
+              </span>
+
+              <q-icon class="q-ml-auto" size="sm" name="more_vert"></q-icon>
             </div>
-            <p>+1 (1212) 121212</p>
-            <div><span>File No. 12345678</span> <span> </span></div>
+            <div>
+              <span>
+                {{ client["insuredInfo"]["primary"]["phoneNumber"] }}
+              </span>
+            </div>
+            <div><span>File No. 12345678</span></div>
             <div>Status: Negotiation</div>
           </div>
         </div>
@@ -65,14 +73,13 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import CustomHeader from "components/CustomHeader";
-
+import axios from "axios";
 export default {
   name: "Clients",
   components: { CustomHeader },
   data() {
     return {
       searchText: ""
-      // clients: [1, 2, 3, 4, 5, 6, 7, 8, 9],
     };
   },
 
