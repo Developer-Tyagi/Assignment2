@@ -6,4 +6,4 @@ export const contactType = state => state.contactType;
 
 export const leadSources = state => state.leadSources;
 
-export const titleType = state => state.titleType;
+//export const titleType = state => state.titleType;

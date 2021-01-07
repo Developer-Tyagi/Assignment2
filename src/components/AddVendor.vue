@@ -45,8 +45,12 @@
           <p class="form-heading">Company's Contact Person Details</p>
           <q-select
             v-model="vendor.contact[0].honorific.title"
-            :options="titleType"
+            :options="title"
+            option-label="title"
             label="Title"
+            option-value="title"
+            @input="setTitleName()"
+            emit-value
           />
           <q-input v-model="vendor.contact[0].fname" label="First Name" />
           <q-input v-model="vendor.contact[0].lname" label="Last Name" />
@@ -100,8 +104,12 @@
             <q-input v-model="contactInfo.lname" label="LastName" />
             <q-select
               v-model="contactInfo.honorific.title"
-              :options="titleType"
+              :options="title"
+              option-label="title"
               label="Title"
+              option-value="title"
+              @input="setTitleNameForMultiple()"
+              emit-value
             />
 
             <div class="row">
@@ -147,6 +155,7 @@ import AddressService from "@utils/country";
 const addressService = new AddressService();
 import { mapGetters, mapActions } from "vuex";
 import { getVendorIndustries } from "src/store/vendors/actions";
+import { getTitle } from "src/store/vendors/actions";
 
 export default {
   name: "AddVendor",
@@ -210,34 +219,53 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["contactType", "vendorIndustries", "titleType"])
+    ...mapGetters(["contactType", "vendorIndustries", "title"])
   },
 
   created() {
     this.getVendorIndustries();
+    console.log(3);
     this.getTitle();
   },
 
   methods: {
-    ...mapActions(["addVendor", "getVendorIndustries"]),
-    method(vendorIndustries) {
-      let placeFound = vendorIndustries.find(m =>
-        m.types.includes(this.vendor.industry.name)
-      );
-      if (placeFound) {
-        return placeFound.id;
-      }
-      return "I up!";
+    ...mapActions(["addVendor", "getVendorIndustries", "getTitle"]),
+
+    /* for adding the ids for multiple vendors */
+    setTitleNameForMultiple() {
+      const len = this.vendor.contact.length;
+      //console.log(len);
+      //onsole.log(this.title, 44);
+      var titleId1 = this.vendor.contact[len - 1].honorific.title;
+      //console.log(titleId1, 9);
+      var titleResult1 = this.title.find(obj => {
+        return obj.title === titleId1;
+        //console.log(titleResult, 66);
+      });
+      this.vendor.contact[len - 1].honorific.id = titleResult1.id;
     },
+    /* for adding the id for the primary vendor */
+    setTitleName() {
+      //console.log(this.title, 44);
+      var titleId = this.vendor.contact[0].honorific.title;
+
+      var titleResult = this.title.find(obj => {
+        return obj.title === titleId;
+      });
+
+      this.vendor.contact[0].honorific.id = titleResult.id;
+    },
+
     setVendorIndustryName() {
       var ids = this.vendor.industry.name;
       var result = this.vendorIndustries.find(obj => {
         return obj.name === ids;
       });
+      //console.log(result);
       var industryName = result.name;
       var industryId = result.id;
-      console.log(result.id);
-      console.log(result.name);
+      //console.log(result.id);
+      //console.log(result.name);
       this.vendor.industry.name = industryName;
       this.vendor.industry.id = industryId;
     },
@@ -281,9 +309,9 @@ export default {
       this.$refs.vendorForm.validate().then(async success => {
         if (success) {
           console.log(this.vendor);
-          //this.addVendor(this.vendor).then(async => {
-          //this.closeDialog(true);
-          //});ge
+          this.addVendor(this.vendor).then(async => {
+            this.closeDialog(true);
+          });
         }
       });
     },
