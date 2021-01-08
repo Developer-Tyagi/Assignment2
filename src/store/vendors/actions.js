@@ -40,7 +40,6 @@ export async function getVendorIndustries({ commit, dispatch }) {
   dispatch("setLoading", true);
   try {
     const { data } = await request.get("/industries");
-    console.log(data, 1);
 
     commit("setvendorsIndustries", data);
     dispatch("setLoading", false);
@@ -52,6 +51,7 @@ export async function getVendorIndustries({ commit, dispatch }) {
     });
   }
 }
+/*
 export async function getTitles({ commit, dispatch }) {
   dispatch("setLoading", true);
   try {
@@ -68,3 +68,4 @@ export async function getTitles({ commit, dispatch }) {
     });
   }
 }
+*/

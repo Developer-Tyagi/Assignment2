@@ -155,7 +155,8 @@ import AddressService from "@utils/country";
 const addressService = new AddressService();
 import { mapGetters, mapActions } from "vuex";
 import { getVendorIndustries } from "src/store/vendors/actions";
-import { getTitles } from "src/store/vendors/actions";
+//import { getTitles } from "src/store/vendors/actions";
+import { getTitles } from "src/store/common/actions";
 
 export default {
   name: "AddVendor",
@@ -224,7 +225,7 @@ export default {
 
   created() {
     this.getVendorIndustries();
-    //console.log(3);
+
     this.getTitles();
   },
 
@@ -234,19 +235,16 @@ export default {
     /* for adding the ids for multiple vendors */
     setTitleNameForMultiple() {
       const len = this.vendor.contact.length;
-      //console.log(len);
-      //onsole.log(this.title, 44);
+
       var titleId1 = this.vendor.contact[len - 1].honorific.title;
-      //console.log(titleId1, 9);
+
       var titleResult1 = this.title.find(obj => {
         return obj.title === titleId1;
-        //console.log(titleResult, 66);
       });
       this.vendor.contact[len - 1].honorific.id = titleResult1.id;
     },
     /* for adding the id for the primary vendor */
     setTitleName() {
-      //console.log(this.title, 44);
       var titleId = this.vendor.contact[0].honorific.title;
 
       var titleResult = this.title.find(obj => {
@@ -258,14 +256,14 @@ export default {
 
     setVendorIndustryName() {
       var ids = this.vendor.industry.name;
+
       var result = this.vendorIndustries.find(obj => {
         return obj.name === ids;
       });
-      //console.log(result);
+
       var industryName = result.name;
       var industryId = result.id;
-      //console.log(result.id);
-      //console.log(result.name);
+
       this.vendor.industry.name = industryName;
       this.vendor.industry.id = industryId;
     },

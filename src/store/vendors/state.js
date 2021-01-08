@@ -1,7 +1,7 @@
 export default function() {
   return {
     vendors: [],
-    vendorIndustries: [],
-    title: []
+    vendorIndustries: []
+    //title: []
   };
 }
