@@ -117,11 +117,11 @@ export default {
   mounted() {
     this.getVendorIndustries();
     this.getVendors(this.params);
-    this.getTitle();
+    this.getTitles();
   },
 
   methods: {
-    ...mapActions(["getVendors", "getVendorIndustries", "getTitle"]),
+    ...mapActions(["getVendors", "getVendorIndustries", "getTitles"]),
 
     selectFilter(filter) {
       this.selectedFilter = filter.id;

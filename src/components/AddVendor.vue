@@ -155,7 +155,7 @@ import AddressService from "@utils/country";
 const addressService = new AddressService();
 import { mapGetters, mapActions } from "vuex";
 import { getVendorIndustries } from "src/store/vendors/actions";
-import { getTitle } from "src/store/vendors/actions";
+import { getTitles } from "src/store/vendors/actions";
 
 export default {
   name: "AddVendor",
@@ -224,8 +224,8 @@ export default {
 
   created() {
     this.getVendorIndustries();
-    console.log(3);
-    this.getTitle();
+    //console.log(3);
+    this.getTitles();
   },
 
   methods: {
