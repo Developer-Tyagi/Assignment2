@@ -1,10 +1,12 @@
 import request from "@api";
 import { buildApiData } from "@utils/api";
-
-export async function getActiveLeadsList({ commit, dispatch }) {
+export async function getActiveLeadsList(
+  { commit, dispatch },
+  searchString = ""
+) {
   dispatch("setLoading", true);
   try {
-    const { data } = await request.get("/leads");
+    const { data } = await request.get("/leads", { name: searchString });
     commit("setActiveLeads", data);
     dispatch("setLoading", false);
   } catch (e) {
@@ -16,7 +18,6 @@ export async function getActiveLeadsList({ commit, dispatch }) {
     });
   }
 }
-
 export async function getArchivedLeadsList({ commit, dispatch }) {
   dispatch("setLoading", true);
   try {
@@ -32,7 +33,6 @@ export async function getArchivedLeadsList({ commit, dispatch }) {
     });
   }
 }
-
 export async function addLeadToArchiveList({ commit, dispatch }, leadId) {
   dispatch("setLoading", true);
   try {
@@ -85,6 +85,7 @@ export async function getLeadDetails({ commit, dispatch }, id) {
   }
 }
 
+//need to be added later
 // export async function removeSelectedLeadDetails({ commit, dispatch }) {
 //   dispatch("setLoading", true);
 //   try {
