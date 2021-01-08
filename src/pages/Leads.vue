@@ -23,6 +23,7 @@
             (activeLeads.length || archivedLeads.length) && !openSearchInput
           "
         />
+
         <img
           src="~assets/add.svg"
           alt=""
@@ -36,8 +37,7 @@
           placeholder="Search for leads"
           style="width: 80%; margin: 0 10%"
           clearable
-          @input="filterLeads(false, $event)"
-          @clear="filterLeads(true)"
+          @input="filterLeads()"
         >
         </q-input>
       </q-toolbar>
@@ -260,19 +260,8 @@ export default {
       this.$router.push("/details/" + lead.id);
     },
 
-    filterLeads(closeModel, event) {
-      if (event) {
-        const pattern = new RegExp(event, "i");
-        this.activeLeads = this.activeLeads.filter(val => {
-          return (
-            pattern.test(val.primaryContact.fname) ||
-            pattern.test(val.primaryContact.lname)
-          );
-        });
-      } else {
-        this.activeLeads = JSON.parse(this.copyActiveLeads);
-        this.openSearchInput = false;
-      }
+    filterLeads() {
+      this.getActiveLeadsList(this.searchText ? this.searchText : "");
     },
 
     onListSwipe(info, lead) {
