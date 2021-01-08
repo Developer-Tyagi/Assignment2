@@ -43,9 +43,18 @@
 
               <q-icon class="q-ml-auto" size="sm" name="more_vert"></q-icon>
             </div>
-            <div>
+
+            <!-- <div>
               <span>
-                {{ client["insuredInfo"]["primary"]["phoneNumber"] }}
+                {{ client["insuredInfo"]["primary"]["phoneNumber"]["type"] }}
+              </span>
+            </div> -->
+            <div class="row">
+              <span
+                >Mob:
+                <span>
+                  {{ client.insuredInfo.primary.phoneNumber[0].number }}
+                </span>
               </span>
             </div>
             <div><span>File No. 12345678</span></div>

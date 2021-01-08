@@ -5,92 +5,75 @@
       :showAddButton="false"
     />
 
-    <div class="column full-height" style="padding:71px 20px 20px 20px">
+    <div class="column full-height" style="padding:51px 20px 20px 20px">
       <div class="q-pa-md column full-height">
-        <div class="createClientInfo" style="font-size:20px">
-          <div
-            class="publicAdjustorInfo"
+        <div class="createClientInfo" style="font-size:15px">
+   <div
+       class="form-list"
+           @click="clientInfoDailog = true"
+          >
+            Client Info
+          </div>
+       <div
+        class="form-list"
             @click="publicAdjustorInfoDialog = true"
           >
             Public Adjustor Info
           </div>
-          <q-separator />
-
-          <div
-            class="clientInfo"
-            style="margin-top:15px;"
-            @click="clientInfoDailog = true"
+    <div
+        class="form-list"
+       @click="mailingAddressDialog = true"
           >
-            Client Info
+          Mailing Address
           </div>
-          <q-separator />
           <div
-            class="mailingAddress"
-            style="margin-top:15px;"
-            @click="mailingAddressDialog = true"
-          >
-            Mailing Address
-          </div>
-          <q-separator />
-          <div
-            class="insuranceInfo"
-            style="margin-top:15px"
-            @click="insuranceInfoDialog = true"
+          class="form-list"
+           @click="insuranceInfoDialog = true"
           >
             Insurance Info
           </div>
-          <q-separator />
-          <div
-            class="lossInfo"
-            style="margin-top:15px"
-            @click="lossInfoDialog = true"
+           <div
+        class="form-list"
+          @click="lossInfoDialog = true"
           >
             Loss Info
           </div>
-          <q-separator />
           <div
-            class="mortgageInfo"
-            style="margin-top:15px"
-            @click="mortgageInfoDialog = true"
+           class="form-list"
+           @click="mortgageInfoDialog = true"
           >
             Mortgage Info
           </div>
-          <q-separator />
           <div
-            class="estimatingInfo"
-            style="margin-top:15px"
-            @click="estimatingInfoDialog = true"
+         class="form-list"
+     @click="estimatingInfoDialog = true"
           >
             Estimating Info
           </div>
           <q-separator />
           <div
-            class="expertVendor"
-            style="margin-top:15px"
-            @click="expertVendorInfoDialog = true"
+            class="form-list"
+    @click="expertVendorInfoDialog = true"
           >
             Expert/Vendor Info
           </div>
           <q-separator />
           <div
-            class="officeTask"
-            style="margin-top:15px"
-            @click="officeTaskDialog = true"
+           class="form-list"
+    @click="officeTaskDialog = true"
           >
             Office Task
           </div>
           <q-separator />
           <div
-            class="documents"
-            style="margin-top:15px"
+         class="form-list"
             @click="documentsDialog = true"
           >
             Documents
           </div>
           <q-separator />
         </div>
-
-        <q-btn
+  <q-btn
           label="Create Client"
           color="primary"
           class="full-width q-mt-auto text-capitalize"
@@ -290,14 +273,19 @@
                 label="Client Type"
               />
               <br />
-            <span class="stepper-heading">Insured Details</span>
+            <span class="form-heading">Insured Details</span>
               <q-input v-model="insuredDetails.fname" 
                    lazy-rules
                 :rules="[
-                  val => (val && val.length > 0) || 'Please fill the first name'
+                  val => (val && val.length > 0) || 'Please fill the First name'
                 ]"
               label="First Name" />
-              <q-input v-model="insuredDetails.lname" label="Last Name" />
+              <q-input v-model="insuredDetails.lname" 
+                lazy-rules
+                :rules="[
+                  val => (val && val.length > 0) || 'Please fill the Last name'
+                ]"
+                label="Last Name" />
               <div class="row">
                 <q-select
                   v-model="insuredDetails.type"
@@ -330,7 +318,7 @@
               </div>
               <br />
               <div v-if="isThereaCoInsuredToggle" style="font-size:20px;">
-                <span class="stepper-heading">Co-insured Details</span>
+                <span class="form-heading">Co-insured Details</span>
                 <q-input v-model="coInsuredDetails.fname" label="First Name" />
                 <q-input v-model="coInsuredDetails.lname" label="Last Name" />
             <div class="row">
@@ -344,12 +332,7 @@
                     v-model="coInsuredDetails.phone"
                     label="Phone"
                     type="number"
-                    lazy-rules
-                    :rules="[
-                      val =>
-                        (val && val.length > 0) ||
-                        'You have entered an invalid Phone!'
-                    ]"
+                   
                     style="width:65%;margin-left:auto"
                   />
                 </div>
@@ -404,7 +387,7 @@
                 </div>
               </div>
               <br />
-              <span class="stepper-heading">Address Details</span>
+              <span class="form-heading">Address Details</span>
               <q-input
                 v-model="addressDetails.streetNumber"
                 label="Street Number"
@@ -857,7 +840,7 @@
               label="Date of Birth of Primary Mortgagee"
             /><br />
 
-             <span class="stepper-heading">
+             <span class="form-heading">
               Last 4 Primary Mortgagee's Social Security<br> Numbers
             </span>
             <q-input
@@ -1379,9 +1362,17 @@ export default {
   width: 0px;
   background: transparent; /* make scrollbar transparent */
 }
-.stepper-heading {
+.form-heading {
   color: #333333;
   font-weight: bold;
   font-size: 14px;
+}
+.form-list {
+  color: #333333;
+  font-weight: bold;
+  font-size: 16px;
+  
+  padding: 15px 0;
+  border-bottom: 1px solid #D3D3D3;
 }
 </style>
