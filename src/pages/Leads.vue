@@ -93,8 +93,8 @@
                   <q-item-section>
                     <div class="row">
                       <span
-                        >{{ lead["primaryContact"]["fname"] }}
-                        {{ lead["primaryContact"]["lname"] }}</span
+                        >{{ lead.primaryContact.fname }}
+                        {{ lead.primaryContact.lname }}</span
                       >
                       <span class="q-ml-auto">Visting On</span>
                     </div>
@@ -105,6 +105,12 @@
                           v-if="
                             lead.primaryContact.phoneNumber &&
                               lead.primaryContact.phoneNumber.length
+                          "
+                          @click="
+                            onPhoneNumberClick(
+                              lead.primaryContact.phoneNumber[0].number,
+                              $event
+                            )
                           "
                         >
                           {{ lead.primaryContact.phoneNumber[0].number }}
@@ -217,9 +223,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import { mapActions } from "vuex";
-import axios from "axios";
+import { mapGetters, mapActions } from "vuex";
 import moment from "moment";
 
 export default {
@@ -288,6 +292,13 @@ export default {
 
     onArchiveButtonClick(leadId) {
       this.addLeadToArchiveList(leadId);
+    },
+
+    onPhoneNumberClick(number, e) {
+      e.stopPropagation();
+      if (number) {
+        window.open("tel:" + number);
+      }
     }
   }
 };
