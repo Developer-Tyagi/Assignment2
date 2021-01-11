@@ -262,9 +262,11 @@ export default {
     ]),
     ...mapMutations(["setSelectedLead"]),
     onCreateClientButtonClick(lead) {
-      // this.$store.commit("setSelectedLead", lead);
-      this.setSelectedLead(lead);
-      // console.log(lead);
+      let payload = {
+        attributes: lead
+      };
+      this.setSelectedLead(payload);
+
       this.$router.push("/add-client");
     },
     addLead() {

@@ -1076,8 +1076,7 @@
             /><br />
             <div class="row">
               <p>Additional Office Task Required</p>
-
-              <q-toggle
+<q-toggle
                 class="q-ml-auto"
                 v-model="additionalOfficeTaskRequiredToggle"
               />
@@ -1265,11 +1264,15 @@ created() {
   if(this.selectedLead){
     console.log(this.selectedLead)
 this.insuredDetails.fname = this.selectedLead.primaryContact.fname;
+this.insuredDetails.lname = this.selectedLead.primaryContact.lname;
+this.insuredDetails.email = this.selectedLead.primaryContact.email;
+this.insuredDetails.phone = this.selectedLead.primaryContact.phoneNumber[0].number;
+this.insuredDetails.type = this.selectedLead.primaryContact.phoneNumber[0].type;
 this.clientInfoDailog = true;
 }
    else
   {
-    console.log("else part")
+  this.clientInfoDailog = true;
  }
   },
   computed: {
