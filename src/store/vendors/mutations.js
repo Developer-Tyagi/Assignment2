@@ -12,10 +12,3 @@ export function setvendorsIndustries(state, vendorIndustries) {
     id: vendorIndustry.id
   }));
 }
-/*
-export function setTitles(state, title) {
-  state.title = title.map(title => ({
-    title: title.attributes.title,
-    id: title.id
-  }));
-}*/

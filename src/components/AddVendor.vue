@@ -45,7 +45,7 @@
           <p class="form-heading">Company's Contact Person Details</p>
           <q-select
             v-model="vendor.contact[0].honorific.title"
-            :options="title"
+            :options="titles"
             option-label="title"
             label="Title"
             option-value="title"
@@ -104,7 +104,7 @@
             <q-input v-model="contactInfo.lname" label="LastName" />
             <q-select
               v-model="contactInfo.honorific.title"
-              :options="title"
+              :options="titles"
               option-label="title"
               label="Title"
               option-value="title"
@@ -155,7 +155,6 @@ import AddressService from "@utils/country";
 const addressService = new AddressService();
 import { mapGetters, mapActions } from "vuex";
 import { getVendorIndustries } from "src/store/vendors/actions";
-//import { getTitles } from "src/store/vendors/actions";
 import { getTitles } from "src/store/common/actions";
 
 export default {
@@ -220,7 +219,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["contactType", "vendorIndustries", "title"])
+    ...mapGetters(["contactType", "vendorIndustries", "titles"])
   },
 
   created() {
@@ -238,7 +237,7 @@ export default {
 
       var titleId1 = this.vendor.contact[len - 1].honorific.title;
 
-      var titleResult1 = this.title.find(obj => {
+      var titleResult1 = this.titles.find(obj => {
         return obj.title === titleId1;
       });
       this.vendor.contact[len - 1].honorific.id = titleResult1.id;
@@ -247,7 +246,7 @@ export default {
     setTitleName() {
       var titleId = this.vendor.contact[0].honorific.title;
 
-      var titleResult = this.title.find(obj => {
+      var titleResult = this.titles.find(obj => {
         return obj.title === titleId;
       });
 
@@ -303,10 +302,8 @@ export default {
     },
 
     onAddVendorButtonClick() {
-      console.log(this.vendor, 1);
       this.$refs.vendorForm.validate().then(async success => {
         if (success) {
-          console.log(this.vendor);
           this.addVendor(this.vendor).then(async => {
             this.closeDialog(true);
           });

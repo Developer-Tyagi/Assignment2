@@ -96,6 +96,7 @@
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
+import { getTitles } from "src/store/common/actions";
 export default {
   name: "VendorsList",
   props: ["selective"],
