@@ -5,11 +5,10 @@ export async function getClients({ commit, dispatch }) {
   dispatch("setLoading", true);
   try {
     const { data } = await request.get("/clients");
-    console.log(data);
+
     commit("setClients", data);
 
     dispatch("setLoading", false);
-    console.log(data);
   } catch (e) {
     console.log(e);
     dispatch("setLoading", false);

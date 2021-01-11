@@ -82,7 +82,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import CustomHeader from "components/CustomHeader";
-import axios from "axios";
+
 export default {
   name: "Clients",
   components: { CustomHeader },

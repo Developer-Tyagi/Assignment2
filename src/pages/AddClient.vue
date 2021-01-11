@@ -1345,7 +1345,7 @@ export default {
          },
      
       }
-    console.log(payload)
+   
     this.addClient(payload)
     },
     saveButtonClick() {},

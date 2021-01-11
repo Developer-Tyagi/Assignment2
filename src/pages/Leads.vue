@@ -137,10 +137,11 @@
                       >Schedule Visit</span
                     >
                   </div>
-                  <div class="button-orange">
+
+                  <div class="button-orange" @click="clientInfoDailog = true">
                     <span class="text-white q-my-auto q-mx-auto"
-                      >Create Client</span
-                    >
+                      >Create Client
+                    </span>
                   </div>
                 </div>
               </div>
@@ -221,6 +222,7 @@ import { mapGetters } from "vuex";
 import { mapActions } from "vuex";
 import axios from "axios";
 import moment from "moment";
+import AddClient from "src/pages/AddClient";
 
 export default {
   name: "Leads",
@@ -228,7 +230,8 @@ export default {
     return {
       openSearchInput: false,
       searchText: "",
-      panel: "newLeads"
+      panel: "newLeads",
+      clientInfoDailog: false
     };
   },
 
