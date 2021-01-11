@@ -1102,7 +1102,8 @@
 <script>
 import CustomHeader from "components/CustomHeader";
 import { validateEmail } from "@utils/validation";
-import {mapActions} from "vuex"
+import { selectedLead } from 'src/store/leads/getters';
+import { mapGetters,mapActions } from "vuex";
 export default {
   name: "addClient",
   components: { CustomHeader },
@@ -1260,8 +1261,21 @@ export default {
       documentsDialog: false
     };
   },
-
-  methods: {
+created() {
+  if(this.selectedLead){
+    console.log(this.selectedLead)
+this.insuredDetails.fname = this.selectedLead.primaryContact.fname;
+this.clientInfoDailog = true;
+}
+   else
+  {
+    console.log("else part")
+ }
+  },
+  computed: {
+  ...mapGetters(["selectedLead"])
+  },
+ methods: {
     ...mapActions (["addClient"]),
   saveButtonInClientInfo() {
    

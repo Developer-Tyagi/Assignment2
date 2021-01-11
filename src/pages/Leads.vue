@@ -144,10 +144,12 @@
                     >
                   </div>
 
-                  <div class="button-orange" @click="clientInfoDailog = true">
-                    <span class="text-white q-my-auto q-mx-auto"
-                      >Create Client
-                    </span>
+                  <div class="button-orange">
+                    <q-btn
+                      class="text-white q-my-auto q-mx-auto full-width full-height"
+                      label="Create Client"
+                      @click="onCreateClientButtonClick(lead)"
+                    ></q-btn>
                   </div>
                 </div>
               </div>
@@ -224,9 +226,9 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapMutations } from "vuex";
 import moment from "moment";
-import AddClient from "src/pages/AddClient";
+import { setSelectedLead } from "src/store/leads/mutations";
 
 export default {
   name: "Leads",
@@ -258,7 +260,13 @@ export default {
       "getArchivedLeadsList",
       "addLeadToArchiveList"
     ]),
-
+    ...mapMutations(["setSelectedLead"]),
+    onCreateClientButtonClick(lead) {
+      // this.$store.commit("setSelectedLead", lead);
+      this.setSelectedLead(lead);
+      // console.log(lead);
+      this.$router.push("/add-client");
+    },
     addLead() {
       this.$router.push("/add-lead");
     },
