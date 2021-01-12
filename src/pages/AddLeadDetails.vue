@@ -29,8 +29,7 @@
                 label="First Name"
                 lazy-rules
                 :rules="[
-                  (val) =>
-                    (val && val.length > 0) || 'Please fill the first name',
+                  val => (val && val.length > 0) || 'Please fill the first name'
                 ]"
               />
               <q-input
@@ -38,17 +37,19 @@
                 label="Last Name"
                 lazy-rules
                 :rules="[
-                  (val) =>
-                    (val && val.length > 0) || 'Please fill the last name',
+                  val => (val && val.length > 0) || 'Please fill the last name'
                 ]"
               />
               <div class="row">
                 <q-select
                   v-model="primaryDetails.selectedContactType"
-                  :options="contactType"
+                  :options="contactTypes"
+                  option-value="machineName"
+                  option-label="name"
+                  map-options
                   label="Mobile"
                   lazy-rules
-                  :rules="[(val) => (val && val.length > 0) || '']"
+                  :rules="[val => (val && val.length > 0) || '']"
                   style="width: 30%; margin-right: auto"
                 />
                 <q-input
@@ -57,9 +58,9 @@
                   type="number"
                   lazy-rules
                   :rules="[
-                    (val) =>
+                    val =>
                       (val && val.length == 10) ||
-                      'Please fill the phone number',
+                      'Please fill the phone number'
                   ]"
                   style="width: 65%"
                 />
@@ -69,9 +70,9 @@
                 label="Email"
                 lazy-rules
                 :rules="[
-                  (val) =>
+                  val =>
                     validateEmail(val) ||
-                    'You have entered an invalid email address!',
+                    'You have entered an invalid email address!'
                 ]"
               />
 
@@ -92,9 +93,9 @@
                   label="Organization Name"
                   lazy-rules
                   :rules="[
-                    (val) =>
+                    val =>
                       (val && val.length > 0) ||
-                      'Please fill the organization name ',
+                      'Please fill the organization name '
                   ]"
                 />
               </div>
@@ -136,7 +137,7 @@
                 @input="onCountrySelect(lossDetails.country)"
                 lazy-rules
                 :rules="[
-                  (val) => (val && val.length > 0) || 'Please fill the country',
+                  val => (val && val.length > 0) || 'Please fill the country'
                 ]"
               />
               <q-input
@@ -144,7 +145,7 @@
                 label="Address1"
                 lazy-rules
                 :rules="[
-                  (val) => (val && val.length > 0) || 'Please fill the address',
+                  val => (val && val.length > 0) || 'Please fill the address'
                 ]"
               />
               <q-input v-model="lossDetails.address2" label="Address2" />
@@ -153,7 +154,7 @@
                 label="City"
                 lazy-rules
                 :rules="[
-                  (val) => (val && val.length > 0) || 'Please fill the city',
+                  val => (val && val.length > 0) || 'Please fill the city'
                 ]"
               ></q-input>
               <q-select
@@ -162,7 +163,7 @@
                 label="State"
                 lazy-rules
                 :rules="[
-                  (val) => (val && val.length > 0) || 'Please fill the state',
+                  val => (val && val.length > 0) || 'Please fill the state'
                 ]"
               />
               <q-input
@@ -170,8 +171,7 @@
                 label="ZIP Code"
                 lazy-rules
                 :rules="[
-                  (val) =>
-                    (val && val.length > 0) || 'Please fill the zip code',
+                  val => (val && val.length > 0) || 'Please fill the zip code'
                 ]"
               />
             </q-card>
@@ -253,14 +253,14 @@
                 <q-input
                   v-if="
                     sourceDetails.type != 'vendor' &&
-                    sourceDetails.type != '' &&
-                    sourceDetails.type != 'google'
+                      sourceDetails.type != '' &&
+                      sourceDetails.type != 'google'
                   "
                   type="text"
                   placeholder="Enter Source details"
                   v-model="sourceDetails.details"
                   lazy-rules
-                  :rules="[(val) => (val && val.length > 0) || '']"
+                  :rules="[val => (val && val.length > 0) || '']"
                 />
                 <div
                   v-else-if="sourceDetails.type == 'vendor'"
@@ -310,7 +310,7 @@
                 type="input"
                 lazy-rules
                 :rules="[
-                  (val) => (val && val.length > 0) || 'Please fill the notes',
+                  val => (val && val.length > 0) || 'Please fill the notes'
                 ]"
               />
             </q-card>
@@ -473,7 +473,7 @@ export default {
         lastName: "",
         email: "",
         phone: "",
-        selectedContactType: "mobile",
+        selectedContactType: ""
       },
       lossDetails: {
         lossDesc: "",
@@ -483,31 +483,36 @@ export default {
         city: "",
         state: "",
         country: "United States",
-        postalCode: "",
+        postalCode: ""
       },
       insuranceDetails: {
         policyNumber: "",
-        carrierName: "",
+        carrierName: ""
       },
       sourceDetails: {
         id: "",
         type: "",
-        details: "",
+        details: ""
       },
       schedulingDetails: {
         isAutomaticScheduling: false,
         inspectionType: "",
         subInspectionType: "",
-        inspectionDuration: "",
+        inspectionDuration: ""
       },
       notes: "",
       vendorSelected: "",
-      industryTypes: ["Association"],
+      industryTypes: ["Association"]
     };
   },
 
   methods: {
-    ...mapActions(["addLeads", "getInspectionTypes", "addVendor"]),
+    ...mapActions([
+      "addLeads",
+      "getInspectionTypes",
+      "addVendor",
+      "getContactTypes"
+    ]),
 
     onCountrySelect(country) {
       this.states = addressService.getStates(country);
@@ -515,7 +520,7 @@ export default {
 
     onInspectionTypesSelect() {
       const selectedInspectionType = this.inspectionTypes.find(
-        (type) => type.name === this.schedulingDetails.inspectionType
+        type => type.name === this.schedulingDetails.inspectionType
       );
       if (selectedInspectionType.subtypes.length > 1) {
         this.subInspectionTypes = selectedInspectionType.subtypes;
@@ -533,7 +538,7 @@ export default {
 
     onSubInspectionTypesSelect() {
       const index = this.subInspectionTypes.findIndex(
-        (val) => val.id == this.schedulingDetails.subInspectionType
+        val => val.id == this.schedulingDetails.subInspectionType
       );
       this.schedulingDetails.inspectionDuration = this.subInspectionTypes[
         index
@@ -554,7 +559,7 @@ export default {
           fname: this.primaryDetails.firstName,
           lname: this.primaryDetails.lastName,
           email: this.primaryDetails.email,
-          phoneNumber: [],
+          phoneNumber: []
         },
         lossLocation: {
           addressCountry: this.lossDetails.country,
@@ -562,7 +567,7 @@ export default {
           addressRegion: this.lossDetails.state,
           postOfficeBoxNumber: "",
           postalCode: this.lossDetails.postalCode,
-          streetAddress: this.lossDetails.address1,
+          streetAddress: this.lossDetails.address1
         },
         lossDesc: this.lossDetails.lossDesc,
         dateofLoss: formattedString,
@@ -572,13 +577,13 @@ export default {
         notes: this.notes,
         inspectionInfo: {
           id: this.schedulingDetails.subInspectionType,
-          duration: this.schedulingDetails.inspectionDuration,
+          duration: this.schedulingDetails.inspectionDuration
         },
         leadSource: {
           id: "",
           type: this.sourceDetails.type,
-          details: "",
-        },
+          details: ""
+        }
       };
       if (payload["isOrganization"]) {
         payload["organizationName"] = this.primaryDetails.organizationName;
@@ -586,7 +591,7 @@ export default {
       if (this.primaryDetails.phoneNumber) {
         payload.primaryContact["phoneNumber"].push({
           type: this.primaryDetails.selectedContactType,
-          number: this.primaryDetails.phoneNumber,
+          number: this.primaryDetails.phoneNumber
         });
       }
       if (this.sourceDetails.type == "vendor") {
@@ -612,7 +617,7 @@ export default {
       this.sourceDetails = {
         id: e.id,
         type: "vendor",
-        details: e.name,
+        details: e.name
       };
       this.closeVendorsList();
     },
@@ -623,11 +628,11 @@ export default {
       if (e) {
         this.$refs.list.getVendors();
       }
-    },
+    }
   },
 
   computed: {
-    ...mapGetters(["clients", "inspectionTypes", "contactType", "leadSources"]),
+    ...mapGetters(["clients", "inspectionTypes", "leadSources", "contactTypes"])
   },
 
   watch: {
@@ -639,14 +644,14 @@ export default {
       } else if (newValue === 5 && oldValue === 6) {
         el[0].scroll(-100, 0);
       }
-    },
+    }
   },
 
   created() {
     // TODO : Have to change primary details object, so that selected client can be assigned as it is.
     if (this.$route.params.id) {
       let selectedClient = this.clients.find(
-        (client) => client.id === this.$route.params.id
+        client => client.id === this.$route.params.id
       );
       this.primaryDetails.firstName = selectedClient.primaryContact.fname;
       this.primaryDetails.lastName = selectedClient.primaryContact.lname;
@@ -663,7 +668,8 @@ export default {
     this.countries = addressService.getCountries();
     this.getInspectionTypes();
     this.onCountrySelect("United States");
-  },
+    this.getContactTypes();
+  }
 };
 </script>
 

@@ -44,17 +44,20 @@
           <q-input v-model="vendor.contact.fname" label="First Name" />
           <q-input v-model="vendor.contact.lname" label="Last Name" />
           <div class="row">
+            <q-select
+              v-model="vendor.contact.phoneNumber[0].type"
+              :options="contactTypes"
+              option-value="machineName"
+              option-label="name"
+              map-options
+              label="Type"
+              style="width: 30%; margin-right: auto"
+            />
             <q-input
               v-model="vendor.contact.phoneNumber[0].number"
               label="Phone"
               type="number"
               style="width: 65%"
-            />
-            <q-select
-              v-model="vendor.contact.phoneNumber[0].type"
-              :options="contactType"
-              label="Type"
-              style="width: 30%; margin-left: auto"
             />
           </div>
           <q-input v-model="vendor.contact.email" label="Email" />
@@ -84,31 +87,37 @@
           />
           <p class="form-heading">Company's Phone & Website</p>
           <div class="row">
+            <q-select
+              v-model="vendor.info.phoneNumbers[0].type"
+              :options="contactTypes"
+              option-value="machineName"
+              option-label="name"
+              map-options
+              label="Type1"
+              style="width: 30%; margin-right: auto"
+            />
             <q-input
               v-model="vendor.info.phoneNumbers[0].number"
               label="Phone1"
               type="number"
               style="width: 65%"
             />
-            <q-select
-              v-model="vendor.info.phoneNumbers[0].type"
-              :options="contactType"
-              label="Type1"
-              style="width: 30%; margin-left: auto"
-            />
           </div>
           <div class="row">
+            <q-select
+              v-model="vendor.info.phoneNumbers[1].type"
+              :options="contactTypes"
+              option-value="machineName"
+              option-label="name"
+              map-options
+              label="Type2"
+              style="width: 30%; margin-right: auto"
+            />
             <q-input
               v-model="vendor.info.phoneNumbers[1].number"
               label="Phone2"
               type="number"
               style="width: 65%"
-            />
-            <q-select
-              v-model="vendor.info.phoneNumbers[1].type"
-              :options="contactType"
-              label="Type2"
-              style="width: 30%; margin-left: auto"
             />
           </div>
           <q-input v-model="vendor.info.website" label="Website" />

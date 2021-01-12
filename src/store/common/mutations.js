@@ -7,5 +7,8 @@ export function setNotification(state, value) {
 }
 
 export function setContactTypes(state, types) {
-  state.contactTypes = types.map(type => ({ ...type.attributes, id: type.id }));
+  state.contactTypes = types.map(type => ({
+    name: type.attributes.value,
+    machineName: type.attributes.machineValue
+  }));
 }
