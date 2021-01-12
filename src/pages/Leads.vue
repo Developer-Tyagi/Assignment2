@@ -143,10 +143,13 @@
                       >Schedule Visit</span
                     >
                   </div>
+
                   <div class="button-orange">
-                    <span class="text-white q-my-auto q-mx-auto"
-                      >Create Client</span
-                    >
+                    <q-btn
+                      class="text-white q-my-auto q-mx-auto full-width full-height"
+                      label="Create Client"
+                      @click="onCreateClientButtonClick(lead)"
+                    ></q-btn>
                   </div>
                 </div>
               </div>
@@ -223,8 +226,9 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapMutations } from "vuex";
 import moment from "moment";
+import { setSelectedLead } from "src/store/leads/mutations";
 
 export default {
   name: "Leads",
@@ -232,7 +236,8 @@ export default {
     return {
       openSearchInput: false,
       searchText: "",
-      panel: "newLeads"
+      panel: "newLeads",
+      clientInfoDailog: false
     };
   },
 
@@ -255,7 +260,15 @@ export default {
       "getArchivedLeadsList",
       "addLeadToArchiveList"
     ]),
+    ...mapMutations(["setSelectedLead"]),
+    onCreateClientButtonClick(lead) {
+      let payload = {
+        attributes: lead
+      };
+      this.setSelectedLead(payload);
 
+      this.$router.push("/add-client");
+    },
     addLead() {
       this.$router.push("/add-lead");
     },

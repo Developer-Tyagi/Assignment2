@@ -5,92 +5,75 @@
       :showAddButton="false"
     />
 
-    <div class="column full-height" style="padding:71px 20px 20px 20px">
+    <div class="column full-height" style="padding:51px 20px 20px 20px">
       <div class="q-pa-md column full-height">
-        <div class="createClientInfo" style="font-size:20px">
-          <div
-            class="publicAdjustorInfo"
+        <div class="createClientInfo" style="font-size:15px">
+   <div
+       class="form-list"
+           @click="clientInfoDailog = true"
+          >
+            Client Info
+          </div>
+       <div
+        class="form-list"
             @click="publicAdjustorInfoDialog = true"
           >
             Public Adjustor Info
           </div>
-          <q-separator />
-
-          <div
-            class="clientInfo"
-            style="margin-top:15px;"
-            @click="clientInfoDailog = true"
+    <div
+        class="form-list"
+       @click="mailingAddressDialog = true"
           >
-            Client Info
+          Mailing Address
           </div>
-          <q-separator />
           <div
-            class="mailingAddress"
-            style="margin-top:15px;"
-            @click="mailingAddressDialog = true"
-          >
-            Mailing Address
-          </div>
-          <q-separator />
-          <div
-            class="insuranceInfo"
-            style="margin-top:15px"
-            @click="insuranceInfoDialog = true"
+          class="form-list"
+           @click="insuranceInfoDialog = true"
           >
             Insurance Info
           </div>
-          <q-separator />
-          <div
-            class="lossInfo"
-            style="margin-top:15px"
-            @click="lossInfoDialog = true"
+           <div
+        class="form-list"
+          @click="lossInfoDialog = true"
           >
             Loss Info
           </div>
-          <q-separator />
           <div
-            class="mortgageInfo"
-            style="margin-top:15px"
-            @click="mortgageInfoDialog = true"
+           class="form-list"
+           @click="mortgageInfoDialog = true"
           >
             Mortgage Info
           </div>
-          <q-separator />
           <div
-            class="estimatingInfo"
-            style="margin-top:15px"
-            @click="estimatingInfoDialog = true"
+         class="form-list"
+     @click="estimatingInfoDialog = true"
           >
             Estimating Info
           </div>
           <q-separator />
           <div
-            class="expertVendor"
-            style="margin-top:15px"
-            @click="expertVendorInfoDialog = true"
+            class="form-list"
+    @click="expertVendorInfoDialog = true"
           >
             Expert/Vendor Info
           </div>
           <q-separator />
           <div
-            class="officeTask"
-            style="margin-top:15px"
-            @click="officeTaskDialog = true"
+           class="form-list"
+    @click="officeTaskDialog = true"
           >
             Office Task
           </div>
           <q-separator />
           <div
-            class="documents"
-            style="margin-top:15px"
+         class="form-list"
             @click="documentsDialog = true"
           >
             Documents
           </div>
           <q-separator />
         </div>
-
-        <q-btn
+  <q-btn
           label="Create Client"
           color="primary"
           class="full-width q-mt-auto text-capitalize"
@@ -290,11 +273,19 @@
                 label="Client Type"
               />
               <br />
-              <div style="font-size: 20px;font-weight:bold">
-                Insured Details
-              </div>
-              <q-input v-model="insuredDetails.fname" label="First Name" />
-              <q-input v-model="insuredDetails.lname" label="Last Name" />
+            <span class="form-heading">Insured Details</span>
+              <q-input v-model="insuredDetails.fname" 
+                   lazy-rules
+                :rules="[
+                  val => (val && val.length > 0) || 'Please fill the First name'
+                ]"
+              label="First Name" />
+              <q-input v-model="insuredDetails.lname" 
+                lazy-rules
+                :rules="[
+                  val => (val && val.length > 0) || 'Please fill the Last name'
+                ]"
+                label="Last Name" />
               <div class="row">
                 <q-select
                   v-model="insuredDetails.type"
@@ -306,13 +297,8 @@
                   v-model="insuredDetails.phone"
                   label="Phone"
                   type="number"
-                  lazy-rules
-                  :rules="[
-                    val =>
-                      (val && val.length > 0) ||
-                      'You have entered an invalid Phone!'
-                  ]"
-                  style="width: 65%"
+                 
+                  style="width: 65%;margin-left:auto"
                 /> </div>
                 <q-input
                 v-model="insuredDetails.email"
@@ -332,7 +318,7 @@
               </div>
               <br />
               <div v-if="isThereaCoInsuredToggle" style="font-size:20px;">
-                <p style="font-weight: bold">Co-Insured Details</p>
+                <span class="form-heading">Co-insured Details</span>
                 <q-input v-model="coInsuredDetails.fname" label="First Name" />
                 <q-input v-model="coInsuredDetails.lname" label="Last Name" />
             <div class="row">
@@ -340,19 +326,14 @@
                     v-model="coInsuredDetails.type"
                     :options="coInsuredTypes"
                     label="Type"
-                    style="width: 30%;"
+                style="width: 30%;margin-left:auto "
                   />
                   <q-input
                     v-model="coInsuredDetails.phone"
                     label="Phone"
                     type="number"
-                    lazy-rules
-                    :rules="[
-                      val =>
-                        (val && val.length > 0) ||
-                        'You have entered an invalid Phone!'
-                    ]"
-                    style="width: 65%"
+                   
+                    style="width:65%;margin-left:auto"
                   />
                 </div>
                 <q-input
@@ -388,6 +369,7 @@
                   <q-input
                     v-model="addAditionalPhoneNumber.phone2"
                     label="Phone2"
+                    style="width:65%;margin-left:auto"
                   />
                   </div>
                 <div class="row">
@@ -400,13 +382,12 @@
                   <q-input
                     v-model="addAditionalPhoneNumber.phone3"
                     label="Phone3"
+                    style="width:65%;margin-left:auto"
                   />
                 </div>
               </div>
               <br />
-              <div style="font-size:20px;font-weight: bold">
-                Address Details
-              </div>
+              <span class="form-heading">Address Details</span>
               <q-input
                 v-model="addressDetails.streetNumber"
                 label="Street Number"
@@ -439,19 +420,21 @@
               <div v-if="tenantOccupiedToggle">
                 <q-input v-model="tanentOccupied.name" label="Tenant Name" />
                 <div class="row">
-                  <q-input v-model="tanentOccupied.phone" label="Phone" />
                   <q-select
                     v-model="tanentOccupied.type"
                     :options="tenantOccupiedTypes"
                     label="Type"
-                    style="width: 30%; margin-left: auto"
+                    style="width: 30%;"
                   />
+                  <q-input v-model="tanentOccupied.phone" label="Phone" style="width:65%; margin-left: auto"/>
+                  
                 </div>
               </div>
               <br />
             </div>
           </div>
 <q-btn
+          @click="saveButtonInClientInfo"
             label="Save"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
@@ -857,9 +840,9 @@
               label="Date of Birth of Primary Mortgagee"
             /><br />
 
-            <div style="font-size:15px;font-weight: bold">
-              Last 4 Primary Mortgagee's Social Security Numbers
-            </div>
+             <span class="form-heading">
+              Last 4 Primary Mortgagee's Social Security<br> Numbers
+            </span>
             <q-input
               v-model="mortgageDetails.socialSecurityNumber1"
               label="Social Security Number 1"
@@ -1093,8 +1076,7 @@
             /><br />
             <div class="row">
               <p>Additional Office Task Required</p>
-
-              <q-toggle
+<q-toggle
                 class="q-ml-auto"
                 v-model="additionalOfficeTaskRequiredToggle"
               />
@@ -1119,8 +1101,10 @@
 <script>
 import CustomHeader from "components/CustomHeader";
 import { validateEmail } from "@utils/validation";
+import { selectedLead } from 'src/store/leads/getters';
+import { mapGetters,mapActions } from "vuex";
 export default {
-  name: "AddClient",
+  name: "addClient",
   components: { CustomHeader },
   data() {
     return {
@@ -1140,7 +1124,7 @@ export default {
         lname: "",
         phone: "",
         type: "",
-        email: ""
+        email: "",
       },
       coInsuredDetails: {
         fname: "",
@@ -1171,6 +1155,7 @@ export default {
         phone: "",
         type: ""
       },
+      
       mailingAddressDetails: {
         streetNumber: "",
         apartmentNumber: "",
@@ -1275,7 +1260,111 @@ export default {
       documentsDialog: false
     };
   },
-  methods: {
+created() {
+  if(this.selectedLead){
+    console.log(this.selectedLead)
+this.insuredDetails.fname = this.selectedLead.primaryContact.fname;
+this.insuredDetails.lname = this.selectedLead.primaryContact.lname;
+this.insuredDetails.email = this.selectedLead.primaryContact.email;
+this.insuredDetails.phone = this.selectedLead.primaryContact.phoneNumber[0].number;
+this.insuredDetails.type = this.selectedLead.primaryContact.phoneNumber[0].type;
+this.clientInfoDailog = true;
+}
+   else
+  {
+  this.clientInfoDailog = true;
+ }
+  },
+  computed: {
+  ...mapGetters(["selectedLead"])
+  },
+ methods: {
+    ...mapActions (["addClient"]),
+  saveButtonInClientInfo() {
+   
+      const payload = {
+        attributes: {
+         isOrganization:false,
+        isOrganizationPolicyholder: false,
+        },
+       
+        source: {
+          id: "",
+          type: this.client.type,
+          detail: this.client.sourceOfLead,
+        },
+        type: {
+           id: "",
+          name:"",
+        },
+      
+        insuredInfo: {
+          primary:{
+            fname: this.insuredDetails.fname,
+            lname: this.insuredDetails.lname,
+            email: this.insuredDetails.email,
+            phoneNumber : [
+              {
+                type: this.insuredDetails.type,
+                number: this.insuredDetails.phone,
+              }
+            ]
+          },
+       
+          secondary:{
+          fname: this.coInsuredDetails.fname,
+          lname: this.coInsuredDetails.lname,
+          email : this.coInsuredDetails.email,
+          phoneNumber: [
+            {
+              type:  this.coInsuredDetails.type,
+              number: this.coInsuredDetails.phone,
+            }
+          ]
+          },
+          address: {
+               addressCountry: this.addressDetails.state,
+               addressLocality: this.addressDetails.city,
+                 addressRegion: this.addressDetails.apartmentNumber,
+                  postOfficeBoxNumber: "",
+                    postalCode: this.addressDetails.zip,
+                    streetAddress:  this.addressDetails.streetNumber,
+                    dropBox:this.gateDropbox.info,
+          },
+            mailingAddress: {
+                    addressCountry: "",
+                    addressLocality: "",
+                    addressRegion: "",
+                    postOfficeBoxNumber: "",
+                    postalCode: "",
+                    streetAddress: "",
+                    dropBoxInfo: "",
+                },
+                 phoneNumbers: [
+                    {
+                        type: this.addAditionalPhoneNumber.type1,
+                        number: this.addAditionalPhoneNumber.phone2,
+                    },
+                    {
+                       type: this.addAditionalPhoneNumber.type2,
+     
+                   number: this.addAditionalPhoneNumber.phone3,
+                    },
+
+                 ],
+                  tenantInfo: {
+                    name:  this.tanentOccupied.name,
+                    phoneNumber: {
+                        type:  this.tanentOccupied.type,
+                        number: this.tanentOccupied.phone,
+                    }
+                }
+         },
+     
+      }
+   
+    this.addClient(payload)
+    },
     saveButtonClick() {},
     validateEmail
   }
@@ -1289,5 +1378,18 @@ export default {
 ::-webkit-scrollbar {
   width: 0px;
   background: transparent; /* make scrollbar transparent */
+}
+.form-heading {
+  color: #333333;
+  font-weight: bold;
+  font-size: 14px;
+}
+.form-list {
+  color: #333333;
+  font-weight: bold;
+  font-size: 16px;
+  
+  padding: 15px 0;
+  border-bottom: 1px solid #D3D3D3;
 }
 </style>
