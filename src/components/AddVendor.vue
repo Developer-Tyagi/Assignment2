@@ -29,14 +29,14 @@
         >
           <q-input
             v-model="vendor.name"
-            label="Vendor Company Name"
+            label=" Company Name"
             lazy-rules
             :rules="[val => (val && val.length) || '']"
           />
           <q-select
             v-model="vendor.industry.name"
             :options="vendorIndustries"
-            label="Vendor Industry"
+            label=" Industry"
             option-label="name"
             option-value="name"
             @input="setVendorIndustryName()"

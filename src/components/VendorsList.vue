@@ -12,14 +12,14 @@
         </template>
       </q-input>
       <div
-        v-if="!params.industry"
+        v-if="!params.industry && filter"
         class="q-ml-auto row"
         @click="filterDialog = true"
       >
         <img src="~assets/filter.svg" />Filters
       </div>
       <q-btn
-        v-else
+        v-if="params.industry && filter"
         class="q-ml-auto"
         color="white"
         text-color="grey"
@@ -99,7 +99,7 @@ import { mapActions, mapGetters } from "vuex";
 import { getTitles } from "src/store/common/actions";
 export default {
   name: "VendorsList",
-  props: ["selective"],
+  props: ["selective", "filter", "filterName", "headerName"],
   data() {
     return {
       searchText: "",
@@ -117,7 +117,10 @@ export default {
 
   mounted() {
     this.getVendorIndustries();
+    console.log(this.filterName, 1222);
     this.getVendors(this.params);
+    this.params.industry = this.filterName;
+    //console.log(this.params.industry);
     this.getTitles();
   },
 

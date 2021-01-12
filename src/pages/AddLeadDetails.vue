@@ -209,14 +209,24 @@
           <q-form @submit="step++" @reset="step--">
             <q-card class="q-pa-md form-card">
               <span class="stepper-heading">Insurance Details (Optional)</span>
+
               <q-input
                 v-model="insuranceDetails.carrierName"
                 label="Carrier Name"
               />
-              <q-input
-                v-model="insuranceDetails.policyNumber"
-                label="Policy Number"
-              />
+              <div
+                v-model="insuranceDetails.carrierName"
+                class="custom-select"
+                @click="carrierSet()"
+              >
+                <div class="select-text">
+                  {{
+                    sourceDetails.id
+                      ? sourceDetails.details
+                      : "Enter Carrier Details"
+                  }}
+                </div>
+              </div>
             </q-card>
             <div class="row q-pt-md">
               <div>
@@ -401,8 +411,9 @@
         </q-step>
       </q-stepper>
     </div>
+
     <q-dialog
-      v-model="vendorsListDialog"
+      v-model="addVendorDialog"
       persistent
       :maximized="true"
       transition-show="slide-up"
@@ -431,18 +442,46 @@
           :selective="true"
           @selectedVendor="addSelectedVendor"
           ref="list"
+          :filter="true"
         />
+      </q-card>
+      <q-card>
+        <AddVendor @closeDialog="closeAddVendorDialog" />
       </q-card>
     </q-dialog>
     <q-dialog
-      v-model="addVendorDialog"
+      v-model="carrierListDialog"
       persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
     >
       <q-card>
-        <AddVendor @closeDialog="closeAddVendorDialog" />
+        <q-header bordered class="bg-white">
+          <q-toolbar class="row bg-white">
+            <img
+              src="~assets/close.svg"
+              alt="close"
+              @click="carrierListDialog = false"
+              style="margin: auto 0"
+            />
+            <div class="text-uppercase text-bold text-black q-mx-auto">
+              Carrier
+            </div>
+            <img
+              src="~assets/add.svg"
+              @click="addVendorDialog = true"
+              style="margin: 0 0 0 20px"
+            />
+          </q-toolbar>
+        </q-header>
+        <VendorsList
+          :selective="true"
+          @selectedVendor=""
+          ref="list"
+          :filter="false"
+          :filterName="'abcd'"
+        />
       </q-card>
     </q-dialog>
   </q-page>
@@ -468,7 +507,8 @@ export default {
       showSubInspectionType: false,
       addVendorDialog: false,
       vendorsListDialog: false,
-      step: 1,
+      carrierListDialog: false,
+      step: 3,
       primaryDetails: {
         isOrganization: false,
         organizationName: "",
@@ -511,6 +551,9 @@ export default {
 
   methods: {
     ...mapActions(["addLeads", "getInspectionTypes", "addVendor"]),
+    carrierSet() {
+      this.carrierListDialog = true;
+    },
 
     onCountrySelect(country) {
       this.states = addressService.getStates(country);
