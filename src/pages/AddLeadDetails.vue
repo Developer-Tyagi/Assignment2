@@ -47,10 +47,10 @@
                   option-value="machineName"
                   option-label="name"
                   map-options
-                  label="Mobile"
+                  style="width: 40%; margin-right: auto"
+                  label="Type"
                   lazy-rules
                   :rules="[val => (val && val.length > 0) || '']"
-                  style="width: 30%; margin-right: auto"
                 />
                 <q-input
                   v-model="primaryDetails.phoneNumber"

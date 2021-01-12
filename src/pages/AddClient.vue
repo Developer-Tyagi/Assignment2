@@ -1,7 +1,7 @@
 <template>
   <q-page style="padding-top: 0; height: 100vh">
     <CustomHeader
-      @backButton="$router.push('/dashboard')"
+      @backButton="$router.push('/clients')"
       :showAddButton="false"
     />
 
@@ -73,7 +73,7 @@
           </div>
           <q-separator />
         </div>
-  <q-btn
+          <q-btn
           label="Create Client"
           color="primary"
           class="full-width q-mt-auto text-capitalize"
@@ -232,7 +232,7 @@
         ></q-btn>
       </q-card>
     </q-dialog>
-<q-dialog
+    <q-dialog
       v-model="clientInfoDailog"
       persistent
       :maximized="maximizedToggle"
@@ -269,7 +269,10 @@
               </div>
             <q-select
                 v-model="client.type"
-                :options="ClientTypes"
+                option-value="machineName"
+                  option-label="name"
+                  map-options
+                :options="clientTypes"
                 label="Client Type"
               />
               <br />
@@ -289,16 +292,17 @@
               <div class="row">
                 <q-select
                   v-model="insuredDetails.type"
-                  :options="insuredTypes"
-                  label="Type"
-                  style="width: 30%;"
+                  :options="contactTypes"
+                  option-value="machineName"
+                  option-label="name"
+                  map-options
+                  style="width: 40%; margin-right: auto"
                 />
                 <q-input
                   v-model="insuredDetails.phone"
                   label="Phone"
                   type="number"
-                 
-                  style="width: 65%;margin-left:auto"
+                  style="width: 55%"
                 /> </div>
                 <q-input
                 v-model="insuredDetails.email"
@@ -324,16 +328,20 @@
             <div class="row">
                     <q-select
                     v-model="coInsuredDetails.type"
-                    :options="coInsuredTypes"
                     label="Type"
-                style="width: 30%;margin-left:auto "
+                    :options="contactTypes"
+                  option-value="machineName"
+                  option-label="name"
+                  map-options
+                  style="width: 40%; margin-right: auto"
+
                   />
                   <q-input
                     v-model="coInsuredDetails.phone"
                     label="Phone"
                     type="number"
                    
-                    style="width:65%;margin-left:auto"
+                    style="width:55%;"
                   />
                 </div>
                 <q-input
@@ -362,27 +370,33 @@
                 <div class="row">
                   <q-select
                     v-model="addAditionalPhoneNumber.type1"
-                    :options="addAdditionalPhoneNumber1Types"
                     label="Type"
-                    style="width: 30%; "
+                    :options="contactTypes"
+                  option-value="machineName"
+                  option-label="name"
+                  map-options
+                  style="width: 40%; margin-right: auto"
                   />
                   <q-input
                     v-model="addAditionalPhoneNumber.phone2"
                     label="Phone2"
-                    style="width:65%;margin-left:auto"
+                    style="width:55%;margin-left:auto"
                   />
                   </div>
                 <div class="row">
                   <q-select
                     v-model="addAditionalPhoneNumber.type2"
-                    :options="addAdditionalPhoneNumber2Types"
                     label="Type"
-                    style="width: 30%;"
+                    :options="contactTypes"
+                  option-value="machineName"
+                  option-label="name"
+                  map-options
+                  style="width: 40%; margin-right: auto"
                   />
                   <q-input
                     v-model="addAditionalPhoneNumber.phone3"
                     label="Phone3"
-                    style="width:65%;margin-left:auto"
+                    style="width:55%"
                   />
                 </div>
               </div>
@@ -422,11 +436,14 @@
                 <div class="row">
                   <q-select
                     v-model="tanentOccupied.type"
-                    :options="tenantOccupiedTypes"
                     label="Type"
-                    style="width: 30%;"
+                    :options="contactTypes"
+                  option-value="machineName"
+                  option-label="name"
+                  map-options
+                  style="width: 40%; margin-right: auto"
                   />
-                  <q-input v-model="tanentOccupied.phone" label="Phone" style="width:65%; margin-left: auto"/>
+                  <q-input v-model="tanentOccupied.phone" label="Phone" style="width:55%"/>
                   
                 </div>
               </div>
@@ -706,13 +723,17 @@
               <div class="row">
                 <q-select
                   v-model="lossInfo.insuranceAdjustorPhoneType"
-                  :options="insuranceAdjustorPhoneType"
                   label="Type"
-                  style="width: 30%;"
+                  :options="contactTypes"
+                  option-value="machineName"
+                  option-label="name"
+                  map-options
+                  style="width: 40%; margin-right: auto"
                 />
                 <q-input
                   v-model="lossInfo.insuranceAdjustorPhone"
                   label="Insurance Adjuster's Phone"
+                  style="width:55%"
                   />
                 </div>
               <q-input
@@ -1113,8 +1134,6 @@ export default {
       maximizedToggle: true,
       clientInfoDailog: false,
 
-      ClientTypes: ["Client A", "Client B"],
-
       client: {
         sourceOfLead: "",
         type: ""
@@ -1237,11 +1256,6 @@ export default {
       isThereAsecondClaimToFileToggle: false,
       insuranceAdjustorPhoneType: ["A", "B", "C"],
       typeOfLoss: ["A", "B"],
-      coInsuredTypes: ["A", "B"],
-      insuredTypes: ["A", "B"],
-      tenantOccupiedTypes: ["A", "B"],
-      addAdditionalPhoneNumber1Types: ["A", "B"],
-      addAdditionalPhoneNumber2Types: ["A", "B"],
       hasAvendorOfExpertHiredTypes: ["A", "B"],
       severityOfClaimTypes: ["A", "B"],
       mortgageInfoDialog: false,
@@ -1260,29 +1274,31 @@ export default {
       documentsDialog: false
     };
   },
-created() {
-  if(this.selectedLead){
-    console.log(this.selectedLead)
-this.insuredDetails.fname = this.selectedLead.primaryContact.fname;
-this.insuredDetails.lname = this.selectedLead.primaryContact.lname;
-this.insuredDetails.email = this.selectedLead.primaryContact.email;
-this.insuredDetails.phone = this.selectedLead.primaryContact.phoneNumber[0].number;
-this.insuredDetails.type = this.selectedLead.primaryContact.phoneNumber[0].type;
-this.clientInfoDailog = true;
-}
-   else
-  {
-  this.clientInfoDailog = true;
- }
+
+  created() {
+    this.getClientTypes();
+    this.getContactTypes();
+    if(this.selectedLead.name){
+      this.insuredDetails.fname = this.selectedLead.primaryContact.fname;
+      this.insuredDetails.lname = this.selectedLead.primaryContact.lname;
+      this.insuredDetails.email = this.selectedLead.primaryContact.email;
+      this.insuredDetails.phone = this.selectedLead.primaryContact.phoneNumber[0].number;
+      this.insuredDetails.type = this.selectedLead.primaryContact.phoneNumber[0].type;
+      this.clientInfoDailog = true;
+    } else  {
+      this.clientInfoDailog = false;
+    }
   },
+
+
   computed: {
-  ...mapGetters(["selectedLead"])
+  ...mapGetters(["selectedLead","clientTypes","contactTypes"])
   },
  methods: {
-    ...mapActions (["addClient"]),
-  saveButtonInClientInfo() {
-   
-      const payload = {
+    ...mapActions (["addClient","getClientTypes","getContactTypes"]),
+
+    saveButtonInClientInfo() {
+         const payload = {
         attributes: {
          isOrganization:false,
         isOrganizationPolicyholder: false,

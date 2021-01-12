@@ -5,10 +5,10 @@ export function setClients(state, clients) {
     name: client.attributes.insuredInfo.primary["fname"]
   }));
 }
-<<<<<<< HEAD
 
 export function setClientTypes(state, types) {
-  state.contactTypes = types.map(type => ({ ...type.attributes, id: type.id }));
+  state.contactTypes = types.map(type => ({
+    name: type.attributes.value,
+    machineName: type.attributes.machineValue
+  }));
 }
-=======
->>>>>>> master
