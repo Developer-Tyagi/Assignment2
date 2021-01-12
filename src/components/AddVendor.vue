@@ -56,16 +56,19 @@
           <q-input v-model="vendor.contact[0].lname" label="Last Name" />
           <div class="row">
             <q-select
-              v-model="vendor.contact[0].phoneNumber.type"
-              :options="contactType"
+              v-model="vendor.contact[0].phoneNumber[0].type"
+              :options="contactTypes"
+              option-value="machineName"
+              option-label="name"
+              map-options
               label="Type"
-              style="width:50%;"
+              style="width: 40%; margin-right: auto"
             />
             <q-input
-              v-model="vendor.contact[0].phoneNumber.number"
+              v-model="vendor.contact[0].phoneNumber[0].number"
               label="Phone"
               type="number"
-              style="width: 65%,margin-left: auto;"
+              style="width: 55%"
             />
           </div>
           <q-input
@@ -115,15 +118,18 @@
             <div class="row">
               <q-select
                 v-model="contactInfo.phoneNumber.type"
-                :options="contactType"
-                label="Type1"
-                style="width: 50%;"
+                :options="contactTypes"
+                option-value="machineName"
+                option-label="name"
+                map-options
+                label="Type"
+                style="width: 40%; margin-right: auto"
               />
               <q-input
                 v-model="contactInfo.phoneNumber.phone"
                 label="Phone1"
                 type="number"
-                style="width: 50%"
+                style="width: 55%"
               />
             </div>
             <q-input
@@ -155,7 +161,7 @@ import AddressService from "@utils/country";
 const addressService = new AddressService();
 import { mapGetters, mapActions } from "vuex";
 import { getVendorIndustries } from "src/store/vendors/actions";
-import { getTitles } from "src/store/common/actions";
+import { getContactTypes, getTitles } from "src/store/common/actions";
 
 export default {
   name: "AddVendor",
@@ -167,7 +173,6 @@ export default {
       vendor: {
         name: "",
         industry: { name: "", id: "" },
-
         contact: [
           {
             fname: "",
@@ -179,7 +184,7 @@ export default {
             },
             phoneNumber: [
               {
-                type: "mobile",
+                type: "",
                 phone: ""
               }
             ],
@@ -195,7 +200,7 @@ export default {
             },
             phoneNumber: [
               {
-                type: "mobile",
+                type: "",
                 phone: ""
               }
             ]
@@ -219,17 +224,22 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["contactType", "vendorIndustries", "titles"])
+    ...mapGetters(["contactTypes", "vendorIndustries", "titles"])
   },
 
-  created() {
+  mounted() {
     this.getVendorIndustries();
-
     this.getTitles();
+    this.getContactTypes();
   },
 
   methods: {
-    ...mapActions(["addVendor", "getVendorIndustries", "getTitle"]),
+    ...mapActions([
+      "addVendor",
+      "getVendorIndustries",
+      "getTitles",
+      "getContactTypes"
+    ]),
 
     /* for adding the ids for multiple vendors */
     setTitleNameForMultiple() {

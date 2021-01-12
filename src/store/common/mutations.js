@@ -11,3 +11,10 @@ export function setTitles(state, titles) {
     id: titles.id
   }));
 }
+
+export function setContactTypes(state, types) {
+  state.contactTypes = types.map(type => ({
+    name: type.attributes.value,
+    machineName: type.attributes.machineValue
+  }));
+}

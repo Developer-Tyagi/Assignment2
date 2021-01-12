@@ -18,6 +18,3 @@ export function moveActiveToArchive(state, leadId) {
 export function setSelectedLead(state, lead) {
   state.selectedLead = lead.attributes;
 }
-// export function selectedLead(state, lead) {
-//   state.selectedLead = lead.attributes;
-// }

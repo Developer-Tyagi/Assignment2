@@ -17,7 +17,7 @@
             <q-icon name="search" />
           </template>
         </q-input>
-        <div class="q-ml-auto row" @click="filterDialog = true">
+        <!-- <div class="q-ml-auto row" @click="filterDialog = true">
           <img src="~assets/filter.svg" />Filters
         </div>
         <q-btn
@@ -30,7 +30,7 @@
           dense
           style="font-weight: 400"
           >Clear</q-btn
-        >
+        > -->
       </div>
       <div class="clients-list">
         <div class="q-px-md q-pt-sm" v-for="client in clients" :key="client.id">
@@ -43,12 +43,6 @@
 
               <q-icon class="q-ml-auto" size="sm" name="more_vert"></q-icon>
             </div>
-
-            <!-- <div>
-              <span>
-                {{ client["insuredInfo"]["primary"]["phoneNumber"]["type"] }}
-              </span>
-            </div> -->
             <div class="row">
               <span
                 >Mob:
@@ -104,7 +98,9 @@ export default {
 
     addClient() {
       this.$router.push("/add-client");
-    }
+    },
+
+    search(e) {}
   }
 };
 </script>
