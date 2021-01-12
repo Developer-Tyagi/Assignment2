@@ -265,7 +265,11 @@ export default {
     },
 
     filterLeads() {
-      this.getActiveLeadsList(this.searchText ? this.searchText : "");
+      if (this.panel === "newLeads") {
+        this.getActiveLeadsList(this.searchText ? this.searchText : "");
+      } else {
+        this.getArchivedLeadsList(this.searchText ? this.searchText : "");
+      }
     },
 
     onListSwipe(info, lead) {
@@ -298,6 +302,20 @@ export default {
       e.stopPropagation();
       if (number) {
         window.open("tel:" + number);
+      }
+    }
+  },
+  watch: {
+    panel(newVal, oldVal) {
+      if (newVal != oldVal) {
+        this.searchText = "";
+        this.openSearchInput = false;
+      }
+
+      if (oldVal === "newLeads") {
+        this.getActiveLeadsList();
+      } else {
+        this.getArchivedLeadsList();
       }
     }
   }

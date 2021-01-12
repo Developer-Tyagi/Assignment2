@@ -18,10 +18,13 @@ export async function getActiveLeadsList(
     });
   }
 }
-export async function getArchivedLeadsList({ commit, dispatch }) {
+export async function getArchivedLeadsList({ commit, dispatch }, searchString) {
   dispatch("setLoading", true);
   try {
-    const { data } = await request.get("/leads?archive=true");
+    const { data } = await request.get("/leads", {
+      name: searchString,
+      archive: true
+    });
     commit("setArchivedLeads", data);
     dispatch("setLoading", false);
   } catch (e) {
