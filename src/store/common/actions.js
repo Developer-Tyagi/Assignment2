@@ -1,5 +1,4 @@
 import request from "@api";
-
 export function setLoading({ commit }, value) {
   commit("setLoading", value);
 }
@@ -13,6 +12,22 @@ export async function getContactTypes({ commit, dispatch }) {
   try {
     const { data } = await request.get("/phonetypes");
     commit("setContactTypes", data);
+    dispatch("setLoading", false);
+  } catch (e) {
+    console.log(e);
+    dispatch("setLoading", false);
+    dispatch("setNotification", {
+      type: "negative",
+      message: e.response.data.title
+    });
+  }
+}
+
+export async function getTitles({ commit, dispatch }) {
+  dispatch("setLoading", true);
+  try {
+    const { data } = await request.get("/honorifics");
+    commit("setTitles", data);
     dispatch("setLoading", false);
   } catch (e) {
     console.log(e);

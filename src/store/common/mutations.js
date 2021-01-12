@@ -5,6 +5,12 @@ export function setLoading(state, value) {
 export function setNotification(state, value) {
   state.notification = value;
 }
+export function setTitles(state, titles) {
+  state.titles = titles.map(titles => ({
+    title: titles.attributes.titles,
+    id: titles.id
+  }));
+}
 
 export function setContactTypes(state, types) {
   state.contactTypes = types.map(type => ({

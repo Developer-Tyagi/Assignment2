@@ -34,14 +34,26 @@
             :rules="[val => (val && val.length) || '']"
           />
           <q-select
-            v-model="vendor.industry"
+            v-model="vendor.industry.name"
             :options="vendorIndustries"
             label="Vendor Industry"
             option-label="name"
+            option-value="name"
+            @input="setVendorIndustryName()"
+            emit-value
           />
           <p class="form-heading">Company's Contact Person Details</p>
-          <q-input v-model="vendor.contact.fname" label="First Name" />
-          <q-input v-model="vendor.contact.lname" label="Last Name" />
+          <q-select
+            v-model="vendor.contact[0].honorific.title"
+            :options="titles"
+            option-label="title"
+            label="Title"
+            option-value="title"
+            @input="setTitleName()"
+            emit-value
+          />
+          <q-input v-model="vendor.contact[0].fname" label="First Name" />
+          <q-input v-model="vendor.contact[0].lname" label="Last Name" />
           <div class="row">
             <q-select
               v-model="vendor.contact.phoneNumber[0].type"
@@ -59,7 +71,12 @@
               style="width: 65%"
             />
           </div>
-          <q-input v-model="vendor.contact.email" label="Email" />
+          <q-input
+            v-model="vendor.contact[0].email"
+            type="email"
+            label="Email"
+          />
+
           <p class="form-heading">Company's Address</p>
           <q-input v-model="vendor.address.streetAddress" label="Address1" />
           <q-input
@@ -85,39 +102,41 @@
             :rules="[val => (val && val.length > 0) || '']"
           />
           <p class="form-heading">Company's Phone & Website</p>
-          <div class="row">
+          <div v-for="(contactInfo, index) in vendor.contact" v-if="index >= 1">
+            <q-input v-model="contactInfo.fname" label="First Name" />
+            <q-input v-model="contactInfo.lname" label="LastName" />
             <q-select
-              v-model="vendor.info.phoneNumbers[0].type"
-              :options="contactTypes"
-              option-value="machineName"
-              option-label="name"
-              map-options
-              label="Type1"
-              style="width: 30%; margin-right: auto"
+              v-model="contactInfo.honorific.title"
+              :options="titles"
+              option-label="title"
+              label="Title"
+              option-value="title"
+              @input="setTitleNameForMultiple()"
+              emit-value
             />
+
+            <div class="row">
+              <q-select
+                v-model="contactInfo.phoneNumber.type"
+                :options="contactType"
+                label="Type1"
+                style="width: 50%;"
+              />
+              <q-input
+                v-model="contactInfo.phoneNumber.phone"
+                label="Phone1"
+                type="number"
+                style="width: 50%"
+              />
+            </div>
             <q-input
-              v-model="vendor.info.phoneNumbers[0].number"
-              label="Phone1"
-              type="number"
-              style="width: 65%"
+              v-model="contactInfo.email"
+              novalidate="true"
+              label="email"
             />
           </div>
-          <div class="row">
-            <q-select
-              v-model="vendor.info.phoneNumbers[1].type"
-              :options="contactTypes"
-              option-value="machineName"
-              option-label="name"
-              map-options
-              label="Type2"
-              style="width: 30%; margin-right: auto"
-            />
-            <q-input
-              v-model="vendor.info.phoneNumbers[1].number"
-              label="Phone2"
-              type="number"
-              style="width: 65%"
-            />
+          <div @click="addAnotherContact" class="q-pa-md text-capitalize">
+            + another
           </div>
           <q-input v-model="vendor.info.website" label="Website" />
           <q-input v-model="vendor.info.notes" label="Notes" />
@@ -138,6 +157,8 @@
 import AddressService from "@utils/country";
 const addressService = new AddressService();
 import { mapGetters, mapActions } from "vuex";
+import { getVendorIndustries } from "src/store/vendors/actions";
+import { getTitles } from "src/store/common/actions";
 
 export default {
   name: "AddVendor",
@@ -148,18 +169,41 @@ export default {
       states: [],
       vendor: {
         name: "",
-        industry: "",
-        contact: {
-          fname: "",
-          lname: "",
-          email: "",
-          phoneNumber: [
-            {
-              type: "mobile",
-              number: ""
-            }
-          ]
-        },
+        industry: { name: "", id: "" },
+        contact: [
+          {
+            fname: "",
+            lname: "",
+            email: "",
+            honorific: {
+              id: "",
+              title: ""
+            },
+            phoneNumber: [
+              {
+                type: "mobile",
+                phone: ""
+              }
+            ],
+            isPrimary: true
+          },
+          {
+            fname: "",
+            lname: "",
+            email: "",
+            honorific: {
+              id: "",
+              title: ""
+            },
+            phoneNumber: [
+              {
+                type: "mobile",
+                phone: ""
+              }
+            ]
+          }
+        ],
+
         address: {
           addressCountry: "United States",
           addressLocality: "",
@@ -169,16 +213,6 @@ export default {
           streetAddress: ""
         },
         info: {
-          phoneNumbers: [
-            {
-              type: "pager",
-              number: ""
-            },
-            {
-              type: "mobile",
-              number: ""
-            }
-          ],
           website: "",
           notes: ""
         }
@@ -187,15 +221,82 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["contactType", "vendorIndustries"])
+    ...mapGetters(["contactTypes", "vendorIndustries", "titles"])
   },
 
   created() {
     this.getVendorIndustries();
+    this.getTitles();
   },
 
   methods: {
-    ...mapActions(["addVendor", "getVendorIndustries"]),
+    ...mapActions(["addVendor", "getVendorIndustries", "getTitle"]),
+
+    /* for adding the ids for multiple vendors */
+    setTitleNameForMultiple() {
+      const len = this.vendor.contact.length;
+
+      var titleId1 = this.vendor.contact[len - 1].honorific.title;
+
+      var titleResult1 = this.titles.find(obj => {
+        return obj.title === titleId1;
+      });
+      this.vendor.contact[len - 1].honorific.id = titleResult1.id;
+    },
+    /* for adding the id for the primary vendor */
+    setTitleName() {
+      var titleId = this.vendor.contact[0].honorific.title;
+
+      var titleResult = this.titles.find(obj => {
+        return obj.title === titleId;
+      });
+
+      this.vendor.contact[0].honorific.id = titleResult.id;
+    },
+
+    setVendorIndustryName() {
+      var ids = this.vendor.industry.name;
+
+      var result = this.vendorIndustries.find(obj => {
+        return obj.name === ids;
+      });
+
+      var industryName = result.name;
+      var industryId = result.id;
+
+      this.vendor.industry.name = industryName;
+      this.vendor.industry.id = industryId;
+    },
+
+    addAnotherContact() {
+      const len = this.vendor.contact.length;
+      if (
+        this.vendor.contact[len - 1].fname &&
+        this.vendor.contact[len - 1].phoneNumber
+      ) {
+        this.vendor.contact.push({
+          fname: "",
+          lname: "",
+          email: "",
+          honorific: {
+            id: "",
+            title: ""
+          },
+          phoneNumber: [
+            {
+              type: "mobile",
+              phone: ""
+            }
+          ]
+        });
+      } else {
+        this.$q.notify({
+          message: "Please fill the above details first",
+          position: "top",
+          type: "negative"
+        });
+      }
+    },
 
     onCountrySelect(country) {
       this.states = addressService.getStates(country);
