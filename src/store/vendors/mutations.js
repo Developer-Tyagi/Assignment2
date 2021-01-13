@@ -8,7 +8,7 @@ export function setvendors(state, vendors) {
 
 export function setvendorsIndustries(state, vendorIndustries) {
   state.vendorIndustries = vendorIndustries.map(vendorIndustry => ({
-    name: vendorIndustry.attributes.name,
+    name: vendorIndustry.attributes.value,
     id: vendorIndustry.id
   }));
 }

@@ -17,7 +17,7 @@
             <q-icon name="search" />
           </template>
         </q-input>
-        <div class="q-ml-auto row" @click="filterDialog = true">
+        <!-- <div class="q-ml-auto row" @click="filterDialog = true">
           <img src="~assets/filter.svg" />Filters
         </div>
         <q-btn
@@ -30,17 +30,28 @@
           dense
           style="font-weight: 400"
           >Clear</q-btn
-        >
+        > -->
       </div>
       <div class="clients-list">
-        <div class="q-px-md q-pt-sm" v-for="client in clients" :key="client">
+        <div class="q-px-md q-pt-sm" v-for="client in clients" :key="client.id">
           <div class="client-list-item">
             <div class="row">
-              <span>John Smith</span
-              ><q-icon class="q-ml-auto" size="sm" name="more_vert"></q-icon>
+              <span>
+                {{ client["insuredInfo"]["primary"]["fname"] }}
+                {{ client["insuredInfo"]["primary"]["lname"] }}
+              </span>
+
+              <q-icon class="q-ml-auto" size="sm" name="more_vert"></q-icon>
             </div>
-            <p>+1 (1212) 121212</p>
-            <div><span>File No. 12345678</span> <span> </span></div>
+            <div class="row">
+              <span
+                >Mob:
+                <span>
+                  {{ client.insuredInfo.primary.phoneNumber[0].number }}
+                </span>
+              </span>
+            </div>
+            <div><span>File No. 12345678</span></div>
             <div>Status: Negotiation</div>
           </div>
         </div>
@@ -72,7 +83,6 @@ export default {
   data() {
     return {
       searchText: ""
-      // clients: [1, 2, 3, 4, 5, 6, 7, 8, 9],
     };
   },
 
@@ -88,7 +98,9 @@ export default {
 
     addClient() {
       this.$router.push("/add-client");
-    }
+    },
+
+    search(e) {}
   }
 };
 </script>

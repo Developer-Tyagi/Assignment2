@@ -116,10 +116,14 @@ export default {
   },
 
   mounted() {
+    //this.params.industry = this.filterName;
+    if (this.filterName) {
+      this.params.industry = this.filterName;
+    }
     this.getVendorIndustries();
-    console.log(this.filterName, 1222);
+    //console.log(this.filterName, 1222);
     this.getVendors(this.params);
-    this.params.industry = this.filterName;
+
     //console.log(this.params.industry);
     this.getTitles();
   },

@@ -67,11 +67,6 @@ const routes = [
         path: "vendors",
         name: "vendors",
         component: () => import("pages/Vendors.vue")
-      },
-      {
-        path: "add-vendor",
-        name: "add new vendor",
-        component: () => import("pages/AddVendor.vue")
       }
     ]
   },
@@ -86,7 +81,7 @@ const routes = [
       },
       {
         path: "add-client",
-        name: "add new client",
+        name: "create client",
         component: () => import("pages/AddClient.vue")
       }
     ]

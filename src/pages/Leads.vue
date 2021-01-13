@@ -19,8 +19,11 @@
           alt="Search icon"
           @click="openSearchInput = true"
           style="margin: 0"
-          v-if="(activeLeads.length || archivedLeads.length) && !openSearchInput"
+          v-if="
+            (activeLeads.length || archivedLeads.length) && !openSearchInput
+          "
         />
+
         <img
           src="~assets/add.svg"
           alt=""
@@ -34,8 +37,7 @@
           placeholder="Search for leads"
           style="width: 80%; margin: 0 10%"
           clearable
-          @input="filterLeads(false, $event)"
-          @clear="filterLeads(true)"
+          @input="filterLeads()"
         >
         </q-input>
       </q-toolbar>
@@ -81,18 +83,18 @@
                   v-ripple
                   class="lead-list-details"
                   v-touch-swipe.mouse:6e-3:150:50="
-                    (data) => onListSwipe(data, lead)
+                    data => onListSwipe(data, lead)
                   "
                   :class="{
                     swipeRight: lead.isLeftOptionOpen,
-                    swipeLeft: lead.isRightOptionOpen,
+                    swipeLeft: lead.isRightOptionOpen
                   }"
                 >
                   <q-item-section>
                     <div class="row">
                       <span
-                        >{{ lead["primaryContact"]["fname"] }}
-                        {{ lead["primaryContact"]["lname"] }}</span
+                        >{{ lead.primaryContact.fname }}
+                        {{ lead.primaryContact.lname }}</span
                       >
                       <span class="q-ml-auto">Visting On</span>
                     </div>
@@ -102,7 +104,13 @@
                         <span
                           v-if="
                             lead.primaryContact.phoneNumber &&
-                            lead.primaryContact.phoneNumber.length
+                              lead.primaryContact.phoneNumber.length
+                          "
+                          @click="
+                            onPhoneNumberClick(
+                              lead.primaryContact.phoneNumber[0].number,
+                              $event
+                            )
                           "
                         >
                           {{ lead.primaryContact.phoneNumber[0].number }}
@@ -117,7 +125,7 @@
                       Date of Loss:
                       <span v-if="lead.dateofLoss">{{
                         lead.dateofLoss &&
-                        lead.dateofLoss | moment("DD/MM/YYYY")
+                          lead.dateofLoss | moment("DD/MM/YYYY")
                       }}</span>
                       <span v-else> - </span>
                     </div>
@@ -135,10 +143,13 @@
                       >Schedule Visit</span
                     >
                   </div>
+
                   <div class="button-orange">
-                    <span class="text-white q-my-auto q-mx-auto"
-                      >Create Client</span
-                    >
+                    <q-btn
+                      class="text-white q-my-auto q-mx-auto full-width full-height"
+                      label="Create Client"
+                      @click="onCreateClientButtonClick(lead)"
+                    ></q-btn>
                   </div>
                 </div>
               </div>
@@ -167,7 +178,7 @@
                       <span
                         v-if="
                           lead.primaryContact.phoneNumber &&
-                          lead.primaryContact.phoneNumber.length
+                            lead.primaryContact.phoneNumber.length
                         "
                       >
                         {{ lead.primaryContact.phoneNumber[0].number }}
@@ -215,10 +226,9 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import { mapActions } from "vuex";
-import axios from "axios";
+import { mapGetters, mapActions, mapMutations } from "vuex";
 import moment from "moment";
+import { setSelectedLead } from "src/store/leads/mutations";
 
 export default {
   name: "Leads",
@@ -227,6 +237,7 @@ export default {
       openSearchInput: false,
       searchText: "",
       panel: "newLeads",
+      clientInfoDailog: false
     };
   },
 
@@ -236,7 +247,7 @@ export default {
       if (value) {
         return moment(String(value)).format("MM/DD/YYYY");
       }
-    },
+    }
   },
 
   created() {
@@ -247,9 +258,17 @@ export default {
     ...mapActions([
       "getActiveLeadsList",
       "getArchivedLeadsList",
-      "addLeadToArchiveList",
+      "addLeadToArchiveList"
     ]),
+    ...mapMutations(["setSelectedLead"]),
+    onCreateClientButtonClick(lead) {
+      let payload = {
+        attributes: lead
+      };
+      this.setSelectedLead(payload);
 
+      this.$router.push("/add-client");
+    },
     addLead() {
       this.$router.push("/add-lead");
     },
@@ -258,18 +277,11 @@ export default {
       this.$router.push("/details/" + lead.id);
     },
 
-    filterLeads(closeModel, event) {
-      if (event) {
-        const pattern = new RegExp(event, "i");
-        this.activeLeads = this.activeLeads.filter((val) => {
-          return (
-            pattern.test(val.primaryContact.fname) ||
-            pattern.test(val.primaryContact.lname)
-          );
-        });
+    filterLeads() {
+      if (this.panel === "newLeads") {
+        this.getActiveLeadsList(this.searchText ? this.searchText : "");
       } else {
-        this.activeLeads = JSON.parse(this.copyActiveLeads);
-        this.openSearchInput = false;
+        this.getArchivedLeadsList(this.searchText ? this.searchText : "");
       }
     },
 
@@ -291,14 +303,35 @@ export default {
           lead["isRightOptionOpen"] = false;
         }
       }
-      let index = this.activeLeads.findIndex((item) => item.id === lead.id);
+      let index = this.activeLeads.findIndex(item => item.id === lead.id);
       this.$set(this.activeLeads, index, lead);
     },
 
     onArchiveButtonClick(leadId) {
       this.addLeadToArchiveList(leadId);
     },
+
+    onPhoneNumberClick(number, e) {
+      e.stopPropagation();
+      if (number) {
+        window.open("tel:" + number);
+      }
+    }
   },
+  watch: {
+    panel(newVal, oldVal) {
+      if (newVal != oldVal) {
+        this.searchText = "";
+        this.openSearchInput = false;
+      }
+
+      if (oldVal === "newLeads") {
+        this.getActiveLeadsList();
+      } else {
+        this.getArchivedLeadsList();
+      }
+    }
+  }
 };
 </script>
 <style lang="sass">

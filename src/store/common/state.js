@@ -2,7 +2,7 @@ export default function() {
   return {
     showLoading: false,
     notification: null,
-    contactType: ["phone", "mobile", "pager"],
+    contactTypes: [],
     title: [],
     leadSources: [
       { value: "", name: "None" },

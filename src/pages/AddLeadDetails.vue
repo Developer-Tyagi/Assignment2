@@ -41,23 +41,28 @@
                 ]"
               />
               <div class="row">
+                <q-select
+                  v-model="primaryDetails.selectedContactType"
+                  :options="contactTypes"
+                  option-value="machineName"
+                  option-label="name"
+                  map-options
+                  style="width: 40%; margin-right: auto"
+                  label="Type"
+                  lazy-rules
+                  :rules="[val => (val && val.length > 0) || '']"
+                />
                 <q-input
                   v-model="primaryDetails.phoneNumber"
                   label="Phone"
+                  type="number"
                   lazy-rules
                   :rules="[
                     val =>
-                      (val && val.length > 7) || 'Please fill the phone number'
+                      (val && val.length == 10) ||
+                      'Please fill the phone number'
                   ]"
                   style="width: 65%"
-                />
-                <q-select
-                  v-model="primaryDetails.selectedContactType"
-                  :options="contactType"
-                  label="Mobile"
-                  lazy-rules
-                  :rules="[val => (val && val.length > 0) || '']"
-                  style="width: 30%; margin-left: auto"
                 />
               </div>
               <q-input
@@ -118,21 +123,10 @@
                 v-model="lossDetails.dateOfLoss"
                 type="date"
                 placeholder="Date of Loss"
-                lazy-rules
-                :rules="[
-                  val =>
-                    (val && val.length > 0) || 'Please fill the date of loss '
-                ]"
               />
               <q-input
                 v-model="lossDetails.lossDesc"
                 label="Brief description of loss"
-                lazy-rules
-                :rules="[
-                  val =>
-                    (val && val.length > 0) ||
-                    'Please fill the loss description'
-                ]"
               />
               <br />
               <span class="stepper-heading">Loss Location</span>
@@ -210,10 +204,6 @@
             <q-card class="q-pa-md form-card">
               <span class="stepper-heading">Insurance Details (Optional)</span>
 
-              <q-input
-                v-model="insuranceDetails.carrierName"
-                label="Carrier Name"
-              />
               <div
                 v-model="insuranceDetails.carrierName"
                 class="custom-select"
@@ -227,6 +217,10 @@
                   }}
                 </div>
               </div>
+              <q-input
+                v-model="insuranceDetails.policyNumber"
+                label="Policy Number"
+              />
             </q-card>
             <div class="row q-pt-md">
               <div>
@@ -285,7 +279,9 @@
                 >
                   <div class="select-text">
                     {{
-                      sourceDetails.id ? sourceDetails.details : "Select Vendor"
+                      sourceDetails.id
+                        ? sourceDetails.details
+                        : "Select Lead Source"
                     }}
                   </div>
                 </div>
@@ -420,33 +416,10 @@
       transition-hide="slide-down"
     >
       <q-card>
-        <q-header bordered class="bg-white">
-          <q-toolbar class="row bg-white">
-            <img
-              src="~assets/close.svg"
-              alt="close"
-              @click="vendorsListDialog = false"
-              style="margin: auto 0"
-            />
-            <div class="text-uppercase text-bold text-black q-mx-auto">
-              Vendors
-            </div>
-            <img
-              src="~assets/add.svg"
-              @click="addVendorDialog = true"
-              style="margin: 0 0 0 20px"
-            />
-          </q-toolbar>
-        </q-header>
-        <VendorsList
-          :selective="true"
-          @selectedVendor="addSelectedVendor"
-          ref="list"
-          :filter="true"
+        <AddVendor
+          @closeDialog="closeAddVendorDialog"
+          :pageFrom="'Insurance'"
         />
-      </q-card>
-      <q-card>
-        <AddVendor @closeDialog="closeAddVendorDialog" />
       </q-card>
     </q-dialog>
     <q-dialog
@@ -502,10 +475,12 @@ export default {
   data() {
     return {
       countries: [],
+
       states: [],
       subInspectionTypes: [],
       showSubInspectionType: false,
       addVendorDialog: false,
+      addVendorDialog1: false,
       vendorsListDialog: false,
       carrierListDialog: false,
       step: 3,
@@ -516,7 +491,7 @@ export default {
         lastName: "",
         email: "",
         phone: "",
-        selectedContactType: "mobile"
+        selectedContactType: ""
       },
       lossDetails: {
         lossDesc: "",
@@ -550,9 +525,16 @@ export default {
   },
 
   methods: {
-    ...mapActions(["addLeads", "getInspectionTypes", "addVendor"]),
+    ...mapActions([
+      "addLeads",
+      "getInspectionTypes",
+      "addVendor",
+      "getContactTypes"
+    ]),
     carrierSet() {
       this.carrierListDialog = true;
+      this.insuranceDetails.carrierName = "insurance";
+      console.log(this.insuranceDetails.carrierName);
     },
 
     onCountrySelect(country) {
@@ -587,10 +569,13 @@ export default {
     },
 
     onSubmit() {
-      let formattedString = date.formatDate(
-        this.lossDetails.dateOfLoss,
-        "YYYY-MM-DDTHH:mm:ssZ"
-      );
+      let formattedString = "";
+      if (this.lossDetails.dateOfLoss) {
+        formattedString = date.formatDate(
+          this.lossDetails.dateOfLoss,
+          "YYYY-MM-DDTHH:mm:ssZ"
+        );
+      }
       const payload = {
         isOrganization: this.primaryDetails.isOrganization,
         primaryContact: {
@@ -670,7 +655,19 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["clients", "inspectionTypes", "contactType", "leadSources"])
+    ...mapGetters(["clients", "inspectionTypes", "leadSources", "contactTypes"])
+  },
+
+  watch: {
+    step(newValue, oldValue) {
+      console.log(newValue, oldValue);
+      var el = document.getElementsByClassName("q-stepper__header");
+      if (newValue === 6 && oldValue === 5) {
+        el[0].scroll(100, 0);
+      } else if (newValue === 5 && oldValue === 6) {
+        el[0].scroll(-100, 0);
+      }
+    }
   },
 
   created() {
@@ -694,6 +691,7 @@ export default {
     this.countries = addressService.getCountries();
     this.getInspectionTypes();
     this.onCountrySelect("United States");
+    this.getContactTypes();
   }
 };
 </script>

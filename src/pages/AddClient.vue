@@ -1,19 +1,1411 @@
 <template>
   <q-page style="padding-top: 0; height: 100vh">
     <CustomHeader
-      @backButton="$router.push('/dashboard')"
+      @backButton="$router.push('/clients')"
       :showAddButton="false"
     />
-      </q-toolbar>
-    </q-header>
+
+    <div class="column full-height" style="padding:51px 20px 20px 20px">
+      <div class="q-pa-md column full-height">
+        <div class="createClientInfo" style="font-size:15px">
+   <div
+       class="form-list"
+           @click="clientInfoDailog = true"
+          >
+            Client Info
+          </div>
+       <div
+        class="form-list"
+            @click="publicAdjustorInfoDialog = true"
+          >
+            Public Adjustor Info
+          </div>
+    <div
+        class="form-list"
+       @click="mailingAddressDialog = true"
+          >
+          Mailing Address
+          </div>
+          <div
+          class="form-list"
+           @click="insuranceInfoDialog = true"
+          >
+            Insurance Info
+          </div>
+           <div
+        class="form-list"
+          @click="lossInfoDialog = true"
+          >
+            Loss Info
+          </div>
+          <div
+           class="form-list"
+           @click="mortgageInfoDialog = true"
+          >
+            Mortgage Info
+          </div>
+          <div
+         class="form-list"
+     @click="estimatingInfoDialog = true"
+          >
+            Estimating Info
+          </div>
+          <q-separator />
+          <div
+            class="form-list"
+    @click="expertVendorInfoDialog = true"
+          >
+            Expert/Vendor Info
+          </div>
+          <q-separator />
+          <div
+           class="form-list"
+    @click="officeTaskDialog = true"
+          >
+            Office Task
+          </div>
+          <q-separator />
+          <div
+         class="form-list"
+            @click="documentsDialog = true"
+          >
+            Documents
+          </div>
+          <q-separator />
+        </div>
+          <q-btn
+          label="Create Client"
+          color="primary"
+          class="full-width q-mt-auto text-capitalize"
+          @click="saveButtonClick"
+          size="'xl'"
+        ></q-btn>
+      </div>
+    </div>
+    <q-dialog
+      v-model="publicAdjustorInfoDialog"
+      persistent
+      :maximized="maximizedToggle"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card class="form-card q-pa-md" style="padding-top:51px">
+        <q-header bordered class="bg-white">
+          <q-toolbar class="row bg-white">
+            <img
+              src="~assets/close.svg"
+              alt="back-arrow"
+              @click="publicAdjustorInfoDialog = false"
+              style="margin: auto 0"
+            />
+            
+            <div class="text-uppercase text-bold text-black q-mx-auto">
+              Public Adjustor Info
+            </div>
+          </q-toolbar>
+        </q-header>
+        <q-card-section>
+          <div class="text-h7">Select Public Adjustor You Want to Assign to. </div>
+        <q-select
+            v-model="AdjustorTypes.type"
+            :options="AdjustorTypes"
+            label="Select Public Adjustor"
+          />
+        </q-card-section>
+      <div v-if="AdjustorTypes.type == 'Self'">
+          <div style="font-size: 15px; font-weight: bold">My Details</div>
+          <br />
+          <div style="font-size:15px; margin-left:10px">22/12/2020</div>
+          <div style="font-size:15px; margin-left:10px;font-weight:bold">
+            David Jones
+          </div>
+          <div style="font-size:15px; margin-left:10px">
+            davidjones@company.com
+          </div>
+          <div style="font-size:15px; margin-left:10px">
+            Mobile- +1(650) XXXXX98
+          </div>
+          <div style="font-size:15px; margin-left:10px">
+            License Number- 12345677
+          </div>
+          <br />
+          <div class="row">
+            <p style="font-size:15px">Is it company lead?</p>
+            <q-toggle class="q-ml-auto" v-model="isItCompanyLeadToggle" />
+          </div>
+          <q-separator /><br />
+          <div style="font-size:15px;">Default Fee Rate - 20%</div>
+          <br />
+          <div style="font-size:20px;">Adjustors Fee Type</div>
+          <div class="row">
+            <div class="q-pa-md ">
+              <q-btn padding="xs" color="primary" icon="eva-percent" />
+            </div>
+            <div class="q-pa-md ">
+              <div class="text-purple q-gutter-md">
+                <q-btn padding="xs" color="primary" icon="monetization_on" />
+              </div>
+            </div>
+            <div class="q-pa-md ">
+              <div class="text-purple q-gutter-md">
+                <q-btn padding="xs" color="primary" icon="query_builder" />
+              </div>
+            </div>
+          </div>
+        <div style="font-size:15px; font-weight: bold">
+            Adjusters Fee Rate
+          </div>
+          <br />
+          <q-separator />
+          <br />
+          <div class="row" style="font-size:20px; ">
+            <span class="material-icons">
+              info
+            </span>
+          <div>Needs approval from company</div>
+          </div>
+        </div>
+        <div v-else v-else-if="AdjustorTypes.type == 'Public Adjustor 01'">
+          <div style="font-size: 15px; margin-left:10px">
+            Public Adjustor 01 Details
+          </div>
+          <br />
+          <div style="font-size:15px; margin-left:10px">22/12/2020</div>
+          <div style="font-size:15px; margin-left:10px;font-weight:bold">
+            Public Adjustor 01
+          </div>
+          <div style="font-size:15px; margin-left:10px">
+            publicadjustor01@company.com
+          </div>
+          <div style="font-size:15px; margin-left:10px">
+            Mobile- +1(650) XXXXX98
+          </div>
+          <div style="font-size:15px; margin-left:10px">
+            License Number- 12345677
+          </div>
+          <br />
+          <div class="row">
+            <p style="font-size:15px">Is it company lead</p>
+            <q-toggle class="q-ml-auto" v-model="isItCompanyLeadToggle" />
+          </div>
+          <q-separator></q-separator><br />
+          <div style="font-size:15px; margin-left:25px">
+            Default Fee Rate - 20%
+          </div>
+          <br />
+          <div style="font-size:20px;">
+            Adjustors Fee Type
+          </div>
+          <div class="row">
+            <div class="q-pa-md ">
+              <q-btn padding="xs" color="primary" icon="eva-percent" />
+            </div>
+            <div class="q-pa-md ">
+              <div class="text-purple q-gutter-md">
+                <q-btn padding="xs" color="primary" icon="monetization_on" />
+              </div>
+            </div>
+            <div class="q-pa-md ">
+              <div class="text-purple q-gutter-md">
+                <q-btn padding="xs" color="primary" icon="query_builder" />
+              </div>
+            </div>
+          </div>
+        <div style="font-size:15px; font-weight: bold">Adjusters Fee Rate</div>
+          <br />
+          <q-separator />
+          <br />
+          <div class="row" style="font-size:20px; margin-left:10px">
+            <span class="material-icons">
+              info
+            </span>
+            <div>Needs approval from company</div>
+          </div>
+        </div>
+        <div v-else>
+        </div>
+      <q-btn
+          label="Save"
+          color="primary"
+          class="full-width q-mt-auto text-capitalize"
+          size="'xl'"
+        ></q-btn>
+      </q-card>
+    </q-dialog>
+    <q-dialog
+      v-model="clientInfoDailog"
+      persistent
+      :maximized="maximizedToggle"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card class="form-card q-pa-md" style="padding-top-51px;">
+        <q-header bordered class="bg-white">
+          <q-toolbar class="row bg-white">
+            <img
+              src="~assets/close.svg"
+              alt="back-arrow"
+              @click="clientInfoDailog = false"
+              style="margin: auto 0"
+            />
+            <div class="text-uppercase text-bold text-black q-mx-auto">
+              Client Info
+            </div>
+          </q-toolbar>
+        </q-header>
+        <q-card-section>
+          <div class="q-page bg-white " style="min-height: 630px;">
+            <div
+              class="full-width"
+              style="
+            height: calc(100vh - 145px);
+            overflow-y: auto;
+            margin-bottom: 10px;
+            padding-top:40px;
+          "
+            >
+              <div>
+                <q-input v-model="client.sourceOfLead" label="Source of Lead" />
+              </div>
+            <q-select
+                v-model="client.type"
+                option-value="machineName"
+                  option-label="name"
+                  map-options
+                :options="clientTypes"
+                label="Client Type"
+              />
+              <br />
+            <span class="form-heading">Insured Details</span>
+              <q-input v-model="insuredDetails.fname" 
+                   lazy-rules
+                :rules="[
+                  val => (val && val.length > 0) || 'Please fill the First name'
+                ]"
+              label="First Name" />
+              <q-input v-model="insuredDetails.lname" 
+                lazy-rules
+                :rules="[
+                  val => (val && val.length > 0) || 'Please fill the Last name'
+                ]"
+                label="Last Name" />
+              <div class="row">
+                <q-select
+                  v-model="insuredDetails.type"
+                  :options="contactTypes"
+                  option-value="machineName"
+                  option-label="name"
+                  map-options
+                  style="width: 40%; margin-right: auto"
+                />
+                <q-input
+                  v-model="insuredDetails.phone"
+                  label="Phone"
+                  type="number"
+                  style="width: 55%"
+                /> </div>
+                <q-input
+                v-model="insuredDetails.email"
+                label="Email"
+                lazy-rules
+                :rules="[
+                  val =>
+                    validateEmail(val) ||
+                    'You have entered an invalid email address!'
+                ]"
+              />
+  <div class="row">
+                <p class="q-mx-none q-my-auto">
+                  Is there a Co-insured?
+                </p>
+                <q-toggle class="q-ml-auto" v-model="isThereaCoInsuredToggle" />
+              </div>
+              <br />
+              <div v-if="isThereaCoInsuredToggle" style="font-size:20px;">
+                <span class="form-heading">Co-insured Details</span>
+                <q-input v-model="coInsuredDetails.fname" label="First Name" />
+                <q-input v-model="coInsuredDetails.lname" label="Last Name" />
+            <div class="row">
+                    <q-select
+                    v-model="coInsuredDetails.type"
+                    label="Type"
+                    :options="contactTypes"
+                  option-value="machineName"
+                  option-label="name"
+                  map-options
+                  style="width: 40%; margin-right: auto"
+
+                  />
+                  <q-input
+                    v-model="coInsuredDetails.phone"
+                    label="Phone"
+                    type="number"
+                   
+                    style="width:55%;"
+                  />
+                </div>
+                <q-input
+                  v-model="coInsuredDetails.email"
+                  input
+                  type="email"
+                  lazy-rules
+                  :rules="[
+                    val =>
+                      validateEmail(val) ||
+                      'You have entered an invalid email address!'
+                  ]"
+                  label="Email"
+                />
+              </div>
+  <div class="row">
+                <p class="q-mx-none q-my-auto">
+                  Add aditional phone number(s)
+                </p>
+                <q-toggle
+                  class="q-ml-auto"
+                  v-model="addAditionalPhoneNumberToggle"
+                />
+              </div>
+              <div v-if="addAditionalPhoneNumberToggle">
+                <div class="row">
+                  <q-select
+                    v-model="addAditionalPhoneNumber.type1"
+                    label="Type"
+                    :options="contactTypes"
+                  option-value="machineName"
+                  option-label="name"
+                  map-options
+                  style="width: 40%; margin-right: auto"
+                  />
+                  <q-input
+                    v-model="addAditionalPhoneNumber.phone2"
+                    label="Phone2"
+                    style="width:55%;margin-left:auto"
+                  />
+                  </div>
+                <div class="row">
+                  <q-select
+                    v-model="addAditionalPhoneNumber.type2"
+                    label="Type"
+                    :options="contactTypes"
+                  option-value="machineName"
+                  option-label="name"
+                  map-options
+                  style="width: 40%; margin-right: auto"
+                  />
+                  <q-input
+                    v-model="addAditionalPhoneNumber.phone3"
+                    label="Phone3"
+                    style="width:55%"
+                  />
+                </div>
+              </div>
+              <br />
+              <span class="form-heading">Address Details</span>
+              <q-input
+                v-model="addressDetails.streetNumber"
+                label="Street Number"
+              />
+              <q-input
+                v-model="addressDetails.apartmentNumber"
+                label="Unit or Apartment Number"
+              />
+              <q-input v-model="addressDetails.city" label="City" />
+              <q-input v-model="addressDetails.state" label="State" />
+              <q-input v-model="addressDetails.zip" label="ZIP" />
+              <div class="row">
+                <p class="q-mx-none q-my-auto">
+                  Gate / Dropbox
+                </p>
+            <q-toggle class="q-ml-auto" v-model="gateDropboxToggle" />
+              </div>
+              <div v-if="gateDropboxToggle">
+                <q-input
+                  v-model="gateDropbox.info"
+                  label="Gate ? Dropbox Info"
+                />
+              </div>
+              <div class="row">
+                <p class="q-mx-none q-my-auto">
+                  Tenent Occupied
+                </p>
+              <q-toggle class="q-ml-auto" v-model="tenantOccupiedToggle" />
+              </div>
+              <div v-if="tenantOccupiedToggle">
+                <q-input v-model="tanentOccupied.name" label="Tenant Name" />
+                <div class="row">
+                  <q-select
+                    v-model="tanentOccupied.type"
+                    label="Type"
+                    :options="contactTypes"
+                  option-value="machineName"
+                  option-label="name"
+                  map-options
+                  style="width: 40%; margin-right: auto"
+                  />
+                  <q-input v-model="tanentOccupied.phone" label="Phone" style="width:55%"/>
+                  
+                </div>
+              </div>
+              <br />
+            </div>
+          </div>
+<q-btn
+          @click="saveButtonInClientInfo"
+            label="Save"
+            color="primary"
+            class="full-width q-mt-auto text-capitalize"
+            size="'xl'"
+          ></q-btn>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+    <q-dialog
+      v-model="mailingAddressDialog"
+      persistent
+      :maximized="maximizedToggle"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card class="form-card q-pa-md" style="padding-top-20px">
+        <q-header bordered class="bg-white">
+          <q-toolbar class="row bg-white">
+            <img
+              src="~assets/close.svg"
+              alt="back-arrow"
+              @click="mailingAddressDialog = false"
+              style="margin: auto 0"
+            />
+            <div class="text-uppercase text-bold text-black q-mx-auto">
+              Mailing Address
+            </div>
+          </q-toolbar>
+        </q-header>
+<q-card-section>
+          <div class="q-page bg-white " style="min-height: 630px;">
+            <div
+              class="full-width"
+              style="
+            height: calc(100vh - 145px);
+          margin-bottom: 10px;
+            padding-top:40px;
+          "
+            >
+              <div
+                class="column full-height"
+                style="padding:30px 20px 20px 20px"
+              >
+                <div class="row">
+                  <p class="q-mx-none q-my-auto">
+                    Is the mailing address same?
+                  </p>
+                <q-toggle
+                    class="q-ml-auto"
+                    v-model="isMailingAddressSameToggle"
+                  />
+                </div>
+                <q-input
+                  v-model="mailingAddressDetails.streetAddress"
+                  label="Street Address"
+                />
+                <q-input
+                  v-model="mailingAddressDetails.apartmentNumber"
+                  label="Unit or Apartment Number"
+                />
+                <q-select
+                  v-model="mailingAddressDetails.city"
+                  :options="CityTypes"
+                  label="City"
+                />
+                <q-select
+                  v-model="mailingAddressDetails.state"
+                  :options="StateTypes"
+                  label="State"
+                />
+                <q-input v-model="mailingAddressDetails.zip" label="ZIP" />
+              </div>
+          <br />
+            </div>
+          </div>
+          <q-btn
+            label="Save"
+            color="primary"
+            class="full-width q-mt-auto text-capitalize"
+            @click="saveButtonClick"
+            size="'xl'"
+          ></q-btn>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+    <q-dialog
+      v-model="insuranceInfoDialog"
+      persistent
+      :maximized="maximizedToggle"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card class="form-card q-pa-md" style="padding-top-20px">
+        <q-header bordered class="bg-white">
+          <q-toolbar class="row bg-white">
+            <img
+              src="~assets/close.svg"
+              alt="back-arrow"
+              @click="insuranceInfoDialog = false"
+              style="margin: auto 0"
+            />
+            <div class="text-uppercase text-bold text-black q-mx-auto">
+              Insurance Info
+            </div>
+          </q-toolbar>
+        </q-header>
+
+        <q-card-section>
+          <div class="q-page bg-white " style="min-height: 630px;">
+            <div
+              class="full-width"
+              style="
+            height: calc(100vh - 145px);
+            
+            margin-bottom: 10px;
+            padding-top:40px;
+          "
+            >
+              <div
+                class="column full-height"
+                style="padding:30px 20px 20px 20px"
+              >
+                <div class="row">
+                  <p class="q-mx-none q-my-auto" style="font-size:15px">
+                    Is this is a Foced-Placed policy?
+                  </p>
+<q-toggle
+                    class="q-ml-auto"
+                    v-model="isThisIsForcedPlacedPolicyToggle"
+                  />
+                </div>
+  <q-select
+                  v-model="forcedPlacedPolicyDetails.policyType"
+                  :options="PolicyTypes"
+                  label="Type of Policy"
+                />
+  <q-input
+                  v-model="forcedPlacedPolicyDetails.policyInceptionDate"
+                  label="Policy Inception Date"
+            />
+                <q-input
+                  v-model="forcedPlacedPolicyDetails.policyExpirationDate"
+                  label="Policy Expiration Date"
+                />
+                <q-input
+                  v-model="forcedPlacedPolicyDetails.otherPolicyType"
+                  label="Other Policy Type"
+                />
+                <q-input
+                  v-model="forcedPlacedPolicyDetails.insuranceCarrier"
+                  label="Insurance Carrier"
+                />
+                <q-input
+                  v-model="forcedPlacedPolicyDetails.policyNumber"
+                  label="Policy Number"
+                />
+                <q-input
+                  v-model="forcedPlacedPolicyDetails.policyDeductibleAmount"
+                  label="Policy deductible amount"
+                />
+                <div class="row">
+                  <p class="q-mx-none q-my-auto" style="font-size:15px">
+                    Did you have the policy's Declaration?
+                  </p>
+
+                  <q-toggle
+                    class="q-ml-auto"
+                    v-model="DidYouHavePoliceDeclarationToggle"
+                  />
+                </div>
+                <q-separator></q-separator>
+              </div>
+            <br />
+            </div>
+          </div>
+          <q-btn
+            label="Save"
+            color="primary"
+            class="full-width q-mt-auto text-capitalize"
+            @click="saveButtonClick"
+            size="'xl'"
+          ></q-btn>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+    <q-dialog
+      v-model="lossInfoDialog"
+      persistent
+      :maximized="maximizedToggle"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card class="form-card q-pa-md" style="padding-top:20px">
+        <q-header bordered class="bg-white">
+          <q-toolbar class="row bg-white">
+            <img
+              src="~assets/close.svg"
+              alt="back-arrow"
+              @click="lossInfoDialog = false"
+              style="margin: auto 0"
+            />
+            <div class="text-uppercase text-bold text-black q-mx-auto">
+              Loss Info
+            </div>
+          </q-toolbar>
+        </q-header>
+<q-card-section>
+          <div class="q-page bg-white " style="min-height: 630px;">
+            <div
+              class="full-width"
+              style="
+            height: calc(100vh - 145px);
+            overflow-y: auto;
+            margin-bottom: 10px;
+            padding-top:40px;
+          "
+            >
+              <q-input v-model="lossInfo.dateOfLoss" label="Date of Loss" />
+            <q-select
+                v-model="lossInfo.claimType"
+                :options="ClaimTypes"
+                label="Claim Type"
+              /><br />
+              <div class="row">
+                <p style="font-size:15px">
+                  Is this a State of Emergency Claim?
+                </p>
+                <q-toggle
+                  class="q-ml-auto"
+                  v-model="isThisStateOfEmergencyClaimToggle"
+                />
+              </div>
+              <div class="row">
+                <p style="font-size:15px">State of Emergency</p>
+                <q-toggle class="q-ml-auto" v-model="stateOfEmergencyToggle" />
+              </div>
+              <div v-if="stateOfEmergencyToggle">
+                <q-input
+                  v-model="lossInfo.nameOfEmergency"
+                  label="Name of Emergency"
+                />
+                <q-input v-model="lossInfo.claim" label="Claim (%)" />
+              </div>
+
+              <div class="row">
+                <p style="font-size:15px">Has the claim been filed?</p>
+                <q-toggle class="q-ml-auto" v-model="hasClaimFiledToggle" />
+              </div>
+              <q-input
+                v-model="lossInfo.claimNumber"
+                label="Claim Number"
+              /><br />
+              <div class="row">
+                <p style="font-size:15px">
+                  Do you know the Insurance<br />
+                  Adjuster's Information?
+                </p>
+                <q-toggle
+                  class="q-ml-auto"
+                  v-model="doYouKnowInsuranceAdjustorInformationToggle"
+                />
+              </div>
+              <div v-if="doYouKnowInsuranceAdjustorInformationToggle">
+                <q-input
+                  v-model="lossInfo.insuranceAdjustorName"
+                  label="Insurance Adjuster's Name"
+                />
+              </div>
+              <div class="row">
+                <q-select
+                  v-model="lossInfo.insuranceAdjustorPhoneType"
+                  label="Type"
+                  :options="contactTypes"
+                  option-value="machineName"
+                  option-label="name"
+                  map-options
+                  style="width: 40%; margin-right: auto"
+                />
+                <q-input
+                  v-model="lossInfo.insuranceAdjustorPhone"
+                  label="Insurance Adjuster's Phone"
+                  style="width:55%"
+                  />
+                </div>
+              <q-input
+                v-model="lossInfo.whereDidTheLossOccur"
+                label="Where did the loss occur"
+              />
+              <q-select
+                v-model="lossInfo.typeOfLoss"
+                :options="typeOfLoss"
+                label="Type of Loss"
+              />
+              <q-input v-model="lossInfo.other" label="Other" />
+              <q-select
+                v-model="lossInfo.severityOfClaimType"
+                :options="severityOfClaimTypes"
+                label="Severity of Claim"
+              />
+              <br />
+              <div class="row">
+                <p style="font-size:15px">Is the home habitable?</p>
+                <q-toggle class="q-ml-auto" v-model="isTheHomeHabitable" />
+              </div>
+              <q-input v-model="lossInfo.causeOfLoss" label="Cause of Loss" />
+              <q-input
+                v-model="lossInfo.describeTheLoss"
+                label="Describe the Loss"
+              />
+              <br />
+              <div class="row">
+                <p style="font-size:15px">
+                  Is there damage to personal property?
+                </p>
+                <q-toggle
+                  class="q-ml-auto"
+                  v-model="isThereDamageToPersonalPropertyToggle"
+                />
+              </div>
+              <div class="row">
+                <p style="font-size:15px">
+                  Was a PPIF provided to the insured?
+                </p>
+                <q-toggle
+                  class="q-ml-auto"
+                  v-model="wasAppifProvidedToTheInsuredToggle"
+                />
+              </div>
+              <div class="row">
+                <p style="font-size:15px">
+                  Does the office need to provide a<br />
+                  PPIF to the insured?
+                </p>
+                <q-toggle
+                  class="q-ml-auto"
+                  v-model="doesTheOfficeNeedToProvidePpifToTheInsuredToggle"
+                />
+              </div>
+              <div class="row">
+                <p style="font-size:15px">Is there a mortgage on the home?</p>
+                <q-toggle
+                  class="q-ml-auto"
+                  v-model="IsThereAmortgageOnTheHomeToggle"
+                />
+              </div>
+              <div class="row">
+                <p style="font-size:15px">Is there a second claim to file?</p>
+                <q-toggle
+                  class="q-ml-auto"
+                  v-model="isThereAsecondClaimToFileToggle"
+                />
+              </div>
+            </div>
+            <q-separator />
+            <br />
+          </div>
+          <q-btn
+            label="Save"
+            color="primary"
+            class="full-width q-mt-auto text-capitalize"
+            @click="saveButtonClick"
+            size="'xl'"
+          ></q-btn>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+    <q-dialog
+      v-model="mortgageInfoDialog"
+      persistent
+      :maximized="maximizedToggle"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card class="form-card q-pa-md" style="padding-top:20px">
+        <q-header bordered class="bg-white">
+          <q-toolbar class="row bg-white">
+            <img
+              src="~assets/close.svg"
+              alt="back-arrow"
+              @click="mortgageInfoDialog = false"
+              style="margin: auto 0"
+            />
+            <div class="text-uppercase text-bold text-black q-mx-auto">
+              Mortgage Info
+            </div>
+          </q-toolbar>
+        </q-header>
+
+        <q-card-section>
+          <div class="q-page bg-white " style="min-height: 620px;">
+            <div
+              class="full-width"
+              style="
+            height: calc(100vh - 145px);
+            overflow-y: auto;
+            margin-bottom: 10px;
+            padding-top:40px;
+          "
+            >
+            <q-input
+              v-model="mortgageDetails.companyName"
+              label="Mortgage Company Name"
+            />
+            <q-input v-model="mortgageDetails.loanNumber" label="Loan Number" />
+            <q-input
+              v-model="mortgageDetails.dob"
+              label="Date of Birth of Primary Mortgagee"
+            /><br />
+
+             <span class="form-heading">
+              Last 4 Primary Mortgagee's Social Security<br> Numbers
+            </span>
+            <q-input
+              v-model="mortgageDetails.socialSecurityNumber1"
+              label="Social Security Number 1"
+            />
+            <q-input
+              v-model="mortgageDetails.socialSecurityNumber2"
+              label="Social Security Number 2"
+            />
+            <q-input
+              v-model="mortgageDetails.socialSecurityNumber3"
+              label="Social Security Number 3"
+            />
+            <q-input
+              v-model="mortgageDetails.socialSecurityNumber4"
+              label="Social Security Number 4"
+            /><br />
+            <div class="row">
+              <p style="font-size:15px">Is there a 2nd mortgage on the home?</p>
+
+              <q-toggle
+                class="q-ml-auto"
+                v-model="isTherea2ndMortgageOnTheHomeToggle"
+              />
+            </div>
+            <div v-if="isTherea2ndMortgageOnTheHomeToggle">
+              <q-input
+                v-model="mortgageDetails.secondCompanyName"
+                label="2nd Mortgage Company Name"
+              />
+              <q-input
+                v-model="mortgageDetails.secondLoanNumber"
+                label="2nd Mortgage Loan Number"
+              />
+            </div>
+          </div>
+          <br />
+          </div>
+          </div>
+          <q-btn
+            label="Save"
+            color="primary"
+            class="full-width q-mt-auto text-capitalize"
+            @click="saveButtonClick"
+            size="'xl'"
+          ></q-btn>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+    <q-dialog
+      v-model="estimatingInfoDialog"
+      persistent
+      :maximized="maximizedToggle"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card class="form-card q-pa-md" style="padding-top:20px">
+        <q-header bordered class="bg-white">
+          <q-toolbar class="row bg-white">
+            <img
+              src="~assets/close.svg"
+              alt="back-arrow"
+              @click="estimatingInfoDialog = false"
+              style="margin: auto 0"
+            />
+            <div class="text-uppercase text-bold text-black q-mx-auto">
+              Estimating Info
+            </div>
+          </q-toolbar>
+        </q-header>
+          <q-card-section>
+        <div class="q-page bg-white " style="min-height: 630px;">
+            <div
+              class="full-width"
+              style="
+            height: calc(100vh - 145px);
+            overflow-y: auto;
+            margin-bottom: 10px;
+            padding-top:40px;
+          "
+            >
+            <div class="row">
+              <p style="font-size:15px">
+                Does an estimator need to be<br />assigned?
+              </p>
+              <q-toggle
+                class="q-ml-auto"
+                v-model="doesAnEstimatorNeedToBeAssignedToggle"
+              />
+            </div>
+            <q-input
+              v-model="estimatingInfo.estimatorToBeAssigned"
+              label="Estimator to be assigned"
+            />
+            <q-input
+              v-model="estimatingInfo.scopeTimeNeeded"
+              label="Scope time needed"
+            />
+            <q-input
+              v-model="estimatingInfo.notesToTheEstimator"
+              label="Notes to the estimator"
+            /><br />
+            <div class="row">
+              <p style="font-size:15px">Estimating Information Claim 2</p>
+            <q-toggle
+                class="q-ml-auto"
+                v-model="estimatingInformationClaim2Toggle"
+              />
+            </div>
+          </div>
+          <br />
+        </div>
+        </div>
+          <q-btn
+            label="Save"
+            color="primary"
+            class="full-width q-mt-auto text-capitalize"
+            @click="saveButtonClick"
+            size="'xl'"
+          ></q-btn>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+    <q-dialog
+      v-model="expertVendorInfoDialog"
+      persistent
+      :maximized="maximizedToggle"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card class="form-card q-pa-md" style="padding-top:20px">
+        <q-header bordered class="bg-white">
+          <q-toolbar class="row bg-white">
+            <img
+              src="~assets/close.svg"
+              alt="back-arrow"
+              @click="expertVendorInfoDialog = false"
+              style="margin: auto 0"
+            />
+            <div class="text-uppercase text-bold text-black q-mx-auto">
+              Expert / Vendor Info
+            </div>
+          </q-toolbar>
+        </q-header>
+          <q-card-section>
+      <div class="q-page bg-white " style="min-height: 630px;">
+            <div
+              class="full-width"
+              style="
+            height: calc(100vh - 145px);
+            overflow-y: auto;
+            margin-bottom: 10px;
+            padding-top:40px;
+          "
+            >
+            <div class="row">
+              <p>Has a Vendor of Expert hired?</p>
+              <q-toggle
+                class="q-ml-auto"
+                v-model="hasAvendorOfExpertHiredToggle"
+              />
+            </div>
+            <div v-if="hasAvendorOfExpertHiredToggle">
+              <q-select
+                v-model="expertVendorInfo.expertType"
+                :options="hasAvendorOfExpertHiredTypes"
+                label="Select Vendor / Expert Type"
+              />
+            </div>
+            <div class="row">
+              <p>Any other Expert hired?</p>
+          <q-toggle class="q-ml-auto" v-model="anyOtherExpertHiredToggle" />
+            </div>
+            <div class="row">
+              <p>Do you refer any Vendor?</p>
+  <q-toggle class="q-ml-auto" v-model="doYouReferAnyVendorToggle" />
+            </div>
+          </div>
+    <br /> </div>
+      </div>
+          <q-btn
+            label="Save"
+            color="primary"
+            class="full-width q-mt-auto text-capitalize"
+            @click="saveButtonClick"
+            size="'xl'"
+          ></q-btn>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+    <q-dialog
+      v-model="officeTaskDialog"
+      persistent
+      :maximized="maximizedToggle"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card class="form-card q-pa-md" style="padding-top:20px">
+        <q-header bordered class="bg-white">
+          <q-toolbar class="row bg-white">
+            <img
+              src="~assets/close.svg"
+              alt="back-arrow"
+              @click="officeTaskDialog = false"
+              style="margin: auto 0"
+            />
+            <div class="text-uppercase text-bold text-black q-mx-auto">
+              Office Task
+            </div>
+          </q-toolbar>
+        </q-header>
+        <q-card-section>
+        <div class="q-page bg-white " style="min-height: 630px;">
+            <div
+              class="full-width"
+              style="
+            height: calc(100vh - 145px);
+            overflow-y: auto;
+            margin-bottom: 10px;
+            padding-top:40px;
+          "
+            >
+            <q-select
+              v-model="officeTask.officeActionTypes"
+              :options="officeActionRequiredTypes"
+              label="Office Action Required"
+            />
+            <q-select
+              v-model="officeTask.officeTaskTypes"
+              :options="officeTaskRequiredTypes"
+              label="Office Task Required"
+            /><br />
+            <div class="row">
+              <p>Additional Office Task Required</p>
+<q-toggle
+                class="q-ml-auto"
+                v-model="additionalOfficeTaskRequiredToggle"
+              />
+            </div>
+          </div>
+      <br />
+        </div>
+        </div>
+          <q-btn
+            label="Save"
+            color="primary"
+            class="full-width q-mt-auto text-capitalize"
+            @click="saveButtonClick"
+            size="'xl'"
+          ></q-btn>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
 <script>
 import CustomHeader from "components/CustomHeader";
+import { validateEmail } from "@utils/validation";
+import { selectedLead } from 'src/store/leads/getters';
+import { mapGetters,mapActions } from "vuex";
 export default {
-  name: "AddClient",
-  components: { CustomHeader }
+  name: "addClient",
+  components: { CustomHeader },
+  data() {
+    return {
+      publicAdjustorInfoDialog: false,
+      AdjustorTypes: ["Self", "Public Adjustor 01"],
+      maximizedToggle: true,
+      clientInfoDailog: false,
+
+      client: {
+        sourceOfLead: "",
+        type: ""
+      },
+      insuredDetails: {
+        fname: "",
+        lname: "",
+        phone: "",
+        type: "",
+        email: "",
+      },
+      coInsuredDetails: {
+        fname: "",
+        lname: "",
+        phone: "",
+        type: "",
+        email: ""
+      },
+      addAditionalPhoneNumber: {
+        phone2: "",
+        phone3: "",
+        phone: "",
+        type1: "",
+        type2: ""
+      },
+      addressDetails: {
+        streetNumber: "",
+        apartmentNumber: "",
+        city: "",
+        state: "",
+        zip: ""
+      },
+      gateDropbox: {
+        info: ""
+      },
+      tanentOccupied: {
+        name: "",
+        phone: "",
+        type: ""
+      },
+      
+      mailingAddressDetails: {
+        streetNumber: "",
+        apartmentNumber: "",
+        city: "",
+        state: "",
+        zip: ""
+      },
+      forcedPlacedPolicyDetails: {
+        policyInceptionDate: "",
+        policyExpirationDate: "",
+        otherPolicyType: "",
+        insuranceCarrier: "",
+        policyNumber: "",
+        policyDeductibleAmount: ""
+      },
+      lossInfo: {
+        dateOfLoss: "",
+        claimType: "",
+        nameOfEmergency: "",
+        claim: "",
+        claimNumber: "",
+        insuranceAdjustorName: "",
+        whereDidTheLossOccur: "",
+        other: "",
+        severityOfClaimType: "",
+        causeOfLoss: "",
+        describeTheLoss: "",
+        insuranceAdjustorPhone: "",
+        insuranceAdjustorPhoneType: "",
+        typeOfLoss: ""
+      },
+      mortgageDetails: {
+        companyName: "",
+        loanNumber: "",
+        dob: "",
+        socialSecurityNumber1: "",
+        socialSecurityNumber2: "",
+        socialSecurityNumber3: "",
+        socialSecurityNumber4: "",
+        secondCompanyName: "",
+        secondLoanNumber: ""
+      },
+      estimatingInfo: {
+        estimatorToBeAssigned: "",
+        scopeTimeNeeded: "",
+        notesToTheEstimator: ""
+      },
+      expertVendorInfo: {
+        expertType: ""
+      },
+      officeTask: {
+        officeActionTypes: "",
+        officeTaskTypes: ""
+      },
+      isItCompanyLeadToggle: false,
+      addAditionalPhoneNumberToggle: false,
+      gateDropboxToggle: false,
+      tenantOccupiedToggle: false,
+      mailingAddressDialog: false,
+      isMailingAddressSameToggle: false,
+      isThereaCoInsuredToggle: false,
+      CityTypes: ["Toronto", "Brampton"],
+      StateTypes: ["California", "Washington"],
+      insuranceInfoDialog: false,
+      isThisIsForcedPlacedPolicyToggle: false,
+      PolicyTypes: ["A", "B"],
+      DidYouHavePoliceDeclarationToggle: false,
+      lossInfoDialog: false,
+      ClaimTypes: ["A", "B", "C"],
+      isThisStateOfEmergencyClaimToggle: false,
+      stateOfEmergencyToggle: false,
+      hasClaimFiledToggle: false,
+      isTheHomeHabitable: false,
+      isThereDamageToPersonalPropertyToggle: false,
+      wasAppifProvidedToTheInsuredToggle: false,
+      doYouKnowInsuranceAdjustorInformationToggle: true,
+      doesTheOfficeNeedToProvidePpifToTheInsuredToggle: false,
+      IsThereAmortgageOnTheHomeToggle: false,
+      isThereAsecondClaimToFileToggle: false,
+      insuranceAdjustorPhoneType: ["A", "B", "C"],
+      typeOfLoss: ["A", "B"],
+      hasAvendorOfExpertHiredTypes: ["A", "B"],
+      severityOfClaimTypes: ["A", "B"],
+      mortgageInfoDialog: false,
+      isTherea2ndMortgageOnTheHomeToggle: false,
+      estimatingInfoDialog: false,
+      doesAnEstimatorNeedToBeAssignedToggle: false,
+      estimatingInformationClaim2Toggle: false,
+      expertVendorInfoDialog: false,
+      hasAvendorOfExpertHiredToggle: false,
+      anyOtherExpertHiredToggle: false,
+      doYouReferAnyVendorToggle: false,
+      officeTaskDialog: false,
+      additionalOfficeTaskRequiredToggle: false,
+      officeActionRequiredTypes: ["A", "B", "C"],
+      officeTaskRequiredTypes: ["A", "B", "C"],
+      documentsDialog: false
+    };
+  },
+
+  created() {
+    this.getClientTypes();
+    this.getContactTypes();
+    if(this.selectedLead.name){
+      this.insuredDetails.fname = this.selectedLead.primaryContact.fname;
+      this.insuredDetails.lname = this.selectedLead.primaryContact.lname;
+      this.insuredDetails.email = this.selectedLead.primaryContact.email;
+      this.insuredDetails.phone = this.selectedLead.primaryContact.phoneNumber[0].number;
+      this.insuredDetails.type = this.selectedLead.primaryContact.phoneNumber[0].type;
+      this.clientInfoDailog = true;
+    } else  {
+      this.clientInfoDailog = false;
+    }
+  },
+
+
+  computed: {
+  ...mapGetters(["selectedLead","clientTypes","contactTypes"])
+  },
+ methods: {
+    ...mapActions (["addClient","getClientTypes","getContactTypes"]),
+
+    saveButtonInClientInfo() {
+         const payload = {
+        attributes: {
+         isOrganization:false,
+        isOrganizationPolicyholder: false,
+        },
+       
+        source: {
+          id: "",
+          type: this.client.type,
+          detail: this.client.sourceOfLead,
+        },
+        type: {
+           id: "",
+          name:"",
+        },
+      
+        insuredInfo: {
+          primary:{
+            fname: this.insuredDetails.fname,
+            lname: this.insuredDetails.lname,
+            email: this.insuredDetails.email,
+            phoneNumber : [
+              {
+                type: this.insuredDetails.type,
+                number: this.insuredDetails.phone,
+              }
+            ]
+          },
+       
+          secondary:{
+          fname: this.coInsuredDetails.fname,
+          lname: this.coInsuredDetails.lname,
+          email : this.coInsuredDetails.email,
+          phoneNumber: [
+            {
+              type:  this.coInsuredDetails.type,
+              number: this.coInsuredDetails.phone,
+            }
+          ]
+          },
+          address: {
+               addressCountry: this.addressDetails.state,
+               addressLocality: this.addressDetails.city,
+                 addressRegion: this.addressDetails.apartmentNumber,
+                  postOfficeBoxNumber: "",
+                    postalCode: this.addressDetails.zip,
+                    streetAddress:  this.addressDetails.streetNumber,
+                    dropBox:this.gateDropbox.info,
+          },
+            mailingAddress: {
+                    addressCountry: "",
+                    addressLocality: "",
+                    addressRegion: "",
+                    postOfficeBoxNumber: "",
+                    postalCode: "",
+                    streetAddress: "",
+                    dropBoxInfo: "",
+                },
+                 phoneNumbers: [
+                    {
+                        type: this.addAditionalPhoneNumber.type1,
+                        number: this.addAditionalPhoneNumber.phone2,
+                    },
+                    {
+                       type: this.addAditionalPhoneNumber.type2,
+     
+                   number: this.addAditionalPhoneNumber.phone3,
+                    },
+
+                 ],
+                  tenantInfo: {
+                    name:  this.tanentOccupied.name,
+                    phoneNumber: {
+                        type:  this.tanentOccupied.type,
+                        number: this.tanentOccupied.phone,
+                    }
+                }
+         },
+     
+      }
+   
+    this.addClient(payload)
+    },
+    saveButtonClick() {},
+    validateEmail
+  }
 };
 </script>
-<style lang="sass"></style>
+<style lang="scss">
+.form-card {
+  max-height: calc(100vh - 100px);
+  overflow: scroll;
+}
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent; /* make scrollbar transparent */
+}
+.form-heading {
+  color: #333333;
+  font-weight: bold;
+  font-size: 14px;
+}
+.form-list {
+  color: #333333;
+  font-weight: bold;
+  font-size: 16px;
+  
+  padding: 15px 0;
+  border-bottom: 1px solid #D3D3D3;
+}
+</style>
