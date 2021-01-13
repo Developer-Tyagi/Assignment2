@@ -62,7 +62,7 @@
                       (val && val.length == 10) ||
                       'Please fill the phone number'
                   ]"
-                  style="width: 65%"
+                  style="width: 55%"
                 />
               </div>
               <q-input
