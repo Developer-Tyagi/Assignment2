@@ -207,7 +207,7 @@
               <div
                 v-model="insuranceDetails.carrierName"
                 class="custom-select"
-                @click="carrierSet()"
+                @click="onAddVendorDialogClick('carrier')"
               >
                 <div class="select-text">
                   {{
@@ -275,7 +275,7 @@
                 <div
                   v-else-if="sourceDetails.type == 'vendor'"
                   class="custom-select"
-                  @click="vendorsListDialog = true"
+                  @click="onAddVendorDialogClick('vendor')"
                 >
                   <div class="select-text">
                     {{
@@ -409,21 +409,7 @@
     </div>
 
     <q-dialog
-      v-model="addVendorDialog"
-      persistent
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <AddVendor
-          @closeDialog="closeAddVendorDialog"
-          :pageFrom="'Insurance'"
-        />
-      </q-card>
-    </q-dialog>
-    <q-dialog
-      v-model="carrierListDialog"
+      v-model="vendorsListDialog"
       persistent
       :maximized="true"
       transition-show="slide-up"
@@ -435,11 +421,11 @@
             <img
               src="~assets/close.svg"
               alt="close"
-              @click="carrierListDialog = false"
+              @click="vendorsListDialog = false"
               style="margin: auto 0"
             />
             <div class="text-uppercase text-bold text-black q-mx-auto">
-              Carrier
+              {{ vendorDialogName }}
             </div>
             <img
               src="~assets/add.svg"
@@ -452,8 +438,23 @@
           :selective="true"
           @selectedVendor=""
           ref="list"
-          :filter="false"
-          :filterName="'abcd'"
+          :showFilter="showVendorDialogFilters"
+          :filterName="vendorDialogFilterByIndustry"
+        />
+      </q-card>
+    </q-dialog>
+
+    <q-dialog
+      v-model="addVendorDialog"
+      persistent
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <AddVendor
+          @closeDialog="closeAddVendorDialog"
+          :componentName="vendorDialogName"
         />
       </q-card>
     </q-dialog>
@@ -475,14 +476,14 @@ export default {
   data() {
     return {
       countries: [],
-
       states: [],
       subInspectionTypes: [],
       showSubInspectionType: false,
       addVendorDialog: false,
-      addVendorDialog1: false,
       vendorsListDialog: false,
-      carrierListDialog: false,
+      showVendorDialogFilters: false,
+      vendorDialogName: "",
+      vendorDialogFilterByIndustry: "",
       step: 3,
       primaryDetails: {
         isOrganization: false,
@@ -531,10 +532,17 @@ export default {
       "addVendor",
       "getContactTypes"
     ]),
-    carrierSet() {
-      this.carrierListDialog = true;
-      this.insuranceDetails.carrierName = "insurance";
-      console.log(this.insuranceDetails.carrierName);
+
+    onAddVendorDialogClick(name) {
+      this.vendorDialogName = name;
+      if (name === "carrier") {
+        this.showVendorDialogFilters = false;
+        this.vendorDialogFilterByIndustry = "carrier";
+      } else {
+        this.showVendorDialogFilters = true;
+        this.vendorDialogFilterByIndustry = "";
+      }
+      this.vendorsListDialog = true;
     },
 
     onCountrySelect(country) {
@@ -660,7 +668,6 @@ export default {
 
   watch: {
     step(newValue, oldValue) {
-      console.log(newValue, oldValue);
       var el = document.getElementsByClassName("q-stepper__header");
       if (newValue === 6 && oldValue === 5) {
         el[0].scroll(100, 0);

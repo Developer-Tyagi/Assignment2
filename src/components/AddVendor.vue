@@ -9,7 +9,7 @@
           style="margin: auto 0"
         />
         <div class="text-uppercase text-bold text-black q-mx-auto">
-          ADD NEW{{ componentName }}
+          ADD NEW {{ componentName }}
         </div>
       </q-toolbar>
     </q-header>
@@ -76,7 +76,7 @@
             type="email"
             label="Email"
           />
-          <div class="row" v-if="this.pageFrom">
+          <div class="row" v-if="componentName === 'carrier'">
             <p class="q-mx-none q-my-auto">
               can claim be filed by email
             </p>
@@ -155,8 +155,9 @@
           class="full-width q-mt-auto text-capitalize"
           @click="onAddVendorButtonClick"
           size="'xl'"
-          >Add {{ pageFrom }}</q-btn
         >
+          Add {{ componentName }}
+        </q-btn>
       </q-form>
     </div>
   </q-page>
@@ -171,7 +172,7 @@ import { getContactTypes, getTitles } from "src/store/common/actions";
 
 export default {
   name: "AddVendor",
-  props: ["pageFrom", "componentName"],
+  props: ["componentName"],
   title: "",
   data() {
     return {
@@ -239,16 +240,18 @@ export default {
   },
 
   mounted() {
-    if (this.pageFrom) {
-      this.vendor.name = this.pageFrom;
-      this.titles = this.pageFrom;
-      //console.log(this.pageFrom);
-    }
-    this.titles = this.name;
-
     this.getVendorIndustries();
     this.getTitles();
     this.getContactTypes();
+    if (this.componentName && this.componentName === "carrier") {
+      let industryType = this.vendorIndustries.find(
+        o => o.machineValue === "carrier"
+      );
+      if (industryType.name && industryType.id) {
+        this.vendor.industry.name = industryType.name;
+        this.vendor.industry.id = industryType.id;
+      }
+    }
   },
 
   methods: {
