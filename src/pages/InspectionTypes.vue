@@ -22,7 +22,7 @@
           :key="inspectionType.id"
           class="inspection-list-item"
         >
-          {{ inspectionType.name }}
+          {{ inspectionType.machineValue }}
         </div>
       </div>
       <div v-else class="column full-height">

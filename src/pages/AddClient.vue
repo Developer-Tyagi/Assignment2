@@ -297,6 +297,7 @@
                   option-label="name"
                   map-options
                   style="width: 40%; margin-right: auto"
+                  label="Phone Type"
                 />
                 <q-input
                   v-model="insuredDetails.phone"
@@ -328,13 +329,12 @@
             <div class="row">
                     <q-select
                     v-model="coInsuredDetails.type"
-                    label="Type"
                     :options="contactTypes"
                   option-value="machineName"
                   option-label="name"
                   map-options
                   style="width: 40%; margin-right: auto"
-
+                  label="Phone Type"
                   />
                   <q-input
                     v-model="coInsuredDetails.phone"
@@ -370,12 +370,12 @@
                 <div class="row">
                   <q-select
                     v-model="addAditionalPhoneNumber.type1"
-                    label="Type"
                     :options="contactTypes"
                   option-value="machineName"
                   option-label="name"
                   map-options
                   style="width: 40%; margin-right: auto"
+                  label="Phone Type"
                   />
                   <q-input
                     v-model="addAditionalPhoneNumber.phone2"
@@ -386,12 +386,12 @@
                 <div class="row">
                   <q-select
                     v-model="addAditionalPhoneNumber.type2"
-                    label="Type"
                     :options="contactTypes"
                   option-value="machineName"
                   option-label="name"
                   map-options
                   style="width: 40%; margin-right: auto"
+                  label="Phone Type"
                   />
                   <q-input
                     v-model="addAditionalPhoneNumber.phone3"
@@ -436,12 +436,12 @@
                 <div class="row">
                   <q-select
                     v-model="tanentOccupied.type"
-                    label="Type"
                     :options="contactTypes"
                   option-value="machineName"
                   option-label="name"
                   map-options
                   style="width: 40%; margin-right: auto"
+                  label="Phone Type"
                   />
                   <q-input v-model="tanentOccupied.phone" label="Phone" style="width:55%"/>
                   
@@ -723,12 +723,12 @@
               <div class="row">
                 <q-select
                   v-model="lossInfo.insuranceAdjustorPhoneType"
-                  label="Type"
                   :options="contactTypes"
                   option-value="machineName"
                   option-label="name"
                   map-options
                   style="width: 40%; margin-right: auto"
+                  label="Phone Type"
                 />
                 <q-input
                   v-model="lossInfo.insuranceAdjustorPhone"

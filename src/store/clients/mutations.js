@@ -7,7 +7,7 @@ export function setClients(state, clients) {
 }
 
 export function setClientTypes(state, types) {
-  state.contactTypes = types.map(type => ({
+  state.clientTypes = types.map(type => ({
     name: type.attributes.value,
     machineName: type.attributes.machineValue
   }));
