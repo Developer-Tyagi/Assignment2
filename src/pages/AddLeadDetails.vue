@@ -24,6 +24,17 @@
           <q-form @submit="step++">
             <q-card class="form-card q-pa-md">
               <span class="stepper-heading">Primary Contact</span>
+              <q-select
+                v-model="primaryDetails.honorific.id"
+                :options="titles"
+                option-value="id"
+                option-label="title"
+                map-options
+                emit-value
+                label="Title"
+                lazy-rules
+                :rules="[val => (val && val.length > 0) || '']"
+              />
               <q-input
                 v-model="primaryDetails.firstName"
                 label="First Name"
@@ -204,10 +215,20 @@
           <q-form @submit="step++" @reset="step--">
             <q-card class="q-pa-md form-card">
               <span class="stepper-heading">Insurance Details (Optional)</span>
-              <q-input
+
+              <div
                 v-model="insuranceDetails.carrierName"
-                label="Carrier Name"
-              />
+                class="custom-select"
+                @click="onAddVendorDialogClick('carrier')"
+              >
+                <div class="select-text">
+                  {{
+                    insuranceDetails.carrierName
+                      ? insuranceDetails.carrierName
+                      : "Enter Carrier Details"
+                  }}
+                </div>
+              </div>
               <q-input
                 v-model="insuranceDetails.policyNumber"
                 label="Policy Number"
@@ -266,7 +287,7 @@
                 <div
                   v-else-if="sourceDetails.type == 'vendor'"
                   class="custom-select"
-                  @click="vendorsListDialog = true"
+                  @click="onAddVendorDialogClick('vendor')"
                 >
                   <div class="select-text">
                     {{
@@ -398,6 +419,7 @@
         </q-step>
       </q-stepper>
     </div>
+
     <q-dialog
       v-model="vendorsListDialog"
       persistent
@@ -414,9 +436,8 @@
               @click="vendorsListDialog = false"
               style="margin: auto 0"
             />
-
             <div class="text-uppercase text-bold text-black q-mx-auto">
-              Vendors
+              {{ vendorDialogName }}
             </div>
             <img
               src="~assets/add.svg"
@@ -427,11 +448,14 @@
         </q-header>
         <VendorsList
           :selective="true"
-          @selectedVendor="addSelectedVendor"
+          @selectedVendor="onClosingVendorSelectDialog"
           ref="list"
+          :showFilter="showVendorDialogFilters"
+          :filterName="vendorDialogFilterByIndustry"
         />
       </q-card>
     </q-dialog>
+
     <q-dialog
       v-model="addVendorDialog"
       persistent
@@ -440,7 +464,10 @@
       transition-hide="slide-down"
     >
       <q-card>
-        <AddVendor @closeDialog="closeAddVendorDialog" />
+        <AddVendor
+          @closeDialog="closeAddVendorDialog"
+          :componentName="vendorDialogName"
+        />
       </q-card>
     </q-dialog>
   </q-page>
@@ -453,6 +480,7 @@ import { validateEmail } from "@utils/validation";
 import { leadSource } from "src/store/common/getters";
 import VendorsList from "components/VendorsList";
 import AddVendor from "components/AddVendor";
+
 const addressService = new AddressService();
 
 export default {
@@ -462,11 +490,16 @@ export default {
     return {
       countries: [],
       states: [],
+
       subInspectionTypes: [],
-      showSubInspectionType: false,
       addVendorDialog: false,
+      showSubInspectionType: false,
+
       vendorsListDialog: false,
-      step: 1,
+      showVendorDialogFilters: false,
+      vendorDialogName: "",
+      vendorDialogFilterByIndustry: "",
+      step: 3,
       primaryDetails: {
         isOrganization: false,
         organizationName: "",
@@ -474,7 +507,11 @@ export default {
         lastName: "",
         email: "",
         phone: "",
-        selectedContactType: ""
+        selectedContactType: "",
+        honorific: {
+          id: "",
+          value: ""
+        }
       },
       lossDetails: {
         lossDesc: "",
@@ -488,7 +525,8 @@ export default {
       },
       insuranceDetails: {
         policyNumber: "",
-        carrierName: ""
+        carrierName: "",
+        carrierId: ""
       },
       sourceDetails: {
         id: "",
@@ -512,11 +550,31 @@ export default {
       "addLeads",
       "getInspectionTypes",
       "addVendor",
-      "getContactTypes"
+      "getContactTypes",
+      "getTitles"
     ]),
 
-    console(a) {
-      console.log(a);
+    onAddVendorDialogClick(name) {
+      this.vendorDialogName = name;
+      if (name === "carrier") {
+        this.showVendorDialogFilters = false;
+        this.vendorDialogFilterByIndustry = ""; //filter by what?
+      } else {
+        this.showVendorDialogFilters = true;
+        this.vendorDialogFilterByIndustry = ""; ///filter by what?
+      }
+      this.vendorsListDialog = true;
+    },
+
+    onClosingVendorSelectDialog(vendor, isVendor) {
+      if (isVendor) {
+        this.sourceDetails.id = vendor.id;
+        this.sourceDetails.details = vendor.name;
+      } else {
+        this.insuranceDetails.carrierId = vendor.id;
+        this.insuranceDetails.carrierName = vendor.name;
+      }
+      this.vendorsListDialog = false;
     },
 
     onCountrySelect(country) {
@@ -561,6 +619,10 @@ export default {
       const payload = {
         isOrganization: this.primaryDetails.isOrganization,
         primaryContact: {
+          honorific: {
+            id: this.primaryDetails.honorific.id,
+            value: "Mr."
+          },
           fname: this.primaryDetails.firstName,
           lname: this.primaryDetails.lastName,
           email: this.primaryDetails.email,
@@ -576,7 +638,10 @@ export default {
         },
         lossDesc: this.lossDetails.lossDesc,
         dateofLoss: formattedString,
-        carrier: this.insuranceDetails.carrierName,
+        carrier: {
+          id: this.insuranceDetails.carrierId,
+          value: this.insuranceDetails.carrierName
+        },
         policyNumber: this.insuranceDetails.policyNumber,
         isAutomaticScheduling: this.schedulingDetails.isAutomaticScheduling,
         notes: this.notes,
@@ -637,12 +702,17 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["clients", "inspectionTypes", "leadSources", "contactTypes"])
+    ...mapGetters([
+      "clients",
+      "inspectionTypes",
+      "leadSources",
+      "contactTypes",
+      "titles"
+    ])
   },
 
   watch: {
     step(newValue, oldValue) {
-      console.log(newValue, oldValue);
       var el = document.getElementsByClassName("q-stepper__header");
       if (newValue === 6 && oldValue === 5) {
         el[0].scroll(100, 0);
@@ -674,6 +744,7 @@ export default {
     this.getInspectionTypes();
     this.onCountrySelect("United States");
     this.getContactTypes();
+    this.getTitles();
   }
 };
 </script>

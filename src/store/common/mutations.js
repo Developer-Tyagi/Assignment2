@@ -7,7 +7,7 @@ export function setNotification(state, value) {
 }
 export function setTitles(state, titles) {
   state.titles = titles.map(titles => ({
-    title: titles.attributes.titles,
+    title: titles.attributes.machineValue,
     id: titles.id
   }));
 }

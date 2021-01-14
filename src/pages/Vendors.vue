@@ -8,9 +8,7 @@
           @click="$router.push('/dashboard')"
           style="margin: auto 0"
         />
-        <div
-          class="text-uppercase text-bold text-black q-mx-auto"
-        >
+        <div class="text-uppercase text-bold text-black q-mx-auto">
           {{ $route.name }}
         </div>
         <img
@@ -21,33 +19,38 @@
         />
       </q-toolbar>
     </q-header>
-    <VendorsList ref="list" :selective="false"/>
+    <VendorsList ref="list" :selective="false" :filter="true" />
     <q-dialog
       v-model="addVendorDialog"
       persistent
       :maximized="true"
       transition-show="slide-up"
-      transition-hide="slide-down"     
+      transition-hide="slide-down"
     >
-    <q-card>
-      <AddVendor @closeDialog="closeAddVendorDialog"/>
-    </q-card>
+      <q-card>
+        <AddVendor
+          @closeDialog="closeAddVendorDialog"
+          :componentName="'vendor'"
+        />
+      </q-card>
     </q-dialog>
   </q-page>
 </template>
 
 <script>
-import VendorsList from 'components/VendorsList';
-import AddVendor from 'components/AddVendor'
+import VendorsList from "components/VendorsList";
+import AddVendor from "components/AddVendor";
 export default {
   name: "Vendors",
   components: { VendorsList, AddVendor },
-  data(){ return { addVendorDialog : false }},
-  methods:{
-    closeAddVendorDialog(e){
+  data() {
+    return { addVendorDialog: false, vendorDialogFilterByIndustry: "" };
+  },
+  methods: {
+    closeAddVendorDialog(e) {
       this.addVendorDialog = false;
-      if(e){
-        this.$refs.list.getVendors()
+      if (e) {
+        this.$refs.list.getVendors();
       }
     }
   }

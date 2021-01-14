@@ -51,21 +51,3 @@ export async function getVendorIndustries({ commit, dispatch }) {
     });
   }
 }
-/*
-export async function getTitles({ commit, dispatch }) {
-  dispatch("setLoading", true);
-  try {
-    const { data } = await request.get("/honorifics");
-    console.log(data, 2);
-    commit("setTitles", data);
-    dispatch("setLoading", false);
-  } catch (e) {
-    console.log(e);
-    dispatch("setLoading", false);
-    dispatch("setNotification", {
-      type: "negative",
-      message: e.response.data.title
-    });
-  }
-}
-*/
