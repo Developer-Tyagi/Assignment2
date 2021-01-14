@@ -1,7 +1,7 @@
 <template>
   <q-page style="padding-top: 0; height: 100vh">
     <CustomHeader
-      @backButton="$router.push('/dashboard')"
+      @backButton="$router.push('/clients')"
       :showAddButton="false"
     />
 
@@ -77,7 +77,7 @@
           label="Create Client"
           color="primary"
           class="full-width q-mt-auto text-capitalize"
-          @click="saveButtonInClientInfo"
+          @click="CreateClientButtonClick"
           size="'xl'"
         ></q-btn>
       </div>
@@ -304,8 +304,11 @@
                 </div>
               </div>
             <q-select
-                v-model="client.type"
-                :options="ClientTypes"
+             v-model="client.type"
+                option-value="machineName"
+                  option-label="name"
+                  map-options
+                :options="clientTypes"
                 label="Client Type"
               />
               <br />
@@ -324,17 +327,19 @@
                 label="Last Name" />
               <div class="row">
                 <q-select
-                  v-model="insuredDetails.type"
-                  :options="insuredTypes"
+                v-model="insuredDetails.type"
+                  :options="contactTypes"
+                  option-value="machineName"
+                  option-label="name"
+                  map-options
                   label="Type"
-                  style="width: 30%;"
+                  style="width: 40%; margin-right: auto"
                 />
                 <q-input
-                  v-model="insuredDetails.phone"
+                 v-model="insuredDetails.phone"
                   label="Phone"
                   type="number"
-                 
-                  style="width: 65%;margin-left:auto"
+                  style="width: 55%"
                 /> </div>
                 <q-input
                 v-model="insuredDetails.email"
@@ -361,16 +366,19 @@
             <div class="row">
                     <q-select
                     v-model="coInsuredDetails.type"
-                    :options="coInsuredTypes"
                     label="Type"
-                style="width: 30%;margin-left:auto "
+                    :options="contactTypes"
+                  option-value="machineName"
+                  option-label="name"
+                  map-options
+                  style="width: 40%; margin-right: auto"
                   />
                   <q-input
-                    v-model="coInsuredDetails.phone"
+                   v-model="coInsuredDetails.phone"
                     label="Phone"
                     type="number"
                    
-                    style="width:65%;margin-left:auto"
+                    style="width:55%;"
                   />
                 </div>
                 <q-input
@@ -398,28 +406,34 @@
               <div v-if="addAditionalPhoneNumberToggle">
                 <div class="row">
                   <q-select
-                    v-model="addAditionalPhoneNumber.type1"
-                    :options="addAdditionalPhoneNumber1Types"
+                     v-model="addAditionalPhoneNumber.type1"
                     label="Type"
-                    style="width: 30%; "
+                    :options="contactTypes"
+                    option-value="machineName"
+                  option-label="name"
+                  map-options
+                  style="width: 40%; margin-right: auto"
                   />
                   <q-input
                     v-model="addAditionalPhoneNumber.phone2"
                     label="Phone2"
-                    style="width:65%;margin-left:auto"
-                  />
+                    style="width:55%;margin-left:auto"
+ />
                   </div>
                 <div class="row">
                   <q-select
-                    v-model="addAditionalPhoneNumber.type2"
-                    :options="addAdditionalPhoneNumber2Types"
+                   v-model="addAditionalPhoneNumber.type2"
                     label="Type"
-                    style="width: 30%;"
+                    :options="contactTypes"
+                  option-value="machineName"
+                  option-label="name"
+                  map-options
+                  style="width: 40%; margin-right: auto"
                   />
                   <q-input
-                    v-model="addAditionalPhoneNumber.phone3"
+                  v-model="addAditionalPhoneNumber.phone3"
                     label="Phone3"
-                    style="width:65%;margin-left:auto"
+                    style="width:55%"
                   />
                 </div>
               </div>
@@ -467,10 +481,13 @@
                 <q-input v-model="tanentOccupied.name" label="Tenant Name" />
                 <div class="row">
                   <q-select
-                    v-model="tanentOccupied.type"
-                    :options="tenantOccupiedTypes"
+                 v-model="tanentOccupied.type"
                     label="Type"
-                    style="width: 30%;"
+                    :options="contactTypes"
+                  option-value="machineName"
+                  option-label="name"
+                  map-options
+                  style="width: 40%; margin-right: auto"
                   />
                   <q-input v-model="tanentOccupied.phone" label="Phone" style="width:65%; margin-left: auto"/>
                   
@@ -531,7 +548,7 @@
                 <q-toggle
                     class="q-ml-auto"
                     v-model="isMailingAddressSameToggle"
-                   @input="isMailingAddressSamePreFill"
+                   @input="MailingAddressSame"
                   />
                 </div>
                 <div v-if="!isMailingAddressSameToggle"
@@ -805,14 +822,18 @@
               </div>
               <div class="row">
                 <q-select
-                  v-model="lossInfo.insuranceAdjustorPhoneType"
-                  :options="insuranceAdjustorPhoneType"
+                 v-model="lossInfo.insuranceAdjustorPhoneType"
                   label="Type"
-                  style="width: 30%;"
+                  :options="contactTypes"
+                  option-value="machineName"
+                  option-label="name"
+                  map-options
+                  style="width: 40%; margin-right: auto"
                 />
                 <q-input
                   v-model="lossInfo.insuranceAdjustorPhone"
                   label="Insurance Adjuster's Phone"
+                  style="width:55%"
                   />
                 </div>
               <q-input
@@ -1258,7 +1279,7 @@ import AddVendor from "components/AddVendor";
 const addressService = new AddressService();
 
 export default {
-  name: "addClient",
+   name: "addClient",
   components: { CustomHeader, VendorsList, AddVendor },
   data() {
     return {
@@ -1278,7 +1299,7 @@ export default {
      country:"",
      dropBox:"",
      },
- ClientTypes: ["Client A", "Client B"],
+ 
  sourceDetails: {
         id: "",
         type: "",
@@ -1287,6 +1308,7 @@ export default {
       client: {
       type: ""
       },
+      
       insuredDetails: {
         fname: "",
         lname: "",
@@ -1435,27 +1457,30 @@ export default {
     };
   },
 created() {
+   this.getClientTypes();
+    this.getContactTypes();
   if(this.selectedLead.primaryContact.fname){
- this.insuredDetails.fname = this.selectedLead.primaryContact.fname;
+   this.insuredDetails.fname = this.selectedLead.primaryContact.fname;
 this.insuredDetails.lname = this.selectedLead.primaryContact.lname;
 this.insuredDetails.email = this.selectedLead.primaryContact.email;
 this.insuredDetails.phone = this.selectedLead.primaryContact.phoneNumber[0].number;
 this.insuredDetails.type = this.selectedLead.primaryContact.phoneNumber[0].type;
-}
+ }
  
-  this.countries = addressService.getCountries();
+ this.countries = addressService.getCountries();
   this.onCountrySelect("United States");
+      
 },
   computed: {
-  ...mapGetters(["selectedLead","leadSources"])
+  ...mapGetters(["selectedLead","leadSources","contactTypes","clientTypes"])
   },
  methods: {
-    ...mapActions (["addClient","addVendor"]),
+    ...mapActions (["addClient","getClientTypes", "getContactTypes"]),
     
    onCountrySelect(country) {
       this.states = addressService.getStates(country);
    },
-    isMailingAddressSamePreFill(){
+    MailingAddressSame(){
    this.mailingAddressSameInfo.streetAddress = this.addressDetails.streetNumber;
    this.mailingAddressSameInfo.unitOrApartmentNumber = this.addressDetails.apartmentNumber;
     this.mailingAddressSameInfo.city = this.addressDetails.city;
@@ -1464,13 +1489,11 @@ this.insuredDetails.type = this.selectedLead.primaryContact.phoneNumber[0].type;
   this.mailingAddressSameInfo.country = this.addressDetails.country;
   this.mailingAddressSameInfo.dropBox = this.gateDropbox.info;
    },
-  saveButtonInClientInfo() {
+  CreateClientButtonClick() {
    const payload = {
-        attributes: {
-         isOrganization:false,
+        isOrganization:false,
         isOrganizationPolicyholder: false,
-        },
-       leadSource: {
+        leadSource: {
           id: "",
           type: this.sourceDetails.type,
           details: "",
