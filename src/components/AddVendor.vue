@@ -80,7 +80,10 @@
             <p class="q-mx-none q-my-auto">
               can claim be filed by email
             </p>
-            <q-toggle class="q-ml-auto" v-model="vendor.claimFiledByEmail" />
+            <q-toggle
+              class="q-ml-auto"
+              v-model="vendor.meta.claimFiledByEmail"
+            />
           </div>
 
           <p class="form-heading">Company's Address</p>
@@ -173,7 +176,7 @@ import { getContactTypes, getTitles } from "src/store/common/actions";
 export default {
   name: "AddVendor",
   props: ["componentName"],
-  title: "",
+  //title: "",
   data() {
     return {
       industryTypes: ["Association"],
@@ -240,6 +243,7 @@ export default {
   },
 
   mounted() {
+    //console.log(this.titles);
     this.getVendorIndustries();
     this.getTitles();
     this.getContactTypes();
@@ -333,8 +337,10 @@ export default {
     },
 
     onAddVendorButtonClick() {
+      console.log(this.vendor);
       this.$refs.vendorForm.validate().then(async success => {
         if (success) {
+          console.log(66);
           this.addVendor(this.vendor).then(async => {
             this.closeDialog(true);
           });

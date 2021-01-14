@@ -28,7 +28,10 @@
       transition-hide="slide-down"
     >
       <q-card>
-        <AddVendor @closeDialog="closeAddVendorDialog" />
+        <AddVendor
+          @closeDialog="closeAddVendorDialog"
+          :componentName="'vendor'"
+        />
       </q-card>
     </q-dialog>
   </q-page>
@@ -41,7 +44,7 @@ export default {
   name: "Vendors",
   components: { VendorsList, AddVendor },
   data() {
-    return { addVendorDialog: false };
+    return { addVendorDialog: false, vendorDialogFilterByIndustry: "" };
   },
   methods: {
     closeAddVendorDialog(e) {
