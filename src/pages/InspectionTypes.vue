@@ -113,10 +113,10 @@ export default {
     return {
       addInspectionDialog: false,
       inspectionType: {
-        name: "",
+        value: "",
         subtypes: [
           {
-            name: "",
+            value: "",
             duration: 1,
             unit: "hour"
           }
