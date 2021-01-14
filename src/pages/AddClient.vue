@@ -308,12 +308,72 @@
                 option-value="machineName"
                   option-label="name"
                   map-options
+                  emit-value
                 :options="clientTypes"
                 label="Client Type"
               />
-              <br />
-            <span class="form-heading">Insured Details</span>
-              <q-input v-model="insuredDetails.fname" 
+            <div class="row">
+                <p class="q-mx-none q-my-auto">
+                  Is Policy Holder An Organization ?
+                </p>
+                <q-toggle
+                  v-model="primaryDetails.isOrganization"
+                  left-label
+                  color="orange"
+                  class="q-ml-auto"
+                />
+              </div>
+              <div v-if="primaryDetails.isOrganization">
+                <q-input
+                  v-model="primaryDetails.organizationName"
+                  label="Organization Name"
+                  lazy-rules
+                  :rules="[
+                    val =>
+                      (val && val.length > 0) ||
+                      'Please fill the organization name '
+                  ]"
+                />
+              </div>
+
+
+
+              <div class="row">
+                <p class="q-mx-none q-my-auto">
+                  Organization Is Policyholder?
+                </p>
+                <q-toggle
+                  v-model="policyHolder.isPolicyHolder"
+                  left-label
+                  color="orange"
+                  class="q-ml-auto"
+                />
+              </div>
+              <div v-if="policyHolder.isPolicyHolder">
+                <q-input
+                  v-model="policyHolder.policyHolderName"
+                  label="Organization Name"
+                  lazy-rules
+                  :rules="[
+                    val =>
+                      (val && val.length > 0) ||
+                      'Please fill the organization name '
+                  ]"
+                />
+              </div>
+  <br />
+   <span class="form-heading">Insured Details</span>
+ <q-select
+            v-model="honorific1.title"
+            :options="titles"
+            option-label="title"
+            label="Title"
+            option-value="title"
+            @input="setTitleName()"
+            emit-value
+          />
+
+   <q-input v-model="insuredDetails.fname" 
                    lazy-rules
                 :rules="[
                   val => (val && val.length > 0) || 'Please fill the First name'
@@ -326,12 +386,14 @@
                 ]"
                 label="Last Name" />
               <div class="row">
+                
                 <q-select
                 v-model="insuredDetails.type"
                   :options="contactTypes"
                   option-value="machineName"
                   option-label="name"
                   map-options
+                emit-value
                   label="Type"
                   style="width: 40%; margin-right: auto"
                 />
@@ -361,6 +423,15 @@
               <br />
               <div v-if="isThereaCoInsuredToggle" style="font-size:20px;">
                 <span class="form-heading">Co-insured Details</span>
+                <q-select
+            v-model="honorific2.title"
+            :options="titles"
+            option-label="title"
+            label="Title"
+            option-value="title"
+            @input="setTitleName()"
+            emit-value
+          />
                 <q-input v-model="coInsuredDetails.fname" label="First Name" />
                 <q-input v-model="coInsuredDetails.lname" label="Last Name" />
             <div class="row">
@@ -371,6 +442,7 @@
                   option-value="machineName"
                   option-label="name"
                   map-options
+                  emit-value
                   style="width: 40%; margin-right: auto"
                   />
                   <q-input
@@ -412,6 +484,7 @@
                     option-value="machineName"
                   option-label="name"
                   map-options
+                  emit-value
                   style="width: 40%; margin-right: auto"
                   />
                   <q-input
@@ -428,6 +501,7 @@
                   option-value="machineName"
                   option-label="name"
                   map-options
+                  emit-value
                   style="width: 40%; margin-right: auto"
                   />
                   <q-input
@@ -487,10 +561,10 @@
                   option-value="machineName"
                   option-label="name"
                   map-options
-                  style="width: 40%; margin-right: auto"
+                  emit-value
+                    style="width: 40%; margin-right: auto"
                   />
-                  <q-input v-model="tanentOccupied.phone" label="Phone" style="width:65%; margin-left: auto"/>
-                  
+                  <q-input v-model="tanentOccupied.phone" label="Phone"    style="width:55%;margin-left:auto"/>
                 </div>
               </div>
               <br />
@@ -1268,11 +1342,12 @@
 <script>
 import CustomHeader from "components/CustomHeader";
 import AddressService from "@utils/country";
+import {  getTitles } from "src/store/common/actions";
 import { validateEmail } from "@utils/validation";
 import { selectedLead } from 'src/store/leads/getters';
 import { addressDetails } from 'src/store/clients/getters';
 import { mapGetters,mapActions} from "vuex";
-import { leadSource } from "src/store/common/getters";
+import { sources } from "src/store/common/getters";
 import { state } from "src/store/common/state";
 import VendorsList from "components/VendorsList";
 import AddVendor from "components/AddVendor";
@@ -1289,7 +1364,14 @@ export default {
       AdjustorTypes: ["Self", "Public Adjustor 01"],
       maximizedToggle: true,
       clientInfoDailog: false,
-    
+      policyHolder:{
+isPolicyHolder:false,
+policyHolderName:"",
+      },
+       primaryDetails: {
+        isOrganization: false,
+        organizationName: "",
+       },
      mailingAddressSameInfo: {
      streetAddress:"",
      unitOrApartmentNumber:"",
@@ -1300,7 +1382,15 @@ export default {
      dropBox:"",
      },
  
- sourceDetails: {
+honorific1: {
+              id: "",
+              title: "",
+            },
+honorific2: {
+              id: "",
+              title: "",
+            },
+   sourceDetails: {
         id: "",
         type: "",
         details: "",
@@ -1459,12 +1549,15 @@ export default {
 created() {
    this.getClientTypes();
     this.getContactTypes();
+    
   if(this.selectedLead.primaryContact.fname){
+    
    this.insuredDetails.fname = this.selectedLead.primaryContact.fname;
 this.insuredDetails.lname = this.selectedLead.primaryContact.lname;
 this.insuredDetails.email = this.selectedLead.primaryContact.email;
 this.insuredDetails.phone = this.selectedLead.primaryContact.phoneNumber[0].number;
 this.insuredDetails.type = this.selectedLead.primaryContact.phoneNumber[0].type;
+     
  }
  
  this.countries = addressService.getCountries();
@@ -1472,14 +1565,26 @@ this.insuredDetails.type = this.selectedLead.primaryContact.phoneNumber[0].type;
       
 },
   computed: {
-  ...mapGetters(["selectedLead","leadSources","contactTypes","clientTypes"])
+  ...mapGetters(["selectedLead","leadSources","contactTypes","clientTypes","titles"])
   },
+   mounted() {
+   this.getTitles();
+   },
  methods: {
-    ...mapActions (["addClient","getClientTypes", "getContactTypes"]),
+    ...mapActions (["addClient","getClientTypes", "getContactTypes", "getTitles",]),
     
    onCountrySelect(country) {
       this.states = addressService.getStates(country);
    },
+    setTitleName() {
+      var titleId = this.honorific1.title;
+
+      var titleResult = this.titles.find(obj => {
+        return obj.title === titleId;
+      });
+
+      this.honorific1.id = titleResult.id;
+    },
     MailingAddressSame(){
    this.mailingAddressSameInfo.streetAddress = this.addressDetails.streetNumber;
    this.mailingAddressSameInfo.unitOrApartmentNumber = this.addressDetails.apartmentNumber;
@@ -1490,26 +1595,26 @@ this.insuredDetails.type = this.selectedLead.primaryContact.phoneNumber[0].type;
   this.mailingAddressSameInfo.dropBox = this.gateDropbox.info;
    },
   CreateClientButtonClick() {
+  
    const payload = {
-        isOrganization:false,
-        isOrganizationPolicyholder: false,
-        leadSource: {
-          id: "",
+        isOrganization:this.primaryDetails.isOrganization,
+         organizationName:this.primaryDetails.organizationName,
+        isOrganizationPolicyholder: this.policyHolder.isPolicyHolder,
+    source: {
+         id: "",
           type: this.sourceDetails.type,
-          details: "",
-        },
-        source: {
-          id: "",
-          type: this.client.type,
-          
-        },
+          detail: "",  
+       },
         type: {
            id: "",
-          name:"",
+           value: this.client.type,
         },
-      
-        insuredInfo: {
+       insuredInfo: {
           primary:{
+            honorific: {
+                     id: this.honorific1.id,
+                        value: this.honorific1.title
+                    },
             fname: this.insuredDetails.fname,
             lname: this.insuredDetails.lname,
             email: this.insuredDetails.email,
@@ -1520,8 +1625,11 @@ this.insuredDetails.type = this.selectedLead.primaryContact.phoneNumber[0].type;
               }
             ]
           },
-       
-          secondary:{
+        secondary:{
+              honorific: {
+                       id:"",
+                        value: this.honorific2.title,
+                    },
           fname: this.coInsuredDetails.fname,
           lname: this.coInsuredDetails.lname,
           email : this.coInsuredDetails.email,
@@ -1542,13 +1650,13 @@ this.insuredDetails.type = this.selectedLead.primaryContact.phoneNumber[0].type;
                     dropBox:this.gateDropbox.info,
           },
             mailingAddress: {
-                    addressCountry: "",
+                    addressCountry: this.mailingAddressDetails.country,
                     addressLocality: "",
                     addressRegion: "",
                     postOfficeBoxNumber: "",
                     postalCode: "",
-                    streetAddress: "",
-                    dropBoxInfo: "",
+                    streetAddress: this.addressDetails.streetNumber,
+                    dropBoxInfo: this.mailingAddressSameInfo.dropBox,
                 },
                  phoneNumbers: [
                     {
@@ -1572,7 +1680,7 @@ this.insuredDetails.type = this.selectedLead.primaryContact.phoneNumber[0].type;
          },
      
       }
-   
+   console.log(payload);
     this.addClient(payload)
     },
     
