@@ -211,8 +211,8 @@
               >
                 <div class="select-text">
                   {{
-                    sourceDetails.id
-                      ? sourceDetails.details
+                    insuranceDetails.carrierName
+                      ? insuranceDetails.carrierName
                       : "Enter Carrier Details"
                   }}
                 </div>
@@ -468,6 +468,7 @@ import { validateEmail } from "@utils/validation";
 import { leadSource } from "src/store/common/getters";
 import VendorsList from "components/VendorsList";
 import AddVendor from "components/AddVendor";
+
 const addressService = new AddressService();
 
 export default {
@@ -477,9 +478,11 @@ export default {
     return {
       countries: [],
       states: [],
+
       subInspectionTypes: [],
       addVendorDialog: false,
       showSubInspectionType: false,
+
       vendorsListDialog: false,
       showVendorDialogFilters: false,
       vendorDialogName: "",
@@ -537,10 +540,10 @@ export default {
       this.vendorDialogName = name;
       if (name === "carrier") {
         this.showVendorDialogFilters = false;
-        this.vendorDialogFilterByIndustry = "carrier";
+        this.vendorDialogFilterByIndustry = ""; //filter by what?
       } else {
         this.showVendorDialogFilters = true;
-        this.vendorDialogFilterByIndustry = "";
+        this.vendorDialogFilterByIndustry = ""; ///filter by what?
       }
       this.vendorsListDialog = true;
     },
