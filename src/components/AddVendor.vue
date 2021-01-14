@@ -242,7 +242,6 @@ export default {
   },
 
   mounted() {
-    //console.log(this.titles);
     this.getVendorIndustries();
     this.getTitles();
     this.getContactTypes();
@@ -336,10 +335,8 @@ export default {
     },
 
     onAddVendorButtonClick() {
-      console.log(this.vendor);
       this.$refs.vendorForm.validate().then(async success => {
         if (success) {
-          console.log(66);
           this.addVendor(this.vendor).then(async => {
             this.closeDialog(true);
           });

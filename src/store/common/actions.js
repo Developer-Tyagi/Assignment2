@@ -11,7 +11,6 @@ export async function getContactTypes({ commit, dispatch }) {
   dispatch("setLoading", true);
   try {
     const { data } = await request.get("/phonetypes");
-    console.log(data);
     commit("setContactTypes", data);
     dispatch("setLoading", false);
   } catch (e) {

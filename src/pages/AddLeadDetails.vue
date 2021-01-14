@@ -142,25 +142,20 @@
               />
               <br />
               <span class="stepper-heading">Loss Location</span>
-              <q-select
-                v-model="lossDetails.country"
-                :options="countries"
-                label="Country"
-                @input="onCountrySelect(lossDetails.country)"
-                lazy-rules
-                :rules="[
-                  val => (val && val.length > 0) || 'Please fill the country'
-                ]"
-              />
-              <q-input
-                v-model="lossDetails.address1"
-                label="Address1"
-                lazy-rules
-                :rules="[
-                  val => (val && val.length > 0) || 'Please fill the address'
-                ]"
-              />
-              <q-input v-model="lossDetails.address2" label="Address2" />
+              <div class="row">
+                <q-input
+                  v-model="lossDetails.address2"
+                  label="House/Flat No"
+                  style="width:30%"
+                />
+                <input
+                  type="text"
+                  id="autocomplete"
+                  class="input-autocomplete"
+                  v-model="lossDetails.address1"
+                  placeholder="Street"
+                />
+              </div>
               <q-input
                 v-model="lossDetails.city"
                 label="City"
@@ -176,6 +171,16 @@
                 lazy-rules
                 :rules="[
                   val => (val && val.length > 0) || 'Please fill the state'
+                ]"
+              />
+              <q-select
+                v-model="lossDetails.country"
+                :options="countries"
+                label="Country"
+                @input="onCountrySelect(lossDetails.country)"
+                lazy-rules
+                :rules="[
+                  val => (val && val.length > 0) || 'Please fill the country'
                 ]"
               />
               <q-input
@@ -488,13 +493,12 @@ export default {
 
   data() {
     return {
+      autocomplete: {},
       countries: [],
       states: [],
-
       subInspectionTypes: [],
       addVendorDialog: false,
       showSubInspectionType: false,
-
       vendorsListDialog: false,
       showVendorDialogFilters: false,
       vendorDialogName: "",
@@ -545,6 +549,30 @@ export default {
     };
   },
 
+  mounted() {
+    const autocomplete = new google.maps.places.Autocomplete(
+      document.getElementById("autocomplete")
+    );
+
+    function fillInAddress() {
+      const place = autocomplete.getPlace().address_components;
+      this.lossDetails.address1 = "";
+      this.lossDetails.city =
+        place[this.getPlaceName("country", place)].long_name;
+      this.lossDetails.state =
+        place[
+          this.getPlaceName("administrative_area_level_1", place)
+        ].long_name;
+      this.lossDetails.country =
+        place[this.getPlaceName("country", place)].long_name;
+      if (this.getPlaceName("postal_code", place)) {
+        this.lossDetails.postalCode =
+          place[this.getPlaceName("postal_code", place)].long_name;
+      }
+    }
+
+    autocomplete.addListener("place_changed", fillInAddress.bind(this));
+  },
   methods: {
     ...mapActions([
       "addLeads",
@@ -575,6 +603,17 @@ export default {
         this.insuranceDetails.carrierName = vendor.name;
       }
       this.vendorsListDialog = false;
+    },
+
+    getPlaceName(key, value) {
+      for (let i = 0; i < value.length; i++) {
+        let index = value[i].types.indexOf(key);
+        if (index != -1) {
+          return i;
+        } else {
+          return null;
+        }
+      }
     },
 
     onCountrySelect(country) {
@@ -815,6 +854,43 @@ export default {
     padding-top: 24px;
     padding-bottom: 8px;
     height: 50px;
+  }
+}
+
+.input-autocomplete {
+  width: 65%;
+  margin-left: auto;
+  border: 0;
+  line-height: 24px;
+  padding-top: 24px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #c2c2c2;
+  outline: none;
+  position: relative;
+  &::placeholder {
+    font-size: 16px;
+  }
+
+  &:focus {
+    border-bottom: 2px solid #f05a26;
+
+    &::placeholder {
+      font-size: 12px;
+      position: absolute;
+      color: #f05a26;
+    }
+  }
+}
+.pac-icon {
+  display: none;
+}
+
+.pac-item {
+  font-size: 16px;
+  padding: 4px 10px;
+
+  &:hover {
+    background-color: #ececec;
   }
 }
 </style>
