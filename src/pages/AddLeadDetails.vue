@@ -47,6 +47,7 @@
                   option-value="machineName"
                   option-label="name"
                   map-options
+                  emit-value
                   style="width: 40%; margin-right: auto"
                   label="Type"
                   lazy-rules
@@ -513,6 +514,10 @@ export default {
       "addVendor",
       "getContactTypes"
     ]),
+
+    console(a) {
+      console.log(a);
+    },
 
     onCountrySelect(country) {
       this.states = addressService.getStates(country);
