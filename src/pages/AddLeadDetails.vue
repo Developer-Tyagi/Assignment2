@@ -691,14 +691,20 @@ export default {
           id: "",
           type: this.sourceDetails.type,
           details: ""
+        },
+        carrier: {
+          id: "",
+          value: ""
         }
       };
       if (payload["isOrganization"]) {
         payload["organizationName"] = this.primaryDetails.organizationName;
       }
       if (this.insuranceDetails.carrierId) {
-        (payload["carrier"].id = this.insuranceDetails.carrierId),
-          (payload["carrier"].value = this.insuranceDetails.carrierName);
+        payload["carrier"]["id"] = this.insuranceDetails.carrierId;
+        payload["carrier"]["value"] = this.insuranceDetails.carrierName;
+      } else {
+        delete payload["carrier"];
       }
       if (this.primaryDetails.phoneNumber) {
         payload.primaryContact["phoneNumber"].push({
