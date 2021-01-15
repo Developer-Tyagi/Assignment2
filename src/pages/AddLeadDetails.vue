@@ -563,7 +563,7 @@ export default {
       this.vendorDialogName = name;
       if (name === "carrier") {
         this.showVendorDialogFilters = false;
-        this.vendorDialogFilterByIndustry = "carrier";
+        this.vendorDialogFilterByIndustry = "5ffedc469a111940084ce6e2";
       } else {
         this.showVendorDialogFilters = true;
         this.vendorDialogFilterByIndustry = "";
@@ -679,10 +679,7 @@ export default {
         },
         lossDesc: this.lossDetails.lossDesc,
         dateofLoss: formattedString,
-        carrier: {
-          id: this.insuranceDetails.carrierId,
-          value: this.insuranceDetails.carrierName
-        },
+
         policyNumber: this.insuranceDetails.policyNumber,
         isAutomaticScheduling: this.schedulingDetails.isAutomaticScheduling,
         notes: this.notes,
@@ -698,6 +695,10 @@ export default {
       };
       if (payload["isOrganization"]) {
         payload["organizationName"] = this.primaryDetails.organizationName;
+      }
+      if (this.insuranceDetails.carrierId) {
+        (payload["carrier"].id = this.insuranceDetails.carrierId),
+          (payload["carrier"].value = this.insuranceDetails.carrierName);
       }
       if (this.primaryDetails.phoneNumber) {
         payload.primaryContact["phoneNumber"].push({
