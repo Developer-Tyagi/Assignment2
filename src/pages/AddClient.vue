@@ -1637,10 +1637,10 @@ this.sourceDetails.type = this.selectedLead.leadSource.type
           },
             mailingAddress: {
                     addressCountry: this.mailingAddressDetails.country,
-                    addressLocality: "",
-                    addressRegion: "",
+                    addressLocality: this.mailingAddressDetails.city,
+                    addressRegion: this.mailingAddressDetails.apartmentNumber,
                     postOfficeBoxNumber: "",
-                    postalCode: "",
+                    postalCode: this.mailingAddressDetails.zip,
                     streetAddress: this.addressDetails.streetNumber,
                     dropBoxInfo: this.mailingAddressSameInfo.dropBox,
                 },
@@ -1671,6 +1671,11 @@ this.sourceDetails.type = this.selectedLead.leadSource.type
       payload.insuredInfo.tenantInfo.phoneNumber.number= this.tenantOccupied.phone;
       } else {
         delete payload.insuredInfo.tenantInfo
+      }
+      if (this.sourceDetails.type == "vendor") {
+        payload.leadSource.id = this.sourceDetails.id;
+      } else {
+        payload.leadSource.details = this.sourceDetails.details;
       }
       
                   
