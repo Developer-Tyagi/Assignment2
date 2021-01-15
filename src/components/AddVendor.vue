@@ -9,7 +9,7 @@
           style="margin: auto 0"
         />
         <div class="text-uppercase text-bold text-black q-mx-auto">
-          {{ $route.name }}
+          ADD NEW {{ componentName }}
         </div>
       </q-toolbar>
     </q-header>
@@ -29,14 +29,14 @@
         >
           <q-input
             v-model="vendor.name"
-            label="Vendor Company Name"
+            label=" Company Name"
             lazy-rules
             :rules="[val => (val && val.length) || '']"
           />
           <q-select
-            v-model="vendor.industry.name"
+            v-model="vendor.industry.value"
             :options="vendorIndustries"
-            label="Vendor Industry"
+            label=" Industry"
             option-label="name"
             option-value="name"
             @input="setVendorIndustryName()"
@@ -44,7 +44,7 @@
           />
           <p class="form-heading">Company's Contact Person Details</p>
           <q-select
-            v-model="vendor.contact[0].honorific.title"
+            v-model="vendor.contact[0].honorific.value"
             :options="titles"
             option-label="title"
             label="Title"
@@ -56,16 +56,16 @@
           <q-input v-model="vendor.contact[0].lname" label="Last Name" />
           <div class="row">
             <q-select
-              v-model="vendor.contact[0].phoneNumber[0].type"
+              v-model="vendor.contact[0].phoneNumber.type"
               :options="contactTypes"
               option-value="machineName"
               option-label="name"
-              map-options
               label="Type"
               style="width: 40%; margin-right: auto"
+              emit-value
             />
             <q-input
-              v-model="vendor.contact[0].phoneNumber[0].number"
+              v-model="vendor.contact[0].phoneNumber.number"
               label="Phone"
               type="number"
               style="width: 55%"
@@ -76,6 +76,15 @@
             type="email"
             label="Email"
           />
+          <div class="row" v-if="componentName === 'carrier'">
+            <p class="q-mx-none q-my-auto">
+              <label> Can Claim be Filed by email</label>
+            </p>
+            <q-toggle
+              class="q-ml-auto"
+              v-model="vendor.meta.claimFiledByEmail"
+            />
+          </div>
 
           <p class="form-heading">Company's Address</p>
           <q-input v-model="vendor.address.streetAddress" label="Address1" />
@@ -106,7 +115,7 @@
             <q-input v-model="contactInfo.fname" label="First Name" />
             <q-input v-model="contactInfo.lname" label="LastName" />
             <q-select
-              v-model="contactInfo.honorific.title"
+              v-model="contactInfo.honorific.value"
               :options="titles"
               option-label="title"
               label="Title"
@@ -119,14 +128,14 @@
               <q-select
                 v-model="contactInfo.phoneNumber.type"
                 :options="contactTypes"
-                option-value="machineName"
+                option-value="name"
                 option-label="name"
-                map-options
                 label="Type"
                 style="width: 40%; margin-right: auto"
+                emit-value
               />
               <q-input
-                v-model="contactInfo.phoneNumber.phone"
+                v-model="contactInfo.phoneNumber.number"
                 label="Phone1"
                 type="number"
                 style="width: 55%"
@@ -145,12 +154,13 @@
           <q-input v-model="vendor.info.notes" label="Notes" />
         </div>
         <q-btn
-          label="Add Vendor"
           color="primary"
           class="full-width q-mt-auto text-capitalize"
           @click="onAddVendorButtonClick"
           size="'xl'"
-        ></q-btn>
+        >
+          Add {{ componentName }}
+        </q-btn>
       </q-form>
     </div>
   </q-page>
@@ -165,6 +175,7 @@ import { getContactTypes, getTitles } from "src/store/common/actions";
 
 export default {
   name: "AddVendor",
+  props: ["componentName"],
   data() {
     return {
       industryTypes: ["Association"],
@@ -172,7 +183,10 @@ export default {
       states: [],
       vendor: {
         name: "",
-        industry: { name: "", id: "" },
+        industry: { value: "", id: "" },
+        meta: {
+          claimFiledByEmail: false
+        },
         contact: [
           {
             fname: "",
@@ -180,12 +194,12 @@ export default {
             email: "",
             honorific: {
               id: "",
-              title: ""
+              value: ""
             },
             phoneNumber: [
               {
                 type: "",
-                phone: ""
+                number: ""
               }
             ],
             isPrimary: true
@@ -196,12 +210,12 @@ export default {
             email: "",
             honorific: {
               id: "",
-              title: ""
+              value: ""
             },
             phoneNumber: [
               {
                 type: "",
-                phone: ""
+                number: ""
               }
             ]
           }
@@ -231,6 +245,15 @@ export default {
     this.getVendorIndustries();
     this.getTitles();
     this.getContactTypes();
+    if (this.componentName && this.componentName === "carrier") {
+      let industryType = this.vendorIndustries.find(
+        o => o.machineValue === "carrier"
+      );
+      if (industryType.name && industryType.id) {
+        this.vendor.industry.value = industryType.name;
+        this.vendor.industry.id = industryType.id;
+      }
+    }
   },
 
   methods: {
@@ -245,7 +268,7 @@ export default {
     setTitleNameForMultiple() {
       const len = this.vendor.contact.length;
 
-      var titleId1 = this.vendor.contact[len - 1].honorific.title;
+      var titleId1 = this.vendor.contact[len - 1].honorific.value;
 
       var titleResult1 = this.titles.find(obj => {
         return obj.title === titleId1;
@@ -254,7 +277,7 @@ export default {
     },
     /* for adding the id for the primary vendor */
     setTitleName() {
-      var titleId = this.vendor.contact[0].honorific.title;
+      var titleId = this.vendor.contact[0].honorific.value;
 
       var titleResult = this.titles.find(obj => {
         return obj.title === titleId;
@@ -264,7 +287,7 @@ export default {
     },
 
     setVendorIndustryName() {
-      var ids = this.vendor.industry.name;
+      var ids = this.vendor.industry.value;
 
       var result = this.vendorIndustries.find(obj => {
         return obj.name === ids;
@@ -273,7 +296,7 @@ export default {
       var industryName = result.name;
       var industryId = result.id;
 
-      this.vendor.industry.name = industryName;
+      this.vendor.industry.value = industryName;
       this.vendor.industry.id = industryId;
     },
 
@@ -281,7 +304,7 @@ export default {
       const len = this.vendor.contact.length;
       if (
         this.vendor.contact[len - 1].fname &&
-        this.vendor.contact[len - 1].phoneNumber
+        this.vendor.contact[len - 1].phoneNumber.number
       ) {
         this.vendor.contact.push({
           fname: "",
@@ -289,12 +312,12 @@ export default {
           email: "",
           honorific: {
             id: "",
-            title: ""
+            value: ""
           },
           phoneNumber: [
             {
-              type: "mobile",
-              phone: ""
+              type: "",
+              number: ""
             }
           ]
         });

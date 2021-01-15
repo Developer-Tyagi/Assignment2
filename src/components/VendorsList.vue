@@ -12,14 +12,14 @@
         </template>
       </q-input>
       <div
-        v-if="!params.industry"
+        v-if="!params.industry && showFilter"
         class="q-ml-auto row"
         @click="filterDialog = true"
       >
         <img src="~assets/filter.svg" />Filters
       </div>
       <q-btn
-        v-else
+        v-if="params.industry && showFilter"
         class="q-ml-auto"
         color="white"
         text-color="grey"
@@ -99,7 +99,7 @@ import { mapActions, mapGetters } from "vuex";
 import { getTitles } from "src/store/common/actions";
 export default {
   name: "VendorsList",
-  props: ["selective"],
+  props: ["selective", "showFilter", "filterName"],
   data() {
     return {
       searchText: "",
@@ -112,17 +112,19 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["vendors", "vendorIndustries", "title"])
+    ...mapGetters(["vendors", "vendorIndustries"])
   },
 
   mounted() {
+    if (this.filterName) {
+      this.params.industry = this.filterName;
+    }
     this.getVendorIndustries();
     this.getVendors(this.params);
-    this.getTitles();
   },
 
   methods: {
-    ...mapActions(["getVendors", "getVendorIndustries", "getTitles"]),
+    ...mapActions(["getVendors", "getVendorIndustries"]),
 
     selectFilter(filter) {
       this.selectedFilter = filter.id;
@@ -145,7 +147,11 @@ export default {
           vendor.selected = false;
         });
         vendor.selected = true;
-        this.$emit("selectedVendor", vendor);
+        if (!this.showFilter) {
+          this.$emit("selectedVendor", vendor, false);
+        } else {
+          this.$emit("selectedVendor", vendor, true);
+        }
       }
     },
 

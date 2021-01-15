@@ -3,7 +3,7 @@ export default function() {
     showLoading: false,
     notification: null,
     contactTypes: [],
-    title: [],
+    titles: [],
     leadSources: [
       { value: "", name: "None" },
       { value: "client", name: "Prior Client" },

@@ -19,11 +19,24 @@
         color="primary"
         animated
         alternative-labels
+        @transition="moveToNextForm"
       >
         <q-step :name="1" :done="step > 1" title="Primary Contact">
           <q-form @submit="step++">
             <q-card class="form-card q-pa-md">
               <span class="stepper-heading">Primary Contact</span>
+              <q-select
+                v-model="primaryDetails.honorific.id"
+                :options="titles"
+                option-value="id"
+                option-label="title"
+                map-options
+                @input="setTitleName()"
+                emit-value
+                label="Title"
+                lazy-rules
+                :rules="[val => (val && val.length > 0) || '']"
+              />
               <q-input
                 v-model="primaryDetails.firstName"
                 label="First Name"
@@ -47,6 +60,7 @@
                   option-value="machineName"
                   option-label="name"
                   map-options
+                  emit-value
                   style="width: 40%; margin-right: auto"
                   label="Type"
                   lazy-rules
@@ -130,25 +144,17 @@
               />
               <br />
               <span class="stepper-heading">Loss Location</span>
-              <q-select
-                v-model="lossDetails.country"
-                :options="countries"
-                label="Country"
-                @input="onCountrySelect(lossDetails.country)"
-                lazy-rules
-                :rules="[
-                  val => (val && val.length > 0) || 'Please fill the country'
-                ]"
-              />
-              <q-input
-                v-model="lossDetails.address1"
-                label="Address1"
-                lazy-rules
-                :rules="[
-                  val => (val && val.length > 0) || 'Please fill the address'
-                ]"
-              />
-              <q-input v-model="lossDetails.address2" label="Address2" />
+              <div class="row">
+                <q-input v-model="lossDetails.address2" label="House/Flat No" />
+                <input
+                  type="text"
+                  id="autocomplete"
+                  class="input-autocomplete"
+                  v-model="lossDetails.address1"
+                  placeholder="Street"
+                  @focus="getGeoLocation"
+                />
+              </div>
               <q-input
                 v-model="lossDetails.city"
                 label="City"
@@ -164,6 +170,16 @@
                 lazy-rules
                 :rules="[
                   val => (val && val.length > 0) || 'Please fill the state'
+                ]"
+              />
+              <q-select
+                v-model="lossDetails.country"
+                :options="countries"
+                label="Country"
+                @input="onCountrySelect(lossDetails.country)"
+                lazy-rules
+                :rules="[
+                  val => (val && val.length > 0) || 'Please fill the country'
                 ]"
               />
               <q-input
@@ -203,10 +219,20 @@
           <q-form @submit="step++" @reset="step--">
             <q-card class="q-pa-md form-card">
               <span class="stepper-heading">Insurance Details (Optional)</span>
-              <q-input
+
+              <div
                 v-model="insuranceDetails.carrierName"
-                label="Carrier Name"
-              />
+                class="custom-select"
+                @click="onAddVendorDialogClick('carrier')"
+              >
+                <div class="select-text">
+                  {{
+                    insuranceDetails.carrierName
+                      ? insuranceDetails.carrierName
+                      : "Enter Carrier Details"
+                  }}
+                </div>
+              </div>
               <q-input
                 v-model="insuranceDetails.policyNumber"
                 label="Policy Number"
@@ -265,7 +291,7 @@
                 <div
                   v-else-if="sourceDetails.type == 'vendor'"
                   class="custom-select"
-                  @click="vendorsListDialog = true"
+                  @click="onAddVendorDialogClick('vendor')"
                 >
                   <div class="select-text">
                     {{
@@ -342,6 +368,7 @@
           <q-form @submit="onSubmit" @reset="step--">
             <q-card class="q-pa-md form-card">
               <div class="stepper-heading">Scheduling</div>
+
               <q-toggle
                 v-model="schedulingDetails.isAutomaticScheduling"
                 label="Is automatic scheduling needed?"
@@ -351,8 +378,8 @@
                 v-model="schedulingDetails.inspectionType"
                 :options="inspectionTypes"
                 label="Type of Inspection"
-                option-label="name"
-                option-value="name"
+                option-label="value"
+                option-value="value"
                 emit-value
                 @input="onInspectionTypesSelect()"
               />
@@ -360,8 +387,8 @@
                 v-if="showSubInspectionType"
                 v-model="schedulingDetails.subInspectionType"
                 :options="subInspectionTypes"
-                option-label="name"
-                option-value="id"
+                option-label="value"
+                option-value="userID"
                 emit-value
                 label="Sub Type of Inspection"
                 @input="onSubInspectionTypesSelect()"
@@ -397,6 +424,7 @@
         </q-step>
       </q-stepper>
     </div>
+
     <q-dialog
       v-model="vendorsListDialog"
       persistent
@@ -413,9 +441,8 @@
               @click="vendorsListDialog = false"
               style="margin: auto 0"
             />
-
             <div class="text-uppercase text-bold text-black q-mx-auto">
-              Vendors
+              {{ vendorDialogName }}
             </div>
             <img
               src="~assets/add.svg"
@@ -426,11 +453,14 @@
         </q-header>
         <VendorsList
           :selective="true"
-          @selectedVendor="addSelectedVendor"
+          @selectedVendor="onClosingVendorSelectDialog"
           ref="list"
+          :showFilter="showVendorDialogFilters"
+          :filterName="vendorDialogFilterByIndustry"
         />
       </q-card>
     </q-dialog>
+
     <q-dialog
       v-model="addVendorDialog"
       persistent
@@ -439,7 +469,10 @@
       transition-hide="slide-down"
     >
       <q-card>
-        <AddVendor @closeDialog="closeAddVendorDialog" />
+        <AddVendor
+          @closeDialog="closeAddVendorDialog"
+          :componentName="vendorDialogName"
+        />
       </q-card>
     </q-dialog>
   </q-page>
@@ -452,6 +485,7 @@ import { validateEmail } from "@utils/validation";
 import { leadSource } from "src/store/common/getters";
 import VendorsList from "components/VendorsList";
 import AddVendor from "components/AddVendor";
+
 const addressService = new AddressService();
 
 export default {
@@ -459,12 +493,17 @@ export default {
 
   data() {
     return {
+      autocomplete: {},
+      enableAddressField: false,
       countries: [],
       states: [],
       subInspectionTypes: [],
-      showSubInspectionType: false,
       addVendorDialog: false,
+      showSubInspectionType: false,
       vendorsListDialog: false,
+      showVendorDialogFilters: false,
+      vendorDialogName: "",
+      vendorDialogFilterByIndustry: "",
       step: 1,
       primaryDetails: {
         isOrganization: false,
@@ -472,8 +511,12 @@ export default {
         firstName: "",
         lastName: "",
         email: "",
-        phone: "",
-        selectedContactType: ""
+        phoneNumber: "",
+        selectedContactType: "",
+        honorific: {
+          id: "",
+          value: ""
+        }
       },
       lossDetails: {
         lossDesc: "",
@@ -487,7 +530,8 @@ export default {
       },
       insuranceDetails: {
         policyNumber: "",
-        carrierName: ""
+        carrierName: "",
+        carrierId: ""
       },
       sourceDetails: {
         id: "",
@@ -511,8 +555,66 @@ export default {
       "addLeads",
       "getInspectionTypes",
       "addVendor",
-      "getContactTypes"
+      "getContactTypes",
+      "getTitles"
     ]),
+
+    onAddVendorDialogClick(name) {
+      this.vendorDialogName = name;
+      if (name === "carrier") {
+        this.showVendorDialogFilters = false;
+        this.vendorDialogFilterByIndustry = "5ffedc469a111940084ce6e2";
+      } else {
+        this.showVendorDialogFilters = true;
+        this.vendorDialogFilterByIndustry = "";
+      }
+      this.vendorsListDialog = true;
+    },
+
+    onClosingVendorSelectDialog(vendor, isVendor) {
+      if (isVendor) {
+        this.sourceDetails.id = vendor.id;
+        this.sourceDetails.details = vendor.name;
+      } else {
+        this.insuranceDetails.carrierId = vendor.id;
+        this.insuranceDetails.carrierName = vendor.name;
+      }
+      this.vendorsListDialog = false;
+    },
+
+    setTitleName() {
+      const title = this.titles.find(obj => {
+        return obj.id === this.primaryDetails.honorific.id;
+      });
+
+      this.primaryDetails.honorific.value = title.title;
+    },
+
+    moveToNextForm(newValue, oldValue) {
+      if (newValue == 2) {
+        this.autocomplete = new google.maps.places.Autocomplete(
+          document.getElementById("autocomplete"),
+          { types: ["geocode"] }
+        );
+        this.autocomplete.addListener("place_changed", this.fillInAddress);
+      }
+    },
+
+    getGeoLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+          const geolocation = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+          const circle = new google.maps.Circle({
+            center: geolocation,
+            radius: position.coords.accuracy
+          });
+          this.autocomplete.setBounds(circle.getBounds());
+        });
+      }
+    },
 
     onCountrySelect(country) {
       this.states = addressService.getStates(country);
@@ -520,7 +622,7 @@ export default {
 
     onInspectionTypesSelect() {
       const selectedInspectionType = this.inspectionTypes.find(
-        type => type.name === this.schedulingDetails.inspectionType
+        type => type.value === this.schedulingDetails.inspectionType
       );
       if (selectedInspectionType.subtypes.length > 1) {
         this.subInspectionTypes = selectedInspectionType.subtypes;
@@ -530,7 +632,7 @@ export default {
       } else {
         this.showSubInspectionType = false;
         this.schedulingDetails.subInspectionType =
-          selectedInspectionType.subtypes[0].id;
+          selectedInspectionType.subtypes[0].userID;
         this.schedulingDetails.inspectionDuration =
           selectedInspectionType.subtypes[0].duration;
       }
@@ -538,7 +640,7 @@ export default {
 
     onSubInspectionTypesSelect() {
       const index = this.subInspectionTypes.findIndex(
-        val => val.id == this.schedulingDetails.subInspectionType
+        val => val.userID == this.schedulingDetails.subInspectionType
       );
       this.schedulingDetails.inspectionDuration = this.subInspectionTypes[
         index
@@ -552,10 +654,16 @@ export default {
           this.lossDetails.dateOfLoss,
           "YYYY-MM-DDTHH:mm:ssZ"
         );
+      } else {
+        formattedString = null;
       }
       const payload = {
         isOrganization: this.primaryDetails.isOrganization,
         primaryContact: {
+          honorific: {
+            id: this.primaryDetails.honorific.id,
+            value: this.primaryDetails.honorific.value
+          },
           fname: this.primaryDetails.firstName,
           lname: this.primaryDetails.lastName,
           email: this.primaryDetails.email,
@@ -571,7 +679,7 @@ export default {
         },
         lossDesc: this.lossDetails.lossDesc,
         dateofLoss: formattedString,
-        carrier: this.insuranceDetails.carrierName,
+
         policyNumber: this.insuranceDetails.policyNumber,
         isAutomaticScheduling: this.schedulingDetails.isAutomaticScheduling,
         notes: this.notes,
@@ -583,10 +691,20 @@ export default {
           id: "",
           type: this.sourceDetails.type,
           details: ""
+        },
+        carrier: {
+          id: "",
+          value: ""
         }
       };
       if (payload["isOrganization"]) {
         payload["organizationName"] = this.primaryDetails.organizationName;
+      }
+      if (this.insuranceDetails.carrierId) {
+        payload["carrier"]["id"] = this.insuranceDetails.carrierId;
+        payload["carrier"]["value"] = this.insuranceDetails.carrierName;
+      } else {
+        delete payload["carrier"];
       }
       if (this.primaryDetails.phoneNumber) {
         payload.primaryContact["phoneNumber"].push({
@@ -616,7 +734,6 @@ export default {
     addSelectedVendor(e) {
       this.sourceDetails = {
         id: e.id,
-        type: "vendor",
         details: e.name
       };
       this.closeVendorsList();
@@ -628,16 +745,60 @@ export default {
       if (e) {
         this.$refs.list.getVendors();
       }
+    },
+
+    getPlaceName(key, value) {
+      for (let i = 0; i < value.length; i++) {
+        let index = value[i].types.indexOf(key);
+
+        if (index != -1) {
+          return i;
+        }
+      }
+    },
+
+    fillInAddress() {
+      const place = this.autocomplete.getPlace().address_components;
+      if (this.getPlaceName("route", place)) {
+        this.lossDetails.address1 =
+          place[this.getPlaceName("route", place)].long_name;
+      }
+      if (this.getPlaceName("administrative_area_level_2", place)) {
+        this.lossDetails.city =
+          place[
+            this.getPlaceName("administrative_area_level_2", place)
+          ].long_name;
+      }
+      if (this.getPlaceName("administrative_area_level_1", place)) {
+        this.lossDetails.state =
+          place[
+            this.getPlaceName("administrative_area_level_1", place)
+          ].long_name;
+      }
+      if (this.getPlaceName("country", place)) {
+        this.lossDetails.country =
+          place[this.getPlaceName("country", place)].long_name;
+      }
+      if (this.getPlaceName("postal_code", place)) {
+        this.lossDetails.postalCode =
+          place[this.getPlaceName("postal_code", place)].long_name;
+      }
+      this.enableAddressField = true;
     }
   },
 
   computed: {
-    ...mapGetters(["clients", "inspectionTypes", "leadSources", "contactTypes"])
+    ...mapGetters([
+      "clients",
+      "inspectionTypes",
+      "leadSources",
+      "contactTypes",
+      "titles"
+    ])
   },
 
   watch: {
     step(newValue, oldValue) {
-      console.log(newValue, oldValue);
       var el = document.getElementsByClassName("q-stepper__header");
       if (newValue === 6 && oldValue === 5) {
         el[0].scroll(100, 0);
@@ -669,6 +830,7 @@ export default {
     this.getInspectionTypes();
     this.onCountrySelect("United States");
     this.getContactTypes();
+    this.getTitles();
   }
 };
 </script>
@@ -739,6 +901,43 @@ export default {
     padding-top: 24px;
     padding-bottom: 8px;
     height: 50px;
+  }
+}
+
+.input-autocomplete {
+  width: 65%;
+  margin-left: auto;
+  border: 0;
+  line-height: 24px;
+  padding-top: 24px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #c2c2c2;
+  outline: none;
+  position: relative;
+  &::placeholder {
+    font-size: 16px;
+  }
+
+  &:focus {
+    border-bottom: 2px solid #f05a26;
+
+    &::placeholder {
+      font-size: 12px;
+      position: absolute;
+      color: #f05a26;
+    }
+  }
+}
+.pac-icon {
+  display: none;
+}
+
+.pac-item {
+  font-size: 16px;
+  padding: 4px 10px;
+
+  &:hover {
+    background-color: #ececec;
   }
 }
 </style>

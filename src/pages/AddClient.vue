@@ -73,11 +73,11 @@
           </div>
           <q-separator />
         </div>
-          <q-btn
+  <q-btn
           label="Create Client"
           color="primary"
           class="full-width q-mt-auto text-capitalize"
-          @click="saveButtonClick"
+          @click="createClientButtonClick"
           size="'xl'"
         ></q-btn>
       </div>
@@ -232,7 +232,7 @@
         ></q-btn>
       </q-card>
     </q-dialog>
-    <q-dialog
+<q-dialog
       v-model="clientInfoDailog"
       persistent
       :maximized="maximizedToggle"
@@ -265,19 +265,99 @@
           "
             >
               <div>
-                <q-input v-model="client.sourceOfLead" label="Source of Lead" />
+                <span class="form-heading">Choose Lead Source</span>
+              </div>
+                <div>
+                <q-select
+                  v-model="sourceDetails.type"
+                  :options="leadSources"
+                  option-label="name"
+                  option-value="value"
+                  emit-value
+                  map-options
+                  @input="onChangingSourceType()"
+                />
+                <q-input
+                  v-if="
+                    sourceDetails.type != 'vendor' &&
+                    sourceDetails.type != '' &&
+                    sourceDetails.type != 'google'
+                  "
+                  type="text"
+                  placeholder="Enter Source details"
+                  v-model="sourceDetails.details"
+                  lazy-rules
+                  :rules="[(val) => (val && val.length > 0) || '']"
+                />
+                <div
+                  v-else-if="sourceDetails.type == 'vendor' "
+                  class="custom-select"
+                  @click="vendorsListDialog = true"
+                >
+                  <div class="select-text">
+                    {{
+                      sourceDetails.id
+                        ? sourceDetails.details
+                        : "Select Lead Source"
+                    }}
+                  </div>
+                </div>
               </div>
             <q-select
-                v-model="client.type"
-                option-value="machineName"
-                  option-label="name"
+             v-model="client.id"
+                option-value="id"
+                option-label="name"
                   map-options
+                  emit-value
                 :options="clientTypes"
+                @input="setClientType"
                 label="Client Type"
               />
-              <br />
-            <span class="form-heading">Insured Details</span>
-              <q-input v-model="insuredDetails.fname" 
+            <div class="row">
+                <p class="q-mx-none q-my-auto">
+                  Is Policy Holder An Organization ?
+                </p>
+                <q-toggle
+                  v-model="primaryDetails.isOrganization"
+                  left-label
+                  class="q-ml-auto"
+                />
+              </div>
+              <div v-if="primaryDetails.isOrganization">
+                <q-input
+                  v-model="primaryDetails.organizationName"
+                  label="Organization Name"
+                  lazy-rules
+                  :rules="[
+                    val =>
+                      (val && val.length > 0) ||
+                      'Please fill the organization name '
+                  ]"
+                />
+              </div>
+              <div class="row">
+                <p class="q-mx-none q-my-auto">
+                  Organization Is Policyholder?
+                </p>
+                <q-toggle
+                  v-model="policyHolder.isPolicyHolder"
+                  left-label
+                  class="q-ml-auto"
+                />
+              </div>
+  <br />
+   <span class="form-heading">Insured Details</span>
+ <q-select
+            v-model="honorific1.title"
+            :options="titles"
+            option-label="title"
+            label="Title"
+            option-value="title"
+            @input="setTitleName(1)"
+            emit-value
+          />
+
+   <q-input v-model="insuredDetails.fname" 
                    lazy-rules
                 :rules="[
                   val => (val && val.length > 0) || 'Please fill the First name'
@@ -290,18 +370,27 @@
                 ]"
                 label="Last Name" />
               <div class="row">
+                
                 <q-select
-                  v-model="insuredDetails.type"
+                v-model="insuredDetails.type"
                   :options="contactTypes"
                   option-value="machineName"
                   option-label="name"
                   map-options
+                emit-value
+                  label="Type"
+                   lazy-rules
+                  :rules="[val => (val && val.length > 0) || '']"
                   style="width: 40%; margin-right: auto"
                 />
                 <q-input
-                  v-model="insuredDetails.phone"
+                 v-model="insuredDetails.phone"
                   label="Phone"
                   type="number"
+                  lazy-rules
+                :rules="[
+                  val => (val && val.length == 10) || 'Please fill the phone number'
+                ]"
                   style="width: 55%"
                 /> </div>
                 <q-input
@@ -314,6 +403,7 @@
                     'You have entered an invalid email address!'
                 ]"
               />
+                   
   <div class="row">
                 <p class="q-mx-none q-my-auto">
                   Is there a Co-insured?
@@ -323,24 +413,38 @@
               <br />
               <div v-if="isThereaCoInsuredToggle" style="font-size:20px;">
                 <span class="form-heading">Co-insured Details</span>
+                <q-select
+            v-model="honorific2.title"
+            :options="titles"
+            option-label="title"
+            label="Title"
+            option-value="title"
+            @input="setTitleName(2)"
+            emit-value
+          />
                 <q-input v-model="coInsuredDetails.fname" label="First Name" />
                 <q-input v-model="coInsuredDetails.lname" label="Last Name" />
             <div class="row">
                     <q-select
                     v-model="coInsuredDetails.type"
-                    label="Type"
                     :options="contactTypes"
                   option-value="machineName"
                   option-label="name"
                   map-options
+                  emit-value
                   style="width: 40%; margin-right: auto"
-
+                  label="Type"
+                       lazy-rules
+                  :rules="[val => (val && val.length > 0) || '']"
                   />
                   <q-input
-                    v-model="coInsuredDetails.phone"
+                   v-model="coInsuredDetails.phone"
                     label="Phone"
                     type="number"
-                   
+                   lazy-rules
+                :rules="[
+                  val => (val && val.length == 10) || 'Please fill the phone number'
+                ]"
                     style="width:55%;"
                   />
                 </div>
@@ -369,33 +473,49 @@
               <div v-if="addAditionalPhoneNumberToggle">
                 <div class="row">
                   <q-select
-                    v-model="addAditionalPhoneNumber.type1"
+                     v-model="addAditionalPhoneNumber.type1"
                     label="Type"
                     :options="contactTypes"
-                  option-value="machineName"
+                    option-value="machineName"
                   option-label="name"
                   map-options
+                  emit-value
+                    lazy-rules
+                  :rules="[val => (val && val.length > 0) || '']"
                   style="width: 40%; margin-right: auto"
                   />
                   <q-input
                     v-model="addAditionalPhoneNumber.phone2"
                     label="Phone2"
+                    type="number"
+                      lazy-rules
+                :rules="[
+                  val => (val && val.length == 10) || 'Please fill the phone number'
+                ]"
                     style="width:55%;margin-left:auto"
-                  />
+ />
                   </div>
                 <div class="row">
                   <q-select
-                    v-model="addAditionalPhoneNumber.type2"
+                   v-model="addAditionalPhoneNumber.type2"
                     label="Type"
                     :options="contactTypes"
                   option-value="machineName"
                   option-label="name"
                   map-options
+                  emit-value
+                    lazy-rules
+                  :rules="[val => (val && val.length > 0) || '']"
                   style="width: 40%; margin-right: auto"
                   />
                   <q-input
-                    v-model="addAditionalPhoneNumber.phone3"
+                  v-model="addAditionalPhoneNumber.phone3"
                     label="Phone3"
+                    type="number"
+                      lazy-rules
+                :rules="[
+                  val => (val && val.length == 10) || 'Please fill the phone number'
+                ]"
                     style="width:55%"
                   />
                 </div>
@@ -405,24 +525,33 @@
               <q-input
                 v-model="addressDetails.streetNumber"
                 label="Street Number"
+
               />
+
               <q-input
                 v-model="addressDetails.apartmentNumber"
                 label="Unit or Apartment Number"
               />
               <q-input v-model="addressDetails.city" label="City" />
-              <q-input v-model="addressDetails.state" label="State" />
+              <q-select  v-model="addressDetails.state" 
+               :options="states" label="State" />
               <q-input v-model="addressDetails.zip" label="ZIP" />
+              <q-select
+                  v-model="addressDetails.country"
+                    :options="countries"
+                  label="Country"
+                  @input="onCountrySelect(mailingAddressDetails.country)"
+                />
               <div class="row">
                 <p class="q-mx-none q-my-auto">
                   Gate / Dropbox
                 </p>
-            <q-toggle class="q-ml-auto" v-model="gateDropboxToggle" />
+                <q-toggle class="q-ml-auto" v-model="gateDropboxToggle" />
               </div>
               <div v-if="gateDropboxToggle">
                 <q-input
                   v-model="gateDropbox.info"
-                  label="Gate ? Dropbox Info"
+                  label="Gate / Dropbox Info"
                 />
               </div>
               <div class="row">
@@ -432,26 +561,26 @@
               <q-toggle class="q-ml-auto" v-model="tenantOccupiedToggle" />
               </div>
               <div v-if="tenantOccupiedToggle">
-                <q-input v-model="tanentOccupied.name" label="Tenant Name" />
+                <q-input v-model="tenantOccupied.name" label="Tenant Name" />
                 <div class="row">
                   <q-select
-                    v-model="tanentOccupied.type"
+                 v-model="tenantOccupied.type"
                     label="Type"
                     :options="contactTypes"
                   option-value="machineName"
                   option-label="name"
                   map-options
-                  style="width: 40%; margin-right: auto"
+                  emit-value
+                    style="width: 40%; margin-right: auto"
                   />
-                  <q-input v-model="tanentOccupied.phone" label="Phone" style="width:55%"/>
-                  
+                  <q-input v-model="tenantOccupied.phone" label="Phone"    style="width:55%;margin-left:auto"/>
                 </div>
               </div>
               <br />
             </div>
           </div>
 <q-btn
-          @click="saveButtonInClientInfo"
+          @click="clientInfoDailog = false"
             label="Save"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
@@ -497,33 +626,98 @@
               >
                 <div class="row">
                   <p class="q-mx-none q-my-auto">
-                    Is the mailing address same?
+                    Is the mailing address same? 
                   </p>
                 <q-toggle
                     class="q-ml-auto"
                     v-model="isMailingAddressSameToggle"
+                   @input="mailingAddressSame"
                   />
                 </div>
+                <div v-if="!isMailingAddressSameToggle"
+                >
                 <q-input
-                  v-model="mailingAddressDetails.streetAddress"
+                  v-model="mailingAddressSameInfo.streetAddress"
                   label="Street Address"
                 />
-                <q-input
-                  v-model="mailingAddressDetails.apartmentNumber"
+            <q-input
+                  v-model="mailingAddressSameInfo.unitOrApartmentNumber"
                   label="Unit or Apartment Number"
                 />
-                <q-select
-                  v-model="mailingAddressDetails.city"
-                  :options="CityTypes"
-                  label="City"
+                <q-input
+                  v-model="mailingAddressSameInfo.city"
+                 label="City"
                 />
                 <q-select
-                  v-model="mailingAddressDetails.state"
-                  :options="StateTypes"
+                  v-model="mailingAddressSameInfo.state"
+                   :options="states"
                   label="State"
                 />
-                <q-input v-model="mailingAddressDetails.zip" label="ZIP" />
+                     <q-select
+                  v-model="mailingAddressSameInfo.country"
+                    :options="countries"
+                  label="Country"
+                  @input="onCountrySelect(mailingAddressDetails.country)"
+                />
+                <q-input v-model="mailingAddressSameInfo.zip" label="ZIP" />
+                 <div class="row">
+                <p class="q-mx-none q-my-auto">
+                  Gate / Dropbox
+                </p>
+            <q-toggle class="q-ml-auto" v-model="gateDropboxToggle" />
               </div>
+               <div v-if="gateDropboxToggle">
+                <q-input
+                  v-model="mailingAddressSameInfo.dropBox"
+                
+                  label="Gate / Dropbox Info"
+                />
+              </div>
+              </div>
+              <div v-else> 
+                <q-input
+                  v-model="mailingAddressSameInfo.streetAddress"
+                  label="Street Address"
+                disable  
+             />
+              <q-input
+             v-model="mailingAddressSameInfo.unitOrApartmentNumber"
+             label="Unit or Apartment Number"
+              disable 
+                />
+              <q-input
+                  v-model="mailingAddressSameInfo.city"
+                  label="City"
+                  disable
+                />
+                <q-select
+                  v-model="mailingAddressSameInfo.state"
+                  :options="states"
+                  label="State"
+                  disable
+                />
+                  <q-select
+                  v-model="mailingAddressSameInfo.country"
+                  :options="countries"
+                  label="Country"
+                  disable
+                   @input="onCountrySelect(mailingAddressDetails.country)"
+                />
+                <q-input v-model="mailingAddressSameInfo.zip" disable label="ZIP" />
+                <div class="row">
+                <p class="q-mx-none q-my-auto">
+                  Gate / Dropbox
+                </p>
+            <q-toggle class="q-ml-auto" v-model="gateDropboxToggle" />
+              </div>
+               
+                <q-input
+                  v-model="mailingAddressSameInfo.dropBox"
+                  disable
+                  label="Gate / Dropbox Info"
+                />
+             </div>
+               </div>
           <br />
             </div>
           </div>
@@ -531,7 +725,7 @@
             label="Save"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
-            @click="saveButtonClick"
+           @click="mailingAddressDialog = false"
             size="'xl'"
           ></q-btn>
         </q-card-section>
@@ -722,7 +916,7 @@
               </div>
               <div class="row">
                 <q-select
-                  v-model="lossInfo.insuranceAdjustorPhoneType"
+                 v-model="lossInfo.insuranceAdjustorPhoneType"
                   label="Type"
                   :options="contactTypes"
                   option-value="machineName"
@@ -1116,34 +1310,122 @@
         </q-card-section>
       </q-card>
     </q-dialog>
+  
+      <q-dialog
+      v-model="vendorsListDialog"
+      persistent
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <q-header bordered class="bg-white">
+          <q-toolbar class="row bg-white">
+            <img
+              src="~assets/close.svg"
+              alt="close"
+              @click="vendorsListDialog = false"
+              style="margin: auto 0"
+            />
+
+            <div class="text-uppercase text-bold text-black q-mx-auto">
+              Vendors
+            </div>
+            <img
+              src="~assets/add.svg"
+              @click="addVendorDialog = true"
+              style="margin: 0 0 0 20px"
+            />
+          </q-toolbar>
+        </q-header>
+        <VendorsList
+          :selective="true"
+          @selectedVendor="onClosingVendorSelectDialog"
+          ref="list"
+          :showFilter="true"
+        />
+      </q-card>
+    </q-dialog>
+    <q-dialog
+      v-model="addVendorDialog"
+      persistent
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <AddVendor @closeDialog="closeAddVendorDialog" 
+          :componentName="'vendor'"
+         />
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
 <script>
 import CustomHeader from "components/CustomHeader";
+import AddressService from "@utils/country";
 import { validateEmail } from "@utils/validation";
-import { selectedLead } from 'src/store/leads/getters';
-import { mapGetters,mapActions } from "vuex";
+import { mapGetters,mapActions,mapMutations} from "vuex";
+import { sources } from "src/store/common/getters";
+import { state } from "src/store/common/state";
+import VendorsList from "components/VendorsList";
+import AddVendor from "components/AddVendor";
+const addressService = new AddressService();
+
 export default {
-  name: "addClient",
-  components: { CustomHeader },
+   name: "addClient",
+  components: { CustomHeader, VendorsList, AddVendor },
   data() {
     return {
       publicAdjustorInfoDialog: false,
+      addVendorDialog: false,
+      vendorsListDialog: false,
       AdjustorTypes: ["Self", "Public Adjustor 01"],
       maximizedToggle: true,
       clientInfoDailog: false,
-
-      client: {
-        sourceOfLead: "",
-        type: ""
+      policyHolder:{
+isPolicyHolder:false,
+policyHolderName:"",
       },
+       primaryDetails: {
+        isOrganization: false,
+        organizationName: "",
+       },
+     mailingAddressSameInfo: {
+     streetAddress:"",
+     unitOrApartmentNumber:"",
+     city:"",
+     state:"",          
+     zip:"",
+     country:"",
+     dropBox:"",
+     },
+ 
+honorific1: {
+              id: "",
+              title: "",
+            },
+honorific2: {
+              id: "",
+              title: "",
+            },
+   sourceDetails: {
+        id: "",
+        type: "",
+        details: "",
+      },
+      client: {
+      type: "",id:""
+      },
+      
       insuredDetails: {
         fname: "",
         lname: "",
         phone: "",
         type: "",
         email: "",
+       
       },
       coInsuredDetails: {
         fname: "",
@@ -1160,16 +1442,18 @@ export default {
         type2: ""
       },
       addressDetails: {
-        streetNumber: "",
+        streetNumber: "",  
         apartmentNumber: "",
         city: "",
         state: "",
-        zip: ""
+        zip: "",
+        country: "",
+        
       },
       gateDropbox: {
         info: ""
       },
-      tanentOccupied: {
+      tenantOccupied: {
         name: "",
         phone: "",
         type: ""
@@ -1180,7 +1464,9 @@ export default {
         apartmentNumber: "",
         city: "",
         state: "",
-        zip: ""
+      country: "United States",
+        zip: "",
+     
       },
       forcedPlacedPolicyDetails: {
         policyInceptionDate: "",
@@ -1236,8 +1522,9 @@ export default {
       mailingAddressDialog: false,
       isMailingAddressSameToggle: false,
       isThereaCoInsuredToggle: false,
-      CityTypes: ["Toronto", "Brampton"],
-      StateTypes: ["California", "Washington"],
+      
+       states: [],
+       countries: [],
       insuranceInfoDialog: false,
       isThisIsForcedPlacedPolicyToggle: false,
       PolicyTypes: ["A", "B"],
@@ -1256,6 +1543,11 @@ export default {
       isThereAsecondClaimToFileToggle: false,
       insuranceAdjustorPhoneType: ["A", "B", "C"],
       typeOfLoss: ["A", "B"],
+      coInsuredTypes: ["A", "B"],
+      insuredTypes: ["A", "B"],
+      tenantOccupiedTypes: ["A", "B"],
+      addAdditionalPhoneNumber1Types: ["A", "B"],
+      addAdditionalPhoneNumber2Types: ["A", "B"],
       hasAvendorOfExpertHiredTypes: ["A", "B"],
       severityOfClaimTypes: ["A", "B"],
       mortgageInfoDialog: false,
@@ -1274,48 +1566,86 @@ export default {
       documentsDialog: false
     };
   },
-
-  created() {
-    this.getClientTypes();
+created() {
+   this.getClientTypes();
     this.getContactTypes();
-    if(this.selectedLead.name){
-      this.insuredDetails.fname = this.selectedLead.primaryContact.fname;
-      this.insuredDetails.lname = this.selectedLead.primaryContact.lname;
-      this.insuredDetails.email = this.selectedLead.primaryContact.email;
-      this.insuredDetails.phone = this.selectedLead.primaryContact.phoneNumber[0].number;
-      this.insuredDetails.type = this.selectedLead.primaryContact.phoneNumber[0].type;
-      this.clientInfoDailog = true;
-    } else  {
-      this.clientInfoDailog = false;
-    }
-  },
-
-
-  computed: {
-  ...mapGetters(["selectedLead","clientTypes","contactTypes"])
-  },
- methods: {
-    ...mapActions (["addClient","getClientTypes","getContactTypes"]),
-
-    saveButtonInClientInfo() {
-         const payload = {
-        attributes: {
-         isOrganization:false,
-        isOrganizationPolicyholder: false,
-        },
-       
-        source: {
-          id: "",
-          type: this.client.type,
-          detail: this.client.sourceOfLead,
-        },
-        type: {
-           id: "",
-          name:"",
-        },
+    
+  if(this.selectedLead.id){
+    
+   this.insuredDetails.fname = this.selectedLead.primaryContact.fname;
+this.insuredDetails.lname = this.selectedLead.primaryContact.lname;
+this.insuredDetails.email = this.selectedLead.primaryContact.email;
+this.insuredDetails.phone = this.selectedLead.primaryContact.phoneNumber[0].number;
+this.insuredDetails.type = this.selectedLead.primaryContact.phoneNumber[0].type;
+this.sourceDetails.type = this.selectedLead.leadSource.type
+     
+ }
+ 
+ this.countries = addressService.getCountries();
+  this.onCountrySelect("United States");
       
-        insuredInfo: {
+},
+  computed: {
+  ...mapGetters(["selectedLead","leadSources","contactTypes","clientTypes","titles"])
+  },
+   mounted() {
+   this.getTitles();
+   },
+ methods: {
+    ...mapActions (["addClient","getClientTypes", "getContactTypes", "getTitles",]),
+    ...mapMutations(["setSelectedLead"]),
+    
+   onCountrySelect(country) {
+      this.states = addressService.getStates(country);
+   },
+
+    setTitleName(val) {
+      const titleResult = this.titles.find(obj => {
+        return obj.title === this['honorific'+val].title;
+      });
+
+      this['honorific'+val].id = titleResult.id;
+    },
+
+    setClientType() {
+      const obj = this.clientTypes.find(item => {
+        return item.id === this.client.id;
+      });
+
+      this.client.id = obj.id;
+      this.client.type = obj.machineName;
+    },
+
+    mailingAddressSame(){
+   this.mailingAddressSameInfo.streetAddress = this.addressDetails.streetNumber;
+   this.mailingAddressSameInfo.unitOrApartmentNumber = this.addressDetails.apartmentNumber;
+    this.mailingAddressSameInfo.city = this.addressDetails.city;
+  this.mailingAddressSameInfo.state = this.addressDetails.state;
+  this.mailingAddressSameInfo.zip = this.addressDetails.zip;
+  this.mailingAddressSameInfo.country = this.addressDetails.country;
+  this.mailingAddressSameInfo.dropBox = this.gateDropbox.info;
+   },
+  createClientButtonClick() {
+  
+   const payload = {
+        isOrganization:this.primaryDetails.isOrganization,
+         organizationName:this.primaryDetails.organizationName,
+        isOrganizationPolicyholder: this.policyHolder.isPolicyHolder,
+    source: {
+         id: "",
+          type: this.sourceDetails.type,
+          detail: "",  
+       },
+        type: {
+           id: this.client.id,
+           value: this.client.type,
+        },
+       insuredInfo: {
           primary:{
+            honorific: {
+                     id: this.honorific1.id,
+                        value: this.honorific1.title
+                    },
             fname: this.insuredDetails.fname,
             lname: this.insuredDetails.lname,
             email: this.insuredDetails.email,
@@ -1326,8 +1656,11 @@ export default {
               }
             ]
           },
-       
-          secondary:{
+        secondary:{
+              honorific: {
+                       id:this.honorific2.id,
+                        value: this.honorific2.title,
+                    },
           fname: this.coInsuredDetails.fname,
           lname: this.coInsuredDetails.lname,
           email : this.coInsuredDetails.email,
@@ -1348,13 +1681,13 @@ export default {
                     dropBox:this.gateDropbox.info,
           },
             mailingAddress: {
-                    addressCountry: "",
-                    addressLocality: "",
-                    addressRegion: "",
+                    addressCountry: this.mailingAddressDetails.country,
+                    addressLocality: this.mailingAddressDetails.city,
+                    addressRegion: this.mailingAddressDetails.apartmentNumber,
                     postOfficeBoxNumber: "",
-                    postalCode: "",
-                    streetAddress: "",
-                    dropBoxInfo: "",
+                    postalCode: this.mailingAddressDetails.zip,
+                    streetAddress: this.addressDetails.streetNumber,
+                    dropBoxInfo: this.mailingAddressSameInfo.dropBox,
                 },
                  phoneNumbers: [
                     {
@@ -1369,20 +1702,65 @@ export default {
 
                  ],
                   tenantInfo: {
-                    name:  this.tanentOccupied.name,
+                    name:  "",
                     phoneNumber: {
-                        type:  this.tanentOccupied.type,
-                        number: this.tanentOccupied.phone,
+                        type:  "",
+                        number: "",
                     }
                 }
          },
-     
       }
+      if(this.tenantOccupiedToggle){
+        payload.insuredInfo.tenantInfo.name = this.tenantOccupied.name;
+       payload.insuredInfo.tenantInfo.phoneNumber.type =  this.tenantOccupied.type;
+      payload.insuredInfo.tenantInfo.phoneNumber.number= this.tenantOccupied.phone;
+      } else {
+        delete payload.insuredInfo.tenantInfo
+      }
+      if (this.sourceDetails.type == "vendor") {
+        payload.source.id = this.sourceDetails.id;
+      } else {
+        payload.source.detail = this.sourceDetails.details;
+      }
+      
+                  
    
-    this.addClient(payload)
+    this.addClient(payload).then(()=> this.setSelectedLead())
     },
+    
     saveButtonClick() {},
-    validateEmail
+
+    validateEmail,
+
+    onChangingSourceType() {
+      this.sourceDetails.id = "";
+      this.sourceDetails.details = "";
+    },
+
+     addSelectedVendor(e) {
+      this.sourceDetails = {
+        id: e.id,
+        type: "vendor",
+        details: e.name,
+      };
+      this.closeVendorsList();
+    },
+
+    closeAddVendorDialog(e) {
+      this.addVendorDialog = false;
+      this.vendorsListDialog = true;
+      if (e) {
+        this.$refs.list.getVendors();
+      }
+    },
+
+    onClosingVendorSelectDialog(vendor, isVendor) {
+      if (isVendor) {
+        this.sourceDetails.id = vendor.id;
+        this.sourceDetails.details = vendor.name;
+      }
+      this.vendorsListDialog = false;
+    },
   }
 };
 </script>
@@ -1407,5 +1785,18 @@ export default {
   
   padding: 15px 0;
   border-bottom: 1px solid #D3D3D3;
+}
+
+.custom-select {
+  width: 100%;
+  border-bottom: 1px solid #c2c2c2;
+  margin-bottom: 20px;
+
+  .select-text {
+    line-height: 24px;
+    padding-top: 24px;
+    padding-bottom: 8px;
+    height: 50px;
+  }
 }
 </style>
