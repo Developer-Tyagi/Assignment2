@@ -573,10 +573,10 @@ export default {
       this.vendorDialogName = name;
       if (name === "carrier") {
         this.showVendorDialogFilters = false;
-        this.vendorDialogFilterByIndustry = ""; //filter by what?
+        this.vendorDialogFilterByIndustry = "carrier";
       } else {
         this.showVendorDialogFilters = true;
-        this.vendorDialogFilterByIndustry = ""; ///filter by what?
+        this.vendorDialogFilterByIndustry = "";
       }
       this.vendorsListDialog = true;
     },
