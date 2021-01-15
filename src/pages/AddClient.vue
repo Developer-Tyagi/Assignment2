@@ -1671,7 +1671,7 @@ this.sourceDetails.type = this.selectedLead.leadSource.type
       } else {
         delete payload.insuredInfo.tenantInfo
       }
-      if (this.sourceDetails.type == "vendor") {
+      if (this.source.type == "vendor") {
         payload.source.id = this.sourceDetails.id;
       } else {
         payload.source.detail = this.sourceDetails.details;
