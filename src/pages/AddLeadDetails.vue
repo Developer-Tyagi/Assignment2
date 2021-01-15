@@ -144,28 +144,17 @@
               />
               <br />
               <span class="stepper-heading">Loss Location</span>
-              <!-- <div class="row">
-                <q-input
-                  v-model="lossDetails.address2"
-                  label="House/Flat No"
-                  style="width:30%"
-                />
+              <div class="row">
+                <q-input v-model="lossDetails.address2" label="House/Flat No" />
                 <input
                   type="text"
                   id="autocomplete"
                   class="input-autocomplete"
                   v-model="lossDetails.address1"
                   placeholder="Street"
+                  @focus="getGeoLocation"
                 />
-              </div> -->
-              <q-input
-                v-model="lossDetails.address1"
-                label="Address1"
-                lazy-rules
-                :rules="[
-                  val => (val && val.length > 0) || 'Please fill the address1'
-                ]"
-              ></q-input>
+              </div>
               <q-input
                 v-model="lossDetails.city"
                 label="City"
@@ -505,6 +494,7 @@ export default {
   data() {
     return {
       autocomplete: {},
+      enableAddressField: false,
       countries: [],
       states: [],
       subInspectionTypes: [],
@@ -603,20 +593,26 @@ export default {
     moveToNextForm(newValue, oldValue) {
       if (newValue == 2) {
         this.autocomplete = new google.maps.places.Autocomplete(
-          document.getElementById("autocomplete")
+          document.getElementById("autocomplete"),
+          { types: ["geocode"] }
         );
         this.autocomplete.addListener("place_changed", this.fillInAddress);
       }
     },
 
-    getPlaceName(key, value) {
-      for (let i = 0; i < value.length; i++) {
-        let index = value[i].types.indexOf(key);
-        if (index != -1) {
-          return i;
-        } else {
-          return null;
-        }
+    getGeoLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+          const geolocation = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+          const circle = new google.maps.Circle({
+            center: geolocation,
+            radius: position.coords.accuracy
+          });
+          this.autocomplete.setBounds(circle.getBounds());
+        });
       }
     },
 
@@ -658,6 +654,8 @@ export default {
           this.lossDetails.dateOfLoss,
           "YYYY-MM-DDTHH:mm:ssZ"
         );
+      } else {
+        formattedString = null;
       }
       const payload = {
         isOrganization: this.primaryDetails.isOrganization,
@@ -742,21 +740,43 @@ export default {
       }
     },
 
+    getPlaceName(key, value) {
+      for (let i = 0; i < value.length; i++) {
+        let index = value[i].types.indexOf(key);
+
+        if (index != -1) {
+          return i;
+        }
+      }
+    },
+
     fillInAddress() {
       const place = this.autocomplete.getPlace().address_components;
-      this.lossDetails.address1 = "";
-      this.lossDetails.city =
-        place[this.getPlaceName("country", place)].long_name;
-      this.lossDetails.state =
-        place[
-          this.getPlaceName("administrative_area_level_1", place)
-        ].long_name;
-      this.lossDetails.country =
-        place[this.getPlaceName("country", place)].long_name;
+      if (this.getPlaceName("route", place)) {
+        this.lossDetails.address1 =
+          place[this.getPlaceName("route", place)].long_name;
+      }
+      if (this.getPlaceName("administrative_area_level_2", place)) {
+        this.lossDetails.city =
+          place[
+            this.getPlaceName("administrative_area_level_2", place)
+          ].long_name;
+      }
+      if (this.getPlaceName("administrative_area_level_1", place)) {
+        this.lossDetails.state =
+          place[
+            this.getPlaceName("administrative_area_level_1", place)
+          ].long_name;
+      }
+      if (this.getPlaceName("country", place)) {
+        this.lossDetails.country =
+          place[this.getPlaceName("country", place)].long_name;
+      }
       if (this.getPlaceName("postal_code", place)) {
         this.lossDetails.postalCode =
           place[this.getPlaceName("postal_code", place)].long_name;
       }
+      this.enableAddressField = true;
     }
   },
 
