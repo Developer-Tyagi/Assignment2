@@ -1673,15 +1673,15 @@ this.sourceDetails.type = this.selectedLead.leadSource.type
         delete payload.insuredInfo.tenantInfo
       }
       if (this.sourceDetails.type == "vendor") {
-        payload.leadSource.id = this.sourceDetails.id;
+        payload.source.id = this.sourceDetails.id;
       } else {
-        payload.leadSource.details = this.sourceDetails.details;
+        payload.source.details = this.sourceDetails.details;
       }
       
                   
    console.log(payload);
    
-    // this.addClient(payload).then(()=> this.setSelectedLead())
+    this.addClient(payload).then(()=> this.setSelectedLead())
     },
     
     saveButtonClick() {},
