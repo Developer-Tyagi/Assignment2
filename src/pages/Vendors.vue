@@ -19,7 +19,12 @@
         />
       </q-toolbar>
     </q-header>
-    <VendorsList ref="list" :selective="false" :filter="true" />
+    <VendorsList
+      ref="list"
+      :selective="false"
+      :showFilter="true"
+      :filterName="''"
+    />
     <q-dialog
       v-model="addVendorDialog"
       persistent
