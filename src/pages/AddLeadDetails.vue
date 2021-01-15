@@ -19,6 +19,7 @@
         color="primary"
         animated
         alternative-labels
+        @transition="moveToNextForm"
       >
         <q-step :name="1" :done="step > 1" title="Primary Contact">
           <q-form @submit="step++">
@@ -30,6 +31,7 @@
                 option-value="id"
                 option-label="title"
                 map-options
+                @input="setTitleName()"
                 emit-value
                 label="Title"
                 lazy-rules
@@ -142,7 +144,7 @@
               />
               <br />
               <span class="stepper-heading">Loss Location</span>
-              <div class="row">
+              <!-- <div class="row">
                 <q-input
                   v-model="lossDetails.address2"
                   label="House/Flat No"
@@ -155,7 +157,15 @@
                   v-model="lossDetails.address1"
                   placeholder="Street"
                 />
-              </div>
+              </div> -->
+              <q-input
+                v-model="lossDetails.address1"
+                label="Address1"
+                lazy-rules
+                :rules="[
+                  val => (val && val.length > 0) || 'Please fill the address1'
+                ]"
+              ></q-input>
               <q-input
                 v-model="lossDetails.city"
                 label="City"
@@ -369,6 +379,7 @@
           <q-form @submit="onSubmit" @reset="step--">
             <q-card class="q-pa-md form-card">
               <div class="stepper-heading">Scheduling</div>
+
               <q-toggle
                 v-model="schedulingDetails.isAutomaticScheduling"
                 label="Is automatic scheduling needed?"
@@ -378,8 +389,8 @@
                 v-model="schedulingDetails.inspectionType"
                 :options="inspectionTypes"
                 label="Type of Inspection"
-                option-label="name"
-                option-value="name"
+                option-label="value"
+                option-value="value"
                 emit-value
                 @input="onInspectionTypesSelect()"
               />
@@ -387,8 +398,8 @@
                 v-if="showSubInspectionType"
                 v-model="schedulingDetails.subInspectionType"
                 :options="subInspectionTypes"
-                option-label="name"
-                option-value="id"
+                option-label="value"
+                option-value="userID"
                 emit-value
                 label="Sub Type of Inspection"
                 @input="onSubInspectionTypesSelect()"
@@ -503,14 +514,14 @@ export default {
       showVendorDialogFilters: false,
       vendorDialogName: "",
       vendorDialogFilterByIndustry: "",
-      step: 3,
+      step: 1,
       primaryDetails: {
         isOrganization: false,
         organizationName: "",
         firstName: "",
         lastName: "",
         email: "",
-        phone: "",
+        phoneNumber: "",
         selectedContactType: "",
         honorific: {
           id: "",
@@ -549,30 +560,6 @@ export default {
     };
   },
 
-  mounted() {
-    const autocomplete = new google.maps.places.Autocomplete(
-      document.getElementById("autocomplete")
-    );
-
-    function fillInAddress() {
-      const place = autocomplete.getPlace().address_components;
-      this.lossDetails.address1 = "";
-      this.lossDetails.city =
-        place[this.getPlaceName("country", place)].long_name;
-      this.lossDetails.state =
-        place[
-          this.getPlaceName("administrative_area_level_1", place)
-        ].long_name;
-      this.lossDetails.country =
-        place[this.getPlaceName("country", place)].long_name;
-      if (this.getPlaceName("postal_code", place)) {
-        this.lossDetails.postalCode =
-          place[this.getPlaceName("postal_code", place)].long_name;
-      }
-    }
-
-    autocomplete.addListener("place_changed", fillInAddress.bind(this));
-  },
   methods: {
     ...mapActions([
       "addLeads",
@@ -605,6 +592,23 @@ export default {
       this.vendorsListDialog = false;
     },
 
+    setTitleName() {
+      const title = this.titles.find(obj => {
+        return obj.id === this.primaryDetails.honorific.id;
+      });
+
+      this.primaryDetails.honorific.value = title.title;
+    },
+
+    moveToNextForm(newValue, oldValue) {
+      if (newValue == 2) {
+        this.autocomplete = new google.maps.places.Autocomplete(
+          document.getElementById("autocomplete")
+        );
+        this.autocomplete.addListener("place_changed", this.fillInAddress);
+      }
+    },
+
     getPlaceName(key, value) {
       for (let i = 0; i < value.length; i++) {
         let index = value[i].types.indexOf(key);
@@ -622,7 +626,7 @@ export default {
 
     onInspectionTypesSelect() {
       const selectedInspectionType = this.inspectionTypes.find(
-        type => type.name === this.schedulingDetails.inspectionType
+        type => type.value === this.schedulingDetails.inspectionType
       );
       if (selectedInspectionType.subtypes.length > 1) {
         this.subInspectionTypes = selectedInspectionType.subtypes;
@@ -632,7 +636,7 @@ export default {
       } else {
         this.showSubInspectionType = false;
         this.schedulingDetails.subInspectionType =
-          selectedInspectionType.subtypes[0].id;
+          selectedInspectionType.subtypes[0].userID;
         this.schedulingDetails.inspectionDuration =
           selectedInspectionType.subtypes[0].duration;
       }
@@ -640,7 +644,7 @@ export default {
 
     onSubInspectionTypesSelect() {
       const index = this.subInspectionTypes.findIndex(
-        val => val.id == this.schedulingDetails.subInspectionType
+        val => val.userID == this.schedulingDetails.subInspectionType
       );
       this.schedulingDetails.inspectionDuration = this.subInspectionTypes[
         index
@@ -660,7 +664,7 @@ export default {
         primaryContact: {
           honorific: {
             id: this.primaryDetails.honorific.id,
-            value: "Mr."
+            value: this.primaryDetails.honorific.value
           },
           fname: this.primaryDetails.firstName,
           lname: this.primaryDetails.lastName,
@@ -725,7 +729,6 @@ export default {
     addSelectedVendor(e) {
       this.sourceDetails = {
         id: e.id,
-        type: "vendor",
         details: e.name
       };
       this.closeVendorsList();
@@ -736,6 +739,23 @@ export default {
       this.vendorsListDialog = true;
       if (e) {
         this.$refs.list.getVendors();
+      }
+    },
+
+    fillInAddress() {
+      const place = this.autocomplete.getPlace().address_components;
+      this.lossDetails.address1 = "";
+      this.lossDetails.city =
+        place[this.getPlaceName("country", place)].long_name;
+      this.lossDetails.state =
+        place[
+          this.getPlaceName("administrative_area_level_1", place)
+        ].long_name;
+      this.lossDetails.country =
+        place[this.getPlaceName("country", place)].long_name;
+      if (this.getPlaceName("postal_code", place)) {
+        this.lossDetails.postalCode =
+          place[this.getPlaceName("postal_code", place)].long_name;
       }
     }
   },

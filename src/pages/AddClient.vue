@@ -396,7 +396,6 @@
                 emit-value
                   label="Type"
                   style="width: 40%; margin-right: auto"
-                  label="Phone Type"
                 />
                 <q-input
                  v-model="insuredDetails.phone"
@@ -444,7 +443,7 @@
                   map-options
                   emit-value
                   style="width: 40%; margin-right: auto"
-                  label="Phone Type"
+                  label="Type"
                   />
                   <q-input
                    v-model="coInsuredDetails.phone"
@@ -487,7 +486,6 @@
                   map-options
                   emit-value
                   style="width: 40%; margin-right: auto"
-                  label="Phone Type"
                   />
                   <q-input
                     v-model="addAditionalPhoneNumber.phone2"
@@ -505,7 +503,6 @@
                   map-options
                   emit-value
                   style="width: 40%; margin-right: auto"
-                  label="Phone Type"
                   />
                   <q-input
                   v-model="addAditionalPhoneNumber.phone3"
@@ -906,7 +903,6 @@
                   option-label="name"
                   map-options
                   style="width: 40%; margin-right: auto"
-                  label="Phone Type"
                 />
                 <q-input
                   v-model="lossInfo.insuranceAdjustorPhone"
