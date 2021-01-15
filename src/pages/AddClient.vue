@@ -77,7 +77,7 @@
           label="Create Client"
           color="primary"
           class="full-width q-mt-auto text-capitalize"
-          @click="CreateClientButtonClick"
+          @click="createClientButtonClick"
           size="'xl'"
         ></q-btn>
       </div>
@@ -319,7 +319,6 @@
                 <q-toggle
                   v-model="primaryDetails.isOrganization"
                   left-label
-                  color="orange"
                   class="q-ml-auto"
                 />
               </div>
@@ -335,9 +334,6 @@
                   ]"
                 />
               </div>
-
-
-
               <div class="row">
                 <p class="q-mx-none q-my-auto">
                   Organization Is Policyholder?
@@ -345,20 +341,7 @@
                 <q-toggle
                   v-model="policyHolder.isPolicyHolder"
                   left-label
-                  color="orange"
                   class="q-ml-auto"
-                />
-              </div>
-              <div v-if="policyHolder.isPolicyHolder">
-                <q-input
-                  v-model="policyHolder.policyHolderName"
-                  label="Organization Name"
-                  lazy-rules
-                  :rules="[
-                    val =>
-                      (val && val.length > 0) ||
-                      'Please fill the organization name '
-                  ]"
                 />
               </div>
   <br />
@@ -537,7 +520,7 @@
                 <p class="q-mx-none q-my-auto">
                   Gate / Dropbox
                 </p>
-            <q-toggle class="q-ml-auto" v-model="gateDropboxToggle" />
+                <q-toggle class="q-ml-auto" v-model="gateDropboxToggle" />
               </div>
               <div v-if="gateDropboxToggle">
                 <q-input
@@ -552,10 +535,10 @@
               <q-toggle class="q-ml-auto" v-model="tenantOccupiedToggle" />
               </div>
               <div v-if="tenantOccupiedToggle">
-                <q-input v-model="tanentOccupied.name" label="Tenant Name" />
+                <q-input v-model="tenantOccupied.name" label="Tenant Name" />
                 <div class="row">
                   <q-select
-                 v-model="tanentOccupied.type"
+                 v-model="tenantOccupied.type"
                     label="Type"
                     :options="contactTypes"
                   option-value="machineName"
@@ -564,7 +547,7 @@
                   emit-value
                     style="width: 40%; margin-right: auto"
                   />
-                  <q-input v-model="tanentOccupied.phone" label="Phone"    style="width:55%;margin-left:auto"/>
+                  <q-input v-model="tenantOccupied.phone" label="Phone"    style="width:55%;margin-left:auto"/>
                 </div>
               </div>
               <br />
@@ -622,7 +605,7 @@
                 <q-toggle
                     class="q-ml-auto"
                     v-model="isMailingAddressSameToggle"
-                   @input="MailingAddressSame"
+                   @input="mailingAddressSame"
                   />
                 </div>
                 <div v-if="!isMailingAddressSameToggle"
@@ -1290,18 +1273,7 @@
         </q-card-section>
       </q-card>
     </q-dialog>
-   
-    <q-dialog
-      v-model="addVendorDialog"
-      persistent
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <AddVendor @closeDialog="closeAddVendorDialog" />
-      </q-card>
-    </q-dialog>
+  
       <q-dialog
       v-model="vendorsListDialog"
       persistent
@@ -1331,9 +1303,23 @@
         </q-header>
         <VendorsList
           :selective="true"
-          @selectedVendor="addSelectedVendor"
+          @selectedVendor="onClosingVendorSelectDialog"
           ref="list"
+          :showFilter="true"
         />
+      </q-card>
+    </q-dialog>
+    <q-dialog
+      v-model="addVendorDialog"
+      persistent
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <AddVendor @closeDialog="closeAddVendorDialog" 
+          :componentName="'vendor'"
+         />
       </q-card>
     </q-dialog>
   </q-page>
@@ -1342,11 +1328,8 @@
 <script>
 import CustomHeader from "components/CustomHeader";
 import AddressService from "@utils/country";
-import {  getTitles } from "src/store/common/actions";
 import { validateEmail } from "@utils/validation";
-import { selectedLead } from 'src/store/leads/getters';
-import { addressDetails } from 'src/store/clients/getters';
-import { mapGetters,mapActions} from "vuex";
+import { mapGetters,mapActions,mapMutations} from "vuex";
 import { sources } from "src/store/common/getters";
 import { state } from "src/store/common/state";
 import VendorsList from "components/VendorsList";
@@ -1433,7 +1416,7 @@ honorific2: {
       gateDropbox: {
         info: ""
       },
-      tanentOccupied: {
+      tenantOccupied: {
         name: "",
         phone: "",
         type: ""
@@ -1550,13 +1533,15 @@ created() {
    this.getClientTypes();
     this.getContactTypes();
     
-  if(this.selectedLead.primaryContact.fname){
+  if(this.selectedLead.id){
     
    this.insuredDetails.fname = this.selectedLead.primaryContact.fname;
 this.insuredDetails.lname = this.selectedLead.primaryContact.lname;
 this.insuredDetails.email = this.selectedLead.primaryContact.email;
 this.insuredDetails.phone = this.selectedLead.primaryContact.phoneNumber[0].number;
 this.insuredDetails.type = this.selectedLead.primaryContact.phoneNumber[0].type;
+console.log(this.selectedLead.leadSource)
+this.sourceDetails.type = this.selectedLead.leadSource.type
      
  }
  
@@ -1572,6 +1557,7 @@ this.insuredDetails.type = this.selectedLead.primaryContact.phoneNumber[0].type;
    },
  methods: {
     ...mapActions (["addClient","getClientTypes", "getContactTypes", "getTitles",]),
+    ...mapMutations(["setSelectedLead"]),
     
    onCountrySelect(country) {
       this.states = addressService.getStates(country);
@@ -1585,7 +1571,7 @@ this.insuredDetails.type = this.selectedLead.primaryContact.phoneNumber[0].type;
 
       this.honorific1.id = titleResult.id;
     },
-    MailingAddressSame(){
+    mailingAddressSame(){
    this.mailingAddressSameInfo.streetAddress = this.addressDetails.streetNumber;
    this.mailingAddressSameInfo.unitOrApartmentNumber = this.addressDetails.apartmentNumber;
     this.mailingAddressSameInfo.city = this.addressDetails.city;
@@ -1594,7 +1580,7 @@ this.insuredDetails.type = this.selectedLead.primaryContact.phoneNumber[0].type;
   this.mailingAddressSameInfo.country = this.addressDetails.country;
   this.mailingAddressSameInfo.dropBox = this.gateDropbox.info;
    },
-  CreateClientButtonClick() {
+  createClientButtonClick() {
   
    const payload = {
         isOrganization:this.primaryDetails.isOrganization,
@@ -1671,25 +1657,37 @@ this.insuredDetails.type = this.selectedLead.primaryContact.phoneNumber[0].type;
 
                  ],
                   tenantInfo: {
-                    name:  this.tanentOccupied.name,
+                    name:  "",
                     phoneNumber: {
-                        type:  this.tanentOccupied.type,
-                        number: this.tanentOccupied.phone,
+                        type:  "",
+                        number: "",
                     }
                 }
          },
-     
       }
+      if(this.tenantOccupiedToggle){
+        payload.insuredInfo.tenantInfo.name = this.tenantOccupied.name;
+       payload.insuredInfo.tenantInfo.phoneNumber.type =  this.tenantOccupied.type;
+      payload.insuredInfo.tenantInfo.phoneNumber.number= this.tenantOccupied.phone;
+      } else {
+        delete payload.insuredInfo.tenantInfo
+      }
+      
+                  
    console.log(payload);
-    this.addClient(payload)
+   
+    // this.addClient(payload).then(()=> this.setSelectedLead())
     },
     
     saveButtonClick() {},
+
     validateEmail,
+
     onChangingSourceType() {
       this.sourceDetails.id = "";
       this.sourceDetails.details = "";
     },
+
      addSelectedVendor(e) {
       this.sourceDetails = {
         id: e.id,
@@ -1698,12 +1696,21 @@ this.insuredDetails.type = this.selectedLead.primaryContact.phoneNumber[0].type;
       };
       this.closeVendorsList();
     },
-     closeAddVendorDialog(e) {
+
+    closeAddVendorDialog(e) {
       this.addVendorDialog = false;
       this.vendorsListDialog = true;
       if (e) {
         this.$refs.list.getVendors();
       }
+    },
+
+    onClosingVendorSelectDialog(vendor, isVendor) {
+      if (isVendor) {
+        this.sourceDetails.id = vendor.id;
+        this.sourceDetails.details = vendor.name;
+      }
+      this.vendorsListDialog = false;
     },
   }
 };

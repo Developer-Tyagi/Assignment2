@@ -87,19 +87,3 @@ export async function getLeadDetails({ commit, dispatch }, id) {
     });
   }
 }
-
-//need to be added later
-// export async function removeSelectedLeadDetails({ commit, dispatch }) {
-//   dispatch("setLoading", true);
-//   try {
-//     commit("setSelectedLead", {});
-//     dispatch("setLoading", false);
-//   } catch (e) {
-//     console.log(e);
-//     dispatch("setLoading", false);
-//     dispatch("setNotification", {
-//       type: "negative",
-//       message: e.response.data.title
-//     });
-//   }
-// }
