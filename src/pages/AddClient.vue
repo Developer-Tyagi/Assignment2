@@ -352,7 +352,7 @@
             option-label="title"
             label="Title"
             option-value="title"
-            @input="setTitleName()"
+            @input="setTitleName(1)"
             emit-value
           />
 
@@ -412,7 +412,7 @@
             option-label="title"
             label="Title"
             option-value="title"
-            @input="setTitleName()"
+            @input="setTitleName(2)"
             emit-value
           />
                 <q-input v-model="coInsuredDetails.fname" label="First Name" />
@@ -1562,14 +1562,13 @@ this.sourceDetails.type = this.selectedLead.leadSource.type
    onCountrySelect(country) {
       this.states = addressService.getStates(country);
    },
-    setTitleName() {
-      var titleId = this.honorific1.title;
 
-      var titleResult = this.titles.find(obj => {
-        return obj.title === titleId;
+    setTitleName(val) {
+      const titleResult = this.titles.find(obj => {
+        return obj.title === this['honorific'+val].title;
       });
 
-      this.honorific1.id = titleResult.id;
+      this['honorific'+val].id = titleResult.id;
     },
     mailingAddressSame(){
    this.mailingAddressSameInfo.streetAddress = this.addressDetails.streetNumber;
@@ -1588,7 +1587,7 @@ this.sourceDetails.type = this.selectedLead.leadSource.type
         isOrganizationPolicyholder: this.policyHolder.isPolicyHolder,
     source: {
          id: "",
-          type: this.sourceDetails.type,
+          type: this.source.type,
           detail: "",  
        },
         type: {
@@ -1675,7 +1674,7 @@ this.sourceDetails.type = this.selectedLead.leadSource.type
       if (this.sourceDetails.type == "vendor") {
         payload.source.id = this.sourceDetails.id;
       } else {
-        payload.source.details = this.sourceDetails.details;
+        payload.source.detail = this.sourceDetails.details;
       }
       
                   
