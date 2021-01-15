@@ -304,7 +304,7 @@
                 </div>
               </div>
             <q-select
-             v-model="client.type"
+             v-model="client.id"
                 option-value="id"
                 option-label="name"
                   map-options
@@ -1380,7 +1380,7 @@ honorific2: {
         details: "",
       },
       client: {
-      type: ""
+      type: "",id:""
       },
       
       insuredDetails: {
@@ -1541,7 +1541,6 @@ this.insuredDetails.lname = this.selectedLead.primaryContact.lname;
 this.insuredDetails.email = this.selectedLead.primaryContact.email;
 this.insuredDetails.phone = this.selectedLead.primaryContact.phoneNumber[0].number;
 this.insuredDetails.type = this.selectedLead.primaryContact.phoneNumber[0].type;
-console.log(this.selectedLead.leadSource)
 this.sourceDetails.type = this.selectedLead.leadSource.type
      
  }
@@ -1574,11 +1573,11 @@ this.sourceDetails.type = this.selectedLead.leadSource.type
 
     setClientType() {
       const obj = this.clientTypes.find(item => {
-        return item.id === this.clientTypes.id;
+        return item.id === this.client.id;
       });
 
-      this.type.id = obj.id;
-      this.type.value = obj.machineValue;
+      this.client.id = obj.id;
+      this.client.type = obj.machineName;
     },
 
     mailingAddressSame(){
@@ -1602,7 +1601,7 @@ this.sourceDetails.type = this.selectedLead.leadSource.type
           detail: "",  
        },
         type: {
-           id: "",
+           id: this.client.id,
            value: this.client.type,
         },
        insuredInfo: {
@@ -1675,6 +1674,7 @@ this.sourceDetails.type = this.selectedLead.leadSource.type
                 }
          },
       }
+      console.log(payload)
       if(this.tenantOccupiedToggle){
         payload.insuredInfo.tenantInfo.name = this.tenantOccupied.name;
        payload.insuredInfo.tenantInfo.phoneNumber.type =  this.tenantOccupied.type;
