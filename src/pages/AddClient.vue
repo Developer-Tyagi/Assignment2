@@ -379,12 +379,18 @@
                   map-options
                 emit-value
                   label="Type"
+                   lazy-rules
+                  :rules="[val => (val && val.length > 0) || '']"
                   style="width: 40%; margin-right: auto"
                 />
                 <q-input
                  v-model="insuredDetails.phone"
                   label="Phone"
                   type="number"
+                  lazy-rules
+                :rules="[
+                  val => (val && val.length == 10) || 'Please fill the phone number'
+                ]"
                   style="width: 55%"
                 /> </div>
                 <q-input
@@ -428,12 +434,17 @@
                   emit-value
                   style="width: 40%; margin-right: auto"
                   label="Type"
+                       lazy-rules
+                  :rules="[val => (val && val.length > 0) || '']"
                   />
                   <q-input
                    v-model="coInsuredDetails.phone"
                     label="Phone"
                     type="number"
-                   
+                   lazy-rules
+                :rules="[
+                  val => (val && val.length == 10) || 'Please fill the phone number'
+                ]"
                     style="width:55%;"
                   />
                 </div>
@@ -469,11 +480,18 @@
                   option-label="name"
                   map-options
                   emit-value
+                    lazy-rules
+                  :rules="[val => (val && val.length > 0) || '']"
                   style="width: 40%; margin-right: auto"
                   />
                   <q-input
                     v-model="addAditionalPhoneNumber.phone2"
                     label="Phone2"
+                    type="number"
+                      lazy-rules
+                :rules="[
+                  val => (val && val.length == 10) || 'Please fill the phone number'
+                ]"
                     style="width:55%;margin-left:auto"
  />
                   </div>
@@ -486,11 +504,18 @@
                   option-label="name"
                   map-options
                   emit-value
+                    lazy-rules
+                  :rules="[val => (val && val.length > 0) || '']"
                   style="width: 40%; margin-right: auto"
                   />
                   <q-input
                   v-model="addAditionalPhoneNumber.phone3"
                     label="Phone3"
+                    type="number"
+                      lazy-rules
+                :rules="[
+                  val => (val && val.length == 10) || 'Please fill the phone number'
+                ]"
                     style="width:55%"
                   />
                 </div>
@@ -635,6 +660,19 @@
                   @input="onCountrySelect(mailingAddressDetails.country)"
                 />
                 <q-input v-model="mailingAddressSameInfo.zip" label="ZIP" />
+                 <div class="row">
+                <p class="q-mx-none q-my-auto">
+                  Gate / Dropbox
+                </p>
+            <q-toggle class="q-ml-auto" v-model="gateDropboxToggle" />
+              </div>
+               <div v-if="gateDropboxToggle">
+                <q-input
+                  v-model="mailingAddressSameInfo.dropBox"
+                
+                  label="Gate / Dropbox Info"
+                />
+              </div>
               </div>
               <div v-else> 
                 <q-input
@@ -666,22 +704,20 @@
                    @input="onCountrySelect(mailingAddressDetails.country)"
                 />
                 <q-input v-model="mailingAddressSameInfo.zip" disable label="ZIP" />
-               
-              </div>
-               <div class="row">
+                <div class="row">
                 <p class="q-mx-none q-my-auto">
                   Gate / Dropbox
                 </p>
             <q-toggle class="q-ml-auto" v-model="gateDropboxToggle" />
               </div>
-               <div v-if="gateDropboxToggle">
+               
                 <q-input
                   v-model="mailingAddressSameInfo.dropBox"
                   disable
                   label="Gate / Dropbox Info"
                 />
-              </div>
-              </div>
+             </div>
+               </div>
           <br />
             </div>
           </div>
@@ -689,7 +725,7 @@
             label="Save"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
-            @click="saveButtonClick"
+           @click="mailingAddressDialog = false"
             size="'xl'"
           ></q-btn>
         </q-card-section>
