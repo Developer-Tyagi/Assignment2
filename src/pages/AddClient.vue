@@ -305,11 +305,12 @@
               </div>
             <q-select
              v-model="client.type"
-                option-value="machineName"
-                  option-label="name"
+                option-value="id"
+                option-label="name"
                   map-options
                   emit-value
                 :options="clientTypes"
+                @input="setClientType"
                 label="Client Type"
               />
             <div class="row">
@@ -1570,6 +1571,16 @@ this.sourceDetails.type = this.selectedLead.leadSource.type
 
       this['honorific'+val].id = titleResult.id;
     },
+
+    setClientType() {
+      const obj = this.clientTypes.find(item => {
+        return item.id === this.clientTypes.id;
+      });
+
+      this.type.id = obj.id;
+      this.type.value = obj.machineValue;
+    },
+
     mailingAddressSame(){
    this.mailingAddressSameInfo.streetAddress = this.addressDetails.streetNumber;
    this.mailingAddressSameInfo.unitOrApartmentNumber = this.addressDetails.apartmentNumber;
@@ -1612,7 +1623,7 @@ this.sourceDetails.type = this.selectedLead.leadSource.type
           },
         secondary:{
               honorific: {
-                       id:"",
+                       id:this.honorific2.id,
                         value: this.honorific2.title,
                     },
           fname: this.coInsuredDetails.fname,
@@ -1671,8 +1682,6 @@ this.sourceDetails.type = this.selectedLead.leadSource.type
       } else {
         delete payload.insuredInfo.tenantInfo
       }
-   console.log(payload);
-
       if (this.sourceDetails.type == "vendor") {
         payload.source.id = this.sourceDetails.id;
       } else {
