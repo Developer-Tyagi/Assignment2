@@ -304,7 +304,7 @@ export default {
       const len = this.vendor.contact.length;
       if (
         this.vendor.contact[len - 1].fname &&
-        this.vendor.contact[len - 1].phoneNumber.phone
+        this.vendor.contact[len - 1].phoneNumber.number
       ) {
         this.vendor.contact.push({
           fname: "",
@@ -317,7 +317,7 @@ export default {
           phoneNumber: [
             {
               type: "",
-              phone: ""
+              number: ""
             }
           ]
         });
