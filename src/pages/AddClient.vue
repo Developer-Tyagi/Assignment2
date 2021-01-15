@@ -1710,7 +1710,6 @@ this.sourceDetails.type = this.selectedLead.leadSource.type
                 }
          },
       }
-      console.log(payload)
       if(this.tenantOccupiedToggle){
         payload.insuredInfo.tenantInfo.name = this.tenantOccupied.name;
        payload.insuredInfo.tenantInfo.phoneNumber.type =  this.tenantOccupied.type;
