@@ -77,7 +77,7 @@
           label="Create Client"
           color="primary"
           class="full-width q-mt-auto text-capitalize"
-          @click="CreateClientButtonClick"
+          @click="createClientButtonClick"
           size="'xl'"
         ></q-btn>
       </div>
@@ -605,7 +605,7 @@
                 <q-toggle
                     class="q-ml-auto"
                     v-model="isMailingAddressSameToggle"
-                   @input="MailingAddressSame"
+                   @input="mailingAddressSame"
                   />
                 </div>
                 <div v-if="!isMailingAddressSameToggle"
@@ -1273,18 +1273,7 @@
         </q-card-section>
       </q-card>
     </q-dialog>
-   
-    <q-dialog
-      v-model="addVendorDialog"
-      persistent
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <AddVendor @closeDialog="closeAddVendorDialog" />
-      </q-card>
-    </q-dialog>
+  
       <q-dialog
       v-model="vendorsListDialog"
       persistent
@@ -1318,6 +1307,19 @@
           ref="list"
           :showFilter="true"
         />
+      </q-card>
+    </q-dialog>
+    <q-dialog
+      v-model="addVendorDialog"
+      persistent
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <AddVendor @closeDialog="closeAddVendorDialog" 
+          :componentName="'vendor'"
+         />
       </q-card>
     </q-dialog>
   </q-page>
@@ -1569,7 +1571,7 @@ this.sourceDetails.type = this.selectedLead.leadSource.type
 
       this.honorific1.id = titleResult.id;
     },
-    MailingAddressSame(){
+    mailingAddressSame(){
    this.mailingAddressSameInfo.streetAddress = this.addressDetails.streetNumber;
    this.mailingAddressSameInfo.unitOrApartmentNumber = this.addressDetails.apartmentNumber;
     this.mailingAddressSameInfo.city = this.addressDetails.city;
@@ -1578,7 +1580,7 @@ this.sourceDetails.type = this.selectedLead.leadSource.type
   this.mailingAddressSameInfo.country = this.addressDetails.country;
   this.mailingAddressSameInfo.dropBox = this.gateDropbox.info;
    },
-  CreateClientButtonClick() {
+  createClientButtonClick() {
   
    const payload = {
         isOrganization:this.primaryDetails.isOrganization,
@@ -1707,9 +1709,6 @@ this.sourceDetails.type = this.selectedLead.leadSource.type
       if (isVendor) {
         this.sourceDetails.id = vendor.id;
         this.sourceDetails.details = vendor.name;
-      } else {
-        this.insuranceDetails.carrierId = vendor.id;
-        this.insuranceDetails.carrierName = vendor.name;
       }
       this.vendorsListDialog = false;
     },
