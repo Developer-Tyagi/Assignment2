@@ -1587,7 +1587,7 @@ this.sourceDetails.type = this.selectedLead.leadSource.type
         isOrganizationPolicyholder: this.policyHolder.isPolicyHolder,
     source: {
          id: "",
-          type: this.source.type,
+          type: this.sourceDetails.type,
           detail: "",  
        },
         type: {
@@ -1671,14 +1671,15 @@ this.sourceDetails.type = this.selectedLead.leadSource.type
       } else {
         delete payload.insuredInfo.tenantInfo
       }
-      if (this.source.type == "vendor") {
+   console.log(payload);
+
+      if (this.sourceDetails.type == "vendor") {
         payload.source.id = this.sourceDetails.id;
       } else {
         payload.source.detail = this.sourceDetails.details;
       }
       
                   
-   console.log(payload);
    
     this.addClient(payload).then(()=> this.setSelectedLead())
     },
