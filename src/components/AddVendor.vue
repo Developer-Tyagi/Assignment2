@@ -60,9 +60,9 @@
               :options="contactTypes"
               option-value="machineName"
               option-label="name"
+              map-options
               label="Type"
               style="width: 40%; margin-right: auto"
-              emit-value
             />
             <q-input
               v-model="vendor.contact[0].phoneNumber.number"
@@ -112,43 +112,61 @@
           />
           <p class="form-heading">Company's Phone & Website</p>
           <div v-for="(contactInfo, index) in vendor.contact" v-if="index >= 1">
-            <q-input v-model="contactInfo.fname" label="First Name" />
-            <q-input v-model="contactInfo.lname" label="LastName" />
-            <q-select
-              v-model="contactInfo.honorific.value"
-              :options="titles"
-              option-label="title"
-              label="Title"
-              option-value="title"
-              @input="setTitleNameForMultiple()"
-              emit-value
-            />
-
-            <div class="row">
+            <q-card class="q-mt-sm">
+              <q-input v-model="contactInfo.fname" label="First Name" />
+              <q-input v-model="contactInfo.lname" label="LastName" />
               <q-select
-                v-model="contactInfo.phoneNumber.type"
-                :options="contactTypes"
-                option-value="name"
-                option-label="name"
-                label="Type"
-                style="width: 40%; margin-right: auto"
+                v-model="contactInfo.honorific.value"
+                :options="titles"
+                option-label="title"
+                label="Title"
+                option-value="title"
+                @input="setTitleNameForMultiple()"
                 emit-value
               />
+
+              <div class="row">
+                <q-select
+                  v-model="contactInfo.phoneNumber.type"
+                  :options="contactTypes"
+                  option-value="name"
+                  option-label="name"
+                  label="Type"
+                  style="width: 40%; margin-right: auto"
+                  emit-value
+                />
+                <q-input
+                  v-model="contactInfo.phoneNumber.number"
+                  label="Phone"
+                  type="number"
+                  style="width: 55%"
+                />
+              </div>
               <q-input
-                v-model="contactInfo.phoneNumber.number"
-                label="Phone1"
-                type="number"
-                style="width: 55%"
+                v-model="contactInfo.email"
+                novalidate="true"
+                label="email"
               />
-            </div>
-            <q-input
-              v-model="contactInfo.email"
-              novalidate="true"
-              label="email"
-            />
+            </q-card>
           </div>
-          <div @click="addAnotherContact" class="q-pa-md text-capitalize">
-            + another
+          <div class="row">
+            <q-btn
+              outline
+              class="q-mt-sm"
+              @click="addAnotherContact"
+              color="primary"
+              label="Add-Another"
+              style=" margin-right: auto"
+            />
+
+            <q-btn
+              outline
+              @click="removeAnotherContact"
+              class="q-mt-sm"
+              color="primary"
+              label="Remove"
+              v-if="showRemoveButton"
+            />
           </div>
           <q-input v-model="vendor.info.website" label="Website" />
           <q-input v-model="vendor.info.notes" label="Notes" />
@@ -176,11 +194,13 @@ import { getContactTypes, getTitles } from "src/store/common/actions";
 export default {
   name: "AddVendor",
   props: ["componentName"],
+  //title: "",
   data() {
     return {
       industryTypes: ["Association"],
       countries: [],
       states: [],
+      showRemoveButton: false,
       vendor: {
         name: "",
         industry: { value: "", id: "" },
@@ -242,6 +262,7 @@ export default {
   },
 
   mounted() {
+    //console.log(this.titles);
     this.getVendorIndustries();
     this.getTitles();
     this.getContactTypes();
@@ -299,13 +320,34 @@ export default {
       this.vendor.industry.value = industryName;
       this.vendor.industry.id = industryId;
     },
+    removeAnotherContact() {
+      const len = this.vendor.contact.length;
+      this.showRemoveButton = false;
+
+      this.vendor.contact.pop({
+        fname: "",
+        lname: "",
+        email: "",
+        honorific: {
+          id: "",
+          value: ""
+        },
+        phoneNumber: [
+          {
+            type: "",
+            number: ""
+          }
+        ]
+      });
+    },
 
     addAnotherContact() {
       const len = this.vendor.contact.length;
       if (
         this.vendor.contact[len - 1].fname &&
-        this.vendor.contact[len - 1].phoneNumber.phone
+        this.vendor.contact[len - 1].phoneNumber.number
       ) {
+        this.showRemoveButton = true;
         this.vendor.contact.push({
           fname: "",
           lname: "",
@@ -317,7 +359,7 @@ export default {
           phoneNumber: [
             {
               type: "",
-              phone: ""
+              number: ""
             }
           ]
         });
@@ -335,8 +377,10 @@ export default {
     },
 
     onAddVendorButtonClick() {
+      console.log(this.vendor);
       this.$refs.vendorForm.validate().then(async success => {
         if (success) {
+          console.log(66);
           this.addVendor(this.vendor).then(async => {
             this.closeDialog(true);
           });
