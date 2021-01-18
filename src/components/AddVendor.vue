@@ -34,18 +34,6 @@
             :rules="[val => (val && val.length) || '']"
           />
           <q-select
-            filled
-            v-model="vendor.name"
-            use-input
-            input-debounce="0"
-            label="Simple filter"
-            :options="options"
-            @filter="filterFn"
-            style="width: 250px"
-            behavior="menu"
-          />
-
-          <q-select
             v-model="vendor.industry.value"
             :options="vendorIndustries"
             label=" Industry"
@@ -53,18 +41,28 @@
             option-value="name"
             @input="setVendorIndustryName()"
             emit-value
+            lazy-rules
+            :rules="[val => (val && val.length) || '']"
           />
           <p class="form-heading">Company's Contact Person Details</p>
           <q-select
-            v-model="vendor.contact[0].honorific.value"
+            v-model="vendor.contact[0].honorific.id"
             :options="titles"
-            option-label="title"
             label="Title"
-            option-value="title"
-            @input="setTitleName()"
+            option-label="name"
+            option-value="id"
+            map-options
             emit-value
+            @input="setTitleName(vendor.contact[0].honorific)"
+            lazy-rules
+            :rules="[val => (val && val.length) || '']"
           />
-          <q-input v-model="vendor.contact[0].fname" label="First Name" />
+          <q-input
+            v-model="vendor.contact[0].fname"
+            label="First Name"
+            lazy-rules
+            :rules="[val => (val && val.length) || '']"
+          />
           <q-input v-model="vendor.contact[0].lname" label="Last Name" />
           <div class="row">
             <q-select
@@ -72,9 +70,9 @@
               :options="contactTypes"
               option-value="machineName"
               option-label="name"
-              map-options
               label="Type"
               style="width: 40%; margin-right: auto"
+              emit-value
             />
             <q-input
               v-model="vendor.contact[0].phoneNumber.number"
@@ -123,23 +121,28 @@
             :rules="[val => (val && val.length > 0) || '']"
           />
           <p class="form-heading">Company's Phone & Website</p>
-          <div v-for="(contactInfo, index) in vendor.contact" v-if="index >= 1">
+          <div
+            outline
+            v-for="(contactInfo, index) in vendor.contact"
+            v-if="index >= 1"
+          >
             <q-card class="q-mt-sm">
+              <q-select
+                v-model="contactInfo.honorific.id"
+                :options="titles"
+                option-label="name"
+                label="Title"
+                option-value="id"
+                @input="setTitleName(contactInfo.honorific)"
+                emit-value
+                map-options
+              />
               <q-input
                 v-model="contactInfo.fname"
                 label="First Name"
                 :rules="[val => (val && val.length) || '']"
               />
-              <q-input v-model="contactInfo.lname" label="LastName" />
-              <q-select
-                v-model="contactInfo.honorific.value"
-                :options="titles"
-                option-label="title"
-                label="Title"
-                option-value="title"
-                @input="setTitleNameForMultiple()"
-                emit-value
-              />
+              <q-input v-model="contactInfo.lname" label="Last Name" />
 
               <div class="row">
                 <q-select
@@ -153,16 +156,15 @@
                 />
                 <q-input
                   v-model="contactInfo.phoneNumber.number"
-                  label="Phone"
+                  label="Phone1"
                   type="number"
                   style="width: 55%"
-                  :rules="[val => (val && val.length) || '']"
                 />
               </div>
               <q-input
                 v-model="contactInfo.email"
                 novalidate="true"
-                label="email"
+                label="Email"
               />
             </q-card>
           </div>
@@ -185,6 +187,7 @@
               v-if="showRemoveButton"
             />
           </div>
+
           <q-input v-model="vendor.info.website" label="Website" />
           <q-input v-model="vendor.info.notes" label="Notes" />
         </div>
@@ -211,7 +214,6 @@ import { getContactTypes, getTitles } from "src/store/common/actions";
 export default {
   name: "AddVendor",
   props: ["componentName"],
-  //title: "",
   data() {
     return {
       industryTypes: ["Association"],
@@ -300,57 +302,6 @@ export default {
       "getTitles",
       "getContactTypes"
     ]),
-    filterFn(val, update) {
-      if (val === "") {
-        update(() => {
-          this.options = vendorIndustries;
-        });
-        return;
-      }
-
-      update(() => {
-        const needle = val.toLowerCase();
-        this.options = stringOptions.filter(
-          v => v.toLowerCase().indexOf(needle) > -1
-        );
-      });
-    },
-
-    /* for adding the ids for multiple vendors */
-    setTitleNameForMultiple() {
-      const len = this.vendor.contact.length;
-
-      var titleId1 = this.vendor.contact[len - 1].honorific.value;
-
-      var titleResult1 = this.titles.find(obj => {
-        return obj.title === titleId1;
-      });
-      this.vendor.contact[len - 1].honorific.id = titleResult1.id;
-    },
-    /* for adding the id for the primary vendor */
-    setTitleName() {
-      var titleId = this.vendor.contact[0].honorific.value;
-
-      var titleResult = this.titles.find(obj => {
-        return obj.title === titleId;
-      });
-
-      this.vendor.contact[0].honorific.id = titleResult.id;
-    },
-
-    setVendorIndustryName() {
-      var ids = this.vendor.industry.value;
-
-      var result = this.vendorIndustries.find(obj => {
-        return obj.name === ids;
-      });
-
-      var industryName = result.name;
-      var industryId = result.id;
-
-      this.vendor.industry.value = industryName;
-      this.vendor.industry.id = industryId;
-    },
     removeAnotherContact() {
       const len = this.vendor.contact.length;
       if (len === 3) {
@@ -374,13 +325,29 @@ export default {
       });
     },
 
+    setTitleName(selectedTitle) {
+      const selected = this.titles.find(obj => {
+        return obj.id === selectedTitle.id;
+      });
+
+      selectedTitle.value = selected.title;
+    },
+
+    setVendorIndustryName() {
+      const selectedName = this.vendor.industry.value;
+      const result = this.vendorIndustries.find(obj => {
+        return obj.name === selectedName;
+      });
+      this.vendor.industry.value = result.name;
+      this.vendor.industry.id = result.id;
+    },
+
     addAnotherContact() {
-      this.$refs.vendorForm.validate();
       const len = this.vendor.contact.length;
+      this.$refs.vendorForm.validate();
       if (
         this.vendor.contact[len - 1].fname &&
-        this.vendor.contact[len - 1].phoneNumber.number &&
-        this.$refs.vendorForm.validate()
+        this.vendor.contact[len - 1].phoneNumber.number
       ) {
         this.showRemoveButton = true;
         this.vendor.contact.push({
@@ -411,16 +378,14 @@ export default {
       this.states = addressService.getStates(country);
     },
 
-    onAddVendorButtonClick() {
-      console.log(this.vendor);
-      this.$refs.vendorForm.validate().then(async success => {
-        if (success) {
-          console.log(66);
-          this.addVendor(this.vendor).then(async => {
-            this.closeDialog(true);
-          });
+    async onAddVendorButtonClick() {
+      const success = await this.$refs.vendorForm.validate();
+      if (success) {
+        const response = await this.addVendor(this.vendor);
+        if (response) {
+          this.closeDialog(true);
         }
-      });
+      }
     },
 
     closeDialog(flag) {
