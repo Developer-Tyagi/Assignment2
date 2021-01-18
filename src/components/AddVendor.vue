@@ -97,29 +97,7 @@
           </div>
 
           <p class="form-heading">Company's Address</p>
-          <q-input v-model="vendor.address.streetAddress" label="Address1" />
-          <q-input
-            v-model="vendor.address.postOfficeBoxNumber"
-            label="Address2"
-          />
-          <q-input
-            v-model="vendor.address.addressLocality"
-            label="City"
-          ></q-input>
-          <q-select
-            v-model="vendor.address.addressRegion"
-            :options="states"
-            label="State"
-          />
-          <q-input v-model="vendor.address.postalCode" label="ZIP Code" />
-          <q-select
-            v-model="vendor.address.addressCountry"
-            :options="countries"
-            label="Country"
-            @input="onCountrySelect(vendor.address.addressCountry)"
-            lazy-rules
-            :rules="[val => (val && val.length > 0) || '']"
-          />
+          <AutoCompleteAddress :address="vendor.address" />
           <p class="form-heading">Company's Phone & Website</p>
           <div v-for="(contactInfo, index) in vendor.contact" v-if="index >= 1">
             <q-select
@@ -183,10 +161,12 @@ const addressService = new AddressService();
 import { mapGetters, mapActions } from "vuex";
 import { getVendorIndustries } from "src/store/vendors/actions";
 import { getContactTypes, getTitles } from "src/store/common/actions";
+import AutoCompleteAddress from "components/AutoCompleteAddress";
 
 export default {
   name: "AddVendor",
   props: ["componentName"],
+  components: { AutoCompleteAddress },
   data() {
     return {
       industryTypes: ["Association"],
@@ -231,9 +211,8 @@ export default {
             ]
           }
         ],
-
         address: {
-          addressCountry: "United States",
+          addressCountry: "",
           addressLocality: "",
           addressRegion: "",
           postOfficeBoxNumber: "",

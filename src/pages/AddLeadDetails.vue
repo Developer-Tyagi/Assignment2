@@ -19,7 +19,6 @@
         color="primary"
         animated
         alternative-labels
-        @transition="moveToNextForm"
       >
         <q-step :name="1" :done="step > 1" title="Primary Contact">
           <q-form @submit="step++">
@@ -144,52 +143,7 @@
               />
               <br />
               <span class="stepper-heading">Loss Location</span>
-              <div class="row">
-                <q-input v-model="lossDetails.address2" label="House/Flat No" />
-                <input
-                  type="text"
-                  id="autocomplete"
-                  class="input-autocomplete"
-                  v-model="lossDetails.address1"
-                  placeholder="Street"
-                  @focus="getGeoLocation"
-                />
-              </div>
-              <q-input
-                v-model="lossDetails.city"
-                label="City"
-                lazy-rules
-                :rules="[
-                  val => (val && val.length > 0) || 'Please fill the city'
-                ]"
-              ></q-input>
-              <q-select
-                v-model="lossDetails.state"
-                :options="states"
-                label="State"
-                lazy-rules
-                :rules="[
-                  val => (val && val.length > 0) || 'Please fill the state'
-                ]"
-              />
-              <q-select
-                v-model="lossDetails.country"
-                :options="countries"
-                label="Country"
-                @input="onCountrySelect(lossDetails.country)"
-                lazy-rules
-                :rules="[
-                  val => (val && val.length > 0) || 'Please fill the country'
-                ]"
-              />
-              <q-input
-                v-model="lossDetails.postalCode"
-                label="ZIP Code"
-                lazy-rules
-                :rules="[
-                  val => (val && val.length > 0) || 'Please fill the zip code'
-                ]"
-              />
+              <AutoCompleteAddress :address="lossAddress" />
             </q-card>
             <div class="row q-pt-md">
               <div>
@@ -480,23 +434,17 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 import { date } from "quasar";
-import AddressService from "@utils/country";
 import { validateEmail } from "@utils/validation";
 import { leadSource } from "src/store/common/getters";
 import VendorsList from "components/VendorsList";
 import AddVendor from "components/AddVendor";
-
-const addressService = new AddressService();
+import AutoCompleteAddress from "components/AutoCompleteAddress";
 
 export default {
-  components: { VendorsList, AddVendor },
+  components: { VendorsList, AddVendor, AutoCompleteAddress },
 
   data() {
     return {
-      autocomplete: {},
-      enableAddressField: false,
-      countries: [],
-      states: [],
       subInspectionTypes: [],
       addVendorDialog: false,
       showSubInspectionType: false,
@@ -520,13 +468,15 @@ export default {
       },
       lossDetails: {
         lossDesc: "",
-        dateOfLoss: "",
-        address1: "",
-        address2: "",
-        city: "",
-        state: "",
-        country: "United States",
-        postalCode: ""
+        dateOfLoss: ""
+      },
+      lossAddress: {
+        addressCountry: "",
+        addressRegion: "",
+        addressLocality: "",
+        postalCode: "",
+        streetAddress: "",
+        postOfficeBoxNumber: ""
       },
       insuranceDetails: {
         policyNumber: "",
@@ -590,36 +540,6 @@ export default {
       this.primaryDetails.honorific.value = title.title;
     },
 
-    moveToNextForm(newValue, oldValue) {
-      if (newValue == 2) {
-        this.autocomplete = new google.maps.places.Autocomplete(
-          document.getElementById("autocomplete"),
-          { types: ["geocode"] }
-        );
-        this.autocomplete.addListener("place_changed", this.fillInAddress);
-      }
-    },
-
-    getGeoLocation() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(position => {
-          const geolocation = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-          };
-          const circle = new google.maps.Circle({
-            center: geolocation,
-            radius: position.coords.accuracy
-          });
-          this.autocomplete.setBounds(circle.getBounds());
-        });
-      }
-    },
-
-    onCountrySelect(country) {
-      this.states = addressService.getStates(country);
-    },
-
     onInspectionTypesSelect() {
       const selectedInspectionType = this.inspectionTypes.find(
         type => type.value === this.schedulingDetails.inspectionType
@@ -670,12 +590,7 @@ export default {
           phoneNumber: []
         },
         lossLocation: {
-          addressCountry: this.lossDetails.country,
-          addressLocality: this.lossDetails.city,
-          addressRegion: this.lossDetails.state,
-          postOfficeBoxNumber: "",
-          postalCode: this.lossDetails.postalCode,
-          streetAddress: this.lossDetails.address1
+          ...this.lossAddress
         },
         lossDesc: this.lossDetails.lossDesc,
         dateofLoss: formattedString,
@@ -717,7 +632,6 @@ export default {
       } else {
         payload.leadSource.details = this.sourceDetails.details;
       }
-      console.log(payload);
       this.addLeads(payload);
     },
 
@@ -746,45 +660,6 @@ export default {
       if (e) {
         this.$refs.list.getVendors();
       }
-    },
-
-    getPlaceName(key, value) {
-      for (let i = 0; i < value.length; i++) {
-        let index = value[i].types.indexOf(key);
-
-        if (index != -1) {
-          return i;
-        }
-      }
-    },
-
-    fillInAddress() {
-      const place = this.autocomplete.getPlace().address_components;
-      if (this.getPlaceName("route", place)) {
-        this.lossDetails.address1 =
-          place[this.getPlaceName("route", place)].long_name;
-      }
-      if (this.getPlaceName("administrative_area_level_2", place)) {
-        this.lossDetails.city =
-          place[
-            this.getPlaceName("administrative_area_level_2", place)
-          ].long_name;
-      }
-      if (this.getPlaceName("administrative_area_level_1", place)) {
-        this.lossDetails.state =
-          place[
-            this.getPlaceName("administrative_area_level_1", place)
-          ].long_name;
-      }
-      if (this.getPlaceName("country", place)) {
-        this.lossDetails.country =
-          place[this.getPlaceName("country", place)].long_name;
-      }
-      if (this.getPlaceName("postal_code", place)) {
-        this.lossDetails.postalCode =
-          place[this.getPlaceName("postal_code", place)].long_name;
-      }
-      this.enableAddressField = true;
     }
   },
 
@@ -827,9 +702,7 @@ export default {
         this.primaryDetails.organizationName = selectedClient.organizationName;
       }
     }
-    this.countries = addressService.getCountries();
     this.getInspectionTypes();
-    this.onCountrySelect("United States");
     this.getContactTypes();
     this.getTitles();
   }
@@ -902,43 +775,6 @@ export default {
     padding-top: 24px;
     padding-bottom: 8px;
     height: 50px;
-  }
-}
-
-.input-autocomplete {
-  width: 65%;
-  margin-left: auto;
-  border: 0;
-  line-height: 24px;
-  padding-top: 24px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid #c2c2c2;
-  outline: none;
-  position: relative;
-  &::placeholder {
-    font-size: 16px;
-  }
-
-  &:focus {
-    border-bottom: 2px solid #f05a26;
-
-    &::placeholder {
-      font-size: 12px;
-      position: absolute;
-      color: #f05a26;
-    }
-  }
-}
-.pac-icon {
-  display: none;
-}
-
-.pac-item {
-  font-size: 16px;
-  padding: 4px 10px;
-
-  &:hover {
-    background-color: #ececec;
   }
 }
 </style>
