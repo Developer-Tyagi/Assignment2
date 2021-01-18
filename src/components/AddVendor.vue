@@ -38,9 +38,11 @@
             :options="vendorIndustries"
             label=" Industry"
             option-label="name"
-            option-value="id"
+            option-value="name"
             @input="setVendorIndustryName()"
             emit-value
+            lazy-rules
+            :rules="[val => (val && val.length) || '']"
           />
           <p class="form-heading">Company's Contact Person Details</p>
           <q-select
@@ -52,8 +54,15 @@
             map-options
             emit-value
             @input="setTitleName(vendor.contact[0].honorific)"
+            lazy-rules
+            :rules="[val => (val && val.length) || '']"
           />
-          <q-input v-model="vendor.contact[0].fname" label="First Name" />
+          <q-input
+            v-model="vendor.contact[0].fname"
+            label="First Name"
+            lazy-rules
+            :rules="[val => (val && val.length) || '']"
+          />
           <q-input v-model="vendor.contact[0].lname" label="Last Name" />
           <div class="row">
             <q-select
@@ -275,12 +284,10 @@ export default {
     },
 
     setVendorIndustryName() {
-      const ids = this.vendor.industry.value;
-
+      const selectedName = this.vendor.industry.value;
       const result = this.vendorIndustries.find(obj => {
-        return obj.name === ids;
+        return obj.name === selectedName;
       });
-
       this.vendor.industry.value = result.name;
       this.vendor.industry.id = result.id;
     },
@@ -319,14 +326,14 @@ export default {
       this.states = addressService.getStates(country);
     },
 
-    onAddVendorButtonClick() {
-      this.$refs.vendorForm.validate().then(async success => {
-        if (success) {
-          this.addVendor(this.vendor).then(async => {
-            this.closeDialog(true);
-          });
+    async onAddVendorButtonClick() {
+      const success = await this.$refs.vendorForm.validate();
+      if (success) {
+        const response = await this.addVendor(this.vendor);
+        if (response) {
+          this.closeDialog(true);
         }
-      });
+      }
     },
 
     closeDialog(flag) {
