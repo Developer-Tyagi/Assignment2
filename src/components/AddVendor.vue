@@ -34,6 +34,18 @@
             :rules="[val => (val && val.length) || '']"
           />
           <q-select
+            filled
+            v-model="vendor.name"
+            use-input
+            input-debounce="0"
+            label="Simple filter"
+            :options="options"
+            @filter="filterFn"
+            style="width: 250px"
+            behavior="menu"
+          />
+
+          <q-select
             v-model="vendor.industry.value"
             :options="vendorIndustries"
             label=" Industry"
@@ -113,7 +125,11 @@
           <p class="form-heading">Company's Phone & Website</p>
           <div v-for="(contactInfo, index) in vendor.contact" v-if="index >= 1">
             <q-card class="q-mt-sm">
-              <q-input v-model="contactInfo.fname" label="First Name" />
+              <q-input
+                v-model="contactInfo.fname"
+                label="First Name"
+                :rules="[val => (val && val.length) || '']"
+              />
               <q-input v-model="contactInfo.lname" label="LastName" />
               <q-select
                 v-model="contactInfo.honorific.value"
@@ -140,6 +156,7 @@
                   label="Phone"
                   type="number"
                   style="width: 55%"
+                  :rules="[val => (val && val.length) || '']"
                 />
               </div>
               <q-input
@@ -262,7 +279,6 @@ export default {
   },
 
   mounted() {
-    //console.log(this.titles);
     this.getVendorIndustries();
     this.getTitles();
     this.getContactTypes();
@@ -284,6 +300,21 @@ export default {
       "getTitles",
       "getContactTypes"
     ]),
+    filterFn(val, update) {
+      if (val === "") {
+        update(() => {
+          this.options = vendorIndustries;
+        });
+        return;
+      }
+
+      update(() => {
+        const needle = val.toLowerCase();
+        this.options = stringOptions.filter(
+          v => v.toLowerCase().indexOf(needle) > -1
+        );
+      });
+    },
 
     /* for adding the ids for multiple vendors */
     setTitleNameForMultiple() {
@@ -322,7 +353,9 @@ export default {
     },
     removeAnotherContact() {
       const len = this.vendor.contact.length;
-      this.showRemoveButton = false;
+      if (len === 3) {
+        this.showRemoveButton = false;
+      }
 
       this.vendor.contact.pop({
         fname: "",
@@ -342,10 +375,12 @@ export default {
     },
 
     addAnotherContact() {
+      this.$refs.vendorForm.validate();
       const len = this.vendor.contact.length;
       if (
         this.vendor.contact[len - 1].fname &&
-        this.vendor.contact[len - 1].phoneNumber.number
+        this.vendor.contact[len - 1].phoneNumber.number &&
+        this.$refs.vendorForm.validate()
       ) {
         this.showRemoveButton = true;
         this.vendor.contact.push({
