@@ -29,7 +29,7 @@
                 v-model="primaryDetails.honorific.id"
                 :options="titles"
                 option-value="id"
-                option-label="title"
+                option-label="name"
                 map-options
                 @input="setTitleName()"
                 emit-value
@@ -717,6 +717,7 @@ export default {
       } else {
         payload.leadSource.details = this.sourceDetails.details;
       }
+      console.log(payload);
       this.addLeads(payload);
     },
 

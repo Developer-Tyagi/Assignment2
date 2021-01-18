@@ -38,19 +38,20 @@
             :options="vendorIndustries"
             label=" Industry"
             option-label="name"
-            option-value="name"
+            option-value="id"
             @input="setVendorIndustryName()"
             emit-value
           />
           <p class="form-heading">Company's Contact Person Details</p>
           <q-select
-            v-model="vendor.contact[0].honorific.value"
+            v-model="vendor.contact[0].honorific.id"
             :options="titles"
-            option-label="title"
             label="Title"
-            option-value="title"
-            @input="setTitleName()"
+            option-label="name"
+            option-value="id"
+            map-options
             emit-value
+            @input="setTitleName(vendor.contact[0].honorific)"
           />
           <q-input v-model="vendor.contact[0].fname" label="First Name" />
           <q-input v-model="vendor.contact[0].lname" label="Last Name" />
@@ -112,17 +113,18 @@
           />
           <p class="form-heading">Company's Phone & Website</p>
           <div v-for="(contactInfo, index) in vendor.contact" v-if="index >= 1">
+            <q-select
+              v-model="contactInfo.honorific.id"
+              :options="titles"
+              option-label="name"
+              label="Title"
+              option-value="id"
+              @input="setTitleName(contactInfo.honorific)"
+              emit-value
+              map-options
+            />
             <q-input v-model="contactInfo.fname" label="First Name" />
             <q-input v-model="contactInfo.lname" label="LastName" />
-            <q-select
-              v-model="contactInfo.honorific.value"
-              :options="titles"
-              option-label="title"
-              label="Title"
-              option-value="title"
-              @input="setTitleNameForMultiple()"
-              emit-value
-            />
 
             <div class="row">
               <q-select
@@ -264,40 +266,23 @@ export default {
       "getContactTypes"
     ]),
 
-    /* for adding the ids for multiple vendors */
-    setTitleNameForMultiple() {
-      const len = this.vendor.contact.length;
-
-      var titleId1 = this.vendor.contact[len - 1].honorific.value;
-
-      var titleResult1 = this.titles.find(obj => {
-        return obj.title === titleId1;
-      });
-      this.vendor.contact[len - 1].honorific.id = titleResult1.id;
-    },
-    /* for adding the id for the primary vendor */
-    setTitleName() {
-      var titleId = this.vendor.contact[0].honorific.value;
-
-      var titleResult = this.titles.find(obj => {
-        return obj.title === titleId;
+    setTitleName(selectedTitle) {
+      const selected = this.titles.find(obj => {
+        return obj.id === selectedTitle.id;
       });
 
-      this.vendor.contact[0].honorific.id = titleResult.id;
+      selectedTitle.value = selected.title;
     },
 
     setVendorIndustryName() {
-      var ids = this.vendor.industry.value;
+      const ids = this.vendor.industry.value;
 
-      var result = this.vendorIndustries.find(obj => {
+      const result = this.vendorIndustries.find(obj => {
         return obj.name === ids;
       });
 
-      var industryName = result.name;
-      var industryId = result.id;
-
-      this.vendor.industry.value = industryName;
-      this.vendor.industry.id = industryId;
+      this.vendor.industry.value = result.name;
+      this.vendor.industry.id = result.id;
     },
 
     addAnotherContact() {
