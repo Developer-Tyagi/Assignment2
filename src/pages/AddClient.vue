@@ -4,8 +4,7 @@
       @backButton="$router.push('/clients')"
       :showAddButton="false"
     />
-
-    <div class="column full-height" style="padding:51px 20px 20px 20px">
+ <div class="column full-height" style="padding:51px 20px 20px 20px">
       <div class="q-pa-md column full-height">
         <div class="createClientInfo" style="font-size:15px">
    <div
@@ -310,7 +309,7 @@
                   map-options
                   emit-value
                 :options="clientTypes"
-                @input="setClientType"
+                @input="setTypes(clientTypes,client)"
                 label="Client Type"
               />
             <div class="row">
@@ -825,7 +824,7 @@
             label="Save"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
-            @click="saveButton"
+           @click="insuranceInfoDialog = false"
             size="'xl'"
           ></q-btn>
         </q-card-section>
@@ -869,7 +868,7 @@
                 </p>
                 <q-toggle
                   class="q-ml-auto"
-                  v-model="lossAddressSameAsClientToggle"
+                  v-model="isLossAddressSameAsClientToggle"
                 />
               </div>
                <input
@@ -887,28 +886,26 @@
                 :rules="[
                   val => (val && val.length > 0) || 'This is a required field'
                 ]"/>
-          
-           <q-select
+          <q-select
              v-model="lossInfo.property.id"
                 option-value="id"
                 option-label="name"
                 map-options
                 emit-value
                 :options="propertyTypes"
-                @input="setPropertyType"
+                @input="setTypes(propertyTypes,lossInfo.property)"
 
                 label="Property Type"
               />
-      <q-input v-model="lossInfo.descriptionOfProperty" label="Description of Property" />
-           
-        <q-select
+      <q-input v-model="lossInfo.propertyDescription" label="Description of Property" />
+          <q-select
              v-model="lossInfo.reasonClaim.id"
                 option-value="id"
                 option-label="name"
                 map-options
                 emit-value
                 :options="claimReasons"
-                @input="setClaimReasons"
+                @input="setTypes(claimReasons,lossInfo.reasonClaim)"
                 label="Reason for Claim"
               /><br>
 <span class="form-heading">Date of Loss</span>
@@ -921,7 +918,7 @@
                 map-options
                 emit-value
                 :options="lossCauses"
-                @input="setLossCauses"
+                @input="setTypes(lossCauses,lossInfo.causeOfLoss)"
                 label="Cause of Loss"
               /><br>
          <span class="form-heading">Deadline Date</span>
@@ -938,9 +935,9 @@
               </div>
              <div class="row">
                 <p style="q-mx-none q-my-auto">State of Emergency</p>
-                <q-toggle class="q-ml-auto" v-model="stateOfEmergencyToggle" />
+                <q-toggle class="q-ml-auto" v-model="isStateOfEmergencyToggle" />
               </div>
-              <div v-if="stateOfEmergencyToggle">
+              <div v-if="isStateOfEmergencyToggle">
                 <q-input
                   v-model="lossInfo.nameOfEmergency"
                   label="Related to"
@@ -953,7 +950,7 @@
                 map-options
                 emit-value
                 :options="claimSeverity"
-                @input="setClaimSeverity"
+                @input="setTypes(claimSeverity,lossInfo.severityOfClaimType)"
                 label="Severity of Claim"
               /><br>
  <q-input v-model="lossInfo.descriptionDwelling" label="Loss Description to Dwelling" /><br>
@@ -963,10 +960,10 @@
                 </p>
                 <q-toggle
                   class="q-ml-auto"
-                  v-model="isThereDamageToOtherStructureToggle"
+                  v-model="isDamageOSToggle"
                 />
               </div>
-             <q-input v-if="isThereDamageToOtherStructureToggle" v-model="lossInfo.damageDescription"  label="Damage items description" />
+             <q-input v-if="isDamageOSToggle" v-model="lossInfo.damageDescription"  label="Damage items description" />
               
               <div class="row">
                 <p style="q-mx-none q-my-auto">
@@ -977,6 +974,7 @@
                   v-model="isThereDamageToPersonalPropertyToggle"
                 />
               </div>
+           
               <div class="row">
                 <p style="q-mx-none q-my-auto">
                   Was a PPIF provided to the insured?
@@ -1000,7 +998,7 @@
                 <p style="q-mx-none q-my-auto">Is there a mortgage on the home?</p>
                 <q-toggle
                   class="q-ml-auto"
-                  v-model="IsThereAmortgageOnTheHomeToggle"
+                  v-model="IsMortgageHomeToggle"
                 />
               </div>
               <div class="row">
@@ -1112,7 +1110,7 @@
             label="Save"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
-            @click="saveButtonClick"
+            @click="mortgageInfoDialog = false"
             size="'xl'"
           ></q-btn>
         </q-card-section>
@@ -1186,7 +1184,7 @@
             label="Save"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
-            @click="saveButtonClick"
+            @click="estimatingInfoDialog = false"
             size="'xl'"
           ></q-btn>
         </q-card-section>
@@ -1253,7 +1251,7 @@
             label="Save"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
-            @click="saveButtonClick"
+          @click="expertVendorInfoDialog = false"
             size="'xl'"
           ></q-btn>
         </q-card-section>
@@ -1316,7 +1314,7 @@
             label="Save"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
-            @click="saveButtonClick"
+            @click="officeTaskDialog = false"
             size="'xl'"
           ></q-btn>
         </q-card-section>
@@ -1391,7 +1389,6 @@ export default {
   data() {
     return {
       LossAddressName:"",
-      saveButton:"",
       publicAdjustorInfoDialog: false,
       addVendorDialog: false,
       vendorsListDialog: false,
@@ -1492,7 +1489,7 @@ honorific2: {
       },
       lossInfo: {
         dateOfLoss: "",
-     descriptionOfProperty:"",
+     propertyDescription:"",
        reasonClaim:{
     type:"",
      id:"",
@@ -1549,7 +1546,7 @@ honorific2: {
       addAditionalPhoneNumberToggle: false,
       gateDropboxToggle: false,
       tenantOccupiedToggle: false,
-      isThereDamageToOtherStructureToggle:false,
+      isDamageOSToggle:false,
       mailingAddressDialog: false,
       isMailingAddressSameToggle: false,
       isThereaCoInsuredToggle: false,
@@ -1561,24 +1558,19 @@ honorific2: {
       PolicyTypes: ["A", "B"],
       DidYouHavePoliceDeclarationToggle: false,
       lossInfoDialog: false,
-      stateOfEmergencyToggle: false,
+      isStateOfEmergencyToggle: false,
       isTheHomeHabitable: false,
       isThereDamageToPersonalPropertyToggle: false,
       wasAppifProvidedToTheInsuredToggle: false,
      
       doesTheOfficeNeedToProvidePpifToTheInsuredToggle: false,
-      IsThereAmortgageOnTheHomeToggle: false,
-      lossAddressSameAsClientToggle:false,
+      IsMortgageHomeToggle: false,
+      isLossAddressSameAsClientToggle:false,
       lossAddress:"",
       isThereAsecondClaimToFileToggle: false,
       insuranceAdjustorPhoneType: ["A", "B", "C"],
-      typeOfLoss: ["A", "B"],
-      coInsuredTypes: ["A", "B"],
-      insuredTypes: ["A", "B"],
-      tenantOccupiedTypes: ["A", "B"],
-      addAdditionalPhoneNumber1Types: ["A", "B"],
-      addAdditionalPhoneNumber2Types: ["A", "B"],
-      hasAvendorOfExpertHiredTypes: ["A", "B"],
+      typeOfLoss: [],
+     hasAvendorOfExpertHiredTypes: ["A", "B"],
     mortgageInfoDialog: false,
       isTherea2ndMortgageOnTheHomeToggle: false,
       estimatingInfoDialog: false,
@@ -1591,8 +1583,8 @@ honorific2: {
       officeTaskDialog: false,
       femaClaimToggle: false,
       additionalOfficeTaskRequiredToggle: false,
-      officeActionRequiredTypes: ["A", "B", "C"],
-      officeTaskRequiredTypes: ["A", "B", "C"],
+      officeActionRequiredTypes: [],
+      officeTaskRequiredTypes: [],
       documentsDialog: false
     };
   },
@@ -1632,60 +1624,21 @@ this.sourceDetails.type = this.selectedLead.leadSource.type
    onCountrySelect(country) {
       this.states = addressService.getStates(country);
    },
-  
-
-    setTitleName(val) {
+   setTitleName(val) {
       const titleResult = this.titles.find(obj => {
         return obj.title === this['honorific'+val].title;
       });
 
       this['honorific'+val].id = titleResult.id;
     },
+     setTypes(types,data){
+         const obj = types.find(item => {
+           return item.id === data.id;
+         }) 
+          data.id = obj.id;
+      data.types = obj.machineName;
+           },
 
-    setClientType() {
-      const obj = this.clientTypes.find(item => {
-        return item.id === this.client.id;
-      });
-
-      this.client.id = obj.id;
-      this.client.type = obj.machineName;
-    },
-
-    setPropertyType() {
-      
-      const obj = this.propertyTypes.find(item => {
-        return item.id === this.lossInfo.property.id;
-      });
-    
-      this.lossInfo.property.id = obj.id;
-      this.lossInfo.property.type = obj.machineName;
-    },
-
-     setClaimSeverity() {
-      const obj = this.claimSeverity.find(item => {
-        return item.id === this.lossInfo.severityOfClaimType.id;
-      });
-
-      this.lossInfo.severityOfClaimType.id = obj.id;
-      this.lossInfo.severityOfClaimType.type = obj.machineName;
-    },
- 
- setLossCauses() {
-   const obj = this.lossCauses.find(item => {
-     return item.id === this.lossInfo.causeOfLoss.id;
-   });
-   this.lossInfo.causeOfLoss.id = obj.id;
-   this.lossInfo.causeOfLoss.type = obj.machineName;
- },
-
-      setClaimReasons() {
-    const obj = this.claimReasons.find(item => {
-        return item.id === this.lossInfo.reasonClaim.id;
-      });
-
-      this.lossInfo.reasonClaim.id = obj.id;
-      this.lossInfo.reasonClaim.type = obj.machineName;
-    },
 mailingAddressSame(){
    this.mailingAddressSameInfo.streetAddress = this.addressDetails.streetNumber;
    this.mailingAddressSameInfo.unitOrApartmentNumber = this.addressDetails.apartmentNumber;
@@ -1696,8 +1649,7 @@ mailingAddressSame(){
   this.mailingAddressSameInfo.dropBox = this.gateDropbox.info;
    },
    async  createClientButtonClick() {
-  
-   const payload = {
+  const payload = {
         isOrganization:this.primaryDetails.isOrganization,
          organizationName:this.primaryDetails.organizationName,
         isOrganizationPolicyholder: this.policyHolder.isPolicyHolder,
@@ -1796,10 +1748,9 @@ mailingAddressSame(){
       if(response&& response.id){
        this.setPayloadForLoss(response.id)
  }
- 
+
  },
-   
-async setPayloadForLoss(clientId)
+ async setPayloadForLoss(clientId)
 {
     const payload1 = {
 client: {
@@ -1873,7 +1824,7 @@ lossInfo:{
     id:this.lossInfo.property.id,
     value:this.lossInfo.property.type
   },
-  propertyDesc:this.lossInfo.descriptionOfProperty,
+  propertyDesc:this.lossInfo.propertyDescription,
   claimReason:{
     id:this.lossInfo.reasonClaim.id,
     value:this.lossInfo.reasonClaim.type,
@@ -1886,7 +1837,7 @@ lossInfo:{
   deadlineDate:this.lossInfo.deadlineDate,
   recovDDate: this.lossInfo.recovDeadline,
   isFEMA:this.femaClaimToggle,
-  isEmergency:this.stateOfEmergencyToggle,
+  isEmergency:this.isStateOfEmergencyToggle,
   emergencyName:this.lossInfo.nameOfEmergency,
   desc:this.descriptionDwelling,
   isHabitable:this.isTheHomeHabitable,
@@ -1894,18 +1845,18 @@ lossInfo:{
     id:this.lossInfo.severityOfClaimType.id,
     value:this.lossInfo.severityOfClaimType.type,
   },
-  isOSDamaged:this.isThereDamageToOtherStructureToggle,
+  isOSDamaged:this.isDamageOSToggle,
   OSDamageDesc:this.lossInfo.damageDescription,
   isPPDamaged:this.isThereDamageToPersonalPropertyToggle,
   isPPIF:this.wasAppifProvidedToTheInsuredToggle,
   isNeedPPIF:this.doesTheOfficeNeedToProvidePpifToTheInsuredToggle,
-  hashHomeMortgage:this.IsThereAmortgageOnTheHomeToggle,
+  hashHomeMortgage:this.IsMortgageHomeToggle,
   isSecondClaim:this.isThereAsecondClaimToFileToggle,
 }
 }
-this.addClaim(payload1)
+this.addClaim(payload1).then(()=> this.setSelectedLead())
 },
-  saveButtonClick() {},
+ 
   validateEmail,
  onChangingSourceType() {
       this.sourceDetails.id = "";
@@ -1959,7 +1910,6 @@ this.addClaim(payload1)
   color: #333333;
   font-weight: bold;
   font-size: 16px;
-  
   padding: 15px 0;
   border-bottom: 1px solid #D3D3D3;
 }

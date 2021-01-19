@@ -44,7 +44,6 @@ export async function addClaim({ dispatch, state }, payload) {
       buildApiData("claims", payload)
     );
     dispatch("setLoading", false);
-    this.$router.push("/claims");
   } catch (e) {
     console.log(e);
     dispatch("setLoading", false);
