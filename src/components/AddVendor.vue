@@ -33,9 +33,32 @@
             lazy-rules
             :rules="[val => (val && val.length) || '']"
           />
-          
-            
-          </q-select>
+          <div>
+            <q-select
+              class="full-width"
+              v-model="vendor.industry.value"
+              use-input
+              input-debounce="0"
+              option-label="name"
+              label=" Industry"
+              :options="options"
+              option-value="name"
+              @filter="filterFn"
+              style="width: 250px"
+              behavior="menu"
+              emit-value
+              lazy-rules
+              :rules="[val => (val && val.length) || '']"
+            >
+              <template v-slot:no-option>
+                <q-item>
+                  <q-item-section class="text-black">
+                    No results
+                  </q-item-section>
+                </q-item>
+              </template>
+            </q-select>
+          </div>
 
           <p class="form-heading">Company's Contact Person Details</p>
           <q-select
@@ -297,7 +320,27 @@ export default {
       "getTitles",
       "getContactTypes"
     ]),
-    
+    filterFn(val, update) {
+      if (val === "") {
+        update(() => {
+          this.options = this.vendorIndustries;
+        });
+        return;
+      }
+
+      update(() => {
+        const needle = val.toLowerCase().trim();
+
+        this.options = this.vendorIndustries.filter(
+          v =>
+            v.name
+              .toLowerCase()
+              .trim()
+              .indexOf(needle) > -1
+        );
+      });
+    },
+
     removeAnotherContact() {
       const len = this.vendor.contact.length;
       if (len === 3) {
@@ -376,6 +419,7 @@ export default {
   },
 
   created() {
+    this.options = this.vendorIndustries;
     this.countries = addressService.getCountries();
     this.onCountrySelect("United States");
   }
