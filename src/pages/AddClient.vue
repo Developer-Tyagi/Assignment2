@@ -347,14 +347,16 @@
   <br />
    <span class="form-heading">Insured Details</span>
  <q-select
-            v-model="honorific1.title"
-            :options="titles"
-            option-label="title"
-            label="Title"
-            option-value="title"
-            @input="setTitleName(1)"
-            emit-value
-          />
+                v-model="honorific1.id"
+                :options="titles"
+                option-value="id"
+                option-label="name"
+                map-options
+                @input="setTitleName(1)"
+                emit-value
+                label="Title"
+              />
+          
 
    <q-input v-model="insuredDetails.fname" 
                    lazy-rules
@@ -412,15 +414,17 @@
               <br />
               <div v-if="isThereaCoInsuredToggle" style="font-size:20px;">
                 <span class="form-heading">Co-insured Details</span>
-                <q-select
-            v-model="honorific2.title"
-            :options="titles"
-            option-label="title"
-            label="Title"
-            option-value="title"
-            @input="setTitleName(2)"
-            emit-value
-          />
+                
+          <q-select
+                v-model="honorific2.id"
+                :options="titles"
+                option-value="id"
+                option-label="name"
+                map-options
+                @input="setTitleName(2)"
+                emit-value
+                label="Title"
+              />
                 <q-input v-model="coInsuredDetails.fname" label="First Name" />
                 <q-input v-model="coInsuredDetails.lname" label="Last Name" />
             <div class="row">
@@ -1626,10 +1630,9 @@ this.sourceDetails.type = this.selectedLead.leadSource.type
    },
    setTitleName(val) {
       const titleResult = this.titles.find(obj => {
-        return obj.title === this['honorific'+val].title;
+        return obj.id === this['honorific'+val].id;
       });
-
-      this['honorific'+val].id = titleResult.id;
+      this['honorific'+val].title = titleResult.title;
     },
      setTypes(types,data){
          const obj = types.find(item => {
