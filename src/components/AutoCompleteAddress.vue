@@ -18,7 +18,7 @@
       v-model="address.addressLocality"
       label="City"
       :disable="isAddressFieldEnable"
-    ></q-input>
+    />
     <q-select
       v-model="address.addressRegion"
       :options="states"
