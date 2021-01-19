@@ -717,7 +717,6 @@ export default {
       } else {
         payload.leadSource.details = this.sourceDetails.details;
       }
-      console.log(payload);
       this.addLeads(payload);
     },
 

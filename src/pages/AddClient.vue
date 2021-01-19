@@ -1597,12 +1597,10 @@ this.sourceDetails.type = this.selectedLead.leadSource.type
    },
  methods: {
     ...mapActions (["addClient","getClientTypes", "getContactTypes", "getTitles",]),
-    ...mapMutations(["setSelectedLead"]),
-    
+    ...mapMutations(["setSelectedLead"]),  
    onCountrySelect(country) {
       this.states = addressService.getStates(country);
    },
-
     setTitleName(val) {
       const titleResult = this.titles.find(obj => {
         return obj.id === this['honorific'+val].id;
