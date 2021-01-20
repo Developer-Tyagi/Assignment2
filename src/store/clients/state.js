@@ -1,6 +1,10 @@
 export default function() {
   return {
     clients: [],
-    clientTypes: []
+    clientTypes: [],
+    propertyTypes: [],
+    claimReasons: [],
+    lossCauses: [],
+    claimSeverity: []
   };
 }

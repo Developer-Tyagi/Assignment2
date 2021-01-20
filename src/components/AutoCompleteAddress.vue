@@ -1,51 +1,178 @@
 <template>
-  <div class="row">
-    <q-input v-model="lossDetails.address2" label="House/Flat No" />
-    <input
-      type="text"
-      id="autocomplete"
-      class="input-autocomplete"
-      v-model="address.street"
-      placeholder="Street"
-      @focus="getGeoLocation"
+  <div>
+    <div class="row">
+      <q-input
+        v-model="address.houseNumber"
+        label="House/Flat No"
+        style="width: 35%"
+      />
+      <input
+        type="text"
+        id="autocomplete1"
+        class="input-autocomplete"
+        v-model="address.streetAddress"
+        placeholder="Street"
+      />
+    </div>
+    <q-input
+      v-model="address.addressLocality"
+      label="City"
+      :disable="isAddressFieldEnable"
+    />
+    <q-select
+      v-model="address.addressRegion"
+      :options="states"
+      label="State"
+      :disable="isAddressFieldEnable"
+    />
+    <q-select
+      v-model="address.addressCountry"
+      :options="countries"
+      label="Country"
+      @input="onCountrySelect(address.addressCountry)"
+      :disable="isAddressFieldEnable"
+    />
+    <q-input
+      v-model="address.postalCode"
+      label="ZIP Code"
+      :disable="isAddressFieldEnable"
     />
   </div>
-  <q-input
-    v-model="address.city"
-    label="City"
-    lazy-rules
-    :rules="[val => (val && val.length > 0) || 'Please fill the city']"
-  ></q-input>
-  <q-select
-    v-model="address.state"
-    :options="states"
-    label="State"
-    lazy-rules
-    :rules="[val => (val && val.length > 0) || 'Please fill the state']"
-  />
-  <q-select
-    v-model="address.country"
-    :options="countries"
-    label="Country"
-    @input="onCountrySelect(lossDetails.country)"
-    lazy-rules
-    :rules="[val => (val && val.length > 0) || 'Please fill the country']"
-  />
-  <q-input
-    v-model="address.postalCode"
-    label="ZIP Code"
-    lazy-rules
-    :rules="[val => (val && val.length > 0) || 'Please fill the zip code']"
-  />
 </template>
 <script>
-import AddressService from "@utils/country";
+import AddressService from '@utils/country';
 const addressService = new AddressService();
 export default {
-  name: "AutoCompleteAddress",
-  props: [],
+  name: 'AutoCompleteAddress',
+  props: {
+    address: {
+      type: Object,
+      required: true
+    }
+  },
+
   data() {
-    return {};
+    return {
+      autocomplete: {},
+      isAddressFieldEnable: true,
+      countries: [],
+      states: []
+    };
+  },
+
+  mounted() {
+    this.autocomplete = new google.maps.places.Autocomplete(
+      document.getElementById('autocomplete1'),
+      { types: ['geocode'] }
+    );
+    this.getGeoLocation;
+    this.autocomplete.addListener('place_changed', this.fillInAddress);
+    this.countries = addressService.getCountries();
+  },
+
+  methods: {
+    getGeoLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+          const geolocation = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+          const circle = new google.maps.Circle({
+            center: geolocation,
+            radius: position.coords.accuracy
+          });
+          this.autocomplete.setBounds(circle.getBounds());
+        });
+      }
+    },
+
+    fillInAddress() {
+      const place = this.autocomplete.getPlace().address_components;
+      this.address.streetAddress =
+        this.getPlaceName('route', place) >= 0
+          ? place[this.getPlaceName('route', place)].long_name
+          : '';
+      this.address.addressLocality = this.getPlaceName(
+        'administrative_area_level_2',
+        place
+      )
+        ? place[this.getPlaceName('administrative_area_level_2', place)]
+            .long_name
+        : '';
+      this.address.addressRegion = this.getPlaceName(
+        'administrative_area_level_1',
+        place
+      )
+        ? place[this.getPlaceName('administrative_area_level_1', place)]
+            .long_name
+        : '';
+      this.address.addressCountry = this.getPlaceName('country', place)
+        ? place[this.getPlaceName('country', place)].long_name
+        : '';
+
+      this.address.postalCode = this.getPlaceName('postal_code', place)
+        ? place[this.getPlaceName('postal_code', place)].long_name
+        : '';
+
+      this.isAddressFieldEnable = false;
+    },
+
+    getPlaceName(key, value) {
+      for (let i = 0; i < value.length; i++) {
+        let index = value[i].types.indexOf(key);
+        if (index != -1) {
+          return i;
+        }
+      }
+    },
+
+    onCountrySelect(country) {
+      this.states = addressService.getStates(country);
+    }
   }
 };
 </script>
+<style lang="scss">
+.input-autocomplete {
+  width: 60%;
+  margin-left: auto;
+  border: 0;
+  line-height: 24px;
+  padding: 16px 0;
+  border-bottom: 1px solid #c2c2c2;
+  outline: none;
+  position: relative;
+  text-transform: capitalize;
+  &::placeholder {
+    font-size: 16px;
+  }
+
+  &:focus {
+    border-bottom: 2px solid #f05a26;
+
+    &::placeholder {
+      font-size: 12px;
+      position: absolute;
+      color: #f05a26;
+    }
+  }
+}
+
+.pac-container {
+  z-index: 10000000;
+}
+
+.pac-icon {
+  display: none;
+}
+
+.pac-item {
+  font-size: 16px;
+  padding: 4px 10px;
+
+  &:hover {
+    background-color: #ececec;
+  }
+}
+</style>
