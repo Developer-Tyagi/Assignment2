@@ -25,6 +25,7 @@ export async function addVendor({ dispatch, state }, payload) {
       buildApiData("vendors", payload)
     );
     dispatch("setLoading", false);
+    return true;
   } catch (e) {
     console.log(e);
     dispatch("setLoading", false);

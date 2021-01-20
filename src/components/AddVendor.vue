@@ -41,18 +41,28 @@
             option-value="name"
             @input="setVendorIndustryName()"
             emit-value
+            lazy-rules
+            :rules="[val => (val && val.length) || '']"
           />
           <p class="form-heading">Company's Contact Person Details</p>
           <q-select
-            v-model="vendor.contact[0].honorific.value"
+            v-model="vendor.contact[0].honorific.id"
             :options="titles"
-            option-label="title"
             label="Title"
-            option-value="title"
-            @input="setTitleName()"
+            option-label="name"
+            option-value="id"
+            map-options
             emit-value
+            @input="setTitleName(vendor.contact[0].honorific)"
+            lazy-rules
+            :rules="[val => (val && val.length) || '']"
           />
-          <q-input v-model="vendor.contact[0].fname" label="First Name" />
+          <q-input
+            v-model="vendor.contact[0].fname"
+            label="First Name"
+            lazy-rules
+            :rules="[val => (val && val.length) || '']"
+          />
           <q-input v-model="vendor.contact[0].lname" label="Last Name" />
           <div class="row">
             <q-select
@@ -87,42 +97,25 @@
           </div>
 
           <p class="form-heading">Company's Address</p>
-          <q-input v-model="vendor.address.streetAddress" label="Address1" />
-          <q-input
-            v-model="vendor.address.postOfficeBoxNumber"
-            label="Address2"
-          />
-          <q-input
-            v-model="vendor.address.addressLocality"
-            label="City"
-          ></q-input>
-          <q-select
-            v-model="vendor.address.addressRegion"
-            :options="states"
-            label="State"
-          />
-          <q-input v-model="vendor.address.postalCode" label="ZIP Code" />
-          <q-select
-            v-model="vendor.address.addressCountry"
-            :options="countries"
-            label="Country"
-            @input="onCountrySelect(vendor.address.addressCountry)"
-            lazy-rules
-            :rules="[val => (val && val.length > 0) || '']"
+          <AutoCompleteAddress
+            :address="vendor.address"
+            :isDropBoxEnable="false"
+            :isChecksEnable="false"
           />
           <p class="form-heading">Company's Phone & Website</p>
           <div v-for="(contactInfo, index) in vendor.contact" v-if="index >= 1">
+            <q-select
+              v-model="contactInfo.honorific.id"
+              :options="titles"
+              option-label="name"
+              label="Title"
+              option-value="id"
+              @input="setTitleName(contactInfo.honorific)"
+              emit-value
+              map-options
+            />
             <q-input v-model="contactInfo.fname" label="First Name" />
             <q-input v-model="contactInfo.lname" label="LastName" />
-            <q-select
-              v-model="contactInfo.honorific.value"
-              :options="titles"
-              option-label="title"
-              label="Title"
-              option-value="title"
-              @input="setTitleNameForMultiple()"
-              emit-value
-            />
 
             <div class="row">
               <q-select
@@ -172,10 +165,12 @@ const addressService = new AddressService();
 import { mapGetters, mapActions } from "vuex";
 import { getVendorIndustries } from "src/store/vendors/actions";
 import { getContactTypes, getTitles } from "src/store/common/actions";
+import AutoCompleteAddress from "components/AutoCompleteAddress";
 
 export default {
   name: "AddVendor",
   props: ["componentName"],
+  components: { AutoCompleteAddress },
   data() {
     return {
       industryTypes: ["Association"],
@@ -220,9 +215,8 @@ export default {
             ]
           }
         ],
-
         address: {
-          addressCountry: "United States",
+          addressCountry: "",
           addressLocality: "",
           addressRegion: "",
           postOfficeBoxNumber: "",
@@ -264,40 +258,21 @@ export default {
       "getContactTypes"
     ]),
 
-    /* for adding the ids for multiple vendors */
-    setTitleNameForMultiple() {
-      const len = this.vendor.contact.length;
-
-      var titleId1 = this.vendor.contact[len - 1].honorific.value;
-
-      var titleResult1 = this.titles.find(obj => {
-        return obj.title === titleId1;
-      });
-      this.vendor.contact[len - 1].honorific.id = titleResult1.id;
-    },
-    /* for adding the id for the primary vendor */
-    setTitleName() {
-      var titleId = this.vendor.contact[0].honorific.value;
-
-      var titleResult = this.titles.find(obj => {
-        return obj.title === titleId;
+    setTitleName(selectedTitle) {
+      const selected = this.titles.find(obj => {
+        return obj.id === selectedTitle.id;
       });
 
-      this.vendor.contact[0].honorific.id = titleResult.id;
+      selectedTitle.value = selected.title;
     },
 
     setVendorIndustryName() {
-      var ids = this.vendor.industry.value;
-
-      var result = this.vendorIndustries.find(obj => {
-        return obj.name === ids;
+      const selectedName = this.vendor.industry.value;
+      const result = this.vendorIndustries.find(obj => {
+        return obj.name === selectedName;
       });
-
-      var industryName = result.name;
-      var industryId = result.id;
-
-      this.vendor.industry.value = industryName;
-      this.vendor.industry.id = industryId;
+      this.vendor.industry.value = result.name;
+      this.vendor.industry.id = result.id;
     },
 
     addAnotherContact() {
@@ -334,14 +309,14 @@ export default {
       this.states = addressService.getStates(country);
     },
 
-    onAddVendorButtonClick() {
-      this.$refs.vendorForm.validate().then(async success => {
-        if (success) {
-          this.addVendor(this.vendor).then(async => {
-            this.closeDialog(true);
-          });
+    async onAddVendorButtonClick() {
+      const success = await this.$refs.vendorForm.validate();
+      if (success) {
+        const response = await this.addVendor(this.vendor);
+        if (response) {
+          this.closeDialog(true);
         }
-      });
+      }
     },
 
     closeDialog(flag) {
