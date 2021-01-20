@@ -76,7 +76,6 @@ export async function getLeadDetails({ commit, dispatch }, id) {
   dispatch("setLoading", true);
   try {
     const { data } = await request.get(`/leads/${id}`);
-    console.log(data);
     commit("setSelectedLead", data);
     dispatch("setLoading", false);
   } catch (e) {

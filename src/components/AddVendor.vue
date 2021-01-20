@@ -45,7 +45,7 @@
               label=" Industry"
               :options="options"
               option-value="name"
-              @filter="filterFn"
+              @filter="searchFilterBy"
               style="width: 250px"
               behavior="menu"
               emit-value
@@ -233,7 +233,6 @@
 </template>
 
 <script>
-//const stringOptions = ["Google", "Facebook", "Twitter", "Apple", "Oracle"];
 import AddressService from "@utils/country";
 const addressService = new AddressService();
 import { mapGetters, mapActions } from "vuex";
@@ -332,7 +331,7 @@ export default {
       "getTitles",
       "getContactTypes"
     ]),
-    filterFn(val, update) {
+    searchFilterBy(val, update) {
       if (val === "") {
         update(() => {
           this.options = this.vendorIndustries;
