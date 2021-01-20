@@ -115,7 +115,7 @@ pre_prod_deploy:
     - kubectl version
     - kubectl create namespace ${KUBE_NAMESPACE} --dry-run -o yaml | kubectl apply -f -
     - kubectl label namespace ${KUBE_NAMESPACE} istio-injection=enabled --dry-run -o yaml | kubectl apply -f -
-    - kubectl create secret generic app-sa-key --from-file /tmp/key.json --namespace ${KUBE_NAMESPACE} --dry-run -o yaml | kubectl apply -f - 
+    - kubectl create secret generic app-sa-key --from-file /tmp/key.json --namespace ${KUBE_NAMESPACE} --dry-run -o yaml | kubectl apply -f -
     - kubectl apply -f k8s/pre-prod/values.yaml --namespace ${KUBE_NAMESPACE}
     - sed -i "s/CI_COMMIT_SHORT_SHA/${CI_COMMIT_SHORT_SHA}/g" k8s/pre-prod/crd-spec.yaml
     - sed -i "s~DOCKER_IMAGE~${DOCKER_IMAGE}~g" k8s/pre-prod/crd-spec.yaml
