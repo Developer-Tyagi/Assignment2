@@ -43,13 +43,13 @@
 </template>
 
 <script>
-import VendorsList from "components/VendorsList";
-import AddVendor from "components/AddVendor";
+import VendorsList from 'components/VendorsList';
+import AddVendor from 'components/AddVendor';
 export default {
-  name: "Vendors",
+  name: 'Vendors',
   components: { VendorsList, AddVendor },
   data() {
-    return { addVendorDialog: false, vendorDialogFilterByIndustry: "" };
+    return { addVendorDialog: false, vendorDialogFilterByIndustry: '' };
   },
   methods: {
     closeAddVendorDialog(e) {

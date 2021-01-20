@@ -54,12 +54,12 @@
   </q-page>
 </template>
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   data() {
     return {
-      selectedClient: "",
+      selectedClient: '',
       isNewLead: true
     };
   },
@@ -69,11 +69,11 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["clients"])
+    ...mapGetters(['clients'])
   },
 
   methods: {
-    ...mapActions(["getClients"]),
+    ...mapActions(['getClients']),
 
     onContinue() {
       if (this.selectedClient) {
