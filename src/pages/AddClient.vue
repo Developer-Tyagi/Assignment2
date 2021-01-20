@@ -47,6 +47,7 @@
         ></q-btn>
       </div>
     </div>
+
     <q-dialog
       v-model="publicAdjustorInfoDialog"
       persistent
@@ -197,7 +198,7 @@
     <q-dialog
       v-model="clientInfoDailog"
       persistent
-      :maximized="maximizedToggle"
+      :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
     >
@@ -215,6 +216,7 @@
             </div>
           </q-toolbar>
         </q-header>
+
         <q-card-section>
           <div class="q-page bg-white" style="min-height: 630px">
             <div
@@ -370,7 +372,6 @@
                     'You have entered an invalid email address!'
                 ]"
               />
-
               <div class="row">
                 <p class="q-mx-none q-my-auto">Is there a Co-insured?</p>
                 <q-toggle class="q-ml-auto" v-model="isThereaCoInsuredToggle" />
@@ -452,7 +453,7 @@
                     style="width: 40%; margin-right: auto"
                   />
                   <q-input
-                    v-model="addAditionalPhoneNumber.phone2"
+                    v-model="additionalPhoneNumber.phone2"
                     label="Phone2"
                     type="number"
                     lazy-rules
@@ -539,7 +540,7 @@
     <q-dialog
       v-model="mailingAddressDialog"
       persistent
-      :maximized="maximizedToggle"
+      :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
     >
@@ -601,7 +602,7 @@
     <q-dialog
       v-model="insuranceInfoDialog"
       persistent
-      :maximized="maximizedToggle"
+      :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
     >
@@ -626,64 +627,180 @@
               class="full-width"
               style="
                 height: calc(100vh - 145px);
-
+                overflow-y: auto;
                 margin-bottom: 10px;
                 padding-top: 40px;
               "
             >
-              <div
-                class="column full-height"
-                style="padding: 30px 20px 20px 20px"
-              >
-                <div class="row">
-                  <p class="q-mx-none q-my-auto" style="font-size: 15px">
-                    Is this is a Foced-Placed policy?
-                  </p>
-                  <q-toggle
-                    class="q-ml-auto"
-                    v-model="isThisIsForcedPlacedPolicyToggle"
-                  />
-                </div>
-                <q-select
-                  v-model="forcedPlacedPolicyDetails.policyType"
-                  :options="PolicyTypes"
-                  label="Type of Policy"
-                />
-                <q-input
-                  v-model="forcedPlacedPolicyDetails.policyInceptionDate"
-                  label="Policy Inception Date"
-                />
-                <q-input
-                  v-model="forcedPlacedPolicyDetails.policyExpirationDate"
-                  label="Policy Expiration Date"
-                />
-                <q-input
-                  v-model="forcedPlacedPolicyDetails.otherPolicyType"
-                  label="Other Policy Type"
-                />
-                <q-input
-                  v-model="forcedPlacedPolicyDetails.insuranceCarrier"
-                  label="Insurance Carrier"
-                />
-                <q-input
-                  v-model="forcedPlacedPolicyDetails.policyNumber"
-                  label="Policy Number"
-                />
-                <q-input
-                  v-model="forcedPlacedPolicyDetails.policyDeductibleAmount"
-                  label="Policy deductible amount"
-                />
-                <div class="row">
-                  <p class="q-mx-none q-my-auto" style="font-size: 15px">
-                    Did you have the policy's Declaration?
-                  </p>
+              <span class="stepper-heading">Insurance Carrier</span>
 
-                  <q-toggle
-                    class="q-ml-auto"
-                    v-model="DidYouHavePoliceDeclarationToggle"
-                  />
+              <div
+                v-model="insuranceDetails.carrierName"
+                class="custom-select"
+                @click="onAddVendorDialogClick('carrier')"
+              >
+                <div class="select-text">
+                  {{
+                    insuranceDetails.carrierName
+                      ? insuranceDetails.carrierName
+                      : 'Enter Carrier Details'
+                  }}
                 </div>
-                <q-separator></q-separator>
+              </div>
+              <q-input
+                v-model="insuranceDetails.policyNumber"
+                label="Policy Number"
+              />
+
+              <q-input
+                v-model="insuranceDetails.insuranceCarrierNumber"
+                label="Insurance Carrier Number"
+              />
+
+              <div class="row">
+                <p class="q-mx-none q-my-auto">Has claim been filed?</p>
+                <q-toggle
+                  class="q-ml-auto"
+                  v-model="hasClaimBeenFilledToggle"
+                />
+              </div>
+              <div class="row">
+                <p class="q-mx-none q-my-auto">
+                  Is this is a Foced-Placed policy?
+                </p>
+                <q-toggle
+                  class="q-ml-auto"
+                  v-model="isThisIsForcedPlacedPolicyToggle"
+                />
+              </div>
+              <span class="form-heading">Policy Effective date</span>
+              <q-input
+                v-model="insuranceDetails.policyEffectiveDate"
+                type="date"
+              /><br />
+              <span class="form-heading">Policy Expiry date </span>
+              <q-input
+                v-model="insuranceDetails.policyExpireDate"
+                type="date"
+              />
+              <q-select
+                v-model="insuranceDetails.policyCategory.id"
+                option-value="id"
+                option-label="name"
+                map-options
+                emit-value
+                :options="policyCategories"
+                @input="
+                  setTypes(policyCategories, insuranceDetails.policyCategory)
+                "
+                label="Policy Category"
+              />
+              <q-select
+                v-model="insuranceDetails.property.id"
+                option-value="id"
+                option-label="name"
+                map-options
+                emit-value
+                :options="propertyTypes"
+                @input="setTypes(propertyTypes, insuranceDetails.property)"
+                label="Property Type"
+              />
+              <div class="row">
+                <p class="q-mx-none q-my-auto">Dwelling Limit (A)</p>
+                <q-input
+                  type="number"
+                  v-model="insuranceDetails.dwellingLimitA"
+                  placeholder="Dwelling Limit (A)"
+                  prefix="$"
+                  style="margin-left: 40px; width: 50%"
+                />
+              </div>
+              <div class="row">
+                <p class="q-mx-none q-my-auto">Other Structure (B)</p>
+                <q-input
+                  type="number"
+                  v-model="insuranceDetails.otherStructureB"
+                  placeholder="Other Structure (B)"
+                  prefix="$"
+                  step="0.01"
+                  min="0"
+                  max="10"
+                  style="margin-left: 40px; width: 50%"
+                />
+              </div>
+              <div class="row">
+                <p class="q-mx-none q-my-auto">Contents Limit (C)</p>
+                <q-input
+                  type="number"
+                  v-model="insuranceDetails.contentsLimit"
+                  placeholder="Contents Limit (C)"
+                  prefix="$"
+                  step="0.01"
+                  min="0"
+                  max="10"
+                  style="margin-left: 40px; width: 50%"
+                />
+              </div>
+              <div class="row">
+                <p class="q-mx-none q-my-auto">Loss of Use Limit (D)</p>
+                <q-input
+                  type="number"
+                  v-model="insuranceDetails.lossOfUSD"
+                  placeholder="Loss of Use Limit (D)"
+                  prefix="$"
+                  step="0.01"
+                  min="0"
+                  max="10"
+                  style="margin-left: 20px; width: 50%"
+                />
+              </div>
+              <div class="row">
+                <p class="q-mx-none q-my-auto">Depreciation</p>
+                <q-input
+                  type="number"
+                  v-model="insuranceDetails.deprecation"
+                  placeholder="Depreciation"
+                  prefix="$"
+                  step="0.01"
+                  min="0"
+                  max="10"
+                  style="margin-left: 70px; width: 50%"
+                />
+              </div>
+              <div class="row">
+                <p class="q-mx-none q-my-auto">Deductible</p>
+                <q-input
+                  type="number"
+                  v-model="insuranceDetails.deductible"
+                  placeholder="Deductible"
+                  prefix="$"
+                  step="0.01"
+                  min="0"
+                  max="10"
+                  style="margin-left: 80px; width: 50%"
+                />
+              </div>
+              <div class="row">
+                <p class="q-mx-none q-my-auto">Prior payment by insured</p>
+                <q-input
+                  type="number"
+                  v-model="insuranceDetails.priorPayment"
+                  placeholder="Prior payment by insured"
+                  prefix="$"
+                  step="0.01"
+                  min="0"
+                  max="10"
+                  style="margin-left: 10px; width: 50%"
+                />
+              </div>
+              <br />
+              <span class="form-heading">Reason for Limits/Denial</span>
+              <div class="floating-label">
+                <textarea
+                  required
+                  class="full-width"
+                  v-model="insuranceDetails.reasonsOfLD"
+                ></textarea>
               </div>
               <br />
             </div>
@@ -701,7 +818,7 @@
     <q-dialog
       v-model="lossInfoDialog"
       persistent
-      :maximized="maximizedToggle"
+      :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
     >
@@ -863,7 +980,6 @@
                   v-model="isThereDamageToPersonalPropertyToggle"
                 />
               </div>
-
               <div class="row">
                 <p style="q-mx-none q-my-auto">
                   Was a PPIF provided to the insured?
@@ -915,7 +1031,7 @@
     <q-dialog
       v-model="mortgageInfoDialog"
       persistent
-      :maximized="maximizedToggle"
+      :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
     >
@@ -1415,6 +1531,33 @@ export default {
         insuranceAdjustorPhoneType: '',
         typeOfLoss: ''
       },
+      insuranceDetails: {
+        property: {
+          id: '',
+          type: ''
+        },
+        type: '',
+        details: '',
+        id: '',
+        policyCategory: {
+          id: '',
+          type: ''
+        },
+        carrierName: '',
+        carrierId: '',
+        insuranceCarrierNumber: '',
+        policyNumber: '',
+        policyEffectiveDate: '',
+        policyExpireDate: '',
+        dwellingLimitA: '',
+        contentsLimit: '',
+        otherStructureB: '',
+        lossOfUSD: '',
+        deprecation: '',
+        deductible: '',
+        priorPayment: '',
+        reasonsOfLD: ''
+      },
       mortgageDetails: {
         companyName: '',
         loanNumber: '',
@@ -1453,12 +1596,10 @@ export default {
       isThisIsForcedPlacedPolicyToggle: false,
       PolicyTypes: ['A', 'B'],
       DidYouHavePoliceDeclarationToggle: false,
-      lossInfoDialog: false,
       isStateOfEmergencyToggle: false,
       isTheHomeHabitable: false,
       isThereDamageToPersonalPropertyToggle: false,
       wasAppifProvidedToTheInsuredToggle: false,
-
       doesTheOfficeNeedToProvidePpifToTheInsuredToggle: false,
       IsMortgageHomeToggle: false,
       isLossAddressSameAsClientToggle: false,
@@ -1478,19 +1619,15 @@ export default {
       hasAvendorOfExpertHiredTypes: ['A', 'B'],
       mortgageInfoDialog: false,
       isTherea2ndMortgageOnTheHomeToggle: false,
-      estimatingInfoDialog: false,
       doesAnEstimatorNeedToBeAssignedToggle: false,
       estimatingInformationClaim2Toggle: false,
-      expertVendorInfoDialog: false,
       hasAvendorOfExpertHiredToggle: false,
       anyOtherExpertHiredToggle: false,
       doYouReferAnyVendorToggle: false,
-      officeTaskDialog: false,
       femaClaimToggle: false,
       additionalOfficeTaskRequiredToggle: false,
       officeActionRequiredTypes: [],
-      officeTaskRequiredTypes: [],
-      documentsDialog: false
+      officeTaskRequiredTypes: []
     };
   },
   created() {
@@ -1805,14 +1942,6 @@ export default {
       this.closeVendorsList();
     },
 
-    closeAddVendorDialog(e) {
-      this.addVendorDialog = false;
-      this.vendorsListDialog = true;
-      if (e) {
-        this.$refs.list.getVendors();
-      }
-    },
-
     onClosingVendorSelectDialog(vendor, isVendor) {
       if (isVendor) {
         this.sourceDetails.id = vendor.id;
@@ -1823,11 +1952,13 @@ export default {
   }
 };
 </script>
+
 <style lang="scss">
 .form-card {
   max-height: calc(100vh - 100px);
   overflow: scroll;
 }
+
 ::-webkit-scrollbar {
   width: 0px;
   background: transparent; /* make scrollbar transparent */

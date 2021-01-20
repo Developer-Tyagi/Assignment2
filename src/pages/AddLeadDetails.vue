@@ -561,7 +561,6 @@ export default {
           selectedInspectionType.subtypes[0].duration;
       }
     },
-
     onSubInspectionTypesSelect() {
       const index = this.subInspectionTypes.findIndex(
         val => val.userID == this.schedulingDetails.subInspectionType
