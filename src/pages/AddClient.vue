@@ -1593,6 +1593,7 @@ export default {
         };
       }
     },
+
     async createClientButtonClick() {
       const payload = {
         isOrganization: this.primaryDetails.isOrganization,
@@ -1639,13 +1640,7 @@ export default {
             ]
           },
           address: {
-            addressCountry: this.addressDetails.state,
-            addressLocality: this.addressDetails.city,
-            addressRegion: this.addressDetails.apartmentNumber,
-            postOfficeBoxNumber: '',
-            postalCode: this.addressDetails.zip,
-            streetAddress: this.addressDetails.streetNumber,
-            dropBox: this.gateDropbox.info
+            ...this.clientAddressDetails
           },
           mailingAddress: {
             ...this.mailingAddressDetails
@@ -1682,11 +1677,13 @@ export default {
       } else {
         payload.source.detail = this.sourceDetails.details;
       }
+      console.log(payload);
       const response = await this.addClient(payload);
       if (response && response.id) {
         this.setPayloadForLoss(response.id);
       }
     },
+
     async setPayloadForLoss(clientId) {
       const payload1 = {
         client: {
