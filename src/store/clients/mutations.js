@@ -43,3 +43,10 @@ export function setClaimSeverity(state, types) {
     id: type.id
   }));
 }
+export function setPolicyCategory(state, types) {
+  state.policyCategories = types.map(type => ({
+    name: type.attributes.value,
+    machineName: type.attributes.machineValue,
+    id: type.id
+  }));
+}

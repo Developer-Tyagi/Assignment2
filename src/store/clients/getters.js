@@ -4,3 +4,4 @@ export const propertyTypes = state => state.propertyTypes;
 export const claimReasons = state => state.claimReasons;
 export const lossCauses = state => state.lossCauses;
 export const claimSeverity = state => state.claimSeverity;
+export const policyCategories = state => state.policyCategories;

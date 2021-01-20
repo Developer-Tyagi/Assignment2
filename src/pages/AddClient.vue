@@ -252,6 +252,7 @@
             </div>
           </q-toolbar>
         </q-header>
+        
         <q-card-section>
           <div class="q-page bg-white " style="min-height: 630px;">
             <div
@@ -751,80 +752,175 @@
             </div>
           </q-toolbar>
         </q-header>
-
-        <q-card-section>
+       
+   <q-card-section>
           <div class="q-page bg-white " style="min-height: 630px;">
             <div
               class="full-width"
               style="
             height: calc(100vh - 145px);
-            
+            overflow-y: auto;
             margin-bottom: 10px;
             padding-top:40px;
           "
             >
+           <span class="stepper-heading">Insurance Carrier</span>
+
               <div
-                class="column full-height"
-                style="padding:30px 20px 20px 20px"
+                v-model="insuranceDetails.carrierName"
+                class="custom-select"
+                @click="onAddVendorDialogClick('carrier')"
               >
-                <div class="row">
-                  <p class="q-mx-none q-my-auto" style="font-size:15px">
+                <div class="select-text">
+                  {{
+                    insuranceDetails.carrierName
+                      ? insuranceDetails.carrierName
+                      : "Enter Carrier Details"
+                  }}
+                </div>
+              </div>
+              <q-input
+                v-model="insuranceDetails.policyNumber"
+                label="Policy Number"
+              />
+         
+                 <q-input
+                  v-model="insuranceDetails.insuranceCarrierNumber"
+                  label="Insurance Carrier Number"
+                />
+
+         <div class="row">
+                  <p class="q-mx-none q-my-auto">
+                    Has claim been filed?
+                  </p>
+          <q-toggle
+                    class="q-ml-auto"
+                    v-model="hasClaimBeenFilledToggle"
+                  />
+                </div>
+              <div class="row">
+                  <p class="q-mx-none q-my-auto" >
                     Is this is a Foced-Placed policy?
                   </p>
-<q-toggle
+                 <q-toggle
                     class="q-ml-auto"
-                    v-model="isThisIsForcedPlacedPolicyToggle"
-                  />
+                    v-model="isThisIsForcedPlacedPolicyToggle"     
+                  />                                           
                 </div>
-  <q-select
-                  v-model="forcedPlacedPolicyDetails.policyType"
-                  :options="PolicyTypes"
-                  label="Type of Policy"
-                />
-  <q-input
-                  v-model="forcedPlacedPolicyDetails.policyInceptionDate"
-                  label="Policy Inception Date"
-            />
+                <span class="form-heading">Policy Effective date</span>
+             <q-input v-model="insuranceDetails.policyEffectiveDate" type = "date"  /><br>
+               <span class="form-heading">Policy Expiry date
+           </span>
+            <q-input v-model="insuranceDetails.policyExpireDate" type = "date"  />
+                 <q-select
+             v-model="insuranceDetails.policyCategory.id"
+                option-value="id"
+                option-label="name"
+                map-options
+                emit-value
+                :options="policyCategories"
+                @input="setTypes(policyCategories,insuranceDetails.policyCategory)"
+                 label="Policy Category"
+              />
+   <q-select
+             v-model="insuranceDetails.property.id"
+                option-value="id"
+                option-label="name"
+                map-options
+                emit-value
+                :options="propertyTypes"
+                @input="setTypes(propertyTypes,insuranceDetails.property)"
+              label="Property Type"
+              />
+              <div class="row">
+                <p class="q-mx-none q-my-auto"> Dwelling Limit (A)</p>
                 <q-input
-                  v-model="forcedPlacedPolicyDetails.policyExpirationDate"
-                  label="Policy Expiration Date"
+               type="number"
+                  v-model="insuranceDetails.dwellingLimitA"
+                 placeholder="Dwelling Limit (A)" 
+                  prefix="$"
+                  style="margin-left:40px;width:50%"
                 />
-                <q-input
-                  v-model="forcedPlacedPolicyDetails.otherPolicyType"
-                  label="Other Policy Type"
-                />
-                <q-input
-                  v-model="forcedPlacedPolicyDetails.insuranceCarrier"
-                  label="Insurance Carrier"
-                />
-                <q-input
-                  v-model="forcedPlacedPolicyDetails.policyNumber"
-                  label="Policy Number"
-                />
-                <q-input
-                  v-model="forcedPlacedPolicyDetails.policyDeductibleAmount"
-                  label="Policy deductible amount"
-                />
-                <div class="row">
-                  <p class="q-mx-none q-my-auto" style="font-size:15px">
-                    Did you have the policy's Declaration?
-                  </p>
-
-                  <q-toggle
-                    class="q-ml-auto"
-                    v-model="DidYouHavePoliceDeclarationToggle"
-                  />
-                </div>
-                <q-separator></q-separator>
               </div>
-            <br />
+              <div class="row">
+               <p class="q-mx-none q-my-auto"> Other Structure (B)</p>
+           <q-input
+         type="number"
+                  v-model="insuranceDetails.otherStructureB"
+                 placeholder="Other Structure (B)"
+                 prefix="$"
+                 step="0.01"  min="0" max="10"
+                 style="margin-left:40px;width:50%"
+                />
+                </div>
+                 <div class="row">
+               <p class="q-mx-none q-my-auto">Contents Limit (C)</p>
+                <q-input
+             type="number"
+                  v-model="insuranceDetails.contentsLimit"
+                 placeholder="Contents Limit (C)"
+                  prefix="$"
+                  step="0.01"  min="0" max="10"
+                   style="margin-left:40px;width:50%"
+                />
+                </div>
+                <div class="row">
+               <p class="q-mx-none q-my-auto">Loss of Use Limit (D)</p>
+            <q-input
+                      type="number"
+                  v-model="insuranceDetails.lossOfUSD"
+                  placeholder="Loss of Use Limit (D)"
+                  prefix="$"
+                 step="0.01"  min="0" max="10"
+                  style="margin-left:20px;width:50%"
+                />
+                </div>
+                   <div class="row">
+               <p class="q-mx-none q-my-auto">Depreciation</p>
+                  <q-input
+                    type="number"
+                  v-model="insuranceDetails.deprecation"
+                 placeholder="Depreciation"
+                     prefix="$"
+                       step="0.01"  min="0" max="10"
+                  style="margin-left:70px;width:50%"
+                />
+                </div>
+                 <div class="row">
+               <p class="q-mx-none q-my-auto">Deductible</p>
+                <q-input
+                    type="number"
+                  v-model="insuranceDetails.deductible"
+                 placeholder="Deductible"
+                     prefix="$"
+                    step="0.01"  min="0" max="10"
+                  style="margin-left:80px;width:50%"
+                />
+                </div>
+                 <div class="row">
+               <p class="q-mx-none q-my-auto">Prior payment by insured</p>
+              <q-input
+                  type="number"
+                  v-model="insuranceDetails.priorPayment"
+                 placeholder="Prior payment by insured"
+                    prefix="$"
+                     step="0.01"  min="0" max="10"
+                  style="margin-left:10px;width:50%"
+                />
+                </div>
+                 <br>
+           <span class="form-heading">Reason for Limits/Denial</span>
+     <div class="floating-label">
+  <textarea required class="full-width" v-model="insuranceDetails.reasonsOfLD"></textarea>
+ </div>
+  <br />
             </div>
           </div>
           <q-btn
             label="Save"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
-           @click="insuranceInfoDialog = false"
+           @click="saveInstance" 
             size="'xl'"
           ></q-btn>
         </q-card-section>
@@ -1320,55 +1416,6 @@
         </q-card-section>
       </q-card>
     </q-dialog>
-  
-      <q-dialog
-      v-model="vendorsListDialog"
-      persistent
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <q-header bordered class="bg-white">
-          <q-toolbar class="row bg-white">
-            <img
-              src="~assets/close.svg"
-              alt="close"
-              @click="vendorsListDialog = false"
-              style="margin: auto 0"
-            />
-
-            <div class="text-uppercase text-bold text-black q-mx-auto">
-              Vendors
-            </div>
-            <img
-              src="~assets/add.svg"
-              @click="addVendorDialog = true"
-              style="margin: 0 0 0 20px"
-            />
-          </q-toolbar>
-        </q-header>
-        <VendorsList
-          :selective="true"
-          @selectedVendor="onClosingVendorSelectDialog"
-          ref="list"
-          :showFilter="true"
-        />
-      </q-card>
-    </q-dialog>
-    <q-dialog
-      v-model="addVendorDialog"
-      persistent
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <AddVendor @closeDialog="closeAddVendorDialog" 
-          :componentName="'vendor'"
-         />
-      </q-card>
-    </q-dialog>
   </q-page>
 </template>
 
@@ -1383,12 +1430,16 @@ import VendorsList from "components/VendorsList";
 import AddVendor from "components/AddVendor";
 const addressService = new AddressService();
 
+
+
 export default {
    name: "addClient",
   components: { CustomHeader, VendorsList, AddVendor },
   data() {
     return {
       LossAddressName:"",
+      vendorDialogName: "",
+      showVendorDialogFilters:"",
       publicAdjustorInfoDialog: false,
       addVendorDialog: false,
       vendorsListDialog: false,
@@ -1431,6 +1482,7 @@ honorific2: {
       },
       
       insuredDetails: {
+
         fname: "",
         lname: "",
         phone: "",
@@ -1519,6 +1571,33 @@ honorific2: {
         insuranceAdjustorPhoneType: "",
         typeOfLoss: ""
       },
+       insuranceDetails:{
+         property:{
+      id:"",
+      type:"",
+         },
+         type:"",
+         details:"",
+         id:"",
+        policyCategory:{
+          id:"",
+          type:"",
+        },
+      carrierName:"",
+         carrierId: "",
+        insuranceCarrierNumber:"",
+        policyNumber:"",
+        policyEffectiveDate: "",
+        policyExpireDate:"",
+       dwellingLimitA:"",
+       contentsLimit:"",
+       otherStructureB:"",
+       lossOfUSD:"", 
+       deprecation:"",
+     deductible:"",
+     priorPayment:"",
+      reasonsOfLD:"",
+      },
       mortgageDetails: {
         companyName: "",
         loanNumber: "",
@@ -1550,12 +1629,11 @@ honorific2: {
       mailingAddressDialog: false,
       isMailingAddressSameToggle: false,
       isThereaCoInsuredToggle: false,
-      
+      hasClaimBeenFilledToggle:false,
        states: [],
        countries: [],
       insuranceInfoDialog: false,
       isThisIsForcedPlacedPolicyToggle: false,
-      PolicyTypes: ["A", "B"],
       DidYouHavePoliceDeclarationToggle: false,
       lossInfoDialog: false,
       isStateOfEmergencyToggle: false,
@@ -1570,6 +1648,7 @@ honorific2: {
       isThereAsecondClaimToFileToggle: false,
       insuranceAdjustorPhoneType: ["A", "B", "C"],
       typeOfLoss: [],
+       vendorDialogFilterByIndustry: "",
      hasAvendorOfExpertHiredTypes: ["A", "B"],
     mortgageInfoDialog: false,
       isTherea2ndMortgageOnTheHomeToggle: false,
@@ -1593,32 +1672,34 @@ created() {
    this.getPropertyTypes();
    this.getLossCauses();
    this.getSeverityClaim();
+   this.getPolicyCategory();
    this.getClaimReasons();
     this.getContactTypes();
     
   if(this.selectedLead.id){
-    
-   this.insuredDetails.fname = this.selectedLead.primaryContact.fname;
+this.insuredDetails.fname = this.selectedLead.primaryContact.fname;
 this.insuredDetails.lname = this.selectedLead.primaryContact.lname;
 this.insuredDetails.email = this.selectedLead.primaryContact.email;
 this.insuredDetails.phone = this.selectedLead.primaryContact.phoneNumber[0].number;
 this.insuredDetails.type = this.selectedLead.primaryContact.phoneNumber[0].type;
 this.sourceDetails.type = this.selectedLead.leadSource.type
-     
- }
+this.insuranceDetails.policyNumber =this.selectedLead.policyNumber
+this.insuranceDetails.carrierName = this.selectedLead.carrier.value;
+}
+ 
  
  this.countries = addressService.getCountries();
   this.onCountrySelect("United States");
       
 },
   computed: {
-  ...mapGetters(["selectedLead","leadSources","contactTypes","clientTypes","propertyTypes","claimSeverity","lossCauses","claimReasons","titles"])
+  ...mapGetters(["selectedLead","leadSources","contactTypes","clientTypes","propertyTypes","policyCategories","claimSeverity","lossCauses","claimReasons","titles"])
   },
    mounted() {
    this.getTitles();
    },
  methods: {
-    ...mapActions (["addClient","addClaim","getClientTypes","getPropertyTypes","getSeverityClaim","getLossCauses","getClaimReasons", "getContactTypes", "getTitles",]),
+    ...mapActions (["addClient","addClaim","getClientTypes","getPropertyTypes","getSeverityClaim","getPolicyCategory","getLossCauses","getClaimReasons", "getContactTypes", "getTitles",]),
     ...mapMutations(["setSelectedLead"]),
     
    onCountrySelect(country) {
@@ -1638,7 +1719,32 @@ this.sourceDetails.type = this.selectedLead.leadSource.type
           data.id = obj.id;
       data.types = obj.machineName;
            },
-
+           saveInstance(){
+console.log(this.insuranceDetails)
+           },
+onAddVendorDialogClick(name) {
+      this.vendorDialogName = name;
+      if (name === "carrier") {
+        this.showVendorDialogFilters = false;
+        this.vendorDialogFilterByIndustry = "5ffedc469a111940084ce6e2";
+      }
+      else {
+        this.showVendorDialogFilters = true;
+        this.vendorDialogFilterByIndustry = "";
+      }
+      this.vendorsListDialog = true;
+    },
+    onClosingVendorSelectDialog(vendor, isVendor) {
+     
+      if (isVendor) {
+        this.insuredDetails.id = vendor.id;
+        this.insuredDetails.details = vendor.name;
+      } else {
+        this.insuranceDetails.carrierId = vendor.id;
+        this.insuranceDetails.carrierName = vendor.name;
+      }
+      this.vendorsListDialog = false;
+    },
 mailingAddressSame(){
    this.mailingAddressSameInfo.streetAddress = this.addressDetails.streetNumber;
    this.mailingAddressSameInfo.unitOrApartmentNumber = this.addressDetails.apartmentNumber;
@@ -1760,23 +1866,23 @@ client: {
 },
 policyInfo:{
   carrier: {
-    id:"",
-    value:"",
+    id:this.insuranceDetails.id,
+    value:this.insuranceDetails.type,
   },
-  number: "",
-  isClaimFiled:"",
-  isForcedPlaced:"",
+  number: this.insuranceDetails.policyNumber,
+  isClaimFiled:this.hasClaimBeenFilledToggle,
+  isForcedPlaced:this.isThisIsForcedPlacedPolicyToggle,
   claimNumber: "",
   category: {
-    id:"",
-    value:"",
+    id:this.insuranceDetails.policyCategory.id,
+    value:this.insuranceDetails.policyCategory.type,
   },
   type:{
-id:"",
-value:"",
+id:this.insuranceDetails.property.id,
+value:this.insuranceDetails.property.type,
   },
-  effectiveDate:"",
-  expirationDate:"",
+  effectiveDate:this.insuranceDetails.policyEffectiveDate,
+  expirationDate: this.insuranceDetails.policyExpireDate,
   limitCoverage: {
     dwelling:"",
     content:"",
@@ -1854,47 +1960,22 @@ lossInfo:{
   isSecondClaim:this.isThereAsecondClaimToFileToggle,
 }
 }
+
 this.addClaim(payload1).then(()=> this.setSelectedLead())
+
 },
  
   validateEmail,
- onChangingSourceType() {
-      this.sourceDetails.id = "";
-      this.sourceDetails.details = "";
-    },
-
-     addSelectedVendor(e) {
-      this.sourceDetails = {
-        id: e.id,
-        type: "vendor",
-        details: e.name,
-      };
-      this.closeVendorsList();
-    },
-
-    closeAddVendorDialog(e) {
-      this.addVendorDialog = false;
-      this.vendorsListDialog = true;
-      if (e) {
-        this.$refs.list.getVendors();
-      }
-    },
-
-    onClosingVendorSelectDialog(vendor, isVendor) {
-      if (isVendor) {
-        this.sourceDetails.id = vendor.id;
-        this.sourceDetails.details = vendor.name;
-      }
-      this.vendorsListDialog = false;
-    },
   }
 };
 </script>
 <style lang="scss">
+
 .form-card {
   max-height: calc(100vh - 100px);
   overflow: scroll;
 }
+
 ::-webkit-scrollbar {
   width: 0px;
   background: transparent; /* make scrollbar transparent */
@@ -1924,30 +2005,6 @@ this.addClaim(payload1).then(()=> this.setSelectedLead())
     padding-top: 24px;
     padding-bottom: 8px;
     height: 50px;
-  }
-}
-.input-autocomplete {
-  width:100%;
-  margin-left: auto;
-  border: 0;
-  line-height: 24px;
-  padding-top: 24px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid #c2c2c2;
-  outline: none;
-  position: relative;
-  &::placeholder {
-    font-size: 16px;
-  }
-
-  &:focus {
-    border-bottom: 2px solid #f05a26;
-
-    &::placeholder {
-      font-size: 12px;
-      position: absolute;
-      color: #f05a26;
-    }
   }
 }
 </style>
