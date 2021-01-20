@@ -615,6 +615,7 @@
               @click="insuranceInfoDialog = false"
               style="margin: auto 0"
             />
+
             <div class="text-uppercase text-bold text-black q-mx-auto">
               Insurance Info
             </div>
@@ -632,8 +633,6 @@
                 padding-top: 40px;
               "
             >
-              <span class="stepper-heading">Insurance Carrier</span>
-
               <div
                 v-model="insuranceDetails.carrierName"
                 class="custom-select"
@@ -1357,7 +1356,7 @@
             />
 
             <div class="text-uppercase text-bold text-black q-mx-auto">
-              Vendors
+              {{ vendorDialogName }}
             </div>
             <img
               src="~assets/add.svg"
@@ -1370,7 +1369,8 @@
           :selective="true"
           @selectedVendor="onClosingVendorSelectDialog"
           ref="list"
-          :showFilter="true"
+          :showFilter="showVendorDialogFilters"
+          :filterName="vendorDialogFilterByIndustry"
         />
       </q-card>
     </q-dialog>
@@ -1384,7 +1384,7 @@
       <q-card>
         <AddVendor
           @closeDialog="closeAddVendorDialog"
-          :componentName="'vendor'"
+          :componentName="vendorDialogName"
         />
       </q-card>
     </q-dialog>
@@ -1409,10 +1409,18 @@ export default {
   components: { CustomHeader, VendorsList, AddVendor, AutoCompleteAddress },
   data() {
     return {
+      vendorDialogName: '',
+      vendorDialogFilterByIndustry: '',
+      showVendorDialogFilters: false,
       LossAddressName: '',
       publicAdjustorInfoDialog: false,
       addVendorDialog: false,
       vendorsListDialog: false,
+      officeTaskDialog: false,
+      expertVendorInfoDialog: false,
+      estimatingInfoDialog: false,
+      lossInfoDialog: false,
+      hasClaimBeenFilledToggle: false,
       AdjustorTypes: ['Self', 'Public Adjustor 01'],
       maximizedToggle: true,
       clientInfoDailog: false,
@@ -1637,7 +1645,7 @@ export default {
     this.getSeverityClaim();
     this.getClaimReasons();
     this.getContactTypes();
-
+    this.getPolicyCategory();
     if (this.selectedLead.id) {
       this.insuredDetails.fname = this.selectedLead.primaryContact.fname;
       this.insuredDetails.lname = this.selectedLead.primaryContact.lname;
@@ -1660,7 +1668,8 @@ export default {
       'claimSeverity',
       'lossCauses',
       'claimReasons',
-      'titles'
+      'titles',
+      'policyCategories'
     ])
   },
   mounted() {
@@ -1676,19 +1685,23 @@ export default {
       'getLossCauses',
       'getClaimReasons',
       'getContactTypes',
-      'getTitles'
+      'getTitles',
+      'getPolicyCategory'
     ]),
+
     ...mapMutations(['setSelectedLead']),
 
     onCountrySelect(country) {
       this.states = addressService.getStates(country);
     },
+
     setTitleName(val) {
       const titleResult = this.titles.find(obj => {
         return obj.id === this['honorific' + val].id;
       });
       this['honorific' + val].title = titleResult.title;
     },
+
     setTypes(types, data) {
       const obj = types.find(item => {
         return item.id === data.id;
@@ -1928,6 +1941,7 @@ export default {
     },
 
     validateEmail,
+
     onChangingSourceType() {
       this.sourceDetails.id = '';
       this.sourceDetails.details = '';
@@ -1946,8 +1960,31 @@ export default {
       if (isVendor) {
         this.sourceDetails.id = vendor.id;
         this.sourceDetails.details = vendor.name;
+      } else {
+        this.insuranceDetails.carrierId = vendor.id;
+        this.insuranceDetails.carrierName = vendor.name;
       }
       this.vendorsListDialog = false;
+    },
+
+    closeAddVendorDialog(e) {
+      this.addVendorDialog = false;
+      this.vendorsListDialog = true;
+      if (e) {
+        this.$refs.list.getVendors();
+      }
+    },
+
+    onAddVendorDialogClick(name) {
+      this.vendorDialogName = name;
+      if (name === 'carrier') {
+        this.showVendorDialogFilters = false;
+        this.vendorDialogFilterByIndustry = '5ffedc469a111940084ce6e2';
+      } else {
+        this.showVendorDialogFilters = true;
+        this.vendorDialogFilterByIndustry = '';
+      }
+      this.vendorsListDialog = true;
     }
   }
 };
