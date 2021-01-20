@@ -97,7 +97,11 @@
           </div>
 
           <p class="form-heading">Company's Address</p>
-          <AutoCompleteAddress :address="vendor.address" />
+          <AutoCompleteAddress
+            :address="vendor.address"
+            :isDropBoxEnable="false"
+            :isChecksEnable="false"
+          />
           <p class="form-heading">Company's Phone & Website</p>
           <div v-for="(contactInfo, index) in vendor.contact" v-if="index >= 1">
             <q-select
@@ -156,88 +160,88 @@
 </template>
 
 <script>
-import AddressService from "@utils/country";
+import AddressService from '@utils/country';
 const addressService = new AddressService();
-import { mapGetters, mapActions } from "vuex";
-import { getVendorIndustries } from "src/store/vendors/actions";
-import { getContactTypes, getTitles } from "src/store/common/actions";
-import AutoCompleteAddress from "components/AutoCompleteAddress";
+import { mapGetters, mapActions } from 'vuex';
+import { getVendorIndustries } from 'src/store/vendors/actions';
+import { getContactTypes, getTitles } from 'src/store/common/actions';
+import AutoCompleteAddress from 'components/AutoCompleteAddress';
 
 export default {
-  name: "AddVendor",
-  props: ["componentName"],
+  name: 'AddVendor',
+  props: ['componentName'],
   components: { AutoCompleteAddress },
   data() {
     return {
-      industryTypes: ["Association"],
+      industryTypes: ['Association'],
       countries: [],
       states: [],
       vendor: {
-        name: "",
-        industry: { value: "", id: "" },
+        name: '',
+        industry: { value: '', id: '' },
         meta: {
           claimFiledByEmail: false
         },
         contact: [
           {
-            fname: "",
-            lname: "",
-            email: "",
+            fname: '',
+            lname: '',
+            email: '',
             honorific: {
-              id: "",
-              value: ""
+              id: '',
+              value: ''
             },
             phoneNumber: [
               {
-                type: "",
-                number: ""
+                type: '',
+                number: ''
               }
             ],
             isPrimary: true
           },
           {
-            fname: "",
-            lname: "",
-            email: "",
+            fname: '',
+            lname: '',
+            email: '',
             honorific: {
-              id: "",
-              value: ""
+              id: '',
+              value: ''
             },
             phoneNumber: [
               {
-                type: "",
-                number: ""
+                type: '',
+                number: ''
               }
             ]
           }
         ],
         address: {
-          addressCountry: "",
-          addressLocality: "",
-          addressRegion: "",
-          postOfficeBoxNumber: "",
-          postalCode: "",
-          streetAddress: ""
+          addressCountry: '',
+          addressLocality: '',
+          addressRegion: '',
+          postOfficeBoxNumber: '',
+          postalCode: '',
+          streetAddress: ''
         },
         info: {
-          website: "",
-          notes: ""
+          website: '',
+          notes: ''
         }
       }
     };
   },
 
   computed: {
-    ...mapGetters(["contactTypes", "vendorIndustries", "titles"])
+    ...mapGetters(['contactTypes', 'vendorIndustries', 'titles'])
   },
 
   mounted() {
     this.getVendorIndustries();
     this.getTitles();
     this.getContactTypes();
-    if (this.componentName && this.componentName === "carrier") {
+    if (this.componentName && this.componentName === 'carrier') {
       let industryType = this.vendorIndustries.find(
-        o => o.machineValue === "carrier"
+        o => o.machineValue === 'carrier'
       );
       if (industryType.name && industryType.id) {
         this.vendor.industry.value = industryType.name;
@@ -248,10 +252,10 @@ export default {
 
   methods: {
     ...mapActions([
-      "addVendor",
-      "getVendorIndustries",
-      "getTitles",
-      "getContactTypes"
+      'addVendor',
+      'getVendorIndustries',
+      'getTitles',
+      'getContactTypes'
     ]),
 
     setTitleName(selectedTitle) {
@@ -278,25 +282,25 @@ export default {
         this.vendor.contact[len - 1].phoneNumber.number
       ) {
         this.vendor.contact.push({
-          fname: "",
-          lname: "",
-          email: "",
+          fname: '',
+          lname: '',
+          email: '',
           honorific: {
-            id: "",
-            value: ""
+            id: '',
+            value: ''
           },
           phoneNumber: [
             {
-              type: "",
-              number: ""
+              type: '',
+              number: ''
             }
           ]
         });
       } else {
         this.$q.notify({
-          message: "Please fill the above details first",
-          position: "top",
-          type: "negative"
+          message: 'Please fill the above details first',
+          position: 'top',
+          type: 'negative'
         });
       }
     },
@@ -316,13 +320,13 @@ export default {
     },
 
     closeDialog(flag) {
-      this.$emit("closeDialog", flag);
+      this.$emit('closeDialog', flag);
     }
   },
 
   created() {
     this.countries = addressService.getCountries();
-    this.onCountrySelect("United States");
+    this.onCountrySelect('United States');
   }
 };
 </script>

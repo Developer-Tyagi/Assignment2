@@ -493,38 +493,12 @@
               </div>
               <br />
               <span class="form-heading">Address Details</span>
-              <q-input
-                v-model="addressDetails.streetNumber"
-                label="Street Number"
+              <AutoCompleteAddress
+                :address="clientAddressDetails"
+                :isDropBoxEnable="true"
+                :isChecksEnable="false"
+                :isFieldsDisable="false"
               />
-
-              <q-input
-                v-model="addressDetails.apartmentNumber"
-                label="Unit or Apartment Number"
-              />
-              <q-input v-model="addressDetails.city" label="City" />
-              <q-select
-                v-model="addressDetails.state"
-                :options="states"
-                label="State"
-              />
-              <q-input v-model="addressDetails.zip" label="ZIP" />
-              <q-select
-                v-model="addressDetails.country"
-                :options="countries"
-                label="Country"
-                @input="onCountrySelect(mailingAddressDetails.country)"
-              />
-              <div class="row">
-                <p class="q-mx-none q-my-auto">Gate / Dropbox</p>
-                <q-toggle class="q-ml-auto" v-model="gateDropboxToggle" />
-              </div>
-              <div v-if="gateDropboxToggle">
-                <q-input
-                  v-model="gateDropbox.info"
-                  label="Gate / Dropbox Info"
-                />
-              </div>
               <div class="row">
                 <p class="q-mx-none q-my-auto">Tenent Occupied</p>
                 <q-toggle class="q-ml-auto" v-model="tenantOccupiedToggle" />
@@ -593,10 +567,7 @@
                 padding-top: 40px;
               "
             >
-              <div
-                class="column full-height"
-                style="padding: 30px 20px 20px 20px"
-              >
+              <div class="full-height" style="padding: 30px 20px 20px 20px">
                 <div class="row">
                   <p class="q-mx-none q-my-auto">
                     Is the mailing address same?
@@ -607,84 +578,12 @@
                     @input="mailingAddressSame"
                   />
                 </div>
-                <div v-if="!isMailingAddressSameToggle">
-                  <q-input
-                    v-model="mailingAddressSameInfo.streetAddress"
-                    label="Street Address"
-                  />
-                  <q-input
-                    v-model="mailingAddressSameInfo.unitOrApartmentNumber"
-                    label="Unit or Apartment Number"
-                  />
-                  <q-input v-model="mailingAddressSameInfo.city" label="City" />
-                  <q-select
-                    v-model="mailingAddressSameInfo.state"
-                    :options="states"
-                    label="State"
-                  />
-                  <q-select
-                    v-model="mailingAddressSameInfo.country"
-                    :options="countries"
-                    label="Country"
-                    @input="onCountrySelect(mailingAddressDetails.country)"
-                  />
-                  <q-input v-model="mailingAddressSameInfo.zip" label="ZIP" />
-                  <div class="row">
-                    <p class="q-mx-none q-my-auto">Gate / Dropbox</p>
-                    <q-toggle class="q-ml-auto" v-model="gateDropboxToggle" />
-                  </div>
-                  <div v-if="gateDropboxToggle">
-                    <q-input
-                      v-model="mailingAddressSameInfo.dropBox"
-                      label="Gate / Dropbox Info"
-                    />
-                  </div>
-                </div>
-                <div v-else>
-                  <q-input
-                    v-model="mailingAddressSameInfo.streetAddress"
-                    label="Street Address"
-                    disable
-                  />
-                  <q-input
-                    v-model="mailingAddressSameInfo.unitOrApartmentNumber"
-                    label="Unit or Apartment Number"
-                    disable
-                  />
-                  <q-input
-                    v-model="mailingAddressSameInfo.city"
-                    label="City"
-                    disable
-                  />
-                  <q-select
-                    v-model="mailingAddressSameInfo.state"
-                    :options="states"
-                    label="State"
-                    disable
-                  />
-                  <q-select
-                    v-model="mailingAddressSameInfo.country"
-                    :options="countries"
-                    label="Country"
-                    disable
-                    @input="onCountrySelect(mailingAddressDetails.country)"
-                  />
-                  <q-input
-                    v-model="mailingAddressSameInfo.zip"
-                    disable
-                    label="ZIP"
-                  />
-                  <div class="row">
-                    <p class="q-mx-none q-my-auto">Gate / Dropbox</p>
-                    <q-toggle class="q-ml-auto" v-model="gateDropboxToggle" />
-                  </div>
-
-                  <q-input
-                    v-model="mailingAddressSameInfo.dropBox"
-                    disable
-                    label="Gate / Dropbox Info"
-                  />
-                </div>
+                <AutoCompleteAddress
+                  :address="mailingAddressDetails"
+                  :isDropBoxEnable="true"
+                  :isChecksEnable="false"
+                  :isFieldsDisable="isMailingAddressSameToggle"
+                />
               </div>
               <br />
             </div>
@@ -838,14 +737,14 @@
                 <q-toggle
                   class="q-ml-auto"
                   v-model="isLossAddressSameAsClientToggle"
+                  @input="lossAddressSame"
                 />
               </div>
-              <input
-                type="text"
-                id="autocomplete"
-                class="input-autocomplete"
-                v-model="lossAddress"
-                placeholder="Address"
+              <AutoCompleteAddress
+                :address="lossAddressDetails"
+                :isDropBoxEnable="true"
+                :isChecksEnable="false"
+                :isFieldsDisable="isLossAddressSameAsClientToggle"
               />
               <q-input
                 v-model="LossAddressName"
@@ -1378,6 +1277,8 @@
 
 <script>
 import CustomHeader from 'components/CustomHeader';
+import AutoCompleteAddress from 'components/AutoCompleteAddress';
+
 import AddressService from '@utils/country';
 import { validateEmail } from '@utils/validation';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
@@ -1389,7 +1290,7 @@ const addressService = new AddressService();
 
 export default {
   name: 'addClient',
-  components: { CustomHeader, VendorsList, AddVendor },
+  components: { CustomHeader, VendorsList, AddVendor, AutoCompleteAddress },
   data() {
     return {
       LossAddressName: '',
@@ -1407,16 +1308,6 @@ export default {
         isOrganization: false,
         organizationName: ''
       },
-      mailingAddressSameInfo: {
-        streetAddress: '',
-        unitOrApartmentNumber: '',
-        city: '',
-        state: '',
-        zip: '',
-        country: '',
-        dropBox: ''
-      },
-
       honorific1: {
         id: '',
         title: ''
@@ -1456,13 +1347,15 @@ export default {
         type1: '',
         type2: ''
       },
-      addressDetails: {
-        streetNumber: '',
-        apartmentNumber: '',
-        city: '',
-        state: '',
-        zip: '',
-        country: ''
+      clientAddressDetails: {
+        addressCountry: '',
+        addressRegion: '',
+        addressLocality: '',
+        postalCode: '',
+        streetAddress: '',
+        postOfficeBoxNumber: '',
+        isGateDropbox: false,
+        dropBox: ''
       },
       gateDropbox: {
         info: ''
@@ -1472,14 +1365,15 @@ export default {
         phone: '',
         type: ''
       },
-
       mailingAddressDetails: {
-        streetNumber: '',
-        apartmentNumber: '',
-        city: '',
-        state: '',
-        country: 'United States',
-        zip: ''
+        addressCountry: '',
+        addressRegion: '',
+        addressLocality: '',
+        postalCode: '',
+        streetAddress: '',
+        postOfficeBoxNumber: '',
+        isGateDropbox: false,
+        dropBox: ''
       },
       forcedPlacedPolicyDetails: {
         policyInceptionDate: '',
@@ -1568,7 +1462,16 @@ export default {
       doesTheOfficeNeedToProvidePpifToTheInsuredToggle: false,
       IsMortgageHomeToggle: false,
       isLossAddressSameAsClientToggle: false,
-      lossAddress: '',
+      lossAddressDetails: {
+        addressCountry: '',
+        addressRegion: '',
+        addressLocality: '',
+        postalCode: '',
+        streetAddress: '',
+        postOfficeBoxNumber: '',
+        isGateDropbox: false,
+        dropBox: ''
+      },
       isThereAsecondClaimToFileToggle: false,
       insuranceAdjustorPhoneType: ['A', 'B', 'C'],
       typeOfLoss: [],
@@ -1658,13 +1561,37 @@ export default {
     },
 
     mailingAddressSame() {
-      this.mailingAddressSameInfo.streetAddress = this.addressDetails.streetNumber;
-      this.mailingAddressSameInfo.unitOrApartmentNumber = this.addressDetails.apartmentNumber;
-      this.mailingAddressSameInfo.city = this.addressDetails.city;
-      this.mailingAddressSameInfo.state = this.addressDetails.state;
-      this.mailingAddressSameInfo.zip = this.addressDetails.zip;
-      this.mailingAddressSameInfo.country = this.addressDetails.country;
-      this.mailingAddressSameInfo.dropBox = this.gateDropbox.info;
+      if (this.isMailingAddressSameToggle) {
+        this.mailingAddressDetails = this.clientAddressDetails;
+      } else {
+        this.mailingAddressDetails = {
+          addressCountry: '',
+          addressRegion: '',
+          addressLocality: '',
+          postalCode: '',
+          streetAddress: '',
+          postOfficeBoxNumber: '',
+          isGateDropbox: false,
+          dropBox: ''
+        };
+      }
+    },
+
+    lossAddressSame() {
+      if (this.isLossAddressSameAsClientToggle) {
+        this.lossAddressDetails = this.clientAddressDetails;
+      } else {
+        this.lossAddressDetails = {
+          addressCountry: '',
+          addressRegion: '',
+          addressLocality: '',
+          postalCode: '',
+          streetAddress: '',
+          postOfficeBoxNumber: '',
+          isGateDropbox: false,
+          dropBox: ''
+        };
+      }
     },
     async createClientButtonClick() {
       const payload = {
@@ -1721,13 +1648,7 @@ export default {
             dropBox: this.gateDropbox.info
           },
           mailingAddress: {
-            addressCountry: this.mailingAddressDetails.country,
-            addressLocality: this.mailingAddressDetails.city,
-            addressRegion: this.mailingAddressDetails.apartmentNumber,
-            postOfficeBoxNumber: '',
-            postalCode: this.mailingAddressDetails.zip,
-            streetAddress: this.addressDetails.streetNumber,
-            dropBoxInfo: this.mailingAddressSameInfo.dropBox
+            ...this.mailingAddressDetails
           },
           phoneNumbers: [
             {
@@ -1938,30 +1859,6 @@ export default {
     padding-top: 24px;
     padding-bottom: 8px;
     height: 50px;
-  }
-}
-.input-autocomplete {
-  width: 100%;
-  margin-left: auto;
-  border: 0;
-  line-height: 24px;
-  padding-top: 24px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid #c2c2c2;
-  outline: none;
-  position: relative;
-  &::placeholder {
-    font-size: 16px;
-  }
-
-  &:focus {
-    border-bottom: 2px solid #f05a26;
-
-    &::placeholder {
-      font-size: 12px;
-      position: absolute;
-      color: #f05a26;
-    }
   }
 }
 </style>
