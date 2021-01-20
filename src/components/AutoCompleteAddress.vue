@@ -40,10 +40,10 @@
   </div>
 </template>
 <script>
-import AddressService from "@utils/country";
+import AddressService from '@utils/country';
 const addressService = new AddressService();
 export default {
-  name: "AutoCompleteAddress",
+  name: 'AutoCompleteAddress',
   props: {
     address: {
       type: Object,
@@ -62,11 +62,11 @@ export default {
 
   mounted() {
     this.autocomplete = new google.maps.places.Autocomplete(
-      document.getElementById("autocomplete1"),
-      { types: ["geocode"] }
+      document.getElementById('autocomplete1'),
+      { types: ['geocode'] }
     );
     this.getGeoLocation;
-    this.autocomplete.addListener("place_changed", this.fillInAddress);
+    this.autocomplete.addListener('place_changed', this.fillInAddress);
     this.countries = addressService.getCountries();
   },
 
@@ -90,30 +90,30 @@ export default {
     fillInAddress() {
       const place = this.autocomplete.getPlace().address_components;
       this.address.streetAddress =
-        this.getPlaceName("route", place) >= 0
-          ? place[this.getPlaceName("route", place)].long_name
-          : "";
+        this.getPlaceName('route', place) >= 0
+          ? place[this.getPlaceName('route', place)].long_name
+          : '';
       this.address.addressLocality = this.getPlaceName(
-        "administrative_area_level_2",
+        'administrative_area_level_2',
         place
       )
-        ? place[this.getPlaceName("administrative_area_level_2", place)]
+        ? place[this.getPlaceName('administrative_area_level_2', place)]
             .long_name
-        : "";
+        : '';
       this.address.addressRegion = this.getPlaceName(
-        "administrative_area_level_1",
+        'administrative_area_level_1',
         place
       )
-        ? place[this.getPlaceName("administrative_area_level_1", place)]
+        ? place[this.getPlaceName('administrative_area_level_1', place)]
             .long_name
-        : "";
-      this.address.addressCountry = this.getPlaceName("country", place)
-        ? place[this.getPlaceName("country", place)].long_name
-        : "";
+        : '';
+      this.address.addressCountry = this.getPlaceName('country', place)
+        ? place[this.getPlaceName('country', place)].long_name
+        : '';
 
-      this.address.postalCode = this.getPlaceName("postal_code", place)
-        ? place[this.getPlaceName("postal_code", place)].long_name
-        : "";
+      this.address.postalCode = this.getPlaceName('postal_code', place)
+        ? place[this.getPlaceName('postal_code', place)].long_name
+        : '';
 
       this.isAddressFieldEnable = false;
     },
