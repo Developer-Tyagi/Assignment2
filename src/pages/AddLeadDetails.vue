@@ -382,6 +382,11 @@
                 option-value="value"
                 emit-value
                 @input="onInspectionTypesSelect()"
+                :rules="[
+                  val =>
+                    (val && val.length > 0) ||
+                    'Please Choose the inspection type'
+                ]"
               />
               <q-select
                 v-if="showSubInspectionType"

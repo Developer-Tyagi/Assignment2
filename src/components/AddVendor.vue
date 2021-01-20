@@ -31,7 +31,9 @@
             v-model="vendor.name"
             label=" Company Name"
             lazy-rules
-            :rules="[val => (val && val.length) || '']"
+            :rules="[
+              val => (val && val.length > 0) || 'Please fill the first name'
+            ]"
           />
           <div>
             <q-select
@@ -48,7 +50,9 @@
               behavior="menu"
               emit-value
               lazy-rules
-              :rules="[val => (val && val.length) || '']"
+              :rules="[
+                val => (val && val.length > 0) || 'Please fill the first name'
+              ]"
             >
               <template v-slot:no-option>
                 <q-item>
@@ -71,7 +75,9 @@
             emit-value
             @input="setTitleName(vendor.contact[0].honorific)"
             lazy-rules
-            :rules="[val => (val && val.length) || '']"
+            :rules="[
+              val => (val && val.length > 0) || 'Please choose the Title'
+            ]"
           />
           <q-input
             v-model="vendor.contact[0].fname"
@@ -156,25 +162,31 @@
               <q-input
                 v-model="contactInfo.fname"
                 label="First Name"
-                :rules="[val => (val && val.length) || '']"
+                :rules="[
+                  val => (val && val.length > 0) || 'Please fill the first name'
+                ]"
               />
               <q-input v-model="contactInfo.lname" label="Last Name" />
-
               <div class="row">
                 <q-select
                   v-model="contactInfo.phoneNumber.type"
                   :options="contactTypes"
-                  option-value="name"
+                  option-value="machineName"
                   option-label="name"
                   label="Type"
                   style="width: 40%; margin-right: auto"
                   emit-value
+                  :rules="[val => (val && val.length > 0) || '']"
                 />
                 <q-input
                   v-model="contactInfo.phoneNumber.number"
                   label="Phone1"
                   type="number"
                   style="width: 55%"
+                  :rules="[
+                    val =>
+                      (val && val.length > 0) || 'Please fill the phone number'
+                  ]"
                 />
               </div>
               <q-input

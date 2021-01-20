@@ -35,7 +35,14 @@
               >{{ selectedLead.primaryContact.phoneNumber[0].number }}</span
             ><span v-else> - </span>
           </p>
-          <p class="texts">Email: {{ selectedLead.primaryContact.email }}</p>
+          <p class="texts">
+            Email:
+            <span
+              v-if="selectedLead.primaryContact.email"
+              @click="onEmailClick(selectedLead.primaryContact.email, $event)"
+              >{{ selectedLead.primaryContact.email }}</span
+            ><span v-else> - </span>
+          </p>
 
           <p class="heading">Loss Address</p>
           <p class="texts">{{ selectedLead.lossLocation.streetAddress }}</p>
@@ -50,7 +57,7 @@
           <p class="heading">Loss Details</p>
 
           <p class="texts">
-            Date of Loss &nbsp;&nbsp;{{ selectedLead.dateOfLoss }}
+            Date of Loss &nbsp;&nbsp;{{ selectedLead.dateofLoss }}
           </p>
           <p class="texts">
             Description &nbsp;&nbsp;{{ selectedLead.lossDesc }}
@@ -58,20 +65,25 @@
 
           <p class="heading">Policy Details</p>
           <p class="texts">
-            Carrier Name &nbsp;&nbsp;{{ selectedLead.carrier }}
+            Carrier Name &nbsp;&nbsp;{{ selectedLead.carrier.value }}
           </p>
           <p class="texts">
             Policy No &nbsp;&nbsp;{{ selectedLead.policyNumber }}
           </p>
 
-          <p class="heading">Inspection Type</p>
-          <p class="texts"></p>
+          <p class="heading">
+            Inspection Type
+          </p>
+          <p class="texts">
+            &nbsp;&nbsp;{{ selectedLead.inspectionInfo.value }}
+          </p>
 
           <p class="heading">Lead Source</p>
-          <p class="texts"></p>
+          <p class="texts">&nbsp;&nbsp;{{ selectedLead.leadSource.type }}</p>
+          <p class="texts">&nbsp;&nbsp;{{ selectedLead.leadSource.detail }}</p>
 
           <p class="heading">Loss Site Visiting On</p>
-          <p class="texts"></p>
+          <p class="texts">&nbsp;&nbsp;{{ selectedLead.visited }}</p>
 
           <p class="heading">Notes</p>
           <p class="texts">{{ selectedLead.notes }}</p>
@@ -97,6 +109,12 @@ export default {
 
   methods: {
     ...mapActions(["getLeadDetails", "removeSelectedLeadDetails"]),
+    onEmailClick(email, e) {
+      e.stopPropagation();
+      if (email) {
+        window.open("mailto:" + email);
+      }
+    },
 
     onPhoneNumberClick(number, e) {
       e.stopPropagation();
@@ -106,7 +124,6 @@ export default {
     }
   },
   created() {
-    console.log(1234);
     console.log(this.selectedLead, 1);
     this.getLeadDetails(this.$route.params.id);
   }
