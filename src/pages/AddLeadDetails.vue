@@ -143,15 +143,11 @@
               />
               <br />
               <span class="stepper-heading">Loss Location</span>
-<<<<<<< HEAD
               <AutoCompleteAddress
                 :address="lossAddress"
                 :isDropBoxEnable="false"
                 :isChecksEnable="true"
               />
-=======
-              <AutoCompleteAddress :address="lossAddress" />
->>>>>>> master
             </q-card>
             <div class="row q-pt-md">
               <div>

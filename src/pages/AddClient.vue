@@ -19,7 +19,10 @@
           </div>
           <div
           class="form-list"
-          @click="insuranceInfoDialog = true"
+          @click="insuranceInfoDialog = true"mortgageInfoDialog: false,
+          mailingAddressDialog: false,
+            lossInfoDialog: false,
+      documentsDialog: false,
           >
             Insurance Info
           </div>
@@ -53,7 +56,7 @@
         ></q-btn>
       </div>
 </div>
-    //client info
+    
     <q-dialog
       v-model="clientInfoDailog"
       persistent
@@ -169,18 +172,16 @@
                 />
               </div>
   <br />
-   <span class="form-heading">Insured Details</span>
- <q-select
-                v-model="honorific1.id"
-                :options="titles"
-                option-value="id"
-                option-label="name"
-                map-options
-                @input="setTitleName(1)"
-                emit-value
-                label="Title"
-              />
-          
+  <span class="form-heading">Insured Details</span>
+<q-select
+            v-model="honorific1.title"
+            :options="titles"
+            option-label="title"
+            label="Title"
+            option-value="title"
+            @input="setTitleName(1)"
+            emit-value
+          />
 
   <q-input v-model="insuredDetails.fname" 
                   lazy-rules
@@ -294,10 +295,10 @@
                 </p>
                 <q-toggle
                   class="q-ml-auto"
-                  v-model="additionalPhoneNumberToggle"
+                  v-model="addAditionalPhoneNumberToggle"
                 />
               </div>
-              <div v-if="additionalPhoneNumberToggle">
+              <div v-if="addAditionalPhoneNumberToggle">
                 <div class="row">
                   <q-select
                     v-model="additionalPhoneNumber.type1"
@@ -354,11 +355,11 @@
                 <p class="q-mx-none q-my-auto">
                   Gate / Dropbox
                 </p>
-                <q-toggle class="q-ml-auto" v-model="clientInfoAddressDetails.gateDropbox" />
+                <q-toggle class="q-ml-auto" v-model="gateDropboxToggle" />
               </div>
-              <div v-if="clientInfoAddressDetails.gateDropbox">
+              <div v-if="gateDropboxToggle">
                 <q-input
-                  v-model="clientInfoAddressDetails.gateDropboxInfo"
+                  v-model="gateDropbox.info"
                   label="Gate / Dropbox Info"
                 />
               </div>
@@ -397,7 +398,6 @@
         </q-card-section>
       </q-card>
     </q-dialog>
-    //mailing address
     <q-dialog
       v-model="mailingAddressDialog"
       persistent
@@ -419,7 +419,7 @@
             </div>
           </q-toolbar>
         </q-header>
-        <q-card-section>
+<q-card-section>
           <div class="q-page bg-white " style="min-height: 630px;">
             <div
               class="full-width"
@@ -440,10 +440,91 @@
                 <q-toggle
                     class="q-ml-auto"
                     v-model="isMailingAddressSameToggle"
-                  @input="sameAddressAsClient"
+                  @input="mailingAddressSame"
                   />
                 </div>
-                <AutoCompleteAddress :address="mailingAddressDetails"/>
+                <div v-if="!isMailingAddressSameToggle"
+                >
+                <q-input
+                  v-model="mailingAddressSameInfo.streetAddress"
+                  label="Street Address"
+                />
+            <q-input
+                  v-model="mailingAddressSameInfo.unitOrApartmentNumber"
+                  label="Unit or Apartment Number"
+                />
+                <q-input
+                  v-model="mailingAddressSameInfo.city"
+                label="City"
+                />
+                <q-select
+                  v-model="mailingAddressSameInfo.state"
+                  :options="states"
+                  label="State"
+                />
+                    <q-select
+                  v-model="mailingAddressSameInfo.country"
+                    :options="countries"
+                  label="Country"
+                  @input="onCountrySelect(mailingAddressDetails.country)"
+                />
+                <q-input v-model="mailingAddressSameInfo.zip" label="ZIP" />
+                <div class="row">
+                <p class="q-mx-none q-my-auto">
+                  Gate / Dropbox
+                </p>
+            <q-toggle class="q-ml-auto" v-model="gateDropboxToggle" />
+              </div>
+              <div v-if="gateDropboxToggle">
+                <q-input
+                  v-model="mailingAddressSameInfo.dropBox"
+                
+                  label="Gate / Dropbox Info"
+                />
+              </div>
+              </div>
+              <div v-else> 
+                <q-input
+                  v-model="mailingAddressSameInfo.streetAddress"
+                  label="Street Address"
+                disable  
+            />
+              <q-input
+            v-model="mailingAddressSameInfo.unitOrApartmentNumber"
+            label="Unit or Apartment Number"
+              disable 
+                />
+              <q-input
+                  v-model="mailingAddressSameInfo.city"
+                  label="City"
+                  disable
+                />
+                <q-select
+                  v-model="mailingAddressSameInfo.state"
+                  :options="states"
+                  label="State"
+                  disable
+                />
+                  <q-select
+                  v-model="mailingAddressSameInfo.country"
+                  :options="countries"
+                  label="Country"
+                  disable
+                  @input="onCountrySelect(mailingAddressDetails.country)"
+                />
+                <q-input v-model="mailingAddressSameInfo.zip" disable label="ZIP" />
+                <div class="row">
+                <p class="q-mx-none q-my-auto">
+                  Gate / Dropbox
+                </p>
+            <q-toggle class="q-ml-auto" v-model="gateDropboxToggle" />
+              </div>
+              
+                <q-input
+                  v-model="mailingAddressSameInfo.dropBox"
+                  disable
+                  label="Gate / Dropbox Info"
+                />
             </div>
               </div>
           <br />
@@ -459,7 +540,6 @@
         </q-card-section>
       </q-card>
     </q-dialog>
-    //insurance Info
     <q-dialog
       v-model="insuranceInfoDialog"
       persistent
@@ -649,13 +729,12 @@
             label="Save"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
-          @click="insuranceInfoDialog = false" 
+          @click="saveInstance" 
             size="'xl'"
           ></q-btn>
         </q-card-section>
       </q-card>
     </q-dialog>
-    //loss info
     <q-dialog
       v-model="lossInfoDialog"
       persistent
@@ -697,7 +776,7 @@
                   v-model="isLossAddressSameAsClientToggle"
                 />
               </div>
-              <AutoCompleteAddress :address="lossInfo.lossAddressDetails"/>
+              //autocomplete
             <q-input 
             v-model="lossAddressName"
           label="Loss Address Name"
@@ -841,7 +920,6 @@
         </q-card-section>
       </q-card>
     </q-dialog>
-    // mortgage info
     <q-dialog
       v-model="mortgageInfoDialog"
       persistent
@@ -944,12 +1022,12 @@
 import CustomHeader from "components/CustomHeader";
 import { validateEmail } from "@utils/validation";
 import { mapGetters,mapActions,mapMutations} from "vuex";
-import AutoCompleteAddress from "components/AutoCompleteAddress";
+
 
 
 export default {
   name: "addClient",
-  components: { CustomHeader, AutoCompleteAddress },
+  components: { CustomHeader },
   data() {
     return {
       lossAddressName:"",
@@ -976,6 +1054,7 @@ export default {
         id: "",
         title: "",
       },
+      
       sourceDetails: {
         id: "",
         type: "",
@@ -990,7 +1069,8 @@ export default {
         lname: "",
         phone: "",
         type: "",
-        email: "",      
+        email: "",
+      
       },
       coInsuredDetails: {
         fname: "",
@@ -999,6 +1079,7 @@ export default {
         type: "",
         email: ""
       },
+
       additionalPhoneNumber: {
         phone2: "",
         phone3: "",
@@ -1007,54 +1088,53 @@ export default {
         type2: ""
       },
       clientInfoAddressDetails: {
-        houseNumber: "",
-        streetAddress: "",  
-        addressLocality: "",
-        addressLocality: "",
-        postalCode: "",
-        addressCountry: "",
-        gateDropbox:false,
-        gateDropboxInfo:""
+        streetNumber: "",  
+        apartmentNumber: "",
+        city: "",
+        state: "",
+        zip: "",
+        country: "",
+        gateDropbox:""
       },
       tenantOccupied: {
         name: "",
         phone: "",
         type: ""
       },
+      
       mailingAddressDetails: {
-        houseNumber: "",
-        streetAddress: "",  
-        addressLocality: "",
-        addressLocality: "",
-        postalCode: "",
-        addressCountry: "",
-        gateDropbox:false,
-        gateDropboxInfo:""  
+        streetNumber: "",
+        apartmentNumber: "",
+        city: "",
+        state: "",
+      country: "",
+        zip: "",
+    
+      },
+      forcedPlacedPolicyDetails: {
+        policyInceptionDate: "",
+        policyExpirationDate: "",
+        otherPolicyType: "",
+        insuranceCarrier: "",
+        policyNumber: "",
+        policyDeductibleAmount: ""
       },
       lossInfo: {
         dateOfLoss: "",
-        propertyDescription:"",
-        reasonClaim:{
-          type:"",
-          id:"",
-        },
-        lossAddressDetails: {
-          houseNumber: "",
-          streetAddress: "",  
-          addressLocality: "",
-          addressLocality: "",
-          postalCode: "",
-          addressCountry: "",
-        },
-        deadlineDate:"",
-        recovDeadline:"",
+    propertyDescription:"",
+      reasonClaim:{
+    type:"",
+    id:"",
+      },
+      deadlineDate:"",
+      recovDeadline:"",
         nameOfEmergency: "",
         descriptionDwelling:"",
         damageDescription:"",
-        property: {
-          type: "",
-          id:""
-        },
+      property: {
+      type: "",
+      id:""
+      },
         insuranceAdjustorName: "",
         whereDidTheLossOccur: "",
         other: "",
@@ -1073,8 +1153,8 @@ export default {
       },
       insuranceDetails:{
         property:{
-        id:"",
-        type:"",
+      id:"",
+      type:"",
         },
         type:"",
         details:"",
@@ -1109,8 +1189,9 @@ export default {
         secondCompanyName: "",
         secondLoanNumber: ""
       },
-
-      additionalPhoneNumberToggle: false,
+      isItCompanyLeadToggle: false,
+      addAditionalPhoneNumberToggle: false,
+      gateDropboxToggle: false,
       tenantOccupiedToggle: false,
       isDamageOSToggle:false,
 
@@ -1153,8 +1234,8 @@ created() {
   this.getSeverityClaim();
   this.getPolicyCategory();
   this.getClaimReasons();
-  this.getContactTypes();
-  this.getTitles();
+    this.getContactTypes();
+    this.getTitles();
   if(this.selectedLead.id){
 this.insuredDetails.fname = this.selectedLead.primaryContact.fname;
 this.insuredDetails.lname = this.selectedLead.primaryContact.lname;
@@ -1164,7 +1245,12 @@ this.insuredDetails.type = this.selectedLead.primaryContact.phoneNumber[0].type;
 this.sourceDetails.type = this.selectedLead.leadSource.type
 this.insuranceDetails.policyNumber =this.selectedLead.policyNumber
 this.insuranceDetails.carrierName = this.selectedLead.carrier.value;
-} 
+}
+
+
+this.countries = addressService.getCountries();
+  this.onCountrySelect("United States");
+      
 },
   computed: {
   ...mapGetters(["selectedLead","leadSources","contactTypes","clientTypes","propertyTypes","policyCategories","claimSeverity","lossCauses","claimReasons","titles"])
@@ -1186,226 +1272,228 @@ methods: {
         }) 
           data.id = obj.id;
       data.types = obj.machineName;
-    },
-
-    sameAddressAsClient(){
-      this.mailingAddressDetails = this.clientInfoAddressDetails
-    },
+      },
           
 
-    onChangingSourceType() {
-      this.sourceDetails.id = "";
-      this.sourceDetails.details = "";
-    },
+    
+mailingAddressSame(){
+  this.mailingAddressSameInfo.streetAddress = this.addressDetails.streetNumber;
+  this.mailingAddressSameInfo.unitOrApartmentNumber = this.addressDetails.apartmentNumber;
+    this.mailingAddressSameInfo.city = this.addressDetails.city;
+  this.mailingAddressSameInfo.state = this.addressDetails.state;
+  this.mailingAddressSameInfo.zip = this.addressDetails.zip;
+  this.mailingAddressSameInfo.country = this.addressDetails.country;
+  this.mailingAddressSameInfo.dropBox = this.gateDropbox.info;
+  },
 
   async  createClientButtonClick() {
-//   const payload = {
-//         isOrganization:this.primaryDetails.isOrganization,
-//         organizationName:this.primaryDetails.organizationName,
-//         isOrganizationPolicyholder: this.policyHolder.isPolicyHolder,
-//     source: {
-//         id: "",
-//           type: this.sourceDetails.type,
-//           detail: "",  
-//       },
-//         type: {
-//           id: this.client.id,
-//           value: this.client.type,
-//         },
-//       insuredInfo: {
-//           primary:{
-//             honorific: {
-//                     id: this.honorific1.id,
-//                         value: this.honorific1.title
-//                     },
-//             fname: this.insuredDetails.fname,
-//             lname: this.insuredDetails.lname,
-//             email: this.insuredDetails.email,
-//             phoneNumber : [
-//               {
-//                 type: this.insuredDetails.type,
-//                 number: this.insuredDetails.phone,
-//               }
-//             ]
-//           },
-//         secondary:{
-//               honorific: {
-//                       id:this.honorific2.id,
-//                         value: this.honorific2.title,
-//                     },
-//           fname: this.coInsuredDetails.fname,
-//           lname: this.coInsuredDetails.lname,
-//           email : this.coInsuredDetails.email,
-//           phoneNumber: [
-//             {
-//               type:  this.coInsuredDetails.type,
-//               number: this.coInsuredDetails.phone,
-//             }
-//           ]
-//           },
-//           address: {
-//               addressCountry: this.addressDetails.state,
-//               addressLocality: this.addressDetails.city,
-//                 addressRegion: this.addressDetails.apartmentNumber,
-//                   postOfficeBoxNumber: "",
-//                     postalCode: this.addressDetails.zip,
-//                     streetAddress:  this.addressDetails.streetNumber,
-//                     dropBox:this.gateDropbox.info,
-//           },
-//             mailingAddress: {
-//                     addressCountry: this.mailingAddressDetails.country,
-//                     addressLocality: this.mailingAddressDetails.city,
-//                     addressRegion: this.mailingAddressDetails.apartmentNumber,
-//                     postOfficeBoxNumber: "",
-//                     postalCode: this.mailingAddressDetails.zip,
-//                     streetAddress: this.addressDetails.streetNumber,
-//                     dropBoxInfo: this.mailingAddressSameInfo.dropBox,
-//                 },
-//                 phoneNumbers: [
-//                     {
-//                         type: this.additionalPhoneNumber.type1,
-//                         number: this.additionalPhoneNumber.phone2,
-//                     },
-//                     {
-//                       type: this.additionalPhoneNumber.type2,
+  const payload = {
+        isOrganization:this.primaryDetails.isOrganization,
+        organizationName:this.primaryDetails.organizationName,
+        isOrganizationPolicyholder: this.policyHolder.isPolicyHolder,
+    source: {
+        id: "",
+          type: this.sourceDetails.type,
+          detail: "",  
+      },
+        type: {
+          id: this.client.id,
+          value: this.client.type,
+        },
+      insuredInfo: {
+          primary:{
+            honorific: {
+                    id: this.honorific1.id,
+                        value: this.honorific1.title
+                    },
+            fname: this.insuredDetails.fname,
+            lname: this.insuredDetails.lname,
+            email: this.insuredDetails.email,
+            phoneNumber : [
+              {
+                type: this.insuredDetails.type,
+                number: this.insuredDetails.phone,
+              }
+            ]
+          },
+        secondary:{
+              honorific: {
+                      id:this.honorific2.id,
+                        value: this.honorific2.title,
+                    },
+          fname: this.coInsuredDetails.fname,
+          lname: this.coInsuredDetails.lname,
+          email : this.coInsuredDetails.email,
+          phoneNumber: [
+            {
+              type:  this.coInsuredDetails.type,
+              number: this.coInsuredDetails.phone,
+            }
+          ]
+          },
+          address: {
+              addressCountry: this.addressDetails.state,
+              addressLocality: this.addressDetails.city,
+                addressRegion: this.addressDetails.apartmentNumber,
+                  postOfficeBoxNumber: "",
+                    postalCode: this.addressDetails.zip,
+                    streetAddress:  this.addressDetails.streetNumber,
+                    dropBox:this.gateDropbox.info,
+          },
+            mailingAddress: {
+                    addressCountry: this.mailingAddressDetails.country,
+                    addressLocality: this.mailingAddressDetails.city,
+                    addressRegion: this.mailingAddressDetails.apartmentNumber,
+                    postOfficeBoxNumber: "",
+                    postalCode: this.mailingAddressDetails.zip,
+                    streetAddress: this.addressDetails.streetNumber,
+                    dropBoxInfo: this.mailingAddressSameInfo.dropBox,
+                },
+                phoneNumbers: [
+                    {
+                        type: this.additionalPhoneNumber.type1,
+                        number: this.additionalPhoneNumber.phone2,
+                    },
+                    {
+                      type: this.additionalPhoneNumber.type2,
     
-//                   number: this.additionalPhoneNumber.phone3,
-//                     },
+                  number: this.additionalPhoneNumber.phone3,
+                    },
 
-//                 ],
-//                   tenantInfo: {
-//                     name:  "",
-//                     phoneNumber: {
-//                         type:  "",
-//                         number: "",
-//                     }
-//                 }
-//         },
-//       }
-//       if(this.tenantOccupiedToggle){
-//         payload.insuredInfo.tenantInfo.name = this.tenantOccupied.name;
-//       payload.insuredInfo.tenantInfo.phoneNumber.type =  this.tenantOccupied.type;
-//       payload.insuredInfo.tenantInfo.phoneNumber.number= this.tenantOccupied.phone;
-//       } else {
-//         delete payload.insuredInfo.tenantInfo
-//       }
-//       if (this.sourceDetails.type == "vendor") {
-//         payload.source.id = this.sourceDetails.id;
-//       } else {
-//         payload.source.detail = this.sourceDetails.details;
-//       }
-//       const response= await this.addClient(payload)
-//       if(response&& response.id){
-//       this.setPayloadForLoss(response.id)
-// }
+                ],
+                  tenantInfo: {
+                    name:  "",
+                    phoneNumber: {
+                        type:  "",
+                        number: "",
+                    }
+                }
+        },
+      }
+      if(this.tenantOccupiedToggle){
+        payload.insuredInfo.tenantInfo.name = this.tenantOccupied.name;
+      payload.insuredInfo.tenantInfo.phoneNumber.type =  this.tenantOccupied.type;
+      payload.insuredInfo.tenantInfo.phoneNumber.number= this.tenantOccupied.phone;
+      } else {
+        delete payload.insuredInfo.tenantInfo
+      }
+      if (this.sourceDetails.type == "vendor") {
+        payload.source.id = this.sourceDetails.id;
+      } else {
+        payload.source.detail = this.sourceDetails.details;
+      }
+      const response= await this.addClient(payload)
+      if(response&& response.id){
+      this.setPayloadForLoss(response.id)
+}
 
-// },
-// async setPayloadForLoss(clientId)
-// {
-//     const payload1 = {
-// client: {
-//   id: "",
-//   fname:"",
-//   lname:"",
-// },
-// policyInfo:{
-//   carrier: {
-//     id:this.insuranceDetails.id,
-//     value:this.insuranceDetails.type,
-//   },
-//   number: this.insuranceDetails.policyNumber,
-//   isClaimFiled:this.hasClaimBeenFilledToggle,
-//   isForcedPlaced:this.isThisIsForcedPlacedPolicyToggle,
-//   claimNumber: "",
-//   category: {
-//     id:this.insuranceDetails.policyCategory.id,
-//     value:this.insuranceDetails.policyCategory.type,
-//   },
-//   type:{
-// id:this.insuranceDetails.property.id,
-// value:this.insuranceDetails.property.type,
-//   },
-//   effectiveDate:this.insuranceDetails.policyEffectiveDate,
-//   expirationDate: this.insuranceDetails.policyExpireDate,
-//   limitCoverage: {
-//     dwelling:"",
-//     content:"",
-//     lossOfUse:"",
-//   },
-//   deductibleAmount:"",
-//   depreciation:"",
-//   priorPayment:"",
-//   limitReason:"",
-//   declaration:{
-//     isDeclared:"",
-//     fileInfo:{
-//       id:"",
-//       value:"",
-//     }
-//   }
-// },
-// mortgageInfo:[
-//   {
-//     id: "",
-//     value: "",
-//       loanNumber: "",
-//       accountNumber: "",
-//       isPrimary: "",
-//       notes:"",
-//   },
-//   {
-//     id: "",
-//     value: "",
-//     loanNumber: "",
-//     accountNumber: "",
-//     notes:""
-//                 }
-// ],
-// lossInfo:{
-//   address: {
-//     addressCountry:"",
-//     addressLocality:"",
-//     addressRegion:"",
-//     postOfficeBoxNumber:"",
-//     postalCode: "",
-//     streetAddress:"",    
-//   },
-//   propertyType:{
-//     id:this.lossInfo.property.id,
-//     value:this.lossInfo.property.type
-//   },
-//   propertyDesc:this.lossInfo.propertyDescription,
-//   claimReason:{
-//     id:this.lossInfo.reasonClaim.id,
-//     value:this.lossInfo.reasonClaim.type,
-//   },
-//   date:this.lossInfo.dateOfLoss,
-//   cause:{
-//     id:this.lossInfo.causeOfLoss.id,
-//     value:this.lossInfo.causeOfLoss.type,
-//   },
-//   deadlineDate:this.lossInfo.deadlineDate,
-//   recovDDate: this.lossInfo.recovDeadline,
-//   isFEMA:this.femaClaimToggle,
-//   isEmergency:this.isStateOfEmergencyToggle,
-//   emergencyName:this.lossInfo.nameOfEmergency,
-//   desc:this.descriptionDwelling,
-//   isHabitable:this.isTheHomeHabitable,
-//   serverity:{
-//     id:this.lossInfo.severityOfClaimType.id,
-//     value:this.lossInfo.severityOfClaimType.type,
-//   },
-//   isOSDamaged:this.isDamageOSToggle,
-//   OSDamageDesc:this.lossInfo.damageDescription,
-//   isPPDamaged:this.isThereDamageToPersonalPropertyToggle,
-//   isPPIF:this.wasAppifProvidedToTheInsuredToggle,
-//   isNeedPPIF:this.doesTheOfficeNeedToProvidePpifToTheInsuredToggle,
-//   hashHomeMortgage:this.IsMortgageHomeToggle,
-//   isSecondClaim:this.isThereAsecondClaimToFileToggle,
-// }
-// }
+},
+async setPayloadForLoss(clientId)
+{
+    const payload1 = {
+client: {
+  id: "",
+  fname:"",
+  lname:"",
+},
+policyInfo:{
+  carrier: {
+    id:this.insuranceDetails.id,
+    value:this.insuranceDetails.type,
+  },
+  number: this.insuranceDetails.policyNumber,
+  isClaimFiled:this.hasClaimBeenFilledToggle,
+  isForcedPlaced:this.isThisIsForcedPlacedPolicyToggle,
+  claimNumber: "",
+  category: {
+    id:this.insuranceDetails.policyCategory.id,
+    value:this.insuranceDetails.policyCategory.type,
+  },
+  type:{
+id:this.insuranceDetails.property.id,
+value:this.insuranceDetails.property.type,
+  },
+  effectiveDate:this.insuranceDetails.policyEffectiveDate,
+  expirationDate: this.insuranceDetails.policyExpireDate,
+  limitCoverage: {
+    dwelling:"",
+    content:"",
+    lossOfUse:"",
+  },
+  deductibleAmount:"",
+  depreciation:"",
+  priorPayment:"",
+  limitReason:"",
+  declaration:{
+    isDeclared:"",
+    fileInfo:{
+      id:"",
+      value:"",
+    }
+  }
+},
+mortgageInfo:[
+  {
+    id: "",
+    value: "",
+      loanNumber: "",
+      accountNumber: "",
+      isPrimary: "",
+      notes:"",
+  },
+  {
+    id: "",
+    value: "",
+    loanNumber: "",
+    accountNumber: "",
+    notes:""
+                }
+],
+lossInfo:{
+  address: {
+    addressCountry:"",
+    addressLocality:"",
+    addressRegion:"",
+    postOfficeBoxNumber:"",
+    postalCode: "",
+    streetAddress:"",    
+  },
+  propertyType:{
+    id:this.lossInfo.property.id,
+    value:this.lossInfo.property.type
+  },
+  propertyDesc:this.lossInfo.propertyDescription,
+  claimReason:{
+    id:this.lossInfo.reasonClaim.id,
+    value:this.lossInfo.reasonClaim.type,
+  },
+  date:this.lossInfo.dateOfLoss,
+  cause:{
+    id:this.lossInfo.causeOfLoss.id,
+    value:this.lossInfo.causeOfLoss.type,
+  },
+  deadlineDate:this.lossInfo.deadlineDate,
+  recovDDate: this.lossInfo.recovDeadline,
+  isFEMA:this.femaClaimToggle,
+  isEmergency:this.isStateOfEmergencyToggle,
+  emergencyName:this.lossInfo.nameOfEmergency,
+  desc:this.descriptionDwelling,
+  isHabitable:this.isTheHomeHabitable,
+  serverity:{
+    id:this.lossInfo.severityOfClaimType.id,
+    value:this.lossInfo.severityOfClaimType.type,
+  },
+  isOSDamaged:this.isDamageOSToggle,
+  OSDamageDesc:this.lossInfo.damageDescription,
+  isPPDamaged:this.isThereDamageToPersonalPropertyToggle,
+  isPPIF:this.wasAppifProvidedToTheInsuredToggle,
+  isNeedPPIF:this.doesTheOfficeNeedToProvidePpifToTheInsuredToggle,
+  hashHomeMortgage:this.IsMortgageHomeToggle,
+  isSecondClaim:this.isThereAsecondClaimToFileToggle,
+}
+}
 
-// this.addClaim(payload1).then(()=> this.setSelectedLead())
+this.addClaim(payload1).then(()=> this.setSelectedLead())
 
 },
 
@@ -1416,6 +1504,7 @@ methods: {
 
 
 <style lang="scss">
+
 .form-card {
   max-height: calc(100vh - 100px);
   overflow: scroll;
