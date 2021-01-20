@@ -814,13 +814,16 @@ export default {
       let selectedClient = this.clients.find(
         client => client.id === this.$route.params.id
       );
-      this.primaryDetails.firstName = selectedClient.primaryContact.fname;
-      this.primaryDetails.lastName = selectedClient.primaryContact.lname;
-      this.primaryDetails.email = selectedClient.primaryContact.email;
+      this.primaryDetails.honorific.id =
+        selectedClient.insuredInfo.primary.honorific.id;
+
+      this.primaryDetails.firstName = selectedClient.insuredInfo.primary.fname;
+      this.primaryDetails.lastName = selectedClient.insuredInfo.primary.lname;
+      this.primaryDetails.email = selectedClient.insuredInfo.primary.email;
       this.primaryDetails.phoneNumber =
-        selectedClient.primaryContact.phoneNumber[0].number;
+        selectedClient.insuredInfo.primary.phoneNumber[0].number;
       this.primaryDetails.selectedContactType =
-        selectedClient.primaryContact.phoneNumber[0].type;
+        selectedClient.insuredInfo.primary.phoneNumber[0].type;
       this.primaryDetails.isOrganization = selectedClient.isOrganization;
       if (this.primaryDetails.isOrganization) {
         this.primaryDetails.organizationName = selectedClient.organizationName;

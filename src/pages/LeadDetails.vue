@@ -88,6 +88,7 @@
   </q-page>
 </template>
 <script>
+import { getLeadDetails } from "src/store/leads/actions";
 import { mapGetters, mapActions } from "vuex";
 export default {
   computed: {
@@ -105,6 +106,8 @@ export default {
     }
   },
   created() {
+    console.log(1234);
+    console.log(this.selectedLead, 1);
     this.getLeadDetails(this.$route.params.id);
   }
 
