@@ -47,7 +47,6 @@
         ></q-btn>
       </div>
     </div>
-
     <q-dialog
       v-model="publicAdjustorInfoDialog"
       persistent
@@ -615,7 +614,6 @@
               @click="insuranceInfoDialog = false"
               style="margin: auto 0"
             />
-
             <div class="text-uppercase text-bold text-black q-mx-auto">
               Insurance Info
             </div>
@@ -634,8 +632,8 @@
               "
             >
               <div
-                v-model="insuranceDetails.carrierName"
                 class="custom-select"
+                v-model="insuranceDetails.carrierName"
                 @click="onAddVendorDialogClick('carrier')"
               >
                 <div class="select-text">
@@ -721,9 +719,6 @@
                   v-model="insuranceDetails.otherStructureB"
                   placeholder="Other Structure (B)"
                   prefix="$"
-                  step="0.01"
-                  min="0"
-                  max="10"
                   style="margin-left: 40px; width: 50%"
                 />
               </div>
@@ -734,9 +729,6 @@
                   v-model="insuranceDetails.contentsLimit"
                   placeholder="Contents Limit (C)"
                   prefix="$"
-                  step="0.01"
-                  min="0"
-                  max="10"
                   style="margin-left: 40px; width: 50%"
                 />
               </div>
@@ -747,9 +739,6 @@
                   v-model="insuranceDetails.lossOfUSD"
                   placeholder="Loss of Use Limit (D)"
                   prefix="$"
-                  step="0.01"
-                  min="0"
-                  max="10"
                   style="margin-left: 20px; width: 50%"
                 />
               </div>
@@ -760,9 +749,6 @@
                   v-model="insuranceDetails.deprecation"
                   placeholder="Depreciation"
                   prefix="$"
-                  step="0.01"
-                  min="0"
-                  max="10"
                   style="margin-left: 70px; width: 50%"
                 />
               </div>
@@ -773,9 +759,6 @@
                   v-model="insuranceDetails.deductible"
                   placeholder="Deductible"
                   prefix="$"
-                  step="0.01"
-                  min="0"
-                  max="10"
                   style="margin-left: 80px; width: 50%"
                 />
               </div>
@@ -786,9 +769,6 @@
                   v-model="insuranceDetails.priorPayment"
                   placeholder="Prior payment by insured"
                   prefix="$"
-                  step="0.01"
-                  min="0"
-                  max="10"
                   style="margin-left: 10px; width: 50%"
                 />
               </div>
@@ -1060,8 +1040,14 @@
                 padding-top: 40px;
               "
             >
-              <q-input
-                v-model="mortgageDetails.companyName"
+              <q-select
+                v-model="mortgageDetails.companyName.id"
+                option-value="id"
+                option-label="name"
+                map-options
+                emit-value
+                :options="vendors"
+                @input="setTypes(vendors, mortgageDetails.companyName)"
                 label="Mortgage Company Name"
               />
               <q-input
@@ -1069,53 +1055,51 @@
                 label="Loan Number"
               />
               <q-input
-                v-model="mortgageDetails.dob"
-                label="Date of Birth of Primary Mortgagee"
+                v-model="mortgageDetails.accountNumber"
+                label="Account Number"
               /><br />
-
-              <span class="form-heading">
-                Last 4 Primary Mortgagee's Social Security<br />
-                Numbers
-              </span>
-              <q-input
-                v-model="mortgageDetails.socialSecurityNumber1"
-                label="Social Security Number 1"
-              />
-              <q-input
-                v-model="mortgageDetails.socialSecurityNumber2"
-                label="Social Security Number 2"
-              />
-              <q-input
-                v-model="mortgageDetails.socialSecurityNumber3"
-                label="Social Security Number 3"
-              />
-              <q-input
-                v-model="mortgageDetails.socialSecurityNumber4"
-                label="Social Security Number 4"
-              /><br />
+              <span class="form-heading">Notes</span>
+              <textarea
+                required
+                class="full-width"
+                v-model="mortgageDetails.notes"
+              ></textarea>
               <div class="row">
-                <p style="font-size: 15px">
+                <p style="q-mx-none q-my-auto">
                   Is there a 2nd mortgage on the home?
                 </p>
-
-                <q-toggle
-                  class="q-ml-auto"
-                  v-model="isTherea2ndMortgageOnTheHomeToggle"
-                />
+                <q-toggle class="q-ml-auto" v-model="is2ndMortgageHomeToggle" />
               </div>
-              <div v-if="isTherea2ndMortgageOnTheHomeToggle">
-                <q-input
-                  v-model="mortgageDetails.secondCompanyName"
-                  label="2nd Mortgage Company Name"
+              <div v-if="is2ndMortgageHomeToggle">
+                <q-select
+                  v-model="mortgageDetails.secondCompanyName.id"
+                  option-value="id"
+                  option-label="name"
+                  map-options
+                  emit-value
+                  :options="vendors"
+                  @input="setTypes(vendors, mortgageDetails.secondCompanyName)"
+                  label="Mortgage Company Name"
                 />
                 <q-input
                   v-model="mortgageDetails.secondLoanNumber"
-                  label="2nd Mortgage Loan Number"
+                  label="Loan Number"
                 />
+                <q-input
+                  v-model="mortgageDetails.secondAccountNumber"
+                  label="Account Number"
+                /><br />
+                <span class="form-heading">Notes</span>
+                <textarea
+                  required
+                  class="full-width"
+                  v-model="mortgageDetails.secondNotes"
+                ></textarea>
               </div>
             </div>
             <br />
           </div>
+          <!-- </div> -->
           <q-btn
             label="Save"
             color="primary"
@@ -1402,6 +1386,7 @@ import { sources } from 'src/store/common/getters';
 import { state } from 'src/store/common/state';
 import VendorsList from 'components/VendorsList';
 import AddVendor from 'components/AddVendor';
+import vendors from 'src/store/vendors';
 const addressService = new AddressService();
 
 export default {
@@ -1409,6 +1394,7 @@ export default {
   components: { CustomHeader, VendorsList, AddVendor, AutoCompleteAddress },
   data() {
     return {
+      is2ndMortgageHomeToggle: false,
       vendorDialogName: '',
       vendorDialogFilterByIndustry: '',
       showVendorDialogFilters: false,
@@ -1499,14 +1485,6 @@ export default {
         isGateDropbox: false,
         dropBox: ''
       },
-      forcedPlacedPolicyDetails: {
-        policyInceptionDate: '',
-        policyExpirationDate: '',
-        otherPolicyType: '',
-        insuranceCarrier: '',
-        policyNumber: '',
-        policyDeductibleAmount: ''
-      },
       lossInfo: {
         dateOfLoss: '',
         propertyDescription: '',
@@ -1542,14 +1520,14 @@ export default {
       insuranceDetails: {
         property: {
           id: '',
-          type: ''
+          value: ''
         },
         type: '',
         details: '',
         id: '',
         policyCategory: {
           id: '',
-          type: ''
+          value: ''
         },
         carrierName: '',
         carrierId: '',
@@ -1567,15 +1545,19 @@ export default {
         reasonsOfLD: ''
       },
       mortgageDetails: {
-        companyName: '',
+        companyName: {
+          id: '',
+          value: ''
+        },
         loanNumber: '',
-        dob: '',
-        socialSecurityNumber1: '',
-        socialSecurityNumber2: '',
-        socialSecurityNumber3: '',
-        socialSecurityNumber4: '',
-        secondCompanyName: '',
-        secondLoanNumber: ''
+        accountNumber: '',
+        notes: '',
+        secondCompanyName: {
+          id: ''
+        },
+        secondLoanNumber: '',
+        secondAccountNumber: '',
+        secondNotes: ''
       },
       estimatingInfo: {
         estimatorToBeAssigned: '',
@@ -1639,6 +1621,7 @@ export default {
     };
   },
   created() {
+    this.getVendors(this.$route.params.id);
     this.getClientTypes();
     this.getPropertyTypes();
     this.getLossCauses();
@@ -1653,8 +1636,9 @@ export default {
       this.insuredDetails.phone = this.selectedLead.primaryContact.phoneNumber[0].number;
       this.insuredDetails.type = this.selectedLead.primaryContact.phoneNumber[0].type;
       this.sourceDetails.type = this.selectedLead.leadSource.type;
+      this.insuranceDetails.carrierName = this.selectedLead.leadSource.type;
+      this.insuranceDetails.policyNumber = this.selectedLead.policyNumber;
     }
-
     this.countries = addressService.getCountries();
     this.onCountrySelect('United States');
   },
@@ -1669,6 +1653,7 @@ export default {
       'lossCauses',
       'claimReasons',
       'titles',
+      'vendors',
       'policyCategories'
     ])
   },
@@ -1678,6 +1663,7 @@ export default {
   methods: {
     ...mapActions([
       'addClient',
+      'getVendors',
       'addClaim',
       'getClientTypes',
       'getPropertyTypes',
@@ -1827,13 +1813,12 @@ export default {
       } else {
         payload.source.detail = this.sourceDetails.details;
       }
-      console.log(payload);
+
       const response = await this.addClient(payload);
       if (response && response.id) {
         this.setPayloadForLoss(response.id);
       }
     },
-
     async setPayloadForLoss(clientId) {
       const payload1 = {
         client: {
@@ -1847,28 +1832,29 @@ export default {
             value: ''
           },
           number: '',
-          isClaimFiled: '',
-          isForcedPlaced: '',
+          isClaimFiled: this.hasClaimBeenFilledToggle,
+          isForcedPlaced: this.isThisIsForcedPlacedPolicyToggle,
           claimNumber: '',
           category: {
-            id: '',
-            value: ''
+            id: this.insuranceDetails.policyCategory.id,
+            value: this.insuranceDetails.policyCategory.value
           },
           type: {
-            id: '',
-            value: ''
+            id: this.insuranceDetails.property.id,
+            value: this.insuranceDetails.property.value
           },
-          effectiveDate: '',
-          expirationDate: '',
+          effectiveDate: this.insuranceDetails.policyEffectiveDate,
+          expirationDate: this.insuranceDetails.policyExpireDate,
           limitCoverage: {
-            dwelling: '',
-            content: '',
-            lossOfUse: ''
+            dwelling: this.insuranceDetails.dwellingLimitA,
+            otherStructure: this.insuranceDetails.otherStructureB,
+            content: this.insuranceDetails.contentsLimit,
+            lossOfUse: this.insuranceDetails.lossOfUSD
           },
-          deductibleAmount: '',
-          depreciation: '',
-          priorPayment: '',
-          limitReason: '',
+          deductibleAmount: this.insuranceDetails.deductible,
+          depreciation: this.insuranceDetails.deprecation,
+          priorPayment: this.insuranceDetails.priorPayment,
+          limitReason: this.insuranceDetails.reasonsOfLD,
           declaration: {
             isDeclared: '',
             fileInfo: {
@@ -1879,19 +1865,19 @@ export default {
         },
         mortgageInfo: [
           {
-            id: '',
-            value: '',
-            loanNumber: '',
-            accountNumber: '',
+            id: this.mortgageDetails.companyName.id,
+            value: this.mortgageDetails.companyName.value,
+            loanNumber: this.mortgageDetails.loanNumber,
+            accountNumber: this.mortgageDetails.accountNumber,
             isPrimary: '',
-            notes: ''
+            notes: this.mortgageDetails.notes.notes
           },
           {
-            id: '',
-            value: '',
-            loanNumber: '',
-            accountNumber: '',
-            notes: ''
+            id: this.mortgageDetails.secondCompanyName.id,
+            value: this.mortgageDetails.secondCompanyName.value,
+            loanNumber: this.mortgageDetails.secondLoanNumber,
+            accountNumber: this.mortgageDetails.secondAccountNumber,
+            notes: this.mortgageDetails.secondNotes
           }
         ],
         lossInfo: {
