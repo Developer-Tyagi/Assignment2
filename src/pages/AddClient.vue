@@ -1899,6 +1899,7 @@ export default {
     validateEmail,
     onChangingSourceType() {
       this.sourceDetails.id = '';
+
       this.sourceDetails.details = '';
     },
 

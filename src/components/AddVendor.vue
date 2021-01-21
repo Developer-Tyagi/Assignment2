@@ -83,7 +83,9 @@
             v-model="vendor.contact[0].fname"
             label="First Name"
             lazy-rules
-            :rules="[val => (val && val.length) || '']"
+            :rules="[
+              val => (val && val.length > 0) || 'Please fill the first name'
+            ]"
           />
           <q-input v-model="vendor.contact[0].lname" label="Last Name" />
           <div class="row">
@@ -122,20 +124,7 @@
           <AutoCompleteAddress :address="vendor.address" />
           <p class="form-heading">Company's Phone & Website</p>
           <div v-for="(contactInfo, index) in vendor.contact" v-if="index >= 1">
-            <q-select
-              v-model="contactInfo.honorific.id"
-              :options="titles"
-              option-label="name"
-              label="Title"
-              option-value="id"
-              @input="setTitleName(contactInfo.honorific)"
-              emit-value
-              map-options
-            />
-            <q-input v-model="contactInfo.fname" label="First Name" />
-            <q-input v-model="contactInfo.lname" label="LastName" />
-
-            <div class="row">
+            <q-card class="q-mt-sm">
               <q-select
                 v-model="contactInfo.honorific.id"
                 :options="titles"
@@ -220,90 +209,90 @@
 </template>
 
 <script>
-import AddressService from "@utils/country";
+import AddressService from '@utils/country';
 const addressService = new AddressService();
-import { mapGetters, mapActions } from "vuex";
-import { getVendorIndustries } from "src/store/vendors/actions";
-import { getContactTypes, getTitles } from "src/store/common/actions";
-import AutoCompleteAddress from "components/AutoCompleteAddress";
+import { mapGetters, mapActions } from 'vuex';
+import { getVendorIndustries } from 'src/store/vendors/actions';
+import { getContactTypes, getTitles } from 'src/store/common/actions';
+import AutoCompleteAddress from 'components/AutoCompleteAddress';
 
 export default {
-  name: "AddVendor",
-  props: ["componentName"],
+  name: 'AddVendor',
+  props: ['componentName'],
   components: { AutoCompleteAddress },
   data() {
     return {
-      options: "",
-      industryTypes: ["Association"],
+      options: '',
+      industryTypes: ['Association'],
       countries: [],
       states: [],
       isShowRemoveButton: false,
       vendor: {
-        name: "",
-        industry: { value: "", id: "" },
+        name: '',
+        industry: { value: '', id: '' },
         meta: {
           claimFiledByEmail: false
         },
         contact: [
           {
-            fname: "",
-            lname: "",
-            email: "",
+            fname: '',
+            lname: '',
+            email: '',
             honorific: {
-              id: "",
-              value: ""
+              id: '',
+              value: ''
             },
             phoneNumber: [
               {
-                type: "",
-                number: ""
+                type: '',
+                number: ''
               }
             ],
             isPrimary: true
           },
           {
-            fname: "",
-            lname: "",
-            email: "",
+            fname: '',
+            lname: '',
+            email: '',
             honorific: {
-              id: "",
-              value: ""
+              id: '',
+              value: ''
             },
             phoneNumber: [
               {
-                type: "",
-                number: ""
+                type: '',
+                number: ''
               }
             ]
           }
         ],
         address: {
-          addressCountry: "",
-          addressLocality: "",
-          addressRegion: "",
-          postOfficeBoxNumber: "",
-          postalCode: "",
-          streetAddress: ""
+          addressCountry: '',
+          addressLocality: '',
+          addressRegion: '',
+          postOfficeBoxNumber: '',
+          postalCode: '',
+          streetAddress: ''
         },
         info: {
-          website: "",
-          notes: ""
+          website: '',
+          notes: ''
         }
       }
     };
   },
 
   computed: {
-    ...mapGetters(["contactTypes", "vendorIndustries", "titles"])
+    ...mapGetters(['contactTypes', 'vendorIndustries', 'titles'])
   },
 
   mounted() {
     this.getVendorIndustries();
     this.getTitles();
     this.getContactTypes();
-    if (this.componentName && this.componentName === "carrier") {
+    if (this.componentName && this.componentName === 'carrier') {
       let industryType = this.vendorIndustries.find(
-        o => o.machineValue === "carrier"
+        o => o.machineValue === 'carrier'
       );
       if (industryType.name && industryType.id) {
         this.vendor.industry.value = industryType.name;
@@ -314,13 +303,13 @@ export default {
 
   methods: {
     ...mapActions([
-      "addVendor",
-      "getVendorIndustries",
-      "getTitles",
-      "getContactTypes"
+      'addVendor',
+      'getVendorIndustries',
+      'getTitles',
+      'getContactTypes'
     ]),
     searchFilterBy(val, update) {
-      if (val === "") {
+      if (val === ' ') {
         update(() => {
           this.options = this.vendorIndustries;
         });
@@ -328,14 +317,10 @@ export default {
       }
 
       update(() => {
-        const needle = val.toLowerCase().trim();
+        const search = val.toLowerCase();
 
         this.options = this.vendorIndustries.filter(
-          v =>
-            v.name
-              .toLowerCase()
-              .trim()
-              .indexOf(needle) > -1
+          v => v.name.toLowerCase().indexOf(search) > -1
         );
       });
     },
@@ -375,25 +360,25 @@ export default {
       ) {
         this.isShowRemoveButton = true;
         this.vendor.contact.push({
-          fname: "",
-          lname: "",
-          email: "",
+          fname: '',
+          lname: '',
+          email: '',
           honorific: {
-            id: "",
-            value: ""
+            id: '',
+            value: ''
           },
           phoneNumber: [
             {
-              type: "",
-              number: ""
+              type: '',
+              number: ''
             }
           ]
         });
       } else {
         this.$q.notify({
-          message: "Please fill the above details first",
-          position: "top",
-          type: "negative"
+          message: 'Please fill the above details first',
+          position: 'top',
+          type: 'negative'
         });
       }
     },
@@ -413,14 +398,14 @@ export default {
     },
 
     closeDialog(flag) {
-      this.$emit("closeDialog", flag);
+      this.$emit('closeDialog', flag);
     }
   },
 
   created() {
     this.options = this.vendorIndustries;
     this.countries = addressService.getCountries();
-    this.onCountrySelect("United States");
+    this.onCountrySelect('United States');
   }
 };
 </script>
