@@ -218,7 +218,9 @@ import AutoCompleteAddress from 'components/AutoCompleteAddress';
 export default {
   name: 'AddVendor',
   props: ['componentName'],
+
   components: { AutoCompleteAddress },
+
   data() {
     return {
       options: '',
@@ -228,7 +230,7 @@ export default {
       isShowRemoveButton: false,
       vendor: {
         name: '',
-        industry: { value: '', id: '' },
+        industry: { value: null, id: '' },
         meta: {
           claimFiledByEmail: false
         },
@@ -307,7 +309,9 @@ export default {
       'getTitles',
       'getContactTypes'
     ]),
+
     searchFilterBy(val, update) {
+      this.vendor.industry.value = null;
       if (val === ' ') {
         update(() => {
           this.options = this.vendorIndustries;
