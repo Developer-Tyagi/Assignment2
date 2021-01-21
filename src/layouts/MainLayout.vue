@@ -77,29 +77,29 @@ export default {
         {
           title: "Leads",
           link: "/leads-dashboard",
-          description: "View Lead Dashboard, all leads and add new lead.",
+          description: "View Lead Dashboard, all leads and add new lead."
         },
         {
           title: "Clients",
           link: "/clients",
-          description: "View Lead Clients, all leads and add new clients.",
+          description: "View Lead Clients, all leads and add new clients."
         },
         {
           title: "Claims",
           link: "/claims",
-          description: "View Lead Claims, all leads and add new claims.",
+          description: "View Lead Claims, all leads and add new claims."
         },
         {
           title: "Vendors",
           link: "/vendors",
-          description: "View Schedule all vendors.",
+          description: "View Schedule all vendors."
         },
         {
           title: "Settings",
           link: "/settings",
-          description: "Setup My Schedule, Type of Inspection.",
-        },
-      ],
+          description: "Setup My Schedule, Type of Inspection."
+        }
+      ]
     };
   },
 
@@ -110,7 +110,7 @@ export default {
     },
 
     removeToken,
-    
+
     backToLastNavigation() {
       this.$router.go(-1);
     },
@@ -121,18 +121,18 @@ export default {
 
     onMenuHide() {
       this.isLeftSidePanelOpen = false;
-    },
+    }
   },
 
   components: {
-    CustomQHeader,
+    CustomQHeader
   },
 
   computed: {
     currentRouteName() {
       return this.$router.history.current.path.substring(1);
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="sass">
