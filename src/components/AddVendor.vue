@@ -46,7 +46,6 @@
               :options="options"
               option-value="name"
               @filter="searchFilterBy"
-              style="width: 250px"
               behavior="menu"
               emit-value
               lazy-rules
@@ -178,7 +177,7 @@
               class="q-mt-sm"
               @click="addAnotherContact"
               color="primary"
-              label="Add-Another"
+              label="Add"
               style=" margin-right: auto"
             />
 
