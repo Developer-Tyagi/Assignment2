@@ -123,7 +123,7 @@
           <AutoCompleteAddress :address="vendor.address" />
           <p class="form-heading">Company's Phone & Website</p>
           <div v-for="(contactInfo, index) in vendor.contact" v-if="index >= 1">
-            <q-card class="q-mt-sm">
+            <div class="q-mt-sm rounded-border">
               <q-select
                 v-model="contactInfo.honorific.id"
                 :options="titles"
@@ -169,7 +169,7 @@
                 novalidate="true"
                 label="Email"
               />
-            </q-card>
+            </div>
           </div>
           <div class="row">
             <q-btn
