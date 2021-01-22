@@ -4,9 +4,9 @@
       @backButton="$router.push('/clients')"
       :showAddButton="false"
     />
-    <div class="column full-height" style="padding:51px 20px 20px 20px">
-      <div class="q-pa-md column full-height">
-        <div class="createClientInfo" style="font-size:15px">
+    <div class="column full-height" style="padding: 51px 20px 20px 20px">
+      <div class="q-md column full-height">
+        <div class="createClientInfo" style="font-size: 15px">
           <div class="form-list" @click="clientInfoDailog = true">
             Client Info
           </div>
@@ -19,9 +19,7 @@
           <div class="form-list" @click="insuranceInfoDialog = true">
             Insurance Info
           </div>
-          <div class="form-list" @click="lossInfoDialog = true">
-            Loss Info
-          </div>
+          <div class="form-list" @click="lossInfoDialog = true">Loss Info</div>
           <div class="form-list" @click="mortgageInfoDialog = true">
             Mortgage Info
           </div>
@@ -37,9 +35,7 @@
             Office Task
           </div>
           <q-separator />
-          <div class="form-list" @click="documentsDialog = true">
-            Documents
-          </div>
+          <div class="form-list" @click="documentsDialog = true">Documents</div>
           <q-separator />
         </div>
         <q-btn
@@ -58,7 +54,7 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="form-card q-pa-md" style="padding-top:51px">
+      <q-card class="form-card q-pa-md" style="padding-top: 51px">
         <q-header bordered class="bg-white">
           <q-toolbar class="row bg-white">
             <img
@@ -86,112 +82,106 @@
         <div v-if="AdjustorTypes.type == 'Self'">
           <div style="font-size: 15px; font-weight: bold">My Details</div>
           <br />
-          <div style="font-size:15px; margin-left:10px">22/12/2020</div>
-          <div style="font-size:15px; margin-left:10px;font-weight:bold">
+          <div style="font-size: 15px; margin-left: 10px">22/12/2020</div>
+          <div style="font-size: 15px; margin-left: 10px; font-weight: bold">
             David Jones
           </div>
-          <div style="font-size:15px; margin-left:10px">
+          <div style="font-size: 15px; margin-left: 10px">
             davidjones@company.com
           </div>
-          <div style="font-size:15px; margin-left:10px">
+          <div style="font-size: 15px; margin-left: 10px">
             Mobile- +1(650) XXXXX98
           </div>
-          <div style="font-size:15px; margin-left:10px">
+          <div style="font-size: 15px; margin-left: 10px">
             License Number- 12345677
           </div>
           <br />
           <div class="row">
-            <p style="font-size:15px">Is it company lead?</p>
+            <p style="font-size: 15px">Is it company lead?</p>
             <q-toggle class="q-ml-auto" v-model="isItCompanyLeadToggle" />
           </div>
           <q-separator /><br />
-          <div style="font-size:15px;">Default Fee Rate - 20%</div>
+          <div style="font-size: 15px">Default Fee Rate - 20%</div>
           <br />
-          <div style="font-size:20px;">Adjustors Fee Type</div>
+          <div style="font-size: 20px">Adjustors Fee Type</div>
           <div class="row">
-            <div class="q-pa-md ">
+            <div class="q-pa-md">
               <q-btn padding="xs" color="primary" icon="eva-percent" />
             </div>
-            <div class="q-pa-md ">
+            <div class="q-pa-md">
               <div class="text-purple q-gutter-md">
                 <q-btn padding="xs" color="primary" icon="monetization_on" />
               </div>
             </div>
-            <div class="q-pa-md ">
+            <div class="q-pa-md">
               <div class="text-purple q-gutter-md">
                 <q-btn padding="xs" color="primary" icon="query_builder" />
               </div>
             </div>
           </div>
-          <div style="font-size:15px; font-weight: bold">
+          <div style="font-size: 15px; font-weight: bold">
             Adjusters Fee Rate
           </div>
           <br />
           <q-separator />
           <br />
-          <div class="row" style="font-size:20px; ">
-            <span class="material-icons">
-              info
-            </span>
+          <div class="row" style="font-size: 20px">
+            <span class="material-icons"> info </span>
             <div>Needs approval from company</div>
           </div>
         </div>
         <div v-else v-else-if="AdjustorTypes.type == 'Public Adjustor 01'">
-          <div style="font-size: 15px; margin-left:10px">
+          <div style="font-size: 15px; margin-left: 10px">
             Public Adjustor 01 Details
           </div>
           <br />
-          <div style="font-size:15px; margin-left:10px">22/12/2020</div>
-          <div style="font-size:15px; margin-left:10px;font-weight:bold">
+          <div style="font-size: 15px; margin-left: 10px">22/12/2020</div>
+          <div style="font-size: 15px; margin-left: 10px; font-weight: bold">
             Public Adjustor 01
           </div>
-          <div style="font-size:15px; margin-left:10px">
+          <div style="font-size: 15px; margin-left: 10px">
             publicadjustor01@company.com
           </div>
-          <div style="font-size:15px; margin-left:10px">
+          <div style="font-size: 15px; margin-left: 10px">
             Mobile- +1(650) XXXXX98
           </div>
-          <div style="font-size:15px; margin-left:10px">
+          <div style="font-size: 15px; margin-left: 10px">
             License Number- 12345677
           </div>
           <br />
           <div class="row">
-            <p style="font-size:15px">Is it company lead</p>
+            <p style="font-size: 15px">Is it company lead</p>
             <q-toggle class="q-ml-auto" v-model="isItCompanyLeadToggle" />
           </div>
           <q-separator></q-separator><br />
-          <div style="font-size:15px; margin-left:25px">
+          <div style="font-size: 15px; margin-left: 25px">
             Default Fee Rate - 20%
           </div>
           <br />
-          <div style="font-size:20px;">
-            Adjustors Fee Type
-          </div>
+          <div style="font-size: 20px">Adjustors Fee Type</div>
           <div class="row">
-            <div class="q-pa-md ">
+            <div class="q-pa-md">
               <q-btn padding="xs" color="primary" icon="eva-percent" />
             </div>
-            <div class="q-pa-md ">
+            <div class="q-pa-md">
               <div class="text-purple q-gutter-md">
                 <q-btn padding="xs" color="primary" icon="monetization_on" />
               </div>
             </div>
-            <div class="q-pa-md ">
+            <div class="q-pa-md">
               <div class="text-purple q-gutter-md">
                 <q-btn padding="xs" color="primary" icon="query_builder" />
               </div>
             </div>
           </div>
-          <div style="font-size:15px; font-weight: bold">
+          <div style="font-size: 15px; font-weight: bold">
             Adjusters Fee Rate
           </div>
           <br />
           <q-separator />
           <br />
-          <div class="row" style="font-size:20px; margin-left:10px">
-            <span class="material-icons">
-              info
-            </span>
+          <div class="row" style="font-size: 20px; margin-left: 10px">
+            <span class="material-icons"> info </span>
             <div>Needs approval from company</div>
           </div>
         </div>
@@ -211,7 +201,7 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="form-card q-pa-md" style="padding-top-51px;">
+      <q-card class="form-card q-pa-md" style="padding-top: 51px">
         <q-header bordered class="bg-white">
           <q-toolbar class="row bg-white">
             <img
@@ -226,15 +216,15 @@
           </q-toolbar>
         </q-header>
         <q-card-section>
-          <div class="q-page bg-white " style="min-height: 630px;">
+          <div class="q-page bg-white" style="min-height: 530px">
             <div
               class="full-width"
               style="
-            height: calc(100vh - 145px);
-            overflow-y: auto;
-            margin-bottom: 10px;
-            padding-top:40px;
-          "
+                height: calc(100vh - 145px);
+                overflow-y: auto;
+                margin-bottom: 10px;
+                padding-top: 40px;
+              "
             >
               <div>
                 <span class="form-heading">Choose Lead Source</span>
@@ -252,8 +242,8 @@
                 <q-input
                   v-if="
                     sourceDetails.type != 'vendor' &&
-                      sourceDetails.type != '' &&
-                      sourceDetails.type != 'google'
+                    sourceDetails.type != '' &&
+                    sourceDetails.type != 'google'
                   "
                   type="text"
                   placeholder="Enter Source details"
@@ -308,9 +298,7 @@
                 />
               </div>
               <div class="row">
-                <p class="q-mx-none q-my-auto">
-                  Organization Is Policyholder?
-                </p>
+                <p class="q-mx-none q-my-auto">Organization Is Policyholder?</p>
                 <q-toggle
                   v-model="policyHolder.isPolicyHolder"
                   left-label
@@ -384,13 +372,11 @@
               />
 
               <div class="row">
-                <p class="q-mx-none q-my-auto">
-                  Is there a Co-insured?
-                </p>
+                <p class="q-mx-none q-my-auto">Is there a Co-insured?</p>
                 <q-toggle class="q-ml-auto" v-model="isThereaCoInsuredToggle" />
               </div>
               <br />
-              <div v-if="isThereaCoInsuredToggle" style="font-size:20px;">
+              <div v-if="isThereaCoInsuredToggle" style="font-size: 20px">
                 <span class="form-heading">Co-insured Details</span>
 
                 <q-select
@@ -428,7 +414,7 @@
                         (val && val.length == 10) ||
                         'Please fill the phone number'
                     ]"
-                    style="width:55%;"
+                    style="width: 55%"
                   />
                 </div>
                 <q-input
@@ -445,9 +431,7 @@
                 />
               </div>
               <div class="row">
-                <p class="q-mx-none q-my-auto">
-                  Add aditional phone number(s)
-                </p>
+                <p class="q-mx-none q-my-auto">Add aditional phone number(s)</p>
                 <q-toggle
                   class="q-ml-auto"
                   v-model="addAditionalPhoneNumberToggle"
@@ -477,7 +461,7 @@
                         (val && val.length == 10) ||
                         'Please fill the phone number'
                     ]"
-                    style="width:55%;margin-left:auto"
+                    style="width: 55%; margin-left: auto"
                   />
                 </div>
                 <div class="row">
@@ -503,7 +487,7 @@
                         (val && val.length == 10) ||
                         'Please fill the phone number'
                     ]"
-                    style="width:55%"
+                    style="width: 55%"
                   />
                 </div>
               </div>
@@ -532,9 +516,7 @@
                 @input="onCountrySelect(mailingAddressDetails.country)"
               />
               <div class="row">
-                <p class="q-mx-none q-my-auto">
-                  Gate / Dropbox
-                </p>
+                <p class="q-mx-none q-my-auto">Gate / Dropbox</p>
                 <q-toggle class="q-ml-auto" v-model="gateDropboxToggle" />
               </div>
               <div v-if="gateDropboxToggle">
@@ -544,9 +526,7 @@
                 />
               </div>
               <div class="row">
-                <p class="q-mx-none q-my-auto">
-                  Tenent Occupied
-                </p>
+                <p class="q-mx-none q-my-auto">Tenent Occupied</p>
                 <q-toggle class="q-ml-auto" v-model="tenantOccupiedToggle" />
               </div>
               <div v-if="tenantOccupiedToggle">
@@ -565,7 +545,7 @@
                   <q-input
                     v-model="tenantOccupied.phone"
                     label="Phone"
-                    style="width:55%;margin-left:auto"
+                    style="width: 55%; margin-left: auto"
                   />
                 </div>
               </div>
@@ -604,19 +584,16 @@
           </q-toolbar>
         </q-header>
         <q-card-section>
-          <div class="q-page bg-white " style="min-height: 630px;">
+          <div class="q-page bg-white" style="min-height: 560px">
             <div
               class="full-width"
               style="
-            height: calc(100vh - 145px);
-          margin-bottom: 10px;
-            padding-top:40px;
-          "
+                height: calc(100vh - 145px);
+                margin-bottom: 10px;
+                padding-top: 40px;
+              "
             >
-              <div
-                class="column full-height"
-                style="padding:30px 20px 20px 20px"
-              >
+              <div class="column full-height">
                 <div class="row">
                   <p class="q-mx-none q-my-auto">
                     Is the mailing address same?
@@ -650,9 +627,7 @@
                   />
                   <q-input v-model="mailingAddressSameInfo.zip" label="ZIP" />
                   <div class="row">
-                    <p class="q-mx-none q-my-auto">
-                      Gate / Dropbox
-                    </p>
+                    <p class="q-mx-none q-my-auto">Gate / Dropbox</p>
                     <q-toggle class="q-ml-auto" v-model="gateDropboxToggle" />
                   </div>
                   <div v-if="gateDropboxToggle">
@@ -697,9 +672,7 @@
                     label="ZIP"
                   />
                   <div class="row">
-                    <p class="q-mx-none q-my-auto">
-                      Gate / Dropbox
-                    </p>
+                    <p class="q-mx-none q-my-auto">Gate / Dropbox</p>
                     <q-toggle class="q-ml-auto" v-model="gateDropboxToggle" />
                   </div>
 
@@ -730,7 +703,7 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="form-card q-pa-md" style="padding-top-20px">
+      <q-card class="form-card q-pa-md" style="padding-top: 20px">
         <q-header bordered class="bg-white">
           <q-toolbar class="row bg-white">
             <img
@@ -746,70 +719,62 @@
         </q-header>
 
         <q-card-section>
-          <div class="q-page bg-white " style="min-height: 630px;">
+          <div class="q-page bg-white" style="min-height: 560px">
             <div
               class="full-width"
               style="
-            height: calc(100vh - 145px);
-            
-            margin-bottom: 10px;
-            padding-top:40px;
-          "
+                height: calc(100vh - 120px);
+                overflow-y: auto;
+                margin-bottom: 10px;
+                padding-top: 40px;
+              "
             >
-              <div
-                class="column full-height"
-                style="padding:30px 20px 20px 20px"
-              >
-                <div class="row">
-                  <p class="q-mx-none q-my-auto" style="font-size:15px">
-                    Is this is a Foced-Placed policy?
-                  </p>
-                  <q-toggle
-                    class="q-ml-auto"
-                    v-model="isThisIsForcedPlacedPolicyToggle"
-                  />
-                </div>
-                <q-select
-                  v-model="forcedPlacedPolicyDetails.policyType"
-                  :options="PolicyTypes"
-                  label="Type of Policy"
+              <div class="row">
+                <p class="form-heading">Is this is a Foced-Placed policy?</p>
+                <q-toggle
+                  class="q-ml-auto"
+                  v-model="isThisIsForcedPlacedPolicyToggle"
                 />
-                <q-input
-                  v-model="forcedPlacedPolicyDetails.policyInceptionDate"
-                  label="Policy Inception Date"
-                />
-                <q-input
-                  v-model="forcedPlacedPolicyDetails.policyExpirationDate"
-                  label="Policy Expiration Date"
-                />
-                <q-input
-                  v-model="forcedPlacedPolicyDetails.otherPolicyType"
-                  label="Other Policy Type"
-                />
-                <q-input
-                  v-model="forcedPlacedPolicyDetails.insuranceCarrier"
-                  label="Insurance Carrier"
-                />
-                <q-input
-                  v-model="forcedPlacedPolicyDetails.policyNumber"
-                  label="Policy Number"
-                />
-                <q-input
-                  v-model="forcedPlacedPolicyDetails.policyDeductibleAmount"
-                  label="Policy deductible amount"
-                />
-                <div class="row">
-                  <p class="q-mx-none q-my-auto" style="font-size:15px">
-                    Did you have the policy's Declaration?
-                  </p>
-
-                  <q-toggle
-                    class="q-ml-auto"
-                    v-model="DidYouHavePoliceDeclarationToggle"
-                  />
-                </div>
-                <q-separator></q-separator>
               </div>
+              <q-select
+                v-model="forcedPlacedPolicyDetails.policyType"
+                :options="PolicyTypes"
+                label="Type of Policy"
+              />
+              <q-input
+                v-model="forcedPlacedPolicyDetails.policyInceptionDate"
+                label="Policy Inception Date"
+              />
+              <q-input
+                v-model="forcedPlacedPolicyDetails.policyExpirationDate"
+                label="Policy Expiration Date"
+              />
+              <q-input
+                v-model="forcedPlacedPolicyDetails.otherPolicyType"
+                label="Other Policy Type"
+              />
+              <q-input
+                v-model="forcedPlacedPolicyDetails.insuranceCarrier"
+                label="Insurance Carrier"
+              />
+              <q-input
+                v-model="forcedPlacedPolicyDetails.policyNumber"
+                label="Policy Number"
+              /><br />
+              <q-input
+                v-model="forcedPlacedPolicyDetails.policyDeductibleAmount"
+                label="Policy deductible amount"
+              /><br />
+              <div class="row">
+                <p class="form-heading">
+                  Did you have the policy's Declaration?
+                </p>
+                <q-toggle
+                  class="q-ml-auto"
+                  v-model="DidYouHavePoliceDeclarationToggle"
+                />
+              </div>
+              <q-separator />
               <br />
             </div>
           </div>
@@ -830,7 +795,7 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="form-card q-pa-md" style="padding-top:20px">
+      <q-card class="form-card q-md" style="padding-top: 20px">
         <q-header bordered class="bg-white">
           <q-toolbar class="row bg-white">
             <img
@@ -845,20 +810,18 @@
           </q-toolbar>
         </q-header>
         <q-card-section>
-          <div class="q-page bg-white " style="min-height: 630px;">
+          <div class="q-page bg-white" style="min-height: 550px">
             <div
               class="full-width"
               style="
-            height: calc(100vh - 145px);
-            overflow-y: auto;
-            margin-bottom: 10px;
-            padding-top:40px;
-          "
+                height: calc(100vh - 145px);
+                overflow-y: auto;
+                margin-bottom: 10px;
+                padding-top: 40px;
+              "
             >
               <div class="row">
-                <p class="q-mx-none q-my-auto">
-                  Loss Address Same As Client's?
-                </p>
+                <p class="form-heading">Loss Address Same As Client's?</p>
                 <q-toggle
                   class="q-ml-auto"
                   v-model="isLossAddressSameAsClientToggle"
@@ -933,15 +896,15 @@
                 placeholder="Recov. Deprec. Deadline"
               /><br />
               <div class="row">
-                <p style="q-mx-none q-my-auto">Is the Home Habitable?</p>
+                <p class="form-heading">Is the Home Habitable?</p>
                 <q-toggle class="q-ml-auto" v-model="isTheHomeHabitable" />
               </div>
               <div class="row">
-                <p style="q-mx-none q-my-auto">FEMA Claim</p>
+                <p class="form-heading">FEMA Claim</p>
                 <q-toggle class="q-ml-auto" v-model="femaClaimToggle" />
               </div>
               <div class="row">
-                <p style="q-mx-none q-my-auto">State of Emergency</p>
+                <span class="form-heading">State of Emergency</span>
                 <q-toggle
                   class="q-ml-auto"
                   v-model="isStateOfEmergencyToggle"
@@ -963,14 +926,13 @@
                 @input="setTypes(claimSeverity, lossInfo.severityOfClaimType)"
                 label="Severity of Claim"
               /><br />
-              <q-input
+              <span class="form-heading">Loss Description to Dwelling</span>
+              <textarea
+                class="full-width"
                 v-model="lossInfo.descriptionDwelling"
-                label="Loss Description to Dwelling"
-              /><br />
+              ></textarea>
               <div class="row">
-                <p style="q-mx-none q-my-auto">
-                  Is there damage to other structures?
-                </p>
+                <p class="form-heading">Is there damage to other structures?</p>
                 <q-toggle class="q-ml-auto" v-model="isDamageOSToggle" />
               </div>
               <q-input
@@ -980,7 +942,7 @@
               />
 
               <div class="row">
-                <p style="q-mx-none q-my-auto">
+                <p class="form-heading">
                   Is there damage to personal property?
                 </p>
                 <q-toggle
@@ -990,16 +952,14 @@
               </div>
 
               <div class="row">
-                <p style="q-mx-none q-my-auto">
-                  Was a PPIF provided to the insured?
-                </p>
+                <p class="form-heading">Was a PPIF provided to the insured?</p>
                 <q-toggle
                   class="q-ml-auto"
                   v-model="wasAppifProvidedToTheInsuredToggle"
                 />
               </div>
               <div class="row">
-                <p style="q-mx-none q-my-auto">
+                <p class="form-heading">
                   Does the office need to provide a<br />
                   PPIF to the insured?
                 </p>
@@ -1009,15 +969,11 @@
                 />
               </div>
               <div class="row">
-                <p style="q-mx-none q-my-auto">
-                  Is there a mortgage on the home?
-                </p>
+                <p class="form-heading">Is there a mortgage on the home?</p>
                 <q-toggle class="q-ml-auto" v-model="IsMortgageHomeToggle" />
               </div>
               <div class="row">
-                <p style="q-mx-none q-my-auto">
-                  Is there a second claim to file?
-                </p>
+                <p class="form-heading">Is there a second claim to file?</p>
                 <q-toggle
                   class="q-ml-auto"
                   v-model="isThereAsecondClaimToFileToggle"
@@ -1044,7 +1000,7 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="form-card q-pa-md" style="padding-top:20px">
+      <q-card class="form-card q-pa-md" style="padding-top: 20px">
         <q-header bordered class="bg-white">
           <q-toolbar class="row bg-white">
             <img
@@ -1060,15 +1016,15 @@
         </q-header>
 
         <q-card-section>
-          <div class="q-page bg-white " style="min-height: 620px;">
+          <div class="q-page bg-white" style="min-height: 550px">
             <div
               class="full-width"
               style="
-            height: calc(100vh - 145px);
-            overflow-y: auto;
-            margin-bottom: 10px;
-            padding-top:40px;
-          "
+                height: calc(100vh - 145px);
+                overflow-y: auto;
+                margin-bottom: 10px;
+                padding-top: 40px;
+              "
             >
               <q-input
                 v-model="mortgageDetails.companyName"
@@ -1104,9 +1060,7 @@
                 label="Social Security Number 4"
               /><br />
               <div class="row">
-                <p style="font-size:15px">
-                  Is there a 2nd mortgage on the home?
-                </p>
+                <p class="form-heading">Is there a 2nd mortgage on the home?</p>
 
                 <q-toggle
                   class="q-ml-auto"
@@ -1143,7 +1097,7 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="form-card q-pa-md" style="padding-top:20px">
+      <q-card class="form-card q-pa-md" style="padding-top: 20px">
         <q-header bordered class="bg-white">
           <q-toolbar class="row bg-white">
             <img
@@ -1158,18 +1112,18 @@
           </q-toolbar>
         </q-header>
         <q-card-section>
-          <div class="q-page bg-white " style="min-height: 630px;">
+          <div class="q-page bg-white" style="min-height: 630px">
             <div
               class="full-width"
               style="
-            height: calc(100vh - 145px);
-            overflow-y: auto;
-            margin-bottom: 10px;
-            padding-top:40px;
-          "
+                height: calc(100vh - 145px);
+                overflow-y: auto;
+                margin-bottom: 10px;
+                padding-top: 40px;
+              "
             >
               <div class="row">
-                <p style="font-size:15px">
+                <p style="font-size: 15px">
                   Does an estimator need to be<br />assigned?
                 </p>
                 <q-toggle
@@ -1190,7 +1144,7 @@
                 label="Notes to the estimator"
               /><br />
               <div class="row">
-                <p style="font-size:15px">Estimating Information Claim 2</p>
+                <p style="font-size: 15px">Estimating Information Claim 2</p>
                 <q-toggle
                   class="q-ml-auto"
                   v-model="estimatingInformationClaim2Toggle"
@@ -1217,7 +1171,7 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="form-card q-pa-md" style="padding-top:20px">
+      <q-card class="form-card q-pa-md" style="padding-top: 20px">
         <q-header bordered class="bg-white">
           <q-toolbar class="row bg-white">
             <img
@@ -1232,15 +1186,15 @@
           </q-toolbar>
         </q-header>
         <q-card-section>
-          <div class="q-page bg-white " style="min-height: 630px;">
+          <div class="q-page bg-white" style="min-height: 630px">
             <div
               class="full-width"
               style="
-            height: calc(100vh - 145px);
-            overflow-y: auto;
-            margin-bottom: 10px;
-            padding-top:40px;
-          "
+                height: calc(100vh - 145px);
+                overflow-y: auto;
+                margin-bottom: 10px;
+                padding-top: 40px;
+              "
             >
               <div class="row">
                 <p>Has a Vendor of Expert hired?</p>
@@ -1291,7 +1245,7 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="form-card q-pa-md" style="padding-top:20px">
+      <q-card class="form-card q-pa-md" style="padding-top: 20px">
         <q-header bordered class="bg-white">
           <q-toolbar class="row bg-white">
             <img
@@ -1306,15 +1260,15 @@
           </q-toolbar>
         </q-header>
         <q-card-section>
-          <div class="q-page bg-white " style="min-height: 630px;">
+          <div class="q-page bg-white" style="min-height: 630px">
             <div
               class="full-width"
               style="
-            height: calc(100vh - 145px);
-            overflow-y: auto;
-            margin-bottom: 10px;
-            padding-top:40px;
-          "
+                height: calc(100vh - 145px);
+                overflow-y: auto;
+                margin-bottom: 10px;
+                padding-top: 40px;
+              "
             >
               <q-select
                 v-model="officeTask.officeActionTypes"
