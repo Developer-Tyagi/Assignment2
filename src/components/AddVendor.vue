@@ -223,8 +223,8 @@ export default {
 
   data() {
     return {
-      options: '',
       industryTypes: ['Association'],
+      options: '',
       countries: [],
       states: [],
       isShowRemoveButton: false,
