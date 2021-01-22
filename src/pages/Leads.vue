@@ -104,7 +104,7 @@
                         <span
                           v-if="
                             lead.primaryContact.phoneNumber &&
-                              lead.primaryContact.phoneNumber.length
+                            lead.primaryContact.phoneNumber.length
                           "
                           @click="
                             onPhoneNumberClick(
@@ -117,7 +117,7 @@
                         </span>
                       </span>
                       <span class="q-ml-auto" v-if="lead.lastVisted">
-                        {{ lead.lastVisted | moment("DD/MM/YYYY") }}
+                        {{ lead.lastVisted | moment('DD/MM/YYYY') }}
                       </span>
                       <span v-else class="q-ml-auto"> - </span>
                     </div>
@@ -125,7 +125,7 @@
                       Date of Loss:
                       <span v-if="lead.dateofLoss">{{
                         lead.dateofLoss &&
-                          lead.dateofLoss | moment("DD/MM/YYYY")
+                        lead.dateofLoss | moment('DD/MM/YYYY')
                       }}</span>
                       <span v-else> - </span>
                     </div>
@@ -178,21 +178,21 @@
                       <span
                         v-if="
                           lead.primaryContact.phoneNumber &&
-                            lead.primaryContact.phoneNumber.length
+                          lead.primaryContact.phoneNumber.length
                         "
                       >
                         {{ lead.primaryContact.phoneNumber[0].number }}
                       </span>
                     </span>
                     <span class="q-ml-auto" v-if="lead.lastVisted">
-                      {{ lead.lastVisted | moment("DD/MM/YYYY") }}
+                      {{ lead.lastVisted | moment('DD/MM/YYYY') }}
                     </span>
                     <span v-else class="q-ml-auto"> - </span>
                   </div>
                   <div>
                     Date of Loss:
                     <span v-if="lead.dateofLoss">{{
-                      lead.dateofLoss && lead.dateofLoss | moment("DD/MM/YYYY")
+                      lead.dateofLoss && lead.dateofLoss | moment('DD/MM/YYYY')
                     }}</span>
                     <span v-else> - </span>
                   </div>
@@ -226,26 +226,26 @@
 </template>
 
 <script>
-import { mapGetters, mapActions, mapMutations } from "vuex";
-import moment from "moment";
-import { setSelectedLead } from "src/store/leads/mutations";
+import { mapGetters, mapActions, mapMutations } from 'vuex';
+import moment from 'moment';
+import { setSelectedLead } from 'src/store/leads/mutations';
 
 export default {
-  name: "Leads",
+  name: 'Leads',
   data() {
     return {
       openSearchInput: false,
-      searchText: "",
-      panel: "newLeads",
+      searchText: '',
+      panel: 'newLeads',
       clientInfoDailog: false
     };
   },
 
   computed: {
-    ...mapGetters(["activeLeads", "archivedLeads"]),
+    ...mapGetters(['activeLeads', 'archivedLeads']),
     formatDate(value) {
       if (value) {
-        return moment(String(value)).format("MM/DD/YYYY");
+        return moment(String(value)).format('MM/DD/YYYY');
       }
     }
   },
@@ -256,51 +256,51 @@ export default {
   },
   methods: {
     ...mapActions([
-      "getActiveLeadsList",
-      "getArchivedLeadsList",
-      "addLeadToArchiveList"
+      'getActiveLeadsList',
+      'getArchivedLeadsList',
+      'addLeadToArchiveList'
     ]),
-    ...mapMutations(["setSelectedLead"]),
+    ...mapMutations(['setSelectedLead']),
     onCreateClientButtonClick(lead) {
       let payload = {
         attributes: lead
       };
       this.setSelectedLead(payload);
 
-      this.$router.push("/add-client");
+      this.$router.push('/add-client');
     },
     addLead() {
-      this.$router.push("/add-lead");
+      this.$router.push('/add-lead');
     },
 
     onLeadListClick(lead) {
-      this.$router.push("/details/" + lead.id);
+      this.$router.push('/details/' + lead.id);
     },
 
     filterLeads() {
-      if (this.panel === "newLeads") {
-        this.getActiveLeadsList(this.searchText ? this.searchText : "");
+      if (this.panel === 'newLeads') {
+        this.getActiveLeadsList(this.searchText ? this.searchText : '');
       } else {
-        this.getArchivedLeadsList(this.searchText ? this.searchText : "");
+        this.getArchivedLeadsList(this.searchText ? this.searchText : '');
       }
     },
 
     onListSwipe(info, lead) {
-      if (info.direction === "left") {
-        if (lead["isLeftOptionOpen"]) {
-          lead["isLeftOptionOpen"] = false;
-          lead["isRightOptionOpen"] = false;
+      if (info.direction === 'left') {
+        if (lead['isLeftOptionOpen']) {
+          lead['isLeftOptionOpen'] = false;
+          lead['isRightOptionOpen'] = false;
         } else {
-          lead["isLeftOptionOpen"] = false;
-          lead["isRightOptionOpen"] = true;
+          lead['isLeftOptionOpen'] = false;
+          lead['isRightOptionOpen'] = true;
         }
-      } else if (info.direction === "right") {
+      } else if (info.direction === 'right') {
         if (lead.isRightOptionOpen) {
-          lead["isLeftOptionOpen"] = false;
-          lead["isRightOptionOpen"] = false;
+          lead['isLeftOptionOpen'] = false;
+          lead['isRightOptionOpen'] = false;
         } else {
-          lead["isLeftOptionOpen"] = true;
-          lead["isRightOptionOpen"] = false;
+          lead['isLeftOptionOpen'] = true;
+          lead['isRightOptionOpen'] = false;
         }
       }
       let index = this.activeLeads.findIndex(item => item.id === lead.id);
@@ -314,18 +314,18 @@ export default {
     onPhoneNumberClick(number, e) {
       e.stopPropagation();
       if (number) {
-        window.open("tel:" + number);
+        window.open('tel:' + number);
       }
     }
   },
   watch: {
     panel(newVal, oldVal) {
       if (newVal != oldVal) {
-        this.searchText = "";
+        this.searchText = '';
         this.openSearchInput = false;
       }
 
-      if (oldVal === "newLeads") {
+      if (oldVal === 'newLeads') {
         this.getActiveLeadsList();
       } else {
         this.getArchivedLeadsList();
