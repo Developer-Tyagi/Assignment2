@@ -217,7 +217,7 @@
         </q-header>
 
         <q-card-section>
-          <div class="q-page bg-white" style="min-height: 630px">
+          <div class="q-page bg-white">
             <div
               class="full-width"
               style="
@@ -227,7 +227,11 @@
                 padding-top: 40px;
               "
             >
-              <div>
+            <div>
+           <q-form
+        ref="clientForm"
+          >
+             <div>
                 <span class="form-heading">Choose Lead Source</span>
               </div>
               <div>
@@ -239,7 +243,7 @@
                   emit-value
                   map-options
                   @input="onChangingSourceType()"
-                />
+                /> 
                 <q-input
                   v-if="
                     sourceDetails.type != 'vendor' &&
@@ -255,7 +259,7 @@
                 <div
                   v-else-if="sourceDetails.type == 'vendor'"
                   class="custom-select"
-                  @click="vendorsListDialog = true"
+                  @click="onAddVendorDialogClick('vendor')"
                 >
                   <div class="select-text">
                     {{
@@ -276,6 +280,7 @@
                 @input="setTypes(clientTypes, client)"
                 label="Client Type"
               />
+
               <div class="row">
                 <p class="q-mx-none q-my-auto">
                   Is Policy Holder An Organization ?
@@ -286,6 +291,7 @@
                   class="q-ml-auto"
                 />
               </div>
+
               <div v-if="primaryDetails.isOrganization">
                 <q-input
                   v-model="primaryDetails.organizationName"
@@ -307,9 +313,10 @@
                 />
               </div>
               <br />
+
               <span class="form-heading">Insured Details</span>
               <q-select
-                v-model="honorific1.id"
+                v-model="insuredDetails.honorific.id"
                 :options="titles"
                 option-value="id"
                 option-label="name"
@@ -327,6 +334,7 @@
                 ]"
                 label="First Name"
               />
+
               <q-input
                 v-model="insuredDetails.lname"
                 lazy-rules
@@ -452,7 +460,7 @@
                     style="width: 40%; margin-right: auto"
                   />
                   <q-input
-                    v-model="additionalPhoneNumber.phone2"
+                    v-model="addAditionalPhoneNumber.phone2"
                     label="Phone2"
                     type="number"
                     lazy-rules
@@ -493,6 +501,7 @@
               </div>
               <br />
               <span class="form-heading">Address Details</span>
+
               <AutoCompleteAddress
                 :address="clientAddressDetails"
                 :isDropBoxEnable="true"
@@ -505,6 +514,7 @@
               </div>
               <div v-if="tenantOccupiedToggle">
                 <q-input v-model="tenantOccupied.name" label="Tenant Name" />
+
                 <div class="row">
                   <q-select
                     v-model="tenantOccupied.type"
@@ -522,18 +532,21 @@
                     style="width: 55%; margin-left: auto"
                   />
                 </div>
+                </div>
+                </q-form>
+                </div>
               </div>
               <br />
             </div>
           </div>
-          <q-btn
-            @click="clientInfoDailog = false"
-            label="Save"
-            color="primary"
-            class="full-width q-mt-auto text-capitalize"
-            size="'xl'"
-          ></q-btn>
-        </q-card-section>
+         <q-btn
+            @click="onSubmit"
+             label="Save"
+              color="primary"
+              class="full-width q-mt-auto text-capitalize"
+              size="'xl'"
+            ></q-btn>
+          </q-card-section>
       </q-card>
     </q-dialog>
     <q-dialog
@@ -543,8 +556,8 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="form-card q-pa-md" style="padding-top-20px">
-        <q-header bordered class="bg-white">
+      <q-card class="form-card q-pa-md" style="padding-top-51px;">
+       <q-header bordered class="bg-white">
           <q-toolbar class="row bg-white">
             <img
               src="~assets/close.svg"
@@ -552,7 +565,8 @@
               @click="mailingAddressDialog = false"
               style="margin: auto 0"
             />
-            <div class="text-uppercase text-bold text-black q-mx-auto">
+          
+         <div class="text-uppercase text-bold text-black q-mx-auto">
               Mailing Address
             </div>
           </q-toolbar>
@@ -567,7 +581,8 @@
                 padding-top: 40px;
               "
             >
-              <div class="full-height" style="padding: 30px 20px 20px 20px">
+              <div>
+       <div class="full-height" style="padding: 30px 20px 20px 20px">
                 <div class="row">
                   <p class="q-mx-none q-my-auto">
                     Is the mailing address same?
@@ -584,17 +599,20 @@
                   :isChecksEnable="false"
                   :isFieldsDisable="isMailingAddressSameToggle"
                 />
-              </div>
+               </div>
+               </q-form>
+                </div>
               <br />
             </div>
-          </div>
+          </div>     
           <q-btn
             label="Save"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
-            @click="mailingAddressDialog = false"
-            size="'xl'"
+         @click="onSubmit"
+             size="'xl'"
           ></q-btn>
+         
         </q-card-section>
       </q-card>
     </q-dialog>
@@ -1418,13 +1436,13 @@ export default {
         isOrganization: false,
         organizationName: ''
       },
-      honorific1: {
+      honorific: {
         id: '',
-        title: ''
+        value: ''
       },
       honorific2: {
         id: '',
-        title: ''
+        value: ''
       },
       sourceDetails: {
         id: '',
@@ -1435,13 +1453,16 @@ export default {
         type: '',
         id: ''
       },
-
-      insuredDetails: {
+ insuredDetails: {
         fname: '',
         lname: '',
         phone: '',
         type: '',
-        email: ''
+        email: '',
+        honorific:{
+          id:'',
+          value:'',
+        }
       },
       coInsuredDetails: {
         fname: '',
@@ -1621,7 +1642,7 @@ export default {
     };
   },
   created() {
-    this.getVendors(this.$route.params.id);
+     this.getVendors(this.$route.params.id);
     this.getClientTypes();
     this.getPropertyTypes();
     this.getLossCauses();
@@ -1630,18 +1651,24 @@ export default {
     this.getContactTypes();
     this.getPolicyCategory();
     if (this.selectedLead.id) {
-      this.insuredDetails.fname = this.selectedLead.primaryContact.fname;
+   this.insuredDetails.fname = this.selectedLead.primaryContact.fname;
       this.insuredDetails.lname = this.selectedLead.primaryContact.lname;
       this.insuredDetails.email = this.selectedLead.primaryContact.email;
       this.insuredDetails.phone = this.selectedLead.primaryContact.phoneNumber[0].number;
       this.insuredDetails.type = this.selectedLead.primaryContact.phoneNumber[0].type;
-      this.sourceDetails.type = this.selectedLead.leadSource.type;
-      this.insuranceDetails.carrierName = this.selectedLead.leadSource.type;
+      this.sourceDetails.id = this.selectedLead.leadSource.id;
+     this.sourceDetails.type = this.selectedLead.leadSource.type;
+      this.insuredDetails.honorific.id = this.selectedLead.primaryContact.honorific.id;
+      this.insuredDetails.honorific.value= this.selectedLead.primaryContact.honorific.value;
+      this.sourceDetails.details = this.selectedLead.leadSource.detail;
+    this.insuranceDetails.carrierName = this.selectedLead.leadSource.type;
       this.insuranceDetails.policyNumber = this.selectedLead.policyNumber;
-    }
+   }
     this.countries = addressService.getCountries();
     this.onCountrySelect('United States');
   },
+
+
   computed: {
     ...mapGetters([
       'selectedLead',
@@ -1680,6 +1707,23 @@ export default {
     onCountrySelect(country) {
       this.states = addressService.getStates(country);
     },
+     
+     async onSubmit(){
+    const sucess =   await this.$refs.clientForm.validate()
+    // const mailingForm = await this.$refs.mailingForm.validate()
+  if(sucess==true) 
+{
+this.clientInfoDailog = false;
+}else{
+  this.clientInfoDailog = true;
+ }
+//  if(mailingForm==true)
+//  {
+//    this.mailingAddressDialog =false;
+//  }else{
+//     this.mailingAddressDialog = true;
+//  }
+},
 
     setTitleName(val) {
       const titleResult = this.titles.find(obj => {
@@ -1687,6 +1731,7 @@ export default {
       });
       this['honorific' + val].title = titleResult.title;
     },
+
 
     setTypes(types, data) {
       const obj = types.find(item => {
@@ -1747,8 +1792,8 @@ export default {
         insuredInfo: {
           primary: {
             honorific: {
-              id: this.honorific1.id,
-              value: this.honorific1.title
+              id: this.honorific.id,
+              value: this.honorific.title
             },
             fname: this.insuredDetails.fname,
             lname: this.insuredDetails.lname,
@@ -1810,6 +1855,7 @@ export default {
       }
       if (this.sourceDetails.type == 'vendor') {
         payload.source.id = this.sourceDetails.id;
+        
       } else {
         payload.source.detail = this.sourceDetails.details;
       }

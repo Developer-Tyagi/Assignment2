@@ -23,7 +23,7 @@
         <q-step :name="1" :done="step > 1" title="Primary Contact">
           <q-form @submit="step++">
             <q-card class="form-card q-pa-md">
-              <span class="stepper-heading">Primary Contact</span>
+              <span class="stepper-heading">Primary Contact </span>
               <q-select
                 v-model="primaryDetails.honorific.id"
                 :options="titles"
@@ -127,7 +127,6 @@
             </div>
           </q-form>
         </q-step>
-
         <q-step :name="2" :done="step > 2" title="Loss Details">
           <q-form @submit="step++" @reset="step--">
             <q-card class="q-pa-md form-card">
@@ -608,7 +607,7 @@ export default {
         leadSource: {
           id: '',
           type: this.sourceDetails.type,
-          details: ''
+          detail: this.sourceDetails.details
         },
         carrier: {
           id: '',
@@ -635,6 +634,7 @@ export default {
       } else {
         payload.leadSource.details = this.sourceDetails.details;
       }
+
       this.addLeads(payload);
     },
 

@@ -6,6 +6,10 @@ export default function () {
       isOrganization: false,
       organizationName: '',
       primaryContact: {
+        honorific: {
+          id: '',
+          value: ''
+        },
         fname: '',
         lname: '',
         email: '',
