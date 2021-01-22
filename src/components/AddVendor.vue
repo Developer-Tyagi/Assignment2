@@ -31,19 +31,38 @@
             v-model="vendor.name"
             label=" Company Name"
             lazy-rules
-            :rules="[val => (val && val.length) || '']"
+            :rules="[
+              val => (val && val.length > 0) || 'Please fill the first name'
+            ]"
           />
-          <q-select
-            v-model="vendor.industry.value"
-            :options="vendorIndustries"
-            label=" Industry"
-            option-label="name"
-            option-value="name"
-            @input="setVendorIndustryName()"
-            emit-value
-            lazy-rules
-            :rules="[val => (val && val.length) || '']"
-          />
+          <div>
+            <q-select
+              class="full-width"
+              v-model="vendor.industry.value"
+              use-input
+              input-debounce="0"
+              option-label="name"
+              label=" Industry"
+              :options="options"
+              option-value="name"
+              @filter="searchFilterBy"
+              behavior="menu"
+              emit-value
+              lazy-rules
+              :rules="[
+                val => (val && val.length > 0) || 'Please fill the first name'
+              ]"
+            >
+              <template v-slot:no-option>
+                <q-item>
+                  <q-item-section class="text-black">
+                    No results
+                  </q-item-section>
+                </q-item>
+              </template>
+            </q-select>
+          </div>
+
           <p class="form-heading">Company's Contact Person Details</p>
           <q-select
             v-model="vendor.contact[0].honorific.id"
@@ -55,13 +74,17 @@
             emit-value
             @input="setTitleName(vendor.contact[0].honorific)"
             lazy-rules
-            :rules="[val => (val && val.length) || '']"
+            :rules="[
+              val => (val && val.length > 0) || 'Please choose the Title'
+            ]"
           />
           <q-input
             v-model="vendor.contact[0].fname"
             label="First Name"
             lazy-rules
-            :rules="[val => (val && val.length) || '']"
+            :rules="[
+              val => (val && val.length > 0) || 'Please fill the first name'
+            ]"
           />
           <q-input v-model="vendor.contact[0].lname" label="Last Name" />
           <div class="row">
@@ -104,45 +127,74 @@
           />
           <p class="form-heading">Company's Phone & Website</p>
           <div v-for="(contactInfo, index) in vendor.contact" v-if="index >= 1">
-            <q-select
-              v-model="contactInfo.honorific.id"
-              :options="titles"
-              option-label="name"
-              label="Title"
-              option-value="id"
-              @input="setTitleName(contactInfo.honorific)"
-              emit-value
-              map-options
-            />
-            <q-input v-model="contactInfo.fname" label="First Name" />
-            <q-input v-model="contactInfo.lname" label="LastName" />
-
-            <div class="row">
+            <q-card class="q-mt-sm">
               <q-select
-                v-model="contactInfo.phoneNumber.type"
-                :options="contactTypes"
-                option-value="name"
+                v-model="contactInfo.honorific.id"
+                :options="titles"
                 option-label="name"
-                label="Type"
-                style="width: 40%; margin-right: auto"
+                label="Title"
+                option-value="id"
+                @input="setTitleName(contactInfo.honorific)"
                 emit-value
+                map-options
               />
               <q-input
-                v-model="contactInfo.phoneNumber.number"
-                label="Phone1"
-                type="number"
-                style="width: 55%"
+                v-model="contactInfo.fname"
+                label="First Name"
+                :rules="[
+                  val => (val && val.length > 0) || 'Please fill the first name'
+                ]"
               />
-            </div>
-            <q-input
-              v-model="contactInfo.email"
-              novalidate="true"
-              label="email"
+              <q-input v-model="contactInfo.lname" label="Last Name" />
+              <div class="row">
+                <q-select
+                  v-model="contactInfo.phoneNumber.type"
+                  :options="contactTypes"
+                  option-value="machineName"
+                  option-label="name"
+                  label="Type"
+                  style="width: 40%; margin-right: auto"
+                  emit-value
+                  :rules="[val => (val && val.length > 0) || '']"
+                />
+                <q-input
+                  v-model="contactInfo.phoneNumber.number"
+                  label="Phone1"
+                  type="number"
+                  style="width: 55%"
+                  :rules="[
+                    val =>
+                      (val && val.length > 0) || 'Please fill the phone number'
+                  ]"
+                />
+              </div>
+              <q-input
+                v-model="contactInfo.email"
+                novalidate="true"
+                label="Email"
+              />
+            </q-card>
+          </div>
+          <div class="row">
+            <q-btn
+              outline
+              class="q-mt-sm"
+              @click="addAnotherContact"
+              color="primary"
+              label="Add"
+              style=" margin-right: auto"
+            />
+
+            <q-btn
+              outline
+              @click="removeAnotherContact"
+              class="q-mt-sm"
+              color="primary"
+              label="Remove"
+              v-if="isShowRemoveButton"
             />
           </div>
-          <div @click="addAnotherContact" class="q-pa-md text-capitalize">
-            + another
-          </div>
+
           <q-input v-model="vendor.info.website" label="Website" />
           <q-input v-model="vendor.info.notes" label="Notes" />
         </div>
@@ -173,9 +225,11 @@ export default {
   components: { AutoCompleteAddress },
   data() {
     return {
+      options: '',
       industryTypes: ['Association'],
       countries: [],
       states: [],
+      isShowRemoveButton: false,
       vendor: {
         name: '',
         industry: { value: '', id: '' },
@@ -257,6 +311,31 @@ export default {
       'getTitles',
       'getContactTypes'
     ]),
+    searchFilterBy(val, update) {
+      if (val === ' ') {
+        update(() => {
+          this.options = this.vendorIndustries;
+        });
+        return;
+      }
+
+      update(() => {
+        const search = val.toLowerCase();
+
+        this.options = this.vendorIndustries.filter(
+          v => v.name.toLowerCase().indexOf(search) > -1
+        );
+      });
+    },
+
+    removeAnotherContact() {
+      const len = this.vendor.contact.length;
+      if (len === 3) {
+        this.isShowRemoveButton = false;
+      }
+
+      this.vendor.contact.pop();
+    },
 
     setTitleName(selectedTitle) {
       const selected = this.titles.find(obj => {
@@ -277,10 +356,12 @@ export default {
 
     addAnotherContact() {
       const len = this.vendor.contact.length;
+      this.$refs.vendorForm.validate();
       if (
         this.vendor.contact[len - 1].fname &&
         this.vendor.contact[len - 1].phoneNumber.number
       ) {
+        this.isShowRemoveButton = true;
         this.vendor.contact.push({
           fname: '',
           lname: '',
@@ -325,6 +406,7 @@ export default {
   },
 
   created() {
+    this.options = this.vendorIndustries;
     this.countries = addressService.getCountries();
     this.onCountrySelect('United States');
   }

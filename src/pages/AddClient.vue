@@ -1930,6 +1930,7 @@ export default {
 
     onChangingSourceType() {
       this.sourceDetails.id = '';
+
       this.sourceDetails.details = '';
     },
 

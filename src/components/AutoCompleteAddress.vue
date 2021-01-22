@@ -96,7 +96,7 @@ export default {
 
   mounted() {
     this.autocomplete = new google.maps.places.Autocomplete(
-      document.getElementById('autocomplete'),
+      document.getElementById('autocomplete1'),
       { types: ['geocode'] }
     );
     this.getGeoLocation;
