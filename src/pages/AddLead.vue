@@ -1,18 +1,6 @@
 <template>
   <q-page>
-    <q-header bordered class="bg-white">
-      <q-toolbar class="row bg-white">
-        <img
-          src="~assets/left-arrow.svg"
-          alt="back-arrow"
-          @click="$router.push('/leads')"
-          style="margin: auto 0"
-        />
-        <div class="text-uppercase text-bold text-black q-mx-auto">
-          {{ $route.name }}
-        </div>
-      </q-toolbar>
-    </q-header>
+    <CustomHeader @backButton="$router.push('/leads')" :showAddButton="false" />
     <div style="padding-top: 51px">
       <div class="q-pa-lg column" style="height: calc(100vh - 51px)">
         <div class="row">
@@ -21,13 +9,13 @@
             v-model="isNewLead"
             left-label
             color="orange"
-            class="q-ml-auto "
+            class="q-ml-auto"
           />
         </div>
         <div v-if="!isNewLead">
           <q-separator></q-separator>
           <br />
-          <p style="color:#666666;opacity:50%;font-size:12px">
+          <p style="color: #666666; opacity: 50%; font-size: 12px">
             If client already exists, select from list below
           </p>
           <q-select
@@ -62,6 +50,10 @@ export default {
       selectedClient: '',
       isNewLead: true
     };
+  },
+
+  components: {
+    CustomHeader
   },
 
   created() {

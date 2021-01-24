@@ -1,25 +1,13 @@
 <template>
   <q-page style="padding-top: 0; height: 100vh">
-    <q-header bordered class="bg-white">
-      <q-toolbar class="row bg-white">
-        <img
-          src="~assets/left-arrow.svg"
-          alt="back-arrow"
-          @click="$router.push('/leads')"
-          style="margin: auto 0"
-        />
-        <div class="text-uppercase text-bold text-black q-mx-auto">
-          {{ $route.name }}
-        </div>
-      </q-toolbar>
-    </q-header>
+    <CustomHeader @backButton="$router.push('/leads')" :showAddButton="false" />
     <div style="padding-top: 51px" class="full-height row">
       <q-card class="q-pa-md q-ma-md" style="width: 100%">
         <div>
           <q-icon name="create" color="primary" class="edit-icon"></q-icon>
           <p class="heading">Policy Holder Details</p>
           <p class="texts">
-            {{ selectedLead["primaryContact"]["fname"] }}
+            {{ selectedLead['primaryContact']['fname'] }}
             {{ selectedLead.primaryContact.lname }}
           </p>
           <p class="texts">
@@ -35,7 +23,14 @@
               >{{ selectedLead.primaryContact.phoneNumber[0].number }}</span
             ><span v-else> - </span>
           </p>
-          <p class="texts">Email: {{ selectedLead.primaryContact.email }}</p>
+          <p class="texts">
+            Email:
+            <span
+              v-if="selectedLead.primaryContact.email"
+              @click="onEmailClick(selectedLead.primaryContact.email, $event)"
+              >{{ selectedLead.primaryContact.email }}</span
+            ><span v-else> - </span>
+          </p>
 
           <p class="heading">Loss Address</p>
           <p class="texts">{{ selectedLead.lossLocation.streetAddress }}</p>
@@ -50,7 +45,7 @@
           <p class="heading">Loss Details</p>
 
           <p class="texts">
-            Date of Loss &nbsp;&nbsp;{{ selectedLead.dateOfLoss }}
+            Date of Loss &nbsp;&nbsp;{{ selectedLead.dateofLoss }}
           </p>
           <p class="texts">
             Description &nbsp;&nbsp;{{ selectedLead.lossDesc }}
@@ -58,20 +53,23 @@
 
           <p class="heading">Policy Details</p>
           <p class="texts">
-            Carrier Name &nbsp;&nbsp;{{ selectedLead.carrier }}
+            Carrier Name &nbsp;&nbsp;{{ selectedLead.carrier.value }}
           </p>
           <p class="texts">
             Policy No &nbsp;&nbsp;{{ selectedLead.policyNumber }}
           </p>
 
           <p class="heading">Inspection Type</p>
-          <p class="texts"></p>
+          <p class="texts">
+            &nbsp;&nbsp;{{ selectedLead.inspectionInfo.value }}
+          </p>
 
           <p class="heading">Lead Source</p>
-          <p class="texts"></p>
+          <p class="texts">&nbsp;&nbsp;{{ selectedLead.leadSource.type }}</p>
+          <p class="texts">&nbsp;&nbsp;{{ selectedLead.leadSource.detail }}</p>
 
           <p class="heading">Loss Site Visiting On</p>
-          <p class="texts"></p>
+          <p class="texts">&nbsp;&nbsp;{{ selectedLead.visited }}</p>
 
           <p class="heading">Notes</p>
           <p class="texts">{{ selectedLead.notes }}</p>
@@ -88,19 +86,25 @@
   </q-page>
 </template>
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex';
 export default {
   computed: {
-    ...mapGetters(["selectedLead"])
+    ...mapGetters(['selectedLead'])
   },
 
   methods: {
-    ...mapActions(["getLeadDetails", "removeSelectedLeadDetails"]),
+    ...mapActions(['getLeadDetails', 'removeSelectedLeadDetails']),
+    onEmailClick(email, e) {
+      e.stopPropagation();
+      if (email) {
+        window.open('mailto:' + email);
+      }
+    },
 
     onPhoneNumberClick(number, e) {
       e.stopPropagation();
       if (number) {
-        window.open("tel:" + number);
+        window.open('tel:' + number);
       }
     }
   },

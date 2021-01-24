@@ -16,39 +16,39 @@ export function moveActiveToArchive(state, leadId) {
 }
 
 export function setSelectedLead(state, lead) {
-  if (lead && lead.attributes.id) {
+  if (lead && lead.id) {
     state.selectedLead = lead.attributes;
   } else {
     state.selectedLead = {
       isOrganization: false,
-      organizationName: "",
+      organizationName: '',
       primaryContact: {
-        fname: "",
-        lname: "",
-        email: "",
+        fname: '',
+        lname: '',
+        email: '',
         phoneNumber: [
           {
-            type: "",
-            number: ""
+            type: '',
+            number: ''
           }
         ]
       },
-      lastVisted: "",
+      lastVisted: '',
       visited: [],
       lossLocation: {
-        addressCountry: "",
-        addressLocality: "",
-        addressRegion: "",
-        postOfficeBoxNumber: "",
-        postalCode: "",
-        streetAddress: ""
+        addressCountry: '',
+        addressLocality: '',
+        addressRegion: '',
+        postOfficeBoxNumber: '',
+        postalCode: '',
+        streetAddress: ''
       },
-      lossDesc: "",
-      dateOfLoss: "",
-      carrier: "",
-      policyNumber: "",
+      lossDesc: '',
+      dateOfLoss: '',
+      carrier: '',
+      policyNumber: '',
       isAutomaticScheduling: false,
-      notes: ""
+      notes: ''
     };
   }
 }

@@ -117,19 +117,19 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   data() {
     return {
       addInspectionDialog: false,
       inspectionType: {
-        value: "",
+        value: '',
         subtypes: [
           {
-            value: "",
+            value: '',
             duration: 1,
-            unit: "hour"
+            unit: 'hour'
           }
         ]
       }
@@ -140,11 +140,11 @@ export default {
     this.getInspectionTypes();
   },
   computed: {
-    ...mapGetters(["inspectionTypes"])
+    ...mapGetters(['inspectionTypes'])
   },
 
   methods: {
-    ...mapActions(["getInspectionTypes", "addInspectionTypes"]),
+    ...mapActions(['getInspectionTypes', 'addInspectionTypes']),
 
     onAddSubTypeButtonClick() {
       const length = this.inspectionType.subtypes.length;
@@ -153,15 +153,15 @@ export default {
         this.inspectionType.value
       ) {
         this.inspectionType.subtypes.push({
-          value: "",
+          value: '',
           duration: 0,
-          unit: "hour"
+          unit: 'hour'
         });
       } else {
         this.$q.notify({
-          message: "Please fill the above details first",
-          position: "top",
-          type: "negative"
+          message: 'Please fill the above details first',
+          position: 'top',
+          type: 'negative'
         });
       }
     },
@@ -179,12 +179,12 @@ export default {
     closeInspetionDialog() {
       this.addInspectionDialog = false;
       this.inspectionType = {
-        value: "",
+        value: '',
         subtypes: [
           {
-            value: "",
+            value: '',
             duration: 1,
-            unit: "hour"
+            unit: 'hour'
           }
         ]
       };

@@ -66,51 +66,51 @@
 </template>
 
 <script>
-import CustomQHeader from "components/CustomQHeader";
-import { removeToken } from "@utils/auth";
+import CustomQHeader from 'components/CustomQHeader';
+import { removeToken } from '@utils/auth';
 export default {
-  name: "MainLayout",
+  name: 'MainLayout',
   data() {
     return {
       isLeftSidePanelOpen: false,
       linksData: [
         {
-          title: "Leads",
-          link: "/leads-dashboard",
-          description: "View Lead Dashboard, all leads and add new lead.",
+          title: 'Leads',
+          link: '/leads-dashboard',
+          description: 'View Lead Dashboard, all leads and add new lead.'
         },
         {
-          title: "Clients",
-          link: "/clients",
-          description: "View Lead Clients, all leads and add new clients.",
+          title: 'Clients',
+          link: '/clients',
+          description: 'View Lead Clients, all leads and add new clients.'
         },
         {
-          title: "Claims",
-          link: "/claims",
-          description: "View Lead Claims, all leads and add new claims.",
+          title: 'Claims',
+          link: '/claims',
+          description: 'View Lead Claims, all leads and add new claims.'
         },
         {
-          title: "Vendors",
-          link: "/vendors",
-          description: "View Schedule all vendors.",
+          title: 'Vendors',
+          link: '/vendors',
+          description: 'View Schedule all vendors.'
         },
         {
-          title: "Settings",
-          link: "/settings",
-          description: "Setup My Schedule, Type of Inspection.",
-        },
-      ],
+          title: 'Settings',
+          link: '/settings',
+          description: 'Setup My Schedule, Type of Inspection.'
+        }
+      ]
     };
   },
 
   methods: {
     logout() {
       this.removeToken();
-      this.$router.push("/login");
+      this.$router.push('/login');
     },
 
     removeToken,
-    
+
     backToLastNavigation() {
       this.$router.go(-1);
     },
@@ -121,18 +121,18 @@ export default {
 
     onMenuHide() {
       this.isLeftSidePanelOpen = false;
-    },
+    }
   },
 
   components: {
-    CustomQHeader,
+    CustomQHeader
   },
 
   computed: {
     currentRouteName() {
       return this.$router.history.current.path.substring(1);
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="sass">

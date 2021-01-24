@@ -7,7 +7,7 @@ metadata:
   labels:
     name: ui
     project: claimguru
-    version: "CI_COMMIT_SHORT_SHA"
+    version: 'CI_COMMIT_SHORT_SHA'
 spec:
   replicas: 1
   selector:
@@ -19,7 +19,7 @@ spec:
       labels:
         name: ui
         project: claimguru
-        version: "CI_COMMIT_SHORT_SHA"
+        version: 'CI_COMMIT_SHORT_SHA'
     spec:
       securityContext: {}
       containers:
@@ -49,7 +49,7 @@ metadata:
   labels:
     name: ui
     project: claimguru
-    version: "CI_COMMIT_SHORT_SHA"
+    version: 'CI_COMMIT_SHORT_SHA'
 spec:
   type: ClusterIP
   ports:
@@ -69,7 +69,7 @@ metadata:
   labels:
     name: ui
     project: claimguru
-    version: "CI_COMMIT_SHORT_SHA"
+    version: 'CI_COMMIT_SHORT_SHA'
 spec:
   hosts:
     - claimguru-ui-CI_MERGE_REQUEST_IID.claimguru.cilalabs.dev
@@ -78,7 +78,7 @@ spec:
   http:
     - match:
         - uri:
-            prefix: "/"
+            prefix: '/'
       route:
         - destination:
             host: ui
