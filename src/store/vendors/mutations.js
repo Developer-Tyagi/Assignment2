@@ -1,7 +1,15 @@
 export function setvendors(state, vendors) {
-    state.vendors = vendors.map(vendor => ({...vendor.attributes, id: vendor.id, selected: false }));
+  state.vendors = vendors.map(vendor => ({
+    ...vendor.attributes,
+    id: vendor.id,
+    selected: false
+  }));
 }
 
 export function setvendorsIndustries(state, vendorIndustries) {
-    state.vendorIndustries = vendorIndustries.map(vendorIndustry => ({ name: vendorIndustry.attributes.name, id: vendorIndustry.id }));
+  state.vendorIndustries = vendorIndustries.map(vendorIndustry => ({
+    machineValue: vendorIndustry.attributes.machineValue,
+    name: vendorIndustry.attributes.value,
+    id: vendorIndustry.id
+  }));
 }

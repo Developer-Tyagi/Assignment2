@@ -4,18 +4,18 @@
     <div style="padding-top: 51px">
       <div class="q-pa-lg column" style="height: calc(100vh - 51px)">
         <div class="row">
-          <p class="q-mx-none q-my-auto">Is this a new lead?</p>
+          <p class="q-mx-none q-my-auto">Is this a new lead</p>
           <q-toggle
             v-model="isNewLead"
             left-label
             color="orange"
-            class="q-ml-auto "
+            class="q-ml-auto"
           />
         </div>
         <div v-if="!isNewLead">
           <q-separator></q-separator>
           <br />
-          <p style="color:#666666;opacity:50%;font-size:12px">
+          <p style="color: #666666; opacity: 50%; font-size: 12px">
             If client already exists, select from list below
           </p>
           <q-select
@@ -42,12 +42,12 @@
   </q-page>
 </template>
 <script>
-import { mapActions, mapGetters } from "vuex";
-import CustomHeader from "components/CustomHeader";
+import { mapActions, mapGetters } from 'vuex';
+
 export default {
   data() {
     return {
-      selectedClient: "",
+      selectedClient: '',
       isNewLead: true
     };
   },
@@ -61,11 +61,11 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["clients"])
+    ...mapGetters(['clients'])
   },
 
   methods: {
-    ...mapActions(["getClients"]),
+    ...mapActions(['getClients']),
 
     onContinue() {
       if (this.selectedClient) {

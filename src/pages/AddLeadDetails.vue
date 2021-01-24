@@ -16,6 +16,18 @@
           <q-form @submit="step++">
             <q-card class="form-card q-pa-md">
               <span class="stepper-heading">Primary Contact</span>
+              <q-select
+                v-model="primaryDetails.honorific.id"
+                :options="titles"
+                option-value="id"
+                option-label="name"
+                map-options
+                @input="setTitleName()"
+                emit-value
+                label="Title"
+                lazy-rules
+                :rules="[val => (val && val.length > 0) || '']"
+              />
               <q-input
                 v-model="primaryDetails.firstName"
                 label="First Name"
@@ -33,23 +45,29 @@
                 ]"
               />
               <div class="row">
+                <q-select
+                  v-model="primaryDetails.selectedContactType"
+                  :options="contactTypes"
+                  option-value="machineName"
+                  option-label="name"
+                  map-options
+                  emit-value
+                  style="width: 40%; margin-right: auto"
+                  label="Type"
+                  lazy-rules
+                  :rules="[val => (val && val.length > 0) || '']"
+                />
                 <q-input
                   v-model="primaryDetails.phoneNumber"
                   label="Phone"
+                  type="number"
                   lazy-rules
                   :rules="[
                     val =>
-                      (val && val.length > 7) || 'Please fill the phone number'
+                      (val && val.length == 10) ||
+                      'Please fill the phone number'
                   ]"
-                  style="width: 65%"
-                />
-                <q-select
-                  v-model="primaryDetails.selectedContactType"
-                  :options="contactType"
-                  label="Mobile"
-                  lazy-rules
-                  :rules="[val => (val && val.length > 0) || '']"
-                  style="width: 30%; margin-left: auto"
+                  style="width: 55%"
                 />
               </div>
               <q-input
@@ -110,68 +128,14 @@
                 v-model="lossDetails.dateOfLoss"
                 type="date"
                 placeholder="Date of Loss"
-                lazy-rules
-                :rules="[
-                  val =>
-                    (val && val.length > 0) || 'Please fill the date of loss '
-                ]"
               />
               <q-input
                 v-model="lossDetails.lossDesc"
                 label="Brief description of loss"
-                lazy-rules
-                :rules="[
-                  val =>
-                    (val && val.length > 0) ||
-                    'Please fill the loss description'
-                ]"
               />
               <br />
               <span class="stepper-heading">Loss Location</span>
-              <q-select
-                v-model="lossDetails.country"
-                :options="countries"
-                label="Country"
-                @input="onCountrySelect(lossDetails.country)"
-                lazy-rules
-                :rules="[
-                  val => (val && val.length > 0) || 'Please fill the country'
-                ]"
-              />
-              <q-input
-                v-model="lossDetails.address1"
-                label="Address1"
-                lazy-rules
-                :rules="[
-                  val => (val && val.length > 0) || 'Please fill the address'
-                ]"
-              />
-              <q-input v-model="lossDetails.address2" label="Address2" />
-              <q-input
-                v-model="lossDetails.city"
-                label="City"
-                lazy-rules
-                :rules="[
-                  val => (val && val.length > 0) || 'Please fill the city'
-                ]"
-              ></q-input>
-              <q-select
-                v-model="lossDetails.state"
-                :options="states"
-                label="State"
-                lazy-rules
-                :rules="[
-                  val => (val && val.length > 0) || 'Please fill the state'
-                ]"
-              />
-              <q-input
-                v-model="lossDetails.postalCode"
-                label="ZIP Code"
-                lazy-rules
-                :rules="[
-                  val => (val && val.length > 0) || 'Please fill the zip code'
-                ]"
-              />
+              <AutoCompleteAddress :address="lossAddress" />
             </q-card>
             <div class="row q-pt-md">
               <div>
@@ -201,10 +165,20 @@
           <q-form @submit="step++" @reset="step--">
             <q-card class="q-pa-md form-card">
               <span class="stepper-heading">Insurance Details (Optional)</span>
-              <q-input
+
+              <div
                 v-model="insuranceDetails.carrierName"
-                label="Carrier Name"
-              />
+                class="custom-select"
+                @click="onAddVendorDialogClick('carrier')"
+              >
+                <div class="select-text">
+                  {{
+                    insuranceDetails.carrierName
+                      ? insuranceDetails.carrierName
+                      : 'Enter Carrier Details'
+                  }}
+                </div>
+              </div>
               <q-input
                 v-model="insuranceDetails.policyNumber"
                 label="Policy Number"
@@ -263,11 +237,13 @@
                 <div
                   v-else-if="sourceDetails.type == 'vendor'"
                   class="custom-select"
-                  @click="vendorsListDialog = true"
+                  @click="onAddVendorDialogClick('vendor')"
                 >
                   <div class="select-text">
                     {{
-                      sourceDetails.id ? sourceDetails.details : "Select Vendor"
+                      sourceDetails.id
+                        ? sourceDetails.details
+                        : 'Select Lead Source'
                     }}
                   </div>
                 </div>
@@ -338,6 +314,7 @@
           <q-form @submit="onSubmit" @reset="step--">
             <q-card class="q-pa-md form-card">
               <div class="stepper-heading">Scheduling</div>
+
               <q-toggle
                 v-model="schedulingDetails.isAutomaticScheduling"
                 label="Is automatic scheduling needed?"
@@ -347,17 +324,22 @@
                 v-model="schedulingDetails.inspectionType"
                 :options="inspectionTypes"
                 label="Type of Inspection"
-                option-label="name"
-                option-value="name"
+                option-label="value"
+                option-value="value"
                 emit-value
                 @input="onInspectionTypesSelect()"
+                :rules="[
+                  val =>
+                    (val && val.length > 0) ||
+                    'Please Choose the inspection type'
+                ]"
               />
               <q-select
                 v-if="showSubInspectionType"
                 v-model="schedulingDetails.subInspectionType"
                 :options="subInspectionTypes"
-                option-label="name"
-                option-value="id"
+                option-label="value"
+                option-value="userID"
                 emit-value
                 label="Sub Type of Inspection"
                 @input="onSubInspectionTypesSelect()"
@@ -393,6 +375,7 @@
         </q-step>
       </q-stepper>
     </div>
+
     <q-dialog
       v-model="vendorsListDialog"
       persistent
@@ -410,7 +393,7 @@
               style="margin: auto 0"
             />
             <div class="text-uppercase text-bold text-black q-mx-auto">
-              Vendors
+              {{ vendorDialogName }}
             </div>
             <img
               src="~assets/add.svg"
@@ -421,11 +404,14 @@
         </q-header>
         <VendorsList
           :selective="true"
-          @selectedVendor="addSelectedVendor"
+          @selectedVendor="onClosingVendorSelectDialog"
           ref="list"
+          :showFilter="showVendorDialogFilters"
+          :filterName="vendorDialogFilterByIndustry"
         />
       </q-card>
     </q-dialog>
+
     <q-dialog
       v-model="addVendorDialog"
       persistent
@@ -434,94 +420,136 @@
       transition-hide="slide-down"
     >
       <q-card>
-        <AddVendor @closeDialog="closeAddVendorDialog" />
+        <AddVendor
+          @closeDialog="closeAddVendorDialog"
+          :componentName="vendorDialogName"
+        />
       </q-card>
     </q-dialog>
   </q-page>
 </template>
 <script>
-import { mapActions, mapGetters } from "vuex";
-import { date } from "quasar";
-import AddressService from "@utils/country";
-import { validateEmail } from "@utils/validation";
-import { leadSource } from "src/store/common/getters";
-import VendorsList from "components/VendorsList";
-import AddVendor from "components/AddVendor";
-import CustomHeader from "components/CustomHeader";
-const addressService = new AddressService();
+import { mapActions, mapGetters } from 'vuex';
+import { date } from 'quasar';
+import { validateEmail } from '@utils/validation';
+import { leadSource } from 'src/store/common/getters';
+import VendorsList from 'components/VendorsList';
+import AddVendor from 'components/AddVendor';
+import AutoCompleteAddress from 'components/AutoCompleteAddress';
 
 export default {
-  components: { VendorsList, AddVendor, CustomHeader },
+  components: { VendorsList, AddVendor, AutoCompleteAddress },
 
   data() {
     return {
-      countries: [],
-      states: [],
       subInspectionTypes: [],
-      showSubInspectionType: false,
       addVendorDialog: false,
+      showSubInspectionType: false,
       vendorsListDialog: false,
+      showVendorDialogFilters: false,
+      vendorDialogName: '',
+      vendorDialogFilterByIndustry: '',
       step: 1,
       primaryDetails: {
         isOrganization: false,
-        organizationName: "",
-        firstName: "",
-        lastName: "",
-        email: "",
-        phone: "",
-        selectedContactType: "mobile"
+        organizationName: '',
+        firstName: '',
+        lastName: '',
+        email: '',
+        phoneNumber: '',
+        selectedContactType: '',
+        honorific: {
+          id: '',
+          value: ''
+        }
       },
       lossDetails: {
-        lossDesc: "",
-        dateOfLoss: "",
-        address1: "",
-        address2: "",
-        city: "",
-        state: "",
-        country: "United States",
-        postalCode: ""
+        lossDesc: '',
+        dateOfLoss: ''
+      },
+      lossAddress: {
+        addressCountry: '',
+        addressRegion: '',
+        addressLocality: '',
+        postalCode: '',
+        streetAddress: '',
+        postOfficeBoxNumber: ''
       },
       insuranceDetails: {
-        policyNumber: "",
-        carrierName: ""
+        policyNumber: '',
+        carrierName: '',
+        carrierId: ''
       },
       sourceDetails: {
-        id: "",
-        type: "",
-        details: ""
+        id: '',
+        type: '',
+        details: ''
       },
       schedulingDetails: {
         isAutomaticScheduling: false,
-        inspectionType: "",
-        subInspectionType: "",
-        inspectionDuration: ""
+        inspectionType: '',
+        subInspectionType: '',
+        inspectionDuration: ''
       },
-      notes: "",
-      vendorSelected: "",
-      industryTypes: ["Association"]
+      notes: '',
+      vendorSelected: '',
+      industryTypes: ['Association']
     };
   },
 
   methods: {
-    ...mapActions(["addLeads", "getInspectionTypes", "addVendor"]),
+    ...mapActions([
+      'addLeads',
+      'getInspectionTypes',
+      'addVendor',
+      'getContactTypes',
+      'getTitles'
+    ]),
 
-    onCountrySelect(country) {
-      this.states = addressService.getStates(country);
+    onAddVendorDialogClick(name) {
+      this.vendorDialogName = name;
+      if (name === 'carrier') {
+        this.showVendorDialogFilters = false;
+        this.vendorDialogFilterByIndustry = '5ffedc469a111940084ce6e2';
+      } else {
+        this.showVendorDialogFilters = true;
+        this.vendorDialogFilterByIndustry = '';
+      }
+      this.vendorsListDialog = true;
+    },
+
+    onClosingVendorSelectDialog(vendor, isVendor) {
+      if (isVendor) {
+        this.sourceDetails.id = vendor.id;
+        this.sourceDetails.details = vendor.name;
+      } else {
+        this.insuranceDetails.carrierId = vendor.id;
+        this.insuranceDetails.carrierName = vendor.name;
+      }
+      this.vendorsListDialog = false;
+    },
+
+    setTitleName() {
+      const title = this.titles.find(obj => {
+        return obj.id === this.primaryDetails.honorific.id;
+      });
+
+      this.primaryDetails.honorific.value = title.title;
     },
 
     onInspectionTypesSelect() {
       const selectedInspectionType = this.inspectionTypes.find(
-        type => type.name === this.schedulingDetails.inspectionType
+        type => type.value === this.schedulingDetails.inspectionType
       );
       if (selectedInspectionType.subtypes.length > 1) {
         this.subInspectionTypes = selectedInspectionType.subtypes;
-        this.schedulingDetails.subInspectionType = "";
-        this.schedulingDetails.inspectionDuration = "";
+        this.schedulingDetails.subInspectionType = '';
+        this.schedulingDetails.inspectionDuration = '';
         this.showSubInspectionType = true;
       } else {
         this.showSubInspectionType = false;
         this.schedulingDetails.subInspectionType =
-          selectedInspectionType.subtypes[0].id;
+          selectedInspectionType.subtypes[0].userID;
         this.schedulingDetails.inspectionDuration =
           selectedInspectionType.subtypes[0].duration;
       }
@@ -529,7 +557,7 @@ export default {
 
     onSubInspectionTypesSelect() {
       const index = this.subInspectionTypes.findIndex(
-        val => val.id == this.schedulingDetails.subInspectionType
+        val => val.userID == this.schedulingDetails.subInspectionType
       );
       this.schedulingDetails.inspectionDuration = this.subInspectionTypes[
         index
@@ -537,29 +565,33 @@ export default {
     },
 
     onSubmit() {
-      let formattedString = date.formatDate(
-        this.lossDetails.dateOfLoss,
-        "YYYY-MM-DDTHH:mm:ssZ"
-      );
+      let formattedString = '';
+      if (this.lossDetails.dateOfLoss) {
+        formattedString = date.formatDate(
+          this.lossDetails.dateOfLoss,
+          'YYYY-MM-DDTHH:mm:ssZ'
+        );
+      } else {
+        formattedString = null;
+      }
       const payload = {
         isOrganization: this.primaryDetails.isOrganization,
         primaryContact: {
+          honorific: {
+            id: this.primaryDetails.honorific.id,
+            value: this.primaryDetails.honorific.value
+          },
           fname: this.primaryDetails.firstName,
           lname: this.primaryDetails.lastName,
           email: this.primaryDetails.email,
           phoneNumber: []
         },
         lossLocation: {
-          addressCountry: this.lossDetails.country,
-          addressLocality: this.lossDetails.city,
-          addressRegion: this.lossDetails.state,
-          postOfficeBoxNumber: "",
-          postalCode: this.lossDetails.postalCode,
-          streetAddress: this.lossDetails.address1
+          ...this.lossAddress
         },
         lossDesc: this.lossDetails.lossDesc,
         dateofLoss: formattedString,
-        carrier: this.insuranceDetails.carrierName,
+
         policyNumber: this.insuranceDetails.policyNumber,
         isAutomaticScheduling: this.schedulingDetails.isAutomaticScheduling,
         notes: this.notes,
@@ -568,21 +600,31 @@ export default {
           duration: this.schedulingDetails.inspectionDuration
         },
         leadSource: {
-          id: "",
+          id: '',
           type: this.sourceDetails.type,
-          details: ""
+          details: ''
+        },
+        carrier: {
+          id: '',
+          value: ''
         }
       };
-      if (payload["isOrganization"]) {
-        payload["organizationName"] = this.primaryDetails.organizationName;
+      if (payload['isOrganization']) {
+        payload['organizationName'] = this.primaryDetails.organizationName;
+      }
+      if (this.insuranceDetails.carrierId) {
+        payload['carrier']['id'] = this.insuranceDetails.carrierId;
+        payload['carrier']['value'] = this.insuranceDetails.carrierName;
+      } else {
+        delete payload['carrier'];
       }
       if (this.primaryDetails.phoneNumber) {
-        payload.primaryContact["phoneNumber"].push({
+        payload.primaryContact['phoneNumber'].push({
           type: this.primaryDetails.selectedContactType,
           number: this.primaryDetails.phoneNumber
         });
       }
-      if (this.sourceDetails.type == "vendor") {
+      if (this.sourceDetails.type == 'vendor') {
         payload.leadSource.id = this.sourceDetails.id;
       } else {
         payload.leadSource.details = this.sourceDetails.details;
@@ -597,14 +639,13 @@ export default {
     validateEmail,
 
     onChangingSourceType() {
-      this.sourceDetails.id = "";
-      this.sourceDetails.details = "";
+      this.sourceDetails.id = '';
+      this.sourceDetails.details = '';
     },
 
     addSelectedVendor(e) {
       this.sourceDetails = {
         id: e.id,
-        type: "vendor",
         details: e.name
       };
       this.closeVendorsList();
@@ -620,7 +661,24 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["clients", "inspectionTypes", "contactType", "leadSources"])
+    ...mapGetters([
+      'clients',
+      'inspectionTypes',
+      'leadSources',
+      'contactTypes',
+      'titles'
+    ])
+  },
+
+  watch: {
+    step(newValue, oldValue) {
+      var el = document.getElementsByClassName('q-stepper__header');
+      if (newValue === 6 && oldValue === 5) {
+        el[0].scroll(100, 0);
+      } else if (newValue === 5 && oldValue === 6) {
+        el[0].scroll(-100, 0);
+      }
+    }
   },
 
   created() {
@@ -629,21 +687,24 @@ export default {
       let selectedClient = this.clients.find(
         client => client.id === this.$route.params.id
       );
-      this.primaryDetails.firstName = selectedClient.primaryContact.fname;
-      this.primaryDetails.lastName = selectedClient.primaryContact.lname;
-      this.primaryDetails.email = selectedClient.primaryContact.email;
+      this.primaryDetails.honorific.id =
+        selectedClient.insuredInfo.primary.honorific.id;
+
+      this.primaryDetails.firstName = selectedClient.insuredInfo.primary.fname;
+      this.primaryDetails.lastName = selectedClient.insuredInfo.primary.lname;
+      this.primaryDetails.email = selectedClient.insuredInfo.primary.email;
       this.primaryDetails.phoneNumber =
-        selectedClient.primaryContact.phoneNumber[0].number;
+        selectedClient.insuredInfo.primary.phoneNumber[0].number;
       this.primaryDetails.selectedContactType =
-        selectedClient.primaryContact.phoneNumber[0].type;
+        selectedClient.insuredInfo.primary.phoneNumber[0].type;
       this.primaryDetails.isOrganization = selectedClient.isOrganization;
       if (this.primaryDetails.isOrganization) {
         this.primaryDetails.organizationName = selectedClient.organizationName;
       }
     }
-    this.countries = addressService.getCountries();
     this.getInspectionTypes();
-    this.onCountrySelect("United States");
+    this.getContactTypes();
+    this.getTitles();
   }
 };
 </script>

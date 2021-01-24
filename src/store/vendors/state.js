@@ -1,6 +1,6 @@
 export default function() {
-    return {
-        vendors: [],
-        vendorIndustries: []
-    }
+  return {
+    vendors: [],
+    vendorIndustries: []
+  };
 }

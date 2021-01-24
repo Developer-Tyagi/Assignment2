@@ -22,7 +22,7 @@
           :key="inspectionType.id"
           class="inspection-list-item"
         >
-          {{ inspectionType.name }}
+          {{ inspectionType.value }}
         </div>
       </div>
       <div v-else class="column full-height">
@@ -51,11 +51,22 @@
         <q-bar>
           <img src="~assets/close.svg" @click="closeInspetionDialog" />
           <q-space />
-          <div class="text-uppercase text-bold text-black">
-            Add Inspection Type
-          </div>
+          <div class="text-uppercase text-bold text-black"></div>
           <q-space />
         </q-bar>
+        <q-header bordered class="bg-white">
+          <q-toolbar class="row bg-white">
+            <img
+              src="~assets/close.svg"
+              alt="close"
+              @click="closeInspetionDialog"
+              style="margin: auto 0"
+            />
+            <div class="text-uppercase text-bold text-black q-mx-auto">
+              Add Inspection Type
+            </div>
+          </q-toolbar>
+        </q-header>
         <div class="q-pa-md column" style="height: calc(100% - 51px)">
           <div style="height: calc(100% - 50px); ">
             <q-card
@@ -64,13 +75,13 @@
               :key="index"
             >
               <q-input
-                v-model="inspectionType.name"
+                v-model="inspectionType.value"
                 placeholder="Type of Inspection"
                 v-if="index == 0"
               />
               <q-input
                 placeholder="Sub Type of Inspection"
-                v-model="inspectionType.subtypes[index].name"
+                v-model="inspectionType.subtypes[index].value"
               />
               <div class="slider-div">
                 <label>Duration(hr)</label>
@@ -106,19 +117,19 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   data() {
     return {
       addInspectionDialog: false,
       inspectionType: {
-        name: "",
+        value: '',
         subtypes: [
           {
-            name: "",
+            value: '',
             duration: 1,
-            unit: "hour"
+            unit: 'hour'
           }
         ]
       }
@@ -129,35 +140,35 @@ export default {
     this.getInspectionTypes();
   },
   computed: {
-    ...mapGetters(["inspectionTypes"])
+    ...mapGetters(['inspectionTypes'])
   },
 
   methods: {
-    ...mapActions(["getInspectionTypes", "addInspectionTypes"]),
+    ...mapActions(['getInspectionTypes', 'addInspectionTypes']),
 
     onAddSubTypeButtonClick() {
       const length = this.inspectionType.subtypes.length;
       if (
-        this.inspectionType.subtypes[length - 1].name &&
-        this.inspectionType.name
+        this.inspectionType.subtypes[length - 1].value &&
+        this.inspectionType.value
       ) {
         this.inspectionType.subtypes.push({
-          name: "",
+          value: '',
           duration: 0,
-          unit: "hour"
+          unit: 'hour'
         });
       } else {
         this.$q.notify({
-          message: "Please fill the above details first",
-          position: "top",
-          type: "negative"
+          message: 'Please fill the above details first',
+          position: 'top',
+          type: 'negative'
         });
       }
     },
 
     onAddInspection() {
-      if (!this.inspectionType.subtypes[0].name) {
-        this.inspectionType.subtypes[0].name = this.inspectionType.name;
+      if (!this.inspectionType.subtypes[0].value) {
+        this.inspectionType.subtypes[0].value = this.inspectionType.value;
       }
       this.addInspectionTypes(this.inspectionType).then(() => {
         this.closeInspetionDialog();
@@ -168,12 +179,12 @@ export default {
     closeInspetionDialog() {
       this.addInspectionDialog = false;
       this.inspectionType = {
-        name: "",
+        value: '',
         subtypes: [
           {
-            name: "",
+            value: '',
             duration: 1,
-            unit: "hour"
+            unit: 'hour'
           }
         ]
       };

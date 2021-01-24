@@ -7,50 +7,74 @@
           <q-icon name="create" color="primary" class="edit-icon"></q-icon>
           <p class="heading">Policy Holder Details</p>
           <p class="texts">
-            {{ lead.primaryContact.fname }} {{ lead.primaryContact.lname }}
+            {{ selectedLead['primaryContact']['fname'] }}
+            {{ selectedLead.primaryContact.lname }}
           </p>
           <p class="texts">
             Mobile:
-            <span v-if="lead.primaryContact.phoneNumber">{{
-              lead.primaryContact.phoneNumber[0].number
-            }}</span
+            <span
+              v-if="selectedLead.primaryContact.phoneNumber"
+              @click="
+                onPhoneNumberClick(
+                  selectedLead.primaryContact.phoneNumber[0].number,
+                  $event
+                )
+              "
+              >{{ selectedLead.primaryContact.phoneNumber[0].number }}</span
             ><span v-else> - </span>
           </p>
-          <p class="texts">Email: {{ lead.primaryContact.email }}</p>
+          <p class="texts">
+            Email:
+            <span
+              v-if="selectedLead.primaryContact.email"
+              @click="onEmailClick(selectedLead.primaryContact.email, $event)"
+              >{{ selectedLead.primaryContact.email }}</span
+            ><span v-else> - </span>
+          </p>
 
           <p class="heading">Loss Address</p>
-          <p class="texts">{{ lead.lossLocation.streetAddress }}</p>
-          <p class="texts">{{ lead.lossLocation.addressRegion }}</p>
+          <p class="texts">{{ selectedLead.lossLocation.streetAddress }}</p>
+          <p class="texts">{{ selectedLead.lossLocation.addressRegion }}</p>
           <p class="texts">
-            {{ lead.lossLocation.addressRegion }}-{{
-              lead.lossLocation.postalCode
+            {{ selectedLead.lossLocation.addressRegion }}-{{
+              selectedLead.lossLocation.postalCode
             }}
           </p>
-          <p class="texts">{{ lead.lossLocation.addressCountry }}</p>
+          <p class="texts">{{ selectedLead.lossLocation.addressCountry }}</p>
 
           <p class="heading">Loss Details</p>
 
-          <p class="texts">Date of Loss &nbsp;&nbsp;{{ lead.dateOfLoss }}</p>
-          <p class="texts">Description &nbsp;&nbsp;{{ lead.lossDesc }}</p>
+          <p class="texts">
+            Date of Loss &nbsp;&nbsp;{{ selectedLead.dateofLoss }}
+          </p>
+          <p class="texts">
+            Description &nbsp;&nbsp;{{ selectedLead.lossDesc }}
+          </p>
 
           <p class="heading">Policy Details</p>
-          <p class="texts">Carrier Name &nbsp;&nbsp;{{ lead.carrier }}</p>
-          <p class="texts">Policy No &nbsp;&nbsp;{{ lead.policyNumber }}</p>
+          <p class="texts">
+            Carrier Name &nbsp;&nbsp;{{ selectedLead.carrier.value }}
+          </p>
+          <p class="texts">
+            Policy No &nbsp;&nbsp;{{ selectedLead.policyNumber }}
+          </p>
 
           <p class="heading">Inspection Type</p>
-          <p class="texts"></p>
+          <p class="texts">
+            &nbsp;&nbsp;{{ selectedLead.inspectionInfo.value }}
+          </p>
 
           <p class="heading">Lead Source</p>
-          <p class="texts"></p>
+          <p class="texts">&nbsp;&nbsp;{{ selectedLead.leadSource.type }}</p>
+          <p class="texts">&nbsp;&nbsp;{{ selectedLead.leadSource.detail }}</p>
 
           <p class="heading">Loss Site Visiting On</p>
-          <p class="texts"></p>
+          <p class="texts">&nbsp;&nbsp;{{ selectedLead.visited }}</p>
 
           <p class="heading">Notes</p>
-          <p class="texts">{{ lead.notes }}</p>
+          <p class="texts">{{ selectedLead.notes }}</p>
         </div>
       </q-card>
-
       <q-btn
         label="Schedule Visit"
         class="q-my-auto q-mx-lg text-capitalize"
@@ -62,74 +86,35 @@
   </q-page>
 </template>
 <script>
-import axios from "axios";
-import CustomHeader from "components/CustomHeader";
+import { mapGetters, mapActions } from 'vuex';
 export default {
-  data() {
-    return {
-      lead: {
-        isOrganization: false,
-        organizationName: "",
-        primaryContact: {
-          fname: "",
-          lname: "",
-          email: "",
-          phoneNumber: [
-            {
-              type: "",
-              number: ""
-            }
-          ]
-        },
-        lastVisted: "",
-        visited: [],
-        lossLocation: {
-          addressCountry: "",
-          addressLocality: "",
-          addressRegion: "",
-          postOfficeBoxNumber: "",
-          postalCode: "",
-          streetAddress: ""
-        },
-        lossDesc: "",
-        dateOfLoss: "",
-        carrier: "",
-        policyNumber: "",
-        isAutomaticScheduling: false,
-        notes: ""
-      }
-    };
+  computed: {
+    ...mapGetters(['selectedLead'])
   },
-  components: {
-    CustomHeader
-  },
-  mounted() {
-    this.getLead();
-  },
+
   methods: {
-    getLead() {
-      // API endpoint is hardcoded for testing.
-      axios
-        .get(
-          `https://api.claimguru.cilalabs.dev/v1/leads/${this.$route.params.id}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-              Authorization: ""
-            }
-          }
-        )
-        .then(
-          response => {
-            this.lead = response["data"]["data"]["attributes"];
-          },
-          error => {
-            this.showError("Sorry, Couldn't retrieve lead data");
-          }
-        );
+    ...mapActions(['getLeadDetails', 'removeSelectedLeadDetails']),
+    onEmailClick(email, e) {
+      e.stopPropagation();
+      if (email) {
+        window.open('mailto:' + email);
+      }
+    },
+
+    onPhoneNumberClick(number, e) {
+      e.stopPropagation();
+      if (number) {
+        window.open('tel:' + number);
+      }
     }
+  },
+  created() {
+    this.getLeadDetails(this.$route.params.id);
   }
+
+  // beforeDestroy() {
+  //   this.removeSelectedLeadDetails();
+  // }
 };
 </script>
 <style lang="scss" scoped>

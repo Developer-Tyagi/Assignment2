@@ -23,6 +23,7 @@
             (activeLeads.length || archivedLeads.length) && !openSearchInput
           "
         />
+
         <img
           src="~assets/add.svg"
           alt=""
@@ -36,13 +37,12 @@
           placeholder="Search for leads"
           style="width: 80%; margin: 0 10%"
           clearable
-          @input="filterLeads(false, $event)"
-          @clear="filterLeads(true)"
+          @input="filterLeads()"
         >
         </q-input>
       </q-toolbar>
     </q-header>
-    <div style="padding-top: 51px ;" class=" row">
+    <div style="padding-top: 51px" class="row">
       <div class="full-width" v-if="activeLeads.length || archivedLeads.length">
         <q-tabs
           v-model="panel"
@@ -67,7 +67,7 @@
         <q-tab-panels
           v-model="panel"
           animated
-          style=" height: calc(100vh - 103px); overflow: auto"
+          style="height: calc(100vh - 103px); overflow: auto"
         >
           <q-tab-panel name="newLeads" class="q-pa-none">
             <q-list style="overflow-x: hidden">
@@ -97,8 +97,8 @@
                   <q-item-section>
                     <div class="row">
                       <span
-                        >{{ lead["primaryContact"]["fname"] }}
-                        {{ lead["primaryContact"]["lname"] }}</span
+                        >{{ lead.primaryContact.fname }}
+                        {{ lead.primaryContact.lname }}</span
                       >
                       <span class="q-ml-auto">Visting On</span>
                     </div>
@@ -110,12 +110,18 @@
                             lead.primaryContact.phoneNumber &&
                               lead.primaryContact.phoneNumber.length
                           "
+                          @click="
+                            onPhoneNumberClick(
+                              lead.primaryContact.phoneNumber[0].number,
+                              $event
+                            )
+                          "
                         >
                           {{ lead.primaryContact.phoneNumber[0].number }}
                         </span>
                       </span>
                       <span class="q-ml-auto" v-if="lead.lastVisted">
-                        {{ lead.lastVisted | moment("DD/MM/YYYY") }}
+                        {{ lead.lastVisted | moment('DD/MM/YYYY') }}
                       </span>
                       <span v-else class="q-ml-auto"> - </span>
                     </div>
@@ -123,7 +129,7 @@
                       Date of Loss:
                       <span v-if="lead.dateofLoss">{{
                         lead.dateofLoss &&
-                          lead.dateofLoss | moment("DD/MM/YYYY")
+                          lead.dateofLoss | moment('DD/MM/YYYY')
                       }}</span>
                       <span v-else> - </span>
                     </div>
@@ -141,10 +147,13 @@
                       >Schedule Visit</span
                     >
                   </div>
+
                   <div class="button-orange">
-                    <span class="text-white q-my-auto q-mx-auto"
-                      >Create Client</span
-                    >
+                    <q-btn
+                      class="text-white q-my-auto q-mx-auto full-width full-height"
+                      label="Create Client"
+                      @click="onCreateClientButtonClick(lead)"
+                    ></q-btn>
                   </div>
                 </div>
               </div>
@@ -180,14 +189,14 @@
                       </span>
                     </span>
                     <span class="q-ml-auto" v-if="lead.lastVisted">
-                      {{ lead.lastVisted | moment("DD/MM/YYYY") }}
+                      {{ lead.lastVisted | moment('DD/MM/YYYY') }}
                     </span>
                     <span v-else class="q-ml-auto"> - </span>
                   </div>
                   <div>
                     Date of Loss:
                     <span v-if="lead.dateofLoss">{{
-                      lead.dateofLoss && lead.dateofLoss | moment("DD/MM/YYYY")
+                      lead.dateofLoss && lead.dateofLoss | moment('DD/MM/YYYY')
                     }}</span>
                     <span v-else> - </span>
                   </div>
@@ -221,26 +230,26 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import { mapActions } from "vuex";
-import axios from "axios";
-import moment from "moment";
+import { mapGetters, mapActions, mapMutations } from 'vuex';
+import moment from 'moment';
+import { setSelectedLead } from 'src/store/leads/mutations';
 
 export default {
-  name: "Leads",
+  name: 'Leads',
   data() {
     return {
       openSearchInput: false,
-      searchText: "",
-      panel: "newLeads"
+      searchText: '',
+      panel: 'newLeads',
+      clientInfoDailog: false
     };
   },
 
   computed: {
-    ...mapGetters(["activeLeads", "archivedLeads"]),
+    ...mapGetters(['activeLeads', 'archivedLeads']),
     formatDate(value) {
       if (value) {
-        return moment(String(value)).format("MM/DD/YYYY");
+        return moment(String(value)).format('MM/DD/YYYY');
       }
     }
   },
@@ -251,50 +260,51 @@ export default {
   },
   methods: {
     ...mapActions([
-      "getActiveLeadsList",
-      "getArchivedLeadsList",
-      "addLeadToArchiveList"
+      'getActiveLeadsList',
+      'getArchivedLeadsList',
+      'addLeadToArchiveList'
     ]),
+    ...mapMutations(['setSelectedLead']),
+    onCreateClientButtonClick(lead) {
+      let payload = {
+        attributes: lead
+      };
+      this.setSelectedLead(payload);
 
+      this.$router.push('/add-client');
+    },
     addLead() {
-      this.$router.push("/add-lead");
+      this.$router.push('/add-lead');
     },
 
     onLeadListClick(lead) {
-      this.$router.push("/details/" + lead.id);
+      this.$router.push('/details/' + lead.id);
     },
 
-    filterLeads(closeModel, event) {
-      if (event) {
-        const pattern = new RegExp(event, "i");
-        this.activeLeads = this.activeLeads.filter(val => {
-          return (
-            pattern.test(val.primaryContact.fname) ||
-            pattern.test(val.primaryContact.lname)
-          );
-        });
+    filterLeads() {
+      if (this.panel === 'newLeads') {
+        this.getActiveLeadsList(this.searchText ? this.searchText : '');
       } else {
-        this.activeLeads = JSON.parse(this.copyActiveLeads);
-        this.openSearchInput = false;
+        this.getArchivedLeadsList(this.searchText ? this.searchText : '');
       }
     },
 
     onListSwipe(info, lead) {
-      if (info.direction === "left") {
-        if (lead["isLeftOptionOpen"]) {
-          lead["isLeftOptionOpen"] = false;
-          lead["isRightOptionOpen"] = false;
+      if (info.direction === 'left') {
+        if (lead['isLeftOptionOpen']) {
+          lead['isLeftOptionOpen'] = false;
+          lead['isRightOptionOpen'] = false;
         } else {
-          lead["isLeftOptionOpen"] = false;
-          lead["isRightOptionOpen"] = true;
+          lead['isLeftOptionOpen'] = false;
+          lead['isRightOptionOpen'] = true;
         }
-      } else if (info.direction === "right") {
+      } else if (info.direction === 'right') {
         if (lead.isRightOptionOpen) {
-          lead["isLeftOptionOpen"] = false;
-          lead["isRightOptionOpen"] = false;
+          lead['isLeftOptionOpen'] = false;
+          lead['isRightOptionOpen'] = false;
         } else {
-          lead["isLeftOptionOpen"] = true;
-          lead["isRightOptionOpen"] = false;
+          lead['isLeftOptionOpen'] = true;
+          lead['isRightOptionOpen'] = false;
         }
       }
       let index = this.activeLeads.findIndex(item => item.id === lead.id);
@@ -303,6 +313,27 @@ export default {
 
     onArchiveButtonClick(leadId) {
       this.addLeadToArchiveList(leadId);
+    },
+
+    onPhoneNumberClick(number, e) {
+      e.stopPropagation();
+      if (number) {
+        window.open('tel:' + number);
+      }
+    }
+  },
+  watch: {
+    panel(newVal, oldVal) {
+      if (newVal != oldVal) {
+        this.searchText = '';
+        this.openSearchInput = false;
+      }
+
+      if (oldVal === 'newLeads') {
+        this.getActiveLeadsList();
+      } else {
+        this.getArchivedLeadsList();
+      }
     }
   }
 };

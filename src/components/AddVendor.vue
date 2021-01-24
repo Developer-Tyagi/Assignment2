@@ -1,6 +1,6 @@
 <template>
-     <q-page class="bg-white full-width">
-     <q-header bordered class="bg-white">
+  <q-page class="bg-white full-width">
+    <q-header bordered class="bg-white">
       <q-toolbar class="row bg-white">
         <img
           src="~assets/close.svg"
@@ -9,12 +9,16 @@
           style="margin: auto 0"
         />
         <div class="text-uppercase text-bold text-black q-mx-auto">
-          {{ $route.name }}
+          ADD NEW {{ componentName }}
         </div>
       </q-toolbar>
     </q-header>
     <div style="padding-top: 51px">
-      <q-form class="q-pa-lg" style="height: calc(100vh - 51px)" ref="vendorForm">
+      <q-form
+        class="q-pa-lg"
+        style="height: calc(100vh - 51px)"
+        ref="vendorForm"
+      >
         <div
           class="full-width"
           style="
@@ -23,192 +27,386 @@
             margin-bottom: 10px;
           "
         >
-          <q-input v-model="vendor.name" label="Vendor Company Name" lazy-rules
-              :rules="[(val) => (val && val.length ) || '']"/>
-          <q-select
-            v-model="vendor.industry"
-            :options="vendorIndustries"
-            label="Vendor Industry"
-            option-label="name"
-          />          
+          <q-input
+            v-model="vendor.name"
+            label=" Company Name"
+            lazy-rules
+            :rules="[
+              val => (val && val.length > 0) || 'Please fill the first name'
+            ]"
+          />
+          <div>
+            <q-select
+              class="full-width"
+              v-model="vendor.industry.value"
+              use-input
+              input-debounce="0"
+              option-label="name"
+              label=" Industry"
+              :options="options"
+              option-value="name"
+              @filter="searchFilterBy"
+              behavior="menu"
+              emit-value
+              lazy-rules
+              :rules="[
+                val => (val && val.length > 0) || 'Please fill the first name'
+              ]"
+            >
+              <template v-slot:no-option>
+                <q-item>
+                  <q-item-section class="text-black">
+                    No results
+                  </q-item-section>
+                </q-item>
+              </template>
+            </q-select>
+          </div>
+
           <p class="form-heading">Company's Contact Person Details</p>
-          <q-input v-model="vendor.contact.fname" label="First Name" />
-          <q-input v-model="vendor.contact.lname" label="Last Name" />
+          <q-select
+            v-model="vendor.contact[0].honorific.id"
+            :options="titles"
+            label="Title"
+            option-label="name"
+            option-value="id"
+            map-options
+            emit-value
+            @input="setTitleName(vendor.contact[0].honorific)"
+            lazy-rules
+            :rules="[
+              val => (val && val.length > 0) || 'Please choose the Title'
+            ]"
+          />
+          <q-input
+            v-model="vendor.contact[0].fname"
+            label="First Name"
+            lazy-rules
+            :rules="[
+              val => (val && val.length > 0) || 'Please fill the first name'
+            ]"
+          />
+          <q-input v-model="vendor.contact[0].lname" label="Last Name" />
           <div class="row">
+            <q-select
+              v-model="vendor.contact[0].phoneNumber.type"
+              :options="contactTypes"
+              option-value="machineName"
+              option-label="name"
+              label="Type"
+              style="width: 40%; margin-right: auto"
+              emit-value
+            />
             <q-input
-              v-model="vendor.contact.phoneNumber[0].number"
+              v-model="vendor.contact[0].phoneNumber.number"
               label="Phone"
               type="number"
-              style="width: 65%"
-            />
-            <q-select
-              v-model="vendor.contact.phoneNumber[0].type"
-              :options="contactType"
-              label="Type"
-              style="width: 30%; margin-left: auto"
+              style="width: 55%"
             />
           </div>
-          <q-input v-model="vendor.contact.email" label="Email" />
+          <q-input
+            v-model="vendor.contact[0].email"
+            type="email"
+            label="Email"
+          />
+          <div class="row" v-if="componentName === 'carrier'">
+            <p class="q-mx-none q-my-auto">
+              <label> Can Claim be Filed by email</label>
+            </p>
+            <q-toggle
+              class="q-ml-auto"
+              v-model="vendor.meta.claimFiledByEmail"
+            />
+          </div>
+
           <p class="form-heading">Company's Address</p>
-          <q-input v-model="vendor.address.streetAddress" label="Address1" />
-          <q-input
-            v-model="vendor.address.postOfficeBoxNumber"
-            label="Address2"
-          />
-          <q-input
-            v-model="vendor.address.addressLocality"
-            label="City"
-          ></q-input>
-          <q-select
-            v-model="vendor.address.addressRegion"
-            :options="states"
-            label="State"
-          />
-          <q-input
-            v-model="vendor.address.postalCode"
-            label="ZIP Code"
-          />
-          <q-select
-            v-model="vendor.address.addressCountry"
-            :options="countries"
-            label="Country"
-            @input="onCountrySelect(vendor.address.addressCountry)"
-            lazy-rules
-            :rules="[(val) => (val && val.length > 0) || '']"
-          />
+          <AutoCompleteAddress :address="vendor.address" />
           <p class="form-heading">Company's Phone & Website</p>
-          <div class="row">
-            <q-input
-              v-model="vendor.info.phoneNumbers[0].number"
-              label="Phone1"
-              type="number"
-              style="width: 65%"
-            />
-            <q-select
-              v-model="vendor.info.phoneNumbers[0].type"
-              :options="contactType"
-              label="Type1"
-              style="width: 30%; margin-left: auto"
-            />
+          <div v-for="(contactInfo, index) in vendor.contact" v-if="index >= 1">
+            <q-card class="q-mt-sm">
+              <q-select
+                v-model="contactInfo.honorific.id"
+                :options="titles"
+                option-label="name"
+                label="Title"
+                option-value="id"
+                @input="setTitleName(contactInfo.honorific)"
+                emit-value
+                map-options
+              />
+              <q-input
+                v-model="contactInfo.fname"
+                label="First Name"
+                :rules="[
+                  val => (val && val.length > 0) || 'Please fill the first name'
+                ]"
+              />
+              <q-input v-model="contactInfo.lname" label="Last Name" />
+              <div class="row">
+                <q-select
+                  v-model="contactInfo.phoneNumber.type"
+                  :options="contactTypes"
+                  option-value="machineName"
+                  option-label="name"
+                  label="Type"
+                  style="width: 40%; margin-right: auto"
+                  emit-value
+                  :rules="[val => (val && val.length > 0) || '']"
+                />
+                <q-input
+                  v-model="contactInfo.phoneNumber.number"
+                  label="Phone1"
+                  type="number"
+                  style="width: 55%"
+                  :rules="[
+                    val =>
+                      (val && val.length > 0) || 'Please fill the phone number'
+                  ]"
+                />
+              </div>
+              <q-input
+                v-model="contactInfo.email"
+                novalidate="true"
+                label="Email"
+              />
+            </q-card>
           </div>
           <div class="row">
-            <q-input
-              v-model="vendor.info.phoneNumbers[1].number"
-              label="Phone2"
-              type="number"
-              style="width: 65%"
+            <q-btn
+              outline
+              class="q-mt-sm"
+              @click="addAnotherContact"
+              color="primary"
+              label="Add"
+              style=" margin-right: auto"
             />
-            <q-select
-              v-model="vendor.info.phoneNumbers[1].type"
-              :options="contactType"
-              label="Type2"
-              style="width: 30%; margin-left: auto"
+
+            <q-btn
+              outline
+              @click="removeAnotherContact"
+              class="q-mt-sm"
+              color="primary"
+              label="Remove"
+              v-if="isShowRemoveButton"
             />
           </div>
+
           <q-input v-model="vendor.info.website" label="Website" />
           <q-input v-model="vendor.info.notes" label="Notes" />
         </div>
         <q-btn
-          label="Add Vendor"
           color="primary"
           class="full-width q-mt-auto text-capitalize"
           @click="onAddVendorButtonClick"
           size="'xl'"
-        ></q-btn>
+        >
+          Add {{ componentName }}
+        </q-btn>
       </q-form>
     </div>
   </q-page>
 </template>
 
-
 <script>
-import AddressService from "@utils/country";
+import AddressService from '@utils/country';
 const addressService = new AddressService();
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex';
+import { getVendorIndustries } from 'src/store/vendors/actions';
+import { getContactTypes, getTitles } from 'src/store/common/actions';
+import AutoCompleteAddress from 'components/AutoCompleteAddress';
 
 export default {
-  name: "AddVendor",
+  name: 'AddVendor',
+  props: ['componentName'],
+  components: { AutoCompleteAddress },
   data() {
     return {
-      industryTypes: ["Association"],
+      options: '',
+      industryTypes: ['Association'],
       countries: [],
       states: [],
+      isShowRemoveButton: false,
       vendor: {
-        name: "",
-        industry: "",
-        contact: {
-          fname: "",
-          lname: "",
-          email: "",
-          phoneNumber: [
-            {
-              type: "mobile",
-              number: "",
-            },
-          ],
+        name: '',
+        industry: { value: '', id: '' },
+        meta: {
+          claimFiledByEmail: false
         },
+        contact: [
+          {
+            fname: '',
+            lname: '',
+            email: '',
+            honorific: {
+              id: '',
+              value: ''
+            },
+            phoneNumber: [
+              {
+                type: '',
+                number: ''
+              }
+            ],
+            isPrimary: true
+          },
+          {
+            fname: '',
+            lname: '',
+            email: '',
+            honorific: {
+              id: '',
+              value: ''
+            },
+            phoneNumber: [
+              {
+                type: '',
+                number: ''
+              }
+            ]
+          }
+        ],
         address: {
-          addressCountry: "United States",
-          addressLocality: "",
-          addressRegion: "",
-          postOfficeBoxNumber: "",
-          postalCode: "",
-          streetAddress: "",
+          addressCountry: '',
+          addressLocality: '',
+          addressRegion: '',
+          postOfficeBoxNumber: '',
+          postalCode: '',
+          streetAddress: ''
         },
         info: {
-          phoneNumbers: [
-            {
-              type: "pager",
-              number: "",
-            },
-            {
-              type: "mobile",
-              number: "",
-            },
-          ],
-          website: "",
-          notes: "",
-        },
-      },
+          website: '',
+          notes: ''
+        }
+      }
     };
   },
 
   computed: {
-    ...mapGetters(["contactType","vendorIndustries"]),
+    ...mapGetters(['contactTypes', 'vendorIndustries', 'titles'])
   },
 
-  created(){
-  this.getVendorIndustries();
+  mounted() {
+    this.getVendorIndustries();
+    this.getTitles();
+    this.getContactTypes();
+    if (this.componentName && this.componentName === 'carrier') {
+      let industryType = this.vendorIndustries.find(
+        o => o.machineValue === 'carrier'
+      );
+      if (industryType.name && industryType.id) {
+        this.vendor.industry.value = industryType.name;
+        this.vendor.industry.id = industryType.id;
+      }
+    }
   },
 
   methods: {
-    ...mapActions(["addVendor","getVendorIndustries"]),
+    ...mapActions([
+      'addVendor',
+      'getVendorIndustries',
+      'getTitles',
+      'getContactTypes'
+    ]),
+    searchFilterBy(val, update) {
+      if (val === ' ') {
+        update(() => {
+          this.options = this.vendorIndustries;
+        });
+        return;
+      }
+
+      update(() => {
+        const search = val.toLowerCase();
+
+        this.options = this.vendorIndustries.filter(
+          v => v.name.toLowerCase().indexOf(search) > -1
+        );
+      });
+    },
+
+    removeAnotherContact() {
+      const len = this.vendor.contact.length;
+      if (len === 3) {
+        this.isShowRemoveButton = false;
+      }
+
+      this.vendor.contact.pop();
+    },
+
+    setTitleName(selectedTitle) {
+      const selected = this.titles.find(obj => {
+        return obj.id === selectedTitle.id;
+      });
+
+      selectedTitle.value = selected.title;
+    },
+
+    setVendorIndustryName() {
+      const selectedName = this.vendor.industry.value;
+      const result = this.vendorIndustries.find(obj => {
+        return obj.name === selectedName;
+      });
+      this.vendor.industry.value = result.name;
+      this.vendor.industry.id = result.id;
+    },
+
+    addAnotherContact() {
+      const len = this.vendor.contact.length;
+      this.$refs.vendorForm.validate();
+      if (
+        this.vendor.contact[len - 1].fname &&
+        this.vendor.contact[len - 1].phoneNumber.number
+      ) {
+        this.isShowRemoveButton = true;
+        this.vendor.contact.push({
+          fname: '',
+          lname: '',
+          email: '',
+          honorific: {
+            id: '',
+            value: ''
+          },
+          phoneNumber: [
+            {
+              type: '',
+              number: ''
+            }
+          ]
+        });
+      } else {
+        this.$q.notify({
+          message: 'Please fill the above details first',
+          position: 'top',
+          type: 'negative'
+        });
+      }
+    },
 
     onCountrySelect(country) {
       this.states = addressService.getStates(country);
     },
 
-    onAddVendorButtonClick() {
-      this.$refs.vendorForm.validate().then(async (success) => {
-        if (success) {
-          this.addVendor(this.vendor).then( async =>{
-            this.closeDialog(true)
-          })
+    async onAddVendorButtonClick() {
+      const success = await this.$refs.vendorForm.validate();
+      if (success) {
+        const response = await this.addVendor(this.vendor);
+        if (response) {
+          this.closeDialog(true);
         }
-      });
+      }
     },
 
-    
-    closeDialog(flag){
-      this.$emit('closeDialog', flag)
+    closeDialog(flag) {
+      this.$emit('closeDialog', flag);
     }
   },
 
   created() {
+    this.options = this.vendorIndustries;
     this.countries = addressService.getCountries();
-    this.onCountrySelect("United States");
-  },
-}
+    this.onCountrySelect('United States');
+  }
+};
 </script>
 <style lang="scss" scoped>
 .form-heading {
@@ -223,4 +421,3 @@ export default {
   background: transparent; /* make scrollbar transparent */
 }
 </style>
-
