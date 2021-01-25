@@ -756,7 +756,7 @@
                 <q-input
                   mask="#.#"
                   type="number"
-                  v-model="insuranceDetails.otherStructureB"
+                  v-model.number="insuranceDetails.otherStructureB"
                   placeholder="Other Structure (B)"
                   prefix="$"
                   style="margin-left: auto; width: 50%"
@@ -767,7 +767,7 @@
                 <q-input
                   mask="#.#"
                   type="number"
-                  v-model="insuranceDetails.contentsLimit"
+                  v-model.number="insuranceDetails.contentsLimit"
                   placeholder="Contents Limit (C)"
                   prefix="$"
                   style="margin-left: auto; width: 50%"
@@ -778,7 +778,7 @@
                 <q-input
                   mask="#.#"
                   type="number"
-                  v-model="insuranceDetails.lossOfUSD"
+                  v-model.number="insuranceDetails.lossOfUSD"
                   placeholder="Loss of Use Limit (D)"
                   prefix="$"
                   style="margin-left: auto; width: 50%"
@@ -789,7 +789,7 @@
                 <q-input
                   mask="#.#"
                   type="number"
-                  v-model="insuranceDetails.deprecation"
+                  v-model.number="insuranceDetails.deprecation"
                   placeholder="Depreciation"
                   prefix="$"
                   style="margin-left: auto; width: 50%"
@@ -800,7 +800,7 @@
                 <q-input
                   mask="#.#"
                   type="number"
-                  v-model="insuranceDetails.deductible"
+                  v-model.number="insuranceDetails.deductible"
                   placeholder="Deductible"
                   prefix="$"
                   style="margin-left: auto; width: 50%"
@@ -811,7 +811,7 @@
                 <q-input
                   mask="#.#"
                   type="number"
-                  v-model="insuranceDetails.priorPayment"
+                  v-model.number="insuranceDetails.priorPayment"
                   placeholder="Prior payment by insured"
                   prefix="$"
                   style="margin-left: auto; width: 50%"
@@ -1880,7 +1880,6 @@ export default {
       } else {
         payload.source.detail = this.sourceDetails.details;
       }
-
       const response = await this.addClient(payload);
       if (response && response.id) {
         const clientInfo = {
@@ -1928,7 +1927,7 @@ export default {
           priorPayment: this.insuranceDetails.priorPayment,
           limitReason: this.insuranceDetails.reasonsOfLD,
           declaration: {
-            isDeclared: '',
+            isDeclared: true,
             fileInfo: {
               id: '',
               value: ''
@@ -1975,10 +1974,8 @@ export default {
           isSecondClaim: this.isThereAsecondClaimToFileToggle
         }
       };
-
       this.addClaim(payload).then(() => this.setSelectedLead());
     },
-
     validateEmail,
 
     onChangingSourceType() {
