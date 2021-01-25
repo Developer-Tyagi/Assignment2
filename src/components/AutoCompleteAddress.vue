@@ -54,7 +54,7 @@
     </div>
     <q-input
       v-if="address.isGateDropbox && isDropBoxEnable"
-      v-model="address.dropBox"
+      v-model="address.dropBoxInfo"
       label="Gate/ Dropbox"
       :disable="!isAddressFieldEnable"
       :rules="[val => checkValidations(val)]"

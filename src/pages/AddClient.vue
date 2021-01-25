@@ -245,8 +245,8 @@
                     <q-input
                       v-if="
                         sourceDetails.type != 'vendor' &&
-                        sourceDetails.type != '' &&
-                        sourceDetails.type != 'google'
+                          sourceDetails.type != '' &&
+                          sourceDetails.type != 'google'
                       "
                       type="text"
                       placeholder="Enter Source details"
@@ -268,6 +268,7 @@
                       </div>
                     </div>
                   </div>
+
                   <q-select
                     v-model="client.id"
                     option-value="id"
@@ -275,7 +276,7 @@
                     map-options
                     emit-value
                     :options="clientTypes"
-                    @input="setTypes(clientTypes, client)"
+                    @input="setTypes(clientTypes, client, 'clientType')"
                     label="Client Type"
                   />
 
@@ -316,7 +317,7 @@
 
                   <span class="form-heading">Insured Details</span>
                   <q-select
-                    v-model="insuredDetails.honorific.id"
+                    v-model="honorific1.id"
                     :options="titles"
                     option-value="id"
                     option-label="name"
@@ -627,7 +628,7 @@
             label="Save"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
-            @click="onSubmit"
+            @click="mailingAddressDialog = false"
             size="'xl'"
           ></q-btn>
         </q-card-section>
@@ -723,7 +724,11 @@
                 emit-value
                 :options="policyCategories"
                 @input="
-                  setTypes(policyCategories, insuranceDetails.policyCategory)
+                  setTypes(
+                    policyCategories,
+                    insuranceDetails.policyCategory,
+                    'policyCategory'
+                  )
                 "
                 label="Policy Category"
               />
@@ -734,7 +739,13 @@
                 map-options
                 emit-value
                 :options="propertyTypes"
-                @input="setTypes(propertyTypes, insuranceDetails.property)"
+                @input="
+                  setTypes(
+                    propertyTypes,
+                    insuranceDetails.property,
+                    'propertyType'
+                  )
+                "
                 label="Property Type"
               />
               <div class="row">
@@ -744,7 +755,7 @@
                   v-model="insuranceDetails.dwellingLimitA"
                   placeholder="Dwelling Limit (A)"
                   prefix="$"
-                  style="margin-left: 40px; width: 50%"
+                  style="margin-left: auto; width: 50%"
                 />
               </div>
               <div class="row">
@@ -754,7 +765,7 @@
                   v-model="insuranceDetails.otherStructureB"
                   placeholder="Other Structure (B)"
                   prefix="$"
-                  style="margin-left: 40px; width: 50%"
+                  style="margin-left: auto; width: 50%"
                 />
               </div>
               <div class="row">
@@ -764,7 +775,7 @@
                   v-model="insuranceDetails.contentsLimit"
                   placeholder="Contents Limit (C)"
                   prefix="$"
-                  style="margin-left: 40px; width: 50%"
+                  style="margin-left: auto; width: 50%"
                 />
               </div>
               <div class="row">
@@ -774,7 +785,7 @@
                   v-model="insuranceDetails.lossOfUSD"
                   placeholder="Loss of Use Limit (D)"
                   prefix="$"
-                  style="margin-left: 20px; width: 50%"
+                  style="margin-left: auto; width: 50%"
                 />
               </div>
               <div class="row">
@@ -784,7 +795,7 @@
                   v-model="insuranceDetails.deprecation"
                   placeholder="Depreciation"
                   prefix="$"
-                  style="margin-left: 70px; width: 50%"
+                  style="margin-left: auto; width: 50%"
                 />
               </div>
               <div class="row">
@@ -794,7 +805,7 @@
                   v-model="insuranceDetails.deductible"
                   placeholder="Deductible"
                   prefix="$"
-                  style="margin-left: 80px; width: 50%"
+                  style="margin-left: auto; width: 50%"
                 />
               </div>
               <div class="row">
@@ -804,16 +815,18 @@
                   v-model="insuranceDetails.priorPayment"
                   placeholder="Prior payment by insured"
                   prefix="$"
-                  style="margin-left: 10px; width: 50%"
+                  style="margin-left: auto; width: 50%"
                 />
               </div>
               <br />
               <span class="form-heading">Reason for Limits/Denial</span>
               <div class="floating-label">
                 <textarea
+                  rows="5"
                   required
                   class="full-width"
                   v-model="insuranceDetails.reasonsOfLD"
+                  style="resize: none;"
                 ></textarea>
               </div>
               <br />
@@ -892,7 +905,9 @@
                 map-options
                 emit-value
                 :options="propertyTypes"
-                @input="setTypes(propertyTypes, lossInfo.property)"
+                @input="
+                  setTypes(propertyTypes, lossInfo.property, 'lossProperty')
+                "
                 label="Property Type"
               />
               <q-input
@@ -906,7 +921,9 @@
                 map-options
                 emit-value
                 :options="claimReasons"
-                @input="setTypes(claimReasons, lossInfo.reasonClaim)"
+                @input="
+                  setTypes(claimReasons, lossInfo.reasonClaim, 'reasonClaim')
+                "
                 label="Reason for Claim"
               /><br />
               <span class="form-heading">Date of Loss</span>
@@ -923,7 +940,7 @@
                 map-options
                 emit-value
                 :options="lossCauses"
-                @input="setTypes(lossCauses, lossInfo.causeOfLoss)"
+                @input="setTypes(lossCauses, lossInfo.causeOfLoss, 'lossCause')"
                 label="Cause of Loss"
               /><br />
               <span class="form-heading">Deadline Date</span>
@@ -966,7 +983,13 @@
                 map-options
                 emit-value
                 :options="claimSeverity"
-                @input="setTypes(claimSeverity, lossInfo.severityOfClaimType)"
+                @input="
+                  setTypes(
+                    claimSeverity,
+                    lossInfo.severityOfClaimType,
+                    'severityType'
+                  )
+                "
                 label="Severity of Claim"
               /><br />
               <q-input
@@ -1082,7 +1105,13 @@
                 map-options
                 emit-value
                 :options="vendors"
-                @input="setTypes(vendors, mortgageDetails.companyName)"
+                @input="
+                  setTypes(
+                    vendors,
+                    mortgageDetails.companyName,
+                    'mortgageCompany'
+                  )
+                "
                 label="Mortgage Company Name"
               />
               <q-input
@@ -1095,10 +1124,12 @@
               /><br />
               <span class="form-heading">Notes</span>
               <textarea
+                rows="5"
                 required
                 class="full-width"
                 v-model="mortgageDetails.notes"
-              ></textarea>
+                style="resize: none;"
+              />
               <div class="row">
                 <p style="q-mx-none q-my-auto">
                   Is there a 2nd mortgage on the home?
@@ -1126,10 +1157,10 @@
                 /><br />
                 <span class="form-heading">Notes</span>
                 <textarea
-                  required
+                  rows="5"
                   class="full-width"
                   v-model="mortgageDetails.secondNotes"
-                ></textarea>
+                />
               </div>
             </div>
             <br />
@@ -1429,6 +1460,10 @@ export default {
   components: { CustomHeader, VendorsList, AddVendor, AutoCompleteAddress },
   data() {
     return {
+      data: {
+        id: '',
+        types: ''
+      },
       is2ndMortgageHomeToggle: false,
       vendorDialogName: '',
       vendorDialogFilterByIndustry: '',
@@ -1453,7 +1488,7 @@ export default {
         isOrganization: false,
         organizationName: ''
       },
-      honorific: {
+      honorific1: {
         id: '',
         value: ''
       },
@@ -1467,19 +1502,15 @@ export default {
         details: ''
       },
       client: {
-        type: '',
-        id: ''
+        id: '',
+        type: ''
       },
       insuredDetails: {
         fname: '',
         lname: '',
         phone: '',
         type: '',
-        email: '',
-        honorific: {
-          id: '',
-          value: ''
-        }
+        email: ''
       },
       coInsuredDetails: {
         fname: '',
@@ -1503,11 +1534,9 @@ export default {
         streetAddress: '',
         postOfficeBoxNumber: '',
         isGateDropbox: false,
-        dropBox: ''
+        dropBoxInfo: ''
       },
-      gateDropbox: {
-        info: ''
-      },
+
       tenantOccupied: {
         name: '',
         phone: '',
@@ -1521,7 +1550,7 @@ export default {
         streetAddress: '',
         postOfficeBoxNumber: '',
         isGateDropbox: false,
-        dropBox: ''
+        dropBoxInfo: ''
       },
       lossInfo: {
         dateOfLoss: '',
@@ -1639,7 +1668,7 @@ export default {
         streetAddress: '',
         postOfficeBoxNumber: '',
         isGateDropbox: false,
-        dropBox: ''
+        dropBoxInfo: ''
       },
       isThereAsecondClaimToFileToggle: false,
       insuranceAdjustorPhoneType: ['A', 'B', 'C'],
@@ -1675,8 +1704,8 @@ export default {
       this.insuredDetails.type = this.selectedLead.primaryContact.phoneNumber[0].type;
       this.sourceDetails.id = this.selectedLead.leadSource.id;
       this.sourceDetails.type = this.selectedLead.leadSource.type;
-      this.insuredDetails.honorific.id = this.selectedLead.primaryContact.honorific.id;
-      this.insuredDetails.honorific.value = this.selectedLead.primaryContact.honorific.value;
+      this.honorific1.id = this.selectedLead.primaryContact.honorific.id;
+      this.honorific1.value = this.selectedLead.primaryContact.honorific.value;
       this.sourceDetails.details = this.selectedLead.leadSource.detail;
       this.insuranceDetails.carrierName = this.selectedLead.leadSource.type;
       this.insuranceDetails.policyNumber = this.selectedLead.policyNumber;
@@ -1726,33 +1755,44 @@ export default {
 
     async onSubmit() {
       const sucess = await this.$refs.clientForm.validate();
-      // const mailingForm = await this.$refs.mailingForm.validate()
       if (sucess == true) {
         this.clientInfoDailog = false;
       } else {
         this.clientInfoDailog = true;
       }
-      //  if(mailingForm==true)
-      //  {
-      //    this.mailingAddressDialog =false;
-      //  }else{
-      //     this.mailingAddressDialog = true;
-      //  }
     },
 
     setTitleName(val) {
       const titleResult = this.titles.find(obj => {
         return obj.id === this['honorific' + val].id;
       });
+
       this['honorific' + val].title = titleResult.title;
     },
 
-    setTypes(types, data) {
+    setTypes(types, data, value) {
       const obj = types.find(item => {
         return item.id === data.id;
       });
-      data.id = obj.id;
-      data.types = obj.machineName;
+      this.data.id = obj.id;
+      this.data.types = obj.machineName; //machine name is not present in vendor
+      if (value == 'clientType') {
+        this.client.type = this.data.types;
+      } else if (value == 'policyCategory') {
+        this.insuranceDetails.policyCategory.type = this.data.types;
+      } else if (value == 'propertyType') {
+        this.lossInfo.property.type = this.data.types;
+      } else if (value == 'mortgageCompany') {
+        this.mortgageDetails.companyName.value = this.data.types;
+      } else if (value == 'lossProperty') {
+        this.lossInfo.property.type = this.data.types;
+      } else if (value == 'reasonClaim') {
+        this.lossInfo.reasonClaim.type = this.data.types;
+      } else if (value == 'lossCause') {
+        this.lossInfo.causeOfLoss.type = this.data.types;
+      } else if (value == 'severityType') {
+        this.lossInfo.severityOfClaimType.type = this.data.types;
+      }
     },
 
     mailingAddressSame() {
@@ -1767,7 +1807,7 @@ export default {
           streetAddress: '',
           postOfficeBoxNumber: '',
           isGateDropbox: false,
-          dropBox: ''
+          dropBoxInfo: ''
         };
       }
     },
@@ -1784,7 +1824,7 @@ export default {
           streetAddress: '',
           postOfficeBoxNumber: '',
           isGateDropbox: false,
-          dropBox: ''
+          dropBoxInfo: ''
         };
       }
     },
@@ -1797,7 +1837,7 @@ export default {
         source: {
           id: '',
           type: this.sourceDetails.type,
-          detail: ''
+          detail: this.sourceDetails.details
         },
         type: {
           id: this.client.id,
@@ -1806,8 +1846,8 @@ export default {
         insuredInfo: {
           primary: {
             honorific: {
-              id: this.honorific.id,
-              value: this.honorific.title
+              id: this.honorific1.id,
+              value: this.honorific1.title
             },
             fname: this.insuredDetails.fname,
             lname: this.insuredDetails.lname,
@@ -1860,6 +1900,7 @@ export default {
           }
         }
       };
+
       if (this.tenantOccupiedToggle) {
         payload.insuredInfo.tenantInfo.name = this.tenantOccupied.name;
         payload.insuredInfo.tenantInfo.phoneNumber.type = this.tenantOccupied.type;
@@ -1879,7 +1920,7 @@ export default {
       }
     },
     async setPayloadForLoss(clientId) {
-      const payload1 = {
+      const payload = {
         client: {
           id: '',
           fname: '',
@@ -1982,7 +2023,8 @@ export default {
           isSecondClaim: this.isThereAsecondClaimToFileToggle
         }
       };
-      this.addClaim(payload1).then(() => this.setSelectedLead());
+
+      this.addClaim(payload).then(() => this.setSelectedLead());
     },
 
     validateEmail,
