@@ -46,6 +46,7 @@
               :options="options"
               option-value="name"
               @filter="searchFilterBy"
+              @input="setVendorIndustryName"
               behavior="menu"
               emit-value
               lazy-rules
@@ -108,6 +109,7 @@
             v-model="vendor.contact[0].email"
             type="email"
             label="Email"
+            borderless
           />
           <div class="row" v-if="componentName === 'carrier'">
             <p class="q-mx-none q-my-auto">
@@ -223,7 +225,6 @@ export default {
 
   data() {
     return {
-      industryTypes: ['Association'],
       options: '',
       countries: [],
       states: [],
@@ -391,6 +392,7 @@ export default {
     },
 
     async onAddVendorButtonClick() {
+      console.log(this.vendor);
       const success = await this.$refs.vendorForm.validate();
       if (success) {
         const response = await this.addVendor(this.vendor);
