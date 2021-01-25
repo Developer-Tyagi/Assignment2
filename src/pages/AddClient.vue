@@ -4,38 +4,53 @@
       @backButton="$router.push('/clients')"
       :showAddButton="false"
     />
+
     <div class="column full-height" style="padding: 51px 20px 20px 20px">
-      <div class="q-md column full-height">
-        <div class="form-list" @click="clientInfoDailog = true">
-          Client Info
+      <div class="q-md column">
+        <div
+          class="full-width"
+          style="
+                height: calc(100vh - 120px);
+                overflow-y: auto;
+                margin-bottom: 10px;
+              "
+        >
+          <div class="form-list" @click="clientInfoDailog = true">
+            Client Info
+          </div>
+
+          <div class="form-list" @click="mailingAddressDialog = true">
+            Mailing Address
+          </div>
+          <div class="form-list" @click="insuranceInfoDialog = true">
+            Insurance Info
+          </div>
+          <div class="form-list" @click="lossInfoDialog = true">
+            Loss Info
+          </div>
+          <div class="form-list" @click="mortgageInfoDialog = true">
+            Mortgage Info
+          </div>
+          <div class="form-list" @click="estimatingInfoDialog = true">
+            Estimating Info
+          </div>
+
+          <div class="form-list" @click="expertVendorInfoDialog = true">
+            Expert/Vendor Info
+          </div>
+
+          <div class="form-list" @click="officeTaskDialog = true">
+            Office Task
+          </div>
+
+          <div class="form-list" @click="publicAdjustorInfoDialog = true">
+            Public Adjustor Info
+          </div>
+          <div class="form-list" @click="documentsDialog = true">
+            Documents
+          </div>
         </div>
-        <div class="form-list" @click="publicAdjustorInfoDialog = true">
-          Public Adjustor Info
-        </div>
-        <div class="form-list" @click="mailingAddressDialog = true">
-          Mailing Address
-        </div>
-        <div class="form-list" @click="insuranceInfoDialog = true">
-          Insurance Info
-        </div>
-        <div class="form-list" @click="lossInfoDialog = true">Loss Info</div>
-        <div class="form-list" @click="mortgageInfoDialog = true">
-          Mortgage Info
-        </div>
-        <div class="form-list" @click="estimatingInfoDialog = true">
-          Estimating Info
-        </div>
-        <q-separator />
-        <div class="form-list" @click="expertVendorInfoDialog = true">
-          Expert/Vendor Info
-        </div>
-        <q-separator />
-        <div class="form-list" @click="officeTaskDialog = true">
-          Office Task
-        </div>
-        <q-separator />
-        <div class="form-list" @click="documentsDialog = true">Documents</div>
-        <q-separator />
+
         <q-btn
           label="Create Client"
           color="primary"
@@ -45,6 +60,7 @@
         ></q-btn>
       </div>
     </div>
+
     <q-dialog
       v-model="publicAdjustorInfoDialog"
       persistent
@@ -239,8 +255,8 @@
                 <q-input
                   v-if="
                     sourceDetails.type != 'vendor' &&
-                    sourceDetails.type != '' &&
-                    sourceDetails.type != 'google'
+                      sourceDetails.type != '' &&
+                      sourceDetails.type != 'google'
                   "
                   type="text"
                   placeholder="Enter Source details"
@@ -922,9 +938,10 @@
               /><br />
               <span class="form-heading">Loss Description to Dwelling</span>
               <textarea
+                style="resize:none"
                 class="full-width"
                 v-model="lossInfo.descriptionDwelling"
-              ></textarea>
+              />
               <div class="row">
                 <p class="form-heading">Is there damage to other structures?</p>
                 <q-toggle class="q-ml-auto" v-model="isDamageOSToggle" />
