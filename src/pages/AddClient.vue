@@ -6,38 +6,36 @@
     />
     <div class="column full-height" style="padding: 51px 20px 20px 20px">
       <div class="q-md column full-height">
-        <div class="createClientInfo" style="font-size: 15px">
-          <div class="form-list" @click="clientInfoDailog = true">
-            Client Info
-          </div>
-          <div class="form-list" @click="publicAdjustorInfoDialog = true">
-            Public Adjustor Info
-          </div>
-          <div class="form-list" @click="mailingAddressDialog = true">
-            Mailing Address
-          </div>
-          <div class="form-list" @click="insuranceInfoDialog = true">
-            Insurance Info
-          </div>
-          <div class="form-list" @click="lossInfoDialog = true">Loss Info</div>
-          <div class="form-list" @click="mortgageInfoDialog = true">
-            Mortgage Info
-          </div>
-          <div class="form-list" @click="estimatingInfoDialog = true">
-            Estimating Info
-          </div>
-          <q-separator />
-          <div class="form-list" @click="expertVendorInfoDialog = true">
-            Expert/Vendor Info
-          </div>
-          <q-separator />
-          <div class="form-list" @click="officeTaskDialog = true">
-            Office Task
-          </div>
-          <q-separator />
-          <div class="form-list" @click="documentsDialog = true">Documents</div>
-          <q-separator />
+        <div class="form-list" @click="clientInfoDailog = true">
+          Client Info
         </div>
+        <div class="form-list" @click="publicAdjustorInfoDialog = true">
+          Public Adjustor Info
+        </div>
+        <div class="form-list" @click="mailingAddressDialog = true">
+          Mailing Address
+        </div>
+        <div class="form-list" @click="insuranceInfoDialog = true">
+          Insurance Info
+        </div>
+        <div class="form-list" @click="lossInfoDialog = true">Loss Info</div>
+        <div class="form-list" @click="mortgageInfoDialog = true">
+          Mortgage Info
+        </div>
+        <div class="form-list" @click="estimatingInfoDialog = true">
+          Estimating Info
+        </div>
+        <q-separator />
+        <div class="form-list" @click="expertVendorInfoDialog = true">
+          Expert/Vendor Info
+        </div>
+        <q-separator />
+        <div class="form-list" @click="officeTaskDialog = true">
+          Office Task
+        </div>
+        <q-separator />
+        <div class="form-list" @click="documentsDialog = true">Documents</div>
+        <q-separator />
         <q-btn
           label="Create Client"
           color="primary"
@@ -216,14 +214,13 @@
           </q-toolbar>
         </q-header>
         <q-card-section>
-          <div class="q-page bg-white" style="min-height: 530px">
+          <div class="q-page bg-white">
             <div
               class="full-width"
               style="
                 height: calc(100vh - 145px);
                 overflow-y: auto;
                 margin-bottom: 10px;
-                padding-top: 40px;
               "
             >
               <div>
@@ -569,7 +566,7 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="form-card q-pa-md" style="padding-top-20px">
+      <q-card class="form-card q-pa-md">
         <q-header bordered class="bg-white">
           <q-toolbar class="row bg-white">
             <img
@@ -584,105 +581,102 @@
           </q-toolbar>
         </q-header>
         <q-card-section>
-          <div class="q-page bg-white" style="min-height: 560px">
+          <div class="q-page bg-white">
             <div
               class="full-width"
               style="
-                height: calc(100vh - 145px);
+                height: calc(100vh - 120px);
                 margin-bottom: 10px;
-                padding-top: 40px;
+                padding-top: 30px;
               "
             >
-              <div class="column full-height">
+              <div class="row">
+                <p class="q-mx-none q-my-auto">Is the mailing address same?</p>
+                <q-toggle
+                  class="q-ml-auto"
+                  v-model="isMailingAddressSameToggle"
+                  @input="mailingAddressSame"
+                />
+              </div>
+              <div v-if="!isMailingAddressSameToggle">
+                <q-input
+                  v-model="mailingAddressSameInfo.streetAddress"
+                  label="Street Address"
+                />
+                <q-input
+                  v-model="mailingAddressSameInfo.unitOrApartmentNumber"
+                  label="Unit or Apartment Number"
+                />
+                <q-input v-model="mailingAddressSameInfo.city" label="City" />
+                <q-select
+                  v-model="mailingAddressSameInfo.state"
+                  :options="states"
+                  label="State"
+                />
+                <q-select
+                  v-model="mailingAddressSameInfo.country"
+                  :options="countries"
+                  label="Country"
+                  @input="onCountrySelect(mailingAddressDetails.country)"
+                />
+                <q-input v-model="mailingAddressSameInfo.zip" label="ZIP" />
                 <div class="row">
-                  <p class="q-mx-none q-my-auto">
-                    Is the mailing address same?
-                  </p>
-                  <q-toggle
-                    class="q-ml-auto"
-                    v-model="isMailingAddressSameToggle"
-                    @input="mailingAddressSame"
-                  />
+                  <p class="q-mx-none q-my-auto">Gate / Dropbox</p>
+                  <q-toggle class="q-ml-auto" v-model="gateDropboxToggle" />
                 </div>
-                <div v-if="!isMailingAddressSameToggle">
-                  <q-input
-                    v-model="mailingAddressSameInfo.streetAddress"
-                    label="Street Address"
-                  />
-                  <q-input
-                    v-model="mailingAddressSameInfo.unitOrApartmentNumber"
-                    label="Unit or Apartment Number"
-                  />
-                  <q-input v-model="mailingAddressSameInfo.city" label="City" />
-                  <q-select
-                    v-model="mailingAddressSameInfo.state"
-                    :options="states"
-                    label="State"
-                  />
-                  <q-select
-                    v-model="mailingAddressSameInfo.country"
-                    :options="countries"
-                    label="Country"
-                    @input="onCountrySelect(mailingAddressDetails.country)"
-                  />
-                  <q-input v-model="mailingAddressSameInfo.zip" label="ZIP" />
-                  <div class="row">
-                    <p class="q-mx-none q-my-auto">Gate / Dropbox</p>
-                    <q-toggle class="q-ml-auto" v-model="gateDropboxToggle" />
-                  </div>
-                  <div v-if="gateDropboxToggle">
-                    <q-input
-                      v-model="mailingAddressSameInfo.dropBox"
-                      label="Gate / Dropbox Info"
-                    />
-                  </div>
-                </div>
-                <div v-else>
-                  <q-input
-                    v-model="mailingAddressSameInfo.streetAddress"
-                    label="Street Address"
-                    disable
-                  />
-                  <q-input
-                    v-model="mailingAddressSameInfo.unitOrApartmentNumber"
-                    label="Unit or Apartment Number"
-                    disable
-                  />
-                  <q-input
-                    v-model="mailingAddressSameInfo.city"
-                    label="City"
-                    disable
-                  />
-                  <q-select
-                    v-model="mailingAddressSameInfo.state"
-                    :options="states"
-                    label="State"
-                    disable
-                  />
-                  <q-select
-                    v-model="mailingAddressSameInfo.country"
-                    :options="countries"
-                    label="Country"
-                    disable
-                    @input="onCountrySelect(mailingAddressDetails.country)"
-                  />
-                  <q-input
-                    v-model="mailingAddressSameInfo.zip"
-                    disable
-                    label="ZIP"
-                  />
-                  <div class="row">
-                    <p class="q-mx-none q-my-auto">Gate / Dropbox</p>
-                    <q-toggle class="q-ml-auto" v-model="gateDropboxToggle" />
-                  </div>
-
+                <div v-if="gateDropboxToggle">
                   <q-input
                     v-model="mailingAddressSameInfo.dropBox"
-                    disable
                     label="Gate / Dropbox Info"
                   />
                 </div>
               </div>
+              <div v-else>
+                <q-input
+                  v-model="mailingAddressSameInfo.streetAddress"
+                  label="Street Address"
+                  disable
+                />
+                <q-input
+                  v-model="mailingAddressSameInfo.unitOrApartmentNumber"
+                  label="Unit or Apartment Number"
+                  disable
+                />
+                <q-input
+                  v-model="mailingAddressSameInfo.city"
+                  label="City"
+                  disable
+                />
+                <q-select
+                  v-model="mailingAddressSameInfo.state"
+                  :options="states"
+                  label="State"
+                  disable
+                />
+                <q-select
+                  v-model="mailingAddressSameInfo.country"
+                  :options="countries"
+                  label="Country"
+                  disable
+                  @input="onCountrySelect(mailingAddressDetails.country)"
+                />
+                <q-input
+                  v-model="mailingAddressSameInfo.zip"
+                  disable
+                  label="ZIP"
+                />
+                <div class="row">
+                  <p class="q-mx-none q-my-auto">Gate / Dropbox</p>
+                  <q-toggle class="q-ml-auto" v-model="gateDropboxToggle" />
+                </div>
+
+                <q-input
+                  v-model="mailingAddressSameInfo.dropBox"
+                  disable
+                  label="Gate / Dropbox Info"
+                />
+              </div>
+
               <br />
             </div>
           </div>
@@ -719,14 +713,14 @@
         </q-header>
 
         <q-card-section>
-          <div class="q-page bg-white" style="min-height: 560px">
+          <div class="q-page bg-white">
             <div
               class="full-width"
               style="
                 height: calc(100vh - 120px);
                 overflow-y: auto;
                 margin-bottom: 10px;
-                padding-top: 40px;
+                padding-top: 30px;
               "
             >
               <div class="row">
@@ -810,7 +804,7 @@
           </q-toolbar>
         </q-header>
         <q-card-section>
-          <div class="q-page bg-white" style="min-height: 550px">
+          <div class="q-page bg-white">
             <div
               class="full-width"
               style="
@@ -1016,14 +1010,14 @@
         </q-header>
 
         <q-card-section>
-          <div class="q-page bg-white" style="min-height: 550px">
+          <div class="q-page bg-white">
             <div
               class="full-width"
               style="
                 height: calc(100vh - 145px);
                 overflow-y: auto;
                 margin-bottom: 10px;
-                padding-top: 40px;
+                padding-top: 30px;
               "
             >
               <q-input
