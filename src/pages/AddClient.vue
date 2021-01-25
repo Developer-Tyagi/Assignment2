@@ -215,7 +215,6 @@
             </div>
           </q-toolbar>
         </q-header>
-
         <q-card-section>
           <div class="q-page bg-white">
             <div
@@ -268,7 +267,6 @@
                       </div>
                     </div>
                   </div>
-
                   <q-select
                     v-model="client.id"
                     option-value="id"
@@ -276,7 +274,7 @@
                     map-options
                     emit-value
                     :options="clientTypes"
-                    @input="setTypes(clientTypes, client, 'clientType')"
+                    @input="setTypes(clientTypes, client)"
                     label="Client Type"
                   />
 
@@ -739,28 +737,24 @@
                 map-options
                 emit-value
                 :options="propertyTypes"
-                @input="
-                  setTypes(
-                    propertyTypes,
-                    insuranceDetails.property,
-                    'propertyType'
-                  )
-                "
+                @input="setTypes(propertyTypes, insuranceDetails.property)"
                 label="Property Type"
               />
               <div class="row">
                 <p class="q-mx-none q-my-auto">Dwelling Limit (A)</p>
                 <q-input
+                  mask="#.#"
                   type="number"
-                  v-model="insuranceDetails.dwellingLimitA"
+                  v-model.number="insuranceDetails.dwellingLimitA"
                   placeholder="Dwelling Limit (A)"
-                  prefix="$"
                   style="margin-left: auto; width: 50%"
+                  prefix="$"
                 />
               </div>
               <div class="row">
                 <p class="q-mx-none q-my-auto">Other Structure (B)</p>
                 <q-input
+                  mask="#.#"
                   type="number"
                   v-model="insuranceDetails.otherStructureB"
                   placeholder="Other Structure (B)"
@@ -771,6 +765,7 @@
               <div class="row">
                 <p class="q-mx-none q-my-auto">Contents Limit (C)</p>
                 <q-input
+                  mask="#.#"
                   type="number"
                   v-model="insuranceDetails.contentsLimit"
                   placeholder="Contents Limit (C)"
@@ -781,6 +776,7 @@
               <div class="row">
                 <p class="q-mx-none q-my-auto">Loss of Use Limit (D)</p>
                 <q-input
+                  mask="#.#"
                   type="number"
                   v-model="insuranceDetails.lossOfUSD"
                   placeholder="Loss of Use Limit (D)"
@@ -791,6 +787,7 @@
               <div class="row">
                 <p class="q-mx-none q-my-auto">Depreciation</p>
                 <q-input
+                  mask="#.#"
                   type="number"
                   v-model="insuranceDetails.deprecation"
                   placeholder="Depreciation"
@@ -801,6 +798,7 @@
               <div class="row">
                 <p class="q-mx-none q-my-auto">Deductible</p>
                 <q-input
+                  mask="#.#"
                   type="number"
                   v-model="insuranceDetails.deductible"
                   placeholder="Deductible"
@@ -811,6 +809,7 @@
               <div class="row">
                 <p class="q-mx-none q-my-auto">Prior payment by insured</p>
                 <q-input
+                  mask="#.#"
                   type="number"
                   v-model="insuranceDetails.priorPayment"
                   placeholder="Prior payment by insured"
@@ -905,9 +904,7 @@
                 map-options
                 emit-value
                 :options="propertyTypes"
-                @input="
-                  setTypes(propertyTypes, lossInfo.property, 'lossProperty')
-                "
+                @input="setTypes(propertyTypes, lossInfo.property)"
                 label="Property Type"
               />
               <q-input
@@ -921,9 +918,7 @@
                 map-options
                 emit-value
                 :options="claimReasons"
-                @input="
-                  setTypes(claimReasons, lossInfo.reasonClaim, 'reasonClaim')
-                "
+                @input="setTypes(claimReasons, lossInfo.reasonClaim)"
                 label="Reason for Claim"
               /><br />
               <span class="form-heading">Date of Loss</span>
@@ -940,7 +935,7 @@
                 map-options
                 emit-value
                 :options="lossCauses"
-                @input="setTypes(lossCauses, lossInfo.causeOfLoss, 'lossCause')"
+                @input="setTypes(lossCauses, lossInfo.causeOfLoss)"
                 label="Cause of Loss"
               /><br />
               <span class="form-heading">Deadline Date</span>
@@ -983,13 +978,7 @@
                 map-options
                 emit-value
                 :options="claimSeverity"
-                @input="
-                  setTypes(
-                    claimSeverity,
-                    lossInfo.severityOfClaimType,
-                    'severityType'
-                  )
-                "
+                @input="setTypes(claimSeverity, lossInfo.severityOfClaimType)"
                 label="Severity of Claim"
               /><br />
               <q-input
@@ -1099,27 +1088,21 @@
               "
             >
               <q-select
-                v-model="mortgageDetails.companyName.id"
+                v-model="mortgageDetails[0].id"
                 option-value="id"
                 option-label="name"
                 map-options
                 emit-value
                 :options="vendors"
-                @input="
-                  setTypes(
-                    vendors,
-                    mortgageDetails.companyName,
-                    'mortgageCompany'
-                  )
-                "
+                @input="setTypes(vendors, mortgageDetails[0], 'mortgage')"
                 label="Mortgage Company Name"
               />
               <q-input
-                v-model="mortgageDetails.loanNumber"
+                v-model="mortgageDetails[0].loanNumber"
                 label="Loan Number"
               />
               <q-input
-                v-model="mortgageDetails.accountNumber"
+                v-model="mortgageDetails[0].accountNumber"
                 label="Account Number"
               /><br />
               <span class="form-heading">Notes</span>
@@ -1127,39 +1110,43 @@
                 rows="5"
                 required
                 class="full-width"
-                v-model="mortgageDetails.notes"
+                v-model="mortgageDetails[0].notes"
                 style="resize: none;"
               />
               <div class="row">
                 <p style="q-mx-none q-my-auto">
                   Is there a 2nd mortgage on the home?
                 </p>
-                <q-toggle class="q-ml-auto" v-model="is2ndMortgageHomeToggle" />
+                <q-toggle
+                  class="q-ml-auto"
+                  v-model="isSecondMortgageHome"
+                  @input="onSecondMortgageToggle"
+                />
               </div>
-              <div v-if="is2ndMortgageHomeToggle">
+              <div v-if="isSecondMortgageHome">
                 <q-select
-                  v-model="mortgageDetails.secondCompanyName.id"
+                  v-model="mortgageDetails[1].id"
                   option-value="id"
                   option-label="name"
                   map-options
                   emit-value
                   :options="vendors"
-                  @input="setTypes(vendors, mortgageDetails.secondCompanyName)"
+                  @input="setTypes(vendors, mortgageDetails[1], 'mortgage')"
                   label="Mortgage Company Name"
                 />
                 <q-input
-                  v-model="mortgageDetails.secondLoanNumber"
+                  v-model="mortgageDetails[1].loanNumber"
                   label="Loan Number"
                 />
                 <q-input
-                  v-model="mortgageDetails.secondAccountNumber"
+                  v-model="mortgageDetails[1].accountNumber"
                   label="Account Number"
                 /><br />
                 <span class="form-heading">Notes</span>
                 <textarea
                   rows="5"
                   class="full-width"
-                  v-model="mortgageDetails.secondNotes"
+                  v-model="mortgageDetails[1].notes"
                 />
               </div>
             </div>
@@ -1460,11 +1447,7 @@ export default {
   components: { CustomHeader, VendorsList, AddVendor, AutoCompleteAddress },
   data() {
     return {
-      data: {
-        id: '',
-        types: ''
-      },
-      is2ndMortgageHomeToggle: false,
+      isSecondMortgageHome: false,
       vendorDialogName: '',
       vendorDialogFilterByIndustry: '',
       showVendorDialogFilters: false,
@@ -1503,7 +1486,7 @@ export default {
       },
       client: {
         id: '',
-        type: ''
+        value: ''
       },
       insuredDetails: {
         fname: '',
@@ -1556,7 +1539,7 @@ export default {
         dateOfLoss: '',
         propertyDescription: '',
         reasonClaim: {
-          type: '',
+          value: '',
           id: ''
         },
         deadlineDate: '',
@@ -1565,7 +1548,7 @@ export default {
         descriptionDwelling: '',
         damageDescription: '',
         property: {
-          type: '',
+          value: '',
           id: ''
         },
         insuranceAdjustorName: '',
@@ -1576,7 +1559,7 @@ export default {
           value: ''
         },
         causeOfLoss: {
-          type: '',
+          value: '',
           id: ''
         },
         describeTheLoss: '',
@@ -1611,21 +1594,16 @@ export default {
         priorPayment: '',
         reasonsOfLD: ''
       },
-      mortgageDetails: {
-        companyName: {
+      mortgageDetails: [
+        {
           id: '',
-          value: ''
-        },
-        loanNumber: '',
-        accountNumber: '',
-        notes: '',
-        secondCompanyName: {
-          id: ''
-        },
-        secondLoanNumber: '',
-        secondAccountNumber: '',
-        secondNotes: ''
-      },
+          value: '',
+          loanNumber: '',
+          accountNumber: '',
+          isPrimary: true,
+          notes: ''
+        }
+      ],
       estimatingInfo: {
         estimatorToBeAssigned: '',
         scopeTimeNeeded: '',
@@ -1651,7 +1629,6 @@ export default {
       countries: [],
       insuranceInfoDialog: false,
       isThisIsForcedPlacedPolicyToggle: false,
-      PolicyTypes: ['A', 'B'],
       DidYouHavePoliceDeclarationToggle: false,
       isStateOfEmergencyToggle: false,
       isTheHomeHabitable: false,
@@ -1671,9 +1648,7 @@ export default {
         dropBoxInfo: ''
       },
       isThereAsecondClaimToFileToggle: false,
-      insuranceAdjustorPhoneType: ['A', 'B', 'C'],
       typeOfLoss: [],
-      hasAvendorOfExpertHiredTypes: ['A', 'B'],
       mortgageInfoDialog: false,
       isTherea2ndMortgageOnTheHomeToggle: false,
       doesAnEstimatorNeedToBeAssignedToggle: false,
@@ -1770,29 +1745,11 @@ export default {
       this['honorific' + val].title = titleResult.title;
     },
 
-    setTypes(types, data, value) {
+    setTypes(types, data, type) {
       const obj = types.find(item => {
         return item.id === data.id;
       });
-      this.data.id = obj.id;
-      this.data.types = obj.machineName; //machine name is not present in vendor
-      if (value == 'clientType') {
-        this.client.type = this.data.types;
-      } else if (value == 'policyCategory') {
-        this.insuranceDetails.policyCategory.type = this.data.types;
-      } else if (value == 'propertyType') {
-        this.lossInfo.property.type = this.data.types;
-      } else if (value == 'mortgageCompany') {
-        this.mortgageDetails.companyName.value = this.data.types;
-      } else if (value == 'lossProperty') {
-        this.lossInfo.property.type = this.data.types;
-      } else if (value == 'reasonClaim') {
-        this.lossInfo.reasonClaim.type = this.data.types;
-      } else if (value == 'lossCause') {
-        this.lossInfo.causeOfLoss.type = this.data.types;
-      } else if (value == 'severityType') {
-        this.lossInfo.severityOfClaimType.type = this.data.types;
-      }
+      data.value = type == 'mortgage' ? obj.name : obj.machineName; //machine name is not present in vendor
     },
 
     mailingAddressSame() {
@@ -1828,7 +1785,18 @@ export default {
         };
       }
     },
-
+    onSecondMortgageToggle() {
+      if (this.isSecondMortgageHome) {
+        this.mortgageDetails.push({
+          id: '',
+          value: '',
+          loanNumber: '',
+          accountNumber: '',
+          isPrimary: false,
+          notes: ''
+        });
+      }
+    },
     async createClientButtonClick() {
       const payload = {
         isOrganization: this.primaryDetails.isOrganization,
@@ -1840,8 +1808,7 @@ export default {
           detail: this.sourceDetails.details
         },
         type: {
-          id: this.client.id,
-          value: this.client.type
+          ...this.client
         },
         insuredInfo: {
           primary: {
@@ -1916,22 +1883,27 @@ export default {
 
       const response = await this.addClient(payload);
       if (response && response.id) {
-        this.setPayloadForLoss(response.id);
+        const clientInfo = {
+          name: response,
+          id: response.id
+        };
+        this.setPayloadForLoss(clientInfo);
       }
     },
-    async setPayloadForLoss(clientId) {
+
+    async setPayloadForLoss(clientInfo) {
       const payload = {
         client: {
-          id: '',
-          fname: '',
-          lname: ''
+          id: this.client.id,
+          fname: this.insuredDetails.fname,
+          lname: this.insuredDetails.lname
         },
         policyInfo: {
           carrier: {
-            id: '',
-            value: ''
+            id: this.insuranceDetails.carrierId,
+            value: this.insuranceDetails.carrierName
           },
-          number: '',
+          number: this.insuranceDetails.policyNumber,
           isClaimFiled: this.hasClaimBeenFilledToggle,
           isForcedPlaced: this.isThisIsForcedPlacedPolicyToggle,
           claimNumber: '',
@@ -1965,54 +1937,34 @@ export default {
         },
         mortgageInfo: [
           {
-            id: this.mortgageDetails.companyName.id,
-            value: this.mortgageDetails.companyName.value,
-            loanNumber: this.mortgageDetails.loanNumber,
-            accountNumber: this.mortgageDetails.accountNumber,
-            isPrimary: '',
-            notes: this.mortgageDetails.notes.notes
-          },
-          {
-            id: this.mortgageDetails.secondCompanyName.id,
-            value: this.mortgageDetails.secondCompanyName.value,
-            loanNumber: this.mortgageDetails.secondLoanNumber,
-            accountNumber: this.mortgageDetails.secondAccountNumber,
-            notes: this.mortgageDetails.secondNotes
+            ...this.mortgageDetails
           }
         ],
         lossInfo: {
           address: {
-            addressCountry: '',
-            addressLocality: '',
-            addressRegion: '',
-            postOfficeBoxNumber: '',
-            postalCode: '',
-            streetAddress: ''
+            ...this.clientAddressDetails
           },
-          propertyType: {
-            id: this.lossInfo.property.id,
-            value: this.lossInfo.property.type
+
+          propertyTypes: {
+            ...this.lossInfo.property
           },
           propertyDesc: this.lossInfo.propertyDescription,
           claimReason: {
-            id: this.lossInfo.reasonClaim.id,
-            value: this.lossInfo.reasonClaim.type
+            ...this.lossInfo.reasonClaim
           },
           date: this.lossInfo.dateOfLoss,
           cause: {
-            id: this.lossInfo.causeOfLoss.id,
-            value: this.lossInfo.causeOfLoss.type
+            ...this.lossInfo.causeOfLoss
           },
           deadlineDate: this.lossInfo.deadlineDate,
           recovDDate: this.lossInfo.recovDeadline,
           isFEMA: this.femaClaimToggle,
           isEmergency: this.isStateOfEmergencyToggle,
           emergencyName: this.lossInfo.nameOfEmergency,
-          desc: this.descriptionDwelling,
+          desc: this.lossInfo.descriptionDwelling,
           isHabitable: this.isTheHomeHabitable,
-          serverity: {
-            id: this.lossInfo.severityOfClaimType.id,
-            value: this.lossInfo.severityOfClaimType.type
+          claimSeverity: {
+            ...this.lossInfo.severityOfClaimType
           },
           isOSDamaged: this.isDamageOSToggle,
           OSDamageDesc: this.lossInfo.damageDescription,
