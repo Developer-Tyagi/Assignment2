@@ -17,7 +17,6 @@
     "country-region-data": "^1.6.0",
     "mongodb-stitch-browser-sdk": "^4.8.0",
     "node-fetch": "^2.6.1",
-    "prettier": "^2.2.1",
     "quasar": "^1.0.0",
     "vue-chartjs": "^3.5.1"
   },
