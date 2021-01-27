@@ -4,9 +4,9 @@
       @backButton="$router.push('/clients')"
       :showAddButton="false"
     />
-    <div class="column full-height" style="padding: 51px 20px 20px 20px">
-      <div class="q-pa-md column full-height">
-        <div class="createClientInfo" style="font-size: 15px">
+    <div class="column" style="padding: 30px 20px 20px 20px">
+      <div class="q-md column ">
+        <div class="full-width fixHeight">
           <div class="form-list" @click="clientInfoDailog = true">
             Client Info
           </div>
@@ -26,17 +26,16 @@
           <div class="form-list" @click="estimatingInfoDialog = true">
             Estimating Info
           </div>
-          <q-separator />
+
           <div class="form-list" @click="expertVendorInfoDialog = true">
             Expert/Vendor Info
           </div>
-          <q-separator />
+
           <div class="form-list" @click="officeTaskDialog = true">
             Office Task
           </div>
-          <q-separator />
+
           <div class="form-list" @click="documentsDialog = true">Documents</div>
-          <q-separator />
         </div>
         <q-btn
           label="Create Client"
@@ -201,7 +200,7 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="form-card q-pa-md" style="padding-top-51px;">
+      <q-card class="form-card q-pa-md" style="padding-top: 30px;">
         <q-header bordered class="bg-white">
           <q-toolbar class="row bg-white">
             <img
@@ -217,15 +216,7 @@
         </q-header>
         <q-card-section>
           <div class="q-page bg-white">
-            <div
-              class="full-width"
-              style="
-                height: calc(100vh - 145px);
-                overflow-y: auto;
-                margin-bottom: 10px;
-                padding-top: 40px;
-              "
-            >
+            <div class="full-width fixHeight">
               <div>
                 <q-form ref="clientForm">
                   <div>
@@ -574,7 +565,7 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="form-card q-pa-md" style="padding-top-51px;">
+      <q-card class="form-card q-pa-md" style="padding-top:30px;">
         <q-header bordered class="bg-white">
           <q-toolbar class="row bg-white">
             <img
@@ -589,34 +580,25 @@
           </q-toolbar>
         </q-header>
         <q-card-section>
-          <div class="q-page bg-white" style="min-height: 630px">
-            <div
-              class="full-width"
-              style="
-                height: calc(100vh - 145px);
-                margin-bottom: 10px;
-                padding-top: 40px;
-              "
-            >
+          <div class="q-page bg-white">
+            <div class="full-width fixHeight">
               <div>
-                <div class="full-height" style="padding: 30px 20px 20px 20px">
-                  <div class="row">
-                    <p class="q-mx-none q-my-auto">
-                      Is the mailing address same?
-                    </p>
-                    <q-toggle
-                      class="q-ml-auto"
-                      v-model="isMailingAddressSameToggle"
-                      @input="mailingAddressSame"
-                    />
-                  </div>
-                  <AutoCompleteAddress
-                    :address="mailingAddressDetails"
-                    :isDropBoxEnable="true"
-                    :isChecksEnable="false"
-                    :isFieldsDisable="isMailingAddressSameToggle"
+                <div class="row">
+                  <span class="form-heading">
+                    Is the mailing address same?
+                  </span>
+                  <q-toggle
+                    class="q-ml-auto"
+                    v-model="isMailingAddressSameToggle"
+                    @input="mailingAddressSame"
                   />
                 </div>
+                <AutoCompleteAddress
+                  :address="mailingAddressDetails"
+                  :isDropBoxEnable="true"
+                  :isChecksEnable="false"
+                  :isFieldsDisable="isMailingAddressSameToggle"
+                />
               </div>
               <br />
             </div>
@@ -638,7 +620,7 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="form-card q-pa-md" style="padding-top-20px">
+      <q-card class="form-card q-pa-md" style="padding-top: 30px">
         <q-header bordered class="bg-white">
           <q-toolbar class="row bg-white">
             <img
@@ -654,16 +636,8 @@
         </q-header>
 
         <q-card-section>
-          <div class="q-page bg-white" style="min-height: 630px">
-            <div
-              class="full-width"
-              style="
-                height: calc(100vh - 145px);
-                overflow-y: auto;
-                margin-bottom: 10px;
-                padding-top: 40px;
-              "
-            >
+          <div class="q-page bg-white">
+            <div class="full-width fixHeight">
               <div
                 class="custom-select"
                 v-model="insuranceDetails.carrierName"
@@ -686,18 +660,18 @@
                 v-model="insuranceDetails.insuranceClaimNumber"
                 label="Insurance Claim Number"
               />
-
+              <br />
               <div class="row">
-                <p class="q-mx-none q-my-auto">Has claim been filed?</p>
+                <span class="form-heading">Has claim been filed?</span>
                 <q-toggle
                   class="q-ml-auto"
                   v-model="hasClaimBeenFilledToggle"
                 />
               </div>
               <div class="row">
-                <p class="q-mx-none q-my-auto">
+                <span class="form-heading">
                   Is this is a Foced-Placed policy?
-                </p>
+                </span>
                 <q-toggle
                   class="q-ml-auto"
                   v-model="isThisIsForcedPlacedPolicyToggle"
@@ -739,8 +713,9 @@
                 @input="setTypes(propertyTypes, insuranceDetails.property)"
                 label="Property Type"
               />
-              <div class="row">
-                <p class="q-mx-none q-my-auto">Dwelling Limit (A)</p>
+              <br />
+              <div class="row" style="align-items: center;">
+                <span class="form-heading">Dwelling Limit (A)</span>
                 <q-input
                   mask="#.#"
                   type="number"
@@ -750,8 +725,8 @@
                   prefix="$"
                 />
               </div>
-              <div class="row">
-                <p class="q-mx-none q-my-auto">Other Structure (B)</p>
+              <div class="row" style="align-items: center;">
+                <span class="form-heading">Other Structure (B)</span>
                 <q-input
                   mask="#.#"
                   type="number"
@@ -761,8 +736,8 @@
                   style="margin-left: auto; width: 50%"
                 />
               </div>
-              <div class="row">
-                <p class="q-mx-none q-my-auto">Contents Limit (C)</p>
+              <div class="row" style="align-items: center;">
+                <span class="form-heading">Contents Limit (C)</span>
                 <q-input
                   mask="#.#"
                   type="number"
@@ -772,8 +747,8 @@
                   style="margin-left: auto; width: 50%"
                 />
               </div>
-              <div class="row">
-                <p class="q-mx-none q-my-auto">Loss of Use Limit (D)</p>
+              <div class="row" style="align-items: center;">
+                <span class="form-heading">Loss of Use Limit (D)</span>
                 <q-input
                   mask="#.#"
                   type="number"
@@ -783,8 +758,8 @@
                   style="margin-left: auto; width: 50%"
                 />
               </div>
-              <div class="row">
-                <p class="q-mx-none q-my-auto">Depreciation</p>
+              <div class="row" style="align-items: center;">
+                <span class="form-heading">Depreciation</span>
                 <q-input
                   mask="#.#"
                   type="number"
@@ -794,8 +769,8 @@
                   style="margin-left: auto; width: 50%"
                 />
               </div>
-              <div class="row">
-                <p class="q-mx-none q-my-auto">Deductible</p>
+              <div class="row" style="align-items: center;">
+                <span class="form-heading">Deductible</span>
                 <q-input
                   mask="#.#"
                   type="number"
@@ -805,15 +780,16 @@
                   style="margin-left: auto; width: 50%"
                 />
               </div>
-              <div class="row">
-                <p class="q-mx-none q-my-auto">Prior payment by insured</p>
+
+              <div class="row " style="align-items: center;">
+                <span class="form-heading">Prior payment by insured</span>
                 <q-input
                   mask="#.#"
                   type="number"
                   v-model.number="insuranceDetails.priorPayment"
                   placeholder="Prior payment by insured"
                   prefix="$"
-                  style="margin-left: auto; width: 50%"
+                  style="margin-left: auto;  width:50%;    "
                 />
               </div>
               <br />
@@ -862,20 +838,12 @@
           </q-toolbar>
         </q-header>
         <q-card-section>
-          <div class="q-page bg-white" style="min-height: 630px">
-            <div
-              class="full-width"
-              style="
-                height: calc(100vh - 145px);
-                overflow-y: auto;
-                margin-bottom: 10px;
-                padding-top: 40px;
-              "
-            >
+          <div class="q-page bg-white">
+            <div class="full-width fixHeight">
               <div class="row">
-                <p class="q-mx-none q-my-auto">
+                <span class="form-heading">
                   Loss Address Same As Client's?
-                </p>
+                </span>
                 <q-toggle
                   class="q-ml-auto"
                   v-model="isLossAddressSameAsClientToggle"
@@ -950,15 +918,15 @@
                 placeholder="Recov. Deprec. Deadline"
               /><br />
               <div class="row">
-                <p style="q-mx-none q-my-auto">Is the Home Habitable?</p>
+                <span class="form-heading">Is the Home Habitable?</span>
                 <q-toggle class="q-ml-auto" v-model="isTheHomeHabitable" />
               </div>
               <div class="row">
-                <p style="q-mx-none q-my-auto">FEMA Claim</p>
+                <span class="form-heading">FEMA Claim</span>
                 <q-toggle class="q-ml-auto" v-model="femaClaimToggle" />
               </div>
               <div class="row">
-                <p style="q-mx-none q-my-auto">State of Emergency</p>
+                <span class="form-heading">State of Emergency</span>
                 <q-toggle
                   class="q-ml-auto"
                   v-model="isStateOfEmergencyToggle"
@@ -985,9 +953,9 @@
                 label="Loss Description to Dwelling"
               /><br />
               <div class="row">
-                <p style="q-mx-none q-my-auto">
+                <span class="form-heading">
                   Is there damage to other structures?
-                </p>
+                </span>
                 <q-toggle class="q-ml-auto" v-model="isDamageOSToggle" />
               </div>
               <q-input
@@ -997,43 +965,43 @@
               />
 
               <div class="row">
-                <p style="q-mx-none q-my-auto">
+                <span class="form-heading">
                   Is there damage to personal property?
-                </p>
+                </span>
                 <q-toggle
                   class="q-ml-auto"
                   v-model="isThereDamageToPersonalPropertyToggle"
                 />
               </div>
               <div class="row">
-                <p style="q-mx-none q-my-auto">
+                <span class="form-heading">
                   Was a PPIF provided to the insured?
-                </p>
+                </span>
                 <q-toggle
                   class="q-ml-auto"
                   v-model="wasAppifProvidedToTheInsuredToggle"
                 />
               </div>
               <div class="row">
-                <p style="q-mx-none q-my-auto">
+                <span class="form-heading">
                   Does the office need to provide a<br />
                   PPIF to the insured?
-                </p>
+                </span>
                 <q-toggle
                   class="q-ml-auto"
                   v-model="doesTheOfficeNeedToProvidePpifToTheInsuredToggle"
                 />
               </div>
               <div class="row">
-                <p style="q-mx-none q-my-auto">
+                <span class="form-heading">
                   Is there a mortgage on the home?
-                </p>
+                </span>
                 <q-toggle class="q-ml-auto" v-model="IsMortgageHomeToggle" />
               </div>
               <div class="row">
-                <p style="q-mx-none q-my-auto">
+                <span class="form-heading">
                   Is there a second claim to file?
-                </p>
+                </span>
                 <q-toggle
                   class="q-ml-auto"
                   v-model="isThereAsecondClaimToFileToggle"
@@ -1060,7 +1028,7 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="form-card q-pa-md" style="padding-top: 20px">
+      <q-card class="form-card q-pa-md" style="padding-top:30px">
         <q-header bordered class="bg-white">
           <q-toolbar class="row bg-white">
             <img
@@ -1076,16 +1044,8 @@
         </q-header>
 
         <q-card-section>
-          <div class="q-page bg-white" style="min-height: 620px">
-            <div
-              class="full-width"
-              style="
-                height: calc(100vh - 145px);
-                overflow-y: auto;
-                margin-bottom: 10px;
-                padding-top: 40px;
-              "
-            >
+          <div class="q-page bg-white">
+            <div class="full-width fixHeight">
               <q-select
                 v-model="mortgageDetails[0].id"
                 option-value="id"
@@ -1113,9 +1073,9 @@
                 style="resize: none;"
               />
               <div class="row">
-                <p style="q-mx-none q-my-auto">
+                <span class="form-heading">
                   Is there a 2nd mortgage on the home?
-                </p>
+                </span>
                 <q-toggle
                   class="q-ml-auto"
                   v-model="isSecondMortgageHome"
@@ -1151,7 +1111,7 @@
             </div>
             <br />
           </div>
-          <!-- </div> -->
+
           <q-btn
             label="Save"
             color="primary"
@@ -2049,6 +2009,12 @@ export default {
 </script>
 
 <style lang="scss">
+.fixHeight {
+  height: calc(100vh - 145px);
+  overflow-y: auto;
+  margin-bottom: 10px;
+  padding-top: 20px;
+}
 .form-card {
   max-height: calc(100vh - 100px);
   overflow: scroll;
