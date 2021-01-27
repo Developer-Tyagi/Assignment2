@@ -1895,33 +1895,7 @@ export default {
     },
 
     async setPayloadForLoss(clientInfo) {
-      let formattedString = '';
-
-      if (this.insuranceDetails.policyEffectiveDate) {
-        formattedString = date.formatDate(
-          this.insuranceDetails.policyEffectiveDate,
-          'YYYY-MM-DDTHH:mm:ssZ'
-        );
-      } else if (this.insuranceDetails.policyExpireDate) {
-        formattedString = date.formatDate(
-          this.insuranceDetails.policyExpireDate,
-          'YYYY-MM-DDTHH:mm:ssZ'
-        );
-      } else if (this.lossInfo.deadlineDate) {
-        formattedString = date.formatDate(
-          this.lossInfo.deadlineDate,
-          'YYYY-MM-DDTHH:mm:ssZ'
-        );
-      } else if (this.lossInfo.recovDeadline) {
-        formattedString = date.formatDate(
-          this.lossInfo.recovDeadline,
-          'YYYY-MM-DDTHH:mm:ssZ'
-        );
-      } else {
-        formattedString = null;
-      }
       const payload = {
-        id: clientInfo.id,
         client: {
           id: clientInfo.id,
           fname: this.insuredDetails.fname,
@@ -1944,8 +1918,18 @@ export default {
             id: this.insuranceDetails.property.id,
             value: this.insuranceDetails.property.value
           },
-          effectiveDate: formattedString,
-          expirationDate: formattedString,
+          effectiveDate: this.insuranceDetails.policyEffectiveDate
+            ? date.formatDate(
+                this.insuranceDetails.policyEffectiveDate,
+                'YYYY-MM-DDTHH:mm:ssZ'
+              )
+            : '',
+          expirationDate: this.insuranceDetails.policyExpireDate
+            ? date.formatDate(
+                this.insuranceDetails.policyExpireDate,
+                'YYYY-MM-DDTHH:mm:ssZ'
+              )
+            : '',
           limitCoverage: {
             dwelling: this.insuranceDetails.dwellingLimitA,
             otherStructure: this.insuranceDetails.otherStructureB,
@@ -1981,8 +1965,18 @@ export default {
           cause: {
             ...this.lossInfo.causeOfLoss
           },
-          deadlineDate: formattedString,
-          recovDDDate: formattedString,
+          deadlineDate: this.lossInfo.deadlineDate
+            ? date.formatDate(
+                this.lossInfo.deadlineDate,
+                'YYYY-MM-DDTHH:mm:ssZ'
+              )
+            : '',
+          recovDDDate: this.lossInfo.recovDeadline
+            ? date.formatDate(
+                this.lossInfo.recovDeadline,
+                'YYYY-MM-DDTHH:mm:ssZ'
+              )
+            : '',
           isFEMA: this.femaClaimToggle,
           isEmergency: this.isStateOfEmergencyToggle,
           emergencyName: this.lossInfo.nameOfEmergency,
