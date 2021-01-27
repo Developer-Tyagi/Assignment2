@@ -4,9 +4,9 @@
       @backButton="$router.push('/clients')"
       :showAddButton="false"
     />
-    <div class="column full-height" style="padding:51px 20px 20px 20px">
+    <div class="column full-height" style="padding: 51px 20px 20px 20px">
       <div class="q-pa-md column full-height">
-        <div class="createClientInfo" style="font-size:15px">
+        <div class="createClientInfo" style="font-size: 15px">
           <div class="form-list" @click="clientInfoDailog = true">
             Client Info
           </div>
@@ -19,9 +19,7 @@
           <div class="form-list" @click="insuranceInfoDialog = true">
             Insurance Info
           </div>
-          <div class="form-list" @click="lossInfoDialog = true">
-            Loss Info
-          </div>
+          <div class="form-list" @click="lossInfoDialog = true">Loss Info</div>
           <div class="form-list" @click="mortgageInfoDialog = true">
             Mortgage Info
           </div>
@@ -37,9 +35,7 @@
             Office Task
           </div>
           <q-separator />
-          <div class="form-list" @click="documentsDialog = true">
-            Documents
-          </div>
+          <div class="form-list" @click="documentsDialog = true">Documents</div>
           <q-separator />
         </div>
         <q-btn
@@ -58,7 +54,7 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="form-card q-pa-md" style="padding-top:51px">
+      <q-card class="form-card q-pa-md" style="padding-top: 51px">
         <q-header bordered class="bg-white">
           <q-toolbar class="row bg-white">
             <img
@@ -86,112 +82,106 @@
         <div v-if="AdjustorTypes.type == 'Self'">
           <div style="font-size: 15px; font-weight: bold">My Details</div>
           <br />
-          <div style="font-size:15px; margin-left:10px">22/12/2020</div>
-          <div style="font-size:15px; margin-left:10px;font-weight:bold">
+          <div style="font-size: 15px; margin-left: 10px">22/12/2020</div>
+          <div style="font-size: 15px; margin-left: 10px; font-weight: bold">
             David Jones
           </div>
-          <div style="font-size:15px; margin-left:10px">
+          <div style="font-size: 15px; margin-left: 10px">
             davidjones@company.com
           </div>
-          <div style="font-size:15px; margin-left:10px">
+          <div style="font-size: 15px; margin-left: 10px">
             Mobile- +1(650) XXXXX98
           </div>
-          <div style="font-size:15px; margin-left:10px">
+          <div style="font-size: 15px; margin-left: 10px">
             License Number- 12345677
           </div>
           <br />
           <div class="row">
-            <p style="font-size:15px">Is it company lead?</p>
+            <p style="font-size: 15px">Is it company lead?</p>
             <q-toggle class="q-ml-auto" v-model="isItCompanyLeadToggle" />
           </div>
           <q-separator /><br />
-          <div style="font-size:15px;">Default Fee Rate - 20%</div>
+          <div style="font-size: 15px">Default Fee Rate - 20%</div>
           <br />
-          <div style="font-size:20px;">Adjustors Fee Type</div>
+          <div style="font-size: 20px">Adjustors Fee Type</div>
           <div class="row">
-            <div class="q-pa-md ">
+            <div class="q-pa-md">
               <q-btn padding="xs" color="primary" icon="eva-percent" />
             </div>
-            <div class="q-pa-md ">
+            <div class="q-pa-md">
               <div class="text-purple q-gutter-md">
                 <q-btn padding="xs" color="primary" icon="monetization_on" />
               </div>
             </div>
-            <div class="q-pa-md ">
+            <div class="q-pa-md">
               <div class="text-purple q-gutter-md">
                 <q-btn padding="xs" color="primary" icon="query_builder" />
               </div>
             </div>
           </div>
-          <div style="font-size:15px; font-weight: bold">
+          <div style="font-size: 15px; font-weight: bold">
             Adjusters Fee Rate
           </div>
           <br />
           <q-separator />
           <br />
-          <div class="row" style="font-size:20px; ">
-            <span class="material-icons">
-              info
-            </span>
+          <div class="row" style="font-size: 20px">
+            <span class="material-icons"> info </span>
             <div>Needs approval from company</div>
           </div>
         </div>
-        <div v-else v-else-if="AdjustorTypes.type == 'Public Adjustor 01'">
-          <div style="font-size: 15px; margin-left:10px">
+        <div v-else-if="AdjustorTypes.type == 'Public Adjustor 01'">
+          <div style="font-size: 15px; margin-left: 10px">
             Public Adjustor 01 Details
           </div>
           <br />
-          <div style="font-size:15px; margin-left:10px">22/12/2020</div>
-          <div style="font-size:15px; margin-left:10px;font-weight:bold">
+          <div style="font-size: 15px; margin-left: 10px">22/12/2020</div>
+          <div style="font-size: 15px; margin-left: 10px; font-weight: bold">
             Public Adjustor 01
           </div>
-          <div style="font-size:15px; margin-left:10px">
+          <div style="font-size: 15px; margin-left: 10px">
             publicadjustor01@company.com
           </div>
-          <div style="font-size:15px; margin-left:10px">
+          <div style="font-size: 15px; margin-left: 10px">
             Mobile- +1(650) XXXXX98
           </div>
-          <div style="font-size:15px; margin-left:10px">
+          <div style="font-size: 15px; margin-left: 10px">
             License Number- 12345677
           </div>
           <br />
           <div class="row">
-            <p style="font-size:15px">Is it company lead</p>
+            <p style="font-size: 15px">Is it company lead</p>
             <q-toggle class="q-ml-auto" v-model="isItCompanyLeadToggle" />
           </div>
           <q-separator></q-separator><br />
-          <div style="font-size:15px; margin-left:25px">
+          <div style="font-size: 15px; margin-left: 25px">
             Default Fee Rate - 20%
           </div>
           <br />
-          <div style="font-size:20px;">
-            Adjustors Fee Type
-          </div>
+          <div style="font-size: 20px">Adjustors Fee Type</div>
           <div class="row">
-            <div class="q-pa-md ">
+            <div class="q-pa-md">
               <q-btn padding="xs" color="primary" icon="eva-percent" />
             </div>
-            <div class="q-pa-md ">
+            <div class="q-pa-md">
               <div class="text-purple q-gutter-md">
                 <q-btn padding="xs" color="primary" icon="monetization_on" />
               </div>
             </div>
-            <div class="q-pa-md ">
+            <div class="q-pa-md">
               <div class="text-purple q-gutter-md">
                 <q-btn padding="xs" color="primary" icon="query_builder" />
               </div>
             </div>
           </div>
-          <div style="font-size:15px; font-weight: bold">
+          <div style="font-size: 15px; font-weight: bold">
             Adjusters Fee Rate
           </div>
           <br />
           <q-separator />
           <br />
-          <div class="row" style="font-size:20px; margin-left:10px">
-            <span class="material-icons">
-              info
-            </span>
+          <div class="row" style="font-size: 20px; margin-left: 10px">
+            <span class="material-icons"> info </span>
             <div>Needs approval from company</div>
           </div>
         </div>
@@ -207,7 +197,7 @@
     <q-dialog
       v-model="clientInfoDailog"
       persistent
-      :maximized="maximizedToggle"
+      :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
     >
@@ -226,354 +216,349 @@
           </q-toolbar>
         </q-header>
         <q-card-section>
-          <div class="q-page bg-white " style="min-height: 630px;">
+          <div class="q-page bg-white">
             <div
               class="full-width"
               style="
-            height: calc(100vh - 145px);
-            overflow-y: auto;
-            margin-bottom: 10px;
-            padding-top:40px;
-          "
+                height: calc(100vh - 145px);
+                overflow-y: auto;
+                margin-bottom: 10px;
+                padding-top: 40px;
+              "
             >
               <div>
-                <span class="form-heading">Choose Lead Source</span>
-              </div>
-              <div>
-                <q-select
-                  v-model="sourceDetails.type"
-                  :options="leadSources"
-                  option-label="name"
-                  option-value="value"
-                  emit-value
-                  map-options
-                  @input="onChangingSourceType()"
-                />
-                <q-input
-                  v-if="
-                    sourceDetails.type != 'vendor' &&
-                      sourceDetails.type != '' &&
-                      sourceDetails.type != 'google'
-                  "
-                  type="text"
-                  placeholder="Enter Source details"
-                  v-model="sourceDetails.details"
-                  lazy-rules
-                  :rules="[val => (val && val.length > 0) || '']"
-                />
-                <div
-                  v-else-if="sourceDetails.type == 'vendor'"
-                  class="custom-select"
-                  @click="vendorsListDialog = true"
-                >
-                  <div class="select-text">
-                    {{
-                      sourceDetails.id
-                        ? sourceDetails.details
-                        : 'Select Lead Source'
-                    }}
+                <q-form ref="clientForm">
+                  <div>
+                    <span class="form-heading">Choose Lead Source</span>
                   </div>
-                </div>
-              </div>
-              <q-select
-                v-model="client.id"
-                option-value="id"
-                option-label="name"
-                map-options
-                emit-value
-                :options="clientTypes"
-                @input="setTypes(clientTypes, client)"
-                label="Client Type"
-              />
-              <div class="row">
-                <p class="q-mx-none q-my-auto">
-                  Is Policy Holder An Organization ?
-                </p>
-                <q-toggle
-                  v-model="primaryDetails.isOrganization"
-                  left-label
-                  class="q-ml-auto"
-                />
-              </div>
-              <div v-if="primaryDetails.isOrganization">
-                <q-input
-                  v-model="primaryDetails.organizationName"
-                  label="Organization Name"
-                  lazy-rules
-                  :rules="[
-                    val =>
-                      (val && val.length > 0) ||
-                      'Please fill the organization name '
-                  ]"
-                />
-              </div>
-              <div class="row">
-                <p class="q-mx-none q-my-auto">
-                  Organization Is Policyholder?
-                </p>
-                <q-toggle
-                  v-model="policyHolder.isPolicyHolder"
-                  left-label
-                  class="q-ml-auto"
-                />
-              </div>
-              <br />
-              <span class="form-heading">Insured Details</span>
-              <q-select
-                v-model="honorific1.id"
-                :options="titles"
-                option-value="id"
-                option-label="name"
-                map-options
-                @input="setTitleName(1)"
-                emit-value
-                label="Title"
-              />
-
-              <q-input
-                v-model="insuredDetails.fname"
-                lazy-rules
-                :rules="[
-                  val => (val && val.length > 0) || 'Please fill the First name'
-                ]"
-                label="First Name"
-              />
-              <q-input
-                v-model="insuredDetails.lname"
-                lazy-rules
-                :rules="[
-                  val => (val && val.length > 0) || 'Please fill the Last name'
-                ]"
-                label="Last Name"
-              />
-              <div class="row">
-                <q-select
-                  v-model="insuredDetails.type"
-                  :options="contactTypes"
-                  option-value="machineName"
-                  option-label="name"
-                  map-options
-                  emit-value
-                  label="Type"
-                  lazy-rules
-                  :rules="[val => (val && val.length > 0) || '']"
-                  style="width: 40%; margin-right: auto"
-                />
-                <q-input
-                  v-model="insuredDetails.phone"
-                  label="Phone"
-                  type="number"
-                  lazy-rules
-                  :rules="[
-                    val =>
-                      (val && val.length == 10) ||
-                      'Please fill the phone number'
-                  ]"
-                  style="width: 55%"
-                />
-              </div>
-              <q-input
-                v-model="insuredDetails.email"
-                label="Email"
-                lazy-rules
-                :rules="[
-                  val =>
-                    validateEmail(val) ||
-                    'You have entered an invalid email address!'
-                ]"
-              />
-
-              <div class="row">
-                <p class="q-mx-none q-my-auto">
-                  Is there a Co-insured?
-                </p>
-                <q-toggle class="q-ml-auto" v-model="isThereaCoInsuredToggle" />
-              </div>
-              <br />
-              <div v-if="isThereaCoInsuredToggle" style="font-size:20px;">
-                <span class="form-heading">Co-insured Details</span>
-
-                <q-select
-                  v-model="honorific2.id"
-                  :options="titles"
-                  option-value="id"
-                  option-label="name"
-                  map-options
-                  @input="setTitleName(2)"
-                  emit-value
-                  label="Title"
-                />
-                <q-input v-model="coInsuredDetails.fname" label="First Name" />
-                <q-input v-model="coInsuredDetails.lname" label="Last Name" />
-                <div class="row">
+                  <div>
+                    <q-select
+                      v-model="sourceDetails.type"
+                      :options="leadSources"
+                      option-label="name"
+                      option-value="value"
+                      emit-value
+                      map-options
+                      @input="onChangingSourceType()"
+                    />
+                    <q-input
+                      v-if="
+                        sourceDetails.type != 'vendor' &&
+                          sourceDetails.type != '' &&
+                          sourceDetails.type != 'google'
+                      "
+                      type="text"
+                      placeholder="Enter Source details"
+                      v-model="sourceDetails.details"
+                      lazy-rules
+                      :rules="[val => (val && val.length > 0) || '']"
+                    />
+                    <div
+                      v-else-if="sourceDetails.type == 'vendor'"
+                      class="custom-select"
+                      @click="onAddVendorDialogClick('vendor')"
+                    >
+                      <div class="select-text">
+                        {{
+                          sourceDetails.id
+                            ? sourceDetails.details
+                            : 'Select Lead Source'
+                        }}
+                      </div>
+                    </div>
+                  </div>
                   <q-select
-                    v-model="coInsuredDetails.type"
-                    :options="contactTypes"
-                    option-value="machineName"
+                    v-model="client.id"
+                    option-value="id"
                     option-label="name"
                     map-options
                     emit-value
-                    style="width: 40%; margin-right: auto"
-                    label="Type"
-                    lazy-rules
-                    :rules="[val => (val && val.length > 0) || '']"
+                    :options="clientTypes"
+                    @input="setTypes(clientTypes, client)"
+                    label="Client Type"
                   />
+
+                  <div class="row">
+                    <p class="q-mx-none q-my-auto">
+                      Is Policy Holder An Organization ?
+                    </p>
+                    <q-toggle
+                      v-model="primaryDetails.isOrganization"
+                      left-label
+                      class="q-ml-auto"
+                    />
+                  </div>
+
+                  <div v-if="primaryDetails.isOrganization">
+                    <q-input
+                      v-model="primaryDetails.organizationName"
+                      label="Organization Name"
+                      lazy-rules
+                      :rules="[
+                        val =>
+                          (val && val.length > 0) ||
+                          'Please fill the organization name '
+                      ]"
+                    />
+                  </div>
+                  <div class="row">
+                    <p class="q-mx-none q-my-auto">
+                      Organization Is Policyholder?
+                    </p>
+                    <q-toggle
+                      v-model="policyHolder.isPolicyHolder"
+                      left-label
+                      class="q-ml-auto"
+                    />
+                  </div>
+                  <br />
+
+                  <span class="form-heading">Insured Details</span>
+                  <q-select
+                    v-model="honorific1.id"
+                    :options="titles"
+                    option-value="id"
+                    option-label="name"
+                    map-options
+                    @input="setTitleName(1)"
+                    emit-value
+                    label="Title"
+                  />
+
                   <q-input
-                    v-model="coInsuredDetails.phone"
-                    label="Phone"
-                    type="number"
+                    v-model="insuredDetails.fname"
                     lazy-rules
                     :rules="[
                       val =>
-                        (val && val.length == 10) ||
-                        'Please fill the phone number'
+                        (val && val.length > 0) || 'Please fill the First name'
                     ]"
-                    style="width:55%;"
+                    label="First Name"
                   />
-                </div>
-                <q-input
-                  v-model="coInsuredDetails.email"
-                  input
-                  type="email"
-                  lazy-rules
-                  :rules="[
-                    val =>
-                      validateEmail(val) ||
-                      'You have entered an invalid email address!'
-                  ]"
-                  label="Email"
-                />
-              </div>
-              <div class="row">
-                <p class="q-mx-none q-my-auto">
-                  Add aditional phone number(s)
-                </p>
-                <q-toggle
-                  class="q-ml-auto"
-                  v-model="addAditionalPhoneNumberToggle"
-                />
-              </div>
-              <div v-if="addAditionalPhoneNumberToggle">
-                <div class="row">
-                  <q-select
-                    v-model="addAditionalPhoneNumber.type1"
-                    label="Type"
-                    :options="contactTypes"
-                    option-value="machineName"
-                    option-label="name"
-                    map-options
-                    emit-value
-                    lazy-rules
-                    :rules="[val => (val && val.length > 0) || '']"
-                    style="width: 40%; margin-right: auto"
-                  />
-                  <q-input
-                    v-model="addAditionalPhoneNumber.phone2"
-                    label="Phone2"
-                    type="number"
-                    lazy-rules
-                    :rules="[
-                      val =>
-                        (val && val.length == 10) ||
-                        'Please fill the phone number'
-                    ]"
-                    style="width:55%;margin-left:auto"
-                  />
-                </div>
-                <div class="row">
-                  <q-select
-                    v-model="addAditionalPhoneNumber.type2"
-                    label="Type"
-                    :options="contactTypes"
-                    option-value="machineName"
-                    option-label="name"
-                    map-options
-                    emit-value
-                    lazy-rules
-                    :rules="[val => (val && val.length > 0) || '']"
-                    style="width: 40%; margin-right: auto"
-                  />
-                  <q-input
-                    v-model="addAditionalPhoneNumber.phone3"
-                    label="Phone3"
-                    type="number"
-                    lazy-rules
-                    :rules="[
-                      val =>
-                        (val && val.length == 10) ||
-                        'Please fill the phone number'
-                    ]"
-                    style="width:55%"
-                  />
-                </div>
-              </div>
-              <br />
-              <span class="form-heading">Address Details</span>
-              <q-input
-                v-model="addressDetails.streetNumber"
-                label="Street Number"
-              />
 
-              <q-input
-                v-model="addressDetails.apartmentNumber"
-                label="Unit or Apartment Number"
-              />
-              <q-input v-model="addressDetails.city" label="City" />
-              <q-select
-                v-model="addressDetails.state"
-                :options="states"
-                label="State"
-              />
-              <q-input v-model="addressDetails.zip" label="ZIP" />
-              <q-select
-                v-model="addressDetails.country"
-                :options="countries"
-                label="Country"
-                @input="onCountrySelect(mailingAddressDetails.country)"
-              />
-              <div class="row">
-                <p class="q-mx-none q-my-auto">
-                  Gate / Dropbox
-                </p>
-                <q-toggle class="q-ml-auto" v-model="gateDropboxToggle" />
-              </div>
-              <div v-if="gateDropboxToggle">
-                <q-input
-                  v-model="gateDropbox.info"
-                  label="Gate / Dropbox Info"
-                />
-              </div>
-              <div class="row">
-                <p class="q-mx-none q-my-auto">
-                  Tenent Occupied
-                </p>
-                <q-toggle class="q-ml-auto" v-model="tenantOccupiedToggle" />
-              </div>
-              <div v-if="tenantOccupiedToggle">
-                <q-input v-model="tenantOccupied.name" label="Tenant Name" />
-                <div class="row">
-                  <q-select
-                    v-model="tenantOccupied.type"
-                    label="Type"
-                    :options="contactTypes"
-                    option-value="machineName"
-                    option-label="name"
-                    map-options
-                    emit-value
-                    style="width: 40%; margin-right: auto"
-                  />
                   <q-input
-                    v-model="tenantOccupied.phone"
-                    label="Phone"
-                    style="width:55%;margin-left:auto"
+                    v-model="insuredDetails.lname"
+                    lazy-rules
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) || 'Please fill the Last name'
+                    ]"
+                    label="Last Name"
                   />
-                </div>
+                  <div class="row">
+                    <q-select
+                      v-model="insuredDetails.type"
+                      :options="contactTypes"
+                      option-value="machineName"
+                      option-label="name"
+                      map-options
+                      emit-value
+                      label="Type"
+                      lazy-rules
+                      :rules="[val => (val && val.length > 0) || '']"
+                      style="width: 40%; margin-right: auto"
+                    />
+                    <q-input
+                      v-model="insuredDetails.phone"
+                      label="Phone"
+                      type="number"
+                      lazy-rules
+                      :rules="[
+                        val =>
+                          (val && val.length == 10) ||
+                          'Please fill the phone number'
+                      ]"
+                      style="width: 55%"
+                    />
+                  </div>
+                  <q-input
+                    v-model="insuredDetails.email"
+                    label="Email"
+                    lazy-rules
+                    :rules="[
+                      val =>
+                        validateEmail(val) ||
+                        'You have entered an invalid email address!'
+                    ]"
+                  />
+                  <div class="row">
+                    <p class="q-mx-none q-my-auto">Is there a Co-insured?</p>
+                    <q-toggle
+                      class="q-ml-auto"
+                      v-model="isThereaCoInsuredToggle"
+                    />
+                  </div>
+                  <br />
+                  <div v-if="isThereaCoInsuredToggle" style="font-size: 20px">
+                    <span class="form-heading">Co-insured Details</span>
+
+                    <q-select
+                      v-model="honorific2.id"
+                      :options="titles"
+                      option-value="id"
+                      option-label="name"
+                      map-options
+                      @input="setTitleName(2)"
+                      emit-value
+                      label="Title"
+                    />
+                    <q-input
+                      v-model="coInsuredDetails.fname"
+                      label="First Name"
+                    />
+                    <q-input
+                      v-model="coInsuredDetails.lname"
+                      label="Last Name"
+                    />
+                    <div class="row">
+                      <q-select
+                        v-model="coInsuredDetails.type"
+                        :options="contactTypes"
+                        option-value="machineName"
+                        option-label="name"
+                        map-options
+                        emit-value
+                        style="width: 40%; margin-right: auto"
+                        label="Type"
+                        lazy-rules
+                        :rules="[val => (val && val.length > 0) || '']"
+                      />
+                      <q-input
+                        v-model="coInsuredDetails.phone"
+                        label="Phone"
+                        type="number"
+                        lazy-rules
+                        :rules="[
+                          val =>
+                            (val && val.length == 10) ||
+                            'Please fill the phone number'
+                        ]"
+                        style="width: 55%"
+                      />
+                    </div>
+                    <q-input
+                      v-model="coInsuredDetails.email"
+                      input
+                      type="email"
+                      lazy-rules
+                      :rules="[
+                        val =>
+                          validateEmail(val) ||
+                          'You have entered an invalid email address!'
+                      ]"
+                      label="Email"
+                    />
+                  </div>
+                  <div class="row">
+                    <p class="q-mx-none q-my-auto">
+                      Add aditional phone number(s)
+                    </p>
+                    <q-toggle
+                      class="q-ml-auto"
+                      v-model="addAditionalPhoneNumberToggle"
+                    />
+                  </div>
+                  <div v-if="addAditionalPhoneNumberToggle">
+                    <div class="row">
+                      <q-select
+                        v-model="addAditionalPhoneNumber.type1"
+                        label="Type"
+                        :options="contactTypes"
+                        option-value="machineName"
+                        option-label="name"
+                        map-options
+                        emit-value
+                        lazy-rules
+                        :rules="[val => (val && val.length > 0) || '']"
+                        style="width: 40%; margin-right: auto"
+                      />
+                      <q-input
+                        v-model="addAditionalPhoneNumber.phone2"
+                        label="Phone2"
+                        type="number"
+                        lazy-rules
+                        :rules="[
+                          val =>
+                            (val && val.length == 10) ||
+                            'Please fill the phone number'
+                        ]"
+                        style="width: 55%; margin-left: auto"
+                      />
+                    </div>
+                    <div class="row">
+                      <q-select
+                        v-model="addAditionalPhoneNumber.type2"
+                        label="Type"
+                        :options="contactTypes"
+                        option-value="machineName"
+                        option-label="name"
+                        map-options
+                        emit-value
+                        lazy-rules
+                        :rules="[val => (val && val.length > 0) || '']"
+                        style="width: 40%; margin-right: auto"
+                      />
+                      <q-input
+                        v-model="addAditionalPhoneNumber.phone3"
+                        label="Phone3"
+                        type="number"
+                        lazy-rules
+                        :rules="[
+                          val =>
+                            (val && val.length == 10) ||
+                            'Please fill the phone number'
+                        ]"
+                        style="width: 55%"
+                      />
+                    </div>
+                  </div>
+                  <br />
+                  <span class="form-heading">Address Details</span>
+
+                  <AutoCompleteAddress
+                    :address="clientAddressDetails"
+                    :isDropBoxEnable="true"
+                    :isChecksEnable="false"
+                    :isFieldsDisable="false"
+                  />
+                  <div class="row">
+                    <p class="q-mx-none q-my-auto">Tenent Occupied</p>
+                    <q-toggle
+                      class="q-ml-auto"
+                      v-model="tenantOccupiedToggle"
+                    />
+                  </div>
+                  <div v-if="tenantOccupiedToggle">
+                    <q-input
+                      v-model="tenantOccupied.name"
+                      label="Tenant Name"
+                    />
+
+                    <div class="row">
+                      <q-select
+                        v-model="tenantOccupied.type"
+                        label="Type"
+                        :options="contactTypes"
+                        option-value="machineName"
+                        option-label="name"
+                        map-options
+                        emit-value
+                        style="width: 40%; margin-right: auto"
+                      />
+                      <q-input
+                        v-model="tenantOccupied.phone"
+                        label="Phone"
+                        style="width: 55%; margin-left: auto"
+                      />
+                    </div>
+                  </div>
+                </q-form>
               </div>
-              <br />
             </div>
+            <br />
           </div>
+
           <q-btn
-            @click="clientInfoDailog = false"
+            @click="onSubmit"
             label="Save"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
@@ -585,11 +570,11 @@
     <q-dialog
       v-model="mailingAddressDialog"
       persistent
-      :maximized="maximizedToggle"
+      :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="form-card q-pa-md" style="padding-top-20px">
+      <q-card class="form-card q-pa-md" style="padding-top-51px;">
         <q-header bordered class="bg-white">
           <q-toolbar class="row bg-white">
             <img
@@ -604,109 +589,32 @@
           </q-toolbar>
         </q-header>
         <q-card-section>
-          <div class="q-page bg-white " style="min-height: 630px;">
+          <div class="q-page bg-white" style="min-height: 630px">
             <div
               class="full-width"
               style="
-            height: calc(100vh - 145px);
-          margin-bottom: 10px;
-            padding-top:40px;
-          "
+                height: calc(100vh - 145px);
+                margin-bottom: 10px;
+                padding-top: 40px;
+              "
             >
-              <div
-                class="column full-height"
-                style="padding:30px 20px 20px 20px"
-              >
-                <div class="row">
-                  <p class="q-mx-none q-my-auto">
-                    Is the mailing address same?
-                  </p>
-                  <q-toggle
-                    class="q-ml-auto"
-                    v-model="isMailingAddressSameToggle"
-                    @input="mailingAddressSame"
-                  />
-                </div>
-                <div v-if="!isMailingAddressSameToggle">
-                  <q-input
-                    v-model="mailingAddressSameInfo.streetAddress"
-                    label="Street Address"
-                  />
-                  <q-input
-                    v-model="mailingAddressSameInfo.unitOrApartmentNumber"
-                    label="Unit or Apartment Number"
-                  />
-                  <q-input v-model="mailingAddressSameInfo.city" label="City" />
-                  <q-select
-                    v-model="mailingAddressSameInfo.state"
-                    :options="states"
-                    label="State"
-                  />
-                  <q-select
-                    v-model="mailingAddressSameInfo.country"
-                    :options="countries"
-                    label="Country"
-                    @input="onCountrySelect(mailingAddressDetails.country)"
-                  />
-                  <q-input v-model="mailingAddressSameInfo.zip" label="ZIP" />
+              <div>
+                <div class="full-height" style="padding: 30px 20px 20px 20px">
                   <div class="row">
                     <p class="q-mx-none q-my-auto">
-                      Gate / Dropbox
+                      Is the mailing address same?
                     </p>
-                    <q-toggle class="q-ml-auto" v-model="gateDropboxToggle" />
-                  </div>
-                  <div v-if="gateDropboxToggle">
-                    <q-input
-                      v-model="mailingAddressSameInfo.dropBox"
-                      label="Gate / Dropbox Info"
+                    <q-toggle
+                      class="q-ml-auto"
+                      v-model="isMailingAddressSameToggle"
+                      @input="mailingAddressSame"
                     />
                   </div>
-                </div>
-                <div v-else>
-                  <q-input
-                    v-model="mailingAddressSameInfo.streetAddress"
-                    label="Street Address"
-                    disable
-                  />
-                  <q-input
-                    v-model="mailingAddressSameInfo.unitOrApartmentNumber"
-                    label="Unit or Apartment Number"
-                    disable
-                  />
-                  <q-input
-                    v-model="mailingAddressSameInfo.city"
-                    label="City"
-                    disable
-                  />
-                  <q-select
-                    v-model="mailingAddressSameInfo.state"
-                    :options="states"
-                    label="State"
-                    disable
-                  />
-                  <q-select
-                    v-model="mailingAddressSameInfo.country"
-                    :options="countries"
-                    label="Country"
-                    disable
-                    @input="onCountrySelect(mailingAddressDetails.country)"
-                  />
-                  <q-input
-                    v-model="mailingAddressSameInfo.zip"
-                    disable
-                    label="ZIP"
-                  />
-                  <div class="row">
-                    <p class="q-mx-none q-my-auto">
-                      Gate / Dropbox
-                    </p>
-                    <q-toggle class="q-ml-auto" v-model="gateDropboxToggle" />
-                  </div>
-
-                  <q-input
-                    v-model="mailingAddressSameInfo.dropBox"
-                    disable
-                    label="Gate / Dropbox Info"
+                  <AutoCompleteAddress
+                    :address="mailingAddressDetails"
+                    :isDropBoxEnable="true"
+                    :isChecksEnable="false"
+                    :isFieldsDisable="isMailingAddressSameToggle"
                   />
                 </div>
               </div>
@@ -726,7 +634,7 @@
     <q-dialog
       v-model="insuranceInfoDialog"
       persistent
-      :maximized="maximizedToggle"
+      :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
     >
@@ -746,69 +654,178 @@
         </q-header>
 
         <q-card-section>
-          <div class="q-page bg-white " style="min-height: 630px;">
+          <div class="q-page bg-white" style="min-height: 630px">
             <div
               class="full-width"
               style="
-            height: calc(100vh - 145px);
-            
-            margin-bottom: 10px;
-            padding-top:40px;
-          "
+                height: calc(100vh - 145px);
+                overflow-y: auto;
+                margin-bottom: 10px;
+                padding-top: 40px;
+              "
             >
               <div
-                class="column full-height"
-                style="padding:30px 20px 20px 20px"
+                class="custom-select"
+                v-model="insuranceDetails.carrierName"
+                @click="onAddVendorDialogClick('carrier')"
               >
-                <div class="row">
-                  <p class="q-mx-none q-my-auto" style="font-size:15px">
-                    Is this is a Foced-Placed policy?
-                  </p>
-                  <q-toggle
-                    class="q-ml-auto"
-                    v-model="isThisIsForcedPlacedPolicyToggle"
-                  />
+                <div class="select-text">
+                  {{
+                    insuranceDetails.carrierName
+                      ? insuranceDetails.carrierName
+                      : 'Enter Carrier Details'
+                  }}
                 </div>
-                <q-select
-                  v-model="forcedPlacedPolicyDetails.policyType"
-                  :options="PolicyTypes"
-                  label="Type of Policy"
-                />
-                <q-input
-                  v-model="forcedPlacedPolicyDetails.policyInceptionDate"
-                  label="Policy Inception Date"
-                />
-                <q-input
-                  v-model="forcedPlacedPolicyDetails.policyExpirationDate"
-                  label="Policy Expiration Date"
-                />
-                <q-input
-                  v-model="forcedPlacedPolicyDetails.otherPolicyType"
-                  label="Other Policy Type"
-                />
-                <q-input
-                  v-model="forcedPlacedPolicyDetails.insuranceCarrier"
-                  label="Insurance Carrier"
-                />
-                <q-input
-                  v-model="forcedPlacedPolicyDetails.policyNumber"
-                  label="Policy Number"
-                />
-                <q-input
-                  v-model="forcedPlacedPolicyDetails.policyDeductibleAmount"
-                  label="Policy deductible amount"
-                />
-                <div class="row">
-                  <p class="q-mx-none q-my-auto" style="font-size:15px">
-                    Did you have the policy's Declaration?
-                  </p>
+              </div>
+              <q-input
+                v-model="insuranceDetails.policyNumber"
+                label="Policy Number"
+              />
 
-                  <q-toggle
-                    class="q-ml-auto"
-                    v-model="DidYouHavePoliceDeclarationToggle"
-                  />
-                </div>
-                <q-separator></q-separator>
+              <q-input
+                v-model="insuranceDetails.insuranceCarrierNumber"
+                label="Insurance Carrier Number"
+              />
+
+              <div class="row">
+                <p class="q-mx-none q-my-auto">Has claim been filed?</p>
+                <q-toggle
+                  class="q-ml-auto"
+                  v-model="hasClaimBeenFilledToggle"
+                />
+              </div>
+              <div class="row">
+                <p class="q-mx-none q-my-auto">
+                  Is this is a Foced-Placed policy?
+                </p>
+                <q-toggle
+                  class="q-ml-auto"
+                  v-model="isThisIsForcedPlacedPolicyToggle"
+                />
+              </div>
+              <span class="form-heading">Policy Effective date</span>
+              <q-input
+                v-model="insuranceDetails.policyEffectiveDate"
+                type="date"
+              /><br />
+              <span class="form-heading">Policy Expiry date </span>
+              <q-input
+                v-model="insuranceDetails.policyExpireDate"
+                type="date"
+              />
+              <q-select
+                v-model="insuranceDetails.policyCategory.id"
+                option-value="id"
+                option-label="name"
+                map-options
+                emit-value
+                :options="policyCategories"
+                @input="
+                  setTypes(
+                    policyCategories,
+                    insuranceDetails.policyCategory,
+                    'policyCategory'
+                  )
+                "
+                label="Policy Category"
+              />
+              <q-select
+                v-model="insuranceDetails.property.id"
+                option-value="id"
+                option-label="name"
+                map-options
+                emit-value
+                :options="propertyTypes"
+                @input="setTypes(propertyTypes, insuranceDetails.property)"
+                label="Property Type"
+              />
+              <div class="row">
+                <p class="q-mx-none q-my-auto">Dwelling Limit (A)</p>
+                <q-input
+                  mask="#.#"
+                  type="number"
+                  v-model.number="insuranceDetails.dwellingLimitA"
+                  placeholder="Dwelling Limit (A)"
+                  style="margin-left: auto; width: 50%"
+                  prefix="$"
+                />
+              </div>
+              <div class="row">
+                <p class="q-mx-none q-my-auto">Other Structure (B)</p>
+                <q-input
+                  mask="#.#"
+                  type="number"
+                  v-model.number="insuranceDetails.otherStructureB"
+                  placeholder="Other Structure (B)"
+                  prefix="$"
+                  style="margin-left: auto; width: 50%"
+                />
+              </div>
+              <div class="row">
+                <p class="q-mx-none q-my-auto">Contents Limit (C)</p>
+                <q-input
+                  mask="#.#"
+                  type="number"
+                  v-model.number="insuranceDetails.contentsLimit"
+                  placeholder="Contents Limit (C)"
+                  prefix="$"
+                  style="margin-left: auto; width: 50%"
+                />
+              </div>
+              <div class="row">
+                <p class="q-mx-none q-my-auto">Loss of Use Limit (D)</p>
+                <q-input
+                  mask="#.#"
+                  type="number"
+                  v-model.number="insuranceDetails.lossOfUSD"
+                  placeholder="Loss of Use Limit (D)"
+                  prefix="$"
+                  style="margin-left: auto; width: 50%"
+                />
+              </div>
+              <div class="row">
+                <p class="q-mx-none q-my-auto">Depreciation</p>
+                <q-input
+                  mask="#.#"
+                  type="number"
+                  v-model.number="insuranceDetails.deprecation"
+                  placeholder="Depreciation"
+                  prefix="$"
+                  style="margin-left: auto; width: 50%"
+                />
+              </div>
+              <div class="row">
+                <p class="q-mx-none q-my-auto">Deductible</p>
+                <q-input
+                  mask="#.#"
+                  type="number"
+                  v-model.number="insuranceDetails.deductible"
+                  placeholder="Deductible"
+                  prefix="$"
+                  style="margin-left: auto; width: 50%"
+                />
+              </div>
+              <div class="row">
+                <p class="q-mx-none q-my-auto">Prior payment by insured</p>
+                <q-input
+                  mask="#.#"
+                  type="number"
+                  v-model.number="insuranceDetails.priorPayment"
+                  placeholder="Prior payment by insured"
+                  prefix="$"
+                  style="margin-left: auto; width: 50%"
+                />
+              </div>
+              <br />
+              <span class="form-heading">Reason for Limits/Denial</span>
+              <div class="floating-label">
+                <textarea
+                  rows="5"
+                  required
+                  class="full-width"
+                  v-model="insuranceDetails.reasonsOfLD"
+                  style="resize: none;"
+                ></textarea>
               </div>
               <br />
             </div>
@@ -826,11 +843,11 @@
     <q-dialog
       v-model="lossInfoDialog"
       persistent
-      :maximized="maximizedToggle"
+      :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="form-card q-pa-md" style="padding-top:20px">
+      <q-card class="form-card q-pa-md" style="padding-top: 20px">
         <q-header bordered class="bg-white">
           <q-toolbar class="row bg-white">
             <img
@@ -845,15 +862,15 @@
           </q-toolbar>
         </q-header>
         <q-card-section>
-          <div class="q-page bg-white " style="min-height: 630px;">
+          <div class="q-page bg-white" style="min-height: 630px">
             <div
               class="full-width"
               style="
-            height: calc(100vh - 145px);
-            overflow-y: auto;
-            margin-bottom: 10px;
-            padding-top:40px;
-          "
+                height: calc(100vh - 145px);
+                overflow-y: auto;
+                margin-bottom: 10px;
+                padding-top: 40px;
+              "
             >
               <div class="row">
                 <p class="q-mx-none q-my-auto">
@@ -862,14 +879,14 @@
                 <q-toggle
                   class="q-ml-auto"
                   v-model="isLossAddressSameAsClientToggle"
+                  @input="lossAddressSame"
                 />
               </div>
-              <input
-                type="text"
-                id="autocomplete"
-                class="input-autocomplete"
-                v-model="lossAddress"
-                placeholder="Address"
+              <AutoCompleteAddress
+                :address="lossAddressDetails"
+                :isDropBoxEnable="true"
+                :isChecksEnable="false"
+                :isFieldsDisable="isLossAddressSameAsClientToggle"
               />
               <q-input
                 v-model="LossAddressName"
@@ -988,7 +1005,6 @@
                   v-model="isThereDamageToPersonalPropertyToggle"
                 />
               </div>
-
               <div class="row">
                 <p style="q-mx-none q-my-auto">
                   Was a PPIF provided to the insured?
@@ -1040,11 +1056,11 @@
     <q-dialog
       v-model="mortgageInfoDialog"
       persistent
-      :maximized="maximizedToggle"
+      :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="form-card q-pa-md" style="padding-top:20px">
+      <q-card class="form-card q-pa-md" style="padding-top: 20px">
         <q-header bordered class="bg-white">
           <q-toolbar class="row bg-white">
             <img
@@ -1060,72 +1076,82 @@
         </q-header>
 
         <q-card-section>
-          <div class="q-page bg-white " style="min-height: 620px;">
+          <div class="q-page bg-white" style="min-height: 620px">
             <div
               class="full-width"
               style="
-            height: calc(100vh - 145px);
-            overflow-y: auto;
-            margin-bottom: 10px;
-            padding-top:40px;
-          "
+                height: calc(100vh - 145px);
+                overflow-y: auto;
+                margin-bottom: 10px;
+                padding-top: 40px;
+              "
             >
-              <q-input
-                v-model="mortgageDetails.companyName"
+              <q-select
+                v-model="mortgageDetails[0].id"
+                option-value="id"
+                option-label="name"
+                map-options
+                emit-value
+                :options="vendors"
+                @input="setTypes(vendors, mortgageDetails[0], 'mortgage')"
                 label="Mortgage Company Name"
               />
               <q-input
-                v-model="mortgageDetails.loanNumber"
+                v-model="mortgageDetails[0].loanNumber"
                 label="Loan Number"
               />
               <q-input
-                v-model="mortgageDetails.dob"
-                label="Date of Birth of Primary Mortgagee"
+                v-model="mortgageDetails[0].accountNumber"
+                label="Account Number"
               /><br />
-
-              <span class="form-heading">
-                Last 4 Primary Mortgagee's Social Security<br />
-                Numbers
-              </span>
-              <q-input
-                v-model="mortgageDetails.socialSecurityNumber1"
-                label="Social Security Number 1"
+              <span class="form-heading">Notes</span>
+              <textarea
+                rows="5"
+                required
+                class="full-width"
+                v-model="mortgageDetails[0].notes"
+                style="resize: none;"
               />
-              <q-input
-                v-model="mortgageDetails.socialSecurityNumber2"
-                label="Social Security Number 2"
-              />
-              <q-input
-                v-model="mortgageDetails.socialSecurityNumber3"
-                label="Social Security Number 3"
-              />
-              <q-input
-                v-model="mortgageDetails.socialSecurityNumber4"
-                label="Social Security Number 4"
-              /><br />
               <div class="row">
-                <p style="font-size:15px">
+                <p style="q-mx-none q-my-auto">
                   Is there a 2nd mortgage on the home?
                 </p>
-
                 <q-toggle
                   class="q-ml-auto"
-                  v-model="isTherea2ndMortgageOnTheHomeToggle"
+                  v-model="isSecondMortgageHome"
+                  @input="onSecondMortgageToggle"
                 />
               </div>
-              <div v-if="isTherea2ndMortgageOnTheHomeToggle">
-                <q-input
-                  v-model="mortgageDetails.secondCompanyName"
-                  label="2nd Mortgage Company Name"
+              <div v-if="isSecondMortgageHome">
+                <q-select
+                  v-model="mortgageDetails[1].id"
+                  option-value="id"
+                  option-label="name"
+                  map-options
+                  emit-value
+                  :options="vendors"
+                  @input="setTypes(vendors, mortgageDetails[1], 'mortgage')"
+                  label="Mortgage Company Name"
                 />
                 <q-input
-                  v-model="mortgageDetails.secondLoanNumber"
-                  label="2nd Mortgage Loan Number"
+                  v-model="mortgageDetails[1].loanNumber"
+                  label="Loan Number"
+                />
+                <q-input
+                  v-model="mortgageDetails[1].accountNumber"
+                  label="Account Number"
+                /><br />
+                <span class="form-heading">Notes</span>
+                <textarea
+                  rows="5"
+                  class="full-width"
+                  v-model="mortgageDetails[1].notes"
                 />
               </div>
             </div>
             <br />
           </div>
+          <!-- </div> -->
           <q-btn
             label="Save"
             color="primary"
@@ -1143,7 +1169,7 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="form-card q-pa-md" style="padding-top:20px">
+      <q-card class="form-card q-pa-md" style="padding-top: 20px">
         <q-header bordered class="bg-white">
           <q-toolbar class="row bg-white">
             <img
@@ -1158,18 +1184,18 @@
           </q-toolbar>
         </q-header>
         <q-card-section>
-          <div class="q-page bg-white " style="min-height: 630px;">
+          <div class="q-page bg-white" style="min-height: 630px">
             <div
               class="full-width"
               style="
-            height: calc(100vh - 145px);
-            overflow-y: auto;
-            margin-bottom: 10px;
-            padding-top:40px;
-          "
+                height: calc(100vh - 145px);
+                overflow-y: auto;
+                margin-bottom: 10px;
+                padding-top: 40px;
+              "
             >
               <div class="row">
-                <p style="font-size:15px">
+                <p style="font-size: 15px">
                   Does an estimator need to be<br />assigned?
                 </p>
                 <q-toggle
@@ -1190,7 +1216,7 @@
                 label="Notes to the estimator"
               /><br />
               <div class="row">
-                <p style="font-size:15px">Estimating Information Claim 2</p>
+                <p style="font-size: 15px">Estimating Information Claim 2</p>
                 <q-toggle
                   class="q-ml-auto"
                   v-model="estimatingInformationClaim2Toggle"
@@ -1217,7 +1243,7 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="form-card q-pa-md" style="padding-top:20px">
+      <q-card class="form-card q-pa-md" style="padding-top: 20px">
         <q-header bordered class="bg-white">
           <q-toolbar class="row bg-white">
             <img
@@ -1232,15 +1258,15 @@
           </q-toolbar>
         </q-header>
         <q-card-section>
-          <div class="q-page bg-white " style="min-height: 630px;">
+          <div class="q-page bg-white" style="min-height: 630px">
             <div
               class="full-width"
               style="
-            height: calc(100vh - 145px);
-            overflow-y: auto;
-            margin-bottom: 10px;
-            padding-top:40px;
-          "
+                height: calc(100vh - 145px);
+                overflow-y: auto;
+                margin-bottom: 10px;
+                padding-top: 40px;
+              "
             >
               <div class="row">
                 <p>Has a Vendor of Expert hired?</p>
@@ -1291,7 +1317,7 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="form-card q-pa-md" style="padding-top:20px">
+      <q-card class="form-card q-pa-md" style="padding-top: 20px">
         <q-header bordered class="bg-white">
           <q-toolbar class="row bg-white">
             <img
@@ -1306,15 +1332,15 @@
           </q-toolbar>
         </q-header>
         <q-card-section>
-          <div class="q-page bg-white " style="min-height: 630px;">
+          <div class="q-page bg-white" style="min-height: 630px">
             <div
               class="full-width"
               style="
-            height: calc(100vh - 145px);
-            overflow-y: auto;
-            margin-bottom: 10px;
-            padding-top:40px;
-          "
+                height: calc(100vh - 145px);
+                overflow-y: auto;
+                margin-bottom: 10px;
+                padding-top: 40px;
+              "
             >
               <q-select
                 v-model="officeTask.officeActionTypes"
@@ -1366,7 +1392,7 @@
             />
 
             <div class="text-uppercase text-bold text-black q-mx-auto">
-              Vendors
+              {{ vendorDialogName }}
             </div>
             <img
               src="~assets/add.svg"
@@ -1379,7 +1405,8 @@
           :selective="true"
           @selectedVendor="onClosingVendorSelectDialog"
           ref="list"
-          :showFilter="true"
+          :showFilter="showVendorDialogFilters"
+          :filterName="vendorDialogFilterByIndustry"
         />
       </q-card>
     </q-dialog>
@@ -1393,7 +1420,7 @@
       <q-card>
         <AddVendor
           @closeDialog="closeAddVendorDialog"
-          :componentName="'vendor'"
+          :componentName="vendorDialogName"
         />
       </q-card>
     </q-dialog>
@@ -1402,6 +1429,8 @@
 
 <script>
 import CustomHeader from 'components/CustomHeader';
+import AutoCompleteAddress from 'components/AutoCompleteAddress';
+
 import AddressService from '@utils/country';
 import { validateEmail } from '@utils/validation';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
@@ -1409,17 +1438,27 @@ import { sources } from 'src/store/common/getters';
 import { state } from 'src/store/common/state';
 import VendorsList from 'components/VendorsList';
 import AddVendor from 'components/AddVendor';
+import vendors from 'src/store/vendors';
 const addressService = new AddressService();
 
 export default {
   name: 'addClient',
-  components: { CustomHeader, VendorsList, AddVendor },
+  components: { CustomHeader, VendorsList, AddVendor, AutoCompleteAddress },
   data() {
     return {
+      isSecondMortgageHome: false,
+      vendorDialogName: '',
+      vendorDialogFilterByIndustry: '',
+      showVendorDialogFilters: false,
       LossAddressName: '',
       publicAdjustorInfoDialog: false,
       addVendorDialog: false,
       vendorsListDialog: false,
+      officeTaskDialog: false,
+      expertVendorInfoDialog: false,
+      estimatingInfoDialog: false,
+      lossInfoDialog: false,
+      hasClaimBeenFilledToggle: false,
       AdjustorTypes: ['Self', 'Public Adjustor 01'],
       maximizedToggle: true,
       clientInfoDailog: false,
@@ -1431,23 +1470,13 @@ export default {
         isOrganization: false,
         organizationName: ''
       },
-      mailingAddressSameInfo: {
-        streetAddress: '',
-        unitOrApartmentNumber: '',
-        city: '',
-        state: '',
-        zip: '',
-        country: '',
-        dropBox: ''
-      },
-
       honorific1: {
         id: '',
-        title: ''
+        value: ''
       },
       honorific2: {
         id: '',
-        title: ''
+        value: ''
       },
       sourceDetails: {
         id: '',
@@ -1455,10 +1484,9 @@ export default {
         details: ''
       },
       client: {
-        type: '',
-        id: ''
+        id: '',
+        value: ''
       },
-
       insuredDetails: {
         fname: '',
         lname: '',
@@ -1480,44 +1508,37 @@ export default {
         type1: '',
         type2: ''
       },
-      addressDetails: {
-        streetNumber: '',
-        apartmentNumber: '',
-        city: '',
-        state: '',
-        zip: '',
-        country: ''
+      clientAddressDetails: {
+        addressCountry: '',
+        addressRegion: '',
+        addressLocality: '',
+        postalCode: '',
+        streetAddress: '',
+        postOfficeBoxNumber: '',
+        isGateDropbox: false,
+        dropBoxInfo: ''
       },
-      gateDropbox: {
-        info: ''
-      },
+
       tenantOccupied: {
         name: '',
         phone: '',
         type: ''
       },
-
       mailingAddressDetails: {
-        streetNumber: '',
-        apartmentNumber: '',
-        city: '',
-        state: '',
-        country: 'United States',
-        zip: ''
-      },
-      forcedPlacedPolicyDetails: {
-        policyInceptionDate: '',
-        policyExpirationDate: '',
-        otherPolicyType: '',
-        insuranceCarrier: '',
-        policyNumber: '',
-        policyDeductibleAmount: ''
+        addressCountry: '',
+        addressRegion: '',
+        addressLocality: '',
+        postalCode: '',
+        streetAddress: '',
+        postOfficeBoxNumber: '',
+        isGateDropbox: false,
+        dropBoxInfo: ''
       },
       lossInfo: {
         dateOfLoss: '',
         propertyDescription: '',
         reasonClaim: {
-          type: '',
+          value: '',
           id: ''
         },
         deadlineDate: '',
@@ -1526,7 +1547,7 @@ export default {
         descriptionDwelling: '',
         damageDescription: '',
         property: {
-          type: '',
+          value: '',
           id: ''
         },
         insuranceAdjustorName: '',
@@ -1537,7 +1558,7 @@ export default {
           value: ''
         },
         causeOfLoss: {
-          type: '',
+          value: '',
           id: ''
         },
         describeTheLoss: '',
@@ -1545,17 +1566,43 @@ export default {
         insuranceAdjustorPhoneType: '',
         typeOfLoss: ''
       },
-      mortgageDetails: {
-        companyName: '',
-        loanNumber: '',
-        dob: '',
-        socialSecurityNumber1: '',
-        socialSecurityNumber2: '',
-        socialSecurityNumber3: '',
-        socialSecurityNumber4: '',
-        secondCompanyName: '',
-        secondLoanNumber: ''
+      insuranceDetails: {
+        property: {
+          id: '',
+          value: ''
+        },
+        type: '',
+        details: '',
+        id: '',
+        policyCategory: {
+          id: '',
+          value: ''
+        },
+        carrierName: '',
+        carrierId: '',
+        insuranceCarrierNumber: '',
+        policyNumber: '',
+        policyEffectiveDate: '',
+        policyExpireDate: '',
+        dwellingLimitA: '',
+        contentsLimit: '',
+        otherStructureB: '',
+        lossOfUSD: '',
+        deprecation: '',
+        deductible: '',
+        priorPayment: '',
+        reasonsOfLD: ''
       },
+      mortgageDetails: [
+        {
+          id: '',
+          value: '',
+          loanNumber: '',
+          accountNumber: '',
+          isPrimary: true,
+          notes: ''
+        }
+      ],
       estimatingInfo: {
         estimatorToBeAssigned: '',
         scopeTimeNeeded: '',
@@ -1581,59 +1628,66 @@ export default {
       countries: [],
       insuranceInfoDialog: false,
       isThisIsForcedPlacedPolicyToggle: false,
-      PolicyTypes: ['A', 'B'],
       DidYouHavePoliceDeclarationToggle: false,
-      lossInfoDialog: false,
       isStateOfEmergencyToggle: false,
       isTheHomeHabitable: false,
       isThereDamageToPersonalPropertyToggle: false,
       wasAppifProvidedToTheInsuredToggle: false,
-
       doesTheOfficeNeedToProvidePpifToTheInsuredToggle: false,
       IsMortgageHomeToggle: false,
       isLossAddressSameAsClientToggle: false,
-      lossAddress: '',
+      lossAddressDetails: {
+        addressCountry: '',
+        addressRegion: '',
+        addressLocality: '',
+        postalCode: '',
+        streetAddress: '',
+        postOfficeBoxNumber: '',
+        isGateDropbox: false,
+        dropBoxInfo: ''
+      },
       isThereAsecondClaimToFileToggle: false,
-      insuranceAdjustorPhoneType: ['A', 'B', 'C'],
       typeOfLoss: [],
-      hasAvendorOfExpertHiredTypes: ['A', 'B'],
       mortgageInfoDialog: false,
       isTherea2ndMortgageOnTheHomeToggle: false,
-      estimatingInfoDialog: false,
       doesAnEstimatorNeedToBeAssignedToggle: false,
       estimatingInformationClaim2Toggle: false,
-      expertVendorInfoDialog: false,
       hasAvendorOfExpertHiredToggle: false,
       anyOtherExpertHiredToggle: false,
       doYouReferAnyVendorToggle: false,
-      officeTaskDialog: false,
       femaClaimToggle: false,
       additionalOfficeTaskRequiredToggle: false,
       officeActionRequiredTypes: [],
-      officeTaskRequiredTypes: [],
-      documentsDialog: false
+      officeTaskRequiredTypes: []
     };
   },
   created() {
+    this.getVendors(this.$route.params.id);
     this.getClientTypes();
     this.getPropertyTypes();
     this.getLossCauses();
     this.getSeverityClaim();
     this.getClaimReasons();
     this.getContactTypes();
-
+    this.getPolicyCategory();
     if (this.selectedLead.id) {
       this.insuredDetails.fname = this.selectedLead.primaryContact.fname;
       this.insuredDetails.lname = this.selectedLead.primaryContact.lname;
       this.insuredDetails.email = this.selectedLead.primaryContact.email;
       this.insuredDetails.phone = this.selectedLead.primaryContact.phoneNumber[0].number;
       this.insuredDetails.type = this.selectedLead.primaryContact.phoneNumber[0].type;
+      this.sourceDetails.id = this.selectedLead.leadSource.id;
       this.sourceDetails.type = this.selectedLead.leadSource.type;
+      this.honorific1.id = this.selectedLead.primaryContact.honorific.id;
+      this.honorific1.value = this.selectedLead.primaryContact.honorific.value;
+      this.sourceDetails.details = this.selectedLead.leadSource.detail;
+      this.insuranceDetails.carrierName = this.selectedLead.leadSource.type;
+      this.insuranceDetails.policyNumber = this.selectedLead.policyNumber;
     }
-
     this.countries = addressService.getCountries();
     this.onCountrySelect('United States');
   },
+
   computed: {
     ...mapGetters([
       'selectedLead',
@@ -1644,7 +1698,9 @@ export default {
       'claimSeverity',
       'lossCauses',
       'claimReasons',
-      'titles'
+      'titles',
+      'vendors',
+      'policyCategories'
     ])
   },
   mounted() {
@@ -1653,6 +1709,7 @@ export default {
   methods: {
     ...mapActions([
       'addClient',
+      'getVendors',
       'addClaim',
       'getClientTypes',
       'getPropertyTypes',
@@ -1660,35 +1717,84 @@ export default {
       'getLossCauses',
       'getClaimReasons',
       'getContactTypes',
-      'getTitles'
+      'getTitles',
+      'getPolicyCategory'
     ]),
+
     ...mapMutations(['setSelectedLead']),
 
     onCountrySelect(country) {
       this.states = addressService.getStates(country);
     },
+
+    async onSubmit() {
+      const sucess = await this.$refs.clientForm.validate();
+      if (sucess == true) {
+        this.clientInfoDailog = false;
+      } else {
+        this.clientInfoDailog = true;
+      }
+    },
+
     setTitleName(val) {
       const titleResult = this.titles.find(obj => {
         return obj.id === this['honorific' + val].id;
       });
+
       this['honorific' + val].title = titleResult.title;
     },
-    setTypes(types, data) {
+
+    setTypes(types, data, type) {
       const obj = types.find(item => {
         return item.id === data.id;
       });
-      data.id = obj.id;
-      data.types = obj.machineName;
+      data.value = type == 'mortgage' ? obj.name : obj.machineName; //machine name is not present in vendor
     },
 
     mailingAddressSame() {
-      this.mailingAddressSameInfo.streetAddress = this.addressDetails.streetNumber;
-      this.mailingAddressSameInfo.unitOrApartmentNumber = this.addressDetails.apartmentNumber;
-      this.mailingAddressSameInfo.city = this.addressDetails.city;
-      this.mailingAddressSameInfo.state = this.addressDetails.state;
-      this.mailingAddressSameInfo.zip = this.addressDetails.zip;
-      this.mailingAddressSameInfo.country = this.addressDetails.country;
-      this.mailingAddressSameInfo.dropBox = this.gateDropbox.info;
+      if (this.isMailingAddressSameToggle) {
+        this.mailingAddressDetails = this.clientAddressDetails;
+      } else {
+        this.mailingAddressDetails = {
+          addressCountry: '',
+          addressRegion: '',
+          addressLocality: '',
+          postalCode: '',
+          streetAddress: '',
+          postOfficeBoxNumber: '',
+          isGateDropbox: false,
+          dropBoxInfo: ''
+        };
+      }
+    },
+
+    lossAddressSame() {
+      if (this.isLossAddressSameAsClientToggle) {
+        this.lossAddressDetails = this.clientAddressDetails;
+      } else {
+        this.lossAddressDetails = {
+          addressCountry: '',
+          addressRegion: '',
+          addressLocality: '',
+          postalCode: '',
+          streetAddress: '',
+          postOfficeBoxNumber: '',
+          isGateDropbox: false,
+          dropBoxInfo: ''
+        };
+      }
+    },
+    onSecondMortgageToggle() {
+      if (this.isSecondMortgageHome) {
+        this.mortgageDetails.push({
+          id: '',
+          value: '',
+          loanNumber: '',
+          accountNumber: '',
+          isPrimary: false,
+          notes: ''
+        });
+      }
     },
     async createClientButtonClick() {
       const payload = {
@@ -1698,11 +1804,10 @@ export default {
         source: {
           id: '',
           type: this.sourceDetails.type,
-          detail: ''
+          detail: this.sourceDetails.details
         },
         type: {
-          id: this.client.id,
-          value: this.client.type
+          ...this.client
         },
         insuredInfo: {
           primary: {
@@ -1736,22 +1841,10 @@ export default {
             ]
           },
           address: {
-            addressCountry: this.addressDetails.state,
-            addressLocality: this.addressDetails.city,
-            addressRegion: this.addressDetails.apartmentNumber,
-            postOfficeBoxNumber: '',
-            postalCode: this.addressDetails.zip,
-            streetAddress: this.addressDetails.streetNumber,
-            dropBox: this.gateDropbox.info
+            ...this.clientAddressDetails
           },
           mailingAddress: {
-            addressCountry: this.mailingAddressDetails.country,
-            addressLocality: this.mailingAddressDetails.city,
-            addressRegion: this.mailingAddressDetails.apartmentNumber,
-            postOfficeBoxNumber: '',
-            postalCode: this.mailingAddressDetails.zip,
-            streetAddress: this.addressDetails.streetNumber,
-            dropBoxInfo: this.mailingAddressSameInfo.dropBox
+            ...this.mailingAddressDetails
           },
           phoneNumbers: [
             {
@@ -1773,6 +1866,7 @@ export default {
           }
         }
       };
+
       if (this.tenantOccupiedToggle) {
         payload.insuredInfo.tenantInfo.name = this.tenantOccupied.name;
         payload.insuredInfo.tenantInfo.phoneNumber.type = this.tenantOccupied.type;
@@ -1787,46 +1881,52 @@ export default {
       }
       const response = await this.addClient(payload);
       if (response && response.id) {
-        this.setPayloadForLoss(response.id);
+        const clientInfo = {
+          name: response,
+          id: response.id
+        };
+        this.setPayloadForLoss(clientInfo);
       }
     },
-    async setPayloadForLoss(clientId) {
-      const payload1 = {
+
+    async setPayloadForLoss(clientInfo) {
+      const payload = {
         client: {
-          id: '',
-          fname: '',
-          lname: ''
+          id: this.client.id,
+          fname: this.insuredDetails.fname,
+          lname: this.insuredDetails.lname
         },
         policyInfo: {
           carrier: {
-            id: '',
-            value: ''
+            id: this.insuranceDetails.carrierId,
+            value: this.insuranceDetails.carrierName
           },
-          number: '',
-          isClaimFiled: '',
-          isForcedPlaced: '',
+          number: this.insuranceDetails.policyNumber,
+          isClaimFiled: this.hasClaimBeenFilledToggle,
+          isForcedPlaced: this.isThisIsForcedPlacedPolicyToggle,
           claimNumber: '',
           category: {
-            id: '',
-            value: ''
+            id: this.insuranceDetails.policyCategory.id,
+            value: this.insuranceDetails.policyCategory.value
           },
           type: {
-            id: '',
-            value: ''
+            id: this.insuranceDetails.property.id,
+            value: this.insuranceDetails.property.value
           },
-          effectiveDate: '',
-          expirationDate: '',
+          effectiveDate: this.insuranceDetails.policyEffectiveDate,
+          expirationDate: this.insuranceDetails.policyExpireDate,
           limitCoverage: {
-            dwelling: '',
-            content: '',
-            lossOfUse: ''
+            dwelling: this.insuranceDetails.dwellingLimitA,
+            otherStructure: this.insuranceDetails.otherStructureB,
+            content: this.insuranceDetails.contentsLimit,
+            lossOfUse: this.insuranceDetails.lossOfUSD
           },
-          deductibleAmount: '',
-          depreciation: '',
-          priorPayment: '',
-          limitReason: '',
+          deductibleAmount: this.insuranceDetails.deductible,
+          depreciation: this.insuranceDetails.deprecation,
+          priorPayment: this.insuranceDetails.priorPayment,
+          limitReason: this.insuranceDetails.reasonsOfLD,
           declaration: {
-            isDeclared: '',
+            isDeclared: true,
             fileInfo: {
               id: '',
               value: ''
@@ -1835,54 +1935,34 @@ export default {
         },
         mortgageInfo: [
           {
-            id: '',
-            value: '',
-            loanNumber: '',
-            accountNumber: '',
-            isPrimary: '',
-            notes: ''
-          },
-          {
-            id: '',
-            value: '',
-            loanNumber: '',
-            accountNumber: '',
-            notes: ''
+            ...this.mortgageDetails
           }
         ],
         lossInfo: {
           address: {
-            addressCountry: '',
-            addressLocality: '',
-            addressRegion: '',
-            postOfficeBoxNumber: '',
-            postalCode: '',
-            streetAddress: ''
+            ...this.clientAddressDetails
           },
-          propertyType: {
-            id: this.lossInfo.property.id,
-            value: this.lossInfo.property.type
+
+          propertyTypes: {
+            ...this.lossInfo.property
           },
           propertyDesc: this.lossInfo.propertyDescription,
           claimReason: {
-            id: this.lossInfo.reasonClaim.id,
-            value: this.lossInfo.reasonClaim.type
+            ...this.lossInfo.reasonClaim
           },
           date: this.lossInfo.dateOfLoss,
           cause: {
-            id: this.lossInfo.causeOfLoss.id,
-            value: this.lossInfo.causeOfLoss.type
+            ...this.lossInfo.causeOfLoss
           },
           deadlineDate: this.lossInfo.deadlineDate,
           recovDDate: this.lossInfo.recovDeadline,
           isFEMA: this.femaClaimToggle,
           isEmergency: this.isStateOfEmergencyToggle,
           emergencyName: this.lossInfo.nameOfEmergency,
-          desc: this.descriptionDwelling,
+          desc: this.lossInfo.descriptionDwelling,
           isHabitable: this.isTheHomeHabitable,
-          serverity: {
-            id: this.lossInfo.severityOfClaimType.id,
-            value: this.lossInfo.severityOfClaimType.type
+          claimSeverity: {
+            ...this.lossInfo.severityOfClaimType
           },
           isOSDamaged: this.isDamageOSToggle,
           OSDamageDesc: this.lossInfo.damageDescription,
@@ -1893,10 +1973,10 @@ export default {
           isSecondClaim: this.isThereAsecondClaimToFileToggle
         }
       };
-      this.addClaim(payload1).then(() => this.setSelectedLead());
+      this.addClaim(payload).then(() => this.setSelectedLead());
     },
-
     validateEmail,
+
     onChangingSourceType() {
       this.sourceDetails.id = '';
 
@@ -1912,6 +1992,17 @@ export default {
       this.closeVendorsList();
     },
 
+    onClosingVendorSelectDialog(vendor, isVendor) {
+      if (isVendor) {
+        this.sourceDetails.id = vendor.id;
+        this.sourceDetails.details = vendor.name;
+      } else {
+        this.insuranceDetails.carrierId = vendor.id;
+        this.insuranceDetails.carrierName = vendor.name;
+      }
+      this.vendorsListDialog = false;
+    },
+
     closeAddVendorDialog(e) {
       this.addVendorDialog = false;
       this.vendorsListDialog = true;
@@ -1920,21 +2011,27 @@ export default {
       }
     },
 
-    onClosingVendorSelectDialog(vendor, isVendor) {
-      if (isVendor) {
-        this.sourceDetails.id = vendor.id;
-        this.sourceDetails.details = vendor.name;
+    onAddVendorDialogClick(name) {
+      this.vendorDialogName = name;
+      if (name === 'carrier') {
+        this.showVendorDialogFilters = false;
+        this.vendorDialogFilterByIndustry = '5ffedc469a111940084ce6e2';
+      } else {
+        this.showVendorDialogFilters = true;
+        this.vendorDialogFilterByIndustry = '';
       }
-      this.vendorsListDialog = false;
+      this.vendorsListDialog = true;
     }
   }
 };
 </script>
+
 <style lang="scss">
 .form-card {
   max-height: calc(100vh - 100px);
   overflow: scroll;
 }
+
 ::-webkit-scrollbar {
   width: 0px;
   background: transparent; /* make scrollbar transparent */
@@ -1963,30 +2060,6 @@ export default {
     padding-top: 24px;
     padding-bottom: 8px;
     height: 50px;
-  }
-}
-.input-autocomplete {
-  width: 100%;
-  margin-left: auto;
-  border: 0;
-  line-height: 24px;
-  padding-top: 24px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid #c2c2c2;
-  outline: none;
-  position: relative;
-  &::placeholder {
-    font-size: 16px;
-  }
-
-  &:focus {
-    border-bottom: 2px solid #f05a26;
-
-    &::placeholder {
-      font-size: 12px;
-      position: absolute;
-      color: #f05a26;
-    }
   }
 }
 </style>

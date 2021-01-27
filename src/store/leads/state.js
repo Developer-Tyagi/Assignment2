@@ -1,37 +1,41 @@
-export default function() {
+export default function () {
   return {
     activeLeads: [],
     archivedLeads: [],
     selectedLead: {
       isOrganization: false,
-      organizationName: "",
+      organizationName: '',
       primaryContact: {
-        fname: "",
-        lname: "",
-        email: "",
+        honorific: {
+          id: '',
+          value: ''
+        },
+        fname: '',
+        lname: '',
+        email: '',
         phoneNumber: [
           {
-            type: "",
-            number: ""
+            type: '',
+            number: ''
           }
         ]
       },
-      lastVisted: "",
+      lastVisted: '',
       visited: [],
       lossLocation: {
-        addressCountry: "",
-        addressLocality: "",
-        addressRegion: "",
-        postOfficeBoxNumber: "",
-        postalCode: "",
-        streetAddress: ""
+        addressCountry: '',
+        addressLocality: '',
+        addressRegion: '',
+        postOfficeBoxNumber: '',
+        postalCode: '',
+        streetAddress: ''
       },
-      lossDesc: "",
-      dateOfLoss: "",
-      carrier: "",
-      policyNumber: "",
+      lossDesc: '',
+      dateOfLoss: '',
+      carrier: '',
+      policyNumber: '',
       isAutomaticScheduling: false,
-      notes: ""
+      notes: ''
     }
   };
 }
