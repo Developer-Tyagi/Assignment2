@@ -236,8 +236,8 @@
                 <q-input
                   v-if="
                     sourceDetails.type != 'vendor' &&
-                      sourceDetails.type != '' &&
-                      sourceDetails.type != 'google'
+                    sourceDetails.type != '' &&
+                    sourceDetails.type != 'google'
                   "
                   type="text"
                   placeholder="Enter Source details"
