@@ -136,7 +136,7 @@
             <div>Needs approval from company</div>
           </div>
         </div>
-        <div v-else v-else-if="AdjustorTypes.type == 'Public Adjustor 01'">
+        <div v-else-if="AdjustorTypes.type == 'Public Adjustor 01'">
           <div style="font-size: 15px; margin-left: 10px">
             Public Adjustor 01 Details
           </div>
@@ -1880,30 +1880,5 @@ export default {
   overflow-y: auto;
   margin-bottom: 10px;
   padding-top: 20px;
-}
-
-.input-autocomplete {
-  width: 100%;
-  margin-left: auto;
-  border: 0;
-  line-height: 24px;
-  padding-top: 24px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid #c2c2c2;
-  outline: none;
-  position: relative;
-  &::placeholder {
-    font-size: 16px;
-  }
-
-  &:focus {
-    border-bottom: 2px solid #f05a26;
-
-    &::placeholder {
-      font-size: 12px;
-      position: absolute;
-      color: #f05a26;
-    }
-  }
 }
 </style>
