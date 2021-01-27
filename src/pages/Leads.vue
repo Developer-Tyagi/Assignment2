@@ -133,7 +133,11 @@
                       Date of Loss:
                       <span v-if="lead.dateofLoss">{{
                         lead.dateofLoss &&
+<<<<<<< HEAD
                           lead.dateofLoss | moment('DD/MM/YYYY')
+=======
+                        lead.dateofLoss | moment('DD/MM/YYYY')
+>>>>>>> master
                       }}</span>
                       <span v-else> - </span>
                     </div>

@@ -46,6 +46,7 @@
               :options="options"
               option-value="name"
               @filter="searchFilterBy"
+              @input="setVendorIndustryName"
               behavior="menu"
               emit-value
               lazy-rules
@@ -108,6 +109,7 @@
             v-model="vendor.contact[0].email"
             type="email"
             label="Email"
+            borderless
           />
           <div class="row" v-if="componentName === 'carrier'">
             <p class="q-mx-none q-my-auto">
@@ -120,10 +122,14 @@
           </div>
 
           <p class="form-heading">Company's Address</p>
-          <AutoCompleteAddress :address="vendor.address" />
+          <AutoCompleteAddress
+            :address="vendor.address"
+            :isDropBoxEnable="false"
+            :isChecksEnable="false"
+          />
           <p class="form-heading">Company's Phone & Website</p>
           <div v-for="(contactInfo, index) in vendor.contact" v-if="index >= 1">
-            <q-card class="q-mt-sm">
+            <div class="q-mt-sm ">
               <q-select
                 v-model="contactInfo.honorific.id"
                 :options="titles"
@@ -169,7 +175,7 @@
                 novalidate="true"
                 label="Email"
               />
-            </q-card>
+            </div>
           </div>
           <div class="row">
             <q-btn
@@ -218,17 +224,18 @@ import AutoCompleteAddress from 'components/AutoCompleteAddress';
 export default {
   name: 'AddVendor',
   props: ['componentName'],
+
   components: { AutoCompleteAddress },
+
   data() {
     return {
       options: '',
-      industryTypes: ['Association'],
       countries: [],
       states: [],
       isShowRemoveButton: false,
       vendor: {
         name: '',
-        industry: { value: '', id: '' },
+        industry: { value: null, id: '' },
         meta: {
           claimFiledByEmail: false
         },
@@ -307,7 +314,9 @@ export default {
       'getTitles',
       'getContactTypes'
     ]),
+
     searchFilterBy(val, update) {
+      this.vendor.industry.value = null;
       if (val === ' ') {
         update(() => {
           this.options = this.vendorIndustries;
@@ -387,6 +396,7 @@ export default {
     },
 
     async onAddVendorButtonClick() {
+      console.log(this.vendor);
       const success = await this.$refs.vendorForm.validate();
       if (success) {
         const response = await this.addVendor(this.vendor);

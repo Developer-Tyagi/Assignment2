@@ -40,7 +40,7 @@ export async function addClaim({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.post(
-      '/claims',
+      `/clients/${payload.client.id}/claims`,
       buildApiData('claims', payload)
     );
     dispatch('setLoading', false);
@@ -121,6 +121,21 @@ export async function getSeverityClaim({ commit, dispatch }) {
   try {
     const { data } = await request.get('/claimseverities');
     commit('setClaimSeverity', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response.data.title
+    });
+  }
+}
+export async function getPolicyCategory({ commit, dispatch }) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get('/pcategories');
+    commit('setPolicyCategory', data);
     dispatch('setLoading', false);
   } catch (e) {
     console.log(e);

@@ -5,37 +5,59 @@
         v-model="address.houseNumber"
         label="House/Flat No"
         style="width: 35%"
+        :disable="isFieldsDisable"
       />
       <input
         type="text"
-        id="autocomplete1"
+        id="autocomplete"
         class="input-autocomplete"
         v-model="address.streetAddress"
         placeholder="Street"
+        :disabled="isFieldsDisable"
       />
+      <span></span>
     </div>
     <q-input
       v-model="address.addressLocality"
       label="City"
-      :disable="isAddressFieldEnable"
+      :disable="!isAddressFieldEnable"
+      :rules="[val => checkValidations(val)]"
     />
     <q-select
       v-model="address.addressRegion"
       :options="states"
       label="State"
-      :disable="isAddressFieldEnable"
+      :disable="!isAddressFieldEnable"
+      :rules="[val => checkValidations(val)]"
     />
     <q-select
       v-model="address.addressCountry"
       :options="countries"
       label="Country"
       @input="onCountrySelect(address.addressCountry)"
-      :disable="isAddressFieldEnable"
+      :disable="!isAddressFieldEnable"
+      :rules="[val => checkValidations(val)]"
     />
     <q-input
       v-model="address.postalCode"
       label="ZIP Code"
-      :disable="isAddressFieldEnable"
+      :disable="!isAddressFieldEnable"
+      :rules="[val => checkValidations(val)]"
+    />
+    <div class="row" v-if="isDropBoxEnable">
+      <p class="q-mx-none q-my-auto">Gate / Dropbox</p>
+      <q-toggle
+        class="q-ml-auto"
+        v-model="address.isGateDropbox"
+        :disable="!isAddressFieldEnable"
+      />
+    </div>
+    <q-input
+      v-if="address.isGateDropbox && isDropBoxEnable"
+      v-model="address.dropBoxInfo"
+      label="Gate/ Dropbox"
+      :disable="!isAddressFieldEnable"
+      :rules="[val => checkValidations(val)]"
     />
   </div>
 </template>
@@ -48,13 +70,25 @@ export default {
     address: {
       type: Object,
       required: true
+    },
+    isDropBoxEnable: {
+      type: Boolean,
+      required: true
+    },
+    isChecksEnable: {
+      type: Boolean,
+      required: true
+    },
+    isFieldsDisable: {
+      type: Boolean,
+      required: true
     }
   },
 
   data() {
     return {
       autocomplete: {},
-      isAddressFieldEnable: true,
+      isAddressFieldEnable: false,
       countries: [],
       states: []
     };
@@ -62,7 +96,7 @@ export default {
 
   mounted() {
     this.autocomplete = new google.maps.places.Autocomplete(
-      document.getElementById('autocomplete1'),
+      document.getElementById('autocomplete'),
       { types: ['geocode'] }
     );
     this.getGeoLocation;
@@ -71,6 +105,17 @@ export default {
   },
 
   methods: {
+    checkValidations(val) {
+      if (this.isChecksEnable) {
+        if (val) {
+          return true;
+        }
+        return false;
+      } else {
+        return true;
+      }
+    },
+
     getGeoLocation() {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(position => {
@@ -114,8 +159,8 @@ export default {
       this.address.postalCode = this.getPlaceName('postal_code', place)
         ? place[this.getPlaceName('postal_code', place)].long_name
         : '';
-
-      this.isAddressFieldEnable = false;
+      this.states = addressService.getStates(this.address.addressCountry);
+      this.isAddressFieldEnable = true;
     },
 
     getPlaceName(key, value) {
