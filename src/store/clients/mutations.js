@@ -2,7 +2,7 @@ export function setClients(state, clients) {
   state.clients = clients.map(client => ({
     ...client.attributes,
     id: client.id,
-    name: client.attributes.insuredInfo.primary["fname"]
+    name: client.attributes.insuredInfo.primary['fname']
   }));
 }
 
@@ -38,6 +38,13 @@ export function setLossCause(state, types) {
 
 export function setClaimSeverity(state, types) {
   state.claimSeverity = types.map(type => ({
+    name: type.attributes.value,
+    machineName: type.attributes.machineValue,
+    id: type.id
+  }));
+}
+export function setPolicyCategory(state, types) {
+  state.policyCategories = types.map(type => ({
     name: type.attributes.value,
     machineName: type.attributes.machineValue,
     id: type.id

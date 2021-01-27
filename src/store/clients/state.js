@@ -1,3 +1,5 @@
+import { policyCategories } from './getters';
+
 export default function() {
   return {
     clients: [],
@@ -5,6 +7,7 @@ export default function() {
     propertyTypes: [],
     claimReasons: [],
     lossCauses: [],
-    claimSeverity: []
+    claimSeverity: [],
+    policyCategories: []
   };
 }
