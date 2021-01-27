@@ -657,8 +657,8 @@
               />
 
               <q-input
-                v-model="insuranceDetails.insuranceCarrierNumber"
-                label="Insurance Carrier Number"
+                v-model="insuranceDetails.insuranceClaimNumber"
+                label="Insurance Claim Number"
               />
               <br />
               <div class="row">
@@ -1390,7 +1390,7 @@
 <script>
 import CustomHeader from 'components/CustomHeader';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
-
+import { date } from 'quasar';
 import AddressService from '@utils/country';
 import { validateEmail } from '@utils/validation';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
@@ -1540,7 +1540,7 @@ export default {
         },
         carrierName: '',
         carrierId: '',
-        insuranceCarrierNumber: '',
+        insuranceClaimNumber: '',
         policyNumber: '',
         policyEffectiveDate: '',
         policyExpireDate: '',
@@ -1663,6 +1663,11 @@ export default {
       'policyCategories'
     ])
   },
+  formatDate(value) {
+    if (value) {
+      return moment(String(value)).format('MM/DD/YYYY');
+    }
+  },
   mounted() {
     this.getTitles();
   },
@@ -1762,7 +1767,7 @@ export default {
         organizationName: this.primaryDetails.organizationName,
         isOrganizationPolicyholder: this.policyHolder.isPolicyHolder,
         source: {
-          id: '',
+          id: this.sourceDetails.id,
           type: this.sourceDetails.type,
           detail: this.sourceDetails.details
         },
@@ -1852,7 +1857,7 @@ export default {
     async setPayloadForLoss(clientInfo) {
       const payload = {
         client: {
-          id: this.client.id,
+          id: clientInfo.id,
           fname: this.insuredDetails.fname,
           lname: this.insuredDetails.lname
         },
@@ -1864,7 +1869,7 @@ export default {
           number: this.insuranceDetails.policyNumber,
           isClaimFiled: this.hasClaimBeenFilledToggle,
           isForcedPlaced: this.isThisIsForcedPlacedPolicyToggle,
-          claimNumber: '',
+          claimNumber: this.insuranceDetails.insuranceClaimNumber,
           category: {
             id: this.insuranceDetails.policyCategory.id,
             value: this.insuranceDetails.policyCategory.value
@@ -1873,8 +1878,18 @@ export default {
             id: this.insuranceDetails.property.id,
             value: this.insuranceDetails.property.value
           },
-          effectiveDate: this.insuranceDetails.policyEffectiveDate,
-          expirationDate: this.insuranceDetails.policyExpireDate,
+          effectiveDate: this.insuranceDetails.policyEffectiveDate
+            ? date.formatDate(
+                this.insuranceDetails.policyEffectiveDate,
+                'YYYY-MM-DDTHH:mm:ssZ'
+              )
+            : '',
+          expirationDate: this.insuranceDetails.policyExpireDate
+            ? date.formatDate(
+                this.insuranceDetails.policyExpireDate,
+                'YYYY-MM-DDTHH:mm:ssZ'
+              )
+            : '',
           limitCoverage: {
             dwelling: this.insuranceDetails.dwellingLimitA,
             otherStructure: this.insuranceDetails.otherStructureB,
@@ -1893,17 +1908,13 @@ export default {
             }
           }
         },
-        mortgageInfo: [
-          {
-            ...this.mortgageDetails
-          }
-        ],
+        mortgageInfo: this.mortgageDetails,
         lossInfo: {
           address: {
             ...this.clientAddressDetails
           },
 
-          propertyTypes: {
+          propertyType: {
             ...this.lossInfo.property
           },
           propertyDesc: this.lossInfo.propertyDescription,
@@ -1914,14 +1925,24 @@ export default {
           cause: {
             ...this.lossInfo.causeOfLoss
           },
-          deadlineDate: this.lossInfo.deadlineDate,
-          recovDDate: this.lossInfo.recovDeadline,
+          deadlineDate: this.lossInfo.deadlineDate
+            ? date.formatDate(
+                this.lossInfo.deadlineDate,
+                'YYYY-MM-DDTHH:mm:ssZ'
+              )
+            : '',
+          recovDDDate: this.lossInfo.recovDeadline
+            ? date.formatDate(
+                this.lossInfo.recovDeadline,
+                'YYYY-MM-DDTHH:mm:ssZ'
+              )
+            : '',
           isFEMA: this.femaClaimToggle,
           isEmergency: this.isStateOfEmergencyToggle,
           emergencyName: this.lossInfo.nameOfEmergency,
           desc: this.lossInfo.descriptionDwelling,
           isHabitable: this.isTheHomeHabitable,
-          claimSeverity: {
+          serverity: {
             ...this.lossInfo.severityOfClaimType
           },
           isOSDamaged: this.isDamageOSToggle,
@@ -1929,10 +1950,11 @@ export default {
           isPPDamaged: this.isThereDamageToPersonalPropertyToggle,
           isPPIF: this.wasAppifProvidedToTheInsuredToggle,
           isNeedPPIF: this.doesTheOfficeNeedToProvidePpifToTheInsuredToggle,
-          hashHomeMortgage: this.IsMortgageHomeToggle,
+          hasHomeMortgage: this.IsMortgageHomeToggle,
           isSecondClaim: this.isThereAsecondClaimToFileToggle
         }
       };
+
       this.addClaim(payload).then(() => this.setSelectedLead());
     },
     validateEmail,
