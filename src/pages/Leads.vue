@@ -104,7 +104,7 @@
                         <span
                           v-if="
                             lead.primaryContact.phoneNumber &&
-                            lead.primaryContact.phoneNumber.length
+                              lead.primaryContact.phoneNumber.length
                           "
                           @click="
                             onPhoneNumberClick(
@@ -125,7 +125,7 @@
                       Date of Loss:
                       <span v-if="lead.dateofLoss">{{
                         lead.dateofLoss &&
-                        lead.dateofLoss | moment('DD/MM/YYYY')
+                          lead.dateofLoss | moment('DD/MM/YYYY')
                       }}</span>
                       <span v-else> - </span>
                     </div>
@@ -178,7 +178,7 @@
                       <span
                         v-if="
                           lead.primaryContact.phoneNumber &&
-                          lead.primaryContact.phoneNumber.length
+                            lead.primaryContact.phoneNumber.length
                         "
                       >
                         {{ lead.primaryContact.phoneNumber[0].number }}
