@@ -21,7 +21,7 @@
           <q-input
             v-model="vendor.name"
             label="Vendor Company Name"
-            lazy-rules
+            lazy-rule
             :rules="[val => (val && val.length) || '']"
           />
 
@@ -117,51 +117,51 @@
   </q-page>
 </template>
 <script>
-import AddressService from "@utils/country";
-import CustomHeader from "components/CustomHeader";
+import AddressService from '@utils/country';
+import CustomHeader from 'components/CustomHeader';
 const addressService = new AddressService();
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex';
 export default {
   data() {
     return {
-      industryTypes: ["Association"],
+      industryTypes: ['Association'],
       countries: [],
       states: [],
       vendor: {
-        name: "",
-        industry: "",
+        name: '',
+        industry: '',
         contact: {
-          fname: "",
-          lname: "",
-          email: "",
+          fname: '',
+          lname: '',
+          email: '',
           phoneNumber: [
             {
-              type: "mobile",
-              number: ""
+              type: 'mobile',
+              number: ''
             }
           ]
         },
         address: {
-          addressCountry: "United States",
-          addressLocality: "",
-          addressRegion: "",
-          postOfficeBoxNumber: "",
-          postalCode: "",
-          streetAddress: ""
+          addressCountry: 'United States',
+          addressLocality: '',
+          addressRegion: '',
+          postOfficeBoxNumber: '',
+          postalCode: '',
+          streetAddress: ''
         },
         info: {
           phoneNumbers: [
             {
-              type: "pager",
-              number: ""
+              type: 'pager',
+              number: ''
             },
             {
-              type: "mobile",
-              number: ""
+              type: 'mobile',
+              number: ''
             }
           ],
-          website: "",
-          notes: ""
+          website: '',
+          notes: ''
         }
       }
     };
@@ -170,11 +170,11 @@ export default {
     CustomHeader
   },
   computed: {
-    ...mapGetters(["contactType"])
+    ...mapGetters(['contactType'])
   },
 
   methods: {
-    ...mapActions(["addVendor"]),
+    ...mapActions(['addVendor']),
     onCountrySelect(country) {
       this.states = addressService.getStates(country);
     },
@@ -190,7 +190,7 @@ export default {
 
   created() {
     this.countries = addressService.getCountries();
-    this.onCountrySelect("United States");
+    this.onCountrySelect('United States');
   }
 };
 </script>

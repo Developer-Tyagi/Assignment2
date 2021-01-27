@@ -432,13 +432,13 @@
 import { mapActions, mapGetters } from 'vuex';
 import { date } from 'quasar';
 import { validateEmail } from '@utils/validation';
-import { leadSource } from 'src/store/common/getters';
 import VendorsList from 'components/VendorsList';
 import AddVendor from 'components/AddVendor';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
+import CustomHeader from 'components/CustomHeader';
 
 export default {
-  components: { VendorsList, AddVendor, AutoCompleteAddress },
+  components: { VendorsList, AddVendor, AutoCompleteAddress, CustomHeader },
 
   data() {
     return {

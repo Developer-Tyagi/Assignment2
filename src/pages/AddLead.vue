@@ -43,7 +43,7 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex';
-
+import CustomHeader from 'components/CustomHeader';
 export default {
   data() {
     return {

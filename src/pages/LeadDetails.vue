@@ -87,7 +87,10 @@
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import CustomHeader from 'components/CustomHeader';
+
 export default {
+  components: { CustomHeader },
   computed: {
     ...mapGetters(['selectedLead'])
   },
@@ -111,10 +114,6 @@ export default {
   created() {
     this.getLeadDetails(this.$route.params.id);
   }
-
-  // beforeDestroy() {
-  //   this.removeSelectedLeadDetails();
-  // }
 };
 </script>
 <style lang="scss" scoped>
