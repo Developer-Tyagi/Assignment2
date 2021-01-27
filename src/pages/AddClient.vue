@@ -966,7 +966,7 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="form-card q-pa-md" style="padding-top: 30px">
+      <q-card class="form-card q-md" style="padding-top: 30px">
         <q-header bordered class="bg-white">
           <q-toolbar class="row bg-white">
             <img
