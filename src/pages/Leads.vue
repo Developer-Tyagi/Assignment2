@@ -23,7 +23,6 @@
             (activeLeads.length || archivedLeads.length) && !openSearchInput
           "
         />
-
         <img
           src="~assets/add.svg"
           alt=""
@@ -35,15 +34,20 @@
           v-model="searchText"
           v-if="openSearchInput"
           placeholder="Search for leads"
-          style="width: 80%; margin: 0 10%"
-          clearable
+          style="width: 100%; margin: 0 5% 0 5%; border: 0"
           @input="filterLeads()"
-        >
-        </q-input>
+        />
+        <img
+          src="~assets/close.svg"
+          alt=""
+          v-if="openSearchInput"
+          @click="onSearchBackButtonClick"
+          style="margin: 0 0 0 20px"
+        />
       </q-toolbar>
     </q-header>
-    <div style="padding-top: 51px" class="full-height row">
-      <div class="full-width" v-if="activeLeads.length || archivedLeads.length">
+    <div style="padding-top: 51px" class="row">
+      <div class="full-width">
         <q-tabs
           v-model="panel"
           dense
@@ -64,9 +68,13 @@
             class="text-capitalize"
           ></q-tab>
         </q-tabs>
-        <q-tab-panels v-model="panel" animated>
+        <q-tab-panels
+          v-model="panel"
+          animated
+          style="height: calc(100vh - 103px); overflow: auto"
+        >
           <q-tab-panel name="newLeads" class="q-pa-none">
-            <q-list style="overflow-x: hidden">
+            <q-list style="overflow-x: hidden" v-if="activeLeads.length">
               <div
                 class="lead-list-item"
                 v-for="lead in activeLeads"
@@ -104,7 +112,7 @@
                         <span
                           v-if="
                             lead.primaryContact.phoneNumber &&
-                            lead.primaryContact.phoneNumber.length
+                              lead.primaryContact.phoneNumber.length
                           "
                           @click="
                             onPhoneNumberClick(
@@ -124,7 +132,6 @@
                     <div>
                       Date of Loss:
                       <span v-if="lead.dateofLoss">{{
-                        lead.dateofLoss &&
                         lead.dateofLoss | moment('DD/MM/YYYY')
                       }}</span>
                       <span v-else> - </span>
@@ -154,9 +161,22 @@
                 </div>
               </div>
             </q-list>
+            <div v-else class="full-height full-width column">
+              <div style="color: #666666" class="text-center q-mt-auto">
+                You haven't added a Lead yet.
+              </div>
+              <img
+                src="~assets/add.svg"
+                alt="add_icon"
+                width="80px"
+                height="80px"
+                @click="addLead"
+                style="margin-top: 10px"
+              />
+            </div>
           </q-tab-panel>
           <q-tab-panel name="oldLeads" class="q-pa-none">
-            <q-list>
+            <q-list v-if="archivedLeads.length">
               <q-item
                 v-for="lead in archivedLeads"
                 :key="lead.id"
@@ -178,7 +198,7 @@
                       <span
                         v-if="
                           lead.primaryContact.phoneNumber &&
-                          lead.primaryContact.phoneNumber.length
+                            lead.primaryContact.phoneNumber.length
                         "
                       >
                         {{ lead.primaryContact.phoneNumber[0].number }}
@@ -205,21 +225,13 @@
                 </q-item-section>
               </q-item>
             </q-list>
+            <div v-else class="full-height full-width column">
+              <div style="color: #666666" class="text-center q-mt-auto">
+                You haven't any archived Lead yet.
+              </div>
+            </div>
           </q-tab-panel>
         </q-tab-panels>
-      </div>
-      <div v-else class="full-height full-width column">
-        <div style="color: #666666" class="text-center q-mt-auto">
-          You haven't added a Lead yet.
-        </div>
-        <img
-          src="~assets/add.svg"
-          alt="add_icon"
-          width="80px"
-          height="80px"
-          @click="addLead"
-          style="margin-top: 10px"
-        />
       </div>
     </div>
   </q-page>
@@ -228,7 +240,6 @@
 <script>
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import moment from 'moment';
-import { setSelectedLead } from 'src/store/leads/mutations';
 
 export default {
   name: 'Leads',
@@ -316,6 +327,12 @@ export default {
       if (number) {
         window.open('tel:' + number);
       }
+    },
+
+    onSearchBackButtonClick() {
+      this.searchText = '';
+      this.openSearchInput = false;
+      this.filterLeads();
     }
   },
   watch: {

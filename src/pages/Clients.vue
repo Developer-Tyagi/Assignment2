@@ -37,8 +37,8 @@
           <div class="client-list-item">
             <div class="row">
               <span>
-                {{ client["insuredInfo"]["primary"]["fname"] }}
-                {{ client["insuredInfo"]["primary"]["lname"] }}
+                {{ client['insuredInfo']['primary']['fname'] }}
+                {{ client['insuredInfo']['primary']['lname'] }}
               </span>
 
               <q-icon class="q-ml-auto" size="sm" name="more_vert"></q-icon>
@@ -74,30 +74,30 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
-import CustomHeader from "components/CustomHeader";
+import { mapGetters, mapActions } from 'vuex';
+import CustomHeader from 'components/CustomHeader';
 
 export default {
-  name: "Clients",
+  name: 'Clients',
   components: { CustomHeader },
   data() {
     return {
-      searchText: ""
+      searchText: ''
     };
   },
 
   computed: {
-    ...mapGetters(["clients"])
+    ...mapGetters(['clients'])
   },
 
   created() {
     this.getClients();
   },
   methods: {
-    ...mapActions(["getClients"]),
+    ...mapActions(['getClients']),
 
     addClient() {
-      this.$router.push("/add-client");
+      this.$router.push('/add-client');
     },
 
     search(e) {}

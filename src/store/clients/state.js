@@ -1,6 +1,6 @@
 import { policyCategories } from './getters';
 
-export default function () {
+export default function() {
   return {
     clients: [],
     clientTypes: [],
