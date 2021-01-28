@@ -433,8 +433,8 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import { date } from 'quasar';
 import { validateEmail } from '@utils/validation';
+import { dateToSend } from '@utils/date';
 import VendorsList from 'components/VendorsList';
 import AddVendor from 'components/AddVendor';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
@@ -452,7 +452,7 @@ export default {
       showVendorDialogFilters: false,
       vendorDialogName: '',
       vendorDialogFilterByIndustry: '',
-      step: 1,
+      step: 3,
       primaryDetails: {
         isOrganization: false,
         organizationName: '',
@@ -492,7 +492,9 @@ export default {
         isAutomaticScheduling: false,
         inspectionType: '',
         subInspectionType: '',
-        inspectionDuration: ''
+        inspectionDuration: '',
+        subInspectionTypeValue: '',
+        subInspectionTypeMachineValue: ''
       },
       notes: '',
       vendorSelected: '',
@@ -548,6 +550,8 @@ export default {
         this.subInspectionTypes = selectedInspectionType.subtypes;
         this.schedulingDetails.subInspectionType = '';
         this.schedulingDetails.inspectionDuration = '';
+        this.schedulingDetails.subInspectionTypeMachineValue = '';
+        this.schedulingDetails.subInspectionTypeValue = '';
         this.showSubInspectionType = true;
       } else {
         this.showSubInspectionType = false;
@@ -555,8 +559,13 @@ export default {
           selectedInspectionType.subtypes[0].userID;
         this.schedulingDetails.inspectionDuration =
           selectedInspectionType.subtypes[0].duration;
+        this.schedulingDetails.subInspectionTypeValue =
+          selectedInspectionType.subtypes[0].value;
+        this.schedulingDetails.subInspectionTypeMachineValue =
+          selectedInspectionType.subtypes[0].machineValue;
       }
     },
+
     onSubInspectionTypesSelect() {
       const index = this.subInspectionTypes.findIndex(
         val => val.userID == this.schedulingDetails.subInspectionType
@@ -564,18 +573,15 @@ export default {
       this.schedulingDetails.inspectionDuration = this.subInspectionTypes[
         index
       ].duration;
+      this.schedulingDetails.subInspectionTypeValue = this.subInspectionTypes[
+        index
+      ].value;
+      this.schedulingDetails.subInspectionTypeMachineValue = this.subInspectionTypes[
+        index
+      ].machineValue;
     },
 
     onSubmit() {
-      let formattedString = '';
-      if (this.lossDetails.dateOfLoss) {
-        formattedString = date.formatDate(
-          this.lossDetails.dateOfLoss,
-          'YYYY-MM-DDTHH:mm:ssZ'
-        );
-      } else {
-        formattedString = null;
-      }
       const payload = {
         isOrganization: this.primaryDetails.isOrganization,
         primaryContact: {
@@ -592,14 +598,16 @@ export default {
           ...this.lossAddress
         },
         lossDesc: this.lossDetails.lossDesc,
-        dateofLoss: formattedString,
+        dateofLoss: dateToSend(this.lossDetails.dateOfLoss),
 
         policyNumber: this.insuranceDetails.policyNumber,
         isAutomaticScheduling: this.schedulingDetails.isAutomaticScheduling,
         notes: this.notes,
         inspectionInfo: {
           id: this.schedulingDetails.subInspectionType,
-          duration: this.schedulingDetails.inspectionDuration
+          duration: this.schedulingDetails.inspectionDuration,
+          machineValue: this.schedulingDetails.subInspectionTypeMachineValue,
+          value: this.schedulingDetails.subInspectionTypeValue
         },
         leadSource: {
           id: '',
@@ -658,7 +666,15 @@ export default {
       this.addVendorDialog = false;
       this.vendorsListDialog = true;
       if (e) {
-        this.$refs.list.getVendors();
+        if (this.vendorDialogName === 'carrier') {
+          let params = {
+            industry: '5ffedc469a111940084ce6e2',
+            name: ''
+          };
+          this.$refs.list.getVendors(params);
+        } else {
+          this.$refs.list.getVendors();
+        }
       }
     }
   },

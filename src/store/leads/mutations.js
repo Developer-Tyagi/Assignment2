@@ -16,7 +16,7 @@ export function moveActiveToArchive(state, leadId) {
 }
 
 export function setSelectedLead(state, lead) {
-  if (lead && lead.attributes.id) {
+  if (lead.id || lead.attributes.id) {
     state.selectedLead = lead.attributes;
   } else {
     state.selectedLead = {

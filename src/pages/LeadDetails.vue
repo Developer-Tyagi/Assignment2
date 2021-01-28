@@ -45,7 +45,9 @@
           <p class="heading">Loss Details</p>
 
           <p class="texts">
-            Date of Loss &nbsp;&nbsp;{{ selectedLead.dateofLoss }}
+            Date of Loss &nbsp;&nbsp;{{
+              selectedLead.dateofLoss | moment('DD/MM/YYYY')
+            }}
           </p>
           <p class="texts">
             Description &nbsp;&nbsp;{{ selectedLead.lossDesc }}
@@ -56,7 +58,9 @@
             Carrier Name &nbsp;&nbsp;{{ selectedLead.carrier.value }}
           </p>
           <p class="texts">
-            Policy No &nbsp;&nbsp;{{ selectedLead.policyNumber }}
+            Policy No &nbsp;&nbsp;{{
+              selectedLead.policyNumber ? selectedLead.policyNumber : '-'
+            }}
           </p>
 
           <p class="heading">Inspection Type</p>
@@ -87,6 +91,7 @@
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import moment from 'moment';
 import CustomHeader from 'components/CustomHeader';
 
 export default {

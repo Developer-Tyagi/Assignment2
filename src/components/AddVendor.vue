@@ -129,7 +129,7 @@
           />
           <p class="form-heading">Company's Phone & Website</p>
           <div v-for="(contactInfo, index) in vendor.contact" v-if="index >= 1">
-            <div class="q-mt-sm ">
+            <div class="q-mt-sm">
               <q-select
                 v-model="contactInfo.honorific.id"
                 :options="titles"
@@ -143,9 +143,7 @@
               <q-input
                 v-model="contactInfo.fname"
                 label="First Name"
-                :rules="[
-                  val => (val && val.length > 0) || 'Please fill the first name'
-                ]"
+                :ref="`fname-${index}`"
               />
               <q-input v-model="contactInfo.lname" label="Last Name" />
               <div class="row">
@@ -157,17 +155,13 @@
                   label="Type"
                   style="width: 40%; margin-right: auto"
                   emit-value
-                  :rules="[val => (val && val.length > 0) || '']"
                 />
                 <q-input
                   v-model="contactInfo.phoneNumber.number"
                   label="Phone1"
                   type="number"
                   style="width: 55%"
-                  :rules="[
-                    val =>
-                      (val && val.length > 0) || 'Please fill the phone number'
-                  ]"
+                  :ref="`number-${index}`"
                 />
               </div>
               <q-input
@@ -184,7 +178,7 @@
               @click="addAnotherContact"
               color="primary"
               label="Add"
-              style=" margin-right: auto"
+              style="margin-right: auto"
             />
 
             <q-btn
@@ -217,8 +211,6 @@
 import AddressService from '@utils/country';
 const addressService = new AddressService();
 import { mapGetters, mapActions } from 'vuex';
-import { getVendorIndustries } from 'src/store/vendors/actions';
-import { getContactTypes, getTitles } from 'src/store/common/actions';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 
 export default {
@@ -361,7 +353,6 @@ export default {
 
     addAnotherContact() {
       const len = this.vendor.contact.length;
-      this.$refs.vendorForm.validate();
       if (
         this.vendor.contact[len - 1].fname &&
         this.vendor.contact[len - 1].phoneNumber.number
@@ -383,8 +374,17 @@ export default {
           ]
         });
       } else {
+        if (!this.vendor.contact[len - 1].fname) {
+          this.$nextTick(() => {
+            this.$refs[`fname-${len - 1}`][0].$el.focus();
+          });
+        } else if (!this.vendor.contact[len - 1].phoneNumber.number) {
+          this.$nextTick(() => {
+            this.$refs[`number-${len - 1}`][0].$el.focus();
+          });
+        }
         this.$q.notify({
-          message: 'Please fill the above details first',
+          message: 'Please fill this detail first',
           position: 'top',
           type: 'negative'
         });
@@ -396,7 +396,6 @@ export default {
     },
 
     async onAddVendorButtonClick() {
-      console.log(this.vendor);
       const success = await this.$refs.vendorForm.validate();
       if (success) {
         const response = await this.addVendor(this.vendor);
