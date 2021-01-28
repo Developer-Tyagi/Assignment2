@@ -23,14 +23,12 @@
           <div class="form-list" @click="mortgageInfoDialog = true">
             Mortgage Info
           </div>
-          <div class="form-list" @click="estimatingInfoDialog = true">
-            Estimating Info
-          </div>
-
           <div class="form-list" @click="expertVendorInfoDialog = true">
             Expert/Vendor Info
           </div>
-
+          <div class="form-list" @click="estimatingInfoDialog = true">
+            Estimating Info
+          </div>
           <div class="form-list" @click="officeTaskDialog = true">
             Office Task
           </div>
@@ -247,7 +245,7 @@
                     <div
                       v-else-if="sourceDetails.type == 'vendor'"
                       class="custom-select"
-                      @click="onAddVendorDialogClick('vendor')"
+                      @click="onAddVendorDialogClick('vendor', false)"
                     >
                       <div class="select-text">
                         {{
@@ -641,7 +639,7 @@
               <div
                 class="custom-select"
                 v-model="insuranceDetails.carrierName"
-                @click="onAddVendorDialogClick('carrier')"
+                @click="onAddVendorDialogClick('carrier', false)"
               >
                 <div class="select-text">
                   {{
@@ -1203,7 +1201,7 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="form-card q-pa-md" style="padding-top: 20px">
+      <q-card class="form-card q-pa-md" style="padding-top: 30px">
         <q-header bordered class="bg-white">
           <q-toolbar class="row bg-white">
             <img
@@ -1218,48 +1216,62 @@
           </q-toolbar>
         </q-header>
         <q-card-section>
-          <div class="q-page bg-white" style="min-height: 630px">
-            <div
-              class="full-width"
-              style="
-                height: calc(100vh - 145px);
-                overflow-y: auto;
-                margin-bottom: 10px;
-                padding-top: 40px;
-              "
-            >
+          <div class="q-page bg-white">
+            <div class="full-width fixHeight">
               <div class="row">
-                <p>Has a Vendor of Expert hired?</p>
-                <q-toggle
-                  class="q-ml-auto"
-                  v-model="hasAvendorOfExpertHiredToggle"
-                />
+                <span class="form-heading"
+                  >Do any vendors need to be assigned?</span
+                >
+                <q-toggle class="q-ml-auto" v-model="vendorExpertHiredToggle" />
               </div>
-              <div v-if="hasAvendorOfExpertHiredToggle">
-                <q-select
-                  v-model="expertVendorInfo.expertType"
-                  :options="hasAvendorOfExpertHiredTypes"
-                  label="Select Vendor / Expert Type"
-                />
+
+              <div
+                v-if="vendorExpertHiredToggle"
+                class="custom-select"
+                v-model="expertVendorInfo.vendorName"
+                @click="onAddVendorDialogClick('vendor', true)"
+              >
+                <div class="select-text">
+                  {{
+                    expertVendorInfo.id
+                      ? expertVendorInfo.vendorName
+                      : 'Select Vendor'
+                  }}
+                </div>
               </div>
+
               <div class="row">
-                <p>Any other Expert hired?</p>
+                <span class="form-heading">Is Insured hired?</span>
                 <q-toggle
                   class="q-ml-auto"
                   v-model="anyOtherExpertHiredToggle"
                 />
               </div>
-              <div class="row">
-                <p>Do you refer any Vendor?</p>
-                <q-toggle
-                  class="q-ml-auto"
-                  v-model="doYouReferAnyVendorToggle"
-                />
+              <span class="form-heading">Notes</span>
+              <div>
+                <textarea
+                  rows="5"
+                  required
+                  class="full-width"
+                  v-model="expertVendorInfo.notes"
+                  style="resize: none;"
+                ></textarea>
               </div>
-            </div>
-            <br />
-          </div>
+              <br />
+              <div>
+                <span class="form-heading">Internal Notes</span>
+                <textarea
+                  rows="5"
+                  required
+                  class="full-width"
+                  v-model="expertVendorInfo.internalNotes"
+                  style="resize: none;"
+                ></textarea>
+              </div>
 
+              <br />
+            </div>
+          </div>
           <q-btn
             label="Save"
             color="primary"
@@ -1404,6 +1416,7 @@ export default {
   components: { CustomHeader, VendorsList, AddVendor, AutoCompleteAddress },
   data() {
     return {
+      isExpertVendorScreen: false,
       isSecondMortgageHome: false,
       vendorDialogName: '',
       vendorDialogFilterByIndustry: '',
@@ -1570,8 +1583,12 @@ export default {
         scopeTimeNeeded: '',
         notesToTheEstimator: ''
       },
+
       expertVendorInfo: {
-        expertType: ''
+        notes: '',
+        internalNotes: '',
+        vendorName: '',
+        id: ''
       },
       officeTask: {
         officeActionTypes: '',
@@ -1616,9 +1633,9 @@ export default {
       isTherea2ndMortgageOnTheHomeToggle: false,
       doesAnEstimatorNeedToBeAssignedToggle: false,
       estimatingInformationClaim2Toggle: false,
-      hasAvendorOfExpertHiredToggle: false,
+      vendorExpertHiredToggle: false,
       anyOtherExpertHiredToggle: false,
-      doYouReferAnyVendorToggle: false,
+
       femaClaimToggle: false,
       additionalOfficeTaskRequiredToggle: false,
       officeActionRequiredTypes: [],
@@ -1932,6 +1949,16 @@ export default {
           isNeedPPIF: this.doesTheOfficeNeedToProvidePpifToTheInsuredToggle,
           hasHomeMortgage: this.IsMortgageHomeToggle,
           isSecondClaim: this.isThereAsecondClaimToFileToggle
+        },
+        expertInfo: {
+          isVendorAssigned: this.vendorExpertHiredToggle,
+          vendor: {
+            id: this.expertVendorInfo.id,
+            value: this.expertVendorInfo.vendorName
+          },
+          isInsuredHired: this.anyOtherExpertHiredToggle,
+          notes: this.expertVendorInfo.notes,
+          internalNotes: this.expertVendorInfo.internalNotes
         }
       };
 
@@ -1945,23 +1972,19 @@ export default {
       this.sourceDetails.details = '';
     },
 
-    addSelectedVendor(e) {
-      this.sourceDetails = {
-        id: e.id,
-        type: 'vendor',
-        details: e.name
-      };
-      this.closeVendorsList();
-    },
-
     onClosingVendorSelectDialog(vendor, isVendor) {
       if (isVendor) {
+        if (this.isExpertVendorScreen) {
+          this.expertVendorInfo.id = vendor.id;
+          this.expertVendorInfo.vendorName = vendor.name;
+        }
         this.sourceDetails.id = vendor.id;
         this.sourceDetails.details = vendor.name;
       } else {
         this.insuranceDetails.carrierId = vendor.id;
         this.insuranceDetails.carrierName = vendor.name;
       }
+
       this.vendorsListDialog = false;
     },
 
@@ -1973,8 +1996,9 @@ export default {
       }
     },
 
-    onAddVendorDialogClick(name) {
+    onAddVendorDialogClick(name, isExpertVendor) {
       this.vendorDialogName = name;
+      this.isExpertVendorScreen = isExpertVendor;
       if (name === 'carrier') {
         this.showVendorDialogFilters = false;
         this.vendorDialogFilterByIndustry = '5ffedc469a111940084ce6e2';
