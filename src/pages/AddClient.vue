@@ -1476,7 +1476,10 @@ export default {
         streetAddress: '',
         postOfficeBoxNumber: '4',
         isGateDropbox: false,
-        dropBoxInfo: ''
+        dropBox: {
+          info: '',
+          isPresent: false
+        }
       },
 
       tenantOccupied: {
@@ -1492,7 +1495,10 @@ export default {
         streetAddress: '',
         postOfficeBoxNumber: '4',
         isGateDropbox: false,
-        dropBoxInfo: ''
+        dropBox: {
+          info: '',
+          isPresent: false
+        }
       },
       lossInfo: {
         dateOfLoss: '',
@@ -1604,7 +1610,10 @@ export default {
         streetAddress: '',
         postOfficeBoxNumber: '4',
         isGateDropbox: false,
-        dropBoxInfo: ''
+        dropBox: {
+          info: '',
+          isPresent: false
+        }
       },
       isThereAsecondClaimToFileToggle: false,
       typeOfLoss: [],
