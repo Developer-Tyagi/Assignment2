@@ -1961,8 +1961,18 @@ export default {
           internalNotes: this.expertVendorInfo.internalNotes
         }
       };
+      // const response = await this.addClaim(payload);
 
-      this.addClaim(payload).then(() => this.setSelectedLead());
+      // if (response && response.data && response.data.id) {
+
+      //   this.setSelectedLead();
+      //   this.$router.push('/client');
+      // }
+      //this will change
+      this.addClaim(payload).then(() => {
+        this.setSelectedLead();
+        this.$router.push('/clients');
+      });
     },
     validateEmail,
 
