@@ -48,13 +48,13 @@
       <p class="q-mx-none q-my-auto">Gate / Dropbox</p>
       <q-toggle
         class="q-ml-auto"
-        v-model="address.isGateDropbox"
+        v-model="address.dropBox.isPresent"
         :disable="!isAddressFieldEnable"
       />
     </div>
     <q-input
-      v-if="address.isGateDropbox && isDropBoxEnable"
-      v-model="address.dropBoxInfo"
+      v-if="address.dropBox.isPresent && isDropBoxEnable"
+      v-model="address.dropBox.info"
       label="Gate/ Dropbox"
       :disable="!isAddressFieldEnable"
       :rules="[val => checkValidations(val)]"
@@ -81,7 +81,7 @@ export default {
     },
     isFieldsDisable: {
       type: Boolean,
-      required: true
+      required: false
     }
   },
 

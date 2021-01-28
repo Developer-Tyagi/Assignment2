@@ -95,23 +95,23 @@
   </div>
 </template>
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters } from 'vuex';
 export default {
-  name: "VendorsList",
-  props: ["selective", "showFilter", "filterName"],
+  name: 'VendorsList',
+  props: ['selective', 'showFilter', 'filterName'],
   data() {
     return {
-      searchText: "",
+      searchText: '',
       filterDialog: false,
-      selectedFilter: "",
+      selectedFilter: '',
       params: {
-        industry: "",
-        name: ""
+        industry: '',
+        name: ''
       }
     };
   },
   computed: {
-    ...mapGetters(["vendors", "vendorIndustries"])
+    ...mapGetters(['vendors', 'vendorIndustries'])
   },
 
   mounted() {
@@ -123,7 +123,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(["getVendors", "getVendorIndustries"]),
+    ...mapActions(['getVendors', 'getVendorIndustries']),
 
     selectFilter(filter) {
       this.selectedFilter = filter.id;
@@ -147,16 +147,16 @@ export default {
         });
         vendor.selected = true;
         if (!this.showFilter) {
-          this.$emit("selectedVendor", vendor, false);
+          this.$emit('selectedVendor', vendor, false);
         } else {
-          this.$emit("selectedVendor", vendor, true);
+          this.$emit('selectedVendor', vendor, true);
         }
       }
     },
 
     clearFilter() {
-      this.params.industry = "";
-      this.selectedFilter = "";
+      this.params.industry = '';
+      this.selectedFilter = '';
       this.getVendors(this.params);
     }
   }
