@@ -57,27 +57,27 @@
   </q-page-container>
 </template>
 <script>
-import axios from "axios";
-import { Notify } from "quasar";
-import { mapActions } from "vuex";
-import { getToken } from "@utils/auth";
+import axios from 'axios';
+import { Notify } from 'quasar';
+import { mapActions } from 'vuex';
+import { getToken } from '@utils/auth';
 export default {
-  name: "Login",
+  name: 'Login',
   data() {
     return {
       login: {
-        email: "",
-        password: ""
+        email: '',
+        password: ''
       }
     };
   },
   methods: {
-    ...mapActions(["userLogin"]),
+    ...mapActions(['userLogin']),
 
     onUserLogin() {
       const loginData = {
         data: {
-          type: "users",
+          type: 'users',
           attributes: {
             ...this.login
           }
@@ -91,7 +91,7 @@ export default {
 
   beforeMount() {
     if (getToken()) {
-      this.$router.push("/dashboard");
+      this.$router.push('/dashboard');
     }
   }
 };

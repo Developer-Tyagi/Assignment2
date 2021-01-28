@@ -57,8 +57,8 @@
 </style>
 
 <script>
-import BarChartComponent from "components/BarChart";
-import CustomHeader from "components/CustomHeader";
+import BarChartComponent from 'components/BarChart';
+import CustomHeader from 'components/CustomHeader';
 
 export default {
   components: {
@@ -106,16 +106,16 @@ export default {
     fillData() {
       this.datacollection = {
         labels: [
-          "New Lead",
-          "Scheduled",
-          "Visited",
-          "Follow up ",
-          "Leads Converted",
-          "Dead Leads"
+          'New Lead',
+          'Scheduled',
+          'Visited',
+          'Follow up ',
+          'Leads Converted',
+          'Dead Leads'
         ],
         datasets: [
           {
-            backgroundColor: "#1B2854",
+            backgroundColor: '#1B2854',
             data: [5, 8, 15, 10, 7, 3]
           }
         ]
@@ -125,7 +125,7 @@ export default {
   computed: {
     myStyles() {
       return {
-        height: "600px"
+        height: '600px'
       };
     }
   }

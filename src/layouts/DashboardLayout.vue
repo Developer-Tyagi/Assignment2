@@ -47,7 +47,7 @@
             style="width: calc(100% - 54px);"
           >
             <div class="text-capitalize ellipsis full-width">
-              {{ user.name || "Unknown" }}
+              {{ user.name || 'Unknown' }}
             </div>
             <div style="font-size: 11px; opacity: 80%">View Profile</div>
           </div>
@@ -94,26 +94,26 @@
 </template>
 
 <script>
-import { removeToken } from "@utils/auth";
+import { removeToken } from '@utils/auth';
 export default {
-  name: "DashboardLayout",
+  name: 'DashboardLayout',
   data() {
     return {
       user: {
-        name: ""
+        name: ''
       },
       isLeftSidePanelOpen: false,
       intViewportWidth: 0,
       linksData: [
         {
-          title: "Leads",
-          link: "/leads-dashboard",
-          description: "View Lead Dashboard, Add New Lead and Manage Leads."
+          title: 'Leads',
+          link: '/leads-dashboard',
+          description: 'View Lead Dashboard, Add New Lead and Manage Leads.'
         },
         {
-          title: "Clients",
-          link: "/clients",
-          description: "View, Add and Manage Clients."
+          title: 'Clients',
+          link: '/clients',
+          description: 'View, Add and Manage Clients.'
         },
         // {
         //   title: "Claims",
@@ -127,14 +127,14 @@ export default {
         //     "View Insurance and Mortgage Companies, Add and Manage New Companies."
         // },
         {
-          title: "Vendors",
-          link: "/vendors",
-          description: "View, Add and Manage all types of Vendors."
+          title: 'Vendors',
+          link: '/vendors',
+          description: 'View, Add and Manage all types of Vendors.'
         },
         {
-          title: "Settings",
-          link: "/settings",
-          description: "Setup My Schedule, Type of Inspection etc."
+          title: 'Settings',
+          link: '/settings',
+          description: 'Setup My Schedule, Type of Inspection etc.'
         }
       ]
     };
@@ -143,7 +143,7 @@ export default {
   methods: {
     logout() {
       this.removeToken();
-      this.$router.push("/login");
+      this.$router.push('/login');
     },
 
     removeToken,
