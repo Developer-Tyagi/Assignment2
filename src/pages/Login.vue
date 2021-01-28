@@ -2,38 +2,53 @@
   <q-page-container class="bg-login">
     <q-page class="q-pa-lg">
       <div>
-        <div class="flex" style="height: 55vh">
+        <div class="flex column" style="height: 50vh">
           <img
             alt="Claimguru"
-            src="~assets/app-icon2.png"
-            class="q-mx-auto q-my-auto"
-            width="150"
-            height="150"
+            src="~assets/claimguru_icon.png"
+            class="q-mx-auto q-mt-auto"
+            width="95"
+            height="95"
+          />
+          <img
+            alt="Claimguru"
+            src="~assets/claimguru_text.png"
+            class="q-mx-auto q-mb-auto"
+            width="190"
+            height="90"
           />
         </div>
-        <div class="column" style="height: 40vh">
-          <q-input v-model="login.email" placeholder="Username" borderless>
-            <template v-slot:prepend>
-              <q-icon name="person_outline" color="orange" />
-            </template>
-          </q-input>
-          <q-input
-            v-model="login.password"
-            placeholder="Password"
-            type="password"
-            borderless
-          >
-            <template v-slot:prepend>
-              <q-icon name="lock_outline" color="orange" />
-            </template>
-          </q-input>
-          <q-btn
-            color="secondary"
-            label="Login"
-            class="full-width q-my-md"
-            @click="onUserLogin"
-          ></q-btn>
-          <a href style="color: #d64d25; text-decoration: none"
+        <div class="column">
+          <div class="row">
+            <img src="~assets/icon_user.svg" class="q-mr-lg" />
+            <q-input
+              class="login-input"
+              v-model="login.email"
+              placeholder="Username"
+              borderless
+            />
+            <q-separator />
+          </div>
+          <div class="row">
+            <img src="~assets/lock.svg" class="q-mr-lg" />
+            <q-input
+              class="login-input"
+              v-model="login.password"
+              placeholder="Password"
+              type="password"
+              borderless
+            />
+            <q-separator />
+          </div>
+          <div>
+            <q-btn
+              color="secondary"
+              label="Login"
+              class="full-width q-my-md"
+              @click="onUserLogin"
+            ></q-btn>
+          </div>
+          <a href class="text-primary" style="text-decoration: none"
             >Forgot Password</a
           >
         </div>
@@ -45,14 +60,15 @@
 import axios from "axios";
 import { Notify } from "quasar";
 import { mapActions } from "vuex";
+import { getToken } from "@utils/auth";
 export default {
   name: "Login",
   data() {
     return {
       login: {
         email: "",
-        password: "",
-      },
+        password: ""
+      }
     };
   },
   methods: {
@@ -63,26 +79,27 @@ export default {
         data: {
           type: "users",
           attributes: {
-            ...this.login,
-          },
-        },
+            ...this.login
+          }
+        }
       };
       if (this.login.email && this.login.password) {
         this.userLogin(loginData);
       }
-    },
+    }
   },
 
   beforeMount() {
-    if (localStorage.getItem("token")) {
+    if (getToken()) {
       this.$router.push("/dashboard");
     }
-  },
+  }
 };
 </script>
 <style lang="scss" scoped>
-input::placeholder {
-  color: #aeaeae;
+.login-input {
+  color: #999999 !important;
+  font-size: 14px;
 }
 .bg-login {
   background-color: #ededed;

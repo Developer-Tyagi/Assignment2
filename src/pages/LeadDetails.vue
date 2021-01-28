@@ -1,25 +1,13 @@
 <template>
   <q-page style="padding-top: 0; height: 100vh">
-    <q-header bordered class="bg-white">
-      <q-toolbar class="row bg-white">
-        <img
-          src="~assets/left-arrow.svg"
-          alt="back-arrow"
-          @click="$router.push('/leads')"
-          style="margin: auto 0"
-        />
-        <div class="text-uppercase text-bold text-black q-mx-auto">
-          {{ $route.name }}
-        </div>
-      </q-toolbar>
-    </q-header>
+    <CustomHeader @backButton="$router.push('/leads')" :showAddButton="false" />
     <div style="padding-top: 51px" class="full-height row">
       <q-card class="q-pa-md q-ma-md" style="width: 100%">
         <div>
           <q-icon name="create" color="primary" class="edit-icon"></q-icon>
           <p class="heading">Policy Holder Details</p>
           <p class="texts">
-            {{ selectedLead["primaryContact"]["fname"] }}
+            {{ selectedLead['primaryContact']['fname'] }}
             {{ selectedLead.primaryContact.lname }}
           </p>
           <p class="texts">
@@ -57,7 +45,9 @@
           <p class="heading">Loss Details</p>
 
           <p class="texts">
-            Date of Loss &nbsp;&nbsp;{{ selectedLead.dateofLoss }}
+            Date of Loss &nbsp;&nbsp;{{
+              selectedLead.dateofLoss | moment('DD/MM/YYYY')
+            }}
           </p>
           <p class="texts">
             Description &nbsp;&nbsp;{{ selectedLead.lossDesc }}
@@ -68,12 +58,12 @@
             Carrier Name &nbsp;&nbsp;{{ selectedLead.carrier.value }}
           </p>
           <p class="texts">
-            Policy No &nbsp;&nbsp;{{ selectedLead.policyNumber }}
+            Policy No &nbsp;&nbsp;{{
+              selectedLead.policyNumber ? selectedLead.policyNumber : '-'
+            }}
           </p>
 
-          <p class="heading">
-            Inspection Type
-          </p>
+          <p class="heading">Inspection Type</p>
           <p class="texts">
             &nbsp;&nbsp;{{ selectedLead.inspectionInfo.value }}
           </p>
@@ -100,35 +90,35 @@
   </q-page>
 </template>
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex';
+import moment from 'moment';
+import CustomHeader from 'components/CustomHeader';
+
 export default {
+  components: { CustomHeader },
   computed: {
-    ...mapGetters(["selectedLead"])
+    ...mapGetters(['selectedLead'])
   },
 
   methods: {
-    ...mapActions(["getLeadDetails", "removeSelectedLeadDetails"]),
+    ...mapActions(['getLeadDetails', 'removeSelectedLeadDetails']),
     onEmailClick(email, e) {
       e.stopPropagation();
       if (email) {
-        window.open("mailto:" + email);
+        window.open('mailto:' + email);
       }
     },
 
     onPhoneNumberClick(number, e) {
       e.stopPropagation();
       if (number) {
-        window.open("tel:" + number);
+        window.open('tel:' + number);
       }
     }
   },
   created() {
     this.getLeadDetails(this.$route.params.id);
   }
-
-  // beforeDestroy() {
-  //   this.removeSelectedLeadDetails();
-  // }
 };
 </script>
 <style lang="scss" scoped>

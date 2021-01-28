@@ -1,7 +1,7 @@
-import { Cookies } from "quasar";
+import { Cookies } from 'quasar';
 
-const tokenName = "access_token";
-const tokenSettings = { domain: process.env.DOMAIN || "localhost" };
+const tokenName = 'access_token';
+const tokenSettings = { domain: process.env.DOMAIN || 'localhost' };
 
 export function setToken(token) {
   Cookies.set(tokenName, token, tokenSettings);

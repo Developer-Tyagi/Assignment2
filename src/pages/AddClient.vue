@@ -5,7 +5,7 @@
       :showAddButton="false"
     />
     <div class="column" style="padding: 30px 20px 20px 20px">
-      <div class="q-md column ">
+      <div class="q-md column">
         <div class="full-width fixHeight">
           <div class="form-list" @click="clientInfoDailog = true">
             Client Info
@@ -23,14 +23,12 @@
           <div class="form-list" @click="mortgageInfoDialog = true">
             Mortgage Info
           </div>
-          <div class="form-list" @click="estimatingInfoDialog = true">
-            Estimating Info
-          </div>
-
           <div class="form-list" @click="expertVendorInfoDialog = true">
             Expert/Vendor Info
           </div>
-
+          <div class="form-list" @click="estimatingInfoDialog = true">
+            Estimating Info
+          </div>
           <div class="form-list" @click="officeTaskDialog = true">
             Office Task
           </div>
@@ -200,7 +198,7 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="form-card q-pa-md" style="padding-top: 30px;">
+      <q-card class="form-card q-pa-md" style="padding-top: 30px">
         <q-header bordered class="bg-white">
           <q-toolbar class="row bg-white">
             <img
@@ -247,7 +245,7 @@
                     <div
                       v-else-if="sourceDetails.type == 'vendor'"
                       class="custom-select"
-                      @click="onAddVendorDialogClick('vendor')"
+                      @click="onAddVendorDialogClick('vendor', false)"
                     >
                       <div class="select-text">
                         {{
@@ -565,7 +563,7 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="form-card q-pa-md" style="padding-top:30px;">
+      <q-card class="form-card q-pa-md" style="padding-top: 30px">
         <q-header bordered class="bg-white">
           <q-toolbar class="row bg-white">
             <img
@@ -641,7 +639,7 @@
               <div
                 class="custom-select"
                 v-model="insuranceDetails.carrierName"
-                @click="onAddVendorDialogClick('carrier')"
+                @click="onAddVendorDialogClick('carrier', false)"
               >
                 <div class="select-text">
                   {{
@@ -714,7 +712,7 @@
                 label="Property Type"
               />
               <br />
-              <div class="row" style="align-items: center;">
+              <div class="row" style="align-items: center">
                 <span class="form-heading">Dwelling Limit (A)</span>
                 <q-input
                   mask="#.#"
@@ -725,7 +723,7 @@
                   prefix="$"
                 />
               </div>
-              <div class="row" style="align-items: center;">
+              <div class="row" style="align-items: center">
                 <span class="form-heading">Other Structure (B)</span>
                 <q-input
                   mask="#.#"
@@ -736,7 +734,7 @@
                   style="margin-left: auto; width: 50%"
                 />
               </div>
-              <div class="row" style="align-items: center;">
+              <div class="row" style="align-items: center">
                 <span class="form-heading">Contents Limit (C)</span>
                 <q-input
                   mask="#.#"
@@ -747,7 +745,7 @@
                   style="margin-left: auto; width: 50%"
                 />
               </div>
-              <div class="row" style="align-items: center;">
+              <div class="row" style="align-items: center">
                 <span class="form-heading">Loss of Use Limit (D)</span>
                 <q-input
                   mask="#.#"
@@ -758,7 +756,7 @@
                   style="margin-left: auto; width: 50%"
                 />
               </div>
-              <div class="row" style="align-items: center;">
+              <div class="row" style="align-items: center">
                 <span class="form-heading">Depreciation</span>
                 <q-input
                   mask="#.#"
@@ -769,7 +767,7 @@
                   style="margin-left: auto; width: 50%"
                 />
               </div>
-              <div class="row" style="align-items: center;">
+              <div class="row" style="align-items: center">
                 <span class="form-heading">Deductible</span>
                 <q-input
                   mask="#.#"
@@ -781,7 +779,7 @@
                 />
               </div>
 
-              <div class="row " style="align-items: center;">
+              <div class="row" style="align-items: center">
                 <span class="form-heading">Prior payment by insured</span>
                 <q-input
                   mask="#.#"
@@ -789,7 +787,7 @@
                   v-model.number="insuranceDetails.priorPayment"
                   placeholder="Prior payment by insured"
                   prefix="$"
-                  style="margin-left: auto;  width:50%;    "
+                  style="margin-left: auto; width: 50%"
                 />
               </div>
               <br />
@@ -800,7 +798,7 @@
                   required
                   class="full-width"
                   v-model="insuranceDetails.reasonsOfLD"
-                  style="resize: none;"
+                  style="resize: none"
                 ></textarea>
               </div>
               <br />
@@ -1028,7 +1026,7 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="form-card q-pa-md" style="padding-top:30px">
+      <q-card class="form-card q-pa-md" style="padding-top: 30px">
         <q-header bordered class="bg-white">
           <q-toolbar class="row bg-white">
             <img
@@ -1070,7 +1068,7 @@
                 required
                 class="full-width"
                 v-model="mortgageDetails[0].notes"
-                style="resize: none;"
+                style="resize: none"
               />
               <div class="row">
                 <span class="form-heading">
@@ -1203,7 +1201,7 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="form-card q-pa-md" style="padding-top: 20px">
+      <q-card class="form-card q-pa-md" style="padding-top: 30px">
         <q-header bordered class="bg-white">
           <q-toolbar class="row bg-white">
             <img
@@ -1218,48 +1216,62 @@
           </q-toolbar>
         </q-header>
         <q-card-section>
-          <div class="q-page bg-white" style="min-height: 630px">
-            <div
-              class="full-width"
-              style="
-                height: calc(100vh - 145px);
-                overflow-y: auto;
-                margin-bottom: 10px;
-                padding-top: 40px;
-              "
-            >
+          <div class="q-page bg-white">
+            <div class="full-width fixHeight">
               <div class="row">
-                <p>Has a Vendor of Expert hired?</p>
-                <q-toggle
-                  class="q-ml-auto"
-                  v-model="hasAvendorOfExpertHiredToggle"
-                />
+                <span class="form-heading"
+                  >Do any vendors need to be assigned?</span
+                >
+                <q-toggle class="q-ml-auto" v-model="vendorExpertHiredToggle" />
               </div>
-              <div v-if="hasAvendorOfExpertHiredToggle">
-                <q-select
-                  v-model="expertVendorInfo.expertType"
-                  :options="hasAvendorOfExpertHiredTypes"
-                  label="Select Vendor / Expert Type"
-                />
+
+              <div
+                v-if="vendorExpertHiredToggle"
+                class="custom-select"
+                v-model="expertVendorInfo.vendorName"
+                @click="onAddVendorDialogClick('vendor', true)"
+              >
+                <div class="select-text">
+                  {{
+                    expertVendorInfo.id
+                      ? expertVendorInfo.vendorName
+                      : 'Select Vendor'
+                  }}
+                </div>
               </div>
+
               <div class="row">
-                <p>Any other Expert hired?</p>
+                <span class="form-heading">Is Insured hired?</span>
                 <q-toggle
                   class="q-ml-auto"
                   v-model="anyOtherExpertHiredToggle"
                 />
               </div>
-              <div class="row">
-                <p>Do you refer any Vendor?</p>
-                <q-toggle
-                  class="q-ml-auto"
-                  v-model="doYouReferAnyVendorToggle"
-                />
+              <span class="form-heading">Notes</span>
+              <div>
+                <textarea
+                  rows="5"
+                  required
+                  class="full-width"
+                  v-model="expertVendorInfo.notes"
+                  style="resize: none;"
+                ></textarea>
               </div>
-            </div>
-            <br />
-          </div>
+              <br />
+              <div>
+                <span class="form-heading">Internal Notes</span>
+                <textarea
+                  rows="5"
+                  required
+                  class="full-width"
+                  v-model="expertVendorInfo.internalNotes"
+                  style="resize: none;"
+                ></textarea>
+              </div>
 
+              <br />
+            </div>
+          </div>
           <q-btn
             label="Save"
             color="primary"
@@ -1390,15 +1402,13 @@
 <script>
 import CustomHeader from 'components/CustomHeader';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
-import { date } from 'quasar';
 import AddressService from '@utils/country';
 import { validateEmail } from '@utils/validation';
+import { dateToSend } from '@utils/date';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
-import { sources } from 'src/store/common/getters';
-import { state } from 'src/store/common/state';
 import VendorsList from 'components/VendorsList';
 import AddVendor from 'components/AddVendor';
-import vendors from 'src/store/vendors';
+
 const addressService = new AddressService();
 
 export default {
@@ -1406,6 +1416,7 @@ export default {
   components: { CustomHeader, VendorsList, AddVendor, AutoCompleteAddress },
   data() {
     return {
+      isExpertVendorScreen: false,
       isSecondMortgageHome: false,
       vendorDialogName: '',
       vendorDialogFilterByIndustry: '',
@@ -1568,8 +1579,12 @@ export default {
         scopeTimeNeeded: '',
         notesToTheEstimator: ''
       },
+
       expertVendorInfo: {
-        expertType: ''
+        notes: '',
+        internalNotes: '',
+        vendorName: '',
+        id: ''
       },
       officeTask: {
         officeActionTypes: '',
@@ -1612,9 +1627,9 @@ export default {
       isTherea2ndMortgageOnTheHomeToggle: false,
       doesAnEstimatorNeedToBeAssignedToggle: false,
       estimatingInformationClaim2Toggle: false,
-      hasAvendorOfExpertHiredToggle: false,
+      vendorExpertHiredToggle: false,
       anyOtherExpertHiredToggle: false,
-      doYouReferAnyVendorToggle: false,
+
       femaClaimToggle: false,
       additionalOfficeTaskRequiredToggle: false,
       officeActionRequiredTypes: [],
@@ -1663,11 +1678,7 @@ export default {
       'policyCategories'
     ])
   },
-  formatDate(value) {
-    if (value) {
-      return moment(String(value)).format('MM/DD/YYYY');
-    }
-  },
+
   mounted() {
     this.getTitles();
   },
@@ -1878,18 +1889,8 @@ export default {
             id: this.insuranceDetails.property.id,
             value: this.insuranceDetails.property.value
           },
-          effectiveDate: this.insuranceDetails.policyEffectiveDate
-            ? date.formatDate(
-                this.insuranceDetails.policyEffectiveDate,
-                'YYYY-MM-DDTHH:mm:ssZ'
-              )
-            : '',
-          expirationDate: this.insuranceDetails.policyExpireDate
-            ? date.formatDate(
-                this.insuranceDetails.policyExpireDate,
-                'YYYY-MM-DDTHH:mm:ssZ'
-              )
-            : '',
+          effectiveDate: dateToSend(this.insuranceDetails.policyEffectiveDate),
+          expirationDate: dateToSend(this.insuranceDetails.policyExpireDate),
           limitCoverage: {
             dwelling: this.insuranceDetails.dwellingLimitA,
             otherStructure: this.insuranceDetails.otherStructureB,
@@ -1921,22 +1922,12 @@ export default {
           claimReason: {
             ...this.lossInfo.reasonClaim
           },
-          date: this.lossInfo.dateOfLoss,
+          date: dateToSend(this.lossInfo.dateOfLoss),
           cause: {
             ...this.lossInfo.causeOfLoss
           },
-          deadlineDate: this.lossInfo.deadlineDate
-            ? date.formatDate(
-                this.lossInfo.deadlineDate,
-                'YYYY-MM-DDTHH:mm:ssZ'
-              )
-            : '',
-          recovDDDate: this.lossInfo.recovDeadline
-            ? date.formatDate(
-                this.lossInfo.recovDeadline,
-                'YYYY-MM-DDTHH:mm:ssZ'
-              )
-            : '',
+          deadlineDate: dateToSend(this.lossInfo.deadlineDate),
+          recovDDDate: dateToSend(this.lossInfo.recovDeadline),
           isFEMA: this.femaClaimToggle,
           isEmergency: this.isStateOfEmergencyToggle,
           emergencyName: this.lossInfo.nameOfEmergency,
@@ -1952,6 +1943,16 @@ export default {
           isNeedPPIF: this.doesTheOfficeNeedToProvidePpifToTheInsuredToggle,
           hasHomeMortgage: this.IsMortgageHomeToggle,
           isSecondClaim: this.isThereAsecondClaimToFileToggle
+        },
+        expertInfo: {
+          isVendorAssigned: this.vendorExpertHiredToggle,
+          vendor: {
+            id: this.expertVendorInfo.id,
+            value: this.expertVendorInfo.vendorName
+          },
+          isInsuredHired: this.anyOtherExpertHiredToggle,
+          notes: this.expertVendorInfo.notes,
+          internalNotes: this.expertVendorInfo.internalNotes
         }
       };
 
@@ -1965,23 +1966,19 @@ export default {
       this.sourceDetails.details = '';
     },
 
-    addSelectedVendor(e) {
-      this.sourceDetails = {
-        id: e.id,
-        type: 'vendor',
-        details: e.name
-      };
-      this.closeVendorsList();
-    },
-
     onClosingVendorSelectDialog(vendor, isVendor) {
       if (isVendor) {
+        if (this.isExpertVendorScreen) {
+          this.expertVendorInfo.id = vendor.id;
+          this.expertVendorInfo.vendorName = vendor.name;
+        }
         this.sourceDetails.id = vendor.id;
         this.sourceDetails.details = vendor.name;
       } else {
         this.insuranceDetails.carrierId = vendor.id;
         this.insuranceDetails.carrierName = vendor.name;
       }
+
       this.vendorsListDialog = false;
     },
 
@@ -1993,8 +1990,9 @@ export default {
       }
     },
 
-    onAddVendorDialogClick(name) {
+    onAddVendorDialogClick(name, isExpertVendor) {
       this.vendorDialogName = name;
+      this.isExpertVendorScreen = isExpertVendor;
       if (name === 'carrier') {
         this.showVendorDialogFilters = false;
         this.vendorDialogFilterByIndustry = '5ffedc469a111940084ce6e2';
