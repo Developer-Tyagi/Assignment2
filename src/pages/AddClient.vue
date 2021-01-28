@@ -1474,7 +1474,7 @@ export default {
         addressLocality: '',
         postalCode: '',
         streetAddress: '',
-        postOfficeBoxNumber: '',
+        postOfficeBoxNumber: '4',
         isGateDropbox: false,
         dropBoxInfo: ''
       },
@@ -1490,7 +1490,7 @@ export default {
         addressLocality: '',
         postalCode: '',
         streetAddress: '',
-        postOfficeBoxNumber: '',
+        postOfficeBoxNumber: '4',
         isGateDropbox: false,
         dropBoxInfo: ''
       },
@@ -1602,7 +1602,7 @@ export default {
         addressLocality: '',
         postalCode: '',
         streetAddress: '',
-        postOfficeBoxNumber: '',
+        postOfficeBoxNumber: '4',
         isGateDropbox: false,
         dropBoxInfo: ''
       },
