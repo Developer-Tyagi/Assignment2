@@ -1883,11 +1883,11 @@ export default {
           name: response,
           id: response.id
         };
-        this.setPayloadForLoss(clientInfo);
+        this.setPayloadForClaim(clientInfo);
       }
     },
 
-    async setPayloadForLoss(clientInfo) {
+    async setPayloadForClaim(clientInfo) {
       const payload = {
         client: {
           id: clientInfo.id,
@@ -1914,14 +1914,28 @@ export default {
           effectiveDate: dateToSend(this.insuranceDetails.policyEffectiveDate),
           expirationDate: dateToSend(this.insuranceDetails.policyExpireDate),
           limitCoverage: {
-            dwelling: this.insuranceDetails.dwellingLimitA,
-            otherStructure: this.insuranceDetails.otherStructureB,
-            content: this.insuranceDetails.contentsLimit,
+            dwelling: this.insuranceDetails.dwellingLimitA
+              ? this.insuranceDetails.dwellingLimitA
+              : 0,
+            otherStructure: this.insuranceDetails.otherStructureB
+              ? this.insuranceDetails.otherStructureB
+              : 0,
+            content: this.insuranceDetails.contentsLimit
+              ? this.insuranceDetails.contentsLimit
+              : 0,
             lossOfUse: this.insuranceDetails.lossOfUSD
+              ? this.insuranceDetails.lossOfUSD
+              : 0
           },
-          deductibleAmount: this.insuranceDetails.deductible,
-          depreciation: this.insuranceDetails.deprecation,
-          priorPayment: this.insuranceDetails.priorPayment,
+          deductibleAmount: this.insuranceDetails.deductible
+            ? this.insuranceDetails.deductible
+            : 0,
+          depreciation: this.insuranceDetails.deprecation
+            ? this.insuranceDetails.deprecation
+            : 0,
+          priorPayment: this.insuranceDetails.priorPayment
+            ? this.insuranceDetails.priorPayment
+            : 0,
           limitReason: this.insuranceDetails.reasonsOfLD,
           declaration: {
             isDeclared: true,
