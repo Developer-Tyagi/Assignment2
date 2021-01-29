@@ -716,7 +716,6 @@
                 <q-input
                   mask="#.#"
                   type="number"
-                  value="null"
                   v-model.number="insuranceDetails.dwellingLimitA"
                   placeholder="Dwelling Limit (A)"
                   style="margin-left: auto; width: 50%"
