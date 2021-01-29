@@ -343,7 +343,7 @@
                 v-model="schedulingDetails.subInspectionType"
                 :options="subInspectionTypes"
                 option-label="value"
-                option-value="machineValue"
+                option-value="id"
                 emit-value
                 label="Sub Type of Inspection"
                 @input="onSubInspectionTypesSelect()"
@@ -453,7 +453,7 @@ export default {
       showVendorDialogFilters: false,
       vendorDialogName: '',
       vendorDialogFilterByIndustry: '',
-      step: 1,
+      step: 6,
       primaryDetails: {
         isOrganization: false,
         organizationName: '',
@@ -558,7 +558,8 @@ export default {
         this.showSubInspectionType = true;
       } else {
         this.showSubInspectionType = false;
-        this.schedulingDetails.subInspectionType = this.schedulingDetails.inspectionType;
+        this.schedulingDetails.subInspectionType =
+          selectedInspectionType.subtypes[0].id;
         this.schedulingDetails.inspectionDuration =
           selectedInspectionType.subtypes[0].duration;
         this.schedulingDetails.subInspectionTypeValue =
@@ -568,7 +569,7 @@ export default {
 
     onSubInspectionTypesSelect() {
       const index = this.subInspectionTypes.findIndex(
-        val => val.machineValue == this.schedulingDetails.subInspectionType
+        val => val.id === this.schedulingDetails.subInspectionType
       );
       this.schedulingDetails.inspectionDuration = this.subInspectionTypes[
         index
