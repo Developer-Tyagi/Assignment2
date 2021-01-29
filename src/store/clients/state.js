@@ -5,6 +5,7 @@ export default function() {
     clients: [],
     clientTypes: [],
     propertyTypes: [],
+    policyTypes: [],
     claimReasons: [],
     lossCauses: [],
     claimSeverity: [],
