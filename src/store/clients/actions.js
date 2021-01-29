@@ -85,6 +85,21 @@ export async function getPropertyTypes({ commit, dispatch }) {
     });
   }
 }
+export async function getPolicyTypes({ commit, dispatch }) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get('/ptypes');
+    commit('setPolicyTypes', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response.data.title
+    });
+  }
+}
 
 export async function getClaimReasons({ commit, dispatch }) {
   dispatch('setLoading', true);

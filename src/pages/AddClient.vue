@@ -10,9 +10,6 @@
           <div class="form-list" @click="clientInfoDailog = true">
             Client Info
           </div>
-          <div class="form-list" @click="publicAdjustorInfoDialog = true">
-            Public Adjustor Info
-          </div>
           <div class="form-list" @click="mailingAddressDialog = true">
             Mailing Address
           </div>
@@ -32,7 +29,9 @@
           <div class="form-list" @click="officeTaskDialog = true">
             Office Task
           </div>
-
+          <div class="form-list" @click="publicAdjustorInfoDialog = true">
+            Public Adjustor Info
+          </div>
           <div class="form-list" @click="documentsDialog = true">Documents</div>
         </div>
         <q-btn
@@ -702,14 +701,14 @@
                 label="Policy Category"
               />
               <q-select
-                v-model="insuranceDetails.property.id"
+                v-model="insuranceDetails.policy.id"
                 option-value="id"
                 option-label="name"
                 map-options
                 emit-value
-                :options="propertyTypes"
-                @input="setTypes(propertyTypes, insuranceDetails.property)"
-                label="Property Type"
+                :options="policyTypes"
+                @input="setTypes(policyTypes, insuranceDetails.policy)"
+                label="Policy Type"
               />
               <br />
               <div class="row" style="align-items: center">
@@ -821,7 +820,7 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="form-card q-pa-md" style="padding-top: 20px">
+      <q-card class="form-card q-pa-md" style="padding-top: 30px">
         <q-header bordered class="bg-white">
           <q-toolbar class="row bg-white">
             <img
@@ -852,7 +851,6 @@
                 :address="lossAddressDetails"
                 :isDropBoxEnable="true"
                 :isChecksEnable="false"
-                :isFieldsDisable="isLossAddressSameAsClientToggle"
               />
               <q-input
                 v-model="LossAddressName"
@@ -946,20 +944,29 @@
                 @input="setTypes(claimSeverity, lossInfo.severityOfClaimType)"
                 label="Severity of Claim"
               /><br />
-              <q-input
+              <span class="form-heading">Loss Description to Dwelling</span>
+              <textarea
+                rows="5"
+                required
+                class="full-width"
                 v-model="lossInfo.descriptionDwelling"
-                label="Loss Description to Dwelling"
-              /><br />
+                style="resize: none"
+              />
+              <br />
               <div class="row">
                 <span class="form-heading">
                   Is there damage to other structures?
                 </span>
                 <q-toggle class="q-ml-auto" v-model="isDamageOSToggle" />
               </div>
-              <q-input
+              <textarea
                 v-if="isDamageOSToggle"
+                rows="5"
+                required
+                class="full-width"
                 v-model="lossInfo.damageDescription"
                 label="Damage items description"
+                style="resize: none"
               />
 
               <div class="row">
@@ -1104,6 +1111,7 @@
                   rows="5"
                   class="full-width"
                   v-model="mortgageDetails[1].notes"
+                  style="resize: none"
                 />
               </div>
             </div>
@@ -1542,7 +1550,7 @@ export default {
         typeOfLoss: ''
       },
       insuranceDetails: {
-        property: {
+        policy: {
           id: '',
           value: ''
         },
@@ -1646,6 +1654,7 @@ export default {
     this.getVendors(this.$route.params.id);
     this.getClientTypes();
     this.getPropertyTypes();
+    this.getPolicyTypes();
     this.getLossCauses();
     this.getSeverityClaim();
     this.getClaimReasons();
@@ -1664,6 +1673,11 @@ export default {
       this.sourceDetails.details = this.selectedLead.leadSource.detail;
       this.insuranceDetails.carrierName = this.selectedLead.leadSource.type;
       this.insuranceDetails.policyNumber = this.selectedLead.policyNumber;
+      this.lossAddressDetails.addressCountry = this.selectedLead.lossLocation.addressCountry;
+      this.lossAddressDetails.addressLocality = this.selectedLead.lossLocation.addressLocality;
+      this.lossAddressDetails.addressRegion = this.selectedLead.lossLocation.addressRegion;
+      this.lossAddressDetails.postalCode = this.selectedLead.lossLocation.postalCode;
+      this.lossAddressDetails.streetAddress = this.selectedLead.lossLocation.streetAddress;
     }
     this.countries = addressService.getCountries();
     this.onCountrySelect('United States');
@@ -1676,6 +1690,7 @@ export default {
       'contactTypes',
       'clientTypes',
       'propertyTypes',
+      'policyTypes',
       'claimSeverity',
       'lossCauses',
       'claimReasons',
@@ -1695,6 +1710,7 @@ export default {
       'addClaim',
       'getClientTypes',
       'getPropertyTypes',
+      'getPolicyTypes',
       'getSeverityClaim',
       'getLossCauses',
       'getClaimReasons',

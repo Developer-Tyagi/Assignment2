@@ -20,6 +20,13 @@ export function setPropertyTypes(state, types) {
     id: type.id
   }));
 }
+export function setPolicyTypes(state, types) {
+  state.policyTypes = types.map(type => ({
+    name: type.attributes.value,
+    machineName: type.attributes.machineValue,
+    id: type.id
+  }));
+}
 
 export function setClaimReasons(state, types) {
   state.claimReasons = types.map(type => ({
