@@ -270,7 +270,11 @@ export default {
           addressRegion: '',
           postOfficeBoxNumber: '',
           postalCode: '',
-          streetAddress: ''
+          streetAddress: '',
+          dropBox: {
+            info: '',
+            isPresent: false
+          }
         },
         info: {
           website: '',

@@ -328,8 +328,9 @@
                 :options="inspectionTypes"
                 label="Type of Inspection"
                 option-label="value"
-                option-value="value"
+                option-value="id"
                 emit-value
+                map-options
                 @input="onInspectionTypesSelect()"
                 :rules="[
                   val =>
@@ -342,7 +343,7 @@
                 v-model="schedulingDetails.subInspectionType"
                 :options="subInspectionTypes"
                 option-label="value"
-                option-value="userID"
+                option-value="id"
                 emit-value
                 label="Sub Type of Inspection"
                 @input="onSubInspectionTypesSelect()"
@@ -476,7 +477,11 @@ export default {
         addressLocality: '',
         postalCode: '',
         streetAddress: '',
-        postOfficeBoxNumber: ''
+        postOfficeBoxNumber: '',
+        dropBox: {
+          info: '',
+          isPresent: false
+        }
       },
       insuranceDetails: {
         policyNumber: '',
@@ -493,8 +498,7 @@ export default {
         inspectionType: '',
         subInspectionType: '',
         inspectionDuration: '',
-        subInspectionTypeValue: '',
-        subInspectionTypeMachineValue: ''
+        subInspectionTypeValue: ''
       },
       notes: '',
       vendorSelected: '',
@@ -544,31 +548,28 @@ export default {
 
     onInspectionTypesSelect() {
       const selectedInspectionType = this.inspectionTypes.find(
-        type => type.value === this.schedulingDetails.inspectionType
+        type => type.id === this.schedulingDetails.inspectionType
       );
       if (selectedInspectionType.subtypes.length > 1) {
         this.subInspectionTypes = selectedInspectionType.subtypes;
         this.schedulingDetails.subInspectionType = '';
         this.schedulingDetails.inspectionDuration = '';
-        this.schedulingDetails.subInspectionTypeMachineValue = '';
         this.schedulingDetails.subInspectionTypeValue = '';
         this.showSubInspectionType = true;
       } else {
         this.showSubInspectionType = false;
         this.schedulingDetails.subInspectionType =
-          selectedInspectionType.subtypes[0].userID;
+          selectedInspectionType.subtypes[0].id;
         this.schedulingDetails.inspectionDuration =
           selectedInspectionType.subtypes[0].duration;
         this.schedulingDetails.subInspectionTypeValue =
           selectedInspectionType.subtypes[0].value;
-        this.schedulingDetails.subInspectionTypeMachineValue =
-          selectedInspectionType.subtypes[0].machineValue;
       }
     },
 
     onSubInspectionTypesSelect() {
       const index = this.subInspectionTypes.findIndex(
-        val => val.userID == this.schedulingDetails.subInspectionType
+        val => val.id === this.schedulingDetails.subInspectionType
       );
       this.schedulingDetails.inspectionDuration = this.subInspectionTypes[
         index
@@ -576,9 +577,6 @@ export default {
       this.schedulingDetails.subInspectionTypeValue = this.subInspectionTypes[
         index
       ].value;
-      this.schedulingDetails.subInspectionTypeMachineValue = this.subInspectionTypes[
-        index
-      ].machineValue;
     },
 
     onSubmit() {
@@ -604,9 +602,8 @@ export default {
         isAutomaticScheduling: this.schedulingDetails.isAutomaticScheduling,
         notes: this.notes,
         inspectionInfo: {
-          id: this.schedulingDetails.subInspectionType,
+          id: this.schedulingDetails.inspectionType,
           duration: this.schedulingDetails.inspectionDuration,
-          machineValue: this.schedulingDetails.subInspectionTypeMachineValue,
           value: this.schedulingDetails.subInspectionTypeValue
         },
         leadSource: {
@@ -708,7 +705,8 @@ export default {
       );
       this.primaryDetails.honorific.id =
         selectedClient.insuredInfo.primary.honorific.id;
-
+      this.primaryDetails.honorific.value =
+        selectedClient.insuredInfo.primary.honorific.value;
       this.primaryDetails.firstName = selectedClient.insuredInfo.primary.fname;
       this.primaryDetails.lastName = selectedClient.insuredInfo.primary.lname;
       this.primaryDetails.email = selectedClient.insuredInfo.primary.email;
@@ -716,7 +714,9 @@ export default {
         selectedClient.insuredInfo.primary.phoneNumber[0].number;
       this.primaryDetails.selectedContactType =
         selectedClient.insuredInfo.primary.phoneNumber[0].type;
-      this.primaryDetails.isOrganization = selectedClient.isOrganization;
+      this.primaryDetails.isOrganization = selectedClient.isOrganization
+        ? true
+        : false;
       if (this.primaryDetails.isOrganization) {
         this.primaryDetails.organizationName = selectedClient.organizationName;
       }
