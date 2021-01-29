@@ -1908,8 +1908,8 @@ export default {
             value: this.insuranceDetails.policyCategory.value
           },
           type: {
-            id: this.insuranceDetails.property.id,
-            value: this.insuranceDetails.property.value
+            id: this.insuranceDetails.policy.id,
+            value: this.insuranceDetails.policy.value
           },
           effectiveDate: dateToSend(this.insuranceDetails.policyEffectiveDate),
           expirationDate: dateToSend(this.insuranceDetails.policyExpireDate),
