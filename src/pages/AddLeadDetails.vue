@@ -461,10 +461,12 @@ export default {
         lastName: '',
         email: '',
         phoneNumber: '',
+        machineName: '',
         selectedContactType: '',
         honorific: {
           id: '',
-          value: ''
+          value: '',
+          machineName: ''
         }
       },
       lossDetails: {
@@ -497,6 +499,7 @@ export default {
         isAutomaticScheduling: false,
         inspectionType: '',
         subInspectionType: '',
+        machineName: '',
         inspectionDuration: '',
         subInspectionTypeValue: ''
       },
@@ -544,6 +547,8 @@ export default {
       });
 
       this.primaryDetails.honorific.value = title.title;
+
+      this.primaryDetails.honorific.machineName = title.machineName;
     },
 
     onInspectionTypesSelect() {
@@ -564,6 +569,9 @@ export default {
           selectedInspectionType.subtypes[0].duration;
         this.schedulingDetails.subInspectionTypeValue =
           selectedInspectionType.subtypes[0].value;
+
+        this.schedulingDetails.machineName =
+          selectedInspectionType.subtypes[0].machineValue;
       }
     },
 
@@ -585,7 +593,8 @@ export default {
         primaryContact: {
           honorific: {
             id: this.primaryDetails.honorific.id,
-            value: this.primaryDetails.honorific.value
+            value: this.primaryDetails.honorific.value,
+            machineName: this.primaryDetails.honorific.machineName
           },
           fname: this.primaryDetails.firstName,
           lname: this.primaryDetails.lastName,
@@ -604,7 +613,8 @@ export default {
         inspectionInfo: {
           id: this.schedulingDetails.inspectionType,
           duration: this.schedulingDetails.inspectionDuration,
-          value: this.schedulingDetails.subInspectionTypeValue
+          value: this.schedulingDetails.subInspectionTypeValue,
+          machineName: this.schedulingDetails.machineName
         },
         leadSource: {
           id: '',
@@ -616,6 +626,7 @@ export default {
           value: ''
         }
       };
+
       if (payload['isOrganization']) {
         payload['organizationName'] = this.primaryDetails.organizationName;
       }
@@ -628,7 +639,8 @@ export default {
       if (this.primaryDetails.phoneNumber) {
         payload.primaryContact['phoneNumber'].push({
           type: this.primaryDetails.selectedContactType,
-          number: this.primaryDetails.phoneNumber
+          number: this.primaryDetails.phoneNumber,
+          machineName: this.primaryDetails.machineName
         });
       }
       if (this.sourceDetails.type == 'vendor') {

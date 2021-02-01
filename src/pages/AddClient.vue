@@ -1460,17 +1460,20 @@ export default {
       sourceDetails: {
         id: '',
         type: '',
-        details: ''
+        details: '',
+        machineName: ''
       },
       client: {
         id: '',
-        value: ''
+        value: '',
+        machineName: ''
       },
       insuredDetails: {
         fname: '',
         lname: '',
         phone: '',
         type: '',
+
         email: ''
       },
       coInsuredDetails: {
@@ -1478,6 +1481,7 @@ export default {
         lname: '',
         phone: '',
         type: '',
+        machineName: '',
         email: ''
       },
       addAditionalPhoneNumber: {
@@ -1522,7 +1526,8 @@ export default {
         propertyDescription: '',
         reasonClaim: {
           value: '',
-          id: ''
+          id: '',
+          machineName: ''
         },
         deadlineDate: '',
         recovDeadline: '',
@@ -1531,18 +1536,21 @@ export default {
         damageDescription: '',
         property: {
           value: '',
-          id: ''
+          id: '',
+          machineName: ''
         },
         insuranceAdjustorName: '',
         whereDidTheLossOccur: '',
         other: '',
         severityOfClaimType: {
           id: '',
-          value: ''
+          value: '',
+          machineName: ''
         },
         causeOfLoss: {
           value: '',
-          id: ''
+          id: '',
+          machineName: ''
         },
         describeTheLoss: '',
         insuranceAdjustorPhone: '',
@@ -1580,6 +1588,7 @@ export default {
         {
           id: '',
           value: '',
+          machineName: '',
           loanNumber: '',
           accountNumber: '',
           isPrimary: true,
@@ -1740,13 +1749,16 @@ export default {
       });
 
       this['honorific' + val].title = titleResult.title;
+      this['honorific' + val].machineName = titleResult.machineName;
     },
 
     setTypes(types, data, type) {
       const obj = types.find(item => {
         return item.id === data.id;
       });
-      data.value = type == 'mortgage' ? obj.name : obj.machineName; //machine name is not present in vendor
+      // data.value = type == 'mortgage' ? obj.name : obj.machineName; //machine name is not present in vendor
+      data.machineName = obj.machineName;
+      data.value = obj.name;
     },
 
     mailingAddressSame() {
@@ -1802,7 +1814,8 @@ export default {
         source: {
           id: this.sourceDetails.id,
           type: this.sourceDetails.type,
-          detail: this.sourceDetails.details
+          detail: this.sourceDetails.details,
+          machineName: this.sourceDetails.machineName
         },
         type: {
           ...this.client
@@ -1811,7 +1824,8 @@ export default {
           primary: {
             honorific: {
               id: this.honorific1.id,
-              value: this.honorific1.title
+              value: this.honorific1.title,
+              machineName: this.honorific1.machineName
             },
             fname: this.insuredDetails.fname,
             lname: this.insuredDetails.lname,
@@ -1819,14 +1833,16 @@ export default {
             phoneNumber: [
               {
                 type: this.insuredDetails.type,
-                number: this.insuredDetails.phone
+                number: this.insuredDetails.phone,
+                machineName: this.insuredDetails.machineName
               }
             ]
           },
           secondary: {
             honorific: {
               id: this.honorific2.id,
-              value: this.honorific2.title
+              value: this.honorific2.title,
+              machineName: this.honorific2.machineName
             },
             fname: this.coInsuredDetails.fname,
             lname: this.coInsuredDetails.lname,
@@ -1834,7 +1850,8 @@ export default {
             phoneNumber: [
               {
                 type: this.coInsuredDetails.type,
-                number: this.coInsuredDetails.phone
+                number: this.coInsuredDetails.phone,
+                machineName: this.coInsuredDetails.machineName
               }
             ]
           },
@@ -1905,11 +1922,13 @@ export default {
           claimNumber: this.insuranceDetails.insuranceClaimNumber,
           category: {
             id: this.insuranceDetails.policyCategory.id,
-            value: this.insuranceDetails.policyCategory.value
+            value: this.insuranceDetails.policyCategory.value,
+            machineName: this.insuranceDetails.policyCategory.machineName
           },
           type: {
             id: this.insuranceDetails.policy.id,
-            value: this.insuranceDetails.policy.value
+            value: this.insuranceDetails.policy.value,
+            machineName: this.insuranceDetails.policy.machineName
           },
           effectiveDate: dateToSend(this.insuranceDetails.policyEffectiveDate),
           expirationDate: dateToSend(this.insuranceDetails.policyExpireDate),
@@ -1991,6 +2010,7 @@ export default {
           internalNotes: this.expertVendorInfo.internalNotes
         }
       };
+
       // const response = await this.addClaim(payload);
 
       // if (response && response.data && response.data.id) {
@@ -2008,8 +2028,8 @@ export default {
 
     onChangingSourceType() {
       this.sourceDetails.id = '';
-
       this.sourceDetails.details = '';
+      this.sourceDetails.machineName = '';
     },
 
     onClosingVendorSelectDialog(vendor, isVendor) {

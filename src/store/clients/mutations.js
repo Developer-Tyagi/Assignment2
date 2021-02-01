@@ -32,6 +32,7 @@ export function setClaimReasons(state, types) {
   state.claimReasons = types.map(type => ({
     name: type.attributes.value,
     machineName: type.attributes.machineValue,
+
     id: type.id
   }));
 }
@@ -47,6 +48,7 @@ export function setClaimSeverity(state, types) {
   state.claimSeverity = types.map(type => ({
     name: type.attributes.value,
     machineName: type.attributes.machineValue,
+
     id: type.id
   }));
 }

@@ -227,7 +227,7 @@ export default {
       isShowRemoveButton: false,
       vendor: {
         name: '',
-        industry: { value: null, id: '' },
+        industry: { value: null, id: '', machineName: '' },
         meta: {
           claimFiledByEmail: false
         },
@@ -238,7 +238,8 @@ export default {
             email: '',
             honorific: {
               id: '',
-              value: ''
+              value: '',
+              machineName: ''
             },
             phoneNumber: [
               {
@@ -254,7 +255,8 @@ export default {
             email: '',
             honorific: {
               id: '',
-              value: ''
+              value: '',
+              machineName: ''
             },
             phoneNumber: [
               {
@@ -322,7 +324,6 @@ export default {
 
       update(() => {
         const search = val.toLowerCase();
-
         this.options = this.vendorIndustries.filter(
           v => v.name.toLowerCase().indexOf(search) > -1
         );
@@ -344,6 +345,7 @@ export default {
       });
 
       selectedTitle.value = selected.title;
+      selectedTitle.machineName = selected.machineName;
     },
 
     setVendorIndustryName() {
@@ -352,7 +354,9 @@ export default {
         return obj.name === selectedName;
       });
       this.vendor.industry.value = result.name;
+
       this.vendor.industry.id = result.id;
+      this.vendor.industry.machineName = result.machineValue;
     },
 
     addAnotherContact() {
@@ -368,7 +372,8 @@ export default {
           email: '',
           honorific: {
             id: '',
-            value: ''
+            value: '',
+            machineName: ''
           },
           phoneNumber: [
             {
