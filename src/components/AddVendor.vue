@@ -69,7 +69,7 @@
             v-model="vendor.contact[0].honorific.id"
             :options="titles"
             label="Title"
-            option-label="name"
+            option-label="value"
             option-value="id"
             map-options
             emit-value
@@ -92,7 +92,7 @@
             <q-select
               v-model="vendor.contact[0].phoneNumber.type"
               :options="contactTypes"
-              option-value="machineName"
+              option-value="machineValue"
               option-label="name"
               label="Type"
               style="width: 40%; margin-right: auto"
@@ -133,7 +133,7 @@
               <q-select
                 v-model="contactInfo.honorific.id"
                 :options="titles"
-                option-label="name"
+                option-label="value"
                 label="Title"
                 option-value="id"
                 @input="setTitleName(contactInfo.honorific)"
@@ -150,7 +150,7 @@
                 <q-select
                   v-model="contactInfo.phoneNumber.type"
                   :options="contactTypes"
-                  option-value="machineName"
+                  option-value="machineValue"
                   option-label="name"
                   label="Type"
                   style="width: 40%; margin-right: auto"
@@ -227,7 +227,7 @@ export default {
       isShowRemoveButton: false,
       vendor: {
         name: '',
-        industry: { value: null, id: '', machineName: '' },
+        industry: { value: null, id: '', machineValue: '' },
         meta: {
           claimFiledByEmail: false
         },
@@ -239,7 +239,7 @@ export default {
             honorific: {
               id: '',
               value: '',
-              machineName: ''
+              machineValue: ''
             },
             phoneNumber: [
               {
@@ -256,7 +256,7 @@ export default {
             honorific: {
               id: '',
               value: '',
-              machineName: ''
+              machineValue: ''
             },
             phoneNumber: [
               {
@@ -345,7 +345,7 @@ export default {
       });
 
       selectedTitle.value = selected.title;
-      selectedTitle.machineName = selected.machineName;
+      selectedTitle.machineValue = selected.machineValue;
     },
 
     setVendorIndustryName() {
@@ -356,7 +356,7 @@ export default {
       this.vendor.industry.value = result.name;
 
       this.vendor.industry.id = result.id;
-      this.vendor.industry.machineName = result.machineValue;
+      this.vendor.industry.machineValue = result.machineValue;
     },
 
     addAnotherContact() {
@@ -373,7 +373,7 @@ export default {
           honorific: {
             id: '',
             value: '',
-            machineName: ''
+            machineValue: ''
           },
           phoneNumber: [
             {

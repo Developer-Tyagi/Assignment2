@@ -11,7 +11,6 @@ export function setvendorsIndustries(state, vendorIndustries) {
   state.vendorIndustries = vendorIndustries.map(vendorIndustry => ({
     machineValue: vendorIndustry.attributes.machineValue,
     name: vendorIndustry.attributes.value,
-    id: vendorIndustry.id,
-    machineName: vendorIndustry.attributes.machineName
+    id: vendorIndustry.id
   }));
 }

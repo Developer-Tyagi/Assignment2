@@ -20,7 +20,7 @@
                 v-model="primaryDetails.honorific.id"
                 :options="titles"
                 option-value="id"
-                option-label="name"
+                option-label="value"
                 map-options
                 @input="setTitleName()"
                 emit-value
@@ -48,7 +48,7 @@
                 <q-select
                   v-model="primaryDetails.selectedContactType"
                   :options="contactTypes"
-                  option-value="machineName"
+                  option-value="machineValue"
                   option-label="name"
                   map-options
                   emit-value
@@ -461,12 +461,12 @@ export default {
         lastName: '',
         email: '',
         phoneNumber: '',
-        machineName: '',
+
         selectedContactType: '',
         honorific: {
           id: '',
           value: '',
-          machineName: ''
+          machineValue: ''
         }
       },
       lossDetails: {
@@ -499,7 +499,7 @@ export default {
         isAutomaticScheduling: false,
         inspectionType: '',
         subInspectionType: '',
-        machineName: '',
+        machineValue: '',
         inspectionDuration: '',
         subInspectionTypeValue: ''
       },
@@ -546,9 +546,9 @@ export default {
         return obj.id === this.primaryDetails.honorific.id;
       });
 
-      this.primaryDetails.honorific.value = title.title;
+      this.primaryDetails.honorific.value = title.value;
 
-      this.primaryDetails.honorific.machineName = title.machineName;
+      this.primaryDetails.honorific.machineValue = title.machineValue;
     },
 
     onInspectionTypesSelect() {
@@ -569,6 +569,8 @@ export default {
           selectedInspectionType.subtypes[0].duration;
         this.schedulingDetails.subInspectionTypeValue =
           selectedInspectionType.subtypes[0].value;
+        this.schedulingDetails.machineValue =
+          selectedInspectionType.subtypes[0].machineValue;
       }
     },
 
@@ -582,7 +584,7 @@ export default {
       this.schedulingDetails.subInspectionTypeValue = this.subInspectionTypes[
         index
       ].value;
-      this.schedulingDetails.machineName = this.subInspectionTypes[
+      this.schedulingDetails.machineValue = this.subInspectionTypes[
         index
       ].machineValue;
     },
@@ -594,7 +596,7 @@ export default {
           honorific: {
             id: this.primaryDetails.honorific.id,
             value: this.primaryDetails.honorific.value,
-            machineName: this.primaryDetails.honorific.machineName
+            machineValue: this.primaryDetails.honorific.machineValue
           },
           fname: this.primaryDetails.firstName,
           lname: this.primaryDetails.lastName,
@@ -613,7 +615,8 @@ export default {
         inspectionInfo: {
           id: this.schedulingDetails.inspectionType,
           duration: this.schedulingDetails.inspectionDuration,
-          value: this.schedulingDetails.subInspectionTypeValue
+          value: this.schedulingDetails.subInspectionTypeValue,
+          machineValue: this.schedulingDetails.machineValue
         },
         leadSource: {
           id: '',
@@ -638,8 +641,7 @@ export default {
       if (this.primaryDetails.phoneNumber) {
         payload.primaryContact['phoneNumber'].push({
           type: this.primaryDetails.selectedContactType,
-          number: this.primaryDetails.phoneNumber,
-          machineName: this.primaryDetails.machineName
+          number: this.primaryDetails.phoneNumber
         });
       }
       if (this.sourceDetails.type == 'vendor') {

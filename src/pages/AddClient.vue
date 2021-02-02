@@ -306,7 +306,7 @@
                     v-model="honorific1.id"
                     :options="titles"
                     option-value="id"
-                    option-label="name"
+                    option-label="value"
                     map-options
                     @input="setTitleName(1)"
                     emit-value
@@ -336,7 +336,7 @@
                     <q-select
                       v-model="insuredDetails.type"
                       :options="contactTypes"
-                      option-value="machineName"
+                      option-value="machineValue"
                       option-label="name"
                       map-options
                       emit-value
@@ -383,7 +383,7 @@
                       v-model="honorific2.id"
                       :options="titles"
                       option-value="id"
-                      option-label="name"
+                      option-label="value"
                       map-options
                       @input="setTitleName(2)"
                       emit-value
@@ -401,7 +401,7 @@
                       <q-select
                         v-model="coInsuredDetails.type"
                         :options="contactTypes"
-                        option-value="machineName"
+                        option-value="machineValue"
                         option-label="name"
                         map-options
                         emit-value
@@ -451,7 +451,7 @@
                         v-model="addAditionalPhoneNumber.type1"
                         label="Type"
                         :options="contactTypes"
-                        option-value="machineName"
+                        option-value="machineValue"
                         option-label="name"
                         map-options
                         emit-value
@@ -477,7 +477,7 @@
                         v-model="addAditionalPhoneNumber.type2"
                         label="Type"
                         :options="contactTypes"
-                        option-value="machineName"
+                        option-value="machineValue"
                         option-label="name"
                         map-options
                         emit-value
@@ -526,7 +526,7 @@
                         v-model="tenantOccupied.type"
                         label="Type"
                         :options="contactTypes"
-                        option-value="machineName"
+                        option-value="machineValue"
                         option-label="name"
                         map-options
                         emit-value
@@ -1460,13 +1460,12 @@ export default {
       sourceDetails: {
         id: '',
         type: '',
-        details: '',
-        machineName: ''
+        details: ''
       },
       client: {
         id: '',
         value: '',
-        machineName: ''
+        machineValue: ''
       },
       insuredDetails: {
         fname: '',
@@ -1481,7 +1480,7 @@ export default {
         lname: '',
         phone: '',
         type: '',
-        machineName: '',
+        machineValue: '',
         email: ''
       },
       addAditionalPhoneNumber: {
@@ -1527,7 +1526,7 @@ export default {
         reasonClaim: {
           value: '',
           id: '',
-          machineName: ''
+          machineValue: ''
         },
         deadlineDate: '',
         recovDeadline: '',
@@ -1537,7 +1536,7 @@ export default {
         property: {
           value: '',
           id: '',
-          machineName: ''
+          machineValue: ''
         },
         insuranceAdjustorName: '',
         whereDidTheLossOccur: '',
@@ -1545,12 +1544,12 @@ export default {
         severityOfClaimType: {
           id: '',
           value: '',
-          machineName: ''
+          machineValue: ''
         },
         causeOfLoss: {
           value: '',
           id: '',
-          machineName: ''
+          machineValue: ''
         },
         describeTheLoss: '',
         insuranceAdjustorPhone: '',
@@ -1588,7 +1587,7 @@ export default {
         {
           id: '',
           value: '',
-          machineName: '',
+          machineValue: '',
           loanNumber: '',
           accountNumber: '',
           isPrimary: true,
@@ -1747,9 +1746,8 @@ export default {
       const titleResult = this.titles.find(obj => {
         return obj.id === this['honorific' + val].id;
       });
-
-      this['honorific' + val].title = titleResult.title;
-      this['honorific' + val].machineName = titleResult.machineName;
+      this['honorific' + val].title = titleResult.value;
+      this['honorific' + val].machineValue = titleResult.machineValue;
     },
 
     setTypes(types, data, type) {
@@ -1757,7 +1755,7 @@ export default {
         return item.id === data.id;
       });
       // data.value = type == 'mortgage' ? obj.name : obj.machineName; //machine name is not present in vendor
-      data.machineName = obj.machineName;
+      data.machineValue = obj.machineValue;
       data.value = obj.name;
     },
 
@@ -1814,8 +1812,7 @@ export default {
         source: {
           id: this.sourceDetails.id,
           type: this.sourceDetails.type,
-          detail: this.sourceDetails.details,
-          machineName: this.sourceDetails.machineName
+          detail: this.sourceDetails.details
         },
         type: {
           ...this.client
@@ -1825,7 +1822,7 @@ export default {
             honorific: {
               id: this.honorific1.id,
               value: this.honorific1.title,
-              machineName: this.honorific1.machineName
+              machineValue: this.honorific1.machineValue
             },
             fname: this.insuredDetails.fname,
             lname: this.insuredDetails.lname,
@@ -1833,8 +1830,7 @@ export default {
             phoneNumber: [
               {
                 type: this.insuredDetails.type,
-                number: this.insuredDetails.phone,
-                machineName: this.insuredDetails.machineName
+                number: this.insuredDetails.phone
               }
             ]
           },
@@ -1842,7 +1838,7 @@ export default {
             honorific: {
               id: this.honorific2.id,
               value: this.honorific2.title,
-              machineName: this.honorific2.machineName
+              machineValue: this.honorific2.machineValue
             },
             fname: this.coInsuredDetails.fname,
             lname: this.coInsuredDetails.lname,
@@ -1850,8 +1846,7 @@ export default {
             phoneNumber: [
               {
                 type: this.coInsuredDetails.type,
-                number: this.coInsuredDetails.phone,
-                machineName: this.coInsuredDetails.machineName
+                number: this.coInsuredDetails.phone
               }
             ]
           },
@@ -1895,6 +1890,7 @@ export default {
         payload.source.detail = this.sourceDetails.details;
       }
       const response = await this.addClient(payload);
+
       if (response && response.id) {
         const clientInfo = {
           name: response,
@@ -1923,12 +1919,12 @@ export default {
           category: {
             id: this.insuranceDetails.policyCategory.id,
             value: this.insuranceDetails.policyCategory.value,
-            machineName: this.insuranceDetails.policyCategory.machineName
+            machineValue: this.insuranceDetails.policyCategory.machineValue
           },
           type: {
             id: this.insuranceDetails.policy.id,
             value: this.insuranceDetails.policy.value,
-            machineName: this.insuranceDetails.policy.machineName
+            machineValue: this.insuranceDetails.policy.machineValue
           },
           effectiveDate: dateToSend(this.insuranceDetails.policyEffectiveDate),
           expirationDate: dateToSend(this.insuranceDetails.policyExpireDate),
@@ -2029,7 +2025,7 @@ export default {
     onChangingSourceType() {
       this.sourceDetails.id = '';
       this.sourceDetails.details = '';
-      this.sourceDetails.machineName = '';
+      this.sourceDetails.machineValue = '';
     },
 
     onClosingVendorSelectDialog(vendor, isVendor) {
