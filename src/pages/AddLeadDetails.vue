@@ -499,7 +499,8 @@ export default {
         isAutomaticScheduling: false,
         inspectionType: '',
         subInspectionType: '',
-        machineValue: '',
+        // machineValue: '',
+        subInspectionMachineValue: '',
         inspectionDuration: '',
         subInspectionTypeValue: ''
       },
@@ -569,7 +570,7 @@ export default {
           selectedInspectionType.subtypes[0].duration;
         this.schedulingDetails.subInspectionTypeValue =
           selectedInspectionType.subtypes[0].value;
-        this.schedulingDetails.machineValue =
+        this.schedulingDetails.subInspectionMachineValue =
           selectedInspectionType.subtypes[0].machineValue;
       }
     },
@@ -584,7 +585,7 @@ export default {
       this.schedulingDetails.subInspectionTypeValue = this.subInspectionTypes[
         index
       ].value;
-      this.schedulingDetails.machineValue = this.subInspectionTypes[
+      this.schedulingDetails.subInspectionMachineValue = this.subInspectionTypes[
         index
       ].machineValue;
     },
@@ -616,7 +617,7 @@ export default {
           id: this.schedulingDetails.inspectionType,
           duration: this.schedulingDetails.inspectionDuration,
           value: this.schedulingDetails.subInspectionTypeValue,
-          machineValue: this.schedulingDetails.machineValue
+          machineValue: this.schedulingDetails.subInspectionMachineValue
         },
         leadSource: {
           id: '',

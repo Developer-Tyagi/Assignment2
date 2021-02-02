@@ -1754,7 +1754,7 @@ export default {
       const obj = types.find(item => {
         return item.id === data.id;
       });
-      // data.value = type == 'mortgage' ? obj.name : obj.machineName; //machine name is not present in vendor
+
       data.machineValue = obj.machineValue;
       data.value = obj.name;
     },
@@ -2007,14 +2007,6 @@ export default {
         }
       };
 
-      // const response = await this.addClaim(payload);
-
-      // if (response && response.data && response.data.id) {
-
-      //   this.setSelectedLead();
-      //   this.$router.push('/client');
-      // }
-      //this will change
       this.addClaim(payload).then(() => {
         this.setSelectedLead();
         this.$router.push('/clients');
