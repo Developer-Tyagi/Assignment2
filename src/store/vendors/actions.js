@@ -5,6 +5,7 @@ export async function getVendors({ commit, dispatch }, params) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.get('/vendors', params);
+
     commit('setvendors', data);
     dispatch('setLoading', false);
   } catch (e) {
@@ -41,7 +42,6 @@ export async function getVendorIndustries({ commit, dispatch }) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.get('/industries');
-
     commit('setvendorsIndustries', data);
     dispatch('setLoading', false);
   } catch (e) {

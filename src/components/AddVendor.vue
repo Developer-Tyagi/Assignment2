@@ -69,7 +69,7 @@
             v-model="vendor.contact[0].honorific.id"
             :options="titles"
             label="Title"
-            option-label="name"
+            option-label="value"
             option-value="id"
             map-options
             emit-value
@@ -90,16 +90,16 @@
           <q-input v-model="vendor.contact[0].lname" label="Last Name" />
           <div class="row">
             <q-select
-              v-model="vendor.contact[0].phoneNumber.type"
+              v-model="vendor.contact[0].phoneNumber[0].type"
               :options="contactTypes"
-              option-value="machineName"
+              option-value="machineValue"
               option-label="name"
               label="Type"
               style="width: 40%; margin-right: auto"
               emit-value
             />
             <q-input
-              v-model="vendor.contact[0].phoneNumber.number"
+              v-model="vendor.contact[0].phoneNumber[0].number"
               label="Phone"
               type="number"
               style="width: 55%"
@@ -133,7 +133,7 @@
               <q-select
                 v-model="contactInfo.honorific.id"
                 :options="titles"
-                option-label="name"
+                option-label="value"
                 label="Title"
                 option-value="id"
                 @input="setTitleName(contactInfo.honorific)"
@@ -148,16 +148,16 @@
               <q-input v-model="contactInfo.lname" label="Last Name" />
               <div class="row">
                 <q-select
-                  v-model="contactInfo.phoneNumber.type"
+                  v-model="contactInfo.phoneNumber[0].type"
                   :options="contactTypes"
-                  option-value="machineName"
+                  option-value="machineValue"
                   option-label="name"
                   label="Type"
                   style="width: 40%; margin-right: auto"
                   emit-value
                 />
                 <q-input
-                  v-model="contactInfo.phoneNumber.number"
+                  v-model="contactInfo.phoneNumber[0].number"
                   label="Phone1"
                   type="number"
                   style="width: 55%"
@@ -227,7 +227,7 @@ export default {
       isShowRemoveButton: false,
       vendor: {
         name: '',
-        industry: { value: null, id: '' },
+        industry: { value: null, id: '', machineValue: '' },
         meta: {
           claimFiledByEmail: false
         },
@@ -238,7 +238,8 @@ export default {
             email: '',
             honorific: {
               id: '',
-              value: ''
+              value: '',
+              machineValue: ''
             },
             phoneNumber: [
               {
@@ -254,7 +255,8 @@ export default {
             email: '',
             honorific: {
               id: '',
-              value: ''
+              value: '',
+              machineValue: ''
             },
             phoneNumber: [
               {
@@ -322,7 +324,6 @@ export default {
 
       update(() => {
         const search = val.toLowerCase();
-
         this.options = this.vendorIndustries.filter(
           v => v.name.toLowerCase().indexOf(search) > -1
         );
@@ -344,6 +345,7 @@ export default {
       });
 
       selectedTitle.value = selected.title;
+      selectedTitle.machineValue = selected.machineValue;
     },
 
     setVendorIndustryName() {
@@ -352,7 +354,9 @@ export default {
         return obj.name === selectedName;
       });
       this.vendor.industry.value = result.name;
+
       this.vendor.industry.id = result.id;
+      this.vendor.industry.machineValue = result.machineValue;
     },
 
     addAnotherContact() {
@@ -368,7 +372,8 @@ export default {
           email: '',
           honorific: {
             id: '',
-            value: ''
+            value: '',
+            machineValue: ''
           },
           phoneNumber: [
             {

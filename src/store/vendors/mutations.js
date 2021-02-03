@@ -2,6 +2,7 @@ export function setvendors(state, vendors) {
   state.vendors = vendors.map(vendor => ({
     ...vendor.attributes,
     id: vendor.id,
+    machineValue: vendor.attributes.machineValue,
     selected: false
   }));
 }
