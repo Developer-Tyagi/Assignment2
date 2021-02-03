@@ -90,7 +90,7 @@
           <q-input v-model="vendor.contact[0].lname" label="Last Name" />
           <div class="row">
             <q-select
-              v-model="vendor.contact[0].phoneNumber.type"
+              v-model="vendor.contact[0].phoneNumber[0].type"
               :options="contactTypes"
               option-value="machineValue"
               option-label="name"
@@ -99,7 +99,7 @@
               emit-value
             />
             <q-input
-              v-model="vendor.contact[0].phoneNumber.number"
+              v-model="vendor.contact[0].phoneNumber[0].number"
               label="Phone"
               type="number"
               style="width: 55%"
@@ -148,7 +148,7 @@
               <q-input v-model="contactInfo.lname" label="Last Name" />
               <div class="row">
                 <q-select
-                  v-model="contactInfo.phoneNumber.type"
+                  v-model="contactInfo.phoneNumber[0].type"
                   :options="contactTypes"
                   option-value="machineValue"
                   option-label="name"
@@ -157,7 +157,7 @@
                   emit-value
                 />
                 <q-input
-                  v-model="contactInfo.phoneNumber.number"
+                  v-model="contactInfo.phoneNumber[0].number"
                   label="Phone1"
                   type="number"
                   style="width: 55%"
