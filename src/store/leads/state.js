@@ -8,7 +8,8 @@ export default function() {
       primaryContact: {
         honorific: {
           id: '',
-          value: ''
+          value: '',
+          machineValue: ''
         },
         fname: '',
         lname: '',

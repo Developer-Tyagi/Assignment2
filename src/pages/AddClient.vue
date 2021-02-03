@@ -1451,11 +1451,13 @@ export default {
       },
       honorific1: {
         id: '',
-        value: ''
+        value: '',
+        machineValue: ''
       },
       honorific2: {
         id: '',
-        value: ''
+        value: '',
+        machineValue: ''
       },
       sourceDetails: {
         id: '',
@@ -1678,6 +1680,7 @@ export default {
       this.sourceDetails.type = this.selectedLead.leadSource.type;
       this.honorific1.id = this.selectedLead.primaryContact.honorific.id;
       this.honorific1.value = this.selectedLead.primaryContact.honorific.value;
+      this.honorific1.machineValue = this.selectedLead.primaryContact.honorific.machineValue;
       this.sourceDetails.details = this.selectedLead.leadSource.detail;
       this.insuranceDetails.carrierName = this.selectedLead.leadSource.type;
       this.insuranceDetails.policyNumber = this.selectedLead.policyNumber;
