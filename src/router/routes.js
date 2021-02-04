@@ -25,7 +25,14 @@ const routes = [
         path: 'login',
         name: 'login',
         component: () => import('pages/Login.vue')
-      }
+      },
+      { path: 'login-web', component: () => import('pages/LoginWeb.vue') },
+      { path: 'signup', component: () => import('pages/Signup.vue') },
+      {
+        path: 'forgot-password',
+        component: () => import('pages/ForgotPassword.vue')
+      },
+      { path: 'account', component: () => import('pages/Account.vue') }
     ]
   },
   {
