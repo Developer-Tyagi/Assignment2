@@ -1,8 +1,6 @@
 <template>
-  <q-page class="signup-container bg-background q-pl-lg q-pr-lg ">
-    <div class="text-weight-medium text-subtitle1">
-      Signup
-    </div>
+  <q-page class="signup-container">
+    <div class="text-weight-medium text-subtitle1">Signup</div>
     <div class="row q-gutter-lg q-pt-md">
       <div class="col-3 q-gutter-y-md">
         <q-carousel
@@ -63,9 +61,7 @@
           </q-card-section>
         </q-card>
         <q-card class="q-mt-lg">
-          <q-card-section>
-            List
-          </q-card-section>
+          <q-card-section> List </q-card-section>
         </q-card>
       </div>
       <div class="col-8">
@@ -77,7 +73,6 @@
           active-color="black"
           animated
           alternative-labels
-          header-class="signup-header"
         >
           <q-step :name="1" title="User Details">
             <q-form @submit="step++" class="q-gutter-lg row justify-center">
@@ -99,7 +94,7 @@
               />
               <q-input
                 name="lastName"
-                v-model="user.flastName"
+                v-model="user.lastName"
                 color="primary"
                 label="Last Name"
                 filled
@@ -121,7 +116,7 @@
                 filled
                 class="col-5"
               />
-              <div class="row justify-between">
+              <div class="row col-5 justify-between">
                 <q-input
                   name="city"
                   v-model="user.city"
@@ -191,7 +186,7 @@
               class="q-gutter-lg row justify-center"
             >
               <div class="q-gutter-y-lg col-5">
-                <div class="text-h5 ">Billing Info</div>
+                <div class="text-h5">Billing Info</div>
                 <q-input
                   name="fullName"
                   v-model="billingInfo.fullName"
@@ -339,15 +334,15 @@ export default {
   }
 };
 </script>
+
 <style lang="scss">
 .signup {
-  &-container &-header {
+  &-container {
     $size: 16px;
     $active-size: 36px;
     .q-stepper__dot {
       color: transparent !important;
       height: $active-size;
-      width: $size;
 
       .q-icon {
         height: $size;

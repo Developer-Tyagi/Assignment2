@@ -1,18 +1,18 @@
 <template>
-  <q-page class="container bg-login full-width ">
+  <q-page class="container bg-login full-width">
     <div class="bg-prev q-pa-lg" style="height: 100vh">
       <div class="flex" style="height: 50vh">
         <q-img
           src="~assets/logo.png"
-          style="height: 85px; width: 84px; margin-top: 25%; margin-left: 40%;"
+          style="height: 85px; width: 84px; margin-top: 25%; margin-left: 40%"
         />
         <q-img
           src="~assets/CG_Text_White.png"
-          style="height: 80px; width: 170px ; margin-top: -20%; margin-left:31%;"
+          style="height: 80px; width: 170px; margin-top: -20%; margin-left: 31%"
         />
       </div>
-      <div class="column" style="height: 40vh; margin-top:-100px;">
-        <div style="padding:50px; ">
+      <div class="column" style="height: 40vh; margin-top: -100px">
+        <div style="padding: 50px">
           <q-input
             dark
             text-color="white"
