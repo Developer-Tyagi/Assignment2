@@ -27,19 +27,41 @@ const routes = [
         component: () => import('pages/Login.vue')
       },
       {
-        path: 'signup',
+        path: 'signup/:id',
         name: 'signup',
         component: () => import('pages/Signup.vue')
       },
-      // { path: 'login-web', component: () => import('pages/LoginWeb.vue') },
       {
         path: 'forgot-password',
         name: 'forgot-password',
         component: () => import('pages/ForgotPassword.vue')
+      }
+    ]
+  },
+  {
+    path: '',
+    component: () => import('layouts/AdminLayout.vue'),
+    children: [
+      {
+        path: 'onboarding',
+        name: 'onboarding',
+        component: () => import('pages/Onboarding.vue')
       },
-      { path: 'account', component: () => import('pages/Account.vue') },
-      { path: 'payment', component: () => import('pages/Payment.vue') },
-      { path: 'profile', component: () => import('pages/Profile.vue') }
+      {
+        path: 'account',
+        name: 'account',
+        component: () => import('pages/Account.vue')
+      },
+      {
+        path: 'payment',
+        name: 'payment',
+        component: () => import('pages/Payment.vue')
+      },
+      {
+        path: 'profile',
+        name: 'profile',
+        component: () => import('pages/Profile.vue')
+      }
     ]
   },
   {

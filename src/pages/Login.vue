@@ -103,6 +103,8 @@ export default {
       };
       if (this.login.email && this.login.password) {
         this.userLogin(loginData);
+      } else {
+        this.$router.push('/account');
       }
     }
   },

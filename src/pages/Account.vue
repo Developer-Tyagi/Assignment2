@@ -1,38 +1,24 @@
 <template>
-  <q-page class="container bg-background   ">
-    <br />
-    <div class=" row justify-between q-mx-xl ">
-      <div class=" bg-transparent col-1 q-ml-xl ">
-        <q-img src="~assets/insideLogo.png" />
-      </div>
-      <div class=" q-mr-xl">
-        <q-img
-          src="~assets/LogIn-Logout Icon.svg"
-          style="height:24px;width:24px;"
-        />
-      </div>
-    </div>
-
-    <div class=" row  q-ma-xl" style="height:75vh;width:90%;margin-left:10%;">
-      <div class=" flex row q-ma-xl full-width" style="height:40%;">
-        <q-card class="my-card q-ma-lg text">
-          <div class="my-font q-ma-md text-bold ">Manage Users</div></q-card
+  <q-page class="container bg-background">
+    <div class="row q-ma-xl" style="height: 75vh; width: 90%; margin: auto">
+      <div class="flex wrap row q-ma-xl full-width" style="height: 40%">
+        <q-card
+          class="my-card q-ma-lg text"
+          @click="onCardClick('manage-users')"
         >
-        <q-card class="my-card q-ma-lg "
-          ><div class="my-font q-ma-md text-bold">
-            My Profile / Credit Cards
-          </div>
+          <div class="my-font q-ma-md text-bold">Manage Users</div>
         </q-card>
-        <q-card class="my-card q-ma-lg"
-          ><div class="my-font q-ma-md text-bold">Change Password</div>
+        <q-card class="my-card q-ma-lg" @click="onCardClick('profile')">
+          <div class="my-font q-ma-md text-bold">My Profile / Credit Cards</div>
         </q-card>
-      </div>
-      <div class=" row full-width " style="height:50%;">
-        <q-card class="my-card q-ma-lg">
+        <q-card class="my-card q-ma-lg" @click="onCardClick()">
+          <div class="my-font q-ma-md text-bold">Change Password</div>
+        </q-card>
+        <q-card class="my-card q-ma-lg" @click="onCardClick('my-plan')">
           <div class="my-font q-ma-md text-bold">My plan</div></q-card
         >
-        <q-card class="my-card q-ma-lg "
-          ><div class="my-font  q-ma-md text-bold">My Payment</div>
+        <q-card class="my-card q-ma-lg" @click="onCardClick('payment')">
+          <div class="my-font q-ma-md text-bold">My Payment</div>
         </q-card>
       </div>
     </div>
@@ -45,6 +31,11 @@ export default {
     return {
       login: { password: '', email: '' }
     };
+  },
+  methods: {
+    onCardClick(route) {
+      this.$router.push(`/${route}`);
+    }
   }
 };
 </script>
