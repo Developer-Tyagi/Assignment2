@@ -69,7 +69,10 @@ export default {
   props: {
     address: {
       type: Object,
-      required: true
+      dropBox: {
+        info: '',
+        isPresent: false
+      }
     },
     isDropBoxEnable: {
       type: Boolean,
