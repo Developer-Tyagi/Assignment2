@@ -597,6 +597,7 @@
                   :isFieldsDisable="isMailingAddressSameToggle"
                 />
               </div>
+
               <br />
             </div>
           </div>
@@ -851,6 +852,7 @@
                 :address="lossAddressDetails"
                 :isDropBoxEnable="true"
                 :isChecksEnable="false"
+                :isFieldsDisable="isLossAddressSameAsClientToggle"
               />
               <q-input
                 v-model="LossAddressName"
@@ -1522,6 +1524,7 @@ export default {
           isPresent: false
         }
       },
+
       lossInfo: {
         dateOfLoss: '',
         propertyDescription: '',
@@ -1614,7 +1617,6 @@ export default {
       },
       isItCompanyLeadToggle: false,
       addAditionalPhoneNumberToggle: false,
-      gateDropboxToggle: false,
       tenantOccupiedToggle: false,
       isDamageOSToggle: false,
       mailingAddressDialog: false,
@@ -1773,8 +1775,10 @@ export default {
           postalCode: '',
           streetAddress: '',
           postOfficeBoxNumber: '',
-          isGateDropbox: false,
-          dropBoxInfo: ''
+          dropBox: {
+            info: '',
+            isPresent: false
+          }
         };
       }
     },
@@ -1790,8 +1794,10 @@ export default {
           postalCode: '',
           streetAddress: '',
           postOfficeBoxNumber: '',
-          isGateDropbox: false,
-          dropBoxInfo: ''
+          dropBox: {
+            info: '',
+            isPresent: false
+          }
         };
       }
     },
