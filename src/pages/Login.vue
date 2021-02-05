@@ -6,7 +6,7 @@
           v-if="$q.screen.width < 600"
           alt="Claimguru"
           src="~assets/claimguru_icon.png"
-          class="q-mx-auto q-mt-auto"
+          class="q-mt-auto q-mx-auto"
           width="95"
           height="95"
         />
@@ -103,8 +103,6 @@ export default {
       };
       if (this.login.email && this.login.password) {
         this.userLogin(loginData);
-      } else {
-        this.$router.push('/account');
       }
     }
   },
