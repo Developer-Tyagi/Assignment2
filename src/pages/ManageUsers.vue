@@ -7,13 +7,13 @@
       </div>
       <div class="full-width">
         <div class="row justify-between my-font text-bold q-mx-xl">
-          <q-div class="col-3">
+          <div class="col-3">
             <q-input outlined v-model="searchText" placeholder="Search">
               <template v-slot:append>
                 <q-icon name="search" />
               </template>
             </q-input>
-          </q-div>
+          </div>
           ​
           <div class="justify-between row col-6">
             <div class="col-4">
@@ -94,7 +94,7 @@
 </template>
 <script>
 export default {
-  name: 'User',
+  name: 'Manage-User',
   data() {
     return {
       options: [

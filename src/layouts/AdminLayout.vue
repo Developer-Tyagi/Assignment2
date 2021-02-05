@@ -5,7 +5,19 @@
         style="width: 5%; background-color: #1b2854"
         class="items-center q-py-lg q-px-md"
       >
-        <q-icon name="menu" color="white" size="lg"></q-icon>
+        <q-icon
+          v-if="$route.name === 'account'"
+          name="menu"
+          color="white"
+          size="lg"
+        ></q-icon>
+        <q-icon
+          v-else
+          name="reply"
+          color="white"
+          size="lg"
+          @click="$router.back()"
+        ></q-icon>
       </div>
       <div style="width: 95%">
         <div class="row justify-between items-center q-pa-lg">

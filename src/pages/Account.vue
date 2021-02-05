@@ -1,7 +1,7 @@
 <template>
   <q-page class="container bg-background">
     <div class="row q-ma-xl" style="height: 75vh; width: 90%; margin: auto">
-      <div class="flex wrap row q-ma-xl full-width" style="height: 40%">
+      <div class="flex wrap row q-ma-xl full-width">
         <q-card
           class="my-card q-ma-lg text"
           @click="onCardClick('manage-users')"
