@@ -6,6 +6,7 @@
           class="q-ma-md plan-card"
           bordered
           v-for="(plan, index) in plans"
+          :key="price"
           :class="index === 1 ? 'plan-card--selected' : 'plan-card'"
         >
           <q-card-section class="full-height column">
