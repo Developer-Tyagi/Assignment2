@@ -7,6 +7,7 @@ import common from './common';
 import clients from './clients';
 import user from './user';
 import settings from './settings';
+import admin from './admin';
 Vue.use(Vuex);
 
 /*
