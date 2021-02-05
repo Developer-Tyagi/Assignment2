@@ -44,11 +44,10 @@
               <q-expansion-item class="bg-background full-width">
                 <template v-slot:header>
                   <q-item-section avatar>
-                    <!-- This is for Visa Logo -->
-                    <!-- <q-img
+                    <q-img
                       src="~assets/visa-logo.svg"
-                      style="height:24px;width:24px;  "
-                    /> -->
+                      style="height: 24px; width: 24px"
+                    />
                   </q-item-section>
 
                   <q-item-section>

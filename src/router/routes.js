@@ -61,6 +61,16 @@ const routes = [
         path: 'profile',
         name: 'profile',
         component: () => import('pages/Profile.vue')
+      },
+      {
+        path: 'my-plan',
+        name: 'my plan',
+        component: () => import('pages/MyPlan.vue')
+      },
+      {
+        path: 'manage-users',
+        name: 'manage users',
+        component: () => import('pages/ManageUsers.vue')
       }
     ]
   },
