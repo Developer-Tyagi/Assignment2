@@ -27,9 +27,6 @@ spec:
           securityContext: {}
           image: DOCKER_IMAGE
           imagePullPolicy: Always
-          envFrom:
-            - configMapRef:
-                name: ui-config
           ports:
             - name: http
               containerPort: 80

@@ -3,27 +3,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ui
+  name: demo-ui
   labels:
-    name: ui
+    name: demo-ui
     project: claimguru
     version: "CI_COMMIT_SHORT_SHA"
 spec:
   replicas: 1
   selector:
     matchLabels:
-      name: ui
+      name: demo-ui
       project: claimguru
   template:
     metadata:
       labels:
-        name: ui
+        name: demo-ui
         project: claimguru
         version: "CI_COMMIT_SHORT_SHA"
     spec:
       securityContext: {}
       containers:
-        - name: ui
+        - name: demo-ui
           securityContext: {}
           image: DOCKER_IMAGE
           imagePullPolicy: Always
@@ -42,9 +42,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ui
+  name: demo-ui
   labels:
-    name: ui
+    name: demo-ui
     project: claimguru
     version: "CI_COMMIT_SHORT_SHA"
 spec:
@@ -55,16 +55,16 @@ spec:
       protocol: TCP
       name: http
   selector:
-    name: ui
+    name: demo-ui
     project: claimguru
 ---
 # Virtual Service
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: ui
+  name: demo-ui
   labels:
-    name: ui
+    name: demo-ui
     project: claimguru
     version: "CI_COMMIT_SHORT_SHA"
 spec:
@@ -78,4 +78,4 @@ spec:
             prefix: "/"
       route:
         - destination:
-            host: ui
+            host: demo-ui
