@@ -126,7 +126,7 @@ pre_prod_deploy:
   only:
     - master
   
-  # This task creates demo image.
+# This task creates demo image.
 build_demo_image:
   stage: build
   image: docker:git
@@ -147,14 +147,14 @@ build_demo_image:
     - master
   when: manual
 
-  # This task deploy demo set up.
+# This task deploy demo set up.
 demo_deploy:
   stage: deploy
   image:
     name: us-west1-docker.pkg.dev/pre-prod-286801/cilalabs/common-utils/kubeninja
   variables:
-    DOCKER_IMAGE: us-west1-docker.pkg.dev/pre-prod-286801/claimguru/claimguru-ui
-    KUBE_NAMESPACE: claimguru-demo
+    DOCKER_IMAGE: us-west1-docker.pkg.dev/pre-prod-286801/claimguru/claimguru-ui:demo
+    KUBE_NAMESPACE: demo-claimguru
     GOOGLE_APPLICATION_CREDENTIALS: /tmp/key.json
     SOPS_KMS: projects/pre-prod-286801/locations/global/keyRings/sops/cryptoKeys/sops-key
   script:
