@@ -152,6 +152,5 @@ demo_deploy:
     - pre-production
   only:
     - master
-  when:
-    - manual
+  when: manual
 
