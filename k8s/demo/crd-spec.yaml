@@ -69,7 +69,7 @@ metadata:
     version: "CI_COMMIT_SHORT_SHA"
 spec:
   hosts:
-    - claimguru.cilalabs.dev
+    - demo.claimguru.cilalabs.dev
   gateways:
     - istio-system/claimguru-gateway
   http:
