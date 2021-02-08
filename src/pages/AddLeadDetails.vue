@@ -437,6 +437,7 @@ import { mapActions, mapGetters } from 'vuex';
 import { validateEmail } from '@utils/validation';
 import { dateToSend } from '@utils/date';
 import VendorsList from 'components/VendorsList';
+import { constants } from '@utils/constant';
 import AddVendor from 'components/AddVendor';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import CustomHeader from 'components/CustomHeader';
@@ -523,7 +524,7 @@ export default {
       this.vendorDialogName = name;
       if (name === 'carrier') {
         this.showVendorDialogFilters = false;
-        this.vendorDialogFilterByIndustry = '5ffedc469a111940084ce6e2';
+        this.vendorDialogFilterByIndustry = 'carrier';
       } else {
         this.showVendorDialogFilters = true;
         this.vendorDialogFilterByIndustry = '';

@@ -43,6 +43,7 @@
         ></q-btn>
       </div>
     </div>
+    <!-- Public Adjuster Info -->
     <q-dialog
       v-model="publicAdjustorInfoDialog"
       persistent
@@ -190,6 +191,7 @@
         ></q-btn>
       </q-card>
     </q-dialog>
+    <!-- Client Info -->
     <q-dialog
       v-model="clientInfoDailog"
       persistent
@@ -555,6 +557,7 @@
         </q-card-section>
       </q-card>
     </q-dialog>
+    <!-- Mailing Address -->
     <q-dialog
       v-model="mailingAddressDialog"
       persistent
@@ -611,6 +614,7 @@
         </q-card-section>
       </q-card>
     </q-dialog>
+    <!-- Insurance Info -->
     <q-dialog
       v-model="insuranceInfoDialog"
       persistent
@@ -814,6 +818,7 @@
         </q-card-section>
       </q-card>
     </q-dialog>
+    <!-- Loss Info -->
     <q-dialog
       v-model="lossInfoDialog"
       persistent
@@ -1028,6 +1033,7 @@
         </q-card-section>
       </q-card>
     </q-dialog>
+    <!-- Mortage Info -->
     <q-dialog
       v-model="mortgageInfoDialog"
       persistent
@@ -1098,7 +1104,7 @@
                   class="custom-select"
                   v-model="mortgageDetails[1].id"
                   @click="
-                    onAddVendorDialogClick('mortgage', false, false, true)
+                    onAddVendorDialogClick('mortgage1', false, false, true)
                   "
                 >
                   <div class="select-text">
@@ -1139,6 +1145,7 @@
         </q-card-section>
       </q-card>
     </q-dialog>
+    <!-- Estimating Info -->
     <q-dialog
       v-model="estimatingInfoDialog"
       persistent
@@ -1213,6 +1220,7 @@
         </q-card-section>
       </q-card>
     </q-dialog>
+    <!-- Expert /Vendor Info -->
     <q-dialog
       v-model="expertVendorInfoDialog"
       persistent
@@ -1248,7 +1256,7 @@
                 v-if="vendorExpertHiredToggle"
                 class="custom-select"
                 v-model="expertVendorInfo.vendorName"
-                @click="onAddVendorDialogClick('vendor', true)"
+                @click="onAddVendorDialogClick('expertvendor', true)"
               >
                 <div class="select-text">
                   {{
@@ -1301,6 +1309,7 @@
         </q-card-section>
       </q-card>
     </q-dialog>
+    <!-- Office Task -->
     <q-dialog
       v-model="officeTaskDialog"
       persistent
@@ -1364,7 +1373,7 @@
         </q-card-section>
       </q-card>
     </q-dialog>
-
+    <!-- Vendor list Dialog -->
     <q-dialog
       v-model="vendorsListDialog"
       persistent
@@ -1398,9 +1407,11 @@
           ref="list"
           :showFilter="showVendorDialogFilters"
           :filterName="vendorDialogFilterByIndustry"
+          :valueName="valueName"
         />
       </q-card>
     </q-dialog>
+    <!-- Add vendor Dialog -->
     <q-dialog
       v-model="addVendorDialog"
       persistent
@@ -1423,6 +1434,7 @@ import CustomHeader from 'components/CustomHeader';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import AddressService from '@utils/country';
 import { validateEmail } from '@utils/validation';
+import { constants } from '@utils/constant';
 import { dateToSend } from '@utils/date';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import VendorsList from 'components/VendorsList';
@@ -1435,6 +1447,7 @@ export default {
   components: { CustomHeader, VendorsList, AddVendor, AutoCompleteAddress },
   data() {
     return {
+      valueName: '',
       isExpertVendorScreen: false,
       isMortgageCompany: false,
       secondMortgageCompany: false,
@@ -2041,26 +2054,30 @@ export default {
       this.sourceDetails.machineValue = '';
     },
 
-    onClosingVendorSelectDialog(vendor, isVendor, isMortgage) {
-      if (isVendor) {
-        if (this.isExpertVendorScreen) {
+    onClosingVendorSelectDialog(vendor, dialogName) {
+      switch (dialogName) {
+        case 'carrier':
+          this.insuranceDetails.carrierId = vendor.id;
+          this.insuranceDetails.carrierName = vendor.name;
+          break;
+        case 'vendor':
+          this.sourceDetails.id = vendor.id;
+          this.sourceDetails.details = vendor.name;
+          break;
+        case 'mortgage':
+          this.mortgageDetails[0].id = vendor.id;
+          this.mortgageDetails[0].value = vendor.name;
+          break;
+        case 'mortgage1':
+          this.mortgageDetails[1].id = vendor.id;
+          this.mortgageDetails[1].value = vendor.name;
+          break;
+        case 'expertvendor':
           this.expertVendorInfo.id = vendor.id;
           this.expertVendorInfo.vendorName = vendor.name;
-        }
-        this.sourceDetails.id = vendor.id;
-        this.sourceDetails.details = vendor.name;
-      } else {
-        this.insuranceDetails.carrierId = vendor.id;
-        this.insuranceDetails.carrierName = vendor.name;
+          break;
       }
-      if (this.isMortgageCompany) {
-        this.mortgageDetails[0].id = vendor.id;
-        this.mortgageDetails[0].value = vendor.name;
-      }
-      if (this.secondMortgageCompany) {
-        this.mortgageDetails[1].id = vendor.id;
-        this.mortgageDetails[1].value = vendor.name;
-      }
+
       this.vendorsListDialog = false;
     },
 
@@ -2077,17 +2094,17 @@ export default {
       this.isExpertVendorScreen = isExpertVendor;
       this.isMortgageCompany = isMortgage;
       this.secondMortgageCompany = secondMortgage;
+      this.valueName = name;
       if (name === 'carrier') {
         this.showVendorDialogFilters = false;
-        this.vendorDialogFilterByIndustry = '5ffedc469a111940084ce6e2';
+        this.vendorDialogFilterByIndustry = 'carrier';
       } else {
         this.showVendorDialogFilters = true;
         this.vendorDialogFilterByIndustry = '';
       }
-
       if (name == 'mortgage') {
         this.showVendorDialogFilters = false;
-        this.vendorDialogFilterByIndustry = '6020cb00de47668d690a5a35';
+        this.vendorDialogFilterByIndustry = 'mortgage';
       }
       this.vendorsListDialog = true;
     }

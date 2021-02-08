@@ -49,6 +49,7 @@
               @input="setVendorIndustryName"
               behavior="menu"
               emit-value
+              :disable="!industryFilterDisabled"
               lazy-rules
               :rules="[
                 val => (val && val.length > 0) || 'Please fill the first name'
@@ -221,6 +222,7 @@ export default {
 
   data() {
     return {
+      industryFilterDisabled: false,
       options: '',
       countries: [],
       states: [],
@@ -228,6 +230,7 @@ export default {
       vendor: {
         name: '',
         industry: { value: null, id: '', machineValue: '' },
+
         meta: {
           claimFiledByEmail: false
         },
@@ -301,6 +304,18 @@ export default {
       if (industryType.name && industryType.id) {
         this.vendor.industry.value = industryType.name;
         this.vendor.industry.id = industryType.id;
+        this.vendor.industry.machineValue = industryType.machineValue;
+      }
+    }
+
+    if (this.componentName && this.componentName === 'mortgage') {
+      let industryType = this.vendorIndustries.find(
+        o => o.machineValue === 'mortgage'
+      );
+      if (industryType.name && industryType.id) {
+        this.vendor.industry.value = industryType.name;
+        this.vendor.industry.id = industryType.id;
+        this.vendor.industry.machineValue = industryType.machineValue;
       }
     }
   },
@@ -420,6 +435,9 @@ export default {
   },
 
   created() {
+    if (this.componentName == 'vendor') {
+      this.industryFilterDisabled = true;
+    }
     this.options = this.vendorIndustries;
     this.countries = addressService.getCountries();
     this.onCountrySelect('United States');
