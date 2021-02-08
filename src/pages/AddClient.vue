@@ -1053,16 +1053,20 @@
         <q-card-section>
           <div class="q-page bg-white">
             <div class="full-width fixHeight">
-              <q-select
+              <div
+                class="custom-select"
                 v-model="mortgageDetails[0].id"
-                option-value="id"
-                option-label="name"
-                map-options
-                emit-value
-                :options="vendors"
-                @input="setTypes(vendors, mortgageDetails[0], 'mortgage')"
-                label="Mortgage Company Name"
-              />
+                @click="onAddVendorDialogClick('mortgage', false, true)"
+              >
+                <div class="select-text">
+                  {{
+                    mortgageDetails[0].value
+                      ? mortgageDetails[0].value
+                      : 'Enter Mortgage Company'
+                  }}
+                </div>
+              </div>
+
               <q-input
                 v-model="mortgageDetails[0].loanNumber"
                 label="Loan Number"
@@ -1090,16 +1094,21 @@
                 />
               </div>
               <div v-if="isSecondMortgageHome">
-                <q-select
+                <div
+                  class="custom-select"
                   v-model="mortgageDetails[1].id"
-                  option-value="id"
-                  option-label="name"
-                  map-options
-                  emit-value
-                  :options="vendors"
-                  @input="setTypes(vendors, mortgageDetails[1], 'mortgage')"
-                  label="Mortgage Company Name"
-                />
+                  @click="
+                    onAddVendorDialogClick('mortgage', false, false, true)
+                  "
+                >
+                  <div class="select-text">
+                    {{
+                      mortgageDetails[1].value
+                        ? mortgageDetails[1].value
+                        : 'Enter Mortgage Company'
+                    }}
+                  </div>
+                </div>
                 <q-input
                   v-model="mortgageDetails[1].loanNumber"
                   label="Loan Number"
@@ -1427,6 +1436,9 @@ export default {
   data() {
     return {
       isExpertVendorScreen: false,
+      isMortgageCompany: false,
+      secondMortgageCompany: false,
+      mortgageInfoDialog: false,
       isSecondMortgageHome: false,
       vendorDialogName: '',
       vendorDialogFilterByIndustry: '',
@@ -1592,13 +1604,13 @@ export default {
         {
           id: '',
           value: '',
-          machineValue: '',
           loanNumber: '',
           accountNumber: '',
           isPrimary: true,
           notes: ''
         }
       ],
+
       estimatingInfo: {
         estimatorToBeAssigned: '',
         scopeTimeNeeded: '',
@@ -1649,7 +1661,7 @@ export default {
       },
       isThereAsecondClaimToFileToggle: false,
       typeOfLoss: [],
-      mortgageInfoDialog: false,
+
       isTherea2ndMortgageOnTheHomeToggle: false,
       doesAnEstimatorNeedToBeAssignedToggle: false,
       estimatingInformationClaim2Toggle: false,
@@ -2029,7 +2041,7 @@ export default {
       this.sourceDetails.machineValue = '';
     },
 
-    onClosingVendorSelectDialog(vendor, isVendor) {
+    onClosingVendorSelectDialog(vendor, isVendor, isMortgage) {
       if (isVendor) {
         if (this.isExpertVendorScreen) {
           this.expertVendorInfo.id = vendor.id;
@@ -2041,7 +2053,14 @@ export default {
         this.insuranceDetails.carrierId = vendor.id;
         this.insuranceDetails.carrierName = vendor.name;
       }
-
+      if (this.isMortgageCompany) {
+        this.mortgageDetails[0].id = vendor.id;
+        this.mortgageDetails[0].value = vendor.name;
+      }
+      if (this.secondMortgageCompany) {
+        this.mortgageDetails[1].id = vendor.id;
+        this.mortgageDetails[1].value = vendor.name;
+      }
       this.vendorsListDialog = false;
     },
 
@@ -2053,15 +2072,22 @@ export default {
       }
     },
 
-    onAddVendorDialogClick(name, isExpertVendor) {
+    onAddVendorDialogClick(name, isExpertVendor, isMortgage, secondMortgage) {
       this.vendorDialogName = name;
       this.isExpertVendorScreen = isExpertVendor;
+      this.isMortgageCompany = isMortgage;
+      this.secondMortgageCompany = secondMortgage;
       if (name === 'carrier') {
         this.showVendorDialogFilters = false;
         this.vendorDialogFilterByIndustry = '5ffedc469a111940084ce6e2';
       } else {
         this.showVendorDialogFilters = true;
         this.vendorDialogFilterByIndustry = '';
+      }
+
+      if (name == 'mortgage') {
+        this.showVendorDialogFilters = false;
+        this.vendorDialogFilterByIndustry = '6020cb00de47668d690a5a35';
       }
       this.vendorsListDialog = true;
     }
