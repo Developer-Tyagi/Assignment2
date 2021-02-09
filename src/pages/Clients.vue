@@ -5,18 +5,26 @@
       @addButton="addClient"
       :showAddButton="true"
     />
-    <div class="clients" v-if="clients.length">
+    <div class="clients" v-if="clientsList.length">
       <div class="actions-div">
         <q-input
           v-model="searchText"
           placeholder="Search"
           borderless
+          style="width: 100%"
           @input="search($event)"
         >
           <template v-slot:prepend>
             <q-icon name="search" />
           </template>
         </q-input>
+        <img
+          src="~assets/close.svg"
+          alt=""
+          v-if="searchText"
+          @click="onSearchBackButtonClick"
+          style="margin: 0 0 0 20px"
+        />
         <!-- <div class="q-ml-auto row" @click="filterDialog = true">
           <img src="~assets/filter.svg" />Filters
         </div>
@@ -32,13 +40,18 @@
           >Clear</q-btn
         > -->
       </div>
+
       <div class="clients-list">
-        <div class="q-px-md q-pt-sm" v-for="client in clients" :key="client.id">
+        <div
+          class="q-px-md q-pt-sm"
+          v-for="clientsList in clientsList"
+          :key="clientsList.id"
+        >
           <div class="client-list-item">
             <div class="row">
               <span>
-                {{ client['insuredInfo']['primary']['fname'] }}
-                {{ client['insuredInfo']['primary']['lname'] }}
+                {{ clientsList['insuredInfo']['primary']['fname'] }}
+                {{ clientsList['insuredInfo']['primary']['lname'] }}
               </span>
 
               <q-icon class="q-ml-auto" size="sm" name="more_vert"></q-icon>
@@ -47,7 +60,7 @@
               <span
                 >Mob:
                 <span>
-                  {{ client.insuredInfo.primary.phoneNumber[0].number }}
+                  {{ clientsList.insuredInfo.primary.phoneNumber[0].number }}
                 </span>
               </span>
             </div>
@@ -82,25 +95,31 @@ export default {
   components: { CustomHeader },
   data() {
     return {
-      searchText: ''
+      searchText: '',
+      openSearchInput: false
     };
   },
 
   computed: {
-    ...mapGetters(['clients'])
+    ...mapGetters(['clientsList'])
   },
 
   created() {
-    this.getClients();
+    this.getClientsList();
   },
   methods: {
-    ...mapActions(['getClients']),
-
+    ...mapActions(['getClientsList']),
+    onSearchBackButtonClick() {
+      this.searchText = '';
+      this.search();
+    },
     addClient() {
       this.$router.push('/add-client');
     },
 
-    search(e) {}
+    search(e) {
+      this.getClientsList(this.searchText ? this.searchText : '');
+    }
   }
 };
 </script>
