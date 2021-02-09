@@ -92,7 +92,7 @@
               <q-form @submit="step++" class="q-gutter-lg row justify-center">
                 <q-input
                   name="firstName"
-                  v-model="user.firstName"
+                  v-model="users.user.firstName"
                   color="primary"
                   label="First Name"
                   filled
@@ -102,7 +102,7 @@
                 />
                 <q-input
                   name="country"
-                  v-model="user.country"
+                  v-model="users.user.country"
                   color="primary"
                   label="Country"
                   filled
@@ -112,7 +112,7 @@
                 />
                 <q-input
                   name="lastName"
-                  v-model="user.lastName"
+                  v-model="users.user.lastName"
                   color="primary"
                   label="Last Name"
                   filled
@@ -122,7 +122,7 @@
                 />
                 <q-input
                   name="state"
-                  v-model="user.state"
+                  v-model="users.user.state"
                   color="primary"
                   label="State"
                   filled
@@ -132,7 +132,7 @@
                 />
                 <q-input
                   name="businessName"
-                  v-model="user.businessName"
+                  v-model="users.user.businessName"
                   color="primary"
                   label="Business Name"
                   filled
@@ -143,7 +143,7 @@
                 <div class="row col-5 justify-between">
                   <q-input
                     name="city"
-                    v-model="user.city"
+                    v-model="users.user.city"
                     color="primary"
                     label="City"
                     filled
@@ -153,7 +153,7 @@
                   />
                   <q-input
                     name="zip"
-                    v-model="user.zip"
+                    v-model="users.user.zip"
                     color="primary"
                     label="ZIP Code"
                     filled
@@ -164,7 +164,7 @@
                 </div>
                 <q-input
                   name="phone"
-                  v-model="user.phone"
+                  v-model="users.user.phone"
                   color="primary"
                   label="Contact Number"
                   filled
@@ -174,7 +174,7 @@
                 />
                 <q-input
                   name="address1"
-                  v-model="user.address1"
+                  v-model="users.user.address1"
                   color="primary"
                   label="Address 1"
                   filled
@@ -184,7 +184,7 @@
                 />
                 <q-input
                   name="email"
-                  v-model="user.email"
+                  v-model="users.user.email"
                   color="primary"
                   label="Email"
                   type="email"
@@ -193,19 +193,20 @@
                 />
                 <q-input
                   name="address2"
-                  v-model="user.address2"
+                  v-model="users.user.address2"
                   color="primary"
                   label="Address 2"
                   filled
                   class="col-5"
                 />
                 <q-separator />
+                <!-- click="$refs.stepper.next()" -->
                 <div class="full-width q-px-xl">
                   <q-btn
-                    @click="$refs.stepper.next()"
                     color="primary"
                     label="Next"
                     class="float-right q-px-lg"
+                    @click="checkValidation()"
                   />
                 </div>
               </q-form>
@@ -238,7 +239,6 @@
                   <div class="row justify-between">
                     <q-input
                       name="city"
-                      v-model="user.city"
                       color="primary"
                       label="City"
                       filled
@@ -246,7 +246,6 @@
                     />
                     <q-input
                       name="zip"
-                      v-model="user.zip"
                       color="primary"
                       label="ZIP Code"
                       filled
@@ -305,12 +304,7 @@
                     outline
                     type="reset"
                   />
-                  <q-btn
-                    color="primary"
-                    label="Buy"
-                    class="q-px-lg"
-                    type="submit"
-                  />
+                  <q-btn color="primary" label="Buy" class="q-px-lg" />
                 </div>
               </q-form>
             </q-step>
@@ -328,18 +322,20 @@ export default {
     return {
       plan: 1,
       step: 1,
-      user: {
-        firstName: '',
-        lastName: '',
-        businessName: '',
-        phone: '',
-        email: '',
-        country: '',
-        state: '',
-        city: '',
-        zip: '',
-        address1: '',
-        address2: ''
+      users: {
+        user: {
+          firstName: '',
+          lastName: '',
+          businessName: '',
+          phone: '',
+          email: '',
+          country: '',
+          state: '',
+          city: '',
+          zip: '',
+          address1: '',
+          address2: ''
+        }
       },
       selectedPlan: '',
       billingInfo: {
@@ -365,6 +361,9 @@ export default {
     },
     onSubmit() {
       this.$router.push('/forgot-password');
+    },
+    checkValidation() {
+      console.log(this.users);
     }
   },
 
