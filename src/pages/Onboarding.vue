@@ -43,8 +43,7 @@
                       <div class="row q-mt-xs      justify-between full-width">
                         <div class="col-6  ">
                           <q-input
-                            v-model="onboard.adduser.fname"
-                            type="password"
+                            v-model="adduser.contact.fname"
                             class="q-mx-xl"
                             style="border: 1px solid #DDDDDD"
                             filled
@@ -52,8 +51,7 @@
                         </div>
                         <div class="col-6  ">
                           <q-input
-                            v-model="onboard.adduser.lname"
-                            type="password"
+                            v-model="adduser.contact.lname"
                             class="q-mx-xl"
                             style="border: 1px solid #DDDDDD"
                             filled
@@ -67,8 +65,7 @@
                       <div class="row q-mt-xs      justify-between full-width">
                         <div class="col-6  ">
                           <q-input
-                            v-model="onboard.adduser.email"
-                            type="password"
+                            v-model="adduser.email"
                             class="q-mx-xl"
                             style="border: 1px solid #DDDDDD"
                             filled
@@ -76,7 +73,7 @@
                         </div>
                         <div class="col-6  ">
                           <q-select
-                            v-model="onboard.adduser.role"
+                            v-model="adduser.role[0]"
                             filled
                             class="q-mx-xl"
                             :options="options"
@@ -95,7 +92,6 @@
                         <div class="col-6  ">
                           <q-input
                             v-model="onboard.officesuer.fname"
-                            type="password"
                             class="q-mx-xl"
                             style="border: 1px solid #DDDDDD"
                             filled
@@ -103,7 +99,6 @@
                         </div>
                         <div class="col-6  ">
                           <q-input
-                            type="password"
                             class="q-mx-xl"
                             style="border: 1px solid #DDDDDD"
                             filled
@@ -128,6 +123,7 @@
                           <q-select
                             filled
                             v-model="onboard.officesuer.role"
+                            class="q-mx-xl"
                             :options="options"
                             label="Filled"
                           />
@@ -211,6 +207,7 @@
   </q-page>
 </template>
 <script>
+import { mapActions } from 'vuex';
 export default {
   name: 'AddUser',
   data() {
@@ -219,13 +216,16 @@ export default {
       options: ['Manager', 'Staff'],
       tab: 'adduser',
       splitterModel: 20,
-      onboard: {
-        adduser: {
+      adduser: {
+        type: 'user',
+        contact: {
           fname: '',
-          lname: '',
-          email: '',
-          role: ''
+          lname: ''
         },
+        email: '',
+        role: []
+      },
+      onboard: {
         officesuer: {
           fname: '',
           lname: '',
@@ -242,15 +242,10 @@ export default {
     };
   },
   methods: {
+    ...mapActions(['addUser']),
     // on Clicking Next Button
     onClickNext() {
-      if (this.tab == 'adduser') {
-        this.tab = 'offcInfo';
-      } else if (this.tab == 'offcInfo') {
-        this.tab = 'sales';
-      } else if (this.tab == 'sales') {
-        this.tab = 'setConfiguration';
-      }
+      this.addUser(this.adduser);
     },
     // on clicking previous button
     onClickBack() {
