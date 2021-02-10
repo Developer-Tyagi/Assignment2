@@ -157,7 +157,7 @@
                   icon="keyboard_backspace"
                   text-color="primary"
                   padding="md"
-                  type="submit"
+                  @click="checkAddressField"
                 />
               </div>
             </div>
@@ -520,6 +520,17 @@ export default {
       'getContactTypes',
       'getTitles'
     ]),
+    checkAddressField() {
+      if (this.lossAddress.streetAddress) {
+        this.step = 3;
+      } else {
+        this.$q.notify({
+          message: 'Please fill this Street Address',
+          position: 'top',
+          type: 'negative'
+        });
+      }
+    },
 
     onAddVendorDialogClick(name) {
       this.vendorDialogName = name;
