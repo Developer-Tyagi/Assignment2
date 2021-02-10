@@ -5,12 +5,7 @@ export function setClients(state, clients) {
     name: client.attributes.insuredInfo.primary['fname']
   }));
 }
-export function setClientsList(state, clientsList) {
-  state.clientsList = clientsList.map(client => ({
-    ...client.attributes,
-    id: client.id
-  }));
-}
+
 export function setClientTypes(state, types) {
   state.clientTypes = types.map(type => ({
     name: type.attributes.value,

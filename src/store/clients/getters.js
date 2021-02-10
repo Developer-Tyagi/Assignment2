@@ -6,4 +6,3 @@ export const lossCauses = state => state.lossCauses;
 export const claimSeverity = state => state.claimSeverity;
 export const policyCategories = state => state.policyCategories;
 export const policyTypes = state => state.policyTypes;
-export const clientsList = state => state.clientsList;

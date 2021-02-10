@@ -1,26 +1,12 @@
 import request from '@api';
 import { buildApiData } from '@utils/api';
 
-export async function getClientsList({ commit, dispatch }, searchString = '') {
+export async function getClients({ commit, dispatch }, searchString = '') {
   dispatch('setLoading', true);
   try {
-    const { data } = await request.get('/clients', { name: searchString });
-    commit('setClientsList', data);
-    dispatch('setLoading', false);
-  } catch (e) {
-    console.log(e);
-    dispatch('setLoading', false);
-    dispatch('setNotification', {
-      type: 'negative',
-      message: e.response.data.title
+    const { data } = await request.get('/clients', {
+      name: searchString
     });
-  }
-}
-
-export async function getClients({ commit, dispatch }) {
-  dispatch('setLoading', true);
-  try {
-    const { data } = await request.get('/clients');
     commit('setClients', data);
     dispatch('setLoading', false);
   } catch (e) {

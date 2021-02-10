@@ -5,7 +5,7 @@
       @addButton="addClient"
       :showAddButton="true"
     />
-    <div class="clients" v-if="clientsList.length">
+    <div class="clients" v-if="clients.length">
       <div class="actions-div">
         <q-input
           v-model="searchText"
@@ -25,33 +25,15 @@
           @click="onSearchBackButtonClick"
           style="margin: 0 0 0 20px"
         />
-        <!-- <div class="q-ml-auto row" @click="filterDialog = true">
-          <img src="~assets/filter.svg" />Filters
-        </div>
-        <q-btn
-          v-if="false"
-          class="q-ml-auto"
-          color="white"
-          text-color="grey"
-          @click="clearFilter()"
-          flat
-          dense
-          style="font-weight: 400"
-          >Clear</q-btn
-        > -->
       </div>
 
       <div class="clients-list">
-        <div
-          class="q-px-md q-pt-sm"
-          v-for="clientsList in clientsList"
-          :key="clientsList.id"
-        >
+        <div class="q-px-md q-pt-sm" v-for="client in clients" :key="client.id">
           <div class="client-list-item">
             <div class="row">
               <span>
-                {{ clientsList['insuredInfo']['primary']['fname'] }}
-                {{ clientsList['insuredInfo']['primary']['lname'] }}
+                {{ client['insuredInfo']['primary']['fname'] }}
+                {{ client['insuredInfo']['primary']['lname'] }}
               </span>
 
               <q-icon class="q-ml-auto" size="sm" name="more_vert"></q-icon>
@@ -60,7 +42,7 @@
               <span
                 >Mob:
                 <span>
-                  {{ clientsList.insuredInfo.primary.phoneNumber[0].number }}
+                  {{ client.insuredInfo.primary.phoneNumber[0].number }}
                 </span>
               </span>
             </div>
@@ -101,24 +83,26 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['clientsList'])
+    ...mapGetters(['clients'])
   },
 
   created() {
-    this.getClientsList();
+    this.getClients();
   },
   methods: {
-    ...mapActions(['getClientsList']),
+    ...mapActions(['getClients']),
+
     onSearchBackButtonClick() {
       this.searchText = '';
       this.search();
     },
+
     addClient() {
       this.$router.push('/add-client');
     },
 
     search(e) {
-      this.getClientsList(this.searchText ? this.searchText : '');
+      this.getClients(this.searchText ? this.searchText : '');
     }
   }
 };

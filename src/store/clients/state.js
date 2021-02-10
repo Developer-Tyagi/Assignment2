@@ -1,6 +1,5 @@
 export default function() {
   return {
-    clientsList: [],
     clients: [],
     clientTypes: [],
     propertyTypes: [],
