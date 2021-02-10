@@ -15,6 +15,7 @@ export async function userLogin({ commit, dispatch }, formData) {
         this.$router.push('/dashboard');
       });
     })
+
     .catch(error => {
       const errorCode = error.code;
       const errorMessage = error.message;

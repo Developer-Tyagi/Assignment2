@@ -643,7 +643,9 @@
               <div
                 class="custom-select"
                 v-model="insuranceDetails.carrierName"
-                @click="onAddVendorDialogClick('carrier', false)"
+                @click="
+                  onAddVendorDialogClick(constant.industries.CARRIER, false)
+                "
               >
                 <div class="select-text">
                   {{
@@ -1062,7 +1064,13 @@
               <div
                 class="custom-select"
                 v-model="mortgageDetails[0].id"
-                @click="onAddVendorDialogClick('mortgage', false, true)"
+                @click="
+                  onAddVendorDialogClick(
+                    constant.industries.MORTGAGE,
+                    false,
+                    true
+                  )
+                "
               >
                 <div class="select-text">
                   {{
@@ -1447,6 +1455,7 @@ export default {
   components: { CustomHeader, VendorsList, AddVendor, AutoCompleteAddress },
   data() {
     return {
+      constant: constants,
       valueName: '',
       isExpertVendorScreen: false,
       isMortgageCompany: false,
@@ -2056,7 +2065,7 @@ export default {
 
     onClosingVendorSelectDialog(vendor, dialogName) {
       switch (dialogName) {
-        case 'carrier':
+        case constants.industries.CARRIER:
           this.insuranceDetails.carrierId = vendor.id;
           this.insuranceDetails.carrierName = vendor.name;
           break;
@@ -2064,7 +2073,7 @@ export default {
           this.sourceDetails.id = vendor.id;
           this.sourceDetails.details = vendor.name;
           break;
-        case 'mortgage':
+        case constants.industries.MORTGAGE:
           this.mortgageDetails[0].id = vendor.id;
           this.mortgageDetails[0].value = vendor.name;
           break;
@@ -2095,16 +2104,16 @@ export default {
       this.isMortgageCompany = isMortgage;
       this.secondMortgageCompany = secondMortgage;
       this.valueName = name;
-      if (name === 'carrier') {
+      if (name === constants.industries.CARRIER) {
         this.showVendorDialogFilters = false;
-        this.vendorDialogFilterByIndustry = 'carrier';
+        this.vendorDialogFilterByIndustry = constants.industries.CARRIER;
       } else {
         this.showVendorDialogFilters = true;
         this.vendorDialogFilterByIndustry = '';
       }
-      if (name == 'mortgage') {
+      if (name == constants.industries.MORTGAGE) {
         this.showVendorDialogFilters = false;
-        this.vendorDialogFilterByIndustry = 'mortgage';
+        this.vendorDialogFilterByIndustry = constants.industries.MORTGAGE;
       }
       this.vendorsListDialog = true;
     }

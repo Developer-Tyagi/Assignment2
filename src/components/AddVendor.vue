@@ -112,7 +112,7 @@
             label="Email"
             borderless
           />
-          <div class="row" v-if="componentName === 'carrier'">
+          <div class="row" v-if="componentName === constant.industries.CARRIER">
             <p class="q-mx-none q-my-auto">
               <label> Can Claim be Filed by email</label>
             </p>
@@ -212,6 +212,7 @@
 import AddressService from '@utils/country';
 const addressService = new AddressService();
 import { mapGetters, mapActions } from 'vuex';
+import { constants } from '@utils/constant';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 
 export default {
@@ -222,6 +223,7 @@ export default {
 
   data() {
     return {
+      constant: constants,
       industryFilterDisabled: false,
       options: '',
       countries: [],
@@ -297,9 +299,12 @@ export default {
     this.getVendorIndustries();
     this.getTitles();
     this.getContactTypes();
-    if (this.componentName && this.componentName === 'carrier') {
+    if (
+      this.componentName &&
+      this.componentName === constants.industries.CARRIER
+    ) {
       let industryType = this.vendorIndustries.find(
-        o => o.machineValue === 'carrier'
+        o => o.machineValue === constants.industries.CARRIER
       );
       if (industryType.name && industryType.id) {
         this.vendor.industry.value = industryType.name;
@@ -308,9 +313,12 @@ export default {
       }
     }
 
-    if (this.componentName && this.componentName === 'mortgage') {
+    if (
+      this.componentName &&
+      this.componentName === constants.industries.MORTGAGE
+    ) {
       let industryType = this.vendorIndustries.find(
-        o => o.machineValue === 'mortgage'
+        o => o.machineValue === constants.industries.MORTGAGE
       );
       if (industryType.name && industryType.id) {
         this.vendor.industry.value = industryType.name;

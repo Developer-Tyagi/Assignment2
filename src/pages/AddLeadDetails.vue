@@ -172,7 +172,7 @@
               <div
                 v-model="insuranceDetails.carrierName"
                 class="custom-select"
-                @click="onAddVendorDialogClick('carrier')"
+                @click="onAddVendorDialogClick(constant.industries.CARRIER)"
               >
                 <div class="select-text">
                   {{
@@ -447,6 +447,7 @@ export default {
 
   data() {
     return {
+      constant: constants,
       subInspectionTypes: [],
       addVendorDialog: false,
       showSubInspectionType: false,
@@ -522,9 +523,9 @@ export default {
 
     onAddVendorDialogClick(name) {
       this.vendorDialogName = name;
-      if (name === 'carrier') {
+      if (name === constants.industries.CARRIER) {
         this.showVendorDialogFilters = false;
-        this.vendorDialogFilterByIndustry = 'carrier';
+        this.vendorDialogFilterByIndustry = constants.industries.CARRIER;
       } else {
         this.showVendorDialogFilters = true;
         this.vendorDialogFilterByIndustry = '';
@@ -678,9 +679,9 @@ export default {
       this.addVendorDialog = false;
       this.vendorsListDialog = true;
       if (e) {
-        if (this.vendorDialogName === 'carrier') {
+        if (this.vendorDialogName === constant.industries.CARRIER) {
           let params = {
-            industry: '5ffedc469a111940084ce6e2',
+            industry: constant.industries.CARRIER,
             name: ''
           };
           this.$refs.list.getVendors(params);
