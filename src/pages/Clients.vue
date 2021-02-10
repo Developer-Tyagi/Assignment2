@@ -5,7 +5,7 @@
       @addButton="addClient"
       :showAddButton="true"
     />
-    <div class="clients" v-if="clients.length">
+    <div class="clients">
       <div class="actions-div">
         <q-input
           v-model="searchText"
@@ -27,7 +27,7 @@
         />
       </div>
 
-      <div class="clients-list">
+      <div class="clients-list" v-if="clients.length">
         <div class="q-px-md q-pt-sm" v-for="client in clients" :key="client.id">
           <div class="client-list-item">
             <div class="row">
@@ -51,19 +51,19 @@
           </div>
         </div>
       </div>
-    </div>
-    <div v-else class="full-height full-width column">
-      <div style="color: #666666" class="text-center q-mt-auto">
-        You haven't added a Client yet.
+      <div class="full-height full-width column">
+        <div style="color: #666666" class="text-center q-mt-auto">
+          You haven't added a Client yet.
+        </div>
+        <img
+          src="~assets/add.svg"
+          alt="add_icon"
+          width="80px"
+          height="80px"
+          @click="addClient"
+          class="q-mb-auto q-mx-auto q-mt-sm"
+        />
       </div>
-      <img
-        src="~assets/add.svg"
-        alt="add_icon"
-        width="80px"
-        height="80px"
-        @click="addClient"
-        class="q-mb-auto q-mx-auto q-mt-sm"
-      />
     </div>
   </q-page>
 </template>
