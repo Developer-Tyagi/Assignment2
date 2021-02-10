@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <div class="signup-container q-pa-xl">
+    <div class="signup-container q-px-xl q-py-lg">
       <div class="row justify-between">
         <div class="col-3">
           <q-carousel
@@ -10,20 +10,17 @@
             height="130px"
             class="bg-yellow-9 text-white rounded-borders"
           >
-            <q-carousel-slide :name="1" class="column no-wrap justify-between">
-              <div class="text-h5 text-weight-medium">Individual</div>
+            <q-carousel-slide
+              v-for="(plan, index) in plans"
+              :key="plan.id"
+              :name="index + 1"
+              class="column no-wrap justify-between"
+            >
+              <div class="text-h5 text-weight-medium">{{ plan.name }}</div>
               <div>
                 <div>
-                  <span class="text-h5 text-weight-medium">$99</span>/mo
-                </div>
-                <div>Starting Price</div>
-              </div>
-            </q-carousel-slide>
-            <q-carousel-slide :name="2" class="column no-wrap justify-between">
-              <div class="text-h5 text-weight-medium">Basic</div>
-              <div>
-                <div>
-                  <span class="text-h5 text-weight-medium">$199</span>/mo
+                  <span class="text-h5 text-weight-medium"></span
+                  >{{ plan.price }}/mo
                 </div>
                 <div>Starting Price</div>
               </div>
@@ -51,7 +48,7 @@
               dense
               no-caps
               @click="onNextPlan"
-              :disable="plan === 2"
+              :disable="plan === plans.length"
             >
               <div class="text-subtitle2 text-weight-regular">Next Package</div>
               <q-icon right size="2em" name="arrow_forward" />
@@ -64,7 +61,7 @@
                 <div class="text-h6 text-weight-medium">Total</div>
                 <div>
                   <span class="text-h5 text-weight-medium">{{
-                    plan == 1 ? '$99' : '$199'
+                    plans[this.plan - 1].price
                   }}</span
                   >/mo
                 </div>
@@ -76,6 +73,7 @@
             <q-card-section> List </q-card-section>
           </q-card>
         </div>
+
         <div class="col-8">
           <q-stepper
             v-model="step"
@@ -88,129 +86,174 @@
             animated
             alternative-labels
           >
-            <q-step :name="1" title="User Details">
-              <q-form @submit="step++" class="q-gutter-lg row justify-center">
-                <q-input
-                  name="firstName"
-                  v-model="user.contact.fname"
-                  color="primary"
-                  label="First Name"
-                  filled
-                  class="col-5"
-                  lazy-rules
-                  :rules="[val => (val && val.length > 0) || '']"
-                />
-                <q-input
-                  v-model="user.malingAddress.addressCountry"
-                  name="country"
-                  color="primary"
-                  label="Country"
-                  filled
-                  class="col-5"
-                  lazy-rules
-                  :rules="[val => (val && val.length > 0) || '']"
-                />
-                <q-input
-                  v-model="user.contact.lname"
-                  name="lastName"
-                  color="primary"
-                  label="Last Name"
-                  filled
-                  class="col-5"
-                  lazy-rules
-                  :rules="[val => (val && val.length > 0) || '']"
-                />
-                <q-input
-                  v-model="user.malingAddress.addressRegion"
-                  name="state"
-                  color="primary"
-                  label="State"
-                  filled
-                  class="col-5"
-                  lazy-rules
-                  :rules="[val => (val && val.length > 0) || '']"
-                />
-                <q-input
-                  v-model="user.name"
-                  name="businessName"
-                  color="primary"
-                  label="Business Name"
-                  filled
-                  class="col-5"
-                  lazy-rules
-                  :rules="[val => (val && val.length > 0) || '']"
-                />
-                <div class=" row col-5 justify-between">
+            <q-step :name="1" title="Company Information">
+              <q-form
+                @submit="onSubmitCompanyInfo"
+                ref="companyInfo"
+                class="q-gutter-lg justify-between row wrap"
+              >
+                <div class="column col-5">
                   <q-input
-                    v-model="user.malingAddress.postOfficeBoxNumber"
-                    name="city"
+                    name="firstName"
+                    v-model="user.contact.fname"
                     color="primary"
-                    label="City"
+                    label="Contact First Name *"
                     filled
-                    class="col-6"
                     lazy-rules
                     :rules="[val => (val && val.length > 0) || '']"
                   />
                   <q-input
-                    v-model="user.malingAddress.postalCode"
-                    name="zip"
+                    v-model="user.contact.lname"
+                    name="lastName"
                     color="primary"
-                    label="ZIP Code"
+                    label="Contact Last Name *"
                     filled
-                    class="col-5"
+                    lazy-rules
+                    :rules="[val => (val && val.length > 0) || '']"
+                  />
+
+                  <div class="row justify-between" style="padding-bottom: 20px">
+                    <q-select
+                      filled
+                      v-model="user.contact.phoneNumber[0].type"
+                      :options="contactTypes"
+                      option-value="machineValue"
+                      option-label="name"
+                      label="Type"
+                      style="width: 40%; margin-right: auto"
+                      emit-value
+                      map-options
+                    />
+                    <q-input
+                      v-model="user.contact.phoneNumber[0].number"
+                      label="Contact Phone Number"
+                      type="number"
+                      style="width: 55%"
+                      filled
+                    />
+                  </div>
+
+                  <q-input
+                    v-model="user.name"
+                    name="businessName"
+                    color="primary"
+                    label="Business Name *"
+                    filled
+                    lazy-rules
+                    :rules="[val => (val && val.length > 0) || '']"
+                  />
+
+                  <q-input
+                    v-model="user.contact.email"
+                    name="email"
+                    color="primary"
+                    label="Bussiness Email *"
+                    type="email"
+                    filled
+                    lazy-rules
+                    :rules="[val => (val && val.length > 0) || '']"
+                  />
+
+                  <div class="row justify-between">
+                    <q-select
+                      filled
+                      v-model="user.contact.phoneNumber[0].type"
+                      :options="contactTypes"
+                      option-value="machineValue"
+                      option-label="name"
+                      label="Type"
+                      style="width: 40%; margin-right: auto"
+                      emit-value
+                      map-options
+                    />
+                    <q-input
+                      v-model="user.contact.phoneNumber[0].number"
+                      label="Bussiness Phone Number"
+                      type="number"
+                      style="width: 55%"
+                      filled
+                    />
+                  </div>
+                </div>
+
+                <div class="column col-5">
+                  <q-input
+                    v-model="user.malingAddress.addressCountry"
+                    name="country"
+                    color="primary"
+                    label="Country"
+                    filled
+                    lazy-rules
+                    :rules="[val => (val && val.length > 0) || '']"
+                  />
+
+                  <q-input
+                    v-model="user.malingAddress.addressRegion"
+                    name="state"
+                    color="primary"
+                    label="State"
+                    filled
+                    lazy-rules
+                    :rules="[val => (val && val.length > 0) || '']"
+                  />
+
+                  <div class="row justify-between">
+                    <q-input
+                      v-model="user.malingAddress.postOfficeBoxNumber"
+                      name="city"
+                      color="primary"
+                      label="City"
+                      filled
+                      class="col-6"
+                      lazy-rules
+                      :rules="[val => (val && val.length > 0) || '']"
+                    />
+                    <q-input
+                      v-model="user.malingAddress.postalCode"
+                      name="zip"
+                      color="primary"
+                      label="ZIP Code"
+                      filled
+                      class="col-5"
+                      lazy-rules
+                      :rules="[val => (val && val.length > 0) || '']"
+                    />
+                  </div>
+
+                  <q-input
+                    v-model="user.malingAddress.streetAddress"
+                    name="address1"
+                    color="primary"
+                    label="Address 1"
+                    filled
+                    lazy-rules
+                    :rules="[val => (val && val.length > 0) || '']"
+                  />
+
+                  <q-input
+                    v-model="user.malingAddress.addressLocality"
+                    name="address2"
+                    color="primary"
+                    label="Address 2"
+                    filled
+                    lazy-rules
+                    :rules="[val => (val && val.length > 0) || '']"
+                  />
+                  <q-input
+                    v-model="user.website"
+                    name="website"
+                    color="primary"
+                    label="Website *"
+                    filled
                     lazy-rules
                     :rules="[val => (val && val.length > 0) || '']"
                   />
                 </div>
-                <div class="  row col-5 justify-between">
-                  <!-- <q-select
-                    filled
-                    :options="contactTypes"
-                    option-value="machineValue"
-                    option-label="name"
-                    label="Type"
-                    style="width: 40%; margin-right: auto"
-                    emit-value
-                  /> -->
-                  <q-input
-                    v-model="user.contact.phoneNumber[0].number"
-                    label="Phone"
-                    type="number"
-                    style="width: 55%"
-                  />
-                </div>
-                <q-input
-                  v-model="user.malingAddress.streetAddress"
-                  name="address1"
-                  color="primary"
-                  label="Address 1"
-                  filled
-                  class="col-5"
-                  lazy-rules
-                  :rules="[val => (val && val.length > 0) || '']"
-                />
-                <q-input
-                  v-model="user.contact.email"
-                  name="email"
-                  color="primary"
-                  label="Email"
-                  type="email"
-                  filled
-                  class="col-5"
-                />
-                <q-input
-                  v-model="user.malingAddress.addressLocality"
-                  name="address2"
-                  color="primary"
-                  label="Address 2"
-                  filled
-                  class="col-5"
-                />
+
                 <q-separator />
-                <!-- @click="$refs.stepper.next()" -->
-                <div class="full-width q-px-xl">
+                <div class="full-width q-px-xl col-12">
                   <q-btn
-                    @click="validation"
+                    type="submit"
                     color="primary"
                     label="Next"
                     class="float-right q-px-lg"
@@ -219,21 +262,27 @@
               </q-form>
             </q-step>
 
-            <q-step :name="2" title="Payment">
+            <q-step
+              :name="2"
+              ref="billingInfo"
+              title="Company Billing & Payment"
+            >
               <q-form
                 @submit="onSubmit"
                 @reset="step--"
-                class="q-gutter-lg row justify-center"
+                class="q-gutter-lg justify-between row wrap"
               >
-                <div class="q-gutter-y-lg col-5">
+                <div class="column col-5">
                   <div class="text-h5">Billing Info</div>
+
                   <q-input
                     v-model="user.billingInfo.name"
                     name="fullName"
                     color="primary"
                     label="First Name"
                     filled
-                    class="col-5"
+                    lazy-rules
+                    :rules="[val => (val && val.length > 0) || '']"
                   />
                   <q-input
                     v-model="user.billingInfo.address.streetAddress"
@@ -241,7 +290,8 @@
                     color="primary"
                     label="Address"
                     filled
-                    class="col-5"
+                    lazy-rules
+                    :rules="[val => (val && val.length > 0) || '']"
                   />
                   <div class="row justify-between">
                     <q-input
@@ -251,6 +301,8 @@
                       label="City"
                       filled
                       class="col-6"
+                      lazy-rules
+                      :rules="[val => (val && val.length > 0) || '']"
                     />
                     <q-input
                       v-model="user.billingInfo.address.postalCode"
@@ -259,6 +311,8 @@
                       label="ZIP Code"
                       filled
                       class="col-5"
+                      lazy-rules
+                      :rules="[val => (val && val.length > 0) || '']"
                     />
                   </div>
                   <q-input
@@ -267,31 +321,47 @@
                     color="primary"
                     label="Country"
                     filled
-                    class="col-5"
+                    lazy-rules
+                    :rules="[val => (val && val.length > 0) || '']"
                   />
                 </div>
 
-                <div class="q-gutter-y-lg col-5">
+                <div class="column col-5">
                   <div class="text-h5">Credit Card Info</div>
                   <q-input
                     name="cardNumber"
                     color="primary"
                     label="Card Number"
+                    type="number"
                     filled
+                    lazy-rules
+                    :rules="[val => (val && val.length > 0) || '']"
                   />
                   <q-input
                     name="cardHolder"
                     color="primary"
                     label="Cardholder Name"
                     filled
+                    lazy-rules
+                    :rules="[val => (val && val.length > 0) || '']"
                   />
                   <q-input
                     name="expiry"
                     color="primary"
                     label="Expiry Date"
+                    type="month"
                     filled
+                    lazy-rules
+                    :rules="[val => (val && val.length > 0) || '']"
                   />
-                  <q-input name="cvv" color="primary" label="CVV" filled />
+                  <q-input
+                    name="cvv"
+                    color="primary"
+                    label="CVV"
+                    filled
+                    lazy-rules
+                    :rules="[val => (val && val.length === 3) || '']"
+                  />
                 </div>
 
                 <q-separator />
@@ -320,20 +390,25 @@
   </q-page>
 </template>
 <script>
+import { mapActions, mapGetters } from 'vuex';
 export default {
   name: 'Signup',
 
   data() {
     return {
       plan: 1,
-      step: 1,
-      selectedPlan: '',
+      step: 2,
+      selectedPlan: {
+        id: '',
+        name: '',
+        machineName: '',
+        price: ''
+      },
       user: {
-        type: 'organization',
-        // extra emailID
+        type: constants.ORGANIZATION,
         email: '',
         name: '',
-        // Not in form
+        website: '',
         phoneNumber: {
           type: '',
           number: ''
@@ -342,10 +417,7 @@ export default {
           fname: '',
           lname: '',
           email: '',
-          phoneNumber: [
-            { type: 'mobile', number: '' },
-            { type: 'phone', number: '' }
-          ]
+          phoneNumber: [{ type: 'mobile', number: '' }]
         },
         malingAddress: {
           addressCountry: '',
@@ -371,48 +443,42 @@ export default {
             machineName: ''
           }
         }
-
-        // user: {
-        //   firstName: '',
-        //   lastName: '',
-        //   selectedPlan: '',
-        //   businessName: '',
-        //   phone: '',
-        //   email: '',
-        //   country: '',
-        //   state: '',
-        //   city: '',
-        //   zip: '',
-        //   address1: '',
-        //   address2: ''
-        // },
-
-        // selectedPlan: ''
       }
     };
   },
   methods: {
+    ...mapActions(['getPlansInfo', 'getContactTypes']),
+
     onPrevPlan() {
       this.plan--;
     },
+
     onNextPlan() {
       this.plan++;
     },
+
+    onSubmitCompanyInfo() {
+      this.$refs.companyInfo.validate().then(() => {
+        this.step++;
+      });
+    },
+
     onSubmit() {
-      this.$router.push('/forgot-password');
-    },
-    validation() {
-      console.log(this.user, 'sbka malik ek hai');
-      this.$refs.stepper.next();
-    },
-    bill() {
-      console.log(this.user, 'sbka malik 2 hai');
-      this.$refs.stepper.next();
+      // this.$router.push('/forgot-password');
     }
   },
 
+  computed: {
+    ...mapGetters(['plans', 'contactTypes'])
+  },
+
   created() {
-    this.selectedPlan = this.$route.params.id;
+    // this.getPlansInfo();
+    const index = this.plans.findIndex(
+      o => o.machineName === this.$route.query.plan
+    );
+    this.this.plan = index + 1;
+    this.getContactTypes();
   }
 };
 </script>
