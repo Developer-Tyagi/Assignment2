@@ -5,5 +5,6 @@ export const constants = {
     CARRIER: 'carrier',
     VENDOR: 'vendor',
     EXPERTVENDOR: 'expert-vendor'
-  }
+  },
+  ORGANIZATION: 'organization'
 };

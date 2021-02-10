@@ -19,3 +19,7 @@ export function setContactTypes(state, types) {
     machineValue: type.attributes.machineValue
   }));
 }
+
+export function setPlans(state, plans) {
+  state.plans = plans.map(plan => ({ ...plan.attributes, id: plan.id }));
+}
