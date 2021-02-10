@@ -49,6 +49,7 @@
               @input="setVendorIndustryName"
               behavior="menu"
               emit-value
+              :disable="!industryFilterDisabled"
               lazy-rules
               :rules="[
                 val => (val && val.length > 0) || 'Please fill the first name'
@@ -111,7 +112,10 @@
             label="Email"
             borderless
           />
-          <div class="row" v-if="componentName === 'carrier'">
+          <div
+            class="row"
+            v-if="componentName === constants.industries.CARRIER"
+          >
             <p class="q-mx-none q-my-auto">
               <label> Can Claim be Filed by email</label>
             </p>
@@ -211,6 +215,7 @@
 import AddressService from '@utils/country';
 const addressService = new AddressService();
 import { mapGetters, mapActions } from 'vuex';
+import { constants } from '@utils/constant';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 
 export default {
@@ -221,6 +226,8 @@ export default {
 
   data() {
     return {
+      constants: constants,
+      industryFilterDisabled: false,
       options: '',
       countries: [],
       states: [],
@@ -228,6 +235,7 @@ export default {
       vendor: {
         name: '',
         industry: { value: null, id: '', machineValue: '' },
+
         meta: {
           claimFiledByEmail: false
         },
@@ -294,13 +302,31 @@ export default {
     this.getVendorIndustries();
     this.getTitles();
     this.getContactTypes();
-    if (this.componentName && this.componentName === 'carrier') {
+    if (
+      this.componentName &&
+      this.componentName === constants.industries.CARRIER
+    ) {
       let industryType = this.vendorIndustries.find(
-        o => o.machineValue === 'carrier'
+        o => o.machineValue === constants.industries.CARRIER
       );
       if (industryType.name && industryType.id) {
         this.vendor.industry.value = industryType.name;
         this.vendor.industry.id = industryType.id;
+        this.vendor.industry.machineValue = industryType.machineValue;
+      }
+    }
+
+    if (
+      this.componentName &&
+      this.componentName === constants.industries.MORTGAGE
+    ) {
+      let industryType = this.vendorIndustries.find(
+        o => o.machineValue === constants.industries.MORTGAGE
+      );
+      if (industryType.name && industryType.id) {
+        this.vendor.industry.value = industryType.name;
+        this.vendor.industry.id = industryType.id;
+        this.vendor.industry.machineValue = industryType.machineValue;
       }
     }
   },
@@ -420,6 +446,9 @@ export default {
   },
 
   created() {
+    if (this.componentName == constants.industries.VENDOR) {
+      this.industryFilterDisabled = true;
+    }
     this.options = this.vendorIndustries;
     this.countries = addressService.getCountries();
     this.onCountrySelect('United States');

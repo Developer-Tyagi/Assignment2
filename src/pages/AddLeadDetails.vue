@@ -172,7 +172,7 @@
               <div
                 v-model="insuranceDetails.carrierName"
                 class="custom-select"
-                @click="onAddVendorDialogClick('carrier')"
+                @click="onAddVendorDialogClick(constants.industries.CARRIER)"
               >
                 <div class="select-text">
                   {{
@@ -227,7 +227,7 @@
                 />
                 <q-input
                   v-if="
-                    sourceDetails.type != 'vendor' &&
+                    sourceDetails.type != constants.industries.VENDOR &&
                       sourceDetails.type != '' &&
                       sourceDetails.type != 'google'
                   "
@@ -238,9 +238,9 @@
                   :rules="[val => (val && val.length > 0) || '']"
                 />
                 <div
-                  v-else-if="sourceDetails.type == 'vendor'"
+                  v-else-if="sourceDetails.type == constants.industries.VENDOR"
                   class="custom-select"
-                  @click="onAddVendorDialogClick('vendor')"
+                  @click="onAddVendorDialogClick(constants.industries.VENDOR)"
                 >
                   <div class="select-text">
                     {{
@@ -415,6 +415,7 @@
           ref="list"
           :showFilter="showVendorDialogFilters"
           :filterName="vendorDialogFilterByIndustry"
+          :valueName="valueName"
         />
       </q-card>
     </q-dialog>
@@ -440,6 +441,7 @@ import { mapActions, mapGetters } from 'vuex';
 import { validateEmail } from '@utils/validation';
 import { dateToSend } from '@utils/date';
 import VendorsList from 'components/VendorsList';
+import { constants } from '@utils/constant';
 import AddVendor from 'components/AddVendor';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import CustomHeader from 'components/CustomHeader';
@@ -449,6 +451,8 @@ export default {
 
   data() {
     return {
+      valueName: '',
+      constants: constants,
       subInspectionTypes: [],
       addVendorDialog: false,
       showSubInspectionType: false,
@@ -533,10 +537,11 @@ export default {
     },
 
     onAddVendorDialogClick(name) {
+      this.valueName = name;
       this.vendorDialogName = name;
-      if (name === 'carrier') {
+      if (name === constants.industries.CARRIER) {
         this.showVendorDialogFilters = false;
-        this.vendorDialogFilterByIndustry = '5ffedc469a111940084ce6e2';
+        this.vendorDialogFilterByIndustry = constants.industries.CARRIER;
       } else {
         this.showVendorDialogFilters = true;
         this.vendorDialogFilterByIndustry = '';
@@ -544,8 +549,8 @@ export default {
       this.vendorsListDialog = true;
     },
 
-    onClosingVendorSelectDialog(vendor, isVendor) {
-      if (isVendor) {
+    onClosingVendorSelectDialog(vendor, dialogName) {
+      if (dialogName) {
         this.sourceDetails.id = vendor.id;
         this.sourceDetails.details = vendor.name;
       } else {
@@ -658,7 +663,7 @@ export default {
           number: this.primaryDetails.phoneNumber
         });
       }
-      if (this.sourceDetails.type == 'vendor') {
+      if (this.sourceDetails.type == constants.industries.VENDOR) {
         payload.leadSource.id = this.sourceDetails.id;
       } else {
         payload.leadSource.details = this.sourceDetails.details;
@@ -689,9 +694,9 @@ export default {
       this.addVendorDialog = false;
       this.vendorsListDialog = true;
       if (e) {
-        if (this.vendorDialogName === 'carrier') {
+        if (this.vendorDialogName === constants.industries.CARRIER) {
           let params = {
-            industry: '5ffedc469a111940084ce6e2',
+            industry: constants.industries.CARRIER,
             name: ''
           };
           this.$refs.list.getVendors(params);
