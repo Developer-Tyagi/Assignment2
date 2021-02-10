@@ -1,4 +1,5 @@
 import request from '@api';
+import { buildApiData } from '@utils/api';
 import { setToken } from '@utils/auth';
 import firebaseAuthorization from '@utils/firebase';
 
@@ -24,4 +25,24 @@ export async function userLogin({ commit, dispatch }, formData) {
         message: 'Login failed. Please use correct email and password.'
       });
     });
+}
+
+export async function createUserForOrganization({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      '/organizations',
+      buildApiData('organization', payload)
+    );
+    dispatch('setLoading', false);
+    this.$router.push('/forgot-password');
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response.data.title
+    });
+    return false;
+  }
 }

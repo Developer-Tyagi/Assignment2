@@ -144,7 +144,7 @@
                   />
 
                   <q-input
-                    v-model="user.contact.email"
+                    v-model="user.email"
                     name="email"
                     color="primary"
                     label="Bussiness Email *"
@@ -157,7 +157,7 @@
                   <div class="row justify-between">
                     <q-select
                       filled
-                      v-model="user.contact.phoneNumber[0].type"
+                      v-model="user.phoneNumber.type"
                       :options="contactTypes"
                       option-value="machineValue"
                       option-label="name"
@@ -167,7 +167,7 @@
                       map-options
                     />
                     <q-input
-                      v-model="user.contact.phoneNumber[0].number"
+                      v-model="user.phoneNumber.number"
                       label="Bussiness Phone Number"
                       type="number"
                       style="width: 55%"
@@ -178,29 +178,30 @@
 
                 <div class="column col-5">
                   <q-input
-                    v-model="user.malingAddress.addressCountry"
-                    name="country"
+                    v-model="user.mailingAddress.houseNumber"
+                    name="address2"
                     color="primary"
-                    label="Country"
+                    label="House Number"
                     filled
                     lazy-rules
                     :rules="[val => (val && val.length > 0) || '']"
                   />
-
-                  <q-input
-                    v-model="user.malingAddress.addressRegion"
-                    name="state"
+                  <input
+                    v-model="user.mailingAddress.streetAddress"
+                    id="autocomplete"
+                    name="address1"
                     color="primary"
-                    label="State"
+                    label="Street Address"
                     filled
                     lazy-rules
                     :rules="[val => (val && val.length > 0) || '']"
+                    placeholder="Street Address"
                   />
-
                   <div class="row justify-between">
                     <q-input
-                      v-model="user.malingAddress.postOfficeBoxNumber"
+                      v-model="user.mailingAddress.addressLocality"
                       name="city"
+                      :disable="!isAddressFieldEnable"
                       color="primary"
                       label="City"
                       filled
@@ -209,35 +210,37 @@
                       :rules="[val => (val && val.length > 0) || '']"
                     />
                     <q-input
-                      v-model="user.malingAddress.postalCode"
+                      v-model="user.mailingAddress.postalCode"
                       name="zip"
                       color="primary"
                       label="ZIP Code"
+                      type="number"
                       filled
                       class="col-5"
                       lazy-rules
                       :rules="[val => (val && val.length > 0) || '']"
+                      :disable="!isAddressFieldEnable"
                     />
                   </div>
-
                   <q-input
-                    v-model="user.malingAddress.streetAddress"
-                    name="address1"
+                    v-model="user.mailingAddress.addressRegion"
+                    name="state"
                     color="primary"
-                    label="Address 1"
+                    label="State"
                     filled
                     lazy-rules
                     :rules="[val => (val && val.length > 0) || '']"
+                    :disable="!isAddressFieldEnable"
                   />
-
                   <q-input
-                    v-model="user.malingAddress.addressLocality"
-                    name="address2"
+                    v-model="user.mailingAddress.addressCountry"
+                    name="country"
                     color="primary"
-                    label="Address 2"
+                    label="Country"
                     filled
                     lazy-rules
                     :rules="[val => (val && val.length > 0) || '']"
+                    :disable="!isAddressFieldEnable"
                   />
                   <q-input
                     v-model="user.website"
@@ -262,40 +265,52 @@
               </q-form>
             </q-step>
 
-            <q-step
-              :name="2"
-              ref="billingInfo"
-              title="Company Billing & Payment"
-            >
+            <q-step :name="2" title="Company Billing & Payment">
               <q-form
                 @submit="onSubmit"
+                ref="billingInfo"
                 @reset="step--"
                 class="q-gutter-lg justify-between row wrap"
               >
                 <div class="column col-5">
                   <div class="text-h5">Billing Info</div>
 
+                  <div class="row">
+                    <span class="form-heading">
+                      Is billing address same as mailing address
+                    </span>
+                    <q-toggle
+                      class="q-ml-auto"
+                      v-model="isBillingAddressSame"
+                      @input="onMailingAddressSameToggle"
+                    />
+                  </div>
+
                   <q-input
-                    v-model="user.billingInfo.name"
-                    name="fullName"
+                    v-model="user.billingInfo.address.houseNumber"
+                    name="address2"
                     color="primary"
-                    label="First Name"
+                    label="House Number"
                     filled
                     lazy-rules
                     :rules="[val => (val && val.length > 0) || '']"
+                    :disable="isBillingAddressSame"
                   />
-                  <q-input
+                  <input
                     v-model="user.billingInfo.address.streetAddress"
-                    name="address"
+                    id="autocomplete"
+                    name="address1"
                     color="primary"
-                    label="Address"
+                    label="Street Address"
                     filled
                     lazy-rules
                     :rules="[val => (val && val.length > 0) || '']"
+                    disabled="isBillingAddressSame"
+                    placeholder="Street Address"
                   />
                   <div class="row justify-between">
                     <q-input
-                      v-model="user.billingInfo.address.addressRegion"
+                      v-model="user.billingInfo.address.addressLocality"
                       name="city"
                       color="primary"
                       label="City"
@@ -303,18 +318,31 @@
                       class="col-6"
                       lazy-rules
                       :rules="[val => (val && val.length > 0) || '']"
+                      :disable="isBillingAddressSame"
                     />
                     <q-input
                       v-model="user.billingInfo.address.postalCode"
                       name="zip"
                       color="primary"
                       label="ZIP Code"
+                      type="number"
                       filled
                       class="col-5"
                       lazy-rules
                       :rules="[val => (val && val.length > 0) || '']"
+                      :disable="isBillingAddressSame"
                     />
                   </div>
+                  <q-input
+                    v-model="user.billingInfo.address.addressRegion"
+                    name="state"
+                    color="primary"
+                    label="State"
+                    filled
+                    lazy-rules
+                    :rules="[val => (val && val.length > 0) || '']"
+                    :disable="isBillingAddressSame"
+                  />
                   <q-input
                     v-model="user.billingInfo.address.addressCountry"
                     name="country"
@@ -323,6 +351,7 @@
                     filled
                     lazy-rules
                     :rules="[val => (val && val.length > 0) || '']"
+                    :disable="isBillingAddressSame"
                   />
                 </div>
 
@@ -332,6 +361,7 @@
                     name="cardNumber"
                     color="primary"
                     label="Card Number"
+                    v-model="paymentInfo.cardNumber"
                     type="number"
                     filled
                     lazy-rules
@@ -341,26 +371,31 @@
                     name="cardHolder"
                     color="primary"
                     label="Cardholder Name"
+                    v-model="paymentInfo.name"
                     filled
                     lazy-rules
                     :rules="[val => (val && val.length > 0) || '']"
                   />
                   <q-input
                     name="expiry"
+                    v-model="paymentInfo.expiryDate"
                     color="primary"
-                    label="Expiry Date"
-                    type="month"
+                    label="Expiry Date (MM/YY)"
+                    mask="##/##"
                     filled
                     lazy-rules
                     :rules="[val => (val && val.length > 0) || '']"
                   />
                   <q-input
                     name="cvv"
+                    v-model="paymentInfo.cvv"
                     color="primary"
                     label="CVV"
+                    type="password"
+                    mask="###"
                     filled
                     lazy-rules
-                    :rules="[val => (val && val.length === 3) || '']"
+                    :rules="[val => (val && val.length > 0) || '']"
                   />
                 </div>
 
@@ -378,7 +413,7 @@
                     color="primary"
                     label="Buy"
                     class="q-px-lg"
-                    @click="bill"
+                    type="submit"
                   />
                 </div>
               </q-form>
@@ -397,15 +432,24 @@ export default {
   data() {
     return {
       plan: 1,
-      step: 2,
+      step: 1,
+      autocomplete: {},
+      isBillingAddressSame: false,
+      isAddressFieldEnable: false,
       selectedPlan: {
         id: '',
         name: '',
         machineName: '',
         price: ''
       },
+      paymentInfo: {
+        name: '',
+        cardNumber: '',
+        expiryDate: '',
+        cvv: ''
+      },
       user: {
-        type: constants.ORGANIZATION,
+        type: 'organizations',
         email: '',
         name: '',
         website: '',
@@ -417,18 +461,17 @@ export default {
           fname: '',
           lname: '',
           email: '',
-          phoneNumber: [{ type: 'mobile', number: '' }]
+          phoneNumber: [{ type: '', number: '' }]
         },
-        malingAddress: {
+        mailingAddress: {
           addressCountry: '',
           addressLocality: '',
           addressRegion: '',
-          postOfficeBoxNumber: '',
           postalCode: '',
-          streetAddress: ''
+          streetAddress: '',
+          houseNumber: ''
         },
         billingInfo: {
-          name: '',
           address: {
             addressCountry: '',
             addressLocality: '',
@@ -447,14 +490,73 @@ export default {
     };
   },
   methods: {
-    ...mapActions(['getPlansInfo', 'getContactTypes']),
+    ...mapActions([
+      'getPlansInfo',
+      'getContactTypes',
+      'createUserForOrganization'
+    ]),
 
     onPrevPlan() {
       this.plan--;
+      this.user.billingInfo.planInfo.id = this.plans[this.plan - 1].id;
+      this.user.billingInfo.planInfo.name = this.plans[this.plan - 1].name;
+      this.user.billingInfo.planInfo.machineName = this.plans[
+        this.plan - 1
+      ].machineName;
     },
 
     onNextPlan() {
       this.plan++;
+      this.user.billingInfo.planInfo.id = this.plans[this.plan - 1].id;
+      this.user.billingInfo.planInfo.name = this.plans[this.plan - 1].name;
+      this.user.billingInfo.planInfo.machineName = this.plans[
+        this.plan - 1
+      ].machineName;
+    },
+
+    fillInAddress() {
+      const place = this.autocomplete.getPlace().address_components;
+      this.user.mailingAddress.streetAddress =
+        this.getPlaceName('route', place) >= 0
+          ? place[this.getPlaceName('route', place)].long_name
+          : '';
+      this.user.mailingAddress.addressLocality = this.getPlaceName(
+        'administrative_area_level_2',
+        place
+      )
+        ? place[this.getPlaceName('administrative_area_level_2', place)]
+            .long_name
+        : '';
+      this.user.mailingAddress.addressRegion = this.getPlaceName(
+        'administrative_area_level_1',
+        place
+      )
+        ? place[this.getPlaceName('administrative_area_level_1', place)]
+            .long_name
+        : '';
+      this.user.mailingAddress.addressCountry = this.getPlaceName(
+        'country',
+        place
+      )
+        ? place[this.getPlaceName('country', place)].long_name
+        : '';
+
+      this.user.mailingAddress.postalCode = this.getPlaceName(
+        'postal_code',
+        place
+      )
+        ? place[this.getPlaceName('postal_code', place)].long_name
+        : '';
+      this.isAddressFieldEnable = true;
+    },
+
+    getPlaceName(key, value) {
+      for (let i = 0; i < value.length; i++) {
+        let index = value[i].types.indexOf(key);
+        if (index != -1) {
+          return i;
+        }
+      }
     },
 
     onSubmitCompanyInfo() {
@@ -463,8 +565,25 @@ export default {
       });
     },
 
+    onMailingAddressSameToggle() {
+      if (this.isBillingAddressSame) {
+        this.user.billingInfo.address = { ...this.user.mailingAddress };
+      } else {
+        this.user.billingInfo.address = {
+          addressCountry: '',
+          addressLocality: '',
+          addressRegion: '',
+          postOfficeBoxNumber: '',
+          postalCode: '',
+          streetAddress: ''
+        };
+      }
+    },
+
     onSubmit() {
-      // this.$router.push('/forgot-password');
+      this.$refs.billingInfo.validate().then(() => {
+        this.createUserForOrganization(this.user);
+      });
     }
   },
 
@@ -477,8 +596,20 @@ export default {
     const index = this.plans.findIndex(
       o => o.machineName === this.$route.query.plan
     );
-    this.this.plan = index + 1;
+    this.plan = index + 1;
+    this.user.billingInfo.planInfo.id = this.plans[index].id;
+    this.user.billingInfo.planInfo.name = this.plans[index].name;
+    this.user.billingInfo.planInfo.machineName = this.plans[index].machineName;
     this.getContactTypes();
+  },
+
+  mounted() {
+    this.autocomplete = new google.maps.places.Autocomplete(
+      document.getElementById('autocomplete'),
+      { types: ['geocode'] }
+    );
+    this.getGeoLocation;
+    this.autocomplete.addListener('place_changed', this.fillInAddress);
   }
 };
 </script>
@@ -508,5 +639,17 @@ export default {
       }
     }
   }
+}
+#autocomplete {
+  height: 56px;
+  padding: 0 12px;
+  margin-bottom: 20px;
+  background: #f2f2f2;
+  font-weight: 400;
+  line-height: 28px;
+  letter-spacing: 0.00937em;
+  border: none;
+  color: rgba(0, 0, 0, 0.87);
+  outline: none;
 }
 </style>
