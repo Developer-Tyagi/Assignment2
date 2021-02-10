@@ -260,6 +260,7 @@
                     color="primary"
                     label="Next"
                     class="float-right q-px-lg"
+                    @click="checkValidation()"
                   />
                 </div>
               </q-form>
@@ -409,12 +410,7 @@
                     outline
                     type="reset"
                   />
-                  <q-btn
-                    color="primary"
-                    label="Buy"
-                    class="q-px-lg"
-                    type="submit"
-                  />
+                  <q-btn color="primary" label="Buy" class="q-px-lg" />
                 </div>
               </q-form>
             </q-step>
@@ -426,6 +422,8 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import { constants } from '@utils/constant';
+
 export default {
   name: 'Signup',
 
@@ -449,7 +447,7 @@ export default {
         cvv: ''
       },
       user: {
-        type: 'organizations',
+        type: constants.ORGANIZATION,
         email: '',
         name: '',
         website: '',

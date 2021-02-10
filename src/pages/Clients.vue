@@ -5,34 +5,29 @@
       @addButton="addClient"
       :showAddButton="true"
     />
-    <div class="clients" v-if="clients.length">
+    <div class="clients">
       <div class="actions-div">
         <q-input
           v-model="searchText"
           placeholder="Search"
           borderless
+          style="width: 100%"
           @input="search($event)"
         >
           <template v-slot:prepend>
             <q-icon name="search" />
           </template>
         </q-input>
-        <!-- <div class="q-ml-auto row" @click="filterDialog = true">
-          <img src="~assets/filter.svg" />Filters
-        </div>
-        <q-btn
-          v-if="false"
-          class="q-ml-auto"
-          color="white"
-          text-color="grey"
-          @click="clearFilter()"
-          flat
-          dense
-          style="font-weight: 400"
-          >Clear</q-btn
-        > -->
+        <img
+          src="~assets/close.svg"
+          alt=""
+          v-if="searchText"
+          @click="onSearchBackButtonClick"
+          style="margin: 0 0 0 20px"
+        />
       </div>
-      <div class="clients-list">
+
+      <div class="clients-list" v-if="clients.length">
         <div class="q-px-md q-pt-sm" v-for="client in clients" :key="client.id">
           <div class="client-list-item">
             <div class="row">
@@ -56,19 +51,19 @@
           </div>
         </div>
       </div>
-    </div>
-    <div v-else class="full-height full-width column">
-      <div style="color: #666666" class="text-center q-mt-auto">
-        You haven't added a Client yet.
+      <div class="full-height full-width column">
+        <div style="color: #666666" class="text-center q-mt-auto">
+          You haven't added a Client yet.
+        </div>
+        <img
+          src="~assets/add.svg"
+          alt="add_icon"
+          width="80px"
+          height="80px"
+          @click="addClient"
+          class="q-mb-auto q-mx-auto q-mt-sm"
+        />
       </div>
-      <img
-        src="~assets/add.svg"
-        alt="add_icon"
-        width="80px"
-        height="80px"
-        @click="addClient"
-        class="q-mb-auto q-mx-auto q-mt-sm"
-      />
     </div>
   </q-page>
 </template>
@@ -82,7 +77,8 @@ export default {
   components: { CustomHeader },
   data() {
     return {
-      searchText: ''
+      searchText: '',
+      openSearchInput: false
     };
   },
 
@@ -96,11 +92,18 @@ export default {
   methods: {
     ...mapActions(['getClients']),
 
+    onSearchBackButtonClick() {
+      this.searchText = '';
+      this.search();
+    },
+
     addClient() {
       this.$router.push('/add-client');
     },
 
-    search(e) {}
+    search(e) {
+      this.getClients(this.searchText ? this.searchText : '');
+    }
   }
 };
 </script>

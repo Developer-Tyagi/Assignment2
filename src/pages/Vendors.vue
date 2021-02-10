@@ -35,7 +35,7 @@
       <q-card>
         <AddVendor
           @closeDialog="closeAddVendorDialog"
-          :componentName="'vendor'"
+          :componentName="constants.industries.VENDOR"
         />
       </q-card>
     </q-dialog>

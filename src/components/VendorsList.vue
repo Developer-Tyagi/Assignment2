@@ -98,7 +98,7 @@
 import { mapActions, mapGetters } from 'vuex';
 export default {
   name: 'VendorsList',
-  props: ['selective', 'showFilter', 'filterName'],
+  props: ['selective', 'showFilter', 'filterName', 'valueName'],
   data() {
     return {
       searchText: '',
@@ -141,15 +141,17 @@ export default {
     },
 
     selectVendor(vendor) {
+      const dialogName = this.valueName;
+
       if (this.selective) {
         this.vendors.forEach(vendor => {
           vendor.selected = false;
         });
         vendor.selected = true;
         if (!this.showFilter) {
-          this.$emit('selectedVendor', vendor, false);
+          this.$emit('selectedVendor', vendor, dialogName);
         } else {
-          this.$emit('selectedVendor', vendor, true);
+          this.$emit('selectedVendor', vendor, dialogName);
         }
       }
     },
