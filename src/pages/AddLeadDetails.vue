@@ -350,6 +350,9 @@
                 map-options
               />
               <q-input
+                type="number"
+                mask="#.#"
+                step="0.5"
                 v-model="schedulingDetails.inspectionDuration"
                 label="Duration of Inspection (in hours)"
               />
@@ -499,7 +502,6 @@ export default {
         isAutomaticScheduling: false,
         inspectionType: '',
         subInspectionType: '',
-        // machineValue: '',
         subInspectionMachineValue: '',
         inspectionDuration: '',
         subInspectionTypeValue: ''
@@ -615,7 +617,7 @@ export default {
         notes: this.notes,
         inspectionInfo: {
           id: this.schedulingDetails.inspectionType,
-          duration: this.schedulingDetails.inspectionDuration,
+          duration: parseFloat(this.schedulingDetails.inspectionDuration),
           value: this.schedulingDetails.subInspectionTypeValue,
           machineValue: this.schedulingDetails.subInspectionMachineValue
         },
@@ -650,7 +652,6 @@ export default {
       } else {
         payload.leadSource.details = this.sourceDetails.details;
       }
-
       this.addLeads(payload);
     },
 
