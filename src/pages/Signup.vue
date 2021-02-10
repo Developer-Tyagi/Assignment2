@@ -92,7 +92,7 @@
               <q-form @submit="step++" class="q-gutter-lg row justify-center">
                 <q-input
                   name="firstName"
-                  v-model="user.firstName"
+                  v-model="user.contact.fname"
                   color="primary"
                   label="First Name"
                   filled
@@ -101,8 +101,8 @@
                   :rules="[val => (val && val.length > 0) || '']"
                 />
                 <q-input
+                  v-model="user.malingAddress.addressCountry"
                   name="country"
-                  v-model="user.country"
                   color="primary"
                   label="Country"
                   filled
@@ -111,8 +111,8 @@
                   :rules="[val => (val && val.length > 0) || '']"
                 />
                 <q-input
+                  v-model="user.contact.lname"
                   name="lastName"
-                  v-model="user.lastName"
                   color="primary"
                   label="Last Name"
                   filled
@@ -121,8 +121,8 @@
                   :rules="[val => (val && val.length > 0) || '']"
                 />
                 <q-input
+                  v-model="user.malingAddress.addressRegion"
                   name="state"
-                  v-model="user.state"
                   color="primary"
                   label="State"
                   filled
@@ -131,8 +131,8 @@
                   :rules="[val => (val && val.length > 0) || '']"
                 />
                 <q-input
+                  v-model="user.name"
                   name="businessName"
-                  v-model="user.businessName"
                   color="primary"
                   label="Business Name"
                   filled
@@ -140,10 +140,10 @@
                   lazy-rules
                   :rules="[val => (val && val.length > 0) || '']"
                 />
-                <div class="row col-5 justify-between">
+                <div class=" row col-5 justify-between">
                   <q-input
+                    v-model="user.malingAddress.postOfficeBoxNumber"
                     name="city"
-                    v-model="user.city"
                     color="primary"
                     label="City"
                     filled
@@ -152,8 +152,8 @@
                     :rules="[val => (val && val.length > 0) || '']"
                   />
                   <q-input
+                    v-model="user.malingAddress.postalCode"
                     name="zip"
-                    v-model="user.zip"
                     color="primary"
                     label="ZIP Code"
                     filled
@@ -162,19 +162,26 @@
                     :rules="[val => (val && val.length > 0) || '']"
                   />
                 </div>
+                <div class="  row col-5 justify-between">
+                  <!-- <q-select
+                    filled
+                    :options="contactTypes"
+                    option-value="machineValue"
+                    option-label="name"
+                    label="Type"
+                    style="width: 40%; margin-right: auto"
+                    emit-value
+                  /> -->
+                  <q-input
+                    v-model="user.contact.phoneNumber[0].number"
+                    label="Phone"
+                    type="number"
+                    style="width: 55%"
+                  />
+                </div>
                 <q-input
-                  name="phone"
-                  v-model="user.phone"
-                  color="primary"
-                  label="Contact Number"
-                  filled
-                  class="col-5"
-                  lazy-rules
-                  :rules="[val => (val && val.length > 10) || '']"
-                />
-                <q-input
+                  v-model="user.malingAddress.streetAddress"
                   name="address1"
-                  v-model="user.address1"
                   color="primary"
                   label="Address 1"
                   filled
@@ -183,8 +190,8 @@
                   :rules="[val => (val && val.length > 0) || '']"
                 />
                 <q-input
+                  v-model="user.contact.email"
                   name="email"
-                  v-model="user.email"
                   color="primary"
                   label="Email"
                   type="email"
@@ -192,17 +199,18 @@
                   class="col-5"
                 />
                 <q-input
+                  v-model="user.malingAddress.addressLocality"
                   name="address2"
-                  v-model="user.address2"
                   color="primary"
                   label="Address 2"
                   filled
                   class="col-5"
                 />
                 <q-separator />
+                <!-- @click="$refs.stepper.next()" -->
                 <div class="full-width q-px-xl">
                   <q-btn
-                    @click="$refs.stepper.next()"
+                    @click="validation"
                     color="primary"
                     label="Next"
                     class="float-right q-px-lg"
@@ -220,16 +228,16 @@
                 <div class="q-gutter-y-lg col-5">
                   <div class="text-h5">Billing Info</div>
                   <q-input
+                    v-model="user.billingInfo.name"
                     name="fullName"
-                    v-model="billingInfo.fullName"
                     color="primary"
                     label="First Name"
                     filled
                     class="col-5"
                   />
                   <q-input
+                    v-model="user.billingInfo.address.streetAddress"
                     name="address"
-                    v-model="billingInfo.address"
                     color="primary"
                     label="Address"
                     filled
@@ -237,16 +245,16 @@
                   />
                   <div class="row justify-between">
                     <q-input
+                      v-model="user.billingInfo.address.addressRegion"
                       name="city"
-                      v-model="user.city"
                       color="primary"
                       label="City"
                       filled
                       class="col-6"
                     />
                     <q-input
+                      v-model="user.billingInfo.address.postalCode"
                       name="zip"
-                      v-model="user.zip"
                       color="primary"
                       label="ZIP Code"
                       filled
@@ -254,8 +262,8 @@
                     />
                   </div>
                   <q-input
+                    v-model="user.billingInfo.address.addressCountry"
                     name="country"
-                    v-model="billingInfo.country"
                     color="primary"
                     label="Country"
                     filled
@@ -267,32 +275,23 @@
                   <div class="text-h5">Credit Card Info</div>
                   <q-input
                     name="cardNumber"
-                    v-model="billingInfo.cardNumber"
                     color="primary"
                     label="Card Number"
                     filled
                   />
                   <q-input
                     name="cardHolder"
-                    v-model="billingInfo.cardHolder"
                     color="primary"
                     label="Cardholder Name"
                     filled
                   />
                   <q-input
                     name="expiry"
-                    v-model="billingInfo.expiry"
                     color="primary"
                     label="Expiry Date"
                     filled
                   />
-                  <q-input
-                    name="cvv"
-                    v-model="billingInfo.cvv"
-                    color="primary"
-                    label="CVV"
-                    filled
-                  />
+                  <q-input name="cvv" color="primary" label="CVV" filled />
                 </div>
 
                 <q-separator />
@@ -309,7 +308,7 @@
                     color="primary"
                     label="Buy"
                     class="q-px-lg"
-                    type="submit"
+                    @click="bill"
                   />
                 </div>
               </q-form>
@@ -328,31 +327,67 @@ export default {
     return {
       plan: 1,
       step: 1,
-      user: {
-        firstName: '',
-        lastName: '',
-        businessName: '',
-        phone: '',
-        email: '',
-        country: '',
-        state: '',
-        city: '',
-        zip: '',
-        address1: '',
-        address2: ''
-      },
       selectedPlan: '',
-      billingInfo: {
-        fullName: '',
-        country: '',
-        state: '',
-        city: '',
-        zip: '',
-        address: '',
-        cardNumber: '',
-        cardHolder: '',
-        expiry: '',
-        cvv: ''
+      user: {
+        type: 'organization',
+        // extra emailID
+        email: '',
+        name: '',
+        // Not in form
+        phoneNumber: {
+          type: '',
+          number: ''
+        },
+        contact: {
+          fname: '',
+          lname: '',
+          email: '',
+          phoneNumber: [
+            { type: 'mobile', number: '' },
+            { type: 'phone', number: '' }
+          ]
+        },
+        malingAddress: {
+          addressCountry: '',
+          addressLocality: '',
+          addressRegion: '',
+          postOfficeBoxNumber: '',
+          postalCode: '',
+          streetAddress: ''
+        },
+        billingInfo: {
+          name: '',
+          address: {
+            addressCountry: '',
+            addressLocality: '',
+            addressRegion: '',
+            postOfficeBoxNumber: '',
+            postalCode: '',
+            streetAddress: ''
+          },
+          planInfo: {
+            id: '',
+            name: '',
+            machineName: ''
+          }
+        }
+
+        // user: {
+        //   firstName: '',
+        //   lastName: '',
+        //   selectedPlan: '',
+        //   businessName: '',
+        //   phone: '',
+        //   email: '',
+        //   country: '',
+        //   state: '',
+        //   city: '',
+        //   zip: '',
+        //   address1: '',
+        //   address2: ''
+        // },
+
+        // selectedPlan: ''
       }
     };
   },
@@ -365,6 +400,14 @@ export default {
     },
     onSubmit() {
       this.$router.push('/forgot-password');
+    },
+    validation() {
+      console.log(this.user, 'sbka malik ek hai');
+      this.$refs.stepper.next();
+    },
+    bill() {
+      console.log(this.user, 'sbka malik 2 hai');
+      this.$refs.stepper.next();
     }
   },
 
