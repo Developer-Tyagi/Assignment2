@@ -1,10 +1,12 @@
 import request from '@api';
 import { buildApiData } from '@utils/api';
 
-export async function getClients({ commit, dispatch }) {
+export async function getClients({ commit, dispatch }, searchString = '') {
   dispatch('setLoading', true);
   try {
-    const { data } = await request.get('/clients');
+    const { data } = await request.get('/clients', {
+      name: searchString
+    });
     commit('setClients', data);
     dispatch('setLoading', false);
   } catch (e) {

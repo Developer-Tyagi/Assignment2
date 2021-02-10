@@ -11,27 +11,22 @@
           v-model="searchText"
           placeholder="Search"
           borderless
+          style="width: 100%"
           @input="search($event)"
         >
           <template v-slot:prepend>
             <q-icon name="search" />
           </template>
         </q-input>
-        <!-- <div class="q-ml-auto row" @click="filterDialog = true">
-          <img src="~assets/filter.svg" />Filters
-        </div>
-        <q-btn
-          v-if="false"
-          class="q-ml-auto"
-          color="white"
-          text-color="grey"
-          @click="clearFilter()"
-          flat
-          dense
-          style="font-weight: 400"
-          >Clear</q-btn
-        > -->
+        <img
+          src="~assets/close.svg"
+          alt=""
+          v-if="searchText"
+          @click="onSearchBackButtonClick"
+          style="margin: 0 0 0 20px"
+        />
       </div>
+
       <div class="clients-list">
         <div class="q-px-md q-pt-sm" v-for="client in clients" :key="client.id">
           <div class="client-list-item">
@@ -82,7 +77,8 @@ export default {
   components: { CustomHeader },
   data() {
     return {
-      searchText: ''
+      searchText: '',
+      openSearchInput: false
     };
   },
 
@@ -96,11 +92,18 @@ export default {
   methods: {
     ...mapActions(['getClients']),
 
+    onSearchBackButtonClick() {
+      this.searchText = '';
+      this.search();
+    },
+
     addClient() {
       this.$router.push('/add-client');
     },
 
-    search(e) {}
+    search(e) {
+      this.getClients(this.searchText ? this.searchText : '');
+    }
   }
 };
 </script>
