@@ -112,7 +112,10 @@
             label="Email"
             borderless
           />
-          <div class="row" v-if="componentName === constant.industries.CARRIER">
+          <div
+            class="row"
+            v-if="componentName === constants.industries.CARRIER"
+          >
             <p class="q-mx-none q-my-auto">
               <label> Can Claim be Filed by email</label>
             </p>
@@ -223,7 +226,7 @@ export default {
 
   data() {
     return {
-      constant: constants,
+      constants: constants,
       industryFilterDisabled: false,
       options: '',
       countries: [],
@@ -443,7 +446,7 @@ export default {
   },
 
   created() {
-    if (this.componentName == 'vendor') {
+    if (this.componentName == constants.industries.VENDOR) {
       this.industryFilterDisabled = true;
     }
     this.options = this.vendorIndustries;

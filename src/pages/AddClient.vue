@@ -233,7 +233,7 @@
                     />
                     <q-input
                       v-if="
-                        sourceDetails.type != 'vendor' &&
+                        sourceDetails.type != constants.industries.VENDOR &&
                           sourceDetails.type != '' &&
                           sourceDetails.type != 'google'
                       "
@@ -244,9 +244,13 @@
                       :rules="[val => (val && val.length > 0) || '']"
                     />
                     <div
-                      v-else-if="sourceDetails.type == 'vendor'"
+                      v-else-if="
+                        sourceDetails.type == constants.industries.VENDOR
+                      "
                       class="custom-select"
-                      @click="onAddVendorDialogClick('vendor', false)"
+                      @click="
+                        onAddVendorDialogClick(constants.industries.VENDOR)
+                      "
                     >
                       <div class="select-text">
                         {{
@@ -643,9 +647,7 @@
               <div
                 class="custom-select"
                 v-model="insuranceDetails.carrierName"
-                @click="
-                  onAddVendorDialogClick(constant.industries.CARRIER, false)
-                "
+                @click="onAddVendorDialogClick(constants.industries.CARRIER)"
               >
                 <div class="select-text">
                   {{
@@ -1064,13 +1066,7 @@
               <div
                 class="custom-select"
                 v-model="mortgageDetails[0].id"
-                @click="
-                  onAddVendorDialogClick(
-                    constant.industries.MORTGAGE,
-                    false,
-                    true
-                  )
-                "
+                @click="onAddVendorDialogClick(constants.industries.MORTGAGE)"
               >
                 <div class="select-text">
                   {{
@@ -1112,7 +1108,9 @@
                   class="custom-select"
                   v-model="mortgageDetails[1].id"
                   @click="
-                    onAddVendorDialogClick('mortgage1', false, false, true)
+                    onAddVendorDialogClick(
+                      constants.industries.SECONDARYMORTGAGE
+                    )
                   "
                 >
                   <div class="select-text">
@@ -1264,7 +1262,9 @@
                 v-if="vendorExpertHiredToggle"
                 class="custom-select"
                 v-model="expertVendorInfo.vendorName"
-                @click="onAddVendorDialogClick('expertvendor', true)"
+                @click="
+                  onAddVendorDialogClick(constants.industries.EXPERTVENDOR)
+                "
               >
                 <div class="select-text">
                   {{
@@ -1455,11 +1455,8 @@ export default {
   components: { CustomHeader, VendorsList, AddVendor, AutoCompleteAddress },
   data() {
     return {
-      constant: constants,
+      constants: constants,
       valueName: '',
-      isExpertVendorScreen: false,
-      isMortgageCompany: false,
-      secondMortgageCompany: false,
       mortgageInfoDialog: false,
       isSecondMortgageHome: false,
       vendorDialogName: '',
@@ -1927,7 +1924,7 @@ export default {
       } else {
         delete payload.insuredInfo.tenantInfo;
       }
-      if (this.sourceDetails.type == 'vendor') {
+      if (this.sourceDetails.type == constants.industries.VENDOR) {
         payload.source.id = this.sourceDetails.id;
       } else {
         payload.source.detail = this.sourceDetails.details;
@@ -2069,7 +2066,7 @@ export default {
           this.insuranceDetails.carrierId = vendor.id;
           this.insuranceDetails.carrierName = vendor.name;
           break;
-        case 'vendor':
+        case constants.industries.VENDOR:
           this.sourceDetails.id = vendor.id;
           this.sourceDetails.details = vendor.name;
           break;
@@ -2077,11 +2074,11 @@ export default {
           this.mortgageDetails[0].id = vendor.id;
           this.mortgageDetails[0].value = vendor.name;
           break;
-        case 'mortgage1':
+        case constants.industries.SECONDARYMORTGAGE:
           this.mortgageDetails[1].id = vendor.id;
           this.mortgageDetails[1].value = vendor.name;
           break;
-        case 'expertvendor':
+        case constants.industries.EXPERTVENDOR:
           this.expertVendorInfo.id = vendor.id;
           this.expertVendorInfo.vendorName = vendor.name;
           break;
@@ -2098,12 +2095,20 @@ export default {
       }
     },
 
-    onAddVendorDialogClick(name, isExpertVendor, isMortgage, secondMortgage) {
-      this.vendorDialogName = name;
-      this.isExpertVendorScreen = isExpertVendor;
-      this.isMortgageCompany = isMortgage;
-      this.secondMortgageCompany = secondMortgage;
+    onAddVendorDialogClick(name) {
       this.valueName = name;
+      if (
+        name === constants.industries.MORTGAGE ||
+        constants.industries.SECONDARYMORTGAGE
+      ) {
+        this.vendorDialogName = constants.industries.MORTGAGE;
+      }
+      if (name === constants.industries.EXPERTVENDOR) {
+        this.vendorDialogName = constants.industries.VENDOR;
+      } else {
+        this.vendorDialogName = name;
+      }
+
       if (name === constants.industries.CARRIER) {
         this.showVendorDialogFilters = false;
         this.vendorDialogFilterByIndustry = constants.industries.CARRIER;
@@ -2112,6 +2117,10 @@ export default {
         this.vendorDialogFilterByIndustry = '';
       }
       if (name == constants.industries.MORTGAGE) {
+        this.showVendorDialogFilters = false;
+        this.vendorDialogFilterByIndustry = constants.industries.MORTGAGE;
+      }
+      if (name == constants.industries.SECONDARYMORTGAGE) {
         this.showVendorDialogFilters = false;
         this.vendorDialogFilterByIndustry = constants.industries.MORTGAGE;
       }

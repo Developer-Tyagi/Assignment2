@@ -1,6 +1,9 @@
 export const constants = {
   industries: {
     MORTGAGE: 'mortgage',
-    CARRIER: 'carrier'
+    SECONDARYMORTGAGE: 'secondary-mortgage',
+    CARRIER: 'carrier',
+    VENDOR: 'vendor',
+    EXPERTVENDOR: 'expert-vendor'
   }
 };
