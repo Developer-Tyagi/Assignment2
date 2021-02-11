@@ -6,14 +6,12 @@ import { getToken } from '@utils/auth';
 
 // const Authorization = getToken();
 const baseURL = `${process.env.API}/v1`;
-
 const axiosInstance = axios.create({
   baseURL,
   headers: {
     Accept: 'application/json',
-    'Content-Type': 'application/json'
-    // Authorization: `Bearer $(getToken)`
-    // Authorization: `'Bearer ' + getToken`
+    'Content-Type': 'application/json',
+    Authorization: `Bearer  ${getToken()}`
   },
 
   transformResponse: [
@@ -25,12 +23,6 @@ const axiosInstance = axios.create({
       return apiData;
     }
   ]
-});
-
-axiosInstance.interceptors.request.use(config => {
-  const token = getToken();
-  if (token) config.headers.Authorization = 'Bearer ' + token;
-  return config;
 });
 
 const request = {
