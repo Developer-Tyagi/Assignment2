@@ -306,7 +306,7 @@
                     filled
                     lazy-rules
                     :rules="[val => (val && val.length > 0) || '']"
-                    disabled="isBillingAddressSame"
+                    :disabled="isBillingAddressSame == true"
                     placeholder="Street Address"
                   />
                   <div class="row justify-between">

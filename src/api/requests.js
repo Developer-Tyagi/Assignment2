@@ -1,15 +1,12 @@
 import axios from 'axios';
 import { getToken } from '@utils/auth';
-// import qs from 'qs';
-// import { setToken, getToken } from '@utils/auth';
 
 const baseURL = `${process.env.API}/v1`;
 const axiosInstance = axios.create({
   baseURL,
   headers: {
     Accept: 'application/json',
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${getToken()}`
+    'Content-Type': 'application/json'
   },
 
   transformResponse: [
@@ -22,6 +19,17 @@ const axiosInstance = axios.create({
     }
   ]
 });
+
+axiosInstance.interceptors.request.use(
+  config => {
+    const token = getToken();
+    if (token) config.headers.Authorization = 'Bearer ' + token;
+    return config;
+  },
+  error => {
+    return Promise.reject(error);
+  }
+);
 
 const request = {
   get: (url, params) => axiosInstance.get(url, { params }),
