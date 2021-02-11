@@ -2087,14 +2087,6 @@ export default {
       this.vendorsListDialog = false;
     },
 
-    // closeAddVendorDialog(e) {
-    //   this.addVendorDialog = false;
-    //   this.vendorsListDialog = true;
-    //   if (e) {
-    //     this.$refs.list.getVendors();
-    //   }
-    // },
-
     closeAddVendorDialog(e) {
       this.addVendorDialog = false;
       this.vendorsListDialog = true;
