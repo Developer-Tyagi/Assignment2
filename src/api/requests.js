@@ -1,11 +1,7 @@
 import axios from 'axios';
-// import qs from 'qs';
-// import authRefreshInterceptor from 'axios-auth-refresh';
-// import { setToken, getToken } from '@utils/auth';
+import { getToken } from '@utils/auth';
 
-// const Authorization = getToken();
 const baseURL = `${process.env.API}/v1`;
-
 const axiosInstance = axios.create({
   baseURL,
   headers: {
@@ -23,6 +19,17 @@ const axiosInstance = axios.create({
     }
   ]
 });
+
+axiosInstance.interceptors.request.use(
+  config => {
+    const token = getToken();
+    if (token) config.headers.Authorization = 'Bearer ' + token;
+    return config;
+  },
+  error => {
+    return Promise.reject(error);
+  }
+);
 
 const request = {
   get: (url, params) => axiosInstance.get(url, { params }),

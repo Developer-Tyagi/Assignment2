@@ -45,11 +45,16 @@
 <script>
 import VendorsList from 'components/VendorsList';
 import AddVendor from 'components/AddVendor';
+import { constants } from '@utils/constant';
 export default {
   name: 'Vendors',
   components: { VendorsList, AddVendor },
   data() {
-    return { addVendorDialog: false, vendorDialogFilterByIndustry: '' };
+    return {
+      addVendorDialog: false,
+      vendorDialogFilterByIndustry: '',
+      constants: constants
+    };
   },
   methods: {
     closeAddVendorDialog(e) {
