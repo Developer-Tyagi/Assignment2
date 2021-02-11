@@ -22,7 +22,7 @@ export async function addUser({ dispatch, state }, payload) {
   try {
     const { data } = await request.post(
       '/users',
-      buildApiData('adduser', payload)
+      buildApiData('users', payload)
     );
     dispatch('setLoading', false);
     return true;

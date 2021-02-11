@@ -36,50 +36,77 @@
                     transition-next="jump-up"
                   >
                     <q-tab-panel name="adduser">
-                      <div class="q-mt-xs row  full-width">
-                        <div class="col-5  q-mx-xl">First Name *</div>
-                        <div class="col-4  q-mx-lg">Last Name *</div>
+                      <div
+                        v-for="(contactInfo, index) in users"
+                        v-if="index >= 0"
+                      >
+                        <div class="q-mt-xs row  full-width">
+                          <div class="col-5  q-mx-xl">First Name *</div>
+                          <div class="col-4  q-mx-lg">Last Name *</div>
+                        </div>
+                        <div
+                          class="row q-mt-xs      justify-between full-width"
+                        >
+                          <div class="col-6  ">
+                            <q-input
+                              v-model="users[index].contact.fname"
+                              class="q-mx-xl"
+                              style="border: 1px solid #DDDDDD"
+                              filled
+                            />
+                          </div>
+                          <div class="col-6  ">
+                            <q-input
+                              v-model="users[index].contact.lname"
+                              class="q-mx-xl"
+                              style="border: 1px solid #DDDDDD"
+                              filled
+                            />
+                          </div>
+                        </div>
+                        <div class="q-mt-xs row  full-width">
+                          <div class="col-5  q-mx-xl">Email*</div>
+                          <div class="col-4  q-mx-lg">Role *</div>
+                        </div>
+                        <div
+                          class="row q-mt-xs      justify-between full-width"
+                        >
+                          <div class="col-6  ">
+                            <q-input
+                              v-model="users[index].email"
+                              class="q-mx-xl"
+                              style="border: 1px solid #DDDDDD"
+                              filled
+                            />
+                          </div>
+                          <div class="col-6  ">
+                            <q-select
+                              v-model="users[index].roles[0]"
+                              filled
+                              class="q-mx-xl"
+                              :options="options"
+                              label="role"
+                            />
+                          </div>
+                        </div>
                       </div>
-                      <div class="row q-mt-xs      justify-between full-width">
-                        <div class="col-6  ">
-                          <q-input
-                            v-model="adduser.contact.fname"
-                            class="q-mx-xl"
-                            style="border: 1px solid #DDDDDD"
-                            filled
-                          />
-                        </div>
-                        <div class="col-6  ">
-                          <q-input
-                            v-model="adduser.contact.lname"
-                            class="q-mx-xl"
-                            style="border: 1px solid #DDDDDD"
-                            filled
-                          />
-                        </div>
-                      </div>
-                      <div class="q-mt-xs row  full-width">
-                        <div class="col-5  q-mx-xl">Email*</div>
-                        <div class="col-4  q-mx-lg">Role *</div>
-                      </div>
-                      <div class="row q-mt-xs      justify-between full-width">
-                        <div class="col-6  ">
-                          <q-input
-                            v-model="adduser.email"
-                            class="q-mx-xl"
-                            style="border: 1px solid #DDDDDD"
-                            filled
-                          />
-                        </div>
-                        <div class="col-6  ">
-                          <q-select
-                            v-model="adduser.role[0]"
-                            filled
-                            class="q-mx-xl"
-                            :options="options"
-                            label="role"
-                          />
-                        </div>
+                      <div class="row">
+                        <q-btn
+                          outline
+                          class="q-mt-sm q-mx-xl"
+                          @click="addAnotherContact"
+                          color="primary"
+                          label="Add"
+                          style="margin-right: auto"
+                        />
+                        <q-btn
+                          outline
+                          @click="removeAnotherContact"
+                          class="q-mt-sm q-mx-xl"
+                          color="primary"
+                          label="Remove"
+                          v-if="isShowRemoveButton"
+                        />
                       </div>
                     </q-tab-panel>
 
@@ -132,6 +159,14 @@
                     </q-tab-panel>
 
                     <q-tab-panel name="sales">
+                      <div class="q-mx-xl row">
+                        <p class=" q-my-auto">
+                          <label>
+                            Does Company Have Sales Representative
+                          </label>
+                        </p>
+                        <q-toggle class="q-ml-xs" v-model="toggle" />
+                      </div>
                       <div class="q-mt-xs row  full-width">
                         <div class="col-5  q-mx-xl">First Name *</div>
                         <div class="col-4  q-mx-lg">Last Name *</div>
@@ -183,14 +218,6 @@
                     <div class="row justify-between full-width q-pa-xl ">
                       <q-btn
                         color="primary"
-                        label="Back"
-                        class="q-px-lg"
-                        outline
-                        type="reset"
-                        @click="onClickBack"
-                      />
-                      <q-btn
-                        color="primary"
                         label="Next"
                         class="q-px-lg"
                         @click="onClickNext"
@@ -212,19 +239,23 @@ export default {
   name: 'AddUser',
   data() {
     return {
+      toggle: false,
       // this is for static dropdown
       options: ['Manager', 'Staff'],
+      isShowRemoveButton: false,
       tab: 'adduser',
       splitterModel: 20,
-      adduser: {
-        type: 'user',
-        contact: {
-          fname: '',
-          lname: ''
-        },
-        email: '',
-        role: []
-      },
+      users: [
+        {
+          type: 'user',
+          contact: {
+            fname: '',
+            lname: ''
+          },
+          email: '',
+          roles: []
+        }
+      ],
       onboard: {
         officesuer: {
           fname: '',
@@ -245,7 +276,27 @@ export default {
     ...mapActions(['addUser']),
     // on Clicking Next Button
     onClickNext() {
-      this.addUser(this.adduser);
+      this.users.forEach(user => {
+        this.addUser(user);
+      });
+      this.users = [
+        {
+          type: 'user',
+          contact: {
+            fname: '',
+            lname: ''
+          },
+          email: '',
+          roles: []
+        }
+      ];
+      if (this.tab == 'adduser') {
+        this.tab = 'offcInfo';
+      } else if (this.tab == 'offcInfo') {
+        this.tab = 'sales';
+      } else if (this.tab == 'sales') {
+        this.tab = 'setConfiguration';
+      }
     },
     // on clicking previous button
     onClickBack() {
@@ -258,6 +309,39 @@ export default {
       } else if (this.tab == 'setConfiguration') {
         this.tab = 'sales';
       }
+    },
+    addAnotherContact() {
+      const len = this.users.length;
+      console.log(this.users, len);
+      if (len) {
+        console.log(123);
+        // this.isShowRemoveButton = true;
+        this.users.push({
+          type: 'user',
+          contact: {
+            fname: '',
+            lname: ''
+          },
+          email: '',
+          roles: []
+        });
+        this.isShowRemoveButton = true;
+      } else {
+        console.log('no');
+        this.$q.notify({
+          message: 'Please fill this detail first',
+          position: 'top',
+          type: 'negative'
+        });
+      }
+    },
+    removeAnotherContact() {
+      const len = this.users.length;
+      if (len === 2) {
+        this.isShowRemoveButton = false;
+      }
+
+      this.users.pop();
     }
   }
 };
