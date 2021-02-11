@@ -1,17 +1,15 @@
 import axios from 'axios';
 import { getToken } from '@utils/auth';
 // import qs from 'qs';
-// import authRefreshInterceptor from 'axios-auth-refresh';
 // import { setToken, getToken } from '@utils/auth';
 
-// const Authorization = getToken();
 const baseURL = `${process.env.API}/v1`;
 const axiosInstance = axios.create({
   baseURL,
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
-    Authorization: `Bearer  ${getToken()}`
+    Authorization: `Bearer ${getToken()}`
   },
 
   transformResponse: [
