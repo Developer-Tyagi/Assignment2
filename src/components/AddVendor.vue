@@ -323,6 +323,22 @@ export default {
       let industryType = this.vendorIndustries.find(
         o => o.machineValue === constants.industries.MORTGAGE
       );
+
+      if (industryType.name && industryType.id) {
+        this.vendor.industry.value = industryType.name;
+        this.vendor.industry.id = industryType.id;
+        this.vendor.industry.machineValue = industryType.machineValue;
+      }
+    }
+
+    if (
+      this.componentName &&
+      this.componentName === constants.industries.SECONDARYMORTGAGE
+    ) {
+      let industryType = this.vendorIndustries.find(
+        o => o.machineValue === constants.industries.MORTGAGE
+      );
+
       if (industryType.name && industryType.id) {
         this.vendor.industry.value = industryType.name;
         this.vendor.industry.id = industryType.id;

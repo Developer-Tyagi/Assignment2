@@ -540,7 +540,9 @@ export default {
       this.valueName = name;
       this.vendorDialogName = name;
       if (name === constants.industries.CARRIER) {
+        console.log(constants.industries.CARRIER, 1);
         this.showVendorDialogFilters = false;
+
         this.vendorDialogFilterByIndustry = constants.industries.CARRIER;
       } else {
         this.showVendorDialogFilters = true;
@@ -553,7 +555,8 @@ export default {
       if (dialogName) {
         this.sourceDetails.id = vendor.id;
         this.sourceDetails.details = vendor.name;
-      } else {
+      }
+      if (dialogName == constants.industries.CARRIER) {
         this.insuranceDetails.carrierId = vendor.id;
         this.insuranceDetails.carrierName = vendor.name;
       }

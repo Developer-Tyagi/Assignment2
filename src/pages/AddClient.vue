@@ -2087,11 +2087,33 @@ export default {
       this.vendorsListDialog = false;
     },
 
+    // closeAddVendorDialog(e) {
+    //   this.addVendorDialog = false;
+    //   this.vendorsListDialog = true;
+    //   if (e) {
+    //     this.$refs.list.getVendors();
+    //   }
+    // },
+
     closeAddVendorDialog(e) {
       this.addVendorDialog = false;
       this.vendorsListDialog = true;
       if (e) {
-        this.$refs.list.getVendors();
+        if (this.vendorDialogName === constants.industries.CARRIER) {
+          let params = {
+            industry: constants.industries.CARRIER,
+            name: ''
+          };
+          this.$refs.list.getVendors(params);
+        } else if (this.vendorDialogName === constants.industries.MORTGAGE) {
+          let params = {
+            industry: constants.industries.MORTGAGE,
+            name: ''
+          };
+          this.$refs.list.getVendors(params);
+        } else {
+          this.$refs.list.getVendors();
+        }
       }
     },
 
@@ -2099,11 +2121,10 @@ export default {
       this.valueName = name;
       if (
         name === constants.industries.MORTGAGE ||
-        constants.industries.SECONDARYMORTGAGE
+        name === constants.industries.SECONDARYMORTGAGE
       ) {
         this.vendorDialogName = constants.industries.MORTGAGE;
-      }
-      if (name === constants.industries.EXPERTVENDOR) {
+      } else if (name === constants.industries.EXPERTVENDOR) {
         this.vendorDialogName = constants.industries.VENDOR;
       } else {
         this.vendorDialogName = name;
