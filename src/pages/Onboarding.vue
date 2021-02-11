@@ -40,6 +40,78 @@
                         v-for="(contactInfo, index) in users"
                         v-if="index >= 0"
                       >
+                        <div class=" q-mt-xs row  full-width">
+                          <div class="col-5  q-mx-xl">First Name *</div>
+                          <div class="col-4  q-mx-lg">Last Name *</div>
+                        </div>
+                        <div class="row q-mt-xs   justify-between full-width">
+                          <div class="col-6  ">
+                            <q-input
+                              v-model="users[index].contact.fname"
+                              class="q-mx-xl"
+                              style="border: 1px solid #DDDDDD"
+                              filled
+                            />
+                          </div>
+                          <div class="col-6  ">
+                            <q-input
+                              v-model="users[index].contact.lname"
+                              class="q-mx-xl"
+                              style="border: 1px solid #DDDDDD"
+                              filled
+                            />
+                          </div>
+                        </div>
+                        <div class="q-mt-xs row  full-width">
+                          <div class="col-5  q-mx-xl">Email*</div>
+                          <div class="col-4  q-mx-lg">Role *</div>
+                        </div>
+                        <div
+                          class="row q-mt-xs      justify-between full-width"
+                        >
+                          <div class="col-6  ">
+                            <q-input
+                              v-model="users[index].email"
+                              class="q-mx-xl"
+                              style="border: 1px solid #DDDDDD"
+                              filled
+                            />
+                          </div>
+                          <div class="col-6  ">
+                            <q-select
+                              v-model="users[index].roles[0]"
+                              filled
+                              class="q-mx-xl"
+                              :options="options"
+                              label="role"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <q-btn
+                          outline
+                          class="q-mt-lg q-mx-xl"
+                          @click="addAnotherContact"
+                          color="primary"
+                          label="Add"
+                          style="margin-right: auto"
+                        />
+                        <q-btn
+                          outline
+                          @click="removeAnotherContact"
+                          class="q-mt-sm q-mx-xl"
+                          color="primary"
+                          label="Remove"
+                          v-if="isShowRemoveButton"
+                        />
+                      </div>
+                    </q-tab-panel>
+                    <q-tab-panel name="offcInfo">
+                      <div
+                        v-for="(contactInfo, index) in users"
+                        v-if="index >= 0"
+                      >
                         <div class="q-mt-xs row  full-width">
                           <div class="col-5  q-mx-xl">First Name *</div>
                           <div class="col-4  q-mx-lg">Last Name *</div>
@@ -109,56 +181,82 @@
                         />
                       </div>
                     </q-tab-panel>
-
-                    <q-tab-panel name="offcInfo"
-                      ><div class="q-mt-xs row  full-width">
-                        <div class="col-5  q-mx-xl">First Name *</div>
-                        <div class="col-4  q-mx-lg">Last Name *</div>
+                    <q-tab-panel name="sales">
+                      <div
+                        v-for="(contactInfo, index) in users"
+                        v-if="index >= 0"
+                      >
+                        <div class="q-mt-xs row  full-width">
+                          <div class="col-5  q-mx-xl">First Name *</div>
+                          <div class="col-4  q-mx-lg">Last Name *</div>
+                        </div>
+                        <div
+                          class="row q-mt-xs      justify-between full-width"
+                        >
+                          <div class="col-6  ">
+                            <q-input
+                              v-model="users[index].contact.fname"
+                              class="q-mx-xl"
+                              style="border: 1px solid #DDDDDD"
+                              filled
+                            />
+                          </div>
+                          <div class="col-6  ">
+                            <q-input
+                              v-model="users[index].contact.lname"
+                              class="q-mx-xl"
+                              style="border: 1px solid #DDDDDD"
+                              filled
+                            />
+                          </div>
+                        </div>
+                        <div class="q-mt-xs row  full-width">
+                          <div class="col-5  q-mx-xl">Email*</div>
+                          <div class="col-4  q-mx-lg">Role *</div>
+                        </div>
+                        <div
+                          class="row q-mt-xs      justify-between full-width"
+                        >
+                          <div class="col-6  ">
+                            <q-input
+                              v-model="users[index].email"
+                              class="q-mx-xl"
+                              style="border: 1px solid #DDDDDD"
+                              filled
+                            />
+                          </div>
+                          <div class="col-6  ">
+                            <q-select
+                              v-model="users[index].roles[0]"
+                              filled
+                              class="q-mx-xl"
+                              :options="options"
+                              label="role"
+                            />
+                          </div>
+                        </div>
                       </div>
-                      <div class="row q-mt-xs      justify-between full-width">
-                        <div class="col-6  ">
-                          <q-input
-                            v-model="onboard.officesuer.fname"
-                            class="q-mx-xl"
-                            style="border: 1px solid #DDDDDD"
-                            filled
-                          />
-                        </div>
-                        <div class="col-6  ">
-                          <q-input
-                            class="q-mx-xl"
-                            style="border: 1px solid #DDDDDD"
-                            filled
-                            v-model="onboard.officesuer.lname"
-                          />
-                        </div>
-                      </div>
-                      <div class="q-mt-xs row  full-width">
-                        <div class="col-5  q-mx-xl">Email*</div>
-                        <div class="col-4  q-mx-lg">Role *</div>
-                      </div>
-                      <div class="row q-mt-xs      justify-between full-width">
-                        <div class="col-6  ">
-                          <q-input
-                            class="q-mx-xl"
-                            style="border: 1px solid #DDDDDD"
-                            filled
-                            v-model="onboard.officesuer.email"
-                          />
-                        </div>
-                        <div class="col-6  ">
-                          <q-select
-                            filled
-                            v-model="onboard.officesuer.role"
-                            class="q-mx-xl"
-                            :options="options"
-                            label="Filled"
-                          />
-                        </div>
+                      <div class="row">
+                        <q-btn
+                          outline
+                          class="q-mt-sm q-mx-xl"
+                          @click="addAnotherContact"
+                          color="primary"
+                          label="Add"
+                          style="margin-right: auto"
+                        />
+                        <q-btn
+                          outline
+                          @click="removeAnotherContact"
+                          class="q-mt-sm q-mx-xl"
+                          color="primary"
+                          label="Remove"
+                          v-if="isShowRemoveButton"
+                        />
                       </div>
                     </q-tab-panel>
-
-                    <q-tab-panel name="sales">
+                    <!-- This is for 4th panel for future use -->
+                    <!-- <q-tab-panel name="sales">
                       <div class="q-mx-xl row">
                         <p class=" q-my-auto">
                           <label>
@@ -211,14 +309,14 @@
                             label="Filled"
                           />
                         </div></div
-                    ></q-tab-panel>
+                    ></q-tab-panel> -->
                   </q-tab-panels>
-                  <div class="q-pt-xl">
+                  <div class="q-pt-lg">
                     <q-separator />
-                    <div class="row justify-between full-width q-pa-xl ">
+                    <div class="row justify-center full-width q-pa-xl ">
                       <q-btn
                         color="primary"
-                        label="Next"
+                        label="submit and Proceed"
                         class="q-px-lg"
                         @click="onClickNext"
                       />
@@ -291,6 +389,7 @@ export default {
         }
       ];
       if (this.tab == 'adduser') {
+        this.isShowRemoveButton = false;
         this.tab = 'offcInfo';
       } else if (this.tab == 'offcInfo') {
         this.tab = 'sales';
@@ -298,24 +397,11 @@ export default {
         this.tab = 'setConfiguration';
       }
     },
-    // on clicking previous button
-    onClickBack() {
-      if (this.tab == 'adduser') {
-        // this.tab = 'offcInfo';
-      } else if (this.tab == 'offcInfo') {
-        this.tab = 'adduser';
-      } else if (this.tab == 'sales') {
-        this.tab = 'offcInfo';
-      } else if (this.tab == 'setConfiguration') {
-        this.tab = 'sales';
-      }
-    },
+
     addAnotherContact() {
       const len = this.users.length;
       console.log(this.users, len);
-      if (len) {
-        console.log(123);
-        // this.isShowRemoveButton = true;
+      if (this.users[len - 1].contact.fname) {
         this.users.push({
           type: 'user',
           contact: {
@@ -329,7 +415,7 @@ export default {
       } else {
         console.log('no');
         this.$q.notify({
-          message: 'Please fill this detail first',
+          message: 'Please fill the first Name',
           position: 'top',
           type: 'negative'
         });
