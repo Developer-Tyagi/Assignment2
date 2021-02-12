@@ -260,7 +260,6 @@
                     color="primary"
                     label="Next"
                     class="float-right q-px-lg"
-                    @click="checkValidation()"
                   />
                 </div>
               </q-form>
@@ -410,7 +409,12 @@
                     outline
                     type="reset"
                   />
-                  <q-btn color="primary" label="Buy" class="q-px-lg" />
+                  <q-btn
+                    color="primary"
+                    label="Buy"
+                    class="q-px-lg"
+                    type="submit"
+                  />
                 </div>
               </q-form>
             </q-step>
