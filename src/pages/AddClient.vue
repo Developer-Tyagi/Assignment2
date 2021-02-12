@@ -2091,15 +2091,15 @@ export default {
       this.addVendorDialog = false;
       this.vendorsListDialog = true;
       if (e) {
-        if (this.vendorDialogName === constants.industries.CARRIER) {
-          let params = {
-            industry: constants.industries.CARRIER,
-            name: ''
-          };
-          this.$refs.list.getVendors(params);
-        } else if (this.vendorDialogName === constants.industries.MORTGAGE) {
-          let params = {
-            industry: constants.industries.MORTGAGE,
+        if (
+          this.vendorDialogName === constants.industries.CARRIER ||
+          constants.industries.MORTGAGE
+        ) {
+          const params = {
+            industry:
+              this.vendorDialogName === constants.industries.CARRIER
+                ? constants.industries.CARRIER
+                : constants.industries.MORTGAGE,
             name: ''
           };
           this.$refs.list.getVendors(params);

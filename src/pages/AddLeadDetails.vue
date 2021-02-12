@@ -540,7 +540,6 @@ export default {
       this.valueName = name;
       this.vendorDialogName = name;
       if (name === constants.industries.CARRIER) {
-        console.log(constants.industries.CARRIER, 1);
         this.showVendorDialogFilters = false;
 
         this.vendorDialogFilterByIndustry = constants.industries.CARRIER;
