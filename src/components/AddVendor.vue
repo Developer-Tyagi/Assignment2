@@ -302,10 +302,8 @@ export default {
     this.getVendorIndustries();
     this.getTitles();
     this.getContactTypes();
-    if (
-      this.componentName &&
-      this.componentName === constants.industries.CARRIER
-    ) {
+
+    if (this.componentName === constants.industries.CARRIER) {
       let industryType = this.vendorIndustries.find(
         o => o.machineValue === constants.industries.CARRIER
       );
@@ -315,34 +313,11 @@ export default {
         this.vendor.industry.machineValue = industryType.machineValue;
       }
     } else if (
-      this.componentName &&
-      this.componentName === constants.industries.MORTGAGE
-    ) {
-      let industryType = this.vendorIndustries.find(
-        o => o.machineValue === constants.industries.MORTGAGE
-      );
-
-      if (industryType.name && industryType.id) {
-        this.vendor.industry.value = industryType.name;
-        this.vendor.industry.id = industryType.id;
-        this.vendor.industry.machineValue = industryType.machineValue;
-      }
-    } else if (
-      this.componentName &&
+      this.componentName === constants.industries.MORTGAGE ||
       this.componentName === constants.industries.SECONDARYMORTGAGE
     ) {
       let industryType = this.vendorIndustries.find(
         o => o.machineValue === constants.industries.MORTGAGE
-      );
-
-      if (industryType.name && industryType.id) {
-        this.vendor.industry.value = industryType.name;
-        this.vendor.industry.id = industryType.id;
-        this.vendor.industry.machineValue = industryType.machineValue;
-      }
-    } else {
-      let industryType = this.vendorIndustries.find(
-        o => o.machineValue === constants.industries.VENDOR
       );
 
       if (industryType.name && industryType.id) {

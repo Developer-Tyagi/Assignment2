@@ -2093,7 +2093,7 @@ export default {
       if (e) {
         if (
           this.vendorDialogName === constants.industries.CARRIER ||
-          constants.industries.MORTGAGE
+          this.vendorDialogName === constants.industries.MORTGAGE
         ) {
           const params = {
             industry:
