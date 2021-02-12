@@ -238,6 +238,7 @@
                           sourceDetails.type != 'google'
                       "
                       type="text"
+                      class="required"
                       placeholder="Enter Source details"
                       v-model="sourceDetails.details"
                       lazy-rules
@@ -262,6 +263,7 @@
                     </div>
                   </div>
                   <q-select
+                    class="required"
                     v-model="client.id"
                     option-value="id"
                     option-label="name"
@@ -287,6 +289,7 @@
                     <q-input
                       v-model="primaryDetails.organizationName"
                       label="Organization Name"
+                      class="required"
                       lazy-rules
                       :rules="[
                         val =>
@@ -310,6 +313,7 @@
                   <span class="form-heading">Insured Details</span>
                   <q-select
                     v-model="honorific1.id"
+                    class="required"
                     :options="titles"
                     option-value="id"
                     option-label="value"
@@ -320,6 +324,7 @@
                   />
 
                   <q-input
+                    class="required"
                     v-model="insuredDetails.fname"
                     lazy-rules
                     :rules="[
@@ -331,6 +336,7 @@
 
                   <q-input
                     v-model="insuredDetails.lname"
+                    class="required"
                     lazy-rules
                     :rules="[
                       val =>
@@ -341,6 +347,7 @@
                   <div class="row">
                     <q-select
                       v-model="insuredDetails.type"
+                      class="required"
                       :options="contactTypes"
                       option-value="machineValue"
                       option-label="name"
@@ -353,6 +360,7 @@
                     />
                     <q-input
                       v-model="insuredDetails.phone"
+                      class="required"
                       label="Phone"
                       type="number"
                       lazy-rules
@@ -366,6 +374,7 @@
                   </div>
                   <q-input
                     v-model="insuredDetails.email"
+                    class="required"
                     label="Email"
                     lazy-rules
                     :rules="[
@@ -387,6 +396,7 @@
 
                     <q-select
                       v-model="honorific2.id"
+                      class="required"
                       :options="titles"
                       option-value="id"
                       option-label="value"
@@ -406,6 +416,7 @@
                     <div class="row">
                       <q-select
                         v-model="coInsuredDetails.type"
+                        class="required"
                         :options="contactTypes"
                         option-value="machineValue"
                         option-label="name"
@@ -419,6 +430,7 @@
                       <q-input
                         v-model="coInsuredDetails.phone"
                         label="Phone"
+                        class="required"
                         type="number"
                         lazy-rules
                         :rules="[
@@ -433,6 +445,7 @@
                       v-model="coInsuredDetails.email"
                       input
                       type="email"
+                      class="required"
                       lazy-rules
                       :rules="[
                         val =>
@@ -455,6 +468,7 @@
                     <div class="row">
                       <q-select
                         v-model="addAditionalPhoneNumber.type1"
+                        class="required"
                         label="Type"
                         :options="contactTypes"
                         option-value="machineValue"
@@ -468,6 +482,7 @@
                       <q-input
                         v-model="addAditionalPhoneNumber.phone2"
                         label="Phone2"
+                        class="required"
                         type="number"
                         lazy-rules
                         :rules="[
@@ -480,6 +495,7 @@
                     </div>
                     <div class="row">
                       <q-select
+                        class="required"
                         v-model="addAditionalPhoneNumber.type2"
                         label="Type"
                         :options="contactTypes"
@@ -492,6 +508,7 @@
                         style="width: 40%; margin-right: auto"
                       />
                       <q-input
+                        class="required"
                         v-model="addAditionalPhoneNumber.phone3"
                         label="Phone3"
                         type="number"
@@ -529,6 +546,7 @@
 
                     <div class="row">
                       <q-select
+                        class="required"
                         v-model="tenantOccupied.type"
                         label="Type"
                         :options="contactTypes"
@@ -539,6 +557,7 @@
                         style="width: 40%; margin-right: auto"
                       />
                       <q-input
+                        class="required"
                         v-model="tenantOccupied.phone"
                         label="Phone"
                         style="width: 55%; margin-left: auto"
@@ -694,6 +713,7 @@
                 type="date"
               />
               <q-select
+                class="required"
                 v-model="insuranceDetails.policyCategory.id"
                 option-value="id"
                 option-label="name"
@@ -710,6 +730,7 @@
                 label="Policy Category"
               />
               <q-select
+                class="required"
                 v-model="insuranceDetails.policy.id"
                 option-value="id"
                 option-label="name"
@@ -864,6 +885,7 @@
                 :isFieldsDisable="isLossAddressSameAsClientToggle"
               />
               <q-input
+                class="required"
                 v-model="LossAddressName"
                 label="Loss Address Name"
                 lazy-rules
@@ -872,6 +894,7 @@
                 ]"
               />
               <q-select
+                class="required"
                 v-model="lossInfo.property.id"
                 option-value="id"
                 option-label="name"
@@ -886,6 +909,7 @@
                 label="Description of Property"
               />
               <q-select
+                class="required"
                 v-model="lossInfo.reasonClaim.id"
                 option-value="id"
                 option-label="name"
@@ -903,6 +927,7 @@
               />
 
               <q-select
+                class="required"
                 v-model="lossInfo.causeOfLoss.id"
                 option-value="id"
                 option-label="name"
@@ -946,6 +971,7 @@
                 />
               </div>
               <q-select
+                class="required"
                 v-model="lossInfo.severityOfClaimType.id"
                 option-value="id"
                 option-label="name"
@@ -2131,6 +2157,11 @@ export default {
 </script>
 
 <style lang="scss">
+.required .q-field__native ~ .q-field__label:after {
+  content: '*';
+  color: red;
+}
+
 .fixHeight {
   height: calc(100vh - 145px);
   overflow-y: auto;
