@@ -8,26 +8,42 @@
           Setup Company Account
         </div>
       </div>
-      <div class=" row   full-width " flat bordered>
+      <!-- Height given for there Inner 2 div -->
+      <div class=" row   full-width " style="height:107%;" flat bordered>
         <q-separator vertical />
-        <q-card class="  col-11  q-ml-xl   " flat bordered>
+        <q-card class="   col-11  q-ml-xl full-height  " flat bordered>
           <div id="q-app">
             <div>
-              <q-splitter v-model="splitterModel" style="height: 405px">
+              <q-splitter
+                v-model="splitterModel"
+                style="height: 478px"
+                flat
+                bordered
+              >
                 <template v-slot:before>
                   <q-tabs v-model="tab" vertical class="">
-                    <q-tab name="adduser" label="Add-User"></q-tab>
-                    <q-tab name="offcInfo" label="Offc Staff Info"></q-tab>
-                    <q-tab name="sales" label="Sales Representative"></q-tab>
+                    <q-tab name="adduser" label="Add User" disable></q-tab>
+                    <q-tab
+                      id="offcInfo"
+                      label="Office Staff Info"
+                      disable
+                    ></q-tab>
+                    <q-tab
+                      name="sales"
+                      label="Sales Representatives"
+                      disable
+                    ></q-tab>
                     <q-tab
                       name="setConfiguration"
                       label="Set Configuration"
+                      disable
                     ></q-tab>
                   </q-tabs>
                 </template>
-
+                <!-- Main Template -->
                 <template v-slot:after>
                   <q-tab-panels
+                    style="height:400px"
                     v-model="tab"
                     animated
                     swipeable
@@ -36,62 +52,81 @@
                     transition-next="jump-up"
                   >
                     <q-tab-panel name="adduser">
-                      <div
-                        v-for="(contactInfo, index) in users"
-                        v-if="index >= 0"
-                      >
-                        <div class=" q-mt-xs row  full-width">
-                          <div class="col-5  q-mx-xl">First Name *</div>
-                          <div class="col-4  q-mx-lg">Last Name *</div>
-                        </div>
-                        <div class="row q-mt-xs   justify-between full-width">
-                          <div class="col-6  ">
-                            <q-input
-                              v-model="users[index].contact.fname"
-                              class="q-mx-xl"
-                              style="border: 1px solid #DDDDDD"
-                              filled
-                            />
-                          </div>
-                          <div class="col-6  ">
-                            <q-input
-                              v-model="users[index].contact.lname"
-                              class="q-mx-xl"
-                              style="border: 1px solid #DDDDDD"
-                              filled
-                            />
-                          </div>
-                        </div>
-                        <div class="q-mt-xs row  full-width">
-                          <div class="col-5  q-mx-xl">Email*</div>
-                          <div class="col-4  q-mx-lg">Role *</div>
-                        </div>
+                      <q-form ref="addUserForm">
                         <div
-                          class="row q-mt-xs      justify-between full-width"
+                          outlined
+                          v-for="(contactInfo, index) in users"
+                          v-if="index >= 0"
                         >
-                          <div class="col-6  ">
-                            <q-input
-                              v-model="users[index].email"
-                              class="q-mx-xl"
-                              style="border: 1px solid #DDDDDD"
-                              filled
-                            />
+                          <div class=" q-mt-xs   row  full-width">
+                            <div class="col-5  text-bold">
+                              Add User &nbsp;{{ index + 1 }}
+                            </div>
                           </div>
-                          <div class="col-6  ">
-                            <q-select
-                              v-model="users[index].roles[0]"
-                              filled
-                              class="q-mx-xl"
-                              :options="options"
-                              label="role"
-                            />
+                          <div class=" q-mt-xs row  full-width">
+                            <div class="col-5  q-mx-xl q-mt-lg">
+                              First Name *
+                            </div>
+                            <div class="col-4  q-mx-lg q-mt-lg">
+                              Last Name *
+                            </div>
+                          </div>
+                          <div class="row q-mt-xs   justify-between full-width">
+                            <div class="col-6  ">
+                              <q-input
+                                v-model="users[index].contact.fname"
+                                class="q-mx-xl"
+                                style="width :300px ;"
+                                outlined
+                              />
+                            </div>
+                            <div class="col-6  ">
+                              <q-input
+                                v-model="users[index].contact.lname"
+                                class="q-mx-xl"
+                                style="width :300px ;"
+                                outlined
+                              />
+                            </div>
+                          </div>
+                          <div class="q-mt-xs row  full-width">
+                            <div class="col-5  q-mx-xl q-mt-lg">Email*</div>
+                            <div class="col-4  q-mx-lg q-mt-lg">Role *</div>
+                          </div>
+                          <div
+                            class="row q-mt-xs      justify-between full-width"
+                          >
+                            <div class="col-6  ">
+                              <q-input
+                                v-model="users[index].email"
+                                class="q-mx-xl"
+                                style="width :300px ;"
+                                outlined
+                                :rules="[
+                                  val =>
+                                    (val && val.length > 0) ||
+                                    'Please choose the Title'
+                                ]"
+                              />
+                            </div>
+                            <div class="col-6  ">
+                              <q-select
+                                v-model="users[index].roles[0]"
+                                outlined
+                                style="width :300px ;"
+                                class="q-mx-xl"
+                                :options="options"
+                                label="role"
+                              />
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <div class="row">
+                      </q-form>
+
+                      <div class="row q-mt-lg">
                         <q-btn
                           outline
-                          class="q-mt-lg q-mx-xl"
+                          class="  q-mx-xl"
                           @click="addAnotherContact"
                           color="primary"
                           label="Add"
@@ -109,36 +144,40 @@
                     </q-tab-panel>
                     <q-tab-panel name="offcInfo">
                       <div
+                        outlined
                         v-for="(contactInfo, index) in users"
                         v-if="index >= 0"
                       >
-                        <div class="q-mt-xs row  full-width">
-                          <div class="col-5  q-mx-xl">First Name *</div>
-                          <div class="col-4  q-mx-lg">Last Name *</div>
+                        <div class=" q-mt-xs   row  full-width">
+                          <div class="col-5  text-bold">
+                            Sale Representative &nbsp;{{ index + 1 }}
+                          </div>
                         </div>
-                        <div
-                          class="row q-mt-xs      justify-between full-width"
-                        >
+                        <div class=" q-mt-xs row  full-width">
+                          <div class="col-5  q-mx-xl q-mt-lg">First Name *</div>
+                          <div class="col-4  q-mx-lg q-mt-lg">Last Name *</div>
+                        </div>
+                        <div class="row q-mt-xs   justify-between full-width">
                           <div class="col-6  ">
                             <q-input
                               v-model="users[index].contact.fname"
                               class="q-mx-xl"
-                              style="border: 1px solid #DDDDDD"
-                              filled
+                              style="width :300px ;"
+                              outlined
                             />
                           </div>
                           <div class="col-6  ">
                             <q-input
                               v-model="users[index].contact.lname"
                               class="q-mx-xl"
-                              style="border: 1px solid #DDDDDD"
-                              filled
+                              style="width :300px ;"
+                              outlined
                             />
                           </div>
                         </div>
                         <div class="q-mt-xs row  full-width">
-                          <div class="col-5  q-mx-xl">Email*</div>
-                          <div class="col-4  q-mx-lg">Role *</div>
+                          <div class="col-5  q-mx-xl q-mt-lg">Email*</div>
+                          <div class="col-4  q-mx-lg q-mt-lg">Role *</div>
                         </div>
                         <div
                           class="row q-mt-xs      justify-between full-width"
@@ -147,14 +186,15 @@
                             <q-input
                               v-model="users[index].email"
                               class="q-mx-xl"
-                              style="border: 1px solid #DDDDDD"
-                              filled
+                              style="width :300px ;"
+                              outlined
                             />
                           </div>
                           <div class="col-6  ">
                             <q-select
                               v-model="users[index].roles[0]"
-                              filled
+                              outlined
+                              style="width :300px ;"
                               class="q-mx-xl"
                               :options="options"
                               label="role"
@@ -162,10 +202,11 @@
                           </div>
                         </div>
                       </div>
-                      <div class="row">
+
+                      <div class="row q-mt-lg">
                         <q-btn
                           outline
-                          class="q-mt-sm q-mx-xl"
+                          class="  q-mx-xl"
                           @click="addAnotherContact"
                           color="primary"
                           label="Add"
@@ -182,37 +223,51 @@
                       </div>
                     </q-tab-panel>
                     <q-tab-panel name="sales">
+                      <div class=" row ">
+                        <p class=" q-my-auto">
+                          <label>
+                            Does Company Have Sales Representative
+                          </label>
+                        </p>
+                        <q-toggle class="q-ml-xs" v-model="toggle" />
+                      </div>
                       <div
+                        outlined
                         v-for="(contactInfo, index) in users"
                         v-if="index >= 0"
                       >
-                        <div class="q-mt-xs row  full-width">
-                          <div class="col-5  q-mx-xl">First Name *</div>
-                          <div class="col-4  q-mx-lg">Last Name *</div>
+                        <div class=" q-mt-xs   row  full-width">
+                          <div class="col-5  text-bold">
+                            Sale Representative &nbsp;{{ index + 1 }}
+                          </div>
                         </div>
-                        <div
-                          class="row q-mt-xs      justify-between full-width"
-                        >
+                        <div class=" q-mt-xs row  full-width">
+                          <div class="col-5  q-mx-xl q-mt-lg">First Name *</div>
+                          <div class="col-4  q-mx-lg q-mt-lg">Last Name *</div>
+                        </div>
+                        <div class="row q-mt-xs   justify-between full-width">
                           <div class="col-6  ">
                             <q-input
                               v-model="users[index].contact.fname"
                               class="q-mx-xl"
-                              style="border: 1px solid #DDDDDD"
-                              filled
+                              style="width :300px ;"
+                              outlined
+                              :disable="toggle == false"
                             />
                           </div>
                           <div class="col-6  ">
                             <q-input
                               v-model="users[index].contact.lname"
                               class="q-mx-xl"
-                              style="border: 1px solid #DDDDDD"
-                              filled
+                              style="width :300px ;"
+                              outlined
+                              :disable="toggle == false"
                             />
                           </div>
                         </div>
                         <div class="q-mt-xs row  full-width">
-                          <div class="col-5  q-mx-xl">Email*</div>
-                          <div class="col-4  q-mx-lg">Role *</div>
+                          <div class="col-5  q-mx-xl q-mt-lg">Email*</div>
+                          <div class="col-4  q-mx-lg q-mt-lg">Role *</div>
                         </div>
                         <div
                           class="row q-mt-xs      justify-between full-width"
@@ -221,25 +276,29 @@
                             <q-input
                               v-model="users[index].email"
                               class="q-mx-xl"
-                              style="border: 1px solid #DDDDDD"
-                              filled
+                              style="width :300px ;"
+                              outlined
+                              :disable="toggle == false"
                             />
                           </div>
                           <div class="col-6  ">
                             <q-select
                               v-model="users[index].roles[0]"
-                              filled
+                              outlined
+                              style="width :300px ;"
                               class="q-mx-xl"
                               :options="options"
                               label="role"
+                              :disable="toggle == false"
                             />
                           </div>
                         </div>
                       </div>
-                      <div class="row">
+
+                      <div class="row q-mt-lg">
                         <q-btn
                           outline
-                          class="q-mt-sm q-mx-xl"
+                          class="  q-mx-xl"
                           @click="addAnotherContact"
                           color="primary"
                           label="Add"
@@ -255,75 +314,28 @@
                         />
                       </div>
                     </q-tab-panel>
-                    <!-- This is for 4th panel for future use -->
-                    <!-- <q-tab-panel name="sales">
-                      <div class="q-mx-xl row">
-                        <p class=" q-my-auto">
-                          <label>
-                            Does Company Have Sales Representative
-                          </label>
-                        </p>
-                        <q-toggle class="q-ml-xs" v-model="toggle" />
-                      </div>
-                      <div class="q-mt-xs row  full-width">
-                        <div class="col-5  q-mx-xl">First Name *</div>
-                        <div class="col-4  q-mx-lg">Last Name *</div>
-                      </div>
-                      <div class="row q-mt-xs  justify-between full-width">
-                        <div class="col-6  ">
-                          <q-input
-                            v-model="onboard.sales.fname"
-                            class="q-mx-xl"
-                            style="border: 1px solid #DDDDDD"
-                            filled
-                          />
-                        </div>
-                        <div class="col-6  ">
-                          <q-input
-                            v-model="onboard.sales.lname"
-                            class="q-mx-xl"
-                            style="border: 1px solid #DDDDDD"
-                            filled
-                          />
-                        </div>
-                      </div>
-                      <div class="q-mt-xs row  full-width">
-                        <div class="col-5  q-mx-xl">Email*</div>
-                        <div class="col-4  q-mx-lg">Role *</div>
-                      </div>
-                      <div class="row q-mt-xs      justify-between full-width">
-                        <div class="col-6  ">
-                          <q-input
-                            v-model="onboard.sales.email"
-                            class="q-mx-xl"
-                            style="border: 1px solid #DDDDDD"
-                            filled
-                          />
-                        </div>
-                        <div class="col-6  ">
-                          <q-select
-                            filled
-                            v-model="onboard.sales.role"
-                            class="q-mx-xl"
-                            :options="options"
-                            label="Filled"
-                          />
-                        </div></div
-                    ></q-tab-panel> -->
                   </q-tab-panels>
-                  <div class="q-pt-lg">
+                  <div>
                     <q-separator />
-                    <div class="row justify-center full-width q-pa-xl ">
-                      <q-btn
-                        color="primary"
-                        label="submit and Proceed"
-                        class="q-px-lg"
-                        @click="onClickNext"
-                      />
-                    </div>
+                  </div>
+                  <div class="q-mt-lg row justify-center">
+                    <q-btn
+                      color="primary"
+                      label="submit and Proceed"
+                      class="q-mx-lg "
+                      @click="onClickNext"
+                    />
+                  </div>
+                  <div class="q-mt-md ">
+                    <q-separator />
                   </div>
                 </template>
               </q-splitter>
+
+              <div class=" row    full-width q-pa-xl ">
+                <div class="col-3 "></div>
+                <div class="col-7 justify-center q-ml-xl  "></div>
+              </div>
             </div>
           </div>
         </q-card>
@@ -337,6 +349,7 @@ export default {
   name: 'AddUser',
   data() {
     return {
+      len: 1,
       toggle: false,
       // this is for static dropdown
       options: ['Manager', 'Staff'],
@@ -397,11 +410,17 @@ export default {
         this.tab = 'setConfiguration';
       }
     },
+    ToggleFunction() {
+      // this.toggle = false;
+    },
 
     addAnotherContact() {
+      this.$refs.addUserForm.validate();
       const len = this.users.length;
+
       console.log(this.users, len);
       if (this.users[len - 1].contact.fname) {
+        this.len = len + 1;
         this.users.push({
           type: 'user',
           contact: {
@@ -423,6 +442,7 @@ export default {
     },
     removeAnotherContact() {
       const len = this.users.length;
+      // this.len = len - 1;
       if (len === 2) {
         this.isShowRemoveButton = false;
       }
@@ -432,3 +452,4 @@ export default {
   }
 };
 </script>
+<style lang="scss"></style>
