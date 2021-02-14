@@ -6,26 +6,27 @@ import firebaseAuthorization from '@utils/firebase';
 export async function userLogin({ commit, dispatch }, formData) {
   const { data } = formData;
   dispatch('setLoading', true);
-  firebaseAuthorization
-    .signInWithEmailAndPassword(data.attributes.email, data.attributes.password)
-    .then(res => {
-      // Signed in
-      dispatch('setLoading', false);
-      res.user.getIdToken().then(token => {
+  try {
+    const firebaseRes = await firebaseAuthorization.signInWithEmailAndPassword(
+      data.attributes.email,
+      data.attributes.password
+    );
+    if (firebaseRes && firebaseRes.user) {
+      const token = await firebaseRes.user.getIdToken();
+      if (token) {
         setToken(token);
-        this.$router.push('/dashboard');
-      });
-    })
-
-    .catch(error => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      dispatch('setLoading', false);
-      dispatch('setNotification', {
-        type: 'negative',
-        message: 'Login failed. Please use correct email and password.'
-      });
+        return true;
+      }
+    }
+    dispatch('setLoading', false);
+    return true;
+  } catch (error) {
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'Login failed. Please use correct email and password.'
     });
+  }
 }
 
 export async function createUserForOrganization({ dispatch, state }, payload) {
@@ -45,5 +46,26 @@ export async function createUserForOrganization({ dispatch, state }, payload) {
       message: e.response.data.title
     });
     return false;
+  }
+}
+
+export async function getUserInfo({ dispatch, state }) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get('/users/me');
+    state.userInfo = data.attributes;
+    if (state.userInfo.onboard.isCompleted) {
+      this.$router.push('/dashboard');
+    } else {
+      this.$router.push('/onboarding');
+    }
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response.data.title
+    });
   }
 }

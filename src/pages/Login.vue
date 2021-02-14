@@ -77,7 +77,7 @@
   </q-page>
 </template>
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import { getToken } from '@utils/auth';
 export default {
   name: 'Login',
@@ -90,9 +90,9 @@ export default {
     };
   },
   methods: {
-    ...mapActions(['userLogin']),
+    ...mapActions(['userLogin', 'getUserInfo']),
 
-    onUserLogin() {
+    async onUserLogin() {
       const loginData = {
         data: {
           type: 'users',
@@ -102,14 +102,26 @@ export default {
         }
       };
       if (this.login.email && this.login.password) {
-        this.userLogin(loginData);
+        const response = await this.userLogin(loginData);
+        if (response) {
+          this.getUserInfo();
+        }
       }
     }
   },
 
-  beforeMount() {
+  computed: {
+    ...mapGetters(['userInfo'])
+  },
+
+  created() {
     if (getToken()) {
-      this.$router.push('/dashboard');
+      this.getUserInfo();
+      if (userInfo.onboard.isCompleted) {
+        this.$router.push('/dashboard');
+      } else {
+        this.$router.push('/onboarding');
+      }
     }
   }
 };
@@ -139,3 +151,4 @@ export default {
   }
 }
 </style>
+;
