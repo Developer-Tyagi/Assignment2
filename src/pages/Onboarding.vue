@@ -117,6 +117,11 @@
                                 class="q-mx-xl"
                                 :options="options"
                                 label="role"
+                                :rules="[
+                                  val =>
+                                    (val && val.length > 0) ||
+                                    'Please choose the Title'
+                                ]"
                               />
                             </div>
                           </div>
@@ -150,7 +155,7 @@
                       >
                         <div class=" q-mt-xs   row  full-width">
                           <div class="col-5  text-bold">
-                            Sale Representative &nbsp;{{ index + 1 }}
+                            Office Staff Info &nbsp;{{ index + 1 }}
                           </div>
                         </div>
                         <div class=" q-mt-xs row  full-width">
@@ -188,6 +193,11 @@
                               class="q-mx-xl"
                               style="width :300px ;"
                               outlined
+                              :rules="[
+                                val =>
+                                  (val && val.length > 0) ||
+                                  'Please choose the Title'
+                              ]"
                             />
                           </div>
                           <div class="col-6  ">
@@ -198,6 +208,11 @@
                               class="q-mx-xl"
                               :options="options"
                               label="role"
+                              :rules="[
+                                val =>
+                                  (val && val.length > 0) ||
+                                  'Please choose the Title'
+                              ]"
                             />
                           </div>
                         </div>
@@ -279,6 +294,11 @@
                               style="width :300px ;"
                               outlined
                               :disable="toggle == false"
+                              :rules="[
+                                val =>
+                                  (val && val.length > 0) ||
+                                  'Please choose the Title'
+                              ]"
                             />
                           </div>
                           <div class="col-6  ">
@@ -290,6 +310,11 @@
                               :options="options"
                               label="role"
                               :disable="toggle == false"
+                              :rules="[
+                                val =>
+                                  (val && val.length > 0) ||
+                                  'Please choose the Title'
+                              ]"
                             />
                           </div>
                         </div>
@@ -410,34 +435,31 @@ export default {
         this.tab = 'setConfiguration';
       }
     },
-    ToggleFunction() {
-      // this.toggle = false;
-    },
 
     addAnotherContact() {
-      this.$refs.addUserForm.validate();
-      const len = this.users.length;
+      const success = this.$refs.addUserForm.validate();
+      if (success) {
+        const len = this.users.length;
 
-      console.log(this.users, len);
-      if (this.users[len - 1].contact.fname) {
-        this.len = len + 1;
-        this.users.push({
-          type: 'user',
-          contact: {
-            fname: '',
-            lname: ''
-          },
-          email: '',
-          roles: []
-        });
-        this.isShowRemoveButton = true;
-      } else {
-        console.log('no');
-        this.$q.notify({
-          message: 'Please fill the first Name',
-          position: 'top',
-          type: 'negative'
-        });
+        if (this.users[len - 1].contact.fname && this.users[len - 1].email) {
+          this.len = len + 1;
+          this.users.push({
+            type: 'user',
+            contact: {
+              fname: '',
+              lname: ''
+            },
+            email: '',
+            roles: []
+          });
+          this.isShowRemoveButton = true;
+        } else {
+          this.$q.notify({
+            message: 'Please fill the first Name',
+            position: 'top',
+            type: 'negative'
+          });
+        }
       }
     },
     removeAnotherContact() {
