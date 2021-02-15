@@ -1,6 +1,6 @@
 import request from '@api';
 import { buildApiData } from '@utils/api';
-import { setToken } from '@utils/auth';
+import { setToken, setCurrentUser } from '@utils/auth';
 import firebaseAuthorization from '@utils/firebase';
 
 export async function userLogin({ commit, dispatch }, formData) {
@@ -53,8 +53,8 @@ export async function getUserInfo({ dispatch, state }) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.get('/users/me');
-    state.userInfo = data.attributes;
-    if (state.userInfo.onboard.isCompleted) {
+    setCurrentUser(data.attributes);
+    if (data.attributes.onboard.isCompleted) {
       this.$router.push('/dashboard');
     } else {
       this.$router.push('/onboarding');

@@ -77,8 +77,8 @@
   </q-page>
 </template>
 <script>
-import { mapActions, mapGetters } from 'vuex';
-import { getToken } from '@utils/auth';
+import { mapActions } from 'vuex';
+import { getToken, getCurrentUser } from '@utils/auth';
 export default {
   name: 'Login',
   data() {
@@ -110,14 +110,9 @@ export default {
     }
   },
 
-  computed: {
-    ...mapGetters(['userInfo'])
-  },
-
   created() {
     if (getToken()) {
-      this.getUserInfo();
-      if (userInfo.onboard.isCompleted) {
+      if (getCurrentUser() && getCurrentUser().onboard.isCompleted) {
         this.$router.push('/dashboard');
       } else {
         this.$router.push('/onboarding');
