@@ -551,11 +551,10 @@ export default {
     },
 
     onClosingVendorSelectDialog(vendor, dialogName) {
-      if (dialogName) {
+      if (dialogName === constants.industries.VENDOR) {
         this.sourceDetails.id = vendor.id;
         this.sourceDetails.details = vendor.name;
-      }
-      if (dialogName == constants.industries.CARRIER) {
+      } else {
         this.insuranceDetails.carrierId = vendor.id;
         this.insuranceDetails.carrierName = vendor.name;
       }
