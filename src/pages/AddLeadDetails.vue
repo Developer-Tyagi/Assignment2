@@ -840,8 +840,4 @@ export default {
     height: 50px;
   }
 }
-.required .q-field__native ~ .q-field__label:after {
-  content: '*';
-  color: red;
-}
 </style>

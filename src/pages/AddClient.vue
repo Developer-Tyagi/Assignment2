@@ -2157,11 +2157,6 @@ export default {
 </script>
 
 <style lang="scss">
-.required .q-field__native ~ .q-field__label:after {
-  content: '*';
-  color: red;
-}
-
 .fixHeight {
   height: calc(100vh - 145px);
   overflow-y: auto;
