@@ -6,8 +6,7 @@ export default function() {
       phone: '',
       email: '',
       logo: null,
-      avatar: null,
-      adduser: []
+      avatar: null
     }
   };
 }
