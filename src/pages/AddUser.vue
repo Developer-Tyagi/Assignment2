@@ -9,7 +9,7 @@
         </div>
       </div>
       <q-card class=" row  full-width full-height" flat bordered>
-        <q-card class="  col-6 q-mx-xl   full-height " flat bordered>
+        <q-card class=" col-6 q-mx-xl   full-height " flat bordered>
           <div class="q-mt-xs row  full-width">
             <div class="col-5  q-mx-xl">First Name *</div>
             <div class="col-4  q-mx-lg">Last Name *</div>
@@ -121,7 +121,7 @@
 </template>
 <script>
 export default {
-  name: 'Payment',
+  name: 'AddUser',
   data() {
     return {
       items: [{}, {}, {}, {}, {}, {}, {}, {}, {}],
