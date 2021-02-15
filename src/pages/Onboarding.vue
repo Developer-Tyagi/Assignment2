@@ -41,11 +41,13 @@
                       >
                         Set Configuration
                         <q-menu
-                          max-height="290px"
+                          max-height="200px"
                           class="bg-blue"
                           style="overflow:auto;"
                         >
                           <div class=" " style="width:240px;"></div>
+                          <div class="">kk</div>
+                          <div class="">kk</div>
                           <div class="">kk</div>
                           <div class="">kk</div>
                           <div class="">kk</div>
