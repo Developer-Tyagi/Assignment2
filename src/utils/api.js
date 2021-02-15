@@ -12,7 +12,6 @@ export function apiSerialize(data, type, options) {
 }
 
 export function buildApiData(type, attributes) {
-  console.log(attributes);
   return {
     data: {
       type,

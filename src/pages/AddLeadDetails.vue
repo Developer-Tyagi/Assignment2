@@ -554,6 +554,7 @@ export default {
       this.vendorDialogName = name;
       if (name === constants.industries.CARRIER) {
         this.showVendorDialogFilters = false;
+
         this.vendorDialogFilterByIndustry = constants.industries.CARRIER;
       } else {
         this.showVendorDialogFilters = true;
@@ -563,7 +564,7 @@ export default {
     },
 
     onClosingVendorSelectDialog(vendor, dialogName) {
-      if (dialogName) {
+      if (dialogName === constants.industries.VENDOR) {
         this.sourceDetails.id = vendor.id;
         this.sourceDetails.details = vendor.name;
       } else {

@@ -2117,38 +2117,54 @@ export default {
       this.addVendorDialog = false;
       this.vendorsListDialog = true;
       if (e) {
-        this.$refs.list.getVendors();
+        if (
+          this.vendorDialogName === constants.industries.CARRIER ||
+          this.vendorDialogName === constants.industries.MORTGAGE
+        ) {
+          const params = {
+            industry:
+              this.vendorDialogName === constants.industries.CARRIER
+                ? constants.industries.CARRIER
+                : constants.industries.MORTGAGE,
+            name: ''
+          };
+          this.$refs.list.getVendors(params);
+        } else {
+          this.$refs.list.getVendors();
+        }
       }
     },
-
     onAddVendorDialogClick(name) {
       this.valueName = name;
-      if (
-        name === constants.industries.MORTGAGE ||
-        constants.industries.SECONDARYMORTGAGE
-      ) {
-        this.vendorDialogName = constants.industries.MORTGAGE;
-      }
-      if (name === constants.industries.EXPERTVENDOR) {
-        this.vendorDialogName = constants.industries.VENDOR;
-      } else {
-        this.vendorDialogName = name;
-      }
 
-      if (name === constants.industries.CARRIER) {
-        this.showVendorDialogFilters = false;
-        this.vendorDialogFilterByIndustry = constants.industries.CARRIER;
-      } else {
-        this.showVendorDialogFilters = true;
-        this.vendorDialogFilterByIndustry = '';
-      }
-      if (name == constants.industries.MORTGAGE) {
-        this.showVendorDialogFilters = false;
-        this.vendorDialogFilterByIndustry = constants.industries.MORTGAGE;
-      }
-      if (name == constants.industries.SECONDARYMORTGAGE) {
-        this.showVendorDialogFilters = false;
-        this.vendorDialogFilterByIndustry = constants.industries.MORTGAGE;
+      switch (name) {
+        case constants.industries.MORTGAGE:
+          this.vendorDialogName = constants.industries.MORTGAGE;
+          this.showVendorDialogFilters = false;
+          this.vendorDialogFilterByIndustry = constants.industries.MORTGAGE;
+          break;
+        case constants.industries.SECONDARYMORTGAGE:
+          this.vendorDialogName = constants.industries.MORTGAGE;
+          this.showVendorDialogFilters = false;
+          this.vendorDialogFilterByIndustry = constants.industries.MORTGAGE;
+          break;
+        case constants.industries.EXPERTVENDOR:
+          this.vendorDialogName = constants.industries.VENDOR;
+          this.showVendorDialogFilters = true;
+          this.vendorDialogFilterByIndustry = '';
+          break;
+        case constants.industries.CARRIER:
+          this.vendorDialogName = constants.industries.CARRIER;
+          this.showVendorDialogFilters = false;
+          this.vendorDialogFilterByIndustry = constants.industries.CARRIER;
+          break;
+        case constants.industries.VENDOR:
+          this.vendorDialogName = constants.industries.VENDOR;
+          this.showVendorDialogFilters = true;
+          this.vendorDialogFilterByIndustry = '';
+          break;
+        default:
+          this.vendorDialogName = name;
       }
       this.vendorsListDialog = true;
     }
