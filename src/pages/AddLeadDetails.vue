@@ -16,7 +16,9 @@
           <q-form @submit="step++">
             <q-card class="form-card q-pa-md">
               <span class="stepper-heading">Primary Contact </span>
+
               <q-select
+                class="required"
                 v-model="primaryDetails.honorific.id"
                 :options="titles"
                 option-value="id"
@@ -28,7 +30,9 @@
                 lazy-rules
                 :rules="[val => (val && val.length > 0) || '']"
               />
+
               <q-input
+                class="required"
                 v-model="primaryDetails.firstName"
                 label="First Name"
                 lazy-rules
@@ -37,6 +41,7 @@
                 ]"
               />
               <q-input
+                class="required"
                 v-model="primaryDetails.lastName"
                 label="Last Name"
                 lazy-rules
@@ -46,6 +51,7 @@
               />
               <div class="row">
                 <q-select
+                  class="required"
                   v-model="primaryDetails.selectedContactType"
                   :options="contactTypes"
                   option-value="machineValue"
@@ -58,6 +64,7 @@
                   :rules="[val => (val && val.length > 0) || '']"
                 />
                 <q-input
+                  class="required"
                   v-model="primaryDetails.phoneNumber"
                   label="Phone"
                   type="number"
@@ -71,6 +78,7 @@
                 />
               </div>
               <q-input
+                class="required"
                 v-model="primaryDetails.email"
                 label="Email"
                 lazy-rules
@@ -94,6 +102,7 @@
               </div>
               <div v-if="primaryDetails.isOrganization">
                 <q-input
+                  class="required"
                   v-model="primaryDetails.organizationName"
                   label="Organization Name"
                   lazy-rules
@@ -279,8 +288,10 @@
         <q-step :name="5" :done="step > 5" title="Notes">
           <q-form @submit="step++" @reset="step--">
             <q-card class="q-pa-md form-card">
-              <p class="text-color-light-grey">Last Notes</p>
+              <p class="text-color-light-grey ">Last Notes</p>
               <q-input
+                class="required"
+                label="Last Notes"
                 v-model="notes"
                 type="input"
                 lazy-rules
@@ -324,6 +335,7 @@
                 left-label
               />
               <q-select
+                class="required"
                 v-model="schedulingDetails.inspectionType"
                 :options="inspectionTypes"
                 label="Type of Inspection"
@@ -339,6 +351,7 @@
                 ]"
               />
               <q-select
+                class="required"
                 v-if="showSubInspectionType"
                 v-model="schedulingDetails.subInspectionType"
                 :options="subInspectionTypes"
