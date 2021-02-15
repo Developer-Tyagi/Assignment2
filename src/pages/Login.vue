@@ -57,14 +57,14 @@
               placeholder="Password"
               type="password"
               borderless
-              :type="isPwd ? 'password' : 'text'"
+              :type="isPasswordVisible ? 'text' : 'password'"
             >
               <template v-slot:append>
                 <q-avatar>
                   <q-icon
-                    :name="isPwd ? 'visibility_off' : 'visibility'"
+                    :name="isPasswordVisible ? 'visibility' : 'visibility_off'"
                     class="cursor-pointer"
-                    @click="isPwd = !isPwd"
+                    @click="isPasswordVisible = !isPasswordVisible"
                   ></q-icon>
                 </q-avatar>
               </template>
@@ -98,7 +98,7 @@ export default {
   name: 'Login',
   data() {
     return {
-      isPwd: true,
+      isPasswordVisible: false,
       login: {
         email: '',
         password: ''
