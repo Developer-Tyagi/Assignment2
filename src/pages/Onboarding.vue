@@ -33,13 +33,25 @@
                       label="Sales Representatives"
                       disable
                     ></q-tab>
-                    <div name="setConfiguration" class="">
-                      <div label="Set Configuration " class="bg-red full-width">
+                    <div name=" bg-yellow setConfiguration" class="">
+                      <div
+                        label="Set Configuration "
+                        class="bg-blue full-width"
+                        scroll
+                      >
                         Set Configuration
-                        <q-menu max-height="290px" class="bg-blue" scroll>
+                        <q-menu
+                          max-height="290px"
+                          class="bg-blue"
+                          style="overflow:auto;"
+                        >
                           <div class=" " style="width:240px;"></div>
-                          <div class="bg-red">kk</div>
-                          <div class="bg-red">kk</div>
+                          <div class="">kk</div>
+                          <div class="">kk</div>
+                          <div class="">kk</div>
+                          <div class="">kk</div>
+                          <div class="">kk</div>
+                          <div class="">kk</div>
                           <div class="bg-red">kk</div>
                           <div class="bg-red">kk</div>
                         </q-menu>
