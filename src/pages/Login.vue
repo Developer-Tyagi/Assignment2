@@ -46,15 +46,30 @@
           />
           <q-separator :color="$q.screen.width < 600 ? 'grey' : 'white'" />
         </div>
-        <div class="row">
-          <img src="~assets/lock.svg" class="q-mr-lg" />
-          <q-input
-            class="login-input"
-            v-model="login.password"
-            placeholder="Password"
-            type="password"
-            borderless
-          />
+        <div class="row ">
+          <div class="col-1 q-mt-md">
+            <img src="~assets/lock.svg" class=" q-mr-lg" />
+          </div>
+          <div class=" col-11">
+            <q-input
+              class=" login-input full-width "
+              v-model="login.password"
+              placeholder="Password"
+              type="password"
+              borderless
+              :type="isPwd ? 'password' : 'text'"
+            >
+              <template v-slot:append>
+                <q-avatar>
+                  <q-icon
+                    :name="isPwd ? 'visibility_off' : 'visibility'"
+                    class="cursor-pointer"
+                    @click="isPwd = !isPwd"
+                  ></q-icon>
+                </q-avatar>
+              </template>
+            </q-input>
+          </div>
           <q-separator :color="$q.screen.width < 600 ? 'grey' : 'white'" />
         </div>
         <div>
@@ -83,6 +98,7 @@ export default {
   name: 'Login',
   data() {
     return {
+      isPwd: true,
       login: {
         email: '',
         password: ''
