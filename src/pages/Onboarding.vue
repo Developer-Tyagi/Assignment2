@@ -33,11 +33,18 @@
                       label="Sales Representatives"
                       disable
                     ></q-tab>
-                    <q-tab
-                      name="setConfiguration"
-                      label="Set Configuration"
-                      disable
-                    ></q-tab>
+                    <div name="setConfiguration" class="">
+                      <div label="Set Configuration " class="bg-red full-width">
+                        Set Configuration
+                        <q-menu max-height="290px" class="bg-blue" scroll>
+                          <div class=" " style="width:240px;"></div>
+                          <div class="bg-red">kk</div>
+                          <div class="bg-red">kk</div>
+                          <div class="bg-red">kk</div>
+                          <div class="bg-red">kk</div>
+                        </q-menu>
+                      </div>
+                    </div>
                   </q-tabs>
                 </template>
                 <!-- Main Template -->
@@ -339,6 +346,7 @@
                         />
                       </div>
                     </q-tab-panel>
+                    <q-tab-panel name="setConfiguration"> abcg</q-tab-panel>
                   </q-tab-panels>
                   <div>
                     <q-separator />
@@ -379,7 +387,7 @@ export default {
       // this is for static dropdown
       options: ['Manager', 'Staff'],
       isShowRemoveButton: false,
-      tab: 'adduser',
+      tab: 'setConfiguration',
       splitterModel: 20,
       users: [
         {
