@@ -2,6 +2,7 @@
   <div>
     <div class="row">
       <q-input
+        class="required"
         v-model="address.houseNumber"
         label="House/Flat No"
         style="width: 35%"
@@ -18,12 +19,14 @@
       <span></span>
     </div>
     <q-input
+      class="required"
       v-model="address.addressLocality"
       label="City"
       :disable="!isAddressFieldEnable"
       :rules="[val => checkValidations(val)]"
     />
     <q-select
+      class="required"
       v-model="address.addressRegion"
       :options="states"
       label="State"
@@ -31,6 +34,7 @@
       :rules="[val => checkValidations(val)]"
     />
     <q-select
+      class="required"
       v-model="address.addressCountry"
       :options="countries"
       label="Country"
@@ -39,6 +43,7 @@
       :rules="[val => checkValidations(val)]"
     />
     <q-input
+      class="required"
       v-model="address.postalCode"
       label="ZIP Code"
       :disable="!isAddressFieldEnable"
@@ -55,6 +60,7 @@
     <q-input
       v-if="address.dropBox.isPresent && isDropBoxEnable"
       v-model="address.dropBox.info"
+      class="required"
       label="Gate/ Dropbox"
       :disable="!isAddressFieldEnable"
       :rules="[val => checkValidations(val)]"
@@ -202,6 +208,7 @@ export default {
     &::placeholder {
       font-size: 12px;
       position: absolute;
+
       color: #f05a26;
     }
   }

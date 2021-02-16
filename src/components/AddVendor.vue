@@ -28,6 +28,7 @@
           "
         >
           <q-input
+            class="required"
             v-model="vendor.name"
             label=" Company Name"
             lazy-rules
@@ -37,7 +38,7 @@
           />
           <div>
             <q-select
-              class="full-width"
+              class="full-width required"
               v-model="vendor.industry.value"
               use-input
               input-debounce="0"
@@ -67,6 +68,7 @@
 
           <p class="form-heading">Company's Contact Person Details</p>
           <q-select
+            class="required"
             v-model="vendor.contact[0].honorific.id"
             :options="titles"
             label="Title"
@@ -81,6 +83,7 @@
             ]"
           />
           <q-input
+            class="required"
             v-model="vendor.contact[0].fname"
             label="First Name"
             lazy-rules
@@ -91,6 +94,7 @@
           <q-input v-model="vendor.contact[0].lname" label="Last Name" />
           <div class="row">
             <q-select
+              class="required"
               v-model="vendor.contact[0].phoneNumber[0].type"
               :options="contactTypes"
               option-value="machineValue"
@@ -100,6 +104,7 @@
               emit-value
             />
             <q-input
+              class="required"
               v-model="vendor.contact[0].phoneNumber[0].number"
               label="Phone"
               type="number"
@@ -135,6 +140,7 @@
           <div v-for="(contactInfo, index) in vendor.contact" v-if="index >= 1">
             <div class="q-mt-sm">
               <q-select
+                class="required"
                 v-model="contactInfo.honorific.id"
                 :options="titles"
                 option-label="value"
@@ -152,6 +158,7 @@
               <q-input v-model="contactInfo.lname" label="Last Name" />
               <div class="row">
                 <q-select
+                  class="required"
                   v-model="contactInfo.phoneNumber[0].type"
                   :options="contactTypes"
                   option-value="machineValue"
@@ -161,6 +168,7 @@
                   emit-value
                 />
                 <q-input
+                  class="required"
                   v-model="contactInfo.phoneNumber[0].number"
                   label="Phone1"
                   type="number"
@@ -302,10 +310,8 @@ export default {
     this.getVendorIndustries();
     this.getTitles();
     this.getContactTypes();
-    if (
-      this.componentName &&
-      this.componentName === constants.industries.CARRIER
-    ) {
+
+    if (this.componentName === constants.industries.CARRIER) {
       let industryType = this.vendorIndustries.find(
         o => o.machineValue === constants.industries.CARRIER
       );
@@ -314,15 +320,14 @@ export default {
         this.vendor.industry.id = industryType.id;
         this.vendor.industry.machineValue = industryType.machineValue;
       }
-    }
-
-    if (
-      this.componentName &&
-      this.componentName === constants.industries.MORTGAGE
+    } else if (
+      this.componentName === constants.industries.MORTGAGE ||
+      this.componentName === constants.industries.SECONDARYMORTGAGE
     ) {
       let industryType = this.vendorIndustries.find(
         o => o.machineValue === constants.industries.MORTGAGE
       );
+
       if (industryType.name && industryType.id) {
         this.vendor.industry.value = industryType.name;
         this.vendor.industry.id = industryType.id;
