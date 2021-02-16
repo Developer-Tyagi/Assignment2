@@ -29,7 +29,10 @@ const routes = [
       {
         path: 'signup',
         name: 'signup',
-        component: () => import('pages/Signup.vue')
+        component: () => import('pages/Signup.vue'),
+        beforeEnter: (to, from, next) => {
+          getToken() ? next({ name: 'signup' }) : next();
+        }
       },
       {
         path: 'forgot-password',
