@@ -8,21 +8,10 @@ export function setClients(state, clients) {
 
 export function setEstimators(state, estimators) {
   state.estimators = estimators.map(estimator => ({
-    ...estimator,
+    ...estimator.attributes,
     id: estimator.id
   }));
 }
-// export function setEstimators(state, estimators) {
-//   console.log(estimators, 'estimators');
-
-//   state.estimators = estimators.map(estimator => ({
-//     ...estimator.attributes,
-
-//     id: estimators.id,
-
-//     name: estimators.attributes.fname
-//   }));
-// }
 
 export function setClientTypes(state, types) {
   state.clientTypes = types.map(type => ({

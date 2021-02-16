@@ -23,11 +23,9 @@ export async function getEstimators({ commit, dispatch }) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.get('/estimators');
-    console.log(data, 87);
+
     commit('setEstimators', data);
-    // console.log(this.setEstimators, 87);
-    console.log('helllllllll');
-    // console.log('after set estimators', setEstimators);
+
     dispatch('setLoading', false);
   } catch (e) {
     console.log(e);
@@ -76,8 +74,7 @@ export async function addClaim({ dispatch, state }, payload) {
   }
 }
 
-export async function addEstimator1({ dispatch, state }, payload) {
-  console.log('bye');
+export async function addEstimator({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.post(

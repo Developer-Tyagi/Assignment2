@@ -1231,9 +1231,23 @@
                 v-if="doesAnEstimatorNeedToBeAssignedToggle"
                 @click="estimatorsListDialog = true"
               >
-                <div class="custom-select form-heading">
+                <!-- <div class="custom-select form-heading">
                   {{ 'Add Estimator' }}
+                </div> -->
+                <!-- yaha se -->
+                <div
+                  class="custom-select form-heading"
+                  v-model="addEstimatorInfo.name"
+                >
+                  <div class="select-text">
+                    {{
+                      addEstimatorInfo.name
+                        ? addEstimatorInfo.name
+                        : 'Add Estimator'
+                    }}
+                  </div>
                 </div>
+                <!-- yaha tak only -->
               </div>
               <q-input
                 v-model="estimatingInfo.estimatorToBeAssigned"
@@ -1307,7 +1321,7 @@
               />
 
               <q-input
-                v-model="addEstimator.fname"
+                v-model="addEstimatorInfo.fname"
                 lazy-rules
                 :rules="[
                   val => (val && val.length > 0) || 'Please fill the First name'
@@ -1316,7 +1330,7 @@
               />
 
               <q-input
-                v-model="addEstimator.lname"
+                v-model="addEstimatorInfo.lname"
                 lazy-rules
                 :rules="[
                   val => (val && val.length > 0) || 'Please fill the Last name'
@@ -1324,7 +1338,7 @@
                 label="Last Name"
               />
               <q-input
-                v-model="addEstimator.email"
+                v-model="addEstimatorInfo.email"
                 label="Email"
                 lazy-rules
                 :rules="[
@@ -1337,7 +1351,7 @@
               <div class="row">
                 <q-select
                   class="required"
-                  v-model="addEstimator.type"
+                  v-model="addEstimatorInfo.type"
                   :options="contactTypes"
                   option-value="machineValue"
                   option-label="name"
@@ -1350,7 +1364,7 @@
                 />
                 <q-input
                   class="required"
-                  v-model="addEstimator.phone"
+                  v-model="addEstimatorInfo.phone"
                   label="Phone"
                   type="number"
                   lazy-rules
@@ -1486,7 +1500,7 @@
             </div>
           </div>
           <q-btn
-            label="Add Estimator"
+            label="Save"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
             @click="expertVendorInfoDialog = false"
@@ -1568,7 +1582,7 @@
       transition-hide="slide-down"
     >
       <q-card>
-        <q-header bordered class="bg-white">
+        <q-header bordered class="bg-white  ">
           <q-toolbar class="row bg-white">
             <img
               src="~assets/close.svg"
@@ -1607,7 +1621,7 @@
     >
       <q-card>
         <q-header bordered class="bg-white">
-          <q-toolbar class="row bg-white">
+          <q-toolbar class="row bg-white  justify-between">
             <img
               src="~assets/close.svg"
               alt="close"
@@ -1620,19 +1634,18 @@
               @click="addEstimatorDialog = true"
               style="margin: 0 0 0 20px"
             />
-            <div>
-              <div
-                v-for="estimator in estimators"
-                :key="estimators.id"
-                class="vendor-list-item"
-                @click="selectEstimator(estimator)"
-              >
-                <span>{{ estimator.name }}</span>
-              </div>
-            </div>
           </q-toolbar>
         </q-header>
-        <span>Hello</span>
+        <div class="vendor-list">
+          <div
+            v-for="estimator in estimators"
+            :key="estimator.id"
+            class="vendor-list-item"
+            @click="selectEstimator(estimator)"
+          >
+            <span>{{ estimator.fname }} {{ estimator.lname }}</span>
+          </div>
+        </div>
       </q-card>
     </q-dialog>
     <!-- Add vendor Dialog -->
@@ -1899,7 +1912,8 @@ export default {
           isPresent: false
         }
       },
-      addEstimator: {
+      addEstimatorInfo: {
+        name: '',
         fname: '',
         lname: '',
         email: '',
@@ -1990,7 +2004,7 @@ export default {
       'getVendors',
       'getEstimators',
       'addClaim',
-      'addEstimator1',
+      'addEstimator',
       'getClientTypes',
       'getPropertyTypes',
       'getPolicyTypes',
@@ -2026,7 +2040,7 @@ export default {
       const result = this.vendorIndustries.find(obj => {
         return obj.name === selectedName;
       });
-      console.log(selectedName, 'selected name');
+
       this.expertVendorInfo.industry.value = result.name;
 
       this.expertVendorInfo.industry.id = result.id;
@@ -2196,8 +2210,8 @@ export default {
       } else {
         payload.source.detail = this.sourceDetails.details;
       }
-      // this.setPayloadForEstimator();
 
+      const response = await this.addClient(payload);
       if (response && response.id) {
         const clientInfo = {
           name: response,
@@ -2321,31 +2335,31 @@ export default {
     },
     async onAddEstimatorButtonClick() {
       const payload = {
-        fname: this.addEstimator.fname,
-        lname: this.addEstimator.lname,
+        fname: this.addEstimatorInfo.fname,
+        lname: this.addEstimatorInfo.lname,
         honorific: {
           id: this.honorific3.id,
           value: this.honorific3.title,
           machineValue: this.honorific3.machineValue
         },
-        email: this.addEstimator.email,
+        email: this.addEstimatorInfo.email,
         phoneNumber: [
           {
-            type: this.addEstimator.type,
-            number: this.addEstimator.phone
+            type: this.addEstimatorInfo.type,
+            number: this.addEstimatorInfo.phone
           }
         ]
       };
 
-      const response = await this.addEstimator1(payload);
+      const response = this.addEstimator(payload);
       if (response) {
         this.addEstimatorDialog = false;
-
-        console.log(response, 'this is response');
+        this.getEstimators();
       }
     },
-    selectEstimator() {
-      console.log('select estimator dialog box me aya');
+    selectEstimator(value) {
+      this.addEstimatorInfo.name = value.fname;
+      this.estimatorsListDialog = false;
     },
 
     validateEmail,
@@ -2355,9 +2369,7 @@ export default {
       this.sourceDetails.details = '';
       this.sourceDetails.machineValue = '';
     },
-    closeAddEstimatorDialog() {
-      console.log('list is');
-    },
+
     onClosingVendorSelectDialog(vendor, dialogName) {
       switch (dialogName) {
         case constants.industries.CARRIER:
@@ -2422,8 +2434,8 @@ export default {
           break;
         case constants.industries.EXPERTVENDOR:
           this.vendorDialogName = constants.industries.VENDOR;
-          this.showVendorDialogFilters = true;
-          this.vendorDialogFilterByIndustry = '';
+
+          this.vendorDialogFilterByIndustry = this.selectedName;
           break;
         case constants.industries.CARRIER:
           this.vendorDialogName = constants.industries.CARRIER;
@@ -2484,6 +2496,22 @@ export default {
     padding-top: 24px;
     padding-bottom: 8px;
     height: 50px;
+  }
+}
+.vendor-list {
+  padding-top: 51px;
+  color: #666666;
+  .actions-div {
+    display: flex;
+    border-bottom: 1px solid #0000001f;
+    padding: 0 20px;
+    align-items: center;
+  }
+  .vendor-list-item {
+    padding: 20px;
+    border-bottom: 1px solid lightgray;
+    text-transform: capitalize;
+    display: flex;
   }
 }
 </style>
