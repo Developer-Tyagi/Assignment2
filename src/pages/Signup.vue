@@ -188,7 +188,8 @@
                   />
                   <input
                     v-model="user.mailingAddress.streetAddress"
-                    id="autocomplete"
+                    id="autocomplete1"
+                    class="autocomplete-input"
                     name="address1"
                     color="primary"
                     label="Street Address"
@@ -298,7 +299,8 @@
                   />
                   <input
                     v-model="user.billingInfo.address.streetAddress"
-                    id="autocomplete"
+                    id="autocomplete2"
+                    class="autocomplete-input"
                     name="address1"
                     color="primary"
                     label="Street Address"
@@ -435,7 +437,8 @@ export default {
     return {
       plan: 1,
       step: 1,
-      autocomplete: {},
+      autocomplete1: {},
+      autocomplete2: {},
       isBillingAddressSame: false,
       isAddressFieldEnable: false,
       selectedPlan: {
@@ -500,53 +503,51 @@ export default {
 
     onPrevPlan() {
       this.plan--;
-      this.user.billingInfo.planInfo.id = this.plans[this.plan - 1].id;
-      this.user.billingInfo.planInfo.name = this.plans[this.plan - 1].name;
-      this.user.billingInfo.planInfo.machineName = this.plans[
-        this.plan - 1
-      ].machineName;
+      this.$router.push({
+        path: 'signup',
+        query: { plan: this.plans[this.plan - 1].machineName }
+      });
     },
 
     onNextPlan() {
       this.plan++;
-      this.user.billingInfo.planInfo.id = this.plans[this.plan - 1].id;
-      this.user.billingInfo.planInfo.name = this.plans[this.plan - 1].name;
-      this.user.billingInfo.planInfo.machineName = this.plans[
-        this.plan - 1
-      ].machineName;
+      this.$router.push({
+        path: 'signup',
+        query: { plan: this.plans[this.plan - 1].machineName }
+      });
     },
 
     fillInAddress() {
-      const place = this.autocomplete.getPlace().address_components;
-      this.user.mailingAddress.streetAddress =
+      const autoPopulateAddress =
+        this.step === 1
+          ? this.user.mailingAddress
+          : this.user.billingInfo.address;
+      const addressField =
+        this.step === 1 ? this.autocomplete1 : this.autocomplete2;
+      const place = addressField.getPlace().address_components;
+      autoPopulateAddress.streetAddress =
         this.getPlaceName('route', place) >= 0
           ? place[this.getPlaceName('route', place)].long_name
           : '';
-      this.user.mailingAddress.addressLocality = this.getPlaceName(
+      autoPopulateAddress.addressLocality = this.getPlaceName(
         'administrative_area_level_2',
         place
       )
         ? place[this.getPlaceName('administrative_area_level_2', place)]
             .long_name
         : '';
-      this.user.mailingAddress.addressRegion = this.getPlaceName(
+      autoPopulateAddress.addressRegion = this.getPlaceName(
         'administrative_area_level_1',
         place
       )
         ? place[this.getPlaceName('administrative_area_level_1', place)]
             .long_name
         : '';
-      this.user.mailingAddress.addressCountry = this.getPlaceName(
-        'country',
-        place
-      )
+      autoPopulateAddress.addressCountry = this.getPlaceName('country', place)
         ? place[this.getPlaceName('country', place)].long_name
         : '';
 
-      this.user.mailingAddress.postalCode = this.getPlaceName(
-        'postal_code',
-        place
-      )
+      autoPopulateAddress.postalCode = this.getPlaceName('postal_code', place)
         ? place[this.getPlaceName('postal_code', place)].long_name
         : '';
       this.isAddressFieldEnable = true;
@@ -606,12 +607,23 @@ export default {
   },
 
   mounted() {
-    this.autocomplete = new google.maps.places.Autocomplete(
-      document.getElementById('autocomplete'),
+    this.autocomplete1 = new google.maps.places.Autocomplete(
+      document.getElementById('autocomplete1'),
       { types: ['geocode'] }
     );
-    this.getGeoLocation;
-    this.autocomplete.addListener('place_changed', this.fillInAddress);
+    this.autocomplete1.addListener('place_changed', this.fillInAddress);
+  },
+
+  watch: {
+    step(newValue, oldValue) {
+      if (newValue === 2) {
+        this.autocomplete2 = new google.maps.places.Autocomplete(
+          document.getElementById('autocomplete2'),
+          { types: ['geocode'] }
+        );
+        this.autocomplete2.addListener('place_changed', this.fillInAddress);
+      }
+    }
   }
 };
 </script>
@@ -642,7 +654,7 @@ export default {
     }
   }
 }
-#autocomplete {
+.autocomplete-input {
   height: 56px;
   padding: 0 12px;
   margin-bottom: 20px;
