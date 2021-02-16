@@ -1231,10 +1231,6 @@
                 v-if="doesAnEstimatorNeedToBeAssignedToggle"
                 @click="estimatorsListDialog = true"
               >
-                <!-- <div class="custom-select form-heading">
-                  {{ 'Add Estimator' }}
-                </div> -->
-                <!-- yaha se -->
                 <div
                   class="custom-select form-heading"
                   v-model="addEstimatorInfo.name"
@@ -1247,7 +1243,6 @@
                     }}
                   </div>
                 </div>
-                <!-- yaha tak only -->
               </div>
               <q-input
                 v-model="estimatingInfo.estimatorToBeAssigned"
