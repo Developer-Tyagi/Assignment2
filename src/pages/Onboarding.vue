@@ -21,26 +21,17 @@
             >
               <template v-slot:before>
                 <q-tabs v-model="tab" vertical class="">
-                  <q-tab name="adduser" label="Add User" disable></q-tab>
-                  <q-tab
-                    id="offcInfo"
-                    label="Office Staff Info"
-                    disable
-                  ></q-tab>
-                  <q-tab
-                    name="sales"
-                    label="Sales Representatives"
-                    disable
-                  ></q-tab>
+                  <q-tab name="adduser" label="Add User"></q-tab>
+                  <q-tab id="offcInfo" label="Office Staff Info"></q-tab>
+                  <q-tab name="sales" label="Sales Representatives"></q-tab>
                   <q-tab
                     name="setConfiguration"
                     label="Set Configuration"
-                    disable
                   ></q-tab>
 
                   <div class="bg-blue" style="overflow:auto;max-height:300px">
                     <div
-                      name="sssss"
+                      name="inspectionType"
                       class="q-py-md text-center"
                       @click="UserA('inspectionType')"
                     >
@@ -359,30 +350,46 @@
                   <q-tab-panel name="inspectionType">
                     <div class="row justify-between">
                       <!-- empty pannel -->
-                      <div class="bg-red col-2">Inspection Type</div>
-                      <div
-                        class="bg-green col-2 text-primary"
-                        @click="bar = true"
-                      >
+                      <div class=" text-bold col-2">Inspection Type</div>
+                      <div class=" col-2 text-primary" @click="bar = true">
                         Add Inspection Type
                       </div>
                     </div>
                     <div class="q-mt-lg"><q-separator /></div>
-
-                    <div v-if="!inspection.subtypes[0].type">ddddd</div>
+                    <!-- This is div for Data of Inspection Type -->
+                    <div class="q-pa-lg" v-if="!inspection.type">
+                      You Have Not Added Any Inspection Type yet
+                    </div>
                     <div v-else class="row justify-between">
-                      <p>
-                        {{ inspection.subtypes[0].type }}
-                      </p>
-                      <div>
-                        <q-icon size="sm" color="primary" name="create" />
-                        <q-icon
-                          class="q-ml-xs"
-                          size="sm"
-                          color="primary"
-                          name="delete"
-                        />
-                      </div>
+                      <table>
+                        <tr class=" justify-between" style="width:40%">
+                          <td>
+                            Inspection Type
+                          </td>
+                          <td>Duration</td>
+                        </tr>
+
+                        <tr
+                          v-for="(contactInfo, index) in inspection.subtypes"
+                          v-if="index >= 0"
+                        >
+                          <td>
+                            {{ inspection.subtypes[0].type }}
+                          </td>
+                          <td>{{ inspection.subtypes[0].duration }}</td>
+                          <td>
+                            <div>
+                              <q-icon size="sm" color="primary" name="create" />
+                              <q-icon
+                                class="q-ml-xs"
+                                size="sm"
+                                color="primary"
+                                name="delete"
+                              />
+                            </div>
+                          </td>
+                        </tr>
+                      </table>
                     </div>
                   </q-tab-panel>
 
@@ -426,36 +433,56 @@
                         v-model="inspection.type"
                         label="Type Of Inspection"
                         lazy-rules
-                        :rules="[
-                          val =>
-                            (val && val.length == 10) ||
-                            'Please fill the phone number'
-                        ]"
                       />
-
-                      <q-input
-                        v-model="inspection.subtypes[0].type"
-                        label="Sub Type Of Inspection"
-                        lazy-rules
-                        :rules="[
-                          val =>
-                            (val && val.length == 10) ||
-                            'Please fill the phone number'
-                        ]"
-                      />
-                      <q-label>Default Duration (hr)</q-label>
-                      <q-slider
-                        class="q-mt-lg"
-                        name="speed"
-                        v-model="inspection.subtypes[0].duration"
-                        label-always
-                        :min="0"
-                        :max="5"
-                        :step="0.5"
+                      <div
+                        v-for="(contactInfo, index) in inspection.subtypes"
+                        v-if="index >= 0"
+                      >
+                        <q-input
+                          v-model="inspection.subtypes[index].type"
+                          label="Sub Type Of Inspection"
+                          lazy-rules
+                        />
+                        Default Duration (hr))
+                        <q-slider
+                          class="q-mt-lg"
+                          name="speed"
+                          v-model="inspection.subtypes[index].duration"
+                          label-always
+                          :min="0"
+                          :max="5"
+                          :step="0.5"
+                        />
+                      </div>
+                    </div>
+                    <div class=" row justify-between text-primary q-pl-lg">
+                      <div @click="addAnotherSubType">
+                        + Another Sub Type Of Inspection
+                      </div>
+                      <div
+                        v-if="inspection.subtypes[1]"
+                        @click="onClickRemoveSubType"
+                      >
+                        Remove
+                      </div>
+                    </div>
+                  </div>
+                  <div class="  row justify-center  q-pa-lg">
+                    <div>
+                      <q-btn
+                        color="primary"
+                        label="Clear"
+                        class="q-mx-lg "
+                        @click="onClickClearInspectionType"
                       />
                     </div>
-                    <div class="text-primary q-pl-lg" style="">
-                      + Another Sub Type Of Inspection
+                    <div>
+                      <q-btn
+                        color="primary"
+                        label="Save"
+                        class="q-mx-lg "
+                        @click="onSaveInspectionType"
+                      />
                     </div>
                   </div>
                 </q-card-section>
@@ -518,7 +545,7 @@ export default {
       // this is for static dropdown
       options: ['Manager', 'Staff'],
       isShowRemoveButton: false,
-      tab: '',
+      tab: 'inspectionType',
       splitterModel: 20,
       users: [
         {
@@ -532,8 +559,8 @@ export default {
         }
       ],
       inspection: {
-        type: 'A',
-        subtypes: [{ type: 'Industry ', duration: 1 }]
+        type: '',
+        subtypes: [{ type: ' ', duration: '' }]
       },
       onboard: {
         officesuer: {
@@ -617,9 +644,35 @@ export default {
     UserA(value) {
       console.log(1233456787);
       this.tab = value;
+    },
+
+    addAnotherSubType() {
+      console.log(668666);
+      this.inspection.subtypes.push({ type: ' ', duration: '' });
+    },
+    onClickRemoveSubType() {
+      this.inspection.subtypes.pop();
+    },
+    onClickClearInspectionType() {
+      this.inspection = {
+        type: '',
+        subtypes: [{ type: ' ', duration: '' }]
+      };
+    },
+    onSaveInspectionType() {
+      console.log(this.inspection);
+      this.bar = false;
     }
+
     // End of Functions
   }
+  // End of Functions
 };
 </script>
-<style lang="scss"></style>
+<style lang="scss">
+.th,
+td {
+  border: 1px solid black;
+  width: 200px;
+}
+</style>
