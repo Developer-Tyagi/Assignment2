@@ -93,7 +93,7 @@
 </template>
 <script>
 import { mapActions } from 'vuex';
-import { getToken } from '@utils/auth';
+import { getToken, getCurrentUser } from '@utils/auth';
 export default {
   name: 'Login',
   data() {
@@ -106,9 +106,9 @@ export default {
     };
   },
   methods: {
-    ...mapActions(['userLogin']),
+    ...mapActions(['userLogin', 'getUserInfo']),
 
-    onUserLogin() {
+    async onUserLogin() {
       const loginData = {
         data: {
           type: 'users',
@@ -118,14 +118,21 @@ export default {
         }
       };
       if (this.login.email && this.login.password) {
-        this.userLogin(loginData);
+        const response = await this.userLogin(loginData);
+        if (response) {
+          this.getUserInfo();
+        }
       }
     }
   },
 
-  beforeMount() {
+  created() {
     if (getToken()) {
-      this.$router.push('/dashboard');
+      if (getCurrentUser() && getCurrentUser().attributes.onboard.isCompleted) {
+        this.$router.push('/dashboard');
+      } else {
+        this.$router.push('/onboarding');
+      }
     }
   }
 };
@@ -155,3 +162,4 @@ export default {
   }
 }
 </style>
+;

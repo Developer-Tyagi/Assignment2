@@ -44,7 +44,7 @@
           />
           <div
             class="column text-white q-pa-sm q-ml-sm"
-            style="width: calc(100% - 54px);"
+            style="width: calc(100% - 54px)"
           >
             <div class="text-capitalize ellipsis full-width">
               {{ user.name || 'Unknown' }}
@@ -94,7 +94,7 @@
 </template>
 
 <script>
-import { removeToken } from '@utils/auth';
+import { removeToken, removeCurrentUser } from '@utils/auth';
 export default {
   name: 'DashboardLayout',
   data() {
@@ -143,10 +143,12 @@ export default {
   methods: {
     logout() {
       this.removeToken();
+      this.removeCurrentUser();
       this.$router.push('/login');
     },
 
     removeToken,
+    removeCurrentUser,
 
     onMenuButtonClick() {
       this.isLeftSidePanelOpen = !this.isLeftSidePanelOpen;
