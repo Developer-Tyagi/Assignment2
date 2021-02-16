@@ -1,17 +1,18 @@
 <template>
-  <q-page class="window-height bg-background full-width   ">
+  <q-page class="window-height bg-background full-width">
     <br />
     <!-- This Style is needed for inner div-->
-    <div class="  q-pa-xs" style="height:60%;width:95%;">
-      <div class=" full-width">
-        <div class=" my-font text-bold row q-my-lg q-mx-xl">
+    <div class="q-pa-xs" style="height: 60%; width: 95%">
+      <div class="full-width">
+        <div class="my-font text-bold row q-my-lg q-mx-xl">
           Setup Company Account
         </div>
       </div>
       <!-- Height given for there Inner 2 div -->
-      <div class=" row   full-width " style="height:107%;" flat bordered>
+      <div class="row full-width" style="height: 107%" flat bordered>
         <q-separator vertical />
-        <q-card class=" bg-red  col-11  q-ml-xl full-height  " flat bordered>
+        <!-- This is the Main Div -->
+        <q-card class="  col-11  q-ml-xl full-height  " flat bordered>
           <div>
             <q-splitter
               v-model="splitterModel"
@@ -21,15 +22,32 @@
             >
               <template v-slot:before>
                 <q-tabs v-model="tab" vertical class="">
-                  <q-tab name="adduser" label="Add User"></q-tab>
-                  <q-tab id="offcInfo" label="Office Staff Info"></q-tab>
-                  <q-tab name="sales" label="Sales Representatives"></q-tab>
-                  <q-tab
-                    name="setConfiguration"
-                    label="Set Configuration"
-                  ></q-tab>
+                  <div class="q-py-md text-center text-bold text-h7">
+                    Add User
+                  </div>
 
-                  <div class="bg-blue" style="overflow:auto;max-height:300px">
+                  <div
+                    class="q-py-md text-center text-bold text-h7"
+                    name="offcInfo"
+                    label="Office Staff Info"
+                  >
+                    Office Staff Info
+                  </div>
+                  <div
+                    class="q-py-md text-center text-bold text-h7"
+                    name="sales"
+                    label="Sales Representatives"
+                  >
+                    Sales Representatives
+                  </div>
+                  <div class="q-py-md text-center text-bold text-h7">
+                    Set Configuration
+                  </div>
+                  <!-- This is Scrolling div -->
+                  <div
+                    style="overflow:auto;max-height:300px"
+                    v-if="tab == 'inspectionType'"
+                  >
                     <div
                       name="inspectionType"
                       class="q-py-md text-center"
@@ -37,7 +55,10 @@
                     >
                       InspectionType
                     </div>
-                    <div class="q-py-md text-center" @click="Dialog2 = true">
+                    <div
+                      class="q-py-md text-center"
+                      @click="industryTypeDialogBox = true"
+                    >
                       Industry Type
                     </div>
                     <div class="q-py-md text-center">honorific</div>
@@ -82,56 +103,53 @@
                             Last Name *
                           </div>
                         </div>
-                        <div class="row q-mt-xs   justify-between full-width">
-                          <div class="col-6  ">
+                        <div class="row q-mt-xs justify-between full-width">
+                          <div class="col-6">
                             <q-input
                               v-model="users[index].contact.fname"
                               class="q-mx-xl"
-                              style="width :300px ;"
+                              style="width: 300px"
                               outlined
                             />
                           </div>
-                          <div class="col-6  ">
+                          <div class="col-6">
                             <q-input
                               v-model="users[index].contact.lname"
                               class="q-mx-xl"
-                              style="width :300px ;"
+                              style="width: 300px"
                               outlined
                             />
                           </div>
                         </div>
-                        <div class="q-mt-xs row  full-width">
-                          <div class="col-5  q-mx-xl q-mt-lg">Email*</div>
-                          <div class="col-4  q-mx-lg q-mt-lg">Role *</div>
+                        <div class="q-mt-xs row full-width">
+                          <div class="col-5 q-mx-xl q-mt-lg">Email*</div>
+                          <div class="col-4 q-mx-lg q-mt-lg">Role *</div>
                         </div>
-                        <div
-                          class="row q-mt-xs      justify-between full-width"
-                        >
-                          <div class="col-6  ">
+                        <div class="row q-mt-xs justify-between full-width">
+                          <div class="col-6">
                             <q-input
                               v-model="users[index].email"
                               class="q-mx-xl"
-                              style="width :300px ;"
+                              style="width: 300px"
                               outlined
                               :rules="[
                                 val =>
                                   (val && val.length > 0) ||
-                                  'Please choose the Title'
+                                  'Please enter Email'
                               ]"
                             />
                           </div>
-                          <div class="col-6  ">
+                          <div class="col-6">
                             <q-select
                               v-model="users[index].roles[0]"
                               outlined
-                              style="width :300px ;"
+                              style="width: 300px"
                               class="q-mx-xl"
                               :options="options"
                               label="role"
                               :rules="[
                                 val =>
-                                  (val && val.length > 0) ||
-                                  'Please choose the Title'
+                                  (val && val.length > 0) || 'Role is Required'
                               ]"
                             />
                           </div>
@@ -158,73 +176,80 @@
                       />
                     </div>
                   </q-tab-panel>
+                  <!-- Office Information -->
                   <q-tab-panel name="offcInfo">
-                    <div
-                      outlined
-                      v-for="(contactInfo, index) in users"
-                      v-if="index >= 0"
-                    >
-                      <div class=" q-mt-xs   row  full-width">
-                        <div class="col-5  text-bold">
-                          Office Staff Info &nbsp;{{ index + 1 }}
+                    <q-form ref="addUserForm">
+                      <div
+                        outlined
+                        v-for="(contactInfo, index) in users"
+                        v-if="index >= 0"
+                      >
+                        <div class=" q-mt-xs   row  full-width">
+                          <div class="col-5  text-bold">
+                            Office Staff &nbsp;{{ index + 1 }}
+                          </div>
+                        </div>
+                        <div class=" q-mt-xs row  full-width">
+                          <div class="col-5  q-mx-xl q-mt-lg">
+                            First Name *
+                          </div>
+                          <div class="col-4  q-mx-lg q-mt-lg">
+                            Last Name *
+                          </div>
+                        </div>
+                        <div class="row q-mt-xs justify-between full-width">
+                          <div class="col-6">
+                            <q-input
+                              v-model="users[index].contact.fname"
+                              class="q-mx-xl"
+                              style="width: 300px"
+                              outlined
+                            />
+                          </div>
+                          <div class="col-6">
+                            <q-input
+                              v-model="users[index].contact.lname"
+                              class="q-mx-xl"
+                              style="width: 300px"
+                              outlined
+                            />
+                          </div>
+                        </div>
+                        <div class="q-mt-xs row full-width">
+                          <div class="col-5 q-mx-xl q-mt-lg">Email*</div>
+                          <div class="col-4 q-mx-lg q-mt-lg">Role *</div>
+                        </div>
+                        <div class="row q-mt-xs justify-between full-width">
+                          <div class="col-6">
+                            <q-input
+                              v-model="users[index].email"
+                              class="q-mx-xl"
+                              style="width: 300px"
+                              outlined
+                              :rules="[
+                                val =>
+                                  (val && val.length > 0) ||
+                                  'Please enter Email'
+                              ]"
+                            />
+                          </div>
+                          <div class="col-6">
+                            <q-select
+                              v-model="users[index].roles[0]"
+                              outlined
+                              style="width: 300px"
+                              class="q-mx-xl"
+                              :options="options"
+                              label="role"
+                              :rules="[
+                                val =>
+                                  (val && val.length > 0) || 'Role is Required'
+                              ]"
+                            />
+                          </div>
                         </div>
                       </div>
-                      <div class=" q-mt-xs row  full-width">
-                        <div class="col-5  q-mx-xl q-mt-lg">First Name *</div>
-                        <div class="col-4  q-mx-lg q-mt-lg">Last Name *</div>
-                      </div>
-                      <div class="row q-mt-xs   justify-between full-width">
-                        <div class="col-6  ">
-                          <q-input
-                            v-model="users[index].contact.fname"
-                            class="q-mx-xl"
-                            style="width :300px ;"
-                            outlined
-                          />
-                        </div>
-                        <div class="col-6  ">
-                          <q-input
-                            v-model="users[index].contact.lname"
-                            class="q-mx-xl"
-                            style="width :300px ;"
-                            outlined
-                          />
-                        </div>
-                      </div>
-                      <div class="q-mt-xs row  full-width">
-                        <div class="col-5  q-mx-xl q-mt-lg">Email*</div>
-                        <div class="col-4  q-mx-lg q-mt-lg">Role *</div>
-                      </div>
-                      <div class="row q-mt-xs      justify-between full-width">
-                        <div class="col-6  ">
-                          <q-input
-                            v-model="users[index].email"
-                            class="q-mx-xl"
-                            style="width :300px ;"
-                            outlined
-                            :rules="[
-                              val =>
-                                (val && val.length > 0) ||
-                                'Please choose the Title'
-                            ]"
-                          />
-                        </div>
-                        <div class="col-6  ">
-                          <q-select
-                            v-model="users[index].roles[0]"
-                            outlined
-                            style="width :300px ;"
-                            class="q-mx-xl"
-                            :options="options"
-                            :rules="[
-                              val =>
-                                (val && val.length > 0) ||
-                                'Please choose the Title'
-                            ]"
-                          />
-                        </div>
-                      </div>
-                    </div>
+                    </q-form>
 
                     <div class="row q-mt-lg">
                       <q-btn
@@ -245,6 +270,7 @@
                       />
                     </div>
                   </q-tab-panel>
+                  <!-- Sales  Representative -->
                   <q-tab-panel name="sales">
                     <div class=" row ">
                       <p class=" q-my-auto">
@@ -254,79 +280,84 @@
                       </p>
                       <q-toggle class="q-ml-xs" v-model="toggle" />
                     </div>
-                    <div
-                      outlined
-                      v-for="(contactInfo, index) in users"
-                      v-if="index >= 0"
-                    >
-                      <div class=" q-mt-xs   row  full-width">
-                        <div class="col-5  text-bold">
-                          Sale Representative &nbsp;{{ index + 1 }}
+                    <q-form ref="addUserForm">
+                      <div
+                        outlined
+                        v-for="(contactInfo, index) in users"
+                        v-if="index >= 0"
+                      >
+                        <div class=" q-mt-xs   row  full-width">
+                          <div class="col-5  text-bold">
+                            Sales Representative &nbsp;{{ index + 1 }}
+                          </div>
+                        </div>
+                        <div class=" q-mt-xs row  full-width">
+                          <div class="col-5  q-mx-xl q-mt-lg">
+                            First Name *
+                          </div>
+                          <div class="col-4  q-mx-lg q-mt-lg">
+                            Last Name *
+                          </div>
+                        </div>
+                        <div class="row q-mt-xs justify-between full-width">
+                          <div class="col-6">
+                            <q-input
+                              v-model="users[index].contact.fname"
+                              class="q-mx-xl"
+                              style="width: 300px"
+                              outlined
+                              :disable="toggle == false"
+                            />
+                          </div>
+                          <div class="col-6">
+                            <q-input
+                              v-model="users[index].contact.lname"
+                              class="q-mx-xl"
+                              style="width: 300px"
+                              outlined
+                              :disable="toggle == false"
+                            />
+                          </div>
+                        </div>
+                        <div class="q-mt-xs row full-width">
+                          <div class="col-5 q-mx-xl q-mt-lg">Email*</div>
+                          <div class="col-4 q-mx-lg q-mt-lg">Role *</div>
+                        </div>
+                        <div class="row q-mt-xs justify-between full-width">
+                          <div class="col-6">
+                            <q-input
+                              v-model="users[index].email"
+                              class="q-mx-xl"
+                              style="width: 300px"
+                              outlined
+                              :disable="toggle == false"
+                              :rules="[
+                                val =>
+                                  (val && val.length > 0) ||
+                                  'Please enter Email'
+                              ]"
+                            />
+                          </div>
+                          <div class="col-6">
+                            <q-select
+                              v-model="users[index].roles[0]"
+                              outlined
+                              style="width: 300px"
+                              class="q-mx-xl"
+                              :options="options"
+                              :disable="toggle == false"
+                              label="role"
+                              :rules="[
+                                val =>
+                                  (val && val.length > 0) || 'Role is Required'
+                              ]"
+                            />
+                          </div>
                         </div>
                       </div>
-                      <div class=" q-mt-xs row  full-width">
-                        <div class="col-5  q-mx-xl q-mt-lg">First Name *</div>
-                        <div class="col-4  q-mx-lg q-mt-lg">Last Name *</div>
-                      </div>
-                      <div class="row q-mt-xs   justify-between full-width">
-                        <div class="col-6  ">
-                          <q-input
-                            v-model="users[index].contact.fname"
-                            class="q-mx-xl"
-                            style="width :300px ;"
-                            outlined
-                            :disable="toggle == false"
-                          />
-                        </div>
-                        <div class="col-6  ">
-                          <q-input
-                            v-model="users[index].contact.lname"
-                            class="q-mx-xl"
-                            style="width :300px ;"
-                            outlined
-                            :disable="toggle == false"
-                          />
-                        </div>
-                      </div>
-                      <div class="q-mt-xs row  full-width">
-                        <div class="col-5  q-mx-xl q-mt-lg">Email*</div>
-                        <div class="col-4  q-mx-lg q-mt-lg">Role *</div>
-                      </div>
-                      <div class="row q-mt-xs      justify-between full-width">
-                        <div class="col-6  ">
-                          <q-input
-                            v-model="users[index].email"
-                            class="q-mx-xl"
-                            style="width :300px ;"
-                            outlined
-                            :disable="toggle == false"
-                            :rules="[
-                              val =>
-                                (val && val.length > 0) ||
-                                'Please choose the Title'
-                            ]"
-                          />
-                        </div>
-                        <div class="col-6  ">
-                          <q-select
-                            v-model="users[index].roles[0]"
-                            outlined
-                            style="width :300px ;"
-                            class="q-mx-xl"
-                            :options="options"
-                            label="role"
-                            :disable="toggle == false"
-                            :rules="[
-                              val =>
-                                (val && val.length > 0) ||
-                                'Please choose the Title'
-                            ]"
-                          />
-                        </div>
-                      </div>
-                    </div>
+                    </q-form>
 
-                    <div class="row q-mt-lg">
+                    <div class="row q-my-lg">
                       <q-btn
                         outline
                         class="  q-mx-xl"
@@ -345,13 +376,16 @@
                       />
                     </div>
                   </q-tab-panel>
-                  <q-tab-panel name="setConfiguration"> abcg</q-tab-panel>
+
                   <!-- Inspection Type -->
                   <q-tab-panel name="inspectionType">
                     <div class="row justify-between">
                       <!-- empty pannel -->
-                      <div class=" text-bold col-2">Inspection Type</div>
-                      <div class=" col-2 text-primary" @click="bar = true">
+                      <div class=" text-bold col-4">Inspection Type</div>
+                      <div
+                        class=" col-2 text-primary"
+                        @click="InspectionDialogBox = true"
+                      >
                         Add Inspection Type
                       </div>
                     </div>
@@ -403,7 +437,7 @@
                     color="primary"
                     label="submit and Proceed"
                     class="q-mx-lg "
-                    @click="onClickNext"
+                    @click="onSubmit"
                   />
                 </div>
                 <div class="q-mt-md ">
@@ -412,10 +446,10 @@
               </template>
             </q-splitter>
             <!-- This is First Dialog -->
-            <q-dialog v-model="bar" persistent>
-              <q-card style="width: 1000px;height:1000px; max-width: 1000vw;">
+            <q-dialog v-model="InspectionDialogBox" persistent>
+              <q-card style="width: 700px;height:700px; max-width: 1000vw;">
                 <q-bar class=" row justify-between" style="height:100px">
-                  <div class="col-4 q-px-xl text-bold ">
+                  <div class="col-46 q-px-xl text-bold ">
                     Add Inspection Type
                   </div>
                   <q-btn dense flat icon="close" v-close-popup>
@@ -425,19 +459,21 @@
 
                 <q-card-section>
                   <div
-                    class="column  bg-grey-3 q-pa-xl"
-                    style="margin-left:150px;margin-right:150px;"
+                    v-for="(contactInfo, index) in inspection.subtypes"
+                    v-if="index >= 0"
                   >
-                    <div class="q-pa-lg">
-                      <q-input
-                        v-model="inspection.type"
-                        label="Type Of Inspection"
-                        lazy-rules
-                      />
-                      <div
-                        v-for="(contactInfo, index) in inspection.subtypes"
-                        v-if="index >= 0"
-                      >
+                    <div
+                      class="column  bg-grey-3 q-pa-xl"
+                      style="margin-left:100px;margin-right:100px;"
+                    >
+                      <div class="q-pa-lg">
+                        <q-input
+                          v-model="inspection.type"
+                          label="Type Of Inspection"
+                          lazy-rules
+                          v-if="index == 0"
+                        />
+
                         <q-input
                           v-model="inspection.subtypes[index].type"
                           label="Sub Type Of Inspection"
@@ -455,16 +491,19 @@
                         />
                       </div>
                     </div>
-                    <div class=" row justify-between text-primary q-pl-lg">
-                      <div @click="addAnotherSubType">
-                        + Another Sub Type Of Inspection
-                      </div>
-                      <div
-                        v-if="inspection.subtypes[1]"
-                        @click="onClickRemoveSubType"
-                      >
-                        Remove
-                      </div>
+                    <br />
+                  </div>
+
+                  <div class="  row justify-between text-primary q-mx-xl">
+                    <div class="q-ml-xl" @click="addAnotherSubType">
+                      + Another Sub Type Of Inspection
+                    </div>
+                    <div
+                      class="q-mr-xl"
+                      v-if="inspection.subtypes[1]"
+                      @click="onClickRemoveSubType"
+                    >
+                      Remove
                     </div>
                   </div>
                   <div class="  row justify-center  q-pa-lg">
@@ -489,8 +528,8 @@
               </q-card>
             </q-dialog>
             <!-- This is Industry Dialog Box -->
-            <q-dialog v-model="Dialog2" persistent>
-              <q-card style="width: 1000px;height:1000px; max-width: 1000vw;">
+            <q-dialog v-model="industryTypeDialogBox" persistent>
+              <q-card style="width: 700px;height:1000px; max-width: 1000vw;">
                 <q-bar class=" row justify-between" style="height:100px">
                   <div class="col-4 q-px-xl text-bold ">
                     Add Industry Type
@@ -537,11 +576,11 @@ export default {
   name: 'AddUser',
   data() {
     return {
-      bar: false,
-      Dialog2: false,
+      InspectionDialogBox: false,
+      industryTypeDialogBox: false,
       len: 1,
       toggle: false,
-      // speed: 0,
+
       // this is for static dropdown
       options: ['Manager', 'Staff'],
       isShowRemoveButton: false,
@@ -560,7 +599,7 @@ export default {
       ],
       inspection: {
         type: '',
-        subtypes: [{ type: ' ', duration: '' }]
+        subtypes: [{ type: ' ', duration: 0 }]
       },
       onboard: {
         officesuer: {
@@ -580,34 +619,43 @@ export default {
   },
   methods: {
     ...mapActions(['addUser']),
-    // on Clicking Next Button
-    onClickNext() {
-      this.users.forEach(user => {
-        this.addUser(user);
-      });
-      this.users = [
-        {
-          type: 'user',
-          contact: {
-            fname: '',
-            lname: ''
-          },
-          email: '',
-          roles: []
+    // on Clicking Submit Button
+    async onSubmit() {
+      const success = await this.$refs.addUserForm.validate();
+      if (success) {
+        this.users.forEach(user => {
+          this.addUser(user);
+        });
+        this.users = [
+          {
+            type: 'user',
+            contact: {
+              fname: '',
+              lname: ''
+            },
+            email: '',
+            roles: []
+          }
+        ];
+        if (this.tab == 'adduser') {
+          this.isShowRemoveButton = false;
+          this.tab = 'offcInfo';
+        } else if (this.tab == 'offcInfo') {
+          this.tab = 'sales';
+        } else if (this.tab == 'sales') {
+          this.tab = 'inspectionType';
         }
-      ];
-      if (this.tab == 'adduser') {
-        this.isShowRemoveButton = false;
-        this.tab = 'offcInfo';
-      } else if (this.tab == 'offcInfo') {
-        this.tab = 'sales';
-      } else if (this.tab == 'sales') {
-        this.tab = 'setConfiguration';
+      } else {
+        this.$q.notify({
+          message: 'Please fill the first Name',
+          position: 'top',
+          type: 'negative'
+        });
       }
     },
 
-    addAnotherContact() {
-      const success = this.$refs.addUserForm.validate();
+    async addAnotherContact() {
+      const success = await this.$refs.addUserForm.validate();
       if (success) {
         const len = this.users.length;
 
@@ -634,7 +682,6 @@ export default {
     },
     removeAnotherContact() {
       const len = this.users.length;
-      // this.len = len - 1;
       if (len === 2) {
         this.isShowRemoveButton = false;
       }
@@ -642,12 +689,10 @@ export default {
       this.users.pop();
     },
     UserA(value) {
-      console.log(1233456787);
       this.tab = value;
     },
 
     addAnotherSubType() {
-      console.log(668666);
       this.inspection.subtypes.push({ type: ' ', duration: '' });
     },
     onClickRemoveSubType() {
@@ -660,13 +705,11 @@ export default {
       };
     },
     onSaveInspectionType() {
-      console.log(this.inspection);
-      this.bar = false;
+      this.InspectionDialogBox = false;
     }
 
     // End of Functions
   }
-  // End of Functions
 };
 </script>
 <style lang="scss">

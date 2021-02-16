@@ -1,6 +1,7 @@
 import { Cookies } from 'quasar';
 
 const tokenName = 'access_token';
+const currentUser = 'current_user';
 const tokenSettings = { domain: process.env.DOMAIN || 'localhost' };
 
 export function setToken(token) {
@@ -13,4 +14,16 @@ export function removeToken() {
 
 export function getToken() {
   return Cookies.get(tokenName);
+}
+
+export function setCurrentUser(user) {
+  Cookies.set(currentUser, user, tokenSettings);
+}
+
+export function removeCurrentUser() {
+  Cookies.remove(currentUser, tokenSettings);
+}
+
+export function getCurrentUser() {
+  return Cookies.get(currentUser);
 }
