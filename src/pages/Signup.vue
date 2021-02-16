@@ -440,7 +440,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import { constants } from '@utils/constant';
-
+import { getToken, getCurrentUser } from '@utils/auth.js';
 export default {
   name: 'Signup',
 
@@ -607,20 +607,28 @@ export default {
   },
 
   created() {
-    // this.getPlansInfo();
-    const index = this.plans.findIndex(
-      o => o.machineName === this.$route.query.plan
-    );
-    if (index > -1) {
-      this.plan = index + 1;
-      this.user.billingInfo.planInfo.id = this.plans[index].id;
-      this.user.billingInfo.planInfo.name = this.plans[index].name;
-      this.user.billingInfo.planInfo.machineName = this.plans[
-        index
-      ].machineName;
-      // this.getContactTypes();
+    if (getToken()) {
+      if (getCurrentUser() && getCurrentUser().attributes.onboard.isCompleted) {
+        this.$router.push('/dashboard');
+      } else {
+        this.$router.push('/onboarding');
+      }
     } else {
-      this.isValidPlan = false;
+      // this.getPlansInfo();
+      const index = this.plans.findIndex(
+        o => o.machineName === this.$route.query.plan
+      );
+      if (index > -1) {
+        this.plan = index + 1;
+        this.user.billingInfo.planInfo.id = this.plans[index].id;
+        this.user.billingInfo.planInfo.name = this.plans[index].name;
+        this.user.billingInfo.planInfo.machineName = this.plans[
+          index
+        ].machineName;
+        // this.getContactTypes();
+      } else {
+        this.isValidPlan = false;
+      }
     }
   },
 
