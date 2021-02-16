@@ -69,3 +69,24 @@ export async function getUserInfo({ dispatch, state }) {
     });
   }
 }
+
+export async function addUser({ dispatch, state }, payload) {
+  console.log('in');
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      '/users',
+      buildApiData('users', payload)
+    );
+    dispatch('setLoading', false);
+    return true;
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response.data.title
+    });
+    return false;
+  }
+}
