@@ -423,7 +423,7 @@
           </q-stepper>
         </div>
       </div>
-      <div else class="column justify-between">
+      <div v-else class="column justify-between">
         <img src="~assets/404-error.jpg" width="60%" class="q-mx-auto" />
         <h3 class="q-mx-auto">Plan Not Found</h3>
         <q-btn
