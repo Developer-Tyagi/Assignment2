@@ -1,6 +1,7 @@
 export default function() {
   return {
     clients: [],
+    estimators: [],
     clientTypes: [],
     propertyTypes: [],
     policyTypes: [],

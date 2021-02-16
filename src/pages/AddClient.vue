@@ -1203,9 +1203,9 @@
 
               <div
                 v-if="doesAnEstimatorNeedToBeAssignedToggle"
-                @click="addEstimatorDialog = true"
+                @click="estimatorsListDialog = true"
               >
-                <div class="select-text">
+                <div class="custom-select form-heading">
                   {{ 'Add Estimator' }}
                 </div>
               </div>
@@ -1268,14 +1268,14 @@
         <q-card-section>
           <div class="q-page bg-white">
             <div class="full-width fixHeight">
-              {{ addEstimator.honorific.id }}
               <q-select
-                v-model="addEstimator.honorific.id"
+                class="required"
+                v-model="honorific3.id"
                 :options="titles"
                 option-value="id"
                 option-label="value"
                 map-options
-                @input="setTitleName2()"
+                @input="setTitleName(3)"
                 emit-value
                 label="Title"
               />
@@ -1310,6 +1310,7 @@
 
               <div class="row">
                 <q-select
+                  class="required"
                   v-model="addEstimator.type"
                   :options="contactTypes"
                   option-value="machineValue"
@@ -1322,6 +1323,7 @@
                   style="width: 40%; margin-right: auto"
                 />
                 <q-input
+                  class="required"
                   v-model="addEstimator.phone"
                   label="Phone"
                   type="number"
@@ -1338,10 +1340,10 @@
           </div>
 
           <q-btn
-            label="Save"
+            label="Add Estimator"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
-            @click="addEstimatorDialog = false"
+            @click="onAddEstimatorButtonClick()"
             size="'xl'"
           ></q-btn>
         </q-card-section>
@@ -1458,7 +1460,7 @@
             </div>
           </div>
           <q-btn
-            label="Save"
+            label="Add Estimator"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
             @click="expertVendorInfoDialog = false"
@@ -1569,6 +1571,44 @@
         />
       </q-card>
     </q-dialog>
+    <!-- Estimators List Dialog -->
+    <q-dialog
+      v-model="estimatorsListDialog"
+      persistent
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <q-header bordered class="bg-white">
+          <q-toolbar class="row bg-white">
+            <img
+              src="~assets/close.svg"
+              alt="close"
+              @click="estimatorsListDialog = false"
+              style="margin: auto 0"
+            />
+
+            <img
+              src="~assets/add.svg"
+              @click="addEstimatorDialog = true"
+              style="margin: 0 0 0 20px"
+            />
+            <div>
+              <div
+                v-for="estimator in estimators"
+                :key="estimators.id"
+                class="vendor-list-item"
+                @click="selectEstimator(estimator)"
+              >
+                <span>{{ estimator.name }}</span>
+              </div>
+            </div>
+          </q-toolbar>
+        </q-header>
+        <span>Hello</span>
+      </q-card>
+    </q-dialog>
     <!-- Add vendor Dialog -->
     <q-dialog
       v-model="addVendorDialog"
@@ -1606,6 +1646,7 @@ export default {
   data() {
     return {
       options: [],
+      estimatorsListDialog: false,
       constants: constants,
       valueName: '',
       mortgageInfoDialog: false,
@@ -1837,12 +1878,12 @@ export default {
         lname: '',
         email: '',
         phone: '',
-        type: '',
-        honorific: {
-          id: '',
-          value: '',
-          machineValue: ''
-        }
+        type: ''
+      },
+      honorific3: {
+        id: '',
+        value: '',
+        machineValue: ''
       },
       typeOfLoss: [],
 
@@ -1861,6 +1902,8 @@ export default {
   created() {
     this.getVendors(this.$route.params.id);
     this.getClientTypes();
+    this.getEstimators();
+
     this.getPropertyTypes();
     this.getPolicyTypes();
     this.getLossCauses();
@@ -1896,6 +1939,7 @@ export default {
     ...mapGetters([
       'selectedLead',
       'leadSources',
+      'estimators',
       'contactTypes',
       'clientTypes',
       'propertyTypes',
@@ -1918,7 +1962,9 @@ export default {
     ...mapActions([
       'addClient',
       'getVendors',
+      'getEstimators',
       'addClaim',
+      'addEstimator1',
       'getClientTypes',
       'getPropertyTypes',
       'getPolicyTypes',
@@ -1979,16 +2025,6 @@ export default {
       });
       this['honorific' + val].title = titleResult.value;
       this['honorific' + val].machineValue = titleResult.machineValue;
-    },
-
-    setTitleName2() {
-      const title = this.titles.find(obj => {
-        return obj.id === this.addEstimator.honorific.id;
-      });
-
-      this.addEstimator.honorific.value = title.value;
-
-      this.addEstimator.honorific.machineValue = title.machineValue;
     },
 
     setTypes(types, data, type) {
@@ -2134,13 +2170,14 @@ export default {
       } else {
         payload.source.detail = this.sourceDetails.details;
       }
-      const response = await this.addClient(payload);
+      // this.setPayloadForEstimator();
 
       if (response && response.id) {
         const clientInfo = {
           name: response,
           id: response.id
         };
+
         this.setPayloadForClaim(clientInfo);
       }
     },
@@ -2251,12 +2288,40 @@ export default {
           internalNotes: this.expertVendorInfo.internalNotes
         }
       };
-
       this.addClaim(payload).then(() => {
         this.setSelectedLead();
         this.$router.push('/clients');
       });
     },
+    async onAddEstimatorButtonClick() {
+      const payload = {
+        fname: this.addEstimator.fname,
+        lname: this.addEstimator.lname,
+        honorific: {
+          id: this.honorific3.id,
+          value: this.honorific3.title,
+          machineValue: this.honorific3.machineValue
+        },
+        email: this.addEstimator.email,
+        phoneNumber: [
+          {
+            type: this.addEstimator.type,
+            number: this.addEstimator.phone
+          }
+        ]
+      };
+
+      const response = await this.addEstimator1(payload);
+      if (response) {
+        this.addEstimatorDialog = false;
+
+        console.log(response, 'this is response');
+      }
+    },
+    selectEstimator() {
+      console.log('select estimator dialog box me aya');
+    },
+
     validateEmail,
 
     onChangingSourceType() {
@@ -2264,7 +2329,9 @@ export default {
       this.sourceDetails.details = '';
       this.sourceDetails.machineValue = '';
     },
-
+    closeAddEstimatorDialog() {
+      console.log('list is');
+    },
     onClosingVendorSelectDialog(vendor, dialogName) {
       switch (dialogName) {
         case constants.industries.CARRIER:
@@ -2310,6 +2377,8 @@ export default {
       }
       if (name === constants.industries.EXPERTVENDOR) {
         this.vendorDialogName = constants.industries.VENDOR;
+
+        this.vendorDialogFilterByIndustry = this.selectedName;
       } else {
         this.vendorDialogName = name;
       }
