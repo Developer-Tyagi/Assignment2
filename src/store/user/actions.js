@@ -53,7 +53,7 @@ export async function getUserInfo({ dispatch, state }) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.get('/users/me');
-    setCurrentUser(data.attributes);
+    setCurrentUser(data);
     if (data.attributes.onboard.isCompleted) {
       this.$router.push('/dashboard');
     } else {
