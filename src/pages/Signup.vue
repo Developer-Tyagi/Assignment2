@@ -127,12 +127,17 @@
                     <q-input
                       v-model="user.contact.phoneNumber[0].number"
                       label="Contact Phone Number"
-                      type="number"
+                      :mask="
+                        user.contact.phoneNumber[0].type !== 'mobile'
+                          ? '(###) ###-####'
+                          : '##########'
+                      "
                       style="width: 55%"
                       filled
+                      lazy-rules
+                      :rules="[val => (val && val.length == 14) || '']"
                     />
                   </div>
-
                   <q-input
                     v-model="user.name"
                     name="businessName"
@@ -512,6 +517,10 @@ export default {
       'getContactTypes',
       'createUserForOrganization'
     ]),
+
+    call(number) {
+      window.open('tel:' + number);
+    },
 
     onPrevPlan() {
       this.plan--;
