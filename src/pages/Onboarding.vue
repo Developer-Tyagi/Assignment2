@@ -12,7 +12,7 @@
       <div class="row full-width" style="height: 107%" flat bordered>
         <q-separator vertical />
         <!-- This is the Main Div -->
-        <q-card class="  col-11  q-ml-xl full-height  " flat bordered>
+        <q-card class="col-11 q-ml-xl full-height" flat bordered>
           <div>
             <q-splitter
               v-model="splitterModel"
@@ -45,7 +45,7 @@
                   </div>
                   <!-- This is Scrolling div -->
                   <div
-                    style="overflow:auto;max-height:300px"
+                    style="overflow: auto; max-height: 300px"
                     v-if="tab == 'inspectionType'"
                   >
                     <div
@@ -75,7 +75,7 @@
               <!-- Main Template -->
               <template v-slot:after>
                 <q-tab-panels
-                  style="height:400px"
+                  style="height: 400px"
                   v-model="tab"
                   animated
                   swipeable
@@ -90,18 +90,14 @@
                         v-for="(contactInfo, index) in users"
                         v-if="index >= 0"
                       >
-                        <div class=" q-mt-xs   row  full-width">
-                          <div class="col-5  text-bold">
+                        <div class="q-mt-xs row full-width">
+                          <div class="col-5 text-bold">
                             Add User &nbsp;{{ index + 1 }}
                           </div>
                         </div>
-                        <div class=" q-mt-xs row  full-width">
-                          <div class="col-5  q-mx-xl q-mt-lg">
-                            First Name *
-                          </div>
-                          <div class="col-4  q-mx-lg q-mt-lg">
-                            Last Name *
-                          </div>
+                        <div class="q-mt-xs row full-width">
+                          <div class="col-5 q-mx-xl q-mt-lg">First Name *</div>
+                          <div class="col-4 q-mx-lg q-mt-lg">Last Name *</div>
                         </div>
                         <div class="row q-mt-xs justify-between full-width">
                           <div class="col-6">
@@ -160,7 +156,7 @@
                     <div class="row q-mt-lg">
                       <q-btn
                         outline
-                        class="  q-mx-xl"
+                        class="q-mx-xl"
                         @click="addAnotherContact"
                         color="primary"
                         label="Add"
@@ -184,18 +180,14 @@
                         v-for="(contactInfo, index) in users"
                         v-if="index >= 0"
                       >
-                        <div class=" q-mt-xs   row  full-width">
-                          <div class="col-5  text-bold">
+                        <div class="q-mt-xs row full-width">
+                          <div class="col-5 text-bold">
                             Office Staff &nbsp;{{ index + 1 }}
                           </div>
                         </div>
-                        <div class=" q-mt-xs row  full-width">
-                          <div class="col-5  q-mx-xl q-mt-lg">
-                            First Name *
-                          </div>
-                          <div class="col-4  q-mx-lg q-mt-lg">
-                            Last Name *
-                          </div>
+                        <div class="q-mt-xs row full-width">
+                          <div class="col-5 q-mx-xl q-mt-lg">First Name *</div>
+                          <div class="col-4 q-mx-lg q-mt-lg">Last Name *</div>
                         </div>
                         <div class="row q-mt-xs justify-between full-width">
                           <div class="col-6">
@@ -254,7 +246,7 @@
                     <div class="row q-mt-lg">
                       <q-btn
                         outline
-                        class="  q-mx-xl"
+                        class="q-mx-xl"
                         @click="addAnotherContact"
                         color="primary"
                         label="Add"
@@ -272,11 +264,9 @@
                   </q-tab-panel>
                   <!-- Sales  Representative -->
                   <q-tab-panel name="sales">
-                    <div class=" row ">
-                      <p class=" q-my-auto">
-                        <label>
-                          Does Company Have Sales Representative
-                        </label>
+                    <div class="row">
+                      <p class="q-my-auto">
+                        <label> Does Company Have Sales Representative </label>
                       </p>
                       <q-toggle class="q-ml-xs" v-model="toggle" />
                     </div>
@@ -286,18 +276,14 @@
                         v-for="(contactInfo, index) in users"
                         v-if="index >= 0"
                       >
-                        <div class=" q-mt-xs   row  full-width">
-                          <div class="col-5  text-bold">
+                        <div class="q-mt-xs row full-width">
+                          <div class="col-5 text-bold">
                             Sales Representative &nbsp;{{ index + 1 }}
                           </div>
                         </div>
-                        <div class=" q-mt-xs row  full-width">
-                          <div class="col-5  q-mx-xl q-mt-lg">
-                            First Name *
-                          </div>
-                          <div class="col-4  q-mx-lg q-mt-lg">
-                            Last Name *
-                          </div>
+                        <div class="q-mt-xs row full-width">
+                          <div class="col-5 q-mx-xl q-mt-lg">First Name *</div>
+                          <div class="col-4 q-mx-lg q-mt-lg">Last Name *</div>
                         </div>
                         <div class="row q-mt-xs justify-between full-width">
                           <div class="col-6">
@@ -360,7 +346,7 @@
                     <div class="row q-my-lg">
                       <q-btn
                         outline
-                        class="  q-mx-xl"
+                        class="q-mx-xl"
                         @click="addAnotherContact"
                         color="primary"
                         label="Add"
@@ -381,9 +367,9 @@
                   <q-tab-panel name="inspectionType">
                     <div class="row justify-between">
                       <!-- empty pannel -->
-                      <div class=" text-bold col-4">Inspection Type</div>
+                      <div class="text-bold col-4">Inspection Type</div>
                       <div
-                        class=" col-2 text-primary"
+                        class="col-2 text-primary"
                         @click="InspectionDialogBox = true"
                       >
                         Add Inspection Type
@@ -396,10 +382,8 @@
                     </div>
                     <div v-else class="row justify-between">
                       <table>
-                        <tr class=" justify-between" style="width:40%">
-                          <td>
-                            Inspection Type
-                          </td>
+                        <tr class="justify-between" style="width: 40%">
+                          <td>Inspection Type</td>
                           <td>Duration</td>
                         </tr>
 
@@ -436,20 +420,20 @@
                   <q-btn
                     color="primary"
                     label="submit and Proceed"
-                    class="q-mx-lg "
+                    class="q-mx-lg"
                     @click="onSubmit"
                   />
                 </div>
-                <div class="q-mt-md ">
+                <div class="q-mt-md">
                   <q-separator />
                 </div>
               </template>
             </q-splitter>
             <!-- This is First Dialog -->
             <q-dialog v-model="InspectionDialogBox" persistent>
-              <q-card style="width: 700px;height:700px; max-width: 1000vw;">
-                <q-bar class=" row justify-between" style="height:100px">
-                  <div class="col-46 q-px-xl text-bold ">
+              <q-card style="width: 700px; height: 700px; max-width: 1000vw">
+                <q-bar class="row justify-between" style="height: 100px">
+                  <div class="col-46 q-px-xl text-bold">
                     Add Inspection Type
                   </div>
                   <q-btn dense flat icon="close" v-close-popup>
@@ -463,8 +447,8 @@
                     v-if="index >= 0"
                   >
                     <div
-                      class="column  bg-grey-3 q-pa-xl"
-                      style="margin-left:100px;margin-right:100px;"
+                      class="column bg-grey-3 q-pa-xl"
+                      style="margin-left: 100px; margin-right: 100px"
                     >
                       <div class="q-pa-lg">
                         <q-input
@@ -494,7 +478,7 @@
                     <br />
                   </div>
 
-                  <div class="  row justify-between text-primary q-mx-xl">
+                  <div class="row justify-between text-primary q-mx-xl">
                     <div class="q-ml-xl" @click="addAnotherSubType">
                       + Another Sub Type Of Inspection
                     </div>
@@ -506,12 +490,12 @@
                       Remove
                     </div>
                   </div>
-                  <div class="  row justify-center  q-pa-lg">
+                  <div class="row justify-center q-pa-lg">
                     <div>
                       <q-btn
                         color="primary"
                         label="Clear"
-                        class="q-mx-lg "
+                        class="q-mx-lg"
                         @click="onClickClearInspectionType"
                       />
                     </div>
@@ -519,7 +503,7 @@
                       <q-btn
                         color="primary"
                         label="Save"
-                        class="q-mx-lg "
+                        class="q-mx-lg"
                         @click="onSaveInspectionType"
                       />
                     </div>
@@ -529,11 +513,9 @@
             </q-dialog>
             <!-- This is Industry Dialog Box -->
             <q-dialog v-model="industryTypeDialogBox" persistent>
-              <q-card style="width: 700px;height:1000px; max-width: 1000vw;">
-                <q-bar class=" row justify-between" style="height:100px">
-                  <div class="col-4 q-px-xl text-bold ">
-                    Add Industry Type
-                  </div>
+              <q-card style="width: 700px; height: 1000px; max-width: 1000vw">
+                <q-bar class="row justify-between" style="height: 100px">
+                  <div class="col-4 q-px-xl text-bold">Add Industry Type</div>
                   <q-btn dense flat icon="close" v-close-popup>
                     <q-tooltip>Close</q-tooltip>
                   </q-btn>
@@ -542,15 +524,15 @@
                 <q-card-section>
                   <div
                     class="q-pa-xl"
-                    style="margin-left:150px;margin-right:150px;"
+                    style="margin-left: 150px; margin-right: 150px"
                   >
-                    <div class=" column bg-bue q-pa-lg">
+                    <div class="column bg-bue q-pa-lg">
                       <div class="q-mx-xl q-my-xs">Industry Type</div>
                       <div class="">
                         <q-input
                           class="q-mx-xl"
                           label=""
-                          style="width :300px ;"
+                          style="width: 300px"
                           outlined
                         />
                       </div>
@@ -560,9 +542,9 @@
               </q-card>
             </q-dialog>
 
-            <div class=" row    full-width q-pa-xl ">
-              <div class="col-3 "></div>
-              <div class="col-7 justify-center q-ml-xl  "></div>
+            <div class="row full-width q-pa-xl">
+              <div class="col-3"></div>
+              <div class="col-7 justify-center q-ml-xl"></div>
             </div>
           </div>
         </q-card>
@@ -584,7 +566,7 @@ export default {
       // this is for static dropdown
       options: ['Manager', 'Staff'],
       isShowRemoveButton: false,
-      tab: 'inspectionType',
+      tab: 'adduser',
       splitterModel: 20,
       users: [
         {
