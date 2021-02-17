@@ -17,9 +17,9 @@
             Insurance Info
           </div>
           <div class="form-list" @click="lossInfoDialog = true">Loss Info</div>
-          <div class="form-list" @click="mortgageInfoDialog = true">
+          <!-- <div class="form-list" @click="mortgageInfoDialog = true">
             Mortgage Info
-          </div>
+          </div> -->
           <div class="form-list" @click="expertVendorInfoDialog = true">
             Expert/Vendor Info
           </div>
@@ -1072,6 +1072,15 @@
                   v-model="isThereDamageToPersonalPropertyToggle"
                 />
               </div>
+              <textarea
+                v-if="isThereDamageToPersonalPropertyToggle"
+                rows="5"
+                required
+                class="full-width"
+                v-model="lossInfo.damagePersnalPropertyDescription"
+                label="Damage items description"
+                style="resize: none"
+              />
               <div class="row">
                 <span class="form-heading">
                   Was a PPIF provided to the insured?
@@ -1083,8 +1092,7 @@
               </div>
               <div class="row">
                 <span class="form-heading">
-                  Does the office need to provide a<br />
-                  PPIF to the insured?
+                  Does Claimguru PPIF need to be provided?
                 </span>
                 <q-toggle
                   class="q-ml-auto"
@@ -1097,14 +1105,13 @@
                 </span>
                 <q-toggle class="q-ml-auto" v-model="IsMortgageHomeToggle" />
               </div>
-              <div class="row">
-                <span class="form-heading">
-                  Is there a second claim to file?
-                </span>
-                <q-toggle
-                  class="q-ml-auto"
-                  v-model="isThereAsecondClaimToFileToggle"
-                />
+              <div
+                v-if="IsMortgageHomeToggle"
+                @click="mortgageInfoDialog = true"
+              >
+                <div class="select-text">
+                  {{ 'Select Mortgage' }}
+                </div>
               </div>
             </div>
             <q-separator />
@@ -1268,13 +1275,31 @@
               "
             >
               <div class="row">
-                <p style="font-size: 15px">
+                <p style="form-heading">
                   Does an estimator need to be<br />assigned?
                 </p>
                 <q-toggle
                   class="q-ml-auto"
                   v-model="doesAnEstimatorNeedToBeAssignedToggle"
                 />
+              </div>
+
+              <div
+                v-if="doesAnEstimatorNeedToBeAssignedToggle"
+                @click="estimatorsListDialog = true"
+              >
+                <div
+                  class="custom-select form-heading"
+                  v-model="addEstimatorInfo.name"
+                >
+                  <div class="select-text">
+                    {{
+                      addEstimatorInfo.name
+                        ? addEstimatorInfo.name
+                        : 'Add Estimator'
+                    }}
+                  </div>
+                </div>
               </div>
               <q-input
                 v-model="estimatingInfo.estimatorToBeAssigned"
@@ -1304,6 +1329,113 @@
             color="primary"
             class="full-width q-mt-auto text-capitalize"
             @click="estimatingInfoDialog = false"
+            size="'xl'"
+          ></q-btn>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+    <!-- Add Estimator Dialog -->
+    <q-dialog
+      v-model="addEstimatorDialog"
+      persistent
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card class="form-card q-pa-md" style="padding-top: 30px">
+        <q-header bordered class="bg-white">
+          <q-toolbar class="row bg-white">
+            <img
+              src="~assets/close.svg"
+              alt="back-arrow"
+              @click="addEstimatorDialog = false"
+              style="margin: auto 0"
+            />
+            <div class="text-uppercase text-bold text-black q-mx-auto">
+              Add Estimator
+            </div>
+          </q-toolbar>
+        </q-header>
+
+        <q-card-section>
+          <div class="q-page bg-white">
+            <div class="full-width fixHeight">
+              <q-select
+                class="required"
+                v-model="honorific3.id"
+                :options="titles"
+                option-value="id"
+                option-label="value"
+                map-options
+                @input="setTitleName(3)"
+                emit-value
+                label="Title"
+              />
+
+              <q-input
+                v-model="addEstimatorInfo.fname"
+                lazy-rules
+                :rules="[
+                  val => (val && val.length > 0) || 'Please fill the First name'
+                ]"
+                label="First Name"
+              />
+
+              <q-input
+                v-model="addEstimatorInfo.lname"
+                lazy-rules
+                :rules="[
+                  val => (val && val.length > 0) || 'Please fill the Last name'
+                ]"
+                label="Last Name"
+              />
+              <q-input
+                v-model="addEstimatorInfo.email"
+                label="Email"
+                lazy-rules
+                :rules="[
+                  val =>
+                    validateEmail(val) ||
+                    'You have entered an invalid email address!'
+                ]"
+              />
+
+              <div class="row">
+                <q-select
+                  class="required"
+                  v-model="addEstimatorInfo.type"
+                  :options="contactTypes"
+                  option-value="machineValue"
+                  option-label="name"
+                  map-options
+                  emit-value
+                  label="Type"
+                  lazy-rules
+                  :rules="[val => (val && val.length > 0) || '']"
+                  style="width: 40%; margin-right: auto"
+                />
+                <q-input
+                  class="required"
+                  v-model="addEstimatorInfo.phone"
+                  label="Phone"
+                  type="number"
+                  lazy-rules
+                  :rules="[
+                    val =>
+                      (val && val.length == 10) ||
+                      'Please fill the phone number'
+                  ]"
+                  style="width: 55%"
+                />
+              </div>
+            </div>
+          </div>
+
+          <q-btn
+            label="Add Estimator"
+            color="primary"
+            class="full-width q-mt-auto text-capitalize"
+            @click="onAddEstimatorButtonClick()"
             size="'xl'"
           ></q-btn>
         </q-card-section>
@@ -1340,6 +1472,35 @@
                 >
                 <q-toggle class="q-ml-auto" v-model="vendorExpertHiredToggle" />
               </div>
+
+              <q-select
+                v-if="vendorExpertHiredToggle"
+                class="full-width"
+                v-model="expertVendorInfo.industry.value"
+                use-input
+                input-debounce="0"
+                option-label="name"
+                label=" Industry"
+                :options="options"
+                option-value="name"
+                @filter="searchFilterBy"
+                @input="setVendorIndustryName"
+                behavior="menu"
+                emit-value
+                lazy-rules
+                :rules="[
+                  val =>
+                    (val && val.length > 0) || 'Please fill the Vendor Industry'
+                ]"
+              >
+                <template v-slot:no-option>
+                  <q-item>
+                    <q-item-section class="text-black">
+                      No results
+                    </q-item-section>
+                  </q-item>
+                </template>
+              </q-select>
 
               <div
                 v-if="vendorExpertHiredToggle"
@@ -1473,7 +1634,7 @@
       transition-hide="slide-down"
     >
       <q-card>
-        <q-header bordered class="bg-white">
+        <q-header bordered class="bg-white  ">
           <q-toolbar class="row bg-white">
             <img
               src="~assets/close.svg"
@@ -1500,6 +1661,43 @@
           :filterName="vendorDialogFilterByIndustry"
           :valueName="valueName"
         />
+      </q-card>
+    </q-dialog>
+    <!-- Estimators List Dialog -->
+    <q-dialog
+      v-model="estimatorsListDialog"
+      persistent
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <q-header bordered class="bg-white">
+          <q-toolbar class="row bg-white  justify-between">
+            <img
+              src="~assets/close.svg"
+              alt="close"
+              @click="estimatorsListDialog = false"
+              style="margin: auto 0"
+            />
+
+            <img
+              src="~assets/add.svg"
+              @click="addEstimatorDialog = true"
+              style="margin: 0 0 0 20px"
+            />
+          </q-toolbar>
+        </q-header>
+        <div class="vendor-list">
+          <div
+            v-for="estimator in estimators"
+            :key="estimator.id"
+            class="vendor-list-item"
+            @click="selectEstimator(estimator)"
+          >
+            <span>{{ estimator.fname }} {{ estimator.lname }}</span>
+          </div>
+        </div>
       </q-card>
     </q-dialog>
     <!-- Add vendor Dialog -->
@@ -1538,6 +1736,8 @@ export default {
   components: { CustomHeader, VendorsList, AddVendor, AutoCompleteAddress },
   data() {
     return {
+      options: [],
+      estimatorsListDialog: false,
       constants: constants,
       valueName: '',
       mortgageInfoDialog: false,
@@ -1548,6 +1748,7 @@ export default {
       LossAddressName: '',
       publicAdjustorInfoDialog: false,
       addVendorDialog: false,
+      addEstimatorDialog: false,
       vendorsListDialog: false,
       officeTaskDialog: false,
       expertVendorInfoDialog: false,
@@ -1642,6 +1843,7 @@ export default {
       lossInfo: {
         dateOfLoss: '',
         propertyDescription: '',
+        damagePersnalPropertyDescription: '',
         reasonClaim: {
           value: '',
           id: '',
@@ -1723,7 +1925,8 @@ export default {
         notes: '',
         internalNotes: '',
         vendorName: '',
-        id: ''
+        id: '',
+        industry: { value: null, id: '', machineValue: '' }
       },
       officeTask: {
         officeActionTypes: '',
@@ -1761,7 +1964,19 @@ export default {
           isPresent: false
         }
       },
-      isThereAsecondClaimToFileToggle: false,
+      addEstimatorInfo: {
+        name: '',
+        fname: '',
+        lname: '',
+        email: '',
+        phone: '',
+        type: ''
+      },
+      honorific3: {
+        id: '',
+        value: '',
+        machineValue: ''
+      },
       typeOfLoss: [],
 
       isTherea2ndMortgageOnTheHomeToggle: false,
@@ -1779,6 +1994,8 @@ export default {
   created() {
     this.getVendors(this.$route.params.id);
     this.getClientTypes();
+    this.getEstimators();
+
     this.getPropertyTypes();
     this.getPolicyTypes();
     this.getLossCauses();
@@ -1814,6 +2031,7 @@ export default {
     ...mapGetters([
       'selectedLead',
       'leadSources',
+      'estimators',
       'contactTypes',
       'clientTypes',
       'propertyTypes',
@@ -1823,18 +2041,22 @@ export default {
       'claimReasons',
       'titles',
       'vendors',
-      'policyCategories'
+      'policyCategories',
+      'vendorIndustries'
     ])
   },
 
   mounted() {
     this.getTitles();
+    this.getVendorIndustries();
   },
   methods: {
     ...mapActions([
       'addClient',
       'getVendors',
+      'getEstimators',
       'addClaim',
+      'addEstimator',
       'getClientTypes',
       'getPropertyTypes',
       'getPolicyTypes',
@@ -1843,11 +2065,39 @@ export default {
       'getClaimReasons',
       'getContactTypes',
       'getTitles',
-      'getPolicyCategory'
+      'getPolicyCategory',
+      'getVendorIndustries'
     ]),
 
     ...mapMutations(['setSelectedLead']),
 
+    searchFilterBy(val, update) {
+      this.expertVendorInfo.industry.value = null;
+      if (val === ' ') {
+        update(() => {
+          this.options = this.vendorIndustries;
+        });
+        return;
+      }
+
+      update(() => {
+        const search = val.toLowerCase();
+        this.options = this.vendorIndustries.filter(
+          v => v.name.toLowerCase().indexOf(search) > -1
+        );
+      });
+    },
+    setVendorIndustryName() {
+      const selectedName = this.expertVendorInfo.industry.value;
+      const result = this.vendorIndustries.find(obj => {
+        return obj.name === selectedName;
+      });
+
+      this.expertVendorInfo.industry.value = result.name;
+
+      this.expertVendorInfo.industry.id = result.id;
+      this.expertVendorInfo.industry.machineValue = result.machineValue;
+    },
     onCountrySelect(country) {
       this.states = addressService.getStates(country);
     },
@@ -2012,13 +2262,14 @@ export default {
       } else {
         payload.source.detail = this.sourceDetails.details;
       }
-      const response = await this.addClient(payload);
 
+      const response = await this.addClient(payload);
       if (response && response.id) {
         const clientInfo = {
           name: response,
           id: response.id
         };
+
         this.setPayloadForClaim(clientInfo);
       }
     },
@@ -2115,8 +2366,8 @@ export default {
           isPPDamaged: this.isThereDamageToPersonalPropertyToggle,
           isPPIF: this.wasAppifProvidedToTheInsuredToggle,
           isNeedPPIF: this.doesTheOfficeNeedToProvidePpifToTheInsuredToggle,
-          hasHomeMortgage: this.IsMortgageHomeToggle,
-          isSecondClaim: this.isThereAsecondClaimToFileToggle
+          PPDamageDesc: this.lossInfo.damagePersnalPropertyDescription,
+          hasHomeMortgage: this.IsMortgageHomeToggle
         },
         expertInfo: {
           isVendorAssigned: this.vendorExpertHiredToggle,
@@ -2129,12 +2380,40 @@ export default {
           internalNotes: this.expertVendorInfo.internalNotes
         }
       };
-
       this.addClaim(payload).then(() => {
         this.setSelectedLead();
         this.$router.push('/clients');
       });
     },
+    async onAddEstimatorButtonClick() {
+      const payload = {
+        fname: this.addEstimatorInfo.fname,
+        lname: this.addEstimatorInfo.lname,
+        honorific: {
+          id: this.honorific3.id,
+          value: this.honorific3.title,
+          machineValue: this.honorific3.machineValue
+        },
+        email: this.addEstimatorInfo.email,
+        phoneNumber: [
+          {
+            type: this.addEstimatorInfo.type,
+            number: this.addEstimatorInfo.phone
+          }
+        ]
+      };
+
+      const response = this.addEstimator(payload);
+      if (response) {
+        this.addEstimatorDialog = false;
+        this.getEstimators();
+      }
+    },
+    selectEstimator(value) {
+      this.addEstimatorInfo.name = value.fname;
+      this.estimatorsListDialog = false;
+    },
+
     validateEmail,
 
     onChangingSourceType() {
@@ -2207,8 +2486,8 @@ export default {
           break;
         case constants.industries.EXPERTVENDOR:
           this.vendorDialogName = constants.industries.VENDOR;
-          this.showVendorDialogFilters = true;
-          this.vendorDialogFilterByIndustry = '';
+
+          this.vendorDialogFilterByIndustry = this.selectedName;
           break;
         case constants.industries.CARRIER:
           this.vendorDialogName = constants.industries.CARRIER;
@@ -2269,6 +2548,22 @@ export default {
     padding-top: 24px;
     padding-bottom: 8px;
     height: 50px;
+  }
+}
+.vendor-list {
+  padding-top: 51px;
+  color: #666666;
+  .actions-div {
+    display: flex;
+    border-bottom: 1px solid #0000001f;
+    padding: 0 20px;
+    align-items: center;
+  }
+  .vendor-list-item {
+    padding: 20px;
+    border-bottom: 1px solid lightgray;
+    text-transform: capitalize;
+    display: flex;
   }
 }
 </style>
