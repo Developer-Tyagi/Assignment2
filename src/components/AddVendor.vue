@@ -33,7 +33,7 @@
             label=" Company Name"
             lazy-rules
             :rules="[
-              val => (val && val.length > 0) || 'Please fill the first name'
+              val => (val && val.length > 0) || 'Please fill the company name'
             ]"
           />
           <div>
@@ -53,7 +53,8 @@
               :disable="!industryFilterDisabled"
               lazy-rules
               :rules="[
-                val => (val && val.length > 0) || 'Please fill the first name'
+                val =>
+                  (val && val.length > 0) || 'Please choose the industry type'
               ]"
             >
               <template v-slot:no-option>
@@ -102,6 +103,10 @@
               label="Type"
               style="width: 40%; margin-right: auto"
               emit-value
+              lazy-rules
+              :rules="[
+                val => (val && val.length > 0) || 'Please choose phone type'
+              ]"
             />
             <q-input
               class="required"
@@ -109,13 +114,24 @@
               label="Phone"
               type="number"
               style="width: 55%"
+              lazy-rules
+              :rules="[
+                val =>
+                  (val && val.length == 10) || 'Please fill the phone number!'
+              ]"
             />
           </div>
           <q-input
+            class="required"
             v-model="vendor.contact[0].email"
             type="email"
             label="Email"
-            borderless
+            lazy-rules
+            :rules="[
+              val =>
+                validateEmail(val) ||
+                'You have entered an invalid email address!'
+            ]"
           />
           <div
             class="row"
@@ -225,6 +241,7 @@ const addressService = new AddressService();
 import { mapGetters, mapActions } from 'vuex';
 import { constants } from '@utils/constant';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
+import { validateEmail } from '@utils/validation';
 
 export default {
   name: 'AddVendor',
@@ -343,6 +360,7 @@ export default {
       'getTitles',
       'getContactTypes'
     ]),
+    validateEmail,
 
     searchFilterBy(val, update) {
       this.vendor.industry.value = null;

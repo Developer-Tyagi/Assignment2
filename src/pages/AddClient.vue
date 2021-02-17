@@ -354,9 +354,12 @@
                       map-options
                       emit-value
                       label="Type"
-                      lazy-rules
-                      :rules="[val => (val && val.length > 0) || '']"
                       style="width: 40%; margin-right: auto"
+                      lazy-rules
+                      :rules="[
+                        val =>
+                          (val && val.length > 0) || 'Please choose phone type'
+                      ]"
                     />
                     <q-input
                       v-model="insuredDetails.phone"
@@ -404,6 +407,11 @@
                       @input="setTitleName(2)"
                       emit-value
                       label="Title"
+                      lazy-rules
+                      :rules="[
+                        val =>
+                          (val && val.length > 0) || 'Please choose the Title'
+                      ]"
                     />
                     <q-input
                       v-model="coInsuredDetails.fname"
@@ -425,7 +433,11 @@
                         style="width: 40%; margin-right: auto"
                         label="Type"
                         lazy-rules
-                        :rules="[val => (val && val.length > 0) || '']"
+                        :rules="[
+                          val =>
+                            (val && val.length > 0) ||
+                            'Please choose phone type'
+                        ]"
                       />
                       <q-input
                         v-model="coInsuredDetails.phone"
@@ -476,7 +488,11 @@
                         map-options
                         emit-value
                         lazy-rules
-                        :rules="[val => (val && val.length > 0) || '']"
+                        :rules="[
+                          val =>
+                            (val && val.length > 0) ||
+                            'Please choose phone type'
+                        ]"
                         style="width: 40%; margin-right: auto"
                       />
                       <q-input
@@ -504,7 +520,11 @@
                         map-options
                         emit-value
                         lazy-rules
-                        :rules="[val => (val && val.length > 0) || '']"
+                        :rules="[
+                          val =>
+                            (val && val.length > 0) ||
+                            'Please choose phone type'
+                        ]"
                         style="width: 40%; margin-right: auto"
                       />
                       <q-input
@@ -555,12 +575,24 @@
                         map-options
                         emit-value
                         style="width: 40%; margin-right: auto"
+                        lazy-rules
+                        :rules="[
+                          val =>
+                            (val && val.length > 0) ||
+                            'Please choose phone type'
+                        ]"
                       />
                       <q-input
                         class="required"
                         v-model="tenantOccupied.phone"
                         label="Phone"
                         style="width: 55%; margin-left: auto"
+                        lazy-rules
+                        :rules="[
+                          val =>
+                            (val && val.length == 10) ||
+                            'Please fill the phone number'
+                        ]"
                       />
                     </div>
                   </div>
