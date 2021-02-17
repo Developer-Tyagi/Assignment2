@@ -366,13 +366,18 @@
                       class="required"
                       label="Phone"
                       type="number"
+                      :mask="
+                        insuredDetails.type !== 'mobile'
+                          ? '(###) ###-####'
+                          : '##########'
+                      "
+                      style="width: 55%"
                       lazy-rules
                       :rules="[
                         val =>
-                          (val && val.length == 10) ||
-                          'Please fill the phone number'
+                          (val && val.length == 14) ||
+                          'Please enter the phone number'
                       ]"
-                      style="width: 55%"
                     />
                   </div>
                   <q-input
@@ -444,11 +449,16 @@
                         label="Phone"
                         class="required"
                         type="number"
+                        :mask="
+                          coInsuredDetails.type !== 'mobile'
+                            ? '(###) ###-####'
+                            : '##########'
+                        "
                         lazy-rules
                         :rules="[
                           val =>
-                            (val && val.length == 10) ||
-                            'Please fill the phone number'
+                            (val && val.length == 14) ||
+                            'Please enter the phone number'
                         ]"
                         style="width: 55%"
                       />
@@ -500,11 +510,16 @@
                         label="Phone2"
                         class="required"
                         type="number"
+                        :mask="
+                          addAditionalPhoneNumber.type1 !== 'mobile'
+                            ? '(###) ###-####'
+                            : '##########'
+                        "
                         lazy-rules
                         :rules="[
                           val =>
-                            (val && val.length == 10) ||
-                            'Please fill the phone number'
+                            (val && val.length == 14) ||
+                            'Please enter the phone number'
                         ]"
                         style="width: 55%; margin-left: auto"
                       />
@@ -532,11 +547,16 @@
                         v-model="addAditionalPhoneNumber.phone3"
                         label="Phone3"
                         type="number"
+                        :mask="
+                          addAditionalPhoneNumber.type2 !== 'mobile'
+                            ? '(###) ###-####'
+                            : '##########'
+                        "
                         lazy-rules
                         :rules="[
                           val =>
-                            (val && val.length == 10) ||
-                            'Please fill the phone number'
+                            (val && val.length == 14) ||
+                            'Please enter the phone number'
                         ]"
                         style="width: 55%"
                       />
@@ -587,11 +607,16 @@
                         v-model="tenantOccupied.phone"
                         label="Phone"
                         style="width: 55%; margin-left: auto"
+                        :mask="
+                          tenantOccupied.type !== 'mobile'
+                            ? '(###) ###-####'
+                            : '##########'
+                        "
                         lazy-rules
                         :rules="[
                           val =>
-                            (val && val.length == 10) ||
-                            'Please fill the phone number'
+                            (val && val.length == 14) ||
+                            'Please enter the phone number'
                         ]"
                       />
                     </div>

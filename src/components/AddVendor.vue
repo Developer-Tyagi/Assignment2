@@ -114,10 +114,14 @@
               label="Phone"
               type="number"
               style="width: 55%"
+              :mask="
+                vendor.contact[0].phoneNumber[0].type !== 'mobile'
+                  ? '(###) ###-####'
+                  : '##########'
+              "
               lazy-rules
               :rules="[
-                val =>
-                  (val && val.length == 10) || 'Please fill the phone number!'
+                val => (val && val.length == 14) || 'Please enter phone number'
               ]"
             />
           </div>
@@ -165,6 +169,8 @@
                 @input="setTitleName(contactInfo.honorific)"
                 emit-value
                 map-options
+                lazy-rules
+                :rules="[val => (val && val.length > 0) || '']"
               />
               <q-input
                 v-model="contactInfo.fname"
@@ -182,6 +188,8 @@
                   label="Type"
                   style="width: 40%; margin-right: auto"
                   emit-value
+                  lazy-rules
+                  :rules="[val => (val && val.length > 0) || '']"
                 />
                 <q-input
                   class="required"
@@ -190,6 +198,16 @@
                   type="number"
                   style="width: 55%"
                   :ref="`number-${index}`"
+                  :mask="
+                    contactInfo.phoneNumber[0].type !== 'mobile'
+                      ? '(###) ###-####'
+                      : '##########'
+                  "
+                  lazy-rules
+                  :rules="[
+                    val =>
+                      (val && val.length == 14) || 'Please enter phone number'
+                  ]"
                 />
               </div>
               <q-input

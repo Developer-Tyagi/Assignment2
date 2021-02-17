@@ -68,13 +68,17 @@
                   v-model="primaryDetails.phoneNumber"
                   label="Phone"
                   type="number"
+                  :mask="
+                    primaryDetails.selectedContactType !== 'mobile'
+                      ? '(###) ###-####'
+                      : '##########'
+                  "
                   lazy-rules
                   :rules="[
                     val =>
-                      (val && val.length == 10) ||
-                      'Please fill the phone number'
+                      (val && val.length == 14) ||
+                      'Please enter the phone number'
                   ]"
-                  style="width: 55%"
                 />
               </div>
               <q-input
