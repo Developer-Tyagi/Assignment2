@@ -69,7 +69,9 @@ export async function getUserInfo({ dispatch, state }) {
     });
   }
 }
+
 export async function addUser({ dispatch, state }, payload) {
+  console.log('in');
   dispatch('setLoading', true);
   try {
     const { data } = await request.post(
