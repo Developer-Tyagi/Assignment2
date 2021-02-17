@@ -3,22 +3,6 @@ import { getToken } from '@utils/auth.js';
 const routes = [
   {
     path: '',
-    component: () => import('layouts/DashboardLayout.vue'),
-    beforeEnter: (to, from, next) => {
-      !getToken() ? next({ name: 'login' }) : next();
-    },
-    children: [
-      {
-        path: 'dashboard',
-        name: 'dashboard',
-        component: () => import('pages/Dashboard.vue')
-      },
-
-      { path: '', redirect: 'dashboard' }
-    ]
-  },
-  {
-    path: '',
     component: () => import('layouts/AuthLayout.vue'),
     children: [
       {
@@ -36,6 +20,22 @@ const routes = [
         name: 'forgot-password',
         component: () => import('pages/ForgotPassword.vue')
       }
+    ]
+  },
+  {
+    path: '',
+    component: () => import('layouts/DashboardLayout.vue'),
+    beforeEnter: (to, from, next) => {
+      !getToken() ? next({ name: 'login' }) : next();
+    },
+    children: [
+      {
+        path: 'dashboard',
+        name: 'dashboard',
+        component: () => import('pages/Dashboard.vue')
+      },
+
+      { path: '', redirect: 'dashboard' }
     ]
   },
   {

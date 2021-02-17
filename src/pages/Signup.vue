@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <div class="signup-container q-px-xl q-py-lg">
-      <div class="row justify-between">
+      <div v-if="isValidPlan" class="row justify-between">
         <div class="col-3">
           <q-carousel
             v-model="plan"
@@ -127,12 +127,17 @@
                     <q-input
                       v-model="user.contact.phoneNumber[0].number"
                       label="Contact Phone Number"
-                      type="number"
+                      :mask="
+                        user.contact.phoneNumber[0].type !== 'mobile'
+                          ? '(###) ###-####'
+                          : '##########'
+                      "
                       style="width: 55%"
                       filled
+                      lazy-rules
+                      :rules="[val => (val && val.length == 14) || '']"
                     />
                   </div>
-
                   <q-input
                     v-model="user.name"
                     name="businessName"
@@ -423,13 +428,24 @@
           </q-stepper>
         </div>
       </div>
+      <div v-else class="column justify-between">
+        <img src="~assets/404-error.jpg" width="60%" class="q-mx-auto" />
+        <h3 class="q-mx-auto">Plan Not Found</h3>
+        <q-btn
+          color="primary"
+          label="Back"
+          class="q-px-lg q-mx-auto"
+          type="submit"
+          style="width: 20%"
+        />
+      </div>
     </div>
   </q-page>
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import { constants } from '@utils/constant';
-
+import { getToken, getCurrentUser } from '@utils/auth.js';
 export default {
   name: 'Signup',
 
@@ -439,6 +455,7 @@ export default {
       step: 1,
       autocomplete1: {},
       autocomplete2: {},
+      isValidPlan: true,
       isBillingAddressSame: false,
       isAddressFieldEnable: false,
       selectedPlan: {
@@ -500,6 +517,10 @@ export default {
       'getContactTypes',
       'createUserForOrganization'
     ]),
+
+    call(number) {
+      window.open('tel:' + number);
+    },
 
     onPrevPlan() {
       this.plan--;
@@ -595,23 +616,39 @@ export default {
   },
 
   created() {
-    // this.getPlansInfo();
-    const index = this.plans.findIndex(
-      o => o.machineName === this.$route.query.plan
-    );
-    this.plan = index + 1;
-    this.user.billingInfo.planInfo.id = this.plans[index].id;
-    this.user.billingInfo.planInfo.name = this.plans[index].name;
-    this.user.billingInfo.planInfo.machineName = this.plans[index].machineName;
-    this.getContactTypes();
+    if (getToken()) {
+      if (getCurrentUser() && getCurrentUser().attributes.onboard.isCompleted) {
+        this.$router.push('/dashboard');
+      } else {
+        this.$router.push('/onboarding');
+      }
+    } else {
+      // this.getPlansInfo();
+      const index = this.plans.findIndex(
+        o => o.machineName === this.$route.query.plan
+      );
+      if (index > -1) {
+        this.plan = index + 1;
+        this.user.billingInfo.planInfo.id = this.plans[index].id;
+        this.user.billingInfo.planInfo.name = this.plans[index].name;
+        this.user.billingInfo.planInfo.machineName = this.plans[
+          index
+        ].machineName;
+        // this.getContactTypes();
+      } else {
+        this.isValidPlan = false;
+      }
+    }
   },
 
   mounted() {
-    this.autocomplete1 = new google.maps.places.Autocomplete(
-      document.getElementById('autocomplete1'),
-      { types: ['geocode'] }
-    );
-    this.autocomplete1.addListener('place_changed', this.fillInAddress);
+    if (this.isValidPlan) {
+      this.autocomplete1 = new google.maps.places.Autocomplete(
+        document.getElementById('autocomplete1'),
+        { types: ['geocode'] }
+      );
+      this.autocomplete1.addListener('place_changed', this.fillInAddress);
+    }
   },
 
   watch: {
