@@ -19,6 +19,24 @@ export async function getClients({ commit, dispatch }, searchString = '') {
   }
 }
 
+export async function getEstimators({ commit, dispatch }) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get('/estimators');
+
+    commit('setEstimators', data);
+
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response.data.title
+    });
+  }
+}
+
 export async function addClient({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
@@ -46,6 +64,25 @@ export async function addClaim({ dispatch, state }, payload) {
       buildApiData('claims', payload)
     );
     dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response.data.title
+    });
+  }
+}
+
+export async function addEstimator({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      '/estimators',
+      buildApiData('estimators', payload)
+    );
+    dispatch('setLoading', false);
+    return data;
   } catch (e) {
     console.log(e);
     dispatch('setLoading', false);
