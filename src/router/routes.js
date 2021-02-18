@@ -35,6 +35,11 @@ const routes = [
         path: 'set-password',
         name: 'set-password',
         component: () => import('pages/ForgotPassword.vue')
+      },
+      {
+        path: 'info',
+        name: 'info',
+        component: () => import('pages/Information.vue')
       }
     ]
   },

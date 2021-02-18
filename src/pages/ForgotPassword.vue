@@ -1,6 +1,6 @@
 <template>
   <q-page class="container bg-background">
-    <div class="flex row q-pa-xl justify-between">
+    <div class="flex row q-pa-xl justify-between" v-if="!isLinkExpired">
       <div class="bg-grey col-7"></div>
       <div class="col-4">
         <div class="full-height" style="border: 1px solid #dddddd">
@@ -13,17 +13,29 @@
           <q-input
             type="password"
             class="q-mx-xl"
-            style="border: 1px solid #dddddd"
             filled
             v-model="password.password"
+            lazy-rules
+            :rules="[
+              val =>
+                (val && val.length > 8) || 'Password should be more than 8 char'
+            ]"
           />
           <div class="my-font q-mx-xl q-mt-lg">Confirm Password</div>
           <q-input
             type="password"
             class="q-mx-xl"
-            style="border: 1px solid #dddddd"
             filled
             v-model="password.confirm"
+            lazy-rules
+            :rules="[
+              val =>
+                (val &&
+                  val == password.password &&
+                  val.length == password.password.length) ||
+                'Password should be same'
+            ]"
+            @input="checkConfirmPassword"
           />
           <q-separator class="q-mt-lg" />
           <center>
@@ -33,30 +45,78 @@
               label="Submit"
               class="q-my-md"
               @click="onSubmitPassword"
+              :disabled="isSubmitDisabled"
             />
           </center>
         </div>
       </div>
     </div>
+    <div v-else class="column justify-between">
+      <img src="~assets/link-expired.svg" width="50%" class="q-mx-auto" />
+      <h3 class="q-mx-auto">This link is expired.</h3>
+    </div>
   </q-page>
 </template>
 <script>
+import { mapActions } from 'vuex';
 export default {
   name: 'forgotPassword',
   data() {
     return {
-      password: { password: '', confirm: '' }
+      userId: '',
+      userEmail: '',
+      isSubmitDisabled: true,
+      password: { password: '', confirm: '' },
+      isLinkExpired: false
     };
   },
   methods: {
-    onSubmitPassword() {
-      if (
-        this.password.password &&
-        this.password.password === this.password.confirm
-      ) {
-        this.$router.push('/login');
+    ...mapActions(['verifyOobCode', 'setPassword']),
+
+    checkConfirmPassword() {
+      if (this.password.password === this.password.confirm) {
+        this.isSubmitDisabled = false;
+      } else {
+        this.isSubmitDisabled = true;
+      }
+    },
+
+    async onSubmitPassword() {
+      const payload = {
+        id: this.userId,
+        password: { password: this.password.password }
+      };
+      const setPass = await this.setPassword(payload);
+      if (sestPass) {
+        const loginData = {
+          data: {
+            type: 'users',
+            attributes: {
+              email: this.userEmail,
+              password: this.password.password
+            }
+          }
+        };
+        if (res) {
+          const response = await this.userLogin(loginData);
+          if (response) {
+            this.getUserInfo();
+          }
+        }
       }
     }
+  },
+
+  created() {
+    this.verifyOobCode(this.$route.query).then(response => {
+      if (response && reponse.status === 200) {
+        this.userId = response.data.id;
+        this.userEmail = response.data.attribute.email;
+        this.isLinkExpired = false;
+      } else {
+        this.isLinkExpired = true;
+      }
+    });
   }
 };
 </script>
