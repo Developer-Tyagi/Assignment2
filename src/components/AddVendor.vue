@@ -54,7 +54,7 @@
               lazy-rules
               :rules="[
                 val =>
-                  (val && val.length > 0) || 'Please choose the industry type'
+                  (val && val.length > 0) || 'Please select the industry type'
               ]"
             >
               <template v-slot:no-option>
@@ -105,7 +105,7 @@
               emit-value
               lazy-rules
               :rules="[
-                val => (val && val.length > 0) || 'Please choose phone type'
+                val => (val && val.length > 0) || 'Please select phone type'
               ]"
             />
             <q-input
@@ -170,7 +170,9 @@
                 emit-value
                 map-options
                 lazy-rules
-                :rules="[val => (val && val.length > 0) || '']"
+                :rules="[
+                  val => (val && val.length > 0) || 'Please select the Title'
+                ]"
               />
               <q-input
                 v-model="contactInfo.fname"
@@ -189,7 +191,10 @@
                   style="width: 40%; margin-right: auto"
                   emit-value
                   lazy-rules
-                  :rules="[val => (val && val.length > 0) || '']"
+                  lazy-rules
+                  :rules="[
+                    val => (val && val.length > 0) || 'Please select phone type'
+                  ]"
                 />
                 <q-input
                   class="required"
@@ -473,7 +478,7 @@ export default {
 
     async onAddVendorButtonClick() {
       const success = await this.$refs.vendorForm.validate();
-      if (success) {
+      if (success && this.checkAddressField()) {
         const response = await this.addVendor(this.vendor);
         if (response) {
           this.closeDialog(true);
@@ -483,6 +488,17 @@ export default {
 
     closeDialog(flag) {
       this.$emit('closeDialog', flag);
+    },
+    checkAddressField() {
+      if (this.vendor.address.streetAddress) {
+        return true;
+      } else {
+        this.$q.notify({
+          message: 'Please fill this Street Address',
+          position: 'top',
+          type: 'negative'
+        });
+      }
     }
   },
 
