@@ -71,7 +71,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(['verifyOobCode', 'setPassword']),
+    ...mapActions(['verifyOobCode', 'setPassword', 'userLogin', 'getUserInfo']),
 
     checkConfirmPassword() {
       if (this.password.password === this.password.confirm) {
@@ -87,8 +87,7 @@ export default {
         password: { password: this.password.password }
       };
       const setPass = await this.setPassword(payload);
-      console.log(setPass);
-      if (sestPass) {
+      if (setPass) {
         const loginData = {
           data: {
             type: 'users',
@@ -98,11 +97,9 @@ export default {
             }
           }
         };
+        const res = await this.userLogin(loginData);
         if (res) {
-          const res = await this.userLogin(loginData);
-          if (res) {
-            this.getUserInfo();
-          }
+          this.getUserInfo();
         }
       }
     }

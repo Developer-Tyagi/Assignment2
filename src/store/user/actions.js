@@ -110,6 +110,7 @@ export async function setPassword({ dispatch, state }, payload) {
       buildApiData('users', payload.password)
     );
     dispatch('setLoading', false);
+    return true;
   } catch (e) {
     console.log(e);
     dispatch('setLoading', false);
