@@ -87,6 +87,7 @@ export default {
         password: { password: this.password.password }
       };
       const setPass = await this.setPassword(payload);
+      console.log(setPass);
       if (sestPass) {
         const loginData = {
           data: {

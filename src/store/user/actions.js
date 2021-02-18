@@ -106,7 +106,7 @@ export async function setPassword({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.post(
-      `/users/${payload.id}/set-password`,
+      `/users/${payload.id}/setpassword`,
       buildApiData('users', payload.password)
     );
     dispatch('setLoading', false);
