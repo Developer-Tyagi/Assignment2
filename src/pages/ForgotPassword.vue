@@ -98,8 +98,8 @@ export default {
           }
         };
         if (res) {
-          const response = await this.userLogin(loginData);
-          if (response) {
+          const res = await this.userLogin(loginData);
+          if (res) {
             this.getUserInfo();
           }
         }
