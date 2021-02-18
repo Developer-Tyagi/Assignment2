@@ -364,7 +364,8 @@
 
                 <div class="column col-5">
                   <div class="text-h5">Credit Card Info</div>
-                  <q-input
+                  <PaymentCard @cardDetailsAdded="cardDetailsAdded" />
+                  <!-- <q-input
                     name="cardNumber"
                     color="primary"
                     label="Card Number"
@@ -403,7 +404,7 @@
                     filled
                     lazy-rules
                     :rules="[val => (val && val.length > 0) || '']"
-                  />
+                  /> -->
                 </div>
 
                 <q-separator />
@@ -421,6 +422,7 @@
                     label="Buy"
                     class="q-px-lg"
                     type="submit"
+                    :disabled="!isBuyButtonEnable"
                   />
                 </div>
               </q-form>
@@ -446,18 +448,21 @@
 import { mapActions, mapGetters } from 'vuex';
 import { constants } from '@utils/constant';
 import { getToken, getCurrentUser } from '@utils/auth.js';
+import PaymentCard from 'components/PaymentCard';
+
 export default {
-  name: 'Signup',
+  components: { PaymentCard },
 
   data() {
     return {
       plan: 1,
-      step: 1,
+      step: 2,
       autocomplete1: {},
       autocomplete2: {},
       isValidPlan: true,
       isBillingAddressSame: false,
       isAddressFieldEnable: false,
+      isBuyButtonEnable: false,
       selectedPlan: {
         id: '',
         name: '',
@@ -517,10 +522,6 @@ export default {
       'getContactTypes',
       'createUserForOrganization'
     ]),
-
-    call(number) {
-      window.open('tel:' + number);
-    },
 
     onPrevPlan() {
       this.plan--;
@@ -608,6 +609,10 @@ export default {
       this.$refs.billingInfo.validate().then(() => {
         this.createUserForOrganization(this.user);
       });
+    },
+
+    cardDetailsAdded(e) {
+      this.isBuyButtonEnable = e;
     }
   },
 
@@ -658,6 +663,7 @@ export default {
           document.getElementById('autocomplete2'),
           { types: ['geocode'] }
         );
+
         this.autocomplete2.addListener('place_changed', this.fillInAddress);
       }
     }
