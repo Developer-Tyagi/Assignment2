@@ -2349,7 +2349,7 @@ export default {
       const response = this.addEstimator(payload);
       if (response) {
         this.addEstimatorDialog = false;
-        this.getEstimators();
+        this.getEstimators(this.params);
       }
     },
     selectEstimator(value) {
@@ -2429,8 +2429,9 @@ export default {
           break;
         case constants.industries.EXPERTVENDOR:
           this.vendorDialogName = constants.industries.VENDOR;
+          this.showVendorDialogFilters = false;
 
-          this.vendorDialogFilterByIndustry = this.selectedName;
+          this.vendorDialogFilterByIndustry = this.expertVendorInfo.industry.machineValue;
           break;
         case constants.industries.CARRIER:
           this.vendorDialogName = constants.industries.CARRIER;

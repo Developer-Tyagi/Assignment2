@@ -19,10 +19,10 @@ export async function getClients({ commit, dispatch }, searchString = '') {
   }
 }
 
-export async function getEstimators({ commit, dispatch }) {
+export async function getEstimators({ commit, dispatch }, params) {
   dispatch('setLoading', true);
   try {
-    const { data } = await request.get('/estimators');
+    const { data } = await request.get('/estimators', params);
 
     commit('setEstimators', data);
 
