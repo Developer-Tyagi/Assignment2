@@ -23,10 +23,10 @@
               <template v-slot:before>
                 <q-tabs v-model="tab" vertical class="">
                   <div
-                    class="  q-py-md text-center text-bold text-h7"
+                    class="  row  justify-between text-bold text-h7"
                     :style="
                       tab == 'adduser'
-                        ? { 'background-color': '#CDFE92' }
+                        ? { 'background-color': '' }
                         : tab == 'sales' ||
                           tab == 'offcInfo' ||
                           tab == 'inspectionType' ||
@@ -35,7 +35,15 @@
                         : 'red'
                     "
                   >
-                    Add User
+                    <div
+                      class="col-5 q-py-md q-ml-xl
+                    "
+                    >
+                      Add User
+                    </div>
+                    <div class=" q-mt-md col-1 q-mr-lg">
+                      <q-icon size="sm" color="green" name="done" />
+                    </div>
                   </div>
 
                   <div
@@ -1284,7 +1292,8 @@
   </q-page>
 </template>
 <script>
-import { mapActions } from 'vuex';
+// import { mapActions } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import { validateEmail } from '@utils/validation';
 export default {
   name: 'AddUser',
@@ -1333,8 +1342,15 @@ export default {
       }
     };
   },
+  computed: {
+    ...mapGetters(['contactTypes', 'titles'])
+  },
+  mounted() {
+    this.getTitles();
+    this.getContactTypes();
+  },
   methods: {
-    ...mapActions(['addUser']),
+    ...mapActions(['addUser', 'getTitles', 'getContactTypes']),
     validateEmail,
     // on Clicking Submit Button
 
@@ -1378,6 +1394,7 @@ export default {
     },
 
     async addAnotherContact() {
+      console.log(this.titles);
       const success = await this.$refs.addUserForm.validate();
       if (success) {
         const len = this.users.length;
@@ -1452,6 +1469,9 @@ export default {
     }
 
     // End of Functions
+  },
+  created() {
+    console.log('helloW');
   }
 };
 </script>
