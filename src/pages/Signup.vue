@@ -111,33 +111,18 @@
                     lazy-rules
                     :rules="[val => (val && val.length > 0) || '']"
                   />
-
-                  <div class="row justify-between" style="padding-bottom: 20px">
-                    <q-select
-                      filled
-                      v-model="user.contact.phoneNumber[0].type"
-                      :options="contactTypes"
-                      option-value="machineValue"
-                      option-label="name"
-                      label="Type"
-                      style="width: 40%; margin-right: auto"
-                      emit-value
-                      map-options
-                    />
-                    <q-input
-                      v-model="user.contact.phoneNumber[0].number"
-                      label="Contact Phone Number"
-                      :mask="
-                        user.contact.phoneNumber[0].type !== 'mobile'
-                          ? '(###) ###-####'
-                          : '##########'
-                      "
-                      style="width: 55%"
-                      filled
-                      lazy-rules
-                      :rules="[val => (val && val.length == 14) || '']"
-                    />
-                  </div>
+                  <q-input
+                    v-model="user.contact.phoneNumber[0].number"
+                    label="Contact Phone Number"
+                    :mask="
+                      user.contact.phoneNumber[0].type !== 'mobile'
+                        ? '(###) ###-####'
+                        : '##########'
+                    "
+                    filled
+                    lazy-rules
+                    :rules="[val => (val && val.length == 14) || '']"
+                  />
                   <q-input
                     v-model="user.name"
                     name="businessName"
@@ -159,26 +144,18 @@
                     :rules="[val => (val && val.length > 0) || '']"
                   />
 
-                  <div class="row justify-between">
-                    <q-select
-                      filled
-                      v-model="user.phoneNumber.type"
-                      :options="contactTypes"
-                      option-value="machineValue"
-                      option-label="name"
-                      label="Type"
-                      style="width: 40%; margin-right: auto"
-                      emit-value
-                      map-options
-                    />
-                    <q-input
-                      v-model="user.phoneNumber.number"
-                      label="Bussiness Phone Number"
-                      type="number"
-                      style="width: 55%"
-                      filled
-                    />
-                  </div>
+                  <q-input
+                    v-model="user.phoneNumber.number"
+                    label="Bussiness Phone Number"
+                    :mask="
+                      user.contact.phoneNumber[0].type !== 'mobile'
+                        ? '(###) ###-####'
+                        : '##########'
+                    "
+                    filled
+                    lazy-rules
+                    :rules="[val => (val && val.length == 14) || '']"
+                  />
                 </div>
 
                 <div class="column col-5">

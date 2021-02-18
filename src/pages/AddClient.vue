@@ -1295,7 +1295,7 @@
               style="margin: auto 0"
             />
             <div class="text-uppercase text-bold text-black q-mx-auto">
-              Add Estimator
+              ADD NEW ESTIMATOR
             </div>
           </q-toolbar>
         </q-header>
@@ -1623,7 +1623,9 @@
               @click="estimatorsListDialog = false"
               style="margin: auto 0"
             />
-
+            <div class="text-uppercase text-bold text-black q-mx-auto">
+              Estimators
+            </div>
             <img
               src="~assets/add.svg"
               @click="addEstimatorDialog = true"
@@ -2429,8 +2431,9 @@ export default {
           break;
         case constants.industries.EXPERTVENDOR:
           this.vendorDialogName = constants.industries.VENDOR;
+          this.showVendorDialogFilters = false;
 
-          this.vendorDialogFilterByIndustry = this.selectedName;
+          this.vendorDialogFilterByIndustry = this.expertVendorInfo.industry.machineValue;
           break;
         case constants.industries.CARRIER:
           this.vendorDialogName = constants.industries.CARRIER;
