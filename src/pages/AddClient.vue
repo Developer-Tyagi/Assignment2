@@ -1052,8 +1052,21 @@
                 v-if="IsMortgageHomeToggle"
                 @click="mortgageInfoDialog = true"
               >
-                <div class="select-text">
-                  {{ 'Select Mortgage' }}
+                <div
+                  class="custom-select "
+                  style="display:flex"
+                  v-model="selectMortgage.name"
+                >
+                  <div
+                    class="select-text q-px-xs"
+                    v-for="(i, index) in mortgageDetails"
+                  >
+                    {{
+                      mortgageDetails[index].value
+                        ? mortgageDetails[index].value
+                        : 'Select Mortgage'
+                    }},
+                  </div>
                 </div>
               </div>
             </div>
@@ -1736,6 +1749,9 @@ export default {
         type: '',
 
         email: ''
+      },
+      selectMortgage: {
+        name: ''
       },
       coInsuredDetails: {
         fname: '',
