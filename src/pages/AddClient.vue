@@ -1057,15 +1057,22 @@
                   style="display:flex"
                   v-model="selectMortgage.name"
                 >
-                  <div
-                    class="select-text q-px-xs"
-                    v-for="(i, index) in mortgageDetails"
-                  >
-                    {{
-                      mortgageDetails[index].value
-                        ? mortgageDetails[index].value
-                        : 'Select Mortgage'
-                    }},
+                  <div class=" q-px-xs row">
+                    <div v-if="!mortgageDetails[0].id">
+                      Select Mortgage
+                    </div>
+                    <div
+                      v-else
+                      class="select-text"
+                      v-for="(mortgageDetail, index) in mortgageDetails"
+                    >
+                      <span>
+                        {{ mortgageDetail.value }}
+                      </span>
+                      <span v-if="mortgageDetails.length - 1 > index">
+                        ,
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
