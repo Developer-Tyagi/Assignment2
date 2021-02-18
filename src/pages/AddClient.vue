@@ -1295,7 +1295,7 @@
               style="margin: auto 0"
             />
             <div class="text-uppercase text-bold text-black q-mx-auto">
-              Add Estimator
+              ADD NEW ESTIMATOR
             </div>
           </q-toolbar>
         </q-header>
@@ -1623,7 +1623,9 @@
               @click="estimatorsListDialog = false"
               style="margin: auto 0"
             />
-
+            <div class="text-uppercase text-bold text-black q-mx-auto">
+              Estimators
+            </div>
             <img
               src="~assets/add.svg"
               @click="addEstimatorDialog = true"
@@ -2349,7 +2351,7 @@ export default {
       const response = this.addEstimator(payload);
       if (response) {
         this.addEstimatorDialog = false;
-        this.getEstimators(this.params);
+        this.getEstimators();
       }
     },
     selectEstimator(value) {
