@@ -636,7 +636,13 @@
           </div>
 
           <q-btn
-            @click="onSubmit('clientInfoDailog')"
+            @click="
+              onSubmit(
+                'clientInfoDailog',
+
+                clientAddressDetails.streetAddress
+              )
+            "
             label="Save"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
@@ -699,7 +705,13 @@
             label="Save"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
-            @click="onSubmit('mailingAddressDialog')"
+            @click="
+              onSubmit(
+                'mailingAddressDialog',
+
+                mailingAddressDetails.streetAddress
+              )
+            "
             size="'xl'"
           ></q-btn>
         </q-card-section>
@@ -1172,13 +1184,101 @@
               </div>
               <q-separator />
               <br />
+              <div class="row">
+                <span class="form-heading">
+                  Is there damage to other structures?
+                </span>
+                <q-toggle class="q-ml-auto" v-model="isDamageOSToggle" />
+              </div>
+              <textarea
+                v-if="isDamageOSToggle"
+                rows="5"
+                required
+                class="full-width"
+                v-model="lossInfo.damageDescription"
+                label="Damage items description"
+                style="resize: none"
+              />
+
+              <div class="row">
+                <span class="form-heading">
+                  Is there damage to personal property?
+                </span>
+                <q-toggle
+                  class="q-ml-auto"
+                  v-model="isThereDamageToPersonalPropertyToggle"
+                />
+              </div>
+              <textarea
+                v-if="isThereDamageToPersonalPropertyToggle"
+                rows="5"
+                required
+                class="full-width"
+                v-model="lossInfo.damagePersnalPropertyDescription"
+                label="Damage items description"
+                style="resize: none"
+              />
+              <div class="row">
+                <span class="form-heading">
+                  Was a PPIF provided to the insured?
+                </span>
+                <q-toggle
+                  class="q-ml-auto"
+                  v-model="wasAppifProvidedToTheInsuredToggle"
+                />
+              </div>
+              <div class="row">
+                <span class="form-heading">
+                  Does Claimguru PPIF need to be provided?
+                </span>
+                <q-toggle
+                  class="q-ml-auto"
+                  v-model="doesTheOfficeNeedToProvidePpifToTheInsuredToggle"
+                />
+              </div>
+              <div class="row">
+                <span class="form-heading">
+                  Is there a mortgage on the home?
+                </span>
+                <q-toggle class="q-ml-auto" v-model="IsMortgageHomeToggle" />
+              </div>
+              <div
+                v-if="IsMortgageHomeToggle"
+                @click="mortgageInfoDialog = true"
+              >
+                <div class="row ">
+                  <div class=" q-px-xs row">
+                    <div v-if="!mortgageDetails[0].id">
+                      Select Mortgage
+                    </div>
+                    <div
+                      v-else
+                      class="select-text"
+                      v-for="(mortgageDetail, index) in mortgageDetails"
+                    >
+                      <span>
+                        {{ mortgageDetail.value }}
+                      </span>
+                      <span v-if="mortgageDetails.length - 1 > index">
+                        ,
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <q-btn
             label="Save"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
-            @click="onSubmit('lossInfoDialog')"
+            @click="
+              onSubmit(
+                'lossInfoDialog',
+
+                lossAddressDetails.streetAddress
+              )
+            "
             size="'xl'"
           ></q-btn>
         </q-card-section>
@@ -1409,7 +1509,7 @@
               style="margin: auto 0"
             />
             <div class="text-uppercase text-bold text-black q-mx-auto">
-              Add Estimator
+              ADD NEW ESTIMATOR
             </div>
           </q-toolbar>
         </q-header>
@@ -1741,7 +1841,9 @@
               @click="estimatorsListDialog = false"
               style="margin: auto 0"
             />
-
+            <div class="text-uppercase text-bold text-black q-mx-auto">
+              Estimators
+            </div>
             <img
               src="~assets/add.svg"
               @click="addEstimatorDialog = true"
@@ -1855,6 +1957,7 @@ export default {
 
         email: ''
       },
+
       coInsuredDetails: {
         fname: '',
         lname: '',
@@ -2174,54 +2277,38 @@ export default {
       this.states = addressService.getStates(country);
     },
 
-    async onSubmit(name) {
+    async onSubmit(name, streetAddress) {
+      let success = false;
       switch (name) {
         case 'clientInfoDailog':
-          var sucess = await this.$refs.clientForm.validate();
+          success = await this.$refs.clientForm.validate();
           break;
         case 'insuranceInfoDialog':
-          var sucess = await this.$refs.insuranceInfoForm.validate();
+          success = await this.$refs.insuranceInfoForm.validate();
           break;
         case 'mailingAddressDialog':
-          var sucess = await this.$refs.mailingAddressForm.validate();
+          success = await this.$refs.mailingAddressForm.validate();
           break;
         case 'addEstimatorDialog':
-          var sucess = await this.$refs.addEstimatorForm.validate();
+          success = await this.$refs.addEstimatorForm.validate();
           break;
         case 'lossInfoDialog':
-          var sucess = await this.$refs.lossInfoForm.validate();
+          success = await this.$refs.lossInfoForm.validate();
           break;
         case 'expertVendorInfoDialog':
-          var sucess = await this.$refs.expertVendorInfoForm.validate();
+          success = await this.$refs.expertVendorInfoForm.validate();
           break;
       }
-      if (sucess == true) {
-        if (name == 'insuranceInfoDialog') {
-          this.insuranceInfoDialog = false;
-        }
+      if (success == true) {
         if (
-          name == 'clientInfoDailog' &&
-          this.checkAddressField(this.clientAddressDetails.streetAddress)
+          name === 'insuranceInfoDialog' ||
+          name === 'expertVendorInfoDialog'
         ) {
-          this.clientInfoDailog = false;
-        }
-        if (
-          name == 'mailingAddressDialog' &&
-          this.checkAddressField(this.mailingAddressDetails.streetAddress)
-        ) {
-          this.mailingAddressDialog = false;
-        }
-        if (name == 'addEstimatorDialog' && this.onAddEstimatorButtonClick()) {
-          this.addEstimatorDialog = false;
-        }
-        if (
-          name == 'lossInfoDialog' &&
-          this.checkAddressField(this.lossAddressDetails.streetAddress)
-        ) {
-          this.lossInfoDialog = false;
-        }
-        if (name == 'expertVendorInfoDialog') {
-          this.expertVendorInfoDialog = false;
+          this[name] = false;
+        } else {
+          if (this.checkAddressField(streetAddress)) {
+            this[name] = false;
+          }
         }
       }
     },
@@ -2600,7 +2687,9 @@ export default {
           break;
         case constants.industries.EXPERTVENDOR:
           this.vendorDialogName = constants.industries.VENDOR;
+          this.showVendorDialogFilters = false;
 
+          this.vendorDialogFilterByIndustry = this.expertVendorInfo.industry.machineValue;
           break;
         case constants.industries.CARRIER:
           this.vendorDialogName = constants.industries.CARRIER;
