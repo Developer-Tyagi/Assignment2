@@ -82,7 +82,6 @@ export async function addEstimator({ dispatch, state }, payload) {
       buildApiData('estimators', payload)
     );
     dispatch('setLoading', false);
-    return data;
   } catch (e) {
     console.log(e);
     dispatch('setLoading', false);

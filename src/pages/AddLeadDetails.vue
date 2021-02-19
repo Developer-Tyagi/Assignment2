@@ -28,7 +28,9 @@
                 emit-value
                 label="Title"
                 lazy-rules
-                :rules="[val => (val && val.length > 0) || '']"
+                :rules="[
+                  val => (val && val.length > 0) || 'Please select the Title'
+                ]"
               />
 
               <q-input
@@ -61,20 +63,26 @@
                   style="width: 40%; margin-right: auto"
                   label="Type"
                   lazy-rules
-                  :rules="[val => (val && val.length > 0) || '']"
+                  :rules="[
+                    val => (val && val.length > 0) || 'Please select phone type'
+                  ]"
                 />
                 <q-input
                   class="required"
                   v-model="primaryDetails.phoneNumber"
                   label="Phone"
                   type="number"
+                  :mask="
+                    primaryDetails.selectedContactType !== 'mobile'
+                      ? '(###) ###-####'
+                      : '##########'
+                  "
                   lazy-rules
                   :rules="[
                     val =>
-                      (val && val.length == 10) ||
-                      'Please fill the phone number'
+                      (val && val.length == 14) ||
+                      'Please enter the phone number'
                   ]"
-                  style="width: 55%"
                 />
               </div>
               <q-input
