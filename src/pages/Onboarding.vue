@@ -26,7 +26,7 @@
                     class="  row  justify-between text-bold text-h7"
                     :style="
                       tab == 'adduser'
-                        ? { 'background-color': '' }
+                        ? { 'background-color': '#E8E8E8' }
                         : tab == 'sales' ||
                           tab == 'offcInfo' ||
                           tab == 'inspectionType' ||
@@ -41,18 +41,21 @@
                     >
                       Add User
                     </div>
-                    <div class=" q-mt-md col-1 q-mr-lg">
-                      <q-icon size="sm" color="green" name="done" />
+                    <div
+                      class=" q-mt-md col-1 q-mr-lg "
+                      v-if="tab != 'adduser'"
+                    >
+                      <q-icon size="xs" color="primary" name="done" />
                     </div>
                   </div>
 
                   <div
-                    class="q-py-md text-center text-bold text-h7"
+                    class="q-pb-lg row justify-between text-bold text-h7"
                     name="offcInfo"
                     label="Office Staff Info"
                     :style="
                       tab == 'offcInfo'
-                        ? { 'background-color': '#CDFE92' }
+                        ? { 'background-color': '#E8E8E8' }
                         : tab == 'sales' ||
                           tab == 'offcInfo' ||
                           tab == 'inspectionType' ||
@@ -61,15 +64,26 @@
                         : 'red'
                     "
                   >
-                    Office Staff Info
+                    <div
+                      class="col-5 q-pt-md q-ml-xl
+                    "
+                    >
+                      Office Staff Info
+                    </div>
+                    <div
+                      class=" q-mt-md col-1 q-mr-lg "
+                      v-if="tab != 'adduser' && tab != 'offcInfo'"
+                    >
+                      <q-icon size="xs" color="primary" name="done" />
+                    </div>
                   </div>
                   <div
-                    class="q-py-md text-center text-bold text-h7"
+                    class="q-pb-lg row justify-between text-bold text-h7"
                     name="sales"
                     label="Sales Representatives"
                     :style="
                       tab == 'sales'
-                        ? { 'background-color': '#CDFE92' }
+                        ? { 'background-color': '#E8E8E8' }
                         : tab == 'sales' ||
                           tab == 'offcInfo' ||
                           tab == 'inspectionType' ||
@@ -78,13 +92,26 @@
                         : 'red'
                     "
                   >
-                    Sales Representatives
+                    <div
+                      class=" col-7 q-pt-md q-ml-xl
+                    "
+                    >
+                      Sales Representative
+                    </div>
+                    <div
+                      class=" q-mt-md col-1 q-mr-lg "
+                      v-if="
+                        tab != 'adduser' && tab != 'offcInfo' && tab != 'sales'
+                      "
+                    >
+                      <q-icon size="xs" color="primary" name="done" />
+                    </div>
                   </div>
                   <div
-                    class="q-py-md text-center text-bold text-h7"
+                    class="q-pb-lg row justify-between text-bold text-h7"
                     :style="
-                      tab == 'inspectionType'
-                        ? { 'background-color': '#CDFE92' }
+                      tab != 'adduser' && tab != 'offcInfo' && tab != 'sales'
+                        ? { 'background-color': '#E8E8E8' }
                         : tab == 'sales' ||
                           tab == 'offcInfo' ||
                           tab == 'inspectionType' ||
@@ -93,7 +120,13 @@
                         : 'red'
                     "
                   >
-                    Set Configuration
+                    <div class=" col-7 q-pt-md q-ml-xl">Set Configuration</div>
+                    <div
+                      class=" q-mt-md col-1 q-mr-lg "
+                      v-if="tab == 'claimSeverity'"
+                    >
+                      <q-icon size="xs" color="primary" name="done" />
+                    </div>
                   </div>
                   <!-- This is Scrolling div -->
                   <div
@@ -104,55 +137,92 @@
                   >
                     <div
                       name="inspectionType"
-                      class="q-py-md text-center"
+                      class="q-pb-lg row justify-between text-bold text-h7"
                       :style="
                         tab == 'inspectionType'
-                          ? { 'background-color': '#CDFE92' }
-                          : tab == 'sales' ||
-                            tab == 'offcInfo' ||
-                            tab == 'inspectionType'
-                          ? { 'background-color': 'white' }
-                          : 'red'
+                          ? { 'background-color': '	#E8E8E8' }
+                          : 'white'
                       "
                     >
-                      InspectionType
+                      <div class=" col-7 q-pt-md q-ml-xl">InspectionType</div>
+                      <div
+                        class=" q-mt-md col-1 q-mr-lg "
+                        v-if="
+                          tab != 'adduser' &&
+                            tab != 'offcInfo' &&
+                            tab != 'sales' &&
+                            tab != 'inspectionType'
+                        "
+                      >
+                        <q-icon size="xs" color="primary" name="done" />
+                      </div>
                     </div>
                     <div
                       name="industryType"
-                      class="q-py-md text-center"
+                      class="q-pb-lg row justify-between text-bold text-h7"
                       :style="
                         tab == 'industryType'
-                          ? { 'background-color': '#CDFE92' }
+                          ? { 'background-color': '#E8E8E8' }
                           : tab == 'sales' ||
                             tab == 'offcInfo' ||
                             tab == 'inspectionType'
                           ? { 'background-color': 'white' }
-                          : 'red'
+                          : 'white'
                       "
                     >
-                      Industry Type
+                      <div class=" col-7 q-pt-md q-ml-xl">Industry Type</div>
+                      <div
+                        class=" q-mt-md col-1 q-mr-lg "
+                        v-if="
+                          tab != 'adduser' &&
+                            tab != 'offcInfo' &&
+                            tab != 'sales' &&
+                            tab != 'inspectionType' &&
+                            tab != 'industryType'
+                        "
+                      >
+                        <q-icon size="xs" color="primary" name="done" />
+                      </div>
                     </div>
                     <div
                       name="honorific"
-                      class="q-py-md text-center"
+                      class="q-pb-lg row justify-between text-bold text-h7"
                       :style="
                         tab == 'honorific'
-                          ? { 'background-color': '#CDFE92' }
+                          ? { 'background-color': '#E8E8E8' }
                           : tab == 'sales' ||
                             tab == 'offcInfo' ||
                             tab == 'inspectionType'
                           ? { 'background-color': 'white' }
-                          : 'red'
+                          : 'white'
                       "
                     >
-                      Honorific
+                      <div
+                        class=" col-7 q-pt-md q-ml-xl
+"
+                      >
+                        Honorific
+                      </div>
+                      <div
+                        class=" q-mt-md col-1 q-mr-lg "
+                        v-if="
+                          tab != 'adduser' &&
+                            tab != 'offcInfo' &&
+                            tab != 'sales' &&
+                            tab != 'inspectionType' &&
+                            tab != 'industryType' &&
+                            tab != 'honorific'
+                        "
+                      >
+                        <q-icon size="xs" color="primary" name="done" />
+                      </div>
                     </div>
                     <div
                       name="phoneType"
-                      class="q-py-md text-center"
+                      class="q-pb-lg row justify-between text-bold text-h7"
                       :style="
                         tab == 'phoneType'
-                          ? { 'background-color': '#CDFE92' }
+                          ? { 'background-color': '#E8E8E8' }
                           : tab == 'sales' ||
                             tab == 'offcInfo' ||
                             tab == 'inspectionType'
@@ -160,14 +230,28 @@
                           : 'red'
                       "
                     >
-                      Phone Type
+                      <div class=" col-7 q-pt-md q-ml-xl">Phone Type</div>
+                      <div
+                        class=" q-mt-md col-1 q-mr-lg "
+                        v-if="
+                          tab != 'adduser' &&
+                            tab != 'offcInfo' &&
+                            tab != 'sales' &&
+                            tab != 'inspectionType' &&
+                            tab != 'industryType' &&
+                            tab != 'honorific' &&
+                            tab != 'phoneType'
+                        "
+                      >
+                        <q-icon size="xs" color="primary" name="done" />
+                      </div>
                     </div>
                     <div
                       name="clientType"
-                      class="q-py-md text-center"
+                      class="q-pb-lg row justify-between text-bold text-h7"
                       :style="
                         tab == 'clientType'
-                          ? { 'background-color': '#CDFE92' }
+                          ? { 'background-color': '#E8E8E8' }
                           : tab == 'sales' ||
                             tab == 'offcInfo' ||
                             tab == 'inspectionType'
@@ -175,14 +259,29 @@
                           : 'red'
                       "
                     >
-                      Clients Type
+                      <div class=" col-7 q-pt-md q-ml-xl">Clients Type</div>
+                      <div
+                        class=" q-mt-md col-1 q-mr-lg "
+                        v-if="
+                          tab != 'adduser' &&
+                            tab != 'offcInfo' &&
+                            tab != 'sales' &&
+                            tab != 'inspectionType' &&
+                            tab != 'industryType' &&
+                            tab != 'honorific' &&
+                            tab != 'phoneType' &&
+                            tab != 'clientType'
+                        "
+                      >
+                        <q-icon size="xs" color="primary" name="done" />
+                      </div>
                     </div>
                     <div
                       name="policyCategories"
-                      class="q-py-md text-center"
+                      class="q-pb-lg row justify-between text-bold text-h7"
                       :style="
                         tab == 'policyCategories'
-                          ? { 'background-color': '#CDFE92' }
+                          ? { 'background-color': '#E8E8E8' }
                           : tab == 'sales' ||
                             tab == 'offcInfo' ||
                             tab == 'inspectionType'
@@ -190,14 +289,32 @@
                           : 'red'
                       "
                     >
-                      Policy Categories
+                      <div class=" col-7 q-pt-md q-ml-xl">
+                        Policy Categories
+                      </div>
+                      <div
+                        class=" q-mt-md col-1 q-mr-lg "
+                        v-if="
+                          tab != 'adduser' &&
+                            tab != 'offcInfo' &&
+                            tab != 'sales' &&
+                            tab != 'inspectionType' &&
+                            tab != 'industryType' &&
+                            tab != 'honorific' &&
+                            tab != 'phoneType' &&
+                            tab != 'clientType' &&
+                            tab != 'policyCategories'
+                        "
+                      >
+                        <q-icon size="xs" color="primary" name="done" />
+                      </div>
                     </div>
                     <div
                       name="policyType"
-                      class="q-py-md text-center"
+                      class="q-pb-lg row justify-between text-bold text-h7"
                       :style="
                         tab == 'policyType'
-                          ? { 'background-color': '#CDFE92' }
+                          ? { 'background-color': '#E8E8E8' }
                           : tab == 'sales' ||
                             tab == 'offcInfo' ||
                             tab == 'inspectionType'
@@ -205,14 +322,31 @@
                           : 'red'
                       "
                     >
-                      Policy Type
+                      <div class=" col-7 q-pt-md q-ml-xl">Policy Type</div>
+                      <div
+                        class=" q-mt-md col-1 q-mr-lg "
+                        v-if="
+                          tab != 'adduser' &&
+                            tab != 'offcInfo' &&
+                            tab != 'sales' &&
+                            tab != 'inspectionType' &&
+                            tab != 'industryType' &&
+                            tab != 'honorific' &&
+                            tab != 'phoneType' &&
+                            tab != 'clientType' &&
+                            tab != 'policyType' &&
+                            tab != 'policyCategories'
+                        "
+                      >
+                        <q-icon size="xs" color="primary" name="done" />
+                      </div>
                     </div>
                     <div
                       name="propertyType"
-                      class="q-py-md text-center"
+                      class="q-pb-lg row justify-between text-bold text-h7"
                       :style="
                         tab == 'propertyType'
-                          ? { 'background-color': '#CDFE92' }
+                          ? { 'background-color': '#E8E8E8' }
                           : tab == 'sales' ||
                             tab == 'offcInfo' ||
                             tab == 'inspectionType'
@@ -220,29 +354,66 @@
                           : 'red'
                       "
                     >
-                      Property Type
+                      <div class=" col-7 q-pt-md q-ml-xl">Property Type</div>
+                      <div
+                        class=" q-mt-md col-1 q-mr-lg "
+                        v-if="
+                          tab != 'adduser' &&
+                            tab != 'offcInfo' &&
+                            tab != 'sales' &&
+                            tab != 'inspectionType' &&
+                            tab != 'industryType' &&
+                            tab != 'honorific' &&
+                            tab != 'phoneType' &&
+                            tab != 'clientType' &&
+                            tab != 'policyType' &&
+                            tab != 'propertyType' &&
+                            tab != 'policyCategories'
+                        "
+                      >
+                        <q-icon size="xs" color="primary" name="done" />
+                      </div>
                     </div>
                     <div
                       name="claimReason"
-                      class="q-py-md text-center"
+                      class="q-pb-lg row justify-between text-bold text-h7"
                       :style="
                         tab == 'claimReason'
-                          ? { 'background-color': '#CDFE92' }
+                          ? { 'background-color': '#E8E8E8' }
                           : tab == 'sales' ||
                             tab == 'offcInfo' ||
                             tab == 'inspectionType'
-                          ? { 'background-color': '#CDFE92' }
+                          ? { 'background-color': 'white' }
                           : 'red'
                       "
                     >
-                      Claim Reason
+                      <div class=" col-7 q-pt-md q-ml-xl">Claim Reason</div>
+                      <div
+                        class=" q-mt-md col-1 q-mr-lg "
+                        v-if="
+                          tab != 'adduser' &&
+                            tab != 'offcInfo' &&
+                            tab != 'sales' &&
+                            tab != 'inspectionType' &&
+                            tab != 'industryType' &&
+                            tab != 'honorific' &&
+                            tab != 'phoneType' &&
+                            tab != 'clientType' &&
+                            tab != 'policyType' &&
+                            tab != 'propertyType' &&
+                            tab != 'claimReason' &&
+                            tab != 'policyCategories'
+                        "
+                      >
+                        <q-icon size="xs" color="primary" name="done" />
+                      </div>
                     </div>
                     <div
                       name="lossCause"
-                      class="q-py-md text-center"
+                      class="q-pb-lg row justify-between text-bold text-h7"
                       :style="
                         tab == 'lossCause'
-                          ? { 'background-color': '#CDFE92' }
+                          ? { 'background-color': '#E8E8E8' }
                           : tab == 'sales' ||
                             tab == 'offcInfo' ||
                             tab == 'inspectionType'
@@ -250,14 +421,34 @@
                           : 'red'
                       "
                     >
-                      Loss Cause
+                      <div class=" col-7 q-pt-md q-ml-xl">Loss Cause</div>
+                      <div
+                        class=" q-mt-md col-1 q-mr-lg "
+                        v-if="
+                          tab != 'adduser' &&
+                            tab != 'offcInfo' &&
+                            tab != 'sales' &&
+                            tab != 'inspectionType' &&
+                            tab != 'industryType' &&
+                            tab != 'honorific' &&
+                            tab != 'phoneType' &&
+                            tab != 'clientType' &&
+                            tab != 'policyType' &&
+                            tab != 'propertyType' &&
+                            tab != 'claimReason' &&
+                            tab != 'lossCause' &&
+                            tab != 'policyCategories'
+                        "
+                      >
+                        <q-icon size="xs" color="primary" name="done" />
+                      </div>
                     </div>
                     <div
-                      class="q-py-md text-center"
+                      class="q-pb-lg row justify-between text-bold text-h7"
                       name="claimSeverity"
                       :style="
                         tab == 'claimSeverity'
-                          ? { 'background-color': '#CDFE92' }
+                          ? { 'background-color': '#E8E8E8' }
                           : tab == 'sales' ||
                             tab == 'offcInfo' ||
                             tab == 'inspectionType'
@@ -265,7 +456,28 @@
                           : 'red'
                       "
                     >
-                      Claim Severity
+                      <div class=" col-7 q-pt-md q-ml-xl">Claim Severity</div>
+                      <div
+                        class=" q-mt-md col-1 q-mr-lg "
+                        v-if="
+                          tab != 'adduser' &&
+                            tab != 'offcInfo' &&
+                            tab != 'sales' &&
+                            tab != 'inspectionType' &&
+                            tab != 'industryType' &&
+                            tab != 'honorific' &&
+                            tab != 'phoneType' &&
+                            tab != 'clientType' &&
+                            tab != 'policyType' &&
+                            tab != 'propertyType' &&
+                            tab != 'claimReason' &&
+                            tab != 'lossCause' &&
+                            tab != 'claimSeverity' &&
+                            tab != 'policyCategories'
+                        "
+                      >
+                        <q-icon size="xs" color="primary" name="done" />
+                      </div>
                     </div>
                   </div>
                 </q-tabs>
@@ -273,6 +485,7 @@
               <!-- Main Template -->
               <template v-slot:after>
                 <q-tab-panels
+                  class="bg-grey-3"
                   style="height: 400px"
                   v-model="tab"
                   animated
@@ -468,7 +681,11 @@
                       <p class="q-my-auto">
                         <label> Does Company Have Sales Representative </label>
                       </p>
-                      <q-toggle class="q-ml-xs" v-model="toggle" />
+                      <q-toggle
+                        class="q-ml-xs"
+                        v-model="toggle"
+                        @input="onToggleChange"
+                      />
                     </div>
                     <q-form ref="addUserForm">
                       <div
@@ -579,87 +796,100 @@
                     </div>
                     <div class="q-mt-lg"><q-separator /></div>
                     <!-- This is div for Data of Inspection Type -->
-                    <div class="q-pa-lg" v-if="!inspection.type">
-                      You Have Not Added Any Inspection Type yet
+                    <div class="q-pa-lg" v-if="!inspectionTypes">
+                      You Have Not Added Any Inspection Type Yet
                     </div>
-                    <div v-else class="row justify-between">
-                      <table>
-                        <tr class="justify-between" style="width: 40%">
-                          <td>Inspection Type</td>
-                          <td>Duration</td>
-                        </tr>
+                    <div v-else class="row ">
+                      <div class=" row full-width">
+                        <div class=" col-4 q-ml-xl text-bold ">
+                          Inspection Type
+                        </div>
+                        <div class=" col-3 q-ml-lg text-bold ">Duration</div>
+                        <div class="  col-3 q-ml-lg text-center text-bold ">
+                          Edit/Delete
+                        </div>
+                      </div>
+                      <br />
 
-                        <tr
-                          v-for="(contactInfo, index) in inspection.subtypes"
-                          v-if="index >= 0"
-                        >
-                          <td>
-                            {{ inspection.subtypes[0].type }}
-                          </td>
-                          <td>{{ inspection.subtypes[0].duration }}</td>
-                          <td>
-                            <div>
-                              <q-icon size="sm" color="primary" name="create" />
-                              <q-icon
-                                class="q-ml-xs"
-                                size="sm"
-                                color="primary"
-                                name="delete"
-                              />
+                      <div
+                        class="row  full-width "
+                        v-for="(ins, index) in inspectionTypes"
+                        v-if="index >= 0"
+                      >
+                        <div class=" col-8 q-ml-xl bg-grey-2 ">
+                          <div class="col-5 q-pl-md  ">
+                            {{ inspectionTypes[index].value }}
+                          </div>
+
+                          <div
+                            class="row q-ml-lg q-mb-md col-5 "
+                            v-for="(ins, index1) in inspectionTypes[index]
+                              .subtypes"
+                            v-if="index >= 0"
+                          >
+                            <div class="q-pl-lg col-6">
+                              {{
+                                inspectionTypes[index].subtypes[index1].value
+                              }}
                             </div>
-                          </td>
-                        </tr>
-                      </table>
+                            <div class="q-pl-lg ">
+                              {{
+                                inspectionTypes[index].subtypes[index1].duration
+                              }}
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-2 bg-grey-2 q-pl-xl">
+                          <q-icon size="sm" color="primary" name="create" />
+                          <q-icon
+                            class="q-ml-xs"
+                            size="sm"
+                            color="primary"
+                            name="delete"
+                          />
+                        </div>
+                      </div>
                     </div>
                   </q-tab-panel>
                   <!-- Industry Type -->
                   <q-tab-panel name="industryType">
                     <div class="row justify-between">
                       <!-- empty pannel -->
-                      <div class=" text-bold col-4">Industry Type</div>
+                      <div class=" text-bold col-4">IndustryType</div>
                       <div
                         class=" col-2 text-primary"
                         @click="onclickSecondaryDialogBox('Industry Type')"
                       >
-                        Add Industry Type
+                        Add IndustryType
                       </div>
                     </div>
                     <div class="q-mt-lg"><q-separator /></div>
                     <!-- This is div for Data of Industry Type -->
-                    <div class="q-pa-lg" v-if="!industryType[0]">
-                      You Have Not Added Any Industry Type yet
+                    <div class="q-pa-lg" v-if="!vendorIndustries">
+                      You Have Not Added Any IndustryType yet
                     </div>
-                    <div v-else class="row justify-between">
-                      <table>
-                        <tr class=" justify-between" style="width:40%">
-                          <td>
-                            industry Type
-                          </td>
-                          <td>Duration</td>
-                          <td>Edit & Delete</td>
-                        </tr>
+                    <div v-else class="bg-grey-1">
+                      <div
+                        class="q-py-xs row justify-between full-width"
+                        v-for="(contactInfo, index) in vendorIndustries"
+                        v-if="index >= 0"
+                      >
+                        <div class="q-px-xl q-py-xs">
+                          {{ vendorIndustries[index].name }}
+                        </div>
 
-                        <tr
-                          v-for="(contactInfo, index) in inspection.subtypes"
-                          v-if="index >= 0"
-                        >
-                          <td>
-                            {{ industryType }}
-                          </td>
-                          <td>{{ industryType }}</td>
-                          <td>
-                            <div>
-                              <q-icon size="sm" color="primary" name="create" />
-                              <q-icon
-                                class="q-ml-xs"
-                                size="sm"
-                                color="primary"
-                                name="delete"
-                              />
-                            </div>
-                          </td>
-                        </tr>
-                      </table>
+                        <div class=" col-2 item-center">
+                          <div>
+                            <q-icon size="sm" color="primary" name="create" />
+                            <q-icon
+                              class="q-ml-xs"
+                              size="sm"
+                              color="primary"
+                              name="delete"
+                            />
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </q-tab-panel>
                   <!-- Honorific -->
@@ -676,42 +906,34 @@
                     </div>
                     <div class="q-mt-lg"><q-separator /></div>
                     <!-- This is div for Data of Industry Type -->
-                    <div class="q-pa-lg" v-if="!industryType[0]">
+                    <div class="q-pa-lg" v-if="!titles">
                       You Have Not Added Any Honorific yet
                     </div>
-                    <div v-else class="row justify-between">
-                      <table>
-                        <tr class=" justify-between" style="width:40%">
-                          <td>
-                            Honorific
-                          </td>
-                          <td>Duration</td>
-                          <td>Edit & Delete</td>
-                        </tr>
+                    <div v-else class="bg-grey-1">
+                      <div
+                        class=" row justify-between full-width"
+                        v-for="(contactInfo, index) in titles"
+                        v-if="index >= 0"
+                      >
+                        <div class="q-px-xl">
+                          {{ titles[index].value }}
+                        </div>
 
-                        <tr
-                          v-for="(contactInfo, index) in inspection.subtypes"
-                          v-if="index >= 0"
-                        >
-                          <td>
-                            {{ industryType }}
-                          </td>
-                          <td>{{ industryType }}</td>
-                          <td>
-                            <div>
-                              <q-icon size="sm" color="primary" name="create" />
-                              <q-icon
-                                class="q-ml-xs"
-                                size="sm"
-                                color="primary"
-                                name="delete"
-                              />
-                            </div>
-                          </td>
-                        </tr>
-                      </table>
+                        <div class=" col-2 item-center">
+                          <div>
+                            <q-icon size="sm" color="primary" name="create" />
+                            <q-icon
+                              class="q-ml-xs"
+                              size="sm"
+                              color="primary"
+                              name="delete"
+                            />
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </q-tab-panel>
+
                   <!-- Phone Type -->
                   <q-tab-panel name="phoneType">
                     <div class="row justify-between">
@@ -726,46 +948,36 @@
                     </div>
                     <div class="q-mt-lg"><q-separator /></div>
                     <!-- This is div for Data of Industry Type -->
-                    <div class="q-pa-lg" v-if="!industryType[0]">
-                      You Have Not Added Any Phone Type yet
+                    <div class="q-pa-lg" v-if="!contactTypes">
+                      You Have Not Added Any Phone Type Yet
                     </div>
-                    <div v-else class="row justify-between">
-                      <table>
-                        <tr class=" justify-between" style="width:40%">
-                          <td>
-                            Honorific
-                          </td>
-                          <td>Duration</td>
-                          <td>Edit & Delete</td>
-                        </tr>
+                    <div v-else class="bg-grey-1">
+                      <div
+                        class=" row justify-between full-width"
+                        v-for="(contactInfo, index) in contactTypes"
+                        v-if="index >= 0"
+                      >
+                        <div class="q-px-xl">
+                          {{ contactTypes[index].name }}
+                        </div>
 
-                        <tr
-                          v-for="(contactInfo, index) in inspection.subtypes"
-                          v-if="index >= 0"
-                        >
-                          <td>
-                            {{ industryType }}
-                          </td>
-                          <td>{{ industryType }}</td>
-                          <td>
-                            <div>
-                              <q-icon size="sm" color="primary" name="create" />
-                              <q-icon
-                                class="q-ml-xs"
-                                size="sm"
-                                color="primary"
-                                name="delete"
-                              />
-                            </div>
-                          </td>
-                        </tr>
-                      </table>
+                        <div class=" col-2 item-center">
+                          <div>
+                            <q-icon size="sm" color="primary" name="create" />
+                            <q-icon
+                              class="q-ml-xs"
+                              size="sm"
+                              color="primary"
+                              name="delete"
+                            />
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </q-tab-panel>
                   <!-- Client Type -->
                   <q-tab-panel name="clientType">
                     <div class="row justify-between">
-                      <!-- empty pannel -->
                       <div class=" text-bold col-4">Client Type</div>
                       <div
                         class=" col-2 text-primary"
@@ -776,46 +988,36 @@
                     </div>
                     <div class="q-mt-lg"><q-separator /></div>
                     <!-- This is div for Data of Industry Type -->
-                    <div class="q-pa-lg" v-if="!industryType[0]">
-                      You Have Not Added Any Client Type yet
+                    <div class="q-pa-lg" v-if="!clientTypes">
+                      You Have Not Added Any Client Type Yet
                     </div>
-                    <div v-else class="row justify-between">
-                      <table>
-                        <tr class=" justify-between" style="width:40%">
-                          <td>
-                            Honorific
-                          </td>
-                          <td>Duration</td>
-                          <td>Edit & Delete</td>
-                        </tr>
+                    <div v-else class="bg-grey-1">
+                      <div
+                        class=" row justify-between full-width"
+                        v-for="(contactInfo, index) in clientTypes"
+                        v-if="index >= 0"
+                      >
+                        <div class="q-px-xl">
+                          {{ clientTypes[index].name }}
+                        </div>
 
-                        <tr
-                          v-for="(contactInfo, index) in inspection.subtypes"
-                          v-if="index >= 0"
-                        >
-                          <td>
-                            {{ industryType }}
-                          </td>
-                          <td>{{ industryType }}</td>
-                          <td>
-                            <div>
-                              <q-icon size="sm" color="primary" name="create" />
-                              <q-icon
-                                class="q-ml-xs"
-                                size="sm"
-                                color="primary"
-                                name="delete"
-                              />
-                            </div>
-                          </td>
-                        </tr>
-                      </table>
+                        <div class=" col-2 item-center">
+                          <div>
+                            <q-icon size="sm" color="primary" name="create" />
+                            <q-icon
+                              class="q-ml-xs"
+                              size="sm"
+                              color="primary"
+                              name="delete"
+                            />
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </q-tab-panel>
                   <!-- Policy Category -->
                   <q-tab-panel name="policyCategories">
                     <div class="row justify-between">
-                      <!-- empty pannel -->
                       <div class=" text-bold col-4">Policy Categories</div>
                       <div
                         class=" col-2 text-primary"
@@ -826,47 +1028,37 @@
                     </div>
                     <div class="q-mt-lg"><q-separator /></div>
                     <!-- This is div for Data of Industry Type -->
-                    <div class="q-pa-lg" v-if="!industryType[0]">
-                      You Have Not Added Any Policy Categories yet
+                    <div class="q-pa-lg" v-if="!policyCategories">
+                      You Have Not Added Any Policy Categories Yet
                     </div>
-                    <div v-else class="row justify-between">
-                      <table>
-                        <tr class=" justify-between" style="width:40%">
-                          <td>
-                            Policy Categories
-                          </td>
-                          <td>Duration</td>
-                          <td>Edit & Delete</td>
-                        </tr>
+                    <div v-else class="bg-grey-1">
+                      <div
+                        class=" row justify-between full-width"
+                        v-for="(contactInfo, index) in policyCategories"
+                        v-if="index >= 0"
+                      >
+                        <div class="q-px-xl">
+                          {{ policyCategories[index].name }}
+                        </div>
 
-                        <tr
-                          v-for="(contactInfo, index) in inspection.subtypes"
-                          v-if="index >= 0"
-                        >
-                          <td>
-                            {{ industryType }}
-                          </td>
-                          <td>{{ industryType }}</td>
-                          <td>
-                            <div>
-                              <q-icon size="sm" color="primary" name="create" />
-                              <q-icon
-                                class="q-ml-xs"
-                                size="sm"
-                                color="primary"
-                                name="delete"
-                              />
-                            </div>
-                          </td>
-                        </tr>
-                      </table>
+                        <div class=" col-2 item-center">
+                          <div>
+                            <q-icon size="sm" color="primary" name="create" />
+                            <q-icon
+                              class="q-ml-xs"
+                              size="sm"
+                              color="primary"
+                              name="delete"
+                            />
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </q-tab-panel>
 
                   <!-- Policy Type -->
                   <q-tab-panel name="policyType">
                     <div class="row justify-between">
-                      <!-- empty pannel -->
                       <div class=" text-bold col-4">Policy Type</div>
                       <div
                         class=" col-2 text-primary"
@@ -877,97 +1069,78 @@
                     </div>
                     <div class="q-mt-lg"><q-separator /></div>
                     <!-- This is div for Data of Industry Type -->
-                    <div class="q-pa-lg" v-if="!industryType[0]">
-                      You Have Not Added Any Policy Type yet
+                    <div class="q-pa-lg" v-if="!policyTypes">
+                      You Have Not Added Any Policy Type Yet
                     </div>
-                    <div v-else class="row justify-between">
-                      <table>
-                        <tr class=" justify-between" style="width:40%">
-                          <td>
-                            Policy Type
-                          </td>
-                          <td>Duration</td>
-                          <td>Edit & Delete</td>
-                        </tr>
+                    <div v-else class="bg-grey-1">
+                      <div
+                        class=" row justify-between full-width"
+                        v-for="(contactInfo, index) in policyTypes"
+                        v-if="index >= 0"
+                      >
+                        <div class="q-px-xl">
+                          {{ policyTypes[index].name }}
+                        </div>
 
-                        <tr
-                          v-for="(contactInfo, index) in inspection.subtypes"
-                          v-if="index >= 0"
-                        >
-                          <td>
-                            {{ industryType }}
-                          </td>
-                          <td>{{ industryType }}</td>
-                          <td>
-                            <div>
-                              <q-icon size="sm" color="primary" name="create" />
-                              <q-icon
-                                class="q-ml-xs"
-                                size="sm"
-                                color="primary"
-                                name="delete"
-                              />
-                            </div>
-                          </td>
-                        </tr>
-                      </table>
+                        <div class=" col-2 item-center">
+                          <div>
+                            <q-icon size="sm" color="primary" name="create" />
+                            <q-icon
+                              class="q-ml-xs"
+                              size="sm"
+                              color="primary"
+                              name="delete"
+                            />
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </q-tab-panel>
+
                   <!-- property Type -->
                   <q-tab-panel name="propertyType">
                     <div class="row justify-between">
-                      <!-- empty pannel -->
-                      <div class=" text-bold col-4">Policy Type</div>
+                      <div class=" text-bold col-4">Property Type</div>
                       <div
                         class=" col-2 text-primary"
-                        @click="onclickSecondaryDialogBox('Policy Type')"
+                        @click="onclickSecondaryDialogBox('Property Type')"
                       >
-                        Add Policy Type
+                        Add Property Type
                       </div>
                     </div>
                     <div class="q-mt-lg"><q-separator /></div>
                     <!-- This is div for Data of Industry Type -->
-                    <div class="q-pa-lg" v-if="!industryType[0]">
-                      You Have Not Added Any Policy Type yet
+                    <div class="q-pa-lg" v-if="!propertyTypes">
+                      You Have Not Added Any Property Type Yet
                     </div>
-                    <div v-else class="row justify-between">
-                      <table>
-                        <tr class=" justify-between" style="width:40%">
-                          <td>
-                            Policy Type
-                          </td>
-                          <td>Duration</td>
-                          <td>Edit & Delete</td>
-                        </tr>
+                    <div v-else class="bg-grey-1">
+                      <div
+                        class=" row justify-between full-width"
+                        v-for="(contactInfo, index) in propertyTypes"
+                        v-if="index >= 0"
+                      >
+                        <div class="q-px-xl">
+                          {{ propertyTypes[index].name }}
+                        </div>
 
-                        <tr
-                          v-for="(contactInfo, index) in inspection.subtypes"
-                          v-if="index >= 0"
-                        >
-                          <td>
-                            {{ industryType }}
-                          </td>
-                          <td>{{ industryType }}</td>
-                          <td>
-                            <div>
-                              <q-icon size="sm" color="primary" name="create" />
-                              <q-icon
-                                class="q-ml-xs"
-                                size="sm"
-                                color="primary"
-                                name="delete"
-                              />
-                            </div>
-                          </td>
-                        </tr>
-                      </table>
+                        <div class=" col-2 item-center">
+                          <div>
+                            <q-icon size="sm" color="primary" name="create" />
+                            <q-icon
+                              class="q-ml-xs"
+                              size="sm"
+                              color="primary"
+                              name="delete"
+                            />
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </q-tab-panel>
 
                   <!-- Claim Reason -->
                   <q-tab-panel name="claimReason">
                     <div class="row justify-between">
-                      <!-- empty pannel -->
                       <div class=" text-bold col-4">Claim Reason</div>
                       <div
                         class=" col-2 text-primary"
@@ -978,47 +1151,37 @@
                     </div>
                     <div class="q-mt-lg"><q-separator /></div>
                     <!-- This is div for Data of Industry Type -->
-                    <div class="q-pa-lg" v-if="!industryType[0]">
-                      You Have Not Added Any Claim Reason yet
+                    <div class="q-pa-lg" v-if="!claimReasons">
+                      You Have Not Added Any Claim Reason Yet
                     </div>
-                    <div v-else class="row justify-between">
-                      <table>
-                        <tr class=" justify-between" style="width:40%">
-                          <td>
-                            Claim Reason
-                          </td>
-                          <td>Duration</td>
-                          <td>Edit & Delete</td>
-                        </tr>
+                    <div v-else class="bg-grey-1">
+                      <div
+                        class=" row justify-between full-width"
+                        v-for="(contactInfo, index) in claimReasons"
+                        v-if="index >= 0"
+                      >
+                        <div class="q-px-xl">
+                          {{ claimReasons[index].name }}
+                        </div>
 
-                        <tr
-                          v-for="(contactInfo, index) in inspection.subtypes"
-                          v-if="index >= 0"
-                        >
-                          <td>
-                            {{ industryType }}
-                          </td>
-                          <td>{{ industryType }}</td>
-                          <td>
-                            <div>
-                              <q-icon size="sm" color="primary" name="create" />
-                              <q-icon
-                                class="q-ml-xs"
-                                size="sm"
-                                color="primary"
-                                name="delete"
-                              />
-                            </div>
-                          </td>
-                        </tr>
-                      </table>
+                        <div class=" col-2 item-center">
+                          <div>
+                            <q-icon size="sm" color="primary" name="create" />
+                            <q-icon
+                              class="q-ml-xs"
+                              size="sm"
+                              color="primary"
+                              name="delete"
+                            />
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </q-tab-panel>
 
                   <!-- Loss Cause -->
                   <q-tab-panel name="lossCause">
                     <div class="row justify-between">
-                      <!-- empty pannel -->
                       <div class=" text-bold col-4">Loss Cause</div>
                       <div
                         class=" col-2 text-primary"
@@ -1029,91 +1192,72 @@
                     </div>
                     <div class="q-mt-lg"><q-separator /></div>
                     <!-- This is div for Data of Industry Type -->
-                    <div class="q-pa-lg" v-if="!industryType[0]">
-                      You Have Not Added Any Loss Cause yet
+                    <div class="q-pa-lg" v-if="!lossCauses">
+                      You Have Not Added Any Loss Cause Yet
                     </div>
-                    <div v-else class="row justify-between">
-                      <table>
-                        <tr class=" justify-between" style="width:40%">
-                          <td>
-                            Loss Cause
-                          </td>
-                          <td>Duration</td>
-                          <td>Edit & Delete</td>
-                        </tr>
+                    <div v-else class="bg-grey-1">
+                      <div
+                        class=" row justify-between full-width"
+                        v-for="(contactInfo, index) in lossCauses"
+                        v-if="index >= 0"
+                      >
+                        <div class="q-px-xl">
+                          {{ lossCauses[index].name }}
+                        </div>
 
-                        <tr
-                          v-for="(contactInfo, index) in inspection.subtypes"
-                          v-if="index >= 0"
-                        >
-                          <td>
-                            {{ industryType }}
-                          </td>
-                          <td>{{ industryType }}</td>
-                          <td>
-                            <div>
-                              <q-icon size="sm" color="primary" name="create" />
-                              <q-icon
-                                class="q-ml-xs"
-                                size="sm"
-                                color="primary"
-                                name="delete"
-                              />
-                            </div>
-                          </td>
-                        </tr>
-                      </table>
+                        <div class=" col-2 item-center">
+                          <div>
+                            <q-icon size="sm" color="primary" name="create" />
+                            <q-icon
+                              class="q-ml-xs"
+                              size="sm"
+                              color="primary"
+                              name="delete"
+                            />
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </q-tab-panel>
 
                   <!-- Claim Severity -->
                   <q-tab-panel name="claimSeverity">
                     <div class="row justify-between">
-                      <!-- empty pannel -->
-                      <div class=" text-bold col-4">Claim Serverity</div>
+                      <div class=" text-bold col-4">Claim Severity</div>
                       <div
                         class=" col-2 text-primary"
-                        @click="onclickSecondaryDialogBox('Claim Serverity')"
+                        @click="onclickSecondaryDialogBox('Claim Severity')"
                       >
-                        Add Claim Serverity
+                        Add Claim Severity
                       </div>
                     </div>
                     <div class="q-mt-lg"><q-separator /></div>
                     <!-- This is div for Data of Industry Type -->
-                    <div class="q-pa-lg" v-if="!industryType[0]">
-                      You Have Not Added Any Claim Serverity yet
+                    <div class="q-pa-lg" v-if="!claimSeverity">
+                      You Have Not Added Any Claim Severity Yet
                     </div>
-                    <div v-else class="row justify-between">
-                      <table>
-                        <tr class=" justify-between" style="width:40%">
-                          <td>
-                            Claim Serverity
-                          </td>
-                          <td>Duration</td>
-                          <td>Edit & Delete</td>
-                        </tr>
+                    <div v-else class="bg-grey-1">
+                      <div
+                        class=" row justify-between full-width"
+                        v-for="(contactInfo, index) in claimSeverity"
+                        v-if="index >= 0"
+                      >
+                        <div class="q-px-xl">
+                          {{ claimSeverity[index].name }}
+                        </div>
 
-                        <tr
-                          v-for="(contactInfo, index) in inspection.subtypes"
-                          v-if="index >= 0"
-                        >
-                          <td>
-                            {{ industryType }}
-                          </td>
-                          <td>{{ industryType }}</td>
-                          <td>
-                            <div>
-                              <q-icon size="sm" color="primary" name="create" />
-                              <q-icon
-                                class="q-ml-xs"
-                                size="sm"
-                                color="primary"
-                                name="delete"
-                              />
-                            </div>
-                          </td>
-                        </tr>
-                      </table>
+                        <div class=" col-2 item-center">
+                          <div>
+                            <q-icon size="sm" color="primary" name="create" />
+                            <q-icon
+                              class="q-ml-xs"
+                              size="sm"
+                              color="primary"
+                              name="delete"
+                            />
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </q-tab-panel>
                 </q-tab-panels>
@@ -1133,12 +1277,22 @@
                   />
                   <q-btn
                     v-if="
-                      tab != 'adduser' && tab != 'offcInfo' && tab != 'sales'
+                      tab != 'adduser' &&
+                        tab != 'offcInfo' &&
+                        tab != 'sales' &&
+                        tab != 'claimSeverity'
                     "
                     color="primary"
                     label="Next"
                     class="q-mx-lg "
                     @click="onClickNext"
+                  />
+                  <q-btn
+                    v-if="tab == 'claimSeverity'"
+                    color="primary"
+                    label="Go To Dashboard"
+                    class="q-mx-lg "
+                    @click="SendToDashboard"
                   />
                 </div>
                 <div class="q-mt-md">
@@ -1169,14 +1323,14 @@
                     >
                       <div class="q-pa-lg">
                         <q-input
-                          v-model="inspection.type"
+                          v-model="inspection.value"
                           label="Type Of Inspection"
                           lazy-rules
                           v-if="index == 0"
                         />
 
                         <q-input
-                          v-model="inspection.subtypes[index].type"
+                          v-model="inspection.subtypes[index].value"
                           label="Sub Type Of Inspection"
                           lazy-rules
                         />
@@ -1228,7 +1382,7 @@
                 </q-card-section>
               </q-card>
             </q-dialog>
-            <!-- This is Industry Dialog Box -->
+            <!-- This is Secondary Dialog Box -->
             <q-dialog v-model="industryTypeDialogBox" persistent>
               <q-card style="width: 700px;height:400px; max-width: 1000vw;">
                 <q-bar class=" row justify-between" style="height:50px">
@@ -1251,7 +1405,7 @@
                       </div>
                       <div class="q-pl-xs">
                         <q-input
-                          v-model="industryType"
+                          v-model="industryType.value"
                           class="q-mx-xl"
                           style="width :300px ; height:50px;"
                           outlined
@@ -1272,7 +1426,9 @@
                           color="primary"
                           label="Save"
                           class="q-mx-lg "
-                          @click=""
+                          @click="
+                            onSubmitSecondaryDilogBox(industryTypeDialogBoxName)
+                          "
                         />
                       </div>
                     </div>
@@ -1295,6 +1451,7 @@
 // import { mapActions } from 'vuex';
 import { mapGetters, mapActions } from 'vuex';
 import { validateEmail } from '@utils/validation';
+import { getToken, getCurrentUser } from '@utils/auth';
 export default {
   name: 'AddUser',
   data() {
@@ -1308,7 +1465,7 @@ export default {
       // this is for static dropdown
       options: ['Manager', 'Staff'],
       isShowRemoveButton: false,
-      tab: 'adduser',
+      tab: 'offcInfo',
       splitterModel: 20,
       users: [
         {
@@ -1322,38 +1479,140 @@ export default {
         }
       ],
       inspection: {
-        type: '',
-        subtypes: [{ type: ' ', duration: 0 }]
+        value: '',
+
+        subtypes: [{ value: ' ', duration: 0, unit: 'hour', machineValue: '' }]
       },
-      industryType: [],
-      onboard: {
-        officesuer: {
-          fname: '',
-          lname: '',
-          email: '',
-          role: ''
-        },
-        sales: {
-          fname: '',
-          lname: '',
-          email: '',
-          role: ''
-        }
+      industryType: {
+        value: '',
+        machineValue: ''
       }
     };
   },
   computed: {
-    ...mapGetters(['contactTypes', 'titles'])
+    ...mapGetters([
+      'contactTypes',
+      'titles',
+      'inspectionTypes',
+      'vendorIndustries',
+      'clientTypes',
+      'policyTypes',
+      'policyCategories',
+      'propertyTypes',
+      'claimReasons',
+      'lossCauses',
+      'claimSeverity'
+    ])
   },
   mounted() {
+    // not working for now
+    // this.addOnboardingStep(getCurrentUser());
     this.getTitles();
     this.getContactTypes();
+    this.getVendorIndustries();
+    this.getInspectionTypes();
+    this.getClientTypes();
+    this.getPolicyTypes();
+    this.getPolicyCategory();
+    this.getPropertyTypes();
+    this.getLossCauses();
+    this.getSeverityClaim();
+    this.getClaimReasons();
   },
   methods: {
-    ...mapActions(['addUser', 'getTitles', 'getContactTypes']),
+    ...mapActions([
+      'addUser',
+      'addInspectionType',
+      'addHonorifics',
+      'addIndustry',
+      'addPhone',
+      'addClient',
+      'addPolicy',
+      'addPolicyCategories',
+      'addProperty',
+      'addClaimReason',
+      'addLoss',
+      'addClaimSeverity',
+      'addOnboardingStep',
+      'getTitles',
+      'getClientTypes',
+      'getContactTypes',
+      'getInspectionTypes',
+      'getVendorIndustries',
+      'getPolicyTypes',
+      'getPolicyCategory',
+      'getPropertyTypes',
+      'getSeverityClaim',
+      'getClaimReasons',
+      'getLossCauses'
+    ]),
     validateEmail,
-    // on Clicking Submit Button
+    //  Secondary Dilog Box Submit
+    async onSubmitSecondaryDilogBox(name1) {
+      switch (name1) {
+        case 'Honorofic':
+          console.log(this.industryType, 'honorifics');
+          var response = await this.addHonorifics(this.industryType);
+          break;
 
+        case 'Industry Type':
+          console.log(this.industryType, 'industry');
+          var response = await this.addIndustry(this.industryType);
+          break;
+        case 'Phone Type':
+          console.log(this.industryType, 'Phonetype');
+          var response = await this.addPhone(this.industryType);
+          break;
+        case 'Client Type':
+          console.log(this.industryType, 'Cl');
+          var response = await this.addClient(this.industryType);
+          break;
+        case 'Policy Type':
+          console.log(this.industryType, 'Policy Type');
+          var response = await this.addPolicy(this.industryType);
+          break;
+        case 'Policy Categories':
+          console.log(this.industryType, 'Policy Categories');
+          var response = await this.addPolicyCategories(this.industryType);
+          break;
+        case 'Property Type':
+          console.log(this.industryType, 'Property Type');
+          var response = await this.addProperty(this.industryType);
+          break;
+        case 'Claim Reason':
+          console.log(this.industryType, 'Claim Reason');
+          var response = await this.addClaimReason(this.industryType);
+          break;
+        case 'Loss Cause':
+          console.log(this.industryType, 'Loss Cause');
+          var response = await this.addLoss(this.industryType);
+          break;
+        case 'Claim Severity':
+          console.log(this.industryType, ' Claim Reason');
+          var response = await this.addClaimSeverity(this.industryType);
+          break;
+      }
+      if (response) {
+        this.getTitles();
+        this.getVendorIndustries();
+        this.getContactTypes();
+        this.getClientTypes();
+        this.getPolicyTypes();
+        this.getPolicyCategory();
+        this.getPropertyTypes();
+        this.getLossCauses();
+        this.getSeverityClaim();
+        this.getClaimReasons();
+
+        this.industryTypeDialogBox = false;
+      }
+    },
+    // This is Secondary Dialog Box
+    onclickSecondaryDialogBox(value) {
+      this.industryTypeDialogBoxName = value;
+      this.industryTypeDialogBox = true;
+    },
+    // on Clicking Submit Button
     async onSubmit() {
       const success = await this.$refs.addUserForm.validate();
       if (success) {
@@ -1372,29 +1631,24 @@ export default {
           }
         ];
         if (this.tab == 'adduser') {
-          this.isShowRemoveButton = false;
+          // this.isShowRemoveButton = false;
           this.tab = 'offcInfo';
         } else if (this.tab == 'offcInfo') {
           this.tab = 'sales';
         } else if (this.tab == 'sales') {
           this.tab = 'inspectionType';
         }
+        this.isShowRemoveButton = false;
       } else {
         this.$q.notify({
-          message: 'Please fill the first Name',
+          message: 'Please fill the Required',
           position: 'top',
           type: 'negative'
         });
       }
     },
-    // This is Secondary Dialog Box
-    onclickSecondaryDialogBox(value) {
-      this.industryTypeDialogBoxName = value;
-      this.industryTypeDialogBox = true;
-    },
 
     async addAnotherContact() {
-      console.log(this.titles);
       const success = await this.$refs.addUserForm.validate();
       if (success) {
         const len = this.users.length;
@@ -1413,36 +1667,52 @@ export default {
           this.isShowRemoveButton = true;
         } else {
           this.$q.notify({
-            message: 'Please fill the first Name',
+            message: 'Please fill the first Name and Email First',
             position: 'top',
             type: 'negative'
           });
         }
       }
     },
+    //  For Remove  AddUser,OfficeStraffInfo and Sales
     removeAnotherContact() {
       const len = this.users.length;
       if (len === 2) {
         this.isShowRemoveButton = false;
       }
-
       this.users.pop();
     },
-
+    // For adding SubType of Inspection Type
     addAnotherSubType() {
       this.inspection.subtypes.push({ type: ' ', duration: '' });
     },
+    // For Removing SubType
     onClickRemoveSubType() {
       this.inspection.subtypes.pop();
     },
+    // For Clearing  the Form In Inspection Type
     onClickClearInspectionType() {
       this.inspection = {
         type: '',
         subtypes: [{ type: ' ', duration: '' }]
       };
     },
-    onSaveInspectionType() {
-      this.InspectionDialogBox = false;
+    // onSaveInspectionType
+    async onSaveInspectionType() {
+      const response = await this.addInspectionType(this.inspection);
+      if (response) {
+        this.getInspectionTypes();
+        this.InspectionDialogBox = false;
+      } else {
+        this.$q.notify({
+          message: ' Server Response Failed',
+          position: 'top',
+          type: 'negative'
+        });
+      }
+    },
+    SendToDashboard() {
+      this.$router.push('/dashboard');
     },
     onClickNext() {
       if (this.tab == 'inspectionType') {
@@ -1466,12 +1736,29 @@ export default {
       } else if (this.tab == 'lossCause') {
         this.tab = 'claimSeverity';
       }
+    },
+    onToggleChange() {
+      if (this.toggle == false) {
+        this.users = [
+          {
+            type: 'user',
+            contact: {
+              fname: '',
+              lname: ''
+            },
+            email: '',
+            roles: []
+          }
+        ];
+      }
     }
 
     // End of Functions
   },
   created() {
-    console.log('helloW');
+    if (getToken()) {
+      console.log(getCurrentUser().id, 3434);
+    }
   }
 };
 </script>
