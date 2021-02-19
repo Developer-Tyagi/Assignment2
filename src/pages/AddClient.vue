@@ -2236,7 +2236,8 @@ export default {
       if (success == true) {
         if (
           name === 'insuranceInfoDialog' ||
-          name === 'expertVendorInfoDialog'
+          name === 'expertVendorInfoDialog' ||
+          name === 'addEstimatorDialog'
         ) {
           this[name] = false;
         } else {
