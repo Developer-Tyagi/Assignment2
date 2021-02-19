@@ -1,6 +1,11 @@
 <template>
   <div class="">
-    <div id="card-element"></div>
+    <label class="heading">Card Number</label>
+    <div id="card-number"></div>
+    <label class="heading">Expiry Date</label>
+    <div id="card-expiry-date"></div>
+    <label class="heading">CVV</label>
+    <div id="card-cvv"></div>
     <div></div>
     <div id="payment-errors"></div>
   </div>
@@ -11,13 +16,6 @@ const stripe = Stripe(
 );
 export default {
   name: 'PaymentCard',
-
-  props: {
-    isDropBoxEnable: {
-      type: Boolean,
-      required: false
-    }
-  },
 
   data() {
     return {};
@@ -32,24 +30,25 @@ export default {
         fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
         fontSmoothing: 'antialiased',
         fontSize: '16px',
+        padding: '16px',
         '::placeholder': {
           color: '#aab7c4'
         }
       },
       invalid: {
-        color: 'green',
-        iconColor: 'green'
+        color: 'red',
+        iconColor: 'red'
       }
     };
-    const cardElement = elements.create('cardNumber', {
-      style: style,
-      hidePostalCode: true
+    const cardNumberElement = elements.create('cardNumber', {
+      style: style
     });
-    const displayError = document.getElementById('payment-errors');
 
-    cardElement.mount('#card-element');
+    const displayError = document.getElementById('payment-errors', {});
 
-    cardElement.on('change', event => {
+    cardNumberElement.mount('#card-number');
+
+    cardNumberElement.on('change', event => {
       if (event.complete) {
         this.createTokenForPayment(event, cardElement);
       } else {
@@ -57,7 +56,7 @@ export default {
       }
     });
 
-    cardElement.on('change', ({ error }) => {
+    cardNumberElement.on('change', ({ error }) => {
       const displayError = document.getElementById('payment-errors');
       if (error) {
         displayError.textContent = error.message;
@@ -70,10 +69,20 @@ export default {
   methods: {
     async createTokenForPayment(event, cardElement) {
       const token = await stripe.createToken(cardElement);
-      console.log(token, 'token');
       this.$emit('cardDetailsAdded', true);
     }
   }
 };
 </script>
-<style lang="scss"></style>
+<style lang="scss">
+.heading {
+}
+
+#card-number,
+#card-expiry-date,
+#card-cvv {
+  padding: 12px 12px;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 4px 4px 0 0;
+}
+</style>
