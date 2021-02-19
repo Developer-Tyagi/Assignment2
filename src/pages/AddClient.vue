@@ -2515,16 +2515,15 @@ export default {
       const response = this.addEstimator(payload);
 
       if (response) {
-        (this.addEstimatorInfo = {
+        this.addEstimatorInfo = {
           name: '',
           fname: '',
           lname: '',
           email: '',
           phone: '',
           type: ''
-        }),
-          (this.honorific3.id = ''),
-          (this.addEstimatorDialog = false);
+        };
+        (this.honorific3.id = ''), (this.addEstimatorDialog = false);
         this.getEstimators();
       }
     },
