@@ -37,20 +37,24 @@
       </div>
       <div class="column">
         <div class="row">
-          <img src="~assets/icon_user.svg" class="q-mr-lg" />
-          <q-input
-            class="login-input"
-            v-model="login.email"
-            placeholder="Username"
-            borderless
-          />
+          <div class="  q-mt-md " style="width:20px">
+            <img src="~assets/icon_user.svg" class="q-mr-lg" />
+          </div>
+          <div class="q-pl-md col-10">
+            <q-input
+              class="login-input full-width"
+              v-model="login.email"
+              placeholder="Username"
+              borderless
+            />
+          </div>
           <q-separator :color="$q.screen.width < 600 ? 'grey' : 'white'" />
         </div>
         <div class="row ">
-          <div class="col-1 q-mt-md">
+          <div class=" q-mt-md" style="width:20px">
             <img src="~assets/lock.svg" class=" q-mr-lg" />
           </div>
-          <div class=" col-11">
+          <div class=" q-pl-md col-10">
             <q-input
               class=" login-input full-width "
               v-model="login.password"
