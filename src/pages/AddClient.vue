@@ -374,16 +374,11 @@
                       class="required"
                       label="Phone"
                       type="number"
-                      :mask="
-                        insuredDetails.type !== 'mobile'
-                          ? '(###) ###-####'
-                          : '##########'
-                      "
                       style="width: 55%"
                       lazy-rules
                       :rules="[
                         val =>
-                          (val && val.length == 14) ||
+                          (val && val.length == 10) ||
                           'Please enter the phone number'
                       ]"
                     />
@@ -457,15 +452,10 @@
                         label="Phone"
                         class="required"
                         type="number"
-                        :mask="
-                          coInsuredDetails.type !== 'mobile'
-                            ? '(###) ###-####'
-                            : '##########'
-                        "
                         lazy-rules
                         :rules="[
                           val =>
-                            (val && val.length == 14) ||
+                            (val && val.length == 10) ||
                             'Please enter the phone number'
                         ]"
                         style="width: 55%"
@@ -518,15 +508,10 @@
                         label="Phone2"
                         class="required"
                         type="number"
-                        :mask="
-                          addAditionalPhoneNumber.type1 !== 'mobile'
-                            ? '(###) ###-####'
-                            : '##########'
-                        "
                         lazy-rules
                         :rules="[
                           val =>
-                            (val && val.length == 14) ||
+                            (val && val.length == 10) ||
                             'Please enter the phone number'
                         ]"
                         style="width: 55%; margin-left: auto"
@@ -555,15 +540,10 @@
                         v-model="addAditionalPhoneNumber.phone3"
                         label="Phone3"
                         type="number"
-                        :mask="
-                          addAditionalPhoneNumber.type2 !== 'mobile'
-                            ? '(###) ###-####'
-                            : '##########'
-                        "
                         lazy-rules
                         :rules="[
                           val =>
-                            (val && val.length == 14) ||
+                            (val && val.length == 10) ||
                             'Please enter the phone number'
                         ]"
                         style="width: 55%"
@@ -615,15 +595,10 @@
                         v-model="tenantOccupied.phone"
                         label="Phone"
                         style="width: 55%; margin-left: auto"
-                        :mask="
-                          tenantOccupied.type !== 'mobile'
-                            ? '(###) ###-####'
-                            : '##########'
-                        "
                         lazy-rules
                         :rules="[
                           val =>
-                            (val && val.length == 14) ||
+                            (val && val.length == 10) ||
                             'Please enter the phone number'
                         ]"
                       />
@@ -1509,11 +1484,6 @@
                       v-model="addEstimatorInfo.phone"
                       label="Phone"
                       type="number"
-                      :mask="
-                        addEstimatorInfo.type !== 'mobile'
-                          ? '(###) ###-####'
-                          : '##########'
-                      "
                       style="width: 55%"
                     />
                   </div>
@@ -2238,9 +2208,12 @@ export default {
       if (success == true) {
         if (
           name === 'insuranceInfoDialog' ||
-          name === 'expertVendorInfoDialog' ||
-          name === 'addEstimatorDialog'
+          name === 'expertVendorInfoDialog'
         ) {
+          this[name] = false;
+        }
+        if (name === 'addEstimatorDialog') {
+          this.onAddEstimatorButtonClick();
           this[name] = false;
         } else {
           if (this.checkAddressField(streetAddress)) {
@@ -2542,8 +2515,17 @@ export default {
       };
 
       const response = this.addEstimator(payload);
+
       if (response) {
-        this.addEstimatorDialog = false;
+        this.addEstimatorInfo = {
+          name: '',
+          fname: '',
+          lname: '',
+          email: '',
+          phone: '',
+          type: ''
+        };
+        (this.honorific3.id = ''), (this.addEstimatorDialog = false);
         this.getEstimators();
       }
     },

@@ -114,14 +114,9 @@
               label="Phone"
               type="number"
               style="width: 55%"
-              :mask="
-                vendor.contact[0].phoneNumber[0].type !== 'mobile'
-                  ? '(###) ###-####'
-                  : '##########'
-              "
               lazy-rules
               :rules="[
-                val => (val && val.length == 14) || 'Please enter phone number'
+                val => (val && val.length == 10) || 'Please enter phone number'
               ]"
             />
           </div>
@@ -180,6 +175,7 @@
                 :ref="`fname-${index}`"
               />
               <q-input v-model="contactInfo.lname" label="Last Name" />
+              {{ contactInfo.phoneNumber[0].type }}
               <div class="row">
                 <q-select
                   class="required"
@@ -203,15 +199,10 @@
                   type="number"
                   style="width: 55%"
                   :ref="`number-${index}`"
-                  :mask="
-                    contactInfo.phoneNumber[0].type !== 'mobile'
-                      ? '(###) ###-####'
-                      : '##########'
-                  "
                   lazy-rules
                   :rules="[
                     val =>
-                      (val && val.length == 14) || 'Please enter phone number'
+                      (val && val.length == 10) || 'Please enter phone number'
                   ]"
                 />
               </div>
@@ -478,7 +469,7 @@ export default {
 
     async onAddVendorButtonClick() {
       const success = await this.$refs.vendorForm.validate();
-      if (success && this.checkAddressField()) {
+      if (this.checkAddressField() && success) {
         const response = await this.addVendor(this.vendor);
         if (response) {
           this.closeDialog(true);
