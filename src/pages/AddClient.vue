@@ -1052,11 +1052,7 @@
                 v-if="IsMortgageHomeToggle"
                 @click="mortgageInfoDialog = true"
               >
-                <div
-                  class="custom-select "
-                  style="display:flex"
-                  v-model="selectMortgage.name"
-                >
+                <div class="row " style="display:flex">
                   <div class=" q-px-xs row">
                     <div v-if="!mortgageDetails[0].id">
                       Select Mortgage
@@ -1757,9 +1753,7 @@ export default {
 
         email: ''
       },
-      selectMortgage: {
-        name: ''
-      },
+
       coInsuredDetails: {
         fname: '',
         lname: '',
