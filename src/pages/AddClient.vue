@@ -1471,6 +1471,7 @@
                   />
 
                   <q-input
+                    class="required"
                     v-model="addEstimatorInfo.fname"
                     lazy-rules
                     :rules="[
@@ -1482,6 +1483,7 @@
 
                   <q-input v-model="addEstimatorInfo.lname" label="Last Name" />
                   <q-input
+                    class="required"
                     v-model="addEstimatorInfo.email"
                     label="Email"
                     lazy-rules
