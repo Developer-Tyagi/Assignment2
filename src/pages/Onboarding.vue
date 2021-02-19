@@ -691,13 +691,14 @@
                       <div
                         outlined
                         v-for="(contactInfo, index) in users"
-                        v-if="index >= 0"
+                        v-if="index >= 0 && toggle == true"
                       >
                         <div class="q-mt-xs row full-width">
                           <div class="col-5 text-bold">
                             Sales Representative &nbsp;{{ index + 1 }}
                           </div>
                         </div>
+
                         <div class="q-mt-xs row full-width">
                           <div class="col-5 q-mx-xl q-mt-lg">First Name *</div>
                           <div class="col-4 q-mx-lg q-mt-lg">Last Name *</div>
@@ -742,6 +743,7 @@
                               ]"
                             />
                           </div>
+
                           <div class="col-6">
                             <q-select
                               v-model="users[index].roles[0]"
@@ -764,6 +766,7 @@
 
                     <div class="row q-py-md q-px-xl">
                       <q-btn
+                        v-if="toggle == true"
                         outline
                         class="  q-mx-md"
                         @click="addAnotherContact"
@@ -1069,7 +1072,7 @@
                     </div>
                     <div class="q-mt-lg"><q-separator /></div>
                     <!-- This is div for Data of Industry Type -->
-                    <div class="q-pa-lg" v-if="!policyTypes.length">
+                    <div class="q-pa-lg" v-if="!policyTypes">
                       You Have Not Added Any Policy Type Yet
                     </div>
                     <div v-else class="bg-grey-1">
@@ -1321,7 +1324,7 @@
                       class="column bg-grey-3 q-pa-xl"
                       style="margin-left: 100px; margin-right: 100px"
                     >
-                      <div class="q-pa-lg">
+                      <div class="q-pa-xs">
                         <q-input
                           v-model="inspection.value"
                           label="Type Of Inspection"
@@ -1340,7 +1343,7 @@
                           name="speed"
                           v-model="inspection.subtypes[index].duration"
                           label-always
-                          :min="0"
+                          :min="0.5"
                           :max="5"
                           :step="0.5"
                         />
@@ -1489,7 +1492,9 @@ export default {
       inspection: {
         value: '',
 
-        subtypes: [{ value: ' ', duration: 0, unit: 'hour', machineValue: '' }]
+        subtypes: [
+          { value: ' ', duration: 0.5, unit: 'hour', machineValue: '' }
+        ]
       },
       industryType: {
         value: '',
@@ -1555,7 +1560,7 @@ export default {
     validateEmail,
     //  Secondary Dilog Box Submit
     async onSubmitSecondaryDilogBox(typeName) {
-      const vald = await this.$refs.SecondaryForm.validate();
+      var vald = await this.$refs.SecondaryForm.validate();
       if (vald) {
         switch (typeName) {
           case 'Honorofic':
@@ -1607,7 +1612,8 @@ export default {
           this.getSeverityClaim();
           this.getClaimReasons();
           this.industryTypeDialogBox = false;
-          this.industryType = '';
+          this.industryType.value = '';
+          vald = '';
         }
       }
     },
@@ -1619,6 +1625,10 @@ export default {
     // on Clicking Submit Button on
     async onSubmit() {
       const success = await this.$refs.addUserForm.validate();
+      if (this.tab == 'sales' && this.toggle == false) {
+        this.tab = 'inspectionType';
+        return;
+      }
       if (success) {
         this.users.forEach(user => {
           this.addUser(user);
@@ -1681,7 +1691,7 @@ export default {
     },
     // For adding SubType of Inspection Type
     addAnotherSubType() {
-      this.inspection.subtypes.push({ type: ' ', duration: '' });
+      this.inspection.subtypes.push({ type: ' ', duration: 0.5 });
     },
     // For Removing SubType
     onClickRemoveSubType() {
@@ -1691,7 +1701,7 @@ export default {
     onClickClearInspectionType() {
       this.inspection = {
         type: '',
-        subtypes: [{ type: ' ', duration: '' }]
+        subtypes: [{ type: ' ', duration: 0.5 }]
       };
     },
     //For clearing the Secondary Dilog box Data when clicked to clearing
@@ -1704,6 +1714,13 @@ export default {
       if (response) {
         this.getInspectionTypes();
         this.InspectionDialogBox = false;
+        this.inspection = {
+          value: '',
+
+          subtypes: [
+            { value: ' ', duration: 0.5, unit: 'hour', machineValue: '' }
+          ]
+        };
       } else {
         this.$q.notify({
           message: ' Server Response Failed',
