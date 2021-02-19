@@ -72,15 +72,10 @@
                   v-model="primaryDetails.phoneNumber"
                   label="Phone"
                   type="number"
-                  :mask="
-                    primaryDetails.selectedContactType !== 'mobile'
-                      ? '(###) ###-####'
-                      : '##########'
-                  "
                   lazy-rules
                   :rules="[
                     val =>
-                      (val && val.length == 14) ||
+                      (val && val.length == 10) ||
                       'Please enter the phone number'
                   ]"
                 />
