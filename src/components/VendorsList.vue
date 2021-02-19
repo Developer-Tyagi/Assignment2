@@ -83,7 +83,7 @@
               {{ filter.name }}
               <q-radio
                 v-model="selectedFilter"
-                :val="filter.id"
+                :val="filter.machineValue"
                 dense
                 class="q-ml-auto"
               />
