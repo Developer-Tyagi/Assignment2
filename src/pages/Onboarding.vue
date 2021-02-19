@@ -449,7 +449,6 @@
                             tab != 'propertyType' &&
                             tab != 'claimReason' &&
                             tab != 'lossCause' &&
-                            tab != 'claimSeverity' &&
                             tab != 'policyCategories'
                         "
                       >
