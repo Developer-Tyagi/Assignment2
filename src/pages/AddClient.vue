@@ -1052,8 +1052,24 @@
                 v-if="IsMortgageHomeToggle"
                 @click="mortgageInfoDialog = true"
               >
-                <div class="select-text">
-                  {{ 'Select Mortgage' }}
+                <div class="row ">
+                  <div class=" q-px-xs row">
+                    <div v-if="!mortgageDetails[0].id">
+                      Select Mortgage
+                    </div>
+                    <div
+                      v-else
+                      class="select-text"
+                      v-for="(mortgageDetail, index) in mortgageDetails"
+                    >
+                      <span>
+                        {{ mortgageDetail.value }}
+                      </span>
+                      <span v-if="mortgageDetails.length - 1 > index">
+                        ,
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1739,6 +1755,7 @@ export default {
 
         email: ''
       },
+
       coInsuredDetails: {
         fname: '',
         lname: '',
