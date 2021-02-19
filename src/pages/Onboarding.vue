@@ -25,7 +25,7 @@
                   <div
                     class="row justify-between text-bold text-h7"
                     :style="
-                      tab == 'adduser'
+                      tab == 'addUser'
                         ? { 'background-color': '#E8E8E8' }
                         : tab == 'sales' ||
                           tab == 'offcInfo' ||
@@ -36,7 +36,7 @@
                     "
                   >
                     <div class="col-5 q-py-md q-ml-xl">Add User</div>
-                    <div class="q-mt-md col-1 q-mr-lg" v-if="tab != 'adduser'">
+                    <div class="q-mt-md col-1 q-mr-lg" v-if="tab != 'addUser'">
                       <q-icon size="xs" color="primary" name="done" />
                     </div>
                   </div>
@@ -59,7 +59,7 @@
                     <div class="col-5 q-pt-md q-ml-xl">Office Staff Info</div>
                     <div
                       class="q-mt-md col-1 q-mr-lg"
-                      v-if="tab != 'adduser' && tab != 'offcInfo'"
+                      v-if="tab != 'addUser' && tab != 'offcInfo'"
                     >
                       <q-icon size="xs" color="primary" name="done" />
                     </div>
@@ -85,7 +85,7 @@
                     <div
                       class="q-mt-md col-1 q-mr-lg"
                       v-if="
-                        tab != 'adduser' && tab != 'offcInfo' && tab != 'sales'
+                        tab != 'addUser' && tab != 'offcInfo' && tab != 'sales'
                       "
                     >
                       <q-icon size="xs" color="primary" name="done" />
@@ -94,7 +94,7 @@
                   <div
                     class="q-pb-lg row justify-between text-bold text-h7"
                     :style="
-                      tab != 'adduser' && tab != 'offcInfo' && tab != 'sales'
+                      tab != 'addUser' && tab != 'offcInfo' && tab != 'sales'
                         ? { 'background-color': '#E8E8E8' }
                         : tab == 'sales' ||
                           tab == 'offcInfo' ||
@@ -116,7 +116,7 @@
                   <div
                     style="overflow: auto; max-height: 300px"
                     v-if="
-                      tab != 'adduser' && tab != 'offcInfo' && tab != 'sales'
+                      tab != 'addUser' && tab != 'offcInfo' && tab != 'sales'
                     "
                   >
                     <div
@@ -132,7 +132,7 @@
                       <div
                         class="q-mt-md col-1 q-mr-lg"
                         v-if="
-                          tab != 'adduser' &&
+                          tab != 'addUser' &&
                             tab != 'offcInfo' &&
                             tab != 'sales' &&
                             tab != 'inspectionType'
@@ -158,7 +158,7 @@
                       <div
                         class="q-mt-md col-1 q-mr-lg"
                         v-if="
-                          tab != 'adduser' &&
+                          tab != 'addUser' &&
                             tab != 'offcInfo' &&
                             tab != 'sales' &&
                             tab != 'inspectionType' &&
@@ -185,7 +185,7 @@
                       <div
                         class="q-mt-md col-1 q-mr-lg"
                         v-if="
-                          tab != 'adduser' &&
+                          tab != 'addUser' &&
                             tab != 'offcInfo' &&
                             tab != 'sales' &&
                             tab != 'inspectionType' &&
@@ -213,7 +213,7 @@
                       <div
                         class="q-mt-md col-1 q-mr-lg"
                         v-if="
-                          tab != 'adduser' &&
+                          tab != 'addUser' &&
                             tab != 'offcInfo' &&
                             tab != 'sales' &&
                             tab != 'inspectionType' &&
@@ -242,7 +242,7 @@
                       <div
                         class="q-mt-md col-1 q-mr-lg"
                         v-if="
-                          tab != 'adduser' &&
+                          tab != 'addUser' &&
                             tab != 'offcInfo' &&
                             tab != 'sales' &&
                             tab != 'inspectionType' &&
@@ -272,7 +272,7 @@
                       <div
                         class="q-mt-md col-1 q-mr-lg"
                         v-if="
-                          tab != 'adduser' &&
+                          tab != 'addUser' &&
                             tab != 'offcInfo' &&
                             tab != 'sales' &&
                             tab != 'inspectionType' &&
@@ -303,7 +303,7 @@
                       <div
                         class="q-mt-md col-1 q-mr-lg"
                         v-if="
-                          tab != 'adduser' &&
+                          tab != 'addUser' &&
                             tab != 'offcInfo' &&
                             tab != 'sales' &&
                             tab != 'inspectionType' &&
@@ -335,7 +335,7 @@
                       <div
                         class="q-mt-md col-1 q-mr-lg"
                         v-if="
-                          tab != 'adduser' &&
+                          tab != 'addUser' &&
                             tab != 'offcInfo' &&
                             tab != 'sales' &&
                             tab != 'inspectionType' &&
@@ -368,7 +368,7 @@
                       <div
                         class="q-mt-md col-1 q-mr-lg"
                         v-if="
-                          tab != 'adduser' &&
+                          tab != 'addUser' &&
                             tab != 'offcInfo' &&
                             tab != 'sales' &&
                             tab != 'inspectionType' &&
@@ -402,7 +402,7 @@
                       <div
                         class="q-mt-md col-1 q-mr-lg"
                         v-if="
-                          tab != 'adduser' &&
+                          tab != 'addUser' &&
                             tab != 'offcInfo' &&
                             tab != 'sales' &&
                             tab != 'inspectionType' &&
@@ -437,7 +437,7 @@
                       <div
                         class="q-mt-md col-1 q-mr-lg"
                         v-if="
-                          tab != 'adduser' &&
+                          tab != 'addUser' &&
                             tab != 'offcInfo' &&
                             tab != 'sales' &&
                             tab != 'inspectionType' &&
@@ -470,7 +470,7 @@
                   transition-prev="jump-up"
                   transition-next="jump-up"
                 >
-                  <q-tab-panel name="adduser">
+                  <q-tab-panel name="addUser">
                     <q-form ref="addUserForm">
                       <div
                         outlined
@@ -1247,7 +1247,7 @@
                 <div class="q-mt-lg row justify-center">
                   <q-btn
                     v-if="
-                      tab == 'adduser' || tab == 'offcInfo' || tab == 'sales'
+                      tab == 'addUser' || tab == 'offcInfo' || tab == 'sales'
                     "
                     color="primary"
                     label="submit and Proceed"
@@ -1256,7 +1256,7 @@
                   />
                   <q-btn
                     v-if="
-                      tab != 'adduser' &&
+                      tab != 'addUser' &&
                         tab != 'offcInfo' &&
                         tab != 'sales' &&
                         tab != 'claimSeverity'
@@ -1439,7 +1439,7 @@ import { mapGetters, mapActions } from 'vuex';
 import { validateEmail } from '@utils/validation';
 import { getToken, getCurrentUser } from '@utils/auth';
 export default {
-  name: 'AddUser',
+  name: 'addUser',
   data() {
     return {
       InspectionDialogBox: false,
@@ -1451,7 +1451,7 @@ export default {
       // this is for static dropdown
       options: ['Manager', 'Staff'],
       isShowRemoveButton: false,
-      tab: 'adduser',
+      tab: 'addUser',
       splitterModel: 20,
 
       users: [
@@ -1626,7 +1626,7 @@ export default {
             roles: []
           }
         ];
-        if (this.tab == 'adduser') {
+        if (this.tab == 'addUser') {
           this.tab = 'offcInfo';
         } else if (this.tab == 'offcInfo') {
           this.tab = 'sales';
