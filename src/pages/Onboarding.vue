@@ -571,7 +571,7 @@
                         class="  q-mx-md"
                         @click="addAnotherContact"
                         color="primary"
-                        label="Add"
+                        label="Add More"
                         style="margin-right: auto"
                       />
                       <q-btn
@@ -662,7 +662,7 @@
                         class="  q-mx-md"
                         @click="addAnotherContact"
                         color="primary"
-                        label="Add"
+                        label="Add More"
                         style="margin-right: auto"
                       />
                       <q-btn
@@ -768,7 +768,7 @@
                         class="  q-mx-md"
                         @click="addAnotherContact"
                         color="primary"
-                        label="Add"
+                        label="Add More"
                         style="margin-right: auto"
                       />
                       <q-btn
@@ -1069,7 +1069,7 @@
                     </div>
                     <div class="q-mt-lg"><q-separator /></div>
                     <!-- This is div for Data of Industry Type -->
-                    <div class="q-pa-lg" v-if="!policyTypes">
+                    <div class="q-pa-lg" v-if="!policyTypes.length">
                       You Have Not Added Any Policy Type Yet
                     </div>
                     <div v-else class="bg-grey-1">
@@ -1400,17 +1400,24 @@
                     style="margin-left:50px;margin-right:50px;"
                   >
                     <div class=" column  q-pa-lg">
-                      <div class="q-px-xl q-my-xs">
+                      <div class="q-px-xl q-py-xs">
                         {{ industryTypeDialogBoxName }}
                       </div>
-                      <div class="q-pl-xs">
-                        <q-input
-                          v-model="industryType.value"
-                          class="q-mx-xl"
-                          style="width :300px ; height:50px;"
-                          outlined
-                        />
-                      </div>
+                      <q-form ref="SecondaryForm">
+                        <div class="q-pl-xs">
+                          <q-input
+                            v-model="industryType.value"
+                            class="q-mx-xl"
+                            style="width :300px ; "
+                            outlined
+                            :rules="[
+                              val =>
+                                (val && val.length > 0) ||
+                                'Please Fill ' + industryTypeDialogBoxName
+                            ]"
+                          />
+                        </div>
+                      </q-form>
                     </div>
                     <div class="  row justify-center  q-pa-lg">
                       <div>
@@ -1418,7 +1425,7 @@
                           color="primary"
                           label="Clear"
                           class="q-mx-lg "
-                          @click=""
+                          @click="onClickClearSecondaryDilogBoxData"
                         />
                       </div>
                       <div>
@@ -1467,6 +1474,7 @@ export default {
       isShowRemoveButton: false,
       tab: 'adduser',
       splitterModel: 20,
+
       users: [
         {
           type: 'user',
@@ -1505,8 +1513,6 @@ export default {
     ])
   },
   mounted() {
-    // not working for now
-    // this.addOnboardingStep(getCurrentUser());
     this.getTitles();
     this.getContactTypes();
     this.getVendorIndustries();
@@ -1526,7 +1532,7 @@ export default {
       'addHonorifics',
       'addIndustry',
       'addPhone',
-      'addClient',
+      'addClientType',
       'addPolicy',
       'addPolicyCategories',
       'addProperty',
@@ -1548,63 +1554,61 @@ export default {
     ]),
     validateEmail,
     //  Secondary Dilog Box Submit
-    async onSubmitSecondaryDilogBox(name1) {
-      switch (name1) {
-        case 'Honorofic':
-          console.log(this.industryType, 'honorifics');
-          var response = await this.addHonorifics(this.industryType);
-          break;
+    async onSubmitSecondaryDilogBox(typeName) {
+      const vald = await this.$refs.SecondaryForm.validate();
+      if (vald) {
+        switch (typeName) {
+          case 'Honorofic':
+            var response = await this.addHonorifics(this.industryType);
+            break;
 
-        case 'Industry Type':
-          console.log(this.industryType, 'industry');
-          var response = await this.addIndustry(this.industryType);
-          break;
-        case 'Phone Type':
-          console.log(this.industryType, 'Phonetype');
-          var response = await this.addPhone(this.industryType);
-          break;
-        case 'Client Type':
-          console.log(this.industryType, 'Cl');
-          var response = await this.addClient(this.industryType);
-          break;
-        case 'Policy Type':
-          console.log(this.industryType, 'Policy Type');
-          var response = await this.addPolicy(this.industryType);
-          break;
-        case 'Policy Categories':
-          console.log(this.industryType, 'Policy Categories');
-          var response = await this.addPolicyCategories(this.industryType);
-          break;
-        case 'Property Type':
-          console.log(this.industryType, 'Property Type');
-          var response = await this.addProperty(this.industryType);
-          break;
-        case 'Claim Reason':
-          console.log(this.industryType, 'Claim Reason');
-          var response = await this.addClaimReason(this.industryType);
-          break;
-        case 'Loss Cause':
-          console.log(this.industryType, 'Loss Cause');
-          var response = await this.addLoss(this.industryType);
-          break;
-        case 'Claim Severity':
-          console.log(this.industryType, ' Claim Reason');
-          var response = await this.addClaimSeverity(this.industryType);
-          break;
-      }
-      if (response) {
-        this.getTitles();
-        this.getVendorIndustries();
-        this.getContactTypes();
-        this.getClientTypes();
-        this.getPolicyTypes();
-        this.getPolicyCategory();
-        this.getPropertyTypes();
-        this.getLossCauses();
-        this.getSeverityClaim();
-        this.getClaimReasons();
-
-        this.industryTypeDialogBox = false;
+          case 'Industry Type':
+            var response = await this.addIndustry(this.industryType);
+            break;
+          case 'Phone Type':
+            var response = await this.addPhone(this.industryType);
+            break;
+          case 'Client Type':
+            var response = await this.addClientType(this.industryType);
+            break;
+          case 'Policy Type':
+            var response = await this.addPolicy(this.industryType);
+            break;
+          case 'Policy Categories':
+            var response = await this.addPolicyCategories(this.industryType);
+            break;
+          case 'Property Type':
+            var response = await this.addProperty(this.industryType);
+            break;
+          case 'Claim Reason':
+            var response = await this.addClaimReason(this.industryType);
+            break;
+          case 'Loss Cause':
+            var response = await this.addLoss(this.industryType);
+            break;
+          case 'Claim Severity':
+            var response = await this.addClaimSeverity(this.industryType);
+            break;
+        }
+        if (response) {
+          const data = {
+            payload: { step: this.tab },
+            id: getCurrentUser().id
+          };
+          await this.addOnboardingStep(data);
+          this.getTitles();
+          this.getVendorIndustries();
+          this.getContactTypes();
+          this.getClientTypes();
+          this.getPolicyTypes();
+          this.getPolicyCategory();
+          this.getPropertyTypes();
+          this.getLossCauses();
+          this.getSeverityClaim();
+          this.getClaimReasons();
+          this.industryTypeDialogBox = false;
+          this.industryType = '';
+        }
       }
     },
     // This is Secondary Dialog Box
@@ -1612,7 +1616,7 @@ export default {
       this.industryTypeDialogBoxName = value;
       this.industryTypeDialogBox = true;
     },
-    // on Clicking Submit Button
+    // on Clicking Submit Button on
     async onSubmit() {
       const success = await this.$refs.addUserForm.validate();
       if (success) {
@@ -1631,7 +1635,6 @@ export default {
           }
         ];
         if (this.tab == 'adduser') {
-          // this.isShowRemoveButton = false;
           this.tab = 'offcInfo';
         } else if (this.tab == 'offcInfo') {
           this.tab = 'sales';
@@ -1639,12 +1642,6 @@ export default {
           this.tab = 'inspectionType';
         }
         this.isShowRemoveButton = false;
-      } else {
-        this.$q.notify({
-          message: 'Please fill the Required',
-          position: 'top',
-          type: 'negative'
-        });
       }
     },
 
@@ -1696,6 +1693,10 @@ export default {
         type: '',
         subtypes: [{ type: ' ', duration: '' }]
       };
+    },
+    //For clearing the Secondary Dilog box Data when clicked to clearing
+    onClickClearSecondaryDilogBoxData() {
+      this.industryType.value = '';
     },
     // onSaveInspectionType
     async onSaveInspectionType() {
@@ -1754,11 +1755,6 @@ export default {
     }
 
     // End of Functions
-  },
-  created() {
-    if (getToken()) {
-      console.log(getCurrentUser().id, 3434);
-    }
   }
 };
 </script>

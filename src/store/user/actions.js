@@ -38,7 +38,7 @@ export async function createUserForOrganization({ dispatch, state }, payload) {
       buildApiData('organization', payload)
     );
     dispatch('setLoading', false);
-    this.$router.push('/forgot-password');
+    this.$router.push('/info');
   } catch (e) {
     console.log(e);
     dispatch('setLoading', false);
@@ -79,6 +79,37 @@ export async function addUser({ dispatch, state }, payload) {
       buildApiData('users', payload)
     );
     dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response.data.title
+    });
+  }
+}
+
+export async function verifyOobCode({ commit, dispatch }, params) {
+  dispatch('setLoading', true);
+  try {
+    const response = await request.get('/users/verifyOOBCode', {
+      ...params
+    });
+    dispatch('setLoading', false);
+    return response;
+  } catch (e) {
+    dispatch('setLoading', false);
+    return false;
+  }
+}
+export async function setPassword({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      `/users/${payload.id}/setpassword`,
+      buildApiData('users', payload.password)
+    );
+    dispatch('setLoading', false);
     return true;
   } catch (e) {
     console.log(e);
@@ -90,6 +121,7 @@ export async function addUser({ dispatch, state }, payload) {
     return false;
   }
 }
+
 // Post Api for Inspection Type
 
 export async function addInspectionType({ dispatch, state }, payload) {
@@ -174,7 +206,7 @@ export async function addPhone({ dispatch, state }, payload) {
   }
 }
 // Add Client Type
-export async function addClient({ dispatch, state }, payload) {
+export async function addClientType({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.post(
@@ -314,12 +346,12 @@ export async function addClaimSeverity({ dispatch, state }, payload) {
   }
 }
 
-export async function addOnboardingStep({ dispatch, state }, payload) {
+export async function addOnboardingStep({ dispatch, state }, payloadData) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.post(
-      `${payload.id}/set-onboard-step`,
-      buildApiData('users', payload)
+      `/users/${payloadData.id}/set-onboard-step`,
+      buildApiData('users', payloadData.payload)
     );
     dispatch('setLoading', false);
   } catch (e) {
