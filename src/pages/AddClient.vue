@@ -1052,7 +1052,7 @@
                 v-if="IsMortgageHomeToggle"
                 @click="mortgageInfoDialog = true"
               >
-                <div class="row " style="display:flex">
+                <div class="row ">
                   <div class=" q-px-xs row">
                     <div v-if="!mortgageDetails[0].id">
                       Select Mortgage
