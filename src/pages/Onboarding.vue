@@ -1465,7 +1465,7 @@ export default {
       // this is for static dropdown
       options: ['Manager', 'Staff'],
       isShowRemoveButton: false,
-      tab: 'offcInfo',
+      tab: 'adduser',
       splitterModel: 20,
       users: [
         {
