@@ -1172,75 +1172,7 @@
                       v-model="IsMortgageHomeToggle"
                     />
                   </div>
-                  <div
-                    v-if="IsMortgageHomeToggle"
-                    @click="mortgageInfoDialog = true"
-                  >
-                    <div class="select-text">
-                      {{ 'Select Mortgage' }}
-                    </div>
-                  </div>
                 </q-form>
-              </div>
-              <q-separator />
-              <br />
-              <div class="row">
-                <span class="form-heading">
-                  Is there damage to other structures?
-                </span>
-                <q-toggle class="q-ml-auto" v-model="isDamageOSToggle" />
-              </div>
-              <textarea
-                v-if="isDamageOSToggle"
-                rows="5"
-                required
-                class="full-width"
-                v-model="lossInfo.damageDescription"
-                label="Damage items description"
-                style="resize: none"
-              />
-
-              <div class="row">
-                <span class="form-heading">
-                  Is there damage to personal property?
-                </span>
-                <q-toggle
-                  class="q-ml-auto"
-                  v-model="isThereDamageToPersonalPropertyToggle"
-                />
-              </div>
-              <textarea
-                v-if="isThereDamageToPersonalPropertyToggle"
-                rows="5"
-                required
-                class="full-width"
-                v-model="lossInfo.damagePersnalPropertyDescription"
-                label="Damage items description"
-                style="resize: none"
-              />
-              <div class="row">
-                <span class="form-heading">
-                  Was a PPIF provided to the insured?
-                </span>
-                <q-toggle
-                  class="q-ml-auto"
-                  v-model="wasAppifProvidedToTheInsuredToggle"
-                />
-              </div>
-              <div class="row">
-                <span class="form-heading">
-                  Does Claimguru PPIF need to be provided?
-                </span>
-                <q-toggle
-                  class="q-ml-auto"
-                  v-model="doesTheOfficeNeedToProvidePpifToTheInsuredToggle"
-                />
-              </div>
-              <div class="row">
-                <span class="form-heading">
-                  Is there a mortgage on the home?
-                </span>
-                <q-toggle class="q-ml-auto" v-model="IsMortgageHomeToggle" />
               </div>
               <div
                 v-if="IsMortgageHomeToggle"
@@ -1266,6 +1198,8 @@
                   </div>
                 </div>
               </div>
+              <q-separator />
+              <br />
             </div>
           </div>
           <q-btn
