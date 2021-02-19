@@ -23,7 +23,7 @@
               <template v-slot:before>
                 <q-tabs v-model="tab" vertical class="">
                   <div
-                    class="  row  justify-between text-bold text-h7"
+                    class="row justify-between text-bold text-h7"
                     :style="
                       tab == 'adduser'
                         ? { 'background-color': '#E8E8E8' }
@@ -35,16 +35,8 @@
                         : 'red'
                     "
                   >
-                    <div
-                      class="col-5 q-py-md q-ml-xl
-                    "
-                    >
-                      Add User
-                    </div>
-                    <div
-                      class=" q-mt-md col-1 q-mr-lg "
-                      v-if="tab != 'adduser'"
-                    >
+                    <div class="col-5 q-py-md q-ml-xl">Add User</div>
+                    <div class="q-mt-md col-1 q-mr-lg" v-if="tab != 'adduser'">
                       <q-icon size="xs" color="primary" name="done" />
                     </div>
                   </div>
@@ -64,14 +56,9 @@
                         : 'red'
                     "
                   >
+                    <div class="col-5 q-pt-md q-ml-xl">Office Staff Info</div>
                     <div
-                      class="col-5 q-pt-md q-ml-xl
-                    "
-                    >
-                      Office Staff Info
-                    </div>
-                    <div
-                      class=" q-mt-md col-1 q-mr-lg "
+                      class="q-mt-md col-1 q-mr-lg"
                       v-if="tab != 'adduser' && tab != 'offcInfo'"
                     >
                       <q-icon size="xs" color="primary" name="done" />
@@ -92,14 +79,11 @@
                         : 'red'
                     "
                   >
-                    <div
-                      class=" col-7 q-pt-md q-ml-xl
-                    "
-                    >
+                    <div class="col-7 q-pt-md q-ml-xl">
                       Sales Representative
                     </div>
                     <div
-                      class=" q-mt-md col-1 q-mr-lg "
+                      class="q-mt-md col-1 q-mr-lg"
                       v-if="
                         tab != 'adduser' && tab != 'offcInfo' && tab != 'sales'
                       "
@@ -120,9 +104,9 @@
                         : 'red'
                     "
                   >
-                    <div class=" col-7 q-pt-md q-ml-xl">Set Configuration</div>
+                    <div class="col-7 q-pt-md q-ml-xl">Set Configuration</div>
                     <div
-                      class=" q-mt-md col-1 q-mr-lg "
+                      class="q-mt-md col-1 q-mr-lg"
                       v-if="tab == 'claimSeverity'"
                     >
                       <q-icon size="xs" color="primary" name="done" />
@@ -130,7 +114,7 @@
                   </div>
                   <!-- This is Scrolling div -->
                   <div
-                    style="overflow:auto;max-height:300px"
+                    style="overflow: auto; max-height: 300px"
                     v-if="
                       tab != 'adduser' && tab != 'offcInfo' && tab != 'sales'
                     "
@@ -144,9 +128,9 @@
                           : 'white'
                       "
                     >
-                      <div class=" col-7 q-pt-md q-ml-xl">InspectionType</div>
+                      <div class="col-7 q-pt-md q-ml-xl">InspectionType</div>
                       <div
-                        class=" q-mt-md col-1 q-mr-lg "
+                        class="q-mt-md col-1 q-mr-lg"
                         v-if="
                           tab != 'adduser' &&
                             tab != 'offcInfo' &&
@@ -170,9 +154,9 @@
                           : 'white'
                       "
                     >
-                      <div class=" col-7 q-pt-md q-ml-xl">Industry Type</div>
+                      <div class="col-7 q-pt-md q-ml-xl">Industry Type</div>
                       <div
-                        class=" q-mt-md col-1 q-mr-lg "
+                        class="q-mt-md col-1 q-mr-lg"
                         v-if="
                           tab != 'adduser' &&
                             tab != 'offcInfo' &&
@@ -197,14 +181,9 @@
                           : 'white'
                       "
                     >
+                      <div class="col-7 q-pt-md q-ml-xl">Honorific</div>
                       <div
-                        class=" col-7 q-pt-md q-ml-xl
-"
-                      >
-                        Honorific
-                      </div>
-                      <div
-                        class=" q-mt-md col-1 q-mr-lg "
+                        class="q-mt-md col-1 q-mr-lg"
                         v-if="
                           tab != 'adduser' &&
                             tab != 'offcInfo' &&
@@ -230,9 +209,9 @@
                           : 'red'
                       "
                     >
-                      <div class=" col-7 q-pt-md q-ml-xl">Phone Type</div>
+                      <div class="col-7 q-pt-md q-ml-xl">Phone Type</div>
                       <div
-                        class=" q-mt-md col-1 q-mr-lg "
+                        class="q-mt-md col-1 q-mr-lg"
                         v-if="
                           tab != 'adduser' &&
                             tab != 'offcInfo' &&
@@ -259,9 +238,9 @@
                           : 'red'
                       "
                     >
-                      <div class=" col-7 q-pt-md q-ml-xl">Clients Type</div>
+                      <div class="col-7 q-pt-md q-ml-xl">Clients Type</div>
                       <div
-                        class=" q-mt-md col-1 q-mr-lg "
+                        class="q-mt-md col-1 q-mr-lg"
                         v-if="
                           tab != 'adduser' &&
                             tab != 'offcInfo' &&
@@ -289,11 +268,9 @@
                           : 'red'
                       "
                     >
-                      <div class=" col-7 q-pt-md q-ml-xl">
-                        Policy Categories
-                      </div>
+                      <div class="col-7 q-pt-md q-ml-xl">Policy Categories</div>
                       <div
-                        class=" q-mt-md col-1 q-mr-lg "
+                        class="q-mt-md col-1 q-mr-lg"
                         v-if="
                           tab != 'adduser' &&
                             tab != 'offcInfo' &&
@@ -322,9 +299,9 @@
                           : 'red'
                       "
                     >
-                      <div class=" col-7 q-pt-md q-ml-xl">Policy Type</div>
+                      <div class="col-7 q-pt-md q-ml-xl">Policy Type</div>
                       <div
-                        class=" q-mt-md col-1 q-mr-lg "
+                        class="q-mt-md col-1 q-mr-lg"
                         v-if="
                           tab != 'adduser' &&
                             tab != 'offcInfo' &&
@@ -354,9 +331,9 @@
                           : 'red'
                       "
                     >
-                      <div class=" col-7 q-pt-md q-ml-xl">Property Type</div>
+                      <div class="col-7 q-pt-md q-ml-xl">Property Type</div>
                       <div
-                        class=" q-mt-md col-1 q-mr-lg "
+                        class="q-mt-md col-1 q-mr-lg"
                         v-if="
                           tab != 'adduser' &&
                             tab != 'offcInfo' &&
@@ -387,9 +364,9 @@
                           : 'red'
                       "
                     >
-                      <div class=" col-7 q-pt-md q-ml-xl">Claim Reason</div>
+                      <div class="col-7 q-pt-md q-ml-xl">Claim Reason</div>
                       <div
-                        class=" q-mt-md col-1 q-mr-lg "
+                        class="q-mt-md col-1 q-mr-lg"
                         v-if="
                           tab != 'adduser' &&
                             tab != 'offcInfo' &&
@@ -421,9 +398,9 @@
                           : 'red'
                       "
                     >
-                      <div class=" col-7 q-pt-md q-ml-xl">Loss Cause</div>
+                      <div class="col-7 q-pt-md q-ml-xl">Loss Cause</div>
                       <div
-                        class=" q-mt-md col-1 q-mr-lg "
+                        class="q-mt-md col-1 q-mr-lg"
                         v-if="
                           tab != 'adduser' &&
                             tab != 'offcInfo' &&
@@ -456,9 +433,9 @@
                           : 'red'
                       "
                     >
-                      <div class=" col-7 q-pt-md q-ml-xl">Claim Severity</div>
+                      <div class="col-7 q-pt-md q-ml-xl">Claim Severity</div>
                       <div
-                        class=" q-mt-md col-1 q-mr-lg "
+                        class="q-mt-md col-1 q-mr-lg"
                         v-if="
                           tab != 'adduser' &&
                             tab != 'offcInfo' &&
@@ -501,8 +478,8 @@
                         v-for="(contactInfo, index) in users"
                         v-if="index >= 0"
                       >
-                        <div class=" q-mt-xs   row  full-width">
-                          <div class="col-5  text-bold">
+                        <div class="q-mt-xs row full-width">
+                          <div class="col-5 text-bold">
                             User &nbsp;{{ index + 1 }}
                           </div>
                         </div>
@@ -565,10 +542,10 @@
                       </div>
                     </q-form>
 
-                    <div class=" row q-py-md q-px-xl">
+                    <div class="row q-py-md q-px-xl">
                       <q-btn
                         outline
-                        class="  q-mx-md"
+                        class="q-mx-md"
                         @click="addAnotherContact"
                         color="primary"
                         label="Add More"
@@ -659,7 +636,7 @@
                     <div class="row q-py-md q-px-xl">
                       <q-btn
                         outline
-                        class="  q-mx-md"
+                        class="q-mx-md"
                         @click="addAnotherContact"
                         color="primary"
                         label="Add More"
@@ -768,7 +745,7 @@
                       <q-btn
                         v-if="toggle == true"
                         outline
-                        class="  q-mx-md"
+                        class="q-mx-md"
                         @click="addAnotherContact"
                         color="primary"
                         label="Add More"
@@ -802,30 +779,30 @@
                     <div class="q-pa-lg" v-if="!inspectionTypes">
                       You Have Not Added Any Inspection Type Yet
                     </div>
-                    <div v-else class="row ">
-                      <div class=" row full-width">
-                        <div class=" col-4 q-ml-xl text-bold ">
+                    <div v-else class="row">
+                      <div class="row full-width">
+                        <div class="col-4 q-ml-xl text-bold">
                           Inspection Type
                         </div>
-                        <div class=" col-3 q-ml-lg text-bold ">Duration</div>
-                        <div class="  col-3 q-ml-lg text-center text-bold ">
+                        <div class="col-3 q-ml-lg text-bold">Duration</div>
+                        <div class="col-3 q-ml-lg text-center text-bold">
                           Edit/Delete
                         </div>
                       </div>
                       <br />
 
                       <div
-                        class="row  full-width "
+                        class="row full-width"
                         v-for="(ins, index) in inspectionTypes"
                         v-if="index >= 0"
                       >
-                        <div class=" col-8 q-ml-xl bg-grey-2 ">
-                          <div class="col-5 q-pl-md  ">
+                        <div class="col-8 q-ml-xl bg-grey-2">
+                          <div class="col-5 q-pl-md">
                             {{ inspectionTypes[index].value }}
                           </div>
 
                           <div
-                            class="row q-ml-lg q-mb-md col-5 "
+                            class="row q-ml-lg q-mb-md col-5"
                             v-for="(ins, index1) in inspectionTypes[index]
                               .subtypes"
                             v-if="index >= 0"
@@ -835,7 +812,7 @@
                                 inspectionTypes[index].subtypes[index1].value
                               }}
                             </div>
-                            <div class="q-pl-lg ">
+                            <div class="q-pl-lg">
                               {{
                                 inspectionTypes[index].subtypes[index1].duration
                               }}
@@ -858,9 +835,9 @@
                   <q-tab-panel name="industryType">
                     <div class="row justify-between">
                       <!-- empty pannel -->
-                      <div class=" text-bold col-4">IndustryType</div>
+                      <div class="text-bold col-4">IndustryType</div>
                       <div
-                        class=" col-2 text-primary"
+                        class="col-2 text-primary"
                         @click="onclickSecondaryDialogBox('Industry Type')"
                       >
                         Add IndustryType
@@ -881,7 +858,7 @@
                           {{ vendorIndustries[index].name }}
                         </div>
 
-                        <div class=" col-2 item-center">
+                        <div class="col-2 item-center">
                           <div>
                             <q-icon size="sm" color="primary" name="create" />
                             <q-icon
@@ -899,9 +876,9 @@
                   <q-tab-panel name="honorific">
                     <div class="row justify-between">
                       <!-- empty pannel -->
-                      <div class=" text-bold col-4">Honorific</div>
+                      <div class="text-bold col-4">Honorific</div>
                       <div
-                        class=" col-2 text-primary"
+                        class="col-2 text-primary"
                         @click="onclickSecondaryDialogBox('Honorofic')"
                       >
                         Add Honorific
@@ -914,7 +891,7 @@
                     </div>
                     <div v-else class="bg-grey-1">
                       <div
-                        class=" row justify-between full-width"
+                        class="row justify-between full-width"
                         v-for="(contactInfo, index) in titles"
                         v-if="index >= 0"
                       >
@@ -922,7 +899,7 @@
                           {{ titles[index].value }}
                         </div>
 
-                        <div class=" col-2 item-center">
+                        <div class="col-2 item-center">
                           <div>
                             <q-icon size="sm" color="primary" name="create" />
                             <q-icon
@@ -941,9 +918,9 @@
                   <q-tab-panel name="phoneType">
                     <div class="row justify-between">
                       <!-- empty pannel -->
-                      <div class=" text-bold col-4">Phone Type</div>
+                      <div class="text-bold col-4">Phone Type</div>
                       <div
-                        class=" col-2 text-primary"
+                        class="col-2 text-primary"
                         @click="onclickSecondaryDialogBox('Phone Type')"
                       >
                         Add Phone Type
@@ -956,7 +933,7 @@
                     </div>
                     <div v-else class="bg-grey-1">
                       <div
-                        class=" row justify-between full-width"
+                        class="row justify-between full-width"
                         v-for="(contactInfo, index) in contactTypes"
                         v-if="index >= 0"
                       >
@@ -964,7 +941,7 @@
                           {{ contactTypes[index].name }}
                         </div>
 
-                        <div class=" col-2 item-center">
+                        <div class="col-2 item-center">
                           <div>
                             <q-icon size="sm" color="primary" name="create" />
                             <q-icon
@@ -981,9 +958,9 @@
                   <!-- Client Type -->
                   <q-tab-panel name="clientType">
                     <div class="row justify-between">
-                      <div class=" text-bold col-4">Client Type</div>
+                      <div class="text-bold col-4">Client Type</div>
                       <div
-                        class=" col-2 text-primary"
+                        class="col-2 text-primary"
                         @click="onclickSecondaryDialogBox('Client Type')"
                       >
                         Add Client Type
@@ -996,7 +973,7 @@
                     </div>
                     <div v-else class="bg-grey-1">
                       <div
-                        class=" row justify-between full-width"
+                        class="row justify-between full-width"
                         v-for="(contactInfo, index) in clientTypes"
                         v-if="index >= 0"
                       >
@@ -1004,7 +981,7 @@
                           {{ clientTypes[index].name }}
                         </div>
 
-                        <div class=" col-2 item-center">
+                        <div class="col-2 item-center">
                           <div>
                             <q-icon size="sm" color="primary" name="create" />
                             <q-icon
@@ -1021,9 +998,9 @@
                   <!-- Policy Category -->
                   <q-tab-panel name="policyCategories">
                     <div class="row justify-between">
-                      <div class=" text-bold col-4">Policy Categories</div>
+                      <div class="text-bold col-4">Policy Categories</div>
                       <div
-                        class=" col-2 text-primary"
+                        class="col-2 text-primary"
                         @click="onclickSecondaryDialogBox('Policy Categories')"
                       >
                         Add Policy Categories
@@ -1036,7 +1013,7 @@
                     </div>
                     <div v-else class="bg-grey-1">
                       <div
-                        class=" row justify-between full-width"
+                        class="row justify-between full-width"
                         v-for="(contactInfo, index) in policyCategories"
                         v-if="index >= 0"
                       >
@@ -1044,7 +1021,7 @@
                           {{ policyCategories[index].name }}
                         </div>
 
-                        <div class=" col-2 item-center">
+                        <div class="col-2 item-center">
                           <div>
                             <q-icon size="sm" color="primary" name="create" />
                             <q-icon
@@ -1062,9 +1039,9 @@
                   <!-- Policy Type -->
                   <q-tab-panel name="policyType">
                     <div class="row justify-between">
-                      <div class=" text-bold col-4">Policy Type</div>
+                      <div class="text-bold col-4">Policy Type</div>
                       <div
-                        class=" col-2 text-primary"
+                        class="col-2 text-primary"
                         @click="onclickSecondaryDialogBox('Policy Type')"
                       >
                         Add Policy Type
@@ -1077,7 +1054,7 @@
                     </div>
                     <div v-else class="bg-grey-1">
                       <div
-                        class=" row justify-between full-width"
+                        class="row justify-between full-width"
                         v-for="(contactInfo, index) in policyTypes"
                         v-if="index >= 0"
                       >
@@ -1085,7 +1062,7 @@
                           {{ policyTypes[index].name }}
                         </div>
 
-                        <div class=" col-2 item-center">
+                        <div class="col-2 item-center">
                           <div>
                             <q-icon size="sm" color="primary" name="create" />
                             <q-icon
@@ -1103,9 +1080,9 @@
                   <!-- property Type -->
                   <q-tab-panel name="propertyType">
                     <div class="row justify-between">
-                      <div class=" text-bold col-4">Property Type</div>
+                      <div class="text-bold col-4">Property Type</div>
                       <div
-                        class=" col-2 text-primary"
+                        class="col-2 text-primary"
                         @click="onclickSecondaryDialogBox('Property Type')"
                       >
                         Add Property Type
@@ -1118,7 +1095,7 @@
                     </div>
                     <div v-else class="bg-grey-1">
                       <div
-                        class=" row justify-between full-width"
+                        class="row justify-between full-width"
                         v-for="(contactInfo, index) in propertyTypes"
                         v-if="index >= 0"
                       >
@@ -1126,7 +1103,7 @@
                           {{ propertyTypes[index].name }}
                         </div>
 
-                        <div class=" col-2 item-center">
+                        <div class="col-2 item-center">
                           <div>
                             <q-icon size="sm" color="primary" name="create" />
                             <q-icon
@@ -1144,9 +1121,9 @@
                   <!-- Claim Reason -->
                   <q-tab-panel name="claimReason">
                     <div class="row justify-between">
-                      <div class=" text-bold col-4">Claim Reason</div>
+                      <div class="text-bold col-4">Claim Reason</div>
                       <div
-                        class=" col-2 text-primary"
+                        class="col-2 text-primary"
                         @click="onclickSecondaryDialogBox('Claim Reason')"
                       >
                         Add Claim Reason
@@ -1159,7 +1136,7 @@
                     </div>
                     <div v-else class="bg-grey-1">
                       <div
-                        class=" row justify-between full-width"
+                        class="row justify-between full-width"
                         v-for="(contactInfo, index) in claimReasons"
                         v-if="index >= 0"
                       >
@@ -1167,7 +1144,7 @@
                           {{ claimReasons[index].name }}
                         </div>
 
-                        <div class=" col-2 item-center">
+                        <div class="col-2 item-center">
                           <div>
                             <q-icon size="sm" color="primary" name="create" />
                             <q-icon
@@ -1185,9 +1162,9 @@
                   <!-- Loss Cause -->
                   <q-tab-panel name="lossCause">
                     <div class="row justify-between">
-                      <div class=" text-bold col-4">Loss Cause</div>
+                      <div class="text-bold col-4">Loss Cause</div>
                       <div
-                        class=" col-2 text-primary"
+                        class="col-2 text-primary"
                         @click="onclickSecondaryDialogBox('Loss Cause')"
                       >
                         Add Loss Cause
@@ -1200,7 +1177,7 @@
                     </div>
                     <div v-else class="bg-grey-1">
                       <div
-                        class=" row justify-between full-width"
+                        class="row justify-between full-width"
                         v-for="(contactInfo, index) in lossCauses"
                         v-if="index >= 0"
                       >
@@ -1208,7 +1185,7 @@
                           {{ lossCauses[index].name }}
                         </div>
 
-                        <div class=" col-2 item-center">
+                        <div class="col-2 item-center">
                           <div>
                             <q-icon size="sm" color="primary" name="create" />
                             <q-icon
@@ -1226,9 +1203,9 @@
                   <!-- Claim Severity -->
                   <q-tab-panel name="claimSeverity">
                     <div class="row justify-between">
-                      <div class=" text-bold col-4">Claim Severity</div>
+                      <div class="text-bold col-4">Claim Severity</div>
                       <div
-                        class=" col-2 text-primary"
+                        class="col-2 text-primary"
                         @click="onclickSecondaryDialogBox('Claim Severity')"
                       >
                         Add Claim Severity
@@ -1241,7 +1218,7 @@
                     </div>
                     <div v-else class="bg-grey-1">
                       <div
-                        class=" row justify-between full-width"
+                        class="row justify-between full-width"
                         v-for="(contactInfo, index) in claimSeverity"
                         v-if="index >= 0"
                       >
@@ -1249,7 +1226,7 @@
                           {{ claimSeverity[index].name }}
                         </div>
 
-                        <div class=" col-2 item-center">
+                        <div class="col-2 item-center">
                           <div>
                             <q-icon size="sm" color="primary" name="create" />
                             <q-icon
@@ -1287,14 +1264,14 @@
                     "
                     color="primary"
                     label="Next"
-                    class="q-mx-lg "
+                    class="q-mx-lg"
                     @click="onClickNext"
                   />
                   <q-btn
                     v-if="tab == 'claimSeverity'"
                     color="primary"
                     label="Go To Dashboard"
-                    class="q-mx-lg "
+                    class="q-mx-lg"
                     @click="SendToDashboard"
                   />
                 </div>
@@ -1305,9 +1282,9 @@
             </q-splitter>
             <!-- This is First Dialog -->
             <q-dialog v-model="InspectionDialogBox" persistent>
-              <q-card style="width: 700px;height:600px; max-width: 1000vw;">
-                <q-bar class=" row justify-between" style="height:50px">
-                  <div class="col-46 q-px-xl text-bold ">
+              <q-card style="width: 700px; height: 600px; max-width: 1000vw">
+                <q-bar class="row justify-between" style="height: 50px">
+                  <div class="col-46 q-px-xl text-bold">
                     Add Inspection Type
                   </div>
                   <q-btn dense flat icon="close" v-close-popup>
@@ -1387,9 +1364,9 @@
             </q-dialog>
             <!-- This is Secondary Dialog Box -->
             <q-dialog v-model="industryTypeDialogBox" persistent>
-              <q-card style="width: 700px;height:400px; max-width: 1000vw;">
-                <q-bar class=" row justify-between" style="height:50px">
-                  <div class="col-7 q-px-xl text-bold ">
+              <q-card style="width: 700px; height: 400px; max-width: 1000vw">
+                <q-bar class="row justify-between" style="height: 50px">
+                  <div class="col-7 q-px-xl text-bold">
                     Add {{ industryTypeDialogBoxName }}
                   </div>
                   <q-btn dense flat icon="close" v-close-popup>
@@ -1399,10 +1376,10 @@
 
                 <q-card-section>
                   <div
-                    class=" q-pa-xl"
-                    style="margin-left:50px;margin-right:50px;"
+                    class="q-pa-xl"
+                    style="margin-left: 50px; margin-right: 50px"
                   >
-                    <div class=" column  q-pa-lg">
+                    <div class="column q-pa-lg">
                       <div class="q-px-xl q-py-xs">
                         {{ industryTypeDialogBoxName }}
                       </div>
@@ -1411,7 +1388,7 @@
                           <q-input
                             v-model="industryType.value"
                             class="q-mx-xl"
-                            style="width :300px ; "
+                            style="width: 300px"
                             outlined
                             :rules="[
                               val =>
@@ -1422,12 +1399,12 @@
                         </div>
                       </q-form>
                     </div>
-                    <div class="  row justify-center  q-pa-lg">
+                    <div class="row justify-center q-pa-lg">
                       <div>
                         <q-btn
                           color="primary"
                           label="Clear"
-                          class="q-mx-lg "
+                          class="q-mx-lg"
                           @click="onClickClearSecondaryDilogBoxData"
                         />
                       </div>
@@ -1435,7 +1412,7 @@
                         <q-btn
                           color="primary"
                           label="Save"
-                          class="q-mx-lg "
+                          class="q-mx-lg"
                           @click="
                             onSubmitSecondaryDilogBox(industryTypeDialogBoxName)
                           "
@@ -1529,6 +1506,12 @@ export default {
     this.getLossCauses();
     this.getSeverityClaim();
     this.getClaimReasons();
+  },
+
+  created() {
+    if (getCurrentUser() && getCurrentUser().attributes) {
+      this.tab = getCurrentUser().attributes.onboard.step;
+    }
   },
   methods: {
     ...mapActions([
@@ -1780,5 +1763,9 @@ export default {
 td {
   border: 1px solid black;
   width: 200px;
+}
+
+::-webkit-scrollbar {
+  display: none;
 }
 </style>
