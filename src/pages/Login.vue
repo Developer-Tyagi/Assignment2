@@ -3,7 +3,7 @@
     <div class="q-pa-lg">
       <div class="flex column" style="height: 50vh">
         <img
-          v-if="$q.screen.width < 600"
+          v-if="$q.screen.width < 624"
           alt="Claimguru"
           src="~assets/claimguru_icon.png"
           class="q-mt-auto q-mx-auto"
@@ -19,7 +19,7 @@
           height="95"
         />
         <img
-          v-if="$q.screen.width < 600"
+          v-if="$q.screen.width < 624"
           alt="Claimguru"
           src="~assets/claimguru_text.png"
           class="q-mx-auto q-mb-auto"
@@ -37,20 +37,24 @@
       </div>
       <div class="column">
         <div class="row">
-          <img src="~assets/icon_user.svg" class="q-mr-lg" />
-          <q-input
-            class="login-input"
-            v-model="login.email"
-            placeholder="Username"
-            borderless
-          />
-          <q-separator :color="$q.screen.width < 600 ? 'grey' : 'white'" />
+          <div class="  q-mt-md " style="width:20px">
+            <img src="~assets/icon_user.svg" class="q-mr-lg" />
+          </div>
+          <div class="q-pl-md col-10">
+            <q-input
+              class="login-input full-width"
+              v-model="login.email"
+              placeholder="Username"
+              borderless
+            />
+          </div>
+          <q-separator :color="$q.screen.width < 624 ? 'grey' : 'white'" />
         </div>
         <div class="row ">
-          <div class="col-1 q-mt-md">
+          <div class=" q-mt-md" style="width:20px">
             <img src="~assets/lock.svg" class=" q-mr-lg" />
           </div>
-          <div class=" col-11">
+          <div class="  q-pl-md col-10" style="width:90%;">
             <q-input
               class=" login-input full-width "
               v-model="login.password"
@@ -70,12 +74,12 @@
               </template>
             </q-input>
           </div>
-          <q-separator :color="$q.screen.width < 600 ? 'grey' : 'white'" />
+          <q-separator :color="$q.screen.width < 624 ? 'grey' : 'white'" />
         </div>
         <div>
           <q-btn
-            :color="$q.screen.width < 600 ? 'secondary' : 'white'"
-            :outline="$q.screen.width > 600 ? true : false"
+            :color="$q.screen.width < 624 ? 'secondary' : 'white'"
+            :outline="$q.screen.width > 624 ? true : false"
             label="Login"
             class="full-width q-my-md"
             @click="onUserLogin"
@@ -83,7 +87,7 @@
         </div>
         <a
           href
-          :class="$q.screen.width < 600 ? 'text-primary' : 'text-white'"
+          :class="$q.screen.width < 624 ? 'text-primary' : 'text-white'"
           style="text-decoration: none"
           >Forgot Password</a
         >
@@ -150,7 +154,7 @@ export default {
   margin-right: 10%;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 624px) {
   .bg-login {
     background-color: #ededed;
     width: 100%;

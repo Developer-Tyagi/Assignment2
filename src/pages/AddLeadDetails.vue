@@ -28,7 +28,9 @@
                 emit-value
                 label="Title"
                 lazy-rules
-                :rules="[val => (val && val.length > 0) || '']"
+                :rules="[
+                  val => (val && val.length > 0) || 'Please select the Title'
+                ]"
               />
 
               <q-input
@@ -61,7 +63,9 @@
                   style="width: 40%; margin-right: auto"
                   label="Type"
                   lazy-rules
-                  :rules="[val => (val && val.length > 0) || '']"
+                  :rules="[
+                    val => (val && val.length > 0) || 'Please select phone type'
+                  ]"
                 />
                 <q-input
                   class="required"
@@ -72,9 +76,8 @@
                   :rules="[
                     val =>
                       (val && val.length == 10) ||
-                      'Please fill the phone number'
+                      'Please enter the phone number'
                   ]"
-                  style="width: 55%"
                 />
               </div>
               <q-input

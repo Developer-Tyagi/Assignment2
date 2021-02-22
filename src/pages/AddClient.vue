@@ -17,9 +17,7 @@
             Insurance Info
           </div>
           <div class="form-list" @click="lossInfoDialog = true">Loss Info</div>
-          <!-- <div class="form-list" @click="mortgageInfoDialog = true">
-            Mortgage Info
-          </div> -->
+
           <div class="form-list" @click="expertVendorInfoDialog = true">
             Expert/Vendor Info
           </div>
@@ -272,6 +270,11 @@
                     :options="clientTypes"
                     @input="setTypes(clientTypes, client)"
                     label="Client Type"
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) ||
+                        'Please select the client type'
+                    ]"
                   />
 
                   <div class="row">
@@ -321,6 +324,11 @@
                     @input="setTitleName(1)"
                     emit-value
                     label="Title"
+                    lazy-rules
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) || 'Please select the Title'
+                    ]"
                   />
 
                   <q-input
@@ -354,22 +362,25 @@
                       map-options
                       emit-value
                       label="Type"
-                      lazy-rules
-                      :rules="[val => (val && val.length > 0) || '']"
                       style="width: 40%; margin-right: auto"
+                      lazy-rules
+                      :rules="[
+                        val =>
+                          (val && val.length > 0) || 'Please select phone type'
+                      ]"
                     />
                     <q-input
                       v-model="insuredDetails.phone"
                       class="required"
                       label="Phone"
                       type="number"
+                      style="width: 55%"
                       lazy-rules
                       :rules="[
                         val =>
                           (val && val.length == 10) ||
-                          'Please fill the phone number'
+                          'Please enter the phone number'
                       ]"
-                      style="width: 55%"
                     />
                   </div>
                   <q-input
@@ -404,6 +415,11 @@
                       @input="setTitleName(2)"
                       emit-value
                       label="Title"
+                      lazy-rules
+                      :rules="[
+                        val =>
+                          (val && val.length > 0) || 'Please select the Title'
+                      ]"
                     />
                     <q-input
                       v-model="coInsuredDetails.fname"
@@ -425,7 +441,11 @@
                         style="width: 40%; margin-right: auto"
                         label="Type"
                         lazy-rules
-                        :rules="[val => (val && val.length > 0) || '']"
+                        :rules="[
+                          val =>
+                            (val && val.length > 0) ||
+                            'Please select phone type'
+                        ]"
                       />
                       <q-input
                         v-model="coInsuredDetails.phone"
@@ -436,7 +456,7 @@
                         :rules="[
                           val =>
                             (val && val.length == 10) ||
-                            'Please fill the phone number'
+                            'Please enter the phone number'
                         ]"
                         style="width: 55%"
                       />
@@ -476,7 +496,11 @@
                         map-options
                         emit-value
                         lazy-rules
-                        :rules="[val => (val && val.length > 0) || '']"
+                        :rules="[
+                          val =>
+                            (val && val.length > 0) ||
+                            'Please select phone type'
+                        ]"
                         style="width: 40%; margin-right: auto"
                       />
                       <q-input
@@ -488,7 +512,7 @@
                         :rules="[
                           val =>
                             (val && val.length == 10) ||
-                            'Please fill the phone number'
+                            'Please enter the phone number'
                         ]"
                         style="width: 55%; margin-left: auto"
                       />
@@ -504,7 +528,11 @@
                         map-options
                         emit-value
                         lazy-rules
-                        :rules="[val => (val && val.length > 0) || '']"
+                        :rules="[
+                          val =>
+                            (val && val.length > 0) ||
+                            'Please select phone type'
+                        ]"
                         style="width: 40%; margin-right: auto"
                       />
                       <q-input
@@ -516,7 +544,7 @@
                         :rules="[
                           val =>
                             (val && val.length == 10) ||
-                            'Please fill the phone number'
+                            'Please enter the phone number'
                         ]"
                         style="width: 55%"
                       />
@@ -555,12 +583,24 @@
                         map-options
                         emit-value
                         style="width: 40%; margin-right: auto"
+                        lazy-rules
+                        :rules="[
+                          val =>
+                            (val && val.length > 0) ||
+                            'Please select phone type'
+                        ]"
                       />
                       <q-input
                         class="required"
                         v-model="tenantOccupied.phone"
                         label="Phone"
                         style="width: 55%; margin-left: auto"
+                        lazy-rules
+                        :rules="[
+                          val =>
+                            (val && val.length == 10) ||
+                            'Please enter the phone number'
+                        ]"
                       />
                     </div>
                   </div>
@@ -571,7 +611,13 @@
           </div>
 
           <q-btn
-            @click="onSubmit"
+            @click="
+              onSubmit(
+                'clientInfoDailog',
+
+                clientAddressDetails.streetAddress
+              )
+            "
             label="Save"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
@@ -606,32 +652,41 @@
           <div class="q-page bg-white">
             <div class="full-width fixHeight">
               <div>
-                <div class="row">
-                  <span class="form-heading">
-                    Is the mailing address same?
-                  </span>
-                  <q-toggle
-                    class="q-ml-auto"
-                    v-model="isMailingAddressSameToggle"
-                    @input="mailingAddressSame"
+                <q-form ref="mailingAddressForm">
+                  <div class="row">
+                    <span class="form-heading">
+                      Is the mailing address same?
+                    </span>
+                    <q-toggle
+                      class="q-ml-auto"
+                      v-model="isMailingAddressSameToggle"
+                      @input="mailingAddressSame"
+                    />
+                  </div>
+                  <AutoCompleteAddress
+                    :address="mailingAddressDetails"
+                    :isDropBoxEnable="true"
+                    :isChecksEnable="false"
+                    :isFieldsDisable="isMailingAddressSameToggle"
                   />
-                </div>
-                <AutoCompleteAddress
-                  :address="mailingAddressDetails"
-                  :isDropBoxEnable="true"
-                  :isChecksEnable="false"
-                  :isFieldsDisable="isMailingAddressSameToggle"
-                />
+                </q-form>
               </div>
 
               <br />
             </div>
           </div>
+
           <q-btn
             label="Save"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
-            @click="mailingAddressDialog = false"
+            @click="
+              onSubmit(
+                'mailingAddressDialog',
+
+                mailingAddressDetails.streetAddress
+              )
+            "
             size="'xl'"
           ></q-btn>
         </q-card-section>
@@ -663,181 +718,197 @@
         <q-card-section>
           <div class="q-page bg-white">
             <div class="full-width fixHeight">
-              <div
-                class="custom-select"
-                v-model="insuranceDetails.carrierName"
-                @click="onAddVendorDialogClick(constants.industries.CARRIER)"
-              >
-                <div class="select-text">
-                  {{
-                    insuranceDetails.carrierName
-                      ? insuranceDetails.carrierName
-                      : 'Enter Carrier Details'
-                  }}
-                </div>
-              </div>
-              <q-input
-                v-model="insuranceDetails.policyNumber"
-                label="Policy Number"
-              />
+              <div>
+                <q-form ref="insuranceInfoForm">
+                  <div
+                    class="custom-select"
+                    v-model="insuranceDetails.carrierName"
+                    @click="
+                      onAddVendorDialogClick(constants.industries.CARRIER)
+                    "
+                  >
+                    <div class="select-text">
+                      {{
+                        insuranceDetails.carrierName
+                          ? insuranceDetails.carrierName
+                          : 'Enter Carrier Details'
+                      }}
+                    </div>
+                  </div>
+                  <q-input
+                    v-model="insuranceDetails.policyNumber"
+                    label="Policy Number"
+                  />
 
-              <q-input
-                v-model="insuranceDetails.insuranceClaimNumber"
-                label="Insurance Claim Number"
-              />
-              <br />
-              <div class="row">
-                <span class="form-heading">Has claim been filed?</span>
-                <q-toggle
-                  class="q-ml-auto"
-                  v-model="hasClaimBeenFilledToggle"
-                />
-              </div>
-              <div class="row">
-                <span class="form-heading">
-                  Is this is a Foced-Placed policy?
-                </span>
-                <q-toggle
-                  class="q-ml-auto"
-                  v-model="isThisIsForcedPlacedPolicyToggle"
-                />
-              </div>
-              <span class="form-heading">Policy Effective date</span>
-              <q-input
-                v-model="insuranceDetails.policyEffectiveDate"
-                type="date"
-              /><br />
-              <span class="form-heading">Policy Expiry date </span>
-              <q-input
-                v-model="insuranceDetails.policyExpireDate"
-                type="date"
-              />
-              <q-select
-                class="required"
-                v-model="insuranceDetails.policyCategory.id"
-                option-value="id"
-                option-label="name"
-                map-options
-                emit-value
-                :options="policyCategories"
-                @input="
-                  setTypes(
-                    policyCategories,
-                    insuranceDetails.policyCategory,
-                    'policyCategory'
-                  )
-                "
-                label="Policy Category"
-              />
-              <q-select
-                class="required"
-                v-model="insuranceDetails.policy.id"
-                option-value="id"
-                option-label="name"
-                map-options
-                emit-value
-                :options="policyTypes"
-                @input="setTypes(policyTypes, insuranceDetails.policy)"
-                label="Policy Type"
-              />
-              <br />
-              <div class="row" style="align-items: center">
-                <span class="form-heading">Dwelling Limit (A)</span>
-                <q-input
-                  mask="#.#"
-                  type="number"
-                  v-model.number="insuranceDetails.dwellingLimitA"
-                  placeholder="Dwelling Limit (A)"
-                  style="margin-left: auto; width: 50%"
-                  prefix="$"
-                />
-              </div>
-              <div class="row" style="align-items: center">
-                <span class="form-heading">Other Structure (B)</span>
-                <q-input
-                  mask="#.#"
-                  type="number"
-                  v-model.number="insuranceDetails.otherStructureB"
-                  placeholder="Other Structure (B)"
-                  prefix="$"
-                  style="margin-left: auto; width: 50%"
-                />
-              </div>
-              <div class="row" style="align-items: center">
-                <span class="form-heading">Contents Limit (C)</span>
-                <q-input
-                  mask="#.#"
-                  type="number"
-                  v-model.number="insuranceDetails.contentsLimit"
-                  placeholder="Contents Limit (C)"
-                  prefix="$"
-                  style="margin-left: auto; width: 50%"
-                />
-              </div>
-              <div class="row" style="align-items: center">
-                <span class="form-heading">Loss of Use Limit (D)</span>
-                <q-input
-                  mask="#.#"
-                  type="number"
-                  v-model.number="insuranceDetails.lossOfUSD"
-                  placeholder="Loss of Use Limit (D)"
-                  prefix="$"
-                  style="margin-left: auto; width: 50%"
-                />
-              </div>
-              <div class="row" style="align-items: center">
-                <span class="form-heading">Depreciation</span>
-                <q-input
-                  mask="#.#"
-                  type="number"
-                  v-model.number="insuranceDetails.deprecation"
-                  placeholder="Depreciation"
-                  prefix="$"
-                  style="margin-left: auto; width: 50%"
-                />
-              </div>
-              <div class="row" style="align-items: center">
-                <span class="form-heading">Deductible</span>
-                <q-input
-                  mask="#.#"
-                  type="number"
-                  v-model.number="insuranceDetails.deductible"
-                  placeholder="Deductible"
-                  prefix="$"
-                  style="margin-left: auto; width: 50%"
-                />
-              </div>
+                  <q-input
+                    v-model="insuranceDetails.insuranceClaimNumber"
+                    label="Insurance Claim Number"
+                  />
+                  <br />
+                  <div class="row">
+                    <span class="form-heading">Has claim been filed?</span>
+                    <q-toggle
+                      class="q-ml-auto"
+                      v-model="hasClaimBeenFilledToggle"
+                    />
+                  </div>
+                  <div class="row">
+                    <span class="form-heading">
+                      Is this is a Foced-Placed policy?
+                    </span>
+                    <q-toggle
+                      class="q-ml-auto"
+                      v-model="isThisIsForcedPlacedPolicyToggle"
+                    />
+                  </div>
+                  <span class="form-heading">Policy Effective date</span>
+                  <q-input
+                    v-model="insuranceDetails.policyEffectiveDate"
+                    type="date"
+                  /><br />
+                  <span class="form-heading">Policy Expiry date </span>
+                  <q-input
+                    v-model="insuranceDetails.policyExpireDate"
+                    type="date"
+                  />
+                  <q-select
+                    class="required"
+                    v-model="insuranceDetails.policyCategory.id"
+                    option-value="id"
+                    option-label="name"
+                    map-options
+                    emit-value
+                    :options="policyCategories"
+                    @input="
+                      setTypes(
+                        policyCategories,
+                        insuranceDetails.policyCategory,
+                        'policyCategory'
+                      )
+                    "
+                    label="Policy Category"
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) ||
+                        'Please select policy category'
+                    ]"
+                  />
+                  <q-select
+                    class="required"
+                    v-model="insuranceDetails.policy.id"
+                    option-value="id"
+                    option-label="name"
+                    map-options
+                    emit-value
+                    :options="policyTypes"
+                    @input="setTypes(policyTypes, insuranceDetails.policy)"
+                    label="Policy Type"
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) ||
+                        'Please select the policy type'
+                    ]"
+                  />
+                  <br />
+                  <div class="row" style="align-items: center">
+                    <span class="form-heading">Dwelling Limit (A)</span>
+                    <q-input
+                      mask="#.#"
+                      type="number"
+                      v-model.number="insuranceDetails.dwellingLimitA"
+                      placeholder="Dwelling Limit (A)"
+                      style="margin-left: auto; width: 50%"
+                      prefix="$"
+                    />
+                  </div>
+                  <div class="row" style="align-items: center">
+                    <span class="form-heading">Other Structure (B)</span>
+                    <q-input
+                      mask="#.#"
+                      type="number"
+                      v-model.number="insuranceDetails.otherStructureB"
+                      placeholder="Other Structure (B)"
+                      prefix="$"
+                      style="margin-left: auto; width: 50%"
+                    />
+                  </div>
+                  <div class="row" style="align-items: center">
+                    <span class="form-heading">Contents Limit (C)</span>
+                    <q-input
+                      mask="#.#"
+                      type="number"
+                      v-model.number="insuranceDetails.contentsLimit"
+                      placeholder="Contents Limit (C)"
+                      prefix="$"
+                      style="margin-left: auto; width: 50%"
+                    />
+                  </div>
+                  <div class="row" style="align-items: center">
+                    <span class="form-heading">Loss of Use Limit (D)</span>
+                    <q-input
+                      mask="#.#"
+                      type="number"
+                      v-model.number="insuranceDetails.lossOfUSD"
+                      placeholder="Loss of Use Limit (D)"
+                      prefix="$"
+                      style="margin-left: auto; width: 50%"
+                    />
+                  </div>
+                  <div class="row" style="align-items: center">
+                    <span class="form-heading">Depreciation</span>
+                    <q-input
+                      mask="#.#"
+                      type="number"
+                      v-model.number="insuranceDetails.deprecation"
+                      placeholder="Depreciation"
+                      prefix="$"
+                      style="margin-left: auto; width: 50%"
+                    />
+                  </div>
+                  <div class="row" style="align-items: center">
+                    <span class="form-heading">Deductible</span>
+                    <q-input
+                      mask="#.#"
+                      type="number"
+                      v-model.number="insuranceDetails.deductible"
+                      placeholder="Deductible"
+                      prefix="$"
+                      style="margin-left: auto; width: 50%"
+                    />
+                  </div>
 
-              <div class="row" style="align-items: center">
-                <span class="form-heading">Prior payment by insured</span>
-                <q-input
-                  mask="#.#"
-                  type="number"
-                  v-model.number="insuranceDetails.priorPayment"
-                  placeholder="Prior payment by insured"
-                  prefix="$"
-                  style="margin-left: auto; width: 50%"
-                />
+                  <div class="row" style="align-items: center">
+                    <span class="form-heading">Prior payment by insured</span>
+                    <q-input
+                      mask="#.#"
+                      type="number"
+                      v-model.number="insuranceDetails.priorPayment"
+                      placeholder="Prior payment by insured"
+                      prefix="$"
+                      style="margin-left: auto; width: 50%"
+                    />
+                  </div>
+                  <br />
+                  <span class="form-heading">Reason for Limits/Denial</span>
+                  <div class="floating-label">
+                    <textarea
+                      rows="5"
+                      required
+                      class="full-width"
+                      v-model="insuranceDetails.reasonsOfLD"
+                      style="resize: none"
+                    ></textarea>
+                  </div>
+                  <br />
+                </q-form>
               </div>
-              <br />
-              <span class="form-heading">Reason for Limits/Denial</span>
-              <div class="floating-label">
-                <textarea
-                  rows="5"
-                  required
-                  class="full-width"
-                  v-model="insuranceDetails.reasonsOfLD"
-                  style="resize: none"
-                ></textarea>
-              </div>
-              <br />
             </div>
           </div>
           <q-btn
             label="Save"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
-            @click="insuranceInfoDialog = false"
+            @click="onSubmit('insuranceInfoDialog')"
             size="'xl'"
           ></q-btn>
         </q-card-section>
@@ -868,203 +939,255 @@
         <q-card-section>
           <div class="q-page bg-white">
             <div class="full-width fixHeight">
-              <div class="row">
-                <span class="form-heading">
-                  Loss Address Same As Client's?
-                </span>
-                <q-toggle
-                  class="q-ml-auto"
-                  v-model="isLossAddressSameAsClientToggle"
-                  @input="lossAddressSame"
-                />
-              </div>
-              <AutoCompleteAddress
-                :address="lossAddressDetails"
-                :isDropBoxEnable="true"
-                :isChecksEnable="false"
-                :isFieldsDisable="isLossAddressSameAsClientToggle"
-              />
-              <q-input
-                class="required"
-                v-model="LossAddressName"
-                label="Loss Address Name"
-                lazy-rules
-                :rules="[
-                  val => (val && val.length > 0) || 'This is a required field'
-                ]"
-              />
-              <q-select
-                class="required"
-                v-model="lossInfo.property.id"
-                option-value="id"
-                option-label="name"
-                map-options
-                emit-value
-                :options="propertyTypes"
-                @input="setTypes(propertyTypes, lossInfo.property)"
-                label="Property Type"
-              />
-              <q-input
-                v-model="lossInfo.propertyDescription"
-                label="Description of Property"
-              />
-              <q-select
-                class="required"
-                v-model="lossInfo.reasonClaim.id"
-                option-value="id"
-                option-label="name"
-                map-options
-                emit-value
-                :options="claimReasons"
-                @input="setTypes(claimReasons, lossInfo.reasonClaim)"
-                label="Reason for Claim"
-              /><br />
-              <span class="form-heading">Date of Loss</span>
-              <q-input
-                v-model="lossInfo.dateOfLoss"
-                type="date"
-                placeholder="Date of Loss"
-              />
+              <div>
+                <q-form ref="lossInfoForm">
+                  <div class="row">
+                    <span class="form-heading">
+                      Loss Address Same As Client's?
+                    </span>
+                    <q-toggle
+                      class="q-ml-auto"
+                      v-model="isLossAddressSameAsClientToggle"
+                      @input="lossAddressSame"
+                    />
+                  </div>
+                  <AutoCompleteAddress
+                    :address="lossAddressDetails"
+                    :isDropBoxEnable="true"
+                    :isChecksEnable="false"
+                    :isFieldsDisable="isLossAddressSameAsClientToggle"
+                  />
+                  <q-input
+                    class="required"
+                    v-model="LossAddressName"
+                    label="Loss Address Name"
+                    lazy-rules
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) || 'This is a required field'
+                    ]"
+                  />
+                  <q-select
+                    class="required"
+                    v-model="lossInfo.property.id"
+                    option-value="id"
+                    option-label="name"
+                    map-options
+                    emit-value
+                    :options="propertyTypes"
+                    @input="setTypes(propertyTypes, lossInfo.property)"
+                    label="Property Type"
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) ||
+                        'Please select the property type'
+                    ]"
+                  />
+                  <q-input
+                    v-model="lossInfo.propertyDescription"
+                    label="Description of Property"
+                  />
+                  <q-select
+                    class="required"
+                    v-model="lossInfo.reasonClaim.id"
+                    option-value="id"
+                    option-label="name"
+                    map-options
+                    emit-value
+                    :options="claimReasons"
+                    @input="setTypes(claimReasons, lossInfo.reasonClaim)"
+                    label="Reason for Claim"
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) ||
+                        'Please select the reason for claim'
+                    ]"
+                  /><br />
+                  <span class="form-heading">Date of Loss</span>
+                  <q-input
+                    v-model="lossInfo.dateOfLoss"
+                    type="date"
+                    placeholder="Date of Loss"
+                  />
 
-              <q-select
-                class="required"
-                v-model="lossInfo.causeOfLoss.id"
-                option-value="id"
-                option-label="name"
-                map-options
-                emit-value
-                :options="lossCauses"
-                @input="setTypes(lossCauses, lossInfo.causeOfLoss)"
-                label="Cause of Loss"
-              /><br />
-              <span class="form-heading">Deadline Date</span>
-              <q-input
-                v-model="lossInfo.deadlineDate"
-                type="date"
-                placeholder="Deadline Date"
-              /><br />
-              <span class="form-heading">Recov. Deprec. Deadline</span>
-              <q-input
-                v-model="lossInfo.recovDeadline"
-                type="date"
-                placeholder="Recov. Deprec. Deadline"
-              /><br />
-              <div class="row">
-                <span class="form-heading">Is the Home Habitable?</span>
-                <q-toggle class="q-ml-auto" v-model="isTheHomeHabitable" />
-              </div>
-              <div class="row">
-                <span class="form-heading">FEMA Claim</span>
-                <q-toggle class="q-ml-auto" v-model="femaClaimToggle" />
-              </div>
-              <div class="row">
-                <span class="form-heading">State of Emergency</span>
-                <q-toggle
-                  class="q-ml-auto"
-                  v-model="isStateOfEmergencyToggle"
-                />
-              </div>
-              <div v-if="isStateOfEmergencyToggle">
-                <q-input
-                  v-model="lossInfo.nameOfEmergency"
-                  label="Related to"
-                />
-              </div>
-              <q-select
-                class="required"
-                v-model="lossInfo.severityOfClaimType.id"
-                option-value="id"
-                option-label="name"
-                map-options
-                emit-value
-                :options="claimSeverity"
-                @input="setTypes(claimSeverity, lossInfo.severityOfClaimType)"
-                label="Severity of Claim"
-              /><br />
-              <span class="form-heading">Loss Description to Dwelling</span>
-              <textarea
-                rows="5"
-                required
-                class="full-width"
-                v-model="lossInfo.descriptionDwelling"
-                style="resize: none"
-              />
-              <br />
-              <div class="row">
-                <span class="form-heading">
-                  Is there damage to other structures?
-                </span>
-                <q-toggle class="q-ml-auto" v-model="isDamageOSToggle" />
-              </div>
-              <textarea
-                v-if="isDamageOSToggle"
-                rows="5"
-                required
-                class="full-width"
-                v-model="lossInfo.damageDescription"
-                label="Damage items description"
-                style="resize: none"
-              />
+                  <q-select
+                    class="required"
+                    v-model="lossInfo.causeOfLoss.id"
+                    option-value="id"
+                    option-label="name"
+                    map-options
+                    emit-value
+                    :options="lossCauses"
+                    @input="setTypes(lossCauses, lossInfo.causeOfLoss)"
+                    label="Cause of Loss"
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) ||
+                        'Please select the cause of loss'
+                    ]"
+                  /><br />
+                  <span class="form-heading">Deadline Date</span>
+                  <q-input
+                    v-model="lossInfo.deadlineDate"
+                    type="date"
+                    placeholder="Deadline Date"
+                  /><br />
+                  <span class="form-heading">Recov. Deprec. Deadline</span>
+                  <q-input
+                    v-model="lossInfo.recovDeadline"
+                    type="date"
+                    placeholder="Recov. Deprec. Deadline"
+                  /><br />
+                  <div class="row">
+                    <span class="form-heading">Is the Home Habitable?</span>
+                    <q-toggle class="q-ml-auto" v-model="isTheHomeHabitable" />
+                  </div>
+                  <div class="row">
+                    <span class="form-heading">FEMA Claim</span>
+                    <q-toggle class="q-ml-auto" v-model="femaClaimToggle" />
+                  </div>
+                  <div class="row">
+                    <span class="form-heading">State of Emergency</span>
+                    <q-toggle
+                      class="q-ml-auto"
+                      v-model="isStateOfEmergencyToggle"
+                    />
+                  </div>
+                  <div v-if="isStateOfEmergencyToggle">
+                    <q-input
+                      v-model="lossInfo.nameOfEmergency"
+                      label="Related to"
+                    />
+                  </div>
+                  <q-select
+                    class="required"
+                    v-model="lossInfo.severityOfClaimType.id"
+                    option-value="id"
+                    option-label="name"
+                    map-options
+                    emit-value
+                    :options="claimSeverity"
+                    @input="
+                      setTypes(claimSeverity, lossInfo.severityOfClaimType)
+                    "
+                    label="Severity of Claim"
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) ||
+                        'Please select the severity of claim'
+                    ]"
+                  /><br />
+                  <span class="form-heading">Loss Description to Dwelling</span>
+                  <textarea
+                    rows="5"
+                    required
+                    class="full-width"
+                    v-model="lossInfo.descriptionDwelling"
+                    style="resize: none"
+                  />
+                  <br />
+                  <div class="row">
+                    <span class="form-heading">
+                      Is there damage to other structures?
+                    </span>
+                    <q-toggle class="q-ml-auto" v-model="isDamageOSToggle" />
+                  </div>
+                  <textarea
+                    v-if="isDamageOSToggle"
+                    rows="5"
+                    required
+                    class="full-width"
+                    v-model="lossInfo.damageDescription"
+                    label="Damage items description"
+                    style="resize: none"
+                  />
 
-              <div class="row">
-                <span class="form-heading">
-                  Is there damage to personal property?
-                </span>
-                <q-toggle
-                  class="q-ml-auto"
-                  v-model="isThereDamageToPersonalPropertyToggle"
-                />
-              </div>
-              <textarea
-                v-if="isThereDamageToPersonalPropertyToggle"
-                rows="5"
-                required
-                class="full-width"
-                v-model="lossInfo.damagePersnalPropertyDescription"
-                label="Damage items description"
-                style="resize: none"
-              />
-              <div class="row">
-                <span class="form-heading">
-                  Was a PPIF provided to the insured?
-                </span>
-                <q-toggle
-                  class="q-ml-auto"
-                  v-model="wasAppifProvidedToTheInsuredToggle"
-                />
-              </div>
-              <div class="row">
-                <span class="form-heading">
-                  Does Claimguru PPIF need to be provided?
-                </span>
-                <q-toggle
-                  class="q-ml-auto"
-                  v-model="doesTheOfficeNeedToProvidePpifToTheInsuredToggle"
-                />
-              </div>
-              <div class="row">
-                <span class="form-heading">
-                  Is there a mortgage on the home?
-                </span>
-                <q-toggle class="q-ml-auto" v-model="IsMortgageHomeToggle" />
+                  <div class="row">
+                    <span class="form-heading">
+                      Is there damage to personal property?
+                    </span>
+                    <q-toggle
+                      class="q-ml-auto"
+                      v-model="isThereDamageToPersonalPropertyToggle"
+                    />
+                  </div>
+                  <textarea
+                    v-if="isThereDamageToPersonalPropertyToggle"
+                    rows="5"
+                    required
+                    class="full-width"
+                    v-model="lossInfo.damagePersnalPropertyDescription"
+                    label="Damage items description"
+                    style="resize: none"
+                  />
+                  <div class="row">
+                    <span class="form-heading">
+                      Was a PPIF provided to the insured?
+                    </span>
+                    <q-toggle
+                      class="q-ml-auto"
+                      v-model="wasAppifProvidedToTheInsuredToggle"
+                    />
+                  </div>
+                  <div class="row">
+                    <span class="form-heading">
+                      Does Claimguru PPIF need to be provided?
+                    </span>
+                    <q-toggle
+                      class="q-ml-auto"
+                      v-model="doesTheOfficeNeedToProvidePpifToTheInsuredToggle"
+                    />
+                  </div>
+                  <div class="row">
+                    <span class="form-heading">
+                      Is there a mortgage on the home?
+                    </span>
+                    <q-toggle
+                      class="q-ml-auto"
+                      v-model="IsMortgageHomeToggle"
+                    />
+                  </div>
+                </q-form>
               </div>
               <div
                 v-if="IsMortgageHomeToggle"
                 @click="mortgageInfoDialog = true"
               >
-                <div class="select-text">
-                  {{ 'Select Mortgage' }}
+                <div class="row ">
+                  <div class=" q-px-xs row">
+                    <div v-if="!mortgageDetails[0].id">
+                      Select Mortgage
+                    </div>
+                    <div
+                      v-else
+                      class="select-text"
+                      v-for="(mortgageDetail, index) in mortgageDetails"
+                    >
+                      <span>
+                        {{ mortgageDetail.value }}
+                      </span>
+                      <span v-if="mortgageDetails.length - 1 > index">
+                        ,
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
+              <q-separator />
+              <br />
             </div>
-            <q-separator />
-            <br />
           </div>
           <q-btn
             label="Save"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
-            @click="lossInfoDialog = false"
+            @click="
+              onSubmit(
+                'lossInfoDialog',
+
+                lossAddressDetails.streetAddress
+              )
+            "
             size="'xl'"
           ></q-btn>
         </q-card-section>
@@ -1303,82 +1426,76 @@
         <q-card-section>
           <div class="q-page bg-white">
             <div class="full-width fixHeight">
-              <q-select
-                class="required"
-                v-model="honorific3.id"
-                :options="titles"
-                option-value="id"
-                option-label="value"
-                map-options
-                @input="setTitleName(3)"
-                emit-value
-                label="Title"
-              />
+              <div>
+                <q-form ref="addEstimatorForm">
+                  <q-select
+                    class="required"
+                    v-model="honorific3.id"
+                    :options="titles"
+                    option-value="id"
+                    option-label="value"
+                    map-options
+                    @input="setTitleName(3)"
+                    emit-value
+                    label="Title"
+                    lazy-rules
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) || 'Please select the title'
+                    ]"
+                  />
 
-              <q-input
-                v-model="addEstimatorInfo.fname"
-                lazy-rules
-                :rules="[
-                  val => (val && val.length > 0) || 'Please fill the First name'
-                ]"
-                label="First Name"
-              />
+                  <q-input
+                    class="required"
+                    v-model="addEstimatorInfo.fname"
+                    lazy-rules
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) || 'Please fill the First name'
+                    ]"
+                    label="First Name"
+                  />
 
-              <q-input
-                v-model="addEstimatorInfo.lname"
-                lazy-rules
-                :rules="[
-                  val => (val && val.length > 0) || 'Please fill the Last name'
-                ]"
-                label="Last Name"
-              />
-              <q-input
-                v-model="addEstimatorInfo.email"
-                label="Email"
-                lazy-rules
-                :rules="[
-                  val =>
-                    validateEmail(val) ||
-                    'You have entered an invalid email address!'
-                ]"
-              />
+                  <q-input v-model="addEstimatorInfo.lname" label="Last Name" />
+                  <q-input
+                    class="required"
+                    v-model="addEstimatorInfo.email"
+                    label="Email"
+                    lazy-rules
+                    :rules="[
+                      val =>
+                        validateEmail(val) ||
+                        'You have entered an invalid email address!'
+                    ]"
+                  />
 
-              <div class="row">
-                <q-select
-                  class="required"
-                  v-model="addEstimatorInfo.type"
-                  :options="contactTypes"
-                  option-value="machineValue"
-                  option-label="name"
-                  map-options
-                  emit-value
-                  label="Type"
-                  lazy-rules
-                  :rules="[val => (val && val.length > 0) || '']"
-                  style="width: 40%; margin-right: auto"
-                />
-                <q-input
-                  class="required"
-                  v-model="addEstimatorInfo.phone"
-                  label="Phone"
-                  type="number"
-                  lazy-rules
-                  :rules="[
-                    val =>
-                      (val && val.length == 10) ||
-                      'Please fill the phone number'
-                  ]"
-                  style="width: 55%"
-                />
+                  <div class="row">
+                    <q-select
+                      v-model="addEstimatorInfo.type"
+                      :options="contactTypes"
+                      option-value="machineValue"
+                      option-label="name"
+                      map-options
+                      emit-value
+                      label="Type"
+                      style="width: 40%; margin-right: auto"
+                    />
+                    <q-input
+                      v-model="addEstimatorInfo.phone"
+                      label="Phone"
+                      type="number"
+                      style="width: 55%"
+                    />
+                  </div>
+                </q-form>
               </div>
             </div>
           </div>
-
           <q-btn
             label="Add Estimator"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
-            @click="onAddEstimatorButtonClick()"
+            @click="onSubmit('addEstimatorDialog')"
             size="'xl'"
           ></q-btn>
         </q-card-section>
@@ -1409,88 +1526,95 @@
         <q-card-section>
           <div class="q-page bg-white">
             <div class="full-width fixHeight">
-              <div class="row">
-                <span class="form-heading"
-                  >Do any vendors need to be assigned?</span
-                >
-                <q-toggle class="q-ml-auto" v-model="vendorExpertHiredToggle" />
-              </div>
-
-              <q-select
-                v-if="vendorExpertHiredToggle"
-                class="full-width"
-                v-model="expertVendorInfo.industry.value"
-                use-input
-                input-debounce="0"
-                option-label="name"
-                label=" Industry"
-                :options="options"
-                option-value="name"
-                @filter="searchFilterBy"
-                @input="setVendorIndustryName"
-                behavior="menu"
-                emit-value
-                lazy-rules
-                :rules="[
-                  val =>
-                    (val && val.length > 0) || 'Please fill the Vendor Industry'
-                ]"
-              >
-                <template v-slot:no-option>
-                  <q-item>
-                    <q-item-section class="text-black">
-                      No results
-                    </q-item-section>
-                  </q-item>
-                </template>
-              </q-select>
-
-              <div
-                v-if="vendorExpertHiredToggle"
-                class="custom-select"
-                v-model="expertVendorInfo.vendorName"
-                @click="
-                  onAddVendorDialogClick(constants.industries.EXPERTVENDOR)
-                "
-              >
-                <div class="select-text">
-                  {{
-                    expertVendorInfo.id
-                      ? expertVendorInfo.vendorName
-                      : 'Select Vendor'
-                  }}
-                </div>
-              </div>
-
-              <div class="row">
-                <span class="form-heading">Is Insured hired?</span>
-                <q-toggle
-                  class="q-ml-auto"
-                  v-model="anyOtherExpertHiredToggle"
-                />
-              </div>
-              <span class="form-heading">Notes</span>
               <div>
-                <textarea
-                  rows="5"
-                  required
-                  class="full-width"
-                  v-model="expertVendorInfo.notes"
-                  style="resize: none;"
-                ></textarea>
-              </div>
-              <br />
-              <div>
-                <span class="form-heading">Internal Notes</span>
-                <textarea
-                  rows="5"
-                  required
-                  class="full-width"
-                  v-model="expertVendorInfo.internalNotes"
-                  style="resize: none;"
-                ></textarea>
-              </div>
+                <q-form ref="expertVendorInfoForm">
+                  <div class="row">
+                    <span class="form-heading"
+                      >Do any vendors need to be assigned?</span
+                    >
+                    <q-toggle
+                      class="q-ml-auto"
+                      v-model="vendorExpertHiredToggle"
+                    />
+                  </div>
 
+                  <q-select
+                    v-if="vendorExpertHiredToggle"
+                    class="full-width"
+                    v-model="expertVendorInfo.industry.value"
+                    use-input
+                    input-debounce="0"
+                    option-label="name"
+                    label=" Industry"
+                    :options="vendorIndustriesOptions"
+                    option-value="name"
+                    @filter="searchFilterBy"
+                    @input="setVendorIndustryName"
+                    behavior="menu"
+                    emit-value
+                    lazy-rules
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) ||
+                        'Please fill the Vendor Industry'
+                    ]"
+                  >
+                    <template v-slot:no-option>
+                      <q-item>
+                        <q-item-section class="text-black">
+                          No results
+                        </q-item-section>
+                      </q-item>
+                    </template>
+                  </q-select>
+
+                  <div
+                    v-if="vendorExpertHiredToggle"
+                    class="custom-select"
+                    v-model="expertVendorInfo.vendorName"
+                    @click="
+                      onAddVendorDialogClick(constants.industries.EXPERTVENDOR)
+                    "
+                  >
+                    <div class="select-text">
+                      {{
+                        expertVendorInfo.id
+                          ? expertVendorInfo.vendorName
+                          : 'Select Vendor'
+                      }}
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <span class="form-heading">Is Insured hired?</span>
+                    <q-toggle
+                      class="q-ml-auto"
+                      v-model="anyOtherExpertHiredToggle"
+                    />
+                  </div>
+                  <span class="form-heading">Notes</span>
+                  <div>
+                    <textarea
+                      rows="5"
+                      required
+                      class="full-width"
+                      v-model="expertVendorInfo.notes"
+                      style="resize: none;"
+                    ></textarea>
+                  </div>
+                  <br />
+                  <div>
+                    <span class="form-heading">Internal Notes</span>
+                    <textarea
+                      rows="5"
+                      required
+                      class="full-width"
+                      v-model="expertVendorInfo.internalNotes"
+                      style="resize: none;"
+                    ></textarea>
+                  </div>
+                </q-form>
+              </div>
               <br />
             </div>
           </div>
@@ -1498,7 +1622,7 @@
             label="Save"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
-            @click="expertVendorInfoDialog = false"
+            @click="onSubmit('expertVendorInfoDialog')"
             size="'xl'"
           ></q-btn>
         </q-card-section>
@@ -1681,7 +1805,7 @@ export default {
   components: { CustomHeader, VendorsList, AddVendor, AutoCompleteAddress },
   data() {
     return {
-      options: [],
+      vendorIndustriesOptions: [],
       estimatorsListDialog: false,
       constants: constants,
       valueName: '',
@@ -1739,6 +1863,7 @@ export default {
 
         email: ''
       },
+
       coInsuredDetails: {
         fname: '',
         lname: '',
@@ -2020,17 +2145,28 @@ export default {
       this.expertVendorInfo.industry.value = null;
       if (val === ' ') {
         update(() => {
-          this.options = this.vendorIndustries;
+          this.vendorIndustriesOptions = this.vendorIndustries;
         });
         return;
       }
 
       update(() => {
         const search = val.toLowerCase();
-        this.options = this.vendorIndustries.filter(
+        this.vendorIndustriesOptions = this.vendorIndustries.filter(
           v => v.name.toLowerCase().indexOf(search) > -1
         );
       });
+    },
+    checkAddressField(streetValue) {
+      if (streetValue) {
+        return true;
+      } else {
+        this.$q.notify({
+          message: 'Please fill this Street Address',
+          position: 'top',
+          type: 'negative'
+        });
+      }
     },
     setVendorIndustryName() {
       const selectedName = this.expertVendorInfo.industry.value;
@@ -2047,15 +2183,45 @@ export default {
       this.states = addressService.getStates(country);
     },
 
-    async onSubmit() {
-      const sucess = await this.$refs.clientForm.validate();
-      if (sucess == true) {
-        this.clientInfoDailog = false;
-      } else {
-        this.clientInfoDailog = true;
+    async onSubmit(name, streetAddress) {
+      let success = false;
+      switch (name) {
+        case 'clientInfoDailog':
+          success = await this.$refs.clientForm.validate();
+          break;
+        case 'insuranceInfoDialog':
+          success = await this.$refs.insuranceInfoForm.validate();
+          break;
+        case 'mailingAddressDialog':
+          success = await this.$refs.mailingAddressForm.validate();
+          break;
+        case 'addEstimatorDialog':
+          success = await this.$refs.addEstimatorForm.validate();
+          break;
+        case 'lossInfoDialog':
+          success = await this.$refs.lossInfoForm.validate();
+          break;
+        case 'expertVendorInfoDialog':
+          success = await this.$refs.expertVendorInfoForm.validate();
+          break;
+      }
+      if (success == true) {
+        if (
+          name === 'insuranceInfoDialog' ||
+          name === 'expertVendorInfoDialog'
+        ) {
+          this[name] = false;
+        }
+        if (name === 'addEstimatorDialog') {
+          this.onAddEstimatorButtonClick();
+          this[name] = false;
+        } else {
+          if (this.checkAddressField(streetAddress)) {
+            this[name] = false;
+          }
+        }
       }
     },
-
     setTitleName(val) {
       const titleResult = this.titles.find(obj => {
         return obj.id === this['honorific' + val].id;
@@ -2349,8 +2515,17 @@ export default {
       };
 
       const response = this.addEstimator(payload);
+
       if (response) {
-        this.addEstimatorDialog = false;
+        this.addEstimatorInfo = {
+          name: '',
+          fname: '',
+          lname: '',
+          email: '',
+          phone: '',
+          type: ''
+        };
+        (this.honorific3.id = ''), (this.addEstimatorDialog = false);
         this.getEstimators();
       }
     },

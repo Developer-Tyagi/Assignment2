@@ -33,7 +33,7 @@
             label=" Company Name"
             lazy-rules
             :rules="[
-              val => (val && val.length > 0) || 'Please fill the first name'
+              val => (val && val.length > 0) || 'Please fill the company name'
             ]"
           />
           <div>
@@ -53,7 +53,8 @@
               :disable="!industryFilterDisabled"
               lazy-rules
               :rules="[
-                val => (val && val.length > 0) || 'Please fill the first name'
+                val =>
+                  (val && val.length > 0) || 'Please select the industry type'
               ]"
             >
               <template v-slot:no-option>
@@ -102,6 +103,10 @@
               label="Type"
               style="width: 40%; margin-right: auto"
               emit-value
+              lazy-rules
+              :rules="[
+                val => (val && val.length > 0) || 'Please select phone type'
+              ]"
             />
             <q-input
               class="required"
@@ -109,13 +114,23 @@
               label="Phone"
               type="number"
               style="width: 55%"
+              lazy-rules
+              :rules="[
+                val => (val && val.length == 10) || 'Please enter phone number'
+              ]"
             />
           </div>
           <q-input
+            class="required"
             v-model="vendor.contact[0].email"
             type="email"
             label="Email"
-            borderless
+            lazy-rules
+            :rules="[
+              val =>
+                validateEmail(val) ||
+                'You have entered an invalid email address!'
+            ]"
           />
           <div
             class="row"
@@ -149,6 +164,10 @@
                 @input="setTitleName(contactInfo.honorific)"
                 emit-value
                 map-options
+                lazy-rules
+                :rules="[
+                  val => (val && val.length > 0) || 'Please select the Title'
+                ]"
               />
               <q-input
                 v-model="contactInfo.fname"
@@ -156,6 +175,7 @@
                 :ref="`fname-${index}`"
               />
               <q-input v-model="contactInfo.lname" label="Last Name" />
+              {{ contactInfo.phoneNumber[0].type }}
               <div class="row">
                 <q-select
                   class="required"
@@ -166,6 +186,11 @@
                   label="Type"
                   style="width: 40%; margin-right: auto"
                   emit-value
+                  lazy-rules
+                  lazy-rules
+                  :rules="[
+                    val => (val && val.length > 0) || 'Please select phone type'
+                  ]"
                 />
                 <q-input
                   class="required"
@@ -174,6 +199,11 @@
                   type="number"
                   style="width: 55%"
                   :ref="`number-${index}`"
+                  lazy-rules
+                  :rules="[
+                    val =>
+                      (val && val.length == 10) || 'Please enter phone number'
+                  ]"
                 />
               </div>
               <q-input
@@ -225,6 +255,7 @@ const addressService = new AddressService();
 import { mapGetters, mapActions } from 'vuex';
 import { constants } from '@utils/constant';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
+import { validateEmail } from '@utils/validation';
 
 export default {
   name: 'AddVendor',
@@ -343,6 +374,7 @@ export default {
       'getTitles',
       'getContactTypes'
     ]),
+    validateEmail,
 
     searchFilterBy(val, update) {
       this.vendor.industry.value = null;
@@ -437,7 +469,7 @@ export default {
 
     async onAddVendorButtonClick() {
       const success = await this.$refs.vendorForm.validate();
-      if (success) {
+      if (this.checkAddressField() && success) {
         const response = await this.addVendor(this.vendor);
         if (response) {
           this.closeDialog(true);
@@ -447,6 +479,17 @@ export default {
 
     closeDialog(flag) {
       this.$emit('closeDialog', flag);
+    },
+    checkAddressField() {
+      if (this.vendor.address.streetAddress) {
+        return true;
+      } else {
+        this.$q.notify({
+          message: 'Please fill this Street Address',
+          position: 'top',
+          type: 'negative'
+        });
+      }
     }
   },
 

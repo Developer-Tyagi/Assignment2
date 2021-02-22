@@ -2,7 +2,6 @@
   <div>
     <div class="row">
       <q-input
-        class="required"
         v-model="address.houseNumber"
         label="House/Flat No"
         style="width: 35%"
@@ -47,7 +46,12 @@
       v-model="address.postalCode"
       label="ZIP Code"
       :disable="!isAddressFieldEnable"
-      :rules="[val => checkValidations(val)]"
+      lazy-rules
+      :rules="[
+        val =>
+          (checkValidations(val) && val.length > 0) ||
+          'Please fill the zip code'
+      ]"
     />
     <div class="row" v-if="isDropBoxEnable">
       <p class="q-mx-none q-my-auto">Gate / Dropbox</p>
