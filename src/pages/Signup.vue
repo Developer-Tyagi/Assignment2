@@ -433,7 +433,7 @@ export default {
   data() {
     return {
       plan: 1,
-      step: 2,
+      step: 1,
       autocomplete1: {},
       autocomplete2: {},
       isValidPlan: true,
@@ -445,12 +445,6 @@ export default {
         name: '',
         machineName: '',
         price: ''
-      },
-      paymentInfo: {
-        name: '',
-        cardNumber: '',
-        expiryDate: '',
-        cvv: ''
       },
       user: {
         type: constants.ORGANIZATION,
@@ -483,13 +477,14 @@ export default {
             postOfficeBoxNumber: '',
             postalCode: '',
             streetAddress: ''
-          },
-          planInfo: {
-            id: '',
-            name: '',
-            machineName: ''
           }
-        }
+        },
+        plan: {
+          id: '',
+          name: '',
+          machineName: ''
+        },
+        stripeToken: ''
       }
     };
   },
@@ -589,7 +584,13 @@ export default {
     },
 
     cardDetailsAdded(e) {
-      this.isBuyButtonEnable = e;
+      if (e) {
+        this.isBuyButtonEnable = true;
+        this.user.stripeToken = e;
+      } else {
+        this.isBuyButtonEnable = false;
+        this.stripeToken = '';
+      }
     }
   },
 
@@ -611,11 +612,9 @@ export default {
       );
       if (index > -1) {
         this.plan = index + 1;
-        this.user.billingInfo.planInfo.id = this.plans[index].id;
-        this.user.billingInfo.planInfo.name = this.plans[index].name;
-        this.user.billingInfo.planInfo.machineName = this.plans[
-          index
-        ].machineName;
+        this.user.plan.id = this.plans[index].id;
+        this.user.plan.name = this.plans[index].name;
+        this.user.plan.machineName = this.plans[index].machineName;
         // this.getContactTypes();
       } else {
         this.isValidPlan = false;
