@@ -341,46 +341,7 @@
 
                 <div class="column col-5">
                   <div class="text-h5">Credit Card Info</div>
-                  <q-input
-                    name="cardNumber"
-                    color="primary"
-                    label="Card Number"
-                    v-model="paymentInfo.cardNumber"
-                    type="number"
-                    filled
-                    lazy-rules
-                    :rules="[val => (val && val.length > 0) || '']"
-                  />
-                  <q-input
-                    name="cardHolder"
-                    color="primary"
-                    label="Cardholder Name"
-                    v-model="paymentInfo.name"
-                    filled
-                    lazy-rules
-                    :rules="[val => (val && val.length > 0) || '']"
-                  />
-                  <q-input
-                    name="expiry"
-                    v-model="paymentInfo.expiryDate"
-                    color="primary"
-                    label="Expiry Date (MM/YY)"
-                    mask="##/##"
-                    filled
-                    lazy-rules
-                    :rules="[val => (val && val.length > 0) || '']"
-                  />
-                  <q-input
-                    name="cvv"
-                    v-model="paymentInfo.cvv"
-                    color="primary"
-                    label="CVV"
-                    type="password"
-                    mask="###"
-                    filled
-                    lazy-rules
-                    :rules="[val => (val && val.length > 0) || '']"
-                  />
+                  <PaymentCard @cardDetailsAdded="cardDetailsAdded" />
                 </div>
 
                 <q-separator />
@@ -398,6 +359,7 @@
                     label="Buy"
                     class="q-px-lg"
                     type="submit"
+                    :disabled="!isBuyButtonEnable"
                   />
                 </div>
               </q-form>
@@ -423,8 +385,10 @@
 import { mapActions, mapGetters } from 'vuex';
 import { constants } from '@utils/constant';
 import { getToken, getCurrentUser } from '@utils/auth.js';
+import PaymentCard from 'components/PaymentCard';
+
 export default {
-  name: 'Signup',
+  components: { PaymentCard },
 
   data() {
     return {
@@ -435,17 +399,12 @@ export default {
       isValidPlan: true,
       isBillingAddressSame: false,
       isAddressFieldEnable: false,
+      isBuyButtonEnable: false,
       selectedPlan: {
         id: '',
         name: '',
         machineName: '',
         price: ''
-      },
-      paymentInfo: {
-        name: '',
-        cardNumber: '',
-        expiryDate: '',
-        cvv: ''
       },
       user: {
         type: constants.ORGANIZATION,
@@ -478,13 +437,14 @@ export default {
             postOfficeBoxNumber: '',
             postalCode: '',
             streetAddress: ''
-          },
-          planInfo: {
-            id: '',
-            name: '',
-            machineName: ''
           }
-        }
+        },
+        plan: {
+          id: '',
+          name: '',
+          machineName: ''
+        },
+        stripeToken: ''
       }
     };
   },
@@ -494,10 +454,6 @@ export default {
       'getContactTypes',
       'createUserForOrganization'
     ]),
-
-    call(number) {
-      window.open('tel:' + number);
-    },
 
     onPrevPlan() {
       this.plan--;
@@ -585,6 +541,16 @@ export default {
       this.$refs.billingInfo.validate().then(() => {
         this.createUserForOrganization(this.user);
       });
+    },
+
+    cardDetailsAdded(e) {
+      if (e) {
+        this.isBuyButtonEnable = true;
+        this.user.stripeToken = e;
+      } else {
+        this.isBuyButtonEnable = false;
+        this.stripeToken = '';
+      }
     }
   },
 
@@ -606,11 +572,9 @@ export default {
       );
       if (index > -1) {
         this.plan = index + 1;
-        this.user.billingInfo.planInfo.id = this.plans[index].id;
-        this.user.billingInfo.planInfo.name = this.plans[index].name;
-        this.user.billingInfo.planInfo.machineName = this.plans[
-          index
-        ].machineName;
+        this.user.plan.id = this.plans[index].id;
+        this.user.plan.name = this.plans[index].name;
+        this.user.plan.machineName = this.plans[index].machineName;
         // this.getContactTypes();
       } else {
         this.isValidPlan = false;
@@ -635,6 +599,7 @@ export default {
           document.getElementById('autocomplete2'),
           { types: ['geocode'] }
         );
+
         this.autocomplete2.addListener('place_changed', this.fillInAddress);
       }
     }
