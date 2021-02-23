@@ -58,7 +58,7 @@ export async function getUserInfo({ dispatch, state }) {
     if (data.attributes.onboard.isCompleted) {
       this.$router.push('/dashboard');
     } else {
-      this.$router.push('/onboarding');
+      this.$router.push('/manage-users');
     }
     dispatch('setLoading', false);
   } catch (e) {
@@ -352,6 +352,23 @@ export async function addOnboardingStep({ dispatch, state }, payloadData) {
     const { data } = await request.post(
       `/users/${payloadData.id}/set-onboard-step`,
       buildApiData('users', payloadData.payload)
+    );
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response.data.title
+    });
+  }
+}
+export async function setOnboard({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      `/users/setOnboard`,
+      buildApiData('users', payload)
     );
     dispatch('setLoading', false);
   } catch (e) {

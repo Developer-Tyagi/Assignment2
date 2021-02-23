@@ -135,7 +135,7 @@ export default {
       if (getCurrentUser() && getCurrentUser().attributes.onboard.isCompleted) {
         this.$router.push('/dashboard');
       } else {
-        this.$router.push('/onboarding');
+        this.$router.push('/manage-users');
       }
     }
   }
