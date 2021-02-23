@@ -1,5 +1,5 @@
 <template>
-  <q-layout class=" " view="lhr lpR lfr">
+  <q-layout view="lhr lpR lfr">
     <div class="row">
       <div
         style="width: 5%; background-color: #1b2854"
