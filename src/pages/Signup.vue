@@ -342,46 +342,6 @@
                 <div class="column col-5">
                   <div class="text-h5">Credit Card Info</div>
                   <PaymentCard @cardDetailsAdded="cardDetailsAdded" />
-                  <!-- <q-input
-                    name="cardNumber"
-                    color="primary"
-                    label="Card Number"
-                    v-model="paymentInfo.cardNumber"
-                    type="number"
-                    filled
-                    lazy-rules
-                    :rules="[val => (val && val.length > 0) || '']"
-                  />
-                  <q-input
-                    name="cardHolder"
-                    color="primary"
-                    label="Cardholder Name"
-                    v-model="paymentInfo.name"
-                    filled
-                    lazy-rules
-                    :rules="[val => (val && val.length > 0) || '']"
-                  />
-                  <q-input
-                    name="expiry"
-                    v-model="paymentInfo.expiryDate"
-                    color="primary"
-                    label="Expiry Date (MM/YY)"
-                    mask="##/##"
-                    filled
-                    lazy-rules
-                    :rules="[val => (val && val.length > 0) || '']"
-                  />
-                  <q-input
-                    name="cvv"
-                    v-model="paymentInfo.cvv"
-                    color="primary"
-                    label="CVV"
-                    type="password"
-                    mask="###"
-                    filled
-                    lazy-rules
-                    :rules="[val => (val && val.length > 0) || '']"
-                  /> -->
                 </div>
 
                 <q-separator />
