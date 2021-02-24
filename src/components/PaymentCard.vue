@@ -12,7 +12,7 @@
 </template>
 <script>
 const stripe = Stripe(
-  'pk_test_51ILZR8AGR7x56iDlbZcd3BMWhLRYPacnJVMI8ha2IaZmbKk9UQfNQhqTFMymy086XAJ1E0zrO9IykTXV8ry8DQOk00ZUXCDne4'
+  'pk_test_51IJWePEK8DUf1aFSQMUUHOdf4eFYmSgUaXxDdu31oqO5gDNcjTw6NF8ECGgWhyUXqZRk4xTWIVTgm72LfKx0eNYM00ntmzs1ns'
 );
 export default {
   name: 'PaymentCard',
@@ -23,6 +23,9 @@ export default {
 
   mounted() {
     const elements = stripe.elements();
+    let cardNumberEvent = false;
+    let cardExpiryDateEvent = false;
+    let cardCvcEvent = false;
     const style = {
       base: {
         color: '#3b3b3b',
@@ -82,24 +85,27 @@ export default {
       }
     });
 
-    // cardNumberElement.on('change', event => {
-    //   if (event.complete) {
-    //     this.createTokenForPayment(event, cardNumberElement);
-    //   } else {
-    //     this.$emit('cardDetailsAdded', false);
-    //   }
-    // });
+    cardNumberElement.on('change', event => {
+      cardNumberEvent = event.complete;
+      if (cardCvcEvent && cardExpiryDateEvent && cardNumberEvent) {
+        this.createTokenForPayment(event, cardCvcElement);
+      } else {
+        this.$emit('cardDetailsAdded', false);
+      }
+    });
 
-    // cardExpiryDateElement.on('change', event => {
-    //   if (event.complete) {
-    //     this.createTokenForPayment(event, cardExpiryDateElement);
-    //   } else {
-    //     this.$emit('cardDetailsAdded', false);
-    //   }
-    // });
+    cardExpiryDateElement.on('change', event => {
+      cardExpiryDateEvent = event.complete;
+      if (cardCvcEvent && cardExpiryDateEvent && cardNumberEvent) {
+        this.createTokenForPayment(event, cardCvcElement);
+      } else {
+        this.$emit('cardDetailsAdded', false);
+      }
+    });
 
     cardCvcElement.on('change', event => {
-      if (event.complete) {
+      cardCvcEvent = event.complete;
+      if (cardCvcEvent && cardExpiryDateEvent && cardNumberEvent) {
         this.createTokenForPayment(event, cardCvcElement);
       } else {
         this.$emit('cardDetailsAdded', false);
@@ -122,5 +128,11 @@ export default {
   padding: 16px 12px;
   background: rgba(0, 0, 0, 0.05);
   border-radius: 4px 4px 0 0;
+}
+
+#card-errors {
+  color: red;
+  margin-top: 10px;
+  padding: 16px 12px;
 }
 </style>
