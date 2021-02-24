@@ -424,7 +424,7 @@ export default {
   data() {
     return {
       plan: 1,
-      step: 2,
+      step: 1,
       autocomplete1: {},
       autocomplete2: {},
       isValidPlan: true,
