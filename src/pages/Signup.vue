@@ -424,11 +424,11 @@ export default {
   data() {
     return {
       plan: 1,
-      step: 1,
+      step: 2,
       autocomplete1: {},
       autocomplete2: {},
       isValidPlan: true,
-      isBillingAddressSame: false,
+      isBillingAddressSame: true,
       isAddressFieldEnable: false,
       isBuyButtonEnable: false,
       selectedPlan: {
@@ -557,6 +557,12 @@ export default {
       if (this.isBillingAddressSame) {
         this.user.billingInfo.address = { ...this.user.mailingAddress };
       } else {
+        this.autocomplete2 = new google.maps.places.Autocomplete(
+          document.getElementById('autocomplete2'),
+          { types: ['geocode'] }
+        );
+
+        this.autocomplete2.addListener('place_changed', this.fillInAddress);
         this.user.billingInfo.address = {
           addressCountry: '',
           addressLocality: '',
@@ -625,12 +631,7 @@ export default {
   watch: {
     step(newValue, oldValue) {
       if (newValue === 2) {
-        this.autocomplete2 = new google.maps.places.Autocomplete(
-          document.getElementById('autocomplete2'),
-          { types: ['geocode'] }
-        );
-
-        this.autocomplete2.addListener('place_changed', this.fillInAddress);
+        this.user.billingInfo.address = { ...this.user.mailingAddress };
       }
     }
   }
