@@ -1144,18 +1144,19 @@
                     </span>
                     <q-toggle
                       class="q-ml-auto"
-                      v-model="IsMortgageHomeToggle"
+                      v-model="isMortgageHomeToggle"
+                      @input="onToggleButtonClick"
                     />
                   </div>
                 </q-form>
               </div>
               <div
-                v-if="IsMortgageHomeToggle"
+                v-if="isMortgageHomeToggle"
                 @click="mortgageInfoDialog = true"
               >
                 <div class="row ">
                   <div class=" q-px-xs row">
-                    <div v-if="!mortgageDetails[0].id">
+                    <div v-if="!mortgageDetails[0]['id']">
                       Select Mortgage
                     </div>
                     <div
@@ -2020,7 +2021,7 @@ export default {
       isThereDamageToPersonalPropertyToggle: false,
       wasAppifProvidedToTheInsuredToggle: false,
       doesTheOfficeNeedToProvidePpifToTheInsuredToggle: false,
-      IsMortgageHomeToggle: false,
+      isMortgageHomeToggle: false,
       isLossAddressSameAsClientToggle: false,
       lossAddressDetails: {
         addressCountry: '',
@@ -2286,6 +2287,8 @@ export default {
           isPrimary: false,
           notes: ''
         });
+      } else {
+        this.mortgageDetails.pop();
       }
     },
     async createClientButtonClick() {
@@ -2478,7 +2481,7 @@ export default {
           isPPIF: this.wasAppifProvidedToTheInsuredToggle,
           isNeedPPIF: this.doesTheOfficeNeedToProvidePpifToTheInsuredToggle,
           PPDamageDesc: this.lossInfo.damagePersnalPropertyDescription,
-          hasHomeMortgage: this.IsMortgageHomeToggle
+          hasHomeMortgage: this.isMortgageHomeToggle
         },
         expertInfo: {
           isVendorAssigned: this.vendorExpertHiredToggle,
@@ -2568,7 +2571,24 @@ export default {
 
       this.vendorsListDialog = false;
     },
-
+    onToggleButtonClick() {
+      if (this.mortgageDetails.length > 1) {
+        this.mortgageDetails.pop();
+      }
+      if (!this.isMortgageHomeToggle) {
+        this.isSecondMortgageHome = false;
+        this.mortgageDetails = [
+          {
+            id: '',
+            value: '',
+            loanNumber: '',
+            accountNumber: '',
+            isPrimary: true,
+            notes: ''
+          }
+        ];
+      }
+    },
     closeAddVendorDialog(e) {
       this.addVendorDialog = false;
       this.vendorsListDialog = true;
