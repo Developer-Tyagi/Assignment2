@@ -40,7 +40,7 @@ export async function getTitles({ commit, dispatch }) {
   }
 }
 
-export async function getPlans({ commit, dispatch }) {
+export async function getPlansInfo({ commit, dispatch }) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.get('/plans');

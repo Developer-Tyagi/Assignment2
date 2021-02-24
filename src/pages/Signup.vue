@@ -100,7 +100,9 @@
                     label="Contact First Name *"
                     filled
                     lazy-rules
-                    :rules="[val => (val && val.length > 0) || '']"
+                    :rules="[
+                      val => (val && val.length > 0) || 'Please fill first name'
+                    ]"
                   />
                   <q-input
                     v-model="user.contact.lname"
@@ -109,19 +111,21 @@
                     label="Contact Last Name *"
                     filled
                     lazy-rules
-                    :rules="[val => (val && val.length > 0) || '']"
+                    :rules="[
+                      val => (val && val.length > 0) || 'Please fill last name'
+                    ]"
                   />
                   <q-input
                     v-model="user.contact.phoneNumber[0].number"
                     label="Contact Phone Number"
-                    :mask="
-                      user.contact.phoneNumber[0].type !== 'mobile'
-                        ? '(###) ###-####'
-                        : '##########'
-                    "
+                    mask="(###) ###-####"
                     filled
                     lazy-rules
-                    :rules="[val => (val && val.length == 14) || '']"
+                    :rules="[
+                      val =>
+                        (val && val.length == 14) ||
+                        'Please fill contact number'
+                    ]"
                   />
                   <q-input
                     v-model="user.name"
@@ -141,20 +145,22 @@
                     type="email"
                     filled
                     lazy-rules
-                    :rules="[val => (val && val.length > 0) || '']"
+                    :rules="[
+                      val => (val && val.length > 0) || 'Please fill your email'
+                    ]"
                   />
 
                   <q-input
                     v-model="user.phoneNumber.number"
                     label="Bussiness Phone Number"
-                    :mask="
-                      user.contact.phoneNumber[0].type !== 'mobile'
-                        ? '(###) ###-####'
-                        : '##########'
-                    "
+                    mask="(###) ###-####"
                     filled
                     lazy-rules
-                    :rules="[val => (val && val.length == 14) || '']"
+                    :rules="[
+                      val =>
+                        (val && val.length == 14) ||
+                        'Please fill your bussiness number'
+                    ]"
                   />
                 </div>
 
@@ -166,7 +172,10 @@
                     label="House Number"
                     filled
                     lazy-rules
-                    :rules="[val => (val && val.length > 0) || '']"
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) || 'Please fill house number'
+                    ]"
                   />
                   <input
                     v-model="user.mailingAddress.streetAddress"
@@ -175,9 +184,6 @@
                     name="address1"
                     color="primary"
                     label="Street Address"
-                    filled
-                    lazy-rules
-                    :rules="[val => (val && val.length > 0) || '']"
                     placeholder="Street Address"
                   />
                   <div class="row justify-between">
@@ -190,7 +196,10 @@
                       filled
                       class="col-6"
                       lazy-rules
-                      :rules="[val => (val && val.length > 0) || '']"
+                      :rules="[
+                        val =>
+                          (val && val.length > 0) || 'Please fill your city'
+                      ]"
                     />
                     <q-input
                       v-model="user.mailingAddress.postalCode"
@@ -201,7 +210,10 @@
                       filled
                       class="col-5"
                       lazy-rules
-                      :rules="[val => (val && val.length > 0) || '']"
+                      :rules="[
+                        val =>
+                          (val && val.length > 0) || 'Please fill your zipcode'
+                      ]"
                       :disable="!isAddressFieldEnable"
                     />
                   </div>
@@ -212,7 +224,9 @@
                     label="State"
                     filled
                     lazy-rules
-                    :rules="[val => (val && val.length > 0) || '']"
+                    :rules="[
+                      val => (val && val.length > 0) || 'Please fill your state'
+                    ]"
                     :disable="!isAddressFieldEnable"
                   />
                   <q-input
@@ -222,7 +236,10 @@
                     label="Country"
                     filled
                     lazy-rules
-                    :rules="[val => (val && val.length > 0) || '']"
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) || 'Please fill your country'
+                    ]"
                     :disable="!isAddressFieldEnable"
                   />
                   <q-input
@@ -232,7 +249,10 @@
                     label="Website *"
                     filled
                     lazy-rules
-                    :rules="[val => (val && val.length > 0) || '']"
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) || 'please fill your website'
+                    ]"
                   />
                 </div>
 
@@ -276,7 +296,10 @@
                     label="House Number"
                     filled
                     lazy-rules
-                    :rules="[val => (val && val.length > 0) || '']"
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) || 'Please fill house number'
+                    ]"
                     :disable="isBillingAddressSame"
                   />
                   <input
@@ -286,9 +309,6 @@
                     name="address1"
                     color="primary"
                     label="Street Address"
-                    filled
-                    lazy-rules
-                    :rules="[val => (val && val.length > 0) || '']"
                     :disabled="isBillingAddressSame == true"
                     placeholder="Street Address"
                   />
@@ -301,7 +321,10 @@
                       filled
                       class="col-6"
                       lazy-rules
-                      :rules="[val => (val && val.length > 0) || '']"
+                      :rules="[
+                        val =>
+                          (val && val.length > 0) || 'Please fill your city'
+                      ]"
                       :disable="isBillingAddressSame"
                     />
                     <q-input
@@ -313,7 +336,10 @@
                       filled
                       class="col-5"
                       lazy-rules
-                      :rules="[val => (val && val.length > 0) || '']"
+                      :rules="[
+                        val =>
+                          (val && val.length > 0) || 'Please fill your zipcode'
+                      ]"
                       :disable="isBillingAddressSame"
                     />
                   </div>
@@ -324,7 +350,9 @@
                     label="State"
                     filled
                     lazy-rules
-                    :rules="[val => (val && val.length > 0) || '']"
+                    :rules="[
+                      val => (val && val.length > 0) || 'Please fill your state'
+                    ]"
                     :disable="isBillingAddressSame"
                   />
                   <q-input
@@ -334,7 +362,10 @@
                     label="Country"
                     filled
                     lazy-rules
-                    :rules="[val => (val && val.length > 0) || '']"
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) || 'Please fill your country'
+                    ]"
                     :disable="isBillingAddressSame"
                   />
                 </div>
@@ -403,7 +434,7 @@ export default {
       selectedPlan: {
         id: '',
         name: '',
-        machineName: '',
+        machineValue: '',
         price: ''
       },
       user: {
@@ -419,7 +450,7 @@ export default {
           fname: '',
           lname: '',
           email: '',
-          phoneNumber: [{ type: '', number: '' }]
+          phoneNumber: [{ number: '' }]
         },
         mailingAddress: {
           addressCountry: '',
@@ -442,7 +473,7 @@ export default {
         plan: {
           id: '',
           name: '',
-          machineName: ''
+          machineValue: ''
         },
         stripeToken: ''
       }
@@ -459,7 +490,7 @@ export default {
       this.plan--;
       this.$router.push({
         path: 'signup',
-        query: { plan: this.plans[this.plan - 1].machineName }
+        query: { plan: this.plans[this.plan - 1].machineValue }
       });
     },
 
@@ -467,7 +498,7 @@ export default {
       this.plan++;
       this.$router.push({
         path: 'signup',
-        query: { plan: this.plans[this.plan - 1].machineName }
+        query: { plan: this.plans[this.plan - 1].machineValue }
       });
     },
 
@@ -568,14 +599,13 @@ export default {
     } else {
       // this.getPlansInfo();
       const index = this.plans.findIndex(
-        o => o.machineName === this.$route.query.plan
+        o => o.machineValue === this.$route.query.plan
       );
       if (index > -1) {
         this.plan = index + 1;
         this.user.plan.id = this.plans[index].id;
         this.user.plan.name = this.plans[index].name;
-        this.user.plan.machineName = this.plans[index].machineName;
-        // this.getContactTypes();
+        this.user.plan.machineValue = this.plans[index].machineValue;
       } else {
         this.isValidPlan = false;
       }
@@ -636,7 +666,7 @@ export default {
 .autocomplete-input {
   height: 56px;
   padding: 0 12px;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   background: #f2f2f2;
   font-weight: 400;
   line-height: 28px;
@@ -644,5 +674,9 @@ export default {
   border: none;
   color: rgba(0, 0, 0, 0.87);
   outline: none;
+}
+
+.q-field--with-bottom {
+  padding-bottom: 30px;
 }
 </style>
