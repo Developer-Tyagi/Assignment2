@@ -3,7 +3,7 @@
     <div class="row">
       <div
         style="width: 5%; background-color: #1b2854"
-        class="items-center q-py-lg q-px-md"
+        class="items-center q-py-lg q-px-lg"
       >
         <q-btn
           flat
@@ -38,10 +38,55 @@
 
           <q-scroll-area style="height: calc(100% - 220px)">
             <div
-              class=" text-white q-pa-xl justified-center"
-              @click="$router.back()"
+              class=" text-white q-px-lg q-pt-lg justified-center"
+              @click="$router.push(`/dashboard`)"
             >
               Dashboard
+            </div>
+
+            <div>
+              <div class=" q-pa-md  text-white" style="max-width: 350px">
+                <div bordered class=" bg-white rounded-borders">
+                  <q-expansion-item
+                    class="text-black"
+                    expand-separator
+                    label=" Settings"
+                  >
+                    <q-card>
+                      <q-card-section>
+                        <div class="q-pa-xs border border-dark ">
+                          <div
+                            class="q-ma-xs"
+                            style="text-decoration:none"
+                            @click="$router.push(`/setConfiguration`)"
+                          >
+                            Inspection Type
+                          </div>
+
+                          <div class="q-ma-xs border border-red" outlined>
+                            Industry Type
+                          </div>
+                          <div class="q-ma-xs border border-red" outlined>
+                            Honorific
+                          </div>
+                          <div class="q-ma-xs border border-red" outlined>
+                            Phone Type
+                          </div>
+                          <div class="q-ma-xs border border-red" outlined>
+                            Client Type
+                          </div>
+                          <div class="q-ma-xs border border-red" outlined>
+                            Policy Categories
+                          </div>
+                          <div class="q-ma-xs border border-red" outlined>
+                            Policy Type
+                          </div>
+                        </div>
+                      </q-card-section>
+                    </q-card>
+                  </q-expansion-item>
+                </div>
+              </div>
             </div>
           </q-scroll-area>
         </q-drawer>
@@ -101,15 +146,21 @@ export default {
   }
 };
 </script>
-<style lang="sass">
-.bg-side-panel
-  background-color: $sidePanel
-.title
-  font-size: 16px
-  font-weight: bold
-  margin-bottom: 0
-.description
-  opacity: 70%
-  font-size: 12px
-  margin-bottom: 0
+<style lang="scss">
+.a {
+  text-decoration: none;
+}
+.bg-side-panel {
+  background-color: $sidePanel;
+}
+.title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 0;
+}
+.description {
+  opacity: 70%;
+  font-size: 12px;
+  margin-bottom: 0;
+}
 </style>

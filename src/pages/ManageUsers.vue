@@ -40,12 +40,12 @@
       </div>
       <div class="q-mt-xs -xl row full-width full-height">
         <div class="col-11 q-mx-xl">
-          <q-markup-table flat bordered>
+          <q-markup-table flat bordered class="" scroll>
             <thead class="bg-grey-5">
               <tr>
                 <th class="text-left">Contact Name</th>
-                <th class="text-left">Bussiness</th>
-                <th class="text-left">Contact Number</th>
+                <th class="text-left">Email</th>
+                <th class="text-left">Tel</th>
                 <th class="text-left">Member Since</th>
                 <th class="text-left">Roles</th>
                 <th class="text-left">Last Access</th>
@@ -54,12 +54,17 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="index in 5" :key="index">
-                <td class="text-left">{{ name }}</td>
-                <td class="text-left">{{ bussiness }}</td>
-                <td class="text-left">{{ contactNo }}</td>
+              <tr v-for="(user, index) in allUsers" v-if="index < 5">
+                <td class="text-left">
+                  {{ user.attributes.contact.fname }}
+                  {{ user.attributes.contact.lname }}
+                </td>
+                <td class="text-left">{{ user.attributes.email }}</td>
+                <td class="text-left">
+                  {{ user.attributes['contact']['phoneNumber'] }}
+                </td>
                 <td class="text-left">{{ date }}/</td>
-                <td class="text-left">{{ roles }}</td>
+                <td class="text-left">{{ user.attributes.roles[0] }}</td>
                 <td class="text-left">{{ lastAccess }}</td>
                 <td class="text-left">{{ status }}</td>
                 <td class="text-center">
@@ -101,7 +106,7 @@
     </div>
     <q-dialog v-model="addUserDialogBox" persistent>
       <q-card
-        style="width: 800px; height: 600px; max-width: 1000vw"
+        style="width: 800px; height: 500px; max-width: 1000vw"
         class="q-pa-md"
       >
         <q-bar class="row justify-between" style="height: 50px">
@@ -116,107 +121,73 @@
           <div
             class=" bg- q-ma-xs"
             outlined
-            v-for="(contactInfo, index) in users"
+            v-for="(user, index) in users"
             v-if="index >= 0"
           >
             <div class=" q-mt-xs row full-width">
-              <div class="col-5 text-bold q-pl-md">
-                USER &nbsp;{{ index + 1 }}
-              </div>
+              <div class="col-5 q-mx-xl q-mt-lg">First Name *</div>
+              <div class="col-4 q-mx-lg q-mt-lg">Last Name *</div>
             </div>
             <div class="row q-mt-xs justify-between full-width">
               <div class="col-6">
-                <q-select
-                  v-model="typeOfUsers"
-                  outlined
-                  style="width: 300px"
+                <q-input
+                  v-model="user.contact.fname"
                   class="q-mx-xl"
-                  :options="typeOfUser"
-                  label="role"
-                  :rules="[
-                    val => (val && val.length > 0) || 'Role is Required'
-                  ]"
+                  style="width: 300px"
+                  outlined
+                />
+              </div>
+              <div class="col-6">
+                <q-input
+                  v-model="user.contact.lname"
+                  class="q-mx-xl"
+                  style="width: 300px"
+                  outlined
                 />
               </div>
             </div>
-            <div v-if="typeOfUser != null">
-              <div class=" q-mt-xs row full-width">
-                <div class="col-5 q-mx-xl q-mt-lg">First Name *</div>
-                <div class="col-4 q-mx-lg q-mt-lg">Last Name *</div>
+            <div class="q-mt-xs row full-width">
+              <div class="col-5 q-mx-xl q-mt-lg">Email*</div>
+              <div class="col-4 q-mx-lg q-mt-lg">Role *</div>
+            </div>
+            <div class=" row q-mt-xs justify-between full-width">
+              <div class="col-6 q-mb-xl">
+                <q-input
+                  v-model="user.email"
+                  class="q-mx-xl"
+                  style="width: 300px"
+                  outlined
+                  lazy-rules
+                  :rules="[
+                    val =>
+                      validateEmail(val) ||
+                      'You have entered an invalid email address!'
+                  ]"
+                />
               </div>
-              <div class="row q-mt-xs justify-between full-width">
-                <div class="col-6">
-                  <q-input
-                    v-model="users[index].contact.fname"
-                    class="q-mx-xl"
-                    style="width: 300px"
-                    outlined
-                  />
-                </div>
-                <div class="col-6">
-                  <q-input
-                    v-model="users[index].contact.lname"
-                    class="q-mx-xl"
-                    style="width: 300px"
-                    outlined
-                  />
-                </div>
-              </div>
-              <div class="q-mt-xs row full-width">
-                <div class="col-5 q-mx-xl q-mt-lg">Email*</div>
-                <div class="col-4 q-mx-lg q-mt-lg">Role *</div>
-              </div>
-              <div class="row q-mt-xs justify-between full-width">
-                <div class="col-6 q-mb-xl">
-                  <q-input
-                    v-model="users[index].email"
-                    class="q-mx-xl"
-                    style="width: 300px"
-                    outlined
-                    lazy-rules
-                    :rules="[
-                      val =>
-                        validateEmail(val) ||
-                        'You have entered an invalid email address!'
-                    ]"
-                  />
-                </div>
-                <div class="col-6">
-                  <q-select
-                    v-model="users[index].roles[0]"
-                    outlined
-                    style="width: 300px"
-                    class="q-mx-xl"
-                    :options="optionsRole"
-                    label="role"
-                    :rules="[
-                      val => (val && val.length > 0) || 'Role is Required'
-                    ]"
-                  />
-                </div>
+              <div class="col-6  ">
+                <select
+                  v-model="user.roles[0]"
+                  class=" q-ml-xl "
+                  style="height:60px;width:300px; border:1px solid grey"
+                >
+                  <option value="ss" disabled selected>Selecttion</option
+                  ><optgroup label="Paid">
+                    <option>User12</option>
+                    <option>User1</option>
+                    <option>User1</option>
+                  </optgroup>
+                  <optgroup label="Unpaid">
+                    <option>User1 </option>
+                    <option>User1</option>
+                    <option>User1</option>
+                  </optgroup></select
+                >
               </div>
             </div>
           </div>
         </q-form>
-        <div class=" row  q-px-xl justify-between">
-          <q-btn
-            outline
-            class=" q-mx-md"
-            @click="addAnotherContact"
-            color="primary"
-            label="Add More"
-            style="margin-right: auto"
-          />
 
-          <q-btn
-            outline
-            @click="removeAnotherContact"
-            class="  q-mx-xl"
-            color="primary"
-            label="Remove"
-            v-if="isShowRemoveButton"
-          />
-        </div>
         <div class="q-mt-lg row justify-center">
           <q-btn
             color="primary"
@@ -227,19 +198,24 @@
         </div>
       </q-card>
     </q-dialog>
+    <div></div>
   </q-page>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import { validateEmail } from '@utils/validation';
+
 export default {
   name: 'Manage-User',
+  components: {
+    SetConfiguration
+  },
   data() {
     return {
       OnboardingStatus: { isCompleted: true },
       isShowRemoveButton: false,
-      typeOfUsers: '',
+
       optionsRole: ['Manager', 'Staff'],
       typeOfUser: ['User', 'Office Staff', 'Sales'],
       users: [
@@ -271,41 +247,21 @@ export default {
       status: 'Active'
     };
   },
+  computed: {
+    ...mapGetters(['contactTypes', 'allUsers'])
+  },
+  mounted() {
+    this.getAllUsers();
+  },
 
   methods: {
     validateEmail,
-    ...mapActions(['addUser', 'setOnboard']),
+    ...mapActions(['addUser', 'setOnboard', 'getAllUsers']),
 
     onItemClick() {},
-    async addAnotherContact() {
-      const success = await this.$refs.addUserForm.validate();
-      if (success) {
-        const len = this.users.length;
 
-        if (this.users[len - 1].contact.fname && this.users[len - 1].email) {
-          this.len = len + 1;
-          this.users.push({
-            type: 'user',
-            contact: {
-              fname: '',
-              lname: ''
-            },
-            email: '',
-            roles: []
-          });
-          this.isShowRemoveButton = true;
-        } else {
-          this.$q.notify({
-            message: 'Please fill the first Name and Email First',
-            position: 'top',
-            type: 'negative'
-          });
-        }
-      }
-    },
     //fThis is for Updating the  Onboarding status
     SendToDashboard() {
-      console.log(this.OnboardingStatus);
       this.setOnboard(this.OnboardingStatus);
       this.$router.push('/dashboard');
     },
@@ -318,7 +274,6 @@ export default {
       this.users.pop();
     },
     async onSubmit() {
-      console.log(66575);
       const success = await this.$refs.addUserForm.validate();
 
       if (success) {
