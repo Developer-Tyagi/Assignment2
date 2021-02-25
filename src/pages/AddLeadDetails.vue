@@ -291,7 +291,7 @@
         <q-step :name="5" :done="step > 5" title="Notes">
           <q-form @submit="step++" @reset="step--">
             <q-card class="q-pa-md form-card">
-              <p class="text-color-light-grey ">Last Notes</p>
+              <span class=" stepper-heading">Last Notes</span>
               <q-input
                 class="required"
                 label="Last Notes"

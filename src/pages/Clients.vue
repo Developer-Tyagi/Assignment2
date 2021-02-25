@@ -5,6 +5,7 @@
       @addButton="addClient"
       :showAddButton="true"
     />
+
     <div class="clients">
       <div class="actions-div">
         <q-input
@@ -26,43 +27,52 @@
           style="margin: 0 0 0 20px"
         />
       </div>
+      <div class="row">
+        <div class="full-width fixHeight">
+          <div class="clients-list" v-if="clients.length">
+            <div
+              class="clients-list"
+              v-for="client in clients"
+              :key="client.id"
+            >
+              <div class="client-list-item">
+                <div class="row">
+                  <span>
+                    {{ client['insuredInfo']['primary']['fname'] }}
+                    {{ client['insuredInfo']['primary']['lname'] }}
+                  </span>
 
-      <div class="clients-list" v-if="clients.length">
-        <div class="q-px-md q-pt-sm" v-for="client in clients" :key="client.id">
-          <div class="client-list-item">
-            <div class="row">
-              <span>
-                {{ client['insuredInfo']['primary']['fname'] }}
-                {{ client['insuredInfo']['primary']['lname'] }}
-              </span>
-
-              <q-icon class="q-ml-auto" size="sm" name="more_vert"></q-icon>
+                  <q-icon class="q-ml-auto" size="sm" name="more_vert"></q-icon>
+                </div>
+                <div class="row">
+                  <div class="row">
+                    <span
+                      >Mob:
+                      <span>
+                        {{ client.insuredInfo.primary.phoneNumber[0].number }}
+                      </span>
+                    </span>
+                  </div>
+                </div>
+                <div><span>File No. 12345678</span></div>
+                <div>Status: Negotiation</div>
+              </div>
             </div>
-            <div class="row">
-              <span
-                >Mob:
-                <span>
-                  {{ client.insuredInfo.primary.phoneNumber[0].number }}
-                </span>
-              </span>
+          </div>
+          <div v-else class="full-height full-width column">
+            <div style="color: #666666" class="text-center q-mt-auto">
+              You haven't added a Client yet.
             </div>
-            <div><span>File No. 12345678</span></div>
-            <div>Status: Negotiation</div>
+            <img
+              src="~assets/add.svg"
+              alt="add_icon"
+              width="80px"
+              height="80px"
+              @click="addClient"
+              class="q-mb-auto q-mx-auto q-mt-sm"
+            />
           </div>
         </div>
-      </div>
-      <div class="full-height full-width column">
-        <div style="color: #666666" class="text-center q-mt-auto">
-          You haven't added a Client yet.
-        </div>
-        <img
-          src="~assets/add.svg"
-          alt="add_icon"
-          width="80px"
-          height="80px"
-          @click="addClient"
-          class="q-mb-auto q-mx-auto q-mt-sm"
-        />
       </div>
     </div>
   </q-page>
@@ -109,29 +119,36 @@ export default {
 </script>
 
 <style lang="scss">
+// * {
+//   color: #333333;
+// }
 .clients {
   padding-top: 51px;
   height: calc(100% - 51px);
   .actions-div {
     display: flex;
     border-bottom: 1px solid #0000001f;
-    padding: 0 20px;
+    padding: 0 10px;
     align-items: center;
   }
   .clients-list {
-    color: #666666;
-    margin-bottom: 20px;
-    height: calc(100% - 20px);
-    overflow: scroll;
+    background-color: #f4f4f4;
+
+    border-bottom: 6px solid white;
 
     .client-list-item {
       padding: 20px;
-      background-color: lightgray;
+      background-color: #f4f4f4;
       text-transform: capitalize;
       p {
         margin: 0 0 6px;
       }
     }
   }
+}
+.fixHeight {
+  height: calc(100vh - 130px);
+  overflow-y: auto;
+  margin-bottom: 10px;
 }
 </style>
