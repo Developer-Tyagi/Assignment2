@@ -476,7 +476,7 @@ export default {
       showVendorDialogFilters: false,
       vendorDialogName: '',
       vendorDialogFilterByIndustry: '',
-      step: 2,
+      step: 1,
       primaryDetails: {
         isOrganization: false,
         organizationName: '',
