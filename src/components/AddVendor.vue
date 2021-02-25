@@ -112,11 +112,11 @@
               class="required"
               v-model="vendor.contact[0].phoneNumber[0].number"
               label="Phone"
-              type="number"
+              mask="(###) ###-####"
               style="width: 55%"
               lazy-rules
               :rules="[
-                val => (val && val.length == 10) || 'Please enter phone number'
+                val => (val && val.length == 14) || 'Please enter phone number'
               ]"
             />
           </div>
@@ -196,7 +196,7 @@
                   class="required"
                   v-model="contactInfo.phoneNumber[0].number"
                   label="Phone1"
-                  type="number"
+                  mask="(###) ###-####"
                   style="width: 55%"
                   :ref="`number-${index}`"
                   lazy-rules

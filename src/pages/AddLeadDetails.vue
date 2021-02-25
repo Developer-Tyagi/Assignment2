@@ -71,11 +71,11 @@
                   class="required"
                   v-model="primaryDetails.phoneNumber"
                   label="Phone"
-                  type="number"
+                  mask="(###) ###-####"
                   lazy-rules
                   :rules="[
                     val =>
-                      (val && val.length == 10) ||
+                      (val && val.length == 14) ||
                       'Please enter the phone number'
                   ]"
                 />
@@ -476,7 +476,7 @@ export default {
       showVendorDialogFilters: false,
       vendorDialogName: '',
       vendorDialogFilterByIndustry: '',
-      step: 1,
+      step: 2,
       primaryDetails: {
         isOrganization: false,
         organizationName: '',

@@ -373,12 +373,12 @@
                       v-model="insuredDetails.phone"
                       class="required"
                       label="Phone"
-                      type="number"
+                      mask="(###) ###-####"
                       style="width: 55%"
                       lazy-rules
                       :rules="[
                         val =>
-                          (val && val.length == 10) ||
+                          (val && val.length == 14) ||
                           'Please enter the phone number'
                       ]"
                     />
@@ -451,11 +451,11 @@
                         v-model="coInsuredDetails.phone"
                         label="Phone"
                         class="required"
-                        type="number"
+                        mask="(###) ###-####"
                         lazy-rules
                         :rules="[
                           val =>
-                            (val && val.length == 10) ||
+                            (val && val.length == 14) ||
                             'Please enter the phone number'
                         ]"
                         style="width: 55%"
@@ -507,11 +507,11 @@
                         v-model="addAditionalPhoneNumber.phone2"
                         label="Phone2"
                         class="required"
-                        type="number"
+                        mask="(###) ###-####"
                         lazy-rules
                         :rules="[
                           val =>
-                            (val && val.length == 10) ||
+                            (val && val.length == 14) ||
                             'Please enter the phone number'
                         ]"
                         style="width: 55%; margin-left: auto"
@@ -539,11 +539,11 @@
                         class="required"
                         v-model="addAditionalPhoneNumber.phone3"
                         label="Phone3"
-                        type="number"
+                        mask="(###) ###-####"
                         lazy-rules
                         :rules="[
                           val =>
-                            (val && val.length == 10) ||
+                            (val && val.length == 14) ||
                             'Please enter the phone number'
                         ]"
                         style="width: 55%"
@@ -594,11 +594,12 @@
                         class="required"
                         v-model="tenantOccupied.phone"
                         label="Phone"
+                        mask="(###) ###-####"
                         style="width: 55%; margin-left: auto"
                         lazy-rules
                         :rules="[
                           val =>
-                            (val && val.length == 10) ||
+                            (val && val.length == 14) ||
                             'Please enter the phone number'
                         ]"
                       />
@@ -1483,7 +1484,7 @@
                     <q-input
                       v-model="addEstimatorInfo.phone"
                       label="Phone"
-                      type="number"
+                      mask="(###) ###-####"
                       style="width: 55%"
                     />
                   </div>
