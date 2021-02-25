@@ -119,9 +119,6 @@ export default {
 </script>
 
 <style lang="scss">
-// * {
-//   color: #333333;
-// }
 .clients {
   padding-top: 51px;
   height: calc(100% - 51px);
