@@ -661,6 +661,9 @@ export default {
     ])
   },
   mounted() {
+    this.recieve = this.$route.params.data;
+    console.log(this.recieve);
+    this.tab = this.recieve;
     this.getTitles();
     this.getContactTypes();
     this.getVendorIndustries();
