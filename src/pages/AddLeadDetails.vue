@@ -140,6 +140,7 @@
                 type="date"
                 placeholder="Date of Loss"
               />
+
               <q-input
                 v-model="lossDetails.lossDesc"
                 label="Brief description of loss"
@@ -456,9 +457,11 @@
 import { mapActions, mapGetters } from 'vuex';
 import { validateEmail } from '@utils/validation';
 import { dateToSend } from '@utils/date';
+
 import VendorsList from 'components/VendorsList';
 import { constants } from '@utils/constant';
 import AddVendor from 'components/AddVendor';
+
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import CustomHeader from 'components/CustomHeader';
 
@@ -747,14 +750,17 @@ export default {
 
   created() {
     // TODO : Have to change primary details object, so that selected client can be assigned as it is.
-    if (this.$route.params.id) {
+    if (this.$route.params) {
       let selectedClient = this.clients.find(
         client => client.id === this.$route.params.id
       );
+
       this.primaryDetails.honorific.id =
         selectedClient.insuredInfo.primary.honorific.id;
       this.primaryDetails.honorific.value =
         selectedClient.insuredInfo.primary.honorific.value;
+      this.primaryDetails.honorific.machineValue =
+        selectedClient.insuredInfo.primary.honorific.machineValue;
       this.primaryDetails.firstName = selectedClient.insuredInfo.primary.fname;
       this.primaryDetails.lastName = selectedClient.insuredInfo.primary.lname;
       this.primaryDetails.email = selectedClient.insuredInfo.primary.email;

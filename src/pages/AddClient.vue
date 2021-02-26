@@ -1554,6 +1554,7 @@
                     @input="setVendorIndustryName"
                     behavior="menu"
                     emit-value
+                    map-options
                     lazy-rules
                     :rules="[
                       val =>

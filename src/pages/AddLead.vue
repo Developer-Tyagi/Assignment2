@@ -19,15 +19,28 @@
             If client already exists, select from list below
           </p>
           <q-select
+            class="full-width"
             v-model="selectedClient"
-            :options="clients"
-            clearable
+            use-input
+            input-debounce="0"
             option-label="name"
-            option-value="id"
-            emit-value
             label="Select existing client"
+            :options="options"
+            @filter="searchFilterBy"
+            @input="setClientName"
+            option-value="id"
+            behavior="menu"
+            emit-value
             map-options
-          />
+          >
+            <template v-slot:no-option>
+              <q-item>
+                <q-item-section class="text-black">
+                  No results
+                </q-item-section>
+              </q-item>
+            </template>
+          </q-select>
         </div>
         <q-btn
           label="Continue"
@@ -48,6 +61,8 @@ export default {
   data() {
     return {
       selectedClient: '',
+      options: '',
+
       isNewLead: true
     };
   },
@@ -57,6 +72,7 @@ export default {
   },
 
   created() {
+    this.options = this.clients;
     this.getClients();
   },
 
@@ -69,10 +85,37 @@ export default {
 
     onContinue() {
       if (this.selectedClient) {
-        this.$router.push({ path: `/add-lead-details/${this.selectedClient}` });
+        this.$router.push({
+          path: `/add-lead-details/${this.selectedClient}`
+        });
       } else {
         this.$router.push({ path: `/add-lead-details` });
       }
+    },
+
+    searchFilterBy(val, update) {
+      this.selectedClient = null;
+      if (val === ' ') {
+        update(() => {
+          this.options = this.clients;
+        });
+        return;
+      }
+
+      update(() => {
+        const search = val.toLowerCase();
+        this.options = this.clients.filter(
+          v => v.name.toLowerCase().indexOf(search) > -1
+        );
+      });
+    },
+    setClientName() {
+      const selectedName = this.selectedClient;
+
+      const result = this.clients.find(obj => {
+        return obj.id === selectedName;
+      });
+      this.selectedClient = result.id;
     }
   }
 };
