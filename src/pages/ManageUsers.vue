@@ -208,9 +208,9 @@ import { validateEmail } from '@utils/validation';
 
 export default {
   name: 'Manage-User',
-  components: {
-    SetConfiguration
-  },
+  // components: {
+  //   SetConfiguration
+  // },
   data() {
     return {
       OnboardingStatus: { isCompleted: true },
