@@ -48,11 +48,6 @@ const routes = [
     component: () => import('layouts/AdminLayout.vue'),
     children: [
       {
-        path: 'onboarding',
-        name: 'onboarding',
-        component: () => import('pages/Onboarding.vue')
-      },
-      {
         path: 'setConfiguration',
         name: 'setConfiguration',
         component: () => import('pages/SetConfiguration.vue')
