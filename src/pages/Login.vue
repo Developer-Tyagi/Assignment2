@@ -139,7 +139,7 @@ export default {
       ) {
         this.$router.push('/dashboard');
       } else {
-        this.$router.push('/onboarding');
+        this.$router.push('/manage-users');
       }
     }
   }

@@ -1437,7 +1437,7 @@
 // import { mapActions } from 'vuex';
 import { mapGetters, mapActions } from 'vuex';
 import { validateEmail } from '@utils/validation';
-import { getToken, getCurrentUser } from '@utils/auth';
+import { getCurrentUser } from '@utils/auth';
 export default {
   name: 'addUser',
   data() {
@@ -1451,7 +1451,7 @@ export default {
       // this is for static dropdown
       options: ['Manager', 'Staff'],
       isShowRemoveButton: false,
-      tab: 'addUser',
+      tab: 'inspectionType',
       splitterModel: 20,
 
       users: [

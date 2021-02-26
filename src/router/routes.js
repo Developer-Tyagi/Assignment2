@@ -53,6 +53,11 @@ const routes = [
         component: () => import('pages/Onboarding.vue')
       },
       {
+        path: 'setConfiguration',
+        name: 'setConfiguration',
+        component: () => import('pages/SetConfiguration.vue')
+      },
+      {
         path: 'account',
         name: 'account',
         component: () => import('pages/Account.vue')
