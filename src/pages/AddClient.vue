@@ -7,20 +7,39 @@
     <div class="column" style="padding: 30px 20px 20px 20px">
       <div class="q-md column">
         <div class="full-width fixHeight">
-          <div class="form-list" @click="clientInfoDailog = true">
+          <div class="form-list row" @click="clientInfoDailog = true">
             Client Info
+            <div class="  q-mr-lg  q-ml-auto" v-if="completed[0] == 1">
+              <q-icon size="xs" color="primary" name="done" />
+            </div>
           </div>
-          <div class="form-list" @click="mailingAddressDialog = true">
-            Mailing Address
-          </div>
-          <div class="form-list" @click="insuranceInfoDialog = true">
-            Insurance Info
-          </div>
-          <div class="form-list" @click="lossInfoDialog = true">Loss Info</div>
 
-          <div class="form-list" @click="expertVendorInfoDialog = true">
-            Expert/Vendor Info
+          <div class="form-list row" @click="mailingAddressDialog = true">
+            Mailing Address
+            <div class="  q-mr-lg  q-ml-auto " v-if="completed[1] == 1">
+              <q-icon size="xs" color="primary" name="done" />
+            </div>
           </div>
+          <div class="form-list row" @click="insuranceInfoDialog = true">
+            Insurance Info
+            <div class="   q-mr-lg  q-ml-auto " v-if="completed[2] == 1">
+              <q-icon size="xs" color="primary" name="done" />
+            </div>
+          </div>
+          <div class="form-list row" @click="lossInfoDialog = true">
+            Loss Info
+            <div class="  q-mr-lg  q-ml-auto" v-if="completed[3] == 1">
+              <q-icon size="xs" color="primary" name="done" />
+            </div>
+          </div>
+
+          <div class="form-list row" @click="expertVendorInfoDialog = true">
+            Expert/Vendor Info
+            <div class="   q-mr-lg  q-ml-auto" v-if="completed[4] == 1">
+              <q-icon size="xs" color="primary" name="done" />
+            </div>
+          </div>
+
           <div class="form-list" @click="estimatingInfoDialog = true">
             Estimating Info
           </div>
@@ -1805,6 +1824,7 @@ export default {
   components: { CustomHeader, VendorsList, AddVendor, AutoCompleteAddress },
   data() {
     return {
+      completed: [0, 0, 0, 0],
       vendorIndustriesOptions: [],
       estimatorsListDialog: false,
       constants: constants,
@@ -2185,27 +2205,40 @@ export default {
 
     async onSubmit(name, streetAddress) {
       let success = false;
+      let index;
       switch (name) {
         case 'clientInfoDailog':
           success = await this.$refs.clientForm.validate();
+          index = 0;
           break;
         case 'insuranceInfoDialog':
           success = await this.$refs.insuranceInfoForm.validate();
+          index = 2;
           break;
+
         case 'mailingAddressDialog':
           success = await this.$refs.mailingAddressForm.validate();
+          index = 1;
           break;
+
         case 'addEstimatorDialog':
           success = await this.$refs.addEstimatorForm.validate();
+
           break;
         case 'lossInfoDialog':
           success = await this.$refs.lossInfoForm.validate();
+          index = 3;
+
           break;
+
         case 'expertVendorInfoDialog':
           success = await this.$refs.expertVendorInfoForm.validate();
+          index = 4;
           break;
       }
       if (success == true) {
+        this.completed[index] = 1;
+
         if (
           name === 'insuranceInfoDialog' ||
           name === 'expertVendorInfoDialog'
@@ -2636,6 +2669,7 @@ export default {
   margin-bottom: 10px;
   padding-top: 20px;
 }
+
 .form-card {
   max-height: calc(100vh - 100px);
   overflow: scroll;
