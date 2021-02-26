@@ -62,6 +62,7 @@
               type="password"
               borderless
               :type="isPasswordVisible ? 'text' : 'password'"
+              @keyup.enter="onUserLogin"
             >
               <template v-slot:append>
                 <q-avatar>
