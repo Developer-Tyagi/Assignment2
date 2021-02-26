@@ -1,6 +1,6 @@
 <template>
-  <q-page>
-    <div class="signup-container q-px-xl q-py-lg">
+  <q-page style="min-height: calc(100vh - 77px)">
+    <div class="signup-container q-px-md q-py-lg">
       <div v-if="isValidPlan" class="row justify-between">
         <div class="col-3">
           <q-carousel
@@ -90,7 +90,7 @@
               <q-form
                 @submit="onSubmitCompanyInfo"
                 ref="companyInfo"
-                class="q-gutter-lg justify-between row wrap"
+                class="q-gutter-md justify-between row wrap"
               >
                 <div class="column col-5">
                   <q-input
@@ -134,7 +134,10 @@
                     label="Business Name *"
                     filled
                     lazy-rules
-                    :rules="[val => (val && val.length > 0) || '']"
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) || 'Please fill bussiness name'
+                    ]"
                   />
 
                   <q-input
@@ -142,11 +145,10 @@
                     name="email"
                     color="primary"
                     label="Bussiness Email *"
-                    type="email"
                     filled
                     lazy-rules
                     :rules="[
-                      val => (val && val.length > 0) || 'Please fill your email'
+                      val => validateEmail(val) || 'Please fill your email'
                     ]"
                   />
 
@@ -246,12 +248,12 @@
                     v-model="user.website"
                     name="website"
                     color="primary"
-                    label="Website *"
+                    label="Website"
+                    class="required"
                     filled
                     lazy-rules
                     :rules="[
-                      val =>
-                        (val && val.length > 0) || 'please fill your website'
+                      val => validateUrl(val) || 'Please fill your website'
                     ]"
                   />
                 </div>
@@ -371,6 +373,34 @@
                 </div>
 
                 <div class="column col-5">
+                  <q-input
+                    v-model="user.SSNumber"
+                    name="ssNumber"
+                    color="primary"
+                    label="Social Security Number"
+                    filled
+                    lazy-rules
+                    :rules="[
+                      val =>
+                        (val && val.length == 11) ||
+                        'Please fill social security number'
+                    ]"
+                    mask="###-##-####"
+                  />
+                  <q-input
+                    v-model="user.EINumber"
+                    name="eiNumber"
+                    color="primary"
+                    label="Employee Identification Number"
+                    filled
+                    lazy-rules
+                    :rules="[
+                      val =>
+                        (val && val.length == 10) ||
+                        'Please fill employee identification number'
+                    ]"
+                    mask="##-#######"
+                  />
                   <div class="text-h5">Credit Card Info</div>
                   <PaymentCard @cardDetailsAdded="cardDetailsAdded" />
                 </div>
@@ -417,6 +447,7 @@ import { mapActions, mapGetters } from 'vuex';
 import { constants } from '@utils/constant';
 import { getToken, getCurrentUser } from '@utils/auth.js';
 import PaymentCard from 'components/PaymentCard';
+import { validateEmail, validateUrl } from '@utils/validation';
 
 export default {
   components: { PaymentCard },
@@ -424,7 +455,7 @@ export default {
   data() {
     return {
       plan: 1,
-      step: 1,
+      step: 2,
       autocomplete1: {},
       autocomplete2: {},
       isValidPlan: true,
@@ -588,7 +619,11 @@ export default {
         this.isBuyButtonEnable = false;
         this.stripeToken = '';
       }
-    }
+    },
+
+    validateEmail,
+
+    validateUrl
   },
 
   computed: {
@@ -663,11 +698,21 @@ export default {
       }
     }
   }
+
+  input[type='number']::-webkit-outer-spin-button,
+  input[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
 }
 .autocomplete-input {
   height: 56px;
   padding: 0 12px;
-  margin-bottom: 30px;
+  margin-bottom: 25px;
   background: #f2f2f2;
   font-weight: 400;
   line-height: 28px;
@@ -678,6 +723,6 @@ export default {
 }
 
 .q-field--with-bottom {
-  padding-bottom: 30px;
+  padding-bottom: 25px;
 }
 </style>
