@@ -4,6 +4,7 @@
       @backButton="$router.push('/clients')"
       :showAddButton="false"
     />
+
     <div class="column" style="padding: 30px 20px 20px 20px">
       <div class="q-md column">
         <div class="full-width fixHeight">
@@ -16,7 +17,9 @@
           <div class="form-list" @click="insuranceInfoDialog = true">
             Insurance Info
           </div>
-          <div class="form-list" @click="lossInfoDialog = true">Loss Info</div>
+          <div class="form-list" @click="lossInfoDialog = true">
+            Loss Info
+          </div>
 
           <div class="form-list" @click="expertVendorInfoDialog = true">
             Expert/Vendor Info
@@ -30,17 +33,32 @@
           <div class="form-list" @click="publicAdjustorInfoDialog = true">
             Public Adjustor Info
           </div>
-          <div class="form-list" @click="documentsDialog = true">Documents</div>
+          <div class="form-list" @click="documentsDialog = true">
+            Documents
+          </div>
         </div>
-        <q-btn
-          label="Create Client"
-          color="primary"
-          class="full-width q-mt-auto text-capitalize"
-          @click="createClientButtonClick"
-          size="'xl'"
-        ></q-btn>
+        <div v-if="counter < 5">
+          <q-btn
+            label="Create Client"
+            color="primary"
+            class="full-width q-mt-auto text-capitalize"
+            disabled
+            size="'xl'"
+          ></q-btn>
+        </div>
+
+        <div v-else>
+          <q-btn
+            label="Create Client"
+            color="primary"
+            class="full-width q-mt-auto text-capitalize"
+            @click="createClientButtonClick"
+            size="'xl'"
+          ></q-btn>
+        </div>
       </div>
     </div>
+
     <!-- Public Adjuster Info -->
     <q-dialog
       v-model="publicAdjustorInfoDialog"
@@ -1807,6 +1825,8 @@ export default {
   components: { CustomHeader, VendorsList, AddVendor, AutoCompleteAddress },
   data() {
     return {
+      counter: 0,
+
       vendorIndustriesOptions: [],
       estimatorsListDialog: false,
       constants: constants,
@@ -2190,21 +2210,41 @@ export default {
       switch (name) {
         case 'clientInfoDailog':
           success = await this.$refs.clientForm.validate();
+          if (success == true) {
+            this.counter = this.counter + 1;
+          }
+
           break;
         case 'insuranceInfoDialog':
           success = await this.$refs.insuranceInfoForm.validate();
+          if (success == true) {
+            this.counter = this.counter + 1;
+          }
+
           break;
         case 'mailingAddressDialog':
           success = await this.$refs.mailingAddressForm.validate();
+          if (success == true) {
+            this.counter = this.counter + 1;
+          }
+
           break;
         case 'addEstimatorDialog':
           success = await this.$refs.addEstimatorForm.validate();
           break;
         case 'lossInfoDialog':
           success = await this.$refs.lossInfoForm.validate();
+          if (success == true) {
+            this.counter = this.counter + 1;
+          }
+
           break;
         case 'expertVendorInfoDialog':
           success = await this.$refs.expertVendorInfoForm.validate();
+          if (success == true) {
+            this.counter = this.counter + 1;
+          }
+
           break;
       }
       if (success == true) {
