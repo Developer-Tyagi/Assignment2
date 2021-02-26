@@ -58,27 +58,51 @@
                           <div
                             class="q-ma-xs"
                             style="text-decoration:none"
-                            @click="$router.push(`/setConfiguration`)"
+                            @click="shareData('inspectionType')"
                           >
                             Inspection Type
                           </div>
 
-                          <div class="q-ma-xs border border-red" outlined>
+                          <div
+                            class="q-ma-xs border border-red"
+                            outlined
+                            @click="shareData('industryType')"
+                          >
                             Industry Type
                           </div>
-                          <div class="q-ma-xs border border-red" outlined>
+                          <div
+                            class="q-ma-xs border border-red"
+                            outlined
+                            @click="shareData('honorific')"
+                          >
                             Honorific
                           </div>
-                          <div class="q-ma-xs border border-red" outlined>
+                          <div
+                            class="q-ma-xs border border-red"
+                            outlined
+                            @click="shareData('phoneType')"
+                          >
                             Phone Type
                           </div>
-                          <div class="q-ma-xs border border-red" outlined>
+                          <div
+                            class="q-ma-xs border border-red"
+                            outlined
+                            @click="shareData('clientType')"
+                          >
                             Client Type
                           </div>
-                          <div class="q-ma-xs border border-red" outlined>
+                          <div
+                            class="q-ma-xs border border-red"
+                            outlined
+                            @click="shareData('policyCategories')"
+                          >
                             Policy Categories
                           </div>
-                          <div class="q-ma-xs border border-red" outlined>
+                          <div
+                            class="q-ma-xs border border-red"
+                            outlined
+                            @click="shareData('policyType')"
+                          >
                             Policy Type
                           </div>
                         </div>
@@ -117,6 +141,7 @@ export default {
   name: 'AdminLayout',
   data() {
     return {
+      sendData: 'himnnnn',
       user: {
         name: ''
       },
@@ -126,6 +151,12 @@ export default {
   },
 
   methods: {
+    shareData(value) {
+      this.$router.push({
+        name: 'setConfiguration',
+        params: { data: value }
+      });
+    },
     onMenuButtonClick() {
       this.isLeftSidePanelOpen = !this.isLeftSidePanelOpen;
     },

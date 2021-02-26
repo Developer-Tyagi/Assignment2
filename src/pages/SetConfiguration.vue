@@ -5,7 +5,7 @@
     <div class=" q-pa-xs" style="height: 60%; width: 95%;">
       <div class="full-width">
         <div class="my-font text-bold row q-my-lg q-mx-xl">
-          Setup Company Account {{ username }}
+          Setup Company Account {{ recieve }}
         </div>
       </div>
       <!-- Height given for there Inner 2 div -->
@@ -603,6 +603,7 @@ export default {
 
   data() {
     return {
+      recieve: '',
       InspectionDialogBox: false,
       industryTypeDialogBox: false,
       industryTypeDialogBoxName: '',
@@ -612,7 +613,7 @@ export default {
       // this is for static dropdown
       options: ['Manager', 'Staff'],
       isShowRemoveButton: false,
-      tab: 'honorific',
+      tab: '',
       splitterModel: 20,
 
       users: [
@@ -638,6 +639,11 @@ export default {
         machineValue: ''
       }
     };
+  },
+  created() {
+    this.recieve = this.$route.params.data;
+    console.log(this.recieve);
+    this.tab = this.recieve;
   },
   computed: {
     ...mapGetters([

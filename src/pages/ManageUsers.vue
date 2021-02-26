@@ -61,7 +61,8 @@
                 </td>
                 <td class="text-left">{{ user.attributes.email }}</td>
                 <td class="text-left">
-                  {{ user.attributes['contact']['phoneNumber'] }}
+                  24355732
+                  <!-- {{ user.attributes['contact']['phoneNumber'] }} -->
                 </td>
                 <td class="text-left">{{ date }}/</td>
                 <td class="text-left">{{ user.attributes.roles[0] }}</td>
