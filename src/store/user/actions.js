@@ -55,7 +55,10 @@ export async function getUserInfo({ dispatch, state }) {
   try {
     const { data } = await request.get('/users/me');
     setCurrentUser(data);
-    if (data.attributes.onboard.isCompleted) {
+    if (
+      data.attributes['onboard'] &&
+      data.attributes['onboard']['isCompleted']
+    ) {
       this.$router.push('/dashboard');
     } else {
       this.$router.push('/onboarding');
