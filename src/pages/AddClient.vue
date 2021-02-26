@@ -1332,7 +1332,7 @@
           </q-toolbar>
         </q-header>
         <q-card-section>
-          <div class="q-page bg-white" style="min-height: 630px">
+          <div class="q-page bg-white" style="min-height: 500px">
             <div
               class="full-width"
               style="
@@ -1381,13 +1381,6 @@
                 v-model="estimatingInfo.notesToTheEstimator"
                 label="Notes to the estimator"
               /><br />
-              <div class="row">
-                <p style="font-size: 15px">Estimating Information Claim 2</p>
-                <q-toggle
-                  class="q-ml-auto"
-                  v-model="estimatingInformationClaim2Toggle"
-                />
-              </div>
             </div>
             <br />
           </div>
@@ -2053,7 +2046,7 @@ export default {
 
       isTherea2ndMortgageOnTheHomeToggle: false,
       doesAnEstimatorNeedToBeAssignedToggle: false,
-      estimatingInformationClaim2Toggle: false,
+
       vendorExpertHiredToggle: false,
       anyOtherExpertHiredToggle: false,
 
