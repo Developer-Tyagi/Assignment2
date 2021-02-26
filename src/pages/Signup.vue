@@ -632,7 +632,11 @@ export default {
 
   created() {
     if (getToken()) {
-      if (getCurrentUser() && getCurrentUser().attributes.onboard.isCompleted) {
+      if (
+        getCurrentUser() &&
+        getCurrentUser().attributes['onboard'] &&
+        getCurrentUser().attributes['onboard']['isCompleted']
+      ) {
         this.$router.push('/dashboard');
       } else {
         this.$router.push('/onboarding');
