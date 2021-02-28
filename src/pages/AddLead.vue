@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <CustomHeader @backButton="$router.push('/leads')" :showAddButton="false" />
+    <CustomHeader @backButton="onBackButtonClick" :showAddButton="false" />
     <div style="padding-top: 51px">
       <div class="q-pa-lg column" style="height: calc(100vh - 51px)">
         <div class="row">
@@ -19,7 +19,7 @@
             If client already exists, select from list below
           </p>
           <q-select
-            v-model="selectedClient"
+            v-model="clientSelected"
             :options="clients"
             clearable
             option-label="name"
@@ -42,12 +42,12 @@
   </q-page>
 </template>
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 import CustomHeader from 'components/CustomHeader';
 export default {
   data() {
     return {
-      selectedClient: '',
+      clientSelected: '',
       isNewLead: true
     };
   },
@@ -58,21 +58,32 @@ export default {
 
   created() {
     this.getClients();
+    if (this.selectedClient) {
+      this.isNewLead = false;
+      this.clientSelected = this.selectedClient;
+    }
   },
 
   computed: {
-    ...mapGetters(['clients'])
+    ...mapGetters(['clients', 'selectedClient'])
   },
 
   methods: {
     ...mapActions(['getClients']),
+    ...mapMutations(['setSelectedClient']),
 
     onContinue() {
-      if (this.selectedClient) {
-        this.$router.push({ path: `/add-lead-details/${this.selectedClient}` });
+      if (this.clientSelected) {
+        this.setSelectedClient(this.clientSelected);
+        this.$router.push({ path: `/add-lead-details/${this.clientSelected}` });
       } else {
         this.$router.push({ path: `/add-lead-details` });
       }
+    },
+
+    onBackButtonClick() {
+      this.setSelectedClient('');
+      this.$router.push('/leads');
     }
   }
 };

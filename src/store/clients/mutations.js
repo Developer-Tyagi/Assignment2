@@ -65,3 +65,7 @@ export function setPolicyCategory(state, types) {
     id: type.id
   }));
 }
+
+export function setSelectedClient(state, client) {
+  state.selectedClient = client;
+}
