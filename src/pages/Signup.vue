@@ -78,15 +78,11 @@
           <q-stepper
             v-model="step"
             ref="stepper"
-            :active-icon="`img:${require('../assets/step-active-icon.svg')}`"
-            :inactive-icon="
-              `img:${require('../assets/step-inactive-icon.svg')}`
-            "
-            active-color="black"
+            active-color="primary"
             animated
             alternative-labels
           >
-            <q-step :name="1" title="Company Information">
+            <q-step :name="1" :done="step > 1" title="Company Information">
               <q-form
                 @submit="onSubmitCompanyInfo"
                 ref="companyInfo"
@@ -679,30 +675,6 @@ export default {
 
 <style lang="scss">
 .signup-container {
-  $size: 16px;
-  $active-size: 36px;
-  .q-stepper__dot {
-    color: transparent !important;
-    height: $active-size;
-
-    .q-icon {
-      height: $size;
-      width: $size;
-    }
-  }
-
-  .q-stepper__tab--active {
-    .q-stepper__dot {
-      height: $active-size;
-      width: $active-size;
-
-      .q-icon {
-        height: $active-size;
-        width: $active-size;
-      }
-    }
-  }
-
   input[type='number']::-webkit-outer-spin-button,
   input[type='number']::-webkit-inner-spin-button {
     -webkit-appearance: none;
