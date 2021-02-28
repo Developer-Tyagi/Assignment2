@@ -15,7 +15,7 @@
         <div v-if="!isNewLead">
           <q-separator></q-separator>
           <br />
-          <p style="color: #666666; opacity: 50%; font-size: 12px">
+          <p class="stepper-heading">
             If client already exists, select from list below
           </p>
           <q-select
@@ -120,4 +120,10 @@ export default {
   }
 };
 </script>
-<style></style>
+<style lang="scss">
+.stepper-heading {
+  color: #333333;
+  font-weight: bold;
+  font-size: 14px;
+}
+</style>
