@@ -763,15 +763,69 @@
                     />
                   </div>
                   <span class="form-heading">Policy Effective date</span>
-                  <q-input
-                    v-model="insuranceDetails.policyEffectiveDate"
-                    type="date"
-                  /><br />
+
+                  <div class=" full-width">
+                    <q-input
+                      v-model="insuranceDetails.policyEffectiveDate"
+                      mask="##/##/####"
+                      label="MM/DD/YYYY"
+                    >
+                      <template v-slot:append>
+                        <q-icon
+                          name="event"
+                          size="md"
+                          color="primary"
+                          class="cursor-pointer"
+                        >
+                          <q-popup-proxy
+                            ref="qDateProxy"
+                            transition-show="scale"
+                            transition-hide="scale"
+                          >
+                            <q-date
+                              v-model="insuranceDetails.policyEffectiveDate"
+                              @input="() => $refs.qDateProxy.hide()"
+                              mask="MM/DD/YYYY"
+                            ></q-date>
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                    </q-input>
+                  </div>
+
+                  <br />
+
                   <span class="form-heading">Policy Expiry date </span>
-                  <q-input
-                    v-model="insuranceDetails.policyExpireDate"
-                    type="date"
-                  />
+
+                  <div class=" full-width">
+                    <q-input
+                      v-model="insuranceDetails.policyExpireDate"
+                      mask="##/##/####"
+                      label="MM/DD/YYYY"
+                    >
+                      <template v-slot:append>
+                        <q-icon
+                          name="event"
+                          size="md"
+                          color="primary"
+                          class="cursor-pointer"
+                        >
+                          <q-popup-proxy
+                            ref="qDateProxy1"
+                            transition-show="scale"
+                            transition-hide="scale"
+                          >
+                            <q-date
+                              v-model="insuranceDetails.policyExpireDate"
+                              @input="() => $refs.qDateProxy1.hide()"
+                              mask="MM/DD/YYYY"
+                            ></q-date>
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                    </q-input>
+                  </div>
+
                   <q-select
                     class="required"
                     v-model="insuranceDetails.policyCategory.id"
@@ -1005,11 +1059,35 @@
                     ]"
                   /><br />
                   <span class="form-heading">Date of Loss</span>
-                  <q-input
-                    v-model="lossInfo.dateOfLoss"
-                    type="date"
-                    placeholder="Date of Loss"
-                  />
+
+                  <div class=" full-width">
+                    <q-input
+                      v-model="lossInfo.dateOfLoss"
+                      mask="##/##/####"
+                      label="MM/DD/YYYY"
+                    >
+                      <template v-slot:append>
+                        <q-icon
+                          name="event"
+                          size="md"
+                          color="primary"
+                          class="cursor-pointer"
+                        >
+                          <q-popup-proxy
+                            ref="qDateProxy2"
+                            transition-show="scale"
+                            transition-hide="scale"
+                          >
+                            <q-date
+                              v-model="lossInfo.dateOfLoss"
+                              @input="() => $refs.qDateProxy2.hide()"
+                              mask="MM/DD/YYYY"
+                            ></q-date>
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                    </q-input>
+                  </div>
 
                   <q-select
                     class="required"
@@ -1028,17 +1106,68 @@
                     ]"
                   /><br />
                   <span class="form-heading">Deadline Date</span>
-                  <q-input
-                    v-model="lossInfo.deadlineDate"
-                    type="date"
-                    placeholder="Deadline Date"
-                  /><br />
+
+                  <div class=" full-width">
+                    <q-input
+                      v-model="lossInfo.deadlineDate"
+                      mask="##/##/####"
+                      label="MM/DD/YYYY"
+                    >
+                      <template v-slot:append>
+                        <q-icon
+                          name="event"
+                          size="md"
+                          color="primary"
+                          class="cursor-pointer"
+                        >
+                          <q-popup-proxy
+                            ref="qDateProxy3"
+                            transition-show="scale"
+                            transition-hide="scale"
+                          >
+                            <q-date
+                              v-model="lossInfo.deadlineDate"
+                              @input="() => $refs.qDateProxy3.hide()"
+                              mask="MM/DD/YYYY"
+                            ></q-date>
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                    </q-input>
+                  </div>
+                  <br />
                   <span class="form-heading">Recov. Deprec. Deadline</span>
-                  <q-input
-                    v-model="lossInfo.recovDeadline"
-                    type="date"
-                    placeholder="Recov. Deprec. Deadline"
-                  /><br />
+
+                  <div class=" full-width">
+                    <q-input
+                      v-model="lossInfo.recovDeadline"
+                      mask="##/##/####"
+                      label="MM/DD/YYYY"
+                    >
+                      <template v-slot:append>
+                        <q-icon
+                          name="event"
+                          size="md"
+                          color="primary"
+                          class="cursor-pointer"
+                        >
+                          <q-popup-proxy
+                            ref="qDateProxy4"
+                            transition-show="scale"
+                            transition-hide="scale"
+                          >
+                            <q-date
+                              v-model="lossInfo.recovDeadline"
+                              @input="() => $refs.qDateProxy4.hide()"
+                              mask="MM/DD/YYYY"
+                            ></q-date>
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                    </q-input>
+                  </div>
+                  <br />
+
                   <div class="row">
                     <span class="form-heading">Is the Home Habitable?</span>
                     <q-toggle class="q-ml-auto" v-model="isTheHomeHabitable" />

@@ -140,7 +140,7 @@
                 <q-input
                   v-model="lossDetails.dateOfLoss"
                   mask="##/##/####"
-                  label="Date of Loss"
+                  label="MM/DD/YYYY"
                 >
                   <template v-slot:append>
                     <q-icon
