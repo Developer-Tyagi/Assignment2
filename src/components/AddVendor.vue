@@ -202,7 +202,7 @@
                   lazy-rules
                   :rules="[
                     val =>
-                      (val && val.length == 10) || 'Please enter phone number'
+                      (val && val.length == 14) || 'Please enter phone number'
                   ]"
                 />
               </div>
