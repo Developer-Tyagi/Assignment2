@@ -195,7 +195,7 @@
                   icon="keyboard_backspace"
                   text-color="primary"
                   padding="md"
-                  @click="checkAddressField"
+                  type="submit"
                 />
               </div>
             </div>
@@ -565,20 +565,9 @@ export default {
       'getInspectionTypes',
       'addVendor',
       'getContactTypes',
-      'getTitles'
+      'getTitles',
+      'getClients'
     ]),
-
-    checkAddressField() {
-      if (this.lossAddress.streetAddress) {
-        this.step = 3;
-      } else {
-        this.$q.notify({
-          message: 'Please fill this Street Address',
-          position: 'top',
-          type: 'negative'
-        });
-      }
-    },
 
     onAddVendorDialogClick(name) {
       this.valueName = name;
@@ -776,34 +765,38 @@ export default {
 
   created() {
     // TODO : Have to change primary details object, so that selected client can be assigned as it is.
-    if (this.$route.params.id) {
-      let selectedClient = this.clients.find(
-        client => client.id === this.$route.params.id
-      );
-      this.primaryDetails.honorific.id =
-        selectedClient.insuredInfo.primary.honorific.id;
-      this.primaryDetails.honorific.value =
-        selectedClient.insuredInfo.primary.honorific.value;
-      this.primaryDetails.honorific.machineValue =
-        selectedClient.insuredInfo.primary.honorific.machineValue;
-
-      this.primaryDetails.firstName = selectedClient.insuredInfo.primary.fname;
-      this.primaryDetails.lastName = selectedClient.insuredInfo.primary.lname;
-      this.primaryDetails.email = selectedClient.insuredInfo.primary.email;
-      this.primaryDetails.phoneNumber =
-        selectedClient.insuredInfo.primary.phoneNumber[0].number;
-      this.primaryDetails.selectedContactType =
-        selectedClient.insuredInfo.primary.phoneNumber[0].type;
-      this.primaryDetails.isOrganization = selectedClient.isOrganization
-        ? true
-        : false;
-      if (this.primaryDetails.isOrganization) {
-        this.primaryDetails.organizationName = selectedClient.organizationName;
-      }
-    }
     this.getInspectionTypes();
     this.getContactTypes();
     this.getTitles();
+    this.getClients().then(() => {
+      if (this.$route.params.id) {
+        let selectedClient = this.clients.find(
+          client => client.id === this.$route.params.id
+        );
+        this.primaryDetails.honorific.id =
+          selectedClient.insuredInfo.primary.honorific.id;
+        this.primaryDetails.honorific.value =
+          selectedClient.insuredInfo.primary.honorific.value;
+        this.primaryDetails.honorific.machineValue =
+          selectedClient.insuredInfo.primary.honorific.machineValue;
+
+        this.primaryDetails.firstName =
+          selectedClient.insuredInfo.primary.fname;
+        this.primaryDetails.lastName = selectedClient.insuredInfo.primary.lname;
+        this.primaryDetails.email = selectedClient.insuredInfo.primary.email;
+        this.primaryDetails.phoneNumber =
+          selectedClient.insuredInfo.primary.phoneNumber[0].number;
+        this.primaryDetails.selectedContactType =
+          selectedClient.insuredInfo.primary.phoneNumber[0].type;
+        this.primaryDetails.isOrganization = selectedClient.isOrganization
+          ? true
+          : false;
+        if (this.primaryDetails.isOrganization) {
+          this.primaryDetails.organizationName =
+            selectedClient.organizationName;
+        }
+      }
+    });
   }
 };
 </script>

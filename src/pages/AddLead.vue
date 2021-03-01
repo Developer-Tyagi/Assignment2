@@ -10,6 +10,7 @@
             left-label
             color="orange"
             class="q-ml-auto"
+            @input="onNewLeadButtonToggle"
           />
         </div>
         <div v-if="!isNewLead">
@@ -34,9 +35,7 @@
           >
             <template v-slot:no-option>
               <q-item>
-                <q-item-section class="text-black">
-                  No results
-                </q-item-section>
+                <q-item-section class="text-black"> No results </q-item-section>
               </q-item>
             </template>
           </q-select>
@@ -111,9 +110,19 @@ export default {
         );
       });
     },
+
     onBackButtonClick() {
       this.setSelectedClient('');
       this.$router.push('/leads');
+    },
+
+    onNewLeadButtonToggle() {
+      if (this.isNewLead) {
+        this.clientSelected = '';
+        this.setSelectedClient('');
+      } else {
+        this.setSelectedClient(this.clientSelected);
+      }
     }
   }
 };
