@@ -1686,6 +1686,7 @@
                     @input="setVendorIndustryName"
                     behavior="menu"
                     emit-value
+                    map-options
                     lazy-rules
                     :rules="[
                       val =>
@@ -2352,7 +2353,7 @@ export default {
           this.onAddEstimatorButtonClick();
           this[name] = false;
         } else {
-          if (this.checkAddressField(streetAddress)) {
+          if (this.checkAddressField(streetAddress, name)) {
             this[name] = false;
           }
         }

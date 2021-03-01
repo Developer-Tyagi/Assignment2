@@ -568,6 +568,7 @@ export default {
       'getContactTypes',
       'getTitles'
     ]),
+
     checkAddressField() {
       if (this.lossAddress.streetAddress) {
         this.step = 3;
@@ -784,6 +785,9 @@ export default {
         selectedClient.insuredInfo.primary.honorific.id;
       this.primaryDetails.honorific.value =
         selectedClient.insuredInfo.primary.honorific.value;
+      this.primaryDetails.honorific.machineValue =
+        selectedClient.insuredInfo.primary.honorific.machineValue;
+
       this.primaryDetails.firstName = selectedClient.insuredInfo.primary.fname;
       this.primaryDetails.lastName = selectedClient.insuredInfo.primary.lname;
       this.primaryDetails.email = selectedClient.insuredInfo.primary.email;
