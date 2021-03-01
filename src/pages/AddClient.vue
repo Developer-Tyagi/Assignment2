@@ -1554,6 +1554,7 @@
                     @input="setVendorIndustryName"
                     behavior="menu"
                     emit-value
+                    map-options
                     lazy-rules
                     :rules="[
                       val =>
@@ -2159,8 +2160,12 @@ export default {
         );
       });
     },
-    checkAddressField(streetValue) {
-      if (streetValue) {
+    checkAddressField(streetValue, name) {
+      if (
+        streetValue ||
+        name === 'insuranceInfoDialog' ||
+        name === 'expertVendorInfoDialog'
+      ) {
         return true;
       } else {
         this.$q.notify({
@@ -2218,7 +2223,7 @@ export default {
           this.onAddEstimatorButtonClick();
           this[name] = false;
         } else {
-          if (this.checkAddressField(streetAddress)) {
+          if (this.checkAddressField(streetAddress, name)) {
             this[name] = false;
           }
         }
