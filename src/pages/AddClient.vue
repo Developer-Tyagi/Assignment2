@@ -769,7 +769,8 @@
                       v-model="insuranceDetails.policyEffectiveDate"
                       mask="##/##/####"
                       label="MM/DD/YYYY"
-                      :rules="[checkDate]"
+                      lazy-rules
+                      :rules="[val => validateDate(val) || 'Invalid date!']"
                     >
                       <template v-slot:append>
                         <q-icon
@@ -803,7 +804,8 @@
                       v-model="insuranceDetails.policyExpireDate"
                       mask="##/##/####"
                       label="MM/DD/YYYY"
-                      :rules="[checkDate]"
+                      lazy-rules
+                      :rules="[val => validateDate(val) || 'Invalid date!']"
                     >
                       <template v-slot:append>
                         <q-icon
@@ -1067,7 +1069,8 @@
                       v-model="lossInfo.dateOfLoss"
                       mask="##/##/####"
                       label="MM/DD/YYYY"
-                      :rules="[checkDate]"
+                      lazy-rules
+                      :rules="[val => validateDate(val) || 'Invalid date!']"
                     >
                       <template v-slot:append>
                         <q-icon
@@ -1115,7 +1118,8 @@
                       v-model="lossInfo.deadlineDate"
                       mask="##/##/####"
                       label="MM/DD/YYYY"
-                      :rules="[checkDate]"
+                      lazy-rules
+                      :rules="[val => validateDate(val) || 'Invalid date!']"
                     >
                       <template v-slot:append>
                         <q-icon
@@ -1147,7 +1151,8 @@
                       v-model="lossInfo.recovDeadline"
                       mask="##/##/####"
                       label="MM/DD/YYYY"
-                      :rules="[checkDate]"
+                      lazy-rules
+                      :rules="[val => validateDate(val) || 'Invalid date!']"
                     >
                       <template v-slot:append>
                         <q-icon
@@ -1920,13 +1925,12 @@
 import CustomHeader from 'components/CustomHeader';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import AddressService from '@utils/country';
-import { validateEmail } from '@utils/validation';
+import { validateEmail, validateDate } from '@utils/validation';
 import { constants } from '@utils/constant';
 import { dateToSend } from '@utils/date';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import VendorsList from 'components/VendorsList';
 import AddVendor from 'components/AddVendor';
-import { date } from 'quasar';
 
 const addressService = new AddressService();
 
@@ -2288,9 +2292,7 @@ export default {
       });
     },
 
-    checkDate(val) {
-      return Quasar.utils.date.isValid(val) || 'Invalid date.';
-    },
+    validateDate,
     checkAddressField(streetValue) {
       if (streetValue) {
         return true;
