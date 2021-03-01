@@ -51,16 +51,15 @@
                   val => (val && val.length > 0) || 'Please fill the last name'
                 ]"
               />
-              <div class="row">
+              <div class="row justify-between">
                 <q-select
-                  class="required"
+                  class="required col-5"
                   v-model="primaryDetails.selectedContactType"
                   :options="contactTypes"
                   option-value="machineValue"
                   option-label="name"
                   map-options
                   emit-value
-                  style="width: 40%; margin-right: auto"
                   label="Type"
                   lazy-rules
                   :rules="[
@@ -68,7 +67,7 @@
                   ]"
                 />
                 <q-input
-                  class="required"
+                  class="required col-6"
                   v-model="primaryDetails.phoneNumber"
                   label="Phone"
                   mask="(###) ###-####"
@@ -136,7 +135,7 @@
             <q-card class="q-pa-md form-card">
               <span class="stepper-heading">Loss Details</span>
 
-              <div class=" full-width">
+              <div class="full-width">
                 <q-input
                   v-model="lossDetails.dateOfLoss"
                   mask="##/##/####"
@@ -316,7 +315,7 @@
         <q-step :name="5" :done="step > 5" title="Notes">
           <q-form @submit="step++" @reset="step--">
             <q-card class="q-pa-md form-card">
-              <span class=" stepper-heading">Last Notes</span>
+              <span class="stepper-heading">Last Notes</span>
               <q-input
                 class="required"
                 label="Last Notes"

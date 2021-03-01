@@ -352,17 +352,16 @@
                     ]"
                     label="Last Name"
                   />
-                  <div class="row">
+                  <div class="row justify-between">
                     <q-select
                       v-model="insuredDetails.type"
-                      class="required"
+                      class="required col-5"
                       :options="contactTypes"
                       option-value="machineValue"
                       option-label="name"
                       map-options
                       emit-value
                       label="Type"
-                      style="width: 40%; margin-right: auto"
                       lazy-rules
                       :rules="[
                         val =>
@@ -371,10 +370,9 @@
                     />
                     <q-input
                       v-model="insuredDetails.phone"
-                      class="required"
+                      class="required col-6"
                       label="Phone"
                       mask="(###) ###-####"
-                      style="width: 55%"
                       lazy-rules
                       :rules="[
                         val =>
@@ -429,16 +427,15 @@
                       v-model="coInsuredDetails.lname"
                       label="Last Name"
                     />
-                    <div class="row">
+                    <div class="row justify-between">
                       <q-select
                         v-model="coInsuredDetails.type"
-                        class="required"
+                        class="required col-5"
                         :options="contactTypes"
                         option-value="machineValue"
                         option-label="name"
                         map-options
                         emit-value
-                        style="width: 40%; margin-right: auto"
                         label="Type"
                         lazy-rules
                         :rules="[
@@ -450,7 +447,7 @@
                       <q-input
                         v-model="coInsuredDetails.phone"
                         label="Phone"
-                        class="required"
+                        class="required col-6"
                         mask="(###) ###-####"
                         lazy-rules
                         :rules="[
@@ -458,7 +455,6 @@
                             (val && val.length == 14) ||
                             'Please enter the phone number'
                         ]"
-                        style="width: 55%"
                       />
                     </div>
                     <q-input
@@ -485,10 +481,10 @@
                     />
                   </div>
                   <div v-if="addAditionalPhoneNumberToggle">
-                    <div class="row">
+                    <div class="row justify-between">
                       <q-select
                         v-model="addAditionalPhoneNumber.type1"
-                        class="required"
+                        class="required col-5"
                         label="Type"
                         :options="contactTypes"
                         option-value="machineValue"
@@ -501,12 +497,11 @@
                             (val && val.length > 0) ||
                             'Please select phone type'
                         ]"
-                        style="width: 40%; margin-right: auto"
                       />
                       <q-input
                         v-model="addAditionalPhoneNumber.phone2"
                         label="Phone2"
-                        class="required"
+                        class="required col-6"
                         mask="(###) ###-####"
                         lazy-rules
                         :rules="[
@@ -514,12 +509,11 @@
                             (val && val.length == 14) ||
                             'Please enter the phone number'
                         ]"
-                        style="width: 55%; margin-left: auto"
                       />
                     </div>
-                    <div class="row">
+                    <div class="row justify-between">
                       <q-select
-                        class="required"
+                        class="required col-5"
                         v-model="addAditionalPhoneNumber.type2"
                         label="Type"
                         :options="contactTypes"
@@ -533,10 +527,9 @@
                             (val && val.length > 0) ||
                             'Please select phone type'
                         ]"
-                        style="width: 40%; margin-right: auto"
                       />
                       <q-input
-                        class="required"
+                        class="required col-6"
                         v-model="addAditionalPhoneNumber.phone3"
                         label="Phone3"
                         mask="(###) ###-####"
@@ -546,7 +539,6 @@
                             (val && val.length == 14) ||
                             'Please enter the phone number'
                         ]"
-                        style="width: 55%"
                       />
                     </div>
                   </div>
@@ -572,9 +564,9 @@
                       label="Tenant Name"
                     />
 
-                    <div class="row">
+                    <div class="row justify-between">
                       <q-select
-                        class="required"
+                        class="required col-5"
                         v-model="tenantOccupied.type"
                         label="Type"
                         :options="contactTypes"
@@ -582,7 +574,6 @@
                         option-label="name"
                         map-options
                         emit-value
-                        style="width: 40%; margin-right: auto"
                         lazy-rules
                         :rules="[
                           val =>
@@ -591,11 +582,10 @@
                         ]"
                       />
                       <q-input
-                        class="required"
+                        class="required col-6"
                         v-model="tenantOccupied.phone"
                         label="Phone"
                         mask="(###) ###-####"
-                        style="width: 55%; margin-left: auto"
                         lazy-rules
                         :rules="[
                           val =>
@@ -1155,11 +1145,9 @@
                 v-if="isMortgageHomeToggle"
                 @click="mortgageInfoDialog = true"
               >
-                <div class="row ">
-                  <div class=" q-px-xs row">
-                    <div v-if="!mortgageDetails[0]['id']">
-                      Select Mortgage
-                    </div>
+                <div class="row">
+                  <div class="q-px-xs row">
+                    <div v-if="!mortgageDetails[0]['id']">Select Mortgage</div>
                     <div
                       v-else
                       class="select-text"
@@ -1168,9 +1156,7 @@
                       <span>
                         {{ mortgageDetail.value }}
                       </span>
-                      <span v-if="mortgageDetails.length - 1 > index">
-                        ,
-                      </span>
+                      <span v-if="mortgageDetails.length - 1 > index"> , </span>
                     </div>
                   </div>
                 </div>
@@ -1471,8 +1457,9 @@
                     ]"
                   />
 
-                  <div class="row">
+                  <div class="row justify-between">
                     <q-select
+                      class="col-5"
                       v-model="addEstimatorInfo.type"
                       :options="contactTypes"
                       option-value="machineValue"
@@ -1480,13 +1467,12 @@
                       map-options
                       emit-value
                       label="Type"
-                      style="width: 40%; margin-right: auto"
                     />
                     <q-input
+                      class="col-6"
                       v-model="addEstimatorInfo.phone"
                       label="Phone"
                       mask="(###) ###-####"
-                      style="width: 55%"
                     />
                   </div>
                 </q-form>
@@ -1602,7 +1588,7 @@
                       required
                       class="full-width"
                       v-model="expertVendorInfo.notes"
-                      style="resize: none;"
+                      style="resize: none"
                     ></textarea>
                   </div>
                   <br />
@@ -1613,7 +1599,7 @@
                       required
                       class="full-width"
                       v-model="expertVendorInfo.internalNotes"
-                      style="resize: none;"
+                      style="resize: none"
                     ></textarea>
                   </div>
                 </q-form>
@@ -1704,7 +1690,7 @@
       transition-hide="slide-down"
     >
       <q-card>
-        <q-header bordered class="bg-white  ">
+        <q-header bordered class="bg-white">
           <q-toolbar class="row bg-white">
             <img
               src="~assets/close.svg"
@@ -1743,7 +1729,7 @@
     >
       <q-card>
         <q-header bordered class="bg-white">
-          <q-toolbar class="row bg-white  justify-between">
+          <q-toolbar class="row bg-white justify-between">
             <img
               src="~assets/close.svg"
               alt="close"
