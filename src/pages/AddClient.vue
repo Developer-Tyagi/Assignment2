@@ -9,33 +9,33 @@
         <div class="full-width fixHeight">
           <div class="form-list row" @click="clientInfoDailog = true">
             Client Info
-            <div class="  q-mr-lg  q-ml-auto" v-if="completed[0] == 1">
+            <div class="  q-mr-lg  q-ml-auto" v-if="validForm[1] == true">
               <q-icon size="xs" color="primary" name="done" />
             </div>
           </div>
 
           <div class="form-list row" @click="mailingAddressDialog = true">
             Mailing Address
-            <div class="  q-mr-lg  q-ml-auto " v-if="completed[1] == 1">
+            <div class="  q-mr-lg  q-ml-auto " v-if="validForm[2] == true">
               <q-icon size="xs" color="primary" name="done" />
             </div>
           </div>
           <div class="form-list row" @click="insuranceInfoDialog = true">
             Insurance Info
-            <div class="   q-mr-lg  q-ml-auto " v-if="completed[2] == 1">
+            <div class="   q-mr-lg  q-ml-auto " v-if="validForm[3] == true">
               <q-icon size="xs" color="primary" name="done" />
             </div>
           </div>
           <div class="form-list row" @click="lossInfoDialog = true">
             Loss Info
-            <div class="  q-mr-lg  q-ml-auto" v-if="completed[3] == 1">
+            <div class="  q-mr-lg  q-ml-auto" v-if="validForm[4] == true">
               <q-icon size="xs" color="primary" name="done" />
             </div>
           </div>
 
           <div class="form-list row" @click="expertVendorInfoDialog = true">
             Expert/Vendor Info
-            <div class="   q-mr-lg  q-ml-auto" v-if="completed[4] == 1">
+            <div class="   q-mr-lg  q-ml-auto" v-if="validForm[5] == true">
               <q-icon size="xs" color="primary" name="done" />
             </div>
           </div>
@@ -1824,7 +1824,7 @@ export default {
   components: { CustomHeader, VendorsList, AddVendor, AutoCompleteAddress },
   data() {
     return {
-      completed: [0, 0, 0, 0],
+      validForm: [],
       vendorIndustriesOptions: [],
       estimatorsListDialog: false,
       constants: constants,
@@ -2206,19 +2206,20 @@ export default {
     async onSubmit(name, streetAddress) {
       let success = false;
       let index;
+
       switch (name) {
         case 'clientInfoDailog':
           success = await this.$refs.clientForm.validate();
-          index = 0;
+          index = 1;
           break;
         case 'insuranceInfoDialog':
           success = await this.$refs.insuranceInfoForm.validate();
-          index = 2;
+          index = 3;
           break;
 
         case 'mailingAddressDialog':
           success = await this.$refs.mailingAddressForm.validate();
-          index = 1;
+          index = 2;
           break;
 
         case 'addEstimatorDialog':
@@ -2227,18 +2228,16 @@ export default {
           break;
         case 'lossInfoDialog':
           success = await this.$refs.lossInfoForm.validate();
-          index = 3;
-
+          index = 4;
           break;
 
         case 'expertVendorInfoDialog':
           success = await this.$refs.expertVendorInfoForm.validate();
-          index = 4;
+          index = 5;
           break;
       }
       if (success == true) {
-        this.completed[index] = 1;
-
+        this.validForm[index] = true;
         if (
           name === 'insuranceInfoDialog' ||
           name === 'expertVendorInfoDialog'
