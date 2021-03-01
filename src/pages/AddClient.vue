@@ -763,15 +763,73 @@
                     />
                   </div>
                   <span class="form-heading">Policy Effective date</span>
-                  <q-input
-                    v-model="insuranceDetails.policyEffectiveDate"
-                    type="date"
-                  /><br />
+
+                  <div class=" full-width">
+                    <q-input
+                      v-model="insuranceDetails.policyEffectiveDate"
+                      mask="##/##/####"
+                      label="MM/DD/YYYY"
+                      lazy-rules
+                      :rules="[val => validateDate(val) || 'Invalid date!']"
+                    >
+                      <template v-slot:append>
+                        <q-icon
+                          name="event"
+                          size="sm"
+                          color="primary"
+                          class="cursor-pointer"
+                        >
+                          <q-popup-proxy
+                            ref="qDateProxy"
+                            transition-show="scale"
+                            transition-hide="scale"
+                          >
+                            <q-date
+                              v-model="insuranceDetails.policyEffectiveDate"
+                              @input="() => $refs.qDateProxy.hide()"
+                              mask="MM/DD/YYYY"
+                            ></q-date>
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                    </q-input>
+                  </div>
+
+                  <br />
+
                   <span class="form-heading">Policy Expiry date </span>
-                  <q-input
-                    v-model="insuranceDetails.policyExpireDate"
-                    type="date"
-                  />
+
+                  <div class=" full-width">
+                    <q-input
+                      v-model="insuranceDetails.policyExpireDate"
+                      mask="##/##/####"
+                      label="MM/DD/YYYY"
+                      lazy-rules
+                      :rules="[val => validateDate(val) || 'Invalid date!']"
+                    >
+                      <template v-slot:append>
+                        <q-icon
+                          name="event"
+                          size="sm"
+                          color="primary"
+                          class="cursor-pointer"
+                        >
+                          <q-popup-proxy
+                            ref="qDateProxy1"
+                            transition-show="scale"
+                            transition-hide="scale"
+                          >
+                            <q-date
+                              v-model="insuranceDetails.policyExpireDate"
+                              @input="() => $refs.qDateProxy1.hide()"
+                              mask="MM/DD/YYYY"
+                            ></q-date>
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                    </q-input>
+                  </div>
+
                   <q-select
                     class="required"
                     v-model="insuranceDetails.policyCategory.id"
@@ -1005,11 +1063,37 @@
                     ]"
                   /><br />
                   <span class="form-heading">Date of Loss</span>
-                  <q-input
-                    v-model="lossInfo.dateOfLoss"
-                    type="date"
-                    placeholder="Date of Loss"
-                  />
+
+                  <div class=" full-width">
+                    <q-input
+                      v-model="lossInfo.dateOfLoss"
+                      mask="##/##/####"
+                      label="MM/DD/YYYY"
+                      lazy-rules
+                      :rules="[val => validateDate(val) || 'Invalid date!']"
+                    >
+                      <template v-slot:append>
+                        <q-icon
+                          name="event"
+                          size="sm"
+                          color="primary"
+                          class="cursor-pointer"
+                        >
+                          <q-popup-proxy
+                            ref="qDateProxy2"
+                            transition-show="scale"
+                            transition-hide="scale"
+                          >
+                            <q-date
+                              v-model="lossInfo.dateOfLoss"
+                              @input="() => $refs.qDateProxy2.hide()"
+                              mask="MM/DD/YYYY"
+                            ></q-date>
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                    </q-input>
+                  </div>
 
                   <q-select
                     class="required"
@@ -1028,17 +1112,72 @@
                     ]"
                   /><br />
                   <span class="form-heading">Deadline Date</span>
-                  <q-input
-                    v-model="lossInfo.deadlineDate"
-                    type="date"
-                    placeholder="Deadline Date"
-                  /><br />
+
+                  <div class=" full-width">
+                    <q-input
+                      v-model="lossInfo.deadlineDate"
+                      mask="##/##/####"
+                      label="MM/DD/YYYY"
+                      lazy-rules
+                      :rules="[val => validateDate(val) || 'Invalid date!']"
+                    >
+                      <template v-slot:append>
+                        <q-icon
+                          name="event"
+                          size="sm"
+                          color="primary"
+                          class="cursor-pointer"
+                        >
+                          <q-popup-proxy
+                            ref="qDateProxy3"
+                            transition-show="scale"
+                            transition-hide="scale"
+                          >
+                            <q-date
+                              v-model="lossInfo.deadlineDate"
+                              @input="() => $refs.qDateProxy3.hide()"
+                              mask="MM/DD/YYYY"
+                            ></q-date>
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                    </q-input>
+                  </div>
+                  <br />
                   <span class="form-heading">Recov. Deprec. Deadline</span>
-                  <q-input
-                    v-model="lossInfo.recovDeadline"
-                    type="date"
-                    placeholder="Recov. Deprec. Deadline"
-                  /><br />
+
+                  <div class=" full-width">
+                    <q-input
+                      v-model="lossInfo.recovDeadline"
+                      mask="##/##/####"
+                      label="MM/DD/YYYY"
+                      lazy-rules
+                      :rules="[val => validateDate(val) || 'Invalid date!']"
+                    >
+                      <template v-slot:append>
+                        <q-icon
+                          name="event"
+                          size="sm"
+                          color="primary"
+                          class="cursor-pointer"
+                        >
+                          <q-popup-proxy
+                            ref="qDateProxy4"
+                            transition-show="scale"
+                            transition-hide="scale"
+                          >
+                            <q-date
+                              v-model="lossInfo.recovDeadline"
+                              @input="() => $refs.qDateProxy4.hide()"
+                              mask="MM/DD/YYYY"
+                            ></q-date>
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                    </q-input>
+                  </div>
+                  <br />
+
                   <div class="row">
                     <span class="form-heading">Is the Home Habitable?</span>
                     <q-toggle class="q-ml-auto" v-model="isTheHomeHabitable" />
@@ -1332,7 +1471,7 @@
           </q-toolbar>
         </q-header>
         <q-card-section>
-          <div class="q-page bg-white" style="min-height: 630px">
+          <div class="q-page bg-white" style="min-height: 500px">
             <div
               class="full-width"
               style="
@@ -1381,13 +1520,6 @@
                 v-model="estimatingInfo.notesToTheEstimator"
                 label="Notes to the estimator"
               /><br />
-              <div class="row">
-                <p style="font-size: 15px">Estimating Information Claim 2</p>
-                <q-toggle
-                  class="q-ml-auto"
-                  v-model="estimatingInformationClaim2Toggle"
-                />
-              </div>
             </div>
             <br />
           </div>
@@ -1794,7 +1926,7 @@
 import CustomHeader from 'components/CustomHeader';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import AddressService from '@utils/country';
-import { validateEmail } from '@utils/validation';
+import { validateEmail, validateDate } from '@utils/validation';
 import { constants } from '@utils/constant';
 import { dateToSend } from '@utils/date';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
@@ -2054,7 +2186,7 @@ export default {
 
       isTherea2ndMortgageOnTheHomeToggle: false,
       doesAnEstimatorNeedToBeAssignedToggle: false,
-      estimatingInformationClaim2Toggle: false,
+
       vendorExpertHiredToggle: false,
       anyOtherExpertHiredToggle: false,
 
@@ -2160,12 +2292,10 @@ export default {
         );
       });
     },
-    checkAddressField(streetValue, name) {
-      if (
-        streetValue ||
-        name === 'insuranceInfoDialog' ||
-        name === 'expertVendorInfoDialog'
-      ) {
+
+    validateDate,
+    checkAddressField(streetValue) {
+      if (streetValue) {
         return true;
       } else {
         this.$q.notify({
