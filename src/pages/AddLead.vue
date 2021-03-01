@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <CustomHeader @backButton="$router.push('/leads')" :showAddButton="false" />
+    <CustomHeader @backButton="onBackButtonClick" :showAddButton="false" />
     <div style="padding-top: 51px">
       <div class="q-pa-lg column" style="height: calc(100vh - 51px)">
         <div class="row">
@@ -20,14 +20,13 @@
           </p>
           <q-select
             class="full-width"
-            v-model="selectedClient"
+            v-model="clientSelected"
             use-input
             input-debounce="0"
             option-label="name"
             label="Select existing client"
             :options="options"
             @filter="searchFilterBy"
-            @input="setClientName"
             option-value="id"
             behavior="menu"
             emit-value
@@ -55,14 +54,13 @@
   </q-page>
 </template>
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 import CustomHeader from 'components/CustomHeader';
 export default {
   data() {
     return {
-      selectedClient: '',
+      clientSelected: '',
       options: '',
-
       isNewLead: true
     };
   },
@@ -74,27 +72,31 @@ export default {
   created() {
     this.options = this.clients;
     this.getClients();
+    if (this.selectedClient) {
+      this.isNewLead = false;
+      this.clientSelected = this.selectedClient;
+    }
   },
 
   computed: {
-    ...mapGetters(['clients'])
+    ...mapGetters(['clients', 'selectedClient'])
   },
 
   methods: {
     ...mapActions(['getClients']),
+    ...mapMutations(['setSelectedClient']),
 
     onContinue() {
-      if (this.selectedClient) {
-        this.$router.push({
-          path: `/add-lead-details/${this.selectedClient}`
-        });
+      if (this.clientSelected) {
+        this.setSelectedClient(this.clientSelected);
+        this.$router.push({ path: `/add-lead-details/${this.clientSelected}` });
       } else {
         this.$router.push({ path: `/add-lead-details` });
       }
     },
 
     searchFilterBy(val, update) {
-      this.selectedClient = null;
+      this.clientSelected = null;
       if (val === ' ') {
         update(() => {
           this.options = this.clients;
@@ -109,13 +111,9 @@ export default {
         );
       });
     },
-    setClientName() {
-      const selectedName = this.selectedClient;
-
-      const result = this.clients.find(obj => {
-        return obj.id === selectedName;
-      });
-      this.selectedClient = result.id;
+    onBackButtonClick() {
+      this.setSelectedClient('');
+      this.$router.push('/leads');
     }
   }
 };

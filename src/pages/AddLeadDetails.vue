@@ -135,11 +135,35 @@
           <q-form @submit="step++" @reset="step--">
             <q-card class="q-pa-md form-card">
               <span class="stepper-heading">Loss Details</span>
-              <q-input
-                v-model="lossDetails.dateOfLoss"
-                type="date"
-                placeholder="Date of Loss"
-              />
+
+              <div class=" full-width">
+                <q-input
+                  v-model="lossDetails.dateOfLoss"
+                  mask="##/##/####"
+                  label="MM/DD/YYYY"
+                >
+                  <template v-slot:append>
+                    <q-icon
+                      name="event"
+                      size="md"
+                      color="primary"
+                      class="cursor-pointer"
+                    >
+                      <q-popup-proxy
+                        ref="qDateProxy"
+                        transition-show="scale"
+                        transition-hide="scale"
+                      >
+                        <q-date
+                          v-model="lossDetails.dateOfLoss"
+                          @input="() => $refs.qDateProxy.hide()"
+                          mask="MM/DD/YYYY"
+                        ></q-date>
+                      </q-popup-proxy>
+                    </q-icon>
+                  </template>
+                </q-input>
+              </div>
 
               <q-input
                 v-model="lossDetails.lossDesc"
@@ -457,11 +481,9 @@
 import { mapActions, mapGetters } from 'vuex';
 import { validateEmail } from '@utils/validation';
 import { dateToSend } from '@utils/date';
-
 import VendorsList from 'components/VendorsList';
 import { constants } from '@utils/constant';
 import AddVendor from 'components/AddVendor';
-
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import CustomHeader from 'components/CustomHeader';
 
@@ -499,6 +521,7 @@ export default {
         lossDesc: '',
         dateOfLoss: ''
       },
+
       lossAddress: {
         addressCountry: '',
         addressRegion: '',
@@ -543,6 +566,7 @@ export default {
       'getContactTypes',
       'getTitles'
     ]),
+
     checkAddressField() {
       if (this.lossAddress.streetAddress) {
         this.step = 3;
@@ -750,17 +774,17 @@ export default {
 
   created() {
     // TODO : Have to change primary details object, so that selected client can be assigned as it is.
-    if (this.$route.params) {
+    if (this.$route.params.id) {
       let selectedClient = this.clients.find(
         client => client.id === this.$route.params.id
       );
-
       this.primaryDetails.honorific.id =
         selectedClient.insuredInfo.primary.honorific.id;
       this.primaryDetails.honorific.value =
         selectedClient.insuredInfo.primary.honorific.value;
       this.primaryDetails.honorific.machineValue =
         selectedClient.insuredInfo.primary.honorific.machineValue;
+
       this.primaryDetails.firstName = selectedClient.insuredInfo.primary.fname;
       this.primaryDetails.lastName = selectedClient.insuredInfo.primary.lname;
       this.primaryDetails.email = selectedClient.insuredInfo.primary.email;
