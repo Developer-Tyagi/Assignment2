@@ -769,11 +769,12 @@
                       v-model="insuranceDetails.policyEffectiveDate"
                       mask="##/##/####"
                       label="MM/DD/YYYY"
+                      :rules="[checkDate]"
                     >
                       <template v-slot:append>
                         <q-icon
                           name="event"
-                          size="md"
+                          size="sm"
                           color="primary"
                           class="cursor-pointer"
                         >
@@ -802,11 +803,12 @@
                       v-model="insuranceDetails.policyExpireDate"
                       mask="##/##/####"
                       label="MM/DD/YYYY"
+                      :rules="[checkDate]"
                     >
                       <template v-slot:append>
                         <q-icon
                           name="event"
-                          size="md"
+                          size="sm"
                           color="primary"
                           class="cursor-pointer"
                         >
@@ -1065,11 +1067,12 @@
                       v-model="lossInfo.dateOfLoss"
                       mask="##/##/####"
                       label="MM/DD/YYYY"
+                      :rules="[checkDate]"
                     >
                       <template v-slot:append>
                         <q-icon
                           name="event"
-                          size="md"
+                          size="sm"
                           color="primary"
                           class="cursor-pointer"
                         >
@@ -1112,11 +1115,12 @@
                       v-model="lossInfo.deadlineDate"
                       mask="##/##/####"
                       label="MM/DD/YYYY"
+                      :rules="[checkDate]"
                     >
                       <template v-slot:append>
                         <q-icon
                           name="event"
-                          size="md"
+                          size="sm"
                           color="primary"
                           class="cursor-pointer"
                         >
@@ -1143,11 +1147,12 @@
                       v-model="lossInfo.recovDeadline"
                       mask="##/##/####"
                       label="MM/DD/YYYY"
+                      :rules="[checkDate]"
                     >
                       <template v-slot:append>
                         <q-icon
                           name="event"
-                          size="md"
+                          size="sm"
                           color="primary"
                           class="cursor-pointer"
                         >
@@ -1921,6 +1926,7 @@ import { dateToSend } from '@utils/date';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import VendorsList from 'components/VendorsList';
 import AddVendor from 'components/AddVendor';
+import { date } from 'quasar';
 
 const addressService = new AddressService();
 
@@ -2280,6 +2286,10 @@ export default {
           v => v.name.toLowerCase().indexOf(search) > -1
         );
       });
+    },
+
+    checkDate(val) {
+      return Quasar.utils.date.isValid(val) || 'Invalid date.';
     },
     checkAddressField(streetValue) {
       if (streetValue) {
