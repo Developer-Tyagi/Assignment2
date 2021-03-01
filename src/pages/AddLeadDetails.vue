@@ -140,6 +140,8 @@
                   v-model="lossDetails.dateOfLoss"
                   mask="##/##/####"
                   label="MM/DD/YYYY"
+                  lazy-rules
+                  :rules="[val => validateDate(val) || 'Invalid date!']"
                 >
                   <template v-slot:append>
                     <q-icon
@@ -478,7 +480,7 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import { validateEmail } from '@utils/validation';
+import { validateEmail, validateDate } from '@utils/validation';
 import { dateToSend } from '@utils/date';
 import VendorsList from 'components/VendorsList';
 import { constants } from '@utils/constant';
@@ -719,6 +721,7 @@ export default {
     },
 
     validateEmail,
+    validateDate,
 
     onChangingSourceType() {
       this.sourceDetails.id = '';
