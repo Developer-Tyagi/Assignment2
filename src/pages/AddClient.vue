@@ -1895,17 +1895,6 @@ export default {
   components: { CustomHeader, VendorsList, AddVendor, AutoCompleteAddress },
   data() {
     return {
-      // dialogBoxes: [
-      //   this.clientInfoDailog,
-      //   this.mailingAddressDialog,
-      //   this.insuranceInfoDialog,
-      //   this.lossInfoDialog,
-      //   this.expertVendorInfoDialog,
-      //   this.estimatingInfoDialog,
-      //   this.officeTaskDialog,
-      //   this.publicAdjustorInfoDialog,
-      //   this.documentsDialog
-      // ],
       dialogBoxes: [
         { name: 'Client Info' },
         { name: 'Mailing Address' },
