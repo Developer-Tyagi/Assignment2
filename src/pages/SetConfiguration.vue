@@ -522,7 +522,87 @@
         </template>
 
         <!-- This is First Dialog -->
+        <q-dialog v-model="InspectionDialogBox" persistent>
+          <q-card style="width: 700px;height:600px; max-width: 1000vw;">
+            <q-bar class=" row justify-between" style="height:50px">
+              <div class="col-46 q-px-xl text-bold ">
+                Add Inspection Type
+              </div>
+              <q-btn dense flat icon="close" v-close-popup>
+                <q-tooltip>Close</q-tooltip>
+              </q-btn>
+            </q-bar>
 
+            <q-card-section>
+              <div
+                v-for="(contactInfo, index) in inspection.subtypes"
+                v-if="index >= 0"
+              >
+                <div
+                  class="column bg-grey-3 q-pa-xl"
+                  style="margin-left: 100px; margin-right: 100px"
+                >
+                  <div class="q-pa-lg">
+                    <q-input
+                      v-model="inspection.value"
+                      label="Type Of Inspection"
+                      lazy-rules
+                      v-if="index == 0"
+                    />
+
+                    <q-input
+                      v-model="inspection.subtypes[index].value"
+                      label="Sub Type Of Inspection"
+                      lazy-rules
+                    />
+                    Default Duration (hr))
+                    <q-slider
+                      class="q-mt-lg"
+                      name="speed"
+                      v-model="inspection.subtypes[index].duration"
+                      label-always
+                      :min="0"
+                      :max="5"
+                      :step="0.5"
+                    />
+                  </div>
+                </div>
+                <br />
+              </div>
+
+              <div class="row justify-between text-primary q-mx-xl">
+                <div class="q-ml-xl" @click="addAnotherSubType">
+                  + Another Sub Type Of Inspection
+                </div>
+                <div
+                  class="q-mr-xl"
+                  v-if="inspection.subtypes[1]"
+                  @click="onClickRemoveSubType"
+                >
+                  Remove
+                </div>
+              </div>
+              <div class="row justify-center q-pa-lg">
+                <div>
+                  <q-btn
+                    color="primary"
+                    label="Clear"
+                    class="q-mx-lg"
+                    @click="onClickClearInspectionType"
+                  />
+                </div>
+                <div>
+                  <q-btn
+                    color="primary"
+                    label="Save"
+                    class="q-mx-lg"
+                    @click="onSaveInspectionType"
+                  />
+                </div>
+              </div>
+            </q-card-section>
+          </q-card>
+        </q-dialog>
         <!-- This is Secondary Dialog Box -->
         <q-dialog v-model="industryTypeDialogBox" persistent>
           <q-card style="width: 700px; height: 400px; max-width: 1000vw">
@@ -641,9 +721,7 @@ export default {
     };
   },
   created() {
-    this.recieve = this.$route.params.data;
-    console.log(this.recieve);
-    this.tab = this.recieve;
+    this.tab = this.$route.params.data;
   },
   computed: {
     ...mapGetters([
@@ -661,9 +739,7 @@ export default {
     ])
   },
   mounted() {
-    this.recieve = this.$route.params.data;
-    console.log(this.recieve);
-    this.tab = this.recieve;
+    this.tab = this.$route.params.data;
     this.getTitles();
     this.getContactTypes();
     this.getVendorIndustries();
@@ -766,77 +842,10 @@ export default {
     },
     // This is Secondary Dialog Box
     onclickSecondaryDialogBox(value) {
-      console.log(username, 788877);
       this.industryTypeDialogBoxName = value;
       this.industryTypeDialogBox = true;
     },
-    // on Clicking Submit Button on
-    // async onSubmit() {
-    //   const success = await this.$refs.addUserForm.validate();
-    //   if (this.tab == 'sales' && this.toggle == false) {
-    //     this.tab = 'inspectionType';
-    //     return;
-    //   }
-    //   if (success) {
-    //     this.users.forEach(user => {
-    //       this.addUser(user);
-    //     });
-    //     this.users = [
-    //       {
-    //         type: 'user',
-    //         contact: {
-    //           fname: '',
-    //           lname: ''
-    //         },
-    //         email: '',
-    //         roles: []
-    //       }
-    //     ];
-    //     if (this.tab == 'addUser') {
-    //       this.tab = 'offcInfo';
-    //     } else if (this.tab == 'offcInfo') {
-    //       this.tab = 'sales';
-    //     } else if (this.tab == 'sales') {
-    //       this.tab = 'inspectionType';
-    //     }
-    //     this.isShowRemoveButton = false;
-    //   }
-    // },
 
-    async addAnotherContact() {
-      const success = await this.$refs.addUserForm.validate();
-      if (success) {
-        const len = this.users.length;
-
-        if (this.users[len - 1].contact.fname && this.users[len - 1].email) {
-          this.len = len + 1;
-          this.users.push({
-            type: 'user',
-            contact: {
-              fname: '',
-              lname: ''
-            },
-            email: '',
-            roles: []
-          });
-          this.isShowRemoveButton = true;
-        } else {
-          this.$q.notify({
-            message: 'Please fill the first Name and Email First',
-            position: 'top',
-            type: 'negative'
-          });
-        }
-      }
-    },
-    //  For Remove  AddUser,OfficeStraffInfo and Sales
-    removeAnotherContact() {
-      const len = this.users.length;
-      if (len === 2) {
-        this.isShowRemoveButton = false;
-      }
-      this.users.pop();
-    },
     // For adding SubType of Inspection Type
     addAnotherSubType() {
       this.inspection.subtypes.push({ type: ' ', duration: 0.5 });
@@ -902,21 +911,6 @@ export default {
       } else if (this.tab == 'lossCause') {
         this.tab = 'claimSeverity';
       }
-    },
-    onToggleChange() {
-      if (this.toggle == false) {
-        this.users = [
-          {
-            type: 'user',
-            contact: {
-              fname: '',
-              lname: ''
-            },
-            email: '',
-            roles: []
-          }
-        ];
-      }
     }
 
     // End of Functions
@@ -924,12 +918,6 @@ export default {
 };
 </script>
 <style lang="scss">
-.th,
-td {
-  border: 1px solid black;
-  width: 200px;
-}
-
 ::-webkit-scrollbar {
   display: none;
 }
