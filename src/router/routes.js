@@ -11,6 +11,7 @@ const routes = [
       {
         path: 'dashboard',
         name: 'dashboard',
+        caseSensitive: true,
         component: () => import('pages/Dashboard.vue')
       },
 
@@ -24,21 +25,25 @@ const routes = [
       {
         path: 'login',
         name: 'login',
+        caseSensitive: true,
         component: () => import('pages/Login.vue')
       },
       {
         path: 'signup',
         name: 'signup',
+        caseSensitive: true,
         component: () => import('pages/Signup.vue')
       },
       {
         path: 'set-password',
         name: 'set-password',
+        caseSensitive: true,
         component: () => import('pages/ForgotPassword.vue')
       },
       {
         path: 'info',
         name: 'info',
+        caseSensitive: true,
         component: () => import('pages/Information.vue')
       }
     ]
@@ -50,36 +55,43 @@ const routes = [
       {
         path: 'setConfiguration',
         name: 'setConfiguration',
+        caseSensitive: true,
         component: () => import('pages/SetConfiguration.vue')
       },
       {
         path: 'account',
         name: 'account',
+        caseSensitive: true,
         component: () => import('pages/Account.vue')
       },
       {
         path: 'payment',
         name: 'payment',
+        caseSensitive: true,
         component: () => import('pages/Payment.vue')
       },
       {
         path: 'profile',
         name: 'profile',
+        caseSensitive: true,
         component: () => import('pages/Profile.vue')
       },
       {
         path: 'my-plan',
         name: 'my plan',
+        caseSensitive: true,
         component: () => import('pages/MyPlan.vue')
       },
       {
         path: 'manage-users',
         name: 'manage users',
+        caseSensitive: true,
         component: () => import('pages/ManageUsers.vue')
       },
       {
         path: 'add-user',
         name: 'add-user',
+        caseSensitive: true,
         component: () => import('pages/AddUser.vue')
       }
     ]
@@ -91,26 +103,31 @@ const routes = [
       {
         path: 'leads-dashboard',
         name: 'leads dashboard',
+        caseSensitive: true,
         component: () => import('pages/LeadsDashboard.vue')
       },
       {
         path: 'leads',
         name: 'leads',
+        caseSensitive: true,
         component: () => import('pages/Leads.vue')
       },
       {
         path: 'add-lead',
         name: 'add new leads',
+        caseSensitive: true,
         component: () => import('pages/AddLead.vue')
       },
       {
         path: 'details/:id',
         name: 'lead details',
+        caseSensitive: true,
         component: () => import('pages/LeadDetails.vue')
       },
       {
         path: 'add-lead-details/:id?',
         name: 'add new lead',
+        caseSensitive: true,
         component: () => import('pages/AddLeadDetails.vue')
       }
     ]
@@ -122,6 +139,7 @@ const routes = [
       {
         path: 'vendors',
         name: 'vendors',
+        caseSensitive: true,
         component: () => import('pages/Vendors.vue')
       }
     ]
@@ -133,11 +151,13 @@ const routes = [
       {
         path: 'clients',
         name: 'clients',
+        caseSensitive: true,
         component: () => import('pages/Clients.vue')
       },
       {
         path: 'add-client',
         name: 'create client',
+        caseSensitive: true,
         component: () => import('pages/AddClient.vue')
       }
     ]
@@ -150,15 +170,18 @@ const routes = [
       {
         path: 'settings',
         name: 'settings',
+        caseSensitive: true,
         component: () => import('pages/Settings.vue')
       },
       {
         path: 'preferred',
+        caseSensitive: true,
         component: () => import('pages/PreferredDistance.vue')
       },
       {
         path: 'inspection-types',
         name: 'type of inspections',
+        caseSensitive: true,
         component: () => import('pages/InspectionTypes.vue')
       }
     ]

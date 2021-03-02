@@ -5,33 +5,23 @@
       :showAddButton="false"
     />
     <div class="column" style="padding: 30px 20px 20px 20px">
-      <div class="q-md column">
-        <div class="full-width fixHeight">
-          <div class="form-list" @click="clientInfoDailog = true">
-            Client Info
+      <div class="q-md column   full-width fixHeight ">
+        <div
+          v-for="dialogBox in dialogBoxes"
+          :key="dialogBox.name"
+          @click="createClientDailogBoxOpen(dialogBox.name)"
+        >
+          <div class="form-list  row">
+            {{ dialogBox.name }}
+            <div
+              class="   q-mr-lg  q-ml-auto"
+              v-if="dialogBox.validForm == true"
+            >
+              <q-icon size="xs" color="primary" name="done" />
+            </div>
           </div>
-          <div class="form-list" @click="mailingAddressDialog = true">
-            Mailing Address
-          </div>
-          <div class="form-list" @click="insuranceInfoDialog = true">
-            Insurance Info
-          </div>
-          <div class="form-list" @click="lossInfoDialog = true">Loss Info</div>
-
-          <div class="form-list" @click="expertVendorInfoDialog = true">
-            Expert/Vendor Info
-          </div>
-          <div class="form-list" @click="estimatingInfoDialog = true">
-            Estimating Info
-          </div>
-          <div class="form-list" @click="officeTaskDialog = true">
-            Office Task
-          </div>
-          <div class="form-list" @click="publicAdjustorInfoDialog = true">
-            Public Adjustor Info
-          </div>
-          <div class="form-list" @click="documentsDialog = true">Documents</div>
         </div>
+
         <q-btn
           label="Create Client"
           color="primary"
@@ -548,9 +538,9 @@
                   <AutoCompleteAddress
                     :address="clientAddressDetails"
                     :isDropBoxEnable="true"
-                    :isChecksEnable="false"
-                    :isFieldsDisable="false"
+                    :isChecksEnable="true"
                   />
+
                   <div class="row">
                     <p class="q-mx-none q-my-auto">Tenent Occupied</p>
                     <q-toggle
@@ -602,13 +592,7 @@
           </div>
 
           <q-btn
-            @click="
-              onSubmit(
-                'clientInfoDailog',
-
-                clientAddressDetails.streetAddress
-              )
-            "
+            @click="onSubmit('clientInfoDailog')"
             label="Save"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
@@ -657,7 +641,7 @@
                   <AutoCompleteAddress
                     :address="mailingAddressDetails"
                     :isDropBoxEnable="true"
-                    :isChecksEnable="false"
+                    :isChecksEnable="true"
                     :isFieldsDisable="isMailingAddressSameToggle"
                   />
                 </q-form>
@@ -671,13 +655,7 @@
             label="Save"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
-            @click="
-              onSubmit(
-                'mailingAddressDialog',
-
-                mailingAddressDetails.streetAddress
-              )
-            "
+            @click="onSubmit('mailingAddressDialog')"
             size="'xl'"
           ></q-btn>
         </q-card-section>
@@ -1007,7 +985,7 @@
                   <AutoCompleteAddress
                     :address="lossAddressDetails"
                     :isDropBoxEnable="true"
-                    :isChecksEnable="false"
+                    :isChecksEnable="true"
                     :isFieldsDisable="isLossAddressSameAsClientToggle"
                   />
                   <q-input
@@ -1316,13 +1294,7 @@
             label="Save"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
-            @click="
-              onSubmit(
-                'lossInfoDialog',
-
-                lossAddressDetails.streetAddress
-              )
-            "
+            @click="onSubmit('lossInfoDialog')"
             size="'xl'"
           ></q-btn>
         </q-card-section>
@@ -1910,6 +1882,7 @@
         <AddVendor
           @closeDialog="closeAddVendorDialog"
           :componentName="vendorDialogName"
+          :selectedIndustryType="expertVendorInfo.industry.value"
         />
       </q-card>
     </q-dialog>
@@ -1934,6 +1907,17 @@ export default {
   components: { CustomHeader, VendorsList, AddVendor, AutoCompleteAddress },
   data() {
     return {
+      dialogBoxes: [
+        { name: 'Client Info', validForm: false },
+        { name: 'Mailing Address', validForm: false },
+        { name: 'Insurance Info', validForm: false },
+        { name: 'Loss Info', validForm: false },
+        { name: 'Expert/Vendor Info', validForm: false },
+        { name: 'Estimating Info', validForm: false },
+        { name: 'Office Task', validForm: false },
+        { name: 'Public Adjustor Info', validForm: false }
+      ],
+
       vendorIndustriesOptions: [],
       estimatorsListDialog: false,
       constants: constants,
@@ -2286,19 +2270,39 @@ export default {
         );
       });
     },
-
-    validateDate,
-    checkAddressField(streetValue) {
-      if (streetValue) {
-        return true;
-      } else {
-        this.$q.notify({
-          message: 'Please fill this Street Address',
-          position: 'top',
-          type: 'negative'
-        });
+    createClientDailogBoxOpen(value) {
+      switch (value) {
+        case 'Client Info':
+          this.clientInfoDailog = true;
+          break;
+        case 'Mailing Address':
+          this.mailingAddressDialog = true;
+          break;
+        case 'Insurance Info':
+          this.insuranceInfoDialog = true;
+          break;
+        case 'Loss Info':
+          this.lossInfoDialog = true;
+          break;
+        case 'Expert/Vendor Info':
+          this.expertVendorInfoDialog = true;
+          break;
+        case 'Estimating Info':
+          this.estimatingInfoDialog = true;
+          break;
+        case 'Office Task':
+          this.officeTaskDialog = true;
+          break;
+        case 'Public Adjustor Info':
+          this.publicAdjustorInfoDialog = true;
+          break;
+        case 'Documents':
+          this.documentsDialog = true;
+          break;
       }
     },
+    validateDate,
+
     setVendorIndustryName() {
       const selectedName = this.expertVendorInfo.industry.value;
       const result = this.vendorIndustries.find(obj => {
@@ -2314,29 +2318,41 @@ export default {
       this.states = addressService.getStates(country);
     },
 
-    async onSubmit(name, streetAddress) {
+    async onSubmit(name) {
       let success = false;
+      let validationIndex;
       switch (name) {
         case 'clientInfoDailog':
           success = await this.$refs.clientForm.validate();
+          validationIndex = 0;
           break;
         case 'insuranceInfoDialog':
           success = await this.$refs.insuranceInfoForm.validate();
+          validationIndex = 2;
           break;
+
         case 'mailingAddressDialog':
           success = await this.$refs.mailingAddressForm.validate();
+          validationIndex = 1;
           break;
+
         case 'addEstimatorDialog':
           success = await this.$refs.addEstimatorForm.validate();
+          validationIndex = 5;
           break;
         case 'lossInfoDialog':
           success = await this.$refs.lossInfoForm.validate();
+          validationIndex = 3;
           break;
+
         case 'expertVendorInfoDialog':
           success = await this.$refs.expertVendorInfoForm.validate();
+          validationIndex = 4;
           break;
       }
       if (success == true) {
+        this.dialogBoxes[validationIndex].validForm = true;
+
         if (
           name === 'insuranceInfoDialog' ||
           name === 'expertVendorInfoDialog'
@@ -2347,10 +2363,10 @@ export default {
           this.onAddEstimatorButtonClick();
           this[name] = false;
         } else {
-          if (this.checkAddressField(streetAddress, name)) {
-            this[name] = false;
-          }
+          this[name] = false;
         }
+      } else {
+        this.dialogBoxes.validForm = false;
       }
     },
     setTitleName(val) {
@@ -2646,10 +2662,9 @@ export default {
           }
         ]
       };
-
       const response = this.addEstimator(payload);
-
       if (response) {
+        await this.getEstimators();
         this.addEstimatorInfo = {
           name: '',
           fname: '',
@@ -2659,7 +2674,6 @@ export default {
           type: ''
         };
         (this.honorific3.id = ''), (this.addEstimatorDialog = false);
-        this.getEstimators();
       }
     },
     selectEstimator(value) {
@@ -2757,6 +2771,7 @@ export default {
         case constants.industries.EXPERTVENDOR:
           this.vendorDialogName = constants.industries.VENDOR;
           this.showVendorDialogFilters = false;
+          this.vendorDialogFilterByIndustry = constants.industries.VENDOR;
 
           this.vendorDialogFilterByIndustry = this.expertVendorInfo.industry.machineValue;
           break;
@@ -2786,6 +2801,7 @@ export default {
   margin-bottom: 10px;
   padding-top: 20px;
 }
+
 .form-card {
   max-height: calc(100vh - 100px);
   overflow: scroll;
@@ -2805,8 +2821,9 @@ export default {
   color: #333333;
   font-weight: bold;
   font-size: 16px;
-  padding: 15px 0;
+  padding: 5px;
   border-bottom: 1px solid #d3d3d3;
+  margin-top: 20px;
 }
 
 .custom-select {
