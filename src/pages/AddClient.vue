@@ -7,13 +7,16 @@
     <div class="column" style="padding: 30px 20px 20px 20px">
       <div class="q-md column   full-width fixHeight ">
         <div
-          v-for="(dialogBox, index) in dialogBoxes"
+          v-for="dialogBox in dialogBoxes"
           :key="dialogBox.name"
           @click="createClientDailogBoxOpen(dialogBox.name)"
         >
           <div class="form-list  row">
             {{ dialogBox.name }}
-            <div class="   q-mr-lg  q-ml-auto" v-if="validForm[index] == true">
+            <div
+              class="   q-mr-lg  q-ml-auto"
+              v-if="dialogBox.validForm == true"
+            >
               <q-icon size="xs" color="primary" name="done" />
             </div>
           </div>
@@ -1896,16 +1899,16 @@ export default {
   data() {
     return {
       dialogBoxes: [
-        { name: 'Client Info' },
-        { name: 'Mailing Address' },
-        { name: 'Insurance Info' },
-        { name: 'Loss Info' },
-        { name: 'Expert/Vendor Info' },
-        { name: 'Estimating Info' },
-        { name: 'Office Task' },
-        { name: 'Public Adjustor Info' }
+        { name: 'Client Info', validForm: false },
+        { name: 'Mailing Address', validForm: false },
+        { name: 'Insurance Info', validForm: false },
+        { name: 'Loss Info', validForm: false },
+        { name: 'Expert/Vendor Info', validForm: false },
+        { name: 'Estimating Info', validForm: false },
+        { name: 'Office Task', validForm: false },
+        { name: 'Public Adjustor Info', validForm: false }
       ],
-      validForm: [],
+
       vendorIndustriesOptions: [],
       estimatorsListDialog: false,
       constants: constants,
@@ -2308,39 +2311,39 @@ export default {
 
     async onSubmit(name) {
       let success = false;
-      let index;
-
+      let validationIndex;
       switch (name) {
         case 'clientInfoDailog':
           success = await this.$refs.clientForm.validate();
-          index = 0;
+          validationIndex = 0;
           break;
         case 'insuranceInfoDialog':
           success = await this.$refs.insuranceInfoForm.validate();
-          index = 2;
+          validationIndex = 2;
           break;
 
         case 'mailingAddressDialog':
           success = await this.$refs.mailingAddressForm.validate();
-          index = 1;
+          validationIndex = 1;
           break;
 
         case 'addEstimatorDialog':
           success = await this.$refs.addEstimatorForm.validate();
-
+          validationIndex = 5;
           break;
         case 'lossInfoDialog':
           success = await this.$refs.lossInfoForm.validate();
-          index = 3;
+          validationIndex = 3;
           break;
 
         case 'expertVendorInfoDialog':
           success = await this.$refs.expertVendorInfoForm.validate();
-          index = 4;
+          validationIndex = 4;
           break;
       }
       if (success == true) {
-        this.validForm[index] = true;
+        this.dialogBoxes[validationIndex].validForm = true;
+
         if (
           name === 'insuranceInfoDialog' ||
           name === 'expertVendorInfoDialog'
@@ -2353,6 +2356,8 @@ export default {
         } else {
           this[name] = false;
         }
+      } else {
+        this.dialogBoxes.validForm = false;
       }
     },
     setTitleName(val) {
