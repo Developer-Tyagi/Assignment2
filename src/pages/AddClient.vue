@@ -4,6 +4,7 @@
       @backButton="$router.push('/clients')"
       :showAddButton="false"
     />
+
     <div class="column" style="padding: 30px 20px 20px 20px">
       <div class="q-md column full-width fixHeight">
         <div
@@ -23,11 +24,13 @@
           label="Create Client"
           color="primary"
           class="full-width q-mt-auto text-capitalize"
+          :disabled="isCreateClientButtonDisabled"
           @click="createClientButtonClick"
           size="'xl'"
         ></q-btn>
       </div>
     </div>
+
     <!-- Public Adjuster Info -->
     <q-dialog
       v-model="publicAdjustorInfoDialog"
@@ -1913,6 +1916,7 @@ export default {
   components: { CustomHeader, VendorsList, AddVendor, AutoCompleteAddress },
   data() {
     return {
+      isCreateClientButtonDisabled: true,
       industryType: {
         value: '',
         machineValue: ''
@@ -2346,15 +2350,18 @@ export default {
         case 'clientInfoDailog':
           success = await this.$refs.clientForm.validate();
           validationIndex = 0;
+
           break;
         case 'insuranceInfoDialog':
           success = await this.$refs.insuranceInfoForm.validate();
           validationIndex = 2;
+
           break;
 
         case 'mailingAddressDialog':
           success = await this.$refs.mailingAddressForm.validate();
           validationIndex = 1;
+
           break;
 
         case 'addEstimatorDialog':
@@ -2364,15 +2371,26 @@ export default {
         case 'lossInfoDialog':
           success = await this.$refs.lossInfoForm.validate();
           validationIndex = 3;
+
           break;
 
         case 'expertVendorInfoDialog':
           success = await this.$refs.expertVendorInfoForm.validate();
           validationIndex = 4;
+
           break;
       }
       if (success == true) {
         this.dialogBoxes[validationIndex].validForm = true;
+
+        for (var i = 0; i < this.dialogBoxes.length - 3; i++) {
+          if (this.dialogBoxes[i].validForm == false) {
+            this.isCreateClientButtonDisabled = true;
+            break;
+          } else {
+            this.isCreateClientButtonDisabled = false;
+          }
+        }
 
         if (
           name === 'insuranceInfoDialog' ||

@@ -45,7 +45,7 @@
               <tr>
                 <th class="text-left">Contact Name</th>
                 <th class="text-left">Email</th>
-                <th class="text-left">Tel</th>
+                <th class="text-left">Phone</th>
                 <th class="text-left">Member Since</th>
                 <th class="text-left">Roles</th>
                 <th class="text-left">Last Access</th>
@@ -59,9 +59,22 @@
                   {{ user.attributes.contact.fname }}
                   {{ user.attributes.contact.lname }}
                 </td>
-                <td class="text-left">{{ user.attributes.email }}</td>
                 <td class="text-left">
-                  {{ user.attributes['contact']['phoneNumber'] }}
+                  <!-- {{ user.attributes.email }} -->
+
+                  <span
+                    v-if="user.attributes.email"
+                    @click="onEmailClick(user.attributes.email, $event)"
+                    >{{ user.attributes.email }}</span
+                  ><span v-else> - </span>
+                </td>
+                <td class="text-left">
+                  <!-- {{ user.attributes['contact']['phoneNumber'] }} -->
+                  <span
+                    v-if="5567656"
+                    @click="onPhoneNumberClick(24355732, $event)"
+                    >{{ 24355732 }}</span
+                  ><span v-else> - </span>
                 </td>
                 <td class="text-left">{{ date }}/</td>
                 <td class="text-left">{{ user.attributes.roles[0] }}</td>
@@ -257,7 +270,19 @@ export default {
   methods: {
     validateEmail,
     ...mapActions(['addUser', 'setOnboard', 'getAllUsers']),
-
+    onEmailClick(email, e) {
+      e.stopPropagation();
+      if (email) {
+        window.open('mailto:' + email);
+      }
+    },
+    onPhoneNumberClick(number, e) {
+      e.stopPropagation();
+      if (number) {
+        window.open('tel:' + number);
+      }
+    },
+    //this is important dont remove this function
     onItemClick() {},
 
     //fThis is for Updating the  Onboarding status
