@@ -5,7 +5,7 @@
     <div class="q-pa-xs" style="height: 60%; width: 95%">
       <div class="full-width">
         <div class="my-font text-bold row q-my-lg q-mx-xl">
-          Setup Company Account {{ recieve }}
+          Setup Company Account
         </div>
       </div>
       <!-- Height given for there Inner 2 div -->
@@ -27,7 +27,6 @@
             <!-- Inspection Type -->
             <q-tab-panel name="inspectionType">
               <div class="row justify-between">
-                <!-- empty pannel -->
                 <div class="text-bold col-4">Inspection Type</div>
                 <div
                   class="col-2 text-primary"
@@ -56,7 +55,7 @@
                   v-for="(ins, index) in inspectionTypes"
                   v-if="index >= 0"
                 >
-                  <div class="col-8 q-ml-xl bg-grey-2">
+                  <div class="col-8 q-ml-xl q-my-md bg-grey-2">
                     <div class="col-5 q-pl-md">
                       {{ inspectionTypes[index].value }}
                     </div>
@@ -74,7 +73,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-2 bg-grey-2 q-pl-xl">
+                  <div class="col-2 bg-grey-2 q-pl-xl q-my-md q-pt-md">
                     <q-icon size="sm" color="primary" name="create" />
                     <q-icon
                       class="q-ml-xs"
@@ -103,7 +102,7 @@
               <div class="q-pa-lg" v-if="!vendorIndustries">
                 You Have Not Added Any IndustryType yet
               </div>
-              <div v-else class="bg-grey-1">
+              <div v-else class="bg-grey-1 q-pl-xl q-my-md ">
                 <div
                   class="q-py-xs row justify-between full-width"
                   v-for="(contactInfo, index) in vendorIndustries"
@@ -500,7 +499,7 @@
           <div class="bg-blue">
             <q-separator />
           </div>
-          <div class="q-mt-lg row justify-center">
+          <div class="q-mt-lg row justify-center  full-width">
             <q-btn
               color="primary"
               label="Next"
@@ -681,30 +680,14 @@ export default {
 
   data() {
     return {
-      recieve: '',
       InspectionDialogBox: false,
       industryTypeDialogBox: false,
       industryTypeDialogBoxName: '',
       len: 1,
-      toggle: false,
 
-      // this is for static dropdown
-      options: ['Manager', 'Staff'],
       isShowRemoveButton: false,
       tab: '',
-      splitterModel: 20,
 
-      users: [
-        {
-          type: 'user',
-          contact: {
-            fname: '',
-            lname: ''
-          },
-          email: '',
-          roles: []
-        }
-      ],
       inspection: {
         value: '',
 
@@ -718,8 +701,14 @@ export default {
       }
     };
   },
+
+  watch: {
+    $route(to, from) {
+      this.tab = this.$route.query.data;
+    }
+  },
   created() {
-    this.tab = this.$route.params.data;
+    this.tab = this.$route.query.data;
   },
   computed: {
     ...mapGetters([
@@ -736,8 +725,8 @@ export default {
       'claimSeverity'
     ])
   },
+
   mounted() {
-    this.tab = this.$route.params.data;
     this.getTitles();
     this.getContactTypes();
     this.getVendorIndustries();

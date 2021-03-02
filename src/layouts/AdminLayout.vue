@@ -56,54 +56,13 @@
                       <q-card-section>
                         <div class="q-pa-xs border border-dark ">
                           <div
-                            class="q-ma-xs"
-                            style="text-decoration:none"
-                            @click="shareData('inspectionType')"
+                            v-for="ConfigurationType in ConfigurationType"
+                            :key="ConfigurationType.name"
+                            @click="shareData(ConfigurationType.dilogName)"
                           >
-                            Inspection Type
-                          </div>
-
-                          <div
-                            class="q-ma-xs border border-red"
-                            outlined
-                            @click="shareData('industryType')"
-                          >
-                            Industry Type
-                          </div>
-                          <div
-                            class="q-ma-xs border border-red"
-                            outlined
-                            @click="shareData('honorific')"
-                          >
-                            Honorific
-                          </div>
-                          <div
-                            class="q-ma-xs border border-red"
-                            outlined
-                            @click="shareData('phoneType')"
-                          >
-                            Phone Type
-                          </div>
-                          <div
-                            class="q-ma-xs border border-red"
-                            outlined
-                            @click="shareData('clientType')"
-                          >
-                            Client Type
-                          </div>
-                          <div
-                            class="q-ma-xs border border-red"
-                            outlined
-                            @click="shareData('policyCategories')"
-                          >
-                            Policy Categories
-                          </div>
-                          <div
-                            class="q-ma-xs border border-red"
-                            outlined
-                            @click="shareData('policyType')"
-                          >
-                            Policy Type
+                            <div class="form-list row">
+                              {{ ConfigurationType.name }}
+                            </div>
                           </div>
                         </div>
                       </q-card-section>
@@ -136,12 +95,24 @@
 </template>
 
 <script>
-// import { removeToken, removeCurrentUser } from '@utils/auth';
 export default {
   name: 'AdminLayout',
   data() {
     return {
-      sendData: 'himnnnn',
+      ConfigurationType: [
+        { name: 'Inspection Type', dilogName: 'inspectionType' },
+        { name: ' Industry Type', dilogName: 'industryType' },
+        { name: 'Honorific', dilogName: 'honorific' },
+        { name: 'Phone Type', dilogName: 'phoneType' },
+        { name: 'Client Type', dilogName: 'clientType' },
+        { name: 'Policy Categories', dilogName: 'policyCategories' },
+        { name: 'Policy Type', dilogName: 'policyType' },
+        { name: 'Property Type', dilogName: 'propertyType' },
+        { name: 'Claim Reason', dilogName: 'claimReason' },
+        { name: 'Loss Cause', dilogName: 'lossCause' },
+        { name: 'Claim Severity', dilogName: 'claimSeverity' }
+      ],
+
       user: {
         name: ''
       },
@@ -153,8 +124,8 @@ export default {
   methods: {
     shareData(value) {
       this.$router.push({
-        name: 'setConfiguration',
-        params: { data: value }
+        path: 'setConfiguration',
+        query: { data: value }
       });
     },
     onMenuButtonClick() {
