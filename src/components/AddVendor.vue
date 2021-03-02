@@ -337,6 +337,7 @@ export default {
     this.getVendorIndustries();
     this.getTitles();
     this.getContactTypes();
+    console.log(this.selectedIndustryType);
 
     if (this.componentName === constants.industries.CARRIER) {
       let industryType = this.vendorIndustries.find(
@@ -349,7 +350,7 @@ export default {
       }
     }
 
-    if (this.componentName === constants.industries.VENDOR) {
+    if (this.componentName === constants.industries.EXPERTVENDOR) {
       let industryType = this.vendorIndustries.find(
         o => o.name === this.selectedIndustryType
       );
@@ -504,6 +505,10 @@ export default {
     if (this.componentName == constants.industries.VENDOR) {
       this.industryFilterDisabled = true;
     }
+    if (this.componentName == constants.industries.EXPERTVENDOR) {
+      this.industryFilterDisabled = false;
+    }
+
     this.options = this.vendorIndustries;
     this.countries = addressService.getCountries();
     this.onCountrySelect('United States');
