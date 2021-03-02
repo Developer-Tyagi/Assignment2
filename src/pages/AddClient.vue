@@ -715,7 +715,7 @@
                   />
                   <br />
                   <div class="row">
-                    <p class=" q-mx-none q-my-auto form-heading ">
+                    <p class=" q-my-auto form-heading ">
                       Has claim been filed?
                     </p>
                     <q-toggle
@@ -724,7 +724,7 @@
                     />
                   </div>
                   <div class="row">
-                    <p class="q-mx-none q-my-auto form-heading">
+                    <p class=" q-my-auto form-heading">
                       Is this is a Foced-Placed policy?
                     </p>
 
@@ -973,7 +973,7 @@
               <div>
                 <q-form ref="lossInfoForm">
                   <div class="row">
-                    <p class=" q-mx-none q-my-auto form-heading">
+                    <p class=" q-my-auto form-heading">
                       Loss Address Same As Client's?
                     </p>
                     <q-toggle
@@ -1151,7 +1151,7 @@
                   <br />
 
                   <div class="row">
-                    <p class="q-mx-none q-my-auto form-heading">
+                    <p class=" q-my-auto form-heading">
                       Is the Home Habitable?
                     </p>
                     <q-toggle class="q-ml-auto" v-model="isTheHomeHabitable" />
@@ -1161,7 +1161,7 @@
                     <q-toggle class="q-ml-auto" v-model="femaClaimToggle" />
                   </div>
                   <div class="row">
-                    <p class="q-mx-none q-my-auto form-heading">
+                    <p class=" q-my-auto form-heading">
                       State of Emergency
                     </p>
                     <q-toggle
@@ -1219,7 +1219,7 @@
                   />
 
                   <div class="row">
-                    <p class="q-mx-none q-my-auto form-heading">
+                    <p class=" q-my-auto form-heading">
                       Is there damage to personal property?
                     </p>
                     <q-toggle
@@ -1255,7 +1255,7 @@
                     />
                   </div>
                   <div class="row">
-                    <p class="q-mx-none q-my-auto form-heading">
+                    <p class=" q-my-auto form-heading">
                       Is there a mortgage on the home?
                     </p>
                     <q-toggle
