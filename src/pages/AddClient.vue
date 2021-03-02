@@ -5,18 +5,15 @@
       :showAddButton="false"
     />
     <div class="column" style="padding: 30px 20px 20px 20px">
-      <div class="q-md column   full-width fixHeight ">
+      <div class="q-md column full-width fixHeight">
         <div
           v-for="dialogBox in dialogBoxes"
           :key="dialogBox.name"
           @click="createClientDailogBoxOpen(dialogBox.name)"
         >
-          <div class="form-list  row">
+          <div class="form-list row">
             {{ dialogBox.name }}
-            <div
-              class="   q-mr-lg  q-ml-auto"
-              v-if="dialogBox.validForm == true"
-            >
+            <div class="q-mr-lg q-ml-auto" v-if="dialogBox.validForm == true">
               <q-icon size="xs" color="primary" name="done" />
             </div>
           </div>
@@ -732,7 +729,7 @@
                   </div>
                   <span class="form-heading">Policy Effective date</span>
 
-                  <div class=" full-width">
+                  <div class="full-width">
                     <q-input
                       v-model="insuranceDetails.policyEffectiveDate"
                       mask="##/##/####"
@@ -767,7 +764,7 @@
 
                   <span class="form-heading">Policy Expiry date </span>
 
-                  <div class=" full-width">
+                  <div class="full-width">
                     <q-input
                       v-model="insuranceDetails.policyExpireDate"
                       mask="##/##/####"
@@ -1032,7 +1029,7 @@
                   /><br />
                   <span class="form-heading">Date of Loss</span>
 
-                  <div class=" full-width">
+                  <div class="full-width">
                     <q-input
                       v-model="lossInfo.dateOfLoss"
                       mask="##/##/####"
@@ -1081,7 +1078,7 @@
                   /><br />
                   <span class="form-heading">Deadline Date</span>
 
-                  <div class=" full-width">
+                  <div class="full-width">
                     <q-input
                       v-model="lossInfo.deadlineDate"
                       mask="##/##/####"
@@ -1114,7 +1111,7 @@
                   <br />
                   <span class="form-heading">Recov. Deprec. Deadline</span>
 
-                  <div class=" full-width">
+                  <div class="full-width">
                     <q-input
                       v-model="lossInfo.recovDeadline"
                       mask="##/##/####"
@@ -2268,7 +2265,7 @@ export default {
 
     ...mapMutations(['setSelectedLead']),
     async addAnotherIndustry() {
-      var response = await this.addIndustry(this.industryType);
+      const response = await this.addIndustry(this.industryType);
       if (response) {
         this.$q.notify({
           message: 'Added New Industry Type',

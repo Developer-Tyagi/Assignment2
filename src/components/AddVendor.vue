@@ -337,8 +337,6 @@ export default {
     this.getVendorIndustries();
     this.getTitles();
     this.getContactTypes();
-    console.log(this.selectedIndustryType);
-
     if (this.componentName === constants.industries.CARRIER) {
       let industryType = this.vendorIndustries.find(
         o => o.machineValue === constants.industries.CARRIER
