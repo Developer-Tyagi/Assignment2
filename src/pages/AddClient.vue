@@ -5,33 +5,23 @@
       :showAddButton="false"
     />
     <div class="column" style="padding: 30px 20px 20px 20px">
-      <div class="q-md column">
-        <div class="full-width fixHeight">
-          <div class="form-list" @click="clientInfoDailog = true">
-            Client Info
+      <div class="q-md column   full-width fixHeight ">
+        <div
+          v-for="dialogBox in dialogBoxes"
+          :key="dialogBox.name"
+          @click="createClientDailogBoxOpen(dialogBox.name)"
+        >
+          <div class="form-list  row">
+            {{ dialogBox.name }}
+            <div
+              class="   q-mr-lg  q-ml-auto"
+              v-if="dialogBox.validForm == true"
+            >
+              <q-icon size="xs" color="primary" name="done" />
+            </div>
           </div>
-          <div class="form-list" @click="mailingAddressDialog = true">
-            Mailing Address
-          </div>
-          <div class="form-list" @click="insuranceInfoDialog = true">
-            Insurance Info
-          </div>
-          <div class="form-list" @click="lossInfoDialog = true">Loss Info</div>
-
-          <div class="form-list" @click="expertVendorInfoDialog = true">
-            Expert/Vendor Info
-          </div>
-          <div class="form-list" @click="estimatingInfoDialog = true">
-            Estimating Info
-          </div>
-          <div class="form-list" @click="officeTaskDialog = true">
-            Office Task
-          </div>
-          <div class="form-list" @click="publicAdjustorInfoDialog = true">
-            Public Adjustor Info
-          </div>
-          <div class="form-list" @click="documentsDialog = true">Documents</div>
         </div>
+
         <q-btn
           label="Create Client"
           color="primary"
@@ -352,17 +342,16 @@
                     ]"
                     label="Last Name"
                   />
-                  <div class="row">
+                  <div class="row justify-between">
                     <q-select
                       v-model="insuredDetails.type"
-                      class="required"
+                      class="required col-5"
                       :options="contactTypes"
                       option-value="machineValue"
                       option-label="name"
                       map-options
                       emit-value
                       label="Type"
-                      style="width: 40%; margin-right: auto"
                       lazy-rules
                       :rules="[
                         val =>
@@ -371,14 +360,13 @@
                     />
                     <q-input
                       v-model="insuredDetails.phone"
-                      class="required"
+                      class="required col-6"
                       label="Phone"
-                      type="number"
-                      style="width: 55%"
+                      mask="(###) ###-####"
                       lazy-rules
                       :rules="[
                         val =>
-                          (val && val.length == 10) ||
+                          (val && val.length == 14) ||
                           'Please enter the phone number'
                       ]"
                     />
@@ -429,16 +417,15 @@
                       v-model="coInsuredDetails.lname"
                       label="Last Name"
                     />
-                    <div class="row">
+                    <div class="row justify-between">
                       <q-select
                         v-model="coInsuredDetails.type"
-                        class="required"
+                        class="required col-5"
                         :options="contactTypes"
                         option-value="machineValue"
                         option-label="name"
                         map-options
                         emit-value
-                        style="width: 40%; margin-right: auto"
                         label="Type"
                         lazy-rules
                         :rules="[
@@ -450,15 +437,14 @@
                       <q-input
                         v-model="coInsuredDetails.phone"
                         label="Phone"
-                        class="required"
-                        type="number"
+                        class="required col-6"
+                        mask="(###) ###-####"
                         lazy-rules
                         :rules="[
                           val =>
-                            (val && val.length == 10) ||
+                            (val && val.length == 14) ||
                             'Please enter the phone number'
                         ]"
-                        style="width: 55%"
                       />
                     </div>
                     <q-input
@@ -485,10 +471,10 @@
                     />
                   </div>
                   <div v-if="addAditionalPhoneNumberToggle">
-                    <div class="row">
+                    <div class="row justify-between">
                       <q-select
                         v-model="addAditionalPhoneNumber.type1"
-                        class="required"
+                        class="required col-5"
                         label="Type"
                         :options="contactTypes"
                         option-value="machineValue"
@@ -501,25 +487,23 @@
                             (val && val.length > 0) ||
                             'Please select phone type'
                         ]"
-                        style="width: 40%; margin-right: auto"
                       />
                       <q-input
                         v-model="addAditionalPhoneNumber.phone2"
                         label="Phone2"
-                        class="required"
-                        type="number"
+                        class="required col-6"
+                        mask="(###) ###-####"
                         lazy-rules
                         :rules="[
                           val =>
-                            (val && val.length == 10) ||
+                            (val && val.length == 14) ||
                             'Please enter the phone number'
                         ]"
-                        style="width: 55%; margin-left: auto"
                       />
                     </div>
-                    <div class="row">
+                    <div class="row justify-between">
                       <q-select
-                        class="required"
+                        class="required col-5"
                         v-model="addAditionalPhoneNumber.type2"
                         label="Type"
                         :options="contactTypes"
@@ -533,20 +517,18 @@
                             (val && val.length > 0) ||
                             'Please select phone type'
                         ]"
-                        style="width: 40%; margin-right: auto"
                       />
                       <q-input
-                        class="required"
+                        class="required col-6"
                         v-model="addAditionalPhoneNumber.phone3"
                         label="Phone3"
-                        type="number"
+                        mask="(###) ###-####"
                         lazy-rules
                         :rules="[
                           val =>
-                            (val && val.length == 10) ||
+                            (val && val.length == 14) ||
                             'Please enter the phone number'
                         ]"
-                        style="width: 55%"
                       />
                     </div>
                   </div>
@@ -556,9 +538,9 @@
                   <AutoCompleteAddress
                     :address="clientAddressDetails"
                     :isDropBoxEnable="true"
-                    :isChecksEnable="false"
-                    :isFieldsDisable="false"
+                    :isChecksEnable="true"
                   />
+
                   <div class="row">
                     <p class="q-mx-none q-my-auto">Tenent Occupied</p>
                     <q-toggle
@@ -572,9 +554,9 @@
                       label="Tenant Name"
                     />
 
-                    <div class="row">
+                    <div class="row justify-between">
                       <q-select
-                        class="required"
+                        class="required col-5"
                         v-model="tenantOccupied.type"
                         label="Type"
                         :options="contactTypes"
@@ -582,7 +564,6 @@
                         option-label="name"
                         map-options
                         emit-value
-                        style="width: 40%; margin-right: auto"
                         lazy-rules
                         :rules="[
                           val =>
@@ -591,14 +572,14 @@
                         ]"
                       />
                       <q-input
-                        class="required"
+                        class="required col-6"
                         v-model="tenantOccupied.phone"
                         label="Phone"
-                        style="width: 55%; margin-left: auto"
+                        mask="(###) ###-####"
                         lazy-rules
                         :rules="[
                           val =>
-                            (val && val.length == 10) ||
+                            (val && val.length == 14) ||
                             'Please enter the phone number'
                         ]"
                       />
@@ -611,13 +592,7 @@
           </div>
 
           <q-btn
-            @click="
-              onSubmit(
-                'clientInfoDailog',
-
-                clientAddressDetails.streetAddress
-              )
-            "
+            @click="onSubmit('clientInfoDailog')"
             label="Save"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
@@ -666,7 +641,7 @@
                   <AutoCompleteAddress
                     :address="mailingAddressDetails"
                     :isDropBoxEnable="true"
-                    :isChecksEnable="false"
+                    :isChecksEnable="true"
                     :isFieldsDisable="isMailingAddressSameToggle"
                   />
                 </q-form>
@@ -680,13 +655,7 @@
             label="Save"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
-            @click="
-              onSubmit(
-                'mailingAddressDialog',
-
-                mailingAddressDetails.streetAddress
-              )
-            "
+            @click="onSubmit('mailingAddressDialog')"
             size="'xl'"
           ></q-btn>
         </q-card-section>
@@ -762,15 +731,73 @@
                     />
                   </div>
                   <span class="form-heading">Policy Effective date</span>
-                  <q-input
-                    v-model="insuranceDetails.policyEffectiveDate"
-                    type="date"
-                  /><br />
+
+                  <div class=" full-width">
+                    <q-input
+                      v-model="insuranceDetails.policyEffectiveDate"
+                      mask="##/##/####"
+                      label="MM/DD/YYYY"
+                      lazy-rules
+                      :rules="[val => validateDate(val) || 'Invalid date!']"
+                    >
+                      <template v-slot:append>
+                        <q-icon
+                          name="event"
+                          size="sm"
+                          color="primary"
+                          class="cursor-pointer"
+                        >
+                          <q-popup-proxy
+                            ref="qDateProxy"
+                            transition-show="scale"
+                            transition-hide="scale"
+                          >
+                            <q-date
+                              v-model="insuranceDetails.policyEffectiveDate"
+                              @input="() => $refs.qDateProxy.hide()"
+                              mask="MM/DD/YYYY"
+                            ></q-date>
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                    </q-input>
+                  </div>
+
+                  <br />
+
                   <span class="form-heading">Policy Expiry date </span>
-                  <q-input
-                    v-model="insuranceDetails.policyExpireDate"
-                    type="date"
-                  />
+
+                  <div class=" full-width">
+                    <q-input
+                      v-model="insuranceDetails.policyExpireDate"
+                      mask="##/##/####"
+                      label="MM/DD/YYYY"
+                      lazy-rules
+                      :rules="[val => validateDate(val) || 'Invalid date!']"
+                    >
+                      <template v-slot:append>
+                        <q-icon
+                          name="event"
+                          size="sm"
+                          color="primary"
+                          class="cursor-pointer"
+                        >
+                          <q-popup-proxy
+                            ref="qDateProxy1"
+                            transition-show="scale"
+                            transition-hide="scale"
+                          >
+                            <q-date
+                              v-model="insuranceDetails.policyExpireDate"
+                              @input="() => $refs.qDateProxy1.hide()"
+                              mask="MM/DD/YYYY"
+                            ></q-date>
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                    </q-input>
+                  </div>
+
                   <q-select
                     class="required"
                     v-model="insuranceDetails.policyCategory.id"
@@ -954,7 +981,7 @@
                   <AutoCompleteAddress
                     :address="lossAddressDetails"
                     :isDropBoxEnable="true"
-                    :isChecksEnable="false"
+                    :isChecksEnable="true"
                     :isFieldsDisable="isLossAddressSameAsClientToggle"
                   />
                   <q-input
@@ -1004,11 +1031,37 @@
                     ]"
                   /><br />
                   <span class="form-heading">Date of Loss</span>
-                  <q-input
-                    v-model="lossInfo.dateOfLoss"
-                    type="date"
-                    placeholder="Date of Loss"
-                  />
+
+                  <div class=" full-width">
+                    <q-input
+                      v-model="lossInfo.dateOfLoss"
+                      mask="##/##/####"
+                      label="MM/DD/YYYY"
+                      lazy-rules
+                      :rules="[val => validateDate(val) || 'Invalid date!']"
+                    >
+                      <template v-slot:append>
+                        <q-icon
+                          name="event"
+                          size="sm"
+                          color="primary"
+                          class="cursor-pointer"
+                        >
+                          <q-popup-proxy
+                            ref="qDateProxy2"
+                            transition-show="scale"
+                            transition-hide="scale"
+                          >
+                            <q-date
+                              v-model="lossInfo.dateOfLoss"
+                              @input="() => $refs.qDateProxy2.hide()"
+                              mask="MM/DD/YYYY"
+                            ></q-date>
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                    </q-input>
+                  </div>
 
                   <q-select
                     class="required"
@@ -1027,17 +1080,72 @@
                     ]"
                   /><br />
                   <span class="form-heading">Deadline Date</span>
-                  <q-input
-                    v-model="lossInfo.deadlineDate"
-                    type="date"
-                    placeholder="Deadline Date"
-                  /><br />
+
+                  <div class=" full-width">
+                    <q-input
+                      v-model="lossInfo.deadlineDate"
+                      mask="##/##/####"
+                      label="MM/DD/YYYY"
+                      lazy-rules
+                      :rules="[val => validateDate(val) || 'Invalid date!']"
+                    >
+                      <template v-slot:append>
+                        <q-icon
+                          name="event"
+                          size="sm"
+                          color="primary"
+                          class="cursor-pointer"
+                        >
+                          <q-popup-proxy
+                            ref="qDateProxy3"
+                            transition-show="scale"
+                            transition-hide="scale"
+                          >
+                            <q-date
+                              v-model="lossInfo.deadlineDate"
+                              @input="() => $refs.qDateProxy3.hide()"
+                              mask="MM/DD/YYYY"
+                            ></q-date>
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                    </q-input>
+                  </div>
+                  <br />
                   <span class="form-heading">Recov. Deprec. Deadline</span>
-                  <q-input
-                    v-model="lossInfo.recovDeadline"
-                    type="date"
-                    placeholder="Recov. Deprec. Deadline"
-                  /><br />
+
+                  <div class=" full-width">
+                    <q-input
+                      v-model="lossInfo.recovDeadline"
+                      mask="##/##/####"
+                      label="MM/DD/YYYY"
+                      lazy-rules
+                      :rules="[val => validateDate(val) || 'Invalid date!']"
+                    >
+                      <template v-slot:append>
+                        <q-icon
+                          name="event"
+                          size="sm"
+                          color="primary"
+                          class="cursor-pointer"
+                        >
+                          <q-popup-proxy
+                            ref="qDateProxy4"
+                            transition-show="scale"
+                            transition-hide="scale"
+                          >
+                            <q-date
+                              v-model="lossInfo.recovDeadline"
+                              @input="() => $refs.qDateProxy4.hide()"
+                              mask="MM/DD/YYYY"
+                            ></q-date>
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                    </q-input>
+                  </div>
+                  <br />
+
                   <div class="row">
                     <span class="form-heading">Is the Home Habitable?</span>
                     <q-toggle class="q-ml-auto" v-model="isTheHomeHabitable" />
@@ -1144,20 +1252,19 @@
                     </span>
                     <q-toggle
                       class="q-ml-auto"
-                      v-model="IsMortgageHomeToggle"
+                      v-model="isMortgageHomeToggle"
+                      @input="onToggleButtonClick"
                     />
                   </div>
                 </q-form>
               </div>
               <div
-                v-if="IsMortgageHomeToggle"
+                v-if="isMortgageHomeToggle"
                 @click="mortgageInfoDialog = true"
               >
-                <div class="row ">
-                  <div class=" q-px-xs row">
-                    <div v-if="!mortgageDetails[0].id">
-                      Select Mortgage
-                    </div>
+                <div class="row">
+                  <div class="q-px-xs row">
+                    <div v-if="!mortgageDetails[0]['id']">Select Mortgage</div>
                     <div
                       v-else
                       class="select-text"
@@ -1166,9 +1273,7 @@
                       <span>
                         {{ mortgageDetail.value }}
                       </span>
-                      <span v-if="mortgageDetails.length - 1 > index">
-                        ,
-                      </span>
+                      <span v-if="mortgageDetails.length - 1 > index"> , </span>
                     </div>
                   </div>
                 </div>
@@ -1181,13 +1286,7 @@
             label="Save"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
-            @click="
-              onSubmit(
-                'lossInfoDialog',
-
-                lossAddressDetails.streetAddress
-              )
-            "
+            @click="onSubmit('lossInfoDialog')"
             size="'xl'"
           ></q-btn>
         </q-card-section>
@@ -1330,7 +1429,7 @@
           </q-toolbar>
         </q-header>
         <q-card-section>
-          <div class="q-page bg-white" style="min-height: 630px">
+          <div class="q-page bg-white" style="min-height: 500px">
             <div
               class="full-width"
               style="
@@ -1379,13 +1478,6 @@
                 v-model="estimatingInfo.notesToTheEstimator"
                 label="Notes to the estimator"
               /><br />
-              <div class="row">
-                <p style="font-size: 15px">Estimating Information Claim 2</p>
-                <q-toggle
-                  class="q-ml-auto"
-                  v-model="estimatingInformationClaim2Toggle"
-                />
-              </div>
             </div>
             <br />
           </div>
@@ -1469,8 +1561,9 @@
                     ]"
                   />
 
-                  <div class="row">
+                  <div class="row justify-between">
                     <q-select
+                      class="col-5"
                       v-model="addEstimatorInfo.type"
                       :options="contactTypes"
                       option-value="machineValue"
@@ -1478,13 +1571,12 @@
                       map-options
                       emit-value
                       label="Type"
-                      style="width: 40%; margin-right: auto"
                     />
                     <q-input
+                      class="col-6"
                       v-model="addEstimatorInfo.phone"
                       label="Phone"
-                      type="number"
-                      style="width: 55%"
+                      mask="(###) ###-####"
                     />
                   </div>
                 </q-form>
@@ -1552,6 +1644,7 @@
                     @input="setVendorIndustryName"
                     behavior="menu"
                     emit-value
+                    map-options
                     lazy-rules
                     :rules="[
                       val =>
@@ -1599,7 +1692,7 @@
                       required
                       class="full-width"
                       v-model="expertVendorInfo.notes"
-                      style="resize: none;"
+                      style="resize: none"
                     ></textarea>
                   </div>
                   <br />
@@ -1610,7 +1703,7 @@
                       required
                       class="full-width"
                       v-model="expertVendorInfo.internalNotes"
-                      style="resize: none;"
+                      style="resize: none"
                     ></textarea>
                   </div>
                 </q-form>
@@ -1701,7 +1794,7 @@
       transition-hide="slide-down"
     >
       <q-card>
-        <q-header bordered class="bg-white  ">
+        <q-header bordered class="bg-white">
           <q-toolbar class="row bg-white">
             <img
               src="~assets/close.svg"
@@ -1740,7 +1833,7 @@
     >
       <q-card>
         <q-header bordered class="bg-white">
-          <q-toolbar class="row bg-white  justify-between">
+          <q-toolbar class="row bg-white justify-between">
             <img
               src="~assets/close.svg"
               alt="close"
@@ -1781,6 +1874,7 @@
         <AddVendor
           @closeDialog="closeAddVendorDialog"
           :componentName="vendorDialogName"
+          :selectedIndustryType="expertVendorInfo.industry.value"
         />
       </q-card>
     </q-dialog>
@@ -1791,7 +1885,7 @@
 import CustomHeader from 'components/CustomHeader';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import AddressService from '@utils/country';
-import { validateEmail } from '@utils/validation';
+import { validateEmail, validateDate } from '@utils/validation';
 import { constants } from '@utils/constant';
 import { dateToSend } from '@utils/date';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
@@ -1805,6 +1899,17 @@ export default {
   components: { CustomHeader, VendorsList, AddVendor, AutoCompleteAddress },
   data() {
     return {
+      dialogBoxes: [
+        { name: 'Client Info', validForm: false },
+        { name: 'Mailing Address', validForm: false },
+        { name: 'Insurance Info', validForm: false },
+        { name: 'Loss Info', validForm: false },
+        { name: 'Expert/Vendor Info', validForm: false },
+        { name: 'Estimating Info', validForm: false },
+        { name: 'Office Task', validForm: false },
+        { name: 'Public Adjustor Info', validForm: false }
+      ],
+
       vendorIndustriesOptions: [],
       estimatorsListDialog: false,
       constants: constants,
@@ -2020,7 +2125,7 @@ export default {
       isThereDamageToPersonalPropertyToggle: false,
       wasAppifProvidedToTheInsuredToggle: false,
       doesTheOfficeNeedToProvidePpifToTheInsuredToggle: false,
-      IsMortgageHomeToggle: false,
+      isMortgageHomeToggle: false,
       isLossAddressSameAsClientToggle: false,
       lossAddressDetails: {
         addressCountry: '',
@@ -2051,7 +2156,7 @@ export default {
 
       isTherea2ndMortgageOnTheHomeToggle: false,
       doesAnEstimatorNeedToBeAssignedToggle: false,
-      estimatingInformationClaim2Toggle: false,
+
       vendorExpertHiredToggle: false,
       anyOtherExpertHiredToggle: false,
 
@@ -2157,17 +2262,39 @@ export default {
         );
       });
     },
-    checkAddressField(streetValue) {
-      if (streetValue) {
-        return true;
-      } else {
-        this.$q.notify({
-          message: 'Please fill this Street Address',
-          position: 'top',
-          type: 'negative'
-        });
+    createClientDailogBoxOpen(value) {
+      switch (value) {
+        case 'Client Info':
+          this.clientInfoDailog = true;
+          break;
+        case 'Mailing Address':
+          this.mailingAddressDialog = true;
+          break;
+        case 'Insurance Info':
+          this.insuranceInfoDialog = true;
+          break;
+        case 'Loss Info':
+          this.lossInfoDialog = true;
+          break;
+        case 'Expert/Vendor Info':
+          this.expertVendorInfoDialog = true;
+          break;
+        case 'Estimating Info':
+          this.estimatingInfoDialog = true;
+          break;
+        case 'Office Task':
+          this.officeTaskDialog = true;
+          break;
+        case 'Public Adjustor Info':
+          this.publicAdjustorInfoDialog = true;
+          break;
+        case 'Documents':
+          this.documentsDialog = true;
+          break;
       }
     },
+    validateDate,
+
     setVendorIndustryName() {
       const selectedName = this.expertVendorInfo.industry.value;
       const result = this.vendorIndustries.find(obj => {
@@ -2183,29 +2310,41 @@ export default {
       this.states = addressService.getStates(country);
     },
 
-    async onSubmit(name, streetAddress) {
+    async onSubmit(name) {
       let success = false;
+      let validationIndex;
       switch (name) {
         case 'clientInfoDailog':
           success = await this.$refs.clientForm.validate();
+          validationIndex = 0;
           break;
         case 'insuranceInfoDialog':
           success = await this.$refs.insuranceInfoForm.validate();
+          validationIndex = 2;
           break;
+
         case 'mailingAddressDialog':
           success = await this.$refs.mailingAddressForm.validate();
+          validationIndex = 1;
           break;
+
         case 'addEstimatorDialog':
           success = await this.$refs.addEstimatorForm.validate();
+          validationIndex = 5;
           break;
         case 'lossInfoDialog':
           success = await this.$refs.lossInfoForm.validate();
+          validationIndex = 3;
           break;
+
         case 'expertVendorInfoDialog':
           success = await this.$refs.expertVendorInfoForm.validate();
+          validationIndex = 4;
           break;
       }
       if (success == true) {
+        this.dialogBoxes[validationIndex].validForm = true;
+
         if (
           name === 'insuranceInfoDialog' ||
           name === 'expertVendorInfoDialog'
@@ -2216,10 +2355,10 @@ export default {
           this.onAddEstimatorButtonClick();
           this[name] = false;
         } else {
-          if (this.checkAddressField(streetAddress)) {
-            this[name] = false;
-          }
+          this[name] = false;
         }
+      } else {
+        this.dialogBoxes.validForm = false;
       }
     },
     setTitleName(val) {
@@ -2286,6 +2425,8 @@ export default {
           isPrimary: false,
           notes: ''
         });
+      } else {
+        this.mortgageDetails.pop();
       }
     },
     async createClientButtonClick() {
@@ -2478,7 +2619,7 @@ export default {
           isPPIF: this.wasAppifProvidedToTheInsuredToggle,
           isNeedPPIF: this.doesTheOfficeNeedToProvidePpifToTheInsuredToggle,
           PPDamageDesc: this.lossInfo.damagePersnalPropertyDescription,
-          hasHomeMortgage: this.IsMortgageHomeToggle
+          hasHomeMortgage: this.isMortgageHomeToggle
         },
         expertInfo: {
           isVendorAssigned: this.vendorExpertHiredToggle,
@@ -2513,10 +2654,9 @@ export default {
           }
         ]
       };
-
       const response = this.addEstimator(payload);
-
       if (response) {
+        await this.getEstimators();
         this.addEstimatorInfo = {
           name: '',
           fname: '',
@@ -2526,7 +2666,6 @@ export default {
           type: ''
         };
         (this.honorific3.id = ''), (this.addEstimatorDialog = false);
-        this.getEstimators();
       }
     },
     selectEstimator(value) {
@@ -2568,7 +2707,24 @@ export default {
 
       this.vendorsListDialog = false;
     },
-
+    onToggleButtonClick() {
+      if (this.mortgageDetails.length > 1) {
+        this.mortgageDetails.pop();
+      }
+      if (!this.isMortgageHomeToggle) {
+        this.isSecondMortgageHome = false;
+        this.mortgageDetails = [
+          {
+            id: '',
+            value: '',
+            loanNumber: '',
+            accountNumber: '',
+            isPrimary: true,
+            notes: ''
+          }
+        ];
+      }
+    },
     closeAddVendorDialog(e) {
       this.addVendorDialog = false;
       this.vendorsListDialog = true;
@@ -2607,6 +2763,7 @@ export default {
         case constants.industries.EXPERTVENDOR:
           this.vendorDialogName = constants.industries.VENDOR;
           this.showVendorDialogFilters = false;
+          this.vendorDialogFilterByIndustry = constants.industries.VENDOR;
 
           this.vendorDialogFilterByIndustry = this.expertVendorInfo.industry.machineValue;
           break;
@@ -2636,6 +2793,7 @@ export default {
   margin-bottom: 10px;
   padding-top: 20px;
 }
+
 .form-card {
   max-height: calc(100vh - 100px);
   overflow: scroll;
@@ -2655,8 +2813,9 @@ export default {
   color: #333333;
   font-weight: bold;
   font-size: 16px;
-  padding: 15px 0;
+  padding: 5px;
   border-bottom: 1px solid #d3d3d3;
+  margin-top: 20px;
 }
 
 .custom-select {

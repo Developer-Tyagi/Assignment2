@@ -1,36 +1,43 @@
 <template>
   <div>
-    <div class="row">
+    <input
+      type="text"
+      id="autocomplete"
+      class="input-autocomplete"
+      v-model="addressAutoComplete"
+      placeholder="AutoComplete address"
+      :disabled="isFieldsDisable"
+    />
+    <div class="row justify-between">
       <q-input
+        class="required col-3"
         v-model="address.houseNumber"
         label="House/Flat No"
-        style="width: 35%"
-        :disable="isFieldsDisable"
+        :rules="[
+          val => checkValidations(val) || 'Please fill the house or flat no'
+        ]"
       />
-      <input
-        type="text"
-        id="autocomplete"
-        class="input-autocomplete"
+      <q-input
+        class="required col-8"
         v-model="address.streetAddress"
-        placeholder="Street"
-        :disabled="isFieldsDisable"
+        label="Street"
+        :rules="[
+          val => checkValidations(val) || 'Please fill the street address'
+        ]"
       />
-      <span></span>
     </div>
     <q-input
       class="required"
       v-model="address.addressLocality"
       label="City"
-      :disable="!isAddressFieldEnable"
-      :rules="[val => checkValidations(val)]"
+      :rules="[val => checkValidations(val) || 'Please fill the city']"
     />
     <q-select
       class="required"
       v-model="address.addressRegion"
       :options="states"
       label="State"
-      :disable="!isAddressFieldEnable"
-      :rules="[val => checkValidations(val)]"
+      :rules="[val => checkValidations(val) || 'Please fill the state']"
     />
     <q-select
       class="required"
@@ -38,14 +45,12 @@
       :options="countries"
       label="Country"
       @input="onCountrySelect(address.addressCountry)"
-      :disable="!isAddressFieldEnable"
-      :rules="[val => checkValidations(val)]"
+      :rules="[val => checkValidations(val) || 'Please fill the country']"
     />
     <q-input
       class="required"
       v-model="address.postalCode"
       label="ZIP Code"
-      :disable="!isAddressFieldEnable"
       lazy-rules
       :rules="[
         val =>
@@ -100,6 +105,7 @@ export default {
 
   data() {
     return {
+      addressAutoComplete: '',
       autocomplete: {},
       isAddressFieldEnable: false,
       countries: [],
@@ -174,6 +180,7 @@ export default {
         : '';
       this.states = addressService.getStates(this.address.addressCountry);
       this.isAddressFieldEnable = true;
+      this.addressAutoComplete = '';
     },
 
     getPlaceName(key, value) {
@@ -193,7 +200,7 @@ export default {
 </script>
 <style lang="scss">
 .input-autocomplete {
-  width: 60%;
+  width: 100%;
   margin-left: auto;
   border: 0;
   line-height: 24px;

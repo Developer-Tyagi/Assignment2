@@ -2,7 +2,7 @@
   <q-page class="window-height bg-background full-width">
     <br />
     <!-- This Style is needed for inner div-->
-    <div class=" q-pa-xs" style="height: 60%; width: 95%;">
+    <div class="q-pa-xs" style="height: 60%; width: 95%">
       <div class="full-width">
         <div class="my-font text-bold row q-my-lg q-mx-xl">
           Setup Company Account {{ recieve }}
@@ -16,7 +16,7 @@
         <template class="">
           <q-tab-panels
             class="q-ml-xl bg-grey-3"
-            style="height: 500px;width:1550px;"
+            style="height: 500px; width: 1550px"
             v-model="tab"
             animated
             vertical
@@ -43,9 +43,7 @@
               </div>
               <div v-else class="row">
                 <div class="row full-width">
-                  <div class="col-4 q-ml-xl text-bold">
-                    Inspection Type
-                  </div>
+                  <div class="col-4 q-ml-xl text-bold">Inspection Type</div>
                   <div class="col-3 q-ml-lg text-bold">Duration</div>
                   <div class="col-3 q-ml-lg text-center text-bold">
                     Edit/Delete
@@ -502,7 +500,7 @@
           <div class="bg-blue">
             <q-separator />
           </div>
-          <div class=" q-mt-lg row justify-center">
+          <div class="q-mt-lg row justify-center">
             <q-btn
               color="primary"
               label="Next"

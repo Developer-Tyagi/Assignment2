@@ -37,7 +37,7 @@
       </div>
       <div class="column">
         <div class="row">
-          <div class="  q-mt-md " style="width:20px">
+          <div class="q-mt-md" style="width: 20px">
             <img src="~assets/icon_user.svg" class="q-mr-lg" />
           </div>
           <div class="q-pl-md col-10">
@@ -50,18 +50,19 @@
           </div>
           <q-separator :color="$q.screen.width < 624 ? 'grey' : 'white'" />
         </div>
-        <div class="row ">
-          <div class=" q-mt-md" style="width:20px">
-            <img src="~assets/lock.svg" class=" q-mr-lg" />
+        <div class="row">
+          <div class="q-mt-md" style="width: 20px">
+            <img src="~assets/lock.svg" class="q-mr-lg" />
           </div>
-          <div class="  q-pl-md col-10" style="width:90%;">
+          <div class="q-pl-md col-10" style="width: 90%">
             <q-input
-              class=" login-input full-width "
+              class="login-input full-width"
               v-model="login.password"
               placeholder="Password"
               type="password"
               borderless
               :type="isPasswordVisible ? 'text' : 'password'"
+              @keyup.enter="onUserLogin"
             >
               <template v-slot:append>
                 <q-avatar>
@@ -132,7 +133,11 @@ export default {
 
   created() {
     if (getToken()) {
-      if (getCurrentUser() && getCurrentUser().attributes.onboard.isCompleted) {
+      if (
+        getCurrentUser() &&
+        getCurrentUser().attributes['onboard'] &&
+        getCurrentUser().attributes['onboard']['isCompleted']
+      ) {
         this.$router.push('/dashboard');
       } else {
         this.$router.push('/manage-users');

@@ -1,6 +1,6 @@
 <template>
-  <q-page>
-    <div class="signup-container q-px-xl q-py-lg">
+  <q-page style="min-height: calc(100vh - 77px)">
+    <div class="signup-container q-px-md q-py-lg">
       <div v-if="isValidPlan" class="row justify-between">
         <div class="col-3">
           <q-carousel
@@ -78,119 +78,145 @@
           <q-stepper
             v-model="step"
             ref="stepper"
-            :active-icon="`img:${require('../assets/step-active-icon.svg')}`"
-            :inactive-icon="
-              `img:${require('../assets/step-inactive-icon.svg')}`
-            "
-            active-color="black"
+            active-color="primary"
             animated
             alternative-labels
           >
-            <q-step :name="1" title="Company Information">
+            <q-step :name="1" :done="step > 1" title="Company Information">
               <q-form
                 @submit="onSubmitCompanyInfo"
                 ref="companyInfo"
-                class="q-gutter-lg justify-between row wrap"
+                class="q-gutter-md justify-between row wrap"
               >
                 <div class="column col-5">
                   <q-input
                     name="firstName"
                     v-model="user.contact.fname"
                     color="primary"
-                    label="Contact First Name *"
+                    label="Contact First Name"
+                    class="required"
                     filled
                     lazy-rules
-                    :rules="[val => (val && val.length > 0) || '']"
+                    :rules="[
+                      val => (val && val.length > 0) || 'Please fill first name'
+                    ]"
                   />
                   <q-input
                     v-model="user.contact.lname"
                     name="lastName"
                     color="primary"
-                    label="Contact Last Name *"
+                    label="Contact Last Name"
+                    class="required"
                     filled
                     lazy-rules
-                    :rules="[val => (val && val.length > 0) || '']"
+                    :rules="[
+                      val => (val && val.length > 0) || 'Please fill last name'
+                    ]"
                   />
                   <q-input
                     v-model="user.contact.phoneNumber[0].number"
                     label="Contact Phone Number"
-                    :mask="
-                      user.contact.phoneNumber[0].type !== 'mobile'
-                        ? '(###) ###-####'
-                        : '##########'
-                    "
+                    mask="(###) ###-####"
+                    class="required"
                     filled
                     lazy-rules
-                    :rules="[val => (val && val.length == 14) || '']"
+                    :rules="[
+                      val =>
+                        (val && val.length == 14) ||
+                        'Please fill contact number'
+                    ]"
                   />
                   <q-input
                     v-model="user.name"
                     name="businessName"
                     color="primary"
-                    label="Business Name *"
+                    label="Business Name"
+                    class="required"
                     filled
                     lazy-rules
-                    :rules="[val => (val && val.length > 0) || '']"
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) || 'Please fill bussiness name'
+                    ]"
                   />
 
                   <q-input
                     v-model="user.email"
                     name="email"
                     color="primary"
-                    label="Bussiness Email *"
-                    type="email"
+                    label="Bussiness Email"
+                    class="required"
                     filled
                     lazy-rules
-                    :rules="[val => (val && val.length > 0) || '']"
+                    :rules="[
+                      val => validateEmail(val) || 'Please fill your email'
+                    ]"
                   />
 
                   <q-input
                     v-model="user.phoneNumber.number"
                     label="Bussiness Phone Number"
-                    :mask="
-                      user.contact.phoneNumber[0].type !== 'mobile'
-                        ? '(###) ###-####'
-                        : '##########'
-                    "
+                    mask="(###) ###-####"
+                    class="required"
                     filled
                     lazy-rules
-                    :rules="[val => (val && val.length == 14) || '']"
+                    :rules="[
+                      val =>
+                        (val && val.length == 14) ||
+                        'Please fill your bussiness number'
+                    ]"
                   />
                 </div>
 
                 <div class="column col-5">
+                  <input
+                    v-model="autocompleteAddress"
+                    id="autocomplete1"
+                    class="autocomplete-input"
+                    name="autcomplete"
+                    color="primary"
+                    placeholder=" Auto-complete address"
+                    autocomplete="off"
+                  />
                   <q-input
                     v-model="user.mailingAddress.houseNumber"
                     name="address2"
                     color="primary"
                     label="House Number"
+                    class="required"
                     filled
                     lazy-rules
-                    :rules="[val => (val && val.length > 0) || '']"
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) || 'Please fill house number'
+                    ]"
                   />
-                  <input
+                  <q-input
                     v-model="user.mailingAddress.streetAddress"
-                    id="autocomplete1"
-                    class="autocomplete-input"
                     name="address1"
                     color="primary"
                     label="Street Address"
+                    class="required"
                     filled
                     lazy-rules
-                    :rules="[val => (val && val.length > 0) || '']"
-                    placeholder="Street Address"
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) || 'Please fill street address'
+                    ]"
                   />
                   <div class="row justify-between">
                     <q-input
                       v-model="user.mailingAddress.addressLocality"
                       name="city"
-                      :disable="!isAddressFieldEnable"
                       color="primary"
                       label="City"
                       filled
-                      class="col-6"
+                      class="col-6 required"
                       lazy-rules
-                      :rules="[val => (val && val.length > 0) || '']"
+                      :rules="[
+                        val =>
+                          (val && val.length > 0) || 'Please fill your city'
+                      ]"
                     />
                     <q-input
                       v-model="user.mailingAddress.postalCode"
@@ -199,40 +225,53 @@
                       label="ZIP Code"
                       type="number"
                       filled
-                      class="col-5"
+                      class="col-5 required"
                       lazy-rules
-                      :rules="[val => (val && val.length > 0) || '']"
-                      :disable="!isAddressFieldEnable"
+                      :rules="[
+                        val =>
+                          (val && val.length > 0) || 'Please fill your zipcode'
+                      ]"
                     />
                   </div>
-                  <q-input
-                    v-model="user.mailingAddress.addressRegion"
-                    name="state"
-                    color="primary"
-                    label="State"
-                    filled
-                    lazy-rules
-                    :rules="[val => (val && val.length > 0) || '']"
-                    :disable="!isAddressFieldEnable"
-                  />
-                  <q-input
-                    v-model="user.mailingAddress.addressCountry"
-                    name="country"
-                    color="primary"
-                    label="Country"
-                    filled
-                    lazy-rules
-                    :rules="[val => (val && val.length > 0) || '']"
-                    :disable="!isAddressFieldEnable"
-                  />
+                  <div class="row justify-between">
+                    <q-input
+                      v-model="user.mailingAddress.addressRegion"
+                      name="state"
+                      color="primary"
+                      label="State"
+                      class="col-6 required"
+                      filled
+                      lazy-rules
+                      :rules="[
+                        val =>
+                          (val && val.length > 0) || 'Please fill your state'
+                      ]"
+                    />
+                    <q-input
+                      v-model="user.mailingAddress.addressCountry"
+                      name="country"
+                      color="primary"
+                      label="Country"
+                      class="col-5 required"
+                      filled
+                      lazy-rules
+                      :rules="[
+                        val =>
+                          (val && val.length > 0) || 'Please fill your country'
+                      ]"
+                    />
+                  </div>
                   <q-input
                     v-model="user.website"
                     name="website"
                     color="primary"
-                    label="Website *"
+                    label="Website"
+                    class="required"
                     filled
                     lazy-rules
-                    :rules="[val => (val && val.length > 0) || '']"
+                    :rules="[
+                      val => validateUrl(val) || 'Please fill your website'
+                    ]"
                   />
                 </div>
 
@@ -258,7 +297,7 @@
                 <div class="column col-5">
                   <div class="text-h5">Billing Info</div>
 
-                  <div class="row">
+                  <div class="row align-center">
                     <span class="form-heading">
                       Is billing address same as mailing address
                     </span>
@@ -268,29 +307,43 @@
                       @input="onMailingAddressSameToggle"
                     />
                   </div>
-
+                  <input
+                    v-model="autocompleteAddress"
+                    id="autocomplete2"
+                    class="autocomplete-input"
+                    name="autocomplete"
+                    color="primary"
+                    :disabled="isBillingAddressSame == true"
+                    placeholder=" Auto-complete address"
+                    autocomplete="off"
+                  />
                   <q-input
                     v-model="user.billingInfo.address.houseNumber"
                     name="address2"
                     color="primary"
                     label="House Number"
+                    class="required"
                     filled
                     lazy-rules
-                    :rules="[val => (val && val.length > 0) || '']"
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) || 'Please fill house number'
+                    ]"
                     :disable="isBillingAddressSame"
                   />
-                  <input
+                  <q-input
                     v-model="user.billingInfo.address.streetAddress"
-                    id="autocomplete2"
-                    class="autocomplete-input"
                     name="address1"
                     color="primary"
                     label="Street Address"
+                    class="required"
                     filled
                     lazy-rules
-                    :rules="[val => (val && val.length > 0) || '']"
-                    :disabled="isBillingAddressSame == true"
-                    placeholder="Street Address"
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) || 'Please fill Street Address'
+                    ]"
+                    :disable="isBillingAddressSame"
                   />
                   <div class="row justify-between">
                     <q-input
@@ -299,9 +352,12 @@
                       color="primary"
                       label="City"
                       filled
-                      class="col-6"
+                      class="col-6 required"
                       lazy-rules
-                      :rules="[val => (val && val.length > 0) || '']"
+                      :rules="[
+                        val =>
+                          (val && val.length > 0) || 'Please fill your city'
+                      ]"
                       :disable="isBillingAddressSame"
                     />
                     <q-input
@@ -311,76 +367,78 @@
                       label="ZIP Code"
                       type="number"
                       filled
-                      class="col-5"
+                      class="col-5 required"
                       lazy-rules
-                      :rules="[val => (val && val.length > 0) || '']"
+                      :rules="[
+                        val =>
+                          (val && val.length > 0) || 'Please fill your zipcode'
+                      ]"
                       :disable="isBillingAddressSame"
                     />
                   </div>
-                  <q-input
-                    v-model="user.billingInfo.address.addressRegion"
-                    name="state"
-                    color="primary"
-                    label="State"
-                    filled
-                    lazy-rules
-                    :rules="[val => (val && val.length > 0) || '']"
-                    :disable="isBillingAddressSame"
-                  />
-                  <q-input
-                    v-model="user.billingInfo.address.addressCountry"
-                    name="country"
-                    color="primary"
-                    label="Country"
-                    filled
-                    lazy-rules
-                    :rules="[val => (val && val.length > 0) || '']"
-                    :disable="isBillingAddressSame"
-                  />
+                  <div class="row justify-between">
+                    <q-input
+                      v-model="user.billingInfo.address.addressRegion"
+                      name="state"
+                      color="primary"
+                      class="col-6 required"
+                      label="State"
+                      filled
+                      lazy-rules
+                      :rules="[
+                        val =>
+                          (val && val.length > 0) || 'Please fill your state'
+                      ]"
+                      :disable="isBillingAddressSame"
+                    />
+                    <q-input
+                      v-model="user.billingInfo.address.addressCountry"
+                      name="country"
+                      color="primary"
+                      label="Country"
+                      class="col-5 required"
+                      filled
+                      lazy-rules
+                      :rules="[
+                        val =>
+                          (val && val.length > 0) || 'Please fill your country'
+                      ]"
+                      :disable="isBillingAddressSame"
+                    />
+                  </div>
                 </div>
 
                 <div class="column col-5">
+                  <q-input
+                    v-model="user.SSNumber"
+                    name="ssNumber"
+                    color="primary"
+                    label="Social Security Number"
+                    filled
+                    lazy-rules
+                    :rules="[
+                      val =>
+                        (val && val.length == 11) ||
+                        'Please fill social security number'
+                    ]"
+                    mask="###-##-####"
+                  />
+                  <q-input
+                    v-model="user.EINumber"
+                    name="eiNumber"
+                    color="primary"
+                    label="Employee Identification Number"
+                    filled
+                    lazy-rules
+                    :rules="[
+                      val =>
+                        (val && val.length == 10) ||
+                        'Please fill employee identification number'
+                    ]"
+                    mask="##-#######"
+                  />
                   <div class="text-h5">Credit Card Info</div>
-                  <q-input
-                    name="cardNumber"
-                    color="primary"
-                    label="Card Number"
-                    v-model="paymentInfo.cardNumber"
-                    type="number"
-                    filled
-                    lazy-rules
-                    :rules="[val => (val && val.length > 0) || '']"
-                  />
-                  <q-input
-                    name="cardHolder"
-                    color="primary"
-                    label="Cardholder Name"
-                    v-model="paymentInfo.name"
-                    filled
-                    lazy-rules
-                    :rules="[val => (val && val.length > 0) || '']"
-                  />
-                  <q-input
-                    name="expiry"
-                    v-model="paymentInfo.expiryDate"
-                    color="primary"
-                    label="Expiry Date (MM/YY)"
-                    mask="##/##"
-                    filled
-                    lazy-rules
-                    :rules="[val => (val && val.length > 0) || '']"
-                  />
-                  <q-input
-                    name="cvv"
-                    v-model="paymentInfo.cvv"
-                    color="primary"
-                    label="CVV"
-                    type="password"
-                    mask="###"
-                    filled
-                    lazy-rules
-                    :rules="[val => (val && val.length > 0) || '']"
-                  />
+                  <PaymentCard @cardDetailsAdded="cardDetailsAdded" />
                 </div>
 
                 <q-separator />
@@ -398,6 +456,7 @@
                     label="Buy"
                     class="q-px-lg"
                     type="submit"
+                    :disabled="!isBuyButtonEnable"
                   />
                 </div>
               </q-form>
@@ -423,29 +482,28 @@
 import { mapActions, mapGetters } from 'vuex';
 import { constants } from '@utils/constant';
 import { getToken, getCurrentUser } from '@utils/auth.js';
+import PaymentCard from 'components/PaymentCard';
+import { validateEmail, validateUrl } from '@utils/validation';
+
 export default {
-  name: 'Signup',
+  components: { PaymentCard },
 
   data() {
     return {
       plan: 1,
       step: 1,
+      autocompleteAddress: '',
       autocomplete1: {},
       autocomplete2: {},
       isValidPlan: true,
-      isBillingAddressSame: false,
+      isBillingAddressSame: true,
       isAddressFieldEnable: false,
+      isBuyButtonEnable: false,
       selectedPlan: {
         id: '',
         name: '',
-        machineName: '',
+        machineValue: '',
         price: ''
-      },
-      paymentInfo: {
-        name: '',
-        cardNumber: '',
-        expiryDate: '',
-        cvv: ''
       },
       user: {
         type: constants.ORGANIZATION,
@@ -460,7 +518,7 @@ export default {
           fname: '',
           lname: '',
           email: '',
-          phoneNumber: [{ type: '', number: '' }]
+          phoneNumber: [{ number: '' }]
         },
         mailingAddress: {
           addressCountry: '',
@@ -478,13 +536,14 @@ export default {
             postOfficeBoxNumber: '',
             postalCode: '',
             streetAddress: ''
-          },
-          planInfo: {
-            id: '',
-            name: '',
-            machineName: ''
           }
-        }
+        },
+        plan: {
+          id: '',
+          name: '',
+          machineValue: ''
+        },
+        stripeToken: ''
       }
     };
   },
@@ -495,15 +554,11 @@ export default {
       'createUserForOrganization'
     ]),
 
-    call(number) {
-      window.open('tel:' + number);
-    },
-
     onPrevPlan() {
       this.plan--;
       this.$router.push({
         path: 'signup',
-        query: { plan: this.plans[this.plan - 1].machineName }
+        query: { plan: this.plans[this.plan - 1].machineValue }
       });
     },
 
@@ -511,7 +566,7 @@ export default {
       this.plan++;
       this.$router.push({
         path: 'signup',
-        query: { plan: this.plans[this.plan - 1].machineName }
+        query: { plan: this.plans[this.plan - 1].machineValue }
       });
     },
 
@@ -549,6 +604,7 @@ export default {
         ? place[this.getPlaceName('postal_code', place)].long_name
         : '';
       this.isAddressFieldEnable = true;
+      this.autocompleteAddress = '';
     },
 
     getPlaceName(key, value) {
@@ -570,6 +626,12 @@ export default {
       if (this.isBillingAddressSame) {
         this.user.billingInfo.address = { ...this.user.mailingAddress };
       } else {
+        this.autocomplete2 = new google.maps.places.Autocomplete(
+          document.getElementById('autocomplete2'),
+          { types: ['geocode'] }
+        );
+
+        this.autocomplete2.addListener('place_changed', this.fillInAddress);
         this.user.billingInfo.address = {
           addressCountry: '',
           addressLocality: '',
@@ -585,7 +647,21 @@ export default {
       this.$refs.billingInfo.validate().then(() => {
         this.createUserForOrganization(this.user);
       });
-    }
+    },
+
+    cardDetailsAdded(e) {
+      if (e) {
+        this.isBuyButtonEnable = true;
+        this.user.stripeToken = e;
+      } else {
+        this.isBuyButtonEnable = false;
+        this.stripeToken = '';
+      }
+    },
+
+    validateEmail,
+
+    validateUrl
   },
 
   computed: {
@@ -594,7 +670,11 @@ export default {
 
   created() {
     if (getToken()) {
-      if (getCurrentUser() && getCurrentUser().attributes.onboard.isCompleted) {
+      if (
+        getCurrentUser() &&
+        getCurrentUser().attributes['onboard'] &&
+        getCurrentUser().attributes['onboard']['isCompleted']
+      ) {
         this.$router.push('/dashboard');
       } else {
         this.$router.push('/onboarding');
@@ -602,16 +682,13 @@ export default {
     } else {
       // this.getPlansInfo();
       const index = this.plans.findIndex(
-        o => o.machineName === this.$route.query.plan
+        o => o.machineValue === this.$route.query.plan
       );
       if (index > -1) {
         this.plan = index + 1;
-        this.user.billingInfo.planInfo.id = this.plans[index].id;
-        this.user.billingInfo.planInfo.name = this.plans[index].name;
-        this.user.billingInfo.planInfo.machineName = this.plans[
-          index
-        ].machineName;
-        // this.getContactTypes();
+        this.user.plan.id = this.plans[index].id;
+        this.user.plan.name = this.plans[index].name;
+        this.user.plan.machineValue = this.plans[index].machineValue;
       } else {
         this.isValidPlan = false;
       }
@@ -631,11 +708,7 @@ export default {
   watch: {
     step(newValue, oldValue) {
       if (newValue === 2) {
-        this.autocomplete2 = new google.maps.places.Autocomplete(
-          document.getElementById('autocomplete2'),
-          { types: ['geocode'] }
-        );
-        this.autocomplete2.addListener('place_changed', this.fillInAddress);
+        this.user.billingInfo.address = { ...this.user.mailingAddress };
       }
     }
   }
@@ -644,34 +717,20 @@ export default {
 
 <style lang="scss">
 .signup-container {
-  $size: 16px;
-  $active-size: 36px;
-  .q-stepper__dot {
-    color: transparent !important;
-    height: $active-size;
-
-    .q-icon {
-      height: $size;
-      width: $size;
-    }
+  input[type='number']::-webkit-outer-spin-button,
+  input[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
 
-  .q-stepper__tab--active {
-    .q-stepper__dot {
-      height: $active-size;
-      width: $active-size;
-
-      .q-icon {
-        height: $active-size;
-        width: $active-size;
-      }
-    }
+  input[type='number'] {
+    -moz-appearance: textfield;
   }
 }
 .autocomplete-input {
   height: 56px;
   padding: 0 12px;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
   background: #f2f2f2;
   font-weight: 400;
   line-height: 28px;
@@ -679,5 +738,9 @@ export default {
   border: none;
   color: rgba(0, 0, 0, 0.87);
   outline: none;
+}
+
+.q-field--with-bottom {
+  padding-bottom: 25px;
 }
 </style>

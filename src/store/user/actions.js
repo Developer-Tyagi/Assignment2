@@ -55,7 +55,10 @@ export async function getUserInfo({ dispatch, state }) {
   try {
     const { data } = await request.get('/users/me');
     setCurrentUser(data);
-    if (data.attributes.onboard.isCompleted) {
+    if (
+      data.attributes['onboard'] &&
+      data.attributes['onboard']['isCompleted']
+    ) {
       this.$router.push('/dashboard');
     } else {
       this.$router.push('/manage-users');
@@ -106,8 +109,8 @@ export async function setPassword({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.post(
-      `/users/${payload.id}/setpassword`,
-      buildApiData('users', payload.password)
+      `/users/setpassword`,
+      buildApiData('users', payload)
     );
     dispatch('setLoading', false);
     return true;

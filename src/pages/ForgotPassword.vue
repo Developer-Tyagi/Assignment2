@@ -83,8 +83,8 @@ export default {
 
     async onSubmitPassword() {
       const payload = {
-        id: this.userId,
-        password: { password: this.password.password }
+        uid: this.userId,
+        password: this.password.password
       };
       const setPass = await this.setPassword(payload);
       if (setPass) {
