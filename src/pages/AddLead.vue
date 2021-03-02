@@ -10,24 +10,35 @@
             left-label
             color="orange"
             class="q-ml-auto"
+            @input="onNewLeadButtonToggle"
           />
         </div>
         <div v-if="!isNewLead">
           <q-separator></q-separator>
           <br />
-          <p style="color: #666666; opacity: 50%; font-size: 12px">
+          <p class="stepper-heading">
             If client already exists, select from list below
           </p>
           <q-select
+            class="full-width"
             v-model="clientSelected"
-            :options="clients"
-            clearable
+            use-input
+            input-debounce="0"
             option-label="name"
-            option-value="id"
-            emit-value
             label="Select existing client"
+            :options="options"
+            @filter="searchFilterBy"
+            option-value="id"
+            behavior="menu"
+            emit-value
             map-options
-          />
+          >
+            <template v-slot:no-option>
+              <q-item>
+                <q-item-section class="text-black"> No results </q-item-section>
+              </q-item>
+            </template>
+          </q-select>
         </div>
         <q-btn
           label="Continue"
@@ -48,6 +59,7 @@ export default {
   data() {
     return {
       clientSelected: '',
+      options: '',
       isNewLead: true
     };
   },
@@ -57,6 +69,7 @@ export default {
   },
 
   created() {
+    this.options = this.clients;
     this.getClients();
     if (this.selectedClient) {
       this.isNewLead = false;
@@ -81,11 +94,43 @@ export default {
       }
     },
 
+    searchFilterBy(val, update) {
+      this.clientSelected = null;
+      if (val === ' ') {
+        update(() => {
+          this.options = this.clients;
+        });
+        return;
+      }
+
+      update(() => {
+        const search = val.toLowerCase();
+        this.options = this.clients.filter(
+          v => v.name.toLowerCase().indexOf(search) > -1
+        );
+      });
+    },
+
     onBackButtonClick() {
       this.setSelectedClient('');
       this.$router.push('/leads');
+    },
+
+    onNewLeadButtonToggle() {
+      if (this.isNewLead) {
+        this.clientSelected = '';
+        this.setSelectedClient('');
+      } else {
+        this.setSelectedClient(this.clientSelected);
+      }
     }
   }
 };
 </script>
-<style></style>
+<style lang="scss">
+.stepper-heading {
+  color: #333333;
+  font-weight: bold;
+  font-size: 14px;
+}
+</style>

@@ -51,16 +51,15 @@
                   val => (val && val.length > 0) || 'Please fill the last name'
                 ]"
               />
-              <div class="row">
+              <div class="row justify-between">
                 <q-select
-                  class="required"
+                  class="required col-5"
                   v-model="primaryDetails.selectedContactType"
                   :options="contactTypes"
                   option-value="machineValue"
                   option-label="name"
                   map-options
                   emit-value
-                  style="width: 40%; margin-right: auto"
                   label="Type"
                   lazy-rules
                   :rules="[
@@ -68,7 +67,7 @@
                   ]"
                 />
                 <q-input
-                  class="required"
+                  class="required col-6"
                   v-model="primaryDetails.phoneNumber"
                   label="Phone"
                   mask="(###) ###-####"
@@ -135,11 +134,38 @@
           <q-form @submit="step++" @reset="step--">
             <q-card class="q-pa-md form-card">
               <span class="stepper-heading">Loss Details</span>
-              <q-input
-                v-model="lossDetails.dateOfLoss"
-                type="date"
-                placeholder="Date of Loss"
-              />
+
+              <div class="full-width">
+                <q-input
+                  v-model="lossDetails.dateOfLoss"
+                  mask="##/##/####"
+                  label="MM/DD/YYYY"
+                  lazy-rules
+                  :rules="[val => validateDate(val) || 'Invalid date!']"
+                >
+                  <template v-slot:append>
+                    <q-icon
+                      name="event"
+                      size="md"
+                      color="primary"
+                      class="cursor-pointer"
+                    >
+                      <q-popup-proxy
+                        ref="qDateProxy"
+                        transition-show="scale"
+                        transition-hide="scale"
+                      >
+                        <q-date
+                          v-model="lossDetails.dateOfLoss"
+                          @input="() => $refs.qDateProxy.hide()"
+                          mask="MM/DD/YYYY"
+                        ></q-date>
+                      </q-popup-proxy>
+                    </q-icon>
+                  </template>
+                </q-input>
+              </div>
+
               <q-input
                 v-model="lossDetails.lossDesc"
                 label="Brief description of loss"
@@ -169,7 +195,7 @@
                   icon="keyboard_backspace"
                   text-color="primary"
                   padding="md"
-                  @click="checkAddressField"
+                  type="submit"
                 />
               </div>
             </div>
@@ -291,7 +317,7 @@
         <q-step :name="5" :done="step > 5" title="Notes">
           <q-form @submit="step++" @reset="step--">
             <q-card class="q-pa-md form-card">
-              <span class=" stepper-heading">Last Notes</span>
+              <span class="stepper-heading">Last Notes</span>
               <q-input
                 class="required"
                 label="Last Notes"
@@ -454,7 +480,7 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import { validateEmail } from '@utils/validation';
+import { validateEmail, validateDate } from '@utils/validation';
 import { dateToSend } from '@utils/date';
 import VendorsList from 'components/VendorsList';
 import { constants } from '@utils/constant';
@@ -496,6 +522,7 @@ export default {
         lossDesc: '',
         dateOfLoss: ''
       },
+
       lossAddress: {
         addressCountry: '',
         addressRegion: '',
@@ -538,19 +565,9 @@ export default {
       'getInspectionTypes',
       'addVendor',
       'getContactTypes',
-      'getTitles'
+      'getTitles',
+      'getClients'
     ]),
-    checkAddressField() {
-      if (this.lossAddress.streetAddress) {
-        this.step = 3;
-      } else {
-        this.$q.notify({
-          message: 'Please fill this Street Address',
-          position: 'top',
-          type: 'negative'
-        });
-      }
-    },
 
     onAddVendorDialogClick(name) {
       this.valueName = name;
@@ -693,6 +710,7 @@ export default {
     },
 
     validateEmail,
+    validateDate,
 
     onChangingSourceType() {
       this.sourceDetails.id = '';
@@ -747,31 +765,38 @@ export default {
 
   created() {
     // TODO : Have to change primary details object, so that selected client can be assigned as it is.
-    if (this.$route.params.id) {
-      let selectedClient = this.clients.find(
-        client => client.id === this.$route.params.id
-      );
-      this.primaryDetails.honorific.id =
-        selectedClient.insuredInfo.primary.honorific.id;
-      this.primaryDetails.honorific.value =
-        selectedClient.insuredInfo.primary.honorific.value;
-      this.primaryDetails.firstName = selectedClient.insuredInfo.primary.fname;
-      this.primaryDetails.lastName = selectedClient.insuredInfo.primary.lname;
-      this.primaryDetails.email = selectedClient.insuredInfo.primary.email;
-      this.primaryDetails.phoneNumber =
-        selectedClient.insuredInfo.primary.phoneNumber[0].number;
-      this.primaryDetails.selectedContactType =
-        selectedClient.insuredInfo.primary.phoneNumber[0].type;
-      this.primaryDetails.isOrganization = selectedClient.isOrganization
-        ? true
-        : false;
-      if (this.primaryDetails.isOrganization) {
-        this.primaryDetails.organizationName = selectedClient.organizationName;
-      }
-    }
     this.getInspectionTypes();
     this.getContactTypes();
     this.getTitles();
+    this.getClients().then(() => {
+      if (this.$route.params.id) {
+        let selectedClient = this.clients.find(
+          client => client.id === this.$route.params.id
+        );
+        this.primaryDetails.honorific.id =
+          selectedClient.insuredInfo.primary.honorific.id;
+        this.primaryDetails.honorific.value =
+          selectedClient.insuredInfo.primary.honorific.value;
+        this.primaryDetails.honorific.machineValue =
+          selectedClient.insuredInfo.primary.honorific.machineValue;
+
+        this.primaryDetails.firstName =
+          selectedClient.insuredInfo.primary.fname;
+        this.primaryDetails.lastName = selectedClient.insuredInfo.primary.lname;
+        this.primaryDetails.email = selectedClient.insuredInfo.primary.email;
+        this.primaryDetails.phoneNumber =
+          selectedClient.insuredInfo.primary.phoneNumber[0].number;
+        this.primaryDetails.selectedContactType =
+          selectedClient.insuredInfo.primary.phoneNumber[0].type;
+        this.primaryDetails.isOrganization = selectedClient.isOrganization
+          ? true
+          : false;
+        if (this.primaryDetails.isOrganization) {
+          this.primaryDetails.organizationName =
+            selectedClient.organizationName;
+        }
+      }
+    });
   }
 };
 </script>
