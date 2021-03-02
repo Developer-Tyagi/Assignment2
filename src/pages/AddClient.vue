@@ -1688,6 +1688,19 @@
                       </q-item>
                     </template>
                   </q-select>
+                  <!-- This will Show the input when industry Type is Others -->
+                  <q-input
+                    v-model="industryType.value"
+                    v-if="expertVendorInfo.industry.value == 'Others'"
+                    label="Enter New Industry Type"
+                  ></q-input>
+                  <q-btn
+                    class="q-mt-md"
+                    v-if="industryType.value"
+                    label="Add"
+                    outline
+                    @click="addAnotherIndustry"
+                  />
 
                   <div
                     v-if="vendorExpertHiredToggle"
@@ -1902,7 +1915,11 @@
         <AddVendor
           @closeDialog="closeAddVendorDialog"
           :componentName="vendorDialogName"
-          :selectedIndustryType="expertVendorInfo.industry.value"
+          :selectedIndustryType="
+            expertVendorInfo.industry.value == 'Others'
+              ? industryType.value
+              : expertVendorInfo.industry.value
+          "
         />
       </q-card>
     </q-dialog>
@@ -1927,6 +1944,10 @@ export default {
   components: { CustomHeader, VendorsList, AddVendor, AutoCompleteAddress },
   data() {
     return {
+      industryType: {
+        value: '',
+        machineValue: ''
+      },
       vendorIndustriesOptions: [],
       estimatorsListDialog: false,
       constants: constants,
@@ -2258,10 +2279,21 @@ export default {
       'getContactTypes',
       'getTitles',
       'getPolicyCategory',
-      'getVendorIndustries'
+      'getVendorIndustries',
+      'addIndustry'
     ]),
 
     ...mapMutations(['setSelectedLead']),
+    async addAnotherIndustry() {
+      var response = await this.addIndustry(this.industryType);
+      if (response) {
+        this.$q.notify({
+          message: 'Added New Industry Type',
+          position: 'top',
+          type: 'negative'
+        });
+      }
+    },
 
     searchFilterBy(val, update) {
       this.expertVendorInfo.industry.value = null;
@@ -2746,7 +2778,7 @@ export default {
           this.vendorDialogFilterByIndustry = constants.industries.MORTGAGE;
           break;
         case constants.industries.EXPERTVENDOR:
-          this.vendorDialogName = constants.industries.VENDOR;
+          this.vendorDialogName = constants.industries.EXPERTVENDOR;
           this.showVendorDialogFilters = false;
           this.vendorDialogFilterByIndustry = constants.industries.VENDOR;
 
