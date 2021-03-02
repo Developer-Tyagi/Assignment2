@@ -8,6 +8,9 @@
 const path = require('path');
 module.exports = function(/* ctx */) {
   return {
+    bin: {
+      linuxAndroidStudio: '/home/lenovo/android-studio/bin/studio.sh'
+    },
     // https://quasar.dev/quasar-cli/supporting-ts
     supportTS: false,
 

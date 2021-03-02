@@ -6,7 +6,10 @@
     />
     <div class="column" style="padding: 30px 20px 20px 20px">
       <div class="q-md column">
-        <div class="full-width fixHeight">
+        <div class="form-list row" v-for="dialogBoxe in dialogBoxes">
+          <span>{{ dialogBoxes }}</span>
+        </div>
+        <!-- <div class="full-width fixHeight">
           <div class="form-list row" @click="clientInfoDailog = true">
             Client Info
             <div class="  q-mr-lg  q-ml-auto" v-if="validForm[1] == true">
@@ -50,7 +53,7 @@
             Public Adjustor Info
           </div>
           <div class="form-list" @click="documentsDialog = true">Documents</div>
-        </div>
+        </div> -->
         <q-btn
           label="Create Client"
           color="primary"
@@ -567,9 +570,9 @@
                   <AutoCompleteAddress
                     :address="clientAddressDetails"
                     :isDropBoxEnable="true"
-                    :isChecksEnable="false"
-                    :isFieldsDisable="false"
+                    :isChecksEnable="true"
                   />
+
                   <div class="row">
                     <p class="q-mx-none q-my-auto">Tenent Occupied</p>
                     <q-toggle
@@ -621,13 +624,7 @@
           </div>
 
           <q-btn
-            @click="
-              onSubmit(
-                'clientInfoDailog',
-
-                clientAddressDetails.streetAddress
-              )
-            "
+            @click="onSubmit('clientInfoDailog')"
             label="Save"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
@@ -676,7 +673,7 @@
                   <AutoCompleteAddress
                     :address="mailingAddressDetails"
                     :isDropBoxEnable="true"
-                    :isChecksEnable="false"
+                    :isChecksEnable="true"
                     :isFieldsDisable="isMailingAddressSameToggle"
                   />
                 </q-form>
@@ -690,13 +687,7 @@
             label="Save"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
-            @click="
-              onSubmit(
-                'mailingAddressDialog',
-
-                mailingAddressDetails.streetAddress
-              )
-            "
+            @click="onSubmit('mailingAddressDialog')"
             size="'xl'"
           ></q-btn>
         </q-card-section>
@@ -1022,7 +1013,7 @@
                   <AutoCompleteAddress
                     :address="lossAddressDetails"
                     :isDropBoxEnable="true"
-                    :isChecksEnable="false"
+                    :isChecksEnable="true"
                     :isFieldsDisable="isLossAddressSameAsClientToggle"
                   />
                   <q-input
@@ -1327,13 +1318,7 @@
             label="Save"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
-            @click="
-              onSubmit(
-                'lossInfoDialog',
-
-                lossAddressDetails.streetAddress
-              )
-            "
+            @click="onSubmit('lossInfoDialog')"
             size="'xl'"
           ></q-btn>
         </q-card-section>
@@ -1945,6 +1930,17 @@ export default {
   components: { CustomHeader, VendorsList, AddVendor, AutoCompleteAddress },
   data() {
     return {
+      dialogBoxes: [
+        this.clientInfoDailog,
+        this.mailingAddressDialog,
+        this.insuranceInfoDialog,
+        this.lossInfoDialog,
+        this.expertVendorInfoDialog,
+        this.estimatingInfoDialog,
+        this.officeTaskDialog,
+        this.publicAdjustorInfoDialog,
+        this.documentsDialog
+      ],
       validForm: [],
       vendorIndustriesOptions: [],
       estimatorsListDialog: false,
@@ -2300,17 +2296,7 @@ export default {
     },
 
     validateDate,
-    checkAddressField(streetValue) {
-      if (streetValue) {
-        return true;
-      } else {
-        this.$q.notify({
-          message: 'Please fill this Street Address',
-          position: 'top',
-          type: 'negative'
-        });
-      }
-    },
+
     setVendorIndustryName() {
       const selectedName = this.expertVendorInfo.industry.value;
       const result = this.vendorIndustries.find(obj => {
@@ -2326,7 +2312,7 @@ export default {
       this.states = addressService.getStates(country);
     },
 
-    async onSubmit(name, streetAddress) {
+    async onSubmit(name) {
       let success = false;
       let index;
 
@@ -2371,9 +2357,7 @@ export default {
           this.onAddEstimatorButtonClick();
           this[name] = false;
         } else {
-          if (this.checkAddressField(streetAddress, name)) {
-            this[name] = false;
-          }
+          this[name] = false;
         }
       }
     },
