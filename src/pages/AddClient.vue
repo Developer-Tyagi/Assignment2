@@ -371,17 +371,16 @@
                     ]"
                     label="Last Name"
                   />
-                  <div class="row">
+                  <div class="row justify-between">
                     <q-select
                       v-model="insuredDetails.type"
-                      class="required"
+                      class="required col-5"
                       :options="contactTypes"
                       option-value="machineValue"
                       option-label="name"
                       map-options
                       emit-value
                       label="Type"
-                      style="width: 40%; margin-right: auto"
                       lazy-rules
                       :rules="[
                         val =>
@@ -390,14 +389,13 @@
                     />
                     <q-input
                       v-model="insuredDetails.phone"
-                      class="required"
+                      class="required col-6"
                       label="Phone"
-                      type="number"
-                      style="width: 55%"
+                      mask="(###) ###-####"
                       lazy-rules
                       :rules="[
                         val =>
-                          (val && val.length == 10) ||
+                          (val && val.length == 14) ||
                           'Please enter the phone number'
                       ]"
                     />
@@ -448,16 +446,15 @@
                       v-model="coInsuredDetails.lname"
                       label="Last Name"
                     />
-                    <div class="row">
+                    <div class="row justify-between">
                       <q-select
                         v-model="coInsuredDetails.type"
-                        class="required"
+                        class="required col-5"
                         :options="contactTypes"
                         option-value="machineValue"
                         option-label="name"
                         map-options
                         emit-value
-                        style="width: 40%; margin-right: auto"
                         label="Type"
                         lazy-rules
                         :rules="[
@@ -469,15 +466,14 @@
                       <q-input
                         v-model="coInsuredDetails.phone"
                         label="Phone"
-                        class="required"
-                        type="number"
+                        class="required col-6"
+                        mask="(###) ###-####"
                         lazy-rules
                         :rules="[
                           val =>
-                            (val && val.length == 10) ||
+                            (val && val.length == 14) ||
                             'Please enter the phone number'
                         ]"
-                        style="width: 55%"
                       />
                     </div>
                     <q-input
@@ -504,10 +500,10 @@
                     />
                   </div>
                   <div v-if="addAditionalPhoneNumberToggle">
-                    <div class="row">
+                    <div class="row justify-between">
                       <q-select
                         v-model="addAditionalPhoneNumber.type1"
-                        class="required"
+                        class="required col-5"
                         label="Type"
                         :options="contactTypes"
                         option-value="machineValue"
@@ -520,25 +516,23 @@
                             (val && val.length > 0) ||
                             'Please select phone type'
                         ]"
-                        style="width: 40%; margin-right: auto"
                       />
                       <q-input
                         v-model="addAditionalPhoneNumber.phone2"
                         label="Phone2"
-                        class="required"
-                        type="number"
+                        class="required col-6"
+                        mask="(###) ###-####"
                         lazy-rules
                         :rules="[
                           val =>
-                            (val && val.length == 10) ||
+                            (val && val.length == 14) ||
                             'Please enter the phone number'
                         ]"
-                        style="width: 55%; margin-left: auto"
                       />
                     </div>
-                    <div class="row">
+                    <div class="row justify-between">
                       <q-select
-                        class="required"
+                        class="required col-5"
                         v-model="addAditionalPhoneNumber.type2"
                         label="Type"
                         :options="contactTypes"
@@ -552,20 +546,18 @@
                             (val && val.length > 0) ||
                             'Please select phone type'
                         ]"
-                        style="width: 40%; margin-right: auto"
                       />
                       <q-input
-                        class="required"
+                        class="required col-6"
                         v-model="addAditionalPhoneNumber.phone3"
                         label="Phone3"
-                        type="number"
+                        mask="(###) ###-####"
                         lazy-rules
                         :rules="[
                           val =>
-                            (val && val.length == 10) ||
+                            (val && val.length == 14) ||
                             'Please enter the phone number'
                         ]"
-                        style="width: 55%"
                       />
                     </div>
                   </div>
@@ -591,9 +583,9 @@
                       label="Tenant Name"
                     />
 
-                    <div class="row">
+                    <div class="row justify-between">
                       <q-select
-                        class="required"
+                        class="required col-5"
                         v-model="tenantOccupied.type"
                         label="Type"
                         :options="contactTypes"
@@ -601,7 +593,6 @@
                         option-label="name"
                         map-options
                         emit-value
-                        style="width: 40%; margin-right: auto"
                         lazy-rules
                         :rules="[
                           val =>
@@ -610,14 +601,14 @@
                         ]"
                       />
                       <q-input
-                        class="required"
+                        class="required col-6"
                         v-model="tenantOccupied.phone"
                         label="Phone"
-                        style="width: 55%; margin-left: auto"
+                        mask="(###) ###-####"
                         lazy-rules
                         :rules="[
                           val =>
-                            (val && val.length == 10) ||
+                            (val && val.length == 14) ||
                             'Please enter the phone number'
                         ]"
                       />
@@ -781,15 +772,73 @@
                     />
                   </div>
                   <span class="form-heading">Policy Effective date</span>
-                  <q-input
-                    v-model="insuranceDetails.policyEffectiveDate"
-                    type="date"
-                  /><br />
+
+                  <div class=" full-width">
+                    <q-input
+                      v-model="insuranceDetails.policyEffectiveDate"
+                      mask="##/##/####"
+                      label="MM/DD/YYYY"
+                      lazy-rules
+                      :rules="[val => validateDate(val) || 'Invalid date!']"
+                    >
+                      <template v-slot:append>
+                        <q-icon
+                          name="event"
+                          size="sm"
+                          color="primary"
+                          class="cursor-pointer"
+                        >
+                          <q-popup-proxy
+                            ref="qDateProxy"
+                            transition-show="scale"
+                            transition-hide="scale"
+                          >
+                            <q-date
+                              v-model="insuranceDetails.policyEffectiveDate"
+                              @input="() => $refs.qDateProxy.hide()"
+                              mask="MM/DD/YYYY"
+                            ></q-date>
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                    </q-input>
+                  </div>
+
+                  <br />
+
                   <span class="form-heading">Policy Expiry date </span>
-                  <q-input
-                    v-model="insuranceDetails.policyExpireDate"
-                    type="date"
-                  />
+
+                  <div class=" full-width">
+                    <q-input
+                      v-model="insuranceDetails.policyExpireDate"
+                      mask="##/##/####"
+                      label="MM/DD/YYYY"
+                      lazy-rules
+                      :rules="[val => validateDate(val) || 'Invalid date!']"
+                    >
+                      <template v-slot:append>
+                        <q-icon
+                          name="event"
+                          size="sm"
+                          color="primary"
+                          class="cursor-pointer"
+                        >
+                          <q-popup-proxy
+                            ref="qDateProxy1"
+                            transition-show="scale"
+                            transition-hide="scale"
+                          >
+                            <q-date
+                              v-model="insuranceDetails.policyExpireDate"
+                              @input="() => $refs.qDateProxy1.hide()"
+                              mask="MM/DD/YYYY"
+                            ></q-date>
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                    </q-input>
+                  </div>
+
                   <q-select
                     class="required"
                     v-model="insuranceDetails.policyCategory.id"
@@ -1023,11 +1072,37 @@
                     ]"
                   /><br />
                   <span class="form-heading">Date of Loss</span>
-                  <q-input
-                    v-model="lossInfo.dateOfLoss"
-                    type="date"
-                    placeholder="Date of Loss"
-                  />
+
+                  <div class=" full-width">
+                    <q-input
+                      v-model="lossInfo.dateOfLoss"
+                      mask="##/##/####"
+                      label="MM/DD/YYYY"
+                      lazy-rules
+                      :rules="[val => validateDate(val) || 'Invalid date!']"
+                    >
+                      <template v-slot:append>
+                        <q-icon
+                          name="event"
+                          size="sm"
+                          color="primary"
+                          class="cursor-pointer"
+                        >
+                          <q-popup-proxy
+                            ref="qDateProxy2"
+                            transition-show="scale"
+                            transition-hide="scale"
+                          >
+                            <q-date
+                              v-model="lossInfo.dateOfLoss"
+                              @input="() => $refs.qDateProxy2.hide()"
+                              mask="MM/DD/YYYY"
+                            ></q-date>
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                    </q-input>
+                  </div>
 
                   <q-select
                     class="required"
@@ -1046,17 +1121,72 @@
                     ]"
                   /><br />
                   <span class="form-heading">Deadline Date</span>
-                  <q-input
-                    v-model="lossInfo.deadlineDate"
-                    type="date"
-                    placeholder="Deadline Date"
-                  /><br />
+
+                  <div class=" full-width">
+                    <q-input
+                      v-model="lossInfo.deadlineDate"
+                      mask="##/##/####"
+                      label="MM/DD/YYYY"
+                      lazy-rules
+                      :rules="[val => validateDate(val) || 'Invalid date!']"
+                    >
+                      <template v-slot:append>
+                        <q-icon
+                          name="event"
+                          size="sm"
+                          color="primary"
+                          class="cursor-pointer"
+                        >
+                          <q-popup-proxy
+                            ref="qDateProxy3"
+                            transition-show="scale"
+                            transition-hide="scale"
+                          >
+                            <q-date
+                              v-model="lossInfo.deadlineDate"
+                              @input="() => $refs.qDateProxy3.hide()"
+                              mask="MM/DD/YYYY"
+                            ></q-date>
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                    </q-input>
+                  </div>
+                  <br />
                   <span class="form-heading">Recov. Deprec. Deadline</span>
-                  <q-input
-                    v-model="lossInfo.recovDeadline"
-                    type="date"
-                    placeholder="Recov. Deprec. Deadline"
-                  /><br />
+
+                  <div class=" full-width">
+                    <q-input
+                      v-model="lossInfo.recovDeadline"
+                      mask="##/##/####"
+                      label="MM/DD/YYYY"
+                      lazy-rules
+                      :rules="[val => validateDate(val) || 'Invalid date!']"
+                    >
+                      <template v-slot:append>
+                        <q-icon
+                          name="event"
+                          size="sm"
+                          color="primary"
+                          class="cursor-pointer"
+                        >
+                          <q-popup-proxy
+                            ref="qDateProxy4"
+                            transition-show="scale"
+                            transition-hide="scale"
+                          >
+                            <q-date
+                              v-model="lossInfo.recovDeadline"
+                              @input="() => $refs.qDateProxy4.hide()"
+                              mask="MM/DD/YYYY"
+                            ></q-date>
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                    </q-input>
+                  </div>
+                  <br />
+
                   <div class="row">
                     <span class="form-heading">Is the Home Habitable?</span>
                     <q-toggle class="q-ml-auto" v-model="isTheHomeHabitable" />
@@ -1163,20 +1293,19 @@
                     </span>
                     <q-toggle
                       class="q-ml-auto"
-                      v-model="IsMortgageHomeToggle"
+                      v-model="isMortgageHomeToggle"
+                      @input="onToggleButtonClick"
                     />
                   </div>
                 </q-form>
               </div>
               <div
-                v-if="IsMortgageHomeToggle"
+                v-if="isMortgageHomeToggle"
                 @click="mortgageInfoDialog = true"
               >
-                <div class="row ">
-                  <div class=" q-px-xs row">
-                    <div v-if="!mortgageDetails[0].id">
-                      Select Mortgage
-                    </div>
+                <div class="row">
+                  <div class="q-px-xs row">
+                    <div v-if="!mortgageDetails[0]['id']">Select Mortgage</div>
                     <div
                       v-else
                       class="select-text"
@@ -1185,9 +1314,7 @@
                       <span>
                         {{ mortgageDetail.value }}
                       </span>
-                      <span v-if="mortgageDetails.length - 1 > index">
-                        ,
-                      </span>
+                      <span v-if="mortgageDetails.length - 1 > index"> , </span>
                     </div>
                   </div>
                 </div>
@@ -1349,7 +1476,7 @@
           </q-toolbar>
         </q-header>
         <q-card-section>
-          <div class="q-page bg-white" style="min-height: 630px">
+          <div class="q-page bg-white" style="min-height: 500px">
             <div
               class="full-width"
               style="
@@ -1398,13 +1525,6 @@
                 v-model="estimatingInfo.notesToTheEstimator"
                 label="Notes to the estimator"
               /><br />
-              <div class="row">
-                <p style="font-size: 15px">Estimating Information Claim 2</p>
-                <q-toggle
-                  class="q-ml-auto"
-                  v-model="estimatingInformationClaim2Toggle"
-                />
-              </div>
             </div>
             <br />
           </div>
@@ -1488,8 +1608,9 @@
                     ]"
                   />
 
-                  <div class="row">
+                  <div class="row justify-between">
                     <q-select
+                      class="col-5"
                       v-model="addEstimatorInfo.type"
                       :options="contactTypes"
                       option-value="machineValue"
@@ -1497,13 +1618,12 @@
                       map-options
                       emit-value
                       label="Type"
-                      style="width: 40%; margin-right: auto"
                     />
                     <q-input
+                      class="col-6"
                       v-model="addEstimatorInfo.phone"
                       label="Phone"
-                      type="number"
-                      style="width: 55%"
+                      mask="(###) ###-####"
                     />
                   </div>
                 </q-form>
@@ -1571,6 +1691,7 @@
                     @input="setVendorIndustryName"
                     behavior="menu"
                     emit-value
+                    map-options
                     lazy-rules
                     :rules="[
                       val =>
@@ -1618,7 +1739,7 @@
                       required
                       class="full-width"
                       v-model="expertVendorInfo.notes"
-                      style="resize: none;"
+                      style="resize: none"
                     ></textarea>
                   </div>
                   <br />
@@ -1629,7 +1750,7 @@
                       required
                       class="full-width"
                       v-model="expertVendorInfo.internalNotes"
-                      style="resize: none;"
+                      style="resize: none"
                     ></textarea>
                   </div>
                 </q-form>
@@ -1720,7 +1841,7 @@
       transition-hide="slide-down"
     >
       <q-card>
-        <q-header bordered class="bg-white  ">
+        <q-header bordered class="bg-white">
           <q-toolbar class="row bg-white">
             <img
               src="~assets/close.svg"
@@ -1759,7 +1880,7 @@
     >
       <q-card>
         <q-header bordered class="bg-white">
-          <q-toolbar class="row bg-white  justify-between">
+          <q-toolbar class="row bg-white justify-between">
             <img
               src="~assets/close.svg"
               alt="close"
@@ -1810,7 +1931,7 @@
 import CustomHeader from 'components/CustomHeader';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import AddressService from '@utils/country';
-import { validateEmail } from '@utils/validation';
+import { validateEmail, validateDate } from '@utils/validation';
 import { constants } from '@utils/constant';
 import { dateToSend } from '@utils/date';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
@@ -2040,7 +2161,7 @@ export default {
       isThereDamageToPersonalPropertyToggle: false,
       wasAppifProvidedToTheInsuredToggle: false,
       doesTheOfficeNeedToProvidePpifToTheInsuredToggle: false,
-      IsMortgageHomeToggle: false,
+      isMortgageHomeToggle: false,
       isLossAddressSameAsClientToggle: false,
       lossAddressDetails: {
         addressCountry: '',
@@ -2071,7 +2192,7 @@ export default {
 
       isTherea2ndMortgageOnTheHomeToggle: false,
       doesAnEstimatorNeedToBeAssignedToggle: false,
-      estimatingInformationClaim2Toggle: false,
+
       vendorExpertHiredToggle: false,
       anyOtherExpertHiredToggle: false,
 
@@ -2177,6 +2298,8 @@ export default {
         );
       });
     },
+
+    validateDate,
     checkAddressField(streetValue) {
       if (streetValue) {
         return true;
@@ -2248,7 +2371,7 @@ export default {
           this.onAddEstimatorButtonClick();
           this[name] = false;
         } else {
-          if (this.checkAddressField(streetAddress)) {
+          if (this.checkAddressField(streetAddress, name)) {
             this[name] = false;
           }
         }
@@ -2318,6 +2441,8 @@ export default {
           isPrimary: false,
           notes: ''
         });
+      } else {
+        this.mortgageDetails.pop();
       }
     },
     async createClientButtonClick() {
@@ -2510,7 +2635,7 @@ export default {
           isPPIF: this.wasAppifProvidedToTheInsuredToggle,
           isNeedPPIF: this.doesTheOfficeNeedToProvidePpifToTheInsuredToggle,
           PPDamageDesc: this.lossInfo.damagePersnalPropertyDescription,
-          hasHomeMortgage: this.IsMortgageHomeToggle
+          hasHomeMortgage: this.isMortgageHomeToggle
         },
         expertInfo: {
           isVendorAssigned: this.vendorExpertHiredToggle,
@@ -2600,7 +2725,24 @@ export default {
 
       this.vendorsListDialog = false;
     },
-
+    onToggleButtonClick() {
+      if (this.mortgageDetails.length > 1) {
+        this.mortgageDetails.pop();
+      }
+      if (!this.isMortgageHomeToggle) {
+        this.isSecondMortgageHome = false;
+        this.mortgageDetails = [
+          {
+            id: '',
+            value: '',
+            loanNumber: '',
+            accountNumber: '',
+            isPrimary: true,
+            notes: ''
+          }
+        ];
+      }
+    },
     closeAddVendorDialog(e) {
       this.addVendorDialog = false;
       this.vendorsListDialog = true;

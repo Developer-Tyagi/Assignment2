@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <CustomHeader @backButton="$router.push('/leads')" :showAddButton="false" />
+    <CustomHeader @backButton="onBackButtonClick" :showAddButton="false" />
     <div style="padding-top: 51px">
       <div class="q-pa-lg column" style="height: calc(100vh - 51px)">
         <div class="row">
@@ -10,24 +10,35 @@
             left-label
             color="orange"
             class="q-ml-auto"
+            @input="onNewLeadButtonToggle"
           />
         </div>
         <div v-if="!isNewLead">
           <q-separator></q-separator>
           <br />
-          <p style="color: #666666; opacity: 50%; font-size: 12px">
+          <p class="stepper-heading">
             If client already exists, select from list below
           </p>
           <q-select
-            v-model="selectedClient"
-            :options="clients"
-            clearable
+            class="full-width"
+            v-model="clientSelected"
+            use-input
+            input-debounce="0"
             option-label="name"
-            option-value="id"
-            emit-value
             label="Select existing client"
+            :options="options"
+            @filter="searchFilterBy"
+            option-value="id"
+            behavior="menu"
+            emit-value
             map-options
-          />
+          >
+            <template v-slot:no-option>
+              <q-item>
+                <q-item-section class="text-black"> No results </q-item-section>
+              </q-item>
+            </template>
+          </q-select>
         </div>
         <q-btn
           label="Continue"
@@ -42,12 +53,13 @@
   </q-page>
 </template>
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 import CustomHeader from 'components/CustomHeader';
 export default {
   data() {
     return {
-      selectedClient: '',
+      clientSelected: '',
+      options: '',
       isNewLead: true
     };
   },
@@ -57,24 +69,68 @@ export default {
   },
 
   created() {
+    this.options = this.clients;
     this.getClients();
+    if (this.selectedClient) {
+      this.isNewLead = false;
+      this.clientSelected = this.selectedClient;
+    }
   },
 
   computed: {
-    ...mapGetters(['clients'])
+    ...mapGetters(['clients', 'selectedClient'])
   },
 
   methods: {
     ...mapActions(['getClients']),
+    ...mapMutations(['setSelectedClient']),
 
     onContinue() {
-      if (this.selectedClient) {
-        this.$router.push({ path: `/add-lead-details/${this.selectedClient}` });
+      if (this.clientSelected) {
+        this.setSelectedClient(this.clientSelected);
+        this.$router.push({ path: `/add-lead-details/${this.clientSelected}` });
       } else {
         this.$router.push({ path: `/add-lead-details` });
+      }
+    },
+
+    searchFilterBy(val, update) {
+      this.clientSelected = null;
+      if (val === ' ') {
+        update(() => {
+          this.options = this.clients;
+        });
+        return;
+      }
+
+      update(() => {
+        const search = val.toLowerCase();
+        this.options = this.clients.filter(
+          v => v.name.toLowerCase().indexOf(search) > -1
+        );
+      });
+    },
+
+    onBackButtonClick() {
+      this.setSelectedClient('');
+      this.$router.push('/leads');
+    },
+
+    onNewLeadButtonToggle() {
+      if (this.isNewLead) {
+        this.clientSelected = '';
+        this.setSelectedClient('');
+      } else {
+        this.setSelectedClient(this.clientSelected);
       }
     }
   }
 };
 </script>
-<style></style>
+<style lang="scss">
+.stepper-heading {
+  color: #333333;
+  font-weight: bold;
+  font-size: 14px;
+}
+</style>
