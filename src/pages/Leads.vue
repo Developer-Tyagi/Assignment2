@@ -47,7 +47,7 @@
       </q-toolbar>
     </q-header>
     <div style="padding-top: 51px" class="row">
-      <div class="full-width">
+      <div class="full-width ">
         <q-tabs
           v-model="panel"
           dense
@@ -429,5 +429,9 @@ img {
   .q-tab__content {
     width: 100% !important;
   }
+}
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent; /* make scrollbar transparent */
 }
 </style>

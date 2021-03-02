@@ -747,21 +747,25 @@
                   />
                   <br />
                   <div class="row">
-                    <span class="form-heading">Has claim been filed?</span>
+                    <p class=" q-mx-none q-my-auto form-heading ">
+                      Has claim been filed?
+                    </p>
                     <q-toggle
                       class="q-ml-auto"
                       v-model="hasClaimBeenFilledToggle"
                     />
                   </div>
                   <div class="row">
-                    <span class="form-heading">
+                    <p class="q-mx-none q-my-auto form-heading">
                       Is this is a Foced-Placed policy?
-                    </span>
+                    </p>
+
                     <q-toggle
                       class="q-ml-auto"
                       v-model="isThisIsForcedPlacedPolicyToggle"
                     />
                   </div>
+                  <br />
                   <span class="form-heading">Policy Effective date</span>
                   <q-input
                     v-model="insuranceDetails.policyEffectiveDate"
@@ -943,9 +947,9 @@
               <div>
                 <q-form ref="lossInfoForm">
                   <div class="row">
-                    <span class="form-heading">
+                    <p class=" q-mx-none q-my-auto form-heading">
                       Loss Address Same As Client's?
-                    </span>
+                    </p>
                     <q-toggle
                       class="q-ml-auto"
                       v-model="isLossAddressSameAsClientToggle"
@@ -1040,15 +1044,19 @@
                     placeholder="Recov. Deprec. Deadline"
                   /><br />
                   <div class="row">
-                    <span class="form-heading">Is the Home Habitable?</span>
+                    <p class="q-mx-none q-my-auto form-heading">
+                      Is the Home Habitable?
+                    </p>
                     <q-toggle class="q-ml-auto" v-model="isTheHomeHabitable" />
                   </div>
                   <div class="row">
-                    <span class="form-heading">FEMA Claim</span>
+                    <p class=" q-mx-none q-my-auto form-heading">FEMA Claim</p>
                     <q-toggle class="q-ml-auto" v-model="femaClaimToggle" />
                   </div>
                   <div class="row">
-                    <span class="form-heading">State of Emergency</span>
+                    <p class="q-mx-none q-my-auto form-heading">
+                      State of Emergency
+                    </p>
                     <q-toggle
                       class="q-ml-auto"
                       v-model="isStateOfEmergencyToggle"
@@ -1088,9 +1096,9 @@
                   />
                   <br />
                   <div class="row">
-                    <span class="form-heading">
+                    <p class=" q-mx-none q-my-auto form-heading">
                       Is there damage to other structures?
-                    </span>
+                    </p>
                     <q-toggle class="q-ml-auto" v-model="isDamageOSToggle" />
                   </div>
                   <textarea
@@ -1104,9 +1112,9 @@
                   />
 
                   <div class="row">
-                    <span class="form-heading">
+                    <p class="q-mx-none q-my-auto form-heading">
                       Is there damage to personal property?
-                    </span>
+                    </p>
                     <q-toggle
                       class="q-ml-auto"
                       v-model="isThereDamageToPersonalPropertyToggle"
@@ -1122,27 +1130,27 @@
                     style="resize: none"
                   />
                   <div class="row">
-                    <span class="form-heading">
+                    <p class=" q-mx-none q-my-auto form-heading">
                       Was a PPIF provided to the insured?
-                    </span>
+                    </p>
                     <q-toggle
                       class="q-ml-auto"
                       v-model="wasAppifProvidedToTheInsuredToggle"
                     />
                   </div>
                   <div class="row">
-                    <span class="form-heading">
+                    <p class=" q-mx-none q-my-auto form-heading">
                       Does Claimguru PPIF need to be provided?
-                    </span>
+                    </p>
                     <q-toggle
                       class="q-ml-auto"
                       v-model="doesTheOfficeNeedToProvidePpifToTheInsuredToggle"
                     />
                   </div>
                   <div class="row">
-                    <span class="form-heading">
+                    <p class="q-mx-none q-my-auto form-heading">
                       Is there a mortgage on the home?
-                    </span>
+                    </p>
                     <q-toggle
                       class="q-ml-auto"
                       v-model="isMortgageHomeToggle"
