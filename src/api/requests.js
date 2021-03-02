@@ -7,17 +7,18 @@ const axiosInstance = axios.create({
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json'
-  },
+  }
 
-  transformResponse: [
-    apiData => {
-      if (apiData && apiData !== '') {
-        const { data } = JSON.parse(apiData);
-        return data;
-      }
-      return apiData;
-    }
-  ]
+  // transformResponse: [
+  //   apiData => {
+  //     if (apiData && apiData !== '') {
+
+  //       const { data } = JSON.parse(apiData);
+  //       return data;
+  //     }
+  //     return apiData;
+  //   }
+  // ]
 });
 
 axiosInstance.interceptors.request.use(
@@ -28,6 +29,16 @@ axiosInstance.interceptors.request.use(
   },
   error => {
     return Promise.reject(error);
+  }
+);
+
+axiosInstance.interceptors.response.use(
+  response => {
+    return response.data;
+  },
+  error => {
+    console.log(error);
+    throw error;
   }
 );
 
