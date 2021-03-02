@@ -10,7 +10,7 @@
             {{ selectedLead['primaryContact']['fname'] }}
             {{ selectedLead.primaryContact.lname }}
           </p>
-          <p class="texts ">
+          <p class="texts">
             Mobile:
             <span
               class="clickLink"
@@ -24,7 +24,7 @@
               >{{ selectedLead.primaryContact.phoneNumber[0].number }}</span
             ><span v-else> - </span>
           </p>
-          <p class="texts ">
+          <p class="texts">
             Email:
             <span
               class="clickLink"
@@ -57,7 +57,9 @@
 
           <p class="heading">Policy Details</p>
           <p class="texts">
-            Carrier Name &nbsp;&nbsp;{{ selectedLead.carrier.value }}
+            Carrier Name &nbsp;&nbsp;{{
+              selectedLead['carrier'] ? selectedLead['carrier']['value'] : '-'
+            }}
           </p>
           <p class="texts">
             Policy No &nbsp;&nbsp;{{
@@ -118,7 +120,7 @@ export default {
       }
     }
   },
-  created() {
+  mounted() {
     this.getLeadDetails(this.$route.params.id);
   }
 };

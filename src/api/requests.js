@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getToken } from '@utils/auth';
+import { getToken, remove } from '@utils/auth';
 
 const baseURL = `${process.env.API}/v1`;
 const axiosInstance = axios.create({
@@ -8,17 +8,6 @@ const axiosInstance = axios.create({
     Accept: 'application/json',
     'Content-Type': 'application/json'
   }
-
-  // transformResponse: [
-  //   apiData => {
-  //     if (apiData && apiData !== '') {
-
-  //       const { data } = JSON.parse(apiData);
-  //       return data;
-  //     }
-  //     return apiData;
-  //   }
-  // ]
 });
 
 axiosInstance.interceptors.request.use(
@@ -34,10 +23,15 @@ axiosInstance.interceptors.request.use(
 
 axiosInstance.interceptors.response.use(
   response => {
+    if (response.status === 401) {
+      removeToken();
+      removeCurrentUser();
+      this.$router.push('/login');
+      return;
+    }
     return response.data;
   },
   error => {
-    console.log(error);
     throw error;
   }
 );

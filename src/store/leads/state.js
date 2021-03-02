@@ -33,7 +33,10 @@ export default function() {
       },
       lossDesc: '',
       dateOfLoss: '',
-      carrier: '',
+      carrier: {
+        id: '',
+        value: ''
+      },
       policyNumber: '',
       isAutomaticScheduling: false,
       notes: ''
