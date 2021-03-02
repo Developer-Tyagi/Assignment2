@@ -5,55 +5,20 @@
       :showAddButton="false"
     />
     <div class="column" style="padding: 30px 20px 20px 20px">
-      <div class="q-md column">
-        <div class="form-list row" v-for="dialogBoxe in dialogBoxes">
-          <span>{{ dialogBoxes }}</span>
+      <div class="q-md column  full-width fixHeight ">
+        <div
+          v-for="(dialogBox, index) in dialogBoxes"
+          :key="dialogBox.name"
+          @click="createClientDailogBoxOpen(dialogBox.name)"
+        >
+          <div class="form-list  row">
+            {{ dialogBox.name }}
+            <div class="   q-mr-lg  q-ml-auto" v-if="validForm[index] == true">
+              <q-icon size="xs" color="primary" name="done" />
+            </div>
+          </div>
         </div>
-        <!-- <div class="full-width fixHeight">
-          <div class="form-list row" @click="clientInfoDailog = true">
-            Client Info
-            <div class="  q-mr-lg  q-ml-auto" v-if="validForm[1] == true">
-              <q-icon size="xs" color="primary" name="done" />
-            </div>
-          </div>
 
-          <div class="form-list row" @click="mailingAddressDialog = true">
-            Mailing Address
-            <div class="  q-mr-lg  q-ml-auto " v-if="validForm[2] == true">
-              <q-icon size="xs" color="primary" name="done" />
-            </div>
-          </div>
-          <div class="form-list row" @click="insuranceInfoDialog = true">
-            Insurance Info
-            <div class="   q-mr-lg  q-ml-auto " v-if="validForm[3] == true">
-              <q-icon size="xs" color="primary" name="done" />
-            </div>
-          </div>
-          <div class="form-list row" @click="lossInfoDialog = true">
-            Loss Info
-            <div class="  q-mr-lg  q-ml-auto" v-if="validForm[4] == true">
-              <q-icon size="xs" color="primary" name="done" />
-            </div>
-          </div>
-
-          <div class="form-list row" @click="expertVendorInfoDialog = true">
-            Expert/Vendor Info
-            <div class="   q-mr-lg  q-ml-auto" v-if="validForm[5] == true">
-              <q-icon size="xs" color="primary" name="done" />
-            </div>
-          </div>
-
-          <div class="form-list" @click="estimatingInfoDialog = true">
-            Estimating Info
-          </div>
-          <div class="form-list" @click="officeTaskDialog = true">
-            Office Task
-          </div>
-          <div class="form-list" @click="publicAdjustorInfoDialog = true">
-            Public Adjustor Info
-          </div>
-          <div class="form-list" @click="documentsDialog = true">Documents</div>
-        </div> -->
         <q-btn
           label="Create Client"
           color="primary"
@@ -1930,16 +1895,26 @@ export default {
   components: { CustomHeader, VendorsList, AddVendor, AutoCompleteAddress },
   data() {
     return {
+      // dialogBoxes: [
+      //   this.clientInfoDailog,
+      //   this.mailingAddressDialog,
+      //   this.insuranceInfoDialog,
+      //   this.lossInfoDialog,
+      //   this.expertVendorInfoDialog,
+      //   this.estimatingInfoDialog,
+      //   this.officeTaskDialog,
+      //   this.publicAdjustorInfoDialog,
+      //   this.documentsDialog
+      // ],
       dialogBoxes: [
-        this.clientInfoDailog,
-        this.mailingAddressDialog,
-        this.insuranceInfoDialog,
-        this.lossInfoDialog,
-        this.expertVendorInfoDialog,
-        this.estimatingInfoDialog,
-        this.officeTaskDialog,
-        this.publicAdjustorInfoDialog,
-        this.documentsDialog
+        { name: 'Client Info' },
+        { name: 'Mailing Address' },
+        { name: 'Insurance Info' },
+        { name: 'Loss Info' },
+        { name: 'Expert/Vendor Info' },
+        { name: 'Estimating Info' },
+        { name: 'Office Task' },
+        { name: 'Public Adjustor Info' }
       ],
       validForm: [],
       vendorIndustriesOptions: [],
@@ -2294,7 +2269,37 @@ export default {
         );
       });
     },
-
+    createClientDailogBoxOpen(value) {
+      switch (value) {
+        case 'Client Info':
+          this.clientInfoDailog = true;
+          break;
+        case 'Mailing Address':
+          this.mailingAddressDialog = true;
+          break;
+        case 'Insurance Info':
+          this.insuranceInfoDialog = true;
+          break;
+        case 'Loss Info':
+          this.lossInfoDialog = true;
+          break;
+        case 'Expert/Vendor Info':
+          this.expertVendorInfoDialog = true;
+          break;
+        case 'Estimating Info':
+          this.estimatingInfoDialog = true;
+          break;
+        case 'Office Task':
+          this.officeTaskDialog = true;
+          break;
+        case 'Public Adjustor Info':
+          this.publicAdjustorInfoDialog = true;
+          break;
+        case 'Documents':
+          this.documentsDialog = true;
+          break;
+      }
+    },
     validateDate,
 
     setVendorIndustryName() {
@@ -2319,16 +2324,16 @@ export default {
       switch (name) {
         case 'clientInfoDailog':
           success = await this.$refs.clientForm.validate();
-          index = 1;
+          index = 0;
           break;
         case 'insuranceInfoDialog':
           success = await this.$refs.insuranceInfoForm.validate();
-          index = 3;
+          index = 2;
           break;
 
         case 'mailingAddressDialog':
           success = await this.$refs.mailingAddressForm.validate();
-          index = 2;
+          index = 1;
           break;
 
         case 'addEstimatorDialog':
@@ -2337,12 +2342,12 @@ export default {
           break;
         case 'lossInfoDialog':
           success = await this.$refs.lossInfoForm.validate();
-          index = 4;
+          index = 3;
           break;
 
         case 'expertVendorInfoDialog':
           success = await this.$refs.expertVendorInfoForm.validate();
-          index = 5;
+          index = 4;
           break;
       }
       if (success == true) {
@@ -2814,8 +2819,9 @@ export default {
   color: #333333;
   font-weight: bold;
   font-size: 16px;
-  padding: 15px 0;
+
   border-bottom: 1px solid #d3d3d3;
+  margin-top: 20px;
 }
 
 .custom-select {
