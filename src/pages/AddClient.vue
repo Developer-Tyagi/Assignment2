@@ -5,7 +5,7 @@
       :showAddButton="false"
     />
     <div class="column" style="padding: 30px 20px 20px 20px">
-      <div class="q-md column  full-width fixHeight ">
+      <div class="q-md column   full-width fixHeight ">
         <div
           v-for="(dialogBox, index) in dialogBoxes"
           :key="dialogBox.name"
@@ -2808,7 +2808,7 @@ export default {
   color: #333333;
   font-weight: bold;
   font-size: 16px;
-
+  padding: 5px;
   border-bottom: 1px solid #d3d3d3;
   margin-top: 20px;
 }
