@@ -8,6 +8,7 @@ export default function() {
     claimReasons: [],
     lossCauses: [],
     claimSeverity: [],
-    policyCategories: []
+    policyCategories: [],
+    selectedClient: ''
   };
 }

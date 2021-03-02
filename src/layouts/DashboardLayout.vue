@@ -95,6 +95,7 @@
 
 <script>
 import { removeToken, removeCurrentUser } from '@utils/auth';
+import { getCurrentUser } from 'src/utils/auth';
 export default {
   name: 'DashboardLayout',
   data() {
@@ -170,6 +171,9 @@ export default {
       this.intViewportWidth = window.innerWidth * 0.9;
     } else {
       this.intViewportWidth = 400;
+    }
+    if (getCurrentUser().attributes) {
+      this.user = getCurrentUser().attributes;
     }
   }
 };

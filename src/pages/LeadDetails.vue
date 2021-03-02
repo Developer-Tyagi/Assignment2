@@ -10,9 +10,10 @@
             {{ selectedLead['primaryContact']['fname'] }}
             {{ selectedLead.primaryContact.lname }}
           </p>
-          <p class="texts">
+          <p class="texts ">
             Mobile:
             <span
+              class="clickLink"
               v-if="selectedLead.primaryContact.phoneNumber"
               @click="
                 onPhoneNumberClick(
@@ -23,9 +24,10 @@
               >{{ selectedLead.primaryContact.phoneNumber[0].number }}</span
             ><span v-else> - </span>
           </p>
-          <p class="texts">
+          <p class="texts ">
             Email:
             <span
+              class="clickLink"
               v-if="selectedLead.primaryContact.email"
               @click="onEmailClick(selectedLead.primaryContact.email, $event)"
               >{{ selectedLead.primaryContact.email }}</span
@@ -132,10 +134,14 @@ export default {
   font-weight: bold;
   margin: 16px 0 8px 0;
 }
+.clickLink {
+  color: $primary;
+}
 
 .texts {
   margin-bottom: 0;
   font-size: 12px;
+
   text-align: left;
 }
 </style>

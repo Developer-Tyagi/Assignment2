@@ -93,15 +93,14 @@
             ]"
           />
           <q-input v-model="vendor.contact[0].lname" label="Last Name" />
-          <div class="row">
+          <div class="row justify-between">
             <q-select
-              class="required"
+              class="required col-5"
               v-model="vendor.contact[0].phoneNumber[0].type"
               :options="contactTypes"
               option-value="machineValue"
               option-label="name"
               label="Type"
-              style="width: 40%; margin-right: auto"
               emit-value
               lazy-rules
               :rules="[
@@ -109,11 +108,10 @@
               ]"
             />
             <q-input
-              class="required"
+              class="required col-6"
               v-model="vendor.contact[0].phoneNumber[0].number"
               label="Phone"
               mask="(###) ###-####"
-              style="width: 55%"
               lazy-rules
               :rules="[
                 val => (val && val.length == 14) || 'Please enter phone number'
@@ -176,15 +174,14 @@
               />
               <q-input v-model="contactInfo.lname" label="Last Name" />
               {{ contactInfo.phoneNumber[0].type }}
-              <div class="row">
+              <div class="row justify-between">
                 <q-select
-                  class="required"
+                  class="required col-5"
                   v-model="contactInfo.phoneNumber[0].type"
                   :options="contactTypes"
                   option-value="machineValue"
                   option-label="name"
                   label="Type"
-                  style="width: 40%; margin-right: auto"
                   emit-value
                   lazy-rules
                   lazy-rules
@@ -193,16 +190,15 @@
                   ]"
                 />
                 <q-input
-                  class="required"
+                  class="required col-6"
                   v-model="contactInfo.phoneNumber[0].number"
                   label="Phone1"
                   mask="(###) ###-####"
-                  style="width: 55%"
                   :ref="`number-${index}`"
                   lazy-rules
                   :rules="[
                     val =>
-                      (val && val.length == 10) || 'Please enter phone number'
+                      (val && val.length == 14) || 'Please enter phone number'
                   ]"
                 />
               </div>
@@ -259,7 +255,7 @@ import { validateEmail } from '@utils/validation';
 
 export default {
   name: 'AddVendor',
-  props: ['componentName'],
+  props: ['componentName', 'selectedIndustryType'],
 
   components: { AutoCompleteAddress },
 
@@ -345,6 +341,17 @@ export default {
     if (this.componentName === constants.industries.CARRIER) {
       let industryType = this.vendorIndustries.find(
         o => o.machineValue === constants.industries.CARRIER
+      );
+      if (industryType.name && industryType.id) {
+        this.vendor.industry.value = industryType.name;
+        this.vendor.industry.id = industryType.id;
+        this.vendor.industry.machineValue = industryType.machineValue;
+      }
+    }
+
+    if (this.componentName === constants.industries.VENDOR) {
+      let industryType = this.vendorIndustries.find(
+        o => o.name === this.selectedIndustryType
       );
       if (industryType.name && industryType.id) {
         this.vendor.industry.value = industryType.name;
