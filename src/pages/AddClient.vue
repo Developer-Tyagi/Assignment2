@@ -6,18 +6,15 @@
     />
 
     <div class="column" style="padding: 30px 20px 20px 20px">
-      <div class="q-md column   full-width fixHeight ">
+      <div class="q-md column full-width fixHeight">
         <div
           v-for="dialogBox in dialogBoxes"
           :key="dialogBox.name"
           @click="createClientDailogBoxOpen(dialogBox.name)"
         >
-          <div class="form-list  row">
+          <div class="form-list row">
             {{ dialogBox.name }}
-            <div
-              class="   q-mr-lg  q-ml-auto"
-              v-if="dialogBox.validForm == true"
-            >
+            <div class="q-mr-lg q-ml-auto" v-if="dialogBox.validForm == true">
               <q-icon size="xs" color="primary" name="done" />
             </div>
           </div>
@@ -735,7 +732,7 @@
                   </div>
                   <span class="form-heading">Policy Effective date</span>
 
-                  <div class=" full-width">
+                  <div class="full-width">
                     <q-input
                       v-model="insuranceDetails.policyEffectiveDate"
                       mask="##/##/####"
@@ -770,7 +767,7 @@
 
                   <span class="form-heading">Policy Expiry date </span>
 
-                  <div class=" full-width">
+                  <div class="full-width">
                     <q-input
                       v-model="insuranceDetails.policyExpireDate"
                       mask="##/##/####"
@@ -1035,7 +1032,7 @@
                   /><br />
                   <span class="form-heading">Date of Loss</span>
 
-                  <div class=" full-width">
+                  <div class="full-width">
                     <q-input
                       v-model="lossInfo.dateOfLoss"
                       mask="##/##/####"
@@ -1084,7 +1081,7 @@
                   /><br />
                   <span class="form-heading">Deadline Date</span>
 
-                  <div class=" full-width">
+                  <div class="full-width">
                     <q-input
                       v-model="lossInfo.deadlineDate"
                       mask="##/##/####"
@@ -1117,7 +1114,7 @@
                   <br />
                   <span class="form-heading">Recov. Deprec. Deadline</span>
 
-                  <div class=" full-width">
+                  <div class="full-width">
                     <q-input
                       v-model="lossInfo.recovDeadline"
                       mask="##/##/####"
@@ -1663,6 +1660,19 @@
                       </q-item>
                     </template>
                   </q-select>
+                  <!-- This will Show the input when industry Type is Others -->
+                  <q-input
+                    v-model="industryType.value"
+                    v-if="expertVendorInfo.industry.value == 'Others'"
+                    label="Enter New Industry Type"
+                  ></q-input>
+                  <q-btn
+                    class="q-mt-md"
+                    v-if="industryType.value"
+                    label="Add"
+                    outline
+                    @click="addAnotherIndustry"
+                  />
 
                   <div
                     v-if="vendorExpertHiredToggle"
@@ -1877,7 +1887,11 @@
         <AddVendor
           @closeDialog="closeAddVendorDialog"
           :componentName="vendorDialogName"
-          :selectedIndustryType="expertVendorInfo.industry.value"
+          :selectedIndustryType="
+            expertVendorInfo.industry.value == 'Others'
+              ? industryType.value
+              : expertVendorInfo.industry.value
+          "
         />
       </q-card>
     </q-dialog>
@@ -1903,6 +1917,10 @@ export default {
   data() {
     return {
       isCreateClientButtonDisabled: true,
+      industryType: {
+        value: '',
+        machineValue: ''
+      },
       dialogBoxes: [
         { name: 'Client Info', validForm: false },
         { name: 'Mailing Address', validForm: false },
@@ -2245,10 +2263,21 @@ export default {
       'getContactTypes',
       'getTitles',
       'getPolicyCategory',
-      'getVendorIndustries'
+      'getVendorIndustries',
+      'addIndustry'
     ]),
 
     ...mapMutations(['setSelectedLead']),
+    async addAnotherIndustry() {
+      const response = await this.addIndustry(this.industryType);
+      if (response) {
+        this.$q.notify({
+          message: 'Added New Industry Type',
+          position: 'top',
+          type: 'negative'
+        });
+      }
+    },
 
     searchFilterBy(val, update) {
       this.expertVendorInfo.industry.value = null;
@@ -2779,7 +2808,7 @@ export default {
           this.vendorDialogFilterByIndustry = constants.industries.MORTGAGE;
           break;
         case constants.industries.EXPERTVENDOR:
-          this.vendorDialogName = constants.industries.VENDOR;
+          this.vendorDialogName = constants.industries.EXPERTVENDOR;
           this.showVendorDialogFilters = false;
           this.vendorDialogFilterByIndustry = constants.industries.VENDOR;
 
