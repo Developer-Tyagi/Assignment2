@@ -1783,6 +1783,7 @@
         <AddVendor
           @closeDialog="closeAddVendorDialog"
           :componentName="vendorDialogName"
+          :selectedIndustryType="expertVendorInfo.industry.value"
         />
       </q-card>
     </q-dialog>
@@ -2212,6 +2213,10 @@ export default {
           name === 'insuranceInfoDialog' ||
           name === 'expertVendorInfoDialog'
         ) {
+          console.log(
+            'insideexpertinfoif',
+            this.expertVendorInfo.industry.value
+          );
           this[name] = false;
         }
         if (name === 'addEstimatorDialog') {
@@ -2517,10 +2522,9 @@ export default {
           }
         ]
       };
-
       const response = this.addEstimator(payload);
-
       if (response) {
+        await this.getEstimators();
         this.addEstimatorInfo = {
           name: '',
           fname: '',
@@ -2530,7 +2534,6 @@ export default {
           type: ''
         };
         (this.honorific3.id = ''), (this.addEstimatorDialog = false);
-        this.getEstimators();
       }
     },
     selectEstimator(value) {
@@ -2628,6 +2631,7 @@ export default {
         case constants.industries.EXPERTVENDOR:
           this.vendorDialogName = constants.industries.VENDOR;
           this.showVendorDialogFilters = false;
+          this.vendorDialogFilterByIndustry = constants.industries.VENDOR;
 
           this.vendorDialogFilterByIndustry = this.expertVendorInfo.industry.machineValue;
           break;

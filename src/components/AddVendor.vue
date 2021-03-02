@@ -259,7 +259,7 @@ import { validateEmail } from '@utils/validation';
 
 export default {
   name: 'AddVendor',
-  props: ['componentName'],
+  props: ['componentName', 'selectedIndustryType'],
 
   components: { AutoCompleteAddress },
 
@@ -345,6 +345,17 @@ export default {
     if (this.componentName === constants.industries.CARRIER) {
       let industryType = this.vendorIndustries.find(
         o => o.machineValue === constants.industries.CARRIER
+      );
+      if (industryType.name && industryType.id) {
+        this.vendor.industry.value = industryType.name;
+        this.vendor.industry.id = industryType.id;
+        this.vendor.industry.machineValue = industryType.machineValue;
+      }
+    }
+
+    if (this.componentName === constants.industries.VENDOR) {
+      let industryType = this.vendorIndustries.find(
+        o => o.name === this.selectedIndustryType
       );
       if (industryType.name && industryType.id) {
         this.vendor.industry.value = industryType.name;
