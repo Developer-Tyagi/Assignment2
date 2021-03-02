@@ -5,7 +5,7 @@
     <div class="q-pa-xs" style="height: 60%; width: 95%">
       <div class="full-width">
         <div class="my-font text-bold row q-my-lg q-mx-xl">
-          Setup Company Account {{ username }}
+          Setup Company Account
         </div>
       </div>
       <!-- Height given for there Inner 2 div -->
@@ -27,7 +27,6 @@
             <!-- Inspection Type -->
             <q-tab-panel name="inspectionType">
               <div class="row justify-between">
-                <!-- empty pannel -->
                 <div class="text-bold col-4">Inspection Type</div>
                 <div
                   class="col-2 text-primary"
@@ -56,7 +55,7 @@
                   v-for="(ins, index) in inspectionTypes"
                   v-if="index >= 0"
                 >
-                  <div class="col-8 q-ml-xl bg-grey-2">
+                  <div class="col-8 q-ml-xl q-my-md bg-grey-2">
                     <div class="col-5 q-pl-md">
                       {{ inspectionTypes[index].value }}
                     </div>
@@ -74,7 +73,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-2 bg-grey-2 q-pl-xl">
+                  <div class="col-2 bg-grey-2 q-pl-xl q-my-md q-pt-md">
                     <q-icon size="sm" color="primary" name="create" />
                     <q-icon
                       class="q-ml-xs"
@@ -103,7 +102,7 @@
               <div class="q-pa-lg" v-if="!vendorIndustries">
                 You Have Not Added Any IndustryType yet
               </div>
-              <div v-else class="bg-grey-1">
+              <div v-else class="bg-grey-1 q-pl-xl q-my-md ">
                 <div
                   class="q-py-xs row justify-between full-width"
                   v-for="(contactInfo, index) in vendorIndustries"
@@ -500,7 +499,7 @@
           <div class="bg-blue">
             <q-separator />
           </div>
-          <div class="q-mt-lg row justify-center">
+          <div class="q-mt-lg row justify-center  full-width">
             <q-btn
               color="primary"
               label="Next"
@@ -520,7 +519,87 @@
         </template>
 
         <!-- This is First Dialog -->
+        <q-dialog v-model="InspectionDialogBox" persistent>
+          <q-card style="width: 700px;height:600px; max-width: 1000vw;">
+            <q-bar class=" row justify-between" style="height:50px">
+              <div class="col-46 q-px-xl text-bold ">
+                Add Inspection Type
+              </div>
+              <q-btn dense flat icon="close" v-close-popup>
+                <q-tooltip>Close</q-tooltip>
+              </q-btn>
+            </q-bar>
 
+            <q-card-section>
+              <div
+                v-for="(contactInfo, index) in inspection.subtypes"
+                v-if="index >= 0"
+              >
+                <div
+                  class="column bg-grey-3 q-pa-xl"
+                  style="margin-left: 100px; margin-right: 100px"
+                >
+                  <div class="q-pa-lg">
+                    <q-input
+                      v-model="inspection.value"
+                      label="Type Of Inspection"
+                      lazy-rules
+                      v-if="index == 0"
+                    />
+
+                    <q-input
+                      v-model="inspection.subtypes[index].value"
+                      label="Sub Type Of Inspection"
+                      lazy-rules
+                    />
+                    Default Duration (hr))
+                    <q-slider
+                      class="q-mt-lg"
+                      name="speed"
+                      v-model="inspection.subtypes[index].duration"
+                      label-always
+                      :min="0"
+                      :max="5"
+                      :step="0.5"
+                    />
+                  </div>
+                </div>
+                <br />
+              </div>
+
+              <div class="row justify-between text-primary q-mx-xl">
+                <div class="q-ml-xl" @click="addAnotherSubType">
+                  + Another Sub Type Of Inspection
+                </div>
+                <div
+                  class="q-mr-xl"
+                  v-if="inspection.subtypes[1]"
+                  @click="onClickRemoveSubType"
+                >
+                  Remove
+                </div>
+              </div>
+              <div class="row justify-center q-pa-lg">
+                <div>
+                  <q-btn
+                    color="primary"
+                    label="Clear"
+                    class="q-mx-lg"
+                    @click="onClickClearInspectionType"
+                  />
+                </div>
+                <div>
+                  <q-btn
+                    color="primary"
+                    label="Save"
+                    class="q-mx-lg"
+                    @click="onSaveInspectionType"
+                  />
+                </div>
+              </div>
+            </q-card-section>
+          </q-card>
+        </q-dialog>
         <!-- This is Secondary Dialog Box -->
         <q-dialog v-model="industryTypeDialogBox" persistent>
           <q-card style="width: 700px; height: 400px; max-width: 1000vw">
@@ -605,25 +684,10 @@ export default {
       industryTypeDialogBox: false,
       industryTypeDialogBoxName: '',
       len: 1,
-      toggle: false,
 
-      // this is for static dropdown
-      options: ['Manager', 'Staff'],
       isShowRemoveButton: false,
-      tab: 'honorific',
-      splitterModel: 20,
+      tab: '',
 
-      users: [
-        {
-          type: 'user',
-          contact: {
-            fname: '',
-            lname: ''
-          },
-          email: '',
-          roles: []
-        }
-      ],
       inspection: {
         value: '',
 
@@ -636,6 +700,15 @@ export default {
         machineValue: ''
       }
     };
+  },
+
+  watch: {
+    $route(to, from) {
+      this.tab = this.$route.query.data;
+    }
+  },
+  created() {
+    this.tab = this.$route.query.data;
   },
   computed: {
     ...mapGetters([
@@ -652,6 +725,7 @@ export default {
       'claimSeverity'
     ])
   },
+
   mounted() {
     this.getTitles();
     this.getContactTypes();
@@ -758,73 +832,7 @@ export default {
       this.industryTypeDialogBoxName = value;
       this.industryTypeDialogBox = true;
     },
-    // on Clicking Submit Button on
-    // async onSubmit() {
-    //   const success = await this.$refs.addUserForm.validate();
-    //   if (this.tab == 'sales' && this.toggle == false) {
-    //     this.tab = 'inspectionType';
-    //     return;
-    //   }
-    //   if (success) {
-    //     this.users.forEach(user => {
-    //       this.addUser(user);
-    //     });
-    //     this.users = [
-    //       {
-    //         type: 'user',
-    //         contact: {
-    //           fname: '',
-    //           lname: ''
-    //         },
-    //         email: '',
-    //         roles: []
-    //       }
-    //     ];
-    //     if (this.tab == 'addUser') {
-    //       this.tab = 'offcInfo';
-    //     } else if (this.tab == 'offcInfo') {
-    //       this.tab = 'sales';
-    //     } else if (this.tab == 'sales') {
-    //       this.tab = 'inspectionType';
-    //     }
-    //     this.isShowRemoveButton = false;
-    //   }
-    // },
 
-    async addAnotherContact() {
-      const success = await this.$refs.addUserForm.validate();
-      if (success) {
-        const len = this.users.length;
-
-        if (this.users[len - 1].contact.fname && this.users[len - 1].email) {
-          this.len = len + 1;
-          this.users.push({
-            type: 'user',
-            contact: {
-              fname: '',
-              lname: ''
-            },
-            email: '',
-            roles: []
-          });
-          this.isShowRemoveButton = true;
-        } else {
-          this.$q.notify({
-            message: 'Please fill the first Name and Email First',
-            position: 'top',
-            type: 'negative'
-          });
-        }
-      }
-    },
-    //  For Remove  AddUser,OfficeStraffInfo and Sales
-    removeAnotherContact() {
-      const len = this.users.length;
-      if (len === 2) {
-        this.isShowRemoveButton = false;
-      }
-      this.users.pop();
-    },
     // For adding SubType of Inspection Type
     addAnotherSubType() {
       this.inspection.subtypes.push({ type: ' ', duration: 0.5 });
@@ -890,21 +898,6 @@ export default {
       } else if (this.tab == 'lossCause') {
         this.tab = 'claimSeverity';
       }
-    },
-    onToggleChange() {
-      if (this.toggle == false) {
-        this.users = [
-          {
-            type: 'user',
-            contact: {
-              fname: '',
-              lname: ''
-            },
-            email: '',
-            roles: []
-          }
-        ];
-      }
     }
 
     // End of Functions
@@ -912,12 +905,6 @@ export default {
 };
 </script>
 <style lang="scss">
-.th,
-td {
-  border: 1px solid black;
-  width: 200px;
-}
-
 ::-webkit-scrollbar {
   display: none;
 }
