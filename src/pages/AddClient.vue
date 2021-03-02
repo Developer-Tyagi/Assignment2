@@ -2213,10 +2213,6 @@ export default {
           name === 'insuranceInfoDialog' ||
           name === 'expertVendorInfoDialog'
         ) {
-          console.log(
-            'insideexpertinfoif',
-            this.expertVendorInfo.industry.value
-          );
           this[name] = false;
         }
         if (name === 'addEstimatorDialog') {
