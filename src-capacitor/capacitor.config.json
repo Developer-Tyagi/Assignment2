@@ -1,0 +1,7 @@
+{
+  "appId": "claimguru.app",
+  "appName": "claimguru",
+  "bundledWebRuntime": false,
+  "npmClient": "yarn",
+  "webDir": "www"
+}
