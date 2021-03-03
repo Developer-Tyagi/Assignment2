@@ -134,9 +134,10 @@ export default {
   created() {
     if (getToken()) {
       if (
-        getCurrentUser() &&
-        getCurrentUser().attributes['onboard'] &&
-        getCurrentUser().attributes['onboard']['isCompleted']
+        (getCurrentUser() &&
+          getCurrentUser().attributes['onboard'] &&
+          getCurrentUser().attributes['onboard']['isCompleted']) ||
+        this.$q.screen.width < 992
       ) {
         this.$router.push('/dashboard');
       } else {

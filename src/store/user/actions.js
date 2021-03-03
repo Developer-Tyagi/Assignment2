@@ -2,7 +2,7 @@ import request from '@api';
 import { buildApiData } from '@utils/api';
 import { setToken, setCurrentUser } from '@utils/auth';
 import firebaseAuthorization from '@utils/firebase';
-import { policyCategories } from '../clients/getters';
+import { Screen } from 'quasar';
 
 export async function userLogin({ commit, dispatch }, formData) {
   const { data } = formData;
@@ -56,8 +56,9 @@ export async function getUserInfo({ dispatch, state }) {
     const { data } = await request.get('/users/me');
     setCurrentUser(data);
     if (
-      data.attributes['onboard'] &&
-      data.attributes['onboard']['isCompleted']
+      (data.attributes['onboard'] &&
+        data.attributes['onboard']['isCompleted']) ||
+      Screen.width < 992
     ) {
       this.$router.push('/dashboard');
     } else {
