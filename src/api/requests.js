@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getToken, remove } from '@utils/auth';
+import { getToken, removeToken, removeCurrentUser } from '@utils/auth';
 
 const baseURL = `${process.env.API}/v1`;
 const axiosInstance = axios.create({
@@ -17,22 +17,22 @@ axiosInstance.interceptors.request.use(
     return config;
   },
   error => {
+    alert('interceptor request has error');
     return Promise.reject(error);
   }
 );
 
 axiosInstance.interceptors.response.use(
   response => {
-    if (response.status === 401) {
-      removeToken();
-      removeCurrentUser();
-      this.$router.push('/login');
-      return;
-    }
     return response.data;
   },
   error => {
-    throw error;
+    const err = { error };
+    if (err.error.response.status === 401) {
+      removeToken();
+      removeCurrentUser();
+      window.location.href = '/login';
+    }
   }
 );
 
