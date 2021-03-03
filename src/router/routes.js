@@ -1,23 +1,6 @@
-import { getToken } from '@utils/auth.js';
+import { guardMyroute } from '@utils/auth.js';
 
 const routes = [
-  {
-    path: '',
-    component: () => import('layouts/DashboardLayout.vue'),
-    beforeEnter: (to, from, next) => {
-      !getToken() ? next({ name: 'login' }) : next();
-    },
-    children: [
-      {
-        path: 'dashboard',
-        name: 'dashboard',
-        caseSensitive: true,
-        component: () => import('pages/Dashboard.vue')
-      },
-
-      { path: '', redirect: 'dashboard' }
-    ]
-  },
   {
     path: '',
     component: () => import('layouts/AuthLayout.vue'),
@@ -45,6 +28,20 @@ const routes = [
         name: 'info',
         caseSensitive: true,
         component: () => import('pages/Information.vue')
+      },
+      { path: '', redirect: 'login' }
+    ]
+  },
+  {
+    path: '',
+    component: () => import('layouts/DashboardLayout.vue'),
+    beforeEnter: guardMyroute,
+    children: [
+      {
+        path: 'dashboard',
+        name: 'dashboard',
+        caseSensitive: true,
+        component: () => import('pages/Dashboard.vue')
       }
     ]
   },
@@ -56,6 +53,7 @@ const routes = [
         path: 'setConfiguration',
         name: 'setConfiguration',
         caseSensitive: true,
+        beforeEnter: guardMyroute,
         component: () => import('pages/SetConfiguration.vue')
       },
       {
@@ -99,6 +97,7 @@ const routes = [
   {
     path: '',
     component: () => import('layouts/LeadLayout.vue'),
+    beforeEnter: guardMyroute,
     children: [
       {
         path: 'leads-dashboard',
@@ -135,6 +134,7 @@ const routes = [
   {
     path: '',
     component: () => import('layouts/VendorsLayout.vue'),
+    beforeEnter: guardMyroute,
     children: [
       {
         path: 'vendors',
@@ -147,6 +147,7 @@ const routes = [
   {
     path: '',
     component: () => import('layouts/ClientLayout.vue'),
+    beforeEnter: guardMyroute,
     children: [
       {
         path: 'clients',
@@ -166,6 +167,7 @@ const routes = [
   {
     path: '',
     component: () => import('layouts/SettingsLayout.vue'),
+    beforeEnter: guardMyroute,
     children: [
       {
         path: 'settings',

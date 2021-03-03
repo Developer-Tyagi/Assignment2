@@ -27,3 +27,14 @@ export function removeCurrentUser() {
 export function getCurrentUser() {
   return Cookies.get(currentUser);
 }
+
+export function guardMyroute(to, from, next) {
+  var isAuthenticated = false;
+  if (getToken()) isAuthenticated = true;
+  else isAuthenticated = false;
+  if (isAuthenticated) {
+    next();
+  } else {
+    next('/login');
+  }
+}
