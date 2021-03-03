@@ -146,7 +146,7 @@
                   <template v-slot:append>
                     <q-icon
                       name="event"
-                      size="md"
+                      size="sm"
                       color="primary"
                       class="cursor-pointer"
                     >
