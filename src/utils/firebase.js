@@ -1,5 +1,6 @@
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import { setToken } from './auth';
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -19,3 +20,15 @@ const firebaseApp = firebase.initializeApp(firebaseConfig);
 const firebaseAuthorization = firebaseApp.auth();
 
 export default firebaseAuthorization;
+
+export function refreshToken() {
+  firebase
+    .auth()
+    .currentUser.getIdToken(true)
+    .then(function(token) {
+      setToken(token);
+    })
+    .catch(function(error) {
+      if (error) throw error;
+    });
+}
