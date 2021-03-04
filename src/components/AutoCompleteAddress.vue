@@ -13,6 +13,7 @@
         class="required col-3"
         v-model="address.houseNumber"
         label="House/Flat No"
+        lazy-rules
         :rules="[
           val => checkValidations(val) || 'Please fill the house or flat no'
         ]"
@@ -21,6 +22,7 @@
         class="required col-8"
         v-model="address.streetAddress"
         label="Street"
+        lazy-rules
         :rules="[
           val =>
             (checkValidations(val) && val.length > 0) ||
@@ -32,6 +34,7 @@
       class="required"
       v-model="address.addressLocality"
       label="City"
+      lazy-rules
       :rules="[
         val =>
           (checkValidations(val) && val.length > 0) || 'Please fill the city'
@@ -42,6 +45,7 @@
       v-model="address.addressRegion"
       :options="states"
       label="State"
+      lazy-rules
       :rules="[
         val =>
           (checkValidations(val) && val.length > 0) || 'Please fill the state'
@@ -53,6 +57,7 @@
       :options="countries"
       label="Country"
       @input="onCountrySelect(address.addressCountry)"
+      lazy-rules
       :rules="[
         val =>
           (checkValidations(val) && val.length > 0) || 'Please fill the country'
