@@ -1208,16 +1208,108 @@
                     </p>
                     <q-toggle class="q-ml-auto" v-model="isDamageOSToggle" />
                   </div>
-                  <textarea
-                    v-if="isDamageOSToggle"
-                    rows="5"
-                    required
-                    class="full-width"
-                    v-model="lossInfo.damageDescription"
-                    label="Damage items description"
-                    style="resize: none"
-                  />
 
+                  <div v-if="isDamageOSToggle">
+                    <q-btn
+                      label="add item"
+                      name="add"
+                      icon="add"
+                      size="sm"
+                      color="primary"
+                      @click="damagedItemsDailog = true"
+                    >
+                    </q-btn>
+                    <br />
+                    <q-markup-table
+                      v-if="items.length > 1"
+                      flat
+                      bordered
+                      class=""
+                      scroll
+                      style="margin-top:20px"
+                    >
+                      <thead class="bg-grey-5">
+                        <tr>
+                          <th class="text-left">Description</th>
+                          <th class="text-left">Cost</th>
+                          <th class="text-left">Delete</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr
+                          v-for="(item, index) in items"
+                          v-if="items.length > 1"
+                        >
+                          <td class="text-left">
+                            {{ item.name }}
+                          </td>
+                          <td>{{ item.value }}</td>
+                          <td>
+                            <q-icon
+                              v-if="items.length > 1"
+                              class="q-ml-xs"
+                              size="sm"
+                              color="primary"
+                              name="delete"
+                              @click="deleteDamagedItem(index)"
+                            />
+                          </td>
+                        </tr>
+                      </tbody>
+                    </q-markup-table>
+
+                    <q-dialog
+                      v-model="damagedItemsDailog"
+                      persistent
+                      transition-show="slide-up"
+                      transition-hide="slide-down"
+                    >
+                      <q-card
+                        class="form-card q-pa-md"
+                        style="width:500px;height:50%"
+                      >
+                        <q-header bordered class="bg-white">
+                          <q-toolbar class="row bg-white">
+                            <img
+                              src="~assets/close.svg"
+                              alt="back-arrow"
+                              @click="damagedItemsDailog = false"
+                              style="margin: auto 0"
+                            />
+                            <div
+                              class="text-uppercase text-bold text-black q-mx-auto"
+                            >
+                              Add Items
+                            </div>
+                          </q-toolbar>
+                        </q-header>
+
+                        <q-card-section>
+                          <div class="q-page bg-white">
+                            <div class="full-width" style="margin-top: 30px;">
+                              <q-input
+                                v-model="lossInfo.OSDamageDescription"
+                                label="Damaged Items"
+                              />
+                              <q-input
+                                v-model="lossInfo.OSDamageItemCost"
+                                label="Items Cost"
+                              /><br />
+                            </div>
+                            <br />
+                          </div>
+
+                          <q-btn
+                            label="Save"
+                            color="primary"
+                            class="full-width q-mt-auto text-capitalize"
+                            @click="addDamagedItems"
+                            size="'xl'"
+                          ></q-btn>
+                        </q-card-section>
+                      </q-card>
+                    </q-dialog>
+                  </div>
                   <div class="row">
                     <p class=" q-my-auto form-heading">
                       Is there damage to personal property?
@@ -1922,8 +2014,14 @@ const addressService = new AddressService();
 export default {
   name: 'addClient',
   components: { CustomHeader, VendorsList, AddVendor, AutoCompleteAddress },
+
   data() {
     return {
+      damagedItemsDailog: false,
+
+      cost: '',
+      items: [],
+
       isCreateClientButtonDisabled: true,
       industryType: {
         value: '',
@@ -2046,6 +2144,10 @@ export default {
       },
 
       lossInfo: {
+        OSDamageDescription: '',
+        OSDamageItemCost: '',
+        DescriptionOfLoss: '',
+        costOfItem: '',
         dateOfLoss: '',
         propertyDescription: '',
         damagePersnalPropertyDescription: '',
@@ -2196,6 +2298,7 @@ export default {
       officeTaskRequiredTypes: []
     };
   },
+
   created() {
     this.getVendors(this.$route.params.id);
     this.getClientTypes();
@@ -2303,6 +2406,7 @@ export default {
         );
       });
     },
+
     createClientDailogBoxOpen(value) {
       switch (value) {
         case 'Client Info':
@@ -2668,6 +2772,12 @@ export default {
           serverity: {
             ...this.lossInfo.severityOfClaimType
           },
+          OSDamageItems: [
+            {
+              desc: this.lossInfo.OSDamageDescription,
+              cost: this.lossInfo.OSDamageItemCost
+            }
+          ],
           isOSDamaged: this.isDamageOSToggle,
           OSDamageDesc: this.lossInfo.damageDescription,
           isPPDamaged: this.isThereDamageToPersonalPropertyToggle,
@@ -2729,6 +2839,20 @@ export default {
     },
 
     validateEmail,
+    addDamagedItems() {
+      this.items.push({
+        name: this.lossInfo.OSDamageDescription,
+        value: this.lossInfo.OSDamageItemCost
+      });
+      this.damagedItemsDailog = false;
+      this.lossInfo.OSDamageDescription = '';
+      this.lossInfo.OSDamageItemCost = '';
+    },
+    deleteDamagedItem(val) {
+      console.log(val, 444);
+      let index = this.items.indexOf(val);
+      this.items.splice(index, 1);
+    },
 
     onChangingSourceType() {
       this.sourceDetails.id = '';
