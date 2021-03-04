@@ -22,7 +22,9 @@
         v-model="address.streetAddress"
         label="Street"
         :rules="[
-          val => checkValidations(val) || 'Please fill the street address'
+          val =>
+            (checkValidations(val) && val.length > 0) ||
+            'Please fill the street address'
         ]"
       />
     </div>
@@ -30,14 +32,20 @@
       class="required"
       v-model="address.addressLocality"
       label="City"
-      :rules="[val => checkValidations(val) || 'Please fill the city']"
+      :rules="[
+        val =>
+          (checkValidations(val) && val.length > 0) || 'Please fill the city'
+      ]"
     />
     <q-select
       class="required"
       v-model="address.addressRegion"
       :options="states"
       label="State"
-      :rules="[val => checkValidations(val) || 'Please fill the state']"
+      :rules="[
+        val =>
+          (checkValidations(val) && val.length > 0) || 'Please fill the state'
+      ]"
     />
     <q-select
       class="required"
@@ -45,7 +53,10 @@
       :options="countries"
       label="Country"
       @input="onCountrySelect(address.addressCountry)"
-      :rules="[val => checkValidations(val) || 'Please fill the country']"
+      :rules="[
+        val =>
+          (checkValidations(val) && val.length > 0) || 'Please fill the country'
+      ]"
     />
     <q-input
       class="required"
