@@ -1438,63 +1438,59 @@
         </q-header>
         <q-card-section>
           <div class="q-page bg-white" style="min-height: 500px">
-            <div
-              class="full-width"
-              style="
-                height: calc(100vh - 145px);
-                overflow-y: auto;
-                margin-bottom: 10px;
-                padding-top: 40px;
-              "
-            >
-              <div class="row">
-                <p style="form-heading">
-                  Does an estimator need to be<br />assigned?
-                </p>
-                <q-toggle
-                  class="q-ml-auto"
-                  v-model="doesAnEstimatorNeedToBeAssignedToggle"
-                />
-              </div>
-
-              <div
-                v-if="doesAnEstimatorNeedToBeAssignedToggle"
-                @click="estimatorsListDialog = true"
-              >
-                <div
-                  class="custom-select form-heading"
-                  v-model="addEstimatorInfo.name"
-                >
-                  <div class="select-text">
-                    {{
-                      addEstimatorInfo.name
-                        ? addEstimatorInfo.name
-                        : 'Add Estimator'
-                    }}
+            <div class="full-width fixHeight">
+              <div>
+                <q-form ref="estimatingInfoForm">
+                  <div class="row">
+                    <p style="form-heading">
+                      Does an estimator need to be<br />assigned?
+                    </p>
+                    <q-toggle
+                      class="q-ml-auto"
+                      v-model="doesAnEstimatorNeedToBeAssignedToggle"
+                    />
                   </div>
-                </div>
+
+                  <div
+                    v-if="doesAnEstimatorNeedToBeAssignedToggle"
+                    @click="estimatorsListDialog = true"
+                  >
+                    <div
+                      class="custom-select form-heading"
+                      v-model="addEstimatorInfo.name"
+                    >
+                      <div class="select-text">
+                        {{
+                          addEstimatorInfo.name
+                            ? addEstimatorInfo.name
+                            : 'Add Estimator'
+                        }}
+                      </div>
+                    </div>
+                  </div>
+                  <q-input
+                    v-model="estimatingInfo.estimatorToBeAssigned"
+                    label="Estimator to be assigned"
+                  />
+                  <q-input
+                    v-model="estimatingInfo.scopeTimeNeeded"
+                    label="Scope time needed"
+                  />
+                  <q-input
+                    v-model="estimatingInfo.notesToTheEstimator"
+                    label="Notes to the estimator"
+                  /><br />
+                </q-form>
               </div>
-              <q-input
-                v-model="estimatingInfo.estimatorToBeAssigned"
-                label="Estimator to be assigned"
-              />
-              <q-input
-                v-model="estimatingInfo.scopeTimeNeeded"
-                label="Scope time needed"
-              />
-              <q-input
-                v-model="estimatingInfo.notesToTheEstimator"
-                label="Notes to the estimator"
-              /><br />
+              <br />
             </div>
-            <br />
           </div>
 
           <q-btn
             label="Save"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
-            @click="estimatingInfoDialog = false"
+            @click="onSubmit('estimatingInfoDialog')"
             size="'xl'"
           ></q-btn>
         </q-card-section>
@@ -2387,11 +2383,14 @@ export default {
           validationIndex = 4;
 
           break;
+        case 'estimatingInfoDialog':
+          success = await this.$refs.estimatingInfoForm.validate();
+          validationIndex = 5;
       }
       if (success == true) {
         this.dialogBoxes[validationIndex].validForm = true;
 
-        for (var i = 0; i < this.dialogBoxes.length - 3; i++) {
+        for (var i = 0; i < this.dialogBoxes.length - 2; i++) {
           if (this.dialogBoxes[i].validForm == false) {
             this.isCreateClientButtonDisabled = true;
             break;
