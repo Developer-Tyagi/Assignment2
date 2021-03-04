@@ -768,10 +768,8 @@ export default {
   },
 
   created() {
-    let timeStamp = Date.now();
-    let currentDate = date.formatDate(timeStamp, 'MM/DD/YYYY');
-
-    this.lossDetails.dateOfLoss = currentDate;
+    //Current Date
+    this.lossDetails.dateOfLoss = date.formatDate(Date.now(), 'MM/DD/YYYY');
 
     // TODO : Have to change primary details object, so that selected client can be assigned as it is.
     this.getInspectionTypes();
