@@ -2516,17 +2516,17 @@ export default {
           },
           secondary: {
             honorific: {
-              id: this.honorific2.id,
-              value: this.honorific2.title,
-              machineValue: this.honorific2.machineValue
+              id: '',
+              value: '',
+              machineValue: ''
             },
-            fname: this.coInsuredDetails.fname,
-            lname: this.coInsuredDetails.lname,
-            email: this.coInsuredDetails.email,
+            fname: '',
+            lname: '',
+            email: '',
             phoneNumber: [
               {
-                type: this.coInsuredDetails.type,
-                number: this.coInsuredDetails.phone
+                type: '',
+                number: ''
               }
             ]
           },
@@ -2563,6 +2563,18 @@ export default {
         payload.insuredInfo.tenantInfo.phoneNumber.number = this.tenantOccupied.phone;
       } else {
         delete payload.insuredInfo.tenantInfo;
+      }
+      if (this.isThereaCoInsuredToggle) {
+        payload.insuredInfo.secondary.honorific.id = this.honorific2.id;
+        payload.insuredInfo.secondary.honorific.value = this.honorific2.title;
+        payload.insuredInfo.secondary.honorific.machineValue = this.honorific2.machineValue;
+        payload.insuredInfo.secondary.fname = this.coInsuredDetails.fname;
+        payload.insuredInfo.secondary.lname = this.coInsuredDetails.lname;
+        payload.insuredInfo.secondary.email = this.coInsuredDetails.email;
+        payload.insuredInfo.secondary.phoneNumber[0].type = this.coInsuredDetails.type;
+        payload.insuredInfo.secondary.phoneNumber[0].number = this.coInsuredDetails.phone;
+      } else {
+        delete payload.insuredInfo.secondary;
       }
       if (this.sourceDetails.type == constants.industries.VENDOR) {
         payload.source.id = this.sourceDetails.id;
