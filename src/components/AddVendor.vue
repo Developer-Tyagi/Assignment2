@@ -173,7 +173,6 @@
                 :ref="`fname-${index}`"
               />
               <q-input v-model="contactInfo.lname" label="Last Name" />
-              {{ contactInfo.phoneNumber[0].type }}
               <div class="row justify-between">
                 <q-select
                   class="required col-5"
@@ -475,7 +474,7 @@ export default {
 
     async onAddVendorButtonClick() {
       const success = await this.$refs.vendorForm.validate();
-      if (this.checkAddressField() && success) {
+      if (success) {
         const response = await this.addVendor(this.vendor);
         if (response) {
           this.closeDialog(true);
@@ -485,17 +484,6 @@ export default {
 
     closeDialog(flag) {
       this.$emit('closeDialog', flag);
-    },
-    checkAddressField() {
-      if (this.vendor.address.streetAddress) {
-        return true;
-      } else {
-        this.$q.notify({
-          message: 'Please fill this Street Address',
-          position: 'top',
-          type: 'negative'
-        });
-      }
     }
   },
 

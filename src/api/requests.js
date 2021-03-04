@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { getToken, removeToken, removeCurrentUser } from '@utils/auth';
-
+import { refreshToken } from '@utils/firebase';
 const baseURL = `${process.env.API}/v1`;
 const axiosInstance = axios.create({
   baseURL,
@@ -29,9 +29,12 @@ axiosInstance.interceptors.response.use(
   error => {
     const err = { error };
     if (err.error.response.status === 401) {
-      removeToken();
-      removeCurrentUser();
-      window.location.href = '/login';
+      refreshToken();
+      return axiosInstance.request({
+        method: err.error.config.method,
+        url: err.error.config.url,
+        params: err.error.config.params
+      });
     }
   }
 );

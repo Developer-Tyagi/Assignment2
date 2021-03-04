@@ -19,13 +19,16 @@
           <p class="stepper-heading">
             If client already exists, select from list below
           </p>
+
+          <div class="q-mt-lg text-bold ">Select existing client</div>
+
           <q-select
-            class="full-width"
+            class=" full-width"
             v-model="clientSelected"
             use-input
             input-debounce="0"
             option-label="name"
-            label="Select existing client"
+            label="Search"
             :options="options"
             @filter="searchFilterBy"
             option-value="id"
