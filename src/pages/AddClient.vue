@@ -1916,6 +1916,7 @@ import { dateToSend } from '@utils/date';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import VendorsList from 'components/VendorsList';
 import AddVendor from 'components/AddVendor';
+import { date } from 'quasar';
 
 const addressService = new AddressService();
 
@@ -2197,6 +2198,11 @@ export default {
     };
   },
   created() {
+    this.insuranceDetails.policyEffectiveDate = this.insuranceDetails.policyExpireDate = this.lossInfo.dateOfLoss = this.lossInfo.deadlineDate = this.lossInfo.recovDeadline = date.formatDate(
+      Date.now(),
+      'MM/DD/YYYY'
+    );
+
     this.getVendors(this.$route.params.id);
     this.getClientTypes();
     this.getEstimators();
