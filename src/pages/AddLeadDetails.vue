@@ -479,7 +479,7 @@
   </q-page>
 </template>
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { validateEmail, validateDate } from '@utils/validation';
 import { dateToSend } from '@utils/date';
 import VendorsList from 'components/VendorsList';
@@ -487,6 +487,7 @@ import { constants } from '@utils/constant';
 import AddVendor from 'components/AddVendor';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import CustomHeader from 'components/CustomHeader';
+import { date } from 'quasar';
 
 export default {
   components: { VendorsList, AddVendor, AutoCompleteAddress, CustomHeader },
@@ -568,6 +569,7 @@ export default {
       'getTitles',
       'getClients'
     ]),
+    ...mapMutations(['setSelectedClient']),
 
     onAddVendorDialogClick(name) {
       this.valueName = name;
@@ -702,7 +704,9 @@ export default {
       } else {
         payload.leadSource.details = this.sourceDetails.details;
       }
-      this.addLeads(payload);
+      this.addLeads(payload).then(() => {
+        this.setSelectedClient();
+      });
     },
 
     closeVendorsList() {
@@ -764,6 +768,9 @@ export default {
   },
 
   created() {
+    //Current Date
+    this.lossDetails.dateOfLoss = date.formatDate(Date.now(), 'MM/DD/YYYY');
+
     // TODO : Have to change primary details object, so that selected client can be assigned as it is.
     this.getInspectionTypes();
     this.getContactTypes();

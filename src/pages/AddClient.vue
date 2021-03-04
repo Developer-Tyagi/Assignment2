@@ -715,16 +715,14 @@
                   />
                   <br />
                   <div class="row">
-                    <p class=" q-my-auto form-heading ">
-                      Has claim been filed?
-                    </p>
+                    <p class="q-my-auto form-heading">Has claim been filed?</p>
                     <q-toggle
                       class="q-ml-auto"
                       v-model="hasClaimBeenFilledToggle"
                     />
                   </div>
                   <div class="row">
-                    <p class=" q-my-auto form-heading">
+                    <p class="q-my-auto form-heading">
                       Is this is a Foced-Placed policy?
                     </p>
 
@@ -909,7 +907,9 @@
                   </div>
 
                   <div class="row" style="align-items: center">
-                    <span class="form-heading">Prior payment by insured</span>
+                    <span class="form-heading" style="width: 50%"
+                      >Prior payment by insured</span
+                    >
                     <q-input
                       mask="#.#"
                       type="number"
@@ -973,7 +973,7 @@
               <div>
                 <q-form ref="lossInfoForm">
                   <div class="row">
-                    <p class=" q-my-auto form-heading">
+                    <p class="q-my-auto form-heading">
                       Loss Address Same As Client's?
                     </p>
                     <q-toggle
@@ -1151,19 +1151,15 @@
                   <br />
 
                   <div class="row">
-                    <p class=" q-my-auto form-heading">
-                      Is the Home Habitable?
-                    </p>
+                    <p class="q-my-auto form-heading">Is the Home Habitable?</p>
                     <q-toggle class="q-ml-auto" v-model="isTheHomeHabitable" />
                   </div>
                   <div class="row">
-                    <p class=" q-mx-none q-my-auto form-heading">FEMA Claim</p>
+                    <p class="q-mx-none q-my-auto form-heading">FEMA Claim</p>
                     <q-toggle class="q-ml-auto" v-model="femaClaimToggle" />
                   </div>
                   <div class="row">
-                    <p class=" q-my-auto form-heading">
-                      State of Emergency
-                    </p>
+                    <p class="q-my-auto form-heading">State of Emergency</p>
                     <q-toggle
                       class="q-ml-auto"
                       v-model="isStateOfEmergencyToggle"
@@ -1203,7 +1199,7 @@
                   />
                   <br />
                   <div class="row">
-                    <p class=" q-mx-none q-my-auto form-heading">
+                    <p class="q-mx-none q-my-auto form-heading">
                       Is there damage to other structures?
                     </p>
                     <q-toggle class="q-ml-auto" v-model="isDamageOSToggle" />
@@ -1219,7 +1215,7 @@
                   />
 
                   <div class="row">
-                    <p class=" q-my-auto form-heading">
+                    <p class="q-my-auto form-heading">
                       Is there damage to personal property?
                     </p>
                     <q-toggle
@@ -1237,7 +1233,7 @@
                     style="resize: none"
                   />
                   <div class="row">
-                    <p class=" q-mx-none q-my-auto form-heading">
+                    <p class="q-mx-none q-my-auto form-heading">
                       Was a PPIF provided to the insured?
                     </p>
                     <q-toggle
@@ -1246,7 +1242,7 @@
                     />
                   </div>
                   <div class="row">
-                    <p class=" q-mx-none q-my-auto form-heading">
+                    <p class="q-mx-none q-my-auto form-heading">
                       Does Claimguru PPIF need to be provided?
                     </p>
                     <q-toggle
@@ -1255,7 +1251,7 @@
                     />
                   </div>
                   <div class="row">
-                    <p class=" q-my-auto form-heading">
+                    <p class="q-my-auto form-heading">
                       Is there a mortgage on the home?
                     </p>
                     <q-toggle
@@ -1916,6 +1912,7 @@ import { dateToSend } from '@utils/date';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import VendorsList from 'components/VendorsList';
 import AddVendor from 'components/AddVendor';
+import { date } from 'quasar';
 
 const addressService = new AddressService();
 
@@ -2197,6 +2194,11 @@ export default {
     };
   },
   created() {
+    this.insuranceDetails.policyEffectiveDate = this.insuranceDetails.policyExpireDate = this.lossInfo.dateOfLoss = this.lossInfo.deadlineDate = this.lossInfo.recovDeadline = date.formatDate(
+      Date.now(),
+      'MM/DD/YYYY'
+    );
+
     this.getVendors(this.$route.params.id);
     this.getClientTypes();
     this.getEstimators();

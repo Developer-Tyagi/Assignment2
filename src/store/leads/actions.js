@@ -59,7 +59,7 @@ export async function addLeads({ dispatch, state }, payload) {
       '/leads',
       buildApiData('leads', payload)
     );
-    dispatch('setSelectedClient', '');
+
     dispatch('setLoading', false);
     this.$router.push('/leads');
   } catch (e) {
