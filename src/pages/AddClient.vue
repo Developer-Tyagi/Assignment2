@@ -2835,10 +2835,12 @@ export default {
         },
         expertInfo: {
           isVendorAssigned: this.vendorExpertHiredToggle,
-          vendor: {
-            id: this.expertVendorInfo.id,
-            value: this.expertVendorInfo.vendorName
-          },
+          vendor: [
+            {
+              id: this.expertVendorInfo.id,
+              value: this.expertVendorInfo.vendorName
+            }
+          ],
           isInsuredHired: this.anyOtherExpertHiredToggle,
           notes: this.expertVendorInfo.notes,
           internalNotes: this.expertVendorInfo.internalNotes
