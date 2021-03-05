@@ -6,7 +6,7 @@
     />
 
     <div class="column" style="padding: 30px 20px 20px 20px">
-      <div class="q-md column full-width fixHeight">
+      <div class="q-md column full-width fix-height">
         <div
           v-for="dialogBox in dialogBoxes"
           :key="dialogBox.name"
@@ -203,7 +203,7 @@
         </q-header>
         <q-card-section>
           <div class="q-page bg-white">
-            <div class="full-width fixHeight">
+            <div class="full-width fix-height">
               <div>
                 <q-form ref="clientForm">
                   <div>
@@ -625,7 +625,7 @@
         </q-header>
         <q-card-section>
           <div class="q-page bg-white">
-            <div class="full-width fixHeight">
+            <div class="full-width fix-height">
               <div>
                 <q-form ref="mailingAddressForm">
                   <div class="row">
@@ -686,7 +686,7 @@
 
         <q-card-section>
           <div class="q-page bg-white">
-            <div class="full-width fixHeight">
+            <div class="full-width fix-height">
               <div>
                 <q-form ref="insuranceInfoForm">
                   <div
@@ -969,7 +969,7 @@
         </q-header>
         <q-card-section>
           <div class="q-page bg-white">
-            <div class="full-width fixHeight">
+            <div class="full-width fix-height">
               <div>
                 <q-form ref="lossInfoForm">
                   <div class="row">
@@ -1434,63 +1434,59 @@
         </q-header>
         <q-card-section>
           <div class="q-page bg-white" style="min-height: 500px">
-            <div
-              class="full-width"
-              style="
-                height: calc(100vh - 145px);
-                overflow-y: auto;
-                margin-bottom: 10px;
-                padding-top: 40px;
-              "
-            >
-              <div class="row">
-                <p style="form-heading">
-                  Does an estimator need to be<br />assigned?
-                </p>
-                <q-toggle
-                  class="q-ml-auto"
-                  v-model="doesAnEstimatorNeedToBeAssignedToggle"
-                />
-              </div>
-
-              <div
-                v-if="doesAnEstimatorNeedToBeAssignedToggle"
-                @click="estimatorsListDialog = true"
-              >
-                <div
-                  class="custom-select form-heading"
-                  v-model="addEstimatorInfo.name"
-                >
-                  <div class="select-text">
-                    {{
-                      addEstimatorInfo.name
-                        ? addEstimatorInfo.name
-                        : 'Add Estimator'
-                    }}
+            <div class="full-width fix-height">
+              <div>
+                <q-form ref="estimatingInfoForm">
+                  <div class="row">
+                    <p style="form-heading">
+                      Does an estimator need to be<br />assigned?
+                    </p>
+                    <q-toggle
+                      class="q-ml-auto"
+                      v-model="doesAnEstimatorNeedToBeAssignedToggle"
+                    />
                   </div>
-                </div>
+
+                  <div
+                    v-if="doesAnEstimatorNeedToBeAssignedToggle"
+                    @click="estimatorsListDialog = true"
+                  >
+                    <div
+                      class="custom-select form-heading"
+                      v-model="addEstimatorInfo.name"
+                    >
+                      <div class="select-text">
+                        {{
+                          addEstimatorInfo.name
+                            ? addEstimatorInfo.name
+                            : 'Add Estimator'
+                        }}
+                      </div>
+                    </div>
+                  </div>
+                  <q-input
+                    v-model="estimatingInfo.estimatorToBeAssigned"
+                    label="Estimator to be assigned"
+                  />
+                  <q-input
+                    v-model="estimatingInfo.scopeTimeNeeded"
+                    label="Scope time needed"
+                  />
+                  <q-input
+                    v-model="estimatingInfo.notesToTheEstimator"
+                    label="Notes to the estimator"
+                  /><br />
+                </q-form>
               </div>
-              <q-input
-                v-model="estimatingInfo.estimatorToBeAssigned"
-                label="Estimator to be assigned"
-              />
-              <q-input
-                v-model="estimatingInfo.scopeTimeNeeded"
-                label="Scope time needed"
-              />
-              <q-input
-                v-model="estimatingInfo.notesToTheEstimator"
-                label="Notes to the estimator"
-              /><br />
+              <br />
             </div>
-            <br />
           </div>
 
           <q-btn
             label="Save"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
-            @click="estimatingInfoDialog = false"
+            @click="onSubmit('estimatingInfoDialog')"
             size="'xl'"
           ></q-btn>
         </q-card-section>
@@ -1521,7 +1517,7 @@
 
         <q-card-section>
           <div class="q-page bg-white">
-            <div class="full-width fixHeight">
+            <div class="full-width fix-height">
               <div>
                 <q-form ref="addEstimatorForm">
                   <q-select
@@ -1621,7 +1617,7 @@
         </q-header>
         <q-card-section>
           <div class="q-page bg-white">
-            <div class="full-width fixHeight">
+            <div class="full-width fix-height">
               <div>
                 <q-form ref="expertVendorInfoForm">
                   <div class="row">
@@ -2389,11 +2385,14 @@ export default {
           validationIndex = 4;
 
           break;
+        case 'estimatingInfoDialog':
+          success = await this.$refs.estimatingInfoForm.validate();
+          validationIndex = 5;
       }
       if (success == true) {
         this.dialogBoxes[validationIndex].validForm = true;
 
-        for (var i = 0; i < this.dialogBoxes.length - 3; i++) {
+        for (var i = 0; i < this.dialogBoxes.length - 2; i++) {
           if (this.dialogBoxes[i].validForm == false) {
             this.isCreateClientButtonDisabled = true;
             break;
@@ -2565,6 +2564,9 @@ export default {
         payload.insuredInfo.tenantInfo.phoneNumber.number = this.tenantOccupied.phone;
       } else {
         delete payload.insuredInfo.tenantInfo;
+      }
+      if (!this.isThereaCoInsuredToggle) {
+        delete payload.insuredInfo.secondary;
       }
       if (this.sourceDetails.type == constants.industries.VENDOR) {
         payload.source.id = this.sourceDetails.id;
@@ -2844,7 +2846,7 @@ export default {
 </script>
 
 <style lang="scss">
-.fixHeight {
+.fix-height {
   height: calc(100vh - 145px);
   overflow-y: auto;
   margin-bottom: 10px;
