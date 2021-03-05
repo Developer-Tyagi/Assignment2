@@ -1244,7 +1244,7 @@
                               size="sm"
                               dense
                               color="primary"
-                              name="delete"
+                              name="close"
                               @click="deleteDamagedItem(index)"
                             />
                           </td>
@@ -1286,6 +1286,7 @@
                                 label="Damaged Items"
                               />
                               <q-input
+                                type="number"
                                 v-model="lossInfo.OSDamageItemCost"
                                 label="Items Cost"
                               /><br />
@@ -1315,8 +1316,35 @@
                   </div>
                   <!-- Persnol Property Damage List -->
                   <div v-if="isThereDamageToPersonalPropertyToggle">
+                    <q-list>
+                      <q-item
+                        v-for="(item, index) in pItems"
+                        :key="item.title"
+                        clickable
+                      >
+                        <q-item-section avatar class="hello">
+                          <q-input
+                            v-model="item.value"
+                            class="q-my-auto "
+                            placeholder="Add Another"
+                          />
+                        </q-item-section>
+                        <q-item-section>
+                          {{ item.title }}
+                        </q-item-section>
+                        <q-item-section side>
+                          <q-btn
+                            @click="deleteItems(index)"
+                            flat
+                            round
+                            color="primary"
+                            icon="close"
+                          />
+                        </q-item-section>
+                      </q-item>
+                    </q-list>
                     <q-btn
-                      @click="addTask"
+                      @click="addPPDamagedItems"
                       class="q-mt-sm icon"
                       size="1em"
                       color="primary"
@@ -1326,34 +1354,6 @@
                       icon="add"
                       label=" Add Another Damage"
                     />
-                    <q-list>
-                      <q-item
-                        v-for="(item, index) in pItems"
-                        :key="item.title"
-                        clickable
-                      >
-                        <q-item-section avatar>
-                          <q-input
-                            v-model="item.value"
-                            class="q-my-auto"
-                            placeholder="Add Another"
-                          />
-                        </q-item-section>
-                        <q-item-section>
-                          <q-item-label>{{ item.title }}</q-item-label>
-                        </q-item-section>
-                        <q-item-section side>
-                          <q-btn
-                            @click="deleteTask(index)"
-                            flat
-                            round
-                            dense
-                            color="primary"
-                            icon="delete"
-                          />
-                        </q-item-section>
-                      </q-item>
-                    </q-list>
                   </div>
                   <div class="row">
                     <p class="q-mx-none q-my-auto form-heading">
@@ -2175,7 +2175,7 @@ export default {
 
       lossInfo: {
         OSDamageDescription: '',
-        OSDamageItemCost: '',
+        OSDamageItemCost: 0,
         DescriptionOfLoss: '',
         costOfItem: '',
         dateOfLoss: '',
@@ -2474,12 +2474,12 @@ export default {
       }
     },
     validateDate,
-    deleteTask(index) {
+    deleteItems(index) {
       this.$delete(this.pItems, index);
     },
-    addTask() {
+    addPPDamagedItems() {
       this.pItems.push({ value: this.persnolProperty });
-      this.expert = '';
+      this.persnolProperty = '';
     },
 
     setVendorIndustryName() {
@@ -2789,6 +2789,7 @@ export default {
         },
         mortgageInfo: this.mortgageDetails,
         lossInfo: {
+          lossAddressName: '',
           address: {
             ...this.clientAddressDetails
           },
@@ -2820,13 +2821,17 @@ export default {
               cost: this.lossInfo.OSDamageItemCost
             }
           ],
-          isOSDamaged: this.isDamageOSToggle,
-          OSDamageDesc: this.lossInfo.damageDescription,
-          isPPDamaged: this.isThereDamageToPersonalPropertyToggle,
+          PPDamageItems: [
+            {
+              desc: this.persnolProperty,
+              cost: 0.0
+            }
+          ],
           isPPIF: this.wasAppifProvidedToTheInsuredToggle,
           isNeedPPIF: this.doesTheOfficeNeedToProvidePpifToTheInsuredToggle,
-          PPDamageDesc: this.lossInfo.damagePersnalPropertyDescription,
-          hasHomeMortgage: this.isMortgageHomeToggle
+
+          hasHomeMortgage: this.isMortgageHomeToggle,
+          isSecondClaim: false
         },
         expertInfo: {
           isVendorAssigned: this.vendorExpertHiredToggle,
@@ -2834,6 +2839,7 @@ export default {
             id: this.expertVendorInfo.id,
             value: this.expertVendorInfo.vendorName
           },
+
           isInsuredHired: this.anyOtherExpertHiredToggle,
           notes: this.expertVendorInfo.notes,
           internalNotes: this.expertVendorInfo.internalNotes
@@ -3064,5 +3070,17 @@ export default {
     text-transform: capitalize;
     display: flex;
   }
+}
+.hello {
+  background-color: #ddd;
+  border: none;
+  color: black;
+  padding: 2px 2px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 16px;
 }
 </style>
