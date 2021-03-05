@@ -2565,6 +2565,9 @@ export default {
       } else {
         delete payload.insuredInfo.tenantInfo;
       }
+      if (!this.isThereaCoInsuredToggle) {
+        delete payload.insuredInfo.secondary;
+      }
       if (this.sourceDetails.type == constants.industries.VENDOR) {
         payload.source.id = this.sourceDetails.id;
       } else {
