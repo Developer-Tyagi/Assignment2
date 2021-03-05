@@ -1234,7 +1234,7 @@
                       <tbody>
                         <tr
                           v-for="(item, index) in items"
-                          v-if="items.length > 1"
+                          v-if="items.length"
                         >
                           <td class="text-left">
                             {{ item.name }}
@@ -1245,6 +1245,7 @@
                               v-if="items.length > 1"
                               class="q-ml-xs"
                               size="sm"
+                              dense
                               color="primary"
                               name="delete"
                               @click="deleteDamagedItem(index)"
@@ -1315,16 +1316,53 @@
                       v-model="isThereDamageToPersonalPropertyToggle"
                     />
                   </div>
-                  <textarea
-                    v-if="isThereDamageToPersonalPropertyToggle"
-                    rows="5"
-                    required
-                    class="full-width"
-                    v-model="lossInfo.damagePersnalPropertyDescription"
-                    label="Damage items description"
-                    style="resize: none"
-                  />
-                  <div class="row">
+                 <!-- Persnol Property Damage List -->
+                  <div v-if="isThereDamageToPersonalPropertyToggle">
+                  
+                    </q-input>
+                      <q-btn
+                        @click="addTask"
+                        class="q-mt-sm icon"
+                        size="1em"
+                        color="primary"
+                        round
+                        dense
+                        flat
+                        icon="add"
+                        label=" Add Another Damage"
+                      />
+                      <q-list>
+                        <q-item
+                          v-for="(item, index) in pItems"
+                          :key="item.title"
+                          clickable
+                          
+                        >
+                          <q-item-section avatar>
+                            <q-input
+                              v-model="item.value"
+                              class="q-my-auto"
+                             placeholder="Add Another"
+                            />
+                          </q-item-section>
+                          <q-item-section>
+                            <q-item-label >{{ item.title }}</q-item-label>
+                          </q-item-section>
+                          <q-item-section side>
+                            <q-btn
+                              @click="deleteTask(index)"
+                              flat
+                              round
+                              dense
+                              color="primary"
+                              icon="delete"
+                            />
+                          </q-item-section>
+                        </q-item>
+                      </q-list>
+                    </q-input>
+                  </div>
+                 <div class="row">
                     <p class="q-mx-none q-my-auto form-heading">
                       Was a PPIF provided to the insured?
                     </p>
@@ -2014,6 +2052,8 @@ export default {
 
   data() {
     return {
+      pItems: [],
+      persnolProperty: '',
       damagedItemsDailog: false,
 
       cost: '',
@@ -2441,6 +2481,13 @@ export default {
       }
     },
     validateDate,
+    deleteTask(index) {
+      this.$delete(this.pItems, index);
+    },
+    addTask() {
+      this.pItems.push({ value: this.persnolProperty });
+      this.expert = '';
+    },
 
     setVendorIndustryName() {
       const selectedName = this.expertVendorInfo.industry.value;
@@ -2851,7 +2898,6 @@ export default {
       this.lossInfo.OSDamageItemCost = '';
     },
     deleteDamagedItem(val) {
-      console.log(val, 444);
       let index = this.items.indexOf(val);
       this.items.splice(index, 1);
     },
