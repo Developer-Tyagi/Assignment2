@@ -1232,10 +1232,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr
-                          v-for="(item, index) in items"
-                          v-if="items.length"
-                        >
+                        <tr v-for="(item, index) in items" v-if="items.length">
                           <td class="text-left">
                             {{ item.name }}
                           </td>
@@ -1316,53 +1313,49 @@
                       v-model="isThereDamageToPersonalPropertyToggle"
                     />
                   </div>
-                 <!-- Persnol Property Damage List -->
+                  <!-- Persnol Property Damage List -->
                   <div v-if="isThereDamageToPersonalPropertyToggle">
-                  
-                    </q-input>
-                      <q-btn
-                        @click="addTask"
-                        class="q-mt-sm icon"
-                        size="1em"
-                        color="primary"
-                        round
-                        dense
-                        flat
-                        icon="add"
-                        label=" Add Another Damage"
-                      />
-                      <q-list>
-                        <q-item
-                          v-for="(item, index) in pItems"
-                          :key="item.title"
-                          clickable
-                          
-                        >
-                          <q-item-section avatar>
-                            <q-input
-                              v-model="item.value"
-                              class="q-my-auto"
-                             placeholder="Add Another"
-                            />
-                          </q-item-section>
-                          <q-item-section>
-                            <q-item-label >{{ item.title }}</q-item-label>
-                          </q-item-section>
-                          <q-item-section side>
-                            <q-btn
-                              @click="deleteTask(index)"
-                              flat
-                              round
-                              dense
-                              color="primary"
-                              icon="delete"
-                            />
-                          </q-item-section>
-                        </q-item>
-                      </q-list>
-                    </q-input>
+                    <q-btn
+                      @click="addTask"
+                      class="q-mt-sm icon"
+                      size="1em"
+                      color="primary"
+                      round
+                      dense
+                      flat
+                      icon="add"
+                      label=" Add Another Damage"
+                    />
+                    <q-list>
+                      <q-item
+                        v-for="(item, index) in pItems"
+                        :key="item.title"
+                        clickable
+                      >
+                        <q-item-section avatar>
+                          <q-input
+                            v-model="item.value"
+                            class="q-my-auto"
+                            placeholder="Add Another"
+                          />
+                        </q-item-section>
+                        <q-item-section>
+                          <q-item-label>{{ item.title }}</q-item-label>
+                        </q-item-section>
+                        <q-item-section side>
+                          <q-btn
+                            @click="deleteTask(index)"
+                            flat
+                            round
+                            dense
+                            color="primary"
+                            icon="delete"
+                          />
+                        </q-item-section>
+                      </q-item>
+                    </q-list>
                   </div>
-                 <div class="row">
+                  <div class="row">
                     <p class="q-mx-none q-my-auto form-heading">
                       Was a PPIF provided to the insured?
                     </p>
@@ -2897,9 +2890,8 @@ export default {
       this.lossInfo.OSDamageDescription = '';
       this.lossInfo.OSDamageItemCost = '';
     },
-    deleteDamagedItem(val) {
-      let index = this.items.indexOf(val);
-      this.items.splice(index, 1);
+    deleteDamagedItem(index) {
+      this.$delete(this.items, index);
     },
 
     onChangingSourceType() {
