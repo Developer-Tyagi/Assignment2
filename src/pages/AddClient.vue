@@ -6,7 +6,7 @@
     />
 
     <div class="column" style="padding: 30px 20px 20px 20px">
-      <div class="q-md column full-width fixHeight">
+      <div class="q-md column full-width fix-height">
         <div
           v-for="dialogBox in dialogBoxes"
           :key="dialogBox.name"
@@ -203,7 +203,7 @@
         </q-header>
         <q-card-section>
           <div class="q-page bg-white">
-            <div class="full-width fixHeight">
+            <div class="full-width fix-height">
               <div>
                 <q-form ref="clientForm">
                   <div>
@@ -625,7 +625,7 @@
         </q-header>
         <q-card-section>
           <div class="q-page bg-white">
-            <div class="full-width fixHeight">
+            <div class="full-width fix-height">
               <div>
                 <q-form ref="mailingAddressForm">
                   <div class="row">
@@ -686,7 +686,7 @@
 
         <q-card-section>
           <div class="q-page bg-white">
-            <div class="full-width fixHeight">
+            <div class="full-width fix-height">
               <div>
                 <q-form ref="insuranceInfoForm">
                   <div
@@ -969,7 +969,7 @@
         </q-header>
         <q-card-section>
           <div class="q-page bg-white">
-            <div class="full-width fixHeight">
+            <div class="full-width fix-height">
               <div>
                 <q-form ref="lossInfoForm">
                   <div class="row">
@@ -1438,7 +1438,7 @@
         </q-header>
         <q-card-section>
           <div class="q-page bg-white" style="min-height: 500px">
-            <div class="full-width fixHeight">
+            <div class="full-width fix-height">
               <div>
                 <q-form ref="estimatingInfoForm">
                   <div class="row">
@@ -1521,7 +1521,7 @@
 
         <q-card-section>
           <div class="q-page bg-white">
-            <div class="full-width fixHeight">
+            <div class="full-width fix-height">
               <div>
                 <q-form ref="addEstimatorForm">
                   <q-select
@@ -1621,7 +1621,7 @@
         </q-header>
         <q-card-section>
           <div class="q-page bg-white">
-            <div class="full-width fixHeight">
+            <div class="full-width fix-height">
               <div>
                 <q-form ref="expertVendorInfoForm">
                   <div class="row">
@@ -2841,7 +2841,7 @@ export default {
 </script>
 
 <style lang="scss">
-.fixHeight {
+.fix-height {
   height: calc(100vh - 145px);
   overflow-y: auto;
   margin-bottom: 10px;
