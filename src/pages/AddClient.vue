@@ -2817,14 +2817,14 @@ export default {
           },
           OSDamageItems: [
             {
-              desc: this.lossInfo.OSDamageDescription,
-              cost: this.lossInfo.OSDamageItemCost
+              desc: '',
+              cost: 0
             }
           ],
           PPDamageItems: [
             {
-              desc: this.persnolProperty,
-              cost: 0.0
+              desc: '',
+              cost: 0
             }
           ],
           isPPIF: this.wasAppifProvidedToTheInsuredToggle,
@@ -2839,7 +2839,6 @@ export default {
             id: this.expertVendorInfo.id,
             value: this.expertVendorInfo.vendorName
           },
-
           isInsuredHired: this.anyOtherExpertHiredToggle,
           notes: this.expertVendorInfo.notes,
           internalNotes: this.expertVendorInfo.internalNotes
