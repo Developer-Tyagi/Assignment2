@@ -193,7 +193,7 @@
             <img
               src="~assets/close.svg"
               alt="back-arrow"
-              @click="clientInfoDailog = false"
+              @click="onSubmit('clientInfoDailog')"
               style="margin: auto 0"
             />
             <div class="text-uppercase text-bold text-black q-mx-auto">
@@ -615,7 +615,7 @@
             <img
               src="~assets/close.svg"
               alt="back-arrow"
-              @click="mailingAddressDialog = false"
+              @click="onSubmit('mailingAddressDialog')"
               style="margin: auto 0"
             />
             <div class="text-uppercase text-bold text-black q-mx-auto">
@@ -675,7 +675,7 @@
             <img
               src="~assets/close.svg"
               alt="back-arrow"
-              @click="insuranceInfoDialog = false"
+              @click="onSubmit('insuranceInfoDialog')"
               style="margin: auto 0"
             />
             <div class="text-uppercase text-bold text-black q-mx-auto">
@@ -959,7 +959,7 @@
             <img
               src="~assets/close.svg"
               alt="back-arrow"
-              @click="lossInfoDialog = false"
+              @click="onSubmit('lossInfoDialog')"
               style="margin: auto 0"
             />
             <div class="text-uppercase text-bold text-black q-mx-auto">
@@ -1611,7 +1611,7 @@
             <img
               src="~assets/close.svg"
               alt="back-arrow"
-              @click="expertVendorInfoDialog = false"
+              @click="onSubmit('expertVendorInfoDialog')"
               style="margin: auto 0"
             />
             <div class="text-uppercase text-bold text-black q-mx-auto">
@@ -2572,14 +2572,21 @@ export default {
         payload.source.detail = this.sourceDetails.details;
       }
 
-      const response = await this.addClient(payload);
-      if (response && response.id) {
+      const response = this.addClient(payload);
+
+      if (response) {
         const clientInfo = {
           name: response,
           id: response.id
         };
 
         this.setPayloadForClaim(clientInfo);
+      } else {
+        this.$q.notify({
+          message: ' Create Client Failed',
+          position: 'top',
+          type: 'negative'
+        });
       }
     },
 

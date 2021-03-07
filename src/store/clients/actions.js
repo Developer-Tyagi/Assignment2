@@ -47,6 +47,8 @@ export async function addClient({ dispatch, state }, payload) {
     dispatch('setLoading', false);
     return data;
   } catch (e) {
+    window.alert('Server Response Failed');
+
     console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
