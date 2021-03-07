@@ -11,8 +11,14 @@
         color="primary"
         animated
         alternative-labels
+        header-nav
       >
-        <q-step :name="1" :done="step > 1" title="Primary Contact">
+        <q-step
+          :name="1"
+          :done="step > 1"
+          title="Primary Contact"
+          :header-nav="step > 1"
+        >
           <q-form @submit="step++">
             <q-card class="form-card q-pa-md">
               <span class="stepper-heading">Primary Contact </span>
@@ -130,7 +136,12 @@
             </div>
           </q-form>
         </q-step>
-        <q-step :name="2" :done="step > 2" title="Loss Details">
+        <q-step
+          :name="2"
+          :done="step > 2"
+          title="Loss Details"
+          :header-nav="step > 2"
+        >
           <q-form @submit="step++" @reset="step--">
             <q-card class="q-pa-md form-card">
               <span class="stepper-heading">Loss Details</span>
@@ -202,7 +213,12 @@
           </q-form>
         </q-step>
 
-        <q-step :name="3" :done="step > 3" title="Insurance">
+        <q-step
+          :name="3"
+          :done="step > 3"
+          title="Insurance"
+          :header-nav="step > 3"
+        >
           <q-form @submit="step++" @reset="step--">
             <q-card class="q-pa-md form-card">
               <span class="stepper-heading">Insurance Details (Optional)</span>
@@ -249,7 +265,12 @@
           </q-form>
         </q-step>
 
-        <q-step :name="4" :done="step > 4" title="Lead Source">
+        <q-step
+          :name="4"
+          :done="step > 4"
+          title="Lead Source"
+          :header-nav="step > 4"
+        >
           <q-form @submit="step++" @reset="step--">
             <q-card class="q-pa-md form-card">
               <span class="stepper-heading">Choose Lead Source</span>
@@ -314,7 +335,7 @@
           </q-form>
         </q-step>
 
-        <q-step :name="5" :done="step > 5" title="Notes">
+        <q-step :name="5" :done="step > 5" title="Notes" :header-nav="step > 5">
           <q-form @submit="step++" @reset="step--">
             <q-card class="q-pa-md form-card">
               <span class="stepper-heading">Last Notes</span>
@@ -353,7 +374,12 @@
           </q-form>
         </q-step>
 
-        <q-step :name="6" :done="step > 6" title="Scheduling">
+        <q-step
+          :name="6"
+          :done="step > 6"
+          title="Scheduling"
+          :header-nav="step > 6"
+        >
           <q-form @submit="onSubmit" @reset="step--">
             <q-card class="q-pa-md form-card">
               <div class="stepper-heading">Scheduling</div>
@@ -759,9 +785,9 @@ export default {
   watch: {
     step(newValue, oldValue) {
       var el = document.getElementsByClassName('q-stepper__header');
-      if (newValue === 6 && oldValue === 5) {
+      if (newValue === 6) {
         el[0].scroll(100, 0);
-      } else if (newValue === 5 && oldValue === 6) {
+      } else if (newValue < 6) {
         el[0].scroll(-100, 0);
       }
     }
