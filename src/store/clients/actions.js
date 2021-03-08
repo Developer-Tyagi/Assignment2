@@ -51,7 +51,7 @@ export async function addClient({ dispatch, state }, payload) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response.data.title
+      message: 'Failed to create Client! please try again !'
     });
   }
 }

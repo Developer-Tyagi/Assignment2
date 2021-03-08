@@ -193,7 +193,7 @@
             <img
               src="~assets/close.svg"
               alt="back-arrow"
-              @click="clientInfoDailog = false"
+              @click="onCloseDialogBox('clientInfoDailog', 0)"
               style="margin: auto 0"
             />
             <div class="text-uppercase text-bold text-black q-mx-auto">
@@ -615,7 +615,7 @@
             <img
               src="~assets/close.svg"
               alt="back-arrow"
-              @click="mailingAddressDialog = false"
+              @click="onCloseDialogBox('mailingAddressDialog', 1)"
               style="margin: auto 0"
             />
             <div class="text-uppercase text-bold text-black q-mx-auto">
@@ -675,7 +675,7 @@
             <img
               src="~assets/close.svg"
               alt="back-arrow"
-              @click="insuranceInfoDialog = false"
+              @click="onCloseDialogBox('insuranceInfoDialog', 2)"
               style="margin: auto 0"
             />
             <div class="text-uppercase text-bold text-black q-mx-auto">
@@ -959,7 +959,7 @@
             <img
               src="~assets/close.svg"
               alt="back-arrow"
-              @click="lossInfoDialog = false"
+              @click="onCloseDialogBox('lossInfoDialog', 3)"
               style="margin: auto 0"
             />
             <div class="text-uppercase text-bold text-black q-mx-auto">
@@ -1710,7 +1710,7 @@
             label="Add Estimator"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
-            @click="onSubmit('addEstimatorDialog')"
+            @click="onCloseDialogBox('addEstimatorDialog', 5)"
             size="'xl'"
           ></q-btn>
         </q-card-section>
@@ -1730,7 +1730,7 @@
             <img
               src="~assets/close.svg"
               alt="back-arrow"
-              @click="expertVendorInfoDialog = false"
+              @click="onCloseDialogBox('expertVendorInfoDialog', 4)"
               style="margin: auto 0"
             />
             <div class="text-uppercase text-bold text-black q-mx-auto">
@@ -2492,6 +2492,13 @@ export default {
     onCountrySelect(country) {
       this.states = addressService.getStates(country);
     },
+    onCloseDialogBox(DialogName, value) {
+      if (this.dialogBoxes[value].validForm == true) {
+        this.onSubmit(DialogName);
+      } else {
+        this[DialogName] = false;
+      }
+    },
 
     async onSubmit(name) {
       let success = false;
@@ -2718,8 +2725,9 @@ export default {
         payload.source.detail = this.sourceDetails.details;
       }
 
-      const response = await this.addClient(payload);
-      if (response && response.id) {
+      const response = this.addClient(payload);
+
+      if (response) {
         const clientInfo = {
           name: response,
           id: response.id
