@@ -438,7 +438,10 @@
                     mask="##-#######"
                   />
                   <div class="text-h5">Credit Card Info</div>
-                  <PaymentCard @cardDetailsAdded="cardDetailsAdded" />
+                  <PaymentCard
+                    @cardDetailsAdded="cardDetailsAdded"
+                    ref="card"
+                  />
                 </div>
 
                 <q-separator />
@@ -511,7 +514,6 @@ export default {
         name: '',
         website: '',
         phoneNumber: {
-          type: '',
           number: ''
         },
         contact: {
@@ -644,8 +646,12 @@ export default {
     },
 
     onSubmit() {
-      this.$refs.billingInfo.validate().then(() => {
-        this.createUserForOrganization(this.user);
+      this.$refs.billingInfo.validate();
+
+      this.createUserForOrganization(this.user).then(res => {
+        if (!res) {
+          this.$refs.card.clearCard();
+        }
       });
     },
 
@@ -676,8 +682,6 @@ export default {
         getCurrentUser().attributes['onboard']['isCompleted']
       ) {
         this.$router.push('/dashboard');
-      } else {
-        this.$router.push('/onboarding');
       }
     } else {
       // this.getPlansInfo();
