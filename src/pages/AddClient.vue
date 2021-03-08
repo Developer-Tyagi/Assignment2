@@ -1217,7 +1217,7 @@
                     </q-btn>
                     <br />
                     <q-markup-table
-                      v-if="items.length > 1"
+                      v-if="osDamagedItems.length >= 1"
                       flat
                       bordered
                       class=""
@@ -1226,20 +1226,25 @@
                     >
                       <thead class="bg-grey-5">
                         <tr>
-                          <th class="text-left">Description</th>
+                          <th class="text-left">Name</th>
+                          <th class="text-left">Description Of Damage</th>
                           <th class="text-left">Cost</th>
                           <th class="text-left">Delete</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr v-for="(item, index) in items" v-if="items.length">
+                        <tr
+                          v-for="(item, index) in osDamagedItems"
+                          v-if="osDamagedItems.length"
+                        >
                           <td class="text-left">
                             {{ item.name }}
                           </td>
-                          <td>{{ item.value }}</td>
+                          <td>{{ item.desc }}</td>
+                          <td>{{ item.cost }}</td>
                           <td>
                             <q-icon
-                              v-if="items.length > 1"
+                              v-if="osDamagedItems.length >= 1"
                               class="q-ml-xs"
                               size="sm"
                               dense
@@ -1282,13 +1287,18 @@
                           <div class="q-page bg-white">
                             <div class="full-width" style="margin-top: 30px;">
                               <q-input
-                                v-model="lossInfo.OSDamageDescription"
-                                label="Damaged Items"
+                                v-model="lossInfo.OSDamageName"
+                                label="Name"
                               />
                               <q-input
+                                v-model="lossInfo.OSDamageDescription"
+                                label="Description"
+                              />
+                              <q-input
+                                mask="#.#"
                                 type="number"
-                                v-model="lossInfo.OSDamageItemCost"
-                                label="Items Cost"
+                                v-model.number="lossInfo.OSDamagedItemCost"
+                                label="Item Cost"
                               /><br />
                             </div>
                             <br />
@@ -1316,44 +1326,113 @@
                   </div>
                   <!-- Persnol Property Damage List -->
                   <div v-if="isThereDamageToPersonalPropertyToggle">
-                    <q-list>
-                      <q-item
-                        v-for="(item, index) in pItems"
-                        :key="item.title"
-                        clickable
-                      >
-                        <q-item-section avatar class="hello">
-                          <q-input
-                            v-model="item.value"
-                            class="q-my-auto "
-                            placeholder="Add Another"
-                          />
-                        </q-item-section>
-                        <q-item-section>
-                          {{ item.title }}
-                        </q-item-section>
-                        <q-item-section side>
-                          <q-btn
-                            @click="deleteItems(index)"
-                            flat
-                            round
-                            color="primary"
-                            icon="close"
-                          />
-                        </q-item-section>
-                      </q-item>
-                    </q-list>
                     <q-btn
-                      @click="addPPDamagedItems"
-                      class="q-mt-sm icon"
-                      size="1em"
-                      color="primary"
-                      round
-                      dense
-                      flat
+                      label="add item"
+                      name="add"
                       icon="add"
-                      label=" Add Another Damage"
-                    />
+                      size="sm"
+                      color="primary"
+                      @click="PPdamagedItemsDailog = true"
+                    >
+                    </q-btn>
+                    <br />
+                    <q-markup-table
+                      v-if="ppDamagedItems.length >= 1"
+                      flat
+                      bordered
+                      class=""
+                      scroll
+                      style="margin-top:20px"
+                    >
+                      <thead class="bg-grey-5">
+                        <tr>
+                          <th class="text-left">Name</th>
+                          <th class="text-left">Description Of Damage</th>
+                          <th class="text-left">Cost</th>
+                          <th class="text-left">Delete</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr
+                          v-for="(item, index) in ppDamagedItems"
+                          v-if="ppDamagedItems.length"
+                        >
+                          <td class="text-left">
+                            {{ item.name }}
+                          </td>
+                          <td>{{ item.desc }}</td>
+                          <td>{{ item.cost }}</td>
+                          <td>
+                            <q-icon
+                              v-if="ppDamagedItems.length >= 1"
+                              class="q-ml-xs"
+                              size="sm"
+                              dense
+                              color="primary"
+                              name="close"
+                              @click="deletePPDamagedItem(index)"
+                            />
+                          </td>
+                        </tr>
+                      </tbody>
+                    </q-markup-table>
+
+                    <q-dialog
+                      v-model="PPdamagedItemsDailog"
+                      persistent
+                      transition-show="slide-up"
+                      transition-hide="slide-down"
+                    >
+                      <q-card
+                        class="form-card q-pa-md"
+                        style="width:500px;height:50%"
+                      >
+                        <q-header bordered class="bg-white">
+                          <q-toolbar class="row bg-white">
+                            <img
+                              src="~assets/close.svg"
+                              alt="back-arrow"
+                              @click="PPdamagedItemsDailog = false"
+                              style="margin: auto 0"
+                            />
+                            <div
+                              class="text-uppercase text-bold text-black q-mx-auto"
+                            >
+                              Add Items
+                            </div>
+                          </q-toolbar>
+                        </q-header>
+
+                        <q-card-section>
+                          <div class="q-page bg-white">
+                            <div class="full-width" style="margin-top: 30px;">
+                              <q-input
+                                v-model="lossInfo.PPDamageName"
+                                label="Name"
+                              />
+                              <q-input
+                                v-model="lossInfo.PPDamageDescription"
+                                label="Description"
+                              />
+                              <q-input
+                                type="number"
+                                v-model.number="lossInfo.PPDamagedItemCost"
+                                label="Item Cost"
+                              /><br />
+                            </div>
+                            <br />
+                          </div>
+
+                          <q-btn
+                            label="Save"
+                            color="primary"
+                            class="full-width q-mt-auto text-capitalize"
+                            @click="addPPDamagedItems"
+                            size="'xl'"
+                          ></q-btn>
+                        </q-card-section>
+                      </q-card>
+                    </q-dialog>
                   </div>
                   <div class="row">
                     <p class="q-mx-none q-my-auto form-heading">
@@ -2041,12 +2120,11 @@ export default {
 
   data() {
     return {
-      pItems: [],
-      persnolProperty: '',
-      damagedItemsDailog: false,
+      PPdamagedItemsDailog: false,
+      ppDamagedItems: [],
 
-      cost: '',
-      items: [],
+      damagedItemsDailog: false,
+      osDamagedItems: [],
 
       isCreateClientButtonDisabled: true,
       industryType: {
@@ -2170,10 +2248,15 @@ export default {
       },
 
       lossInfo: {
+        PPDamageName: '',
+        PPDamageDescription: '',
+        PPDamagedItemCost: '',
         OSDamageDescription: '',
-        OSDamageItemCost: 0,
+        OSDamageName: '',
+
         DescriptionOfLoss: '',
-        costOfItem: '',
+
+        OSDamagedItemCost: '',
         dateOfLoss: '',
         propertyDescription: '',
         damagePersnalPropertyDescription: '',
@@ -2471,11 +2554,21 @@ export default {
     },
     validateDate,
     deleteItems(index) {
-      this.$delete(this.pItems, index);
+      this.$delete(this.ppDamagedItems, index);
     },
     addPPDamagedItems() {
-      this.pItems.push({ value: this.persnolProperty });
-      this.persnolProperty = '';
+      this.PPdamagedItemsDailog = false;
+      this.ppDamagedItems.push({
+        name: this.lossInfo.PPDamageName,
+        desc: this.lossInfo.PPDamageDescription,
+        cost: this.lossInfo.PPDamagedItemCost
+      });
+      this.lossInfo.PPDamageName = '';
+      this.lossInfo.PPDamageDescription = '';
+      this.lossInfo.PPDamagedItemCost = '';
+    },
+    deletePPDamagedItem(index) {
+      this.$delete(this.ppDamagedItems, index);
     },
 
     setVendorIndustryName() {
@@ -2817,18 +2910,8 @@ export default {
           serverity: {
             ...this.lossInfo.severityOfClaimType
           },
-          OSDamageItems: [
-            {
-              desc: '',
-              cost: 0
-            }
-          ],
-          PPDamageItems: [
-            {
-              desc: '',
-              cost: 0
-            }
-          ],
+          OSDamageItems: this.osDamagedItems,
+          PPDamageItems: this.ppDamagedItems,
           isPPIF: this.wasAppifProvidedToTheInsuredToggle,
           isNeedPPIF: this.doesTheOfficeNeedToProvidePpifToTheInsuredToggle,
 
@@ -2848,6 +2931,7 @@ export default {
           internalNotes: this.expertVendorInfo.internalNotes
         }
       };
+
       this.addClaim(payload).then(() => {
         this.setSelectedLead();
         this.$router.push('/clients');
@@ -2891,16 +2975,19 @@ export default {
 
     validateEmail,
     addDamagedItems() {
-      this.items.push({
-        name: this.lossInfo.OSDamageDescription,
-        value: this.lossInfo.OSDamageItemCost
+      this.osDamagedItems.push({
+        name: this.lossInfo.OSDamageName,
+        desc: this.lossInfo.OSDamageDescription,
+        cost: this.lossInfo.OSDamagedItemCost
       });
+
       this.damagedItemsDailog = false;
+      this.lossInfo.OSDamageName = '';
       this.lossInfo.OSDamageDescription = '';
-      this.lossInfo.OSDamageItemCost = '';
+      this.lossInfo.OSDamagedItemCost = '';
     },
     deleteDamagedItem(index) {
-      this.$delete(this.items, index);
+      this.$delete(this.osDamagedItems, index);
     },
 
     onChangingSourceType() {
@@ -3073,17 +3160,5 @@ export default {
     text-transform: capitalize;
     display: flex;
   }
-}
-.hello {
-  background-color: #ddd;
-  border: none;
-  color: black;
-  padding: 2px 2px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  margin: 4px 2px;
-  cursor: pointer;
-  border-radius: 16px;
 }
 </style>
