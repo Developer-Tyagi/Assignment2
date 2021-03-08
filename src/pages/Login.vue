@@ -35,7 +35,7 @@
           height="90"
         />
       </div>
-      <div class="column">
+      <q-form class="column" autocapitalize="off" @submit="onUserLogin">
         <div class="row">
           <div class="q-mt-md" style="width: 20px">
             <img src="~assets/icon_user.svg" class="q-mr-lg" />
@@ -82,8 +82,8 @@
             :color="$q.screen.width < 624 ? 'secondary' : 'white'"
             :outline="$q.screen.width > 624 ? true : false"
             label="Login"
+            type="submit"
             class="full-width q-my-md"
-            @click="onUserLogin"
           ></q-btn>
         </div>
         <a
@@ -92,7 +92,7 @@
           style="text-decoration: none"
           >Forgot Password</a
         >
-      </div>
+      </q-form>
     </div>
   </q-page>
 </template>

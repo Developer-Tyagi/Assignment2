@@ -6,7 +6,7 @@
     />
 
     <div class="column" style="padding: 30px 20px 20px 20px">
-      <div class="q-md column full-width fixHeight">
+      <div class="q-md column full-width fix-height">
         <div
           v-for="dialogBox in dialogBoxes"
           :key="dialogBox.name"
@@ -203,7 +203,7 @@
         </q-header>
         <q-card-section>
           <div class="q-page bg-white">
-            <div class="full-width fixHeight">
+            <div class="full-width fix-height">
               <div>
                 <q-form ref="clientForm">
                   <div>
@@ -625,7 +625,7 @@
         </q-header>
         <q-card-section>
           <div class="q-page bg-white">
-            <div class="full-width fixHeight">
+            <div class="full-width fix-height">
               <div>
                 <q-form ref="mailingAddressForm">
                   <div class="row">
@@ -686,7 +686,7 @@
 
         <q-card-section>
           <div class="q-page bg-white">
-            <div class="full-width fixHeight">
+            <div class="full-width fix-height">
               <div>
                 <q-form ref="insuranceInfoForm">
                   <div
@@ -969,7 +969,7 @@
         </q-header>
         <q-card-section>
           <div class="q-page bg-white">
-            <div class="full-width fixHeight">
+            <div class="full-width fix-height">
               <div>
                 <q-form ref="lossInfoForm">
                   <div class="row">
@@ -1204,16 +1204,107 @@
                     </p>
                     <q-toggle class="q-ml-auto" v-model="isDamageOSToggle" />
                   </div>
-                  <textarea
-                    v-if="isDamageOSToggle"
-                    rows="5"
-                    required
-                    class="full-width"
-                    v-model="lossInfo.damageDescription"
-                    label="Damage items description"
-                    style="resize: none"
-                  />
 
+                  <div v-if="isDamageOSToggle">
+                    <q-btn
+                      label="add item"
+                      name="add"
+                      icon="add"
+                      size="sm"
+                      color="primary"
+                      @click="damagedItemsDailog = true"
+                    >
+                    </q-btn>
+                    <br />
+                    <q-markup-table
+                      v-if="items.length > 1"
+                      flat
+                      bordered
+                      class=""
+                      scroll
+                      style="margin-top:20px"
+                    >
+                      <thead class="bg-grey-5">
+                        <tr>
+                          <th class="text-left">Description</th>
+                          <th class="text-left">Cost</th>
+                          <th class="text-left">Delete</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="(item, index) in items" v-if="items.length">
+                          <td class="text-left">
+                            {{ item.name }}
+                          </td>
+                          <td>{{ item.value }}</td>
+                          <td>
+                            <q-icon
+                              v-if="items.length > 1"
+                              class="q-ml-xs"
+                              size="sm"
+                              dense
+                              color="primary"
+                              name="close"
+                              @click="deleteDamagedItem(index)"
+                            />
+                          </td>
+                        </tr>
+                      </tbody>
+                    </q-markup-table>
+
+                    <q-dialog
+                      v-model="damagedItemsDailog"
+                      persistent
+                      transition-show="slide-up"
+                      transition-hide="slide-down"
+                    >
+                      <q-card
+                        class="form-card q-pa-md"
+                        style="width:500px;height:50%"
+                      >
+                        <q-header bordered class="bg-white">
+                          <q-toolbar class="row bg-white">
+                            <img
+                              src="~assets/close.svg"
+                              alt="back-arrow"
+                              @click="damagedItemsDailog = false"
+                              style="margin: auto 0"
+                            />
+                            <div
+                              class="text-uppercase text-bold text-black q-mx-auto"
+                            >
+                              Add Items
+                            </div>
+                          </q-toolbar>
+                        </q-header>
+
+                        <q-card-section>
+                          <div class="q-page bg-white">
+                            <div class="full-width" style="margin-top: 30px;">
+                              <q-input
+                                v-model="lossInfo.OSDamageDescription"
+                                label="Damaged Items"
+                              />
+                              <q-input
+                                type="number"
+                                v-model="lossInfo.OSDamageItemCost"
+                                label="Items Cost"
+                              /><br />
+                            </div>
+                            <br />
+                          </div>
+
+                          <q-btn
+                            label="Save"
+                            color="primary"
+                            class="full-width q-mt-auto text-capitalize"
+                            @click="addDamagedItems"
+                            size="'xl'"
+                          ></q-btn>
+                        </q-card-section>
+                      </q-card>
+                    </q-dialog>
+                  </div>
                   <div class="row">
                     <p class="q-my-auto form-heading">
                       Is there damage to personal property?
@@ -1223,15 +1314,47 @@
                       v-model="isThereDamageToPersonalPropertyToggle"
                     />
                   </div>
-                  <textarea
-                    v-if="isThereDamageToPersonalPropertyToggle"
-                    rows="5"
-                    required
-                    class="full-width"
-                    v-model="lossInfo.damagePersnalPropertyDescription"
-                    label="Damage items description"
-                    style="resize: none"
-                  />
+                  <!-- Persnol Property Damage List -->
+                  <div v-if="isThereDamageToPersonalPropertyToggle">
+                    <q-list>
+                      <q-item
+                        v-for="(item, index) in pItems"
+                        :key="item.title"
+                        clickable
+                      >
+                        <q-item-section avatar class="hello">
+                          <q-input
+                            v-model="item.value"
+                            class="q-my-auto "
+                            placeholder="Add Another"
+                          />
+                        </q-item-section>
+                        <q-item-section>
+                          {{ item.title }}
+                        </q-item-section>
+                        <q-item-section side>
+                          <q-btn
+                            @click="deleteItems(index)"
+                            flat
+                            round
+                            color="primary"
+                            icon="close"
+                          />
+                        </q-item-section>
+                      </q-item>
+                    </q-list>
+                    <q-btn
+                      @click="addPPDamagedItems"
+                      class="q-mt-sm icon"
+                      size="1em"
+                      color="primary"
+                      round
+                      dense
+                      flat
+                      icon="add"
+                      label=" Add Another Damage"
+                    />
+                  </div>
                   <div class="row">
                     <p class="q-mx-none q-my-auto form-heading">
                       Was a PPIF provided to the insured?
@@ -1434,63 +1557,59 @@
         </q-header>
         <q-card-section>
           <div class="q-page bg-white" style="min-height: 500px">
-            <div
-              class="full-width"
-              style="
-                height: calc(100vh - 145px);
-                overflow-y: auto;
-                margin-bottom: 10px;
-                padding-top: 40px;
-              "
-            >
-              <div class="row">
-                <p style="form-heading">
-                  Does an estimator need to be<br />assigned?
-                </p>
-                <q-toggle
-                  class="q-ml-auto"
-                  v-model="doesAnEstimatorNeedToBeAssignedToggle"
-                />
-              </div>
-
-              <div
-                v-if="doesAnEstimatorNeedToBeAssignedToggle"
-                @click="estimatorsListDialog = true"
-              >
-                <div
-                  class="custom-select form-heading"
-                  v-model="addEstimatorInfo.name"
-                >
-                  <div class="select-text">
-                    {{
-                      addEstimatorInfo.name
-                        ? addEstimatorInfo.name
-                        : 'Add Estimator'
-                    }}
+            <div class="full-width fix-height">
+              <div>
+                <q-form ref="estimatingInfoForm">
+                  <div class="row">
+                    <p style="form-heading">
+                      Does an estimator need to be<br />assigned?
+                    </p>
+                    <q-toggle
+                      class="q-ml-auto"
+                      v-model="doesAnEstimatorNeedToBeAssignedToggle"
+                    />
                   </div>
-                </div>
+
+                  <div
+                    v-if="doesAnEstimatorNeedToBeAssignedToggle"
+                    @click="estimatorsListDialog = true"
+                  >
+                    <div
+                      class="custom-select form-heading"
+                      v-model="addEstimatorInfo.name"
+                    >
+                      <div class="select-text">
+                        {{
+                          addEstimatorInfo.name
+                            ? addEstimatorInfo.name
+                            : 'Add Estimator'
+                        }}
+                      </div>
+                    </div>
+                  </div>
+                  <q-input
+                    v-model="estimatingInfo.estimatorToBeAssigned"
+                    label="Estimator to be assigned"
+                  />
+                  <q-input
+                    v-model="estimatingInfo.scopeTimeNeeded"
+                    label="Scope time needed"
+                  />
+                  <q-input
+                    v-model="estimatingInfo.notesToTheEstimator"
+                    label="Notes to the estimator"
+                  /><br />
+                </q-form>
               </div>
-              <q-input
-                v-model="estimatingInfo.estimatorToBeAssigned"
-                label="Estimator to be assigned"
-              />
-              <q-input
-                v-model="estimatingInfo.scopeTimeNeeded"
-                label="Scope time needed"
-              />
-              <q-input
-                v-model="estimatingInfo.notesToTheEstimator"
-                label="Notes to the estimator"
-              /><br />
+              <br />
             </div>
-            <br />
           </div>
 
           <q-btn
             label="Save"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
-            @click="estimatingInfoDialog = false"
+            @click="onSubmit('estimatingInfoDialog')"
             size="'xl'"
           ></q-btn>
         </q-card-section>
@@ -1521,7 +1640,7 @@
 
         <q-card-section>
           <div class="q-page bg-white">
-            <div class="full-width fixHeight">
+            <div class="full-width fix-height">
               <div>
                 <q-form ref="addEstimatorForm">
                   <q-select
@@ -1621,7 +1740,7 @@
         </q-header>
         <q-card-section>
           <div class="q-page bg-white">
-            <div class="full-width fixHeight">
+            <div class="full-width fix-height">
               <div>
                 <q-form ref="expertVendorInfoForm">
                   <div class="row">
@@ -1919,8 +2038,16 @@ const addressService = new AddressService();
 export default {
   name: 'addClient',
   components: { CustomHeader, VendorsList, AddVendor, AutoCompleteAddress },
+
   data() {
     return {
+      pItems: [],
+      persnolProperty: '',
+      damagedItemsDailog: false,
+
+      cost: '',
+      items: [],
+
       isCreateClientButtonDisabled: true,
       industryType: {
         value: '',
@@ -2043,6 +2170,10 @@ export default {
       },
 
       lossInfo: {
+        OSDamageDescription: '',
+        OSDamageItemCost: 0,
+        DescriptionOfLoss: '',
+        costOfItem: '',
         dateOfLoss: '',
         propertyDescription: '',
         damagePersnalPropertyDescription: '',
@@ -2193,6 +2324,7 @@ export default {
       officeTaskRequiredTypes: []
     };
   },
+
   created() {
     this.insuranceDetails.policyEffectiveDate = this.insuranceDetails.policyExpireDate = this.lossInfo.dateOfLoss = this.lossInfo.deadlineDate = this.lossInfo.recovDeadline = date.formatDate(
       Date.now(),
@@ -2305,6 +2437,7 @@ export default {
         );
       });
     },
+
     createClientDailogBoxOpen(value) {
       switch (value) {
         case 'Client Info':
@@ -2337,6 +2470,13 @@ export default {
       }
     },
     validateDate,
+    deleteItems(index) {
+      this.$delete(this.pItems, index);
+    },
+    addPPDamagedItems() {
+      this.pItems.push({ value: this.persnolProperty });
+      this.persnolProperty = '';
+    },
 
     setVendorIndustryName() {
       const selectedName = this.expertVendorInfo.industry.value;
@@ -2396,11 +2536,14 @@ export default {
           validationIndex = 4;
 
           break;
+        case 'estimatingInfoDialog':
+          success = await this.$refs.estimatingInfoForm.validate();
+          validationIndex = 5;
       }
       if (success == true) {
         this.dialogBoxes[validationIndex].validForm = true;
 
-        for (var i = 0; i < this.dialogBoxes.length - 3; i++) {
+        for (var i = 0; i < this.dialogBoxes.length - 2; i++) {
           if (this.dialogBoxes[i].validForm == false) {
             this.isCreateClientButtonDisabled = true;
             break;
@@ -2573,6 +2716,9 @@ export default {
       } else {
         delete payload.insuredInfo.tenantInfo;
       }
+      if (!this.isThereaCoInsuredToggle) {
+        delete payload.insuredInfo.secondary;
+      }
       if (this.sourceDetails.type == constants.industries.VENDOR) {
         payload.source.id = this.sourceDetails.id;
       } else {
@@ -2659,6 +2805,7 @@ export default {
         },
         mortgageInfo: this.mortgageDetails,
         lossInfo: {
+          lossAddressName: '',
           address: {
             ...this.clientAddressDetails
           },
@@ -2684,20 +2831,32 @@ export default {
           serverity: {
             ...this.lossInfo.severityOfClaimType
           },
-          isOSDamaged: this.isDamageOSToggle,
-          OSDamageDesc: this.lossInfo.damageDescription,
-          isPPDamaged: this.isThereDamageToPersonalPropertyToggle,
+          OSDamageItems: [
+            {
+              desc: '',
+              cost: 0
+            }
+          ],
+          PPDamageItems: [
+            {
+              desc: '',
+              cost: 0
+            }
+          ],
           isPPIF: this.wasAppifProvidedToTheInsuredToggle,
           isNeedPPIF: this.doesTheOfficeNeedToProvidePpifToTheInsuredToggle,
-          PPDamageDesc: this.lossInfo.damagePersnalPropertyDescription,
-          hasHomeMortgage: this.isMortgageHomeToggle
+
+          hasHomeMortgage: this.isMortgageHomeToggle,
+          isSecondClaim: false
         },
         expertInfo: {
           isVendorAssigned: this.vendorExpertHiredToggle,
-          vendor: {
-            id: this.expertVendorInfo.id,
-            value: this.expertVendorInfo.vendorName
-          },
+          vendor: [
+            {
+              id: this.expertVendorInfo.id,
+              value: this.expertVendorInfo.vendorName
+            }
+          ],
           isInsuredHired: this.anyOtherExpertHiredToggle,
           notes: this.expertVendorInfo.notes,
           internalNotes: this.expertVendorInfo.internalNotes
@@ -2745,6 +2904,18 @@ export default {
     },
 
     validateEmail,
+    addDamagedItems() {
+      this.items.push({
+        name: this.lossInfo.OSDamageDescription,
+        value: this.lossInfo.OSDamageItemCost
+      });
+      this.damagedItemsDailog = false;
+      this.lossInfo.OSDamageDescription = '';
+      this.lossInfo.OSDamageItemCost = '';
+    },
+    deleteDamagedItem(index) {
+      this.$delete(this.items, index);
+    },
 
     onChangingSourceType() {
       this.sourceDetails.id = '';
@@ -2858,7 +3029,7 @@ export default {
 </script>
 
 <style lang="scss">
-.fixHeight {
+.fix-height {
   height: calc(100vh - 145px);
   overflow-y: auto;
   margin-bottom: 10px;
@@ -2916,5 +3087,17 @@ export default {
     text-transform: capitalize;
     display: flex;
   }
+}
+.hello {
+  background-color: #ddd;
+  border: none;
+  color: black;
+  padding: 2px 2px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 16px;
 }
 </style>
