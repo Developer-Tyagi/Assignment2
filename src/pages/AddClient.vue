@@ -311,6 +311,7 @@
                     option-value="id"
                     option-label="value"
                     map-options
+                    behavior="menu"
                     @input="setTitleName(1)"
                     emit-value
                     label="Title"
@@ -402,6 +403,7 @@
                       map-options
                       @input="setTitleName(2)"
                       emit-value
+                      behavior="menu"
                       label="Title"
                       lazy-rules
                       :rules="[
@@ -1651,6 +1653,7 @@
                     option-label="value"
                     map-options
                     @input="setTitleName(3)"
+                    behavior="menu"
                     emit-value
                     label="Title"
                     lazy-rules

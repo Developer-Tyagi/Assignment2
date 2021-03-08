@@ -69,12 +69,13 @@
 
           <p class="form-heading">Company's Contact Person Details</p>
           <q-select
-            class="required"
+            class=" required"
             v-model="vendor.contact[0].honorific.id"
             :options="titles"
             label="Title"
             option-label="value"
             option-value="id"
+            behavior="menu"
             map-options
             emit-value
             @input="setTitleName(vendor.contact[0].honorific)"
@@ -159,6 +160,7 @@
                 option-label="value"
                 label="Title"
                 option-value="id"
+                behavior="menu"
                 @input="setTitleName(contactInfo.honorific)"
                 emit-value
                 map-options
@@ -173,6 +175,7 @@
                 :ref="`fname-${index}`"
               />
               <q-input v-model="contactInfo.lname" label="Last Name" />
+              {{ contactInfo.phoneNumber[0].type }}
               <div class="row justify-between">
                 <q-select
                   class="required col-5"
@@ -474,7 +477,7 @@ export default {
 
     async onAddVendorButtonClick() {
       const success = await this.$refs.vendorForm.validate();
-      if (success) {
+      if (this.checkAddressField() && success) {
         const response = await this.addVendor(this.vendor);
         if (response) {
           this.closeDialog(true);
@@ -484,6 +487,17 @@ export default {
 
     closeDialog(flag) {
       this.$emit('closeDialog', flag);
+    },
+    checkAddressField() {
+      if (this.vendor.address.streetAddress) {
+        return true;
+      } else {
+        this.$q.notify({
+          message: 'Please fill this Street Address',
+          position: 'top',
+          type: 'negative'
+        });
+      }
     }
   },
 

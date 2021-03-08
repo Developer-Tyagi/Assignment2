@@ -32,6 +32,7 @@
                 map-options
                 @input="setTitleName()"
                 emit-value
+                behavior="menu"
                 label="Title"
                 lazy-rules
                 :rules="[
