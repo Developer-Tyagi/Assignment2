@@ -119,10 +119,10 @@
     </div>
     <q-dialog v-model="addUserDialogBox" persistent>
       <q-card
-        style="width: 800px; height: 500px; max-width: 1000vw"
-        class="q-pa-md"
+        style="width: 700px; height: 420px; max-width: 9000vw"
+        class="q-pa-xs"
       >
-        <q-bar class="row justify-between" style="height: 50px">
+        <q-bar class=" row justify-between" style="height: 50px">
           <div class="col-46 q-px-xl text-bold">
             Add User
           </div>
@@ -132,20 +132,20 @@
         </q-bar>
         <q-form ref="addUserForm">
           <div
-            class=" bg- q-ma-xs"
+            class=" q-ma-xs"
             outlined
             v-for="(user, index) in users"
             v-if="index >= 0"
           >
             <div class=" q-mt-xs row full-width">
-              <div class="col-5 q-mx-xl q-mt-lg">First Name *</div>
-              <div class="col-4 q-mx-lg q-mt-lg">Last Name *</div>
+              <div class="col-5 q-mx-md q-mt-lg required">First Name*</div>
+              <div class="col-4 q-mx-xl q-mt-lg">Last Name *</div>
             </div>
             <div class="row q-mt-xs justify-between full-width">
               <div class="col-6">
                 <q-input
                   v-model="user.contact.fname"
-                  class="q-mx-xl"
+                  class="q-mx-md"
                   style="width: 300px"
                   outlined
                 />
@@ -153,21 +153,21 @@
               <div class="col-6">
                 <q-input
                   v-model="user.contact.lname"
-                  class="q-mx-xl"
+                  class="q-mx-md"
                   style="width: 300px"
                   outlined
                 />
               </div>
             </div>
             <div class="q-mt-xs row full-width">
-              <div class="col-5 q-mx-xl q-mt-lg">Email*</div>
-              <div class="col-4 q-mx-lg q-mt-lg">Role *</div>
+              <div class="col-5 q-mx-md q-mt-lg">Email*</div>
+              <div class="col-4 q-mx-xl q-mt-lg">Role *</div>
             </div>
             <div class=" row q-mt-xs justify-between full-width">
               <div class="col-6 q-mb-xl">
                 <q-input
                   v-model="user.email"
-                  class="q-mx-xl"
+                  class="q-mx-md"
                   style="width: 300px"
                   outlined
                   lazy-rules
@@ -181,8 +181,8 @@
               <div class="col-6  ">
                 <select
                   v-model="user.roles[0]"
-                  class=" q-ml-xl "
-                  style="height:60px;width:300px; border:1px solid grey"
+                  class=" q-ml-md "
+                  style="height:60px;width:300px; border:2px solid lightgrey;background:white;"
                 >
                   <option value="ss" disabled selected>Selecttion</option
                   ><optgroup label="Paid">
@@ -201,7 +201,7 @@
           </div>
         </q-form>
 
-        <div class="q-mt-lg row justify-center">
+        <div class="q-mt-xs row justify-center">
           <q-btn
             color="primary"
             label="submit and Proceed"
@@ -290,23 +290,24 @@ export default {
       this.setOnboard(this.OnboardingStatus);
       this.$router.push('/dashboard');
     },
-    //  For Remove  AddUser,OfficeStraffInfo and Sales
-    removeAnotherContact() {
-      const len = this.users.length;
-      if (len === 2) {
-        this.isShowRemoveButton = false;
-      }
-      this.users.pop();
-    },
+
     async onSubmit() {
       const success = await this.$refs.addUserForm.validate();
 
       if (success) {
-        this.users.forEach(user => {
-          this.addUser(user);
-        });
-
-        this.isShowRemoveButton = false;
+        this.addUser(this.users);
+        this.users = [
+          {
+            type: 'user',
+            contact: {
+              fname: '',
+              lname: ''
+            },
+            email: '',
+            roles: []
+          }
+        ];
+        this.addUserDialogBox = false;
       }
     }
   }
