@@ -2734,12 +2734,6 @@ export default {
         };
 
         this.setPayloadForClaim(clientInfo);
-      } else {
-        this.$q.notify({
-          message: ' Create Client Failed',
-          position: 'top',
-          type: 'negative'
-        });
       }
     },
 
