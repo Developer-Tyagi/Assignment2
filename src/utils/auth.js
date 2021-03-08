@@ -1,31 +1,30 @@
-import { Cookies } from 'quasar';
+import { LocalStorage } from 'quasar';
 
 const tokenName = 'access_token';
 const currentUser = 'current_user';
-const tokenSettings = { domain: process.env.DOMAIN || 'localhost' };
 
 export function setToken(token) {
-  Cookies.set(tokenName, token, tokenSettings);
+  LocalStorage.set(tokenName, token);
 }
 
 export function removeToken() {
-  Cookies.remove(tokenName, tokenSettings);
+  LocalStorage.remove(tokenName);
 }
 
 export function getToken() {
-  return Cookies.get(tokenName);
+  return LocalStorage.getItem(tokenName);
 }
 
 export function setCurrentUser(user) {
-  Cookies.set(currentUser, user, tokenSettings);
+  LocalStorage.set(currentUser, user);
 }
 
 export function removeCurrentUser() {
-  Cookies.remove(currentUser, tokenSettings);
+  LocalStorage.remove(currentUser);
 }
 
 export function getCurrentUser() {
-  return Cookies.get(currentUser);
+  return LocalStorage.getItem(currentUser);
 }
 
 export function guardMyroute(to, from, next) {
