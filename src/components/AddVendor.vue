@@ -175,7 +175,7 @@
                 :ref="`fname-${index}`"
               />
               <q-input v-model="contactInfo.lname" label="Last Name" />
-              {{ contactInfo.phoneNumber[0].type }}
+
               <div class="row justify-between">
                 <q-select
                   class="required col-5"
