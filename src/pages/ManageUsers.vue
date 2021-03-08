@@ -118,10 +118,7 @@
       </div>
     </div>
     <q-dialog v-model="addUserDialogBox" persistent>
-      <q-card
-        style="width: 700px; height: 420px; max-width: 9000vw"
-        class="q-pa-xs"
-      >
+      <q-card class=" q-pa-xs col-5">
         <q-bar class=" row justify-between" style="height: 50px">
           <div class="col-46 q-px-xl text-bold">
             Add User
@@ -131,12 +128,7 @@
           </q-btn>
         </q-bar>
         <q-form ref="addUserForm">
-          <div
-            class=" q-ma-xs"
-            outlined
-            v-for="(user, index) in users"
-            v-if="index >= 0"
-          >
+          <div v-for="(user, index) in users" v-if="index >= 0">
             <div class=" q-mt-xs row full-width">
               <div class="col-5 q-mx-md q-mt-lg required">First Name*</div>
               <div class="col-4 q-mx-xl q-mt-lg">Last Name *</div>
@@ -164,7 +156,7 @@
               <div class="col-4 q-mx-xl q-mt-lg">Role *</div>
             </div>
             <div class=" row q-mt-xs justify-between full-width">
-              <div class="col-6 q-mb-xl">
+              <div class="col-6 q-mb-lg">
                 <q-input
                   v-model="user.email"
                   class="q-mx-md"
@@ -178,11 +170,11 @@
                   ]"
                 />
               </div>
-              <div class="col-6  ">
+              <div class="col-6 q-px-md ">
                 <select
                   v-model="user.roles[0]"
-                  class=" q-ml-md "
-                  style="height:60px;width:300px; border:2px solid lightgrey;background:white;"
+                  class="q-ml-md full-width bg-white"
+                  style=" height:55px;border:2px solid lightgrey;"
                 >
                   <option value="ss" disabled selected>Selecttion</option
                   ><optgroup label="Paid">
@@ -201,17 +193,16 @@
           </div>
         </q-form>
 
-        <div class="q-mt-xs row justify-center">
+        <div class=" row justify-center">
           <q-btn
             color="primary"
             label="submit and Proceed"
-            class="q-mx-lg"
+            class="q-mb-lg"
             @click="onSubmit"
           />
         </div>
       </q-card>
     </q-dialog>
-    <div></div>
   </q-page>
 </template>
 
