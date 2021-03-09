@@ -39,8 +39,8 @@
         </div>
       </div>
       <div class="q-mt-xs -xl row full-width full-height">
-        <div class="col-11 q-mx-xl">
-          <q-markup-table flat bordered class="" scroll>
+        <div class="col-11 q-mx-xl ">
+          <q-markup-table style="height:400px;" flat bordered>
             <thead class="bg-grey-5">
               <tr>
                 <th class="text-left">Contact Name</th>
@@ -53,15 +53,13 @@
                 <th class="text-center">Actions</th>
               </tr>
             </thead>
-            <tbody>
-              <tr v-for="(user, index) in allUsers" v-if="index < 5">
+            <tbody scroll>
+              <tr v-for="(user, index) in allUsers" v-if="index < 7">
                 <td class="text-left">
                   {{ user.attributes.contact.fname }}
                   {{ user.attributes.contact.lname }}
                 </td>
                 <td class="text-left">
-                  <!-- {{ user.attributes.email }} -->
-
                   <span
                     v-if="user.attributes.email"
                     @click="onEmailClick(user.attributes.email, $event)"
@@ -69,7 +67,6 @@
                   ><span v-else> - </span>
                 </td>
                 <td class="text-left">
-                  <!-- {{ user.attributes['contact']['phoneNumber'] }} -->
                   <span
                     v-if="5567656"
                     @click="onPhoneNumberClick(24355732, $event)"
@@ -106,21 +103,21 @@
               </tr>
             </tbody>
           </q-markup-table>
-          <div class=" row absolute-center">
-            <q-btn
-              color="primary"
-              label="Go To Dashboard"
-              class="q-mx-lg"
-              @click="SendToDashboard"
-            />
-          </div>
+        </div>
+        <div class=" row justify-center full-width">
+          <q-btn
+            color="primary"
+            style="height:40px;"
+            label="Go To Dashboard"
+            @click="SendToDashboard"
+          />
         </div>
       </div>
     </div>
     <q-dialog v-model="addUserDialogBox" persistent>
-      <q-card class=" q-pa-xs col-5">
-        <q-bar class=" row justify-between" style="height: 50px">
-          <div class="col-46 q-px-xl text-bold">
+      <q-card class=" q-pa-xs col-5 ">
+        <q-bar class=" row justify-between " style="height: 50px">
+          <div class="col-4 q-px-xl text-bold">
             Add User
           </div>
           <q-btn dense flat icon="close" v-close-popup>
@@ -128,67 +125,65 @@
           </q-btn>
         </q-bar>
         <q-form ref="addUserForm">
-          <div v-for="(user, index) in users" v-if="index >= 0">
-            <div class=" q-mt-xs row full-width">
-              <div class="col-5 q-mx-md q-mt-lg required">First Name*</div>
-              <div class="col-4 q-mx-xl q-mt-lg">Last Name *</div>
+          <div class=" q-mt-xs row full-width">
+            <div class="col-5 q-mx-md q-mt-lg required">First Name*</div>
+            <div class="col-4 q-mx-xl q-mt-lg">Last Name *</div>
+          </div>
+          <div class="row q-mt-xs justify-between full-width">
+            <div class="col-6">
+              <q-input
+                v-model="users.contact.fname"
+                class="q-mx-md"
+                style="width: 300px"
+                outlined
+              />
             </div>
-            <div class="row q-mt-xs justify-between full-width">
-              <div class="col-6">
-                <q-input
-                  v-model="user.contact.fname"
-                  class="q-mx-md"
-                  style="width: 300px"
-                  outlined
-                />
-              </div>
-              <div class="col-6">
-                <q-input
-                  v-model="user.contact.lname"
-                  class="q-mx-md"
-                  style="width: 300px"
-                  outlined
-                />
-              </div>
+            <div class="col-6">
+              <q-input
+                v-model="users.contact.lname"
+                class="q-mx-md"
+                style="width: 300px"
+                outlined
+              />
             </div>
-            <div class="q-mt-xs row full-width">
-              <div class="col-5 q-mx-md q-mt-lg">Email*</div>
-              <div class="col-4 q-mx-xl q-mt-lg">Role *</div>
+          </div>
+          <div class="q-mt-xs row full-width">
+            <div class="col-5 q-mx-md q-mt-lg">Email*</div>
+            <div class="col-4 q-mx-xl q-mt-lg">Role *</div>
+          </div>
+          <div class=" row q-mt-xs justify-between full-width">
+            <div class="col-6 q-mb-lg">
+              <q-input
+                v-model="users.email"
+                class="q-mx-md"
+                style="width: 300px"
+                outlined
+                lazy-rules
+                :rules="[
+                  val =>
+                    validateEmail(val) ||
+                    'You have entered an invalid email address!'
+                ]"
+              />
             </div>
-            <div class=" row q-mt-xs justify-between full-width">
-              <div class="col-6 q-mb-lg">
-                <q-input
-                  v-model="user.email"
-                  class="q-mx-md"
-                  style="width: 300px"
-                  outlined
-                  lazy-rules
-                  :rules="[
-                    val =>
-                      validateEmail(val) ||
-                      'You have entered an invalid email address!'
-                  ]"
-                />
-              </div>
-              <div class="col-6 q-px-md ">
-                <select
-                  v-model="user.roles[0]"
-                  class="q-ml-md full-width bg-white"
-                  style=" height:55px;border:2px solid lightgrey;"
-                >
-                  <option value="ss" disabled selected>Selecttion</option
-                  ><optgroup label="Paid">
-                    <option>User12</option>
-                    <option>User1</option>
-                    <option>User1</option>
-                  </optgroup>
-                  <optgroup label="Unpaid">
-                    <option>User1 </option>
-                    <option>User1</option>
-                    <option>User1</option>
-                  </optgroup></select
-                >
-              </div>
+            <div class="col-6 q-px-md ">
+              <select
+                v-model="users.roles[0]"
+                class="q-ml-md full-width bg-white"
+                style=" height:55px;border:2px solid lightgrey;"
+              >
+                <option value="ss" disabled selected>Selecttion</option
+                ><optgroup label="Paid">
+                  <option>User12</option>
+                  <option>User1</option>
+                  <option>User1</option>
+                </optgroup>
+                <optgroup label="Unpaid">
+                  <option>User1 </option>
+                  <option>User1</option>
+                  <option>User1</option>
+                </optgroup></select
+              >
             </div>
           </div>
         </q-form>
@@ -222,17 +217,15 @@ export default {
 
       optionsRole: ['Manager', 'Staff'],
       typeOfUser: ['User', 'Office Staff', 'Sales'],
-      users: [
-        {
-          type: 'user',
-          contact: {
-            fname: '',
-            lname: ''
-          },
-          email: '',
-          roles: []
-        }
-      ],
+      users: {
+        type: 'user',
+        contact: {
+          fname: '',
+          lname: ''
+        },
+        email: '',
+        roles: []
+      },
       options: [
         'View/Edit',
         'Reset Password',
@@ -286,18 +279,17 @@ export default {
       const success = await this.$refs.addUserForm.validate();
 
       if (success) {
-        this.addUser(this.users);
-        this.users = [
-          {
-            type: 'user',
-            contact: {
-              fname: '',
-              lname: ''
-            },
-            email: '',
-            roles: []
-          }
-        ];
+        await this.addUser(this.users);
+        this.users = {
+          type: 'user',
+          contact: {
+            fname: '',
+            lname: ''
+          },
+          email: '',
+          roles: []
+        };
+
         this.addUserDialogBox = false;
       }
     }
