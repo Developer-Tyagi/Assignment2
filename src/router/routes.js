@@ -48,12 +48,12 @@ const routes = [
   {
     path: '',
     component: () => import('layouts/AdminLayout.vue'),
+    beforeEnter: guardMyroute,
     children: [
       {
         path: 'setConfiguration',
         name: 'setConfiguration',
         caseSensitive: true,
-        beforeEnter: guardMyroute,
         component: () => import('pages/SetConfiguration.vue')
       },
       {
