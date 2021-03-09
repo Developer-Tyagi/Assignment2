@@ -2728,19 +2728,14 @@ export default {
       const response = await this.addClient(payload);
 
       if (response && response.id) {
-        const clientInfo = {
-          name: response,
-          id: response.id
-        };
-
-        this.setPayloadForClaim(clientInfo);
+        this.setPayloadForClaim(response.id);
       }
     },
 
-    async setPayloadForClaim(clientInfo) {
+    async setPayloadForClaim(id) {
       const payload = {
         client: {
-          id: clientInfo.id,
+          id: id,
           fname: this.insuredDetails.fname,
           lname: this.insuredDetails.lname
         },
