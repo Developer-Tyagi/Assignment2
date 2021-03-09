@@ -1,13 +1,13 @@
 <template>
   <q-page class="window-height bg-background full-width">
     <br />
-    <div class="q-mx-xl q-mt-xs" style="height: 60%; width: 90%">
+    <div class="q-mx-xl q-mt-xs" style="height: 60%; width: 95%">
       <div class="full-width">
         <div class="text-bold q-mx-xl">Manage Users</div>
       </div>
       <div class="full-width">
         <div class="row justify-between my-font text-bold q-mx-xl">
-          <div class="col-3">
+          <div class="col-4">
             <q-input outlined v-model="searchText" placeholder="Search">
               <template v-slot:append>
                 <q-icon name="search" />
@@ -26,7 +26,7 @@
                 >Total Users - 1</q-card
               >
             </div>
-            <div class="col-3 q-mr-lg">
+            <div class="col-3 q-mr-xl">
               <q-card
                 class="q-pl-lg q-pt-md q-mx-xs full-height text-primary"
                 flat
@@ -40,26 +40,29 @@
       </div>
       <div class="q-mt-xs -xl row full-width full-height">
         <div class="col-11 q-mx-xl ">
-          <q-markup-table style="height:400px;" flat bordered>
-            <thead class="bg-grey-5">
-              <tr>
-                <th class="text-left">Contact Name</th>
-                <th class="text-left">Email</th>
-                <th class="text-left">Phone</th>
-                <th class="text-left">Member Since</th>
-                <th class="text-left">Roles</th>
-                <th class="text-left">Last Access</th>
-                <th class="text-left">Status</th>
-                <th class="text-center">Actions</th>
-              </tr>
-            </thead>
+          <div class=" row bg-primary text-bold text-h6 text-white">
+            <div class="q-pl-xl col text-center">Contact Name</div>
+            <div class="q-pl-xl col-2  text-center">Email</div>
+            <div class="q-pl-xl col   text-center">Phone</div>
+            <div class=" col text-left">Member Since</div>
+            <div class="col ">Roles</div>
+            <div class=" col text-left">Last Access</div>
+            <div class="col text-left">Status</div>
+            <div class="col ">Actions</div>
+          </div>
+
+          <q-markup-table style="height:500px;" flat bordered>
             <tbody scroll>
-              <tr v-for="(user, index) in allUsers" v-if="index < 7">
-                <td class="text-left">
-                  {{ user.attributes.contact.fname }}
+              <tr v-for="user in allUsers" v-if="">
+                <td style="width:15%" class="  col-3 text-center">
+                  {{
+                    user.attributes.contact.fname
+                      ? user.attributes.contact.fname
+                      : '-'
+                  }}
                   {{ user.attributes.contact.lname }}
                 </td>
-                <td class="text-left">
+                <td class="text-center">
                   <span
                     v-if="user.attributes.email"
                     @click="onEmailClick(user.attributes.email, $event)"
@@ -70,13 +73,15 @@
                   <span
                     v-if="5567656"
                     @click="onPhoneNumberClick(24355732, $event)"
-                    >{{ 24355732 }}</span
+                    >{{ 243557388 }}</span
                   ><span v-else> - </span>
                 </td>
-                <td class="text-left">{{ date }}/</td>
-                <td class="text-left">{{ user.attributes.roles[0] }}</td>
-                <td class="text-left">{{ lastAccess }}</td>
-                <td class="text-left">{{ status }}</td>
+                <td class="text-left">{{ date }}</td>
+                <td class="text-left">
+                  {{ user.attributes.roles ? user.attributes.roles[0] : '-' }}
+                </td>
+                <td class="text-right">{{ lastAccess }}</td>
+                <td class="text-right">{{ status }}</td>
                 <td class="text-center">
                   <div class="q-pl-xl">
                     <q-btn-dropdown label="Action" style="width: 100px" outline>
@@ -104,7 +109,7 @@
             </tbody>
           </q-markup-table>
         </div>
-        <div class=" row justify-center full-width">
+        <div class=" q-mt-xl row justify-center full-width">
           <q-btn
             color="primary"
             style="height:40px;"
@@ -174,7 +179,7 @@
               >
                 <option value="ss" disabled selected>Selecttion</option
                 ><optgroup label="Paid">
-                  <option>User12</option>
+                  <option>User4</option>
                   <option>User1</option>
                   <option>User1</option>
                 </optgroup>
@@ -240,7 +245,7 @@ export default {
       contactNo: +909098987,
       date: '20/02/1998',
       roles: 'Super Admin',
-      lastAccess: '20/01/2020 20:40:19',
+      lastAccess: '20/01/2020 ',
       status: 'Active'
     };
   },
