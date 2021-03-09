@@ -27,14 +27,27 @@ axiosInstance.interceptors.response.use(
     return response.data;
   },
   error => {
-    const err = { error };
-    if (err.error.response.status === 401) {
+    if (error.response.status === 401) {
       refreshToken();
       return axiosInstance.request({
         method: err.error.config.method,
         url: err.error.config.url,
         params: err.error.config.params
       });
+    } else {
+      if (typeof error.response === 'object') {
+        throw {
+          response: error.response.data.errors,
+          status: error.response.status,
+          type: 'multiple'
+        };
+      } else {
+        throw {
+          response: error.response.data,
+          status: error.response.status,
+          type: 'single'
+        };
+      }
     }
   }
 );
