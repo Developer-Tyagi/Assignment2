@@ -1216,7 +1216,7 @@
                     >
                     </q-btn>
                     <br />
-                    <q-markup-table
+                    <div
                       v-if="osDamagedItems.length >= 1"
                       flat
                       bordered
@@ -1224,38 +1224,35 @@
                       scroll
                       style="margin-top:20px"
                     >
-                      <thead class="bg-grey-5">
-                        <tr>
-                          <th class="text-left">Name</th>
-                          <th class="text-left">Description Of Damage</th>
-                          <th class="text-left">Cost</th>
-                          <th class="text-left">Delete</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr
+                      <q-card>
+                        <div
                           v-for="(item, index) in osDamagedItems"
                           v-if="osDamagedItems.length"
                         >
-                          <td class="text-left">
-                            {{ item.name }}
-                          </td>
-                          <td>{{ item.desc }}</td>
-                          <td>{{ item.cost }}</td>
-                          <td>
-                            <q-icon
-                              v-if="osDamagedItems.length >= 1"
-                              class="q-ml-xs"
-                              size="sm"
-                              dense
-                              color="primary"
-                              name="close"
-                              @click="deleteDamagedItem(index)"
-                            />
-                          </td>
-                        </tr>
-                      </tbody>
-                    </q-markup-table>
+                          <div class="row">
+                            <div class="text-left ">
+                              {{ item.name }}
+                            </div>
+                            <div class="q-ml-auto" style="margin-right:30px">
+                              {{ '$' + item.cost }}
+                            </div>
+                            <div>
+                              <q-icon
+                                v-if="osDamagedItems.length >= 1"
+                                class="q-ml-xs"
+                                size="sm"
+                                dense
+                                color="primary"
+                                name="close"
+                                @click="deleteDamagedItem(index)"
+                              />
+                            </div>
+                          </div>
+                          <div class="text-left">{{ item.desc }}</div>
+                          <q-separator />
+                        </div>
+                      </q-card>
+                    </div>
 
                     <q-dialog
                       v-model="damagedItemsDailog"
@@ -1293,10 +1290,12 @@
                               <q-input
                                 v-model="lossInfo.OSDamageDescription"
                                 label="Description"
+                                autogrow
                               />
                               <q-input
                                 mask="#.#"
                                 type="number"
+                                prefix="$"
                                 v-model.number="lossInfo.OSDamagedItemCost"
                                 label="Item Cost"
                               /><br />
@@ -1336,33 +1335,26 @@
                     >
                     </q-btn>
                     <br />
-                    <q-markup-table
+                    <div
                       v-if="ppDamagedItems.length >= 1"
                       flat
                       bordered
-                      class=""
                       scroll
                       style="margin-top:20px"
                     >
-                      <thead class="bg-grey-5">
-                        <tr>
-                          <th class="text-left">Name</th>
-                          <th class="text-left">Description Of Damage</th>
-                          <th class="text-left">Cost</th>
-                          <th class="text-left">Delete</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr
+                      <q-card>
+                        <div
                           v-for="(item, index) in ppDamagedItems"
                           v-if="ppDamagedItems.length"
                         >
-                          <td class="text-left">
-                            {{ item.name }}
-                          </td>
-                          <td>{{ item.desc }}</td>
-                          <td>{{ item.cost }}</td>
-                          <td>
+                          <div class="row">
+                            <div class="text-left">
+                              {{ item.name }}
+                            </div>
+                            <div class="q-ml-auto" style="margin-right:30px">
+                              {{ '$' + item.cost }}
+                            </div>
+
                             <q-icon
                               v-if="ppDamagedItems.length >= 1"
                               class="q-ml-xs"
@@ -1372,10 +1364,16 @@
                               name="close"
                               @click="deletePPDamagedItem(index)"
                             />
-                          </td>
-                        </tr>
-                      </tbody>
-                    </q-markup-table>
+                          </div>
+                          <div class="text-left">{{ item.desc }}</div>
+                          <div class="text-left">{{ item.serialNumber }}</div>
+                          <div>
+                            {{ 'Repair/Replace    ' + item.toggle }}
+                          </div>
+                          <q-separator />
+                        </div>
+                      </q-card>
+                    </div>
 
                     <q-dialog
                       v-model="PPdamagedItemsDailog"
@@ -1385,7 +1383,7 @@
                     >
                       <q-card
                         class="form-card q-pa-md"
-                        style="width:500px;height:50%"
+                        style="width:500px;height:70%"
                       >
                         <q-header bordered class="bg-white">
                           <q-toolbar class="row bg-white">
@@ -1413,12 +1411,28 @@
                               <q-input
                                 v-model="lossInfo.PPDamageDescription"
                                 label="Description"
+                                autogrow
                               />
                               <q-input
                                 type="number"
                                 v-model.number="lossInfo.PPDamagedItemCost"
                                 label="Item Cost"
-                              /><br />
+                                prefix="$"
+                              />
+                              <q-input
+                                v-model="lossInfo.serialNumber"
+                                label="Serial Number"
+                              />
+                              <br />
+                              <div class="row">
+                                <p class="q-my-auto form-heading">
+                                  Repair/Replace?
+                                </p>
+                                <q-toggle
+                                  class="q-ml-auto"
+                                  v-model="lossInfo.repairReplaceToggle"
+                                />
+                              </div>
                             </div>
                             <br />
                           </div>
@@ -2248,6 +2262,8 @@ export default {
       },
 
       lossInfo: {
+        repairReplaceToggle: false,
+        serialNumber: '',
         PPDamageName: '',
         PPDamageDescription: '',
         PPDamagedItemCost: '',
@@ -2561,11 +2577,15 @@ export default {
       this.ppDamagedItems.push({
         name: this.lossInfo.PPDamageName,
         desc: this.lossInfo.PPDamageDescription,
-        cost: this.lossInfo.PPDamagedItemCost
+        cost: this.lossInfo.PPDamagedItemCost,
+        serialNumber: this.lossInfo.serialNumber,
+        toggle: this.lossInfo.repairReplaceToggle
       });
       this.lossInfo.PPDamageName = '';
       this.lossInfo.PPDamageDescription = '';
+      this.lossInfo.serialNumber = '';
       this.lossInfo.PPDamagedItemCost = '';
+      this.lossInfo.repairReplaceToggle = false;
     },
     deletePPDamagedItem(index) {
       this.$delete(this.ppDamagedItems, index);
@@ -3160,5 +3180,9 @@ export default {
     text-transform: capitalize;
     display: flex;
   }
+}
+.my-card {
+  width: 100%;
+  max-width: 350px;
 }
 </style>
