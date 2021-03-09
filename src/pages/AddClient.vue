@@ -2725,9 +2725,9 @@ export default {
         payload.source.detail = this.sourceDetails.details;
       }
 
-      const response = this.addClient(payload);
+      const response = await this.addClient(payload);
 
-      if (response) {
+      if (response && response.id) {
         const clientInfo = {
           name: response,
           id: response.id
