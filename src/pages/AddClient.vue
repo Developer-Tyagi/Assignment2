@@ -1206,54 +1206,59 @@
                   </div>
 
                   <div v-if="isDamageOSToggle">
-                    <q-btn
-                      label="add item"
-                      name="add"
-                      icon="add"
-                      size="sm"
-                      color="primary"
-                      @click="damagedItemsDailog = true"
-                    >
-                    </q-btn>
                     <br />
                     <div
                       v-if="osDamagedItems.length >= 1"
                       flat
                       bordered
-                      class=""
                       scroll
                       style="margin-top:20px"
                     >
-                      <q-card>
+                      <div class=" items-start q-gutter-md">
                         <div
                           v-for="(item, index) in osDamagedItems"
                           v-if="osDamagedItems.length"
                         >
-                          <div class="row">
-                            <div class="text-left ">
-                              {{ item.name }}
-                            </div>
-                            <div class="q-ml-auto" style="margin-right:30px">
-                              {{ '$' + item.cost }}
-                            </div>
-                            <div>
+                          <q-card flat bordered>
+                            <div class="text-right">
                               <q-icon
                                 v-if="osDamagedItems.length >= 1"
-                                class="q-ml-xs"
-                                size="sm"
+                                size="xs"
+                                class="q-ma-xs"
                                 dense
                                 color="primary"
                                 name="close"
                                 @click="deleteDamagedItem(index)"
                               />
                             </div>
-                          </div>
-                          <div class="text-left">{{ item.desc }}</div>
-                          <q-separator />
+                            <div class="row ">
+                              <div class=" text-h6 q-ml-sm text-capitalize">
+                                {{ item.name }}
+                              </div>
+                              <div
+                                class="q-ml-auto q-pt-sm"
+                                style="margin-right:30px"
+                              >
+                                {{ '$' + item.cost }}
+                              </div>
+                            </div>
+                            <div class="q-ma-xs  text-capitalize text-caption">
+                              {{ item.desc }}
+                            </div>
+                          </q-card>
                         </div>
-                      </q-card>
+                      </div>
                     </div>
-
+                    <q-btn
+                      label="add item"
+                      name="add"
+                      class="q-mt-sm"
+                      icon="add"
+                      size="sm"
+                      color="primary"
+                      @click="damagedItemsDailog = true"
+                    >
+                    </q-btn>
                     <q-dialog
                       v-model="damagedItemsDailog"
                       persistent
@@ -1261,7 +1266,7 @@
                       transition-hide="slide-down"
                     >
                       <q-card
-                        class="form-card q-pa-md"
+                        class="form-card q-pa-md "
                         style="width:500px;height:50%"
                       >
                         <q-header bordered class="bg-white">
@@ -1314,8 +1319,8 @@
                       </q-card>
                     </q-dialog>
                   </div>
-                  <div class="row">
-                    <p class="q-my-auto form-heading">
+                  <div class="row ">
+                    <p class="q-mt-md form-heading">
                       Is there damage to personal property?
                     </p>
                     <q-toggle
@@ -1325,56 +1330,71 @@
                   </div>
                   <!-- Persnol Property Damage List -->
                   <div v-if="isThereDamageToPersonalPropertyToggle">
-                    <q-btn
-                      label="add item"
-                      name="add"
-                      icon="add"
-                      size="sm"
-                      color="primary"
-                      @click="PPdamagedItemsDailog = true"
-                    >
-                    </q-btn>
                     <br />
                     <div
                       v-if="ppDamagedItems.length >= 1"
                       flat
                       bordered
                       scroll
-                      style="margin-top:20px"
+                      class="q-mt-xs"
                     >
-                      <q-card>
+                      <div class=" items-start q-gutter-md">
                         <div
                           v-for="(item, index) in ppDamagedItems"
                           v-if="ppDamagedItems.length"
                         >
-                          <div class="row">
-                            <div class="text-left">
-                              {{ item.name }}
+                          <q-card flat bordered>
+                            <div class="text-right">
+                              <q-icon
+                                v-if="ppDamagedItems.length >= 1"
+                                class="q-ma-xs"
+                                size="xs"
+                                dense
+                                color="primary"
+                                name="close"
+                                @click="deletePPDamagedItem(index)"
+                              />
                             </div>
-                            <div class="q-ml-auto" style="margin-right:30px">
-                              {{ '$' + item.cost }}
+                            <div class="row">
+                              <p
+                                class="q-ml-sm q-mb-auto text-h6 text-capitalize"
+                              >
+                                {{ item.name }}
+                              </p>
+                              <p
+                                class="q-ml-auto q-pt-sm"
+                                style="margin-right:30px"
+                              >
+                                {{ '$' + item.cost }}
+                              </p>
                             </div>
-
-                            <q-icon
-                              v-if="ppDamagedItems.length >= 1"
-                              class="q-ml-xs"
-                              size="sm"
-                              dense
-                              color="primary"
-                              name="close"
-                              @click="deletePPDamagedItem(index)"
-                            />
-                          </div>
-                          <div class="text-left">{{ item.desc }}</div>
-                          <div class="text-left">{{ item.serialNumber }}</div>
-                          <div>
-                            {{ 'Repair/Replace    ' + item.toggle }}
-                          </div>
-                          <q-separator />
+                            <div
+                              class="q-ma-sm q-ml-xs   text-capitalize text-caption"
+                            >
+                              {{ item.desc }}
+                            </div>
+                            <div class="q-ma-sm q-ml-xs ">
+                              {{ item.serialNumber }}
+                            </div>
+                            <div class="q-ma-sm ">
+                              {{ item.radio }}
+                            </div>
+                          </q-card>
                         </div>
-                      </q-card>
+                      </div>
                     </div>
-
+                    <div>
+                      <q-btn
+                        label="add item"
+                        name="add"
+                        class="q-mt-sm"
+                        icon="add"
+                        size="sm"
+                        color="primary"
+                        @click="PPdamagedItemsDailog = true"
+                      >
+                      </q-btn>
+                    </div>
                     <q-dialog
                       v-model="PPdamagedItemsDailog"
                       persistent
@@ -1383,7 +1403,7 @@
                     >
                       <q-card
                         class="form-card q-pa-md"
-                        style="width:500px;height:70%"
+                        style="width:500px;height:65%"
                       >
                         <q-header bordered class="bg-white">
                           <q-toolbar class="row bg-white">
@@ -1424,15 +1444,18 @@
                                 label="Serial Number"
                               />
                               <br />
-                              <div class="row">
-                                <p class="q-my-auto form-heading">
-                                  Repair/Replace?
-                                </p>
-                                <q-toggle
-                                  class="q-ml-auto"
-                                  v-model="lossInfo.repairReplaceToggle"
-                                />
-                              </div>
+
+                              <q-radio
+                                v-model="lossInfo.repairReplaceRadio"
+                                val="Repair"
+                                label="Repair"
+                              ></q-radio>
+                              <q-radio
+                                class="q-ml-none "
+                                v-model="lossInfo.repairReplaceRadio"
+                                val="Replace"
+                                label="Replace"
+                              ></q-radio>
                             </div>
                             <br />
                           </div>
@@ -2262,7 +2285,7 @@ export default {
       },
 
       lossInfo: {
-        repairReplaceToggle: false,
+        repairReplaceRadio: '',
         serialNumber: '',
         PPDamageName: '',
         PPDamageDescription: '',
@@ -2579,13 +2602,13 @@ export default {
         desc: this.lossInfo.PPDamageDescription,
         cost: this.lossInfo.PPDamagedItemCost,
         serialNumber: this.lossInfo.serialNumber,
-        toggle: this.lossInfo.repairReplaceToggle
+        radio: this.lossInfo.repairReplaceRadio
       });
       this.lossInfo.PPDamageName = '';
       this.lossInfo.PPDamageDescription = '';
       this.lossInfo.serialNumber = '';
       this.lossInfo.PPDamagedItemCost = '';
-      this.lossInfo.repairReplaceToggle = false;
+      this.lossInfo.repairReplaceRadio = false;
     },
     deletePPDamagedItem(index) {
       this.$delete(this.ppDamagedItems, index);
@@ -3181,8 +3204,7 @@ export default {
     display: flex;
   }
 }
-.my-card {
-  width: 100%;
-  max-width: 350px;
+.row {
+  display: flex;
 }
 </style>
