@@ -1816,6 +1816,13 @@
                       }}
                     </div>
                   </div>
+                  <q-btn
+                    v-if="vendorExpertHiredToggle"
+                    class="q-ma-xs"
+                    size="sm"
+                    label="Add More Vendors"
+                    color="primary"
+                  />
 
                   <div class="row">
                     <span class="form-heading">Is Insured hired?</span>
