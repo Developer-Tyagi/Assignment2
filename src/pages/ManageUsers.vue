@@ -38,23 +38,25 @@
           </div>
         </div>
       </div>
-      <div class="q-mt-xs -xl row full-width full-height">
-        <div class="col-11 q-mx-xl ">
-          <div class=" row bg-primary text-bold text-h6 text-white">
-            <div class="q-pl-xl col text-center">Contact Name</div>
-            <div class="q-pl-xl col-2  text-center">Email</div>
-            <div class="q-pl-xl col   text-center">Phone</div>
-            <div class=" col text-left">Member Since</div>
-            <div class="col ">Roles</div>
-            <div class=" col text-left">Last Access</div>
-            <div class="col text-left">Status</div>
-            <div class="col ">Actions</div>
-          </div>
+      <div class="q-mt-xs -xl  full-width full-height">
+        <div class=" q-mx-xl ">
+          <tr class=" row bg-primary text-bold text-h6 text-white">
+            <td class="col-2 bg-blue text-center">Contact Name</td>
+            <td class="q-pl-xl col-2 text-center">Email</td>
+            <td class="q-pl-xl col   text-center">
+              &ensp; Phone
+            </td>
+            <td class=" q-pl-xl col text-left">Member Since</td>
+            <td class="col   ">&ensp; &ensp; Roles</td>
+            <td class=" col text-left">Last Access</td>
+            <td class="col text-left">Status</td>
+            <td class="col">Actions</td>
+          </tr>
 
-          <q-markup-table style="height:500px;" flat bordered>
-            <tbody scroll>
+          <q-markup-table style="height:550px;" flat bordered>
+            <tbody>
               <tr v-for="user in allUsers" v-if="">
-                <td style="width:15%" class="  col-3 text-center">
+                <td class="col-2 bg-yellow">
                   {{
                     user.attributes.contact.fname
                       ? user.attributes.contact.fname
@@ -62,27 +64,30 @@
                   }}
                   {{ user.attributes.contact.lname }}
                 </td>
-                <td class="text-center">
+                <td class="text-center col-2 bg-blue">
                   <span
                     v-if="user.attributes.email"
                     @click="onEmailClick(user.attributes.email, $event)"
                     >{{ user.attributes.email }}</span
                   ><span v-else> - </span>
                 </td>
-                <td class="text-left">
+                <td class="text-left col">
                   <span
                     v-if="5567656"
                     @click="onPhoneNumberClick(24355732, $event)"
                     >{{ 243557388 }}</span
                   ><span v-else> - </span>
                 </td>
-                <td class="text-left">{{ date }}</td>
-                <td class="text-left">
+                <td class="text-center col">{{ date }}</td>
+                <td class="text-center col">
                   {{ user.attributes.roles ? user.attributes.roles[0] : '-' }}
                 </td>
-                <td class="text-right">{{ lastAccess }}</td>
-                <td class="text-right">{{ status }}</td>
-                <td class="text-center">
+                <td class="text-right col">{{ lastAccess }}</td>
+
+                <td class="text-right col-1  " style="margin-left:50%;">
+                  {{ status }}
+                </td>
+                <td class="text-center " style="width:16%;">
                   <div class="q-pl-xl">
                     <q-btn-dropdown label="Action" style="width: 100px" outline>
                       <q-list>
@@ -109,6 +114,7 @@
             </tbody>
           </q-markup-table>
         </div>
+
         <div class=" q-mt-xl row justify-center full-width">
           <q-btn
             color="primary"
@@ -131,7 +137,7 @@
         </q-bar>
         <q-form ref="addUserForm">
           <div class=" q-mt-xs row full-width">
-            <div class="col-5 q-mx-md q-mt-lg required">First Name*</div>
+            <div class="col-5 q-mx-md q-mt-lg ">First Name*</div>
             <div class="col-4 q-mx-xl q-mt-lg">Last Name *</div>
           </div>
           <div class="row q-mt-xs justify-between full-width">
