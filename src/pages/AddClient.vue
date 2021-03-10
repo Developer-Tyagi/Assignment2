@@ -3204,7 +3204,4 @@ export default {
     display: flex;
   }
 }
-.row {
-  display: flex;
-}
 </style>
