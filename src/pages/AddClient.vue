@@ -972,6 +972,47 @@
             <div class="full-width fix-height">
               <div>
                 <q-form ref="lossInfoForm">
+                  <!-- <q-select
+                    class="required"
+                    v-model="LossAddressName"
+                    label="Loss Address Name"
+                    lazy-rules
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) || 'This is a required field'
+                    ]"
+                  /> -->
+                  //test the
+
+                  <q-select
+                    class="full-width required"
+                    v-model="LossAddressName"
+                    use-input
+                    input-debounce="0"
+                    option-label="name"
+                    label=" Loss Address Name"
+                    :options="clientsOptions"
+                    option-value="name"
+                    @filter="searchFilterByLoss"
+                    @input="setVendorIndustryName"
+                    behavior="menu"
+                    emit-value
+                    lazy-rules
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) || 'This is a required field'
+                    ]"
+                  >
+                    <template v-slot:no-option>
+                      <q-item>
+                        <q-item-section class="text-black">
+                          No results
+                        </q-item-section>
+                      </q-item>
+                    </template>
+                  </q-select>
+
+                  //test
                   <div class="row">
                     <p class="q-my-auto form-heading">
                       Loss Address Same As Client's?
@@ -988,16 +1029,7 @@
                     :isChecksEnable="true"
                     :isFieldsDisable="isLossAddressSameAsClientToggle"
                   />
-                  <q-input
-                    class="required"
-                    v-model="LossAddressName"
-                    label="Loss Address Name"
-                    lazy-rules
-                    :rules="[
-                      val =>
-                        (val && val.length > 0) || 'This is a required field'
-                    ]"
-                  />
+
                   <q-select
                     class="required"
                     v-model="lossInfo.property.id"
@@ -2065,6 +2097,7 @@ export default {
       ],
 
       vendorIndustriesOptions: [],
+      clientsOptions: [],
       estimatorsListDialog: false,
       constants: constants,
       valueName: '',
@@ -2381,7 +2414,8 @@ export default {
       'titles',
       'vendors',
       'policyCategories',
-      'vendorIndustries'
+      'vendorIndustries',
+      'clients'
     ])
   },
 
@@ -2437,7 +2471,23 @@ export default {
         );
       });
     },
+    searchFilterByLoss(val, update) {
+      console.log(this.clients, 11);
+      this.LossAddressName = null;
+      if (val === ' ') {
+        update(() => {
+          this.clientsOptions = this.clients;
+        });
+        return;
+      }
 
+      update(() => {
+        const search = val.toLowerCase();
+        this.clientsOptions = this.clients.filter(
+          v => v.name.toLowerCase().indexOf(search) > -1
+        );
+      });
+    },
     createClientDailogBoxOpen(value) {
       switch (value) {
         case 'Client Info':
