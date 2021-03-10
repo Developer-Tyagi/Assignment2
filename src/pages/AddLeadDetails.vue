@@ -75,7 +75,7 @@
                 />
                 <q-input
                   class="required col-6"
-                  v-model="primaryDetails.phoneNumber"
+                  v-model.number="primaryDetails.phoneNumber"
                   label="Phone"
                   mask="(###) ###-####"
                   lazy-rules

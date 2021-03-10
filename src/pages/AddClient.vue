@@ -360,7 +360,7 @@
                       ]"
                     />
                     <q-input
-                      v-model="insuredDetails.phone"
+                      v-model.number="insuredDetails.phone"
                       class="required col-6"
                       label="Phone"
                       mask="(###) ###-####"
@@ -437,7 +437,7 @@
                         ]"
                       />
                       <q-input
-                        v-model="coInsuredDetails.phone"
+                        v-model.number="coInsuredDetails.phone"
                         label="Phone"
                         class="required col-6"
                         mask="(###) ###-####"
@@ -491,7 +491,7 @@
                         ]"
                       />
                       <q-input
-                        v-model="addAditionalPhoneNumber.phone2"
+                        v-model.number="addAditionalPhoneNumber.phone2"
                         label="Phone2"
                         class="required col-6"
                         mask="(###) ###-####"
@@ -522,7 +522,7 @@
                       />
                       <q-input
                         class="required col-6"
-                        v-model="addAditionalPhoneNumber.phone3"
+                        v-model.number="addAditionalPhoneNumber.phone3"
                         label="Phone3"
                         mask="(###) ###-####"
                         lazy-rules
@@ -575,7 +575,7 @@
                       />
                       <q-input
                         class="required col-6"
-                        v-model="tenantOccupied.phone"
+                        v-model.number="tenantOccupied.phone"
                         label="Phone"
                         mask="(###) ###-####"
                         lazy-rules
@@ -1700,7 +1700,7 @@
                     />
                     <q-input
                       class="col-6"
-                      v-model="addEstimatorInfo.phone"
+                      v-model.number="addEstimatorInfo.phone"
                       label="Phone"
                       mask="(###) ###-####"
                     />
@@ -2289,6 +2289,7 @@ export default {
       isMortgageHomeToggle: false,
       isLossAddressSameAsClientToggle: false,
       lossAddressDetails: {
+        houseNumber: '',
         addressCountry: '',
         addressRegion: '',
         addressLocality: '',
@@ -2359,6 +2360,7 @@ export default {
       this.sourceDetails.details = this.selectedLead.leadSource.detail;
       this.insuranceDetails.carrierName = this.selectedLead.leadSource.type;
       this.insuranceDetails.policyNumber = this.selectedLead.policyNumber;
+      this.lossAddressDetails.houseNumber = this.selectedLead.lossLocation.houseNumber;
       this.lossAddressDetails.addressCountry = this.selectedLead.lossLocation.addressCountry;
       this.lossAddressDetails.addressLocality = this.selectedLead.lossLocation.addressLocality;
       this.lossAddressDetails.addressRegion = this.selectedLead.lossLocation.addressRegion;

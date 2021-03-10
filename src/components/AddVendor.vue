@@ -99,7 +99,7 @@
               class="required col-5"
               v-model="vendor.contact[0].phoneNumber[0].type"
               :options="contactTypes"
-              option-value="machineValue"
+              option-value="name"
               option-label="name"
               label="Type"
               emit-value
@@ -110,7 +110,7 @@
             />
             <q-input
               class="required col-6"
-              v-model="vendor.contact[0].phoneNumber[0].number"
+              v-model.number="vendor.contact[0].phoneNumber[0].number"
               label="Phone"
               mask="(###) ###-####"
               lazy-rules
@@ -180,7 +180,7 @@
                   class="required col-5"
                   v-model="contactInfo.phoneNumber[0].type"
                   :options="contactTypes"
-                  option-value="machineValue"
+                  option-value="name"
                   option-label="name"
                   label="Type"
                   emit-value
@@ -192,7 +192,7 @@
                 />
                 <q-input
                   class="required col-6"
-                  v-model="contactInfo.phoneNumber[0].number"
+                  v-model.number="contactInfo.phoneNumber[0].number"
                   label="Phone1"
                   mask="(###) ###-####"
                   :ref="`number-${index}`"
@@ -475,6 +475,7 @@ export default {
     },
 
     async onAddVendorButtonClick() {
+      console.log(this.vendor);
       const success = await this.$refs.vendorForm.validate();
       if (success) {
         const response = await this.addVendor(this.vendor);
