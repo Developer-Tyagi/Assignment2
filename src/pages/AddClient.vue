@@ -1794,7 +1794,7 @@
                   ></q-input>
                   <q-btn
                     class="q-mt-md"
-                    v-if="industryType.value"
+                    v-if="expertVendorInfo.industry.value == 'Others'"
                     label="Add"
                     outline
                     @click="addAnotherIndustry"
