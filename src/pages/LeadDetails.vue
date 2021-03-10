@@ -67,27 +67,27 @@
           <p class="heading">Loss Details</p>
 
           <span class="texts  "> Date of Loss :</span
-          ><span class="textDiscription">
+          ><span class="text-Discription">
             &nbsp;&nbsp;{{ selectedLead.dateofLoss | moment('DD/MM/YYYY') }}
           </span>
           <br />
           <span class="texts ">
             Description :
           </span>
-          <span class="textDiscription">
+          <span class="text-Discription">
             &nbsp;&nbsp;{{ selectedLead.lossDesc }}</span
           >
 
           <p class="heading">Policy Details</p>
           <span class="texts "> Carrier Name :</span
-          ><span class="textDiscription"
+          ><span class="text-Discription"
             >&nbsp;&nbsp;{{
               selectedLead['carrier'] ? selectedLead['carrier']['value'] : '-'
             }}
           </span>
           <br />
           <span class="texts"> Policy No : </span
-          ><span class="textDiscription"
+          ><span class="text-Discription"
             >&nbsp;&nbsp;{{
               selectedLead.policyNumber ? selectedLead.policyNumber : '-'
             }}
@@ -182,7 +182,7 @@ export default {
 .clickLink {
   color: $primary;
 }
-.textDiscription {
+.text-Discription {
   margin-bottom: 0;
   font-size: 13px;
 
