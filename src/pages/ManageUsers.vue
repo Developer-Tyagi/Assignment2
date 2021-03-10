@@ -26,7 +26,7 @@
                 >Total Users - 1</q-card
               >
             </div>
-            <div class="col-3 q-mr-xl">
+            <div class="col-3 q-mr-xs">
               <q-card
                 class="q-pl-lg q-pt-md q-mx-xs full-height text-primary"
                 flat
@@ -39,24 +39,23 @@
         </div>
       </div>
       <div class="q-mt-xs -xl  full-width full-height">
-        <div class=" q-mx-xl ">
-          <tr class=" row bg-primary text-bold text-h6 text-white">
-            <td class="col-2 bg-blue text-center">Contact Name</td>
-            <td class="q-pl-xl col-2 text-center">Email</td>
-            <td class="q-pl-xl col   text-center">
-              &ensp; Phone
-            </td>
-            <td class=" q-pl-xl col text-left">Member Since</td>
-            <td class="col   ">&ensp; &ensp; Roles</td>
-            <td class=" col text-left">Last Access</td>
-            <td class="col text-left">Status</td>
-            <td class="col">Actions</td>
-          </tr>
-
-          <q-markup-table style="height:550px;" flat bordered>
+        <div class=" q-mx-xl tableFixHead" style="height:590px;">
+          <table>
+            <thead>
+              <tr class="text-bold text-h6 text-white">
+                <th>Contact Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Member Since</th>
+                <th>Roles</th>
+                <th>Last Access</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
             <tbody>
               <tr v-for="user in allUsers" v-if="">
-                <td class="col-2 bg-yellow">
+                <td class="text-center">
                   {{
                     user.attributes.contact.fname
                       ? user.attributes.contact.fname
@@ -64,27 +63,27 @@
                   }}
                   {{ user.attributes.contact.lname }}
                 </td>
-                <td class="text-center col-2 bg-blue">
+                <td class="text-center">
                   <span
                     v-if="user.attributes.email"
                     @click="onEmailClick(user.attributes.email, $event)"
                     >{{ user.attributes.email }}</span
                   ><span v-else> - </span>
                 </td>
-                <td class="text-left col">
+                <td class="text-center">
                   <span
                     v-if="5567656"
                     @click="onPhoneNumberClick(24355732, $event)"
                     >{{ 243557388 }}</span
                   ><span v-else> - </span>
                 </td>
-                <td class="text-center col">{{ date }}</td>
-                <td class="text-center col">
+                <td class="text-center">{{ date }}</td>
+                <td class="text-center ">
                   {{ user.attributes.roles ? user.attributes.roles[0] : '-' }}
                 </td>
-                <td class="text-right col">{{ lastAccess }}</td>
+                <td class="text-center ">{{ lastAccess }}</td>
 
-                <td class="text-right col-1  " style="margin-left:50%;">
+                <td class="text-center " style="margin-left:50%;">
                   {{ status }}
                 </td>
                 <td class="text-center " style="width:16%;">
@@ -112,7 +111,7 @@
                 </td>
               </tr>
             </tbody>
-          </q-markup-table>
+          </table>
         </div>
 
         <div class=" q-mt-xl row justify-center full-width">
@@ -218,9 +217,7 @@ import { validateEmail } from '@utils/validation';
 
 export default {
   name: 'Manage-User',
-  // components: {
-  //   SetConfiguration
-  // },
+
   data() {
     return {
       OnboardingStatus: { isCompleted: true },
@@ -310,5 +307,24 @@ export default {
 <style lang="scss" scoped>
 tr:nth-child(even) {
   background-color: $grey-3 !important;
+}
+.tableFixHead {
+  overflow-y: auto;
+  height: 106px;
+}
+.tableFixHead thead th {
+  position: sticky;
+  top: 0;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+th {
+  background: red;
+}
+td {
+  padding: 8px 16px;
+  border: 1px solid #ccc;
 }
 </style>
