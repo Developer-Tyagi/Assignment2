@@ -76,6 +76,7 @@
             option-label="value"
             option-value="id"
             map-options
+            behavior="menu"
             emit-value
             @input="setTitleName(vendor.contact[0].honorific)"
             lazy-rules
@@ -161,6 +162,7 @@
                 option-value="id"
                 @input="setTitleName(contactInfo.honorific)"
                 emit-value
+                behavior="menu"
                 map-options
                 lazy-rules
                 :rules="[
