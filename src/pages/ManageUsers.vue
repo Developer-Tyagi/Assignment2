@@ -39,7 +39,7 @@
         </div>
       </div>
       <div class="q-mt-xs -xl  full-width full-height">
-        <div class=" q-mx-xl tableFixHead" style="height:590px;">
+        <div class=" q-mt-md q-mx-xl tableFixHead" style="height:590px;">
           <table>
             <thead>
               <tr class="text-bold text-h6 text-white">
