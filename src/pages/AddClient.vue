@@ -1231,24 +1231,25 @@
                                 @click="deleteDamagedItem(index)"
                               />
                             </div>
-
-                            <div class="row">
-                              <div
-                                class=" form-heading q-ml-sm text-capitalize q-pt-xs"
-                              >
-                                {{ item.name }}
+                            <div>
+                              <div class="row">
+                                <div
+                                  class=" form-heading q-ml-sm text-capitalize q-pt-xs"
+                                >
+                                  {{ item.name }}
+                                </div>
+                                <div
+                                  class="q-ml-auto q-pt-xs"
+                                  style="margin-right:30px"
+                                >
+                                  {{ '$' + item.cost }}
+                                </div>
                               </div>
                               <div
-                                class="q-ml-auto q-pt-xs"
-                                style="margin-right:30px"
+                                class="q-mr-xl  q-my-xm q-px-sm  text-capitalize text-caption "
                               >
-                                {{ '$' + item.cost }}
+                                <p>{{ item.desc }}</p>
                               </div>
-                            </div>
-                            <div
-                              class="q-ma-xs  text-capitalize text-caption wrapbox strict"
-                            >
-                              {{ item.desc }}
                             </div>
                           </q-card>
                         </div>
@@ -1375,9 +1376,9 @@
                               </div>
                             </div>
                             <div
-                              class="q-ma-sm q-ml-xs   text-capitalize text-caption wrapbox "
+                              class="q-mr-xl  q-my-xm q-px-sm  text-capitalize text-caption "
                             >
-                              {{ item.desc }}
+                              <p>{{ item.desc }}</p>
                             </div>
                             <div class="q-ma-sm q-ml-xs ">
                               {{ item.serialNumber }}
@@ -3209,12 +3210,5 @@ export default {
     text-transform: capitalize;
     display: flex;
   }
-}
-.wrapbox {
-  width: 25em;
-  margin: 0.5em;
-  white-space: normal;
-  vertical-align: top;
-  display: inline-block;
 }
 </style>
