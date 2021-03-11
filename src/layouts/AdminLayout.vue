@@ -38,17 +38,17 @@
 
           <q-scroll-area style="height: calc(100% - 220px)">
             <div
-              class=" text-white q-px-lg q-pt-lg justified-center"
+              class=" text-white q-px-lg q-pt-lg justified-center text-h6"
               @click="$router.push(`/dashboard`)"
             >
               Dashboard
             </div>
 
             <div>
-              <div class=" q-pa-md  text-white" style="max-width: 350px">
+              <div class=" q-pa-md " style="max-width: 350px">
                 <div bordered class=" bg-white rounded-borders">
                   <q-expansion-item
-                    class="text-black"
+                    class="text-black text-h6"
                     expand-separator
                     label=" Settings"
                   >
@@ -60,7 +60,7 @@
                             :key="ConfigurationType.name"
                             @click="shareData(ConfigurationType.dilogName)"
                           >
-                            <div class="form-list row">
+                            <div class="form-list row text-h6">
                               {{ ConfigurationType.name }}
                             </div>
                           </div>
@@ -143,7 +143,7 @@ export default {
     if (window.innerWidth * 0.9 < 400) {
       this.intViewportWidth = window.innerWidth * 0.9;
     } else {
-      this.intViewportWidth = 200;
+      this.intViewportWidth = 250;
     }
   }
 };
