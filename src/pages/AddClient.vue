@@ -215,6 +215,7 @@
                       :options="leadSources"
                       option-label="name"
                       option-value="value"
+                      options-dense
                       emit-value
                       map-options
                       @input="onChangingSourceType()"
@@ -257,6 +258,7 @@
                     option-label="name"
                     map-options
                     emit-value
+                    options-dense
                     :options="clientTypes"
                     @input="setTypes(clientTypes, client)"
                     label="Client Type"
@@ -311,6 +313,7 @@
                     option-value="id"
                     option-label="value"
                     map-options
+                    options-dense
                     behavior="menu"
                     @input="setTitleName(1)"
                     emit-value
@@ -352,6 +355,7 @@
                       option-label="name"
                       map-options
                       emit-value
+                      options-dense
                       label="Type"
                       lazy-rules
                       :rules="[
@@ -403,6 +407,7 @@
                       map-options
                       @input="setTitleName(2)"
                       emit-value
+                      options-dense
                       behavior="menu"
                       label="Title"
                       lazy-rules
@@ -428,6 +433,7 @@
                         option-label="name"
                         map-options
                         emit-value
+                        options-dense
                         label="Type"
                         lazy-rules
                         :rules="[
@@ -482,6 +488,7 @@
                         option-value="machineValue"
                         option-label="name"
                         map-options
+                        options-dense
                         emit-value
                         lazy-rules
                         :rules="[
@@ -513,6 +520,7 @@
                         option-label="name"
                         map-options
                         emit-value
+                        options-dense
                         lazy-rules
                         :rules="[
                           val =>
@@ -565,6 +573,7 @@
                         option-value="machineValue"
                         option-label="name"
                         map-options
+                        options-dense
                         emit-value
                         lazy-rules
                         :rules="[
@@ -808,6 +817,7 @@
                     option-value="id"
                     option-label="name"
                     map-options
+                    options-dense
                     emit-value
                     :options="policyCategories"
                     @input="
@@ -831,6 +841,7 @@
                     option-label="name"
                     map-options
                     emit-value
+                    options-dense
                     :options="policyTypes"
                     @input="setTypes(policyTypes, insuranceDetails.policy)"
                     label="Policy Type"
@@ -1006,6 +1017,7 @@
                     option-value="id"
                     option-label="name"
                     map-options
+                    options-dense
                     emit-value
                     :options="propertyTypes"
                     @input="setTypes(propertyTypes, lossInfo.property)"
@@ -1026,6 +1038,7 @@
                     option-value="id"
                     option-label="name"
                     map-options
+                    options-dense
                     emit-value
                     :options="claimReasons"
                     @input="setTypes(claimReasons, lossInfo.reasonClaim)"
@@ -1075,6 +1088,7 @@
                     option-value="id"
                     option-label="name"
                     map-options
+                    options-dense
                     emit-value
                     :options="lossCauses"
                     @input="setTypes(lossCauses, lossInfo.causeOfLoss)"
@@ -1180,6 +1194,7 @@
                     option-label="name"
                     map-options
                     emit-value
+                    options-dense
                     :options="claimSeverity"
                     @input="
                       setTypes(claimSeverity, lossInfo.severityOfClaimType)
@@ -1655,6 +1670,7 @@
                     @input="setTitleName(3)"
                     behavior="menu"
                     emit-value
+                    options-dense
                     label="Title"
                     lazy-rules
                     :rules="[
@@ -1695,6 +1711,7 @@
                       option-value="machineValue"
                       option-label="name"
                       map-options
+                      options-dense
                       emit-value
                       label="Type"
                     />
@@ -1764,6 +1781,7 @@
                     input-debounce="0"
                     option-label="name"
                     label=" Industry"
+                    options-dense
                     :options="vendorIndustriesOptions"
                     option-value="name"
                     @filter="searchFilterBy"

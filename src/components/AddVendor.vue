@@ -49,6 +49,7 @@
               @filter="searchFilterBy"
               @input="setVendorIndustryName"
               behavior="menu"
+              options-dense
               emit-value
               :disable="!industryFilterDisabled"
               lazy-rules
@@ -77,6 +78,7 @@
             option-value="id"
             map-options
             behavior="menu"
+            options-dense
             emit-value
             @input="setTitleName(vendor.contact[0].honorific)"
             lazy-rules
@@ -99,8 +101,10 @@
               class="required col-5"
               v-model="vendor.contact[0].phoneNumber[0].type"
               :options="contactTypes"
-              option-value="name"
+              option-value="machineValue"
               option-label="name"
+              map-options
+              options-dense
               label="Type"
               emit-value
               lazy-rules
@@ -164,6 +168,7 @@
                 emit-value
                 behavior="menu"
                 map-options
+                options-dense
                 lazy-rules
                 :rules="[
                   val => (val && val.length > 0) || 'Please select the Title'
@@ -180,11 +185,12 @@
                   class="required col-5"
                   v-model="contactInfo.phoneNumber[0].type"
                   :options="contactTypes"
-                  option-value="name"
+                  option-value="machineValue"
                   option-label="name"
                   label="Type"
                   emit-value
-                  lazy-rules
+                  map-options
+                  options-dense
                   lazy-rules
                   :rules="[
                     val => (val && val.length > 0) || 'Please select phone type'
