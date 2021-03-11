@@ -1757,6 +1757,7 @@
                   </div>
 
                   <q-select
+                    id="xyz"
                     v-if="vendorExpertHiredToggle"
                     class="full-width"
                     v-model="expertVendorInfo.industry.value"
@@ -2067,7 +2068,7 @@ export default {
         { name: 'Public Adjustor Info', validForm: false }
       ],
 
-      vendorIndustriesOptions: [],
+      vendorIndustriesOptions: ['kjssssssssssssssssssssssssssssssssj'],
       estimatorsListDialog: false,
       constants: constants,
       valueName: '',
@@ -2413,6 +2414,7 @@ export default {
     ]),
 
     ...mapMutations(['setSelectedLead']),
+    // For Adding Another Industry in Expert/Vendor
     async addAnotherIndustry() {
       const response = await this.addIndustry(this.industryType);
       if (response) {
@@ -2422,9 +2424,30 @@ export default {
           type: 'negative'
         });
       }
+      this.industryType.value = '';
+      this.getVendorIndustries();
     },
-
+    //This function is user for searching Industries and  add others option at the last
     searchFilterBy(val, update) {
+      let len = this.vendorIndustries.length;
+
+      if (this.vendorIndustries[len - 1].name != 'Others') {
+        this.vendorIndustries.push({
+          id: '',
+          machineValue: 'electrician',
+          name: 'Others'
+        });
+      }
+      if (
+        val === 'Othe' ||
+        val === 'Other' ||
+        val === 'Others' ||
+        val === 'othe' ||
+        val === 'other' ||
+        val === 'others'
+      ) {
+        val = '';
+      }
       this.expertVendorInfo.industry.value = null;
       if (val === ' ') {
         update(() => {
