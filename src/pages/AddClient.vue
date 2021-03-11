@@ -1246,7 +1246,7 @@
                                 </div>
                               </div>
                               <div
-                                class="q-mr-xl  q-my-xm q-px-sm  text-capitalize text-caption "
+                                class="q-mr-xl  q-my-xm q-px-sm q-ma-xs  text-capitalize text-caption "
                               >
                                 <p>{{ item.desc }}</p>
                               </div>
@@ -1376,7 +1376,7 @@
                               </div>
                             </div>
                             <div
-                              class="q-mr-xl  q-my-xm q-px-sm  text-capitalize text-caption "
+                              class="q-mr-xl  q-my-xm q-px-sm q-ma-xs  text-capitalize text-caption "
                             >
                               <p>{{ item.desc }}</p>
                             </div>
