@@ -1812,7 +1812,7 @@
                     <div
                       v-if="vendorExpertHiredToggle"
                       class="custom-select"
-                      v-model="expertVendorInfo.vendorName[index]"
+                      v-model="expertVendorInfo.vendorName[index - 1]"
                       @click="
                         onAddVendorDialogClick(
                           constants.industries.EXPERTVENDOR,
@@ -1823,7 +1823,7 @@
                       <div class="select-text">
                         {{
                           expertVendorInfo.id
-                            ? expertVendorInfo.vendorName
+                            ? expertVendorInfo.vendorName[index - 1]
                             : 'Select Vendor'
                         }}
                       </div>
@@ -1831,16 +1831,17 @@
                   </div>
                   <q-btn
                     v-if="vendorExpertHiredToggle"
-                    class="q-ml-xs"
-                    size="md"
-                    flat
-                    label="Add More Vendors"
+                    class="q-ma-none q-mb-sm"
+                    size="sm"
+                    label="Add More"
                     color="primary"
-                    @click="addAnotherVendor"
+                    @click="addAnotherVendor()"
                   />
 
                   <div class="row">
-                    <span class="form-heading">Is Insured hired?</span>
+                    <p class="form-heading q-mx-none q-my-auto">
+                      Is Insured hired?
+                    </p>
                     <q-toggle
                       class="q-ml-auto"
                       v-model="anyOtherExpertHiredToggle"
@@ -2066,12 +2067,6 @@ export default {
 
   data() {
     return {
-      vendorsArray: [
-        {
-          id: '',
-          value: ''
-        }
-      ],
       pItems: [],
       persnolProperty: '',
       damagedItemsDailog: false,
@@ -2456,6 +2451,35 @@ export default {
         id: this.expertVendorInfo.industry.id,
         value: this.expertVendorInfo.industry.vendorName
       });
+
+      this.expertVendorInfo.vendorName.push('Select Vendor');
+    },
+    onClosingVendorSelectDialog(vendor, dialogName) {
+      switch (dialogName) {
+        case constants.industries.CARRIER:
+          this.insuranceDetails.carrierId = vendor.id;
+          this.insuranceDetails.carrierName = vendor.name;
+          break;
+        case constants.industries.VENDOR:
+          this.sourceDetails.id = vendor.id;
+          this.sourceDetails.details = vendor.name;
+          break;
+        case constants.industries.MORTGAGE:
+          this.mortgageDetails[0].id = vendor.id;
+          this.mortgageDetails[0].value = vendor.name;
+          break;
+        case constants.industries.SECONDARYMORTGAGE:
+          this.mortgageDetails[1].id = vendor.id;
+          this.mortgageDetails[1].value = vendor.name;
+          break;
+        case constants.industries.EXPERTVENDOR:
+          this.expertVendorInfo.id = vendor.id;
+          let len = this.expertVendorInfo.vendorName.length;
+          this.expertVendorInfo.vendorName[len - 1] = vendor.name;
+          break;
+      }
+
+      this.vendorsListDialog = false;
     },
     searchFilterBy(val, update) {
       this.expertVendorInfo.industry.value = null;
@@ -2878,8 +2902,9 @@ export default {
           isVendorAssigned: this.vendorExpertHiredToggle,
           vendor: [
             {
-              id: this.expertVendorInfo.id,
-              value: this.expertVendorInfo.vendorName
+              // id: this.expertVendorInfo.industry.id,
+              // value: this.expertVendorInfo.industry.vendorName
+              ...this.expertVendorInfo.industry
             }
           ],
           isInsuredHired: this.anyOtherExpertHiredToggle,
@@ -2948,32 +2973,6 @@ export default {
       this.sourceDetails.machineValue = '';
     },
 
-    onClosingVendorSelectDialog(vendor, dialogName) {
-      switch (dialogName) {
-        case constants.industries.CARRIER:
-          this.insuranceDetails.carrierId = vendor.id;
-          this.insuranceDetails.carrierName = vendor.name;
-          break;
-        case constants.industries.VENDOR:
-          this.sourceDetails.id = vendor.id;
-          this.sourceDetails.details = vendor.name;
-          break;
-        case constants.industries.MORTGAGE:
-          this.mortgageDetails[0].id = vendor.id;
-          this.mortgageDetails[0].value = vendor.name;
-          break;
-        case constants.industries.SECONDARYMORTGAGE:
-          this.mortgageDetails[1].id = vendor.id;
-          this.mortgageDetails[1].value = vendor.name;
-          break;
-        case constants.industries.EXPERTVENDOR:
-          this.expertVendorInfo.id = vendor.id;
-          this.expertVendorInfo.vendorName = vendor.name;
-          break;
-      }
-
-      this.vendorsListDialog = false;
-    },
     onToggleButtonClick() {
       if (this.mortgageDetails.length > 1) {
         this.mortgageDetails.pop();
