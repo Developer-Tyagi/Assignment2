@@ -988,6 +988,30 @@
             <div class="full-width fix-height">
               <div>
                 <q-form ref="lossInfoForm">
+                  <!-- Loss Address Name Dropdown -->
+                  <q-select
+                    class="required"
+                    v-model="lossAddressNameDropdown"
+                    label="Loss Address Name"
+                    :options="lossAddressNameOptions"
+                    lazy-rules
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) || 'This is a required field'
+                    ]"
+                  />
+                  <q-input
+                    class="required"
+                    v-model="lossInfo.lossAddressName"
+                    v-if="lossAddressNameOptions == 'Others'"
+                    label="Enter New Loss Address Name "
+                    lazy-rules
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) || 'This is a required field'
+                    ]"
+                  ></q-input>
+
                   <div class="row">
                     <p class="q-my-auto form-heading">
                       Loss Address Same As Client's?
@@ -1004,16 +1028,7 @@
                     :isChecksEnable="true"
                     :isFieldsDisable="isLossAddressSameAsClientToggle"
                   />
-                  <q-input
-                    class="required"
-                    v-model="LossAddressName"
-                    label="Loss Address Name"
-                    lazy-rules
-                    :rules="[
-                      val =>
-                        (val && val.length > 0) || 'This is a required field'
-                    ]"
-                  />
+
                   <q-select
                     class="required"
                     v-model="lossInfo.property.id"
@@ -2089,6 +2104,7 @@ export default {
       ],
 
       vendorIndustriesOptions: [],
+      lossAddressNameOptions: ['Others'],
       estimatorsListDialog: false,
       constants: constants,
       valueName: '',
@@ -2097,7 +2113,7 @@ export default {
       vendorDialogName: '',
       vendorDialogFilterByIndustry: '',
       showVendorDialogFilters: false,
-      LossAddressName: '',
+      lossAddressNameDropdown: 'Others',
       publicAdjustorInfoDialog: false,
       addVendorDialog: false,
       addEstimatorDialog: false,
@@ -2194,6 +2210,7 @@ export default {
       },
 
       lossInfo: {
+        lossAddressName: '',
         OSDamageDescription: '',
         OSDamageItemCost: 0,
         DescriptionOfLoss: '',
@@ -2820,7 +2837,7 @@ export default {
         },
         mortgageInfo: this.mortgageDetails,
         lossInfo: {
-          lossAddressName: '',
+          lossAddressName: this.lossInfo.lossAddressName,
           address: {
             ...this.clientAddressDetails
           },
