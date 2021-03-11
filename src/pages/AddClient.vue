@@ -1755,73 +1755,81 @@
                       v-model="vendorExpertHiredToggle"
                     />
                   </div>
-
-                  <q-select
-                    v-if="vendorExpertHiredToggle"
-                    class="full-width"
-                    v-model="expertVendorInfo.industry.value"
-                    use-input
-                    input-debounce="0"
-                    option-label="name"
-                    label=" Industry"
-                    :options="vendorIndustriesOptions"
-                    option-value="name"
-                    @filter="searchFilterBy"
-                    @input="setVendorIndustryName"
-                    behavior="menu"
-                    emit-value
-                    map-options
-                    lazy-rules
-                    :rules="[
-                      val =>
-                        (val && val.length > 0) ||
-                        'Please fill the Vendor Industry'
-                    ]"
-                  >
-                    <template v-slot:no-option>
-                      <q-item>
-                        <q-item-section class="text-black">
-                          No results
-                        </q-item-section>
-                      </q-item>
-                    </template>
-                  </q-select>
-                  <!-- This will Show the input when industry Type is Others -->
-                  <q-input
-                    v-model="industryType.value"
-                    v-if="expertVendorInfo.industry.value == 'Others'"
-                    label="Enter New Industry Type"
-                  ></q-input>
-                  <q-btn
-                    class="q-mt-md"
-                    v-if="industryType.value"
-                    label="Add"
-                    outline
-                    @click="addAnotherIndustry"
-                  />
-
                   <div
-                    v-if="vendorExpertHiredToggle"
-                    class="custom-select"
-                    v-model="expertVendorInfo.vendorName"
-                    @click="
-                      onAddVendorDialogClick(constants.industries.EXPERTVENDOR)
-                    "
+                    v-for="(item, index) in vendorsArray"
+                    v-if="vendorsArray.length >= 0"
                   >
-                    <div class="select-text">
-                      {{
-                        expertVendorInfo.id
-                          ? expertVendorInfo.vendorName
-                          : 'Select Vendor'
-                      }}
+                    <q-select
+                      v-if="vendorExpertHiredToggle"
+                      class="full-width"
+                      v-model="expertVendorInfo.industry.value"
+                      use-input
+                      input-debounce="0"
+                      option-label="name"
+                      label=" Industry"
+                      :options="vendorIndustriesOptions"
+                      option-value="name"
+                      @filter="searchFilterBy"
+                      @input="setVendorIndustryName"
+                      behavior="menu"
+                      emit-value
+                      map-options
+                      lazy-rules
+                      :rules="[
+                        val =>
+                          (val && val.length > 0) ||
+                          'Please fill the Vendor Industry'
+                      ]"
+                    >
+                      <template v-slot:no-option>
+                        <q-item>
+                          <q-item-section class="text-black">
+                            No results
+                          </q-item-section>
+                        </q-item>
+                      </template>
+                    </q-select>
+                    <!-- This will Show the input when industry Type is Others -->
+                    <q-input
+                      v-model="industryType.value"
+                      v-if="expertVendorInfo.industry.value == 'Others'"
+                      label="Enter New Industry Type"
+                    ></q-input>
+                    <q-btn
+                      class="q-mt-md"
+                      v-if="industryType.value"
+                      label="Add"
+                      outline
+                      @click="addAnotherIndustry"
+                    />
+
+                    <div
+                      v-if="vendorExpertHiredToggle"
+                      class="custom-select"
+                      v-model="expertVendorInfo.vendorName"
+                      @click="
+                        onAddVendorDialogClick(
+                          constants.industries.EXPERTVENDOR
+                        )
+                      "
+                    >
+                      <div class="select-text">
+                        {{
+                          expertVendorInfo.id
+                            ? expertVendorInfo.vendorName
+                            : 'Select Vendor'
+                        }}
+                      </div>
                     </div>
                   </div>
                   <q-btn
                     v-if="vendorExpertHiredToggle"
                     class="q-ma-xs"
-                    size="sm"
+                    size="md"
+                    flat
                     label="Add More Vendors"
                     color="primary"
+                    @click="addAnotherVendor"
                   />
 
                   <div class="row">
@@ -2051,6 +2059,12 @@ export default {
 
   data() {
     return {
+      vendorsArray: [
+        {
+          id: '',
+          value: ''
+        }
+      ],
       pItems: [],
       persnolProperty: '',
       damagedItemsDailog: false,
@@ -2430,7 +2444,12 @@ export default {
         });
       }
     },
-
+    addAnotherVendor() {
+      this.vendorsArray.push({
+        id: this.expertVendorInfo.id,
+        value: this.expertVendorInfo.vendorName
+      });
+    },
     searchFilterBy(val, update) {
       this.expertVendorInfo.industry.value = null;
       if (val === ' ') {
