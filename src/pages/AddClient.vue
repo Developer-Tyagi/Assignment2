@@ -972,47 +972,29 @@
             <div class="full-width fix-height">
               <div>
                 <q-form ref="lossInfoForm">
-                  <!-- <q-select
+                  <q-select
                     class="required"
                     v-model="LossAddressName"
                     label="Loss Address Name"
+                    :options="lossAddressNameOptions"
                     lazy-rules
                     :rules="[
                       val =>
                         (val && val.length > 0) || 'This is a required field'
                     ]"
-                  /> -->
-                  //test the
-
-                  <q-select
-                    class="full-width required"
-                    v-model="LossAddressName"
-                    use-input
-                    input-debounce="0"
-                    option-label="name"
-                    label=" Loss Address Name"
-                    :options="clientsOptions"
-                    option-value="name"
-                    @filter="searchFilterByLoss"
-                    @input="setVendorIndustryName"
-                    behavior="menu"
-                    emit-value
+                  />
+                  <q-input
+                    class="required"
+                    v-model="lossInfo.lossAddressName"
+                    v-if="lossAddressNameOptions == 'Others'"
+                    label="Enter New Loss Address Name "
                     lazy-rules
                     :rules="[
                       val =>
                         (val && val.length > 0) || 'This is a required field'
                     ]"
-                  >
-                    <template v-slot:no-option>
-                      <q-item>
-                        <q-item-section class="text-black">
-                          No results
-                        </q-item-section>
-                      </q-item>
-                    </template>
-                  </q-select>
+                  ></q-input>
 
-                  //test
                   <div class="row">
                     <p class="q-my-auto form-heading">
                       Loss Address Same As Client's?
@@ -2097,7 +2079,7 @@ export default {
       ],
 
       vendorIndustriesOptions: [],
-      clientsOptions: [],
+      lossAddressNameOptions: ['Others'],
       estimatorsListDialog: false,
       constants: constants,
       valueName: '',
@@ -2106,7 +2088,7 @@ export default {
       vendorDialogName: '',
       vendorDialogFilterByIndustry: '',
       showVendorDialogFilters: false,
-      LossAddressName: '',
+      LossAddressName: 'Others',
       publicAdjustorInfoDialog: false,
       addVendorDialog: false,
       addEstimatorDialog: false,
@@ -2203,6 +2185,7 @@ export default {
       },
 
       lossInfo: {
+        lossAddressName: '',
         OSDamageDescription: '',
         OSDamageItemCost: 0,
         DescriptionOfLoss: '',
@@ -2471,23 +2454,7 @@ export default {
         );
       });
     },
-    searchFilterByLoss(val, update) {
-      console.log(this.clients, 11);
-      this.LossAddressName = null;
-      if (val === ' ') {
-        update(() => {
-          this.clientsOptions = this.clients;
-        });
-        return;
-      }
 
-      update(() => {
-        const search = val.toLowerCase();
-        this.clientsOptions = this.clients.filter(
-          v => v.name.toLowerCase().indexOf(search) > -1
-        );
-      });
-    },
     createClientDailogBoxOpen(value) {
       switch (value) {
         case 'Client Info':
@@ -2844,7 +2811,7 @@ export default {
         },
         mortgageInfo: this.mortgageDetails,
         lossInfo: {
-          lossAddressName: '',
+          lossAddressName: this.lossInfo.lossAddressName,
           address: {
             ...this.clientAddressDetails
           },
