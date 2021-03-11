@@ -972,6 +972,7 @@
             <div class="full-width fix-height">
               <div>
                 <q-form ref="lossInfoForm">
+                  <!-- Loss Address Name Dropdown -->
                   <q-select
                     class="required"
                     v-model="LossAddressName"
