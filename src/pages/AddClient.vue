@@ -2068,7 +2068,7 @@ export default {
         { name: 'Public Adjustor Info', validForm: false }
       ],
 
-      vendorIndustriesOptions: ['kjssssssssssssssssssssssssssssssssj'],
+      vendorIndustriesOptions: [],
       estimatorsListDialog: false,
       constants: constants,
       valueName: '',
