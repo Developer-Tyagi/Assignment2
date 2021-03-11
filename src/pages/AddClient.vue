@@ -217,6 +217,7 @@
                       option-value="value"
                       emit-value
                       map-options
+                      options-dense
                       @input="onChangingSourceType()"
                     />
                     <q-input
@@ -315,6 +316,7 @@
                     emit-value
                     label="Title"
                     lazy-rules
+                    options-dense
                     :rules="[
                       val =>
                         (val && val.length > 0) || 'Please select the Title'
@@ -427,6 +429,7 @@
                         map-options
                         emit-value
                         label="Type"
+                        options-dense
                         lazy-rules
                         :rules="[
                           val =>
@@ -480,6 +483,7 @@
                         option-value="machineValue"
                         option-label="name"
                         map-options
+                        options-dense
                         emit-value
                         lazy-rules
                         :rules="[
@@ -511,6 +515,7 @@
                         option-label="name"
                         map-options
                         emit-value
+                        options-dense
                         lazy-rules
                         :rules="[
                           val =>

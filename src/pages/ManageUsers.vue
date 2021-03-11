@@ -39,7 +39,7 @@
         </div>
       </div>
       <div class="q-mt-xs -xl  full-width full-height">
-        <div class=" q-mt-md q-mx-xl tableFixHead" style="height:590px;">
+        <div class=" q-mt-md q-mx-xl text-Discription" style="height:590px;">
           <table>
             <thead>
               <tr class="text-bold text-h6 text-white">
@@ -308,11 +308,11 @@ export default {
 tr:nth-child(even) {
   background-color: $grey-3 !important;
 }
-.tableFixHead {
+.text-Discription {
   overflow-y: auto;
   height: 106px;
 }
-.tableFixHead thead th {
+.text-Discription thead th {
   position: sticky;
   top: 0;
 }
