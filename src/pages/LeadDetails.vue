@@ -75,7 +75,9 @@
             Description :
           </span>
           <span class="text-Discription">
-            &nbsp;&nbsp;{{ selectedLead.lossDesc }}</span
+            &nbsp;&nbsp;{{
+              selectedLead.lossDesc ? selectedLead.lossDesc : '-'
+            }}</span
           >
 
           <p class="heading">Policy Details</p>
