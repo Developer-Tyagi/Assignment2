@@ -482,7 +482,6 @@ export default {
     },
 
     async onAddVendorButtonClick() {
-      console.log(this.vendor);
       const success = await this.$refs.vendorForm.validate();
       if (success) {
         const response = await this.addVendor(this.vendor);
