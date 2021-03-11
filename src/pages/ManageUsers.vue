@@ -1,13 +1,13 @@
 <template>
   <q-page class="window-height bg-background full-width">
     <br />
-    <div class="q-mx-xl q-mt-xs" style="height: 60%; width: 90%">
+    <div class="q-mx-xl q-mt-xs" style="height: 60%; width: 95%">
       <div class="full-width">
         <div class="text-bold q-mx-xl">Manage Users</div>
       </div>
       <div class="full-width">
         <div class="row justify-between my-font text-bold q-mx-xl">
-          <div class="col-3">
+          <div class="col-4">
             <q-input outlined v-model="searchText" placeholder="Search">
               <template v-slot:append>
                 <q-icon name="search" />
@@ -26,7 +26,7 @@
                 >Total Users - 1</q-card
               >
             </div>
-            <div class="col-3 q-mr-lg">
+            <div class="col-3 q-mr-xs">
               <q-card
                 class="q-pl-lg q-pt-md q-mx-xs full-height text-primary"
                 flat
@@ -38,49 +38,55 @@
           </div>
         </div>
       </div>
-      <div class="q-mt-xs -xl row full-width full-height">
-        <div class="col-11 q-mx-xl">
-          <q-markup-table flat bordered class="" scroll>
-            <thead class="bg-grey-5">
-              <tr>
-                <th class="text-left">Contact Name</th>
-                <th class="text-left">Email</th>
-                <th class="text-left">Phone</th>
-                <th class="text-left">Member Since</th>
-                <th class="text-left">Roles</th>
-                <th class="text-left">Last Access</th>
-                <th class="text-left">Status</th>
-                <th class="text-center">Actions</th>
+      <div class="q-mt-xs -xl  full-width full-height">
+        <div class=" q-mt-md q-mx-xl text-Discription" style="height:590px;">
+          <table>
+            <thead>
+              <tr class="text-bold text-h6 text-white">
+                <th>Contact Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Member Since</th>
+                <th>Roles</th>
+                <th>Last Access</th>
+                <th>Status</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(user, index) in allUsers" v-if="index < 5">
-                <td class="text-left">
-                  {{ user.attributes.contact.fname }}
+              <tr v-for="user in allUsers" v-if="">
+                <td class="text-center">
+                  {{
+                    user.attributes.contact.fname
+                      ? user.attributes.contact.fname
+                      : '-'
+                  }}
                   {{ user.attributes.contact.lname }}
                 </td>
-                <td class="text-left">
-                  <!-- {{ user.attributes.email }} -->
-
+                <td class="text-center">
                   <span
                     v-if="user.attributes.email"
                     @click="onEmailClick(user.attributes.email, $event)"
                     >{{ user.attributes.email }}</span
                   ><span v-else> - </span>
                 </td>
-                <td class="text-left">
-                  <!-- {{ user.attributes['contact']['phoneNumber'] }} -->
+                <td class="text-center">
                   <span
                     v-if="5567656"
                     @click="onPhoneNumberClick(24355732, $event)"
-                    >{{ 24355732 }}</span
+                    >{{ 243557388 }}</span
                   ><span v-else> - </span>
                 </td>
-                <td class="text-left">{{ date }}/</td>
-                <td class="text-left">{{ user.attributes.roles[0] }}</td>
-                <td class="text-left">{{ lastAccess }}</td>
-                <td class="text-left">{{ status }}</td>
-                <td class="text-center">
+                <td class="text-center">{{ date }}</td>
+                <td class="text-center ">
+                  {{ user.attributes.roles ? user.attributes.roles[0] : '-' }}
+                </td>
+                <td class="text-center ">{{ lastAccess }}</td>
+
+                <td class="text-center " style="margin-left:50%;">
+                  {{ status }}
+                </td>
+                <td class="text-center " style="width:16%;">
                   <div class="q-pl-xl">
                     <q-btn-dropdown label="Action" style="width: 100px" outline>
                       <q-list>
@@ -105,25 +111,23 @@
                 </td>
               </tr>
             </tbody>
-          </q-markup-table>
-          <div class=" row absolute-center">
-            <q-btn
-              color="primary"
-              label="Go To Dashboard"
-              class="q-mx-lg"
-              @click="SendToDashboard"
-            />
-          </div>
+          </table>
+        </div>
+
+        <div class=" q-mt-xl row justify-center full-width">
+          <q-btn
+            color="primary"
+            style="height:40px;"
+            label="Go To Dashboard"
+            @click="SendToDashboard"
+          />
         </div>
       </div>
     </div>
     <q-dialog v-model="addUserDialogBox" persistent>
-      <q-card
-        style="width: 800px; height: 500px; max-width: 1000vw"
-        class="q-pa-md"
-      >
-        <q-bar class="row justify-between" style="height: 50px">
-          <div class="col-46 q-px-xl text-bold">
+      <q-card class=" q-pa-xs col-5 ">
+        <q-bar class=" row justify-between " style="height: 50px">
+          <div class="col-4 q-px-xl text-bold">
             Add User
           </div>
           <q-btn dense flat icon="close" v-close-popup>
@@ -131,87 +135,79 @@
           </q-btn>
         </q-bar>
         <q-form ref="addUserForm">
-          <div
-            class=" bg- q-ma-xs"
-            outlined
-            v-for="(user, index) in users"
-            v-if="index >= 0"
-          >
-            <div class=" q-mt-xs row full-width">
-              <div class="col-5 q-mx-xl q-mt-lg">First Name *</div>
-              <div class="col-4 q-mx-lg q-mt-lg">Last Name *</div>
+          <div class=" q-mt-xs row full-width">
+            <div class="col-5 q-mx-md q-mt-lg ">First Name*</div>
+            <div class="col-4 q-mx-xl q-mt-lg">Last Name *</div>
+          </div>
+          <div class="row q-mt-xs justify-between full-width">
+            <div class="col-6">
+              <q-input
+                v-model="users.contact.fname"
+                class="q-mx-md"
+                style="width: 300px"
+                outlined
+              />
             </div>
-            <div class="row q-mt-xs justify-between full-width">
-              <div class="col-6">
-                <q-input
-                  v-model="user.contact.fname"
-                  class="q-mx-xl"
-                  style="width: 300px"
-                  outlined
-                />
-              </div>
-              <div class="col-6">
-                <q-input
-                  v-model="user.contact.lname"
-                  class="q-mx-xl"
-                  style="width: 300px"
-                  outlined
-                />
-              </div>
+            <div class="col-6">
+              <q-input
+                v-model="users.contact.lname"
+                class="q-mx-md"
+                style="width: 300px"
+                outlined
+              />
             </div>
-            <div class="q-mt-xs row full-width">
-              <div class="col-5 q-mx-xl q-mt-lg">Email*</div>
-              <div class="col-4 q-mx-lg q-mt-lg">Role *</div>
+          </div>
+          <div class="q-mt-xs row full-width">
+            <div class="col-5 q-mx-md q-mt-lg">Email*</div>
+            <div class="col-4 q-mx-xl q-mt-lg">Role *</div>
+          </div>
+          <div class=" row q-mt-xs justify-between full-width">
+            <div class="col-6 q-mb-lg">
+              <q-input
+                v-model="users.email"
+                class="q-mx-md"
+                style="width: 300px"
+                outlined
+                lazy-rules
+                :rules="[
+                  val =>
+                    validateEmail(val) ||
+                    'You have entered an invalid email address!'
+                ]"
+              />
             </div>
-            <div class=" row q-mt-xs justify-between full-width">
-              <div class="col-6 q-mb-xl">
-                <q-input
-                  v-model="user.email"
-                  class="q-mx-xl"
-                  style="width: 300px"
-                  outlined
-                  lazy-rules
-                  :rules="[
-                    val =>
-                      validateEmail(val) ||
-                      'You have entered an invalid email address!'
-                  ]"
-                />
-              </div>
-              <div class="col-6  ">
-                <select
-                  v-model="user.roles[0]"
-                  class=" q-ml-xl "
-                  style="height:60px;width:300px; border:1px solid grey"
-                >
-                  <option value="ss" disabled selected>Selecttion</option
-                  ><optgroup label="Paid">
-                    <option>User12</option>
-                    <option>User1</option>
-                    <option>User1</option>
-                  </optgroup>
-                  <optgroup label="Unpaid">
-                    <option>User1 </option>
-                    <option>User1</option>
-                    <option>User1</option>
-                  </optgroup></select
-                >
-              </div>
+            <div class="col-6 q-px-md ">
+              <select
+                v-model="users.roles[0]"
+                class="q-ml-md full-width bg-white"
+                style=" height:55px;border:2px solid lightgrey;"
+              >
+                <option value="ss" disabled selected>Selecttion</option
+                ><optgroup label="Paid">
+                  <option>User4</option>
+                  <option>User1</option>
+                  <option>User1</option>
+                </optgroup>
+                <optgroup label="Unpaid">
+                  <option>User1 </option>
+                  <option>User1</option>
+                  <option>User1</option>
+                </optgroup></select
+              >
             </div>
           </div>
         </q-form>
 
-        <div class="q-mt-lg row justify-center">
+        <div class=" row justify-center">
           <q-btn
             color="primary"
             label="submit and Proceed"
-            class="q-mx-lg"
+            class="q-mb-lg"
             @click="onSubmit"
           />
         </div>
       </q-card>
     </q-dialog>
-    <div></div>
   </q-page>
 </template>
 
@@ -221,9 +217,7 @@ import { validateEmail } from '@utils/validation';
 
 export default {
   name: 'Manage-User',
-  // components: {
-  //   SetConfiguration
-  // },
+
   data() {
     return {
       OnboardingStatus: { isCompleted: true },
@@ -231,17 +225,15 @@ export default {
 
       optionsRole: ['Manager', 'Staff'],
       typeOfUser: ['User', 'Office Staff', 'Sales'],
-      users: [
-        {
-          type: 'user',
-          contact: {
-            fname: '',
-            lname: ''
-          },
-          email: '',
-          roles: []
-        }
-      ],
+      users: {
+        type: 'user',
+        contact: {
+          fname: '',
+          lname: ''
+        },
+        email: '',
+        roles: []
+      },
       options: [
         'View/Edit',
         'Reset Password',
@@ -256,7 +248,7 @@ export default {
       contactNo: +909098987,
       date: '20/02/1998',
       roles: 'Super Admin',
-      lastAccess: '20/01/2020 20:40:19',
+      lastAccess: '20/01/2020 ',
       status: 'Active'
     };
   },
@@ -290,23 +282,23 @@ export default {
       this.setOnboard(this.OnboardingStatus);
       this.$router.push('/dashboard');
     },
-    //  For Remove  AddUser,OfficeStraffInfo and Sales
-    removeAnotherContact() {
-      const len = this.users.length;
-      if (len === 2) {
-        this.isShowRemoveButton = false;
-      }
-      this.users.pop();
-    },
+
     async onSubmit() {
       const success = await this.$refs.addUserForm.validate();
 
       if (success) {
-        this.users.forEach(user => {
-          this.addUser(user);
-        });
+        await this.addUser(this.users);
+        this.users = {
+          type: 'user',
+          contact: {
+            fname: '',
+            lname: ''
+          },
+          email: '',
+          roles: []
+        };
 
-        this.isShowRemoveButton = false;
+        this.addUserDialogBox = false;
       }
     }
   }
@@ -315,5 +307,24 @@ export default {
 <style lang="scss" scoped>
 tr:nth-child(even) {
   background-color: $grey-3 !important;
+}
+.text-Discription {
+  overflow-y: auto;
+  height: 106px;
+}
+.text-Discription thead th {
+  position: sticky;
+  top: 0;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+th {
+  background: red;
+}
+td {
+  padding: 8px 16px;
+  border: 1px solid #ccc;
 }
 </style>
