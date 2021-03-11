@@ -1760,14 +1760,15 @@
                       v-model="vendorExpertHiredToggle"
                     />
                   </div>
+                  <!-- Assigning Multiple Expert Vendors -->
                   <div
-                    v-for="(item, index) in vendorsArray"
-                    v-if="vendorsArray.length >= 0"
+                    v-for="(item, index) in expertVendorInfo.industry"
+                    v-if="expertVendorInfo.industry.length >= 0"
                   >
                     <q-select
                       v-if="vendorExpertHiredToggle"
                       class="full-width"
-                      v-model="expertVendorInfo.industry.value"
+                      v-model="expertVendorInfo.industry[index].value"
                       use-input
                       input-debounce="0"
                       option-label="name"
@@ -1775,7 +1776,7 @@
                       :options="vendorIndustriesOptions"
                       option-value="name"
                       @filter="searchFilterBy"
-                      @input="setVendorIndustryName"
+                      @input="setVendorIndustryName(index)"
                       behavior="menu"
                       emit-value
                       map-options
@@ -1811,10 +1812,11 @@
                     <div
                       v-if="vendorExpertHiredToggle"
                       class="custom-select"
-                      v-model="expertVendorInfo.vendorName"
+                      v-model="expertVendorInfo.vendorName[index]"
                       @click="
                         onAddVendorDialogClick(
-                          constants.industries.EXPERTVENDOR
+                          constants.industries.EXPERTVENDOR,
+                          index
                         )
                       "
                     >
@@ -1829,7 +1831,7 @@
                   </div>
                   <q-btn
                     v-if="vendorExpertHiredToggle"
-                    class="q-ma-xs"
+                    class="q-ml-xs"
                     size="md"
                     flat
                     label="Add More Vendors"
@@ -2286,9 +2288,9 @@ export default {
       expertVendorInfo: {
         notes: '',
         internalNotes: '',
-        vendorName: '',
+        vendorName: [],
         id: '',
-        industry: { value: null, id: '', machineValue: '' }
+        industry: [{ value: null, id: '', machineValue: '' }]
       },
       officeTask: {
         officeActionTypes: '',
@@ -2450,9 +2452,9 @@ export default {
       }
     },
     addAnotherVendor() {
-      this.vendorsArray.push({
-        id: this.expertVendorInfo.id,
-        value: this.expertVendorInfo.vendorName
+      this.expertVendorInfo.industry.push({
+        id: this.expertVendorInfo.industry.id,
+        value: this.expertVendorInfo.industry.vendorName
       });
     },
     searchFilterBy(val, update) {
@@ -2512,16 +2514,16 @@ export default {
       this.persnolProperty = '';
     },
 
-    setVendorIndustryName() {
-      const selectedName = this.expertVendorInfo.industry.value;
+    setVendorIndustryName(index) {
+      const selectedName = this.expertVendorInfo.industry[index].value;
       const result = this.vendorIndustries.find(obj => {
         return obj.name === selectedName;
       });
 
-      this.expertVendorInfo.industry.value = result.name;
+      this.expertVendorInfo.industry[index].value = result.name;
 
-      this.expertVendorInfo.industry.id = result.id;
-      this.expertVendorInfo.industry.machineValue = result.machineValue;
+      this.expertVendorInfo.industry[index].id = result.id;
+      this.expertVendorInfo.industry[index].machineValue = result.machineValue;
     },
     onCountrySelect(country) {
       this.states = addressService.getStates(country);
@@ -3011,7 +3013,7 @@ export default {
         }
       }
     },
-    onAddVendorDialogClick(name) {
+    onAddVendorDialogClick(name, index) {
       this.valueName = name;
 
       switch (name) {
@@ -3030,7 +3032,9 @@ export default {
           this.showVendorDialogFilters = false;
           this.vendorDialogFilterByIndustry = constants.industries.VENDOR;
 
-          this.vendorDialogFilterByIndustry = this.expertVendorInfo.industry.machineValue;
+          this.vendorDialogFilterByIndustry = this.expertVendorInfo.industry[
+            index
+          ].machineValue;
           break;
         case constants.industries.CARRIER:
           this.vendorDialogName = constants.industries.CARRIER;
