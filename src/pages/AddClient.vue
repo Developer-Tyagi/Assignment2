@@ -1231,18 +1231,23 @@
                                 @click="deleteDamagedItem(index)"
                               />
                             </div>
-                            <div class="row ">
-                              <div class=" text-h6 q-ml-sm text-capitalize">
+
+                            <div class="row">
+                              <div
+                                class=" form-heading q-ml-sm text-capitalize q-pt-xs"
+                              >
                                 {{ item.name }}
                               </div>
                               <div
-                                class="q-ml-auto q-pt-sm"
+                                class="q-ml-auto q-pt-xs"
                                 style="margin-right:30px"
                               >
                                 {{ '$' + item.cost }}
                               </div>
                             </div>
-                            <div class="q-ma-xs  text-capitalize text-caption">
+                            <div
+                              class="q-ma-xs  text-capitalize text-caption wrapbox strict"
+                            >
                               {{ item.desc }}
                             </div>
                           </q-card>
@@ -1259,6 +1264,7 @@
                       @click="damagedItemsDailog = true"
                     >
                     </q-btn>
+                    <!-- Damaged Items Dialog Box -->
                     <q-dialog
                       v-model="damagedItemsDailog"
                       persistent
@@ -1356,20 +1362,20 @@
                               />
                             </div>
                             <div class="row">
-                              <p
-                                class="q-ml-sm q-mb-auto text-h6 text-capitalize"
+                              <div
+                                class=" form-heading q-ml-sm text-capitalize q-pt-xs"
                               >
                                 {{ item.name }}
-                              </p>
-                              <p
-                                class="q-ml-auto q-pt-sm"
+                              </div>
+                              <div
+                                class="q-ml-auto q-pt-xs"
                                 style="margin-right:30px"
                               >
                                 {{ '$' + item.cost }}
-                              </p>
+                              </div>
                             </div>
                             <div
-                              class="q-ma-sm q-ml-xs   text-capitalize text-caption"
+                              class="q-ma-sm q-ml-xs   text-capitalize text-caption wrapbox "
                             >
                               {{ item.desc }}
                             </div>
@@ -3203,5 +3209,12 @@ export default {
     text-transform: capitalize;
     display: flex;
   }
+}
+.wrapbox {
+  width: 25em;
+  margin: 0.5em;
+  white-space: normal;
+  vertical-align: top;
+  display: inline-block;
 }
 </style>
