@@ -975,7 +975,7 @@
                   <!-- Loss Address Name Dropdown -->
                   <q-select
                     class="required"
-                    v-model="LossAddressName"
+                    v-model="lossAddressNameDropdown"
                     label="Loss Address Name"
                     :options="lossAddressNameOptions"
                     lazy-rules
@@ -2089,7 +2089,7 @@ export default {
       vendorDialogName: '',
       vendorDialogFilterByIndustry: '',
       showVendorDialogFilters: false,
-      LossAddressName: 'Others',
+      lossAddressNameDropdown: 'Others',
       publicAdjustorInfoDialog: false,
       addVendorDialog: false,
       addEstimatorDialog: false,
@@ -2398,8 +2398,7 @@ export default {
       'titles',
       'vendors',
       'policyCategories',
-      'vendorIndustries',
-      'clients'
+      'vendorIndustries'
     ])
   },
 
