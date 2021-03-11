@@ -315,6 +315,7 @@ tr:nth-child(even) {
 .text-Discription thead th {
   position: sticky;
   top: 0;
+  z-index: 10;
 }
 table {
   border-collapse: collapse;
