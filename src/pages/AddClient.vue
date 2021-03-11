@@ -218,6 +218,7 @@
                       options-dense
                       emit-value
                       map-options
+                      options-dense
                       @input="onChangingSourceType()"
                     />
                     <q-input
@@ -319,6 +320,7 @@
                     emit-value
                     label="Title"
                     lazy-rules
+                    options-dense
                     :rules="[
                       val =>
                         (val && val.length > 0) || 'Please select the Title'
@@ -435,6 +437,7 @@
                         emit-value
                         options-dense
                         label="Type"
+                        options-dense
                         lazy-rules
                         :rules="[
                           val =>

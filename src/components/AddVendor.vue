@@ -53,6 +53,7 @@
               emit-value
               :disable="!industryFilterDisabled"
               lazy-rules
+              options-dense
               :rules="[
                 val =>
                   (val && val.length > 0) || 'Please select the industry type'
