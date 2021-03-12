@@ -49,9 +49,11 @@
               @filter="searchFilterBy"
               @input="setVendorIndustryName"
               behavior="menu"
+              options-dense
               emit-value
               :disable="!industryFilterDisabled"
               lazy-rules
+              options-dense
               :rules="[
                 val =>
                   (val && val.length > 0) || 'Please select the industry type'
@@ -77,6 +79,7 @@
             option-value="id"
             map-options
             behavior="menu"
+            options-dense
             emit-value
             @input="setTitleName(vendor.contact[0].honorific)"
             lazy-rules
@@ -101,6 +104,8 @@
               :options="contactTypes"
               option-value="machineValue"
               option-label="name"
+              map-options
+              options-dense
               label="Type"
               emit-value
               lazy-rules
@@ -110,7 +115,7 @@
             />
             <q-input
               class="required col-6"
-              v-model="vendor.contact[0].phoneNumber[0].number"
+              v-model.number="vendor.contact[0].phoneNumber[0].number"
               label="Phone"
               mask="(###) ###-####"
               lazy-rules
@@ -164,6 +169,7 @@
                 emit-value
                 behavior="menu"
                 map-options
+                options-dense
                 lazy-rules
                 :rules="[
                   val => (val && val.length > 0) || 'Please select the Title'
@@ -184,7 +190,8 @@
                   option-label="name"
                   label="Type"
                   emit-value
-                  lazy-rules
+                  map-options
+                  options-dense
                   lazy-rules
                   :rules="[
                     val => (val && val.length > 0) || 'Please select phone type'
@@ -192,7 +199,7 @@
                 />
                 <q-input
                   class="required col-6"
-                  v-model="contactInfo.phoneNumber[0].number"
+                  v-model.number="contactInfo.phoneNumber[0].number"
                   label="Phone1"
                   mask="(###) ###-####"
                   :ref="`number-${index}`"

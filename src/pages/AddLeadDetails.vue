@@ -66,6 +66,7 @@
                   option-value="machineValue"
                   option-label="name"
                   map-options
+                  options-dense
                   emit-value
                   label="Type"
                   lazy-rules
@@ -75,7 +76,7 @@
                 />
                 <q-input
                   class="required col-6"
-                  v-model="primaryDetails.phoneNumber"
+                  v-model.number="primaryDetails.phoneNumber"
                   label="Phone"
                   mask="(###) ###-####"
                   lazy-rules
@@ -281,6 +282,7 @@
                   :options="leadSources"
                   option-label="name"
                   option-value="value"
+                  options-dense
                   emit-value
                   map-options
                   @input="onChangingSourceType()"
@@ -397,6 +399,7 @@
                 label="Type of Inspection"
                 option-label="value"
                 option-value="id"
+                options-dense
                 emit-value
                 map-options
                 @input="onInspectionTypesSelect()"
@@ -413,6 +416,7 @@
                 :options="subInspectionTypes"
                 option-label="value"
                 option-value="id"
+                options-dense
                 emit-value
                 label="Sub Type of Inspection"
                 @input="onSubInspectionTypesSelect()"

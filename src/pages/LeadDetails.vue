@@ -1,9 +1,9 @@
 <template>
   <q-page style="padding-top: 0; height: 100vh">
     <CustomHeader @backButton="$router.push('/leads')" :showAddButton="false" />
-    <div style="padding-top: 51px" class="full-height row">
+    <div style="padding-top: 51px" class=" row  ">
       <q-card class="q-pa-md q-ma-md" style="width: 100%">
-        <div>
+        <div class="q-mb-lg">
           <q-icon name="create" color="primary" class="edit-icon"></q-icon>
           <p class="heading">Policy Holder Details</p>
           <p class="texts">
@@ -21,22 +21,42 @@
                   $event
                 )
               "
-              >{{ selectedLead.primaryContact.phoneNumber[0].number }}</span
+              >{{
+                selectedLead.primaryContact.phoneNumber[0].number
+                  ? selectedLead.primaryContact.phoneNumber[0].number
+                  : '-'
+              }}</span
             ><span v-else> - </span>
           </p>
-          <p class="texts">
+          <p class=" texts">
             Email:
             <span
               class="clickLink"
               v-if="selectedLead.primaryContact.email"
               @click="onEmailClick(selectedLead.primaryContact.email, $event)"
-              >{{ selectedLead.primaryContact.email }}</span
+              >{{
+                selectedLead.primaryContact.email
+                  ? selectedLead.primaryContact.email
+                  : '-'
+              }}</span
             ><span v-else> - </span>
           </p>
 
           <p class="heading">Loss Address</p>
-          <p class="texts">{{ selectedLead.lossLocation.streetAddress }}</p>
-          <p class="texts">{{ selectedLead.lossLocation.addressRegion }}</p>
+          <p class="texts">
+            {{
+              selectedLead.lossLocation.streetAddress
+                ? selectedLead.lossLocation.streetAddress
+                : '-'
+            }}
+          </p>
+          <p class="texts">
+            {{
+              selectedLead.lossLocation.addressRegion
+                ? selectedLead.lossLocation.addressRegion
+                : '-'
+            }}
+          </p>
           <p class="texts">
             {{ selectedLead.lossLocation.addressRegion }}-{{
               selectedLead.lossLocation.postalCode
@@ -46,51 +66,75 @@
 
           <p class="heading">Loss Details</p>
 
-          <p class="texts">
-            Date of Loss &nbsp;&nbsp;{{
-              selectedLead.dateofLoss | moment('DD/MM/YYYY')
-            }}
-          </p>
-          <p class="texts">
-            Description &nbsp;&nbsp;{{ selectedLead.lossDesc }}
-          </p>
+          <span class="texts  "> Date of Loss :</span
+          ><span class="text-Discription">
+            &nbsp;&nbsp;{{ selectedLead.dateofLoss | moment('DD/MM/YYYY') }}
+          </span>
+          <br />
+          <span class="texts ">
+            Description :
+          </span>
+          <span class="text-Discription">
+            &nbsp;&nbsp;{{
+              selectedLead.lossDesc ? selectedLead.lossDesc : '-'
+            }}</span
+          >
 
           <p class="heading">Policy Details</p>
-          <p class="texts">
-            Carrier Name &nbsp;&nbsp;{{
+          <span class="texts "> Carrier Name :</span
+          ><span class="text-Discription"
+            >&nbsp;&nbsp;{{
               selectedLead['carrier'] ? selectedLead['carrier']['value'] : '-'
             }}
-          </p>
-          <p class="texts">
-            Policy No &nbsp;&nbsp;{{
+          </span>
+          <br />
+          <span class="texts"> Policy No : </span
+          ><span class="text-Discription"
+            >&nbsp;&nbsp;{{
               selectedLead.policyNumber ? selectedLead.policyNumber : '-'
             }}
-          </p>
+          </span>
 
           <p class="heading">Inspection Type</p>
           <p class="texts">
-            &nbsp;&nbsp;{{ selectedLead.inspectionInfo.value }}
+            &nbsp;&nbsp;{{
+              selectedLead.inspectionInfo.value
+                ? selectedLead.inspectionInfo.value
+                : '-'
+            }}
           </p>
 
           <p class="heading">Lead Source</p>
-          <p class="texts">&nbsp;&nbsp;{{ selectedLead.leadSource.type }}</p>
-          <p class="texts">&nbsp;&nbsp;{{ selectedLead.leadSource.detail }}</p>
+          <p class="texts">
+            &nbsp;&nbsp;{{
+              selectedLead.leadSource.type ? selectedLead.leadSource.type : '-'
+            }}
+          </p>
+          <p class="texts ">
+            &nbsp;&nbsp;{{
+              selectedLead.leadSource.detail
+                ? selectedLead.leadSource.detail
+                : '-'
+            }}
+          </p>
 
           <p class="heading">Loss Site Visiting On</p>
-          <p class="texts">&nbsp;&nbsp;{{ selectedLead.visited }}</p>
+          <p class="texts">
+            &nbsp;&nbsp;{{ selectedLead.visited ? selectedLead.visited : '-' }}
+          </p>
 
           <p class="heading">Notes</p>
           <p class="texts">{{ selectedLead.notes }}</p>
         </div>
       </q-card>
-      <q-btn
-        label="Schedule Visit"
-        class="q-my-auto q-mx-lg text-capitalize"
-        style="width: 100%"
-        color="primary"
-        size="md"
-      ></q-btn>
     </div>
+
+    <q-btn
+      label="Schedule Visit"
+      class=" fixed-bottom  full-width  q-mt-lg "
+      color="primary"
+      size="md"
+    ></q-btn>
   </q-page>
 </template>
 <script>
@@ -133,16 +177,23 @@ export default {
 }
 
 .heading {
+  font-size: 15px;
   font-weight: bold;
   margin: 16px 0 8px 0;
 }
 .clickLink {
   color: $primary;
 }
+.text-Discription {
+  margin-bottom: 0;
+  font-size: 13px;
+
+  text-align: left;
+}
 
 .texts {
   margin-bottom: 0;
-  font-size: 12px;
+  font-size: 15px;
 
   text-align: left;
 }
