@@ -73,7 +73,7 @@
                     emit-value
                     map-options
                     options-dense
-                    @input="onFilteringPersonnelRoles('manager')"
+                    @input="onFilteringPersonnelRoles('Kuldeep')"
                   ></q-select>
                   <div class="form-heading q-mt-lg">
                     Person Party
@@ -94,7 +94,6 @@
                   <q-select
                     v-model="publicAdjustor.personnelRole2"
                     :options="personnelRoles"
-                    @input="onFilteringPersonnelRoles('receptionist')"
                     label="Select Role"
                     option-label="name"
                     option-value="value"
@@ -103,7 +102,7 @@
                     map-options
                     options-dense
                   ></q-select>
-                  <div class="form-heading q-mt-lg">Person Party</div>
+                  <div class="form-heading q-mt-lg">Person/Party</div>
                   <q-select
                     v-model="publicAdjustor.personParty2"
                     :options="personnelRoles"
@@ -128,7 +127,7 @@
                     map-options
                     options-dense
                   ></q-select>
-                  <div class="form-heading q-mt-lg">Person Party</div>
+                  <div class="form-heading q-mt-lg">Person/Party</div>
                   <q-select
                     v-model="publicAdjustor.personParty3"
                     :options="personnelRoles"
@@ -153,7 +152,7 @@
                     map-options
                     options-dense
                   ></q-select>
-                  <div class="form-heading q-mt-lg">Person Party</div>
+                  <div class="form-heading q-mt-lg">Person/Party</div>
                   <q-select
                     v-model="publicAdjustor.personParty4"
                     :options="personnelRoles"
@@ -2626,9 +2625,10 @@ export default {
       }
     },
     onFilteringPersonnelRoles(val) {
-      this.publicAdjustor.filterRole.push(val);
-
-      this.publicAdjustor.isFilterApply = false;
+      if (this.publicAdjustor.personnelRole1 == 'manager') {
+        this.publicAdjustor.filterRole.push(val);
+        this.publicAdjustor.isFilterApply = false;
+      }
     },
     searchFilterBy(val, update) {
       this.expertVendorInfo.industry.value = null;
@@ -3067,6 +3067,16 @@ export default {
           isInsuredHired: this.anyOtherExpertHiredToggle,
           notes: this.expertVendorInfo.notes,
           internalNotes: this.expertVendorInfo.internalNotes
+        },
+        personnel: {
+          notes: this.publicAdjustor.notes,
+          users: [
+            {
+              id: '',
+              name: '',
+              role: ''
+            }
+          ]
         }
       };
 
