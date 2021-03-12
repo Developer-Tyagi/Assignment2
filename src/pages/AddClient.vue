@@ -2796,18 +2796,34 @@ export default {
       if (this.isLossAddressSameAsClientToggle) {
         this.lossAddressDetails = this.clientAddressDetails;
       } else {
-        this.lossAddressDetails = {
-          addressCountry: '',
-          addressRegion: '',
-          addressLocality: '',
-          postalCode: '',
-          streetAddress: '',
-          postOfficeBoxNumber: '',
-          dropBox: {
-            info: '',
-            isPresent: false
-          }
-        };
+        if (this.selectedLead.id) {
+          this.lossAddressDetails = {
+            houseNumber: this.selectedLead.lossLocation.houseNumber,
+            addressCountry: this.selectedLead.lossLocation.addressCountry,
+            addressRegion: this.selectedLead.lossLocation.addressRegion,
+            addressLocality: this.selectedLead.lossLocation.addressLocality,
+            postalCode: this.selectedLead.lossLocation.postalCode,
+            streetAddress: this.selectedLead.lossLocation.streetAddress,
+            postOfficeBoxNumber: '',
+            dropBox: {
+              info: '',
+              isPresent: false
+            }
+          };
+        } else {
+          this.lossAddressDetails = {
+            addressCountry: '',
+            addressRegion: '',
+            addressLocality: '',
+            postalCode: '',
+            streetAddress: '',
+            postOfficeBoxNumber: '',
+            dropBox: {
+              info: '',
+              isPresent: false
+            }
+          };
+        }
       }
     },
     onSecondMortgageToggle() {
