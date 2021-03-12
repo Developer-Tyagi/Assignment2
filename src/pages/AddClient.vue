@@ -1282,7 +1282,7 @@
                               </div>
                               <div
                                 class="q-mr-xl  q-my-xm q-px-sm q-ma-xs  text-capitalize text-caption "
-                                style="margin-right:91px"
+                                style="margin-right:71px"
                               >
                                 <p>{{ item.desc }}</p>
                               </div>
@@ -1413,11 +1413,11 @@
                             </div>
                             <div
                               class="q-mr-xl  q-my-xm q-px-sm q-ma-xs  text-capitalize text-caption "
-                              style="margin-right:91px"
+                              style="margin-right:71px"
                             >
                               <p>{{ item.desc }}</p>
                             </div>
-                            <div class="q-ma-sm q-ml-xs ">
+                            <div class="q-ma-sm q-ml-xs">
                               {{ item.serialNumber }}
                             </div>
                             <div class="q-ma-sm ">
