@@ -481,6 +481,12 @@ export default {
         const response = await this.addVendor(this.vendor);
         if (response) {
           this.closeDialog(true);
+          this.$emit(
+            'onCloseAddVendor',
+            true,
+            this.vendor.name,
+            this.vendor.industry.value
+          );
         }
       }
     },

@@ -498,6 +498,7 @@
     >
       <q-card>
         <AddVendor
+          @onCloseAddVendor="onCloseAddVendorDialogBox"
           @closeDialog="closeAddVendorDialog"
           :componentName="vendorDialogName"
         />
@@ -594,7 +595,8 @@ export default {
       'addVendor',
       'getContactTypes',
       'getTitles',
-      'getClients'
+      'getClients',
+      'getVendors'
     ]),
     ...mapMutations(['setSelectedClient']),
 
@@ -610,6 +612,24 @@ export default {
         this.vendorDialogFilterByIndustry = '';
       }
       this.vendorsListDialog = true;
+    },
+    // This function value is coming through props form add-vendor Page!
+    async onCloseAddVendorDialogBox(result, name, industryType) {
+      if (result === true && industryType === 'Carrier') {
+        this.vendorsListDialog = false;
+        let params = {
+          industry: constants.industries.CARRIER,
+          name: ''
+        };
+        await this.getVendors(params);
+
+        this.insuranceDetails.carrierName = name;
+        const selected = this.vendors.find(obj => {
+          return obj.name === name;
+        });
+        this.insuranceDetails.carrierId = selected.id;
+        this.insuranceDetails.carrierName = name;
+      }
     },
 
     onClosingVendorSelectDialog(vendor, dialogName) {
@@ -779,7 +799,8 @@ export default {
       'inspectionTypes',
       'leadSources',
       'contactTypes',
-      'titles'
+      'titles',
+      'vendors'
     ])
   },
 
@@ -800,6 +821,7 @@ export default {
 
     // TODO : Have to change primary details object, so that selected client can be assigned as it is.
     this.getInspectionTypes();
+
     this.getContactTypes();
     this.getTitles();
     this.getClients().then(() => {
