@@ -193,7 +193,7 @@
             <img
               src="~assets/close.svg"
               alt="back-arrow"
-              @click="clientInfoDailog = false"
+              @click="onCloseDialogBox('clientInfoDailog', 0)"
               style="margin: auto 0"
             />
             <div class="text-uppercase text-bold text-black q-mx-auto">
@@ -215,8 +215,10 @@
                       :options="leadSources"
                       option-label="name"
                       option-value="value"
+                      options-dense
                       emit-value
                       map-options
+                      options-dense
                       @input="onChangingSourceType()"
                     />
                     <q-input
@@ -257,6 +259,7 @@
                     option-label="name"
                     map-options
                     emit-value
+                    options-dense
                     :options="clientTypes"
                     @input="setTypes(clientTypes, client)"
                     label="Client Type"
@@ -311,10 +314,13 @@
                     option-value="id"
                     option-label="value"
                     map-options
+                    options-dense
+                    behavior="menu"
                     @input="setTitleName(1)"
                     emit-value
                     label="Title"
                     lazy-rules
+                    options-dense
                     :rules="[
                       val =>
                         (val && val.length > 0) || 'Please select the Title'
@@ -351,6 +357,7 @@
                       option-label="name"
                       map-options
                       emit-value
+                      options-dense
                       label="Type"
                       lazy-rules
                       :rules="[
@@ -359,7 +366,7 @@
                       ]"
                     />
                     <q-input
-                      v-model="insuredDetails.phone"
+                      v-model.number="insuredDetails.phone"
                       class="required col-6"
                       label="Phone"
                       mask="(###) ###-####"
@@ -402,6 +409,8 @@
                       map-options
                       @input="setTitleName(2)"
                       emit-value
+                      options-dense
+                      behavior="menu"
                       label="Title"
                       lazy-rules
                       :rules="[
@@ -426,7 +435,9 @@
                         option-label="name"
                         map-options
                         emit-value
+                        options-dense
                         label="Type"
+                        options-dense
                         lazy-rules
                         :rules="[
                           val =>
@@ -435,7 +446,7 @@
                         ]"
                       />
                       <q-input
-                        v-model="coInsuredDetails.phone"
+                        v-model.number="coInsuredDetails.phone"
                         label="Phone"
                         class="required col-6"
                         mask="(###) ###-####"
@@ -480,6 +491,7 @@
                         option-value="machineValue"
                         option-label="name"
                         map-options
+                        options-dense
                         emit-value
                         lazy-rules
                         :rules="[
@@ -489,7 +501,7 @@
                         ]"
                       />
                       <q-input
-                        v-model="addAditionalPhoneNumber.phone2"
+                        v-model.number="addAditionalPhoneNumber.phone2"
                         label="Phone2"
                         class="required col-6"
                         mask="(###) ###-####"
@@ -511,6 +523,7 @@
                         option-label="name"
                         map-options
                         emit-value
+                        options-dense
                         lazy-rules
                         :rules="[
                           val =>
@@ -520,7 +533,7 @@
                       />
                       <q-input
                         class="required col-6"
-                        v-model="addAditionalPhoneNumber.phone3"
+                        v-model.number="addAditionalPhoneNumber.phone3"
                         label="Phone3"
                         mask="(###) ###-####"
                         lazy-rules
@@ -563,6 +576,7 @@
                         option-value="machineValue"
                         option-label="name"
                         map-options
+                        options-dense
                         emit-value
                         lazy-rules
                         :rules="[
@@ -573,7 +587,7 @@
                       />
                       <q-input
                         class="required col-6"
-                        v-model="tenantOccupied.phone"
+                        v-model.number="tenantOccupied.phone"
                         label="Phone"
                         mask="(###) ###-####"
                         lazy-rules
@@ -615,7 +629,7 @@
             <img
               src="~assets/close.svg"
               alt="back-arrow"
-              @click="mailingAddressDialog = false"
+              @click="onCloseDialogBox('mailingAddressDialog', 1)"
               style="margin: auto 0"
             />
             <div class="text-uppercase text-bold text-black q-mx-auto">
@@ -675,7 +689,7 @@
             <img
               src="~assets/close.svg"
               alt="back-arrow"
-              @click="insuranceInfoDialog = false"
+              @click="onCloseDialogBox('insuranceInfoDialog', 2)"
               style="margin: auto 0"
             />
             <div class="text-uppercase text-bold text-black q-mx-auto">
@@ -806,6 +820,7 @@
                     option-value="id"
                     option-label="name"
                     map-options
+                    options-dense
                     emit-value
                     :options="policyCategories"
                     @input="
@@ -829,6 +844,7 @@
                     option-label="name"
                     map-options
                     emit-value
+                    options-dense
                     :options="policyTypes"
                     @input="setTypes(policyTypes, insuranceDetails.policy)"
                     label="Policy Type"
@@ -959,7 +975,7 @@
             <img
               src="~assets/close.svg"
               alt="back-arrow"
-              @click="lossInfoDialog = false"
+              @click="onCloseDialogBox('lossInfoDialog', 3)"
               style="margin: auto 0"
             />
             <div class="text-uppercase text-bold text-black q-mx-auto">
@@ -972,6 +988,30 @@
             <div class="full-width fix-height">
               <div>
                 <q-form ref="lossInfoForm">
+                  <!-- Loss Address Name Dropdown -->
+                  <q-select
+                    class="required"
+                    v-model="lossAddressNameDropdown"
+                    label="Loss Address Name"
+                    :options="lossAddressNameOptions"
+                    lazy-rules
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) || 'This is a required field'
+                    ]"
+                  />
+                  <q-input
+                    class="required"
+                    v-model="lossInfo.lossAddressName"
+                    v-if="lossAddressNameOptions == 'Others'"
+                    label="Enter New Loss Address Name "
+                    lazy-rules
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) || 'This is a required field'
+                    ]"
+                  ></q-input>
+
                   <div class="row">
                     <p class="q-my-auto form-heading">
                       Loss Address Same As Client's?
@@ -988,22 +1028,14 @@
                     :isChecksEnable="true"
                     :isFieldsDisable="isLossAddressSameAsClientToggle"
                   />
-                  <q-input
-                    class="required"
-                    v-model="LossAddressName"
-                    label="Loss Address Name"
-                    lazy-rules
-                    :rules="[
-                      val =>
-                        (val && val.length > 0) || 'This is a required field'
-                    ]"
-                  />
+
                   <q-select
                     class="required"
                     v-model="lossInfo.property.id"
                     option-value="id"
                     option-label="name"
                     map-options
+                    options-dense
                     emit-value
                     :options="propertyTypes"
                     @input="setTypes(propertyTypes, lossInfo.property)"
@@ -1024,6 +1056,7 @@
                     option-value="id"
                     option-label="name"
                     map-options
+                    options-dense
                     emit-value
                     :options="claimReasons"
                     @input="setTypes(claimReasons, lossInfo.reasonClaim)"
@@ -1073,6 +1106,7 @@
                     option-value="id"
                     option-label="name"
                     map-options
+                    options-dense
                     emit-value
                     :options="lossCauses"
                     @input="setTypes(lossCauses, lossInfo.causeOfLoss)"
@@ -1178,6 +1212,7 @@
                     option-label="name"
                     map-options
                     emit-value
+                    options-dense
                     :options="claimSeverity"
                     @input="
                       setTypes(claimSeverity, lossInfo.severityOfClaimType)
@@ -1776,7 +1811,9 @@
                     option-label="value"
                     map-options
                     @input="setTitleName(3)"
+                    behavior="menu"
                     emit-value
+                    options-dense
                     label="Title"
                     lazy-rules
                     :rules="[
@@ -1817,12 +1854,13 @@
                       option-value="machineValue"
                       option-label="name"
                       map-options
+                      options-dense
                       emit-value
                       label="Type"
                     />
                     <q-input
                       class="col-6"
-                      v-model="addEstimatorInfo.phone"
+                      v-model.number="addEstimatorInfo.phone"
                       label="Phone"
                       mask="(###) ###-####"
                     />
@@ -1835,7 +1873,7 @@
             label="Add Estimator"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
-            @click="onSubmit('addEstimatorDialog')"
+            @click="onCloseDialogBox('addEstimatorDialog', 5)"
             size="'xl'"
           ></q-btn>
         </q-card-section>
@@ -1855,7 +1893,7 @@
             <img
               src="~assets/close.svg"
               alt="back-arrow"
-              @click="expertVendorInfoDialog = false"
+              @click="onCloseDialogBox('expertVendorInfoDialog', 4)"
               style="margin: auto 0"
             />
             <div class="text-uppercase text-bold text-black q-mx-auto">
@@ -1886,6 +1924,7 @@
                     input-debounce="0"
                     option-label="name"
                     label=" Industry"
+                    options-dense
                     :options="vendorIndustriesOptions"
                     option-value="name"
                     @filter="searchFilterBy"
@@ -2189,6 +2228,7 @@ export default {
       ],
 
       vendorIndustriesOptions: [],
+      lossAddressNameOptions: ['Others'],
       estimatorsListDialog: false,
       constants: constants,
       valueName: '',
@@ -2197,7 +2237,7 @@ export default {
       vendorDialogName: '',
       vendorDialogFilterByIndustry: '',
       showVendorDialogFilters: false,
-      LossAddressName: '',
+      lossAddressNameDropdown: 'Others',
       publicAdjustorInfoDialog: false,
       addVendorDialog: false,
       addEstimatorDialog: false,
@@ -2299,6 +2339,7 @@ export default {
         PPDamageName: '',
         PPDamageDescription: '',
         PPDamagedItemCost: '',
+        lossAddressName: '',
         OSDamageDescription: '',
         OSDamageName: '',
 
@@ -2417,6 +2458,7 @@ export default {
       isMortgageHomeToggle: false,
       isLossAddressSameAsClientToggle: false,
       lossAddressDetails: {
+        houseNumber: '',
         addressCountry: '',
         addressRegion: '',
         addressLocality: '',
@@ -2487,6 +2529,7 @@ export default {
       this.sourceDetails.details = this.selectedLead.leadSource.detail;
       this.insuranceDetails.carrierName = this.selectedLead.leadSource.type;
       this.insuranceDetails.policyNumber = this.selectedLead.policyNumber;
+      this.lossAddressDetails.houseNumber = this.selectedLead.lossLocation.houseNumber;
       this.lossAddressDetails.addressCountry = this.selectedLead.lossLocation.addressCountry;
       this.lossAddressDetails.addressLocality = this.selectedLead.lossLocation.addressLocality;
       this.lossAddressDetails.addressRegion = this.selectedLead.lossLocation.addressRegion;
@@ -2636,6 +2679,13 @@ export default {
     },
     onCountrySelect(country) {
       this.states = addressService.getStates(country);
+    },
+    onCloseDialogBox(DialogName, value) {
+      if (this.dialogBoxes[value].validForm == true) {
+        this.onSubmit(DialogName);
+      } else {
+        this[DialogName] = false;
+      }
     },
 
     async onSubmit(name) {
@@ -2864,20 +2914,16 @@ export default {
       }
 
       const response = await this.addClient(payload);
-      if (response && response.id) {
-        const clientInfo = {
-          name: response,
-          id: response.id
-        };
 
-        this.setPayloadForClaim(clientInfo);
+      if (response && response.id) {
+        this.setPayloadForClaim(response.id);
       }
     },
 
-    async setPayloadForClaim(clientInfo) {
+    async setPayloadForClaim(id) {
       const payload = {
         client: {
-          id: clientInfo.id,
+          id: id,
           fname: this.insuredDetails.fname,
           lname: this.insuredDetails.lname
         },
@@ -2936,7 +2982,7 @@ export default {
         },
         mortgageInfo: this.mortgageDetails,
         lossInfo: {
-          lossAddressName: '',
+          lossAddressName: this.lossInfo.lossAddressName,
           address: {
             ...this.clientAddressDetails
           },

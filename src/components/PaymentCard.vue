@@ -12,7 +12,9 @@ export default {
   name: 'PaymentCard',
 
   data() {
-    return {};
+    return {
+      cardElement: {}
+    };
   },
 
   mounted() {
@@ -34,7 +36,7 @@ export default {
       }
     };
 
-    const cardElement = elements.create('card', {
+    this.cardElement = elements.create('card', {
       hidePostalCode: true,
       style: style
     });
@@ -43,9 +45,9 @@ export default {
       style: style
     });
 
-    cardElement.mount('#card');
+    this.cardElement.mount('#card');
 
-    cardElement.on('change', ({ error }) => {
+    this.cardElement.on('change', ({ error }) => {
       if (error) {
         displayErrors.textContent = error.message;
       } else {
@@ -53,9 +55,9 @@ export default {
       }
     });
 
-    cardElement.on('change', event => {
+    this.cardElement.on('change', event => {
       if (event.complete) {
-        this.createTokenForPayment(event, cardElement);
+        this.createTokenForPayment(event);
       } else {
         this.$emit('cardDetailsAdded', false);
       }
@@ -63,8 +65,12 @@ export default {
   },
 
   methods: {
-    async createTokenForPayment(event, cardElement) {
-      const token = await stripe.createToken(cardElement);
+    clearCard() {
+      this.cardElement.clear();
+    },
+
+    async createTokenForPayment(event) {
+      const token = await stripe.createToken(this.cardElement);
       this.$emit('cardDetailsAdded', token.token.id);
     }
   }

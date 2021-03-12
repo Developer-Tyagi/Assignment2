@@ -49,7 +49,9 @@
             <div class="text-capitalize ellipsis full-width">
               {{ user.name || 'Unknown' }}
             </div>
-            <div style="font-size: 11px; opacity: 80%">View Profile</div>
+            <div style="font-size: 11px; opacity: 80%" @click="">
+              {{ user.contact.fname ? user.contact.fname : '-' }}
+            </div>
           </div>
         </div>
       </div>
