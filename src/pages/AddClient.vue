@@ -2166,6 +2166,7 @@
                   <span class="form-heading">Contract Date</span>
                   <div class="full-width">
                     <q-input
+                      class="required"
                       v-model="contractInfo.contractDate"
                       mask="##/##/####"
                       label="MM/DD/YYYY"
