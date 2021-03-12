@@ -2194,6 +2194,39 @@
                       </template>
                     </q-input>
                   </div>
+
+                  <br />
+                  <span class="form-heading">Date of First Contract</span>
+                  <div class="full-width">
+                    <q-input
+                      v-model="contractInfo.firstContractDate"
+                      mask="##/##/####"
+                      label="MM/DD/YYYY"
+                      lazy-rules
+                      :rules="[val => validateDate(val) || 'Invalid date!']"
+                    >
+                      <template v-slot:append>
+                        <q-icon
+                          name="event"
+                          size="sm"
+                          color="primary"
+                          class="cursor-pointer"
+                        >
+                          <q-popup-proxy
+                            ref="qDateProxy4"
+                            transition-show="scale"
+                            transition-hide="scale"
+                          >
+                            <q-date
+                              v-model="contractInfo.firstContractDate"
+                              @input="() => $refs.qDateProxy4.hide()"
+                              mask="MM/DD/YYYY"
+                            ></q-date>
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                    </q-input>
+                  </div>
                   <div class="row  ">
                     <q-btn
                       v-model="contractInfo.buttonGroup"
@@ -2227,46 +2260,28 @@
                       @click="contractInfo.update = !contractInfo.update"
                     ></q-btn>
                   </div>
-                  <br />
-                  <span class="form-heading">Date of First Contract</span>
-                  <div class="full-width">
-                    <q-input
-                      v-model="contractInfo.firstContractDate"
-                      mask="##/##/####"
-                      label="MM/DD/YYYY"
-                      lazy-rules
-                      :rules="[val => validateDate(val) || 'Invalid date!']"
-                    >
-                      <template v-slot:append>
-                        <q-icon
-                          name="event"
-                          size="sm"
-                          color="primary"
-                          class="cursor-pointer"
-                        >
-                          <q-popup-proxy
-                            ref="qDateProxy4"
-                            transition-show="scale"
-                            transition-hide="scale"
-                          >
-                            <q-date
-                              v-model="contractInfo.firstContractDate"
-                              @input="() => $refs.qDateProxy4.hide()"
-                              mask="MM/DD/YYYY"
-                            ></q-date>
-                          </q-popup-proxy>
-                        </q-icon>
-                      </template>
-                    </q-input>
-                  </div>
                   <div class="row" style="align-items: center">
-                    <span class="form-heading x-pt-xs">Claim Fee Rate</span>
+                    <span
+                      class="form-heading x-pt-xs"
+                      v-if="contractInfo.percentage"
+                      >Claim Fee Percent</span
+                    >
+                    <span
+                      class="form-heading x-pt-xs"
+                      v-if="contractInfo.doller"
+                      >Claim Fee
+                    </span>
+                    <span
+                      class="form-heading x-pt-xs"
+                      v-if="contractInfo.update"
+                      >Claim Fee Rate
+                    </span>
                     <q-input
                       class="q-ml-auto"
                       mask="#.#"
                       type="number"
                       v-model.number="contractInfo.claimFeeRate"
-                      placeholder="Claim Fee Rate"
+                      placeholder="Claim Fee "
                       style=" width: 50%"
                       suffix="/hr"
                     />
