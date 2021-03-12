@@ -1812,7 +1812,7 @@
                     <div
                       v-if="vendorExpertHiredToggle"
                       class="custom-select"
-                      v-model="expertVendorInfo.vendorName[index - 1]"
+                      v-model="expertVendorInfo.vendor[index]"
                       @click="
                         onAddVendorDialogClick(
                           constants.industries.EXPERTVENDOR,
@@ -1823,7 +1823,7 @@
                       <div class="select-text">
                         {{
                           expertVendorInfo.id
-                            ? expertVendorInfo.vendorName[index - 1]
+                            ? expertVendorInfo.vendor[index]
                             : 'Select Vendor'
                         }}
                       </div>
@@ -2283,7 +2283,8 @@ export default {
       expertVendorInfo: {
         notes: '',
         internalNotes: '',
-        vendorName: [],
+
+        vendor: [{ id: '', value: '', machineValue: '' }],
         id: '',
         industry: [{ value: null, id: '', machineValue: '' }]
       },
@@ -2451,8 +2452,14 @@ export default {
         id: this.expertVendorInfo.industry.id,
         value: this.expertVendorInfo.industry.vendorName
       });
-
-      this.expertVendorInfo.vendorName.push('Select Vendor');
+      let len = expertVendorInfo.vendor.length;
+      // this.expertVendorInfo.vendore.push('Select Vendor');
+      this.expertVendorInfo.vendor.push({
+        id: this.expertVendorInfo.vendor.id,
+        value: this.expertVendorInfo.vendor.value
+      });
+      console.log(this.expertVendorInfo.vendor, 12);
+      console.log(this.expertVendorInfo.vendor.value, 23);
     },
     onClosingVendorSelectDialog(vendor, dialogName) {
       switch (dialogName) {
@@ -2474,8 +2481,8 @@ export default {
           break;
         case constants.industries.EXPERTVENDOR:
           this.expertVendorInfo.id = vendor.id;
-          let len = this.expertVendorInfo.vendorName.length;
-          this.expertVendorInfo.vendorName[len - 1] = vendor.name;
+          let len = this.expertVendorInfo.vendor.length;
+          this.expertVendorInfo.vendor[len - 1] = vendor.name;
           break;
       }
 
@@ -2548,6 +2555,9 @@ export default {
 
       this.expertVendorInfo.industry[index].id = result.id;
       this.expertVendorInfo.industry[index].machineValue = result.machineValue;
+      this.expertVendorInfo.vendor[index].id = result.id;
+      this.expertVendorInfo.vendor[index].value = result.name;
+      this.expertVendorInfo.vendor[index].machineValue = result.machineValue;
     },
     onCountrySelect(country) {
       this.states = addressService.getStates(country);
@@ -2902,9 +2912,7 @@ export default {
           isVendorAssigned: this.vendorExpertHiredToggle,
           vendor: [
             {
-              // id: this.expertVendorInfo.industry.id,
-              // value: this.expertVendorInfo.industry.vendorName
-              ...this.expertVendorInfo.industry
+              ...this.expertVendorInfo.vendor
             }
           ],
           isInsuredHired: this.anyOtherExpertHiredToggle,
