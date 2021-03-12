@@ -617,22 +617,15 @@ export default {
       }
       this.vendorsListDialog = true;
     },
-    // This function value is coming through props form add-vendor Page!
-    async onCloseAddVendorDialogBox(result, name, industryType) {
-      if (result === true && industryType === 'Carrier') {
-        this.vendorsListDialog = false;
-        let params = {
-          industry: constants.industries.CARRIER,
-          name: ''
-        };
-        await this.getVendors(params);
 
-        this.insuranceDetails.carrierName = name;
-        const selected = this.vendors.find(obj => {
-          return obj.name === name;
-        });
-        this.insuranceDetails.carrierId = selected.id;
-        this.insuranceDetails.carrierName = name;
+    // This function value is coming through props form add-vendor Page!
+
+    onCloseAddVendorDialogBox(result, selected, industryType) {
+      if (result === true && industryType === 'Carrier') {
+        this.onClosingVendorSelectDialog(
+          selected,
+          selected.industry.machineValue
+        );
       }
     },
 
@@ -793,6 +786,7 @@ export default {
         } else {
           this.$refs.list.getVendors();
         }
+        this.vendorsListDialog = false;
       }
     }
   },
