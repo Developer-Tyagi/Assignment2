@@ -1247,6 +1247,7 @@
                               </div>
                               <div
                                 class="q-mr-xl  q-my-xm q-px-sm q-ma-xs  text-capitalize text-caption "
+                                style="margin-right:91px"
                               >
                                 <p>{{ item.desc }}</p>
                               </div>
@@ -1377,6 +1378,7 @@
                             </div>
                             <div
                               class="q-mr-xl  q-my-xm q-px-sm q-ma-xs  text-capitalize text-caption "
+                              style="margin-right:91px"
                             >
                               <p>{{ item.desc }}</p>
                             </div>
