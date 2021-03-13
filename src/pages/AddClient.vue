@@ -1955,7 +1955,7 @@
                   ></q-input>
                   <q-btn
                     class="q-mt-md"
-                    v-if="industryType.value"
+                    v-if="expertVendorInfo.industry.value == 'Others'"
                     label="Add"
                     outline
                     @click="addAnotherIndustry"
@@ -2584,18 +2584,41 @@ export default {
     ]),
 
     ...mapMutations(['setSelectedLead']),
+    // For Adding Another Industry in Expert/Vendor
     async addAnotherIndustry() {
-      const response = await this.addIndustry(this.industryType);
-      if (response) {
+      let text = this.industryType.value.toLowerCase();
+      console.log(text);
+      if (text != 'others') {
+        const response = await this.addIndustry(this.industryType);
+        if (response) {
+          this.$q.notify({
+            message: 'Added New Industry Type',
+            position: 'top',
+            type: 'negative'
+          });
+        }
+        this.industryType.value = '';
+        this.getVendorIndustries();
+      } else {
         this.$q.notify({
-          message: 'Added New Industry Type',
+          message: 'Sorry ! Cannot add Others ',
           position: 'top',
           type: 'negative'
         });
       }
     },
-
+    //This function is user for searching Industries and  add others option at the last
     searchFilterBy(val, update) {
+      let len = this.vendorIndustries.length;
+
+      if (this.vendorIndustries[len - 1].name != 'Others') {
+        this.vendorIndustries.push({
+          id: '',
+          machineValue: 'others',
+          name: 'Others'
+        });
+      }
+
       this.expertVendorInfo.industry.value = null;
       if (val === ' ') {
         update(() => {
