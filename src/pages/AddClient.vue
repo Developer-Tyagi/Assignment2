@@ -1812,7 +1812,7 @@
                     <div
                       v-if="vendorExpertHiredToggle"
                       class="custom-select"
-                      v-model="expertVendorInfo.vendor[index]"
+                      v-model="expertVendorInfo.vendor[index].value"
                       @click="
                         onAddVendorDialogClick(
                           constants.industries.EXPERTVENDOR,
@@ -1823,7 +1823,7 @@
                       <div class="select-text">
                         {{
                           expertVendorInfo.id
-                            ? expertVendorInfo.vendor[index]
+                            ? expertVendorInfo.vendor[index].value
                             : 'Select Vendor'
                         }}
                       </div>
@@ -2284,7 +2284,7 @@ export default {
         notes: '',
         internalNotes: '',
 
-        vendor: [{ id: '', value: '', machineValue: '' }],
+        vendor: [{ id: '', value: null }],
         id: '',
         industry: [{ value: null, id: '', machineValue: '' }]
       },
@@ -2450,16 +2450,14 @@ export default {
     addAnotherVendor() {
       this.expertVendorInfo.industry.push({
         id: this.expertVendorInfo.industry.id,
-        value: this.expertVendorInfo.industry.vendorName
+        value: this.expertVendorInfo.industry.value
       });
-      let len = expertVendorInfo.vendor.length;
-      // this.expertVendorInfo.vendore.push('Select Vendor');
+      let len = this.expertVendorInfo.vendor.length;
       this.expertVendorInfo.vendor.push({
-        id: this.expertVendorInfo.vendor.id,
-        value: this.expertVendorInfo.vendor.value
+        id: this.expertVendorInfo.vendor[len - 1].id,
+        value: this.expertVendorInfo.vendor[len - 1].value
       });
-      console.log(this.expertVendorInfo.vendor, 12);
-      console.log(this.expertVendorInfo.vendor.value, 23);
+      this.expertVendorInfo.vendor[len].value = 'Select Vendor';
     },
     onClosingVendorSelectDialog(vendor, dialogName) {
       switch (dialogName) {
@@ -2482,7 +2480,9 @@ export default {
         case constants.industries.EXPERTVENDOR:
           this.expertVendorInfo.id = vendor.id;
           let len = this.expertVendorInfo.vendor.length;
-          this.expertVendorInfo.vendor[len - 1] = vendor.name;
+          this.expertVendorInfo.vendor[len - 1].id = vendor.id;
+          this.expertVendorInfo.vendor[len - 1].value = vendor.name;
+
           break;
       }
 
@@ -2555,9 +2555,6 @@ export default {
 
       this.expertVendorInfo.industry[index].id = result.id;
       this.expertVendorInfo.industry[index].machineValue = result.machineValue;
-      this.expertVendorInfo.vendor[index].id = result.id;
-      this.expertVendorInfo.vendor[index].value = result.name;
-      this.expertVendorInfo.vendor[index].machineValue = result.machineValue;
     },
     onCountrySelect(country) {
       this.states = addressService.getStates(country);
