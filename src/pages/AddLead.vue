@@ -33,6 +33,7 @@
             @filter="searchFilterBy"
             option-value="id"
             behavior="menu"
+            options-dense
             emit-value
             map-options
           >
