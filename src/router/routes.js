@@ -100,16 +100,16 @@ const routes = [
     beforeEnter: guardMyroute,
     children: [
       {
-        path: 'leads-dashboard',
-        name: 'leads dashboard',
-        caseSensitive: true,
-        component: () => import('pages/LeadsDashboard.vue')
-      },
-      {
         path: 'leads',
         name: 'leads',
         caseSensitive: true,
         component: () => import('pages/Leads.vue')
+      },
+      {
+        path: 'clients',
+        name: 'clients',
+        caseSensitive: true,
+        component: () => import('pages/Clients.vue')
       },
       {
         path: 'add-lead',
@@ -150,16 +150,16 @@ const routes = [
     beforeEnter: guardMyroute,
     children: [
       {
-        path: 'clients',
-        name: 'clients',
-        caseSensitive: true,
-        component: () => import('pages/Clients.vue')
-      },
-      {
         path: 'add-client',
         name: 'create client',
         caseSensitive: true,
         component: () => import('pages/AddClient.vue')
+      },
+      {
+        path: 'leads-dashboard',
+        name: 'leads dashboard',
+        caseSensitive: true,
+        component: () => import('pages/LeadsDashboard.vue')
       }
     ]
   },
