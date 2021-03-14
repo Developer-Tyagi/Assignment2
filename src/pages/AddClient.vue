@@ -3048,15 +3048,16 @@ export default {
 
         case 'contractInfoDialog':
           success = await this.$refs.contractInfoForm.validate();
-        case 'publicAdjustorInfoDialog':
-          success = await this.$refs.publicAdjustorForm.validate();
           validationIndex = 6;
           break;
+        case 'publicAdjustorInfoDialog':
+          success = await this.$refs.publicAdjustorForm.validate();
+          validationIndex = 7;
       }
       if (success == true) {
         this.dialogBoxes[validationIndex].validForm = true;
 
-        for (var i = 0; i < this.dialogBoxes.length - 2; i++) {
+        for (var i = 0; i < this.dialogBoxes.length - 1; i++) {
           if (this.dialogBoxes[i].validForm == false) {
             this.isCreateClientButtonDisabled = true;
             break;
