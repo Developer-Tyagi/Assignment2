@@ -221,52 +221,6 @@
             <div class="full-width fix-height">
               <div>
                 <q-form ref="clientForm">
-                  <div>
-                    <span class="form-heading">Choose Lead Source</span>
-                  </div>
-                  <div>
-                    <q-select
-                      v-model="sourceDetails.type"
-                      :options="leadSources"
-                      option-label="name"
-                      option-value="value"
-                      options-dense
-                      emit-value
-                      map-options
-                      options-dense
-                      @input="onChangingSourceType()"
-                    />
-                    <q-input
-                      v-if="
-                        sourceDetails.type != constants.industries.VENDOR &&
-                          sourceDetails.type != '' &&
-                          sourceDetails.type != 'google'
-                      "
-                      type="text"
-                      class="required"
-                      placeholder="Enter Source details"
-                      v-model="sourceDetails.details"
-                      lazy-rules
-                      :rules="[val => (val && val.length > 0) || '']"
-                    />
-                    <div
-                      v-else-if="
-                        sourceDetails.type == constants.industries.VENDOR
-                      "
-                      class="custom-select"
-                      @click="
-                        onAddVendorDialogClick(constants.industries.VENDOR)
-                      "
-                    >
-                      <div class="select-text">
-                        {{
-                          sourceDetails.id
-                            ? sourceDetails.details
-                            : 'Select Lead Source'
-                        }}
-                      </div>
-                    </div>
-                  </div>
                   <q-select
                     class="required"
                     v-model="client.id"
@@ -2197,6 +2151,288 @@
         />
       </q-card>
     </q-dialog>
+    <!-- Contract Info Dialog -->
+    <q-dialog
+      v-model="contractInfoDialog"
+      persistent
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card class="form-card q-pa-md" style="padding-top: 30px">
+        <q-header bordered class="bg-white">
+          <q-toolbar class="row bg-white">
+            <img
+              src="~assets/close.svg"
+              alt="back-arrow"
+              @click="onCloseDialogBox('contractInfoDialog', 5)"
+              style="margin: auto 0"
+            />
+            <div class="text-uppercase text-bold text-black q-mx-auto">
+              Contract Details
+            </div>
+          </q-toolbar>
+        </q-header>
+        <q-card-section>
+          <div class="q-page bg-white">
+            <div class="full-width fix-height">
+              <div>
+                <q-form ref="contractInfoForm">
+                  <span class="form-heading">Contract Date</span>
+                  <div class="full-width">
+                    <q-input
+                      class="required"
+                      v-model="contractInfo.contractDate"
+                      mask="##/##/####"
+                      label="MM/DD/YYYY"
+                      lazy-rules
+                      :rules="[val => validateDate(val) || 'Invalid date!']"
+                    >
+                      <template v-slot:append>
+                        <q-icon
+                          name="event"
+                          size="sm"
+                          color="primary"
+                          class="cursor-pointer"
+                        >
+                          <q-popup-proxy
+                            ref="qDateProxy4"
+                            transition-show="scale"
+                            transition-hide="scale"
+                          >
+                            <q-date
+                              v-model="contractInfo.contractDate"
+                              @input="() => $refs.qDateProxy4.hide()"
+                              mask="MM/DD/YYYY"
+                            ></q-date>
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                    </q-input>
+                  </div>
+
+                  <br />
+                  <span class="form-heading">Date of First Contract</span>
+                  <div class="full-width">
+                    <q-input
+                      v-model="contractInfo.firstContractDate"
+                      mask="##/##/####"
+                      label="MM/DD/YYYY"
+                      lazy-rules
+                      :rules="[val => validateDate(val) || 'Invalid date!']"
+                    >
+                      <template v-slot:append>
+                        <q-icon
+                          name="event"
+                          size="sm"
+                          color="primary"
+                          class="cursor-pointer"
+                        >
+                          <q-popup-proxy
+                            ref="qDateProxy4"
+                            transition-show="scale"
+                            transition-hide="scale"
+                          >
+                            <q-date
+                              v-model="contractInfo.firstContractDate"
+                              @input="() => $refs.qDateProxy4.hide()"
+                              mask="MM/DD/YYYY"
+                            ></q-date>
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                    </q-input>
+                  </div>
+                  <div class="row  ">
+                    <q-btn
+                      v-model="contractInfo.buttonGroup"
+                      push
+                      label="%"
+                      :color="contractInfo.percentage ? 'primary' : 'white'"
+                      :text-color="
+                        !contractInfo.percentage ? 'primary' : 'white'
+                      "
+                      @click="
+                        contractInfo.percentage = !contractInfo.percentage
+                      "
+                    ></q-btn>
+                    <q-btn
+                      v-model="contractInfo.buttonGroup"
+                      class="q-mx-sm"
+                      push
+                      label="$"
+                      :color="contractInfo.dollar ? 'primary' : 'white'"
+                      :text-color="!contractInfo.dollar ? 'primary' : 'white'"
+                      @click="contractInfo.dollar = !contractInfo.dollar"
+                    ></q-btn>
+
+                    <q-btn
+                      v-model="contractInfo.buttonGroup"
+                      push
+                      size="xs"
+                      icon="update"
+                      :color="contractInfo.update ? 'primary' : 'white'"
+                      :text-color="!contractInfo.update ? 'primary' : 'white'"
+                      @click="contractInfo.update = !contractInfo.update"
+                    ></q-btn>
+                  </div>
+                  <div class="row" style="align-items: center">
+                    <span
+                      class="form-heading x-pt-xs"
+                      v-if="contractInfo.percentage"
+                      >Claim Fee Percent</span
+                    >
+                    <span
+                      class="form-heading x-pt-xs"
+                      v-if="contractInfo.dollar"
+                      >Claim Fee
+                    </span>
+                    <span
+                      class="form-heading x-pt-xs"
+                      v-if="contractInfo.update"
+                      >Claim Fee Rate
+                    </span>
+                    <q-input
+                      class="q-ml-auto"
+                      mask="#.#"
+                      type="number"
+                      v-model.number="contractInfo.claimFeeRate"
+                      placeholder="Claim Fee "
+                      style=" width: 50%"
+                      suffix="/hr"
+                    />
+                  </div>
+                  <br />
+
+                  <div class=" full-width">
+                    <q-input
+                      label=" Time Of First Contract"
+                      v-model="contractInfo.time"
+                      now
+                      mask="time"
+                      lazy-rules
+                      :rules="[val => validateTime(val) || 'Invalid time!']"
+                    >
+                      <template v-slot:append>
+                        <q-icon name="access_time" class="cursor-pointer">
+                          <q-popup-proxy
+                            transition-show="scale"
+                            transition-hide="scale"
+                          >
+                            <q-time v-model="contractInfo.time">
+                              <div class="row items-center justify-end">
+                                <q-btn
+                                  v-close-popup
+                                  label="Close"
+                                  color="primary"
+                                  flat
+                                ></q-btn>
+                              </div>
+                            </q-time>
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                    </q-input>
+                  </div>
+                  <span class="form-heading">
+                    Source Of Claim
+                  </span>
+
+                  <div>
+                    <q-select
+                      v-model="sourceDetails.type"
+                      :options="leadSources"
+                      option-label="name"
+                      option-value="value"
+                      options-dense
+                      emit-value
+                      map-options
+                      options-dense
+                      @input="onChangingSourceType()"
+                    />
+                    <q-input
+                      v-if="
+                        sourceDetails.type != constants.industries.VENDOR &&
+                          sourceDetails.type != '' &&
+                          sourceDetails.type != 'google'
+                      "
+                      type="text"
+                      class="required"
+                      placeholder="Enter Source details"
+                      v-model="sourceDetails.details"
+                      lazy-rules
+                      :rules="[val => (val && val.length > 0) || '']"
+                    />
+                    <div
+                      v-else-if="
+                        sourceDetails.type == constants.industries.VENDOR
+                      "
+                      class="custom-select"
+                      @click="
+                        onAddVendorDialogClick(constants.industries.VENDOR)
+                      "
+                    >
+                      <div class="select-text">
+                        {{
+                          sourceDetails.id
+                            ? sourceDetails.details
+                            : 'Select Lead Source'
+                        }}
+                      </div>
+                    </div>
+                  </div>
+                  <br />
+                  <span class="form-heading">Accept or Cancel Claim ?</span>
+                  <p>
+                    if this claim will not be accepted, you can mark the claim
+                    as beiing "Cancelled",which will close the claim upon
+                    creation. This allows you to record the client and property
+                    information in claimGuru for historical purposes.
+                  </p>
+                  <div class="row">
+                    <p class="q-mx-none q-my-auto form-heading">
+                      Cancelled?
+                    </p>
+                    <q-toggle
+                      class="q-ml-auto"
+                      v-model="contractInfo.cancelledToggle"
+                    />
+                  </div>
+                  <div class="full-width">
+                    <q-select
+                      v-model="contractInfo.reasonForCancellation"
+                      :options="reasonForCancellation"
+                      label="Reason For Cancellation"
+                    ></q-select>
+                  </div>
+                  <br />
+                  <span class="form-heading">Reason For Cancellation</span>
+                  <div class="floating-label">
+                    <textarea
+                      rows="5"
+                      required
+                      class="full-width"
+                      v-model="contractInfo.reasonForCancellationText"
+                      style="resize: none"
+                    ></textarea>
+                  </div>
+                </q-form>
+              </div>
+
+              <br />
+            </div>
+          </div>
+
+          <q-btn
+            label="Save"
+            color="primary"
+            class="full-width q-mt-auto text-capitalize"
+            @click="onSubmit('contractInfoDialog')"
+            size="'xl'"
+          ></q-btn>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -2204,7 +2440,7 @@
 import CustomHeader from 'components/CustomHeader';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import AddressService from '@utils/country';
-import { validateEmail, validateDate } from '@utils/validation';
+import { validateEmail, validateDate, validateTime } from '@utils/validation';
 import { constants } from '@utils/constant';
 import { dateToSend } from '@utils/date';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
@@ -2220,6 +2456,20 @@ export default {
 
   data() {
     return {
+      reasonForCancellation: ['Google', 'Facebook', 'Whatsapp', 'Instagram'],
+      contractInfo: {
+        contractDate: '',
+        firstContractDate: '',
+        claimFeeRate: '',
+        time: '',
+        cancelledToggle: false,
+        reasonForCancellation: '',
+        reasonForCancellationText: '',
+        percentage: false,
+        dollar: false,
+        update: false,
+        buttonGroup: ''
+      },
       publicAdjustor: {
         personnelRole1: '',
         personnelRole2: '',
@@ -2241,6 +2491,7 @@ export default {
       osDamagedItems: [],
 
       isCreateClientButtonDisabled: true,
+
       industryType: {
         value: '',
         machineValue: ''
@@ -2252,6 +2503,7 @@ export default {
         { name: 'Loss Info', validForm: false },
         { name: 'Expert/Vendor Info', validForm: false },
         { name: 'Estimating Info', validForm: false },
+        { name: 'Contract Info', validForm: false },
         { name: 'Public Adjustor Info', validForm: false },
         { name: 'Office Task', validForm: false }
       ],
@@ -2268,6 +2520,7 @@ export default {
       showVendorDialogFilters: false,
       lossAddressNameDropdown: 'Others',
       publicAdjustorInfoDialog: false,
+      contractInfoDialog: false,
       addVendorDialog: false,
       addEstimatorDialog: false,
       vendorsListDialog: false,
@@ -2528,7 +2781,7 @@ export default {
   },
 
   created() {
-    this.insuranceDetails.policyEffectiveDate = this.insuranceDetails.policyExpireDate = this.lossInfo.dateOfLoss = this.lossInfo.deadlineDate = this.lossInfo.recovDeadline = date.formatDate(
+    this.contractInfo.firstContractDate = this.contractInfo.contractDate = this.insuranceDetails.policyEffectiveDate = this.insuranceDetails.policyExpireDate = this.lossInfo.dateOfLoss = this.lossInfo.deadlineDate = this.lossInfo.recovDeadline = date.formatDate(
       Date.now(),
       'MM/DD/YYYY'
     );
@@ -2701,9 +2954,12 @@ export default {
         case 'Documents':
           this.documentsDialog = true;
           break;
+        case 'Contract Info':
+          this.contractInfoDialog = true;
       }
     },
     validateDate,
+    validateTime,
     deleteItems(index) {
       this.$delete(this.ppDamagedItems, index);
     },
@@ -2741,6 +2997,7 @@ export default {
       this.states = addressService.getStates(country);
     },
     onCloseDialogBox(DialogName, value) {
+      console.log('hello');
       if (this.dialogBoxes[value].validForm == true) {
         this.onSubmit(DialogName);
       } else {
@@ -2788,15 +3045,19 @@ export default {
           success = await this.$refs.estimatingInfoForm.validate();
           validationIndex = 5;
           break;
-        case 'publicAdjustorInfoDialog':
-          success = await this.$refs.publicAdjustorForm.validate();
+
+        case 'contractInfoDialog':
+          success = await this.$refs.contractInfoForm.validate();
           validationIndex = 6;
           break;
+        case 'publicAdjustorInfoDialog':
+          success = await this.$refs.publicAdjustorForm.validate();
+          validationIndex = 7;
       }
       if (success == true) {
         this.dialogBoxes[validationIndex].validForm = true;
 
-        for (var i = 0; i < this.dialogBoxes.length - 2; i++) {
+        for (var i = 0; i < this.dialogBoxes.length - 1; i++) {
           if (this.dialogBoxes[i].validForm == false) {
             this.isCreateClientButtonDisabled = true;
             break;
@@ -3108,6 +3369,21 @@ export default {
           isInsuredHired: this.anyOtherExpertHiredToggle,
           notes: this.expertVendorInfo.notes,
           internalNotes: this.expertVendorInfo.internalNotes
+        },
+        contractInfo: {
+          date: dateToSend(this.contractInfo.contractDate),
+          fees: {
+            type:
+              this.contractInfo.percentage ||
+              this.contractInfo.dollar ||
+              this.contractInfo.update
+                ? this.contractInfo.buttonGroup
+                : '',
+            rate: this.contractInfo.claimFeeRate
+              ? this.contractInfo.claimFeeRate
+              : 0
+          },
+          dateOfFirstContact: dateToSend(this.contractInfo.firstContractDate)
         },
         personnel: {
           notes: this.publicAdjustor.notes,
