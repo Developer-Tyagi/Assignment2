@@ -260,6 +260,7 @@ import { mapGetters, mapActions } from 'vuex';
 import { constants } from '@utils/constant';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import { validateEmail } from '@utils/validation';
+import { getVendors } from 'src/store/vendors/actions';
 
 export default {
   name: 'AddVendor',
@@ -338,7 +339,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['contactTypes', 'vendorIndustries', 'titles'])
+    ...mapGetters(['contactTypes', 'vendorIndustries', 'titles', 'vendors'])
   },
 
   mounted() {
@@ -386,7 +387,8 @@ export default {
       'addVendor',
       'getVendorIndustries',
       'getTitles',
-      'getContactTypes'
+      'getContactTypes',
+      'getVendors'
     ]),
     validateEmail,
 
@@ -486,6 +488,25 @@ export default {
       if (success) {
         const response = await this.addVendor(this.vendor);
         if (response) {
+          if (this.vendor.industry.value === 'Carrier') {
+            let params = {
+              industry: 'carrier',
+              name: ''
+            };
+            await this.getVendors(params);
+
+            const selected = this.vendors.find(obj => {
+              return obj.name === this.vendor.name;
+            });
+
+            this.$emit(
+              'onCloseAddVendor',
+              true,
+              selected,
+              this.vendor.industry.value
+            );
+          }
+
           this.closeDialog(true);
         }
       }
