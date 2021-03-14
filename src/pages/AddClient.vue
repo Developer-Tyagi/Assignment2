@@ -1884,71 +1884,89 @@
                       v-model="vendorExpertHiredToggle"
                     />
                   </div>
-
-                  <q-select
-                    v-if="vendorExpertHiredToggle"
-                    class="full-width"
-                    v-model="expertVendorInfo.industry.value"
-                    use-input
-                    input-debounce="0"
-                    option-label="name"
-                    label=" Industry"
-                    options-dense
-                    :options="vendorIndustriesOptions"
-                    option-value="name"
-                    @filter="searchFilterBy"
-                    @input="setVendorIndustryName"
-                    behavior="menu"
-                    emit-value
-                    map-options
-                    lazy-rules
-                    :rules="[
-                      val =>
-                        (val && val.length > 0) ||
-                        'Please fill the Vendor Industry'
-                    ]"
-                  >
-                    <template v-slot:no-option>
-                      <q-item>
-                        <q-item-section class="text-black">
-                          No results
-                        </q-item-section>
-                      </q-item>
-                    </template>
-                  </q-select>
-                  <!-- This will Show the input when industry Type is Others -->
-                  <q-input
-                    v-model="industryType.value"
-                    v-if="expertVendorInfo.industry.value == 'Others'"
-                    label="Enter New Industry Type"
-                  ></q-input>
-                  <q-btn
-                    class="q-mt-md"
-                    v-if="expertVendorInfo.industry.value == 'Others'"
-                    label="Add"
-                    outline
-                    @click="addAnotherIndustry"
-                  />
+                  <!-- Assigning Multiple Expert Vendors -->
 
                   <div
-                    v-if="vendorExpertHiredToggle"
-                    class="custom-select"
-                    v-model="expertVendorInfo.vendorName"
-                    @click="
-                      onAddVendorDialogClick(constants.industries.EXPERTVENDOR)
-                    "
+                    v-for="(item, index) in expertVendorInfo.industry"
+                    v-if="expertVendorInfo.industry.length >= 0"
                   >
-                    <div class="select-text">
-                      {{
-                        expertVendorInfo.id
-                          ? expertVendorInfo.vendorName
-                          : 'Select Vendor'
-                      }}
+                    <q-select
+                      v-if="vendorExpertHiredToggle"
+                      class="full-width"
+                      v-model="expertVendorInfo.industry[index].value"
+                      use-input
+                      input-debounce="0"
+                      option-label="name"
+                      label=" Industry"
+                      :options="vendorIndustriesOptions"
+                      option-value="name"
+                      @filter="searchFilterBy"
+                      @input="setVendorIndustryName(index)"
+                      behavior="menu"
+                      emit-value
+                      map-options
+                      lazy-rules
+                      :rules="[
+                        val =>
+                          (val && val.length > 0) ||
+                          'Please fill the Vendor Industry'
+                      ]"
+                    >
+                      <template v-slot:no-option>
+                        <q-item>
+                          <q-item-section class="text-black">
+                            No results
+                          </q-item-section>
+                        </q-item>
+                      </template>
+                    </q-select>
+                    <!-- This will Show the input when industry Type is Others -->
+                    <q-input
+                      v-model="industryType.value"
+                      v-if="expertVendorInfo.industry[index].value == 'Others'"
+                      label="Enter New Industry Type"
+                    ></q-input>
+                    <q-btn
+                      class="q-mt-md"
+                      v-if="expertVendorInfo.industry[index].value == 'Others'"
+                      label="Add"
+                      outline
+                      @click="addAnotherIndustry"
+                    />
+
+                    <div
+                      v-if="vendorExpertHiredToggle"
+                      class="custom-select"
+                      v-model="expertVendorInfo.vendors[index].value"
+                      @click="
+                        onAddVendorDialogClick(
+                          constants.industries.EXPERTVENDOR,
+                          index
+                        )
+                      "
+                    >
+                      <div class="select-text">
+                        {{
+                          expertVendorInfo.id
+                            ? expertVendorInfo.vendors[index].value
+                            : 'Select Vendor'
+                        }}
+                      </div>
                     </div>
                   </div>
+                  <q-btn
+                    v-if="vendorExpertHiredToggle"
+                    class="q-ma-none q-mb-sm"
+                    size="sm"
+                    label="Add More"
+                    color="primary"
+                    @click="addAnotherVendor()"
+                  />
 
                   <div class="row">
-                    <span class="form-heading">Is Insured hired?</span>
+                    <p class="form-heading q-mx-none q-my-auto">
+                      Is Insured hired?
+                    </p>
                     <q-toggle
                       class="q-ml-auto"
                       v-model="anyOtherExpertHiredToggle"
@@ -2711,9 +2729,10 @@ export default {
       expertVendorInfo: {
         notes: '',
         internalNotes: '',
-        vendorName: '',
+
+        vendors: [{ id: '', value: null }],
         id: '',
-        industry: { value: null, id: '', machineValue: '' }
+        industry: [{ value: null, id: '', machineValue: '' }]
       },
       officeTask: {
         officeActionTypes: '',
@@ -2870,7 +2889,7 @@ export default {
     // For Adding Another Industry in Expert/Vendor
     async addAnotherIndustry() {
       let text = this.industryType.value.toLowerCase();
-      console.log(text);
+
       if (text != 'others') {
         const response = await this.addIndustry(this.industryType);
         if (response) {
@@ -2889,6 +2908,47 @@ export default {
           type: 'negative'
         });
       }
+    },
+    addAnotherVendor() {
+      this.expertVendorInfo.industry.push({
+        id: this.expertVendorInfo.industry.id,
+        value: this.expertVendorInfo.industry.value
+      });
+      let len = this.expertVendorInfo.vendors.length;
+      this.expertVendorInfo.vendors.push({
+        id: this.expertVendorInfo.vendors[len - 1].id,
+        value: this.expertVendorInfo.vendors[len - 1].value
+      });
+      this.expertVendorInfo.vendors[len].value = 'Select Vendor';
+    },
+    onClosingVendorSelectDialog(vendor, dialogName) {
+      switch (dialogName) {
+        case constants.industries.CARRIER:
+          this.insuranceDetails.carrierId = vendor.id;
+          this.insuranceDetails.carrierName = vendor.name;
+          break;
+        case constants.industries.VENDOR:
+          this.sourceDetails.id = vendor.id;
+          this.sourceDetails.details = vendor.name;
+          break;
+        case constants.industries.MORTGAGE:
+          this.mortgageDetails[0].id = vendor.id;
+          this.mortgageDetails[0].value = vendor.name;
+          break;
+        case constants.industries.SECONDARYMORTGAGE:
+          this.mortgageDetails[1].id = vendor.id;
+          this.mortgageDetails[1].value = vendor.name;
+          break;
+        case constants.industries.EXPERTVENDOR:
+          this.expertVendorInfo.id = vendor.id;
+          let len = this.expertVendorInfo.vendors.length;
+          this.expertVendorInfo.vendors[len - 1].id = vendor.id;
+          this.expertVendorInfo.vendors[len - 1].value = vendor.name;
+
+          break;
+      }
+
+      this.vendorsListDialog = false;
     },
     // This function is used for filtering role in public adjustor page
     onFilteringPersonnelRoles(val) {
@@ -2982,16 +3042,16 @@ export default {
       this.$delete(this.ppDamagedItems, index);
     },
 
-    setVendorIndustryName() {
-      const selectedName = this.expertVendorInfo.industry.value;
+    setVendorIndustryName(index) {
+      const selectedName = this.expertVendorInfo.industry[index].value;
       const result = this.vendorIndustries.find(obj => {
         return obj.name === selectedName;
       });
 
-      this.expertVendorInfo.industry.value = result.name;
+      this.expertVendorInfo.industry[index].value = result.name;
 
-      this.expertVendorInfo.industry.id = result.id;
-      this.expertVendorInfo.industry.machineValue = result.machineValue;
+      this.expertVendorInfo.industry[index].id = result.id;
+      this.expertVendorInfo.industry[index].machineValue = result.machineValue;
     },
     onCountrySelect(country) {
       this.states = addressService.getStates(country);
@@ -3360,12 +3420,7 @@ export default {
         },
         expertInfo: {
           isVendorAssigned: this.vendorExpertHiredToggle,
-          vendor: [
-            {
-              id: this.expertVendorInfo.id,
-              value: this.expertVendorInfo.vendorName
-            }
-          ],
+          vendor: this.expertVendorInfo.vendors,
           isInsuredHired: this.anyOtherExpertHiredToggle,
           notes: this.expertVendorInfo.notes,
           internalNotes: this.expertVendorInfo.internalNotes
@@ -3461,32 +3516,6 @@ export default {
       this.sourceDetails.machineValue = '';
     },
 
-    onClosingVendorSelectDialog(vendor, dialogName) {
-      switch (dialogName) {
-        case constants.industries.CARRIER:
-          this.insuranceDetails.carrierId = vendor.id;
-          this.insuranceDetails.carrierName = vendor.name;
-          break;
-        case constants.industries.VENDOR:
-          this.sourceDetails.id = vendor.id;
-          this.sourceDetails.details = vendor.name;
-          break;
-        case constants.industries.MORTGAGE:
-          this.mortgageDetails[0].id = vendor.id;
-          this.mortgageDetails[0].value = vendor.name;
-          break;
-        case constants.industries.SECONDARYMORTGAGE:
-          this.mortgageDetails[1].id = vendor.id;
-          this.mortgageDetails[1].value = vendor.name;
-          break;
-        case constants.industries.EXPERTVENDOR:
-          this.expertVendorInfo.id = vendor.id;
-          this.expertVendorInfo.vendorName = vendor.name;
-          break;
-      }
-
-      this.vendorsListDialog = false;
-    },
     onToggleButtonClick() {
       if (this.mortgageDetails.length > 1) {
         this.mortgageDetails.pop();
@@ -3526,7 +3555,7 @@ export default {
         }
       }
     },
-    onAddVendorDialogClick(name) {
+    onAddVendorDialogClick(name, index) {
       this.valueName = name;
 
       switch (name) {
@@ -3545,7 +3574,9 @@ export default {
           this.showVendorDialogFilters = false;
           this.vendorDialogFilterByIndustry = constants.industries.VENDOR;
 
-          this.vendorDialogFilterByIndustry = this.expertVendorInfo.industry.machineValue;
+          this.vendorDialogFilterByIndustry = this.expertVendorInfo.industry[
+            index
+          ].machineValue;
           break;
         case constants.industries.CARRIER:
           this.vendorDialogName = constants.industries.CARRIER;
