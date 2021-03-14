@@ -1,4 +1,5 @@
 export const clients = state => state.clients;
+export const personnelRoles = state => state.personnelRoles;
 export const estimators = state => state.estimators;
 export const clientTypes = state => state.clientTypes;
 export const propertyTypes = state => state.propertyTypes;

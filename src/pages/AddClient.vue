@@ -39,13 +39,13 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="form-card q-pa-md" style="padding-top: 51px">
+      <q-card class="form-card q-pa-md">
         <q-header bordered class="bg-white">
           <q-toolbar class="row bg-white">
             <img
               src="~assets/close.svg"
               alt="back-arrow"
-              @click="publicAdjustorInfoDialog = false"
+              @click="onCloseDialogBox('publicAdjustorInfoDialog', 6)"
               style="margin: auto 0"
             />
 
@@ -55,126 +55,141 @@
           </q-toolbar>
         </q-header>
         <q-card-section>
-          <div class="text-h7">
-            Select Public Adjustor You Want to Assign to.
+          <div class="q-page bg-white">
+            <div class="full-width fix-height">
+              <div>
+                <q-form ref="publicAdjustorForm">
+                  <div class="form-heading q-pt-lg text-bold">
+                    CLAIM PERSONNEL
+                  </div>
+                  <div class="form-heading q-mt-lg">Personnel Role</div>
+                  <q-select
+                    v-model="publicAdjustor.personnelRole1"
+                    :options="personnelRoles"
+                    label="Select Role"
+                    option-label="name"
+                    option-value="value"
+                    options-dense
+                    emit-value
+                    map-options
+                    options-dense
+                    @input="onFilteringPersonnelRoles('Kuldeep')"
+                  ></q-select>
+                  <div class="form-heading q-mt-lg">
+                    Person Party
+                  </div>
+                  <q-select
+                    v-model="publicAdjustor.personParty1"
+                    :options="publicAdjustor.filterRole"
+                    label="Select a Role"
+                    option-label="name"
+                    :disable="publicAdjustor.isFilterApply"
+                    option-value="value"
+                    options-dense
+                    emit-value
+                    map-options
+                    options-dense
+                  ></q-select>
+                  <div class="form-heading q-mt-lg">Personnel Role</div>
+                  <q-select
+                    v-model="publicAdjustor.personnelRole2"
+                    :options="personnelRoles"
+                    label="Select Role"
+                    option-label="name"
+                    option-value="value"
+                    options-dense
+                    emit-value
+                    map-options
+                    options-dense
+                  ></q-select>
+                  <div class="form-heading q-mt-lg">Person/Party</div>
+                  <q-select
+                    v-model="publicAdjustor.personParty2"
+                    :options="personnelRoles"
+                    label="Select a Role"
+                    option-label="name"
+                    disable
+                    option-value="value"
+                    options-dense
+                    emit-value
+                    map-options
+                    options-dense
+                  ></q-select>
+                  <div class="form-heading q-mt-lg">Personnel Role</div>
+                  <q-select
+                    v-model="publicAdjustor.personnelRole3"
+                    :options="personnelRoles"
+                    label="Select Role"
+                    option-label="name"
+                    option-value="value"
+                    options-dense
+                    emit-value
+                    map-options
+                    options-dense
+                  ></q-select>
+                  <div class="form-heading q-mt-lg">Person/Party</div>
+                  <q-select
+                    v-model="publicAdjustor.personParty3"
+                    :options="personnelRoles"
+                    label="Select a Role"
+                    option-label="name"
+                    disable
+                    option-value="value"
+                    options-dense
+                    emit-value
+                    map-options
+                    options-dense
+                  ></q-select>
+                  <div class="form-heading q-mt-lg">Personnel Role</div>
+                  <q-select
+                    v-model="publicAdjustor.personnelRole4"
+                    :options="personnelRoles"
+                    label="Select Role"
+                    option-label="name"
+                    option-value="value"
+                    options-dense
+                    emit-value
+                    map-options
+                    options-dense
+                  ></q-select>
+                  <div class="form-heading q-mt-lg">Person/Party</div>
+                  <q-select
+                    v-model="publicAdjustor.personParty4"
+                    :options="personnelRoles"
+                    label="Select a Role"
+                    option-label="name"
+                    disable
+                    option-value="value"
+                    options-dense
+                    emit-value
+                    map-options
+                    options-dense
+                  ></q-select
+                  ><br />
+                  <span class="form-heading"
+                    >Special Instructions, Comments Or Other Notes</span
+                  >
+
+                  <div class="floating-label">
+                    <textarea
+                      rows="5"
+                      required
+                      class="full-width"
+                      v-model="publicAdjustor.notes"
+                      style="resize: none"
+                    ></textarea>
+                  </div>
+                </q-form>
+              </div>
+            </div>
           </div>
-          <q-select
-            v-model="AdjustorTypes.type"
-            :options="AdjustorTypes"
-            label="Select Public Adjustor"
-          />
         </q-card-section>
-        <div v-if="AdjustorTypes.type == 'Self'">
-          <div style="font-size: 15px; font-weight: bold">My Details</div>
-          <br />
-          <div style="font-size: 15px; margin-left: 10px">22/12/2020</div>
-          <div style="font-size: 15px; margin-left: 10px; font-weight: bold">
-            David Jones
-          </div>
-          <div style="font-size: 15px; margin-left: 10px">
-            davidjones@company.com
-          </div>
-          <div style="font-size: 15px; margin-left: 10px">
-            Mobile- +1(650) XXXXX98
-          </div>
-          <div style="font-size: 15px; margin-left: 10px">
-            License Number- 12345677
-          </div>
-          <br />
-          <div class="row">
-            <p style="font-size: 15px">Is it company lead?</p>
-            <q-toggle class="q-ml-auto" v-model="isItCompanyLeadToggle" />
-          </div>
-          <q-separator /><br />
-          <div style="font-size: 15px">Default Fee Rate - 20%</div>
-          <br />
-          <div style="font-size: 20px">Adjustors Fee Type</div>
-          <div class="row">
-            <div class="q-pa-md">
-              <q-btn padding="xs" color="primary" icon="eva-percent" />
-            </div>
-            <div class="q-pa-md">
-              <div class="text-purple q-gutter-md">
-                <q-btn padding="xs" color="primary" icon="monetization_on" />
-              </div>
-            </div>
-            <div class="q-pa-md">
-              <div class="text-purple q-gutter-md">
-                <q-btn padding="xs" color="primary" icon="query_builder" />
-              </div>
-            </div>
-          </div>
-          <div style="font-size: 15px; font-weight: bold">
-            Adjusters Fee Rate
-          </div>
-          <br />
-          <q-separator />
-          <br />
-          <div class="row" style="font-size: 20px">
-            <span class="material-icons"> info </span>
-            <div>Needs approval from company</div>
-          </div>
-        </div>
-        <div v-else-if="AdjustorTypes.type == 'Public Adjustor 01'">
-          <div style="font-size: 15px; margin-left: 10px">
-            Public Adjustor 01 Details
-          </div>
-          <br />
-          <div style="font-size: 15px; margin-left: 10px">22/12/2020</div>
-          <div style="font-size: 15px; margin-left: 10px; font-weight: bold">
-            Public Adjustor 01
-          </div>
-          <div style="font-size: 15px; margin-left: 10px">
-            publicadjustor01@company.com
-          </div>
-          <div style="font-size: 15px; margin-left: 10px">
-            Mobile- +1(650) XXXXX98
-          </div>
-          <div style="font-size: 15px; margin-left: 10px">
-            License Number- 12345677
-          </div>
-          <br />
-          <div class="row">
-            <p style="font-size: 15px">Is it company lead</p>
-            <q-toggle class="q-ml-auto" v-model="isItCompanyLeadToggle" />
-          </div>
-          <q-separator></q-separator><br />
-          <div style="font-size: 15px; margin-left: 25px">
-            Default Fee Rate - 20%
-          </div>
-          <br />
-          <div style="font-size: 20px">Adjustors Fee Type</div>
-          <div class="row">
-            <div class="q-pa-md">
-              <q-btn padding="xs" color="primary" icon="eva-percent" />
-            </div>
-            <div class="q-pa-md">
-              <div class="text-purple q-gutter-md">
-                <q-btn padding="xs" color="primary" icon="monetization_on" />
-              </div>
-            </div>
-            <div class="q-pa-md">
-              <div class="text-purple q-gutter-md">
-                <q-btn padding="xs" color="primary" icon="query_builder" />
-              </div>
-            </div>
-          </div>
-          <div style="font-size: 15px; font-weight: bold">
-            Adjusters Fee Rate
-          </div>
-          <br />
-          <q-separator />
-          <br />
-          <div class="row" style="font-size: 20px; margin-left: 10px">
-            <span class="material-icons"> info </span>
-            <div>Needs approval from company</div>
-          </div>
-        </div>
-        <div v-else></div>
+
         <q-btn
           label="Save"
           color="primary"
           class="full-width q-mt-auto text-capitalize"
+          @click="onSubmit('publicAdjustorInfoDialog')"
           size="'xl'"
         ></q-btn>
       </q-card>
@@ -2246,9 +2261,9 @@
                       class="q-mx-sm"
                       push
                       label="$"
-                      :color="contractInfo.doller ? 'primary' : 'white'"
-                      :text-color="!contractInfo.doller ? 'primary' : 'white'"
-                      @click="contractInfo.doller = !contractInfo.doller"
+                      :color="contractInfo.dollar ? 'primary' : 'white'"
+                      :text-color="!contractInfo.dollar ? 'primary' : 'white'"
+                      @click="contractInfo.dollar = !contractInfo.dollar"
                     ></q-btn>
 
                     <q-btn
@@ -2269,7 +2284,7 @@
                     >
                     <span
                       class="form-heading x-pt-xs"
-                      v-if="contractInfo.doller"
+                      v-if="contractInfo.dollar"
                       >Claim Fee
                     </span>
                     <span
@@ -2451,10 +2466,24 @@ export default {
         reasonForCancellation: '',
         reasonForCancellationText: '',
         percentage: false,
-        doller: false,
+        dollar: false,
         update: false,
         buttonGroup: ''
       },
+      publicAdjustor: {
+        personnelRole1: '',
+        personnelRole2: '',
+        personnelRole3: '',
+        personnelRole4: '',
+        personParty1: '',
+        personParty2: '',
+        personParty3: '',
+        personParty4: '',
+        notes: '',
+        isFilterApply: true,
+        filterRole: []
+      },
+
       PPdamagedItemsDailog: false,
       ppDamagedItems: [],
 
@@ -2475,7 +2504,6 @@ export default {
         { name: 'Expert/Vendor Info', validForm: false },
         { name: 'Estimating Info', validForm: false },
         { name: 'Contract Info', validForm: false },
-
         { name: 'Public Adjustor Info', validForm: false },
         { name: 'Office Task', validForm: false }
       ],
@@ -2501,7 +2529,7 @@ export default {
       estimatingInfoDialog: false,
       lossInfoDialog: false,
       hasClaimBeenFilledToggle: false,
-      AdjustorTypes: ['Self', 'Public Adjustor 01'],
+
       maximizedToggle: true,
       clientInfoDailog: false,
       policyHolder: {
@@ -2691,7 +2719,7 @@ export default {
         officeActionTypes: '',
         officeTaskTypes: ''
       },
-      isItCompanyLeadToggle: false,
+
       addAditionalPhoneNumberToggle: false,
       tenantOccupiedToggle: false,
       isDamageOSToggle: false,
@@ -2809,7 +2837,8 @@ export default {
       'titles',
       'vendors',
       'policyCategories',
-      'vendorIndustries'
+      'vendorIndustries',
+      'personnelRoles'
     ])
   },
 
@@ -2859,6 +2888,13 @@ export default {
           position: 'top',
           type: 'negative'
         });
+      }
+    },
+    // This function is used for filtering role in public adjustor page
+    onFilteringPersonnelRoles(val) {
+      if (this.publicAdjustor.personnelRole1 == 'manager') {
+        this.publicAdjustor.filterRole.push(val);
+        this.publicAdjustor.isFilterApply = false;
       }
     },
     //This function is user for searching Industries and  add others option at the last
@@ -3012,6 +3048,8 @@ export default {
 
         case 'contractInfoDialog':
           success = await this.$refs.contractInfoForm.validate();
+        case 'publicAdjustorInfoDialog':
+          success = await this.$refs.publicAdjustorForm.validate();
           validationIndex = 6;
           break;
       }
@@ -3320,7 +3358,7 @@ export default {
           fees: {
             type:
               this.contractInfo.percentage ||
-              this.contractInfo.doller ||
+              this.contractInfo.dollar ||
               this.contractInfo.update
                 ? this.contractInfo.buttonGroup
                 : '',
@@ -3329,6 +3367,16 @@ export default {
               : 0
           },
           dateOfFirstContact: dateToSend(this.contractInfo.firstContractDate)
+        },
+        personnel: {
+          notes: this.publicAdjustor.notes,
+          users: [
+            {
+              id: '',
+              name: '',
+              role: ''
+            }
+          ]
         }
       };
 

@@ -14,6 +14,7 @@ export default function() {
       { value: 'google', name: 'Google' },
       { value: 'other', name: 'Other' }
     ],
+
     plans: [
       {
         id: '3',
