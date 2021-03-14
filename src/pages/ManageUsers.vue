@@ -42,9 +42,9 @@
         <div class=" q-mt-md q-mx-xl text-Discription" style="height:590px;">
           <table>
             <thead>
-              <tr class="text-bold text-h6 text-white">
-                <th>Contact Name</th>
-                <th>Email</th>
+              <tr class="text-bold text-h6 text-white" style="height:50px;">
+                <th style="width:15%;">Contact Name</th>
+                <th style="width:15%;">Email</th>
                 <th>Phone</th>
                 <th>Member Since</th>
                 <th>Roles</th>
@@ -83,11 +83,11 @@
                 </td>
                 <td class="text-center ">{{ lastAccess }}</td>
 
-                <td class="text-center " style="margin-left:50%;">
+                <td class="text-center ">
                   {{ status }}
                 </td>
-                <td class="text-center " style="width:16%;">
-                  <div class="q-pl-xl">
+                <td class="text-center ">
+                  <div>
                     <q-btn-dropdown label="Action" style="width: 100px" outline>
                       <q-list>
                         <q-item clickable v-close-popup @click="onItemClick">
@@ -287,18 +287,26 @@ export default {
       const success = await this.$refs.addUserForm.validate();
 
       if (success) {
-        await this.addUser(this.users);
-        this.users = {
-          type: 'user',
-          contact: {
-            fname: '',
-            lname: ''
-          },
-          email: '',
-          roles: []
-        };
+        if (this.users.roles[0]) {
+          await this.addUser(this.users);
+          this.users = {
+            type: 'user',
+            contact: {
+              fname: '',
+              lname: ''
+            },
+            email: '',
+            roles: []
+          };
 
-        this.addUserDialogBox = false;
+          this.addUserDialogBox = false;
+        } else {
+          this.$q.notify({
+            message: ' Role Is  Mandatory',
+            position: 'top',
+            type: 'negative'
+          });
+        }
       }
     }
   }
@@ -319,7 +327,7 @@ tr:nth-child(even) {
 }
 table {
   border-collapse: collapse;
-  width: 100%;
+  width: 99.9%;
 }
 th {
   background: red;
