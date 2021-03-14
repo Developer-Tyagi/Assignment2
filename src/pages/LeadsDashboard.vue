@@ -4,7 +4,7 @@
       @backButton="$router.push('/dashboard')"
       :showAddButton="false"
     />
-    <div style="padding-top: 51px; height: calc(100vh); overflow: auto">
+    <div class="leads-dashboard">
       <div class="row q-pa-sm">
         <q-card dark class="my-card" @click="$router.push('/leads')">
           <div class="value">0</div>
@@ -35,23 +35,28 @@
     </div>
   </q-page>
 </template>
-<style lang="scss" scoped>
-.my-card {
-  display: flex;
-  flex-direction: column;
-  background-color: #1b2854;
-  width: calc(33.33% - 10px);
-  height: 150px;
-  padding: 25px 20px;
-  margin: 5px;
-  .value {
-    font-size: 32px;
-    text-align: center;
-  }
-  .text {
-    font-size: 14px;
-    text-align: center;
-    line-height: 18px;
+<style lang="scss">
+.leads-dashboard {
+  padding-top: 51px;
+  height: calc(100% - 51px);
+  overflow: auto;
+  .my-card {
+    display: flex;
+    flex-direction: column;
+    background-color: #1b2854;
+    width: calc(33.33% - 10px);
+    height: 150px;
+    padding: 25px 20px;
+    margin: 5px;
+    .value {
+      font-size: 32px;
+      text-align: center;
+    }
+    .text {
+      font-size: 14px;
+      text-align: center;
+      line-height: 18px;
+    }
   }
 }
 </style>
