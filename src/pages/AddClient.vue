@@ -81,7 +81,7 @@
                   <q-select
                     v-model="publicAdjustor.personParty1"
                     :options="publicAdjustor.filterRole"
-                    placeholder="Select a Role"
+                    :label="!publicAdjustor.personParty1 ? 'Select a Role' : ''"
                     option-label="name"
                     :disable="publicAdjustor.isFilterApply"
                     option-value="value"
@@ -1127,7 +1127,11 @@
                       mask="##/##/####"
                       label="MM/DD/YYYY"
                       lazy-rules
-                      :rules="[val => validateDate(val) || 'Invalid date!']"
+                      :rules="[
+                        val =>
+                          (val.length > 0 && validateDate(val)) ||
+                          'Invalid date!'
+                      ]"
                     >
                       <template v-slot:append>
                         <q-icon
@@ -2205,7 +2209,11 @@
                       mask="##/##/####"
                       label="MM/DD/YYYY"
                       lazy-rules
-                      :rules="[val => validateDate(val) || 'Invalid date!']"
+                      :rules="[
+                        val =>
+                          (validateDate(val) && val && val.length > 0) ||
+                          'Invalid date!'
+                      ]"
                     >
                       <template v-slot:append>
                         <q-icon
@@ -2294,7 +2302,7 @@
                   </div>
                   <div class="row  ">
                     <q-btn
-                      v-model="contractInfo.buttonGroup"
+                      v-model="contractInfo.percentage"
                       push
                       label="%"
                       :color="contractInfo.percentage ? 'primary' : 'white'"
@@ -2306,7 +2314,7 @@
                       "
                     ></q-btn>
                     <q-btn
-                      v-model="contractInfo.buttonGroup"
+                      v-model="contractInfo.dollar"
                       class="q-mx-sm"
                       push
                       label="$"
@@ -2316,7 +2324,7 @@
                     ></q-btn>
 
                     <q-btn
-                      v-model="contractInfo.buttonGroup"
+                      v-model="contractInfo.update"
                       push
                       size="xs"
                       icon="update"
@@ -2331,9 +2339,17 @@
                       mask="#.#"
                       type="number"
                       v-model.number="contractInfo.claimFeeRate"
-                      label="Claim Fee"
+                      label="Claim Fee Rate"
+                      :suffix="
+                        contractInfo.dollar
+                          ? '$ flat'
+                          : '' || contractInfo.percentage
+                          ? '%'
+                          : '' || contractInfo.update
+                          ? '/hr'
+                          : ''
+                      "
                       style=" width: 50%"
-                      suffix="/hr"
                     />
                   </div>
                   <br />
@@ -2479,7 +2495,7 @@ export default {
         percentage: false,
         dollar: false,
         update: false,
-        buttonGroup: ''
+        buttonGroup: false
       },
       publicAdjustor: {
         personnelRole1: '',
@@ -2878,6 +2894,7 @@ export default {
       'addIndustry'
     ]),
     ...mapMutations(['setSelectedLead']),
+
     // in Expert Vendor info when the Toggle Button is off data will be cleared.
     onExpertVendorToggleOff() {
       if (!this.vendorExpertHiredToggle) {
