@@ -2101,6 +2101,7 @@
           </q-toolbar>
         </q-header>
         <VendorsList
+          :carrierName="insuranceDetails.carrierName"
           :selective="true"
           @selectedVendor="onClosingVendorSelectDialog"
           ref="list"
@@ -3057,7 +3058,6 @@ export default {
       this.states = addressService.getStates(country);
     },
     onCloseDialogBox(DialogName, value) {
-      console.log('hello');
       if (this.dialogBoxes[value].validForm == true) {
         this.onSubmit(DialogName);
       } else {
