@@ -736,6 +736,9 @@ export default {
         },
         lossDesc: this.lossDetails.lossDesc,
         dateofLoss: dateToSend(this.lossDetails.dateOfLoss),
+        lossCause: {
+          ...this.lossDetails.causeOfLoss
+        },
 
         policyNumber: this.insuranceDetails.policyNumber,
         isAutomaticScheduling: this.schedulingDetails.isAutomaticScheduling,

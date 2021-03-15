@@ -2836,7 +2836,9 @@ export default {
       this.lossAddressDetails.addressRegion = this.selectedLead.lossLocation.addressRegion;
       this.lossAddressDetails.postalCode = this.selectedLead.lossLocation.postalCode;
       this.lossAddressDetails.streetAddress = this.selectedLead.lossLocation.streetAddress;
-      this.lossInfo.causeOfLoss = this.selectedLead.causeOfLoss;
+      this.lossInfo.causeOfLoss.id = this.selectedLead.causeOfLoss.id;
+      this.lossInfo.causeOfLoss.value = this.selectedLead.causeOfLoss.value;
+      this.lossInfo.causeOfLoss.machineValue = this.selectedLead.causeOfLoss.machineValue;
     }
     this.countries = addressService.getCountries();
     this.onCountrySelect('United States');
