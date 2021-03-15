@@ -178,6 +178,22 @@
                   </template>
                 </q-input>
               </div>
+              <q-select
+                class="required"
+                v-model="lossDetails.causeOfLoss.id"
+                option-value="id"
+                option-label="name"
+                map-options
+                options-dense
+                emit-value
+                :options="lossCauses"
+                @input="setTypes(lossCauses, lossDetails.causeOfLoss)"
+                label="Cause of Loss"
+                :rules="[
+                  val =>
+                    (val && val.length > 0) || 'Please select the cause of loss'
+                ]"
+              /><br />
 
               <q-input
                 v-model="lossDetails.lossDesc"
@@ -553,7 +569,12 @@ export default {
       },
       lossDetails: {
         lossDesc: '',
-        dateOfLoss: ''
+        dateOfLoss: '',
+        causeOfLoss: {
+          value: '',
+          id: '',
+          machineValue: ''
+        }
       },
 
       lossAddress: {
@@ -600,7 +621,8 @@ export default {
       'getContactTypes',
       'getTitles',
       'getClients',
-      'getVendors'
+      'getVendors',
+      'getLossCauses'
     ]),
     ...mapMutations(['setSelectedClient']),
 
@@ -639,7 +661,14 @@ export default {
       }
       this.vendorsListDialog = false;
     },
+    setTypes(types, data) {
+      const obj = types.find(item => {
+        return item.id === data.id;
+      });
 
+      data.machineValue = obj.machineValue;
+      data.value = obj.name;
+    },
     setTitleName() {
       const title = this.titles.find(obj => {
         return obj.id === this.primaryDetails.honorific.id;
@@ -798,7 +827,8 @@ export default {
       'leadSources',
       'contactTypes',
       'titles',
-      'vendors'
+      'vendors',
+      'lossCauses'
     ])
   },
 
@@ -822,6 +852,7 @@ export default {
 
     this.getContactTypes();
     this.getTitles();
+    this.getLossCauses();
     this.getClients().then(() => {
       if (this.$route.params.id) {
         let selectedClient = this.clients.find(

@@ -2836,6 +2836,7 @@ export default {
       this.lossAddressDetails.addressRegion = this.selectedLead.lossLocation.addressRegion;
       this.lossAddressDetails.postalCode = this.selectedLead.lossLocation.postalCode;
       this.lossAddressDetails.streetAddress = this.selectedLead.lossLocation.streetAddress;
+      this.lossInfo.causeOfLoss = this.selectedLead.causeOfLoss;
     }
     this.countries = addressService.getCountries();
     this.onCountrySelect('United States');

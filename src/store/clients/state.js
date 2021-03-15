@@ -14,7 +14,7 @@ export default function() {
     propertyTypes: [],
     policyTypes: [],
     claimReasons: [],
-    lossCauses: [],
+
     claimSeverity: [],
     policyCategories: [],
     selectedClient: ''

@@ -43,13 +43,6 @@ export function setClaimReasons(state, types) {
     id: type.id
   }));
 }
-export function setLossCause(state, types) {
-  state.lossCauses = types.map(type => ({
-    name: type.attributes.value,
-    machineValue: type.attributes.machineValue,
-    id: type.id
-  }));
-}
 
 export function setClaimSeverity(state, types) {
   state.claimSeverity = types.map(type => ({

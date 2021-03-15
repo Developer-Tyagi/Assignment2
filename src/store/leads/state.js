@@ -33,6 +33,7 @@ export default function() {
       },
       lossDesc: '',
       dateOfLoss: '',
+      causeOfLoss: '',
       carrier: {
         id: '',
         value: ''
