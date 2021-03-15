@@ -81,7 +81,7 @@
                   <q-select
                     v-model="publicAdjustor.personParty1"
                     :options="publicAdjustor.filterRole"
-                    label="Select a Role"
+                    placeholder="Select a Role"
                     option-label="name"
                     :disable="publicAdjustor.isFilterApply"
                     option-value="value"
@@ -106,7 +106,7 @@
                   <q-select
                     v-model="publicAdjustor.personParty2"
                     :options="personnelRoles"
-                    label="Select a Role"
+                    placeholder="Select a Role"
                     option-label="name"
                     disable
                     option-value="value"
@@ -131,7 +131,7 @@
                   <q-select
                     v-model="publicAdjustor.personParty3"
                     :options="personnelRoles"
-                    label="Select a Role"
+                    placeholder="Select a Role"
                     option-label="name"
                     disable
                     option-value="value"
@@ -144,7 +144,7 @@
                   <q-select
                     v-model="publicAdjustor.personnelRole4"
                     :options="personnelRoles"
-                    label="Select Role"
+                    placeholder="Select Role"
                     option-label="name"
                     option-value="value"
                     options-dense
@@ -156,7 +156,7 @@
                   <q-select
                     v-model="publicAdjustor.personParty4"
                     :options="personnelRoles"
-                    label="Select a Role"
+                    placeholder="Select a Role"
                     option-label="name"
                     disable
                     option-value="value"
@@ -2262,6 +2262,36 @@
                       </template>
                     </q-input>
                   </div>
+                  <div class=" full-width">
+                    <q-input
+                      label=" Time Of First Contract"
+                      v-model="contractInfo.time"
+                      now
+                      mask="time"
+                      lazy-rules
+                      :rules="[val => validateTime(val) || 'Invalid time!']"
+                    >
+                      <template v-slot:append>
+                        <q-icon name="access_time" class="cursor-pointer">
+                          <q-popup-proxy
+                            transition-show="scale"
+                            transition-hide="scale"
+                          >
+                            <q-time v-model="contractInfo.time">
+                              <div class="row items-center justify-end">
+                                <q-btn
+                                  v-close-popup
+                                  label="Close"
+                                  color="primary"
+                                  flat
+                                ></q-btn>
+                              </div>
+                            </q-time>
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                    </q-input>
+                  </div>
                   <div class="row  ">
                     <q-btn
                       v-model="contractInfo.buttonGroup"
@@ -2296,63 +2326,18 @@
                     ></q-btn>
                   </div>
                   <div class="row" style="align-items: center">
-                    <span
-                      class="form-heading x-pt-xs"
-                      v-if="contractInfo.percentage"
-                      >Claim Fee Percent</span
-                    >
-                    <span
-                      class="form-heading x-pt-xs"
-                      v-if="contractInfo.dollar"
-                      >Claim Fee
-                    </span>
-                    <span
-                      class="form-heading x-pt-xs"
-                      v-if="contractInfo.update"
-                      >Claim Fee Rate
-                    </span>
                     <q-input
-                      class="q-ml-auto"
+                      class="q-ml-auto full-width"
                       mask="#.#"
                       type="number"
                       v-model.number="contractInfo.claimFeeRate"
-                      placeholder="Claim Fee "
+                      label="Claim Fee"
                       style=" width: 50%"
                       suffix="/hr"
                     />
                   </div>
                   <br />
 
-                  <div class=" full-width">
-                    <q-input
-                      label=" Time Of First Contract"
-                      v-model="contractInfo.time"
-                      now
-                      mask="time"
-                      lazy-rules
-                      :rules="[val => validateTime(val) || 'Invalid time!']"
-                    >
-                      <template v-slot:append>
-                        <q-icon name="access_time" class="cursor-pointer">
-                          <q-popup-proxy
-                            transition-show="scale"
-                            transition-hide="scale"
-                          >
-                            <q-time v-model="contractInfo.time">
-                              <div class="row items-center justify-end">
-                                <q-btn
-                                  v-close-popup
-                                  label="Close"
-                                  color="primary"
-                                  flat
-                                ></q-btn>
-                              </div>
-                            </q-time>
-                          </q-popup-proxy>
-                        </q-icon>
-                      </template>
-                    </q-input>
-                  </div>
                   <span class="form-heading">
                     Source Of Claim
                   </span>
@@ -2422,6 +2407,7 @@
                       v-model="contractInfo.reasonForCancellation"
                       :options="reasonForCancellation"
                       label="Reason For Cancellation"
+                      options-dense
                     ></q-select>
                   </div>
                   <br />
@@ -2475,7 +2461,13 @@ export default {
 
   data() {
     return {
-      reasonForCancellation: ['Google', 'Facebook', 'Whatsapp', 'Instagram'],
+      reasonForCancellation: [
+        'Client Cancelled',
+        'Insufficient Coverage',
+        'Loss to small',
+        'No coverage',
+        'Other'
+      ],
       contractInfo: {
         contractDate: '',
         firstContractDate: '',
