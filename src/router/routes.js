@@ -98,38 +98,7 @@ const routes = [
     path: '',
     component: () => import('layouts/LeadLayout.vue'),
     beforeEnter: guardMyroute,
-    children: [
-      {
-        path: 'leads',
-        name: 'leads',
-        caseSensitive: true,
-        component: () => import('pages/Leads.vue')
-      },
-      {
-        path: 'clients',
-        name: 'clients',
-        caseSensitive: true,
-        component: () => import('pages/Clients.vue')
-      },
-      {
-        path: 'add-lead',
-        name: 'add new leads',
-        caseSensitive: true,
-        component: () => import('pages/AddLead.vue')
-      },
-      {
-        path: 'details/:id',
-        name: 'lead details',
-        caseSensitive: true,
-        component: () => import('pages/LeadDetails.vue')
-      },
-      {
-        path: 'add-lead-details/:id?',
-        name: 'add new lead',
-        caseSensitive: true,
-        component: () => import('pages/AddLeadDetails.vue')
-      }
-    ]
+    children: []
   },
   {
     path: '',
@@ -148,20 +117,7 @@ const routes = [
     path: '',
     component: () => import('layouts/ClientLayout.vue'),
     beforeEnter: guardMyroute,
-    children: [
-      {
-        path: 'add-client',
-        name: 'create client',
-        caseSensitive: true,
-        component: () => import('pages/AddClient.vue')
-      },
-      {
-        path: 'leads-dashboard',
-        name: 'leads dashboard',
-        caseSensitive: true,
-        component: () => import('pages/LeadsDashboard.vue')
-      }
-    ]
+    children: []
   },
 
   {
@@ -185,6 +141,55 @@ const routes = [
         name: 'type of inspections',
         caseSensitive: true,
         component: () => import('pages/InspectionTypes.vue')
+      }
+    ]
+  },
+  {
+    path: '',
+    component: () => import('layouts/MobileLayout.vue'),
+    beforeEnter: guardMyroute,
+    children: [
+      {
+        path: 'leads-dashboard',
+        name: 'leads dashboard',
+        caseSensitive: true,
+        component: () => import('pages/LeadsDashboard.vue')
+      },
+      {
+        path: 'leads',
+        name: 'leads',
+        caseSensitive: true,
+        component: () => import('pages/Leads.vue')
+      },
+      {
+        path: 'clients',
+        name: 'clients',
+        caseSensitive: true,
+        component: () => import('pages/Clients.vue')
+      },
+      {
+        path: 'add-lead',
+        name: 'add new leads',
+        caseSensitive: true,
+        component: () => import('pages/AddLead.vue')
+      },
+      {
+        path: 'add-client',
+        name: 'create client',
+        caseSensitive: true,
+        component: () => import('pages/AddClient.vue')
+      },
+      {
+        path: 'add-lead-details/:id?',
+        name: 'add new lead',
+        caseSensitive: true,
+        component: () => import('pages/AddLeadDetails.vue')
+      },
+      {
+        path: 'details/:id',
+        name: 'lead details',
+        caseSensitive: true,
+        component: () => import('pages/LeadDetails.vue')
       }
     ]
   },
