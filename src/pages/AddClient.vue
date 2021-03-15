@@ -1882,6 +1882,7 @@
                     <q-toggle
                       class="q-ml-auto"
                       v-model="vendorExpertHiredToggle"
+                      @input="onExpertVendorToggleOff"
                     />
                   </div>
                   <!-- Assigning Multiple Expert Vendors -->
@@ -2884,7 +2885,13 @@ export default {
       'getVendorIndustries',
       'addIndustry'
     ]),
-
+    // This Function is used when the expert vendor toggle button is off
+    onExpertVendorToggleOff() {
+      if (!this.vendorExpertHiredToggle) {
+        this.expertVendorInfo.industry = '';
+        this.expertVendorInfo.vendors = '';
+      }
+    },
     ...mapMutations(['setSelectedLead']),
     // For Adding Another Industry in Expert/Vendor
     async addAnotherIndustry() {
