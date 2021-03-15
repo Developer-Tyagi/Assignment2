@@ -1039,6 +1039,7 @@
                   <span class="form-heading">Date of Loss</span>
 
                   <div class="full-width">
+                    {{ lossInfo.dateOfLoss }}
                     <q-input
                       v-model="lossInfo.dateOfLoss"
                       mask="##/##/####"
@@ -1495,7 +1496,7 @@
                   </div>
                   <div class="row">
                     <p class="q-mx-none q-my-auto form-heading">
-                      Does Claimguru PPIF need to be provided?
+                      Does Claim Guru PPIF need to be provided?
                     </p>
                     <q-toggle
                       class="q-ml-auto"
@@ -2460,7 +2461,7 @@ import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import AddressService from '@utils/country';
 import { validateEmail, validateDate, validateTime } from '@utils/validation';
 import { constants } from '@utils/constant';
-import { dateToSend } from '@utils/date';
+import { dateToSend, dateToFetch } from '@utils/date';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import VendorsList from 'components/VendorsList';
 import AddVendor from 'components/AddVendor';
@@ -2836,7 +2837,9 @@ export default {
       this.lossAddressDetails.addressRegion = this.selectedLead.lossLocation.addressRegion;
       this.lossAddressDetails.postalCode = this.selectedLead.lossLocation.postalCode;
       this.lossAddressDetails.streetAddress = this.selectedLead.lossLocation.streetAddress;
+      this.lossInfo.dateOfLoss = this.selectedLead.dateOfLoss;
     }
+
     this.countries = addressService.getCountries();
     this.onCountrySelect('United States');
   },
@@ -3057,7 +3060,6 @@ export default {
       this.states = addressService.getStates(country);
     },
     onCloseDialogBox(DialogName, value) {
-      console.log('hello');
       if (this.dialogBoxes[value].validForm == true) {
         this.onSubmit(DialogName);
       } else {
