@@ -2300,39 +2300,21 @@
                       </template>
                     </q-input>
                   </div>
-                  <div class="row  ">
-                    <q-btn
-                      v-model="contractInfo.percentage"
-                      push
-                      label="%"
-                      :color="contractInfo.percentage ? 'primary' : 'white'"
-                      :text-color="
-                        !contractInfo.percentage ? 'primary' : 'white'
-                      "
-                      @click="
-                        contractInfo.percentage = !contractInfo.percentage
-                      "
-                    ></q-btn>
-                    <q-btn
-                      v-model="contractInfo.dollar"
-                      class="q-mx-sm"
-                      push
-                      label="$"
-                      :color="contractInfo.dollar ? 'primary' : 'white'"
-                      :text-color="!contractInfo.dollar ? 'primary' : 'white'"
-                      @click="contractInfo.dollar = !contractInfo.dollar"
-                    ></q-btn>
 
-                    <q-btn
-                      v-model="contractInfo.update"
+                  <div class="row">
+                    <q-btn-toggle
+                      v-model="contractInfo.buttonGroup"
                       push
-                      size="xs"
-                      icon="update"
-                      :color="contractInfo.update ? 'primary' : 'white'"
-                      :text-color="!contractInfo.update ? 'primary' : 'white'"
-                      @click="contractInfo.update = !contractInfo.update"
-                    ></q-btn>
+                      glossy
+                      toggle-color="primary"
+                      :options="[
+                        { label: ' $', value: 'dollar' },
+                        { label: ' %', value: 'percentage' },
+                        { value: 'update', icon: 'update' }
+                      ]"
+                    ></q-btn-toggle>
                   </div>
+
                   <div class="row" style="align-items: center">
                     <q-input
                       class="q-ml-auto full-width"
@@ -2341,11 +2323,11 @@
                       v-model.number="contractInfo.claimFeeRate"
                       label="Claim Fee Rate"
                       :suffix="
-                        contractInfo.dollar
+                        contractInfo.buttonGroup == 'dollar'
                           ? '$ flat'
-                          : '' || contractInfo.percentage
+                          : '' || contractInfo.buttonGroup == 'percentage'
                           ? '%'
-                          : '' || contractInfo.update
+                          : '' || contractInfo.buttonGroup == 'update'
                           ? '/hr'
                           : ''
                       "
@@ -2492,10 +2474,8 @@ export default {
         cancelledToggle: false,
         reasonForCancellation: '',
         reasonForCancellationText: '',
-        percentage: false,
-        dollar: false,
-        update: false,
-        buttonGroup: false
+
+        buttonGroup: 'dollar'
       },
       publicAdjustor: {
         personnelRole1: '',
@@ -3456,12 +3436,7 @@ export default {
         contractInfo: {
           date: dateToSend(this.contractInfo.contractDate),
           fees: {
-            type:
-              this.contractInfo.percentage ||
-              this.contractInfo.dollar ||
-              this.contractInfo.update
-                ? this.contractInfo.buttonGroup
-                : '',
+            type: this.contractInfo.buttonGroup,
             rate: this.contractInfo.claimFeeRate
               ? this.contractInfo.claimFeeRate
               : 0
