@@ -7,30 +7,20 @@
       <div class="text-uppercase text-bold text-black q-mx-auto">
         {{ $route.name }}
       </div>
-      <q-btn
-        @click="onAddClick"
-        flat
-        :class="{
-          visbile: showAddButton == true,
-          'no-visibility': showAddButton == false
-        }"
-      >
-        <img src="~assets/add.svg" />
-      </q-btn>
     </q-toolbar>
   </q-header>
 </template>
 <script>
 export default {
-  name: "CustomHeader",
-  props: ["showAddButton"],
+  name: 'CustomHeader',
+  props: ['showAddButton'],
   methods: {
     onBackClick() {
-      this.$emit("backButton");
+      this.$emit('backButton');
     },
 
     onAddClick() {
-      this.$emit("addButton");
+      this.$emit('addButton');
     }
   }
 };

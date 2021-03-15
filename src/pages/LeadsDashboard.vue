@@ -37,10 +37,7 @@
 </template>
 <style lang="scss">
 .leads-dashboard {
-  position: fixed;
-  top: 61px;
   height: calc(100% - 51px);
-  width: 100%;
   overflow: auto;
   .my-card {
     display: flex;
