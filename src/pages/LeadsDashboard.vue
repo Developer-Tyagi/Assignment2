@@ -37,8 +37,10 @@
 </template>
 <style lang="scss">
 .leads-dashboard {
-  padding-top: 51px;
+  position: fixed;
+  top: 61px;
   height: calc(100% - 51px);
+  width: 100%;
   overflow: auto;
   .my-card {
     display: flex;
@@ -46,7 +48,7 @@
     background-color: #1b2854;
     width: calc(33.33% - 10px);
     height: 150px;
-    padding: 25px 20px;
+    padding: 25px 10px;
     margin: 5px;
     .value {
       font-size: 32px;

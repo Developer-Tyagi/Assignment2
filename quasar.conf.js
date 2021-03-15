@@ -66,7 +66,8 @@ module.exports = function(/* ctx */) {
       lang: 'en-us', // Quasar language pack
       config: {
         capacitor: {
-          backButtonExit: ['/dashboard', '/login']
+          backButtonExit: ['/dashboard', '/login'],
+          iosStatusBarPadding: true
         }
       },
       // Possible values for "importStrategy":

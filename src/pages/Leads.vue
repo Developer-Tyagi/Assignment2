@@ -46,7 +46,7 @@
         />
       </q-toolbar>
     </q-header>
-    <div style="padding-top: 51px" class="row">
+    <div style="position:fixed; top: 61px; width:100%" class="row">
       <div class="full-width ">
         <q-tabs
           v-model="panel"

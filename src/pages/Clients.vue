@@ -125,7 +125,9 @@ export default {
   .actions-div {
     display: flex;
     border-bottom: 1px solid #0000001f;
-    padding: 0 10px;
+    padding: env(safe-area-inset-top, 10px) env(safe-area-inset-right, 10px)
+      env(safe-area-inset-bottom, 10px) env(safe-area-inset-left, 10px);
+
     align-items: center;
   }
   .clients-list {
