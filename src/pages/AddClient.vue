@@ -516,7 +516,7 @@
                   </div>
                   <br />
                   <span class="form-heading">Address Details</span>
-                  {{ isRequired }}
+
                   <AutoCompleteAddress
                     :address="clientAddressDetails"
                     :isDropBoxEnable="true"
