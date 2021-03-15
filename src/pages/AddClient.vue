@@ -2885,14 +2885,26 @@ export default {
       'getVendorIndustries',
       'addIndustry'
     ]),
-    // This Function is used when the expert vendor toggle button is off
+    ...mapMutations(['setSelectedLead']),
+    // in Expert Vendor info when the Toggle Button is off data will be cleared.
     onExpertVendorToggleOff() {
       if (!this.vendorExpertHiredToggle) {
-        this.expertVendorInfo.industry = '';
-        this.expertVendorInfo.vendors = '';
+        this.expertVendorInfo.industry = [
+          {
+            id: '',
+            value: '',
+            machineValue: ''
+          }
+        ];
+        this.expertVendorInfo.vendors = [
+          {
+            id: '',
+            value: 'Select Vendor'
+          }
+        ];
       }
     },
-    ...mapMutations(['setSelectedLead']),
+
     // For Adding Another Industry in Expert/Vendor
     async addAnotherIndustry() {
       let text = this.industryType.value.toLowerCase();
