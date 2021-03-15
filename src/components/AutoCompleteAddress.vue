@@ -10,7 +10,7 @@
     />
     <div class="row justify-between">
       <q-input
-        class="required col-3"
+        class="isRequired ? required col-3 "
         v-model="address.houseNumber"
         label="House/Flat No"
         lazy-rules
@@ -19,60 +19,45 @@
         ]"
       />
       <q-input
-        class="required col-8"
+        class="isRequired? required col-8   "
         v-model="address.streetAddress"
         label="Street"
         lazy-rules
         :rules="[
-          val =>
-            (checkValidations(val) && val.length > 0) ||
-            'Please fill the street address'
+          val => checkValidations(val) || 'Please fill the street address'
         ]"
       />
     </div>
     <q-input
-      class="required"
+      class=" isRequired? required "
       v-model="address.addressLocality"
       label="City"
       lazy-rules
-      :rules="[
-        val =>
-          (checkValidations(val) && val.length > 0) || 'Please fill the city'
-      ]"
+      :rules="[val => checkValidations(val) || 'Please fill the city']"
     />
     <q-select
-      class="required"
+      class="isRequired? required"
       v-model="address.addressRegion"
       :options="states"
       label="State"
       lazy-rules
-      :rules="[
-        val =>
-          (checkValidations(val) && val.length > 0) || 'Please fill the state'
-      ]"
+      :rules="[val => checkValidations(val) || 'Please fill the state']"
     />
     <q-select
-      class="required"
+      class="isRequired? required"
       v-model="address.addressCountry"
       :options="countries"
       label="Country"
       @input="onCountrySelect(address.addressCountry)"
       lazy-rules
-      :rules="[
-        val =>
-          (checkValidations(val) && val.length > 0) || 'Please fill the country'
-      ]"
+      :rules="[val => checkValidations(val) || 'Please fill the country']"
     />
     <q-input
-      class="required"
+      class="isRequired? required"
       v-model="address.postalCode"
       label="ZIP Code"
       lazy-rules
-      :rules="[
-        val =>
-          (checkValidations(val) && val.length > 0) ||
-          'Please fill the zip code'
-      ]"
+      :rules="[val => checkValidations(val) || 'Please fill the zip code']"
     />
     <div class="row" v-if="isDropBoxEnable">
       <p class="q-mx-none q-my-auto">Gate / Dropbox</p>
@@ -98,6 +83,7 @@ const addressService = new AddressService();
 export default {
   name: 'AutoCompleteAddress',
   props: {
+    isRequired: false,
     address: {
       type: Object,
       dropBox: {
@@ -142,7 +128,7 @@ export default {
   methods: {
     checkValidations(val) {
       if (this.isChecksEnable) {
-        if (val) {
+        if (val && val.length > 0) {
           return true;
         }
         return false;

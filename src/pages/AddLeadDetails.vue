@@ -189,6 +189,7 @@
                 :address="lossAddress"
                 :isDropBoxEnable="false"
                 :isChecksEnable="true"
+                :isRequired="true"
               />
             </q-card>
             <div class="row q-pt-md">

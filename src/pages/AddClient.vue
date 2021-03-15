@@ -516,11 +516,12 @@
                   </div>
                   <br />
                   <span class="form-heading">Address Details</span>
-
+                  {{ isRequired }}
                   <AutoCompleteAddress
                     :address="clientAddressDetails"
                     :isDropBoxEnable="true"
                     :isChecksEnable="true"
+                    :isRequired="true"
                   />
 
                   <div class="row">
@@ -626,6 +627,7 @@
                     :isDropBoxEnable="true"
                     :isChecksEnable="true"
                     :isFieldsDisable="isMailingAddressSameToggle"
+                    :isRequired="true"
                   />
                 </q-form>
               </div>
@@ -996,6 +998,7 @@
                     :isDropBoxEnable="true"
                     :isChecksEnable="true"
                     :isFieldsDisable="isLossAddressSameAsClientToggle"
+                    :isRequired="true"
                   />
 
                   <q-select
