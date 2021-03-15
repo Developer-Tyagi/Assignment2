@@ -115,13 +115,6 @@ const routes = [
   },
   {
     path: '',
-    component: () => import('layouts/ClientLayout.vue'),
-    beforeEnter: guardMyroute,
-    children: []
-  },
-
-  {
-    path: '',
     component: () => import('layouts/SettingsLayout.vue'),
     beforeEnter: guardMyroute,
     children: [
@@ -173,12 +166,12 @@ const routes = [
         caseSensitive: true,
         component: () => import('pages/AddLead.vue')
       },
-      {
-        path: 'add-client',
-        name: 'create client',
-        caseSensitive: true,
-        component: () => import('pages/AddClient.vue')
-      },
+      // {
+      //   path: 'add-client',
+      //   name: 'create client',
+      //   caseSensitive: true,
+      //   component: () => import('pages/AddClient.vue')
+      // },
       {
         path: 'add-lead-details/:id?',
         name: 'add new lead',

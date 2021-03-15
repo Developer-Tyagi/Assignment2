@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <div class="mobile-container">
+    <div>
       <div class="actions-div">
         <q-input
           v-model="searchText"
@@ -106,18 +106,8 @@ export default {
 </script>
 
 <style lang="scss">
-.actions-div {
-  display: flex;
-  border-bottom: 1px solid #0000001f;
-  align-items: center;
-
-  .q-field__prepend {
-    padding: 12px;
-  }
-}
 .clients-list {
   background-color: #f4f4f4;
-
   border-bottom: 6px solid white;
 
   .client-list-item {

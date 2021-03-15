@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <div class="mobile-container">
+    <div>
       <div class="mobile-container-page-without-search">
         <div class="row q-pa-sm">
           <q-card

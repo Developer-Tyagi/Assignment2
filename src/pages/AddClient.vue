@@ -1,22 +1,16 @@
 <template>
-  <q-page style="padding-top: 0; height: 100vh">
-    <CustomHeader
-      @backButton="$router.push('/clients')"
-      :showAddButton="false"
-    />
-
-    <div class="column" style="padding: 30px 20px 20px 20px">
-      <div class="q-md column full-width fix-height">
+  <q-page>
+    <div class="mobile-container-page-without-search">
+      <div class="column full-height">
         <div
           v-for="dialogBox in dialogBoxes"
           :key="dialogBox.name"
           @click="createClientDailogBoxOpen(dialogBox.name)"
+          class="form-list row"
         >
-          <div class="form-list row">
-            {{ dialogBox.name }}
-            <div class="q-mr-lg q-ml-auto" v-if="dialogBox.validForm == true">
-              <q-icon size="xs" color="primary" name="done" />
-            </div>
+          {{ dialogBox.name }}
+          <div class="q-mr-lg q-ml-auto" v-if="dialogBox.validForm == true">
+            <q-icon size="xs" color="primary" name="done" />
           </div>
         </div>
 
@@ -75,9 +69,7 @@
                     options-dense
                     @input="onFilteringPersonnelRoles('Kuldeep')"
                   ></q-select>
-                  <div class="form-heading q-mt-lg">
-                    Person Party
-                  </div>
+                  <div class="form-heading q-mt-lg">Person Party</div>
                   <q-select
                     v-model="publicAdjustor.personParty1"
                     :options="publicAdjustor.filterRole"
@@ -1216,9 +1208,9 @@
                       flat
                       bordered
                       scroll
-                      style="margin-top:20px"
+                      style="margin-top: 20px"
                     >
-                      <div class=" items-start q-gutter-md">
+                      <div class="items-start q-gutter-md">
                         <div
                           v-for="(item, index) in osDamagedItems"
                           v-if="osDamagedItems.length"
@@ -1238,20 +1230,20 @@
                             <div>
                               <div class="row">
                                 <div
-                                  class=" form-heading q-ml-sm text-capitalize q-pt-xs"
+                                  class="form-heading q-ml-sm text-capitalize q-pt-xs"
                                 >
                                   {{ item.name }}
                                 </div>
                                 <div
                                   class="q-ml-auto q-pt-xs"
-                                  style="margin-right:30px"
+                                  style="margin-right: 30px"
                                 >
                                   {{ '$' + item.cost }}
                                 </div>
                               </div>
                               <div
-                                class="q-mr-xl  q-my-xm q-px-sm q-ma-xs  text-capitalize text-caption "
-                                style="margin-right:71px"
+                                class="q-mr-xl q-my-xm q-px-sm q-ma-xs text-capitalize text-caption"
+                                style="margin-right: 71px"
                               >
                                 <p>{{ item.desc }}</p>
                               </div>
@@ -1278,8 +1270,8 @@
                       transition-hide="slide-down"
                     >
                       <q-card
-                        class="form-card q-pa-md "
-                        style="width:500px;height:50%"
+                        class="form-card q-pa-md"
+                        style="width: 500px; height: 50%"
                       >
                         <q-header bordered class="bg-white">
                           <q-toolbar class="row bg-white">
@@ -1299,7 +1291,7 @@
 
                         <q-card-section>
                           <div class="q-page bg-white">
-                            <div class="full-width" style="margin-top: 30px;">
+                            <div class="full-width" style="margin-top: 30px">
                               <q-input
                                 v-model="lossInfo.OSDamageName"
                                 label="Name"
@@ -1331,7 +1323,7 @@
                       </q-card>
                     </q-dialog>
                   </div>
-                  <div class="row ">
+                  <div class="row">
                     <p class="q-mt-md form-heading">
                       Is there damage to personal property?
                     </p>
@@ -1350,7 +1342,7 @@
                       scroll
                       class="q-mt-xs"
                     >
-                      <div class=" items-start q-gutter-md">
+                      <div class="items-start q-gutter-md">
                         <div
                           v-for="(item, index) in ppDamagedItems"
                           v-if="ppDamagedItems.length"
@@ -1369,27 +1361,27 @@
                             </div>
                             <div class="row">
                               <div
-                                class=" form-heading q-ml-sm text-capitalize q-pt-xs"
+                                class="form-heading q-ml-sm text-capitalize q-pt-xs"
                               >
                                 {{ item.name }}
                               </div>
                               <div
                                 class="q-ml-auto q-pt-xs"
-                                style="margin-right:30px"
+                                style="margin-right: 30px"
                               >
                                 {{ '$' + item.cost }}
                               </div>
                             </div>
                             <div
-                              class="q-mr-xl  q-my-xm q-px-sm q-ma-xs  text-capitalize text-caption "
-                              style="margin-right:71px"
+                              class="q-mr-xl q-my-xm q-px-sm q-ma-xs text-capitalize text-caption"
+                              style="margin-right: 71px"
                             >
                               <p>{{ item.desc }}</p>
                             </div>
                             <div class="q-ma-sm q-ml-xs">
                               {{ item.serialNumber }}
                             </div>
-                            <div class="q-ma-sm ">
+                            <div class="q-ma-sm">
                               {{ item.radio }}
                             </div>
                           </q-card>
@@ -1416,7 +1408,7 @@
                     >
                       <q-card
                         class="form-card q-pa-md"
-                        style="width:500px;height:65%"
+                        style="width: 500px; height: 65%"
                       >
                         <q-header bordered class="bg-white">
                           <q-toolbar class="row bg-white">
@@ -1436,7 +1428,7 @@
 
                         <q-card-section>
                           <div class="q-page bg-white">
-                            <div class="full-width" style="margin-top: 30px;">
+                            <div class="full-width" style="margin-top: 30px">
                               <q-input
                                 v-model="lossInfo.PPDamageName"
                                 label="Name"
@@ -1464,7 +1456,7 @@
                                 label="Repair"
                               ></q-radio>
                               <q-radio
-                                class="q-ml-none "
+                                class="q-ml-none"
                                 v-model="lossInfo.repairReplaceRadio"
                                 val="Replace"
                                 label="Replace"
@@ -2261,7 +2253,7 @@
                       </template>
                     </q-input>
                   </div>
-                  <div class="row  ">
+                  <div class="row">
                     <q-btn
                       v-model="contractInfo.buttonGroup"
                       push
@@ -2316,13 +2308,13 @@
                       type="number"
                       v-model.number="contractInfo.claimFeeRate"
                       placeholder="Claim Fee "
-                      style=" width: 50%"
+                      style="width: 50%"
                       suffix="/hr"
                     />
                   </div>
                   <br />
 
-                  <div class=" full-width">
+                  <div class="full-width">
                     <q-input
                       label=" Time Of First Contract"
                       v-model="contractInfo.time"
@@ -2352,9 +2344,7 @@
                       </template>
                     </q-input>
                   </div>
-                  <span class="form-heading">
-                    Source Of Claim
-                  </span>
+                  <span class="form-heading"> Source Of Claim </span>
 
                   <div>
                     <q-select
@@ -2408,9 +2398,7 @@
                     information in claimGuru for historical purposes.
                   </p>
                   <div class="row">
-                    <p class="q-mx-none q-my-auto form-heading">
-                      Cancelled?
-                    </p>
+                    <p class="q-mx-none q-my-auto form-heading">Cancelled?</p>
                     <q-toggle
                       class="q-ml-auto"
                       v-model="contractInfo.cancelledToggle"
@@ -3598,18 +3586,6 @@ export default {
 </script>
 
 <style lang="scss">
-.fix-height {
-  height: calc(100vh - 145px);
-  overflow-y: auto;
-  margin-bottom: 10px;
-  padding-top: 20px;
-}
-
-.form-card {
-  max-height: calc(100vh - 100px);
-  overflow: scroll;
-}
-
 ::-webkit-scrollbar {
   width: 0px;
   background: transparent; /* make scrollbar transparent */
@@ -3624,9 +3600,8 @@ export default {
   color: #333333;
   font-weight: bold;
   font-size: 16px;
-  padding: 5px;
   border-bottom: 1px solid #d3d3d3;
-  margin-top: 20px;
+  margin: 5px 0;
 }
 
 .custom-select {

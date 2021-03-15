@@ -1,10 +1,6 @@
 <template>
   <q-page>
-    <CustomHeader
-      @backButton="$router.push('/add-lead')"
-      :showAddButton="false"
-    />
-    <div style="padding-top: 51px">
+    <div class="mobile-container-page-without-search">
       <q-stepper
         v-model="step"
         ref="stepper"
@@ -865,6 +861,7 @@ export default {
   }
   .q-stepper__tab {
     width: 80px;
+    padding: 10px 20px;
   }
 
   .q-stepper__tab--active {
