@@ -19,6 +19,24 @@ export async function getClients({ commit, dispatch }, searchString = '') {
   }
 }
 
+export async function getSingleClientDetails({ commit, dispatch }, id) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get(`/clients/${id}`);
+
+    commit('setSelectedEditClient', data);
+
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response.data.title
+    });
+  }
+}
+
 export async function getEstimators({ commit, dispatch }) {
   dispatch('setLoading', true);
   try {
