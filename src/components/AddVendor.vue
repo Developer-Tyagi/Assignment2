@@ -154,12 +154,12 @@
             :address="vendor.address"
             :isDropBoxEnable="false"
             :isChecksEnable="false"
-            :isAsteriskMark="false"
           />
           <p class="form-heading">Company's Phone & Website</p>
           <div v-for="(contactInfo, index) in vendor.contact" v-if="index >= 1">
             <div class="q-mt-sm">
               <q-select
+                class="required"
                 v-model="contactInfo.honorific.id"
                 :options="titles"
                 option-label="value"
@@ -170,6 +170,10 @@
                 behavior="menu"
                 map-options
                 options-dense
+                lazy-rules
+                :rules="[
+                  val => (val && val.length > 0) || 'Please select the Title'
+                ]"
               />
               <q-input
                 v-model="contactInfo.fname"
@@ -179,7 +183,7 @@
               <q-input v-model="contactInfo.lname" label="Last Name" />
               <div class="row justify-between">
                 <q-select
-                  class=" col-5"
+                  class="required col-5"
                   v-model="contactInfo.phoneNumber[0].type"
                   :options="contactTypes"
                   option-value="machineValue"
@@ -188,13 +192,22 @@
                   emit-value
                   map-options
                   options-dense
+                  lazy-rules
+                  :rules="[
+                    val => (val && val.length > 0) || 'Please select phone type'
+                  ]"
                 />
                 <q-input
-                  class=" col-6"
+                  class="required col-6"
                   v-model.number="contactInfo.phoneNumber[0].number"
                   label="Phone1"
                   mask="(###) ###-####"
                   :ref="`number-${index}`"
+                  lazy-rules
+                  :rules="[
+                    val =>
+                      (val && val.length == 14) || 'Please enter phone number'
+                  ]"
                 />
               </div>
               <q-input
@@ -247,7 +260,6 @@ import { mapGetters, mapActions } from 'vuex';
 import { constants } from '@utils/constant';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import { validateEmail } from '@utils/validation';
-import { getVendors } from 'src/store/vendors/actions';
 
 export default {
   name: 'AddVendor',
@@ -305,7 +317,6 @@ export default {
             ]
           }
         ],
-
         address: {
           addressCountry: '',
           addressLocality: '',
@@ -327,7 +338,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['contactTypes', 'vendorIndustries', 'titles', 'vendors'])
+    ...mapGetters(['contactTypes', 'vendorIndustries', 'titles'])
   },
 
   mounted() {
@@ -375,8 +386,7 @@ export default {
       'addVendor',
       'getVendorIndustries',
       'getTitles',
-      'getContactTypes',
-      'getVendors'
+      'getContactTypes'
     ]),
     validateEmail,
 
@@ -476,25 +486,6 @@ export default {
       if (success) {
         const response = await this.addVendor(this.vendor);
         if (response) {
-          if (this.vendor.industry.value === 'Carrier') {
-            let params = {
-              industry: 'carrier',
-              name: ''
-            };
-            await this.getVendors(params);
-
-            const selected = this.vendors.find(obj => {
-              return obj.name === this.vendor.name;
-            });
-
-            this.$emit(
-              'onCloseAddVendor',
-              true,
-              selected,
-              this.vendor.industry.value
-            );
-          }
-
           this.closeDialog(true);
         }
       }
