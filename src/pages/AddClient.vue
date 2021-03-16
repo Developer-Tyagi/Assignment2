@@ -521,6 +521,7 @@
                     :address="clientAddressDetails"
                     :isDropBoxEnable="true"
                     :isChecksEnable="true"
+                    :isAsteriskMark="true"
                   />
 
                   <div class="row">
@@ -626,6 +627,7 @@
                     :isDropBoxEnable="true"
                     :isChecksEnable="true"
                     :isFieldsDisable="isMailingAddressSameToggle"
+                    :isAsteriskMark="true"
                   />
                 </q-form>
               </div>
@@ -996,6 +998,7 @@
                     :isDropBoxEnable="true"
                     :isChecksEnable="true"
                     :isFieldsDisable="isLossAddressSameAsClientToggle"
+                    :isAsteriskMark="true"
                   />
 
                   <q-select
