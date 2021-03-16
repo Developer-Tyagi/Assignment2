@@ -1499,7 +1499,7 @@
                   </div>
                   <div class="row">
                     <p class="q-mx-none q-my-auto form-heading">
-                      Does Claimguru PPIF need to be provided?
+                      Does Claim Guru PPIF need to be provided?
                     </p>
                     <q-toggle
                       class="q-ml-auto"
@@ -2798,7 +2798,6 @@ export default {
     this.getVendors(this.$route.params.id);
     this.getClientTypes();
     this.getEstimators();
-
     this.getPropertyTypes();
     this.getPolicyTypes();
     this.getLossCauses();
@@ -2827,7 +2826,12 @@ export default {
       this.lossAddressDetails.addressRegion = this.selectedLead.lossLocation.addressRegion;
       this.lossAddressDetails.postalCode = this.selectedLead.lossLocation.postalCode;
       this.lossAddressDetails.streetAddress = this.selectedLead.lossLocation.streetAddress;
+      this.lossInfo.dateOfLoss = date.formatDate(
+        this.selectedLead.dateofLoss,
+        'MM/DD/YYYY'
+      );
     }
+
     this.countries = addressService.getCountries();
     this.onCountrySelect('United States');
   },

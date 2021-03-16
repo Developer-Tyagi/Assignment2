@@ -30,6 +30,7 @@
                 option-value="id"
                 option-label="value"
                 map-options
+                options-dense
                 @input="setTitleName()"
                 emit-value
                 behavior="menu"
@@ -342,16 +343,7 @@
           <q-form @submit="step++" @reset="step--">
             <q-card class="q-pa-md form-card">
               <span class="stepper-heading">Last Notes</span>
-              <q-input
-                class="required"
-                label="Last Notes"
-                v-model="notes"
-                type="input"
-                lazy-rules
-                :rules="[
-                  val => (val && val.length > 0) || 'Please fill the notes'
-                ]"
-              />
+              <q-input label="Last Notes" v-model="notes" type="input" />
             </q-card>
             <div class="row q-pt-md">
               <div>
