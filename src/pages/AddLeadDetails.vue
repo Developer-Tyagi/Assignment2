@@ -517,7 +517,7 @@ export default {
     VendorsList,
     AddVendor,
     AutoCompleteAddress,
-    CustomBarCustomBar
+    CustomBar
   },
 
   data() {
