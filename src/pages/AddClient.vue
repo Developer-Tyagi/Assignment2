@@ -2835,9 +2835,10 @@ export default {
       this.lossAddressDetails.addressRegion = this.selectedLead.lossLocation.addressRegion;
       this.lossAddressDetails.postalCode = this.selectedLead.lossLocation.postalCode;
       this.lossAddressDetails.streetAddress = this.selectedLead.lossLocation.streetAddress;
-
-      const Date = date.formatDate(this.selectedLead.dateofLoss, 'MM/DD/YYYY');
-      this.lossInfo.dateOfLoss = Date;
+      this.lossInfo.dateOfLoss = date.formatDate(
+        this.selectedLead.dateofLoss,
+        'MM/DD/YYYY'
+      );
     }
 
     this.countries = addressService.getCountries();
