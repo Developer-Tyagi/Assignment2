@@ -113,13 +113,7 @@ const routes = [
         caseSensitive: true,
         component: () => import('pages/Leads.vue')
       },
-      {
-        path: 'editClient',
-        name: 'client details',
 
-        caseSensitive: true,
-        component: () => import('pages/ClientsDetails.vue')
-      },
       {
         path: 'add-lead',
         name: 'add new leads',
@@ -166,10 +160,23 @@ const routes = [
         component: () => import('pages/Clients.vue')
       },
       {
+        path: 'view-client',
+        name: 'client details',
+
+        caseSensitive: true,
+        component: () => import('pages/ClientsDetails.vue')
+      },
+      {
         path: 'add-client',
         name: 'create client',
         caseSensitive: true,
         component: () => import('pages/AddClient.vue')
+      },
+      {
+        path: 'client-details',
+        name: 'client info ',
+        caseSensitive: true,
+        component: () => import('pages/ClientInfo.vue')
       }
     ]
   },

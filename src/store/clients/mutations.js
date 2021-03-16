@@ -5,6 +5,9 @@ export function setClients(state, clients) {
     name: client.attributes.insuredInfo.primary['fname']
   }));
 }
+export function setSelectedEditClient(state, client) {
+  state.editSelectedClient = client;
+}
 
 export function setEstimators(state, estimators) {
   state.estimators = estimators.map(estimator => ({

@@ -35,7 +35,7 @@
               v-for="client in clients"
               :key="client.id"
             >
-              <q-item-section @click="onClientsListClick">
+              <q-item-section @click="onClientsListClick(client)">
                 <div class="client-list-item">
                   <div class="row">
                     <span>
@@ -106,14 +106,15 @@ export default {
     this.getClients();
   },
   methods: {
-    ...mapActions(['getClients']),
+    ...mapActions(['getClients', 'getSingleClientDetails']),
 
     onSearchBackButtonClick() {
       this.searchText = '';
       this.search();
     },
-    onClientsListClick() {
-      this.$router.push('/editClient');
+    onClientsListClick(client) {
+      this.getSingleClientDetails(client.id);
+      this.$router.push('/view-client');
     },
     addClient() {
       this.$router.push('/add-client');
