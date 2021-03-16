@@ -3569,7 +3569,7 @@ export default {
         }
       }
     },
-    onAddVendorDialogClick(name, index) {
+    async onAddVendorDialogClick(name, index) {
       this.valueName = name;
 
       switch (name) {
@@ -3577,6 +3577,12 @@ export default {
           this.vendorDialogName = constants.industries.MORTGAGE;
           this.showVendorDialogFilters = false;
           this.vendorDialogFilterByIndustry = constants.industries.MORTGAGE;
+          const params = {
+            industry: this.vendorDialogFilterByIndustry,
+            name: ''
+          };
+          await this.getVendors(params);
+
           break;
         case constants.industries.SECONDARYMORTGAGE:
           this.vendorDialogName = constants.industries.MORTGAGE;
