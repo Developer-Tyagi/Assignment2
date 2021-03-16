@@ -25,148 +25,7 @@
         ></q-btn>
       </div>
     </div>
-    <!-- Public Adjuster Info -->
-    <q-dialog
-      v-model="publicAdjustorInfoDialog"
-      persistent
-      :maximized="maximizedToggle"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <CustomBar
-          :dialogName="'Public Adjustor Info'"
-          @closeDialog="onCloseDialogBox('publicAdjustorInfoDialog', 6)"
-        />
-        <div class="mobile-container-page-without-search">
-          <q-form ref="publicAdjustorForm" class="form-height">
-            <div class="form-heading text-bold">CLAIM PERSONNEL</div>
-            <div class="form-heading q-mt-lg">Personnel Role</div>
-            <q-select
-              v-model="publicAdjustor.personnelRole1"
-              :options="personnelRoles"
-              label="Select Role"
-              option-label="name"
-              option-value="value"
-              options-dense
-              emit-value
-              map-options
-              options-dense
-              @input="onFilteringPersonnelRoles('Kuldeep')"
-            ></q-select>
-            <div class="form-heading q-mt-lg">Person Party</div>
-            <q-select
-              v-model="publicAdjustor.personParty1"
-              :options="publicAdjustor.filterRole"
-              :label="!publicAdjustor.personParty1 ? 'Select a Role' : ''"
-              option-label="name"
-              :disable="publicAdjustor.isFilterApply"
-              option-value="value"
-              options-dense
-              emit-value
-              map-options
-              options-dense
-            ></q-select>
-            <div class="form-heading q-mt-lg">Personnel Role</div>
-            <q-select
-              v-model="publicAdjustor.personnelRole2"
-              :options="personnelRoles"
-              label="Select Role"
-              option-label="name"
-              option-value="value"
-              options-dense
-              emit-value
-              map-options
-              options-dense
-            ></q-select>
-            <div class="form-heading q-mt-lg">Person/Party</div>
-            <q-select
-              v-model="publicAdjustor.personParty2"
-              :options="personnelRoles"
-              placeholder="Select a Role"
-              option-label="name"
-              disable
-              option-value="value"
-              options-dense
-              emit-value
-              map-options
-              options-dense
-            ></q-select>
-            <div class="form-heading q-mt-lg">Personnel Role</div>
-            <q-select
-              v-model="publicAdjustor.personnelRole3"
-              :options="personnelRoles"
-              label="Select Role"
-              option-label="name"
-              option-value="value"
-              options-dense
-              emit-value
-              map-options
-              options-dense
-            ></q-select>
-            <div class="form-heading q-mt-lg">Person/Party</div>
-            <q-select
-              v-model="publicAdjustor.personParty3"
-              :options="personnelRoles"
-              placeholder="Select a Role"
-              option-label="name"
-              disable
-              option-value="value"
-              options-dense
-              emit-value
-              map-options
-              options-dense
-            ></q-select>
-            <div class="form-heading q-mt-lg">Personnel Role</div>
-            <q-select
-              v-model="publicAdjustor.personnelRole4"
-              :options="personnelRoles"
-              placeholder="Select Role"
-              option-label="name"
-              option-value="value"
-              options-dense
-              emit-value
-              map-options
-              options-dense
-            ></q-select>
-            <div class="form-heading q-mt-lg">Person/Party</div>
-            <q-select
-              v-model="publicAdjustor.personParty4"
-              :options="personnelRoles"
-              placeholder="Select a Role"
-              option-label="name"
-              disable
-              option-value="value"
-              options-dense
-              emit-value
-              map-options
-              options-dense
-            ></q-select
-            ><br />
-            <span class="form-heading"
-              >Special Instructions, Comments Or Other Notes</span
-            >
 
-            <div class="floating-label">
-              <textarea
-                rows="5"
-                required
-                class="full-width"
-                v-model="publicAdjustor.notes"
-                style="resize: none"
-              ></textarea>
-            </div>
-          </q-form>
-          <q-btn
-            label="Save"
-            color="primary"
-            class="button-width-90"
-            @click="onSubmit('publicAdjustorInfoDialog')"
-            size="'xl'"
-          />
-        </div>
-      </q-card>
-    </q-dialog>
     <!-- Client Info -->
     <q-dialog
       v-model="clientInfoDailog"
@@ -515,7 +374,7 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="form-card">
+      <q-card>
         <CustomBar
           @closeDialog="onCloseDialogBox('mailingAddressDialog', 1)"
           :dialogName="'Mailing Address'"
@@ -556,7 +415,7 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="form-card">
+      <q-card>
         <CustomBar
           @closeDialog="onCloseDialogBox('insuranceInfoDialog', 2)"
           :dialogName="'Insurance Info'"
@@ -811,6 +670,7 @@
         </div>
       </q-card>
     </q-dialog>
+
     <!-- Loss Info -->
     <q-dialog
       v-model="lossInfoDialog"
@@ -819,7 +679,7 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="form-card">
+      <q-card>
         <CustomBar
           @closeDialog="onCloseDialogBox('lossInfoDialog', 3)"
           :dialogName="'Loss Info'"
@@ -1418,13 +1278,639 @@
           <q-btn
             label="Save"
             color="primary"
-            class="full-width q-mt-auto text-capitalize"
+            class="button-width-90"
             @click="onSubmit('lossInfoDialog')"
             size="'xl'"
           ></q-btn>
         </q-card-section>
       </q-card>
     </q-dialog>
+
+    <!-- Expert /Vendor Info -->
+    <q-dialog
+      v-model="expertVendorInfoDialog"
+      persistent
+      :maximized="maximizedToggle"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <CustomBar
+          @closeDialog="onCloseDialogBox('expertVendorInfoDialog', 4)"
+          :dialogName="'Expert / Vendor Info'"
+        />
+        <div class="mobile-container-page-without-search">
+          <q-form ref="expertVendorInfoForm" class="form-height">
+            <div class="row">
+              <span class="form-heading"
+                >Do any vendors need to be assigned?</span
+              >
+              <q-toggle
+                class="q-ml-auto"
+                v-model="vendorExpertHiredToggle"
+                @input="onExpertVendorToggleOff"
+              />
+            </div>
+            <!-- Assigning Multiple Expert Vendors -->
+
+            <div
+              v-for="(item, index) in expertVendorInfo.industry"
+              v-if="expertVendorInfo.industry.length >= 0"
+            >
+              <q-select
+                v-if="vendorExpertHiredToggle"
+                class="full-width"
+                v-model="expertVendorInfo.industry[index].value"
+                use-input
+                input-debounce="0"
+                option-label="name"
+                label=" Industry"
+                :options="vendorIndustriesOptions"
+                option-value="name"
+                @filter="searchFilterBy"
+                @input="setVendorIndustryName(index)"
+                behavior="menu"
+                emit-value
+                map-options
+                lazy-rules
+                :rules="[
+                  val =>
+                    (val && val.length > 0) || 'Please fill the Vendor Industry'
+                ]"
+              >
+                <template v-slot:no-option>
+                  <q-item>
+                    <q-item-section class="text-black">
+                      No results
+                    </q-item-section>
+                  </q-item>
+                </template>
+              </q-select>
+              <!-- This will Show the input when industry Type is Others -->
+              <q-input
+                v-model="industryType.value"
+                v-if="expertVendorInfo.industry[index].value == 'Others'"
+                label="Enter New Industry Type"
+              ></q-input>
+              <q-btn
+                class="q-mt-md"
+                v-if="expertVendorInfo.industry[index].value == 'Others'"
+                label="Add"
+                outline
+                @click="addAnotherIndustry"
+              />
+
+              <div
+                v-if="vendorExpertHiredToggle"
+                class="custom-select"
+                v-model="expertVendorInfo.vendors[index].value"
+                @click="
+                  onAddVendorDialogClick(
+                    constants.industries.EXPERTVENDOR,
+                    index
+                  )
+                "
+              >
+                <div class="select-text">
+                  {{
+                    expertVendorInfo.id
+                      ? expertVendorInfo.vendors[index].value
+                      : 'Select Vendor'
+                  }}
+                </div>
+              </div>
+            </div>
+            <q-btn
+              v-if="vendorExpertHiredToggle"
+              class="q-ma-none q-mb-sm"
+              size="sm"
+              label="Add More"
+              color="primary"
+              @click="addAnotherVendor()"
+            />
+
+            <div class="row">
+              <p class="form-heading q-mx-none q-my-auto">Is Insured hired?</p>
+              <q-toggle class="q-ml-auto" v-model="anyOtherExpertHiredToggle" />
+            </div>
+            <span class="form-heading">Notes</span>
+            <div>
+              <textarea
+                rows="5"
+                required
+                class="full-width"
+                v-model="expertVendorInfo.notes"
+                style="resize: none"
+              ></textarea>
+            </div>
+            <br />
+            <div>
+              <span class="form-heading">Internal Notes</span>
+              <textarea
+                rows="5"
+                required
+                class="full-width"
+                v-model="expertVendorInfo.internalNotes"
+                style="resize: none"
+              ></textarea>
+            </div>
+          </q-form>
+
+          <q-btn
+            label="Save"
+            color="primary"
+            class="button-width-90"
+            @click="onSubmit('expertVendorInfoDialog')"
+            size="'xl'"
+          />
+        </div>
+      </q-card>
+    </q-dialog>
+    <!-- Estimating Info -->
+    <q-dialog
+      v-model="estimatingInfoDialog"
+      persistent
+      :maximized="maximizedToggle"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <CustomBar
+          @closeDialog="estimatingInfoDialog = false"
+          :dialogName="'Estimating Info'"
+        />
+        <div class="mobile-container-page-without-search">
+          <q-form ref="estimatingInfoForm" class="form-height">
+            <div class="row">
+              <p style="form-heading">
+                Does an estimator need to be<br />assigned?
+              </p>
+              <q-toggle
+                class="q-ml-auto"
+                v-model="doesAnEstimatorNeedToBeAssignedToggle"
+              />
+            </div>
+
+            <div
+              v-if="doesAnEstimatorNeedToBeAssignedToggle"
+              @click="estimatorsListDialog = true"
+            >
+              <div
+                class="custom-select form-heading"
+                v-model="addEstimatorInfo.name"
+              >
+                <div class="select-text">
+                  {{
+                    addEstimatorInfo.name
+                      ? addEstimatorInfo.name
+                      : 'Add Estimator'
+                  }}
+                </div>
+              </div>
+            </div>
+            <q-input
+              v-model="estimatingInfo.estimatorToBeAssigned"
+              label="Estimator to be assigned"
+            />
+            <q-input
+              v-model="estimatingInfo.scopeTimeNeeded"
+              label="Scope time needed"
+            />
+            <q-input
+              v-model="estimatingInfo.notesToTheEstimator"
+              label="Notes to the estimator"
+            /><br />
+          </q-form>
+          <q-btn
+            label="Save"
+            color="primary"
+            class="button-width-90"
+            @click="onSubmit('estimatingInfoDialog')"
+            size="'xl'"
+          />
+        </div>
+      </q-card>
+    </q-dialog>
+    <!-- Contract Info Dialog -->
+    <q-dialog
+      v-model="contractInfoDialog"
+      persistent
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <CustomBar
+          @closeDialog="onCloseDialogBox('contractInfoDialog', 5)"
+          :dialogName="'Contract Details'"
+        />
+        <div class="mobile-container-page-without-search">
+          <q-form ref="contractInfoForm" class="form-height">
+            <span class="form-heading">Contract Date</span>
+            <div class="full-width">
+              <q-input
+                class="required"
+                v-model="contractInfo.contractDate"
+                mask="##/##/####"
+                label="MM/DD/YYYY"
+                lazy-rules
+                :rules="[
+                  val =>
+                    (validateDate(val) && val && val.length > 0) ||
+                    'Invalid date!'
+                ]"
+              >
+                <template v-slot:append>
+                  <q-icon
+                    name="event"
+                    size="sm"
+                    color="primary"
+                    class="cursor-pointer"
+                  >
+                    <q-popup-proxy
+                      ref="qDateProxy4"
+                      transition-show="scale"
+                      transition-hide="scale"
+                    >
+                      <q-date
+                        v-model="contractInfo.contractDate"
+                        @input="() => $refs.qDateProxy4.hide()"
+                        mask="MM/DD/YYYY"
+                      ></q-date>
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
+              </q-input>
+            </div>
+
+            <br />
+            <span class="form-heading">Date of First Contract</span>
+            <div class="full-width">
+              <q-input
+                v-model="contractInfo.firstContractDate"
+                mask="##/##/####"
+                label="MM/DD/YYYY"
+                lazy-rules
+                :rules="[val => validateDate(val) || 'Invalid date!']"
+              >
+                <template v-slot:append>
+                  <q-icon
+                    name="event"
+                    size="sm"
+                    color="primary"
+                    class="cursor-pointer"
+                  >
+                    <q-popup-proxy
+                      ref="qDateProxy4"
+                      transition-show="scale"
+                      transition-hide="scale"
+                    >
+                      <q-date
+                        v-model="contractInfo.firstContractDate"
+                        @input="() => $refs.qDateProxy4.hide()"
+                        mask="MM/DD/YYYY"
+                      ></q-date>
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
+              </q-input>
+            </div>
+            <div class="full-width">
+              <q-input
+                label=" Time Of First Contract"
+                v-model="contractInfo.time"
+                now
+                mask="time"
+                lazy-rules
+                :rules="[val => validateTime(val) || 'Invalid time!']"
+              >
+                <template v-slot:append>
+                  <q-icon name="access_time" class="cursor-pointer">
+                    <q-popup-proxy
+                      transition-show="scale"
+                      transition-hide="scale"
+                    >
+                      <q-time v-model="contractInfo.time">
+                        <div class="row items-center justify-end">
+                          <q-btn
+                            v-close-popup
+                            label="Close"
+                            color="primary"
+                            flat
+                          ></q-btn>
+                        </div>
+                      </q-time>
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
+              </q-input>
+            </div>
+            <div class="row">
+              <q-btn-toggle
+                v-model="contractInfo.buttonGroup"
+                push
+                glossy
+                toggle-color="primary"
+                :options="[
+                  { label: ' $', value: 'dollar' },
+                  { label: ' %', value: 'percentage' },
+                  { value: 'update', icon: 'update' }
+                ]"
+              ></q-btn-toggle>
+            </div>
+
+            <div class="row" style="align-items: center">
+              <q-input
+                class="q-ml-auto full-width"
+                mask="#.#"
+                type="number"
+                v-model.number="contractInfo.claimFeeRate"
+                label="Claim Fee Rate"
+                :suffix="
+                  contractInfo.buttonGroup == 'dollar'
+                    ? '$ flat'
+                    : '' || contractInfo.buttonGroup == 'percentage'
+                    ? '%'
+                    : '' || contractInfo.buttonGroup == 'update'
+                    ? '/hr'
+                    : ''
+                "
+                style="width: 50%"
+              />
+            </div>
+            <br />
+            <span class="form-heading"> Source Of Claim </span>
+            <div>
+              <q-select
+                v-model="sourceDetails.type"
+                :options="leadSources"
+                option-label="name"
+                option-value="value"
+                options-dense
+                emit-value
+                map-options
+                options-dense
+                @input="onChangingSourceType()"
+              />
+              <q-input
+                v-if="
+                  sourceDetails.type != constants.industries.VENDOR &&
+                    sourceDetails.type != '' &&
+                    sourceDetails.type != 'google'
+                "
+                type="text"
+                class="required"
+                placeholder="Enter Source details"
+                v-model="sourceDetails.details"
+                lazy-rules
+                :rules="[val => (val && val.length > 0) || '']"
+              />
+              <div
+                v-else-if="sourceDetails.type == constants.industries.VENDOR"
+                class="custom-select"
+                @click="onAddVendorDialogClick(constants.industries.VENDOR)"
+              >
+                <div class="select-text">
+                  {{
+                    sourceDetails.id
+                      ? sourceDetails.details
+                      : 'Select Lead Source'
+                  }}
+                </div>
+              </div>
+            </div>
+            <br />
+            <span class="form-heading">Accept or Cancel Claim ?</span>
+            <p>
+              if this claim will not be accepted, you can mark the claim as
+              beiing "Cancelled",which will close the claim upon creation. This
+              allows you to record the client and property information in
+              claimGuru for historical purposes.
+            </p>
+            <div class="row">
+              <p class="q-mx-none q-my-auto form-heading">Cancelled?</p>
+              <q-toggle
+                class="q-ml-auto"
+                v-model="contractInfo.cancelledToggle"
+              />
+            </div>
+            <div class="full-width">
+              <q-select
+                v-model="contractInfo.reasonForCancellation"
+                :options="reasonForCancellation"
+                label="Reason For Cancellation"
+                options-dense
+              ></q-select>
+            </div>
+            <br />
+            <span class="form-heading">Reason For Cancellation</span>
+            <div class="floating-label">
+              <textarea
+                rows="5"
+                required
+                class="full-width"
+                v-model="contractInfo.reasonForCancellationText"
+                style="resize: none"
+              ></textarea>
+            </div>
+          </q-form>
+          <q-btn
+            label="Save"
+            color="primary"
+            class="button-width-90"
+            @click="onSubmit('contractInfoDialog')"
+            size="'xl'"
+          ></q-btn>
+        </div>
+      </q-card>
+    </q-dialog>
+    <!-- Public Adjuster Info -->
+    <q-dialog
+      v-model="publicAdjustorInfoDialog"
+      persistent
+      :maximized="maximizedToggle"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <CustomBar
+          :dialogName="'Public Adjustor Info'"
+          @closeDialog="onCloseDialogBox('publicAdjustorInfoDialog', 6)"
+        />
+        <div class="mobile-container-page-without-search">
+          <q-form ref="publicAdjustorForm" class="form-height">
+            <div class="form-heading text-bold">CLAIM PERSONNEL</div>
+            <div class="form-heading q-mt-lg">Personnel Role</div>
+            <q-select
+              v-model="publicAdjustor.personnelRole1"
+              :options="personnelRoles"
+              label="Select Role"
+              option-label="name"
+              option-value="value"
+              options-dense
+              emit-value
+              map-options
+              options-dense
+              @input="onFilteringPersonnelRoles('Kuldeep')"
+            ></q-select>
+            <div class="form-heading q-mt-lg">Person Party</div>
+            <q-select
+              v-model="publicAdjustor.personParty1"
+              :options="publicAdjustor.filterRole"
+              :label="!publicAdjustor.personParty1 ? 'Select a Role' : ''"
+              option-label="name"
+              :disable="publicAdjustor.isFilterApply"
+              option-value="value"
+              options-dense
+              emit-value
+              map-options
+              options-dense
+            ></q-select>
+            <div class="form-heading q-mt-lg">Personnel Role</div>
+            <q-select
+              v-model="publicAdjustor.personnelRole2"
+              :options="personnelRoles"
+              label="Select Role"
+              option-label="name"
+              option-value="value"
+              options-dense
+              emit-value
+              map-options
+              options-dense
+            ></q-select>
+            <div class="form-heading q-mt-lg">Person/Party</div>
+            <q-select
+              v-model="publicAdjustor.personParty2"
+              :options="personnelRoles"
+              placeholder="Select a Role"
+              option-label="name"
+              disable
+              option-value="value"
+              options-dense
+              emit-value
+              map-options
+              options-dense
+            ></q-select>
+            <div class="form-heading q-mt-lg">Personnel Role</div>
+            <q-select
+              v-model="publicAdjustor.personnelRole3"
+              :options="personnelRoles"
+              label="Select Role"
+              option-label="name"
+              option-value="value"
+              options-dense
+              emit-value
+              map-options
+              options-dense
+            ></q-select>
+            <div class="form-heading q-mt-lg">Person/Party</div>
+            <q-select
+              v-model="publicAdjustor.personParty3"
+              :options="personnelRoles"
+              placeholder="Select a Role"
+              option-label="name"
+              disable
+              option-value="value"
+              options-dense
+              emit-value
+              map-options
+              options-dense
+            ></q-select>
+            <div class="form-heading q-mt-lg">Personnel Role</div>
+            <q-select
+              v-model="publicAdjustor.personnelRole4"
+              :options="personnelRoles"
+              placeholder="Select Role"
+              option-label="name"
+              option-value="value"
+              options-dense
+              emit-value
+              map-options
+              options-dense
+            ></q-select>
+            <div class="form-heading q-mt-lg">Person/Party</div>
+            <q-select
+              v-model="publicAdjustor.personParty4"
+              :options="personnelRoles"
+              placeholder="Select a Role"
+              option-label="name"
+              disable
+              option-value="value"
+              options-dense
+              emit-value
+              map-options
+              options-dense
+            ></q-select
+            ><br />
+            <span class="form-heading"
+              >Special Instructions, Comments Or Other Notes</span
+            >
+
+            <div class="floating-label">
+              <textarea
+                rows="5"
+                required
+                class="full-width"
+                v-model="publicAdjustor.notes"
+                style="resize: none"
+              ></textarea>
+            </div>
+          </q-form>
+          <q-btn
+            label="Save"
+            color="primary"
+            class="button-width-90"
+            @click="onSubmit('publicAdjustorInfoDialog')"
+            size="'xl'"
+          />
+        </div>
+      </q-card>
+    </q-dialog>
+    <!-- Office Task -->
+    <q-dialog
+      v-model="officeTaskDialog"
+      persistent
+      :maximized="maximizedToggle"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <CustomBar
+          @closeDialog="officeTaskDialog = false"
+          :dialogName="'Office Task'"
+        />
+        <div class="mobile-container-page-without-search">
+          <q-form ref="estimatingInfoForm" class="form-height">
+            <q-select
+              v-model="officeTask.officeActionTypes"
+              :options="officeActionRequiredTypes"
+              label="Office Action Required"
+            />
+            <q-select
+              v-model="officeTask.officeTaskTypes"
+              :options="officeTaskRequiredTypes"
+              label="Office Task Required"
+            /><br />
+            <div class="row">
+              <p>Additional Office Task Required</p>
+              <q-toggle
+                class="q-ml-auto"
+                v-model="additionalOfficeTaskRequiredToggle"
+              />
+            </div>
+          </q-form>
+
+          <q-btn
+            label="Save"
+            color="primary"
+            class="full-width q-mt-auto text-capitalize"
+            @click="officeTaskDialog = false"
+            size="'xl'"
+          />
+        </div>
+      </q-card>
+    </q-dialog>
+
     <!-- Mortage Info -->
     <q-dialog
       v-model="mortgageInfoDialog"
@@ -1433,7 +1919,7 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="form-card">
+      <q-card>
         <CustomBar
           @closeDialog="mortagegeInfoDialog = false"
           :dialogName="'Mortagage Info'"
@@ -1529,79 +2015,7 @@
         </q-card-section>
       </q-card>
     </q-dialog>
-    <!-- Estimating Info -->
-    <q-dialog
-      v-model="estimatingInfoDialog"
-      persistent
-      :maximized="maximizedToggle"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card class="form-card">
-        <CustomBar
-          @closeDialog="estimatingInfoDialog = false"
-          :dialogName="'Estimating Info'"
-        />
-        <q-card-section>
-          <div class="q-page bg-white" style="min-height: 500px">
-            <div class="full-width fix-height">
-              <div>
-                <q-form ref="estimatingInfoForm">
-                  <div class="row">
-                    <p style="form-heading">
-                      Does an estimator need to be<br />assigned?
-                    </p>
-                    <q-toggle
-                      class="q-ml-auto"
-                      v-model="doesAnEstimatorNeedToBeAssignedToggle"
-                    />
-                  </div>
 
-                  <div
-                    v-if="doesAnEstimatorNeedToBeAssignedToggle"
-                    @click="estimatorsListDialog = true"
-                  >
-                    <div
-                      class="custom-select form-heading"
-                      v-model="addEstimatorInfo.name"
-                    >
-                      <div class="select-text">
-                        {{
-                          addEstimatorInfo.name
-                            ? addEstimatorInfo.name
-                            : 'Add Estimator'
-                        }}
-                      </div>
-                    </div>
-                  </div>
-                  <q-input
-                    v-model="estimatingInfo.estimatorToBeAssigned"
-                    label="Estimator to be assigned"
-                  />
-                  <q-input
-                    v-model="estimatingInfo.scopeTimeNeeded"
-                    label="Scope time needed"
-                  />
-                  <q-input
-                    v-model="estimatingInfo.notesToTheEstimator"
-                    label="Notes to the estimator"
-                  /><br />
-                </q-form>
-              </div>
-              <br />
-            </div>
-          </div>
-
-          <q-btn
-            label="Save"
-            color="primary"
-            class="full-width q-mt-auto text-capitalize"
-            @click="onSubmit('estimatingInfoDialog')"
-            size="'xl'"
-          ></q-btn>
-        </q-card-section>
-      </q-card>
-    </q-dialog>
     <!-- Add Estimator Dialog -->
     <q-dialog
       v-model="addEstimatorDialog"
@@ -1610,299 +2024,85 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="form-card">
+      <q-card>
         <CustomBar
           @closeDialog="addEstimatorDialog = false"
           :dialogName="'Add New Estimator'"
         />
-        <q-card-section>
-          <div class="q-page bg-white">
-            <div class="full-width fix-height">
-              <div>
-                <q-form ref="addEstimatorForm">
-                  <q-select
-                    class="required"
-                    v-model="honorific3.id"
-                    :options="titles"
-                    option-value="id"
-                    option-label="value"
-                    map-options
-                    @input="setTitleName(3)"
-                    behavior="menu"
-                    emit-value
-                    options-dense
-                    label="Title"
-                    lazy-rules
-                    :rules="[
-                      val =>
-                        (val && val.length > 0) || 'Please select the title'
-                    ]"
-                  />
+        <div class="mobile-container-page-without-search">
+          <q-form ref="addEstimatorForm" class="form-height">
+            <q-select
+              class="required"
+              v-model="honorific3.id"
+              :options="titles"
+              option-value="id"
+              option-label="value"
+              map-options
+              @input="setTitleName(3)"
+              behavior="menu"
+              emit-value
+              options-dense
+              label="Title"
+              lazy-rules
+              :rules="[
+                val => (val && val.length > 0) || 'Please select the title'
+              ]"
+            />
 
-                  <q-input
-                    class="required"
-                    v-model="addEstimatorInfo.fname"
-                    lazy-rules
-                    :rules="[
-                      val =>
-                        (val && val.length > 0) || 'Please fill the First name'
-                    ]"
-                    label="First Name"
-                  />
+            <q-input
+              class="required"
+              v-model="addEstimatorInfo.fname"
+              lazy-rules
+              :rules="[
+                val => (val && val.length > 0) || 'Please fill the First name'
+              ]"
+              label="First Name"
+            />
 
-                  <q-input v-model="addEstimatorInfo.lname" label="Last Name" />
-                  <q-input
-                    class="required"
-                    v-model="addEstimatorInfo.email"
-                    label="Email"
-                    lazy-rules
-                    :rules="[
-                      val =>
-                        validateEmail(val) ||
-                        'You have entered an invalid email address!'
-                    ]"
-                  />
+            <q-input v-model="addEstimatorInfo.lname" label="Last Name" />
+            <q-input
+              class="required"
+              v-model="addEstimatorInfo.email"
+              label="Email"
+              lazy-rules
+              :rules="[
+                val =>
+                  validateEmail(val) ||
+                  'You have entered an invalid email address!'
+              ]"
+            />
 
-                  <div class="row justify-between">
-                    <q-select
-                      class="col-5"
-                      v-model="addEstimatorInfo.type"
-                      :options="contactTypes"
-                      option-value="machineValue"
-                      option-label="name"
-                      map-options
-                      options-dense
-                      emit-value
-                      label="Type"
-                    />
-                    <q-input
-                      class="col-6"
-                      v-model.number="addEstimatorInfo.phone"
-                      label="Phone"
-                      mask="(###) ###-####"
-                    />
-                  </div>
-                </q-form>
-              </div>
+            <div class="row justify-between">
+              <q-select
+                class="col-5"
+                v-model="addEstimatorInfo.type"
+                :options="contactTypes"
+                option-value="machineValue"
+                option-label="name"
+                map-options
+                options-dense
+                emit-value
+                label="Type"
+              />
+              <q-input
+                class="col-6"
+                v-model.number="addEstimatorInfo.phone"
+                label="Phone"
+                mask="(###) ###-####"
+              />
             </div>
-          </div>
+          </q-form>
           <q-btn
             label="Add Estimator"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
             @click="onCloseDialogBox('addEstimatorDialog', 5)"
             size="'xl'"
-          ></q-btn>
-        </q-card-section>
+          />
+        </div>
       </q-card>
     </q-dialog>
-    <!-- Expert /Vendor Info -->
-    <q-dialog
-      v-model="expertVendorInfoDialog"
-      persistent
-      :maximized="maximizedToggle"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card class="form-card">
-        <CustomBar
-          @closeDialog="onCloseDialogBox('expertVendorInfoDialog', 4)"
-          :dialogName="'Expert / Vendor Info'"
-        />
-        <q-card-section>
-          <div class="q-page bg-white">
-            <div class="full-width fix-height">
-              <div>
-                <q-form ref="expertVendorInfoForm">
-                  <div class="row">
-                    <span class="form-heading"
-                      >Do any vendors need to be assigned?</span
-                    >
-                    <q-toggle
-                      class="q-ml-auto"
-                      v-model="vendorExpertHiredToggle"
-                      @input="onExpertVendorToggleOff"
-                    />
-                  </div>
-                  <!-- Assigning Multiple Expert Vendors -->
 
-                  <div
-                    v-for="(item, index) in expertVendorInfo.industry"
-                    v-if="expertVendorInfo.industry.length >= 0"
-                  >
-                    <q-select
-                      v-if="vendorExpertHiredToggle"
-                      class="full-width"
-                      v-model="expertVendorInfo.industry[index].value"
-                      use-input
-                      input-debounce="0"
-                      option-label="name"
-                      label=" Industry"
-                      :options="vendorIndustriesOptions"
-                      option-value="name"
-                      @filter="searchFilterBy"
-                      @input="setVendorIndustryName(index)"
-                      behavior="menu"
-                      emit-value
-                      map-options
-                      lazy-rules
-                      :rules="[
-                        val =>
-                          (val && val.length > 0) ||
-                          'Please fill the Vendor Industry'
-                      ]"
-                    >
-                      <template v-slot:no-option>
-                        <q-item>
-                          <q-item-section class="text-black">
-                            No results
-                          </q-item-section>
-                        </q-item>
-                      </template>
-                    </q-select>
-                    <!-- This will Show the input when industry Type is Others -->
-                    <q-input
-                      v-model="industryType.value"
-                      v-if="expertVendorInfo.industry[index].value == 'Others'"
-                      label="Enter New Industry Type"
-                    ></q-input>
-                    <q-btn
-                      class="q-mt-md"
-                      v-if="expertVendorInfo.industry[index].value == 'Others'"
-                      label="Add"
-                      outline
-                      @click="addAnotherIndustry"
-                    />
-
-                    <div
-                      v-if="vendorExpertHiredToggle"
-                      class="custom-select"
-                      v-model="expertVendorInfo.vendors[index].value"
-                      @click="
-                        onAddVendorDialogClick(
-                          constants.industries.EXPERTVENDOR,
-                          index
-                        )
-                      "
-                    >
-                      <div class="select-text">
-                        {{
-                          expertVendorInfo.id
-                            ? expertVendorInfo.vendors[index].value
-                            : 'Select Vendor'
-                        }}
-                      </div>
-                    </div>
-                  </div>
-                  <q-btn
-                    v-if="vendorExpertHiredToggle"
-                    class="q-ma-none q-mb-sm"
-                    size="sm"
-                    label="Add More"
-                    color="primary"
-                    @click="addAnotherVendor()"
-                  />
-
-                  <div class="row">
-                    <p class="form-heading q-mx-none q-my-auto">
-                      Is Insured hired?
-                    </p>
-                    <q-toggle
-                      class="q-ml-auto"
-                      v-model="anyOtherExpertHiredToggle"
-                    />
-                  </div>
-                  <span class="form-heading">Notes</span>
-                  <div>
-                    <textarea
-                      rows="5"
-                      required
-                      class="full-width"
-                      v-model="expertVendorInfo.notes"
-                      style="resize: none"
-                    ></textarea>
-                  </div>
-                  <br />
-                  <div>
-                    <span class="form-heading">Internal Notes</span>
-                    <textarea
-                      rows="5"
-                      required
-                      class="full-width"
-                      v-model="expertVendorInfo.internalNotes"
-                      style="resize: none"
-                    ></textarea>
-                  </div>
-                </q-form>
-              </div>
-              <br />
-            </div>
-          </div>
-          <q-btn
-            label="Save"
-            color="primary"
-            class="full-width q-mt-auto text-capitalize"
-            @click="onSubmit('expertVendorInfoDialog')"
-            size="'xl'"
-          ></q-btn>
-        </q-card-section>
-      </q-card>
-    </q-dialog>
-    <!-- Office Task -->
-    <q-dialog
-      v-model="officeTaskDialog"
-      persistent
-      :maximized="maximizedToggle"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card class="form-card">
-        <CustomBar
-          @closeDialog="officeTaskDialog = false"
-          :dialogName="'Office Task'"
-        />
-        <q-card-section>
-          <div class="q-page bg-white" style="min-height: 630px">
-            <div
-              class="full-width"
-              style="
-                height: calc(100vh - 145px);
-                overflow-y: auto;
-                margin-bottom: 10px;
-                padding-top: 40px;
-              "
-            >
-              <q-select
-                v-model="officeTask.officeActionTypes"
-                :options="officeActionRequiredTypes"
-                label="Office Action Required"
-              />
-              <q-select
-                v-model="officeTask.officeTaskTypes"
-                :options="officeTaskRequiredTypes"
-                label="Office Task Required"
-              /><br />
-              <div class="row">
-                <p>Additional Office Task Required</p>
-                <q-toggle
-                  class="q-ml-auto"
-                  v-model="additionalOfficeTaskRequiredToggle"
-                />
-              </div>
-            </div>
-            <br />
-          </div>
-
-          <q-btn
-            label="Save"
-            color="primary"
-            class="full-width q-mt-auto text-capitalize"
-            @click="officeTaskDialog = false"
-            size="'xl'"
-          ></q-btn>
-        </q-card-section>
-      </q-card>
-    </q-dialog>
     <!-- Vendor list Dialog -->
     <q-dialog
       v-model="vendorsListDialog"
@@ -1912,25 +2112,10 @@
       transition-hide="slide-down"
     >
       <q-card>
-        <q-header bordered class="bg-white">
-          <q-toolbar class="row bg-white">
-            <img
-              src="~assets/close.svg"
-              alt="close"
-              @click="vendorsListDialog = false"
-              style="margin: auto 0"
-            />
-
-            <div class="text-uppercase text-bold text-black q-mx-auto">
-              {{ vendorDialogName }}
-            </div>
-            <img
-              src="~assets/add.svg"
-              @click="addVendorDialog = true"
-              style="margin: 0 0 0 20px"
-            />
-          </q-toolbar>
-        </q-header>
+        <CustomBar
+          @closeDialog="addEstimatorDialog = false"
+          :dialogName="vendorDialogName"
+        />
         <VendorsList
           :carrierName="insuranceDetails.carrierName"
           :selective="true"
@@ -1939,6 +2124,7 @@
           :showFilter="showVendorDialogFilters"
           :filterName="vendorDialogFilterByIndustry"
           :valueName="valueName"
+          @addVendor="addVendorDialog = true"
         />
       </q-card>
     </q-dialog>
@@ -1951,25 +2137,22 @@
       transition-hide="slide-down"
     >
       <q-card>
-        <q-header bordered class="bg-white">
-          <q-toolbar class="row bg-white justify-between">
-            <img
-              src="~assets/close.svg"
-              alt="close"
-              @click="estimatorsListDialog = false"
-              style="margin: auto 0"
-            />
-            <div class="text-uppercase text-bold text-black q-mx-auto">
-              Estimators
-            </div>
-            <img
-              src="~assets/add.svg"
-              @click="addEstimatorDialog = true"
-              style="margin: 0 0 0 20px"
-            />
-          </q-toolbar>
-        </q-header>
+        <CustomBar
+          :dialogName="'Estimators'"
+          @closeDialog="estimatorsListDialog = false"
+        />
         <div class="vendor-list">
+          <div class="actions-div">
+            <q-input placeholder="Search" borderless class="full-width">
+              <template v-slot:prepend>
+                <q-icon name="search" />
+              </template>
+            </q-input>
+            <q-separator vertical inset></q-separator>
+            <q-btn @click="addEstimatorDialog = true" flat
+              ><img src="~assets/add.svg"
+            /></q-btn>
+          </div>
           <div
             v-for="estimator in estimators"
             :key="estimator.id"
@@ -1999,254 +2182,6 @@
               : expertVendorInfo.industry.value
           "
         />
-      </q-card>
-    </q-dialog>
-    <!-- Contract Info Dialog -->
-    <q-dialog
-      v-model="contractInfoDialog"
-      persistent
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card class="form-card">
-        <CustomBar
-          @closeDialog="onCloseDialogBox('contractInfoDialog', 5)"
-          :dialogName="'Contract Details'"
-        />
-        <q-card-section>
-          <div class="q-page bg-white">
-            <div class="full-width fix-height">
-              <div>
-                <q-form ref="contractInfoForm">
-                  <span class="form-heading">Contract Date</span>
-                  <div class="full-width">
-                    <q-input
-                      class="required"
-                      v-model="contractInfo.contractDate"
-                      mask="##/##/####"
-                      label="MM/DD/YYYY"
-                      lazy-rules
-                      :rules="[
-                        val =>
-                          (validateDate(val) && val && val.length > 0) ||
-                          'Invalid date!'
-                      ]"
-                    >
-                      <template v-slot:append>
-                        <q-icon
-                          name="event"
-                          size="sm"
-                          color="primary"
-                          class="cursor-pointer"
-                        >
-                          <q-popup-proxy
-                            ref="qDateProxy4"
-                            transition-show="scale"
-                            transition-hide="scale"
-                          >
-                            <q-date
-                              v-model="contractInfo.contractDate"
-                              @input="() => $refs.qDateProxy4.hide()"
-                              mask="MM/DD/YYYY"
-                            ></q-date>
-                          </q-popup-proxy>
-                        </q-icon>
-                      </template>
-                    </q-input>
-                  </div>
-
-                  <br />
-                  <span class="form-heading">Date of First Contract</span>
-                  <div class="full-width">
-                    <q-input
-                      v-model="contractInfo.firstContractDate"
-                      mask="##/##/####"
-                      label="MM/DD/YYYY"
-                      lazy-rules
-                      :rules="[val => validateDate(val) || 'Invalid date!']"
-                    >
-                      <template v-slot:append>
-                        <q-icon
-                          name="event"
-                          size="sm"
-                          color="primary"
-                          class="cursor-pointer"
-                        >
-                          <q-popup-proxy
-                            ref="qDateProxy4"
-                            transition-show="scale"
-                            transition-hide="scale"
-                          >
-                            <q-date
-                              v-model="contractInfo.firstContractDate"
-                              @input="() => $refs.qDateProxy4.hide()"
-                              mask="MM/DD/YYYY"
-                            ></q-date>
-                          </q-popup-proxy>
-                        </q-icon>
-                      </template>
-                    </q-input>
-                  </div>
-                  <div class="full-width">
-                    <q-input
-                      label=" Time Of First Contract"
-                      v-model="contractInfo.time"
-                      now
-                      mask="time"
-                      lazy-rules
-                      :rules="[val => validateTime(val) || 'Invalid time!']"
-                    >
-                      <template v-slot:append>
-                        <q-icon name="access_time" class="cursor-pointer">
-                          <q-popup-proxy
-                            transition-show="scale"
-                            transition-hide="scale"
-                          >
-                            <q-time v-model="contractInfo.time">
-                              <div class="row items-center justify-end">
-                                <q-btn
-                                  v-close-popup
-                                  label="Close"
-                                  color="primary"
-                                  flat
-                                ></q-btn>
-                              </div>
-                            </q-time>
-                          </q-popup-proxy>
-                        </q-icon>
-                      </template>
-                    </q-input>
-                  </div>
-                  <div class="row">
-                    <q-btn-toggle
-                      v-model="contractInfo.buttonGroup"
-                      push
-                      glossy
-                      toggle-color="primary"
-                      :options="[
-                        { label: ' $', value: 'dollar' },
-                        { label: ' %', value: 'percentage' },
-                        { value: 'update', icon: 'update' }
-                      ]"
-                    ></q-btn-toggle>
-                  </div>
-
-                  <div class="row" style="align-items: center">
-                    <q-input
-                      class="q-ml-auto full-width"
-                      mask="#.#"
-                      type="number"
-                      v-model.number="contractInfo.claimFeeRate"
-                      label="Claim Fee Rate"
-                      :suffix="
-                        contractInfo.buttonGroup == 'dollar'
-                          ? '$ flat'
-                          : '' || contractInfo.buttonGroup == 'percentage'
-                          ? '%'
-                          : '' || contractInfo.buttonGroup == 'update'
-                          ? '/hr'
-                          : ''
-                      "
-                      style="width: 50%"
-                    />
-                  </div>
-                  <br />
-
-                  <span class="form-heading"> Source Of Claim </span>
-
-                  <div>
-                    <q-select
-                      v-model="sourceDetails.type"
-                      :options="leadSources"
-                      option-label="name"
-                      option-value="value"
-                      options-dense
-                      emit-value
-                      map-options
-                      options-dense
-                      @input="onChangingSourceType()"
-                    />
-                    <q-input
-                      v-if="
-                        sourceDetails.type != constants.industries.VENDOR &&
-                          sourceDetails.type != '' &&
-                          sourceDetails.type != 'google'
-                      "
-                      type="text"
-                      class="required"
-                      placeholder="Enter Source details"
-                      v-model="sourceDetails.details"
-                      lazy-rules
-                      :rules="[val => (val && val.length > 0) || '']"
-                    />
-                    <div
-                      v-else-if="
-                        sourceDetails.type == constants.industries.VENDOR
-                      "
-                      class="custom-select"
-                      @click="
-                        onAddVendorDialogClick(constants.industries.VENDOR)
-                      "
-                    >
-                      <div class="select-text">
-                        {{
-                          sourceDetails.id
-                            ? sourceDetails.details
-                            : 'Select Lead Source'
-                        }}
-                      </div>
-                    </div>
-                  </div>
-                  <br />
-                  <span class="form-heading">Accept or Cancel Claim ?</span>
-                  <p>
-                    if this claim will not be accepted, you can mark the claim
-                    as beiing "Cancelled",which will close the claim upon
-                    creation. This allows you to record the client and property
-                    information in claimGuru for historical purposes.
-                  </p>
-                  <div class="row">
-                    <p class="q-mx-none q-my-auto form-heading">Cancelled?</p>
-                    <q-toggle
-                      class="q-ml-auto"
-                      v-model="contractInfo.cancelledToggle"
-                    />
-                  </div>
-                  <div class="full-width">
-                    <q-select
-                      v-model="contractInfo.reasonForCancellation"
-                      :options="reasonForCancellation"
-                      label="Reason For Cancellation"
-                      options-dense
-                    ></q-select>
-                  </div>
-                  <br />
-                  <span class="form-heading">Reason For Cancellation</span>
-                  <div class="floating-label">
-                    <textarea
-                      rows="5"
-                      required
-                      class="full-width"
-                      v-model="contractInfo.reasonForCancellationText"
-                      style="resize: none"
-                    ></textarea>
-                  </div>
-                </q-form>
-              </div>
-
-              <br />
-            </div>
-          </div>
-
-          <q-btn
-            label="Save"
-            color="primary"
-            class="full-width q-mt-auto text-capitalize"
-            @click="onSubmit('contractInfoDialog')"
-            size="'xl'"
-          ></q-btn>
-        </q-card-section>
       </q-card>
     </q-dialog>
   </q-page>
@@ -3453,14 +3388,8 @@ export default {
   }
 }
 .vendor-list {
-  padding-top: 51px;
   color: #666666;
-  .actions-div {
-    display: flex;
-    border-bottom: 1px solid #0000001f;
-    padding: 0 20px;
-    align-items: center;
-  }
+
   .vendor-list-item {
     padding: 20px;
     border-bottom: 1px solid lightgray;
