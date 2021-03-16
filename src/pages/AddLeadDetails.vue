@@ -460,24 +460,10 @@
       transition-hide="slide-down"
     >
       <q-card>
-        <q-header bordered class="bg-white">
-          <q-toolbar class="row bg-white">
-            <img
-              src="~assets/close.svg"
-              alt="close"
-              @click="vendorsListDialog = false"
-              style="margin: auto 0"
-            />
-            <div class="text-uppercase text-bold text-black q-mx-auto">
-              {{ vendorDialogName }}
-            </div>
-            <img
-              src="~assets/add.svg"
-              @click="addVendorDialog = true"
-              style="margin: 0 0 0 20px"
-            />
-          </q-toolbar>
-        </q-header>
+        <CustomBar
+          :dialogName="vendorDialogName"
+          @closeDialog="vendorsListDialog = false"
+        />
         <VendorsList
           :selective="true"
           @selectedVendor="onClosingVendorSelectDialog"
@@ -513,12 +499,17 @@ import { dateToSend } from '@utils/date';
 import VendorsList from 'components/VendorsList';
 import { constants } from '@utils/constant';
 import AddVendor from 'components/AddVendor';
+import CustomBar from 'components/CustomBar';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
-import CustomHeader from 'components/CustomHeader';
 import { date } from 'quasar';
 
 export default {
-  components: { VendorsList, AddVendor, AutoCompleteAddress, CustomHeader },
+  components: {
+    VendorsList,
+    AddVendor,
+    AutoCompleteAddress,
+    CustomBarCustomBar
+  },
 
   data() {
     return {

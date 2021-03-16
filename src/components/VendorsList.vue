@@ -58,7 +58,7 @@
       <q-card class="bg-white">
         <q-bar
           style="height: 51px; border-bottom: 1px solid #0000001f"
-          class="bg-white"
+          class="bg-grey-4"
         >
           <img
             src="~assets/close.svg"

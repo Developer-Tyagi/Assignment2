@@ -56,14 +56,10 @@
       transition-hide="slide-down"
     >
       <q-card class="bg-white">
-        <q-bar style="background: whitesmoke">
-          <img src="~assets/close.svg" @click="closeInspetionDialog" />
-          <q-space />
-          <div class="text-uppercase text-bold text-black">
-            Add Inspection Type
-          </div>
-          <q-space />
-        </q-bar>
+        <CustomBar
+          :dialogName="'Add Inspection Type'"
+          @closeDialog="closeInspetionDialog"
+        />
 
         <div class="q-pa-md column height-without-header">
           <div style="height: calc(100% - 50px)">
@@ -116,8 +112,9 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-
+import CustomBar from 'components/CustomBar';
 export default {
+  components: { CustomBar },
   data() {
     return {
       searchText: '',

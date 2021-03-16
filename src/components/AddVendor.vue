@@ -1,19 +1,10 @@
 <template>
-  <q-page class="bg-white full-width">
-    <q-header bordered class="bg-white">
-      <q-toolbar class="row bg-white">
-        <img
-          src="~assets/close.svg"
-          alt="back-arrow"
-          @click="closeDialog(false)"
-          style="margin: auto 0"
-        />
-        <div class="text-uppercase text-bold text-black q-mx-auto">
-          ADD NEW {{ componentName }}
-        </div>
-      </q-toolbar>
-    </q-header>
-    <div style="padding-top: 51px">
+  <q-page>
+    <div class="bg-white full-width">
+      <CustomBar
+        :dialogName="componentName"
+        @closeDialog="closeDialog(false)"
+      />
       <q-form
         class="q-pa-lg"
         style="height: calc(100vh - 51px)"
@@ -259,6 +250,7 @@ const addressService = new AddressService();
 import { mapGetters, mapActions } from 'vuex';
 import { constants } from '@utils/constant';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
+import CustomBar from 'components/CustomBar';
 import { validateEmail } from '@utils/validation';
 import { getVendors } from 'src/store/vendors/actions';
 
@@ -266,7 +258,7 @@ export default {
   name: 'AddVendor',
   props: ['componentName', 'selectedIndustryType'],
 
-  components: { AutoCompleteAddress },
+  components: { AutoCompleteAddress, CustomBar },
 
   data() {
     return {

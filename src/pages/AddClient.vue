@@ -15,6 +15,7 @@
         </div>
 
         <q-btn
+          style="width: 90%"
           label="Create Client"
           color="primary"
           class="q-mt-auto text-capitalize q-mx-auto"
@@ -34,20 +35,10 @@
       transition-hide="slide-down"
     >
       <q-card class="form-card q-pa-md">
-        <q-header bordered class="bg-white">
-          <q-toolbar class="row bg-white">
-            <img
-              src="~assets/close.svg"
-              alt="back-arrow"
-              @click="onCloseDialogBox('publicAdjustorInfoDialog', 6)"
-              style="margin: auto 0"
-            />
-
-            <div class="text-uppercase text-bold text-black q-mx-auto">
-              Public Adjustor Info
-            </div>
-          </q-toolbar>
-        </q-header>
+        <CustomBar
+          :dialogName="'Public Adjustor Info'"
+          @closeDialog="onCloseDialogBox('publicAdjustorInfoDialog', 6)"
+        />
         <q-card-section>
           <div class="q-page bg-white">
             <div class="full-width fix-height">
@@ -194,20 +185,11 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="form-card q-pa-md" style="padding-top: 30px">
-        <q-header bordered class="bg-white">
-          <q-toolbar class="row bg-white">
-            <img
-              src="~assets/close.svg"
-              alt="back-arrow"
-              @click="onCloseDialogBox('clientInfoDailog', 0)"
-              style="margin: auto 0"
-            />
-            <div class="text-uppercase text-bold text-black q-mx-auto">
-              Client Info
-            </div>
-          </q-toolbar>
-        </q-header>
+      <q-card class="form-card">
+        <CustomBar
+          :dialogName="'Client Info'"
+          @closeDialog="onCloseDialogBox('clientInfoDailog', 0)"
+        />
         <q-card-section>
           <div class="q-page bg-white">
             <div class="full-width fix-height">
@@ -584,20 +566,11 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="form-card q-pa-md" style="padding-top: 30px">
-        <q-header bordered class="bg-white">
-          <q-toolbar class="row bg-white">
-            <img
-              src="~assets/close.svg"
-              alt="back-arrow"
-              @click="onCloseDialogBox('mailingAddressDialog', 1)"
-              style="margin: auto 0"
-            />
-            <div class="text-uppercase text-bold text-black q-mx-auto">
-              Mailing Address
-            </div>
-          </q-toolbar>
-        </q-header>
+      <q-card class="form-card">
+        <CustomBar
+          @closeDialog="onCloseDialogBox('mailingAddressDialog', 1)"
+          :dialogName="'Mailing Address'"
+        />
         <q-card-section>
           <div class="q-page bg-white">
             <div class="full-width fix-height">
@@ -644,21 +617,11 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="form-card q-pa-md" style="padding-top: 30px">
-        <q-header bordered class="bg-white">
-          <q-toolbar class="row bg-white">
-            <img
-              src="~assets/close.svg"
-              alt="back-arrow"
-              @click="onCloseDialogBox('insuranceInfoDialog', 2)"
-              style="margin: auto 0"
-            />
-            <div class="text-uppercase text-bold text-black q-mx-auto">
-              Insurance Info
-            </div>
-          </q-toolbar>
-        </q-header>
-
+      <q-card class="form-card">
+        <CustomBar
+          @closeDialog="onCloseDialogBox('insuranceInfoDialog', 2)"
+          :dialogName="'Insurance Info'"
+        />
         <q-card-section>
           <div class="q-page bg-white">
             <div class="full-width fix-height">
@@ -930,20 +893,11 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="form-card q-pa-md" style="padding-top: 30px">
-        <q-header bordered class="bg-white">
-          <q-toolbar class="row bg-white">
-            <img
-              src="~assets/close.svg"
-              alt="back-arrow"
-              @click="onCloseDialogBox('lossInfoDialog', 3)"
-              style="margin: auto 0"
-            />
-            <div class="text-uppercase text-bold text-black q-mx-auto">
-              Loss Info
-            </div>
-          </q-toolbar>
-        </q-header>
+      <q-card class="form-card">
+        <CustomBar
+          @closeDialog="onCloseDialogBox('lossInfoDialog', 3)"
+          :dialogName="'Loss Info'"
+        />
         <q-card-section>
           <div class="q-page bg-white">
             <div class="full-width fix-height">
@@ -1548,21 +1502,11 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="form-card q-pa-md" style="padding-top: 30px">
-        <q-header bordered class="bg-white">
-          <q-toolbar class="row bg-white">
-            <img
-              src="~assets/close.svg"
-              alt="back-arrow"
-              @click="mortgageInfoDialog = false"
-              style="margin: auto 0"
-            />
-            <div class="text-uppercase text-bold text-black q-mx-auto">
-              Mortgage Info
-            </div>
-          </q-toolbar>
-        </q-header>
-
+      <q-card class="form-card">
+        <CustomBar
+          @closeDialog="mortagegeInfoDialog = false"
+          :dialogName="'Mortagage Info'"
+        />
         <q-card-section>
           <div class="q-page bg-white">
             <div class="full-width fixHeight">
@@ -1662,20 +1606,11 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="form-card q-pa-md" style="padding-top: 20px">
-        <q-header bordered class="bg-white">
-          <q-toolbar class="row bg-white">
-            <img
-              src="~assets/close.svg"
-              alt="back-arrow"
-              @click="estimatingInfoDialog = false"
-              style="margin: auto 0"
-            />
-            <div class="text-uppercase text-bold text-black q-mx-auto">
-              Estimating Info
-            </div>
-          </q-toolbar>
-        </q-header>
+      <q-card class="form-card">
+        <CustomBar
+          @closeDialog="estimatingInfoDialog = false"
+          :dialogName="'Estimating Info'"
+        />
         <q-card-section>
           <div class="q-page bg-white" style="min-height: 500px">
             <div class="full-width fix-height">
@@ -1744,21 +1679,11 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="form-card q-pa-md" style="padding-top: 30px">
-        <q-header bordered class="bg-white">
-          <q-toolbar class="row bg-white">
-            <img
-              src="~assets/close.svg"
-              alt="back-arrow"
-              @click="addEstimatorDialog = false"
-              style="margin: auto 0"
-            />
-            <div class="text-uppercase text-bold text-black q-mx-auto">
-              ADD NEW ESTIMATOR
-            </div>
-          </q-toolbar>
-        </q-header>
-
+      <q-card class="form-card">
+        <CustomBar
+          @closeDialog="addEstimatorDialog = false"
+          :dialogName="'Add New Estimator'"
+        />
         <q-card-section>
           <div class="q-page bg-white">
             <div class="full-width fix-height">
@@ -1848,20 +1773,11 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="form-card q-pa-md" style="padding-top: 30px">
-        <q-header bordered class="bg-white">
-          <q-toolbar class="row bg-white">
-            <img
-              src="~assets/close.svg"
-              alt="back-arrow"
-              @click="onCloseDialogBox('expertVendorInfoDialog', 4)"
-              style="margin: auto 0"
-            />
-            <div class="text-uppercase text-bold text-black q-mx-auto">
-              Expert / Vendor Info
-            </div>
-          </q-toolbar>
-        </q-header>
+      <q-card class="form-card">
+        <CustomBar
+          @closeDialog="onCloseDialogBox('expertVendorInfoDialog', 4)"
+          :dialogName="'Expert / Vendor Info'"
+        />
         <q-card-section>
           <div class="q-page bg-white">
             <div class="full-width fix-height">
@@ -2008,20 +1924,11 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="form-card q-pa-md" style="padding-top: 20px">
-        <q-header bordered class="bg-white">
-          <q-toolbar class="row bg-white">
-            <img
-              src="~assets/close.svg"
-              alt="back-arrow"
-              @click="officeTaskDialog = false"
-              style="margin: auto 0"
-            />
-            <div class="text-uppercase text-bold text-black q-mx-auto">
-              Office Task
-            </div>
-          </q-toolbar>
-        </q-header>
+      <q-card class="form-card">
+        <CustomBar
+          @closeDialog="officeTaskDialog = false"
+          :dialogName="'Office Task'"
+        />
         <q-card-section>
           <div class="q-page bg-white" style="min-height: 630px">
             <div
@@ -2169,20 +2076,11 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="form-card q-pa-md" style="padding-top: 30px">
-        <q-header bordered class="bg-white">
-          <q-toolbar class="row bg-white">
-            <img
-              src="~assets/close.svg"
-              alt="back-arrow"
-              @click="onCloseDialogBox('contractInfoDialog', 5)"
-              style="margin: auto 0"
-            />
-            <div class="text-uppercase text-bold text-black q-mx-auto">
-              Contract Details
-            </div>
-          </q-toolbar>
-        </q-header>
+      <q-card class="form-card">
+        <CustomBar
+          @closeDialog="onCloseDialogBox('contractInfoDialog', 5)"
+          :dialogName="'Contract Details'"
+        />
         <q-card-section>
           <div class="q-page bg-white">
             <div class="full-width fix-height">
@@ -2443,7 +2341,7 @@
 </template>
 
 <script>
-import CustomHeader from 'components/CustomHeader';
+import CustomBar from 'components/CustomBar';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import AddressService from '@utils/country';
 import { validateEmail, validateDate, validateTime } from '@utils/validation';
@@ -2458,7 +2356,7 @@ const addressService = new AddressService();
 
 export default {
   name: 'addClient',
-  components: { CustomHeader, VendorsList, AddVendor, AutoCompleteAddress },
+  components: { CustomBar, VendorsList, AddVendor, AutoCompleteAddress },
 
   data() {
     return {

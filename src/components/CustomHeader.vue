@@ -32,7 +32,4 @@ export default {
 .q-btn {
   width: 50px;
 }
-.no-visibility {
-  visibility: hidden;
-}
 </style>
