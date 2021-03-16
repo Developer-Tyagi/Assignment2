@@ -2826,6 +2826,9 @@ export default {
       this.lossAddressDetails.addressRegion = this.selectedLead.lossLocation.addressRegion;
       this.lossAddressDetails.postalCode = this.selectedLead.lossLocation.postalCode;
       this.lossAddressDetails.streetAddress = this.selectedLead.lossLocation.streetAddress;
+      this.lossInfo.causeOfLoss.id = this.selectedLead.lossCause.id;
+      this.lossInfo.causeOfLoss.value = this.selectedLead.lossCause.value;
+      this.lossInfo.causeOfLoss.machineValue = this.selectedLead.lossCause.machineValue;
       this.lossInfo.dateOfLoss = date.formatDate(
         this.selectedLead.dateofLoss,
         'MM/DD/YYYY'

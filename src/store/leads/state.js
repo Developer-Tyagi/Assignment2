@@ -21,6 +21,11 @@ export default function() {
           }
         ]
       },
+      causeOfLoss: {
+        id: '',
+        value: '',
+        machineValue: ''
+      },
       lastVisted: '',
       visited: [],
       lossLocation: {
@@ -33,6 +38,7 @@ export default function() {
       },
       lossDesc: '',
       dateOfLoss: '',
+
       carrier: {
         id: '',
         value: ''
