@@ -35,7 +35,7 @@
               v-for="client in clients"
               :key="client.id"
             >
-              <q-item-section @click="onClientListClick">
+              <q-item-section @click="onClientsListClick">
                 <div class="client-list-item">
                   <div class="row">
                     <span>
@@ -112,7 +112,7 @@ export default {
       this.searchText = '';
       this.search();
     },
-    onClientListClick() {
+    onClientsListClick() {
       this.$router.push('/editClient');
     },
     addClient() {
