@@ -23,3 +23,10 @@ export function setContactTypes(state, types) {
 export function setPlans(state, plans) {
   state.plans = plans.map(plan => ({ ...plan.attributes, id: plan.id }));
 }
+export function setLossCause(state, types) {
+  state.lossCauses = types.map(type => ({
+    name: type.attributes.value,
+    machineValue: type.attributes.machineValue,
+    id: type.id
+  }));
+}

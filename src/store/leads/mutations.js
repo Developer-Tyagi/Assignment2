@@ -44,6 +44,7 @@ export function setSelectedLead(state, lead) {
         streetAddress: ''
       },
       lossDesc: '',
+      lossDetails: '',
       dateOfLoss: '',
       carrier: '',
       policyNumber: '',
