@@ -358,6 +358,7 @@ export default {
     }
 
     if (this.componentName === constants.industries.EXPERTVENDOR) {
+      console.log(8777, this.selectedIndustryType);
       let industryType = this.vendorIndustries.find(
         o => o.name === this.selectedIndustryType
       );

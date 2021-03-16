@@ -2161,11 +2161,7 @@
         <AddVendor
           @closeDialog="closeAddVendorDialog"
           :componentName="vendorDialogName"
-          :selectedIndustryType="
-            expertVendorInfo.industry.value == 'Others'
-              ? industryType.value
-              : expertVendorInfo.industry.value
-          "
+          :selectedIndustryType="valuePass"
         />
       </q-card>
     </q-dialog>
@@ -2474,6 +2470,7 @@ export default {
 
   data() {
     return {
+      valuePass: '',
       reasonForCancellation: ['Google', 'Facebook', 'Whatsapp', 'Instagram'],
       contractInfo: {
         contractDate: '',
@@ -3049,6 +3046,7 @@ export default {
       });
 
       this.expertVendorInfo.industry[index].value = result.name;
+      this.valuePass = result.name;
 
       this.expertVendorInfo.industry[index].id = result.id;
       this.expertVendorInfo.industry[index].machineValue = result.machineValue;
