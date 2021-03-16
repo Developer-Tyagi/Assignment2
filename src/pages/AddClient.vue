@@ -2106,6 +2106,7 @@
           </q-toolbar>
         </q-header>
         <VendorsList
+          :carrierName="insuranceDetails.carrierName"
           :selective="true"
           @selectedVendor="onClosingVendorSelectDialog"
           ref="list"
