@@ -10,7 +10,7 @@
     />
     <div class="row justify-between">
       <q-input
-        :class="isRequired ? 'required col-3' : ''"
+        :class="[isAsteriskMark ? 'required col-3' : 'col-3']"
         v-model="address.houseNumber"
         label="House/Flat No"
         lazy-rules
@@ -19,7 +19,7 @@
         ]"
       />
       <q-input
-        :class="isRequired ? 'required col-8' : ''"
+        :class="[isAsteriskMark ? 'required col-8' : 'col-8']"
         v-model="address.streetAddress"
         label="Street"
         lazy-rules
@@ -29,14 +29,14 @@
       />
     </div>
     <q-input
-      :class="isRequired ? 'required' : ''"
+      :class="[isAsteriskMark ? 'required' : '']"
       v-model="address.addressLocality"
       label="City"
       lazy-rules
       :rules="[val => checkValidations(val) || 'Please fill the city']"
     />
     <q-select
-      :class="isRequired ? 'required' : ''"
+      :class="[isAsteriskMark ? 'required' : '']"
       v-model="address.addressRegion"
       :options="states"
       label="State"
@@ -44,7 +44,7 @@
       :rules="[val => checkValidations(val) || 'Please fill the state']"
     />
     <q-select
-      :class="isRequired ? 'required' : ''"
+      :class="[isAsteriskMark ? 'required' : '']"
       v-model="address.addressCountry"
       :options="countries"
       label="Country"
@@ -53,7 +53,7 @@
       :rules="[val => checkValidations(val) || 'Please fill the country']"
     />
     <q-input
-      :class="isRequired ? 'required' : ''"
+      :class="[isAsteriskMark ? 'required' : '']"
       v-model="address.postalCode"
       label="ZIP Code"
       lazy-rules
@@ -83,7 +83,10 @@ const addressService = new AddressService();
 export default {
   name: 'AutoCompleteAddress',
   props: {
-    isRequired: false,
+    isAsteriskMark: {
+      type: Boolean,
+      required: false
+    },
     address: {
       type: Object,
       dropBox: {
