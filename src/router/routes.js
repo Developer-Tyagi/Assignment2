@@ -17,6 +17,7 @@ const routes = [
         caseSensitive: true,
         component: () => import('pages/Signup.vue')
       },
+
       {
         path: 'set-password',
         name: 'set-password',
@@ -45,6 +46,7 @@ const routes = [
       }
     ]
   },
+
   {
     path: '',
     component: () => import('layouts/AdminLayout.vue'),
@@ -112,6 +114,13 @@ const routes = [
         component: () => import('pages/Leads.vue')
       },
       {
+        path: 'editClient',
+        name: 'client details',
+
+        caseSensitive: true,
+        component: () => import('pages/ClientsDetails.vue')
+      },
+      {
         path: 'add-lead',
         name: 'add new leads',
         caseSensitive: true,
@@ -144,6 +153,7 @@ const routes = [
       }
     ]
   },
+
   {
     path: '',
     component: () => import('layouts/ClientLayout.vue'),

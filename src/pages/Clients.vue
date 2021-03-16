@@ -35,28 +35,34 @@
               v-for="client in clients"
               :key="client.id"
             >
-              <div class="client-list-item">
-                <div class="row">
-                  <span>
-                    {{ client['insuredInfo']['primary']['fname'] }}
-                    {{ client['insuredInfo']['primary']['lname'] }}
-                  </span>
-
-                  <q-icon class="q-ml-auto" size="sm" name="more_vert"></q-icon>
-                </div>
-                <div class="row">
+              <q-item-section @click="onClientsListClick">
+                <div class="client-list-item">
                   <div class="row">
-                    <span
-                      >Mob:
-                      <span>
-                        {{ client.insuredInfo.primary.phoneNumber[0].number }}
-                      </span>
+                    <span>
+                      {{ client['insuredInfo']['primary']['fname'] }}
+                      {{ client['insuredInfo']['primary']['lname'] }}
                     </span>
+
+                    <q-icon
+                      class="q-ml-auto"
+                      size="sm"
+                      name="more_vert"
+                    ></q-icon>
                   </div>
+                  <div class="row">
+                    <div class="row">
+                      <span
+                        >Mob:
+                        <span>
+                          {{ client.insuredInfo.primary.phoneNumber[0].number }}
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                  <div><span>File No. 12345678</span></div>
+                  <div>Status: Negotiation</div>
                 </div>
-                <div><span>File No. 12345678</span></div>
-                <div>Status: Negotiation</div>
-              </div>
+              </q-item-section>
             </div>
           </div>
           <div v-else class="full-height full-width column">
@@ -106,7 +112,9 @@ export default {
       this.searchText = '';
       this.search();
     },
-
+    onClientsListClick() {
+      this.$router.push('/editClient');
+    },
     addClient() {
       this.$router.push('/add-client');
     },
