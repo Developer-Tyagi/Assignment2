@@ -17,7 +17,6 @@ export default function() {
     selectedClient: '',
     claimSeverity: [],
     policyCategories: [],
-    selectedClient: '',
     editSelectedClient: []
   };
 }
