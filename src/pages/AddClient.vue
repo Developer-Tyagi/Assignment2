@@ -1910,7 +1910,6 @@
                 }}
               </div>
             </div>
-
             <q-input
               v-model="mortgageDetails[0].loanNumber"
               label="Loan Number"
@@ -1971,6 +1970,7 @@
             </div>
           </q-form>
           <q-btn
+            :disable="!expertVendorButton == true"
             label="Save"
             color="primary"
             class="button-width-90"
@@ -2174,6 +2174,8 @@ export default {
 
   data() {
     return {
+      expertVendorButton: true,
+      industryTypeValue: '',
       reasonForCancellation: [
         'Client Cancelled',
         'Insufficient Coverage',
@@ -2614,6 +2616,9 @@ export default {
             value: 'Select Vendor'
           }
         ];
+        this.expertVendorButton = true;
+      } else {
+        this.expertVendorButton = false;
       }
     },
 
@@ -2621,7 +2626,7 @@ export default {
     async addAnotherIndustry() {
       let text = this.industryType.value.toLowerCase();
 
-      if (text != 'others') {
+      if (text != 'others' && text != '') {
         const response = await this.addIndustry(this.industryType);
         if (response) {
           this.$q.notify({
@@ -2634,7 +2639,7 @@ export default {
         this.getVendorIndustries();
       } else {
         this.$q.notify({
-          message: 'Sorry ! Cannot add Others ',
+          message: 'Sorry ! Cannot add Others or Blank  ',
           position: 'top',
           type: 'negative'
         });
@@ -2780,9 +2785,16 @@ export default {
       });
 
       this.expertVendorInfo.industry[index].value = result.name;
+      this.industryTypeValue = result.name;
 
       this.expertVendorInfo.industry[index].id = result.id;
       this.expertVendorInfo.industry[index].machineValue = result.machineValue;
+
+      if (this.expertVendorInfo.industry[index].value != 'Others') {
+        this.expertVendorButton = true;
+      } else {
+        this.expertVendorButton = false;
+      }
     },
     onCountrySelect(country) {
       this.states = addressService.getStates(country);
@@ -3280,7 +3292,7 @@ export default {
         }
       }
     },
-    onAddVendorDialogClick(name, index) {
+    async onAddVendorDialogClick(name, index) {
       this.valueName = name;
 
       switch (name) {
@@ -3288,6 +3300,12 @@ export default {
           this.vendorDialogName = constants.industries.MORTGAGE;
           this.showVendorDialogFilters = false;
           this.vendorDialogFilterByIndustry = constants.industries.MORTGAGE;
+          const params = {
+            industry: this.vendorDialogFilterByIndustry,
+            name: ''
+          };
+          await this.getVendors(params);
+
           break;
         case constants.industries.SECONDARYMORTGAGE:
           this.vendorDialogName = constants.industries.MORTGAGE;

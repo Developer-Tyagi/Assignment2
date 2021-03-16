@@ -164,6 +164,13 @@
                   clickable
                   v-ripple
                   class="lead-list-details"
+                  v-touch-swipe.horizontal.scroll="
+                    data => onListSwipe(data, lead)
+                  "
+                  :class="{
+                    swipeRight: lead.isLeftOptionOpen,
+                    swipeLeft: lead.isRightOptionOpen
+                  }"
                 >
                   <q-item-section>
                     <div class="row">

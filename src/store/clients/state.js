@@ -14,9 +14,9 @@ export default function() {
     propertyTypes: [],
     policyTypes: [],
     claimReasons: [],
-
+    selectedClient: '',
     claimSeverity: [],
     policyCategories: [],
-    selectedClient: ''
+    editSelectedClient: []
   };
 }

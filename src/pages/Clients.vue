@@ -87,13 +87,16 @@ export default {
     this.getClients();
   },
   methods: {
-    ...mapActions(['getClients']),
+    ...mapActions(['getClients', 'getSingleClientDetails']),
 
     onSearchBackButtonClick() {
       this.searchText = '';
       this.search();
     },
-
+    onClientsListClick(client) {
+      this.getSingleClientDetails(client.id);
+      this.$router.push('/view-client');
+    },
     addClient() {
       this.$router.push('/add-client');
     },
