@@ -13,14 +13,14 @@
       </q-input>
       <div
         v-if="!params.industry && showFilter"
-        class="q-ml-auto row"
+        class="q-ml-auto row q-pr-md"
         @click="filterDialog = true"
       >
-        <img src="~assets/filter.svg" />Filters
+        <img src="~assets/filter.svg" />
       </div>
       <q-btn
         v-if="params.industry && showFilter"
-        class="q-ml-auto"
+        class="q-ml-auto q-pr-md"
         color="white"
         text-color="grey"
         @click="clearFilter()"
@@ -29,6 +29,8 @@
         style="font-weight: 400"
         >Clear</q-btn
       >
+      <q-separator vertical inset></q-separator>
+      <q-btn @click="onAddButtonClick" flat><img src="~assets/add.svg"/></q-btn>
     </div>
     <div>
       <div
@@ -55,7 +57,7 @@
     >
       <q-card class="bg-white">
         <q-bar
-          style="height:51px;border-bottom: 1px solid #0000001f;"
+          style="height: 51px; border-bottom: 1px solid #0000001f"
           class="bg-white"
         >
           <img
@@ -64,9 +66,7 @@
             @click="filterDialog = false"
           />
           <q-space />
-          <div class="text-uppercase text-bold text-black">
-            Filters
-          </div>
+          <div class="text-uppercase text-bold text-black">Filters</div>
           <q-space />
           <q-btn color="primary" text-color="white" @click="applyFilter()"
             >Apply</q-btn
@@ -160,6 +160,10 @@ export default {
       this.params.industry = '';
       this.selectedFilter = '';
       this.getVendors(this.params);
+    },
+
+    onAddButtonClick() {
+      this.$emit('addVendor', true);
     }
   }
 };
@@ -167,12 +171,10 @@ export default {
 
 <style lang="scss">
 .vendor-list {
-  padding-top: 51px;
   color: #666666;
   .actions-div {
     display: flex;
     border-bottom: 1px solid #0000001f;
-    padding: 0 20px;
     align-items: center;
   }
   .vendor-list-item {

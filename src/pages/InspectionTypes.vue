@@ -1,22 +1,30 @@
 <template>
-  <q-page style="padding-top: 0; height: 100vh">
-    <q-header bordered class="bg-white">
-      <q-toolbar class="row bg-white">
+  <q-page>
+    <div>
+      <div class="actions-div">
+        <q-input
+          v-model="searchText"
+          placeholder="Search"
+          borderless
+          style="width: 100%"
+          @input="search($event)"
+        >
+          <template v-slot:prepend>
+            <q-icon name="search" />
+          </template>
+        </q-input>
         <img
-          src="~assets/left-arrow.svg"
-          alt="back-arrow"
-          @click="$router.push('/settings')"
-          style="margin: auto 0"
+          src="~assets/close.svg"
+          v-if="searchText"
+          @click="onSearchBackButtonClick"
+          style="margin: 0 20px"
         />
-        <div class="text-uppercase text-bold text-black q-mx-auto">
-          {{ $route.name }}
-        </div>
-        <img src="~assets/add.svg" alt="" @click="addInspectionDialog = true" />
-      </q-toolbar>
-    </q-header>
-
-    <div style="padding-top: 51px" class="full-height">
-      <div v-if="inspectionTypes.length" class="q-pa-md">
+        <q-separator vertical inset></q-separator>
+        <q-btn @click="addInspectionDialog = true" flat
+          ><img src="~assets/add.svg" />
+        </q-btn>
+      </div>
+      <div v-if="inspectionTypes.length" class="mobile-container-page">
         <div
           v-for="inspectionType in inspectionTypes"
           :key="inspectionType.id"
@@ -48,27 +56,17 @@
       transition-hide="slide-down"
     >
       <q-card class="bg-white">
-        <q-bar>
+        <q-bar style="background: whitesmoke">
           <img src="~assets/close.svg" @click="closeInspetionDialog" />
           <q-space />
-          <div class="text-uppercase text-bold text-black"></div>
+          <div class="text-uppercase text-bold text-black">
+            Add Inspection Type
+          </div>
           <q-space />
         </q-bar>
-        <q-header bordered class="bg-white">
-          <q-toolbar class="row bg-white">
-            <img
-              src="~assets/close.svg"
-              alt="close"
-              @click="closeInspetionDialog"
-              style="margin: auto 0"
-            />
-            <div class="text-uppercase text-bold text-black q-mx-auto">
-              Add Inspection Type
-            </div>
-          </q-toolbar>
-        </q-header>
-        <div class="q-pa-md column" style="height: calc(100% - 51px)">
-          <div style="height: calc(100% - 50px); ">
+
+        <div class="q-pa-md column height-without-header">
+          <div style="height: calc(100% - 50px)">
             <q-card
               class="inspection-card"
               v-for="(subtype, index) in inspectionType.subtypes"
@@ -122,6 +120,7 @@ import { mapActions, mapGetters } from 'vuex';
 export default {
   data() {
     return {
+      searchText: '',
       addInspectionDialog: false,
       inspectionType: {
         value: '',
@@ -188,6 +187,12 @@ export default {
           }
         ]
       };
+    },
+
+    search(e) {},
+
+    onSearchBackButtonClick() {
+      this.searchText = '';
     }
   }
 };

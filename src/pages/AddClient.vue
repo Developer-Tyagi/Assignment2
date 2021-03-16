@@ -17,7 +17,7 @@
         <q-btn
           label="Create Client"
           color="primary"
-          class="full-width q-mt-auto text-capitalize"
+          class="q-mt-auto text-capitalize q-mx-auto"
           :disabled="isCreateClientButtonDisabled"
           @click="createClientButtonClick"
           size="'xl'"
@@ -3601,6 +3601,7 @@ export default {
   font-weight: bold;
   font-size: 16px;
   border-bottom: 1px solid #d3d3d3;
+  padding: 10px;
   margin: 5px 0;
 }
 

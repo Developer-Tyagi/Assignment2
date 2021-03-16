@@ -96,49 +96,6 @@ const routes = [
   },
   {
     path: '',
-    component: () => import('layouts/LeadLayout.vue'),
-    beforeEnter: guardMyroute,
-    children: []
-  },
-  {
-    path: '',
-    component: () => import('layouts/VendorsLayout.vue'),
-    beforeEnter: guardMyroute,
-    children: [
-      {
-        path: 'vendors',
-        name: 'vendors',
-        caseSensitive: true,
-        component: () => import('pages/Vendors.vue')
-      }
-    ]
-  },
-  {
-    path: '',
-    component: () => import('layouts/SettingsLayout.vue'),
-    beforeEnter: guardMyroute,
-    children: [
-      {
-        path: 'settings',
-        name: 'settings',
-        caseSensitive: true,
-        component: () => import('pages/Settings.vue')
-      },
-      {
-        path: 'preferred',
-        caseSensitive: true,
-        component: () => import('pages/PreferredDistance.vue')
-      },
-      {
-        path: 'inspection-types',
-        name: 'type of inspections',
-        caseSensitive: true,
-        component: () => import('pages/InspectionTypes.vue')
-      }
-    ]
-  },
-  {
-    path: '',
     component: () => import('layouts/MobileLayout.vue'),
     beforeEnter: guardMyroute,
     children: [
@@ -155,23 +112,11 @@ const routes = [
         component: () => import('pages/Leads.vue')
       },
       {
-        path: 'clients',
-        name: 'clients',
-        caseSensitive: true,
-        component: () => import('pages/Clients.vue')
-      },
-      {
         path: 'add-lead',
         name: 'add new leads',
         caseSensitive: true,
         component: () => import('pages/AddLead.vue')
       },
-      // {
-      //   path: 'add-client',
-      //   name: 'create client',
-      //   caseSensitive: true,
-      //   component: () => import('pages/AddClient.vue')
-      // },
       {
         path: 'add-lead-details/:id?',
         name: 'add new lead',
@@ -183,6 +128,41 @@ const routes = [
         name: 'lead details',
         caseSensitive: true,
         component: () => import('pages/LeadDetails.vue')
+      },
+      {
+        path: 'clients',
+        name: 'clients',
+        caseSensitive: true,
+        component: () => import('pages/Clients.vue')
+      },
+      {
+        path: 'add-client',
+        name: 'create client',
+        caseSensitive: true,
+        component: () => import('pages/AddClient.vue')
+      },
+      {
+        path: 'vendors',
+        name: 'vendors',
+        caseSensitive: true,
+        component: () => import('pages/Vendors.vue')
+      },
+      {
+        path: 'settings',
+        name: 'settings',
+        caseSensitive: true,
+        component: () => import('pages/Settings.vue')
+      },
+      {
+        path: 'inspection-types',
+        name: 'type of inspections',
+        caseSensitive: true,
+        component: () => import('pages/InspectionTypes.vue')
+      },
+      {
+        path: 'preferred',
+        caseSensitive: true,
+        component: () => import('pages/PreferredDistance.vue')
       }
     ]
   },

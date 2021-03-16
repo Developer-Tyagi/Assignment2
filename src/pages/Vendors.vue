@@ -1,30 +1,14 @@
 <template>
-  <q-page style="padding-top: 0; height: 100vh">
-    <q-header bordered class="bg-white">
-      <q-toolbar class="row bg-white">
-        <img
-          src="~assets/left-arrow.svg"
-          alt="back-arrow"
-          @click="$router.push('/dashboard')"
-          style="margin: auto 0"
-        />
-        <div class="text-uppercase text-bold text-black q-mx-auto">
-          {{ $route.name }}
-        </div>
-        <img
-          src="~assets/add.svg"
-          alt=""
-          @click="addVendorDialog = true"
-          style="margin: 0 0 0 20px"
-        />
-      </q-toolbar>
-    </q-header>
-    <VendorsList
-      ref="list"
-      :selective="false"
-      :showFilter="true"
-      :filterName="''"
-    />
+  <q-page>
+    <div class="mobile-container-page-without-search">
+      <VendorsList
+        ref="list"
+        :selective="false"
+        :showFilter="true"
+        :filterName="''"
+        @addVendor="openAddVendorDialog"
+      />
+    </div>
     <q-dialog
       v-model="addVendorDialog"
       persistent
@@ -56,12 +40,17 @@ export default {
       constants: constants
     };
   },
+
   methods: {
     closeAddVendorDialog(e) {
       this.addVendorDialog = false;
       if (e) {
         this.$refs.list.getVendors();
       }
+    },
+    openAddVendorDialog(e) {
+      console.log(e);
+      this.addVendorDialog = e;
     }
   }
 };
