@@ -81,7 +81,7 @@
                   <q-select
                     v-model="publicAdjustor.personParty1"
                     :options="publicAdjustor.filterRole"
-                    label="Select a Role"
+                    :label="!publicAdjustor.personParty1 ? 'Select a Role' : ''"
                     option-label="name"
                     :disable="publicAdjustor.isFilterApply"
                     option-value="value"
@@ -106,7 +106,7 @@
                   <q-select
                     v-model="publicAdjustor.personParty2"
                     :options="personnelRoles"
-                    label="Select a Role"
+                    placeholder="Select a Role"
                     option-label="name"
                     disable
                     option-value="value"
@@ -131,7 +131,7 @@
                   <q-select
                     v-model="publicAdjustor.personParty3"
                     :options="personnelRoles"
-                    label="Select a Role"
+                    placeholder="Select a Role"
                     option-label="name"
                     disable
                     option-value="value"
@@ -144,7 +144,7 @@
                   <q-select
                     v-model="publicAdjustor.personnelRole4"
                     :options="personnelRoles"
-                    label="Select Role"
+                    placeholder="Select Role"
                     option-label="name"
                     option-value="value"
                     options-dense
@@ -156,7 +156,7 @@
                   <q-select
                     v-model="publicAdjustor.personParty4"
                     :options="personnelRoles"
-                    label="Select a Role"
+                    placeholder="Select a Role"
                     option-label="name"
                     disable
                     option-value="value"
@@ -1127,7 +1127,11 @@
                       mask="##/##/####"
                       label="MM/DD/YYYY"
                       lazy-rules
-                      :rules="[val => validateDate(val) || 'Invalid date!']"
+                      :rules="[
+                        val =>
+                          (val.length > 0 && validateDate(val)) ||
+                          'Invalid date!'
+                      ]"
                     >
                       <template v-slot:append>
                         <q-icon
@@ -1495,7 +1499,7 @@
                   </div>
                   <div class="row">
                     <p class="q-mx-none q-my-auto form-heading">
-                      Does Claimguru PPIF need to be provided?
+                      Does Claim Guru PPIF need to be provided?
                     </p>
                     <q-toggle
                       class="q-ml-auto"
@@ -1882,6 +1886,7 @@
                     <q-toggle
                       class="q-ml-auto"
                       v-model="vendorExpertHiredToggle"
+                      @input="onExpertVendorToggleOff"
                     />
                   </div>
                   <!-- Assigning Multiple Expert Vendors -->
@@ -2101,6 +2106,7 @@
           </q-toolbar>
         </q-header>
         <VendorsList
+          :carrierName="insuranceDetails.carrierName"
           :selective="true"
           @selectedVendor="onClosingVendorSelectDialog"
           ref="list"
@@ -2204,7 +2210,11 @@
                       mask="##/##/####"
                       label="MM/DD/YYYY"
                       lazy-rules
-                      :rules="[val => validateDate(val) || 'Invalid date!']"
+                      :rules="[
+                        val =>
+                          (validateDate(val) && val && val.length > 0) ||
+                          'Invalid date!'
+                      ]"
                     >
                       <template v-slot:append>
                         <q-icon
@@ -2261,67 +2271,6 @@
                       </template>
                     </q-input>
                   </div>
-                  <div class="row  ">
-                    <q-btn
-                      v-model="contractInfo.buttonGroup"
-                      push
-                      label="%"
-                      :color="contractInfo.percentage ? 'primary' : 'white'"
-                      :text-color="
-                        !contractInfo.percentage ? 'primary' : 'white'
-                      "
-                      @click="
-                        contractInfo.percentage = !contractInfo.percentage
-                      "
-                    ></q-btn>
-                    <q-btn
-                      v-model="contractInfo.buttonGroup"
-                      class="q-mx-sm"
-                      push
-                      label="$"
-                      :color="contractInfo.dollar ? 'primary' : 'white'"
-                      :text-color="!contractInfo.dollar ? 'primary' : 'white'"
-                      @click="contractInfo.dollar = !contractInfo.dollar"
-                    ></q-btn>
-
-                    <q-btn
-                      v-model="contractInfo.buttonGroup"
-                      push
-                      size="xs"
-                      icon="update"
-                      :color="contractInfo.update ? 'primary' : 'white'"
-                      :text-color="!contractInfo.update ? 'primary' : 'white'"
-                      @click="contractInfo.update = !contractInfo.update"
-                    ></q-btn>
-                  </div>
-                  <div class="row" style="align-items: center">
-                    <span
-                      class="form-heading x-pt-xs"
-                      v-if="contractInfo.percentage"
-                      >Claim Fee Percent</span
-                    >
-                    <span
-                      class="form-heading x-pt-xs"
-                      v-if="contractInfo.dollar"
-                      >Claim Fee
-                    </span>
-                    <span
-                      class="form-heading x-pt-xs"
-                      v-if="contractInfo.update"
-                      >Claim Fee Rate
-                    </span>
-                    <q-input
-                      class="q-ml-auto"
-                      mask="#.#"
-                      type="number"
-                      v-model.number="contractInfo.claimFeeRate"
-                      placeholder="Claim Fee "
-                      style=" width: 50%"
-                      suffix="/hr"
-                    />
-                  </div>
-                  <br />
-
                   <div class=" full-width">
                     <q-input
                       label=" Time Of First Contract"
@@ -2352,6 +2301,42 @@
                       </template>
                     </q-input>
                   </div>
+
+                  <div class="row">
+                    <q-btn-toggle
+                      v-model="contractInfo.buttonGroup"
+                      push
+                      glossy
+                      toggle-color="primary"
+                      :options="[
+                        { label: ' $', value: 'dollar' },
+                        { label: ' %', value: 'percentage' },
+                        { value: 'update', icon: 'update' }
+                      ]"
+                    ></q-btn-toggle>
+                  </div>
+
+                  <div class="row" style="align-items: center">
+                    <q-input
+                      class="q-ml-auto full-width"
+                      mask="#.#"
+                      type="number"
+                      v-model.number="contractInfo.claimFeeRate"
+                      label="Claim Fee Rate"
+                      :suffix="
+                        contractInfo.buttonGroup == 'dollar'
+                          ? '$ flat'
+                          : '' || contractInfo.buttonGroup == 'percentage'
+                          ? '%'
+                          : '' || contractInfo.buttonGroup == 'update'
+                          ? '/hr'
+                          : ''
+                      "
+                      style=" width: 50%"
+                    />
+                  </div>
+                  <br />
+
                   <span class="form-heading">
                     Source Of Claim
                   </span>
@@ -2421,6 +2406,7 @@
                       v-model="contractInfo.reasonForCancellation"
                       :options="reasonForCancellation"
                       label="Reason For Cancellation"
+                      options-dense
                     ></q-select>
                   </div>
                   <br />
@@ -2474,7 +2460,13 @@ export default {
 
   data() {
     return {
-      reasonForCancellation: ['Google', 'Facebook', 'Whatsapp', 'Instagram'],
+      reasonForCancellation: [
+        'Client Cancelled',
+        'Insufficient Coverage',
+        'Loss to small',
+        'No coverage',
+        'Other'
+      ],
       contractInfo: {
         contractDate: '',
         firstContractDate: '',
@@ -2483,10 +2475,8 @@ export default {
         cancelledToggle: false,
         reasonForCancellation: '',
         reasonForCancellationText: '',
-        percentage: false,
-        dollar: false,
-        update: false,
-        buttonGroup: ''
+
+        buttonGroup: 'dollar'
       },
       publicAdjustor: {
         personnelRole1: '',
@@ -2808,7 +2798,6 @@ export default {
     this.getVendors(this.$route.params.id);
     this.getClientTypes();
     this.getEstimators();
-
     this.getPropertyTypes();
     this.getPolicyTypes();
     this.getLossCauses();
@@ -2828,7 +2817,8 @@ export default {
       this.honorific1.value = this.selectedLead.primaryContact.honorific.value;
       this.honorific1.machineValue = this.selectedLead.primaryContact.honorific.machineValue;
       this.sourceDetails.details = this.selectedLead.leadSource.detail;
-      this.insuranceDetails.carrierName = this.selectedLead.leadSource.type;
+      this.insuranceDetails.carrierName = this.selectedLead.carrier.value;
+      this.insuranceDetails.carrierId = this.selectedLead.carrier.id;
       this.insuranceDetails.policyNumber = this.selectedLead.policyNumber;
       this.lossAddressDetails.houseNumber = this.selectedLead.lossLocation.houseNumber;
       this.lossAddressDetails.addressCountry = this.selectedLead.lossLocation.addressCountry;
@@ -2839,7 +2829,12 @@ export default {
       this.lossInfo.causeOfLoss.id = this.selectedLead.lossCause.id;
       this.lossInfo.causeOfLoss.value = this.selectedLead.lossCause.value;
       this.lossInfo.causeOfLoss.machineValue = this.selectedLead.lossCause.machineValue;
+      this.lossInfo.dateOfLoss = date.formatDate(
+        this.selectedLead.dateofLoss,
+        'MM/DD/YYYY'
+      );
     }
+
     this.countries = addressService.getCountries();
     this.onCountrySelect('United States');
   },
@@ -2887,8 +2882,27 @@ export default {
       'getVendorIndustries',
       'addIndustry'
     ]),
-
     ...mapMutations(['setSelectedLead']),
+
+    // in Expert Vendor info when the Toggle Button is off data will be cleared.
+    onExpertVendorToggleOff() {
+      if (!this.vendorExpertHiredToggle) {
+        this.expertVendorInfo.industry = [
+          {
+            id: '',
+            value: '',
+            machineValue: ''
+          }
+        ];
+        this.expertVendorInfo.vendors = [
+          {
+            id: '',
+            value: 'Select Vendor'
+          }
+        ];
+      }
+    },
+
     // For Adding Another Industry in Expert/Vendor
     async addAnotherIndustry() {
       let text = this.industryType.value.toLowerCase();
@@ -3060,7 +3074,6 @@ export default {
       this.states = addressService.getStates(country);
     },
     onCloseDialogBox(DialogName, value) {
-      console.log('hello');
       if (this.dialogBoxes[value].validForm == true) {
         this.onSubmit(DialogName);
       } else {
@@ -3431,12 +3444,7 @@ export default {
         contractInfo: {
           date: dateToSend(this.contractInfo.contractDate),
           fees: {
-            type:
-              this.contractInfo.percentage ||
-              this.contractInfo.dollar ||
-              this.contractInfo.update
-                ? this.contractInfo.buttonGroup
-                : '',
+            type: this.contractInfo.buttonGroup,
             rate: this.contractInfo.claimFeeRate
               ? this.contractInfo.claimFeeRate
               : 0
