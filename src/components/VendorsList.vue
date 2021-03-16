@@ -6,6 +6,7 @@
         placeholder="Search"
         borderless
         @input="search($event)"
+        class="full-width"
       >
         <template v-slot:prepend>
           <q-icon name="search" />

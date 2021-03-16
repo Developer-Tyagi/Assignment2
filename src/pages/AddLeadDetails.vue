@@ -18,7 +18,6 @@
           <q-form @submit="step++">
             <q-card class="form-card q-pa-md">
               <span class="stepper-heading">Primary Contact </span>
-
               <q-select
                 class="required"
                 v-model="primaryDetails.honorific.id"
