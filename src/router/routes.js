@@ -115,7 +115,7 @@ const routes = [
       },
       {
         path: 'editClient',
-        name: 'edit client',
+        name: 'client details',
 
         caseSensitive: true,
         component: () => import('pages/ClientsDetails.vue')
