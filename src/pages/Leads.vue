@@ -47,7 +47,7 @@
       </q-toolbar>
     </q-header>
     <div style="padding-top: 51px" class="row">
-      <div class="full-width ">
+      <div class="full-width">
         <q-tabs
           v-model="panel"
           dense
@@ -90,7 +90,7 @@
                   clickable
                   v-ripple
                   class="lead-list-details"
-                  v-touch-swipe.mouse:6e-3:150:50="
+                  v-touch-swipe.horizontal.scroll="
                     data => onListSwipe(data, lead)
                   "
                   :class="{
