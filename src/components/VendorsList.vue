@@ -40,8 +40,10 @@
         @click="selectVendor(vendor)"
       >
         <span>{{ vendor.name }}</span>
+        <!-- //remove -->
+
         <q-icon
-          v-if="vendor.selected"
+          v-if="vendor.name === carrierName"
           name="done"
           size="xs"
           class="q-ml-auto"
@@ -98,7 +100,7 @@
 import { mapActions, mapGetters } from 'vuex';
 export default {
   name: 'VendorsList',
-  props: ['selective', 'showFilter', 'filterName', 'valueName'],
+  props: ['carrierName', 'selective', 'showFilter', 'filterName', 'valueName'],
   data() {
     return {
       searchText: '',
@@ -144,10 +146,6 @@ export default {
       const dialogName = this.valueName;
 
       if (this.selective) {
-        this.vendors.forEach(vendor => {
-          vendor.selected = false;
-        });
-        vendor.selected = true;
         if (!this.showFilter) {
           this.$emit('selectedVendor', vendor, dialogName);
         } else {

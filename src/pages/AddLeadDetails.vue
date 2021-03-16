@@ -26,6 +26,7 @@
                 option-value="id"
                 option-label="value"
                 map-options
+                options-dense
                 @input="setTitleName()"
                 emit-value
                 behavior="menu"
@@ -174,6 +175,22 @@
                   </template>
                 </q-input>
               </div>
+              <q-select
+                class="required"
+                v-model="lossDetails.causeOfLoss.id"
+                option-value="id"
+                option-label="name"
+                map-options
+                options-dense
+                emit-value
+                :options="lossCauses"
+                @input="setTypes(lossCauses, lossDetails.causeOfLoss)"
+                label="Cause of Loss"
+                :rules="[
+                  val =>
+                    (val && val.length > 0) || 'Please select the cause of loss'
+                ]"
+              /><br />
 
               <q-input
                 v-model="lossDetails.lossDesc"
@@ -185,6 +202,7 @@
                 :address="lossAddress"
                 :isDropBoxEnable="false"
                 :isChecksEnable="true"
+                :isAsteriskMark="true"
               />
             </q-card>
             <div class="row q-pt-md">
@@ -338,16 +356,7 @@
           <q-form @submit="step++" @reset="step--">
             <q-card class="q-pa-md form-card">
               <span class="stepper-heading">Last Notes</span>
-              <q-input
-                class="required"
-                label="Last Notes"
-                v-model="notes"
-                type="input"
-                lazy-rules
-                :rules="[
-                  val => (val && val.length > 0) || 'Please fill the notes'
-                ]"
-              />
+              <q-input label="Last Notes" v-model="notes" type="input" />
             </q-card>
             <div class="row q-pt-md">
               <div>
@@ -540,7 +549,12 @@ export default {
       },
       lossDetails: {
         lossDesc: '',
-        dateOfLoss: ''
+        dateOfLoss: '',
+        causeOfLoss: {
+          value: '',
+          id: '',
+          machineValue: ''
+        }
       },
 
       lossAddress: {
@@ -587,7 +601,8 @@ export default {
       'getContactTypes',
       'getTitles',
       'getClients',
-      'getVendors'
+      'getVendors',
+      'getLossCauses'
     ]),
     ...mapMutations(['setSelectedClient']),
 
@@ -626,7 +641,14 @@ export default {
       }
       this.vendorsListDialog = false;
     },
+    setTypes(types, data) {
+      const obj = types.find(item => {
+        return item.id === data.id;
+      });
 
+      data.machineValue = obj.machineValue;
+      data.value = obj.name;
+    },
     setTitleName() {
       const title = this.titles.find(obj => {
         return obj.id === this.primaryDetails.honorific.id;
@@ -694,6 +716,9 @@ export default {
         },
         lossDesc: this.lossDetails.lossDesc,
         dateofLoss: dateToSend(this.lossDetails.dateOfLoss),
+        lossCause: {
+          ...this.lossDetails.causeOfLoss
+        },
 
         policyNumber: this.insuranceDetails.policyNumber,
         isAutomaticScheduling: this.schedulingDetails.isAutomaticScheduling,
@@ -785,7 +810,8 @@ export default {
       'leadSources',
       'contactTypes',
       'titles',
-      'vendors'
+      'vendors',
+      'lossCauses'
     ])
   },
 
@@ -809,6 +835,7 @@ export default {
 
     this.getContactTypes();
     this.getTitles();
+    this.getLossCauses();
     this.getClients().then(() => {
       if (this.$route.params.id) {
         let selectedClient = this.clients.find(
