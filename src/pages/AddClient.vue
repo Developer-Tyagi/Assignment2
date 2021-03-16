@@ -2817,7 +2817,8 @@ export default {
       this.honorific1.value = this.selectedLead.primaryContact.honorific.value;
       this.honorific1.machineValue = this.selectedLead.primaryContact.honorific.machineValue;
       this.sourceDetails.details = this.selectedLead.leadSource.detail;
-      this.insuranceDetails.carrierName = this.selectedLead.leadSource.type;
+      this.insuranceDetails.carrierName = this.selectedLead.carrier.value;
+      this.insuranceDetails.carrierId = this.selectedLead.carrier.id;
       this.insuranceDetails.policyNumber = this.selectedLead.policyNumber;
       this.lossAddressDetails.houseNumber = this.selectedLead.lossLocation.houseNumber;
       this.lossAddressDetails.addressCountry = this.selectedLead.lossLocation.addressCountry;
@@ -3065,7 +3066,6 @@ export default {
       this.states = addressService.getStates(country);
     },
     onCloseDialogBox(DialogName, value) {
-      console.log('hello');
       if (this.dialogBoxes[value].validForm == true) {
         this.onSubmit(DialogName);
       } else {
