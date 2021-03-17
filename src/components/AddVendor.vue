@@ -159,7 +159,6 @@
           <div v-for="(contactInfo, index) in vendor.contact" v-if="index >= 1">
             <div class="q-mt-sm">
               <q-select
-                class="required"
                 v-model="contactInfo.honorific.id"
                 :options="titles"
                 option-label="value"
@@ -170,10 +169,6 @@
                 behavior="menu"
                 map-options
                 options-dense
-                lazy-rules
-                :rules="[
-                  val => (val && val.length > 0) || 'Please select the Title'
-                ]"
               />
               <q-input
                 v-model="contactInfo.fname"
@@ -183,7 +178,7 @@
               <q-input v-model="contactInfo.lname" label="Last Name" />
               <div class="row justify-between">
                 <q-select
-                  class="required col-5"
+                  class=" col-5"
                   v-model="contactInfo.phoneNumber[0].type"
                   :options="contactTypes"
                   option-value="machineValue"
@@ -192,22 +187,13 @@
                   emit-value
                   map-options
                   options-dense
-                  lazy-rules
-                  :rules="[
-                    val => (val && val.length > 0) || 'Please select phone type'
-                  ]"
                 />
                 <q-input
-                  class="required col-6"
+                  class=" col-6"
                   v-model.number="contactInfo.phoneNumber[0].number"
                   label="Phone1"
                   mask="(###) ###-####"
                   :ref="`number-${index}`"
-                  lazy-rules
-                  :rules="[
-                    val =>
-                      (val && val.length == 14) || 'Please enter phone number'
-                  ]"
                 />
               </div>
               <q-input
