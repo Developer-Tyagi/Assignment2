@@ -1,5 +1,5 @@
 <template>
-  <div class="vendor-list">
+  <div class="mobile-container-page-without-search vendor-list">
     <div class="actions-div">
       <q-input
         v-model="searchText"

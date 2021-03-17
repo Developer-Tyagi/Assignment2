@@ -479,6 +479,7 @@
           :showFilter="showVendorDialogFilters"
           :filterName="vendorDialogFilterByIndustry"
           :valueName="valueName"
+          @addVendor="addVendorDialog = true"
         />
       </q-card>
     </q-dialog>
