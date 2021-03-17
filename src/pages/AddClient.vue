@@ -1227,7 +1227,13 @@
                 @input="onToggleButtonClick"
               />
             </div>
-            <div v-if="isMortgageHomeToggle" @click="mortgageInfoDialog = true">
+            <div
+              v-if="isMortgageHomeToggle"
+              @click="
+                mortgageInfoDialog = true;
+                lossInfoDialog = false;
+              "
+            >
               <div class="row">
                 <div class="q-px-xs row">
                   <div v-if="!mortgageDetails[0]['id']">Select Mortgage</div>
@@ -1892,7 +1898,10 @@
     >
       <q-card>
         <CustomBar
-          @closeDialog="mortgageInfoDialog = false"
+          @closeDialog="
+            mortgageInfoDialog = false;
+            lossInfoDialog = true;
+          "
           :dialogName="'Mortagage Info'"
         />
         <div class="mobile-container-page-without-search">
@@ -1974,7 +1983,10 @@
             label="Save"
             color="primary"
             class="button-width-90"
-            @click="mortgageInfoDialog = false"
+            @click="
+              mortgageInfoDialog = false;
+              lossInfoDialog = true;
+            "
             size="'xl'"
           />
         </div>

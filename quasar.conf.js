@@ -7,6 +7,10 @@
 const path = require('path');
 module.exports = function(/* ctx */) {
   return {
+    //remove this as per the requirement
+    // bin: {
+    //   linuxAndroidStudio: '/home/anni/android-studio/bin/studio.sh'
+    // },
     // https://quasar.dev/quasar-cli/supporting-ts
     supportTS: false,
     // https://quasar.dev/quasar-cli/prefetch-feature

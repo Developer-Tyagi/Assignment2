@@ -70,7 +70,7 @@
                     clickable
                     v-ripple
                     class="lead-list-details"
-                    v-touch-swipe.mouse:6e-3:150:50="
+                    v-touch-swipe.horizontal.scroll="
                       data => onListSwipe(data, lead)
                     "
                     :class="{
