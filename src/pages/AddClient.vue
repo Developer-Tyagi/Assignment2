@@ -451,7 +451,7 @@
             </div>
             <div class="row">
               <p class="q-my-auto form-heading">
-                Is this is a Foced-Placed policy?
+                Is this is a Forced-Placed policy?
               </p>
 
               <q-toggle
