@@ -125,9 +125,9 @@
       </div>
     </div>
     <q-dialog v-model="addUserDialogBox" persistent>
-      <q-card class=" q-pa-xs col-5 ">
-        <q-bar class=" row justify-between " style="height: 50px">
-          <div class="col-4 q-px-xl text-bold">
+      <q-card class="  col-5 ">
+        <q-bar class=" row justify-between bg-primary" style="height: 50px">
+          <div class="col-4 q-px-xs text-bold">
             Add User
           </div>
           <q-btn dense flat icon="close" v-close-popup>
