@@ -77,9 +77,9 @@ export async function editClient({ dispatch, state }, payload) {
   try {
     const { data } = await request.post(
       `/clients/${payload.id}/info`,
-      buildApiData('clients', payload.clientData)
+      buildApiData('clients', payload)
     );
-    console.log(data, 11);
+
     dispatch('setLoading', false);
     return data;
   } catch (e) {

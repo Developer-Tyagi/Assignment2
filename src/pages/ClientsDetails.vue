@@ -14,6 +14,9 @@
           >
             <div class="form-list row">
               {{ dialogBox.name }}
+              <div class="q-mr-lg q-ml-auto" v-if="dialogBox.validForm == true">
+                <q-icon size="xs" color="primary" name="done" />
+              </div>
             </div>
           </div>
         </div>
