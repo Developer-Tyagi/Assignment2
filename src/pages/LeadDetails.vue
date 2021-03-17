@@ -1,6 +1,11 @@
 <template>
   <q-page>
-    <div class="mobile-container-page-without-search">
+    <div
+      :class="{
+        'mobile-container-page-without-search': !$q.platform.is.iphone,
+        'mobile-container-page': $q.platform.is.iphone
+      }"
+    >
       <div class="row full-height">
         <q-card class="q-pa-md q-ma-md overflow-y w-100">
           <div class="q-mb-lg">

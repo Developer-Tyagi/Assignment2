@@ -1,6 +1,11 @@
 <template>
   <q-page>
-    <div class="mobile-container-page-without-search">
+    <div
+      :class="{
+        'mobile-container-page-without-search': !$q.platform.is.iphone,
+        'mobile-container-page': $q.platform.is.iphone
+      }"
+    >
       <div>
         <q-list>
           <q-item clickable>

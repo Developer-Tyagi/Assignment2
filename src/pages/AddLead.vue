@@ -1,6 +1,11 @@
 <template>
   <q-page>
-    <div class="mobile-container-page-without-search">
+    <div
+      :class="{
+        'mobile-container-page-without-search': !$q.platform.is.iphone,
+        'mobile-container-page': $q.platform.is.iphone
+      }"
+    >
       <div class="q-pa-lg column full-height">
         <div class="row">
           <p class="q-mx-none q-my-auto">Is this a new lead</p>
