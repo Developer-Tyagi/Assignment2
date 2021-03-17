@@ -16,13 +16,6 @@ export function setEstimators(state, estimators) {
   }));
 }
 
-export function setClientTypes(state, types) {
-  state.clientTypes = types.map(type => ({
-    name: type.attributes.value,
-    machineValue: type.attributes.machineValue,
-    id: type.id
-  }));
-}
 export function setPropertyTypes(state, types) {
   state.propertyTypes = types.map(type => ({
     name: type.attributes.value,

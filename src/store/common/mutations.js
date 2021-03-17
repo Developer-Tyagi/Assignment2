@@ -1,7 +1,13 @@
 export function setLoading(state, value) {
   state.showLoading = value;
 }
-
+export function setClientTypes(state, types) {
+  state.clientTypes = types.map(type => ({
+    name: type.attributes.value,
+    machineValue: type.attributes.machineValue,
+    id: type.id
+  }));
+}
 export function setNotification(state, value) {
   state.notification = value;
 }

@@ -4,6 +4,7 @@ export default function() {
     notification: null,
     contactTypes: [],
     titles: [],
+    clientTypes: [],
     lossCauses: [],
     leadSources: [
       { value: '', name: 'None' },
