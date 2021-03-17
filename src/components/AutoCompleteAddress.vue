@@ -1,13 +1,15 @@
 <template>
   <div>
-    <input
-      type="text"
-      id="autocomplete"
-      class="input-autocomplete"
-      v-model="addressAutoComplete"
-      placeholder="AutoComplete address"
-      :disabled="isFieldsDisable"
-    />
+    <div v-if="isFieldsDisable == false">
+      <input
+        type="text"
+        id="autocomplete"
+        class="input-autocomplete"
+        v-model="addressAutoComplete"
+        placeholder="AutoComplete address"
+        :disabled="isFieldsDisable"
+      />
+    </div>
     <div class="row justify-between">
       <q-input
         :class="[isAsteriskMark ? 'required col-3' : 'col-3']"
