@@ -160,14 +160,18 @@ export default {
 
     fillInAddress() {
       const place = this.autocomplete.getPlace().address_components;
+      this.address.houseNumber =
+        this.getPlaceName('street_number', place) >= 0
+          ? place[this.getPlaceName('street_number', place)].long_name
+          : '';
       this.address.streetAddress =
         this.getPlaceName('route', place) >= 0
           ? place[this.getPlaceName('route', place)].long_name
           : '';
-      this.address.addressLocality = this.getPlaceName(
-        'administrative_area_level_2',
-        place
-      )
+      this.address.addressLocality = this.getPlaceName('locality', place)
+        ? place[this.getPlaceName('locality', place)].long_name
+        : place[this.getPlaceName('administrative_area_level_2', place)]
+            .long_name
         ? place[this.getPlaceName('administrative_area_level_2', place)]
             .long_name
         : '';
