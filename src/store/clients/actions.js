@@ -23,9 +23,7 @@ export async function getSingleClientDetails({ commit, dispatch }, id) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.get(`/clients/${id}`);
-
     commit('setSelectedEditClient', data);
-
     dispatch('setLoading', false);
   } catch (e) {
     console.log(e);
@@ -70,6 +68,26 @@ export async function addClient({ dispatch, state }, payload) {
     dispatch('setNotification', {
       type: 'negative',
       message: 'Failed to create Client! please try again !'
+    });
+  }
+}
+
+export async function editClient({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      `/clients/${payload.id}/info`,
+      buildApiData('clients', payload.clientData)
+    );
+    console.log(data, 11);
+    dispatch('setLoading', false);
+    return data;
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response.data.title
     });
   }
 }

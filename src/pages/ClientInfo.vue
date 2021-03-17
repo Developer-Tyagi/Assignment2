@@ -13,7 +13,7 @@
             name="create"
             color="primary"
             class="edit-icon"
-            @click="onClickEditClient"
+            @click="editClientInfoDailog = true"
           ></q-icon>
         </div>
 
@@ -67,7 +67,19 @@
           }}<br />
           <p class="texts">
             Mobile:
-            <span class="clickLink" @click="onPhoneNumberClick()">
+            <span
+              v-if="
+                editSelectedClient.attributes.insuredInfo.secondary.phoneNumber
+              "
+              class="clickLink"
+              @click="
+                onPhoneNumberClick(
+                  editSelectedClient.attributes.insuredInfo.secondary
+                    .phoneNumber[0].number,
+                  $event
+                )
+              "
+            >
               {{
                 editSelectedClient.attributes.insuredInfo.secondary
                   .phoneNumber[0].number
@@ -594,7 +606,7 @@
           </div>
 
           <q-btn
-            @click="editClientInfoDailog = false"
+            @click="onSaveButtonClick"
             label="Save"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
@@ -622,6 +634,7 @@ export default {
         addressRegion: '',
         addressLocality: '',
         postalCode: '',
+        houseNumber: '',
         streetAddress: '',
         postOfficeBoxNumber: '4',
         dropBox: {
@@ -650,6 +663,7 @@ export default {
         type2: ''
       },
       clientAddressDetails: {
+        houseNumber: '',
         addressCountry: '',
         addressRegion: '',
         addressLocality: '',
@@ -723,9 +737,11 @@ export default {
     this.honorific1.machineValue = this.editSelectedClient.attributes.insuredInfo.primary.honorific.machineValue;
     this.insuredDetails.fname = this.editSelectedClient.attributes.insuredInfo.primary.fname;
     this.insuredDetails.lname = this.editSelectedClient.attributes.insuredInfo.primary.lname;
-    console.log(this.editSelectedClient.attributes, 11);
+
     this.primaryDetails.isOrganization = this.editSelectedClient.attributes.isOrganization;
+
     this.policyHolder.isPolicyHolder = this.editSelectedClient.attributes.isOrganizationPolicyholder;
+
     this.primaryDetails.organizationName = this.editSelectedClient.attributes.organizationName;
     this.insuredDetails.type = this.editSelectedClient.attributes.insuredInfo.primary.phoneNumber[0].type;
     this.insuredDetails.phone = this.editSelectedClient.attributes.insuredInfo.primary.phoneNumber[0].number;
@@ -742,23 +758,42 @@ export default {
       this.coInsuredDetails.email = this.editSelectedClient.attributes.insuredInfo.secondary.email;
     }
     if (this.editSelectedClient.attributes.insuredInfo.phoneNumbers) {
+      console.log(this.editSelectedClient.attributes.insuredInfo.phoneNumbers);
       this.addAditionalPhoneNumberToggle = true;
       this.addAditionalPhoneNumber.type1 = this.editSelectedClient.attributes.insuredInfo.phoneNumbers[0].type;
       this.addAditionalPhoneNumber.phone2 = this.editSelectedClient.attributes.insuredInfo.phoneNumbers[0].number;
       this.addAditionalPhoneNumber.type2 = this.editSelectedClient.attributes.insuredInfo.phoneNumbers[1].type;
       this.addAditionalPhoneNumber.phone3 = this.editSelectedClient.attributes.insuredInfo.phoneNumbers[1].number;
     }
-    if (this.editSelectedClient.attributes.insuredInfo.tenantInfo) {
+    if (this.editSelectedClient.attributes.insuredInfo.tenantInfo.name) {
       this.tenantOccupiedToggle = true;
       this.tenantOccupied.name = this.editSelectedClient.attributes.insuredInfo.tenantInfo.name;
       this.tenantOccupied.type = this.editSelectedClient.attributes.insuredInfo.tenantInfo.phoneNumber.type;
       this.tenantOccupied.phone = this.editSelectedClient.attributes.insuredInfo.tenantInfo.phoneNumber.number;
     }
-    //Mailing Address Editable & prefilled Details
+    //Client Address Editable & prefilled Details
+    this.clientAddressDetails.addressCountry = this.editSelectedClient.attributes.insuredInfo.mailingAddress.addressCountry;
+    this.clientAddressDetails.addressRegion = this.editSelectedClient.attributes.insuredInfo.mailingAddress.addressRegion;
+    this.clientAddressDetails.addressLocality = this.editSelectedClient.attributes.insuredInfo.mailingAddress.addressLocality;
+    this.clientAddressDetails.postalCode = this.editSelectedClient.attributes.insuredInfo.mailingAddress.postalCode;
+    this.clientAddressDetails.streetAddress = this.editSelectedClient.attributes.insuredInfo.mailingAddress.streetAddress;
+    this.clientAddressDetails.houseNumber = this.editSelectedClient.attributes.insuredInfo.mailingAddress.houseNumber;
+    this.clientAddressDetails.dropBox.info = this.editSelectedClient.attributes.insuredInfo.mailingAddress.dropBox.info;
+    this.clientAddressDetails.dropBox.isPresent = this.editSelectedClient.attributes.insuredInfo.mailingAddress.dropBox.isPresent;
+
+    //Mailing  Address Editable & prefilled Details
+    this.mailingAddressDetails.addressCountry = this.editSelectedClient.attributes.insuredInfo.mailingAddress.addressCountry;
+    this.mailingAddressDetails.addressRegion = this.editSelectedClient.attributes.insuredInfo.mailingAddress.addressRegion;
+    this.mailingAddressDetails.addressLocality = this.editSelectedClient.attributes.insuredInfo.mailingAddress.addressLocality;
+    this.mailingAddressDetails.postalCode = this.editSelectedClient.attributes.insuredInfo.mailingAddress.postalCode;
+    this.mailingAddressDetails.streetAddress = this.editSelectedClient.attributes.insuredInfo.mailingAddress.streetAddress;
+    this.mailingAddressDetails.houseNumber = this.editSelectedClient.attributes.insuredInfo.mailingAddress.houseNumber;
+    this.mailingAddressDetails.dropBox.info = this.editSelectedClient.attributes.insuredInfo.mailingAddress.dropBox.info;
+    this.mailingAddressDetails.dropBox.isPresent = this.editSelectedClient.attributes.insuredInfo.mailingAddress.dropBox.isPresent;
   },
 
   methods: {
-    ...mapActions(['getClientTypes', 'getTitles']),
+    ...mapActions(['getClientTypes', 'getTitles', 'editClient']),
     setTypes(types, data) {
       const obj = types.find(item => {
         return item.id === data.id;
@@ -785,6 +820,82 @@ export default {
         };
       }
     },
+    onSaveButtonClick() {
+      if (this.editSelectedClient.id) {
+      }
+      const payload = {
+        id: this.editSelectedClient.id,
+        clientData: {
+          isOrganization: this.primaryDetails.isOrganization,
+          organizationName: this.primaryDetails.organizationName,
+          isOrganizationPolicyholder: this.policyHolder.isPolicyHolder,
+          type: {
+            ...this.client
+          },
+          insuredInfo: {
+            primary: {
+              honorific: {
+                id: this.honorific1.id,
+                value: this.honorific1.title,
+                machineValue: this.honorific1.machineValue
+              },
+              fname: this.insuredDetails.fname,
+              lname: this.insuredDetails.lname,
+              email: this.insuredDetails.email,
+              phoneNumber: [
+                {
+                  type: this.insuredDetails.type,
+                  number: this.insuredDetails.phone
+                }
+              ]
+            },
+            secondary: {
+              honorific: {
+                id: this.honorific2.id,
+                value: this.honorific2.title,
+                machineValue: this.honorific2.machineValue
+              },
+              fname: this.coInsuredDetails.fname,
+              lname: this.coInsuredDetails.lname,
+              email: this.coInsuredDetails.email,
+              phoneNumber: [
+                {
+                  type: this.coInsuredDetails.type,
+                  number: this.coInsuredDetails.phone
+                }
+              ]
+            },
+            address: {
+              ...this.clientAddressDetails
+            },
+            mailingAddress: {
+              ...this.mailingAddressDetails
+            },
+            phoneNumbers: [
+              {
+                type: this.addAditionalPhoneNumber.type1,
+                number: this.addAditionalPhoneNumber.phone2
+              },
+              {
+                type: this.addAditionalPhoneNumber.type2,
+
+                number: this.addAditionalPhoneNumber.phone3
+              }
+            ],
+            tenantInfo: {
+              name: '',
+              phoneNumber: {
+                type: '',
+                number: ''
+              }
+            }
+          }
+        }
+      };
+      this.editClient(payload);
+      this.editClientInfoDailog = false;
+      this.$router.push('/view-client');
+    },
     onCountrySelect(country) {
       this.states = addressService.getStates(country);
     },
@@ -795,22 +906,18 @@ export default {
       });
       this['honorific' + val].title = titleResult.value;
       this['honorific' + val].machineValue = titleResult.machineValue;
-    },
-
-    onClickEditClient() {
-      this.editClientInfoDailog = true;
-    },
-    onPhoneNumberClick(number, e) {
-      e.stopPropagation();
-      if (number) {
-        window.open('tel:' + number);
-      }
-    },
-    onEmailClick(email, e) {
-      e.stopPropagation();
-      if (email) {
-        window.open('mailto:' + email);
-      }
+    }
+  },
+  onPhoneNumberClick(number, e) {
+    e.stopPropagation();
+    if (number) {
+      window.open('tel:' + number);
+    }
+  },
+  onEmailClick(email, e) {
+    e.stopPropagation();
+    if (email) {
+      window.open('mailto:' + email);
     }
   }
 };
