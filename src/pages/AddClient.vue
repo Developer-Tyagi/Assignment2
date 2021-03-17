@@ -2646,7 +2646,6 @@ export default {
 
         const response = this.addEstimator(payload);
         if (response) {
-          console.log(7676);
           this.addEstimatorValue.name = this.addEstimatorInfo.fname;
           this.addEstimatorDialog = false;
           this.getEstimators();
@@ -3249,37 +3248,7 @@ export default {
         this.$router.push('/clients');
       });
     },
-    // async onAddEstimatorButtonClick() {
-    //   const payload = {
-    //     fname: this.addEstimatorInfo.fname,
-    //     lname: this.addEstimatorInfo.lname,
-    //     honorific: {
-    //       id: this.honorific3.id,
-    //       value: this.honorific3.title,
-    //       machineValue: this.honorific3.machineValue
-    //     },
-    //     email: this.addEstimatorInfo.email,
-    //     phoneNumber: [
-    //       {
-    //         type: this.addEstimatorInfo.type,
-    //         number: this.addEstimatorInfo.phone
-    //       }
-    //     ]
-    //   };
-    //   const response = this.addEstimator(payload);
-    //   if (response) {
-    //     await this.getEstimators();
-    //     this.addEstimatorInfo = {
-    //       name: '',
-    //       fname: '',
-    //       lname: '',
-    //       email: '',
-    //       phone: '',
-    //       type: ''
-    //     };
-    //     (this.honorific3.id = ''), (this.addEstimatorDialog = false);
-    //   }
-    // },
+
     selectEstimator(value) {
       this.addEstimatorValue.name = value.fname;
       this.estimatorsListDialog = false;
