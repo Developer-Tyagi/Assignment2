@@ -98,7 +98,7 @@ const routes = [
   },
   {
     path: '',
-    component: () => import('layouts/LeadLayout.vue'),
+    component: () => import('layouts/MobileLayout.vue'),
     beforeEnter: guardMyroute,
     children: [
       {
@@ -121,38 +121,17 @@ const routes = [
         component: () => import('pages/AddLead.vue')
       },
       {
+        path: 'add-lead-details/:id?',
+        name: 'add new lead',
+        caseSensitive: true,
+        component: () => import('pages/AddLeadDetails.vue')
+      },
+      {
         path: 'details/:id',
         name: 'lead details',
         caseSensitive: true,
         component: () => import('pages/LeadDetails.vue')
       },
-      {
-        path: 'add-lead-details/:id?',
-        name: 'add new lead',
-        caseSensitive: true,
-        component: () => import('pages/AddLeadDetails.vue')
-      }
-    ]
-  },
-  {
-    path: '',
-    component: () => import('layouts/VendorsLayout.vue'),
-    beforeEnter: guardMyroute,
-    children: [
-      {
-        path: 'vendors',
-        name: 'vendors',
-        caseSensitive: true,
-        component: () => import('pages/Vendors.vue')
-      }
-    ]
-  },
-
-  {
-    path: '',
-    component: () => import('layouts/ClientLayout.vue'),
-    beforeEnter: guardMyroute,
-    children: [
       {
         path: 'clients',
         name: 'clients',
@@ -167,25 +146,23 @@ const routes = [
         component: () => import('pages/ClientsDetails.vue')
       },
       {
+        path: 'client-details',
+        name: 'client info ',
+        caseSensitive: true,
+        component: () => import('pages/ClientInfo.vue')
+      },
+      {
         path: 'add-client',
         name: 'create client',
         caseSensitive: true,
         component: () => import('pages/AddClient.vue')
       },
       {
-        path: 'client-details',
-        name: 'client info ',
+        path: 'vendors',
+        name: 'vendors',
         caseSensitive: true,
-        component: () => import('pages/ClientInfo.vue')
-      }
-    ]
-  },
-
-  {
-    path: '',
-    component: () => import('layouts/SettingsLayout.vue'),
-    beforeEnter: guardMyroute,
-    children: [
+        component: () => import('pages/Vendors.vue')
+      },
       {
         path: 'settings',
         name: 'settings',
@@ -193,15 +170,15 @@ const routes = [
         component: () => import('pages/Settings.vue')
       },
       {
-        path: 'preferred',
-        caseSensitive: true,
-        component: () => import('pages/PreferredDistance.vue')
-      },
-      {
         path: 'inspection-types',
         name: 'type of inspections',
         caseSensitive: true,
         component: () => import('pages/InspectionTypes.vue')
+      },
+      {
+        path: 'preferred',
+        caseSensitive: true,
+        component: () => import('pages/PreferredDistance.vue')
       }
     ]
   },

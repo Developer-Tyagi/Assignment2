@@ -1,19 +1,10 @@
 <template>
-  <q-page class="bg-white full-width">
-    <q-header bordered class="bg-white">
-      <q-toolbar class="row bg-white">
-        <img
-          src="~assets/close.svg"
-          alt="back-arrow"
-          @click="closeDialog(false)"
-          style="margin: auto 0"
-        />
-        <div class="text-uppercase text-bold text-black q-mx-auto">
-          ADD NEW {{ componentName }}
-        </div>
-      </q-toolbar>
-    </q-header>
-    <div style="padding-top: 51px">
+  <q-page>
+    <div class="bg-white full-width">
+      <CustomBar
+        :dialogName="'Add ' + componentName"
+        @closeDialog="closeDialog(false)"
+      />
       <q-form
         class="q-pa-lg"
         style="height: calc(100vh - 51px)"
@@ -245,13 +236,14 @@ const addressService = new AddressService();
 import { mapGetters, mapActions } from 'vuex';
 import { constants } from '@utils/constant';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
+import CustomBar from 'components/CustomBar';
 import { validateEmail } from '@utils/validation';
 
 export default {
   name: 'AddVendor',
   props: ['componentName', 'selectedIndustryType'],
 
-  components: { AutoCompleteAddress },
+  components: { AutoCompleteAddress, CustomBar },
 
   data() {
     return {
@@ -372,7 +364,8 @@ export default {
       'addVendor',
       'getVendorIndustries',
       'getTitles',
-      'getContactTypes'
+      'getContactTypes',
+      'getVendors'
     ]),
     validateEmail,
 
@@ -472,6 +465,22 @@ export default {
       if (success) {
         const response = await this.addVendor(this.vendor);
         if (response) {
+          if (this.vendor.industry.value === 'Carrier') {
+            let params = {
+              industry: 'carrier',
+              name: ''
+            };
+            this.getVendors(params);
+            const selected = this.vendors.find(obj => {
+              return obj.name === this.vendor.name;
+            });
+            this.$emit(
+              'onCloseAddVendor',
+              true,
+              selected,
+              this.vendor.industry.value
+            );
+          }
           this.closeDialog(true);
         }
       }

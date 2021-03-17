@@ -1,33 +1,30 @@
 <template>
   <q-page>
-    <q-header bordered class="bg-white">
-      <q-toolbar class="row bg-white">
-        <img
-          src="~assets/left-arrow.svg"
-          alt="back-arrow"
-          @click="$router.push('/dashboard')"
-        />
-        <div class="text-uppercase text-bold text-black q-mx-auto">
-          {{ $route.name }}
-        </div>
-      </q-toolbar>
-    </q-header>
-    <div style="padding-top: 51px" class="full-height">
-      <div class="q-pa-md">
-        <q-list separator>
+    <div
+      :class="{
+        'mobile-container-page-without-search': !$q.platform.is.iphone,
+        'mobile-container-page': $q.platform.is.iphone
+      }"
+    >
+      <div>
+        <q-list>
           <q-item clickable>
-            <q-item-section>My Schedule</q-item-section>
+            <q-item-section class="form-list">My Schedule</q-item-section>
           </q-item>
 
           <q-item clickable v-ripple :to="'/inspection-types'">
-            <q-item-section> Type of Inspection </q-item-section>
+            <q-item-section class="form-list">
+              Type of Inspection
+            </q-item-section>
           </q-item>
 
           <q-item clickable>
-            <q-item-section> Prefered Max Distance of Travel </q-item-section>
+            <q-item-section class="form-list">
+              Prefered Max Distance of Travel
+            </q-item-section>
           </q-item>
           <q-item clickable>
-            <q-item-section> Documents </q-item-section>
+            <q-item-section class="form-list"> Documents </q-item-section>
           </q-item>
         </q-list>
       </div>
@@ -40,3 +37,11 @@ export default {
   name: 'Settings'
 };
 </script>
+<style lang="scss">
+.form-list {
+  color: #333333;
+  font-weight: bold;
+  font-size: 16px;
+  margin: 5px 0;
+}
+</style>

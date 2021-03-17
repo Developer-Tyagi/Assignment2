@@ -7,30 +7,19 @@
       <div class="text-uppercase text-bold text-black q-mx-auto">
         {{ $route.name }}
       </div>
-      <q-btn
-        @click="onAddClick"
-        flat
-        :class="{
-          visbile: showAddButton == true,
-          'no-visibility': showAddButton == false
-        }"
-      >
-        <img src="~assets/add.svg" />
+      <q-btn class="no-visibility" flat>
+        <img src="~assets/left-arrow.svg" alt="back-arrow" />
       </q-btn>
     </q-toolbar>
   </q-header>
 </template>
 <script>
 export default {
-  name: "CustomHeader",
-  props: ["showAddButton"],
+  name: 'CustomHeader',
+
   methods: {
     onBackClick() {
-      this.$emit("backButton");
-    },
-
-    onAddClick() {
-      this.$emit("addButton");
+      this.$emit('backButton');
     }
   }
 };
@@ -42,12 +31,5 @@ export default {
 
 .q-btn {
   width: 50px;
-}
-.no-visibility {
-  visibility: hidden;
-}
-
-.visible {
-  visibility: visible;
 }
 </style>

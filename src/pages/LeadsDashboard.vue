@@ -1,48 +1,57 @@
 <template>
   <q-page>
-    <CustomHeader
-      @backButton="$router.push('/dashboard')"
-      :showAddButton="false"
-    />
-    <div style="padding-top: 51px; height: calc(100vh); overflow: auto">
-      <div class="row q-pa-sm">
-        <q-card dark class="my-card" @click="$router.push('/leads')">
-          <div class="value">0</div>
-          <div class="text">New Leads</div>
-        </q-card>
-        <q-card dark class="my-card">
-          <div class="value">6</div>
-          <div class="text">Converted Leads</div>
-        </q-card>
-        <q-card dark class="my-card">
-          <div class="value">2</div>
-          <div class="text">Dead Leads</div>
-        </q-card>
-      </div>
-      <div class="q-pa-md">
-        <q-card>
-          <div class="q-pa-lg">
-            <div style="font-size: 16px; font-weight: bold; text-align: center">
-              Lead Phase Chart
+    <div>
+      <div
+        :class="{
+          'mobile-container-page-without-search': !$q.platform.is.iphone,
+          'mobile-container-page': $q.platform.is.iphone
+        }"
+      >
+        <div class="row q-pa-sm">
+          <q-card
+            dark
+            class="lead-dashboard-card"
+            @click="$router.push('/leads')"
+          >
+            <div class="value">0</div>
+            <div class="text">New Leads</div>
+          </q-card>
+          <q-card dark class="lead-dashboard-card">
+            <div class="value">6</div>
+            <div class="text">Converted Leads</div>
+          </q-card>
+          <q-card dark class="lead-dashboard-card">
+            <div class="value">2</div>
+            <div class="text">Dead Leads</div>
+          </q-card>
+        </div>
+        <div class="q-pa-md">
+          <q-card>
+            <div class="q-pa-lg">
+              <div
+                style="font-size: 16px; font-weight: bold; text-align: center"
+              >
+                Lead Phase Chart
+              </div>
+              <div style="color: #999999; font-size: 14px; text-align: center">
+                Last 30 Days
+              </div>
             </div>
-            <div style="color: #999999; font-size: 14px; text-align: center">
-              Last 30 Days
-            </div>
-          </div>
-          <BarChartComponent :chartData="datacollection" :options="options" />
-        </q-card>
+            <BarChartComponent :chartData="datacollection" :options="options" />
+          </q-card>
+        </div>
       </div>
     </div>
   </q-page>
 </template>
-<style lang="scss" scoped>
-.my-card {
+<style lang="scss">
+.lead-dashboard-card {
   display: flex;
   flex-direction: column;
   background-color: #1b2854;
   width: calc(33.33% - 10px);
   height: 150px;
-  padding: 25px 20px;
+  padding: 25px 10px;
   margin: 5px;
   .value {
     font-size: 32px;

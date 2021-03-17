@@ -1,92 +1,166 @@
 <template>
-  <q-page style="padding-top: 0; height: 100vh">
-    <q-header bordered class="bg-white">
-      <q-toolbar class="row bg-white">
-        <img
-          src="~assets/left-arrow.svg"
-          alt="back-arrow"
-          @click="$router.push('/leads-dashboard')"
-          style="margin: auto 0"
-        />
-        <div
-          class="text-uppercase text-bold text-black q-mx-auto"
-          v-if="!openSearchInput"
-        >
-          {{ $route.name }}
-        </div>
-        <img
-          src="~assets/search.svg"
-          alt="Search icon"
-          @click="openSearchInput = true"
-          style="margin: 0"
-          v-if="
-            (activeLeads.length || archivedLeads.length) && !openSearchInput
-          "
-        />
-        <img
-          src="~assets/add.svg"
-          alt=""
-          @click="addLead"
-          style="margin: 0 0 0 20px"
-          v-if="!openSearchInput"
-        />
-        <q-input
-          v-model="searchText"
-          v-if="openSearchInput"
-          placeholder="Search for leads"
-          style="width: 100%; margin: 0 5% 0 5%; border: 0"
-          @input="filterLeads()"
-        />
-        <img
-          src="~assets/close.svg"
-          alt=""
-          v-if="openSearchInput"
-          @click="onSearchBackButtonClick"
-          style="margin: 0 0 0 20px"
-        />
-      </q-toolbar>
-    </q-header>
-    <div style="padding-top: 51px" class="row">
-      <div class="full-width">
-        <q-tabs
-          v-model="panel"
-          dense
-          class="q-mt-md"
-          active-color="primary"
-          indicator-color="primary"
-          align="justify"
-          narrow-indicator
-        >
-          <q-tab
-            name="newLeads"
-            :label="`Active Leads-${activeLeads.length}`"
-            class="text-capitalize"
-          ></q-tab>
-          <q-tab
-            name="oldLeads"
-            :label="`Old Leads-${archivedLeads.length}`"
-            class="text-capitalize"
-          ></q-tab>
-        </q-tabs>
-        <q-tab-panels
-          v-model="panel"
-          animated
-          style="height: calc(100vh - 103px); overflow: auto"
-        >
-          <q-tab-panel name="newLeads" class="q-pa-none">
-            <q-list style="overflow-x: hidden" v-if="activeLeads.length">
-              <div
-                class="lead-list-item"
-                v-for="lead in activeLeads"
-                :key="lead.id"
-              >
-                <div class="button-left" @click="onArchiveButtonClick(lead.id)">
-                  <div class="button-yellow">
-                    <span class="text-white q-my-auto q-mx-auto">Archive</span>
+  <q-page>
+    <div class="actions-div">
+      <q-input
+        v-model="searchText"
+        placeholder="Search"
+        borderless
+        style="width: 100%"
+        @input="search($event)"
+      >
+        <template v-slot:prepend>
+          <q-icon name="search" />
+        </template>
+      </q-input>
+      <img
+        src="~assets/close.svg"
+        v-if="searchText"
+        @click="onSearchBackButtonClick"
+        style="margin: 0 20px"
+      />
+      <q-separator vertical inset></q-separator>
+      <q-btn @click="addLead" flat><img src="~assets/add.svg"/></q-btn>
+    </div>
+    <div class="mobile-container-page">
+      <div class="row">
+        <div class="full-width">
+          <q-tabs
+            v-model="panel"
+            dense
+            active-color="primary"
+            indicator-color="primary"
+            align="justify"
+            narrow-indicator
+          >
+            <q-tab
+              name="newLeads"
+              :label="`Active Leads-${activeLeads.length}`"
+              class="text-capitalize"
+            ></q-tab>
+            <q-tab
+              name="oldLeads"
+              :label="`Old Leads-${archivedLeads.length}`"
+              class="text-capitalize"
+            ></q-tab>
+          </q-tabs>
+          <q-tab-panels
+            v-model="panel"
+            animated
+            style="height: calc(100vh - 156px); overflow: auto"
+          >
+            <q-tab-panel name="newLeads" class="q-pa-none">
+              <q-list style="overflow-x: hidden" v-if="activeLeads.length">
+                <div
+                  class="lead-list-item"
+                  v-for="lead in activeLeads"
+                  :key="lead.id"
+                >
+                  <div
+                    class="button-left"
+                    @click="onArchiveButtonClick(lead.id)"
+                  >
+                    <div class="button-yellow">
+                      <span class="text-white q-my-auto q-mx-auto"
+                        >Archive</span
+                      >
+                    </div>
+                  </div>
+                  <q-item
+                    @click="onLeadListClick(lead)"
+                    clickable
+                    v-ripple
+                    class="lead-list-details"
+                    v-touch-swipe.mouse:6e-3:150:50="
+                      data => onListSwipe(data, lead)
+                    "
+                    :class="{
+                      swipeRight: lead.isLeftOptionOpen,
+                      swipeLeft: lead.isRightOptionOpen
+                    }"
+                  >
+                    <q-item-section>
+                      <div class="row">
+                        <span
+                          >{{ lead.primaryContact.fname }}
+                          {{ lead.primaryContact.lname }}</span
+                        >
+                        <span class="q-ml-auto">Visting On</span>
+                      </div>
+                      <div class="row">
+                        <span
+                          >Mob:
+                          <span
+                            v-if="
+                              lead.primaryContact.phoneNumber &&
+                                lead.primaryContact.phoneNumber.length
+                            "
+                            class="click-link"
+                            @click="
+                              onPhoneNumberClick(
+                                lead.primaryContact.phoneNumber[0].number,
+                                $event
+                              )
+                            "
+                          >
+                            {{ lead.primaryContact.phoneNumber[0].number }}
+                          </span>
+                        </span>
+                        <span class="q-ml-auto" v-if="lead.lastVisted">
+                          {{ lead.lastVisted | moment('DD/MM/YYYY') }}
+                        </span>
+                        <span v-else class="q-ml-auto"> - </span>
+                      </div>
+                      <div>
+                        Date of Loss:
+                        <span v-if="lead.dateofLoss">{{
+                          lead.dateofLoss | moment('DD/MM/YYYY')
+                        }}</span>
+                        <span v-else> - </span>
+                      </div>
+                      <div class="q-mt-md row">
+                        <span>New Lead in Inspection</span>
+                        <span class="q-ml-auto">
+                          <q-icon name="restore_page"></q-icon>
+                        </span>
+                      </div>
+                    </q-item-section>
+                  </q-item>
+                  <div class="button-right">
+                    <div class="button-yellow">
+                      <span class="text-white q-my-auto q-mx-auto"
+                        >Schedule Visit</span
+                      >
+                    </div>
+
+                    <div class="button-orange">
+                      <q-btn
+                        class="text-white q-my-auto q-mx-auto full-width full-height"
+                        label="Create Client"
+                        @click="onCreateClientButtonClick(lead)"
+                      ></q-btn>
+                    </div>
                   </div>
                 </div>
+              </q-list>
+              <div v-else class="full-height full-width column">
+                <div style="color: #666666" class="text-center q-mt-auto">
+                  You haven't added a Lead yet.
+                </div>
+                <img
+                  src="~assets/add.svg"
+                  alt="add_icon"
+                  width="80px"
+                  height="80px"
+                  @click="addLead"
+                  style="margin-top: 10px"
+                />
+              </div>
+            </q-tab-panel>
+            <q-tab-panel name="oldLeads" class="q-pa-none">
+              <q-list v-if="archivedLeads.length">
                 <q-item
-                  @click="onLeadListClick(lead)"
+                  v-for="lead in archivedLeads"
+                  :key="lead.id"
                   clickable
                   v-ripple
                   class="lead-list-details"
@@ -114,12 +188,6 @@
                             lead.primaryContact.phoneNumber &&
                               lead.primaryContact.phoneNumber.length
                           "
-                          @click="
-                            onPhoneNumberClick(
-                              lead.primaryContact.phoneNumber[0].number,
-                              $event
-                            )
-                          "
                         >
                           {{ lead.primaryContact.phoneNumber[0].number }}
                         </span>
@@ -132,7 +200,8 @@
                     <div>
                       Date of Loss:
                       <span v-if="lead.dateofLoss">{{
-                        lead.dateofLoss | moment('DD/MM/YYYY')
+                        lead.dateofLoss &&
+                          lead.dateofLoss | moment('DD/MM/YYYY')
                       }}</span>
                       <span v-else> - </span>
                     </div>
@@ -144,94 +213,15 @@
                     </div>
                   </q-item-section>
                 </q-item>
-                <div class="button-right">
-                  <div class="button-yellow">
-                    <span class="text-white q-my-auto q-mx-auto"
-                      >Schedule Visit</span
-                    >
-                  </div>
-
-                  <div class="button-orange">
-                    <q-btn
-                      class="text-white q-my-auto q-mx-auto full-width full-height"
-                      label="Create Client"
-                      @click="onCreateClientButtonClick(lead)"
-                    ></q-btn>
-                  </div>
+              </q-list>
+              <div v-else class="full-height full-width column">
+                <div style="color: #666666" class="text-center q-mt-auto">
+                  You haven't any archived Lead yet.
                 </div>
               </div>
-            </q-list>
-            <div v-else class="full-height full-width column">
-              <div style="color: #666666" class="text-center q-mt-auto">
-                You haven't added a Lead yet.
-              </div>
-              <img
-                src="~assets/add.svg"
-                alt="add_icon"
-                width="80px"
-                height="80px"
-                @click="addLead"
-                style="margin-top: 10px"
-              />
-            </div>
-          </q-tab-panel>
-          <q-tab-panel name="oldLeads" class="q-pa-none">
-            <q-list v-if="archivedLeads.length">
-              <q-item
-                v-for="lead in archivedLeads"
-                :key="lead.id"
-                clickable
-                v-ripple
-                class="lead-list-details"
-              >
-                <q-item-section>
-                  <div class="row">
-                    <span
-                      >{{ lead.primaryContact.fname }}
-                      {{ lead.primaryContact.lname }}</span
-                    >
-                    <span class="q-ml-auto">Visting On</span>
-                  </div>
-                  <div class="row">
-                    <span
-                      >Mob:
-                      <span
-                        v-if="
-                          lead.primaryContact.phoneNumber &&
-                            lead.primaryContact.phoneNumber.length
-                        "
-                      >
-                        {{ lead.primaryContact.phoneNumber[0].number }}
-                      </span>
-                    </span>
-                    <span class="q-ml-auto" v-if="lead.lastVisted">
-                      {{ lead.lastVisted | moment('DD/MM/YYYY') }}
-                    </span>
-                    <span v-else class="q-ml-auto"> - </span>
-                  </div>
-                  <div>
-                    Date of Loss:
-                    <span v-if="lead.dateofLoss">{{
-                      lead.dateofLoss && lead.dateofLoss | moment('DD/MM/YYYY')
-                    }}</span>
-                    <span v-else> - </span>
-                  </div>
-                  <div class="q-mt-md row">
-                    <span>New Lead in Inspection</span>
-                    <span class="q-ml-auto">
-                      <q-icon name="restore_page"></q-icon>
-                    </span>
-                  </div>
-                </q-item-section>
-              </q-item>
-            </q-list>
-            <div v-else class="full-height full-width column">
-              <div style="color: #666666" class="text-center q-mt-auto">
-                You haven't any archived Lead yet.
-              </div>
-            </div>
-          </q-tab-panel>
-        </q-tab-panels>
+            </q-tab-panel>
+          </q-tab-panels>
+        </div>
       </div>
     </div>
   </q-page>
@@ -245,10 +235,8 @@ export default {
   name: 'Leads',
   data() {
     return {
-      openSearchInput: false,
       searchText: '',
-      panel: 'newLeads',
-      clientInfoDailog: false
+      panel: 'newLeads'
     };
   },
 
@@ -272,6 +260,7 @@ export default {
       'addLeadToArchiveList'
     ]),
     ...mapMutations(['setSelectedLead']),
+
     onCreateClientButtonClick(lead) {
       let payload = {
         attributes: lead
@@ -288,7 +277,7 @@ export default {
       this.$router.push('/details/' + lead.id);
     },
 
-    filterLeads() {
+    search() {
       if (this.panel === 'newLeads') {
         this.getActiveLeadsList(this.searchText ? this.searchText : '');
       } else {
@@ -331,8 +320,7 @@ export default {
 
     onSearchBackButtonClick() {
       this.searchText = '';
-      this.openSearchInput = false;
-      this.filterLeads();
+      this.search();
     }
   },
   watch: {
@@ -403,9 +391,6 @@ export default {
     transform: translateX(-200px)
 </style>
 <style lang="scss" scoped>
-* {
-  color: #333333;
-}
 img {
   display: block;
   margin-bottom: auto;

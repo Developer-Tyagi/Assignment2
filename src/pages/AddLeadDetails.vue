@@ -1,10 +1,11 @@
 <template>
   <q-page>
-    <CustomHeader
-      @backButton="$router.push('/add-lead')"
-      :showAddButton="false"
-    />
-    <div style="padding-top: 51px">
+    <div
+      :class="{
+        'mobile-container-page-without-search': !$q.platform.is.iphone,
+        'mobile-container-page': $q.platform.is.iphone
+      }"
+    >
       <q-stepper
         v-model="step"
         ref="stepper"
@@ -22,7 +23,6 @@
           <q-form @submit="step++">
             <q-card class="form-card q-pa-md">
               <span class="stepper-heading">Primary Contact </span>
-
               <q-select
                 class="required"
                 v-model="primaryDetails.honorific.id"
@@ -473,24 +473,10 @@
       transition-hide="slide-down"
     >
       <q-card>
-        <q-header bordered class="bg-white">
-          <q-toolbar class="row bg-white">
-            <img
-              src="~assets/close.svg"
-              alt="close"
-              @click="vendorsListDialog = false"
-              style="margin: auto 0"
-            />
-            <div class="text-uppercase text-bold text-black q-mx-auto">
-              {{ vendorDialogName }}
-            </div>
-            <img
-              src="~assets/add.svg"
-              @click="addVendorDialog = true"
-              style="margin: 0 0 0 20px"
-            />
-          </q-toolbar>
-        </q-header>
+        <CustomBar
+          :dialogName="vendorDialogName"
+          @closeDialog="vendorsListDialog = false"
+        />
         <VendorsList
           :selective="true"
           @selectedVendor="onClosingVendorSelectDialog"
@@ -498,6 +484,7 @@
           :showFilter="showVendorDialogFilters"
           :filterName="vendorDialogFilterByIndustry"
           :valueName="valueName"
+          @addVendor="addVendorDialog = true"
         />
       </q-card>
     </q-dialog>
@@ -526,12 +513,17 @@ import { dateToSend } from '@utils/date';
 import VendorsList from 'components/VendorsList';
 import { constants } from '@utils/constant';
 import AddVendor from 'components/AddVendor';
+import CustomBar from 'components/CustomBar';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
-import CustomHeader from 'components/CustomHeader';
 import { date } from 'quasar';
 
 export default {
-  components: { VendorsList, AddVendor, AutoCompleteAddress, CustomHeader },
+  components: {
+    VendorsList,
+    AddVendor,
+    AutoCompleteAddress,
+    CustomBar
+  },
 
   data() {
     return {
@@ -845,7 +837,6 @@ export default {
 
     // TODO : Have to change primary details object, so that selected client can be assigned as it is.
     this.getInspectionTypes();
-
     this.getContactTypes();
     this.getTitles();
     this.getLossCauses();
@@ -892,6 +883,7 @@ export default {
   }
   .q-stepper__tab {
     width: 80px;
+    padding: 10px 20px;
   }
 
   .q-stepper__tab--active {
@@ -934,7 +926,7 @@ export default {
 
 .form-card {
   min-height: 250px;
-  max-height: calc(100vh - 250px);
+  max-height: calc(100vh - 280px);
   overflow: scroll;
 }
 

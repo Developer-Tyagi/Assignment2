@@ -1,8 +1,12 @@
 <template>
   <q-page>
-    <CustomHeader @backButton="onBackButtonClick" :showAddButton="false" />
-    <div style="padding-top: 51px">
-      <div class="q-pa-lg column" style="height: calc(100vh - 51px)">
+    <div
+      :class="{
+        'mobile-container-page-without-search': !$q.platform.is.iphone,
+        'mobile-container-page': $q.platform.is.iphone
+      }"
+    >
+      <div class="q-pa-lg column full-height">
         <div class="row">
           <p class="q-mx-none q-my-auto">Is this a new lead</p>
           <q-toggle
@@ -20,10 +24,10 @@
             If client already exists, select from list below
           </p>
 
-          <div class="q-mt-lg text-bold ">Select existing client</div>
+          <div class="q-mt-lg text-bold">Select existing client</div>
 
           <q-select
-            class=" full-width"
+            class="full-width"
             v-model="clientSelected"
             use-input
             input-debounce="0"
