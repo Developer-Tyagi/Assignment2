@@ -75,7 +75,7 @@
             >Apply</q-btn
           >
         </q-bar>
-        <div class="filters">
+        <div class="mobile-container-page-without-search">
           <div
             v-for="filter in vendorIndustries"
             :key="filter.id"
@@ -181,14 +181,13 @@ export default {
   display: flex;
 }
 
-.filters {
-  .filters-list-item {
-    color: #666666;
-    padding: 20px;
-    border-bottom: 1px solid lightgray;
-    text-transform: capitalize;
-  }
+.filters-list-item {
+  color: #666666;
+  padding: 20px;
+  border-bottom: 1px solid lightgray;
+  text-transform: capitalize;
 }
+
 .text-green {
   color: green;
 }

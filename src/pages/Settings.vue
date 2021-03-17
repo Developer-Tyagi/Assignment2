@@ -2,7 +2,7 @@
   <q-page>
     <div class="mobile-container-page-without-search">
       <div>
-        <q-list separator>
+        <q-list>
           <q-item clickable>
             <q-item-section class="form-list">My Schedule</q-item-section>
           </q-item>

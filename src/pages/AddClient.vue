@@ -2142,7 +2142,7 @@
       <q-card>
         <AddVendor
           @closeDialog="closeAddVendorDialog"
-          :componentName="'Add ' + vendorDialogName"
+          :componentName="vendorDialogName"
           :selectedIndustryType="
             expertVendorInfo.industry.value == 'Others'
               ? industryType.value
@@ -3292,9 +3292,9 @@ export default {
         }
       }
     },
+
     async onAddVendorDialogClick(name, index) {
       this.valueName = name;
-
       switch (name) {
         case constants.industries.MORTGAGE:
           this.vendorDialogName = constants.industries.MORTGAGE;
@@ -3305,7 +3305,6 @@ export default {
             name: ''
           };
           await this.getVendors(params);
-
           break;
         case constants.industries.SECONDARYMORTGAGE:
           this.vendorDialogName = constants.industries.MORTGAGE;

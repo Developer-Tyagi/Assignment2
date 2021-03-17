@@ -2,7 +2,7 @@
   <q-page>
     <div class="bg-white full-width">
       <CustomBar
-        :dialogName="componentName"
+        :dialogName="'Add ' + componentName"
         @closeDialog="closeDialog(false)"
       />
       <q-form
@@ -237,7 +237,7 @@
           @click="onAddVendorButtonClick"
           size="'xl'"
         >
-          {{ componentName }}
+          Add {{ componentName }}
         </q-btn>
       </q-form>
     </div>
@@ -337,6 +337,7 @@ export default {
     this.getVendorIndustries();
     this.getTitles();
     this.getContactTypes();
+    console.log(this.componentName);
     if (this.componentName === constants.industries.CARRIER) {
       let industryType = this.vendorIndustries.find(
         o => o.machineValue === constants.industries.CARRIER
