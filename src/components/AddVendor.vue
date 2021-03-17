@@ -237,7 +237,7 @@
           @click="onAddVendorButtonClick"
           size="'xl'"
         >
-          Add {{ componentName }}
+          {{ componentName }}
         </q-btn>
       </q-form>
     </div>
@@ -478,6 +478,24 @@ export default {
       if (success) {
         const response = await this.addVendor(this.vendor);
         if (response) {
+          if (this.vendor.industry.value === 'Carrier') {
+            let params = {
+              industry: 'carrier',
+              name: ''
+            };
+            await this.getVendors(params);
+
+            const selected = this.vendors.find(obj => {
+              return obj.name === this.vendor.name;
+            });
+
+            this.$emit(
+              'onCloseAddVendor',
+              true,
+              selected,
+              this.vendor.industry.value
+            );
+          }
           this.closeDialog(true);
         }
       }

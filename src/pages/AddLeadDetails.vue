@@ -832,7 +832,6 @@ export default {
 
     // TODO : Have to change primary details object, so that selected client can be assigned as it is.
     this.getInspectionTypes();
-
     this.getContactTypes();
     this.getTitles();
     this.getLossCauses();
@@ -922,7 +921,7 @@ export default {
 
 .form-card {
   min-height: 250px;
-  max-height: calc(100vh - 250px);
+  max-height: calc(100vh - 280px);
   overflow: scroll;
 }
 
