@@ -474,7 +474,7 @@ export default {
       this.states = addressService.getStates(country);
     },
 
-     onAddVendorButtonClick() {
+    async onAddVendorButtonClick() {
       const success = await this.$refs.vendorForm.validate();
       if (success) {
         const response = await this.addVendor(this.vendor);
@@ -484,8 +484,8 @@ export default {
               industry: 'carrier',
               name: ''
             };
-             this.getVendors(params).then(()=>{
-              const selected = this.vendors.find(obj => {
+            this.getVendors(params);
+            const selected = this.vendors.find(obj => {
               return obj.name === this.vendor.name;
             });
             this.$emit(
@@ -494,7 +494,6 @@ export default {
               selected,
               this.vendor.industry.value
             );
-             }) 
           }
           this.closeDialog(true);
         }
