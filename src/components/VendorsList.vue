@@ -1,5 +1,5 @@
 <template>
-  <div class="mobile-container-page-without-search vendor-list">
+  <div class="mobile-container-page-without-search">
     <div class="actions-div">
       <q-input
         v-model="searchText"
@@ -33,7 +33,7 @@
       <q-separator vertical inset></q-separator>
       <q-btn @click="onAddButtonClick" flat><img src="~assets/add.svg"/></q-btn>
     </div>
-    <div>
+    <div class="mobile-container-page">
       <div
         v-for="vendor in vendors"
         :key="vendor.id"
@@ -169,20 +169,18 @@ export default {
 </script>
 
 <style lang="scss">
-.vendor-list {
-  color: #666666;
-  .actions-div {
-    display: flex;
-    border-bottom: 1px solid #0000001f;
-    align-items: center;
-  }
-  .vendor-list-item {
-    padding: 20px;
-    border-bottom: 1px solid lightgray;
-    text-transform: capitalize;
-    display: flex;
-  }
+.actions-div {
+  display: flex;
+  border-bottom: 1px solid #0000001f;
+  align-items: center;
 }
+.vendor-list-item {
+  padding: 20px;
+  border-bottom: 1px solid lightgray;
+  text-transform: capitalize;
+  display: flex;
+}
+
 .filters {
   .filters-list-item {
     color: #666666;
