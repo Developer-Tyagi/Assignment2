@@ -10,3 +10,5 @@ export const policyTypes = state => state.policyTypes;
 export const selectedClient = state => state.selectedClient;
 export const setSelectedClient = state => state.setSelectedClient;
 export const editSelectedClient = state => state.editSelectedClient;
+export const setClientProperty = state => state.setClientProperty;
+export const claimsData = state => state.claimsData;

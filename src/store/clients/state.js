@@ -17,6 +17,13 @@ export default function() {
     claimSeverity: [],
     policyCategories: [],
     editSelectedClient: [],
-    selectedClientId: ''
+    selectedClientId: '',
+    setClientProperty: [],
+    claimsData: {
+      number: '2131313100001',
+      fileNumber: 'FL-12121212',
+      status: 'Open',
+      phase: 'Orgainated'
+    }
   };
 }

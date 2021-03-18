@@ -25,7 +25,6 @@ export async function getSingleClientDetails({ commit, dispatch }, id) {
     commit('setSelectedClientId', id);
     const { data } = await request.get(`/clients/${id}`);
     commit('setSelectedEditClient', data);
-
     dispatch('setLoading', false);
   } catch (e) {
     console.log(e);
@@ -36,6 +35,25 @@ export async function getSingleClientDetails({ commit, dispatch }, id) {
     });
   }
 }
+//test
+export async function getSingleClientProperty({ commit, dispatch }, id) {
+  dispatch('setLoading', true);
+  try {
+    commit('setSelectedClientId', id);
+    const { data } = await request.get(`/clients/${id}/address`);
+    commit('setSelectedClientProperty', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response.data.title
+    });
+  }
+}
+
+//test
 
 export async function getEstimators({ commit, dispatch }) {
   dispatch('setLoading', true);
@@ -73,6 +91,28 @@ export async function addClient({ dispatch, state }, payload) {
     });
   }
 }
+//test for property Address API
+
+export async function addPropertyAddress({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      `/clients/${payload.id}/address`,
+      buildApiData('address', payload.clientData)
+    );
+    dispatch('setLoading', false);
+    return data;
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response.data.title
+    });
+  }
+}
+
+//test
 
 export async function editClient({ dispatch, state }, payload) {
   dispatch('setLoading', true);

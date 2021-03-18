@@ -827,8 +827,7 @@ export default {
       success = await this.$refs.clientForm.validate();
       if (success) {
         this.editClientInfoDailog = false;
-        if (this.editSelectedClient.id) {
-        }
+
         const payload = {
           id: this.editSelectedClient.id,
           clientData: {
