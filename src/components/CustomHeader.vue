@@ -16,6 +16,7 @@
                 $route.name === 'leads dashboard' ||
                 $route.name === 'vendors' ||
                 $route.name === 'settings' ||
+                $route.name === 'admin' ||
                 $route.name === 'configuration')) ||
               ($q.screen.width < 992 && $route.name === 'dashboard')
           "
@@ -38,7 +39,7 @@
       content-class="bg-side-panel"
       @hide="onMenuHide()"
     >
-      <div style="height: calc(120px)" class="q-px-xl q-pt-xl">
+      <div style="height: calc(120px)" class="q-px-md q-pt-lg">
         <div class="row no-wrap">
           <q-avatar
             rounded
@@ -62,7 +63,7 @@
         </div>
       </div>
       <q-scroll-area style="height: calc(100% - 220px)">
-        <div class="q-px-xl">
+        <div class="q-px-md">
           <q-list separator dark>
             <q-item
               clickable
@@ -72,6 +73,10 @@
               @click="routeTo(link)"
               v-bind="link"
               class="q-px-none"
+              v-if="
+                (link.title != 'Admin' || $q.screen.width > 992) &&
+                  (link.title != 'Configuration' || $q.screen.width > 992)
+              "
             >
               <q-item-section>
                 <p class="title">{{ link.title }}</p>
@@ -81,12 +86,11 @@
               </q-item-section>
             </q-item>
           </q-list>
-          <div class="full-width" v-if="this.$q.screen.width > 992"></div>
         </div>
       </q-scroll-area>
-      <div style="height: 100px" class="q-px-xl">
+      <div style="height: 100px" class="q-px-md">
         <q-btn
-          class="q-px-xl q-py-xs full-width"
+          class="q-px-md q-py-xs full-width"
           color="primary"
           label="LOGOUT"
           @click="logout()"
@@ -147,7 +151,11 @@ export default {
         //   link: '/settings',
         //   description: 'Setup My Schedule, Type of Inspection etc.'
         // },
-
+        {
+          title: 'Admin',
+          link: '/admin',
+          description: 'Setup Company , account, email, actions etc.'
+        },
         {
           title: 'Configuration',
           link: '/configuration',
@@ -190,10 +198,10 @@ export default {
   },
 
   created() {
-    if (window.innerWidth * 0.9 < 400) {
+    if (window.innerWidth * 0.9 < 300) {
       this.intViewportWidth = window.innerWidth * 0.9;
     } else {
-      this.intViewportWidth = 350;
+      this.intViewportWidth = 300;
     }
     if (getCurrentUser().attributes) {
       this.user = getCurrentUser().attributes;
