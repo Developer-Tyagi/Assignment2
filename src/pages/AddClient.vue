@@ -1425,12 +1425,13 @@
               <q-toggle
                 class="q-ml-auto"
                 v-model="doesAnEstimatorNeedToBeAssignedToggle"
+                @input="EstimatorToggleChange"
               />
             </div>
 
             <div
               v-if="doesAnEstimatorNeedToBeAssignedToggle"
-              @click="estimatorsListDialog = true"
+              @click="onClickEstimatorOpen"
             >
               <div
                 class="custom-select form-heading"
@@ -1438,8 +1439,8 @@
               >
                 <div class="select-text">
                   {{
-                    addEstimatorInfo.name
-                      ? addEstimatorInfo.name
+                    addEstimatorValue.name
+                      ? addEstimatorValue.name
                       : 'Add Estimator'
                   }}
                 </div>
@@ -2073,7 +2074,7 @@
             label="Add Estimator"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
-            @click="onCloseDialogBox('addEstimatorDialog', 5)"
+            @click="onCloseAddEstimator('addEstimatorDialog', 5)"
             size="'xl'"
           />
         </div>
@@ -2127,7 +2128,12 @@
               </template>
             </q-input>
             <q-separator vertical inset></q-separator>
-            <q-btn @click="addEstimatorDialog = true" flat
+            <q-btn
+              @click="
+                addEstimatorDialog = true;
+                estimatorsListDialog = false;
+              "
+              flat
               ><img src="~assets/add.svg"
             /></q-btn>
           </div>
@@ -2187,6 +2193,7 @@ export default {
 
   data() {
     return {
+      addEstimatorValue: { name: '' },
       expertVendorButton: true,
       industryTypeValue: '',
       reasonForCancellation: [
@@ -2612,6 +2619,54 @@ export default {
       'addIndustry'
     ]),
     ...mapMutations(['setSelectedLead']),
+    EstimatorToggleChange() {
+      this.addEstimatorInfo = {
+        name: '',
+        fname: '',
+        lname: '',
+        email: '',
+        phone: '',
+        type: ''
+      };
+      this.honorific3.id = '';
+      this.addEstimatorValue.name = '';
+    },
+
+    onClickEstimatorOpen() {
+      this.getEstimators();
+      this.estimatorsListDialog = true;
+    },
+
+    async onCloseAddEstimator() {
+      const success = await this.$refs.addEstimatorForm.validate();
+
+      if (success) {
+        const payload = {
+          fname: this.addEstimatorInfo.fname,
+          lname: this.addEstimatorInfo.lname,
+          honorific: {
+            id: this.honorific3.id,
+            value: this.honorific3.title,
+            machineValue: this.honorific3.machineValue
+          },
+          email: this.addEstimatorInfo.email,
+          phoneNumber: [
+            {
+              type: this.addEstimatorInfo.type,
+              number: this.addEstimatorInfo.phone
+            }
+          ]
+        };
+
+        const response = this.addEstimator(payload);
+        if (response) {
+          this.addEstimatorValue.name = this.addEstimatorInfo.fname;
+          this.addEstimatorDialog = false;
+          this.getEstimators();
+          // this.carrierName = this.addEstimatorInfo.fname;
+        }
+      }
+    },
     //addvendor close list
 
     async onCloseAddVendorDialogBox(result, selected, industryType) {
@@ -3224,39 +3279,9 @@ export default {
         this.$router.push('/clients');
       });
     },
-    async onAddEstimatorButtonClick() {
-      const payload = {
-        fname: this.addEstimatorInfo.fname,
-        lname: this.addEstimatorInfo.lname,
-        honorific: {
-          id: this.honorific3.id,
-          value: this.honorific3.title,
-          machineValue: this.honorific3.machineValue
-        },
-        email: this.addEstimatorInfo.email,
-        phoneNumber: [
-          {
-            type: this.addEstimatorInfo.type,
-            number: this.addEstimatorInfo.phone
-          }
-        ]
-      };
-      const response = this.addEstimator(payload);
-      if (response) {
-        await this.getEstimators();
-        this.addEstimatorInfo = {
-          name: '',
-          fname: '',
-          lname: '',
-          email: '',
-          phone: '',
-          type: ''
-        };
-        (this.honorific3.id = ''), (this.addEstimatorDialog = false);
-      }
-    },
+
     selectEstimator(value) {
-      this.addEstimatorInfo.name = value.fname;
+      this.addEstimatorValue.name = value.fname;
       this.estimatorsListDialog = false;
     },
 
