@@ -628,7 +628,7 @@ export default {
     // This function value is coming through props form add-vendor Page!
 
     onCloseAddVendorDialogBox(result, selected, industryType) {
-      if (result === true && industryType === 'Carrier') {
+      if (result === true && industryType === 'carrier') {
         this.onClosingVendorSelectDialog(
           selected,
           selected.industry.machineValue
@@ -805,6 +805,7 @@ export default {
         }
         this.vendorsListDialog = false;
       }
+      this.vendorsListDialog = false;
     }
   },
 

@@ -2101,7 +2101,7 @@
           :showFilter="showVendorDialogFilters"
           :filterName="vendorDialogFilterByIndustry"
           :valueName="valueName"
-          @addVendor="addVendorDialog = true"
+          @addVendor="(addVendorDialog = true), (vendorsListDialog = false)"
         />
       </q-card>
     </q-dialog>
@@ -2153,6 +2153,7 @@
     >
       <q-card>
         <AddVendor
+          @onCloseAddVendor="onCloseAddVendorDialogBox"
           @closeDialog="closeAddVendorDialog"
           :componentName="vendorDialogName"
           :selectedIndustryType="
@@ -2611,6 +2612,14 @@ export default {
       'addIndustry'
     ]),
     ...mapMutations(['setSelectedLead']),
+    //addvendor close list
+
+    async onCloseAddVendorDialogBox(result, selected, industryType) {
+      if (result === true) {
+        await this.getVendors();
+        this.onClosingVendorSelectDialog(selected, this.valueName);
+      }
+    },
 
     // in Expert Vendor info when the Toggle Button is off data will be cleared.
     onExpertVendorToggleOff() {
@@ -2669,7 +2678,7 @@ export default {
       });
       this.expertVendorInfo.vendors[len].value = 'Select Vendor';
     },
-    onClosingVendorSelectDialog(vendor, dialogName) {
+    async onClosingVendorSelectDialog(vendor, dialogName) {
       switch (dialogName) {
         case constants.industries.CARRIER:
           this.insuranceDetails.carrierId = vendor.id;
@@ -2688,9 +2697,18 @@ export default {
           this.mortgageDetails[1].value = vendor.name;
           break;
         case constants.industries.EXPERTVENDOR:
-          this.expertVendorInfo.id = vendor.id;
+          const params = {
+            industry: '',
+            name: ''
+          };
+          await this.getVendors(params);
+
+          let vendorsValue = this.vendors.find(o => o.name === vendor.name);
+
+          this.expertVendorInfo.id = vendorsValue.id;
+
           let len = this.expertVendorInfo.vendors.length;
-          this.expertVendorInfo.vendors[len - 1].id = vendor.id;
+          this.expertVendorInfo.vendors[len - 1].id = vendorsValue.id;
           this.expertVendorInfo.vendors[len - 1].value = vendor.name;
 
           break;
@@ -3285,7 +3303,7 @@ export default {
     },
     closeAddVendorDialog(e) {
       this.addVendorDialog = false;
-      this.vendorsListDialog = true;
+
       if (e) {
         if (
           this.vendorDialogName === constants.industries.CARRIER ||
@@ -3302,6 +3320,9 @@ export default {
         } else {
           this.$refs.list.getVendors();
         }
+        this.vendorsListDialog = false;
+      } else {
+        this.vendorsListDialog = true;
       }
     },
 
