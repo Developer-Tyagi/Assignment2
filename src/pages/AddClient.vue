@@ -451,7 +451,7 @@
             </div>
             <div class="row">
               <p class="q-my-auto form-heading">
-                Is this is a Foced-Placed policy?
+                Is this is a Forced-Placed policy?
               </p>
 
               <q-toggle
@@ -1227,7 +1227,13 @@
                 @input="onToggleButtonClick"
               />
             </div>
-            <div v-if="isMortgageHomeToggle" @click="mortgageInfoDialog = true">
+            <div
+              v-if="isMortgageHomeToggle"
+              @click="
+                mortgageInfoDialog = true;
+                lossInfoDialog = false;
+              "
+            >
               <div class="row">
                 <div class="q-px-xs row">
                   <div v-if="!mortgageDetails[0]['id']">Select Mortgage</div>
@@ -1893,7 +1899,10 @@
     >
       <q-card>
         <CustomBar
-          @closeDialog="mortgageInfoDialog = false"
+          @closeDialog="
+            mortgageInfoDialog = false;
+            lossInfoDialog = true;
+          "
           :dialogName="'Mortagage Info'"
         />
         <div class="mobile-container-page-without-search">
@@ -1975,7 +1984,10 @@
             label="Save"
             color="primary"
             class="button-width-90"
-            @click="mortgageInfoDialog = false"
+            @click="
+              mortgageInfoDialog = false;
+              lossInfoDialog = true;
+            "
             size="'xl'"
           />
         </div>
@@ -2090,7 +2102,7 @@
           :showFilter="showVendorDialogFilters"
           :filterName="vendorDialogFilterByIndustry"
           :valueName="valueName"
-          @addVendor="addVendorDialog = true"
+          @addVendor="(addVendorDialog = true), (vendorsListDialog = false)"
         />
       </q-card>
     </q-dialog>
@@ -2147,6 +2159,7 @@
     >
       <q-card>
         <AddVendor
+          @onCloseAddVendor="onCloseAddVendorDialogBox"
           @closeDialog="closeAddVendorDialog"
           :componentName="vendorDialogName"
           :selectedIndustryType="
@@ -2654,6 +2667,14 @@ export default {
         }
       }
     },
+    //addvendor close list
+
+    async onCloseAddVendorDialogBox(result, selected, industryType) {
+      if (result === true) {
+        await this.getVendors();
+        this.onClosingVendorSelectDialog(selected, this.valueName);
+      }
+    },
 
     // in Expert Vendor info when the Toggle Button is off data will be cleared.
     onExpertVendorToggleOff() {
@@ -2712,7 +2733,7 @@ export default {
       });
       this.expertVendorInfo.vendors[len].value = 'Select Vendor';
     },
-    onClosingVendorSelectDialog(vendor, dialogName) {
+    async onClosingVendorSelectDialog(vendor, dialogName) {
       switch (dialogName) {
         case constants.industries.CARRIER:
           this.insuranceDetails.carrierId = vendor.id;
@@ -2731,9 +2752,18 @@ export default {
           this.mortgageDetails[1].value = vendor.name;
           break;
         case constants.industries.EXPERTVENDOR:
-          this.expertVendorInfo.id = vendor.id;
+          const params = {
+            industry: '',
+            name: ''
+          };
+          await this.getVendors(params);
+
+          let vendorsValue = this.vendors.find(o => o.name === vendor.name);
+
+          this.expertVendorInfo.id = vendorsValue.id;
+
           let len = this.expertVendorInfo.vendors.length;
-          this.expertVendorInfo.vendors[len - 1].id = vendor.id;
+          this.expertVendorInfo.vendors[len - 1].id = vendorsValue.id;
           this.expertVendorInfo.vendors[len - 1].value = vendor.name;
 
           break;
@@ -3298,7 +3328,7 @@ export default {
     },
     closeAddVendorDialog(e) {
       this.addVendorDialog = false;
-      this.vendorsListDialog = true;
+
       if (e) {
         if (
           this.vendorDialogName === constants.industries.CARRIER ||
@@ -3315,6 +3345,9 @@ export default {
         } else {
           this.$refs.list.getVendors();
         }
+        this.vendorsListDialog = false;
+      } else {
+        this.vendorsListDialog = true;
       }
     },
 

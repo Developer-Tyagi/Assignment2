@@ -336,7 +336,7 @@ export default {
 
     if (this.componentName === constants.industries.EXPERTVENDOR) {
       let industryType = this.vendorIndustries.find(
-        o => o.name === this.selectedIndustryType
+        o => o.machineValue === constants.industries.VENDOR
       );
       if (industryType.name && industryType.id) {
         this.vendor.industry.value = industryType.name;
@@ -462,25 +462,14 @@ export default {
 
     async onAddVendorButtonClick() {
       const success = await this.$refs.vendorForm.validate();
+
       if (success) {
         const response = await this.addVendor(this.vendor);
+
         if (response) {
-          if (this.vendor.industry.value === 'Carrier') {
-            let params = {
-              industry: 'carrier',
-              name: ''
-            };
-            this.getVendors(params);
-            const selected = this.vendors.find(obj => {
-              return obj.name === this.vendor.name;
-            });
-            this.$emit(
-              'onCloseAddVendor',
-              true,
-              selected,
-              this.vendor.industry.value
-            );
-          }
+          this.$emit('onCloseAddVendor', true, this.vendor, this.componentName);
+          this.getVendors();
+
           this.closeDialog(true);
         }
       }
