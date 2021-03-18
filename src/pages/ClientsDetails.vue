@@ -62,6 +62,6 @@ export default {
   font-size: 16px;
   padding: 5px;
   border-bottom: 1px solid #d3d3d3;
-  margin-top: 40px;
+  margin-top: 30px;
 }
 </style>

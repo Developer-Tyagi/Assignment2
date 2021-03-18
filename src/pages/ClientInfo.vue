@@ -6,11 +6,11 @@
         'mobile-container-page': $q.platform.is.iphone
       }"
     >
-      <div class="q-pa-lg column full-height q-mt-lg">
+      <div class="q-pa-lg column full-height ">
         <!-- This is for showing the client details -->
-        <q-card class="q-pa-md q-ma-md full-width ">
+        <q-card class="q-pa-md q-mt-md  full-width ">
           <div class="row">
-            <span class="form-heading q-mt-none">Insured Details</span><br />
+            <span class="form-heading ">Insured Details</span><br />
             <q-icon
               name="create"
               color="primary"
@@ -248,8 +248,8 @@
           </q-toolbar>
         </q-header>
         <q-card-section>
-          <div class="mobile-container-page-without-search">
-            <q-form ref="clientForm" class="form-height">
+          <div class="mobile-container-page-without-search form-height">
+            <q-form ref="clientForm">
               <q-select
                 class="required"
                 v-model="client.id"
@@ -966,7 +966,7 @@ export default {
   text-align: left;
 }
 .form-height {
-  height: calc(100vh - 120px);
+  height: calc(100vh - 145px);
   overflow: auto;
   margin: 10px;
 }
