@@ -33,7 +33,7 @@
           {{ inspectionType.value }}
         </div>
       </div>
-      <div v-else class="column full-height">
+      <div v-else class="column mobile-container-page">
         <div style="color: #666666" class="text-center q-mt-auto">
           You haven't added Inspection yet.
         </div>
@@ -124,7 +124,7 @@ export default {
         subtypes: [
           {
             value: '',
-            duration: 1,
+            duration: 0.5,
             unit: 'hour'
           }
         ]
@@ -150,7 +150,7 @@ export default {
       ) {
         this.inspectionType.subtypes.push({
           value: '',
-          duration: 0,
+          duration: 0.5,
           unit: 'hour'
         });
       } else {

@@ -35,7 +35,7 @@ const routes = [
   },
   {
     path: '',
-    component: () => import('layouts/DashboardLayout.vue'),
+    component: () => import('src/layouts/MainLayout.vue'),
     beforeEnter: guardMyroute,
     children: [
       {
@@ -43,20 +43,12 @@ const routes = [
         name: 'dashboard',
         caseSensitive: true,
         component: () => import('pages/Dashboard.vue')
-      }
-    ]
-  },
-
-  {
-    path: '',
-    component: () => import('layouts/AdminLayout.vue'),
-    beforeEnter: guardMyroute,
-    children: [
+      },
       {
-        path: 'setConfiguration',
-        name: 'setConfiguration',
+        path: 'configuration',
+        name: 'configuration',
         caseSensitive: true,
-        component: () => import('pages/SetConfiguration.vue')
+        component: () => import('pages/Configuration.vue')
       },
       {
         path: 'account',
@@ -93,14 +85,7 @@ const routes = [
         name: 'add-user',
         caseSensitive: true,
         component: () => import('pages/AddUser.vue')
-      }
-    ]
-  },
-  {
-    path: '',
-    component: () => import('layouts/MobileLayout.vue'),
-    beforeEnter: guardMyroute,
-    children: [
+      },
       {
         path: 'leads-dashboard',
         name: 'leads dashboard',

@@ -1,35 +1,226 @@
 <template>
-  <q-header bordered class="bg-white">
-    <q-toolbar class="row bg-white">
-      <q-btn @click="onBackClick" flat>
-        <img src="~assets/left-arrow.svg" alt="back-arrow" />
-      </q-btn>
-      <div class="text-uppercase text-bold text-black q-mx-auto">
-        {{ $route.name }}
+  <div>
+    <q-header bordered class="bg-white">
+      <q-toolbar class="row bg-white">
+        <q-btn
+          flat
+          dense
+          class="color-grey"
+          icon="menu"
+          aria-label="Menu"
+          @click="onMenuButtonClick"
+          v-if="
+            ($q.screen.width > 992 &&
+              ($route.name === 'dashboard' ||
+                $route.name === 'clients' ||
+                $route.name === 'leads dashboard' ||
+                $route.name === 'vendors' ||
+                $route.name === 'settings' ||
+                $route.name === 'configuration')) ||
+              ($q.screen.width < 992 && $route.name === 'dashboard')
+          "
+        ></q-btn>
+        <q-btn @click="onBackClick" flat v-else>
+          <img src="~assets/left-arrow.svg" alt="back-arrow" />
+        </q-btn>
+        <div class="text-uppercase text-bold text-black q-mx-auto">
+          {{ $route.name }}
+        </div>
+        <q-btn class="no-visibility" flat>
+          <img src="~assets/left-arrow.svg" alt="back-arrow" />
+        </q-btn>
+      </q-toolbar>
+    </q-header>
+    <q-drawer
+      v-model="isLeftSidePanelOpen"
+      :width="intViewportWidth"
+      :breakpoint="992"
+      content-class="bg-side-panel"
+      @hide="onMenuHide()"
+    >
+      <div style="height: calc(120px)" class="q-px-xl q-pt-xl">
+        <div class="row no-wrap">
+          <q-avatar
+            rounded
+            size="54px"
+            font-size="42px"
+            color="yellow-9"
+            text-color="white"
+            icon="user"
+          />
+          <div
+            class="column text-white q-pa-sm q-ml-sm"
+            style="width: calc(100% - 54px)"
+          >
+            <div class="text-capitalize ellipsis full-width">
+              {{ user.name || 'Unknown' }}
+            </div>
+            <div style="font-size: 11px; opacity: 80%" @click="">
+              {{ user.contact.fname ? user.contact.fname : '-' }}
+            </div>
+          </div>
+        </div>
       </div>
-      <q-btn class="no-visibility" flat>
-        <img src="~assets/left-arrow.svg" alt="back-arrow" />
-      </q-btn>
-    </q-toolbar>
-  </q-header>
+      <q-scroll-area style="height: calc(100% - 220px)">
+        <div class="q-px-xl">
+          <q-list separator dark>
+            <q-item
+              clickable
+              v-ripple
+              v-for="link in linksData"
+              :key="link.title"
+              @click="routeTo(link)"
+              v-bind="link"
+              class="q-px-none"
+            >
+              <q-item-section>
+                <p class="title">{{ link.title }}</p>
+                <p class="description">
+                  {{ link.description }}
+                </p>
+              </q-item-section>
+            </q-item>
+          </q-list>
+          <div class="full-width" v-if="this.$q.screen.width > 992"></div>
+        </div>
+      </q-scroll-area>
+      <div style="height: 100px" class="q-px-xl">
+        <q-btn
+          class="q-px-xl q-py-xs full-width"
+          color="primary"
+          label="LOGOUT"
+          @click="logout()"
+        />
+        <p class="text-white q-mt-md" style="opacity: 50%; font-size: 12px">
+          Claimguru Version 1.0
+        </p>
+      </div>
+    </q-drawer>
+  </div>
 </template>
 <script>
+import { removeToken, removeCurrentUser } from '@utils/auth';
+import { getCurrentUser } from 'src/utils/auth';
 export default {
   name: 'CustomHeader',
+  data() {
+    return {
+      user: {
+        name: ''
+      },
+      isLeftSidePanelOpen: false,
+      intViewportWidth: 0,
+      linksData: [
+        {
+          title: 'Dashboard',
+          link: '/dashboard',
+          description: 'View Dashboard and details'
+        },
+        {
+          title: 'Leads',
+          link: '/leads-dashboard',
+          description: 'View Lead Dashboard, Add New Lead and Manage Leads.'
+        },
+        {
+          title: 'Clients',
+          link: '/clients',
+          description: 'View, Add and Manage Clients.'
+        },
+        // {
+        //   title: "Claims",
+        //   link: "/claims",
+        //   description: "View, Add and Manage Claims."
+        // },
+        // {
+        //   title: "Companies",
+        //   link: "/companies",
+        //   description:
+        //     "View Insurance and Mortgage Companies, Add and Manage New Companies."
+        // },
+        {
+          title: 'Vendors',
+          link: '/vendors',
+          description: 'View, Add and Manage all types of Vendors.'
+        },
+        // {
+        //   title: 'Settings',
+        //   link: '/settings',
+        //   description: 'Setup My Schedule, Type of Inspection etc.'
+        // },
 
+        {
+          title: 'Configuration',
+          link: '/configuration',
+          description: 'View, Add and Manage all types of configuration.'
+        }
+      ]
+    };
+  },
   methods: {
+    logout() {
+      this.removeToken();
+      this.removeCurrentUser();
+      this.$router.push('/login');
+    },
+
+    removeToken,
+    removeCurrentUser,
+
+    onMenuButtonClick() {
+      this.isLeftSidePanelOpen = !this.isLeftSidePanelOpen;
+    },
+
+    onMenuHide() {
+      this.isLeftSidePanelOpen = false;
+    },
+
     onBackClick() {
       this.$emit('backButton');
+    },
+
+    routeTo(link) {
+      this.$router.push(link.link);
+    }
+  },
+
+  computed: {
+    currentRouteName() {
+      return this.$router.history.current.path.substring(1);
+    }
+  },
+
+  created() {
+    if (window.innerWidth * 0.9 < 400) {
+      this.intViewportWidth = window.innerWidth * 0.9;
+    } else {
+      this.intViewportWidth = 350;
+    }
+    if (getCurrentUser().attributes) {
+      this.user = getCurrentUser().attributes;
     }
   }
 };
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 .q-toolbar {
   padding: 0;
 }
 
 .q-btn {
   width: 50px;
+}
+
+.bg-side-panel {
+  background-color: $sidePanel;
+}
+.title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 0;
+}
+.description {
+  opacity: 70%;
+  font-size: 12px;
+  margin-bottom: 0;
 }
 </style>

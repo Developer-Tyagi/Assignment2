@@ -102,7 +102,7 @@
               <div class="q-pa-lg" v-if="!vendorIndustries">
                 You Have Not Added Any IndustryType yet
               </div>
-              <div v-else class="bg-grey-1 q-pl-xl q-my-md ">
+              <div v-else class="bg-grey-1 q-pl-xl q-my-md">
                 <div
                   class="q-py-xs row justify-between full-width"
                   v-for="(contactInfo, index) in vendorIndustries"
@@ -499,7 +499,7 @@
           <div class="bg-blue">
             <q-separator />
           </div>
-          <div class="q-mt-lg row justify-center  full-width">
+          <div class="q-mt-lg row justify-center full-width">
             <q-btn
               color="primary"
               label="Next"
@@ -520,11 +520,9 @@
 
         <!-- This is First Dialog -->
         <q-dialog v-model="InspectionDialogBox" persistent>
-          <q-card style="width: 700px;height:600px; max-width: 1000vw;">
-            <q-bar class=" row justify-between" style="height:50px">
-              <div class="col-46 q-px-xl text-bold ">
-                Add Inspection Type
-              </div>
+          <q-card style="width: 700px; height: 600px; max-width: 1000vw">
+            <q-bar class="row justify-between" style="height: 50px">
+              <div class="col-46 q-px-xl text-bold">Add Inspection Type</div>
               <q-btn dense flat icon="close" v-close-popup>
                 <q-tooltip>Close</q-tooltip>
               </q-btn>

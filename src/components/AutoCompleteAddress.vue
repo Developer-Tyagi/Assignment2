@@ -1,6 +1,11 @@
 <template>
   <div>
-    <div v-if="isFieldsDisable == false">
+    <div
+      :class="{
+        'no-visibility': isFieldsDisable,
+        visibility: !isFieldsDisable
+      }"
+    >
       <input
         type="text"
         id="autocomplete"
@@ -12,7 +17,8 @@
     </div>
     <div class="row justify-between">
       <q-input
-        :class="[isAsteriskMark ? 'required col-3' : 'col-3']"
+        :class="{ required: isAsteriskMark }"
+        class="col-3"
         v-model="address.houseNumber"
         label="House/Flat No"
         lazy-rules
@@ -21,7 +27,8 @@
         ]"
       />
       <q-input
-        :class="[isAsteriskMark ? 'required col-8' : 'col-8']"
+        :class="{ required: isAsteriskMark }"
+        class="col-8"
         v-model="address.streetAddress"
         label="Street"
         lazy-rules
@@ -31,14 +38,14 @@
       />
     </div>
     <q-input
-      :class="[isAsteriskMark ? 'required' : '']"
+      :class="{ required: isAsteriskMark }"
       v-model="address.addressLocality"
       label="City"
       lazy-rules
       :rules="[val => checkValidations(val) || 'Please fill the city']"
     />
     <q-select
-      :class="[isAsteriskMark ? 'required' : '']"
+      :class="{ required: isAsteriskMark }"
       v-model="address.addressRegion"
       :options="states"
       label="State"
@@ -46,7 +53,7 @@
       :rules="[val => checkValidations(val) || 'Please fill the state']"
     />
     <q-select
-      :class="[isAsteriskMark ? 'required' : '']"
+      :class="{ required: isAsteriskMark }"
       v-model="address.addressCountry"
       :options="countries"
       label="Country"
@@ -55,7 +62,7 @@
       :rules="[val => checkValidations(val) || 'Please fill the country']"
     />
     <q-input
-      :class="[isAsteriskMark ? 'required' : '']"
+      :class="{ required: isAsteriskMark }"
       v-model="address.postalCode"
       label="ZIP Code"
       lazy-rules
@@ -160,10 +167,6 @@ export default {
 
     fillInAddress() {
       const place = this.autocomplete.getPlace().address_components;
-      this.address.houseNumber =
-        this.getPlaceName('street_number', place) >= 0
-          ? place[this.getPlaceName('street_number', place)].long_name
-          : '';
       this.address.streetAddress =
         this.getPlaceName('route', place) >= 0
           ? place[this.getPlaceName('route', place)].long_name
@@ -189,6 +192,11 @@ export default {
       this.address.postalCode = this.getPlaceName('postal_code', place)
         ? place[this.getPlaceName('postal_code', place)].long_name
         : '';
+
+      if (this.getPlaceName('street_number', place) >= 0) {
+        this.address.houseNumber =
+          place[this.getPlaceName('street_number', place)].long_name;
+      }
       this.states = addressService.getStates(this.address.addressCountry);
       this.isAddressFieldEnable = true;
       this.addressAutoComplete = '';
