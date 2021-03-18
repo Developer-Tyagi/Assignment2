@@ -22,8 +22,10 @@ export async function getClients({ commit, dispatch }, searchString = '') {
 export async function getSingleClientDetails({ commit, dispatch }, id) {
   dispatch('setLoading', true);
   try {
+    commit('setSelectedClientId', id);
     const { data } = await request.get(`/clients/${id}`);
     commit('setSelectedEditClient', data);
+
     dispatch('setLoading', false);
   } catch (e) {
     console.log(e);
@@ -77,7 +79,7 @@ export async function editClient({ dispatch, state }, payload) {
   try {
     const { data } = await request.post(
       `/clients/${payload.id}/info`,
-      buildApiData('clients', payload)
+      buildApiData('clients', payload.clientData)
     );
 
     dispatch('setLoading', false);
