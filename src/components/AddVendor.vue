@@ -335,7 +335,6 @@ export default {
     }
 
     if (this.componentName === constants.industries.EXPERTVENDOR) {
-      console.log(this.vendorIndustries, 767);
       let industryType = this.vendorIndustries.find(
         o => o.machineValue === constants.industries.VENDOR
       );
@@ -482,7 +481,6 @@ export default {
   },
 
   created() {
-    console.log(this.componentName);
     if (this.componentName == constants.industries.VENDOR) {
       this.industryFilterDisabled = true;
     }

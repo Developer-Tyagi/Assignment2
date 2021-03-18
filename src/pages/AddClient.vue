@@ -3303,7 +3303,7 @@ export default {
     },
     closeAddVendorDialog(e) {
       this.addVendorDialog = false;
-      // this.vendorsListDialog = true;
+
       if (e) {
         if (
           this.vendorDialogName === constants.industries.CARRIER ||

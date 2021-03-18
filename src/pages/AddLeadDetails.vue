@@ -536,7 +536,7 @@ export default {
       showVendorDialogFilters: false,
       vendorDialogName: '',
       vendorDialogFilterByIndustry: '',
-      step: 3,
+      step: 1,
       primaryDetails: {
         isOrganization: false,
         organizationName: '',
@@ -628,7 +628,6 @@ export default {
     // This function value is coming through props form add-vendor Page!
 
     onCloseAddVendorDialogBox(result, selected, industryType) {
-      console.log(result, selected, industryType);
       if (result === true && industryType === 'carrier') {
         this.onClosingVendorSelectDialog(
           selected,
