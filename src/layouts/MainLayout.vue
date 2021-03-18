@@ -19,6 +19,7 @@ export default {
         route == 'leads-dashboard' ||
         route == 'clients' ||
         route == 'vendors' ||
+        route == 'admin' ||
         route == 'settings'
       ) {
         this.$router.push('/dashboard');

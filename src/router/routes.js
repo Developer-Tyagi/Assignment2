@@ -164,6 +164,12 @@ const routes = [
         path: 'preferred',
         caseSensitive: true,
         component: () => import('pages/PreferredDistance.vue')
+      },
+      {
+        path: 'admin',
+        name: 'admin',
+        caseSensitive: true,
+        component: () => import('pages/Admin.vue')
       }
     ]
   },
