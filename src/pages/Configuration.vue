@@ -1,8 +1,13 @@
 <template>
-  <q-page class="window-height bg-background full-width">
-    <br />
+  <q-page class="row height-without-header">
+    <SubSideBar
+      class="col-2"
+      :list="configurationType"
+      @onListClick="setSelectedTab"
+      :selectedItem="tab"
+    />
     <!-- This Style is needed for inner div-->
-    <div class="q-pa-xs" style="height: 60%; width: 95%">
+    <div class="q-pa-xs col-9">
       <div class="full-width">
         <div class="my-font text-bold row q-my-lg q-mx-xl">
           Setup Company Account
@@ -499,23 +504,6 @@
           <div class="bg-blue">
             <q-separator />
           </div>
-          <div class="q-mt-lg row justify-center full-width">
-            <q-btn
-              color="primary"
-              label="Next"
-              class="q-mx-lg"
-              @click="onClickNext"
-            />
-            <q-btn
-              color="primary"
-              label="Go To Dashboard"
-              class="q-mx-lg"
-              @click="SendToDashboard"
-            />
-          </div>
-          <div class="q-mt-md">
-            <q-separator />
-          </div>
         </template>
 
         <!-- This is First Dialog -->
@@ -659,11 +647,6 @@
             </q-card-section>
           </q-card>
         </q-dialog>
-
-        <div class="row full-width q-pa-xl">
-          <div class="col-3"></div>
-          <div class="col-7 justify-center q-ml-xl"></div>
-        </div>
       </div>
     </div>
   </q-page>
@@ -672,9 +655,13 @@
 // import { mapActions } from 'vuex';
 import { mapGetters, mapActions } from 'vuex';
 import { validateEmail } from '@utils/validation';
+import SubSideBar from 'components/SubSideBar';
 
 export default {
   name: 'SetConfiguration',
+  components: {
+    SubSideBar
+  },
 
   data() {
     return {
@@ -696,18 +683,28 @@ export default {
       industryType: {
         value: '',
         machineValue: ''
-      }
+      },
+
+      configurationType: [
+        { name: 'Inspection Type', key: 'inspectionType' },
+        { name: ' Industry Type', key: 'industryType' },
+        { name: 'Honorific', key: 'honorific' },
+        { name: 'Phone Type', key: 'phoneType' },
+        { name: 'Client Type', key: 'clientType' },
+        { name: 'Policy Categories', key: 'policyCategories' },
+        { name: 'Policy Type', key: 'policyType' },
+        { name: 'Property Type', key: 'propertyType' },
+        { name: 'Claim Reason', key: 'claimReason' },
+        { name: 'Loss Cause', key: 'lossCause' },
+        { name: 'Claim Severity', key: 'claimSeverity' }
+      ]
     };
   },
 
-  watch: {
-    $route(to, from) {
-      this.tab = this.$route.query.data;
-    }
-  },
   created() {
-    this.tab = this.$route.query.data;
+    this.tab = this.configurationType[0].key;
   },
+
   computed: {
     ...mapGetters([
       'contactTypes',
@@ -874,6 +871,7 @@ export default {
     SendToDashboard() {
       this.$router.push('/dashboard');
     },
+
     onClickNext() {
       if (this.tab == 'inspectionType') {
         this.tab = 'industryType';
@@ -896,6 +894,10 @@ export default {
       } else if (this.tab == 'lossCause') {
         this.tab = 'claimSeverity';
       }
+    },
+
+    setSelectedTab(e) {
+      this.tab = e.key;
     }
 
     // End of Functions

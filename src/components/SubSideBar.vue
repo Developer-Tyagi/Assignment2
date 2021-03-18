@@ -1,5 +1,5 @@
 <template>
-  <div class="full-height bg-grey-4" style="width: 20%">
+  <div class="full-height bg-grey-4">
     <div>
       <q-list separator>
         <q-item
@@ -9,9 +9,13 @@
           :key="data.name"
           @click="onListClick(data)"
           class="q-px-none"
+          :active="data.key === selectedItem"
+          active-class=""
         >
-          <q-item-section style="color: #666666">
-            <p class="title">{{ data.name }}</p>
+          <q-item-section>
+            <div class="title" style="text-align: center">
+              {{ data.name }}
+            </div>
           </q-item-section>
         </q-item>
       </q-list>
@@ -25,13 +29,24 @@ export default {
     list: {
       type: Array,
       required: true
+    },
+    selectedItem: {
+      type: String,
+      required: true
     }
   },
 
   methods: {
     onListClick(data) {
+      console.log(this.selectedItem);
       this.$emit('onListClick', data);
     }
   }
 };
 </script>
+<style lang="scss">
+.active-list {
+  background: grey;
+  color: $grey-10;
+}
+</style>
