@@ -2118,7 +2118,8 @@
             <q-separator vertical inset></q-separator>
             <q-btn
               @click="
-                (addEstimatorDialog = true), (estimatorsListDialog = false)
+                addEstimatorDialog = true;
+                estimatorsListDialog = false;
               "
               flat
               ><img src="~assets/add.svg"
