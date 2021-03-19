@@ -24,7 +24,8 @@
   </q-page>
 </template>
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
+import CustomBar from 'components/CustomBar';
 export default {
   data() {
     return {
@@ -37,15 +38,19 @@ export default {
     };
   },
 
-  components: {},
+  components: { CustomBar },
   computed: {
     ...mapGetters(['editSelectedClient', 'selectedClientId'])
   },
   methods: {
     ...mapActions(['getSingleClientDetails']),
+
     clientDetailsDailogBoxOpen(value) {
       if (value == 'Client Info') {
         this.$router.push('/client-details');
+      }
+      if (value == 'Properties and Claims') {
+        this.$router.push('/property-details');
       }
     }
   },
