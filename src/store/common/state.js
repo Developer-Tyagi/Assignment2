@@ -5,6 +5,7 @@ export default function() {
     contactTypes: [],
     titles: [],
     clientTypes: [],
+    userRoles: [],
     lossCauses: [],
     roleTypes: [],
     leadSources: [

@@ -8,6 +8,14 @@ export function setClientTypes(state, types) {
     id: type.id
   }));
 }
+export function setUserRoles(state, userRoles) {
+  state.userRoles = userRoles.map(type => ({
+    name: type.attributes.name,
+    id: type.id
+  }));
+  console.log(this.userRoles, 12);
+}
+
 export function setNotification(state, value) {
   state.notification = value;
 }

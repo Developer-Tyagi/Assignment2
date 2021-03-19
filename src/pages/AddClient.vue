@@ -1719,43 +1719,30 @@
           <q-form ref="publicAdjustorForm" class="form-height">
             <div class="form-heading text-bold">CLAIM PERSONNEL</div>
             <div class="form-heading q-mt-lg">Personnel Role</div>
-
-            <!-- <q-select
-              v-model="publicAdjustor.personnelRole1"
-              :options="personnelRoles.id"
-              label="Select Role"
-              option-label="name"
-              option-value="value"
-              options-dense
-              emit-value
-              map-options
-              @input="setTypes(personnelRoles, publicAdjustor.personnelRole1)"
-            ></q-select> -->
-
+            {{ publicAdjustor }}
             <q-select
               v-model="publicAdjustor.personnelRole1.id"
               :options="personnelRoles"
-              option-value="id"
+              option-value="machineValue"
               option-label="name"
               map-options
               emit-value
               options-dense
               @input="setTypes(personnelRoles, publicAdjustor.personnelRole1)"
+              @change="onSelectRole(publicAdjustor.personnelRole1.machineValue)"
               label="Select Role"
             ></q-select>
 
             <div class="form-heading q-mt-lg">Person Party</div>
             <q-select
               v-model="publicAdjustor.personParty1"
-              :options="publicAdjustor.filterRole"
+              :options="userRoles"
               :label="!publicAdjustor.personParty1 ? 'Select a Role' : ''"
               option-label="name"
-              :disable="publicAdjustor.isFilterApply"
-              option-value="value"
+              option-value="machineValue"
               options-dense
               emit-value
               map-options
-              options-dense
             ></q-select>
             <div class="form-heading q-mt-lg">Personnel Role</div>
             <q-select
@@ -2559,6 +2546,8 @@ export default {
     this.getContactTypes();
     this.getPolicyCategory();
     this.getRoles();
+    this.getAllUsers();
+    console.log(this.userRoles.contact.fname, 123);
     if (this.selectedLead.id) {
       this.insuredDetails.fname = this.selectedLead.primaryContact.fname;
       this.insuredDetails.lname = this.selectedLead.primaryContact.lname;
@@ -2609,7 +2598,8 @@ export default {
       'vendors',
       'policyCategories',
       'vendorIndustries',
-      'personnelRoles'
+      'personnelRoles',
+      'userRoles'
     ])
   },
 
@@ -2635,7 +2625,8 @@ export default {
       'getPolicyCategory',
       'getVendorIndustries',
       'addIndustry',
-      'getRoles'
+      'getRoles',
+      'getAllUsers'
     ]),
     ...mapMutations(['setSelectedLead']),
     EstimatorToggleChange() {
@@ -2650,7 +2641,7 @@ export default {
       this.honorific3.id = '';
       this.addEstimatorValue.name = '';
     },
-
+    onSelectRole() {},
     onClickEstimatorOpen() {
       this.getEstimators();
       this.estimatorsListDialog = true;
@@ -3000,9 +2991,10 @@ export default {
       const obj = types.find(item => {
         return item.id === data.id;
       });
-
+      console.log(obj, 44);
       data.machineValue = obj.machineValue;
       data.value = obj.name;
+      console.log(this.publicAdjustor, 123);
     },
 
     mailingAddressSame() {
