@@ -38,7 +38,6 @@ export default {
 
   methods: {
     onListClick(data) {
-      console.log(this.selectedItem);
       this.$emit('onListClick', data);
     }
   }

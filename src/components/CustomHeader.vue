@@ -5,7 +5,7 @@
         <q-btn
           flat
           dense
-          class="color-grey"
+          class="color-grey button-50"
           icon="menu"
           aria-label="Menu"
           @click="onMenuButtonClick"
@@ -21,13 +21,13 @@
               ($q.screen.width < 992 && $route.name === 'dashboard')
           "
         ></q-btn>
-        <q-btn @click="onBackClick" flat v-else>
+        <q-btn @click="onBackClick" flat v-else class="button-50">
           <img src="~assets/left-arrow.svg" alt="back-arrow" />
         </q-btn>
         <div class="text-uppercase text-bold text-black q-mx-auto">
           {{ $route.name }}
         </div>
-        <q-btn class="no-visibility" flat>
+        <q-btn class="no-visibility button-50" flat>
           <img src="~assets/left-arrow.svg" alt="back-arrow" />
         </q-btn>
       </q-toolbar>
@@ -214,7 +214,7 @@ export default {
   padding: 0;
 }
 
-.q-btn {
+.button-50 {
   width: 50px;
 }
 

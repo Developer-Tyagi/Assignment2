@@ -4,655 +4,200 @@
       class="col-2"
       :list="configurationType"
       @onListClick="setSelectedTab"
-      :selectedItem="tab"
+      :selectedItem="tab.key"
     />
-    <!-- This Style is needed for inner div-->
-    <div class="q-pa-xs col-9">
-      <div class="full-width">
-        <div class="my-font text-bold row q-my-lg q-mx-xl">
-          Setup Company Account
+    <div class="col-10">
+      <div class="my-font text-bold row q-ma-md">Setup Company Account</div>
+      <div class="q-mx-md" flat bordered>
+        <div class="row full-width justify-between">
+          <span class="text-bold" style="line-height: 36px">{{
+            tab.name
+          }}</span>
+          <q-btn @click="onClickingAddButton(tab)" color="primary">
+            Add {{ tab.name }}
+          </q-btn>
         </div>
-      </div>
-      <!-- Height given for there Inner 2 div -->
-      <div class="row full-width" style="height: 107%" flat bordered>
-        <!-- This is the Main Div -->
-
-        <!-- Main Template -->
-        <template class="">
-          <q-tab-panels
-            class="q-ml-xl bg-grey-3"
-            style="height: 500px; width: 1550px"
-            v-model="tab"
-            animated
-            vertical
-            swipeable
-            transition-prev="jump-up"
-            transition-next="jump-up"
-          >
-            <!-- Inspection Type -->
-            <q-tab-panel name="inspectionType">
-              <div class="row justify-between">
-                <div class="text-bold col-4">Inspection Type</div>
-                <div
-                  class="col-2 text-primary"
-                  @click="InspectionDialogBox = true"
-                >
-                  Add Inspection Type
-                </div>
-              </div>
-              <div class="q-mt-lg"><q-separator /></div>
-              <!-- This is div for Data of Inspection Type -->
-              <div class="q-pa-lg" v-if="!inspectionTypes">
-                You Have Not Added Any Inspection Type Yet
-              </div>
-              <div v-else class="row">
-                <div class="row full-width">
-                  <div class="col-4 q-ml-xl text-bold">Inspection Type</div>
-                  <div class="col-3 q-ml-lg text-bold">Duration</div>
-                  <div class="col-3 q-ml-lg text-center text-bold">
-                    Edit/Delete
-                  </div>
-                </div>
-                <br />
-
-                <div
-                  class="row full-width"
-                  v-for="(ins, index) in inspectionTypes"
-                  v-if="index >= 0"
-                >
-                  <div class="col-8 q-ml-xl q-my-md bg-grey-2">
-                    <div class="col-5 q-pl-md">
-                      {{ inspectionTypes[index].value }}
-                    </div>
-
-                    <div
-                      class="row q-ml-lg q-mb-md col-5"
-                      v-for="(ins, index1) in inspectionTypes[index].subtypes"
-                      v-if="index >= 0"
-                    >
-                      <div class="q-pl-lg col-6">
-                        {{ inspectionTypes[index].subtypes[index1].value }}
-                      </div>
-                      <div class="q-pl-lg">
-                        {{ inspectionTypes[index].subtypes[index1].duration }}
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-2 bg-grey-2 q-pl-xl q-my-md q-pt-md">
+        <div
+          class="bg-grey-3 q-mt-md"
+          style="
+            position: relative;
+            height: calc(100vh - 170px);
+            overflow: auto;
+            display: flex;
+          "
+        >
+          <table class="table" v-if="table.length">
+            <thead>
+              <tr class="table-tr" v-if="tab.key !== 'inspectionType'">
+                <th class="table-th">Name</th>
+                <th class="table-th">Action</th>
+              </tr>
+              <tr class="table-tr" v-if="tab.key == 'inspectionType'">
+                <th class="table-th">Name</th>
+                <th class="table-th">Duration</th>
+                <th class="table-th">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                class="table-tr"
+                v-for="list in table"
+                v-if="tab.key !== 'inspectionType'"
+              >
+                <td class="table-td">{{ list.value || list.name }}</td>
+                <td class="table-td">
+                  <span>
                     <q-icon size="sm" color="primary" name="create" />
+                  </span>
+                  <span>
                     <q-icon
                       class="q-ml-xs"
                       size="sm"
                       color="primary"
                       name="delete"
                     />
-                  </div>
-                </div>
-              </div>
-            </q-tab-panel>
-            <!-- Industry Type -->
-            <q-tab-panel name="industryType">
-              <div class="row justify-between">
-                <!-- empty pannel -->
-                <div class="text-bold col-4">IndustryType</div>
-                <div
-                  class="col-2 text-primary"
-                  @click="onclickSecondaryDialogBox('Industry Type')"
-                >
-                  Add IndustryType
-                </div>
-              </div>
-              <div class="q-mt-lg"><q-separator /></div>
-              <!-- This is div for Data of Industry Type -->
-              <div class="q-pa-lg" v-if="!vendorIndustries">
-                You Have Not Added Any IndustryType yet
-              </div>
-              <div v-else class="bg-grey-1 q-pl-xl q-my-md">
-                <div
-                  class="q-py-xs row justify-between full-width"
-                  v-for="(contactInfo, index) in vendorIndustries"
-                  v-if="index >= 0"
-                >
-                  <div class="q-px-xl q-py-xs">
-                    {{ vendorIndustries[index].name }}
-                  </div>
-
-                  <div class="col-2 item-center">
-                    <div>
-                      <q-icon size="sm" color="primary" name="create" />
-                      <q-icon
-                        class="q-ml-xs"
-                        size="sm"
-                        color="primary"
-                        name="delete"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </q-tab-panel>
-            <!-- Honorific -->
-            <q-tab-panel name="honorific">
-              <div class="row justify-between">
-                <!-- empty pannel -->
-                <div class="text-bold col-4">Honorific</div>
-                <div
-                  class="col-2 text-primary"
-                  @click="onclickSecondaryDialogBox('Honorofic')"
-                >
-                  Add Honorific
-                </div>
-              </div>
-              <div class="q-mt-lg"><q-separator /></div>
-              <!-- This is div for Data of Industry Type -->
-              <div class="q-pa-lg" v-if="!titles">
-                You Have Not Added Any Honorific yet
-              </div>
-              <div v-else class="bg-grey-1">
-                <div
-                  class="row justify-between full-width"
-                  v-for="(contactInfo, index) in titles"
-                  v-if="index >= 0"
-                >
-                  <div class="q-px-xl">
-                    {{ titles[index].value }}
-                  </div>
-
-                  <div class="col-2 item-center">
-                    <div>
-                      <q-icon size="sm" color="primary" name="create" />
-                      <q-icon
-                        class="q-ml-xs"
-                        size="sm"
-                        color="primary"
-                        name="delete"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </q-tab-panel>
-
-            <!-- Phone Type -->
-            <q-tab-panel name="phoneType">
-              <div class="row justify-between">
-                <!-- empty pannel -->
-                <div class="text-bold col-4">Phone Type</div>
-                <div
-                  class="col-2 text-primary"
-                  @click="onclickSecondaryDialogBox('Phone Type')"
-                >
-                  Add Phone Type
-                </div>
-              </div>
-              <div class="q-mt-lg"><q-separator /></div>
-              <!-- This is div for Data of Industry Type -->
-              <div class="q-pa-lg" v-if="!contactTypes">
-                You Have Not Added Any Phone Type Yet
-              </div>
-              <div v-else class="bg-grey-1">
-                <div
-                  class="row justify-between full-width"
-                  v-for="(contactInfo, index) in contactTypes"
-                  v-if="index >= 0"
-                >
-                  <div class="q-px-xl">
-                    {{ contactTypes[index].name }}
-                  </div>
-
-                  <div class="col-2 item-center">
-                    <div>
-                      <q-icon size="sm" color="primary" name="create" />
-                      <q-icon
-                        class="q-ml-xs"
-                        size="sm"
-                        color="primary"
-                        name="delete"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </q-tab-panel>
-            <!-- Client Type -->
-            <q-tab-panel name="clientType">
-              <div class="row justify-between">
-                <div class="text-bold col-4">Client Type</div>
-                <div
-                  class="col-2 text-primary"
-                  @click="onclickSecondaryDialogBox('Client Type')"
-                >
-                  Add Client Type
-                </div>
-              </div>
-              <div class="q-mt-lg"><q-separator /></div>
-              <!-- This is div for Data of Industry Type -->
-              <div class="q-pa-lg" v-if="!clientTypes">
-                You Have Not Added Any Client Type Yet
-              </div>
-              <div v-else class="bg-grey-1">
-                <div
-                  class="row justify-between full-width"
-                  v-for="(contactInfo, index) in clientTypes"
-                  v-if="index >= 0"
-                >
-                  <div class="q-px-xl">
-                    {{ clientTypes[index].name }}
-                  </div>
-
-                  <div class="col-2 item-center">
-                    <div>
-                      <q-icon size="sm" color="primary" name="create" />
-                      <q-icon
-                        class="q-ml-xs"
-                        size="sm"
-                        color="primary"
-                        name="delete"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </q-tab-panel>
-            <!-- Policy Category -->
-            <q-tab-panel name="policyCategories">
-              <div class="row justify-between">
-                <div class="text-bold col-4">Policy Categories</div>
-                <div
-                  class="col-2 text-primary"
-                  @click="onclickSecondaryDialogBox('Policy Categories')"
-                >
-                  Add Policy Categories
-                </div>
-              </div>
-              <div class="q-mt-lg"><q-separator /></div>
-              <!-- This is div for Data of Industry Type -->
-              <div class="q-pa-lg" v-if="!policyCategories">
-                You Have Not Added Any Policy Categories Yet
-              </div>
-              <div v-else class="bg-grey-1">
-                <div
-                  class="row justify-between full-width"
-                  v-for="(contactInfo, index) in policyCategories"
-                  v-if="index >= 0"
-                >
-                  <div class="q-px-xl">
-                    {{ policyCategories[index].name }}
-                  </div>
-
-                  <div class="col-2 item-center">
-                    <div>
-                      <q-icon size="sm" color="primary" name="create" />
-                      <q-icon
-                        class="q-ml-xs"
-                        size="sm"
-                        color="primary"
-                        name="delete"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </q-tab-panel>
-
-            <!-- Policy Type -->
-            <q-tab-panel name="policyType">
-              <div class="row justify-between">
-                <div class="text-bold col-4">Policy Type</div>
-                <div
-                  class="col-2 text-primary"
-                  @click="onclickSecondaryDialogBox('Policy Type')"
-                >
-                  Add Policy Type
-                </div>
-              </div>
-              <div class="q-mt-lg"><q-separator /></div>
-              <!-- This is div for Data of Industry Type -->
-              <div class="q-pa-lg" v-if="!policyTypes">
-                You Have Not Added Any Policy Type Yet
-              </div>
-              <div v-else class="bg-grey-1">
-                <div
-                  class="row justify-between full-width"
-                  v-for="(contactInfo, index) in policyTypes"
-                  v-if="index >= 0"
-                >
-                  <div class="q-px-xl">
-                    {{ policyTypes[index].name }}
-                  </div>
-
-                  <div class="col-2 item-center">
-                    <div>
-                      <q-icon size="sm" color="primary" name="create" />
-                      <q-icon
-                        class="q-ml-xs"
-                        size="sm"
-                        color="primary"
-                        name="delete"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </q-tab-panel>
-
-            <!-- property Type -->
-            <q-tab-panel name="propertyType">
-              <div class="row justify-between">
-                <div class="text-bold col-4">Property Type</div>
-                <div
-                  class="col-2 text-primary"
-                  @click="onclickSecondaryDialogBox('Property Type')"
-                >
-                  Add Property Type
-                </div>
-              </div>
-              <div class="q-mt-lg"><q-separator /></div>
-              <!-- This is div for Data of Industry Type -->
-              <div class="q-pa-lg" v-if="!propertyTypes">
-                You Have Not Added Any Property Type Yet
-              </div>
-              <div v-else class="bg-grey-1">
-                <div
-                  class="row justify-between full-width"
-                  v-for="(contactInfo, index) in propertyTypes"
-                  v-if="index >= 0"
-                >
-                  <div class="q-px-xl">
-                    {{ propertyTypes[index].name }}
-                  </div>
-
-                  <div class="col-2 item-center">
-                    <div>
-                      <q-icon size="sm" color="primary" name="create" />
-                      <q-icon
-                        class="q-ml-xs"
-                        size="sm"
-                        color="primary"
-                        name="delete"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </q-tab-panel>
-
-            <!-- Claim Reason -->
-            <q-tab-panel name="claimReason">
-              <div class="row justify-between">
-                <div class="text-bold col-4">Claim Reason</div>
-                <div
-                  class="col-2 text-primary"
-                  @click="onclickSecondaryDialogBox('Claim Reason')"
-                >
-                  Add Claim Reason
-                </div>
-              </div>
-              <div class="q-mt-lg"><q-separator /></div>
-              <!-- This is div for Data of Industry Type -->
-              <div class="q-pa-lg" v-if="!claimReasons">
-                You Have Not Added Any Claim Reason Yet
-              </div>
-              <div v-else class="bg-grey-1">
-                <div
-                  class="row justify-between full-width"
-                  v-for="(contactInfo, index) in claimReasons"
-                  v-if="index >= 0"
-                >
-                  <div class="q-px-xl">
-                    {{ claimReasons[index].name }}
-                  </div>
-
-                  <div class="col-2 item-center">
-                    <div>
-                      <q-icon size="sm" color="primary" name="create" />
-                      <q-icon
-                        class="q-ml-xs"
-                        size="sm"
-                        color="primary"
-                        name="delete"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </q-tab-panel>
-
-            <!-- Loss Cause -->
-            <q-tab-panel name="lossCause">
-              <div class="row justify-between">
-                <div class="text-bold col-4">Loss Cause</div>
-                <div
-                  class="col-2 text-primary"
-                  @click="onclickSecondaryDialogBox('Loss Cause')"
-                >
-                  Add Loss Cause
-                </div>
-              </div>
-              <div class="q-mt-lg"><q-separator /></div>
-              <!-- This is div for Data of Industry Type -->
-              <div class="q-pa-lg" v-if="!lossCauses">
-                You Have Not Added Any Loss Cause Yet
-              </div>
-              <div v-else class="bg-grey-1">
-                <div
-                  class="row justify-between full-width"
-                  v-for="(contactInfo, index) in lossCauses"
-                  v-if="index >= 0"
-                >
-                  <div class="q-px-xl">
-                    {{ lossCauses[index].name }}
-                  </div>
-
-                  <div class="col-2 item-center">
-                    <div>
-                      <q-icon size="sm" color="primary" name="create" />
-                      <q-icon
-                        class="q-ml-xs"
-                        size="sm"
-                        color="primary"
-                        name="delete"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </q-tab-panel>
-
-            <!-- Claim Severity -->
-            <q-tab-panel name="claimSeverity">
-              <div class="row justify-between">
-                <div class="text-bold col-4">Claim Severity</div>
-                <div
-                  class="col-2 text-primary"
-                  @click="onclickSecondaryDialogBox('Claim Severity')"
-                >
-                  Add Claim Severity
-                </div>
-              </div>
-              <div class="q-mt-lg"><q-separator /></div>
-              <!-- This is div for Data of Industry Type -->
-              <div class="q-pa-lg" v-if="!claimSeverity">
-                You Have Not Added Any Claim Severity Yet
-              </div>
-              <div v-else class="bg-grey-1">
-                <div
-                  class="row justify-between full-width"
-                  v-for="(contactInfo, index) in claimSeverity"
-                  v-if="index >= 0"
-                >
-                  <div class="q-px-xl">
-                    {{ claimSeverity[index].name }}
-                  </div>
-
-                  <div class="col-2 item-center">
-                    <div>
-                      <q-icon size="sm" color="primary" name="create" />
-                      <q-icon
-                        class="q-ml-xs"
-                        size="sm"
-                        color="primary"
-                        name="delete"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </q-tab-panel>
-          </q-tab-panels>
-          <!-- This is Submit Button -->
-          <div class="bg-blue">
-            <q-separator />
-          </div>
-        </template>
-
-        <!-- This is First Dialog -->
-        <q-dialog v-model="InspectionDialogBox" persistent>
-          <q-card style="width: 700px; height: 600px; max-width: 1000vw">
-            <q-bar class="row justify-between" style="height: 50px">
-              <div class="col-46 q-px-xl text-bold">Add Inspection Type</div>
-              <q-btn dense flat icon="close" v-close-popup>
-                <q-tooltip>Close</q-tooltip>
-              </q-btn>
-            </q-bar>
-
-            <q-card-section>
-              <div
-                v-for="(contactInfo, index) in inspection.subtypes"
-                v-if="index >= 0"
+                  </span>
+                </td>
+              </tr>
+              <tr
+                class="table-tr"
+                v-for="list in table"
+                v-if="tab.key === 'inspectionType'"
               >
-                <div
-                  class="column bg-grey-3 q-pa-xl"
-                  style="margin-left: 100px; margin-right: 100px"
-                >
-                  <div class="q-pa-lg">
-                    <q-input
-                      v-model="inspection.value"
-                      label="Type Of Inspection"
-                      lazy-rules
-                      v-if="index == 0"
-                    />
-
-                    <q-input
-                      v-model="inspection.subtypes[index].value"
-                      label="Sub Type Of Inspection"
-                      lazy-rules
-                    />
-                    Default Duration (hr))
-                    <q-slider
-                      class="q-mt-lg"
-                      name="speed"
-                      v-model="inspection.subtypes[index].duration"
-                      label-always
-                      :min="0"
-                      :max="5"
-                      :step="0.5"
-                    />
+                <td class="table-td">
+                  <div class="text-bold">{{ list.value }}</div>
+                  <div v-for="type in list.subtypes">
+                    <div>{{ type.value }}</div>
                   </div>
-                </div>
-                <br />
-              </div>
-
-              <div class="row justify-between text-primary q-mx-xl">
-                <div class="q-ml-xl" @click="addAnotherSubType">
-                  + Another Sub Type Of Inspection
-                </div>
-                <div
-                  class="q-mr-xl"
-                  v-if="inspection.subtypes[1]"
-                  @click="onClickRemoveSubType"
-                >
-                  Remove
-                </div>
-              </div>
-              <div class="row justify-center q-pa-lg">
-                <div>
-                  <q-btn
-                    color="primary"
-                    label="Clear"
-                    class="q-mx-lg"
-                    @click="onClickClearInspectionType"
-                  />
-                </div>
-                <div>
-                  <q-btn
-                    color="primary"
-                    label="Save"
-                    class="q-mx-lg"
-                    @click="onSaveInspectionType"
-                  />
-                </div>
-              </div>
-            </q-card-section>
-          </q-card>
-        </q-dialog>
-        <!-- This is Secondary Dialog Box -->
-        <q-dialog v-model="industryTypeDialogBox" persistent>
-          <q-card style="width: 700px; height: 400px; max-width: 1000vw">
-            <q-bar class="row justify-between" style="height: 50px">
-              <div class="col-7 q-px-xl text-bold">
-                Add {{ industryTypeDialogBoxName }}
-              </div>
-              <q-btn dense flat icon="close" v-close-popup>
-                <q-tooltip>Close</q-tooltip>
-              </q-btn>
-            </q-bar>
-
-            <q-card-section>
-              <div
-                class="q-pa-xl"
-                style="margin-left: 50px; margin-right: 50px"
-              >
-                <div class="column q-pa-lg">
-                  <div class="q-px-xl q-py-xs">
-                    {{ industryTypeDialogBoxName }}
+                </td>
+                <td class="table-td">
+                  <div>&nbsp;</div>
+                  <div v-for="type in list.subtypes">
+                    <div>{{ type.duration }}</div>
                   </div>
-                  <q-form ref="SecondaryForm">
-                    <div class="q-pl-xs">
-                      <q-input
-                        v-model="industryType.value"
-                        class="q-mx-xl"
-                        style="width: 300px"
-                        outlined
-                        :rules="[
-                          val =>
-                            (val && val.length > 0) ||
-                            'Please Fill ' + industryTypeDialogBoxName
-                        ]"
+                </td>
+                <td class="table-td">
+                  <div>&nbsp;</div>
+                  <div v-for="type in list.subtypes">
+                    <span>
+                      <q-icon size="sm" color="primary" name="create" />
+                    </span>
+                    <span>
+                      <q-icon
+                        class="q-ml-xs"
+                        size="sm"
+                        color="primary"
+                        name="delete"
                       />
-                    </div>
-                  </q-form>
-                </div>
-                <div class="row justify-center q-pa-lg">
-                  <div>
-                    <q-btn
-                      color="primary"
-                      label="Clear"
-                      class="q-mx-lg"
-                      @click="onClickClearSecondaryDilogBoxData"
-                    />
+                    </span>
                   </div>
-                  <div>
-                    <q-btn
-                      color="primary"
-                      label="Save"
-                      class="q-mx-lg"
-                      @click="
-                        onSubmitSecondaryDilogBox(industryTypeDialogBoxName)
-                      "
-                    />
-                  </div>
-                </div>
-              </div>
-            </q-card-section>
-          </q-card>
-        </q-dialog>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="q-pa-lg q-ma-auto" v-else>You Have Not Added AnyYet</div>
+        </div>
       </div>
     </div>
+    <q-dialog v-model="dialogBox" persistent>
+      <q-card style="height: 60vh; width: 50vw">
+        <q-bar class="row justify-between" style="height: 50px">
+          <div class="col-7 text-bold">Add {{ dialogBoxName.name }}</div>
+          <q-btn dense flat icon="close" v-close-popup>
+            <q-tooltip>Close</q-tooltip>
+          </q-btn>
+        </q-bar>
+
+        <q-card-section style="height: calc(55vh - 90px); overflow: auto">
+          <div class="column q-pa-lg">
+            <q-form ref="form" v-if="tab.key !== 'inspectionType'">
+              <div class="q-pl-xs">
+                <q-input
+                  v-model="payload.value"
+                  class="q-mx-xl"
+                  style="width: 300px"
+                  outlined
+                  :rules="[
+                    val =>
+                      (val && val.length > 0) ||
+                      'Please Fill ' + dialogBoxName.name
+                  ]"
+                />
+              </div>
+            </q-form>
+            <q-form ref="form" v-if="tab.key == 'inspectionType'">
+              <q-card
+                class="q-ma-md q-pa-md"
+                v-for="(subtype, index) in inspectionType.subtypes"
+                :key="index"
+              >
+                <q-input
+                  v-model="inspectionType.value"
+                  placeholder="Type of Inspection"
+                  v-if="index == 0"
+                  :rules="[
+                    val =>
+                      (val && val.length > 0) || 'Please fill inspection name'
+                  ]"
+                />
+                <q-input
+                  placeholder="Sub Type of Inspection"
+                  v-model="inspectionType.subtypes[index].value"
+                />
+                <div class="slider-div">
+                  <label>Duration(hr)</label>
+                  <q-slider
+                    v-model="inspectionType.subtypes[index].duration"
+                    label-always
+                    markers
+                    :min="0"
+                    :max="4"
+                    :step="0.5"
+                  />
+                </div>
+              </q-card>
+            </q-form>
+          </div>
+          <div
+            class="row justify-between text-primary"
+            v-if="tab.key == 'inspectionType'"
+          >
+            <div class="q-ml-xl" @click="addAnotherSubType">
+              + Another Sub Type Of Inspection
+            </div>
+            <div
+              class="q-mr-xl"
+              v-if="inspectionType.subtypes.length > 1"
+              @click="onClickRemoveSubType"
+            >
+              Remove
+            </div>
+          </div>
+        </q-card-section>
+        <div class="row justify-center q-pa-md">
+          <div>
+            <q-btn
+              color="primary"
+              label="Clear"
+              class="q-mx-lg"
+              @click="clear"
+            />
+          </div>
+          <div>
+            <q-btn
+              color="primary"
+              label="Save"
+              class="q-mx-lg"
+              @click="onSubmit(tab)"
+            />
+          </div>
+        </div>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 <script>
-// import { mapActions } from 'vuex';
 import { mapGetters, mapActions } from 'vuex';
 import { validateEmail } from '@utils/validation';
 import SubSideBar from 'components/SubSideBar';
@@ -665,24 +210,18 @@ export default {
 
   data() {
     return {
-      InspectionDialogBox: false,
-      industryTypeDialogBox: false,
-      industryTypeDialogBoxName: '',
-      len: 1,
-
-      isShowRemoveButton: false,
-      tab: '',
-
-      inspection: {
+      dialogBox: false,
+      dialogBoxName: {},
+      tab: {},
+      table: [],
+      inspectionType: {
         value: '',
-
         subtypes: [
           { value: ' ', duration: 0.5, unit: 'hour', machineValue: '' }
         ]
       },
-      industryType: {
-        value: '',
-        machineValue: ''
+      payload: {
+        value: ''
       },
 
       configurationType: [
@@ -702,7 +241,10 @@ export default {
   },
 
   created() {
-    this.tab = this.configurationType[0].key;
+    this.getInspectionTypes().then(async () => {
+      this.table = this.inspectionTypes;
+    });
+    this.tab = this.configurationType[0];
   },
 
   computed: {
@@ -719,20 +261,6 @@ export default {
       'lossCauses',
       'claimSeverity'
     ])
-  },
-
-  mounted() {
-    this.getTitles();
-    this.getContactTypes();
-    this.getVendorIndustries();
-    this.getInspectionTypes();
-    this.getClientTypes();
-    this.getPolicyTypes();
-    this.getPolicyCategory();
-    this.getPropertyTypes();
-    this.getLossCauses();
-    this.getSeverityClaim();
-    this.getClaimReasons();
   },
 
   methods: {
@@ -762,94 +290,133 @@ export default {
       'getClaimReasons',
       'getLossCauses'
     ]),
-    validateEmail,
-    //  Secondary Dilog Box Submit
-    async onSubmitSecondaryDilogBox(typeName) {
-      var vald = await this.$refs.SecondaryForm.validate();
-      if (vald) {
-        switch (typeName) {
-          case 'Honorofic':
-            var response = await this.addHonorifics(this.industryType);
-            break;
 
-          case 'Industry Type':
-            var response = await this.addIndustry(this.industryType);
+    async setSelectedTab(e) {
+      this.tab = e;
+      switch (this.tab.key) {
+        case 'inspectionType':
+          await this.getInspectionTypes();
+          this.table = this.inspectionTypes;
+          break;
+        case 'honorific':
+          await this.getTitles();
+          this.table = this.titles;
+          break;
+        case 'industryType':
+          await this.getVendorIndustries();
+          this.table = this.vendorIndustries;
+          break;
+        case 'phoneType':
+          await this.getContactTypes();
+          this.table = this.contactTypes;
+          break;
+        case 'clientType':
+          await this.getClientTypes();
+          this.table = this.clientTypes;
+          break;
+        case 'policyType':
+          await this.getPolicyTypes();
+          this.table = this.policyTypes;
+          break;
+        case 'policyCategories':
+          await this.getPolicyCategory();
+          this.table = this.policyCategories;
+          break;
+        case 'propertyType':
+          await this.getPropertyTypes();
+          this.table = this.propertyTypes;
+          break;
+        case 'claimReason':
+          await this.getClaimReasons();
+          this.table = this.claimReasons;
+          break;
+        case 'lossCause':
+          await this.getLossCauses();
+          this.table = this.lossCauses;
+          break;
+        case 'claimSeverity':
+          await this.getSeverityClaim();
+          this.table = this.claimSeverity;
+          break;
+      }
+    },
+
+    validateEmail,
+
+    async onSubmit(tab) {
+      var vald = await this.$refs.form.validate();
+      if (vald) {
+        switch (tab.key) {
+          case 'inspectionType':
+            var response = await this.addInspectionType(this.inspectionType);
             break;
-          case 'Phone Type':
-            var response = await this.addPhone(this.industryType);
+          case 'honorific':
+            var response = await this.addHonorifics(this.payload);
             break;
-          case 'Client Type':
-            var response = await this.addClientType(this.industryType);
+          case 'industryType':
+            var response = await this.addIndustry(this.payload);
             break;
-          case 'Policy Type':
-            var response = await this.addPolicy(this.industryType);
+          case 'phoneType':
+            var response = await this.addPhone(this.payload);
             break;
-          case 'Policy Categories':
-            var response = await this.addPolicyCategories(this.industryType);
+          case 'clientType':
+            var response = await this.addClientType(this.payload);
             break;
-          case 'Property Type':
-            var response = await this.addProperty(this.industryType);
+          case 'policyType':
+            var response = await this.addPolicy(this.payload);
             break;
-          case 'Claim Reason':
-            var response = await this.addClaimReason(this.industryType);
+          case 'policyCategories':
+            var response = await this.addPolicyCategories(this.payload);
             break;
-          case 'Loss Cause':
-            var response = await this.addLoss(this.industryType);
+          case 'propertyType':
+            var response = await this.addProperty(this.payload);
             break;
-          case 'Claim Severity':
-            var response = await this.addClaimSeverity(this.industryType);
+          case 'claimReason':
+            var response = await this.addClaimReason(this.payload);
+            break;
+          case 'lossCause':
+            var response = await this.addLoss(this.payload);
+            break;
+          case 'claimSeverity':
+            var response = await this.addClaimSeverity(this.payload);
             break;
         }
         if (response) {
-          //   const data = {
-          //     payload: { step: this.tab },
-          //     id: getCurrentUser().id
-          //   };
-          //   await this.addOnboardingStep(data);
-          this.getTitles();
-          this.getVendorIndustries();
-          this.getContactTypes();
-          this.getClientTypes();
-          this.getPolicyTypes();
-          this.getPolicyCategory();
-          this.getPropertyTypes();
-          this.getLossCauses();
-          this.getSeverityClaim();
-          this.getClaimReasons();
-          this.industryTypeDialogBox = false;
-          this.industryType.value = '';
-          vald = '';
+          this.setSelectedTab(tab);
+          this.clear();
+          this.dialogBox = false;
         }
       }
     },
+
     // This is Secondary Dialog Box
-    onclickSecondaryDialogBox(value) {
-      this.industryTypeDialogBoxName = value;
-      this.industryTypeDialogBox = true;
+    onClickingAddButton(key) {
+      this.dialogBoxName = key;
+      this.dialogBox = true;
     },
 
-    // For adding SubType of Inspection Type
     addAnotherSubType() {
-      this.inspection.subtypes.push({ type: ' ', duration: 0.5 });
+      this.inspectionType.subtypes.push({ type: ' ', duration: 0.5 });
     },
-    // For Removing SubType
+
     onClickRemoveSubType() {
-      this.inspection.subtypes.pop();
+      this.inspectionType.subtypes.pop();
     },
-    // For Clearing  the Form In Inspection Type
-    onClickClearInspectionType() {
-      this.inspection = {
-        type: '',
-        subtypes: [{ type: ' ', duration: 0.5 }]
-      };
-    },
+
     //For clearing the Secondary Dilog box Data when clicked to clearing
-    onClickClearSecondaryDilogBoxData() {
-      this.industryType.value = '';
+    clear() {
+      if (this.tab.key == 'inspectionType') {
+        this.inspectionType = {
+          value: '',
+          subtypes: [{ type: ' ', duration: 0.5 }]
+        };
+      } else {
+        this.payload.value = '';
+      }
     },
+
     // onSaveInspectionType
     async onSaveInspectionType() {
-      const response = await this.addInspectionType(this.inspection);
       if (response) {
         this.getInspectionTypes();
         this.InspectionDialogBox = false;
@@ -867,45 +434,44 @@ export default {
           type: 'negative'
         });
       }
-    },
-    SendToDashboard() {
-      this.$router.push('/dashboard');
-    },
-
-    onClickNext() {
-      if (this.tab == 'inspectionType') {
-        this.tab = 'industryType';
-      } else if (this.tab == 'industryType') {
-        this.tab = 'honorific';
-      } else if (this.tab == 'honorific') {
-        this.tab = 'phoneType';
-      } else if (this.tab == 'phoneType') {
-        this.tab = 'clientType';
-      } else if (this.tab == 'clientType') {
-        this.tab = 'policyCategories';
-      } else if (this.tab == 'policyCategories') {
-        this.tab = 'policyType';
-      } else if (this.tab == 'policyType') {
-        this.tab = 'propertyType';
-      } else if (this.tab == 'propertyType') {
-        this.tab = 'claimReason';
-      } else if (this.tab == 'claimReason') {
-        this.tab = 'lossCause';
-      } else if (this.tab == 'lossCause') {
-        this.tab = 'claimSeverity';
-      }
-    },
-
-    setSelectedTab(e) {
-      this.tab = e.key;
     }
-
-    // End of Functions
   }
 };
 </script>
 <style lang="scss">
+.table {
+  border-collapse: collapse;
+  width: 100%;
+  overflow: auto;
+}
+.table-th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: orangered;
+  color: white;
+}
+
+.table-th,
+.table-td {
+  text-align: center;
+  padding: 12px;
+}
+
+.table-tr:nth-child(odd) {
+  background-color: white;
+}
+
+.table-tr:nth-child(even) {
+  background-color: $grey-3;
+}
+.table-data {
+  width: 33.33%;
+  text-align: center;
+  padding: 12px;
+}
+
 ::-webkit-scrollbar {
-  display: none;
+  width: 0px;
 }
 </style>
