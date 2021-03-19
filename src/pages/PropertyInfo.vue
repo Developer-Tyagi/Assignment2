@@ -2,8 +2,6 @@
   <q-page>
     <div>
       <div class="actions-div">
-        <!-- <span borderless style="width: 100%"> </span> -->
-        <!-- <q-separator vertical inset></q-separator> -->
         <q-btn @click="addNewPropertyDialog = true" flat class="q-ml-auto"
           ><img src="~assets/add.svg"
         /></q-btn>
@@ -62,7 +60,7 @@
                   ? setClientProperty[i - 1].attributes.houseNumber
                   : '-'
               }}<br />
-              <q-separator />
+              <q-separator v-if="setClientProperty[i - 1].attributes.claims" />
               <div
                 class="q-mt-sm"
                 v-for="claim in setClientProperty[i - 1].attributes.claims"
