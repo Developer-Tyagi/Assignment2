@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 
 export default {
   name: 'Clients',
@@ -91,13 +91,14 @@ export default {
   },
   methods: {
     ...mapActions(['getClients', 'getSingleClientDetails']),
+    ...mapMutations(['setSelectedClientId']),
 
     onSearchBackButtonClick() {
       this.searchText = '';
       this.search();
     },
     onClientsListClick(client) {
-      this.getSingleClientDetails(client.id);
+      this.setSelectedClientId(client.id);
       this.$router.push('/view-client');
     },
     addClient() {

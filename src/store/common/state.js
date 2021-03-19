@@ -6,6 +6,7 @@ export default function() {
     titles: [],
     clientTypes: [],
     lossCauses: [],
+    roleTypes: [],
     leadSources: [
       { value: '', name: 'None' },
       { value: 'client', name: 'Prior Client' },

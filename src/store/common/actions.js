@@ -83,3 +83,19 @@ export async function getPlansInfo({ commit, dispatch }) {
     });
   }
 }
+
+export async function getRoles({ commit, dispatch }) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get('/roles');
+    commit('setRoles', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response.data.title
+    });
+  }
+}

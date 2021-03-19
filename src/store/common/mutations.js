@@ -36,3 +36,12 @@ export function setLossCause(state, types) {
     id: type.id
   }));
 }
+
+export function setRoles(state, roles) {
+  state.roleTypes = roles.map(type => ({
+    name: type.attributes.value,
+    machineValue: type.attributes.machineValue,
+    id: type.id,
+    isPaid: type.attributes.isPaid
+  }));
+}
