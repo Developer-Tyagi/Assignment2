@@ -228,8 +228,9 @@ export default {
         };
         await this.addPropertyAddress(payload);
         this.successMessage();
+
         this.addNewPropertyDialog = false;
-        this.getSingleClientProperty(this.selectedClientId);
+        this.getSingleClientProperty(this.setClientProperty.id);
       }
     },
     successMessage() {

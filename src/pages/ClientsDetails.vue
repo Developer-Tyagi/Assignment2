@@ -24,7 +24,7 @@
   </q-page>
 </template>
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 import CustomBar from 'components/CustomBar';
 export default {
   data() {
@@ -44,6 +44,7 @@ export default {
   },
   methods: {
     ...mapActions(['getSingleClientDetails']),
+
     clientDetailsDailogBoxOpen(value) {
       if (value == 'Client Info') {
         this.$router.push('/client-details');

@@ -22,7 +22,6 @@ export async function getClients({ commit, dispatch }, searchString = '') {
 export async function getSingleClientDetails({ commit, dispatch }, id) {
   dispatch('setLoading', true);
   try {
-    commit('setSelectedClientId', id);
     const { data } = await request.get(`/clients/${id}`);
     commit('setSelectedEditClient', data);
     dispatch('setLoading', false);
@@ -40,7 +39,7 @@ export async function getSingleClientProperty({ commit, dispatch }, id) {
   dispatch('setLoading', true);
   try {
     commit('setSelectedClientId', id);
-    const { data } = await request.get(`/clients/${id}/address`);
+    const { data } = await request.get(`/clients/${id}/addresses`);
     commit('setSelectedClientProperty', data);
     dispatch('setLoading', false);
   } catch (e) {
@@ -94,7 +93,7 @@ export async function addPropertyAddress({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.post(
-      `/clients/${payload.id}/address`,
+      `/clients/${payload.id}/addresses`,
       buildApiData('address', payload.clientData)
     );
     dispatch('setLoading', false);
