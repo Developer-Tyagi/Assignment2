@@ -46,6 +46,8 @@ export default {
     clientDetailsDailogBoxOpen(value) {
       if (value == 'Client Info') {
         this.$router.push('/client-details');
+      } else if (value == 'Documents') {
+        this.$router.push('/client-documents');
       }
     }
   },
