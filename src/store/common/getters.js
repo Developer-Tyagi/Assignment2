@@ -11,3 +11,5 @@ export const titles = state => state.titles;
 
 export const plans = state => state.plans;
 export const clientTypes = state => state.clientTypes;
+
+export const roleTypes = state => state.roleTypes;
