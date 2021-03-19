@@ -2262,7 +2262,7 @@ export default {
       vendorDialogName: '',
       vendorDialogFilterByIndustry: '',
       showVendorDialogFilters: false,
-      lossAddressNameDropdown: 'Others',
+      lossAddressNameDropdown: 'New',
       publicAdjustorInfoDialog: false,
       contractInfoDialog: false,
       addVendorDialog: false,
@@ -3211,6 +3211,7 @@ export default {
         },
         mortgageInfo: this.mortgageDetails,
         lossInfo: {
+          isNewAddress: this.lossAddressNameDropdown == 'New' ? true : false,
           lossAddressName: this.lossInfo.lossAddressName,
           address: {
             ...this.clientAddressDetails
