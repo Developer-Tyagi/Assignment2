@@ -10,3 +10,4 @@ export const lossCauses = state => state.lossCauses;
 export const titles = state => state.titles;
 
 export const plans = state => state.plans;
+export const clientTypes = state => state.clientTypes;

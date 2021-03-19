@@ -10,13 +10,13 @@ export default function() {
     ],
     clients: [],
     estimators: [],
-    clientTypes: [],
     propertyTypes: [],
     policyTypes: [],
     claimReasons: [],
     selectedClient: '',
     claimSeverity: [],
     policyCategories: [],
-    editSelectedClient: []
+    editSelectedClient: [],
+    selectedClientId: ''
   };
 }
