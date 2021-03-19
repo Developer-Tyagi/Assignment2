@@ -35,7 +35,7 @@ export async function getSingleClientDetails({ commit, dispatch }, id) {
     });
   }
 }
-//test
+
 export async function getSingleClientProperty({ commit, dispatch }, id) {
   dispatch('setLoading', true);
   try {
@@ -52,8 +52,6 @@ export async function getSingleClientProperty({ commit, dispatch }, id) {
     });
   }
 }
-
-//test
 
 export async function getEstimators({ commit, dispatch }) {
   dispatch('setLoading', true);
@@ -91,7 +89,6 @@ export async function addClient({ dispatch, state }, payload) {
     });
   }
 }
-//test for property Address API
 
 export async function addPropertyAddress({ dispatch, state }, payload) {
   dispatch('setLoading', true);
@@ -111,8 +108,6 @@ export async function addPropertyAddress({ dispatch, state }, payload) {
     });
   }
 }
-
-//test
 
 export async function editClient({ dispatch, state }, payload) {
   dispatch('setLoading', true);

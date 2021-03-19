@@ -1,109 +1,101 @@
 <template>
   <q-page>
-      <div>
-    <div class="actions-div"> 
-   
-     
-  <div class="q-mt-xl"> <q-btn class=" " @click="addNewPropertyDialog = true" flat
+    <div>
+      <div class="actions-div">
+        <!-- <span borderless style="width: 100%"> </span> -->
+        <!-- <q-separator vertical inset></q-separator> -->
+        <q-btn @click="addNewPropertyDialog = true" flat class="q-ml-auto"
           ><img src="~assets/add.svg"
-        /></q-btn></div></div>
-     </div>
-    <div class="q-pa-md">
-   <!-- This is for showing the Property details  -->
-    <div class="mobile-container-page">
-  <div
-          class="clients-list  full-width  "
-          v-for="i in setClientProperty.length"
-          :key="setClientProperty.id"
-        > <div class="q-pl-lg">
-          <div class="row ">
-            <span class="form-heading col-10">Property Name</span><br />
-            <q-icon
-            size="xs"
-             name="create"
-              color="primary"
-              class=" col q-pt-xs"
-              @click="editClientInfoDailog = true"
-            ></q-icon>
+        /></q-btn>
+      </div>
+      <div class="mobile-container-page ">
+        <div class="clients-list" v-if="setClientProperty.length">
+          <!-- This is for showing the Property details  -->
+          <div
+            class="clients-list"
+            v-for="i in setClientProperty.length"
+            :key="setClientProperty.id"
+          >
+            <div class="row ">
+              <span class="col-10"></span>
+              <q-icon
+                size="xs"
+                name="create"
+                color="primary"
+                class=" col q-pt-xs"
+                @click="editClientInfoDailog = true"
+              ></q-icon>
+            </div>
+            <div class="client-list-item">
+              <span class=" form-heading">
+                {{
+                  setClientProperty[i - 1].attributes.name
+                    ? setClientProperty[i - 1].attributes.name
+                    : '-'
+                }}
+              </span>
+
+              <br />
+
+              {{
+                setClientProperty[i - 1].attributes.streetAddress
+                  ? setClientProperty[i - 1].attributes.streetAddress
+                  : '-'
+              }}<br />
+              {{
+                setClientProperty[i - 1].attributes.addressRegion
+                  ? setClientProperty[i - 1].attributes.addressRegion
+                  : '-'
+              }}
+              {{
+                setClientProperty[i - 1].attributes.addressCountry
+                  ? setClientProperty[i - 1].attributes.addressCountry
+                  : '-'
+              }}<br />
+              {{
+                setClientProperty[i - 1].attributes.addressLocality
+                  ? setClientProperty[i - 1].attributes.addressLocality
+                  : '-'
+              }}<br />
+              {{
+                setClientProperty[i - 1].attributes.houseNumber
+                  ? setClientProperty[i - 1].attributes.houseNumber
+                  : '-'
+              }}<br />
+              <q-separator />
+              <div
+                class="q-mt-sm"
+                v-for="claim in setClientProperty[i - 1].attributes.claims"
+                :key="claim.id"
+              >
+                <span class="form-heading">Status : </span>
+                <q-badge>{{ claim.status ? claim.status : '-' }}</q-badge
+                ><br />
+                <span class="form-heading">Claim Number: </span
+                >{{ claim.number ? claim.number : '-' }} <br />
+                <span class="form-heading">File Number: </span
+                >{{ claim.fileNumber ? claim.fileNumber : '-' }} <br />
+                <span class="form-heading"> Current Phase: </span
+                >{{ claim.phase ? claim.phase : '-' }}
+                <q-separator />
+              </div>
+            </div>
+            <q-separator />
           </div>
-
-          {{
-            setClientProperty[i - 1].attributes.name
-              ? setClientProperty[i - 1].attributes.name
-              : '-'
-          }}<br />
-
-          {{
-            setClientProperty[i - 1].attributes.streetAddress
-              ? setClientProperty[i - 1].attributes.streetAddress
-              : '-'
-          }}<br />
-          {{
-            setClientProperty[i - 1].attributes.addressRegion
-              ? setClientProperty[i - 1].attributes.addressRegion
-              : '-'
-          }}
-          {{
-            setClientProperty[i - 1].attributes.addressCountry
-              ? setClientProperty[i - 1].attributes.addressCountry
-              : '-'
-          }}<br />
-          {{
-            setClientProperty[i - 1].attributes.addressLocality
-              ? setClientProperty[i - 1].attributes.addressLocality
-              : '-'
-          }}<br />
-          {{
-            setClientProperty[i - 1].attributes.houseNumber
-              ? setClientProperty[i - 1].attributes.houseNumber
-              : '-'
-          }}<br />
-
-          <span class="form-heading ">Property Type</span><br />
-          {{
-            setClientProperty[i - 1].type ? setClientProperty[i - 1].type : '-'
-          }}<br />
-          <q-separator />
-          <span class="form-heading">Claim </span><br />
-          <span class="form-heading"
-            >Current Phase:
-           <span class="form-heading ">   {{
-           claimsData.status
-          }}</span>
-          <br/> </span>
-          {{
-              claimsData.number
-               
-            }}<br/>
-          
-          {{
-            claimsData.fileNumber
-           }}<br />
-
-       
-        <span class="form-heading ">   {{
-            claimsData.phase
-          }}</span>
-          </br/>
-          <q-separator class="q-mt-md"/>
         </div>
-        <q-separator class="q-mt-lg"/>
-        </div>
-        </div>
-      
- <!-- This Dialog Box is for adding a new property  -->
-
-<q-dialog
-          v-model="addNewPropertyDialog"
-          persistent
-          :maximized="true"
-          transition-show="slide-up"
-          transition-hide="slide-down"
-        >
-          <q-card>
-            <CustomBar
-            />
-              <q-header bordered class="bg-white">
+      </div>
+    </div>
+    <!-- This Dialog Box is for adding a new property  -->
+    <q-dialog
+      v-model="addNewPropertyDialog"
+      persistent
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <CustomBar />
+        <q-header bordered class="bg-white">
           <q-toolbar class="row bg-white">
             <img
               src="~assets/close.svg"
@@ -116,52 +108,49 @@
             </div>
           </q-toolbar>
         </q-header>
-            <div class="mobile-container-page-without-search q-ma-sm">
-              <q-form ref="propertyAddressForm" class="form-height">
-                <q-input
-                  class="full-width"
-                  v-model="propertyName"
-                  label=" Property Name"
-                />
-                <q-select
-                  class="required"
-                  v-model="property.id"
-                  option-value="id"
-                  option-label="name"
-                  map-options
-                  options-dense
-                  emit-value
-                  :options="propertyTypes"
-                  @input="setTypes(propertyTypes, property)"
-                  label="Property Type"
-                  :rules="[
-                    val =>
-                      (val && val.length > 0) ||
-                      'Please select the property type'
-                  ]"
-                />
-                <AutoCompleteAddress
-                  :address="propertyAddressDetails"
-                  :isDropBoxEnable="false"
-                  :isChecksEnable="true"
-                  :isAsteriskMark="true"
-                />
-              </q-form>
-              <q-btn
-                label="Save"
-                color="primary"
-                class="button-width-90"
-                @click="onSaveButtonClick"
-                size="'xl'"
-              />
-            </div>
-          </q-card>
-        </q-dialog>
-      </div>
-    </div>
-   
+        <div class="mobile-container-page-without-search q-ma-sm">
+          <q-form ref="propertyAddressForm" class="form-height">
+            <q-input
+              class="full-width"
+              v-model="propertyName"
+              label=" Property Name"
+            />
+            <q-select
+              class="required"
+              v-model="property.id"
+              option-value="id"
+              option-label="name"
+              map-options
+              options-dense
+              emit-value
+              :options="propertyTypes"
+              @input="setTypes(propertyTypes, property)"
+              label="Property Type"
+              :rules="[
+                val =>
+                  (val && val.length > 0) || 'Please select the property type'
+              ]"
+            />
+            <AutoCompleteAddress
+              :address="propertyAddressDetails"
+              :isDropBoxEnable="false"
+              :isChecksEnable="true"
+              :isAsteriskMark="true"
+            />
+          </q-form>
+          <q-btn
+            label="Save"
+            color="primary"
+            class="button-width-90"
+            @click="onSaveButtonClick"
+            size="'xl'"
+          />
+        </div>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
+
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import CustomBar from 'components/CustomBar';
@@ -194,17 +183,26 @@ export default {
       }
     };
   },
+
   components: { CustomBar, AutoCompleteAddress },
   created() {
-  this.getPropertyTypes();
- this.getSingleClientProperty(this.selectedClientId);
- },
+    this.getPropertyTypes();
+    this.getSingleClientProperty(this.selectedClientId);
+  },
   computed: {
-    ...mapGetters(['setClientProperty', 'selectedClientId', 'propertyTypes','selectedClientId','claimsData'])
-},
-
+    ...mapGetters([
+      'setClientProperty',
+      'selectedClientId',
+      'propertyTypes',
+      'selectedClientId'
+    ])
+  },
   methods: {
-   ...mapActions(['getSingleClientProperty', 'getPropertyTypes','addPropertyAddress']),
+    ...mapActions([
+      'getSingleClientProperty',
+      'getPropertyTypes',
+      'addPropertyAddress'
+    ]),
 
     setTypes(types, data) {
       const obj = types.find(item => {
@@ -218,29 +216,23 @@ export default {
       let success = true;
       success = await this.$refs.propertyAddressForm.validate();
       if (success) {
-           const payload = {
+        const payload = {
           id: this.selectedClientId,
           clientData: {
-            name:  this.propertyName,
+            name: this.propertyName,
             addressCountry: this.propertyAddressDetails.addressCountry,
             addressLocality: this.propertyAddressDetails.addressLocality,
-            addressRegion:this.propertyAddressDetails.addressRegion,
+            addressRegion: this.propertyAddressDetails.addressRegion,
             postalCode: this.propertyAddressDetails.postalCode,
-            streetAddress:  this.propertyAddressDetails.streetAddress,
-            houseNumber: this.propertyAddressDetails.houseNumber,
-            claims:[{
-                number:"",
-                fileNumber:"",
-                status:"",
-                phase:""
-            }]
+            streetAddress: this.propertyAddressDetails.streetAddress,
+            houseNumber: this.propertyAddressDetails.houseNumber
           }
-           }
+        };
         await this.addPropertyAddress(payload);
         this.successMessage();
-       this.addNewPropertyDialog = false;
-       this.getSingleClientProperty(this.selectedClientId);
- }
+        this.addNewPropertyDialog = false;
+        this.getSingleClientProperty(this.selectedClientId);
+      }
     },
     successMessage() {
       this.$q.notify({
@@ -248,16 +240,17 @@ export default {
         message: `Property Address Updated Successfully!`,
         position: 'center'
       });
-    },
+    }
   }
 };
 </script>
+
 <style lang="scss">
 .form-heading {
   color: #333333;
   font-weight: bold;
   font-size: 14px;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 .clients-list {
   background-color: #f4f4f4;

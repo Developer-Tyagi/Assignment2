@@ -18,12 +18,6 @@ export default function() {
     policyCategories: [],
     editSelectedClient: [],
     selectedClientId: '',
-    setClientProperty: [],
-    claimsData: {
-      number: '2131313100001',
-      fileNumber: 'FL-12121212',
-      status: 'Open',
-      phase: 'Orgainated'
-    }
+    setClientProperty: []
   };
 }
