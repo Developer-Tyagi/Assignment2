@@ -1719,18 +1719,31 @@
           <q-form ref="publicAdjustorForm" class="form-height">
             <div class="form-heading text-bold">CLAIM PERSONNEL</div>
             <div class="form-heading q-mt-lg">Personnel Role</div>
-            <q-select
+
+            <!-- <q-select
               v-model="publicAdjustor.personnelRole1"
-              :options="personnelRoles"
+              :options="personnelRoles.id"
               label="Select Role"
               option-label="name"
               option-value="value"
               options-dense
               emit-value
               map-options
+              @input="setTypes(personnelRoles, publicAdjustor.personnelRole1)"
+            ></q-select> -->
+
+            <q-select
+              v-model="publicAdjustor.personnelRole1.id"
+              :options="personnelRoles"
+              option-value="id"
+              option-label="name"
+              map-options
+              emit-value
               options-dense
-              @input="onFilteringPersonnelRoles('Kuldeep')"
+              @input="setTypes(personnelRoles, publicAdjustor.personnelRole1)"
+              label="Select Role"
             ></q-select>
+
             <div class="form-heading q-mt-lg">Person Party</div>
             <q-select
               v-model="publicAdjustor.personParty1"
@@ -2215,7 +2228,11 @@ export default {
         buttonGroup: 'dollar'
       },
       publicAdjustor: {
-        personnelRole1: '',
+        personnelRole1: {
+          id: '',
+          value: '',
+          machineValue: ''
+        },
         personnelRole2: '',
         personnelRole3: '',
         personnelRole4: '',
@@ -2541,6 +2558,7 @@ export default {
     this.getClaimReasons();
     this.getContactTypes();
     this.getPolicyCategory();
+    this.getRoles();
     if (this.selectedLead.id) {
       this.insuredDetails.fname = this.selectedLead.primaryContact.fname;
       this.insuredDetails.lname = this.selectedLead.primaryContact.lname;
@@ -2616,7 +2634,8 @@ export default {
       'getTitles',
       'getPolicyCategory',
       'getVendorIndustries',
-      'addIndustry'
+      'addIndustry',
+      'getRoles'
     ]),
     ...mapMutations(['setSelectedLead']),
     EstimatorToggleChange() {
