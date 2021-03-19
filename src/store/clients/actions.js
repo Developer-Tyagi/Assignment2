@@ -22,8 +22,8 @@ export async function getClients({ commit, dispatch }, searchString = '') {
 export async function getSingleClientDetails({ commit, dispatch }, id) {
   dispatch('setLoading', true);
   try {
+    commit('setSelectedClientId', id);
     const { data } = await request.get(`/clients/${id}`);
-
     commit('setSelectedEditClient', data);
 
     dispatch('setLoading', false);
@@ -74,6 +74,26 @@ export async function addClient({ dispatch, state }, payload) {
   }
 }
 
+export async function editClient({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      `/clients/${payload.id}/info`,
+      buildApiData('clients', payload.clientData)
+    );
+
+    dispatch('setLoading', false);
+    return data;
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response.data.title
+    });
+  }
+}
+
 export async function addClaim({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
@@ -99,22 +119,6 @@ export async function addEstimator({ dispatch, state }, payload) {
       '/estimators',
       buildApiData('estimators', payload)
     );
-    dispatch('setLoading', false);
-  } catch (e) {
-    console.log(e);
-    dispatch('setLoading', false);
-    dispatch('setNotification', {
-      type: 'negative',
-      message: e.response.data.title
-    });
-  }
-}
-
-export async function getClientTypes({ commit, dispatch }) {
-  dispatch('setLoading', true);
-  try {
-    const { data } = await request.get('/ctypes');
-    commit('setClientTypes', data);
     dispatch('setLoading', false);
   } catch (e) {
     console.log(e);

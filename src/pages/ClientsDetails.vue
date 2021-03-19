@@ -1,19 +1,21 @@
 <template>
-  <q-page style="padding-top: 0; height: 100vh">
-    <CustomHeader
-      @backButton="$router.push('/clients')"
-      :showAddButton="false"
-    />
-    <div class="column" style="padding: 30px 20px 20px;">
-      <div class="q-md column">
-        <div class=" q-mt-md full-width">
-          <div
-            v-for="dialogBox in dialogBoxes"
-            :key="dialogBox.name"
-            @click="clientDetailsDailogBoxOpen(dialogBox.name)"
-          >
-            <div class="form-list row">
-              {{ dialogBox.name }}
+  <q-page>
+    <div
+      :class="{
+        'mobile-container-page-without-search': !$q.platform.is.iphone,
+        'mobile-container-page': $q.platform.is.iphone
+      }"
+    >
+      <div class="q-pa-lg column full-height">
+        <div
+          v-for="dialogBox in dialogBoxes"
+          :key="dialogBox.name"
+          @click="clientDetailsDailogBoxOpen(dialogBox.name)"
+        >
+          <div class="form-list row">
+            {{ dialogBox.name }}
+            <div class="q-mr-lg q-ml-auto" v-if="dialogBox.validForm == true">
+              <q-icon size="xs" color="primary" name="done" />
             </div>
           </div>
         </div>
@@ -22,8 +24,7 @@
   </q-page>
 </template>
 <script>
-import CustomHeader from 'components/CustomHeader';
-
+import { mapActions, mapGetters } from 'vuex';
 export default {
   data() {
     return {
@@ -36,15 +37,21 @@ export default {
     };
   },
 
-  components: {
-    CustomHeader
+  components: {},
+  computed: {
+    ...mapGetters(['editSelectedClient', 'selectedClientId'])
   },
   methods: {
+    ...mapActions(['getSingleClientDetails']),
     clientDetailsDailogBoxOpen(value) {
       if (value == 'Client Info') {
         this.$router.push('/client-details');
       }
     }
+  },
+
+  created() {
+    this.getSingleClientDetails(this.selectedClientId);
   }
 };
 </script>
@@ -55,6 +62,6 @@ export default {
   font-size: 16px;
   padding: 5px;
   border-bottom: 1px solid #d3d3d3;
-  margin-top: 20px;
+  margin-top: 30px;
 }
 </style>
