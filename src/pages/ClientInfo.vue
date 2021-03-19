@@ -6,11 +6,11 @@
         'mobile-container-page': $q.platform.is.iphone
       }"
     >
-      <div class="q-pa-lg column full-height ">
+      <div class="q-pa-lg column full-height">
         <!-- This is for showing the client details -->
-        <q-card class="q-pa-md q-mt-md  full-width ">
+        <q-card class="q-pa-md q-mt-md full-width">
           <div class="row">
-            <span class="form-heading ">Insured Details</span><br />
+            <span class="form-heading">Insured Details</span><br />
             <q-icon
               name="create"
               color="primary"
@@ -233,20 +233,10 @@
       transition-hide="slide-down"
     >
       <q-card>
-        <CustomBar />
-        <q-header bordered class="bg-white">
-          <q-toolbar class="row bg-white">
-            <img
-              src="~assets/close.svg"
-              alt="back-arrow"
-              @click="editClientInfoDailog = false"
-              style="margin: auto 0"
-            />
-            <div class="text-uppercase text-bold text-black q-mx-auto">
-              Client Info
-            </div>
-          </q-toolbar>
-        </q-header>
+        <CustomBar
+          :dialogName="'Client Info'"
+          @closeDialog="editClientInfoDailog = false"
+        />
         <q-card-section>
           <div class="mobile-container-page-without-search form-height">
             <q-form ref="clientForm">
@@ -329,9 +319,7 @@
                 />
               </div>
               <div class="row">
-                <p class="q-mx-none q-my-auto">
-                  Organization Is Policyholder?
-                </p>
+                <p class="q-mx-none q-my-auto">Organization Is Policyholder?</p>
                 <q-toggle
                   v-model="policyHolder.isPolicyHolder"
                   left-label
@@ -453,9 +441,7 @@
                 />
               </div>
               <div class="row">
-                <p class="q-mx-none q-my-auto">
-                  Add aditional phone number(s)
-                </p>
+                <p class="q-mx-none q-my-auto">Add aditional phone number(s)</p>
                 <q-toggle
                   class="q-ml-auto"
                   v-model="addAditionalPhoneNumberToggle"

@@ -67,12 +67,10 @@
 
 <script>
 import BarChartComponent from 'components/BarChart';
-import CustomHeader from 'components/CustomHeader';
 
 export default {
   components: {
-    BarChartComponent,
-    CustomHeader
+    BarChartComponent
   },
   data() {
     return {

@@ -62,7 +62,6 @@
 </template>
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex';
-import CustomHeader from 'components/CustomHeader';
 export default {
   data() {
     return {
@@ -70,10 +69,6 @@ export default {
       options: '',
       isNewLead: true
     };
-  },
-
-  components: {
-    CustomHeader
   },
 
   created() {

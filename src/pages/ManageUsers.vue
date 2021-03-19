@@ -283,7 +283,7 @@ export default {
             roles: []
           };
           this.selectedRole = '';
-
+          await this.getAllUsers();
           this.addUserDialogBox = false;
         } else {
           this.$q.notify({
