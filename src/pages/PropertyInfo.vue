@@ -34,7 +34,6 @@
               </span>
 
               <br />
-
               {{
                 setClientProperty[i - 1].attributes.streetAddress
                   ? setClientProperty[i - 1].attributes.streetAddress
@@ -66,9 +65,14 @@
                 v-for="claim in setClientProperty[i - 1].attributes.claims"
                 :key="claim.id"
               >
-                <span class="form-heading">Status : </span>
-                <q-badge>{{ claim.status ? claim.status : '-' }}</q-badge
-                ><br />
+                <div class="row">
+                  <span class="text-bold">Last Updated on : </span>
+                  {{ claim.updated | moment('DD/MM/YYYY') }}
+                  <q-badge class="q-ml-auto">{{
+                    claim.status ? claim.status : '-'
+                  }}</q-badge
+                  ><br />
+                </div>
                 <span class="form-heading">Claim Number: </span
                 >{{ claim.number ? claim.number : '-' }} <br />
                 <span class="form-heading">File Number: </span
@@ -153,6 +157,7 @@
 import { mapGetters, mapActions } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
+import moment from 'moment';
 
 export default {
   name: 'PropertyInfo',
@@ -193,7 +198,12 @@ export default {
       'selectedClientId',
       'propertyTypes',
       'selectedClientId'
-    ])
+    ]),
+    formatDate(value) {
+      if (value) {
+        return moment(String(value)).format('MM/DD/YYYY');
+      }
+    }
   },
   methods: {
     ...mapActions([
