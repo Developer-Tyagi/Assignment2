@@ -24,9 +24,7 @@ export default {
   },
 
   method: {
-    setSelectedTab() {
-      console.log('hi');
-    }
+    setSelectedTab() {}
   },
 
   created() {
