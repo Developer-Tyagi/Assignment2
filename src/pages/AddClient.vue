@@ -700,7 +700,7 @@
             <q-input
               class="required"
               v-model="lossInfo.lossAddressName"
-              v-if="lossAddressNameOptions == 'Others'"
+              v-if="lossAddressNameOptions == 'New'"
               label="Enter New Loss Address Name "
               lazy-rules
               :rules="[
@@ -2253,7 +2253,7 @@ export default {
       ],
 
       vendorIndustriesOptions: [],
-      lossAddressNameOptions: ['Others'],
+      lossAddressNameOptions: ['New'],
       estimatorsListDialog: false,
       constants: constants,
       valueName: '',
