@@ -19,27 +19,6 @@ export async function getClients({ commit, dispatch }, searchString = '') {
   }
 }
 
-//tssfs
-
-export async function getRoles({ commit, dispatch }) {
-  dispatch('setLoading', true);
-  try {
-    const { data } = await request.get('/roles');
-    console.log(data, 65);
-    commit('setRoles', data);
-    dispatch('setLoading', false);
-  } catch (e) {
-    console.log(e);
-    dispatch('setLoading', false);
-    dispatch('setNotification', {
-      type: 'negative',
-      message: e.response.data.title
-    });
-  }
-}
-
-//test
-
 export async function getSingleClientDetails({ commit, dispatch }, id) {
   dispatch('setLoading', true);
   try {

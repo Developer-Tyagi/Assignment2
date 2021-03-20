@@ -21,16 +21,6 @@ export function setEstimators(state, estimators) {
   }));
 }
 
-export function setRoles(state, personnelRoles) {
-  state.personnelRoles = personnelRoles.map(role => ({
-    ...role.attributes,
-    name: role.attributes.value,
-    machineValue: role.attributes.machineValue,
-    id: role.id
-  }));
-  console.log(this.name, 99);
-}
-
 export function setSelectedClientId(state, id) {
   state.selectedClientId = id;
 }

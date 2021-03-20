@@ -1,6 +1,5 @@
 export default function() {
   return {
-    personnelRoles: [],
     clients: [],
     estimators: [],
     propertyTypes: [],

@@ -22,7 +22,6 @@ export async function getAllUsers({ commit, dispatch }, params) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.get('/users', params);
-    console.log(data, 123456);
     commit('setUserRoles', data);
     dispatch('setLoading', false);
   } catch (e) {
