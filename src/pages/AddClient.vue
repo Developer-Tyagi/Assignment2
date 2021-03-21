@@ -1553,9 +1553,9 @@
                 </template>
               </q-input>
             </div>
+            <span class="form-heading">Time Of First Contract</span>
             <div class="full-width">
               <q-input
-                label=" Time Of First Contract"
                 v-model="contractInfo.time"
                 now
                 mask="time"
@@ -1563,12 +1563,20 @@
                 :rules="[val => validateTime(val) || 'Invalid time!']"
               >
                 <template v-slot:append>
-                  <q-icon name="access_time" class="cursor-pointer">
+                  <q-icon
+                    name="access_time"
+                    color="primary"
+                    class="cursor-pointer"
+                  >
                     <q-popup-proxy
+                      ref="qTimeProxy"
                       transition-show="scale"
                       transition-hide="scale"
                     >
-                      <q-time v-model="contractInfo.time">
+                      <q-time
+                        v-model="contractInfo.time"
+                        @input="closeTimeDialog"
+                      >
                         <div class="row items-center justify-end">
                           <q-btn
                             v-close-popup
@@ -1660,10 +1668,10 @@
             <br />
             <span class="form-heading">Accept or Cancel Claim ?</span>
             <p>
-              if this claim will not be accepted, you can mark the claim as
-              beiing "Cancelled",which will close the claim upon creation. This
-              allows you to record the client and property information in
-              claimGuru for historical purposes.
+              If this claim will not be accepted, you can mark the claim as
+              being "Cancelled",which will close the claim upon creation. This
+              allows you to record the client and property information in Claim
+              Guru for historical purposes.
             </p>
             <div class="row">
               <p class="q-mx-none q-my-auto form-heading">Cancelled?</p>
@@ -2526,6 +2534,7 @@ export default {
   },
 
   created() {
+    this.contractInfo.time = date.formatDate(Date.now(), 'HH:mm ');
     this.contractInfo.firstContractDate = this.contractInfo.contractDate = this.insuranceDetails.policyEffectiveDate = this.insuranceDetails.policyExpireDate = this.lossInfo.dateOfLoss = this.lossInfo.deadlineDate = this.lossInfo.recovDeadline = date.formatDate(
       Date.now(),
       'MM/DD/YYYY'
@@ -2631,7 +2640,10 @@ export default {
       this.honorific3.id = '';
       this.addEstimatorValue.name = '';
     },
-
+    //This function is for closing the time popup
+    closeTimeDialog() {
+      this.$refs.qTimeProxy.hide();
+    },
     onClickEstimatorOpen() {
       this.getEstimators();
       this.estimatorsListDialog = true;
