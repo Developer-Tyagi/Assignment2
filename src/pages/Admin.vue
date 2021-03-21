@@ -306,7 +306,9 @@
             ></q-select>
           </div>
           <div class="  q-ml-xl q-pt-sm text-bold">
-            <q-icon size="md" color="primary" name="add" @click="Addlick" />
+            <a href=""
+              ><q-icon size="md" color="primary" name="add" @click="Addlick"
+            /></a>
           </div>
           <div class="  q-ml-lg q-pt-sm text-bold">
             <q-icon
@@ -317,6 +319,7 @@
             />
           </div>
         </div>
+        <!-- {{ actionOverDues[0].subOptions[1].subTypes }} -->
         <div
           v-for="(val, index) in value1"
           v-if="value1.length > 0"
@@ -330,23 +333,37 @@
               outlined
               options-dense
               behavior="menu"
+              option-value="machineValue"
+              option-label="value"
               v-model="val.name"
-              :options="options"
+              map-options
+              emit-value
+              :options="actionOverDues[0].value"
               label="OverDue"
             ></q-select>
           </div>
 
-          <div
-            class="col-3 q-ml-lg"
-            v-if="val.name == 'nnj' || val.name == 'nknj'"
-          >
+          <div class="col-3 q-ml-lg " v-if="val.name == 'client'">
             <q-select
               class="  col-3"
               outlined
               options-dense
               behavior="menu"
+              option-label="value"
               v-model="model"
-              :options="options"
+              :options="actionOverDues[0].subOptions[vara].subTypes"
+              label="Sub-option"
+            ></q-select>
+          </div>
+          <div class="col-3 q-ml-lg " v-if="val.name == 'group'">
+            <q-select
+              class="  col-3"
+              outlined
+              options-dense
+              behavior="menu"
+              option-label="value"
+              v-model="model"
+              :options="actionOverDues[0].subOptions[1].subTypes"
               label="Sub-option"
             ></q-select>
           </div>
@@ -368,6 +385,14 @@
           </div>
         </div>
 
+        <div class="  row q-mt-md  full-width">
+          <div class="col-1-1 ">
+            <div class="q-ml-xl q-pa-md text-bold">Notes/Instruction:</div>
+          </div>
+          <div class="q-ml-md col-5 ">
+            <textarea rows="4" required style="width:60%;"></textarea>
+          </div>
+        </div>
         <div class="  q-mt-xl row justify-center">
           <q-btn
             color="primary"
@@ -382,12 +407,14 @@
 </template>
 <script>
 import SubSideBar from 'components/SubSideBar';
+import { mapGetters, mapActions } from 'vuex';
 import { getCurrentUser } from 'src/utils/auth';
 export default {
   name: 'Admin',
   components: { SubSideBar },
   data() {
     return {
+      vara: 0,
       main: {
         select: ''
       },
@@ -395,7 +422,7 @@ export default {
       defaultPriorityToggleButton: false,
       value: [{ name: '' }],
       value1: [{ name: '' }],
-      addDefaultActionDialogBox: false,
+      addDefaultActionDialogBox: true,
       model: null,
       options: ['nknj', ',mmnjn', 'nnkmk', 'nnj', 'nkjn'],
       tab: '',
@@ -407,8 +434,11 @@ export default {
       ]
     };
   },
-
+  computed: {
+    ...mapGetters(['actionOverDues'])
+  },
   methods: {
+    ...mapActions(['getActionOverDues', 'getActionCompletion']),
     setSelectedTab(e) {
       this.tab = e.key;
     },
@@ -434,6 +464,9 @@ export default {
   },
 
   created() {
+    this.getActionOverDues();
+    this.getActionCompletion();
+    // console.log(this.actionOverDues);
     this.tab = 'accountSummary';
     if (getCurrentUser().attributes) {
       this.user = getCurrentUser().attributes;
