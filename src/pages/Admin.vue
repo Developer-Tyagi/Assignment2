@@ -11,8 +11,6 @@
         <div class="q-pa-xs col-9">
           <!-- Height given for there Inner 2 div -->
           <div class=" row full-width" style="height: 100%" flat bordered>
-            <!-- This is the Main Div -->
-
             <!-- Main Template -->
             <template class="">
               <q-tab-panels
@@ -25,7 +23,6 @@
                 transition-prev="jump-up"
                 transition-next="jump-up"
               >
-                <!--  -->
                 <q-tab-panel name="accountSummary">
                   <q-card class="q-pa-lg " style="height: 800px;" flat bordered>
                     <div class=" text-h5">Account Summary</div>
@@ -104,7 +101,7 @@
                     </div>
                     <q-card
                       class=" q-ma-xl  "
-                      style="; border: 1px solid grey;"
+                      style="border: 1px solid grey;"
                       flat
                       bordered
                     >
@@ -159,7 +156,7 @@
       </div>
     </div>
     <q-dialog v-model="addDefaultActionDialogBox" persistent>
-      <q-card class=" col-8 " style=" width:1200px;height: 800px">
+      <q-card class=" col-8 " style=" width:1200px;">
         <q-bar class=" row justify-between bg-primary " style="height:50px;">
           <div class=" q-px-xs text-bold text-white">
             Add Action Item
@@ -184,7 +181,7 @@
             <q-badge class="q-mt-md" color="primary" v-else>Disable</q-badge>
           </div>
         </div>
-        <!-- //second -->
+        <!-- second -->
         <div class=" row q-mt-md  full-width">
           <div class="col-1-1 ">
             <div class="q-ml-xl q-pa-md text-bold">Created When :</div>
@@ -195,11 +192,14 @@
               options-dense
               behavior="menu"
               v-model="main.select"
-              :options="options"
+              option-label="value"
+              :options="actionReason"
+              map-options
+              emit-value
               label="Created when"
             ></q-select>
           </div>
-
+          <!-- This is for Demo ! Api Not Integrated Yet -->
           <div
             class="col-3 q-ml-lg"
             v-if="main.select == 'nnj' || main.select == 'nknj'"
@@ -286,31 +286,32 @@
               options-dense
               behavior="menu"
               v-model="val.name"
-              :options="options"
+              option-value="machineValue"
+              option-label="value"
+              :options="actionCompletion[0].value"
+              @input="setSubTypeOfAction(val.name)"
               label="Completion Action"
             ></q-select>
           </div>
 
-          <div
-            class="col-3 q-ml-lg"
-            v-if="val.name == 'nnj' || val.name == 'nknj'"
-          >
+          <div class="col-3 q-ml-lg" v-if="val.name">
             <q-select
               class="  col-3"
               outlined
               options-dense
               behavior="menu"
               v-model="model"
-              :options="options"
+              option-label="value"
+              :options="
+                actionCompletion[0].subOptions[indexOfSubTypeAction].subTypes
+              "
               label="Sub-option"
             ></q-select>
           </div>
           <div class="  q-ml-xl q-pt-sm text-bold">
-            <a href=""
-              ><q-icon size="md" color="primary" name="add" @click="Addlick"
-            /></a>
+            <q-icon size="md" color="primary" name="add" @click="Addlick" />
           </div>
-          <div class="  q-ml-lg q-pt-sm text-bold">
+          <div class="  q-ml-lg q-pt-sm text-bold" v-if="value.length > 1">
             <q-icon
               size="md"
               color="primary"
@@ -339,11 +340,12 @@
               map-options
               emit-value
               :options="actionOverDues[0].value"
+              @input="setSubType(val.name)"
               label="OverDue"
             ></q-select>
           </div>
 
-          <div class="col-3 q-ml-lg " v-if="val.name == 'client'">
+          <div class="col-3 q-ml-lg " v-if="val.name">
             <q-select
               class="  col-3"
               outlined
@@ -351,22 +353,11 @@
               behavior="menu"
               option-label="value"
               v-model="model"
-              :options="actionOverDues[0].subOptions[vara].subTypes"
+              :options="actionOverDues[0].subOptions[indexOfSubType].subTypes"
               label="Sub-option"
             ></q-select>
           </div>
-          <div class="col-3 q-ml-lg " v-if="val.name == 'group'">
-            <q-select
-              class="  col-3"
-              outlined
-              options-dense
-              behavior="menu"
-              option-label="value"
-              v-model="model"
-              :options="actionOverDues[0].subOptions[1].subTypes"
-              label="Sub-option"
-            ></q-select>
-          </div>
+
           <div class="  q-ml-xl q-pt-sm text-bold">
             <q-icon
               size="md"
@@ -375,7 +366,7 @@
               @click="addMoreOverDue"
             />
           </div>
-          <div class="  q-ml-lg q-pt-sm text-bold">
+          <div class="  q-ml-lg q-pt-sm text-bold" v-if="value1.length > 1">
             <q-icon
               size="md"
               color="primary"
@@ -393,7 +384,7 @@
             <textarea rows="4" required style="width:60%;"></textarea>
           </div>
         </div>
-        <div class="  q-mt-xl row justify-center">
+        <div class="  q-my-xl row justify-center">
           <q-btn
             color="primary"
             label="Save"
@@ -414,7 +405,7 @@ export default {
   components: { SubSideBar },
   data() {
     return {
-      vara: 0,
+      indexOfSubType: 0,
       main: {
         select: ''
       },
@@ -422,7 +413,7 @@ export default {
       defaultPriorityToggleButton: false,
       value: [{ name: '' }],
       value1: [{ name: '' }],
-      addDefaultActionDialogBox: true,
+      addDefaultActionDialogBox: false,
       model: null,
       options: ['nknj', ',mmnjn', 'nnkmk', 'nnj', 'nkjn'],
       tab: '',
@@ -435,10 +426,14 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['actionOverDues'])
+    ...mapGetters(['actionOverDues', 'actionCompletion', 'actionReason'])
   },
   methods: {
-    ...mapActions(['getActionOverDues', 'getActionCompletion']),
+    ...mapActions([
+      'getActionOverDues',
+      'getActionCompletion',
+      'getActionReasons'
+    ]),
     setSelectedTab(e) {
       this.tab = e.key;
     },
@@ -456,6 +451,21 @@ export default {
         name: ''
       });
     },
+    setSubType(val) {
+      if (val == 'client') {
+        this.indexOfSubType = 0;
+      } else {
+        this.indexOfSubType = 1;
+      }
+    },
+    setSubTypeOfAction(val) {
+      if (val.machineValue == 'client') {
+        this.indexOfSubTypeAction = 0;
+      } else {
+        this.indexOfSubTypeAction = 1;
+      }
+    },
+
     Addlick() {
       this.value.push({
         name: ''
@@ -464,9 +474,12 @@ export default {
   },
 
   created() {
+    const params = {
+      workflowID: ''
+    };
+    this.getActionReasons(params);
     this.getActionOverDues();
     this.getActionCompletion();
-    // console.log(this.actionOverDues);
     this.tab = 'accountSummary';
     if (getCurrentUser().attributes) {
       this.user = getCurrentUser().attributes;

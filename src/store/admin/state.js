@@ -1,5 +1,7 @@
 export default function() {
   return {
-    actionOverDues: []
+    actionOverDues: [],
+    actionCompletion: [],
+    actionReason: []
   };
 }

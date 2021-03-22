@@ -8,3 +8,23 @@ export function setActionOverDues(state, actionOverDues) {
     subOptions: actionOverDues.attributes.additionalActions
   }));
 }
+export function setActionCompletion(state, actionCompletion) {
+  state.actionCompletion = actionCompletion.map(actionCompletion => ({
+    ...actionCompletion.attributes,
+    value: actionCompletion.attributes.additionalActions,
+
+    id: actionCompletion.id,
+    machineValue: actionCompletion.attributes.machineValue,
+    subOptions: actionCompletion.attributes.additionalActions
+  }));
+}
+export function setActionReasons(state, actionReason) {
+  state.actionReason = actionReason.map(actionReason => ({
+    ...actionReason.attributes,
+    value: actionReason.attributes.machineValue,
+
+    id: actionReason.id,
+    machineValue: actionReason.attributes.machineValue,
+    subOptions: actionReason.attributes.additionalActions
+  }));
+}
