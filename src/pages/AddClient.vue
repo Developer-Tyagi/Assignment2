@@ -3426,21 +3426,6 @@ export default {
       this.addVendorDialog = false;
 
       if (e) {
-        if (
-          this.vendorDialogName === constants.industries.CARRIER ||
-          this.vendorDialogName === constants.industries.MORTGAGE
-        ) {
-          const params = {
-            industry:
-              this.vendorDialogName === constants.industries.CARRIER
-                ? constants.industries.CARRIER
-                : constants.industries.MORTGAGE,
-            name: ''
-          };
-          this.$refs.list.getVendors(params);
-        } else {
-          this.$refs.list.getVendors();
-        }
         this.vendorsListDialog = false;
       } else {
         this.vendorsListDialog = true;
