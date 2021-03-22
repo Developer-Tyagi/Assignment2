@@ -1727,111 +1727,134 @@
           <q-form ref="publicAdjustorForm" class="form-height">
             <div class="form-heading text-bold">CLAIM PERSONNEL</div>
             <div class="form-heading q-mt-lg">Personnel Role</div>
+
             <q-select
-              v-model="publicAdjustor.personnelRole1"
-              :options="personnelRoles"
-              label="Select Role"
+              v-model="publicAdjustor.personnelRole1.id"
+              :options="roleTypes"
+              option-value="id"
               option-label="name"
-              option-value="value"
-              options-dense
-              emit-value
               map-options
+              emit-value
               options-dense
-              @input="onFilteringPersonnelRoles('Kuldeep')"
+              @input="
+                setTypes(roleTypes, publicAdjustor.personnelRole1, 'role1')
+              "
+              label="Select Role"
             ></q-select>
+
             <div class="form-heading q-mt-lg">Person Party</div>
+
             <q-select
               v-model="publicAdjustor.personParty1"
-              :options="publicAdjustor.filterRole"
-              :label="!publicAdjustor.personParty1 ? 'Select a Role' : ''"
+              :options="userRoles"
+              :disable="publicAdjustor.isFieldDisable1"
+              :label="
+                publicAdjustor.isFieldDisable1
+                  ? 'Select a Role'
+                  : 'Select a Party'
+              "
               option-label="name"
-              :disable="publicAdjustor.isFilterApply"
-              option-value="value"
+              option-value="machineValue"
               options-dense
               emit-value
               map-options
-              options-dense
             ></q-select>
+
             <div class="form-heading q-mt-lg">Personnel Role</div>
             <q-select
-              v-model="publicAdjustor.personnelRole2"
-              :options="personnelRoles"
-              label="Select Role"
+              v-model="publicAdjustor.personnelRole2.id"
+              :options="roleTypes"
+              option-value="id"
               option-label="name"
-              option-value="value"
-              options-dense
-              emit-value
               map-options
+              emit-value
               options-dense
+              @input="
+                setTypes(roleTypes, publicAdjustor.personnelRole2, 'role2')
+              "
+              label="Select Role"
             ></q-select>
             <div class="form-heading q-mt-lg">Person/Party</div>
             <q-select
               v-model="publicAdjustor.personParty2"
-              :options="personnelRoles"
-              placeholder="Select a Role"
+              :options="userRoles"
+              :disable="publicAdjustor.isFieldDisable2"
+              :label="
+                publicAdjustor.isFieldDisable2
+                  ? 'Select a Role'
+                  : 'Select a Party'
+              "
               option-label="name"
-              disable
-              option-value="value"
+              option-value="machineValue"
               options-dense
               emit-value
               map-options
-              options-dense
             ></q-select>
             <div class="form-heading q-mt-lg">Personnel Role</div>
             <q-select
-              v-model="publicAdjustor.personnelRole3"
-              :options="personnelRoles"
-              label="Select Role"
+              v-model="publicAdjustor.personnelRole3.id"
+              :options="roleTypes"
+              option-value="id"
               option-label="name"
-              option-value="value"
-              options-dense
-              emit-value
               map-options
+              emit-value
               options-dense
+              @input="
+                setTypes(roleTypes, publicAdjustor.personnelRole3, 'role3')
+              "
+              label="Select Role"
             ></q-select>
             <div class="form-heading q-mt-lg">Person/Party</div>
+
             <q-select
               v-model="publicAdjustor.personParty3"
-              :options="personnelRoles"
-              placeholder="Select a Role"
+              :options="userRoles"
+              :disable="publicAdjustor.isFieldDisable3"
+              :label="
+                publicAdjustor.isFieldDisable3
+                  ? 'Select a Role'
+                  : 'Select a Party'
+              "
               option-label="name"
-              disable
-              option-value="value"
+              option-value="machineValue"
               options-dense
               emit-value
               map-options
-              options-dense
             ></q-select>
             <div class="form-heading q-mt-lg">Personnel Role</div>
             <q-select
-              v-model="publicAdjustor.personnelRole4"
-              :options="personnelRoles"
-              placeholder="Select Role"
+              v-model="publicAdjustor.personnelRole4.id"
+              :options="roleTypes"
+              option-value="id"
               option-label="name"
-              option-value="value"
-              options-dense
-              emit-value
               map-options
+              emit-value
               options-dense
+              @input="
+                setTypes(roleTypes, publicAdjustor.personnelRole4, 'role4')
+              "
+              label="Select Role"
             ></q-select>
             <div class="form-heading q-mt-lg">Person/Party</div>
             <q-select
               v-model="publicAdjustor.personParty4"
-              :options="personnelRoles"
-              placeholder="Select a Role"
+              :options="userRoles"
+              :disable="publicAdjustor.isFieldDisable4"
+              :label="
+                publicAdjustor.isFieldDisable4
+                  ? 'Select a Role'
+                  : 'Select a Party'
+              "
               option-label="name"
-              disable
-              option-value="value"
+              option-value="machineValue"
               options-dense
               emit-value
               map-options
-              options-dense
             ></q-select
             ><br />
             <span class="form-heading"
               >Special Instructions, Comments Or Other Notes</span
             >
-
             <div class="floating-label">
               <textarea
                 rows="5"
@@ -2201,6 +2224,9 @@ export default {
 
   data() {
     return {
+      params: {
+        role: ''
+      },
       addEstimatorValue: { name: '' },
       expertVendorButton: true,
       industryTypeValue: '',
@@ -2223,16 +2249,36 @@ export default {
         buttonGroup: 'dollar'
       },
       publicAdjustor: {
-        personnelRole1: '',
-        personnelRole2: '',
-        personnelRole3: '',
-        personnelRole4: '',
+        isFieldDisable1: true,
+        isFieldDisable2: true,
+        isFieldDisable3: true,
+        isFieldDisable4: true,
+        personnelRole1: {
+          id: '',
+          value: '',
+          machineValue: ''
+        },
+        personnelRole2: {
+          id: '',
+          value: '',
+          machineValue: ''
+        },
+        personnelRole3: {
+          id: '',
+          value: '',
+          machineValue: ''
+        },
+        personnelRole4: {
+          id: '',
+          value: '',
+          machineValue: ''
+        },
         personParty1: '',
         personParty2: '',
         personParty3: '',
         personParty4: '',
         notes: '',
-        isFilterApply: true,
+
         filterRole: []
       },
 
@@ -2550,6 +2596,9 @@ export default {
     this.getClaimReasons();
     this.getContactTypes();
     this.getPolicyCategory();
+    this.getRoles();
+    this.getAllUsers();
+
     if (this.selectedLead.id) {
       this.insuredDetails.fname = this.selectedLead.primaryContact.fname;
       this.insuredDetails.lname = this.selectedLead.primaryContact.lname;
@@ -2600,7 +2649,8 @@ export default {
       'vendors',
       'policyCategories',
       'vendorIndustries',
-      'personnelRoles'
+      'roleTypes',
+      'userRoles'
     ])
   },
 
@@ -2625,7 +2675,9 @@ export default {
       'getTitles',
       'getPolicyCategory',
       'getVendorIndustries',
-      'addIndustry'
+      'addIndustry',
+      'getRoles',
+      'getAllUsers'
     ]),
     ...mapMutations(['setSelectedLead']),
     EstimatorToggleChange() {
@@ -2783,13 +2835,7 @@ export default {
 
       this.vendorsListDialog = false;
     },
-    // This function is used for filtering role in public adjustor page
-    onFilteringPersonnelRoles(val) {
-      if (this.publicAdjustor.personnelRole1 == 'manager') {
-        this.publicAdjustor.filterRole.push(val);
-        this.publicAdjustor.isFilterApply = false;
-      }
-    },
+
     //This function is user for searching Industries and  add others option at the last
     searchFilterBy(val, update) {
       let len = this.vendorIndustries.length;
@@ -2989,13 +3035,35 @@ export default {
       this['honorific' + val].machineValue = titleResult.machineValue;
     },
 
-    setTypes(types, data, type) {
+    setTypes(types, data, role) {
       const obj = types.find(item => {
         return item.id === data.id;
       });
-
       data.machineValue = obj.machineValue;
       data.value = obj.name;
+      switch (role) {
+        case 'role1':
+          this.publicAdjustor.isFieldDisable1 = false;
+          this.params.role = this.publicAdjustor.personnelRole1.machineValue;
+          this.getAllUsers(this.params);
+          break;
+        case 'role2':
+          this.publicAdjustor.isFieldDisable2 = false;
+          this.params.role = this.publicAdjustor.personnelRole2.machineValue;
+          this.getAllUsers(this.params);
+          break;
+
+        case 'role3':
+          this.publicAdjustor.isFieldDisable3 = false;
+          this.params.role = this.publicAdjustor.personnelRole3.machineValue;
+          this.getAllUsers(this.params);
+          break;
+        case 'role4':
+          this.publicAdjustor.isFieldDisable4 = false;
+          this.params.role = this.publicAdjustor.personnelRole4.machineValue;
+          this.getAllUsers(this.params);
+          break;
+      }
     },
 
     mailingAddressSame() {
@@ -3278,9 +3346,26 @@ export default {
           notes: this.publicAdjustor.notes,
           users: [
             {
-              id: '',
-              name: '',
-              role: ''
+              id: this.publicAdjustor.personnelRole1.id,
+              name: this.publicAdjustor.personParty1.name,
+              role: this.publicAdjustor.personnelRole1.value
+            },
+
+            {
+              id: this.publicAdjustor.personnelRole2.id,
+              name: this.publicAdjustor.personParty2.name,
+              role: this.publicAdjustor.personnelRole2.value
+            },
+
+            {
+              id: this.publicAdjustor.personnelRole3.id,
+              name: this.publicAdjustor.personParty3.name,
+              role: this.publicAdjustor.personnelRole3.value
+            },
+            {
+              id: this.publicAdjustor.personnelRole4.id,
+              name: this.publicAdjustor.personParty4.name,
+              role: this.publicAdjustor.personnelRole4.value
             }
           ]
         }
