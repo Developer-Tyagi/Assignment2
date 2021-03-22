@@ -160,7 +160,7 @@
                     v-model="inspectionType.subtypes[index].duration"
                     label-always
                     markers
-                    :min="0"
+                    :min="0.5"
                     :max="4"
                     :step="0.5"
                   />
@@ -225,9 +225,7 @@ export default {
       table: [],
       inspectionType: {
         value: '',
-        subtypes: [
-          { value: ' ', duration: 0.5, unit: 'hour', machineValue: '' }
-        ]
+        subtypes: [{ value: '', duration: 0.5, unit: 'hour' }]
       },
       payload: {
         value: ''
@@ -357,6 +355,14 @@ export default {
       if (vald) {
         switch (tab.key) {
           case 'inspectionType':
+            for (var i = 0; i <= this.inspectionType.subtypes.length - 1; i++) {
+              if (this.inspectionType.subtypes[i].value == '') {
+                this.inspectionType.subtypes[
+                  i
+                ].value = this.inspectionType.value;
+              }
+            }
+
             var response = await this.addInspectionType(this.inspectionType);
             break;
           case 'honorific':
@@ -404,8 +410,11 @@ export default {
       this.dialogBox = true;
     },
 
-    addAnotherSubType() {
-      this.inspectionType.subtypes.push({ type: ' ', duration: 0.5 });
+    async addAnotherSubType() {
+      var ValidateSubType = await this.$refs.form.validate();
+      if (ValidateSubType) {
+        this.inspectionType.subtypes.push({ type: ' ', duration: 0.5 });
+      }
     },
 
     onClickRemoveSubType() {
@@ -417,7 +426,8 @@ export default {
       if (this.tab.key == 'inspectionType') {
         this.inspectionType = {
           value: '',
-          subtypes: [{ type: ' ', duration: 0.5 }]
+
+          subtypes: [{ value: '', duration: 0.5, unit: 'hour' }]
         };
       } else {
         this.payload.value = '';
