@@ -2188,11 +2188,7 @@
           @onCloseAddVendor="onCloseAddVendorDialogBox"
           @closeDialog="closeAddVendorDialog"
           :componentName="vendorDialogName"
-          :selectedIndustryType="
-            expertVendorInfo.industry.value == 'Others'
-              ? industryType.value
-              : expertVendorInfo.industry.value
-          "
+          :selectedIndustryType="currentExpertVendorIndustryType"
         />
       </q-card>
     </q-dialog>
@@ -2219,6 +2215,7 @@ export default {
 
   data() {
     return {
+      currentExpertVendorIndustryType: '',
       params: {
         role: ''
       },
@@ -2751,7 +2748,6 @@ export default {
 
     async onCloseAddVendorDialogBox(result, selected, industryType) {
       if (result === true) {
-        await this.getVendors();
         this.onClosingVendorSelectDialog(selected, this.valueName);
       }
     },
@@ -2833,7 +2829,7 @@ export default {
           break;
         case constants.industries.EXPERTVENDOR:
           const params = {
-            industry: '',
+            industry: vendor.industry.machineValue,
             name: ''
           };
           await this.getVendors(params);
@@ -2939,9 +2935,11 @@ export default {
 
     setVendorIndustryName(index) {
       const selectedName = this.expertVendorInfo.industry[index].value;
+      this.currentExpertVendorIndustryType = selectedName;
       const result = this.vendorIndustries.find(obj => {
         return obj.name === selectedName;
       });
+      this.currentExpertVendorIndustryType = result;
 
       this.expertVendorInfo.industry[index].value = result.name;
       this.industryTypeValue = result.name;
@@ -3435,21 +3433,6 @@ export default {
       this.addVendorDialog = false;
 
       if (e) {
-        if (
-          this.vendorDialogName === constants.industries.CARRIER ||
-          this.vendorDialogName === constants.industries.MORTGAGE
-        ) {
-          const params = {
-            industry:
-              this.vendorDialogName === constants.industries.CARRIER
-                ? constants.industries.CARRIER
-                : constants.industries.MORTGAGE,
-            name: ''
-          };
-          this.$refs.list.getVendors(params);
-        } else {
-          this.$refs.list.getVendors();
-        }
         this.vendorsListDialog = false;
       } else {
         this.vendorsListDialog = true;
