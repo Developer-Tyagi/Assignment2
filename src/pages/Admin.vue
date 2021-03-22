@@ -288,7 +288,6 @@
               v-model="val.name"
               option-value="machineValue"
               option-label="value"
-              :options="actionCompletion[0].value"
               @input="setSubTypeOfAction(val.name)"
               label="Completion Action"
             ></q-select>
@@ -302,9 +301,6 @@
               behavior="menu"
               v-model="model"
               option-label="value"
-              :options="
-                actionCompletion[0].subOptions[indexOfSubTypeAction].subTypes
-              "
               label="Sub-option"
             ></q-select>
           </div>
@@ -339,7 +335,6 @@
               v-model="val.name"
               map-options
               emit-value
-              :options="actionOverDues[0].value"
               @input="setSubType(val.name)"
               label="OverDue"
             ></q-select>
@@ -353,7 +348,6 @@
               behavior="menu"
               option-label="value"
               v-model="model"
-              :options="actionOverDues[0].subOptions[indexOfSubType].subTypes"
               label="Sub-option"
             ></q-select>
           </div>
