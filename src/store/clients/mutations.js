@@ -20,6 +20,7 @@ export function setEstimators(state, estimators) {
     id: estimator.id
   }));
 }
+
 export function setSelectedClientId(state, id) {
   state.selectedClientId = id;
 }
