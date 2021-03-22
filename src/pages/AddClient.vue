@@ -700,7 +700,7 @@
             <q-input
               class="required"
               v-model="lossInfo.lossAddressName"
-              v-if="lossAddressNameOptions == 'Others'"
+              v-if="lossAddressNameOptions == 'New'"
               label="Enter New Loss Address Name "
               lazy-rules
               :rules="[
@@ -2307,7 +2307,7 @@ export default {
       ],
 
       vendorIndustriesOptions: [],
-      lossAddressNameOptions: ['Others'],
+      lossAddressNameOptions: ['New'],
       estimatorsListDialog: false,
       constants: constants,
       valueName: '',
@@ -2316,7 +2316,7 @@ export default {
       vendorDialogName: '',
       vendorDialogFilterByIndustry: '',
       showVendorDialogFilters: false,
-      lossAddressNameDropdown: 'Others',
+      lossAddressNameDropdown: 'New',
       publicAdjustorInfoDialog: false,
       contractInfoDialog: false,
       addVendorDialog: false,
@@ -3291,6 +3291,7 @@ export default {
         },
         mortgageInfo: this.mortgageDetails,
         lossInfo: {
+          isNewAddress: this.lossAddressNameDropdown == 'New' ? true : false,
           lossAddressName: this.lossInfo.lossAddressName,
           address: {
             ...this.clientAddressDetails
