@@ -2,12 +2,16 @@
   <q-page>
     <div>
       <div class="actions-div justify-between q-px-md">
-        <q-breadcrumbs>
+        <q-breadcrumbs class="text-primary" active-color="grey" gutter="sm">
+          <template v-slot:separator>
+            <q-icon size="1.5em" name="chevron_right" color="primary" />
+          </template>
           <q-breadcrumbs-el
             class="text-capitalize"
             v-for="breadCrumb in depth"
             :key="breadCrumb.name"
             :label="breadCrumb.name"
+            @click="onBreadCrumbClick(breadCrumb)"
           ></q-breadcrumbs-el>
         </q-breadcrumbs>
         <div>
@@ -256,6 +260,21 @@ export default {
         case 'jpeg':
           return 'photo';
       }
+    },
+
+    async onBreadCrumbClick(crumb) {
+      const index = this.depth.findIndex(val => val.id === crumb.id);
+      this.setLoading(true);
+      const { data } = await request.get(`/documents?parent_id=${crumb.id}`);
+      this.documents = data.map(document => ({
+        name: document.attributes.name,
+        id: document.id,
+        type: document.attributes.mimeType
+      }));
+      console.log(index, this.depth);
+      this.depth.splice(index + 1);
+      console.log(this.depth);
+      this.setLoading(false);
     }
   },
 
