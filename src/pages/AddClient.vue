@@ -422,244 +422,9 @@
         />
         <div class="mobile-container-page-without-search">
           <q-form ref="insuranceInfoForm" class="form-height">
-            <div
-              class="custom-select"
-              v-model="insuranceDetails.carrierName"
-              @click="onAddVendorDialogClick(constants.industries.CARRIER)"
-            >
-              <div class="select-text">
-                {{
-                  insuranceDetails.carrierName
-                    ? insuranceDetails.carrierName
-                    : 'Enter Carrier Details'
-                }}
-              </div>
-            </div>
-            <q-input
-              v-model="insuranceDetails.policyNumber"
-              label="Policy Number"
-            />
-
-            <q-input
-              v-model="insuranceDetails.insuranceClaimNumber"
-              label="Insurance Claim Number"
-            />
-            <br />
-            <div class="row">
-              <p class="q-my-auto form-heading">Has claim been filed?</p>
-              <q-toggle class="q-ml-auto" v-model="hasClaimBeenFilledToggle" />
-            </div>
-            <div class="row">
-              <p class="q-my-auto form-heading">
-                Is this is a Forced-Placed policy?
-              </p>
-
-              <q-toggle
-                class="q-ml-auto"
-                v-model="isThisIsForcedPlacedPolicyToggle"
-              />
-            </div>
-            <br />
-            <span class="form-heading">Policy Effective date</span>
-
-            <div class="full-width">
-              <q-input
-                v-model="insuranceDetails.policyEffectiveDate"
-                mask="##/##/####"
-                label="MM/DD/YYYY"
-                lazy-rules
-                :rules="[val => validateDate(val) || 'Invalid date!']"
-              >
-                <template v-slot:append>
-                  <q-icon
-                    name="event"
-                    size="sm"
-                    color="primary"
-                    class="cursor-pointer"
-                  >
-                    <q-popup-proxy
-                      ref="qDateProxy"
-                      transition-show="scale"
-                      transition-hide="scale"
-                    >
-                      <q-date
-                        v-model="insuranceDetails.policyEffectiveDate"
-                        @input="() => $refs.qDateProxy.hide()"
-                        mask="MM/DD/YYYY"
-                      ></q-date>
-                    </q-popup-proxy>
-                  </q-icon>
-                </template>
-              </q-input>
-            </div>
-
-            <br />
-
-            <span class="form-heading">Policy Expiry date </span>
-
-            <div class="full-width">
-              <q-input
-                v-model="insuranceDetails.policyExpireDate"
-                mask="##/##/####"
-                label="MM/DD/YYYY"
-                lazy-rules
-                :rules="[val => validateDate(val) || 'Invalid date!']"
-              >
-                <template v-slot:append>
-                  <q-icon
-                    name="event"
-                    size="sm"
-                    color="primary"
-                    class="cursor-pointer"
-                  >
-                    <q-popup-proxy
-                      ref="qDateProxy1"
-                      transition-show="scale"
-                      transition-hide="scale"
-                    >
-                      <q-date
-                        v-model="insuranceDetails.policyExpireDate"
-                        @input="() => $refs.qDateProxy1.hide()"
-                        mask="MM/DD/YYYY"
-                      ></q-date>
-                    </q-popup-proxy>
-                  </q-icon>
-                </template>
-              </q-input>
-            </div>
-
-            <q-select
-              class="required"
-              v-model="insuranceDetails.policyCategory.id"
-              option-value="id"
-              option-label="name"
-              map-options
-              options-dense
-              emit-value
-              :options="policyCategories"
-              @input="
-                setTypes(
-                  policyCategories,
-                  insuranceDetails.policyCategory,
-                  'policyCategory'
-                )
-              "
-              label="Policy Category"
-              :rules="[
-                val =>
-                  (val && val.length > 0) || 'Please select policy category'
-              ]"
-            />
-            <q-select
-              class="required"
-              v-model="insuranceDetails.policy.id"
-              option-value="id"
-              option-label="name"
-              map-options
-              emit-value
-              options-dense
-              :options="policyTypes"
-              @input="setTypes(policyTypes, insuranceDetails.policy)"
-              label="Policy Type"
-              :rules="[
-                val =>
-                  (val && val.length > 0) || 'Please select the policy type'
-              ]"
-            />
-            <br />
-            <div class="row" style="align-items: center">
-              <span class="form-heading">Dwelling Limit (A)</span>
-              <q-input
-                mask="#.#"
-                type="number"
-                v-model.number="insuranceDetails.dwellingLimitA"
-                placeholder="Dwelling Limit (A)"
-                style="margin-left: auto; width: 50%"
-                prefix="$"
-              />
-            </div>
-            <div class="row" style="align-items: center">
-              <span class="form-heading">Other Structure (B)</span>
-              <q-input
-                mask="#.#"
-                type="number"
-                v-model.number="insuranceDetails.otherStructureB"
-                placeholder="Other Structure (B)"
-                prefix="$"
-                style="margin-left: auto; width: 50%"
-              />
-            </div>
-            <div class="row" style="align-items: center">
-              <span class="form-heading">Contents Limit (C)</span>
-              <q-input
-                mask="#.#"
-                type="number"
-                v-model.number="insuranceDetails.contentsLimit"
-                placeholder="Contents Limit (C)"
-                prefix="$"
-                style="margin-left: auto; width: 50%"
-              />
-            </div>
-            <div class="row" style="align-items: center">
-              <span class="form-heading">Loss of Use Limit (D)</span>
-              <q-input
-                mask="#.#"
-                type="number"
-                v-model.number="insuranceDetails.lossOfUSD"
-                placeholder="Loss of Use Limit (D)"
-                prefix="$"
-                style="margin-left: auto; width: 50%"
-              />
-            </div>
-            <div class="row" style="align-items: center">
-              <span class="form-heading">Depreciation</span>
-              <q-input
-                mask="#.#"
-                type="number"
-                v-model.number="insuranceDetails.deprecation"
-                placeholder="Depreciation"
-                prefix="$"
-                style="margin-left: auto; width: 50%"
-              />
-            </div>
-            <div class="row" style="align-items: center">
-              <span class="form-heading">Deductible</span>
-              <q-input
-                mask="#.#"
-                type="number"
-                v-model.number="insuranceDetails.deductible"
-                placeholder="Deductible"
-                prefix="$"
-                style="margin-left: auto; width: 50%"
-              />
-            </div>
-
-            <div class="row" style="align-items: center">
-              <span class="form-heading" style="width: 50%"
-                >Prior payment by insured</span
-              >
-              <q-input
-                mask="#.#"
-                type="number"
-                v-model.number="insuranceDetails.priorPayment"
-                placeholder="Prior payment by insured"
-                prefix="$"
-                style="margin-left: auto; width: 50%"
-              />
-            </div>
-            <br />
-            <span class="form-heading">Reason for Limits/Denial</span>
-            <div class="floating-label">
-              <textarea
-                rows="5"
-                required
-                class="full-width"
-                v-model="insuranceDetails.reasonsOfLD"
-                style="resize: none"
-              ></textarea>
-            </div>
-            <br />
+            <InsuranceInfo :insuranceDetails="insuranceDetails" />
           </q-form>
+
           <q-btn
             label="Save"
             color="primary"
@@ -686,570 +451,7 @@
         />
         <div class="mobile-container-page-without-search">
           <q-form ref="lossInfoForm" class="form-height">
-            <!-- Loss Address Name Dropdown -->
-            <q-select
-              class="required"
-              v-model="lossAddressNameDropdown"
-              label="Loss Address Name"
-              :options="lossAddressNameOptions"
-              lazy-rules
-              :rules="[
-                val => (val && val.length > 0) || 'This is a required field'
-              ]"
-            />
-            <q-input
-              class="required"
-              v-model="lossInfo.lossAddressName"
-              v-if="lossAddressNameOptions == 'Others'"
-              label="Enter New Loss Address Name "
-              lazy-rules
-              :rules="[
-                val => (val && val.length > 0) || 'This is a required field'
-              ]"
-            ></q-input>
-
-            <div class="row">
-              <p class="q-my-auto form-heading">
-                Loss Address Same As Client's?
-              </p>
-              <q-toggle
-                class="q-ml-auto"
-                v-model="isLossAddressSameAsClientToggle"
-                @input="lossAddressSame"
-              />
-            </div>
-            <AutoCompleteAddress
-              :address="lossAddressDetails"
-              :isDropBoxEnable="true"
-              :isChecksEnable="true"
-              :isFieldsDisable="isLossAddressSameAsClientToggle"
-              :isAsteriskMark="true"
-            />
-
-            <q-select
-              class="required"
-              v-model="lossInfo.property.id"
-              option-value="id"
-              option-label="name"
-              map-options
-              options-dense
-              emit-value
-              :options="propertyTypes"
-              @input="setTypes(propertyTypes, lossInfo.property)"
-              label="Property Type"
-              :rules="[
-                val =>
-                  (val && val.length > 0) || 'Please select the property type'
-              ]"
-            />
-            <q-input
-              v-model="lossInfo.propertyDescription"
-              label="Description of Property"
-            />
-            <q-select
-              class="required"
-              v-model="lossInfo.reasonClaim.id"
-              option-value="id"
-              option-label="name"
-              map-options
-              options-dense
-              emit-value
-              :options="claimReasons"
-              @input="setTypes(claimReasons, lossInfo.reasonClaim)"
-              label="Reason for Claim"
-              :rules="[
-                val =>
-                  (val && val.length > 0) ||
-                  'Please select the reason for claim'
-              ]"
-            /><br />
-            <span class="form-heading">Date of Loss</span>
-
-            <div class="full-width">
-              <q-input
-                v-model="lossInfo.dateOfLoss"
-                mask="##/##/####"
-                label="MM/DD/YYYY"
-                lazy-rules
-                :rules="[val => validateDate(val) || 'Invalid date!']"
-              >
-                <template v-slot:append>
-                  <q-icon
-                    name="event"
-                    size="sm"
-                    color="primary"
-                    class="cursor-pointer"
-                  >
-                    <q-popup-proxy
-                      ref="qDateProxy2"
-                      transition-show="scale"
-                      transition-hide="scale"
-                    >
-                      <q-date
-                        v-model="lossInfo.dateOfLoss"
-                        @input="() => $refs.qDateProxy2.hide()"
-                        mask="MM/DD/YYYY"
-                      ></q-date>
-                    </q-popup-proxy>
-                  </q-icon>
-                </template>
-              </q-input>
-            </div>
-
-            <q-select
-              class="required"
-              v-model="lossInfo.causeOfLoss.id"
-              option-value="id"
-              option-label="name"
-              map-options
-              options-dense
-              emit-value
-              :options="lossCauses"
-              @input="setTypes(lossCauses, lossInfo.causeOfLoss)"
-              label="Cause of Loss"
-              :rules="[
-                val =>
-                  (val && val.length > 0) || 'Please select the cause of loss'
-              ]"
-            /><br />
-            <span class="form-heading">Deadline Date</span>
-
-            <div class="full-width">
-              <q-input
-                v-model="lossInfo.deadlineDate"
-                mask="##/##/####"
-                label="MM/DD/YYYY"
-                lazy-rules
-                :rules="[val => validateDate(val) || 'Invalid date!']"
-              >
-                <template v-slot:append>
-                  <q-icon
-                    name="event"
-                    size="sm"
-                    color="primary"
-                    class="cursor-pointer"
-                  >
-                    <q-popup-proxy
-                      ref="qDateProxy3"
-                      transition-show="scale"
-                      transition-hide="scale"
-                    >
-                      <q-date
-                        v-model="lossInfo.deadlineDate"
-                        @input="() => $refs.qDateProxy3.hide()"
-                        mask="MM/DD/YYYY"
-                      ></q-date>
-                    </q-popup-proxy>
-                  </q-icon>
-                </template>
-              </q-input>
-            </div>
-            <br />
-            <span class="form-heading">Recov. Deprec. Deadline</span>
-
-            <div class="full-width">
-              <q-input
-                v-model="lossInfo.recovDeadline"
-                mask="##/##/####"
-                label="MM/DD/YYYY"
-                lazy-rules
-                :rules="[
-                  val =>
-                    (val.length > 0 && validateDate(val)) || 'Invalid date!'
-                ]"
-              >
-                <template v-slot:append>
-                  <q-icon
-                    name="event"
-                    size="sm"
-                    color="primary"
-                    class="cursor-pointer"
-                  >
-                    <q-popup-proxy
-                      ref="qDateProxy4"
-                      transition-show="scale"
-                      transition-hide="scale"
-                    >
-                      <q-date
-                        v-model="lossInfo.recovDeadline"
-                        @input="() => $refs.qDateProxy4.hide()"
-                        mask="MM/DD/YYYY"
-                      ></q-date>
-                    </q-popup-proxy>
-                  </q-icon>
-                </template>
-              </q-input>
-            </div>
-            <br />
-
-            <div class="row">
-              <p class="q-my-auto form-heading">Is the Home Habitable?</p>
-              <q-toggle class="q-ml-auto" v-model="isTheHomeHabitable" />
-            </div>
-            <div class="row">
-              <p class="q-mx-none q-my-auto form-heading">FEMA Claim</p>
-              <q-toggle class="q-ml-auto" v-model="femaClaimToggle" />
-            </div>
-            <div class="row">
-              <p class="q-my-auto form-heading">State of Emergency</p>
-              <q-toggle class="q-ml-auto" v-model="isStateOfEmergencyToggle" />
-            </div>
-            <div v-if="isStateOfEmergencyToggle">
-              <q-input v-model="lossInfo.nameOfEmergency" label="Related to" />
-            </div>
-            <q-select
-              class="required"
-              v-model="lossInfo.severityOfClaimType.id"
-              option-value="id"
-              option-label="name"
-              map-options
-              emit-value
-              options-dense
-              :options="claimSeverity"
-              @input="setTypes(claimSeverity, lossInfo.severityOfClaimType)"
-              label="Severity of Claim"
-              :rules="[
-                val =>
-                  (val && val.length > 0) ||
-                  'Please select the severity of claim'
-              ]"
-            /><br />
-            <span class="form-heading">Loss Description to Dwelling</span>
-            <textarea
-              rows="5"
-              required
-              class="full-width"
-              v-model="lossInfo.descriptionDwelling"
-              style="resize: none"
-            />
-            <br />
-            <div class="row">
-              <p class="q-mx-none q-my-auto form-heading">
-                Is there damage to other structures?
-              </p>
-              <q-toggle class="q-ml-auto" v-model="isDamageOSToggle" />
-            </div>
-
-            <div v-if="isDamageOSToggle">
-              <br />
-              <div
-                v-if="osDamagedItems.length >= 1"
-                flat
-                bordered
-                scroll
-                style="margin-top: 20px"
-              >
-                <div class="items-start q-gutter-md">
-                  <div
-                    v-for="(item, index) in osDamagedItems"
-                    v-if="osDamagedItems.length"
-                  >
-                    <q-card flat bordered>
-                      <div class="text-right">
-                        <q-icon
-                          v-if="osDamagedItems.length >= 1"
-                          size="xs"
-                          class="q-ma-xs"
-                          dense
-                          color="primary"
-                          name="close"
-                          @click="deleteDamagedItem(index)"
-                        />
-                      </div>
-                      <div>
-                        <div class="row">
-                          <div
-                            class="form-heading q-ml-sm text-capitalize q-pt-xs"
-                          >
-                            {{ item.name }}
-                          </div>
-                          <div
-                            class="q-ml-auto q-pt-xs"
-                            style="margin-right: 30px"
-                          >
-                            {{ '$' + item.cost }}
-                          </div>
-                        </div>
-                        <div
-                          class="q-mr-xl q-my-xm q-px-sm q-ma-xs text-capitalize text-caption"
-                          style="margin-right: 71px"
-                        >
-                          <p>{{ item.desc }}</p>
-                        </div>
-                      </div>
-                    </q-card>
-                  </div>
-                </div>
-              </div>
-              <q-btn
-                label="add item"
-                name="add"
-                class="q-mt-sm"
-                icon="add"
-                size="sm"
-                color="primary"
-                @click="damagedItemsDailog = true"
-              >
-              </q-btn>
-              <!-- Damaged Items Dialog Box -->
-              <q-dialog
-                v-model="damagedItemsDailog"
-                persistent
-                transition-show="slide-up"
-                transition-hide="slide-down"
-              >
-                <q-card
-                  class="form-card q-pa-md"
-                  style="width: 500px; height: 50%"
-                >
-                  <q-header bordered class="bg-white">
-                    <q-toolbar class="row bg-white">
-                      <img
-                        src="~assets/close.svg"
-                        alt="back-arrow"
-                        @click="damagedItemsDailog = false"
-                        style="margin: auto 0"
-                      />
-                      <div
-                        class="text-uppercase text-bold text-black q-mx-auto"
-                      >
-                        Add Items
-                      </div>
-                    </q-toolbar>
-                  </q-header>
-
-                  <q-card-section>
-                    <div class="q-page bg-white">
-                      <div class="full-width" style="margin-top: 30px">
-                        <q-input v-model="lossInfo.OSDamageName" label="Name" />
-                        <q-input
-                          v-model="lossInfo.OSDamageDescription"
-                          label="Description"
-                          autogrow
-                        />
-                        <q-input
-                          mask="#.#"
-                          type="number"
-                          prefix="$"
-                          v-model.number="lossInfo.OSDamagedItemCost"
-                          label="Item Cost"
-                        /><br />
-                      </div>
-                      <br />
-                    </div>
-
-                    <q-btn
-                      label="Save"
-                      color="primary"
-                      class="full-width q-mt-auto text-capitalize"
-                      @click="addDamagedItems"
-                      size="'xl'"
-                    ></q-btn>
-                  </q-card-section>
-                </q-card>
-              </q-dialog>
-            </div>
-            <div class="row">
-              <p class="q-mt-md form-heading">
-                Is there damage to personal property?
-              </p>
-              <q-toggle
-                class="q-ml-auto"
-                v-model="isThereDamageToPersonalPropertyToggle"
-              />
-            </div>
-            <!-- Persnol Property Damage List -->
-            <div v-if="isThereDamageToPersonalPropertyToggle">
-              <br />
-              <div
-                v-if="ppDamagedItems.length >= 1"
-                flat
-                bordered
-                scroll
-                class="q-mt-xs"
-              >
-                <div class="items-start q-gutter-md">
-                  <div
-                    v-for="(item, index) in ppDamagedItems"
-                    v-if="ppDamagedItems.length"
-                  >
-                    <q-card flat bordered>
-                      <div class="text-right">
-                        <q-icon
-                          v-if="ppDamagedItems.length >= 1"
-                          class="q-ma-xs"
-                          size="xs"
-                          dense
-                          color="primary"
-                          name="close"
-                          @click="deletePPDamagedItem(index)"
-                        />
-                      </div>
-                      <div class="row">
-                        <div
-                          class="form-heading q-ml-sm text-capitalize q-pt-xs"
-                        >
-                          {{ item.name }}
-                        </div>
-                        <div
-                          class="q-ml-auto q-pt-xs"
-                          style="margin-right: 30px"
-                        >
-                          {{ '$' + item.cost }}
-                        </div>
-                      </div>
-                      <div
-                        class="q-mr-xl q-my-xm q-px-sm q-ma-xs text-capitalize text-caption"
-                        style="margin-right: 71px"
-                      >
-                        <p>{{ item.desc }}</p>
-                      </div>
-                      <div class="q-ma-sm q-ml-xs">
-                        {{ item.serialNumber }}
-                      </div>
-                      <div class="q-ma-sm">
-                        {{ item.radio }}
-                      </div>
-                    </q-card>
-                  </div>
-                </div>
-              </div>
-              <div>
-                <q-btn
-                  label="add item"
-                  name="add"
-                  class="q-mt-sm"
-                  icon="add"
-                  size="sm"
-                  color="primary"
-                  @click="PPdamagedItemsDailog = true"
-                >
-                </q-btn>
-              </div>
-              <q-dialog
-                v-model="PPdamagedItemsDailog"
-                persistent
-                transition-show="slide-up"
-                transition-hide="slide-down"
-              >
-                <q-card
-                  class="form-card q-pa-md"
-                  style="width: 500px; height: 65%"
-                >
-                  <q-header bordered class="bg-white">
-                    <q-toolbar class="row bg-white">
-                      <img
-                        src="~assets/close.svg"
-                        alt="back-arrow"
-                        @click="PPdamagedItemsDailog = false"
-                        style="margin: auto 0"
-                      />
-                      <div
-                        class="text-uppercase text-bold text-black q-mx-auto"
-                      >
-                        Add Items
-                      </div>
-                    </q-toolbar>
-                  </q-header>
-
-                  <q-card-section>
-                    <div class="q-page bg-white">
-                      <div class="full-width" style="margin-top: 30px">
-                        <q-input v-model="lossInfo.PPDamageName" label="Name" />
-                        <q-input
-                          v-model="lossInfo.PPDamageDescription"
-                          label="Description"
-                          autogrow
-                        />
-                        <q-input
-                          type="number"
-                          v-model.number="lossInfo.PPDamagedItemCost"
-                          label="Item Cost"
-                          prefix="$"
-                        />
-                        <q-input
-                          v-model="lossInfo.serialNumber"
-                          label="Serial Number"
-                        />
-                        <br />
-
-                        <q-radio
-                          v-model="lossInfo.repairReplaceRadio"
-                          val="Repair"
-                          label="Repair"
-                        ></q-radio>
-                        <q-radio
-                          class="q-ml-none"
-                          v-model="lossInfo.repairReplaceRadio"
-                          val="Replace"
-                          label="Replace"
-                        ></q-radio>
-                      </div>
-                      <br />
-                    </div>
-
-                    <q-btn
-                      label="Save"
-                      color="primary"
-                      class="full-width q-mt-auto text-capitalize"
-                      @click="addPPDamagedItems"
-                      size="'xl'"
-                    ></q-btn>
-                  </q-card-section>
-                </q-card>
-              </q-dialog>
-            </div>
-            <div class="row">
-              <p class="q-mx-none q-my-auto form-heading">
-                Was a PPIF provided to the insured?
-              </p>
-              <q-toggle
-                class="q-ml-auto"
-                v-model="wasAppifProvidedToTheInsuredToggle"
-              />
-            </div>
-            <div class="row">
-              <p class="q-mx-none q-my-auto form-heading">
-                Does Claim Guru PPIF need to be provided?
-              </p>
-              <q-toggle
-                class="q-ml-auto"
-                v-model="doesTheOfficeNeedToProvidePpifToTheInsuredToggle"
-              />
-            </div>
-            <div class="row">
-              <p class="q-my-auto form-heading">
-                Is there a mortgage on the home?
-              </p>
-              <q-toggle
-                class="q-ml-auto"
-                v-model="isMortgageHomeToggle"
-                @input="onToggleButtonClick"
-              />
-            </div>
-            <div
-              v-if="isMortgageHomeToggle"
-              @click="
-                mortgageInfoDialog = true;
-                lossInfoDialog = false;
-              "
-            >
-              <div class="row">
-                <div class="q-px-xs row">
-                  <div v-if="!mortgageDetails[0]['id']">Select Mortgage</div>
-                  <div
-                    v-else
-                    class="select-text"
-                    v-for="(mortgageDetail, index) in mortgageDetails"
-                  >
-                    <span>
-                      {{ mortgageDetail.value }}
-                    </span>
-                    <span v-if="mortgageDetails.length - 1 > index"> , </span>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <LossInfo :lossInfo="lossInfo" @lossAddressSame="lossAddressSame" />
           </q-form>
 
           <q-btn
@@ -1278,119 +480,7 @@
         />
         <div class="mobile-container-page-without-search">
           <q-form ref="expertVendorInfoForm" class="form-height">
-            <div class="row">
-              <span class="form-heading"
-                >Do any vendors need to be assigned?</span
-              >
-              <q-toggle
-                class="q-ml-auto"
-                v-model="vendorExpertHiredToggle"
-                @input="onExpertVendorToggleOff"
-              />
-            </div>
-            <!-- Assigning Multiple Expert Vendors -->
-
-            <div
-              v-for="(item, index) in expertVendorInfo.industry"
-              v-if="expertVendorInfo.industry.length >= 0"
-            >
-              <q-select
-                v-if="vendorExpertHiredToggle"
-                class="full-width"
-                v-model="expertVendorInfo.industry[index].value"
-                use-input
-                input-debounce="0"
-                option-label="name"
-                label=" Industry"
-                :options="vendorIndustriesOptions"
-                option-value="name"
-                @filter="searchFilterBy"
-                @input="setVendorIndustryName(index)"
-                behavior="menu"
-                emit-value
-                map-options
-                lazy-rules
-                :rules="[
-                  val =>
-                    (val && val.length > 0) || 'Please fill the Vendor Industry'
-                ]"
-              >
-                <template v-slot:no-option>
-                  <q-item>
-                    <q-item-section class="text-black">
-                      No results
-                    </q-item-section>
-                  </q-item>
-                </template>
-              </q-select>
-              <!-- This will Show the input when industry Type is Others -->
-              <q-input
-                v-model="industryType.value"
-                v-if="expertVendorInfo.industry[index].value == 'Others'"
-                label="Enter New Industry Type"
-              ></q-input>
-              <q-btn
-                class="q-mt-md"
-                v-if="expertVendorInfo.industry[index].value == 'Others'"
-                label="Add"
-                outline
-                @click="addAnotherIndustry"
-              />
-
-              <div
-                v-if="vendorExpertHiredToggle"
-                class="custom-select"
-                v-model="expertVendorInfo.vendors[index].value"
-                @click="
-                  onAddVendorDialogClick(
-                    constants.industries.EXPERTVENDOR,
-                    index
-                  )
-                "
-              >
-                <div class="select-text">
-                  {{
-                    expertVendorInfo.id
-                      ? expertVendorInfo.vendors[index].value
-                      : 'Select Vendor'
-                  }}
-                </div>
-              </div>
-            </div>
-            <q-btn
-              v-if="vendorExpertHiredToggle"
-              class="q-ma-none q-mb-sm"
-              size="sm"
-              label="Add More"
-              color="primary"
-              @click="addAnotherVendor()"
-            />
-
-            <div class="row">
-              <p class="form-heading q-mx-none q-my-auto">Is Insured hired?</p>
-              <q-toggle class="q-ml-auto" v-model="anyOtherExpertHiredToggle" />
-            </div>
-            <span class="form-heading">Notes</span>
-            <div>
-              <textarea
-                rows="5"
-                required
-                class="full-width"
-                v-model="expertVendorInfo.notes"
-                style="resize: none"
-              ></textarea>
-            </div>
-            <br />
-            <div>
-              <span class="form-heading">Internal Notes</span>
-              <textarea
-                rows="5"
-                required
-                class="full-width"
-                v-model="expertVendorInfo.internalNotes"
-                style="resize: none"
-              ></textarea>
-            </div>
+            <ExpertVendorInfo :expertVendorInfo="expertVendorInfo" />
           </q-form>
 
           <q-btn
@@ -1418,46 +508,7 @@
         />
         <div class="mobile-container-page-without-search">
           <q-form ref="estimatingInfoForm" class="form-height">
-            <div class="row">
-              <p style="form-heading">
-                Does an estimator need to be<br />assigned?
-              </p>
-              <q-toggle
-                class="q-ml-auto"
-                v-model="doesAnEstimatorNeedToBeAssignedToggle"
-                @input="EstimatorToggleChange"
-              />
-            </div>
-
-            <div
-              v-if="doesAnEstimatorNeedToBeAssignedToggle"
-              @click="onClickEstimatorOpen"
-            >
-              <div
-                class="custom-select form-heading"
-                v-model="addEstimatorInfo.name"
-              >
-                <div class="select-text">
-                  {{
-                    addEstimatorValue.name
-                      ? addEstimatorValue.name
-                      : 'Add Estimator'
-                  }}
-                </div>
-              </div>
-            </div>
-            <q-input
-              v-model="estimatingInfo.estimatorToBeAssigned"
-              label="Estimator to be assigned"
-            />
-            <q-input
-              v-model="estimatingInfo.scopeTimeNeeded"
-              label="Scope time needed"
-            />
-            <q-input
-              v-model="estimatingInfo.notesToTheEstimator"
-              label="Notes to the estimator"
-            /><br />
+            <EstimatingInfo :estimatingInfo="estimatingInfo" />
           </q-form>
           <q-btn
             label="Save"
@@ -1484,213 +535,7 @@
         />
         <div class="mobile-container-page-without-search">
           <q-form ref="contractInfoForm" class="form-height">
-            <span class="form-heading">Contract Date</span>
-            <div class="full-width">
-              <q-input
-                class="required"
-                v-model="contractInfo.contractDate"
-                mask="##/##/####"
-                label="MM/DD/YYYY"
-                lazy-rules
-                :rules="[
-                  val =>
-                    (validateDate(val) && val && val.length > 0) ||
-                    'Invalid date!'
-                ]"
-              >
-                <template v-slot:append>
-                  <q-icon
-                    name="event"
-                    size="sm"
-                    color="primary"
-                    class="cursor-pointer"
-                  >
-                    <q-popup-proxy
-                      ref="qDateProxy4"
-                      transition-show="scale"
-                      transition-hide="scale"
-                    >
-                      <q-date
-                        v-model="contractInfo.contractDate"
-                        @input="() => $refs.qDateProxy4.hide()"
-                        mask="MM/DD/YYYY"
-                      ></q-date>
-                    </q-popup-proxy>
-                  </q-icon>
-                </template>
-              </q-input>
-            </div>
-
-            <br />
-            <span class="form-heading">Date of First Contract</span>
-            <div class="full-width">
-              <q-input
-                v-model="contractInfo.firstContractDate"
-                mask="##/##/####"
-                label="MM/DD/YYYY"
-                lazy-rules
-                :rules="[val => validateDate(val) || 'Invalid date!']"
-              >
-                <template v-slot:append>
-                  <q-icon
-                    name="event"
-                    size="sm"
-                    color="primary"
-                    class="cursor-pointer"
-                  >
-                    <q-popup-proxy
-                      ref="qDateProxy4"
-                      transition-show="scale"
-                      transition-hide="scale"
-                    >
-                      <q-date
-                        v-model="contractInfo.firstContractDate"
-                        @input="() => $refs.qDateProxy4.hide()"
-                        mask="MM/DD/YYYY"
-                      ></q-date>
-                    </q-popup-proxy>
-                  </q-icon>
-                </template>
-              </q-input>
-            </div>
-            <div class="full-width">
-              <q-input
-                label=" Time Of First Contract"
-                v-model="contractInfo.time"
-                now
-                mask="time"
-                lazy-rules
-                :rules="[val => validateTime(val) || 'Invalid time!']"
-              >
-                <template v-slot:append>
-                  <q-icon name="access_time" class="cursor-pointer">
-                    <q-popup-proxy
-                      transition-show="scale"
-                      transition-hide="scale"
-                    >
-                      <q-time v-model="contractInfo.time">
-                        <div class="row items-center justify-end">
-                          <q-btn
-                            v-close-popup
-                            label="Close"
-                            color="primary"
-                            flat
-                          ></q-btn>
-                        </div>
-                      </q-time>
-                    </q-popup-proxy>
-                  </q-icon>
-                </template>
-              </q-input>
-            </div>
-            <div class="row">
-              <q-btn-toggle
-                v-model="contractInfo.buttonGroup"
-                push
-                glossy
-                toggle-color="primary"
-                :options="[
-                  { label: ' $', value: 'dollar' },
-                  { label: ' %', value: 'percentage' },
-                  { value: 'update', icon: 'update' }
-                ]"
-              ></q-btn-toggle>
-            </div>
-
-            <div class="row" style="align-items: center">
-              <q-input
-                class="q-ml-auto full-width"
-                mask="#.#"
-                type="number"
-                v-model.number="contractInfo.claimFeeRate"
-                label="Claim Fee Rate"
-                :suffix="
-                  contractInfo.buttonGroup == 'dollar'
-                    ? '$ flat'
-                    : '' || contractInfo.buttonGroup == 'percentage'
-                    ? '%'
-                    : '' || contractInfo.buttonGroup == 'update'
-                    ? '/hr'
-                    : ''
-                "
-                style="width: 50%"
-              />
-            </div>
-            <br />
-            <span class="form-heading"> Source Of Claim </span>
-            <div>
-              <q-select
-                v-model="sourceDetails.type"
-                :options="leadSources"
-                option-label="name"
-                option-value="value"
-                options-dense
-                emit-value
-                map-options
-                options-dense
-                @input="onChangingSourceType()"
-              />
-              <q-input
-                v-if="
-                  sourceDetails.type != constants.industries.VENDOR &&
-                    sourceDetails.type != '' &&
-                    sourceDetails.type != 'google'
-                "
-                type="text"
-                class="required"
-                placeholder="Enter Source details"
-                v-model="sourceDetails.details"
-                lazy-rules
-                :rules="[val => (val && val.length > 0) || '']"
-              />
-              <div
-                v-else-if="sourceDetails.type == constants.industries.VENDOR"
-                class="custom-select"
-                @click="onAddVendorDialogClick(constants.industries.VENDOR)"
-              >
-                <div class="select-text">
-                  {{
-                    sourceDetails.id
-                      ? sourceDetails.details
-                      : 'Select Lead Source'
-                  }}
-                </div>
-              </div>
-            </div>
-            <br />
-            <span class="form-heading">Accept or Cancel Claim ?</span>
-            <p>
-              if this claim will not be accepted, you can mark the claim as
-              beiing "Cancelled",which will close the claim upon creation. This
-              allows you to record the client and property information in
-              claimGuru for historical purposes.
-            </p>
-            <div class="row">
-              <p class="q-mx-none q-my-auto form-heading">Cancelled?</p>
-              <q-toggle
-                class="q-ml-auto"
-                v-model="contractInfo.cancelledToggle"
-              />
-            </div>
-            <div class="full-width">
-              <q-select
-                v-model="contractInfo.reasonForCancellation"
-                :options="reasonForCancellation"
-                label="Reason For Cancellation"
-                options-dense
-              ></q-select>
-            </div>
-            <br />
-            <span class="form-heading">Reason For Cancellation</span>
-            <div class="floating-label">
-              <textarea
-                rows="5"
-                required
-                class="full-width"
-                v-model="contractInfo.reasonForCancellationText"
-                style="resize: none"
-              ></textarea>
-            </div>
+            <ContractInfo :contractInfo="contractInfo" />
           </q-form>
           <q-btn
             label="Save"
@@ -1717,122 +562,7 @@
         />
         <div class="mobile-container-page-without-search">
           <q-form ref="publicAdjustorForm" class="form-height">
-            <div class="form-heading text-bold">CLAIM PERSONNEL</div>
-            <div class="form-heading q-mt-lg">Personnel Role</div>
-            <q-select
-              v-model="publicAdjustor.personnelRole1"
-              :options="personnelRoles"
-              label="Select Role"
-              option-label="name"
-              option-value="value"
-              options-dense
-              emit-value
-              map-options
-              options-dense
-              @input="onFilteringPersonnelRoles('Kuldeep')"
-            ></q-select>
-            <div class="form-heading q-mt-lg">Person Party</div>
-            <q-select
-              v-model="publicAdjustor.personParty1"
-              :options="publicAdjustor.filterRole"
-              :label="!publicAdjustor.personParty1 ? 'Select a Role' : ''"
-              option-label="name"
-              :disable="publicAdjustor.isFilterApply"
-              option-value="value"
-              options-dense
-              emit-value
-              map-options
-              options-dense
-            ></q-select>
-            <div class="form-heading q-mt-lg">Personnel Role</div>
-            <q-select
-              v-model="publicAdjustor.personnelRole2"
-              :options="personnelRoles"
-              label="Select Role"
-              option-label="name"
-              option-value="value"
-              options-dense
-              emit-value
-              map-options
-              options-dense
-            ></q-select>
-            <div class="form-heading q-mt-lg">Person/Party</div>
-            <q-select
-              v-model="publicAdjustor.personParty2"
-              :options="personnelRoles"
-              placeholder="Select a Role"
-              option-label="name"
-              disable
-              option-value="value"
-              options-dense
-              emit-value
-              map-options
-              options-dense
-            ></q-select>
-            <div class="form-heading q-mt-lg">Personnel Role</div>
-            <q-select
-              v-model="publicAdjustor.personnelRole3"
-              :options="personnelRoles"
-              label="Select Role"
-              option-label="name"
-              option-value="value"
-              options-dense
-              emit-value
-              map-options
-              options-dense
-            ></q-select>
-            <div class="form-heading q-mt-lg">Person/Party</div>
-            <q-select
-              v-model="publicAdjustor.personParty3"
-              :options="personnelRoles"
-              placeholder="Select a Role"
-              option-label="name"
-              disable
-              option-value="value"
-              options-dense
-              emit-value
-              map-options
-              options-dense
-            ></q-select>
-            <div class="form-heading q-mt-lg">Personnel Role</div>
-            <q-select
-              v-model="publicAdjustor.personnelRole4"
-              :options="personnelRoles"
-              placeholder="Select Role"
-              option-label="name"
-              option-value="value"
-              options-dense
-              emit-value
-              map-options
-              options-dense
-            ></q-select>
-            <div class="form-heading q-mt-lg">Person/Party</div>
-            <q-select
-              v-model="publicAdjustor.personParty4"
-              :options="personnelRoles"
-              placeholder="Select a Role"
-              option-label="name"
-              disable
-              option-value="value"
-              options-dense
-              emit-value
-              map-options
-              options-dense
-            ></q-select
-            ><br />
-            <span class="form-heading"
-              >Special Instructions, Comments Or Other Notes</span
-            >
-
-            <div class="floating-label">
-              <textarea
-                rows="5"
-                required
-                class="full-width"
-                v-model="publicAdjustor.notes"
-                style="resize: none"
-              ></textarea>
-            </div>
+            <PublicAdjustorInfo :publicAdjustorInfo="publicAdjustorInfo" />
           </q-form>
           <q-btn
             label="Save"
@@ -1888,294 +618,18 @@
         </div>
       </q-card>
     </q-dialog>
-
-    <!-- Mortage Info -->
-    <q-dialog
-      v-model="mortgageInfoDialog"
-      persistent
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <CustomBar
-          @closeDialog="
-            mortgageInfoDialog = false;
-            lossInfoDialog = true;
-          "
-          :dialogName="'Mortagage Info'"
-        />
-        <div class="mobile-container-page-without-search">
-          <q-form ref="estimatingInfoForm" class="form-height">
-            <div
-              class="custom-select"
-              v-model="mortgageDetails[0].id"
-              @click="onAddVendorDialogClick(constants.industries.MORTGAGE)"
-            >
-              <div class="select-text">
-                {{
-                  mortgageDetails[0].value
-                    ? mortgageDetails[0].value
-                    : 'Enter Mortgage Company'
-                }}
-              </div>
-            </div>
-            <q-input
-              v-model="mortgageDetails[0].loanNumber"
-              label="Loan Number"
-            />
-            <q-input
-              v-model="mortgageDetails[0].accountNumber"
-              label="Account Number"
-            /><br />
-            <span class="form-heading">Notes</span>
-            <textarea
-              rows="5"
-              required
-              class="full-width"
-              v-model="mortgageDetails[0].notes"
-              style="resize: none"
-            />
-            <div class="row">
-              <span class="form-heading">
-                Is there a 2nd mortgage on the home?
-              </span>
-              <q-toggle
-                class="q-ml-auto"
-                v-model="isSecondMortgageHome"
-                @input="onSecondMortgageToggle"
-              />
-            </div>
-            <div v-if="isSecondMortgageHome">
-              <div
-                class="custom-select"
-                v-model="mortgageDetails[1].id"
-                @click="
-                  onAddVendorDialogClick(constants.industries.SECONDARYMORTGAGE)
-                "
-              >
-                <div class="select-text">
-                  {{
-                    mortgageDetails[1].value
-                      ? mortgageDetails[1].value
-                      : 'Enter Mortgage Company'
-                  }}
-                </div>
-              </div>
-              <q-input
-                v-model="mortgageDetails[1].loanNumber"
-                label="Loan Number"
-              />
-              <q-input
-                v-model="mortgageDetails[1].accountNumber"
-                label="Account Number"
-              /><br />
-              <span class="form-heading">Notes</span>
-              <textarea
-                rows="5"
-                class="full-width"
-                v-model="mortgageDetails[1].notes"
-                style="resize: none"
-              />
-            </div>
-          </q-form>
-          <q-btn
-            :disable="!expertVendorButton == true"
-            label="Save"
-            color="primary"
-            class="button-width-90"
-            @click="
-              mortgageInfoDialog = false;
-              lossInfoDialog = true;
-            "
-            size="'xl'"
-          />
-        </div>
-      </q-card>
-    </q-dialog>
-
-    <!-- Add Estimator Dialog -->
-    <q-dialog
-      v-model="addEstimatorDialog"
-      persistent
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <CustomBar
-          @closeDialog="addEstimatorDialog = false"
-          :dialogName="'Add New Estimator'"
-        />
-        <div class="mobile-container-page-without-search">
-          <q-form ref="addEstimatorForm" class="form-height">
-            <q-select
-              class="required"
-              v-model="honorific3.id"
-              :options="titles"
-              option-value="id"
-              option-label="value"
-              map-options
-              @input="setTitleName(3)"
-              behavior="menu"
-              emit-value
-              options-dense
-              label="Title"
-              lazy-rules
-              :rules="[
-                val => (val && val.length > 0) || 'Please select the title'
-              ]"
-            />
-
-            <q-input
-              class="required"
-              v-model="addEstimatorInfo.fname"
-              lazy-rules
-              :rules="[
-                val => (val && val.length > 0) || 'Please fill the First name'
-              ]"
-              label="First Name"
-            />
-
-            <q-input v-model="addEstimatorInfo.lname" label="Last Name" />
-            <q-input
-              class="required"
-              v-model="addEstimatorInfo.email"
-              label="Email"
-              lazy-rules
-              :rules="[
-                val =>
-                  validateEmail(val) ||
-                  'You have entered an invalid email address!'
-              ]"
-            />
-
-            <div class="row justify-between">
-              <q-select
-                class="col-5"
-                v-model="addEstimatorInfo.type"
-                :options="contactTypes"
-                option-value="machineValue"
-                option-label="name"
-                map-options
-                options-dense
-                emit-value
-                label="Type"
-              />
-              <q-input
-                class="col-6"
-                v-model.number="addEstimatorInfo.phone"
-                label="Phone"
-                mask="(###) ###-####"
-              />
-            </div>
-          </q-form>
-          <q-btn
-            label="Add Estimator"
-            color="primary"
-            class="full-width q-mt-auto text-capitalize"
-            @click="onCloseAddEstimator('addEstimatorDialog', 5)"
-            size="'xl'"
-          />
-        </div>
-      </q-card>
-    </q-dialog>
-
-    <!-- Vendor list Dialog -->
-    <q-dialog
-      v-model="vendorsListDialog"
-      persistent
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <CustomBar
-          @closeDialog="vendorsListDialog = false"
-          :dialogName="vendorDialogName"
-        />
-        <VendorsList
-          :carrierName="insuranceDetails.carrierName"
-          :selective="true"
-          @selectedVendor="onClosingVendorSelectDialog"
-          ref="list"
-          :showFilter="showVendorDialogFilters"
-          :filterName="vendorDialogFilterByIndustry"
-          :valueName="valueName"
-          @addVendor="(addVendorDialog = true), (vendorsListDialog = false)"
-        />
-      </q-card>
-    </q-dialog>
-
-    <!-- Estimators List Dialog -->
-    <q-dialog
-      v-model="estimatorsListDialog"
-      persistent
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <CustomBar
-          :dialogName="'Estimators'"
-          @closeDialog="estimatorsListDialog = false"
-        />
-        <div class="vendor-list">
-          <div class="actions-div">
-            <q-input placeholder="Search" borderless class="full-width">
-              <template v-slot:prepend>
-                <q-icon name="search" />
-              </template>
-            </q-input>
-            <q-separator vertical inset></q-separator>
-            <q-btn
-              @click="
-                addEstimatorDialog = true;
-                estimatorsListDialog = false;
-              "
-              flat
-              ><img src="~assets/add.svg"
-            /></q-btn>
-          </div>
-          <div
-            v-for="estimator in estimators"
-            :key="estimator.id"
-            class="vendor-list-item"
-            @click="selectEstimator(estimator)"
-          >
-            <span>{{ estimator.fname }} {{ estimator.lname }}</span>
-          </div>
-        </div>
-      </q-card>
-    </q-dialog>
-
-    <!-- Add vendor Dialog -->
-    <q-dialog
-      v-model="addVendorDialog"
-      persistent
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <AddVendor
-          @onCloseAddVendor="onCloseAddVendorDialogBox"
-          @closeDialog="closeAddVendorDialog"
-          :componentName="vendorDialogName"
-          :selectedIndustryType="
-            expertVendorInfo.industry.value == 'Others'
-              ? industryType.value
-              : expertVendorInfo.industry.value
-          "
-        />
-      </q-card>
-    </q-dialog>
   </q-page>
 </template>
 
 <script>
 import CustomBar from 'components/CustomBar';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
+import ContractInfo from 'components/ContractInfo';
+import PublicAdjustorInfo from 'components/PublicAdjustorInfo';
+import EstimatingInfo from 'components/EstimatingInfo';
+import LossInfo from 'components/LossInfo';
+import ExpertVendorInfo from 'components/ExpertVendorInfo';
+import InsuranceInfo from 'components/InsuranceInfo';
 import AddressService from '@utils/country';
 import { validateEmail, validateDate, validateTime } from '@utils/validation';
 import { constants } from '@utils/constant';
@@ -2189,50 +643,79 @@ const addressService = new AddressService();
 
 export default {
   name: 'addClient',
-  components: { CustomBar, VendorsList, AddVendor, AutoCompleteAddress },
+  components: {
+    CustomBar,
+    VendorsList,
+    AddVendor,
+    AutoCompleteAddress,
+    InsuranceInfo,
+    LossInfo,
+    ExpertVendorInfo,
+    EstimatingInfo,
+    ContractInfo,
+    PublicAdjustorInfo
+  },
 
   data() {
     return {
-      addEstimatorValue: { name: '' },
-      expertVendorButton: true,
       industryTypeValue: '',
-      reasonForCancellation: [
-        'Client Cancelled',
-        'Insufficient Coverage',
-        'Loss to small',
-        'No coverage',
-        'Other'
-      ],
+
       contractInfo: {
+        vendorsListDialog: false,
+        vendorDialogFilterByIndustry: '',
+        showVendorDialogFilters: false,
+        addVendorDialog: false,
+        reasonForCancellation: '',
+        vendorDialogName: '',
+        reasonForCancellation: [],
+        sourceDetails: {
+          id: '',
+          type: '',
+          details: ''
+        },
         contractDate: '',
         firstContractDate: '',
         claimFeeRate: '',
         time: '',
         cancelledToggle: false,
-        reasonForCancellation: '',
+
         reasonForCancellationText: '',
 
         buttonGroup: 'dollar'
       },
-      publicAdjustor: {
-        personnelRole1: '',
-        personnelRole2: '',
-        personnelRole3: '',
-        personnelRole4: '',
+      publicAdjustorInfo: {
+        isFieldDisable1: true,
+        isFieldDisable2: true,
+        isFieldDisable3: true,
+        isFieldDisable4: true,
+        personnelRole1: {
+          id: '',
+          value: '',
+          machineValue: ''
+        },
+        personnelRole2: {
+          id: '',
+          value: '',
+          machineValue: ''
+        },
+        personnelRole3: {
+          id: '',
+          value: '',
+          machineValue: ''
+        },
+        personnelRole4: {
+          id: '',
+          value: '',
+          machineValue: ''
+        },
         personParty1: '',
         personParty2: '',
         personParty3: '',
         personParty4: '',
         notes: '',
-        isFilterApply: true,
+
         filterRole: []
       },
-
-      PPdamagedItemsDailog: false,
-      ppDamagedItems: [],
-
-      damagedItemsDailog: false,
-      osDamagedItems: [],
 
       isCreateClientButtonDisabled: true,
 
@@ -2254,25 +737,16 @@ export default {
 
       vendorIndustriesOptions: [],
       lossAddressNameOptions: ['Others'],
-      estimatorsListDialog: false,
+
       constants: constants,
-      valueName: '',
-      mortgageInfoDialog: false,
-      isSecondMortgageHome: false,
-      vendorDialogName: '',
-      vendorDialogFilterByIndustry: '',
-      showVendorDialogFilters: false,
-      lossAddressNameDropdown: 'Others',
+
       publicAdjustorInfoDialog: false,
       contractInfoDialog: false,
-      addVendorDialog: false,
-      addEstimatorDialog: false,
-      vendorsListDialog: false,
+
       officeTaskDialog: false,
       expertVendorInfoDialog: false,
       estimatingInfoDialog: false,
       lossInfoDialog: false,
-      hasClaimBeenFilledToggle: false,
 
       maximizedToggle: true,
       clientInfoDailog: false,
@@ -2294,11 +768,7 @@ export default {
         value: '',
         machineValue: ''
       },
-      sourceDetails: {
-        id: '',
-        type: '',
-        details: ''
-      },
+
       client: {
         id: '',
         value: '',
@@ -2360,6 +830,53 @@ export default {
       },
 
       lossInfo: {
+        isMortgageHomeToggle: false,
+        vendorsListDialog: false,
+        vendorDialogFilterByIndustry: '',
+        showVendorDialogFilters: false,
+        addVendorDialog: false,
+        vendorDialogName: '',
+        valueName: '',
+        mortgageInfoDialog: false,
+        mortgageDetails: [
+          {
+            id: '',
+            value: '',
+            loanNumber: '',
+            accountNumber: '',
+            isPrimary: true,
+            notes: ''
+          }
+        ],
+        lossAddressNameDropdown: 'Others',
+        isSecondMortgageHome: false,
+
+        wasAppifProvidedToTheInsuredToggle: false,
+        doesTheOfficeNeedToProvidePpifToTheInsuredToggle: false,
+        PPdamagedItemsDailog: false,
+        ppDamagedItems: [],
+
+        damagedItemsDailog: false,
+        osDamagedItems: [],
+        isDamageOSToggle: false,
+        isThereDamageToPersonalPropertyToggle: false,
+        femaClaimToggle: false,
+        isStateOfEmergencyToggle: false,
+        isTheHomeHabitable: false,
+        lossAddressDetails: {
+          houseNumber: '',
+          addressCountry: '',
+          addressRegion: '',
+          addressLocality: '',
+          postalCode: '',
+          streetAddress: '',
+          postOfficeBoxNumber: '4',
+          dropBox: {
+            info: '',
+            isPresent: false
+          }
+        },
+        isLossAddressSameAsClientToggle: false,
         repairReplaceRadio: '',
         serialNumber: '',
         PPDamageName: '',
@@ -2409,6 +926,8 @@ export default {
         typeOfLoss: ''
       },
       insuranceDetails: {
+        hasClaimBeenFilledToggle: false,
+        isThisIsForcedPlacedPolicyToggle: false,
         policy: {
           id: '',
           value: ''
@@ -2435,24 +954,36 @@ export default {
         priorPayment: '',
         reasonsOfLD: ''
       },
-      mortgageDetails: [
-        {
-          id: '',
-          value: '',
-          loanNumber: '',
-          accountNumber: '',
-          isPrimary: true,
-          notes: ''
-        }
-      ],
 
       estimatingInfo: {
+        addEstimatorDialog: false,
+        addEstimatorValue: { name: '' },
+        honorific3: {
+          id: '',
+          value: '',
+          machineValue: ''
+        },
+        name: '',
+        fname: '',
+        lname: '',
+        email: '',
+        phone: '',
+        type: '',
+        estimatorsListDialog: false,
+
         estimatorToBeAssigned: '',
         scopeTimeNeeded: '',
-        notesToTheEstimator: ''
+        notesToTheEstimator: '',
+        doesAnEstimatorNeedToBeAssignedToggle: false
       },
 
       expertVendorInfo: {
+        expertVendorButton: true,
+        carrierName: '',
+        carrierId: '',
+        vendorIndustriesOptions: [],
+        anyOtherExpertHiredToggle: false,
+        vendorExpertHiredToggle: false,
         notes: '',
         internalNotes: '',
 
@@ -2467,7 +998,7 @@ export default {
 
       addAditionalPhoneNumberToggle: false,
       tenantOccupiedToggle: false,
-      isDamageOSToggle: false,
+
       mailingAddressDialog: false,
       isMailingAddressSameToggle: false,
       isThereaCoInsuredToggle: false,
@@ -2475,50 +1006,11 @@ export default {
       states: [],
       countries: [],
       insuranceInfoDialog: false,
-      isThisIsForcedPlacedPolicyToggle: false,
+
       DidYouHavePoliceDeclarationToggle: false,
-      isStateOfEmergencyToggle: false,
-      isTheHomeHabitable: false,
-      isThereDamageToPersonalPropertyToggle: false,
-      wasAppifProvidedToTheInsuredToggle: false,
-      doesTheOfficeNeedToProvidePpifToTheInsuredToggle: false,
-      isMortgageHomeToggle: false,
-      isLossAddressSameAsClientToggle: false,
-      lossAddressDetails: {
-        houseNumber: '',
-        addressCountry: '',
-        addressRegion: '',
-        addressLocality: '',
-        postalCode: '',
-        streetAddress: '',
-        postOfficeBoxNumber: '4',
-        dropBox: {
-          info: '',
-          isPresent: false
-        }
-      },
-      addEstimatorInfo: {
-        name: '',
-        fname: '',
-        lname: '',
-        email: '',
-        phone: '',
-        type: ''
-      },
-      honorific3: {
-        id: '',
-        value: '',
-        machineValue: ''
-      },
+
       typeOfLoss: [],
 
-      isTherea2ndMortgageOnTheHomeToggle: false,
-      doesAnEstimatorNeedToBeAssignedToggle: false,
-
-      vendorExpertHiredToggle: false,
-      anyOtherExpertHiredToggle: false,
-
-      femaClaimToggle: false,
       additionalOfficeTaskRequiredToggle: false,
       officeActionRequiredTypes: [],
       officeTaskRequiredTypes: []
@@ -2530,10 +1022,9 @@ export default {
       Date.now(),
       'MM/DD/YYYY'
     );
-
     this.getVendors(this.$route.params.id);
     this.getClientTypes();
-    this.getEstimators();
+
     this.getPropertyTypes();
     this.getPolicyTypes();
     this.getLossCauses();
@@ -2547,21 +1038,21 @@ export default {
       this.insuredDetails.email = this.selectedLead.primaryContact.email;
       this.insuredDetails.phone = this.selectedLead.primaryContact.phoneNumber[0].number;
       this.insuredDetails.type = this.selectedLead.primaryContact.phoneNumber[0].type;
-      this.sourceDetails.id = this.selectedLead.leadSource.id;
-      this.sourceDetails.type = this.selectedLead.leadSource.type;
+      this.contractInfo.sourceDetails.id = this.selectedLead.leadSource.id;
+      this.contractInfo.sourceDetails.type = this.selectedLead.leadSource.type;
       this.honorific1.id = this.selectedLead.primaryContact.honorific.id;
       this.honorific1.value = this.selectedLead.primaryContact.honorific.value;
       this.honorific1.machineValue = this.selectedLead.primaryContact.honorific.machineValue;
-      this.sourceDetails.details = this.selectedLead.leadSource.detail;
+      this.contractInfo.sourceDetails.details = this.selectedLead.leadSource.detail;
       this.insuranceDetails.carrierName = this.selectedLead.carrier.value;
       this.insuranceDetails.carrierId = this.selectedLead.carrier.id;
       this.insuranceDetails.policyNumber = this.selectedLead.policyNumber;
-      this.lossAddressDetails.houseNumber = this.selectedLead.lossLocation.houseNumber;
-      this.lossAddressDetails.addressCountry = this.selectedLead.lossLocation.addressCountry;
-      this.lossAddressDetails.addressLocality = this.selectedLead.lossLocation.addressLocality;
-      this.lossAddressDetails.addressRegion = this.selectedLead.lossLocation.addressRegion;
-      this.lossAddressDetails.postalCode = this.selectedLead.lossLocation.postalCode;
-      this.lossAddressDetails.streetAddress = this.selectedLead.lossLocation.streetAddress;
+      this.lossInfo.lossAddressDetails.houseNumber = this.selectedLead.lossLocation.houseNumber;
+      this.lossInfo.lossAddressDetails.addressCountry = this.selectedLead.lossLocation.addressCountry;
+      this.lossInfo.lossAddressDetails.addressLocality = this.selectedLead.lossLocation.addressLocality;
+      this.lossInfo.lossAddressDetails.addressRegion = this.selectedLead.lossLocation.addressRegion;
+      this.lossInfo.lossAddressDetails.postalCode = this.selectedLead.lossLocation.postalCode;
+      this.lossInfo.lossAddressDetails.streetAddress = this.selectedLead.lossLocation.streetAddress;
       this.lossInfo.causeOfLoss.id = this.selectedLead.lossCause.id;
       this.lossInfo.causeOfLoss.value = this.selectedLead.lossCause.value;
       this.lossInfo.causeOfLoss.machineValue = this.selectedLead.lossCause.machineValue;
@@ -2619,191 +1110,26 @@ export default {
       'addIndustry'
     ]),
     ...mapMutations(['setSelectedLead']),
-    EstimatorToggleChange() {
-      this.addEstimatorInfo = {
-        name: '',
-        fname: '',
-        lname: '',
-        email: '',
-        phone: '',
-        type: ''
-      };
-      this.honorific3.id = '';
-      this.addEstimatorValue.name = '';
-    },
-
-    onClickEstimatorOpen() {
-      this.getEstimators();
-      this.estimatorsListDialog = true;
-    },
-
-    async onCloseAddEstimator() {
-      const success = await this.$refs.addEstimatorForm.validate();
-
-      if (success) {
-        const payload = {
-          fname: this.addEstimatorInfo.fname,
-          lname: this.addEstimatorInfo.lname,
-          honorific: {
-            id: this.honorific3.id,
-            value: this.honorific3.title,
-            machineValue: this.honorific3.machineValue
-          },
-          email: this.addEstimatorInfo.email,
-          phoneNumber: [
-            {
-              type: this.addEstimatorInfo.type,
-              number: this.addEstimatorInfo.phone
+    lossAddressSame() {
+      if (this.lossInfo.isLossAddressSameAsClientToggle) {
+        this.lossInfo.lossAddressDetails = this.clientAddressDetails;
+      } else {
+        if (this.selectedLead.id) {
+          this.lossInfo.lossAddressDetails = {
+            houseNumber: this.selectedLead.lossLocation.houseNumber,
+            addressCountry: this.selectedLead.lossLocation.addressCountry,
+            addressRegion: this.selectedLead.lossLocation.addressRegion,
+            addressLocality: this.selectedLead.lossLocation.addressLocality,
+            postalCode: this.selectedLead.lossLocation.postalCode,
+            streetAddress: this.selectedLead.lossLocation.streetAddress,
+            postOfficeBoxNumber: '',
+            dropBox: {
+              info: '',
+              isPresent: false
             }
-          ]
-        };
-
-        const response = this.addEstimator(payload);
-        if (response) {
-          this.addEstimatorValue.name = this.addEstimatorInfo.fname;
-          this.addEstimatorDialog = false;
-          this.getEstimators();
-          // this.carrierName = this.addEstimatorInfo.fname;
-        }
-      }
-    },
-    //addvendor close list
-
-    async onCloseAddVendorDialogBox(result, selected, industryType) {
-      if (result === true) {
-        await this.getVendors();
-        this.onClosingVendorSelectDialog(selected, this.valueName);
-      }
-    },
-
-    // in Expert Vendor info when the Toggle Button is off data will be cleared.
-    onExpertVendorToggleOff() {
-      if (!this.vendorExpertHiredToggle) {
-        this.expertVendorInfo.industry = [
-          {
-            id: '',
-            value: '',
-            machineValue: ''
-          }
-        ];
-        this.expertVendorInfo.vendors = [
-          {
-            id: '',
-            value: 'Select Vendor'
-          }
-        ];
-        this.expertVendorButton = true;
-      } else {
-        this.expertVendorButton = false;
-      }
-    },
-
-    // For Adding Another Industry in Expert/Vendor
-    async addAnotherIndustry() {
-      let text = this.industryType.value.toLowerCase();
-
-      if (text != 'others' && text != '') {
-        const response = await this.addIndustry(this.industryType);
-        if (response) {
-          this.$q.notify({
-            message: 'Added New Industry Type',
-            position: 'top',
-            type: 'negative'
-          });
-        }
-        this.industryType.value = '';
-        this.getVendorIndustries();
-      } else {
-        this.$q.notify({
-          message: 'Sorry ! Cannot add Others or Blank  ',
-          position: 'top',
-          type: 'negative'
-        });
-      }
-    },
-    addAnotherVendor() {
-      this.expertVendorInfo.industry.push({
-        id: this.expertVendorInfo.industry.id,
-        value: this.expertVendorInfo.industry.value
-      });
-      let len = this.expertVendorInfo.vendors.length;
-      this.expertVendorInfo.vendors.push({
-        id: this.expertVendorInfo.vendors[len - 1].id,
-        value: this.expertVendorInfo.vendors[len - 1].value
-      });
-      this.expertVendorInfo.vendors[len].value = 'Select Vendor';
-    },
-    async onClosingVendorSelectDialog(vendor, dialogName) {
-      switch (dialogName) {
-        case constants.industries.CARRIER:
-          this.insuranceDetails.carrierId = vendor.id;
-          this.insuranceDetails.carrierName = vendor.name;
-          break;
-        case constants.industries.VENDOR:
-          this.sourceDetails.id = vendor.id;
-          this.sourceDetails.details = vendor.name;
-          break;
-        case constants.industries.MORTGAGE:
-          this.mortgageDetails[0].id = vendor.id;
-          this.mortgageDetails[0].value = vendor.name;
-          break;
-        case constants.industries.SECONDARYMORTGAGE:
-          this.mortgageDetails[1].id = vendor.id;
-          this.mortgageDetails[1].value = vendor.name;
-          break;
-        case constants.industries.EXPERTVENDOR:
-          const params = {
-            industry: '',
-            name: ''
           };
-          await this.getVendors(params);
-
-          let vendorsValue = this.vendors.find(o => o.name === vendor.name);
-
-          this.expertVendorInfo.id = vendorsValue.id;
-
-          let len = this.expertVendorInfo.vendors.length;
-          this.expertVendorInfo.vendors[len - 1].id = vendorsValue.id;
-          this.expertVendorInfo.vendors[len - 1].value = vendor.name;
-
-          break;
+        }
       }
-
-      this.vendorsListDialog = false;
-    },
-    // This function is used for filtering role in public adjustor page
-    onFilteringPersonnelRoles(val) {
-      if (this.publicAdjustor.personnelRole1 == 'manager') {
-        this.publicAdjustor.filterRole.push(val);
-        this.publicAdjustor.isFilterApply = false;
-      }
-    },
-    //This function is user for searching Industries and  add others option at the last
-    searchFilterBy(val, update) {
-      let len = this.vendorIndustries.length;
-
-      if (this.vendorIndustries[len - 1].name != 'Others') {
-        this.vendorIndustries.push({
-          id: '',
-          machineValue: 'others',
-          name: 'Others'
-        });
-      }
-
-      this.expertVendorInfo.industry.value = null;
-      if (val === ' ') {
-        update(() => {
-          this.vendorIndustriesOptions = this.vendorIndustries;
-        });
-        return;
-      }
-
-      update(() => {
-        const search = val.toLowerCase();
-        this.vendorIndustriesOptions = this.vendorIndustries.filter(
-          v => v.name.toLowerCase().indexOf(search) > -1
-        );
-      });
     },
 
     createClientDailogBoxOpen(value) {
@@ -2841,46 +1167,7 @@ export default {
     },
     validateDate,
     validateTime,
-    deleteItems(index) {
-      this.$delete(this.ppDamagedItems, index);
-    },
-    addPPDamagedItems() {
-      this.PPdamagedItemsDailog = false;
-      this.ppDamagedItems.push({
-        name: this.lossInfo.PPDamageName,
-        desc: this.lossInfo.PPDamageDescription,
-        cost: this.lossInfo.PPDamagedItemCost,
-        serialNumber: this.lossInfo.serialNumber,
-        radio: this.lossInfo.repairReplaceRadio
-      });
-      this.lossInfo.PPDamageName = '';
-      this.lossInfo.PPDamageDescription = '';
-      this.lossInfo.serialNumber = '';
-      this.lossInfo.PPDamagedItemCost = '';
-      this.lossInfo.repairReplaceRadio = false;
-    },
-    deletePPDamagedItem(index) {
-      this.$delete(this.ppDamagedItems, index);
-    },
 
-    setVendorIndustryName(index) {
-      const selectedName = this.expertVendorInfo.industry[index].value;
-      const result = this.vendorIndustries.find(obj => {
-        return obj.name === selectedName;
-      });
-
-      this.expertVendorInfo.industry[index].value = result.name;
-      this.industryTypeValue = result.name;
-
-      this.expertVendorInfo.industry[index].id = result.id;
-      this.expertVendorInfo.industry[index].machineValue = result.machineValue;
-
-      if (this.expertVendorInfo.industry[index].value != 'Others') {
-        this.expertVendorButton = true;
-      } else {
-        this.expertVendorButton = false;
-      }
-    },
     onCountrySelect(country) {
       this.states = addressService.getStates(country);
     },
@@ -3005,63 +1292,15 @@ export default {
       }
     },
 
-    lossAddressSame() {
-      if (this.isLossAddressSameAsClientToggle) {
-        this.lossAddressDetails = this.clientAddressDetails;
-      } else {
-        if (this.selectedLead.id) {
-          this.lossAddressDetails = {
-            houseNumber: this.selectedLead.lossLocation.houseNumber,
-            addressCountry: this.selectedLead.lossLocation.addressCountry,
-            addressRegion: this.selectedLead.lossLocation.addressRegion,
-            addressLocality: this.selectedLead.lossLocation.addressLocality,
-            postalCode: this.selectedLead.lossLocation.postalCode,
-            streetAddress: this.selectedLead.lossLocation.streetAddress,
-            postOfficeBoxNumber: '',
-            dropBox: {
-              info: '',
-              isPresent: false
-            }
-          };
-        } else {
-          this.lossAddressDetails = {
-            addressCountry: '',
-            addressRegion: '',
-            addressLocality: '',
-            postalCode: '',
-            streetAddress: '',
-            postOfficeBoxNumber: '',
-            dropBox: {
-              info: '',
-              isPresent: false
-            }
-          };
-        }
-      }
-    },
-    onSecondMortgageToggle() {
-      if (this.isSecondMortgageHome) {
-        this.mortgageDetails.push({
-          id: '',
-          value: '',
-          loanNumber: '',
-          accountNumber: '',
-          isPrimary: false,
-          notes: ''
-        });
-      } else {
-        this.mortgageDetails.pop();
-      }
-    },
     async createClientButtonClick() {
       const payload = {
         isOrganization: this.primaryDetails.isOrganization,
         organizationName: this.primaryDetails.organizationName,
         isOrganizationPolicyholder: this.policyHolder.isPolicyHolder,
         source: {
-          id: this.sourceDetails.id,
-          type: this.sourceDetails.type,
-          detail: this.sourceDetails.details
+          id: this.contractInfo.sourceDetails.id,
+          type: this.contractInfo.sourceDetails.type,
+          detail: this.contractInfo.sourceDetails.details
         },
         type: {
           ...this.client
@@ -3136,10 +1375,10 @@ export default {
       if (!this.isThereaCoInsuredToggle) {
         delete payload.insuredInfo.secondary;
       }
-      if (this.sourceDetails.type == constants.industries.VENDOR) {
-        payload.source.id = this.sourceDetails.id;
+      if (this.contractInfo.sourceDetails.type == constants.industries.VENDOR) {
+        payload.source.id = this.contractInfo.sourceDetails.id;
       } else {
-        payload.source.detail = this.sourceDetails.details;
+        payload.source.detail = this.contractInfo.sourceDetails.details;
       }
 
       const response = await this.addClient(payload);
@@ -3209,9 +1448,10 @@ export default {
             }
           }
         },
-        mortgageInfo: this.mortgageDetails,
+        mortgageInfo: this.lossInfo.mortgageDetails,
         lossInfo: {
-          lossAddressName: this.lossInfo.lossAddressName,
+          isNewAddress:
+            this.lossInfo.lossAddressNameDropdown == 'New' ? true : false,
           address: {
             ...this.clientAddressDetails
           },
@@ -3229,26 +1469,27 @@ export default {
           },
           deadlineDate: dateToSend(this.lossInfo.deadlineDate),
           recovDDDate: dateToSend(this.lossInfo.recovDeadline),
-          isFEMA: this.femaClaimToggle,
-          isEmergency: this.isStateOfEmergencyToggle,
+          isFEMA: this.lossInfo.femaClaimToggle,
+          isEmergency: this.lossInfo.isStateOfEmergencyToggle,
           emergencyName: this.lossInfo.nameOfEmergency,
           desc: this.lossInfo.descriptionDwelling,
-          isHabitable: this.isTheHomeHabitable,
+          isHabitable: this.lossInfo.isTheHomeHabitable,
           serverity: {
             ...this.lossInfo.severityOfClaimType
           },
-          OSDamageItems: this.osDamagedItems,
-          PPDamageItems: this.ppDamagedItems,
-          isPPIF: this.wasAppifProvidedToTheInsuredToggle,
-          isNeedPPIF: this.doesTheOfficeNeedToProvidePpifToTheInsuredToggle,
+          OSDamageItems: this.lossInfo.osDamagedItems,
+          PPDamageItems: this.lossInfo.ppDamagedItems,
+          isPPIF: this.lossInfo.wasAppifProvidedToTheInsuredToggle,
+          isNeedPPIF: this.lossInfo
+            .doesTheOfficeNeedToProvidePpifToTheInsuredToggle,
 
-          hasHomeMortgage: this.isMortgageHomeToggle,
+          hasHomeMortgage: this.lossInfo.isMortgageHomeToggle,
           isSecondClaim: false
         },
         expertInfo: {
-          isVendorAssigned: this.vendorExpertHiredToggle,
+          isVendorAssigned: this.expertVendorInfo.vendorExpertHiredToggle,
           vendor: this.expertVendorInfo.vendors,
-          isInsuredHired: this.anyOtherExpertHiredToggle,
+          isInsuredHired: this.expertVendorInfo.anyOtherExpertHiredToggle,
           notes: this.expertVendorInfo.notes,
           internalNotes: this.expertVendorInfo.internalNotes
         },
@@ -3263,12 +1504,29 @@ export default {
           dateOfFirstContact: dateToSend(this.contractInfo.firstContractDate)
         },
         personnel: {
-          notes: this.publicAdjustor.notes,
+          notes: this.publicAdjustorInfo.notes,
           users: [
             {
-              id: '',
-              name: '',
-              role: ''
+              id: this.publicAdjustorInfo.personnelRole1.id,
+              name: this.publicAdjustorInfo.personParty1.name,
+              role: this.publicAdjustorInfo.personnelRole1.value
+            },
+
+            {
+              id: this.publicAdjustorInfo.personnelRole2.id,
+              name: this.publicAdjustorInfo.personParty2.name,
+              role: this.publicAdjustorInfo.personnelRole2.value
+            },
+
+            {
+              id: this.publicAdjustorInfo.personnelRole3.id,
+              name: this.publicAdjustorInfo.personParty3.name,
+              role: this.publicAdjustorInfo.personnelRole3.value
+            },
+            {
+              id: this.publicAdjustorInfo.personnelRole4.id,
+              name: this.publicAdjustorInfo.personParty4.name,
+              role: this.publicAdjustorInfo.personnelRole4.value
             }
           ]
         }
@@ -3280,119 +1538,7 @@ export default {
       });
     },
 
-    selectEstimator(value) {
-      this.addEstimatorValue.name = value.fname;
-      this.estimatorsListDialog = false;
-    },
-
-    validateEmail,
-    addDamagedItems() {
-      this.osDamagedItems.push({
-        name: this.lossInfo.OSDamageName,
-        desc: this.lossInfo.OSDamageDescription,
-        cost: this.lossInfo.OSDamagedItemCost
-      });
-
-      this.damagedItemsDailog = false;
-      this.lossInfo.OSDamageName = '';
-      this.lossInfo.OSDamageDescription = '';
-      this.lossInfo.OSDamagedItemCost = '';
-    },
-    deleteDamagedItem(index) {
-      this.$delete(this.osDamagedItems, index);
-    },
-
-    onChangingSourceType() {
-      this.sourceDetails.id = '';
-      this.sourceDetails.details = '';
-      this.sourceDetails.machineValue = '';
-    },
-
-    onToggleButtonClick() {
-      if (this.mortgageDetails.length > 1) {
-        this.mortgageDetails.pop();
-      }
-      if (!this.isMortgageHomeToggle) {
-        this.isSecondMortgageHome = false;
-        this.mortgageDetails = [
-          {
-            id: '',
-            value: '',
-            loanNumber: '',
-            accountNumber: '',
-            isPrimary: true,
-            notes: ''
-          }
-        ];
-      }
-    },
-    closeAddVendorDialog(e) {
-      this.addVendorDialog = false;
-
-      if (e) {
-        if (
-          this.vendorDialogName === constants.industries.CARRIER ||
-          this.vendorDialogName === constants.industries.MORTGAGE
-        ) {
-          const params = {
-            industry:
-              this.vendorDialogName === constants.industries.CARRIER
-                ? constants.industries.CARRIER
-                : constants.industries.MORTGAGE,
-            name: ''
-          };
-          this.$refs.list.getVendors(params);
-        } else {
-          this.$refs.list.getVendors();
-        }
-        this.vendorsListDialog = false;
-      } else {
-        this.vendorsListDialog = true;
-      }
-    },
-
-    async onAddVendorDialogClick(name, index) {
-      this.valueName = name;
-      switch (name) {
-        case constants.industries.MORTGAGE:
-          this.vendorDialogName = constants.industries.MORTGAGE;
-          this.showVendorDialogFilters = false;
-          this.vendorDialogFilterByIndustry = constants.industries.MORTGAGE;
-          const params = {
-            industry: this.vendorDialogFilterByIndustry,
-            name: ''
-          };
-          await this.getVendors(params);
-          break;
-        case constants.industries.SECONDARYMORTGAGE:
-          this.vendorDialogName = constants.industries.MORTGAGE;
-          this.showVendorDialogFilters = false;
-          this.vendorDialogFilterByIndustry = constants.industries.MORTGAGE;
-          break;
-        case constants.industries.EXPERTVENDOR:
-          this.vendorDialogName = constants.industries.EXPERTVENDOR;
-          this.showVendorDialogFilters = false;
-          this.vendorDialogFilterByIndustry = constants.industries.VENDOR;
-
-          this.vendorDialogFilterByIndustry = this.expertVendorInfo.industry[
-            index
-          ].machineValue;
-          break;
-        case constants.industries.CARRIER:
-          this.vendorDialogName = constants.industries.CARRIER;
-          this.showVendorDialogFilters = false;
-          this.vendorDialogFilterByIndustry = constants.industries.CARRIER;
-          break;
-        case constants.industries.VENDOR:
-          this.vendorDialogName = constants.industries.VENDOR;
-          this.showVendorDialogFilters = true;
-          this.vendorDialogFilterByIndustry = '';
-          break;
-        default:
-          this.vendorDialogName = name;
-      }
-      this.vendorsListDialog = true;
-    }
+    validateEmail
   }
 };
 </script>

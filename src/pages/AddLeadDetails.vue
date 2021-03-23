@@ -180,7 +180,6 @@
                 </q-input>
               </div>
               <q-select
-                class="required"
                 v-model="lossDetails.causeOfLoss.id"
                 option-value="id"
                 option-label="name"
@@ -190,10 +189,6 @@
                 :options="lossCauses"
                 @input="setTypes(lossCauses, lossDetails.causeOfLoss)"
                 label="Cause of Loss"
-                :rules="[
-                  val =>
-                    (val && val.length > 0) || 'Please select the cause of loss'
-                ]"
               /><br />
 
               <q-input
