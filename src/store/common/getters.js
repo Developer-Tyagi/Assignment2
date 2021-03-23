@@ -11,3 +11,9 @@ export const titles = state => state.titles;
 
 export const plans = state => state.plans;
 export const clientTypes = state => state.clientTypes;
+
+export const roleTypes = state => state.roleTypes;
+
+export const userRoles = state => state.userRoles;
+
+export const allDocuments = state => state.allDocuments;

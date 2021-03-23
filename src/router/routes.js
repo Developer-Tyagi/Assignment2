@@ -143,6 +143,12 @@ const routes = [
         component: () => import('pages/ClientDocuments.vue')
       },
       {
+        path: 'property-details',
+        name: 'properties and claims ',
+        caseSensitive: true,
+        component: () => import('pages/PropertyInfo.vue')
+      },
+      {
         path: 'add-client',
         name: 'create client',
         caseSensitive: true,

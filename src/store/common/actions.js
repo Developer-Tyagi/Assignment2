@@ -1,4 +1,5 @@
 import request from '@api';
+import { buildApiData } from 'src/utils/api';
 export function setLoading({ commit }, value) {
   commit('setLoading', value);
 }
@@ -17,6 +18,23 @@ export async function getClientTypes({ commit, dispatch }) {
     });
   }
 }
+
+export async function getAllUsers({ commit, dispatch }, params) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get('/users', params);
+    commit('setUserRoles', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response.data.title
+    });
+  }
+}
+
 export function setNotification({ commit }, notification) {
   commit('setNotification', notification);
 }
@@ -81,5 +99,74 @@ export async function getPlansInfo({ commit, dispatch }) {
       type: 'negative',
       message: e.response.data.title
     });
+  }
+}
+
+export async function getRoles({ commit, dispatch }) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get('/roles');
+    commit('setRoles', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response.data.title
+    });
+  }
+}
+
+export async function getFolderDocuments({ commit, dispatch }) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get('/documents');
+    commit('setAllDocuments', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response.data.title
+    });
+  }
+}
+
+export async function createDocuments({ dispatch, state }, formData) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post('/documents', formData);
+
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response.data.title
+    });
+    return false;
+  }
+}
+
+export async function createDirectories({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      '/directories',
+      buildApiData('directories', payload)
+    );
+
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response.data.title
+    });
+    return false;
   }
 }

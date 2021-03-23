@@ -101,7 +101,12 @@
       </div>
     </div>
     <q-dialog v-model="dialogBox" persistent>
-      <q-card style="height: 60vh; width: 50vw">
+      <q-card
+        :class="{
+          'inspection-dialog-box': tab.key === 'inspectionType',
+          'other-dialog-box': tab.key !== 'inspectionType'
+        }"
+      >
         <q-bar class="row justify-between" style="height: 50px">
           <div class="col-7 text-bold">Add {{ dialogBoxName.name }}</div>
           <q-btn dense flat icon="close" v-close-popup>
@@ -109,14 +114,18 @@
           </q-btn>
         </q-bar>
 
-        <q-card-section style="height: calc(55vh - 90px); overflow: auto">
-          <div class="column q-pa-lg">
+        <q-card-section
+          :class="{
+            'dialog-box-content': tab.key === 'inspectionType',
+            'other-dialog-box-content': tab.key !== 'inspectionType'
+          }"
+        >
+          <div class="column">
             <q-form ref="form" v-if="tab.key !== 'inspectionType'">
               <div class="q-pl-xs">
                 <q-input
                   v-model="payload.value"
-                  class="q-mx-xl"
-                  style="width: 300px"
+                  class="full-width"
                   outlined
                   :rules="[
                     val =>
@@ -473,5 +482,19 @@ export default {
 
 ::-webkit-scrollbar {
   width: 0px;
+}
+
+.inspection-dialog-box {
+  height: 60vh;
+  width: 50vw;
+
+  .dialog-box-content {
+    height: calc(55vh - 90px);
+    overflow: auto;
+  }
+}
+.other-dialog-box {
+  height: 30vh;
+  width: 40vw;
 }
 </style>

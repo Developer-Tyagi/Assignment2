@@ -5,8 +5,13 @@ export function setClients(state, clients) {
     name: client.attributes.insuredInfo.primary['fname']
   }));
 }
+
 export function setSelectedEditClient(state, client) {
   state.editSelectedClient = client;
+}
+
+export function setSelectedClientProperty(state, client) {
+  state.setClientProperty = client;
 }
 
 export function setEstimators(state, estimators) {
@@ -15,6 +20,7 @@ export function setEstimators(state, estimators) {
     id: estimator.id
   }));
 }
+
 export function setSelectedClientId(state, id) {
   state.selectedClientId = id;
 }

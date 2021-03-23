@@ -8,6 +8,13 @@ export function setClientTypes(state, types) {
     id: type.id
   }));
 }
+export function setUserRoles(state, userRoles) {
+  state.userRoles = userRoles.map(type => ({
+    name: type.attributes.name,
+    id: type.id
+  }));
+}
+
 export function setNotification(state, value) {
   state.notification = value;
 }
@@ -34,5 +41,14 @@ export function setLossCause(state, types) {
     name: type.attributes.value,
     machineValue: type.attributes.machineValue,
     id: type.id
+  }));
+}
+
+export function setRoles(state, roles) {
+  state.roleTypes = roles.map(type => ({
+    name: type.attributes.value,
+    machineValue: type.attributes.machineValue,
+    id: type.id,
+    isPaid: type.attributes.isPaid
   }));
 }

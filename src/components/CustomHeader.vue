@@ -16,6 +16,7 @@
                 $route.name === 'leads dashboard' ||
                 $route.name === 'vendors' ||
                 $route.name === 'settings' ||
+                $route.name === 'manage users' ||
                 $route.name === 'admin' ||
                 $route.name === 'configuration')) ||
               ($q.screen.width < 992 && $route.name === 'dashboard')
@@ -155,6 +156,11 @@ export default {
           title: 'Admin',
           link: '/admin',
           description: 'Setup Company , account, email, actions etc.'
+        },
+        {
+          title: 'Manage Users',
+          link: '/manage-users',
+          description: 'View, Add and Manage all types of Vendors.'
         },
         {
           title: 'Configuration',

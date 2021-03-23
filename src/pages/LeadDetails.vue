@@ -148,10 +148,8 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import moment from 'moment';
-import CustomHeader from 'components/CustomHeader';
 
 export default {
-  components: { CustomHeader },
   computed: {
     ...mapGetters(['selectedLead'])
   },

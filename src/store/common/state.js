@@ -5,7 +5,9 @@ export default function() {
     contactTypes: [],
     titles: [],
     clientTypes: [],
+    userRoles: [],
     lossCauses: [],
+    roleTypes: [],
     leadSources: [
       { value: '', name: 'None' },
       { value: 'client', name: 'Prior Client' },
@@ -16,7 +18,6 @@ export default function() {
       { value: 'google', name: 'Google' },
       { value: 'other', name: 'Other' }
     ],
-
     plans: [
       {
         id: '3',
