@@ -246,12 +246,17 @@
               <q-toggle
                 class="q-ml-auto"
                 v-model="addAditionalPhoneNumberToggle"
+                @input="onaddAditionalPhoneNumberToggle"
               />
             </div>
             <div v-if="addAditionalPhoneNumberToggle">
-              <div class="row justify-between">
+              <div
+                class="row justify-between"
+                v-for="(addPhone, index) in phoneNumber"
+                v-if="index >= 0"
+              >
                 <q-select
-                  v-model="addAditionalPhoneNumber.type1"
+                  v-model="phoneNumber[index].type"
                   class="required col-5"
                   label="Type"
                   :options="contactTypes"
@@ -266,8 +271,8 @@
                   ]"
                 />
                 <q-input
-                  v-model.number="addAditionalPhoneNumber.phone2"
-                  label="Phone2"
+                  v-model.number="phoneNumber[index].number"
+                  label="Phone"
                   class="required col-6"
                   mask="(###) ###-####"
                   lazy-rules
@@ -278,33 +283,23 @@
                   ]"
                 />
               </div>
-              <div class="row justify-between">
-                <q-select
-                  class="required col-5"
-                  v-model="addAditionalPhoneNumber.type2"
-                  label="Type"
-                  :options="contactTypes"
-                  option-value="machineValue"
-                  option-label="name"
-                  map-options
-                  emit-value
-                  options-dense
-                  lazy-rules
-                  :rules="[
-                    val => (val && val.length > 0) || 'Please select phone type'
-                  ]"
+              <div class="row">
+                <q-btn
+                  outline
+                  class="q-mt-sm"
+                  @click="addAnotherContact"
+                  color="primary"
+                  label="Add"
+                  style="margin-right: auto"
                 />
-                <q-input
-                  class="required col-6"
-                  v-model.number="addAditionalPhoneNumber.phone3"
-                  label="Phone3"
-                  mask="(###) ###-####"
-                  lazy-rules
-                  :rules="[
-                    val =>
-                      (val && val.length == 14) ||
-                      'Please enter the phone number'
-                  ]"
+
+                <q-btn
+                  v-if="phoneNumber.length > 1"
+                  outline
+                  @click="RemoveAnotherContact"
+                  class="q-mt-sm"
+                  color="primary"
+                  label="Remove"
                 />
               </div>
             </div>
@@ -2193,11 +2188,7 @@
           @onCloseAddVendor="onCloseAddVendorDialogBox"
           @closeDialog="closeAddVendorDialog"
           :componentName="vendorDialogName"
-          :selectedIndustryType="
-            expertVendorInfo.industry.value == 'Others'
-              ? industryType.value
-              : expertVendorInfo.industry.value
-          "
+          :selectedIndustryType="currentExpertVendorIndustryType"
         />
       </q-card>
     </q-dialog>
@@ -2224,6 +2215,7 @@ export default {
 
   data() {
     return {
+      currentExpertVendorIndustryType: '',
       params: {
         role: ''
       },
@@ -2375,13 +2367,13 @@ export default {
         machineValue: '',
         email: ''
       },
-      addAditionalPhoneNumber: {
-        phone2: '',
-        phone3: '',
-        phone: '',
-        type1: '',
-        type2: ''
-      },
+
+      phoneNumber: [
+        {
+          type: '',
+          number: ''
+        }
+      ],
       clientAddressDetails: {
         addressCountry: '',
         addressRegion: '',
@@ -2680,6 +2672,27 @@ export default {
       'getAllUsers'
     ]),
     ...mapMutations(['setSelectedLead']),
+    // For adding multiple Contact Numbers in ClientInfo
+    addAnotherContact() {
+      this.phoneNumber.push({
+        type: '',
+        number: ''
+      });
+    },
+    RemoveAnotherContact() {
+      this.phoneNumber.pop();
+    },
+    onaddAditionalPhoneNumberToggle() {
+      if (this.addAditionalPhoneNumberToggle == false) {
+        this.phoneNumber = [
+          {
+            type: '',
+            number: ''
+          }
+        ];
+      }
+    },
+
     EstimatorToggleChange() {
       this.addEstimatorInfo = {
         name: '',
@@ -2735,7 +2748,6 @@ export default {
 
     async onCloseAddVendorDialogBox(result, selected, industryType) {
       if (result === true) {
-        await this.getVendors();
         this.onClosingVendorSelectDialog(selected, this.valueName);
       }
     },
@@ -2817,7 +2829,7 @@ export default {
           break;
         case constants.industries.EXPERTVENDOR:
           const params = {
-            industry: '',
+            industry: vendor.industry.machineValue,
             name: ''
           };
           await this.getVendors(params);
@@ -2923,9 +2935,11 @@ export default {
 
     setVendorIndustryName(index) {
       const selectedName = this.expertVendorInfo.industry[index].value;
+      this.currentExpertVendorIndustryType = selectedName;
       const result = this.vendorIndustries.find(obj => {
         return obj.name === selectedName;
       });
+      this.currentExpertVendorIndustryType = result;
 
       this.expertVendorInfo.industry[index].value = result.name;
       this.industryTypeValue = result.name;
@@ -3185,17 +3199,8 @@ export default {
           mailingAddress: {
             ...this.mailingAddressDetails
           },
-          phoneNumbers: [
-            {
-              type: this.addAditionalPhoneNumber.type1,
-              number: this.addAditionalPhoneNumber.phone2
-            },
-            {
-              type: this.addAditionalPhoneNumber.type2,
+          phoneNumbers: this.phoneNumber,
 
-              number: this.addAditionalPhoneNumber.phone3
-            }
-          ],
           tenantInfo: {
             name: '',
             phoneNumber: {
@@ -3428,21 +3433,6 @@ export default {
       this.addVendorDialog = false;
 
       if (e) {
-        if (
-          this.vendorDialogName === constants.industries.CARRIER ||
-          this.vendorDialogName === constants.industries.MORTGAGE
-        ) {
-          const params = {
-            industry:
-              this.vendorDialogName === constants.industries.CARRIER
-                ? constants.industries.CARRIER
-                : constants.industries.MORTGAGE,
-            name: ''
-          };
-          this.$refs.list.getVendors(params);
-        } else {
-          this.$refs.list.getVendors();
-        }
         this.vendorsListDialog = false;
       } else {
         this.vendorsListDialog = true;

@@ -54,6 +54,9 @@ export default {
       if (value == 'Properties and Claims') {
         this.$router.push('/property-details');
       }
+      if (value == 'Properties and Claims') {
+        this.$router.push('/property-details');
+      }
     }
   },
 
