@@ -1,126 +1,131 @@
 <template>
-    
-
- <div class="bg-white full-width">
+  <div class="bg-white full-width">
     <!-- Estimating  Info -->
-<div class="row">
+    <div class="row">
       <p style="form-heading">Does an estimator need to be<br />assigned?</p>
       <q-toggle
         class="q-ml-auto"
         v-model="estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle"
         @input="EstimatorToggleChange"
       />
-    </div> 
-
+    </div>
 
     <div
-     v-if="estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle"
+      v-if="estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle"
       @click="onClickEstimatorOpen"
     >
       <div class="custom-select form-heading" v-model="estimatingInfo.name">
-       <div class="select-text"> 
-         {{ 
- estimatingInfo.addEstimatorValue.name ?
-  estimatingInfo.addEstimatorValue.name : 'Add Estimator' }}
+        <div class="select-text">
+          {{
+            estimatingInfo.addEstimatorValue.name
+              ? estimatingInfo.addEstimatorValue.name
+              : 'Add Estimator'
+          }}
+        </div>
       </div>
     </div>
-     </div>
-   <q-input
+    <q-input
       v-model="estimatingInfo.estimatorToBeAssigned"
       label="Estimator to be assigned"
-   />
+    />
     <q-input
       v-model="estimatingInfo.scopeTimeNeeded"
-     label="Scope time needed"
-     />
-   <q-input
-     v-model="estimatingInfo.notesToTheEstimator"
-    label="Notes to the estimator"
-     /> 
+      label="Scope time needed"
+    />
+    <q-input
+      v-model="estimatingInfo.notesToTheEstimator"
+      label="Notes to the estimator"
+    />
 
-
-  <!-- Estimators List Dialog -->
-      <q-dialog
+    <!-- Estimators List Dialog -->
+    <q-dialog
       v-model="estimatingInfo.estimatorsListDialog"
       persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-     <q-card>
+      <q-card>
         <CustomBar
-           :dialogName="'Estimators'"
-         @closeDialog="estimatingInfo.estimatorsListDialog = false"
-         />
-       <div class="vendor-list">
-         <div class="actions-div">
-         <q-input placeholder="Search" borderless class="full-width">
-             <template v-slot:prepend>
-              <q-icon name="search" />
+          :dialogName="'Estimators'"
+          @closeDialog="estimatingInfo.estimatorsListDialog = false"
+        />
+        <div class="vendor-list">
+          <div class="actions-div">
+            <q-input placeholder="Search" borderless class="full-width">
+              <template v-slot:prepend>
+                <q-icon name="search" />
               </template>
             </q-input>
-           <q-separator vertical inset></q-separator>
-           <q-btn 
- @click="estimatingInfo.addEstimatorDialog = true;
-  estimatingInfo.estimatorsListDialog = false; "  flat >
-  <img src="~assets/add.svg"
-          /></q-btn>
-        </div>
-        <div
-          v-for="estimator in estimators"
-          :key="estimator.id"
-          class="vendor-list-item"
-          @click="selectEstimator(estimator)"
-         >
+            <q-separator vertical inset></q-separator>
+            <q-btn
+              @click="
+                estimatingInfo.addEstimatorDialog = true;
+                estimatingInfo.estimatorsListDialog = false;
+              "
+              flat
+            >
+              <img src="~assets/add.svg"
+            /></q-btn>
+          </div>
+          <div
+            v-for="estimator in estimators"
+            :key="estimator.id"
+            class="vendor-list-item"
+            @click="selectEstimator(estimator)"
+          >
             <span>{{ estimator.fname }} {{ estimator.lname }}</span>
           </div>
         </div>
-       </q-card>
+      </q-card>
     </q-dialog>
 
-  <!-- Add Estimator Dialog -->
-       <q-dialog
+    <!-- Add Estimator Dialog -->
+    <q-dialog
       v-model="estimatingInfo.addEstimatorDialog"
-     persistent
-     :maximized="true"
-     transition-show="slide-up"
-    transition-hide="slide-down"
-   >
+      persistent
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
       <q-card>
-     <CustomBar
+        <CustomBar
           @closeDialog="estimatingInfo.addEstimatorDialog = false"
-        :dialogName="'Add New Estimator'"
-         />
+          :dialogName="'Add New Estimator'"
+        />
         <div class="mobile-container-page-without-search">
-         <q-form ref="addEstimatorForm" class="form-height">{{}}
-        <q-select
-          class="required"
-            v-model="estimatingInfo.honorific3.id"
-             :options="titles"
-             option-value="id"
-             option-label="value"
-             map-options
-             @input="setTitleName(estimatingInfo.honorific3)"
-             behavior="menu"
-         emit-value
-               options-dense
-               label="Title"
-            lazy-rules
-            :rules="[ 
-              val => (val && val.length > 0) || 'Please select the title'
-             ]"
+          <q-form ref="addEstimatorForm" class="form-height"
+            >{{}}
+            <q-select
+              class="required"
+              v-model="estimatingInfo.honorific3.id"
+              :options="titles"
+              option-value="id"
+              option-label="value"
+              map-options
+              @input="setTitleName(estimatingInfo.honorific3)"
+              behavior="menu"
+              emit-value
+              options-dense
+              label="Title"
+              lazy-rules
+              :rules="[
+                val => (val && val.length > 0) || 'Please select the title'
+              ]"
             />
 
-             <q-input
-             class="required"
-            v-model="estimatingInfo.fname"
-               lazy-rules
-             :rules="[ 
- val => (val && val.length > 0) || 'Please fill the First name'  ]" 
-  label="First Name" />
+            <q-input
+              class="required"
+              v-model="estimatingInfo.fname"
+              lazy-rules
+              :rules="[
+                val => (val && val.length > 0) || 'Please fill the First name'
+              ]"
+              label="First Name"
+            />
 
             <q-input v-model="estimatingInfo.lname" label="Last Name" />
-      <q-input
+            <q-input
               class="required"
               v-model="estimatingInfo.email"
               label="Email"
@@ -150,46 +155,45 @@
                 mask="(###) ###-####"
               />
             </div>
-        </q-form>
-         <q-btn
+          </q-form>
+          <q-btn
             label="Add Estimator"
-           color="primary"
-           class="full-width q-mt-auto text-capitalize"
-           @click="onCloseAddEstimator('addEstimatorDialog')"
-          size="'xl'"
-         />
+            color="primary"
+            class="full-width q-mt-auto text-capitalize"
+            @click="onCloseAddEstimator('addEstimatorDialog')"
+            size="'xl'"
+          />
         </div>
       </q-card>
-   </q-dialog>
+    </q-dialog>
   </div>
 </template>
 <script>
-  import { mapGetters, mapActions } from 'vuex'; 
-  import { validateEmail } from '@utils/validation';
+import { mapGetters, mapActions } from 'vuex';
+import { validateEmail } from '@utils/validation';
 import CustomBar from 'components/CustomBar';
-   export default {  
-       name: 'EstimatingInfo', 
+export default {
+  name: 'EstimatingInfo',
   components: { CustomBar },
 
-   props: {
-   estimatingInfo: {  
-    type: Object 
-  } ,
-   },
-   data() {
-        return {}; 
+  props: {
+    estimatingInfo: {
+      type: Object
+    }
   },
-  created() { 
-  this.getEstimators(); 
-    
-   },
-   computed:  {
-        ...mapGetters(['estimators', 'contactTypes','titles']) 
-  }, 
+  data() {
+    return {};
+  },
+  created() {
+    this.getEstimators();
+  },
+  computed: {
+    ...mapGetters(['estimators', 'contactTypes', 'titles'])
+  },
   methods: {
-        ...mapActions(['getEstimators' ,'addEstimator',]), 
-        validateEmail,
-          async onCloseAddEstimator() {
+    ...mapActions(['getEstimators', 'addEstimator']),
+    validateEmail,
+    async onCloseAddEstimator() {
       const success = await this.$refs.addEstimatorForm.validate();
 
       if (success) {
@@ -219,8 +223,8 @@ import CustomBar from 'components/CustomBar';
         }
       }
     },
-    
-      setTitleName(selectedTitle) {
+
+    setTitleName(selectedTitle) {
       const selected = this.titles.find(obj => {
         return obj.id === selectedTitle.id;
       });
@@ -228,11 +232,11 @@ import CustomBar from 'components/CustomBar';
       selectedTitle.value = selected.title;
       selectedTitle.machineValue = selected.machineValue;
     },
-  onClickEstimatorOpen() { 
-       this.getEstimators(); 
-  this.estimatingInfo.estimatorsListDialog = true; 
-  }, 
-  EstimatorToggleChange() {
+    onClickEstimatorOpen() {
+      this.getEstimators();
+      this.estimatingInfo.estimatorsListDialog = true;
+    },
+    EstimatorToggleChange() {
       this.estimatingInfo.addEstimatorInfo = {
         name: '',
         fname: '',
@@ -244,11 +248,10 @@ import CustomBar from 'components/CustomBar';
       this.estimatingInfo.honorific3.id = '';
       this.estimatingInfo.addEstimatorValue.name = '';
     },
-   selectEstimator(value) {
+    selectEstimator(value) {
       this.estimatingInfo.addEstimatorValue.name = value.fname;
       this.estimatingInfo.estimatorsListDialog = false;
-    },
-     } 
-      };
-  </script> 
-</template>
+    }
+  }
+};
+</script>
