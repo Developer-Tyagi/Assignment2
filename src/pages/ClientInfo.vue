@@ -7,7 +7,8 @@
       }"
     >
       <div class="q-pa-lg column full-height">
-        <!-- This is for showing the client details -->
+        <!-- This is for showing the client details   -->
+
         <q-card class="q-pa-md q-mt-md full-width">
           <div class="row">
             <span class="form-heading">Insured Details</span><br />
@@ -119,42 +120,20 @@
           <div class="q-mt-md">
             <span class="form-heading q-mt-none">Additional Phone Numbers</span>
             <br />
-            <span
-              class="clickLink"
-              v-if="editSelectedClient.attributes.insuredInfo.phoneNumbers"
-              @click="
-                onPhoneNumberClick(
-                  editSelectedClient.attributes.insuredInfo.phoneNumbers[0]
-                    .number,
-                  $event
-                )
-              "
+
+            <div
+              v-for="(phone, i) in editSelectedClient.attributes.insuredInfo
+                .phoneNumbers"
             >
-              {{
-                editSelectedClient.attributes.insuredInfo.phoneNumbers[0].number
-                  ? editSelectedClient.attributes.insuredInfo.phoneNumbers[0]
-                      .number
-                  : '-'
-              }}</span
-            ><br />
-            <span
-              class="clickLink"
-              v-if="editSelectedClient.attributes.insuredInfo.phoneNumbers"
-              @click="
-                onPhoneNumberClick(
-                  editSelectedClient.attributes.insuredInfo.phoneNumbers[1]
-                    .number,
-                  $event
-                )
-              "
-              >{{
-                editSelectedClient.attributes.insuredInfo.phoneNumbers[1].number
-                  ? editSelectedClient.attributes.insuredInfo.phoneNumbers[1]
-                      .number
-                  : '-'
-              }}</span
-            >
+              <span
+                class="clickLink"
+                @click="onPhoneNumberClick(phone.number, $event)"
+              >
+                {{ phone.number ? phone.number : '-' }}</span
+              >
+            </div>
           </div>
+
           <div class="q-mt-md">
             <span class="form-heading q-mt-none">Tenant Details</span> <br />
             {{
@@ -448,9 +427,13 @@
                 />
               </div>
               <div v-if="addAditionalPhoneNumberToggle">
-                <div class="row justify-between">
+                <div
+                  class="row justify-between"
+                  v-for="(addPhone, index) in phoneNumber"
+                  v-if="index >= 0"
+                >
                   <q-select
-                    v-model="addAditionalPhoneNumber.type1"
+                    v-model="phoneNumber[index].type"
                     class="required col-5"
                     label="Type"
                     :options="contactTypes"
@@ -466,8 +449,8 @@
                     ]"
                   />
                   <q-input
-                    v-model.number="addAditionalPhoneNumber.phone2"
-                    label="Phone2"
+                    v-model.number="phoneNumber[index].number"
+                    label="Phone"
                     class="required col-6"
                     mask="(###) ###-####"
                     lazy-rules
@@ -478,34 +461,23 @@
                     ]"
                   />
                 </div>
-                <div class="row justify-between">
-                  <q-select
-                    class="required col-5"
-                    v-model="addAditionalPhoneNumber.type2"
-                    label="Type"
-                    :options="contactTypes"
-                    option-value="machineValue"
-                    option-label="name"
-                    map-options
-                    emit-value
-                    options-dense
-                    lazy-rules
-                    :rules="[
-                      val =>
-                        (val && val.length > 0) || 'Please select phone type'
-                    ]"
+                <div class="row">
+                  <q-btn
+                    outline
+                    class="q-mt-sm"
+                    @click="addAnotherContact"
+                    color="primary"
+                    label="Add"
+                    style="margin-right: auto"
                   />
-                  <q-input
-                    class="required col-6"
-                    v-model.number="addAditionalPhoneNumber.phone3"
-                    label="Phone3"
-                    mask="(###) ###-####"
-                    lazy-rules
-                    :rules="[
-                      val =>
-                        (val && val.length == 14) ||
-                        'Please enter the phone number'
-                    ]"
+
+                  <q-btn
+                    v-if="phoneNumber.length > 1"
+                    outline
+                    @click="RemoveAnotherContact"
+                    class="q-mt-sm"
+                    color="primary"
+                    label="Remove"
                   />
                 </div>
               </div>
@@ -631,13 +603,12 @@ export default {
         phone: '',
         type: ''
       },
-      addAditionalPhoneNumber: {
-        phone2: '',
-        phone3: '',
-        phone: '',
-        type1: '',
-        type2: ''
-      },
+      phoneNumber: [
+        {
+          type: '',
+          number: ''
+        }
+      ],
       clientAddressDetails: {
         houseNumber: '',
         addressCountry: '',
@@ -700,13 +671,20 @@ export default {
       'selectedClientId'
     ])
   },
+  mounted() {
+    if (!this.selectedClientId) {
+      this.$router.push('/clients');
+    }
+  },
   created() {
     this.getClientTypes();
     this.getTitles();
     this.getContactTypes();
     this.countries = addressService.getCountries();
     this.onCountrySelect('United States');
+
     // Client info Editable & prefilled Details
+
     this.client.id = this.editSelectedClient.attributes.type.id;
     this.client.value = this.editSelectedClient.attributes.type.value;
     this.client.machineValue = this.editSelectedClient.attributes.type.machineValue;
@@ -742,10 +720,9 @@ export default {
     }
     if (this.editSelectedClient.attributes.insuredInfo.phoneNumbers[0].type) {
       this.addAditionalPhoneNumberToggle = true;
-      this.addAditionalPhoneNumber.type1 = this.editSelectedClient.attributes.insuredInfo.phoneNumbers[0].type;
-      this.addAditionalPhoneNumber.phone2 = this.editSelectedClient.attributes.insuredInfo.phoneNumbers[0].number;
-      this.addAditionalPhoneNumber.type2 = this.editSelectedClient.attributes.insuredInfo.phoneNumbers[1].type;
-      this.addAditionalPhoneNumber.phone3 = this.editSelectedClient.attributes.insuredInfo.phoneNumbers[1].number;
+      this.phoneNumber = this.editSelectedClient.attributes.insuredInfo.phoneNumbers;
+    } else {
+      this.addAditionalPhoneNumberToggle = false;
     }
     if (this.editSelectedClient.attributes.insuredInfo.tenantInfo.name) {
       this.tenantOccupiedToggle = true;
@@ -789,6 +766,26 @@ export default {
 
       data.machineValue = obj.machineValue;
       data.value = obj.name;
+    },
+    // For adding multiple Contact Numbers in ClientInfo
+    addAnotherContact() {
+      this.phoneNumber.push({
+        type: '',
+        number: ''
+      });
+    },
+    RemoveAnotherContact() {
+      this.phoneNumber.pop();
+    },
+    onaddAditionalPhoneNumberToggle() {
+      if (this.addAditionalPhoneNumberToggle == false) {
+        this.phoneNumber = [
+          {
+            type: '',
+            number: ''
+          }
+        ];
+      }
     },
     mailingAddressSame() {
       if (this.isMailingAddressSameToggle) {
@@ -862,17 +859,7 @@ export default {
               mailingAddress: {
                 ...this.mailingAddressDetails
               },
-              phoneNumbers: [
-                {
-                  type: this.addAditionalPhoneNumber.type1,
-                  number: this.addAditionalPhoneNumber.phone2
-                },
-                {
-                  type: this.addAditionalPhoneNumber.type2,
-
-                  number: this.addAditionalPhoneNumber.phone3
-                }
-              ],
+              phoneNumbers: this.phoneNumber,
               tenantInfo: {
                 name: '',
                 phoneNumber: {
@@ -914,18 +901,18 @@ export default {
       });
       this['honorific' + val].title = titleResult.value;
       this['honorific' + val].machineValue = titleResult.machineValue;
-    }
-  },
-  onPhoneNumberClick(number, e) {
-    e.stopPropagation();
-    if (number) {
-      window.open('tel:' + number);
-    }
-  },
-  onEmailClick(email, e) {
-    e.stopPropagation();
-    if (email) {
-      window.open('mailto:' + email);
+    },
+    onPhoneNumberClick(number, e) {
+      e.stopPropagation();
+      if (number) {
+        window.open('tel:' + number);
+      }
+    },
+    onEmailClick(email, e) {
+      e.stopPropagation();
+      if (email) {
+        window.open('mailto:' + email);
+      }
     }
   }
 };
