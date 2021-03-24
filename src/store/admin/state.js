@@ -2,6 +2,8 @@ export default function() {
   return {
     actionOverDues: [],
     actionCompletion: [],
-    actionReason: []
+    actionReason: [],
+    workflowAction: [],
+    allAction: []
   };
 }
