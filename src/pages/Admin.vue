@@ -66,49 +66,45 @@
                       <div class=" text-h5 text-bold">Claim Action Item</div>
                       <div class="text-h5 " style="height:200px;">
                         <div class=" q-pa-xl"></div>
-                        <div class=" row q-pa-xl">
+                        <div class=" row q-pa-xl  ">
                           <q-btn
-                            color="primary"
+                            :disabled="!ClaimType"
                             label="+ Add Default Action "
-                            class=" col-2"
+                            class="formButtonfront "
                             @click="addDefaultActionDialogBox = true"
                           />
                           <q-btn
-                            color="primary"
                             label="Refresh "
-                            class="q-mx-lg col-2"
+                            class=" formButtonfront"
                             @click=""
                           />
                           <q-btn
-                            color="primary"
                             label="Clone Workflow "
-                            class="col-2"
+                            class="formButtonfront"
                             @click=""
                           />
                           <q-btn
-                            color="primary"
                             label="Delete Workflow "
-                            class="q-mx-lg col-2"
+                            class=" formButtonfront"
                             @click=""
                           />
                           <q-btn
-                            color="primary"
                             label="Planning Sheet "
-                            class="q-mx-lg col-2"
+                            class="formButtonfront  "
                             @click=""
                           />
                         </div>
                       </div>
                     </div>
                     <q-card
-                      class=" q-ma-xl  "
+                      class=" q-mx-xl q-my-md "
                       style="border: 1px solid grey;"
                       flat
                       bordered
                     >
                       <div class=" row bg-grey-3 ">
                         <div class="col-7 q-pa-lg">
-                          5 Action Items
+                          {{ allAction.length }} Action Items
                         </div>
 
                         <div class="col-4 row  text-h6">
@@ -240,7 +236,15 @@
                 emit-value
                 :options="actionReason[indexOfActionReason].additionalReasons"
                 label="Sub-option"
-              ></q-select>
+              >
+                <template v-slot:no-option>
+                  <q-item>
+                    <q-item-section class=" text-grey">
+                      No data present
+                    </q-item-section>
+                  </q-item>
+                </template>
+              </q-select>
             </div>
           </div>
           <!-- 3 -->
@@ -252,9 +256,8 @@
             </div>
             <div class="col-5">
               <q-toggle v-model="priority" left-label @input="TogglePriority" />
-              <q-badge color="primary" v-if="priority == true"
-                >Important</q-badge
-              >
+              <q-badge color="primary" v-if="priority == true">HIgh</q-badge>
+              <q-badge v-else color="primary">Low</q-badge>
             </div>
             <div class="col-1-1 ">
               <div class=" q-pa-md">:</div>
@@ -382,13 +385,20 @@
               ></q-select>
             </div>
             <div class="  q-ml-xl q-pt-sm text-bold">
-              <q-icon size="md" color="primary" name="add" @click="Addlick" />
+              <q-icon
+                class="clickable"
+                size="md"
+                color="primary"
+                name="add"
+                @click="Addlick"
+              />
             </div>
             <div
               class="  q-ml-lg q-pt-sm text-bold"
               v-if="actions.actions.onComplete.length > 1"
             >
               <q-icon
+                class="clickable"
                 size="md"
                 color="primary"
                 name="clear"
@@ -475,6 +485,7 @@
 
             <div class="  q-ml-xl q-pt-sm text-bold">
               <q-icon
+                class="clickable"
                 size="md"
                 color="primary"
                 name="add"
@@ -486,6 +497,7 @@
               v-if="actions.actions.onOverdue.length > 1"
             >
               <q-icon
+                class="clickable"
                 size="md"
                 color="primary"
                 name="clear"
@@ -538,7 +550,7 @@ export default {
           type: '',
           task: []
         },
-        priority: 'normal',
+        priority: 'low',
         assignedTo: [
           {
             type: 'user',
@@ -725,3 +737,22 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+.formButtonfront {
+  width: 10%;
+  max-height: 60px;
+  min-height: 50px;
+  min-width: 15%;
+  background-color: $primary;
+  margin-left: 3%;
+  color: white;
+}
+@media screen and (max-width: 1023px) {
+  .formButtonfront {
+    min-width: 12%;
+    max-height: 5%;
+    padding: 5px;
+    margin-left: 7%;
+  }
+}
+</style>

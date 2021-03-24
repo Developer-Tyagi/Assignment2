@@ -56,8 +56,9 @@
                   >{{ user.attributes.email }}</span
                 ><span v-else> - </span>
               </td>
-              <td class=" clickable text-primary text-center">
+              <td class=" text-primary text-center">
                 <span
+                  class="clickable"
                   v-if="5567656"
                   @click="onPhoneNumberClick(24355732, $event)"
                   >{{ 243557388 }}</span
