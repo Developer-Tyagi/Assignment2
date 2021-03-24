@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <!-- Note Dialog -->
-     <q-dialog
+    <q-dialog
       v-model="addNoteDialog"
       persistent
       :maximized="true"
@@ -15,9 +15,12 @@
         />
         <q-card-section>
           <div class="mobile-container-page-without-search form-height">
-           
-            <q-input class="full-width" label="Take Notes here" v-model="note"/>
-                </div>
+            <q-input
+              class="full-width"
+              label="Take notes here"
+              v-model="note"
+            />
+          </div>
           <q-btn
             @click="onSave"
             label="Save"
@@ -25,33 +28,35 @@
             class="button-width-90"
             size="'xl'"
           />
-</q-card-section>
+        </q-card-section>
       </q-card>
     </q-dialog>
     <div>
       <div class="actions-div">
         <q-separator vertical inset></q-separator>
-        <q-btn @click="addNote" flat class ="q-ml-auto"><img src="~assets/add.svg"/></q-btn>
+        <q-btn @click="addNote" flat class="q-ml-auto"
+          ><img src="~assets/add.svg"
+        /></q-btn>
       </div>
       <div class="mobile-container-page">
         <div
           class="clients-list q-ma-sm "
           v-if="editSelectedClient.attributes.notes.length"
-          >
+        >
           <div
             class="clients-list"
-            v-for="note,index in editSelectedClient.attributes.notes"
+            v-for="(note, index) in editSelectedClient.attributes.notes"
           >
             <q-item-section>
               <div class="client-list-item">
-                
                 <div class="row">
-                
-                  {{ editSelectedClient.attributes.notes[index].addedAt | moment('DD/MM/YYYY')}} <br />
-                  {{ editSelectedClient.attributes.notes[index].desc }}</br/>
-              
-                  
-                 
+                  {{
+                    editSelectedClient.attributes.notes[index].addedAt
+                      | moment('DD/MM/YYYY')
+                  }}
+                  <br />
+                  {{ editSelectedClient.attributes.notes[index].desc }}<br />
+
                   <div class="row"></div>
                 </div>
               </div>
@@ -83,55 +88,57 @@ import moment from 'moment';
 
 export default {
   name: 'Clients',
-   components: { CustomBar },
+  components: { CustomBar },
   data() {
     return {
-     addNoteDialog:false,
-     note:'',
+      addNoteDialog: false,
+      note: ''
     };
   },
 
   computed: {
-    ...mapGetters(['clients', 'selectedClientId', 'editSelectedClient','notes'])
+    ...mapGetters([
+      'clients',
+      'selectedClientId',
+      'editSelectedClient',
+      'notes'
+    ])
   },
- formatDate(value) {
-      if (value) {
-        return moment(String(value)).format('MM/DD/YYYY','HH:MM');
-      }
-    },
+  formatDate(value) {
+    if (value) {
+      return moment(String(value)).format('MM/DD/YYYY', 'HH:MM');
+    }
+  },
   created() {
-   
- this.getSingleClientDetails(this.selectedClientId);
- },
+    this.getSingleClientDetails(this.selectedClientId);
+  },
   methods: {
-    ...mapActions(['getSingleClientDetails','addNotes']),
+    ...mapActions(['getSingleClientDetails', 'addNotes']),
     ...mapMutations(['setSelectedClientId']),
 
-  
-  addNote(){
-this.addNoteDialog = true;
+    addNote() {
+      this.addNoteDialog = true;
+    },
+    async onSave() {
+      const payload = {
+        id: this.selectedClientId,
+        notesData: {
+          note: this.note
+        }
+      };
+      await this.addNotes(payload);
+      this.addNoteDialog = false;
+      this.successMessage();
 
-  },
- async onSave(){
-const payload = {
-    id:this.selectedClientId,
-  notesData:{
-note:this.note
-  }
- }
-  await this.addNotes(payload)
-  this.addNoteDialog=false;
-  this.successMessage();
-// this.addNotes(payload);
-this.getSingleClientDetails(this.selectedClientId);
-},
-successMessage() {
+      this.getSingleClientDetails(this.selectedClientId);
+    },
+    successMessage() {
       this.$q.notify({
         type: 'positive',
-        message: `Client Info Updated Successfully!`,
+        message: `Notes Added Successfully!`,
         position: 'center'
       });
-    },
+    }
   }
 };
 </script>

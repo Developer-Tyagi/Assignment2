@@ -88,7 +88,6 @@ export default {
   },
 
   created() {
-    console.log(this.editSelectedCaim, 22222222);
     this.getClients();
   },
   methods: {
