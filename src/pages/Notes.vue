@@ -2,53 +2,21 @@
   <q-page>
     <div>
       <div class="actions-div">
-        <q-input
-          v-model="searchText"
-          placeholder="Search"
-          borderless
-          style="width: 100%"
-          @input="search($event)"
-        >
-          <template v-slot:prepend>
-            <q-icon name="search" />
-          </template>
-        </q-input>
-        <img
-          src="~assets/close.svg"
-          v-if="searchText"
-          @click="onSearchBackButtonClick"
-          style="margin: 0 20px"
-        />
         <q-separator vertical inset></q-separator>
         <q-btn @click="addClient" flat><img src="~assets/add.svg"/></q-btn>
       </div>
       <div class="mobile-container-page">
         <div class="clients-list" v-if="clients.length">
           <div class="clients-list" v-for="client in clients" :key="client.id">
-            <q-item-section @click="onClientsListClick(client)">
+            <q-item-section>
               <div class="client-list-item">
                 <div class="row">
-                  {{ editSelectedCaim }}88888888
-                  <span>
-                    {{ client['insuredInfo']['primary']['fname'] }}
-
-                    {{ client['insuredInfo']['primary']['lname'] }}
-                  </span>
-
                   <q-icon class="q-ml-auto" size="sm" name="more_vert"></q-icon>
                 </div>
                 <div class="row">
-                  <div class="row">
-                    <span
-                      >Mob:
-                      <span>
-                        {{ client.insuredInfo.primary.phoneNumber[0].number }}
-                      </span>
-                    </span>
-                  </div>
+                  {{ selectedClientId }}
+                  <div class="row"></div>
                 </div>
-                <div><span>File No. 12345678</span></div>
-                <div>Status: Negotiation</div>
               </div>
             </q-item-section>
           </div>
@@ -88,9 +56,10 @@ export default {
   },
 
   created() {
-    console.log(this.editSelectedCaim, 22222222);
+    this.getSingleClaimDetails(this.selectedClientId);
+    console.log(this.editSelectedCaim, 876543);
+    console.log(this.selectedClientId, 111111111);
     this.getClients();
-    this.getSingleClaimDetails();
   },
   methods: {
     ...mapActions([
@@ -104,11 +73,7 @@ export default {
       this.searchText = '';
       this.search();
     },
-    onClientsListClick(client) {
-      this.setSelectedClientId(client.id);
 
-      this.$router.push('/view-client');
-    },
     addClient() {
       this.$router.push('/add-client');
     },

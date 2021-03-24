@@ -143,6 +143,12 @@ const routes = [
         component: () => import('pages/PropertyInfo.vue')
       },
       {
+        path: 'note-details',
+        name: 'Notes ',
+        caseSensitive: true,
+        component: () => import('pages/Notes.vue')
+      },
+      {
         path: 'add-client',
         name: 'create client',
         caseSensitive: true,

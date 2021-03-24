@@ -10,6 +10,8 @@ export default function() {
     policyCategories: [],
     editSelectedClient: [],
     selectedClientId: '',
-    setClientProperty: []
+    selectedClaimId: '',
+    setClientProperty: [],
+    editSelectedCaim: []
   };
 }
