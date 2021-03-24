@@ -83,7 +83,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['clients', 'selectedClientId'])
+    ...mapGetters(['clients', 'selectedClientId', 'editSelectedCaim'])
   },
 
   created() {
@@ -99,6 +99,7 @@ export default {
     },
     onClientsListClick(client) {
       this.setSelectedClientId(client.id);
+
       this.$router.push('/view-client');
     },
     addClient() {
