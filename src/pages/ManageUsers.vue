@@ -110,8 +110,10 @@
         </q-bar>
         <q-form ref="addUserForm">
           <div class="q-mt-xs row full-width">
-            <div class="col-5 q-mx-md q-mt-lg">First Name*</div>
-            <div class="col-4 q-mx-xl q-mt-lg">Last Name *</div>
+            <div class="col-5 q-mx-md q-mt-lg required">
+              First Name
+            </div>
+            <div class="col-4 q-mx-xl q-mt-lg">Last Name</div>
           </div>
           <div class="row q-mt-xs justify-between full-width">
             <div class="col-6">
@@ -132,8 +134,12 @@
             </div>
           </div>
           <div class="q-mt-xs row full-width">
-            <div class="col-5 q-mx-md q-mt-lg">Email*</div>
-            <div class="col-4 q-mx-xl q-mt-lg">Role *</div>
+            <div class="col-5 q-mx-md q-mt-lg">
+              Email <span class="text-red"> * </span>
+            </div>
+            <div class="col-4 q-mx-xl q-mt-lg">
+              Role <span class="text-red"> * </span>
+            </div>
           </div>
           <div class="row q-mt-xs justify-between full-width">
             <div class="col-6 q-mb-lg">

@@ -13,10 +13,10 @@
         <div
           class="full-width"
           style="
-            height: calc(100vh - 145px);
-            overflow-y: auto;
-            margin-bottom: 10px;
-          "
+height: calc(100vh - 145px);
+overflow-y: auto;
+margin-bottom: 10px;
+"
         >
           <q-input
             class="required"
@@ -336,7 +336,7 @@ export default {
 
     if (this.componentName === constants.industries.EXPERTVENDOR) {
       let industryType = this.vendorIndustries.find(
-        o => o.machineValue === constants.industries.VENDOR
+        o => o.machineValue === this.selectedIndustryType.machineValue
       );
       if (industryType.name && industryType.id) {
         this.vendor.industry.value = industryType.name;
@@ -468,7 +468,6 @@ export default {
 
         if (response) {
           this.$emit('onCloseAddVendor', true, this.vendor, this.componentName);
-          this.getVendors();
 
           this.closeDialog(true);
         }
