@@ -111,6 +111,7 @@
       map-options
     ></q-select
     ><br />
+
     <span class="form-heading"
       >Special Instructions, Comments Or Other Notes</span
     >
@@ -145,6 +146,7 @@ export default {
     };
   },
   created() {
+    this.getRoles();
     this.getAllUsers();
   },
 
@@ -161,24 +163,24 @@ export default {
       data.value = obj.name;
       switch (role) {
         case 'role1':
-          this.publicAdjustor.isFieldDisable1 = false;
-          this.params.role = this.publicAdjustor.personnelRole1.machineValue;
+          this.publicAdjustorInfo.isFieldDisable1 = false;
+          this.params.role = this.publicAdjustorInfo.personnelRole1.machineValue;
           this.getAllUsers(this.params);
           break;
         case 'role2':
-          this.publicAdjustor.isFieldDisable2 = false;
-          this.params.role = this.publicAdjustor.personnelRole2.machineValue;
+          this.publicAdjustorInfo.isFieldDisable2 = false;
+          this.params.role = this.publicAdjustorInfo.personnelRole2.machineValue;
           this.getAllUsers(this.params);
           break;
 
         case 'role3':
-          this.publicAdjustor.isFieldDisable3 = false;
-          this.params.role = this.publicAdjustor.personnelRole3.machineValue;
+          this.publicAdjustorInfo.isFieldDisable3 = false;
+          this.params.role = this.publicAdjustorInfo.personnelRole3.machineValue;
           this.getAllUsers(this.params);
           break;
         case 'role4':
-          this.publicAdjustor.isFieldDisable4 = false;
-          this.params.role = this.publicAdjustor.personnelRole4.machineValue;
+          this.publicAdjustorInfo.isFieldDisable4 = false;
+          this.params.role = this.publicAdjustorInfo.personnelRole4.machineValue;
           this.getAllUsers(this.params);
           break;
       }

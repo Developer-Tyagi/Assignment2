@@ -645,7 +645,7 @@
       v-if="lossInfo.isMortgageHomeToggle"
       @click="
         lossInfo.mortgageInfoDialog = true;
-        lossInfoDialog = false;
+        lossInfo.lossInfoDialog = false;
       "
     >
       <div class="row">
@@ -672,7 +672,7 @@ import { constants } from '@utils/constant';
 import CustomBar from 'components/CustomBar';
 import VendorsList from 'components/VendorsList';
 import { validateDate } from '@utils/validation';
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 import AddVendor from 'components/AddVendor';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 export default {

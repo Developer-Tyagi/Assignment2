@@ -108,13 +108,18 @@
         v-model="contractInfo.time"
         now
         mask="time"
+        format24h
         lazy-rules
         :rules="[val => validateTime(val) || 'Invalid time!']"
       >
         <template v-slot:append>
           <q-icon name="access_time" class="cursor-pointer">
-            <q-popup-proxy transition-show="scale" transition-hide="scale">
-              <q-time v-model="contractInfo.time">
+            <q-popup-proxy
+              transition-show="scale"
+              transition-hide="scale"
+              ref="qTimeProxy"
+            >
+              <q-time v-model="contractInfo.time" @input="closeTimeDialog">
                 <div class="row items-center justify-end">
                   <q-btn
                     v-close-popup
@@ -283,6 +288,10 @@ export default {
   },
   methods: {
     ...mapActions(['getVendors']),
+    //This function is for closing the time popup
+    closeTimeDialog() {
+      this.$refs.qTimeProxy.hide();
+    },
 
     async onCloseAddVendorDialogBox(result, selected) {
       if (result === true) {

@@ -1018,6 +1018,7 @@ export default {
   },
 
   created() {
+    this.contractInfo.time = date.formatDate(Date.now(), 'HH:mm:ss:aa');
     this.contractInfo.firstContractDate = this.contractInfo.contractDate = this.insuranceDetails.policyEffectiveDate = this.insuranceDetails.policyExpireDate = this.lossInfo.dateOfLoss = this.lossInfo.deadlineDate = this.lossInfo.recovDeadline = date.formatDate(
       Date.now(),
       'MM/DD/YYYY'
@@ -1110,6 +1111,7 @@ export default {
       'addIndustry'
     ]),
     ...mapMutations(['setSelectedLead']),
+
     lossAddressSame() {
       if (this.lossInfo.isLossAddressSameAsClientToggle) {
         this.lossInfo.lossAddressDetails = this.clientAddressDetails;
@@ -1451,7 +1453,7 @@ export default {
         mortgageInfo: this.lossInfo.mortgageDetails,
         lossInfo: {
           isNewAddress:
-            this.lossInfo.lossAddressNameDropdown == 'New' ? true : false,
+            this.lossInfo.lossAddressNameDropdown == 'Others' ? true : false,
           address: {
             ...this.clientAddressDetails
           },
