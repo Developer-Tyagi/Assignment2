@@ -48,14 +48,15 @@
                 }}
                 {{ user.attributes.contact.lname }}
               </td>
-              <td class="text-center">
+              <td class="  text-primary text-center">
                 <span
+                  class="clickable"
                   v-if="user.attributes.email"
                   @click="onEmailClick(user.attributes.email, $event)"
                   >{{ user.attributes.email }}</span
                 ><span v-else> - </span>
               </td>
-              <td class="text-center">
+              <td class=" clickable text-primary text-center">
                 <span
                   v-if="5567656"
                   @click="onPhoneNumberClick(24355732, $event)"
