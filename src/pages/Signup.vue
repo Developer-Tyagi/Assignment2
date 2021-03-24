@@ -676,13 +676,7 @@ export default {
 
   created() {
     if (getToken()) {
-      if (
-        getCurrentUser() &&
-        getCurrentUser().attributes['onboard'] &&
-        getCurrentUser().attributes['onboard']['isCompleted']
-      ) {
-        this.$router.push('/dashboard');
-      }
+      this.$router.push('/dashboard');
     } else {
       // this.getPlansInfo();
       const index = this.plans.findIndex(
