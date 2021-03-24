@@ -246,17 +246,12 @@
               <q-toggle
                 class="q-ml-auto"
                 v-model="addAditionalPhoneNumberToggle"
-                @input="onaddAditionalPhoneNumberToggle"
               />
             </div>
             <div v-if="addAditionalPhoneNumberToggle">
-              <div
-                class="row justify-between"
-                v-for="(addPhone, index) in phoneNumber"
-                v-if="index >= 0"
-              >
+              <div class="row justify-between">
                 <q-select
-                  v-model="phoneNumber[index].type"
+                  v-model="addAditionalPhoneNumber.type1"
                   class="required col-5"
                   label="Type"
                   :options="contactTypes"
@@ -271,8 +266,8 @@
                   ]"
                 />
                 <q-input
-                  v-model.number="phoneNumber[index].number"
-                  label="Phone"
+                  v-model.number="addAditionalPhoneNumber.phone2"
+                  label="Phone2"
                   class="required col-6"
                   mask="(###) ###-####"
                   lazy-rules
@@ -283,23 +278,33 @@
                   ]"
                 />
               </div>
-              <div class="row">
-                <q-btn
-                  outline
-                  class="q-mt-sm"
-                  @click="addAnotherContact"
-                  color="primary"
-                  label="Add"
-                  style="margin-right: auto"
+              <div class="row justify-between">
+                <q-select
+                  class="required col-5"
+                  v-model="addAditionalPhoneNumber.type2"
+                  label="Type"
+                  :options="contactTypes"
+                  option-value="machineValue"
+                  option-label="name"
+                  map-options
+                  emit-value
+                  options-dense
+                  lazy-rules
+                  :rules="[
+                    val => (val && val.length > 0) || 'Please select phone type'
+                  ]"
                 />
-
-                <q-btn
-                  v-if="phoneNumber.length > 1"
-                  outline
-                  @click="RemoveAnotherContact"
-                  class="q-mt-sm"
-                  color="primary"
-                  label="Remove"
+                <q-input
+                  class="required col-6"
+                  v-model.number="addAditionalPhoneNumber.phone3"
+                  label="Phone3"
+                  mask="(###) ###-####"
+                  lazy-rules
+                  :rules="[
+                    val =>
+                      (val && val.length == 14) ||
+                      'Please enter the phone number'
+                  ]"
                 />
               </div>
             </div>
@@ -786,13 +791,13 @@ export default {
         machineValue: '',
         email: ''
       },
-
-      phoneNumber: [
-        {
-          type: '',
-          number: ''
-        }
-      ],
+      addAditionalPhoneNumber: {
+        phone2: '',
+        phone3: '',
+        phone: '',
+        type1: '',
+        type2: ''
+      },
       clientAddressDetails: {
         addressCountry: '',
         addressRegion: '',
@@ -1028,9 +1033,6 @@ export default {
     this.getClaimReasons();
     this.getContactTypes();
     this.getPolicyCategory();
-    this.getRoles();
-    this.getAllUsers();
-
     if (this.selectedLead.id) {
       this.insuredDetails.fname = this.selectedLead.primaryContact.fname;
       this.insuredDetails.lname = this.selectedLead.primaryContact.lname;
@@ -1081,8 +1083,7 @@ export default {
       'vendors',
       'policyCategories',
       'vendorIndustries',
-      'roleTypes',
-      'userRoles'
+      'personnelRoles'
     ])
   },
 
@@ -1107,9 +1108,7 @@ export default {
       'getTitles',
       'getPolicyCategory',
       'getVendorIndustries',
-      'addIndustry',
-      'getRoles',
-      'getAllUsers'
+      'addIndustry'
     ]),
     ...mapMutations(['setSelectedLead']),
 
@@ -1267,35 +1266,13 @@ export default {
       this['honorific' + val].machineValue = titleResult.machineValue;
     },
 
-    setTypes(types, data, role) {
+    setTypes(types, data, type) {
       const obj = types.find(item => {
         return item.id === data.id;
       });
+
       data.machineValue = obj.machineValue;
       data.value = obj.name;
-      switch (role) {
-        case 'role1':
-          this.publicAdjustor.isFieldDisable1 = false;
-          this.params.role = this.publicAdjustor.personnelRole1.machineValue;
-          this.getAllUsers(this.params);
-          break;
-        case 'role2':
-          this.publicAdjustor.isFieldDisable2 = false;
-          this.params.role = this.publicAdjustor.personnelRole2.machineValue;
-          this.getAllUsers(this.params);
-          break;
-
-        case 'role3':
-          this.publicAdjustor.isFieldDisable3 = false;
-          this.params.role = this.publicAdjustor.personnelRole3.machineValue;
-          this.getAllUsers(this.params);
-          break;
-        case 'role4':
-          this.publicAdjustor.isFieldDisable4 = false;
-          this.params.role = this.publicAdjustor.personnelRole4.machineValue;
-          this.getAllUsers(this.params);
-          break;
-      }
     },
 
     mailingAddressSame() {
@@ -1369,8 +1346,17 @@ export default {
           mailingAddress: {
             ...this.mailingAddressDetails
           },
-          phoneNumbers: this.phoneNumber,
+          phoneNumbers: [
+            {
+              type: this.addAditionalPhoneNumber.type1,
+              number: this.addAditionalPhoneNumber.phone2
+            },
+            {
+              type: this.addAditionalPhoneNumber.type2,
 
+              number: this.addAditionalPhoneNumber.phone3
+            }
+          ],
           tenantInfo: {
             name: '',
             phoneNumber: {
