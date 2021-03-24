@@ -32,7 +32,7 @@ export function setWorkflowAction(state, workflowAction) {
 
 export function setAllWorkFlow(state, allAction) {
   state.allAction = allAction.map(workaction => ({
-    ...workaction.attributes,
-    value: workaction
+    name: workaction.Attributes.name,
+    createdDesc: workaction.Attributes.createdDesc
   }));
 }

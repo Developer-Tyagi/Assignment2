@@ -133,23 +133,18 @@
                         </div>
                         <q-separator />
                       </div>
+
                       <div class=" q-pa-lg">
                         <div v-for="index in allAction">
                           <div class=" row q-pa-md">
                             <div class="col-11 ">
                               <div class="text-blue">
-                                {{
-                                  index.value.Attributes.name
-                                    ? index.value.Attributes.name
-                                    : '-'
-                                }}
+                                {{ index.name ? index.name : '-' }}
                               </div>
 
                               <div class="q-pl-lg">
                                 {{
-                                  index.value.Attributes.createdDesc
-                                    ? index.value.Attributes.createdDesc
-                                    : '-'
+                                  index.createdDesc ? index.createdDesc : '-'
                                 }}
                               </div>
                             </div>
