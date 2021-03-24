@@ -165,7 +165,7 @@
       </div>
     </div>
     <q-dialog v-model="addDefaultActionDialogBox" persistent>
-      <q-card class=" col-8 " style="width:70%;">
+      <q-card style="width: 70%; height:90vh;">
         <q-bar
           class=" row justify-between bg-primary  "
           style="height:50px;position:fixed;width:67%; z-index: 10;"
@@ -177,7 +177,7 @@
             <q-tooltip>Close</q-tooltip>
           </q-btn>
         </q-bar>
-        <div class="q-pt-xl">
+        <div class="q-pt-xl" style="height: calc(100% - 125px; overflow:auto">
           <div class=" row q-mt-lg  full-width">
             <div class="col-1-1 ">
               <div class="q-ml-xl q-pa-md text-bold">Action Item :</div>
@@ -508,7 +508,7 @@
             </div>
           </div>
         </div>
-        <div class="  q-my-xl row justify-center">
+        <div class=" row justify-center">
           <q-btn
             color="primary"
             label="Save"
@@ -725,3 +725,8 @@ export default {
   }
 };
 </script>
+<style scoped lang="scss">
+.q-dialog__inner--minimized > div {
+  max-width: 80%;
+}
+</style>
