@@ -2,7 +2,7 @@
   <q-page>
     <div>
       <div class="actions-div justify-between q-px-md">
-        <q-breadcrumbs class="text-primary" active-color="grey" gutter="sm">
+        <q-breadcrumbs class="text-primary" active-color="grey" gutter="none">
           <template v-slot:separator>
             <q-icon size="1.5em" name="chevron_right" color="primary" />
           </template>
@@ -26,8 +26,24 @@
             @click="addFolderDialog = true"
             icon="create_new_folder"
             text-color="primary"
+            class="q-ml-sm"
           />
         </div>
+        <!-- <q-btn-dropdown color="primary" v-else>
+          <q-list>
+            <q-item clickable v-close-popup @click="addFileDialog = true">
+              <q-item-section>
+                <q-item-label>Add file</q-item-label>
+              </q-item-section>
+            </q-item>
+
+            <q-item clickable v-close-popup @click="addFolderDialog = true">
+              <q-item-section>
+                <q-item-label>Add folder</q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-btn-dropdown> -->
       </div>
       <div>
         <div
@@ -169,7 +185,8 @@ export default {
         this.documents = data.map(document => ({
           name: document.attributes.name,
           id: document.id,
-          type: document.attributes.mimeType
+          type: document.attributes.mimeType,
+          link: document.attributes.webViewLink
         }));
         this.setLoading(false);
       }
@@ -189,7 +206,8 @@ export default {
         this.documents = data.map(document => ({
           name: document.attributes.name,
           id: document.id,
-          type: document.attributes.mimeType
+          type: document.attributes.mimeType,
+          link: document.attributes.webViewLink
         }));
         this.addFolderDialog = false;
         this.setLoading(false);
@@ -214,7 +232,8 @@ export default {
       this.documents = data.map(document => ({
         name: document.attributes.name,
         id: document.id,
-        type: document.attributes.mimeType
+        type: document.attributes.mimeType,
+        link: document.attributes.webViewLink
       }));
       this.depth.push({ name: 'home', id: this.claimId });
       this.setLoading(false);
@@ -229,12 +248,13 @@ export default {
         this.documents = data.map(document => ({
           name: document.attributes.name,
           id: document.id,
-          type: document.attributes.mimeType
+          type: document.attributes.mimeType,
+          link: document.attributes.webViewLink
         }));
         this.depth.push({ name: document.name, id: document.id });
         this.setLoading(false);
       } else {
-        alert('download file');
+        window.open(document.link);
       }
     },
 
@@ -245,7 +265,8 @@ export default {
       this.documents = data.map(document => ({
         name: document.attributes.name,
         id: document.id,
-        type: document.attributes.mimeType
+        type: document.attributes.mimeType,
+        link: document.attributes.webViewLink
       }));
       this.depth.pop();
       this.setLoading(false);
@@ -269,11 +290,10 @@ export default {
       this.documents = data.map(document => ({
         name: document.attributes.name,
         id: document.id,
-        type: document.attributes.mimeType
+        type: document.attributes.mimeType,
+        link: document.attributes.webViewLink
       }));
-      console.log(index, this.depth);
       this.depth.splice(index + 1);
-      console.log(this.depth);
       this.setLoading(false);
     }
   },
