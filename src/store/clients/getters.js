@@ -1,4 +1,5 @@
 export const clients = state => state.clients;
+export const notes = state => state.notes;
 export const personnelRoles = state => state.personnelRoles;
 export const estimators = state => state.estimators;
 export const selectedClientId = state => state.selectedClientId;

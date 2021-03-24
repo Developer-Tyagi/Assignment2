@@ -9,16 +9,6 @@ export function setClients(state, clients) {
 export function setSelectedEditClient(state, client) {
   state.editSelectedClient = client;
 }
-export function setSelectedClaim(state, claim) {
-  state.claims = clients.map(claim => ({
-    ...claim.attributes,
-    id: claim.id
-  }));
-
-  console.log('mutaaaaa');
-  // state.editSelectedCaim = claim;
-  // console.log(state.editSelectedCaim, 'asadaf');
-}
 
 export function setSelectedClientProperty(state, client) {
   state.setClientProperty = client;
@@ -33,11 +23,6 @@ export function setEstimators(state, estimators) {
 
 export function setSelectedClientId(state, id) {
   state.selectedClientId = id;
-}
-
-export function setSelectedClaimId(state, id) {
-  console.log(setSelectedClaimId, 786);
-  state.selectedClaimId = id;
 }
 
 export function setPropertyTypes(state, types) {

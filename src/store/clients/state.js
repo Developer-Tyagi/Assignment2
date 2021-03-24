@@ -1,6 +1,7 @@
 export default function() {
   return {
     clients: [],
+    notes: [],
     estimators: [],
     propertyTypes: [],
     policyTypes: [],
@@ -10,8 +11,6 @@ export default function() {
     policyCategories: [],
     editSelectedClient: [],
     selectedClientId: '',
-    selectedClaimId: '',
-    setClientProperty: [],
-    editSelectedCaim: []
+    setClientProperty: []
   };
 }

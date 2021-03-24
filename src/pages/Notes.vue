@@ -1,20 +1,57 @@
 <template>
   <q-page>
+    <!-- Note Dialog -->
+     <q-dialog
+      v-model="addNoteDialog"
+      persistent
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <CustomBar
+          :dialogName="'Add New Note'"
+          @closeDialog="addNoteDialog = false"
+        />
+        <q-card-section>
+          <div class="mobile-container-page-without-search form-height">
+           
+            <q-input class="full-width" label="Take Notes here" v-model="note"/>
+                </div>
+          <q-btn
+            @click="onSave"
+            label="Save"
+            color="primary"
+            class="button-width-90"
+            size="'xl'"
+          />
+</q-card-section>
+      </q-card>
+    </q-dialog>
     <div>
       <div class="actions-div">
         <q-separator vertical inset></q-separator>
-        <q-btn @click="addClient" flat><img src="~assets/add.svg"/></q-btn>
+        <q-btn @click="addNote" flat class ="q-ml-auto"><img src="~assets/add.svg"/></q-btn>
       </div>
       <div class="mobile-container-page">
-        <div class="clients-list" v-if="clients.length">
-          <div class="clients-list" v-for="client in clients" :key="client.id">
+        <div
+          class="clients-list q-ma-sm "
+          v-if="editSelectedClient.attributes.notes.length"
+          >
+          <div
+            class="clients-list"
+            v-for="note,index in editSelectedClient.attributes.notes"
+          >
             <q-item-section>
               <div class="client-list-item">
+                
                 <div class="row">
-                  <q-icon class="q-ml-auto" size="sm" name="more_vert"></q-icon>
-                </div>
-                <div class="row">
-                  {{ selectedClientId }}
+                
+                  {{ editSelectedClient.attributes.notes[index].addedAt | moment('DD/MM/YYYY')}} <br />
+                  {{ editSelectedClient.attributes.notes[index].desc }}</br/>
+              
+                  
+                 
                   <div class="row"></div>
                 </div>
               </div>
@@ -41,50 +78,63 @@
 
 <script>
 import { mapGetters, mapActions, mapMutations } from 'vuex';
+import CustomBar from 'components/CustomBar';
+import moment from 'moment';
 
 export default {
   name: 'Clients',
+   components: { CustomBar },
   data() {
     return {
-      searchText: '',
-      openSearchInput: false
+     addNoteDialog:false,
+     note:'',
     };
   },
 
   computed: {
-    ...mapGetters(['clients', 'selectedClientId', 'editSelectedCaim'])
+    ...mapGetters(['clients', 'selectedClientId', 'editSelectedClient','notes'])
   },
-
+ formatDate(value) {
+      if (value) {
+        return moment(String(value)).format('MM/DD/YYYY','HH:MM');
+      }
+    },
   created() {
-    this.getSingleClaimDetails(this.selectedClientId);
-    console.log(this.editSelectedCaim, 876543);
-    console.log(this.selectedClientId, 111111111);
-    this.getClients();
-  },
+   
+ this.getSingleClientDetails(this.selectedClientId);
+ },
   methods: {
-    ...mapActions([
-      'getClients',
-      'getSingleClientDetails',
-      'getSingleClaimDetails'
-    ]),
+    ...mapActions(['getSingleClientDetails','addNotes']),
     ...mapMutations(['setSelectedClientId']),
 
-    onSearchBackButtonClick() {
-      this.searchText = '';
-      this.search();
-    },
+  
+  addNote(){
+this.addNoteDialog = true;
 
-    addClient() {
-      this.$router.push('/add-client');
+  },
+ async onSave(){
+const payload = {
+    id:this.selectedClientId,
+  notesData:{
+note:this.note
+  }
+ }
+  await this.addNotes(payload)
+  this.addNoteDialog=false;
+  this.successMessage();
+// this.addNotes(payload);
+this.getSingleClientDetails(this.selectedClientId);
+},
+successMessage() {
+      this.$q.notify({
+        type: 'positive',
+        message: `Client Info Updated Successfully!`,
+        position: 'center'
+      });
     },
-
-    search(e) {
-      this.getClients(this.searchText ? this.searchText : '');
-    }
   }
 };
 </script>
-
 <style lang="scss">
 .clients-list {
   background-color: #f4f4f4;
@@ -98,5 +148,10 @@ export default {
       margin: 0 0 6px;
     }
   }
+}
+.form-height {
+  height: calc(100vh - 145px);
+  overflow: auto;
+  margin: 10px;
 }
 </style>

@@ -23,6 +23,7 @@ export async function getSingleClientDetails({ commit, dispatch }, id) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.get(`/clients/${id}`);
+
     commit('setSelectedEditClient', data);
     dispatch('setLoading', false);
   } catch (e) {
@@ -85,6 +86,26 @@ export async function addClient({ dispatch, state }, payload) {
     dispatch('setNotification', {
       type: 'negative',
       message: 'Failed to create Client! please try again !'
+    });
+  }
+}
+
+export async function addNotes({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      `/clients/${payload.id}/notes`,
+      buildApiData('clients', payload.notesData)
+    );
+
+    dispatch('setLoading', false);
+    return data;
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'Failed to create Note! please try again !'
     });
   }
 }
@@ -231,26 +252,6 @@ export async function getPolicyCategory({ commit, dispatch }) {
   try {
     const { data } = await request.get('/pcategories');
     commit('setPolicyCategory', data);
-    dispatch('setLoading', false);
-  } catch (e) {
-    console.log(e);
-    dispatch('setLoading', false);
-    dispatch('setNotification', {
-      type: 'negative',
-      message: e.response.data.title
-    });
-  }
-}
-//testing the
-
-export async function getSingleClaimDetails({ commit, dispatch }, id) {
-  console.log('action me aya');
-  dispatch('setLoading', true);
-  try {
-    // commit('setSelectedClaimId', id);
-    const { data } = await request.get(`/clients/${id}/claims/${id}`);
-    console.log(data, 'data ');
-    commit('setSelectedClaim', data);
     dispatch('setLoading', false);
   } catch (e) {
     console.log(e);

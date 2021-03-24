@@ -90,14 +90,9 @@ export default {
   created() {
     console.log(this.editSelectedCaim, 22222222);
     this.getClients();
-    this.getSingleClaimDetails();
   },
   methods: {
-    ...mapActions([
-      'getClients',
-      'getSingleClientDetails',
-      'getSingleClaimDetails'
-    ]),
+    ...mapActions(['getClients', 'getSingleClientDetails']),
     ...mapMutations(['setSelectedClientId']),
 
     onSearchBackButtonClick() {

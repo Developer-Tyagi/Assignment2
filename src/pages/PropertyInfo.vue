@@ -191,7 +191,6 @@ export default {
   created() {
     this.getPropertyTypes();
     this.getSingleClientProperty(this.selectedClientId);
-    console.log(this.setClientProperty, 99);
   },
   computed: {
     ...mapGetters([
