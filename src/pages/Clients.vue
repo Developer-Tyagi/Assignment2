@@ -28,7 +28,6 @@
             <q-item-section @click="onClientsListClick(client)">
               <div class="client-list-item">
                 <div class="row">
-                  {{ editSelectedCaim }}
                   <span>
                     {{ client['insuredInfo']['primary']['fname'] }}
 
