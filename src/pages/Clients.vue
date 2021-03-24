@@ -28,7 +28,7 @@
             <q-item-section @click="onClientsListClick(client)">
               <div class="client-list-item">
                 <div class="row">
-                  {{ editSelectedCaim }}88888888
+                  {{ editSelectedCaim }}
                   <span>
                     {{ client['insuredInfo']['primary']['fname'] }}
 
