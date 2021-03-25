@@ -23,7 +23,6 @@
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
-  //   name: 'Claims',
   components: {},
   data() {
     return {
