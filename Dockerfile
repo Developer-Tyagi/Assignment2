@@ -9,6 +9,9 @@ EXPOSE 8080
 # build stage
 FROM develop-stage as build-stage
 RUN yarn
+WORKDIR /app/src-capacitor
+RUN yarn
+WORKDIR /app
 RUN quasar build
 # production stage
 FROM nginx:alpine as production-stage
