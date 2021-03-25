@@ -39,42 +39,47 @@
         /></q-btn>
       </div>
       <div class="mobile-container-page">
-        <div
-          class="clients-list q-ma-sm "
-          v-if="editSelectedClient.attributes.notes.length"
-        >
+        <div v-if="editSelectedClient.attributes.notes">
           <div
-            class="clients-list"
-            v-for="(note, index) in editSelectedClient.attributes.notes"
+            class="clients-list q-ma-sm "
+            v-if="editSelectedClient.attributes.notes.length"
           >
-            <q-item-section>
-              <div class="client-list-item">
-                <div class="row">
-                  {{
-                    editSelectedClient.attributes.notes[index].addedAt
-                      | moment('DD/MM/YYYY')
-                  }}
-                  <br />
-                  {{ editSelectedClient.attributes.notes[index].desc }}<br />
+            <div
+              class="clients-list"
+              v-for="(note, index) in editSelectedClient.attributes.notes"
+            >
+              <q-item-section>
+                <div class="client-list-item">
+                  <div class="row">
+                    {{
+                      editSelectedClient.attributes.notes[index].addedAt
+                        | moment('DD/MM/YYYY/, HH:mm')
+                    }}
+                    <br />
+                    {{ editSelectedClient.attributes.notes[index].desc }}<br />
 
-                  <div class="row"></div>
+                    <div class="row"></div>
+                  </div>
                 </div>
-              </div>
-            </q-item-section>
+              </q-item-section>
+            </div>
           </div>
         </div>
-        <div v-else class="full-height full-width column">
-          <div style="color: #666666" class="text-center q-mt-auto">
-            You haven't added a Client yet.
+        <div v-else class="full-height full-width column ">
+          <div class=" column absolute-center">
+            <div style="color: #666666,align-items: center">
+              You haven't added a Note yet.
+            </div>
+
+            <img
+              class="q-mx-lg q-pt-sm"
+              src="~assets/add.svg"
+              alt="add_icon"
+              width="130px"
+              height="100px"
+              @click="addNote"
+            />
           </div>
-          <img
-            src="~assets/add.svg"
-            alt="add_icon"
-            width="80px"
-            height="80px"
-            @click="addClient"
-            class="q-mb-auto q-mx-auto q-mt-sm"
-          />
         </div>
       </div>
     </div>
@@ -129,6 +134,7 @@ export default {
       await this.addNotes(payload);
       this.addNoteDialog = false;
       this.successMessage();
+      this.note = '';
 
       this.getSingleClientDetails(this.selectedClientId);
     },
