@@ -107,8 +107,8 @@ export default {
 
   created() {
     this.verifyOobCode(this.$route.query).then(response => {
-      if (response && response.status === 200) {
-        this.userId = response.data.id;
+      if (response && response.id && response.data.attributes.email) {
+        this.userId = response.id;
         this.userEmail = response.data.attributes.email;
         this.isLinkExpired = false;
       } else {
