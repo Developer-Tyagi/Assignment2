@@ -137,6 +137,18 @@ const routes = [
         component: () => import('pages/ClientInfo.vue')
       },
       {
+        path: 'claim-details',
+        name: 'claim details ',
+        caseSensitive: true,
+        component: () => import('pages/ClaimDetails.vue')
+      },
+      {
+        path: 'claim-summary',
+        name: 'claim summary ',
+        caseSensitive: true,
+        component: () => import('pages/ClaimSummary.vue')
+      },
+      {
         path: 'property-details',
         name: 'properties and claims ',
         caseSensitive: true,

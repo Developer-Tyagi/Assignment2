@@ -10,6 +10,11 @@ export function setSelectedEditClient(state, client) {
   state.editSelectedClient = client;
 }
 
+export function setSelectedSingleClaim(state, claim) {
+  console.log('in claim mutation');
+  state.getSelectedClaim = claim;
+}
+
 export function setSelectedClientProperty(state, client) {
   state.setClientProperty = client;
 }

@@ -74,7 +74,9 @@
                   ><br />
                 </div>
                 <span class="form-heading">Claim Number: </span
-                >{{ claim.number ? claim.number : '-' }} <br />
+                ><span @click="onClickClaimNumber" class="click-link"
+                  >{{ claim.number ? claim.number : '-' }} </span
+                ><br />
                 <span class="form-heading">File Number: </span
                 >{{ claim.fileNumber ? claim.fileNumber : '-' }} <br />
                 <span class="form-heading"> Current Phase: </span
@@ -211,7 +213,9 @@ export default {
       'getPropertyTypes',
       'addPropertyAddress'
     ]),
-
+    onClickClaimNumber() {
+      this.$router.push('/claim-details');
+    },
     setTypes(types, data) {
       const obj = types.find(item => {
         return item.id === data.id;
