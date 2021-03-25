@@ -3,7 +3,7 @@ export const notes = state => state.notes;
 export const personnelRoles = state => state.personnelRoles;
 export const estimators = state => state.estimators;
 export const selectedClientId = state => state.selectedClientId;
-export const selectedClaimtId = state => state.selectedClaimId;
+export const selectedClaimId = state => state.selectedClaimId;
 export const propertyTypes = state => state.propertyTypes;
 export const claimReasons = state => state.claimReasons;
 export const claimSeverity = state => state.claimSeverity;

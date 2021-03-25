@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions, mapMutations } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   //   name: 'Claims',
@@ -45,51 +45,40 @@ export default {
   },
 
   computed: {
-    ...mapGetters([])
+    ...mapGetters(['selectedClaimId'])
   },
 
-  created() {},
+  created() {
+    this.getSingleClaimDetails(this.selectedClaimId);
+  },
   methods: {
-    ...mapActions(['', '']),
-    ...mapMutations(['']),
+    ...mapActions(['getSingleClaimDetails']),
     onClickClaimItems(value) {
       switch (value) {
         case 'Claim Summary':
-          console.log('in Claim Summary');
           this.$router.push('/claim-summary');
           break;
         case 'Action Items':
-          this.mailingAddressDialog = true;
           break;
         case 'Demands And Offers':
-          this.insuranceInfoDialog = true;
           break;
         case 'Activity Log & Message Archive':
-          this.lossInfoDialog = true;
           break;
         case 'Company Personnel':
-          this.expertVendorInfoDialog = true;
           break;
         case 'Insurer & Policy':
-          this.estimatingInfoDialog = true;
           break;
         case 'Mortgages and Liens':
-          this.officeTaskDialog = true;
           break;
         case 'Files':
-          this.publicAdjustorInfoDialog = true;
           break;
         case 'Notes':
-          this.documentsDialog = true;
           break;
         case 'MatterPort':
-          this.contractInfoDialog = true;
           break;
         case 'Time Tracking':
-          this.contractInfoDialog = true;
           break;
         case 'Claim Ledger':
-          this.contractInfoDialog = true;
       }
     }
   }

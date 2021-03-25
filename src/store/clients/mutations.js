@@ -11,7 +11,6 @@ export function setSelectedEditClient(state, client) {
 }
 
 export function setSelectedSingleClaim(state, claim) {
-  console.log('in claim mutation');
   state.getSelectedClaim = claim;
 }
 
@@ -28,6 +27,9 @@ export function setEstimators(state, estimators) {
 
 export function setSelectedClientId(state, id) {
   state.selectedClientId = id;
+}
+export function setSelectedClaimId(state, id) {
+  state.selectedClaimId = id;
 }
 
 export function setPropertyTypes(state, types) {

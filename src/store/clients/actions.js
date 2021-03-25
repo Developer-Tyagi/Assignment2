@@ -36,144 +36,14 @@ export async function getSingleClientDetails({ commit, dispatch }, id) {
   }
 }
 
-//This API is for View single claim
+//This API is for Viewing single claim Info
 
 export async function getSingleClaimDetails({ commit, dispatch }, id) {
   dispatch('setLoading', true);
+
   try {
-    // const { data } = await request.get(`/claims/${id}`);
-    const data = {
-      data: {
-        id: '602634d01d975ca6a81bcf60',
-        type: 'claims',
-        attributes: {
-          created: '2021-02-12T07:57:04.172Z',
-          updated: '2021-02-12T07:57:04.172Z',
-          client: {
-            id: '602634952999a5c99b4efd71',
-            fname: 'Bose',
-            lname: 'jack'
-          },
-          policyInfo: {
-            carrier: {
-              id: '243721c8-4f4c-11eb-ae93-0242ac130002',
-              value: 'American Azira'
-            },
-            number: '1234353BA',
-            isClaimFiled: true,
-            isForcedPlaced: true,
-            claimNumber: 'asd121212aasas',
-            category: {
-              id: '243721c8-4f4c-11eb-ae93-0242ac130002',
-              value: 'commercial',
-              machineValue: 'commercial'
-            },
-            type: {
-              id: '243721c8-4f4c-11eb-ae93-0242ac130002',
-              value: 'Inland Marine',
-              machineValue: 'inland_marine'
-            },
-            effectiveDate: '2020-09-24T11:18:06Z',
-            expirationDate: '2020-09-24T11:18:06Z',
-            limitCoverage: {
-              dwelling: 12.3,
-              otherStructure: 12.34,
-              content: 12.21,
-              lossOfUse: 12.1
-            },
-            deductibleAmount: 45,
-            depreciation: 1234.09,
-            declaration: {
-              isDeclared: true,
-              fileInfo: {
-                id: '243721c8-4f4c-11eb-ae93-0242ac130002',
-                value: 'policy_declared.pdf'
-              }
-            },
-            priorPayment: 1234.09,
-            limitReason: 'reason for limits or denial'
-          },
-          mortgageInfo: [
-            {
-              id: '243721c8-4f4c-11eb-ae93-0242ac130002',
-              value: 'Mortgage company 1',
-              loanNumber: '123232323',
-              accountNumber: '232323233',
-              isPrimary: true
-            },
-            {
-              id: '243721c8-4f4c-11eb-ae93-0242ac130002',
-              value: 'Mortgage company 1',
-              loanNumber: '123232323',
-              accountNumber: '232323233',
-              isPrimary: false
-            }
-          ],
-          lossInfo: {
-            address: {
-              addressCountry: 'USA',
-              addressLocality: 'Mountain View',
-              addressRegion: 'California',
-              postalCode: '94043',
-              streetAddress: '1600 Amphitheatre Pkwy',
-              dropBox: {
-                info: 'DropBox info',
-                isPresent: false
-              },
-              houseNumber: '1221'
-            },
-            propertyType: {
-              id: '243721c8-4f4c-11eb-ae93-0242ac130002',
-              value: 'residential - condo',
-              machineValue: 'residential_condo'
-            },
-            propertyDesc: 'Property description',
-            claimReason: {
-              id: '243721c8-4f4c-11eb-ae93-0242ac130002',
-              value: 'appraisal',
-              machineValue: 'appraisal'
-            },
-            date: '2020-09-24T11:18:06Z',
-            cause: {
-              id: '243721c8-4f4c-11eb-ae93-0242ac130002',
-              value: 'accidental discharge',
-              machineValue: 'accidental_discharge'
-            },
-            deadlineDate: '2020-09-24T11:18:06Z',
-            recovDDDate: '2020-09-24T11:18:06Z',
-            isFEMA: true,
-            emergencyName: 'strong storm',
-            desc: 'Loss description',
-            isHabitable: true,
-            serverity: {
-              id: '243721c8-4f4c-11eb-ae93-0242ac130002',
-              value: 'Standard',
-              machineValue: 'standard'
-            },
-            isPPDamaged: true,
-            isPPIF: true,
-            isNeedPPIF: false,
-            hasHomeMortgage: true,
-            isEmergency: true,
-            isOSDamaged: true,
-            OSDamageDesc: 'Other structure damage description',
-            isSecondClaim: true,
-            lossAddressName: 'Addr Name'
-          },
-          expertInfo: {
-            isVendorAssigned: true,
-            vendor: {
-              id: '243721c8-4f4c-11eb-ae93-0242ac130002',
-              value: 'American Azira'
-            },
-            isInsuredHired: false,
-            notes: 'expert notes',
-            internalNotes: 'intenral notes'
-          }
-        }
-      }
-    };
-    console.log(data, 'data in actions');
+    const { data } = await request.get(`/claims/${id}/info`);
+
     commit('setSelectedSingleClaim', data);
     dispatch('setLoading', false);
   } catch (e) {
@@ -304,6 +174,7 @@ export async function addClaim({ dispatch, state }, payload) {
   try {
     const { data } = await request.post(
       `/clients/${payload.client.id}/claims`,
+
       buildApiData('claims', payload)
     );
     dispatch('setLoading', false);
