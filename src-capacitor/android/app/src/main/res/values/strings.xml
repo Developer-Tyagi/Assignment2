@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">claimguru</string>
+    <string name="title_activity_main">claimguru</string>
+    <string name="package_name">claimguru.app</string>
+    <string name="custom_url_scheme">claimguru.app</string>
+</resources>
