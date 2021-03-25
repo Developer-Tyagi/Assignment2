@@ -27,7 +27,7 @@ export function validateDate(val) {
   }
 }
 export function validateTime(val) {
-  const regex = /^([0-1]?\d|2[0-3]):[0-5]\d$/;
+  const regex = /([01]?[0-9]|2[0-3]):[0-5][0-9]/;
   if (val) {
     if (regex.test(val)) {
       return true;
