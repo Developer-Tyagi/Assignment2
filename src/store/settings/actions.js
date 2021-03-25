@@ -35,19 +35,3 @@ export async function addInspectionTypes({ dispatch, state }, payload) {
     return false;
   }
 }
-
-export async function getAllUsers({ commit, dispatch }) {
-  dispatch('setLoading', true);
-  try {
-    const { data } = await request.get('/users');
-    commit('setAllUsers', data);
-    dispatch('setLoading', false);
-  } catch (e) {
-    console.log(e);
-    dispatch('setLoading', false);
-    dispatch('setNotification', {
-      type: 'negative',
-      message: e.response.data.title
-    });
-  }
-}

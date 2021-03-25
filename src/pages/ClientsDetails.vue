@@ -48,6 +48,11 @@ export default {
     clientDetailsDailogBoxOpen(value) {
       if (value == 'Client Info') {
         this.$router.push('/client-details');
+      } else if (value == 'Documents') {
+        this.$router.push('/client-documents');
+      }
+      if (value == 'Properties and Claims') {
+        this.$router.push('/property-details');
       }
       if (value == 'Properties and Claims') {
         this.$router.push('/property-details');

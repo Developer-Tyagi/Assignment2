@@ -54,7 +54,11 @@ module.exports = function(/* ctx */) {
           ...cfg.resolve.alias, // This adds the existing alias
           // Add your own alias like this
           '@api': path.resolve(__dirname, './src/api'),
-          '@utils': path.resolve(__dirname, './src/utils')
+          '@utils': path.resolve(__dirname, './src/utils'),
+          '@capacitor': path.resolve(
+            __dirname,
+            './src-capacitor/node_modules/@capacitor'
+          )
         };
       }
     },
