@@ -153,7 +153,7 @@ export async function addClaim({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.post(
-      `/clients/${payload.client.id}/claims`,
+      '/claims',
       buildApiData('claims', payload)
     );
     dispatch('setLoading', false);
