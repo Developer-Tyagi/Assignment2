@@ -9,7 +9,7 @@
             </template>
           </q-input>
         </div>
-        <div class="col-6 row justify-between text-bold">
+        <div class="col-4 row justify-between text-bold">
           <q-card flat bordered class="q-pa-sm"
             >Licenses available- {{ '5' }}</q-card
           >
@@ -27,7 +27,7 @@
       <div class="q-mt-md" style="height: calc(100vh - 150px); overflow: auto">
         <table>
           <thead>
-            <tr class="text-bold text-h6 text-white" style="height: 50px">
+            <tr class="text-bold text-h6 text-white" style="height: 30px">
               <th style="width: 15%">Contact Name</th>
               <th style="width: 15%">Email</th>
               <th>Phone</th>
@@ -76,7 +76,7 @@
               <td class="text-center">
                 <div>
                   <q-btn-dropdown label="Action" style="width: 100px" outline>
-                    <q-list>
+                    <q-list style="width: 100px;">
                       <q-item clickable v-close-popup @click="onItemClick">
                         <q-item-section>
                           <q-item-label>View/Edit</q-item-label>
