@@ -16,6 +16,21 @@ export async function getInspectionTypes({ commit, dispatch }) {
     });
   }
 }
+export async function getAllUsers({ commit, dispatch }, params) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get('/users', params);
+    commit('setAllUsers', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response.data.title
+    });
+  }
+}
 
 export async function addInspectionTypes({ dispatch, state }, payload) {
   dispatch('setLoading', true);
