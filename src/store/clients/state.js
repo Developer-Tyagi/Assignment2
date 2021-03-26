@@ -13,6 +13,7 @@ export default function() {
     selectedClientId: '',
     setClientProperty: [],
     getSelectedClaim: [],
-    selectedClaimId: ''
+    selectedClaimId: '',
+    lossInfo: []
   };
 }

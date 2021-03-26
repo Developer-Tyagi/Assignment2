@@ -1,6 +1,25 @@
 import request from '@api';
 import { buildApiData } from '@utils/api';
 
+//This API is for getting Loss Info Details
+export async function getLossInfo({ commit, dispatch }, id) {
+  dispatch('setLoading', true);
+
+  try {
+    const { data } = await request.get(`/claims/${id}/lossinfo`);
+
+    commit('setLossInfo', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response.data.title
+    });
+  }
+}
+
 export async function getClients({ commit, dispatch }, searchString = '') {
   dispatch('setLoading', true);
   try {
@@ -42,7 +61,8 @@ export async function getSingleClaimDetails({ commit, dispatch }, id) {
   dispatch('setLoading', true);
 
   try {
-    const { data } = await request.get(`/claims/${id}/info`);
+    // const { data } = await request.get(`/claims/${id}/info`);
+    const data = {};
 
     commit('setSelectedSingleClaim', data);
     dispatch('setLoading', false);
