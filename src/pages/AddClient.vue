@@ -683,31 +683,32 @@ export default {
 
         buttonGroup: 'dollar'
       },
+
       publicAdjustorInfo: {
         isFieldDisable1: true,
         isFieldDisable2: true,
         isFieldDisable3: true,
         isFieldDisable4: true,
-        personnelRole1: {
-          id: '',
-          value: '',
-          machineValue: ''
-        },
-        personnelRole2: {
-          id: '',
-          value: '',
-          machineValue: ''
-        },
-        personnelRole3: {
-          id: '',
-          value: '',
-          machineValue: ''
-        },
-        personnelRole4: {
-          id: '',
-          value: '',
-          machineValue: ''
-        },
+
+        personnel: [
+          {
+            id: '',
+            role: ''
+          },
+          {
+            id: '',
+            role: ''
+          },
+          {
+            id: '',
+            role: ''
+          },
+          {
+            id: '',
+            role: ''
+          }
+        ],
+
         personParty1: '',
         personParty2: '',
         personParty3: '',
@@ -1466,9 +1467,9 @@ export default {
             ...this.lossInfo.reasonClaim
           },
           date: dateToSend(this.lossInfo.dateOfLoss),
-          cause: {
-            ...this.lossInfo.causeOfLoss
-          },
+          cause: this.lossInfo.causeOfLoss.value
+            ? this.lossInfo.causeOfLoss
+            : null,
           deadlineDate: dateToSend(this.lossInfo.deadlineDate),
           recovDDDate: dateToSend(this.lossInfo.recovDeadline),
           isFEMA: this.lossInfo.femaClaimToggle,
@@ -1505,33 +1506,8 @@ export default {
           },
           dateOfFirstContact: dateToSend(this.contractInfo.firstContractDate)
         },
-        personnel: {
-          notes: this.publicAdjustorInfo.notes,
-          users: [
-            {
-              id: this.publicAdjustorInfo.personnelRole1.id,
-              name: this.publicAdjustorInfo.personParty1.name,
-              role: this.publicAdjustorInfo.personnelRole1.value
-            },
 
-            {
-              id: this.publicAdjustorInfo.personnelRole2.id,
-              name: this.publicAdjustorInfo.personParty2.name,
-              role: this.publicAdjustorInfo.personnelRole2.value
-            },
-
-            {
-              id: this.publicAdjustorInfo.personnelRole3.id,
-              name: this.publicAdjustorInfo.personParty3.name,
-              role: this.publicAdjustorInfo.personnelRole3.value
-            },
-            {
-              id: this.publicAdjustorInfo.personnelRole4.id,
-              name: this.publicAdjustorInfo.personParty4.name,
-              role: this.publicAdjustorInfo.personnelRole4.value
-            }
-          ]
-        }
+        personnel: this.publicAdjustorInfo.personnel
       };
 
       this.addClaim(payload).then(() => {
