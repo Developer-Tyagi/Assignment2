@@ -6,7 +6,7 @@
           ><img src="~assets/add.svg"
         /></q-btn>
       </div>
-      <div class="mobile-container-page ">
+      <div class="mobile-container-page">
         <div class="clients-list" v-if="setClientProperty.length">
           <!-- This is for showing the Property details  -->
           <div
@@ -14,18 +14,18 @@
             v-for="i in setClientProperty.length"
             :key="setClientProperty.id"
           >
-            <div class="row ">
+            <div class="row">
               <span class="col-10"></span>
               <q-icon
                 size="xs"
                 name="create"
                 color="primary"
-                class=" col q-pt-xs"
+                class="col q-pt-xs"
                 @click="editClientInfoDailog = true"
               ></q-icon>
             </div>
             <div class="client-list-item">
-              <span class=" form-heading">
+              <span class="form-heading">
                 {{
                   setClientProperty[i - 1].attributes.name
                     ? setClientProperty[i - 1].attributes.name
@@ -96,20 +96,10 @@
       transition-hide="slide-down"
     >
       <q-card>
-        <CustomBar />
-        <q-header bordered class="bg-white">
-          <q-toolbar class="row bg-white">
-            <img
-              src="~assets/close.svg"
-              alt="back-arrow"
-              @click="addNewPropertyDialog = false"
-              style="margin: auto 0"
-            />
-            <div class="text-uppercase text-bold text-black q-mx-auto">
-              Add New Property
-            </div>
-          </q-toolbar>
-        </q-header>
+        <CustomBar
+          :dialogName="'Add New Property'"
+          @closeDialog="addNewPropertyDialog = false"
+        />
         <div class="mobile-container-page-without-search q-ma-sm">
           <q-form ref="propertyAddressForm" class="form-height">
             <q-input
