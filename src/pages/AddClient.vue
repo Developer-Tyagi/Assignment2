@@ -1467,9 +1467,9 @@ export default {
             ...this.lossInfo.reasonClaim
           },
           date: dateToSend(this.lossInfo.dateOfLoss),
-          cause: {
-            ...this.lossInfo.causeOfLoss
-          },
+          cause: this.lossInfo.causeOfLoss.value
+            ? this.lossInfo.causeOfLoss
+            : null,
           deadlineDate: dateToSend(this.lossInfo.deadlineDate),
           recovDDDate: dateToSend(this.lossInfo.recovDeadline),
           isFEMA: this.lossInfo.femaClaimToggle,
@@ -1507,7 +1507,7 @@ export default {
           dateOfFirstContact: dateToSend(this.contractInfo.firstContractDate)
         },
 
-        personnel: [...this.publicAdjustorInfo.personnel]
+        personnel: this.publicAdjustorInfo.personnel
       };
 
       this.addClaim(payload).then(() => {
