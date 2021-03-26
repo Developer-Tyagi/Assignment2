@@ -4,14 +4,14 @@
     <div class="form-heading q-mt-lg">Personnel Role</div>
 
     <q-select
-      v-model="publicAdjustorInfo.personnelRole1.id"
+      v-model="publicAdjustorInfo.personnel[0].id"
       :options="roleTypes"
       option-value="id"
       option-label="name"
       map-options
       emit-value
       options-dense
-      @input="setTypes(roleTypes, publicAdjustorInfo.personnelRole1, 'role1')"
+      @input="setTypes(roleTypes, publicAdjustorInfo.personnel[0], 0)"
       label="Select Role"
     ></q-select>
 
@@ -33,14 +33,14 @@
 
     <div class="form-heading q-mt-lg">Personnel Role</div>
     <q-select
-      v-model="publicAdjustorInfo.personnelRole2.id"
+      v-model="publicAdjustorInfo.personnel[1].id"
       :options="roleTypes"
       option-value="id"
       option-label="name"
       map-options
       emit-value
       options-dense
-      @input="setTypes(roleTypes, publicAdjustorInfo.personnelRole2, 'role2')"
+      @input="setTypes(roleTypes, publicAdjustorInfo.personnel[1], 1)"
       label="Select Role"
     ></q-select>
     <div class="form-heading q-mt-lg">Person/Party</div>
@@ -59,14 +59,14 @@
     ></q-select>
     <div class="form-heading q-mt-lg">Personnel Role</div>
     <q-select
-      v-model="publicAdjustorInfo.personnelRole3.id"
+      v-model="publicAdjustorInfo.personnel[2].id"
       :options="roleTypes"
       option-value="id"
       option-label="name"
       map-options
       emit-value
       options-dense
-      @input="setTypes(roleTypes, publicAdjustorInfo.personnelRole3, 'role3')"
+      @input="setTypes(roleTypes, publicAdjustorInfo.personnel[2], 2)"
       label="Select Role"
     ></q-select>
     <div class="form-heading q-mt-lg">Person/Party</div>
@@ -86,14 +86,14 @@
     ></q-select>
     <div class="form-heading q-mt-lg">Personnel Role</div>
     <q-select
-      v-model="publicAdjustorInfo.personnelRole4.id"
+      v-model="publicAdjustorInfo.personnel[3].id"
       :options="roleTypes"
       option-value="id"
       option-label="name"
       map-options
       emit-value
       options-dense
-      @input="setTypes(roleTypes, publicAdjustorInfo.personnelRole4, 'role4')"
+      @input="setTypes(roleTypes, publicAdjustorInfo.personnel[3], 3)"
       label="Select Role"
     ></q-select>
     <div class="form-heading q-mt-lg">Person/Party</div>
@@ -140,6 +140,20 @@ export default {
 
   data() {
     return {
+      role: [
+        {
+          machineValue: ''
+        },
+        {
+          machineValue: ''
+        },
+        {
+          machineValue: ''
+        },
+        {
+          machineValue: ''
+        }
+      ],
       params: {
         role: ''
       }
@@ -155,32 +169,34 @@ export default {
   },
   methods: {
     ...mapActions(['getRoles', 'getAllUsers']),
-    setTypes(types, data, role) {
+    setTypes(types, data, index) {
       const obj = types.find(item => {
         return item.id === data.id;
       });
-      data.machineValue = obj.machineValue;
-      data.value = obj.name;
-      switch (role) {
-        case 'role1':
+
+      this.role[index].machineValue = obj.machineValue;
+      data.role = obj.name;
+      switch (index) {
+        case 0:
           this.publicAdjustorInfo.isFieldDisable1 = false;
-          this.params.role = this.publicAdjustorInfo.personnelRole1.machineValue;
+          this.params.role = this.role[index].machineValue;
+
           this.getAllUsers(this.params);
           break;
-        case 'role2':
+        case 1:
           this.publicAdjustorInfo.isFieldDisable2 = false;
-          this.params.role = this.publicAdjustorInfo.personnelRole2.machineValue;
+          this.params.role = this.role[index].machineValue;
           this.getAllUsers(this.params);
           break;
 
-        case 'role3':
+        case 2:
           this.publicAdjustorInfo.isFieldDisable3 = false;
-          this.params.role = this.publicAdjustorInfo.personnelRole3.machineValue;
+          this.params.role = this.role[index].machineValue;
           this.getAllUsers(this.params);
           break;
-        case 'role4':
+        case 3:
           this.publicAdjustorInfo.isFieldDisable4 = false;
-          this.params.role = this.publicAdjustorInfo.personnelRole4.machineValue;
+          this.params.role = this.role[index].machineValue;
           this.getAllUsers(this.params);
           break;
       }
