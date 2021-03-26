@@ -716,7 +716,7 @@ export default {
         },
         lossDesc: this.lossDetails.lossDesc,
         dateofLoss: dateToSend(this.lossDetails.dateOfLoss),
-        lossCause: this.lossDetails.causeOfLoss
+        lossCause: this.lossDetails.causeOfLoss.value
           ? this.lossDetails.causeOfLoss
           : null,
 
