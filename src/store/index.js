@@ -4,6 +4,7 @@ import Vuex from 'vuex';
 import leads from './leads';
 import vendors from './vendors';
 import common from './common';
+import claims from './claims';
 import clients from './clients';
 import user from './user';
 import settings from './settings';
@@ -23,6 +24,7 @@ export default function(/* { ssrContext } */) {
       user,
       vendors,
       clients,
+      claims,
       settings,
       admin
     }

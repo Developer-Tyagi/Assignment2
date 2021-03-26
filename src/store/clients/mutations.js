@@ -10,6 +10,10 @@ export function setSelectedEditClient(state, client) {
   state.editSelectedClient = client;
 }
 
+export function setSelectedSingleClaim(state, claim) {
+  state.getSelectedClaim = claim;
+}
+
 export function setSelectedClientProperty(state, client) {
   state.setClientProperty = client;
 }
@@ -23,6 +27,9 @@ export function setEstimators(state, estimators) {
 
 export function setSelectedClientId(state, id) {
   state.selectedClientId = id;
+}
+export function setSelectedClaimId(state, id) {
+  state.selectedClaimId = id;
 }
 
 export function setPropertyTypes(state, types) {
