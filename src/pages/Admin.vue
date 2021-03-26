@@ -66,43 +66,48 @@
                       <div class=" text-h5 text-bold">Claim Action Item</div>
                       <div class="text-h5 " style="height:200px;">
                         <div class=" q-pa-xl"></div>
-                        <div class=" row q-pa-xl  ">
+                        <div class=" row q-pa-xl">
                           <q-btn
+                            color="primary"
                             label="+ Add Default Action "
-                            :disabled="!ClaimType"
-                            class="formButtonfront "
+                            class=" col-md-2 col-lg-2 "
                             @click="addDefaultActionDialogBox = true"
                           />
                           <q-btn
+                            color="primary"
                             label="Refresh "
-                            class=" formButtonfront"
+                            class=" col-md-1  q-mx-lg col-lg-2"
                             @click=""
                           />
                           <q-btn
+                            color="primary"
                             label="Clone Workflow "
-                            class="formButtonfront"
+                            class="col-md-2col-lg-2"
                             @click=""
                           />
                           <q-btn
+                            color="primary"
                             label="Delete Workflow "
-                            class=" formButtonfront"
+                            class="q-mx-lg col-md-2  col-lg-2"
                             @click=""
                           />
                           <q-btn
+                            color="primary"
                             label="Planning Sheet "
-                            class="formButtonfront  "
+                            class=" q-mx-lg col-md-2  col-lg-2"
                             @click=""
                           />
                         </div>
                       </div>
                     </div>
                     <q-card
-                      class=" q-mx-xl q-my-md "
+                      class=" q-mx-xl q-my-md  "
+                      scroll
                       style="border: 1px solid grey;"
                       flat
                       bordered
                     >
-                      <div class=" row bg-grey-3 ">
+                      <div class=" row bg-grey-3  ">
                         <div class="col-7 q-pa-lg" v-if="ClaimType">
                           {{ allAction.length }} Action Items
                         </div>
@@ -133,7 +138,7 @@
                         <q-separator />
                       </div>
 
-                      <div class=" q-pa-lg">
+                      <div class=" q-pa-lg" style="height:350px; overflow:auto">
                         <div v-for="index in allAction">
                           <div class=" row q-pa-md">
                             <div class="col-11 ">
@@ -297,7 +302,7 @@
                 label="Type"
               ></q-select>
             </div>
-            <div class="col-1-1  q-ml-md">
+            <div class="   q-ml-md">
               <div class=" q-mt-md q-ml-xl text-bold ">
                 days after it is created
               </div>
@@ -617,7 +622,7 @@ export default {
       indexOfSubTypeForComp: '',
       indexOfSubOfSubType: 0,
 
-      addDefaultActionDialogBox: false,
+      addDefaultActionDialogBox: true,
       model: null,
       options: ['Bussiness', 'Industry'],
       tab: '',
@@ -717,11 +722,6 @@ export default {
       await this.addWorkflowAction(param);
       this.addDefaultActionDialogBox = false;
       this.getAllWorkFlow(this.params);
-
-      var props = this.actions.getOwnPropertyNames(obj);
-      for (var i = 0; i < props.length; i++) {
-        delete obj[props[i]];
-      }
     },
 
     // Remove Completion Multiple Values
@@ -770,24 +770,7 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped>
-.formButtonfront {
-  width: 10%;
-  max-height: 60px;
-  min-height: 50px;
-  min-width: 15%;
-  background-color: $primary;
-  margin-left: 3%;
-  color: white;
-}
-@media screen and (max-width: 1023px) {
-  .formButtonfront {
-    min-width: 12%;
-    max-height: 5%;
-    padding: 5px;
-    margin-left: 7%;
-  }
-}
+<style lang="scss">
 .q-dialog__inner--minimized > div {
   max-width: 80%;
 }
