@@ -155,6 +155,12 @@ const routes = [
         component: () => import('pages/Notes.vue')
       },
       {
+        path: 'insurance-policy',
+        name: 'insurancy policy',
+        caseSensitive: true,
+        component: () => import('pages/InsurancePolicy.vue')
+      },
+      {
         path: 'add-client',
         name: 'create client',
         caseSensitive: true,
