@@ -1507,11 +1507,7 @@ export default {
           dateOfFirstContact: dateToSend(this.contractInfo.firstContractDate)
         },
 
-        personnel: [
-          {
-            ...this.publicAdjustorInfo.personnel
-          }
-        ]
+        personnel: [...this.publicAdjustorInfo.personnel]
       };
 
       this.addClaim(payload).then(() => {
