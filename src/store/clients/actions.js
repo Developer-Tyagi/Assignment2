@@ -42,8 +42,7 @@ export async function getSingleClaimDetails({ commit, dispatch }, id) {
   dispatch('setLoading', true);
 
   try {
-    // const { data } = await request.get(`/claims/${id}/info`);
-    const data = {};
+    const { data } = await request.get(`/claims/${id}/info`);
 
     commit('setSelectedSingleClaim', data);
     dispatch('setLoading', false);
