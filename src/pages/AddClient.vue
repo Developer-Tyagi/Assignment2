@@ -456,6 +456,7 @@
               @lossAddressSame="lossAddressSame"
               :isMailingAddressEnable="true"
               :lossAddressSameAsClient="true"
+              :isAddressRequired="true"
             />
           </q-form>
 

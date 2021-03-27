@@ -183,13 +183,17 @@
         @input="lossAddressSameToggleClick"
       />
     </div>
-    <AutoCompleteAddress
-      :address="lossInfo.lossAddressDetails"
-      :isDropBoxEnable="true"
-      :isChecksEnable="true"
-      :isFieldsDisable="lossInfo.isLossAddressSameAsClientToggle"
-      :isAsteriskMark="true"
-    />
+
+    <div v-if="isAddressRequired">
+      {{ isAddressRequired }}67
+      <AutoCompleteAddress
+        :address="lossInfo.lossAddressDetails"
+        :isDropBoxEnable="true"
+        :isChecksEnable="true"
+        :isFieldsDisable="lossInfo.isLossAddressSameAsClientToggle"
+        :isAsteriskMark="true"
+      />
+    </div>
     <q-select
       class="required"
       v-model="lossInfo.property.id"
@@ -697,6 +701,10 @@ export default {
       type: Object
     },
     isMailingAddressEnable: {
+      type: Boolean,
+      required: false
+    },
+    isAddressRequired: {
       type: Boolean,
       required: false
     },

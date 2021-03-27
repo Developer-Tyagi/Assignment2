@@ -18,6 +18,7 @@
               :lossInfo="lossInfo"
               :isMailingAddressEnable="false"
               :lossAddressSameAsClient="false"
+              :isAddressRequired="false"
             />
           </q-form>
 
