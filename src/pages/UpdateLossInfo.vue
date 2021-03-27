@@ -15,7 +15,7 @@
         <div class="mobile-container-page-without-search q-pa-md">
           <q-form ref="lossInfoForm" class="form-height">
             <LossInfo
-              :lossInfo="lossInfo"
+              :lossInfo="lossDetails"
               :isMailingAddressEnable="false"
               :lossAddressSameAsClient="false"
               :isAddressRequired="false"
@@ -55,82 +55,79 @@
               ></q-icon>
             </div>
           </div>
+          <!-- {{ lossInfo.attributes }} -->
+
+          <div class="form-heading">Address :</div>
+          <div>
+            {{
+              lossInfo.attributes.address.streetAddress
+                ? lossInfo.attributes.address.streetAddress
+                : '-'
+            }}
+          </div>
+          <div>
+            {{
+              lossInfo.attributes.address.addressLocality
+                ? lossInfo.attributes.address.addressLocality
+                : '-'
+            }},
+            {{
+              lossInfo.attributes.address.houseNumber
+                ? lossInfo.attributes.address.houseNumber
+                : '-'
+            }}
+          </div>
+          <div>
+            {{ lossInfo.attributes.address.addressRegion }},
+            {{ lossInfo.attributes.address.addressCountry }}
+          </div>
+
+          <div class="form-heading  ">Property Type :</div>
 
           <div>
-            <div>Address :</div>
-
-            <div>
-              {{ lossInfo.lossAddressDetails.streetAddress }}
-            </div>
-
-            {{
-              InfoLoss.attributes.lossInfo.address.streetAddress
-                ? InfoLoss.attributes.lossInfo.address.streetAddress
-                : '-'
-            }}
-            <div>
-              {{
-                lossInfo.lossAddressDetails.addressLocality
-                  ? lossInfo.lossAddressDetails.addressLocality
-                  : '-'
-              }},
-              {{
-                lossInfo.lossAddressDetails.houseNumber
-                  ? lossInfo.lossAddressDetails.houseNumber
-                  : '-'
-              }}
-            </div>
-            <div>
-              {{ lossInfo.lossAddressDetails.addressRegion }},
-              {{ lossInfo.lossAddressDetails.addressCountry }}
-            </div>
-
-            <div class="form-heading  ">Property Type :</div>
-
-            <div>
-              {{ InfoLoss.attributes.lossInfo.propertyType.value }}
-            </div>
-
-            <div class="form-heading ">Property Description :</div>
-
-            {{
-              InfoLoss.attributes.lossInfo.propertyDesc
-                ? InfoLoss.attributes.lossInfo.propertyDesc
-                : '-'
-            }}
-            <div class="form-heading ">Claim Reason:</div>
-
-            {{
-              InfoLoss.attributes.lossInfo.claimReason.value
-                ? InfoLoss.attributes.lossInfo.claimReason.value
-                : '-'
-            }}
-            <div class="form-heading ">Loss Cause:</div>
-
-            <div>
-              {{
-                InfoLoss.attributes.lossInfo.cause.value
-                  ? InfoLoss.attributes.lossInfo.cause.value
-                  : '-'
-              }}
-            </div>
-
-            <div class="form-heading ">Deadline Date:</div>
-            <div>
-              {{ InfoLoss.attributes.deadlineDate | moment('MM/DD/YYYY') }}
-            </div>
-
-            <div class="form-heading ">Recovery Date:</div>
-            <div>
-              {{
-                InfoLoss.attributes.lossInfo.recovDDDate | moment('MM/DD/YYYY')
-              }}
-            </div>
-
-            <div class="form-heading ">lossAddressName:</div>
-
-            <div>{{ InfoLoss.attributes.lossInfo.lossAddressName }}</div>
+            {{ lossInfo.attributes.propertyType.value }}
           </div>
+
+          <div class="form-heading ">Property Description :</div>
+
+          {{
+            lossInfo.attributes.propertyDesc
+              ? lossInfo.attributes.propertyDesc
+              : '-'
+          }}
+          <div class="form-heading ">Claim Reason:</div>
+
+          {{
+            lossInfo.attributes.claimReason.value
+              ? lossInfo.attributes.claimReason.value
+              : '-'
+          }}
+          <div class="form-heading ">Loss Cause:</div>
+
+          <div>
+            {{
+              lossInfo.attributes.cause.value
+                ? lossInfo.attributes.cause.value
+                : '-'
+            }}
+          </div>
+          <div class="form-heading ">Date of Loss:</div>
+          <div>
+            {{ lossInfo.attributes.dateOfLoss | moment('MM/DD/YYYY') }}
+          </div>
+          <div class="form-heading ">Deadline Date:</div>
+          <div>
+            {{ lossInfo.attributes.deadlineDate | moment('MM/DD/YYYY') }}
+          </div>
+
+          <div class="form-heading ">Recovery Date:</div>
+          <div>
+            {{ lossInfo.attributes.recovDDDate | moment('MM/DD/YYYY') }}
+          </div>
+
+          <div class="form-heading ">lossAddressName:</div>
+
+          <div>{{ lossInfo.attributes.lossAddressName }}</div>
         </q-card>
       </div>
     </div>
@@ -144,28 +141,24 @@ import { validateDate } from '@utils/validation';
 import { date } from 'quasar';
 import { dateToSend } from '@utils/date';
 import CustomBar from 'components/CustomBar';
-import AutoCompleteAddress from 'components/AutoCompleteAddress';
+
 export default {
   name: 'UpdateLossInfo',
   components: {
     CustomBar,
-    AutoCompleteAddress,
+
     LossInfo
   },
   data() {
     return {
-      lossInfo: {
-        isLossAddressSameAsClientToggle: false,
-
+      lossDetails: {
         lossAddressNameDropdown: 'Others',
-        isSecondMortgageHome: false,
 
         wasAppifProvidedToTheInsuredToggle: false,
         doesTheOfficeNeedToProvidePpifToTheInsuredToggle: false,
-        PPdamagedItemsDailog: false,
+
         ppDamagedItems: [],
 
-        damagedItemsDailog: false,
         osDamagedItems: [],
         isDamageOSToggle: false,
         isThereDamageToPersonalPropertyToggle: false,
@@ -239,7 +232,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'InfoLoss',
+      'lossInfo',
       'selectedClaimId',
       'propertyTypes',
       'claimReasons',
@@ -262,29 +255,30 @@ export default {
     this.setSelectedClaimId(this.selectedClaimId);
 
     this.getPropertyTypes();
-
     this.getClaimReasons();
     this.getLossCauses();
     this.getSeverityClaim();
-    this.lossInfo.dateOfLoss = this.lossInfo.deadlineDate = this.lossInfo.recovDeadline = date.formatDate(
+    this.lossDetails.dateOfLoss = this.lossDetails.deadlineDate = this.lossDetails.recovDeadline = date.formatDate(
       Date.now(),
       'MM/DD/YYYY'
     );
 
     //This is For Prefilling Values in Loss Info Form
 
-    this.lossInfo.lossAddressDetails = this.InfoLoss.attributes.lossInfo.address;
+    this.lossDetails.lossAddressDetails = this.lossInfo.attributes.address;
 
-    this.lossInfo.lossAddressName = this.InfoLoss.attributes.lossInfo.lossAddressName;
-    this.lossInfo.causeOfLoss = this.InfoLoss.attributes.lossInfo.cause;
+    this.lossDetails.lossAddressName = this.lossInfo.attributes.lossAddressName;
+    this.lossDetails.causeOfLoss.id = this.lossInfo.attributes.cause.id;
+    this.lossDetails.causeOfLoss.value = this.lossInfo.attributes.cause.value;
+    this.lossDetails.causeOfLoss.machineValue = this.lossInfo.attributes.cause.machineValue;
 
-    this.lossInfo.property = this.InfoLoss.attributes.lossInfo.propertyType;
+    this.lossDetails.property = this.lossInfo.attributes.propertyType;
 
-    this.lossInfo.reasonClaim = this.InfoLoss.attributes.lossInfo.claimReason;
-    this.lossInfo.deadlineDate = this.InfoLoss.attributes.lossInfo.deadlineDate;
-    this.lossInfo.recovDDDate = this.InfoLoss.attributes.lossInfo.recovDDDate;
-    this.lossInfo.severityOfClaimType = this.InfoLoss.attributes.lossInfo.serverity;
-    this.lossInfo.propertyDescription = this.InfoLoss.attributes.propertyDesc;
+    this.lossDetails.reasonClaim = this.lossInfo.attributes.claimReason;
+    this.lossDetails.deadlineDate = this.lossInfo.attributes.deadlineDate;
+    this.lossDetails.recovDDDate = this.lossInfo.attributes.recovDDDate;
+    this.lossDetails.severityOfClaimType = this.lossInfo.attributes.serverity;
+    this.lossDetails.propertyDescription = this.lossInfo.attributes.propertyDesc;
   },
   methods: {
     ...mapActions([
@@ -328,9 +322,7 @@ export default {
               ...this.lossInfo.reasonClaim
             },
             date: dateToSend(this.lossInfo.dateOfLoss),
-            cause: this.lossInfo.causeOfLoss.value
-              ? this.lossInfo.causeOfLoss
-              : null,
+            cause: this.lossInfo.causeOfLoss ? this.lossInfo.causeOfLoss : null,
             deadlineDate: dateToSend(this.lossInfo.deadlineDate),
             recovDDDate: dateToSend(this.lossInfo.recovDeadline),
 
@@ -358,6 +350,7 @@ export default {
   color: #333333;
   font-weight: bold;
   font-size: 14px;
+  margin-top: 10px;
 }
 .form-height {
   height: calc(100vh - 150px);
