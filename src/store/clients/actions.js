@@ -36,6 +36,26 @@ export async function getSingleClientDetails({ commit, dispatch }, id) {
   }
 }
 
+//This API is for Viewing single claim Info
+
+export async function getSingleClaimDetails({ commit, dispatch }, id) {
+  dispatch('setLoading', true);
+
+  try {
+    const { data } = await request.get(`/claims/${id}/info`);
+
+    commit('setSelectedSingleClaim', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response.data.title
+    });
+  }
+}
+
 export async function getSingleClientProperty({ commit, dispatch }, id) {
   dispatch('setLoading', true);
   try {

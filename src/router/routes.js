@@ -137,6 +137,18 @@ const routes = [
         component: () => import('pages/ClientInfo.vue')
       },
       {
+        path: 'claim-details',
+        name: 'claim details ',
+        caseSensitive: true,
+        component: () => import('pages/ClaimDetails.vue')
+      },
+      {
+        path: 'claim-summary',
+        name: 'claim summary ',
+        caseSensitive: true,
+        component: () => import('pages/ClaimSummary.vue')
+      },
+      {
         path: 'client-documents',
         name: 'Documents',
         caseSensitive: true,
@@ -165,6 +177,12 @@ const routes = [
         name: 'vendors',
         caseSensitive: true,
         component: () => import('pages/Vendors.vue')
+      },
+      {
+        path: 'claims',
+        name: 'open claims',
+        caseSensitive: true,
+        component: () => import('pages/Claims.vue')
       },
       {
         path: 'settings',

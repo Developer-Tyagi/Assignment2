@@ -11,6 +11,8 @@ export default function() {
     policyCategories: [],
     editSelectedClient: [],
     selectedClientId: '',
-    setClientProperty: []
+    setClientProperty: [],
+    getSelectedClaim: [],
+    selectedClaimId: ''
   };
 }
