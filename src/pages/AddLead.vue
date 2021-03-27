@@ -27,6 +27,7 @@
           <div class="q-mt-lg text-bold">Select existing client</div>
 
           <q-select
+            dense
             class="full-width"
             v-model="clientSelected"
             use-input
@@ -40,6 +41,7 @@
             options-dense
             emit-value
             map-options
+            class="input-extra-padding"
           >
             <template v-slot:no-option>
               <q-item>

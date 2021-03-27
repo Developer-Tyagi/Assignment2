@@ -124,6 +124,7 @@
             <q-form ref="form" v-if="tab.key !== 'inspectionType'">
               <div class="q-pl-xs">
                 <q-input
+                  dense
                   v-model="payload.value"
                   class="full-width"
                   outlined
@@ -142,6 +143,7 @@
                 :key="index"
               >
                 <q-input
+                  dense
                   v-model="inspectionType.value"
                   placeholder="Type of Inspection"
                   v-if="index == 0"
@@ -151,6 +153,7 @@
                   ]"
                 />
                 <q-input
+                  dense
                   placeholder="Sub Type of Inspection"
                   v-model="inspectionType.subtypes[index].value"
                 />

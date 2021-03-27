@@ -94,7 +94,7 @@
         </q-card-section>
 
         <q-card-section class="q-pt-none">
-          <q-input dense v-model="folderName" autofocus />
+          <q-input dense dense v-model="folderName" autofocus />
         </q-card-section>
 
         <q-card-actions align="right">
@@ -116,7 +116,7 @@
         </q-card-section>
 
         <q-card-section class="q-pt-none">
-          <q-input dense v-model="fileName" autofocus />
+          <q-input dense dense v-model="fileName" autofocus />
         </q-card-section>
 
         <q-card-actions align="right">

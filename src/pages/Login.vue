@@ -42,6 +42,7 @@
           </div>
           <div class="q-pl-md col-10">
             <q-input
+              dense
               class="login-input full-width"
               v-model="login.email"
               placeholder="Username"
@@ -56,6 +57,7 @@
           </div>
           <div class="q-pl-md col-10" style="width: 90%">
             <q-input
+              dense
               class="login-input full-width"
               v-model="login.password"
               placeholder="Password"

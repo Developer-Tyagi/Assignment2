@@ -13,12 +13,13 @@
         <div
           class="full-width"
           style="
-height: calc(100vh - 145px);
-overflow-y: auto;
-margin-bottom: 10px;
-"
+            height: calc(100vh - 145px);
+            overflow-y: auto;
+            margin-bottom: 10px;
+          "
         >
           <q-input
+            dense
             class="required"
             v-model="vendor.name"
             label=" Company Name"
@@ -29,6 +30,7 @@ margin-bottom: 10px;
           />
           <div>
             <q-select
+              dense
               class="full-width required"
               v-model="vendor.industry.value"
               use-input
@@ -62,6 +64,7 @@ margin-bottom: 10px;
 
           <p class="form-heading">Company's Contact Person Details</p>
           <q-select
+            dense
             class="required"
             v-model="vendor.contact[0].honorific.id"
             :options="titles"
@@ -79,6 +82,7 @@ margin-bottom: 10px;
             ]"
           />
           <q-input
+            dense
             class="required"
             v-model="vendor.contact[0].fname"
             label="First Name"
@@ -87,9 +91,15 @@ margin-bottom: 10px;
               val => (val && val.length > 0) || 'Please fill the first name'
             ]"
           />
-          <q-input v-model="vendor.contact[0].lname" label="Last Name" />
+          <q-input
+            dense
+            class="input-extra-padding"
+            v-model="vendor.contact[0].lname"
+            label="Last Name"
+          />
           <div class="row justify-between">
             <q-select
+              dense
               class="required col-5"
               v-model="vendor.contact[0].phoneNumber[0].type"
               :options="contactTypes"
@@ -105,6 +115,7 @@ margin-bottom: 10px;
               ]"
             />
             <q-input
+              dense
               class="required col-6"
               v-model.number="vendor.contact[0].phoneNumber[0].number"
               label="Phone"
@@ -116,6 +127,7 @@ margin-bottom: 10px;
             />
           </div>
           <q-input
+            dense
             class="required"
             v-model="vendor.contact[0].email"
             type="email"
@@ -150,6 +162,7 @@ margin-bottom: 10px;
           <div v-for="(contactInfo, index) in vendor.contact" v-if="index >= 1">
             <div class="q-mt-sm">
               <q-select
+                dense
                 v-model="contactInfo.honorific.id"
                 :options="titles"
                 option-label="value"
@@ -160,16 +173,19 @@ margin-bottom: 10px;
                 behavior="menu"
                 map-options
                 options-dense
+                class="input-extra-padding"
               />
               <q-input
+                dense
                 v-model="contactInfo.fname"
                 label="First Name"
                 :ref="`fname-${index}`"
               />
-              <q-input v-model="contactInfo.lname" label="Last Name" />
+              <q-input dense v-model="contactInfo.lname" label="Last Name" />
               <div class="row justify-between">
                 <q-select
-                  class=" col-5"
+                  dense
+                  class="col-5"
                   v-model="contactInfo.phoneNumber[0].type"
                   :options="contactTypes"
                   option-value="machineValue"
@@ -178,9 +194,11 @@ margin-bottom: 10px;
                   emit-value
                   map-options
                   options-dense
+                  class="input-extra-padding"
                 />
                 <q-input
-                  class=" col-6"
+                  dense
+                  class="col-6"
                   v-model.number="contactInfo.phoneNumber[0].number"
                   label="Phone1"
                   mask="(###) ###-####"
@@ -188,6 +206,7 @@ margin-bottom: 10px;
                 />
               </div>
               <q-input
+                dense
                 v-model="contactInfo.email"
                 novalidate="true"
                 label="Email"
@@ -214,8 +233,8 @@ margin-bottom: 10px;
             />
           </div>
 
-          <q-input v-model="vendor.info.website" label="Website" />
-          <q-input v-model="vendor.info.notes" label="Notes" />
+          <q-input dense v-model="vendor.info.website" label="Website" />
+          <q-input dense v-model="vendor.info.notes" label="Notes" />
         </div>
         <q-btn
           color="primary"

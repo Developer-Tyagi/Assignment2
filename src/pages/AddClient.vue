@@ -42,6 +42,7 @@
         <div class="mobile-container-page-without-search">
           <q-form ref="clientForm" class="form-height">
             <q-select
+              dense
               class="required"
               v-model="client.id"
               option-value="id"
@@ -71,6 +72,7 @@
 
             <div v-if="primaryDetails.isOrganization">
               <q-input
+                dense
                 v-model="primaryDetails.organizationName"
                 label="Organization Name"
                 class="required"
@@ -94,6 +96,7 @@
 
             <span class="form-heading">Insured Details</span>
             <q-select
+              dense
               v-model="honorific1.id"
               class="required"
               :options="titles"
@@ -113,6 +116,7 @@
             />
 
             <q-input
+              dense
               class="required"
               v-model="insuredDetails.fname"
               lazy-rules
@@ -123,6 +127,7 @@
             />
 
             <q-input
+              dense
               v-model="insuredDetails.lname"
               class="required"
               lazy-rules
@@ -133,6 +138,7 @@
             />
             <div class="row justify-between">
               <q-select
+                dense
                 v-model="insuredDetails.type"
                 class="required col-5"
                 :options="contactTypes"
@@ -148,6 +154,7 @@
                 ]"
               />
               <q-input
+                dense
                 v-model.number="insuredDetails.phone"
                 class="required col-6"
                 label="Phone"
@@ -160,6 +167,7 @@
               />
             </div>
             <q-input
+              dense
               v-model="insuredDetails.email"
               class="required"
               label="Email"
@@ -179,6 +187,7 @@
               <span class="form-heading">Co-insured Details</span>
 
               <q-select
+                dense
                 v-model="honorific2.id"
                 class="required"
                 :options="titles"
@@ -195,10 +204,19 @@
                   val => (val && val.length > 0) || 'Please select the Title'
                 ]"
               />
-              <q-input v-model="coInsuredDetails.fname" label="First Name" />
-              <q-input v-model="coInsuredDetails.lname" label="Last Name" />
+              <q-input
+                dense
+                v-model="coInsuredDetails.fname"
+                label="First Name"
+              />
+              <q-input
+                dense
+                v-model="coInsuredDetails.lname"
+                label="Last Name"
+              />
               <div class="row justify-between">
                 <q-select
+                  dense
                   v-model="coInsuredDetails.type"
                   class="required col-5"
                   :options="contactTypes"
@@ -215,6 +233,7 @@
                   ]"
                 />
                 <q-input
+                  dense
                   v-model.number="coInsuredDetails.phone"
                   label="Phone"
                   class="required col-6"
@@ -228,6 +247,7 @@
                 />
               </div>
               <q-input
+                dense
                 v-model="coInsuredDetails.email"
                 input
                 type="email"
@@ -256,6 +276,7 @@
                 v-if="index >= 0"
               >
                 <q-select
+                  dense
                   v-model="phoneNumber[index].type"
                   class="required col-5"
                   label="Type"
@@ -271,6 +292,7 @@
                   ]"
                 />
                 <q-input
+                  dense
                   v-model.number="phoneNumber[index].number"
                   label="Phone"
                   class="required col-6"
@@ -318,10 +340,15 @@
               <q-toggle class="q-ml-auto" v-model="tenantOccupiedToggle" />
             </div>
             <div v-if="tenantOccupiedToggle">
-              <q-input v-model="tenantOccupied.name" label="Tenant Name" />
+              <q-input
+                dense
+                v-model="tenantOccupied.name"
+                label="Tenant Name"
+              />
 
               <div class="row justify-between">
                 <q-select
+                  dense
                   class="required col-5"
                   v-model="tenantOccupied.type"
                   label="Type"
@@ -337,6 +364,7 @@
                   ]"
                 />
                 <q-input
+                  dense
                   class="required col-6"
                   v-model.number="tenantOccupied.phone"
                   label="Phone"
@@ -431,11 +459,13 @@
               </div>
             </div>
             <q-input
+              dense
               v-model="insuranceDetails.policyNumber"
               label="Policy Number"
             />
 
             <q-input
+              dense
               v-model="insuranceDetails.insuranceClaimNumber"
               label="Insurance Claim Number"
             />
@@ -459,6 +489,7 @@
 
             <div class="full-width">
               <q-input
+                dense
                 v-model="insuranceDetails.policyEffectiveDate"
                 mask="##/##/####"
                 label="MM/DD/YYYY"
@@ -494,6 +525,7 @@
 
             <div class="full-width">
               <q-input
+                dense
                 v-model="insuranceDetails.policyExpireDate"
                 mask="##/##/####"
                 label="MM/DD/YYYY"
@@ -524,6 +556,7 @@
             </div>
 
             <q-select
+              dense
               class="required"
               v-model="insuranceDetails.policyCategory.id"
               option-value="id"
@@ -546,6 +579,7 @@
               ]"
             />
             <q-select
+              dense
               class="required"
               v-model="insuranceDetails.policy.id"
               option-value="id"
@@ -565,6 +599,7 @@
             <div class="row" style="align-items: center">
               <span class="form-heading">Dwelling Limit (A)</span>
               <q-input
+                dense
                 mask="#.#"
                 type="number"
                 v-model.number="insuranceDetails.dwellingLimitA"
@@ -576,6 +611,7 @@
             <div class="row" style="align-items: center">
               <span class="form-heading">Other Structure (B)</span>
               <q-input
+                dense
                 mask="#.#"
                 type="number"
                 v-model.number="insuranceDetails.otherStructureB"
@@ -587,6 +623,7 @@
             <div class="row" style="align-items: center">
               <span class="form-heading">Contents Limit (C)</span>
               <q-input
+                dense
                 mask="#.#"
                 type="number"
                 v-model.number="insuranceDetails.contentsLimit"
@@ -598,6 +635,7 @@
             <div class="row" style="align-items: center">
               <span class="form-heading">Loss of Use Limit (D)</span>
               <q-input
+                dense
                 mask="#.#"
                 type="number"
                 v-model.number="insuranceDetails.lossOfUSD"
@@ -609,6 +647,7 @@
             <div class="row" style="align-items: center">
               <span class="form-heading">Depreciation</span>
               <q-input
+                dense
                 mask="#.#"
                 type="number"
                 v-model.number="insuranceDetails.deprecation"
@@ -620,6 +659,7 @@
             <div class="row" style="align-items: center">
               <span class="form-heading">Deductible</span>
               <q-input
+                dense
                 mask="#.#"
                 type="number"
                 v-model.number="insuranceDetails.deductible"
@@ -634,6 +674,7 @@
                 >Prior payment by insured</span
               >
               <q-input
+                dense
                 mask="#.#"
                 type="number"
                 v-model.number="insuranceDetails.priorPayment"
@@ -683,6 +724,7 @@
           <q-form ref="lossInfoForm" class="form-height">
             <!-- Loss Address Name Dropdown -->
             <q-select
+              dense
               class="required"
               v-model="lossAddressNameDropdown"
               label="Loss Address Name"
@@ -693,6 +735,7 @@
               ]"
             />
             <q-input
+              dense
               class="required"
               v-model="lossInfo.lossAddressName"
               v-if="lossAddressNameOptions == 'New'"
@@ -722,6 +765,7 @@
             />
 
             <q-select
+              dense
               class="required"
               v-model="lossInfo.property.id"
               option-value="id"
@@ -738,10 +782,12 @@
               ]"
             />
             <q-input
+              dense
               v-model="lossInfo.propertyDescription"
               label="Description of Property"
             />
             <q-select
+              dense
               class="required"
               v-model="lossInfo.reasonClaim.id"
               option-value="id"
@@ -762,6 +808,7 @@
 
             <div class="full-width">
               <q-input
+                dense
                 v-model="lossInfo.dateOfLoss"
                 mask="##/##/####"
                 label="MM/DD/YYYY"
@@ -792,6 +839,7 @@
             </div>
 
             <q-select
+              dense
               class="required"
               v-model="lossInfo.causeOfLoss.id"
               option-value="id"
@@ -811,6 +859,7 @@
 
             <div class="full-width">
               <q-input
+                dense
                 v-model="lossInfo.deadlineDate"
                 mask="##/##/####"
                 label="MM/DD/YYYY"
@@ -844,6 +893,7 @@
 
             <div class="full-width">
               <q-input
+                dense
                 v-model="lossInfo.recovDeadline"
                 mask="##/##/####"
                 label="MM/DD/YYYY"
@@ -890,9 +940,14 @@
               <q-toggle class="q-ml-auto" v-model="isStateOfEmergencyToggle" />
             </div>
             <div v-if="isStateOfEmergencyToggle">
-              <q-input v-model="lossInfo.nameOfEmergency" label="Related to" />
+              <q-input
+                dense
+                v-model="lossInfo.nameOfEmergency"
+                label="Related to"
+              />
             </div>
             <q-select
+              dense
               class="required"
               v-model="lossInfo.severityOfClaimType.id"
               option-value="id"
@@ -1016,13 +1071,19 @@
                   <q-card-section>
                     <div class="q-page bg-white">
                       <div class="full-width" style="margin-top: 30px">
-                        <q-input v-model="lossInfo.OSDamageName" label="Name" />
                         <q-input
+                          dense
+                          v-model="lossInfo.OSDamageName"
+                          label="Name"
+                        />
+                        <q-input
+                          dense
                           v-model="lossInfo.OSDamageDescription"
                           label="Description"
                           autogrow
                         />
                         <q-input
+                          dense
                           mask="#.#"
                           type="number"
                           prefix="$"
@@ -1150,19 +1211,26 @@
                   <q-card-section>
                     <div class="q-page bg-white">
                       <div class="full-width" style="margin-top: 30px">
-                        <q-input v-model="lossInfo.PPDamageName" label="Name" />
                         <q-input
+                          dense
+                          v-model="lossInfo.PPDamageName"
+                          label="Name"
+                        />
+                        <q-input
+                          dense
                           v-model="lossInfo.PPDamageDescription"
                           label="Description"
                           autogrow
                         />
                         <q-input
+                          dense
                           type="number"
                           v-model.number="lossInfo.PPDamagedItemCost"
                           label="Item Cost"
                           prefix="$"
                         />
                         <q-input
+                          dense
                           v-model="lossInfo.serialNumber"
                           label="Serial Number"
                         />
@@ -1290,6 +1358,7 @@
               v-if="expertVendorInfo.industry.length >= 0"
             >
               <q-select
+                dense
                 v-if="vendorExpertHiredToggle"
                 class="full-width"
                 v-model="expertVendorInfo.industry[index].value"
@@ -1320,6 +1389,7 @@
               </q-select>
               <!-- This will Show the input when industry Type is Others -->
               <q-input
+                dense
                 v-model="industryType.value"
                 v-if="expertVendorInfo.industry[index].value == 'Others'"
                 label="Enter New Industry Type"
@@ -1442,14 +1512,17 @@
               </div>
             </div>
             <q-input
+              dense
               v-model="estimatingInfo.estimatorToBeAssigned"
               label="Estimator to be assigned"
             />
             <q-input
+              dense
               v-model="estimatingInfo.scopeTimeNeeded"
               label="Scope time needed"
             />
             <q-input
+              dense
               v-model="estimatingInfo.notesToTheEstimator"
               label="Notes to the estimator"
             /><br />
@@ -1482,6 +1555,7 @@
             <span class="form-heading">Contract Date</span>
             <div class="full-width">
               <q-input
+                dense
                 class="required"
                 v-model="contractInfo.contractDate"
                 mask="##/##/####"
@@ -1520,6 +1594,7 @@
             <span class="form-heading">Date of First Contract</span>
             <div class="full-width">
               <q-input
+                dense
                 v-model="contractInfo.firstContractDate"
                 mask="##/##/####"
                 label="MM/DD/YYYY"
@@ -1551,6 +1626,7 @@
             <span class="form-heading">Time Of First Contract</span>
             <div class="full-width">
               <q-input
+                dense
                 v-model="contractInfo.time"
                 now
                 mask="time"
@@ -1602,6 +1678,7 @@
 
             <div class="row" style="align-items: center">
               <q-input
+                dense
                 class="q-ml-auto full-width"
                 mask="#.#"
                 type="number"
@@ -1623,6 +1700,7 @@
             <span class="form-heading"> Source Of Claim </span>
             <div>
               <q-select
+                dense
                 v-model="sourceDetails.type"
                 :options="leadSources"
                 option-label="name"
@@ -1632,8 +1710,10 @@
                 map-options
                 options-dense
                 @input="onChangingSourceType()"
+                class="input-extra-padding"
               />
               <q-input
+                dense
                 v-if="
                   sourceDetails.type != constants.industries.VENDOR &&
                     sourceDetails.type != '' &&
@@ -1677,11 +1757,13 @@
             </div>
             <div class="full-width">
               <q-select
+                dense
                 v-model="contractInfo.reasonForCancellation"
                 :options="reasonForCancellation"
                 label="Reason For Cancellation"
                 options-dense
-              ></q-select>
+                class="input-extra-padding"
+              />
             </div>
             <br />
             <span class="form-heading">Reason For Cancellation</span>
@@ -1724,6 +1806,7 @@
             <div class="form-heading q-mt-lg">Personnel Role</div>
 
             <q-select
+              dense
               v-model="publicAdjustor.personnelRole1.id"
               :options="roleTypes"
               option-value="id"
@@ -1735,11 +1818,13 @@
                 setTypes(roleTypes, publicAdjustor.personnelRole1, 'role1')
               "
               label="Select Role"
-            ></q-select>
+              class="input-extra-padding"
+            />
 
             <div class="form-heading q-mt-lg">Person Party</div>
 
             <q-select
+              dense
               v-model="publicAdjustor.personParty1"
               :options="userRoles"
               :disable="publicAdjustor.isFieldDisable1"
@@ -1753,10 +1838,12 @@
               options-dense
               emit-value
               map-options
-            ></q-select>
+              class="input-extra-padding"
+            />
 
             <div class="form-heading q-mt-lg">Personnel Role</div>
             <q-select
+              dense
               v-model="publicAdjustor.personnelRole2.id"
               :options="roleTypes"
               option-value="id"
@@ -1768,9 +1855,11 @@
                 setTypes(roleTypes, publicAdjustor.personnelRole2, 'role2')
               "
               label="Select Role"
-            ></q-select>
+              class="input-extra-padding"
+            />
             <div class="form-heading q-mt-lg">Person/Party</div>
             <q-select
+              dense
               v-model="publicAdjustor.personParty2"
               :options="userRoles"
               :disable="publicAdjustor.isFieldDisable2"
@@ -1784,9 +1873,11 @@
               options-dense
               emit-value
               map-options
-            ></q-select>
+              class="input-extra-padding"
+            />
             <div class="form-heading q-mt-lg">Personnel Role</div>
             <q-select
+              dense
               v-model="publicAdjustor.personnelRole3.id"
               :options="roleTypes"
               option-value="id"
@@ -1798,10 +1889,12 @@
                 setTypes(roleTypes, publicAdjustor.personnelRole3, 'role3')
               "
               label="Select Role"
-            ></q-select>
+              class="input-extra-padding"
+            />
             <div class="form-heading q-mt-lg">Person/Party</div>
 
             <q-select
+              dense
               v-model="publicAdjustor.personParty3"
               :options="userRoles"
               :disable="publicAdjustor.isFieldDisable3"
@@ -1815,9 +1908,11 @@
               options-dense
               emit-value
               map-options
-            ></q-select>
+              class="input-extra-padding"
+            />
             <div class="form-heading q-mt-lg">Personnel Role</div>
             <q-select
+              dense
               v-model="publicAdjustor.personnelRole4.id"
               :options="roleTypes"
               option-value="id"
@@ -1829,9 +1924,11 @@
                 setTypes(roleTypes, publicAdjustor.personnelRole4, 'role4')
               "
               label="Select Role"
-            ></q-select>
+              class="input-extra-padding"
+            />
             <div class="form-heading q-mt-lg">Person/Party</div>
             <q-select
+              dense
               v-model="publicAdjustor.personParty4"
               :options="userRoles"
               :disable="publicAdjustor.isFieldDisable4"
@@ -1845,8 +1942,9 @@
               options-dense
               emit-value
               map-options
-            ></q-select
-            ><br />
+              class="input-extra-padding"
+            />
+            <br />
             <span class="form-heading"
               >Special Instructions, Comments Or Other Notes</span
             >
@@ -1886,14 +1984,18 @@
         <div class="mobile-container-page-without-search">
           <q-form ref="estimatingInfoForm" class="form-height">
             <q-select
+              dense
               v-model="officeTask.officeActionTypes"
               :options="officeActionRequiredTypes"
               label="Office Action Required"
+              class="input-extra-padding"
             />
             <q-select
+              dense
               v-model="officeTask.officeTaskTypes"
               :options="officeTaskRequiredTypes"
               label="Office Task Required"
+              class="input-extra-padding"
             /><br />
             <div class="row">
               <p>Additional Office Task Required</p>
@@ -1947,10 +2049,12 @@
               </div>
             </div>
             <q-input
+              dense
               v-model="mortgageDetails[0].loanNumber"
               label="Loan Number"
             />
             <q-input
+              dense
               v-model="mortgageDetails[0].accountNumber"
               label="Account Number"
             /><br />
@@ -1989,10 +2093,12 @@
                 </div>
               </div>
               <q-input
+                dense
                 v-model="mortgageDetails[1].loanNumber"
                 label="Loan Number"
               />
               <q-input
+                dense
                 v-model="mortgageDetails[1].accountNumber"
                 label="Account Number"
               /><br />
@@ -2036,6 +2142,7 @@
         <div class="mobile-container-page-without-search">
           <q-form ref="addEstimatorForm" class="form-height">
             <q-select
+              dense
               class="required"
               v-model="honorific3.id"
               :options="titles"
@@ -2051,9 +2158,11 @@
               :rules="[
                 val => (val && val.length > 0) || 'Please select the title'
               ]"
+              class="input-extra-padding"
             />
 
             <q-input
+              dense
               class="required"
               v-model="addEstimatorInfo.fname"
               lazy-rules
@@ -2063,8 +2172,9 @@
               label="First Name"
             />
 
-            <q-input v-model="addEstimatorInfo.lname" label="Last Name" />
+            <q-input dense v-model="addEstimatorInfo.lname" label="Last Name" />
             <q-input
+              dense
               class="required"
               v-model="addEstimatorInfo.email"
               label="Email"
@@ -2078,6 +2188,7 @@
 
             <div class="row justify-between">
               <q-select
+                dense
                 class="col-5"
                 v-model="addEstimatorInfo.type"
                 :options="contactTypes"
@@ -2087,8 +2198,10 @@
                 options-dense
                 emit-value
                 label="Type"
+                class="input-extra-padding"
               />
               <q-input
+                dense
                 class="col-6"
                 v-model.number="addEstimatorInfo.phone"
                 label="Phone"
@@ -2148,7 +2261,7 @@
         />
         <div class="vendor-list">
           <div class="actions-div">
-            <q-input placeholder="Search" borderless class="full-width">
+            <q-input dense placeholder="Search" borderless class="full-width">
               <template v-slot:prepend>
                 <q-icon name="search" />
               </template>

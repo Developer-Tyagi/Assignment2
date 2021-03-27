@@ -17,6 +17,7 @@
     </div>
     <div class="row justify-between">
       <q-input
+        dense
         :class="{ required: isAsteriskMark }"
         class="col-3"
         v-model="address.houseNumber"
@@ -27,6 +28,7 @@
         ]"
       />
       <q-input
+        dense
         :class="{ required: isAsteriskMark }"
         class="col-8"
         v-model="address.streetAddress"
@@ -38,6 +40,7 @@
       />
     </div>
     <q-input
+      dense
       :class="{ required: isAsteriskMark }"
       v-model="address.addressLocality"
       label="City"
@@ -45,6 +48,7 @@
       :rules="[val => checkValidations(val) || 'Please fill the city']"
     />
     <q-select
+      dense
       :class="{ required: isAsteriskMark }"
       v-model="address.addressRegion"
       :options="states"
@@ -53,6 +57,7 @@
       :rules="[val => checkValidations(val) || 'Please fill the state']"
     />
     <q-select
+      dense
       :class="{ required: isAsteriskMark }"
       v-model="address.addressCountry"
       :options="countries"
@@ -62,6 +67,7 @@
       :rules="[val => checkValidations(val) || 'Please fill the country']"
     />
     <q-input
+      dense
       :class="{ required: isAsteriskMark }"
       v-model="address.postalCode"
       label="ZIP Code"
@@ -77,6 +83,7 @@
       />
     </div>
     <q-input
+      dense
       v-if="address.dropBox.isPresent && isDropBoxEnable"
       v-model="address.dropBox.info"
       class="required"

@@ -24,6 +24,7 @@
             <q-card class="form-card q-pa-md">
               <span class="stepper-heading">Primary Contact </span>
               <q-select
+                dense
                 class="required"
                 v-model="primaryDetails.honorific.id"
                 :options="titles"
@@ -42,6 +43,7 @@
               />
 
               <q-input
+                dense
                 class="required"
                 v-model="primaryDetails.firstName"
                 label="First Name"
@@ -51,6 +53,7 @@
                 ]"
               />
               <q-input
+                dense
                 class="required"
                 v-model="primaryDetails.lastName"
                 label="Last Name"
@@ -61,6 +64,7 @@
               />
               <div class="row justify-between">
                 <q-select
+                  dense
                   class="required col-5"
                   v-model="primaryDetails.selectedContactType"
                   :options="contactTypes"
@@ -76,6 +80,7 @@
                   ]"
                 />
                 <q-input
+                  dense
                   class="required col-6"
                   v-model.number="primaryDetails.phoneNumber"
                   label="Phone"
@@ -89,6 +94,7 @@
                 />
               </div>
               <q-input
+                dense
                 class="required"
                 v-model="primaryDetails.email"
                 label="Email"
@@ -113,6 +119,7 @@
               </div>
               <div v-if="primaryDetails.isOrganization">
                 <q-input
+                  dense
                   class="required"
                   v-model="primaryDetails.organizationName"
                   label="Organization Name"
@@ -151,6 +158,7 @@
 
               <div class="full-width">
                 <q-input
+                  dense
                   v-model="lossDetails.dateOfLoss"
                   mask="##/##/####"
                   label="MM/DD/YYYY"
@@ -180,6 +188,7 @@
                 </q-input>
               </div>
               <q-select
+                dense
                 class="required"
                 v-model="lossDetails.causeOfLoss.id"
                 option-value="id"
@@ -197,6 +206,7 @@
               /><br />
 
               <q-input
+                dense
                 v-model="lossDetails.lossDesc"
                 label="Brief description of loss"
               />
@@ -257,6 +267,7 @@
                 </div>
               </div>
               <q-input
+                dense
                 v-model="insuranceDetails.policyNumber"
                 label="Policy Number"
               />
@@ -296,6 +307,7 @@
               <span class="stepper-heading">Choose Lead Source</span>
               <div>
                 <q-select
+                  dense
                   v-model="sourceDetails.type"
                   :options="leadSources"
                   option-label="name"
@@ -304,8 +316,10 @@
                   emit-value
                   map-options
                   @input="onChangingSourceType()"
+                  class="input-extra-padding"
                 />
                 <q-input
+                  dense
                   v-if="
                     sourceDetails.type != constants.industries.VENDOR &&
                       sourceDetails.type != '' &&
@@ -360,7 +374,7 @@
           <q-form @submit="step++" @reset="step--">
             <q-card class="q-pa-md form-card">
               <span class="stepper-heading">Last Notes</span>
-              <q-input label="Last Notes" v-model="notes" type="input" />
+              <q-input dense label="Last Notes" v-model="notes" type="input" />
             </q-card>
             <div class="row q-pt-md">
               <div>
@@ -402,6 +416,7 @@
                 left-label
               />
               <q-select
+                dense
                 class="required"
                 v-model="schedulingDetails.inspectionType"
                 :options="inspectionTypes"
@@ -419,7 +434,8 @@
                 ]"
               />
               <q-select
-                class="required"
+                dense
+                class="required input-extra-padding"
                 v-if="showSubInspectionType"
                 v-model="schedulingDetails.subInspectionType"
                 :options="subInspectionTypes"
@@ -432,6 +448,7 @@
                 map-options
               />
               <q-input
+                dense
                 type="number"
                 mask="#.#"
                 step="0.5"

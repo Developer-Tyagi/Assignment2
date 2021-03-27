@@ -103,11 +103,13 @@
         <div class="mobile-container-page-without-search q-ma-sm">
           <q-form ref="propertyAddressForm" class="form-height">
             <q-input
+              dense
               class="full-width"
               v-model="propertyName"
               label=" Property Name"
             />
             <q-select
+              dense
               class="required"
               v-model="property.id"
               option-value="id"
