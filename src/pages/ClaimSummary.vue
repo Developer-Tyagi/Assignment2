@@ -42,11 +42,14 @@
         </div>
         <br />
         <span class="form-heading">Claim Number</span><br />
-        {{
-          getSelectedClaim.attributes.policyInfo.claimNumber
-            ? getSelectedClaim.attributes.policyInfo.claimNumber
-            : '-'
-        }}<br /><br />
+        <div>
+          {{
+            getSelectedClaim.attributes.policyInfo.claimNumber
+              ? getSelectedClaim.attributes.policyInfo.claimNumber
+              : '-'
+          }}
+        </div>
+        <br />
         <span class="form-heading">Claim Fee</span><br />
         -<br />
         <span class="form-heading">Date Notified</span><br />
