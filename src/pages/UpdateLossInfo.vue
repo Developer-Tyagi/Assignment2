@@ -42,9 +42,9 @@
 
         <q-card class="q-pa-md q-mt-md full-width">
           <div class="row">
-            <span class="form-heading ">Loss Info</span>
+            <div class="form-heading ">Loss Info</div>
             <div class="row ">
-              <span class="col-10"></span>
+              <div class="col-10"></div>
               <q-icon
                 size="sm"
                 name="create"
@@ -54,49 +54,58 @@
               ></q-icon>
             </div>
           </div>
-          <br />
+
           <div>
-            <span class="form-heading">Address :</span><br />
-            {{ lossInfo.lossAddressDetails.streetAddress }}
+            <div>Address :</div>
+
+            <div>
+              {{ lossInfo.lossAddressDetails.streetAddress }}
+            </div>
 
             {{
               InfoLoss.attributes.lossInfo.address.streetAddress
                 ? InfoLoss.attributes.lossInfo.address.streetAddress
                 : '-'
             }}
-            <br />
-            {{
-              lossInfo.lossAddressDetails.addressLocality
-                ? lossInfo.lossAddressDetails.addressLocality
-                : '-'
-            }},
-            {{
-              lossInfo.lossAddressDetails.houseNumber
-                ? lossInfo.lossAddressDetails.houseNumber
-                : '-'
-            }}
-            <br />
-            {{ lossInfo.lossAddressDetails.addressRegion }},
-            {{ lossInfo.lossAddressDetails.addressCountry }}<br /><br />
+            <div>
+              {{
+                lossInfo.lossAddressDetails.addressLocality
+                  ? lossInfo.lossAddressDetails.addressLocality
+                  : '-'
+              }},
+              {{
+                lossInfo.lossAddressDetails.houseNumber
+                  ? lossInfo.lossAddressDetails.houseNumber
+                  : '-'
+              }}
+            </div>
+            <div>
+              {{ lossInfo.lossAddressDetails.addressRegion }},
+              {{ lossInfo.lossAddressDetails.addressCountry }}
+            </div>
 
-            <br />
-            <span class="form-heading "> Property Type :</span><br />
-            <div>{{ InfoLoss.attributes.lossInfo.propertyType.value }}</div>
-            <br />
-            <span class="form-heading ">Property Description :</span><br />
+            <div class="form-heading  ">Property Type :</div>
+
+            <div>
+              {{ InfoLoss.attributes.lossInfo.propertyType.value }}
+            </div>
+
+            <div class="form-heading ">Property Description :</div>
 
             {{
               InfoLoss.attributes.lossInfo.propertyDesc
                 ? InfoLoss.attributes.lossInfo.propertyDesc
                 : '-'
-            }}<br /><br />
-            <span class="form-heading ">Claim Reason:</span><br />
+            }}
+            <div class="form-heading ">Claim Reason:</div>
+
             {{
               InfoLoss.attributes.lossInfo.claimReason.value
                 ? InfoLoss.attributes.lossInfo.claimReason.value
                 : '-'
-            }}<br /><br />
-            <span class="form-heading ">Loss Cause:</span><br />
+            }}
+            <div class="form-heading ">Loss Cause:</div>
+
             <div>
               {{
                 InfoLoss.attributes.lossInfo.cause.value
@@ -104,26 +113,22 @@
                   : '-'
               }}
             </div>
-            <br />
 
-            <span class="form-heading ">Deadline Date:</span>
+            <div class="form-heading ">Deadline Date:</div>
             <div>
-              {{
-                InfoLoss.attributes.lossInfo.deadlineDate | moment('MM/DD/YYYY')
-              }}
+              {{ InfoLoss.attributes.deadlineDate | moment('MM/DD/YYYY') }}
             </div>
-            <br />
-            <span class="form-heading ">Recovery Date:</span>
+
+            <div class="form-heading ">Recovery Date:</div>
             <div>
               {{
                 InfoLoss.attributes.lossInfo.recovDDDate | moment('MM/DD/YYYY')
               }}
             </div>
-            <br />
+
             <div class="form-heading ">lossAddressName:</div>
-            <br />
+
             <div>{{ InfoLoss.attributes.lossInfo.lossAddressName }}</div>
-            <br />
           </div>
         </q-card>
       </div>
