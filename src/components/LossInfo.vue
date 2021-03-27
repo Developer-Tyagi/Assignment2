@@ -60,7 +60,10 @@
           "
           :dialogName="'Mortagage Info'"
         />
-        <div class="mobile-container-page-without-search">
+        <div
+          class="mobile-container-page-without-search"
+          v-if="isMailingAddressEnable"
+        >
           <q-form ref="estimatingInfoForm" class="form-height">
             <div
               class="custom-select"
@@ -75,6 +78,7 @@
                 }}
               </div>
             </div>
+
             <q-input
               v-model="lossInfo.mortgageDetails[0].loanNumber"
               label="Loan Number"
@@ -95,6 +99,7 @@
               <span class="form-heading">
                 Is there a 2nd mortgage on the home?
               </span>
+
               <q-toggle
                 class="q-ml-auto"
                 v-model="lossInfo.isSecondMortgageHome"
@@ -168,7 +173,7 @@
       lazy-rules
       :rules="[val => (val && val.length > 0) || 'This is a required field']"
     ></q-input>
-    <div class="row">
+    <div class="row" v-if="lossAddressSameAsClient">
       <p class="q-my-auto form-heading">
         Loss Address Same As Client's?
       </p>
@@ -630,36 +635,39 @@
       />
     </div>
     <!-- Mortgage Details -->
-
-    <div class="row">
-      <p class="q-my-auto form-heading">
-        Is there a mortgage on the home?
-      </p>
-      <q-toggle
-        class="q-ml-auto"
-        v-model="lossInfo.isMortgageHomeToggle"
-        @input="onToggleButtonClick"
-      />
-    </div>
-    <div
-      v-if="lossInfo.isMortgageHomeToggle"
-      @click="
-        lossInfo.mortgageInfoDialog = true;
-        lossInfo.lossInfoDialog = false;
-      "
-    >
+    <div v-if="isMailingAddressEnable">
       <div class="row">
-        <div class="q-px-xs row">
-          <div v-if="!lossInfo.mortgageDetails[0]['id']">Select Mortgage</div>
-          <div
-            v-else
-            class="select-text"
-            v-for="(mortgageDetail, index) in lossInfo.mortgageDetails"
-          >
-            <span>
-              {{ mortgageDetail.value }}
-            </span>
-            <span v-if="lossInfo.mortgageDetails.length - 1 > index"> , </span>
+        <p class="q-my-auto form-heading">
+          Is there a mortgage on the home?
+        </p>
+        <q-toggle
+          class="q-ml-auto"
+          v-model="lossInfo.isMortgageHomeToggle"
+          @input="onToggleButtonClick"
+        />
+      </div>
+      <div
+        v-if="lossInfo.isMortgageHomeToggle"
+        @click="
+          lossInfo.mortgageInfoDialog = true;
+          lossInfo.lossInfoDialog = false;
+        "
+      >
+        <div class="row">
+          <div class="q-px-xs row">
+            <div v-if="!lossInfo.mortgageDetails[0]['id']">Select Mortgage</div>
+            <div
+              v-else
+              class="select-text"
+              v-for="(mortgageDetail, index) in lossInfo.mortgageDetails"
+            >
+              <span>
+                {{ mortgageDetail.value }}
+              </span>
+              <span v-if="lossInfo.mortgageDetails.length - 1 > index">
+                ,
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -672,7 +680,7 @@ import { constants } from '@utils/constant';
 import CustomBar from 'components/CustomBar';
 import VendorsList from 'components/VendorsList';
 import { validateDate } from '@utils/validation';
-import { mapGetters, mapActions, mapMutations } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import AddVendor from 'components/AddVendor';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 export default {
@@ -687,6 +695,14 @@ export default {
   props: {
     lossInfo: {
       type: Object
+    },
+    isMailingAddressEnable: {
+      type: Boolean,
+      required: false
+    },
+    lossAddressSameAsClient: {
+      type: Boolean,
+      required: false
     }
   },
 
@@ -711,6 +727,7 @@ export default {
     };
   },
   created() {
+    this.$emit('isMortgageDetails', false);
     this.getVendors(this.$route.params.id);
   },
   computed: {

@@ -152,7 +152,7 @@ const routes = [
         path: 'loss-info',
         name: 'loss info ',
         caseSensitive: true,
-        component: () => import('pages/LossInfo.vue')
+        component: () => import('src/pages/UpdateLossInfo.vue')
       },
       {
         path: 'client-documents',

@@ -74,7 +74,3 @@ export function setPolicyCategory(state, types) {
 export function setSelectedClient(state, client) {
   state.selectedClient = client;
 }
-
-export function setLossInfo(state, claim) {
-  state.lossInfo = claim;
-}
