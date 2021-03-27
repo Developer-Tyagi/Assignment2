@@ -131,11 +131,11 @@ export default {
           link: '/clients',
           description: 'View, Add and Manage Clients.'
         },
-        // {
-        //   title: "Claims",
-        //   link: "/claims",
-        //   description: "View, Add and Manage Claims."
-        // },
+        {
+          title: 'Claims',
+          link: '/claims',
+          description: 'View, Add and Manage Claims.'
+        },
         // {
         //   title: "Companies",
         //   link: "/companies",

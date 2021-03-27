@@ -65,21 +65,25 @@
                 v-for="claim in setClientProperty[i - 1].attributes.claims"
                 :key="claim.id"
               >
-                <div class="row">
-                  <span class="text-bold">Last Updated on : </span>
-                  {{ claim.updated | moment('DD/MM/YYYY') }}
-                  <q-badge class="q-ml-auto">{{
-                    claim.status ? claim.status : '-'
-                  }}</q-badge
+                <q-item-section @click="onClickClaimNumber(claim)">
+                  <div class="row">
+                    <span class="text-bold">Last Updated on : </span>
+                    {{ claim.updated | moment('DD/MM/YYYY') }}
+                    <q-badge class="q-ml-auto">{{
+                      claim.status ? claim.status : '-'
+                    }}</q-badge
+                    ><br />
+                  </div>
+                  <span class="form-heading">Claim Number: </span
+                  ><span @click="onClickClaimNumber(claim)" class="click-link"
+                    >{{ claim.number ? claim.number : '-' }} </span
                   ><br />
-                </div>
-                <span class="form-heading">Claim Number: </span
-                >{{ claim.number ? claim.number : '-' }} <br />
-                <span class="form-heading">File Number: </span
-                >{{ claim.fileNumber ? claim.fileNumber : '-' }} <br />
-                <span class="form-heading"> Current Phase: </span
-                >{{ claim.phase ? claim.phase : '-' }}
-                <q-separator />
+                  <q-separator />
+                  <span class="form-heading">File Number: </span
+                  >{{ claim.fileNumber ? claim.fileNumber : '-' }} <br />
+                  <span class="form-heading"> Current Phase: </span
+                  >{{ claim.phase ? claim.phase : '-' }}
+                </q-item-section>
               </div>
             </div>
             <q-separator />
@@ -146,7 +150,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import moment from 'moment';
@@ -189,7 +193,8 @@ export default {
       'setClientProperty',
       'selectedClientId',
       'propertyTypes',
-      'selectedClientId'
+      'selectedClientId',
+      'selectedClaimId'
     ]),
     formatDate(value) {
       if (value) {
@@ -203,7 +208,12 @@ export default {
       'getPropertyTypes',
       'addPropertyAddress'
     ]),
+    ...mapMutations(['setSelectedClaimId']),
+    onClickClaimNumber(claim) {
+      this.setSelectedClaimId(claim.id);
 
+      this.$router.push('/claim-details');
+    },
     setTypes(types, data) {
       const obj = types.find(item => {
         return item.id === data.id;

@@ -266,36 +266,43 @@
               <q-toggle
                 class="q-ml-auto"
                 v-model="addAditionalPhoneNumberToggle"
-                @input="onaddAditionalPhoneNumberToggle"
               />
             </div>
             <div v-if="addAditionalPhoneNumberToggle">
-              <div
-                class="row justify-between"
-                v-for="(addPhone, index) in phoneNumber"
-                v-if="index >= 0"
-              >
+              <div class="row justify-between">
+                <q-select <<<<<<< HEAD dense v-model="phoneNumber[index].type"
+                ======= v-model="addAditionalPhoneNumber.type1" >>>>>>> master
+                class="required col-5" label="Type" :options="contactTypes"
+                option-value="machineValue" option-label="name" map-options
+                options-dense emit-value lazy-rules :rules="[ val => (val &&
+                val.length > 0) || 'Please select phone type' ]" /> <q-input
+                <<<<<<< HEAD dense v-model.number="phoneNumber[index].number"
+                label="Phone" =======
+                v-model.number="addAditionalPhoneNumber.phone2" label="Phone2"
+                >>>>>>> master class="required col-6" mask="(###) ###-####"
+                lazy-rules :rules="[ val => (val && val.length == 14) || 'Please
+                enter the phone number' ]" />
+              </div>
+              <div class="row justify-between">
                 <q-select
-                  dense
-                  v-model="phoneNumber[index].type"
                   class="required col-5"
+                  v-model="addAditionalPhoneNumber.type2"
                   label="Type"
                   :options="contactTypes"
                   option-value="machineValue"
                   option-label="name"
                   map-options
-                  options-dense
                   emit-value
+                  options-dense
                   lazy-rules
                   :rules="[
                     val => (val && val.length > 0) || 'Please select phone type'
                   ]"
                 />
                 <q-input
-                  dense
-                  v-model.number="phoneNumber[index].number"
-                  label="Phone"
                   class="required col-6"
+                  v-model.number="addAditionalPhoneNumber.phone3"
+                  label="Phone3"
                   mask="(###) ###-####"
                   lazy-rules
                   :rules="[
@@ -303,25 +310,6 @@
                       (val && val.length == 14) ||
                       'Please enter the phone number'
                   ]"
-                />
-              </div>
-              <div class="row">
-                <q-btn
-                  outline
-                  class="q-mt-sm"
-                  @click="addAnotherContact"
-                  color="primary"
-                  label="Add"
-                  style="margin-right: auto"
-                />
-
-                <q-btn
-                  v-if="phoneNumber.length > 1"
-                  outline
-                  @click="RemoveAnotherContact"
-                  class="q-mt-sm"
-                  color="primary"
-                  label="Remove"
                 />
               </div>
             </div>
@@ -445,6 +433,7 @@
         />
         <div class="mobile-container-page-without-search">
           <q-form ref="insuranceInfoForm" class="form-height">
+            <<<<<<< HEAD
             <div
               class="custom-select"
               v-model="insuranceDetails.carrierName"
@@ -695,7 +684,11 @@
               ></textarea>
             </div>
             <br />
+            =======
+            <InsuranceInfo :insuranceDetails="insuranceDetails" />
+            >>>>>>> master
           </q-form>
+
           <q-btn
             label="Save"
             color="primary"
@@ -722,6 +715,7 @@
         />
         <div class="mobile-container-page-without-search">
           <q-form ref="lossInfoForm" class="form-height">
+            <<<<<<< HEAD
             <!-- Loss Address Name Dropdown -->
             <q-select
               dense
@@ -1313,6 +1307,9 @@
                 </div>
               </div>
             </div>
+            =======
+            <LossInfo :lossInfo="lossInfo" @lossAddressSame="lossAddressSame" />
+            >>>>>>> master
           </q-form>
 
           <q-btn
@@ -1341,6 +1338,7 @@
         />
         <div class="mobile-container-page-without-search">
           <q-form ref="expertVendorInfoForm" class="form-height">
+            <<<<<<< HEAD
             <div class="row">
               <span class="form-heading"
                 >Do any vendors need to be assigned?</span
@@ -1456,6 +1454,9 @@
                 style="resize: none"
               ></textarea>
             </div>
+            =======
+            <ExpertVendorInfo :expertVendorInfo="expertVendorInfo" />
+            >>>>>>> master
           </q-form>
 
           <q-btn
@@ -1483,6 +1484,7 @@
         />
         <div class="mobile-container-page-without-search">
           <q-form ref="estimatingInfoForm" class="form-height">
+            <<<<<<< HEAD
             <div class="row">
               <p style="form-heading">
                 Does an estimator need to be<br />assigned?
@@ -1526,6 +1528,9 @@
               v-model="estimatingInfo.notesToTheEstimator"
               label="Notes to the estimator"
             /><br />
+            =======
+            <EstimatingInfo :estimatingInfo="estimatingInfo" />
+            >>>>>>> master
           </q-form>
           <q-btn
             label="Save"
@@ -1552,6 +1557,7 @@
         />
         <div class="mobile-container-page-without-search">
           <q-form ref="contractInfoForm" class="form-height">
+            <<<<<<< HEAD
             <span class="form-heading">Contract Date</span>
             <div class="full-width">
               <q-input
@@ -1776,6 +1782,9 @@
                 style="resize: none"
               ></textarea>
             </div>
+            =======
+            <ContractInfo :contractInfo="contractInfo" />
+            >>>>>>> master
           </q-form>
           <q-btn
             label="Save"
@@ -1802,6 +1811,7 @@
         />
         <div class="mobile-container-page-without-search">
           <q-form ref="publicAdjustorForm" class="form-height">
+            <<<<<<< HEAD
             <div class="form-heading text-bold">CLAIM PERSONNEL</div>
             <div class="form-heading q-mt-lg">Personnel Role</div>
 
@@ -1957,6 +1967,9 @@
                 style="resize: none"
               ></textarea>
             </div>
+            =======
+            <PublicAdjustorInfo :publicAdjustorInfo="publicAdjustorInfo" />
+            >>>>>>> master
           </q-form>
           <q-btn
             label="Save"
@@ -2016,6 +2029,7 @@
         </div>
       </q-card>
     </q-dialog>
+    <<<<<<< HEAD
 
     <!-- Mortage Info -->
     <q-dialog
@@ -2305,12 +2319,19 @@
         />
       </q-card>
     </q-dialog>
+    ======= >>>>>>> master
   </q-page>
 </template>
 
 <script>
 import CustomBar from 'components/CustomBar';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
+import ContractInfo from 'components/ContractInfo';
+import PublicAdjustorInfo from 'components/PublicAdjustorInfo';
+import EstimatingInfo from 'components/EstimatingInfo';
+import LossInfo from 'components/LossInfo';
+import ExpertVendorInfo from 'components/ExpertVendorInfo';
+import InsuranceInfo from 'components/InsuranceInfo';
 import AddressService from '@utils/country';
 import { validateEmail, validateDate, validateTime } from '@utils/validation';
 import { constants } from '@utils/constant';
@@ -2324,60 +2345,72 @@ const addressService = new AddressService();
 
 export default {
   name: 'addClient',
-  components: { CustomBar, VendorsList, AddVendor, AutoCompleteAddress },
+  components: {
+    CustomBar,
+    VendorsList,
+    AddVendor,
+    AutoCompleteAddress,
+    InsuranceInfo,
+    LossInfo,
+    ExpertVendorInfo,
+    EstimatingInfo,
+    ContractInfo,
+    PublicAdjustorInfo
+  },
 
   data() {
     return {
-      currentExpertVendorIndustryType: '',
-      params: {
-        role: ''
-      },
-      addEstimatorValue: { name: '' },
-      expertVendorButton: true,
       industryTypeValue: '',
-      reasonForCancellation: [
-        'Client Cancelled',
-        'Insufficient Coverage',
-        'Loss to small',
-        'No coverage',
-        'Other'
-      ],
+
       contractInfo: {
+        vendorsListDialog: false,
+        vendorDialogFilterByIndustry: '',
+        showVendorDialogFilters: false,
+        addVendorDialog: false,
+        reasonForCancellation: '',
+        vendorDialogName: '',
+        reasonForCancellation: [],
+        sourceDetails: {
+          id: '',
+          type: '',
+          details: ''
+        },
         contractDate: '',
         firstContractDate: '',
         claimFeeRate: '',
         time: '',
         cancelledToggle: false,
-        reasonForCancellation: '',
+
         reasonForCancellationText: '',
 
         buttonGroup: 'dollar'
       },
-      publicAdjustor: {
+
+      publicAdjustorInfo: {
         isFieldDisable1: true,
         isFieldDisable2: true,
         isFieldDisable3: true,
         isFieldDisable4: true,
-        personnelRole1: {
-          id: '',
-          value: '',
-          machineValue: ''
-        },
-        personnelRole2: {
-          id: '',
-          value: '',
-          machineValue: ''
-        },
-        personnelRole3: {
-          id: '',
-          value: '',
-          machineValue: ''
-        },
-        personnelRole4: {
-          id: '',
-          value: '',
-          machineValue: ''
-        },
+
+        personnel: [
+          {
+            id: '',
+            role: ''
+          },
+          {
+            id: '',
+            role: ''
+          },
+          {
+            id: '',
+            role: ''
+          },
+          {
+            id: '',
+            role: ''
+          }
+        ],
+
         personParty1: '',
         personParty2: '',
         personParty3: '',
@@ -2386,12 +2419,6 @@ export default {
 
         filterRole: []
       },
-
-      PPdamagedItemsDailog: false,
-      ppDamagedItems: [],
-
-      damagedItemsDailog: false,
-      osDamagedItems: [],
 
       isCreateClientButtonDisabled: true,
 
@@ -2412,26 +2439,17 @@ export default {
       ],
 
       vendorIndustriesOptions: [],
-      lossAddressNameOptions: ['New'],
-      estimatorsListDialog: false,
+      lossAddressNameOptions: ['Others'],
+
       constants: constants,
-      valueName: '',
-      mortgageInfoDialog: false,
-      isSecondMortgageHome: false,
-      vendorDialogName: '',
-      vendorDialogFilterByIndustry: '',
-      showVendorDialogFilters: false,
-      lossAddressNameDropdown: 'New',
+
       publicAdjustorInfoDialog: false,
       contractInfoDialog: false,
-      addVendorDialog: false,
-      addEstimatorDialog: false,
-      vendorsListDialog: false,
+
       officeTaskDialog: false,
       expertVendorInfoDialog: false,
       estimatingInfoDialog: false,
       lossInfoDialog: false,
-      hasClaimBeenFilledToggle: false,
 
       maximizedToggle: true,
       clientInfoDailog: false,
@@ -2453,11 +2471,7 @@ export default {
         value: '',
         machineValue: ''
       },
-      sourceDetails: {
-        id: '',
-        type: '',
-        details: ''
-      },
+
       client: {
         id: '',
         value: '',
@@ -2480,13 +2494,13 @@ export default {
         machineValue: '',
         email: ''
       },
-
-      phoneNumber: [
-        {
-          type: '',
-          number: ''
-        }
-      ],
+      addAditionalPhoneNumber: {
+        phone2: '',
+        phone3: '',
+        phone: '',
+        type1: '',
+        type2: ''
+      },
       clientAddressDetails: {
         addressCountry: '',
         addressRegion: '',
@@ -2519,6 +2533,53 @@ export default {
       },
 
       lossInfo: {
+        isMortgageHomeToggle: false,
+        vendorsListDialog: false,
+        vendorDialogFilterByIndustry: '',
+        showVendorDialogFilters: false,
+        addVendorDialog: false,
+        vendorDialogName: '',
+        valueName: '',
+        mortgageInfoDialog: false,
+        mortgageDetails: [
+          {
+            id: '',
+            value: '',
+            loanNumber: '',
+            accountNumber: '',
+            isPrimary: true,
+            notes: ''
+          }
+        ],
+        lossAddressNameDropdown: 'Others',
+        isSecondMortgageHome: false,
+
+        wasAppifProvidedToTheInsuredToggle: false,
+        doesTheOfficeNeedToProvidePpifToTheInsuredToggle: false,
+        PPdamagedItemsDailog: false,
+        ppDamagedItems: [],
+
+        damagedItemsDailog: false,
+        osDamagedItems: [],
+        isDamageOSToggle: false,
+        isThereDamageToPersonalPropertyToggle: false,
+        femaClaimToggle: false,
+        isStateOfEmergencyToggle: false,
+        isTheHomeHabitable: false,
+        lossAddressDetails: {
+          houseNumber: '',
+          addressCountry: '',
+          addressRegion: '',
+          addressLocality: '',
+          postalCode: '',
+          streetAddress: '',
+          postOfficeBoxNumber: '4',
+          dropBox: {
+            info: '',
+            isPresent: false
+          }
+        },
+        isLossAddressSameAsClientToggle: false,
         repairReplaceRadio: '',
         serialNumber: '',
         PPDamageName: '',
@@ -2568,6 +2629,8 @@ export default {
         typeOfLoss: ''
       },
       insuranceDetails: {
+        hasClaimBeenFilledToggle: false,
+        isThisIsForcedPlacedPolicyToggle: false,
         policy: {
           id: '',
           value: ''
@@ -2594,24 +2657,36 @@ export default {
         priorPayment: '',
         reasonsOfLD: ''
       },
-      mortgageDetails: [
-        {
-          id: '',
-          value: '',
-          loanNumber: '',
-          accountNumber: '',
-          isPrimary: true,
-          notes: ''
-        }
-      ],
 
       estimatingInfo: {
+        addEstimatorDialog: false,
+        addEstimatorValue: { name: '' },
+        honorific3: {
+          id: '',
+          value: '',
+          machineValue: ''
+        },
+        name: '',
+        fname: '',
+        lname: '',
+        email: '',
+        phone: '',
+        type: '',
+        estimatorsListDialog: false,
+
         estimatorToBeAssigned: '',
         scopeTimeNeeded: '',
-        notesToTheEstimator: ''
+        notesToTheEstimator: '',
+        doesAnEstimatorNeedToBeAssignedToggle: false
       },
 
       expertVendorInfo: {
+        expertVendorButton: true,
+        carrierName: '',
+        carrierId: '',
+        vendorIndustriesOptions: [],
+        anyOtherExpertHiredToggle: false,
+        vendorExpertHiredToggle: false,
         notes: '',
         internalNotes: '',
 
@@ -2626,7 +2701,7 @@ export default {
 
       addAditionalPhoneNumberToggle: false,
       tenantOccupiedToggle: false,
-      isDamageOSToggle: false,
+
       mailingAddressDialog: false,
       isMailingAddressSameToggle: false,
       isThereaCoInsuredToggle: false,
@@ -2634,50 +2709,11 @@ export default {
       states: [],
       countries: [],
       insuranceInfoDialog: false,
-      isThisIsForcedPlacedPolicyToggle: false,
+
       DidYouHavePoliceDeclarationToggle: false,
-      isStateOfEmergencyToggle: false,
-      isTheHomeHabitable: false,
-      isThereDamageToPersonalPropertyToggle: false,
-      wasAppifProvidedToTheInsuredToggle: false,
-      doesTheOfficeNeedToProvidePpifToTheInsuredToggle: false,
-      isMortgageHomeToggle: false,
-      isLossAddressSameAsClientToggle: false,
-      lossAddressDetails: {
-        houseNumber: '',
-        addressCountry: '',
-        addressRegion: '',
-        addressLocality: '',
-        postalCode: '',
-        streetAddress: '',
-        postOfficeBoxNumber: '4',
-        dropBox: {
-          info: '',
-          isPresent: false
-        }
-      },
-      addEstimatorInfo: {
-        name: '',
-        fname: '',
-        lname: '',
-        email: '',
-        phone: '',
-        type: ''
-      },
-      honorific3: {
-        id: '',
-        value: '',
-        machineValue: ''
-      },
+
       typeOfLoss: [],
 
-      isTherea2ndMortgageOnTheHomeToggle: false,
-      doesAnEstimatorNeedToBeAssignedToggle: false,
-
-      vendorExpertHiredToggle: false,
-      anyOtherExpertHiredToggle: false,
-
-      femaClaimToggle: false,
       additionalOfficeTaskRequiredToggle: false,
       officeActionRequiredTypes: [],
       officeTaskRequiredTypes: []
@@ -2685,15 +2721,14 @@ export default {
   },
 
   created() {
-    this.contractInfo.time = date.formatDate(Date.now(), 'HH:mm ');
+    this.contractInfo.time = date.formatDate(Date.now(), 'HH:mm:ss:aa');
     this.contractInfo.firstContractDate = this.contractInfo.contractDate = this.insuranceDetails.policyEffectiveDate = this.insuranceDetails.policyExpireDate = this.lossInfo.dateOfLoss = this.lossInfo.deadlineDate = this.lossInfo.recovDeadline = date.formatDate(
       Date.now(),
       'MM/DD/YYYY'
     );
-
     this.getVendors(this.$route.params.id);
     this.getClientTypes();
-    this.getEstimators();
+
     this.getPropertyTypes();
     this.getPolicyTypes();
     this.getLossCauses();
@@ -2701,30 +2736,27 @@ export default {
     this.getClaimReasons();
     this.getContactTypes();
     this.getPolicyCategory();
-    this.getRoles();
-    this.getAllUsers();
-
     if (this.selectedLead.id) {
       this.insuredDetails.fname = this.selectedLead.primaryContact.fname;
       this.insuredDetails.lname = this.selectedLead.primaryContact.lname;
       this.insuredDetails.email = this.selectedLead.primaryContact.email;
       this.insuredDetails.phone = this.selectedLead.primaryContact.phoneNumber[0].number;
       this.insuredDetails.type = this.selectedLead.primaryContact.phoneNumber[0].type;
-      this.sourceDetails.id = this.selectedLead.leadSource.id;
-      this.sourceDetails.type = this.selectedLead.leadSource.type;
+      this.contractInfo.sourceDetails.id = this.selectedLead.leadSource.id;
+      this.contractInfo.sourceDetails.type = this.selectedLead.leadSource.type;
       this.honorific1.id = this.selectedLead.primaryContact.honorific.id;
       this.honorific1.value = this.selectedLead.primaryContact.honorific.value;
       this.honorific1.machineValue = this.selectedLead.primaryContact.honorific.machineValue;
-      this.sourceDetails.details = this.selectedLead.leadSource.detail;
+      this.contractInfo.sourceDetails.details = this.selectedLead.leadSource.detail;
       this.insuranceDetails.carrierName = this.selectedLead.carrier.value;
       this.insuranceDetails.carrierId = this.selectedLead.carrier.id;
       this.insuranceDetails.policyNumber = this.selectedLead.policyNumber;
-      this.lossAddressDetails.houseNumber = this.selectedLead.lossLocation.houseNumber;
-      this.lossAddressDetails.addressCountry = this.selectedLead.lossLocation.addressCountry;
-      this.lossAddressDetails.addressLocality = this.selectedLead.lossLocation.addressLocality;
-      this.lossAddressDetails.addressRegion = this.selectedLead.lossLocation.addressRegion;
-      this.lossAddressDetails.postalCode = this.selectedLead.lossLocation.postalCode;
-      this.lossAddressDetails.streetAddress = this.selectedLead.lossLocation.streetAddress;
+      this.lossInfo.lossAddressDetails.houseNumber = this.selectedLead.lossLocation.houseNumber;
+      this.lossInfo.lossAddressDetails.addressCountry = this.selectedLead.lossLocation.addressCountry;
+      this.lossInfo.lossAddressDetails.addressLocality = this.selectedLead.lossLocation.addressLocality;
+      this.lossInfo.lossAddressDetails.addressRegion = this.selectedLead.lossLocation.addressRegion;
+      this.lossInfo.lossAddressDetails.postalCode = this.selectedLead.lossLocation.postalCode;
+      this.lossInfo.lossAddressDetails.streetAddress = this.selectedLead.lossLocation.streetAddress;
       this.lossInfo.causeOfLoss.id = this.selectedLead.lossCause.id;
       this.lossInfo.causeOfLoss.value = this.selectedLead.lossCause.value;
       this.lossInfo.causeOfLoss.machineValue = this.selectedLead.lossCause.machineValue;
@@ -2754,8 +2786,7 @@ export default {
       'vendors',
       'policyCategories',
       'vendorIndustries',
-      'roleTypes',
-      'userRoles'
+      'personnelRoles'
     ])
   },
 
@@ -2780,213 +2811,30 @@ export default {
       'getTitles',
       'getPolicyCategory',
       'getVendorIndustries',
-      'addIndustry',
-      'getRoles',
-      'getAllUsers'
+      'addIndustry'
     ]),
     ...mapMutations(['setSelectedLead']),
-    // For adding multiple Contact Numbers in ClientInfo
-    addAnotherContact() {
-      this.phoneNumber.push({
-        type: '',
-        number: ''
-      });
-    },
-    RemoveAnotherContact() {
-      this.phoneNumber.pop();
-    },
-    onaddAditionalPhoneNumberToggle() {
-      if (this.addAditionalPhoneNumberToggle == false) {
-        this.phoneNumber = [
-          {
-            type: '',
-            number: ''
-          }
-        ];
-      }
-    },
 
-    EstimatorToggleChange() {
-      this.addEstimatorInfo = {
-        name: '',
-        fname: '',
-        lname: '',
-        email: '',
-        phone: '',
-        type: ''
-      };
-      this.honorific3.id = '';
-      this.addEstimatorValue.name = '';
-    },
-    //This function is for closing the time popup
-    closeTimeDialog() {
-      this.$refs.qTimeProxy.hide();
-    },
-    onClickEstimatorOpen() {
-      this.getEstimators();
-      this.estimatorsListDialog = true;
-    },
-
-    async onCloseAddEstimator() {
-      const success = await this.$refs.addEstimatorForm.validate();
-
-      if (success) {
-        const payload = {
-          fname: this.addEstimatorInfo.fname,
-          lname: this.addEstimatorInfo.lname,
-          honorific: {
-            id: this.honorific3.id,
-            value: this.honorific3.title,
-            machineValue: this.honorific3.machineValue
-          },
-          email: this.addEstimatorInfo.email,
-          phoneNumber: [
-            {
-              type: this.addEstimatorInfo.type,
-              number: this.addEstimatorInfo.phone
+    lossAddressSame() {
+      if (this.lossInfo.isLossAddressSameAsClientToggle) {
+        this.lossInfo.lossAddressDetails = this.clientAddressDetails;
+      } else {
+        if (this.selectedLead.id) {
+          this.lossInfo.lossAddressDetails = {
+            houseNumber: this.selectedLead.lossLocation.houseNumber,
+            addressCountry: this.selectedLead.lossLocation.addressCountry,
+            addressRegion: this.selectedLead.lossLocation.addressRegion,
+            addressLocality: this.selectedLead.lossLocation.addressLocality,
+            postalCode: this.selectedLead.lossLocation.postalCode,
+            streetAddress: this.selectedLead.lossLocation.streetAddress,
+            postOfficeBoxNumber: '',
+            dropBox: {
+              info: '',
+              isPresent: false
             }
-          ]
-        };
-
-        const response = this.addEstimator(payload);
-        if (response) {
-          this.addEstimatorValue.name = this.addEstimatorInfo.fname;
-          this.addEstimatorDialog = false;
-          this.getEstimators();
-          // this.carrierName = this.addEstimatorInfo.fname;
-        }
-      }
-    },
-    //addvendor close list
-
-    async onCloseAddVendorDialogBox(result, selected, industryType) {
-      if (result === true) {
-        this.onClosingVendorSelectDialog(selected, this.valueName);
-      }
-    },
-
-    // in Expert Vendor info when the Toggle Button is off data will be cleared.
-    onExpertVendorToggleOff() {
-      if (!this.vendorExpertHiredToggle) {
-        this.expertVendorInfo.industry = [
-          {
-            id: '',
-            value: '',
-            machineValue: ''
-          }
-        ];
-        this.expertVendorInfo.vendors = [
-          {
-            id: '',
-            value: 'Select Vendor'
-          }
-        ];
-        this.expertVendorButton = true;
-      } else {
-        this.expertVendorButton = false;
-      }
-    },
-
-    // For Adding Another Industry in Expert/Vendor
-    async addAnotherIndustry() {
-      let text = this.industryType.value.toLowerCase();
-
-      if (text != 'others' && text != '') {
-        const response = await this.addIndustry(this.industryType);
-        if (response) {
-          this.$q.notify({
-            message: 'Added New Industry Type',
-            position: 'top',
-            type: 'negative'
-          });
-        }
-        this.industryType.value = '';
-        this.getVendorIndustries();
-      } else {
-        this.$q.notify({
-          message: 'Sorry ! Cannot add Others or Blank  ',
-          position: 'top',
-          type: 'negative'
-        });
-      }
-    },
-    addAnotherVendor() {
-      this.expertVendorInfo.industry.push({
-        id: this.expertVendorInfo.industry.id,
-        value: this.expertVendorInfo.industry.value
-      });
-      let len = this.expertVendorInfo.vendors.length;
-      this.expertVendorInfo.vendors.push({
-        id: this.expertVendorInfo.vendors[len - 1].id,
-        value: this.expertVendorInfo.vendors[len - 1].value
-      });
-      this.expertVendorInfo.vendors[len].value = 'Select Vendor';
-    },
-    async onClosingVendorSelectDialog(vendor, dialogName) {
-      switch (dialogName) {
-        case constants.industries.CARRIER:
-          this.insuranceDetails.carrierId = vendor.id;
-          this.insuranceDetails.carrierName = vendor.name;
-          break;
-        case constants.industries.VENDOR:
-          this.sourceDetails.id = vendor.id;
-          this.sourceDetails.details = vendor.name;
-          break;
-        case constants.industries.MORTGAGE:
-          this.mortgageDetails[0].id = vendor.id;
-          this.mortgageDetails[0].value = vendor.name;
-          break;
-        case constants.industries.SECONDARYMORTGAGE:
-          this.mortgageDetails[1].id = vendor.id;
-          this.mortgageDetails[1].value = vendor.name;
-          break;
-        case constants.industries.EXPERTVENDOR:
-          const params = {
-            industry: vendor.industry.machineValue,
-            name: ''
           };
-          await this.getVendors(params);
-
-          let vendorsValue = this.vendors.find(o => o.name === vendor.name);
-
-          this.expertVendorInfo.id = vendorsValue.id;
-
-          let len = this.expertVendorInfo.vendors.length;
-          this.expertVendorInfo.vendors[len - 1].id = vendorsValue.id;
-          this.expertVendorInfo.vendors[len - 1].value = vendor.name;
-
-          break;
+        }
       }
-
-      this.vendorsListDialog = false;
-    },
-
-    //This function is user for searching Industries and  add others option at the last
-    searchFilterBy(val, update) {
-      let len = this.vendorIndustries.length;
-
-      if (this.vendorIndustries[len - 1].name != 'Others') {
-        this.vendorIndustries.push({
-          id: '',
-          machineValue: 'others',
-          name: 'Others'
-        });
-      }
-
-      this.expertVendorInfo.industry.value = null;
-      if (val === ' ') {
-        update(() => {
-          this.vendorIndustriesOptions = this.vendorIndustries;
-        });
-        return;
-      }
-
-      update(() => {
-        const search = val.toLowerCase();
-        this.vendorIndustriesOptions = this.vendorIndustries.filter(
-          v => v.name.toLowerCase().indexOf(search) > -1
-        );
-      });
     },
 
     createClientDailogBoxOpen(value) {
@@ -3024,48 +2872,7 @@ export default {
     },
     validateDate,
     validateTime,
-    deleteItems(index) {
-      this.$delete(this.ppDamagedItems, index);
-    },
-    addPPDamagedItems() {
-      this.PPdamagedItemsDailog = false;
-      this.ppDamagedItems.push({
-        name: this.lossInfo.PPDamageName,
-        desc: this.lossInfo.PPDamageDescription,
-        cost: this.lossInfo.PPDamagedItemCost,
-        serialNumber: this.lossInfo.serialNumber,
-        radio: this.lossInfo.repairReplaceRadio
-      });
-      this.lossInfo.PPDamageName = '';
-      this.lossInfo.PPDamageDescription = '';
-      this.lossInfo.serialNumber = '';
-      this.lossInfo.PPDamagedItemCost = '';
-      this.lossInfo.repairReplaceRadio = false;
-    },
-    deletePPDamagedItem(index) {
-      this.$delete(this.ppDamagedItems, index);
-    },
 
-    setVendorIndustryName(index) {
-      const selectedName = this.expertVendorInfo.industry[index].value;
-      this.currentExpertVendorIndustryType = selectedName;
-      const result = this.vendorIndustries.find(obj => {
-        return obj.name === selectedName;
-      });
-      this.currentExpertVendorIndustryType = result;
-
-      this.expertVendorInfo.industry[index].value = result.name;
-      this.industryTypeValue = result.name;
-
-      this.expertVendorInfo.industry[index].id = result.id;
-      this.expertVendorInfo.industry[index].machineValue = result.machineValue;
-
-      if (this.expertVendorInfo.industry[index].value != 'Others') {
-        this.expertVendorButton = true;
-      } else {
-        this.expertVendorButton = false;
-      }
-    },
     onCountrySelect(country) {
       this.states = addressService.getStates(country);
     },
@@ -3162,35 +2969,13 @@ export default {
       this['honorific' + val].machineValue = titleResult.machineValue;
     },
 
-    setTypes(types, data, role) {
+    setTypes(types, data, type) {
       const obj = types.find(item => {
         return item.id === data.id;
       });
+
       data.machineValue = obj.machineValue;
       data.value = obj.name;
-      switch (role) {
-        case 'role1':
-          this.publicAdjustor.isFieldDisable1 = false;
-          this.params.role = this.publicAdjustor.personnelRole1.machineValue;
-          this.getAllUsers(this.params);
-          break;
-        case 'role2':
-          this.publicAdjustor.isFieldDisable2 = false;
-          this.params.role = this.publicAdjustor.personnelRole2.machineValue;
-          this.getAllUsers(this.params);
-          break;
-
-        case 'role3':
-          this.publicAdjustor.isFieldDisable3 = false;
-          this.params.role = this.publicAdjustor.personnelRole3.machineValue;
-          this.getAllUsers(this.params);
-          break;
-        case 'role4':
-          this.publicAdjustor.isFieldDisable4 = false;
-          this.params.role = this.publicAdjustor.personnelRole4.machineValue;
-          this.getAllUsers(this.params);
-          break;
-      }
     },
 
     mailingAddressSame() {
@@ -3212,63 +2997,15 @@ export default {
       }
     },
 
-    lossAddressSame() {
-      if (this.isLossAddressSameAsClientToggle) {
-        this.lossAddressDetails = this.clientAddressDetails;
-      } else {
-        if (this.selectedLead.id) {
-          this.lossAddressDetails = {
-            houseNumber: this.selectedLead.lossLocation.houseNumber,
-            addressCountry: this.selectedLead.lossLocation.addressCountry,
-            addressRegion: this.selectedLead.lossLocation.addressRegion,
-            addressLocality: this.selectedLead.lossLocation.addressLocality,
-            postalCode: this.selectedLead.lossLocation.postalCode,
-            streetAddress: this.selectedLead.lossLocation.streetAddress,
-            postOfficeBoxNumber: '',
-            dropBox: {
-              info: '',
-              isPresent: false
-            }
-          };
-        } else {
-          this.lossAddressDetails = {
-            addressCountry: '',
-            addressRegion: '',
-            addressLocality: '',
-            postalCode: '',
-            streetAddress: '',
-            postOfficeBoxNumber: '',
-            dropBox: {
-              info: '',
-              isPresent: false
-            }
-          };
-        }
-      }
-    },
-    onSecondMortgageToggle() {
-      if (this.isSecondMortgageHome) {
-        this.mortgageDetails.push({
-          id: '',
-          value: '',
-          loanNumber: '',
-          accountNumber: '',
-          isPrimary: false,
-          notes: ''
-        });
-      } else {
-        this.mortgageDetails.pop();
-      }
-    },
     async createClientButtonClick() {
       const payload = {
         isOrganization: this.primaryDetails.isOrganization,
         organizationName: this.primaryDetails.organizationName,
         isOrganizationPolicyholder: this.policyHolder.isPolicyHolder,
         source: {
-          id: this.sourceDetails.id,
-          type: this.sourceDetails.type,
-          detail: this.sourceDetails.details
+          id: this.contractInfo.sourceDetails.id,
+          type: this.contractInfo.sourceDetails.type,
+          detail: this.contractInfo.sourceDetails.details
         },
         type: {
           ...this.client
@@ -3312,8 +3049,17 @@ export default {
           mailingAddress: {
             ...this.mailingAddressDetails
           },
-          phoneNumbers: this.phoneNumber,
+          phoneNumbers: [
+            {
+              type: this.addAditionalPhoneNumber.type1,
+              number: this.addAditionalPhoneNumber.phone2
+            },
+            {
+              type: this.addAditionalPhoneNumber.type2,
 
+              number: this.addAditionalPhoneNumber.phone3
+            }
+          ],
           tenantInfo: {
             name: '',
             phoneNumber: {
@@ -3334,10 +3080,10 @@ export default {
       if (!this.isThereaCoInsuredToggle) {
         delete payload.insuredInfo.secondary;
       }
-      if (this.sourceDetails.type == constants.industries.VENDOR) {
-        payload.source.id = this.sourceDetails.id;
+      if (this.contractInfo.sourceDetails.type == constants.industries.VENDOR) {
+        payload.source.id = this.contractInfo.sourceDetails.id;
       } else {
-        payload.source.detail = this.sourceDetails.details;
+        payload.source.detail = this.contractInfo.sourceDetails.details;
       }
 
       const response = await this.addClient(payload);
@@ -3407,10 +3153,10 @@ export default {
             }
           }
         },
-        mortgageInfo: this.mortgageDetails,
+        mortgageInfo: this.lossInfo.mortgageDetails,
         lossInfo: {
-          isNewAddress: this.lossAddressNameDropdown == 'New' ? true : false,
-          lossAddressName: this.lossInfo.lossAddressName,
+          isNewAddress:
+            this.lossInfo.lossAddressNameDropdown == 'Others' ? true : false,
           address: {
             ...this.clientAddressDetails
           },
@@ -3423,31 +3169,32 @@ export default {
             ...this.lossInfo.reasonClaim
           },
           date: dateToSend(this.lossInfo.dateOfLoss),
-          cause: {
-            ...this.lossInfo.causeOfLoss
-          },
+          cause: this.lossInfo.causeOfLoss.value
+            ? this.lossInfo.causeOfLoss
+            : null,
           deadlineDate: dateToSend(this.lossInfo.deadlineDate),
           recovDDDate: dateToSend(this.lossInfo.recovDeadline),
-          isFEMA: this.femaClaimToggle,
-          isEmergency: this.isStateOfEmergencyToggle,
+          isFEMA: this.lossInfo.femaClaimToggle,
+          isEmergency: this.lossInfo.isStateOfEmergencyToggle,
           emergencyName: this.lossInfo.nameOfEmergency,
           desc: this.lossInfo.descriptionDwelling,
-          isHabitable: this.isTheHomeHabitable,
+          isHabitable: this.lossInfo.isTheHomeHabitable,
           serverity: {
             ...this.lossInfo.severityOfClaimType
           },
-          OSDamageItems: this.osDamagedItems,
-          PPDamageItems: this.ppDamagedItems,
-          isPPIF: this.wasAppifProvidedToTheInsuredToggle,
-          isNeedPPIF: this.doesTheOfficeNeedToProvidePpifToTheInsuredToggle,
+          OSDamageItems: this.lossInfo.osDamagedItems,
+          PPDamageItems: this.lossInfo.ppDamagedItems,
+          isPPIF: this.lossInfo.wasAppifProvidedToTheInsuredToggle,
+          isNeedPPIF: this.lossInfo
+            .doesTheOfficeNeedToProvidePpifToTheInsuredToggle,
 
-          hasHomeMortgage: this.isMortgageHomeToggle,
+          hasHomeMortgage: this.lossInfo.isMortgageHomeToggle,
           isSecondClaim: false
         },
         expertInfo: {
-          isVendorAssigned: this.vendorExpertHiredToggle,
+          isVendorAssigned: this.expertVendorInfo.vendorExpertHiredToggle,
           vendor: this.expertVendorInfo.vendors,
-          isInsuredHired: this.anyOtherExpertHiredToggle,
+          isInsuredHired: this.expertVendorInfo.anyOtherExpertHiredToggle,
           notes: this.expertVendorInfo.notes,
           internalNotes: this.expertVendorInfo.internalNotes
         },
@@ -3461,33 +3208,8 @@ export default {
           },
           dateOfFirstContact: dateToSend(this.contractInfo.firstContractDate)
         },
-        personnel: {
-          notes: this.publicAdjustor.notes,
-          users: [
-            {
-              id: this.publicAdjustor.personnelRole1.id,
-              name: this.publicAdjustor.personParty1.name,
-              role: this.publicAdjustor.personnelRole1.value
-            },
 
-            {
-              id: this.publicAdjustor.personnelRole2.id,
-              name: this.publicAdjustor.personParty2.name,
-              role: this.publicAdjustor.personnelRole2.value
-            },
-
-            {
-              id: this.publicAdjustor.personnelRole3.id,
-              name: this.publicAdjustor.personParty3.name,
-              role: this.publicAdjustor.personnelRole3.value
-            },
-            {
-              id: this.publicAdjustor.personnelRole4.id,
-              name: this.publicAdjustor.personParty4.name,
-              role: this.publicAdjustor.personnelRole4.value
-            }
-          ]
-        }
+        personnel: this.publicAdjustorInfo.personnel
       };
 
       this.addClaim(payload).then(() => {
@@ -3496,104 +3218,7 @@ export default {
       });
     },
 
-    selectEstimator(value) {
-      this.addEstimatorValue.name = value.fname;
-      this.estimatorsListDialog = false;
-    },
-
-    validateEmail,
-    addDamagedItems() {
-      this.osDamagedItems.push({
-        name: this.lossInfo.OSDamageName,
-        desc: this.lossInfo.OSDamageDescription,
-        cost: this.lossInfo.OSDamagedItemCost
-      });
-
-      this.damagedItemsDailog = false;
-      this.lossInfo.OSDamageName = '';
-      this.lossInfo.OSDamageDescription = '';
-      this.lossInfo.OSDamagedItemCost = '';
-    },
-    deleteDamagedItem(index) {
-      this.$delete(this.osDamagedItems, index);
-    },
-
-    onChangingSourceType() {
-      this.sourceDetails.id = '';
-      this.sourceDetails.details = '';
-      this.sourceDetails.machineValue = '';
-    },
-
-    onToggleButtonClick() {
-      if (this.mortgageDetails.length > 1) {
-        this.mortgageDetails.pop();
-      }
-      if (!this.isMortgageHomeToggle) {
-        this.isSecondMortgageHome = false;
-        this.mortgageDetails = [
-          {
-            id: '',
-            value: '',
-            loanNumber: '',
-            accountNumber: '',
-            isPrimary: true,
-            notes: ''
-          }
-        ];
-      }
-    },
-    closeAddVendorDialog(e) {
-      this.addVendorDialog = false;
-
-      if (e) {
-        this.vendorsListDialog = false;
-      } else {
-        this.vendorsListDialog = true;
-      }
-    },
-
-    async onAddVendorDialogClick(name, index) {
-      this.valueName = name;
-      switch (name) {
-        case constants.industries.MORTGAGE:
-          this.vendorDialogName = constants.industries.MORTGAGE;
-          this.showVendorDialogFilters = false;
-          this.vendorDialogFilterByIndustry = constants.industries.MORTGAGE;
-          const params = {
-            industry: this.vendorDialogFilterByIndustry,
-            name: ''
-          };
-          await this.getVendors(params);
-          break;
-        case constants.industries.SECONDARYMORTGAGE:
-          this.vendorDialogName = constants.industries.MORTGAGE;
-          this.showVendorDialogFilters = false;
-          this.vendorDialogFilterByIndustry = constants.industries.MORTGAGE;
-          break;
-        case constants.industries.EXPERTVENDOR:
-          this.vendorDialogName = constants.industries.EXPERTVENDOR;
-          this.showVendorDialogFilters = false;
-          this.vendorDialogFilterByIndustry = constants.industries.VENDOR;
-
-          this.vendorDialogFilterByIndustry = this.expertVendorInfo.industry[
-            index
-          ].machineValue;
-          break;
-        case constants.industries.CARRIER:
-          this.vendorDialogName = constants.industries.CARRIER;
-          this.showVendorDialogFilters = false;
-          this.vendorDialogFilterByIndustry = constants.industries.CARRIER;
-          break;
-        case constants.industries.VENDOR:
-          this.vendorDialogName = constants.industries.VENDOR;
-          this.showVendorDialogFilters = true;
-          this.vendorDialogFilterByIndustry = '';
-          break;
-        default:
-          this.vendorDialogName = name;
-      }
-      this.vendorsListDialog = true;
-    }
+    validateEmail
   }
 };
 </script>
