@@ -66,6 +66,7 @@ export default {
         case 'Company Personnel':
           break;
         case 'Insurer & Policy':
+          this.$router.push('/insurance-policy');
           break;
         case 'Mortgages and Liens':
           break;
