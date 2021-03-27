@@ -55,7 +55,6 @@
               ></q-icon>
             </div>
           </div>
-          <!-- {{ lossInfo.attributes }} -->
 
           <div class="form-heading">Address :</div>
           <div>
@@ -165,19 +164,6 @@ export default {
         femaClaimToggle: false,
         isStateOfEmergencyToggle: false,
         isTheHomeHabitable: false,
-        lossAddressDetails: {
-          houseNumber: '',
-          addressCountry: '',
-          addressRegion: '',
-          addressLocality: '',
-          postalCode: '',
-          streetAddress: '',
-          postOfficeBoxNumber: '4',
-          dropBox: {
-            info: '',
-            isPresent: false
-          }
-        },
 
         repairReplaceRadio: '',
         serialNumber: '',
@@ -265,8 +251,6 @@ export default {
 
     //This is For Prefilling Values in Loss Info Form
 
-    this.lossDetails.lossAddressDetails = this.lossInfo.attributes.address;
-
     this.lossDetails.lossAddressName = this.lossInfo.attributes.lossAddressName;
     this.lossDetails.causeOfLoss.id = this.lossInfo.attributes.cause.id;
     this.lossDetails.causeOfLoss.value = this.lossInfo.attributes.cause.value;
@@ -309,28 +293,22 @@ export default {
         const payload = {
           id: this.selectedClaimId,
 
-          lossInfo: {
-            address: {
-              ...this.lossInfo.lossAddressDetails
-            },
+          propertyType: {
+            ...this.lossInfo.property
+          },
+          propertyDesc: this.lossInfo.propertyDescription,
+          claimReason: {
+            ...this.lossInfo.reasonClaim
+          },
+          date: dateToSend(this.lossInfo.dateOfLoss),
+          cause: this.lossInfo.causeOfLoss ? this.lossInfo.causeOfLoss : null,
+          deadlineDate: dateToSend(this.lossInfo.deadlineDate),
+          recovDDDate: dateToSend(this.lossInfo.recovDeadline),
 
-            propertyType: {
-              ...this.lossInfo.property
-            },
-            propertyDesc: this.lossInfo.propertyDescription,
-            claimReason: {
-              ...this.lossInfo.reasonClaim
-            },
-            date: dateToSend(this.lossInfo.dateOfLoss),
-            cause: this.lossInfo.causeOfLoss ? this.lossInfo.causeOfLoss : null,
-            deadlineDate: dateToSend(this.lossInfo.deadlineDate),
-            recovDDDate: dateToSend(this.lossInfo.recovDeadline),
+          desc: this.lossInfo.descriptionDwelling,
 
-            desc: this.lossInfo.descriptionDwelling,
-
-            serverity: {
-              ...this.lossInfo.severityOfClaimType
-            }
+          serverity: {
+            ...this.lossInfo.severityOfClaimType
           }
         };
 
