@@ -162,9 +162,15 @@ const routes = [
       },
       {
         path: 'note-details',
-        name: 'Notes ',
+        name: 'Notes',
         caseSensitive: true,
         component: () => import('pages/Notes.vue')
+      },
+      {
+        path: 'company-personnel',
+        name: 'Company Personnel',
+        caseSensitive: true,
+        component: () => import('src/pages/Personnel.vue')
       },
       {
         path: 'add-client',
