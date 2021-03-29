@@ -115,7 +115,7 @@
                           <div class="col">
                             <q-select
                               dense
-                              class="full-width q-py-sm"
+                              class="full-width q-py-sm input-extra-padding"
                               outlined
                               options-dense
                               behavior="menu"
@@ -127,7 +127,6 @@
                               @input="claimActionItem(ClaimType)"
                               map-options
                               emit-value
-                              class="input-extra-padding"
                             />
                           </div>
                         </div>
@@ -232,7 +231,7 @@
             <div class="col-3 q-ml-lg" v-if="actions.createWhen.type">
               <q-select
                 dense
-                class="col-3"
+                class="col-3 input-extra-padding"
                 outlined
                 options-dense
                 behavior="menu"
@@ -242,7 +241,6 @@
                 emit-value
                 :options="actionReason[indexOfActionReason].additionalReasons"
                 label="Sub-option"
-                class="input-extra-padding"
               />
             </div>
           </div>
@@ -347,7 +345,7 @@
             >
               <q-select
                 dense
-                class="col-3"
+                class="col-3 input-extra-padding"
                 outlined
                 v-model="actions.actions.onComplete[index].task[0]"
                 behavior="menu"
@@ -367,7 +365,6 @@
                 map-options
                 emit-value
                 options-dense
-                class="input-extra-padding"
               />
             </div>
             <div
@@ -444,7 +441,7 @@
             >
               <q-select
                 dense
-                class="col-3"
+                class="col-3 input-extra-padding"
                 outlined
                 options-dense
                 v-model="actions.actions.onOverdue[index].task[0]"
@@ -462,7 +459,6 @@
                 "
                 emit-value
                 label="Sub-option"
-                class="input-extra-padding"
               />
             </div>
 
@@ -472,7 +468,7 @@
             >
               <q-select
                 dense
-                class="col-3"
+                class="col-3 input-extra-padding"
                 outlined
                 options-dense
                 v-model="actions.actions.onOverdue[index].task[1]"
@@ -486,7 +482,6 @@
                     .subTypes
                 "
                 label="Sub-option-option"
-                class="input-extra-padding"
               />
             </div>
 

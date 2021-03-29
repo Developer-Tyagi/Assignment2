@@ -76,10 +76,12 @@
               </div>
             </div>
             <q-input
+              dense
               v-model="lossInfo.mortgageDetails[0].loanNumber"
               label="Loan Number"
             />
             <q-input
+              dense
               v-model="lossInfo.mortgageDetails[0].accountNumber"
               label="Account Number"
             /><br />
@@ -118,10 +120,12 @@
                 </div>
               </div>
               <q-input
+                dense
                 v-model="lossInfo.mortgageDetails[1].loanNumber"
                 label="Loan Number"
               />
               <q-input
+                dense
                 v-model="lossInfo.mortgageDetails[1].accountNumber"
                 label="Account Number"
               /><br />
@@ -152,6 +156,9 @@
 
     <!-- Loss Address Name Dropdown -->
     <q-select
+      dense
+      options-dense
+      behavior="menu"
       class="required"
       v-model="lossInfo.lossAddressNameDropdown"
       label="Loss Address Name"
@@ -161,6 +168,7 @@
     />
 
     <q-input
+      dense
       class="required"
       v-model="lossInfo.lossAddressName"
       v-if="lossAddressNameOptions == 'Others'"
@@ -169,9 +177,7 @@
       :rules="[val => (val && val.length > 0) || 'This is a required field']"
     ></q-input>
     <div class="row">
-      <p class="q-my-auto form-heading">
-        Loss Address Same As Client's?
-      </p>
+      <p class="q-my-auto form-heading">Loss Address Same As Client's?</p>
       <q-toggle
         class="q-ml-auto"
         v-model="lossInfo.isLossAddressSameAsClientToggle"
@@ -186,6 +192,8 @@
       :isAsteriskMark="true"
     />
     <q-select
+      dense
+      behavior="menu"
       class="required"
       v-model="lossInfo.property.id"
       option-value="id"
@@ -201,10 +209,13 @@
       ]"
     />
     <q-input
+      dense
       v-model="lossInfo.propertyDescription"
       label="Description of Property"
     />
     <q-select
+      dense
+      behavior="menu"
       class="required"
       v-model="lossInfo.reasonClaim.id"
       option-value="id"
@@ -223,6 +234,7 @@
 
     <div class="full-width">
       <q-input
+        dense
         v-model="lossInfo.dateOfLoss"
         mask="##/##/####"
         label="MM/DD/YYYY"
@@ -248,6 +260,9 @@
     </div>
 
     <q-select
+      class="input-extra-padding"
+      dense
+      behavior="menu"
       v-model="lossInfo.causeOfLoss.id"
       option-value="id"
       option-label="name"
@@ -262,6 +277,7 @@
 
     <div class="full-width">
       <q-input
+        dense
         v-model="lossInfo.deadlineDate"
         mask="##/##/####"
         label="MM/DD/YYYY"
@@ -290,6 +306,7 @@
 
     <div class="full-width">
       <q-input
+        dense
         v-model="lossInfo.recovDeadline"
         mask="##/##/####"
         label="MM/DD/YYYY"
@@ -329,10 +346,12 @@
       <q-toggle class="q-ml-auto" v-model="lossInfo.isStateOfEmergencyToggle" />
     </div>
     <div v-if="lossInfo.isStateOfEmergencyToggle">
-      <q-input v-model="lossInfo.nameOfEmergency" label="Related to" />
+      <q-input dense v-model="lossInfo.nameOfEmergency" label="Related to" />
     </div>
     <q-select
       class="required"
+      dense
+      behavior="menu"
       v-model="lossInfo.severityOfClaimType.id"
       option-value="id"
       option-label="name"
@@ -443,13 +462,15 @@
           <q-card-section>
             <div class="q-page bg-white">
               <div class="full-width" style="margin-top: 30px">
-                <q-input v-model="lossInfo.OSDamageName" label="Name" />
+                <q-input dense v-model="lossInfo.OSDamageName" label="Name" />
                 <q-input
+                  dense
                   v-model="lossInfo.OSDamageDescription"
                   label="Description"
                   autogrow
                 />
                 <q-input
+                  dense
                   mask="#.#"
                   type="number"
                   prefix="$"
@@ -472,9 +493,7 @@
       </q-dialog>
     </div>
     <div class="row">
-      <p class="q-mt-md form-heading">
-        Is there damage to personal property?
-      </p>
+      <p class="q-mt-md form-heading">Is there damage to personal property?</p>
       <q-toggle
         class="q-ml-auto"
         v-model="lossInfo.isThereDamageToPersonalPropertyToggle"
@@ -567,19 +586,22 @@
           <q-card-section>
             <div class="q-page bg-white">
               <div class="full-width" style="margin-top: 30px">
-                <q-input v-model="lossInfo.PPDamageName" label="Name" />
+                <q-input dense v-model="lossInfo.PPDamageName" label="Name" />
                 <q-input
+                  dense
                   v-model="lossInfo.PPDamageDescription"
                   label="Description"
                   autogrow
                 />
                 <q-input
+                  dense
                   type="number"
                   v-model.number="lossInfo.PPDamagedItemCost"
                   label="Item Cost"
                   prefix="$"
                 />
                 <q-input
+                  dense
                   v-model="lossInfo.serialNumber"
                   label="Serial Number"
                 />
@@ -632,9 +654,7 @@
     <!-- Mortgage Details -->
 
     <div class="row">
-      <p class="q-my-auto form-heading">
-        Is there a mortgage on the home?
-      </p>
+      <p class="q-my-auto form-heading">Is there a mortgage on the home?</p>
       <q-toggle
         class="q-ml-auto"
         v-model="lossInfo.isMortgageHomeToggle"

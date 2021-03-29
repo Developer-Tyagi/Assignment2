@@ -4,6 +4,7 @@
     <div class="form-heading q-mt-lg">Personnel Role</div>
 
     <q-select
+      dense
       v-model="publicAdjustorInfo.personnel[0].id"
       :options="roleTypes"
       option-value="id"
@@ -13,11 +14,12 @@
       options-dense
       @input="setTypes(roleTypes, publicAdjustorInfo.personnel[0], 0)"
       label="Select Role"
-    ></q-select>
+    />
 
     <div class="form-heading q-mt-lg">Person Party</div>
 
     <q-select
+      dense
       v-model="publicAdjustorInfo.personParty1"
       :options="userRoles"
       :disable="publicAdjustorInfo.isFieldDisable1"
@@ -29,10 +31,11 @@
       options-dense
       emit-value
       map-options
-    ></q-select>
+    />
 
     <div class="form-heading q-mt-lg">Personnel Role</div>
     <q-select
+      dense
       v-model="publicAdjustorInfo.personnel[1].id"
       :options="roleTypes"
       option-value="id"
@@ -42,9 +45,10 @@
       options-dense
       @input="setTypes(roleTypes, publicAdjustorInfo.personnel[1], 1)"
       label="Select Role"
-    ></q-select>
+    />
     <div class="form-heading q-mt-lg">Person/Party</div>
     <q-select
+      dense
       v-model="publicAdjustorInfo.personParty2"
       :options="userRoles"
       :disable="publicAdjustorInfo.isFieldDisable2"
@@ -56,9 +60,10 @@
       options-dense
       emit-value
       map-options
-    ></q-select>
+    />
     <div class="form-heading q-mt-lg">Personnel Role</div>
     <q-select
+      dense
       v-model="publicAdjustorInfo.personnel[2].id"
       :options="roleTypes"
       option-value="id"
@@ -68,10 +73,11 @@
       options-dense
       @input="setTypes(roleTypes, publicAdjustorInfo.personnel[2], 2)"
       label="Select Role"
-    ></q-select>
+    />
     <div class="form-heading q-mt-lg">Person/Party</div>
 
     <q-select
+      dense
       v-model="publicAdjustorInfo.personParty3"
       :options="userRoles"
       :disable="publicAdjustorInfo.isFieldDisable3"
@@ -83,9 +89,10 @@
       options-dense
       emit-value
       map-options
-    ></q-select>
+    />
     <div class="form-heading q-mt-lg">Personnel Role</div>
     <q-select
+      dense
       v-model="publicAdjustorInfo.personnel[3].id"
       :options="roleTypes"
       option-value="id"
@@ -95,7 +102,7 @@
       options-dense
       @input="setTypes(roleTypes, publicAdjustorInfo.personnel[3], 3)"
       label="Select Role"
-    ></q-select>
+    />
     <div class="form-heading q-mt-lg">Person/Party</div>
     <q-select
       v-model="publicAdjustorInfo.personParty4"
@@ -109,8 +116,7 @@
       options-dense
       emit-value
       map-options
-    ></q-select
-    ><br />
+    />
 
     <span class="form-heading"
       >Special Instructions, Comments Or Other Notes</span
@@ -122,7 +128,7 @@
         class="full-width"
         v-model="publicAdjustorInfo.notes"
         style="resize: none"
-      ></textarea>
+      />
     </div>
   </div>
 </template>

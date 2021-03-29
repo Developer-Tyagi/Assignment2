@@ -185,7 +185,7 @@
               <div class="row justify-between">
                 <q-select
                   dense
-                  class="col-5"
+                  class="col-5 input-extra-padding"
                   v-model="contactInfo.phoneNumber[0].type"
                   :options="contactTypes"
                   option-value="machineValue"
@@ -194,7 +194,6 @@
                   emit-value
                   map-options
                   options-dense
-                  class="input-extra-padding"
                 />
                 <q-input
                   dense

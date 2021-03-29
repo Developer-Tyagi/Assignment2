@@ -28,7 +28,7 @@
 
           <q-select
             dense
-            class="full-width"
+            class="full-width input-extra-padding"
             v-model="clientSelected"
             use-input
             input-debounce="0"
@@ -41,7 +41,6 @@
             options-dense
             emit-value
             map-options
-            class="input-extra-padding"
           >
             <template v-slot:no-option>
               <q-item>

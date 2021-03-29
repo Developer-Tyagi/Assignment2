@@ -81,9 +81,7 @@
       >
         <template v-slot:no-option>
           <q-item>
-            <q-item-section class="text-black">
-              No results
-            </q-item-section>
+            <q-item-section class="text-black"> No results </q-item-section>
           </q-item>
         </template>
       </q-select>
@@ -92,7 +90,9 @@
         v-model="industryType.value"
         v-if="expertVendorInfo.industry[index].value == 'Others'"
         label="Enter New Industry Type"
-      ></q-input>
+        dense
+        class="input-extra-padding"
+      />
       <q-btn
         class="q-mt-md"
         v-if="expertVendorInfo.industry[index].value == 'Others'"
@@ -134,6 +134,7 @@
       />
     </div>
     <span class="form-heading">Notes</span>
+
     <div>
       <textarea
         rows="5"
@@ -141,9 +142,9 @@
         class="full-width"
         v-model="expertVendorInfo.notes"
         style="resize: none"
-      ></textarea>
+      />
     </div>
-    <br />
+
     <div>
       <span class="form-heading">Internal Notes</span>
       <textarea
@@ -152,7 +153,7 @@
         class="full-width"
         v-model="expertVendorInfo.internalNotes"
         style="resize: none"
-      ></textarea>
+      />
     </div>
   </div>
 </template>
