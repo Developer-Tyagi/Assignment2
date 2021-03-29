@@ -24,6 +24,7 @@ export async function getLossInfo({ commit, dispatch }, id) {
 
   try {
     const { data } = await request.get(`/claims/${id}/lossinfo`);
+
     commit('setLossInfo', data);
     dispatch('setLoading', false);
   } catch (e) {
@@ -43,7 +44,7 @@ export async function updateLossInfo({ dispatch, state }, payload) {
   try {
     const { data } = await request.post(
       `/claims/${payload.id}/lossinfo`,
-      buildApiData('claims', payload)
+      buildApiData('claimloss', payload)
     );
 
     dispatch('setLoading', false);

@@ -185,7 +185,6 @@
     </div>
 
     <div v-if="isAddressRequired">
-      {{ isAddressRequired }}67
       <AutoCompleteAddress
         :address="lossInfo.lossAddressDetails"
         :isDropBoxEnable="true"

@@ -43,7 +43,7 @@
 
         <q-card class="q-pa-md q-mt-md full-width">
           <div class="row">
-            <div class="form-heading ">Loss Info</div>
+            <div class="form-heading  ">Loss Info</div>
             <div class="row ">
               <div class="col-10"></div>
               <q-icon
@@ -57,76 +57,84 @@
           </div>
 
           <div class="form-heading">Address :</div>
+
           <div>
             {{
-              lossInfo.attributes.address.streetAddress
-                ? lossInfo.attributes.address.streetAddress
+              lossInfo.attributes.lossInfo.address.streetAddress
+                ? lossInfo.attributes.lossInfo.address.streetAddress
                 : '-'
             }}
           </div>
+
           <div>
             {{
-              lossInfo.attributes.address.addressLocality
-                ? lossInfo.attributes.address.addressLocality
+              lossInfo.attributes.lossInfo.address.addressLocality
+                ? lossInfo.attributes.lossInfo.address.addressLocality
                 : '-'
             }},
             {{
-              lossInfo.attributes.address.houseNumber
-                ? lossInfo.attributes.address.houseNumber
+              lossInfo.attributes.lossInfo.address.houseNumber
+                ? lossInfo.attributes.lossInfo.address.houseNumber
                 : '-'
             }}
           </div>
           <div>
-            {{ lossInfo.attributes.address.addressRegion }},
-            {{ lossInfo.attributes.address.addressCountry }}
+            {{ lossInfo.attributes.lossInfo.address.addressRegion }},
+            {{ lossInfo.attributes.lossInfo.address.addressCountry }}
           </div>
 
           <div class="form-heading  ">Property Type :</div>
 
           <div>
-            {{ lossInfo.attributes.propertyType.value }}
+            {{ lossInfo.attributes.lossInfo.propertyType.value }}
           </div>
 
           <div class="form-heading ">Property Description :</div>
 
           {{
-            lossInfo.attributes.propertyDesc
-              ? lossInfo.attributes.propertyDesc
+            lossInfo.attributes.lossInfo.propertyDesc
+              ? lossInfo.attributes.lossInfo.propertyDesc
               : '-'
           }}
           <div class="form-heading ">Claim Reason:</div>
 
           {{
-            lossInfo.attributes.claimReason.value
-              ? lossInfo.attributes.claimReason.value
+            lossInfo.attributes.lossInfo.claimReason.value
+              ? lossInfo.attributes.lossInfo.claimReason.value
               : '-'
           }}
-          <div class="form-heading ">Loss Cause:</div>
+          <div class="form-heading ">Serverity:</div>
 
-          <div>
-            {{
-              lossInfo.attributes.cause.value
-                ? lossInfo.attributes.cause.value
-                : '-'
-            }}
-          </div>
+          {{
+            lossInfo.attributes.lossInfo.serverity.value
+              ? lossInfo.attributes.lossInfo.serverity.value
+              : '-'
+          }}
+          <div class="form-heading ">Cause of Loss:</div>
+
+          {{
+            lossInfo.attributes.lossInfo.cause
+              ? lossInfo.attributes.lossInfo.cause.value
+              : '-'
+          }}
+
           <div class="form-heading ">Date of Loss:</div>
           <div>
-            {{ lossInfo.attributes.dateOfLoss | moment('MM/DD/YYYY') }}
+            {{ lossInfo.attributes.lossInfo.dateOfLoss | moment('MM/DD/YYYY') }}
           </div>
           <div class="form-heading ">Deadline Date:</div>
           <div>
-            {{ lossInfo.attributes.deadlineDate | moment('MM/DD/YYYY') }}
+            {{
+              lossInfo.attributes.lossInfo.deadlineDate | moment('MM/DD/YYYY')
+            }}
           </div>
 
           <div class="form-heading ">Recovery Date:</div>
           <div>
-            {{ lossInfo.attributes.recovDDDate | moment('MM/DD/YYYY') }}
+            {{
+              lossInfo.attributes.lossInfo.recovDDDate | moment('MM/DD/YYYY')
+            }}
           </div>
-
-          <div class="form-heading ">lossAddressName:</div>
-
-          <div>{{ lossInfo.attributes.lossAddressName }}</div>
         </q-card>
       </div>
     </div>
@@ -195,6 +203,7 @@ export default {
           id: '',
           machineValue: ''
         },
+
         insuranceAdjustorName: '',
         whereDidTheLossOccur: '',
         other: '',
@@ -225,11 +234,7 @@ export default {
       'lossCauses',
       'claimSeverity'
     ]),
-    mounted() {
-      if (!this.selectedClaimId) {
-        this.$router.push('/clients');
-      }
-    },
+
     formatDate(value) {
       if (value) {
         return moment(String(value)).format('MM/DD/YYYY');
@@ -237,6 +242,9 @@ export default {
     }
   },
   created() {
+    if (!this.selectedClaimId) {
+      this.$router.push('/clients');
+    }
     this.getLossInfo(this.selectedClaimId);
     this.setSelectedClaimId(this.selectedClaimId);
 
@@ -251,18 +259,15 @@ export default {
 
     //This is For Prefilling Values in Loss Info Form
 
-    this.lossDetails.lossAddressName = this.lossInfo.attributes.lossAddressName;
-    this.lossDetails.causeOfLoss.id = this.lossInfo.attributes.cause.id;
-    this.lossDetails.causeOfLoss.value = this.lossInfo.attributes.cause.value;
-    this.lossDetails.causeOfLoss.machineValue = this.lossInfo.attributes.cause.machineValue;
-
-    this.lossDetails.property = this.lossInfo.attributes.propertyType;
-
-    this.lossDetails.reasonClaim = this.lossInfo.attributes.claimReason;
-    this.lossDetails.deadlineDate = this.lossInfo.attributes.deadlineDate;
-    this.lossDetails.recovDDDate = this.lossInfo.attributes.recovDDDate;
-    this.lossDetails.severityOfClaimType = this.lossInfo.attributes.serverity;
-    this.lossDetails.propertyDescription = this.lossInfo.attributes.propertyDesc;
+    this.lossDetails.property = this.lossInfo.attributes.lossInfo.propertyType;
+    this.lossDetails.severityOfClaimType = this.lossInfo.attributes.lossInfo.serverity;
+    this.lossDetails.reasonClaim = this.lossInfo.attributes.lossInfo.claimReason;
+    this.lossDetails.deadlineDate = this.lossInfo.attributes.lossInfo.deadlineDate;
+    this.lossDetails.recovDDDate = this.lossInfo.attributes.lossInfo.recovDDDate;
+    this.lossDetails.isTheHomeHabitable = this.lossInfo.attributes.lossInfo.isHabitable;
+    this.lossDetails.femaClaimToggle = this.lossInfo.attributes.lossInfo.isFEMA;
+    this.lossDetails.isStateOfEmergencyToggle = this.lossInfo.attributes.lossInfo.isEmergency;
+    this.lossDetails.causeOfLoss = this.lossInfo.attributes.lossInfo.cause;
   },
   methods: {
     ...mapActions([
@@ -292,23 +297,34 @@ export default {
       if (success == true) {
         const payload = {
           id: this.selectedClaimId,
-
-          propertyType: {
-            ...this.lossInfo.property
-          },
-          propertyDesc: this.lossInfo.propertyDescription,
-          claimReason: {
-            ...this.lossInfo.reasonClaim
-          },
-          date: dateToSend(this.lossInfo.dateOfLoss),
-          cause: this.lossInfo.causeOfLoss ? this.lossInfo.causeOfLoss : null,
-          deadlineDate: dateToSend(this.lossInfo.deadlineDate),
-          recovDDDate: dateToSend(this.lossInfo.recovDeadline),
-
-          desc: this.lossInfo.descriptionDwelling,
-
-          serverity: {
-            ...this.lossInfo.severityOfClaimType
+          lossInfo: {
+            address: {
+              addressCountry: 'USA',
+              addressLocality: 'Mountain View',
+              addressRegion: 'California',
+              postalCode: '94043',
+              streetAddress: '1600 Amphitheatre Pkwy',
+              dropBox: {
+                info: 'DropBox info',
+                isPresent: false
+              },
+              houseNumber: '1221'
+            },
+            isNewAddress: false,
+            lossAddressName: this.lossDetails.lossAddressName,
+            addressID: '605c5f3dd762a4813d48cd91',
+            propertyType: this.lossDetails.property,
+            propertyDesc: this.lossDetails.propertyDescription,
+            claimReason: this.lossDetails.reasonClaim,
+            date: dateToSend(this.lossDetails.dateOfLoss),
+            cause: this.lossDetails.causeOfLoss.value
+              ? this.lossDetails.causeOfLoss
+              : null,
+            deadlineDate: dateToSend(this.lossDetails.deadlineDate),
+            recovDDDate: dateToSend(this.lossDetails.recovDeadline),
+            isFEMA: this.lossDetails.femaClaimToggle,
+            isHabitable: this.lossDetails.isTheHomeHabitable,
+            serverity: this.lossDetails.severityOfClaimType
           }
         };
 
@@ -316,7 +332,6 @@ export default {
         this.lossInfoDialog = false;
         this.successMessage();
         this.getLossInfo(this.selectedClaimId);
-
         this.$router.push('/claim-details');
       }
     }
