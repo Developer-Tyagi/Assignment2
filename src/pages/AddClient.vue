@@ -451,7 +451,13 @@
         />
         <div class="mobile-container-page-without-search">
           <q-form ref="lossInfoForm" class="form-height">
-            <LossInfo :lossInfo="lossInfo" @lossAddressSame="lossAddressSame" />
+            <LossInfo
+              :lossInfo="lossInfo"
+              @lossAddressSame="lossAddressSame"
+              :isMailingAddressEnable="true"
+              :lossAddressSameAsClient="true"
+              :isAddressRequired="true"
+            />
           </q-form>
 
           <q-btn
