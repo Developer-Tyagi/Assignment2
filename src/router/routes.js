@@ -167,6 +167,12 @@ const routes = [
         component: () => import('pages/Notes.vue')
       },
       {
+        path: 'activity-log',
+        name: 'Activity Log And Message ',
+        caseSensitive: true,
+        component: () => import('pages/ActivityLog.vue')
+      },
+      {
         path: 'insurance-policy',
         name: 'insurancy policy',
         caseSensitive: true,
