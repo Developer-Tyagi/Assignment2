@@ -72,6 +72,7 @@ export default {
         case 'Files':
           break;
         case 'Notes':
+          this.$router.push('/claim-notes');
           break;
         case 'MatterPort':
           break;
