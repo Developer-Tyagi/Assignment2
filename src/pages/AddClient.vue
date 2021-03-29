@@ -246,12 +246,17 @@
               <q-toggle
                 class="q-ml-auto"
                 v-model="addAditionalPhoneNumberToggle"
+                @input="onaddAditionalPhoneNumberToggle"
               />
             </div>
             <div v-if="addAditionalPhoneNumberToggle">
-              <div class="row justify-between">
+              <div
+                class="row justify-between"
+                v-for="(addPhone, index) in phoneNumber"
+                v-if="index >= 0"
+              >
                 <q-select
-                  v-model="addAditionalPhoneNumber.type1"
+                  v-model="phoneNumber[index].type"
                   class="required col-5"
                   label="Type"
                   :options="contactTypes"
@@ -266,8 +271,8 @@
                   ]"
                 />
                 <q-input
-                  v-model.number="addAditionalPhoneNumber.phone2"
-                  label="Phone2"
+                  v-model.number="phoneNumber[index].number"
+                  label="Phone"
                   class="required col-6"
                   mask="(###) ###-####"
                   lazy-rules
@@ -278,33 +283,23 @@
                   ]"
                 />
               </div>
-              <div class="row justify-between">
-                <q-select
-                  class="required col-5"
-                  v-model="addAditionalPhoneNumber.type2"
-                  label="Type"
-                  :options="contactTypes"
-                  option-value="machineValue"
-                  option-label="name"
-                  map-options
-                  emit-value
-                  options-dense
-                  lazy-rules
-                  :rules="[
-                    val => (val && val.length > 0) || 'Please select phone type'
-                  ]"
+              <div class="row">
+                <q-btn
+                  outline
+                  class="q-mt-sm"
+                  @click="addAnotherContact"
+                  color="primary"
+                  label="Add"
+                  style="margin-right: auto"
                 />
-                <q-input
-                  class="required col-6"
-                  v-model.number="addAditionalPhoneNumber.phone3"
-                  label="Phone3"
-                  mask="(###) ###-####"
-                  lazy-rules
-                  :rules="[
-                    val =>
-                      (val && val.length == 14) ||
-                      'Please enter the phone number'
-                  ]"
+
+                <q-btn
+                  v-if="phoneNumber.length > 1"
+                  outline
+                  @click="RemoveAnotherContact"
+                  class="q-mt-sm"
+                  color="primary"
+                  label="Remove"
                 />
               </div>
             </div>
@@ -451,7 +446,13 @@
         />
         <div class="mobile-container-page-without-search">
           <q-form ref="lossInfoForm" class="form-height">
-            <LossInfo :lossInfo="lossInfo" @lossAddressSame="lossAddressSame" />
+            <LossInfo
+              :lossInfo="lossInfo"
+              @lossAddressSame="lossAddressSame"
+              :isMailingAddressEnable="true"
+              :lossAddressSameAsClient="true"
+              :isAddressRequired="true"
+            />
           </q-form>
 
           <q-btn
@@ -792,6 +793,12 @@ export default {
         machineValue: '',
         email: ''
       },
+      phoneNumber: [
+        {
+          type: '',
+          number: ''
+        }
+      ],
       addAditionalPhoneNumber: {
         phone2: '',
         phone3: '',
@@ -1112,6 +1119,36 @@ export default {
       'addIndustry'
     ]),
     ...mapMutations(['setSelectedLead']),
+    // For adding multiple Contact Numbers in ClientInfo
+    addAnotherContact() {
+      let len = this.phoneNumber.length;
+      if (this.phoneNumber[len - 1].number) {
+        this.phoneNumber.push({
+          type: '',
+          number: ''
+        });
+      } else {
+        this.$q.notify({
+          message: 'Please fill the above contact first',
+          position: 'top',
+          type: 'negative'
+        });
+      }
+    },
+    RemoveAnotherContact() {
+      this.phoneNumber.pop();
+    },
+
+    onaddAditionalPhoneNumberToggle() {
+      if (this.addAditionalPhoneNumberToggle == false) {
+        this.phoneNumber = [
+          {
+            type: '',
+            number: ''
+          }
+        ];
+      }
+    },
 
     lossAddressSame() {
       if (this.lossInfo.isLossAddressSameAsClientToggle) {
@@ -1347,17 +1384,7 @@ export default {
           mailingAddress: {
             ...this.mailingAddressDetails
           },
-          phoneNumbers: [
-            {
-              type: this.addAditionalPhoneNumber.type1,
-              number: this.addAditionalPhoneNumber.phone2
-            },
-            {
-              type: this.addAditionalPhoneNumber.type2,
-
-              number: this.addAditionalPhoneNumber.phone3
-            }
-          ],
+          phoneNumbers: this.phoneNumber,
           tenantInfo: {
             name: '',
             phoneNumber: {
