@@ -20,6 +20,7 @@ export async function getClaims({ commit, dispatch }, params) {
 export async function getPolicy({ commit, dispatch }, id) {
   dispatch('setLoading', true);
   const { data } = await request.get(`/claims/${id}/policy`);
+
   try {
     commit('setPolicy', data);
     dispatch('setLoading', false);
@@ -37,7 +38,7 @@ export async function editInsurancePolicy({ dispatch, state }, payload) {
   try {
     const { data } = await request.post(
       `claims/${payload.id}/policy`,
-      buildApiData('claims', payload.data)
+      buildApiData('claimpolicy', payload.data)
     );
     dispatch('setLoading', false);
     return true;

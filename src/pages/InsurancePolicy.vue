@@ -301,61 +301,65 @@ export default {
         const payload = {
           id: this.selectedClaimId,
           data: {
-            carrier: {
-              id: this.insuranceDetails.carrierId,
-              value: this.insuranceDetails.carrierName
-            },
-            number: this.insuranceDetails.policyNumber,
-            isClaimFiled: this.hasClaimBeenFilledToggle,
-            isForcedPlaced: this.isThisIsForcedPlacedPolicyToggle,
-            claimNumber: this.insuranceDetails.insuranceClaimNumber,
-            category: {
-              id: this.insuranceDetails.policyCategory.id,
-              value: this.insuranceDetails.policyCategory.value,
-              machineValue: this.insuranceDetails.policyCategory.machineValue
-            },
-            type: {
-              id: this.insuranceDetails.policy.id,
-              value: this.insuranceDetails.policy.value,
-              machineValue: this.insuranceDetails.policy.machineValue
-            },
+            policyInfo: {
+              carrier: {
+                id: this.insuranceDetails.carrierId,
+                value: this.insuranceDetails.carrierName
+              },
+              number: this.insuranceDetails.policyNumber,
+              isClaimFiled: this.hasClaimBeenFilledToggle,
+              isForcedPlaced: this.isThisIsForcedPlacedPolicyToggle,
+              claimNumber: this.insuranceDetails.insuranceClaimNumber,
+              category: {
+                id: this.insuranceDetails.policyCategory.id,
+                value: this.insuranceDetails.policyCategory.value,
+                machineValue: this.insuranceDetails.policyCategory.machineValue
+              },
+              type: {
+                id: this.insuranceDetails.policy.id,
+                value: this.insuranceDetails.policy.value,
+                machineValue: this.insuranceDetails.policy.machineValue
+              },
 
-            effectiveDate: dateToSend(
-              this.insuranceDetails.policyEffectiveDate
-            ),
-            expirationDate: dateToSend(this.insuranceDetails.policyExpireDate),
-            isClaimFiled: this.insuranceDetails.hasClaimBeenFilledToggle,
-            isForcedPlaced: this.insuranceDetails
-              .isThisIsForcedPlacedPolicyToggle,
-            limitCoverage: {
-              dwelling: this.insuranceDetails.dwellingLimitA
-                ? this.insuranceDetails.dwellingLimitA
+              effectiveDate: dateToSend(
+                this.insuranceDetails.policyEffectiveDate
+              ),
+              expirationDate: dateToSend(
+                this.insuranceDetails.policyExpireDate
+              ),
+              isClaimFiled: this.insuranceDetails.hasClaimBeenFilledToggle,
+              isForcedPlaced: this.insuranceDetails
+                .isThisIsForcedPlacedPolicyToggle,
+              limitCoverage: {
+                dwelling: this.insuranceDetails.dwellingLimitA
+                  ? this.insuranceDetails.dwellingLimitA
+                  : 0,
+                otherStructure: this.insuranceDetails.otherStructureB
+                  ? this.insuranceDetails.otherStructureB
+                  : 0,
+                content: this.insuranceDetails.contentsLimit
+                  ? this.insuranceDetails.contentsLimit
+                  : 0,
+                lossOfUse: this.insuranceDetails.lossOfUSD
+                  ? this.insuranceDetails.lossOfUSD
+                  : 0
+              },
+              deductibleAmount: this.insuranceDetails.deductible
+                ? this.insuranceDetails.deductible
                 : 0,
-              otherStructure: this.insuranceDetails.otherStructureB
-                ? this.insuranceDetails.otherStructureB
+              depreciation: this.insuranceDetails.deprecation
+                ? this.insuranceDetails.deprecation
                 : 0,
-              content: this.insuranceDetails.contentsLimit
-                ? this.insuranceDetails.contentsLimit
+              priorPayment: this.insuranceDetails.priorPayment
+                ? this.insuranceDetails.priorPayment
                 : 0,
-              lossOfUse: this.insuranceDetails.lossOfUSD
-                ? this.insuranceDetails.lossOfUSD
-                : 0
-            },
-            deductibleAmount: this.insuranceDetails.deductible
-              ? this.insuranceDetails.deductible
-              : 0,
-            depreciation: this.insuranceDetails.deprecation
-              ? this.insuranceDetails.deprecation
-              : 0,
-            priorPayment: this.insuranceDetails.priorPayment
-              ? this.insuranceDetails.priorPayment
-              : 0,
-            limitReason: this.insuranceDetails.reasonsOfLD,
-            declaration: {
-              isDeclared: true,
-              fileInfo: {
-                id: '',
-                value: ''
+              limitReason: this.insuranceDetails.reasonsOfLD,
+              declaration: {
+                isDeclared: true,
+                fileInfo: {
+                  id: '',
+                  value: ''
+                }
               }
             }
           }
