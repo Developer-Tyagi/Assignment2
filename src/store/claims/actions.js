@@ -22,24 +22,8 @@ export async function getClaims({ commit, dispatch }, params) {
 export async function getClaimNotes({ commit, dispatch }, id) {
   dispatch('setLoading', true);
   try {
-    // const { data } = await request.get(`/claims/${id}/notes`);
-    // console.log(data, 123);
-    const data = {
-      id: '60542e5ab32e591a23cf09b3',
-      type: 'claims',
-      attributes: {
-        notes: [
-          {
-            addedAt: '2021-03-24T11:32:34.39Z',
-            desc: 'This client is super'
-          },
-          {
-            addedAt: '2021-03-24T11:32:34.39Z',
-            desc: 'This client is super'
-          }
-        ]
-      }
-    };
+    const { data } = await request.get(`/claims/${id}/notes`);
+
     commit('setClaimNotes', data);
     dispatch('setLoading', false);
   } catch (e) {

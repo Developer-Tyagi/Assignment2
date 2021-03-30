@@ -69,7 +69,7 @@
           ><img src="~assets/add.svg"
         /></q-btn>
       </div>
-      {{ claimNotes }}
+
       <div class="mobile-container-page">
         <div v-if="claimNotes.attributes.notes">
           <div
@@ -150,12 +150,12 @@ export default {
     }
   },
   created() {
+    this.getClaimNotes(this.selectedClaimId);
     if (!this.selectedClaimId) {
       this.$router.push('/clients');
     }
     let index = this.claimNotes.attributes.notes.length;
     this.editNote = this.claimNotes.attributes.notes[index - 1].desc;
-    this.getClaimNotes(this.selectedClaimId);
   },
   methods: {
     ...mapActions(['getClaimNotes', 'addClaimNotes']),
