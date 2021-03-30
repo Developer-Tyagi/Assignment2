@@ -3,7 +3,13 @@
     <div class="q-pa-md height-without-header">
       <div class="row justify-between">
         <div class="col-4">
-          <q-input outlined v-model="searchText" dense placeholder="Search">
+          <q-input
+            dense
+            outlined
+            v-model="searchText"
+            dense
+            placeholder="Search"
+          >
             <template v-slot:append>
               <q-icon name="search" />
             </template>
@@ -112,14 +118,13 @@
         </q-bar>
         <q-form ref="addUserForm">
           <div class="q-mt-xs row full-width">
-            <div class="col-5 q-mx-md q-mt-lg required">
-              First Name
-            </div>
+            <div class="col-5 q-mx-md q-mt-lg required">First Name</div>
             <div class="col-4 q-mx-xl q-mt-lg">Last Name</div>
           </div>
           <div class="row q-mt-xs justify-between full-width">
             <div class="col-6">
               <q-input
+                dense
                 v-model="users.contact.fname"
                 class="q-mx-md"
                 style="width: 300px"
@@ -128,6 +133,7 @@
             </div>
             <div class="col-6">
               <q-input
+                dense
                 v-model="users.contact.lname"
                 class="q-mx-md"
                 style="width: 300px"
@@ -146,6 +152,7 @@
           <div class="row q-mt-xs justify-between full-width">
             <div class="col-6 q-mb-lg">
               <q-input
+                dense
                 v-model="users.email"
                 class="q-mx-md"
                 style="width: 300px"

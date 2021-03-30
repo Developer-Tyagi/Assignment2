@@ -42,6 +42,7 @@
         <div class="mobile-container-page-without-search">
           <q-form ref="clientForm" class="form-height">
             <q-select
+              dense
               class="required"
               v-model="client.id"
               option-value="id"
@@ -71,6 +72,7 @@
 
             <div v-if="primaryDetails.isOrganization">
               <q-input
+                dense
                 v-model="primaryDetails.organizationName"
                 label="Organization Name"
                 class="required"
@@ -94,6 +96,7 @@
 
             <span class="form-heading">Insured Details</span>
             <q-select
+              dense
               v-model="honorific1.id"
               class="required"
               :options="titles"
@@ -113,6 +116,7 @@
             />
 
             <q-input
+              dense
               class="required"
               v-model="insuredDetails.fname"
               lazy-rules
@@ -123,6 +127,7 @@
             />
 
             <q-input
+              dense
               v-model="insuredDetails.lname"
               class="required"
               lazy-rules
@@ -133,6 +138,7 @@
             />
             <div class="row justify-between">
               <q-select
+                dense
                 v-model="insuredDetails.type"
                 class="required col-5"
                 :options="contactTypes"
@@ -148,6 +154,7 @@
                 ]"
               />
               <q-input
+                dense
                 v-model.number="insuredDetails.phone"
                 class="required col-6"
                 label="Phone"
@@ -160,6 +167,7 @@
               />
             </div>
             <q-input
+              dense
               v-model="insuredDetails.email"
               class="required"
               label="Email"
@@ -179,6 +187,7 @@
               <span class="form-heading">Co-insured Details</span>
 
               <q-select
+                dense
                 v-model="honorific2.id"
                 class="required"
                 :options="titles"
@@ -195,10 +204,19 @@
                   val => (val && val.length > 0) || 'Please select the Title'
                 ]"
               />
-              <q-input v-model="coInsuredDetails.fname" label="First Name" />
-              <q-input v-model="coInsuredDetails.lname" label="Last Name" />
+              <q-input
+                dense
+                v-model="coInsuredDetails.fname"
+                label="First Name"
+              />
+              <q-input
+                dense
+                v-model="coInsuredDetails.lname"
+                label="Last Name"
+              />
               <div class="row justify-between">
                 <q-select
+                  dense
                   v-model="coInsuredDetails.type"
                   class="required col-5"
                   :options="contactTypes"
@@ -215,6 +233,7 @@
                   ]"
                 />
                 <q-input
+                  dense
                   v-model.number="coInsuredDetails.phone"
                   label="Phone"
                   class="required col-6"
@@ -228,6 +247,7 @@
                 />
               </div>
               <q-input
+                dense
                 v-model="coInsuredDetails.email"
                 input
                 type="email"
@@ -271,6 +291,7 @@
                   ]"
                 />
                 <q-input
+                  dense
                   v-model.number="phoneNumber[index].number"
                   label="Phone"
                   class="required col-6"
@@ -318,10 +339,15 @@
               <q-toggle class="q-ml-auto" v-model="tenantOccupiedToggle" />
             </div>
             <div v-if="tenantOccupiedToggle">
-              <q-input v-model="tenantOccupied.name" label="Tenant Name" />
+              <q-input
+                dense
+                v-model="tenantOccupied.name"
+                label="Tenant Name"
+              />
 
               <div class="row justify-between">
                 <q-select
+                  dense
                   class="required col-5"
                   v-model="tenantOccupied.type"
                   label="Type"
@@ -337,6 +363,7 @@
                   ]"
                 />
                 <q-input
+                  dense
                   class="required col-6"
                   v-model.number="tenantOccupied.phone"
                   label="Phone"
@@ -591,14 +618,18 @@
         <div class="mobile-container-page-without-search">
           <q-form ref="estimatingInfoForm" class="form-height">
             <q-select
+              dense
               v-model="officeTask.officeActionTypes"
               :options="officeActionRequiredTypes"
               label="Office Action Required"
+              class="input-extra-padding"
             />
             <q-select
+              dense
               v-model="officeTask.officeTaskTypes"
               :options="officeTaskRequiredTypes"
               label="Office Task Required"
+              class="input-extra-padding"
             /><br />
             <div class="row">
               <p>Additional Office Task Required</p>
@@ -781,10 +812,8 @@ export default {
         lname: '',
         phone: '',
         type: '',
-
         email: ''
       },
-
       coInsuredDetails: {
         fname: '',
         lname: '',
@@ -858,12 +887,10 @@ export default {
         ],
         lossAddressNameDropdown: 'Others',
         isSecondMortgageHome: false,
-
         wasAppifProvidedToTheInsuredToggle: false,
         doesTheOfficeNeedToProvidePpifToTheInsuredToggle: false,
         PPdamagedItemsDailog: false,
         ppDamagedItems: [],
-
         damagedItemsDailog: false,
         osDamagedItems: [],
         isDamageOSToggle: false,
