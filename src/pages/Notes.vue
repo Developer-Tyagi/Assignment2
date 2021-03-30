@@ -34,7 +34,7 @@
     </q-dialog>
     <div>
       <div class="actions-div">
-        <q-separator vertical inset></q-separator>
+        <q-separator vertical></q-separator>
         <q-btn @click="addNote" flat class="q-ml-auto"
           ><img src="~assets/add.svg"
         /></q-btn>

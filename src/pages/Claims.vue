@@ -23,18 +23,18 @@
         <div class="q-ml-auto row q-pr-md" @click="filterDialog = true">
           <img src="~assets/filter.svg" />
         </div>
-        <q-separator vertical inset></q-separator>
+        <q-separator vertical></q-separator>
         <q-btn @click="addClaim" flat><img src="~assets/add.svg"/></q-btn>
       </div>
       <div class="mobile-container-page">
-        <div class="clients-list q-ma-sm " v-if="claims.length">
+        <div class="clients-list q-ma-sm" v-if="claims.length">
           <div
-            class="clients-list "
+            class="clients-list"
             v-for="(claim, index) in claims"
             :key="claim.id"
           >
             <div class="client-list-item">
-              <div class="row form-heading ">
+              <div class="row form-heading">
                 {{ claim.attributes.client.fname }}
                 {{ claim.attributes.client.lname }}
                 <span class="q-ml-auto">
@@ -61,9 +61,7 @@
               <br />
 
               <div class="row q-pt-xs">
-                <span>
-                  Status:
-                </span>
+                <span> Status: </span>
                 <span class="text-bold q-ml-xs"> Open</span>
                 <q-rating
                   v-model="ratingModel"
@@ -76,8 +74,8 @@
             </div>
           </div>
         </div>
-        <div v-else class="full-height full-width column ">
-          <div class=" column absolute-center">
+        <div v-else class="full-height full-width column">
+          <div class="column absolute-center">
             <div style="color: #666666,align-items: center">
               You haven't added a Claim yet.
             </div>
