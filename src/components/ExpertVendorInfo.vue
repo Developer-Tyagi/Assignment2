@@ -20,7 +20,6 @@
     </q-dialog>
 
     <!-- Vendor List Dialog -->
-
     <q-dialog
       v-model="vendorsListDialog"
       persistent
