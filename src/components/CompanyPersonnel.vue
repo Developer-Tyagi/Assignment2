@@ -46,8 +46,7 @@
       <q-input
         class="q-ml-auto full-width"
         mask="#.#"
-        type="number"
-        v-model.number="companyPersonnel.claimFeeRate"
+        v-model="companyPersonnel.claimFeeRate"
         label="Claim Fee Rate"
         :suffix="
           companyPersonnel.buttonGroup == 'dollar'

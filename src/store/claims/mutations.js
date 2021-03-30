@@ -8,6 +8,3 @@ export function setPersonnel(state, claims) {
 export function setLossInfo(state, claims) {
   state.lossInfo = claims;
 }
-export function setPersonnelForEdit(state, claims) {
-  state.editPersonnel = claims;
-}

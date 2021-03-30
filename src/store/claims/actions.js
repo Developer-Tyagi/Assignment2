@@ -40,18 +40,21 @@ export async function addCompanyPersonnel({ dispatch, state }, payload) {
 }
 
 //API for editing Company Personnel Info
-export async function putPersonnel({ commit, dispatch }, id) {
+export async function putPersonnel({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
-    const { data } = await request.put(`/claims/${id}/personnel/${id}`);
-    commit('setPersonnelForEdit', data);
+    const { data } = await request.put(
+      `/claims/${payload.id}/personnel/${payload.companyData.personnel.id}`,
+      buildApiData('claimpersonnel', payload.companyData)
+    );
+
     dispatch('setLoading', false);
   } catch (e) {
     console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response.data.title
+      message: 'failed to update company personnel info'
     });
   }
 }

@@ -190,10 +190,6 @@ export default {
       'MM/DD/YYYY'
     );
     let index = this.personnel.attributes.personnel.length;
-    this.putPersonnel(
-      this.selectedClaimId,
-      this.personnel.attributes.personnel[index - 1].id
-    );
 
     this.companyPersonnel.personnel.id = this.personnel.attributes.personnel[
       index - 1
@@ -246,14 +242,17 @@ export default {
         const payload = {
           id: this.selectedClaimId,
           companyData: {
-            id: this.companyPersonnel.personnel.id,
-            name: this.companyPersonnel.personParty,
-            role: this.companyPersonnel.personnel.role,
-            note: this.companyPersonnel.notes
+            personnel: {
+              fess: this.companyPersonnel.claimFeeRate,
+              id: this.companyPersonnel.personnel.id,
+              name: this.companyPersonnel.personParty.name,
+              role: this.companyPersonnel.personnel.role,
+              note: this.companyPersonnel.notes
+            }
           }
         };
 
-        await this.putPersonnel(this.companyPersonnel.personnel.id);
+        await this.putPersonnel(payload);
         await this.getPersonnelInfo(this.selectedClaimId);
         this.successMessage();
         this.$router.push('/claim-details');
@@ -264,7 +263,7 @@ export default {
       this.$q.notify({
         type: 'positive',
         message: `Company Personnel Info Updated Successfully!`,
-        position: 'center'
+        position: 'top'
       });
     }
   }
