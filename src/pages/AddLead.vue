@@ -25,29 +25,35 @@
           </p>
 
           <div class="q-mt-lg text-bold">Select existing client</div>
-
-          <q-select
-            dense
-            class="full-width input-extra-padding"
-            v-model="clientSelected"
-            use-input
-            input-debounce="0"
-            option-label="name"
-            label="Search"
-            :options="options"
-            @filter="searchFilterBy"
-            option-value="id"
-            behavior="menu"
-            options-dense
-            emit-value
-            map-options
-          >
-            <template v-slot:no-option>
-              <q-item>
-                <q-item-section class="text-black"> No results </q-item-section>
-              </q-item>
-            </template>
-          </q-select>
+          <q-form ref="addLead">
+            <q-select
+              dense
+              class="full-width input-extra-padding"
+              v-model="clientSelected"
+              use-input
+              input-debounce="0"
+              option-label="name"
+              label="Search"
+              :options="options"
+              @filter="searchFilterBy"
+              option-value="id"
+              behavior="menu"
+              options-dense
+              emit-value
+              map-options
+              :rules="[
+                val => (val && val.length > 0) || 'Please select the client'
+              ]"
+            >
+              <template v-slot:no-option>
+                <q-item>
+                  <q-item-section class="text-black">
+                    No results
+                  </q-item-section>
+                </q-item>
+              </template>
+            </q-select>
+          </q-form>
         </div>
         <q-btn
           label="Continue"
@@ -89,12 +95,20 @@ export default {
     ...mapActions(['getClients']),
     ...mapMutations(['setSelectedClient']),
 
-    onContinue() {
-      if (this.clientSelected) {
-        this.setSelectedClient(this.clientSelected);
-        this.$router.push({ path: `/add-lead-details/${this.clientSelected}` });
-      } else {
-        this.$router.push({ path: `/add-lead-details` });
+    async onContinue() {
+      let validate = false;
+      if (!this.isNewLead) {
+        validate = await this.$refs.addLead.validate();
+      }
+      if (validate || this.isNewLead) {
+        if (this.clientSelected) {
+          this.setSelectedClient(this.clientSelected);
+          this.$router.push({
+            path: `/add-lead-details/${this.clientSelected}`
+          });
+        } else {
+          this.$router.push({ path: `/add-lead-details` });
+        }
       }
     },
 
