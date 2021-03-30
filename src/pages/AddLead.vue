@@ -27,7 +27,8 @@
           <div class="q-mt-lg text-bold">Select existing client</div>
 
           <q-select
-            class="full-width"
+            dense
+            class="full-width input-extra-padding"
             v-model="clientSelected"
             use-input
             input-debounce="0"

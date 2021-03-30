@@ -5,3 +5,9 @@ export function setClaims(state, claims) {
 export function setPersonnel(state, claims) {
   state.personnel = claims;
 }
+export function setLossInfo(state, claims) {
+  state.lossInfo = claims;
+}
+export function setPersonnelForEdit(state, claims) {
+  state.editPersonnel = claims;
+}

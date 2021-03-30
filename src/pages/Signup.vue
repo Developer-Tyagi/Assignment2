@@ -90,6 +90,7 @@
               >
                 <div class="column col-5">
                   <q-input
+                    dense
                     name="firstName"
                     v-model="user.contact.fname"
                     color="primary"
@@ -102,6 +103,7 @@
                     ]"
                   />
                   <q-input
+                    dense
                     v-model="user.contact.lname"
                     name="lastName"
                     color="primary"
@@ -114,6 +116,7 @@
                     ]"
                   />
                   <q-input
+                    dense
                     v-model="user.contact.phoneNumber[0].number"
                     label="Contact Phone Number"
                     mask="(###) ###-####"
@@ -127,6 +130,7 @@
                     ]"
                   />
                   <q-input
+                    dense
                     v-model="user.name"
                     name="businessName"
                     color="primary"
@@ -141,6 +145,7 @@
                   />
 
                   <q-input
+                    dense
                     v-model="user.email"
                     name="email"
                     color="primary"
@@ -154,6 +159,7 @@
                   />
 
                   <q-input
+                    dense
                     v-model="user.phoneNumber.number"
                     label="Bussiness Phone Number"
                     mask="(###) ###-####"
@@ -172,13 +178,14 @@
                   <input
                     v-model="autocompleteAddress"
                     id="autocomplete1"
-                    class="autocomplete-input"
+                    class="autocomplete-input--signUp"
                     name="autcomplete"
                     color="primary"
                     placeholder=" Auto-complete address"
                     autocomplete="off"
                   />
                   <q-input
+                    dense
                     v-model="user.mailingAddress.houseNumber"
                     name="address2"
                     color="primary"
@@ -192,6 +199,7 @@
                     ]"
                   />
                   <q-input
+                    dense
                     v-model="user.mailingAddress.streetAddress"
                     name="address1"
                     color="primary"
@@ -206,6 +214,7 @@
                   />
                   <div class="row justify-between">
                     <q-input
+                      dense
                       v-model="user.mailingAddress.addressLocality"
                       name="city"
                       color="primary"
@@ -219,6 +228,7 @@
                       ]"
                     />
                     <q-input
+                      dense
                       v-model="user.mailingAddress.postalCode"
                       name="zip"
                       color="primary"
@@ -235,6 +245,7 @@
                   </div>
                   <div class="row justify-between">
                     <q-input
+                      dense
                       v-model="user.mailingAddress.addressRegion"
                       name="state"
                       color="primary"
@@ -248,6 +259,7 @@
                       ]"
                     />
                     <q-input
+                      dense
                       v-model="user.mailingAddress.addressCountry"
                       name="country"
                       color="primary"
@@ -262,6 +274,7 @@
                     />
                   </div>
                   <q-input
+                    dense
                     v-model="user.website"
                     name="website"
                     color="primary"
@@ -310,14 +323,19 @@
                   <input
                     v-model="autocompleteAddress"
                     id="autocomplete2"
-                    class="autocomplete-input"
+                    class="autocomplete-input--signUp"
                     name="autocomplete"
                     color="primary"
                     :disabled="isBillingAddressSame == true"
                     placeholder=" Auto-complete address"
                     autocomplete="off"
+                    :class="{
+                      'input-margin--40 no-visibility ':
+                        isBillingAddressSame == true
+                    }"
                   />
                   <q-input
+                    dense
                     v-model="user.billingInfo.address.houseNumber"
                     name="address2"
                     color="primary"
@@ -332,6 +350,7 @@
                     :disable="isBillingAddressSame"
                   />
                   <q-input
+                    dense
                     v-model="user.billingInfo.address.streetAddress"
                     name="address1"
                     color="primary"
@@ -347,6 +366,7 @@
                   />
                   <div class="row justify-between">
                     <q-input
+                      dense
                       v-model="user.billingInfo.address.addressLocality"
                       name="city"
                       color="primary"
@@ -361,6 +381,7 @@
                       :disable="isBillingAddressSame"
                     />
                     <q-input
+                      dense
                       v-model="user.billingInfo.address.postalCode"
                       name="zip"
                       color="primary"
@@ -378,6 +399,7 @@
                   </div>
                   <div class="row justify-between">
                     <q-input
+                      dense
                       v-model="user.billingInfo.address.addressRegion"
                       name="state"
                       color="primary"
@@ -392,6 +414,7 @@
                       :disable="isBillingAddressSame"
                     />
                     <q-input
+                      dense
                       v-model="user.billingInfo.address.addressCountry"
                       name="country"
                       color="primary"
@@ -410,6 +433,7 @@
 
                 <div class="column col-5">
                   <q-input
+                    dense
                     v-model="user.SSNumber"
                     name="ssNumber"
                     color="primary"
@@ -424,6 +448,7 @@
                     mask="###-##-####"
                   />
                   <q-input
+                    dense
                     v-model="user.EINumber"
                     name="eiNumber"
                     color="primary"
@@ -724,18 +749,6 @@ export default {
   input[type='number'] {
     -moz-appearance: textfield;
   }
-}
-.autocomplete-input {
-  height: 56px;
-  padding: 0 12px;
-  margin-bottom: 25px;
-  background: #f2f2f2;
-  font-weight: 400;
-  line-height: 28px;
-  letter-spacing: 0.00937em;
-  border: none;
-  color: rgba(0, 0, 0, 0.87);
-  outline: none;
 }
 
 .q-field--with-bottom {

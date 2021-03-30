@@ -1,6 +1,8 @@
 export default function() {
   return {
     claims: [],
-    personnel: []
+    personnel: [],
+    lossInfo: [],
+    editPersonnel: []
   };
 }

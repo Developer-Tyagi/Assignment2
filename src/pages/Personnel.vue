@@ -170,7 +170,13 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['personnel', 'selectedClaimId', 'roleTypes', 'userRoles'])
+    ...mapGetters([
+      'personnel',
+      'selectedClaimId',
+      'roleTypes',
+      'userRoles',
+      'editPersonnel'
+    ])
   },
   created() {
     if (!this.selectedClaimId) {
@@ -184,6 +190,10 @@ export default {
       'MM/DD/YYYY'
     );
     let index = this.personnel.attributes.personnel.length;
+    this.putPersonnel(
+      this.selectedClaimId,
+      this.personnel.attributes.personnel[index - 1].id
+    );
 
     this.companyPersonnel.personnel.id = this.personnel.attributes.personnel[
       index - 1
@@ -203,7 +213,8 @@ export default {
       'getPersonnelInfo',
       'getAllUsers',
       'addCompanyPersonnel',
-      'getRoles'
+      'getRoles',
+      'putPersonnel'
     ]),
     //This Function is for Adding new Company Personnel
     async onSaveButtonClick() {
@@ -241,7 +252,8 @@ export default {
             note: this.companyPersonnel.notes
           }
         };
-        await this.addCompanyPersonnel(payload);
+
+        await this.putPersonnel(this.companyPersonnel.personnel.id);
         await this.getPersonnelInfo(this.selectedClaimId);
         this.successMessage();
         this.$router.push('/claim-details');

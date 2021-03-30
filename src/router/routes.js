@@ -149,6 +149,12 @@ const routes = [
         component: () => import('pages/ClaimSummary.vue')
       },
       {
+        path: 'loss-info',
+        name: 'loss info ',
+        caseSensitive: true,
+        component: () => import('src/pages/UpdateLossInfo.vue')
+      },
+      {
         path: 'client-documents',
         name: 'Documents',
         caseSensitive: true,
