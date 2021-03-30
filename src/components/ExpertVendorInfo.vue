@@ -14,6 +14,7 @@
           @onCloseAddVendor="onCloseAddVendorDialogBox"
           @closeDialog="closeAddVendorDialog"
           :componentName="vendorDialogName"
+          :selectedIndustryType="industryTypeValue"
         />
       </q-card>
     </q-dialog>
@@ -94,11 +95,11 @@
         class="input-extra-padding"
       />
       <q-btn
-        class="q-mt-md"
+        class="q-mt-md "
         v-if="expertVendorInfo.industry[index].value == 'Others'"
         label="Add"
         outline
-        @click="addAnotherIndustry"
+        @click="addAnotherIndustry(index)"
       />
 
       <div
@@ -109,7 +110,7 @@
           onAddVendorDialogClick(constants.industries.EXPERTVENDOR, index)
         "
       >
-        <div class="select-text">
+        <div class="select-text" disable>
           {{
             expertVendorInfo.id
               ? expertVendorInfo.vendors[index].value
@@ -177,6 +178,10 @@ export default {
   },
   data() {
     return {
+      industryTypeValue: '',
+      industryType: {
+        value: ''
+      },
       vendorDialogFilterByIndustry: '',
       showVendorDialogFilters: false,
       valueName: '',
@@ -198,19 +203,10 @@ export default {
     ])
   },
   methods: {
-    ...mapActions(['getVendors']),
+    ...mapActions(['getVendors', 'addIndustry', 'getVendorIndustries']),
 
     addAnotherVendor() {
-      this.expertVendorInfo.industry.push({
-        id: this.expertVendorInfo.industry.id,
-        value: this.expertVendorInfo.industry.value
-      });
-      let len = this.expertVendorInfo.vendors.length;
-      this.expertVendorInfo.vendors.push({
-        id: this.expertVendorInfo.vendors[len - 1].id,
-        value: this.expertVendorInfo.vendors[len - 1].value
-      });
-      this.expertVendorInfo.vendors[len].value = 'Select Vendor';
+      this.$emit('addAnotherVendor', true);
     },
     //This function is user for searching Industries and  add others option at the last
     searchFilterBy(val, update) {
@@ -247,7 +243,7 @@ export default {
       });
 
       this.expertVendorInfo.industry[index].value = result.name;
-      this.industryTypeValue = result.name;
+      this.industryTypeValue = result;
 
       this.expertVendorInfo.industry[index].id = result.id;
       this.expertVendorInfo.industry[index].machineValue = result.machineValue;
@@ -258,18 +254,49 @@ export default {
         this.expertVendorButton = false;
       }
     },
+    // For Adding Another Industry in Expert/Vendor
+    async addAnotherIndustry(index) {
+      let text = this.industryType.value.toLowerCase();
+      if (text != 'others' && text != '') {
+        const response = await this.addIndustry(this.industryType);
+        if (response) {
+          this.$q.notify({
+            message: 'Added New Industry Type',
+            position: 'top',
+            type: 'negative'
+          });
+          this.expertVendorInfo.industry[index].value = '';
+        }
+        this.industryType.value = '';
+        this.getVendorIndustries();
+      } else {
+        this.$q.notify({
+          message: 'Sorry ! Cannot add Others or Blank  ',
+          position: 'top',
+          type: 'negative'
+        });
+      }
+    },
     async onAddVendorDialogClick(name, index) {
-      this.valueName = name;
-      this.vendorDialogName = constants.industries.EXPERTVENDOR;
-      this.showVendorDialogFilters = false;
-      this.vendorDialogFilterByIndustry = constants.industries.VENDOR;
-      this.vendorDialogFilterByIndustry = this.expertVendorInfo.industry[
-        index
-      ].machineValue;
+      if (this.expertVendorInfo.industry[index].value) {
+        this.valueName = name;
+        this.vendorDialogName = constants.industries.EXPERTVENDOR;
+        this.showVendorDialogFilters = false;
+        this.vendorDialogFilterByIndustry = constants.industries.VENDOR;
+        this.vendorDialogFilterByIndustry = this.expertVendorInfo.industry[
+          index
+        ].machineValue;
 
-      this.vendorDialogName = name;
+        this.vendorDialogName = name;
 
-      this.vendorsListDialog = true;
+        this.vendorsListDialog = true;
+      } else {
+        this.$q.notify({
+          type: 'negative',
+          message: `Add Industry Type First!`,
+          position: 'top'
+        });
+      }
     },
 
     //Add Vendor close list
