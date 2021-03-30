@@ -5,25 +5,7 @@ import { buildApiData } from '@utils/api';
 export async function getPersonnelInfo({ commit, dispatch }, id) {
   dispatch('setLoading', true);
   try {
-    // const { data } = await request.get(`/claims/${id}/personnel`);
-    const data = {
-      attributes: {
-        personnel: [
-          {
-            id: '243721c8-4f4c-11eb-ae93-0242ac130002',
-            name: 'Joshua Osteen',
-            role: 'Apprisail',
-            note: 'Notes testing'
-          },
-          {
-            id: '243721c8-4f4c-11eb-ae93-0242ac130002',
-            name: 'Kuldeep Sir',
-            role: 'ALE',
-            note: 'Notes testing'
-          }
-        ]
-      }
-    };
+    const { data } = await request.get(`/claims/${id}/personnel`);
 
     commit('setPersonnel', data);
     dispatch('setLoading', false);

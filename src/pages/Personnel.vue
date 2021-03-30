@@ -73,27 +73,42 @@
         <div class="clients-list">
           <div
             class="clients-list q-pa-md"
-            v-for="i in personnel.attributes.personnel.length"
+            v-for="index in personnel.attributes.personnel.length"
           >
             <div class="row">
-              <div class="form-heading">
-                {{ personnel.attributes.personnel[i - 1].name }}
-              </div>
+              <span class="col-11 form-heading">
+                {{
+                  personnel.attributes.personnel[index - 1]
+                    ? personnel.attributes.personnel[index - 1].name
+                    : '-'
+                }}
+              </span>
+
               <q-icon
                 @click="companyPersonnelDailog = true"
-                class="q-my-auto"
+                class=" col q-pt-xs"
                 name="edit"
                 color="primary"
                 size="sm"
               />
             </div>
+
             <div>
-              {{ personnel.attributes.personnel[i - 1].role }}
+              {{
+                personnel.attributes.personnel[index - 1]
+                  ? personnel.attributes.personnel[index - 1].role
+                  : '-'
+              }}
             </div>
             <div>
               Notes:
-              {{ personnel.attributes.personnel[i - 1].note }}
+              {{
+                personnel.attributes.personnel[index - 1]
+                  ? personnel.attributes.personnel[index - 1].note
+                  : '-'
+              }}
             </div>
+
             <div>Fee - none</div>
             <div></div>
           </div>
