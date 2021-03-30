@@ -16,6 +16,7 @@
         <q-card-section>
           <div class="mobile-container-page-without-search form-height">
             <q-input
+              dense
               class="full-width"
               label="Take notes here"
               v-model="note"
@@ -41,7 +42,7 @@
       <div class="mobile-container-page">
         <div v-if="editSelectedClient.attributes.notes">
           <div
-            class="clients-list q-ma-sm "
+            class="clients-list q-ma-sm"
             v-if="editSelectedClient.attributes.notes.length"
           >
             <div
@@ -65,8 +66,8 @@
             </div>
           </div>
         </div>
-        <div v-else class="full-height full-width column ">
-          <div class=" column absolute-center">
+        <div v-else class="full-height full-width column">
+          <div class="column absolute-center">
             <div style="color: #666666,align-items: center">
               You haven't added a Note yet.
             </div>

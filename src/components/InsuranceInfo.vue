@@ -16,10 +16,17 @@
           }}
         </div>
       </div>
-      <q-input v-model="insuranceDetails.policyNumber" label=" Policy Number" />
+      <q-input
+        v-model="insuranceDetails.policyNumber"
+        label=" Policy Number"
+        dense
+        class="input-extra-padding"
+      />
       <q-input
         v-model="insuranceDetails.insuranceClaimNumber"
         label="Insurance Claim Number"
+        dense
+        class="input-extra-padding"
       />
       <br />
       <div class="row">
@@ -30,9 +37,7 @@
         />
       </div>
       <div class="row">
-        <p class="q-my-auto form-heading">
-          Is this is a Forced-Placed policy?
-        </p>
+        <p class="q-my-auto form-heading">Is this is a Forced-Placed policy?</p>
 
         <q-toggle
           class="q-ml-auto"
@@ -44,6 +49,7 @@
 
       <div class="full-width">
         <q-input
+          dense
           v-model="insuranceDetails.policyEffectiveDate"
           mask="##/##/####"
           label="MM/DD/YYYY"
@@ -79,6 +85,7 @@
 
       <div class="full-width">
         <q-input
+          dense
           v-model="insuranceDetails.policyExpireDate"
           mask="##/##/####"
           label="MM/DD/YYYY"
@@ -110,6 +117,8 @@
 
       <q-select
         class="required"
+        dense
+        behavior="menu"
         v-model="insuranceDetails.policyCategory.id"
         option-value="id"
         option-label="name"
@@ -131,6 +140,8 @@
       />
       <q-select
         class="required"
+        dense
+        behavior="menu"
         v-model="insuranceDetails.policy.id"
         option-value="id"
         option-label="name"
@@ -148,12 +159,14 @@
       <div class="row" style="align-items: center">
         <span class="form-heading">Dwelling Limit (A)</span>
         <q-input
+          dense
           mask="#.#"
           type="number"
           v-model.number="insuranceDetails.dwellingLimitA"
           placeholder="Dwelling Limit (A)"
           style="margin-left: auto; width: 50%"
           prefix="$"
+          class="input-extra-padding"
         />
       </div>
       <div class="row" style="align-items: center">
@@ -165,6 +178,8 @@
           placeholder="Other Structure (B)"
           prefix="$"
           style="margin-left: auto; width: 50%"
+          dense
+          class="input-extra-padding"
         />
       </div>
       <div class="row" style="align-items: center">
@@ -176,6 +191,8 @@
           placeholder="Contents Limit (C)"
           prefix="$"
           style="margin-left: auto; width: 50%"
+          dense
+          class="input-extra-padding"
         />
       </div>
       <div class="row" style="align-items: center">
@@ -187,6 +204,8 @@
           placeholder="Loss of Use Limit (D)"
           prefix="$"
           style="margin-left: auto; width: 50%"
+          dense
+          class="input-extra-padding"
         />
       </div>
       <div class="row" style="align-items: center">
@@ -198,6 +217,8 @@
           placeholder="Depreciation"
           prefix="$"
           style="margin-left: auto; width: 50%"
+          dense
+          class="input-extra-padding"
         />
       </div>
       <div class="row" style="align-items: center">
@@ -209,6 +230,8 @@
           placeholder="Deductible"
           prefix="$"
           style="margin-left: auto; width: 50%"
+          dense
+          class="input-extra-padding"
         />
       </div>
 
@@ -223,6 +246,8 @@
           placeholder="Prior payment by insured"
           prefix="$"
           style="margin-left: auto; width: 50%"
+          dense
+          class="input-extra-padding"
         />
       </div>
       <br />

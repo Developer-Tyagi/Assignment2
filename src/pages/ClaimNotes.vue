@@ -199,7 +199,7 @@ export default {
       this.$q.notify({
         type: 'positive',
         message: `Notes Added Successfully!`,
-        position: 'center'
+        position: 'top'
       });
     }
   }

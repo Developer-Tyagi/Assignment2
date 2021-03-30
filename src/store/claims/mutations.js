@@ -5,3 +5,6 @@ export function setClaims(state, claims) {
 export function setClaimNotes(state, claims) {
   state.claimNotes = claims;
 }
+export function setLossInfo(state, claims) {
+  state.lossInfo = claims;
+}

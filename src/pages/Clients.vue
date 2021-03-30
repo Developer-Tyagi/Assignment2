@@ -3,6 +3,7 @@
     <div>
       <div class="actions-div">
         <q-input
+          dense
           v-model="searchText"
           placeholder="Search"
           borderless
