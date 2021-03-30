@@ -101,10 +101,10 @@
     >
       <q-card>
         <CustomBar
-          :dialogName="'Add New Property'"
           @closeDialog="addNewPropertyDialog = false"
+          :dialogName="'Add New Property'"
         />
-        <div class="mobile-container-page-without-search q-ma-sm">
+        <div class="mobile-container-page-without-search q-pa-md">
           <q-form ref="propertyAddressForm" class="form-height">
             <q-input
               dense
@@ -275,5 +275,10 @@ export default {
       margin: 0 0 6px;
     }
   }
+}
+.form-height {
+  height: calc(100vh - 150px);
+  overflow: auto;
+  margin: 10px;
 }
 </style>

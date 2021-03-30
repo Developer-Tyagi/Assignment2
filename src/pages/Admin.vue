@@ -70,44 +70,50 @@
                           <q-btn
                             color="primary"
                             label="+ Add Default Action "
-                            class="col-2"
+                            class="col-md-2 col-lg-2"
                             @click="addDefaultActionDialogBox = true"
                           />
                           <q-btn
                             color="primary"
                             label="Refresh "
-                            class="q-mx-lg col-2"
+                            class="col-md-1 q-mx-lg col-lg-2"
                             @click=""
                           />
                           <q-btn
                             color="primary"
                             label="Clone Workflow "
-                            class="col-2"
+                            class="col-md-2col-lg-2"
                             @click=""
                           />
                           <q-btn
                             color="primary"
                             label="Delete Workflow "
-                            class="q-mx-lg col-2"
+                            class="q-mx-lg col-md-2 col-lg-2"
                             @click=""
                           />
                           <q-btn
                             color="primary"
                             label="Planning Sheet "
-                            class="q-mx-lg col-2"
+                            class="q-mx-lg col-md-2 col-lg-2"
                             @click=""
                           />
                         </div>
                       </div>
                     </div>
                     <q-card
-                      class="q-ma-xl"
+                      class="q-mx-xl q-my-md"
+                      scroll
                       style="border: 1px solid grey"
                       flat
                       bordered
                     >
                       <div class="row bg-grey-3">
-                        <div class="col-7 q-pa-lg">5 Action Items</div>
+                        <div class="col-7 q-pa-lg" v-if="ClaimType">
+                          {{ allAction.length }} Action Items
+                        </div>
+                        <div class="col-7 q-pa-lg" v-else>
+                          Please Select Action Items
+                        </div>
 
                         <div class="col-4 row text-h6">
                           <div class="col q-pt-md">Workflow</div>
@@ -133,7 +139,10 @@
                         <q-separator />
                       </div>
 
-                      <div class="q-pa-lg">
+                      <div
+                        class="q-pa-lg"
+                        style="height: 350px; overflow: auto"
+                      >
                         <div v-for="index in allAction">
                           <div class="row q-pa-md">
                             <div class="col-11">
@@ -163,36 +172,34 @@
         </div>
       </div>
     </div>
+    <!-- Dialog Box for Adding Action Items -->
     <q-dialog v-model="addDefaultActionDialogBox" persistent>
-      <q-card class="col-8" style="width: 70%">
-        <q-bar
-          class="row justify-between bg-primary"
-          style="height: 50px; position: fixed; width: 67%; z-index: 10"
-        >
+      <q-card style="width: 60%; height: 88vh">
+        <q-bar class="row justify-between bg-primary" style="height: 50px">
           <div class="q-px-xs text-bold text-white">Add Action Item</div>
           <q-btn dense flat icon="close" v-close-popup>
             <q-tooltip>Close</q-tooltip>
           </q-btn>
         </q-bar>
-        <div class="q-pt-xl">
+        <div class="q-mt-sm" style="height: calc(100% - 155px; overflow:auto">
           <div class="row q-mt-lg full-width">
             <div class="col-1-1">
               <div class="q-ml-xl q-pa-md text-bold">Action Item :</div>
             </div>
 
-            <div class="col-5">
+            <div class="col-4">
               <q-input
                 dense
                 v-model="actions.name"
                 class="q-mx-md"
-                style="width: 300px"
+                style="width: 250px"
                 outlined
               />
             </div>
             <div class="col-1-1">
               <div class="q-pa-md text-bold">Enabled :</div>
             </div>
-            <div class="col-3 q-ml-lg">
+            <div class="col-3 q-ml-xs">
               <q-toggle
                 v-model="actions.isEnabled"
                 left-label
@@ -207,10 +214,10 @@
 
           <!-- second -->
           <div class="row q-mt-md full-width">
-            <div class="col-1-1">
+            <div class="col-2-1">
               <div class="q-ml-xl q-pa-md text-bold">Created When :</div>
             </div>
-            <div class="col-3">
+            <div class="col-2-1">
               <q-select
                 dense
                 outlined
@@ -227,8 +234,8 @@
                 class="input-extra-padding"
               />
             </div>
-            <!-- This is for Demo ! Api Not Integrated Yet -->
-            <div class="col-3 q-ml-lg" v-if="actions.createWhen.type">
+
+            <div class="col-2-1 q-ml-xs" v-if="actions.createWhen.type">
               <q-select
                 dense
                 class="col-3 input-extra-padding"
@@ -241,7 +248,15 @@
                 emit-value
                 :options="actionReason[indexOfActionReason].additionalReasons"
                 label="Sub-option"
-              />
+              >
+                <template v-slot:no-option>
+                  <q-item>
+                    <q-item-section class="text-grey">
+                      No data present
+                    </q-item-section>
+                  </q-item>
+                </template>
+              </q-select>
             </div>
           </div>
           <!-- 3 -->
@@ -251,35 +266,39 @@
                 Default Priority <span class="text-red">*</span> :
               </div>
             </div>
-            <div class="col-5">
+            <div class="col-4">
               <q-toggle v-model="priority" left-label @input="TogglePriority" />
-              <q-badge color="primary" v-if="priority == true"
-                >Important</q-badge
-              >
+              <q-badge color="primary" v-if="priority == true">HIgh</q-badge>
+              <q-badge v-else color="primary">Low</q-badge>
             </div>
-            <div class="col-1-1">
-              <div class="q-pa-md">:</div>
+
+            <div class="col-1-1 row">
+              <div class="q-py-sm text-bold">Assign To :</div>
+              <div class="q-ml-sm q-pt-sm text-bold">
+                <q-btn color="primary" size="10px" label="Select" @click="" />
+              </div>
             </div>
-            <div class="col-3 q-ml-lg"></div>
           </div>
           <div class="row q-mt-md full-width">
             <div class="col-1-1 row">
               <div class="q-ml-xl q-pa-md text-bold">Due Date :</div>
-              <div class="q-ml-xl q-pt-md text-bold">Task will be Due</div>
+              <div class="text-grey-9 q-pt-md text-bold">Task will be Due</div>
             </div>
-            <div class="col-2 q-mr-lg">
+            <div class="col-2">
               <q-input
                 dense
                 v-model.number="actions.due.interval"
-                class="q-mx-lg"
+                class="q-mx-sm"
                 style=""
                 outlined
+                placeholder="Day"
               />
             </div>
 
             <div class="col-2">
               <q-select
                 dense
+                class="q-pt-xs"
                 outlined
                 options-dense
                 v-model="actions.due.type"
@@ -287,23 +306,24 @@
                 option-value="options"
                 :options="options"
                 class="input-extra-padding"
+                label="Type"
               />
             </div>
-            <div class="col-1-1">
-              <div class="q-pa-md text-bold">days after it is created</div>
-            </div>
-          </div>
-          <div class="row q-mt-md full-width">
-            <div class="col-1-1 row">
-              <div class="q-ml-xl q-pa-md text-bold">Assign To :</div>
-              <div class="q-ml-xl q-pt-md text-bold">
-                <q-btn color="primary" size="10px" label="Select" @click="" />
+            <div class="q-ml-md">
+              <div class="q-mt-md q-ml-xl text-bold">
+                days after it is created
               </div>
             </div>
           </div>
+
           <div class="row q-mt-md q-pl-xl full-width">
-            <div class="col-4" style="margin-left: 10%">
-              <q-card class="q-pa-md text-bold text-grey-9" flat bordered>
+            <div class="col-7">
+              <q-card
+                class="q-pa-md q-pl-xl text-bold"
+                style="letter-spacing: 1px"
+                flat
+                bordered
+              >
                 Note : Actions are executed in the order specified
               </q-card>
             </div>
@@ -314,9 +334,18 @@
             class="row q-mt-md full-width"
           >
             <div class="col-1-1">
-              <div class="q-ml-xl q-pa-md text-bold">Completion Action :</div>
+              <div class="q-ml-xl q-pa-md text-bold" v-if="index == 0">
+                Completion Action :
+              </div>
+              <div
+                class="q-ml-xl q-pa-md text-bold"
+                v-else
+                style="visibility: hidden"
+              >
+                Completion Action :
+              </div>
             </div>
-            <div class="col-3">
+            <div class="col-2-1">
               <q-select
                 dense
                 outlined
@@ -340,7 +369,7 @@
             </div>
 
             <div
-              class="col-3 q-ml-lg"
+              class="col-2-1 q-ml-xs"
               v-if="actions.actions.onComplete[index].type"
             >
               <q-select
@@ -368,7 +397,7 @@
               />
             </div>
             <div
-              class="col-2 q-ml-lg"
+              class="col-2-1 q-ml-xs"
               v-if="actions.actions.onComplete[index].task[0]"
             >
               <q-select
@@ -389,14 +418,21 @@
                 options-dense
               />
             </div>
-            <div class="q-ml-xl q-pt-sm text-bold">
-              <q-icon size="md" color="primary" name="add" @click="Addlick" />
+            <div class="q-ml-md q-mt-sm">
+              <q-icon
+                class="clickable"
+                size="md"
+                color="primary"
+                name="add"
+                @click="Addlick"
+              />
             </div>
             <div
-              class="q-ml-lg q-pt-sm text-bold"
+              class="q-ml-sm q-pt-sm text-bold"
               v-if="actions.actions.onComplete.length > 1"
             >
               <q-icon
+                class="clickable"
                 size="md"
                 color="primary"
                 name="clear"
@@ -412,10 +448,19 @@
             class="row q-mt-md full-width"
           >
             <div class="col-1-1">
-              <div class="q-ml-xl q-pa-md text-bold">OverDue Action:</div>
+              <div class="q-ml-xl q-pa-md text-bold" v-if="index == 0">
+                OverDue Action:
+              </div>
+              <div
+                class="q-ml-xl q-pa-md text-bold"
+                v-else
+                style="visibility: hidden"
+              >
+                OverDue Action:
+              </div>
             </div>
 
-            <div class="q-ml-lg col-3">
+            <div class="q-ml-lg col-2-1">
               <q-select
                 dense
                 outlined
@@ -436,12 +481,11 @@
             </div>
 
             <div
-              class="col-2 q-ml-lg"
+              class="col-2-1 q-ml-xs"
               v-if="actions.actions.onOverdue[index].type"
             >
               <q-select
-                dense
-                class="col-3 input-extra-padding"
+                class=" "
                 outlined
                 options-dense
                 v-model="actions.actions.onOverdue[index].task[0]"
@@ -463,7 +507,7 @@
             </div>
 
             <div
-              class="col-3 q-ml-lg"
+              class="col-2-1 q-ml-xs"
               v-if="actions.actions.onOverdue[index].task[0]"
             >
               <q-select
@@ -485,8 +529,9 @@
               />
             </div>
 
-            <div class="q-ml-xl q-pt-sm text-bold">
+            <div class="q-ml-md q-pt-sm text-bold">
               <q-icon
+                class="clickable"
                 size="md"
                 color="primary"
                 name="add"
@@ -494,10 +539,11 @@
               />
             </div>
             <div
-              class="q-ml-lg q-pt-sm text-bold"
+              class="q-ml-sm q-pt-sm text-bold"
               v-if="actions.actions.onOverdue.length > 1"
             >
               <q-icon
+                class="clickable"
                 size="md"
                 color="primary"
                 name="clear"
@@ -520,11 +566,11 @@
             </div>
           </div>
         </div>
-        <div class="q-my-xl row justify-center">
+        <div class="row justify-center">
           <q-btn
             color="primary"
             label="Save"
-            class="align-content-center col-2 q-mt-xl"
+            class="align-content-center col-2 q-my-lg"
             @click="onClickSaveButton"
           />
         </div>
@@ -550,7 +596,7 @@ export default {
           type: '',
           task: []
         },
-        priority: 'normal',
+        priority: 'low',
         assignedTo: [
           {
             type: 'user',
@@ -590,7 +636,7 @@ export default {
       indexOfSubTypeForComp: '',
       indexOfSubOfSubType: 0,
 
-      addDefaultActionDialogBox: false,
+      addDefaultActionDialogBox: true,
       model: null,
       options: ['Bussiness', 'Industry'],
       tab: '',
@@ -684,11 +730,12 @@ export default {
     RemoveOverDue(val) {
       this.actions.actions.onOverdue.splice(val, 1);
     },
+    // OnSaveButtonClick
     async onClickSaveButton() {
       const param = { machineValue: this.params, data: this.actions };
-      this.addWorkflowAction(param);
+      await this.addWorkflowAction(param);
       this.addDefaultActionDialogBox = false;
-      await this.getAllWorkFlow(this.params);
+      this.getAllWorkFlow(this.params);
     },
 
     // Remove Completion Multiple Values
@@ -737,3 +784,13 @@ export default {
   }
 };
 </script>
+<style lang="scss">
+.q-dialog__inner--minimized > div {
+  max-width: 80%;
+}
+.q-select {
+  width: 200px;
+  height: 10px;
+  margin-top: 20px;
+}
+</style>

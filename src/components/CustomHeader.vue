@@ -18,6 +18,7 @@
                 $route.name === 'settings' ||
                 $route.name === 'manage users' ||
                 $route.name === 'admin' ||
+                $route.name === 'claims' ||
                 $route.name === 'configuration')) ||
               ($q.screen.width < 992 && $route.name === 'dashboard')
           "
