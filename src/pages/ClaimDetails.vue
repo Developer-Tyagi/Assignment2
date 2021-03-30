@@ -28,6 +28,7 @@ export default {
     return {
       ClaimDetails: [
         { name: 'Claim Summary' },
+        { name: 'Loss Info' },
         { name: 'Action Items' },
         { name: 'Demands And Offers' },
         { name: 'Activity Log & Message Archive' },
@@ -57,7 +58,8 @@ export default {
         case 'Claim Summary':
           this.$router.push('/claim-summary');
           break;
-        case 'Action Items':
+        case 'Loss Info':
+          this.$router.push('/loss-info');
           break;
         case 'Demands And Offers':
           break;

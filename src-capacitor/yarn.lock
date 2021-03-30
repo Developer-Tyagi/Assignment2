@@ -2,15 +2,15 @@
 # yarn lockfile v1
 
 
-"@capacitor/android@2.4.6":
-  version "2.4.6"
-  resolved "https://registry.yarnpkg.com/@capacitor/android/-/android-2.4.6.tgz#57c65f67d6a4e6b67f7f0f7fd23fa4c3c324ecc2"
-  integrity sha512-SBXO0eVtkssnq1gfs6n/8vJLJXPjzqbIblhPetMiR0Myvjt9eqB7v5HbQ4t1EW0+jV46UGyFV6CPCrZeKPtvXg==
+"@capacitor/android@2.4.7":
+  version "2.4.7"
+  resolved "https://registry.yarnpkg.com/@capacitor/android/-/android-2.4.7.tgz#c7edc5322dbd1db79c61b1f4e579b7b81024ce5d"
+  integrity sha512-7jcmwheo94dJEOX1z4r3SlZrL+MvESav1xsUwC5ydLFZCpuvBKJ0szbDNWzCAglgpXmW9hC0WdwYBErgDrDPRg==
 
 "@capacitor/cli@^2.0.0":
-  version "2.4.6"
-  resolved "https://registry.yarnpkg.com/@capacitor/cli/-/cli-2.4.6.tgz#f95cf071403006b04cb0e8d21818292b0f9448ea"
-  integrity sha512-fhwHnitpzjC35Trsb1uR9iA2zlhCZjmh7txunin+g35fImdWjvsswdOwrO7gEC4oItJvErblZF6bRwLvf1Rs1Q==
+  version "2.4.7"
+  resolved "https://registry.yarnpkg.com/@capacitor/cli/-/cli-2.4.7.tgz#690089689b25cb22a25eb930b1dd04af757f2f95"
+  integrity sha512-RC5EO3oA2gWniZK0JWRlZa+7MFIoHYiAtt+W4Hqq74nyv1C0z/MvRY3pX2DX7kKy6Uc1Z/25D0uSXRk+erv3RQ==
   dependencies:
     chalk "^2.3.0"
     commander "^4.1.1"
@@ -25,16 +25,16 @@
     xml2js "^0.4.19"
 
 "@capacitor/core@^2.0.0":
-  version "2.4.6"
-  resolved "https://registry.yarnpkg.com/@capacitor/core/-/core-2.4.6.tgz#71cc6e23ef37fbb47c3c1736f1dea47302a5e22a"
-  integrity sha512-3KLSMorCELA5RNRXwHOGlRGuxXaxCEYHC29wOUxObicI2mf14hbMJWylt4QBzNmSqh3/ha7u4/CAZMoJUQR/QA==
+  version "2.4.7"
+  resolved "https://registry.yarnpkg.com/@capacitor/core/-/core-2.4.7.tgz#f3b4d5728db7e764c1153da5e67d369bda35b772"
+  integrity sha512-ZPzXXQ4EPwR/ZhNDkmlxyzw4FvquIl/ROj8HMMM0MEd4xZfM8ulNGPIL6br9TWdlFLGBKq40eymPZjKaivGnig==
   dependencies:
     tslib "^1.9.0"
 
-"@capacitor/ios@2.4.6":
-  version "2.4.6"
-  resolved "https://registry.yarnpkg.com/@capacitor/ios/-/ios-2.4.6.tgz#b46912d7feb3e416a91e20bdba3c7a9a82048cd0"
-  integrity sha512-/IMmgVUgQgMm1Yv5CaWhZ9UTkVh5GFDX1vFZOB0bMu5v5jkolO/9SLyjbqogDNE2EIl9GuH6RSqZaOh2Xu2Ebg==
+"@capacitor/ios@2.4.7":
+  version "2.4.7"
+  resolved "https://registry.yarnpkg.com/@capacitor/ios/-/ios-2.4.7.tgz#03eecc5348d2ac84e62fc17ae37cc266bcc6a437"
+  integrity sha512-XKYU67ZM+yY4/vDJ3ZVfs+phjtWK8TcKwq75fGoxB9PKXuCmMi5bihPuA3Xs/sIFXuozpnaYnspp0eTRJ7bG0w==
 
 ansi-escapes@^3.2.0:
   version "3.2.0"
@@ -278,9 +278,9 @@ run-async@^2.2.0:
   integrity sha512-tvVnVv01b8c1RrA6Ep7JkStj85Guv/YrMcwqYQnwjsAS2cTmmPGBBjAjpCW7RrSodNSoE2/qg9O4bceNvUuDgQ==
 
 rxjs@^6.4.0:
-  version "6.6.3"
-  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.6.3.tgz#8ca84635c4daa900c0d3967a6ee7ac60271ee552"
-  integrity sha512-trsQc+xYYXZ3urjOiJOuCOa5N3jAZ3eiSpQB5hIT8zGlL2QfnHLJ2r7GMkBGuIausdJN1OneaI6gQlsqNHHmZQ==
+  version "6.6.6"
+  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.6.6.tgz#14d8417aa5a07c5e633995b525e1e3c0dec03b70"
+  integrity sha512-/oTwee4N4iWzAMAL9xdGKjkEHmIwupR3oXbQjCKywF1BeFohswF3vZdogbmEF6pZkOsXTzWkrZszrWpQTByYVg==
   dependencies:
     tslib "^1.9.0"
 

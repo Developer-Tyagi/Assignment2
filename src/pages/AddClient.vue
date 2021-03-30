@@ -42,6 +42,7 @@
         <div class="mobile-container-page-without-search">
           <q-form ref="clientForm" class="form-height">
             <q-select
+              dense
               class="required"
               v-model="client.id"
               option-value="id"
@@ -71,6 +72,7 @@
 
             <div v-if="primaryDetails.isOrganization">
               <q-input
+                dense
                 v-model="primaryDetails.organizationName"
                 label="Organization Name"
                 class="required"
@@ -94,6 +96,7 @@
 
             <span class="form-heading">Insured Details</span>
             <q-select
+              dense
               v-model="honorific1.id"
               class="required"
               :options="titles"
@@ -113,6 +116,7 @@
             />
 
             <q-input
+              dense
               class="required"
               v-model="insuredDetails.fname"
               lazy-rules
@@ -123,6 +127,7 @@
             />
 
             <q-input
+              dense
               v-model="insuredDetails.lname"
               class="required"
               lazy-rules
@@ -133,6 +138,7 @@
             />
             <div class="row justify-between">
               <q-select
+                dense
                 v-model="insuredDetails.type"
                 class="required col-5"
                 :options="contactTypes"
@@ -148,6 +154,7 @@
                 ]"
               />
               <q-input
+                dense
                 v-model.number="insuredDetails.phone"
                 class="required col-6"
                 label="Phone"
@@ -160,6 +167,7 @@
               />
             </div>
             <q-input
+              dense
               v-model="insuredDetails.email"
               class="required"
               label="Email"
@@ -179,6 +187,7 @@
               <span class="form-heading">Co-insured Details</span>
 
               <q-select
+                dense
                 v-model="honorific2.id"
                 class="required"
                 :options="titles"
@@ -195,10 +204,19 @@
                   val => (val && val.length > 0) || 'Please select the Title'
                 ]"
               />
-              <q-input v-model="coInsuredDetails.fname" label="First Name" />
-              <q-input v-model="coInsuredDetails.lname" label="Last Name" />
+              <q-input
+                dense
+                v-model="coInsuredDetails.fname"
+                label="First Name"
+              />
+              <q-input
+                dense
+                v-model="coInsuredDetails.lname"
+                label="Last Name"
+              />
               <div class="row justify-between">
                 <q-select
+                  dense
                   v-model="coInsuredDetails.type"
                   class="required col-5"
                   :options="contactTypes"
@@ -215,6 +233,7 @@
                   ]"
                 />
                 <q-input
+                  dense
                   v-model.number="coInsuredDetails.phone"
                   label="Phone"
                   class="required col-6"
@@ -228,6 +247,7 @@
                 />
               </div>
               <q-input
+                dense
                 v-model="coInsuredDetails.email"
                 input
                 type="email"
@@ -246,12 +266,17 @@
               <q-toggle
                 class="q-ml-auto"
                 v-model="addAditionalPhoneNumberToggle"
+                @input="onaddAditionalPhoneNumberToggle"
               />
             </div>
             <div v-if="addAditionalPhoneNumberToggle">
-              <div class="row justify-between">
+              <div
+                class="row justify-between"
+                v-for="(addPhone, index) in phoneNumber"
+                v-if="index >= 0"
+              >
                 <q-select
-                  v-model="addAditionalPhoneNumber.type1"
+                  v-model="phoneNumber[index].type"
                   class="required col-5"
                   label="Type"
                   :options="contactTypes"
@@ -266,8 +291,9 @@
                   ]"
                 />
                 <q-input
-                  v-model.number="addAditionalPhoneNumber.phone2"
-                  label="Phone2"
+                  dense
+                  v-model.number="phoneNumber[index].number"
+                  label="Phone"
                   class="required col-6"
                   mask="(###) ###-####"
                   lazy-rules
@@ -278,33 +304,23 @@
                   ]"
                 />
               </div>
-              <div class="row justify-between">
-                <q-select
-                  class="required col-5"
-                  v-model="addAditionalPhoneNumber.type2"
-                  label="Type"
-                  :options="contactTypes"
-                  option-value="machineValue"
-                  option-label="name"
-                  map-options
-                  emit-value
-                  options-dense
-                  lazy-rules
-                  :rules="[
-                    val => (val && val.length > 0) || 'Please select phone type'
-                  ]"
+              <div class="row">
+                <q-btn
+                  outline
+                  class="q-mt-sm"
+                  @click="addAnotherContact"
+                  color="primary"
+                  label="Add"
+                  style="margin-right: auto"
                 />
-                <q-input
-                  class="required col-6"
-                  v-model.number="addAditionalPhoneNumber.phone3"
-                  label="Phone3"
-                  mask="(###) ###-####"
-                  lazy-rules
-                  :rules="[
-                    val =>
-                      (val && val.length == 14) ||
-                      'Please enter the phone number'
-                  ]"
+
+                <q-btn
+                  v-if="phoneNumber.length > 1"
+                  outline
+                  @click="RemoveAnotherContact"
+                  class="q-mt-sm"
+                  color="primary"
+                  label="Remove"
                 />
               </div>
             </div>
@@ -323,10 +339,15 @@
               <q-toggle class="q-ml-auto" v-model="tenantOccupiedToggle" />
             </div>
             <div v-if="tenantOccupiedToggle">
-              <q-input v-model="tenantOccupied.name" label="Tenant Name" />
+              <q-input
+                dense
+                v-model="tenantOccupied.name"
+                label="Tenant Name"
+              />
 
               <div class="row justify-between">
                 <q-select
+                  dense
                   class="required col-5"
                   v-model="tenantOccupied.type"
                   label="Type"
@@ -342,6 +363,7 @@
                   ]"
                 />
                 <q-input
+                  dense
                   class="required col-6"
                   v-model.number="tenantOccupied.phone"
                   label="Phone"
@@ -451,7 +473,13 @@
         />
         <div class="mobile-container-page-without-search">
           <q-form ref="lossInfoForm" class="form-height">
-            <LossInfo :lossInfo="lossInfo" @lossAddressSame="lossAddressSame" />
+            <LossInfo
+              :lossInfo="lossInfo"
+              @lossAddressSame="lossAddressSame"
+              :isMailingAddressEnable="true"
+              :lossAddressSameAsClient="true"
+              :isAddressRequired="true"
+            />
           </q-form>
 
           <q-btn
@@ -590,14 +618,18 @@
         <div class="mobile-container-page-without-search">
           <q-form ref="estimatingInfoForm" class="form-height">
             <q-select
+              dense
               v-model="officeTask.officeActionTypes"
               :options="officeActionRequiredTypes"
               label="Office Action Required"
+              class="input-extra-padding"
             />
             <q-select
+              dense
               v-model="officeTask.officeTaskTypes"
               :options="officeTaskRequiredTypes"
               label="Office Task Required"
+              class="input-extra-padding"
             /><br />
             <div class="row">
               <p>Additional Office Task Required</p>
@@ -780,10 +812,8 @@ export default {
         lname: '',
         phone: '',
         type: '',
-
         email: ''
       },
-
       coInsuredDetails: {
         fname: '',
         lname: '',
@@ -792,6 +822,12 @@ export default {
         machineValue: '',
         email: ''
       },
+      phoneNumber: [
+        {
+          type: '',
+          number: ''
+        }
+      ],
       addAditionalPhoneNumber: {
         phone2: '',
         phone3: '',
@@ -851,12 +887,10 @@ export default {
         ],
         lossAddressNameDropdown: 'Others',
         isSecondMortgageHome: false,
-
         wasAppifProvidedToTheInsuredToggle: false,
         doesTheOfficeNeedToProvidePpifToTheInsuredToggle: false,
         PPdamagedItemsDailog: false,
         ppDamagedItems: [],
-
         damagedItemsDailog: false,
         osDamagedItems: [],
         isDamageOSToggle: false,
@@ -1112,6 +1146,36 @@ export default {
       'addIndustry'
     ]),
     ...mapMutations(['setSelectedLead']),
+    // For adding multiple Contact Numbers in ClientInfo
+    addAnotherContact() {
+      let len = this.phoneNumber.length;
+      if (this.phoneNumber[len - 1].number) {
+        this.phoneNumber.push({
+          type: '',
+          number: ''
+        });
+      } else {
+        this.$q.notify({
+          message: 'Please fill the above contact first',
+          position: 'top',
+          type: 'negative'
+        });
+      }
+    },
+    RemoveAnotherContact() {
+      this.phoneNumber.pop();
+    },
+
+    onaddAditionalPhoneNumberToggle() {
+      if (this.addAditionalPhoneNumberToggle == false) {
+        this.phoneNumber = [
+          {
+            type: '',
+            number: ''
+          }
+        ];
+      }
+    },
 
     lossAddressSame() {
       if (this.lossInfo.isLossAddressSameAsClientToggle) {
@@ -1347,17 +1411,7 @@ export default {
           mailingAddress: {
             ...this.mailingAddressDetails
           },
-          phoneNumbers: [
-            {
-              type: this.addAditionalPhoneNumber.type1,
-              number: this.addAditionalPhoneNumber.phone2
-            },
-            {
-              type: this.addAditionalPhoneNumber.type2,
-
-              number: this.addAditionalPhoneNumber.phone3
-            }
-          ],
+          phoneNumbers: this.phoneNumber,
           tenantInfo: {
             name: '',
             phoneNumber: {

@@ -3,13 +3,19 @@
     <div class="q-pa-md height-without-header">
       <div class="row justify-between">
         <div class="col-4">
-          <q-input outlined v-model="searchText" dense placeholder="Search">
+          <q-input
+            dense
+            outlined
+            v-model="searchText"
+            dense
+            placeholder="Search"
+          >
             <template v-slot:append>
               <q-icon name="search" />
             </template>
           </q-input>
         </div>
-        <div class="col-6 row justify-between text-bold">
+        <div class="col-4 row justify-between text-bold">
           <q-card flat bordered class="q-pa-sm"
             >Licenses available- {{ '5' }}</q-card
           >
@@ -27,7 +33,7 @@
       <div class="q-mt-md" style="height: calc(100vh - 150px); overflow: auto">
         <table>
           <thead>
-            <tr class="text-bold text-h6 text-white" style="height: 50px">
+            <tr class="text-bold text-h6 text-white" style="height: 30px">
               <th style="width: 15%">Contact Name</th>
               <th style="width: 15%">Email</th>
               <th>Phone</th>
@@ -48,15 +54,17 @@
                 }}
                 {{ user.attributes.contact.lname }}
               </td>
-              <td class="text-center">
+              <td class="  text-primary text-center">
                 <span
+                  class="clickable"
                   v-if="user.attributes.email"
                   @click="onEmailClick(user.attributes.email, $event)"
                   >{{ user.attributes.email }}</span
                 ><span v-else> - </span>
               </td>
-              <td class="text-center">
+              <td class=" text-primary text-center">
                 <span
+                  class="clickable"
                   v-if="5567656"
                   @click="onPhoneNumberClick(24355732, $event)"
                   >{{ 243557388 }}</span
@@ -74,7 +82,7 @@
               <td class="text-center">
                 <div>
                   <q-btn-dropdown label="Action" style="width: 100px" outline>
-                    <q-list>
+                    <q-list style="width: 100px;">
                       <q-item clickable v-close-popup @click="onItemClick">
                         <q-item-section>
                           <q-item-label>View/Edit</q-item-label>
@@ -110,14 +118,13 @@
         </q-bar>
         <q-form ref="addUserForm">
           <div class="q-mt-xs row full-width">
-            <div class="col-5 q-mx-md q-mt-lg required">
-              First Name
-            </div>
+            <div class="col-5 q-mx-md q-mt-lg required">First Name</div>
             <div class="col-4 q-mx-xl q-mt-lg">Last Name</div>
           </div>
           <div class="row q-mt-xs justify-between full-width">
             <div class="col-6">
               <q-input
+                dense
                 v-model="users.contact.fname"
                 class="q-mx-md"
                 style="width: 300px"
@@ -126,6 +133,7 @@
             </div>
             <div class="col-6">
               <q-input
+                dense
                 v-model="users.contact.lname"
                 class="q-mx-md"
                 style="width: 300px"
@@ -144,6 +152,7 @@
           <div class="row q-mt-xs justify-between full-width">
             <div class="col-6 q-mb-lg">
               <q-input
+                dense
                 v-model="users.email"
                 class="q-mx-md"
                 style="width: 300px"

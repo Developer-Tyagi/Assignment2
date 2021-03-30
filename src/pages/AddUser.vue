@@ -1,22 +1,21 @@
 <template>
-  <q-page class="window-height bg-background full-width   ">
+  <q-page class="window-height bg-background full-width">
     <br />
     <!-- This Style is needed for inner div-->
-    <div class=" q-pa-xs" style="height:60%;width:95%;">
-      <div class=" full-width">
-        <div class=" my-font text-bold row q-my-lg q-mx-xl">
-          Users - Add New
-        </div>
+    <div class="q-pa-xs" style="height: 60%; width: 95%">
+      <div class="full-width">
+        <div class="my-font text-bold row q-my-lg q-mx-xl">Users - Add New</div>
       </div>
-      <q-card class=" row  full-width full-height" flat bordered>
-        <q-card class=" col-6 q-mx-xl   full-height " flat bordered>
-          <div class="q-mt-xs row  full-width">
-            <div class="col-5  q-mx-xl">First Name *</div>
-            <div class="col-4  q-mx-lg">Last Name *</div>
+      <q-card class="row full-width full-height" flat bordered>
+        <q-card class="col-6 q-mx-xl full-height" flat bordered>
+          <div class="q-mt-xs row full-width">
+            <div class="col-5 q-mx-xl">First Name *</div>
+            <div class="col-4 q-mx-lg">Last Name *</div>
           </div>
-          <div class="row q-mt-xs      justify-between full-width">
-            <div class="col-6  ">
+          <div class="row q-mt-xs justify-between full-width">
+            <div class="col-6">
               <q-input
+                dense
                 type="password"
                 class="q-mx-xl"
                 style="border: 1px solid #dddddd"
@@ -25,8 +24,9 @@
               />
             </div>
 
-            <div class="col-6  ">
+            <div class="col-6">
               <q-input
+                dense
                 type="password"
                 class="q-mx-xl"
                 style="border: 1px solid #dddddd"
@@ -35,13 +35,14 @@
               />
             </div>
           </div>
-          <div class="row q-mt-xs  full-width">
-            <div class="col-5  q-mx-xl">Phone Number *</div>
-            <div class="col-4  q-mx-lg">Email *</div>
+          <div class="row q-mt-xs full-width">
+            <div class="col-5 q-mx-xl">Phone Number *</div>
+            <div class="col-4 q-mx-lg">Email *</div>
           </div>
-          <div class="row   justify-between full-width">
-            <div class="col-6 ">
+          <div class="row justify-between full-width">
+            <div class="col-6">
               <q-input
+                dense
                 type="password"
                 class="q-mx-xl"
                 style="border: 1px solid #dddddd"
@@ -50,8 +51,9 @@
               />
             </div>
 
-            <div class="col-6  ">
+            <div class="col-6">
               <q-input
+                dense
                 type="password"
                 class="q-mx-xl"
                 style="border: 1px solid #dddddd"
@@ -60,15 +62,15 @@
               />
             </div>
           </div>
-          <div class="row q-my-xs  full-width">
-            <div class="col-5  q-mx-xl">Available Roles *</div>
-            <div class="col-4  q-mx-lg">Allotted Roles *</div>
+          <div class="row q-my-xs full-width">
+            <div class="col-5 q-mx-xl">Available Roles *</div>
+            <div class="col-4 q-mx-lg">Allotted Roles *</div>
           </div>
-          <div class="row   justify-between full-width">
-            <div class="col-6   " style="height:200px;">
+          <div class="row justify-between full-width">
+            <div class="col-6" style="height: 200px">
               <q-card
-                class="   q-mx-xl scroll"
-                style="height:150px;"
+                class="q-mx-xl scroll"
+                style="height: 150px"
                 flat
                 bordered
               >
@@ -82,15 +84,15 @@
                   </div>
                 </q-pull-to-refresh>
               </q-card>
-              <div class="q-pl-xl row  full-width text-primary">
+              <div class="q-pl-xl row full-width text-primary">
                 +Add Another User
               </div>
             </div>
 
-            <div class="col-6   ">
+            <div class="col-6">
               <q-card
                 class="q-mx-xl scroll q-pl-lg"
-                style="height:150px;"
+                style="height: 150px"
                 flat
                 bordered
               >
@@ -100,13 +102,13 @@
           </div>
         </q-card>
         <q-separator vertical />
-        <div class="  col-4  q-ml-xl   ">
+        <div class="col-4 q-ml-xl">
           <!-- This is for right empt y division! there is no data shown in the wireframes -->
-          <div class="full-width  full-height" borderless>
-            <div class=" row">
+          <div class="full-width full-height" borderless>
+            <div class="row">
               <q-card
                 class="q-mx-xl q-mt-lg q-pl-lg"
-                style="height:100px;width:300px;"
+                style="height: 100px; width: 300px"
                 flat
                 bordered
               >

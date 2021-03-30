@@ -4,3 +4,6 @@ export function setClaims(state, claims) {
 export function setPolicy(state, policy) {
   state.policy = policy;
 }
+export function setLossInfo(state, claims) {
+  state.lossInfo = claims;
+}
