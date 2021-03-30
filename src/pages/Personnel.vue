@@ -221,10 +221,13 @@ export default {
         const payload = {
           id: this.selectedClaimId,
           companyData: {
-            id: this.companyPersonnelPost.personnel.id,
-            name: this.companyPersonnelPost.personParty,
-            role: this.companyPersonnelPost.personnel.role,
-            note: this.companyPersonnelPost.notes
+            personnel: {
+              id: this.companyPersonnelPost.personnel.id,
+              name: this.companyPersonnelPost.personParty.name,
+              role: this.companyPersonnelPost.personnel.role,
+              note: this.companyPersonnelPost.notes,
+              fees: this.companyPersonnelPost.claimFeeRate
+            }
           }
         };
         this.addCompanyPersonnel(payload);

@@ -25,9 +25,9 @@ export async function addCompanyPersonnel({ dispatch, state }, payload) {
   try {
     const { data } = await request.post(
       `/claims/${payload.id}/personnel`,
-      buildApiData('claims', payload.companyData)
+      buildApiData('claimpersonnel', payload.companyData)
     );
-    console.log(data, 89);
+
     dispatch('setLoading', false);
   } catch (e) {
     console.log(e);
