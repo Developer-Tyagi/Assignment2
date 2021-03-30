@@ -232,7 +232,13 @@
             />
           </div>
 
-          <q-input dense v-model="vendor.info.website" label="Website" />
+          <q-input
+            dense
+            v-model="vendor.info.website"
+            label="Website"
+            lazy-rules
+            :rules="[val => validateUrl(val) || 'Please fill your website']"
+          />
           <q-input dense v-model="vendor.info.notes" label="Notes" />
         </div>
         <q-btn
@@ -255,7 +261,7 @@ import { mapGetters, mapActions } from 'vuex';
 import { constants } from '@utils/constant';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import CustomBar from 'components/CustomBar';
-import { validateEmail } from '@utils/validation';
+import { validateEmail, validateUrl } from '@utils/validation';
 
 export default {
   name: 'AddVendor',
@@ -386,6 +392,7 @@ export default {
       'getVendors'
     ]),
     validateEmail,
+    validateUrl,
 
     searchFilterBy(val, update) {
       this.vendor.industry.value = null;
