@@ -3,6 +3,8 @@ export default function() {
     claims: [],
     personnel: [],
     policy: [],
-    lossInfo: []
+    lossInfo: [],
+    settlementType: [],
+    settlement: []
   };
 }

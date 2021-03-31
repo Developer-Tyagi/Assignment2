@@ -11,3 +11,14 @@ export function setPolicy(state, policy) {
 export function setLossInfo(state, claims) {
   state.lossInfo = claims;
 }
+
+export function setSettlementTypes(state, settlementType) {
+  state.settlementType = settlementType.map(action => ({
+    value: action.attributes.value,
+    id: action.id,
+    machineValue: action.attributes.machineValue
+  }));
+}
+export function setSettlements(state, settlement) {
+  state.settlement = settlement;
+}

@@ -153,3 +153,62 @@ export async function updateLossInfo({ dispatch, state }, payload) {
     return false;
   }
 }
+// today
+export async function getSettlements({ commit, dispatch }, id) {
+  dispatch('setLoading', true);
+  const ids = '605eec53ec51198842cb05e2';
+  try {
+    const { data } = await request.get(`/claims/${ids}/settlements`);
+    console.log(data, 'settteee');
+
+    commit('setSettlements', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response.data.title
+    });
+  }
+}
+export async function getSettlementTypes({ commit, dispatch }) {
+  dispatch('setLoading', true);
+
+  try {
+    const { data } = await request.get('/settlementtypes');
+    console.log(data, 'settletype');
+
+    commit('setSettlementTypes', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response.data.title
+    });
+  }
+}
+
+export async function addSettlement({ dispatch, state }, payload) {
+  console.log('in');
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      `/claims/${payload.id}/settlements`,
+      buildApiData('claimsettlements', payload.data)
+    );
+
+    dispatch('setLoading', false);
+    return data;
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response.data.title
+    });
+    return false;
+  }
+}
