@@ -508,7 +508,10 @@
         />
         <div class="mobile-container-page-without-search">
           <q-form ref="expertVendorInfoForm" class="form-height">
-            <ExpertVendorInfo :expertVendorInfo="expertVendorInfo" />
+            <ExpertVendorInfo
+              :expertVendorInfo="expertVendorInfo"
+              @addAnotherVendor="addAnotherVendor"
+            />
           </q-form>
 
           <q-btn
@@ -1146,6 +1149,7 @@ export default {
       'addIndustry'
     ]),
     ...mapMutations(['setSelectedLead']),
+
     // For adding multiple Contact Numbers in ClientInfo
     addAnotherContact() {
       let len = this.phoneNumber.length;
@@ -1160,6 +1164,21 @@ export default {
           position: 'top',
           type: 'negative'
         });
+      }
+    },
+    async addAnotherVendor() {
+      const success = await this.$refs.expertVendorInfoForm.validate();
+      if (success) {
+        this.expertVendorInfo.industry.push({
+          id: this.expertVendorInfo.industry.id,
+          value: this.expertVendorInfo.industry.value
+        });
+        let len = this.expertVendorInfo.vendors.length;
+        this.expertVendorInfo.vendors.push({
+          id: this.expertVendorInfo.vendors[len - 1].id,
+          value: this.expertVendorInfo.vendors[len - 1].value
+        });
+        this.expertVendorInfo.vendors[len].value = 'Select Vendor';
       }
     },
     RemoveAnotherContact() {
