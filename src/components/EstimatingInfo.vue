@@ -25,16 +25,25 @@
       </div>
     </div>
     <q-input
+      dense
       v-model="estimatingInfo.estimatorToBeAssigned"
       label="Estimator to be assigned"
+      dense
+      class="input-extra-padding"
     />
     <q-input
+      dense
       v-model="estimatingInfo.scopeTimeNeeded"
       label="Scope time needed"
+      dense
+      class="input-extra-padding"
     />
     <q-input
+      dense
       v-model="estimatingInfo.notesToTheEstimator"
       label="Notes to the estimator"
+      dense
+      class="input-extra-padding"
     />
 
     <!-- Estimators List Dialog -->
@@ -52,12 +61,12 @@
         />
         <div class="vendor-list">
           <div class="actions-div">
-            <q-input placeholder="Search" borderless class="full-width">
+            <q-input dense placeholder="Search" borderless class="full-width">
               <template v-slot:prepend>
                 <q-icon name="search" />
               </template>
             </q-input>
-            <q-separator vertical inset></q-separator>
+            <q-separator vertical></q-separator>
             <q-btn
               @click="
                 estimatingInfo.addEstimatorDialog = true;
@@ -94,10 +103,10 @@
           :dialogName="'Add New Estimator'"
         />
         <div class="mobile-container-page-without-search">
-          <q-form ref="addEstimatorForm" class="form-height"
-            >{{}}
+          <q-form ref="addEstimatorForm" class="form-height">
             <q-select
               class="required"
+              dense
               v-model="estimatingInfo.honorific3.id"
               :options="titles"
               option-value="id"
@@ -116,6 +125,7 @@
 
             <q-input
               class="required"
+              dense
               v-model="estimatingInfo.fname"
               lazy-rules
               :rules="[
@@ -124,9 +134,15 @@
               label="First Name"
             />
 
-            <q-input v-model="estimatingInfo.lname" label="Last Name" />
+            <q-input
+              v-model="estimatingInfo.lname"
+              label="Last Name"
+              dense
+              class="input-extra-padding"
+            />
             <q-input
               class="required"
+              dense
               v-model="estimatingInfo.email"
               label="Email"
               lazy-rules
@@ -138,7 +154,7 @@
             />
             <div class="row justify-between">
               <q-select
-                class="col-5"
+                class="col-5 input-extra-padding"
                 v-model="estimatingInfo.type"
                 :options="contactTypes"
                 option-value="machineValue"
@@ -147,9 +163,12 @@
                 options-dense
                 emit-value
                 label="Type"
+                dense
+                behavior="menu"
               />
               <q-input
-                class="col-6"
+                dense
+                class="col-6 input-extra-padding"
                 v-model.number="estimatingInfo.phone"
                 label="Phone"
                 mask="(###) ###-####"

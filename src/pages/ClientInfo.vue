@@ -220,6 +220,7 @@
           <div class="mobile-container-page-without-search form-height">
             <q-form ref="clientForm">
               <q-select
+                dense
                 class="required"
                 v-model="client.id"
                 option-value="id"
@@ -237,6 +238,7 @@
               />
               <span class="form-heading">Insured Details</span>
               <q-select
+                dense
                 v-model="honorific1.id"
                 class="required"
                 :options="titles"
@@ -255,6 +257,7 @@
                 ]"
               />
               <q-input
+                dense
                 class="required"
                 v-model="insuredDetails.fname"
                 lazy-rules
@@ -264,6 +267,7 @@
                 label="First Name"
               />
               <q-input
+                dense
                 v-model="insuredDetails.lname"
                 class="required"
                 lazy-rules
@@ -286,6 +290,7 @@
 
               <div v-if="primaryDetails.isOrganization">
                 <q-input
+                  dense
                   v-model="primaryDetails.organizationName"
                   label="Organization Name"
                   class="required"
@@ -309,6 +314,7 @@
 
               <div class="row justify-between">
                 <q-select
+                  dense
                   v-model="insuredDetails.type"
                   class="required col-5"
                   :options="contactTypes"
@@ -324,6 +330,7 @@
                   ]"
                 />
                 <q-input
+                  dense
                   v-model.number="insuredDetails.phone"
                   class="required col-6"
                   label="Phone"
@@ -337,6 +344,7 @@
                 />
               </div>
               <q-input
+                dense
                 v-model="insuredDetails.email"
                 class="required"
                 label="Email"
@@ -356,6 +364,7 @@
                 <span class="form-heading">Co-insured Details</span>
 
                 <q-select
+                  dense
                   v-model="honorific2.id"
                   class="required"
                   :options="titles"
@@ -372,10 +381,19 @@
                     val => (val && val.length > 0) || 'Please select the Title'
                   ]"
                 />
-                <q-input v-model="coInsuredDetails.fname" label="First Name" />
-                <q-input v-model="coInsuredDetails.lname" label="Last Name" />
+                <q-input
+                  dense
+                  v-model="coInsuredDetails.fname"
+                  label="First Name"
+                />
+                <q-input
+                  dense
+                  v-model="coInsuredDetails.lname"
+                  label="Last Name"
+                />
                 <div class="row justify-between">
                   <q-select
+                    dense
                     v-model="coInsuredDetails.type"
                     class="required col-5"
                     :options="contactTypes"
@@ -393,6 +411,7 @@
                     ]"
                   />
                   <q-input
+                    dense
                     v-model.number="coInsuredDetails.phone"
                     label="Phone"
                     class="required col-6"
@@ -406,6 +425,7 @@
                   />
                 </div>
                 <q-input
+                  dense
                   v-model="coInsuredDetails.email"
                   input
                   type="email"
@@ -433,6 +453,7 @@
                   v-if="index >= 0"
                 >
                   <q-select
+                    dense
                     v-model="phoneNumber[index].type"
                     class="required col-5"
                     label="Type"
@@ -449,6 +470,7 @@
                     ]"
                   />
                   <q-input
+                    dense
                     v-model.number="phoneNumber[index].number"
                     label="Phone"
                     class="required col-6"
@@ -496,10 +518,15 @@
               </div>
 
               <div v-if="tenantOccupiedToggle">
-                <q-input v-model="tenantOccupied.name" label="Tenant Name" />
+                <q-input
+                  dense
+                  v-model="tenantOccupied.name"
+                  label="Tenant Name"
+                />
 
                 <div class="row justify-between">
                   <q-select
+                    dense
                     class="required col-5"
                     v-model="tenantOccupied.type"
                     label="Type"
@@ -516,6 +543,7 @@
                     ]"
                   />
                   <q-input
+                    dense
                     class="required col-6"
                     v-model.number="tenantOccupied.phone"
                     label="Phone"
@@ -676,6 +704,7 @@ export default {
       this.$router.push('/clients');
     }
   },
+
   created() {
     this.getClientTypes();
     this.getTitles();
@@ -731,24 +760,9 @@ export default {
       this.tenantOccupied.phone = this.editSelectedClient.attributes.insuredInfo.tenantInfo.phoneNumber.number;
     }
     // Client Address Editable & prefilled Details
-    this.clientAddressDetails.addressCountry = this.editSelectedClient.attributes.insuredInfo.mailingAddress.addressCountry;
-    this.clientAddressDetails.addressRegion = this.editSelectedClient.attributes.insuredInfo.mailingAddress.addressRegion;
-    this.clientAddressDetails.addressLocality = this.editSelectedClient.attributes.insuredInfo.mailingAddress.addressLocality;
-    this.clientAddressDetails.postalCode = this.editSelectedClient.attributes.insuredInfo.mailingAddress.postalCode;
-    this.clientAddressDetails.streetAddress = this.editSelectedClient.attributes.insuredInfo.mailingAddress.streetAddress;
-    this.clientAddressDetails.houseNumber = this.editSelectedClient.attributes.insuredInfo.mailingAddress.houseNumber;
-    this.clientAddressDetails.dropBox.info = this.editSelectedClient.attributes.insuredInfo.mailingAddress.dropBox.info;
-    this.clientAddressDetails.dropBox.isPresent = this.editSelectedClient.attributes.insuredInfo.mailingAddress.dropBox.isPresent;
-
+    this.clientAddressDetails = this.editSelectedClient.attributes.insuredInfo.address;
     // Mailing  Address Editable & prefilled Details
-    this.mailingAddressDetails.addressCountry = this.editSelectedClient.attributes.insuredInfo.mailingAddress.addressCountry;
-    this.mailingAddressDetails.addressRegion = this.editSelectedClient.attributes.insuredInfo.mailingAddress.addressRegion;
-    this.mailingAddressDetails.addressLocality = this.editSelectedClient.attributes.insuredInfo.mailingAddress.addressLocality;
-    this.mailingAddressDetails.postalCode = this.editSelectedClient.attributes.insuredInfo.mailingAddress.postalCode;
-    this.mailingAddressDetails.streetAddress = this.editSelectedClient.attributes.insuredInfo.mailingAddress.streetAddress;
-    this.mailingAddressDetails.houseNumber = this.editSelectedClient.attributes.insuredInfo.mailingAddress.houseNumber;
-    this.mailingAddressDetails.dropBox.info = this.editSelectedClient.attributes.insuredInfo.mailingAddress.dropBox.info;
-    this.mailingAddressDetails.dropBox.isPresent = this.editSelectedClient.attributes.insuredInfo.mailingAddress.dropBox.isPresent;
+    this.mailingAddressDetails = this.editSelectedClient.attributes.insuredInfo.mailingAddress;
   },
 
   methods: {
@@ -769,10 +783,19 @@ export default {
     },
     // For adding multiple Contact Numbers in ClientInfo
     addAnotherContact() {
-      this.phoneNumber.push({
-        type: '',
-        number: ''
-      });
+      let len = this.phoneNumber.length;
+      if (this.phoneNumber[len - 1].number) {
+        this.phoneNumber.push({
+          type: '',
+          number: ''
+        });
+      } else {
+        this.$q.notify({
+          message: 'Please fill the above contact first',
+          position: 'top',
+          type: 'negative'
+        });
+      }
     },
     RemoveAnotherContact() {
       this.phoneNumber.pop();
@@ -892,7 +915,7 @@ export default {
       this.$q.notify({
         type: 'positive',
         message: `Client Info Updated Successfully!`,
-        position: 'center'
+        position: 'top'
       });
     },
     setTitleName(val) {

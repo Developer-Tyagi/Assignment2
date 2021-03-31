@@ -149,6 +149,12 @@ const routes = [
         component: () => import('pages/ClaimSummary.vue')
       },
       {
+        path: 'loss-info',
+        name: 'loss info ',
+        caseSensitive: true,
+        component: () => import('src/pages/UpdateLossInfo.vue')
+      },
+      {
         path: 'client-documents',
         name: 'Documents',
         caseSensitive: true,
@@ -161,22 +167,34 @@ const routes = [
         component: () => import('pages/PropertyInfo.vue')
       },
       {
+        path: 'claim-notes',
+        name: 'notes ',
+        caseSensitive: true,
+        component: () => import('pages/ClaimNotes.vue')
+      },
+      {
         path: 'note-details',
-        name: 'Notes ',
+        name: 'Notes',
         caseSensitive: true,
         component: () => import('pages/Notes.vue')
+      },
+      {
+        path: 'company-personnel',
+        name: 'Company Personnel',
+        caseSensitive: true,
+        component: () => import('src/pages/Personnel.vue')
+      },
+      {
+        path: 'insurance-policy',
+        name: 'Insurance Policy ',
+        caseSensitive: true,
+        component: () => import('pages/InsurancePolicy.vue')
       },
       {
         path: 'activity-log',
         name: 'Activity Log And Message ',
         caseSensitive: true,
         component: () => import('pages/ActivityLog.vue')
-      },
-      {
-        path: 'insurance-policy',
-        name: 'insurancy policy',
-        caseSensitive: true,
-        component: () => import('pages/InsurancePolicy.vue')
       },
       {
         path: 'add-client',

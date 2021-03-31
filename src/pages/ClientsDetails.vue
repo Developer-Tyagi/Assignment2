@@ -6,7 +6,7 @@
         'mobile-container-page': $q.platform.is.iphone
       }"
     >
-      <div class="q-pa-lg column full-height">
+      <div class="q-pa-xs column full-height">
         <div
           v-for="dialogBox in dialogBoxes"
           :key="dialogBox.name"

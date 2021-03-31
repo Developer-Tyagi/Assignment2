@@ -3,6 +3,7 @@
     <div>
       <div class="actions-div">
         <q-input
+          dense
           v-model="searchText"
           placeholder="Search"
           borderless
@@ -19,7 +20,7 @@
           @click="onSearchBackButtonClick"
           style="margin: 0 20px"
         />
-        <q-separator vertical inset></q-separator>
+        <q-separator vertical></q-separator>
         <q-btn @click="addInspectionDialog = true" flat
           ><img src="~assets/add.svg" />
         </q-btn>
@@ -69,11 +70,13 @@
               :key="index"
             >
               <q-input
+                dense
                 v-model="inspectionType.value"
                 placeholder="Type of Inspection"
                 v-if="index == 0"
               />
               <q-input
+                dense
                 placeholder="Sub Type of Inspection"
                 v-model="inspectionType.subtypes[index].value"
               />

@@ -1,6 +1,10 @@
 export default function() {
   return {
     claims: [],
-    log: []
+    log: [],
+    claimNotes: [],
+    personnel: [],
+    policy: [],
+    lossInfo: []
   };
 }

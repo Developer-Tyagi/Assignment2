@@ -2,6 +2,7 @@
   <q-page>
     <div class="actions-div">
       <q-input
+        dense
         v-model="searchText"
         placeholder="Search"
         borderless
@@ -18,7 +19,7 @@
         @click="onSearchBackButtonClick"
         style="margin: 0 20px"
       />
-      <q-separator vertical inset></q-separator>
+      <q-separator vertical></q-separator>
       <q-btn @click="addLead" flat><img src="~assets/add.svg"/></q-btn>
     </div>
     <div class="mobile-container-page">

@@ -11,6 +11,7 @@
           </center>
           <div class="my-font q-mx-xl q-mt-lg">Password</div>
           <q-input
+            dense
             type="password"
             class="q-mx-xl"
             filled
@@ -23,6 +24,7 @@
           />
           <div class="my-font q-mx-xl q-mt-lg">Confirm Password</div>
           <q-input
+            dense
             type="password"
             class="q-mx-xl"
             filled

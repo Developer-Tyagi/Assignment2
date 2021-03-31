@@ -6,7 +6,7 @@
           ><img src="~assets/add.svg"
         /></q-btn>
       </div>
-      <div class="mobile-container-page ">
+      <div class="mobile-container-page form-height ">
         <div class="clients-list" v-if="setClientProperty.length">
           <!-- This is for showing the Property details  -->
           <div
@@ -14,79 +14,99 @@
             v-for="i in setClientProperty.length"
             :key="setClientProperty.id"
           >
-            <div class="row ">
-              <span class="col-10"></span>
-              <q-icon
-                size="xs"
-                name="create"
-                color="primary"
-                class=" col q-pt-xs"
-                @click="editClientInfoDailog = true"
-              ></q-icon>
-            </div>
-            <div class="client-list-item">
-              <span class=" form-heading">
+            <div v-if="setClientProperty">
+              <div class="row">
+                <span class="col-10 "></span>
+                <q-icon
+                  size="xs"
+                  name="create"
+                  color="primary"
+                  class="edit-icon q-mt-xs"
+                  @click="editClientInfoDailog = true"
+                ></q-icon>
+              </div>
+              <div class="client-list-item">
+                <span class="form-heading">
+                  {{
+                    setClientProperty[i - 1].attributes.name
+                      ? setClientProperty[i - 1].attributes.name
+                      : '-'
+                  }}
+                </span>
+
+                <br />
                 {{
-                  setClientProperty[i - 1].attributes.name
-                    ? setClientProperty[i - 1].attributes.name
+                  setClientProperty[i - 1].attributes.streetAddress
+                    ? setClientProperty[i - 1].attributes.streetAddress
+                    : '-'
+                }}<br />
+                {{
+                  setClientProperty[i - 1].attributes.addressRegion
+                    ? setClientProperty[i - 1].attributes.addressRegion
                     : '-'
                 }}
-              </span>
-
-              <br />
-              {{
-                setClientProperty[i - 1].attributes.streetAddress
-                  ? setClientProperty[i - 1].attributes.streetAddress
-                  : '-'
-              }}<br />
-              {{
-                setClientProperty[i - 1].attributes.addressRegion
-                  ? setClientProperty[i - 1].attributes.addressRegion
-                  : '-'
-              }}
-              {{
-                setClientProperty[i - 1].attributes.addressCountry
-                  ? setClientProperty[i - 1].attributes.addressCountry
-                  : '-'
-              }}<br />
-              {{
-                setClientProperty[i - 1].attributes.addressLocality
-                  ? setClientProperty[i - 1].attributes.addressLocality
-                  : '-'
-              }}<br />
-              {{
-                setClientProperty[i - 1].attributes.houseNumber
-                  ? setClientProperty[i - 1].attributes.houseNumber
-                  : '-'
-              }}<br />
-              <q-separator v-if="setClientProperty[i - 1].attributes.claims" />
-              <div
-                class="q-mt-sm"
-                v-for="claim in setClientProperty[i - 1].attributes.claims"
-                :key="claim.id"
-              >
-                <q-item-section @click="onClickClaimNumber(claim)">
-                  <div class="row">
-                    <span class="text-bold">Last Updated on : </span>
-                    {{ claim.updated | moment('DD/MM/YYYY') }}
-                    <q-badge class="q-ml-auto">{{
-                      claim.status ? claim.status : '-'
-                    }}</q-badge
+                {{
+                  setClientProperty[i - 1].attributes.addressCountry
+                    ? setClientProperty[i - 1].attributes.addressCountry
+                    : '-'
+                }}<br />
+                {{
+                  setClientProperty[i - 1].attributes.addressLocality
+                    ? setClientProperty[i - 1].attributes.addressLocality
+                    : '-'
+                }}<br />
+                {{
+                  setClientProperty[i - 1].attributes.houseNumber
+                    ? setClientProperty[i - 1].attributes.houseNumber
+                    : '-'
+                }}<br />
+                <q-separator
+                  v-if="setClientProperty[i - 1].attributes.claims"
+                />
+                <div
+                  class="q-mt-sm"
+                  v-for="claim in setClientProperty[i - 1].attributes.claims"
+                  :key="claim.id"
+                >
+                  <q-item-section @click="onClickClaimNumber(claim)">
+                    <div class="row">
+                      <span class="text-bold">Last Updated on : </span>
+                      {{ claim.updated | moment('DD/MM/YYYY') }}
+                      <q-badge class="q-ml-auto">{{
+                        claim.status ? claim.status : '-'
+                      }}</q-badge
+                      ><br />
+                    </div>
+                    <span class="form-heading">Claim Number: </span
+                    ><span @click="onClickClaimNumber(claim)" class="click-link"
+                      >{{ claim.number ? claim.number : '-' }} </span
                     ><br />
-                  </div>
-                  <span class="form-heading">Claim Number: </span
-                  ><span @click="onClickClaimNumber(claim)" class="click-link"
-                    >{{ claim.number ? claim.number : '-' }} </span
-                  ><br />
-                  <q-separator />
-                  <span class="form-heading">File Number: </span
-                  >{{ claim.fileNumber ? claim.fileNumber : '-' }} <br />
-                  <span class="form-heading"> Current Phase: </span
-                  >{{ claim.phase ? claim.phase : '-' }}
-                </q-item-section>
+                    <q-separator />
+                    <span class="form-heading">File Number: </span
+                    >{{ claim.fileNumber ? claim.fileNumber : '-' }} <br />
+                    <span class="form-heading"> Current Phase: </span
+                    >{{ claim.phase ? claim.phase : '-' }}
+                  </q-item-section>
+                </div>
               </div>
+              <q-separator />
             </div>
-            <q-separator />
+          </div>
+        </div>
+        <div v-else class="full-height full-width column">
+          <div class="column absolute-center">
+            <div style="color: #666666,align-items: center">
+              You haven't added a property yet.
+            </div>
+
+            <img
+              class="q-mx-lg q-pt-sm"
+              src="~assets/add.svg"
+              alt="add_icon"
+              width="130px"
+              height="100px"
+              @click="addNewPropertyDialog = true"
+            />
           </div>
         </div>
       </div>
@@ -100,28 +120,20 @@
       transition-hide="slide-down"
     >
       <q-card>
-        <CustomBar />
-        <q-header bordered class="bg-white">
-          <q-toolbar class="row bg-white">
-            <img
-              src="~assets/close.svg"
-              alt="back-arrow"
-              @click="addNewPropertyDialog = false"
-              style="margin: auto 0"
-            />
-            <div class="text-uppercase text-bold text-black q-mx-auto">
-              Add New Property
-            </div>
-          </q-toolbar>
-        </q-header>
-        <div class="mobile-container-page-without-search q-ma-sm">
+        <CustomBar
+          @closeDialog="addNewPropertyDialog = false"
+          :dialogName="'Add New Property'"
+        />
+        <div class="mobile-container-page-without-search q-pa-md">
           <q-form ref="propertyAddressForm" class="form-height">
             <q-input
+              dense
               class="full-width"
               v-model="propertyName"
               label=" Property Name"
             />
             <q-select
+              dense
               class="required"
               v-model="property.id"
               option-value="id"
@@ -193,6 +205,9 @@ export default {
 
   components: { CustomBar, AutoCompleteAddress },
   created() {
+    if (!this.selectedClientId) {
+      this.$router.push('/clients');
+    }
     this.getPropertyTypes();
     this.getSingleClientProperty(this.selectedClientId);
   },
@@ -247,17 +262,28 @@ export default {
           }
         };
         await this.addPropertyAddress(payload);
-        this.successMessage();
 
+        this.successMessage();
         this.addNewPropertyDialog = false;
-        this.getSingleClientProperty(this.setClientProperty.id);
+        this.propertyName = '';
+        this.propertyAddressDetails.addressCountry = '';
+        this.propertyAddressDetails.addressLocality = '';
+        this.propertyAddressDetails.addressRegion = '';
+        this.propertyAddressDetails.postalCode = '';
+        this.propertyAddressDetails.streetAddress = '';
+        this.propertyAddressDetails.houseNumber = '';
+        this.property.id = '';
+        this.property.value = '';
+        this.property.machineValue = '';
+
+        this.getSingleClientProperty(this.selectedClientId);
       }
     },
     successMessage() {
       this.$q.notify({
         type: 'positive',
         message: `Property Address Updated Successfully!`,
-        position: 'center'
+        position: 'top'
       });
     }
   }
@@ -283,5 +309,15 @@ export default {
       margin: 0 0 6px;
     }
   }
+}
+.form-height {
+  height: calc(100vh - 150px);
+  overflow: auto;
+  margin: 10px;
+}
+.edit-icon {
+  position: absolute;
+  right: 20px;
+  font-size: 20px;
 }
 </style>

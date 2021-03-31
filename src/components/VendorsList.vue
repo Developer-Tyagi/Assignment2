@@ -7,6 +7,7 @@
   >
     <div class="actions-div">
       <q-input
+        dense
         v-model="searchText"
         placeholder="Search"
         borderless
@@ -35,7 +36,7 @@
         style="font-weight: 400"
         >Clear</q-btn
       >
-      <q-separator vertical inset></q-separator>
+      <q-separator vertical></q-separator>
       <q-btn @click="onAddButtonClick" flat><img src="~assets/add.svg"/></q-btn>
     </div>
     <div class="mobile-container-page">

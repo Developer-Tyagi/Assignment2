@@ -82,12 +82,15 @@ export async function addUser({ dispatch, state }, payload) {
       buildApiData('users', payload)
     );
     dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'User created'
+    });
   } catch (e) {
-    console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response.data.title
+      message: e.response[0].detail
     });
   }
 }
