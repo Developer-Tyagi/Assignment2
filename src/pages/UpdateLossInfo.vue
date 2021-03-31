@@ -276,7 +276,7 @@ export default {
       this.$q.notify({
         type: 'positive',
         message: `Loss Info Updated Successfully!`,
-        position: 'center'
+        position: 'top'
       });
     },
     async onSaveButtonClick() {
@@ -287,16 +287,21 @@ export default {
           id: this.selectedClaimId,
           lossInfo: {
             address: {
-              addressCountry: 'USA',
-              addressLocality: 'Mountain View',
-              addressRegion: 'California',
-              postalCode: '94043',
-              streetAddress: '1600 Amphitheatre Pkwy',
+              addressCountry: this.lossInfo.attributes.lossInfo.address
+                .addressCountry,
+              addressLocality: this.lossInfo.attributes.lossInfo.address
+                .addressLocality,
+              addressRegion: this.lossInfo.attributes.lossInfo.address
+                .addressRegion,
+              postalCode: this.lossInfo.attributes.lossInfo.address.postalCode,
+              streetAddress: this.lossInfo.attributes.lossInfo.address
+                .streetAddress,
               dropBox: {
-                info: 'DropBox info',
-                isPresent: false
+                info: this.lossInfo.attributes.lossInfo.address.dropBox.info,
+                isPresent: this.lossInfo.attributes.lossInfo.address.dropBox
+                  .isPresent
               },
-              houseNumber: '1221'
+              houseNumber: this.lossInfo.attributes.lossInfo.address.houseNumber
             },
             isNewAddress: false,
             lossAddressName: this.lossDetails.lossAddressName,

@@ -189,7 +189,7 @@
               </div>
               <q-select
                 dense
-                class="required input-extra-padding"
+                class=" input-extra-padding"
                 v-model="lossDetails.causeOfLoss.id"
                 option-value="id"
                 option-label="name"
