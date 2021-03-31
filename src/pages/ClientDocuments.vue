@@ -29,23 +29,8 @@
             class="q-ml-sm"
           />
         </div>
-        <!-- <q-btn-dropdown color="primary" v-else>
-          <q-list>
-            <q-item clickable v-close-popup @click="addFileDialog = true">
-              <q-item-section>
-                <q-item-label>Add file</q-item-label>
-              </q-item-section>
-            </q-item>
-
-            <q-item clickable v-close-popup @click="addFolderDialog = true">
-              <q-item-section>
-                <q-item-label>Add folder</q-item-label>
-              </q-item-section>
-            </q-item>
-          </q-list>
-        </q-btn-dropdown> -->
       </div>
-      <div>
+      <div class="mobile-container-page overflow-y">
         <div
           v-if="depth.length > 1"
           class="row-div vertical-center q-px-md q-py-xs"
@@ -210,6 +195,7 @@ export default {
           link: document.attributes.webViewLink
         }));
         this.addFolderDialog = false;
+        this.folderName = '';
         this.setLoading(false);
       }
     },
