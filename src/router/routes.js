@@ -167,6 +167,12 @@ const routes = [
         component: () => import('pages/PropertyInfo.vue')
       },
       {
+        path: 'claim-notes',
+        name: 'notes ',
+        caseSensitive: true,
+        component: () => import('pages/ClaimNotes.vue')
+      },
+      {
         path: 'note-details',
         name: 'Notes',
         caseSensitive: true,
