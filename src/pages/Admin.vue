@@ -635,7 +635,7 @@ export default {
       indexOfSubTypeForComp: '',
       indexOfSubOfSubType: 0,
 
-      addDefaultActionDialogBox: true,
+      addDefaultActionDialogBox: false,
       model: null,
       options: ['Bussiness', 'Industry'],
       tab: '',

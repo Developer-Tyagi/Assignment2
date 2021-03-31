@@ -20,7 +20,7 @@
           @click="onSearchBackButtonClick"
           style="margin: 0 20px"
         />
-        <q-separator vertical inset></q-separator>
+        <q-separator vertical></q-separator>
         <q-btn @click="addInspectionDialog = true" flat
           ><img src="~assets/add.svg" />
         </q-btn>

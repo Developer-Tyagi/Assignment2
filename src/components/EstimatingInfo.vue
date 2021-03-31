@@ -66,7 +66,7 @@
                 <q-icon name="search" />
               </template>
             </q-input>
-            <q-separator vertical inset></q-separator>
+            <q-separator vertical></q-separator>
             <q-btn
               @click="
                 estimatingInfo.addEstimatorDialog = true;

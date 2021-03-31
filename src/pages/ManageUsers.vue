@@ -2,29 +2,20 @@
   <q-page>
     <div class="q-pa-md height-without-header">
       <div class="row justify-between">
-        <div class="col-4">
-          <q-input
-            dense
-            outlined
-            v-model="searchText"
-            dense
-            placeholder="Search"
-          >
-            <template v-slot:append>
-              <q-icon name="search" />
-            </template>
-          </q-input>
-        </div>
-        <div class="col-4 row justify-between text-bold">
-          <q-card flat bordered class="q-pa-sm"
+        <div class="row justify-between text-bold q-ml-auto">
+          <q-card flat bordered class="q-pa-sm q-ml-md"
             >Licenses available- {{ '5' }}</q-card
           >
 
-          <q-card flat bordered class="q-pa-sm"
+          <q-card flat bordered class="q-pa-sm q-ml-md"
             >Total Users - {{ allUsers.length }}</q-card
           >
 
-          <q-btn color="primary" @click="addUserDialogBox = true">
+          <q-btn
+            color="primary"
+            class="q-ml-md"
+            @click="addUserDialogBox = true"
+          >
             Add New User
           </q-btn>
         </div>
@@ -54,7 +45,7 @@
                 }}
                 {{ user.attributes.contact.lname }}
               </td>
-              <td class="  text-primary text-center">
+              <td class="text-primary text-center">
                 <span
                   class="clickable"
                   v-if="user.attributes.email"
@@ -62,27 +53,30 @@
                   >{{ user.attributes.email }}</span
                 ><span v-else> - </span>
               </td>
-              <td class=" text-primary text-center">
+              <td class="text-primary text-center">
                 <span
                   class="clickable"
-                  v-if="5567656"
-                  @click="onPhoneNumberClick(24355732, $event)"
-                  >{{ 243557388 }}</span
+                  v-if="
+                    user.attributes['phoneNumber'] &&
+                      user.attributes['phoneNumber']['number']
+                  "
+                  @click="
+                    onPhoneNumberClick(user.attributes.phoneNumber, $event)
+                  "
+                  >{{ user.attributes.phoneNumber['number'] }}</span
                 ><span v-else> - </span>
               </td>
-              <td class="text-center">{{ date }}</td>
+              <td class="text-center">-</td>
               <td class="text-center">
                 {{ user.attributes.roles ? user.attributes.roles[0] : '-' }}
               </td>
-              <td class="text-center">{{ lastAccess }}</td>
+              <td class="text-center">-</td>
 
-              <td class="text-center">
-                {{ status }}
-              </td>
+              <td class="text-center">-</td>
               <td class="text-center">
                 <div>
                   <q-btn-dropdown label="Action" style="width: 100px" outline>
-                    <q-list style="width: 100px;">
+                    <q-list style="width: 100px">
                       <q-item clickable v-close-popup @click="onItemClick">
                         <q-item-section>
                           <q-item-label>View/Edit</q-item-label>
@@ -109,77 +103,89 @@
     </div>
 
     <q-dialog v-model="addUserDialogBox" persistent>
-      <q-card class="col-5">
+      <q-card style="max-width: 70vw">
         <q-bar class="row justify-between bg-primary" style="height: 50px">
           <div class="col-4 q-px-xs text-bold text-white">Add User</div>
-          <q-btn dense flat icon="close" v-close-popup>
+          <q-btn dense flat icon="close" color="white" v-close-popup>
             <q-tooltip>Close</q-tooltip>
           </q-btn>
         </q-bar>
-        <q-form ref="addUserForm">
-          <div class="q-mt-xs row full-width">
-            <div class="col-5 q-mx-md q-mt-lg required">First Name</div>
-            <div class="col-4 q-mx-xl q-mt-lg">Last Name</div>
-          </div>
+        <q-form ref="addUserForm" class="q-pa-xl">
           <div class="row q-mt-xs justify-between full-width">
-            <div class="col-6">
-              <q-input
-                dense
-                v-model="users.contact.fname"
-                class="q-mx-md"
-                style="width: 300px"
-                outlined
-              />
-            </div>
-            <div class="col-6">
-              <q-input
-                dense
-                v-model="users.contact.lname"
-                class="q-mx-md"
-                style="width: 300px"
-                outlined
-              />
-            </div>
-          </div>
-          <div class="q-mt-xs row full-width">
-            <div class="col-5 q-mx-md q-mt-lg">
-              Email <span class="text-red"> * </span>
-            </div>
-            <div class="col-4 q-mx-xl q-mt-lg">
-              Role <span class="text-red"> * </span>
-            </div>
-          </div>
-          <div class="row q-mt-xs justify-between full-width">
-            <div class="col-6 q-mb-lg">
-              <q-input
-                dense
-                v-model="users.email"
-                class="q-mx-md"
-                style="width: 300px"
-                outlined
-                lazy-rules
-                :rules="[
-                  val =>
-                    validateEmail(val) ||
-                    'You have entered an invalid email address!'
-                ]"
-              />
-            </div>
-            <div class="col-6 q-px-md">
-              <select
-                v-model="selectedRole"
-                class="q-ml-md full-width bg-white"
-                style="height: 55px; border: 2px solid lightgrey"
-                @change="onChangingUserRole()"
-              >
-                <optgroup label="Paid">
-                  <option v-for="paid in paidUser">{{ paid.name }}</option>
-                </optgroup>
-                <optgroup label="Unpaid">
-                  <option v-for="paid in unpaidUser">{{ paid.name }}</option>
-                </optgroup>
-              </select>
-            </div>
+            <q-input
+              dense
+              v-model="users.contact.fname"
+              class="q-mx-md col-5 input-extra-padding"
+              outlined
+              label="First name"
+            />
+
+            <q-input
+              dense
+              v-model="users.contact.lname"
+              class="q-mx-md col-5 input-extra-padding"
+              outlined
+              label="Last name"
+            />
+            <q-input
+              dense
+              label="Email"
+              v-model="users.email"
+              class="q-mx-md col-5"
+              outlined
+              lazy-rules
+              :rules="[
+                val =>
+                  validateEmail(val) ||
+                  'You have entered an invalid email address!'
+              ]"
+            />
+            <q-select
+              dense
+              outlined
+              filled
+              options-dense
+              class="q-mx-md col-5 input-extra-padding"
+              v-model="selectedRole"
+              :options="userRole"
+              label="Role"
+              color="primary"
+              options-selected-class="text-deep-orange"
+              lazy-rules
+              :rules="[
+                val => (val && val.length > 0) || 'Please enter the user role!'
+              ]"
+            >
+              <template v-slot:option="scope">
+                <q-expansion-item
+                  expand-separator
+                  group="somegroup"
+                  :default-opened="hasChild(scope)"
+                  header-class="text-weight-bold"
+                  :label="scope.opt.label"
+                >
+                  <template v-for="child in scope.opt.children">
+                    <q-item
+                      :key="child.label"
+                      clickable
+                      v-ripple
+                      v-close-popup
+                      @click="selectedRole = child.label"
+                      :class="{
+                        'bg-light-oragne-1': selectedRole === child.label
+                      }"
+                    >
+                      <q-item-section>
+                        <q-item-label
+                          v-html="child.label"
+                          class="q-ml-md"
+                        ></q-item-label>
+                      </q-item-section>
+                    </q-item>
+                  </template>
+                </q-expansion-item>
+              </template>
+            </q-select>
           </div>
         </q-form>
 
@@ -207,8 +213,16 @@ export default {
     return {
       OnboardingStatus: { isCompleted: true },
       isShowRemoveButton: false,
-      paidUser: [],
-      unpaidUser: [],
+      userRole: [
+        {
+          label: 'Paid',
+          children: []
+        },
+        {
+          label: 'Un-paid',
+          children: []
+        }
+      ],
       optionsRole: ['Manager', 'Staff'],
       typeOfUser: ['User', 'Office Staff', 'Sales'],
       selectedRole: '',
@@ -248,12 +262,27 @@ export default {
     this.getRoles().then(async () => {
       this.roleTypes.forEach(val => {
         if (val.isPaid) {
-          this.paidUser.push(val);
+          this.userRole[0].children.push({
+            label: val.name,
+            value: val.machineValue
+          });
         } else {
-          this.unpaidUser.push(val);
+          this.userRole[1].children.push({
+            label: val.name,
+            value: val.machineValue
+          });
         }
       });
     });
+  },
+
+  watch: {
+    selectedRole(newVal, oldVal) {
+      if (newVal) {
+        var user = this.roleTypes.find(o => o.name === newVal);
+        this.users.roles[0] = user.machineValue;
+      }
+    }
   },
 
   methods: {
@@ -276,49 +305,40 @@ export default {
     //this is important dont remove this function
     onItemClick() {},
 
-    //fThis is for Updating the  Onboarding status
-    SendToDashboard() {
-      this.setOnboard(this.OnboardingStatus);
-      this.$router.push('/dashboard');
-    },
-
     async onSubmit() {
       const success = await this.$refs.addUserForm.validate();
 
       if (success) {
-        if (this.users.roles[0]) {
-          await this.addUser(this.users);
-          this.users = {
-            type: 'user',
-            contact: {
-              fname: '',
-              lname: ''
-            },
-            email: '',
-            roles: []
-          };
-          this.selectedRole = '';
-          await this.getAllUsers();
-          this.addUserDialogBox = false;
-        } else {
-          this.$q.notify({
-            message: ' Role Is  Mandatory',
-            position: 'top',
-            type: 'negative'
-          });
-        }
+        await this.addUser(this.users);
+        await this.getAllUsers();
+        this.addUserDialogBox = false;
+        this.users = {
+          type: 'user',
+          contact: {
+            fname: '',
+            lname: ''
+          },
+          email: '',
+          roles: []
+        };
+        this.selectedRole = '';
       }
     },
 
-    onChangingUserRole(e) {
-      var user = this.roleTypes.find(o => o.name === this.selectedRole);
+    getLabel(scope) {
+      return scope.label;
+    },
 
-      this.users.roles[0] = user.machineValue;
+    hasChild(scope) {
+      return scope.opt.children.some(c => c.label === this.selectedRole);
     }
   }
 };
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
+::-webkit-scrollbar {
+  width: 0px;
+}
 tr:nth-child(even) {
   background-color: $grey-3 !important;
 }
