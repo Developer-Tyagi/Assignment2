@@ -89,7 +89,7 @@
       class="required"
       label="Gate/ Dropbox"
       :disable="!isAddressFieldEnable"
-      :rules="[val => checkValidations(val)]"
+      :rules="[val => checkValidations(val) || 'Please fill the dropbox info']"
     />
   </div>
 </template>

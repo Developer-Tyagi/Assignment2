@@ -677,7 +677,7 @@
         "
       >
         <div class="row">
-          <div class="q-px-xs row">
+          <div class="q-px-xs row ">
             <div v-if="!lossInfo.mortgageDetails[0]['id']">Select Mortgage</div>
             <div
               v-else

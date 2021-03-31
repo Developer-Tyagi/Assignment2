@@ -704,6 +704,7 @@ export default {
       this.$router.push('/clients');
     }
   },
+
   created() {
     this.getClientTypes();
     this.getTitles();
@@ -759,24 +760,9 @@ export default {
       this.tenantOccupied.phone = this.editSelectedClient.attributes.insuredInfo.tenantInfo.phoneNumber.number;
     }
     // Client Address Editable & prefilled Details
-    this.clientAddressDetails.addressCountry = this.editSelectedClient.attributes.insuredInfo.mailingAddress.addressCountry;
-    this.clientAddressDetails.addressRegion = this.editSelectedClient.attributes.insuredInfo.mailingAddress.addressRegion;
-    this.clientAddressDetails.addressLocality = this.editSelectedClient.attributes.insuredInfo.mailingAddress.addressLocality;
-    this.clientAddressDetails.postalCode = this.editSelectedClient.attributes.insuredInfo.mailingAddress.postalCode;
-    this.clientAddressDetails.streetAddress = this.editSelectedClient.attributes.insuredInfo.mailingAddress.streetAddress;
-    this.clientAddressDetails.houseNumber = this.editSelectedClient.attributes.insuredInfo.mailingAddress.houseNumber;
-    this.clientAddressDetails.dropBox.info = this.editSelectedClient.attributes.insuredInfo.mailingAddress.dropBox.info;
-    this.clientAddressDetails.dropBox.isPresent = this.editSelectedClient.attributes.insuredInfo.mailingAddress.dropBox.isPresent;
-
+    this.clientAddressDetails = this.editSelectedClient.attributes.insuredInfo.address;
     // Mailing  Address Editable & prefilled Details
-    this.mailingAddressDetails.addressCountry = this.editSelectedClient.attributes.insuredInfo.mailingAddress.addressCountry;
-    this.mailingAddressDetails.addressRegion = this.editSelectedClient.attributes.insuredInfo.mailingAddress.addressRegion;
-    this.mailingAddressDetails.addressLocality = this.editSelectedClient.attributes.insuredInfo.mailingAddress.addressLocality;
-    this.mailingAddressDetails.postalCode = this.editSelectedClient.attributes.insuredInfo.mailingAddress.postalCode;
-    this.mailingAddressDetails.streetAddress = this.editSelectedClient.attributes.insuredInfo.mailingAddress.streetAddress;
-    this.mailingAddressDetails.houseNumber = this.editSelectedClient.attributes.insuredInfo.mailingAddress.houseNumber;
-    this.mailingAddressDetails.dropBox.info = this.editSelectedClient.attributes.insuredInfo.mailingAddress.dropBox.info;
-    this.mailingAddressDetails.dropBox.isPresent = this.editSelectedClient.attributes.insuredInfo.mailingAddress.dropBox.isPresent;
+    this.mailingAddressDetails = this.editSelectedClient.attributes.insuredInfo.mailingAddress;
   },
 
   methods: {
@@ -797,10 +783,19 @@ export default {
     },
     // For adding multiple Contact Numbers in ClientInfo
     addAnotherContact() {
-      this.phoneNumber.push({
-        type: '',
-        number: ''
-      });
+      let len = this.phoneNumber.length;
+      if (this.phoneNumber[len - 1].number) {
+        this.phoneNumber.push({
+          type: '',
+          number: ''
+        });
+      } else {
+        this.$q.notify({
+          message: 'Please fill the above contact first',
+          position: 'top',
+          type: 'negative'
+        });
+      }
     },
     RemoveAnotherContact() {
       this.phoneNumber.pop();
@@ -920,7 +915,7 @@ export default {
       this.$q.notify({
         type: 'positive',
         message: `Client Info Updated Successfully!`,
-        position: 'center'
+        position: 'top'
       });
     },
     setTitleName(val) {

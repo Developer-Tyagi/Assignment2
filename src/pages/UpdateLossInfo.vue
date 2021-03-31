@@ -51,7 +51,7 @@
                 name="create"
                 color="primary"
                 class=" col q-pa-sm absolute-right "
-                @click="lossInfoDialog = true"
+                @click="onEditIconClick"
               ></q-icon>
             </div>
           </div>
@@ -256,18 +256,6 @@ export default {
       Date.now(),
       'MM/DD/YYYY'
     );
-
-    //This is For Prefilling Values in Loss Info Form
-
-    this.lossDetails.property = this.lossInfo.attributes.lossInfo.propertyType;
-    this.lossDetails.severityOfClaimType = this.lossInfo.attributes.lossInfo.serverity;
-    this.lossDetails.reasonClaim = this.lossInfo.attributes.lossInfo.claimReason;
-    this.lossDetails.deadlineDate = this.lossInfo.attributes.lossInfo.deadlineDate;
-    this.lossDetails.recovDDDate = this.lossInfo.attributes.lossInfo.recovDDDate;
-    this.lossDetails.isTheHomeHabitable = this.lossInfo.attributes.lossInfo.isHabitable;
-    this.lossDetails.femaClaimToggle = this.lossInfo.attributes.lossInfo.isFEMA;
-    this.lossDetails.isStateOfEmergencyToggle = this.lossInfo.attributes.lossInfo.isEmergency;
-    this.lossDetails.causeOfLoss = this.lossInfo.attributes.lossInfo.cause;
   },
   methods: {
     ...mapActions([
@@ -334,6 +322,19 @@ export default {
         this.getLossInfo(this.selectedClaimId);
         this.$router.push('/claim-details');
       }
+    },
+    onEditIconClick() {
+      this.lossInfoDialog = true;
+      //This is For Prefilling Values in Loss Info Form
+      this.lossDetails.property = this.lossInfo.attributes.lossInfo.propertyType;
+      this.lossDetails.severityOfClaimType = this.lossInfo.attributes.lossInfo.serverity;
+      this.lossDetails.reasonClaim = this.lossInfo.attributes.lossInfo.claimReason;
+      this.lossDetails.deadlineDate = this.lossInfo.attributes.lossInfo.deadlineDate;
+      this.lossDetails.recovDDDate = this.lossInfo.attributes.lossInfo.recovDDDate;
+      this.lossDetails.isTheHomeHabitable = this.lossInfo.attributes.lossInfo.isHabitable;
+      this.lossDetails.femaClaimToggle = this.lossInfo.attributes.lossInfo.isFEMA;
+      this.lossDetails.isStateOfEmergencyToggle = this.lossInfo.attributes.lossInfo.isEmergency;
+      this.lossDetails.causeOfLoss = this.lossInfo.attributes.lossInfo.cause;
     }
   }
 };
