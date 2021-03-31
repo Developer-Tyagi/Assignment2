@@ -19,8 +19,10 @@
               <div class="text-h5 text-weight-medium">{{ plan.name }}</div>
               <div>
                 <div>
-                  <span class="text-h5 text-weight-medium"></span
-                  >{{ plan.price }}/mo
+                  <span class="text-h5 text-weight-medium"
+                    >${{ plan.price }}</span
+                  >
+                  /month
                 </div>
                 <div>Starting Price</div>
               </div>
@@ -60,10 +62,9 @@
               <div class="row justify-between">
                 <div class="text-h6 text-weight-medium">Total</div>
                 <div>
-                  <span class="text-h5 text-weight-medium">{{
-                    plans[this.plan - 1].price
-                  }}</span
-                  >/mo
+                  <span class="text-h5 text-weight-medium"
+                    >${{ plans[this.plan - 1].price }}</span
+                  >/month
                 </div>
               </div>
             </q-card-section>
@@ -438,6 +439,7 @@
                     name="ssNumber"
                     color="primary"
                     label="Social Security Number"
+                    class="required"
                     filled
                     lazy-rules
                     :rules="[
@@ -453,6 +455,7 @@
                     name="eiNumber"
                     color="primary"
                     label="Employee Identification Number"
+                    class="required"
                     filled
                     lazy-rules
                     :rules="[
@@ -630,6 +633,10 @@ export default {
       autoPopulateAddress.postalCode = this.getPlaceName('postal_code', place)
         ? place[this.getPlaceName('postal_code', place)].long_name
         : '';
+      if (this.getPlaceName('street_number', place) >= 0) {
+        autoPopulateAddress.houseNumber =
+          place[this.getPlaceName('street_number', place)].long_name;
+      }
       this.isAddressFieldEnable = true;
       this.autocompleteAddress = '';
     },

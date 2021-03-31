@@ -51,7 +51,7 @@
                 name="create"
                 color="primary"
                 class=" col q-pa-sm absolute-right "
-                @click="lossInfoDialog = true"
+                @click="onEditIconClick"
               ></q-icon>
             </div>
           </div>
@@ -256,18 +256,6 @@ export default {
       Date.now(),
       'MM/DD/YYYY'
     );
-
-    //This is For Prefilling Values in Loss Info Form
-
-    this.lossDetails.property = this.lossInfo.attributes.lossInfo.propertyType;
-    this.lossDetails.severityOfClaimType = this.lossInfo.attributes.lossInfo.serverity;
-    this.lossDetails.reasonClaim = this.lossInfo.attributes.lossInfo.claimReason;
-    this.lossDetails.deadlineDate = this.lossInfo.attributes.lossInfo.deadlineDate;
-    this.lossDetails.recovDDDate = this.lossInfo.attributes.lossInfo.recovDDDate;
-    this.lossDetails.isTheHomeHabitable = this.lossInfo.attributes.lossInfo.isHabitable;
-    this.lossDetails.femaClaimToggle = this.lossInfo.attributes.lossInfo.isFEMA;
-    this.lossDetails.isStateOfEmergencyToggle = this.lossInfo.attributes.lossInfo.isEmergency;
-    this.lossDetails.causeOfLoss = this.lossInfo.attributes.lossInfo.cause;
   },
   methods: {
     ...mapActions([
@@ -288,7 +276,7 @@ export default {
       this.$q.notify({
         type: 'positive',
         message: `Loss Info Updated Successfully!`,
-        position: 'center'
+        position: 'top'
       });
     },
     async onSaveButtonClick() {
@@ -299,16 +287,21 @@ export default {
           id: this.selectedClaimId,
           lossInfo: {
             address: {
-              addressCountry: 'USA',
-              addressLocality: 'Mountain View',
-              addressRegion: 'California',
-              postalCode: '94043',
-              streetAddress: '1600 Amphitheatre Pkwy',
+              addressCountry: this.lossInfo.attributes.lossInfo.address
+                .addressCountry,
+              addressLocality: this.lossInfo.attributes.lossInfo.address
+                .addressLocality,
+              addressRegion: this.lossInfo.attributes.lossInfo.address
+                .addressRegion,
+              postalCode: this.lossInfo.attributes.lossInfo.address.postalCode,
+              streetAddress: this.lossInfo.attributes.lossInfo.address
+                .streetAddress,
               dropBox: {
-                info: 'DropBox info',
-                isPresent: false
+                info: this.lossInfo.attributes.lossInfo.address.dropBox.info,
+                isPresent: this.lossInfo.attributes.lossInfo.address.dropBox
+                  .isPresent
               },
-              houseNumber: '1221'
+              houseNumber: this.lossInfo.attributes.lossInfo.address.houseNumber
             },
             isNewAddress: false,
             lossAddressName: this.lossDetails.lossAddressName,
@@ -334,6 +327,19 @@ export default {
         this.getLossInfo(this.selectedClaimId);
         this.$router.push('/claim-details');
       }
+    },
+    onEditIconClick() {
+      this.lossInfoDialog = true;
+      //This is For Prefilling Values in Loss Info Form
+      this.lossDetails.property = this.lossInfo.attributes.lossInfo.propertyType;
+      this.lossDetails.severityOfClaimType = this.lossInfo.attributes.lossInfo.serverity;
+      this.lossDetails.reasonClaim = this.lossInfo.attributes.lossInfo.claimReason;
+      this.lossDetails.deadlineDate = this.lossInfo.attributes.lossInfo.deadlineDate;
+      this.lossDetails.recovDDDate = this.lossInfo.attributes.lossInfo.recovDDDate;
+      this.lossDetails.isTheHomeHabitable = this.lossInfo.attributes.lossInfo.isHabitable;
+      this.lossDetails.femaClaimToggle = this.lossInfo.attributes.lossInfo.isFEMA;
+      this.lossDetails.isStateOfEmergencyToggle = this.lossInfo.attributes.lossInfo.isEmergency;
+      this.lossDetails.causeOfLoss = this.lossInfo.attributes.lossInfo.cause;
     }
   }
 };

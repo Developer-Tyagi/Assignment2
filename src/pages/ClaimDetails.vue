@@ -66,8 +66,10 @@ export default {
         case 'Activity Log & Message Archive':
           break;
         case 'Company Personnel':
+          this.$router.push('/company-personnel');
           break;
         case 'Insurer & Policy':
+          this.$router.push('/insurance-policy');
           break;
         case 'Mortgages and Liens':
           break;

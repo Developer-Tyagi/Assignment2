@@ -298,14 +298,13 @@
             <div class="col-2">
               <q-select
                 dense
-                class="q-pt-xs"
+                class="q-pt-xs input-extra-padding"
                 outlined
                 options-dense
                 v-model="actions.due.type"
                 behavior="menu"
                 option-value="options"
                 :options="options"
-                class="input-extra-padding"
                 label="Type"
               />
             </div>
@@ -636,7 +635,7 @@ export default {
       indexOfSubTypeForComp: '',
       indexOfSubOfSubType: 0,
 
-      addDefaultActionDialogBox: true,
+      addDefaultActionDialogBox: false,
       model: null,
       options: ['Bussiness', 'Industry'],
       tab: '',

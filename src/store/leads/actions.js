@@ -61,13 +61,17 @@ export async function addLeads({ dispatch, state }, payload) {
     );
 
     dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Lead Created'
+    });
     this.$router.push('/leads');
   } catch (e) {
     console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response.data.title
+      message: e.response[0].detail
     });
     return false;
   }

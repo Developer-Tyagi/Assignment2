@@ -8,10 +8,13 @@ export function validateEmail(mail) {
 
 export function validateUrl(url) {
   const regex = /^((https?|ftp|smtp):\/\/)?(www.)?[a-z0-9]+\.[a-z]+(\/[a-zA-Z0-9#]+\/?)*$/;
-  if (regex.test(url)) {
-    return true;
-  } else {
+  if (url) {
+    if (regex.test(url)) {
+      return true;
+    }
     return false;
+  } else {
+    return true;
   }
 }
 
