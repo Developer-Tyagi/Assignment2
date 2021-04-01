@@ -64,6 +64,7 @@ export default {
         case 'Demands And Offers':
           break;
         case 'Activity Log & Message Archive':
+          this.$router.push('/activity-log');
           break;
         case 'Company Personnel':
           this.$router.push('/company-personnel');

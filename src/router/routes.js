@@ -191,6 +191,12 @@ const routes = [
         component: () => import('pages/InsurancePolicy.vue')
       },
       {
+        path: 'activity-log',
+        name: 'Activity Log And Message ',
+        caseSensitive: true,
+        component: () => import('pages/ActivityLog.vue')
+      },
+      {
         path: 'add-client',
         name: 'create client',
         caseSensitive: true,
