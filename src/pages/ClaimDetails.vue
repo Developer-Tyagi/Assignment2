@@ -64,6 +64,11 @@ export default {
         case 'Settlements':
           this.$router.push('/settlements');
           break;
+        case 'Action Items':
+          this.$router.push(`/claim-action-items/${this.selectedClaimId}`);
+          break;
+        case 'Demands And Offers':
+          break;
         case 'Activity Log & Message Archive':
           this.$router.push('/activity-log');
           break;

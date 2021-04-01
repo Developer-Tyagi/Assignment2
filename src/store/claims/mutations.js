@@ -24,6 +24,14 @@ export function setSettlementTypes(state, settlementType) {
     machineValue: action.attributes.machineValue
   }));
 }
+
 export function setSettlements(state, settlement) {
   state.settlement = settlement;
+}
+
+export function setClaimTasks(state, claimTasks) {
+  state.claimTasks = claimTasks.map(task => ({
+    id: task.id,
+    ...task.attributes
+  }));
 }

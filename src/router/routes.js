@@ -154,6 +154,12 @@ const routes = [
         caseSensitive: true,
         component: () => import('pages/ClaimFiles.vue')
       },
+      {
+        path: 'claim-action-items/:claimId',
+        name: 'action items ',
+        caseSensitive: true,
+        component: () => import('pages/ClaimActionItems.vue')
+      },
 
       {
         path: 'loss-info',

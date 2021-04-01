@@ -7,6 +7,7 @@ export default function() {
     policy: [],
     lossInfo: [],
     settlementType: [],
-    settlement: []
+    settlement: [],
+    claimTasks: []
   };
 }
