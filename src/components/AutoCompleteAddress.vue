@@ -8,9 +8,9 @@
     >
       <input
         type="text"
-        id="autocomplete"
+        :id="!value ? 'autocomplete' : 'autocomplete2'"
         class="input-autocomplete"
-        v-model="addressAutoComplete"
+        v-model="!value ? addressAutoComplete : addressAutoComplete2"
         placeholder="AutoComplete address"
         :disabled="isFieldsDisable"
       />
@@ -103,6 +103,10 @@ export default {
       type: Boolean,
       required: false
     },
+
+    value: {
+      type: Boolean
+    },
     address: {
       type: Object,
       dropBox: {
@@ -127,7 +131,9 @@ export default {
   data() {
     return {
       addressAutoComplete: '',
+      addressAutoComplete2: '',
       autocomplete: {},
+      autocomplete2: {},
       isAddressFieldEnable: false,
       countries: [],
       states: []
@@ -135,13 +141,23 @@ export default {
   },
 
   mounted() {
-    this.autocomplete = new google.maps.places.Autocomplete(
-      document.getElementById('autocomplete'),
-      { types: ['geocode'] }
-    );
-    this.getGeoLocation;
-    this.autocomplete.addListener('place_changed', this.fillInAddress);
-    this.countries = addressService.getCountries();
+    if (this.value == true) {
+      this.autocomplete2 = new google.maps.places.Autocomplete(
+        document.getElementById('autocomplete2'),
+        { types: ['geocode'] }
+      );
+
+      this.autocomplete2.addListener('place_changed', this.fillInAddress);
+      this.countries = addressService.getCountries();
+    } else {
+      this.autocomplete = new google.maps.places.Autocomplete(
+        document.getElementById('autocomplete'),
+        { types: ['geocode'] }
+      );
+
+      this.autocomplete.addListener('place_changed', this.fillInAddress);
+      this.countries = addressService.getCountries();
+    }
   },
 
   methods: {
@@ -157,7 +173,19 @@ export default {
     },
 
     getGeoLocation() {
-      if (navigator.geolocation) {
+      if (navigator.geolocation && this.value) {
+        navigator.geolocation.getCurrentPosition(position => {
+          const geolocation = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+          const circle = new google.maps.Circle({
+            center: geolocation,
+            radius: position.coords.accuracy
+          });
+          this.autocomplete2.setBounds(circle.getBounds());
+        });
+      } else {
         navigator.geolocation.getCurrentPosition(position => {
           const geolocation = {
             lat: position.coords.latitude,
@@ -173,40 +201,77 @@ export default {
     },
 
     fillInAddress() {
-      const place = this.autocomplete.getPlace().address_components;
-      this.address.streetAddress =
-        this.getPlaceName('route', place) >= 0
-          ? place[this.getPlaceName('route', place)].long_name
+      if (this.value) {
+        const place = this.autocomplete2.getPlace().address_components;
+        this.address.streetAddress =
+          this.getPlaceName('route', place) >= 0
+            ? place[this.getPlaceName('route', place)].long_name
+            : '';
+        this.address.addressLocality = this.getPlaceName('locality', place)
+          ? place[this.getPlaceName('locality', place)].long_name
+          : place[this.getPlaceName('administrative_area_level_2', place)]
+              .long_name
+          ? place[this.getPlaceName('administrative_area_level_2', place)]
+              .long_name
           : '';
-      this.address.addressLocality = this.getPlaceName('locality', place)
-        ? place[this.getPlaceName('locality', place)].long_name
-        : place[this.getPlaceName('administrative_area_level_2', place)]
-            .long_name
-        ? place[this.getPlaceName('administrative_area_level_2', place)]
-            .long_name
-        : '';
-      this.address.addressRegion = this.getPlaceName(
-        'administrative_area_level_1',
-        place
-      )
-        ? place[this.getPlaceName('administrative_area_level_1', place)]
-            .long_name
-        : '';
-      this.address.addressCountry = this.getPlaceName('country', place)
-        ? place[this.getPlaceName('country', place)].long_name
-        : '';
+        this.address.addressRegion = this.getPlaceName(
+          'administrative_area_level_1',
+          place
+        )
+          ? place[this.getPlaceName('administrative_area_level_1', place)]
+              .long_name
+          : '';
+        this.address.addressCountry = this.getPlaceName('country', place)
+          ? place[this.getPlaceName('country', place)].long_name
+          : '';
 
-      this.address.postalCode = this.getPlaceName('postal_code', place)
-        ? place[this.getPlaceName('postal_code', place)].long_name
-        : '';
+        this.address.postalCode = this.getPlaceName('postal_code', place)
+          ? place[this.getPlaceName('postal_code', place)].long_name
+          : '';
 
-      if (this.getPlaceName('street_number', place) >= 0) {
-        this.address.houseNumber =
-          place[this.getPlaceName('street_number', place)].long_name;
+        if (this.getPlaceName('street_number', place) >= 0) {
+          this.address.houseNumber =
+            place[this.getPlaceName('street_number', place)].long_name;
+        }
+        this.states = addressService.getStates(this.address.addressCountry);
+        this.isAddressFieldEnable = true;
+        this.addressAutoComplete2 = '';
+      } else {
+        const place = this.autocomplete.getPlace().address_components;
+        this.address.streetAddress =
+          this.getPlaceName('route', place) >= 0
+            ? place[this.getPlaceName('route', place)].long_name
+            : '';
+        this.address.addressLocality = this.getPlaceName('locality', place)
+          ? place[this.getPlaceName('locality', place)].long_name
+          : place[this.getPlaceName('administrative_area_level_2', place)]
+              .long_name
+          ? place[this.getPlaceName('administrative_area_level_2', place)]
+              .long_name
+          : '';
+        this.address.addressRegion = this.getPlaceName(
+          'administrative_area_level_1',
+          place
+        )
+          ? place[this.getPlaceName('administrative_area_level_1', place)]
+              .long_name
+          : '';
+        this.address.addressCountry = this.getPlaceName('country', place)
+          ? place[this.getPlaceName('country', place)].long_name
+          : '';
+
+        this.address.postalCode = this.getPlaceName('postal_code', place)
+          ? place[this.getPlaceName('postal_code', place)].long_name
+          : '';
+
+        if (this.getPlaceName('street_number', place) >= 0) {
+          this.address.houseNumber =
+            place[this.getPlaceName('street_number', place)].long_name;
+        }
+        this.states = addressService.getStates(this.address.addressCountry);
+        this.isAddressFieldEnable = true;
+        this.addressAutoComplete = '';
       }
-      this.states = addressService.getStates(this.address.addressCountry);
-      this.isAddressFieldEnable = true;
-      this.addressAutoComplete = '';
     },
 
     getPlaceName(key, value) {
