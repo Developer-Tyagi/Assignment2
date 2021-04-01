@@ -149,6 +149,13 @@ const routes = [
         component: () => import('pages/ClaimSummary.vue')
       },
       {
+        path: 'claim-files/:rootDirectoryID',
+        name: 'files ',
+        caseSensitive: true,
+        component: () => import('pages/ClaimFiles.vue')
+      },
+
+      {
         path: 'loss-info',
         name: 'loss info ',
         caseSensitive: true,
