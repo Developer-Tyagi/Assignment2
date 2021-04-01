@@ -206,6 +206,23 @@ export async function getLog({ commit, dispatch }, id) {
     });
   }
 }
+
+export async function getClaimTasks({ commit, dispatch }, id) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get(`claims/${id}/tasks`);
+    commit('setClaimTasks', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response.data.title
+    });
+  }
+}
+
 export async function addLog({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
@@ -221,6 +238,24 @@ export async function addLog({ dispatch, state }, payload) {
     dispatch('setNotification', {
       type: 'negative',
       message: 'Failed to create Note! please try again !'
+    });
+  }
+}
+
+export async function changeSelectedTaskMark({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      `/claims/${payload.claimId}/tasks/${payload.taskId}/${payload.type}`
+    );
+    dispatch('setLoading', false);
+    return data;
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'Failed to update task! please try again !'
     });
   }
 }

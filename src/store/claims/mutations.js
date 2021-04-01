@@ -16,3 +16,9 @@ export function setPolicy(state, policy) {
 export function setLossInfo(state, claims) {
   state.lossInfo = claims;
 }
+export function setClaimTasks(state, claimTasks) {
+  state.claimTasks = claimTasks.map(task => ({
+    id: task.id,
+    ...task.attributes
+  }));
+}

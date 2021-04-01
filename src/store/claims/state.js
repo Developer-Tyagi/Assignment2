@@ -5,6 +5,7 @@ export default function() {
     claimNotes: [],
     personnel: [],
     policy: [],
-    lossInfo: []
+    lossInfo: [],
+    claimTasks: []
   };
 }
