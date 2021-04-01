@@ -1,5 +1,11 @@
 <template>
   <q-page>
+    <div class="actions-div">
+      <q-separator vertical inset></q-separator>
+      <q-btn @click="onClickAddButton" flat class="q-ml-auto"
+        ><img src="~assets/add.svg"
+      /></q-btn>
+    </div>
     <div class="mobile-container-page ">
       <div
         class="client-list-item q-ma-sm  "
@@ -14,7 +20,7 @@
               name="edit"
               size="sm"
               color="primary"
-              @click="settlementDialog = true"
+              @click="onClickEdit(index)"
             />
           </div>
         </div>
@@ -141,7 +147,7 @@
                 <span>=</span>
                 <q-input
                   dense
-                  v-model.number="amounts.actualValue"
+                  v-model.number="actualValue"
                   mask="#.#"
                   type="number"
                   placeholder=""
@@ -188,7 +194,7 @@
                 <span>=</span>
                 <q-input
                   dense
-                  v-model.number="amounts.netSettlement"
+                  v-model.number="netSettlement"
                   mask="#.#"
                   type="number"
                   placeholder=""
@@ -235,7 +241,7 @@
                 <span>=</span>
                 <q-input
                   dense
-                  v-model.number="amounts.totalSettlement"
+                  v-model.number="totalSettlement"
                   mask="#.#"
                   type="number"
                   placeholder=""
@@ -561,7 +567,9 @@ export default {
   components: { CustomBar },
   data() {
     return {
-      buttonGroup: '',
+      setId: '',
+      ecValue: '',
+      buttonGroup: false,
       description: {
         value: '',
         id: '',
@@ -570,19 +578,21 @@ export default {
       option: '',
       settlementDialog: false,
       isFinal: false,
+      actualValue: null,
+      netSettlement: null,
+      totalSettlement: null,
 
       amounts: {
         replacementCost: null,
         recoverable: null,
         nonRecoverable: null,
-        actualValue: '',
+
         otherAdjustment: null,
         deductibleApplied: null,
-        netSettlement: null,
 
         policyLimit: null,
         priorPayment: null,
-        totalSettlement: '',
+
         otherAdjustmentDesc: 'Side settlement'
       },
       notes: '',
@@ -618,9 +628,7 @@ export default {
   },
 
   async created() {
-    console.log(this.selectedClaimId);
     if (this.selectedClaimId) {
-      console.log(this.selectedClaimId, 54);
       this.getSettlementTypes();
       await this.getSettlements(this.selectedClaimId);
     } else {
@@ -640,8 +648,60 @@ export default {
       'getSettlements',
       'getSettlementTypes',
       'addSettlement',
+      'editSettlement',
       'getSettlements'
     ]),
+    onClickAddButton() {
+      this.ecValue = false;
+      (this.description = {
+        value: '',
+        id: '',
+        machineValue: ''
+      }),
+        (this.amounts = {
+          replacementCost: null,
+          recoverable: null,
+          nonRecoverable: null,
+
+          otherAdjustment: null,
+          deductibleApplied: null,
+
+          policyLimit: null,
+          priorPayment: null,
+
+          otherAdjustmentDesc: 'Side settlement'
+        }),
+        (this.buttonGroup = false);
+      this.isFinal = false;
+      this.offeredDate = '';
+      this.paymentExpDate = '';
+      this.notes = '';
+      this.isProofOfLossReq = false;
+      this.proofOfLossInfo = {
+        reqDate: '',
+        dueDate: '',
+        sentClientDate: '',
+        recvClientDate: '',
+        sentCarrierDate: '',
+        resRecvDate: ''
+      };
+      this.settlementDialog = true;
+    },
+    onClickEdit(val) {
+      this.ecValue = true;
+      this.setId = this.settlement[val].id;
+
+      this.settlementDialog = true;
+      this.description = this.settlement[val].attributes.description;
+      this.amounts = this.settlement[val].attributes.amounts;
+      this.buttonGroup = this.settlement[val].attributes.isAccepted;
+      this.isFinal = this.settlement[val].attributes.isFinal;
+      this.offeredDate = this.settlement[val].attributes.offeredDate;
+      this.paymentExpDate = this.settlement[val].attributes.paymentExpDate;
+      this.notes = this.settlement[val].attributes.notes;
+      this.isProofOfLossReq = this.settlement[val].attributes.isProofOfLossReq;
+      this.proofOfLossInfo = this.settlement[val].attributes.proofOfLossInfo;
+    },
     setTypes(data) {
       const obj = data.find(item => {
         return item.id === this.description.id;
@@ -649,25 +709,22 @@ export default {
 
       this.description.value = obj.value;
       this.description.machineValue = obj.machineValue;
-
-      console.log(data, this.description);
     },
 
     closeTimeDialog() {
       this.$refs.qTimeProxy.hide();
     },
     onInput(val) {
-      console.log(val);
-      this.amounts.actualValue =
+      this.actualValue =
         this.amounts.replacementCost -
         this.amounts.recoverable -
         this.amounts.nonRecoverable;
-      this.amounts.netSettlement =
-        this.amounts.actualValue -
+      this.netSettlement =
+        this.actualValue -
         this.amounts.otherAdjustment -
         this.amounts.deductibleApplied;
-      this.amounts.totalSettlement =
-        this.amounts.netSettlement -
+      this.totalSettlement =
+        this.netSettlement -
         this.amounts.policyLimit -
         this.amounts.priorPayment;
     },
@@ -677,6 +734,7 @@ export default {
       success = await this.$refs.settlementForm.validate();
       const payload = {
         id: this.selectedClaimId,
+        setId: this.setId,
         data: {
           description: {
             id: this.description.id,
@@ -720,8 +778,12 @@ export default {
           notes: this.notes
         }
       };
-      console.log(payload, 5654);
-      await this.addSettlement(payload);
+      if (this.ecValue == true) {
+        this.editSettlement(payload);
+      } else {
+        await this.addSettlement(payload);
+      }
+
       this.settlementDialog = false;
     }
   }

@@ -159,7 +159,6 @@ export async function getSettlements({ commit, dispatch }, id) {
   const ids = '605eec53ec51198842cb05e2';
   try {
     const { data } = await request.get(`/claims/${ids}/settlements`);
-    console.log(data, 'settteee');
 
     commit('setSettlements', data);
     dispatch('setLoading', false);
@@ -192,11 +191,31 @@ export async function getSettlementTypes({ commit, dispatch }) {
 }
 
 export async function addSettlement({ dispatch, state }, payload) {
-  console.log('in');
   dispatch('setLoading', true);
   try {
     const { data } = await request.post(
       `/claims/${payload.id}/settlements`,
+      buildApiData('claimsettlements', payload.data)
+    );
+
+    dispatch('setLoading', false);
+    return data;
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response.data.title
+    });
+    return false;
+  }
+}
+
+export async function editSettlement({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.patch(
+      `/claims/${payload.id}/settlements/${payload.setId}`,
       buildApiData('claimsettlements', payload.data)
     );
 
