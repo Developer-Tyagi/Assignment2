@@ -155,9 +155,9 @@
             <q-tooltip>Close</q-tooltip>
           </q-btn>
         </q-bar>
-        <div style="height: calc(100% - 140px); overflow: auto" class="q-pa-lg">
+        <div style="height: calc(100% - 140px); overflow: auto" class="q-pa-md">
           <div class="row full-width">
-            <div class="q-ml-xl q-pa-md text-bold">Action Item :</div>
+            <div class="q-pa-sm text-bold">Action Item :</div>
             <q-input
               dense
               v-model="actions.name"
@@ -174,7 +174,7 @@
 
           <!-- second -->
           <div class="row q-mt-md full-width">
-            <div class="q-ml-xl q-pa-md text-bold">Created When :</div>
+            <div class="q-pa-sm text-bold">Created When :</div>
             <q-select
               dense
               outlined
@@ -189,6 +189,7 @@
               emit-value
               label="Created when"
               class="input-extra-padding"
+              style="width: 250px"
             />
 
             <div class="col-2-1 q-ml-xs" v-if="actions.createWhen.type">
@@ -219,13 +220,13 @@
           <!-- 3 -->
           <div class="row q-mt-md full-width">
             <div class="col-1-1">
-              <div class="q-ml-xl q-pa-sm text-bold">
+              <div class="q-pa-sm text-bold">
                 Default Priority <span class="text-red">*</span> :
               </div>
             </div>
             <div class="col-4">
               <q-toggle v-model="priority" left-label @input="TogglePriority" />
-              <q-badge color="primary" v-if="priority == true">HIgh</q-badge>
+              <q-badge color="primary" v-if="priority == true">High</q-badge>
               <q-badge v-else color="primary">Low</q-badge>
             </div>
 
@@ -237,7 +238,7 @@
             </div>
           </div>
           <div class="row q-mt-md full-width" style="align-items: baseline">
-            <div class="q-ml-xl q-pa-sm text-bold">Due Date :</div>
+            <div class="q-pa-sm text-bold">Due Date :</div>
             <div class="text-grey-9text-bold">Task will be Due</div>
             <q-input
               dense
@@ -245,6 +246,7 @@
               class="q-mx-sm input-extra-padding"
               outlined
               placeholder="Day"
+              style="width: 50px"
             />
 
             <q-select
@@ -257,14 +259,15 @@
               option-value="options"
               :options="dueDays"
               label="Type"
+              style="width: 200px"
             />
 
             <div class="text-bold">days after it is created</div>
           </div>
 
-          <div class="row q-mt-md q-pl-xl full-width">
+          <div class="row q-mt-md full-width">
             <q-card
-              class="q-pa-md q-pl-xl text-bold"
+              class="q-pa-sm q-pl-xl text-bold"
               style="letter-spacing: 1px; width: 100%"
               flat
               bordered
@@ -278,18 +281,14 @@
             class="row q-mt-md full-width"
           >
             <div class="col-1-1">
-              <div class="q-ml-xl q-pa-md text-bold" v-if="index == 0">
+              <div class="q-pa-sm text-bold" v-if="index == 0">
                 Completion Action :
               </div>
-              <div
-                class="q-ml-xl q-pa-md text-bold"
-                v-else
-                style="visibility: hidden"
-              >
+              <div class="q-pa-sm text-bold" v-else style="visibility: hidden">
                 Completion Action :
               </div>
             </div>
-            <div class="col-2-1">
+            <div>
               <q-select
                 dense
                 outlined
@@ -309,13 +308,11 @@
                 "
                 label="Completion Action"
                 class="input-extra-padding"
+                style="width: 200px"
               />
             </div>
 
-            <div
-              class="col-2-1 q-ml-xs"
-              v-if="actions.actions.onComplete[index].type"
-            >
+            <div class="q-ml-xs" v-if="actions.actions.onComplete[index].type">
               <q-select
                 dense
                 class="col-3 input-extra-padding"
@@ -338,15 +335,16 @@
                 map-options
                 emit-value
                 options-dense
+                style="width: 200px"
               />
             </div>
             <div
-              class="col-2-1 q-ml-xs"
+              class="q-ml-xs"
               v-if="actions.actions.onComplete[index].task[0]"
             >
               <q-select
                 dense
-                class="col-3 input-extra-padding"
+                class="input-extra-padding"
                 outlined
                 v-model="actions.actions.onComplete[index].task[1]"
                 behavior="menu"
@@ -360,6 +358,7 @@
                 map-options
                 emit-value
                 options-dense
+                style="width: 200px"
               />
             </div>
             <div class="q-ml-md q-mt-sm">
@@ -392,14 +391,10 @@
             class="row q-mt-md full-width"
           >
             <div class="col-1-1">
-              <div class="q-ml-xl q-pa-md text-bold" v-if="index == 0">
+              <div class="q-pa-sm text-bold" v-if="index == 0">
                 OverDue Action:
               </div>
-              <div
-                class="q-ml-xl q-pa-md text-bold"
-                v-else
-                style="visibility: hidden"
-              >
+              <div class="q-pa-md text-bold" v-else style="visibility: hidden">
                 OverDue Action:
               </div>
             </div>
@@ -421,6 +416,7 @@
                 label="OverDue"
                 options-dense
                 class="input-extra-padding"
+                style="width: 200px"
               />
             </div>
 
@@ -447,6 +443,7 @@
                 "
                 emit-value
                 label="Sub-option"
+                style="width: 200px"
               />
             </div>
 
@@ -470,6 +467,7 @@
                     .subTypes
                 "
                 label="Sub-option-option"
+                style="width: 200px"
               />
             </div>
 
@@ -498,7 +496,7 @@
 
           <div class="row q-mt-md full-width">
             <div class="col-1-1">
-              <div class="q-ml-xl q-pa-md text-bold">Notes/Instruction:</div>
+              <div class="q-pa-sm text-bold">Notes/Instruction:</div>
             </div>
             <div class="q-ml-md col-5">
               <textarea
