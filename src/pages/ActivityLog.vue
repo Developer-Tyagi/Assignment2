@@ -2,15 +2,15 @@
   <q-page>
     <div>
       <div class="actions-div">
-        <q-btn @click="editLog = true" flat class="q-ml-auto "
+        <q-btn @click="editLog = true" flat class="q-ml-auto"
           ><img src="~assets/add.svg"
         /></q-btn>
       </div>
-      <div class="mobile-container-page ">
+      <div class="mobile-container-page">
         <div class="" v-if="log.length">
           <!-- This is for showing the Property details  -->
-          <div class="bg-grey-3 q-pa-md  q-ma-sm  " v-for="(log, index) in log">
-            <div class="row ">
+          <div class="bg-grey-3 q-pa-md q-ma-sm" v-for="(log, index) in log">
+            <div class="row">
               <span class="col-11">
                 {{ log.attributes.created | moment('DD/MM/YYYY/, HH:mm') }}
               </span>
@@ -18,7 +18,7 @@
                 size="xs"
                 name="create"
                 color="primary"
-                class=" col q-pt-xs"
+                class="col q-pt-xs"
                 @click="onClickEdit(log.attributes)"
               ></q-icon>
             </div>
@@ -37,20 +37,8 @@
       transition-hide="slide-down"
     >
       <q-card>
-        <CustomBar />
-        <q-header bordered class="bg-white">
-          <q-toolbar class="row bg-white">
-            <img
-              src="~assets/close.svg"
-              alt="back-arrow"
-              @click="editLog = false"
-              style="margin: auto 0"
-            />
-            <div class="text-uppercase text-bold text-black q-mx-auto">
-              Add New Log
-            </div>
-          </q-toolbar>
-        </q-header>
+        <CustomBar @closeDialog="editLog = false" :dialogName="'Add New Log'" />
+
         <div class="mobile-container-page-without-search q-ma-sm">
           <q-form ref="activityLogForm" class="form-height">
             <q-input
@@ -171,6 +159,5 @@ export default {
   display: flex;
   border-bottom: 1px solid #0000001f;
   align-items: center;
-  margin-top: 20px;
 }
 </style>

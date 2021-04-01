@@ -7,168 +7,142 @@
         @onListClick="setSelectedTab"
         :selectedItem="tab"
       />
+
       <div class="col-10">
-        <div class="q-pa-xs col-9">
-          <!-- Height given for there Inner 2 div -->
-          <div class="row full-width" style="height: 100%" flat bordered>
-            <!-- Main Template -->
-            <template class="">
-              <q-tab-panels
-                class="q-ml-xl full-width"
-                style="height: calc(100vh - 10px)"
-                v-model="tab"
-                animated
-                vertical
-                swipeable
-                transition-prev="jump-up"
-                transition-next="jump-up"
-              >
-                <q-tab-panel name="accountSummary">
-                  <q-card class="q-pa-lg" style="height: 800px" flat bordered>
-                    <div class="text-h5">Account Summary</div>
+        <div class="row" flat bordered>
+          <!-- Main Template -->
+          <q-tab-panels
+            class="q-ml-xl mobile-container-page-without-search full-width"
+            v-model="tab"
+            animated
+            vertical
+            swipeable
+            transition-prev="jump-up"
+            transition-next="jump-up"
+          >
+            <q-tab-panel name="accountSummary">
+              <q-card class="q-pa-lg" flat bordered>
+                <div class="text-h5">Account Summary</div>
 
-                    <div class="row q-mt-lg text-bold">
-                      <div class="col">Company Name</div>
-                      <div class="col">Company Address</div>
-                      <div class="col">Company Mobile</div>
-                      <div class="col">Postal Company Code</div>
-                    </div>
-                    <q-separator />
-                    <div class="row q-mt-xs">
-                      <div class="col">{{ user.name }}</div>
-                      <div class="col">Company Address</div>
-                      <div class="col">
-                        {{
-                          user.phoneNumber.number
-                            ? user.phoneNumber.number
-                            : '-'
-                        }}
-                      </div>
-                      <div class="col">Company Mobile</div>
-                    </div>
+                <div class="row q-mt-lg text-bold">
+                  <div class="col">Company Name</div>
+                  <div class="col">Company Address</div>
+                  <div class="col">Company Mobile</div>
+                  <div class="col">Postal Company Code</div>
+                </div>
+                <q-separator />
+                <div class="row q-mt-xs">
+                  <div class="col">{{ user.name }}</div>
+                  <div class="col">Company Address</div>
+                  <div class="col">
+                    {{
+                      user.phoneNumber.number ? user.phoneNumber.number : '-'
+                    }}
+                  </div>
+                  <div class="col">Company Mobile</div>
+                </div>
 
-                    <div class="row q-mt-xl text-bold">
-                      <div class="col">Company Administrator</div>
-                      <div class="col">Administrator Email</div>
+                <div class="row q-mt-xl text-bold">
+                  <div class="col">Company Administrator</div>
+                  <div class="col">Administrator Email</div>
+                </div>
+                <q-separator />
+                <div class="row q-mt-xs">
+                  <div class="col">
+                    {{ user.contact.fname }} {{ user.contact.lname }}
+                  </div>
+                  <div class="col">{{ user.email }}</div>
+                </div>
+              </q-card>
+            </q-tab-panel>
+            <q-tab-panel name="actionItems">
+              <q-card class="q-pa-lg" flat bordered>
+                <div class="text-h6 text-bold">Claim Action Item</div>
+                <div class="row">
+                  <q-btn
+                    color="primary"
+                    label="+ Add Default Action "
+                    @click="addDefaultActionDialogBox = true"
+                    :disable="params == ''"
+                  />
+                  <q-btn
+                    class="q-ml-sm"
+                    color="primary"
+                    label="Refresh "
+                    @click=""
+                    :disable="params == ''"
+                  />
+                  <q-btn
+                    class="q-ml-sm"
+                    color="primary"
+                    label="Clone Workflow "
+                    @click=""
+                    :disable="params == ''"
+                  />
+                  <q-btn
+                    class="q-ml-sm"
+                    color="primary"
+                    label="Delete Workflow "
+                    @click=""
+                    :disable="params == ''"
+                  />
+                  <q-btn
+                    class="q-ml-sm"
+                    color="primary"
+                    label="Planning Sheet "
+                    @click=""
+                    :disable="params == ''"
+                  />
+                </div>
+
+                <q-card class="q-my-md" scroll flat bordered>
+                  <div
+                    class="row bg-grey-3 q-px-md"
+                    style="align-items: center"
+                  >
+                    <div class="q-pa-lg" v-if="claimType">
+                      {{ allAction.length }} Action Items
                     </div>
-                    <q-separator />
-                    <div class="row q-mt-xs">
-                      <div class="col">
-                        {{ user.contact.fname }} {{ user.contact.lname }}
-                      </div>
-                      <div class="col">{{ user.email }}</div>
-                    </div>
-                  </q-card>
-                </q-tab-panel>
-                <q-tab-panel name="actionItems">
-                  <q-card class="q-pa-lg" style="" flat bordered>
-                    <div class="full-width">
-                      <div class="text-h5 text-bold">Claim Action Item</div>
-                      <div class="text-h5" style="height: 200px">
-                        <div class="q-pa-xl"></div>
-                        <div class="row q-pa-xl">
-                          <q-btn
-                            color="primary"
-                            label="+ Add Default Action "
-                            class="col-md-2 col-lg-2"
-                            @click="addDefaultActionDialogBox = true"
-                          />
-                          <q-btn
-                            color="primary"
-                            label="Refresh "
-                            class="col-md-1 q-mx-lg col-lg-2"
-                            @click=""
-                          />
-                          <q-btn
-                            color="primary"
-                            label="Clone Workflow "
-                            class="col-md-2col-lg-2"
-                            @click=""
-                          />
-                          <q-btn
-                            color="primary"
-                            label="Delete Workflow "
-                            class="q-mx-lg col-md-2 col-lg-2"
-                            @click=""
-                          />
-                          <q-btn
-                            color="primary"
-                            label="Planning Sheet "
-                            class="q-mx-lg col-md-2 col-lg-2"
-                            @click=""
-                          />
+                    <div class="" v-else>Please Select Action Items</div>
+
+                    <div class="text-h6 q-ml-auto q-mr-lg">Workflow</div>
+
+                    <q-select
+                      dense
+                      class="q-py-sm input-extra-padding"
+                      outlined
+                      options-dense
+                      behavior="menu"
+                      v-model="claimType"
+                      option-value="machineValue"
+                      option-label="value"
+                      :options="workflowAction"
+                      label="Claim-New Claim"
+                      @input="claimActionItem(claimType)"
+                      map-options
+                      emit-value
+                    />
+                  </div>
+                  <div class="q-pa-lg" style="height: 350px; overflow: auto">
+                    <div v-for="index in allAction" class="row q-pb-md">
+                      <div class="col-11">
+                        <div class="text-blue">
+                          {{ index.name ? index.name : '-' }}
+                        </div>
+                        <div>
+                          {{ index.createdDesc ? index.createdDesc : '-' }}
                         </div>
                       </div>
+
+                      <div class="col-1 row text-h6">
+                        <q-icon size="sm" color="primary" name="create" />
+                      </div>
                     </div>
-                    <q-card
-                      class="q-mx-xl q-my-md"
-                      scroll
-                      style="border: 1px solid grey"
-                      flat
-                      bordered
-                    >
-                      <div class="row bg-grey-3">
-                        <div class="col-7 q-pa-lg" v-if="ClaimType">
-                          {{ allAction.length }} Action Items
-                        </div>
-                        <div class="col-7 q-pa-lg" v-else>
-                          Please Select Action Items
-                        </div>
-
-                        <div class="col-4 row text-h6">
-                          <div class="col q-pt-md">Workflow</div>
-
-                          <div class="col">
-                            <q-select
-                              dense
-                              class="full-width q-py-sm input-extra-padding"
-                              outlined
-                              options-dense
-                              behavior="menu"
-                              v-model="ClaimType"
-                              option-value="machineValue"
-                              option-label="value"
-                              :options="workflowAction"
-                              label="Claim-New Claim"
-                              @input="claimActionItem(ClaimType)"
-                              map-options
-                              emit-value
-                            />
-                          </div>
-                        </div>
-                        <q-separator />
-                      </div>
-
-                      <div
-                        class="q-pa-lg"
-                        style="height: 350px; overflow: auto"
-                      >
-                        <div v-for="index in allAction">
-                          <div class="row q-pa-md">
-                            <div class="col-11">
-                              <div class="text-blue">
-                                {{ index.name ? index.name : '-' }}
-                              </div>
-
-                              <div class="q-pl-lg">
-                                {{
-                                  index.createdDesc ? index.createdDesc : '-'
-                                }}
-                              </div>
-                            </div>
-
-                            <div class="col-1 row text-h6">
-                              <q-icon size="sm" color="primary" name="create" />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </q-card>
-                  </q-card>
-                </q-tab-panel>
-              </q-tab-panels>
-            </template>
-          </div>
+                  </div>
+                </q-card>
+              </q-card>
+            </q-tab-panel>
+          </q-tab-panels>
         </div>
       </div>
     </div>
@@ -177,63 +151,45 @@
       <q-card style="width: 60%; height: 88vh">
         <q-bar class="row justify-between bg-primary" style="height: 50px">
           <div class="q-px-xs text-bold text-white">Add Action Item</div>
-          <q-btn dense flat icon="close" v-close-popup>
+          <q-btn dense flat icon="close" color="white" v-close-popup>
             <q-tooltip>Close</q-tooltip>
           </q-btn>
         </q-bar>
-        <div class="q-mt-sm" style="height: calc(100% - 155px; overflow:auto">
-          <div class="row q-mt-lg full-width">
-            <div class="col-1-1">
-              <div class="q-ml-xl q-pa-md text-bold">Action Item :</div>
-            </div>
-
-            <div class="col-4">
-              <q-input
-                dense
-                v-model="actions.name"
-                class="q-mx-md"
-                style="width: 250px"
-                outlined
-              />
-            </div>
-            <div class="col-1-1">
-              <div class="q-pa-md text-bold">Enabled :</div>
-            </div>
-            <div class="col-3 q-ml-xs">
-              <q-toggle
-                v-model="actions.isEnabled"
-                left-label
-                class="q-mt-xs"
-              />
-              <q-badge color="primary" v-if="actions.isEnabled == true"
-                >Enable</q-badge
-              >
-              <q-badge class="q-mt-md" color="primary" v-else>Disable</q-badge>
-            </div>
+        <div style="height: calc(100% - 140px); overflow: auto" class="q-pa-lg">
+          <div class="row full-width">
+            <div class="q-ml-xl q-pa-md text-bold">Action Item :</div>
+            <q-input
+              dense
+              v-model="actions.name"
+              class="q-mx-md"
+              style="width: 200px"
+              outlined
+            />
+            <div class="q-pa-md text-bold">Enabled :</div>
+            <q-toggle v-model="actions.isEnabled" left-label class="q-mt-xs" />
+            <q-badge color="primary" dense style="margin: auto 10px">{{
+              actions.isEnabled ? 'Enable' : 'Disable'
+            }}</q-badge>
           </div>
 
           <!-- second -->
           <div class="row q-mt-md full-width">
-            <div class="col-2-1">
-              <div class="q-ml-xl q-pa-md text-bold">Created When :</div>
-            </div>
-            <div class="col-2-1">
-              <q-select
-                dense
-                outlined
-                options-dense
-                behavior="menu"
-                v-model="actions.createWhen.type"
-                option-label="value"
-                :options="actionReason"
-                option-value="machineValue"
-                @input="createdWhenSubType(actions.createWhen.type)"
-                map-options
-                emit-value
-                label="Created when"
-                class="input-extra-padding"
-              />
-            </div>
+            <div class="q-ml-xl q-pa-md text-bold">Created When :</div>
+            <q-select
+              dense
+              outlined
+              options-dense
+              behavior="menu"
+              v-model="actions.createWhen.type"
+              option-label="value"
+              :options="actionReason"
+              option-value="machineValue"
+              @input="createdWhenSubType(actions.createWhen.type)"
+              map-options
+              emit-value
+              label="Created when"
+              class="input-extra-padding"
+            />
 
             <div class="col-2-1 q-ml-xs" v-if="actions.createWhen.type">
               <q-select
@@ -243,7 +199,8 @@
                 options-dense
                 behavior="menu"
                 v-model="actions.createWhen.task[0]"
-                option-label="machineValue"
+                option-label="value"
+                option-value="machineValue"
                 map-options
                 emit-value
                 :options="actionReason[indexOfActionReason].additionalReasons"
@@ -275,57 +232,45 @@
             <div class="col-1-1 row">
               <div class="q-py-sm text-bold">Assign To :</div>
               <div class="q-ml-sm q-pt-sm text-bold">
-                <q-btn color="primary" size="10px" label="Select" @click="" />
+                <q-badge color="primary" label="Select" @click="" />
               </div>
             </div>
           </div>
-          <div class="row q-mt-md full-width">
-            <div class="col-1-1 row">
-              <div class="q-ml-xl q-pa-md text-bold">Due Date :</div>
-              <div class="text-grey-9 q-pt-md text-bold">Task will be Due</div>
-            </div>
-            <div class="col-2">
-              <q-input
-                dense
-                v-model.number="actions.due.interval"
-                class="q-mx-sm"
-                style=""
-                outlined
-                placeholder="Day"
-              />
-            </div>
+          <div class="row q-mt-md full-width" style="align-items: baseline">
+            <div class="q-ml-xl q-pa-sm text-bold">Due Date :</div>
+            <div class="text-grey-9text-bold">Task will be Due</div>
+            <q-input
+              dense
+              v-model.number="actions.due.interval"
+              class="q-mx-sm input-extra-padding"
+              outlined
+              placeholder="Day"
+            />
 
-            <div class="col-2">
-              <q-select
-                dense
-                class="q-pt-xs input-extra-padding"
-                outlined
-                options-dense
-                v-model="actions.due.type"
-                behavior="menu"
-                option-value="options"
-                :options="options"
-                label="Type"
-              />
-            </div>
-            <div class="q-ml-md">
-              <div class="q-mt-md q-ml-xl text-bold">
-                days after it is created
-              </div>
-            </div>
+            <q-select
+              dense
+              class="q-mx-sm input-extra-padding"
+              outlined
+              options-dense
+              v-model="actions.due.type"
+              behavior="menu"
+              option-value="options"
+              :options="dueDays"
+              label="Type"
+            />
+
+            <div class="text-bold">days after it is created</div>
           </div>
 
           <div class="row q-mt-md q-pl-xl full-width">
-            <div class="col-7">
-              <q-card
-                class="q-pa-md q-pl-xl text-bold"
-                style="letter-spacing: 1px"
-                flat
-                bordered
-              >
-                Note : Actions are executed in the order specified
-              </q-card>
-            </div>
+            <q-card
+              class="q-pa-md q-pl-xl text-bold"
+              style="letter-spacing: 1px; width: 100%"
+              flat
+              bordered
+            >
+              Note : Actions are executed in the order specified
+            </q-card>
           </div>
           <div
             v-for="(val, index) in actions.actions.onComplete"
@@ -560,7 +505,7 @@
                 v-model="actions.notes"
                 rows="4"
                 required
-                style="width: 60%"
+                style="width: 100%"
               ></textarea>
             </div>
           </div>
@@ -625,7 +570,7 @@ export default {
         notes: ''
       },
 
-      ClaimType: '',
+      claimType: '',
 
       indexOfActionReason: '',
       indexOfSubTypeOfCompletion: '',
@@ -637,7 +582,7 @@ export default {
 
       addDefaultActionDialogBox: false,
       model: null,
-      options: ['Bussiness', 'Industry'],
+      dueDays: ['Bussiness', 'Calendar'],
       tab: '',
       adminSettings: [
         { name: 'Account Summary', key: 'accountSummary' },
@@ -671,6 +616,9 @@ export default {
     async claimActionItem(mValue) {
       this.params = mValue;
       await this.getAllWorkFlow(this.params);
+      await this.getActionReasons(this.params);
+      await this.getActionOverDues(this.params);
+      await this.getActionCompletion(this.params);
     },
     // Toggle Priority Set
     TogglePriority() {
@@ -768,18 +716,11 @@ export default {
   },
 
   created() {
-    this.getWorkflowAction();
-
-    const params = {
-      workflowID: 'claim_estimation'
-    };
-    this.getActionReasons(params);
-    this.getActionOverDues(params);
-    this.getActionCompletion(params);
     this.tab = 'accountSummary';
     if (getCurrentUser().attributes) {
       this.user = getCurrentUser().attributes;
     }
+    this.getWorkflowAction();
   }
 };
 </script>
@@ -787,9 +728,8 @@ export default {
 .q-dialog__inner--minimized > div {
   max-width: 80%;
 }
-.q-select {
-  width: 200px;
-  height: 10px;
-  margin-top: 20px;
+
+::-webkit-scrollbar {
+  width: 0px;
 }
 </style>
