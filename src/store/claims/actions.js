@@ -40,10 +40,10 @@ export async function addCompanyPersonnel({ dispatch, state }, payload) {
 }
 
 //API for editing Company Personnel Info
-export async function putPersonnel({ dispatch, state }, payload) {
+export async function editPersonnel({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
-    const { data } = await request.put(
+    const { data } = await request.patch(
       `/claims/${payload.id}/personnel/${payload.companyData.personnel.id}`,
       buildApiData('claimpersonnel', payload.companyData)
     );

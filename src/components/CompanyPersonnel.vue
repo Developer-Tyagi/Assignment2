@@ -46,7 +46,8 @@
       <q-input
         class="q-ml-auto full-width"
         mask="#.#"
-        v-model="companyPersonnel.claimFeeRate"
+        type="number"
+        v-model.number="companyPersonnel.claimFeeRate"
         label="Claim Fee Rate"
         :suffix="
           companyPersonnel.buttonGroup == 'dollar'
@@ -163,7 +164,7 @@ export default {
     ])
   },
   created() {
-    this.addCompanyPersonnel(this.selectedClaimId);
+    // this.addCompanyPersonnel(this.selectedClaimId);
     this.getPersonnelInfo(this.selectedClaimId);
   },
   methods: {
