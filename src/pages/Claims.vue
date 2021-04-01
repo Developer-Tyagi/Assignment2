@@ -32,6 +32,7 @@
             class="clients-list"
             v-for="(claim, index) in claims"
             :key="claim.id"
+            @click="onClickingOnClaim(claim)"
           >
             <div class="client-list-item">
               <div class="row form-heading">
@@ -96,7 +97,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 import moment from 'moment';
 
 export default {
@@ -127,6 +128,7 @@ export default {
   },
   methods: {
     ...mapActions(['getClaims']),
+    ...mapMutations(['setSelectedClaimId']),
 
     onSearchBackButtonClick() {
       this.searchText = '';
@@ -134,9 +136,15 @@ export default {
     },
 
     addClaim() {},
+
     search(event) {
       this.params.name = event;
       this.getClaims(this.params);
+    },
+
+    onClickingOnClaim(claim) {
+      this.setSelectedClaimId(claim.id);
+      this.$router.push('/claim-details');
     }
   }
 };

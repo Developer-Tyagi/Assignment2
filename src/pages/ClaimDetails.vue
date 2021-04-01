@@ -45,7 +45,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['selectedClaimId'])
+    ...mapGetters(['selectedClaimId', 'getSelectedClaim'])
   },
 
   created() {
@@ -74,6 +74,9 @@ export default {
         case 'Mortgages and Liens':
           break;
         case 'Files':
+          this.$router.push({
+            path: `/claim-files/${this.getSelectedClaim.attributes.rootDirectoryID}`
+          });
           break;
         case 'Notes':
           this.$router.push('/claim-notes');
