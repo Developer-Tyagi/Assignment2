@@ -156,9 +156,9 @@ export async function updateLossInfo({ dispatch, state }, payload) {
 // today
 export async function getSettlements({ commit, dispatch }, id) {
   dispatch('setLoading', true);
-  const ids = '605eec53ec51198842cb05e2';
+
   try {
-    const { data } = await request.get(`/claims/${ids}/settlements`);
+    const { data } = await request.get(`/claims/${id}/settlements`);
 
     commit('setSettlements', data);
     dispatch('setLoading', false);
@@ -176,7 +176,6 @@ export async function getSettlementTypes({ commit, dispatch }) {
 
   try {
     const { data } = await request.get('/settlementtypes');
-    console.log(data, 'settletype');
 
     commit('setSettlementTypes', data);
     dispatch('setLoading', false);

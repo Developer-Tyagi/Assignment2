@@ -1,48 +1,156 @@
 <template>
   <q-page>
-    <div class="actions-div">
-      <q-separator vertical inset></q-separator>
-      <q-btn @click="onClickAddButton" flat class="q-ml-auto"
-        ><img src="~assets/add.svg"
-      /></q-btn>
-    </div>
-    <div class="mobile-container-page ">
-      <div
-        class="client-list-item q-ma-sm  "
-        v-for="(settlement, index) in settlement"
-      >
-        <div class="row justify-between">
-          <div class=" text-bold">Settlement Details</div>
+    <div v-if="settlement.attributes">
+      <div class="actions-div">
+        <q-separator vertical inset></q-separator>
+        <q-btn @click="onClickAddButton" flat class="q-ml-auto"
+          ><img src="~assets/add.svg"
+        /></q-btn>
+      </div>
+      <div class="mobile-container-page">
+        <div class="row justify-between  ">
+          <div class="form-heading q-ml-md">Total net Claimed</div>
 
           <div>
             <q-icon
-              class="q-my-auto "
+              class="q-mt-md q-mr-md"
               name="edit"
               size="sm"
               color="primary"
-              @click="onClickEdit(index)"
+              @click="editTotalTopFields"
             />
           </div>
         </div>
-
-        <div class="form-heading">Description</div>
-        <div class="q-pl-md">
-          {{ settlement.attributes.description.machineValue }}
+        <div class="q-ml-lg" v-if="edit == false">
+          $ {{ settlement.attributes.totalNetClaimed }}
+        </div>
+        <div class="q-ml-lg" v-if="edit == true">
+          <q-input
+            class="q-mr-xl"
+            style="width:70px"
+            v-model="totalNetClaimed"
+          ></q-input>
         </div>
 
-        <div class="form-heading">Is Accepted</div>
-        <div class="q-pl-md">{{ settlement.attributes.isAccepted }}</div>
-
-        <div class="form-heading">Replacement Cost</div>
-        <div class="q-pl-md">
-          {{ settlement.attributes.amounts.replacementCost }}
+        <div class="form-heading q-ml-md">Total replacement Cost</div>
+        <div class="q-ml-lg" v-if="edit == false">
+          $ {{ settlement.attributes.totalReplCost }}
         </div>
-        <div class="form-heading">Replacement Cost</div>
-        <div class="q-pl-md">
-          {{ settlement.attributes.amounts.nonRecoverable }}
+        <div class="q-ml-lg" v-if="edit == true">
+          <q-input style="width:70px" v-model="totalReplacementCost"></q-input>
+        </div>
+
+        <div class="form-heading q-ml-md">Initial Offer</div>
+        <div class=" q-ml-lg" v-if="edit == false">
+          $ {{ settlement.attributes.intialOffer }}
+        </div>
+        <div class="row justify-between q-mr-lg">
+          <div class="q-ml-lg" v-if="edit == true">
+            <q-input style="width:70px" v-model="initialCost"></q-input>
+          </div>
+          <div class="q-ml-lg" v-if="edit == true">
+            <!-- @click and then send the 3 data edit api -->
+            <q-btn label="Save" color="primary"></q-btn>
+          </div>
+        </div>
+
+        <div class="mobile-container-page ">
+          <div
+            class="q-ma-sm  "
+            v-for="(settlement, index) in settlement.attributes.settlements"
+          >
+            <q-card flat bordered class="client-list-item q-mt-md ">
+              <div class="row justify-right  q-my-md">
+                <div class="col-11 text-center  text-h6">
+                  $ {{ settlement.amounts.netSettlement }}
+                </div>
+
+                <div>
+                  <q-icon
+                    class="q-my-auto "
+                    name="edit"
+                    size="sm"
+                    color="primary"
+                    @click="onClickEdit(index)"
+                  />
+                </div>
+              </div>
+              <div class="row justify-between  q-px-md q-my-md">
+                <div>{{ settlement.description.value }}</div>
+
+                <div>
+                  <q-badge color="primary"> {{ settlement.status }}</q-badge>
+                </div>
+              </div>
+              <q-separator />
+              <div class="row justify-between q-my-md q-px-md ">
+                <div class="">Replacement Cost</div>
+
+                <div>
+                  {{ settlement.amounts.replacementCost }}
+                </div>
+              </div>
+              <div class="row justify-between q-px-md q-my-md">
+                <div>Recoverable</div>
+
+                <div>- {{ settlement.amounts.recoverable }}</div>
+              </div>
+              <div class="row justify-between q-px-md q-my-md">
+                <div>Non-Recoverable</div>
+
+                <div>- {{ settlement.amounts.nonRecoverable }}</div>
+              </div>
+              <q-separator />
+              <div class="row justify-between q-my-md q-px-md ">
+                <div>Actual Cash Value</div>
+
+                <div>
+                  {{ settlement.amounts.actualCash }}
+                </div>
+              </div>
+              <div class="row justify-between  q-my-md q-px-md">
+                <div>Deductable Applied</div>
+
+                <div>- {{ settlement.amounts.deductibleApplied }}</div>
+              </div>
+              <div class="row justify-between q-my-md q-px-md ">
+                <div>Prior Payment Applied</div>
+
+                <div>-{{ settlement.amounts.priorPayment }}</div>
+              </div>
+              <q-separator class="bg-dark " />
+              <div class="row justify-between q-my-md q-px-md ">
+                <div>Net Settlement</div>
+
+                <div>
+                  {{ settlement.amounts.netSettlement }}
+                </div>
+              </div>
+            </q-card>
+          </div>
+          <q-separator />
         </div>
       </div>
-      <q-separator />
+    </div>
+    <div v-else>
+      <div class="actions-div">
+        <q-separator vertical inset></q-separator>
+        <q-btn @click="onClickAddButton" flat class="q-ml-auto"
+          ><img src="~assets/add.svg"
+        /></q-btn>
+      </div>
+      <div class="absolute-center">
+        You Dont Have Any Settlements !
+        <img
+          src="~assets/add.svg"
+          alt="add_icon"
+          width="80px"
+          height="80px"
+          style="margin-left:55px;"
+          @click="onClickAddButton"
+          class="q-mb-auto q-mx-auto q-mt-sm"
+        />
+      </div>
     </div>
     <q-dialog
       v-model="settlementDialog"
@@ -314,8 +422,8 @@
 
               <div class="row q-px-lg justify-between">
                 <div class="q-mt-sm q-py-sm">Pol required</div>
-                <div class="">
-                  <q-toggle class="" v-model="isProofOfLossReq" />
+                <div>
+                  <q-toggle v-model="isProofOfLossReq" />
                 </div>
               </div>
               <div v-if="isProofOfLossReq">
@@ -323,7 +431,7 @@
                   <div class="col-5">Pol Date requested</div>
                   <div class="col-5">Pol Date Due</div>
                 </div>
-                <div class="row q-px-md justify-between">
+                <div class="row q-px-lg justify-between">
                   <div class="col-5 ">
                     <q-input
                       v-model="proofOfLossInfo.reqDate"
@@ -556,7 +664,7 @@
 import { mapGetters, mapActions } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import moment from 'moment';
-import InsuranceInfo from 'components/InsuranceInfo';
+
 import { validateDate } from '@utils/validation';
 import { dateToSend } from '@utils/date';
 import { date } from 'quasar';
@@ -567,9 +675,14 @@ export default {
   components: { CustomBar },
   data() {
     return {
+      totalReplacementCost: '',
+      initialCost: '',
+      totalNetClaimed: '',
+      edit: false,
+      totalNetValue: '',
       setId: '',
       ecValue: '',
-      buttonGroup: false,
+      buttonGroup: null,
       description: {
         value: '',
         id: '',
@@ -638,6 +751,10 @@ export default {
     this.getPolicyCategory();
     this.getPolicyTypes();
     this.getSettlementTypes();
+    this.totalNetValue = this.settlement.attributes.totalNetClaimed;
+    this.totalReplacementCost = this.settlement.attributes.totalReplCost;
+    this.initialCost = this.settlement.attributes.intialOffer;
+    this.totalNetClaimed = this.settlement.attributes.totalNetClaimed;
   },
   methods: {
     ...mapActions([
@@ -648,8 +765,7 @@ export default {
       'getSettlements',
       'getSettlementTypes',
       'addSettlement',
-      'editSettlement',
-      'getSettlements'
+      'editSettlement'
     ]),
     onClickAddButton() {
       this.ecValue = false;
@@ -671,7 +787,7 @@ export default {
 
           otherAdjustmentDesc: 'Side settlement'
         }),
-        (this.buttonGroup = false);
+        (this.buttonGroup = null);
       this.isFinal = false;
       this.offeredDate = '';
       this.paymentExpDate = '';
@@ -685,22 +801,36 @@ export default {
         sentCarrierDate: '',
         resRecvDate: ''
       };
+      this.actualValue = '';
       this.settlementDialog = true;
     },
     onClickEdit(val) {
-      this.ecValue = true;
-      this.setId = this.settlement[val].id;
-
       this.settlementDialog = true;
-      this.description = this.settlement[val].attributes.description;
-      this.amounts = this.settlement[val].attributes.amounts;
-      this.buttonGroup = this.settlement[val].attributes.isAccepted;
-      this.isFinal = this.settlement[val].attributes.isFinal;
-      this.offeredDate = this.settlement[val].attributes.offeredDate;
-      this.paymentExpDate = this.settlement[val].attributes.paymentExpDate;
-      this.notes = this.settlement[val].attributes.notes;
-      this.isProofOfLossReq = this.settlement[val].attributes.isProofOfLossReq;
-      this.proofOfLossInfo = this.settlement[val].attributes.proofOfLossInfo;
+      this.ecValue = true;
+      //here we have to add id which is currently not coming!
+
+      this.setId = this.settlement.attributes.claimID;
+
+      this.description = this.settlement.attributes.settlements[
+        val
+      ].description;
+      this.amounts = this.settlement.attributes.settlements[val].amounts;
+      this.buttonGroup = this.settlement.attributes.settlements[val].isAccepted;
+
+      this.isFinal = this.settlement.attributes.settlements[val].isFinal;
+      this.offeredDate = this.settlement.attributes.settlements[
+        val
+      ].offeredDate;
+      this.paymentExpDate = this.settlement.attributes.settlements[
+        val
+      ].paymentExpDate;
+      this.notes = this.settlement.attributes.settlements[val].notes;
+      this.isProofOfLossReq = this.settlement.attributes.settlements[
+        val
+      ].isProofOfLossReq;
+      this.proofOfLossInfo = this.settlement.attributes.settlements[
+        val
+      ].proofOfLossInfo;
     },
     setTypes(data) {
       const obj = data.find(item => {
@@ -729,9 +859,17 @@ export default {
         this.amounts.priorPayment;
     },
     validateDate,
+    editTotalTopFields() {
+      if (this.edit == false) {
+        this.edit = true;
+      } else {
+        this.edit = false;
+      }
+    },
     async onSaveButtonClick() {
       let success = false;
       success = await this.$refs.settlementForm.validate();
+
       const payload = {
         id: this.selectedClaimId,
         setId: this.setId,
@@ -785,6 +923,7 @@ export default {
       }
 
       this.settlementDialog = false;
+      this.getSettlements(this.selectedClaimId);
     }
   }
 };
@@ -797,7 +936,7 @@ export default {
   margin-top: 10px;
 }
 .client-list-item {
-  padding: 20px;
+  padding: 5px;
   background-color: #f4f4f4;
   text-transform: capitalize;
 }
