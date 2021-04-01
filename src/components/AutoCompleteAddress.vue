@@ -80,6 +80,7 @@
         class="q-ml-auto"
         v-model="address.dropBox.isPresent"
         :disable="!isAddressFieldEnable"
+        @input="onToggleButtonOff"
       />
     </div>
     <q-input
@@ -169,6 +170,11 @@ export default {
         return false;
       } else {
         return true;
+      }
+    },
+    onToggleButtonOff() {
+      if (!this.address.dropBox.isPresent) {
+        this.address.dropBox.info = '';
       }
     },
 
