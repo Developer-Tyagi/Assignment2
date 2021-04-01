@@ -206,8 +206,9 @@ export default {
     this.getSingleClaimDetails(this.selectedClaimId);
   },
   methods: {
-    ...mapActions(['getSingleClaimDetails']),
-    ...mapMutations(['setSelectedClaimId'])
+    ...mapMutations(['setSelectedClaimId']),
+
+    ...mapActions(['getSingleClaimDetails'])
   }
 };
 </script>

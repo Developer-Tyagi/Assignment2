@@ -1,7 +1,12 @@
 export function setClaims(state, claims) {
   state.claims = claims;
 }
-
+export function setLog(state, log) {
+  state.log = log;
+}
+export function setClaimNotes(state, claims) {
+  state.claimNotes = claims;
+}
 export function setPersonnel(state, claims) {
   state.personnel = claims;
 }

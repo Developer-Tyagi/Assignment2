@@ -149,6 +149,13 @@ const routes = [
         component: () => import('pages/ClaimSummary.vue')
       },
       {
+        path: 'claim-files/:rootDirectoryID',
+        name: 'files ',
+        caseSensitive: true,
+        component: () => import('pages/ClaimFiles.vue')
+      },
+
+      {
         path: 'loss-info',
         name: 'loss info ',
         caseSensitive: true,
@@ -165,6 +172,12 @@ const routes = [
         name: 'properties and claims ',
         caseSensitive: true,
         component: () => import('pages/PropertyInfo.vue')
+      },
+      {
+        path: 'claim-notes',
+        name: 'notes ',
+        caseSensitive: true,
+        component: () => import('pages/ClaimNotes.vue')
       },
       {
         path: 'note-details',
@@ -190,7 +203,12 @@ const routes = [
         caseSensitive: true,
         component: () => import('pages/Settlements.vue')
       },
-
+      {
+        path: 'activity-log',
+        name: 'Activity Log And Message ',
+        caseSensitive: true,
+        component: () => import('pages/ActivityLog.vue')
+      },
       {
         path: 'add-client',
         name: 'create client',
