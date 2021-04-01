@@ -16,11 +16,12 @@
         </q-breadcrumbs>
         <div>
           <q-btn
-            name="add"
-            @click="addFileDialog = true"
-            icon="post_add"
+            name="camera"
+            @click="addFile"
+            icon="camera_enhance"
             text-color="primary"
           />
+          <q-btn name="add" @click="" icon="post_add" text-color="primary" />
           <q-btn
             name="upload"
             @click="addFolderDialog = true"
@@ -97,7 +98,7 @@
             text-color="white"
             size="md"
           />
-          <span class="q-ml-sm">Add file</span>
+          <span class="q-ml-sm">Add file as</span>
         </q-card-section>
 
         <q-card-section class="q-pt-none">
@@ -106,7 +107,12 @@
 
         <q-card-actions align="right">
           <q-btn flat label="Cancel" color="primary" @click="closeAddFile" />
-          <q-btn flat label="Submit" color="primary" @click="addFile" />
+          <q-btn
+            flat
+            label="Submit"
+            color="primary"
+            @click="addPdfFileToServer"
+          />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -114,10 +120,12 @@
 </template>
 <script>
 import { mapActions, mapMutations } from 'vuex';
+import request from '@api';
+import { jsPDF } from 'jspdf';
 import { Plugins, CameraResultType, CameraDirection } from '@capacitor/core';
 
 const { Camera } = Plugins;
-import request from '@api';
+
 export default {
   name: 'ClientDocument',
   data() {
@@ -136,45 +144,19 @@ export default {
     ...mapActions(['createDocuments', 'createDirectories']),
     ...mapMutations(['setLoading']),
     async addFile() {
-      if (this.fileName) {
-        const image = await Camera.getPhoto({
-          quality: 100,
-          allowEditing: false,
-          resultType: CameraResultType.DataUrl,
-          direction: CameraDirection.Rear
-        });
-        var byteString = atob(image.dataUrl.split(',')[1]);
-        var mimeString = image.dataUrl
-          .split(',')[0]
-          .split(':')[1]
-          .split(';')[0];
-        // write the bytes of the string to a typed array
-        var arrayBuffer = new ArrayBuffer(byteString.length);
-        var _ia = new Uint8Array(arrayBuffer);
-        for (var i = 0; i < byteString.length; i++) {
-          _ia[i] = byteString.charCodeAt(i);
-        }
-        var dataView = new DataView(arrayBuffer);
-        var file = new Blob([dataView], { type: mimeString });
-        const formData = new FormData();
-        formData.append('parentID', this.depth[this.depth.length - 1].id);
-        formData.append('file', file, this.fileName);
-        await this.createDocuments(formData);
-        this.addFileDialog = false;
-        this.fileName = '';
-        this.setLoading(true);
+      const imageData = await Camera.getPhoto({
+        quality: 100,
+        allowEditing: false,
+        resultType: CameraResultType.DataUrl,
+        direction: CameraDirection.Rear
+      });
+      this.setLoading(true);
 
-        const { data } = await request.get(
-          `/documents?parent_id=${this.depth[this.depth.length - 1].id}`
-        );
-        this.documents = data.map(document => ({
-          name: document.attributes.name,
-          id: document.id,
-          type: document.attributes.mimeType,
-          link: document.attributes.webViewLink
-        }));
-        this.setLoading(false);
-      }
+      const jsPDFObj = new jsPDF('p', 'mm');
+      jsPDFObj.addImage(imageData.dataUrl, 10, 10);
+      this.pdfImage = jsPDFObj.output('datauristring');
+      this.addFileDialog = true;
+      this.setLoading(false);
     },
 
     async addFolder() {
@@ -198,6 +180,54 @@ export default {
         this.folderName = '';
         this.setLoading(false);
       }
+    },
+
+    async addPdfFileToServer() {
+      if (this.fileName) {
+        this.setLoading(true);
+        const formData = new FormData();
+        formData.append('parentID', this.depth[this.depth.length - 1].id);
+        formData.append(
+          'file',
+          this.dataURItoBlob(this.pdfImage),
+          this.fileName
+        );
+        await this.createDocuments(formData);
+        this.fileName = '';
+        this.addFileDialog = false;
+        const { data } = await request.get(
+          `/documents?parent_id=${this.depth[this.depth.length - 1].id}`
+        );
+        this.documents = data.map(document => ({
+          name: document.attributes.name,
+          id: document.id,
+          type: document.attributes.mimeType,
+          link: document.attributes.webViewLink
+        }));
+        this.setLoading(false);
+      }
+    },
+
+    dataURItoBlob(dataURI) {
+      // convert base64/URLEncoded data component to raw binary data held in a string
+      var byteString;
+      if (dataURI.split(',')[0].indexOf('base64') >= 0)
+        byteString = atob(dataURI.split(',')[1]);
+      else byteString = unescape(dataURI.split(',')[1]);
+
+      // separate out the mime component
+      var mimeString = dataURI
+        .split(',')[0]
+        .split(':')[1]
+        .split(';')[0];
+
+      // write the bytes of the string to a typed array
+      var ia = new Uint8Array(byteString.length);
+      for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+      }
+
+      return new Blob([ia], { type: mimeString });
     },
 
     closeAddFolder() {
