@@ -2,10 +2,7 @@
   <q-page>
     <div class="mobile-container-page">
       <!-- This is for showing the client details   -->
-      <div
-        class="clients-list q-ma-sm"
-        v-if="editSelectedClient.attributes.notes.length"
-      >
+      <div class="clients-list q-ma-sm">
         <div class="clients-list">
           <q-item-section>
             <div class="client-list-item">
@@ -122,6 +119,18 @@
                 {{
                   editSelectedClient.attributes.insuredInfo.address
                     .addressRegion
+                }}
+                {{
+                  editSelectedClient.attributes.insuredInfo.address.postalCode
+                    ? editSelectedClient.attributes.insuredInfo.address
+                        .postalCode
+                    : '-'
+                }}<br />
+                {{
+                  editSelectedClient.attributes.insuredInfo.address.dropBox.info
+                    ? editSelectedClient.attributes.insuredInfo.address.dropBox
+                        .info
+                    : '-'
                 }}
               </div>
               <div class="q-mt-md">
