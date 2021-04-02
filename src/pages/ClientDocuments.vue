@@ -1,5 +1,5 @@
 <template>
-  <FileManager :claimId="claimId" />
+  <FileManager :directoryId="directoryId" />
 </template>
 <script>
 import FileManager from 'components/FileManager';
@@ -10,7 +10,7 @@ export default {
 
   data() {
     return {
-      claimId: '1HD84t8eOK25ZJGtPfMJOk4rjwM9zrv8t'
+      directoryId: '1HD84t8eOK25ZJGtPfMJOk4rjwM9zrv8t'
     };
   }
 };

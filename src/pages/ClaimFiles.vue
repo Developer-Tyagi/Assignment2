@@ -1,5 +1,5 @@
 <template>
-  <FileManager :claimId="$route.params.rootDirectoryID" />
+  <FileManager :directoryId="$route.params.rootDirectoryID" />
 </template>
 
 <script>

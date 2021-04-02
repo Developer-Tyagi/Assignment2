@@ -37,7 +37,10 @@
       transition-hide="slide-down"
     >
       <q-card>
-        <CustomBar @closeDialog="editLog = false" :dialogName="'Add New Log'" />
+        <CustomBar
+          @closeDialog="onClosingEditLogDialog"
+          :dialogName="'Add New Log'"
+        />
 
         <div class="mobile-container-page-without-search q-ma-sm">
           <q-form ref="activityLogForm" class="form-height">
@@ -97,6 +100,7 @@ export default {
   },
   computed: {
     ...mapGetters(['selectedClaimId', 'log']),
+
     formatDate(value) {
       if (value) {
         return moment(String(value)).format('MM/DD/YYYY');
@@ -128,7 +132,7 @@ export default {
         this.successMessage();
         this.getLog(this.selectedClaimId);
 
-        this.editLog = false;
+        this.onClosingEditLogDialog();
       }
     },
     successMessage() {
@@ -137,6 +141,12 @@ export default {
         message: `Log Updated Successfully!`,
         position: 'top'
       });
+    },
+
+    onClosingEditLogDialog() {
+      this.editLog = false;
+      this.title = '';
+      this.details = '';
     }
   }
 };
