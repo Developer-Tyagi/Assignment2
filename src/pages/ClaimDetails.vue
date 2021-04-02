@@ -30,7 +30,7 @@ export default {
         { name: 'Claim Overview' },
         { name: 'Loss Info' },
         { name: 'Action Items' },
-        { name: 'Demands And Offers' },
+        { name: 'Settlements' },
         { name: 'Activity Log & Message Archive' },
         { name: 'Company Personnel' },
         { name: 'Insurer & Policy' },
@@ -60,6 +60,9 @@ export default {
           break;
         case 'Loss Info':
           this.$router.push('/loss-info');
+          break;
+        case 'Settlements':
+          this.$router.push('/settlements');
           break;
         case 'Action Items':
           this.$router.push(`/claim-action-items/${this.selectedClaimId}`);

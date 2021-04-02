@@ -204,6 +204,12 @@ const routes = [
         component: () => import('pages/InsurancePolicy.vue')
       },
       {
+        path: 'settlements',
+        name: 'Settlements ',
+        caseSensitive: true,
+        component: () => import('pages/Settlements.vue')
+      },
+      {
         path: 'activity-log',
         name: 'Activity Log And Message ',
         caseSensitive: true,
