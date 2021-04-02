@@ -261,7 +261,6 @@ export default {
         this.depth.push({ name: 'home', id: this.directoryId });
         this.setLoading(false);
       } catch (e) {
-        console.log('hi', e);
         this.setLoading(false);
         this.noDirectoryFound = true;
       }
