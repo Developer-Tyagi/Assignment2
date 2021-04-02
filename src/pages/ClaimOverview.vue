@@ -43,6 +43,14 @@
                 : '-'
             }}</span
           >
+          <div class="form-heading q-pa-sm">Status:</div>
+          <span class="q-pa-sm">
+            {{
+              getSelectedClaim.attributes.status
+                ? getSelectedClaim.attributes.status
+                : '-'
+            }}</span
+          >
           <div class="form-heading q-pa-sm">Since Open</div>
           <span class="q-pa-sm">
             {{
@@ -59,42 +67,44 @@
                 : '-'
             }}</span
           >
-          <br />
-          <div class="form-heading">Claim TimeLines</div>
-          <br />
-          <div
-            class="clients-list q-ma-sm"
-            v-if="getSelectedClaim.attributes.phases.length"
-          >
-            <div v-for="(phase, index) in getSelectedClaim.attributes.phases">
-              <div class="row">
-                <div class="col-7 ">
-                  <q-avatar
-                    color="primary"
-                    size="50px"
-                    font-size="15px"
-                    text-color="white"
-                  >
-                    {{
-                      getSelectedClaim.attributes.phases[index].created
-                        ? getSelectedClaim.attributes.phases[index].created
-                        : '-' | moment('D MMM')
-                    }}
-                  </q-avatar>
-                </div>
-                <div class="text-bold q-ml-md col-2 q-mt-sm">
-                  {{
-                    getSelectedClaim.attributes.phases[index].value
-                      ? getSelectedClaim.attributes.phases[index].value
-                      : '-'
-                  }}
-                </div>
-
-                <!-- <div class=" q-ml-md col ">
-                  Phase Changed to Settled
-                </div> -->
-              </div>
+        </div>
+      </div>
+      <div class="form-heading q-ma-sm">Claim TimeLines</div>
+      <div
+        class="clients-list q-ma-sm"
+        v-if="getSelectedClaim.attributes.phases.length"
+      >
+        <div v-for="(phase, index) in getSelectedClaim.attributes.phases">
+          <div class="row">
+            <div class="col-5 bg-red ">
+              <q-avatar
+                color="primary"
+                size="50px"
+                font-size="15px"
+                text-color="white"
+              >
+                {{
+                  getSelectedClaim.attributes.phases[index].created
+                    ? getSelectedClaim.attributes.phases[index].created
+                    : '-' | moment('D MMM')
+                }}
+              </q-avatar>
             </div>
+            <div class="text-bold q-ml-md col-2q-mt-sm">
+              {{
+                getSelectedClaim.attributes.phases[index].value
+                  ? getSelectedClaim.attributes.phases[index].value
+                  : '-'
+              }}
+            </div>
+            <!-- <div class="col ">
+              Phase Changed to
+              {{
+                getSelectedClaim.attributes.phases[index].value
+                  ? getSelectedClaim.attributes.phases[index].value
+                  : '-'
+              }}
+            </div> -->
           </div>
         </div>
       </div>
@@ -135,12 +145,6 @@ export default {
 };
 </script>
 <style lang="scss">
-.form-heading {
-  color: #333333;
-  font-weight: bold;
-  font-size: 14px;
-  margin-top: 20px;
-}
 .client-list-item {
   padding: 20px;
   background-color: #f4f4f4;
@@ -148,10 +152,5 @@ export default {
   p {
     margin: 0 0 6px;
   }
-}
-.edit-icon {
-  position: absolute;
-  right: 20px;
-  font-size: 20px;
 }
 </style>

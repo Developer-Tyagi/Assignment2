@@ -291,12 +291,6 @@ export default {
 </script>
 
 <style lang="scss">
-.form-heading {
-  color: #333333;
-  font-weight: bold;
-  font-size: 14px;
-  margin-top: 10px;
-}
 .clients-list {
   background-color: #f4f4f4;
   border-bottom: 6px solid white;
@@ -314,10 +308,5 @@ export default {
   height: calc(100vh - 150px);
   overflow: auto;
   margin: 10px;
-}
-.edit-icon {
-  position: absolute;
-  right: 20px;
-  font-size: 20px;
 }
 </style>
