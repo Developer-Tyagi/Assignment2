@@ -149,21 +149,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss">
-.form-heading {
-  color: #333333;
-  font-weight: bold;
-  font-size: 14px;
-}
-.clients-list {
-  background-color: #f4f4f4;
-  border-bottom: 6px solid white;
-
-  .client-list-item {
-    padding: 20px;
-    background-color: #f4f4f4;
-    text-transform: capitalize;
-  }
-}
-</style>

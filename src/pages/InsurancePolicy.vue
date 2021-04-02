@@ -373,29 +373,6 @@ export default {
 };
 </script>
 <style lang="scss">
-.form-heading {
-  color: #333333;
-  font-weight: bold;
-  font-size: 14px;
-  margin-top: 10px;
-}
-.client-list-item {
-  padding: 20px;
-  background-color: #f4f4f4;
-  text-transform: capitalize;
-}
-.custom-select {
-  width: 100%;
-  border-bottom: 1px solid #c2c2c2;
-  margin-bottom: 20px;
-
-  .select-text {
-    line-height: 24px;
-    padding-top: 24px;
-    padding-bottom: 8px;
-    height: 50px;
-  }
-}
 .form-height {
   height: calc(100vh - 120px);
   overflow: auto;

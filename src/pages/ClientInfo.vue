@@ -973,16 +973,6 @@ export default {
 };
 </script>
 <style lang="scss">
-.form-heading {
-  color: #333333;
-  font-weight: bold;
-  font-size: 14px;
-}
-.edit-icon {
-  position: absolute;
-  right: 20px;
-  font-size: 20px;
-}
 .clickLink {
   color: $primary;
 }

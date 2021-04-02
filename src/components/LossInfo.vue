@@ -937,17 +937,3 @@ export default {
   }
 };
 </script>
-<style lang="scss">
-.custom-select {
-  width: 100%;
-  border-bottom: 1px solid #c2c2c2;
-  margin-bottom: 20px;
-
-  .select-text {
-    line-height: 24px;
-    padding-top: 24px;
-    padding-bottom: 8px;
-    height: 50px;
-  }
-}
-</style>

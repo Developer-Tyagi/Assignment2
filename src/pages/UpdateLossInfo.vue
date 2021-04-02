@@ -352,12 +352,6 @@ export default {
 };
 </script>
 <style lang="scss">
-.form-heading {
-  color: #333333;
-  font-weight: bold;
-  font-size: 14px;
-  margin-top: 10px;
-}
 .form-height {
   height: calc(100vh - 150px);
   overflow: auto;

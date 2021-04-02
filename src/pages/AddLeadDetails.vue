@@ -943,17 +943,4 @@ export default {
   max-height: calc(100vh - 280px);
   overflow: scroll;
 }
-
-.custom-select {
-  width: 100%;
-  border-bottom: 1px solid #c2c2c2;
-  margin-bottom: 20px;
-
-  .select-text {
-    line-height: 24px;
-    padding-top: 24px;
-    padding-bottom: 8px;
-    height: 50px;
-  }
-}
 </style>
