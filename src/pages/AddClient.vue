@@ -1082,19 +1082,31 @@ export default {
       this.honorific1.id = this.selectedLead.primaryContact.honorific.id;
       this.honorific1.value = this.selectedLead.primaryContact.honorific.value;
       this.honorific1.machineValue = this.selectedLead.primaryContact.honorific.machineValue;
-      this.contractInfo.sourceDetails.details = this.selectedLead.leadSource.detail;
-      this.insuranceDetails.carrierName = this.selectedLead.carrier.value;
-      this.insuranceDetails.carrierId = this.selectedLead.carrier.id;
-      this.insuranceDetails.policyNumber = this.selectedLead.policyNumber;
+
       this.lossInfo.lossAddressDetails.houseNumber = this.selectedLead.lossLocation.houseNumber;
       this.lossInfo.lossAddressDetails.addressCountry = this.selectedLead.lossLocation.addressCountry;
       this.lossInfo.lossAddressDetails.addressLocality = this.selectedLead.lossLocation.addressLocality;
       this.lossInfo.lossAddressDetails.addressRegion = this.selectedLead.lossLocation.addressRegion;
       this.lossInfo.lossAddressDetails.postalCode = this.selectedLead.lossLocation.postalCode;
       this.lossInfo.lossAddressDetails.streetAddress = this.selectedLead.lossLocation.streetAddress;
-      this.lossInfo.causeOfLoss.id = this.selectedLead.lossCause.id;
-      this.lossInfo.causeOfLoss.value = this.selectedLead.lossCause.value;
-      this.lossInfo.causeOfLoss.machineValue = this.selectedLead.lossCause.machineValue;
+
+      this.contractInfo.sourceDetails.details = this.selectedLead.leadSource
+        ? this.selectedLead.leadSource.detail
+        : null;
+
+      this.insuranceDetails.carrierName = this.selectedLead.carrier
+        ? this.selectedLead.carrier.value
+        : null;
+      this.insuranceDetails.carrierId = this.selectedLead.carrier
+        ? this.selectedLead.carrier.id
+        : null;
+      this.insuranceDetails.policyNumber = this.selectedLead.policyNumber
+        ? this.selectedLead.policyNumber
+        : null;
+      this.lossInfo.causeOfLoss = this.selectedLead.lossCause.value
+        ? this.selectedLead.lossCause
+        : null;
+
       this.lossInfo.dateOfLoss = date.formatDate(
         this.selectedLead.dateofLoss,
         'MM/DD/YYYY'
