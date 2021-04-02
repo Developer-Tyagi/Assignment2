@@ -68,7 +68,7 @@
           >
             <div v-for="(phase, index) in getSelectedClaim.attributes.phases">
               <div class="row">
-                <div class="col-8 ">
+                <div class="col-7 ">
                   <q-avatar
                     color="primary"
                     size="50px"
@@ -82,13 +82,14 @@
                     }}
                   </q-avatar>
                 </div>
-                <div class="text-bold q-ml-md col-2 ">
+                <div class="text-bold q-ml-md col-2 q-mt-sm">
                   {{
                     getSelectedClaim.attributes.phases[index].value
                       ? getSelectedClaim.attributes.phases[index].value
                       : '-'
                   }}
                 </div>
+
                 <!-- <div class=" q-ml-md col ">
                   Phase Changed to Settled
                 </div> -->

@@ -86,7 +86,7 @@
                 </span>
 
                 <q-icon
-                  @click="companyPersonnelDailog = true"
+                  @click="onEditButtonClick"
                   class=" col q-pt-xs"
                   name="edit"
                   color="primary"
@@ -200,20 +200,6 @@ export default {
       Date.now(),
       'MM/DD/YYYY'
     );
-    let index = this.personnel.attributes.personnel.length;
-
-    this.companyPersonnel.personnel.id = this.personnel.attributes.personnel[
-      index - 1
-    ].id;
-    this.companyPersonnel.personnel.role = this.personnel.attributes.personnel[
-      index - 1
-    ].role;
-    this.companyPersonnel.notes = this.personnel.attributes.personnel[
-      index - 1
-    ].note;
-    this.companyPersonnel.personParty = this.personnel.attributes.personnel[
-      index - 1
-    ].name;
   },
   methods: {
     ...mapActions([
@@ -249,6 +235,23 @@ export default {
         this.successMessage();
         this.$router.push('/claim-details');
       }
+    },
+    onEditButtonClick() {
+      this.companyPersonnelDailog = true;
+      let index = this.personnel.attributes.personnel.length;
+
+      this.companyPersonnel.personnel.id = this.personnel.attributes.personnel[
+        index - 1
+      ].id;
+      this.companyPersonnel.personnel.role = this.personnel.attributes.personnel[
+        index - 1
+      ].role;
+      this.companyPersonnel.notes = this.personnel.attributes.personnel[
+        index - 1
+      ].note;
+      this.companyPersonnel.personParty = this.personnel.attributes.personnel[
+        index - 1
+      ].name;
     },
     //This Function is for Editing Existing Company Personnel
     async onEditSaveButtonClick() {
