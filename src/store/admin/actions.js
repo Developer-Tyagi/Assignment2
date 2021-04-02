@@ -56,7 +56,6 @@ export async function getAllWorkFlow({ commit, dispatch }, params) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.get(`/workflows/${params}/actions`);
-
     commit('setAllWorkFlow', data);
     dispatch('setLoading', false);
   } catch (e) {

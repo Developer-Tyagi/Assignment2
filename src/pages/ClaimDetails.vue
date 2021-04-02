@@ -61,6 +61,9 @@ export default {
         case 'Loss Info':
           this.$router.push('/loss-info');
           break;
+        case 'Action Items':
+          this.$router.push(`/claim-action-items/${this.selectedClaimId}`);
+          break;
         case 'Demands And Offers':
           break;
         case 'Activity Log & Message Archive':
