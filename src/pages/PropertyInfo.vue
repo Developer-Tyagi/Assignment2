@@ -15,10 +15,17 @@
             :key="setClientProperty.id"
           >
             <div v-if="setClientProperty">
-              <div class="row">
-                <span class="col-10 "></span>
+              <div class="row " style="width:90px; height:40px;">
+                <span class="col-8 "></span>
+                <q-btn
+                  class="q-mt-sm"
+                  color="primary"
+                  @click="$router.push('/add-claim')"
+                >
+                  + Claim</q-btn
+                >
                 <q-icon
-                  size="xs"
+                  size="sm"
                   name="create"
                   color="primary"
                   class="edit-icon q-mt-xs"
