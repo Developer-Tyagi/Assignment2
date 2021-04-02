@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <div>
-      <div class="actions-div justify-between q-px-md">
+      <div v-if="!noDirectoryFound" class="actions-div justify-between q-px-md">
         <q-breadcrumbs class="text-primary" active-color="grey" gutter="none">
           <template v-slot:separator>
             <q-icon size="1.5em" name="chevron_right" color="primary" />
@@ -31,7 +31,7 @@
           />
         </div>
       </div>
-      <div class="mobile-container-page overflow-y">
+      <div v-if="!noDirectoryFound" class="mobile-container-page overflow-y">
         <div
           v-if="depth.length > 1"
           class="row-div vertical-center q-px-md q-py-xs"
@@ -64,6 +64,9 @@
         <div v-if="!documents.length" class="fixed-heading">
           <span>No file in this folder</span>
         </div>
+      </div>
+      <div v-if="noDirectoryFound" class="fixed-heading">
+        <span>No directory found</span>
       </div>
     </div>
 
@@ -129,7 +132,7 @@ const { Camera } = Plugins;
 
 export default {
   name: 'FileManager',
-  props: ['claimId'],
+  props: ['directoryId'],
 
   data() {
     return {
@@ -138,7 +141,8 @@ export default {
       addFolderDialog: false,
       addFileDialog: false,
       folderName: '',
-      fileName: ''
+      fileName: '',
+      noDirectoryFound: false
     };
   },
 
@@ -244,17 +248,22 @@ export default {
 
     async getDocuments() {
       this.setLoading(true);
-      const { data } = await request.get(
-        `/documents?parent_id=${this.claimId}`
-      );
-      this.documents = data.map(document => ({
-        name: document.attributes.name,
-        id: document.id,
-        type: document.attributes.mimeType,
-        link: document.attributes.webViewLink
-      }));
-      this.depth.push({ name: 'home', id: this.claimId });
-      this.setLoading(false);
+      try {
+        const { data } = await request.get(
+          `/documents?parent_id=${this.directoryId}`
+        );
+        this.documents = data.map(document => ({
+          name: document.attributes.name,
+          id: document.id,
+          type: document.attributes.mimeType,
+          link: document.attributes.webViewLink
+        }));
+        this.depth.push({ name: 'home', id: this.directoryId });
+        this.setLoading(false);
+      } catch (e) {
+        this.setLoading(false);
+        this.noDirectoryFound = true;
+      }
     },
 
     async onClickOnFile(document) {

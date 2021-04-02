@@ -175,7 +175,8 @@ export default {
     logout() {
       this.removeToken();
       this.removeCurrentUser();
-      this.$router.push('/login');
+      // this.$router.push('/login');
+      location.reload();
     },
 
     removeToken,
