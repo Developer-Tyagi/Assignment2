@@ -164,7 +164,6 @@ export default {
     ])
   },
   created() {
-    // this.addCompanyPersonnel(this.selectedClaimId);
     this.getPersonnelInfo(this.selectedClaimId);
   },
   methods: {

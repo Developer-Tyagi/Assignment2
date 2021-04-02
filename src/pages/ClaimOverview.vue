@@ -103,7 +103,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions, mapMutations } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import moment from 'moment';
 
@@ -124,15 +124,12 @@ export default {
   },
 
   created() {
-    console.log(this.getSelectedClaim, 8765);
     if (!this.selectedClaimId) {
       this.$router.push('/clients');
     }
     this.getSingleClaimDetails(this.selectedClaimId);
   },
   methods: {
-    // ...mapMutations(['setSelectedClaimId']),
-
     ...mapActions(['getSingleClaimDetails'])
   }
 };

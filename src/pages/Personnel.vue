@@ -111,6 +111,7 @@
               </div>
 
               <div>Fee - none</div>
+
               <div></div>
             </div>
           </div>
