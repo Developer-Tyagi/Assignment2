@@ -520,13 +520,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.form-heading {
-  color: #333333;
-  font-weight: bold;
-  font-size: 14px;
-  margin: 24px 0;
-}
-
 ::-webkit-scrollbar {
   width: 0px;
   background: transparent; /* make scrollbar transparent */

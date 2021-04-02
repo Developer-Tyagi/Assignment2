@@ -342,10 +342,3 @@ export default {
   }
 };
 </script>
-<style lang="scss">
-.form-heading {
-  color: #333333;
-  font-weight: bold;
-  font-size: 14px;
-}
-</style>

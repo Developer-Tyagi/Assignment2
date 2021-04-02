@@ -1609,18 +1609,6 @@ export default {
   margin: 5px 0;
 }
 
-.custom-select {
-  width: 100%;
-  border-bottom: 1px solid #c2c2c2;
-  margin-bottom: 20px;
-
-  .select-text {
-    line-height: 24px;
-    padding-top: 24px;
-    padding-bottom: 8px;
-    height: 50px;
-  }
-}
 .vendor-list {
   color: #666666;
 
