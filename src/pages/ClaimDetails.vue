@@ -27,7 +27,7 @@ export default {
   data() {
     return {
       ClaimDetails: [
-        { name: 'Claim Summary' },
+        { name: 'Claim Overview' },
         { name: 'Loss Info' },
         { name: 'Action Items' },
         { name: 'Demands And Offers' },
@@ -55,8 +55,8 @@ export default {
     ...mapActions(['getSingleClaimDetails']),
     onClickClaimItems(value) {
       switch (value) {
-        case 'Claim Summary':
-          this.$router.push('/claim-summary');
+        case 'Claim Overview':
+          this.$router.push('/claim-overview');
           break;
         case 'Loss Info':
           this.$router.push('/loss-info');

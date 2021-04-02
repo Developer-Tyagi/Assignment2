@@ -1,8 +1,8 @@
 <template>
   <q-page>
-    <div class="mobile-container-page">
+    <div class="mobile-container-page ">
       <!-- This is for showing the client details   -->
-      <div class="clients-list q-ma-sm">
+      <div class="clients-list q-ma-sm  ">
         <div class="clients-list">
           <q-item-section>
             <div class="client-list-item">
@@ -535,8 +535,12 @@
               :value="false"
             />
             <div class="row">
-              <p class="q-mx-none q-my-auto">Tenent Occupied</p>
-              <q-toggle class="q-ml-auto" v-model="tenantOccupiedToggle" />
+              <p class="q-mx-none q-my-auto">Tenant Occupied</p>
+              <q-toggle
+                class="q-ml-auto"
+                v-model="tenantOccupiedToggle"
+                @input="onTenantToggleOff"
+              />
             </div>
 
             <div v-if="tenantOccupiedToggle">
@@ -600,14 +604,14 @@
             />
           </q-form>
           <br />
-          <q-btn
-            @click="onSaveButtonClick"
-            label="Save"
-            color="primary"
-            class="button-width-90"
-            size="'xl'"
-          ></q-btn>
         </div>
+        <q-btn
+          @click="onSaveButtonClick"
+          label="Save"
+          color="primary"
+          class="button-width-90"
+          size="'xl'"
+        ></q-btn>
       </q-card>
     </q-dialog>
   </q-page>
@@ -818,6 +822,13 @@ export default {
         });
       }
     },
+    onTenantToggleOff() {
+      if (!this.tenantOccupiedToggle) {
+        this.tenantOccupied.name = '';
+        this.tenantOccupied.type = '';
+        this.tenantOccupied.phone = '';
+      }
+    },
     RemoveAnotherContact() {
       this.phoneNumber.pop();
     },
@@ -905,10 +916,10 @@ export default {
               },
               phoneNumbers: this.phoneNumber,
               tenantInfo: {
-                name: '',
+                name: this.tenantOccupied.name,
                 phoneNumber: {
-                  type: '',
-                  number: ''
+                  type: this.tenantOccupied.type,
+                  number: this.tenantOccupied.phone
                 }
               }
             }
@@ -982,7 +993,7 @@ export default {
   text-align: left;
 }
 .form-height {
-  height: calc(100vh - 145px);
+  height: calc(100vh - 130px);
   overflow: auto;
   margin: 10px;
 }

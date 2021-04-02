@@ -71,46 +71,64 @@
     <div class="mobile-container-page ">
       <div class="q-pa-md">
         <div class="clients-list">
-          <div
-            class="clients-list q-pa-md"
-            v-for="index in personnel.attributes.personnel.length"
-          >
-            <div class="row">
-              <span class="col-11 form-heading">
+          <div v-if="personnel.attributes.personnel">
+            <div
+              class="clients-list q-pa-md"
+              v-for="index in personnel.attributes.personnel.length"
+            >
+              <div class="row">
+                <span class="col-11 form-heading">
+                  {{
+                    personnel.attributes.personnel[index - 1].name
+                      ? personnel.attributes.personnel[index - 1].name
+                      : '-'
+                  }}
+                </span>
+
+                <q-icon
+                  @click="onEditButtonClick"
+                  class=" col q-pt-xs"
+                  name="edit"
+                  color="primary"
+                  size="sm"
+                />
+              </div>
+
+              <div>
                 {{
                   personnel.attributes.personnel[index - 1]
-                    ? personnel.attributes.personnel[index - 1].name
+                    ? personnel.attributes.personnel[index - 1].role
                     : '-'
                 }}
-              </span>
+              </div>
+              <div>
+                Notes:
+                {{
+                  personnel.attributes.personnel[index - 1]
+                    ? personnel.attributes.personnel[index - 1].note
+                    : '-'
+                }}
+              </div>
 
-              <q-icon
-                @click="companyPersonnelDailog = true"
-                class=" col q-pt-xs"
-                name="edit"
-                color="primary"
-                size="sm"
+              <div>Fee - none</div>
+
+              <div></div>
+            </div>
+          </div>
+          <div v-else class="full-height full-width column ">
+            <div class=" column absolute-center">
+              <div style="color: #666666,align-items: center">
+                You haven't added a Company Personnel yet.
+              </div>
+              <img
+                class="q-mx-lg q-pt-sm"
+                src="~assets/add.svg"
+                alt="add_icon"
+                width="130px"
+                height="100px"
+                @click="addCompanyPersonnelDailog = true"
               />
             </div>
-
-            <div>
-              {{
-                personnel.attributes.personnel[index - 1]
-                  ? personnel.attributes.personnel[index - 1].role
-                  : '-'
-              }}
-            </div>
-            <div>
-              Notes:
-              {{
-                personnel.attributes.personnel[index - 1]
-                  ? personnel.attributes.personnel[index - 1].note
-                  : '-'
-              }}
-            </div>
-
-            <div>Fee - none</div>
-            <div></div>
           </div>
         </div>
       </div>
@@ -170,13 +188,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters([
-      'personnel',
-      'selectedClaimId',
-      'roleTypes',
-      'userRoles',
-      'editPersonnel'
-    ])
+    ...mapGetters(['personnel', 'selectedClaimId', 'roleTypes', 'userRoles'])
   },
   created() {
     if (!this.selectedClaimId) {
@@ -189,20 +201,6 @@ export default {
       Date.now(),
       'MM/DD/YYYY'
     );
-    let index = this.personnel.attributes.personnel.length;
-
-    this.companyPersonnel.personnel.id = this.personnel.attributes.personnel[
-      index - 1
-    ].id;
-    this.companyPersonnel.personnel.role = this.personnel.attributes.personnel[
-      index - 1
-    ].role;
-    this.companyPersonnel.notes = this.personnel.attributes.personnel[
-      index - 1
-    ].note;
-    this.companyPersonnel.personParty = this.personnel.attributes.personnel[
-      index - 1
-    ].name;
   },
   methods: {
     ...mapActions([
@@ -210,7 +208,7 @@ export default {
       'getAllUsers',
       'addCompanyPersonnel',
       'getRoles',
-      'putPersonnel'
+      'editPersonnel'
     ]),
     //This Function is for Adding new Company Personnel
     async onSaveButtonClick() {
@@ -226,7 +224,10 @@ export default {
               name: this.companyPersonnelPost.personParty.name,
               role: this.companyPersonnelPost.personnel.role,
               note: this.companyPersonnelPost.notes,
-              fees: this.companyPersonnelPost.claimFeeRate
+              fees: {
+                rate: this.companyPersonnelPost.claimFeeRate,
+                type: this.companyPersonnelPost.buttonGroup
+              }
             }
           }
         };
@@ -235,6 +236,23 @@ export default {
         this.successMessage();
         this.$router.push('/claim-details');
       }
+    },
+    onEditButtonClick() {
+      this.companyPersonnelDailog = true;
+      let index = this.personnel.attributes.personnel.length;
+
+      this.companyPersonnel.personnel.id = this.personnel.attributes.personnel[
+        index - 1
+      ].id;
+      this.companyPersonnel.personnel.role = this.personnel.attributes.personnel[
+        index - 1
+      ].role;
+      this.companyPersonnel.notes = this.personnel.attributes.personnel[
+        index - 1
+      ].note;
+      this.companyPersonnel.personParty = this.personnel.attributes.personnel[
+        index - 1
+      ].name;
     },
     //This Function is for Editing Existing Company Personnel
     async onEditSaveButtonClick() {
@@ -246,7 +264,10 @@ export default {
           id: this.selectedClaimId,
           companyData: {
             personnel: {
-              fess: this.companyPersonnel.claimFeeRate,
+              fees: {
+                rate: this.companyPersonnel.claimFeeRate,
+                type: this.companyPersonnel.buttonGroup
+              },
               id: this.companyPersonnel.personnel.id,
               name: this.companyPersonnel.personParty.name,
               role: this.companyPersonnel.personnel.role,
@@ -255,7 +276,7 @@ export default {
           }
         };
 
-        await this.putPersonnel(payload);
+        await this.editPersonnel(payload);
         await this.getPersonnelInfo(this.selectedClaimId);
         this.successMessage();
         this.$router.push('/claim-details');

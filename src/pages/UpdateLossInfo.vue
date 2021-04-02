@@ -38,12 +38,11 @@
         'mobile-container-page': $q.platform.is.iphone
       }"
     >
-      <div class="q-pa-lg column full-height">
+      <div class="clients-list">
         <!-- This is for showing the Loss Info details   -->
 
-        <q-card class="q-pa-md q-mt-md full-width">
+        <div class="clients-list">
           <div class="row">
-            <div class="form-heading  ">Loss Info</div>
             <div class="row ">
               <div class="col-10"></div>
               <q-icon
@@ -56,86 +55,91 @@
             </div>
           </div>
 
-          <div class="form-heading">Address :</div>
+          <div class="client-list-item">
+            <div class="form-heading ">Loss Info</div>
+            <div class="form-heading">Address :</div>
 
-          <div>
+            <div>
+              {{
+                lossInfo.attributes.lossInfo.address.streetAddress
+                  ? lossInfo.attributes.lossInfo.address.streetAddress
+                  : '-'
+              }}
+            </div>
+
+            <div>
+              {{
+                lossInfo.attributes.lossInfo.address.addressLocality
+                  ? lossInfo.attributes.lossInfo.address.addressLocality
+                  : '-'
+              }},
+              {{
+                lossInfo.attributes.lossInfo.address.houseNumber
+                  ? lossInfo.attributes.lossInfo.address.houseNumber
+                  : '-'
+              }}
+            </div>
+            <div>
+              {{ lossInfo.attributes.lossInfo.address.addressRegion }},
+              {{ lossInfo.attributes.lossInfo.address.addressCountry }}
+            </div>
+
+            <div class="form-heading  ">Property Type :</div>
+
+            <div>
+              {{ lossInfo.attributes.lossInfo.propertyType.value }}
+            </div>
+
+            <div class="form-heading ">Property Description :</div>
+
             {{
-              lossInfo.attributes.lossInfo.address.streetAddress
-                ? lossInfo.attributes.lossInfo.address.streetAddress
+              lossInfo.attributes.lossInfo.propertyDesc
+                ? lossInfo.attributes.lossInfo.propertyDesc
                 : '-'
             }}
-          </div>
+            <div class="form-heading ">Claim Reason:</div>
 
-          <div>
             {{
-              lossInfo.attributes.lossInfo.address.addressLocality
-                ? lossInfo.attributes.lossInfo.address.addressLocality
-                : '-'
-            }},
-            {{
-              lossInfo.attributes.lossInfo.address.houseNumber
-                ? lossInfo.attributes.lossInfo.address.houseNumber
+              lossInfo.attributes.lossInfo.claimReason.value
+                ? lossInfo.attributes.lossInfo.claimReason.value
                 : '-'
             }}
-          </div>
-          <div>
-            {{ lossInfo.attributes.lossInfo.address.addressRegion }},
-            {{ lossInfo.attributes.lossInfo.address.addressCountry }}
-          </div>
+            <div class="form-heading ">Serverity:</div>
 
-          <div class="form-heading  ">Property Type :</div>
-
-          <div>
-            {{ lossInfo.attributes.lossInfo.propertyType.value }}
-          </div>
-
-          <div class="form-heading ">Property Description :</div>
-
-          {{
-            lossInfo.attributes.lossInfo.propertyDesc
-              ? lossInfo.attributes.lossInfo.propertyDesc
-              : '-'
-          }}
-          <div class="form-heading ">Claim Reason:</div>
-
-          {{
-            lossInfo.attributes.lossInfo.claimReason.value
-              ? lossInfo.attributes.lossInfo.claimReason.value
-              : '-'
-          }}
-          <div class="form-heading ">Serverity:</div>
-
-          {{
-            lossInfo.attributes.lossInfo.serverity.value
-              ? lossInfo.attributes.lossInfo.serverity.value
-              : '-'
-          }}
-          <div class="form-heading ">Cause of Loss:</div>
-
-          {{
-            lossInfo.attributes.lossInfo.cause
-              ? lossInfo.attributes.lossInfo.cause.value
-              : '-'
-          }}
-
-          <div class="form-heading ">Date of Loss:</div>
-          <div>
-            {{ lossInfo.attributes.lossInfo.dateOfLoss | moment('MM/DD/YYYY') }}
-          </div>
-          <div class="form-heading ">Deadline Date:</div>
-          <div>
             {{
-              lossInfo.attributes.lossInfo.deadlineDate | moment('MM/DD/YYYY')
+              lossInfo.attributes.lossInfo.serverity.value
+                ? lossInfo.attributes.lossInfo.serverity.value
+                : '-'
             }}
-          </div>
+            <div class="form-heading ">Cause of Loss:</div>
 
-          <div class="form-heading ">Recovery Date:</div>
-          <div>
             {{
-              lossInfo.attributes.lossInfo.recovDDDate | moment('MM/DD/YYYY')
+              lossInfo.attributes.lossInfo.cause
+                ? lossInfo.attributes.lossInfo.cause.value
+                : '-'
             }}
+
+            <div class="form-heading ">Date of Loss:</div>
+            <div>
+              {{
+                lossInfo.attributes.lossInfo.dateOfLoss | moment('MM/DD/YYYY')
+              }}
+            </div>
+            <div class="form-heading ">Deadline Date:</div>
+            <div>
+              {{
+                lossInfo.attributes.lossInfo.deadlineDate | moment('MM/DD/YYYY')
+              }}
+            </div>
+
+            <div class="form-heading ">Recovery Date:</div>
+            <div>
+              {{
+                lossInfo.attributes.lossInfo.recovDDDate | moment('MM/DD/YYYY')
+              }}
+            </div>
           </div>
-        </q-card>
+        </div>
       </div>
     </div>
   </q-page>
