@@ -259,6 +259,7 @@ export async function changeSelectedTaskMark({ dispatch, state }, payload) {
     });
   }
 }
+
 export async function getSettlements({ commit, dispatch }, id) {
   dispatch('setLoading', true);
   try {
@@ -294,6 +295,26 @@ export async function addSettlement({ dispatch, state }, payload) {
   try {
     const { data } = await request.post(
       `/claims/${payload.id}/settlements`,
+      buildApiData('claimsettlements', payload.data)
+    );
+    dispatch('setLoading', false);
+    return data;
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response.data.title
+    });
+    return false;
+  }
+}
+
+export async function editSettlement({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.patch(
+      `/claims/${payload.id}/settlements/${payload.setId}`,
       buildApiData('claimsettlements', payload.data)
     );
     dispatch('setLoading', false);

@@ -805,11 +805,9 @@ export default {
       this.settlementDialog = true;
     },
     onClickEdit(val) {
-      this.settlementDialog = true;
       this.ecValue = true;
-      //here we have to add id which is currently not coming!
-
-      this.setId = this.settlement.attributes.claimID;
+      this.setId = this.settlement.attributes.settlements[val].id;
+      this.settlementDialog = true;
 
       this.description = this.settlement.attributes.settlements[
         val
@@ -832,6 +830,7 @@ export default {
         val
       ].proofOfLossInfo;
     },
+    // Setting data for dropDown
     setTypes(data) {
       const obj = data.find(item => {
         return item.id === this.description.id;
@@ -917,7 +916,7 @@ export default {
         }
       };
       if (this.ecValue == true) {
-        this.editSettlement(payload);
+        await this.editSettlement(payload);
       } else {
         await this.addSettlement(payload);
       }
