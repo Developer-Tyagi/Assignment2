@@ -343,7 +343,10 @@ export default {
       this.lossDetails.isTheHomeHabitable = this.lossInfo.attributes.lossInfo.isHabitable;
       this.lossDetails.femaClaimToggle = this.lossInfo.attributes.lossInfo.isFEMA;
       this.lossDetails.isStateOfEmergencyToggle = this.lossInfo.attributes.lossInfo.isEmergency;
-      this.lossDetails.causeOfLoss = this.lossInfo.attributes.lossInfo.cause;
+      this.lossDetails.causeOfLoss = this.lossInfo.attributes.lossInfo.cause
+        .value
+        ? this.lossInfo.attributes.lossInfo.cause
+        : null;
     }
   }
 };
