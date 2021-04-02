@@ -13,7 +13,7 @@ export async function getActionOverDues({ commit, dispatch }, params) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response.data.title
+      message: e.response[0].title
     });
   }
 }
@@ -31,7 +31,7 @@ export async function getActionCompletion({ commit, dispatch }, params) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response.data.title
+      message: e.response[0].title
     });
   }
 }
@@ -47,7 +47,7 @@ export async function getActionReasons({ commit, dispatch }, params) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response.data.title
+      message: e.response[0].title
     });
   }
 }
@@ -63,7 +63,7 @@ export async function getAllWorkFlow({ commit, dispatch }, params) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response.data.title
+      message: e.response[0].title
     });
   }
 }
@@ -75,13 +75,17 @@ export async function addWorkflowAction({ dispatch, state }, payload) {
       buildApiData('actions', payload.data)
     );
     dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Workflow action added !'
+    });
     return true;
   } catch (e) {
     console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response.data.title
+      message: e.response[0].title
     });
     return false;
   }
@@ -99,7 +103,7 @@ export async function getWorkflowAction({ commit, dispatch }) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response.data.title
+      message: e.response[0].title
     });
   }
 }

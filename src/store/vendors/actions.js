@@ -13,7 +13,7 @@ export async function getVendors({ commit, dispatch }, params) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response.data.title
+      message: e.response[0].title
     });
   }
 }
@@ -26,13 +26,17 @@ export async function addVendor({ dispatch, state }, payload) {
       buildApiData('vendors', payload)
     );
     dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Created !'
+    });
     return true;
   } catch (e) {
     console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response.data.title
+      message: e.response[0].detail
     });
     return false;
   }
@@ -48,7 +52,7 @@ export async function getVendorIndustries({ commit, dispatch }) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response.data.title
+      message: e.response[0].title
     });
   }
 }

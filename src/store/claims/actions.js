@@ -14,7 +14,7 @@ export async function getPersonnelInfo({ commit, dispatch }, id) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response.data.title
+      message: e.response[0].title
     });
   }
 }
@@ -27,8 +27,11 @@ export async function addCompanyPersonnel({ dispatch, state }, payload) {
       `/claims/${payload.id}/personnel`,
       buildApiData('claimpersonnel', payload.companyData)
     );
-
     dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Company personnel created !'
+    });
   } catch (e) {
     console.log(e);
     dispatch('setLoading', false);
@@ -47,8 +50,11 @@ export async function editPersonnel({ dispatch, state }, payload) {
       `/claims/${payload.id}/personnel/${payload.companyData.personnel.id}`,
       buildApiData('claimpersonnel', payload.companyData)
     );
-
     dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Personnel updated !'
+    });
   } catch (e) {
     console.log(e);
     dispatch('setLoading', false);
@@ -71,10 +77,11 @@ export async function getClaims({ commit, dispatch }, params) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response.data.title
+      message: e.response[0].title
     });
   }
 }
+
 export async function getPolicy({ commit, dispatch }, id) {
   dispatch('setLoading', true);
   const { data } = await request.get(`/claims/${id}/policy`);
@@ -87,7 +94,7 @@ export async function getPolicy({ commit, dispatch }, id) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response.data.title
+      message: e.response[0].title
     });
   }
 }
@@ -105,7 +112,7 @@ export async function getClaimNotes({ commit, dispatch }, id) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response.data.title
+      message: e.response[0].title
     });
   }
 }
@@ -144,7 +151,7 @@ export async function getLossInfo({ commit, dispatch }, id) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response.data.title
+      message: e.response[0].title
     });
   }
 }
@@ -163,7 +170,7 @@ export async function editInsurancePolicy({ dispatch, state }, payload) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response.data.title
+      message: e.response[0].title
     });
     return false;
   }
@@ -186,7 +193,7 @@ export async function updateLossInfo({ dispatch, state }, payload) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response.data.title
+      message: e.response[0].title
     });
     return false;
   }
@@ -202,7 +209,7 @@ export async function getLog({ commit, dispatch }, id) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response.data.title
+      message: e.response[0].title
     });
   }
 }
@@ -218,7 +225,7 @@ export async function getClaimTasks({ commit, dispatch }, id) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response.data.title
+      message: e.response[0].title
     });
   }
 }
@@ -271,7 +278,7 @@ export async function getSettlements({ commit, dispatch }, id) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response.data.title
+      message: e.response[0].title
     });
   }
 }
@@ -286,7 +293,7 @@ export async function getSettlementTypes({ commit, dispatch }) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response.data.title
+      message: e.response[0].title
     });
   }
 }
@@ -304,7 +311,7 @@ export async function addSettlement({ dispatch, state }, payload) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response.data.title
+      message: e.response[0].title
     });
     return false;
   }
@@ -324,8 +331,24 @@ export async function editSettlement({ dispatch, state }, payload) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response.data.title
+      message: e.response[0].title
     });
     return false;
+  }
+}
+
+export async function getSingleClaims({ commit, dispatch }, id) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get(`/claims/${id}/info`);
+    commit('setClaim', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
   }
 }
