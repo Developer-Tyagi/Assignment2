@@ -15,22 +15,25 @@
             :key="setClientProperty.id"
           >
             <div v-if="setClientProperty">
-              <div class="row " style="width:90px; height:40px;">
-                <span class="col-8 "></span>
-                <q-btn
-                  class="q-mt-sm"
-                  color="primary"
-                  @click="$router.push('/add-claim')"
-                >
-                  + Claim</q-btn
-                >
-                <q-icon
-                  size="sm"
-                  name="create"
-                  color="primary"
-                  class="edit-icon q-mt-xs"
-                  @click="editClientInfoDailog = true"
-                ></q-icon>
+              <div class="row">
+                <div class=" col-7 "></div>
+                <div class="col-5 row justify-between">
+                  <q-btn
+                    class="  q-mt-sm"
+                    color="primary"
+                    style="width:90px; font-size:9px;"
+                    @click="$router.push(`/add-claim/${selectedClientId}`)"
+                  >
+                    Add Claim</q-btn
+                  >
+                  <q-icon
+                    size="sm"
+                    name="create"
+                    color="primary"
+                    class=" q-mx-md q-mt-xs"
+                    @click="editClientInfoDailog = true"
+                  ></q-icon>
+                </div>
               </div>
               <div class="client-list-item">
                 <span class="form-heading">

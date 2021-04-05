@@ -20,415 +20,12 @@
           color="primary"
           class="q-mt-auto text-capitalize q-mx-auto"
           :disabled="isCreateClientButtonDisabled"
-          @click="createClientButtonClick"
+          @click="setPayloadForClaim(clientId)"
           size="'xl'"
         ></q-btn>
       </div>
     </div>
 
-    <!-- Client Info -->
-    <q-dialog
-      v-model="clientInfoDailog"
-      persistent
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <CustomBar
-          :dialogName="'Client Info'"
-          @closeDialog="onCloseDialogBox('clientInfoDailog', 0)"
-        />
-        <div class="mobile-container-page-without-search">
-          <q-form ref="clientForm" class="form-height">
-            <q-select
-              dense
-              class="required"
-              v-model="client.id"
-              option-value="id"
-              option-label="name"
-              map-options
-              emit-value
-              options-dense
-              :options="clientTypes"
-              @input="setTypes(clientTypes, client)"
-              label="Client Type"
-              :rules="[
-                val =>
-                  (val && val.length > 0) || 'Please select the client type'
-              ]"
-            />
-
-            <div class="row">
-              <p class="q-mx-none q-my-auto">
-                Is Policy Holder An Organization ?
-              </p>
-              <q-toggle
-                v-model="primaryDetails.isOrganization"
-                left-label
-                class="q-ml-auto"
-              />
-            </div>
-
-            <div v-if="primaryDetails.isOrganization">
-              <q-input
-                dense
-                v-model="primaryDetails.organizationName"
-                label="Organization Name"
-                class="required"
-                lazy-rules
-                :rules="[
-                  val =>
-                    (val && val.length > 0) ||
-                    'Please fill the organization name '
-                ]"
-              />
-            </div>
-            <div class="row">
-              <p class="q-mx-none q-my-auto">Organization Is Policyholder?</p>
-              <q-toggle
-                v-model="policyHolder.isPolicyHolder"
-                left-label
-                class="q-ml-auto"
-              />
-            </div>
-            <br />
-
-            <span class="form-heading">Insured Details</span>
-            <q-select
-              dense
-              v-model="honorific1.id"
-              class="required"
-              :options="titles"
-              option-value="id"
-              option-label="value"
-              map-options
-              options-dense
-              behavior="menu"
-              @input="setTitleName(1)"
-              emit-value
-              label="Title"
-              lazy-rules
-              options-dense
-              :rules="[
-                val => (val && val.length > 0) || 'Please select the Title'
-              ]"
-            />
-
-            <q-input
-              dense
-              class="required"
-              v-model="insuredDetails.fname"
-              lazy-rules
-              :rules="[
-                val => (val && val.length > 0) || 'Please fill the First name'
-              ]"
-              label="First Name"
-            />
-
-            <q-input
-              dense
-              v-model="insuredDetails.lname"
-              class="required"
-              lazy-rules
-              :rules="[
-                val => (val && val.length > 0) || 'Please fill the Last name'
-              ]"
-              label="Last Name"
-            />
-            <div class="row justify-between">
-              <q-select
-                dense
-                v-model="insuredDetails.type"
-                class="required col-5"
-                :options="contactTypes"
-                option-value="machineValue"
-                option-label="name"
-                map-options
-                emit-value
-                options-dense
-                label="Type"
-                lazy-rules
-                :rules="[
-                  val => (val && val.length > 0) || 'Please select phone type'
-                ]"
-              />
-              <q-input
-                dense
-                v-model.number="insuredDetails.phone"
-                class="required col-6"
-                label="Phone"
-                mask="(###) ###-####"
-                lazy-rules
-                :rules="[
-                  val =>
-                    (val && val.length == 14) || 'Please enter the phone number'
-                ]"
-              />
-            </div>
-            <q-input
-              dense
-              v-model="insuredDetails.email"
-              class="required"
-              label="Email"
-              lazy-rules
-              :rules="[
-                val =>
-                  validateEmail(val) ||
-                  'You have entered an invalid email address!'
-              ]"
-            />
-            <div class="row">
-              <p class="q-mx-none q-my-auto">Is there a Co-insured?</p>
-              <q-toggle class="q-ml-auto" v-model="isThereaCoInsuredToggle" />
-            </div>
-            <br />
-            <div v-if="isThereaCoInsuredToggle" style="font-size: 20px">
-              <span class="form-heading">Co-insured Details</span>
-
-              <q-select
-                dense
-                v-model="honorific2.id"
-                class="required"
-                :options="titles"
-                option-value="id"
-                option-label="value"
-                map-options
-                @input="setTitleName(2)"
-                emit-value
-                options-dense
-                behavior="menu"
-                label="Title"
-                lazy-rules
-                :rules="[
-                  val => (val && val.length > 0) || 'Please select the Title'
-                ]"
-              />
-              <q-input
-                dense
-                v-model="coInsuredDetails.fname"
-                label="First Name"
-              />
-              <q-input
-                dense
-                v-model="coInsuredDetails.lname"
-                label="Last Name"
-              />
-              <div class="row justify-between">
-                <q-select
-                  dense
-                  v-model="coInsuredDetails.type"
-                  class="required col-5"
-                  :options="contactTypes"
-                  option-value="machineValue"
-                  option-label="name"
-                  map-options
-                  emit-value
-                  options-dense
-                  label="Type"
-                  options-dense
-                  lazy-rules
-                  :rules="[
-                    val => (val && val.length > 0) || 'Please select phone type'
-                  ]"
-                />
-                <q-input
-                  dense
-                  v-model.number="coInsuredDetails.phone"
-                  label="Phone"
-                  class="required col-6"
-                  mask="(###) ###-####"
-                  lazy-rules
-                  :rules="[
-                    val =>
-                      (val && val.length == 14) ||
-                      'Please enter the phone number'
-                  ]"
-                />
-              </div>
-              <q-input
-                dense
-                v-model="coInsuredDetails.email"
-                input
-                type="email"
-                class="required"
-                lazy-rules
-                :rules="[
-                  val =>
-                    validateEmail(val) ||
-                    'You have entered an invalid email address!'
-                ]"
-                label="Email"
-              />
-            </div>
-            <div class="row">
-              <p class="q-mx-none q-my-auto">Add aditional phone number(s)</p>
-              <q-toggle
-                class="q-ml-auto"
-                v-model="addAditionalPhoneNumberToggle"
-                @input="onaddAditionalPhoneNumberToggle"
-              />
-            </div>
-            <div v-if="addAditionalPhoneNumberToggle">
-              <div
-                class="row justify-between"
-                v-for="(addPhone, index) in phoneNumber"
-                v-if="index >= 0"
-              >
-                <q-select
-                  v-model="phoneNumber[index].type"
-                  class="required col-5"
-                  label="Type"
-                  :options="contactTypes"
-                  option-value="machineValue"
-                  option-label="name"
-                  map-options
-                  options-dense
-                  emit-value
-                  lazy-rules
-                  :rules="[
-                    val => (val && val.length > 0) || 'Please select phone type'
-                  ]"
-                />
-                <q-input
-                  dense
-                  v-model.number="phoneNumber[index].number"
-                  label="Phone"
-                  class="required col-6"
-                  mask="(###) ###-####"
-                  lazy-rules
-                  :rules="[
-                    val =>
-                      (val && val.length == 14) ||
-                      'Please enter the phone number'
-                  ]"
-                />
-              </div>
-              <div class="row">
-                <q-btn
-                  outline
-                  class="q-mt-sm"
-                  @click="addAnotherContact"
-                  color="primary"
-                  label="Add"
-                  style="margin-right: auto"
-                />
-
-                <q-btn
-                  v-if="phoneNumber.length > 1"
-                  outline
-                  @click="RemoveAnotherContact"
-                  class="q-mt-sm"
-                  color="primary"
-                  label="Remove"
-                />
-              </div>
-            </div>
-            <br />
-            <span class="form-heading">Address Details</span>
-
-            <AutoCompleteAddress
-              :address="clientAddressDetails"
-              :isDropBoxEnable="true"
-              :isChecksEnable="true"
-              :isAsteriskMark="true"
-            />
-
-            <div class="row">
-              <p class="q-mx-none q-my-auto">Tenent Occupied</p>
-              <q-toggle class="q-ml-auto" v-model="tenantOccupiedToggle" />
-            </div>
-            <div v-if="tenantOccupiedToggle">
-              <q-input
-                dense
-                v-model="tenantOccupied.name"
-                label="Tenant Name"
-              />
-
-              <div class="row justify-between">
-                <q-select
-                  dense
-                  class="required col-5"
-                  v-model="tenantOccupied.type"
-                  label="Type"
-                  :options="contactTypes"
-                  option-value="machineValue"
-                  option-label="name"
-                  map-options
-                  options-dense
-                  emit-value
-                  lazy-rules
-                  :rules="[
-                    val => (val && val.length > 0) || 'Please select phone type'
-                  ]"
-                />
-                <q-input
-                  dense
-                  class="required col-6"
-                  v-model.number="tenantOccupied.phone"
-                  label="Phone"
-                  mask="(###) ###-####"
-                  lazy-rules
-                  :rules="[
-                    val =>
-                      (val && val.length == 14) ||
-                      'Please enter the phone number'
-                  ]"
-                />
-              </div>
-            </div>
-          </q-form>
-          <q-btn
-            @click="onSubmit('clientInfoDailog')"
-            label="Save"
-            color="primary"
-            class="button-width-90"
-            size="'xl'"
-          />
-        </div>
-      </q-card>
-    </q-dialog>
-    <!-- Mailing Address -->
-    <q-dialog
-      v-model="mailingAddressDialog"
-      persistent
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <CustomBar
-          @closeDialog="onCloseDialogBox('mailingAddressDialog', 1)"
-          :dialogName="'Mailing Address'"
-        />
-        <div class="mobile-container-page-without-search">
-          <q-form ref="mailingAddressForm" class="form-height">
-            <div class="row">
-              <span class="form-heading"> Is the mailing address same? </span>
-              <q-toggle
-                class="q-ml-auto"
-                v-model="isMailingAddressSameToggle"
-                @input="mailingAddressSame"
-              />
-            </div>
-            <AutoCompleteAddress
-              :address="mailingAddressDetails"
-              :isDropBoxEnable="true"
-              :isChecksEnable="true"
-              :isFieldsDisable="isMailingAddressSameToggle"
-              :isAsteriskMark="true"
-            />
-          </q-form>
-          <q-btn
-            label="Save"
-            color="primary"
-            class="button-width-90"
-            @click="onSubmit('mailingAddressDialog')"
-            size="'xl'"
-          />
-        </div>
-      </q-card>
-    </q-dialog>
     <!-- Insurance Info -->
     <q-dialog
       v-model="insuranceInfoDialog"
@@ -693,6 +290,7 @@ export default {
 
   data() {
     return {
+      clientId: '',
       industryTypeValue: '',
 
       contractInfo: {
@@ -760,8 +358,6 @@ export default {
         machineValue: ''
       },
       dialogBoxes: [
-        { name: 'Client Info', validForm: false },
-        { name: 'Mailing Address', validForm: false },
         { name: 'Insurance Info', validForm: false },
         { name: 'Loss Info', validForm: false },
         { name: 'Expert/Vendor Info', validForm: false },
@@ -855,18 +451,6 @@ export default {
         name: '',
         phone: '',
         type: ''
-      },
-      mailingAddressDetails: {
-        addressCountry: '',
-        addressRegion: '',
-        addressLocality: '',
-        postalCode: '',
-        streetAddress: '',
-        postOfficeBoxNumber: '4',
-        dropBox: {
-          info: '',
-          isPresent: false
-        }
       },
 
       lossInfo: {
@@ -1056,6 +640,8 @@ export default {
   },
 
   created() {
+    this.clientId = this.$route.params.clientId;
+    this.getSingleClientDetails(this.clientId);
     this.contractInfo.time = date.formatDate(Date.now(), 'HH:mm:ss:aa');
     this.contractInfo.firstContractDate = this.contractInfo.contractDate = this.insuranceDetails.policyEffectiveDate = this.insuranceDetails.policyExpireDate = this.lossInfo.dateOfLoss = this.lossInfo.deadlineDate = this.lossInfo.recovDeadline = date.formatDate(
       Date.now(),
@@ -1121,7 +707,8 @@ export default {
       'vendors',
       'policyCategories',
       'vendorIndustries',
-      'personnelRoles'
+      'personnelRoles',
+      'editSelectedClient'
     ])
   },
 
@@ -1146,7 +733,8 @@ export default {
       'getTitles',
       'getPolicyCategory',
       'getVendorIndustries',
-      'addIndustry'
+      'addIndustry',
+      'getSingleClientDetails'
     ]),
     ...mapMutations(['setSelectedLead']),
 
@@ -1198,7 +786,7 @@ export default {
 
     lossAddressSame() {
       if (this.lossInfo.isLossAddressSameAsClientToggle) {
-        this.lossInfo.lossAddressDetails = this.clientAddressDetails;
+        this.lossInfo.lossAddressDetails = this.editSelectedClient.attributes.insuredInfo.address;
       } else {
         if (this.selectedLead.id) {
           this.lossInfo.lossAddressDetails = {
@@ -1269,50 +857,50 @@ export default {
       let success = false;
       let validationIndex;
       switch (name) {
-        case 'clientInfoDailog':
-          success = await this.$refs.clientForm.validate();
+        // case 'clientInfoDailog':
+        //   success = await this.$refs.clientForm.validate();
+        //   validationIndex = 0;
+
+        //   break;
+        case 'insuranceInfoDialog':
+          success = await this.$refs.insuranceInfoForm.validate();
           validationIndex = 0;
 
           break;
-        case 'insuranceInfoDialog':
-          success = await this.$refs.insuranceInfoForm.validate();
-          validationIndex = 2;
 
-          break;
+        // case 'mailingAddressDialog':
+        //   success = await this.$refs.mailingAddressForm.validate();
+        //   validationIndex = 1;
 
-        case 'mailingAddressDialog':
-          success = await this.$refs.mailingAddressForm.validate();
-          validationIndex = 1;
-
-          break;
+        //   break;
 
         case 'addEstimatorDialog':
           success = await this.$refs.addEstimatorForm.validate();
-          validationIndex = 5;
+          validationIndex = 2;
           break;
         case 'lossInfoDialog':
           success = await this.$refs.lossInfoForm.validate();
-          validationIndex = 3;
+          validationIndex = 1;
 
           break;
 
         case 'expertVendorInfoDialog':
           success = await this.$refs.expertVendorInfoForm.validate();
-          validationIndex = 4;
+          validationIndex = 2;
 
           break;
         case 'estimatingInfoDialog':
           success = await this.$refs.estimatingInfoForm.validate();
-          validationIndex = 5;
+          validationIndex = 3;
           break;
 
         case 'contractInfoDialog':
           success = await this.$refs.contractInfoForm.validate();
-          validationIndex = 6;
+          validationIndex = 4;
           break;
         case 'publicAdjustorInfoDialog':
           success = await this.$refs.publicAdjustorForm.validate();
-          validationIndex = 7;
+          validationIndex = 5;
       }
       if (success == true) {
         this.dialogBoxes[validationIndex].validForm = true;
@@ -1359,117 +947,15 @@ export default {
       data.value = obj.name;
     },
 
-    mailingAddressSame() {
-      if (this.isMailingAddressSameToggle) {
-        this.mailingAddressDetails = this.clientAddressDetails;
-      } else {
-        this.mailingAddressDetails = {
-          addressCountry: '',
-          addressRegion: '',
-          addressLocality: '',
-          postalCode: '',
-          streetAddress: '',
-          postOfficeBoxNumber: '',
-          dropBox: {
-            info: '',
-            isPresent: false
-          }
-        };
-      }
-    },
+    //claim
 
-    async createClientButtonClick() {
-      const payload = {
-        isOrganization: this.primaryDetails.isOrganization,
-        organizationName: this.primaryDetails.organizationName,
-        isOrganizationPolicyholder: this.policyHolder.isPolicyHolder,
-        source: {
-          id: this.contractInfo.sourceDetails.id,
-          type: this.contractInfo.sourceDetails.type,
-          detail: this.contractInfo.sourceDetails.details
-        },
-        type: {
-          ...this.client
-        },
-        insuredInfo: {
-          primary: {
-            honorific: {
-              id: this.honorific1.id,
-              value: this.honorific1.title,
-              machineValue: this.honorific1.machineValue
-            },
-            fname: this.insuredDetails.fname,
-            lname: this.insuredDetails.lname,
-            email: this.insuredDetails.email,
-            phoneNumber: [
-              {
-                type: this.insuredDetails.type,
-                number: this.insuredDetails.phone
-              }
-            ]
-          },
-          secondary: {
-            honorific: {
-              id: this.honorific2.id,
-              value: this.honorific2.title,
-              machineValue: this.honorific2.machineValue
-            },
-            fname: this.coInsuredDetails.fname,
-            lname: this.coInsuredDetails.lname,
-            email: this.coInsuredDetails.email,
-            phoneNumber: [
-              {
-                type: this.coInsuredDetails.type,
-                number: this.coInsuredDetails.phone
-              }
-            ]
-          },
-          address: {
-            ...this.clientAddressDetails
-          },
-          mailingAddress: {
-            ...this.mailingAddressDetails
-          },
-          phoneNumbers: this.phoneNumber,
-          tenantInfo: {
-            name: '',
-            phoneNumber: {
-              type: '',
-              number: ''
-            }
-          }
-        }
-      };
-
-      if (this.tenantOccupiedToggle) {
-        payload.insuredInfo.tenantInfo.name = this.tenantOccupied.name;
-        payload.insuredInfo.tenantInfo.phoneNumber.type = this.tenantOccupied.type;
-        payload.insuredInfo.tenantInfo.phoneNumber.number = this.tenantOccupied.phone;
-      } else {
-        delete payload.insuredInfo.tenantInfo;
-      }
-      if (!this.isThereaCoInsuredToggle) {
-        delete payload.insuredInfo.secondary;
-      }
-      if (this.contractInfo.sourceDetails.type == constants.industries.VENDOR) {
-        payload.source.id = this.contractInfo.sourceDetails.id;
-      } else {
-        payload.source.detail = this.contractInfo.sourceDetails.details;
-      }
-
-      const response = await this.addClient(payload);
-
-      if (response && response.id) {
-        this.setPayloadForClaim(response.id);
-      }
-    },
-    //claim ID
     async setPayloadForClaim(id) {
       const payload = {
         client: {
           id: id,
-          fname: this.insuredDetails.fname,
-          lname: this.insuredDetails.lname
+          fname: this.editSelectedClient.attributes.insuredInfo.primary.fname,
+
+          lname: this.editSelectedClient.attributes.insuredInfo.primary.lname
         },
         policyInfo: {
           carrier: {
@@ -1529,7 +1015,7 @@ export default {
           isNewAddress:
             this.lossInfo.lossAddressNameDropdown == 'Others' ? true : false,
           address: {
-            ...this.clientAddressDetails
+            ...this.lossInfo.lossAddressDetails
           },
 
           propertyType: {
