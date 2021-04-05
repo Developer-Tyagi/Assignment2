@@ -306,6 +306,7 @@
               </div>
               <div class="row">
                 <q-btn
+                  :disabled="isAddMorePhoneDisabled"
                   outline
                   class="q-mt-sm"
                   @click="addAnotherContact"
@@ -335,7 +336,7 @@
             />
 
             <div class="row">
-              <p class="q-mx-none q-my-auto">Tenent Occupied</p>
+              <p class="q-mx-none q-my-auto">Tenant Occupied</p>
               <q-toggle class="q-ml-auto" v-model="tenantOccupiedToggle" />
             </div>
             <div v-if="tenantOccupiedToggle">
@@ -695,6 +696,7 @@ export default {
 
   data() {
     return {
+      isAddMorePhoneDisabled: false,
       industryTypeValue: '',
 
       contractInfo: {
@@ -1154,7 +1156,8 @@ export default {
     // For adding multiple Contact Numbers in ClientInfo
     addAnotherContact() {
       let len = this.phoneNumber.length;
-      if (this.phoneNumber[len - 1].number) {
+
+      if (this.phoneNumber[len - 1].number.length == 14) {
         this.phoneNumber.push({
           type: '',
           number: ''
