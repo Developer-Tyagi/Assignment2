@@ -274,7 +274,7 @@ import { date } from 'quasar';
 const addressService = new AddressService();
 
 export default {
-  name: 'addClient',
+  name: 'addClaim',
   components: {
     CustomBar,
     VendorsList,
