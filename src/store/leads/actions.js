@@ -14,7 +14,7 @@ export async function getActiveLeadsList(
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response.data.title
+      message: e.response[0].title
     });
   }
 }
@@ -32,7 +32,7 @@ export async function getArchivedLeadsList({ commit, dispatch }, searchString) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response.data.title
+      message: e.response[0].title
     });
   }
 }
@@ -88,7 +88,7 @@ export async function getLeadDetails({ commit, dispatch }, id) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response.data.title
+      message: e.response[0].title
     });
   }
 }

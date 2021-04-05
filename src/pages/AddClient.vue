@@ -306,6 +306,7 @@
               </div>
               <div class="row">
                 <q-btn
+                  :disabled="isAddMorePhoneDisabled"
                   outline
                   class="q-mt-sm"
                   @click="addAnotherContact"
@@ -335,7 +336,7 @@
             />
 
             <div class="row">
-              <p class="q-mx-none q-my-auto">Tenent Occupied</p>
+              <p class="q-mx-none q-my-auto">Tenant Occupied</p>
               <q-toggle class="q-ml-auto" v-model="tenantOccupiedToggle" />
             </div>
             <div v-if="tenantOccupiedToggle">
@@ -578,9 +579,9 @@
         </div>
       </q-card>
     </q-dialog>
-    <!-- Public Adjuster Info -->
+    <!-- Company Personnel Dialog-->
     <q-dialog
-      v-model="publicAdjustorInfoDialog"
+      v-model="companyPersonnelDialog"
       persistent
       :maximized="maximizedToggle"
       transition-show="slide-up"
@@ -588,18 +589,19 @@
     >
       <q-card>
         <CustomBar
-          :dialogName="'Public Adjustor Info'"
-          @closeDialog="onCloseDialogBox('publicAdjustorInfoDialog', 6)"
+          :dialogName="'Company Personnel'"
+          @closeDialog="onCloseDialogBox('companyPersonnelDialog', 6)"
         />
         <div class="mobile-container-page-without-search">
-          <q-form ref="publicAdjustorForm" class="form-height">
-            <PublicAdjustorInfo :publicAdjustorInfo="publicAdjustorInfo" />
+          <q-form ref="companyPersonnelForm" class="form-height">
+            <div class="form-heading text-bold">CLAIM PERSONNEL</div>
+            <CompanyPersonnel :companyPersonnel="companyPersonnel" />
           </q-form>
           <q-btn
             label="Save"
             color="primary"
             class="button-width-90"
-            @click="onSubmit('publicAdjustorInfoDialog')"
+            @click="onSubmit('companyPersonnelDialog')"
             size="'xl'"
           />
         </div>
@@ -660,7 +662,8 @@
 import CustomBar from 'components/CustomBar';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import ContractInfo from 'components/ContractInfo';
-import PublicAdjustorInfo from 'components/PublicAdjustorInfo';
+import CompanyPersonnel from 'components/CompanyPersonnel';
+
 import EstimatingInfo from 'components/EstimatingInfo';
 import LossInfo from 'components/LossInfo';
 import ExpertVendorInfo from 'components/ExpertVendorInfo';
@@ -688,11 +691,12 @@ export default {
     ExpertVendorInfo,
     EstimatingInfo,
     ContractInfo,
-    PublicAdjustorInfo
+    CompanyPersonnel
   },
 
   data() {
     return {
+      isAddMorePhoneDisabled: false,
       industryTypeValue: '',
 
       contractInfo: {
@@ -719,37 +723,19 @@ export default {
         buttonGroup: 'dollar'
       },
 
-      publicAdjustorInfo: {
-        isFieldDisable1: true,
-        isFieldDisable2: true,
-        isFieldDisable3: true,
-        isFieldDisable4: true,
-
-        personnel: [
-          {
-            id: '',
-            role: ''
-          },
-          {
-            id: '',
-            role: ''
-          },
-          {
-            id: '',
-            role: ''
-          },
-          {
-            id: '',
-            role: ''
-          }
-        ],
-
-        personParty1: '',
-        personParty2: '',
-        personParty3: '',
-        personParty4: '',
+      companyPersonnel: {
         notes: '',
-
+        endDate: '',
+        startDate: '',
+        buttonGroup: 'dollar',
+        claimFeeRate: '',
+        isFieldDisable: true,
+        personnel: {
+          id: '',
+          role: ''
+        },
+        personParty: '',
+        notes: '',
         filterRole: []
       },
 
@@ -767,7 +753,7 @@ export default {
         { name: 'Expert/Vendor Info', validForm: false },
         { name: 'Estimating Info', validForm: false },
         { name: 'Contract Info', validForm: false },
-        { name: 'Public Adjustor Info', validForm: false },
+        { name: 'Company Personnel', validForm: false },
         { name: 'Office Task', validForm: false }
       ],
 
@@ -776,7 +762,7 @@ export default {
 
       constants: constants,
 
-      publicAdjustorInfoDialog: false,
+      companyPersonnelDialog: false,
       contractInfoDialog: false,
 
       officeTaskDialog: false,
@@ -1056,8 +1042,9 @@ export default {
   },
 
   created() {
+    this.getRoles();
     this.contractInfo.time = date.formatDate(Date.now(), 'HH:mm:ss:aa');
-    this.contractInfo.firstContractDate = this.contractInfo.contractDate = this.insuranceDetails.policyEffectiveDate = this.insuranceDetails.policyExpireDate = this.lossInfo.dateOfLoss = this.lossInfo.deadlineDate = this.lossInfo.recovDeadline = date.formatDate(
+    this.companyPersonnel.startDate = this.companyPersonnel.endDate = this.contractInfo.firstContractDate = this.contractInfo.contractDate = this.insuranceDetails.policyEffectiveDate = this.insuranceDetails.policyExpireDate = this.lossInfo.dateOfLoss = this.lossInfo.deadlineDate = this.lossInfo.recovDeadline = date.formatDate(
       Date.now(),
       'MM/DD/YYYY'
     );
@@ -1082,19 +1069,31 @@ export default {
       this.honorific1.id = this.selectedLead.primaryContact.honorific.id;
       this.honorific1.value = this.selectedLead.primaryContact.honorific.value;
       this.honorific1.machineValue = this.selectedLead.primaryContact.honorific.machineValue;
-      this.contractInfo.sourceDetails.details = this.selectedLead.leadSource.detail;
-      this.insuranceDetails.carrierName = this.selectedLead.carrier.value;
-      this.insuranceDetails.carrierId = this.selectedLead.carrier.id;
-      this.insuranceDetails.policyNumber = this.selectedLead.policyNumber;
+
       this.lossInfo.lossAddressDetails.houseNumber = this.selectedLead.lossLocation.houseNumber;
       this.lossInfo.lossAddressDetails.addressCountry = this.selectedLead.lossLocation.addressCountry;
       this.lossInfo.lossAddressDetails.addressLocality = this.selectedLead.lossLocation.addressLocality;
       this.lossInfo.lossAddressDetails.addressRegion = this.selectedLead.lossLocation.addressRegion;
       this.lossInfo.lossAddressDetails.postalCode = this.selectedLead.lossLocation.postalCode;
       this.lossInfo.lossAddressDetails.streetAddress = this.selectedLead.lossLocation.streetAddress;
-      this.lossInfo.causeOfLoss.id = this.selectedLead.lossCause.id;
-      this.lossInfo.causeOfLoss.value = this.selectedLead.lossCause.value;
-      this.lossInfo.causeOfLoss.machineValue = this.selectedLead.lossCause.machineValue;
+
+      this.contractInfo.sourceDetails.details = this.selectedLead.leadSource
+        ? this.selectedLead.leadSource.detail
+        : null;
+
+      this.insuranceDetails.carrierName = this.selectedLead.carrier
+        ? this.selectedLead.carrier.value
+        : null;
+      this.insuranceDetails.carrierId = this.selectedLead.carrier
+        ? this.selectedLead.carrier.id
+        : null;
+      this.insuranceDetails.policyNumber = this.selectedLead.policyNumber
+        ? this.selectedLead.policyNumber
+        : null;
+      this.lossInfo.causeOfLoss = this.selectedLead.lossCause.value
+        ? this.selectedLead.lossCause
+        : null;
+
       this.lossInfo.dateOfLoss = date.formatDate(
         this.selectedLead.dateofLoss,
         'MM/DD/YYYY'
@@ -1121,7 +1120,9 @@ export default {
       'vendors',
       'policyCategories',
       'vendorIndustries',
-      'personnelRoles'
+      'personnelRoles',
+      'roleTypes',
+      'userRoles'
     ])
   },
 
@@ -1146,14 +1147,17 @@ export default {
       'getTitles',
       'getPolicyCategory',
       'getVendorIndustries',
-      'addIndustry'
+      'addIndustry',
+      'getRoles',
+      'getAllUsers'
     ]),
     ...mapMutations(['setSelectedLead']),
 
     // For adding multiple Contact Numbers in ClientInfo
     addAnotherContact() {
       let len = this.phoneNumber.length;
-      if (this.phoneNumber[len - 1].number) {
+
+      if (this.phoneNumber[len - 1].number.length == 14) {
         this.phoneNumber.push({
           type: '',
           number: ''
@@ -1241,8 +1245,8 @@ export default {
         case 'Office Task':
           this.officeTaskDialog = true;
           break;
-        case 'Public Adjustor Info':
-          this.publicAdjustorInfoDialog = true;
+        case 'Company Personnel':
+          this.companyPersonnelDialog = true;
           break;
         case 'Documents':
           this.documentsDialog = true;
@@ -1310,8 +1314,8 @@ export default {
           success = await this.$refs.contractInfoForm.validate();
           validationIndex = 6;
           break;
-        case 'publicAdjustorInfoDialog':
-          success = await this.$refs.publicAdjustorForm.validate();
+        case 'companyPersonnelDialog':
+          success = await this.$refs.companyPersonnelForm.validate();
           validationIndex = 7;
       }
       if (success == true) {
@@ -1580,7 +1584,20 @@ export default {
           dateOfFirstContact: dateToSend(this.contractInfo.firstContractDate)
         },
 
-        personnel: this.publicAdjustorInfo.personnel
+        personnel: [
+          {
+            id: this.companyPersonnel.personnel.id,
+            name: this.companyPersonnel.personParty.name,
+            role: this.companyPersonnel.personnel.role,
+            note: this.companyPersonnel.notes,
+            fees: {
+              type: this.companyPersonnel.buttonGroup,
+              rate: this.companyPersonnel.claimFeeRate
+            },
+            startDate: dateToSend(this.companyPersonnel.startDate),
+            endDate: dateToSend(this.companyPersonnel.endDate)
+          }
+        ]
       };
 
       this.addClaim(payload).then(() => {
@@ -1599,11 +1616,6 @@ export default {
   width: 0px;
   background: transparent; /* make scrollbar transparent */
 }
-.form-heading {
-  color: #333333;
-  font-weight: bold;
-  font-size: 14px;
-}
 
 .form-list {
   color: #333333;
@@ -1614,18 +1626,6 @@ export default {
   margin: 5px 0;
 }
 
-.custom-select {
-  width: 100%;
-  border-bottom: 1px solid #c2c2c2;
-  margin-bottom: 20px;
-
-  .select-text {
-    line-height: 24px;
-    padding-top: 24px;
-    padding-bottom: 8px;
-    height: 50px;
-  }
-}
 .vendor-list {
   color: #666666;
 

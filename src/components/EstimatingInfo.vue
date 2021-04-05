@@ -236,6 +236,7 @@ export default {
         const response = this.addEstimator(payload);
         if (response) {
           this.estimatingInfo.addEstimatorValue.name = this.estimatingInfo.fname;
+
           this.estimatingInfo.addEstimatorDialog = false;
           this.getEstimators();
           // this.carrierName = this.addEstimatorInfo.fname;
@@ -266,9 +267,15 @@ export default {
       };
       this.estimatingInfo.honorific3.id = '';
       this.estimatingInfo.addEstimatorValue.name = '';
+      this.estimatingInfo.fname = '';
+      this.estimatingInfo.lname = '';
+      this.estimatingInfo.email = '';
+      this.estimatingInfo.phone = '';
+      this.estimatingInfo.type = '';
     },
     selectEstimator(value) {
       this.estimatingInfo.addEstimatorValue.name = value.fname;
+
       this.estimatingInfo.estimatorsListDialog = false;
     }
   }

@@ -155,7 +155,7 @@ const routes = [
         component: () => import('src/pages/ClaimOverview.vue')
       },
       {
-        path: 'claim-files/:rootDirectoryID',
+        path: 'claim-files/:claimId',
         name: 'files ',
         caseSensitive: true,
         component: () => import('pages/ClaimFiles.vue')
@@ -208,6 +208,12 @@ const routes = [
         name: 'Insurance Policy ',
         caseSensitive: true,
         component: () => import('pages/InsurancePolicy.vue')
+      },
+      {
+        path: 'settlements',
+        name: 'Settlements ',
+        caseSensitive: true,
+        component: () => import('pages/Settlements.vue')
       },
       {
         path: 'activity-log',

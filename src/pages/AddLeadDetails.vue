@@ -189,7 +189,7 @@
               </div>
               <q-select
                 dense
-                class=" input-extra-padding"
+                class="input-extra-padding"
                 v-model="lossDetails.causeOfLoss.id"
                 option-value="id"
                 option-label="name"
@@ -641,7 +641,7 @@ export default {
     // This function value is coming through props form add-vendor Page!
 
     onCloseAddVendorDialogBox(result, selected, industryType) {
-      if (result === true && industryType === 'carrier') {
+      if (industryType === 'carrier') {
         this.onClosingVendorSelectDialog(
           selected,
           selected.industry.machineValue
@@ -681,7 +681,10 @@ export default {
       const selectedInspectionType = this.inspectionTypes.find(
         type => type.id === this.schedulingDetails.inspectionType
       );
-      if (selectedInspectionType.subtypes.length > 1) {
+      if (
+        selectedInspectionType.subtypes &&
+        selectedInspectionType.subtypes.length > 1
+      ) {
         this.subInspectionTypes = selectedInspectionType.subtypes;
         this.schedulingDetails.subInspectionType = '';
         this.schedulingDetails.inspectionDuration = '';
@@ -942,18 +945,5 @@ export default {
   min-height: 250px;
   max-height: calc(100vh - 280px);
   overflow: scroll;
-}
-
-.custom-select {
-  width: 100%;
-  border-bottom: 1px solid #c2c2c2;
-  margin-bottom: 20px;
-
-  .select-text {
-    line-height: 24px;
-    padding-top: 24px;
-    padding-bottom: 8px;
-    height: 50px;
-  }
 }
 </style>

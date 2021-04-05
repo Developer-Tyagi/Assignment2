@@ -114,7 +114,7 @@ export default {
       user: {
         name: ''
       },
-      isLeftSidePanelOpen: false,
+      isLeftSidePanelOpen: true,
       intViewportWidth: 0,
       linksData: [
         {
@@ -175,7 +175,8 @@ export default {
     logout() {
       this.removeToken();
       this.removeCurrentUser();
-      this.$router.push('/login');
+      // this.$router.push('/login');
+      location.reload();
     },
 
     removeToken,

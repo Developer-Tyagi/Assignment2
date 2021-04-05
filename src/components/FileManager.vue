@@ -129,7 +129,7 @@ const { Camera } = Plugins;
 
 export default {
   name: 'FileManager',
-  props: ['claimId'],
+  props: ['directoryId'],
 
   data() {
     return {
@@ -244,17 +244,21 @@ export default {
 
     async getDocuments() {
       this.setLoading(true);
-      const { data } = await request.get(
-        `/documents?parent_id=${this.claimId}`
-      );
-      this.documents = data.map(document => ({
-        name: document.attributes.name,
-        id: document.id,
-        type: document.attributes.mimeType,
-        link: document.attributes.webViewLink
-      }));
-      this.depth.push({ name: 'home', id: this.claimId });
-      this.setLoading(false);
+      try {
+        const { data } = await request.get(
+          `/documents?parent_id=${this.directoryId}`
+        );
+        this.documents = data.map(document => ({
+          name: document.attributes.name,
+          id: document.id,
+          type: document.attributes.mimeType,
+          link: document.attributes.webViewLink
+        }));
+        this.depth.push({ name: 'home', id: this.directoryId });
+        this.setLoading(false);
+      } catch (e) {
+        this.setLoading(false);
+      }
     },
 
     async onClickOnFile(document) {
