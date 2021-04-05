@@ -251,12 +251,11 @@ export default {
     }
     this.getLossInfo(this.selectedClaimId);
     this.setSelectedClaimId(this.selectedClaimId);
-
     this.getPropertyTypes();
     this.getClaimReasons();
     this.getLossCauses();
     this.getSeverityClaim();
-    this.lossDetails.dateOfLoss = this.lossDetails.deadlineDate = this.lossDetails.recovDeadline = date.formatDate(
+    this.lossDetails.deadlineDate = this.lossDetails.dateOfLoss = this.lossDetails.recovDeadline = date.formatDate(
       Date.now(),
       'MM/DD/YYYY'
     );
@@ -338,8 +337,12 @@ export default {
       this.lossDetails.property = this.lossInfo.attributes.lossInfo.propertyType;
       this.lossDetails.severityOfClaimType = this.lossInfo.attributes.lossInfo.serverity;
       this.lossDetails.reasonClaim = this.lossInfo.attributes.lossInfo.claimReason;
-      this.lossDetails.deadlineDate = this.lossInfo.attributes.lossInfo.deadlineDate;
+
+      this.lossDetails.deadlineDate = this.lossInfo.attributes.lossInfo.deadlineDate.formatDate(
+        'MM/DD/YYYY'
+      );
       this.lossDetails.recovDDDate = this.lossInfo.attributes.lossInfo.recovDDDate;
+
       this.lossDetails.isTheHomeHabitable = this.lossInfo.attributes.lossInfo.isHabitable;
       this.lossDetails.femaClaimToggle = this.lossInfo.attributes.lossInfo.isFEMA;
       this.lossDetails.isStateOfEmergencyToggle = this.lossInfo.attributes.lossInfo.isEmergency;

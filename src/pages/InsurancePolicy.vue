@@ -2,15 +2,21 @@
   <q-page>
     <div class="mobile-container-page ">
       <div class="q-pa-md">
-        <div class="q-pl-sm text-h6">Insurer</div>
+        <div class="q-pl-sm text-h6">
+          Insurer
+        </div>
         <div class="q-pa-sm">
           {{
-            insuranceDetails.carrierName ? insuranceDetails.carrierName : '-'
+            policy.attributes.policyInfo.carrier
+              ? policy.attributes.policyInfo.carrier.value
+              : '-'
           }}
         </div>
         <div class="q-pl-sm">
           {{
-            insuranceDetails.policyNumber ? insuranceDetails.policyNumber : '-'
+            policy.attributes.policyInfo.number
+              ? policy.attributes.policyInfo.number
+              : '-'
           }}
         </div>
       </div>
@@ -33,8 +39,8 @@
         <div class="form-heading">Claim Number</div>
         <div class="q-pl-sm">
           {{
-            insuranceDetails.insuranceClaimNumber
-              ? insuranceDetails.insuranceClaimNumber
+            policy.attributes.policyInfo.claimNumber
+              ? policy.attributes.policyInfo.claimNumber
               : '-'
           }}
         </div>
@@ -42,71 +48,120 @@
         <div class="form-heading">Is Claim be Filed</div>
         <div class="q-pl-sm">
           {{
-            insuranceDetails.hasClaimBeenFilledToggle
-              ? insuranceDetails.hasClaimBeenFilledToggle
+            policy.attributes.policyInfo.isClaimFiled
+              ? policy.attributes.policyInfo.isClaimFiled
               : '-'
           }}
         </div>
 
         <div class="form-heading">Is this is a Forced-Placed policy?</div>
         <div class="q-pl-sm">
-          {{ insuranceDetails.isThisIsForcedPlacedPolicyToggle }}
+          {{
+            policy.attributes.policyInfo.isForcedPlaced
+              ? policy.attributes.policyInfo.isForcedPlaced
+              : '-'
+          }}
         </div>
 
         <div class="form-heading">Policy Start date</div>
         <div class="q-pl-sm">
-          {{ insuranceDetails.policyEffectiveDate | moment('MM/DD/YYYY') }}
+          {{
+            policy.attributes.policyInfo.effectiveDate | moment('MM/DD/YYYY')
+          }}
         </div>
 
         <div class="form-heading">Policy End Date</div>
         <div class="q-pl-sm">
-          {{ insuranceDetails.policyExpireDate | moment('MM/DD/YYYY') }}
+          {{
+            policy.attributes.policyInfo.expirationDate | moment('MM/DD/YYYY')
+          }}
         </div>
 
         <div class="form-heading">Policy Category</div>
+
         <div class="q-pl-sm">
-          {{ insuranceDetails.policyCategory.value }}
+          {{
+            policy.attributes.policyInfo.category.value
+              ? policy.attributes.policyInfo.category.value
+              : '-'
+          }}
         </div>
 
         <div class="form-heading">Policy Type</div>
         <div class="q-pl-sm">
-          {{ insuranceDetails.policy.value }}
+          {{
+            policy.attributes.policyInfo.type.value
+              ? policy.attributes.policyInfo.type.value
+              : '-'
+          }}
         </div>
 
         <div class="form-heading">Dwelling Limit (A)</div>
         <div class="q-pl-sm">
-          {{ insuranceDetails.dwellingLimitA }}
+          {{
+            policy.attributes.policyInfo.limitCoverage.dwelling
+              ? policy.attributes.policyInfo.limitCoverage.dwelling
+              : '-'
+          }}
         </div>
         <div class="form-heading">Other Structure (B)</div>
         <div class="q-pl-sm">
-          {{ insuranceDetails.otherStructureB }}
+          {{
+            policy.attributes.policyInfo.limitCoverage.otherStructure
+              ? policy.attributes.policyInfo.limitCoverage.otherStructure
+              : '-'
+          }}
         </div>
 
         <div class="form-heading">Contents Limit (C)</div>
         <div class="q-pl-sm">
-          {{ insuranceDetails.contentsLimit }}
+          {{
+            policy.attributes.policyInfo.limitCoverage.content
+              ? policy.attributes.policyInfo.limitCoverage.content
+              : '-'
+          }}
         </div>
         <div class="form-heading">Loss of Use Limit (D)</div>
         <div class="q-pl-sm">
-          {{ insuranceDetails.lossOfUSD }}
+          {{
+            policy.attributes.policyInfo.limitCoverage.lossOfUse
+              ? policy.attributes.policyInfo.limitCoverage.lossOfUse
+              : '-'
+          }}
         </div>
 
         <div class="form-heading">Depreciation</div>
         <div class="q-pl-sm">
-          {{ insuranceDetails.deprecation }}
+          {{
+            policy.attributes.policyInfo.depreciation
+              ? policy.attributes.policyInfo.depreciation
+              : '-'
+          }}
         </div>
         <div class="form-heading">Deductible</div>
         <div class="q-pl-sm">
-          {{ insuranceDetails.deductible }}
+          {{
+            policy.attributes.policyInfo.deductibleAmount
+              ? policy.attributes.policyInfo.deductibleAmount
+              : '-'
+          }}
         </div>
         <div class="form-heading">Prior payment by insured</div>
         <div class="q-pl-sm">
-          {{ insuranceDetails.priorPayment }}
+          {{
+            policy.attributes.policyInfo.priorPayment
+              ? policy.attributes.policyInfo.priorPayment
+              : '-'
+          }}
         </div>
 
         <div class="form-heading">Reason for Limits/Denial</div>
         <div class="q-pl-sm">
-          {{ insuranceDetails.reasonsOfLD }}
+          {{
+            policy.attributes.policyInfo.limitReason
+              ? policy.attributes.policyInfo.limitReason
+              : '-'
+          }}
         </div>
       </div>
       <q-separator />
@@ -293,6 +348,13 @@ export default {
       'editInsurancePolicy'
     ]),
     validateDate,
+    successMessage() {
+      this.$q.notify({
+        type: 'positive',
+        message: `Insurer & Policy Info Updated Successfully!`,
+        position: 'top'
+      });
+    },
     async onSaveButtonClick() {
       let success = false;
       success = await this.$refs.insuranceInfoForm.validate();
@@ -367,6 +429,9 @@ export default {
 
         await this.editInsurancePolicy(payload);
         this.insuranceInfoDialog = false;
+        this.getPolicy(this.selectedClaimId);
+        this.$router.push('/claim-details');
+        this.successMessage();
       }
     }
   }
