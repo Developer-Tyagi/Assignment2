@@ -22,7 +22,7 @@
             />
           </div>
           <q-btn
-            @click="onEditButtonClick"
+            @click="onEditSaveButtonClick"
             label="Save"
             color="primary"
             class="button-width-90"
@@ -84,18 +84,19 @@
                 <div class="client-list-item">
                   <div class="row">
                     {{
-                      claimNotes.attributes.notes[index].addedAt
-                        | moment('DD/MM/YYYY/, HH:mm')
+                      claimNotes.attributes.notes[index].created
+                        | moment('DD/MM/YYY/, HH:mm')
                     }}
+
                     <br />
-                    {{ claimNotes.attributes.notes[index].desc }}<br />
+                    {{ claimNotes.attributes.notes[index].desc }}
 
                     <div class="row">
                       <q-icon
                         name="create"
                         color="primary"
                         class="edit-icon"
-                        @click="editNoteDialogBox = true"
+                        @click="onEditButtonClick"
                       ></q-icon>
                     </div>
                   </div>
@@ -137,7 +138,8 @@ export default {
       addNoteDialog: false,
       editNoteDialogBox: false,
       note: '',
-      editNote: ''
+      editNote: '',
+      noteId: ''
     };
   },
 
@@ -154,25 +156,30 @@ export default {
     if (!this.selectedClaimId) {
       this.$router.push('/clients');
     }
-    let index = this.claimNotes.attributes.notes.length;
-    this.editNote = this.claimNotes.attributes.notes[index - 1].desc;
   },
   methods: {
-    ...mapActions(['getClaimNotes', 'addClaimNotes']),
-
+    ...mapActions(['getClaimNotes', 'addClaimNotes', 'editClaimNotes']),
+    onEditButtonClick() {
+      this.editNoteDialogBox = true;
+      let index = this.claimNotes.attributes.notes.length;
+      this.editNote = this.claimNotes.attributes.notes[index - 1].desc;
+      this.noteId = this.claimNotes.attributes.notes[index - 1].id;
+    },
     addNote() {
       this.addNoteDialog = true;
     },
-    async onEditButtonClick() {
+    async onEditSaveButtonClick() {
       const payload = {
         id: this.selectedClaimId,
+        noteId: this.noteId,
         notesData: {
           notes: {
-            note: this.editNote
+            title: '',
+            desc: this.editNote
           }
         }
       };
-      await this.addClaimNotes(payload);
+      await this.editClaimNotes(payload);
       this.editNoteDialogBox = false;
       this.successMessage();
       this.editNote = '';
@@ -184,7 +191,8 @@ export default {
         id: this.selectedClaimId,
         notesData: {
           notes: {
-            note: this.note
+            title: '',
+            desc: this.note
           }
         }
       };

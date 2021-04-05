@@ -110,7 +110,14 @@
                 }}
               </div>
 
-              <div>Fee - none</div>
+              <div>
+                Fee -
+                {{
+                  personnel.attributes.personnel[index - 1]
+                    ? personnel.attributes.personnel[index - 1].fees.rate
+                    : '-'
+                }}
+              </div>
 
               <div></div>
             </div>
@@ -233,12 +240,13 @@ export default {
         };
         this.addCompanyPersonnel(payload);
         await this.getPersonnelInfo(this.selectedClaimId);
-        this.successMessage();
+
         this.$router.push('/claim-details');
       }
     },
     onEditButtonClick() {
       this.companyPersonnelDailog = true;
+      this.companyPersonnel.isFieldDisable = false;
       let index = this.personnel.attributes.personnel.length;
 
       this.companyPersonnel.personnel.id = this.personnel.attributes.personnel[
@@ -253,6 +261,13 @@ export default {
       this.companyPersonnel.personParty = this.personnel.attributes.personnel[
         index - 1
       ].name;
+
+      this.companyPersonnel.buttonGroup = this.personnel.attributes.personnel[
+        index - 1
+      ].fees.type;
+      this.companyPersonnel.claimFeeRate = this.personnel.attributes.personnel[
+        index - 1
+      ].fees.rate;
     },
     //This Function is for Editing Existing Company Personnel
     async onEditSaveButtonClick() {
@@ -271,25 +286,22 @@ export default {
               id: this.companyPersonnel.personnel.id,
               name: this.companyPersonnel.personParty.name,
               role: this.companyPersonnel.personnel.role,
-              note: this.companyPersonnel.notes
+              note: this.companyPersonnel.notes,
+              fess: {
+                type: this.companyPersonnel.buttonGroup,
+                rate: this.companyPersonnel.claimFeeRate
+              }
             }
           }
         };
 
         await this.editPersonnel(payload);
         await this.getPersonnelInfo(this.selectedClaimId);
-        this.successMessage();
+
         this.$router.push('/claim-details');
       }
     },
-    validateDate,
-    successMessage() {
-      this.$q.notify({
-        type: 'positive',
-        message: `Company Personnel Info Updated Successfully!`,
-        position: 'top'
-      });
-    }
+    validateDate
   }
 };
 </script>
