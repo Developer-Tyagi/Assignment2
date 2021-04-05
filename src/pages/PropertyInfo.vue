@@ -22,7 +22,9 @@
                     class="  q-mt-sm"
                     color="primary"
                     style="width:90px; font-size:9px;"
-                    @click="$router.push(`/add-claim/${selectedClientId}`)"
+                    @click="
+                      $router.push(`/add-claim/${setClientProperty[i - 1].id}`)
+                    "
                   >
                     Add Claim</q-btn
                   >

@@ -20,7 +20,7 @@
           color="primary"
           class="q-mt-auto text-capitalize q-mx-auto"
           :disabled="isCreateClientButtonDisabled"
-          @click="setPayloadForClaim(clientId)"
+          @click="setPayloadForClaim(selectedClientId)"
           size="'xl'"
         ></q-btn>
       </div>
@@ -290,7 +290,7 @@ export default {
 
   data() {
     return {
-      clientId: '',
+      addressId: '',
       industryTypeValue: '',
 
       contractInfo: {
@@ -368,7 +368,6 @@ export default {
       ],
 
       vendorIndustriesOptions: [],
-      lossAddressNameOptions: ['Others'],
 
       constants: constants,
 
@@ -454,6 +453,8 @@ export default {
       },
 
       lossInfo: {
+        isDisable: '',
+        lossAddressNameOptions: ['Oters'],
         isMortgageHomeToggle: false,
         vendorsListDialog: false,
         vendorDialogFilterByIndustry: '',
@@ -472,7 +473,7 @@ export default {
             notes: ''
           }
         ],
-        lossAddressNameDropdown: 'Others',
+        lossAddressNameDropdown: '',
         isSecondMortgageHome: false,
         wasAppifProvidedToTheInsuredToggle: false,
         doesTheOfficeNeedToProvidePpifToTheInsuredToggle: false,
@@ -640,8 +641,9 @@ export default {
   },
 
   created() {
-    this.clientId = this.$route.params.clientId;
-    this.getSingleClientDetails(this.clientId);
+    this.addressId = this.$route.params.clientId;
+    this.getSingleClientDetails(this.selectedClientId);
+    this.getSingleClientProperty(this.selectedClientId);
     this.contractInfo.time = date.formatDate(Date.now(), 'HH:mm:ss:aa');
     this.contractInfo.firstContractDate = this.contractInfo.contractDate = this.insuranceDetails.policyEffectiveDate = this.insuranceDetails.policyExpireDate = this.lossInfo.dateOfLoss = this.lossInfo.deadlineDate = this.lossInfo.recovDeadline = date.formatDate(
       Date.now(),
@@ -657,35 +659,17 @@ export default {
     this.getClaimReasons();
     this.getContactTypes();
     this.getPolicyCategory();
-    // if (this.selectedLead.id) {
-    //   this.insuredDetails.fname = this.selectedLead.primaryContact.fname;
-    //   this.insuredDetails.lname = this.selectedLead.primaryContact.lname;
-    //   this.insuredDetails.email = this.selectedLead.primaryContact.email;
-    //   this.insuredDetails.phone = this.selectedLead.primaryContact.phoneNumber[0].number;
-    //   this.insuredDetails.type = this.selectedLead.primaryContact.phoneNumber[0].type;
-    //   this.contractInfo.sourceDetails.id = this.selectedLead.leadSource.id;
-    //   this.contractInfo.sourceDetails.type = this.selectedLead.leadSource.type;
-    //   this.honorific1.id = this.selectedLead.primaryContact.honorific.id;
-    //   this.honorific1.value = this.selectedLead.primaryContact.honorific.value;
-    //   this.honorific1.machineValue = this.selectedLead.primaryContact.honorific.machineValue;
-    //   this.contractInfo.sourceDetails.details = this.selectedLead.leadSource.detail;
-    //   this.insuranceDetails.carrierName = this.selectedLead.carrier.value;
-    //   this.insuranceDetails.carrierId = this.selectedLead.carrier.id;
-    //   this.insuranceDetails.policyNumber = this.selectedLead.policyNumber;
-    //   this.lossInfo.lossAddressDetails.houseNumber = this.selectedLead.lossLocation.houseNumber;
-    //   this.lossInfo.lossAddressDetails.addressCountry = this.selectedLead.lossLocation.addressCountry;
-    //   this.lossInfo.lossAddressDetails.addressLocality = this.selectedLead.lossLocation.addressLocality;
-    //   this.lossInfo.lossAddressDetails.addressRegion = this.selectedLead.lossLocation.addressRegion;
-    //   this.lossInfo.lossAddressDetails.postalCode = this.selectedLead.lossLocation.postalCode;
-    //   this.lossInfo.lossAddressDetails.streetAddress = this.selectedLead.lossLocation.streetAddress;
-    //   this.lossInfo.causeOfLoss.id = this.selectedLead.lossCause.id;
-    //   this.lossInfo.causeOfLoss.value = this.selectedLead.lossCause.value;
-    //   this.lossInfo.causeOfLoss.machineValue = this.selectedLead.lossCause.machineValue;
-    //   this.lossInfo.dateOfLoss = date.formatDate(
-    //     this.selectedLead.dateofLoss,
-    //     'MM/DD/YYYY'
-    //   );
-    // }
+    if (this.addressId) {
+      const obj = this.setClientProperty.find(item => {
+        return item.id === this.addressId;
+      });
+      this.lossInfo.lossAddressNameDropdown = obj.attributes.name;
+      this.lossInfo.isDisable = true;
+    } else {
+      this.lossInfo.lossAddressNameDropdown = 'Others';
+    }
+
+    // this.lossAddressNameOptions = 'ee';
 
     this.countries = addressService.getCountries();
     this.onCountrySelect('United States');
@@ -708,7 +692,9 @@ export default {
       'policyCategories',
       'vendorIndustries',
       'personnelRoles',
-      'editSelectedClient'
+      'editSelectedClient',
+      'selectedClientId',
+      'setClientProperty'
     ])
   },
 
@@ -734,7 +720,8 @@ export default {
       'getPolicyCategory',
       'getVendorIndustries',
       'addIndustry',
-      'getSingleClientDetails'
+      'getSingleClientDetails',
+      'getSingleClientProperty'
     ]),
     ...mapMutations(['setSelectedLead']),
 
@@ -786,7 +773,23 @@ export default {
 
     lossAddressSame() {
       if (this.lossInfo.isLossAddressSameAsClientToggle) {
-        this.lossInfo.lossAddressDetails = this.editSelectedClient.attributes.insuredInfo.address;
+        const obj = this.setClientProperty.find(item => {
+          return item.id === this.addressId;
+        });
+
+        this.lossInfo.lossAddressDetails = {
+          houseNumber: obj.attributes.houseNumber,
+          addressCountry: obj.attributes.addressCountry,
+          addressRegion: obj.attributes.addressRegion,
+          addressLocality: obj.attributes.addressLocality,
+          postalCode: obj.attributes.postalCode,
+          streetAddress: obj.attributes.streetAddress,
+          postOfficeBoxNumber: '',
+          dropBox: {
+            info: '',
+            isPresent: false
+          }
+        };
       } else {
         if (this.selectedLead.id) {
           this.lossInfo.lossAddressDetails = {
@@ -857,22 +860,11 @@ export default {
       let success = false;
       let validationIndex;
       switch (name) {
-        // case 'clientInfoDailog':
-        //   success = await this.$refs.clientForm.validate();
-        //   validationIndex = 0;
-
-        //   break;
         case 'insuranceInfoDialog':
           success = await this.$refs.insuranceInfoForm.validate();
           validationIndex = 0;
 
           break;
-
-        // case 'mailingAddressDialog':
-        //   success = await this.$refs.mailingAddressForm.validate();
-        //   validationIndex = 1;
-
-        //   break;
 
         case 'addEstimatorDialog':
           success = await this.$refs.addEstimatorForm.validate();
@@ -1014,6 +1006,8 @@ export default {
         lossInfo: {
           isNewAddress:
             this.lossInfo.lossAddressNameDropdown == 'Others' ? true : false,
+          lossAddressName: this.lossInfo.lossAddressNameDropdown,
+          addressID: this.addressId,
           address: {
             ...this.lossInfo.lossAddressDetails
           },
