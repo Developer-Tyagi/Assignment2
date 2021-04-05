@@ -15,8 +15,7 @@
             :key="setClientProperty.id"
           >
             <div v-if="setClientProperty">
-              <div class="row">
-                <div class=" col-7 "></div>
+              <div class="row  justify-end">
                 <div class="col-5 row justify-between">
                   <q-btn
                     class="  q-mt-sm"

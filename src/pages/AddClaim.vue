@@ -5,7 +5,7 @@
         <div
           v-for="dialogBox in dialogBoxes"
           :key="dialogBox.name"
-          @click="createClientDailogBoxOpen(dialogBox.name)"
+          @click="createClaimDailogBoxOpen(dialogBox.name)"
           class="form-list row"
         >
           {{ dialogBox.name }}
@@ -669,8 +669,6 @@ export default {
       this.lossInfo.lossAddressNameDropdown = 'Others';
     }
 
-    // this.lossAddressNameOptions = 'ee';
-
     this.countries = addressService.getCountries();
     this.onCountrySelect('United States');
   },
@@ -790,26 +788,10 @@ export default {
             isPresent: false
           }
         };
-      } else {
-        if (this.selectedLead.id) {
-          this.lossInfo.lossAddressDetails = {
-            houseNumber: this.selectedLead.lossLocation.houseNumber,
-            addressCountry: this.selectedLead.lossLocation.addressCountry,
-            addressRegion: this.selectedLead.lossLocation.addressRegion,
-            addressLocality: this.selectedLead.lossLocation.addressLocality,
-            postalCode: this.selectedLead.lossLocation.postalCode,
-            streetAddress: this.selectedLead.lossLocation.streetAddress,
-            postOfficeBoxNumber: '',
-            dropBox: {
-              info: '',
-              isPresent: false
-            }
-          };
-        }
       }
     },
 
-    createClientDailogBoxOpen(value) {
+    createClaimDailogBoxOpen(value) {
       switch (value) {
         case 'Client Info':
           this.clientInfoDailog = true;
