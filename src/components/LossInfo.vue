@@ -507,8 +507,15 @@
         v-model="lossInfo.isThereDamageToPersonalPropertyToggle"
       />
     </div>
+    <div class="row" v-if="lossInfo.isThereDamageToPersonalPropertyToggle">
+      <p class="q-mx-none q-my-auto form-heading">
+        Is the PA filling out the ppif at this inspection?
+      </p>
+      <q-toggle class="q-ml-auto" v-model="lossInfo.isPAFillingOutToggle" />
+    </div>
+
     <!-- Persnol Property Damage List -->
-    <div v-if="lossInfo.isThereDamageToPersonalPropertyToggle">
+    <div v-if="lossInfo.isPAFillingOutToggle">
       <br />
       <div
         v-if="lossInfo.ppDamagedItems.length >= 1"
@@ -640,6 +647,15 @@
           </q-card-section>
         </q-card>
       </q-dialog>
+    </div>
+    <div class="row" v-else>
+      <p class="q-mx-none q-my-auto form-heading">
+        Is the adjuster going to fill out the ppif at a later date?
+      </p>
+      <q-toggle
+        class="q-ml-auto"
+        v-model="lossInfo.isAdjustorFillOutLaterDate"
+      />
     </div>
     <div class="row">
       <p class="q-mx-none q-my-auto form-heading">

@@ -870,6 +870,8 @@ export default {
       },
 
       lossInfo: {
+        isPAFillingOutToggle: false,
+        isAdjustorFillOutLaterDate: false,
         isMortgageHomeToggle: false,
         vendorsListDialog: false,
         vendorDialogFilterByIndustry: '',
