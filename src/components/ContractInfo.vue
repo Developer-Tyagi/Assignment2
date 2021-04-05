@@ -294,7 +294,7 @@ export default {
     },
 
     async onCloseAddVendorDialogBox(result, selected) {
-      if (result === true) {
+      if (result) {
         await this.getVendors();
         this.onClosingVendorSelectDialog(selected, this.contractInfo.valueName);
       }
