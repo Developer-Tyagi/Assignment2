@@ -94,7 +94,7 @@
         class="input-extra-padding"
       />
       <q-btn
-        class="q-mt-md "
+        class="q-mt-md"
         v-if="expertVendorInfo.industry[index].value == 'Others'"
         label="Add"
         outline
@@ -301,7 +301,7 @@ export default {
     //Add Vendor close list
 
     async onCloseAddVendorDialogBox(result, selected) {
-      if (result === true) {
+      if (result) {
         await this.getVendors();
         this.onClosingVendorSelectDialog(selected, this.valueName);
       }

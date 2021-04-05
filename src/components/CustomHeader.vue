@@ -114,7 +114,7 @@ export default {
       user: {
         name: ''
       },
-      isLeftSidePanelOpen: false,
+      isLeftSidePanelOpen: true,
       intViewportWidth: 0,
       linksData: [
         {
