@@ -578,9 +578,9 @@
         </div>
       </q-card>
     </q-dialog>
-    <!-- Public Adjuster Info -->
+    <!-- Company Personnel Dialog-->
     <q-dialog
-      v-model="publicAdjustorInfoDialog"
+      v-model="companyPersonnelDialog"
       persistent
       :maximized="maximizedToggle"
       transition-show="slide-up"
@@ -588,18 +588,19 @@
     >
       <q-card>
         <CustomBar
-          :dialogName="'Public Adjustor Info'"
-          @closeDialog="onCloseDialogBox('publicAdjustorInfoDialog', 6)"
+          :dialogName="'Company Personnel'"
+          @closeDialog="onCloseDialogBox('companyPersonnelDialog', 6)"
         />
         <div class="mobile-container-page-without-search">
-          <q-form ref="publicAdjustorForm" class="form-height">
-            <PublicAdjustorInfo :publicAdjustorInfo="publicAdjustorInfo" />
+          <q-form ref="companyPersonnelForm" class="form-height">
+            <div class="form-heading text-bold">CLAIM PERSONNEL</div>
+            <CompanyPersonnel :companyPersonnel="companyPersonnel" />
           </q-form>
           <q-btn
             label="Save"
             color="primary"
             class="button-width-90"
-            @click="onSubmit('publicAdjustorInfoDialog')"
+            @click="onSubmit('companyPersonnelDialog')"
             size="'xl'"
           />
         </div>
@@ -660,7 +661,8 @@
 import CustomBar from 'components/CustomBar';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import ContractInfo from 'components/ContractInfo';
-import PublicAdjustorInfo from 'components/PublicAdjustorInfo';
+import CompanyPersonnel from 'components/CompanyPersonnel';
+
 import EstimatingInfo from 'components/EstimatingInfo';
 import LossInfo from 'components/LossInfo';
 import ExpertVendorInfo from 'components/ExpertVendorInfo';
@@ -688,7 +690,7 @@ export default {
     ExpertVendorInfo,
     EstimatingInfo,
     ContractInfo,
-    PublicAdjustorInfo
+    CompanyPersonnel
   },
 
   data() {
@@ -719,37 +721,19 @@ export default {
         buttonGroup: 'dollar'
       },
 
-      publicAdjustorInfo: {
-        isFieldDisable1: true,
-        isFieldDisable2: true,
-        isFieldDisable3: true,
-        isFieldDisable4: true,
-
-        personnel: [
-          {
-            id: '',
-            role: ''
-          },
-          {
-            id: '',
-            role: ''
-          },
-          {
-            id: '',
-            role: ''
-          },
-          {
-            id: '',
-            role: ''
-          }
-        ],
-
-        personParty1: '',
-        personParty2: '',
-        personParty3: '',
-        personParty4: '',
+      companyPersonnel: {
         notes: '',
-
+        endDate: '',
+        startDate: '',
+        buttonGroup: 'dollar',
+        claimFeeRate: '',
+        isFieldDisable: true,
+        personnel: {
+          id: '',
+          role: ''
+        },
+        personParty: '',
+        notes: '',
         filterRole: []
       },
 
@@ -767,7 +751,7 @@ export default {
         { name: 'Expert/Vendor Info', validForm: false },
         { name: 'Estimating Info', validForm: false },
         { name: 'Contract Info', validForm: false },
-        { name: 'Public Adjustor Info', validForm: false },
+        { name: 'Company Personnel', validForm: false },
         { name: 'Office Task', validForm: false }
       ],
 
@@ -776,7 +760,7 @@ export default {
 
       constants: constants,
 
-      publicAdjustorInfoDialog: false,
+      companyPersonnelDialog: false,
       contractInfoDialog: false,
 
       officeTaskDialog: false,
@@ -1056,8 +1040,9 @@ export default {
   },
 
   created() {
+    this.getRoles();
     this.contractInfo.time = date.formatDate(Date.now(), 'HH:mm:ss:aa');
-    this.contractInfo.firstContractDate = this.contractInfo.contractDate = this.insuranceDetails.policyEffectiveDate = this.insuranceDetails.policyExpireDate = this.lossInfo.dateOfLoss = this.lossInfo.deadlineDate = this.lossInfo.recovDeadline = date.formatDate(
+    this.companyPersonnel.startDate = this.companyPersonnel.endDate = this.contractInfo.firstContractDate = this.contractInfo.contractDate = this.insuranceDetails.policyEffectiveDate = this.insuranceDetails.policyExpireDate = this.lossInfo.dateOfLoss = this.lossInfo.deadlineDate = this.lossInfo.recovDeadline = date.formatDate(
       Date.now(),
       'MM/DD/YYYY'
     );
@@ -1133,7 +1118,9 @@ export default {
       'vendors',
       'policyCategories',
       'vendorIndustries',
-      'personnelRoles'
+      'personnelRoles',
+      'roleTypes',
+      'userRoles'
     ])
   },
 
@@ -1158,7 +1145,9 @@ export default {
       'getTitles',
       'getPolicyCategory',
       'getVendorIndustries',
-      'addIndustry'
+      'addIndustry',
+      'getRoles',
+      'getAllUsers'
     ]),
     ...mapMutations(['setSelectedLead']),
 
@@ -1253,8 +1242,8 @@ export default {
         case 'Office Task':
           this.officeTaskDialog = true;
           break;
-        case 'Public Adjustor Info':
-          this.publicAdjustorInfoDialog = true;
+        case 'Company Personnel':
+          this.companyPersonnelDialog = true;
           break;
         case 'Documents':
           this.documentsDialog = true;
@@ -1322,8 +1311,8 @@ export default {
           success = await this.$refs.contractInfoForm.validate();
           validationIndex = 6;
           break;
-        case 'publicAdjustorInfoDialog':
-          success = await this.$refs.publicAdjustorForm.validate();
+        case 'companyPersonnelDialog':
+          success = await this.$refs.companyPersonnelForm.validate();
           validationIndex = 7;
       }
       if (success == true) {
@@ -1592,7 +1581,20 @@ export default {
           dateOfFirstContact: dateToSend(this.contractInfo.firstContractDate)
         },
 
-        personnel: this.publicAdjustorInfo.personnel
+        personnel: [
+          {
+            id: this.companyPersonnel.personnel.id,
+            name: this.companyPersonnel.personParty.name,
+            role: this.companyPersonnel.personnel.role,
+            note: this.companyPersonnel.notes,
+            fees: {
+              type: this.companyPersonnel.buttonGroup,
+              rate: this.companyPersonnel.claimFeeRate
+            },
+            startDate: dateToSend(this.companyPersonnel.startDate),
+            endDate: dateToSend(this.companyPersonnel.endDate)
+          }
+        ]
       };
 
       this.addClaim(payload).then(() => {

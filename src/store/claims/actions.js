@@ -137,6 +137,28 @@ export async function addClaimNotes({ dispatch, state }, payload) {
     });
   }
 }
+
+//This API is for Editing the Claim Notes
+export async function editClaimNotes({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.patch(
+      `/claims/${payload.id}/notes/${payload.noteId}`,
+      buildApiData('claimnotes', payload.notesData)
+    );
+    dispatch('setLoading', false);
+    return data;
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+    return false;
+  }
+}
+
 //This API is for getting Loss Info Details
 export async function getLossInfo({ commit, dispatch }, id) {
   dispatch('setLoading', true);

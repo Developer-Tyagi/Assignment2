@@ -163,9 +163,7 @@ export default {
       'userRoles'
     ])
   },
-  created() {
-    this.getPersonnelInfo(this.selectedClaimId);
-  },
+
   methods: {
     ...mapActions(['getPersonnelInfo', 'getAllUsers', 'addCompanyPersonnel']),
     validateDate,
