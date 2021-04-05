@@ -769,25 +769,28 @@ export default {
     ]),
     onClickAddButton() {
       this.ecValue = false;
-      (this.description = {
+      this.description = {
         value: '',
         id: '',
         machineValue: ''
-      }),
-        (this.amounts = {
-          replacementCost: null,
-          recoverable: null,
-          nonRecoverable: null,
+      };
+      this.amounts = {
+        replacementCost: null,
+        recoverable: null,
+        nonRecoverable: null,
 
-          otherAdjustment: null,
-          deductibleApplied: null,
+        otherAdjustment: null,
+        deductibleApplied: null,
 
-          policyLimit: null,
-          priorPayment: null,
+        policyLimit: null,
+        priorPayment: null,
 
-          otherAdjustmentDesc: 'Side settlement'
-        }),
-        (this.buttonGroup = null);
+        otherAdjustmentDesc: 'Side settlement'
+      };
+      this.netSettlement = '';
+      this.actualValue = '';
+      this.totalSettlement = '';
+      this.buttonGroup = null;
       this.isFinal = false;
       this.offeredDate = '';
       this.paymentExpDate = '';
