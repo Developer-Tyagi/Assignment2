@@ -99,6 +99,7 @@
 
                 <div>
                   {{ settlement.amounts.replacementCost }}
+                  <br />
                 </div>
               </div>
               <div class="row justify-between q-px-md q-my-md">
@@ -113,7 +114,7 @@
               </div>
               <q-separator />
               <div class="row justify-between q-my-md q-px-md ">
-                <div>Actual Cash Value</div>
+                <div class="text-bold">Actual Cash Value</div>
 
                 <div>
                   {{ settlement.amounts.actualCash }}
@@ -125,13 +126,18 @@
                 <div>- {{ settlement.amounts.deductibleApplied }}</div>
               </div>
               <div class="row justify-between q-my-md q-px-md ">
+                <div>Amount over Policy Limit</div>
+
+                <div>-{{ settlement.amounts.policyLimit }}</div>
+              </div>
+              <div class="row justify-between q-my-md q-px-md ">
                 <div>Prior Payment Applied</div>
 
                 <div>-{{ settlement.amounts.priorPayment }}</div>
               </div>
               <q-separator class="bg-dark " />
               <div class="row justify-between q-my-md q-px-md ">
-                <div>Net Settlement</div>
+                <div class="text-bold">Net Settlement</div>
 
                 <div>
                   {{ settlement.amounts.netSettlement }}
@@ -262,7 +268,7 @@
               </div>
               <q-separator />
               <div class="row" style="align-items: center">
-                <span class="col-5">Actual Cash Value</span>
+                <span class="col-5 text-bold">Actual Cash Value</span>
                 <span>=</span>
                 <q-input
                   dense
@@ -309,7 +315,7 @@
               </div>
               <q-separator />
               <div class="row" style="align-items: center">
-                <span class="col-5">Net Settlement </span>
+                <span class="col-5 text-bold">Net Settlement </span>
                 <span>=</span>
                 <q-input
                   dense
@@ -356,7 +362,7 @@
               </div>
               <q-separator />
               <div class="row" style="align-items: center">
-                <span class="col-5">Total Settlement </span>
+                <span class="col-5 text-bold">Total Settlement </span>
                 <span>=</span>
                 <q-input
                   dense
