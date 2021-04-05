@@ -1,6 +1,14 @@
 export function setClaims(state, claims) {
   state.claims = claims;
 }
+
+export function setClaim(state, claim) {
+  state.claim = {
+    id: claim.id,
+    ...claim.attributes
+  };
+}
+
 export function setLog(state, log) {
   state.log = log;
 }

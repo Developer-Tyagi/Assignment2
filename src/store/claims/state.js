@@ -1,6 +1,7 @@
 export default function() {
   return {
     claims: [],
+    claim: {},
     log: [],
     claimNotes: [],
     personnel: [],

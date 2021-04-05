@@ -14,7 +14,7 @@ export async function getClients({ commit, dispatch }, searchString = '') {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response.data.title
+      message: e.response[0].title
     });
   }
 }
@@ -31,7 +31,7 @@ export async function getSingleClientDetails({ commit, dispatch }, id) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response.data.title
+      message: e.response[0].title
     });
   }
 }
@@ -51,7 +51,7 @@ export async function getSingleClaimDetails({ commit, dispatch }, id) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response.data.title
+      message: e.response[0].title
     });
   }
 }
@@ -68,7 +68,7 @@ export async function getSingleClientProperty({ commit, dispatch }, id) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response.data.title
+      message: e.response[0].title
     });
   }
 }
@@ -86,7 +86,7 @@ export async function getEstimators({ commit, dispatch }) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response.data.title
+      message: e.response[0].title
     });
   }
 }
@@ -144,7 +144,7 @@ export async function addPropertyAddress({ dispatch, state }, payload) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response.data.title
+      message: e.response[0].title
     });
   }
 }
@@ -164,7 +164,7 @@ export async function editClient({ dispatch, state }, payload) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response.data.title
+      message: e.response[0].title
     });
   }
 }
@@ -182,7 +182,7 @@ export async function addClaim({ dispatch, state }, payload) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response.data.title
+      message: e.response[0].title
     });
   }
 }
@@ -200,7 +200,7 @@ export async function addEstimator({ dispatch, state }, payload) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response.data.title
+      message: e.response[0].title
     });
   }
 }
@@ -216,7 +216,7 @@ export async function getPropertyTypes({ commit, dispatch }) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response.data.title
+      message: e.response[0].title
     });
   }
 }
@@ -231,7 +231,7 @@ export async function getPolicyTypes({ commit, dispatch }) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response.data.title
+      message: e.response[0].title
     });
   }
 }
@@ -247,7 +247,7 @@ export async function getClaimReasons({ commit, dispatch }) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response.data.title
+      message: e.response[0].title
     });
   }
 }
@@ -263,7 +263,7 @@ export async function getSeverityClaim({ commit, dispatch }) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response.data.title
+      message: e.response[0].title
     });
   }
 }
@@ -278,7 +278,7 @@ export async function getPolicyCategory({ commit, dispatch }) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response.data.title
+      message: e.response[0].title
     });
   }
 }

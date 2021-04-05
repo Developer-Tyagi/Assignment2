@@ -294,7 +294,7 @@ export default {
     },
 
     async onCloseAddVendorDialogBox(result, selected) {
-      if (result === true) {
+      if (result) {
         await this.getVendors();
         this.onClosingVendorSelectDialog(selected, this.contractInfo.valueName);
       }
@@ -342,10 +342,3 @@ export default {
   }
 };
 </script>
-<style lang="scss">
-.form-heading {
-  color: #333333;
-  font-weight: bold;
-  font-size: 14px;
-}
-</style>

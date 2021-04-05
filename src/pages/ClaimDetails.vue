@@ -82,7 +82,7 @@ export default {
           break;
         case 'Files':
           this.$router.push({
-            path: `/claim-files/${this.getSelectedClaim.attributes.rootDirectoryID}`
+            path: `/claim-files/${this.selectedClaimId}`
           });
           break;
         case 'Notes':

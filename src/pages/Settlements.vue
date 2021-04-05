@@ -79,7 +79,18 @@
                 <div>{{ settlement.description.value }}</div>
 
                 <div>
-                  <q-badge color="primary"> {{ settlement.status }}</q-badge>
+                  <q-badge
+                    color="primary"
+                    v-if="settlement.status == 'Rejected'"
+                  >
+                    {{ settlement.status }}</q-badge
+                  >
+                  <q-badge color="green" v-if="settlement.status == 'Accepted'">
+                    {{ settlement.status }}</q-badge
+                  >
+                  <q-badge color="grey" v-if="settlement.status == 'Pending'">
+                    {{ settlement.status }}</q-badge
+                  >
                 </div>
               </div>
               <q-separator />
@@ -268,7 +279,7 @@
               <q-separator />
               <div class="row" style="align-items: center">
                 <span class="col-5">Other Adjustment</span>
-                <span>-</span>
+                <span>+</span>
                 <q-input
                   dense
                   v-model.number="amounts.otherAdjustment"
@@ -852,7 +863,7 @@ export default {
         this.amounts.recoverable -
         this.amounts.nonRecoverable;
       this.netSettlement =
-        this.actualValue -
+        this.actualValue +
         this.amounts.otherAdjustment -
         this.amounts.deductibleApplied;
       this.totalSettlement =

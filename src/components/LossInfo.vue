@@ -677,7 +677,7 @@
         "
       >
         <div class="row">
-          <div class="q-px-xs row ">
+          <div class="q-px-xs row">
             <div v-if="!lossInfo.mortgageDetails[0]['id']">Select Mortgage</div>
             <div
               v-else
@@ -783,7 +783,7 @@ export default {
     //Add Vendor Close List
 
     async onCloseAddVendorDialogBox(result, selected) {
-      if (result === true) {
+      if (result) {
         await this.getVendors();
         this.onClosingVendorSelectDialog(selected, this.lossInfo.valueName);
       }
@@ -937,17 +937,3 @@ export default {
   }
 };
 </script>
-<style lang="scss">
-.custom-select {
-  width: 100%;
-  border-bottom: 1px solid #c2c2c2;
-  margin-bottom: 20px;
-
-  .select-text {
-    line-height: 24px;
-    padding-top: 24px;
-    padding-bottom: 8px;
-    height: 50px;
-  }
-}
-</style>

@@ -394,12 +394,12 @@
               <div class="q-pa-sm text-bold" v-if="index == 0">
                 OverDue Action:
               </div>
-              <div class="q-pa-md text-bold" v-else style="visibility: hidden">
+              <div class="q-pa-sm text-bold" v-else style="visibility: hidden">
                 OverDue Action:
               </div>
             </div>
 
-            <div class="q-ml-lg col-2-1">
+            <div class="q-ml-lg ">
               <q-select
                 dense
                 outlined
@@ -420,12 +420,9 @@
               />
             </div>
 
-            <div
-              class="col-2-1 q-ml-xs"
-              v-if="actions.actions.onOverdue[index].type"
-            >
+            <div class="q-ml-xs" v-if="actions.actions.onOverdue[index].type">
               <q-select
-                class=" "
+                class="input-extra-padding"
                 outlined
                 options-dense
                 v-model="actions.actions.onOverdue[index].task[0]"
@@ -448,7 +445,7 @@
             </div>
 
             <div
-              class="col-2-1 q-ml-xs"
+              class="q-ml-xs"
               v-if="actions.actions.onOverdue[index].task[0]"
             >
               <q-select
@@ -495,7 +492,7 @@
           </div>
 
           <div class="row q-mt-md full-width">
-            <div class="col-1-1">
+            <div class="">
               <div class="q-pa-sm text-bold">Notes/Instruction:</div>
             </div>
             <div class="q-ml-md col-5">
@@ -681,6 +678,42 @@ export default {
       await this.addWorkflowAction(param);
       this.addDefaultActionDialogBox = false;
       this.getAllWorkFlow(this.params);
+      this.actions = {
+        name: '',
+        isEnabled: false,
+        createWhen: {
+          type: '',
+          task: []
+        },
+        priority: 'low',
+        assignedTo: [
+          {
+            type: 'user',
+            name: '',
+            id: ''
+          }
+        ],
+        actions: {
+          onComplete: [
+            {
+              type: '',
+              task: []
+            }
+          ],
+          onOverdue: [
+            {
+              type: '',
+              task: []
+            }
+          ]
+        },
+        due: {
+          type: '',
+          interval: '',
+          unit: 'days'
+        },
+        notes: ''
+      };
     },
 
     // Remove Completion Multiple Values

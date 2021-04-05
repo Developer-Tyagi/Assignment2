@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <div>
-      <div v-if="!noDirectoryFound" class="actions-div justify-between q-px-md">
+      <div class="actions-div justify-between q-px-md">
         <q-breadcrumbs class="text-primary" active-color="grey" gutter="none">
           <template v-slot:separator>
             <q-icon size="1.5em" name="chevron_right" color="primary" />
@@ -31,7 +31,7 @@
           />
         </div>
       </div>
-      <div v-if="!noDirectoryFound" class="mobile-container-page overflow-y">
+      <div class="mobile-container-page overflow-y">
         <div
           v-if="depth.length > 1"
           class="row-div vertical-center q-px-md q-py-xs"
@@ -64,9 +64,6 @@
         <div v-if="!documents.length" class="fixed-heading">
           <span>No file in this folder</span>
         </div>
-      </div>
-      <div v-if="noDirectoryFound" class="fixed-heading">
-        <span>No directory found</span>
       </div>
     </div>
 
@@ -141,8 +138,7 @@ export default {
       addFolderDialog: false,
       addFileDialog: false,
       folderName: '',
-      fileName: '',
-      noDirectoryFound: false
+      fileName: ''
     };
   },
 
@@ -262,7 +258,6 @@ export default {
         this.setLoading(false);
       } catch (e) {
         this.setLoading(false);
-        this.noDirectoryFound = true;
       }
     },
 

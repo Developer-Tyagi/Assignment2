@@ -491,10 +491,9 @@ export default {
 
       if (success) {
         const response = await this.addVendor(this.vendor);
-
         if (response) {
+          this.vendor.id = response.id;
           this.$emit('onCloseAddVendor', true, this.vendor, this.componentName);
-
           this.closeDialog(true);
         }
       }
@@ -520,13 +519,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.form-heading {
-  color: #333333;
-  font-weight: bold;
-  font-size: 14px;
-  margin: 24px 0;
-}
-
 ::-webkit-scrollbar {
   width: 0px;
   background: transparent; /* make scrollbar transparent */
