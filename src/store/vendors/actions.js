@@ -30,7 +30,7 @@ export async function addVendor({ dispatch, state }, payload) {
       type: 'positive',
       message: 'Created !'
     });
-    return true;
+    return data;
   } catch (e) {
     console.log(e);
     dispatch('setLoading', false);

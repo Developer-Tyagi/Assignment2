@@ -491,10 +491,9 @@ export default {
 
       if (success) {
         const response = await this.addVendor(this.vendor);
-
         if (response) {
+          this.vendor.id = response.id;
           this.$emit('onCloseAddVendor', true, this.vendor, this.componentName);
-
           this.closeDialog(true);
         }
       }
