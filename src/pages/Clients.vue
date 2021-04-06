@@ -84,7 +84,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['clients', 'selectedClientId', 'editSelectedCaim'])
+    ...mapGetters(['clients', 'selectedClientId', 'editSelectedClaim'])
   },
 
   created() {
