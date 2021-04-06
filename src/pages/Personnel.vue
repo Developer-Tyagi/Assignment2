@@ -232,7 +232,7 @@ export default {
     }
 
     this.getRoles();
-
+    this.getPersonnelInfo(this.selectedClaimId);
     this.companyPersonnel.startDate = this.companyPersonnelPost.startDate = this.companyPersonnelPost.endDate = this.companyPersonnel.endDate = date.formatDate(
       Date.now(),
       'MM/DD/YYYY'
