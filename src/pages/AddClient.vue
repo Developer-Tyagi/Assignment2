@@ -477,6 +477,7 @@
             <LossInfo
               :lossInfo="lossInfo"
               @lossAddressSame="lossAddressSame"
+              :lossAddressToggleShow="true"
               :isMailingAddressEnable="true"
               :lossAddressSameAsClient="true"
               :isAddressRequired="true"

@@ -307,8 +307,9 @@
       lazy-rules
       :rules="[val => (val && val.length > 0) || 'This is a required field']"
     ></q-input>
-    <div class="row" v-if="lossAddressSameAsClient">
+    <div class="row" v-if="lossAddressSameAsClient && lossAddressToggleShow">
       <p class="q-my-auto form-heading">Loss Address Same As Client's?</p>
+
       <q-toggle
         class="q-ml-auto"
         v-model="lossInfo.isLossAddressSameAsClientToggle"
@@ -321,7 +322,7 @@
         :address="lossInfo.lossAddressDetails"
         :isDropBoxEnable="true"
         :isChecksEnable="true"
-        :isFieldsDisable="lossInfo.isLossAddressSameAsClientToggle"
+        :isFieldsDisable="false"
         :isAsteriskMark="true"
       />
     </div>
@@ -827,6 +828,10 @@ export default {
       type: Object
     },
     isMailingAddressEnable: {
+      type: Boolean,
+      required: false
+    },
+    lossAddressToggleShow: {
       type: Boolean,
       required: false
     },

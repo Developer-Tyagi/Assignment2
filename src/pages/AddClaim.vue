@@ -16,7 +16,7 @@
 
         <q-btn
           style="width: 90%"
-          label="Create Client"
+          label="Create Claim"
           color="primary"
           class="q-mt-auto text-capitalize q-mx-auto"
           :disabled="isCreateClientButtonDisabled"
@@ -73,6 +73,7 @@
             <LossInfo
               :lossInfo="lossInfo"
               @lossAddressSame="lossAddressSame"
+              :lossAddressToggleShow="false"
               :isMailingAddressEnable="true"
               :lossAddressSameAsClient="true"
               :isAddressRequired="true"
@@ -175,9 +176,9 @@
         </div>
       </q-card>
     </q-dialog>
-    <!-- Public Adjuster Info -->
+    <!-- Company Personnel Dialog-->
     <q-dialog
-      v-model="publicAdjustorInfoDialog"
+      v-model="companyPersonnelDialog"
       persistent
       :maximized="maximizedToggle"
       transition-show="slide-up"
@@ -185,18 +186,19 @@
     >
       <q-card>
         <CustomBar
-          :dialogName="'Public Adjustor Info'"
-          @closeDialog="onCloseDialogBox('publicAdjustorInfoDialog', 6)"
+          :dialogName="'Company Personnel'"
+          @closeDialog="onCloseDialogBox('companyPersonnelDialog', 6)"
         />
         <div class="mobile-container-page-without-search">
-          <q-form ref="publicAdjustorForm" class="form-height">
-            <PublicAdjustorInfo :publicAdjustorInfo="publicAdjustorInfo" />
+          <q-form ref="companyPersonnelForm" class="form-height">
+            <div class="form-heading text-bold">CLAIM PERSONNEL</div>
+            <CompanyPersonnel :companyPersonnel="companyPersonnel" />
           </q-form>
           <q-btn
             label="Save"
             color="primary"
             class="button-width-90"
-            @click="onSubmit('publicAdjustorInfoDialog')"
+            @click="onSubmit('companyPersonnelDialog')"
             size="'xl'"
           />
         </div>
@@ -257,7 +259,8 @@
 import CustomBar from 'components/CustomBar';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import ContractInfo from 'components/ContractInfo';
-import PublicAdjustorInfo from 'components/PublicAdjustorInfo';
+
+import CompanyPersonnel from 'components/CompanyPersonnel';
 import EstimatingInfo from 'components/EstimatingInfo';
 import LossInfo from 'components/LossInfo';
 import ExpertVendorInfo from 'components/ExpertVendorInfo';
@@ -285,11 +288,12 @@ export default {
     ExpertVendorInfo,
     EstimatingInfo,
     ContractInfo,
-    PublicAdjustorInfo
+    CompanyPersonnel
   },
 
   data() {
     return {
+      isAddMorePhoneDisabled: false,
       addressId: '',
       industryTypeValue: '',
 
@@ -316,38 +320,18 @@ export default {
 
         buttonGroup: 'dollar'
       },
-
-      publicAdjustorInfo: {
-        isFieldDisable1: true,
-        isFieldDisable2: true,
-        isFieldDisable3: true,
-        isFieldDisable4: true,
-
-        personnel: [
-          {
-            id: '',
-            role: ''
-          },
-          {
-            id: '',
-            role: ''
-          },
-          {
-            id: '',
-            role: ''
-          },
-          {
-            id: '',
-            role: ''
-          }
-        ],
-
-        personParty1: '',
-        personParty2: '',
-        personParty3: '',
-        personParty4: '',
+      companyPersonnel: {
         notes: '',
-
+        endDate: '',
+        startDate: '',
+        buttonGroup: 'dollar',
+        claimFeeRate: '',
+        isFieldDisable: true,
+        personnel: {
+          id: '',
+          role: ''
+        },
+        personParty: '',
         filterRole: []
       },
 
@@ -363,7 +347,7 @@ export default {
         { name: 'Expert/Vendor Info', validForm: false },
         { name: 'Estimating Info', validForm: false },
         { name: 'Contract Info', validForm: false },
-        { name: 'Public Adjustor Info', validForm: false },
+        { name: 'Company Personnel', validForm: false },
         { name: 'Office Task', validForm: false }
       ],
 
@@ -371,7 +355,7 @@ export default {
 
       constants: constants,
 
-      publicAdjustorInfoDialog: false,
+      companyPersonnelDialog: false,
       contractInfoDialog: false,
 
       officeTaskDialog: false,
@@ -454,7 +438,7 @@ export default {
 
       lossInfo: {
         isDisable: '',
-        lossAddressNameOptions: ['Oters'],
+        lossAddressNameOptions: ['Others'],
         isMortgageHomeToggle: false,
         vendorsListDialog: false,
         vendorDialogFilterByIndustry: '',
@@ -641,11 +625,12 @@ export default {
   },
 
   created() {
+    this.getRoles();
     this.addressId = this.$route.params.clientId;
     this.getSingleClientDetails(this.selectedClientId);
     this.getSingleClientProperty(this.selectedClientId);
     this.contractInfo.time = date.formatDate(Date.now(), 'HH:mm:ss:aa');
-    this.contractInfo.firstContractDate = this.contractInfo.contractDate = this.insuranceDetails.policyEffectiveDate = this.insuranceDetails.policyExpireDate = this.lossInfo.dateOfLoss = this.lossInfo.deadlineDate = this.lossInfo.recovDeadline = date.formatDate(
+    this.companyPersonnel.startDate = this.companyPersonnel.endDate = this.contractInfo.firstContractDate = this.contractInfo.contractDate = this.insuranceDetails.policyEffectiveDate = this.insuranceDetails.policyExpireDate = this.lossInfo.dateOfLoss = this.lossInfo.deadlineDate = this.lossInfo.recovDeadline = date.formatDate(
       Date.now(),
       'MM/DD/YYYY'
     );
@@ -668,6 +653,23 @@ export default {
     } else {
       this.lossInfo.lossAddressNameDropdown = 'Others';
     }
+
+    const obj = this.setClientProperty.find(item => {
+      return item.id === this.addressId;
+    });
+    this.lossInfo.lossAddressDetails = {
+      houseNumber: obj.attributes.houseNumber,
+      addressCountry: obj.attributes.addressCountry,
+      addressRegion: obj.attributes.addressRegion,
+      addressLocality: obj.attributes.addressLocality,
+      postalCode: obj.attributes.postalCode,
+      streetAddress: obj.attributes.streetAddress,
+      postOfficeBoxNumber: '',
+      dropBox: {
+        info: '',
+        isPresent: false
+      }
+    };
 
     this.countries = addressService.getCountries();
     this.onCountrySelect('United States');
@@ -692,7 +694,9 @@ export default {
       'personnelRoles',
       'editSelectedClient',
       'selectedClientId',
-      'setClientProperty'
+      'setClientProperty',
+      'roleTypes',
+      'userRoles'
     ])
   },
 
@@ -719,14 +723,16 @@ export default {
       'getVendorIndustries',
       'addIndustry',
       'getSingleClientDetails',
-      'getSingleClientProperty'
+      'getSingleClientProperty',
+      'getRoles',
+      'getAllUsers'
     ]),
     ...mapMutations(['setSelectedLead']),
 
     // For adding multiple Contact Numbers in ClientInfo
     addAnotherContact() {
       let len = this.phoneNumber.length;
-      if (this.phoneNumber[len - 1].number) {
+      if (this.phoneNumber[len - 1].number.length == 14) {
         this.phoneNumber.push({
           type: '',
           number: ''
@@ -770,25 +776,22 @@ export default {
     },
 
     lossAddressSame() {
-      if (this.lossInfo.isLossAddressSameAsClientToggle) {
-        const obj = this.setClientProperty.find(item => {
-          return item.id === this.addressId;
-        });
-
-        this.lossInfo.lossAddressDetails = {
-          houseNumber: obj.attributes.houseNumber,
-          addressCountry: obj.attributes.addressCountry,
-          addressRegion: obj.attributes.addressRegion,
-          addressLocality: obj.attributes.addressLocality,
-          postalCode: obj.attributes.postalCode,
-          streetAddress: obj.attributes.streetAddress,
-          postOfficeBoxNumber: '',
-          dropBox: {
-            info: '',
-            isPresent: false
-          }
-        };
-      }
+      const obj = this.setClientProperty.find(item => {
+        return item.id === this.addressId;
+      });
+      this.lossInfo.lossAddressDetails = {
+        houseNumber: obj.attributes.houseNumber,
+        addressCountry: obj.attributes.addressCountry,
+        addressRegion: obj.attributes.addressRegion,
+        addressLocality: obj.attributes.addressLocality,
+        postalCode: obj.attributes.postalCode,
+        streetAddress: obj.attributes.streetAddress,
+        postOfficeBoxNumber: '',
+        dropBox: {
+          info: '',
+          isPresent: false
+        }
+      };
     },
 
     createClaimDailogBoxOpen(value) {
@@ -814,8 +817,8 @@ export default {
         case 'Office Task':
           this.officeTaskDialog = true;
           break;
-        case 'Public Adjustor Info':
-          this.publicAdjustorInfoDialog = true;
+        case 'Company Personnel':
+          this.companyPersonnelDialog = true;
           break;
         case 'Documents':
           this.documentsDialog = true;
@@ -872,8 +875,8 @@ export default {
           success = await this.$refs.contractInfoForm.validate();
           validationIndex = 4;
           break;
-        case 'publicAdjustorInfoDialog':
-          success = await this.$refs.publicAdjustorForm.validate();
+        case 'companyPersonnelDialog':
+          success = await this.$refs.companyPersonnelForm.validate();
           validationIndex = 5;
       }
       if (success == true) {
@@ -1042,12 +1045,27 @@ export default {
           dateOfFirstContact: dateToSend(this.contractInfo.firstContractDate)
         },
 
-        personnel: this.publicAdjustorInfo.personnel
+        personnel: [
+          {
+            id: this.companyPersonnel.personnel.id,
+            name: this.companyPersonnel.personParty.name,
+            role: this.companyPersonnel.personnel.role,
+            note: this.companyPersonnel.notes,
+            fees: {
+              type: this.companyPersonnel.buttonGroup,
+              rate: this.companyPersonnel.claimFeeRate
+                ? this.companyPersonnel.claimFeeRate
+                : 0
+            },
+            startDate: dateToSend(this.companyPersonnel.startDate),
+            endDate: dateToSend(this.companyPersonnel.endDate)
+          }
+        ]
       };
 
       this.addClaim(payload).then(() => {
         this.setSelectedLead();
-        this.$router.push('/clients');
+        this.$router.push('/property-details');
       });
     },
 
