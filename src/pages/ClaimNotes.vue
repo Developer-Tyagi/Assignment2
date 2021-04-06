@@ -174,7 +174,7 @@ export default {
         noteId: this.noteId,
         notesData: {
           notes: {
-            title: '',
+            title: this.editNote,
             desc: this.editNote
           }
         }
@@ -191,7 +191,7 @@ export default {
         id: this.selectedClaimId,
         notesData: {
           notes: {
-            title: '',
+            title: this.note,
             desc: this.note
           }
         }
