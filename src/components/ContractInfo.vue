@@ -155,17 +155,22 @@
         type="number"
         v-model.number="contractInfo.claimFeeRate"
         label="Claim Fee Rate"
-        :suffix="
-          contractInfo.buttonGroup == 'dollar'
-            ? '$ flat'
-            : '' || contractInfo.buttonGroup == 'percentage'
-            ? '%'
-            : '' || contractInfo.buttonGroup == 'update'
-            ? '/hr'
-            : ''
-        "
         style="width: 50%"
-      />
+      >
+        <template v-slot:prepend v-if="contractInfo.buttonGroup == 'dollar'">
+          <q-icon name="$" color="primary"></q-icon>
+        </template>
+
+        <template
+          v-slot:append
+          v-else-if="contractInfo.buttonGroup == 'percentage'"
+        >
+          <q-icon name="%" color="primary"></q-icon>
+        </template>
+        <template v-slot:append v-else>
+          <span class="form-heading">/hour</span>
+        </template></q-input
+      >
     </div>
     <br />
     <span class="form-heading"> Source Of Claim </span>

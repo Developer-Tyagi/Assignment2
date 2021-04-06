@@ -49,17 +49,24 @@
         type="number"
         v-model.number="companyPersonnel.claimFeeRate"
         label="Claim Fee Rate"
-        :suffix="
-          companyPersonnel.buttonGroup == 'dollar'
-            ? '$ flat'
-            : '' || companyPersonnel.buttonGroup == 'percentage'
-            ? '%'
-            : '' || companyPersonnel.buttonGroup == 'update'
-            ? '/hr'
-            : ''
-        "
         style="width: 50%"
-      />
+        ><template
+          v-slot:prepend
+          v-if="companyPersonnel.buttonGroup == 'dollar'"
+        >
+          <q-icon name="$" color="primary"></q-icon>
+        </template>
+
+        <template
+          v-slot:append
+          v-else-if="companyPersonnel.buttonGroup == 'percentage'"
+        >
+          <q-icon name="%" color="primary"></q-icon>
+        </template>
+        <template v-slot:append v-else>
+          <span class="form-heading">/hour</span>
+        </template></q-input
+      >
     </div>
     <br />
     <span class="form-heading">Start Date</span>

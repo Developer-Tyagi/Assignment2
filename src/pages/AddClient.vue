@@ -856,6 +856,14 @@ export default {
       },
 
       lossInfo: {
+        purchaseDate: '',
+        purchasePrice: '',
+        quantity: '',
+        PPDamageItemDescription: '',
+        isPAFillingOutToggle: true,
+        doYouWantToSendInsuredPPIF: false,
+        isClientGoingToPreparePPIF: false,
+        isAdjustorFillOutLaterDate: false,
         isMortgageHomeToggle: false,
         vendorsListDialog: false,
         vendorDialogFilterByIndustry: '',
@@ -1532,6 +1540,7 @@ export default {
         lossInfo: {
           isNewAddress:
             this.lossInfo.lossAddressNameDropdown == 'Others' ? true : false,
+          lossAddressName: this.lossInfo.lossAddressName,
           address: {
             ...this.clientAddressDetails
           },
@@ -1557,6 +1566,11 @@ export default {
           serverity: {
             ...this.lossInfo.severityOfClaimType
           },
+          isPPDamaged: this.lossInfo.isThereDamageToPersonalPropertyToggle,
+          isPPIFFillNow: this.lossInfo.isPAFillingOutToggle,
+          isPPIFFillLater: this.lossInfo.isAdjustorFillOutLaterDate,
+          isClientPreparePPIF: this.lossInfo.isClientGoingToPreparePPIF,
+          isPPIFSendToInsure: this.lossInfo.doYouWantToSendInsuredPPIF,
           OSDamageItems: this.lossInfo.osDamagedItems,
           PPDamageItems: this.lossInfo.ppDamagedItems,
           isPPIF: this.lossInfo.wasAppifProvidedToTheInsuredToggle,
@@ -1593,6 +1607,8 @@ export default {
             fees: {
               type: this.companyPersonnel.buttonGroup,
               rate: this.companyPersonnel.claimFeeRate
+                ? this.companyPersonnel.claimFeeRate
+                : 0
             },
             startDate: dateToSend(this.companyPersonnel.startDate),
             endDate: dateToSend(this.companyPersonnel.endDate)

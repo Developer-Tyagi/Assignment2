@@ -79,7 +79,7 @@
               <div class="row">
                 <span class="col-11 form-heading">
                   {{
-                    personnel.attributes.personnel[index - 1].name
+                    personnel.attributes.personnel[index - 1]
                       ? personnel.attributes.personnel[index - 1].name
                       : '-'
                   }}
@@ -110,11 +110,39 @@
                 }}
               </div>
 
-              <div>
+              <div
+                v-if="
+                  personnel.attributes.personnel[index - 1].fees.type ==
+                    'dollar'
+                "
+              >
+                Fee :
+
+                {{
+                  personnel.attributes.personnel[index - 1]
+                    ? '$' + personnel.attributes.personnel[index - 1].fees.rate
+                    : '-'
+                }}
+              </div>
+              <div
+                v-else-if="
+                  personnel.attributes.personnel[index - 1].fees.type ==
+                    'update'
+                "
+              >
                 Fee -
                 {{
                   personnel.attributes.personnel[index - 1]
-                    ? personnel.attributes.personnel[index - 1].fees.rate
+                    ? personnel.attributes.personnel[index - 1].fees.rate +
+                      ' /hour'
+                    : '-'
+                }}
+              </div>
+              <div v-else>
+                Fee -
+                {{
+                  personnel.attributes.personnel[index - 1]
+                    ? personnel.attributes.personnel[index - 1].fees.rate + ' %'
                     : '-'
                 }}
               </div>
@@ -146,6 +174,7 @@
 import { mapGetters, mapActions } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import CompanyPersonnel from 'components/CompanyPersonnel';
+import { dateToSend } from '@utils/date';
 
 import { validateDate } from '@utils/validation';
 import { date } from 'quasar';
@@ -221,6 +250,7 @@ export default {
     async onSaveButtonClick() {
       let success = false;
       success = await this.$refs.addCompanyForm.validate();
+
       if (success) {
         this.addCompanyPersonnelDailog = false;
         const payload = {
@@ -232,16 +262,20 @@ export default {
               role: this.companyPersonnelPost.personnel.role,
               note: this.companyPersonnelPost.notes,
               fees: {
-                rate: this.companyPersonnelPost.claimFeeRate,
+                rate: this.companyPersonnelPost.claimFeeRate
+                  ? this.companyPersonnelPost.claimFeeRate
+                  : 0,
                 type: this.companyPersonnelPost.buttonGroup
-              }
+              },
+              startDate: dateToSend(this.companyPersonnelPost.startDate),
+              endDate: dateToSend(this.companyPersonnelPost.endDate)
             }
           }
         };
-        this.addCompanyPersonnel(payload);
+        await this.addCompanyPersonnel(payload);
         await this.getPersonnelInfo(this.selectedClaimId);
 
-        this.$router.push('/claim-details');
+        this.$router.push('/company-personnel');
       }
     },
     onEditButtonClick() {
@@ -273,16 +307,14 @@ export default {
     async onEditSaveButtonClick() {
       let success = false;
       success = await this.$refs.companyForm.validate();
+
       if (success) {
         this.companyPersonnelDailog = false;
+
         const payload = {
           id: this.selectedClaimId,
           companyData: {
             personnel: {
-              fees: {
-                rate: this.companyPersonnel.claimFeeRate,
-                type: this.companyPersonnel.buttonGroup
-              },
               id: this.companyPersonnel.personnel.id,
               name: this.companyPersonnel.personParty.name,
               role: this.companyPersonnel.personnel.role,
@@ -290,7 +322,11 @@ export default {
               fess: {
                 type: this.companyPersonnel.buttonGroup,
                 rate: this.companyPersonnel.claimFeeRate
-              }
+                  ? this.companyPersonnel.claimFeeRate
+                  : 0
+              },
+              startDate: dateToSend(this.companyPersonnel.startDate),
+              endDate: dateToSend(this.companyPersonnel.endDate)
             }
           }
         };
@@ -298,7 +334,7 @@ export default {
         await this.editPersonnel(payload);
         await this.getPersonnelInfo(this.selectedClaimId);
 
-        this.$router.push('/claim-details');
+        this.$router.push('/company-personnel');
       }
     },
     validateDate

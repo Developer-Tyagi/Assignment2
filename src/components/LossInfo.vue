@@ -1,5 +1,130 @@
 <template>
   <div class="bg-white full-width">
+    <!-- PP Damaged Items Dialog Box -->
+    <q-dialog
+      v-model="lossInfo.PPdamagedItemsDailog"
+      persistent
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <CustomBar
+          @closeDialog="lossInfo.PPdamagedItemsDailog = false"
+          :dialogName="'Add Items'"
+        />
+        <div class="mobile-container-page-without-search  ">
+          <div class="form-height ">
+            <div class="q-page bg-white ">
+              <div class="full-width" style="margin-top: 30px">
+                <q-input
+                  dense
+                  v-model.number="lossInfo.quantity"
+                  label="Quantity"
+                  type="number"
+                />
+                <q-input
+                  dense
+                  v-model="lossInfo.PPDamageName"
+                  label="Name of item"
+                />
+                <q-input
+                  dense
+                  v-model="lossInfo.serialNumber"
+                  label="Serial Number"
+                />
+
+                <q-input
+                  dense
+                  v-model="lossInfo.PPDamageDescription"
+                  label="Description of Damages"
+                  autogrow
+                />
+                <q-input
+                  dense
+                  v-model="lossInfo.PPDamageItemDescription"
+                  label="Description of Item"
+                  autogrow
+                />
+                <q-input
+                  dense
+                  type="number"
+                  v-model.number="lossInfo.PPDamagedItemCost"
+                  label="Item Cost"
+                >
+                  <template v-slot:prepend>
+                    <q-icon name="$" color="primary"></q-icon> </template
+                ></q-input>
+                <q-input
+                  dense
+                  type="number"
+                  v-model.number="lossInfo.purchasePrice"
+                  label="Purchase Price"
+                >
+                  <template v-slot:prepend>
+                    <q-icon name="$" color="primary"></q-icon> </template
+                ></q-input>
+                <div class="text-bold q-mt-md">Purchase date</div>
+                <div class="full-width">
+                  <q-input
+                    v-model="lossInfo.purchaseDate"
+                    mask="##/##/####"
+                    label="MM/DD/YYYY"
+                    lazy-rules
+                    :rules="[
+                      val =>
+                        (validateDate(val) && val && val.length > 0) ||
+                        'Invalid date!'
+                    ]"
+                  >
+                    <template v-slot:append>
+                      <q-icon
+                        name="event"
+                        size="sm"
+                        color="primary"
+                        class="cursor-pointer"
+                      >
+                        <q-popup-proxy
+                          ref="qDateProxy"
+                          transition-show="scale"
+                          transition-hide="scale"
+                        >
+                          <q-date
+                            v-model="lossInfo.purchaseDate"
+                            @input="() => $refs.qDateProxy.hide()"
+                            mask="MM/DD/YYYY"
+                          ></q-date>
+                        </q-popup-proxy>
+                      </q-icon>
+                    </template>
+                  </q-input>
+                </div>
+
+                <q-radio
+                  v-model="lossInfo.repairReplaceRadio"
+                  val="Repair"
+                  label="Repair"
+                ></q-radio>
+                <q-radio
+                  class="q-ml-none"
+                  v-model="lossInfo.repairReplaceRadio"
+                  val="Replace"
+                  label="Replace"
+                ></q-radio>
+              </div>
+              <br />
+            </div>
+          </div>
+          <q-btn
+            label="Save"
+            color="primary"
+            class="full-width q-mt-auto text-capitalize"
+            @click="addPPDamagedItems"
+            size="'xl'"
+          ></q-btn>
+        </div>
+      </q-card>
+    </q-dialog>
     <!-- Add vendor Dialog -->
     <q-dialog
       v-model="lossInfo.addVendorDialog"
@@ -64,7 +189,7 @@
           class="mobile-container-page-without-search"
           v-if="isMailingAddressEnable"
         >
-          <q-form ref="estimatingInfoForm" class="form-height">
+          <q-form ref="estimatingInfoForm">
             <div
               class="custom-select"
               v-model="lossInfo.mortgageDetails[0].id"
@@ -508,8 +633,20 @@
         v-model="lossInfo.isThereDamageToPersonalPropertyToggle"
       />
     </div>
+    <div class="row" v-if="lossInfo.isThereDamageToPersonalPropertyToggle">
+      <p class="q-mx-none q-my-auto form-heading">
+        Is the PA filling out the PPIF at this inspection?
+      </p>
+      <q-toggle class="q-ml-auto" v-model="lossInfo.isPAFillingOutToggle" />
+    </div>
+
     <!-- Persnol Property Damage List -->
-    <div v-if="lossInfo.isThereDamageToPersonalPropertyToggle">
+    <div
+      v-if="
+        lossInfo.isThereDamageToPersonalPropertyToggle &&
+          lossInfo.isPAFillingOutToggle
+      "
+    >
       <br />
       <div
         v-if="lossInfo.ppDamagedItems.length >= 1"
@@ -548,9 +685,19 @@
                 style="margin-right: 71px"
               >
                 <p>{{ item.desc }}</p>
+                <p>{{ item.itemDesc }}</p>
               </div>
               <div class="q-ma-sm q-ml-xs">
                 {{ item.serialNumber }}
+              </div>
+              <div class="q-ma-sm q-ml-xs">
+                {{ item.purchaseDate }}
+              </div>
+              <div class="q-ma-sm q-ml-xs">
+                {{ '$' + item.purchasePrice }}
+              </div>
+              <div class="q-ma-sm q-ml-xs">
+                {{ item.quantity }}
               </div>
               <div class="q-ma-sm">
                 {{ item.radio }}
@@ -571,76 +718,33 @@
         >
         </q-btn>
       </div>
-      <q-dialog
-        v-model="lossInfo.PPdamagedItemsDailog"
-        persistent
-        transition-show="slide-up"
-        transition-hide="slide-down"
-      >
-        <q-card class="form-card q-pa-md" style="width: 500px; height: 65%">
-          <q-header bordered class="bg-white">
-            <q-toolbar class="row bg-white">
-              <img
-                src="~assets/close.svg"
-                alt="back-arrow"
-                @click="lossInfo.PPdamagedItemsDailog = false"
-                style="margin: auto 0"
-              />
-              <div class="text-uppercase text-bold text-black q-mx-auto">
-                Add Items
-              </div>
-            </q-toolbar>
-          </q-header>
-
-          <q-card-section>
-            <div class="q-page bg-white">
-              <div class="full-width" style="margin-top: 30px">
-                <q-input dense v-model="lossInfo.PPDamageName" label="Name" />
-                <q-input
-                  dense
-                  v-model="lossInfo.PPDamageDescription"
-                  label="Description"
-                  autogrow
-                />
-                <q-input
-                  dense
-                  type="number"
-                  v-model.number="lossInfo.PPDamagedItemCost"
-                  label="Item Cost"
-                  prefix="$"
-                />
-                <q-input
-                  dense
-                  v-model="lossInfo.serialNumber"
-                  label="Serial Number"
-                />
-                <br />
-
-                <q-radio
-                  v-model="lossInfo.repairReplaceRadio"
-                  val="Repair"
-                  label="Repair"
-                ></q-radio>
-                <q-radio
-                  class="q-ml-none"
-                  v-model="lossInfo.repairReplaceRadio"
-                  val="Replace"
-                  label="Replace"
-                ></q-radio>
-              </div>
-              <br />
-            </div>
-
-            <q-btn
-              label="Save"
-              color="primary"
-              class="full-width q-mt-auto text-capitalize"
-              @click="addPPDamagedItems"
-              size="'xl'"
-            ></q-btn>
-          </q-card-section>
-        </q-card>
-      </q-dialog>
+    </div>
+    <div class="row" v-if="!lossInfo.isPAFillingOutToggle">
+      <p class="q-mx-none q-my-auto form-heading">
+        Is the adjuster going to fill out the PPIF at a later date?
+      </p>
+      <q-toggle
+        class="q-ml-auto"
+        v-model="lossInfo.isAdjustorFillOutLaterDate"
+      />
+    </div>
+    <div class="row" v-if="!lossInfo.isAdjustorFillOutLaterDate">
+      <p class="q-mx-none q-my-auto form-heading">
+        Is the client going to prepare the PPIFs?
+      </p>
+      <q-toggle
+        class="q-ml-auto"
+        v-model="lossInfo.isClientGoingToPreparePPIF"
+      />
+    </div>
+    <div class="row" v-if="lossInfo.isClientGoingToPreparePPIF">
+      <p class="q-mx-none q-my-auto form-heading">
+        Do you want to send the insured a PPIF?
+      </p>
+      <q-toggle
+        class="q-ml-auto"
+        v-model="lossInfo.doYouWantToSendInsuredPPIF"
+      />
     </div>
     <div class="row">
       <p class="q-mx-none q-my-auto form-heading">
@@ -700,6 +804,8 @@
 </template>
 <script>
 import AddressService from '@utils/country';
+import { date } from 'quasar';
+
 import { constants } from '@utils/constant';
 import CustomBar from 'components/CustomBar';
 import VendorsList from 'components/VendorsList';
@@ -755,6 +861,7 @@ export default {
     };
   },
   created() {
+    this.lossInfo.purchaseDate = date.formatDate(Date.now(), 'MM/DD/YYYY');
     this.$emit('isMortgageDetails', false);
     this.getVendors(this.$route.params.id);
   },
@@ -897,13 +1004,21 @@ export default {
         desc: this.lossInfo.PPDamageDescription,
         cost: this.lossInfo.PPDamagedItemCost,
         serialNumber: this.lossInfo.serialNumber,
-        radio: this.lossInfo.repairReplaceRadio
+        radio: this.lossInfo.repairReplaceRadio,
+        itemDesc: this.lossInfo.PPDamageItemDescription,
+        purchaseDate: this.lossInfo.purchaseDate,
+        purchasePrice: this.lossInfo.purchasePrice,
+        quantity: this.lossInfo.quantity
       });
       this.lossInfo.PPDamageName = '';
       this.lossInfo.PPDamageDescription = '';
       this.lossInfo.serialNumber = '';
       this.lossInfo.PPDamagedItemCost = '';
       this.lossInfo.repairReplaceRadio = false;
+      this.lossInfo.PPDamageItemDescription = '';
+
+      this.lossInfo.purchasePrice = '';
+      this.lossInfo.quantity = '';
     },
     addDamagedItems() {
       this.lossInfo.osDamagedItems.push({
@@ -938,3 +1053,10 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+.form-height {
+  height: calc(100vh - 120px);
+  overflow: auto;
+  margin: 10px;
+}
+</style>
