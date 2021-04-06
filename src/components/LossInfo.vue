@@ -14,106 +14,104 @@
           :dialogName="'Add Items'"
         />
         <div class="mobile-container-page-without-search  ">
-          <div class="form-height ">
-            <div class="q-page bg-white ">
-              <div class="full-width" style="margin-top: 30px">
-                <q-input
-                  dense
-                  v-model.number="lossInfo.quantity"
-                  label="Quantity"
-                  type="number"
-                />
-                <q-input
-                  dense
-                  v-model="lossInfo.PPDamageName"
-                  label="Name of item"
-                />
-                <q-input
-                  dense
-                  v-model="lossInfo.serialNumber"
-                  label="Serial Number"
-                />
+          <div class="form-height">
+            <div class="full-width">
+              <q-input
+                dense
+                v-model.number="lossInfo.quantity"
+                label="Quantity"
+                type="number"
+              />
+              <q-input
+                dense
+                v-model="lossInfo.PPDamageName"
+                label="Name of item"
+              />
+              <q-input
+                dense
+                v-model="lossInfo.serialNumber"
+                label="Serial Number"
+              />
 
+              <q-input
+                dense
+                v-model="lossInfo.PPDamageDescription"
+                label="Description of Damages"
+                autogrow
+              />
+              <q-input
+                dense
+                v-model="lossInfo.PPDamageItemDescription"
+                label="Description of Item"
+                autogrow
+              />
+              <q-input
+                dense
+                type="number"
+                v-model.number="lossInfo.PPDamagedItemCost"
+                label="Item Cost"
+              >
+                <template v-slot:prepend>
+                  <q-icon name="$" color="primary"></q-icon> </template
+              ></q-input>
+              <q-input
+                dense
+                type="number"
+                v-model.number="lossInfo.purchasePrice"
+                label="Purchase Price"
+              >
+                <template v-slot:prepend>
+                  <q-icon name="$" color="primary"></q-icon> </template
+              ></q-input>
+              <div class="text-bold q-mt-md">Purchase date</div>
+              <div class="full-width">
                 <q-input
-                  dense
-                  v-model="lossInfo.PPDamageDescription"
-                  label="Description of Damages"
-                  autogrow
-                />
-                <q-input
-                  dense
-                  v-model="lossInfo.PPDamageItemDescription"
-                  label="Description of Item"
-                  autogrow
-                />
-                <q-input
-                  dense
-                  type="number"
-                  v-model.number="lossInfo.PPDamagedItemCost"
-                  label="Item Cost"
+                  v-model="lossInfo.purchaseDate"
+                  mask="##/##/####"
+                  label="MM/DD/YYYY"
+                  lazy-rules
+                  :rules="[
+                    val =>
+                      (validateDate(val) && val && val.length > 0) ||
+                      'Invalid date!'
+                  ]"
                 >
-                  <template v-slot:prepend>
-                    <q-icon name="$" color="primary"></q-icon> </template
-                ></q-input>
-                <q-input
-                  dense
-                  type="number"
-                  v-model.number="lossInfo.purchasePrice"
-                  label="Purchase Price"
-                >
-                  <template v-slot:prepend>
-                    <q-icon name="$" color="primary"></q-icon> </template
-                ></q-input>
-                <div class="text-bold q-mt-md">Purchase date</div>
-                <div class="full-width">
-                  <q-input
-                    v-model="lossInfo.purchaseDate"
-                    mask="##/##/####"
-                    label="MM/DD/YYYY"
-                    lazy-rules
-                    :rules="[
-                      val =>
-                        (validateDate(val) && val && val.length > 0) ||
-                        'Invalid date!'
-                    ]"
-                  >
-                    <template v-slot:append>
-                      <q-icon
-                        name="event"
-                        size="sm"
-                        color="primary"
-                        class="cursor-pointer"
+                  <template v-slot:append>
+                    <q-icon
+                      name="event"
+                      size="sm"
+                      color="primary"
+                      class="cursor-pointer"
+                    >
+                      <q-popup-proxy
+                        ref="qDateProxy"
+                        transition-show="scale"
+                        transition-hide="scale"
                       >
-                        <q-popup-proxy
-                          ref="qDateProxy"
-                          transition-show="scale"
-                          transition-hide="scale"
-                        >
-                          <q-date
-                            v-model="lossInfo.purchaseDate"
-                            @input="() => $refs.qDateProxy.hide()"
-                            mask="MM/DD/YYYY"
-                          ></q-date>
-                        </q-popup-proxy>
-                      </q-icon>
-                    </template>
-                  </q-input>
-                </div>
-
-                <q-radio
-                  v-model="lossInfo.repairReplaceRadio"
-                  val="Repair"
-                  label="Repair"
-                ></q-radio>
-                <q-radio
-                  class="q-ml-none"
-                  v-model="lossInfo.repairReplaceRadio"
-                  val="Replace"
-                  label="Replace"
-                ></q-radio>
+                        <q-date
+                          v-model="lossInfo.purchaseDate"
+                          @input="() => $refs.qDateProxy.hide()"
+                          mask="MM/DD/YYYY"
+                        ></q-date>
+                      </q-popup-proxy>
+                    </q-icon>
+                  </template>
+                </q-input>
               </div>
-              <br />
+
+              <q-radio
+                v-model="lossInfo.repairReplaceRadio"
+                val="Repair"
+                label="Repair"
+              ></q-radio>
+              <q-radio
+                class="q-ml-none"
+                v-model="lossInfo.repairReplaceRadio"
+                val="Replace"
+                label="Replace"
+              ></q-radio>
             </div>
+            <br />
           </div>
           <q-btn
             label="Save"
@@ -878,6 +876,7 @@ export default {
   },
   methods: {
     ...mapActions(['getVendors']),
+
     closeAddVendorDialog(e) {
       this.lossInfo.addVendorDialog = false;
       // this.getVendors();

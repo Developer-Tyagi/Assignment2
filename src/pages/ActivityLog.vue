@@ -89,7 +89,7 @@
       <q-card>
         <CustomBar
           @closeDialog="editLogDialog = false"
-          :dialogName="'Add New Log'"
+          :dialogName="'Edit Log'"
         />
 
         <div class="mobile-container-page-without-search q-ma-sm">
@@ -185,6 +185,7 @@ export default {
       this.edit.title = this.log[index - 1].attributes.title;
       this.edit.details = this.log[index - 1].attributes.detail;
 
+      this.edit.notes = this.log[index - 1].attributes.note;
       this.editLogDialog = true;
       this.logId = this.log[index - 1].id;
 
