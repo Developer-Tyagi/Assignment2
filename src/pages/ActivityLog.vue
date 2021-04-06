@@ -2,7 +2,7 @@
   <q-page>
     <div>
       <div class="actions-div">
-        <q-btn @click="editLog = true" flat class="q-ml-auto"
+        <q-btn @click="addLogDialog = true" flat class="q-ml-auto"
           ><img src="~assets/add.svg"
         /></q-btn>
       </div>
@@ -19,7 +19,7 @@
                 name="create"
                 color="primary"
                 class="col q-pt-xs"
-                @click="onClickEdit(log.attributes)"
+                @click="onClickEdit()"
               ></q-icon>
             </div>
             <div>{{ log.attributes.title }}</div>
@@ -30,7 +30,7 @@
     </div>
     <!-- This Dialog Box is for adding a new log  -->
     <q-dialog
-      v-model="editLog"
+      v-model="addLogDialog"
       persistent
       :maximized="true"
       transition-show="slide-up"
@@ -38,7 +38,7 @@
     >
       <q-card>
         <CustomBar
-          @closeDialog="onClosingEditLogDialog"
+          @closeDialog="onClosingaddLogDialog"
           :dialogName="'Add New Log'"
         />
 
@@ -46,7 +46,7 @@
           <q-form ref="activityLogForm" class="form-height">
             <q-input
               v-model="title"
-              class="full-width"
+              class="full-width required"
               label="Title"
               :rules="[
                 val => (val && val.length > 0) || 'Please fill the title    '
@@ -54,18 +54,77 @@
             />
             <q-input
               v-model="details"
-              class="full-width"
+              class="full-width "
               label="Details"
-              :rules="[
-                val => (val && val.length > 0) || 'Please fill the details'
-              ]"
-            />
+            /><br />
+            <span class="form-heading">Notes</span>
+            <div class="floating-label">
+              <textarea
+                rows="5"
+                required
+                class="full-width"
+                v-model="notes"
+                style="resize: none"
+              ></textarea>
+            </div>
           </q-form>
           <q-btn
             label="Save"
             color="primary"
             class="button-width-90"
             @click="onSaveButtonClick"
+            size="'xl'"
+          />
+        </div>
+      </q-card>
+    </q-dialog>
+    <!-- This Dialog Box is for editing a new log -->
+    <q-dialog
+      v-model="editLogDialog"
+      persistent
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <CustomBar
+          @closeDialog="editLogDialog = false"
+          :dialogName="'Add New Log'"
+        />
+
+        <div class="mobile-container-page-without-search q-ma-sm">
+          <q-form ref="activityEditLogForm" class="form-height">
+            <q-input
+              v-model="edit.title"
+              class="full-width required"
+              label="Title"
+              :disable="isFieldDisable"
+              :rules="[
+                val => (val && val.length > 0) || 'Please fill the title    '
+              ]"
+            />
+            <q-input
+              v-model="edit.details"
+              class="full-width "
+              label="Details"
+              :disable="isFieldDisable"
+            /><br />
+            <span class="form-heading">Notes</span>
+            <div class="floating-label">
+              <textarea
+                rows="5"
+                required
+                class="full-width"
+                v-model="edit.notes"
+                style="resize: none"
+              ></textarea>
+            </div>
+          </q-form>
+          <q-btn
+            label="Save"
+            color="primary"
+            class="button-width-90"
+            @click="onEditSaveButtonClick"
             size="'xl'"
           />
         </div>
@@ -84,12 +143,21 @@ export default {
 
   data() {
     return {
+      isFieldDisable: true,
       title: '',
       details: '',
-      editLog: false
+      addLogDialog: false,
+      editLogDialog: false,
+      edit: {
+        title: '',
+        details: '',
+        notes: ''
+      },
+
+      logId: '',
+      notes: ''
     };
   },
-
   components: { CustomBar },
   async created() {
     if (this.selectedClaimId) {
@@ -108,13 +176,23 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getSingleClaimDetails', 'getLog', 'addLog']),
+    ...mapActions(['getSingleClaimDetails', 'getLog', 'addLog', 'editLog']),
     ...mapMutations(['setSelectedClaimId', 'setLog']),
     // Edit Function
-    onClickEdit(val) {
-      this.title = val.title;
-      this.details = val.user.name;
-      this.editLog = true;
+    onClickEdit() {
+      let index = this.log.length;
+      this.edit.title = this.log[index - 1].attributes.title;
+      this.edit.title = this.log[index - 1].attributes.title;
+      this.edit.details = this.log[index - 1].attributes.detail;
+
+      this.editLogDialog = true;
+      this.logId = this.log[index - 1].id;
+
+      if (this.log[index - 1].attributes.isSystemGen == true) {
+        this.isFieldDisable = true;
+      } else {
+        this.isFieldDisable = false;
+      }
     },
     //  Save Function
     async onSaveButtonClick() {
@@ -125,28 +203,50 @@ export default {
           id: this.selectedClaimId,
           data: {
             title: this.title,
-            details: this.details
+            detail: this.details,
+            note: this.notes
           }
         };
         await this.addLog(payload);
         this.successMessage();
         this.getLog(this.selectedClaimId);
 
-        this.onClosingEditLogDialog();
+        this.onClosingaddLogDialog();
+      }
+    },
+    //Function when we update the details
+    async onEditSaveButtonClick() {
+      let success = true;
+      success = await this.$refs.activityEditLogForm.validate();
+      if (success) {
+        const payload = {
+          id: this.selectedClaimId,
+          logUserId: this.logId,
+          data: {
+            title: this.edit.title,
+            detail: this.edit.details,
+            note: this.edit.notes
+          }
+        };
+
+        await this.editLog(payload);
+        this.editLogDialog = false;
+        await this.getLog(this.selectedClaimId);
       }
     },
     successMessage() {
       this.$q.notify({
         type: 'positive',
-        message: `Log Updated Successfully!`,
+        message: `Logs Added Successfully!`,
         position: 'top'
       });
     },
 
-    onClosingEditLogDialog() {
-      this.editLog = false;
+    onClosingaddLogDialog() {
+      this.addLogDialog = false;
       this.title = '';
       this.details = '';
+      this.notes = '';
     }
   }
 };

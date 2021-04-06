@@ -19,6 +19,31 @@ export async function getPersonnelInfo({ commit, dispatch }, id) {
   }
 }
 
+//API for Editing the Activity logs  editLog
+
+export async function editLog({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.put(
+      `/claims/${payload.id}/logs/${payload.logUserId}`,
+      buildApiData('claimlogs', payload.data)
+    );
+
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Activity Log Updated !'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'failed to update Activity Log'
+    });
+  }
+}
+
 // API for Adding Company Personnel
 export async function addCompanyPersonnel({ dispatch, state }, payload) {
   dispatch('setLoading', true);
@@ -266,7 +291,7 @@ export async function addLog({ dispatch, state }, payload) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: 'Failed to create Note! please try again !'
+      message: 'Failed to create log! please try again !'
     });
   }
 }
