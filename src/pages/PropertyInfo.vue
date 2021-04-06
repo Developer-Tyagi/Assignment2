@@ -88,16 +88,19 @@
                       }}</q-badge
                       ><br />
                     </div>
-                    <span class="form-heading">Claim Number: </span
+                    <div class="text-bold q-mt-xs">File Number:</div>
+                    {{ claim.fileNumber ? claim.fileNumber : '-' }}
+                    <span class="text-bold q-mt-xs">Claim Number: </span
                     ><span @click="onClickClaimNumber(claim)" class="click-link"
-                      >{{ claim.number ? claim.number : '-' }} </span
-                    ><br />
-                    <q-separator />
-                    <span class="form-heading">File Number: </span
-                    >{{ claim.fileNumber ? claim.fileNumber : '-' }} <br />
-                    <span class="form-heading"> Current Phase: </span
-                    >{{ claim.phase ? claim.phase : '-' }}
+                      >{{ claim.number ? claim.number : '-' }}
+                    </span>
+
+                    <div class="text-bold q-mt-xs">
+                      Current Phase:
+                    </div>
+                    {{ claim.phase ? claim.phase : '-' }}
                   </q-item-section>
+                  <q-separator />
                 </div>
               </div>
               <q-separator />
