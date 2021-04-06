@@ -3,17 +3,15 @@
     <div class="q-pa-md height-without-header">
       <div class="row justify-between">
         <div class="row justify-between text-bold q-ml-auto">
-          <q-card flat bordered class="q-pa-sm q-ml-md"
+          <q-card flat bordered class="q-pa-sm q-ml-md q-mt-sm"
             >Licenses available- {{ '5' }}</q-card
           >
-
-          <q-card flat bordered class="q-pa-sm q-ml-md"
+          <q-card flat bordered class="q-pa-sm q-ml-md q-mt-sm"
             >Total Users - {{ allUsers.length }}</q-card
           >
-
           <q-btn
             color="primary"
-            class="q-ml-md"
+            class="q-ml-md q-mt-sm"
             @click="addUserDialogBox = true"
           >
             Add New User
@@ -21,7 +19,7 @@
         </div>
       </div>
 
-      <div class="q-mt-md" style="height: calc(100vh - 150px); overflow: auto">
+      <div class="q-mt-sm" style="height: calc(100% - 47px); overflow: auto">
         <table>
           <thead>
             <tr class="text-bold text-h6 text-white" style="height: 30px">

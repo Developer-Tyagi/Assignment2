@@ -1,10 +1,10 @@
 <template>
   <q-page>
     <div>
-      <div class="actions-div justify-between q-px-md">
+      <!-- <div class="actions-div justify-between q-px-md">
         <q-btn color="primary">Add default items</q-btn>
         <q-btn color="primary">Edit default items</q-btn>
-      </div>
+      </div> -->
       <div class="mobile-container-page">
         <div class="clients-list q-ma-sm" v-if="claimTasks.length">
           <div

@@ -77,6 +77,7 @@
               class="q-px-none"
               v-if="
                 (link.title != 'Admin' || $q.screen.width > 992) &&
+                  (link.title != 'Manage Users' || $q.screen.width > 992) &&
                   (link.title != 'Configuration' || $q.screen.width > 992)
               "
             >
