@@ -65,7 +65,7 @@
                     @click="addDefaultActionDialogBox = true"
                     :disable="params == ''"
                   />
-                  <q-btn
+                  <!-- <q-btn
                     class="q-ml-sm"
                     color="primary"
                     label="Refresh "
@@ -92,7 +92,7 @@
                     label="Planning Sheet "
                     @click=""
                     :disable="params == ''"
-                  />
+                  /> -->
                 </div>
 
                 <q-card class="q-my-md" scroll flat bordered>
@@ -117,7 +117,6 @@
                       option-value="machineValue"
                       option-label="value"
                       :options="workflowAction"
-                      label="Claim-New Claim"
                       @input="claimActionItem(claimType)"
                       map-options
                       emit-value
@@ -399,7 +398,7 @@
               </div>
             </div>
 
-            <div class="q-ml-lg ">
+            <div class="q-ml-lg">
               <q-select
                 dense
                 outlined
@@ -526,7 +525,7 @@ export default {
   components: { SubSideBar },
   data() {
     return {
-      params: '',
+      params: 'claim_new_claim',
       priority: false,
       actions: {
         name: '',
@@ -746,12 +745,14 @@ export default {
     }
   },
 
-  created() {
+  async created() {
     this.tab = 'accountSummary';
     if (getCurrentUser().attributes) {
       this.user = getCurrentUser().attributes;
     }
     this.getWorkflowAction();
+    this.claimType = 'claim_new_claim';
+    await this.claimActionItem(this.claimType);
   }
 };
 </script>
