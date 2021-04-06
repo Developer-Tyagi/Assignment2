@@ -63,35 +63,35 @@
                     color="primary"
                     label="+ Add Default Action "
                     @click="addDefaultActionDialogBox = true"
-                    :disable="params == ''"
+                    :disable="claimType == ''"
                   />
                   <!-- <q-btn
                     class="q-ml-sm"
                     color="primary"
                     label="Refresh "
                     @click=""
-                    :disable="params == ''"
+                    :disable="claimType == ''"
                   />
                   <q-btn
                     class="q-ml-sm"
                     color="primary"
                     label="Clone Workflow "
                     @click=""
-                    :disable="params == ''"
+                    :disable="claimType == ''"
                   />
                   <q-btn
                     class="q-ml-sm"
                     color="primary"
                     label="Delete Workflow "
                     @click=""
-                    :disable="params == ''"
+                    :disable="claimType == ''"
                   />
                   <q-btn
                     class="q-ml-sm"
                     color="primary"
                     label="Planning Sheet "
                     @click=""
-                    :disable="params == ''"
+                    :disable="claimType == ''"
                   /> -->
                 </div>
 
@@ -525,7 +525,6 @@ export default {
   components: { SubSideBar },
   data() {
     return {
-      params: 'claim_new_claim',
       priority: false,
       actions: {
         name: '',
@@ -608,11 +607,11 @@ export default {
 
     // For Api Calling
     async claimActionItem(mValue) {
-      this.params = mValue;
-      await this.getAllWorkFlow(this.params);
-      await this.getActionReasons(this.params);
-      await this.getActionOverDues(this.params);
-      await this.getActionCompletion(this.params);
+      this.claimType = mValue;
+      await this.getAllWorkFlow(this.claimType);
+      await this.getActionReasons(this.claimType);
+      await this.getActionOverDues(this.claimType);
+      await this.getActionCompletion(this.claimType);
     },
     // Toggle Priority Set
     TogglePriority() {
@@ -673,10 +672,10 @@ export default {
     },
     // OnSaveButtonClick
     async onClickSaveButton() {
-      const param = { machineValue: this.params, data: this.actions };
+      const param = { machineValue: this.claimType, data: this.actions };
       await this.addWorkflowAction(param);
       this.addDefaultActionDialogBox = false;
-      this.getAllWorkFlow(this.params);
+      this.getAllWorkFlow(this.claimType);
       this.actions = {
         name: '',
         isEnabled: false,
