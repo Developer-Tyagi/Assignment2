@@ -384,7 +384,7 @@
                 mask="##/##/####"
                 label="Date Offered"
                 lazy-rules
-                @input="closeTimeDialog"
+                @input="closeTimeDialog()"
               >
                 <template v-slot:append>
                   <q-icon
@@ -683,8 +683,9 @@ import CustomBar from 'components/CustomBar';
 import moment from 'moment';
 
 import { validateDate } from '@utils/validation';
-import { dateToSend } from '@utils/date';
+import { dateToSend, dateToShow } from '@utils/date';
 import { date } from 'quasar';
+import { log } from 'src/store/claims/getters';
 
 export default {
   name: 'Settlements',
@@ -836,19 +837,47 @@ export default {
       this.buttonGroup = this.settlement.attributes.settlements[val].isAccepted;
 
       this.isFinal = this.settlement.attributes.settlements[val].isFinal;
-      this.offeredDate = this.settlement.attributes.settlements[
-        val
-      ].offeredDate;
-      this.paymentExpDate = this.settlement.attributes.settlements[
-        val
-      ].paymentExpDate;
+      this.offeredDate = dateToShow(
+        this.settlement.attributes.settlements[val].offeredDate
+      );
+      this.paymentExpDate = dateToShow(
+        this.settlement.attributes.settlements[val].paymentExpDate
+      );
       this.notes = this.settlement.attributes.settlements[val].notes;
       this.isProofOfLossReq = this.settlement.attributes.settlements[
         val
       ].isProofOfLossReq;
-      this.proofOfLossInfo = this.settlement.attributes.settlements[
-        val
-      ].proofOfLossInfo;
+      if (this.isProofOfLossReq) {
+        this.proofOfLossInfo.reqDate = dateToShow(
+          this.settlement.attributes.settlements[val].proofOfLossInfo.reqDate
+        );
+
+        this.proofOfLossInfo.dueDate = dateToShow(
+          this.settlement.attributes.settlements[val].proofOfLossInfo.dueDate
+        );
+
+        this.proofOfLossInfo.resRecvDate = dateToShow(
+          this.settlement.attributes.settlements[val].proofOfLossInfo
+            .resRecvDate
+        );
+
+        this.proofOfLossInfo.sentClientDate = dateToShow(
+          this.settlement.attributes.settlements[val].proofOfLossInfo
+            .sentClientDate
+        );
+
+        this.proofOfLossInfo.recvClientDate = dateToShow(
+          this.settlement.attributes.settlements[val].proofOfLossInfo
+            .recvClientDate
+        );
+
+        this.proofOfLossInfo.sentCarrierDate = dateToShow(
+          this.settlement.attributes.settlements[val].proofOfLossInfo
+            .sentCarrierDate
+        );
+
+        // gdvshgfhgdshfdsv
+      }
     },
     // Setting data for dropDown
     setTypes(data) {
