@@ -466,6 +466,7 @@
               <q-toggle
                 class="q-ml-auto"
                 v-model="addAditionalPhoneNumberToggle"
+                @input="onaddAditionalPhoneNumberToggle"
               />
             </div>
             <div v-if="addAditionalPhoneNumberToggle">
@@ -809,7 +810,7 @@ export default {
     // For adding multiple Contact Numbers in ClientInfo
     addAnotherContact() {
       let len = this.phoneNumber.length;
-      if (this.phoneNumber[len - 1].number) {
+      if (this.phoneNumber[len - 1].number.length == 14) {
         this.phoneNumber.push({
           type: '',
           number: ''
