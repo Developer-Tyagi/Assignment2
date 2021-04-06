@@ -54,12 +54,9 @@
             />
             <q-input
               v-model="details"
-              class="full-width required"
+              class="full-width "
               label="Details"
-              :rules="[
-                val => (val && val.length > 0) || 'Please fill the details'
-              ]"
-            />
+            /><br />
             <span class="form-heading">Notes</span>
             <div class="floating-label">
               <textarea
@@ -108,13 +105,10 @@
             />
             <q-input
               v-model="edit.details"
-              class="full-width required"
+              class="full-width "
               label="Details"
               :disable="isFieldDisable"
-              :rules="[
-                val => (val && val.length > 0) || 'Please fill the details'
-              ]"
-            />
+            /><br />
             <span class="form-heading">Notes</span>
             <div class="floating-label">
               <textarea
