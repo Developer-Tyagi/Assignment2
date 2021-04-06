@@ -163,6 +163,7 @@
     <q-select
       dense
       options-dense
+      :disable="lossInfo.isDisable == true"
       behavior="menu"
       class="required"
       v-model="lossInfo.lossAddressNameDropdown"
@@ -176,7 +177,7 @@
       dense
       class="required"
       v-model="lossInfo.lossAddressName"
-      v-if="lossAddressNameOptions == 'Others'"
+      v-if="lossInfo.lossAddressNameDropdown == 'Others'"
       label="Enter New Loss Address Name "
       lazy-rules
       :rules="[val => (val && val.length > 0) || 'This is a required field']"

@@ -15,15 +15,26 @@
             :key="setClientProperty.id"
           >
             <div v-if="setClientProperty">
-              <div class="row">
-                <span class="col-10 "></span>
-                <q-icon
-                  size="xs"
-                  name="create"
-                  color="primary"
-                  class="edit-icon q-mt-xs"
-                  @click="editClientInfoDailog = true"
-                ></q-icon>
+              <div class="row  justify-end">
+                <div class="col-5 row justify-between">
+                  <q-btn
+                    class="  q-mt-sm"
+                    color="primary"
+                    style="width:90px; font-size:9px;"
+                    @click="
+                      $router.push(`/add-claim/${setClientProperty[i - 1].id}`)
+                    "
+                  >
+                    Add Claim</q-btn
+                  >
+                  <q-icon
+                    size="sm"
+                    name="create"
+                    color="primary"
+                    class=" q-mx-md q-mt-xs"
+                    @click="editClientInfoDailog = true"
+                  ></q-icon>
+                </div>
               </div>
               <div class="client-list-item">
                 <span class="form-heading">
