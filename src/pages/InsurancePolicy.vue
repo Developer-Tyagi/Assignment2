@@ -439,7 +439,7 @@ export default {
 </script>
 <style lang="scss">
 .form-height {
-  height: calc(100vh - 150px);
+  height: calc(100vh - 120px);
   overflow: auto;
   margin: 10px;
 }
