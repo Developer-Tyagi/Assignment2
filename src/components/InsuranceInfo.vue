@@ -361,6 +361,7 @@ export default {
         this.vendorsListDialog = true;
       }
     },
+
     //Add Vendor close list
 
     async onCloseAddVendorDialogBox(result, selected) {

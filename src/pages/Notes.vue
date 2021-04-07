@@ -91,6 +91,7 @@
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import moment from 'moment';
+import { successMessage } from '@utils/validation';
 
 export default {
   name: 'Clients',
@@ -134,18 +135,12 @@ export default {
       };
       await this.addNotes(payload);
       this.addNoteDialog = false;
-      this.successMessage();
+      this.successMessage('Notes Added Successfully!');
       this.note = '';
 
       this.getSingleClientDetails(this.selectedClientId);
     },
-    successMessage() {
-      this.$q.notify({
-        type: 'positive',
-        message: `Notes Added Successfully!`,
-        position: 'center'
-      });
-    }
+    successMessage
   }
 };
 </script>

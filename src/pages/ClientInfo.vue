@@ -620,7 +620,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import CustomBar from 'components/CustomBar';
-import { validateEmail } from '@utils/validation';
+import { validateEmail, successMessage } from '@utils/validation';
 import AddressService from '@utils/country';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 
@@ -935,22 +935,17 @@ export default {
 
         await this.editClient(payload);
 
-        this.successMessage();
+        this.successMessage('Client Info Updated Successfully!');
 
-        this.$router.push('/view-client');
+        await this.getSingleClientDetails(this.selectedClientId);
+        this.$router.push('/client-details');
       }
     },
     onCountrySelect(country) {
       this.states = addressService.getStates(country);
     },
     validateEmail,
-    successMessage() {
-      this.$q.notify({
-        type: 'positive',
-        message: `Client Info Updated Successfully!`,
-        position: 'top'
-      });
-    },
+    successMessage,
     setTitleName(val) {
       const titleResult = this.titles.find(obj => {
         return obj.id === this['honorific' + val].id;

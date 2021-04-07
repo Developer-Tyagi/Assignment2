@@ -137,6 +137,7 @@
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import moment from 'moment';
+import { successMessage } from '@utils/validation';
 
 export default {
   name: 'ActivityLog',
@@ -209,7 +210,7 @@ export default {
           }
         };
         await this.addLog(payload);
-        this.successMessage();
+        this.successMessage('Logs Added Successfully');
         this.getLog(this.selectedClaimId);
 
         this.onClosingaddLogDialog();
@@ -235,13 +236,7 @@ export default {
         await this.getLog(this.selectedClaimId);
       }
     },
-    successMessage() {
-      this.$q.notify({
-        type: 'positive',
-        message: `Logs Added Successfully!`,
-        position: 'top'
-      });
-    },
+    successMessage,
 
     onClosingaddLogDialog() {
       this.addLogDialog = false;

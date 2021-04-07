@@ -54,7 +54,7 @@
           v-slot:prepend
           v-if="companyPersonnel.buttonGroup == 'dollar'"
         >
-          <q-icon name="$" color="primary"></q-icon>
+          <q-icon name="$" color="primary" class="q-mb-sm"></q-icon>
         </template>
 
         <template

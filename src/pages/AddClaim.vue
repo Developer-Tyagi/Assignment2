@@ -266,7 +266,12 @@ import LossInfo from 'components/LossInfo';
 import ExpertVendorInfo from 'components/ExpertVendorInfo';
 import InsuranceInfo from 'components/InsuranceInfo';
 import AddressService from '@utils/country';
-import { validateEmail, validateDate, validateTime } from '@utils/validation';
+import {
+  validateEmail,
+  validateDate,
+  validateTime,
+  successMessage
+} from '@utils/validation';
 import { constants } from '@utils/constant';
 import { dateToSend } from '@utils/date';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
@@ -1065,11 +1070,13 @@ export default {
 
       this.addClaim(payload).then(() => {
         this.setSelectedLead();
+        this.successMessage('Claim added Successfully!');
         this.$router.push('/property-details');
       });
     },
 
-    validateEmail
+    validateEmail,
+    successMessage
   }
 };
 </script>

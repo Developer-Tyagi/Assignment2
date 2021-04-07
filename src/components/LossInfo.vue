@@ -32,7 +32,7 @@
                   label="Item Cost"
                 >
                   <template v-slot:prepend>
-                    <q-icon name="$" color="primary"></q-icon>
+                    <q-icon name="$" color="primary" class="q-mb-sm"></q-icon>
                   </template>
                 </q-input>
               </div>
@@ -101,7 +101,11 @@
                 label="Item Cost"
               >
                 <template v-slot:prepend>
-                  <q-icon name="$" color="primary"></q-icon> </template
+                  <q-icon
+                    name="$"
+                    color="primary"
+                    class="q-mb-sm"
+                  ></q-icon> </template
               ></q-input>
               <q-input
                 dense
