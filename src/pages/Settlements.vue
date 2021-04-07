@@ -232,7 +232,7 @@
                   style="margin-left: auto; width: 50%"
                   prefix="$"
                   class="input-extra-padding"
-                  @input="onChangeValueCalculatin()"
+                  @input="onChangeValueCalculation()"
                 />
               </div>
               <div class="row" style="align-items: center">
@@ -248,7 +248,7 @@
                   style="margin-left: auto; width: 50%"
                   prefix="$"
                   class="input-extra-padding"
-                  @input="onChangeValueCalculatin(amounts.replacementCost)"
+                  @input="onChangeValueCalculation(amounts.replacementCost)"
                 />
               </div>
               <div class="row ">
@@ -263,7 +263,7 @@
                   style="margin-left: auto; width: 50%"
                   prefix="$"
                   class="input-extra-padding"
-                  @input="onChangeValueCalculatin(amounts.replacementCost)"
+                  @input="onChangeValueCalculation(amounts.replacementCost)"
                 />
               </div>
               <q-separator />
@@ -279,7 +279,7 @@
                   style="margin-left: auto; width: 50%"
                   prefix="$"
                   class="input-extra-padding"
-                  @input="onChangeValueCalculatin()"
+                  @input="onChangeValueCalculation()"
                 />
               </div>
               <q-separator />
@@ -295,7 +295,7 @@
                   style="margin-left: auto; width: 50%"
                   prefix="$"
                   class="input-extra-padding"
-                  @input="onChangeValueCalculatin()"
+                  @input="onChangeValueCalculation()"
                 />
               </div>
               <div class="row" style="align-items: center">
@@ -310,7 +310,7 @@
                   style="margin-left: auto; width: 50%"
                   prefix="$"
                   class="input-extra-padding"
-                  @input="onChangeValueCalculatin()"
+                  @input="onChangeValueCalculation()"
                 />
               </div>
               <q-separator />
@@ -326,7 +326,7 @@
                   style="margin-left: auto; width: 50%"
                   prefix="$"
                   class="input-extra-padding"
-                  @input="onChangeValueCalculatin()"
+                  @input="onChangeValueCalculation()"
                 />
               </div>
               <q-separator />
@@ -342,7 +342,7 @@
                   style="margin-left: auto; width: 50%"
                   prefix="$"
                   class="input-extra-padding"
-                  @input="onChangeValueCalculatin()"
+                  @input="onChangeValueCalculation()"
                 />
               </div>
               <div class="row" style="align-items: center">
@@ -357,7 +357,7 @@
                   style="margin-left: auto; width: 50%"
                   prefix="$"
                   class="input-extra-padding"
-                  @input="onChangeValueCalculatin()"
+                  @input="onChangeValueCalculation()"
                 />
               </div>
               <q-separator />
@@ -880,7 +880,7 @@ export default {
     closeTimeDialog() {
       this.$refs.qTimeProxy.hide();
     },
-    onChangeValueCalculatin(val) {
+    onChangeValueCalculation(val) {
       this.actualValue =
         this.amounts.replacementCost -
         this.amounts.recoverable -
