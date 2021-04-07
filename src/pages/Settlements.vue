@@ -232,7 +232,7 @@
                   style="margin-left: auto; width: 50%"
                   prefix="$"
                   class="input-extra-padding"
-                  @input="onInput()"
+                  @input="onChangeValueCalculatin()"
                 />
               </div>
               <div class="row" style="align-items: center">
@@ -248,7 +248,7 @@
                   style="margin-left: auto; width: 50%"
                   prefix="$"
                   class="input-extra-padding"
-                  @input="onInput(amounts.replacementCost)"
+                  @input="onChangeValueCalculatin(amounts.replacementCost)"
                 />
               </div>
               <div class="row ">
@@ -263,7 +263,7 @@
                   style="margin-left: auto; width: 50%"
                   prefix="$"
                   class="input-extra-padding"
-                  @input="onInput(amounts.replacementCost)"
+                  @input="onChangeValueCalculatin(amounts.replacementCost)"
                 />
               </div>
               <q-separator />
@@ -279,7 +279,7 @@
                   style="margin-left: auto; width: 50%"
                   prefix="$"
                   class="input-extra-padding"
-                  @input="onInput()"
+                  @input="onChangeValueCalculatin()"
                 />
               </div>
               <q-separator />
@@ -295,7 +295,7 @@
                   style="margin-left: auto; width: 50%"
                   prefix="$"
                   class="input-extra-padding"
-                  @input="onInput()"
+                  @input="onChangeValueCalculatin()"
                 />
               </div>
               <div class="row" style="align-items: center">
@@ -310,7 +310,7 @@
                   style="margin-left: auto; width: 50%"
                   prefix="$"
                   class="input-extra-padding"
-                  @input="onInput()"
+                  @input="onChangeValueCalculatin()"
                 />
               </div>
               <q-separator />
@@ -326,7 +326,7 @@
                   style="margin-left: auto; width: 50%"
                   prefix="$"
                   class="input-extra-padding"
-                  @input="onInput()"
+                  @input="onChangeValueCalculatin()"
                 />
               </div>
               <q-separator />
@@ -342,7 +342,7 @@
                   style="margin-left: auto; width: 50%"
                   prefix="$"
                   class="input-extra-padding"
-                  @input="onInput()"
+                  @input="onChangeValueCalculatin()"
                 />
               </div>
               <div class="row" style="align-items: center">
@@ -357,7 +357,7 @@
                   style="margin-left: auto; width: 50%"
                   prefix="$"
                   class="input-extra-padding"
-                  @input="onInput()"
+                  @input="onChangeValueCalculatin()"
                 />
               </div>
               <q-separator />
@@ -437,8 +437,8 @@
                 </template>
               </q-input>
 
-              <div class="row q-px-lg justify-between">
-                <div class="q-mt-sm q-py-sm">Pol required</div>
+              <div class="row q-px-lg  q-py-sm justify-between ">
+                <div class="q-mt-sm  text-bold">Pol required</div>
                 <div>
                   <q-toggle v-model="isProofOfLossReq" />
                 </div>
@@ -452,7 +452,6 @@
                   <div class="col-5 ">
                     <q-input
                       v-model="proofOfLossInfo.reqDate"
-                      class="  q-my-sm"
                       mask="##/##/####"
                       label="Pol Date requested"
                       lazy-rules
@@ -484,7 +483,6 @@
                   <div class="col-5">
                     <q-input
                       v-model="proofOfLossInfo.dueDate"
-                      class="  q-my-sm"
                       mask="##/##/####"
                       label="Pol Date Due"
                       lazy-rules
@@ -513,7 +511,7 @@
                     </q-input>
                   </div>
                 </div>
-                <div class="row q-px-lg justify-between">
+                <div class="row q-px-lg q-mt-sm justify-between">
                   <div class="col-5">Date send to client</div>
                   <div class="col-5">Date Rec'd from Client</div>
                 </div>
@@ -552,7 +550,6 @@
                     <!-- remain -->
                     <q-input
                       v-model="proofOfLossInfo.recvClientDate"
-                      class="  q-my-sm"
                       mask="##/##/####"
                       label="Date Rec'd from Client"
                       lazy-rules
@@ -581,7 +578,7 @@
                     </q-input>
                   </div>
                 </div>
-                <div class="row q-px-lg justify-between">
+                <div class="row q-px-lg q-mt-sm justify-between">
                   <div class="col-5">Pol Date Send to Carrier</div>
                   <div class="col-5 ">Date Responce Rec'd</div>
                 </div>
@@ -589,7 +586,6 @@
                   <div class="col-5">
                     <q-input
                       v-model="proofOfLossInfo.sentCarrierDate"
-                      class="  q-my-sm"
                       mask="##/##/####"
                       label="Pol Date Send to Carrier"
                       lazy-rules
@@ -620,7 +616,6 @@
                   <div class="col-5 ">
                     <q-input
                       v-model="proofOfLossInfo.resRecvDate"
-                      class="  q-my-sm"
                       mask="##/##/####"
                       label="Date Responce Rec'd"
                       lazy-rules
@@ -699,7 +694,7 @@ export default {
       edit: false,
       totalNetValue: '',
       setId: '',
-      ecValue: '',
+      isEdit: '',
       buttonGroup: null,
       description: {
         value: '',
@@ -774,6 +769,7 @@ export default {
     this.initialCost = this.settlement.attributes.intialOffer;
     this.totalNetClaimed = this.settlement.attributes.totalNetClaimed;
   },
+
   methods: {
     ...mapActions([
       'getPolicy',
@@ -786,7 +782,7 @@ export default {
       'editSettlement'
     ]),
     onClickAddButton() {
-      this.ecValue = false;
+      this.isEdit = false;
       this.description = {
         value: '',
         id: '',
@@ -810,23 +806,17 @@ export default {
       this.totalSettlement = '';
       this.buttonGroup = null;
       this.isFinal = false;
-      this.offeredDate = '';
-      this.paymentExpDate = '';
       this.notes = '';
       this.isProofOfLossReq = false;
-      this.proofOfLossInfo = {
-        reqDate: '',
-        dueDate: '',
-        sentClientDate: '',
-        recvClientDate: '',
-        sentCarrierDate: '',
-        resRecvDate: ''
-      };
       this.actualValue = '';
+      this.offeredDate = this.paymentExpDate = this.proofOfLossInfo.reqDate = this.proofOfLossInfo.dueDate = this.proofOfLossInfo.resRecvDate = this.proofOfLossInfo.sentClientDate = this.proofOfLossInfo.recvClientDate = this.proofOfLossInfo.sentCarrierDate = date.formatDate(
+        Date.now(),
+        'MM/DD/YYYY'
+      );
       this.settlementDialog = true;
     },
     onClickEdit(val) {
-      this.ecValue = true;
+      this.isEdit = true;
       this.setId = this.settlement.attributes.settlements[val].id;
       this.settlementDialog = true;
 
@@ -875,8 +865,6 @@ export default {
           this.settlement.attributes.settlements[val].proofOfLossInfo
             .sentCarrierDate
         );
-
-        // gdvshgfhgdshfdsv
       }
     },
     // Setting data for dropDown
@@ -892,7 +880,7 @@ export default {
     closeTimeDialog() {
       this.$refs.qTimeProxy.hide();
     },
-    onInput(val) {
+    onChangeValueCalculatin(val) {
       this.actualValue =
         this.amounts.replacementCost -
         this.amounts.recoverable -
@@ -964,7 +952,7 @@ export default {
           notes: this.notes
         }
       };
-      if (this.ecValue == true) {
+      if (this.isEdit == true) {
         await this.editSettlement(payload);
       } else {
         await this.addSettlement(payload);
