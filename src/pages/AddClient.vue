@@ -49,6 +49,7 @@
               option-label="name"
               map-options
               emit-value
+              behavior="menu"
               options-dense
               :options="clientTypes"
               @input="setTypes(clientTypes, client)"
@@ -146,6 +147,7 @@
                 option-label="name"
                 map-options
                 emit-value
+                behavior="menu"
                 options-dense
                 label="Type"
                 lazy-rules
@@ -1181,17 +1183,30 @@ export default {
     },
     async addAnotherVendor() {
       const success = await this.$refs.expertVendorInfoForm.validate();
-      if (success) {
-        this.expertVendorInfo.industry.push({
-          id: this.expertVendorInfo.industry.id,
-          value: this.expertVendorInfo.industry.value
+      let len = this.expertVendorInfo.vendors.length;
+
+      if (
+        this.expertVendorInfo.vendors[len - 1].value == 'Select Vendor' ||
+        this.expertVendorInfo.vendors[len - 1].value == null
+      ) {
+        this.$q.notify({
+          message: 'Please Select the vendor first',
+          position: 'top',
+          type: 'negative'
         });
-        let len = this.expertVendorInfo.vendors.length;
-        this.expertVendorInfo.vendors.push({
-          id: this.expertVendorInfo.vendors[len - 1].id,
-          value: this.expertVendorInfo.vendors[len - 1].value
-        });
-        this.expertVendorInfo.vendors[len].value = 'Select Vendor';
+      } else {
+        if (success) {
+          this.expertVendorInfo.industry.push({
+            id: this.expertVendorInfo.industry.id,
+            value: this.expertVendorInfo.industry.value
+          });
+          let len = this.expertVendorInfo.vendors.length;
+          this.expertVendorInfo.vendors.push({
+            id: this.expertVendorInfo.vendors[len - 1].id,
+            value: this.expertVendorInfo.vendors[len - 1].value
+          });
+          this.expertVendorInfo.vendors[len].value = 'Select Vendor';
+        }
       }
     },
     RemoveAnotherContact() {

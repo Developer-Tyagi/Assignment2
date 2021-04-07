@@ -54,7 +54,6 @@ export default {
       }
     },
     openAddVendorDialog(e) {
-      console.log(e);
       this.addVendorDialog = e;
     }
   }

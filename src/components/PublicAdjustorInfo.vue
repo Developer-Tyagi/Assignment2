@@ -10,6 +10,7 @@
       option-value="id"
       option-label="name"
       map-options
+      behavior="menu"
       emit-value
       options-dense
       @input="setTypes(roleTypes, publicAdjustorInfo.personnel[0], 0)"
@@ -27,6 +28,7 @@
         publicAdjustorInfo.isFieldDisable1 ? 'Select a Role' : 'Select a Party'
       "
       option-label="name"
+      behavior="menu"
       option-value="machineValue"
       options-dense
       emit-value
@@ -41,6 +43,7 @@
       option-value="id"
       option-label="name"
       map-options
+      behavior="menu"
       emit-value
       options-dense
       @input="setTypes(roleTypes, publicAdjustorInfo.personnel[1], 1)"
@@ -58,6 +61,7 @@
       option-label="name"
       option-value="machineValue"
       options-dense
+      behavior="menu"
       emit-value
       map-options
     />
@@ -87,6 +91,7 @@
       option-label="name"
       option-value="machineValue"
       options-dense
+      behavior="menu"
       emit-value
       map-options
     />
@@ -115,6 +120,7 @@
       option-value="machineValue"
       options-dense
       emit-value
+      behavior="menu"
       map-options
     />
 
