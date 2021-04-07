@@ -1,5 +1,54 @@
 <template>
   <div class="bg-white full-width">
+    <!-- Damaged Items Dialog Box -->
+    <q-dialog
+      v-model="lossInfo.damagedItemsDailog"
+      persistent
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <CustomBar
+          @closeDialog="lossInfo.damagedItemsDailog = false"
+          :dialogName="'Add Items'"
+        />
+        <div class="mobile-container-page-without-search  ">
+          <div class="form-height">
+            <div class="q-page bg-white">
+              <div class="full-width">
+                <q-input dense v-model="lossInfo.OSDamageName" label="Name" />
+                <q-input
+                  dense
+                  v-model="lossInfo.OSDamageDescription"
+                  label="Description"
+                  autogrow
+                />
+                <q-input
+                  dense
+                  mask="#.#"
+                  type="number"
+                  v-model.number="lossInfo.OSDamagedItemCost"
+                  label="Item Cost"
+                >
+                  <template v-slot:prepend>
+                    <q-icon name="$" color="primary"></q-icon>
+                  </template>
+                </q-input>
+              </div>
+              <br />
+            </div>
+          </div>
+          <q-btn
+            label="Save"
+            color="primary"
+            class="full-width q-mt-auto text-capitalize"
+            size="'xl'"
+            @click="addDamagedItems"
+          ></q-btn>
+        </div>
+      </q-card>
+    </q-dialog>
     <!-- PP Damaged Items Dialog Box -->
     <q-dialog
       v-model="lossInfo.PPdamagedItemsDailog"
@@ -511,7 +560,11 @@
       <p class="q-mx-none q-my-auto form-heading">
         Is there damage to other structures?
       </p>
-      <q-toggle class="q-ml-auto" v-model="lossInfo.isDamageOSToggle" />
+      <q-toggle
+        class="q-ml-auto"
+        v-model="lossInfo.isDamageOSToggle"
+        @input="onDamageOsToggleButtonOff"
+      />
     </div>
 
     <div v-if="lossInfo.isDamageOSToggle">
@@ -541,8 +594,8 @@
                 />
               </div>
               <div>
-                <div class="row">
-                  <div class="form-heading q-ml-sm text-capitalize q-pt-xs">
+                <div class="row ">
+                  <div class=" text-bold q-ml-sm text-capitalize q-pt-xs">
                     {{ item.name }}
                   </div>
                   <div class="q-ml-auto q-pt-xs" style="margin-right: 30px">
@@ -550,8 +603,7 @@
                   </div>
                 </div>
                 <div
-                  class="q-mr-xl q-my-xm q-px-sm q-ma-xs text-capitalize text-caption"
-                  style="margin-right: 71px"
+                  class=" q-ml-sm text-capitalize q-pt-xs text-caption q-mr-xl q-my-xs q-px-xs q-ma-xs"
                 >
                   <p>{{ item.desc }}</p>
                 </div>
@@ -570,73 +622,24 @@
         @click="lossInfo.damagedItemsDailog = true"
       >
       </q-btn>
-      <!-- Damaged Items Dialog Box -->
-      <q-dialog
-        v-model="lossInfo.damagedItemsDailog"
-        persistent
-        transition-show="slide-up"
-        transition-hide="slide-down"
-      >
-        <q-card class="form-card q-pa-md" style="width: 500px; height: 50%">
-          <q-header bordered class="bg-white">
-            <q-toolbar class="row bg-white">
-              <img
-                src="~assets/close.svg"
-                alt="back-arrow"
-                @click="lossInfo.damagedItemsDailog = false"
-                style="margin: auto 0"
-              />
-              <div class="text-uppercase text-bold text-black q-mx-auto">
-                Add Items
-              </div>
-            </q-toolbar>
-          </q-header>
-
-          <q-card-section>
-            <div class="q-page bg-white">
-              <div class="full-width" style="margin-top: 30px">
-                <q-input dense v-model="lossInfo.OSDamageName" label="Name" />
-                <q-input
-                  dense
-                  v-model="lossInfo.OSDamageDescription"
-                  label="Description"
-                  autogrow
-                />
-                <q-input
-                  dense
-                  mask="#.#"
-                  type="number"
-                  prefix="$"
-                  v-model.number="lossInfo.OSDamagedItemCost"
-                  label="Item Cost"
-                /><br />
-              </div>
-              <br />
-            </div>
-
-            <q-btn
-              label="Save"
-              color="primary"
-              class="full-width q-mt-auto text-capitalize"
-              size="'xl'"
-              @click="addDamagedItems"
-            ></q-btn>
-          </q-card-section>
-        </q-card>
-      </q-dialog>
     </div>
     <div class="row">
       <p class="q-mt-md form-heading">Is there damage to personal property?</p>
       <q-toggle
         class="q-ml-auto"
         v-model="lossInfo.isThereDamageToPersonalPropertyToggle"
+        @input="onPersonalPropertyToggleButtonOff"
       />
     </div>
     <div class="row" v-if="lossInfo.isThereDamageToPersonalPropertyToggle">
       <p class="q-mx-none q-my-auto form-heading">
         Is the PA filling out the PPIF at this inspection?
       </p>
-      <q-toggle class="q-ml-auto" v-model="lossInfo.isPAFillingOutToggle" />
+      <q-toggle
+        class="q-ml-auto"
+        v-model="lossInfo.isPAFillingOutToggle"
+        @input="onPersonalPropertyToggleButtonOff"
+      />
     </div>
 
     <!-- Persnol Property Damage List -->
@@ -672,7 +675,7 @@
                 />
               </div>
               <div class="row">
-                <div class="form-heading q-ml-sm text-capitalize q-pt-xs">
+                <div class="text-bold q-ml-sm text-capitalize q-pt-xs">
                   {{ item.name }}
                 </div>
                 <div class="q-ml-auto q-pt-xs" style="margin-right: 30px">
@@ -680,8 +683,7 @@
                 </div>
               </div>
               <div
-                class="q-mr-xl q-my-xm q-px-sm q-ma-xs text-capitalize text-caption"
-                style="margin-right: 71px"
+                class="q-ml-sm text-capitalize q-pt-xs text-caption q-mr-xl q-my-xs q-px-xs q-ma-xs"
               >
                 <p>{{ item.desc }}</p>
                 <p>{{ item.itemDesc }}</p>
@@ -881,7 +883,19 @@ export default {
   },
   methods: {
     ...mapActions(['getVendors']),
-
+    onDamageOsToggleButtonOff() {
+      if (!this.lossInfo.isDamageOSToggle) {
+        this.lossInfo.osDamagedItems.length = 0;
+      }
+    },
+    onPersonalPropertyToggleButtonOff() {
+      if (
+        !this.lossInfo.isThereDamageToPersonalPropertyToggle ||
+        !this.lossInfo.isPAFillingOutToggle
+      ) {
+        this.lossInfo.ppDamagedItems.length = 0;
+      }
+    },
     closeAddVendorDialog(e) {
       this.lossInfo.addVendorDialog = false;
       // this.getVendors();
