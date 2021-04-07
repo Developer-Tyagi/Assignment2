@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <div class="mobile-container-page ">
+    <div style=" height: calc(100vh - 50px); overflow-y: auto">
       <div class="q-pa-md">
         <div class="q-pl-sm text-h6">
           Insurer
@@ -439,7 +439,7 @@ export default {
 </script>
 <style lang="scss">
 .form-height {
-  height: calc(100vh - 120px);
+  height: calc(100vh - 150px);
   overflow: auto;
   margin: 10px;
 }
