@@ -236,7 +236,7 @@
               </div>
             </div>
           </div>
-          <div class="  row q-mt-md full-width" style="">
+          <div class=" row q-mt-md full-width">
             <div class="q-pa-sm text-bold">Due Date :</div>
             <div class="text-grey-9text-bold">Task will be Due</div>
 
