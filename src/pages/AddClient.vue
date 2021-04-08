@@ -1492,7 +1492,7 @@ export default {
       }
 
       const response = await this.addClient(payload);
-      this.successMessage('client created successfully');
+      this.successMessage(constants.successMessages.CLIENT);
       if (response && response.id) {
         this.setPayloadForClaim(response.id);
       }

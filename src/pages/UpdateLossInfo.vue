@@ -1,44 +1,40 @@
 <template>
   <q-page>
-    <q-dialog
-      v-model="lossInfoDialog"
-      persistent
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <CustomBar
-          @closeDialog="lossInfoDialog = false"
-          :dialogName="'Loss Info'"
-        />
-        <div class="mobile-container-page-without-search q-pa-md">
-          <q-form ref="lossInfoForm" class="form-height">
-            <LossInfo
-              :lossInfo="lossDetails"
-              :isMailingAddressEnable="false"
-              :lossAddressSameAsClient="false"
-              :isAddressRequired="false"
-            />
-          </q-form>
-
-          <q-btn
-            label="Save"
-            color="primary"
-            class="button-width-90"
-            @click="onSaveButtonClick"
-            size="'xl'"
+    <div class="listing-height">
+      <q-dialog
+        v-model="lossInfoDialog"
+        persistent
+        :maximized="true"
+        transition-show="slide-up"
+        transition-hide="slide-down"
+      >
+        <q-card>
+          <CustomBar
+            @closeDialog="lossInfoDialog = false"
+            :dialogName="'Loss Info'"
           />
-        </div>
-      </q-card>
-    </q-dialog>
-    <div
-      :class="{
-        'mobile-container-page-without-search': !$q.platform.is.iphone,
-        'mobile-container-page': $q.platform.is.iphone
-      }"
-    >
-      <div class="clients-list">
+          <div class="mobile-container-page-without-search q-pa-md">
+            <q-form ref="lossInfoForm" class="form-height">
+              <LossInfo
+                :lossInfo="lossDetails"
+                :isMailingAddressEnable="false"
+                :lossAddressSameAsClient="false"
+                :isAddressRequired="false"
+              />
+            </q-form>
+
+            <q-btn
+              label="Save"
+              color="primary"
+              class="button-width-90"
+              @click="onSaveButtonClick"
+              size="'xl'"
+            />
+          </div>
+        </q-card>
+      </q-dialog>
+
+      <div class="clients-list ">
         <!-- This is for showing the Loss Info details   -->
 
         <div class="clients-list">
@@ -152,6 +148,7 @@ import { validateDate, successMessage } from '@utils/validation';
 import { date } from 'quasar';
 import { dateToSend } from '@utils/date';
 import CustomBar from 'components/CustomBar';
+import { constants } from 'src/utils/constant';
 
 export default {
   name: 'UpdateLossInfo',
@@ -320,7 +317,7 @@ export default {
 
         await this.updateLossInfo(payload);
         this.lossInfoDialog = false;
-        this.successMessage('Loss Info Updated Successfully!');
+        this.successMessage(constants.successMessages.LOSSINFO_UPDATED);
         this.getLossInfo(this.selectedClaimId);
         this.$router.push('/loss-info');
       }
@@ -328,6 +325,7 @@ export default {
     onEditIconClick() {
       this.lossInfoDialog = true;
       //This is For Prefilling Values in Loss Info Form
+      this.lossDetails.lossAddressName = this.lossInfo.attributes.lossInfo.lossAddressName;
       this.lossDetails.property = this.lossInfo.attributes.lossInfo.propertyType;
       this.lossDetails.severityOfClaimType = this.lossInfo.attributes.lossInfo.serverity;
       this.lossDetails.reasonClaim = this.lossInfo.attributes.lossInfo.claimReason;

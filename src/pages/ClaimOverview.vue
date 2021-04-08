@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <div class="mobile-container-page ">
+    <div class="listing-height">
       <div class="clients-list q-ma-sm ">
         <div class="client-list-item">
           <div class="row">

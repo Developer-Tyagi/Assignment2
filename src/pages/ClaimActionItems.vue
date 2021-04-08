@@ -45,6 +45,7 @@
 </template>
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex';
+import { constants } from '@utils/constant';
 
 export default {
   name: 'ClaimActionItems',
@@ -70,7 +71,7 @@ export default {
         if (result) {
           this.setNotification({
             type: 'positive',
-            message: ' Task updated successfully!'
+            message: constants.TASK
           });
         }
       });

@@ -724,29 +724,52 @@
         </q-btn>
       </div>
     </div>
-    <div class="row" v-if="!lossInfo.isPAFillingOutToggle">
+    <div
+      class="row"
+      v-if="
+        !lossInfo.isPAFillingOutToggle &&
+          lossInfo.isThereDamageToPersonalPropertyToggle
+      "
+    >
       <p class="q-mx-none q-my-auto form-heading">
         Is the adjuster going to fill out the PPIF at a later date?
       </p>
       <q-toggle
+        v-if="lossInfo.isThereDamageToPersonalPropertyToggle"
         class="q-ml-auto"
         v-model="lossInfo.isAdjustorFillOutLaterDate"
       />
     </div>
-    <div class="row" v-if="!lossInfo.isAdjustorFillOutLaterDate">
+    <div
+      class="row"
+      v-if="
+        !lossInfo.isAdjustorFillOutLaterDate &&
+          lossInfo.isThereDamageToPersonalPropertyToggle &&
+          !lossInfo.isAdjustorFillOutLaterDate &&
+          !lossInfo.isPAFillingOutToggle
+      "
+    >
       <p class="q-mx-none q-my-auto form-heading">
         Is the client going to prepare the PPIFs?
       </p>
       <q-toggle
+        v-if="lossInfo.isThereDamageToPersonalPropertyToggle"
         class="q-ml-auto"
         v-model="lossInfo.isClientGoingToPreparePPIF"
       />
     </div>
-    <div class="row" v-if="lossInfo.isClientGoingToPreparePPIF">
+    <div
+      class="row"
+      v-if="
+        lossInfo.isClientGoingToPreparePPIF &&
+          lossInfo.isThereDamageToPersonalPropertyToggle
+      "
+    >
       <p class="q-mx-none q-my-auto form-heading">
         Do you want to send the insured a PPIF?
       </p>
       <q-toggle
+        v-if="lossInfo.isThereDamageToPersonalPropertyToggle"
         class="q-ml-auto"
         v-model="lossInfo.doYouWantToSendInsuredPPIF"
       />

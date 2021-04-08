@@ -6,7 +6,7 @@
           ><img src="~assets/add.svg"
         /></q-btn>
       </div>
-      <div class="mobile-container-page form-height ">
+      <div class=" listing-height">
         <div class="clients-list" v-if="setClientProperty.length">
           <!-- This is for showing the Property details  -->
           <div
@@ -138,13 +138,18 @@
           @closeDialog="addNewPropertyDialog = false"
           :dialogName="'Add New Property'"
         />
-        <div class="mobile-container-page-without-search q-pa-md">
+        <div class="mobile-container-page-without-search q-pa-sm ">
           <q-form ref="propertyAddressForm" class="form-height">
             <q-input
               dense
-              class="full-width"
+              class="full-width required"
               v-model="propertyName"
               label=" Property Name"
+              lazy-rules
+              :rules="[
+                val =>
+                  (val && val.length > 0) || 'Please fill the property name'
+              ]"
             />
             <q-select
               dense
@@ -189,6 +194,7 @@ import CustomBar from 'components/CustomBar';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import moment from 'moment';
 import { successMessage } from '@utils/validation';
+import { constants } from '@utils/constant';
 
 export default {
   name: 'PropertyInfo',
@@ -278,7 +284,7 @@ export default {
         };
         await this.addPropertyAddress(payload);
 
-        this.successMessage('Property Address Updated Successfully!');
+        this.successMessage(constants.successMessages.PROPERTY_ADDRESS);
         this.addNewPropertyDialog = false;
         this.propertyName = '';
         this.propertyAddressDetails.addressCountry = '';
