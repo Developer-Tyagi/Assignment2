@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <div class="mobile-container-page ">
+    <div style=" height: calc(100vh - 50px); overflow-y: auto">
       <div class="q-pa-md">
         <div class="q-pl-sm text-h6">
           Insurer
