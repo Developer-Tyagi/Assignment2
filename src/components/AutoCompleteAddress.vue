@@ -79,7 +79,6 @@
       <q-toggle
         class="q-ml-auto"
         v-model="address.dropBox.isPresent"
-        :disable="!isAddressFieldEnable"
         @input="onToggleButtonOff"
       />
     </div>
@@ -89,7 +88,6 @@
       v-model="address.dropBox.info"
       class="required"
       label="Gate/ Dropbox"
-      :disable="!isAddressFieldEnable"
       :rules="[val => checkValidations(val) || 'Please fill the dropbox info']"
     />
   </div>
@@ -135,7 +133,7 @@ export default {
       addressAutoComplete2: '',
       autocomplete: {},
       autocomplete2: {},
-      isAddressFieldEnable: false,
+
       countries: [],
       states: []
     };
@@ -240,7 +238,7 @@ export default {
             place[this.getPlaceName('street_number', place)].long_name;
         }
         this.states = addressService.getStates(this.address.addressCountry);
-        this.isAddressFieldEnable = true;
+
         this.addressAutoComplete2 = '';
       } else {
         const place = this.autocomplete.getPlace().address_components;
@@ -275,7 +273,7 @@ export default {
             place[this.getPlaceName('street_number', place)].long_name;
         }
         this.states = addressService.getStates(this.address.addressCountry);
-        this.isAddressFieldEnable = true;
+
         this.addressAutoComplete = '';
       }
     },
