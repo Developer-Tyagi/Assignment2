@@ -107,7 +107,10 @@
           'other-dialog-box': tab.key !== 'inspectionType'
         }"
       >
-        <q-bar class="row justify-between" style="height: 50px">
+        <q-bar
+          class="row justify-between bg-primary text-white"
+          style="height: 50px"
+        >
           <div class="col-7 text-bold">Add {{ dialogBoxName.name }}</div>
           <q-btn dense flat icon="close" v-close-popup>
             <q-tooltip>Close</q-tooltip>

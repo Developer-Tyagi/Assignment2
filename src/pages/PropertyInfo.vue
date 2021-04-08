@@ -159,6 +159,7 @@
               option-label="name"
               map-options
               options-dense
+              behavior="menu"
               emit-value
               :options="propertyTypes"
               @input="setTypes(propertyTypes, property)"
