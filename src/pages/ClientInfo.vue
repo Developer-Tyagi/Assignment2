@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <div class="mobile-container-page ">
+    <div class="listing-height">
       <!-- This is for showing the client details   -->
       <div class="clients-list q-ma-sm ">
         <div class="client-list q-pa-sm">
@@ -53,8 +53,8 @@
           </p>
 
           <div class="q-mt-md">
-            <span class="form-heading q-mt-none">Co-Insured Details</span>
-            <br />
+            <div class="form-heading q-mt-none">Co-Insured Details</div>
+
             {{
               editSelectedClient.attributes.insuredInfo.secondary
                 ? editSelectedClient.attributes.insuredInfo.secondary.fname
@@ -116,31 +116,47 @@
           </div>
 
           <div class="q-mt-md">
-            <span class="form-heading q-mt-none">Address Details</span>
-            <br />
-            {{ editSelectedClient.attributes.insuredInfo.address.houseNumber
-            }}<br />
-            {{ editSelectedClient.attributes.insuredInfo.address.streetAddress
-            }}<br />
-            {{ editSelectedClient.attributes.insuredInfo.address.addressCountry
-            }}<br />
-            {{
-              editSelectedClient.attributes.insuredInfo.mailingAddress
-                .addressLocality
-            }}<br />
-            {{
-              editSelectedClient.attributes.insuredInfo.address.addressRegion
-            }}
-            {{
-              editSelectedClient.attributes.insuredInfo.address.postalCode
-                ? editSelectedClient.attributes.insuredInfo.address.postalCode
-                : '-'
-            }}<br />
-            {{
-              editSelectedClient.attributes.insuredInfo.address.dropBox.info
-                ? editSelectedClient.attributes.insuredInfo.address.dropBox.info
-                : '-'
-            }}
+            <div class="form-heading q-mt-none">Address Details</div>
+
+            <div>
+              {{
+                editSelectedClient.attributes.insuredInfo.address.houseNumber
+              }}
+            </div>
+            <div>
+              {{
+                editSelectedClient.attributes.insuredInfo.address.streetAddress
+              }}
+            </div>
+            <div>
+              {{
+                editSelectedClient.attributes.insuredInfo.address.addressCountry
+              }}
+            </div>
+            <div>
+              {{
+                editSelectedClient.attributes.insuredInfo.mailingAddress
+                  .addressLocality
+              }}
+            </div>
+            <div>
+              {{
+                editSelectedClient.attributes.insuredInfo.address.addressRegion
+              }}
+              {{
+                editSelectedClient.attributes.insuredInfo.address.postalCode
+                  ? editSelectedClient.attributes.insuredInfo.address.postalCode
+                  : '-'
+              }}
+            </div>
+            <div>
+              {{
+                editSelectedClient.attributes.insuredInfo.address.dropBox.info
+                  ? editSelectedClient.attributes.insuredInfo.address.dropBox
+                      .info
+                  : '-'
+              }}
+            </div>
           </div>
           <div class="q-mt-md">
             <span class="form-heading q-mt-none">Additional Phone Numbers</span>
@@ -160,13 +176,15 @@
           </div>
 
           <div class="q-mt-md">
-            <span class="form-heading q-mt-none">Tenant Details</span>
-            <br />
-            {{
-              editSelectedClient.attributes.insuredInfo.tenantInfo.name
-                ? editSelectedClient.attributes.insuredInfo.tenantInfo.name
-                : '-'
-            }}<br />
+            <div class="form-heading q-mt-none">Tenant Details</div>
+
+            <div>
+              {{
+                editSelectedClient.attributes.insuredInfo.tenantInfo.name
+                  ? editSelectedClient.attributes.insuredInfo.tenantInfo.name
+                  : '-'
+              }}
+            </div>
             <span
               class="clickLink"
               v-if="
@@ -191,34 +209,46 @@
             >
           </div>
           <div class="q-mt-md">
-            <span class="form-heading q-mt-none">Mailing Address</span>
-            <br />
+            <div class="form-heading q-mt-none">Mailing Address</div>
 
-            {{
-              editSelectedClient.attributes.insuredInfo.mailingAddress
-                .houseNumber
-            }}<br />
-            {{
-              editSelectedClient.attributes.insuredInfo.mailingAddress
-                .streetAddress
-            }}<br />
-            {{
-              editSelectedClient.attributes.insuredInfo.mailingAddress
-                .addressCountry
-            }}<br />
-            {{
-              editSelectedClient.attributes.insuredInfo.mailingAddress
-                .addressLocality
-            }}<br />
-            {{ editSelectedClient.attributes.insuredInfo.address.addressRegion
-            }}<br />
-            {{
-              editSelectedClient.attributes.insuredInfo.mailingAddress
-                .postalCode
-                ? editSelectedClient.attributes.insuredInfo.mailingAddress
-                    .postalCode
-                : '-'
-            }}<br />
+            <div>
+              {{
+                editSelectedClient.attributes.insuredInfo.mailingAddress
+                  .houseNumber
+              }}
+            </div>
+            <div>
+              {{
+                editSelectedClient.attributes.insuredInfo.mailingAddress
+                  .streetAddress
+              }}
+            </div>
+            <div>
+              {{
+                editSelectedClient.attributes.insuredInfo.mailingAddress
+                  .addressCountry
+              }}
+            </div>
+            <div>
+              {{
+                editSelectedClient.attributes.insuredInfo.mailingAddress
+                  .addressLocality
+              }}
+            </div>
+            <div>
+              {{
+                editSelectedClient.attributes.insuredInfo.address.addressRegion
+              }}
+            </div>
+            <div>
+              {{
+                editSelectedClient.attributes.insuredInfo.mailingAddress
+                  .postalCode
+                  ? editSelectedClient.attributes.insuredInfo.mailingAddress
+                      .postalCode
+                  : '-'
+              }}
+            </div>
             {{
               editSelectedClient.attributes.insuredInfo.mailingAddress.dropBox
                 .info
@@ -627,6 +657,7 @@ import CustomBar from 'components/CustomBar';
 import { validateEmail, successMessage } from '@utils/validation';
 import AddressService from '@utils/country';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
+import { constants } from '@utils/constant';
 
 const addressService = new AddressService();
 export default {
@@ -939,7 +970,7 @@ export default {
 
         await this.editClient(payload);
 
-        this.successMessage('Client Info Updated Successfully!');
+        this.successMessage(constants.successMessages.CLIENT_INFO);
 
         await this.getSingleClientDetails(this.selectedClientId);
         this.$router.push('/client-details');

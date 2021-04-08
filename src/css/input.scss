@@ -45,7 +45,10 @@
   font-size: 14px;
   margin-top: 10px;
 }
-
+.listing-height {
+  height: calc(100vh - 50px);
+  overflow-y: auto;
+}
 .edit-icon {
   position: absolute;
   right: 20px;

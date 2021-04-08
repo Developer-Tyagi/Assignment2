@@ -204,6 +204,7 @@ import InsuranceInfo from 'components/InsuranceInfo';
 import { validateDate, successMessage } from '@utils/validation';
 import { dateToSend } from '@utils/date';
 import { date } from 'quasar';
+import { constants } from '@utils/constant';
 
 export default {
   name: 'InsurancePolicy',
@@ -425,7 +426,7 @@ export default {
         this.insuranceInfoDialog = false;
         this.getPolicy(this.selectedClaimId);
         this.$router.push('/insurance-policy');
-        this.successMessage('Insurer & Policy Info Updated Successfully!');
+        this.successMessage(constants.successMessages.INSURER_AND_POLICY);
       }
     }
   }

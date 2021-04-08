@@ -6,8 +6,8 @@
         'mobile-container-page': $q.platform.is.iphone
       }"
     >
-      <div class="row full-height">
-        <q-card class="q-pa-md q-ma-md overflow-y w-100">
+      <div class="full-height">
+        <div class="clients-list q-ma-md listing-height">
           <div class="q-mb-lg">
             <q-icon name="create" color="primary" class="edit-icon"></q-icon>
             <p class="heading">Policy Holder Details</p>
@@ -133,7 +133,7 @@
             <p class="heading">Notes</p>
             <p class="texts">{{ selectedLead.notes }}</p>
           </div>
-        </q-card>
+        </div>
         <q-btn
           label="Schedule Visit"
           class="fixed-bottom q-my-md q-mx-auto"
