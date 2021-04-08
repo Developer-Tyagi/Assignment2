@@ -2,231 +2,235 @@
   <q-page>
     <div class="mobile-container-page ">
       <!-- This is for showing the client details   -->
-      <div class="clients-list q-ma-sm  ">
-        <div class="clients-list">
-          <q-item-section>
-            <div class="client-list-item">
-              <div class="row">
-                <span class="form-heading">Insured Details</span><br />
-                <q-icon
-                  name="create"
-                  color="primary"
-                  class="edit-icon"
-                  @click="editClientInfoDailog = true"
-                ></q-icon>
-              </div>
-              {{ editSelectedClient.attributes.insuredInfo.primary.fname }}
-              {{ editSelectedClient.attributes.insuredInfo.primary.lname }}
-              <p class="texts">
-                Mobile:
-                <span
-                  class="clickLink"
-                  v-if="
-                    editSelectedClient.attributes.insuredInfo.primary
-                      .phoneNumber
-                  "
-                  @click="
-                    onPhoneNumberClick(
-                      editSelectedClient.attributes.insuredInfo.primary
-                        .phoneNumber[0].number,
-                      $event
-                    )
-                  "
-                >
-                  {{
-                    editSelectedClient.attributes.insuredInfo.primary
-                      .phoneNumber[0].number
-                  }}
-                </span>
-              </p>
-              <p class="texts">
-                Email:
-                <span
-                  class="clickLink"
-                  v-if="editSelectedClient.attributes.insuredInfo.primary.email"
-                  @click="
-                    onEmailClick(
-                      editSelectedClient.attributes.insuredInfo.primary.email,
-                      $event
-                    )
-                  "
-                >
-                  {{ editSelectedClient.attributes.insuredInfo.primary.email }}
-                </span>
-              </p>
+      <div class="clients-list q-ma-sm ">
+        <div class="client-list q-pa-sm">
+          <div class="row">
+            <span class="form-heading">Insured Details</span><br />
+            <q-icon
+              name="create"
+              color="primary"
+              class="edit-icon"
+              @click="editClientInfoDailog = true"
+            ></q-icon>
+          </div>
+          {{ editSelectedClient.attributes.insuredInfo.primary.fname }}
+          {{ editSelectedClient.attributes.insuredInfo.primary.lname }}
+          <p class="texts">
+            Mobile:
+            <span
+              class="clickLink"
+              v-if="
+                editSelectedClient.attributes.insuredInfo.primary.phoneNumber
+              "
+              @click="
+                onPhoneNumberClick(
+                  editSelectedClient.attributes.insuredInfo.primary
+                    .phoneNumber[0].number,
+                  $event
+                )
+              "
+            >
+              {{
+                editSelectedClient.attributes.insuredInfo.primary.phoneNumber[0]
+                  .number
+              }}
+            </span>
+          </p>
+          <p class="texts">
+            Email:
+            <span
+              class="clickLink"
+              v-if="editSelectedClient.attributes.insuredInfo.primary.email"
+              @click="
+                onEmailClick(
+                  editSelectedClient.attributes.insuredInfo.primary.email,
+                  $event
+                )
+              "
+            >
+              {{ editSelectedClient.attributes.insuredInfo.primary.email }}
+            </span>
+          </p>
 
-              <div class="q-mt-md">
-                <span class="form-heading q-mt-none">Co-Insured Details</span>
-                <br />
+          <div class="q-mt-md">
+            <span class="form-heading q-mt-none">Co-Insured Details</span>
+            <br />
+            {{
+              editSelectedClient.attributes.insuredInfo.secondary
+                ? editSelectedClient.attributes.insuredInfo.secondary.fname
+                : '-'
+            }}
+            {{
+              editSelectedClient.attributes.insuredInfo.secondary
+                ? editSelectedClient.attributes.insuredInfo.secondary.lname
+                : '-'
+            }}
+
+            <p
+              class="texts"
+              v-if="editSelectedClient.attributes.insuredInfo.secondary"
+            >
+              Mobile:
+              <span
+                v-if="editSelectedClient.attributes.insuredInfo.secondary"
+                class="clickLink"
+                @click="
+                  onPhoneNumberClick(
+                    editSelectedClient.attributes.insuredInfo.secondary
+                      .phoneNumber[0].number,
+                    $event
+                  )
+                "
+              >
                 {{
                   editSelectedClient.attributes.insuredInfo.secondary
-                    ? editSelectedClient.attributes.insuredInfo.secondary.fname
+                    ? editSelectedClient.attributes.insuredInfo.secondary
+                        .phoneNumber[0].number
                     : '-'
                 }}
-                {{
-                  editSelectedClient.attributes.insuredInfo.secondary
-                    ? editSelectedClient.attributes.insuredInfo.secondary.lname
-                    : '-'
-                }}
+              </span>
+            </p>
 
-                <p class="texts">
-                  Mobile:
-                  <span
-                    v-if="editSelectedClient.attributes.insuredInfo.secondary"
-                    class="clickLink"
-                    @click="
-                      onPhoneNumberClick(
-                        editSelectedClient.attributes.insuredInfo.secondary
-                          .phoneNumber[0].number,
-                        $event
-                      )
-                    "
-                  >
-                    {{
-                      editSelectedClient.attributes.insuredInfo.secondary
-                        ? editSelectedClient.attributes.insuredInfo.secondary
-                            .phoneNumber[0].number
-                        : '-'
-                    }}
-                  </span>
-                </p>
-
+            <p
+              class="texts"
+              v-if="editSelectedClient.attributes.insuredInfo.secondary"
+            >
+              Email:
+              <span
+                class="clickLink"
+                v-if="editSelectedClient.attributes.insuredInfo.secondary"
+                @click="
+                  onEmailClick(
+                    editSelectedClient.attributes.insuredInfo.secondary.email,
+                    $event
+                  )
+                "
+              >
                 {{
                   editSelectedClient.attributes.insuredInfo.secondary
                     ? editSelectedClient.attributes.insuredInfo.secondary.email
                     : '-'
-                }}<br />
-              </div>
-
-              <div class="q-mt-md">
-                <span class="form-heading q-mt-none">Address Details</span>
-                <br />
-                {{
-                  editSelectedClient.attributes.insuredInfo.address.houseNumber
-                }}<br />
-                {{
-                  editSelectedClient.attributes.insuredInfo.address
-                    .streetAddress
-                }}<br />
-                {{
-                  editSelectedClient.attributes.insuredInfo.address
-                    .addressCountry
-                }}<br />
-                {{
-                  editSelectedClient.attributes.insuredInfo.mailingAddress
-                    .addressLocality
-                }}<br />
-                {{
-                  editSelectedClient.attributes.insuredInfo.address
-                    .addressRegion
                 }}
-                {{
-                  editSelectedClient.attributes.insuredInfo.address.postalCode
-                    ? editSelectedClient.attributes.insuredInfo.address
-                        .postalCode
-                    : '-'
-                }}<br />
-                {{
-                  editSelectedClient.attributes.insuredInfo.address.dropBox.info
-                    ? editSelectedClient.attributes.insuredInfo.address.dropBox
-                        .info
-                    : '-'
-                }}
-              </div>
-              <div class="q-mt-md">
-                <span class="form-heading q-mt-none"
-                  >Additional Phone Numbers</span
-                >
-                <br />
+              </span>
+            </p>
+          </div>
 
-                <div
-                  v-for="(phone, i) in editSelectedClient.attributes.insuredInfo
-                    .phoneNumbers"
-                >
-                  <span
-                    class="clickLink"
-                    @click="onPhoneNumberClick(phone.number, $event)"
-                  >
-                    {{ phone.number ? phone.number : '-' }}</span
-                  >
-                </div>
-              </div>
+          <div class="q-mt-md">
+            <span class="form-heading q-mt-none">Address Details</span>
+            <br />
+            {{ editSelectedClient.attributes.insuredInfo.address.houseNumber
+            }}<br />
+            {{ editSelectedClient.attributes.insuredInfo.address.streetAddress
+            }}<br />
+            {{ editSelectedClient.attributes.insuredInfo.address.addressCountry
+            }}<br />
+            {{
+              editSelectedClient.attributes.insuredInfo.mailingAddress
+                .addressLocality
+            }}<br />
+            {{
+              editSelectedClient.attributes.insuredInfo.address.addressRegion
+            }}
+            {{
+              editSelectedClient.attributes.insuredInfo.address.postalCode
+                ? editSelectedClient.attributes.insuredInfo.address.postalCode
+                : '-'
+            }}<br />
+            {{
+              editSelectedClient.attributes.insuredInfo.address.dropBox.info
+                ? editSelectedClient.attributes.insuredInfo.address.dropBox.info
+                : '-'
+            }}
+          </div>
+          <div class="q-mt-md">
+            <span class="form-heading q-mt-none">Additional Phone Numbers</span>
+            <br />
 
-              <div class="q-mt-md">
-                <span class="form-heading q-mt-none">Tenant Details</span>
-                <br />
-                {{
-                  editSelectedClient.attributes.insuredInfo.tenantInfo.name
-                    ? editSelectedClient.attributes.insuredInfo.tenantInfo.name
-                    : '-'
-                }}<br />
-                <span
-                  class="clickLink"
-                  v-if="
-                    editSelectedClient.attributes.insuredInfo.tenantInfo
-                      .phoneNumber.number
-                  "
-                  @click="
-                    onPhoneNumberClick(
-                      editSelectedClient.attributes.insuredInfo.tenantInfo
-                        .phoneNumber.number,
-                      $event
-                    )
-                  "
-                >
-                  {{
-                    editSelectedClient.attributes.insuredInfo.tenantInfo
-                      .phoneNumber.number
-                      ? editSelectedClient.attributes.insuredInfo.tenantInfo
-                          .phoneNumber.number
-                      : '-'
-                  }}</span
-                >
-              </div>
-              <div class="q-mt-md">
-                <span class="form-heading q-mt-none">Mailing Address</span>
-                <br />
-
-                {{
-                  editSelectedClient.attributes.insuredInfo.mailingAddress
-                    .houseNumber
-                }}<br />
-                {{
-                  editSelectedClient.attributes.insuredInfo.mailingAddress
-                    .streetAddress
-                }}<br />
-                {{
-                  editSelectedClient.attributes.insuredInfo.mailingAddress
-                    .addressCountry
-                }}<br />
-                {{
-                  editSelectedClient.attributes.insuredInfo.mailingAddress
-                    .addressLocality
-                }}<br />
-                {{
-                  editSelectedClient.attributes.insuredInfo.address
-                    .addressRegion
-                }}<br />
-                {{
-                  editSelectedClient.attributes.insuredInfo.mailingAddress
-                    .postalCode
-                    ? editSelectedClient.attributes.insuredInfo.mailingAddress
-                        .postalCode
-                    : '-'
-                }}<br />
-                {{
-                  editSelectedClient.attributes.insuredInfo.mailingAddress
-                    .dropBox.info
-                    ? editSelectedClient.attributes.insuredInfo.mailingAddress
-                        .dropBox.info
-                    : '-'
-                }}
-              </div>
+            <div
+              v-for="(phone, i) in editSelectedClient.attributes.insuredInfo
+                .phoneNumbers"
+            >
+              <span
+                class="clickLink"
+                @click="onPhoneNumberClick(phone.number, $event)"
+              >
+                {{ phone.number ? phone.number : '-' }}</span
+              >
             </div>
-          </q-item-section>
+          </div>
+
+          <div class="q-mt-md">
+            <span class="form-heading q-mt-none">Tenant Details</span>
+            <br />
+            {{
+              editSelectedClient.attributes.insuredInfo.tenantInfo.name
+                ? editSelectedClient.attributes.insuredInfo.tenantInfo.name
+                : '-'
+            }}<br />
+            <span
+              class="clickLink"
+              v-if="
+                editSelectedClient.attributes.insuredInfo.tenantInfo.phoneNumber
+                  .number
+              "
+              @click="
+                onPhoneNumberClick(
+                  editSelectedClient.attributes.insuredInfo.tenantInfo
+                    .phoneNumber.number,
+                  $event
+                )
+              "
+            >
+              {{
+                editSelectedClient.attributes.insuredInfo.tenantInfo.phoneNumber
+                  .number
+                  ? editSelectedClient.attributes.insuredInfo.tenantInfo
+                      .phoneNumber.number
+                  : '-'
+              }}</span
+            >
+          </div>
+          <div class="q-mt-md">
+            <span class="form-heading q-mt-none">Mailing Address</span>
+            <br />
+
+            {{
+              editSelectedClient.attributes.insuredInfo.mailingAddress
+                .houseNumber
+            }}<br />
+            {{
+              editSelectedClient.attributes.insuredInfo.mailingAddress
+                .streetAddress
+            }}<br />
+            {{
+              editSelectedClient.attributes.insuredInfo.mailingAddress
+                .addressCountry
+            }}<br />
+            {{
+              editSelectedClient.attributes.insuredInfo.mailingAddress
+                .addressLocality
+            }}<br />
+            {{ editSelectedClient.attributes.insuredInfo.address.addressRegion
+            }}<br />
+            {{
+              editSelectedClient.attributes.insuredInfo.mailingAddress
+                .postalCode
+                ? editSelectedClient.attributes.insuredInfo.mailingAddress
+                    .postalCode
+                : '-'
+            }}<br />
+            {{
+              editSelectedClient.attributes.insuredInfo.mailingAddress.dropBox
+                .info
+                ? editSelectedClient.attributes.insuredInfo.mailingAddress
+                    .dropBox.info
+                : '-'
+            }}
+          </div>
         </div>
       </div>
     </div>
+
     <!-- Client Info Edit Dialog -->
     <q-dialog
       v-model="editClientInfoDailog"

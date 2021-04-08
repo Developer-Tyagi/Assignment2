@@ -237,7 +237,7 @@
           :dialogName="'Mortagage Info'"
         />
         <div
-          class="mobile-container-page-without-search"
+          class="mobile-container-page-without-search q-pa-sm form-height"
           v-if="isMailingAddressEnable"
         >
           <q-form ref="estimatingInfoForm">
@@ -319,17 +319,17 @@
               />
             </div>
           </q-form>
-          <q-btn
-            label="Save"
-            color="primary"
-            class="button-width-90"
-            @click="
-              lossInfo.mortgageInfoDialog = false;
-              lossInfoDialog = true;
-            "
-            size="'xl'"
-          />
         </div>
+        <q-btn
+          label="Save"
+          color="primary"
+          class="button-width-90"
+          @click="
+            lossInfo.mortgageInfoDialog = false;
+            lossInfoDialog = true;
+          "
+          size="'xl'"
+        />
       </q-card>
     </q-dialog>
 
