@@ -188,6 +188,7 @@ import { mapGetters, mapActions, mapMutations } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import moment from 'moment';
+import { successMessage } from '@utils/validation';
 
 export default {
   name: 'PropertyInfo',
@@ -277,7 +278,7 @@ export default {
         };
         await this.addPropertyAddress(payload);
 
-        this.successMessage();
+        this.successMessage('Property Address Updated Successfully!');
         this.addNewPropertyDialog = false;
         this.propertyName = '';
         this.propertyAddressDetails.addressCountry = '';
@@ -291,15 +292,10 @@ export default {
         this.property.machineValue = '';
 
         this.getSingleClientProperty(this.selectedClientId);
+        this.$router.push('/property-details');
       }
     },
-    successMessage() {
-      this.$q.notify({
-        type: 'positive',
-        message: `Property Address Updated Successfully!`,
-        position: 'top'
-      });
-    }
+    successMessage
   }
 };
 </script>

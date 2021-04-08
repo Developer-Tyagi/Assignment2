@@ -672,7 +672,12 @@ import LossInfo from 'components/LossInfo';
 import ExpertVendorInfo from 'components/ExpertVendorInfo';
 import InsuranceInfo from 'components/InsuranceInfo';
 import AddressService from '@utils/country';
-import { validateEmail, validateDate, validateTime } from '@utils/validation';
+import {
+  validateEmail,
+  validateDate,
+  validateTime,
+  successMessage
+} from '@utils/validation';
 import { constants } from '@utils/constant';
 import { dateToSend } from '@utils/date';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
@@ -1163,6 +1168,7 @@ export default {
       'getAllUsers'
     ]),
     ...mapMutations(['setSelectedLead']),
+    successMessage,
 
     // For adding multiple Contact Numbers in ClientInfo
     addAnotherContact() {
@@ -1486,7 +1492,7 @@ export default {
       }
 
       const response = await this.addClient(payload);
-
+      this.successMessage('client created successfully');
       if (response && response.id) {
         this.setPayloadForClaim(response.id);
       }
@@ -1634,6 +1640,7 @@ export default {
 
       this.addClaim(payload).then(() => {
         this.setSelectedLead();
+
         this.$router.push('/clients');
       });
     },

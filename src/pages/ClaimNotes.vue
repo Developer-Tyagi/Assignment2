@@ -129,6 +129,7 @@
 import { mapGetters, mapActions } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import moment from 'moment';
+import { successMessage } from '@utils/validation';
 
 export default {
   name: 'Clients',
@@ -181,7 +182,7 @@ export default {
       };
       await this.editClaimNotes(payload);
       this.editNoteDialogBox = false;
-      this.successMessage();
+      this.successMessage('Notes Updated Successfully!');
       this.editNote = '';
 
       this.getClaimNotes(this.selectedClaimId);
@@ -198,18 +199,12 @@ export default {
       };
       await this.addClaimNotes(payload);
       this.addNoteDialog = false;
-      this.successMessage();
+      this.successMessage('Notes Added Successfully!');
       this.note = '';
 
       this.getClaimNotes(this.selectedClaimId);
     },
-    successMessage() {
-      this.$q.notify({
-        type: 'positive',
-        message: `Notes Added Successfully!`,
-        position: 'top'
-      });
-    }
+    successMessage
   }
 };
 </script>
