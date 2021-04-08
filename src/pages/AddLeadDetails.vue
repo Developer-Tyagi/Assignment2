@@ -72,6 +72,7 @@
                   option-label="name"
                   map-options
                   options-dense
+                  behavior="menu"
                   emit-value
                   label="Type"
                   lazy-rules
@@ -195,6 +196,7 @@
                 option-label="name"
                 map-options
                 options-dense
+                behavior="menu"
                 emit-value
                 :options="lossCauses"
                 @input="setTypes(lossCauses, lossDetails.causeOfLoss)"
@@ -421,6 +423,7 @@
                 option-value="id"
                 options-dense
                 emit-value
+                behavior="menu"
                 map-options
                 @input="onInspectionTypesSelect()"
                 :rules="[
@@ -514,7 +517,6 @@
           @onCloseAddVendor="onCloseAddVendorDialogBox"
           @closeDialog="closeAddVendorDialog"
           :componentName="vendorDialogName"
-          :vendorName="'vendorFromLead'"
         />
       </q-card>
     </q-dialog>
@@ -651,13 +653,14 @@ export default {
       if (industryType === 'vendor') {
         this.onClosingVendorSelectDialog(
           selected,
-          selected.industry.machineValue
+          selected.industry.machineValue,
+          industryType
         );
       }
     },
 
-    onClosingVendorSelectDialog(vendor, dialogName) {
-      if (dialogName === constants.industries.VENDOR) {
+    onClosingVendorSelectDialog(vendor, dialogName, industryName) {
+      if (industryName === constants.industries.VENDOR) {
         this.sourceDetails.id = vendor.id;
         this.sourceDetails.details = vendor.name;
       } else {
