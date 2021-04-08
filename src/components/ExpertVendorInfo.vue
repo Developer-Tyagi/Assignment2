@@ -109,7 +109,7 @@
           onAddVendorDialogClick(constants.industries.EXPERTVENDOR, index)
         "
       >
-        <div class="select-text" disable>
+        <div class="select-text">
           {{
             expertVendorInfo.id
               ? expertVendorInfo.vendors[index].value
