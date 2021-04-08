@@ -238,7 +238,7 @@
           </div>
           <div class=" row q-mt-md full-width">
             <div class="q-pa-sm text-bold">Due Date :</div>
-            <div class="text-grey-9text-bold">Task will be Due</div>
+            <div class="text-grey-9 text-bold q-pa-sm">Task will be Due</div>
 
             <q-input
               dense
@@ -262,7 +262,9 @@
               style="width: 200px"
             />
 
-            <div class="text-bold">days after it is created</div>
+            <div class="q-pa-sm text-grey-9 text-bold">
+              days after it is created
+            </div>
           </div>
 
           <div class="row q-mt-md full-width">
