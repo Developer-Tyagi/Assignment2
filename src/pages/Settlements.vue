@@ -824,6 +824,15 @@ export default {
         val
       ].description;
       this.amounts = this.settlement.attributes.settlements[val].amounts;
+      this.totalSettlement = this.settlement.attributes.settlements[
+        val
+      ].amounts.totalSettlement;
+      this.actualValue = this.settlement.attributes.settlements[
+        val
+      ].amounts.actualCash;
+      this.netSettlement = this.settlement.attributes.settlements[
+        val
+      ].amounts.netSettlement;
       this.buttonGroup = this.settlement.attributes.settlements[val].isAccepted;
 
       this.isFinal = this.settlement.attributes.settlements[val].isFinal;
