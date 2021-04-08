@@ -236,13 +236,14 @@
               </div>
             </div>
           </div>
-          <div class="row q-mt-md full-width" style="align-items: baseline">
+          <div class="  row q-mt-md full-width" style="">
             <div class="q-pa-sm text-bold">Due Date :</div>
             <div class="text-grey-9text-bold">Task will be Due</div>
+
             <q-input
               dense
               v-model.number="actions.due.interval"
-              class="q-mx-sm input-extra-padding"
+              class="q-mx-sm"
               outlined
               placeholder="Day"
               style="width: 50px"
@@ -250,7 +251,7 @@
 
             <q-select
               dense
-              class="q-mx-sm input-extra-padding"
+              class="q-mx-sm "
               outlined
               options-dense
               v-model="actions.due.type"
@@ -423,6 +424,7 @@
               <q-select
                 class="input-extra-padding"
                 outlined
+                dense
                 options-dense
                 v-model="actions.actions.onOverdue[index].task[0]"
                 behavior="menu"
@@ -636,7 +638,7 @@ export default {
         index
       ].task[0] = this.actions.actions.onOverdue[index].task[1] = '';
 
-      var index = this.actionCompletion.findIndex(
+      var index = this.actionOverDues.findIndex(
         std => std.machineValue === val
       );
 
