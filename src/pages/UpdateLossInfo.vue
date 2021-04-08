@@ -148,7 +148,7 @@
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import moment from 'moment';
 import LossInfo from 'components/LossInfo';
-import { validateDate } from '@utils/validation';
+import { validateDate, successMessage } from '@utils/validation';
 import { date } from 'quasar';
 import { dateToSend } from '@utils/date';
 import CustomBar from 'components/CustomBar';
@@ -275,13 +275,7 @@ export default {
       this.isMortgageHomeToggle = false;
     },
     validateDate,
-    successMessage() {
-      this.$q.notify({
-        type: 'positive',
-        message: `Loss Info Updated Successfully!`,
-        position: 'top'
-      });
-    },
+    successMessage,
     async onSaveButtonClick() {
       let success = false;
       success = await this.$refs.lossInfoForm.validate();
@@ -326,9 +320,9 @@ export default {
 
         await this.updateLossInfo(payload);
         this.lossInfoDialog = false;
-        this.successMessage();
+        this.successMessage('Loss Info Updated Successfully!');
         this.getLossInfo(this.selectedClaimId);
-        this.$router.push('/claim-details');
+        this.$router.push('/loss-info');
       }
     },
     onEditIconClick() {

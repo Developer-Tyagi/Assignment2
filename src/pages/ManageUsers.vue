@@ -129,7 +129,7 @@
               dense
               label="Email"
               v-model="users.email"
-              class="q-mx-md col-5"
+              class="q-mx-md col-5 required"
               outlined
               lazy-rules
               :rules="[
@@ -143,7 +143,7 @@
               outlined
               filled
               options-dense
-              class="q-mx-md col-5 input-extra-padding"
+              class="q-mx-md col-5 input-extra-padding required"
               v-model="selectedRole"
               :options="userRole"
               label="Role"

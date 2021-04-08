@@ -32,7 +32,7 @@
                   label="Item Cost"
                 >
                   <template v-slot:prepend>
-                    <q-icon name="$" color="primary"></q-icon>
+                    <q-icon name="$" color="primary" class="q-mb-sm"></q-icon>
                   </template>
                 </q-input>
               </div>
@@ -101,7 +101,11 @@
                 label="Item Cost"
               >
                 <template v-slot:prepend>
-                  <q-icon name="$" color="primary"></q-icon> </template
+                  <q-icon
+                    name="$"
+                    color="primary"
+                    class="q-mb-sm"
+                  ></q-icon> </template
               ></q-input>
               <q-input
                 dense
@@ -233,7 +237,7 @@
           :dialogName="'Mortagage Info'"
         />
         <div
-          class="mobile-container-page-without-search"
+          class="mobile-container-page-without-search q-pa-sm form-height"
           v-if="isMailingAddressEnable"
         >
           <q-form ref="estimatingInfoForm">
@@ -315,17 +319,17 @@
               />
             </div>
           </q-form>
-          <q-btn
-            label="Save"
-            color="primary"
-            class="button-width-90"
-            @click="
-              lossInfo.mortgageInfoDialog = false;
-              lossInfoDialog = true;
-            "
-            size="'xl'"
-          />
         </div>
+        <q-btn
+          label="Save"
+          color="primary"
+          class="button-width-90"
+          @click="
+            lossInfo.mortgageInfoDialog = false;
+            lossInfoDialog = true;
+          "
+          size="'xl'"
+        />
       </q-card>
     </q-dialog>
 
@@ -356,7 +360,7 @@
     ></q-input>
     <div class="row" v-if="lossAddressSameAsClient && lossAddressToggleShow">
       <p class="q-my-auto form-heading">Loss Address Same As Client's?</p>
-      {{ lossAddressToggleShow }}
+
       <q-toggle
         class="q-ml-auto"
         v-model="lossInfo.isLossAddressSameAsClientToggle"

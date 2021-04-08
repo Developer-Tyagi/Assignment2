@@ -157,6 +157,7 @@
             :address="vendor.address"
             :isDropBoxEnable="false"
             :isChecksEnable="false"
+            :value="true"
           />
           <p class="form-heading">Company's Phone & Website</p>
           <div v-for="(contactInfo, index) in vendor.contact" v-if="index >= 1">

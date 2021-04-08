@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <div class="mobile-container-page ">
+    <div style=" height: calc(100vh - 50px); overflow-y: auto">
       <div class="q-pa-md">
         <div class="q-pl-sm text-h6">
           Insurer
@@ -201,7 +201,7 @@ import { mapGetters, mapActions, mapMutations } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import moment from 'moment';
 import InsuranceInfo from 'components/InsuranceInfo';
-import { validateDate } from '@utils/validation';
+import { validateDate, successMessage } from '@utils/validation';
 import { dateToSend } from '@utils/date';
 import { date } from 'quasar';
 
@@ -348,13 +348,7 @@ export default {
       'editInsurancePolicy'
     ]),
     validateDate,
-    successMessage() {
-      this.$q.notify({
-        type: 'positive',
-        message: `Insurer & Policy Info Updated Successfully!`,
-        position: 'top'
-      });
-    },
+    successMessage,
     async onSaveButtonClick() {
       let success = false;
       success = await this.$refs.insuranceInfoForm.validate();
@@ -430,8 +424,8 @@ export default {
         await this.editInsurancePolicy(payload);
         this.insuranceInfoDialog = false;
         this.getPolicy(this.selectedClaimId);
-        this.$router.push('/claim-details');
-        this.successMessage();
+        this.$router.push('/insurance-policy');
+        this.successMessage('Insurer & Policy Info Updated Successfully!');
       }
     }
   }

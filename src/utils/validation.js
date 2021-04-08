@@ -40,3 +40,10 @@ export function validateTime(val) {
     return true;
   }
 }
+export function successMessage(message) {
+  return this.$q.notify({
+    type: 'positive',
+    message,
+    position: 'top'
+  });
+}

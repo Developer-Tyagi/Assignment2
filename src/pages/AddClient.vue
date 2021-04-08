@@ -49,6 +49,7 @@
               option-label="name"
               map-options
               emit-value
+              behavior="menu"
               options-dense
               :options="clientTypes"
               @input="setTypes(clientTypes, client)"
@@ -146,6 +147,7 @@
                 option-label="name"
                 map-options
                 emit-value
+                behavior="menu"
                 options-dense
                 label="Type"
                 lazy-rules
@@ -670,7 +672,12 @@ import LossInfo from 'components/LossInfo';
 import ExpertVendorInfo from 'components/ExpertVendorInfo';
 import InsuranceInfo from 'components/InsuranceInfo';
 import AddressService from '@utils/country';
-import { validateEmail, validateDate, validateTime } from '@utils/validation';
+import {
+  validateEmail,
+  validateDate,
+  validateTime,
+  successMessage
+} from '@utils/validation';
 import { constants } from '@utils/constant';
 import { dateToSend } from '@utils/date';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
@@ -1161,6 +1168,7 @@ export default {
       'getAllUsers'
     ]),
     ...mapMutations(['setSelectedLead']),
+    successMessage,
 
     // For adding multiple Contact Numbers in ClientInfo
     addAnotherContact() {
@@ -1181,17 +1189,30 @@ export default {
     },
     async addAnotherVendor() {
       const success = await this.$refs.expertVendorInfoForm.validate();
-      if (success) {
-        this.expertVendorInfo.industry.push({
-          id: this.expertVendorInfo.industry.id,
-          value: this.expertVendorInfo.industry.value
+      let len = this.expertVendorInfo.vendors.length;
+
+      if (
+        this.expertVendorInfo.vendors[len - 1].value == 'Select Vendor' ||
+        this.expertVendorInfo.vendors[len - 1].value == null
+      ) {
+        this.$q.notify({
+          message: 'Please Select the vendor first',
+          position: 'top',
+          type: 'negative'
         });
-        let len = this.expertVendorInfo.vendors.length;
-        this.expertVendorInfo.vendors.push({
-          id: this.expertVendorInfo.vendors[len - 1].id,
-          value: this.expertVendorInfo.vendors[len - 1].value
-        });
-        this.expertVendorInfo.vendors[len].value = 'Select Vendor';
+      } else {
+        if (success) {
+          this.expertVendorInfo.industry.push({
+            id: this.expertVendorInfo.industry.id,
+            value: this.expertVendorInfo.industry.value
+          });
+          let len = this.expertVendorInfo.vendors.length;
+          this.expertVendorInfo.vendors.push({
+            id: this.expertVendorInfo.vendors[len - 1].id,
+            value: this.expertVendorInfo.vendors[len - 1].value
+          });
+          this.expertVendorInfo.vendors[len].value = 'Select Vendor';
+        }
       }
     },
     RemoveAnotherContact() {
@@ -1471,7 +1492,7 @@ export default {
       }
 
       const response = await this.addClient(payload);
-
+      this.successMessage('client created successfully');
       if (response && response.id) {
         this.setPayloadForClaim(response.id);
       }
@@ -1619,6 +1640,7 @@ export default {
 
       this.addClaim(payload).then(() => {
         this.setSelectedLead();
+
         this.$router.push('/clients');
       });
     },

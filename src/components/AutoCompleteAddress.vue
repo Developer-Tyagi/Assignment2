@@ -53,6 +53,7 @@
       v-model="address.addressRegion"
       :options="states"
       label="State"
+      behavior="menu"
       lazy-rules
       :rules="[val => checkValidations(val) || 'Please fill the state']"
     />
@@ -62,6 +63,7 @@
       v-model="address.addressCountry"
       :options="countries"
       label="Country"
+      behavior="menu"
       @input="onCountrySelect(address.addressCountry)"
       lazy-rules
       :rules="[val => checkValidations(val) || 'Please fill the country']"
