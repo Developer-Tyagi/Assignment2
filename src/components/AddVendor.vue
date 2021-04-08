@@ -266,7 +266,7 @@ import { validateEmail, validateUrl } from '@utils/validation';
 
 export default {
   name: 'AddVendor',
-  props: ['componentName', 'selectedIndustryType'],
+  props: ['componentName', 'selectedIndustryType', 'vendorName'],
 
   components: { AutoCompleteAddress, CustomBar },
 
@@ -349,6 +349,17 @@ export default {
     this.getTitles();
     this.getContactTypes();
 
+    if (this.vendorName === 'vendorFromLead') {
+      let industryType = this.vendorIndustries.find(
+        o => o.machineValue === constants.industries.VENDOR
+      );
+      if (industryType.name && industryType.id) {
+        this.vendor.industry.value = industryType.name;
+        this.vendor.industry.id = industryType.id;
+        this.vendor.industry.machineValue = industryType.machineValue;
+        this.industryFilterDisabled = false;
+      }
+    }
     if (this.componentName === constants.industries.CARRIER) {
       let industryType = this.vendorIndustries.find(
         o => o.machineValue === constants.industries.CARRIER

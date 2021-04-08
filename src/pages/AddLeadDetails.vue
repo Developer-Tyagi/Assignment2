@@ -514,6 +514,7 @@
           @onCloseAddVendor="onCloseAddVendorDialogBox"
           @closeDialog="closeAddVendorDialog"
           :componentName="vendorDialogName"
+          :vendorName="'vendorFromLead'"
         />
       </q-card>
     </q-dialog>
@@ -642,6 +643,12 @@ export default {
 
     onCloseAddVendorDialogBox(result, selected, industryType) {
       if (industryType === 'carrier') {
+        this.onClosingVendorSelectDialog(
+          selected,
+          selected.industry.machineValue
+        );
+      }
+      if (industryType === 'vendor') {
         this.onClosingVendorSelectDialog(
           selected,
           selected.industry.machineValue
