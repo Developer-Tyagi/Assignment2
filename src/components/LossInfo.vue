@@ -360,7 +360,7 @@
     ></q-input>
     <div class="row" v-if="lossAddressSameAsClient && lossAddressToggleShow">
       <p class="q-my-auto form-heading">Loss Address Same As Client's?</p>
-      {{ lossAddressToggleShow }}
+
       <q-toggle
         class="q-ml-auto"
         v-model="lossInfo.isLossAddressSameAsClientToggle"
