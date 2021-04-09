@@ -1,57 +1,7 @@
 <template>
   <div>
- 
-    
-       <div
-        v-if="mortgageInfo.isMortgageHomeToggle"
-        @click="
-          mortgageInfo.mortgageInfoDialog = true;
-       
-        "
-      >
-        <div class="row">
-          <div class="q-px-xs row">
-            <div v-if="!mortgageInfo.mortgageDetails[0]['id']">Select Mortgage</div>
-            <div
-              v-else
-              class="select-text"
-              v-for="(mortgageDetail, index) in mortgageInfo.mortgageDetails"
-            >
-              <span>
-                {{ mortgageDetail.value }}
-              </span>
-              <span v-if="mortgageInfo.mortgageDetails.length - 1 > index">
-                ,
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
-  
-  <!-- Mortgage Dialog -->
-    <q-dialog
-      v-model="mortgageInfo.mortgageInfoDialog"
-      persistent
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card >
-        <CustomBar
-          @closeDialog="
-            mortgageInfo.mortgageInfoDialog = false;
-           
-          "
-          :dialogName="'Mortagage Info'"
-        />
-        <div
-          class="mobile-container-page q-pa-sm form-height  "
-       >
-          <q-form ref="estimatingInfoForm">
-            <div
-              class="custom-select "
+ <!-- Mortgage Dialog -->
+   <div class="custom-select"
               v-model="mortgageInfo.mortgageDetails[0].id"
               @click="onAddVendorDialogClick(constants.industries.MORTGAGE)"
             >
@@ -73,8 +23,8 @@
               dense
               v-model="mortgageInfo.mortgageDetails[0].accountNumber"
               label="Account Number"
-            /><br />
-            <span class="form-heading">Notes</span>
+            />
+            <div class="form-heading">Notes</div>
             <textarea
               rows="5"
               required
@@ -118,8 +68,8 @@
                 dense
                 v-model="mortgageInfo.mortgageDetails[1].accountNumber"
                 label="Account Number"
-              /><br />
-              <span class="form-heading">Notes</span>
+              />
+              <div class="form-heading">Notes</div>
               <textarea
                 rows="5"
                 class="full-width"
@@ -127,20 +77,6 @@
                 style="resize: none"
               />
             </div>
-          </q-form>
-        </div>
-        <q-btn
-          label="Save"
-          color="primary"
-          class="button-width-90"
-          @click="
-            mortgageInfo.mortgageInfoDialog = false;
-         
-          "
-          size="'xl'"
-        />
-      </q-card>
-    </q-dialog>
      <!-- Vendor list Dialog -->
     <q-dialog
       v-model="mortgageInfo.vendorsListDialog"

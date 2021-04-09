@@ -65,19 +65,29 @@
                     {{ contact.fname ? contact.fname : '-' }}
                     {{ contact.lname ? contact.lname : '-' }}
                   </div>
-
-                  <div>
-                    <span class="form-heading">Email</span> :
-                    {{ contact.email ? contact.email : '-' }}
-                  </div>
+                  <p class="texts">
+                    Email:
+                    <span
+                      class="clickLink"
+                      @click="onEmailClick(contact.email, $event)"
+                    >
+                      {{ contact.email ? contact.email : '-' }}
+                    </span>
+                  </p>
                   <div
                     v-for="phone in contact.phoneNumber"
                     v-if="mortgage.contact"
                   >
-                    <span class="form-heading">Phone</span> : {{ phone.type }}
-                    {{ phone.number }}
+                    <p class="texts">
+                      Mobile: {{ phone.type }},
+                      <span
+                        class="clickLink"
+                        @click="onPhoneNumberClick(phone.number, $event)"
+                      >
+                        {{ phone.number }}
+                      </span>
+                    </p>
                   </div>
-
                   <q-separator />
                 </div>
               </div>
@@ -109,19 +119,37 @@
             />
           </div>
         </div>
-        <div>
-          <Mortgage
-            :mortgageInfo="mortgageInfo"
-            :isThereSecondMortgageToggle="false"
-          />
-        </div>
+        <!-- Mortgage Dialog -->
+        <q-dialog
+          v-model="mortgageInfo.mortgageInfoDialog"
+          persistent
+          :maximized="true"
+          transition-show="slide-up"
+          transition-hide="slide-down"
+        >
+          <q-card>
+            <CustomBar
+              @closeDialog="mortgageInfo.mortgageInfoDialog = false"
+              :dialogName="'Mortagage Info'"
+            />
+            <div class="mobile-container-page q-pa-sm form-height  ">
+              <q-form ref="estimatingInfoForm">
+                <Mortgage
+                  :mortgageInfo="mortgageInfo"
+                  :isThereSecondMortgageToggle="false"
+                />
+              </q-form>
+            </div>
+            <q-btn
+              label="Save"
+              color="primary"
+              class="button-width-90"
+              @click="onSaveButtonClick"
+              size="'xl'"
+            />
+          </q-card>
+        </q-dialog>
       </div>
-    </div>
-    <div>
-      <Mortgage
-        :mortgageInfo="mortgageInfo"
-        :isThereSecondMortgageToggle="false"
-      />
     </div>
   </q-page>
 </template>
@@ -129,6 +157,7 @@
 import { mapGetters, mapActions } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import { constants } from '@utils/constant';
+import { successMessage } from '@utils/validation';
 import Mortgage from 'components/Mortgage';
 export default {
   components: {
@@ -168,7 +197,40 @@ export default {
     this.getMortgage(this.selectedClaimId);
   },
   methods: {
-    ...mapActions(['getMortgage', 'getVendors'])
+    ...mapActions(['getMortgage', 'getVendors', 'addMortgage']),
+    successMessage,
+    onPhoneNumberClick(number, e) {
+      e.stopPropagation();
+      if (number) {
+        window.open('tel:' + number);
+      }
+    },
+    onEmailClick(email, e) {
+      e.stopPropagation();
+      if (email) {
+        window.open('mailto:' + email);
+      }
+    },
+    async onSaveButtonClick() {
+      const payload = {
+        id: this.selectedClaimId,
+        data: {
+          mortgageInfo: {
+            id: this.mortgageInfo.mortgageDetails[0].id,
+            value: this.mortgageInfo.mortgageDetails[0].value,
+            loanNumber: this.mortgageInfo.mortgageDetails[0].loanNumber,
+            accountNumber: this.mortgageInfo.mortgageDetails[0].accountNumber,
+            isPrimary: this.mortgageInfo.mortgageDetails[0].isPrimary,
+            notes: this.mortgageInfo.mortgageDetails[0].notes
+          }
+        }
+      };
+      await this.addMortgage(payload);
+      this.successMessage(constants.successMessages.MORTGAGE);
+      this.mortgageInfo.mortgageInfoDialog = false;
+      this.getMortgage(this.selectedClaimId);
+      this.mortgageInfo.mortgageDetails[0] = '';
+    }
   }
 };
 </script>

@@ -1048,7 +1048,6 @@ export default {
     );
     this.getVendors(this.$route.params.id);
     this.getClientTypes();
-
     this.getPropertyTypes();
     this.getPolicyTypes();
     this.getLossCauses();

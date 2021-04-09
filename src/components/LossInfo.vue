@@ -647,10 +647,62 @@
           @input="onToggleButtonClick"
         />
       </div>
-      <Mortgage
-        :mortgageInfo="mortgageInfo"
-        :isThereSecondMortgageToggle="true"
-      />
+
+      <div
+        v-if="mortgageInfo.isMortgageHomeToggle"
+        @click="mortgageInfo.mortgageInfoDialog = true"
+      >
+        <div class="row">
+          <div class="q-px-xs row">
+            <div v-if="!mortgageInfo.mortgageDetails[0]['id']">
+              Select Mortgage
+            </div>
+            <div
+              v-else
+              class="select-text"
+              v-for="(mortgageDetail, index) in mortgageInfo.mortgageDetails"
+            >
+              <span>
+                {{ mortgageDetail.value }}
+              </span>
+              <span v-if="mortgageInfo.mortgageDetails.length - 1 > index">
+                ,
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mortgage Dialog -->
+      <q-dialog
+        v-model="mortgageInfo.mortgageInfoDialog"
+        persistent
+        :maximized="true"
+        transition-show="slide-up"
+        transition-hide="slide-down"
+      >
+        <q-card>
+          <CustomBar
+            @closeDialog="mortgageInfo.mortgageInfoDialog = false"
+            :dialogName="'Mortagage Info'"
+          />
+          <div class="mobile-container-page q-pa-sm form-height  ">
+            <q-form ref="estimatingInfoForm">
+              <Mortgage
+                :mortgageInfo="mortgageInfo"
+                :isThereSecondMortgageToggle="true"
+              />
+            </q-form>
+          </div>
+          <q-btn
+            label="Save"
+            color="primary"
+            class="button-width-90"
+            @click="mortgageInfo.mortgageInfoDialog = false"
+            size="'xl'"
+          />
+        </q-card>
+      </q-dialog>
     </div>
   </div>
 </template>
@@ -667,7 +719,7 @@ import AddVendor from 'components/AddVendor';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import Mortgage from 'components/Mortgage';
 export default {
-  name: 'InsuranceInfo',
+  name: 'LossInfo',
   components: {
     CustomBar,
     VendorsList,
@@ -743,6 +795,7 @@ export default {
   created() {
     this.lossInfo.purchaseDate = date.formatDate(Date.now(), 'MM/DD/YYYY');
     this.$emit('isMortgageDetails', false);
+
     this.getVendors(this.$route.params.id);
   },
   computed: {
