@@ -10,7 +10,7 @@
     >
       <q-card>
         <CustomBar
-          :dialogName="'Add New Note'"
+          :dialogName="'Edit Note'"
           @closeDialog="editNoteDialogBox = false"
         />
         <q-card-section>
@@ -96,7 +96,7 @@
                         name="create"
                         color="primary"
                         class="edit-icon"
-                        @click="onEditButtonClick"
+                        @click="onEditButtonClick(index)"
                       ></q-icon>
                     </div>
                   </div>
@@ -161,11 +161,10 @@ export default {
   },
   methods: {
     ...mapActions(['getClaimNotes', 'addClaimNotes', 'editClaimNotes']),
-    onEditButtonClick() {
+    onEditButtonClick(index) {
+      this.noteId = this.claimNotes.attributes.notes[index].id;
       this.editNoteDialogBox = true;
-      let index = this.claimNotes.attributes.notes.length;
-      this.editNote = this.claimNotes.attributes.notes[index - 1].desc;
-      this.noteId = this.claimNotes.attributes.notes[index - 1].id;
+      this.editNote = this.claimNotes.attributes.notes[index].desc;
     },
     addNote() {
       this.addNoteDialog = true;
@@ -184,9 +183,9 @@ export default {
       await this.editClaimNotes(payload);
       this.editNoteDialogBox = false;
       this.successMessage(constants.successMessages.NOTES_UPDATED);
-      this.editNote = '';
 
       this.getClaimNotes(this.selectedClaimId);
+      this.editNote = '';
     },
     async onSave() {
       const payload = {

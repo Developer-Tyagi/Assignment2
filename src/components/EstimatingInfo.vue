@@ -191,6 +191,8 @@
 import { mapGetters, mapActions } from 'vuex';
 import { validateEmail } from '@utils/validation';
 import CustomBar from 'components/CustomBar';
+import { successMessage } from '@utils/validation';
+import { constants } from '@utils/constant';
 export default {
   name: 'EstimatingInfo',
   components: { CustomBar },
@@ -212,6 +214,7 @@ export default {
   methods: {
     ...mapActions(['getEstimators', 'addEstimator']),
     validateEmail,
+    successMessage,
     async onCloseAddEstimator() {
       const success = await this.$refs.addEstimatorForm.validate();
 
@@ -239,6 +242,7 @@ export default {
 
           this.estimatingInfo.addEstimatorDialog = false;
           this.getEstimators();
+          this.successMessage(constants.successMessages.ESTIMATOR);
           // this.carrierName = this.addEstimatorInfo.fname;
         }
       }

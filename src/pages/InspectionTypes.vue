@@ -56,14 +56,14 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card class="bg-white">
+      <q-card class="bg-white ">
         <CustomBar
           :dialogName="'Add Inspection Type'"
           @closeDialog="closeInspetionDialog"
         />
 
-        <div class="q-pa-md column height-without-header">
-          <div style="height: calc(100% - 50px)">
+        <div class="q-pa-md column height-without-header ">
+          <div style="height: calc(100% - 50px) ">
             <q-card
               class="inspection-card"
               v-for="(subtype, index) in inspectionType.subtypes"

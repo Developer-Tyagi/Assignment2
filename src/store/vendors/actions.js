@@ -26,10 +26,7 @@ export async function addVendor({ dispatch, state }, payload) {
       buildApiData('vendors', payload)
     );
     dispatch('setLoading', false);
-    dispatch('setNotification', {
-      type: 'positive',
-      message: 'Created !'
-    });
+
     return data;
   } catch (e) {
     console.log(e);

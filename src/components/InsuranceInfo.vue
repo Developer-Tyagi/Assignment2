@@ -316,6 +316,7 @@ import CustomBar from 'components/CustomBar';
 import VendorsList from 'components/VendorsList';
 import { validateDate } from '@utils/validation';
 import { mapGetters, mapActions } from 'vuex';
+import { successMessage } from '@utils/validation';
 import AddVendor from 'components/AddVendor';
 export default {
   name: 'AddClaim',
@@ -352,6 +353,7 @@ export default {
   },
   methods: {
     ...mapActions(['getVendors']),
+    successMessage,
     closeAddVendorDialog(e) {
       this.addVendorDialog = false;
 
@@ -367,6 +369,7 @@ export default {
     async onCloseAddVendorDialogBox(result, selected) {
       if (result) {
         await this.getVendors();
+        this.successMessage(constants.successMessages.CARRIER);
         this.onClosingVendorSelectDialog(selected, this.valueName);
       }
     },

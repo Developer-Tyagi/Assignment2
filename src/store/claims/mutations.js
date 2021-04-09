@@ -2,6 +2,10 @@ export function setClaims(state, claims) {
   state.claims = claims;
 }
 
+export function setMortgage(state, mortgage) {
+  state.mortgage = mortgage;
+}
+
 export function setClaim(state, claim) {
   state.claim = {
     id: claim.id,
