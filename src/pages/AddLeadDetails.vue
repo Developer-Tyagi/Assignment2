@@ -651,16 +651,12 @@ export default {
         );
       }
       if (industryType === 'vendor') {
-        this.onClosingVendorSelectDialog(
-          selected,
-          selected.industry.machineValue,
-          industryType
-        );
+        this.onClosingVendorSelectDialog(selected, industryType);
       }
     },
 
-    onClosingVendorSelectDialog(vendor, dialogName, industryName) {
-      if (industryName === constants.industries.VENDOR) {
+    onClosingVendorSelectDialog(vendor, dialogName) {
+      if (dialogName === constants.industries.VENDOR) {
         this.sourceDetails.id = vendor.id;
         this.sourceDetails.details = vendor.name;
       } else {
