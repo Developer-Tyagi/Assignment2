@@ -210,6 +210,12 @@ const routes = [
         component: () => import('pages/InsurancePolicy.vue')
       },
       {
+        path: 'mortgage-liens',
+        name: 'mortgage liens ',
+        caseSensitive: true,
+        component: () => import('src/pages/MortgageAndLiens.vue')
+      },
+      {
         path: 'settlements',
         name: 'Settlements ',
         caseSensitive: true,

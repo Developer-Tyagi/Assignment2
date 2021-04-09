@@ -79,6 +79,7 @@ export default {
           this.$router.push('/insurance-policy');
           break;
         case 'Mortgages and Liens':
+          this.$router.push('/mortgage-liens');
           break;
         case 'Files':
           this.$router.push({

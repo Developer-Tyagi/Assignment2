@@ -17,6 +17,10 @@ export const constants = {
     CLIENT_INFO: 'Client Info Updated Successfully !',
     INSURER_AND_POLICY: 'Insurer & Policy Info Updated Successfully !',
     PROPERTY_ADDRESS: 'Property Address Added Successfully !',
-    LOSSINFO_UPDATED: 'Loss Info Updated Successfully !'
+    LOSSINFO_UPDATED: 'Loss Info Updated Successfully !',
+    ESTIMATOR: 'Estimator Created Successfully !',
+    MORTGAGE: 'Mortage Created Successfully !',
+    VENDOR: 'Vendor Created Successfully !',
+    CARRIER: 'Carrier Added Successfully !'
   }
 };

@@ -252,7 +252,7 @@
 import CustomBar from 'components/CustomBar';
 
 import AddVendor from 'components/AddVendor';
-
+import { successMessage } from '@utils/validation';
 import { validateDate, validateTime } from '@utils/validation';
 import { mapGetters, mapActions } from 'vuex';
 import { constants } from '@utils/constant';
@@ -297,10 +297,11 @@ export default {
     closeTimeDialog() {
       this.$refs.qTimeProxy.hide();
     },
-
+    successMessage,
     async onCloseAddVendorDialogBox(result, selected) {
       if (result) {
         await this.getVendors();
+        this.successMessage(constants.successMessages.VENDOR);
         this.onClosingVendorSelectDialog(selected, this.contractInfo.valueName);
       }
     },

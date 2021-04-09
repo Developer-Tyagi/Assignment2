@@ -171,6 +171,7 @@ export async function editClaimNotes({ dispatch, state }, payload) {
       `/claims/${payload.id}/notes/${payload.noteId}`,
       buildApiData('claimnotes', payload.notesData)
     );
+
     dispatch('setLoading', false);
     return data;
   } catch (e) {
@@ -389,6 +390,24 @@ export async function getSingleClaims({ commit, dispatch }, id) {
   try {
     const { data } = await request.get(`/claims/${id}/info`);
     commit('setClaim', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+  }
+}
+
+// This API is for getting Mortgage Info
+export async function getMortgage({ commit, dispatch }, id) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get(`/claims/${id}/mortgages`);
+
+    commit('setMortgage', data);
     dispatch('setLoading', false);
   } catch (e) {
     console.log(e);

@@ -19,7 +19,7 @@
                 name="create"
                 color="primary"
                 class="col q-pt-xs"
-                @click="onClickEdit()"
+                @click="onClickEdit(index)"
               ></q-icon>
             </div>
             <div>{{ log.attributes.title }}</div>
@@ -181,17 +181,16 @@ export default {
     ...mapActions(['getSingleClaimDetails', 'getLog', 'addLog', 'editLog']),
     ...mapMutations(['setSelectedClaimId', 'setLog']),
     // Edit Function
-    onClickEdit() {
-      let index = this.log.length;
-      this.edit.title = this.log[index - 1].attributes.title;
-      this.edit.title = this.log[index - 1].attributes.title;
-      this.edit.details = this.log[index - 1].attributes.detail;
+    onClickEdit(index) {
+      this.edit.title = this.log[index].attributes.title;
+      this.edit.title = this.log[index].attributes.title;
+      this.edit.details = this.log[index].attributes.detail;
 
-      this.edit.notes = this.log[index - 1].attributes.note;
+      this.edit.notes = this.log[index].attributes.note;
       this.editLogDialog = true;
-      this.logId = this.log[index - 1].id;
+      this.logId = this.log[index].id;
 
-      if (this.log[index - 1].attributes.isSystemGen == true) {
+      if (this.log[index].attributes.isSystemGen == true) {
         this.isFieldDisable = true;
       } else {
         this.isFieldDisable = false;

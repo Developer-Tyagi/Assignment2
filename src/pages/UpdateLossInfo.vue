@@ -146,7 +146,7 @@ import moment from 'moment';
 import LossInfo from 'components/LossInfo';
 import { validateDate, successMessage } from '@utils/validation';
 import { date } from 'quasar';
-import { dateToSend } from '@utils/date';
+import { dateToSend, dateToShow } from '@utils/date';
 import CustomBar from 'components/CustomBar';
 import { constants } from 'src/utils/constant';
 
@@ -160,6 +160,7 @@ export default {
   data() {
     return {
       lossDetails: {
+        addressID: '',
         lossAddressNameDropdown: 'Others',
 
         wasAppifProvidedToTheInsuredToggle: false,
@@ -246,6 +247,7 @@ export default {
     if (!this.selectedClaimId) {
       this.$router.push('/clients');
     }
+
     this.getLossInfo(this.selectedClaimId);
     this.setSelectedClaimId(this.selectedClaimId);
     this.getPropertyTypes();
@@ -299,7 +301,7 @@ export default {
             },
             isNewAddress: false,
             lossAddressName: this.lossDetails.lossAddressName,
-            addressID: '605c5f3dd762a4813d48cd91',
+            addressID: this.lossDetails.addressID,
             propertyType: this.lossDetails.property,
             propertyDesc: this.lossDetails.propertyDescription,
             claimReason: this.lossDetails.reasonClaim,
@@ -325,13 +327,15 @@ export default {
     onEditIconClick() {
       this.lossInfoDialog = true;
       //This is For Prefilling Values in Loss Info Form
+
       this.lossDetails.lossAddressName = this.lossInfo.attributes.lossInfo.lossAddressName;
+      this.lossDetails.addressID = this.lossInfo.attributes.lossInfo.addressID;
       this.lossDetails.property = this.lossInfo.attributes.lossInfo.propertyType;
       this.lossDetails.severityOfClaimType = this.lossInfo.attributes.lossInfo.serverity;
       this.lossDetails.reasonClaim = this.lossInfo.attributes.lossInfo.claimReason;
 
-      this.lossDetails.deadlineDate = this.lossInfo.attributes.lossInfo.deadlineDate.formatDate(
-        'MM/DD/YYYY'
+      this.lossDetails.deadlineDate = dateToShow(
+        this.lossInfo.attributes.lossInfo.deadlineDate
       );
       this.lossDetails.recovDDDate = this.lossInfo.attributes.lossInfo.recovDDDate;
 
