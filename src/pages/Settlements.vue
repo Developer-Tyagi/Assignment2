@@ -203,24 +203,26 @@
                   <q-toggle class="" v-model="isFinal" />
                 </div>
               </div>
-
-              <div class="row justify-between ">
-                <div class="q-pl-md q-my-md">Accepted or Rejected</div>
+              <div class="q-pl-md q-mt-md">
+                Accepted or Rejected
+              </div>
+              <div class="row justify-center">
                 <q-btn-toggle
                   class="q-my-sm q-mr-sm"
                   v-model="buttonGroup"
                   glossy
+                  size="md"
                   toggle-color="primary"
                   :options="[
                     { label: ' Accepted', value: true },
-                    { label: 'Rejected', value: false }
+                    { label: 'Rejected', value: false },
+                    { label: 'Pending', value: null }
                   ]"
-                ></q-btn-toggle>
+                />
               </div>
             </q-card>
             <!-- 2nd Card -->
             <q-card class=" q-pa-md q-mt-sm" flat bordered>
-              <div class="form-heading">Accepted or Rejected</div>
               <div class="row" style="align-items: center">
                 <span class="">Replacement Cost</span>
 
@@ -266,7 +268,7 @@
                   @input="onChangeValueCalculation(amounts.replacementCost)"
                 />
               </div>
-              <q-separator />
+
               <div class="row" style="align-items: center">
                 <span class="col-5 text-bold">Actual Cash Value</span>
                 <span>=</span>
@@ -275,14 +277,14 @@
                   v-model.number="actualValue"
                   mask="#.#"
                   type="number"
-                  placeholder=""
-                  style="margin-left: auto; width: 50%"
+                  style="margin-left: auto; width: 50%;font-size:19px;"
                   prefix="$"
-                  class="input-extra-padding"
+                  borderless
+                  class=" q-py-sm"
                   @input="onChangeValueCalculation()"
                 />
               </div>
-              <q-separator />
+
               <div class="row" style="align-items: center">
                 <span class="col-5">Other Adjustment</span>
                 <span>+</span>
@@ -291,7 +293,6 @@
                   v-model.number="amounts.otherAdjustment"
                   mask="#.#"
                   type="number"
-                  placeholder=""
                   style="margin-left: auto; width: 50%"
                   prefix="$"
                   class="input-extra-padding"
@@ -306,30 +307,29 @@
                   v-model.number="amounts.deductibleApplied"
                   mask="#.#"
                   type="number"
-                  placeholder=""
                   style="margin-left: auto; width: 50%"
                   prefix="$"
                   class="input-extra-padding"
                   @input="onChangeValueCalculation()"
                 />
               </div>
-              <q-separator />
+
               <div class="row" style="align-items: center">
                 <span class="col-5 text-bold">Net Settlement </span>
                 <span>=</span>
                 <q-input
                   dense
+                  borderless
                   v-model.number="netSettlement"
                   mask="#.#"
                   type="number"
-                  placeholder=""
-                  style="margin-left: auto; width: 50%"
+                  style="margin-left: auto; width: 50%;font-size:19px;"
                   prefix="$"
-                  class="input-extra-padding"
+                  class=" q-py-sm"
                   @input="onChangeValueCalculation()"
                 />
               </div>
-              <q-separator />
+
               <div class="row" style="align-items: center">
                 <span class="col-5">Amt. Over Policy Limit </span>
                 <span>-</span>
@@ -338,7 +338,6 @@
                   v-model.number="amounts.policyLimit"
                   mask="#.#"
                   type="number"
-                  placeholder=""
                   style="margin-left: auto; width: 50%"
                   prefix="$"
                   class="input-extra-padding"
@@ -353,14 +352,13 @@
                   v-model.number="amounts.priorPayment"
                   mask="#.#"
                   type="number"
-                  placeholder=""
                   style="margin-left: auto; width: 50%"
                   prefix="$"
                   class="input-extra-padding"
                   @input="onChangeValueCalculation()"
                 />
               </div>
-              <q-separator />
+
               <div class="row" style="align-items: center">
                 <span class="col-5 text-bold">Total Settlement </span>
                 <span>=</span>
@@ -369,13 +367,12 @@
                   v-model.number="totalSettlement"
                   mask="#.#"
                   type="number"
-                  placeholder=""
-                  style="margin-left: auto; width: 50%"
+                  style="margin-left: auto; width: 50%;font-size:19px;"
                   prefix="$"
-                  class="input-extra-padding"
+                  class="q-py-sm "
+                  borderless
                 />
               </div>
-              <q-separator />
             </q-card>
             <q-card flat bordered class="q-mt-md">
               <q-input
