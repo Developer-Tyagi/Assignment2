@@ -229,7 +229,11 @@ export default {
       this.successMessage(constants.successMessages.MORTGAGE);
       this.mortgageInfo.mortgageInfoDialog = false;
       this.getMortgage(this.selectedClaimId);
-      this.mortgageInfo.mortgageDetails[0] = '';
+      this.mortgageInfo.mortgageDetails[0].id = '';
+      this.mortgageInfo.mortgageDetails[0].value = '';
+      this.mortgageInfo.mortgageDetails[0].loanNumber = '';
+      this.mortgageInfo.mortgageDetails[0].accountNumber = '';
+      this.mortgageInfo.mortgageDetails[0].notes = '';
     }
   }
 };

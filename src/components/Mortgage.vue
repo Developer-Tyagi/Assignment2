@@ -1,83 +1,82 @@
 <template>
   <div>
- <!-- Mortgage Dialog -->
-   <div class="custom-select"
-              v-model="mortgageInfo.mortgageDetails[0].id"
-              @click="onAddVendorDialogClick(constants.industries.MORTGAGE)"
-            >
-              <div class="select-text">
-                {{
-                  mortgageInfo.mortgageDetails[0].value
-                    ? mortgageInfo.mortgageDetails[0].value
-                    : 'Enter Mortgage Company'
-                }}
-              </div>
-            </div>
+    <!-- Mortgage Dialog -->
+    <div
+      class="custom-select"
+      v-model="mortgageInfo.mortgageDetails[0].id"
+      @click="onAddVendorDialogClick(constants.industries.MORTGAGE)"
+    >
+      <div class="select-text">
+        {{
+          mortgageInfo.mortgageDetails[0].value
+            ? mortgageInfo.mortgageDetails[0].value
+            : 'Enter Mortgage Company'
+        }}
+      </div>
+    </div>
 
-            <q-input
-              dense
-              v-model="mortgageInfo.mortgageDetails[0].loanNumber"
-              label="Loan Number"
-            />
-            <q-input
-              dense
-              v-model="mortgageInfo.mortgageDetails[0].accountNumber"
-              label="Account Number"
-            />
-            <div class="form-heading">Notes</div>
-            <textarea
-              rows="5"
-              required
-              class="full-width"
-              v-model="mortgageInfo.mortgageDetails[0].notes"
-              style="resize: none"
-            />
-            <div class="row" v-if="isThereSecondMortgageToggle">
-              <span class="form-heading">
-                Is there a 2nd mortgage on the home?
-              </span>
+    <q-input
+      dense
+      v-model="mortgageInfo.mortgageDetails[0].loanNumber"
+      label="Loan Number"
+    />
+    <q-input
+      dense
+      v-model="mortgageInfo.mortgageDetails[0].accountNumber"
+      label="Account Number"
+    />
+    <div class="form-heading">Notes</div>
+    <textarea
+      rows="5"
+      required
+      class="full-width"
+      v-model="mortgageInfo.mortgageDetails[0].notes"
+      style="resize: none"
+    />
+    <div class="row" v-if="isThereSecondMortgageToggle">
+      <span class="form-heading">
+        Is there a 2nd mortgage on the home?
+      </span>
 
-              <q-toggle
-                class="q-ml-auto"
-                v-model="mortgageInfo.isSecondMortgageHome"
-                @input="onSecondMortgageToggle"
-              />
-            </div>
-            <div v-if="mortgageInfo.isSecondMortgageHome">
-              <div
-                class="custom-select"
-                v-model="mortgageInfo.mortgageDetails[1].id"
-                @click="
-                  onAddVendorDialogClick(constants.industries.SECONDARYMORTGAGE)
-                "
-              >
-                <div class="select-text">
-                  {{
-                    mortgageInfo.mortgageDetails[1].value
-                      ? mortgageInfo.mortgageDetails[1].value
-                      : 'Enter Mortgage Company'
-                  }}
-                </div>
-              </div>
-              <q-input
-                dense
-                v-model="mortgageInfo.mortgageDetails[1].loanNumber"
-                label="Loan Number"
-              />
-              <q-input
-                dense
-                v-model="mortgageInfo.mortgageDetails[1].accountNumber"
-                label="Account Number"
-              />
-              <div class="form-heading">Notes</div>
-              <textarea
-                rows="5"
-                class="full-width"
-                v-model="mortgageInfo.mortgageDetails[1].notes"
-                style="resize: none"
-              />
-            </div>
-     <!-- Vendor list Dialog -->
+      <q-toggle
+        class="q-ml-auto"
+        v-model="mortgageInfo.isSecondMortgageHome"
+        @input="onSecondMortgageToggle"
+      />
+    </div>
+    <div v-if="mortgageInfo.isSecondMortgageHome">
+      <div
+        class="custom-select"
+        v-model="mortgageInfo.mortgageDetails[1].id"
+        @click="onAddVendorDialogClick(constants.industries.SECONDARYMORTGAGE)"
+      >
+        <div class="select-text">
+          {{
+            mortgageInfo.mortgageDetails[1].value
+              ? mortgageInfo.mortgageDetails[1].value
+              : 'Enter Mortgage Company'
+          }}
+        </div>
+      </div>
+      <q-input
+        dense
+        v-model="mortgageInfo.mortgageDetails[1].loanNumber"
+        label="Loan Number"
+      />
+      <q-input
+        dense
+        v-model="mortgageInfo.mortgageDetails[1].accountNumber"
+        label="Account Number"
+      />
+      <div class="form-heading">Notes</div>
+      <textarea
+        rows="5"
+        class="full-width"
+        v-model="mortgageInfo.mortgageDetails[1].notes"
+        style="resize: none"
+      />
+    </div>
+    <!-- Vendor list Dialog -->
     <q-dialog
       v-model="mortgageInfo.vendorsListDialog"
       persistent
@@ -98,16 +97,13 @@
           :showFilter="mortgageInfo.showVendorDialogFilters"
           :filterName="mortgageInfo.vendorDialogFilterByIndustry"
           :valueName="mortgageInfo.valueName"
-          @addVendor="
-            (mortgageInfo.addVendorDialog = true)
-           
-          "
+          @addVendor="mortgageInfo.addVendorDialog = true"
         />
       </q-card>
     </q-dialog>
-     <!-- Add vendor Dialog -->
+    <!-- Add vendor Dialog -->
 
-        <q-dialog
+    <q-dialog
       v-model="mortgageInfo.addVendorDialog"
       persistent
       :maximized="true"
@@ -122,10 +118,7 @@
         />
       </q-card>
     </q-dialog>
-    </div>
-  
   </div>
-   
 </template>
 
 <script>
@@ -148,25 +141,24 @@ export default {
     mortgageInfo: {
       type: Object
     },
-    isThereSecondMortgageToggle:{
+    isThereSecondMortgageToggle: {
       type: Boolean,
       required: false
     }
-      
   },
 
   data() {
     return {
-           constants: constants,
+      constants: constants
     };
   },
   created() {},
 
-  computed: {...mapGetters([ 'vendors'])},
+  computed: { ...mapGetters(['vendors']) },
   methods: {
-        ...mapActions(['getVendors']),
-            successMessage,
-  onToggleButtonClick() {
+    ...mapActions(['getVendors']),
+    successMessage,
+    onToggleButtonClick() {
       if (this.mortgageInfo.mortgageDetails.length > 1) {
         this.mortgageInfo.mortgageDetails.pop();
       }
@@ -184,12 +176,12 @@ export default {
         ];
       }
     },
-       //Add Vendor Close List
+    //Add Vendor Close List
 
     async onCloseAddVendorDialogBox(result, selected) {
       if (result) {
         await this.getVendors();
-       this.successMessage(constants.successMessages.MORTGAGE);
+        this.successMessage(constants.successMessages.MORTGAGE);
         this.onClosingVendorSelectDialog(selected, this.mortgageInfo.valueName);
       }
     },
@@ -229,7 +221,7 @@ export default {
 
       this.mortgageInfo.vendorsListDialog = true;
     },
-     onSecondMortgageToggle() {
+    onSecondMortgageToggle() {
       if (this.mortgageInfo.isSecondMortgageHome) {
         this.mortgageInfo.mortgageDetails.push({
           id: '',
@@ -242,7 +234,7 @@ export default {
       } else {
         this.mortgageInfo.mortgageDetails.pop();
       }
-    },
-}
+    }
+  }
 };
 </script>
