@@ -524,8 +524,9 @@
 </template>
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex';
-import { validateEmail, validateDate } from '@utils/validation';
+import { validateEmail, validateDate, successMessage } from '@utils/validation';
 import { dateToSend } from '@utils/date';
+
 import VendorsList from 'components/VendorsList';
 import { constants } from '@utils/constant';
 import AddVendor from 'components/AddVendor';
@@ -626,7 +627,7 @@ export default {
       'getLossCauses'
     ]),
     ...mapMutations(['setSelectedClient']),
-
+    successMessage,
     onAddVendorDialogClick(name) {
       this.valueName = name;
       this.vendorDialogName = name;
@@ -826,8 +827,10 @@ export default {
             name: ''
           };
           this.$refs.list.getVendors(params);
+          this.successMessage(constants.successMessages.CARRIER);
         } else {
           this.$refs.list.getVendors();
+          this.successMessage(constants.successMessages.VENDOR);
         }
         this.vendorsListDialog = false;
       }

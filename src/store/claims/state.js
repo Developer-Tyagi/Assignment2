@@ -9,6 +9,7 @@ export default function() {
     lossInfo: [],
     settlementType: [],
     settlement: [],
-    claimTasks: []
+    claimTasks: [],
+    mortgage: []
   };
 }

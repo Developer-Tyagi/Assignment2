@@ -768,8 +768,6 @@ export default {
       vendorIndustriesOptions: [],
       lossAddressNameOptions: ['Others'],
 
-      constants: constants,
-
       companyPersonnelDialog: false,
       contractInfoDialog: false,
 
@@ -872,26 +870,9 @@ export default {
         doYouWantToSendInsuredPPIF: false,
         isClientGoingToPreparePPIF: false,
         isAdjustorFillOutLaterDate: false,
-        isMortgageHomeToggle: false,
-        vendorsListDialog: false,
-        vendorDialogFilterByIndustry: '',
-        showVendorDialogFilters: false,
-        addVendorDialog: false,
-        vendorDialogName: '',
-        valueName: '',
-        mortgageInfoDialog: false,
-        mortgageDetails: [
-          {
-            id: '',
-            value: '',
-            loanNumber: '',
-            accountNumber: '',
-            isPrimary: true,
-            notes: ''
-          }
-        ],
+
         lossAddressNameDropdown: 'Others',
-        isSecondMortgageHome: false,
+
         wasAppifProvidedToTheInsuredToggle: false,
         doesTheOfficeNeedToProvidePpifToTheInsuredToggle: false,
         PPdamagedItemsDailog: false,
@@ -965,6 +946,7 @@ export default {
         insuranceAdjustorPhoneType: '',
         typeOfLoss: ''
       },
+
       insuranceDetails: {
         hasClaimBeenFilledToggle: false,
         isThisIsForcedPlacedPolicyToggle: false,

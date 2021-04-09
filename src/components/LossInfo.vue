@@ -176,162 +176,6 @@
         </div>
       </q-card>
     </q-dialog>
-    <!-- Add vendor Dialog -->
-    <q-dialog
-      v-model="lossInfo.addVendorDialog"
-      persistent
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <AddVendor
-          @onCloseAddVendor="onCloseAddVendorDialogBox"
-          @closeDialog="closeAddVendorDialog"
-          :componentName="lossInfo.vendorDialogName"
-        />
-      </q-card>
-    </q-dialog>
-    <!-- Vendor list Dialog -->
-    <q-dialog
-      v-model="lossInfo.vendorsListDialog"
-      persistent
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <CustomBar
-          @closeDialog="lossInfo.vendorsListDialog = false"
-          :dialogName="lossInfo.vendorDialogName"
-        />
-        <VendorsList
-          :carrierName="lossInfo.carrierName"
-          :selective="true"
-          @selectedVendor="onClosingVendorSelectDialog"
-          ref="list"
-          :showFilter="lossInfo.showVendorDialogFilters"
-          :filterName="lossInfo.vendorDialogFilterByIndustry"
-          :valueName="lossInfo.valueName"
-          @addVendor="
-            (lossInfo.addVendorDialog = true),
-              (lossInfo.vendorsListDialog = false)
-          "
-        />
-      </q-card>
-    </q-dialog>
-    <!-- Mortgage Dialog -->
-    <q-dialog
-      v-model="lossInfo.mortgageInfoDialog"
-      persistent
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <CustomBar
-          @closeDialog="
-            lossInfo.mortgageInfoDialog = false;
-            lossInfoDialog = true;
-          "
-          :dialogName="'Mortagage Info'"
-        />
-        <div
-          class="mobile-container-page-without-search q-pa-sm form-height"
-          v-if="isMailingAddressEnable"
-        >
-          <q-form ref="estimatingInfoForm">
-            <div
-              class="custom-select"
-              v-model="lossInfo.mortgageDetails[0].id"
-              @click="onAddVendorDialogClick(constants.industries.MORTGAGE)"
-            >
-              <div class="select-text">
-                {{
-                  lossInfo.mortgageDetails[0].value
-                    ? lossInfo.mortgageDetails[0].value
-                    : 'Enter Mortgage Company'
-                }}
-              </div>
-            </div>
-
-            <q-input
-              dense
-              v-model="lossInfo.mortgageDetails[0].loanNumber"
-              label="Loan Number"
-            />
-            <q-input
-              dense
-              v-model="lossInfo.mortgageDetails[0].accountNumber"
-              label="Account Number"
-            /><br />
-            <span class="form-heading">Notes</span>
-            <textarea
-              rows="5"
-              required
-              class="full-width"
-              v-model="lossInfo.mortgageDetails[0].notes"
-              style="resize: none"
-            />
-            <div class="row">
-              <span class="form-heading">
-                Is there a 2nd mortgage on the home?
-              </span>
-
-              <q-toggle
-                class="q-ml-auto"
-                v-model="lossInfo.isSecondMortgageHome"
-                @input="onSecondMortgageToggle"
-              />
-            </div>
-            <div v-if="lossInfo.isSecondMortgageHome">
-              <div
-                class="custom-select"
-                v-model="lossInfo.mortgageDetails[1].id"
-                @click="
-                  onAddVendorDialogClick(constants.industries.SECONDARYMORTGAGE)
-                "
-              >
-                <div class="select-text">
-                  {{
-                    lossInfo.mortgageDetails[1].value
-                      ? lossInfo.mortgageDetails[1].value
-                      : 'Enter Mortgage Company'
-                  }}
-                </div>
-              </div>
-              <q-input
-                dense
-                v-model="lossInfo.mortgageDetails[1].loanNumber"
-                label="Loan Number"
-              />
-              <q-input
-                dense
-                v-model="lossInfo.mortgageDetails[1].accountNumber"
-                label="Account Number"
-              /><br />
-              <span class="form-heading">Notes</span>
-              <textarea
-                rows="5"
-                class="full-width"
-                v-model="lossInfo.mortgageDetails[1].notes"
-                style="resize: none"
-              />
-            </div>
-          </q-form>
-        </div>
-        <q-btn
-          label="Save"
-          color="primary"
-          class="button-width-90"
-          @click="
-            lossInfo.mortgageInfoDialog = false;
-            lossInfoDialog = true;
-          "
-          size="'xl'"
-        />
-      </q-card>
-    </q-dialog>
 
     <!-- Loss Info -->
 
@@ -792,41 +636,21 @@
         v-model="lossInfo.doesTheOfficeNeedToProvidePpifToTheInsuredToggle"
       />
     </div>
+
     <!-- Mortgage Details -->
     <div v-if="isMailingAddressEnable">
       <div class="row">
         <p class="q-my-auto form-heading">Is there a mortgage on the home?</p>
         <q-toggle
           class="q-ml-auto"
-          v-model="lossInfo.isMortgageHomeToggle"
+          v-model="mortgageInfo.isMortgageHomeToggle"
           @input="onToggleButtonClick"
         />
       </div>
-      <div
-        v-if="lossInfo.isMortgageHomeToggle"
-        @click="
-          lossInfo.mortgageInfoDialog = true;
-          lossInfo.lossInfoDialog = false;
-        "
-      >
-        <div class="row">
-          <div class="q-px-xs row">
-            <div v-if="!lossInfo.mortgageDetails[0]['id']">Select Mortgage</div>
-            <div
-              v-else
-              class="select-text"
-              v-for="(mortgageDetail, index) in lossInfo.mortgageDetails"
-            >
-              <span>
-                {{ mortgageDetail.value }}
-              </span>
-              <span v-if="lossInfo.mortgageDetails.length - 1 > index">
-                ,
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Mortgage
+        :mortgageInfo="mortgageInfo"
+        :isThereSecondMortgageToggle="true"
+      />
     </div>
   </div>
 </template>
@@ -841,19 +665,22 @@ import { validateDate } from '@utils/validation';
 import { mapGetters, mapActions } from 'vuex';
 import AddVendor from 'components/AddVendor';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
+import Mortgage from 'components/Mortgage';
 export default {
   name: 'InsuranceInfo',
   components: {
     CustomBar,
     VendorsList,
     AddVendor,
-    AutoCompleteAddress
+    AutoCompleteAddress,
+    Mortgage
   },
 
   props: {
     lossInfo: {
       type: Object
     },
+
     isMailingAddressEnable: {
       type: Boolean,
       required: false
@@ -874,6 +701,27 @@ export default {
 
   data() {
     return {
+      mortgageInfo: {
+        vendorsListDialog: false,
+        vendorDialogFilterByIndustry: '',
+        showVendorDialogFilters: false,
+        addVendorDialog: false,
+        vendorDialogName: '',
+        valueName: '',
+        isSecondMortgageHome: false,
+        isMortgageHomeToggle: false,
+        mortgageInfoDialog: false,
+        mortgageDetails: [
+          {
+            id: '',
+            value: '',
+            loanNumber: '',
+            accountNumber: '',
+            isPrimary: true,
+            notes: ''
+          }
+        ]
+      },
       constants: constants,
       lossAddressDetails: {
         houseNumber: '',
@@ -924,66 +772,22 @@ export default {
       }
     },
     closeAddVendorDialog(e) {
-      this.lossInfo.addVendorDialog = false;
+      this.mortgageInfo.addVendorDialog = false;
       // this.getVendors();
       if (e) {
-        this.lossInfo.vendorsListDialog = false;
+        this.mortgageInfo.vendorsListDialog = false;
       } else {
-        this.lossInfo.vendorsListDialog = true;
+        this.mortgageInfo.vendorsListDialog = true;
       }
     },
 
-    //Add Vendor Close List
-
-    async onCloseAddVendorDialogBox(result, selected) {
-      if (result) {
-        await this.getVendors();
-        this.onClosingVendorSelectDialog(selected, this.lossInfo.valueName);
-      }
-    },
-    async onClosingVendorSelectDialog(vendor, dialogName) {
-      if (dialogName == constants.industries.MORTGAGE) {
-        this.lossInfo.mortgageDetails[0].id = vendor.id;
-        this.lossInfo.mortgageDetails[0].value = vendor.name;
-      } else {
-        this.lossInfo.mortgageDetails[1].id = vendor.id;
-
-        this.lossInfo.mortgageDetails[1].value = vendor.name;
-      }
-      this.lossInfo.vendorsListDialog = false;
-    },
-    async onAddVendorDialogClick(name) {
-      this.lossInfo.valueName = name;
-
-      if (name == constants.industries.MORTGAGE) {
-        this.lossInfo.vendorDialogName = constants.industries.MORTGAGE;
-        this.lossInfo.showVendorDialogFilters = false;
-        this.lossInfo.vendorDialogFilterByIndustry =
-          constants.industries.MORTGAGE;
-        const params = {
-          industry: this.lossInfo.vendorDialogFilterByIndustry,
-          name: ''
-        };
-        await this.getVendors(params);
-      } else {
-        this.lossInfo.vendorDialogName = constants.industries.MORTGAGE;
-
-        this.lossInfo.showVendorDialogFilters = false;
-        this.lossInfo.vendorDialogFilterByIndustry =
-          constants.industries.MORTGAGE;
-      }
-
-      this.lossInfo.vendorDialogName = name;
-
-      this.lossInfo.vendorsListDialog = true;
-    },
     onToggleButtonClick() {
-      if (this.lossInfo.mortgageDetails.length > 1) {
-        this.lossInfo.mortgageDetails.pop();
+      if (this.mortgageInfo.mortgageDetails.length > 1) {
+        this.mortgageInfo.mortgageDetails.pop();
       }
-      if (!this.lossInfo.isMortgageHomeToggle) {
-        this.lossInfo.isSecondMortgageHome = false;
-        this.lossInfo.mortgageDetails = [
+      if (!this.mortgageInfo.isMortgageHomeToggle) {
+        this.mortgageInfo.isSecondMortgageHome = false;
+        this.mortgageInfo.mortgageDetails = [
           {
             id: '',
             value: '',
@@ -1028,7 +832,7 @@ export default {
       if (this.lossInfo.mortgageDetails.length > 1) {
         this.lossInfo.mortgageDetails.pop();
       }
-      if (!this.lossInfo.isMortgageHomeToggle) {
+      if (!this.mortgageInfo.isMortgageHomeToggle) {
         this.lossInfo.isSecondMortgageHome = false;
         this.lossInfo.mortgageDetails = [
           {

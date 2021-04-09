@@ -8,3 +8,4 @@ export const lossInfo = state => state.lossInfo;
 export const settlementType = state => state.settlementType;
 export const settlement = state => state.settlement;
 export const claimTasks = state => state.claimTasks;
+export const mortgage = state => state.mortgage;
