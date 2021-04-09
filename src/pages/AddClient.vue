@@ -1074,7 +1074,7 @@ export default {
       this.lossInfo.lossAddressDetails.addressRegion = this.selectedLead.lossLocation.addressRegion;
       this.lossInfo.lossAddressDetails.postalCode = this.selectedLead.lossLocation.postalCode;
       this.lossInfo.lossAddressDetails.streetAddress = this.selectedLead.lossLocation.streetAddress;
-
+      this.lossInfo.descriptionDwelling = this.selectedLead.lossDesc;
       this.contractInfo.sourceDetails.details = this.selectedLead.leadSource
         ? this.selectedLead.leadSource.detail
         : null;
