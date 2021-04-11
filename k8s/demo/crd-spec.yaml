@@ -7,7 +7,7 @@ metadata:
   labels:
     name: demo-ui
     project: claimguru
-    version: "CI_COMMIT_SHORT_SHA"
+    version: 'CI_COMMIT_SHORT_SHA'
 spec:
   replicas: 1
   selector:
@@ -19,7 +19,7 @@ spec:
       labels:
         name: demo-ui
         project: claimguru
-        version: "CI_COMMIT_SHORT_SHA"
+        version: 'CI_COMMIT_SHORT_SHA'
     spec:
       securityContext: {}
       containers:
@@ -36,7 +36,13 @@ spec:
               port: http
             periodSeconds: 150
             initialDelaySeconds: 2
-          resources: {}
+          # resources:
+          #   requests:
+          #     memory: ""
+          #     cpu: ""
+          #   limits:
+          #     memory: "100Mi"
+          #     cpu: "10m"
 ---
 # Service
 apiVersion: v1
@@ -46,7 +52,7 @@ metadata:
   labels:
     name: demo-ui
     project: claimguru
-    version: "CI_COMMIT_SHORT_SHA"
+    version: 'CI_COMMIT_SHORT_SHA'
 spec:
   type: ClusterIP
   ports:
@@ -66,7 +72,7 @@ metadata:
   labels:
     name: demo-ui
     project: claimguru
-    version: "CI_COMMIT_SHORT_SHA"
+    version: 'CI_COMMIT_SHORT_SHA'
 spec:
   hosts:
     - demo.claimguru.cilalabs.dev
@@ -75,7 +81,7 @@ spec:
   http:
     - match:
         - uri:
-            prefix: "/"
+            prefix: '/'
       route:
         - destination:
             host: demo-ui
