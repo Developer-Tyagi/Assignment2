@@ -1,36 +1,31 @@
 <template>
   <div>
- 
-    
-       <div
-        v-if="mortgageInfo.isMortgageHomeToggle"
-        @click="
-          mortgageInfo.mortgageInfoDialog = true;
-       
-        "
-      >
-        <div class="row">
-          <div class="q-px-xs row">
-            <div v-if="!mortgageInfo.mortgageDetails[0]['id']">Select Mortgage</div>
-            <div
-              v-else
-              class="select-text"
-              v-for="(mortgageDetail, index) in mortgageInfo.mortgageDetails"
-            >
-              <span>
-                {{ mortgageDetail.value }}
-              </span>
-              <span v-if="mortgageInfo.mortgageDetails.length - 1 > index">
-                ,
-              </span>
-            </div>
+    <div
+      v-if="mortgageInfo.isMortgageHomeToggle"
+      @click="mortgageInfo.mortgageInfoDialog = true"
+    >
+      <div class="row">
+        <div class="q-px-xs row">
+          <div v-if="!mortgageInfo.mortgageDetails[0]['id']">
+            Select Mortgage
+          </div>
+          <div
+            v-else
+            class="select-text"
+            v-for="(mortgageDetail, index) in mortgageInfo.mortgageDetails"
+          >
+            <span>
+              {{ mortgageDetail.value }}
+            </span>
+            <span v-if="mortgageInfo.mortgageDetails.length - 1 > index">
+              ,
+            </span>
           </div>
         </div>
       </div>
+    </div>
 
-
-  
-  <!-- Mortgage Dialog -->
+    <!-- Mortgage Dialog -->
     <q-dialog
       v-model="mortgageInfo.mortgageInfoDialog"
       persistent
@@ -38,17 +33,12 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card >
+      <q-card>
         <CustomBar
-          @closeDialog="
-            mortgageInfo.mortgageInfoDialog = false;
-           
-          "
+          @closeDialog="mortgageInfo.mortgageInfoDialog = false"
           :dialogName="'Mortagage Info'"
         />
-        <div
-          class="mobile-container-page q-pa-sm form-height  "
-       >
+        <div class="mobile-container-page q-pa-sm form-height  ">
           <q-form ref="estimatingInfoForm">
             <div
               class="custom-select "
@@ -133,15 +123,12 @@
           label="Save"
           color="primary"
           class="button-width-90"
-          @click="
-            mortgageInfo.mortgageInfoDialog = false;
-         
-          "
+          @click="mortgageInfo.mortgageInfoDialog = false"
           size="'xl'"
         />
       </q-card>
     </q-dialog>
-     <!-- Vendor list Dialog -->
+    <!-- Vendor list Dialog -->
     <q-dialog
       v-model="mortgageInfo.vendorsListDialog"
       persistent
@@ -162,16 +149,13 @@
           :showFilter="mortgageInfo.showVendorDialogFilters"
           :filterName="mortgageInfo.vendorDialogFilterByIndustry"
           :valueName="mortgageInfo.valueName"
-          @addVendor="
-            (mortgageInfo.addVendorDialog = true)
-           
-          "
+          @addVendor="mortgageInfo.addVendorDialog = true"
         />
       </q-card>
     </q-dialog>
-     <!-- Add vendor Dialog -->
+    <!-- Add vendor Dialog -->
 
-        <q-dialog
+    <q-dialog
       v-model="mortgageInfo.addVendorDialog"
       persistent
       :maximized="true"
@@ -186,10 +170,7 @@
         />
       </q-card>
     </q-dialog>
-    </div>
-  
   </div>
-   
 </template>
 
 <script>
@@ -212,25 +193,24 @@ export default {
     mortgageInfo: {
       type: Object
     },
-    isThereSecondMortgageToggle:{
+    isThereSecondMortgageToggle: {
       type: Boolean,
       required: false
     }
-      
   },
 
   data() {
     return {
-           constants: constants,
+      constants: constants
     };
   },
   created() {},
 
-  computed: {...mapGetters([ 'vendors'])},
+  computed: { ...mapGetters(['vendors']) },
   methods: {
-        ...mapActions(['getVendors']),
-            successMessage,
-  onToggleButtonClick() {
+    ...mapActions(['getVendors']),
+    successMessage,
+    onToggleButtonClick() {
       if (this.mortgageInfo.mortgageDetails.length > 1) {
         this.mortgageInfo.mortgageDetails.pop();
       }
@@ -248,12 +228,12 @@ export default {
         ];
       }
     },
-       //Add Vendor Close List
+    //Add Vendor Close List
 
     async onCloseAddVendorDialogBox(result, selected) {
       if (result) {
         await this.getVendors();
-       this.successMessage(constants.successMessages.MORTGAGE);
+        this.successMessage(constants.successMessages.MORTGAGE);
         this.onClosingVendorSelectDialog(selected, this.mortgageInfo.valueName);
       }
     },
@@ -293,7 +273,7 @@ export default {
 
       this.mortgageInfo.vendorsListDialog = true;
     },
-     onSecondMortgageToggle() {
+    onSecondMortgageToggle() {
       if (this.mortgageInfo.isSecondMortgageHome) {
         this.mortgageInfo.mortgageDetails.push({
           id: '',
@@ -306,7 +286,7 @@ export default {
       } else {
         this.mortgageInfo.mortgageDetails.pop();
       }
-    },
-}
+    }
+  }
 };
 </script>
