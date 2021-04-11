@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <div class="mobile-container-page ">
+    <div class="mobile-container-page">
       <div class="q-pa-md">
         <div class="form-heading">File Number</div>
         {{
@@ -8,7 +8,6 @@
             ? getSelectedClaim.attributes.policyInfo.number
             : '-'
         }}
-        <!-- <br /><br /> -->
         <div class="form-heading">
           Loss Addresss
 

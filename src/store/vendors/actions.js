@@ -17,7 +17,22 @@ export async function getVendors({ commit, dispatch }, params) {
     });
   }
 }
-
+//View a single vendor
+export async function getVendorDetails({ commit, dispatch }, id) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get(`/vendors/${id}`);
+    commit('setSelectedVendor', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+  }
+}
 export async function addVendor({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {

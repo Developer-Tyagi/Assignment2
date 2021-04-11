@@ -6,6 +6,74 @@ export function setvendors(state, vendors) {
     selected: false
   }));
 }
+export function setSelectedVendor(state, vendor) {
+  if (vendor && (vendor.id || vendor.attributes.id)) {
+    state.selectedVendor = vendor.attributes;
+  } else {
+    state.selectedVendor = {
+      name: '',
+      industry: {
+        value: ' ',
+        id: '',
+        machineValue: ''
+      },
+      meta: {
+        claimFiledByEmail: true
+      },
+      contact: [
+        {
+          fname: '',
+          lname: '',
+          email: '',
+          honorific: {
+            id: '',
+            value: '',
+            machineValue: ''
+          },
+          phoneNumber: [
+            {
+              type: '',
+              number: ''
+            }
+          ],
+          isPrimary: true
+        },
+        {
+          fname: '',
+          lname: '',
+          email: '',
+          honorific: {
+            id: '',
+            value: '',
+            machineValue: ''
+          },
+          phoneNumber: [
+            {
+              type: '',
+              number: ''
+            }
+          ]
+        }
+      ],
+      address: {
+        addressCountry: '',
+        addressLocality: '',
+        addressRegion: '',
+        postalCode: '',
+        streetAddress: '',
+        dropBox: {
+          info: '',
+          isPresent: false
+        },
+        houseNumber: ''
+      },
+      info: {
+        website: '',
+        notes: ''
+      }
+    };
+  }
+}
 
 export function setvendorsIndustries(state, vendorIndustries) {
   state.vendorIndustries = vendorIndustries.map(vendorIndustry => ({
