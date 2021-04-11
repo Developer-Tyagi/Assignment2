@@ -36,7 +36,13 @@ spec:
               port: http
             periodSeconds: 150
             initialDelaySeconds: 2
-          resources: {}
+          # resources:
+          #   requests:
+          #     memory: ""
+          #     cpu: ""
+          #   limits:
+          #     memory: "100Mi"
+          #     cpu: "10m"
 ---
 # Service
 apiVersion: v1

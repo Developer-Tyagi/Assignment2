@@ -63,6 +63,8 @@ review_deploy:
 # This task cleans up MR review set up.
 review_cleanup:
   stage: cleanup
+  needs:
+    - review_deploy
   image:
     name: us-west1-docker.pkg.dev/pre-prod-286801/cilalabs/common-utils/kubeninja
   variables:
@@ -125,7 +127,7 @@ pre_prod_deploy:
     - pre-production
   only:
     - master
-  
+
 # This task creates demo image.
 build_demo_image:
   stage: build
@@ -174,4 +176,3 @@ demo_deploy:
   only:
     - master
   when: manual
-
