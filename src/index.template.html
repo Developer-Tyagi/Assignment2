@@ -37,6 +37,18 @@
       href="icons/favicon-16x16.png"
     />
     <link rel="icon" type="image/ico" href="favicon.ico" />
+    <script
+      src="https://cdn.onesignal.com/sdks/OneSignalSDK.js"
+      async=""
+    ></script>
+    <script>
+      window.OneSignal = window.OneSignal || [];
+      OneSignal.push(function() {
+        OneSignal.init({
+          appId: '8b9d23a5-a03c-4720-902e-552ce6f500d2'
+        });
+      });
+    </script>
   </head>
   <body>
     <!-- DO NOT touch the following DIV -->
