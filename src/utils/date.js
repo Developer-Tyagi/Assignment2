@@ -8,3 +8,7 @@ export function dateToSend(dateString) {
 export function dateToShow(dateString) {
   return dateString ? date.formatDate(dateString, 'MM/DD/YYYY') : '';
 }
+
+export function dateToTime(dateString) {
+  return dateString ? date.formatDate(dateString, 'hh:mm') : '';
+}

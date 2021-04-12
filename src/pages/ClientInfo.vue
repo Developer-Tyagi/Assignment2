@@ -15,7 +15,7 @@
           >
         </div>
       </div>
-      <div class="row  q-ml-md q-my-md text-grey-8">
+      <div class="row  q-ml-md q-my-md lightHeading">
         <div>
           {{
             editSelectedClient.attributes.meta
@@ -47,7 +47,7 @@
             ></q-icon>
           </div>
           <div class="row ">
-            <div class="text-bold  col-xs-4 text-grey-8 ">
+            <div class="text-bold  col-xs-4 lightHeading">
               Insured Details
             </div>
             <div class="q-ml-md column">
@@ -89,7 +89,7 @@
           </div>
 
           <div class="q-mt-md row">
-            <div class="text-bold q-mt-none  col-xs-4 text-grey-8">
+            <div class="text-bold q-mt-none  col-xs-4 lightHeading">
               Co-Insured Details
             </div>
             <div class="column q-ml-md">
@@ -159,7 +159,7 @@
           </div>
 
           <div class="q-mt-md row">
-            <div class="text-bold q-mt-none col-xs-4 text-grey-8">
+            <div class="text-bold q-mt-none col-xs-4 lightHeading">
               Address Details
             </div>
             <div class="column q-ml-md">
@@ -201,7 +201,7 @@
             </div>
           </div>
           <div class="q-mt-md row">
-            <div class="text-bold q-mt-none col-xs-4 text-grey-8">
+            <div class="text-bold q-mt-none col-xs-4 lightHeading">
               Additional Phone Numbers
             </div>
             <div class="column q-ml-md">
@@ -220,7 +220,7 @@
           </div>
 
           <div class="q-mt-md row">
-            <div class="form-heading q-mt-none col-xs-4 text-grey-8">
+            <div class="form-heading q-mt-none col-xs-4 lightHeading">
               Tenant Details
             </div>
             <div class="column q-ml-md">
@@ -656,8 +656,8 @@ import { mapGetters, mapActions } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import { validateEmail, successMessage } from '@utils/validation';
 import AddressService from '@utils/country';
-import { dateToSend, dateToShow } from '@utils/date';
-import { date } from 'quasar';
+import { dateToTime, dateToShow } from '@utils/date';
+
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import { constants } from '@utils/constant';
 
@@ -768,9 +768,7 @@ export default {
       this.$router.push('/clients');
     }
     this.showingDate = dateToShow(this.editSelectedClient.attributes.created);
-    this.showingTime = this.dateToTime(
-      this.editSelectedClient.attributes.created
-    );
+    this.showingTime = dateToTime(this.editSelectedClient.attributes.created);
   },
 
   created() {
@@ -846,9 +844,7 @@ export default {
         `https://www.google.com/maps/search/?api=1&query=${this.editSelectedClient.attributes.insuredInfo.address.houseNumber}${this.editSelectedClient.attributes.insuredInfo.address.streetAddress}${this.editSelectedClient.attributes.insuredInfo.address.postalCode}${this.editSelectedClient.attributes.insuredInfo.address.addressRegion}`
       );
     },
-    dateToTime(dateString) {
-      return dateString ? date.formatDate(dateString, 'hh:mm') : null;
-    },
+
     setTypes(types, data) {
       const obj = types.find(item => {
         return item.id === data.id;
