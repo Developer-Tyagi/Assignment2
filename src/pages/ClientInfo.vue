@@ -3,7 +3,7 @@
     <div class="listing-height">
       <!-- This is for showing the client details   -->
       <div class=" q-ma-md row justify-between">
-        <div class="text-bold text-h6">
+        <div class="text-h6 ">
           {{ editSelectedClient.attributes.insuredInfo.primary.fname }}
           {{ editSelectedClient.attributes.insuredInfo.primary.lname }}
         </div>
@@ -33,7 +33,7 @@
           - Open Claim
         </div>
       </div>
-      <div class="q-ml-md text-bold">Date & Time of first contact</div>
+      <div class="q-ml-md ">Date & Time of first contact</div>
       <div class="q-ml-md">{{ showingDate }},{{ showingTime }}</div>
 
       <q-card class="  q-ma-md q-ma-sm ">
@@ -154,22 +154,6 @@
                     }}
                   </span>
                 </p>
-              </div>
-            </div>
-          </div>
-          <div class="q-mt-md row">
-            <div class="text-bold q-mt-none  col-xs-4 text-grey-8">
-              Source of Lead ?Client
-            </div>
-            <div class="column q-ml-md">
-              <div class="">
-                {{
-                  editSelectedClient.attributes.source
-                    ? editSelectedClient.attributes.source.detail
-                      ? editSelectedClient.attributes.source.detail
-                      : '-'
-                    : '-'
-                }}
               </div>
             </div>
           </div>
