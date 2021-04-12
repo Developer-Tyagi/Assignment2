@@ -37,40 +37,46 @@
                 </div>
               </div>
               <div class="client-list-item">
-                <span class="form-heading">
+                <div class="form-heading">
                   {{
                     setClientProperty[i - 1].attributes.name
                       ? setClientProperty[i - 1].attributes.name
                       : '-'
                   }}
-                </span>
-
-                <br />
-                {{
-                  setClientProperty[i - 1].attributes.streetAddress
-                    ? setClientProperty[i - 1].attributes.streetAddress
-                    : '-'
-                }}<br />
-                {{
-                  setClientProperty[i - 1].attributes.addressRegion
-                    ? setClientProperty[i - 1].attributes.addressRegion
-                    : '-'
-                }}
-                {{
-                  setClientProperty[i - 1].attributes.addressCountry
-                    ? setClientProperty[i - 1].attributes.addressCountry
-                    : '-'
-                }}<br />
-                {{
-                  setClientProperty[i - 1].attributes.addressLocality
-                    ? setClientProperty[i - 1].attributes.addressLocality
-                    : '-'
-                }}<br />
-                {{
-                  setClientProperty[i - 1].attributes.houseNumber
-                    ? setClientProperty[i - 1].attributes.houseNumber
-                    : '-'
-                }}<br />
+                </div>
+                <div>
+                  {{
+                    setClientProperty[i - 1].attributes.streetAddress
+                      ? setClientProperty[i - 1].attributes.streetAddress
+                      : '-'
+                  }}
+                </div>
+                <div>
+                  {{
+                    setClientProperty[i - 1].attributes.addressRegion
+                      ? setClientProperty[i - 1].attributes.addressRegion
+                      : '-'
+                  }}
+                  {{
+                    setClientProperty[i - 1].attributes.addressCountry
+                      ? setClientProperty[i - 1].attributes.addressCountry
+                      : '-'
+                  }}
+                </div>
+                <div>
+                  {{
+                    setClientProperty[i - 1].attributes.addressLocality
+                      ? setClientProperty[i - 1].attributes.addressLocality
+                      : '-'
+                  }}
+                </div>
+                <div>
+                  {{
+                    setClientProperty[i - 1].attributes.houseNumber
+                      ? setClientProperty[i - 1].attributes.houseNumber
+                      : '-'
+                  }}
+                </div>
                 <q-separator
                   v-if="setClientProperty[i - 1].attributes.claims"
                 />
@@ -83,10 +89,11 @@
                     <div class="row">
                       <span class="text-bold">Last Updated on : </span>
                       {{ claim.updated | moment('DD/MM/YYYY') }}
-                      <q-badge class="q-ml-auto">{{
-                        claim.status ? claim.status : '-'
-                      }}</q-badge
-                      ><br />
+                      <div>
+                        <q-badge class="q-ml-auto">{{
+                          claim.status ? claim.status : '-'
+                        }}</q-badge>
+                      </div>
                     </div>
                     <div class="text-bold q-mt-xs">File Number:</div>
                     {{ claim.fileNumber ? claim.fileNumber : '-' }}

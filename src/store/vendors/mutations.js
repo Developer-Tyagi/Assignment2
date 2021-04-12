@@ -10,6 +10,7 @@ export function setSelectedVendor(state, vendor) {
   if (vendor && (vendor.id || vendor.attributes.id)) {
     state.selectedVendor = vendor.attributes;
   } else {
+    console.log('else');
     state.selectedVendor = {
       name: '',
       industry: {

@@ -13,7 +13,7 @@
       <div class="mobile-container-page ">
         <div
           class="clients-list q-ma-sm"
-          v-if="mortgage.attributes.mortgageInfo.length"
+          v-if="mortgage.attributes.mortgageInfo.length > 0"
         >
           <div
             class="clients-list"
@@ -21,7 +21,9 @@
           >
             <div class="client-list-item">
               <div class="form-heading">
-                {{ mortgage.value }}
+                <span class="clickLink" @click="onNameClick(mortgage)">
+                  {{ mortgage.value }}</span
+                >
               </div>
               <div>
                 <div v-if="mortgage.address">
@@ -165,10 +167,14 @@ export default {
     ...mapGetters(['mortgage', 'selectedClaimId', 'vendors'])
   },
   created() {
+    console.log(this.mortgage.attributes.mortgageInfo[0].id, 76);
     this.getMortgage(this.selectedClaimId);
   },
   methods: {
-    ...mapActions(['getMortgage', 'getVendors'])
+    ...mapActions(['getMortgage', 'getVendors']),
+    onNameClick(value) {
+      this.$router.push('/vendor-details/' + value.id);
+    }
   }
 };
 </script>
