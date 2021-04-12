@@ -1004,9 +1004,6 @@ export default {
 };
 </script>
 <style lang="scss">
-.clickLink {
-  color: $primary;
-}
 .texts {
   margin-bottom: 0;
   font-size: 15px;
