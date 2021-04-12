@@ -42,6 +42,18 @@
     <!-- DO NOT touch the following DIV -->
     <div id="q-app"></div>
   </body>
+  <script
+    src="https://cdn.onesignal.com/sdks/OneSignalSDK.js"
+    async=""
+  ></script>
+  <script>
+    window.OneSignal = window.OneSignal || [];
+    OneSignal.push(function() {
+      OneSignal.init({
+        appId: '8b9d23a5-a03c-4720-902e-552ce6f500d2'
+      });
+    });
+  </script>
   <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCwFdir_9DyI7uFPD136PCidxBSqyZp3Zc"></script>
   <script src="https://js.stripe.com/v3/"></script>
 </html>
