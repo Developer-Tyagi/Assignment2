@@ -7,7 +7,7 @@
         /></q-btn>
       </div>
       <div class=" listing-height">
-        <div class="clients-list" v-if="setClientProperty.length">
+        <div class="clients-list" v-if="setClientProperty">
           <!-- This is for showing the Property details  -->
           <div
             class="clients-list"
@@ -39,50 +39,48 @@
               <div class="client-list-item">
                 <div class="form-heading">
                   {{
-                    setClientProperty[i - 1].attributes.name
-                      ? setClientProperty[i - 1].attributes.name
+                    setClientProperty[i - 1].name
+                      ? setClientProperty[i - 1].name
                       : '-'
                   }}
                 </div>
                 <div>
                   {{
-                    setClientProperty[i - 1].attributes.streetAddress
-                      ? setClientProperty[i - 1].attributes.streetAddress
+                    setClientProperty[i - 1].streetAddress
+                      ? setClientProperty[i - 1].streetAddress
                       : '-'
                   }}
                 </div>
                 <div>
                   {{
-                    setClientProperty[i - 1].attributes.addressRegion
-                      ? setClientProperty[i - 1].attributes.addressRegion
+                    setClientProperty[i - 1].addressRegion
+                      ? setClientProperty[i - 1].addressRegion
                       : '-'
                   }}
                   {{
-                    setClientProperty[i - 1].attributes.addressCountry
-                      ? setClientProperty[i - 1].attributes.addressCountry
+                    setClientProperty[i - 1].addressCountry
+                      ? setClientProperty[i - 1].addressCountry
                       : '-'
                   }}
                 </div>
                 <div>
                   {{
-                    setClientProperty[i - 1].attributes.addressLocality
-                      ? setClientProperty[i - 1].attributes.addressLocality
+                    setClientProperty[i - 1].addressLocality
+                      ? setClientProperty[i - 1].addressLocality
                       : '-'
                   }}
                 </div>
                 <div>
                   {{
-                    setClientProperty[i - 1].attributes.houseNumber
-                      ? setClientProperty[i - 1].attributes.houseNumber
+                    setClientProperty[i - 1].houseNumber
+                      ? setClientProperty[i - 1].houseNumber
                       : '-'
                   }}
                 </div>
-                <q-separator
-                  v-if="setClientProperty[i - 1].attributes.claims"
-                />
+                <q-separator v-if="setClientProperty[i - 1].claims" />
                 <div
                   class="q-mt-sm"
-                  v-for="claim in setClientProperty[i - 1].attributes.claims"
+                  v-for="claim in setClientProperty[i - 1].claims"
                   :key="claim.id"
                 >
                   <q-item-section @click="onClickClaimNumber(claim)">

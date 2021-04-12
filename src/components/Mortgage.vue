@@ -1,133 +1,81 @@
 <template>
   <div>
+    <!-- Mortgage Dialog -->
     <div
-      v-if="mortgageInfo.isMortgageHomeToggle"
-      @click="mortgageInfo.mortgageInfoDialog = true"
+      class="custom-select"
+      v-model="mortgageInfo.mortgageDetails[0].id"
+      @click="onAddVendorDialogClick(constants.industries.MORTGAGE)"
     >
-      <div class="row">
-        <div class="q-px-xs row">
-          <div v-if="!mortgageInfo.mortgageDetails[0]['id']">
-            Select Mortgage
-          </div>
-          <div
-            v-else
-            class="select-text"
-            v-for="(mortgageDetail, index) in mortgageInfo.mortgageDetails"
-          >
-            <span>
-              {{ mortgageDetail.value }}
-            </span>
-            <span v-if="mortgageInfo.mortgageDetails.length - 1 > index">
-              ,
-            </span>
-          </div>
-        </div>
+      <div class="select-text">
+        {{
+          mortgageInfo.mortgageDetails[0].value
+            ? mortgageInfo.mortgageDetails[0].value
+            : 'Enter Mortgage Company'
+        }}
       </div>
     </div>
 
-    <!-- Mortgage Dialog -->
-    <q-dialog
-      v-model="mortgageInfo.mortgageInfoDialog"
-      persistent
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <CustomBar
-          @closeDialog="mortgageInfo.mortgageInfoDialog = false"
-          :dialogName="'Mortagage Info'"
-        />
-        <div class="mobile-container-page q-pa-sm form-height  ">
-          <q-form ref="estimatingInfoForm">
-            <div
-              class="custom-select "
-              v-model="mortgageInfo.mortgageDetails[0].id"
-              @click="onAddVendorDialogClick(constants.industries.MORTGAGE)"
-            >
-              <div class="select-text">
-                {{
-                  mortgageInfo.mortgageDetails[0].value
-                    ? mortgageInfo.mortgageDetails[0].value
-                    : 'Enter Mortgage Company'
-                }}
-              </div>
-            </div>
+    <q-input
+      dense
+      v-model="mortgageInfo.mortgageDetails[0].loanNumber"
+      label="Loan Number"
+    />
+    <q-input
+      dense
+      v-model="mortgageInfo.mortgageDetails[0].accountNumber"
+      label="Account Number"
+    />
+    <div class="form-heading">Notes</div>
+    <textarea
+      rows="5"
+      required
+      class="full-width"
+      v-model="mortgageInfo.mortgageDetails[0].notes"
+      style="resize: none"
+    />
+    <div class="row" v-if="isThereSecondMortgageToggle">
+      <span class="form-heading">
+        Is there a 2nd mortgage on the home?
+      </span>
 
-            <q-input
-              dense
-              v-model="mortgageInfo.mortgageDetails[0].loanNumber"
-              label="Loan Number"
-            />
-            <q-input
-              dense
-              v-model="mortgageInfo.mortgageDetails[0].accountNumber"
-              label="Account Number"
-            /><br />
-            <span class="form-heading">Notes</span>
-            <textarea
-              rows="5"
-              required
-              class="full-width"
-              v-model="mortgageInfo.mortgageDetails[0].notes"
-              style="resize: none"
-            />
-            <div class="row" v-if="isThereSecondMortgageToggle">
-              <span class="form-heading">
-                Is there a 2nd mortgage on the home?
-              </span>
-
-              <q-toggle
-                class="q-ml-auto"
-                v-model="mortgageInfo.isSecondMortgageHome"
-                @input="onSecondMortgageToggle"
-              />
-            </div>
-            <div v-if="mortgageInfo.isSecondMortgageHome">
-              <div
-                class="custom-select"
-                v-model="mortgageInfo.mortgageDetails[1].id"
-                @click="
-                  onAddVendorDialogClick(constants.industries.SECONDARYMORTGAGE)
-                "
-              >
-                <div class="select-text">
-                  {{
-                    mortgageInfo.mortgageDetails[1].value
-                      ? mortgageInfo.mortgageDetails[1].value
-                      : 'Enter Mortgage Company'
-                  }}
-                </div>
-              </div>
-              <q-input
-                dense
-                v-model="mortgageInfo.mortgageDetails[1].loanNumber"
-                label="Loan Number"
-              />
-              <q-input
-                dense
-                v-model="mortgageInfo.mortgageDetails[1].accountNumber"
-                label="Account Number"
-              /><br />
-              <span class="form-heading">Notes</span>
-              <textarea
-                rows="5"
-                class="full-width"
-                v-model="mortgageInfo.mortgageDetails[1].notes"
-                style="resize: none"
-              />
-            </div>
-          </q-form>
+      <q-toggle
+        class="q-ml-auto"
+        v-model="mortgageInfo.isSecondMortgageHome"
+        @input="onSecondMortgageToggle"
+      />
+    </div>
+    <div v-if="mortgageInfo.isSecondMortgageHome">
+      <div
+        class="custom-select"
+        v-model="mortgageInfo.mortgageDetails[1].id"
+        @click="onAddVendorDialogClick(constants.industries.SECONDARYMORTGAGE)"
+      >
+        <div class="select-text">
+          {{
+            mortgageInfo.mortgageDetails[1].value
+              ? mortgageInfo.mortgageDetails[1].value
+              : 'Enter Mortgage Company'
+          }}
         </div>
-        <q-btn
-          label="Save"
-          color="primary"
-          class="button-width-90"
-          @click="mortgageInfo.mortgageInfoDialog = false"
-          size="'xl'"
-        />
-      </q-card>
-    </q-dialog>
+      </div>
+      <q-input
+        dense
+        v-model="mortgageInfo.mortgageDetails[1].loanNumber"
+        label="Loan Number"
+      />
+      <q-input
+        dense
+        v-model="mortgageInfo.mortgageDetails[1].accountNumber"
+        label="Account Number"
+      />
+      <div class="form-heading">Notes</div>
+      <textarea
+        rows="5"
+        class="full-width"
+        v-model="mortgageInfo.mortgageDetails[1].notes"
+        style="resize: none"
+      />
+    </div>
     <!-- Vendor list Dialog -->
     <q-dialog
       v-model="mortgageInfo.vendorsListDialog"

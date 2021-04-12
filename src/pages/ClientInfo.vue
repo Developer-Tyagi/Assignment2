@@ -1007,7 +1007,10 @@ export default {
 .clickLink {
   color: $primary;
 }
-
+.texts {
+  margin-bottom: 0;
+  font-size: 15px;
+}
 .form-height {
   height: calc(100vh - 130px);
   overflow: auto;

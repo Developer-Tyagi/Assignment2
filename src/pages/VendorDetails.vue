@@ -16,7 +16,6 @@
             <span class="form-heading"> Industry:</span>
             {{ selectedVendor.industry.value }}
           </div>
-          <!-- <span class="form-heading"> Contact Details </span> -->
           <div v-for="(contact, index) in selectedVendor.contact">
             <span class="form-heading">
               {{ contact.fname }}
