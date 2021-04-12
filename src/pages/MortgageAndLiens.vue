@@ -6,15 +6,12 @@
         <q-btn
           @click="mortgageInfo.mortgageInfoDialog = true"
           flat
-          class="q-ml-auto"
+          class="q-ml-auto q-mt-md"
           ><img src="~assets/addMortgage.svg"
         /></q-btn>
       </div>
       <div class="mobile-container-page ">
-        <div
-          class="clients-list q-ma-sm"
-          v-if="mortgage.attributes.mortgageInfo.length > 0"
-        >
+        <div class="clients-list q-ma-sm" v-if="mortgage.attributes">
           <div
             class="clients-list"
             v-for="(mortgage, index) in mortgage.attributes.mortgageInfo"
@@ -167,7 +164,6 @@ export default {
     ...mapGetters(['mortgage', 'selectedClaimId', 'vendors'])
   },
   created() {
-    console.log(this.mortgage.attributes.mortgageInfo[0].id, 76);
     this.getMortgage(this.selectedClaimId);
   },
   methods: {

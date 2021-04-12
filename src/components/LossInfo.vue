@@ -680,7 +680,9 @@ export default {
     lossInfo: {
       type: Object
     },
-
+    mortgageInfo: {
+      type: Object
+    },
     isMailingAddressEnable: {
       type: Boolean,
       required: false

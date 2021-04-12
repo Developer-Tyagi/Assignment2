@@ -77,6 +77,7 @@
               :isMailingAddressEnable="true"
               :lossAddressSameAsClient="true"
               :isAddressRequired="true"
+              :mortgageInfo="mortgageObject"
             />
           </q-form>
 
@@ -298,6 +299,27 @@ export default {
 
   data() {
     return {
+      mortgageObject: {
+        vendorsListDialog: false,
+        vendorDialogFilterByIndustry: '',
+        showVendorDialogFilters: false,
+        addVendorDialog: false,
+        vendorDialogName: '',
+        valueName: '',
+        isSecondMortgageHome: false,
+        isMortgageHomeToggle: false,
+        mortgageInfoDialog: false,
+        mortgageDetails: [
+          {
+            id: '',
+            value: '',
+            loanNumber: '',
+            accountNumber: '',
+            isPrimary: true,
+            notes: ''
+          }
+        ]
+      },
       isAddMorePhoneDisabled: false,
       addressId: '',
       industryTypeValue: '',
@@ -451,19 +473,19 @@ export default {
         addVendorDialog: false,
         vendorDialogName: '',
         valueName: '',
-        mortgageInfoDialog: false,
-        mortgageDetails: [
-          {
-            id: '',
-            value: '',
-            loanNumber: '',
-            accountNumber: '',
-            isPrimary: true,
-            notes: ''
-          }
-        ],
+        // mortgageInfoDialog: false,
+        // mortgageDetails: [
+        //   {
+        //     id: '',
+        //     value: '',
+        //     loanNumber: '',
+        //     accountNumber: '',
+        //     isPrimary: true,
+        //     notes: ''
+        //   }
+        // ],
         lossAddressNameDropdown: '',
-        isSecondMortgageHome: false,
+        // isSecondMortgageHome: false,
         wasAppifProvidedToTheInsuredToggle: false,
         doesTheOfficeNeedToProvidePpifToTheInsuredToggle: false,
         PPdamagedItemsDailog: false,
@@ -992,7 +1014,7 @@ export default {
             }
           }
         },
-        mortgageInfo: this.lossInfo.mortgageDetails,
+        mortgageInfo: this.mortgageObject.mortgageDetails,
         lossInfo: {
           isNewAddress:
             this.lossInfo.lossAddressNameDropdown == 'Others' ? true : false,

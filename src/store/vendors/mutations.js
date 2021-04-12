@@ -7,73 +7,7 @@ export function setvendors(state, vendors) {
   }));
 }
 export function setSelectedVendor(state, vendor) {
-  if (vendor && (vendor.id || vendor.attributes.id)) {
-    state.selectedVendor = vendor.attributes;
-  } else {
-    console.log('else');
-    state.selectedVendor = {
-      name: '',
-      industry: {
-        value: ' ',
-        id: '',
-        machineValue: ''
-      },
-      meta: {
-        claimFiledByEmail: true
-      },
-      contact: [
-        {
-          fname: '',
-          lname: '',
-          email: '',
-          honorific: {
-            id: '',
-            value: '',
-            machineValue: ''
-          },
-          phoneNumber: [
-            {
-              type: '',
-              number: ''
-            }
-          ],
-          isPrimary: true
-        },
-        {
-          fname: '',
-          lname: '',
-          email: '',
-          honorific: {
-            id: '',
-            value: '',
-            machineValue: ''
-          },
-          phoneNumber: [
-            {
-              type: '',
-              number: ''
-            }
-          ]
-        }
-      ],
-      address: {
-        addressCountry: '',
-        addressLocality: '',
-        addressRegion: '',
-        postalCode: '',
-        streetAddress: '',
-        dropBox: {
-          info: '',
-          isPresent: false
-        },
-        houseNumber: ''
-      },
-      info: {
-        website: '',
-        notes: ''
-      }
-    };
-  }
+  state.selectedVendor = vendor.attributes;
 }
 
 export function setvendorsIndustries(state, vendorIndustries) {
