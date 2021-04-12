@@ -13,7 +13,6 @@
             <q-icon size="xs" color="primary" name="done" />
           </div>
         </div>
-
         <q-btn
           style="width: 90%"
           label="Create Client"
@@ -25,7 +24,6 @@
         ></q-btn>
       </div>
     </div>
-
     <!-- Client Info -->
     <q-dialog
       v-model="clientInfoDailog"
@@ -59,7 +57,6 @@
                   (val && val.length > 0) || 'Please select the client type'
               ]"
             />
-
             <div class="row">
               <p class="q-mx-none q-my-auto">
                 Is Policy Holder An Organization ?
@@ -70,7 +67,6 @@
                 class="q-ml-auto"
               />
             </div>
-
             <div v-if="primaryDetails.isOrganization">
               <q-input
                 dense
@@ -93,8 +89,6 @@
                 class="q-ml-auto"
               />
             </div>
-            <br />
-
             <span class="form-heading">Insured Details</span>
             <q-select
               dense
@@ -115,7 +109,6 @@
                 val => (val && val.length > 0) || 'Please select the Title'
               ]"
             />
-
             <q-input
               dense
               class="required"
@@ -126,7 +119,6 @@
               ]"
               label="First Name"
             />
-
             <q-input
               dense
               v-model="insuredDetails.lname"
@@ -184,10 +176,9 @@
               <p class="q-mx-none q-my-auto">Is there a Co-insured?</p>
               <q-toggle class="q-ml-auto" v-model="isThereaCoInsuredToggle" />
             </div>
-            <br />
+
             <div v-if="isThereaCoInsuredToggle" style="font-size: 20px">
               <span class="form-heading">Co-insured Details</span>
-
               <q-select
                 dense
                 v-model="honorific2.id"
@@ -226,6 +217,7 @@
                   option-label="name"
                   map-options
                   emit-value
+                  behavior="menu"
                   options-dense
                   label="Type"
                   options-dense
@@ -273,7 +265,7 @@
             </div>
             <div v-if="addAditionalPhoneNumberToggle">
               <div
-                class="row justify-between"
+                class=" row justify-between"
                 v-for="(addPhone, index) in phoneNumber"
                 v-if="index >= 0"
               >
@@ -286,6 +278,7 @@
                   option-label="name"
                   map-options
                   options-dense
+                  behavior="menu"
                   emit-value
                   lazy-rules
                   :rules="[
@@ -293,7 +286,6 @@
                   ]"
                 />
                 <q-input
-                  dense
                   v-model.number="phoneNumber[index].number"
                   label="Phone"
                   class="required col-6"
@@ -306,7 +298,7 @@
                   ]"
                 />
               </div>
-              <div class="row">
+              <div class="row justify-between q-my-sm">
                 <q-btn
                   :disabled="isAddMorePhoneDisabled"
                   outline
@@ -314,9 +306,7 @@
                   @click="addAnotherContact"
                   color="primary"
                   label="Add"
-                  style="margin-right: auto"
                 />
-
                 <q-btn
                   v-if="phoneNumber.length > 1"
                   outline
@@ -327,16 +317,13 @@
                 />
               </div>
             </div>
-            <br />
             <span class="form-heading">Address Details</span>
-
             <AutoCompleteAddress
               :address="clientAddressDetails"
               :isDropBoxEnable="true"
               :isChecksEnable="true"
               :isAsteriskMark="true"
             />
-
             <div class="row">
               <p class="q-mx-none q-my-auto">Tenant Occupied</p>
               <q-toggle class="q-ml-auto" v-model="tenantOccupiedToggle" />
@@ -359,6 +346,7 @@
                   option-label="name"
                   map-options
                   options-dense
+                  behavior="menu"
                   emit-value
                   lazy-rules
                   :rules="[
@@ -432,245 +420,11 @@
         </div>
       </q-card>
     </q-dialog>
-    <!-- Insurance Info -->
-    <q-dialog
-      v-model="insuranceInfoDialog"
-      persistent
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <CustomBar
-          @closeDialog="onCloseDialogBox('insuranceInfoDialog', 2)"
-          :dialogName="'Insurance Info'"
-        />
-        <div class="mobile-container-page-without-search">
-          <q-form ref="insuranceInfoForm" class="form-height">
-            <InsuranceInfo :insuranceDetails="insuranceDetails" />
-          </q-form>
-
-          <q-btn
-            label="Save"
-            color="primary"
-            class="button-width-90"
-            @click="onSubmit('insuranceInfoDialog')"
-            size="'xl'"
-          />
-        </div>
-      </q-card>
-    </q-dialog>
-
-    <!-- Loss Info -->
-    <q-dialog
-      v-model="lossInfoDialog"
-      persistent
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <CustomBar
-          @closeDialog="onCloseDialogBox('lossInfoDialog', 3)"
-          :dialogName="'Loss Info'"
-        />
-        <div class="mobile-container-page-without-search">
-          <q-form ref="lossInfoForm" class="form-height">
-            <LossInfo
-              :lossInfo="lossInfo"
-              @lossAddressSame="lossAddressSame"
-              :lossAddressToggleShow="true"
-              :isMailingAddressEnable="true"
-              :lossAddressSameAsClient="true"
-              :isAddressRequired="true"
-            />
-          </q-form>
-
-          <q-btn
-            label="Save"
-            color="primary"
-            class="button-width-90"
-            @click="onSubmit('lossInfoDialog')"
-            size="'xl'"
-          />
-        </div>
-      </q-card>
-    </q-dialog>
-
-    <!-- Expert /Vendor Info -->
-    <q-dialog
-      v-model="expertVendorInfoDialog"
-      persistent
-      :maximized="maximizedToggle"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <CustomBar
-          @closeDialog="onCloseDialogBox('expertVendorInfoDialog', 4)"
-          :dialogName="'Expert / Vendor Info'"
-        />
-        <div class="mobile-container-page-without-search">
-          <q-form ref="expertVendorInfoForm" class="form-height">
-            <ExpertVendorInfo
-              :expertVendorInfo="expertVendorInfo"
-              @addAnotherVendor="addAnotherVendor"
-            />
-          </q-form>
-
-          <q-btn
-            label="Save"
-            color="primary"
-            class="button-width-90"
-            @click="onSubmit('expertVendorInfoDialog')"
-            size="'xl'"
-          />
-        </div>
-      </q-card>
-    </q-dialog>
-    <!-- Estimating Info -->
-    <q-dialog
-      v-model="estimatingInfoDialog"
-      persistent
-      :maximized="maximizedToggle"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <CustomBar
-          @closeDialog="estimatingInfoDialog = false"
-          :dialogName="'Estimating Info'"
-        />
-        <div class="mobile-container-page-without-search">
-          <q-form ref="estimatingInfoForm" class="form-height">
-            <EstimatingInfo :estimatingInfo="estimatingInfo" />
-          </q-form>
-          <q-btn
-            label="Save"
-            color="primary"
-            class="button-width-90"
-            @click="onSubmit('estimatingInfoDialog')"
-            size="'xl'"
-          />
-        </div>
-      </q-card>
-    </q-dialog>
-    <!-- Contract Info Dialog -->
-    <q-dialog
-      v-model="contractInfoDialog"
-      persistent
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <CustomBar
-          @closeDialog="onCloseDialogBox('contractInfoDialog', 5)"
-          :dialogName="'Contract Details'"
-        />
-        <div class="mobile-container-page-without-search">
-          <q-form ref="contractInfoForm" class="form-height">
-            <ContractInfo :contractInfo="contractInfo" />
-          </q-form>
-          <q-btn
-            label="Save"
-            color="primary"
-            class="button-width-90"
-            @click="onSubmit('contractInfoDialog')"
-            size="'xl'"
-          ></q-btn>
-        </div>
-      </q-card>
-    </q-dialog>
-    <!-- Company Personnel Dialog-->
-    <q-dialog
-      v-model="companyPersonnelDialog"
-      persistent
-      :maximized="maximizedToggle"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <CustomBar
-          :dialogName="'Company Personnel'"
-          @closeDialog="onCloseDialogBox('companyPersonnelDialog', 6)"
-        />
-        <div class="mobile-container-page-without-search">
-          <q-form ref="companyPersonnelForm" class="form-height">
-            <div class="form-heading text-bold">CLAIM PERSONNEL</div>
-            <CompanyPersonnel :companyPersonnel="companyPersonnel" />
-          </q-form>
-          <q-btn
-            label="Save"
-            color="primary"
-            class="button-width-90"
-            @click="onSubmit('companyPersonnelDialog')"
-            size="'xl'"
-          />
-        </div>
-      </q-card>
-    </q-dialog>
-    <!-- Office Task -->
-    <q-dialog
-      v-model="officeTaskDialog"
-      persistent
-      :maximized="maximizedToggle"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <CustomBar
-          @closeDialog="officeTaskDialog = false"
-          :dialogName="'Office Task'"
-        />
-        <div class="mobile-container-page-without-search">
-          <q-form ref="estimatingInfoForm" class="form-height">
-            <q-select
-              dense
-              v-model="officeTask.officeActionTypes"
-              :options="officeActionRequiredTypes"
-              label="Office Action Required"
-              class="input-extra-padding"
-            />
-            <q-select
-              dense
-              v-model="officeTask.officeTaskTypes"
-              :options="officeTaskRequiredTypes"
-              label="Office Task Required"
-              class="input-extra-padding"
-            /><br />
-            <div class="row">
-              <p>Additional Office Task Required</p>
-              <q-toggle
-                class="q-ml-auto"
-                v-model="additionalOfficeTaskRequiredToggle"
-              />
-            </div>
-          </q-form>
-
-          <q-btn
-            label="Save"
-            color="primary"
-            class="full-width q-mt-auto text-capitalize"
-            @click="officeTaskDialog = false"
-            size="'xl'"
-          />
-        </div>
-      </q-card>
-    </q-dialog>
   </q-page>
 </template>
-
 <script>
 import CustomBar from 'components/CustomBar';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
-import ContractInfo from 'components/ContractInfo';
-import CompanyPersonnel from 'components/CompanyPersonnel';
-
-import EstimatingInfo from 'components/EstimatingInfo';
-import LossInfo from 'components/LossInfo';
-import ExpertVendorInfo from 'components/ExpertVendorInfo';
-import InsuranceInfo from 'components/InsuranceInfo';
 import AddressService from '@utils/country';
 import {
   validateEmail,
@@ -679,103 +433,46 @@ import {
   successMessage
 } from '@utils/validation';
 import { constants } from '@utils/constant';
-import { dateToSend } from '@utils/date';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import VendorsList from 'components/VendorsList';
 import AddVendor from 'components/AddVendor';
 import { date } from 'quasar';
-
 const addressService = new AddressService();
-
 export default {
   name: 'addClient',
   components: {
     CustomBar,
     VendorsList,
     AddVendor,
-    AutoCompleteAddress,
-    InsuranceInfo,
-    LossInfo,
-    ExpertVendorInfo,
-    EstimatingInfo,
-    ContractInfo,
-    CompanyPersonnel
+    AutoCompleteAddress
   },
-
   data() {
     return {
       isAddMorePhoneDisabled: false,
-      industryTypeValue: '',
-
       contractInfo: {
-        vendorsListDialog: false,
-        vendorDialogFilterByIndustry: '',
-        showVendorDialogFilters: false,
-        addVendorDialog: false,
         reasonForCancellation: '',
-        vendorDialogName: '',
+
         reasonForCancellation: [],
         sourceDetails: {
           id: '',
           type: '',
           details: ''
         },
-        contractDate: '',
-        firstContractDate: '',
-        claimFeeRate: '',
-        time: '',
-        cancelledToggle: false,
-
-        reasonForCancellationText: '',
-
-        buttonGroup: 'dollar'
+        time: ''
       },
-
-      companyPersonnel: {
-        notes: '',
-        endDate: '',
-        startDate: '',
-        buttonGroup: 'dollar',
-        claimFeeRate: '',
-        isFieldDisable: true,
-        personnel: {
-          id: '',
-          role: ''
-        },
-        personParty: '',
-        notes: '',
-        filterRole: []
-      },
-
       isCreateClientButtonDisabled: true,
-
-      industryType: {
-        value: '',
-        machineValue: ''
-      },
       dialogBoxes: [
         { name: 'Client Info', validForm: false },
-        { name: 'Mailing Address', validForm: false },
-        { name: 'Insurance Info', validForm: false },
-        { name: 'Loss Info', validForm: false },
-        { name: 'Expert/Vendor Info', validForm: false },
-        { name: 'Estimating Info', validForm: false },
-        { name: 'Contract Info', validForm: false },
-        { name: 'Company Personnel', validForm: false },
-        { name: 'Office Task', validForm: false }
+        { name: 'Mailing Address', validForm: false }
       ],
-
       vendorIndustriesOptions: [],
       lossAddressNameOptions: ['Others'],
-
+      constants: constants,
       companyPersonnelDialog: false,
       contractInfoDialog: false,
-
       officeTaskDialog: false,
-      expertVendorInfoDialog: false,
       estimatingInfoDialog: false,
       lossInfoDialog: false,
-
       maximizedToggle: true,
       clientInfoDailog: false,
       policyHolder: {
@@ -836,13 +533,13 @@ export default {
         addressLocality: '',
         postalCode: '',
         streetAddress: '',
+        //This is Present in Payload but we are not taking any value like post offc number in form
         postOfficeBoxNumber: '4',
         dropBox: {
           info: '',
           isPresent: false
         }
       },
-
       tenantOccupied: {
         name: '',
         phone: '',
@@ -860,179 +557,13 @@ export default {
           isPresent: false
         }
       },
-
-      lossInfo: {
-        purchaseDate: '',
-        purchasePrice: '',
-        quantity: '',
-        PPDamageItemDescription: '',
-        isPAFillingOutToggle: true,
-        doYouWantToSendInsuredPPIF: false,
-        isClientGoingToPreparePPIF: false,
-        isAdjustorFillOutLaterDate: false,
-
-        lossAddressNameDropdown: 'Others',
-
-        wasAppifProvidedToTheInsuredToggle: false,
-        doesTheOfficeNeedToProvidePpifToTheInsuredToggle: false,
-        PPdamagedItemsDailog: false,
-        ppDamagedItems: [],
-        damagedItemsDailog: false,
-        osDamagedItems: [],
-        isDamageOSToggle: false,
-        isThereDamageToPersonalPropertyToggle: false,
-        femaClaimToggle: false,
-        isStateOfEmergencyToggle: false,
-        isTheHomeHabitable: false,
-        lossAddressDetails: {
-          houseNumber: '',
-          addressCountry: '',
-          addressRegion: '',
-          addressLocality: '',
-          postalCode: '',
-          streetAddress: '',
-          postOfficeBoxNumber: '4',
-          dropBox: {
-            info: '',
-            isPresent: false
-          }
-        },
-        isLossAddressSameAsClientToggle: false,
-        repairReplaceRadio: '',
-        serialNumber: '',
-        PPDamageName: '',
-        PPDamageDescription: '',
-        PPDamagedItemCost: '',
-        lossAddressName: '',
-        OSDamageDescription: '',
-        OSDamageName: '',
-
-        DescriptionOfLoss: '',
-
-        OSDamagedItemCost: '',
-        dateOfLoss: '',
-        propertyDescription: '',
-        damagePersnalPropertyDescription: '',
-        reasonClaim: {
-          value: '',
-          id: '',
-          machineValue: ''
-        },
-        deadlineDate: '',
-        recovDeadline: '',
-        nameOfEmergency: '',
-        descriptionDwelling: '',
-        damageDescription: '',
-        property: {
-          value: '',
-          id: '',
-          machineValue: ''
-        },
-        insuranceAdjustorName: '',
-        whereDidTheLossOccur: '',
-        other: '',
-        severityOfClaimType: {
-          id: '',
-          value: '',
-          machineValue: ''
-        },
-        causeOfLoss: {
-          value: '',
-          id: '',
-          machineValue: ''
-        },
-        describeTheLoss: '',
-        insuranceAdjustorPhone: '',
-        insuranceAdjustorPhoneType: '',
-        typeOfLoss: ''
-      },
-
-      insuranceDetails: {
-        hasClaimBeenFilledToggle: false,
-        isThisIsForcedPlacedPolicyToggle: false,
-        policy: {
-          id: '',
-          value: ''
-        },
-        type: '',
-        details: '',
-        id: '',
-        policyCategory: {
-          id: '',
-          value: ''
-        },
-        carrierName: '',
-        carrierId: '',
-        insuranceClaimNumber: '',
-        policyNumber: '',
-        policyEffectiveDate: '',
-        policyExpireDate: '',
-        dwellingLimitA: '',
-        contentsLimit: '',
-        otherStructureB: '',
-        lossOfUSD: '',
-        deprecation: '',
-        deductible: '',
-        priorPayment: '',
-        reasonsOfLD: ''
-      },
-
-      estimatingInfo: {
-        addEstimatorDialog: false,
-        addEstimatorValue: { name: '' },
-        honorific3: {
-          id: '',
-          value: '',
-          machineValue: ''
-        },
-        name: '',
-        fname: '',
-        lname: '',
-        email: '',
-        phone: '',
-        type: '',
-        estimatorsListDialog: false,
-
-        estimatorToBeAssigned: '',
-        scopeTimeNeeded: '',
-        notesToTheEstimator: '',
-        doesAnEstimatorNeedToBeAssignedToggle: false
-      },
-
-      expertVendorInfo: {
-        expertVendorButton: true,
-        carrierName: '',
-        carrierId: '',
-        vendorIndustriesOptions: [],
-        anyOtherExpertHiredToggle: false,
-        vendorExpertHiredToggle: false,
-        notes: '',
-        internalNotes: '',
-
-        vendors: [{ id: '', value: null }],
-        id: '',
-        industry: [{ value: null, id: '', machineValue: '' }]
-      },
-      officeTask: {
-        officeActionTypes: '',
-        officeTaskTypes: ''
-      },
-
       addAditionalPhoneNumberToggle: false,
       tenantOccupiedToggle: false,
-
       mailingAddressDialog: false,
       isMailingAddressSameToggle: false,
       isThereaCoInsuredToggle: false,
-
       states: [],
       countries: [],
-      insuranceInfoDialog: false,
-
-      DidYouHavePoliceDeclarationToggle: false,
-
-      typeOfLoss: [],
-
       additionalOfficeTaskRequiredToggle: false,
       officeActionRequiredTypes: [],
       officeTaskRequiredTypes: []
@@ -1042,17 +573,10 @@ export default {
   created() {
     this.getRoles();
     this.contractInfo.time = date.formatDate(Date.now(), 'HH:mm:ss:aa');
-    this.companyPersonnel.startDate = this.companyPersonnel.endDate = this.contractInfo.firstContractDate = this.contractInfo.contractDate = this.insuranceDetails.policyEffectiveDate = this.insuranceDetails.policyExpireDate = this.lossInfo.dateOfLoss = this.lossInfo.deadlineDate = this.lossInfo.recovDeadline = date.formatDate(
-      Date.now(),
-      'MM/DD/YYYY'
-    );
     this.getVendors(this.$route.params.id);
     this.getClientTypes();
     this.getPropertyTypes();
     this.getPolicyTypes();
-    this.getLossCauses();
-    this.getSeverityClaim();
-    this.getClaimReasons();
     this.getContactTypes();
     this.getPolicyCategory();
     if (this.selectedLead.id) {
@@ -1066,35 +590,6 @@ export default {
       this.honorific1.id = this.selectedLead.primaryContact.honorific.id;
       this.honorific1.value = this.selectedLead.primaryContact.honorific.value;
       this.honorific1.machineValue = this.selectedLead.primaryContact.honorific.machineValue;
-
-      this.lossInfo.lossAddressDetails.houseNumber = this.selectedLead.lossLocation.houseNumber;
-      this.lossInfo.lossAddressDetails.addressCountry = this.selectedLead.lossLocation.addressCountry;
-      this.lossInfo.lossAddressDetails.addressLocality = this.selectedLead.lossLocation.addressLocality;
-      this.lossInfo.lossAddressDetails.addressRegion = this.selectedLead.lossLocation.addressRegion;
-      this.lossInfo.lossAddressDetails.postalCode = this.selectedLead.lossLocation.postalCode;
-      this.lossInfo.lossAddressDetails.streetAddress = this.selectedLead.lossLocation.streetAddress;
-      this.lossInfo.descriptionDwelling = this.selectedLead.lossDesc;
-      this.contractInfo.sourceDetails.details = this.selectedLead.leadSource
-        ? this.selectedLead.leadSource.detail
-        : null;
-
-      this.insuranceDetails.carrierName = this.selectedLead.carrier
-        ? this.selectedLead.carrier.value
-        : null;
-      this.insuranceDetails.carrierId = this.selectedLead.carrier
-        ? this.selectedLead.carrier.id
-        : null;
-      this.insuranceDetails.policyNumber = this.selectedLead.policyNumber
-        ? this.selectedLead.policyNumber
-        : null;
-      this.lossInfo.causeOfLoss = this.selectedLead.lossCause.value
-        ? this.selectedLead.lossCause
-        : null;
-
-      this.lossInfo.dateOfLoss = date.formatDate(
-        this.selectedLead.dateofLoss,
-        'MM/DD/YYYY'
-      );
     }
 
     this.countries = addressService.getCountries();
@@ -1104,25 +599,13 @@ export default {
   computed: {
     ...mapGetters([
       'selectedLead',
-      'leadSources',
-      'estimators',
       'contactTypes',
       'clientTypes',
-      'propertyTypes',
-      'policyTypes',
-      'claimSeverity',
-      'lossCauses',
-      'claimReasons',
       'titles',
       'vendors',
-      'policyCategories',
-      'vendorIndustries',
-      'personnelRoles',
-      'roleTypes',
-      'userRoles'
+      'vendorIndustries'
     ])
   },
-
   mounted() {
     this.getTitles();
     this.getVendorIndustries();
@@ -1131,22 +614,14 @@ export default {
     ...mapActions([
       'addClient',
       'getVendors',
-      'getEstimators',
-      'addClaim',
-      'addEstimator',
       'getClientTypes',
       'getPropertyTypes',
       'getPolicyTypes',
-      'getSeverityClaim',
-      'getLossCauses',
-      'getClaimReasons',
       'getContactTypes',
       'getTitles',
       'getPolicyCategory',
       'getVendorIndustries',
-      'addIndustry',
-      'getRoles',
-      'getAllUsers'
+      'getRoles'
     ]),
     ...mapMutations(['setSelectedLead']),
     successMessage,
@@ -1168,34 +643,6 @@ export default {
         });
       }
     },
-    async addAnotherVendor() {
-      const success = await this.$refs.expertVendorInfoForm.validate();
-      let len = this.expertVendorInfo.vendors.length;
-
-      if (
-        this.expertVendorInfo.vendors[len - 1].value == 'Select Vendor' ||
-        this.expertVendorInfo.vendors[len - 1].value == null
-      ) {
-        this.$q.notify({
-          message: 'Please Select the vendor first',
-          position: 'top',
-          type: 'negative'
-        });
-      } else {
-        if (success) {
-          this.expertVendorInfo.industry.push({
-            id: this.expertVendorInfo.industry.id,
-            value: this.expertVendorInfo.industry.value
-          });
-          let len = this.expertVendorInfo.vendors.length;
-          this.expertVendorInfo.vendors.push({
-            id: this.expertVendorInfo.vendors[len - 1].id,
-            value: this.expertVendorInfo.vendors[len - 1].value
-          });
-          this.expertVendorInfo.vendors[len].value = 'Select Vendor';
-        }
-      }
-    },
     RemoveAnotherContact() {
       this.phoneNumber.pop();
     },
@@ -1211,28 +658,6 @@ export default {
       }
     },
 
-    lossAddressSame() {
-      if (this.lossInfo.isLossAddressSameAsClientToggle) {
-        this.lossInfo.lossAddressDetails = this.clientAddressDetails;
-      } else {
-        if (this.selectedLead.id) {
-          this.lossInfo.lossAddressDetails = {
-            houseNumber: this.selectedLead.lossLocation.houseNumber,
-            addressCountry: this.selectedLead.lossLocation.addressCountry,
-            addressRegion: this.selectedLead.lossLocation.addressRegion,
-            addressLocality: this.selectedLead.lossLocation.addressLocality,
-            postalCode: this.selectedLead.lossLocation.postalCode,
-            streetAddress: this.selectedLead.lossLocation.streetAddress,
-            postOfficeBoxNumber: '',
-            dropBox: {
-              info: '',
-              isPresent: false
-            }
-          };
-        }
-      }
-    },
-
     createClientDailogBoxOpen(value) {
       switch (value) {
         case 'Client Info':
@@ -1241,29 +666,6 @@ export default {
         case 'Mailing Address':
           this.mailingAddressDialog = true;
           break;
-        case 'Insurance Info':
-          this.insuranceInfoDialog = true;
-          break;
-        case 'Loss Info':
-          this.lossInfoDialog = true;
-          break;
-        case 'Expert/Vendor Info':
-          this.expertVendorInfoDialog = true;
-          break;
-        case 'Estimating Info':
-          this.estimatingInfoDialog = true;
-          break;
-        case 'Office Task':
-          this.officeTaskDialog = true;
-          break;
-        case 'Company Personnel':
-          this.companyPersonnelDialog = true;
-          break;
-        case 'Documents':
-          this.documentsDialog = true;
-          break;
-        case 'Contract Info':
-          this.contractInfoDialog = true;
       }
     },
     validateDate,
@@ -1287,52 +689,17 @@ export default {
         case 'clientInfoDailog':
           success = await this.$refs.clientForm.validate();
           validationIndex = 0;
-
-          break;
-        case 'insuranceInfoDialog':
-          success = await this.$refs.insuranceInfoForm.validate();
-          validationIndex = 2;
-
           break;
 
         case 'mailingAddressDialog':
           success = await this.$refs.mailingAddressForm.validate();
           validationIndex = 1;
-
           break;
-
-        case 'addEstimatorDialog':
-          success = await this.$refs.addEstimatorForm.validate();
-          validationIndex = 5;
-          break;
-        case 'lossInfoDialog':
-          success = await this.$refs.lossInfoForm.validate();
-          validationIndex = 3;
-
-          break;
-
-        case 'expertVendorInfoDialog':
-          success = await this.$refs.expertVendorInfoForm.validate();
-          validationIndex = 4;
-
-          break;
-        case 'estimatingInfoDialog':
-          success = await this.$refs.estimatingInfoForm.validate();
-          validationIndex = 5;
-          break;
-
-        case 'contractInfoDialog':
-          success = await this.$refs.contractInfoForm.validate();
-          validationIndex = 6;
-          break;
-        case 'companyPersonnelDialog':
-          success = await this.$refs.companyPersonnelForm.validate();
-          validationIndex = 7;
       }
+      //here we are validating the form and giving tick if it is validated successfully
       if (success == true) {
         this.dialogBoxes[validationIndex].validForm = true;
-
-        for (var i = 0; i < this.dialogBoxes.length - 1; i++) {
+        for (var i = 0; i < this.dialogBoxes.length; i++) {
           if (this.dialogBoxes[i].validForm == false) {
             this.isCreateClientButtonDisabled = true;
             break;
@@ -1341,22 +708,13 @@ export default {
           }
         }
 
-        if (
-          name === 'insuranceInfoDialog' ||
-          name === 'expertVendorInfoDialog'
-        ) {
-          this[name] = false;
-        }
-        if (name === 'addEstimatorDialog') {
-          this.onAddEstimatorButtonClick();
-          this[name] = false;
-        } else {
-          this[name] = false;
-        }
+        this[name] = false;
       } else {
         this.dialogBoxes.validForm = false;
       }
     },
+
+    //This function is used for setting the title name,machine value from its Id
     setTitleName(val) {
       const titleResult = this.titles.find(obj => {
         return obj.id === this['honorific' + val].id;
@@ -1364,7 +722,7 @@ export default {
       this['honorific' + val].title = titleResult.value;
       this['honorific' + val].machineValue = titleResult.machineValue;
     },
-
+    //This function is used for seting the client Type and  Id from client Info
     setTypes(types, data, type) {
       const obj = types.find(item => {
         return item.id === data.id;
@@ -1374,6 +732,7 @@ export default {
       data.value = obj.name;
     },
 
+    /* Here If Malling address toggle is on , then the address of the client Info will set to maling Address too*/
     mailingAddressSame() {
       if (this.isMailingAddressSameToggle) {
         this.mailingAddressDetails = this.clientAddressDetails;
@@ -1392,7 +751,7 @@ export default {
         };
       }
     },
-
+    //Creating Client (here currently  we are sending Source Detail blank ,later it will change as per client requirement)
     async createClientButtonClick() {
       const payload = {
         isOrganization: this.primaryDetails.isOrganization,
@@ -1460,9 +819,12 @@ export default {
         payload.insuredInfo.tenantInfo.name = this.tenantOccupied.name;
         payload.insuredInfo.tenantInfo.phoneNumber.type = this.tenantOccupied.type;
         payload.insuredInfo.tenantInfo.phoneNumber.number = this.tenantOccupied.phone;
-      } else {
+      }
+      //if tenantOccupiedToggle is off then it will not send the data related to tenantInfo
+      else {
         delete payload.insuredInfo.tenantInfo;
       }
+      /* if coInsuredDetails toggle is off it well not send the coInsured details */
       if (!this.isThereaCoInsuredToggle) {
         delete payload.insuredInfo.secondary;
       }
@@ -1472,171 +834,24 @@ export default {
         payload.source.detail = this.contractInfo.sourceDetails.details;
       }
 
-      const response = await this.addClient(payload);
-      this.successMessage(constants.successMessages.CLIENT);
-      if (response && response.id) {
-        this.setPayloadForClaim(response.id);
-      }
-    },
-
-    async setPayloadForClaim(id) {
-      const payload = {
-        client: {
-          id: id,
-          fname: this.insuredDetails.fname,
-          lname: this.insuredDetails.lname
-        },
-        policyInfo: {
-          carrier: {
-            id: this.insuranceDetails.carrierId,
-            value: this.insuranceDetails.carrierName
-          },
-          number: this.insuranceDetails.policyNumber,
-          isClaimFiled: this.hasClaimBeenFilledToggle,
-          isForcedPlaced: this.isThisIsForcedPlacedPolicyToggle,
-          claimNumber: this.insuranceDetails.insuranceClaimNumber,
-          category: {
-            id: this.insuranceDetails.policyCategory.id,
-            value: this.insuranceDetails.policyCategory.value,
-            machineValue: this.insuranceDetails.policyCategory.machineValue
-          },
-          type: {
-            id: this.insuranceDetails.policy.id,
-            value: this.insuranceDetails.policy.value,
-            machineValue: this.insuranceDetails.policy.machineValue
-          },
-          effectiveDate: dateToSend(this.insuranceDetails.policyEffectiveDate),
-          expirationDate: dateToSend(this.insuranceDetails.policyExpireDate),
-          limitCoverage: {
-            dwelling: this.insuranceDetails.dwellingLimitA
-              ? this.insuranceDetails.dwellingLimitA
-              : 0,
-            otherStructure: this.insuranceDetails.otherStructureB
-              ? this.insuranceDetails.otherStructureB
-              : 0,
-            content: this.insuranceDetails.contentsLimit
-              ? this.insuranceDetails.contentsLimit
-              : 0,
-            lossOfUse: this.insuranceDetails.lossOfUSD
-              ? this.insuranceDetails.lossOfUSD
-              : 0
-          },
-          deductibleAmount: this.insuranceDetails.deductible
-            ? this.insuranceDetails.deductible
-            : 0,
-          depreciation: this.insuranceDetails.deprecation
-            ? this.insuranceDetails.deprecation
-            : 0,
-          priorPayment: this.insuranceDetails.priorPayment
-            ? this.insuranceDetails.priorPayment
-            : 0,
-          limitReason: this.insuranceDetails.reasonsOfLD,
-          declaration: {
-            isDeclared: true,
-            fileInfo: {
-              id: '',
-              value: ''
-            }
-          }
-        },
-        mortgageInfo: this.lossInfo.mortgageDetails,
-        lossInfo: {
-          isNewAddress:
-            this.lossInfo.lossAddressNameDropdown == 'Others' ? true : false,
-          lossAddressName: this.lossInfo.lossAddressName,
-          address: {
-            ...this.clientAddressDetails
-          },
-
-          propertyType: {
-            ...this.lossInfo.property
-          },
-          propertyDesc: this.lossInfo.propertyDescription,
-          claimReason: {
-            ...this.lossInfo.reasonClaim
-          },
-          date: dateToSend(this.lossInfo.dateOfLoss),
-          cause: this.lossInfo.causeOfLoss.value
-            ? this.lossInfo.causeOfLoss
-            : null,
-          deadlineDate: dateToSend(this.lossInfo.deadlineDate),
-          recovDDDate: dateToSend(this.lossInfo.recovDeadline),
-          isFEMA: this.lossInfo.femaClaimToggle,
-          isEmergency: this.lossInfo.isStateOfEmergencyToggle,
-          emergencyName: this.lossInfo.nameOfEmergency,
-          desc: this.lossInfo.descriptionDwelling,
-          isHabitable: this.lossInfo.isTheHomeHabitable,
-          serverity: {
-            ...this.lossInfo.severityOfClaimType
-          },
-          isPPDamaged: this.lossInfo.isThereDamageToPersonalPropertyToggle,
-          isPPIFFillNow: this.lossInfo.isPAFillingOutToggle,
-          isPPIFFillLater: this.lossInfo.isAdjustorFillOutLaterDate,
-          isClientPreparePPIF: this.lossInfo.isClientGoingToPreparePPIF,
-          isPPIFSendToInsure: this.lossInfo.doYouWantToSendInsuredPPIF,
-          OSDamageItems: this.lossInfo.osDamagedItems,
-          PPDamageItems: this.lossInfo.ppDamagedItems,
-          isPPIF: this.lossInfo.wasAppifProvidedToTheInsuredToggle,
-          isNeedPPIF: this.lossInfo
-            .doesTheOfficeNeedToProvidePpifToTheInsuredToggle,
-
-          hasHomeMortgage: this.lossInfo.isMortgageHomeToggle,
-          isSecondClaim: false
-        },
-        expertInfo: {
-          isVendorAssigned: this.expertVendorInfo.vendorExpertHiredToggle,
-          vendor: this.expertVendorInfo.vendors,
-          isInsuredHired: this.expertVendorInfo.anyOtherExpertHiredToggle,
-          notes: this.expertVendorInfo.notes,
-          internalNotes: this.expertVendorInfo.internalNotes
-        },
-        contractInfo: {
-          date: dateToSend(this.contractInfo.contractDate),
-          fees: {
-            type: this.contractInfo.buttonGroup,
-            rate: this.contractInfo.claimFeeRate
-              ? this.contractInfo.claimFeeRate
-              : 0
-          },
-          dateOfFirstContact: dateToSend(this.contractInfo.firstContractDate)
-        },
-
-        personnel: [
-          {
-            id: this.companyPersonnel.personnel.id,
-            name: this.companyPersonnel.personParty.name,
-            role: this.companyPersonnel.personnel.role,
-            note: this.companyPersonnel.notes,
-            fees: {
-              type: this.companyPersonnel.buttonGroup,
-              rate: this.companyPersonnel.claimFeeRate
-                ? this.companyPersonnel.claimFeeRate
-                : 0
-            },
-            startDate: dateToSend(this.companyPersonnel.startDate),
-            endDate: dateToSend(this.companyPersonnel.endDate)
-          }
-        ]
-      };
-
-      this.addClaim(payload).then(() => {
+      this.addClient(payload).then(() => {
         this.setSelectedLead();
-
+        //Routing to Client if Client Creation is Successful
         this.$router.push('/clients');
       });
+      this.successMessage(constants.successMessages.CLIENT);
     },
 
     validateEmail
   }
+  /*----------------------end of method-----------------------------------*/
 };
 </script>
-
 <style lang="scss">
 ::-webkit-scrollbar {
   width: 0px;
   background: transparent; /* make scrollbar transparent */
 }
-
 .form-list {
   color: #333333;
   font-weight: bold;
@@ -1644,17 +859,6 @@ export default {
   border-bottom: 1px solid #d3d3d3;
   padding: 10px;
   margin: 5px 0;
-}
-
-.vendor-list {
-  color: #666666;
-
-  .vendor-list-item {
-    padding: 20px;
-    border-bottom: 1px solid lightgray;
-    text-transform: capitalize;
-    display: flex;
-  }
 }
 .form-height {
   height: calc(100vh - 120px);
