@@ -2,10 +2,43 @@
   <q-page>
     <div class="listing-height">
       <!-- This is for showing the client details   -->
-      <div class="clients-list q-ma-sm ">
+      <div class=" q-ma-md row justify-between">
+        <div class="text-bold text-h6">
+          {{ editSelectedClient.attributes.insuredInfo.primary.fname }}
+          {{ editSelectedClient.attributes.insuredInfo.primary.lname }}
+        </div>
+        <div>
+          <q-badge
+            v-if="editSelectedClient.attributes.isOrganizationPolicyholder"
+          >
+            Policy Holder</q-badge
+          >
+        </div>
+      </div>
+      <div class="row  q-ml-md q-my-md text-grey-8">
+        <div>
+          {{
+            editSelectedClient.attributes.meta
+              ? editSelectedClient.attributes.meta.totalClaims
+              : 0
+          }}
+          - Total Claims
+        </div>
+        <div class="q-ml-xl">
+          {{
+            editSelectedClient.attributes.meta
+              ? editSelectedClient.attributes.meta.openClaims
+              : 0
+          }}
+          - Open Claim
+        </div>
+      </div>
+      <div class="q-ml-md text-bold">Date & Time of first contact</div>
+      <div class="q-ml-md">{{ showingDate }},{{ showingTime }}</div>
+
+      <q-card class="  q-ma-md q-ma-sm ">
         <div class="client-list q-pa-sm">
           <div class="row">
-            <span class="form-heading">Insured Details</span><br />
             <q-icon
               name="create"
               color="primary"
@@ -13,252 +46,235 @@
               @click="editClientInfoDailog = true"
             ></q-icon>
           </div>
-          {{ editSelectedClient.attributes.insuredInfo.primary.fname }}
-          {{ editSelectedClient.attributes.insuredInfo.primary.lname }}
-          <p class="texts">
-            Mobile:
-            <span
-              class="clickLink"
-              v-if="
-                editSelectedClient.attributes.insuredInfo.primary.phoneNumber
-              "
-              @click="
-                onPhoneNumberClick(
-                  editSelectedClient.attributes.insuredInfo.primary
-                    .phoneNumber[0].number,
-                  $event
-                )
-              "
-            >
-              {{
-                editSelectedClient.attributes.insuredInfo.primary.phoneNumber[0]
-                  .number
-              }}
-            </span>
-          </p>
-          <p class="texts">
-            Email:
-            <span
-              class="clickLink"
-              v-if="editSelectedClient.attributes.insuredInfo.primary.email"
-              @click="
-                onEmailClick(
-                  editSelectedClient.attributes.insuredInfo.primary.email,
-                  $event
-                )
-              "
-            >
-              {{ editSelectedClient.attributes.insuredInfo.primary.email }}
-            </span>
-          </p>
-
-          <div class="q-mt-md">
-            <div class="form-heading q-mt-none">Co-Insured Details</div>
-
-            {{
-              editSelectedClient.attributes.insuredInfo.secondary
-                ? editSelectedClient.attributes.insuredInfo.secondary.fname
-                : '-'
-            }}
-            {{
-              editSelectedClient.attributes.insuredInfo.secondary
-                ? editSelectedClient.attributes.insuredInfo.secondary.lname
-                : '-'
-            }}
-
-            <p
-              class="texts"
-              v-if="editSelectedClient.attributes.insuredInfo.secondary"
-            >
-              Mobile:
-              <span
-                v-if="editSelectedClient.attributes.insuredInfo.secondary"
-                class="clickLink"
+          <div class="row ">
+            <div class="text-bold  col-xs-4 text-grey-8 ">
+              Insured Details
+            </div>
+            <div class="q-ml-md column">
+              <div class="">
+                {{ editSelectedClient.attributes.insuredInfo.primary.fname }}
+                {{ editSelectedClient.attributes.insuredInfo.primary.lname }}
+              </div>
+              <div
+                class="clickLink clickable"
+                v-if="
+                  editSelectedClient.attributes.insuredInfo.primary.phoneNumber
+                "
                 @click="
                   onPhoneNumberClick(
-                    editSelectedClient.attributes.insuredInfo.secondary
+                    editSelectedClient.attributes.insuredInfo.primary
                       .phoneNumber[0].number,
                     $event
                   )
                 "
               >
                 {{
-                  editSelectedClient.attributes.insuredInfo.secondary
-                    ? editSelectedClient.attributes.insuredInfo.secondary
-                        .phoneNumber[0].number
-                    : '-'
+                  editSelectedClient.attributes.insuredInfo.primary
+                    .phoneNumber[0].number
                 }}
-              </span>
-            </p>
-
-            <p
-              class="texts"
-              v-if="editSelectedClient.attributes.insuredInfo.secondary"
-            >
-              Email:
-              <span
-                class="clickLink"
-                v-if="editSelectedClient.attributes.insuredInfo.secondary"
+              </div>
+              <div
+                class="clickLink clickable"
+                v-if="editSelectedClient.attributes.insuredInfo.primary.email"
                 @click="
                   onEmailClick(
-                    editSelectedClient.attributes.insuredInfo.secondary.email,
+                    editSelectedClient.attributes.insuredInfo.primary.email,
                     $event
                   )
                 "
               >
+                {{ editSelectedClient.attributes.insuredInfo.primary.email }}
+              </div>
+            </div>
+          </div>
+
+          <div class="q-mt-md row">
+            <div class="text-bold q-mt-none  col-xs-4 text-grey-8">
+              Co-Insured Details
+            </div>
+            <div class="column q-ml-md">
+              <div class="">
                 {{
                   editSelectedClient.attributes.insuredInfo.secondary
-                    ? editSelectedClient.attributes.insuredInfo.secondary.email
+                    ? editSelectedClient.attributes.insuredInfo.secondary.fname
                     : '-'
                 }}
-              </span>
-            </p>
+                {{
+                  editSelectedClient.attributes.insuredInfo.secondary
+                    ? editSelectedClient.attributes.insuredInfo.secondary.lname
+                    : '-'
+                }}
+              </div>
+              <div>
+                <p
+                  class="texts"
+                  v-if="editSelectedClient.attributes.insuredInfo.secondary"
+                >
+                  <span
+                    v-if="editSelectedClient.attributes.insuredInfo.secondary"
+                    class="clickLink"
+                    @click="
+                      onPhoneNumberClick(
+                        editSelectedClient.attributes.insuredInfo.secondary
+                          .phoneNumber[0].number,
+                        $event
+                      )
+                    "
+                  >
+                    {{
+                      editSelectedClient.attributes.insuredInfo.secondary
+                        ? editSelectedClient.attributes.insuredInfo.secondary
+                            .phoneNumber[0].number
+                        : '-'
+                    }}
+                  </span>
+                </p>
+              </div>
+              <div>
+                <p
+                  class="texts"
+                  v-if="editSelectedClient.attributes.insuredInfo.secondary"
+                >
+                  <span
+                    class="clickLink"
+                    v-if="editSelectedClient.attributes.insuredInfo.secondary"
+                    @click="
+                      onEmailClick(
+                        editSelectedClient.attributes.insuredInfo.secondary
+                          .email,
+                        $event
+                      )
+                    "
+                  >
+                    {{
+                      editSelectedClient.attributes.insuredInfo.secondary
+                        ? editSelectedClient.attributes.insuredInfo.secondary
+                            .email
+                        : '-'
+                    }}
+                  </span>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="q-mt-md row">
+            <div class="text-bold q-mt-none  col-xs-4 text-grey-8">
+              Source of Lead ?Client
+            </div>
+            <div class="column q-ml-md">
+              <div class="">
+                {{
+                  editSelectedClient.attributes.source
+                    ? editSelectedClient.attributes.source.detail
+                      ? editSelectedClient.attributes.source.detail
+                      : '-'
+                    : '-'
+                }}
+              </div>
+            </div>
           </div>
 
-          <div class="q-mt-md">
-            <div class="form-heading q-mt-none">Address Details</div>
-
-            <div>
-              {{
-                editSelectedClient.attributes.insuredInfo.address.houseNumber
-              }}
+          <div class="q-mt-md row">
+            <div class="text-bold q-mt-none col-xs-4 text-grey-8">
+              Address Details
             </div>
-            <div>
-              {{
-                editSelectedClient.attributes.insuredInfo.address.streetAddress
-              }}
-            </div>
-            <div>
-              {{
-                editSelectedClient.attributes.insuredInfo.address.addressCountry
-              }}
-            </div>
-            <div>
-              {{
-                editSelectedClient.attributes.insuredInfo.mailingAddress
-                  .addressLocality
-              }}
-            </div>
-            <div>
-              {{
-                editSelectedClient.attributes.insuredInfo.address.addressRegion
-              }}
-              {{
-                editSelectedClient.attributes.insuredInfo.address.postalCode
-                  ? editSelectedClient.attributes.insuredInfo.address.postalCode
-                  : '-'
-              }}
-            </div>
-            <div>
-              {{
-                editSelectedClient.attributes.insuredInfo.address.dropBox.info
-                  ? editSelectedClient.attributes.insuredInfo.address.dropBox
-                      .info
-                  : '-'
-              }}
+            <div class="column q-ml-md">
+              <div>
+                {{
+                  editSelectedClient.attributes.insuredInfo.address.houseNumber
+                }}
+              </div>
+              <div>
+                {{
+                  editSelectedClient.attributes.insuredInfo.address
+                    .streetAddress
+                }}
+              </div>
+              <div>
+                {{
+                  editSelectedClient.attributes.insuredInfo.address
+                    .addressRegion
+                }}
+                {{
+                  editSelectedClient.attributes.insuredInfo.address.postalCode
+                    ? editSelectedClient.attributes.insuredInfo.address
+                        .postalCode
+                    : '-'
+                }}
+              </div>
+              <div>
+                {{
+                  editSelectedClient.attributes.insuredInfo.address
+                    .addressCountry
+                }}
+                <q-icon
+                  name="place"
+                  color="primary"
+                  @click="sendMap"
+                  class="edit-icon"
+                ></q-icon>
+              </div>
             </div>
           </div>
-          <div class="q-mt-md">
-            <span class="form-heading q-mt-none">Additional Phone Numbers</span>
-            <br />
-
-            <div
-              v-for="(phone, i) in editSelectedClient.attributes.insuredInfo
-                .phoneNumbers"
-            >
-              <span
-                class="clickLink"
-                @click="onPhoneNumberClick(phone.number, $event)"
+          <div class="q-mt-md row">
+            <div class="text-bold q-mt-none col-xs-4 text-grey-8">
+              Additional Phone Numbers
+            </div>
+            <div class="column q-ml-md">
+              <div
+                v-for="(phone, i) in editSelectedClient.attributes.insuredInfo
+                  .phoneNumbers"
               >
-                {{ phone.number ? phone.number : '-' }}</span
-              >
+                <span
+                  class="clickLink"
+                  @click="onPhoneNumberClick(phone.number, $event)"
+                >
+                  {{ phone.number ? phone.number : '-' }}</span
+                >
+              </div>
             </div>
           </div>
 
-          <div class="q-mt-md">
-            <div class="form-heading q-mt-none">Tenant Details</div>
-
-            <div>
-              {{
-                editSelectedClient.attributes.insuredInfo.tenantInfo.name
-                  ? editSelectedClient.attributes.insuredInfo.tenantInfo.name
-                  : '-'
-              }}
+          <div class="q-mt-md row">
+            <div class="form-heading q-mt-none col-xs-4 text-grey-8">
+              Tenant Details
             </div>
-            <span
-              class="clickLink"
-              v-if="
-                editSelectedClient.attributes.insuredInfo.tenantInfo.phoneNumber
-                  .number
-              "
-              @click="
-                onPhoneNumberClick(
-                  editSelectedClient.attributes.insuredInfo.tenantInfo
-                    .phoneNumber.number,
-                  $event
-                )
-              "
-            >
-              {{
-                editSelectedClient.attributes.insuredInfo.tenantInfo.phoneNumber
-                  .number
-                  ? editSelectedClient.attributes.insuredInfo.tenantInfo
+            <div class="column q-ml-md">
+              <div>
+                {{
+                  editSelectedClient.attributes.insuredInfo.tenantInfo.name
+                    ? editSelectedClient.attributes.insuredInfo.tenantInfo.name
+                    : '-'
+                }}
+              </div>
+              <div>
+                <span
+                  class="clickLink"
+                  v-if="
+                    editSelectedClient.attributes.insuredInfo.tenantInfo
                       .phoneNumber.number
-                  : '-'
-              }}</span
-            >
-          </div>
-          <div class="q-mt-md">
-            <div class="form-heading q-mt-none">Mailing Address</div>
-
-            <div>
-              {{
-                editSelectedClient.attributes.insuredInfo.mailingAddress
-                  .houseNumber
-              }}
+                  "
+                  @click="
+                    onPhoneNumberClick(
+                      editSelectedClient.attributes.insuredInfo.tenantInfo
+                        .phoneNumber.number,
+                      $event
+                    )
+                  "
+                >
+                  {{
+                    editSelectedClient.attributes.insuredInfo.tenantInfo
+                      .phoneNumber.number
+                      ? editSelectedClient.attributes.insuredInfo.tenantInfo
+                          .phoneNumber.number
+                      : '-'
+                  }}</span
+                >
+              </div>
             </div>
-            <div>
-              {{
-                editSelectedClient.attributes.insuredInfo.mailingAddress
-                  .streetAddress
-              }}
-            </div>
-            <div>
-              {{
-                editSelectedClient.attributes.insuredInfo.mailingAddress
-                  .addressCountry
-              }}
-            </div>
-            <div>
-              {{
-                editSelectedClient.attributes.insuredInfo.mailingAddress
-                  .addressLocality
-              }}
-            </div>
-            <div>
-              {{
-                editSelectedClient.attributes.insuredInfo.address.addressRegion
-              }}
-            </div>
-            <div>
-              {{
-                editSelectedClient.attributes.insuredInfo.mailingAddress
-                  .postalCode
-                  ? editSelectedClient.attributes.insuredInfo.mailingAddress
-                      .postalCode
-                  : '-'
-              }}
-            </div>
-            {{
-              editSelectedClient.attributes.insuredInfo.mailingAddress.dropBox
-                .info
-                ? editSelectedClient.attributes.insuredInfo.mailingAddress
-                    .dropBox.info
-                : '-'
-            }}
           </div>
         </div>
-      </div>
+      </q-card>
     </div>
 
     <!-- Client Info Edit Dialog -->
@@ -656,6 +672,8 @@ import { mapGetters, mapActions } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import { validateEmail, successMessage } from '@utils/validation';
 import AddressService from '@utils/country';
+import { dateToSend, dateToShow } from '@utils/date';
+import { date } from 'quasar';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import { constants } from '@utils/constant';
 
@@ -665,6 +683,8 @@ export default {
 
   data() {
     return {
+      showingDate: '',
+      showingTime: '',
       mailingAddressDetails: {
         addressCountry: '',
         addressRegion: '',
@@ -763,6 +783,10 @@ export default {
     if (!this.selectedClientId) {
       this.$router.push('/clients');
     }
+    this.showingDate = dateToShow(this.editSelectedClient.attributes.created);
+    this.showingTime = this.dateToTime(
+      this.editSelectedClient.attributes.created
+    );
   },
 
   created() {
@@ -833,6 +857,14 @@ export default {
       'getContactTypes',
       'getSingleClientDetails'
     ]),
+    sendMap() {
+      window.open(
+        `https://www.google.com/maps/search/?api=1&query=${this.editSelectedClient.attributes.insuredInfo.address.houseNumber}${this.editSelectedClient.attributes.insuredInfo.address.streetAddress}${this.editSelectedClient.attributes.insuredInfo.address.postalCode}${this.editSelectedClient.attributes.insuredInfo.address.addressRegion}`
+      );
+    },
+    dateToTime(dateString) {
+      return dateString ? date.formatDate(dateString, 'hh:mm') : null;
+    },
     setTypes(types, data) {
       const obj = types.find(item => {
         return item.id === data.id;
