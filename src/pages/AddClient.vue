@@ -317,57 +317,46 @@
                 />
               </div>
             </div>
-            <span class="form-heading">Address Details</span>
+            <span class="form-heading">Loss Address Details</span>
+            <q-input
+              dense
+              class="required"
+              v-model="lossAddressName"
+              label="Enter  Loss Address Name "
+              lazy-rules
+              :rules="[
+                val => (val && val.length > 0) || 'This is a required field'
+              ]"
+            ></q-input>
+            <q-select
+              dense
+              behavior="menu"
+              class="required"
+              v-model="property.id"
+              option-value="id"
+              option-label="name"
+              map-options
+              options-dense
+              emit-value
+              :options="propertyTypes"
+              @input="setTypes(propertyTypes, property)"
+              label="Property Type"
+              :rules="[
+                val =>
+                  (val && val.length > 0) || 'Please select the property type'
+              ]"
+            />
+            <q-input
+              dense
+              v-model="propertyDescription"
+              label="Description of Property"
+            />
             <AutoCompleteAddress
               :address="clientAddressDetails"
               :isDropBoxEnable="true"
               :isChecksEnable="true"
               :isAsteriskMark="true"
             />
-            <div class="row">
-              <p class="q-mx-none q-my-auto">Tenant Occupied</p>
-              <q-toggle class="q-ml-auto" v-model="tenantOccupiedToggle" />
-            </div>
-            <div v-if="tenantOccupiedToggle">
-              <q-input
-                dense
-                v-model="tenantOccupied.name"
-                label="Tenant Name"
-              />
-
-              <div class="row justify-between">
-                <q-select
-                  dense
-                  class="required col-5"
-                  v-model="tenantOccupied.type"
-                  label="Type"
-                  :options="contactTypes"
-                  option-value="machineValue"
-                  option-label="name"
-                  map-options
-                  options-dense
-                  behavior="menu"
-                  emit-value
-                  lazy-rules
-                  :rules="[
-                    val => (val && val.length > 0) || 'Please select phone type'
-                  ]"
-                />
-                <q-input
-                  dense
-                  class="required col-6"
-                  v-model.number="tenantOccupied.phone"
-                  label="Phone"
-                  mask="(###) ###-####"
-                  lazy-rules
-                  :rules="[
-                    val =>
-                      (val && val.length == 14) ||
-                      'Please enter the phone number'
-                  ]"
-                />
-              </div>
-            </div>
           </q-form>
           <q-btn
             @click="onSubmit('clientInfoDailog')"
@@ -395,7 +384,9 @@
         <div class="mobile-container-page-without-search">
           <q-form ref="mailingAddressForm" class="form-height">
             <div class="row">
-              <span class="form-heading"> Is the mailing address same? </span>
+              <span class="form-heading">
+                Is the Mailing Address same as the Loss Address ?
+              </span>
               <q-toggle
                 class="q-ml-auto"
                 v-model="isMailingAddressSameToggle"
@@ -448,6 +439,13 @@ export default {
   },
   data() {
     return {
+      property: {
+        value: '',
+        id: '',
+        machineValue: ''
+      },
+      propertyDescription: '',
+      lossAddressName: '',
       isAddMorePhoneDisabled: false,
       contractInfo: {
         reasonForCancellation: '',
@@ -540,11 +538,7 @@ export default {
           isPresent: false
         }
       },
-      tenantOccupied: {
-        name: '',
-        phone: '',
-        type: ''
-      },
+
       mailingAddressDetails: {
         addressCountry: '',
         addressRegion: '',
@@ -558,7 +552,7 @@ export default {
         }
       },
       addAditionalPhoneNumberToggle: false,
-      tenantOccupiedToggle: false,
+
       mailingAddressDialog: false,
       isMailingAddressSameToggle: false,
       isThereaCoInsuredToggle: false,
@@ -590,6 +584,7 @@ export default {
       this.honorific1.id = this.selectedLead.primaryContact.honorific.id;
       this.honorific1.value = this.selectedLead.primaryContact.honorific.value;
       this.honorific1.machineValue = this.selectedLead.primaryContact.honorific.machineValue;
+      this.propertyDescription = this.selectedLead.lossDesc;
     }
 
     this.countries = addressService.getCountries();
@@ -603,7 +598,8 @@ export default {
       'clientTypes',
       'titles',
       'vendors',
-      'vendorIndustries'
+      'vendorIndustries',
+      'propertyTypes'
     ])
   },
   mounted() {
@@ -615,12 +611,12 @@ export default {
       'addClient',
       'getVendors',
       'getClientTypes',
-      'getPropertyTypes',
       'getPolicyTypes',
       'getContactTypes',
       'getTitles',
       'getPolicyCategory',
       'getVendorIndustries',
+      'getPropertyTypes',
       'getRoles'
     ]),
     ...mapMutations(['setSelectedLead']),
@@ -798,32 +794,27 @@ export default {
               }
             ]
           },
-          address: {
-            ...this.clientAddressDetails
-          },
           mailingAddress: {
             ...this.mailingAddressDetails
           },
           phoneNumbers: this.phoneNumber,
-          tenantInfo: {
-            name: '',
-            phoneNumber: {
-              type: '',
-              number: ''
+          properties: [
+            {
+              name: this.lossAddressName,
+              addressCountry: this.clientAddressDetails.addressCountry,
+              addressLocality: this.clientAddressDetails.addressLocality,
+              addressRegion: this.clientAddressDetails.addressRegion,
+              postalCode: this.clientAddressDetails.postalCode,
+              streetAddress: this.clientAddressDetails.streetAddress,
+              houseNumber: this.clientAddressDetails.houseNumber,
+              propertyType: {
+                ...this.property
+              },
+              propertyDesc: this.propertyDescription
             }
-          }
+          ]
         }
       };
-
-      if (this.tenantOccupiedToggle) {
-        payload.insuredInfo.tenantInfo.name = this.tenantOccupied.name;
-        payload.insuredInfo.tenantInfo.phoneNumber.type = this.tenantOccupied.type;
-        payload.insuredInfo.tenantInfo.phoneNumber.number = this.tenantOccupied.phone;
-      }
-      //if tenantOccupiedToggle is off then it will not send the data related to tenantInfo
-      else {
-        delete payload.insuredInfo.tenantInfo;
-      }
       /* if coInsuredDetails toggle is off it well not send the coInsured details */
       if (!this.isThereaCoInsuredToggle) {
         delete payload.insuredInfo.secondary;
