@@ -49,6 +49,9 @@
   height: calc(100vh - 50px);
   overflow-y: auto;
 }
+.clickLink {
+  color: $primary;
+}
 .edit-icon {
   position: absolute;
   right: 20px;
