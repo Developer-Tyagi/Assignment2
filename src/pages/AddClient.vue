@@ -317,17 +317,45 @@
                 />
               </div>
             </div>
-            <span class="form-heading">Address Details</span>
+            <span class="form-heading">Loss Address Details</span>
+            <q-input
+              dense
+              class="required"
+              v-model="lossAddressName"
+              label="Enter  Loss Address Name "
+              lazy-rules
+              :rules="[
+                val => (val && val.length > 0) || 'This is a required field'
+              ]"
+            ></q-input>
             <AutoCompleteAddress
               :address="clientAddressDetails"
               :isDropBoxEnable="true"
               :isChecksEnable="true"
               :isAsteriskMark="true"
             />
-            <div class="row">
+            <q-select
+              dense
+              behavior="menu"
+              class="required"
+              v-model="property.id"
+              option-value="id"
+              option-label="name"
+              map-options
+              options-dense
+              emit-value
+              :options="propertyTypes"
+              @input="setTypes(propertyTypes, property)"
+              label="Property Type"
+              :rules="[
+                val =>
+                  (val && val.length > 0) || 'Please select the property type'
+              ]"
+            />
+            <!-- <div class="row">
               <p class="q-mx-none q-my-auto">Tenant Occupied</p>
               <q-toggle class="q-ml-auto" v-model="tenantOccupiedToggle" />
-            </div>
+            </div> -->
             <div v-if="tenantOccupiedToggle">
               <q-input
                 dense
@@ -448,6 +476,12 @@ export default {
   },
   data() {
     return {
+      property: {
+        id: '',
+        value: '',
+        machineValue: ''
+      },
+      lossAddressName: '',
       isAddMorePhoneDisabled: false,
       contractInfo: {
         reasonForCancellation: '',
