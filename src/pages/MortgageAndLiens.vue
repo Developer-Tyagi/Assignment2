@@ -6,22 +6,21 @@
         <q-btn
           @click="mortgageInfo.mortgageInfoDialog = true"
           flat
-          class="q-ml-auto"
+          class="q-ml-auto q-mt-md"
           ><img src="~assets/addMortgage.svg"
         /></q-btn>
       </div>
       <div class="mobile-container-page ">
-        <div
-          class="clients-list q-ma-sm"
-          v-if="mortgage.attributes.mortgageInfo.length"
-        >
+        <div class="clients-list q-ma-sm" v-if="mortgage.attributes">
           <div
             class="clients-list"
             v-for="(mortgage, index) in mortgage.attributes.mortgageInfo"
           >
             <div class="client-list-item">
               <div class="form-heading">
-                {{ mortgage.value }}
+                <span class="clickLink" @click="onNameClick(mortgage.id)">
+                  {{ mortgage.value }}</span
+                >
               </div>
               <div>
                 <div v-if="mortgage.address">
@@ -198,6 +197,9 @@ export default {
   },
   methods: {
     ...mapActions(['getMortgage', 'getVendors', 'addMortgage']),
+    onNameClick(value) {
+      this.$router.push('/vendor-details/' + value);
+    },
     successMessage,
     onPhoneNumberClick(number, e) {
       e.stopPropagation();

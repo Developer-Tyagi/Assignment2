@@ -194,11 +194,4 @@ export default {
 
   text-align: left;
 }
-
-.texts {
-  margin-bottom: 0;
-  font-size: 15px;
-
-  text-align: left;
-}
 </style>

@@ -1,8 +1,37 @@
 <template>
   <q-page>
-    <div class="mobile-container-page-without-search">
-      <div class="">
-        <!-- <div>{{ editSelectedClient.meta }} sd</div> -->
+    <div>
+      <div>
+        <div class="q-ml-md q-mt-md text-h6">
+          {{
+            editSelectedClient.attributes.insuredInfo.primary.fname
+              ? editSelectedClient.attributes.insuredInfo.primary.fname
+              : '-'
+          }}
+          {{
+            editSelectedClient.attributes.insuredInfo.primary.lname
+              ? editSelectedClient.attributes.insuredInfo.primary.lname
+              : '-'
+          }}
+        </div>
+        <div class="row heading-light q-ml-md q-my-md">
+          <div>
+            {{
+              editSelectedClient.attributes.meta
+                ? editSelectedClient.attributes.meta.totalClaims
+                : 0
+            }}
+            - Total Claims
+          </div>
+          <div class="q-ml-xl">
+            {{
+              editSelectedClient.attributes.meta
+                ? editSelectedClient.attributes.meta.openClaims
+                : 0
+            }}
+            - Open Claim
+          </div>
+        </div>
 
         <q-card
           class="text-primary q-ma-md q-pa-md"
@@ -14,9 +43,9 @@
         >
         <!-- //pointer -->
         <div class="q-ma-md q-pa-xs">
-          <div class="" v-if="setClientProperty.length">
+          <div v-if="setClientProperty.length">
             <q-card
-              class=" q-my-sm"
+              class="q-my-sm"
               flat
               bordered
               v-for="i in setClientProperty.length"
@@ -24,8 +53,8 @@
             >
               <div v-if="setClientProperty">
                 <div class="">
-                  <div class=" row">
-                    <div class="col-4 bg-red">
+                  <div class=" row q-ma-sm ">
+                    <div class=" col-4 bg-red " style="border-radius:8px;">
                       <img
                         alt="Claimguru"
                         src="~assets/logo.png"
@@ -35,7 +64,7 @@
                       />
                     </div>
                     <div class=" col-6 q-pa-sm">
-                      <div class="lightHeading">Property Name</div>
+                      <div class="heading-light">Property Name</div>
                       <div>
                         {{
                           setClientProperty[i - 1].attributes.name
@@ -73,6 +102,16 @@
                           ? setClientProperty[i - 1].attributes.houseNumber
                           : '-'
                       }}
+                      <div>
+                        <div class="heading-light">
+                          {{
+                            editSelectedClient.attributes.meta
+                              ? editSelectedClient.attributes.meta.openClaims
+                              : 0
+                          }}
+                          - Open Claim
+                        </div>
+                      </div>
                     </div>
 
                     <q-icon
@@ -90,7 +129,7 @@
                     :key="claim.id"
                   >
                     <div class="row q-mx-md ">
-                      <div class="lightHeading col-4 q-mx-xs">
+                      <div class="heading-light col-4 q-mx-xs">
                         Claim Number:
                       </div>
                       <div class="row justify-between q-ml-sm col-7">
@@ -112,25 +151,27 @@
                     </div>
                     <!-- badge -->
                     <div>
-                      <q-badge class="q-px-lg q-mx-md">{{
-                        claim.status ? claim.status : '-'
-                      }}</q-badge>
+                      <q-badge
+                        class="q-px-lg q-mx-md"
+                        style="background-color:#ECA74C;"
+                        >{{ claim.status ? claim.status : '-' }}</q-badge
+                      >
                     </div>
                     <!-- pointer3 -->
                     <div class="row q-ma-md">
-                      <div class="col-4  lightHeding ">
+                      <div class="col-4  heading-light ">
                         Insurane Carrier
                       </div>
                       <div>Carrier details(Static data)</div>
                     </div>
                     <div class="row q-ma-md">
-                      <div class="col-4  lightHeding ">
+                      <div class="col-4  heading-light ">
                         Date of Loss
                       </div>
                       <div>{{ claim.lossDate ? claim.lossDate : '-' }}</div>
                     </div>
                     <div class="row q-ma-md">
-                      <div class="col-4  lightHeding ">
+                      <div class="col-4  heading-light ">
                         Policy Number
                       </div>
                       <div>
@@ -138,11 +179,12 @@
                       </div>
                     </div>
                     <div class="row q-ma-md">
-                      <div class="col-4  lightHeding">
+                      <div class="col-4  heading-light">
                         Cause Of Loss
                       </div>
                       <div>Cause Of loss(static date)</div>
                     </div>
+                    <q-separator />
                   </div>
                 </div>
               </div>
@@ -307,7 +349,8 @@ export default {
     ...mapActions([
       'getSingleClientProperty',
       'getPropertyTypes',
-      'addPropertyAddress'
+      'addPropertyAddress',
+      'getSingleClientDetails'
     ]),
     ...mapMutations(['setSelectedClaimId']),
     onClickClaimNumber(claim) {

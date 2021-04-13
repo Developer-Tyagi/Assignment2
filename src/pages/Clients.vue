@@ -30,12 +30,20 @@
               <div class="client-list-item">
                 <div class="row">
                   <span>
+                    {{ client['meta'] ? client['meta']['totalClaims'] : 0 }}
+                    Total Claims /
+                    {{ client['meta'] ? client['meta']['openClaims'] : 0 }} Open
+                    Claim
+                  </span>
+
+                  <q-icon class="q-ml-auto" size="sm" name="more_vert"></q-icon>
+                </div>
+                <div class="row">
+                  <span>
                     {{ client['insuredInfo']['primary']['fname'] }}
 
                     {{ client['insuredInfo']['primary']['lname'] }}
                   </span>
-
-                  <q-icon class="q-ml-auto" size="sm" name="more_vert"></q-icon>
                 </div>
                 <div class="row">
                   <div class="row">

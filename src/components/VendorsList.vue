@@ -46,9 +46,16 @@
         class="vendor-list-item"
         @click="selectVendor(vendor)"
       >
-        <span>{{ vendor.name }}</span>
-        <!-- //remove -->
-
+        <q-item-section
+          clickable
+          v-ripple
+          @click="onVendorNameClick(vendor)"
+          v-if="vendorDetails"
+        >
+          <span>{{ vendor.name }}</span>
+          <!-- //remove -->
+        </q-item-section>
+        <span v-else>{{ vendor.name }}</span>
         <q-icon
           v-if="vendor.name === carrierName"
           name="done"
@@ -107,7 +114,14 @@
 import { mapActions, mapGetters } from 'vuex';
 export default {
   name: 'VendorsList',
-  props: ['carrierName', 'selective', 'showFilter', 'filterName', 'valueName'],
+  props: [
+    'carrierName',
+    'selective',
+    'showFilter',
+    'filterName',
+    'valueName',
+    'vendorDetails'
+  ],
   data() {
     return {
       searchText: '',
@@ -137,7 +151,9 @@ export default {
     selectFilter(filter) {
       this.selectedFilter = filter.id;
     },
-
+    onVendorNameClick(vendor) {
+      this.$router.push('/vendor-details/' + vendor.id);
+    },
     applyFilter() {
       this.params.industry = this.selectedFilter;
       this.getVendors(this.params);

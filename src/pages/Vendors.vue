@@ -11,6 +11,7 @@
         :selective="false"
         :showFilter="true"
         :filterName="''"
+        :vendorDetails="true"
         @addVendor="openAddVendorDialog"
       />
     </div>

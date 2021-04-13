@@ -240,6 +240,12 @@ const routes = [
         component: () => import('pages/Vendors.vue')
       },
       {
+        path: 'vendor-details/:id',
+        name: 'vendor details',
+        caseSensitive: true,
+        component: () => import('pages/VendorDetails.vue')
+      },
+      {
         path: 'claims',
         name: 'open claims',
         caseSensitive: true,
