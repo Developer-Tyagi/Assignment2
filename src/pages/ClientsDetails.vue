@@ -7,13 +7,45 @@
       }"
     >
       <div class="q-pa-xs column full-height">
+        <div class="q-ml-md q-mt-md text-h6">
+          {{
+            editSelectedClient.attributes.insuredInfo.primary.fname
+              ? editSelectedClient.attributes.insuredInfo.primary.fname
+              : '-'
+          }}
+          {{
+            editSelectedClient.attributes.insuredInfo.primary.lname
+              ? editSelectedClient.attributes.insuredInfo.primary.lname
+              : '-'
+          }}
+        </div>
+        <div class="row  q-ml-md q-my-md">
+          <div>
+            {{
+              editSelectedClient.attributes.meta
+                ? editSelectedClient.attributes.meta.totalClaims
+                : 0
+            }}
+            - Total Claims
+          </div>
+          <div class="q-ml-xl">
+            {{
+              editSelectedClient.attributes.meta
+                ? editSelectedClient.attributes.meta.openClaims
+                : 0
+            }}
+            - Open Claim
+          </div>
+        </div>
         <div
+          class=""
           v-for="dialogBox in dialogBoxes"
           :key="dialogBox.name"
           @click="clientDetailsDailogBoxOpen(dialogBox.name)"
         >
-          <div class="form-list row">
-            {{ dialogBox.name }}
+          <div class="full-width ">
+            <q-card class="q-ma-sm q-pa-md"> {{ dialogBox.name }} </q-card>
+
             <div class="q-mr-lg q-ml-auto" v-if="dialogBox.validForm == true">
               <q-icon size="xs" color="primary" name="done" />
             </div>

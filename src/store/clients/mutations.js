@@ -11,11 +11,11 @@ export function setSelectedEditClient(state, client) {
 }
 
 export function setSelectedSingleClaim(state, claim) {
-  state.getSelectedClaim = claim;
+  state.getSelectedClaim = claim.attributes;
 }
 
 export function setSelectedClientProperty(state, client) {
-  state.setClientProperty = client;
+  state.setClientProperty = client.attributes;
 }
 
 export function setEstimators(state, estimators) {

@@ -39,14 +39,13 @@
     <link rel="icon" type="image/ico" href="favicon.ico" />
     <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async></script>
     <script>
-      var OneSignal = OneSignal || [];
-      OneSignal.push([
-        'init',
-        {
-          appId: '8b9d23a5-a03c-4720-902e-552ce6f500d2'
-          // Your other init settings
-        }
-      ]);
+      window.OneSignal = window.OneSignal || [];
+      OneSignal.push(function() {
+        console.log('hi consoled service worker');
+        OneSignal.init({
+          appId: '07844e53-feca-4f61-bc50-95cf4234e175'
+        });
+      });
     </script>
   </head>
   <body>
