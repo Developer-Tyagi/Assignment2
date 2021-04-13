@@ -7,7 +7,7 @@
         /></q-btn>
       </div>
       <div class=" listing-height">
-        <div class="clients-list" v-if="setClientProperty.length">
+        <div class="clients-list" v-if="setClientProperty">
           <!-- This is for showing the Property details  -->
           <div
             class="clients-list"
@@ -37,56 +37,61 @@
                 </div>
               </div>
               <div class="client-list-item">
-                <span class="form-heading">
+                <div class="form-heading">
                   {{
-                    setClientProperty[i - 1].attributes.name
-                      ? setClientProperty[i - 1].attributes.name
+                    setClientProperty[i - 1].name
+                      ? setClientProperty[i - 1].name
                       : '-'
                   }}
-                </span>
-
-                <br />
-                {{
-                  setClientProperty[i - 1].attributes.streetAddress
-                    ? setClientProperty[i - 1].attributes.streetAddress
-                    : '-'
-                }}<br />
-                {{
-                  setClientProperty[i - 1].attributes.addressRegion
-                    ? setClientProperty[i - 1].attributes.addressRegion
-                    : '-'
-                }}
-                {{
-                  setClientProperty[i - 1].attributes.addressCountry
-                    ? setClientProperty[i - 1].attributes.addressCountry
-                    : '-'
-                }}<br />
-                {{
-                  setClientProperty[i - 1].attributes.addressLocality
-                    ? setClientProperty[i - 1].attributes.addressLocality
-                    : '-'
-                }}<br />
-                {{
-                  setClientProperty[i - 1].attributes.houseNumber
-                    ? setClientProperty[i - 1].attributes.houseNumber
-                    : '-'
-                }}<br />
-                <q-separator
-                  v-if="setClientProperty[i - 1].attributes.claims"
-                />
+                </div>
+                <div>
+                  {{
+                    setClientProperty[i - 1].streetAddress
+                      ? setClientProperty[i - 1].streetAddress
+                      : '-'
+                  }}
+                </div>
+                <div>
+                  {{
+                    setClientProperty[i - 1].addressRegion
+                      ? setClientProperty[i - 1].addressRegion
+                      : '-'
+                  }}
+                  {{
+                    setClientProperty[i - 1].addressCountry
+                      ? setClientProperty[i - 1].addressCountry
+                      : '-'
+                  }}
+                </div>
+                <div>
+                  {{
+                    setClientProperty[i - 1].addressLocality
+                      ? setClientProperty[i - 1].addressLocality
+                      : '-'
+                  }}
+                </div>
+                <div>
+                  {{
+                    setClientProperty[i - 1].houseNumber
+                      ? setClientProperty[i - 1].houseNumber
+                      : '-'
+                  }}
+                </div>
+                <q-separator v-if="setClientProperty[i - 1].claims" />
                 <div
                   class="q-mt-sm"
-                  v-for="claim in setClientProperty[i - 1].attributes.claims"
+                  v-for="claim in setClientProperty[i - 1].claims"
                   :key="claim.id"
                 >
                   <q-item-section @click="onClickClaimNumber(claim)">
                     <div class="row">
                       <span class="text-bold">Last Updated on : </span>
                       {{ claim.updated | moment('DD/MM/YYYY') }}
-                      <q-badge class="q-ml-auto">{{
-                        claim.status ? claim.status : '-'
-                      }}</q-badge
-                      ><br />
+                      <div>
+                        <q-badge class="q-ml-auto">{{
+                          claim.status ? claim.status : '-'
+                        }}</q-badge>
+                      </div>
                     </div>
                     <div class="text-bold q-mt-xs">File Number:</div>
                     {{ claim.fileNumber ? claim.fileNumber : '-' }}

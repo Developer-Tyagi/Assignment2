@@ -1004,11 +1004,12 @@ export default {
 };
 </script>
 <style lang="scss">
+.clickLink {
+  color: $primary;
+}
 .texts {
   margin-bottom: 0;
   font-size: 15px;
-
-  text-align: left;
 }
 .form-height {
   height: calc(100vh - 130px);

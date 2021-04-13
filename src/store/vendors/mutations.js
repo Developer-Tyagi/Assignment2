@@ -6,6 +6,9 @@ export function setvendors(state, vendors) {
     selected: false
   }));
 }
+export function setSelectedVendor(state, vendor) {
+  state.selectedVendor = vendor.attributes;
+}
 
 export function setvendorsIndustries(state, vendorIndustries) {
   state.vendorIndustries = vendorIndustries.map(vendorIndustry => ({

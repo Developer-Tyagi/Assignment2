@@ -131,7 +131,7 @@ import { constants } from '@utils/constant';
 import VendorsList from 'components/VendorsList';
 
 export default {
-  name: 'ContractInfo',
+  name: 'Mortgage',
   components: {
     CustomBar,
     AddVendor,
@@ -152,8 +152,6 @@ export default {
       constants: constants
     };
   },
-  created() {},
-
   computed: { ...mapGetters(['vendors']) },
   methods: {
     ...mapActions(['getVendors']),

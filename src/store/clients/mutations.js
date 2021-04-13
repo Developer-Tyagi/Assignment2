@@ -15,7 +15,7 @@ export function setSelectedSingleClaim(state, claim) {
 }
 
 export function setSelectedClientProperty(state, client) {
-  state.setClientProperty = client;
+  state.setClientProperty = client.attributes;
 }
 
 export function setEstimators(state, estimators) {
