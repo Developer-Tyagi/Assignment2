@@ -328,12 +328,6 @@
                 val => (val && val.length > 0) || 'This is a required field'
               ]"
             ></q-input>
-            <AutoCompleteAddress
-              :address="clientAddressDetails"
-              :isDropBoxEnable="true"
-              :isChecksEnable="true"
-              :isAsteriskMark="true"
-            />
             <q-select
               dense
               behavior="menu"
@@ -352,50 +346,17 @@
                   (val && val.length > 0) || 'Please select the property type'
               ]"
             />
-            <!-- <div class="row">
-              <p class="q-mx-none q-my-auto">Tenant Occupied</p>
-              <q-toggle class="q-ml-auto" v-model="tenantOccupiedToggle" />
-            </div> -->
-            <div v-if="tenantOccupiedToggle">
-              <q-input
-                dense
-                v-model="tenantOccupied.name"
-                label="Tenant Name"
-              />
-
-              <div class="row justify-between">
-                <q-select
-                  dense
-                  class="required col-5"
-                  v-model="tenantOccupied.type"
-                  label="Type"
-                  :options="contactTypes"
-                  option-value="machineValue"
-                  option-label="name"
-                  map-options
-                  options-dense
-                  behavior="menu"
-                  emit-value
-                  lazy-rules
-                  :rules="[
-                    val => (val && val.length > 0) || 'Please select phone type'
-                  ]"
-                />
-                <q-input
-                  dense
-                  class="required col-6"
-                  v-model.number="tenantOccupied.phone"
-                  label="Phone"
-                  mask="(###) ###-####"
-                  lazy-rules
-                  :rules="[
-                    val =>
-                      (val && val.length == 14) ||
-                      'Please enter the phone number'
-                  ]"
-                />
-              </div>
-            </div>
+            <q-input
+              dense
+              v-model="propertyDescription"
+              label="Description of Property"
+            />
+            <AutoCompleteAddress
+              :address="clientAddressDetails"
+              :isDropBoxEnable="true"
+              :isChecksEnable="true"
+              :isAsteriskMark="true"
+            />
           </q-form>
           <q-btn
             @click="onSubmit('clientInfoDailog')"
@@ -423,7 +384,9 @@
         <div class="mobile-container-page-without-search">
           <q-form ref="mailingAddressForm" class="form-height">
             <div class="row">
-              <span class="form-heading"> Is the mailing address same? </span>
+              <span class="form-heading">
+                Is the Mailing Address same as the Loss Address ?
+              </span>
               <q-toggle
                 class="q-ml-auto"
                 v-model="isMailingAddressSameToggle"
@@ -477,10 +440,11 @@ export default {
   data() {
     return {
       property: {
-        id: '',
         value: '',
+        id: '',
         machineValue: ''
       },
+      propertyDescription: '',
       lossAddressName: '',
       isAddMorePhoneDisabled: false,
       contractInfo: {
@@ -624,6 +588,7 @@ export default {
       this.honorific1.id = this.selectedLead.primaryContact.honorific.id;
       this.honorific1.value = this.selectedLead.primaryContact.honorific.value;
       this.honorific1.machineValue = this.selectedLead.primaryContact.honorific.machineValue;
+      this.propertyDescription = this.selectedLead.lossDesc;
     }
 
     this.countries = addressService.getCountries();
@@ -637,7 +602,8 @@ export default {
       'clientTypes',
       'titles',
       'vendors',
-      'vendorIndustries'
+      'vendorIndustries',
+      'propertyTypes'
     ])
   },
   mounted() {
@@ -649,12 +615,12 @@ export default {
       'addClient',
       'getVendors',
       'getClientTypes',
-      'getPropertyTypes',
       'getPolicyTypes',
       'getContactTypes',
       'getTitles',
       'getPolicyCategory',
       'getVendorIndustries',
+      'getPropertyTypes',
       'getRoles'
     ]),
     ...mapMutations(['setSelectedLead']),
@@ -832,20 +798,25 @@ export default {
               }
             ]
           },
-          address: {
-            ...this.clientAddressDetails
-          },
           mailingAddress: {
             ...this.mailingAddressDetails
           },
           phoneNumbers: this.phoneNumber,
-          tenantInfo: {
-            name: '',
-            phoneNumber: {
-              type: '',
-              number: ''
+          properties: [
+            {
+              name: this.lossAddressName,
+              addressCountry: this.clientAddressDetails.addressCountry,
+              addressLocality: this.clientAddressDetails.addressLocality,
+              addressRegion: this.clientAddressDetails.addressRegion,
+              postalCode: this.clientAddressDetails.postalCode,
+              streetAddress: this.clientAddressDetails.streetAddress,
+              houseNumber: this.clientAddressDetails.houseNumber,
+              propertyType: {
+                ...this.property
+              },
+              propertyDesc: this.propertyDescription
             }
-          }
+          ]
         }
       };
 
