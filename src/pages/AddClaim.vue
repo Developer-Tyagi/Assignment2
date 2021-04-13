@@ -473,19 +473,7 @@ export default {
         addVendorDialog: false,
         vendorDialogName: '',
         valueName: '',
-        // mortgageInfoDialog: false,
-        // mortgageDetails: [
-        //   {
-        //     id: '',
-        //     value: '',
-        //     loanNumber: '',
-        //     accountNumber: '',
-        //     isPrimary: true,
-        //     notes: ''
-        //   }
-        // ],
         lossAddressNameDropdown: '',
-        // isSecondMortgageHome: false,
         wasAppifProvidedToTheInsuredToggle: false,
         doesTheOfficeNeedToProvidePpifToTheInsuredToggle: false,
         PPdamagedItemsDailog: false,

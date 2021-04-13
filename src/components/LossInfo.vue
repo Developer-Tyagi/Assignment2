@@ -193,15 +193,6 @@
       :rules="[val => (val && val.length > 0) || 'This is a required field']"
     />
 
-    <q-input
-      dense
-      class="required"
-      v-model="lossInfo.lossAddressName"
-      v-if="lossInfo.lossAddressNameDropdown == 'Others'"
-      label="Enter New Loss Address Name "
-      lazy-rules
-      :rules="[val => (val && val.length > 0) || 'This is a required field']"
-    ></q-input>
     <div class="row" v-if="lossAddressSameAsClient && lossAddressToggleShow">
       <p class="q-my-auto form-heading">Loss Address Same As Client's?</p>
 
@@ -221,23 +212,6 @@
         :isAsteriskMark="true"
       />
     </div>
-    <q-select
-      dense
-      behavior="menu"
-      class="required"
-      v-model="lossInfo.property.id"
-      option-value="id"
-      option-label="name"
-      map-options
-      options-dense
-      emit-value
-      :options="propertyTypes"
-      @input="setTypes(propertyTypes, lossInfo.property)"
-      label="Property Type"
-      :rules="[
-        val => (val && val.length > 0) || 'Please select the property type'
-      ]"
-    />
     <q-input
       dense
       v-model="lossInfo.propertyDescription"
