@@ -538,11 +538,7 @@ export default {
           isPresent: false
         }
       },
-      tenantOccupied: {
-        name: '',
-        phone: '',
-        type: ''
-      },
+
       mailingAddressDetails: {
         addressCountry: '',
         addressRegion: '',
@@ -556,7 +552,7 @@ export default {
         }
       },
       addAditionalPhoneNumberToggle: false,
-      tenantOccupiedToggle: false,
+
       mailingAddressDialog: false,
       isMailingAddressSameToggle: false,
       isThereaCoInsuredToggle: false,
@@ -819,16 +815,6 @@ export default {
           ]
         }
       };
-
-      if (this.tenantOccupiedToggle) {
-        payload.insuredInfo.tenantInfo.name = this.tenantOccupied.name;
-        payload.insuredInfo.tenantInfo.phoneNumber.type = this.tenantOccupied.type;
-        payload.insuredInfo.tenantInfo.phoneNumber.number = this.tenantOccupied.phone;
-      }
-      //if tenantOccupiedToggle is off then it will not send the data related to tenantInfo
-      else {
-        delete payload.insuredInfo.tenantInfo;
-      }
       /* if coInsuredDetails toggle is off it well not send the coInsured details */
       if (!this.isThereaCoInsuredToggle) {
         delete payload.insuredInfo.secondary;
