@@ -97,7 +97,6 @@
           >
         </div>
       </div>
-
       <q-card class="q-ma-md q-pa-md  ">
         <div class="row q-mt-sm ">
           <span class=" text-bold col q-ma-md "> Claim Summary</span>
@@ -311,7 +310,7 @@
                 Phase changed to
                 {{
                   getSelectedClaim.phases[index].value
-                    ? getSelectedClaim.attributes.phases[index].value
+                    ? getSelectedClaim.phases[index].value
                     : '-'
                 }}
               </div>
