@@ -11,7 +11,7 @@ export function setSelectedEditClient(state, client) {
 }
 
 export function setSelectedSingleClaim(state, claim) {
-  state.getSelectedClaim = claim;
+  state.getSelectedClaim = claim.attributes;
 }
 
 export function setSelectedClientProperty(state, client) {
