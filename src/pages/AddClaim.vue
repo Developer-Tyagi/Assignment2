@@ -77,7 +77,7 @@
               :isMailingAddressEnable="true"
               :lossAddressSameAsClient="true"
               :isAddressRequired="true"
-              :mortgageInfo="mortgageObject"
+              :mortgageDetails="mortgageObject"
             />
           </q-form>
 

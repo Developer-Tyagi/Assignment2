@@ -212,11 +212,7 @@
         :isAsteriskMark="true"
       />
     </div>
-    <q-input
-      dense
-      v-model="lossInfo.propertyDescription"
-      label="Description of Property"
-    />
+
     <q-select
       dense
       behavior="menu"
@@ -706,7 +702,7 @@ export default {
     lossInfo: {
       type: Object
     },
-    mortgageInfo: {
+    mortgageDetails: {
       type: Object
     },
     isMailingAddressEnable: {
@@ -786,7 +782,12 @@ export default {
     ])
   },
   methods: {
-    ...mapActions(['getVendors']),
+    ...mapActions([
+      'getVendors',
+      'getClaimReasons',
+      'getSeverityClaim',
+      'getRoles'
+    ]),
     onDamageOsToggleButtonOff() {
       if (!this.lossInfo.isDamageOSToggle) {
         this.lossInfo.osDamagedItems.length = 0;
