@@ -657,7 +657,7 @@ import CustomBar from 'components/CustomBar';
 import { validateEmail, successMessage } from '@utils/validation';
 import AddressService from '@utils/country';
 import { dateToTime, dateToShow } from '@utils/date';
-
+import { onEmailClick, onPhoneNumberClick } from '@utils/clickable';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import { constants } from '@utils/constant';
 
@@ -1000,18 +1000,8 @@ export default {
       this['honorific' + val].title = titleResult.value;
       this['honorific' + val].machineValue = titleResult.machineValue;
     },
-    onPhoneNumberClick(number, e) {
-      e.stopPropagation();
-      if (number) {
-        window.open('tel:' + number);
-      }
-    },
-    onEmailClick(email, e) {
-      e.stopPropagation();
-      if (email) {
-        window.open('mailto:' + email);
-      }
-    }
+    onPhoneNumberClick,
+    onEmailClick
   }
 };
 </script>

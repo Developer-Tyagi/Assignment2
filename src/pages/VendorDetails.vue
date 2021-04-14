@@ -93,6 +93,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import moment from 'moment';
+import { onEmailClick, onPhoneNumberClick } from '@utils/clickable';
 
 export default {
   computed: {
@@ -101,19 +102,8 @@ export default {
 
   methods: {
     ...mapActions(['getVendorDetails']),
-    onEmailClick(email, e) {
-      e.stopPropagation();
-      if (email) {
-        window.open('mailto:' + email);
-      }
-    },
-
-    onPhoneNumberClick(number, e) {
-      e.stopPropagation();
-      if (number) {
-        window.open('tel:' + number);
-      }
-    }
+    onEmailClick,
+    onPhoneNumberClick
   },
   mounted() {
     this.getVendorDetails(this.$route.params.id);

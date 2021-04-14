@@ -26,6 +26,7 @@
 import { mapGetters, mapActions } from 'vuex';
 import moment from 'moment';
 import ClaimDetail from 'components/ClaimDetail';
+import { onEmailClick } from '@utils/clickable';
 
 export default {
   components: { ClaimDetail },
@@ -59,12 +60,7 @@ export default {
   },
   methods: {
     ...mapActions(['getSingleClaimDetails']),
-    onEmailClick(email, e) {
-      e.stopPropagation();
-      if (email) {
-        window.open('mailto:' + email);
-      }
-    },
+    onEmailClick,
     onClickClaimItems(value) {
       switch (value) {
         case 'Claim Summary':

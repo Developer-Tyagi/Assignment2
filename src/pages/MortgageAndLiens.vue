@@ -158,6 +158,8 @@ import CustomBar from 'components/CustomBar';
 import { constants } from '@utils/constant';
 import { successMessage } from '@utils/validation';
 import Mortgage from 'components/Mortgage';
+import { onEmailClick, onPhoneNumberClick } from '@utils/clickable';
+
 export default {
   components: {
     CustomBar,
@@ -201,18 +203,8 @@ export default {
       this.$router.push('/vendor-details/' + value);
     },
     successMessage,
-    onPhoneNumberClick(number, e) {
-      e.stopPropagation();
-      if (number) {
-        window.open('tel:' + number);
-      }
-    },
-    onEmailClick(email, e) {
-      e.stopPropagation();
-      if (email) {
-        window.open('mailto:' + email);
-      }
-    },
+    onPhoneNumberClick,
+    onEmailClick,
     async onSaveButtonClick() {
       const payload = {
         id: this.selectedClaimId,
