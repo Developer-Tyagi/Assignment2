@@ -15,12 +15,14 @@
         />
         <q-card-section>
           <div class="mobile-container-page-without-search form-height">
-            <q-input
-              dense
-              class="full-width"
-              label="Take notes here"
+            <div class="q-py-xs">Notes</div>
+            <textarea
               v-model="note"
-            />
+              rows="4"
+              placeholder="Take Notes here..."
+              required
+              style="width: 100%"
+            ></textarea>
           </div>
           <q-btn
             @click="onSave"
@@ -34,31 +36,62 @@
     </q-dialog>
     <div>
       <div class="actions-div">
-        <q-separator vertical></q-separator>
-        <q-btn @click="addNote" flat class="q-ml-auto"
-          ><img src="~assets/add.svg"
-        /></q-btn>
+        <q-btn @click="addNote" flat class="q-ml-auto q-mt-md">
+          <img src="~assets/addNote.svg" />
+        </q-btn>
       </div>
       <div class="mobile-container-page">
         <div v-if="editSelectedClient.attributes.notes">
+          <div class="q-ml-md q-mt-md text-h6">
+            {{
+              editSelectedClient.attributes.insuredInfo.primary.fname
+                ? editSelectedClient.attributes.insuredInfo.primary.fname
+                : '-'
+            }}
+            {{
+              editSelectedClient.attributes.insuredInfo.primary.lname
+                ? editSelectedClient.attributes.insuredInfo.primary.lname
+                : '-'
+            }}
+          </div>
+          <div class="row  q-ml-md q-my-md heading-light ">
+            <div>
+              {{
+                editSelectedClient.attributes.meta
+                  ? editSelectedClient.attributes.meta.totalClaims
+                  : 0
+              }}
+              - Total Claims
+            </div>
+            <div class="q-ml-xl">
+              {{
+                editSelectedClient.attributes.meta
+                  ? editSelectedClient.attributes.meta.openClaims
+                  : 0
+              }}
+              - Open Claim
+            </div>
+          </div>
           <div
-            class="clients-list q-ma-sm"
+            class="clients-list "
             v-if="editSelectedClient.attributes.notes.length"
           >
             <div
-              class="clients-list"
+              class="clients-list "
               v-for="(note, index) in editSelectedClient.attributes.notes"
             >
               <q-item-section>
                 <div class="client-list-item">
-                  <div class="row">
-                    {{
-                      editSelectedClient.attributes.notes[index].addedAt
-                        | moment('DD/MM/YYYY/, HH:mm')
-                    }}
-                    <br />
-                    {{ editSelectedClient.attributes.notes[index].desc }}<br />
-
+                  <div>
+                    <div class="heading-light q-pb-md">
+                      {{
+                        editSelectedClient.attributes.notes[index].addedAt
+                          | moment('DD/MM/YYYY/, HH:mm')
+                      }}
+                    </div>
+                    <div>
+                      {{ editSelectedClient.attributes.notes[index].desc }}
+                    </div>
                     <div class="row"></div>
                   </div>
                 </div>

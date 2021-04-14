@@ -19,7 +19,7 @@
               : '-'
           }}
         </div>
-        <div class="row  q-ml-md q-my-md">
+        <div class="row  q-ml-md q-my-md heading-light">
           <div>
             {{
               editSelectedClient.attributes.meta
