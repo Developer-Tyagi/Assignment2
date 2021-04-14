@@ -461,7 +461,7 @@
               :isMailingAddressEnable="true"
               :lossAddressSameAsClient="true"
               :isAddressRequired="true"
-              :mortgageDetails="mortgageObject"
+              :mortgageInfo="mortgageObject"
             />
           </q-form>
 
