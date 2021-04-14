@@ -2,67 +2,72 @@
   <q-page>
     <div v-if="settlement.attributes">
       <div class="actions-div">
-        <q-separator vertical inset></q-separator>
         <q-btn @click="onClickAddButton" flat class="q-ml-auto"
-          ><img src="~assets/add.svg"
+          ><img src="~assets/addSettlement.svg"
         /></q-btn>
       </div>
       <div class="mobile-container-page">
-        <div class="row justify-between  ">
-          <div class="form-heading q-ml-md">Total net Claimed</div>
+        <ClaimDetail />
 
-          <div>
-            <q-icon
-              class="q-mt-md q-mr-md"
-              name="edit"
-              size="sm"
-              color="primary"
-              @click="editTotalTopFields"
-            />
+        <div class=" q-mx-md">
+          <q-separator class="q-my-sm" />
+          <div class="row q-py-sm">
+            <div class=" q-ml-sm heading-light col-5">
+              Total net Claimed
+            </div>
+            <div class="col-3" style="margin-left:7.5%;">
+              $
+            </div>
+            <div class="q-ml-lg text-bold">
+              {{ settlement.attributes.totalNetClaimed }}
+            </div>
           </div>
-        </div>
-        <div class="q-ml-lg" v-if="edit == false">
-          $ {{ settlement.attributes.totalNetClaimed }}
-        </div>
-        <div class="q-ml-lg" v-if="edit == true">
-          <q-input
-            class="q-mr-xl"
-            style="width:70px"
-            v-model="totalNetClaimed"
-          ></q-input>
-        </div>
-
-        <div class="form-heading q-ml-md">Total replacement Cost</div>
-        <div class="q-ml-lg" v-if="edit == false">
-          $ {{ settlement.attributes.totalReplCost }}
-        </div>
-        <div class="q-ml-lg" v-if="edit == true">
-          <q-input style="width:70px" v-model="totalReplacementCost"></q-input>
-        </div>
-
-        <div class="form-heading q-ml-md">Initial Offer</div>
-        <div class=" q-ml-lg" v-if="edit == false">
-          $ {{ settlement.attributes.intialOffer }}
-        </div>
-        <div class="row justify-between q-mr-lg">
-          <div class="q-ml-lg" v-if="edit == true">
-            <q-input style="width:70px" v-model="initialCost"></q-input>
+          <div class="row  q-py-sm">
+            <div class="heading-light q-ml-sm  col-5">
+              Total replacement Cost
+            </div>
+            <div class="col-3" style="margin-left:7.5%;">
+              $
+            </div>
+            <div class="q-ml-lg text-bold">
+              {{ settlement.attributes.totalReplCost }}
+            </div>
           </div>
-          <div class="q-ml-lg" v-if="edit == true">
-            <!-- @click and then send the 3 data edit api -->
-            <q-btn label="Save" color="primary"></q-btn>
+          <div class="row  q-py-sm">
+            <div class="heading-light q-ml-sm col-5 ">Initial Offer</div>
+            <div class=" col-3 " style="margin-left:7.5%;">
+              $
+            </div>
+            <div class=" q-ml-lg text-bold">
+              {{ settlement.attributes.intialOffer }}
+            </div>
           </div>
+          <q-separator class="q-my-sm" />
         </div>
-
-        <div class="mobile-container-page ">
+        <!-- card -working -->
+        <div>
           <div
             class="q-ma-sm  "
             v-for="(settlement, index) in settlement.attributes.settlements"
           >
-            <q-card flat bordered class="client-list-item q-mt-md ">
-              <div class="row justify-right  q-my-md">
-                <div class="col-11 text-center  text-h6">
-                  $ {{ settlement.amounts.netSettlement }}
+            <q-card class="q-mt-md ">
+              <div class="row  q-pa-md justify-between ">
+                <div>
+                  <q-badge
+                    class="q-pa-sm"
+                    :color="
+                      settlement.status == 'Accepted'
+                        ? 'green'
+                        : settlement.status == 'Rejected'
+                        ? 'primary'
+                        : 'grey'
+                    "
+                  >
+                    {{ settlement.status }}</q-badge
+                  >
+                </div>
+                <div class="heading-light">
+                  {{ settlement.description.value }}
                 </div>
 
                 <div>
@@ -71,76 +76,32 @@
                     name="edit"
                     size="sm"
                     color="primary"
-                    @click="onClickEdit(index)"
+                    @click="onClickEdit(index, 'show')"
+                  />
+                  <q-icon
+                    class="q-ml-xs "
+                    name="delete"
+                    size="sm"
+                    color="primary"
                   />
                 </div>
               </div>
-              <div class="row justify-between  q-px-md q-my-md">
-                <div>{{ settlement.description.value }}</div>
+              <div class="q-mx-md">
+                <div class="row ">
+                  <div class="heading-light col-6 ">Replacement Cost</div>
+                  <div class="heading-light col-4">$</div>
 
-                <div>
-                  <q-badge
-                    color="primary"
-                    v-if="settlement.status == 'Rejected'"
-                  >
-                    {{ settlement.status }}</q-badge
-                  >
-                  <q-badge color="green" v-if="settlement.status == 'Accepted'">
-                    {{ settlement.status }}</q-badge
-                  >
-                  <q-badge color="grey" v-if="settlement.status == 'Pending'">
-                    {{ settlement.status }}</q-badge
-                  >
+                  <div class="text-bold">
+                    {{ settlement.amounts.replacementCost }}
+                  </div>
                 </div>
-              </div>
-              <q-separator />
-              <div class="row justify-between q-my-md q-px-md ">
-                <div class="">Replacement Cost</div>
+                <div class="row  q-py-lg  ">
+                  <div class="heading-light col-6">Net Settlement</div>
+                  <div class="heading-light col-4">$</div>
 
-                <div>
-                  {{ settlement.amounts.replacementCost }}
-                  <br />
-                </div>
-              </div>
-              <div class="row justify-between q-px-md q-my-md">
-                <div>Recoverable</div>
-
-                <div>- {{ settlement.amounts.recoverable }}</div>
-              </div>
-              <div class="row justify-between q-px-md q-my-md">
-                <div>Non-Recoverable</div>
-
-                <div>- {{ settlement.amounts.nonRecoverable }}</div>
-              </div>
-              <q-separator />
-              <div class="row justify-between q-my-md q-px-md ">
-                <div class="text-bold">Actual Cash Value</div>
-
-                <div>
-                  {{ settlement.amounts.actualCash }}
-                </div>
-              </div>
-              <div class="row justify-between  q-my-md q-px-md">
-                <div>Deductable Applied</div>
-
-                <div>- {{ settlement.amounts.deductibleApplied }}</div>
-              </div>
-              <div class="row justify-between q-my-md q-px-md ">
-                <div>Amount over Policy Limit</div>
-
-                <div>-{{ settlement.amounts.policyLimit }}</div>
-              </div>
-              <div class="row justify-between q-my-md q-px-md ">
-                <div>Prior Payment Applied</div>
-
-                <div>-{{ settlement.amounts.priorPayment }}</div>
-              </div>
-              <q-separator class="bg-dark " />
-              <div class="row justify-between q-my-md q-px-md ">
-                <div class="text-bold">Net Settlement</div>
-
-                <div>
-                  {{ settlement.amounts.netSettlement }}
+                  <div class="text-bold">
+                    {{ settlement.amounts.netSettlement }}
+                  </div>
                 </div>
               </div>
             </q-card>
@@ -169,6 +130,7 @@
         />
       </div>
     </div>
+    <!-- This Dialog box is for editing the Data of settlements -->
     <q-dialog
       v-model="settlementDialog"
       persistent
@@ -666,6 +628,500 @@
         </div>
       </q-card>
     </q-dialog>
+    <!-- This Dialog Box is Only For Showing Data Not Editing -->
+    <q-dialog
+      v-model="settlementShowDialog"
+      persistent
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <CustomBar
+          @closeDialog="settlementShowDialog = false"
+          :dialogName="'Settlements'"
+        />
+        <div class="q-ma-sm  mobile-container-page-without-search">
+          <q-form ref="settlementForm" class="form-height">
+            <!-- 2nd Card -->
+            <q-card class=" q-pa-md q-mt-sm" flat bordered>
+              <div class="row  q-pa-md justify-between ">
+                <div>
+                  <q-badge
+                    class="q-pa-sm"
+                    :color="
+                      status == 'Accepted'
+                        ? 'green'
+                        : status == 'Rejected'
+                        ? 'primary'
+                        : 'grey'
+                    "
+                  >
+                    {{ status }}</q-badge
+                  >
+                </div>
+
+                <div>
+                  <q-icon
+                    class="q-my-auto "
+                    name="edit"
+                    size="sm"
+                    color="primary"
+                    @click="onClickEdit(currentIndex, 'edit')"
+                  />
+                  <q-icon
+                    class="q-ml-xs "
+                    name="delete"
+                    size="sm"
+                    color="primary"
+                  />
+                </div>
+              </div>
+              <div class="row" style="align-items: center">
+                <span class="heading-light">Replacement Cost</span>
+
+                <q-input
+                  dense
+                  disable
+                  v-model.number="amounts.replacementCost"
+                  mask="#.#"
+                  type="number"
+                  style="margin-left: auto; width: 50%"
+                  prefix="$"
+                  class="input-extra-padding"
+                  @input="onChangeValueCalculation()"
+                />
+              </div>
+              <div class="row" style="align-items: center">
+                <span class=" col-5 heading-light">Recoverable </span>
+                <span>-</span>
+
+                <q-input
+                  dense
+                  v-model.number="amounts.recoverable"
+                  mask="#.#"
+                  type="number"
+                  style="margin-left: auto; width: 50%"
+                  prefix="$"
+                  disable
+                  class="input-extra-padding"
+                  @input="onChangeValueCalculation(amounts.replacementCost)"
+                />
+              </div>
+              <div class="row ">
+                <div class=" col-5  q-pt-sm heading-light">Non Recoverable</div>
+                <div class="q-pt-sm">-</div>
+                <q-input
+                  v-model.number="amounts.nonRecoverable"
+                  dense
+                  mask="#.#"
+                  type="number"
+                  disable
+                  style="margin-left: auto; width: 50%"
+                  prefix="$"
+                  class="input-extra-padding"
+                  borderless
+                  @input="onChangeValueCalculation(amounts.replacementCost)"
+                />
+                <q-separator />
+              </div>
+
+              <div class="row" style="align-items: center">
+                <span class="col-5 text-bold">Actual Cash Value</span>
+                <span>=</span>
+                <q-input
+                  dense
+                  v-model.number="actualValue"
+                  mask="#.#"
+                  type="number"
+                  style="margin-left: auto; width: 50%;font-size:19px;"
+                  prefix="$"
+                  borderless
+                  class=" q-py-sm"
+                  @input="onChangeValueCalculation()"
+                />
+                <q-separator />
+              </div>
+
+              <div class="row q-mt-md" style="align-items: center">
+                <span class="col-5 heading-light">Other Adjustment</span>
+                <span>+</span>
+                <q-input
+                  dense
+                  v-model.number="amounts.otherAdjustment"
+                  mask="#.#"
+                  type="number"
+                  style="margin-left: auto; width: 50%"
+                  prefix="$"
+                  disable
+                  class="input-extra-padding"
+                  @input="onChangeValueCalculation()"
+                />
+              </div>
+              <div class="row" style="align-items: center">
+                <span class="col-5 heading-light">Deductible Applied</span>
+                <span class="">-</span>
+                <q-input
+                  dense
+                  v-model.number="amounts.deductibleApplied"
+                  mask="#.#"
+                  type="number"
+                  disable
+                  style="margin-left: auto; width: 50%"
+                  prefix="$"
+                  class="input-extra-padding"
+                  borderless
+                  @input="onChangeValueCalculation()"
+                />
+                <q-separator />
+              </div>
+
+              <div class="row" style="align-items: center">
+                <span class="col-5 text-bold">Net Settlement </span>
+                <span>=</span>
+                <q-input
+                  dense
+                  borderless
+                  v-model.number="netSettlement"
+                  mask="#.#"
+                  type="number"
+                  style="margin-left: auto; width: 50%;font-size:19px;"
+                  prefix="$"
+                  class=" q-py-sm"
+                  @input="onChangeValueCalculation()"
+                />
+                <q-separator />
+              </div>
+
+              <div class="row q-mt-md" style="align-items: center">
+                <span class="col-5 heading-light">Amt. Over Policy Limit </span>
+                <span>-</span>
+                <q-input
+                  dense
+                  v-model.number="amounts.policyLimit"
+                  mask="#.#"
+                  type="number"
+                  style="margin-left: auto; width: 50%"
+                  prefix="$"
+                  disable
+                  class="input-extra-padding"
+                  @input="onChangeValueCalculation()"
+                />
+              </div>
+              <div class="row" style="align-items: center">
+                <span class="col-5 heading-light">Prior Payment </span>
+                <span>-</span>
+                <q-input
+                  dense
+                  v-model.number="amounts.priorPayment"
+                  mask="#.#"
+                  type="number"
+                  disable
+                  style="margin-left: auto; width: 50%"
+                  prefix="$"
+                  class="input-extra-padding"
+                  borderless
+                  @input="onChangeValueCalculation()"
+                />
+                <q-separator />
+              </div>
+
+              <div class="row" style="align-items: center">
+                <span class="col-5 text-bold">Total Settlement </span>
+                <span>=</span>
+                <q-input
+                  dense
+                  v-model.number="totalSettlement"
+                  mask="#.#"
+                  type="number"
+                  style="margin-left: auto; width: 50%;font-size:19px;"
+                  prefix="$"
+                  class="q-py-sm "
+                  borderless
+                />
+                <q-separator />
+              </div>
+            </q-card>
+            <div class="q-mt-md">
+              <div class=" heading-light row justify-between q-py-sm q-px-lg">
+                <div>Offered Date</div>
+                <div>Payment Expected</div>
+              </div>
+              <div class="row justify-between">
+                <q-input
+                  disable
+                  v-model="offeredDate"
+                  class=" q-px-lg q-my-sm col-5"
+                  mask="##/##/####"
+                  label="Date Offered"
+                  lazy-rules
+                  @input="closeTimeDialog()"
+                >
+                  <template v-slot:append>
+                    <q-icon
+                      name="event"
+                      size="sm"
+                      color="primary"
+                      class="cursor-pointer"
+                    >
+                      <q-popup-proxy
+                        ref="qDateProxy1"
+                        transition-show="scale"
+                        transition-hide="scale"
+                      >
+                        <q-date
+                          v-model="offeredDate"
+                          @input="() => $refs.qDateProxy1.hide()"
+                          mask="MM/DD/YYYY"
+                        ></q-date>
+                      </q-popup-proxy>
+                    </q-icon>
+                  </template>
+                </q-input>
+                <q-input
+                  disable
+                  v-model="paymentExpDate"
+                  class=" q-px-lg q-my-sm col-5"
+                  mask="##/##/####"
+                  label="Payment Expected Date"
+                  lazy-rules
+                  @input="closeTimeDialog"
+                >
+                  <template v-slot:append>
+                    <q-icon
+                      name="event"
+                      size="sm"
+                      color="primary"
+                      class="cursor-pointer"
+                    >
+                      <q-popup-proxy
+                        ref="qDateProxy"
+                        transition-show="scale"
+                        transition-hide="scale"
+                      >
+                        <q-date
+                          v-model="paymentExpDate"
+                          @input="() => $refs.qDateProxy.hide()"
+                          mask="MM/DD/YYYY"
+                        ></q-date>
+                      </q-popup-proxy>
+                    </q-icon>
+                  </template>
+                </q-input>
+              </div>
+              <div v-if="isProofOfLossReq">
+                <div class="row q-mt-md q-px-lg justify-between">
+                  <div class="col-5">Pol Date requested</div>
+                  <div class="col-5">Pol Date Due</div>
+                </div>
+                <div class="row q-px-lg justify-between">
+                  <div class="col-5 ">
+                    <q-input
+                      disable
+                      v-model="proofOfLossInfo.reqDate"
+                      mask="##/##/####"
+                      label="Pol Date requested"
+                      lazy-rules
+                      @input="closeTimeDialog"
+                    >
+                      <template v-slot:append>
+                        <q-icon
+                          name="event"
+                          size="xs"
+                          color="primary"
+                          class="cursor-pointer"
+                        >
+                          <q-popup-proxy
+                            ref="qDateProxy2"
+                            transition-show="scale"
+                            transition-hide="scale"
+                          >
+                            <q-date
+                              v-model="proofOfLossInfo.reqDate"
+                              @input="() => $refs.qDateProxy2.hide()"
+                              mask="MM/DD/YYYY"
+                            ></q-date>
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                    </q-input>
+                  </div>
+                  <!-- start -->
+                  <div class="col-5">
+                    <q-input
+                      disable
+                      v-model="proofOfLossInfo.dueDate"
+                      mask="##/##/####"
+                      label="Pol Date Due"
+                      lazy-rules
+                      @input="closeTimeDialog"
+                    >
+                      <template v-slot:append>
+                        <q-icon
+                          name="event"
+                          size="xs"
+                          color="primary"
+                          class="cursor-pointer"
+                        >
+                          <q-popup-proxy
+                            ref="qDateProxy3"
+                            transition-show="scale"
+                            transition-hide="scale"
+                          >
+                            <q-date
+                              v-model="proofOfLossInfo.dueDate"
+                              @input="() => $refs.qDateProxy3.hide()"
+                              mask="MM/DD/YYYY"
+                            ></q-date>
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                    </q-input>
+                  </div>
+                </div>
+                <div class="row q-px-lg q-mt-sm justify-between">
+                  <div class="col-5">Date send to client</div>
+                  <div class="col-5">Date Rec'd from Client</div>
+                </div>
+                <div class="row q-px-lg justify-between">
+                  <div class="col-5">
+                    <q-input
+                      disable
+                      v-model="proofOfLossInfo.sentClientDate"
+                      mask="##/##/####"
+                      label="Date send to client"
+                      lazy-rules
+                      @input="closeTimeDialog"
+                    >
+                      <template v-slot:append>
+                        <q-icon
+                          name="event"
+                          size="xs"
+                          color="primary"
+                          class="cursor-pointer"
+                        >
+                          <q-popup-proxy
+                            ref="qDateProxy4"
+                            transition-show="scale"
+                            transition-hide="scale"
+                          >
+                            <q-date
+                              v-model="proofOfLossInfo.sentClientDate"
+                              @input="() => $refs.qDateProxy4.hide()"
+                              mask="MM/DD/YYYY"
+                            ></q-date>
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                    </q-input>
+                  </div>
+                  <div class="col-5">
+                    <!-- remain -->
+                    <q-input
+                      disable
+                      v-model="proofOfLossInfo.recvClientDate"
+                      mask="##/##/####"
+                      label="Date Rec'd from Client"
+                      lazy-rules
+                      @input="closeTimeDialog"
+                    >
+                      <template v-slot:append>
+                        <q-icon
+                          name="event"
+                          size="xs"
+                          color="primary"
+                          class="cursor-pointer"
+                        >
+                          <q-popup-proxy
+                            ref="qDateProxy7"
+                            transition-show="scale"
+                            transition-hide="scale"
+                          >
+                            <q-date
+                              v-model="proofOfLossInfo.recvClientDate"
+                              @input="() => $refs.qDateProxy7.hide()"
+                              mask="MM/DD/YYYY"
+                            ></q-date>
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                    </q-input>
+                  </div>
+                </div>
+                <div class="row q-px-lg q-mt-sm justify-between">
+                  <div class="col-5">Pol Date Send to Carrier</div>
+                  <div class="col-5 ">Date Responce Rec'd</div>
+                </div>
+                <div class="row q-px-lg justify-between">
+                  <div class="col-5">
+                    <q-input
+                      disable
+                      v-model="proofOfLossInfo.sentCarrierDate"
+                      mask="##/##/####"
+                      label="Pol Date Send to Carrier"
+                      lazy-rules
+                      @input="closeTimeDialog"
+                    >
+                      <template v-slot:append>
+                        <q-icon
+                          name="event"
+                          size="xs"
+                          color="primary"
+                          class="cursor-pointer"
+                        >
+                          <q-popup-proxy
+                            ref="qDateProxy5"
+                            transition-show="scale"
+                            transition-hide="scale"
+                          >
+                            <q-date
+                              v-model="proofOfLossInfo.sentCarrierDate"
+                              @input="() => $refs.qDateProxy5.hide()"
+                              mask="MM/DD/YYYY"
+                            ></q-date>
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                    </q-input>
+                  </div>
+                  <div class="col-5 ">
+                    <q-input
+                      disable
+                      v-model="proofOfLossInfo.resRecvDate"
+                      mask="##/##/####"
+                      label="Date Responce Rec'd"
+                      lazy-rules
+                      @input="closeTimeDialog"
+                    >
+                      <template v-slot:append>
+                        <q-icon
+                          name="event"
+                          size="xs"
+                          color="primary"
+                          class="cursor-pointer"
+                        >
+                          <q-popup-proxy
+                            ref="qDateProxy6"
+                            transition-show="scale"
+                            transition-hide="scale"
+                          >
+                            <q-date
+                              v-model="proofOfLossInfo.resRecvDate"
+                              @input="() => $refs.qDateProxy6.hide()"
+                              mask="MM/DD/YYYY"
+                            ></q-date>
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                    </q-input>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </q-form>
+        </div>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -678,13 +1134,17 @@ import { validateDate } from '@utils/validation';
 import { dateToSend, dateToShow } from '@utils/date';
 import { date } from 'quasar';
 import { log } from 'src/store/claims/getters';
+import ClaimDetail from 'components/ClaimDetail';
 
 export default {
   name: 'Settlements',
 
-  components: { CustomBar },
+  components: { CustomBar, ClaimDetail },
   data() {
     return {
+      status: '',
+      currentIndex: '',
+      settlementShowDialog: false,
       totalReplacementCost: '',
       initialCost: '',
       totalNetClaimed: '',
@@ -812,11 +1272,12 @@ export default {
       );
       this.settlementDialog = true;
     },
-    onClickEdit(val) {
+    onClickEdit(val, dialogName) {
+      this.currentIndex = val;
       this.isEdit = true;
       this.setId = this.settlement.attributes.settlements[val].id;
-      this.settlementDialog = true;
-
+      // this.settlementDialog = true;
+      this.status = this.settlement.attributes.settlements[val].status;
       this.description = this.settlement.attributes.settlements[
         val
       ].description;
@@ -871,6 +1332,11 @@ export default {
           this.settlement.attributes.settlements[val].proofOfLossInfo
             .sentCarrierDate
         );
+      }
+      if (dialogName == 'show') {
+        this.settlementShowDialog = true;
+      } else {
+        this.settlementDialog = true;
       }
     },
     // Setting data for dropDown
