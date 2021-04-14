@@ -3,106 +3,7 @@
     <div class="mobile-container-page-without-search">
       <div class="column full-height">
         <div>
-          <div class=" q-mx-lg q-mt-md">
-            <div class="row">
-              <span class="text-primary">
-                {{ getSelectedClaim.client.fname }}
-                {{ getSelectedClaim.client.lname }}</span
-              >
-              <q-rating
-                v-model="rating"
-                class="q-ml-auto"
-                size="1em"
-                :max="1"
-                color="primary"
-              ></q-rating>
-            </div>
-            <div class="row">
-              <div class="text-grey-8 col-3 ">
-                Name of the property:
-              </div>
-              <div class="col  q-ml-md">
-                {{
-                  getSelectedClaim.lossInfo
-                    ? getSelectedClaim.lossInfo.lossAddressName
-                    : '-'
-                }}
-              </div>
-            </div>
-            <div class="row q-mt-sm " v-if="getSelectedClaim.lossInfo">
-              <span class="text-grey-8 col-3 "> Loss Address:</span>
-              <span class="col-7 q-ml-md">
-                {{
-                  getSelectedClaim.lossInfo.address.streetAddress
-                    ? getSelectedClaim.lossInfo.address.streetAddress
-                    : '-'
-                }}
-                {{
-                  getSelectedClaim.lossInfo.address.addressLocality
-                    ? getSelectedClaim.lossInfo.address.addressLocality
-                    : '-'
-                }},
-                {{
-                  getSelectedClaim.lossInfo.address.addressRegion
-                    ? getSelectedClaim.lossInfo.address.addressRegion
-                    : '-'
-                }}
-                <div>
-                  {{
-                    getSelectedClaim.lossInfo.address.addressCountry
-                      ? getSelectedClaim.lossInfo.address.addressCountry
-                      : '-'
-                  }},
-                  {{
-                    getSelectedClaim.lossInfo.address.postalCode
-                      ? getSelectedClaim.lossInfo.address.postalCode
-                      : '-'
-                  }}
-                </div></span
-              >
-            </div>
-            <div class="row  q-mt-sm">
-              <span class="text-grey-8 col-3"> Claim Email </span>
-              <span
-                class="q-ml-md col clickLink"
-                @click="onEmailClick(getSelectedClaim.email, $event)"
-              >
-                {{
-                  getSelectedClaim.email ? getSelectedClaim.email : '-'
-                }}</span
-              >
-            </div>
-
-            <div class="row q-mt-sm ">
-              <span class="text-grey-8 col-3 "> Current Phase </span>
-              <span class="q-ml-md col-8">
-                {{
-                  getSelectedClaim.status.value
-                    ? getSelectedClaim.status.value
-                    : '-'
-                }}</span
-              >
-              <q-icon name="edit" size="xs" color="primary" class="col" />
-            </div>
-            <div class="row  q-mt-sm" v-if="getSelectedClaim.lossInfo">
-              <span class="text-grey-8 col-3"> Loss Date </span>
-              <span class="q-ml-md col">
-                {{
-                  getSelectedClaim.lossInfo.date | moment('MM/DD/YYYY')
-                }}</span
-              >
-            </div>
-            <div class="row q-mt-sm" v-if="getSelectedClaim.lossInfo">
-              <span class="text-grey-8 col-3"> Loss Cause </span>
-              <span class="q-ml-md col">
-                {{
-                  getSelectedClaim.lossInfo.cause
-                    ? getSelectedClaim.lossInfo.cause.value
-                    : '-'
-                }}</span
-              >
-            </div>
-          </div>
+          <ClaimDetail />
           <q-item-section class="q-mt-md">
             <div
               v-for="item in ClaimDetails"
@@ -124,9 +25,10 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import moment from 'moment';
+import ClaimDetail from 'components/ClaimDetail';
 
 export default {
-  components: {},
+  components: { ClaimDetail },
   data() {
     return {
       rating: 1,
