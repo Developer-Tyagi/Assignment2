@@ -1,102 +1,7 @@
 <template>
   <q-page>
     <div class="listing-height">
-      <div class=" q-mx-lg q-mt-md">
-        <div class="row">
-          <span class="text-primary">
-            {{ getSelectedClaim.client.fname }}
-            {{ getSelectedClaim.client.lname }}</span
-          >
-          <q-rating
-            v-model="rating"
-            class="q-ml-auto"
-            size="1em"
-            :max="1"
-            color="primary"
-          ></q-rating>
-        </div>
-        <div class="row">
-          <div class="heading-light col-3 ">
-            Name of the property
-          </div>
-          <div class="col  q-ml-md">
-            {{
-              getSelectedClaim.lossInfo.lossAddressName
-                ? getSelectedClaim.lossInfo.lossAddressName
-                : '-'
-            }}
-          </div>
-        </div>
-        <div class="row q-mt-sm ">
-          <span class="heading-light col-3 "> Loss Address:</span>
-          <span class="col-7 q-ml-md">
-            {{
-              getSelectedClaim.lossInfo.address.streetAddress
-                ? getSelectedClaim.lossInfo.address.streetAddress
-                : '-'
-            }}
-            {{
-              getSelectedClaim.lossInfo.address.addressLocality
-                ? getSelectedClaim.lossInfo.address.addressLocality
-                : '-'
-            }},
-            {{
-              getSelectedClaim.lossInfo.address.addressRegion
-                ? getSelectedClaim.lossInfo.address.addressRegion
-                : '-'
-            }}
-            <div>
-              {{
-                getSelectedClaim.lossInfo.address.addressCountry
-                  ? getSelectedClaim.lossInfo.address.addressCountry
-                  : '-'
-              }},
-              {{
-                getSelectedClaim.lossInfo.address.postalCode
-                  ? getSelectedClaim.lossInfo.address.postalCode
-                  : '-'
-              }}
-            </div></span
-          >
-        </div>
-        <div class="row  q-mt-sm">
-          <span class="heading-light col-3"> Claim Email </span>
-          <span
-            class="q-ml-md col clickLink"
-            @click="onEmailClick(getSelectedClaim.claimEmail, $event)"
-          >
-            {{
-              getSelectedClaim.claimEmail ? getSelectedClaim.claimEmail : '-'
-            }}</span
-          >
-        </div>
-        <div class="row q-mt-sm ">
-          <span class="heading-light col-3 "> Current Phase </span>
-          <span class="q-ml-md col-8">
-            {{
-              getSelectedClaim.status.value
-                ? getSelectedClaim.status.value
-                : '-'
-            }}</span
-          >
-        </div>
-        <div class="row  q-mt-sm">
-          <span class="heading-light col-3"> Loss Date </span>
-          <span class="q-ml-md col">
-            {{ getSelectedClaim.lossInfo.date | moment('MM/DD/YYYY') }}</span
-          >
-        </div>
-        <div class="row q-mt-sm">
-          <span class="heading-light col-3"> Loss Cause </span>
-          <span class="q-ml-md col">
-            {{
-              getSelectedClaim.lossInfo.cause
-                ? getSelectedClaim.lossInfo.cause.value
-                : '-'
-            }}</span
-          >
-        </div>
-      </div>
+      <ClaimDetail />
       <q-card class="q-ma-md q-pa-md  ">
         <div class="row q-mt-sm ">
           <span class=" text-bold col q-ma-md "> Claim Summary</span>
@@ -125,7 +30,7 @@
           </div>
           <div class="row q-mt-sm">
             <span class="heading-light col-3"> Claim Reason </span>
-            <span class="q-ml-md col">
+            <span class="q-ml-md col" v-if="getSelectedClaim.lossInfo">
               {{
                 getSelectedClaim.lossInfo.claimReason
                   ? getSelectedClaim.lossInfo.claimReason.value
@@ -169,9 +74,7 @@
           </div>
           <div class="row q-mt-sm">
             <span class="heading-light "> Claim Timeline </span>
-            <span class="q-ml-md">
-              -
-            </span>
+            <span class="q-ml-md"> - </span>
           </div>
           <div class="row q-mt-sm">
             <span class="heading-light"> Loss Description </span>
@@ -325,11 +228,12 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import CustomBar from 'components/CustomBar';
+import ClaimDetail from 'components/ClaimDetail';
 import moment from 'moment';
 
 export default {
   name: 'Claims',
-  components: { CustomBar },
+  components: { CustomBar, ClaimDetail },
   data() {
     return { rating: 1 };
   },

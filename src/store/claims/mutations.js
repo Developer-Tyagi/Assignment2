@@ -23,8 +23,12 @@ export function setPersonnel(state, claims) {
   state.personnel = claims;
 }
 export function setPolicy(state, policy) {
-  state.policy = policy;
+  // state.policy = policy.attributes;
+  state.policy = {
+    ...policy.attributes
+  };
 }
+
 export function setLossInfo(state, claims) {
   state.lossInfo = claims;
 }
