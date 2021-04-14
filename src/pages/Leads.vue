@@ -231,6 +231,7 @@
 <script>
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import moment from 'moment';
+import { onPhoneNumberClick } from '@utils/clickable';
 
 export default {
   name: 'Leads',
@@ -312,12 +313,7 @@ export default {
       this.addLeadToArchiveList(leadId);
     },
 
-    onPhoneNumberClick(number, e) {
-      e.stopPropagation();
-      if (number) {
-        window.open('tel:' + number);
-      }
-    },
+    onPhoneNumberClick,
 
     onSearchBackButtonClick() {
       this.searchText = '';

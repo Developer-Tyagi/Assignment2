@@ -7,7 +7,9 @@ export function setvendors(state, vendors) {
   }));
 }
 export function setSelectedVendor(state, vendor) {
-  state.selectedVendor = vendor.attributes;
+  state.selectedVendor = {
+    ...vendor.attributes
+  };
 }
 
 export function setvendorsIndustries(state, vendorIndustries) {

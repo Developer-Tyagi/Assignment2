@@ -203,6 +203,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import { validateEmail } from '@utils/validation';
+import { onEmailClick, onPhoneNumberClick } from '@utils/clickable';
 
 export default {
   name: 'Manage-User',
@@ -288,18 +289,8 @@ export default {
 
     ...mapActions(['addUser', 'setOnboard', 'getAllUsers', 'getRoles']),
 
-    onEmailClick(email, e) {
-      e.stopPropagation();
-      if (email) {
-        window.open('mailto:' + email);
-      }
-    },
-    onPhoneNumberClick(number, e) {
-      e.stopPropagation();
-      if (number) {
-        window.open('tel:' + number);
-      }
-    },
+    onEmailClick,
+    onPhoneNumberClick,
     //this is important dont remove this function
     onItemClick() {},
 
