@@ -1,169 +1,225 @@
 <template>
   <q-page>
     <div style=" height: calc(100vh - 50px); overflow-y: auto">
-      <div class="q-pa-md">
-        <div class="q-pl-sm text-h6">
-          Insurer
+      <ClaimDetail />
+      <q-card class="q-ma-md q-pa-md  ">
+        <div class="row">
+          <span class=" text-bold col q-ma-xs "> Carrier Info</span>
+          <img
+            class="q-mx-xs  q-my-auto"
+            src="~assets/add.svg"
+            alt="add_icon"
+            height="20px"
+          />
         </div>
-        <div class="q-pa-sm">
+        <div class="q-pa-sm" v-if="policy.policyInfo.carrier.id">
           {{
-            policy.attributes.policyInfo.carrier
-              ? policy.attributes.policyInfo.carrier.value
-              : '-'
+            policy.policyInfo.carrier ? policy.policyInfo.carrier.value : '-'
           }}
         </div>
-        <div class="q-pl-sm">
-          {{
-            policy.attributes.policyInfo.number
-              ? policy.attributes.policyInfo.number
-              : '-'
-          }}
+        <div v-else class="heading-light col q-ma-xs">
+          Carrier info not added yet.
         </div>
-      </div>
-
-      <div class="client-list-item q-ma-sm">
-        <div class="row justify-between">
-          <div class=" text-bold">Policy Details</div>
-
-          <div>
-            <q-icon
-              class="q-my-auto "
-              name="edit"
-              size="sm"
-              color="primary"
-              @click="insuranceInfoDialog = true"
-            />
+      </q-card>
+      <q-card class="q-ma-md q-pa-md ">
+        <span class=" text-bold col q-ma-xs "> Adjusters Info</span>
+        <div class="row">
+          <span class="text-bold col q-ma-xs q-mt-md"> Field Adjuster</span>
+          <img
+            class="q-mx-xs q-my-auto"
+            src="~assets/add.svg"
+            alt="add_icon"
+            height="20px"
+          />
+        </div>
+        <div class="q-pa-sm" v-if="policy.adjustor">
+          -
+        </div>
+        <div v-else class="heading-light q-mb-sm  q-ma-xs">
+          Field Adjuster not added yet.
+        </div>
+        <q-separator />
+        <div class="row ">
+          <span class="text-bold col q-ma-xs q-mt-md"> Desk Adjuster</span>
+          <img
+            class="q-mx-xs q-my-auto"
+            src="~assets/add.svg"
+            alt="add_icon"
+            height="20px"
+          />
+        </div>
+        <div class="q-pa-sm" v-if="policy.adjustor">
+          -
+        </div>
+        <div v-else class="heading-light q-ma-xs">
+          Desk Adjuster not added yet.
+        </div>
+      </q-card>
+      <q-card class="q-ma-md q-pa-md  ">
+        <div class="row q-mt-xs">
+          <span class="text-bold col "> Policy Info</span>
+          <q-icon name="edit" size="xs" color="primary" class="col-2  " />
+        </div>
+        <div class=" q-ml-xs">
+          <div class="row q-mt-sm">
+            <span class="heading-light col"> Policy Number </span>
+            <span class="q-ml-md col">
+              {{
+                policy.policyInfo.policyNumber
+                  ? policy.policyInfo.policyNumber
+                  : '-'
+              }}
+            </span>
           </div>
-        </div>
+          <div class="row q-mt-xs">
+            <span class="heading-light col"> Claim Number </span>
+            <span class="q-ml-md col">
+              {{ policy.policyInfo.number ? policy.policyInfo.number : '-' }}
+            </span>
+          </div>
+          <div class="row q-mt-xs">
+            <span class="heading-light col"> Start Date </span>
+            <span class="q-ml-md col">
+              {{ policy.policyInfo.effectiveDate | moment('MM/DD/YYYY') }}
+            </span>
+          </div>
+          <div class="row q-mt-xs">
+            <span class="heading-light col"> End Date </span>
+            <span class="q-ml-md col">
+              {{ policy.policyInfo.expirationDate | moment('MM/DD/YYYY') }}
+            </span>
+          </div>
+          <div class="row q-mt-xs">
+            <span class="heading-light col"> Category </span>
+            <span class="q-ml-md col">
+              {{
+                policy.policyInfo.category.value
+                  ? policy.policyInfo.category.value
+                  : '-'
+              }}
+            </span>
+          </div>
+          <div class="row q-mt-xs">
+            <span class="heading-light col"> Policy Type </span>
+            <span class="q-ml-md col">
+              {{
+                policy.policyInfo.type.value
+                  ? policy.policyInfo.type.value
+                  : '-'
+              }}
+            </span>
+          </div>
+          <div class="row q-mt-xs">
+            <span class="heading-light col"> Appraisal Clause </span>
+            <span class="q-ml-md col">
+              -
+            </span>
+          </div>
+          <div class="row q-mt-xs">
+            <span class="heading-light col"> Total Amount of Policy </span>
+            <span class="q-ml-md col">
+              -
+            </span>
+          </div>
+          <div class="row q-mt-xs">
+            <span class="heading-light col"> Dwelling Limit (A) </span>
+            <span class="q-ml-md col">
+              {{
+                policy.policyInfo.limitCoverage.dwelling
+                  ? policy.policyInfo.limitCoverage.dwelling
+                  : '-'
+              }}
+            </span>
+          </div>
+          <div class="row q-mt-xs">
+            <span class="heading-light col"> Other Structures (B) </span>
+            <span class="q-ml-md col">
+              {{
+                policy.policyInfo.limitCoverage.otherStructure
+                  ? policy.policyInfo.limitCoverage.otherStructure
+                  : '-'
+              }}
+            </span>
+          </div>
+          <div class="row q-mt-xs">
+            <span class="heading-light col"> Contents Limit (C) </span>
+            <span class="q-ml-md col">
+              {{
+                policy.policyInfo.limitCoverage.content
+                  ? policy.policyInfo.limitCoverage.content
+                  : '-'
+              }}
+            </span>
+          </div>
+          <div class="row q-mt-xs">
+            <span class="heading-light col"> Loss of Use/Ale Limit (D) </span>
+            <span class="q-ml-md col">
+              {{
+                policy.policyInfo.limitCoverage.lossOfUse
+                  ? policy.policyInfo.limitCoverage.lossOfUse
+                  : '-'
+              }}
+            </span>
+          </div>
 
-        <div class="form-heading">Claim Number</div>
-        <div class="q-pl-sm">
-          {{
-            policy.attributes.policyInfo.claimNumber
-              ? policy.attributes.policyInfo.claimNumber
-              : '-'
-          }}
+          <div class="row q-mt-xs">
+            <span class="heading-light col"> Ordinance or Law</span>
+            <span class="q-ml-md col">
+              -
+            </span>
+          </div>
+          <div class="row q-mt-xs">
+            <span class="heading-light col"> Debris Removal</span>
+            <span class="q-ml-md col">
+              -
+            </span>
+          </div>
+          <div class="row q-mt-xs">
+            <span class="heading-light col"> Mold Fungi</span>
+            <span class="q-ml-md col">
+              -
+            </span>
+          </div>
+          <div class="row q-mt-xs">
+            <span class="heading-light col"> Business Interruption</span>
+            <span class="q-ml-md col">
+              -
+            </span>
+          </div>
+          <div class="row q-mt-xs">
+            <span class="heading-light col"> Depreciation</span>
+            <span class="q-ml-md col">
+              {{
+                policy.policyInfo.depreciation
+                  ? policy.policyInfo.depreciation
+                  : '-'
+              }}
+            </span>
+          </div>
+          <div class="row q-mt-xs">
+            <span class="heading-light col">Deductible</span>
+            <span class="q-ml-md col">
+              {{
+                policy.policyInfo.deductibleAmount
+                  ? policy.policyInfo.deductibleAmount
+                  : '-'
+              }}
+            </span>
+          </div>
+          <div class="row q-mt-xs">
+            <span class="heading-light col"> Additional Details</span>
+          </div>
+          <q-card class=" q-mt-sm q-pa-sm full-width q-mb-sm row">
+            <span class="q-mb-lg col "> -</span>
+          </q-card>
+          <div class="row q-mt-xs">
+            <span class="heading-light col "> Notes</span>
+          </div>
+          <q-card class=" q-pa-sm full-width q-mt-sm  row">
+            <span class="q-mb-lg col "> -</span>
+          </q-card>
         </div>
-
-        <div class="form-heading">Is Claim be Filed</div>
-        <div class="q-pl-sm">
-          {{
-            policy.attributes.policyInfo.isClaimFiled
-              ? policy.attributes.policyInfo.isClaimFiled
-              : '-'
-          }}
-        </div>
-
-        <div class="form-heading">Is this is a Forced-Placed policy?</div>
-        <div class="q-pl-sm">
-          {{
-            policy.attributes.policyInfo.isForcedPlaced
-              ? policy.attributes.policyInfo.isForcedPlaced
-              : '-'
-          }}
-        </div>
-
-        <div class="form-heading">Policy Start date</div>
-        <div class="q-pl-sm">
-          {{
-            policy.attributes.policyInfo.effectiveDate | moment('MM/DD/YYYY')
-          }}
-        </div>
-
-        <div class="form-heading">Policy End Date</div>
-        <div class="q-pl-sm">
-          {{
-            policy.attributes.policyInfo.expirationDate | moment('MM/DD/YYYY')
-          }}
-        </div>
-
-        <div class="form-heading">Policy Category</div>
-
-        <div class="q-pl-sm">
-          {{
-            policy.attributes.policyInfo.category.value
-              ? policy.attributes.policyInfo.category.value
-              : '-'
-          }}
-        </div>
-
-        <div class="form-heading">Policy Type</div>
-        <div class="q-pl-sm">
-          {{
-            policy.attributes.policyInfo.type.value
-              ? policy.attributes.policyInfo.type.value
-              : '-'
-          }}
-        </div>
-
-        <div class="form-heading">Dwelling Limit (A)</div>
-        <div class="q-pl-sm">
-          {{
-            policy.attributes.policyInfo.limitCoverage.dwelling
-              ? policy.attributes.policyInfo.limitCoverage.dwelling
-              : '-'
-          }}
-        </div>
-        <div class="form-heading">Other Structure (B)</div>
-        <div class="q-pl-sm">
-          {{
-            policy.attributes.policyInfo.limitCoverage.otherStructure
-              ? policy.attributes.policyInfo.limitCoverage.otherStructure
-              : '-'
-          }}
-        </div>
-
-        <div class="form-heading">Contents Limit (C)</div>
-        <div class="q-pl-sm">
-          {{
-            policy.attributes.policyInfo.limitCoverage.content
-              ? policy.attributes.policyInfo.limitCoverage.content
-              : '-'
-          }}
-        </div>
-        <div class="form-heading">Loss of Use Limit (D)</div>
-        <div class="q-pl-sm">
-          {{
-            policy.attributes.policyInfo.limitCoverage.lossOfUse
-              ? policy.attributes.policyInfo.limitCoverage.lossOfUse
-              : '-'
-          }}
-        </div>
-
-        <div class="form-heading">Depreciation</div>
-        <div class="q-pl-sm">
-          {{
-            policy.attributes.policyInfo.depreciation
-              ? policy.attributes.policyInfo.depreciation
-              : '-'
-          }}
-        </div>
-        <div class="form-heading">Deductible</div>
-        <div class="q-pl-sm">
-          {{
-            policy.attributes.policyInfo.deductibleAmount
-              ? policy.attributes.policyInfo.deductibleAmount
-              : '-'
-          }}
-        </div>
-        <div class="form-heading">Prior payment by insured</div>
-        <div class="q-pl-sm">
-          {{
-            policy.attributes.policyInfo.priorPayment
-              ? policy.attributes.policyInfo.priorPayment
-              : '-'
-          }}
-        </div>
-
-        <div class="form-heading">Reason for Limits/Denial</div>
-        <div class="q-pl-sm">
-          {{
-            policy.attributes.policyInfo.limitReason
-              ? policy.attributes.policyInfo.limitReason
-              : '-'
-          }}
-        </div>
-      </div>
+      </q-card>
       <q-separator />
     </div>
     <q-dialog
@@ -199,6 +255,7 @@
 <script>
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import CustomBar from 'components/CustomBar';
+import ClaimDetail from 'components/ClaimDetail';
 import moment from 'moment';
 import InsuranceInfo from 'components/InsuranceInfo';
 import { validateDate, successMessage } from '@utils/validation';
@@ -209,7 +266,7 @@ import { constants } from '@utils/constant';
 export default {
   name: 'InsurancePolicy',
 
-  components: { CustomBar, InsuranceInfo },
+  components: { CustomBar, InsuranceInfo, ClaimDetail },
   data() {
     return {
       insuranceInfoDialog: false,
@@ -271,75 +328,70 @@ export default {
     this.getPolicyCategory();
     this.getPolicyTypes();
 
-    this.insuranceDetails.hasClaimBeenFilledToggle = this.policy.attributes
-      .policyInfo.isClaimFiled
-      ? this.policy.attributes.policyInfo.isClaimFiled
+    this.insuranceDetails.hasClaimBeenFilledToggle = this.policy.policyInfo
+      .isClaimFiled
+      ? this.policy.policyInfo.isClaimFiled
       : false;
 
     this.insuranceDetails.isThisIsForcedPlacedPolicyToggle = this.policy
-      .attributes.policyInfo.isForcedPlaced
-      ? this.policy.attributes.policyInfo.isForcedPlaced
+      .policyInfo.isForcedPlaced
+      ? this.policy.policyInfo.isForcedPlaced
       : false;
 
-    this.insuranceDetails.policy.id = this.policy.attributes.policyInfo.type.id
-      ? this.policy.attributes.policyInfo.type.id
+    this.insuranceDetails.policy.id = this.policy.policyInfo.type.id
+      ? this.policy.policyInfo.type.id
       : '';
 
-    this.insuranceDetails.policy.value = this.policy.attributes.policyInfo.type
+    this.insuranceDetails.policy.value = this.policy.policyInfo.type.value
+      ? this.policy.policyInfo.type.value
+      : '';
+    this.insuranceDetails.policy.machineValue = this.policy.policyInfo.type
+      .machineValue
+      ? this.policy.policyInfo.type.machineValue
+      : '';
+
+    this.insuranceDetails.policyCategory.id = this.policy.policyInfo.category.id
+      ? this.policy.policyInfo.category.id
+      : '';
+
+    this.insuranceDetails.policyCategory.value = this.policy.policyInfo.category
       .value
-      ? this.policy.attributes.policyInfo.type.value
+      ? this.policy.policyInfo.category.value
       : '';
-    this.insuranceDetails.policy.machineValue = this.policy.attributes
-      .policyInfo.type.machineValue
-      ? this.policy.attributes.policyInfo.type.machineValue
-      : '';
-
-    this.insuranceDetails.policyCategory.id = this.policy.attributes.policyInfo
-      .category.id
-      ? this.policy.attributes.policyInfo.category.id
+    this.insuranceDetails.policyCategory.machineValue = this.policy.policyInfo
+      .category.machineValue
+      ? this.policy.policyInfo.category.machineValue
       : '';
 
-    this.insuranceDetails.policyCategory.value = this.policy.attributes
-      .policyInfo.category.value
-      ? this.policy.attributes.policyInfo.category.value
+    this.insuranceDetails.carrierName = this.policy.policyInfo.carrier.value
+      ? this.policy.policyInfo.carrier.value
       : '';
-    this.insuranceDetails.policyCategory.machineValue = this.policy.attributes
-      .policyInfo.category.machineValue
-      ? this.policy.attributes.policyInfo.category.machineValue
-      : '';
-
-    this.insuranceDetails.carrierName = this.policy.attributes.policyInfo
-      .carrier.value
-      ? this.policy.attributes.policyInfo.carrier.value
-      : '';
-    this.insuranceDetails.carrierId = this.policy.attributes.policyInfo.carrier
-      .id
-      ? this.policy.attributes.policyInfo.carrier.id
+    this.insuranceDetails.carrierId = this.policy.policyInfo.carrier.id
+      ? this.policy.policyInfo.carrier.id
       : ''.value
-      ? this.policy.attributes.policyInfo.carrier.value
+      ? this.policy.policyInfo.carrier.value
       : '';
 
-    this.insuranceDetails.policyNumber = this.policy.attributes.policyInfo
-      .number
-      ? this.policy.attributes.policyInfo.number
+    this.insuranceDetails.policyNumber = this.policy.policyInfo.number
+      ? this.policy.policyInfo.number
       : ' ';
-    this.insuranceDetails.insuranceClaimNumber = this.policy.attributes.policyInfo.claimNumber;
-    this.insuranceDetails.policyEffectiveDate = this.policy.attributes.policyInfo.effectiveDate;
-    this.insuranceDetails.policyExpireDate = this.policy.attributes.policyInfo.expirationDate;
+    this.insuranceDetails.insuranceClaimNumber = this.policy.policyInfo.claimNumber;
+    this.insuranceDetails.policyEffectiveDate = this.policy.policyInfo.effectiveDate;
+    this.insuranceDetails.policyExpireDate = this.policy.policyInfo.expirationDate;
 
     this.insuranceDetails.policyEffectiveDate = this.insuranceDetails.policyExpireDate = date.formatDate(
       Date.now(),
       'MM/DD/YYYY'
     );
 
-    this.insuranceDetails.dwellingLimitA = this.policy.attributes.policyInfo.limitCoverage.dwelling;
-    this.insuranceDetails.contentsLimit = this.policy.attributes.policyInfo.limitCoverage.content;
-    this.insuranceDetails.otherStructureB = this.policy.attributes.policyInfo.limitCoverage.otherStructure;
-    this.insuranceDetails.lossOfUSD = this.policy.attributes.policyInfo.limitCoverage.lossOfUse;
-    this.insuranceDetails.deprecation = this.policy.attributes.policyInfo.depreciation;
-    this.insuranceDetails.deductible = this.policy.attributes.policyInfo.deductibleAmount;
-    this.insuranceDetails.priorPayment = this.policy.attributes.policyInfo.priorPayment;
-    this.insuranceDetails.reasonsOfLD = this.policy.attributes.policyInfo.limitReason;
+    this.insuranceDetails.dwellingLimitA = this.policy.policyInfo.limitCoverage.dwelling;
+    this.insuranceDetails.contentsLimit = this.policy.policyInfo.limitCoverage.content;
+    this.insuranceDetails.otherStructureB = this.policy.policyInfo.limitCoverage.otherStructure;
+    this.insuranceDetails.lossOfUSD = this.policy.policyInfo.limitCoverage.lossOfUse;
+    this.insuranceDetails.deprecation = this.policy.policyInfo.depreciation;
+    this.insuranceDetails.deductible = this.policy.policyInfo.deductibleAmount;
+    this.insuranceDetails.priorPayment = this.policy.policyInfo.priorPayment;
+    this.insuranceDetails.reasonsOfLD = this.policy.policyInfo.limitReason;
   },
   methods: {
     ...mapActions([
