@@ -27,7 +27,7 @@
         <q-btn @click="addClaim" flat><img src="~assets/add.svg"/></q-btn>
       </div>
       <div class="mobile-container-page">
-        <div class="clients-list q-ma-sm" v-if="claims.length">
+        <div class="clients-list" v-if="claims.length">
           <div
             class="clients-list"
             v-for="(claim, index) in claims"
@@ -39,38 +39,59 @@
                 {{ claim.attributes.client.fname }}
                 {{ claim.attributes.client.lname }}
                 <span class="q-ml-auto">
-                  {{ claim.attributes.created | moment('DD/MM/YYYY') }}</span
-                >
+                  <q-rating
+                    v-model="ratingModel"
+                    class="q-ml-auto"
+                    size="1em"
+                    :max="1"
+                    color="primary"
+                  ></q-rating>
+                </span>
               </div>
-              <span>
-                Claim No.
-                <span class="q-ml-xs">
-                  {{
-                    claim.attributes.number ? claim.attributes.number : '-'
-                  }}</span
-                > </span
-              ><br />
-              <span>
-                Carrier :
+              <div class="row">
+                <div class="col-3">Carrier</div>
 
-                <span class="q-ml-xs">
-                  {{
-                    claim.attributes.carrier ? claim.attributes.carrier : '-'
-                  }}</span
-                >
-              </span>
-              <br />
+                <div class="">
+                  <!-- uncomment this code after get claim API changes -->
+                  <!-- {{
+                    claim.attributes.carrier.value
+                      ? claim.attributes.carrier.value
+                      : '-'
+                  }} -->
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-3">Claim No.</div>
 
-              <div class="row q-pt-xs">
-                <span> Status: </span>
-                <span class="text-bold q-ml-xs"> Open</span>
-                <q-rating
-                  v-model="ratingModel"
-                  class="q-ml-auto"
-                  size="1em"
-                  :max="1"
-                  color="primary"
-                ></q-rating>
+                <div class="">
+                  {{ claim.attributes.number ? claim.attributes.number : '-' }}
+                </div>
+              </div>
+
+              <div class="row justify-between q-pt-xs">
+                <div>
+                  <!-- uncomment this code after get claim API changes -->
+                  <!-- <q-badge
+                    class="q-px-md q-py-sm"
+                    :style="
+                      claim.attributes.status.isCancelled == false
+                        ? 'background-color:#ECA74C;'
+                        : 'background-color:#EF9A9A;'
+                    "
+                  >
+                    {{ claimcolor == false ? 'OPEN' : 'CANCELLED' }}</q-badge
+                  > -->
+                </div>
+
+                <div column>
+                  <div>
+                    <!-- uncomment this code after get claim API changes -->
+                    <!-- {{ claim.attributes.lossInfo.lossCause }} -->
+                  </div>
+                  <div>
+                    {{ claim.attributes.created | moment('DD/MM/YYYY') }}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -104,6 +125,7 @@ export default {
   name: 'Claims',
   data() {
     return {
+      claimcolor: false,
       filterDialog: false,
       params: {
         name: ''
