@@ -702,7 +702,7 @@ export default {
     lossInfo: {
       type: Object
     },
-    mortgageDetails: {
+    mortgageInfo: {
       type: Object
     },
     isMailingAddressEnable: {
