@@ -13,17 +13,17 @@
             <span class="q-ml-md col">
               {{
                 getSelectedClaim.fileNumber ? getSelectedClaim.fileNumber : '-'
-              }},
+              }}
             </span>
           </div>
           <div class="row q-mt-sm">
             <span class="heading-light col-3"> Claim Number </span>
             <span class="q-ml-md col">
-              {{ getSelectedClaim.number ? getSelectedClaim.number : '-' }},
+              {{ getSelectedClaim.number ? getSelectedClaim.number : '-' }}
             </span>
           </div>
           <div class="row q-mt-sm">
-            <span class="heading-light col-3"> Policy Number </span>
+            <span class="heading-light col-4"> Policy Number </span>
             <span class="q-ml-md col">
               -
             </span>
@@ -39,7 +39,7 @@
             </span>
           </div>
           <div class="row q-mt-sm">
-            <span class="heading-light col-3"> Claim Fees </span>
+            <span class="heading-light col-4"> Claim Fees </span>
             <span class="q-ml-md col">
               -
             </span>
@@ -57,7 +57,7 @@
             </span>
           </div>
           <div class="row q-mt-sm">
-            <span class="heading-light col-3"> Open Since </span>
+            <span class="heading-light col-4"> Open Since </span>
             <span class="q-ml-md col">
               {{
                 getSelectedClaim.sinceOpen ? getSelectedClaim.sinceOpen : '-'
@@ -65,7 +65,7 @@
             </span>
           </div>
           <div class="row q-mt-sm">
-            <span class="heading-light col-3"> Loss Since </span>
+            <span class="heading-light col-4"> Loss Since </span>
             <span class="q-ml-md col">
               {{
                 getSelectedClaim.sinceLoss ? getSelectedClaim.sinceLoss : '-'
@@ -73,12 +73,12 @@
             </span>
           </div>
           <div class="row q-mt-sm">
-            <span class="heading-light "> Claim Timeline </span>
+            <span class="heading-light col-4"> Claim Timeline </span>
             <span class="q-ml-md"> - </span>
           </div>
           <div class="row q-mt-sm">
-            <span class="heading-light"> Loss Description </span>
-            <span class="q-ml-md ">
+            <span class="heading-light col-4"> Loss Description </span>
+            <span class="q-ml-md col">
               -
             </span>
           </div>
@@ -177,11 +177,11 @@
 
       <div v-for="(phase, index) in getSelectedClaim.phases">
         <div class="row">
-          <div class="col-2 q-ml-md">
+          <div class="col-2 q-ml-md ">
             <q-avatar
-              class="q-ma-sm"
-              color="primary"
+              class="q-ma-sm "
               size="50px"
+              style="background-color:#ECA74C"
               font-size="15px"
               text-color="white"
             >
@@ -194,29 +194,31 @@
               >
             </q-avatar>
           </div>
-
-          <div class="row  q-ml-lg q-mt-sm">
-            <div>
-              {{
-                getSelectedClaim.phases[index].value
-                  ? getSelectedClaim.phases[index].value
-                  : '-'
-              }}<q-icon
-                name="create"
-                color="primary"
-                class="edit"
-                style=" margin-left: 200px;"
-                size="xs"
-              ></q-icon
-              ><br />
-              <div style="font-size:13px">
-                Phase changed to
+          <div class="col row q-ml-lg q-mt-sm ">
+            <div class="col-10">
+              <span class="text-bold">
                 {{
                   getSelectedClaim.phases[index].value
                     ? getSelectedClaim.phases[index].value
                     : '-'
-                }}
-              </div>
+                }}</span
+              >
+            </div>
+
+            <q-icon
+              name="create"
+              color="primary"
+              class="col "
+              size="xs"
+            ></q-icon>
+
+            <div class="q-mb-xl heading-light">
+              Phase changed to
+              {{
+                getSelectedClaim.phases[index].value
+                  ? getSelectedClaim.phases[index].value
+                  : '-'
+              }}
             </div>
           </div>
         </div>
