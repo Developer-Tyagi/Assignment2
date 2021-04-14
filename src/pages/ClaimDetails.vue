@@ -68,7 +68,7 @@ export default {
     onClickClaimItems(value) {
       switch (value) {
         case 'Claim Summary':
-          this.$router.push('/claim-overview');
+          this.$router.push('/claim-summary');
           break;
         case 'Loss Info':
           this.$router.push('/loss-info');
