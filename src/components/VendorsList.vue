@@ -55,7 +55,7 @@
           <span class="text-bold">{{ vendor.name }}</span>
           <div v-if="vendor.address">
             <div>
-              {{ vendor.address ? vendor.address.houseNumber : '-' }}
+              {{ vendor.address ? vendor.address.houseNumber : '-' }} ,
               {{
                 vendor.address.streetAddress
                   ? vendor.address.streetAddress
@@ -67,7 +67,9 @@
                 vendor.address.addressLocality
                   ? vendor.address.addressLocality
                   : '-'
-              }},{{
+              }}
+              ,
+              {{
                 vendor.address.addressRegion
                   ? vendor.address.addressRegion
                   : '-'
@@ -79,31 +81,23 @@
                   ? vendor.address.addressCountry
                   : '-'
               }}
+              -
+              {{ vendor.address.postalCode ? vendor.address.postalCode : '-' }}
             </div>
           </div>
-          <div
-            class="q-mt-sm"
-            v-for="(contact, index) in vendor.contact"
-            v-if="vendor.contact"
+          <div class="q-mt-xs" v-for="phone in vendor.phoneNumber">
+            <span v-if="phone.type">{{ phone.type }} : </span>
+            <span
+              class="clickLink"
+              @click="onPhoneNumberClick(phone.number, $event)"
+              >{{ phone.number }}</span
+            >
+          </div>
+          <span
+            class="click-link"
+            @click="onEmailClick(vendor.email, $event)"
+            >{{ vendor.email }}</span
           >
-            <div
-              v-for="(phone, index) in contact.phoneNumber"
-              v-if="contact.phoneNumber"
-            >
-              <span v-if="phone.type">{{ phone.type }} : </span>
-              <span
-                class="clickLink"
-                @click="onPhoneNumberClick(phone.number, $event)"
-                >{{ phone.number }}</span
-              >
-            </div>
-            <div
-              class="click-link"
-              @click="onEmailClick(contact.email, $event)"
-            >
-              {{ contact.email }}
-            </div>
-          </div>
         </q-item-section>
         <span v-else
           ><span class="text-bold">{{ vendor.name }}</span>
