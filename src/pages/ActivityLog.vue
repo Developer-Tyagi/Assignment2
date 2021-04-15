@@ -13,7 +13,7 @@
           <q-card class=" q-pa-md q-ma-sm" v-for="(log, index) in log">
             <div class="row q-my-sm">
               <div class="col-10 heading-light">
-                {{ log.created | moment('DD/MM/YYYY/, HH:mm') }}
+                {{ log.created | moment('DD/MM/YYYY, HH:mm') }}
               </div>
               <q-icon
                 size="xs"
