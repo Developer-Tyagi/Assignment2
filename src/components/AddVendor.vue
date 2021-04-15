@@ -227,7 +227,7 @@ import { mapGetters, mapActions } from 'vuex';
 import { constants } from '@utils/constant';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import CustomBar from 'components/CustomBar';
-import { validateEmail, validateUrl } from '@utils/validation';
+import { validateEmail, validateUrl, successMessage } from '@utils/validation';
 
 export default {
   name: 'AddVendor',
@@ -347,7 +347,7 @@ export default {
     ]),
     validateEmail,
     validateUrl,
-
+    successMessage,
     searchFilterBy(val, update) {
       this.vendor.industry.value = null;
       if (val === ' ') {
@@ -394,6 +394,7 @@ export default {
 
       if (success) {
         const response = await this.addVendor(this.vendor);
+        this.successMessage(constants.successMessages.VENDOR);
         if (response) {
           this.vendor.id = response.id;
           this.$emit('onCloseAddVendor', true, this.vendor, this.componentName);
