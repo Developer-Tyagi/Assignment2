@@ -178,10 +178,11 @@ export default {
       const obj = types.find(item => {
         return item.id === data.id;
       });
-      data.machineValue = obj.machineValue;
-      data.value = obj.name;
-      data.role = obj.name;
-      this.params.role = data.machineValue;
+
+      data.role.value = obj.name;
+      data.role.machineValue = obj.machineValue;
+
+      this.params.role = data.role.machineValue;
       this.getAllUsers(this.params);
       this.companyPersonnel.isFieldDisable = false;
     }
