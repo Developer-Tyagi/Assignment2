@@ -1,20 +1,18 @@
 <template>
-  <q-page>
-    <div
-      :class="{
-        'mobile-container-page-without-search': !$q.platform.is.iphone,
-        'mobile-container-page': $q.platform.is.iphone
-      }"
-    >
-      <VendorsList
-        ref="list"
-        :selective="false"
-        :showFilter="true"
-        :filterName="''"
-        :vendorDetails="true"
-        @addVendor="openAddVendorDialog"
-      />
-    </div>
+  <div
+    :class="{
+      'mobile-container-page-without-search': !$q.platform.is.iphone
+    }"
+  >
+    <VendorsList
+      ref="list"
+      :selective="false"
+      :showFilter="true"
+      :filterName="''"
+      :vendorDetails="true"
+      @addVendor="openAddVendorDialog"
+    />
+
     <q-dialog
       v-model="addVendorDialog"
       persistent
@@ -29,7 +27,7 @@
         />
       </q-card>
     </q-dialog>
-  </q-page>
+  </div>
 </template>
 
 <script>
