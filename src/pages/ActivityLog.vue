@@ -160,8 +160,6 @@ export default {
   components: { CustomBar, ClaimDetail },
   data() {
     return {
-      showDetails:
-        'This is The details Of the Log This is The details Of the Log This is The details Of the Log This is The details Of the Log  ',
       isFieldDisable: true,
       title: '',
       details: '',
