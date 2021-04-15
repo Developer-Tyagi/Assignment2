@@ -145,9 +145,18 @@
               v-if="contact.phoneNumber"
             >
               <span v-if="phone.type">{{ phone.type }} : </span>
-              <span>{{ phone.number }}</span>
+              <span
+                class="clickLink"
+                @click="onPhoneNumberClick(phone.number, $event)"
+                >{{ phone.number }}</span
+              >
             </div>
-            <div>{{ contact.email }}</div>
+            <div
+              class="click-link"
+              @click="onEmailClick(contact.email, $event)"
+            >
+              {{ contact.email }}
+            </div>
           </div>
         </span>
         <q-icon
