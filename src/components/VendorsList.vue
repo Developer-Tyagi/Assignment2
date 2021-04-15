@@ -1,8 +1,7 @@
 <template>
   <div
     :class="{
-      'mobile-container-page-without-search': !$q.platform.is.iphone,
-      'mobile-container-page': $q.platform.is.iphone
+      'mobile-container-page-without-search': !$q.platform.is.iphone
     }"
   >
     <div class="actions-div">
@@ -39,12 +38,13 @@
       <q-separator vertical></q-separator>
       <q-btn @click="onAddButtonClick" flat><img src="~assets/add.svg"/></q-btn>
     </div>
-    <div class="mobile-container-page">
+    <div class="mobile-container-page" v-if="vendors.length">
       <div
         v-for="vendor in vendors"
         :key="vendor.id"
-        class="vendor-list-item"
+        class="vendor-list-item clients-list  "
         @click="selectVendor(vendor)"
+        style="overflow-y: auto;"
       >
         <q-item-section
           clickable
@@ -52,10 +52,113 @@
           @click="onVendorNameClick(vendor)"
           v-if="vendorDetails"
         >
-          <span>{{ vendor.name }}</span>
-          <!-- //remove -->
+          <span class="text-bold">{{ vendor.name }}</span>
+          <div v-if="vendor.address">
+            <div>
+              {{ vendor.address ? vendor.address.houseNumber : '-' }}
+              {{
+                vendor.address.streetAddress
+                  ? vendor.address.streetAddress
+                  : '-'
+              }}
+            </div>
+            <div>
+              {{
+                vendor.address.addressLocality
+                  ? vendor.address.addressLocality
+                  : '-'
+              }},{{
+                vendor.address.addressRegion
+                  ? vendor.address.addressRegion
+                  : '-'
+              }}
+            </div>
+            <div>
+              {{
+                vendor.address.addressCountry
+                  ? vendor.address.addressCountry
+                  : '-'
+              }}
+            </div>
+          </div>
+          <div
+            class="q-mt-sm"
+            v-for="(contact, index) in vendor.contact"
+            v-if="vendor.contact"
+          >
+            <div
+              v-for="(phone, index) in contact.phoneNumber"
+              v-if="contact.phoneNumber"
+            >
+              <span v-if="phone.type">{{ phone.type }} : </span>
+              <span
+                class="clickLink"
+                @click="onPhoneNumberClick(phone.number, $event)"
+                >{{ phone.number }}</span
+              >
+            </div>
+            <div
+              class="click-link"
+              @click="onEmailClick(contact.email, $event)"
+            >
+              {{ contact.email }}
+            </div>
+          </div>
         </q-item-section>
-        <span v-else>{{ vendor.name }}</span>
+        <span v-else
+          ><span class="text-bold">{{ vendor.name }}</span>
+          <div v-if="vendor.address">
+            <div>
+              {{ vendor.address ? vendor.address.houseNumber : '-' }}
+              {{
+                vendor.address.streetAddress
+                  ? vendor.address.streetAddress
+                  : '-'
+              }}
+            </div>
+            <div>
+              {{
+                vendor.address.addressLocality
+                  ? vendor.address.addressLocality
+                  : '-'
+              }},{{
+                vendor.address.addressRegion
+                  ? vendor.address.addressRegion
+                  : '-'
+              }}
+            </div>
+            <div>
+              {{
+                vendor.address.addressCountry
+                  ? vendor.address.addressCountry
+                  : '-'
+              }}
+            </div>
+          </div>
+          <div
+            class=" q-mt-sm"
+            v-for="(contact, index) in vendor.contact"
+            v-if="vendor.contact"
+          >
+            <div
+              v-for="(phone, index) in contact.phoneNumber"
+              v-if="contact.phoneNumber"
+            >
+              <span v-if="phone.type">{{ phone.type }} : </span>
+              <span
+                class="clickLink"
+                @click="onPhoneNumberClick(phone.number, $event)"
+                >{{ phone.number }}</span
+              >
+            </div>
+            <div
+              class="click-link"
+              @click="onEmailClick(contact.email, $event)"
+            >
+              {{ contact.email }}
+            </div>
+          </div>
+        </span>
         <q-icon
           v-if="vendor.name === carrierName"
           name="done"
@@ -112,6 +215,7 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import { onEmailClick, onPhoneNumberClick } from '@utils/clickable';
 export default {
   name: 'VendorsList',
   props: [
@@ -151,6 +255,8 @@ export default {
     selectFilter(filter) {
       this.selectedFilter = filter.id;
     },
+    onEmailClick,
+    onPhoneNumberClick,
     onVendorNameClick(vendor) {
       this.$router.push('/vendor-details/' + vendor.id);
     },
