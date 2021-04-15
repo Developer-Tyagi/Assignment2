@@ -52,12 +52,13 @@
                 <div class="col-3">Carrier</div>
 
                 <div class="">
-                  <!-- uncomment this code after get claim API changes -->
-                  <!-- {{
-                    claim.attributes.carrier.value
+                  {{
+                    claim.attributes.carrier
                       ? claim.attributes.carrier.value
+                        ? claim.attributes.carrier.value
+                        : ''
                       : '-'
-                  }} -->
+                  }}
                 </div>
               </div>
               <div class="row">
@@ -69,9 +70,8 @@
               </div>
 
               <div class="row justify-between q-pt-xs">
-                <div>
-                  <!-- uncomment this code after get claim API changes -->
-                  <!-- <q-badge
+                <div v-if="claim.attributes.status">
+                  <q-badge
                     class="q-px-md q-py-sm"
                     :style="
                       claim.attributes.status.isCancelled == false
@@ -79,14 +79,25 @@
                         : 'background-color:#EF9A9A;'
                     "
                   >
-                    {{ claimcolor == false ? 'OPEN' : 'CANCELLED' }}</q-badge
-                  > -->
+                    {{
+                      claim.attributes.status
+                        ? claim.attributes.status.isCancelled == false
+                          ? 'OPEN'
+                          : 'CANCELLED'
+                        : ''
+                    }}</q-badge
+                  >
                 </div>
 
                 <div column>
                   <div>
-                    <!-- uncomment this code after get claim API changes -->
-                    <!-- {{ claim.attributes.lossInfo.lossCause }} -->
+                    {{
+                      claim.attributes.lossInfo.cause
+                        ? claim.attributes.lossInfo.cause
+                          ? claim.attributes.lossInfo.cause.value
+                          : ''
+                        : '-'
+                    }}
                   </div>
                   <div>
                     {{ claim.attributes.created | moment('DD/MM/YYYY') }}
