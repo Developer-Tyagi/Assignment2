@@ -52,7 +52,6 @@
           @click="onVendorNameClick(vendor)"
           v-if="vendorDetails"
         >
-          <!-- <q-card class="q-ma-xs q-pa-md full-width"> -->
           <span class="text-bold">{{ vendor.name }}</span>
           <div v-if="vendor.address">
             <div>
@@ -105,7 +104,6 @@
               {{ contact.email }}
             </div>
           </div>
-          <!-- </q-card> -->
         </q-item-section>
         <span v-else
           ><span class="text-bold">{{ vendor.name }}</span>
