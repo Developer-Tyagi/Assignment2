@@ -1,19 +1,20 @@
 <template>
   <q-page>
-    <div>
-      <div class="actions-div">
-        <q-btn @click="addLogDialog = true" flat class="q-ml-auto"
-          ><img src="~assets/add.svg"
-        /></q-btn>
-      </div>
-      <div class="mobile-container-page">
-        <div class="" v-if="log.length">
+    <div class="actions-div">
+      <q-btn @click="addLogDialog = true" flat class="q-ml-auto"
+        ><img src="~assets/add.svg"
+      /></q-btn>
+    </div>
+    <div class="mobile-container-page">
+      <ClaimDetail />
+      <div>
+        <div v-if="log">
           <!-- This is for showing the Property details  -->
-          <div class="bg-grey-3 q-pa-md q-ma-sm" v-for="(log, index) in log">
-            <div class="row">
-              <span class="col-11">
-                {{ log.attributes.created | moment('DD/MM/YYYY/, HH:mm') }}
-              </span>
+          <q-card class=" q-pa-md q-ma-sm" v-for="(log, index) in log">
+            <div class="row q-my-sm">
+              <div class="col-10 heading-light">
+                {{ log.created | moment('DD/MM/YYYY/, HH:mm') }}
+              </div>
               <q-icon
                 size="xs"
                 name="create"
@@ -21,10 +22,24 @@
                 class="col q-pt-xs"
                 @click="onClickEdit(index)"
               ></q-icon>
+              <q-icon
+                class="q-ml-sm "
+                name="delete"
+                size="sm"
+                color="primary"
+              />
             </div>
-            <div>{{ log.attributes.title }}</div>
-            <div>Entered by {{ log.attributes.user.name }}</div>
-          </div>
+            <div>{{ log.title }}</div>
+            <div class="heading-light q-my-sm">
+              Entered by {{ log.user.name }}
+            </div>
+            <p class="heading-light q-my-sm  text-caption ">
+              {{ log.detail ? log.detail : '' }}
+            </p>
+          </q-card>
+        </div>
+        <div v-else class="q-ma-xl heading-light text-italic">
+          There is No activity Log present at this Moment
         </div>
       </div>
     </div>
@@ -139,12 +154,14 @@ import CustomBar from 'components/CustomBar';
 import moment from 'moment';
 import { successMessage } from '@utils/validation';
 import { constants } from '@utils/constant';
-
+import ClaimDetail from 'components/ClaimDetail';
 export default {
   name: 'ActivityLog',
-
+  components: { CustomBar, ClaimDetail },
   data() {
     return {
+      showDetails:
+        'This is The details Of the Log This is The details Of the Log This is The details Of the Log This is The details Of the Log  ',
       isFieldDisable: true,
       title: '',
       details: '',
@@ -160,7 +177,7 @@ export default {
       notes: ''
     };
   },
-  components: { CustomBar },
+
   async created() {
     if (this.selectedClaimId) {
       await this.getLog(this.selectedClaimId);
@@ -182,15 +199,15 @@ export default {
     ...mapMutations(['setSelectedClaimId', 'setLog']),
     // Edit Function
     onClickEdit(index) {
-      this.edit.title = this.log[index].attributes.title;
-      this.edit.title = this.log[index].attributes.title;
-      this.edit.details = this.log[index].attributes.detail;
+      this.edit.title = this.log[index].title;
+      this.edit.title = this.log[index].title;
+      this.edit.details = this.log[index].detail;
 
-      this.edit.notes = this.log[index].attributes.note;
+      this.edit.notes = this.log[index].note;
       this.editLogDialog = true;
       this.logId = this.log[index].id;
 
-      if (this.log[index].attributes.isSystemGen == true) {
+      if (this.log[index].isSystemGen == true) {
         this.isFieldDisable = true;
       } else {
         this.isFieldDisable = false;
