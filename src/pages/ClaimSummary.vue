@@ -3,13 +3,12 @@
     <div class="listing-height">
       <ClaimDetail />
       <q-card class="q-ma-md q-pa-md  ">
-        <div class="row q-mt-sm ">
-          <span class=" text-bold col q-ma-md "> Claim Summary</span>
-          <q-icon name="edit" size="xs" color="primary" class="col-2 " />
+        <div class="row q-ml-xs">
+          <span class="text-bold col q-mt-xs"> Claim Summary</span>
         </div>
-        <div class=" q-ml-md ">
-          <div class="row q-mt-xs">
-            <span class="heading-light col-3"> File Number </span>
+        <div class=" q-ml-xs">
+          <div class="row q-mt-sm">
+            <span class="heading-light col-4"> File Number </span>
             <span class="q-ml-md col">
               {{
                 getSelectedClaim.fileNumber ? getSelectedClaim.fileNumber : '-'
@@ -17,7 +16,7 @@
             </span>
           </div>
           <div class="row q-mt-sm">
-            <span class="heading-light col-3"> Claim Number </span>
+            <span class="heading-light col-4"> Claim Number </span>
             <span class="q-ml-md col">
               {{ getSelectedClaim.number ? getSelectedClaim.number : '-' }}
             </span>
@@ -29,7 +28,7 @@
             </span>
           </div>
           <div class="row q-mt-sm">
-            <span class="heading-light col-3"> Claim Reason </span>
+            <span class="heading-light col-4"> Claim Reason </span>
             <span class="q-ml-md col" v-if="getSelectedClaim.lossInfo">
               {{
                 getSelectedClaim.lossInfo.claimReason
@@ -46,15 +45,20 @@
           </div>
           <div class="row q-mt-sm">
             <span class="heading-light "> Date of Contract </span>
-            <span class="q-ml-md">
-              MM/DD/YYYY
+            <span class="q-ml-md" v-if="getSelectedClaim.contractInfo">
+              {{
+                getSelectedClaim.contractInfo.dateOfFirstContact
+                  | moment('MM/DD/YYYY')
+              }}
             </span>
+            <span class="q-ml-md" v-else> MM/DD/YYYY</span>
           </div>
           <div class="row q-mt-sm">
             <span class="heading-light"> Date of Notified </span>
-            <span class="q-ml-md">
-              MM/DD/YYYY
+            <span class="q-ml-md" v-if="getSelectedClaim.contractInfo">
+              {{ getSelectedClaim.contractInfo.date | moment('MM/DD/YYYY') }}
             </span>
+            <span v-else class="q-ml-md"> MM/DD/YYYY</span>
           </div>
           <div class="row q-mt-sm">
             <span class="heading-light col-4"> Open Since </span>
@@ -78,19 +82,22 @@
           </div>
           <div class="row q-mt-sm">
             <span class="heading-light col-4"> Loss Description </span>
-            <span class="q-ml-md col">
-              -
+            <span class="q-ml-md col" v-if="getSelectedClaim.lossInfo">
+              {{
+                getSelectedClaim.lossInfo.desc
+                  ? getSelectedClaim.lossInfo.desc
+                  : '-'
+              }}
             </span>
           </div>
         </div>
       </q-card>
 
       <q-card class="q-ma-md q-pa-md ">
-        <div class="row q-mt-sm ">
-          <span class=" text-bold col q-ma-md "> Claim Deadlines</span>
-          <q-icon name="edit" size="xs" color="primary" class="col-2" />
+        <div class="row q-ml-xs ">
+          <span class="text-bold col q-mt-xs"> Claim Deadlines</span>
         </div>
-        <div class=" q-ml-md ">
+        <div class=" q-ml-xs ">
           <div class="row q-mt-sm">
             <span class="heading-light col-4">
               Tolling Date / Statute Deadline
@@ -117,11 +124,10 @@
       </q-card>
 
       <q-card class="q-ma-md q-pa-md  ">
-        <div class="row q-mt-sm ">
-          <span class=" text-bold col q-ma-md "> Loss Details</span>
-          <q-icon name="edit" size="xs" color="primary" class="col-2 " />
+        <div class="row q-ml-xs">
+          <span class="text-bold col q-mt-xs"> Loss Details</span>
         </div>
-        <div class=" q-ml-md ">
+        <div class=" q-ml-xs ">
           <div class="row q-mt-sm">
             <span class="heading-light col-4">
               Date & Time of Loss
@@ -158,8 +164,12 @@
             <span class="heading-light col-4">
               Property Value at Time of Loss
             </span>
-            <span class="q-ml-md col">
-              -
+            <span class="q-ml-md col" v-if="getSelectedClaim.lossInfo">
+              {{
+                getSelectedClaim.lossInfo.propertyDesc
+                  ? getSelectedClaim.lossInfo.propertyDesc
+                  : '-'
+              }}
             </span>
           </div>
           <div class="row q-mt-sm">
@@ -174,7 +184,6 @@
       </q-card>
 
       <div class="form-heading q-ml-md col q-mb-md">Claim Timeline</div>
-
       <div v-for="(phase, index) in getSelectedClaim.phases">
         <div class="row">
           <div class="col-2 q-ml-md ">

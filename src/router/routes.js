@@ -149,10 +149,10 @@ const routes = [
         component: () => import('pages/AddClaim.vue')
       },
       {
-        path: 'claim-overview',
-        name: 'claim overview ',
+        path: 'claim-summary',
+        name: 'claim summary ',
         caseSensitive: true,
-        component: () => import('src/pages/ClaimOverview.vue')
+        component: () => import('src/pages/ClaimSummary.vue')
       },
       {
         path: 'claim-files/:claimId',

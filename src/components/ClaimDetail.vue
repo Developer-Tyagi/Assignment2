@@ -71,6 +71,12 @@
       >
     </div>
     <div class="row q-mt-sm ">
+      <span class="heading-light col-3 "> Claim Number </span>
+      <span class="q-ml-md col-8" v-if="getSelectedClaim.number">
+        {{ getSelectedClaim.number ? getSelectedClaim.number : '-' }}</span
+      >
+    </div>
+    <div class="row q-mt-sm ">
       <span class="heading-light col-3 "> Current Phase </span>
       <span class="q-ml-md col-8">
         {{
