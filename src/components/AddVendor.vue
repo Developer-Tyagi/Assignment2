@@ -18,232 +18,195 @@
             margin-bottom: 10px;
           "
         >
-          <q-input
-            dense
-            class="required"
-            v-model="vendor.name"
-            label=" Company Name"
-            lazy-rules
-            :rules="[
-              val => (val && val.length > 0) || 'Please fill the company name'
-            ]"
-          />
-          <div>
-            <q-select
-              dense
-              class="full-width required"
-              v-model="vendor.industry.value"
-              use-input
-              input-debounce="0"
-              option-label="name"
-              label=" Industry"
-              :options="options"
-              option-value="name"
-              @filter="searchFilterBy"
-              @input="setVendorIndustryName"
-              behavior="menu"
-              options-dense
-              emit-value
-              :disable="!industryFilterDisabled"
-              lazy-rules
-              options-dense
-              :rules="[
-                val =>
-                  (val && val.length > 0) || 'Please select the industry type'
-              ]"
-            >
-              <template v-slot:no-option>
-                <q-item>
-                  <q-item-section class="text-black">
-                    No results
-                  </q-item-section>
-                </q-item>
-              </template>
-            </q-select>
-          </div>
-
-          <p class="form-heading">Company's Contact Person Details</p>
-          <q-select
-            dense
-            class="required"
-            v-model="vendor.contact[0].honorific.id"
-            :options="titles"
-            label="Title"
-            option-label="value"
-            option-value="id"
-            map-options
-            behavior="menu"
-            options-dense
-            emit-value
-            @input="setTitleName(vendor.contact[0].honorific)"
-            lazy-rules
-            :rules="[
-              val => (val && val.length > 0) || 'Please choose the Title'
-            ]"
-          />
-          <q-input
-            dense
-            class="required"
-            v-model="vendor.contact[0].fname"
-            label="First Name"
-            lazy-rules
-            :rules="[
-              val => (val && val.length > 0) || 'Please fill the first name'
-            ]"
-          />
-          <q-input
-            dense
-            class="input-extra-padding"
-            v-model="vendor.contact[0].lname"
-            label="Last Name"
-          />
-          <div class="row justify-between">
-            <q-select
-              dense
-              class="required col-5"
-              v-model="vendor.contact[0].phoneNumber[0].type"
-              :options="contactTypes"
-              option-value="machineValue"
-              option-label="name"
-              map-options
-              options-dense
-              behavior="menu"
-              label="Type"
-              emit-value
-              lazy-rules
-              :rules="[
-                val => (val && val.length > 0) || 'Please select phone type'
-              ]"
-            />
+          <q-card class="q-ma-xs q-pa-sm">
             <q-input
               dense
-              class="required col-6"
-              v-model.number="vendor.contact[0].phoneNumber[0].number"
-              label="Phone"
-              mask="(###) ###-####"
+              class="required"
+              v-model="vendor.name"
+              label=" Company Name"
               lazy-rules
               :rules="[
-                val => (val && val.length == 14) || 'Please enter phone number'
+                val => (val && val.length > 0) || 'Please fill the company name'
               ]"
             />
-          </div>
-          <q-input
-            dense
-            class="required"
-            v-model="vendor.contact[0].email"
-            type="email"
-            label="Email"
-            lazy-rules
-            :rules="[
-              val =>
-                validateEmail(val) ||
-                'You have entered an invalid email address!'
-            ]"
-          />
-          <div
-            class="row"
-            v-if="componentName === constants.industries.CARRIER"
-          >
-            <p class="q-mx-none q-my-auto">
-              <label> Can Claim be Filed by email</label>
-            </p>
-            <q-toggle
-              class="q-ml-auto"
-              v-model="vendor.meta.claimFiledByEmail"
-            />
-          </div>
-
-          <p class="form-heading">Company's Address</p>
-          <AutoCompleteAddress
-            :address="vendor.address"
-            :isDropBoxEnable="false"
-            :isChecksEnable="false"
-            :value="true"
-          />
-          <p class="form-heading">Company's Phone & Website</p>
-          <div v-for="(contactInfo, index) in vendor.contact" v-if="index >= 1">
-            <div class="q-mt-sm">
+            <div>
               <q-select
                 dense
-                v-model="contactInfo.honorific.id"
-                :options="titles"
-                option-label="value"
-                label="Title"
-                option-value="id"
-                @input="setTitleName(contactInfo.honorific)"
-                emit-value
+                class="full-width required"
+                v-model="vendor.industry.value"
+                use-input
+                input-debounce="0"
+                option-label="name"
+                label=" Industry"
+                :options="options"
+                option-value="name"
+                @filter="searchFilterBy"
+                @input="setVendorIndustryName"
                 behavior="menu"
+                options-dense
+                emit-value
+                :disable="!industryFilterDisabled"
+                lazy-rules
+                options-dense
+                :rules="[
+                  val =>
+                    (val && val.length > 0) || 'Please select the industry type'
+                ]"
+              >
+                <template v-slot:no-option>
+                  <q-item>
+                    <q-item-section class="text-black">
+                      No results
+                    </q-item-section>
+                  </q-item>
+                </template>
+              </q-select>
+            </div>
+            <div class="row justify-between">
+              <q-select
+                dense
+                class="col-5"
+                v-model="vendor.phoneNumber[0].type"
+                :options="contactTypes"
+                option-value="machineValue"
+                option-label="name"
                 map-options
                 options-dense
-                class="input-extra-padding"
+                behavior="menu"
+                label="Type"
+                emit-value
+                lazy-rules
+                :rules="[
+                  val => (val && val.length > 0) || 'Please select phone type'
+                ]"
               />
               <q-input
                 dense
-                v-model="contactInfo.fname"
-                label="First Name"
-                :ref="`fname-${index}`"
+                class="required col-6"
+                v-model.number="vendor.phoneNumber[0].number"
+                label="Phone"
+                mask="(###) ###-####"
+                lazy-rules
+                :rules="[
+                  val =>
+                    (val && val.length == 14) || 'Please enter phone number'
+                ]"
               />
-              <q-input dense v-model="contactInfo.lname" label="Last Name" />
-              <div class="row justify-between">
+            </div>
+            <q-input
+              dense
+              class="required"
+              v-model="vendor.email"
+              type="email"
+              label="Email"
+              lazy-rules
+              :rules="[
+                val =>
+                  validateEmail(val) ||
+                  'You have entered an invalid email address!'
+              ]"
+            />
+            <div
+              class="row"
+              v-if="componentName === constants.industries.CARRIER"
+            >
+              <p class="q-mx-none q-my-auto">
+                <label> Can Claim be Filed by email</label>
+              </p>
+              <q-toggle
+                class="q-ml-auto"
+                v-model="vendor.meta.claimFiledByEmail"
+              />
+            </div>
+          </q-card>
+          <q-card class="q-ma-xs q-pa-sm q-mt-md">
+            <p class="form-heading">Company's Address</p>
+            <AutoCompleteAddress
+              :address="vendor.address"
+              :isDropBoxEnable="false"
+              :isChecksEnable="false"
+              :value="true"
+            />
+          </q-card>
+          <div>
+            <q-card class="q-ma-xs q-pa-sm  q-mt-md">
+              <p class="form-heading">Contact Info</p>
+
+              <div class="q-mt-sm">
                 <q-select
                   dense
-                  class="col-5 input-extra-padding"
-                  v-model="contactInfo.phoneNumber[0].type"
-                  :options="contactTypes"
-                  option-value="machineValue"
-                  option-label="name"
-                  label="Type"
-                  behavior="menu"
+                  v-model="vendor.contact.honorific.id"
+                  :options="titles"
+                  option-label="value"
+                  label="Title"
+                  option-value="id"
+                  @input="setTitleName(vendor.contact.honorific)"
                   emit-value
+                  behavior="menu"
                   map-options
                   options-dense
+                  class="input-extra-padding"
                 />
                 <q-input
                   dense
-                  class="col-6"
-                  v-model.number="contactInfo.phoneNumber[0].number"
-                  label="Phone1"
-                  mask="(###) ###-####"
-                  :ref="`number-${index}`"
+                  v-model="vendor.contact.fname"
+                  label="First Name"
+                />
+                <q-input
+                  dense
+                  v-model="vendor.contact.lname"
+                  label="Last Name"
+                />
+                <div class="row justify-between">
+                  <q-select
+                    dense
+                    class="col-5 "
+                    v-model="vendor.contact.phoneNumber[0].type"
+                    :options="contactTypes"
+                    option-value="machineValue"
+                    option-label="name"
+                    label="Type"
+                    behavior="menu"
+                    emit-value
+                    map-options
+                    options-dense
+                  />
+                  <q-input
+                    dense
+                    class="col-6"
+                    v-model.number="vendor.contact.phoneNumber[0].number"
+                    label="Phone1"
+                    mask="(###) ###-####"
+                  />
+                </div>
+                <q-input
+                  class="q-mb-md"
+                  dense
+                  v-model="vendor.contact.email"
+                  novalidate="true"
+                  label="Email"
                 />
               </div>
-              <q-input
-                dense
-                v-model="contactInfo.email"
-                novalidate="true"
-                label="Email"
-              />
-            </div>
+            </q-card>
           </div>
-          <div class="row">
-            <q-btn
-              outline
-              class="q-mt-sm"
-              @click="addAnotherContact"
-              color="primary"
-              label="Add"
-              style="margin-right: auto"
+          <q-card class="q-ma-xs q-pa-sm q-mt-md">
+            <p class="form-heading">Other Info</p>
+            <q-input
+              dense
+              v-model="vendor.info.website"
+              label="Website"
+              lazy-rules
+              :rules="[val => validateUrl(val) || 'Please fill your website']"
             />
-
-            <q-btn
-              outline
-              @click="removeAnotherContact"
-              class="q-mt-sm"
-              color="primary"
-              label="Remove"
-              v-if="isShowRemoveButton"
+            <q-input
+              class="q-mb-sm"
+              dense
+              v-model="vendor.info.notes"
+              label="Notes"
             />
-          </div>
-
-          <q-input
-            dense
-            v-model="vendor.info.website"
-            label="Website"
-            lazy-rules
-            :rules="[val => validateUrl(val) || 'Please fill your website']"
-          />
-          <q-input dense v-model="vendor.info.notes" label="Notes" />
+          </q-card>
         </div>
+
         <q-btn
           color="primary"
           class="full-width q-mt-auto text-capitalize"
@@ -264,7 +227,7 @@ import { mapGetters, mapActions } from 'vuex';
 import { constants } from '@utils/constant';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import CustomBar from 'components/CustomBar';
-import { validateEmail, validateUrl } from '@utils/validation';
+import { validateEmail, validateUrl, successMessage } from '@utils/validation';
 
 export default {
   name: 'AddVendor',
@@ -282,46 +245,33 @@ export default {
       isShowRemoveButton: false,
       vendor: {
         name: '',
+        email: '',
         industry: { value: null, id: '', machineValue: '' },
-
+        phoneNumber: [
+          {
+            type: 'main',
+            number: ''
+          }
+        ],
         meta: {
           claimFiledByEmail: false
         },
-        contact: [
-          {
-            fname: '',
-            lname: '',
-            email: '',
-            honorific: {
-              id: '',
-              value: '',
-              machineValue: ''
-            },
-            phoneNumber: [
-              {
-                type: '',
-                number: ''
-              }
-            ],
-            isPrimary: true
+        contact: {
+          fname: '',
+          lname: '',
+          email: '',
+          honorific: {
+            id: '602a5eaa312a2b57ac2b00ad',
+            value: 'Mr.',
+            machineValue: 'mr_'
           },
-          {
-            fname: '',
-            lname: '',
-            email: '',
-            honorific: {
-              id: '',
-              value: '',
-              machineValue: ''
-            },
-            phoneNumber: [
-              {
-                type: '',
-                number: ''
-              }
-            ]
-          }
-        ],
+          phoneNumber: [
+            {
+              type: 'main',
+              number: ''
+            }
+          ]
+        },
         address: {
           addressCountry: '',
           addressLocality: '',
@@ -397,7 +347,7 @@ export default {
     ]),
     validateEmail,
     validateUrl,
-
+    successMessage,
     searchFilterBy(val, update) {
       this.vendor.industry.value = null;
       if (val === ' ') {
@@ -413,15 +363,6 @@ export default {
           v => v.name.toLowerCase().indexOf(search) > -1
         );
       });
-    },
-
-    removeAnotherContact() {
-      const len = this.vendor.contact.length;
-      if (len === 3) {
-        this.isShowRemoveButton = false;
-      }
-
-      this.vendor.contact.pop();
     },
 
     setTitleName(selectedTitle) {
@@ -444,47 +385,6 @@ export default {
       this.vendor.industry.machineValue = result.machineValue;
     },
 
-    addAnotherContact() {
-      const len = this.vendor.contact.length;
-      if (
-        this.vendor.contact[len - 1].fname &&
-        this.vendor.contact[len - 1].phoneNumber[0].number
-      ) {
-        this.isShowRemoveButton = true;
-        this.vendor.contact.push({
-          fname: '',
-          lname: '',
-          email: '',
-          honorific: {
-            id: '',
-            value: '',
-            machineValue: ''
-          },
-          phoneNumber: [
-            {
-              type: '',
-              number: ''
-            }
-          ]
-        });
-      } else {
-        if (!this.vendor.contact[len - 1].fname) {
-          this.$nextTick(() => {
-            this.$refs[`fname-${len - 1}`][0].$el.focus();
-          });
-        } else if (!this.vendor.contact[len - 1].phoneNumber[0].number) {
-          this.$nextTick(() => {
-            this.$refs[`number-${len - 1}`][0].$el.focus();
-          });
-        }
-        this.$q.notify({
-          message: 'Please fill this detail first',
-          position: 'top',
-          type: 'negative'
-        });
-      }
-    },
-
     onCountrySelect(country) {
       this.states = addressService.getStates(country);
     },
@@ -494,6 +394,7 @@ export default {
 
       if (success) {
         const response = await this.addVendor(this.vendor);
+        this.successMessage(constants.successMessages.VENDOR);
         if (response) {
           this.vendor.id = response.id;
           this.$emit('onCloseAddVendor', true, this.vendor, this.componentName);
