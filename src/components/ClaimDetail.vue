@@ -23,37 +23,49 @@
             getSelectedClaim.lossInfo.lossAddressName
               ? getSelectedClaim.lossInfo.lossAddressName
               : '-'
-          }}</span
-        >
+          }}
+        </span>
       </div>
     </div>
     <div class="row q-mt-sm">
       <span class="heading-light col-3"> Loss Address:</span>
       <span class="col-7 q-ml-md" v-if="getSelectedClaim.lossInfo">
         {{
-          getSelectedClaim.lossInfo.address.streetAddress
+          getSelectedClaim.lossInfo.address
             ? getSelectedClaim.lossInfo.address.streetAddress
+              ? getSelectedClaim.lossInfo.address.streetAddress
+              : ''
             : '-'
         }}
         {{
-          getSelectedClaim.lossInfo.address.addressLocality
+          getSelectedClaim.lossInfo.address
             ? getSelectedClaim.lossInfo.address.addressLocality
-            : '-'
-        }},
-        {{
-          getSelectedClaim.lossInfo.address.addressRegion
-            ? getSelectedClaim.lossInfo.address.addressRegion
+              ? getSelectedClaim.lossInfo.address.addressLocality
+              : ''
             : '-'
         }}
+
+        {{
+          getSelectedClaim.lossInfo.address
+            ? getSelectedClaim.lossInfo.address.addressRegion
+              ? getSelectedClaim.lossInfo.address.addressRegion
+              : ''
+            : '-'
+        }}
+
         <div>
           {{
-            getSelectedClaim.lossInfo.address.addressCountry
+            getSelectedClaim.lossInfo.address
               ? getSelectedClaim.lossInfo.address.addressCountry
+                ? getSelectedClaim.lossInfo.address.addressCountry
+                : ''
               : '-'
-          }},
+          }}
           {{
-            getSelectedClaim.lossInfo.address.postalCode
+            getSelectedClaim.lossInfo.address
               ? getSelectedClaim.lossInfo.address.postalCode
+                ? getSelectedClaim.lossInfo.address.postalCode
+                : ''
               : '-'
           }}
         </div></span

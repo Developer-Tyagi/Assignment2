@@ -1041,6 +1041,7 @@ export default {
     this.getPolicyTypes();
     this.getContactTypes();
     this.getPolicyCategory();
+
     if (this.selectedLead.id) {
       this.insuredDetails.fname = this.selectedLead.primaryContact.fname;
       this.insuredDetails.lname = this.selectedLead.primaryContact.lname;
@@ -1385,11 +1386,8 @@ export default {
         isOrganization: this.primaryDetails.isOrganization,
         organizationName: this.primaryDetails.organizationName,
         isOrganizationPolicyholder: this.policyHolder.isPolicyHolder,
-        source: {
-          id: this.contractInfo.sourceDetails.id,
-          type: this.contractInfo.sourceDetails.type,
-          detail: this.contractInfo.sourceDetails.details
-        },
+        leadID: this.selectedLead.id,
+
         type: {
           ...this.client
         },
@@ -1430,33 +1428,28 @@ export default {
             ...this.mailingAddressDetails
           },
           phoneNumbers: this.phoneNumber,
-          properties: [
-            {
-              name: this.lossAddressName,
-              addressCountry: this.clientAddressDetails.addressCountry,
-              addressLocality: this.clientAddressDetails.addressLocality,
-              addressRegion: this.clientAddressDetails.addressRegion,
-              postalCode: this.clientAddressDetails.postalCode,
-              streetAddress: this.clientAddressDetails.streetAddress,
-              houseNumber: this.clientAddressDetails.houseNumber,
-              propertyType: {
-                ...this.property
-              },
-              propertyDesc: this.propertyDescription
-            }
-          ]
+          properties: {
+            name: this.lossAddressName,
+            addressCountry: this.clientAddressDetails.addressCountry,
+            addressLocality: this.clientAddressDetails.addressLocality,
+            addressRegion: this.clientAddressDetails.addressRegion,
+            postalCode: this.clientAddressDetails.postalCode,
+            streetAddress: this.clientAddressDetails.streetAddress,
+            houseNumber: this.clientAddressDetails.houseNumber,
+            propertyType: {
+              ...this.property
+            },
+            propertyDesc: this.propertyDescription
+          }
         }
       };
       /* if coInsuredDetails toggle is off it well not send the coInsured details */
       if (!this.isThereaCoInsuredToggle) {
         delete payload.insuredInfo.secondary;
       }
-      if (this.contractInfo.sourceDetails.type == constants.industries.VENDOR) {
-        payload.source.id = this.contractInfo.sourceDetails.id;
-      } else {
-        payload.source.detail = this.contractInfo.sourceDetails.details;
+      if (!this.selectedLead.id) {
+        delete payload.leadID;
       }
-
       const response = await this.addClient(payload);
       this.successMessage(constants.successMessages.CLIENT);
       this.setSelectedLead();
@@ -1464,7 +1457,7 @@ export default {
         this.setPayloadForClaim(response.id);
       }
     },
-
+    /*Payload for Claim*/
     async setPayloadForClaim(id) {
       const payload = {
         client: {

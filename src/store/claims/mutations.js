@@ -14,7 +14,10 @@ export function setClaim(state, claim) {
 }
 
 export function setLog(state, log) {
-  state.log = log;
+  state.log = log.map(action => ({
+    ...action.attributes,
+    id: action.id
+  }));
 }
 export function setClaimNotes(state, claims) {
   state.claimNotes = claims;

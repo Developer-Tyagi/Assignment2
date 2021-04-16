@@ -356,7 +356,10 @@ export default {
         isFieldDisable: true,
         personnel: {
           id: '',
-          role: ''
+          role: {
+            value: '',
+            machineValue: ''
+          }
         },
         personParty: '',
         filterRole: []
@@ -1064,7 +1067,10 @@ export default {
           {
             id: this.companyPersonnel.personnel.id,
             name: this.companyPersonnel.personParty.name,
-            role: this.companyPersonnel.personnel.role,
+            role: {
+              value: this.companyPersonnel.personnel.role.value,
+              machineValue: this.companyPersonnel.personnel.role.machineValue
+            },
             note: this.companyPersonnel.notes,
             fees: {
               type: this.companyPersonnel.buttonGroup,
