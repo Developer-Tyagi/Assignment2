@@ -246,6 +246,18 @@ const routes = [
         component: () => import('pages/VendorDetails.vue')
       },
       {
+        path: 'vendor-company-info/:id',
+        name: 'company info',
+        caseSensitive: true,
+        component: () => import('pages/VendorCompanyInfo.vue')
+      },
+      {
+        path: 'vendor-personnel/:id',
+        name: 'personnel',
+        caseSensitive: true,
+        component: () => import('pages/VendorPersonnel.vue')
+      },
+      {
         path: 'claims',
         name: 'open claims',
         caseSensitive: true,

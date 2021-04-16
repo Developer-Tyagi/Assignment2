@@ -129,28 +129,13 @@
               }}
             </div>
           </div>
-          <div
-            class=" q-mt-sm"
-            v-for="(contact, index) in vendor.contact"
-            v-if="vendor.contact"
-          >
-            <div
-              v-for="(phone, index) in contact.phoneNumber"
-              v-if="contact.phoneNumber"
+          <div class="q-mt-xs" v-for="phone in vendor.phoneNumber">
+            <span v-if="phone.type">{{ phone.type }} : </span>
+            <span
+              class="clickLink"
+              @click="onPhoneNumberClick(phone.number, $event)"
+              >{{ phone.number }}</span
             >
-              <span v-if="phone.type">{{ phone.type }} : </span>
-              <span
-                class="clickLink"
-                @click="onPhoneNumberClick(phone.number, $event)"
-                >{{ phone.number }}</span
-              >
-            </div>
-            <div
-              class="click-link"
-              @click="onEmailClick(contact.email, $event)"
-            >
-              {{ contact.email }}
-            </div>
           </div>
         </span>
         <q-icon
