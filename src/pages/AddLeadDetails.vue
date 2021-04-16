@@ -6,21 +6,44 @@
         'mobile-container-page': $q.platform.is.iphone
       }"
     >
-      <q-stepper
-        v-model="step"
-        ref="stepper"
-        color="primary"
-        animated
-        alternative-labels
-        header-nav
-      >
-        <q-step
-          :name="1"
-          :done="step > 1"
-          title="Primary Contact"
-          :header-nav="step > 1"
-        >
-          <q-form @submit="step++">
+      <div class="stepper">
+        <div class="step justify-between" id="step">
+          <div
+            class="column align-center q-px-md"
+            v-for="(arr, index) in stepArr"
+            @click="onStepClick(index)"
+          >
+            <div
+              :class="{
+                'icon-div-selected': index == step,
+                'icon-div': index != step
+              }"
+              class="q-mx-auto"
+            >
+              <q-icon
+                v-if="index == step"
+                size="14px"
+                name="create"
+                color="white"
+                style="margin: auto"
+              />
+              <q-icon
+                v-if="index < stepClickValidTill && index != step"
+                size="14px"
+                name="done"
+                color="white"
+                style="margin: auto"
+              />
+            </div>
+            <div class="label">{{ arr.name }}</div>
+          </div>
+        </div>
+        <div class="form">
+          <q-form
+            @submit="onNextButtonClick(0)"
+            :hidden="step != 0"
+            ref="primary"
+          >
             <q-card class="form-card q-pa-md">
               <span class="stepper-heading">Primary Contact </span>
               <q-select
@@ -146,14 +169,12 @@
               </div>
             </div>
           </q-form>
-        </q-step>
-        <q-step
-          :name="2"
-          :done="step > 2"
-          title="Loss Details"
-          :header-nav="step > 2"
-        >
-          <q-form @submit="step++" @reset="step--">
+          <q-form
+            @submit="onNextButtonClick(1)"
+            @reset="step--"
+            :hidden="step != 1"
+            ref="loss"
+          >
             <q-card class="q-pa-md form-card">
               <span class="stepper-heading">Loss Details</span>
 
@@ -201,14 +222,13 @@
                 :options="lossCauses"
                 @input="setTypes(lossCauses, lossDetails.causeOfLoss)"
                 label="Cause of Loss"
-              /><br />
+              />
 
               <q-input
                 dense
                 v-model="lossDetails.lossDesc"
                 label="Brief description of loss"
               />
-              <br />
               <span class="stepper-heading">Loss Location</span>
               <AutoCompleteAddress
                 :address="lossAddress"
@@ -239,15 +259,12 @@
               </div>
             </div>
           </q-form>
-        </q-step>
-
-        <q-step
-          :name="3"
-          :done="step > 3"
-          title="Insurance"
-          :header-nav="step > 3"
-        >
-          <q-form @submit="step++" @reset="step--">
+          <q-form
+            @submit="onNextButtonClick(2)"
+            @reset="step--"
+            :hidden="step != 2"
+            ref="insurance"
+          >
             <q-card class="q-pa-md form-card">
               <span class="stepper-heading">Insurance Details (Optional)</span>
 
@@ -292,15 +309,12 @@
               </div>
             </div>
           </q-form>
-        </q-step>
-
-        <q-step
-          :name="4"
-          :done="step > 4"
-          title="Lead Source"
-          :header-nav="step > 4"
-        >
-          <q-form @submit="step++" @reset="step--">
+          <q-form
+            @submit="onNextButtonClick(3)"
+            @reset="step--"
+            :hidden="step != 3"
+            ref="source"
+          >
             <q-card class="q-pa-md form-card">
               <span class="stepper-heading">Choose Lead Source</span>
               <div>
@@ -366,10 +380,12 @@
               </div>
             </div>
           </q-form>
-        </q-step>
-
-        <q-step :name="5" :done="step > 5" title="Notes" :header-nav="step > 5">
-          <q-form @submit="step++" @reset="step--">
+          <q-form
+            @submit="onNextButtonClick(4)"
+            @reset="step--"
+            :hidden="step != 4"
+            ref="note"
+          >
             <q-card class="q-pa-md form-card">
               <span class="stepper-heading">Last Notes</span>
               <q-input dense label="Last Notes" v-model="notes" type="input" />
@@ -396,15 +412,12 @@
               </div>
             </div>
           </q-form>
-        </q-step>
-
-        <q-step
-          :name="6"
-          :done="step > 6"
-          title="Scheduling"
-          :header-nav="step > 6"
-        >
-          <q-form @submit="onSubmit" @reset="step--">
+          <q-form
+            @submit="onSubmit"
+            @reset="step--"
+            :hidden="step != 5"
+            ref="schedule"
+          >
             <q-card class="q-pa-md form-card">
               <div class="stepper-heading">Scheduling</div>
 
@@ -477,8 +490,8 @@
               </div>
             </div>
           </q-form>
-        </q-step>
-      </q-stepper>
+        </div>
+      </div>
     </div>
 
     <q-dialog
@@ -545,6 +558,16 @@ export default {
   data() {
     return {
       valueName: '',
+      step: 0,
+      stepClickValidTill: 0,
+      stepArr: [
+        { name: 'primary contact', ref: 'primary' },
+        { name: 'loss details', ref: 'loss' },
+        { name: 'insurance', ref: 'insurance' },
+        { name: 'lead source', ref: 'source' },
+        { name: 'notes', ref: 'notes' },
+        { name: 'scheduling', ref: 'schedule' }
+      ],
       constants: constants,
       subInspectionTypes: [],
       addVendorDialog: false,
@@ -553,7 +576,6 @@ export default {
       showVendorDialogFilters: false,
       vendorDialogName: '',
       vendorDialogFilterByIndustry: '',
-      step: 1,
       primaryDetails: {
         isOrganization: false,
         organizationName: '',
@@ -831,6 +853,34 @@ export default {
         this.vendorsListDialog = false;
       }
       this.vendorsListDialog = false;
+    },
+
+    async onStepClick(index) {
+      console.log(index, this.stepClickValidTill, this.step);
+      if (this.step < index) {
+        const validation = await this.$refs[
+          this.stepArr[this.step].ref
+        ].validate();
+        if (index <= this.stepClickValidTill) {
+          if (validation) {
+            this.step = index;
+          }
+        }
+      } else {
+        const validation = await this.$refs[
+          this.stepArr[this.step].ref
+        ].validate();
+        if (validation) {
+          this.step = index;
+        }
+      }
+    },
+
+    onNextButtonClick() {
+      this.step++;
+      if (this.stepClickValidTill < this.step) {
+        this.stepClickValidTill = this.step;
+      }
     }
   },
 
@@ -848,11 +898,11 @@ export default {
 
   watch: {
     step(newValue, oldValue) {
-      var el = document.getElementsByClassName('q-stepper__header');
+      var el = document.getElementById('step');
       if (newValue === 6) {
-        el[0].scroll(100, 0);
+        el.scroll(100, 0);
       } else if (newValue < 6) {
-        el[0].scroll(-100, 0);
+        el.scroll(-100, 0);
       }
     }
   },
@@ -900,49 +950,12 @@ export default {
 </script>
 
 <style lang="scss">
-.q-stepper {
-  box-shadow: none;
-
-  .q-stepper__header {
-    flex-wrap: nowrap;
-    overflow: auto;
-  }
-  .q-stepper__tab {
-    width: 80px;
-    padding: 10px 20px;
-  }
-
-  .q-stepper__tab--active {
-    .q-stepper__title {
-      color: #333333;
-    }
-  }
-  .q-stepper__step-inner {
-    padding: 10px;
-  }
-
-  .q-stepper__nav {
-    padding: 24px;
-  }
-  .q-stepper__dot {
-    font-size: 12px;
-    width: 20px;
-    min-width: 20px;
-    height: 20px;
-  }
-
-  .q-stepper__title {
-    color: #cccccc;
-    font-size: 10px;
-    text-align: center;
-  }
-}
-
 .stepper-heading {
   color: #333333;
   font-weight: bold;
   font-size: 14px;
 }
+
 .text-color-grey {
   color: #333333;
 }
@@ -952,7 +965,41 @@ export default {
 
 .form-card {
   min-height: 250px;
-  max-height: calc(100vh - 280px);
+  max-height: calc(100vh - 230px);
   overflow: scroll;
+}
+
+.stepper {
+  .step {
+    display: flex;
+    overflow-x: visible;
+    padding: 10px;
+
+    .icon-div-selected {
+      background: $primary;
+      display: flex;
+      height: 18px;
+      width: 18px;
+      border-radius: 50%;
+    }
+    .icon-div {
+      background: $grey;
+      display: flex;
+      height: 18px;
+      width: 18px;
+      border-radius: 50%;
+    }
+
+    .label {
+      text-transform: capitalize;
+      text-align: center;
+      font-size: x-small;
+    }
+  }
+
+  .form {
+    height: calc(100vh - 140px);
+    padding: 10px;
+  }
 }
 </style>
