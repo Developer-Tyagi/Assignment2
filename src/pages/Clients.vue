@@ -28,13 +28,12 @@
           <div class="clients-list" v-for="client in clients" :key="client.id">
             <q-item-section @click="onClientsListClick(client)">
               <div class="client-list-item">
-                <div class="row">
+                <div class="row text-bold q-pb-md">
                   <span>
                     {{ client['insuredInfo']['primary']['fname'] }}
 
                     {{ client['insuredInfo']['primary']['lname'] }}
                   </span>
-                  <q-icon class="q-ml-auto" size="sm" name="more_vert"></q-icon>
                 </div>
                 <div class="row">
                   <span>
