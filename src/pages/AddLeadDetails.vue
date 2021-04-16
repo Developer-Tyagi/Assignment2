@@ -229,7 +229,7 @@
                 v-model="lossDetails.lossDesc"
                 label="Brief description of loss"
               />
-              <span class="stepper-heading">Loss Location</span>
+              <div class="stepper-heading">Loss Location</div>
               <AutoCompleteAddress
                 :address="lossAddress"
                 :isDropBoxEnable="false"
@@ -387,8 +387,8 @@
             ref="note"
           >
             <q-card class="q-pa-md form-card">
-              <span class="stepper-heading">Last Notes</span>
-              <q-input dense label="Last Notes" v-model="notes" type="input" />
+              <span class="stepper-heading"> Notes</span>
+              <q-input dense label="Notes" v-model="notes" type="input" />
             </q-card>
             <div class="row q-pt-md">
               <div>
@@ -423,12 +423,12 @@
 
               <q-toggle
                 v-model="schedulingDetails.isAutomaticScheduling"
-                label="Is automatic scheduling needed?"
+                label="Is scheduling needed?"
                 left-label
               />
               <q-select
                 dense
-                class="required"
+                :class="{ required: schedulingDetails.isAutomaticScheduling }"
                 v-model="schedulingDetails.inspectionType"
                 :options="inspectionTypes"
                 label="Type of Inspection"
@@ -954,6 +954,7 @@ export default {
   color: #333333;
   font-weight: bold;
   font-size: 14px;
+  margin-top: 10px;
 }
 
 .text-color-grey {
