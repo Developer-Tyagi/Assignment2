@@ -64,7 +64,7 @@ export async function addVendorPersonnel({ dispatch, state }, payload) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'positive',
-      message: 'Vendor personnel added !'
+      message: 'Personnel added Successfully!'
     });
   } catch (e) {
     console.log(e);

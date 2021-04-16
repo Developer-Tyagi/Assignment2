@@ -1,15 +1,13 @@
 <template>
   <q-page>
     <div class="listing-height q-pa-md mobile-container-page">
-      <div class="clients-list q-pa-md">
-        <div class="row"></div>
-
-        <span class="text-bold ">
-          {{ selectedVendor.name ? selectedVendor.name : '-' }}
-        </span>
-
-        <div v-if="selectedVendor.address">
-          <div>
+      <span class="text-bold text-h6 q-ml-md">
+        {{ selectedVendor.name ? selectedVendor.name : '-' }}
+      </span>
+      <q-card class="q-ma-sm q-pa-sm ">
+        <div class="row q-mt-sm">
+          <span class="heading-light col-3">Address Details</span>
+          <span class="col-7 q-ml-md" v-if="selectedVendor.address">
             {{
               selectedVendor.address.houseNumber
                 ? selectedVendor.address.houseNumber
@@ -21,62 +19,75 @@
                 ? selectedVendor.address.streetAddress
                 : '-'
             }}
-          </div>
-          <div>
-            {{
-              selectedVendor.address.addressLocality
-                ? selectedVendor.address.addressLocality
-                : '-'
-            }}
-            ,
-            {{
-              selectedVendor.address.addressRegion
-                ? selectedVendor.address.addressRegion
-                : '-'
-            }}
-          </div>
-          <div>
-            {{
-              selectedVendor.address.addressCountry
-                ? selectedVendor.address.addressCountry
-                : '-'
-            }},
-            {{
-              selectedVendor.address.postalCode
-                ? selectedVendor.address.postalCode
-                : '-'
-            }}
-          </div>
+            <div>
+              {{
+                selectedVendor.address.addressLocality
+                  ? selectedVendor.address.addressLocality
+                  : '-'
+              }}
+              ,
+              {{
+                selectedVendor.address.addressRegion
+                  ? selectedVendor.address.addressRegion
+                  : '-'
+              }}
+            </div>
+            <div>
+              {{
+                selectedVendor.address.addressCountry
+                  ? selectedVendor.address.addressCountry
+                  : '-'
+              }},
+              {{
+                selectedVendor.address.postalCode
+                  ? selectedVendor.address.postalCode
+                  : '-'
+              }}
+              <q-icon
+                name="place"
+                color="primary"
+                @click="sendMap"
+                class="edit-icon"
+              ></q-icon></div
+          ></span>
         </div>
-
-        <div class="q-mt-xs" v-for="phone in selectedVendor.phoneNumber">
-          <span v-if="phone.type">{{ phone.type }} : </span>
+        <div class="row  q-mt-sm" v-if="selectedVendor.email">
+          <span class="heading-light col-3"> Email </span>
           <span
-            class="clickLink"
-            @click="onPhoneNumberClick(phone.number, $event)"
-            >{{ phone.number }}</span
+            class="q-ml-md col clickLink"
+            @click="onEmailClick(selectedVendor.email, $event)"
+          >
+            {{ selectedVendor.email ? selectedVendor.email : '-' }}</span
           >
         </div>
-        <div class=" row ">
-          <div v-if="selectedVendor.email">
+        <div class="row q-mt-sm " v-for="phone in selectedVendor.phoneNumber">
+          <span class="heading-light col-3"> Phone Number </span>
+          <span class="col" v-if="phone.type">
+            {{ phone.type }} :
             <span
-              class="click-link"
-              @click="onEmailClick(selectedVendor.email, $event)"
-              >{{ selectedVendor.email }}</span
-            >
-          </div>
+              class="clickLink "
+              @click="onPhoneNumberClick(phone.number, $event)"
+              >{{ phone.number }}</span
+            ></span
+          >
         </div>
-        <div class=" q-mt-xs row" v-if="selectedVendor.info.website">
-          <span class="text-bold"> Website:</span>
-
-          {{ selectedVendor.info.website ? selectedVendor.info.website : '-' }}
+        <div class="row  q-mt-sm" v-if="selectedVendor.info">
+          <span class="heading-light col-3"> Website: </span>
+          <span class="q-ml-md col ">
+            {{
+              selectedVendor.info.website ? selectedVendor.info.website : '-'
+            }}</span
+          >
         </div>
-
-        <div class=" q-mt-xs" v-if="selectedVendor.info.notes">
-          <span class="text-bold"> Notes: </span>
-          {{ selectedVendor.info.notes ? selectedVendor.info.notes : '-' }}
+        <div class="row  q-mt-sm" v-if="selectedVendor.info">
+          <span class="heading-light col-3"> Notes: </span>
+          <span class="q-ml-md col ">
+            {{
+              selectedVendor.info.notes ? selectedVendor.info.notes : '-'
+            }}</span
+          >
         </div>
-      </div>
+      </q-card>
     </div>
   </q-page>
 </template>
@@ -96,7 +107,12 @@ export default {
   methods: {
     ...mapActions(['getVendorDetails']),
     onEmailClick,
-    onPhoneNumberClick
+    onPhoneNumberClick,
+    sendMap() {
+      window.open(
+        `https://www.google.com/maps/search/?api=1&query=${this.selectedVendor.address.houseNumber}${this.selectedVendor.address.streetAddress}${this.selectedVendor.address.postalCode}${this.selectedVendor.address.addressRegion}`
+      );
+    }
   }
 };
 </script>
