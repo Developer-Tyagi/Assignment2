@@ -321,7 +321,7 @@ export default {
         ]
       },
       isAddMorePhoneDisabled: false,
-      addressId: '',
+      propertyId: '',
       industryTypeValue: '',
 
       contractInfo: {
@@ -644,7 +644,7 @@ export default {
 
   created() {
     this.getRoles();
-    this.addressId = this.$route.params.clientId;
+    this.propertyId = this.$route.params.clientId;
     this.getSingleClientDetails(this.selectedClientId);
     this.getSingleClientProperty(this.selectedClientId);
     this.contractInfo.time = date.formatDate(Date.now(), 'HH:mm:ss:aa');
@@ -662,9 +662,9 @@ export default {
     this.getClaimReasons();
     this.getContactTypes();
     this.getPolicyCategory();
-    if (this.addressId) {
+    if (this.propertyId) {
       const obj = this.setClientProperty.find(item => {
-        return item.id === this.addressId;
+        return item.id === this.propertyId;
       });
       this.lossInfo.lossAddressNameDropdown = obj.attributes.name;
       this.lossInfo.isDisable = true;
@@ -673,21 +673,8 @@ export default {
     }
 
     const obj = this.setClientProperty.find(item => {
-      return item.id === this.addressId;
+      return item.id === this.propertyId;
     });
-    this.lossInfo.lossAddressDetails = {
-      houseNumber: obj.attributes.houseNumber,
-      addressCountry: obj.attributes.addressCountry,
-      addressRegion: obj.attributes.addressRegion,
-      addressLocality: obj.attributes.addressLocality,
-      postalCode: obj.attributes.postalCode,
-      streetAddress: obj.attributes.streetAddress,
-      postOfficeBoxNumber: '',
-      dropBox: {
-        info: '',
-        isPresent: false
-      }
-    };
 
     this.countries = addressService.getCountries();
     this.onCountrySelect('United States');
@@ -795,7 +782,7 @@ export default {
 
     lossAddressSame() {
       const obj = this.setClientProperty.find(item => {
-        return item.id === this.addressId;
+        return item.id === this.propertyId;
       });
       this.lossInfo.lossAddressDetails = {
         houseNumber: obj.attributes.houseNumber,
@@ -1007,13 +994,8 @@ export default {
         },
         mortgageInfo: this.mortgageObject.mortgageDetails,
         lossInfo: {
-          isNewAddress:
-            this.lossInfo.lossAddressNameDropdown == 'Others' ? true : false,
           lossAddressName: this.lossInfo.lossAddressNameDropdown,
-          addressID: this.addressId,
-          address: {
-            ...this.lossInfo.lossAddressDetails
-          },
+          property: { id: this.propertyId },
 
           propertyType: {
             ...this.lossInfo.property
@@ -1060,6 +1042,7 @@ export default {
               ? this.contractInfo.claimFeeRate
               : 0
           },
+          source: this.contractInfo.sourceDetails,
           dateOfFirstContact: dateToSend(this.contractInfo.firstContractDate)
         },
 

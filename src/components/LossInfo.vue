@@ -178,21 +178,6 @@
     </q-dialog>
 
     <!-- Loss Info -->
-
-    <!-- Loss Address Name Dropdown -->
-    <q-select
-      dense
-      options-dense
-      :disable="lossInfo.isDisable == true"
-      behavior="menu"
-      class="required"
-      v-model="lossInfo.lossAddressNameDropdown"
-      label="Loss Address Name"
-      :options="lossAddressNameOptions"
-      lazy-rules
-      :rules="[val => (val && val.length > 0) || 'This is a required field']"
-    />
-
     <div class="row" v-if="lossAddressSameAsClient && lossAddressToggleShow">
       <p class="q-my-auto form-heading">Loss Address Same As Client's?</p>
 
@@ -200,16 +185,6 @@
         class="q-ml-auto"
         v-model="lossInfo.isLossAddressSameAsClientToggle"
         @input="lossAddressSameToggleClick"
-      />
-    </div>
-
-    <div v-if="isAddressRequired">
-      <AutoCompleteAddress
-        :address="lossInfo.lossAddressDetails"
-        :isDropBoxEnable="true"
-        :isChecksEnable="true"
-        :isFieldsDisable="lossInfo.isLossAddressSameAsClientToggle"
-        :isAsteriskMark="true"
       />
     </div>
 
