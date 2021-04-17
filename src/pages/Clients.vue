@@ -28,21 +28,19 @@
           <div class="clients-list" v-for="client in clients" :key="client.id">
             <q-item-section @click="onClientsListClick(client)">
               <div class="client-list-item">
+                <div class="row text-bold q-pb-md">
+                  <span>
+                    {{ client['insuredInfo']['primary']['fname'] }}
+
+                    {{ client['insuredInfo']['primary']['lname'] }}
+                  </span>
+                </div>
                 <div class="row">
                   <span>
                     {{ client['meta'] ? client['meta']['totalClaims'] : 0 }}
                     Total Claims /
                     {{ client['meta'] ? client['meta']['openClaims'] : 0 }} Open
                     Claim
-                  </span>
-
-                  <q-icon class="q-ml-auto" size="sm" name="more_vert"></q-icon>
-                </div>
-                <div class="row">
-                  <span>
-                    {{ client['insuredInfo']['primary']['fname'] }}
-
-                    {{ client['insuredInfo']['primary']['lname'] }}
                   </span>
                 </div>
                 <div class="row">
