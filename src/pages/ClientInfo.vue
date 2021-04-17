@@ -194,7 +194,9 @@
                 <q-icon
                   name="place"
                   color="primary"
-                  @click="sendMap"
+                  @click="
+                    sendMap(editSelectedClient.attributes.insuredInfo.address)
+                  "
                   class="edit-icon"
                 ></q-icon>
               </div>
@@ -657,7 +659,7 @@ import CustomBar from 'components/CustomBar';
 import { validateEmail, successMessage } from '@utils/validation';
 import AddressService from '@utils/country';
 import { dateToTime, dateToShow } from '@utils/date';
-import { onEmailClick, onPhoneNumberClick } from '@utils/clickable';
+import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import { constants } from '@utils/constant';
 
@@ -839,11 +841,7 @@ export default {
       'getContactTypes',
       'getSingleClientDetails'
     ]),
-    sendMap() {
-      window.open(
-        `https://www.google.com/maps/search/?api=1&query=${this.editSelectedClient.attributes.insuredInfo.address.houseNumber}${this.editSelectedClient.attributes.insuredInfo.address.streetAddress}${this.editSelectedClient.attributes.insuredInfo.address.postalCode}${this.editSelectedClient.attributes.insuredInfo.address.addressRegion}`
-      );
-    },
+    sendMap,
 
     setTypes(types, data) {
       const obj = types.find(item => {

@@ -13,6 +13,7 @@ export function setSelectedVendor(state, vendor) {
 }
 export function setVendorPersonnel(state, vendor) {
   state.vendorPersonnel = {
+    id: vendor.id,
     ...vendor.attributes
   };
 }

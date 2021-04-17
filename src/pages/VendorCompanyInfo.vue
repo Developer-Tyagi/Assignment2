@@ -46,7 +46,7 @@
               <q-icon
                 name="place"
                 color="primary"
-                @click="sendMap"
+                @click="sendMap(selectedVendor.address)"
                 class="edit-icon"
               ></q-icon></div
           ></span>
@@ -93,7 +93,7 @@
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import { onEmailClick, onPhoneNumberClick } from '@utils/clickable';
+import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
 export default {
   data() {
     return {};
@@ -108,11 +108,7 @@ export default {
     ...mapActions(['getVendorDetails']),
     onEmailClick,
     onPhoneNumberClick,
-    sendMap() {
-      window.open(
-        `https://www.google.com/maps/search/?api=1&query=${this.selectedVendor.address.houseNumber}${this.selectedVendor.address.streetAddress}${this.selectedVendor.address.postalCode}${this.selectedVendor.address.addressRegion}`
-      );
-    }
+    sendMap
   }
 };
 </script>
