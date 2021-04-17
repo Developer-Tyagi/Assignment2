@@ -15,7 +15,7 @@
           >
         </div>
       </div>
-      <div class="row  q-ml-md q-my-md lightHeading">
+      <div class="row  q-ml-md q-my-md heading-light">
         <div>
           {{
             editSelectedClient.attributes.meta
@@ -47,7 +47,7 @@
             ></q-icon>
           </div>
           <div class="row ">
-            <div class="text-bold  col-xs-4 lightHeading">
+            <div class="heading-light  col-xs-4 lightHeading">
               Insured Details
             </div>
             <div class="q-ml-md column">
@@ -89,7 +89,7 @@
           </div>
 
           <div class="q-mt-md row">
-            <div class="text-bold q-mt-none  col-xs-4 lightHeading">
+            <div class="heading-light q-mt-none  col-xs-4 lightHeading">
               Co-Insured Details
             </div>
             <div class="column q-ml-md">
@@ -159,36 +159,38 @@
           </div>
 
           <div class="q-mt-md row">
-            <div class="text-bold q-mt-none col-xs-4 lightHeading">
+            <div class="heading-light q-mt-none col-xs-4 lightHeading">
               Address Details
             </div>
             <div class="column q-ml-md">
               <div>
                 {{
-                  editSelectedClient.attributes.insuredInfo.address.houseNumber
+                  editSelectedClient.attributes.insuredInfo.mailingAddress
+                    .houseNumber
                 }}
               </div>
               <div>
                 {{
-                  editSelectedClient.attributes.insuredInfo.address
+                  editSelectedClient.attributes.insuredInfo.mailingAddress
                     .streetAddress
                 }}
               </div>
               <div>
                 {{
-                  editSelectedClient.attributes.insuredInfo.address
+                  editSelectedClient.attributes.insuredInfo.mailingAddress
                     .addressRegion
                 }}
                 {{
-                  editSelectedClient.attributes.insuredInfo.address.postalCode
-                    ? editSelectedClient.attributes.insuredInfo.address
+                  editSelectedClient.attributes.insuredInfo.mailingAddress
+                    .postalCode
+                    ? editSelectedClient.attributes.insuredInfo.mailingAddress
                         .postalCode
                     : '-'
                 }}
               </div>
               <div>
                 {{
-                  editSelectedClient.attributes.insuredInfo.address
+                  editSelectedClient.attributes.insuredInfo.mailingAddress
                     .addressCountry
                 }}
                 <q-icon
@@ -203,7 +205,7 @@
             </div>
           </div>
           <div class="q-mt-md row">
-            <div class="text-bold q-mt-none col-xs-4 lightHeading">
+            <div class="heading-light q-mt-none col-xs-4 lightHeading">
               Additional Phone Numbers
             </div>
             <div class="column q-ml-md">
@@ -222,10 +224,13 @@
           </div>
 
           <div class="q-mt-md row">
-            <div class="form-heading q-mt-none col-xs-4 lightHeading">
+            <div class=" q-mt-none col-xs-4 heading-light">
               Tenant Details
             </div>
-            <div class="column q-ml-md">
+            <div
+              class="column q-ml-md"
+              v-if="editSelectedClient.attributes.insuredInfo.tenantInfo"
+            >
               <div>
                 {{
                   editSelectedClient.attributes.insuredInfo.tenantInfo.name

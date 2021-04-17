@@ -35,7 +35,7 @@
             @click="onClickingOnClaim(claim)"
           >
             <div class="client-list-item">
-              <div class="row form-heading">
+              <div class="row text-bold q-pb-md">
                 {{ claim.attributes.client.fname }}
                 {{ claim.attributes.client.lname }}
                 <span class="q-ml-auto">

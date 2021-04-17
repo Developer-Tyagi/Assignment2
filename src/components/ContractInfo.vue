@@ -76,7 +76,7 @@
     </div>
 
     <br />
-    <span class="form-heading">Date of First Contract</span>
+    <span class="form-heading">Date of First Contact</span>
     <div class="full-width">
       <q-input
         v-model="contractInfo.firstContractDate"
@@ -102,15 +102,14 @@
         </template>
       </q-input>
     </div>
-    <span class="form-heading">Time Of First Contract</span>
+    <span class="form-heading">Time Of First Contact</span>
     <div class="full-width">
       <q-input
         v-model="contractInfo.time"
         now
-        mask="time"
         format24h
         lazy-rules
-        :rules="[val => validateTime(val) || 'Invalid time!']"
+        :rules="[val => (val && val.length > 0) || 'Invalid time!']"
       >
         <template v-slot:append>
           <q-icon name="access_time" class="cursor-pointer">
@@ -119,7 +118,11 @@
               transition-hide="scale"
               ref="qTimeProxy"
             >
-              <q-time v-model="contractInfo.time" @input="closeTimeDialog">
+              <q-time
+                mask="hh[h and ]mm[ minutes (]A)"
+                v-model="contractInfo.time"
+                @input="closeTimeDialog"
+              >
                 <div class="row items-center justify-end">
                   <q-btn
                     v-close-popup
@@ -150,12 +153,13 @@
 
     <div class="row" style="align-items: center">
       <q-input
-        class="q-ml-auto full-width"
+        class="q-ml-auto full-width required"
         mask="#.#"
         type="number"
         v-model.number="contractInfo.claimFeeRate"
         label="Claim Fee Rate"
         style="width: 50%"
+        :rules="[val => val || 'Please fill the Fee rate ']"
       >
         <template v-slot:prepend v-if="contractInfo.buttonGroup == 'dollar'">
           <q-icon name="$" color="primary"></q-icon>
@@ -176,6 +180,7 @@
     <span class="form-heading"> Source Of Claim </span>
     <div>
       <q-select
+        class=" required"
         v-model="contractInfo.sourceDetails.type"
         :options="leadSources"
         option-label="name"
@@ -185,6 +190,9 @@
         map-options
         options-dense
         @input="onChangingSourceType()"
+        :rules="[
+          val => (val && val.length > 0) || 'Please select the Source type'
+        ]"
       />
       <q-input
         v-if="
@@ -193,11 +201,9 @@
             contractInfo.sourceDetails.type != 'google'
         "
         type="text"
-        class="required"
         placeholder="Enter Source details"
         v-model="contractInfo.sourceDetails.details"
         lazy-rules
-        :rules="[val => (val && val.length > 0) || '']"
       />
       <div
         v-else-if="
@@ -295,6 +301,7 @@ export default {
     ...mapActions(['getVendors']),
     //This function is for closing the time popup
     closeTimeDialog() {
+      console.log(this.contractInfo.time);
       this.$refs.qTimeProxy.hide();
     },
     successMessage,

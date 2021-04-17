@@ -215,6 +215,9 @@ export default {
     if (getCurrentUser().attributes) {
       this.user = getCurrentUser().attributes;
     }
+    if (this.$q.screen.width < 992) {
+      this.isLeftSidePanelOpen = false;
+    }
   }
 };
 </script>
