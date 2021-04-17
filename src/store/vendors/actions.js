@@ -91,6 +91,45 @@ export async function getVendorPersonnel({ commit, dispatch }, id) {
     });
   }
 }
+export async function editVendorPersonnel({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.patch(
+      `/vendors/${payload.id}/personnel/${payload.personnelId}`,
+      buildApiData('vendorpersonnel', payload.data)
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Personnel  Updated !'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'failed to update Personnel'
+    });
+  }
+}
+export async function deleteVendorPersonnel({ commit, dispatch }, vendor) {
+  dispatch('setLoading', true);
+  try {
+    await request.del(`/vendors/${vendor.id}/personnel/${vendor.personnelId}`);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Personnel  Deleted !'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'Error in deleting personnel.'
+    });
+  }
+}
 export async function getVendorIndustries({ commit, dispatch }) {
   dispatch('setLoading', true);
   try {
