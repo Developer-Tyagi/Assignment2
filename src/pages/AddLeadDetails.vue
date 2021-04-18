@@ -45,8 +45,9 @@
             ref="primary"
           >
             <q-card class="form-card q-pa-md">
-              <span class="stepper-heading">Primary Contact </span>
+              <div class="stepper-heading">Primary Contact</div>
               <q-select
+                filled
                 dense
                 class="required"
                 v-model="primaryDetails.honorific.id"
@@ -66,6 +67,7 @@
               />
 
               <q-input
+                filled
                 dense
                 class="required"
                 v-model="primaryDetails.firstName"
@@ -76,6 +78,7 @@
                 ]"
               />
               <q-input
+                filled
                 dense
                 class="required"
                 v-model="primaryDetails.lastName"
@@ -87,6 +90,7 @@
               />
               <div class="row justify-between">
                 <q-select
+                  filled
                   dense
                   class="required col-5"
                   v-model="primaryDetails.selectedContactType"
@@ -104,6 +108,7 @@
                   ]"
                 />
                 <q-input
+                  filled
                   dense
                   class="required col-6"
                   v-model.number="primaryDetails.phoneNumber"
@@ -118,6 +123,7 @@
                 />
               </div>
               <q-input
+                filled
                 dense
                 class="required"
                 v-model="primaryDetails.email"
@@ -143,6 +149,7 @@
               </div>
               <div v-if="primaryDetails.isOrganization">
                 <q-input
+                  filled
                   dense
                   class="required"
                   v-model="primaryDetails.organizationName"
@@ -225,9 +232,15 @@
               />
 
               <q-input
+                class="required"
                 dense
                 v-model="lossDetails.lossDesc"
                 label="Brief description of loss"
+                lazy-rules
+                :rules="[
+                  val =>
+                    (val && val.length > 0) || 'Please fill the description'
+                ]"
               />
               <div class="stepper-heading">Loss Location</div>
               <AutoCompleteAddress
@@ -330,12 +343,14 @@
                   @input="onChangingSourceType()"
                   class="input-extra-padding"
                 />
+                {{ sourceDetails.type }}
                 <q-input
                   dense
                   v-if="
                     sourceDetails.type != constants.industries.VENDOR &&
                       sourceDetails.type != '' &&
-                      sourceDetails.type != 'google'
+                      sourceDetails.type != 'google' &&
+                      sourceDetails.type != 'client'
                   "
                   type="text"
                   placeholder="Enter Source details"
@@ -355,6 +370,36 @@
                         : 'Select Lead Source'
                     }}
                   </div>
+                </div>
+                <div v-else-if="sourceDetails.type == 'client'">
+                  <q-select
+                    dense
+                    class="full-width input-extra-padding"
+                    v-model="sourceDetails.details"
+                    use-input
+                    input-debounce="0"
+                    option-label="name"
+                    label="Search"
+                    :options="clientOptions"
+                    @filter="searchFilterBy"
+                    option-value="id"
+                    behavior="menu"
+                    options-dense
+                    emit-value
+                    map-options
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) || 'Please select the client'
+                    ]"
+                  >
+                    <template v-slot:no-option>
+                      <q-item>
+                        <q-item-section class="text-black">
+                          No results
+                        </q-item-section>
+                      </q-item>
+                    </template>
+                  </q-select>
                 </div>
               </div>
             </q-card>
@@ -428,6 +473,7 @@
               />
               <q-select
                 dense
+                v-if="schedulingDetails.isAutomaticScheduling"
                 :class="{ required: schedulingDetails.isAutomaticScheduling }"
                 v-model="schedulingDetails.inspectionType"
                 :options="inspectionTypes"
@@ -447,8 +493,11 @@
               />
               <q-select
                 dense
+                v-if="
+                  schedulingDetails.isAutomaticScheduling &&
+                    showSubInspectionType
+                "
                 class="required input-extra-padding"
-                v-if="showSubInspectionType"
                 v-model="schedulingDetails.subInspectionType"
                 :options="subInspectionTypes"
                 option-label="value"
@@ -458,8 +507,14 @@
                 label="Sub Type of Inspection"
                 @input="onSubInspectionTypesSelect()"
                 map-options
+                :rules="[
+                  val =>
+                    (val && val.length > 0) ||
+                    'Please Choose the inspection type'
+                ]"
               />
               <q-input
+                v-if="schedulingDetails.isAutomaticScheduling"
                 dense
                 type="number"
                 mask="#.#"
@@ -558,8 +613,9 @@ export default {
   data() {
     return {
       valueName: '',
-      step: 0,
+      step: 5,
       stepClickValidTill: 0,
+      clientOptions: [],
       stepArr: [
         { name: 'primary contact', ref: 'primary' },
         { name: 'loss details', ref: 'loss' },
@@ -639,6 +695,7 @@ export default {
 
   methods: {
     ...mapActions([
+      'getClients',
       'addLeads',
       'getInspectionTypes',
       'addVendor',
@@ -648,8 +705,11 @@ export default {
       'getVendors',
       'getLossCauses'
     ]),
+
     ...mapMutations(['setSelectedClient']),
+
     successMessage,
+
     onAddVendorDialogClick(name) {
       this.valueName = name;
       this.vendorDialogName = name;
@@ -881,6 +941,25 @@ export default {
       if (this.stepClickValidTill < this.step) {
         this.stepClickValidTill = this.step;
       }
+    },
+
+    searchFilterBy(val, update) {
+      console.log(val);
+      this.sourceDetails.details = null;
+      if (val === ' ') {
+        update(() => {
+          this.clientOptions = this.clients;
+        });
+        return;
+      }
+
+      update(() => {
+        const search = val.toLowerCase();
+        console.log(search);
+        this.clientOptions = this.clients.filter(
+          v => v.name.toLowerCase().indexOf(search) > -1
+        );
+      });
     }
   },
 
@@ -945,18 +1024,12 @@ export default {
         }
       }
     });
+    this.clientOptions = this.clients;
   }
 };
 </script>
 
 <style lang="scss">
-.stepper-heading {
-  color: #333333;
-  font-weight: bold;
-  font-size: 14px;
-  margin-top: 10px;
-}
-
 .text-color-grey {
   color: #333333;
 }
@@ -973,7 +1046,7 @@ export default {
 .stepper {
   .step {
     display: flex;
-    overflow-x: visible;
+    overflow-x: auto;
     padding: 10px;
 
     .icon-div-selected {
@@ -983,6 +1056,14 @@ export default {
       width: 18px;
       border-radius: 50%;
     }
+    .icon-div-done {
+      background: $primary;
+      display: flex;
+      height: 18px;
+      width: 18px;
+      border-radius: 50%;
+    }
+
     .icon-div {
       background: $grey;
       display: flex;
@@ -995,6 +1076,7 @@ export default {
       text-transform: capitalize;
       text-align: center;
       font-size: x-small;
+      margin-top: 10pxasd;
     }
   }
 

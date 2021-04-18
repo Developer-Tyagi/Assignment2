@@ -61,13 +61,12 @@
       dense
       :class="{ required: isAsteriskMark }"
       v-model="address.addressCountry"
-      :options="countries"
       label="Country"
       behavior="menu"
-      @input="onCountrySelect(address.addressCountry)"
       lazy-rules
       :rules="[val => checkValidations(val) || 'Please fill the country']"
     />
+
     <q-input
       dense
       :class="{ required: isAsteriskMark }"
@@ -135,7 +134,6 @@ export default {
       addressAutoComplete2: '',
       autocomplete: {},
       autocomplete2: {},
-
       countries: [],
       states: []
     };
@@ -145,19 +143,19 @@ export default {
     if (this.value == true) {
       this.autocomplete2 = new google.maps.places.Autocomplete(
         document.getElementById('autocomplete2'),
-        { types: ['geocode'] }
+        { types: ['geocode'], componentRestrictions: { country: 'us' } }
       );
-
       this.autocomplete2.addListener('place_changed', this.fillInAddress);
       this.countries = addressService.getCountries();
     } else {
       this.autocomplete = new google.maps.places.Autocomplete(
         document.getElementById('autocomplete'),
-        { types: ['geocode'] }
+        { types: ['geocode'], componentRestrictions: { country: 'us' } }
       );
 
       this.autocomplete.addListener('place_changed', this.fillInAddress);
-      this.countries = addressService.getCountries();
+      this.address.addressCountry = 'United States';
+      this.onCountrySelect(this.address.addressCountry);
     }
   },
 
