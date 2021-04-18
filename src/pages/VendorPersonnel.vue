@@ -12,10 +12,30 @@
           {{ selectedVendor.name ? selectedVendor.name : '-' }}
         </div>
         <div v-if="vendorPersonnel.personnel">
-          <div class="q-mt-sm " v-for="personnel in vendorPersonnel.personnel">
+          <div
+            class="q-mt-sm "
+            v-for="(personnel, index) in vendorPersonnel.personnel"
+          >
             <q-card class="q-ma-sm q-pa-sm ">
-              <div class="text-bold text-capitalize q-mt-sm	">
-                {{ personnel.fname }} {{ personnel.lname }}
+              <div class="text-bold text-capitalize q-mt-xs row">
+                <div class="col-10">
+                  {{ personnel.fname }} {{ personnel.lname }}
+                </div>
+                <q-icon
+                  size="xs"
+                  name="create "
+                  color="primary"
+                  class="q-my-auto col"
+                  @click="onEdit(index)"
+                ></q-icon>
+
+                <q-icon
+                  class="q-my-auto"
+                  name="delete"
+                  size="sm"
+                  color="primary"
+                  @click="onDelete(index)"
+                />
               </div>
               <div class="row q-mt-sm">
                 <div class="heading-light col-3">Address Details</div>
@@ -251,6 +271,140 @@
         />
       </q-card>
     </q-dialog>
+    <!-- Edit Personnel Dialog -->
+    <q-dialog
+      v-model="editPersonnelDialog"
+      persistent
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <CustomBar
+          :dialogName="'Edit Personnel'"
+          @closeDialog="editPersonnelDialog = false"
+        />
+        <div class="mobile-container-page">
+          <q-card class="q-ma-md q-pa-md q-mt-sm">
+            <q-select
+              class="required"
+              dense
+              v-model="honorific.id"
+              :options="titles"
+              option-value="id"
+              option-label="value"
+              map-options
+              options-dense
+              behavior="menu"
+              @input="setTitleName(honorific)"
+              emit-value
+              label="Title"
+              options-dense
+            />
+            <q-input dense v-model="personnel.fname" label="First Name" />
+            <q-input dense v-model="personnel.lname" label="Last Name" />
+            <q-input
+              dense
+              v-model="personnel.departmentName"
+              label="Organization / Department Name"
+            />
+            <q-input
+              dense
+              v-model="personnel.email"
+              input
+              type="email"
+              novalidate="true"
+              label="Email"
+            />
+            <q-select
+              v-model="name"
+              class=" col-5"
+              label="Default Roles"
+              :options="personnel.defaultRoles"
+              option-value="name"
+              behavior="menu"
+              emit-value
+            />
+          </q-card>
+          <q-card class="q-ma-md q-pa-md q-mt-sm"
+            ><span class="text-bold">Address Details</span>
+            <AutoCompleteAddress
+              :address="personnel.address"
+              :isDropBoxEnable="false"
+              :isChecksEnable="false"
+            />
+          </q-card>
+          <q-card class="q-ma-md q-pa-md q-mt-sm">
+            <div>
+              <div
+                class="row justify-between"
+                v-for="(addPhone, index) in personnel.phoneNumber"
+                v-if="index >= 0"
+              >
+                <q-select
+                  dense
+                  v-model="personnel.phoneNumber[index].type"
+                  class="col-5"
+                  label="Type"
+                  :options="contactTypes"
+                  option-value="machineValue"
+                  option-label="name"
+                  map-options
+                  options-dense
+                  emit-value
+                />
+                <q-input
+                  dense
+                  v-model.number="personnel.phoneNumber[index].number"
+                  label="Phone"
+                  class="col-6"
+                  mask="(###) ###-####"
+                />
+              </div>
+              <div class="row">
+                <q-btn
+                  outline
+                  class="q-mt-sm"
+                  @click="addAnotherContact"
+                  color="primary"
+                  label="Add"
+                  style="margin-right: auto"
+                />
+
+                <q-btn
+                  v-if="personnel.phoneNumber.length > 1"
+                  outline
+                  @click="RemoveAnotherContact"
+                  class="q-mt-sm"
+                  color="primary"
+                  label="Remove"
+                />
+              </div>
+            </div>
+          </q-card>
+          <q-card class="q-ma-md q-pa-md q-mt-xs">
+            <div class="form-heading  q-mt-sm  q-mb-sm">Notes</div>
+            <div class="floating-label">
+              <textarea
+                rows="3"
+                required
+                class="full-width"
+                v-model="personnel.notes"
+                style="resize: none"
+                placeholder="Take notes here..."
+              ></textarea>
+            </div>
+          </q-card>
+        </div>
+        <q-btn
+          @click="onEditSave"
+          label="Save"
+          color="primary"
+          class="button-width-90 q-mt-lg"
+          size="'xl'"
+        />
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -267,8 +421,10 @@ export default {
   },
   data() {
     return {
+      id: '',
       name: '',
       addPersonnelDialog: false,
+      editPersonnelDialog: false,
       addAditionalPhoneNumberToggle: false,
       honorific: {
         id: '602a5eaa312a2b57ac2b00ad',
@@ -332,8 +488,60 @@ export default {
       'getTitles',
       'addVendorPersonnel',
       'getVendorPersonnel',
-      'getVendorDetails'
+      'getVendorDetails',
+      'editVendorPersonnel',
+      'deleteVendorPersonnel'
     ]),
+    onEdit(index) {
+      this.editPersonnelDialog = true;
+      this.personnel.fname = this.vendorPersonnel.personnel[index].fname;
+      this.personnel.lname = this.vendorPersonnel.personnel[index].lname;
+      this.personnel.email = this.vendorPersonnel.personnel[index].email;
+      this.personnel.address = this.vendorPersonnel.personnel[index].address;
+      this.personnel.notes = this.vendorPersonnel.personnel[index].note;
+      this.personnel.phoneNumber = this.vendorPersonnel.personnel[
+        index
+      ].phoneNumber;
+      this.id = this.vendorPersonnel.personnel[index].id;
+    },
+    async onEditSave() {
+      const payload = {
+        id: this.$route.params.id,
+        personnelId: this.id,
+        data: {
+          personnel: {
+            honorific: {
+              id: this.honorific.id,
+              value: this.honorific.value,
+              machineValue: this.honorific.machineValue
+            },
+            fname: this.personnel.fname,
+            lname: this.personnel.lname,
+            email: this.personnel.email,
+            phoneNumber: this.personnel.phoneNumber,
+            role: {
+              value: 'Adjuster',
+              machineValue: 'adjuster'
+            },
+            address: {
+              ...this.personnel.address
+            },
+            note: this.personnel.notes
+          }
+        }
+      };
+      await this.editVendorPersonnel(payload);
+      this.getVendorPersonnel(this.$route.params.id);
+      this.editPersonnelDialog = false;
+    },
+    async onDelete(index) {
+      const vendor = {
+        id: this.$route.params.id,
+        personnelId: this.vendorPersonnel.personnel[index].id
+      };
+      await this.deleteVendorPersonnel(vendor);
+      this.getVendorPersonnel(this.$route.params.id);
+    },
     // For adding multiple Contact Numbers in ClientInfo
     addAnotherContact() {
       let len = this.personnel.phoneNumber.length;
@@ -370,7 +578,6 @@ export default {
     async onSave() {
       const payload = {
         id: this.$route.params.id,
-
         data: {
           personnel: {
             honorific: {
