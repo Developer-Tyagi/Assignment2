@@ -10,3 +10,8 @@ export function onPhoneNumberClick(number, e) {
     window.open('tel:' + number);
   }
 }
+export function sendMap(address) {
+  window.open(
+    `https://www.google.com/maps/search/?api=1&query=${address.houseNumber}${address.streetAddress}${address.postalCode}${address.addressRegion}`
+  );
+}

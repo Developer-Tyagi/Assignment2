@@ -258,7 +258,7 @@
 import { mapGetters, mapActions } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
-import { onEmailClick, onPhoneNumberClick } from '@utils/clickable';
+import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
 
 export default {
   components: {
@@ -355,11 +355,7 @@ export default {
     },
     onEmailClick,
     onPhoneNumberClick,
-    sendMap(address) {
-      window.open(
-        `https://www.google.com/maps/search/?api=1&query=${address.houseNumber}${address.streetAddress}${address.postalCode}${address.addressRegion}`
-      );
-    },
+    sendMap,
 
     setTitleName() {
       const title = this.titles.find(obj => {
