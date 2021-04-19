@@ -1,6 +1,7 @@
 export default function() {
   return {
     carriers: [],
-    selectedCarrier: []
+    selectedCarrier: [],
+    carrierPersonnel: []
   };
 }

@@ -275,6 +275,12 @@ const routes = [
         caseSensitive: true,
         component: () => import('src/pages/carrier/CarrierCompanyInfo.vue')
       },
+      {
+        path: 'carrier-personnel/:id',
+        name: 'carrier',
+        caseSensitive: true,
+        component: () => import('src/pages/carrier/CarrierPersonnel.vue')
+      },
 
       {
         path: 'claims',

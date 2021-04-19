@@ -10,3 +10,9 @@ export function setSelectedCarrier(state, carrier) {
     ...carrier.attributes
   };
 }
+export function setCarrierPersonnel(state, carrier) {
+  state.carrierPersonnel = {
+    id: carrier.id,
+    ...carrier.attributes
+  };
+}

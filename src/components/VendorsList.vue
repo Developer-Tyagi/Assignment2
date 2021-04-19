@@ -46,13 +46,10 @@
         @click="selectVendor(vendor)"
         style="overflow-y: auto;"
       >
-        <q-item-section
-          clickable
-          v-ripple
-          @click="onVendorNameClick(vendor)"
-          v-if="vendorDetails"
-        >
-          <span class="text-bold">{{ vendor.name }}</span>
+        <q-item-section v-if="vendorDetails">
+          <span class="text-bold" @click="onVendorNameClick(vendor)">{{
+            vendor.name
+          }}</span>
           <div v-if="vendor.address">
             <div>
               {{ vendor.address ? vendor.address.houseNumber : '-' }} ,

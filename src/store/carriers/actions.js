@@ -76,3 +76,59 @@ export async function addCarrierPersonnel({ dispatch, state }, payload) {
     });
   }
 }
+
+export async function getCarrierPersonnel({ commit, dispatch }, id) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get(`/carriers/${id}/personnel`);
+    commit('setCarrierPersonnel', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+  }
+}
+
+export async function editCarrierPersonnel({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.patch(
+      `/carriers/${payload.id}/personnel/${payload.personnelId}`,
+      buildApiData('carrierpersonnel', payload.data)
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Personnel  Updated !'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'failed to update Personnel'
+    });
+  }
+}
+export async function deleteCarrierPersonnel({ commit, dispatch }, vendor) {
+  dispatch('setLoading', true);
+  try {
+    await request.del(`/carriers/${vendor.id}/personnel/${vendor.personnelId}`);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Personnel  Deleted !'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'Error in deleting personnel.'
+    });
+  }
+}

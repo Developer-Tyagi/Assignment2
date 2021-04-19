@@ -34,13 +34,10 @@
         class="carrier-list-item clients-list  "
         style="overflow-y: auto;"
       >
-        <q-item-section
-          clickable
-          v-ripple
-          @click="onVendorNameClick(carrier)"
-          v-if="carrierDetails"
-        >
-          <span class="text-bold">{{ carrier.name }}</span>
+        <q-item-section v-if="carrierDetails">
+          <span class="text-bold" @click="onVendorNameClick(carrier)">{{
+            carrier.name
+          }}</span>
           <div v-if="carrier.address">
             <div>
               {{ carrier.address ? carrier.address.houseNumber : '-' }} ,
