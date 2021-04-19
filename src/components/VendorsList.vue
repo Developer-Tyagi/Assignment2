@@ -42,7 +42,7 @@
       <div
         v-for="vendor in vendors"
         :key="vendor.id"
-        class="vendor-list-item clients-list  "
+        class="vendor-list-item clients-list "
         @click="selectVendor(vendor)"
         style="overflow-y: auto;"
       >
@@ -75,7 +75,7 @@
                   : '-'
               }}
             </div>
-            <div>
+            <div class="row">
               {{
                 vendor.address.addressCountry
                   ? vendor.address.addressCountry
@@ -83,6 +83,13 @@
               }}
               -
               {{ vendor.address.postalCode ? vendor.address.postalCode : '-' }}
+              <q-icon
+                name="place"
+                color="primary"
+                @click="sendMap(vendor.address)"
+                class="q-ml-auto"
+                size="sm"
+              ></q-icon>
             </div>
           </div>
           <div class="q-mt-xs" v-for="phone in vendor.phoneNumber">
@@ -121,12 +128,19 @@
                   : '-'
               }}
             </div>
-            <div>
+            <div class="row">
               {{
                 vendor.address.addressCountry
                   ? vendor.address.addressCountry
                   : '-'
               }}
+              <q-icon
+                name="place"
+                color="primary"
+                @click="sendMap(vendor.address)"
+                class="q-ml-auto edit-icon"
+                size="sm"
+              ></q-icon>
             </div>
           </div>
           <div class="q-mt-xs" v-for="phone in vendor.phoneNumber">
@@ -194,7 +208,7 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import { onEmailClick, onPhoneNumberClick } from '@utils/clickable';
+import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
 export default {
   name: 'VendorsList',
   props: [
@@ -236,6 +250,7 @@ export default {
     },
     onEmailClick,
     onPhoneNumberClick,
+    sendMap,
     onVendorNameClick(vendor) {
       this.$router.push('/vendor-details/' + vendor.id);
     },

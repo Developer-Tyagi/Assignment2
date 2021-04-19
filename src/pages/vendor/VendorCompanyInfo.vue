@@ -32,7 +32,7 @@
                   : '-'
               }}
             </div>
-            <div>
+            <div class="row">
               {{
                 selectedVendor.address.addressCountry
                   ? selectedVendor.address.addressCountry
