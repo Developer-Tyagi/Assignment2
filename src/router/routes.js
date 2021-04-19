@@ -270,6 +270,24 @@ const routes = [
         component: () => import('pages/Settings.vue')
       },
       {
+        path: 'mortgages',
+        name: 'mortgages',
+        caseSensitive: true,
+        component: () => import('pages/mortgage/Mortgage.vue')
+      },
+      {
+        path: 'mortgage-details/:id',
+        name: 'mortgage details',
+        caseSensitive: true,
+        component: () => import('src/pages/mortgage/MortgageDetails.vue')
+      },
+      {
+        path: 'mortgage-company-info/:id',
+        name: 'mortgage info',
+        caseSensitive: true,
+        component: () => import('src/pages/mortgage/MortgageCompanyInfo.vue')
+      },
+      {
         path: 'inspection-types',
         name: 'type of inspections',
         caseSensitive: true,
