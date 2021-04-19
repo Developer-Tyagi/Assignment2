@@ -34,13 +34,10 @@
         class="mortgage-list-item clients-list  "
         style="overflow-y: auto;"
       >
-        <q-item-section
-          clickable
-          v-ripple
-          @click="onVendorNameClick(mortgage)"
-          v-if="mortgageDetails"
-        >
-          <span class="text-bold">{{ mortgage.name }}</span>
+        <q-item-section v-if="mortgageDetails">
+          <span class="text-bold" @click="onVendorNameClick(mortgage)">{{
+            mortgage.name
+          }}</span>
           <div v-if="mortgage.address">
             <div>
               {{ mortgage.address ? mortgage.address.houseNumber : '-' }} ,

@@ -10,3 +10,9 @@ export function setSelectedMortgage(state, mortgage) {
     ...mortgage.attributes
   };
 }
+export function setMortgagePersonnel(state, mortgage) {
+  state.mortgagePersonnel = {
+    id: mortgage.id,
+    ...mortgage.attributes
+  };
+}
