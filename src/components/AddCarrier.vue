@@ -23,10 +23,10 @@
               dense
               class="required"
               v-model="carrier.name"
-              label=" Company Name"
+              label="Carrier Name"
               lazy-rules
               :rules="[
-                val => (val && val.length > 0) || 'Please fill the company name'
+                val => (val && val.length > 0) || 'Please fill the carrier name'
               ]"
             />
 
@@ -88,7 +88,7 @@
             </div>
           </q-card>
           <q-card class="q-ma-xs q-pa-sm q-mt-md">
-            <p class="form-heading">Company's Address</p>
+            <p class="form-heading">Carrier's Address</p>
             <AutoCompleteAddress
               :address="carrier.address"
               :isDropBoxEnable="false"
@@ -103,7 +103,7 @@
               <div class="q-mt-sm">
                 <q-select
                   dense
-                  v-model="carrier.contact.honorific.id"
+                  v-model="carrier.contact.honorific.value"
                   :options="titles"
                   option-label="value"
                   label="Title"
@@ -206,7 +206,6 @@ export default {
   data() {
     return {
       constants: constants,
-
       options: '',
       countries: [],
       states: [],
@@ -227,7 +226,7 @@ export default {
           lname: '',
           email: '',
           honorific: {
-            id: '602a5eaa312a2b57ac2b00ad',
+            id: '',
             value: 'Mr.',
             machineValue: 'mr_'
           },
