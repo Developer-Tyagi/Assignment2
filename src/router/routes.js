@@ -275,6 +275,12 @@ const routes = [
         caseSensitive: true,
         component: () => import('src/pages/carrier/CarrierCompanyInfo.vue')
       },
+      {
+        path: 'carrier-personnel/:id',
+        name: 'carrier',
+        caseSensitive: true,
+        component: () => import('src/pages/carrier/CarrierPersonnel.vue')
+      },
 
       {
         path: 'claims',
@@ -305,6 +311,12 @@ const routes = [
         name: 'mortgage info',
         caseSensitive: true,
         component: () => import('src/pages/mortgage/MortgageCompanyInfo.vue')
+      },
+      {
+        path: 'mortgage-personnel/:id',
+        name: 'mortgage',
+        caseSensitive: true,
+        component: () => import('src/pages/mortgage/MortgagePersonnel.vue')
       },
       {
         path: 'inspection-types',

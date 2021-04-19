@@ -7,6 +7,7 @@
       <q-card class="q-ma-sm q-pa-sm ">
         <div class="row q-mt-sm">
           <span class="heading-light col-3">Address Details</span>
+
           <span class="col-7 q-ml-md" v-if="selectedMortgage.address">
             {{
               selectedMortgage.address.houseNumber
@@ -19,6 +20,7 @@
                 ? selectedMortgage.address.streetAddress
                 : '-'
             }}
+
             <div>
               {{
                 selectedMortgage.address.addressLocality
@@ -67,7 +69,7 @@
             <span
               class="clickLink "
               @click="onPhoneNumberClick(phone.number, $event)"
-              >{{ phone.number }}</span
+              >{{ phone.number ? phone.number : '-' }}</span
             ></span
           >
         </div>
@@ -108,9 +110,17 @@ export default {
   },
   methods: {
     ...mapActions(['getMortgageDetails']),
+
     onEmailClick,
     onPhoneNumberClick,
-    sendMap
+    sendMap,
+    async onDelete() {
+      const mortgage = {
+        id: this.$route.params.id
+      };
+      await this.deleteMortgageInfo(mortgage);
+      this.getMortgageDetails(this.$route.params.id);
+    }
   }
 };
 </script>
