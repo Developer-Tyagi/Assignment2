@@ -8,7 +8,7 @@
     >
       <div class="listing-height q-pa-md mobile-container-page">
         <div class="q-ml-md  text-h6">
-          {{ selectedCarrier.name ? selectedCarrier.name : '-' }}
+          {{ selectedMortgage.name ? selectedMortgage.name : '-' }}
         </div>
 
         <div
@@ -33,7 +33,7 @@ export default {
   data() {
     return {
       dialogBoxes: [
-        { name: 'Carrier Info' },
+        { name: 'Mortgage Info' },
         { name: 'Personnel' },
         { name: 'Open Claims' },
         { name: 'Claim History' },
@@ -42,25 +42,25 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['selectedCarrier'])
+    ...mapGetters(['selectedMortgage'])
   },
 
   methods: {
-    ...mapActions(['getCarrierDetails']),
+    ...mapActions(['getMortgageDetails']),
     onEmailClick,
     onPhoneNumberClick,
     vendorDetailsDailogBoxOpen(value) {
       switch (value) {
-        case 'Carrier Info':
-          this.$router.push('/carrier-company-info/' + this.$route.params.id);
+        case 'Mortgage Info':
+          this.$router.push('/mortgage-company-info/' + this.$route.params.id);
           break;
         case 'Personnel':
-          this.$router.push('/carrier-personnel/' + this.$route.params.id);
+          this.$router.push('/mortgage-personnel/' + this.$route.params.id);
       }
     }
   },
   mounted() {
-    this.getCarrierDetails(this.$route.params.id);
+    this.getMortgageDetails(this.$route.params.id);
   }
 };
 </script>

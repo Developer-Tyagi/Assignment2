@@ -8,7 +8,7 @@
       <q-form
         class="q-pa-lg"
         style="height: calc(100vh - 51px)"
-        ref="carrierForm"
+        ref="mortgageForm"
       >
         <div
           class="full-width"
@@ -22,11 +22,12 @@
             <q-input
               dense
               class="required"
-              v-model="carrier.name"
-              label="Carrier Name"
+              v-model="mortgage.name"
+              label=" Mortgage Name"
               lazy-rules
               :rules="[
-                val => (val && val.length > 0) || 'Please fill the carrier name'
+                val =>
+                  (val && val.length > 0) || 'Please fill the mortgage name'
               ]"
             />
 
@@ -34,7 +35,7 @@
               <q-select
                 dense
                 class="col-5"
-                v-model="carrier.phoneNumber[0].type"
+                v-model="mortgage.phoneNumber[0].type"
                 :options="contactTypes"
                 option-value="machineValue"
                 option-label="name"
@@ -51,7 +52,7 @@
               <q-input
                 dense
                 class="required col-6"
-                v-model.number="carrier.phoneNumber[0].number"
+                v-model.number="mortgage.phoneNumber[0].number"
                 label="Phone"
                 mask="(###) ###-####"
                 lazy-rules
@@ -64,7 +65,7 @@
             <q-input
               dense
               class="required"
-              v-model="carrier.email"
+              v-model="mortgage.email"
               type="email"
               label="Email"
               lazy-rules
@@ -83,14 +84,14 @@
               </p>
               <q-toggle
                 class="q-ml-auto"
-                v-model="carrier.meta.claimFiledByEmail"
+                v-model="mortgage.meta.claimFiledByEmail"
               />
             </div>
           </q-card>
           <q-card class="q-ma-xs q-pa-sm q-mt-md">
-            <p class="form-heading">Carrier's Address</p>
+            <p class="form-heading">Mortgage Address</p>
             <AutoCompleteAddress
-              :address="carrier.address"
+              :address="mortgage.address"
               :isDropBoxEnable="false"
               :isChecksEnable="false"
               :value="true"
@@ -103,12 +104,12 @@
               <div class="q-mt-sm">
                 <q-select
                   dense
-                  v-model="carrier.contact.honorific.value"
+                  v-model="mortgage.contact.honorific.value"
                   :options="titles"
                   option-label="value"
                   label="Title"
                   option-value="id"
-                  @input="setTitleName(carrier.contact.honorific)"
+                  @input="setTitleName(mortgage.contact.honorific)"
                   emit-value
                   behavior="menu"
                   map-options
@@ -117,19 +118,19 @@
                 />
                 <q-input
                   dense
-                  v-model="carrier.contact.fname"
+                  v-model="mortgage.contact.fname"
                   label="First Name"
                 />
                 <q-input
                   dense
-                  v-model="carrier.contact.lname"
+                  v-model="mortgage.contact.lname"
                   label="Last Name"
                 />
                 <div class="row justify-between">
                   <q-select
                     dense
                     class="col-5 "
-                    v-model="carrier.contact.phoneNumber[0].type"
+                    v-model="mortgage.contact.phoneNumber[0].type"
                     :options="contactTypes"
                     option-value="machineValue"
                     option-label="name"
@@ -142,7 +143,7 @@
                   <q-input
                     dense
                     class="col-6"
-                    v-model.number="carrier.contact.phoneNumber[0].number"
+                    v-model.number="mortgage.contact.phoneNumber[0].number"
                     label="Phone1"
                     mask="(###) ###-####"
                   />
@@ -150,7 +151,7 @@
                 <q-input
                   class="q-mb-md"
                   dense
-                  v-model="carrier.contact.email"
+                  v-model="mortgage.contact.email"
                   novalidate="true"
                   label="Email"
                 />
@@ -161,7 +162,7 @@
             <p class="form-heading">Other Info</p>
             <q-input
               dense
-              v-model="carrier.info.website"
+              v-model="mortgage.info.website"
               label="Website"
               lazy-rules
               :rules="[val => validateUrl(val) || 'Please fill your website']"
@@ -169,7 +170,7 @@
             <q-input
               class="q-mb-sm"
               dense
-              v-model="carrier.info.notes"
+              v-model="mortgage.info.notes"
               label="Notes"
             />
           </q-card>
@@ -198,8 +199,8 @@ import CustomBar from 'components/CustomBar';
 import { validateEmail, validateUrl } from '@utils/validation';
 
 export default {
-  name: 'AddVendor',
-  props: ['componentName', 'selectedIndustryType'],
+  name: 'AddMortgage',
+  props: ['componentName'],
 
   components: { AutoCompleteAddress, CustomBar },
 
@@ -209,7 +210,7 @@ export default {
       options: '',
       countries: [],
       states: [],
-      carrier: {
+      mortgage: {
         name: '',
         email: '',
         phoneNumber: [
@@ -268,10 +269,10 @@ export default {
 
   methods: {
     ...mapActions([
-      'addCarrier',
+      'addClaimMortgage',
       'getTitles',
       'getContactTypes',
-      'getCarriers'
+      'getMortgages'
     ]),
     validateEmail,
     validateUrl,
@@ -290,17 +291,17 @@ export default {
     },
 
     async onAddVendorButtonClick() {
-      const success = await this.$refs.carrierForm.validate();
+      const success = await this.$refs.mortgageForm.validate();
 
       if (success) {
-        const response = await this.addCarrier(this.carrier);
-        this.getCarriers();
+        const response = await this.addClaimMortgage(this.mortgage);
+        this.getMortgages();
         if (response) {
-          this.carrier.id = response.id;
+          this.mortgage.id = response.id;
           this.$emit(
             'onCloseAddVendor',
             true,
-            this.carrier,
+            this.mortgage,
             this.componentName
           );
           this.closeDialog(true);

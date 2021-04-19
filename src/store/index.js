@@ -8,6 +8,7 @@ import common from './common';
 import claims from './claims';
 import clients from './clients';
 import user from './user';
+import mortgages from './mortgages';
 import settings from './settings';
 import admin from './admin';
 Vue.use(Vuex);
@@ -28,6 +29,7 @@ export default function(/* { ssrContext } */) {
       clients,
       claims,
       settings,
+      mortgages,
       admin
     }
 

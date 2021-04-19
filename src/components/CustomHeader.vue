@@ -160,6 +160,11 @@ export default {
         //   description: 'Setup My Schedule, Type of Inspection etc.'
         // },
         {
+          title: 'Mortgages',
+          link: '/mortgages',
+          description: 'View, Add and Manage all types of Mortgages.'
+        },
+        {
           title: 'Admin',
           link: '/admin',
           description: 'Setup Company , account, email, actions etc.'
