@@ -301,7 +301,6 @@ export default {
     ...mapActions(['getVendors']),
     //This function is for closing the time popup
     closeTimeDialog() {
-      console.log(this.contractInfo.time);
       this.$refs.qTimeProxy.hide();
     },
     successMessage,

@@ -79,7 +79,8 @@
                       name="place"
                       color="primary"
                       @click="sendMap(personnel.address)"
-                      class="edit-icon"
+                      style="position: absolute ;right: 20px"
+                      size="sm"
                     ></q-icon>
                   </div>
                 </div>
@@ -104,7 +105,7 @@
                       class="clickLink "
                       @click="onPhoneNumberClick(phone.number, $event)"
                     >
-                      {{ phone.number }}
+                      {{ phone.number ? phone.number : '-' }}
                     </div>
                   </div>
                 </div>

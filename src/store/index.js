@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 
 import leads from './leads';
 import vendors from './vendors';
+import carriers from './carriers';
 import common from './common';
 import claims from './claims';
 import clients from './clients';
@@ -23,6 +24,7 @@ export default function(/* { ssrContext } */) {
       common,
       user,
       vendors,
+      carriers,
       clients,
       claims,
       settings,

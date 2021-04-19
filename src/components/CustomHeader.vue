@@ -149,6 +149,11 @@ export default {
           link: '/vendors',
           description: 'View, Add and Manage all types of Vendors.'
         },
+        {
+          title: 'Carriers',
+          link: '/carriers',
+          description: 'View, Add and Manage all types of Carriers.'
+        },
         // {
         //   title: 'Settings',
         //   link: '/settings',
