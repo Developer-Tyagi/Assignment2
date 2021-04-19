@@ -237,26 +237,45 @@ const routes = [
         path: 'vendors',
         name: 'vendors',
         caseSensitive: true,
-        component: () => import('pages/Vendors.vue')
+        component: () => import('src/pages/vendor/Vendors.vue')
       },
       {
         path: 'vendor-details/:id',
         name: 'vendor details',
         caseSensitive: true,
-        component: () => import('pages/VendorDetails.vue')
+        component: () => import('src/pages/vendor/VendorDetails.vue')
       },
       {
         path: 'vendor-company-info/:id',
         name: 'company info',
         caseSensitive: true,
-        component: () => import('pages/VendorCompanyInfo.vue')
+        component: () => import('src/pages/vendor/VendorCompanyInfo.vue')
       },
       {
         path: 'vendor-personnel/:id',
         name: 'personnel',
         caseSensitive: true,
-        component: () => import('pages/VendorPersonnel.vue')
+        component: () => import('src/pages/vendor/VendorPersonnel.vue')
       },
+      {
+        path: 'carriers',
+        name: 'carriers',
+        caseSensitive: true,
+        component: () => import('pages/carrier/Carriers.vue')
+      },
+      {
+        path: 'carrier-details/:id',
+        name: 'carrier details',
+        caseSensitive: true,
+        component: () => import('src/pages/carrier/CarrierDetails.vue')
+      },
+      {
+        path: 'carrier-company-info/:id',
+        name: 'carrier info',
+        caseSensitive: true,
+        component: () => import('src/pages/carrier/CarrierCompanyInfo.vue')
+      },
+
       {
         path: 'claims',
         name: 'open claims',
