@@ -1,216 +1,141 @@
 <template>
   <q-page>
     <div class="mobile-container-page-without-search">
-      <div class="column full-height">
-        <div
-          v-for="dialogBox in dialogBoxes"
-          :key="dialogBox.name"
-          @click="createClientDailogBoxOpen(dialogBox.name)"
-          class="form-list row"
-        >
-          {{ dialogBox.name }}
-          <div class="q-mr-lg q-ml-auto" v-if="dialogBox.validForm == true">
-            <q-icon size="xs" color="primary" name="done" />
+      <div class="stepper">
+        <div class="step justify-between" id="step">
+          <div
+            class="column align-center q-px-md"
+            v-for="(arr, index) in stepArr"
+            @click="onStepClick(index)"
+          >
+            <div
+              :class="{
+                'icon-div-selected': index == step,
+                'icon-div': index != step
+              }"
+              class="q-mx-auto"
+            >
+              <q-icon
+                v-if="index == step"
+                size="14px"
+                name="create"
+                color="white"
+                style="margin: auto"
+              />
+              <q-icon
+                v-if="index < stepClickValidTill && index != step"
+                size="14px"
+                name="done"
+                color="white"
+                style="margin: auto"
+              />
+            </div>
+            <div class="label">{{ arr.name }}</div>
           </div>
         </div>
-        <q-btn
-          style="width: 90%"
-          label="Create Client"
-          color="primary"
-          class="q-mt-auto text-capitalize q-mx-auto"
-          :disabled="isCreateClientButtonDisabled"
-          @click="createClientButtonClick"
-          size="'xl'"
-        ></q-btn>
-      </div>
-    </div>
-    <!-- Client Info -->
-    <q-dialog
-      v-model="clientInfoDailog"
-      persistent
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <CustomBar
-          :dialogName="'Client Info'"
-          @closeDialog="onCloseDialogBox('clientInfoDailog', 0)"
-        />
-        <div class="mobile-container-page-without-search">
-          <q-form ref="clientForm" class="form-height">
-            <q-select
-              dense
-              class="required"
-              v-model="client.id"
-              option-value="id"
-              option-label="name"
-              map-options
-              emit-value
-              behavior="menu"
-              options-dense
-              :options="clientTypes"
-              @input="setTypes(clientTypes, client)"
-              label="Client Type"
-              :rules="[
-                val =>
-                  (val && val.length > 0) || 'Please select the client type'
-              ]"
-            />
-            <div class="row">
-              <p class="q-mx-none q-my-auto">
-                Is Policy Holder An Organization ?
-              </p>
-              <q-toggle
-                v-model="primaryDetails.isOrganization"
-                left-label
-                class="q-ml-auto"
-              />
-            </div>
-            <div v-if="primaryDetails.isOrganization">
-              <q-input
-                dense
-                v-model="primaryDetails.organizationName"
-                label="Organization Name"
-                class="required"
-                lazy-rules
-                :rules="[
-                  val =>
-                    (val && val.length > 0) ||
-                    'Please fill the organization name '
-                ]"
-              />
-            </div>
-            <div class="row">
-              <p class="q-mx-none q-my-auto">Organization Is Policyholder?</p>
-              <q-toggle
-                v-model="policyHolder.isPolicyHolder"
-                left-label
-                class="q-ml-auto"
-              />
-            </div>
-            <span class="form-heading">Insured Details</span>
-            <q-select
-              dense
-              v-model="honorific1.id"
-              class="required"
-              :options="titles"
-              option-value="id"
-              option-label="value"
-              map-options
-              options-dense
-              behavior="menu"
-              @input="setTitleName(1)"
-              emit-value
-              label="Title"
-              lazy-rules
-              options-dense
-              :rules="[
-                val => (val && val.length > 0) || 'Please select the Title'
-              ]"
-            />
-            <q-input
-              dense
-              class="required"
-              v-model="insuredDetails.fname"
-              lazy-rules
-              :rules="[
-                val => (val && val.length > 0) || 'Please fill the First name'
-              ]"
-              label="First Name"
-            />
-            <q-input
-              dense
-              v-model="insuredDetails.lname"
-              class="required"
-              lazy-rules
-              :rules="[
-                val => (val && val.length > 0) || 'Please fill the Last name'
-              ]"
-              label="Last Name"
-            />
-            <div class="row justify-between">
+        <!-- @click="onSubmit('insuranceInfoDialog')" -->
+        <div class="form">
+          <!-- Client Info -->
+          <q-form
+            @submit="onNextButtonClick(0)"
+            :hidden="step != 0"
+            ref="clientInfo"
+          >
+            <q-card class="form-card q-pa-md">
               <q-select
                 dense
-                v-model="insuredDetails.type"
-                class="required col-5"
-                :options="contactTypes"
-                option-value="machineValue"
+                class="required"
+                v-model="client.id"
+                option-value="id"
                 option-label="name"
                 map-options
                 emit-value
                 behavior="menu"
                 options-dense
-                label="Type"
-                lazy-rules
-                :rules="[
-                  val => (val && val.length > 0) || 'Please select phone type'
-                ]"
-              />
-              <q-input
-                dense
-                v-model.number="insuredDetails.phone"
-                class="required col-6"
-                label="Phone"
-                mask="(###) ###-####"
-                lazy-rules
+                :options="clientTypes"
+                @input="setTypes(clientTypes, client)"
+                label="Client Type"
                 :rules="[
                   val =>
-                    (val && val.length == 14) || 'Please enter the phone number'
+                    (val && val.length > 0) || 'Please select the client type'
                 ]"
               />
-            </div>
-            <q-input
-              dense
-              v-model="insuredDetails.email"
-              class="required"
-              label="Email"
-              lazy-rules
-              :rules="[
-                val =>
-                  validateEmail(val) ||
-                  'You have entered an invalid email address!'
-              ]"
-            />
-            <div class="row">
-              <p class="q-mx-none q-my-auto">Is there a Co-insured?</p>
-              <q-toggle class="q-ml-auto" v-model="isThereaCoInsuredToggle" />
-            </div>
-
-            <div v-if="isThereaCoInsuredToggle" style="font-size: 20px">
-              <span class="form-heading">Co-insured Details</span>
+              <div class="row">
+                <p class="q-mx-none q-my-auto">
+                  Is Policy Holder An Organization ?
+                </p>
+                <q-toggle
+                  v-model="primaryDetails.isOrganization"
+                  left-label
+                  class="q-ml-auto"
+                />
+              </div>
+              <div v-if="primaryDetails.isOrganization">
+                <q-input
+                  dense
+                  v-model="primaryDetails.organizationName"
+                  label="Organization Name"
+                  class="required"
+                  lazy-rules
+                  :rules="[
+                    val =>
+                      (val && val.length > 0) ||
+                      'Please fill the organization name '
+                  ]"
+                />
+              </div>
+              <div class="row">
+                <p class="q-mx-none q-my-auto">Organization Is Policyholder?</p>
+                <q-toggle
+                  v-model="policyHolder.isPolicyHolder"
+                  left-label
+                  class="q-ml-auto"
+                />
+              </div>
+              <span class="form-heading">Insured Details</span>
               <q-select
                 dense
-                v-model="honorific2.id"
+                v-model="honorific1.id"
                 class="required"
                 :options="titles"
                 option-value="id"
                 option-label="value"
                 map-options
-                @input="setTitleName(2)"
-                emit-value
                 options-dense
                 behavior="menu"
+                @input="setTitleName(1)"
+                emit-value
                 label="Title"
                 lazy-rules
+                options-dense
                 :rules="[
                   val => (val && val.length > 0) || 'Please select the Title'
                 ]"
               />
               <q-input
                 dense
-                v-model="coInsuredDetails.fname"
+                class="required"
+                v-model="insuredDetails.fname"
+                lazy-rules
+                :rules="[
+                  val => (val && val.length > 0) || 'Please fill the First name'
+                ]"
                 label="First Name"
               />
               <q-input
                 dense
-                v-model="coInsuredDetails.lname"
+                v-model="insuredDetails.lname"
+                class="required"
+                lazy-rules
+                :rules="[
+                  val => (val && val.length > 0) || 'Please fill the Last name'
+                ]"
                 label="Last Name"
               />
               <div class="row justify-between">
                 <q-select
                   dense
-                  v-model="coInsuredDetails.type"
+                  v-model="insuredDetails.type"
                   class="required col-5"
                   :options="contactTypes"
                   option-value="machineValue"
@@ -220,7 +145,6 @@
                   behavior="menu"
                   options-dense
                   label="Type"
-                  options-dense
                   lazy-rules
                   :rules="[
                     val => (val && val.length > 0) || 'Please select phone type'
@@ -228,9 +152,9 @@
                 />
                 <q-input
                   dense
-                  v-model.number="coInsuredDetails.phone"
-                  label="Phone"
+                  v-model.number="insuredDetails.phone"
                   class="required col-6"
+                  label="Phone"
                   mask="(###) ###-####"
                   lazy-rules
                   :rules="[
@@ -242,401 +166,522 @@
               </div>
               <q-input
                 dense
-                v-model="coInsuredDetails.email"
-                input
-                type="email"
+                v-model="insuredDetails.email"
                 class="required"
+                label="Email"
                 lazy-rules
                 :rules="[
                   val =>
                     validateEmail(val) ||
                     'You have entered an invalid email address!'
                 ]"
-                label="Email"
               />
-            </div>
-            <div class="row">
-              <p class="q-mx-none q-my-auto">Add aditional phone number(s)</p>
-              <q-toggle
-                class="q-ml-auto"
-                v-model="addAditionalPhoneNumberToggle"
-                @input="onaddAditionalPhoneNumberToggle"
-              />
-            </div>
-            <div v-if="addAditionalPhoneNumberToggle">
-              <div
-                class=" row justify-between"
-                v-for="(addPhone, index) in phoneNumber"
-                v-if="index >= 0"
-              >
+              <div class="row">
+                <p class="q-mx-none q-my-auto">Is there a Co-insured?</p>
+                <q-toggle class="q-ml-auto" v-model="isThereaCoInsuredToggle" />
+              </div>
+
+              <div v-if="isThereaCoInsuredToggle" style="font-size: 20px">
+                <span class="form-heading">Co-insured Details</span>
                 <q-select
-                  v-model="phoneNumber[index].type"
-                  class="required col-5"
-                  label="Type"
-                  :options="contactTypes"
-                  option-value="machineValue"
-                  option-label="name"
+                  dense
+                  v-model="honorific2.id"
+                  class="required"
+                  :options="titles"
+                  option-value="id"
+                  option-label="value"
                   map-options
+                  @input="setTitleName(2)"
+                  emit-value
                   options-dense
                   behavior="menu"
-                  emit-value
+                  label="Title"
                   lazy-rules
                   :rules="[
-                    val => (val && val.length > 0) || 'Please select phone type'
+                    val => (val && val.length > 0) || 'Please select the Title'
                   ]"
                 />
                 <q-input
-                  v-model.number="phoneNumber[index].number"
-                  label="Phone"
-                  class="required col-6"
-                  mask="(###) ###-####"
+                  dense
+                  v-model="coInsuredDetails.fname"
+                  label="First Name"
+                />
+                <q-input
+                  dense
+                  v-model="coInsuredDetails.lname"
+                  label="Last Name"
+                />
+                <div class="row justify-between">
+                  <q-select
+                    dense
+                    v-model="coInsuredDetails.type"
+                    class="required col-5"
+                    :options="contactTypes"
+                    option-value="machineValue"
+                    option-label="name"
+                    map-options
+                    emit-value
+                    behavior="menu"
+                    options-dense
+                    label="Type"
+                    options-dense
+                    lazy-rules
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) || 'Please select phone type'
+                    ]"
+                  />
+                  <q-input
+                    dense
+                    v-model.number="coInsuredDetails.phone"
+                    label="Phone"
+                    class="required col-6"
+                    mask="(###) ###-####"
+                    lazy-rules
+                    :rules="[
+                      val =>
+                        (val && val.length == 14) ||
+                        'Please enter the phone number'
+                    ]"
+                  />
+                </div>
+                <q-input
+                  dense
+                  v-model="coInsuredDetails.email"
+                  input
+                  type="email"
+                  class="required"
                   lazy-rules
                   :rules="[
                     val =>
-                      (val && val.length == 14) ||
-                      'Please enter the phone number'
+                      validateEmail(val) ||
+                      'You have entered an invalid email address!'
                   ]"
+                  label="Email"
                 />
               </div>
-              <div class="row justify-between q-my-sm">
-                <q-btn
-                  :disabled="isAddMorePhoneDisabled"
-                  outline
-                  class="q-mt-sm"
-                  @click="addAnotherContact"
-                  color="primary"
-                  label="Add"
+              <div class="row">
+                <p class="q-mx-none q-my-auto">Add aditional phone number(s)</p>
+                <q-toggle
+                  class="q-ml-auto"
+                  v-model="addAditionalPhoneNumberToggle"
+                  @input="onaddAditionalPhoneNumberToggle"
                 />
+              </div>
+              <div v-if="addAditionalPhoneNumberToggle">
+                <div
+                  class="row justify-between"
+                  v-for="(addPhone, index) in phoneNumber"
+                  v-if="index >= 0"
+                >
+                  <q-select
+                    v-model="phoneNumber[index].type"
+                    class="required col-5"
+                    label="Type"
+                    :options="contactTypes"
+                    option-value="machineValue"
+                    option-label="name"
+                    map-options
+                    options-dense
+                    behavior="menu"
+                    emit-value
+                    lazy-rules
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) || 'Please select phone type'
+                    ]"
+                  />
+                  <q-input
+                    v-model.number="phoneNumber[index].number"
+                    label="Phone"
+                    class="required col-6"
+                    mask="(###) ###-####"
+                    lazy-rules
+                    :rules="[
+                      val =>
+                        (val && val.length == 14) ||
+                        'Please enter the phone number'
+                    ]"
+                  />
+                </div>
+                <div class="row justify-between q-my-sm">
+                  <q-btn
+                    :disabled="isAddMorePhoneDisabled"
+                    outline
+                    class="q-mt-sm"
+                    @click="addAnotherContact"
+                    color="primary"
+                    label="Add"
+                  />
+                  <q-btn
+                    v-if="phoneNumber.length > 1"
+                    outline
+                    @click="RemoveAnotherContact"
+                    class="q-mt-sm"
+                    color="primary"
+                    label="Remove"
+                  />
+                </div>
+              </div>
+              <span class="form-heading">Loss Address Details</span>
+              <q-input
+                dense
+                class="required"
+                v-model="lossAddressName"
+                label="Enter  Loss Address Name "
+                lazy-rules
+                :rules="[
+                  val => (val && val.length > 0) || 'This is a required field'
+                ]"
+              ></q-input>
+              <q-select
+                dense
+                behavior="menu"
+                class="required"
+                v-model="property.id"
+                option-value="id"
+                option-label="name"
+                map-options
+                options-dense
+                emit-value
+                :options="propertyTypes"
+                @input="setTypes(propertyTypes, property)"
+                label="Property Type"
+                :rules="[
+                  val =>
+                    (val && val.length > 0) || 'Please select the property type'
+                ]"
+              />
+              <q-input
+                dense
+                v-model="propertyDescription"
+                label="Description of Property"
+              />
+              <AutoCompleteAddress
+                :address="clientAddressDetails"
+                :isDropBoxEnable="true"
+                :isChecksEnable="true"
+                :isAsteriskMark="true"
+              />
+            </q-card>
+            <div class="row q-pt-md">
+              <div class="q-ml-auto">
+                <span class="q-mr-md text-color-grey">Next</span>
                 <q-btn
-                  v-if="phoneNumber.length > 1"
-                  outline
-                  @click="RemoveAnotherContact"
-                  class="q-mt-sm"
-                  color="primary"
-                  label="Remove"
+                  class="rotate-180"
+                  icon="keyboard_backspace"
+                  text-color="primary"
+                  padding="md"
+                  type="submit"
                 />
               </div>
             </div>
-            <span class="form-heading">Loss Address Details</span>
-            <q-input
-              dense
-              class="required"
-              v-model="lossAddressName"
-              label="Enter  Loss Address Name "
-              lazy-rules
-              :rules="[
-                val => (val && val.length > 0) || 'This is a required field'
-              ]"
-            ></q-input>
-            <q-select
-              dense
-              behavior="menu"
-              class="required"
-              v-model="property.id"
-              option-value="id"
-              option-label="name"
-              map-options
-              options-dense
-              emit-value
-              :options="propertyTypes"
-              @input="setTypes(propertyTypes, property)"
-              label="Property Type"
-              :rules="[
-                val =>
-                  (val && val.length > 0) || 'Please select the property type'
-              ]"
-            />
-            <q-input
-              dense
-              v-model="propertyDescription"
-              label="Description of Property"
-            />
-            <AutoCompleteAddress
-              :address="clientAddressDetails"
-              :isDropBoxEnable="true"
-              :isChecksEnable="true"
-              :isAsteriskMark="true"
-            />
           </q-form>
-          <q-btn
-            @click="onSubmit('clientInfoDailog')"
-            label="Save"
-            color="primary"
-            class="button-width-90"
-            size="'xl'"
-          />
-        </div>
-      </q-card>
-    </q-dialog>
-    <!-- Mailing Address -->
-    <q-dialog
-      v-model="mailingAddressDialog"
-      persistent
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <CustomBar
-          @closeDialog="onCloseDialogBox('mailingAddressDialog', 1)"
-          :dialogName="'Mailing Address'"
-        />
-        <div class="mobile-container-page-without-search">
-          <q-form ref="mailingAddressForm" class="form-height">
-            <div class="row">
-              <span class="form-heading">
-                Is the Mailing Address same as the Loss Address ?
-              </span>
-              <q-toggle
-                class="q-ml-auto"
-                v-model="isMailingAddressSameToggle"
-                @input="mailingAddressSame"
+          <!-- Mailing Address -->
+          <q-form
+            @submit="onNextButtonClick(1)"
+            @reset="step--"
+            :hidden="step != 1"
+            ref="mailingInfo"
+          >
+            <q-card class="q-pa-md form-card">
+              <div class="row">
+                <span class="form-heading">
+                  Is the Mailing Address same as the Loss Address ?
+                </span>
+                <q-toggle
+                  class="q-ml-auto"
+                  v-model="isMailingAddressSameToggle"
+                  @input="mailingAddressSame"
+                />
+              </div>
+              <AutoCompleteAddress
+                :address="mailingAddressDetails"
+                :isDropBoxEnable="true"
+                :isChecksEnable="true"
+                :isFieldsDisable="isMailingAddressSameToggle"
+                :isAsteriskMark="true"
               />
-            </div>
-            <AutoCompleteAddress
-              :address="mailingAddressDetails"
-              :isDropBoxEnable="true"
-              :isChecksEnable="true"
-              :isFieldsDisable="isMailingAddressSameToggle"
-              :isAsteriskMark="true"
-            />
-          </q-form>
-          <q-btn
-            label="Save"
-            color="primary"
-            class="button-width-90"
-            @click="onSubmit('mailingAddressDialog')"
-            size="'xl'"
-          />
-        </div>
-      </q-card>
-    </q-dialog>
-    <!-- Insurance Info -->
-    <q-dialog
-      v-model="insuranceInfoDialog"
-      persistent
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <CustomBar
-          @closeDialog="onCloseDialogBox('insuranceInfoDialog', 2)"
-          :dialogName="'Insurance Info'"
-        />
-        <div class="mobile-container-page-without-search">
-          <q-form ref="insuranceInfoForm" class="form-height">
-            <InsuranceInfo :insuranceDetails="insuranceDetails" />
-          </q-form>
-
-          <q-btn
-            label="Save"
-            color="primary"
-            class="button-width-90"
-            @click="onSubmit('insuranceInfoDialog')"
-            size="'xl'"
-          />
-        </div>
-      </q-card>
-    </q-dialog>
-    <!-- Loss Info -->
-    <q-dialog
-      v-model="lossInfoDialog"
-      persistent
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <CustomBar
-          @closeDialog="onCloseDialogBox('lossInfoDialog', 3)"
-          :dialogName="'Loss Info'"
-        />
-        <div class="mobile-container-page-without-search">
-          <q-form ref="lossInfoForm" class="form-height">
-            <LossInfo
-              :lossInfo="lossInfo"
-              @lossAddressSame="lossAddressSame"
-              :lossAddressToggleShow="true"
-              :isMailingAddressEnable="true"
-              :lossAddressSameAsClient="true"
-              :isAddressRequired="true"
-              :mortgageInfo="mortgageObject"
-            />
-          </q-form>
-
-          <q-btn
-            label="Save"
-            color="primary"
-            class="button-width-90"
-            @click="onSubmit('lossInfoDialog')"
-            size="'xl'"
-          />
-        </div>
-      </q-card>
-    </q-dialog>
-
-    <!-- Expert /Vendor Info -->
-    <q-dialog
-      v-model="expertVendorInfoDialog"
-      persistent
-      :maximized="maximizedToggle"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <CustomBar
-          @closeDialog="onCloseDialogBox('expertVendorInfoDialog', 4)"
-          :dialogName="'Expert / Vendor Info'"
-        />
-        <div class="mobile-container-page-without-search">
-          <q-form ref="expertVendorInfoForm" class="form-height">
-            <ExpertVendorInfo
-              :expertVendorInfo="expertVendorInfo"
-              @addAnotherVendor="addAnotherVendor"
-            />
-          </q-form>
-
-          <q-btn
-            label="Save"
-            color="primary"
-            class="button-width-90"
-            @click="onSubmit('expertVendorInfoDialog')"
-            size="'xl'"
-          />
-        </div>
-      </q-card>
-    </q-dialog>
-    <!-- Estimating Info -->
-    <q-dialog
-      v-model="estimatingInfoDialog"
-      persistent
-      :maximized="maximizedToggle"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <CustomBar
-          @closeDialog="estimatingInfoDialog = false"
-          :dialogName="'Estimating Info'"
-        />
-        <div class="mobile-container-page-without-search">
-          <q-form ref="estimatingInfoForm" class="form-height">
-            <EstimatingInfo :estimatingInfo="estimatingInfo" />
-          </q-form>
-          <q-btn
-            label="Save"
-            color="primary"
-            class="button-width-90"
-            @click="onSubmit('estimatingInfoDialog')"
-            size="'xl'"
-          />
-        </div>
-      </q-card>
-    </q-dialog>
-    <!-- Contract Info Dialog -->
-    <q-dialog
-      v-model="contractInfoDialog"
-      persistent
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <CustomBar
-          @closeDialog="onCloseDialogBox('contractInfoDialog', 5)"
-          :dialogName="'Contract Details'"
-        />
-        <div class="mobile-container-page-without-search">
-          <q-form ref="contractInfoForm" class="form-height">
-            <ContractInfo :contractInfo="contractInfo" />
-          </q-form>
-          <q-btn
-            label="Save"
-            color="primary"
-            class="button-width-90"
-            @click="onSubmit('contractInfoDialog')"
-            size="'xl'"
-          ></q-btn>
-        </div>
-      </q-card>
-    </q-dialog>
-    <!-- Company Personnel Dialog-->
-    <q-dialog
-      v-model="companyPersonnelDialog"
-      persistent
-      :maximized="maximizedToggle"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <CustomBar
-          :dialogName="'Company Personnel'"
-          @closeDialog="onCloseDialogBox('companyPersonnelDialog', 6)"
-        />
-        <div class="mobile-container-page-without-search">
-          <q-form ref="companyPersonnelForm" class="form-height">
-            <div class="form-heading text-bold">CLAIM PERSONNEL</div>
-            <CompanyPersonnel :companyPersonnel="companyPersonnel" />
-          </q-form>
-          <q-btn
-            label="Save"
-            color="primary"
-            class="button-width-90"
-            @click="onSubmit('companyPersonnelDialog')"
-            size="'xl'"
-          />
-        </div>
-      </q-card>
-    </q-dialog>
-    <!-- Office Task -->
-    <q-dialog
-      v-model="officeTaskDialog"
-      persistent
-      :maximized="maximizedToggle"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <CustomBar
-          @closeDialog="officeTaskDialog = false"
-          :dialogName="'Office Task'"
-        />
-        <div class="mobile-container-page-without-search">
-          <q-form ref="estimatingInfoForm" class="form-height">
-            <q-select
-              dense
-              v-model="officeTask.officeActionTypes"
-              :options="officeActionRequiredTypes"
-              label="Office Action Required"
-              class="input-extra-padding"
-            />
-            <q-select
-              dense
-              v-model="officeTask.officeTaskTypes"
-              :options="officeTaskRequiredTypes"
-              label="Office Task Required"
-              class="input-extra-padding"
-            /><br />
-            <div class="row">
-              <p>Additional Office Task Required</p>
-              <q-toggle
-                class="q-ml-auto"
-                v-model="additionalOfficeTaskRequiredToggle"
-              />
+            </q-card>
+            <div class="row q-pt-md">
+              <div>
+                <q-btn
+                  icon="keyboard_backspace"
+                  text-color="primary"
+                  padding="md"
+                  type="reset"
+                />
+                <span class="q-ml-md text-color-grey">Back</span>
+              </div>
+              <div class="q-ml-auto">
+                <span class="q-mr-md text-color-grey"> Next</span>
+                <q-btn
+                  class="rotate-180"
+                  icon="keyboard_backspace"
+                  text-color="primary"
+                  padding="md"
+                  type="submit"
+                />
+              </div>
             </div>
           </q-form>
-
-          <q-btn
-            label="Save"
-            color="primary"
-            class="full-width q-mt-auto text-capitalize"
-            @click="officeTaskDialog = false"
-            size="'xl'"
-          />
+          <!-- Insurance Info -->
+          <q-form
+            @submit="onNextButtonClick(2)"
+            @reset="step--"
+            :hidden="step != 2"
+            ref="insuranceInfo"
+          >
+            <q-card class="q-pa-md form-card">
+              <InsuranceInfo :insuranceDetails="insuranceDetails" />
+            </q-card>
+            <div class="row q-pt-md">
+              <div>
+                <q-btn
+                  icon="keyboard_backspace"
+                  text-color="primary"
+                  padding="md"
+                  type="reset"
+                />
+                <span class="q-ml-md text-color-grey">Back</span>
+              </div>
+              <div class="q-ml-auto">
+                <span class="q-mr-md text-color-grey"> Next</span>
+                <q-btn
+                  class="rotate-180"
+                  icon="keyboard_backspace"
+                  text-color="primary"
+                  padding="md"
+                  type="submit"
+                />
+              </div>
+            </div>
+          </q-form>
+          <!-- Loss Info -->
+          <q-form
+            @submit="onNextButtonClick(3)"
+            @reset="step--"
+            :hidden="step != 3"
+            ref="lossInfo"
+          >
+            <q-card class="q-pa-md form-card">
+              <LossInfo
+                :lossInfo="lossInfo"
+                @lossAddressSame="lossAddressSame"
+                :lossAddressToggleShow="true"
+                :isMailingAddressEnable="true"
+                :lossAddressSameAsClient="true"
+                :isAddressRequired="true"
+                :mortgageInfo="mortgageObject"
+            /></q-card>
+            <div class="row q-pt-md">
+              <div>
+                <q-btn
+                  icon="keyboard_backspace"
+                  text-color="primary"
+                  padding="md"
+                  type="reset"
+                />
+                <span class="q-ml-md text-color-grey">Back</span>
+              </div>
+              <div class="q-ml-auto">
+                <span class="q-mr-md text-color-grey"> Next</span>
+                <q-btn
+                  class="rotate-180"
+                  icon="keyboard_backspace"
+                  text-color="primary"
+                  padding="md"
+                  type="submit"
+                />
+              </div>
+            </div>
+          </q-form>
+          <!-- Expert /Vendor Info -->
+          <q-form
+            @submit="onNextButtonClick(4)"
+            @reset="step--"
+            :hidden="step != 4"
+            ref="vendorInfo"
+          >
+            <q-card class="q-pa-md form-card"
+              ><ExpertVendorInfo
+                :expertVendorInfo="expertVendorInfo"
+                @addAnotherVendor="addAnotherVendor"
+              />
+            </q-card>
+            <div class="row q-pt-md">
+              <div>
+                <q-btn
+                  icon="keyboard_backspace"
+                  text-color="primary"
+                  padding="md"
+                  type="reset"
+                />
+                <span class="q-ml-md text-color-grey">Back</span>
+              </div>
+              <div class="q-ml-auto">
+                <span class="q-mr-md text-color-grey"> Next</span>
+                <q-btn
+                  class="rotate-180"
+                  icon="keyboard_backspace"
+                  text-color="primary"
+                  padding="md"
+                  type="submit"
+                />
+              </div>
+            </div>
+          </q-form>
+          <!-- Estimating Info -->
+          <q-form
+            @submit="onNextButtonClick(5)"
+            @reset="step--"
+            :hidden="step != 5"
+            ref="estimatingInfo"
+          >
+            <q-card class="q-pa-md form-card">
+              <EstimatingInfo :estimatingInfo="estimatingInfo" />
+            </q-card>
+            <div class="row q-pt-md">
+              <div>
+                <q-btn
+                  icon="keyboard_backspace"
+                  text-color="primary"
+                  padding="md"
+                  type="reset"
+                />
+                <span class="q-ml-md text-color-grey">Back</span>
+              </div>
+              <div class="q-ml-auto">
+                <span class="q-mr-md text-color-grey"> Next</span>
+                <q-btn
+                  class="rotate-180"
+                  icon="keyboard_backspace"
+                  text-color="primary"
+                  padding="md"
+                  type="submit"
+                />
+              </div>
+            </div>
+          </q-form>
+          <!-- Contract Info Dialog -->
+          <q-form
+            @submit="onNextButtonClick(6)"
+            @reset="step--"
+            :hidden="step != 6"
+            ref="contractInfo"
+          >
+            <q-card class="q-pa-md form-card">
+              <ContractInfo :contractInfo="contractInfo" />
+            </q-card>
+            <div class="row q-pt-md">
+              <div>
+                <q-btn
+                  icon="keyboard_backspace"
+                  text-color="primary"
+                  padding="md"
+                  type="reset"
+                />
+                <span class="q-ml-md text-color-grey">Back</span>
+              </div>
+              <div class="q-ml-auto">
+                <span class="q-mr-md text-color-grey"> Next</span>
+                <q-btn
+                  class="rotate-180"
+                  icon="keyboard_backspace"
+                  text-color="primary"
+                  padding="md"
+                  type="submit"
+                />
+              </div>
+            </div>
+          </q-form>
+          <!-- Company Personnel Dialog-->
+          <q-form
+            @submit="onNextButtonClick(7)"
+            @reset="step--"
+            :hidden="step != 7"
+            ref="personnelInfo"
+          >
+            <q-card class="q-pa-md form-card">
+              <CompanyPersonnel :companyPersonnel="companyPersonnel" />
+            </q-card>
+            <div class="row q-pt-md">
+              <div>
+                <q-btn
+                  icon="keyboard_backspace"
+                  text-color="primary"
+                  padding="md"
+                  type="reset"
+                />
+                <span class="q-ml-md text-color-grey">Back</span>
+              </div>
+              <div class="q-ml-auto">
+                <span class="q-mr-md text-color-grey"> Next</span>
+                <q-btn
+                  class="rotate-180"
+                  icon="keyboard_backspace"
+                  text-color="primary"
+                  padding="md"
+                  type="submit"
+                />
+              </div>
+            </div>
+          </q-form>
+          <!-- Office Task -->
+          <q-form
+            @submit="createClientButtonClick()"
+            @reset="step--"
+            :hidden="step != 8"
+            ref="officeTaskInfo"
+          >
+            <q-card class="q-pa-md form-card">
+              <q-select
+                dense
+                v-model="officeTask.officeActionTypes"
+                :options="officeActionRequiredTypes"
+                label="Office Action Required"
+                class="input-extra-padding"
+              />
+              <q-select
+                dense
+                v-model="officeTask.officeTaskTypes"
+                :options="officeTaskRequiredTypes"
+                label="Office Task Required"
+                class="input-extra-padding"
+              /><br />
+              <div class="row">
+                <p>Additional Office Task Required</p>
+                <q-toggle
+                  class="q-ml-auto"
+                  v-model="additionalOfficeTaskRequiredToggle"
+                />
+              </div>
+            </q-card>
+            <div class="row q-pt-md">
+              <div>
+                <q-btn
+                  icon="keyboard_backspace"
+                  text-color="primary"
+                  padding="md"
+                  type="reset"
+                />
+                <span class="q-ml-md text-color-grey">Back</span>
+              </div>
+              <div class="q-ml-auto">
+                <span class="q-mr-md text-color-grey"> Next</span>
+                <q-btn
+                  class="rotate-180"
+                  icon="keyboard_backspace"
+                  text-color="primary"
+                  padding="md"
+                  type="submit"
+                />
+              </div>
+            </div>
+          </q-form>
         </div>
-      </q-card>
-    </q-dialog>
+      </div>
+    </div>
   </q-page>
 </template>
 <script>
@@ -679,6 +724,8 @@ export default {
   },
   data() {
     return {
+      step: 0,
+      stepClickValidTill: 0,
       mortgageObject: {
         vendorsListDialog: false,
         vendorDialogFilterByIndustry: '',
@@ -754,16 +801,16 @@ export default {
       },
       expertVendorInfoDialog: false,
       isCreateClientButtonDisabled: true,
-      dialogBoxes: [
-        { name: 'Client Info', validForm: false },
-        { name: 'Mailing Address', validForm: false },
-        { name: 'Insurance Info', validForm: false },
-        { name: 'Loss Info', validForm: false },
-        { name: 'Expert/Vendor Info', validForm: false },
-        { name: 'Estimating Info', validForm: false },
-        { name: 'Contract Info', validForm: false },
-        { name: 'Company Personnel', validForm: false },
-        { name: 'Office Task', validForm: false }
+      stepArr: [
+        { name: 'Client Info', ref: 'clientInfo' },
+        { name: 'Mailing Address', ref: 'mailingInfo' },
+        { name: 'Insurance Info', ref: 'insuranceInfo' },
+        { name: 'Loss Info', ref: 'lossInfo' },
+        { name: 'Expert/Vendor Info', ref: 'vendorInfo' },
+        { name: 'Estimating Info', ref: 'estimatingInfo' },
+        { name: 'Contract Info', ref: 'contractInfo' },
+        { name: 'Company Personnel', ref: 'personnelInfo' },
+        { name: 'Office Task', ref: 'officeTaskInfo' }
       ],
       vendorIndustriesOptions: [],
       lossAddressNameOptions: ['Others'],
@@ -1260,7 +1307,7 @@ export default {
       this.states = addressService.getStates(country);
     },
     onCloseDialogBox(DialogName, value) {
-      if (this.dialogBoxes[value].validForm == true) {
+      if (this.stepArr[value].validForm == true) {
         this.onSubmit(DialogName);
       } else {
         this[DialogName] = false;
@@ -1315,9 +1362,9 @@ export default {
       }
       //here we are validating the form and giving tick if it is validated successfully
       if (success == true) {
-        this.dialogBoxes[validationIndex].validForm = true;
-        for (var i = 0; i < this.dialogBoxes.length - 1; i++) {
-          if (this.dialogBoxes[i].validForm == false) {
+        this.stepArr[validationIndex].validForm = true;
+        for (var i = 0; i < this.stepArr.length - 1; i++) {
+          if (this.stepArr[i].validForm == false) {
             this.isCreateClientButtonDisabled = true;
             break;
           } else {
@@ -1339,7 +1386,7 @@ export default {
 
         this[name] = false;
       } else {
-        this.dialogBoxes.validForm = false;
+        this.stepArr.validForm = false;
       }
     },
 
@@ -1604,7 +1651,34 @@ export default {
       });
     },
 
-    validateEmail
+    validateEmail,
+
+    async onStepClick(index) {
+      if (this.step < index) {
+        const validation = await this.$refs[
+          this.stepArr[this.step].ref
+        ].validate();
+        if (index <= this.stepClickValidTill) {
+          if (validation) {
+            this.step = index;
+          }
+        }
+      } else {
+        const validation = await this.$refs[
+          this.stepArr[this.step].ref
+        ].validate();
+        if (validation) {
+          this.step = index;
+        }
+      }
+    },
+
+    onNextButtonClick() {
+      this.step++;
+      if (this.stepClickValidTill < this.step) {
+        this.stepClickValidTill = this.step;
+      }
+    }
   }
   /*----------------------end of method-----------------------------------*/
 };
@@ -1626,5 +1700,54 @@ export default {
   height: calc(100vh - 120px);
   overflow: auto;
   margin: 10px;
+}
+
+.form-card {
+  min-height: 250px;
+  max-height: calc(100vh - 230px);
+  overflow: scroll;
+}
+
+.stepper {
+  .step {
+    display: flex;
+    overflow-x: auto;
+    padding: 10px;
+
+    .icon-div-selected {
+      background: $primary;
+      display: flex;
+      height: 18px;
+      width: 18px;
+      border-radius: 50%;
+    }
+    .icon-div-done {
+      background: $primary;
+      display: flex;
+      height: 18px;
+      width: 18px;
+      border-radius: 50%;
+    }
+
+    .icon-div {
+      background: $grey;
+      display: flex;
+      height: 18px;
+      width: 18px;
+      border-radius: 50%;
+    }
+
+    .label {
+      text-transform: capitalize;
+      text-align: center;
+      font-size: x-small;
+      margin-top: 10pxasd;
+    }
+  }
+
+  .form {
+    height: calc(100vh - 140px);
+    padding: 10px;
+  }
 }
 </style>

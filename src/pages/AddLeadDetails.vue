@@ -613,7 +613,7 @@ export default {
   data() {
     return {
       valueName: '',
-      step: 5,
+      step: 0,
       stepClickValidTill: 0,
       clientOptions: [],
       stepArr: [
@@ -916,7 +916,6 @@ export default {
     },
 
     async onStepClick(index) {
-      console.log(index, this.stepClickValidTill, this.step);
       if (this.step < index) {
         const validation = await this.$refs[
           this.stepArr[this.step].ref
