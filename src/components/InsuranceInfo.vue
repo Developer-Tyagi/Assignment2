@@ -21,14 +21,11 @@
         label=" Policy Number"
         dense
         class="input-extra-padding"
+        lazy-rules
+        :rules="[
+          val => (val && val.length > 0) || 'Please fill the policy number'
+        ]"
       />
-      <q-input
-        v-model="insuranceDetails.insuranceClaimNumber"
-        label="Insurance Claim Number"
-        dense
-        class="input-extra-padding"
-      />
-      <br />
       <div class="row">
         <p class="q-my-auto form-heading">Has claim been filed?</p>
         <q-toggle
@@ -36,6 +33,18 @@
           v-model="insuranceDetails.hasClaimBeenFilledToggle"
         />
       </div>
+      <q-input
+        v-if="insuranceDetails.hasClaimBeenFilledToggle"
+        v-model="insuranceDetails.insuranceClaimNumber"
+        label="Insurance Claim Number"
+        dense
+        class="input-extra-padding"
+        lazy-rules
+        :rules="[
+          val =>
+            (val && val.length > 0) || 'Please fill the insurance claim number'
+        ]"
+      />
       <div class="row">
         <p class="q-my-auto form-heading">Is this is a Forced-Placed policy?</p>
 
@@ -44,7 +53,7 @@
           v-model="insuranceDetails.isThisIsForcedPlacedPolicyToggle"
         />
       </div>
-      <br />
+
       <span class="form-heading">Policy Effective date</span>
 
       <div class="full-width">
@@ -70,7 +79,7 @@
               >
                 <q-date
                   v-model="insuranceDetails.policyEffectiveDate"
-                  @input="() => $refs.qDateProxy.hide()"
+                  @input="onChaningPolicyEffectiveDate()"
                   mask="MM/DD/YYYY"
                 ></q-date>
               </q-popup-proxy>
@@ -78,11 +87,7 @@
           </template>
         </q-input>
       </div>
-
-      <br />
-
       <span class="form-heading">Policy Expiry date </span>
-
       <div class="full-width">
         <q-input
           dense
@@ -317,6 +322,8 @@ import { validateDate } from '@utils/validation';
 import { mapGetters, mapActions } from 'vuex';
 import { successMessage } from '@utils/validation';
 import AddVendor from 'components/AddVendor';
+import { date } from 'quasar';
+
 export default {
   name: 'AddClaim',
   components: {
@@ -387,7 +394,9 @@ export default {
 
       this.vendorsListDialog = false;
     },
+
     validateDate,
+
     setTypes(types, data) {
       const obj = types.find(item => {
         return item.id === data.id;
@@ -395,6 +404,14 @@ export default {
 
       data.machineValue = obj.machineValue;
       data.value = obj.name;
+    },
+    onChaningPolicyEffectiveDate(dateRef) {
+      this.insuranceDetails.policyExpireDate = date.formatDate(
+        date.addToDate(this.insuranceDetails.policyEffectiveDate, {
+          year: 1
+        }),
+        'MM/DD/YYYY'
+      );
     }
   }
 };
