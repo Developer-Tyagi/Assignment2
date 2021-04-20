@@ -1536,7 +1536,8 @@ export default {
               ? this.contractInfo.claimFeeRate
               : 0
           },
-          dateOfFirstContact: dateToSend(this.contractInfo.firstContractDate)
+          dateOfFirstContact: dateToSend(this.contractInfo.firstContractDate),
+          source: this.contractInfo.sourceDetails
         },
 
         personnel: [

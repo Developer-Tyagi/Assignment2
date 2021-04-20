@@ -255,7 +255,6 @@
       <div class="floating-label">
         <textarea
           rows="5"
-          required
           class="full-width"
           v-model="insuranceDetails.reasonsOfLD"
           style="resize: none"
