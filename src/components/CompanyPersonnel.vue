@@ -130,11 +130,10 @@
     <div class="floating-label">
       <textarea
         rows="5"
-        required
         class="full-width"
         v-model="companyPersonnel.notes"
         style="resize: none"
-      ></textarea>
+      />
     </div>
   </div>
 </template>

@@ -138,7 +138,6 @@
     <div>
       <textarea
         rows="5"
-        required
         class="full-width"
         v-model="expertVendorInfo.notes"
         style="resize: none"
@@ -149,7 +148,6 @@
       <span class="form-heading">Internal Notes</span>
       <textarea
         rows="5"
-        required
         class="full-width"
         v-model="expertVendorInfo.internalNotes"
         style="resize: none"

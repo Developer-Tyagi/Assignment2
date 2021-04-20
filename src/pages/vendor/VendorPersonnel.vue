@@ -259,7 +259,7 @@
                 v-model="personnel.notes"
                 style="resize: none"
                 placeholder="Take notes here..."
-              ></textarea>
+              />
             </div>
           </q-card>
         </div>
@@ -393,7 +393,7 @@
                 v-model="personnel.notes"
                 style="resize: none"
                 placeholder="Take notes here..."
-              ></textarea>
+              />
             </div>
           </q-card>
         </div>
