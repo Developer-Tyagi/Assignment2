@@ -133,3 +133,42 @@ export async function deleteMortgagePersonnel({ commit, dispatch }, vendor) {
     });
   }
 }
+export async function deleteMortgageInfo({ commit, dispatch }, mortgage) {
+  dispatch('setLoading', true);
+  try {
+    await request.del(`/mortgages/${mortgage.id}`);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Mortgage  Deleted !'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'Error in deleting mortgage.'
+    });
+  }
+}
+export async function editMortgageInfo({ dispatch, state }, mortgage) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.patch(
+      `/mortgages/${mortgage.id}`,
+      buildApiData('mortgagepersonnel', mortgage)
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Mortgage Info  Updated !'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'failed to update mortgage'
+    });
+  }
+}

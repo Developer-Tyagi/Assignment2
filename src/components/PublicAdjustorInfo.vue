@@ -130,7 +130,6 @@
     <div class="floating-label">
       <textarea
         rows="5"
-        required
         class="full-width"
         v-model="publicAdjustorInfo.notes"
         style="resize: none"

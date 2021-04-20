@@ -430,15 +430,17 @@ export default {
       if (success && !this.isEdit) {
         const response = await this.addVendor(this.vendor);
         this.successMessage(constants.successMessages.VENDOR);
+        this.getVendors();
         if (response) {
           this.vendor.id = response.id;
           this.$emit('onCloseAddVendor', true, this.vendor, this.componentName);
           this.closeDialog(true);
         }
-      } else {
+      } else if (success && this.isEdit) {
         this.vendor.id = this.selectedVendor.id;
         await this.editVendorInfo(this.vendor);
         this.closeDialog(true);
+        this.getVendorDetails(this.vendor.id);
       }
     },
 

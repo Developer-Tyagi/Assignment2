@@ -13,7 +13,7 @@
           @closeDialog="lossInfo.damagedItemsDailog = false"
           :dialogName="'Add Items'"
         />
-        <div class="mobile-container-page-without-search  ">
+        <div class="mobile-container-page-without-search">
           <div class="form-height">
             <div class="q-page bg-white">
               <div class="full-width">
@@ -62,7 +62,7 @@
           @closeDialog="lossInfo.PPdamagedItemsDailog = false"
           :dialogName="'Add Items'"
         />
-        <div class="mobile-container-page-without-search  ">
+        <div class="mobile-container-page-without-search">
           <div class="form-height">
             <div class="full-width">
               <q-input
@@ -387,8 +387,8 @@
                 />
               </div>
               <div>
-                <div class="row ">
-                  <div class=" text-bold q-ml-sm text-capitalize q-pt-xs">
+                <div class="row">
+                  <div class="text-bold q-ml-sm text-capitalize q-pt-xs">
                     {{ item.name }}
                   </div>
                   <div class="q-ml-auto q-pt-xs" style="margin-right: 30px">
@@ -396,7 +396,7 @@
                   </div>
                 </div>
                 <div
-                  class=" q-ml-sm text-capitalize q-pt-xs text-caption q-mr-xl q-my-xs q-px-xs q-ma-xs"
+                  class="q-ml-sm text-capitalize q-pt-xs text-caption q-mr-xl q-my-xs q-px-xs q-ma-xs"
                 >
                   <p>{{ item.desc }}</p>
                 </div>
@@ -631,7 +631,7 @@
             @closeDialog="mortgageInfo.mortgageInfoDialog = false"
             :dialogName="'Mortagage Info'"
           />
-          <div class="mobile-container-page q-pa-sm form-height  ">
+          <div class="mobile-container-page q-pa-sm form-height">
             <q-form ref="estimatingInfoForm">
               <Mortgage
                 :mortgageInfo="mortgageInfo"

@@ -18,21 +18,20 @@
           >
             <q-card class="q-ma-sm q-pa-sm ">
               <div class="text-bold text-capitalize q-mt-xs row">
-                <div class="col-10">
+                <span class="q-my-auto">
                   {{ personnel.fname }} {{ personnel.lname }}
-                </div>
+                </span>
                 <q-icon
                   size="xs"
                   name="create "
                   color="primary"
-                  class="q-my-auto col"
+                  class="q-ml-auto"
                   @click="onEdit(index)"
                 ></q-icon>
-
                 <q-icon
                   class="q-my-auto"
                   name="delete"
-                  size="sm"
+                  size="xs"
                   color="primary"
                   @click="onDelete(index)"
                 />

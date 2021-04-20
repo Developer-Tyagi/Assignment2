@@ -180,7 +180,7 @@
     <span class="form-heading"> Source Of Claim </span>
     <div>
       <q-select
-        class=" required"
+        class="required"
         v-model="contractInfo.sourceDetails.type"
         :options="leadSources"
         option-label="name"
@@ -204,6 +204,9 @@
         placeholder="Enter Source details"
         v-model="contractInfo.sourceDetails.details"
         lazy-rules
+        :rules="[
+          val => (val && val.length > 0) || 'Please select the Source Detail'
+        ]"
       />
       <div
         v-else-if="
@@ -246,7 +249,6 @@
     <div class="floating-label">
       <textarea
         rows="5"
-        required
         class="full-width"
         v-model="contractInfo.reasonForCancellationText"
         style="resize: none"
@@ -311,6 +313,7 @@ export default {
         this.onClosingVendorSelectDialog(selected, this.contractInfo.valueName);
       }
     },
+
     onChangingSourceType() {
       this.contractInfo.sourceDetails.id = '';
       this.contractInfo.sourceDetails.details = '';

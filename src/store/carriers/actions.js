@@ -132,3 +132,42 @@ export async function deleteCarrierPersonnel({ commit, dispatch }, vendor) {
     });
   }
 }
+export async function deleteCarrierInfo({ commit, dispatch }, carrier) {
+  dispatch('setLoading', true);
+  try {
+    await request.del(`/carriers/${carrier.id}`);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Carrier  Deleted !'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'Error in deleting carrier.'
+    });
+  }
+}
+export async function editCarrierInfo({ dispatch, state }, carrier) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.patch(
+      `/carriers/${carrier.id}`,
+      buildApiData('carriers', carrier)
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Carrier info  Updated !'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'failed to update carrier'
+    });
+  }
+}

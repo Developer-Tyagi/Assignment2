@@ -25,17 +25,19 @@
         <div class="row q-mt-sm">
           <span class="heading-light col-3">Address Details</span>
           <span class="col-7 q-ml-md" v-if="selectedVendor.address">
-            {{
-              selectedVendor.address.houseNumber
-                ? selectedVendor.address.houseNumber
-                : '-'
-            }}
-            ,
-            {{
-              selectedVendor.address.streetAddress
-                ? selectedVendor.address.streetAddress
-                : '-'
-            }}
+            <div class="row">
+              {{
+                selectedVendor.address.houseNumber
+                  ? selectedVendor.address.houseNumber
+                  : '-'
+              }}
+              ,
+              {{
+                selectedVendor.address.streetAddress
+                  ? selectedVendor.address.streetAddress
+                  : '-'
+              }}
+            </div>
             <div>
               {{
                 selectedVendor.address.addressLocality

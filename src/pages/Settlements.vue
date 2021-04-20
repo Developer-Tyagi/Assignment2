@@ -9,36 +9,28 @@
       <div class="mobile-container-page">
         <ClaimDetail />
 
-        <div class=" q-mx-md">
+        <div class="q-mx-md">
           <q-separator class="q-my-sm" />
           <div class="row q-py-sm">
-            <div class=" q-ml-sm heading-light col-5">
-              Total net Claimed
-            </div>
-            <div class="col-3" style="margin-left:7.5%;">
-              $
-            </div>
+            <div class="q-ml-sm heading-light col-5">Total net Claimed</div>
+            <div class="col-3" style="margin-left: 7.5%">$</div>
             <div class="q-ml-lg text-bold">
               {{ settlement.attributes.totalNetClaimed }}
             </div>
           </div>
-          <div class="row  q-py-sm">
-            <div class="heading-light q-ml-sm  col-5">
+          <div class="row q-py-sm">
+            <div class="heading-light q-ml-sm col-5">
               Total replacement Cost
             </div>
-            <div class="col-3" style="margin-left:7.5%;">
-              $
-            </div>
+            <div class="col-3" style="margin-left: 7.5%">$</div>
             <div class="q-ml-lg text-bold">
               {{ settlement.attributes.totalReplCost }}
             </div>
           </div>
-          <div class="row  q-py-sm">
-            <div class="heading-light q-ml-sm col-5 ">Initial Offer</div>
-            <div class=" col-3 " style="margin-left:7.5%;">
-              $
-            </div>
-            <div class=" q-ml-lg text-bold">
+          <div class="row q-py-sm">
+            <div class="heading-light q-ml-sm col-5">Initial Offer</div>
+            <div class="col-3" style="margin-left: 7.5%">$</div>
+            <div class="q-ml-lg text-bold">
               {{ settlement.attributes.intialOffer }}
             </div>
           </div>
@@ -47,11 +39,11 @@
         <!-- card -working -->
         <div>
           <div
-            class="q-ma-sm  "
+            class="q-ma-sm"
             v-for="(settlement, index) in settlement.attributes.settlements"
           >
-            <q-card class="q-mt-md ">
-              <div class="row  q-pa-md justify-between ">
+            <q-card class="q-mt-md">
+              <div class="row q-pa-md justify-between">
                 <div>
                   <q-badge
                     class="q-pa-sm"
@@ -72,14 +64,14 @@
 
                 <div>
                   <q-icon
-                    class="q-my-auto "
+                    class="q-my-auto"
                     name="edit"
                     size="sm"
                     color="primary"
                     @click="onClickEdit(index, 'show')"
                   />
                   <q-icon
-                    class="q-ml-xs "
+                    class="q-ml-xs"
                     name="delete"
                     size="sm"
                     color="primary"
@@ -87,15 +79,15 @@
                 </div>
               </div>
               <div class="q-mx-md">
-                <div class="row ">
-                  <div class="heading-light col-6 ">Replacement Cost</div>
+                <div class="row">
+                  <div class="heading-light col-6">Replacement Cost</div>
                   <div class="heading-light col-4">$</div>
 
                   <div class="text-bold">
                     {{ settlement.amounts.replacementCost }}
                   </div>
                 </div>
-                <div class="row  q-py-lg  ">
+                <div class="row q-py-lg">
                   <div class="heading-light col-6">Net Settlement</div>
                   <div class="heading-light col-4">$</div>
 
@@ -124,7 +116,7 @@
           alt="add_icon"
           width="80px"
           height="80px"
-          style="margin-left:55px;"
+          style="margin-left: 55px"
           @click="onClickAddButton"
           class="q-mb-auto q-mx-auto q-mt-sm"
         />
@@ -143,7 +135,7 @@
           @closeDialog="settlementDialog = false"
           :dialogName="'Settlements'"
         />
-        <div class="q-ma-sm  mobile-container-page-without-search">
+        <div class="q-ma-sm mobile-container-page-without-search">
           <q-form ref="settlementForm" class="form-height">
             <q-card flat bordered>
               <q-select
@@ -165,9 +157,7 @@
                   <q-toggle class="" v-model="isFinal" />
                 </div>
               </div>
-              <div class="q-pl-md q-mt-md">
-                Accepted or Rejected
-              </div>
+              <div class="q-pl-md q-mt-md">Accepted or Rejected</div>
               <div class="row justify-center">
                 <q-btn-toggle
                   class="q-my-sm q-mr-sm"
@@ -184,7 +174,7 @@
               </div>
             </q-card>
             <!-- 2nd Card -->
-            <q-card class=" q-pa-md q-mt-sm" flat bordered>
+            <q-card class="q-pa-md q-mt-sm" flat bordered>
               <div class="row" style="align-items: center">
                 <span class="">Replacement Cost</span>
 
@@ -200,7 +190,7 @@
                 />
               </div>
               <div class="row" style="align-items: center">
-                <span class=" col-5">Recoverable </span>
+                <span class="col-5">Recoverable </span>
                 <span>-</span>
 
                 <q-input
@@ -215,8 +205,8 @@
                   @input="onChangeValueCalculation(amounts.replacementCost)"
                 />
               </div>
-              <div class="row ">
-                <div class=" col-5  q-pt-sm">Non Recoverable</div>
+              <div class="row">
+                <div class="col-5 q-pt-sm">Non Recoverable</div>
                 <div class="q-pt-sm">-</div>
                 <q-input
                   v-model.number="amounts.nonRecoverable"
@@ -239,10 +229,10 @@
                   v-model.number="actualValue"
                   mask="#.#"
                   type="number"
-                  style="margin-left: auto; width: 50%;font-size:19px;"
+                  style="margin-left: auto; width: 50%; font-size: 19px"
                   prefix="$"
                   borderless
-                  class=" q-py-sm"
+                  class="q-py-sm"
                   @input="onChangeValueCalculation()"
                 />
               </div>
@@ -285,9 +275,9 @@
                   v-model.number="netSettlement"
                   mask="#.#"
                   type="number"
-                  style="margin-left: auto; width: 50%;font-size:19px;"
+                  style="margin-left: auto; width: 50%; font-size: 19px"
                   prefix="$"
-                  class=" q-py-sm"
+                  class="q-py-sm"
                   @input="onChangeValueCalculation()"
                 />
               </div>
@@ -329,9 +319,9 @@
                   v-model.number="totalSettlement"
                   mask="#.#"
                   type="number"
-                  style="margin-left: auto; width: 50%;font-size:19px;"
+                  style="margin-left: auto; width: 50%; font-size: 19px"
                   prefix="$"
-                  class="q-py-sm "
+                  class="q-py-sm"
                   borderless
                 />
               </div>
@@ -339,7 +329,7 @@
             <q-card flat bordered class="q-mt-md">
               <q-input
                 v-model="offeredDate"
-                class=" q-px-lg q-my-sm"
+                class="q-px-lg q-my-sm"
                 mask="##/##/####"
                 label="Date Offered"
                 lazy-rules
@@ -368,7 +358,7 @@
               </q-input>
               <q-input
                 v-model="paymentExpDate"
-                class=" q-px-lg q-my-sm"
+                class="q-px-lg q-my-sm"
                 mask="##/##/####"
                 label="Payment Expected Date"
                 lazy-rules
@@ -396,8 +386,8 @@
                 </template>
               </q-input>
 
-              <div class="row q-px-lg  q-py-sm justify-between ">
-                <div class="q-mt-sm  text-bold">Pol required</div>
+              <div class="row q-px-lg q-py-sm justify-between">
+                <div class="q-mt-sm text-bold">Pol required</div>
                 <div>
                   <q-toggle v-model="isProofOfLossReq" />
                 </div>
@@ -408,7 +398,7 @@
                   <div class="col-5">Pol Date Due</div>
                 </div>
                 <div class="row q-px-lg justify-between">
-                  <div class="col-5 ">
+                  <div class="col-5">
                     <q-input
                       v-model="proofOfLossInfo.reqDate"
                       mask="##/##/####"
@@ -539,7 +529,7 @@
                 </div>
                 <div class="row q-px-lg q-mt-sm justify-between">
                   <div class="col-5">Pol Date Send to Carrier</div>
-                  <div class="col-5 ">Date Responce Rec'd</div>
+                  <div class="col-5">Date Responce Rec'd</div>
                 </div>
                 <div class="row q-px-lg justify-between">
                   <div class="col-5">
@@ -572,7 +562,7 @@
                       </template>
                     </q-input>
                   </div>
-                  <div class="col-5 ">
+                  <div class="col-5">
                     <q-input
                       v-model="proofOfLossInfo.resRecvDate"
                       mask="##/##/####"
@@ -609,11 +599,10 @@
                 <textarea
                   v-model="notes"
                   rows="5"
-                  required
                   placeholder=" Additional Notes"
                   class="full-width"
                   style="resize: none"
-                ></textarea>
+                />
               </div>
             </q-card>
           </q-form>
@@ -641,11 +630,11 @@
           @closeDialog="settlementShowDialog = false"
           :dialogName="'Settlements'"
         />
-        <div class="q-ma-sm  mobile-container-page-without-search">
+        <div class="q-ma-sm mobile-container-page-without-search">
           <q-form ref="settlementForm" class="form-height">
             <!-- 2nd Card -->
-            <q-card class=" q-pa-md q-mt-sm" flat bordered>
-              <div class="row  q-pa-md justify-between ">
+            <q-card class="q-pa-md q-mt-sm" flat bordered>
+              <div class="row q-pa-md justify-between">
                 <div>
                   <q-badge
                     class="q-pa-sm"
@@ -663,14 +652,14 @@
 
                 <div>
                   <q-icon
-                    class="q-my-auto "
+                    class="q-my-auto"
                     name="edit"
                     size="sm"
                     color="primary"
                     @click="onClickEdit(currentIndex, 'edit')"
                   />
                   <q-icon
-                    class="q-ml-xs "
+                    class="q-ml-xs"
                     name="delete"
                     size="sm"
                     color="primary"
@@ -693,7 +682,7 @@
                 />
               </div>
               <div class="row" style="align-items: center">
-                <span class=" col-5 heading-light">Recoverable </span>
+                <span class="col-5 heading-light">Recoverable </span>
                 <span>-</span>
 
                 <q-input
@@ -708,8 +697,8 @@
                   @input="onChangeValueCalculation(amounts.replacementCost)"
                 />
               </div>
-              <div class="row ">
-                <div class=" col-5  q-pt-sm heading-light">Non Recoverable</div>
+              <div class="row">
+                <div class="col-5 q-pt-sm heading-light">Non Recoverable</div>
                 <div class="q-pt-sm">-</div>
                 <q-input
                   v-model.number="amounts.nonRecoverable"
@@ -734,10 +723,10 @@
                   v-model.number="actualValue"
                   mask="#.#"
                   type="number"
-                  style="margin-left: auto; width: 50%;font-size:19px;"
+                  style="margin-left: auto; width: 50%; font-size: 19px"
                   prefix="$"
                   borderless
-                  class=" q-py-sm"
+                  class="q-py-sm"
                   @input="onChangeValueCalculation()"
                 />
                 <q-separator />
@@ -785,9 +774,9 @@
                   v-model.number="netSettlement"
                   mask="#.#"
                   type="number"
-                  style="margin-left: auto; width: 50%;font-size:19px;"
+                  style="margin-left: auto; width: 50%; font-size: 19px"
                   prefix="$"
-                  class=" q-py-sm"
+                  class="q-py-sm"
                   @input="onChangeValueCalculation()"
                 />
                 <q-separator />
@@ -834,16 +823,16 @@
                   v-model.number="totalSettlement"
                   mask="#.#"
                   type="number"
-                  style="margin-left: auto; width: 50%;font-size:19px;"
+                  style="margin-left: auto; width: 50%; font-size: 19px"
                   prefix="$"
-                  class="q-py-sm "
+                  class="q-py-sm"
                   borderless
                 />
                 <q-separator />
               </div>
             </q-card>
             <div class="q-mt-md">
-              <div class=" heading-light row justify-between q-py-sm q-px-lg">
+              <div class="heading-light row justify-between q-py-sm q-px-lg">
                 <div>Offered Date</div>
                 <div>Payment Expected</div>
               </div>
@@ -851,7 +840,7 @@
                 <q-input
                   disable
                   v-model="offeredDate"
-                  class=" q-px-lg q-my-sm col-5"
+                  class="q-px-lg q-my-sm col-5"
                   mask="##/##/####"
                   label="Date Offered"
                   lazy-rules
@@ -881,7 +870,7 @@
                 <q-input
                   disable
                   v-model="paymentExpDate"
-                  class=" q-px-lg q-my-sm col-5"
+                  class="q-px-lg q-my-sm col-5"
                   mask="##/##/####"
                   label="Payment Expected Date"
                   lazy-rules
@@ -915,7 +904,7 @@
                   <div class="col-5">Pol Date Due</div>
                 </div>
                 <div class="row q-px-lg justify-between">
-                  <div class="col-5 ">
+                  <div class="col-5">
                     <q-input
                       disable
                       v-model="proofOfLossInfo.reqDate"
@@ -1050,7 +1039,7 @@
                 </div>
                 <div class="row q-px-lg q-mt-sm justify-between">
                   <div class="col-5">Pol Date Send to Carrier</div>
-                  <div class="col-5 ">Date Responce Rec'd</div>
+                  <div class="col-5">Date Responce Rec'd</div>
                 </div>
                 <div class="row q-px-lg justify-between">
                   <div class="col-5">
@@ -1084,7 +1073,7 @@
                       </template>
                     </q-input>
                   </div>
-                  <div class="col-5 ">
+                  <div class="col-5">
                     <q-input
                       disable
                       v-model="proofOfLossInfo.resRecvDate"

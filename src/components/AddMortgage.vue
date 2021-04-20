@@ -175,15 +175,16 @@
             />
           </q-card>
         </div>
-
-        <q-btn
-          color="primary"
-          class="full-width q-mt-auto text-capitalize"
-          @click="onAddVendorButtonClick"
-          size="'xl'"
-        >
-          Add {{ componentName }}
-        </q-btn>
+        <div>
+          <q-btn
+            color="primary"
+            class="full-width q-mt-auto text-capitalize"
+            @click="onAddMortgageButtonClick"
+            size="'xl'"
+          >
+            Add {{ componentName }}
+          </q-btn>
+        </div>
       </q-form>
     </div>
   </q-page>
@@ -200,8 +201,14 @@ import { validateEmail, validateUrl } from '@utils/validation';
 
 export default {
   name: 'AddMortgage',
-  props: ['componentName'],
-
+  props: {
+    componentName: {
+      type: String
+    },
+    isEdit: {
+      type: Boolean
+    }
+  },
   components: { AutoCompleteAddress, CustomBar },
 
   data() {
@@ -211,6 +218,7 @@ export default {
       countries: [],
       states: [],
       mortgage: {
+        id: '',
         name: '',
         email: '',
         phoneNumber: [
@@ -239,6 +247,7 @@ export default {
           ]
         },
         address: {
+          houseNumber: '',
           addressCountry: '',
           addressLocality: '',
           addressRegion: '',
@@ -259,10 +268,26 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['contactTypes', 'titles'])
+    ...mapGetters(['contactTypes', 'titles', 'selectedMortgage'])
   },
 
   mounted() {
+    if (this.isEdit) {
+      this.mortgage.name = this.selectedMortgage.name;
+      this.mortgage.email = this.selectedMortgage.email;
+      this.mortgage.phoneNumber[0].number = this.selectedMortgage.phoneNumber[0].number;
+      this.mortgage.phoneNumber[0].type = this.selectedMortgage.phoneNumber[0].type;
+      if (this.selectedMortgage.address) {
+        this.mortgage.address = this.selectedMortgage.address;
+      }
+      this.mortgage.contact.fname = this.selectedMortgage.contact.fname;
+      this.mortgage.contact.lname = this.selectedMortgage.contact.lname;
+      this.mortgage.contact.phoneNumber = this.selectedMortgage.contact.phoneNumber;
+      this.mortgage.contact.email = this.selectedMortgage.contact.email;
+      this.mortgage.info.website = this.selectedMortgage.info.website;
+      this.mortgage.info.notes = this.selectedMortgage.info.notes;
+    }
+
     this.getTitles();
     this.getContactTypes();
   },
@@ -272,7 +297,9 @@ export default {
       'addClaimMortgage',
       'getTitles',
       'getContactTypes',
-      'getMortgages'
+      'getMortgages',
+      'editMortgageInfo',
+      'getMortgageDetails'
     ]),
     validateEmail,
     validateUrl,
@@ -290,10 +317,9 @@ export default {
       this.states = addressService.getStates(country);
     },
 
-    async onAddVendorButtonClick() {
+    async onAddMortgageButtonClick() {
       const success = await this.$refs.mortgageForm.validate();
-
-      if (success) {
+      if (success && !this.isEdit) {
         const response = await this.addClaimMortgage(this.mortgage);
         this.getMortgages();
         if (response) {
@@ -306,6 +332,11 @@ export default {
           );
           this.closeDialog(true);
         }
+      } else {
+        this.mortgage.id = this.selectedMortgage.id;
+        await this.editMortgageInfo(this.mortgage);
+        this.closeDialog(true);
+        this.getMortgageDetails(this.mortgage.id);
       }
     },
 

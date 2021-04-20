@@ -198,8 +198,19 @@ import CustomBar from 'components/CustomBar';
 import { validateEmail, validateUrl } from '@utils/validation';
 
 export default {
-  name: 'AddVendor',
-  props: ['componentName', 'selectedIndustryType'],
+  name: 'AddCarrier',
+
+  props: {
+    componentName: {
+      type: String
+    },
+    isEdit: {
+      type: Boolean
+    },
+    selectedIndustryType: {
+      type: String
+    }
+  },
 
   components: { AutoCompleteAddress, CustomBar },
 
@@ -210,6 +221,7 @@ export default {
       countries: [],
       states: [],
       carrier: {
+        id: '',
         name: '',
         email: '',
         phoneNumber: [
@@ -258,10 +270,25 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['contactTypes', 'titles'])
+    ...mapGetters(['contactTypes', 'titles', 'selectedCarrier'])
   },
 
   mounted() {
+    if (this.isEdit) {
+      this.carrier.name = this.selectedCarrier.name;
+      this.carrier.email = this.selectedCarrier.email;
+      this.carrier.phoneNumber[0].number = this.selectedCarrier.phoneNumber[0].number;
+      this.carrier.phoneNumber[0].type = this.selectedCarrier.phoneNumber[0].type;
+      if (this.selectedCarrier.address) {
+        this.carrier.address = this.selectedCarrier.address;
+      }
+      this.carrier.contact.fname = this.selectedCarrier.contact.fname;
+      this.carrier.contact.lname = this.selectedCarrier.contact.lname;
+      this.carrier.contact.phoneNumber = this.selectedCarrier.contact.phoneNumber;
+      this.carrier.contact.email = this.selectedCarrier.contact.email;
+      this.carrier.info.website = this.selectedCarrier.info.website;
+      this.carrier.info.notes = this.selectedCarrier.info.notes;
+    }
     this.getTitles();
     this.getContactTypes();
   },
@@ -271,7 +298,9 @@ export default {
       'addCarrier',
       'getTitles',
       'getContactTypes',
-      'getCarriers'
+      'getCarriers',
+      'getCarrierDetails',
+      'editCarrierInfo'
     ]),
     validateEmail,
     validateUrl,
@@ -292,7 +321,7 @@ export default {
     async onAddVendorButtonClick() {
       const success = await this.$refs.carrierForm.validate();
 
-      if (success) {
+      if (success && !this.isEdit) {
         const response = await this.addCarrier(this.carrier);
         this.getCarriers();
         if (response) {
@@ -305,6 +334,11 @@ export default {
           );
           this.closeDialog(true);
         }
+      } else {
+        this.carrier.id = this.selectedCarrier.id;
+        await this.editCarrierInfo(this.carrier);
+        this.getCarrierDetails(this.carrier.id);
+        this.closeDialog(true);
       }
     },
 
