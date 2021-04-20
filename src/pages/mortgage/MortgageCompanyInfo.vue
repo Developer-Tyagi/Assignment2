@@ -5,8 +5,25 @@
         {{ selectedMortgage.name ? selectedMortgage.name : '-' }}
       </span>
       <q-card class="q-ma-sm q-pa-sm ">
+        <div class="q-my-auto row q-mt-xs ">
+          <q-icon
+            size="xs"
+            name="create "
+            color="primary"
+            class="q-ml-auto "
+            @click="onEdit"
+          ></q-icon>
+
+          <q-icon
+            class="q-my-auto"
+            name="delete"
+            size="xs"
+            color="primary"
+            @click="onDelete"
+          />
+        </div>
         <div class="row q-mt-sm">
-          <span class="heading-light col-3">Address Details</span>
+          <span class="heading-light col-3">Address Details </span>
 
           <span class="col-7 q-ml-md" v-if="selectedMortgage.address">
             {{
@@ -93,14 +110,37 @@
         </div>
       </q-card>
     </div>
+
+    <q-dialog
+      v-model="addMortgageDialog"
+      persistent
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <AddMortgage
+          @closeDialog="closeAddMortgageDialog"
+          :componentName="constants.industries.MORTGAGE"
+          :isEdit="true"
+        />
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
+import AddMortgage from 'components/AddMortgage';
+import { constants } from '@utils/constant';
 export default {
+  name: 'Mortgage',
+  components: { AddMortgage },
   data() {
-    return {};
+    return {
+      addMortgageDialog: false,
+      constants: constants
+    };
   },
   computed: {
     ...mapGetters(['selectedMortgage'])
@@ -109,17 +149,28 @@ export default {
     this.getMortgageDetails(this.$route.params.id);
   },
   methods: {
-    ...mapActions(['getMortgageDetails']),
+    ...mapActions([
+      'getMortgageDetails',
+      'deleteMortgageInfo',
+      'editMortgageInfo'
+    ]),
 
     onEmailClick,
     onPhoneNumberClick,
     sendMap,
+
+    closeAddMortgageDialog(e) {
+      this.addMortgageDialog = false;
+    },
     async onDelete() {
       const mortgage = {
         id: this.$route.params.id
       };
       await this.deleteMortgageInfo(mortgage);
-      this.getMortgageDetails(this.$route.params.id);
+      this.$router.push('/mortgages');
+    },
+    onEdit() {
+      this.addMortgageDialog = true;
     }
   }
 };

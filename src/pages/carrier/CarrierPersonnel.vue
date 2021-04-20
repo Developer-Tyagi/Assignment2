@@ -547,7 +547,6 @@ export default {
     addAnotherContact() {
       let len = this.personnel.phoneNumber.length;
       if (this.personnel.phoneNumber[len - 1].number.length == 14) {
-        console.log(this.personnel.phoneNumberss, 87);
         this.personnel.phoneNumber.push({
           type: '',
           number: ''

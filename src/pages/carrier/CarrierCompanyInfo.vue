@@ -5,6 +5,23 @@
         {{ selectedCarrier.name ? selectedCarrier.name : '-' }}
       </span>
       <q-card class="q-ma-sm q-pa-sm ">
+        <div class="q-my-auto row q-mt-xs ">
+          <q-icon
+            size="xs"
+            name="create "
+            color="primary"
+            class="q-ml-auto "
+            @click="onEdit"
+          ></q-icon>
+
+          <q-icon
+            class="q-my-auto"
+            name="delete"
+            size="xs"
+            color="primary"
+            @click="onDelete"
+          />
+        </div>
         <div class="row q-mt-sm">
           <span class="heading-light col-3">Address Details</span>
           <span class="col-7 q-ml-md" v-if="selectedCarrier.address">
@@ -89,14 +106,32 @@
         </div>
       </q-card>
     </div>
+    <q-dialog
+      v-model="addCarrierDialog"
+      persistent
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <AddCarrier
+          @closeDialog="closeAddCarrierDialog"
+          :componentName="constants.industries.CARRIER"
+          :isEdit="true"
+        />
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
+import AddCarrier from 'components/AddCarrier';
+import { constants } from '@utils/constant';
 export default {
+  components: { AddCarrier },
   data() {
-    return {};
+    return { addCarrierDialog: false, constants: constants };
   },
   computed: {
     ...mapGetters(['selectedCarrier'])
@@ -105,10 +140,23 @@ export default {
     this.getCarrierDetails(this.$route.params.id);
   },
   methods: {
-    ...mapActions(['getCarrierDetails']),
+    ...mapActions(['getCarrierDetails', 'deleteCarrierInfo']),
     onEmailClick,
     onPhoneNumberClick,
-    sendMap
+    sendMap,
+    onEdit() {
+      this.addCarrierDialog = true;
+    },
+    async onDelete() {
+      const carrier = {
+        id: this.$route.params.id
+      };
+      await this.deleteCarrierInfo(carrier);
+      this.$router.push('/carriers');
+    },
+    closeAddCarrierDialog() {
+      this.addCarrierDialog = false;
+    }
   }
 };
 </script>

@@ -392,7 +392,6 @@ export default {
 
     async onAddVendorButtonClick() {
       const success = await this.$refs.vendorForm.validate();
-
       if (success) {
         const response = await this.addVendor(this.vendor);
         this.successMessage(constants.successMessages.VENDOR);
