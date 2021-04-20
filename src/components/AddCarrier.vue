@@ -335,19 +335,10 @@ export default {
           this.closeDialog(true);
         }
       } else {
-        this.id = this.selectedCarrier.id;
-        const response = await this.editCarrierInfo(this.carrier);
-        this.getCarrierDetails(this.id);
-        if (response) {
-          this.carrier.id = response.id;
-          this.$emit(
-            'onCloseAddVendor',
-            true,
-            this.carrier,
-            this.componentName
-          );
-          this.closeDialog(true);
-        }
+        this.career.id = this.selectedCarrier.id;
+        await this.editCarrierInfo(this.carrier);
+        this.getCarrierDetails(this.career.id);
+        this.closeDialog(true);
       }
     },
 

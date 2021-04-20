@@ -152,7 +152,7 @@ export default {
         id: this.$route.params.id
       };
       await this.deleteCarrierInfo(carrier);
-      this.getCarrierDetails(this.$route.params.id);
+      this.$router.push('/carriers');
     },
     closeAddCarrierDialog() {
       this.addCarrierDialog = false;

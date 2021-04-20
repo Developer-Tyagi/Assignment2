@@ -333,19 +333,10 @@ export default {
           this.closeDialog(true);
         }
       } else {
-        this.id = this.selectedMortgage.id;
-        const response = await this.editMortgageInfo(this.mortgage);
-        this.getMortgageDetails(this.id);
-        if (response) {
-          this.mortgage.id = response.id;
-          this.$emit(
-            'onCloseAddVendor',
-            true,
-            this.mortgage,
-            this.componentName
-          );
-          this.closeDialog(true);
-        }
+        this.mortgage.id = this.selectedMortgage.id;
+        await this.editMortgageInfo(this.mortgage);
+        this.getMortgageDetails(this.mortgage.id);
+        this.closeDialog(true);
       }
     },
 
