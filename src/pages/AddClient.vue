@@ -61,7 +61,7 @@
               />
               <div class="row">
                 <p class="q-mx-none q-my-auto">
-                  Is Policy Holder An Organization ?
+                  Is Policyholder An Organization ?
                 </p>
                 <q-toggle
                   v-model="primaryDetails.isOrganization"
@@ -81,14 +81,6 @@
                       (val && val.length > 0) ||
                       'Please fill the organization name '
                   ]"
-                />
-              </div>
-              <div class="row">
-                <p class="q-mx-none q-my-auto">Organization Is Policyholder?</p>
-                <q-toggle
-                  v-model="policyHolder.isPolicyHolder"
-                  left-label
-                  class="q-ml-auto"
                 />
               </div>
               <span class="form-heading">Insured Details</span>
@@ -131,6 +123,7 @@
                 ]"
                 label="Last Name"
               />
+
               <div class="row justify-between">
                 <q-select
                   dense
@@ -175,6 +168,71 @@
                     'You have entered an invalid email address!'
                 ]"
               />
+              <div class="row">
+                <p class="q-mx-none q-my-auto">
+                  Add additional phone number(s)
+                </p>
+                <q-toggle
+                  class="q-ml-auto"
+                  v-model="addAditionalPhoneNumberToggle"
+                  @input="onaddAditionalPhoneNumberToggle"
+                />
+              </div>
+              <div v-if="addAditionalPhoneNumberToggle">
+                <div
+                  class="row justify-between"
+                  v-for="(addPhone, index) in phoneNumber"
+                  v-if="index >= 0"
+                >
+                  <q-select
+                    v-model="phoneNumber[index].type"
+                    class="required col-5"
+                    label="Type"
+                    :options="contactTypes"
+                    option-value="machineValue"
+                    option-label="name"
+                    map-options
+                    options-dense
+                    behavior="menu"
+                    emit-value
+                    lazy-rules
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) || 'Please select phone type'
+                    ]"
+                  />
+                  <q-input
+                    v-model.number="phoneNumber[index].number"
+                    label="Phone"
+                    class="required col-6"
+                    mask="(###) ###-####"
+                    lazy-rules
+                    :rules="[
+                      val =>
+                        (val && val.length == 14) ||
+                        'Please enter the phone number'
+                    ]"
+                  />
+                </div>
+                <div class="row justify-between q-my-sm">
+                  <q-btn
+                    :disabled="isAddMorePhoneDisabled"
+                    outline
+                    class="q-mt-sm"
+                    @click="addAnotherContact"
+                    color="primary"
+                    label="Add"
+                  />
+                  <q-btn
+                    v-if="phoneNumber.length > 1"
+                    outline
+                    @click="RemoveAnotherContact"
+                    class="q-mt-sm"
+                    color="primary"
+                    label="Remove"
+                  />
+                </div>
+              </div>
               <div class="row">
                 <p class="q-mx-none q-my-auto">Is there a Co-insured?</p>
                 <q-toggle class="q-ml-auto" v-model="isThereaCoInsuredToggle" />
@@ -258,69 +316,6 @@
                   ]"
                   label="Email"
                 />
-              </div>
-              <div class="row">
-                <p class="q-mx-none q-my-auto">Add aditional phone number(s)</p>
-                <q-toggle
-                  class="q-ml-auto"
-                  v-model="addAditionalPhoneNumberToggle"
-                  @input="onaddAditionalPhoneNumberToggle"
-                />
-              </div>
-              <div v-if="addAditionalPhoneNumberToggle">
-                <div
-                  class="row justify-between"
-                  v-for="(addPhone, index) in phoneNumber"
-                  v-if="index >= 0"
-                >
-                  <q-select
-                    v-model="phoneNumber[index].type"
-                    class="required col-5"
-                    label="Type"
-                    :options="contactTypes"
-                    option-value="machineValue"
-                    option-label="name"
-                    map-options
-                    options-dense
-                    behavior="menu"
-                    emit-value
-                    lazy-rules
-                    :rules="[
-                      val =>
-                        (val && val.length > 0) || 'Please select phone type'
-                    ]"
-                  />
-                  <q-input
-                    v-model.number="phoneNumber[index].number"
-                    label="Phone"
-                    class="required col-6"
-                    mask="(###) ###-####"
-                    lazy-rules
-                    :rules="[
-                      val =>
-                        (val && val.length == 14) ||
-                        'Please enter the phone number'
-                    ]"
-                  />
-                </div>
-                <div class="row justify-between q-my-sm">
-                  <q-btn
-                    :disabled="isAddMorePhoneDisabled"
-                    outline
-                    class="q-mt-sm"
-                    @click="addAnotherContact"
-                    color="primary"
-                    label="Add"
-                  />
-                  <q-btn
-                    v-if="phoneNumber.length > 1"
-                    outline
-                    @click="RemoveAnotherContact"
-                    class="q-mt-sm"
-                    color="primary"
-                    label="Remove"
-                  />
-                </div>
               </div>
               <span class="form-heading">Loss Address Details</span>
               <q-input
@@ -821,10 +816,6 @@ export default {
       lossInfoDialog: false,
       maximizedToggle: true,
       clientInfoDailog: false,
-      policyHolder: {
-        isPolicyHolder: false,
-        policyHolderName: ''
-      },
       primaryDetails: {
         isOrganization: false,
         organizationName: ''
@@ -849,20 +840,20 @@ export default {
         fname: '',
         lname: '',
         phone: '',
-        type: '',
+        type: 'main',
         email: ''
       },
       coInsuredDetails: {
         fname: '',
         lname: '',
         phone: '',
-        type: '',
+        type: 'main',
         machineValue: '',
         email: ''
       },
       phoneNumber: [
         {
-          type: '',
+          type: 'main',
           number: ''
         }
       ],
@@ -1075,8 +1066,14 @@ export default {
     // this.getRoles();
     this.getLossCauses();
     this.contractInfo.time = date.formatDate(Date.now(), 'HH:mm:ss:aa');
-    this.companyPersonnel.startDate = this.companyPersonnel.endDate = this.contractInfo.firstContractDate = this.contractInfo.contractDate = this.insuranceDetails.policyEffectiveDate = this.insuranceDetails.policyExpireDate = this.lossInfo.dateOfLoss = this.lossInfo.deadlineDate = this.lossInfo.recovDeadline = date.formatDate(
+    this.companyPersonnel.startDate = this.companyPersonnel.endDate = this.contractInfo.firstContractDate = this.contractInfo.contractDate = this.insuranceDetails.policyEffectiveDate = this.lossInfo.dateOfLoss = this.lossInfo.deadlineDate = this.lossInfo.recovDeadline = date.formatDate(
       Date.now(),
+      'MM/DD/YYYY'
+    );
+    this.insuranceDetails.policyExpireDate = date.formatDate(
+      date.addToDate(Date.now(), {
+        year: 1
+      }),
       'MM/DD/YYYY'
     );
     this.getSeverityClaim();
@@ -1348,7 +1345,6 @@ export default {
       const payload = {
         isOrganization: this.primaryDetails.isOrganization,
         organizationName: this.primaryDetails.organizationName,
-        isOrganizationPolicyholder: this.policyHolder.isPolicyHolder,
         leadID: this.selectedLead.id,
 
         type: {
