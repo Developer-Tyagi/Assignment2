@@ -278,7 +278,7 @@ export default {
       this.mortgage.phoneNumber[0].number = this.selectedMortgage.phoneNumber[0].number;
       this.mortgage.phoneNumber[0].type = this.selectedMortgage.phoneNumber[0].type;
       if (this.selectedMortgage.address) {
-        this.selectedMortgage.address = this.selectedMortgage.address;
+        this.mortgage.address = this.selectedMortgage.address;
       }
       this.mortgage.contact.fname = this.selectedMortgage.contact.fname;
       this.mortgage.contact.lname = this.selectedMortgage.contact.lname;
@@ -299,7 +299,6 @@ export default {
       'getContactTypes',
       'getMortgages',
       'editMortgageInfo',
-      'getMortgageDetails',
       'getMortgageDetails'
     ]),
     validateEmail,
@@ -320,7 +319,7 @@ export default {
 
     async onAddMortgageButtonClick() {
       const success = await this.$refs.mortgageForm.validate();
-      if (success) {
+      if (success && !this.isEdit) {
         const response = await this.addClaimMortgage(this.mortgage);
         this.getMortgages();
         if (response) {
@@ -333,9 +332,7 @@ export default {
           );
           this.closeDialog(true);
         }
-      }
-
-      if (success && this.isEdit) {
+      } else {
         this.id = this.selectedMortgage.id;
         const response = await this.editMortgageInfo(this.mortgage);
         this.getMortgageDetails(this.id);

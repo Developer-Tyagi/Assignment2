@@ -161,14 +161,14 @@ export async function editMortgageInfo({ dispatch, state }, mortgage) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'positive',
-      message: 'Personnel  Updated !'
+      message: 'Mortgage Info  Updated !'
     });
   } catch (e) {
     console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: 'failed to update Personnel'
+      message: 'failed to update mortgage'
     });
   }
 }
