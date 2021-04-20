@@ -18,9 +18,9 @@
       </div>
       <q-input
         v-model="insuranceDetails.policyNumber"
-        label=" Policy Number"
+        label="Policy Number"
         dense
-        class="input-extra-padding"
+        class="required"
         lazy-rules
         :rules="[
           val => (val && val.length > 0) || 'Please fill the policy number'
