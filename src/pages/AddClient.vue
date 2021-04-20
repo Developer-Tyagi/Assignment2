@@ -33,7 +33,6 @@
             <div class="label">{{ arr.name }}</div>
           </div>
         </div>
-        <!-- @click="onSubmit('insuranceInfoDialog')" -->
         <div class="form">
           <!-- Client Info -->
           <q-form
@@ -333,7 +332,7 @@
                 :rules="[
                   val => (val && val.length > 0) || 'This is a required field'
                 ]"
-              ></q-input>
+              />
               <q-select
                 dense
                 behavior="menu"
@@ -358,6 +357,7 @@
                 label="Description of Property"
               />
               <AutoCompleteAddress
+                :id="'ClientInfo'"
                 :address="clientAddressDetails"
                 :isDropBoxEnable="true"
                 :isChecksEnable="true"
@@ -396,6 +396,7 @@
                 />
               </div>
               <AutoCompleteAddress
+                :id="'ClientMailing'"
                 :address="mailingAddressDetails"
                 :isDropBoxEnable="true"
                 :isChecksEnable="true"
@@ -668,7 +669,7 @@
                 <span class="q-ml-md text-color-grey">Back</span>
               </div>
               <div class="q-ml-auto">
-                <span class="q-mr-md text-color-grey"> Next</span>
+                <span class="q-mr-md text-color-grey"> Create Client</span>
                 <q-btn
                   class="rotate-180"
                   icon="keyboard_backspace"
@@ -775,9 +776,7 @@ export default {
         claimFeeRate: '',
         time: '',
         cancelledToggle: false,
-
         reasonForCancellationText: '',
-
         buttonGroup: 'dollar'
       },
       companyPersonnel: {
@@ -1305,89 +1304,6 @@ export default {
 
     onCountrySelect(country) {
       this.states = addressService.getStates(country);
-    },
-    onCloseDialogBox(DialogName, value) {
-      if (this.stepArr[value].validForm == true) {
-        this.onSubmit(DialogName);
-      } else {
-        this[DialogName] = false;
-      }
-    },
-
-    async onSubmit(name) {
-      let success = false;
-      let validationIndex;
-      switch (name) {
-        case 'clientInfoDailog':
-          success = await this.$refs.clientForm.validate();
-          validationIndex = 0;
-          break;
-
-        case 'insuranceInfoDialog':
-          success = await this.$refs.insuranceInfoForm.validate();
-          validationIndex = 2;
-          break;
-        case 'mailingAddressDialog':
-          success = await this.$refs.mailingAddressForm.validate();
-          validationIndex = 1;
-          break;
-
-        case 'addEstimatorDialog':
-          success = await this.$refs.addEstimatorForm.validate();
-          validationIndex = 5;
-          break;
-        case 'lossInfoDialog':
-          success = await this.$refs.lossInfoForm.validate();
-          validationIndex = 3;
-
-          break;
-
-        case 'expertVendorInfoDialog':
-          success = await this.$refs.expertVendorInfoForm.validate();
-          validationIndex = 4;
-
-          break;
-        case 'estimatingInfoDialog':
-          success = await this.$refs.estimatingInfoForm.validate();
-          validationIndex = 5;
-          break;
-
-        case 'contractInfoDialog':
-          success = await this.$refs.contractInfoForm.validate();
-          validationIndex = 6;
-          break;
-        case 'companyPersonnelDialog':
-          success = await this.$refs.companyPersonnelForm.validate();
-          validationIndex = 7;
-      }
-      //here we are validating the form and giving tick if it is validated successfully
-      if (success == true) {
-        this.stepArr[validationIndex].validForm = true;
-        for (var i = 0; i < this.stepArr.length - 1; i++) {
-          if (this.stepArr[i].validForm == false) {
-            this.isCreateClientButtonDisabled = true;
-            break;
-          } else {
-            this.isCreateClientButtonDisabled = false;
-          }
-        }
-        if (
-          name === 'insuranceInfoDialog' ||
-          name === 'expertVendorInfoDialog'
-        ) {
-          this[name] = false;
-        }
-        if (name === 'addEstimatorDialog') {
-          this.onAddEstimatorButtonClick();
-          this[name] = false;
-        } else {
-          this[name] = false;
-        }
-
-        this[name] = false;
-      } else {
-        this.stepArr.validForm = false;
-      }
     },
 
     //This function is used for setting the title name,machine value from its Id

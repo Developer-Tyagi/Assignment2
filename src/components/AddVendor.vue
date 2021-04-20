@@ -122,6 +122,7 @@
           <q-card class="q-ma-xs q-pa-sm q-mt-md">
             <p class="form-heading">Company's Address</p>
             <AutoCompleteAddress
+              :id="'AddVendor'"
               :address="vendor.address"
               :isDropBoxEnable="false"
               :isChecksEnable="false"
@@ -129,7 +130,7 @@
             />
           </q-card>
           <div>
-            <q-card class="q-ma-xs q-pa-sm  q-mt-md">
+            <q-card class="q-ma-xs q-pa-sm q-mt-md">
               <p class="form-heading">Contact Info</p>
 
               <div class="q-mt-sm">
@@ -160,7 +161,7 @@
                 <div class="row justify-between">
                   <q-select
                     dense
-                    class="col-5 "
+                    class="col-5"
                     v-model="vendor.contact.phoneNumber[0].type"
                     :options="contactTypes"
                     option-value="machineValue"

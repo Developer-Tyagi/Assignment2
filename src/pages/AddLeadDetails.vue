@@ -244,6 +244,7 @@
               />
               <div class="stepper-heading">Loss Location</div>
               <AutoCompleteAddress
+                :id="'LeadLoss'"
                 :address="lossAddress"
                 :isDropBoxEnable="false"
                 :isChecksEnable="true"

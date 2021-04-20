@@ -10,7 +10,7 @@
       <div>
         <div v-if="log">
           <!-- This is for showing the Property details  -->
-          <q-card class=" q-pa-md q-ma-sm" v-for="(log, index) in log">
+          <q-card class="q-pa-md q-ma-sm" v-for="(log, index) in log">
             <div class="row q-my-sm">
               <div class="col-10 heading-light">
                 {{ log.created | moment('DD/MM/YYYY, HH:mm') }}
@@ -22,18 +22,13 @@
                 class="col q-pt-xs"
                 @click="onClickEdit(index)"
               ></q-icon>
-              <q-icon
-                class="q-ml-sm "
-                name="delete"
-                size="sm"
-                color="primary"
-              />
+              <q-icon class="q-ml-sm" name="delete" size="sm" color="primary" />
             </div>
             <div>{{ log.title }}</div>
             <div class="heading-light q-my-sm">
               Entered by {{ log.user.name }}
             </div>
-            <p class="heading-light q-my-sm  text-caption ">
+            <p class="heading-light q-my-sm text-caption">
               {{ log.detail ? log.detail : '' }}
             </p>
           </q-card>
@@ -69,18 +64,17 @@
             />
             <q-input
               v-model="details"
-              class="full-width "
+              class="full-width"
               label="Details"
             /><br />
             <span class="form-heading">Notes</span>
             <div class="floating-label">
               <textarea
                 rows="5"
-                required
                 class="full-width"
                 v-model="notes"
                 style="resize: none"
-              ></textarea>
+              />
             </div>
           </q-form>
           <q-btn
@@ -120,7 +114,7 @@
             />
             <q-input
               v-model="edit.details"
-              class="full-width "
+              class="full-width"
               label="Details"
               :disable="isFieldDisable"
             /><br />
@@ -128,11 +122,10 @@
             <div class="floating-label">
               <textarea
                 rows="5"
-                required
                 class="full-width"
                 v-model="edit.notes"
                 style="resize: none"
-              ></textarea>
+              />
             </div>
           </q-form>
           <q-btn

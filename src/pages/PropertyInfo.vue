@@ -53,8 +53,8 @@
             >
               <div v-if="setClientProperty">
                 <div class="">
-                  <div class=" row q-ma-sm ">
-                    <div class=" col-4 bg-red " style="border-radius:8px;">
+                  <div class="row q-ma-sm">
+                    <div class="col-4 bg-red" style="border-radius: 8px">
                       <img
                         alt="Claimguru"
                         src="~assets/logo.png"
@@ -63,7 +63,7 @@
                         height="160"
                       />
                     </div>
-                    <div class=" col-6 q-pa-sm">
+                    <div class="col-6 q-pa-sm">
                       <div class="heading-light">Property Name</div>
                       <div>
                         {{
@@ -118,7 +118,7 @@
                       size="sm"
                       name="create"
                       color="primary"
-                      class=" q-ml-sm q-mt-xs"
+                      class="q-ml-sm q-mt-xs"
                       @click="editClientInfoDailog = true"
                     ></q-icon>
                   </div>
@@ -128,14 +128,14 @@
                     v-for="claim in setClientProperty[i - 1].attributes.claims"
                     :key="claim.id"
                   >
-                    <div class="row q-mx-md ">
+                    <div class="row q-mx-md">
                       <div class="heading-light col-4 q-mx-xs">
                         Claim Number:
                       </div>
                       <div class="row justify-between q-ml-sm col-7">
                         <div
                           @click="onClickClaimNumber(claim)"
-                          class="click-link "
+                          class="click-link"
                         >
                           {{ claim.number ? claim.number : '-' }}
                         </div>
@@ -144,7 +144,7 @@
                             size="xs"
                             name="create"
                             color="primary"
-                            class=" q-ml-sm "
+                            class="q-ml-sm"
                           ></q-icon>
                         </div>
                       </div>
@@ -153,35 +153,27 @@
                     <div>
                       <q-badge
                         class="q-px-lg q-mx-md"
-                        style="background-color:#ECA74C;"
+                        style="background-color: #eca74c"
                         >{{ claim.status ? claim.status : '-' }}</q-badge
                       >
                     </div>
                     <!-- pointer3 -->
                     <div class="row q-ma-md">
-                      <div class="col-4  heading-light ">
-                        Insurane Carrier
-                      </div>
+                      <div class="col-4 heading-light">Insurane Carrier</div>
                       <div>Carrier details(Static data)</div>
                     </div>
                     <div class="row q-ma-md">
-                      <div class="col-4  heading-light ">
-                        Date of Loss
-                      </div>
+                      <div class="col-4 heading-light">Date of Loss</div>
                       <div>{{ claim.lossDate ? claim.lossDate : '-' }}</div>
                     </div>
                     <div class="row q-ma-md">
-                      <div class="col-4  heading-light ">
-                        Policy Number
-                      </div>
+                      <div class="col-4 heading-light">Policy Number</div>
                       <div>
                         {{ claim.policyNumber ? claim.policyNumber : '-' }}
                       </div>
                     </div>
                     <div class="row q-ma-md">
-                      <div class="col-4  heading-light">
-                        Cause Of Loss
-                      </div>
+                      <div class="col-4 heading-light">Cause Of Loss</div>
                       <div>Cause Of loss(static date)</div>
                     </div>
                     <q-separator />
@@ -235,7 +227,7 @@
           @closeDialog="addNewPropertyDialog = false"
           :dialogName="'Add New Property'"
         />
-        <div class="mobile-container-page-without-search q-pa-sm ">
+        <div class="mobile-container-page-without-search q-pa-sm">
           <q-form ref="propertyAddressForm" class="form-height">
             <q-input
               dense
@@ -267,6 +259,7 @@
               ]"
             />
             <AutoCompleteAddress
+              :id="'PropertyInfo'"
               :address="propertyAddressDetails"
               :isDropBoxEnable="false"
               :isChecksEnable="true"

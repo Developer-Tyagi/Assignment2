@@ -28,15 +28,12 @@
     <div class="form-heading">Notes</div>
     <textarea
       rows="5"
-      required
       class="full-width"
       v-model="mortgageInfo.mortgageDetails[0].notes"
       style="resize: none"
     />
     <div class="row" v-if="isThereSecondMortgageToggle">
-      <span class="form-heading">
-        Is there a 2nd mortgage on the home?
-      </span>
+      <span class="form-heading"> Is there a 2nd mortgage on the home? </span>
 
       <q-toggle
         class="q-ml-auto"
