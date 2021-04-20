@@ -8,17 +8,34 @@
         <div class="row q-mt-sm">
           <span class="heading-light col-3">Address Details</span>
           <span class="col-7 q-ml-md" v-if="selectedVendor.address">
-            {{
-              selectedVendor.address.houseNumber
-                ? selectedVendor.address.houseNumber
-                : '-'
-            }}
-            ,
-            {{
-              selectedVendor.address.streetAddress
-                ? selectedVendor.address.streetAddress
-                : '-'
-            }}
+            <div class="row">
+              {{
+                selectedVendor.address.houseNumber
+                  ? selectedVendor.address.houseNumber
+                  : '-'
+              }}
+              ,
+              {{
+                selectedVendor.address.streetAddress
+                  ? selectedVendor.address.streetAddress
+                  : '-'
+              }}
+              <q-icon
+                size="xs"
+                name="create "
+                color="primary"
+                class="q-ml-auto"
+                @click="onEdit"
+              ></q-icon>
+
+              <q-icon
+                class="q-ml-auto"
+                name="delete"
+                size="xs"
+                color="primary"
+                @click="onDelete(index)"
+              />
+            </div>
             <div>
               {{
                 selectedVendor.address.addressLocality
@@ -94,7 +111,9 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
+import AddVendor from 'components/AddVendor';
 export default {
+  components: { AddVendor },
   data() {
     return {};
   },
@@ -108,7 +127,10 @@ export default {
     ...mapActions(['getVendorDetails']),
     onEmailClick,
     onPhoneNumberClick,
-    sendMap
+    sendMap,
+    onEdit() {
+      this.addVendorDialog = true;
+    }
   }
 };
 </script>

@@ -17,8 +17,9 @@
     >
       <q-card>
         <AddMortgage
-          @closeDialog="closeAddCarrierDialog"
+          @closeDialog="closeAddMortgageDialog"
           :componentName="constants.industries.MORTGAGE"
+          :isEdit="false"
         />
       </q-card>
     </q-dialog>
@@ -41,7 +42,7 @@ export default {
   },
 
   methods: {
-    closeAddCarrierDialog(e) {
+    closeAddMortgageDialog(e) {
       this.addMortgageDialog = false;
     },
     openAddMortgageDialog(e) {
