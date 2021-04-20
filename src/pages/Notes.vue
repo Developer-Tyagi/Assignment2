@@ -20,9 +20,8 @@
               v-model="note"
               rows="4"
               placeholder="Take Notes here..."
-              required
               style="width: 100%"
-            ></textarea>
+            />
           </div>
           <q-btn
             @click="onSave"
@@ -54,7 +53,7 @@
                 : '-'
             }}
           </div>
-          <div class="row  q-ml-md q-my-md heading-light ">
+          <div class="row q-ml-md q-my-md heading-light">
             <div>
               {{
                 editSelectedClient.attributes.meta
@@ -73,11 +72,11 @@
             </div>
           </div>
           <div
-            class="clients-list "
+            class="clients-list"
             v-if="editSelectedClient.attributes.notes.length"
           >
             <div
-              class="clients-list "
+              class="clients-list"
               v-for="(note, index) in editSelectedClient.attributes.notes"
             >
               <q-item-section>

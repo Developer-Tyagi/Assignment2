@@ -236,7 +236,7 @@
               </div>
             </div>
           </div>
-          <div class=" row q-mt-md full-width">
+          <div class="row q-mt-md full-width">
             <div class="q-pa-sm text-bold">Due Date :</div>
             <div class="text-grey-9 text-bold q-pa-sm">Task will be Due</div>
 
@@ -251,7 +251,7 @@
 
             <q-select
               dense
-              class="q-mx-sm "
+              class="q-mx-sm"
               outlined
               options-dense
               v-model="actions.due.type"
@@ -499,12 +499,7 @@
               <div class="q-pa-sm text-bold">Notes/Instruction:</div>
             </div>
             <div class="q-ml-md col-5">
-              <textarea
-                v-model="actions.notes"
-                rows="4"
-                required
-                style="width: 100%"
-              ></textarea>
+              <textarea v-model="actions.notes" rows="4" style="width: 100%" />
             </div>
           </div>
         </div>

@@ -8,15 +8,15 @@
     </div>
     <div class="mobile-container-page">
       <div class="q-pa-sm">
-        <div class="text-bold text-h6  q-mt-sm q-ml-md">
+        <div class="text-bold text-h6 q-mt-sm q-ml-md">
           {{ selectedVendor.name ? selectedVendor.name : '-' }}
         </div>
         <div v-if="vendorPersonnel.personnel">
           <div
-            class="q-mt-sm "
+            class="q-mt-sm"
             v-for="(personnel, index) in vendorPersonnel.personnel"
           >
-            <q-card class="q-ma-sm q-pa-sm ">
+            <q-card class="q-ma-sm q-pa-sm">
               <div class="text-bold text-capitalize q-mt-xs row">
                 <div class="col-10">
                   {{ personnel.fname }} {{ personnel.lname }}
@@ -85,7 +85,7 @@
                   </div>
                 </div>
               </div>
-              <div class="row  q-mt-sm" v-if="personnel.email">
+              <div class="row q-mt-sm" v-if="personnel.email">
                 <span class="heading-light col-3"> Email </span>
                 <span
                   class="q-ml-sm col clickLink"
@@ -97,12 +97,12 @@
               <div class="row">
                 <div class="heading-light col-3">Phone Number</div>
                 <div class="q-mt-xs col-6 q-ml-xs">
-                  <div class=" row " v-for="phone in personnel.phoneNumber">
-                    <div class="col-3 ">
+                  <div class="row" v-for="phone in personnel.phoneNumber">
+                    <div class="col-3">
                       {{ phone.type ? phone.type : '-' }}
                     </div>
                     <div
-                      class="clickLink "
+                      class="clickLink"
                       @click="onPhoneNumberClick(phone.number, $event)"
                     >
                       {{ phone.number ? phone.number : '-' }}
@@ -111,7 +111,7 @@
                 </div>
               </div>
 
-              <div class="row  q-mt-sm q-mb-sm">
+              <div class="row q-mt-sm q-mb-sm">
                 <span class="heading-light col-2"> Notes: </span>
                 <span class="q-ml-md col" v-if="personnel.note">
                   {{ personnel.note ? personnel.note : '-' }}</span
@@ -122,7 +122,7 @@
         </div>
         <div v-else class="full-height full-width">
           <div class="absolute-center">
-            <div style="color: #666666; width:110%;">
+            <div style="color: #666666; width: 110%">
               You haven't added a Personnel yet.
             </div>
             <img
@@ -185,7 +185,7 @@
             />
             <q-select
               v-model="name"
-              class=" col-5"
+              class="col-5"
               label="Default Roles"
               :options="personnel.defaultRoles"
               option-value="name"
@@ -196,6 +196,7 @@
           <q-card class="q-ma-md q-pa-md q-mt-sm"
             ><span class="text-bold">Address Details</span>
             <AutoCompleteAddress
+              :id="'PersonnelInfo'"
               :address="personnel.address"
               :isDropBoxEnable="false"
               :isChecksEnable="false"
@@ -250,11 +251,10 @@
             </div>
           </q-card>
           <q-card class="q-ma-md q-pa-md q-mt-xs">
-            <div class="form-heading  q-mt-sm  q-mb-sm">Notes</div>
+            <div class="form-heading q-mt-sm q-mb-sm">Notes</div>
             <div class="floating-label">
               <textarea
                 rows="3"
-                required
                 class="full-width"
                 v-model="personnel.notes"
                 style="resize: none"
@@ -319,7 +319,7 @@
             />
             <q-select
               v-model="name"
-              class=" col-5"
+              class="col-5"
               label="Default Roles"
               :options="personnel.defaultRoles"
               option-value="name"
@@ -330,6 +330,7 @@
           <q-card class="q-ma-md q-pa-md q-mt-sm"
             ><span class="text-bold">Address Details</span>
             <AutoCompleteAddress
+              :id="'PersonnelInfoEdit'"
               :address="personnel.address"
               :isDropBoxEnable="false"
               :isChecksEnable="false"
@@ -384,11 +385,10 @@
             </div>
           </q-card>
           <q-card class="q-ma-md q-pa-md q-mt-xs">
-            <div class="form-heading  q-mt-sm  q-mb-sm">Notes</div>
+            <div class="form-heading q-mt-sm q-mb-sm">Notes</div>
             <div class="floating-label">
               <textarea
                 rows="3"
-                required
                 class="full-width"
                 v-model="personnel.notes"
                 style="resize: none"

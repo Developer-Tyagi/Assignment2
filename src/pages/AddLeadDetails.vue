@@ -244,6 +244,7 @@
               />
               <div class="stepper-heading">Loss Location</div>
               <AutoCompleteAddress
+                :id="'LeadLoss'"
                 :address="lossAddress"
                 :isDropBoxEnable="false"
                 :isChecksEnable="true"
@@ -916,7 +917,6 @@ export default {
     },
 
     async onStepClick(index) {
-      console.log(index, this.stepClickValidTill, this.step);
       if (this.step < index) {
         const validation = await this.$refs[
           this.stepArr[this.step].ref

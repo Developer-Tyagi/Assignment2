@@ -2,8 +2,8 @@
   <q-page>
     <div class="listing-height">
       <!-- This is for showing the client details   -->
-      <div class=" q-ma-md row justify-between">
-        <div class="text-h6 ">
+      <div class="q-ma-md row justify-between">
+        <div class="text-h6">
           {{ editSelectedClient.attributes.insuredInfo.primary.fname }}
           {{ editSelectedClient.attributes.insuredInfo.primary.lname }}
         </div>
@@ -15,7 +15,7 @@
           >
         </div>
       </div>
-      <div class="row  q-ml-md q-my-md heading-light">
+      <div class="row q-ml-md q-my-md heading-light">
         <div>
           {{
             editSelectedClient.attributes.meta
@@ -33,10 +33,10 @@
           - Open Claim
         </div>
       </div>
-      <div class="q-ml-md ">Date & Time of first contact</div>
+      <div class="q-ml-md">Date & Time of first contact</div>
       <div class="q-ml-md">{{ showingDate }},{{ showingTime }}</div>
 
-      <q-card class="  q-ma-md q-ma-sm ">
+      <q-card class="q-ma-md q-ma-sm">
         <div class="client-list q-pa-sm">
           <div class="row">
             <q-icon
@@ -46,8 +46,8 @@
               @click="editClientInfoDailog = true"
             ></q-icon>
           </div>
-          <div class="row ">
-            <div class="heading-light  col-xs-4 lightHeading">
+          <div class="row">
+            <div class="heading-light col-xs-4 lightHeading">
               Insured Details
             </div>
             <div class="q-ml-md column">
@@ -89,7 +89,7 @@
           </div>
 
           <div class="q-mt-md row">
-            <div class="heading-light q-mt-none  col-xs-4 lightHeading">
+            <div class="heading-light q-mt-none col-xs-4 lightHeading">
               Co-Insured Details
             </div>
             <div class="column q-ml-md">
@@ -224,9 +224,7 @@
           </div>
 
           <div class="q-mt-md row">
-            <div class=" q-mt-none col-xs-4 heading-light">
-              Tenant Details
-            </div>
+            <div class="q-mt-none col-xs-4 heading-light">Tenant Details</div>
             <div
               class="column q-ml-md"
               v-if="editSelectedClient.attributes.insuredInfo.tenantInfo"
@@ -570,6 +568,7 @@
             <span class="form-heading">Address Details</span>
 
             <AutoCompleteAddress
+              :id="'ClientInfoEdit'"
               :address="clientAddressDetails"
               :isDropBoxEnable="true"
               :isChecksEnable="true"
@@ -637,6 +636,7 @@
             </div>
 
             <AutoCompleteAddress
+              :id="'ClientMailingEdit'"
               :address="mailingAddressDetails"
               :isDropBoxEnable="true"
               :isChecksEnable="true"
