@@ -8,6 +8,7 @@ export function setvendors(state, vendors) {
 }
 export function setSelectedVendor(state, vendor) {
   state.selectedVendor = {
+    id: vendor.id,
     ...vendor.attributes
   };
 }

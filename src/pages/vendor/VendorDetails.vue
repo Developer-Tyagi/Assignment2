@@ -33,7 +33,7 @@ export default {
   data() {
     return {
       dialogBoxes: [
-        { name: 'Company Info' },
+        { name: 'Vendor Info' },
         { name: 'Personnel' },
         { name: 'Open Claims' },
         { name: 'Claim History' },
@@ -51,7 +51,7 @@ export default {
     onPhoneNumberClick,
     vendorDetailsDailogBoxOpen(value) {
       switch (value) {
-        case 'Company Info':
+        case 'Vendor Info':
           this.$router.push('/vendor-company-info/' + this.$route.params.id);
           break;
         case 'Personnel':

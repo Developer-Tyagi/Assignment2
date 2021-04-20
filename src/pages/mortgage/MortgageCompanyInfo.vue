@@ -119,7 +119,7 @@ export default {
         id: this.$route.params.id
       };
       await this.deleteMortgageInfo(mortgage);
-      this.getMortgageDetails(this.$route.params.id);
+      this.$router.push('/mortgages');
     }
   }
 };

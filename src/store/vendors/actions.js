@@ -144,3 +144,42 @@ export async function getVendorIndustries({ commit, dispatch }) {
     });
   }
 }
+export async function deleteVendorInfo({ commit, dispatch }, vendor) {
+  dispatch('setLoading', true);
+  try {
+    await request.del(`/vendors/${vendor.id}`);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Vendor  Deleted !'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'Error in deleting vendor.'
+    });
+  }
+}
+export async function editVendorInfo({ dispatch, state }, vendor) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.patch(
+      `/vendors/${vendor.id}`,
+      buildApiData('vendors', vendor)
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Vendor info  Updated !'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'failed to update vendor'
+    });
+  }
+}
