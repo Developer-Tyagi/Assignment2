@@ -24,6 +24,7 @@
         <AddVendor
           @closeDialog="closeAddVendorDialog"
           :componentName="constants.industries.VENDOR"
+          :isEdit="false"
         />
       </q-card>
     </q-dialog>

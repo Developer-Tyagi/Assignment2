@@ -335,8 +335,8 @@ export default {
       } else {
         this.mortgage.id = this.selectedMortgage.id;
         await this.editMortgageInfo(this.mortgage);
-        this.getMortgageDetails(this.mortgage.id);
         this.closeDialog(true);
+        this.getMortgageDetails(this.mortgage.id);
       }
     },
 

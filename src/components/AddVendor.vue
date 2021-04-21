@@ -136,7 +136,7 @@
               <div class="q-mt-sm">
                 <q-select
                   dense
-                  v-model="vendor.contact.honorific.id"
+                  v-model="vendor.contact.honorific.value"
                   :options="titles"
                   option-label="value"
                   label="Title"
@@ -232,8 +232,18 @@ import { validateEmail, validateUrl, successMessage } from '@utils/validation';
 
 export default {
   name: 'AddVendor',
-  props: ['componentName', 'selectedIndustryType'],
 
+  props: {
+    componentName: {
+      type: String
+    },
+    isEdit: {
+      type: Boolean
+    },
+    selectedIndustryType: {
+      type: String
+    }
+  },
   components: { AutoCompleteAddress, CustomBar },
 
   data() {
@@ -245,6 +255,7 @@ export default {
       states: [],
       isShowRemoveButton: false,
       vendor: {
+        id: '',
         name: '',
         email: '',
         industry: { value: null, id: '', machineValue: '' },
@@ -262,7 +273,7 @@ export default {
           lname: '',
           email: '',
           honorific: {
-            id: '602a5eaa312a2b57ac2b00ad',
+            id: '',
             value: 'Mr.',
             machineValue: 'mr_'
           },
@@ -294,10 +305,31 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['contactTypes', 'vendorIndustries', 'titles'])
+    ...mapGetters([
+      'contactTypes',
+      'vendorIndustries',
+      'titles',
+      'selectedVendor'
+    ])
   },
 
   mounted() {
+    if (this.isEdit) {
+      this.vendor.industry = this.selectedVendor.industry;
+      this.vendor.name = this.selectedVendor.name;
+      this.vendor.email = this.selectedVendor.email;
+      this.vendor.phoneNumber[0].number = this.selectedVendor.phoneNumber[0].number;
+      this.vendor.phoneNumber[0].type = this.selectedVendor.phoneNumber[0].type;
+      if (this.selectedVendor.address) {
+        this.vendor.address = this.selectedVendor.address;
+      }
+      this.vendor.contact.fname = this.selectedVendor.contact.fname;
+      this.vendor.contact.lname = this.selectedVendor.contact.lname;
+      this.vendor.contact.phoneNumber = this.selectedVendor.contact.phoneNumber;
+      this.vendor.contact.email = this.selectedVendor.contact.email;
+      this.vendor.info.website = this.selectedVendor.info.website;
+      this.vendor.info.notes = this.selectedVendor.info.notes;
+    }
     this.getVendorIndustries();
     this.getTitles();
     this.getContactTypes();
@@ -344,7 +376,9 @@ export default {
       'getVendorIndustries',
       'getTitles',
       'getContactTypes',
-      'getVendors'
+      'getVendors',
+      'getVendorDetails',
+      'editVendorInfo'
     ]),
     validateEmail,
     validateUrl,
@@ -392,14 +426,21 @@ export default {
 
     async onAddVendorButtonClick() {
       const success = await this.$refs.vendorForm.validate();
-      if (success) {
+
+      if (success && !this.isEdit) {
         const response = await this.addVendor(this.vendor);
         this.successMessage(constants.successMessages.VENDOR);
+        this.getVendors();
         if (response) {
           this.vendor.id = response.id;
           this.$emit('onCloseAddVendor', true, this.vendor, this.componentName);
           this.closeDialog(true);
         }
+      } else if (success && this.isEdit) {
+        this.vendor.id = this.selectedVendor.id;
+        await this.editVendorInfo(this.vendor);
+        this.closeDialog(true);
+        this.getVendorDetails(this.vendor.id);
       }
     },
 

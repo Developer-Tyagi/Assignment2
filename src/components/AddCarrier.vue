@@ -335,9 +335,9 @@ export default {
           this.closeDialog(true);
         }
       } else {
-        this.career.id = this.selectedCarrier.id;
+        this.carrier.id = this.selectedCarrier.id;
         await this.editCarrierInfo(this.carrier);
-        this.getCarrierDetails(this.career.id);
+        this.getCarrierDetails(this.carrier.id);
         this.closeDialog(true);
       }
     },

@@ -247,7 +247,7 @@ const routes = [
       },
       {
         path: 'vendor-company-info/:id',
-        name: 'company info',
+        name: 'vendor info',
         caseSensitive: true,
         component: () => import('src/pages/vendor/VendorCompanyInfo.vue')
       },
