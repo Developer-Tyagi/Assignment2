@@ -443,9 +443,9 @@
             :hidden="step != 2"
             ref="insuranceInfo"
           >
-            <q-card class="q-pa-md form-card">
+            <div class="q-pa-sm form-card">
               <InsuranceInfo :insuranceDetails="insuranceDetails" />
-            </q-card>
+            </div>
             <div class="row q-pt-md">
               <div>
                 <q-btn
@@ -475,7 +475,7 @@
             :hidden="step != 3"
             ref="lossInfo"
           >
-            <q-card class="q-pa-md form-card">
+            <div class="q-pa-md form-card">
               <LossInfo
                 :lossInfo="lossInfo"
                 @lossAddressSame="lossAddressSame"
@@ -488,7 +488,8 @@
                   policyEffectiveDate: insuranceDetails.policyEffectiveDate,
                   policyExpireDate: insuranceDetails.policyExpireDate
                 }"
-            /></q-card>
+              />
+            </div>
             <div class="row q-pt-md">
               <div>
                 <q-btn
@@ -518,12 +519,12 @@
             :hidden="step != 4"
             ref="vendorInfo"
           >
-            <q-card class="q-pa-md form-card"
-              ><ExpertVendorInfo
+            <div class="q-pa-md form-card">
+              <ExpertVendorInfo
                 :expertVendorInfo="expertVendorInfo"
                 @addAnotherVendor="addAnotherVendor"
               />
-            </q-card>
+            </div>
             <div class="row q-pt-md">
               <div>
                 <q-btn
@@ -553,9 +554,9 @@
             :hidden="step != 5"
             ref="estimatingInfo"
           >
-            <q-card class="q-pa-md form-card">
+            <div class="q-pa-md form-card">
               <EstimatingInfo :estimatingInfo="estimatingInfo" />
-            </q-card>
+            </div>
             <div class="row q-pt-md">
               <div>
                 <q-btn
@@ -585,9 +586,9 @@
             :hidden="step != 6"
             ref="contractInfo"
           >
-            <q-card class="q-pa-md form-card">
+            <div class="q-pa-md form-card">
               <ContractInfo :contractInfo="contractInfo" />
-            </q-card>
+            </div>
             <div class="row q-pt-md">
               <div>
                 <q-btn
@@ -617,9 +618,9 @@
             :hidden="step != 7"
             ref="personnelInfo"
           >
-            <q-card class="q-pa-md form-card">
+            <div class="q-pa-md form-card">
               <CompanyPersonnel :companyPersonnel="companyPersonnel" />
-            </q-card>
+            </div>
             <div class="row q-pt-md">
               <div>
                 <q-btn
@@ -649,29 +650,32 @@
             :hidden="step != 8"
             ref="officeTaskInfo"
           >
-            <q-card class="q-pa-md form-card">
-              <q-select
-                dense
-                v-model="officeTask.officeActionTypes"
-                :options="officeActionRequiredTypes"
-                label="Office Action Required"
-                class="input-extra-padding"
-              />
-              <q-select
-                dense
-                v-model="officeTask.officeTaskTypes"
-                :options="officeTaskRequiredTypes"
-                label="Office Task Required"
-                class="input-extra-padding"
-              /><br />
-              <div class="row">
-                <p>Additional Office Task Required</p>
-                <q-toggle
-                  class="q-ml-auto"
-                  v-model="additionalOfficeTaskRequiredToggle"
+            <div class="q-pa-md form-card">
+              <q-card class="q-pa-sm q-mt-sm">
+                <q-select
+                  dense
+                  v-model="officeTask.officeActionTypes"
+                  :options="officeActionRequiredTypes"
+                  label="Office Action Required"
+                  class="input-extra-padding"
                 />
-              </div>
-            </q-card>
+                <q-select
+                  dense
+                  v-model="officeTask.officeTaskTypes"
+                  :options="officeTaskRequiredTypes"
+                  label="Office Task Required"
+                  class="input-extra-padding"
+                />
+                <div class="row">
+                  <p>Additional Office Task Required</p>
+                  <q-toggle
+                    class="q-ml-auto"
+                    v-model="additionalOfficeTaskRequiredToggle"
+                  />
+                </div>
+              </q-card>
+            </div>
+
             <div class="row q-pt-md">
               <div>
                 <q-btn
@@ -1027,6 +1031,7 @@ export default {
         email: '',
         phone: '',
         type: '',
+        companyName: '',
         estimatorsListDialog: false,
 
         estimatorToBeAssigned: '',

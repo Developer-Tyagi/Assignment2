@@ -1,51 +1,49 @@
 <template>
   <div class="bg-white full-width">
     <!-- Estimating  Info -->
-    <div class="row">
-      <p style="form-heading">Does an estimator need to be<br />assigned?</p>
-      <q-toggle
-        class="q-ml-auto"
-        v-model="estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle"
-        @input="EstimatorToggleChange"
-      />
-    </div>
+    <q-card class="q-pa-sm">
+      <div class="row">
+        <p class="form-heading q-my-auto">
+          Does Estimator need to be assigned?
+        </p>
+        <q-toggle
+          class="q-ml-auto"
+          v-model="estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle"
+          @input="EstimatorToggleChange"
+        />
+      </div>
 
-    <div
-      v-if="estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle"
-      @click="onClickEstimatorOpen"
-    >
-      <div class="custom-select form-heading" v-model="estimatingInfo.name">
-        <div class="select-text">
-          {{
-            estimatingInfo.addEstimatorValue.name
-              ? estimatingInfo.addEstimatorValue.name
-              : 'Add Estimator'
-          }}
+      <div
+        v-if="estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle"
+        @click="onClickEstimatorOpen"
+      >
+        <div class="custom-select" v-model="estimatingInfo.name">
+          <div class="select-text">
+            {{
+              estimatingInfo.addEstimatorValue.name
+                ? estimatingInfo.addEstimatorValue.name
+                : 'Click to add estimator'
+            }}
+          </div>
         </div>
       </div>
-    </div>
-    <q-input
-      dense
-      v-model="estimatingInfo.estimatorToBeAssigned"
-      label="Estimator to be assigned"
-      dense
-      class="input-extra-padding"
-    />
-    <q-input
-      dense
-      v-model="estimatingInfo.scopeTimeNeeded"
-      label="Scope time needed"
-      dense
-      class="input-extra-padding"
-    />
-    <q-input
-      dense
-      v-model="estimatingInfo.notesToTheEstimator"
-      label="Notes to the estimator"
-      dense
-      class="input-extra-padding"
-    />
-
+      <input
+        v-if="estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle"
+        dense
+        v-model="estimatingInfo.scopeTimeNeeded"
+        placeholder="Scope time needed"
+        class="time-input"
+        type="time"
+      />
+      <q-input
+        v-if="estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle"
+        dense
+        v-model="estimatingInfo.notesToTheEstimator"
+        label="Notes to the estimator"
+        dense
+        class="input-extra-padding"
+      />
+    </q-card>
     <!-- Estimators List Dialog -->
     <q-dialog
       v-model="estimatingInfo.estimatorsListDialog"
@@ -83,7 +81,26 @@
             class="vendor-list-item"
             @click="selectEstimator(estimator)"
           >
-            <span>{{ estimator.fname }} {{ estimator.lname }}</span>
+            <div class="row">
+              <span class="text-bold"
+                >{{ estimator.fname }} {{ estimator.lname }}</span
+              >
+            </div>
+            <div>{{ estimator.companyName }}</div>
+            <div class="row">
+              <span
+                >Mob:
+                <span
+                  v-if="estimator.phoneNumber"
+                  class="click-link"
+                  @click="
+                    onPhoneNumberClick(estimator.phoneNumber.number, $event)
+                  "
+                >
+                  {{ lead.primaryContact.phoneNumber.number }}
+                </span>
+              </span>
+            </div>
           </div>
         </div>
       </q-card>
@@ -174,6 +191,11 @@
                 mask="(###) ###-####"
               />
             </div>
+            <q-input
+              dense
+              v-model="estimatingInfo.companyName"
+              label="Company name"
+            />
           </q-form>
           <q-btn
             label="Add Estimator"
@@ -233,7 +255,8 @@ export default {
               type: this.estimatingInfo.addEstimatorInfo.type,
               number: this.estimatingInfo.addEstimatorInfo.phone
             }
-          ]
+          ],
+          companyName: this.estimatingInfo.companyName
         };
 
         const response = this.addEstimator(payload);
@@ -277,11 +300,16 @@ export default {
       this.estimatingInfo.phone = '';
       this.estimatingInfo.type = '';
     },
+
     selectEstimator(value) {
       this.estimatingInfo.addEstimatorValue.name = value.fname;
-
       this.estimatingInfo.estimatorsListDialog = false;
     }
   }
 };
 </script>
+<style>
+input[type='time']::-webkit-calendar-picker-indicator {
+  background: none;
+}
+</style>
