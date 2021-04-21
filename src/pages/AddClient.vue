@@ -40,238 +40,99 @@
             :hidden="step != 0"
             ref="clientInfo"
           >
-            <q-card class="form-card q-pa-md">
-              <q-select
-                dense
-                class="required"
-                v-model="client.id"
-                option-value="id"
-                option-label="name"
-                map-options
-                emit-value
-                behavior="menu"
-                options-dense
-                :options="clientTypes"
-                @input="setTypes(clientTypes, client)"
-                label="Client Type"
-                :rules="[
-                  val =>
-                    (val && val.length > 0) || 'Please select the client type'
-                ]"
-              />
-              <div class="row">
-                <p class="q-mx-none q-my-auto">
-                  Is Policyholder An Organization ?
-                </p>
-                <q-toggle
-                  v-model="primaryDetails.isOrganization"
-                  left-label
-                  class="q-ml-auto"
-                />
-              </div>
-              <div v-if="primaryDetails.isOrganization">
-                <q-input
-                  dense
-                  v-model="primaryDetails.organizationName"
-                  label="Organization Name"
-                  class="required"
-                  lazy-rules
-                  :rules="[
-                    val =>
-                      (val && val.length > 0) ||
-                      'Please fill the organization name '
-                  ]"
-                />
-              </div>
-              <span class="form-heading">Insured Details</span>
-              <q-select
-                dense
-                v-model="honorific1.id"
-                class="required"
-                :options="titles"
-                option-value="id"
-                option-label="value"
-                map-options
-                options-dense
-                behavior="menu"
-                @input="setTitleName(1)"
-                emit-value
-                label="Title"
-                lazy-rules
-                options-dense
-                :rules="[
-                  val => (val && val.length > 0) || 'Please select the Title'
-                ]"
-              />
-              <q-input
-                dense
-                class="required"
-                v-model="insuredDetails.fname"
-                lazy-rules
-                :rules="[
-                  val => (val && val.length > 0) || 'Please fill the First name'
-                ]"
-                label="First Name"
-              />
-              <q-input
-                dense
-                v-model="insuredDetails.lname"
-                class="required"
-                lazy-rules
-                :rules="[
-                  val => (val && val.length > 0) || 'Please fill the Last name'
-                ]"
-                label="Last Name"
-              />
-
-              <div class="row justify-between">
+            <div class="form-card q-pa-sm">
+              <q-card class="q-pa-sm q-mb-md">
                 <q-select
                   dense
-                  v-model="insuredDetails.type"
-                  class="required col-5"
-                  :options="contactTypes"
-                  option-value="machineValue"
+                  class="required"
+                  v-model="client.id"
+                  option-value="id"
                   option-label="name"
                   map-options
                   emit-value
                   behavior="menu"
                   options-dense
-                  label="Type"
-                  lazy-rules
-                  :rules="[
-                    val => (val && val.length > 0) || 'Please select phone type'
-                  ]"
-                />
-                <q-input
-                  dense
-                  v-model.number="insuredDetails.phone"
-                  class="required col-6"
-                  label="Phone"
-                  mask="(###) ###-####"
-                  lazy-rules
+                  :options="clientTypes"
+                  @input="setTypes(clientTypes, client)"
+                  label="Client Type"
                   :rules="[
                     val =>
-                      (val && val.length == 14) ||
-                      'Please enter the phone number'
+                      (val && val.length > 0) || 'Please select the client type'
                   ]"
                 />
-              </div>
-              <q-input
-                dense
-                v-model="insuredDetails.email"
-                class="required"
-                label="Email"
-                lazy-rules
-                :rules="[
-                  val =>
-                    validateEmail(val) ||
-                    'You have entered an invalid email address!'
-                ]"
-              />
-              <div class="row">
-                <p class="q-mx-none q-my-auto">
-                  Add additional phone number(s)
-                </p>
-                <q-toggle
-                  class="q-ml-auto"
-                  v-model="addAditionalPhoneNumberToggle"
-                  @input="onaddAditionalPhoneNumberToggle"
-                />
-              </div>
-              <div v-if="addAditionalPhoneNumberToggle">
-                <div
-                  class="row justify-between"
-                  v-for="(addPhone, index) in phoneNumber"
-                  v-if="index >= 0"
-                >
-                  <q-select
-                    v-model="phoneNumber[index].type"
-                    class="required col-5"
-                    label="Type"
-                    :options="contactTypes"
-                    option-value="machineValue"
-                    option-label="name"
-                    map-options
-                    options-dense
-                    behavior="menu"
-                    emit-value
-                    lazy-rules
-                    :rules="[
-                      val =>
-                        (val && val.length > 0) || 'Please select phone type'
-                    ]"
+                <div class="row">
+                  <p class="q-mx-none q-my-auto">
+                    Is Policyholder An Organization ?
+                  </p>
+                  <q-toggle
+                    v-model="primaryDetails.isOrganization"
+                    left-label
+                    class="q-ml-auto"
                   />
+                </div>
+                <div v-if="primaryDetails.isOrganization">
                   <q-input
-                    v-model.number="phoneNumber[index].number"
-                    label="Phone"
-                    class="required col-6"
-                    mask="(###) ###-####"
+                    dense
+                    v-model="primaryDetails.organizationName"
+                    label="Organization Name"
+                    class="required"
                     lazy-rules
                     :rules="[
                       val =>
-                        (val && val.length == 14) ||
-                        'Please enter the phone number'
+                        (val && val.length > 0) ||
+                        'Please fill the organization name '
                     ]"
                   />
                 </div>
-                <div class="row justify-between q-my-sm">
-                  <q-btn
-                    :disabled="isAddMorePhoneDisabled"
-                    outline
-                    class="q-mt-sm"
-                    @click="addAnotherContact"
-                    color="primary"
-                    label="Add"
-                  />
-                  <q-btn
-                    v-if="phoneNumber.length > 1"
-                    outline
-                    @click="RemoveAnotherContact"
-                    class="q-mt-sm"
-                    color="primary"
-                    label="Remove"
-                  />
-                </div>
-              </div>
-              <div class="row">
-                <p class="q-mx-none q-my-auto">Is there a Co-insured?</p>
-                <q-toggle class="q-ml-auto" v-model="isThereaCoInsuredToggle" />
-              </div>
-
-              <div v-if="isThereaCoInsuredToggle" style="font-size: 20px">
-                <span class="form-heading">Co-insured Details</span>
+              </q-card>
+              <q-card class="q-pa-sm q-mb-md">
+                <span class="form-heading">Insured Details</span>
                 <q-select
                   dense
-                  v-model="honorific2.id"
+                  v-model="honorific1.id"
                   class="required"
                   :options="titles"
                   option-value="id"
                   option-label="value"
                   map-options
-                  @input="setTitleName(2)"
-                  emit-value
                   options-dense
                   behavior="menu"
+                  @input="setTitleName(1)"
+                  emit-value
                   label="Title"
                   lazy-rules
+                  options-dense
                   :rules="[
                     val => (val && val.length > 0) || 'Please select the Title'
                   ]"
                 />
                 <q-input
                   dense
-                  v-model="coInsuredDetails.fname"
+                  class="required"
+                  v-model="insuredDetails.fname"
+                  lazy-rules
+                  :rules="[
+                    val =>
+                      (val && val.length > 0) || 'Please fill the First name'
+                  ]"
                   label="First Name"
                 />
                 <q-input
                   dense
-                  v-model="coInsuredDetails.lname"
+                  v-model="insuredDetails.lname"
+                  class="required"
+                  lazy-rules
+                  :rules="[
+                    val =>
+                      (val && val.length > 0) || 'Please fill the Last name'
+                  ]"
                   label="Last Name"
                 />
+
                 <div class="row justify-between">
                   <q-select
                     dense
-                    v-model="coInsuredDetails.type"
+                    v-model="insuredDetails.type"
                     class="required col-5"
                     :options="contactTypes"
                     option-value="machineValue"
@@ -281,7 +142,6 @@
                     behavior="menu"
                     options-dense
                     label="Type"
-                    options-dense
                     lazy-rules
                     :rules="[
                       val =>
@@ -290,9 +150,9 @@
                   />
                   <q-input
                     dense
-                    v-model.number="coInsuredDetails.phone"
-                    label="Phone"
+                    v-model.number="insuredDetails.phone"
                     class="required col-6"
+                    label="Phone"
                     mask="(###) ###-####"
                     lazy-rules
                     :rules="[
@@ -304,61 +164,216 @@
                 </div>
                 <q-input
                   dense
-                  v-model="coInsuredDetails.email"
-                  input
-                  type="email"
+                  v-model="insuredDetails.email"
                   class="required"
+                  label="Email"
                   lazy-rules
                   :rules="[
                     val =>
                       validateEmail(val) ||
                       'You have entered an invalid email address!'
                   ]"
-                  label="Email"
                 />
-              </div>
-              <span class="form-heading">Loss Address Details</span>
-              <q-input
-                dense
-                class="required"
-                v-model="lossAddressName"
-                label="Enter  Loss Address Name "
-                lazy-rules
-                :rules="[
-                  val => (val && val.length > 0) || 'This is a required field'
-                ]"
-              />
-              <q-select
-                dense
-                behavior="menu"
-                class="required"
-                v-model="property.id"
-                option-value="id"
-                option-label="name"
-                map-options
-                options-dense
-                emit-value
-                :options="propertyTypes"
-                @input="setTypes(propertyTypes, property)"
-                label="Property Type"
-                :rules="[
-                  val =>
-                    (val && val.length > 0) || 'Please select the property type'
-                ]"
-              />
-              <q-input
-                dense
-                v-model="propertyDescription"
-                label="Description of Property"
-              />
-              <AutoCompleteAddress
-                :id="'ClientInfo'"
-                :address="clientAddressDetails"
-                :isDropBoxEnable="true"
-                :isChecksEnable="true"
-                :isAsteriskMark="true"
-              />
-            </q-card>
+                <div class="row">
+                  <p class="q-mx-none q-my-auto">
+                    Add additional phone number(s)
+                  </p>
+                  <q-toggle
+                    class="q-ml-auto"
+                    v-model="addAditionalPhoneNumberToggle"
+                    @input="onaddAditionalPhoneNumberToggle"
+                  />
+                </div>
+                <div v-if="addAditionalPhoneNumberToggle">
+                  <div
+                    class="row justify-between"
+                    v-for="(addPhone, index) in phoneNumber"
+                    v-if="index >= 0"
+                  >
+                    <q-select
+                      v-model="phoneNumber[index].type"
+                      class="required col-5"
+                      label="Type"
+                      :options="contactTypes"
+                      option-value="machineValue"
+                      option-label="name"
+                      map-options
+                      options-dense
+                      behavior="menu"
+                      emit-value
+                      lazy-rules
+                      :rules="[
+                        val =>
+                          (val && val.length > 0) || 'Please select phone type'
+                      ]"
+                    />
+                    <q-input
+                      v-model.number="phoneNumber[index].number"
+                      label="Phone"
+                      class="required col-6"
+                      mask="(###) ###-####"
+                      lazy-rules
+                      :rules="[
+                        val =>
+                          (val && val.length == 14) ||
+                          'Please enter the phone number'
+                      ]"
+                    />
+                  </div>
+                  <div class="row justify-between q-my-sm">
+                    <q-btn
+                      :disabled="isAddMorePhoneDisabled"
+                      outline
+                      class="q-mt-sm"
+                      @click="addAnotherContact"
+                      color="primary"
+                      label="Add"
+                    />
+                    <q-btn
+                      v-if="phoneNumber.length > 1"
+                      outline
+                      @click="RemoveAnotherContact"
+                      class="q-mt-sm"
+                      color="primary"
+                      label="Remove"
+                    />
+                  </div>
+                </div>
+                <div class="row">
+                  <p class="q-mx-none q-my-auto">Is there a Co-insured?</p>
+                  <q-toggle
+                    class="q-ml-auto"
+                    v-model="isThereaCoInsuredToggle"
+                  />
+                </div>
+
+                <div v-if="isThereaCoInsuredToggle" style="font-size: 20px">
+                  <span class="form-heading">Co-insured Details</span>
+                  <q-select
+                    dense
+                    v-model="honorific2.id"
+                    class="required"
+                    :options="titles"
+                    option-value="id"
+                    option-label="value"
+                    map-options
+                    @input="setTitleName(2)"
+                    emit-value
+                    options-dense
+                    behavior="menu"
+                    label="Title"
+                    lazy-rules
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) || 'Please select the Title'
+                    ]"
+                  />
+                  <q-input
+                    dense
+                    v-model="coInsuredDetails.fname"
+                    label="First Name"
+                  />
+                  <q-input
+                    dense
+                    v-model="coInsuredDetails.lname"
+                    label="Last Name"
+                  />
+                  <div class="row justify-between">
+                    <q-select
+                      dense
+                      v-model="coInsuredDetails.type"
+                      class="required col-5"
+                      :options="contactTypes"
+                      option-value="machineValue"
+                      option-label="name"
+                      map-options
+                      emit-value
+                      behavior="menu"
+                      options-dense
+                      label="Type"
+                      options-dense
+                      lazy-rules
+                      :rules="[
+                        val =>
+                          (val && val.length > 0) || 'Please select phone type'
+                      ]"
+                    />
+                    <q-input
+                      dense
+                      v-model.number="coInsuredDetails.phone"
+                      label="Phone"
+                      class="required col-6"
+                      mask="(###) ###-####"
+                      lazy-rules
+                      :rules="[
+                        val =>
+                          (val && val.length == 14) ||
+                          'Please enter the phone number'
+                      ]"
+                    />
+                  </div>
+                  <q-input
+                    dense
+                    v-model="coInsuredDetails.email"
+                    input
+                    type="email"
+                    class="required"
+                    lazy-rules
+                    :rules="[
+                      val =>
+                        validateEmail(val) ||
+                        'You have entered an invalid email address!'
+                    ]"
+                    label="Email"
+                  />
+                </div>
+              </q-card>
+              <q-card class="q-pa-sm">
+                <span class="form-heading">Loss Address Details</span>
+                <q-input
+                  dense
+                  class="required"
+                  v-model="lossAddressName"
+                  label="Enter  Loss Address Name "
+                  lazy-rules
+                  :rules="[
+                    val => (val && val.length > 0) || 'This is a required field'
+                  ]"
+                />
+                <q-select
+                  dense
+                  behavior="menu"
+                  class="required"
+                  v-model="property.id"
+                  option-value="id"
+                  option-label="name"
+                  map-options
+                  options-dense
+                  emit-value
+                  :options="propertyTypes"
+                  @input="setTypes(propertyTypes, property)"
+                  label="Property Type"
+                  :rules="[
+                    val =>
+                      (val && val.length > 0) ||
+                      'Please select the property type'
+                  ]"
+                />
+                <q-input
+                  dense
+                  v-model="propertyDescription"
+                  label="Description of Property"
+                />
+                <AutoCompleteAddress
+                  :id="'ClientInfo'"
+                  :address="clientAddressDetails"
+                  :isDropBoxEnable="true"
+                  :isChecksEnable="true"
+                  :isAsteriskMark="true"
+                />
+              </q-card>
+            </div>
+
             <div class="row q-pt-md">
               <div class="q-ml-auto">
                 <span class="q-mr-md text-color-grey">Next</span>
@@ -469,6 +484,10 @@
                 :lossAddressSameAsClient="true"
                 :isAddressRequired="true"
                 :mortgageInfo="mortgageObject"
+                :policyDate="{
+                  policyEffectiveDate: insuranceDetails.policyEffectiveDate,
+                  policyExpireDate: insuranceDetails.policyExpireDate
+                }"
             /></q-card>
             <div class="row q-pt-md">
               <div>
@@ -955,7 +974,8 @@ export default {
         causeOfLoss: {
           value: '',
           id: '',
-          machineValue: ''
+          machineValue: '',
+          desc: ''
         },
         describeTheLoss: '',
         insuranceAdjustorPhone: '',

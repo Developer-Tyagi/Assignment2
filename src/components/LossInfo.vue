@@ -214,7 +214,9 @@
         mask="##/##/####"
         label="MM/DD/YYYY"
         lazy-rules
-        :rules="[val => validateDate(val) || 'Invalid date!']"
+        :rules="[
+          val => dateLiesBetween(val) || 'Date is before policy effective date!'
+        ]"
       >
         <template v-slot:append>
           <q-icon name="event" size="sm" color="primary" class="cursor-pointer">
@@ -227,6 +229,7 @@
                 v-model="lossInfo.dateOfLoss"
                 @input="() => $refs.qDateProxy2.hide()"
                 mask="MM/DD/YYYY"
+                :options="lossDateOption"
               ></q-date>
             </q-popup-proxy>
           </q-icon>
@@ -247,7 +250,16 @@
       :options="lossCauses"
       @input="setTypes(lossCauses, lossInfo.causeOfLoss)"
       label="Cause of Loss"
-    /><br />
+    />
+
+    <q-input
+      v-if="lossInfo.causeOfLoss.id"
+      class="required"
+      label="Cause of loss description"
+      v-model="lossInfo.causeOfLoss.desc"
+    >
+    </q-input>
+
     <span class="form-heading">Deadline Date</span>
 
     <div class="full-width">
@@ -307,7 +319,6 @@
         </template>
       </q-input>
     </div>
-    <br />
     <div class="row">
       <p class="q-my-auto form-heading">Is the Home Habitable?</p>
       <q-toggle class="q-ml-auto" v-model="lossInfo.isTheHomeHabitable" />
@@ -654,7 +665,6 @@
 <script>
 import AddressService from '@utils/country';
 import { date } from 'quasar';
-
 import { constants } from '@utils/constant';
 import CustomBar from 'components/CustomBar';
 import VendorsList from 'components/VendorsList';
@@ -663,6 +673,7 @@ import { mapGetters, mapActions } from 'vuex';
 import AddVendor from 'components/AddVendor';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import Mortgage from 'components/Mortgage';
+
 export default {
   name: 'LossInfo',
   components: {
@@ -695,6 +706,9 @@ export default {
     lossAddressSameAsClient: {
       type: Boolean,
       required: false
+    },
+    policyDate: {
+      type: Object
     }
   },
 
@@ -740,6 +754,7 @@ export default {
     };
   },
   created() {
+    console.log(this.policyDate);
     this.lossInfo.purchaseDate = date.formatDate(Date.now(), 'MM/DD/YYYY');
     this.$emit('isMortgageDetails', false);
 
@@ -763,6 +778,29 @@ export default {
       'getSeverityClaim',
       'getRoles'
     ]),
+
+    lossDateOption(dateopn) {
+      return dateopn <= date.formatDate(Date.now(), 'YYYY/MM/DD');
+    },
+
+    dateLiesBetween(val) {
+      if (
+        date.isBetweenDates(
+          val,
+          this.policyDate.policyEffectiveDate,
+          this.policyDate.policyExpireDate2,
+          {
+            inclusiveFrom: true,
+            inclusiveTo: true
+          }
+        )
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+
     onDamageOsToggleButtonOff() {
       if (!this.lossInfo.isDamageOSToggle) {
         this.lossInfo.osDamagedItems.length = 0;
