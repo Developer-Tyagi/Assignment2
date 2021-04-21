@@ -144,6 +144,12 @@
             </div>
           </span>
         </q-item-section>
+        <q-icon
+          v-if="carrier.name === carrierName"
+          name="done"
+          size="xs"
+          class="q-ml-auto"
+        />
       </div>
     </div>
   </div>
@@ -153,7 +159,7 @@ import { mapActions, mapGetters } from 'vuex';
 import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
 export default {
   name: 'CarriersList',
-  props: ['carrierDetails', 'selectCarrier'],
+  props: ['carrierDetails', 'selectCarrier', 'carrierName'],
 
   data() {
     return {

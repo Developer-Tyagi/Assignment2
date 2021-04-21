@@ -32,22 +32,8 @@
         </div>
 
         <div class="q-pa-sm" v-if="selectedClaimCarrier.carrier">
-          <div class="text-bold row">
+          <div class="text-bold row" v-model="carrierName">
             {{ selectedClaimCarrier.carrier.name }}
-            <!-- <q-icon
-              size="xs"
-              name="create "
-              color="primary"
-              @click="onAddCarrierClick"
-              class="q-ml-auto"
-            ></q-icon>
-            <q-icon
-              class="q-my-auto q-ml-sm"
-              name="delete"
-              size="xs"
-              color="primary"
-              @click="onDelete(selectedClaimCarrier.carrier.id)"
-            /> -->
           </div>
 
           <div class="row q-mt-sm">
@@ -92,8 +78,32 @@
                     ? selectedClaimCarrier.carrier.address.postalCode
                     : '-'
                 }}
-              </div></span
-            >
+              </div>
+              <div
+                class="q-mt-xs"
+                v-for="phone in selectedClaimCarrier.carrier.phoneNumber"
+              >
+                <span v-if="phone.type"
+                  >{{ phone.type ? phone.type : '-' }} :
+                </span>
+                <span
+                  class="clickLink"
+                  @click="onPhoneNumberClick(phone.number, $event)"
+                  >{{ phone.number ? phone.number : '-' }}</span
+                >
+              </div>
+              <span
+                class="click-link"
+                @click="
+                  onEmailClick(selectedClaimCarrier.carrier.email, $event)
+                "
+                >{{
+                  selectedClaimCarrier.carrier.email
+                    ? selectedClaimCarrier.carrier.email
+                    : '-'
+                }}</span
+              >
+            </span>
           </div>
         </div>
         <div v-else class="heading-light col q-ma-xs">
@@ -345,6 +355,7 @@
           :carrierDetails="false"
           :selectCarrier="true"
           @afterSelecting="selecting()"
+          :carrierName="carrierName"
         />
       </q-card>
     </q-dialog>
@@ -374,6 +385,8 @@ import InsuranceInfo from 'components/InsuranceInfo';
 import AddCarrier from 'components/AddCarrier';
 import CarriersList from 'components/CarriersList';
 import { validateDate, successMessage } from '@utils/validation';
+import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
+
 import { dateToSend } from '@utils/date';
 import { date } from 'quasar';
 import { constants } from '@utils/constant';
@@ -390,6 +403,7 @@ export default {
   },
   data() {
     return {
+      carrierName: '',
       claimID: '',
       carrierDetails: '',
       carriersListDialog: false,
@@ -537,6 +551,9 @@ export default {
     ]),
     validateDate,
     successMessage,
+    onEmailClick,
+    onPhoneNumberClick,
+
     async onDelete(id) {
       const carrier = {
         claimID: this.selectedClaimId,
@@ -644,6 +661,7 @@ export default {
     },
     onAddCarrierClick() {
       this.carriersListDialog = true;
+      this.carrierName = this.selectedClaimCarrier.carrier.name;
     }
   }
 };

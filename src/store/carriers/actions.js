@@ -219,7 +219,7 @@ export async function deleteClaimCarrier({ commit, dispatch }, carrier) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'positive',
-      message: 'Carrier  Deleted !'
+      message: 'Carrier  has been deleted successfully !'
     });
   } catch (e) {
     console.log(e);
