@@ -63,7 +63,11 @@
           mask="##/##/####"
           label="MM/DD/YYYY"
           lazy-rules
-          :rules="[val => validateDate(val) || 'Invalid date!']"
+          class="required"
+          :rules="[
+            val =>
+              (val && val.length > 0 && validateDate(val)) || 'Invalid date!'
+          ]"
         >
           <template v-slot:append>
             <q-icon
@@ -95,7 +99,11 @@
           mask="##/##/####"
           label="MM/DD/YYYY"
           lazy-rules
-          :rules="[val => validateDate(val) || 'Invalid date!']"
+          class="required"
+          :rules="[
+            val =>
+              (val && val.length > 0 && validateDate(val)) || 'Invalid date!'
+          ]"
         >
           <template v-slot:append>
             <q-icon
