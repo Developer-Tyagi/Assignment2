@@ -560,6 +560,7 @@ export default {
         carrierID: id
       };
       await this.deleteClaimCarrier(carrier);
+      this.carrierName = '';
       this.$router.push(`/insurance-policy/${this.selectedClaimId}`);
     },
     async onSaveButtonClick() {
