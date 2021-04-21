@@ -10,6 +10,7 @@ export default function() {
     settlementType: [],
     settlement: [],
     claimTasks: [],
-    mortgage: []
+    mortgage: [],
+    phases: []
   };
 }

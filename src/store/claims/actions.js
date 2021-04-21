@@ -437,3 +437,55 @@ export async function addMortgage({ dispatch, state }, payload) {
     });
   }
 }
+export async function editClaimNumber({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      `/claims/${payload.id}/setclaimnumber`,
+      buildApiData('claims', payload.data)
+    );
+    dispatch('setLoading', false);
+    return data;
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'Failed to update claim Number! please try again !'
+    });
+  }
+}
+export async function editClaimPhase({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+
+  try {
+    const { data } = await request.post(
+      `/claims/${payload.id}/setclaimphase`,
+      buildApiData('claims', payload.data)
+    );
+    dispatch('setLoading', false);
+    return data;
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'Failed to update claim Phase! please try again !'
+    });
+  }
+}
+export async function getPhases({ commit, dispatch }) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get('/claimphases');
+    commit('setPhases', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+  }
+}
