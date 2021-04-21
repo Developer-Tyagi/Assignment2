@@ -204,7 +204,7 @@ const routes = [
         component: () => import('src/pages/Personnel.vue')
       },
       {
-        path: 'insurance-policy',
+        path: 'insurance-policy/:id',
         name: 'Insurance Policy ',
         caseSensitive: true,
         component: () => import('pages/InsurancePolicy.vue')

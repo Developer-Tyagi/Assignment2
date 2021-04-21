@@ -40,7 +40,7 @@ export default {
         { name: 'Settlements' },
         { name: 'Activity Log & Message Archive' },
         { name: 'Company Personnel' },
-        { name: 'Insurer & Policy' },
+        { name: 'Carrier & Policy' },
         { name: 'Mortgages and Liens' },
         { name: 'Files' },
         { name: 'Notes' },
@@ -83,8 +83,8 @@ export default {
         case 'Company Personnel':
           this.$router.push('/company-personnel');
           break;
-        case 'Insurer & Policy':
-          this.$router.push('/insurance-policy');
+        case 'Carrier & Policy':
+          this.$router.push(`/insurance-policy/${this.selectedClaimId}`);
           break;
         case 'Mortgages and Liens':
           this.$router.push('/mortgage-liens');

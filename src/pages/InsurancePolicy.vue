@@ -3,19 +3,108 @@
     <div style=" height: calc(100vh - 50px); overflow-y: auto">
       <ClaimDetail />
       <q-card class="q-ma-md q-pa-md  ">
-        <div class="row">
-          <span class=" text-bold col q-ma-xs "> Carrier Info</span>
+        <div class="text-bold row q-pa-sm">
+          Carrier Info
+          <q-icon
+            v-if="selectedClaimCarrier.carrier"
+            size="xs"
+            name="create "
+            color="primary"
+            @click="onAddCarrierClick"
+            class="q-ml-auto"
+          ></q-icon>
+          <q-icon
+            v-if="selectedClaimCarrier.carrier"
+            class="q-my-auto q-ml-sm"
+            name="delete"
+            size="xs"
+            color="primary"
+            @click="onDelete(selectedClaimCarrier.carrier.id)"
+          />
           <img
-            class="q-mx-xs  q-my-auto"
+            v-if="!selectedClaimCarrier.carrier"
+            class="q-ml-auto"
             src="~assets/add.svg"
             alt="add_icon"
             height="20px"
+            @click="onAddCarrierClick"
           />
         </div>
-        <div class="q-pa-sm" v-if="policy.policyInfo.carrier.id">
-          {{
-            policy.policyInfo.carrier ? policy.policyInfo.carrier.value : '-'
-          }}
+
+        <div class="q-pa-sm" v-if="selectedClaimCarrier.carrier">
+          <div class="text-bold row" v-model="carrierName">
+            {{ selectedClaimCarrier.carrier.name }}
+          </div>
+
+          <div class="row q-mt-sm">
+            <span
+              class="col-7 heading-light"
+              v-if="selectedClaimCarrier.carrier.address"
+            >
+              <div class="row">
+                {{
+                  selectedClaimCarrier.carrier.address.houseNumber
+                    ? selectedClaimCarrier.carrier.address.houseNumber
+                    : '-'
+                }}
+                ,
+                {{
+                  selectedClaimCarrier.carrier.address.streetAddress
+                    ? selectedClaimCarrier.carrier.address.streetAddress
+                    : '-'
+                }}
+              </div>
+              <div>
+                {{
+                  selectedClaimCarrier.carrier.address.addressLocality
+                    ? selectedClaimCarrier.carrier.address.addressLocality
+                    : '-'
+                }}
+                ,
+                {{
+                  selectedClaimCarrier.carrier.address.addressRegion
+                    ? selectedClaimCarrier.carrier.address.addressRegion
+                    : '-'
+                }}
+              </div>
+              <div class="row">
+                {{
+                  selectedClaimCarrier.carrier.address.addressCountry
+                    ? selectedClaimCarrier.carrier.address.addressCountry
+                    : '-'
+                }},
+                {{
+                  selectedClaimCarrier.carrier.address.postalCode
+                    ? selectedClaimCarrier.carrier.address.postalCode
+                    : '-'
+                }}
+              </div>
+              <div
+                class="q-mt-xs"
+                v-for="phone in selectedClaimCarrier.carrier.phoneNumber"
+              >
+                <span v-if="phone.type"
+                  >{{ phone.type ? phone.type : '-' }} :
+                </span>
+                <span
+                  class="clickLink"
+                  @click="onPhoneNumberClick(phone.number, $event)"
+                  >{{ phone.number ? phone.number : '-' }}</span
+                >
+              </div>
+              <span
+                class="click-link"
+                @click="
+                  onEmailClick(selectedClaimCarrier.carrier.email, $event)
+                "
+                >{{
+                  selectedClaimCarrier.carrier.email
+                    ? selectedClaimCarrier.carrier.email
+                    : '-'
+                }}</span
+              >
+            </span>
+          </div>
         </div>
         <div v-else class="heading-light col q-ma-xs">
           Carrier info not added yet.
@@ -249,6 +338,41 @@
         </div>
       </q-card>
     </q-dialog>
+    <q-dialog
+      v-model="carriersListDialog"
+      persistent
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <CustomBar
+          @closeDialog="carriersListDialog = false"
+          :dialogName="'Select Carrier'"
+        />
+        <CarriersList
+          @addCarrier="openAddCarrierDialog"
+          :carrierDetails="false"
+          :selectCarrier="true"
+          @afterSelecting="selecting()"
+          :carrierName="carrierName"
+        />
+      </q-card>
+    </q-dialog>
+    <q-dialog
+      v-model="addCarrierDialog"
+      persistent
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <AddCarrier
+          @closeDialog="addCarrierDialog = false"
+          :componentName="constants.industries.CARRIER"
+        />
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -258,7 +382,11 @@ import CustomBar from 'components/CustomBar';
 import ClaimDetail from 'components/ClaimDetail';
 import moment from 'moment';
 import InsuranceInfo from 'components/InsuranceInfo';
+import AddCarrier from 'components/AddCarrier';
+import CarriersList from 'components/CarriersList';
 import { validateDate, successMessage } from '@utils/validation';
+import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
+
 import { dateToSend } from '@utils/date';
 import { date } from 'quasar';
 import { constants } from '@utils/constant';
@@ -266,9 +394,26 @@ import { constants } from '@utils/constant';
 export default {
   name: 'InsurancePolicy',
 
-  components: { CustomBar, InsuranceInfo, ClaimDetail },
+  components: {
+    CustomBar,
+    InsuranceInfo,
+    ClaimDetail,
+    CarriersList,
+    AddCarrier
+  },
   data() {
     return {
+      carrierName: '',
+      claimID: '',
+      carrierDetails: '',
+      carriersListDialog: false,
+      addCarrierDialog: false,
+      searchText: '',
+      constants: constants,
+      params: {
+        name: ''
+      },
+      carrierListDialog: false,
       insuranceInfoDialog: false,
       insuranceDetails: {
         hasClaimBeenFilledToggle: false,
@@ -309,7 +454,10 @@ export default {
       'policy',
       'policyTypes',
       'policyCategories',
-      'selectedClaimId'
+      'selectedClaimId',
+      'selectedClaimCarrier',
+      'selectedClaimId',
+      'selectedClaimCarrier'
     ]),
     formatDate(value) {
       if (value) {
@@ -319,10 +467,8 @@ export default {
   },
 
   async created() {
-    if (this.selectedClaimId) {
-      await this.getPolicy(this.selectedClaimId);
-    } else {
-      this.$router.push('/clients');
+    if (this.$route.params.id) {
+      this.getPolicy(this.$route.params.id);
     }
 
     this.getPolicyCategory();
@@ -398,10 +544,25 @@ export default {
       'getPolicy',
       'getPolicyTypes',
       'getPolicyCategory',
-      'editInsurancePolicy'
+      'editInsurancePolicy',
+      'getSelectedClaim',
+      'getClaimCarrier',
+      'deleteClaimCarrier'
     ]),
     validateDate,
     successMessage,
+    onEmailClick,
+    onPhoneNumberClick,
+
+    async onDelete(id) {
+      const carrier = {
+        claimID: this.selectedClaimId,
+        carrierID: id
+      };
+      await this.deleteClaimCarrier(carrier);
+      this.carrierName = '';
+      this.$router.push(`/insurance-policy/${this.selectedClaimId}`);
+    },
     async onSaveButtonClick() {
       let success = false;
       success = await this.$refs.insuranceInfoForm.validate();
@@ -480,6 +641,28 @@ export default {
         this.$router.push('/insurance-policy');
         this.successMessage(constants.successMessages.INSURER_AND_POLICY);
       }
+    },
+    async selecting() {
+      this.carriersListDialog = false;
+      await this.getClaimCarrier(this.selectedClaimId);
+    },
+    async onSelectCarrier() {},
+    openAddCarrierDialog(e) {
+      this.addCarrierDialog = e;
+    },
+    onSearchBackButtonClick() {
+      this.searchText = '';
+      this.search();
+    },
+    onAddButtonClick() {
+      this.$emit('addCarrier', true);
+    },
+    search(event) {
+      this.params.name = event;
+    },
+    onAddCarrierClick() {
+      this.carriersListDialog = true;
+      this.carrierName = this.selectedClaimCarrier.carrier.name;
     }
   }
 };
