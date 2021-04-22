@@ -46,113 +46,197 @@
     </q-dialog>
 
     <!-- Expert Vendor Info -->
-    <div class="row">
-      <span class="form-heading">Do any vendors need to be assigned?</span>
-      <q-toggle
-        class="q-ml-auto"
-        v-model="expertVendorInfo.vendorExpertHiredToggle"
-        @input="onExpertVendorToggleOff"
-      />
-    </div>
-    <!-- Assigning Multiple Expert Vendors -->
-    <div
-      v-for="(item, index) in expertVendorInfo.industry"
-      v-if="expertVendorInfo.industry.length >= 0"
-    >
-      <q-select
-        v-if="expertVendorInfo.vendorExpertHiredToggle"
-        class="full-width"
-        v-model="expertVendorInfo.industry[index].value"
-        use-input
-        input-debounce="0"
-        option-label="name"
-        label="Industry"
-        :options="expertVendorInfo.vendorIndustriesOptions"
-        option-value="name"
-        @filter="searchFilterBy"
-        @input="setVendorIndustryName(index)"
-        behavior="menu"
-        emit-value
-        map-options
-        lazy-rules
-        :rules="[
-          val => (val && val.length > 0) || 'Please fill the Vendor Industry'
-        ]"
-      >
-        <template v-slot:no-option>
-          <q-item>
-            <q-item-section class="text-black"> No results </q-item-section>
-          </q-item>
-        </template>
-      </q-select>
-      <!-- This will Show the input when industry Type is Others -->
-      <q-input
-        v-model="industryType.value"
-        v-if="expertVendorInfo.industry[index].value == 'Others'"
-        label="Enter New Industry Type"
-        dense
-        class="input-extra-padding"
-      />
-      <q-btn
-        class="q-mt-md"
-        v-if="expertVendorInfo.industry[index].value == 'Others'"
-        label="Add"
-        outline
-        @click="addAnotherIndustry(index)"
-      />
+    <q-card class="q-pa-sm">
+      <div class="row">
+        <p class="form-heading q-mx-none q-my-auto">
+          Has the insured hired any vendors?
+        </p>
+        <q-toggle
+          class="q-ml-auto"
+          v-model="expertVendorInfo.anyOtherExpertHiredToggle"
+        />
+      </div>
+      <!-- Assigning Multiple Expert Vendors -->
 
       <div
-        v-if="expertVendorInfo.vendorExpertHiredToggle"
-        class="custom-select"
-        v-model="expertVendorInfo.vendors[index].value"
-        @click="
-          onAddVendorDialogClick(constants.industries.EXPERTVENDOR, index)
-        "
+        v-for="(item, index) in expertVendorInfo.industry"
+        v-if="expertVendorInfo.anyOtherExpertHiredToggle"
       >
-        <div class="select-text">
-          {{
-            expertVendorInfo.id
-              ? expertVendorInfo.vendors[index].value
-              : 'Select Vendor'
-          }}
+        <q-select
+          class="full-width"
+          v-model="expertVendorInfo.industry[index].value"
+          use-input
+          input-debounce="0"
+          option-label="name"
+          label="Industry"
+          :options="expertVendorInfo.vendorIndustriesOptions"
+          option-value="name"
+          @filter="searchFilterBy"
+          @input="setVendorIndustryName(index)"
+          behavior="menu"
+          emit-value
+          map-options
+          lazy-rules
+          :rules="[
+            val => (val && val.length > 0) || 'Please fill the Vendor Industry'
+          ]"
+        >
+          <template v-slot:no-option>
+            <q-item>
+              <q-item-section class="text-black"> No results </q-item-section>
+            </q-item>
+          </template>
+        </q-select>
+        <!-- This will Show the input when industry Type is Others -->
+        <q-input
+          v-model="industryType.value"
+          v-if="expertVendorInfo.industry[index].value == 'Others'"
+          label="Enter New Industry Type"
+          dense
+          class="input-extra-padding"
+        />
+        <q-btn
+          class="q-my-md"
+          v-if="expertVendorInfo.industry[index].value == 'Others'"
+          label="Add"
+          outline
+          @click="addAnotherIndustry(index)"
+        />
+
+        <div
+          v-if="expertVendorInfo.anyOtherExpertHiredToggle"
+          class="custom-select"
+          v-model="expertVendorInfo.vendors[index].value"
+          @click="
+            onAddVendorDialogClick(constants.industries.EXPERTVENDOR, index)
+          "
+        >
+          <div class="select-text">
+            {{
+              expertVendorInfo.id
+                ? expertVendorInfo.vendors[index].value
+                : 'Select Vendor'
+            }}
+          </div>
         </div>
       </div>
-    </div>
-    <q-btn
-      v-if="expertVendorInfo.vendorExpertHiredToggle"
-      class="q-ma-none q-mb-sm"
-      size="sm"
-      label="Add More"
-      color="primary"
-      @click="addAnotherVendor()"
-    />
-    <div class="row">
-      <p class="form-heading q-mx-none q-my-auto">Is Insured hired?</p>
-      <q-toggle
-        class="q-ml-auto"
-        v-model="expertVendorInfo.anyOtherExpertHiredToggle"
+      <q-btn
+        v-if="expertVendorInfo.anyOtherExpertHiredToggle"
+        class="q-ma-none q-mb-sm"
+        size="sm"
+        label="Add More"
+        color="primary"
+        @click="addAnotherVendor()"
       />
-    </div>
-    <span class="form-heading">Notes</span>
+    </q-card>
+    <q-card
+      class="q-pa-sm q-mt-sm"
+      v-if="!expertVendorInfo.anyOtherExpertHiredToggle"
+    >
+      <div class="row">
+        <span class="form-heading"
+          >Does Claim Guru need to assign any vendors?</span
+        >
+        <q-toggle
+          class="q-ml-auto"
+          v-model="expertVendorInfo.vendorExpertHiredToggle"
+          @input="onExpertVendorToggleOff"
+        />
+      </div>
+      <div
+        v-for="(item, index) in expertVendorInfo.industry"
+        v-if="expertVendorInfo.vendorExpertHiredToggle"
+      >
+        <q-select
+          class="full-width"
+          v-model="expertVendorInfo.industry[index].value"
+          use-input
+          input-debounce="0"
+          option-label="name"
+          label="Industry"
+          :options="expertVendorInfo.vendorIndustriesOptions"
+          option-value="name"
+          @filter="searchFilterBy"
+          @input="setVendorIndustryName(index)"
+          behavior="menu"
+          emit-value
+          map-options
+          lazy-rules
+          :rules="[
+            val => (val && val.length > 0) || 'Please fill the Vendor Industry'
+          ]"
+        >
+          <template v-slot:no-option>
+            <q-item>
+              <q-item-section class="text-black"> No results </q-item-section>
+            </q-item>
+          </template>
+        </q-select>
+        <!-- This will Show the input when industry Type is Others -->
+        <q-input
+          v-model="industryType.value"
+          v-if="expertVendorInfo.industry[index].value == 'Others'"
+          label="Enter New Industry Type"
+          dense
+          class="input-extra-padding"
+        />
+        <q-btn
+          class="q-my-md"
+          v-if="expertVendorInfo.industry[index].value == 'Others'"
+          label="Add"
+          outline
+          @click="addAnotherIndustry(index)"
+        />
 
-    <div>
-      <textarea
-        rows="5"
-        class="full-width"
-        v-model="expertVendorInfo.notes"
-        style="resize: none"
+        <div
+          v-if="expertVendorInfo.vendorExpertHiredToggle"
+          class="custom-select"
+          v-model="expertVendorInfo.vendors[index].value"
+          @click="
+            onAddVendorDialogClick(constants.industries.EXPERTVENDOR, index)
+          "
+        >
+          <div class="select-text">
+            {{
+              expertVendorInfo.id
+                ? expertVendorInfo.vendors[index].value
+                : 'Select Vendor'
+            }}
+          </div>
+        </div>
+      </div>
+      <q-btn
+        v-if="expertVendorInfo.anyOtherExpertHiredToggle"
+        class="q-ma-none q-mb-sm"
+        size="sm"
+        label="Add More"
+        color="primary"
+        @click="addAnotherVendor()"
       />
-    </div>
+    </q-card>
 
-    <div>
-      <span class="form-heading">Internal Notes</span>
-      <textarea
-        rows="5"
-        class="full-width"
-        v-model="expertVendorInfo.internalNotes"
-        style="resize: none"
-      />
-    </div>
+    <q-card class="q-pa-sm q-mt-sm">
+      <span class="form-heading">Notes</span>
+
+      <div>
+        <textarea
+          rows="5"
+          class="full-width"
+          v-model="expertVendorInfo.notes"
+          style="resize: none"
+        />
+      </div>
+
+      <div>
+        <span class="form-heading">Internal Notes</span>
+        <textarea
+          rows="5"
+          class="full-width"
+          v-model="expertVendorInfo.internalNotes"
+          style="resize: none"
+        />
+      </div>
+    </q-card>
   </div>
 </template>
 <script>

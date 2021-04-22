@@ -45,215 +45,233 @@
       </q-card>
     </q-dialog>
     <!-- Contract Info -->
-    <span class="form-heading">Contract Date</span>
-    <div class="full-width">
-      <q-input
-        class="required"
-        v-model="contractInfo.contractDate"
-        mask="##/##/####"
-        label="MM/DD/YYYY"
-        lazy-rules
-        :rules="[
-          val => (validateDate(val) && val && val.length > 0) || 'Invalid date!'
-        ]"
-      >
-        <template v-slot:append>
-          <q-icon name="event" size="sm" color="primary" class="cursor-pointer">
-            <q-popup-proxy
-              ref="qDateProxy"
-              transition-show="scale"
-              transition-hide="scale"
-            >
-              <q-date
-                v-model="contractInfo.contractDate"
-                @input="() => $refs.qDateProxy.hide()"
-                mask="MM/DD/YYYY"
-              ></q-date>
-            </q-popup-proxy>
-          </q-icon>
-        </template>
-      </q-input>
-    </div>
-
-    <br />
-    <span class="form-heading">Date of First Contact</span>
-    <div class="full-width">
-      <q-input
-        v-model="contractInfo.firstContractDate"
-        mask="##/##/####"
-        label="MM/DD/YYYY"
-        lazy-rules
-        :rules="[val => validateDate(val) || 'Invalid date!']"
-      >
-        <template v-slot:append>
-          <q-icon name="event" size="sm" color="primary" class="cursor-pointer">
-            <q-popup-proxy
-              ref="qDateProxy4"
-              transition-show="scale"
-              transition-hide="scale"
-            >
-              <q-date
-                v-model="contractInfo.firstContractDate"
-                @input="() => $refs.qDateProxy4.hide()"
-                mask="MM/DD/YYYY"
-              ></q-date>
-            </q-popup-proxy>
-          </q-icon>
-        </template>
-      </q-input>
-    </div>
-    <span class="form-heading">Time Of First Contact</span>
-    <div class="full-width">
-      <q-input
-        v-model="contractInfo.time"
-        now
-        format24h
-        lazy-rules
-        :rules="[val => (val && val.length > 0) || 'Invalid time!']"
-      >
-        <template v-slot:append>
-          <q-icon name="access_time" class="cursor-pointer">
-            <q-popup-proxy
-              transition-show="scale"
-              transition-hide="scale"
-              ref="qTimeProxy"
-            >
-              <q-time
-                mask="hh[h and ]mm[ minutes (]A)"
-                v-model="contractInfo.time"
-                @input="closeTimeDialog"
-              >
-                <div class="row items-center justify-end">
-                  <q-btn
-                    v-close-popup
-                    label="Close"
-                    color="primary"
-                    flat
-                  ></q-btn>
-                </div>
-              </q-time>
-            </q-popup-proxy>
-          </q-icon>
-        </template>
-      </q-input>
-    </div>
-    <div class="row">
-      <q-btn-toggle
-        v-model="contractInfo.buttonGroup"
-        push
-        glossy
-        toggle-color="primary"
-        :options="[
-          { label: ' $', value: 'dollar' },
-          { label: ' %', value: 'percentage' },
-          { value: 'update', icon: 'update' }
-        ]"
-      ></q-btn-toggle>
-    </div>
-
-    <div class="row" style="align-items: center">
-      <q-input
-        class="q-ml-auto full-width required"
-        mask="#.#"
-        type="number"
-        v-model.number="contractInfo.claimFeeRate"
-        label="Claim Fee Rate"
-        style="width: 50%"
-        :rules="[val => val || 'Please fill the Fee rate ']"
-      >
-        <template v-slot:prepend v-if="contractInfo.buttonGroup == 'dollar'">
-          <q-icon name="$" color="primary"></q-icon>
-        </template>
-
-        <template
-          v-slot:append
-          v-else-if="contractInfo.buttonGroup == 'percentage'"
+    <q-card class="q-pa-sm">
+      <span class="form-heading">Contract Date</span>
+      <div class="full-width">
+        <q-input
+          class="required"
+          v-model="contractInfo.contractDate"
+          mask="##/##/####"
+          label="MM/DD/YYYY"
+          lazy-rules
+          :rules="[
+            val =>
+              (validateDate(val) && val && val.length > 0) || 'Invalid date!'
+          ]"
         >
-          <q-icon name="%" color="primary"></q-icon>
-        </template>
-        <template v-slot:append v-else>
-          <span class="form-heading">/hour</span>
-        </template></q-input
-      >
-    </div>
-    <br />
-    <span class="form-heading"> Source Of Claim </span>
-    <div>
-      <q-select
-        class="required"
-        v-model="contractInfo.sourceDetails.type"
-        :options="leadSources"
-        option-label="name"
-        option-value="value"
-        options-dense
-        emit-value
-        map-options
-        options-dense
-        @input="onChangingSourceType()"
-        :rules="[
-          val => (val && val.length > 0) || 'Please select the Source type'
-        ]"
-      />
-      <q-input
-        v-if="
-          contractInfo.sourceDetails.type != constants.industries.VENDOR &&
-            contractInfo.sourceDetails.type != '' &&
-            contractInfo.sourceDetails.type != 'google'
-        "
-        type="text"
-        placeholder="Enter Source details"
-        v-model="contractInfo.sourceDetails.details"
-        lazy-rules
-        :rules="[
-          val => (val && val.length > 0) || 'Please select the Source Detail'
-        ]"
-      />
-      <div
-        v-else-if="
-          contractInfo.sourceDetails.type == constants.industries.VENDOR
-        "
-        class="custom-select"
-        @click="onAddVendorDialogClick(constants.industries.VENDOR)"
-      >
-        <div class="select-text">
-          {{
-            contractInfo.sourceDetails.id
-              ? contractInfo.sourceDetails.details
-              : 'Select Lead Source'
-          }}
+          <template v-slot:append>
+            <q-icon
+              name="event"
+              size="sm"
+              color="primary"
+              class="cursor-pointer"
+            >
+              <q-popup-proxy
+                ref="qDateProxy"
+                transition-show="scale"
+                transition-hide="scale"
+              >
+                <q-date
+                  v-model="contractInfo.contractDate"
+                  @input="() => $refs.qDateProxy.hide()"
+                  mask="MM/DD/YYYY"
+                ></q-date>
+              </q-popup-proxy>
+            </q-icon>
+          </template>
+        </q-input>
+      </div>
+      <span class="form-heading">Date of First Contact</span>
+      <div class="full-width">
+        <q-input
+          v-model="contractInfo.firstContractDate"
+          mask="##/##/####"
+          label="MM/DD/YYYY"
+          lazy-rules
+          :rules="[val => validateDate(val) || 'Invalid date!']"
+        >
+          <template v-slot:append>
+            <q-icon
+              name="event"
+              size="sm"
+              color="primary"
+              class="cursor-pointer"
+            >
+              <q-popup-proxy
+                ref="qDateProxy4"
+                transition-show="scale"
+                transition-hide="scale"
+              >
+                <q-date
+                  v-model="contractInfo.firstContractDate"
+                  @input="() => $refs.qDateProxy4.hide()"
+                  mask="MM/DD/YYYY"
+                ></q-date>
+              </q-popup-proxy>
+            </q-icon>
+          </template>
+        </q-input>
+      </div>
+      <span class="form-heading">Time Of First Contact</span>
+      <div class="full-width">
+        <q-input
+          v-model="contractInfo.time"
+          now
+          format24h
+          lazy-rules
+          :rules="[val => (val && val.length > 0) || 'Invalid time!']"
+        >
+          <template v-slot:append>
+            <q-icon name="access_time" class="cursor-pointer">
+              <q-popup-proxy
+                transition-show="scale"
+                transition-hide="scale"
+                ref="qTimeProxy"
+              >
+                <q-time
+                  mask="hh[h and ]mm[ minutes (]A)"
+                  v-model="contractInfo.time"
+                  @input="closeTimeDialog"
+                >
+                  <div class="row items-center justify-end">
+                    <q-btn
+                      v-close-popup
+                      label="Close"
+                      color="primary"
+                      flat
+                    ></q-btn>
+                  </div>
+                </q-time>
+              </q-popup-proxy>
+            </q-icon>
+          </template>
+        </q-input>
+      </div>
+    </q-card>
+
+    <q-card class="q-pa-sm q-mt-sm">
+      <div class="row">
+        <q-btn-toggle
+          v-model="contractInfo.buttonGroup"
+          push
+          glossy
+          toggle-color="primary"
+          :options="[
+            { label: ' $', value: 'dollar' },
+            { label: ' %', value: 'percentage' },
+            { value: 'update', icon: 'update' }
+          ]"
+        ></q-btn-toggle>
+      </div>
+
+      <div class="row" style="align-items: center">
+        <q-input
+          class="q-ml-auto full-width required"
+          mask="#.#"
+          type="number"
+          v-model.number="contractInfo.claimFeeRate"
+          label="Claim Fee Rate"
+          style="width: 50%"
+          :rules="[val => val || 'Please fill the Fee rate ']"
+        >
+          <template v-slot:prepend v-if="contractInfo.buttonGroup == 'dollar'">
+            <q-icon name="$" color="primary"></q-icon>
+          </template>
+
+          <template
+            v-slot:append
+            v-else-if="contractInfo.buttonGroup == 'percentage'"
+          >
+            <q-icon name="%" color="primary"></q-icon>
+          </template>
+          <template v-slot:append v-else>
+            <span class="form-heading">/hour</span>
+          </template></q-input
+        >
+      </div>
+    </q-card>
+
+    <q-card class="q-pa-sm q-mt-sm">
+      <span class="form-heading"> Source Of Claim </span>
+      <div>
+        <q-select
+          class="required"
+          v-model="contractInfo.sourceDetails.type"
+          :options="leadSources"
+          option-label="name"
+          option-value="value"
+          options-dense
+          emit-value
+          map-options
+          options-dense
+          @input="onChangingSourceType()"
+          :rules="[
+            val => (val && val.length > 0) || 'Please select the Source type'
+          ]"
+        />
+        <q-input
+          v-if="
+            contractInfo.sourceDetails.type != constants.industries.VENDOR &&
+              contractInfo.sourceDetails.type != '' &&
+              contractInfo.sourceDetails.type != 'google'
+          "
+          type="text"
+          placeholder="Enter Source details"
+          v-model="contractInfo.sourceDetails.details"
+          lazy-rules
+          :rules="[
+            val => (val && val.length > 0) || 'Please select the Source Detail'
+          ]"
+        />
+        <div
+          v-else-if="
+            contractInfo.sourceDetails.type == constants.industries.VENDOR
+          "
+          class="custom-select"
+          @click="onAddVendorDialogClick(constants.industries.VENDOR)"
+        >
+          <div class="select-text">
+            {{
+              contractInfo.sourceDetails.id
+                ? contractInfo.sourceDetails.details
+                : 'Select Lead Source'
+            }}
+          </div>
         </div>
       </div>
-    </div>
-    <br />
-    <span class="form-heading">Accept or Cancel Claim ?</span>
-    <p>
-      If this claim will not be accepted, you can mark the claim as being
-      "Cancelled",which will close the claim upon creation. This allows you to
-      record the client and property information in Claim Guru for historical
-      purposes.
-    </p>
-    <div class="row">
-      <p class="q-mx-none q-my-auto form-heading">Cancelled?</p>
-      <q-toggle class="q-ml-auto" v-model="contractInfo.cancelledToggle" />
-    </div>
-    <div class="full-width">
-      <q-select
-        v-model="contractInfo.reasonForCancellation"
-        :options="reasonForCancellation"
-        label="Reason For Cancellation"
-        options-dense
-      ></q-select>
-    </div>
-    <br />
-    <span class="form-heading">Reason For Cancellation</span>
-    <div class="floating-label">
-      <textarea
-        rows="5"
-        class="full-width"
-        v-model="contractInfo.reasonForCancellationText"
-        style="resize: none"
-      ></textarea>
-    </div>
+    </q-card>
+    <q-card class="q-pa-sm q-mt-sm">
+      <span class="form-heading">Accept or Cancel Claim ?</span>
+      <p>
+        If this claim will not be accepted, you can mark the claim as being
+        "Cancelled",which will close the claim upon creation. This allows you to
+        record the client and property information in Claim Guru for historical
+        purposes.
+      </p>
+      <div class="row">
+        <p class="q-mx-none q-my-auto form-heading">Cancelled?</p>
+        <q-toggle class="q-ml-auto" v-model="contractInfo.cancelledToggle" />
+      </div>
+      <div class="full-width">
+        <q-select
+          v-model="contractInfo.reasonForCancellation"
+          :options="reasonForCancellation"
+          label="Reason For Cancellation"
+          options-dense
+        ></q-select>
+      </div>
+    </q-card>
+    <q-card class="q-pa-sm q-mt-sm">
+      <span class="form-heading">Reason For Cancellation</span>
+      <div class="floating-label">
+        <textarea
+          rows="5"
+          class="full-width"
+          v-model="contractInfo.reasonForCancellationText"
+          style="resize: none"
+        ></textarea>
+      </div>
+    </q-card>
   </div>
 </template>
 <script>
