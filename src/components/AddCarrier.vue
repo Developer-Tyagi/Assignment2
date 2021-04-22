@@ -326,6 +326,8 @@ export default {
         this.getCarriers();
         if (response) {
           this.carrier.id = response.id;
+
+          this.$emit('onAddCarrier', this.carrier.id);
           this.$emit(
             'onCloseAddVendor',
             true,
@@ -334,7 +336,7 @@ export default {
           );
           this.closeDialog(true);
         }
-      } else {
+      } else if (success) {
         this.carrier.id = this.selectedCarrier.id;
         await this.editCarrierInfo(this.carrier);
         this.getCarrierDetails(this.carrier.id);
