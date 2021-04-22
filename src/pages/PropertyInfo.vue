@@ -121,6 +121,12 @@
                       class="q-ml-sm q-mt-xs"
                       @click="editPropertyAddress(i - 1)"
                     ></q-icon>
+                    <q-icon
+                      size="sm"
+                      name="delete"
+                      color="primary"
+                      class="q-ml-sm q-mt-xs"
+                    />
                   </div>
 
                   <div
