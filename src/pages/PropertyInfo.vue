@@ -126,6 +126,7 @@
                       name="delete"
                       color="primary"
                       class="q-ml-sm q-mt-xs"
+                      @click="deletePropertyAddress(i - 1)"
                     />
                   </div>
 
@@ -365,7 +366,8 @@ export default {
       'getPropertyTypes',
       'addPropertyAddress',
       'getSingleClientDetails',
-      'editedPropertyAddress'
+      'editedPropertyAddress',
+      'deletedPropertyAddress'
     ]),
     ...mapMutations(['setSelectedClaimId']),
     onClickClaimNumber(claim) {
@@ -380,6 +382,17 @@ export default {
 
       data.machineValue = obj.machineValue;
       data.value = obj.name;
+    },
+    // Deleting Property Address
+
+    async deletePropertyAddress(index) {
+      const payload = {
+        id: this.selectedClientId,
+        propertyId: this.setClientProperty[index].id
+      };
+
+      await this.deletedPropertyAddress(payload);
+      await this.getSingleClientProperty(this.selectedClientId);
     },
     // Editing Property Address
     editPropertyAddress(index) {
