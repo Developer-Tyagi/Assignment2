@@ -147,6 +147,42 @@ export async function addPropertyAddress({ dispatch, state }, payload) {
     });
   }
 }
+export async function editedPropertyAddress({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.put(
+      `/clients/${payload.id}/addresses/${payload.propertyId}`,
+      buildApiData('addresses', payload.clientData)
+    );
+    dispatch('setLoading', false);
+    return data;
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+  }
+}
+export async function deletedPropertyAddress({ commit, dispatch }, payload) {
+  dispatch('setLoading', true);
+  try {
+    await request.del(`/clients/${payload.id}/addresses/${payload.propertyId}`);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Property  Deleted !'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'Error in deleting Property.'
+    });
+  }
+}
 
 export async function editClient({ dispatch, state }, payload) {
   dispatch('setLoading', true);

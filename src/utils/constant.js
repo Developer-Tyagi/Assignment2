@@ -21,6 +21,7 @@ export const constants = {
     ESTIMATOR: 'Estimator Created Successfully !',
     MORTGAGE: 'Mortage Created Successfully !',
     VENDOR: 'Vendor Created Successfully !',
-    CARRIER: 'Carrier Added Successfully !'
+    CARRIER: 'Carrier Added Successfully !',
+    EDIT_PROPERTY_ADDRESS: 'Property Address Edited Successfully !'
   }
 };
