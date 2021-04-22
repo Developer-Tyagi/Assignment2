@@ -1413,7 +1413,7 @@ export default {
           },
           phoneNumbers: this.phoneNumber
         },
-        properties: {
+        property: {
           name: this.lossAddressName,
           addressCountry: this.clientAddressDetails.addressCountry,
           addressLocality: this.clientAddressDetails.addressLocality,
