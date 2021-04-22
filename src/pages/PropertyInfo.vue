@@ -146,14 +146,6 @@
                         >
                           {{ claim.number ? claim.number : '-' }}
                         </div>
-                        <div>
-                          <q-icon
-                            size="xs"
-                            name="create"
-                            color="primary"
-                            class="q-ml-sm"
-                          ></q-icon>
-                        </div>
                       </div>
                     </div>
                     <!-- badge -->
@@ -383,6 +375,7 @@ export default {
       data.machineValue = obj.machineValue;
       data.value = obj.name;
     },
+
     // Deleting Property Address
 
     async deletePropertyAddress(index) {
