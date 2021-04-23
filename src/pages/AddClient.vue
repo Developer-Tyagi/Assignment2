@@ -1676,7 +1676,7 @@ export default {
       text-transform: capitalize;
       text-align: center;
       font-size: x-small;
-      margin-top: 10pxasd;
+      margin-top: 10px;
     }
   }
 
