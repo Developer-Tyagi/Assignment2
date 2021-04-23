@@ -1411,20 +1411,20 @@ export default {
           mailingAddress: {
             ...this.mailingAddressDetails
           },
-          phoneNumbers: this.phoneNumber,
-          properties: {
-            name: this.lossAddressName,
-            addressCountry: this.clientAddressDetails.addressCountry,
-            addressLocality: this.clientAddressDetails.addressLocality,
-            addressRegion: this.clientAddressDetails.addressRegion,
-            postalCode: this.clientAddressDetails.postalCode,
-            streetAddress: this.clientAddressDetails.streetAddress,
-            houseNumber: this.clientAddressDetails.houseNumber,
-            propertyType: {
-              ...this.property
-            },
-            propertyDesc: this.propertyDescription
-          }
+          phoneNumbers: this.phoneNumber
+        },
+        property: {
+          name: this.lossAddressName,
+          addressCountry: this.clientAddressDetails.addressCountry,
+          addressLocality: this.clientAddressDetails.addressLocality,
+          addressRegion: this.clientAddressDetails.addressRegion,
+          postalCode: this.clientAddressDetails.postalCode,
+          streetAddress: this.clientAddressDetails.streetAddress,
+          houseNumber: this.clientAddressDetails.houseNumber,
+          propertyType: {
+            ...this.property
+          },
+          propertyDesc: this.propertyDescription
         }
       };
       /* if coInsuredDetails toggle is off it well not send the coInsured details */
@@ -1435,17 +1435,20 @@ export default {
         delete payload.leadID;
       }
       const response = await this.addClient(payload);
-      this.successMessage(constants.successMessages.CLIENT);
       this.setSelectedLead();
       if (response && response.id) {
-        this.setPayloadForClaim(response.id);
+        const responseData = {
+          id: response.id,
+          propertyId: response.attributes.propertyID
+        };
+        this.setPayloadForClaim(responseData);
       }
     },
     /*Payload for Claim*/
-    async setPayloadForClaim(id) {
+    async setPayloadForClaim(responseData) {
       const payload = {
         client: {
-          id: id,
+          id: responseData.id,
           fname: this.insuredDetails.fname,
           lname: this.insuredDetails.lname
         },
@@ -1504,11 +1507,8 @@ export default {
         },
         mortgageInfo: this.mortgageObject.mortgageDetails,
         lossInfo: {
-          isNewAddress:
-            this.lossInfo.lossAddressNameDropdown == 'Others' ? true : false,
-          lossAddressName: this.lossInfo.lossAddressName,
-          address: {
-            ...this.clientAddressDetails
+          property: {
+            id: responseData.propertyId
           },
 
           claimReason: {
@@ -1538,14 +1538,11 @@ export default {
           isPPIF: this.lossInfo.wasAppifProvidedToTheInsuredToggle,
           isNeedPPIF: this.lossInfo
             .doesTheOfficeNeedToProvidePpifToTheInsuredToggle,
-
           hasHomeMortgage: this.lossInfo.isMortgageHomeToggle,
           isSecondClaim: false
         },
         expertInfo: {
-          isVendorAssigned: this.expertVendorInfo.vendorExpertHiredToggle,
           vendor: this.expertVendorInfo.vendors,
-          isInsuredHired: this.expertVendorInfo.anyOtherExpertHiredToggle,
           notes: this.expertVendorInfo.notes,
           internalNotes: this.expertVendorInfo.internalNotes
         },
@@ -1679,7 +1676,7 @@ export default {
       text-transform: capitalize;
       text-align: center;
       font-size: x-small;
-      margin-top: 10pxasd;
+      margin-top: 10px;
     }
   }
 
