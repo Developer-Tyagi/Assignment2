@@ -10,12 +10,18 @@
 
       <div class="mobile-container-page ">
         <ClaimDetail />
-        <q-card class="q-ma-md q-pa-md" v-if="selectedMortgage">
-          <span class="text-bold text-h7 q-ml-xs" v-model="nameMortgageDone">
+        <q-card class="q-ma-md q-pa-md" v-if="selectedMortgage.id">
+          <span
+            class="text-bold text-h7 q-ml-xs"
+            v-if="selectedMortgage"
+            v-model="nameMortgageDone"
+          >
             {{ selectedMortgage.name ? selectedMortgage.name : '-' }}
           </span>
           <div class="row q-mt-sm">
-            <span class="heading-light col-3">Address Details </span>
+            <span class="heading-light col-3" v-if="selectedMortgage.address"
+              >Address Details
+            </span>
 
             <span class="col-7 q-ml-md" v-if="selectedMortgage.address">
               {{
@@ -79,6 +85,7 @@
             <span class="col q-ml-md" v-if="phone.type">
               {{ phone.type }} :
               <span
+                v-if="phone.number"
                 class="clickLink "
                 @click="onPhoneNumberClick(phone.number, $event)"
                 >{{ phone.number ? phone.number : '-' }}</span
