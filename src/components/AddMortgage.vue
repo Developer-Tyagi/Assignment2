@@ -324,6 +324,7 @@ export default {
         this.getMortgages();
         if (response) {
           this.mortgage.id = response.id;
+          this.$emit('onSelectMortgage', this.mortgage.id);
           this.$emit(
             'onCloseAddVendor',
             true,

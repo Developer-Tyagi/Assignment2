@@ -23,6 +23,7 @@ export async function addClaimMortgage({ dispatch, state }, payload) {
       '/mortgages',
       buildApiData('mortgages', payload)
     );
+    // commit('setSelectedMortgage');
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'positive',

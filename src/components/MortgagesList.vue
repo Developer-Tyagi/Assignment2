@@ -35,7 +35,7 @@
         style="overflow-y: auto;"
       >
         <q-item-section v-if="mortgageDetails">
-          <span class="text-bold" @click="onVendorNameClick(mortgage)">{{
+          <span class="text-bold" @click="onMortgageNameClick(mortgage)">{{
             mortgage.name
           }}</span>
           <div v-if="mortgage.address">
@@ -93,8 +93,9 @@
             >{{ mortgage.email }}</span
           >
         </q-item-section>
-        <span v-else
+        <q-item-section v-else @click="onSelectMortgage(mortgage.id)"
           ><span class="text-bold">{{ mortgage.name }}</span>
+
           <div v-if="mortgage.address">
             <div>
               {{ mortgage.address ? mortgage.address.houseNumber : '-' }}
@@ -121,13 +122,6 @@
                   ? mortgage.address.addressCountry
                   : '-'
               }}
-              <q-icon
-                name="place"
-                class="q-ml-auto "
-                color="primary"
-                size="sm"
-                @click="sendMap(mortgage.address)"
-              ></q-icon>
             </div>
           </div>
           <div class="q-mt-xs" v-for="phone in mortgage.phoneNumber">
@@ -138,7 +132,13 @@
               >{{ phone.number }}</span
             >
           </div>
-        </span>
+        </q-item-section>
+        <q-icon
+          v-if="mortgage.name === demo"
+          name="done"
+          size="xs"
+          class="q-ml-auto"
+        />
       </div>
     </div>
   </div>
@@ -148,7 +148,7 @@ import { mapActions, mapGetters } from 'vuex';
 import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
 export default {
   name: 'MortgagesList',
-  props: ['mortgageDetails'],
+  props: ['mortgageDetails', 'demo'],
   data() {
     return {
       searchText: '',
@@ -158,7 +158,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['mortgages'])
+    ...mapGetters(['mortgages', 'selectedMortgage'])
   },
 
   mounted() {
@@ -166,7 +166,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['getMortgages']),
+    ...mapActions(['getMortgages', 'getMortgageDetails']),
     onSearchBackButtonClick() {
       this.searchText = '';
       this.search();
@@ -175,8 +175,12 @@ export default {
     onPhoneNumberClick,
     sendMap,
 
-    onVendorNameClick(mortgage) {
+    onMortgageNameClick(mortgage) {
       this.$router.push('/mortgage-details/' + mortgage.id);
+    },
+    async onSelectMortgage(id) {
+      await this.getMortgageDetails(id);
+      this.$emit('onCloseMortgageSelect', true);
     },
 
     search(event) {
