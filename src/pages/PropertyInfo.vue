@@ -63,7 +63,7 @@
                         height="160"
                       />
                     </div>
-                    <div class="col-6 q-pa-sm">
+                    <div class=" col-5 q-pa-sm">
                       <div class="heading-light">Property Name</div>
                       <div>
                         {{
@@ -105,29 +105,30 @@
                       <div>
                         <div class="heading-light">
                           {{
-                            editSelectedClient.attributes.meta
-                              ? editSelectedClient.attributes.meta.openClaims
-                              : 0
+                            setClientProperty[i - 1].attributes.openClaims
+                              ? setClientProperty[i - 1].attributes.openClaims
+                              : '0'
                           }}
                           - Open Claim
                         </div>
                       </div>
                     </div>
-
-                    <q-icon
-                      size="sm"
-                      name="create"
-                      color="primary"
-                      class="q-ml-sm q-mt-xs"
-                      @click="editPropertyAddress(i - 1)"
-                    ></q-icon>
-                    <q-icon
-                      size="sm"
-                      name="delete"
-                      color="primary"
-                      class="q-ml-sm q-mt-xs"
-                      @click="deletePropertyAddress(i - 1)"
-                    />
+                    <div>
+                      <q-icon
+                        size="sm"
+                        name="create"
+                        color="primary"
+                        class="q-ml-sm q-mt-xs"
+                        @click="editPropertyAddress(i - 1)"
+                      ></q-icon>
+                      <q-icon
+                        size="sm"
+                        name="delete"
+                        color="primary"
+                        class=" q-mt-xs"
+                        @click="deletePropertyAddress(i - 1)"
+                      />
+                    </div>
                   </div>
 
                   <div
@@ -159,7 +160,7 @@
                     <!-- pointer3 -->
                     <div class="row q-ma-md">
                       <div class="col-4 heading-light">Insurane Carrier</div>
-                      <div>Carrier details(Static data)</div>
+                      <div>{{ claim.carrier ? claim.carrier.value : '-' }}</div>
                     </div>
                     <div class="row q-ma-md">
                       <div class="col-4 heading-light">Date of Loss</div>
@@ -173,7 +174,9 @@
                     </div>
                     <div class="row q-ma-md">
                       <div class="col-4 heading-light">Cause Of Loss</div>
-                      <div>Cause Of loss(static date)</div>
+                      <div>
+                        {{ claim.lossCause ? claim.lossCause.value : '-' }}
+                      </div>
                     </div>
                     <q-separator />
                   </div>
