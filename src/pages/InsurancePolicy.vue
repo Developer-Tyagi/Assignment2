@@ -146,24 +146,30 @@
       </q-card>
       <q-card class="q-ma-md q-pa-md  ">
         <div class="row q-mt-xs">
-          <span class="text-bold col "> Policy Info</span>
-          <q-icon name="edit" size="xs" color="primary" class="col-2  " />
+          <span class="text-bold"> Policy Info</span>
+          <q-icon
+            name="edit"
+            size="xs"
+            color="primary"
+            class="q-ml-auto"
+            @click="onEditPolicyInfo"
+          />
         </div>
         <div class=" q-ml-xs">
           <div class="row q-mt-sm">
             <span class="heading-light col"> Policy Number </span>
             <span class="q-ml-md col">
-              {{
-                policy.policyInfo.policyNumber
-                  ? policy.policyInfo.policyNumber
-                  : '-'
-              }}
+              {{ policy.policyInfo.number ? policy.policyInfo.number : '-' }}
             </span>
           </div>
           <div class="row q-mt-xs">
             <span class="heading-light col"> Claim Number </span>
             <span class="q-ml-md col">
-              {{ policy.policyInfo.number ? policy.policyInfo.number : '-' }}
+              {{
+                policy.policyInfo.claimNumber
+                  ? policy.policyInfo.claimNumber
+                  : '-'
+              }}
             </span>
           </div>
           <div class="row q-mt-xs">
@@ -384,7 +390,7 @@ import moment from 'moment';
 import InsuranceInfo from 'components/InsuranceInfo';
 import AddCarrier from 'components/AddCarrier';
 import CarriersList from 'components/CarriersList';
-import { validateDate, successMessage } from '@utils/validation';
+import { validateDate } from '@utils/validation';
 import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
 
 import { dateToSend } from '@utils/date';
@@ -470,74 +476,8 @@ export default {
     if (this.$route.params.id) {
       this.getPolicy(this.$route.params.id);
     }
-
     this.getPolicyCategory();
     this.getPolicyTypes();
-
-    this.insuranceDetails.hasClaimBeenFilledToggle = this.policy.policyInfo
-      .isClaimFiled
-      ? this.policy.policyInfo.isClaimFiled
-      : false;
-
-    this.insuranceDetails.isThisIsForcedPlacedPolicyToggle = this.policy
-      .policyInfo.isForcedPlaced
-      ? this.policy.policyInfo.isForcedPlaced
-      : false;
-
-    this.insuranceDetails.policy.id = this.policy.policyInfo.type.id
-      ? this.policy.policyInfo.type.id
-      : '';
-
-    this.insuranceDetails.policy.value = this.policy.policyInfo.type.value
-      ? this.policy.policyInfo.type.value
-      : '';
-    this.insuranceDetails.policy.machineValue = this.policy.policyInfo.type
-      .machineValue
-      ? this.policy.policyInfo.type.machineValue
-      : '';
-
-    this.insuranceDetails.policyCategory.id = this.policy.policyInfo.category.id
-      ? this.policy.policyInfo.category.id
-      : '';
-
-    this.insuranceDetails.policyCategory.value = this.policy.policyInfo.category
-      .value
-      ? this.policy.policyInfo.category.value
-      : '';
-    this.insuranceDetails.policyCategory.machineValue = this.policy.policyInfo
-      .category.machineValue
-      ? this.policy.policyInfo.category.machineValue
-      : '';
-
-    this.insuranceDetails.carrierName = this.policy.policyInfo.carrier.value
-      ? this.policy.policyInfo.carrier.value
-      : '';
-    this.insuranceDetails.carrierId = this.policy.policyInfo.carrier.id
-      ? this.policy.policyInfo.carrier.id
-      : ''.value
-      ? this.policy.policyInfo.carrier.value
-      : '';
-
-    this.insuranceDetails.policyNumber = this.policy.policyInfo.number
-      ? this.policy.policyInfo.number
-      : ' ';
-    this.insuranceDetails.insuranceClaimNumber = this.policy.policyInfo.claimNumber;
-    this.insuranceDetails.policyEffectiveDate = this.policy.policyInfo.effectiveDate;
-    this.insuranceDetails.policyExpireDate = this.policy.policyInfo.expirationDate;
-
-    this.insuranceDetails.policyEffectiveDate = this.insuranceDetails.policyExpireDate = date.formatDate(
-      Date.now(),
-      'MM/DD/YYYY'
-    );
-
-    this.insuranceDetails.dwellingLimitA = this.policy.policyInfo.limitCoverage.dwelling;
-    this.insuranceDetails.contentsLimit = this.policy.policyInfo.limitCoverage.content;
-    this.insuranceDetails.otherStructureB = this.policy.policyInfo.limitCoverage.otherStructure;
-    this.insuranceDetails.lossOfUSD = this.policy.policyInfo.limitCoverage.lossOfUse;
-    this.insuranceDetails.deprecation = this.policy.policyInfo.depreciation;
-    this.insuranceDetails.deductible = this.policy.policyInfo.deductibleAmount;
-    this.insuranceDetails.priorPayment = this.policy.policyInfo.priorPayment;
-    this.insuranceDetails.reasonsOfLD = this.policy.policyInfo.limitReason;
   },
   methods: {
     ...mapActions([
@@ -550,10 +490,75 @@ export default {
       'deleteClaimCarrier'
     ]),
     validateDate,
-    successMessage,
+
     onEmailClick,
     onPhoneNumberClick,
+    onEditPolicyInfo() {
+      this.insuranceInfoDialog = true;
+      this.insuranceDetails.hasClaimBeenFilledToggle = this.policy.policyInfo
+        .isClaimFiled
+        ? this.policy.policyInfo.isClaimFiled
+        : false;
 
+      this.insuranceDetails.isThisIsForcedPlacedPolicyToggle = this.policy
+        .policyInfo.isForcedPlaced
+        ? this.policy.policyInfo.isForcedPlaced
+        : false;
+
+      this.insuranceDetails.policy.id = this.policy.policyInfo.type.id
+        ? this.policy.policyInfo.type.id
+        : '';
+
+      this.insuranceDetails.policy.value = this.policy.policyInfo.type.value
+        ? this.policy.policyInfo.type.value
+        : '';
+      this.insuranceDetails.policy.machineValue = this.policy.policyInfo.type
+        .machineValue
+        ? this.policy.policyInfo.type.machineValue
+        : '';
+
+      this.insuranceDetails.policyCategory.id = this.policy.policyInfo.category
+        .id
+        ? this.policy.policyInfo.category.id
+        : '';
+
+      this.insuranceDetails.policyCategory.value = this.policy.policyInfo
+        .category.value
+        ? this.policy.policyInfo.category.value
+        : '';
+      this.insuranceDetails.policyCategory.machineValue = this.policy.policyInfo
+        .category.machineValue
+        ? this.policy.policyInfo.category.machineValue
+        : '';
+      this.insuranceDetails.policyNumber = this.policy.policyInfo.number
+        ? this.policy.policyInfo.number
+        : ' ';
+      this.insuranceDetails.insuranceClaimNumber = this.policy.policyInfo.claimNumber;
+      this.insuranceDetails.policyEffectiveDate = this.policy.policyInfo.effectiveDate;
+      this.insuranceDetails.policyExpireDate = this.policy.policyInfo.expirationDate;
+
+      this.insuranceDetails.policyEffectiveDate = this.insuranceDetails.policyExpireDate = date.formatDate(
+        Date.now(),
+        'MM/DD/YYYY'
+      );
+
+      this.insuranceDetails.dwellingLimitA = this.policy.policyInfo.limitCoverage.dwelling;
+      this.insuranceDetails.contentsLimit = this.policy.policyInfo.limitCoverage.content;
+      this.insuranceDetails.otherStructureB = this.policy.policyInfo.limitCoverage.otherStructure;
+      this.insuranceDetails.lossOfUSD = this.policy.policyInfo.limitCoverage.lossOfUse;
+      this.insuranceDetails.deprecation = this.policy.policyInfo.depreciation;
+      this.insuranceDetails.deductible = this.policy.policyInfo.deductibleAmount;
+      this.insuranceDetails.priorPayment = this.policy.policyInfo.priorPayment;
+      this.insuranceDetails.reasonsOfLD = this.policy.policyInfo.limitReason;
+      this.insuranceDetails.carrierName = this.policy.policyInfo.carrier.value
+        ? this.policy.policyInfo.carrier.value
+        : '';
+      this.insuranceDetails.carrierId = this.policy.policyInfo.carrier.id
+        ? this.policy.policyInfo.carrier.id
+        : ''.value
+        ? this.policy.policyInfo.carrier.value
+        : '';
+    },
     async onDelete(id) {
       const carrier = {
         claimID: this.selectedClaimId,
@@ -561,7 +566,6 @@ export default {
       };
       await this.deleteClaimCarrier(carrier);
       this.carrierName = '';
-      this.$router.push(`/insurance-policy/${this.selectedClaimId}`);
     },
     async onSaveButtonClick() {
       let success = false;
@@ -638,8 +642,7 @@ export default {
         await this.editInsurancePolicy(payload);
         this.insuranceInfoDialog = false;
         this.getPolicy(this.selectedClaimId);
-        this.$router.push('/insurance-policy');
-        this.successMessage(constants.successMessages.INSURER_AND_POLICY);
+        this.$router.push(`/insurance-policy/${this.selectedClaimId}`);
       }
     },
     async selecting() {
@@ -672,5 +675,9 @@ export default {
   height: calc(100vh - 120px);
   overflow: auto;
   margin: 10px;
+}
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent; /* make scrollbar transparent */
 }
 </style>

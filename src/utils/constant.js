@@ -15,7 +15,6 @@ export const constants = {
     NOTES_UPDATED: 'Notes Updated Successfully !',
     NOTES_ADDED: 'Notes Added Successfully !',
     CLIENT_INFO: 'Client Info Updated Successfully !',
-    INSURER_AND_POLICY: 'Insurer & Policy Info Updated Successfully !',
     PROPERTY_ADDRESS: 'Property Address Added Successfully !',
     LOSSINFO_UPDATED: 'Loss Info Updated Successfully !',
     ESTIMATOR: 'Estimator Created Successfully !',
