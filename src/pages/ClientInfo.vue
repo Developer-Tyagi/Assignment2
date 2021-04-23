@@ -33,7 +33,7 @@
           - Open Claim
         </div>
       </div>
-      <div class="q-ml-md">Date & Time of first contact</div>
+      <div class="q-ml-md">Date & Time of First Contact</div>
       <div class="q-ml-md">{{ showingDate }},{{ showingTime }}</div>
 
       <q-card class="q-ma-md q-ma-sm">
@@ -42,7 +42,7 @@
             <q-icon
               name="create"
               color="primary"
-              class="edit-icon"
+              class="edit-icon icon-top"
               @click="editClientInfoDailog = true"
             ></q-icon>
           </div>
@@ -197,7 +197,9 @@
                   name="place"
                   color="primary"
                   @click="
-                    sendMap(editSelectedClient.attributes.insuredInfo.address)
+                    sendMap(
+                      editSelectedClient.attributes.insuredInfo.mailingAddress
+                    )
                   "
                   class="edit-icon"
                 ></q-icon>
@@ -826,7 +828,7 @@ export default {
     } else {
       this.addAditionalPhoneNumberToggle = false;
     }
-    if (this.editSelectedClient.attributes.insuredInfo.tenantInfo.name) {
+    if (this.editSelectedClient.attributes.insuredInfo.tenantInfo) {
       this.tenantOccupiedToggle = true;
       this.tenantOccupied.name = this.editSelectedClient.attributes.insuredInfo.tenantInfo.name;
       this.tenantOccupied.type = this.editSelectedClient.attributes.insuredInfo.tenantInfo.phoneNumber.type;
@@ -1020,5 +1022,11 @@ export default {
   height: calc(100vh - 130px);
   overflow: auto;
   margin: 10px;
+}
+.icon-top {
+  position: fixed;
+  right: 20px;
+  top: 10px;
+  z-index: 10000;
 }
 </style>
