@@ -1,258 +1,287 @@
 <template>
   <q-page>
     <div class="mobile-container-page-without-search">
-      <div class="column full-height">
-        <div
-          v-for="dialogBox in dialogBoxes"
-          :key="dialogBox.name"
-          @click="createClaimDailogBoxOpen(dialogBox.name)"
-          class="form-list row"
-        >
-          {{ dialogBox.name }}
-          <div class="q-mr-lg q-ml-auto" v-if="dialogBox.validForm == true">
-            <q-icon size="xs" color="primary" name="done" />
-          </div>
-        </div>
-
-        <q-btn
-          style="width: 90%"
-          label="Create Claim"
-          color="primary"
-          class="q-mt-auto text-capitalize q-mx-auto"
-          :disabled="isCreateClientButtonDisabled"
-          @click="setPayloadForClaim(selectedClientId)"
-          size="'xl'"
-        ></q-btn>
-      </div>
-    </div>
-
-    <!-- Insurance Info -->
-    <q-dialog
-      v-model="insuranceInfoDialog"
-      persistent
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <CustomBar
-          @closeDialog="onCloseDialogBox('insuranceInfoDialog', 2)"
-          :dialogName="'Insurance Info'"
-        />
-        <div class="mobile-container-page-without-search">
-          <q-form ref="insuranceInfoForm" class="form-height">
-            <InsuranceInfo :insuranceDetails="insuranceDetails" />
-          </q-form>
-
-          <q-btn
-            label="Save"
-            color="primary"
-            class="button-width-90"
-            @click="onSubmit('insuranceInfoDialog')"
-            size="'xl'"
-          />
-        </div>
-      </q-card>
-    </q-dialog>
-
-    <!-- Loss Info -->
-    <q-dialog
-      v-model="lossInfoDialog"
-      persistent
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <CustomBar
-          @closeDialog="onCloseDialogBox('lossInfoDialog', 3)"
-          :dialogName="'Loss Info'"
-        />
-        <div class="mobile-container-page-without-search">
-          <q-form ref="lossInfoForm" class="form-height">
-            <LossInfo
-              :lossInfo="lossInfo"
-              @lossAddressSame="lossAddressSame"
-              :lossAddressToggleShow="false"
-              :isMailingAddressEnable="true"
-              :lossAddressSameAsClient="true"
-              :isAddressRequired="true"
-              :mortgageInfo="mortgageObject"
-            />
-          </q-form>
-
-          <q-btn
-            label="Save"
-            color="primary"
-            class="button-width-90"
-            @click="onSubmit('lossInfoDialog')"
-            size="'xl'"
-          />
-        </div>
-      </q-card>
-    </q-dialog>
-
-    <!-- Expert /Vendor Info -->
-    <q-dialog
-      v-model="expertVendorInfoDialog"
-      persistent
-      :maximized="maximizedToggle"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <CustomBar
-          @closeDialog="onCloseDialogBox('expertVendorInfoDialog', 4)"
-          :dialogName="'Expert / Vendor Info'"
-        />
-        <div class="mobile-container-page-without-search">
-          <q-form ref="expertVendorInfoForm" class="form-height">
-            <ExpertVendorInfo
-              :expertVendorInfo="expertVendorInfo"
-              @addAnotherVendor="addAnotherVendor"
-            />
-          </q-form>
-
-          <q-btn
-            label="Save"
-            color="primary"
-            class="button-width-90"
-            @click="onSubmit('expertVendorInfoDialog')"
-            size="'xl'"
-          />
-        </div>
-      </q-card>
-    </q-dialog>
-    <!-- Estimating Info -->
-    <q-dialog
-      v-model="estimatingInfoDialog"
-      persistent
-      :maximized="maximizedToggle"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <CustomBar
-          @closeDialog="estimatingInfoDialog = false"
-          :dialogName="'Estimating Info'"
-        />
-        <div class="mobile-container-page-without-search">
-          <q-form ref="estimatingInfoForm" class="form-height">
-            <EstimatingInfo :estimatingInfo="estimatingInfo" />
-          </q-form>
-          <q-btn
-            label="Save"
-            color="primary"
-            class="button-width-90"
-            @click="onSubmit('estimatingInfoDialog')"
-            size="'xl'"
-          />
-        </div>
-      </q-card>
-    </q-dialog>
-    <!-- Contract Info Dialog -->
-    <q-dialog
-      v-model="contractInfoDialog"
-      persistent
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <CustomBar
-          @closeDialog="onCloseDialogBox('contractInfoDialog', 5)"
-          :dialogName="'Contract Details'"
-        />
-        <div class="mobile-container-page-without-search">
-          <q-form ref="contractInfoForm" class="form-height">
-            <ContractInfo :contractInfo="contractInfo" />
-          </q-form>
-          <q-btn
-            label="Save"
-            color="primary"
-            class="button-width-90"
-            @click="onSubmit('contractInfoDialog')"
-            size="'xl'"
-          ></q-btn>
-        </div>
-      </q-card>
-    </q-dialog>
-    <!-- Company Personnel Dialog-->
-    <q-dialog
-      v-model="companyPersonnelDialog"
-      persistent
-      :maximized="maximizedToggle"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <CustomBar
-          :dialogName="'Company Personnel'"
-          @closeDialog="onCloseDialogBox('companyPersonnelDialog', 6)"
-        />
-        <div class="mobile-container-page-without-search">
-          <q-form ref="companyPersonnelForm" class="form-height">
-            <div class="form-heading text-bold">CLAIM PERSONNEL</div>
-            <CompanyPersonnel :companyPersonnel="companyPersonnel" />
-          </q-form>
-          <q-btn
-            label="Save"
-            color="primary"
-            class="button-width-90"
-            @click="onSubmit('companyPersonnelDialog')"
-            size="'xl'"
-          />
-        </div>
-      </q-card>
-    </q-dialog>
-    <!-- Office Task -->
-    <q-dialog
-      v-model="officeTaskDialog"
-      persistent
-      :maximized="maximizedToggle"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <CustomBar
-          @closeDialog="officeTaskDialog = false"
-          :dialogName="'Office Task'"
-        />
-        <div class="mobile-container-page-without-search">
-          <q-form ref="estimatingInfoForm" class="form-height">
-            <q-select
-              dense
-              v-model="officeTask.officeActionTypes"
-              :options="officeActionRequiredTypes"
-              label="Office Action Required"
-              class="input-extra-padding"
-            />
-            <q-select
-              dense
-              v-model="officeTask.officeTaskTypes"
-              :options="officeTaskRequiredTypes"
-              label="Office Task Required"
-              class="input-extra-padding"
-            /><br />
-            <div class="row">
-              <p>Additional Office Task Required</p>
-              <q-toggle
-                class="q-ml-auto"
-                v-model="additionalOfficeTaskRequiredToggle"
+      <div class="stepper">
+        <div class="step justify-between" id="step">
+          <div
+            class="column align-center q-px-md"
+            v-for="(arr, index) in stepArr"
+            @click="onStepClick(index)"
+          >
+            <div
+              :class="{
+                'icon-div-selected': index == step,
+                'icon-div': index != step
+              }"
+              class="q-mx-auto"
+            >
+              <q-icon
+                v-if="index == step"
+                size="14px"
+                name="create"
+                color="white"
+                style="margin: auto"
+              />
+              <q-icon
+                v-if="index < stepClickValidTill && index != step"
+                size="14px"
+                name="done"
+                color="white"
+                style="margin: auto"
               />
             </div>
-          </q-form>
-
-          <q-btn
-            label="Save"
-            color="primary"
-            class="full-width q-mt-auto text-capitalize"
-            @click="officeTaskDialog = false"
-            size="'xl'"
-          />
+            <div class="label">{{ arr.name }}</div>
+          </div>
         </div>
-      </q-card>
-    </q-dialog>
+        <div class="form">
+          <q-form
+            @submit="onNextButtonClick(0)"
+            :hidden="step != 0"
+            ref="insuranceInfo"
+          >
+            <div class="q-pa-sm form-card">
+              <InsuranceInfo :insuranceDetails="insuranceDetails" />
+            </div>
+            <div class="row q-pt-md">
+              <div class="q-ml-auto">
+                <span class="q-mr-md text-color-grey">Next</span>
+                <q-btn
+                  class="rotate-180"
+                  icon="keyboard_backspace"
+                  text-color="primary"
+                  padding="md"
+                  type="submit"
+                />
+              </div>
+            </div>
+          </q-form>
+          <q-form
+            @submit="onNextButtonClick(1)"
+            @reset="step--"
+            :hidden="step != 1"
+            ref="lossInfo"
+          >
+            <div class="q-pa-sm form-card">
+              <LossInfo
+                :lossInfo="lossInfo"
+                @lossAddressSame="lossAddressSame"
+                :lossAddressToggleShow="false"
+                :isMailingAddressEnable="true"
+                :lossAddressSameAsClient="true"
+                :isAddressRequired="true"
+                :mortgageInfo="mortgageObject"
+                :policyDate="{
+                  policyEffectiveDate: insuranceDetails.policyEffectiveDate,
+                  policyExpireDate: insuranceDetails.policyExpireDate
+                }"
+              />
+            </div>
+            <div class="row q-pt-md">
+              <div>
+                <q-btn
+                  icon="keyboard_backspace"
+                  text-color="primary"
+                  padding="md"
+                  type="reset"
+                />
+                <span class="q-ml-md text-color-grey">Back</span>
+              </div>
+              <div class="q-ml-auto">
+                <span class="q-mr-md text-color-grey"> Next</span>
+                <q-btn
+                  class="rotate-180"
+                  icon="keyboard_backspace"
+                  text-color="primary"
+                  padding="md"
+                  type="submit"
+                />
+              </div>
+            </div>
+          </q-form>
+          <q-form
+            @submit="onNextButtonClick(2)"
+            @reset="step--"
+            :hidden="step != 2"
+            ref="expertInfo"
+          >
+            <div class="q-pa-md form-card">
+              <ExpertVendorInfo
+                :expertVendorInfo="expertVendorInfo"
+                @addAnotherVendor="addAnotherVendor"
+              />
+            </div>
+            <div class="row q-pt-md">
+              <div>
+                <q-btn
+                  icon="keyboard_backspace"
+                  text-color="primary"
+                  padding="md"
+                  type="reset"
+                />
+                <span class="q-ml-md text-color-grey">Back</span>
+              </div>
+              <div class="q-ml-auto">
+                <span class="q-mr-md text-color-grey"> Next</span>
+                <q-btn
+                  class="rotate-180"
+                  icon="keyboard_backspace"
+                  text-color="primary"
+                  padding="md"
+                  type="submit"
+                />
+              </div>
+            </div>
+          </q-form>
+          <q-form
+            @submit="onNextButtonClick(3)"
+            @reset="step--"
+            :hidden="step != 3"
+            ref="estimatingInfo"
+          >
+            <div class="q-pa-md form-card">
+              <EstimatingInfo :estimatingInfo="estimatingInfo" />
+            </div>
+            <div class="row q-pt-md">
+              <div>
+                <q-btn
+                  icon="keyboard_backspace"
+                  text-color="primary"
+                  padding="md"
+                  type="reset"
+                />
+                <span class="q-ml-md text-color-grey">Back</span>
+              </div>
+              <div class="q-ml-auto">
+                <span class="q-mr-md text-color-grey"> Next</span>
+                <q-btn
+                  class="rotate-180"
+                  icon="keyboard_backspace"
+                  text-color="primary"
+                  padding="md"
+                  type="submit"
+                />
+              </div>
+            </div>
+          </q-form>
+          <q-form
+            @submit="onNextButtonClick(4)"
+            @reset="step--"
+            :hidden="step != 4"
+            ref="contractInfo"
+          >
+            <div class="q-pa-md form-card">
+              <ContractInfo :contractInfo="contractInfo" />
+            </div>
+            <div class="row q-pt-md">
+              <div>
+                <q-btn
+                  icon="keyboard_backspace"
+                  text-color="primary"
+                  padding="md"
+                  type="reset"
+                />
+                <span class="q-ml-md text-color-grey">Back</span>
+              </div>
+              <div class="q-ml-auto">
+                <span class="q-mr-md text-color-grey"> Next</span>
+                <q-btn
+                  class="rotate-180"
+                  icon="keyboard_backspace"
+                  text-color="primary"
+                  padding="md"
+                  type="submit"
+                />
+              </div>
+            </div>
+          </q-form>
+          <q-form
+            @submit="onNextButtonClick(5)"
+            @reset="step--"
+            :hidden="step != 5"
+            ref="personnelInfo"
+          >
+            <div class="q-pa-md form-card">
+              <CompanyPersonnel :companyPersonnel="companyPersonnel" />
+            </div>
+            <div class="row q-pt-md">
+              <div>
+                <q-btn
+                  icon="keyboard_backspace"
+                  text-color="primary"
+                  padding="md"
+                  type="reset"
+                />
+                <span class="q-ml-md text-color-grey">Back</span>
+              </div>
+              <div class="q-ml-auto">
+                <span class="q-mr-md text-color-grey"> Next</span>
+                <q-btn
+                  class="rotate-180"
+                  icon="keyboard_backspace"
+                  text-color="primary"
+                  padding="md"
+                  type="submit"
+                />
+              </div>
+            </div>
+          </q-form>
+          <q-form
+            @submit="setPayloadForClaim(selectedClientId)"
+            @reset="step--"
+            :hidden="step != 6"
+            ref="officeTaskInfo"
+          >
+            <div class="q-pa-md form-card">
+              <q-card class="q-pa-sm q-mt-sm">
+                <q-select
+                  dense
+                  v-model="officeTask.officeActionTypes"
+                  :options="officeActionRequiredTypes"
+                  label="Office Action Required"
+                  class="input-extra-padding"
+                />
+                <q-select
+                  dense
+                  v-model="officeTask.officeTaskTypes"
+                  :options="officeTaskRequiredTypes"
+                  label="Office Task Required"
+                  class="input-extra-padding"
+                />
+                <div class="row">
+                  <p>Additional Office Task Required</p>
+                  <q-toggle
+                    class="q-ml-auto"
+                    v-model="additionalOfficeTaskRequiredToggle"
+                  />
+                </div>
+              </q-card>
+            </div>
+
+            <div class="row q-pt-md">
+              <div>
+                <q-btn
+                  icon="keyboard_backspace"
+                  text-color="primary"
+                  padding="md"
+                  type="reset"
+                />
+                <span class="q-ml-md text-color-grey">Back</span>
+              </div>
+              <div class="q-ml-auto">
+                <span class="q-mr-md text-color-grey"> Create Claim</span>
+                <q-btn
+                  class="rotate-180"
+                  icon="keyboard_backspace"
+                  text-color="primary"
+                  padding="md"
+                  type="submit"
+                />
+              </div>
+            </div>
+          </q-form>
+        </div>
+      </div>
+    </div>
   </q-page>
 </template>
 
@@ -371,30 +400,21 @@ export default {
         value: '',
         machineValue: ''
       },
-      dialogBoxes: [
-        { name: 'Insurance Info', validForm: false },
-        { name: 'Loss Info', validForm: false },
-        { name: 'Expert/Vendor Info', validForm: false },
-        { name: 'Estimating Info', validForm: false },
-        { name: 'Contract Info', validForm: false },
-        { name: 'Company Personnel', validForm: false },
-        { name: 'Office Task', validForm: false }
+
+      step: 0,
+      stepClickValidTill: 0,
+      stepArr: [
+        { name: 'Insurance Info', ref: 'insuranceInfo' },
+        { name: 'Loss Info', ref: 'lossInfo' },
+        { name: 'Expert/Vendor Info', ref: 'expertInfo' },
+        { name: 'Estimating Info', ref: 'estimatingInfo' },
+        { name: 'Contract Info', ref: 'contractInfo' },
+        { name: 'Company Personnel', ref: 'personnelInfo' },
+        { name: 'Office Task', ref: 'officeTaskInfo' }
       ],
 
       vendorIndustriesOptions: [],
-
       constants: constants,
-
-      companyPersonnelDialog: false,
-      contractInfoDialog: false,
-
-      officeTaskDialog: false,
-      expertVendorInfoDialog: false,
-      estimatingInfoDialog: false,
-      lossInfoDialog: false,
-
-      maximizedToggle: true,
-      clientInfoDailog: false,
       policyHolder: {
         isPolicyHolder: false,
         policyHolderName: ''
@@ -846,72 +866,73 @@ export default {
       }
     },
 
-    async onSubmit(name) {
-      let success = false;
-      let validationIndex;
-      switch (name) {
-        case 'insuranceInfoDialog':
-          success = await this.$refs.insuranceInfoForm.validate();
-          validationIndex = 0;
+    // async onSubmit(name) {
+    //   let success = false;
+    //   let validationIndex;
+    //   switch (name) {
+    //     case 'insuranceInfoDialog':
+    //       success = await this.$refs.insuranceInfoForm.validate();
+    //       validationIndex = 0;
 
-          break;
+    //       break;
 
-        case 'addEstimatorDialog':
-          success = await this.$refs.addEstimatorForm.validate();
-          validationIndex = 2;
-          break;
-        case 'lossInfoDialog':
-          success = await this.$refs.lossInfoForm.validate();
-          validationIndex = 1;
+    //     case 'addEstimatorDialog':
+    //       success = await this.$refs.addEstimatorForm.validate();
+    //       validationIndex = 2;
+    //       break;
+    //     case 'lossInfoDialog':
+    //       success = await this.$refs.lossInfoForm.validate();
+    //       validationIndex = 1;
 
-          break;
+    //       break;
 
-        case 'expertVendorInfoDialog':
-          success = await this.$refs.expertVendorInfoForm.validate();
-          validationIndex = 2;
+    //     case 'expertVendorInfoDialog':
+    //       success = await this.$refs.expertVendorInfoForm.validate();
+    //       validationIndex = 2;
 
-          break;
-        case 'estimatingInfoDialog':
-          success = await this.$refs.estimatingInfoForm.validate();
-          validationIndex = 3;
-          break;
+    //       break;
+    //     case 'estimatingInfoDialog':
+    //       success = await this.$refs.estimatingInfoForm.validate();
+    //       validationIndex = 3;
+    //       break;
 
-        case 'contractInfoDialog':
-          success = await this.$refs.contractInfoForm.validate();
-          validationIndex = 4;
-          break;
-        case 'companyPersonnelDialog':
-          success = await this.$refs.companyPersonnelForm.validate();
-          validationIndex = 5;
-      }
-      if (success == true) {
-        this.dialogBoxes[validationIndex].validForm = true;
+    //     case 'contractInfoDialog':
+    //       success = await this.$refs.contractInfoForm.validate();
+    //       validationIndex = 4;
+    //       break;
+    //     case 'companyPersonnelDialog':
+    //       success = await this.$refs.companyPersonnelForm.validate();
+    //       validationIndex = 5;
+    //   }
+    //   if (success == true) {
+    //     this.dialogBoxes[validationIndex].validForm = true;
 
-        for (var i = 0; i < this.dialogBoxes.length - 1; i++) {
-          if (this.dialogBoxes[i].validForm == false) {
-            this.isCreateClientButtonDisabled = true;
-            break;
-          } else {
-            this.isCreateClientButtonDisabled = false;
-          }
-        }
+    //     for (var i = 0; i < this.dialogBoxes.length - 1; i++) {
+    //       if (this.dialogBoxes[i].validForm == false) {
+    //         this.isCreateClientButtonDisabled = true;
+    //         break;
+    //       } else {
+    //         this.isCreateClientButtonDisabled = false;
+    //       }
+    //     }
 
-        if (
-          name === 'insuranceInfoDialog' ||
-          name === 'expertVendorInfoDialog'
-        ) {
-          this[name] = false;
-        }
-        if (name === 'addEstimatorDialog') {
-          this.onAddEstimatorButtonClick();
-          this[name] = false;
-        } else {
-          this[name] = false;
-        }
-      } else {
-        this.dialogBoxes.validForm = false;
-      }
-    },
+    //     if (
+    //       name === 'insuranceInfoDialog' ||
+    //       name === 'expertVendorInfoDialog'
+    //     ) {
+    //       this[name] = false;
+    //     }
+    //     if (name === 'addEstimatorDialog') {
+    //       this.onAddEstimatorButtonClick();
+    //       this[name] = false;
+    //     } else {
+    //       this[name] = false;
+    //     }
+    //   } else {
+    //     this.dialogBoxes.validForm = false;
+    //   }
+    // },
+
     setTitleName(val) {
       const titleResult = this.titles.find(obj => {
         return obj.id === this['honorific' + val].id;
@@ -1074,6 +1095,33 @@ export default {
       });
     },
 
+    async onStepClick(index) {
+      if (this.step < index) {
+        const validation = await this.$refs[
+          this.stepArr[this.step].ref
+        ].validate();
+        if (index <= this.stepClickValidTill) {
+          if (validation) {
+            this.step = index;
+          }
+        }
+      } else {
+        const validation = await this.$refs[
+          this.stepArr[this.step].ref
+        ].validate();
+        if (validation) {
+          this.step = index;
+        }
+      }
+    },
+
+    onNextButtonClick() {
+      this.step++;
+      if (this.stepClickValidTill < this.step) {
+        this.stepClickValidTill = this.step;
+      }
+    },
+
     validateEmail,
     successMessage
   }
@@ -1122,9 +1170,51 @@ export default {
     display: flex;
   }
 }
-.form-height {
-  height: calc(100vh - 120px);
-  overflow: auto;
-  margin: 10px;
+.stepper {
+  .step {
+    display: flex;
+    overflow-x: auto;
+    padding: 10px;
+
+    .icon-div-selected {
+      background: $primary;
+      display: flex;
+      height: 18px;
+      width: 18px;
+      border-radius: 50%;
+    }
+    .icon-div-done {
+      background: $primary;
+      display: flex;
+      height: 18px;
+      width: 18px;
+      border-radius: 50%;
+    }
+
+    .icon-div {
+      background: $grey;
+      display: flex;
+      height: 18px;
+      width: 18px;
+      border-radius: 50%;
+    }
+
+    .label {
+      text-transform: capitalize;
+      text-align: center;
+      font-size: x-small;
+      margin-top: 10pxasd;
+    }
+  }
+
+  .form {
+    height: calc(100vh - 140px);
+    padding: 10px;
+  }
+}
+.form-card {
+  min-height: 250px;
+  max-height: calc(100vh - 230px);
+  overflow: scroll;
 }
 </style>
