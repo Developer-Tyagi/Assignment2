@@ -68,13 +68,13 @@
             <div style="height:250px; ">
               <div v-if="editDialogName == 'Claim Number'">
                 <div class=" q-py-md row">
-                  <div>Current Claim Number :</div>
-                  <div class="q-px-lg heading-light">
+                  <div class="heading-light">Current Claim Number :</div>
+                  <div class="q-px-lg ">
                     {{ getSelectedClaim.policyInfo.claimNumber }}
                   </div>
                 </div>
                 <div class=" q-pb-lg row  ">
-                  <div>New Claim Number</div>
+                  <div class="heading-light">New Claim Number</div>
                   <div class="q-ml-xl">
                     <q-input
                       class="required"
@@ -92,26 +92,30 @@
               </div>
               <div v-else>
                 <div class=" q-py-md row">
-                  <div>Current phase :</div>
-                  <div class="q-px-lg heading-light">
+                  <div class="heading-light">Current phase :</div>
+                  <div class="q-px-lg ">
                     {{ getSelectedClaim.status.value }}
                   </div>
                 </div>
                 <div class="q-mb-sm">
-                  <div>Change Claim phase to :</div>
+                  <div class="heading-light">Change Claim phase to :</div>
                   <div class="q-mt-sm">
                     <q-select
                       class="required"
                       filled
                       v-model="claimPhase.value"
-                      :options="phases"
+                      :options="options"
+                      use-input
+                      input-debounce="0"
                       option-value="name"
                       option-label="name"
+                      behavior="menu"
                       map-options
                       options-dense
                       label="Claim Phases"
                       options-dense
                       emit-value
+                      @filter="searchFilterBy"
                       @input="setTypes(claimPhase.value)"
                       lazy-rules
                       :rules="[
@@ -120,7 +124,7 @@
                     ></q-select>
                   </div>
                 </div>
-                <div>Notes</div>
+                <div class="heading-light">Notes</div>
                 <textarea
                   rows="5"
                   class="full-width"
@@ -152,11 +156,13 @@ import { mapGetters, mapActions } from 'vuex';
 import moment from 'moment';
 import ClaimDetail from 'components/ClaimDetail';
 import { onEmailClick } from '@utils/clickable';
-
+import { successMessage } from '@utils/validation';
+import { constants } from '@utils/constant';
 export default {
   components: { ClaimDetail },
   data() {
     return {
+      options: '',
       rating: 1,
       editClaimDetails: false,
       editClaimNumberDialog: false,
@@ -193,6 +199,7 @@ export default {
   created() {
     this.getSingleClaimDetails(this.selectedClaimId);
     this.getPhases();
+    this.options = this.phases;
   },
   methods: {
     ...mapActions([
@@ -202,6 +209,24 @@ export default {
       'getPhases'
     ]),
     onEmailClick,
+    successMessage,
+
+    searchFilterBy(val, update) {
+      this.claimPhase.value = null;
+      if (val === ' ') {
+        update(() => {
+          this.options = this.phases;
+        });
+        return;
+      }
+
+      update(() => {
+        const search = val.toLowerCase();
+        this.options = this.phases.filter(
+          v => v.name.toLowerCase().indexOf(search) > -1
+        );
+      });
+    },
 
     setTypes(value) {
       const obj = this.phases.find(item => {
@@ -221,12 +246,14 @@ export default {
             data: { number: this.editInputValue }
           };
           await this.editClaimNumber(payload);
+          this.successMessage(constants.successMessages.CLAIM_EDITED);
         } else {
           const payload = {
             id: this.selectedClaimId,
             data: { phase: this.claimPhase, note: this.notes }
           };
           await this.editClaimPhase(payload);
+          this.successMessage(constants.successMessages.CLAIM_PHASE_EDITED);
         }
         await this.getSingleClaimDetails(this.selectedClaimId);
         this.editClaimNumberDialog = false;

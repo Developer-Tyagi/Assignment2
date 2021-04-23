@@ -22,6 +22,8 @@ export const constants = {
     MORTGAGE: 'Mortage Created Successfully !',
     VENDOR: 'Vendor Created Successfully !',
     CARRIER: 'Carrier Added Successfully !',
+    CLAIM_EDITED: 'Claim  Number Edited  Successfully !',
+    CLAIM_PHASE_EDITED: 'Claim Phase Edited  Successfully !',
     EDIT_PROPERTY_ADDRESS: 'Property Address Edited Successfully !'
   }
 };
