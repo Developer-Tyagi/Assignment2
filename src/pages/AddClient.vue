@@ -443,9 +443,9 @@
             :hidden="step != 2"
             ref="insuranceInfo"
           >
-            <q-card class="q-pa-md form-card">
+            <div class="q-pa-sm form-card">
               <InsuranceInfo :insuranceDetails="insuranceDetails" />
-            </q-card>
+            </div>
             <div class="row q-pt-md">
               <div>
                 <q-btn
@@ -475,7 +475,7 @@
             :hidden="step != 3"
             ref="lossInfo"
           >
-            <q-card class="q-pa-md form-card">
+            <div class="q-pa-md form-card">
               <LossInfo
                 :lossInfo="lossInfo"
                 @lossAddressSame="lossAddressSame"
@@ -488,7 +488,8 @@
                   policyEffectiveDate: insuranceDetails.policyEffectiveDate,
                   policyExpireDate: insuranceDetails.policyExpireDate
                 }"
-            /></q-card>
+              />
+            </div>
             <div class="row q-pt-md">
               <div>
                 <q-btn
@@ -518,12 +519,12 @@
             :hidden="step != 4"
             ref="vendorInfo"
           >
-            <q-card class="q-pa-md form-card"
-              ><ExpertVendorInfo
+            <div class="q-pa-md form-card">
+              <ExpertVendorInfo
                 :expertVendorInfo="expertVendorInfo"
                 @addAnotherVendor="addAnotherVendor"
               />
-            </q-card>
+            </div>
             <div class="row q-pt-md">
               <div>
                 <q-btn
@@ -553,9 +554,9 @@
             :hidden="step != 5"
             ref="estimatingInfo"
           >
-            <q-card class="q-pa-md form-card">
+            <div class="q-pa-md form-card">
               <EstimatingInfo :estimatingInfo="estimatingInfo" />
-            </q-card>
+            </div>
             <div class="row q-pt-md">
               <div>
                 <q-btn
@@ -585,9 +586,9 @@
             :hidden="step != 6"
             ref="contractInfo"
           >
-            <q-card class="q-pa-md form-card">
+            <div class="q-pa-md form-card">
               <ContractInfo :contractInfo="contractInfo" />
-            </q-card>
+            </div>
             <div class="row q-pt-md">
               <div>
                 <q-btn
@@ -617,9 +618,9 @@
             :hidden="step != 7"
             ref="personnelInfo"
           >
-            <q-card class="q-pa-md form-card">
+            <div class="q-pa-md form-card">
               <CompanyPersonnel :companyPersonnel="companyPersonnel" />
-            </q-card>
+            </div>
             <div class="row q-pt-md">
               <div>
                 <q-btn
@@ -649,29 +650,32 @@
             :hidden="step != 8"
             ref="officeTaskInfo"
           >
-            <q-card class="q-pa-md form-card">
-              <q-select
-                dense
-                v-model="officeTask.officeActionTypes"
-                :options="officeActionRequiredTypes"
-                label="Office Action Required"
-                class="input-extra-padding"
-              />
-              <q-select
-                dense
-                v-model="officeTask.officeTaskTypes"
-                :options="officeTaskRequiredTypes"
-                label="Office Task Required"
-                class="input-extra-padding"
-              /><br />
-              <div class="row">
-                <p>Additional Office Task Required</p>
-                <q-toggle
-                  class="q-ml-auto"
-                  v-model="additionalOfficeTaskRequiredToggle"
+            <div class="q-pa-md form-card">
+              <q-card class="q-pa-sm q-mt-sm">
+                <q-select
+                  dense
+                  v-model="officeTask.officeActionTypes"
+                  :options="officeActionRequiredTypes"
+                  label="Office Action Required"
+                  class="input-extra-padding"
                 />
-              </div>
-            </q-card>
+                <q-select
+                  dense
+                  v-model="officeTask.officeTaskTypes"
+                  :options="officeTaskRequiredTypes"
+                  label="Office Task Required"
+                  class="input-extra-padding"
+                />
+                <div class="row">
+                  <p>Additional Office Task Required</p>
+                  <q-toggle
+                    class="q-ml-auto"
+                    v-model="additionalOfficeTaskRequiredToggle"
+                  />
+                </div>
+              </q-card>
+            </div>
+
             <div class="row q-pt-md">
               <div>
                 <q-btn
@@ -1027,6 +1031,7 @@ export default {
         email: '',
         phone: '',
         type: '',
+        companyName: '',
         estimatorsListDialog: false,
 
         estimatorToBeAssigned: '',
@@ -1406,20 +1411,20 @@ export default {
           mailingAddress: {
             ...this.mailingAddressDetails
           },
-          phoneNumbers: this.phoneNumber,
-          properties: {
-            name: this.lossAddressName,
-            addressCountry: this.clientAddressDetails.addressCountry,
-            addressLocality: this.clientAddressDetails.addressLocality,
-            addressRegion: this.clientAddressDetails.addressRegion,
-            postalCode: this.clientAddressDetails.postalCode,
-            streetAddress: this.clientAddressDetails.streetAddress,
-            houseNumber: this.clientAddressDetails.houseNumber,
-            propertyType: {
-              ...this.property
-            },
-            propertyDesc: this.propertyDescription
-          }
+          phoneNumbers: this.phoneNumber
+        },
+        property: {
+          name: this.lossAddressName,
+          addressCountry: this.clientAddressDetails.addressCountry,
+          addressLocality: this.clientAddressDetails.addressLocality,
+          addressRegion: this.clientAddressDetails.addressRegion,
+          postalCode: this.clientAddressDetails.postalCode,
+          streetAddress: this.clientAddressDetails.streetAddress,
+          houseNumber: this.clientAddressDetails.houseNumber,
+          propertyType: {
+            ...this.property
+          },
+          propertyDesc: this.propertyDescription
         }
       };
       /* if coInsuredDetails toggle is off it well not send the coInsured details */
@@ -1430,17 +1435,20 @@ export default {
         delete payload.leadID;
       }
       const response = await this.addClient(payload);
-      this.successMessage(constants.successMessages.CLIENT);
       this.setSelectedLead();
       if (response && response.id) {
-        this.setPayloadForClaim(response.id);
+        const responseData = {
+          id: response.id,
+          propertyId: response.attributes.propertyID
+        };
+        this.setPayloadForClaim(responseData);
       }
     },
     /*Payload for Claim*/
-    async setPayloadForClaim(id) {
+    async setPayloadForClaim(responseData) {
       const payload = {
         client: {
-          id: id,
+          id: responseData.id,
           fname: this.insuredDetails.fname,
           lname: this.insuredDetails.lname
         },
@@ -1499,11 +1507,8 @@ export default {
         },
         mortgageInfo: this.mortgageObject.mortgageDetails,
         lossInfo: {
-          isNewAddress:
-            this.lossInfo.lossAddressNameDropdown == 'Others' ? true : false,
-          lossAddressName: this.lossInfo.lossAddressName,
-          address: {
-            ...this.clientAddressDetails
+          property: {
+            id: responseData.propertyId
           },
 
           claimReason: {
@@ -1533,14 +1538,11 @@ export default {
           isPPIF: this.lossInfo.wasAppifProvidedToTheInsuredToggle,
           isNeedPPIF: this.lossInfo
             .doesTheOfficeNeedToProvidePpifToTheInsuredToggle,
-
           hasHomeMortgage: this.lossInfo.isMortgageHomeToggle,
           isSecondClaim: false
         },
         expertInfo: {
-          isVendorAssigned: this.expertVendorInfo.vendorExpertHiredToggle,
           vendor: this.expertVendorInfo.vendors,
-          isInsuredHired: this.expertVendorInfo.anyOtherExpertHiredToggle,
           notes: this.expertVendorInfo.notes,
           internalNotes: this.expertVendorInfo.internalNotes
         },
@@ -1645,7 +1647,7 @@ export default {
   .step {
     display: flex;
     overflow-x: auto;
-    padding: 10px;
+    padding: 10px 10px 0 10px;
 
     .icon-div-selected {
       background: $primary;
@@ -1674,7 +1676,7 @@ export default {
       text-transform: capitalize;
       text-align: center;
       font-size: x-small;
-      margin-top: 10pxasd;
+      margin-top: 10px;
     }
   }
 

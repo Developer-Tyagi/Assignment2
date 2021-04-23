@@ -344,7 +344,6 @@
                   @input="onChangingSourceType()"
                   class="input-extra-padding"
                 />
-                {{ sourceDetails.type }}
                 <q-input
                   dense
                   v-if="
@@ -944,7 +943,6 @@ export default {
     },
 
     searchFilterBy(val, update) {
-      console.log(val);
       this.sourceDetails.details = null;
       if (val === ' ') {
         update(() => {
@@ -955,7 +953,6 @@ export default {
 
       update(() => {
         const search = val.toLowerCase();
-        console.log(search);
         this.clientOptions = this.clients.filter(
           v => v.name.toLowerCase().indexOf(search) > -1
         );

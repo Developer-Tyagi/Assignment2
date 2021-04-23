@@ -37,7 +37,7 @@
           class="text-primary q-ma-md q-pa-md"
           flat
           bordered
-          @click="addNewPropertyDialog = true"
+          @click="onClickAddAnotherProperty"
         >
           + Add Another Property</q-card
         >
@@ -119,8 +119,15 @@
                       name="create"
                       color="primary"
                       class="q-ml-sm q-mt-xs"
-                      @click="editClientInfoDailog = true"
+                      @click="editPropertyAddress(i - 1)"
                     ></q-icon>
+                    <q-icon
+                      size="sm"
+                      name="delete"
+                      color="primary"
+                      class="q-ml-sm q-mt-xs"
+                      @click="deletePropertyAddress(i - 1)"
+                    />
                   </div>
 
                   <div
@@ -138,14 +145,6 @@
                           class="click-link"
                         >
                           {{ claim.number ? claim.number : '-' }}
-                        </div>
-                        <div>
-                          <q-icon
-                            size="xs"
-                            name="create"
-                            color="primary"
-                            class="q-ml-sm"
-                          ></q-icon>
                         </div>
                       </div>
                     </div>
@@ -258,6 +257,18 @@
                   (val && val.length > 0) || 'Please select the property type'
               ]"
             />
+            <q-input
+              dense
+              class="full-width required"
+              v-model="propertyDescription"
+              label=" Description"
+              lazy-rules
+              :rules="[
+                val =>
+                  (val && val.length > 0) ||
+                  'Please fill the property Description'
+              ]"
+            />
             <AutoCompleteAddress
               :id="'PropertyInfo'"
               :address="propertyAddressDetails"
@@ -292,6 +303,8 @@ export default {
 
   data() {
     return {
+      isEdit: '',
+      propertyId: '',
       propertyAddressDetails: {
         houseNumber: '',
         addressCountry: '',
@@ -307,6 +320,7 @@ export default {
       },
       addNewPropertyDialog: false,
       propertyName: '',
+      propertyDescription: '',
       property: {
         value: '',
         id: '',
@@ -343,7 +357,9 @@ export default {
       'getSingleClientProperty',
       'getPropertyTypes',
       'addPropertyAddress',
-      'getSingleClientDetails'
+      'getSingleClientDetails',
+      'editedPropertyAddress',
+      'deletedPropertyAddress'
     ]),
     ...mapMutations(['setSelectedClaimId']),
     onClickClaimNumber(claim) {
@@ -359,12 +375,82 @@ export default {
       data.machineValue = obj.machineValue;
       data.value = obj.name;
     },
+
+    // Deleting Property Address
+
+    async deletePropertyAddress(index) {
+      const payload = {
+        id: this.selectedClientId,
+        propertyId: this.setClientProperty[index].id
+      };
+
+      await this.deletedPropertyAddress(payload);
+      await this.getSingleClientProperty(this.selectedClientId);
+    },
+    // Editing Property Address
+    editPropertyAddress(index) {
+      this.isEdit = true;
+      this.propertyId = this.setClientProperty[index].id;
+
+      this.propertyName = this.setClientProperty[index].attributes.name;
+      this.propertyDescription = this.setClientProperty[
+        index
+      ].attributes.propertyDesc;
+      this.property = this.setClientProperty[index].attributes.propertyType;
+      this.propertyAddressDetails.houseNumber = this.setClientProperty[
+        index
+      ].attributes.houseNumber;
+      this.propertyAddressDetails.addressCountry = this.setClientProperty[
+        index
+      ].attributes.addressCountry;
+
+      this.propertyAddressDetails.addressLocality = this.setClientProperty[
+        index
+      ].attributes.addressLocality;
+      this.propertyAddressDetails.addressRegion = this.setClientProperty[
+        index
+      ].attributes.addressRegion;
+      this.propertyAddressDetails.postalCode = this.setClientProperty[
+        index
+      ].attributes.postalCode;
+      this.propertyAddressDetails.streetAddress = this.setClientProperty[
+        index
+      ].attributes.streetAddress;
+      this.addNewPropertyDialog = true;
+    },
+
+    onClickAddAnotherProperty() {
+      this.isEdit = false;
+      this.propertyAddressDetails = {
+        houseNumber: '',
+        addressCountry: '',
+        addressRegion: '',
+        addressLocality: '',
+        postalCode: '',
+        streetAddress: '',
+        postOfficeBoxNumber: '4',
+        dropBox: {
+          info: '',
+          isPresent: false
+        }
+      };
+      this.propertyName = '';
+      this.propertyDescription = '';
+      this.property = {
+        value: '',
+        id: '',
+        machineValue: ''
+      };
+      this.addNewPropertyDialog = true;
+    },
+
     async onSaveButtonClick() {
       let success = true;
       success = await this.$refs.propertyAddressForm.validate();
       if (success) {
         const payload = {
           id: this.selectedClientId,
+          propertyId: this.propertyId,
           clientData: {
             name: this.propertyName,
             addressCountry: this.propertyAddressDetails.addressCountry,
@@ -372,12 +458,19 @@ export default {
             addressRegion: this.propertyAddressDetails.addressRegion,
             postalCode: this.propertyAddressDetails.postalCode,
             streetAddress: this.propertyAddressDetails.streetAddress,
-            houseNumber: this.propertyAddressDetails.houseNumber
+            houseNumber: this.propertyAddressDetails.houseNumber,
+            propertyType: this.property,
+            PropertyDesc: this.propertyDescription
           }
         };
-        await this.addPropertyAddress(payload);
+        if (this.isEdit == false) {
+          await this.addPropertyAddress(payload);
+          this.successMessage(constants.successMessages.PROPERTY_ADDRESS);
+        } else {
+          await this.editedPropertyAddress(payload);
+          this.successMessage(constants.successMessages.EDIT_PROPERTY_ADDRESS);
+        }
 
-        this.successMessage(constants.successMessages.PROPERTY_ADDRESS);
         this.addNewPropertyDialog = false;
         this.propertyName = '';
         this.propertyAddressDetails.addressCountry = '';

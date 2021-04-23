@@ -23,8 +23,6 @@
         <div class="q-ml-auto row q-pr-md" @click="filterDialog = true">
           <img src="~assets/filter.svg" />
         </div>
-        <q-separator vertical></q-separator>
-        <q-btn @click="addClaim" flat><img src="~assets/add.svg"/></q-btn>
       </div>
       <div class="mobile-container-page">
         <div class="clients-list" v-if="claims.length">
@@ -112,15 +110,6 @@
             <div style="color: #666666,align-items: center">
               You haven't added a Claim yet.
             </div>
-
-            <img
-              class="q-mx-lg q-pt-sm"
-              src="~assets/add.svg"
-              alt="add_icon"
-              width="130px"
-              height="100px"
-              @click="addClaim"
-            />
           </div>
         </div>
       </div>
@@ -167,8 +156,6 @@ export default {
       this.searchText = '';
       this.search();
     },
-
-    addClaim() {},
 
     search(event) {
       this.params.name = event;

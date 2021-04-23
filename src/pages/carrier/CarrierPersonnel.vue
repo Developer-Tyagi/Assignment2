@@ -152,116 +152,7 @@
           @closeDialog="addPersonnelDialog = false"
         />
         <div class="mobile-container-page">
-          <q-card class="q-ma-md q-pa-md q-mt-sm">
-            <q-select
-              class="required"
-              dense
-              v-model="honorific.value"
-              :options="titles"
-              option-value="id"
-              option-label="value"
-              map-options
-              options-dense
-              behavior="menu"
-              @input="setTitleName(honorific)"
-              emit-value
-              label="Title"
-              options-dense
-            />
-            <q-input dense v-model="personnel.fname" label="First Name" />
-            <q-input dense v-model="personnel.lname" label="Last Name" />
-            <q-input
-              dense
-              v-model="personnel.departmentName"
-              label="Organization / Department Name"
-            />
-            <q-input
-              dense
-              v-model="personnel.email"
-              input
-              type="email"
-              novalidate="true"
-              label="Email"
-            />
-            <q-select
-              v-model="name"
-              class=" col-5"
-              label="Default Roles"
-              :options="personnel.defaultRoles"
-              option-value="name"
-              behavior="menu"
-              emit-value
-            />
-          </q-card>
-          <q-card class="q-ma-md q-pa-md q-mt-sm"
-            ><span class="text-bold">Address Details</span>
-            <AutoCompleteAddress
-              :address="personnel.address"
-              :isDropBoxEnable="false"
-              :isChecksEnable="false"
-            />
-          </q-card>
-          <q-card class="q-ma-md q-pa-md q-mt-sm">
-            <div>
-              <div
-                class="row justify-between"
-                v-for="(addPhone, index) in personnel.phoneNumber"
-                v-if="index >= 0"
-              >
-                <q-select
-                  dense
-                  v-model="personnel.phoneNumber[index].type"
-                  class="col-5"
-                  label="Type"
-                  :options="contactTypes"
-                  option-value="machineValue"
-                  option-label="name"
-                  map-options
-                  options-dense
-                  emit-value
-                />
-                <q-input
-                  dense
-                  v-model.number="personnel.phoneNumber[index].number"
-                  label="Phone"
-                  class="col-6"
-                  mask="(###) ###-####"
-                />
-              </div>
-              <div class="row">
-                <q-btn
-                  outline
-                  class="q-mt-sm"
-                  @click="addAnotherContact"
-                  color="primary"
-                  label="Add"
-                  style="margin-right: auto"
-                />
-
-                <q-btn
-                  v-if="personnel.phoneNumber.length > 1"
-                  outline
-                  @click="RemoveAnotherContact"
-                  class="q-mt-sm"
-                  color="primary"
-                  label="Remove"
-                />
-              </div>
-            </div>
-          </q-card>
-          <q-card class="q-ma-md q-pa-md q-mt-xs">
-            <div class="form-heading  q-mt-sm  q-mb-sm">Notes</div>
-            <div class="floating-label">
-              <textarea
-                rows="3"
-                required
-                class="full-width"
-                v-model="personnel.notes"
-                style="resize: none"
-                placeholder="Take notes here..."
-              ></textarea>
-            </div>
-          </q-card>
+          <AddCarrierPersonnel :carrierPersonnel="personnel" />
         </div>
         <q-btn
           @click="onSave"
@@ -287,10 +178,10 @@
         />
         <div class="mobile-container-page">
           <q-card class="q-ma-md q-pa-md q-mt-sm">
-            <q-select
+            <!-- <q-select
               class="required"
               dense
-              v-model="honorific.value"
+              v-model="personnel.honorific.value"
               :options="titles"
               option-value="id"
               option-label="value"
@@ -301,7 +192,7 @@
               emit-value
               label="Title"
               options-dense
-            />
+            /> -->
             <q-input dense v-model="personnel.fname" label="First Name" />
             <q-input dense v-model="personnel.lname" label="Last Name" />
             <q-input
@@ -413,26 +304,29 @@
 import { mapGetters, mapActions } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
+import AddCarrierPersonnel from 'components/AddCarrierPersonnel';
 import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
 
 export default {
   components: {
     CustomBar,
-    AutoCompleteAddress
+    AutoCompleteAddress,
+    AddCarrierPersonnel
   },
   data() {
     return {
-      id: '',
       name: '',
+      id: '',
       addPersonnelDialog: false,
       editPersonnelDialog: false,
       addAditionalPhoneNumberToggle: false,
-      honorific: {
-        id: '',
-        value: 'Mr.',
-        machineValue: 'mr_'
-      },
+
       personnel: {
+        honorific: {
+          id: '',
+          value: 'Mr.',
+          machineValue: 'mr_'
+        },
         fname: '',
         lname: '',
         departmentName: '',
@@ -568,12 +462,12 @@ export default {
 
     setTitleName() {
       const title = this.titles.find(obj => {
-        return obj.id === this.honorific.id;
+        return obj.id === this.personnel.honorific.id;
       });
 
-      this.honorific.value = title.value;
+      this.personnel.honorific.value = title.value;
 
-      this.honorific.machineValue = title.machineValue;
+      this.personnel.honorific.machineValue = title.machineValue;
     },
 
     async onSave() {
@@ -582,9 +476,9 @@ export default {
         data: {
           personnel: {
             honorific: {
-              id: this.honorific.id,
-              value: this.honorific.value,
-              machineValue: this.honorific.machineValue
+              id: this.personnel.honorific.id,
+              value: this.personnel.honorific.value,
+              machineValue: this.personnel.honorific.machineValue
             },
             fname: this.personnel.fname,
             lname: this.personnel.lname,

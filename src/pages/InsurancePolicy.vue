@@ -6,7 +6,7 @@
         <div class="text-bold row q-pa-sm">
           Carrier Info
           <q-icon
-            v-if="selectedClaimCarrier.carrier"
+            v-if="selectedClaimCarrier.carrier.id"
             size="xs"
             name="create "
             color="primary"
@@ -14,7 +14,7 @@
             class="q-ml-auto"
           ></q-icon>
           <q-icon
-            v-if="selectedClaimCarrier.carrier"
+            v-if="selectedClaimCarrier.carrier.id"
             class="q-my-auto q-ml-sm"
             name="delete"
             size="xs"
@@ -22,7 +22,7 @@
             @click="onDelete(selectedClaimCarrier.carrier.id)"
           />
           <img
-            v-if="!selectedClaimCarrier.carrier"
+            v-if="!selectedClaimCarrier.carrier.id"
             class="q-ml-auto"
             src="~assets/add.svg"
             alt="add_icon"
@@ -31,7 +31,7 @@
           />
         </div>
 
-        <div class="q-pa-sm" v-if="selectedClaimCarrier.carrier">
+        <div class="q-pa-sm" v-if="selectedClaimCarrier.carrier.id">
           <div class="text-bold row" v-model="carrierName">
             {{ selectedClaimCarrier.carrier.name }}
           </div>
@@ -119,14 +119,72 @@
             src="~assets/add.svg"
             alt="add_icon"
             height="20px"
+            @click="onFieldAddAdjustorClick"
           />
         </div>
-        <div class="q-pa-sm" v-if="policy.adjustor">
-          -
+
+        <div v-if="selectedClaimCarrier.carrier.personnel">
+          <div class="q-pa-sm text-bold row">
+            {{
+              selectedClaimCarrier.carrier.personnel[0].name
+                ? selectedClaimCarrier.carrier.personnel[0].name
+                : '-'
+            }}
+            <q-icon
+              v-if="selectedClaimCarrier.carrier.personnel[0].id"
+              size="xs"
+              name="create "
+              color="primary"
+              class="q-ml-auto"
+              @click="adjustorListDialog = true"
+            ></q-icon>
+            <q-icon
+              v-if="selectedClaimCarrier.carrier.personnel[0].id"
+              class="q-my-auto q-ml-sm"
+              name="delete"
+              size="xs"
+              color="primary"
+              s
+              @click="
+                onDeleteAdjustor(selectedClaimCarrier.carrier.personnel[0].id)
+              "
+            />
+          </div>
+
+          <div
+            class="q-mt-xs"
+            v-for="phone in selectedClaimCarrier.carrier.personnel[0]
+              .phoneNumber"
+          >
+            <span v-if="phone.type"
+              >{{ phone.type ? phone.type : '-' }} :
+            </span>
+            <span
+              class="clickLink"
+              @click="onPhoneNumberClick(phone.number, $event)"
+              >{{ phone.number ? phone.number : '-' }}</span
+            >
+          </div>
+
+          <span
+            class="click-link"
+            @click="
+              onEmailClick(
+                selectedClaimCarrier.carrier.personnel[0].email,
+                $event
+              )
+            "
+            >{{
+              selectedClaimCarrier.carrier.personnel[0].email
+                ? selectedClaimCarrier.carrier.personnel[0].email
+                : '-'
+            }}</span
+          >
         </div>
-        <div v-else class="heading-light q-mb-sm  q-ma-xs">
-          Field Adjuster not added yet.
+        <div v-else class="heading-light q-ma-xs">
+          Desk Adjuster not added yet.
         </div>
+
         <q-separator />
         <div class="row ">
           <span class="text-bold col q-ma-xs q-mt-md"> Desk Adjuster</span>
@@ -135,15 +193,72 @@
             src="~assets/add.svg"
             alt="add_icon"
             height="20px"
+            @click="onDeskAddAdjustorClick"
           />
         </div>
-        <div class="q-pa-sm" v-if="policy.adjustor">
-          -
+        <div v-if="selectedClaimCarrier.carrier.personnel">
+          <div class="q-pa-sm text-bold row">
+            {{
+              selectedClaimCarrier.carrier.personnel[0].name
+                ? selectedClaimCarrier.carrier.personnel[0].name
+                : '-'
+            }}
+            <q-icon
+              v-if="selectedClaimCarrier.carrier.personnel[0].id"
+              size="xs"
+              name="create "
+              color="primary"
+              class="q-ml-auto"
+              @click="adjustorListDialog = true"
+            ></q-icon>
+            <q-icon
+              v-if="selectedClaimCarrier.carrier.personnel[0].id"
+              class="q-my-auto q-ml-sm"
+              name="delete"
+              size="xs"
+              color="primary"
+              s
+              @click="
+                onDeleteAdjustor(selectedClaimCarrier.carrier.personnel[0].id)
+              "
+            />
+          </div>
+
+          <div
+            class="q-mt-xs"
+            v-for="phone in selectedClaimCarrier.carrier.personnel[0]
+              .phoneNumber"
+          >
+            <span v-if="phone.type"
+              >{{ phone.type ? phone.type : '-' }} :
+            </span>
+            <span
+              class="clickLink"
+              @click="onPhoneNumberClick(phone.number, $event)"
+              >{{ phone.number ? phone.number : '-' }}</span
+            >
+          </div>
+
+          <span
+            class="click-link"
+            @click="
+              onEmailClick(
+                selectedClaimCarrier.carrier.personnel[0].email,
+                $event
+              )
+            "
+            >{{
+              selectedClaimCarrier.carrier.personnel[0].email
+                ? selectedClaimCarrier.carrier.personnel[0].email
+                : '-'
+            }}</span
+          >
         </div>
         <div v-else class="heading-light q-ma-xs">
           Desk Adjuster not added yet.
         </div>
       </q-card>
+
       <q-card class="q-ma-md q-pa-md  ">
         <div class="row q-mt-xs">
           <span class="text-bold"> Policy Info</span>
@@ -317,6 +432,8 @@
       </q-card>
       <q-separator />
     </div>
+    <!-- Insurance Info Dialog -->
+
     <q-dialog
       v-model="insuranceInfoDialog"
       persistent
@@ -344,6 +461,9 @@
         </div>
       </q-card>
     </q-dialog>
+
+    <!-- Carriers List Dialog -->
+
     <q-dialog
       v-model="carriersListDialog"
       persistent
@@ -360,11 +480,15 @@
           @addCarrier="openAddCarrierDialog"
           :carrierDetails="false"
           :selectCarrier="true"
-          @afterSelecting="selecting()"
+          @afterSelecting="onCloseCarrierList"
+          :claimCarrier="true"
           :carrierName="carrierName"
         />
       </q-card>
     </q-dialog>
+
+    <!-- Add Carrier Dialog -->
+
     <q-dialog
       v-model="addCarrierDialog"
       persistent
@@ -376,6 +500,135 @@
         <AddCarrier
           @closeDialog="addCarrierDialog = false"
           :componentName="constants.industries.CARRIER"
+          @onAddCarrier="onSetCarrier"
+        />
+      </q-card>
+    </q-dialog>
+
+    <!-- Adjustor List Dialog  -->
+    <q-dialog
+      v-model="adjustorListDialog"
+      persistent
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <CustomBar
+          @closeDialog="adjustorListDialog = false"
+          :dialogName="'Select Adjustor'"
+        />
+
+        <q-btn
+          @click="addPersonnelDialog = true"
+          flat
+          class="q-ml-auto icon-top"
+          ><img src="~assets/addAdjustor.svg"
+        /></q-btn>
+
+        <div class="mobile-container-page">
+          <div v-if="carrierPersonnel.personnel">
+            <div
+              v-for="personnel in carrierPersonnel.personnel"
+              :key="carrierPersonnel.personnel.id"
+              class="carrier-list-item clients-list "
+              style="overflow-y: auto;"
+            >
+              <q-item-section @click="onSelectPersonnel(personnel.id)">
+                <span>
+                  <span class="text-bold"
+                    >{{ personnel.fname }} {{ personnel.lname }}</span
+                  >
+                  <div v-if="personnel.address">
+                    <div>
+                      {{
+                        personnel.address ? personnel.address.houseNumber : '-'
+                      }}
+                      {{
+                        personnel.address.streetAddress
+                          ? personnel.address.streetAddress
+                          : '-'
+                      }}
+                    </div>
+                    <div>
+                      {{
+                        personnel.address.addressLocality
+                          ? personnel.address.addressLocality
+                          : '-'
+                      }},{{
+                        personnel.address.addressRegion
+                          ? personnel.address.addressRegion
+                          : '-'
+                      }}
+                    </div>
+                    <div class="row">
+                      {{
+                        personnel.address.addressCountry
+                          ? personnel.address.addressCountry
+                          : '-'
+                      }}
+                    </div>
+                  </div>
+                  <div class="q-mt-xs" v-for="phone in personnel.phoneNumber">
+                    <span v-if="phone.type"
+                      >{{ phone.type ? phone.type : '' }} :
+                    </span>
+                    <span
+                      class="clickLink"
+                      @click="onPhoneNumberClick(phone.number, $event)"
+                      >{{ phone.number ? phone.number : '-' }}</span
+                    >
+                  </div>
+                  <span
+                    class="click-link"
+                    @click="onEmailClick(personnel.email, $event)"
+                    >{{ personnel.email }}</span
+                  >
+                </span>
+              </q-item-section>
+            </div>
+          </div>
+          <div v-else class="full-height full-width column ">
+            <div class=" column absolute-center">
+              <div style="color: #666666,align-items: center">
+                You haven't added a Adjustor yet.
+              </div>
+              <img
+                class="q-mx-lg q-pt-sm"
+                src="~assets/add.svg"
+                alt="add_icon"
+                width="130px"
+                height="100px"
+                @click="addPersonnelDialog = true"
+              />
+            </div>
+          </div>
+        </div>
+      </q-card>
+    </q-dialog>
+
+    <!-- Add Adjustor Dialog -->
+    <q-dialog
+      v-model="addPersonnelDialog"
+      persistent
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <CustomBar
+          :dialogName="'Add Personnel'"
+          @closeDialog="addPersonnelDialog = false"
+        />
+        <div class="mobile-container-page">
+          <AddCarrierPersonnel :carrierPersonnel="personnel" />
+        </div>
+        <q-btn
+          @click="onSaveCarrierPersonnel"
+          label="Save"
+          color="primary"
+          class="button-width-90 q-mt-lg"
+          size="'xl'"
         />
       </q-card>
     </q-dialog>
@@ -392,6 +645,7 @@ import AddCarrier from 'components/AddCarrier';
 import CarriersList from 'components/CarriersList';
 import { validateDate } from '@utils/validation';
 import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
+import AddCarrierPersonnel from 'components/AddCarrierPersonnel';
 
 import { dateToSend } from '@utils/date';
 import { date } from 'quasar';
@@ -405,10 +659,52 @@ export default {
     InsuranceInfo,
     ClaimDetail,
     CarriersList,
-    AddCarrier
+    AddCarrier,
+    AddCarrierPersonnel
   },
   data() {
     return {
+      personnel: {
+        honorific: {
+          id: '',
+          value: 'Mr.',
+          machineValue: 'mr_'
+        },
+        fname: '',
+        lname: '',
+        departmentName: '',
+        address: {
+          houseNumber: '',
+          addressCountry: '',
+          addressLocality: '',
+          addressRegion: '',
+          postOfficeBoxNumber: '',
+          postalCode: '',
+          streetAddress: '',
+          dropBox: {
+            info: '',
+            isPresent: false
+          }
+        },
+        phoneNumber: [
+          {
+            type: 'main',
+            number: ''
+          }
+        ],
+        email: '',
+        defaultRoles: [
+          'Manager',
+          'Personnel',
+          'Technical Architect',
+          'Tester',
+          'Engineer',
+          'Plumber'
+        ],
+        notes: ''
+      },
+      addPersonnelDialog: false,
+      adjustorListDialog: false,
       carrierName: '',
       claimID: '',
       carrierDetails: '',
@@ -462,8 +758,11 @@ export default {
       'policyCategories',
       'selectedClaimId',
       'selectedClaimCarrier',
-      'selectedClaimId',
-      'selectedClaimCarrier'
+      'carrierPersonnel',
+      'contactTypes',
+      'titles',
+      'carriers',
+      'carrierPersonnel'
     ]),
     formatDate(value) {
       if (value) {
@@ -472,7 +771,11 @@ export default {
     }
   },
 
-  async created() {
+  created() {
+    this.getClaimCarrier(this.selectedClaimId);
+    this.getCarrierPersonnel(this.selectedClaimCarrier.carrier.id);
+    this.getContactTypes();
+    this.getTitles();
     if (this.$route.params.id) {
       this.getPolicy(this.$route.params.id);
     }
@@ -487,7 +790,16 @@ export default {
       'editInsurancePolicy',
       'getSelectedClaim',
       'getClaimCarrier',
-      'deleteClaimCarrier'
+      'deleteClaimCarrier',
+      'getClaimCarrierPersonnel',
+      'getContactTypes',
+      'getTitles',
+      'addCarrierPersonnel',
+      'getCarrierPersonnel',
+      'addClaimPersonnel',
+      'deleteClaimCarrierPersonnel',
+      'getCarriers',
+      'addClaimCarrier'
     ]),
     validateDate,
 
@@ -533,7 +845,10 @@ export default {
       this.insuranceDetails.policyNumber = this.policy.policyInfo.number
         ? this.policy.policyInfo.number
         : ' ';
-      this.insuranceDetails.insuranceClaimNumber = this.policy.policyInfo.claimNumber;
+      this.insuranceDetails.insuranceClaimNumber = this.policy.policyInfo
+        .claimNumber
+        ? this.policy.policyInfo.claimNumber
+        : '-';
       this.insuranceDetails.policyEffectiveDate = this.policy.policyInfo.effectiveDate;
       this.insuranceDetails.policyExpireDate = this.policy.policyInfo.expirationDate;
 
@@ -559,12 +874,137 @@ export default {
         ? this.policy.policyInfo.carrier.value
         : '';
     },
+    async onCloseCarrierList() {
+      this.carriersListDialog = false;
+      await this.getClaimCarrier(this.selectedClaimId);
+    },
+    async onSetCarrier(carrierID) {
+      this.carriersListDialog = false;
+      await this.getClaimCarrier(this.selectedClaimId);
+      const payload = {
+        id: this.selectedClaimId,
+        data: {
+          carrier: {
+            carrierID: carrierID
+          }
+        }
+      };
+      await this.addClaimCarrier(payload);
+      this.getClaimCarrier(this.selectedClaimId);
+    },
+    async onDeleteAdjustor(id) {
+      const adjustor = {
+        claimID: this.selectedClaimId,
+        carrierID: this.selectedClaimCarrier.carrier.id,
+        personnelD: id
+      };
+      await this.deleteClaimCarrierPersonnel(adjustor);
+      this.$router.push(`/insurance-policy/${this.selectedClaimId}`);
+      this.getClaimCarrier(this.selectedClaimId);
+    },
+
+    onFieldAddAdjustorClick() {
+      this.adjustorListDialog = true;
+      this.getCarrierPersonnel(this.$route.params.id);
+    },
+    onDeskAddAdjustorClick() {
+      this.adjustorListDialog = true;
+      this.getCarrierPersonnel(this.$route.params.id);
+    },
+    async onSaveCarrierPersonnel() {
+      const payload = {
+        id: this.$route.params.id,
+        data: {
+          personnel: {
+            honorific: {
+              id: this.personnel.honorific.id,
+              value: this.personnel.honorific.value,
+              machineValue: this.personnel.honorific.machineValue
+            },
+            fname: this.personnel.fname,
+            lname: this.personnel.lname,
+            email: this.personnel.email,
+            phoneNumber: this.personnel.phoneNumber,
+            role: {
+              value: 'Adjuster',
+              machineValue: 'adjuster'
+            },
+            address: {
+              ...this.personnel.address
+            },
+            note: this.personnel.notes
+          }
+        }
+      };
+      await this.addCarrierPersonnel(payload);
+      this.addPersonnelDialog = false;
+      this.getCarrierPersonnel(this.$route.params.id);
+      this.personnel.fname = '';
+      this.personnel.lname = '';
+      this.personnel.email = '';
+      this.personnel.address.houseNumber = '';
+      this.personnel.address.addressCountry = '';
+      this.personnel.address.addressLocality = '';
+      this.personnel.address.addressRegion = '';
+      this.personnel.address.streetAddress = '';
+      this.personnel.address.postalCode = '';
+      this.personnel.notes = '';
+      this.personnel.departmentName = '';
+    },
+    async onSelectPersonnel(id) {
+      const payload = {
+        claimID: this.selectedClaimId,
+        carrierID: this.selectedClaimCarrier.id,
+        data: {
+          personnel: {
+            personnelID: id,
+
+            name: this.personnel.fname,
+            email: this.personnel.email,
+            role: {
+              value: 'Adjuster',
+              machineValue: 'adjuster'
+            },
+            note: this.personnel.notes,
+            phoneNumber: [
+              {
+                type: this.personnel.phoneNumber[0].type,
+                number: this.personnel.phoneNumber[0].number
+              }
+            ]
+          }
+        }
+      };
+      await this.addClaimPersonnel(payload);
+      this.adjustorListDialog = false;
+      this.getClaimCarrier(this.$route.params.id);
+    },
+    // For adding multiple Contact Numbers in ClientInfo
+    addAnotherContact() {
+      let len = this.personnel.phoneNumber.length;
+      if (this.personnel.phoneNumber[len - 1].number.length == 14) {
+        this.personnel.phoneNumber.push({
+          type: '',
+          number: ''
+        });
+      } else {
+        this.$q.notify({
+          message: 'Please fill the above contact first',
+          position: 'top',
+          type: 'negative'
+        });
+      }
+    },
+    RemoveAnotherContact() {
+      this.personnel.phoneNumber.pop();
+    },
     async onDelete(id) {
       const carrier = {
         claimID: this.selectedClaimId,
         carrierID: id
       };
       await this.deleteClaimCarrier(carrier);
+      this.getClaimCarrier(this.selectedClaimId);
       this.carrierName = '';
     },
     async onSaveButtonClick() {
@@ -649,7 +1089,7 @@ export default {
       this.carriersListDialog = false;
       await this.getClaimCarrier(this.selectedClaimId);
     },
-    async onSelectCarrier() {},
+
     openAddCarrierDialog(e) {
       this.addCarrierDialog = e;
     },
@@ -679,5 +1119,11 @@ export default {
 ::-webkit-scrollbar {
   width: 0px;
   background: transparent; /* make scrollbar transparent */
+}
+.icon-top {
+  position: fixed;
+  right: 10px;
+  top: 10px;
+  z-index: 10000;
 }
 </style>

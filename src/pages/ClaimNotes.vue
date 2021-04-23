@@ -85,7 +85,7 @@
                   <div class="row">
                     {{
                       claimNotes.attributes.notes[index].created
-                        | moment('DD/MM/YYY/, HH:mm')
+                        | moment('MM/DD/YYYY/, HH:mm')
                     }}
 
                     <br />
@@ -105,7 +105,7 @@
             </div>
           </div>
         </div>
-        <div v-else class="full-height full-width column ">
+        <div v-else class="full-height full-width column">
           <div class=" column absolute-center">
             <div style="color: #666666,align-items: center">
               You haven't added a Note yet.

@@ -23,6 +23,7 @@ export async function addCarrier({ dispatch, state }, payload) {
       '/carriers',
       buildApiData('carriers', payload)
     );
+
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'positive',
@@ -220,6 +221,54 @@ export async function deleteClaimCarrier({ commit, dispatch }, carrier) {
     dispatch('setNotification', {
       type: 'positive',
       message: 'Carrier  has been deleted successfully !'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'Error in deleting carrier.'
+    });
+  }
+}
+
+export async function addClaimPersonnel({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      `/claims/${payload.claimID}/carriers/${payload.carrierID}/personnel`,
+      buildApiData('claimcarrier', payload.data)
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Personnel added Successfully!'
+    });
+    return data;
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'error'
+    });
+    return false;
+  }
+}
+export async function deleteClaimCarrierPersonnel(
+  { commit, dispatch },
+  adjustor
+) {
+  dispatch('setLoading', true);
+  try {
+    await request.del(
+      `/claims/${adjustor.claimID}/carriers/${adjustor.carrierID}/personnel/${adjustor.personnelD}`
+    );
+    commit('setSelectedClaimCarrier');
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Personnel  has been deleted successfully !'
     });
   } catch (e) {
     console.log(e);
