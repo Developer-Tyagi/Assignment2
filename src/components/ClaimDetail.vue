@@ -20,8 +20,10 @@
       <div class="col  q-ml-md">
         <span v-if="getSelectedClaim.lossInfo">
           {{
-            getSelectedClaim.lossInfo.lossAddressName
-              ? getSelectedClaim.lossInfo.lossAddressName
+            getSelectedClaim.lossInfo
+              ? getSelectedClaim.lossInfo.property
+                ? getSelectedClaim.lossInfo.property.propertyType.value
+                : ''
               : '-'
           }}
         </span>
@@ -31,40 +33,40 @@
       <span class="heading-light col-3"> Loss Address:</span>
       <span class="col-7 q-ml-md" v-if="getSelectedClaim.lossInfo">
         {{
-          getSelectedClaim.lossInfo.address
-            ? getSelectedClaim.lossInfo.address.streetAddress
-              ? getSelectedClaim.lossInfo.address.streetAddress
+          getSelectedClaim.lossInfo.property
+            ? getSelectedClaim.lossInfo.property
+              ? getSelectedClaim.lossInfo.property.streetAddress
               : ''
             : '-'
         }}
         {{
-          getSelectedClaim.lossInfo.address
-            ? getSelectedClaim.lossInfo.address.addressLocality
-              ? getSelectedClaim.lossInfo.address.addressLocality
+          getSelectedClaim.lossInfo.property
+            ? getSelectedClaim.lossInfo.property
+              ? getSelectedClaim.lossInfo.property.addressLocality
               : ''
             : '-'
         }}
 
         {{
-          getSelectedClaim.lossInfo.address
-            ? getSelectedClaim.lossInfo.address.addressRegion
-              ? getSelectedClaim.lossInfo.address.addressRegion
+          getSelectedClaim.lossInfo.property
+            ? getSelectedClaim.lossInfo.property
+              ? getSelectedClaim.lossInfo.property.postalCode
               : ''
             : '-'
         }}
 
         <div>
           {{
-            getSelectedClaim.lossInfo.address
-              ? getSelectedClaim.lossInfo.address.addressCountry
-                ? getSelectedClaim.lossInfo.address.addressCountry
+            getSelectedClaim.lossInfo.property
+              ? getSelectedClaim.lossInfo.property
+                ? getSelectedClaim.lossInfo.property.addressRegion
                 : ''
               : '-'
           }}
           {{
-            getSelectedClaim.lossInfo.address
-              ? getSelectedClaim.lossInfo.address.postalCode
-                ? getSelectedClaim.lossInfo.address.postalCode
+            getSelectedClaim.lossInfo.property
+              ? getSelectedClaim.lossInfo.property
+                ? getSelectedClaim.lossInfo.property.addressCountry
                 : ''
               : '-'
           }}
@@ -92,7 +94,9 @@
       <span class="heading-light col-3 "> Current Phase </span>
       <span class="q-ml-md col-8">
         {{
-          getSelectedClaim.status.value ? getSelectedClaim.status.value : '-'
+          getSelectedClaim.currentPhase
+            ? getSelectedClaim.currentPhase.value
+            : '-'
         }}</span
       >
     </div>
