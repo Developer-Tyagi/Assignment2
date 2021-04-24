@@ -92,7 +92,7 @@ export async function addMortgagePersonnel({ dispatch, state }, payload) {
     });
   }
 }
-export async function editMortgagePersonnel({ dispatch, state }, payload) {
+export async function editMortgagePersonnel({ dispatch }, payload) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.patch(

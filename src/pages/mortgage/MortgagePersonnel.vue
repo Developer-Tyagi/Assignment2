@@ -531,8 +531,42 @@ export default {
         }
       };
       await this.editMortgagePersonnel(payload);
-      this.getMortgagePersonnel(this.$route.params.id);
+      await this.getMortgagePersonnel(this.$route.params.id);
       this.editPersonnelDialog = false;
+      this.personnel = {
+        fname: '',
+        lname: '',
+        departmentName: '',
+        address: {
+          houseNumber: '',
+          addressCountry: '',
+          addressLocality: '',
+          addressRegion: '',
+          postOfficeBoxNumber: '',
+          postalCode: '',
+          streetAddress: '',
+          dropBox: {
+            info: '',
+            isPresent: false
+          }
+        },
+        phoneNumber: [
+          {
+            type: 'main',
+            number: ''
+          }
+        ],
+        email: '',
+        defaultRoles: [
+          'Manager',
+          'Personnel',
+          'Technical Architect',
+          'Tester',
+          'Engineer',
+          'Plumber'
+        ],
+        notes: ''
+      };
     },
     async onDelete(index) {
       const vendor = {
@@ -543,6 +577,7 @@ export default {
       this.getMortgagePersonnel(this.$route.params.id);
     },
     // For adding multiple Contact Numbers in ClientInfo
+
     addAnotherContact() {
       let len = this.personnel.phoneNumber.length;
       if (this.personnel.phoneNumber[len - 1].number.length == 14) {
@@ -603,18 +638,42 @@ export default {
       await this.addMortgagePersonnel(payload);
       this.addPersonnelDialog = false;
       this.getMortgagePersonnel(this.$route.params.id);
-      this.personnel.fname = '';
-      this.personnel.lname = '';
-      this.personnel.email = '';
-      this.personnel.address.houseNumber = '';
-      this.personnel.address.addressCountry = '';
-      this.personnel.address.addressLocality = '';
-      this.personnel.address.addressRegion = '';
-      this.personnel.address.streetAddress = '';
-      this.personnel.address.postalCode = '';
-      this.personnel.notes = '';
-      this.personnel.departmentName = '';
-      this.personnel.phoneNumber.length = 0;
+      this.name = '';
+      this.personnel = {
+        fname: '',
+        lname: '',
+        departmentName: '',
+        address: {
+          houseNumber: '',
+          addressCountry: '',
+          addressLocality: '',
+          addressRegion: '',
+          postOfficeBoxNumber: '',
+          postalCode: '',
+          streetAddress: '',
+          dropBox: {
+            info: '',
+            isPresent: false
+          }
+        },
+        phoneNumber: [
+          {
+            type: 'main',
+            number: ''
+          }
+        ],
+        defaultRoles: [
+          'Manager',
+          'Personnel',
+          'Technical Architect',
+          'Tester',
+          'Engineer',
+          'Plumber'
+        ],
+        email: '',
+
+        notes: ''
+      };
     }
   }
 };
