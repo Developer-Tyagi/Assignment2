@@ -283,7 +283,7 @@
       <q-card>
         <CustomBar
           @closeDialog="claimSummary = false"
-          :dialogName="'Edit Claim Deadlines'"
+          :dialogName="'Edit Claim Summary'"
         />
         <div class="q-ma-sm mobile-container-page">
           <q-card class="q-mx-sm">
