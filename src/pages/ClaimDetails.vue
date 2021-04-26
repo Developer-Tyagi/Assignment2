@@ -298,7 +298,7 @@ export default {
           this.$router.push(`/insurance-policy/${this.selectedClaimId}`);
           break;
         case 'Mortgages and Liens':
-          this.$router.push('/mortgage-liens');
+          this.$router.push(`/mortgage-liens/${this.selectedClaimId}`);
           break;
         case 'Files':
           this.$router.push({

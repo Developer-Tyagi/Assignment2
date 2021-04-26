@@ -212,13 +212,17 @@ export async function editInsurancePolicy({ dispatch, state }, payload) {
       buildApiData('claimpolicy', payload.data)
     );
     dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Insurance & Policy Info has been  Updated !'
+    });
     return true;
   } catch (e) {
     console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response[0].title
+      message: 'Error in updating please try again !.'
     });
     return false;
   }

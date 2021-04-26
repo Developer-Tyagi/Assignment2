@@ -209,12 +209,7 @@ const routes = [
         caseSensitive: true,
         component: () => import('pages/InsurancePolicy.vue')
       },
-      {
-        path: 'mortgage-liens',
-        name: 'mortgage liens ',
-        caseSensitive: true,
-        component: () => import('src/pages/MortgageAndLiens.vue')
-      },
+
       {
         path: 'settlements',
         name: 'Settlements ',
@@ -299,6 +294,12 @@ const routes = [
         name: 'mortgages',
         caseSensitive: true,
         component: () => import('pages/mortgage/Mortgage.vue')
+      },
+      {
+        path: 'mortgage-liens/:id',
+        name: 'mortgage ',
+        caseSensitive: true,
+        component: () => import('pages/mortgage/MortgageAndLiens.vue')
       },
       {
         path: 'mortgage-details/:id',

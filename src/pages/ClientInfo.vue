@@ -33,7 +33,7 @@
           - Open Claim
         </div>
       </div>
-      <div class="q-ml-md">Date & Time of first contact</div>
+      <div class="q-ml-md">Date & Time of First Contact</div>
       <div class="q-ml-md">{{ showingDate }},{{ showingTime }}</div>
 
       <q-card class="q-ma-md q-ma-sm">
@@ -42,7 +42,7 @@
             <q-icon
               name="create"
               color="primary"
-              class="edit-icon"
+              class="edit-icon icon-top"
               @click="editClientInfoDailog = true"
             ></q-icon>
           </div>
@@ -197,7 +197,9 @@
                   name="place"
                   color="primary"
                   @click="
-                    sendMap(editSelectedClient.attributes.insuredInfo.address)
+                    sendMap(
+                      editSelectedClient.attributes.insuredInfo.mailingAddress
+                    )
                   "
                   class="edit-icon"
                 ></q-icon>
@@ -811,16 +813,14 @@ export default {
     } else {
       this.addAditionalPhoneNumberToggle = false;
     }
-    // if (this.editSelectedClient.attributes.insuredInfo.tenantInfo.name) {
-    //   this.tenantOccupiedToggle = true;
-    //   this.tenantOccupied.name = this.editSelectedClient.attributes.insuredInfo.tenantInfo.name;
-    //   this.tenantOccupied.type = this.editSelectedClient.attributes.insuredInfo.tenantInfo.phoneNumber.type;
-    //   this.tenantOccupied.phone = this.editSelectedClient.attributes.insuredInfo.tenantInfo.phoneNumber.number;
-    // }
+    if (this.editSelectedClient.attributes.insuredInfo.tenantInfo) {
+      this.tenantOccupiedToggle = true;
+      this.tenantOccupied.name = this.editSelectedClient.attributes.insuredInfo.tenantInfo.name;
+      this.tenantOccupied.type = this.editSelectedClient.attributes.insuredInfo.tenantInfo.phoneNumber.type;
+      this.tenantOccupied.phone = this.editSelectedClient.attributes.insuredInfo.tenantInfo.phoneNumber.number;
+    }
     // Client Address Editable & prefilled Details
-    console.log(this.editSelectedClient.attributes.insuredInfo, 7);
     this.clientAddressDetails = this.editSelectedClient.attributes.insuredInfo.mailingAddress;
-    // Mailing  Address Editable & prefilled Details
     this.mailingAddressDetails = this.editSelectedClient.attributes.insuredInfo.mailingAddress;
   },
 
@@ -877,24 +877,6 @@ export default {
             number: ''
           }
         ];
-      }
-    },
-    mailingAddressSame() {
-      if (this.isMailingAddressSameToggle) {
-        this.mailingAddressDetails = this.clientAddressDetails;
-      } else {
-        this.mailingAddressDetails = {
-          addressCountry: '',
-          addressRegion: '',
-          addressLocality: '',
-          postalCode: '',
-          streetAddress: '',
-          postOfficeBoxNumber: '',
-          dropBox: {
-            info: '',
-            isPresent: false
-          }
-        };
       }
     },
     async onSaveButtonClick() {
@@ -969,9 +951,9 @@ export default {
           delete payload.clientData.insuredInfo.tenantInfo;
         }
 
-        await this.editClient(payload);
-
-        this.successMessage(constants.successMessages.CLIENT_INFO);
+        this.editClient(payload).then(async () => {
+          this.successMessage(constants.successMessages.CLIENT_INFO);
+        });
 
         await this.getSingleClientDetails(this.selectedClientId);
         this.$router.push('/client-details');
@@ -1006,5 +988,11 @@ export default {
   height: calc(100vh - 130px);
   overflow: auto;
   margin: 10px;
+}
+.icon-top {
+  position: fixed;
+  right: 20px;
+  top: 10px;
+  z-index: 10000;
 }
 </style>

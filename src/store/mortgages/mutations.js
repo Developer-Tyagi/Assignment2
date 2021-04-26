@@ -4,12 +4,13 @@ export function setMortgages(state, mortgages) {
     id: mortgage.id
   }));
 }
-export function setSelectedMortgage(state, mortgage) {
+export function setSelectedMortgage(state, mortgage = {}) {
   state.selectedMortgage = {
     id: mortgage.id,
     ...mortgage.attributes
   };
 }
+
 export function setMortgagePersonnel(state, mortgage) {
   state.mortgagePersonnel = {
     id: mortgage.id,

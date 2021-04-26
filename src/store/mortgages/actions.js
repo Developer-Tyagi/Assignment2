@@ -23,6 +23,7 @@ export async function addClaimMortgage({ dispatch, state }, payload) {
       '/mortgages',
       buildApiData('mortgages', payload)
     );
+    // commit('setSelectedMortgage');
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'positive',
@@ -92,7 +93,7 @@ export async function addMortgagePersonnel({ dispatch, state }, payload) {
     });
   }
 }
-export async function editMortgagePersonnel({ dispatch, state }, payload) {
+export async function editMortgagePersonnel({ dispatch }, payload) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.patch(
@@ -169,6 +170,29 @@ export async function editMortgageInfo({ dispatch, state }, mortgage) {
     dispatch('setNotification', {
       type: 'negative',
       message: 'failed to update mortgage'
+    });
+  }
+}
+//Remove mortgage info for given claim
+
+export async function deleteClaimMortgage({ dispatch }, mortgage) {
+  dispatch('setLoading', true);
+  console.log(mortgage, 'actions');
+  try {
+    await request.del(
+      `/claims/${mortgage.claimID}/mortgages/${mortgage.mortgageID}`
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Mortgage  Deleted !'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'Error in deleting mortgage.'
     });
   }
 }
