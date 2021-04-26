@@ -52,6 +52,12 @@
 .clickLink {
   color: $primary;
 }
+.icon-top {
+  position: fixed;
+  right: 10px;
+  top: 10px;
+  z-index: 10000;
+}
 .edit-icon {
   position: absolute;
   right: 20px;
