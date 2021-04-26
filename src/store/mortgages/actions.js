@@ -173,3 +173,26 @@ export async function editMortgageInfo({ dispatch, state }, mortgage) {
     });
   }
 }
+//Remove mortgage info for given claim
+
+export async function deleteClaimMortgage({ dispatch }, mortgage) {
+  dispatch('setLoading', true);
+  console.log(mortgage, 'actions');
+  try {
+    await request.del(
+      `/claims/${mortgage.claimID}/mortgages/${mortgage.mortgageID}`
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Mortgage  Deleted !'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'Error in deleting mortgage.'
+    });
+  }
+}

@@ -297,7 +297,7 @@ const routes = [
       },
       {
         path: 'mortgage-liens/:id',
-        name: 'mortgage liens ',
+        name: 'mortgage ',
         caseSensitive: true,
         component: () => import('pages/mortgage/MortgageAndLiens.vue')
       },
