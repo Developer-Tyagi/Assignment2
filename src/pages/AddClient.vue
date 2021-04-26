@@ -1578,6 +1578,12 @@ export default {
           }
         ]
       };
+      if (
+        !this.companyPersonnel.personnel.role.value &&
+        !this.companyPersonnel.personnel.role.machineValue
+      ) {
+        delete payload.personnel;
+      }
       this.addClaim(payload).then(() => {
         this.setSelectedLead();
 
