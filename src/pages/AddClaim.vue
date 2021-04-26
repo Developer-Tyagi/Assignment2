@@ -866,73 +866,6 @@ export default {
       }
     },
 
-    // async onSubmit(name) {
-    //   let success = false;
-    //   let validationIndex;
-    //   switch (name) {
-    //     case 'insuranceInfoDialog':
-    //       success = await this.$refs.insuranceInfoForm.validate();
-    //       validationIndex = 0;
-
-    //       break;
-
-    //     case 'addEstimatorDialog':
-    //       success = await this.$refs.addEstimatorForm.validate();
-    //       validationIndex = 2;
-    //       break;
-    //     case 'lossInfoDialog':
-    //       success = await this.$refs.lossInfoForm.validate();
-    //       validationIndex = 1;
-
-    //       break;
-
-    //     case 'expertVendorInfoDialog':
-    //       success = await this.$refs.expertVendorInfoForm.validate();
-    //       validationIndex = 2;
-
-    //       break;
-    //     case 'estimatingInfoDialog':
-    //       success = await this.$refs.estimatingInfoForm.validate();
-    //       validationIndex = 3;
-    //       break;
-
-    //     case 'contractInfoDialog':
-    //       success = await this.$refs.contractInfoForm.validate();
-    //       validationIndex = 4;
-    //       break;
-    //     case 'companyPersonnelDialog':
-    //       success = await this.$refs.companyPersonnelForm.validate();
-    //       validationIndex = 5;
-    //   }
-    //   if (success == true) {
-    //     this.dialogBoxes[validationIndex].validForm = true;
-
-    //     for (var i = 0; i < this.dialogBoxes.length - 1; i++) {
-    //       if (this.dialogBoxes[i].validForm == false) {
-    //         this.isCreateClientButtonDisabled = true;
-    //         break;
-    //       } else {
-    //         this.isCreateClientButtonDisabled = false;
-    //       }
-    //     }
-
-    //     if (
-    //       name === 'insuranceInfoDialog' ||
-    //       name === 'expertVendorInfoDialog'
-    //     ) {
-    //       this[name] = false;
-    //     }
-    //     if (name === 'addEstimatorDialog') {
-    //       this.onAddEstimatorButtonClick();
-    //       this[name] = false;
-    //     } else {
-    //       this[name] = false;
-    //     }
-    //   } else {
-    //     this.dialogBoxes.validForm = false;
-    //   }
-    // },
-
     setTitleName(val) {
       const titleResult = this.titles.find(obj => {
         return obj.id === this['honorific' + val].id;
@@ -1215,7 +1148,6 @@ export default {
 
   .form {
     height: calc(100vh - 140px);
-    padding: 10px;
   }
 }
 .form-card {

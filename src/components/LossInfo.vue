@@ -256,6 +256,12 @@
         class="required"
         label="Cause of loss description"
         v-model="lossInfo.causeOfLoss.desc"
+        lazy-rules
+        :rules="[
+          val =>
+            (val && val.length > 0) ||
+            'Please fill the cause of loss description'
+        ]"
       >
       </q-input>
 
