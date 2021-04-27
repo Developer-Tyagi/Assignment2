@@ -1088,7 +1088,7 @@ export default {
   },
 
   created() {
-    // this.getRoles();
+    this.getRoles();
     this.getLossCauses();
     this.contractInfo.time = date.formatDate(Date.now(), 'HH:mm:ss:aa');
     this.companyPersonnel.startDate = this.companyPersonnel.endDate = this.contractInfo.firstContractDate = this.contractInfo.contractDate = this.insuranceDetails.policyEffectiveDate = this.lossInfo.dateOfLoss = this.lossInfo.deadlineDate = this.lossInfo.recovDeadline = date.formatDate(
@@ -1178,8 +1178,8 @@ export default {
       'getEstimators',
       'addEstimator',
       'addIndustry',
-      // 'getRoles',
-      // 'getAllUsers',
+      'getRoles',
+      'getAllUsers',
       'vendorIndustries',
       'propertyTypes'
     ])
@@ -1201,7 +1201,7 @@ export default {
       'getPolicyCategory',
       'getVendorIndustries',
       'getPropertyTypes',
-      // 'getRoles',
+      'getRoles',
       'getSeverityClaim',
       'addClaim'
     ]),

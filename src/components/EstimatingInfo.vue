@@ -13,18 +13,32 @@
         />
       </div>
 
-      <div
-        v-if="estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle"
-        @click="onClickEstimatorOpen"
-      >
-        <div class="custom-select" v-model="estimatingInfo.name">
-          <div class="select-text">
-            {{
-              estimatingInfo.addEstimatorValue.name
-                ? estimatingInfo.addEstimatorValue.name
-                : 'Click to add estimator'
-            }}
-          </div>
+      <div v-if="estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle">
+        <div
+          class="custom-select"
+          @click="onClickEstimatorOpen"
+          v-if="!estimatingInfo.addEstimatorValue.name"
+        >
+          <div class="select-text">Click for choosing a estimator</div>
+        </div>
+        <div>
+          <q-card
+            bordered
+            v-if="estimatingInfo.addEstimatorValue.name"
+            @click="onClickEstimatorOpen"
+            class="q-my-md q-pa-md"
+          >
+            <div class="text-bold">
+              {{ estimatingInfo.addEstimatorValue.name }}
+            </div>
+            <div class="row" v-if="estimatingInfo.addEstimatorValue.phone">
+              {{ estimatingInfo.addEstimatorValue.phone.type }} :
+              <span>
+                {{ estimatingInfo.addEstimatorValue.phone.phoneNumber }}
+              </span>
+            </div>
+            <div>{{ estimatingInfo.addEstimatorValue.email }}</div>
+          </q-card>
         </div>
       </div>
       <input
@@ -78,29 +92,34 @@
           <div
             v-for="estimator in estimators"
             :key="estimator.id"
-            class="vendor-list-item"
+            class="vendor-list-item column"
             @click="selectEstimator(estimator)"
           >
-            <div class="row">
-              <span class="text-bold"
-                >{{ estimator.fname }} {{ estimator.lname }}</span
-              >
+            <div class="text-bold">
+              {{ estimator.contact.fname }} {{ estimator.contact.lname }}
             </div>
             <div>{{ estimator.companyName }}</div>
-            <div class="row">
+            <div
+              class="row"
+              v-if="
+                estimator.contact.phoneNumber &&
+                  estimator.contact.phoneNumber.length
+              "
+            >
+              {{ estimator.contact.phoneNumber[0].type }} :
               <span
-                >Mob:
-                <span
-                  v-if="estimator.phoneNumber"
-                  class="click-link"
-                  @click="
-                    onPhoneNumberClick(estimator.phoneNumber.number, $event)
-                  "
-                >
-                  {{ lead.primaryContact.phoneNumber.number }}
-                </span>
+                class="click-link"
+                @click="
+                  onPhoneNumberClick(
+                    estimator.contact.phoneNumber[0].number,
+                    $event
+                  )
+                "
+              >
+                {{ estimator.contact.phoneNumber[0].number }}
               </span>
             </div>
+            <div>{{ estimator.email }}</div>
           </div>
         </div>
       </q-card>
@@ -229,6 +248,7 @@ export default {
   },
   created() {
     this.getEstimators();
+    console.log(this.estimatingInfo);
   },
   computed: {
     ...mapGetters(['estimators', 'contactTypes', 'titles'])
@@ -253,8 +273,8 @@ export default {
             },
             phoneNumber: [
               {
-                type: this.estimatingInfo.addEstimatorInfo.type,
-                number: this.estimatingInfo.addEstimatorInfo.phone
+                type: this.estimatingInfo.type,
+                number: this.estimatingInfo.phone
               }
             ]
           },
@@ -307,7 +327,18 @@ export default {
     },
 
     selectEstimator(value) {
-      this.estimatingInfo.addEstimatorValue.name = value.fname;
+      console.log(value.contact.phoneNumber[0]);
+      this.estimatingInfo.addEstimatorValue.name = value.contact.fname;
+      this.estimatingInfo.addEstimatorValue.phone = {
+        phoneNumber: value.contact.phoneNumber
+          ? value.contact.phoneNumber[0].number
+          : '-',
+        type: value.contact.phoneNumber
+          ? value.contact.phoneNumber[0].type
+          : 'main'
+      };
+
+      this.estimatingInfo.addEstimatorValue.email = value.email;
       this.estimatingInfo.estimatorsListDialog = false;
     }
   }

@@ -155,7 +155,6 @@
 import { mapGetters, mapActions } from 'vuex';
 
 import { validateDate } from '@utils/validation';
-import { date } from 'quasar';
 
 export default {
   name: 'CompanyPersonnel',
@@ -175,18 +174,14 @@ export default {
     };
   },
   computed: {
-    ...mapGetters([
-      'personnel',
-      'selectedClaimId',
-      'roleTypes',
-      'getRoles',
-      'userRoles'
-    ])
+    ...mapGetters(['personnel', 'selectedClaimId', 'roleTypes', 'userRoles'])
   },
 
   methods: {
-    ...mapActions(['getPersonnelInfo', 'getAllUsers', 'addCompanyPersonnel']),
+    ...mapActions(['getPersonnelInfo', 'addCompanyPersonnel']),
+
     validateDate,
+
     setTypes(types, data) {
       const obj = types.find(item => {
         return item.id === data.id;

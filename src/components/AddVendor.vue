@@ -106,18 +106,6 @@
                   'You have entered an invalid email address!'
               ]"
             />
-            <div
-              class="row"
-              v-if="componentName === constants.industries.CARRIER"
-            >
-              <p class="q-mx-none q-my-auto">
-                <label> Can Claim be Filed by email</label>
-              </p>
-              <q-toggle
-                class="q-ml-auto"
-                v-model="vendor.meta.claimFiledByEmail"
-              />
-            </div>
           </q-card>
           <q-card class="q-ma-xs q-pa-sm q-mt-md">
             <p class="form-heading">Company's Address</p>
