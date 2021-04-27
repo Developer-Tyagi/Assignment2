@@ -137,7 +137,7 @@
               Date & Time of Loss
             </span>
             <span class="q-ml-md col">
-              MM/DD/YYYY
+              {{ getSelectedClaim.lossInfo.date | moment('MM/DD/YYYY') }}
             </span>
           </div>
 
