@@ -126,7 +126,7 @@
             v-for="(personnel, index) in selectedClaimCarrier.carrier.personnel"
           >
             <div class="q-pa-sm text-bold row ">
-           {{ personnel.name ? personnel.name : '-' }}
+              {{ personnel.name ? personnel.name : '-' }}
               <div v-if="personnel.role">
                 <q-badge class="q-px-sm q-py-xs q-ml-xs" size="xs">
                   {{ personnel.role.value }}</q-badge
@@ -149,11 +149,10 @@
                 s
                 @click="onDeleteAdjustor(personnel.id)"
               />
-              </div>
-            </span>
+            </div>
 
             <span class="col-7 heading-light " v-if="personnel.address">
-              <div class="row q-ml-sm" v-if=" personnel.address.houseNumber">
+              <div class="row q-ml-sm" v-if="personnel.address.houseNumber">
                 {{
                   personnel.address.houseNumber
                     ? personnel.address.houseNumber
@@ -166,7 +165,7 @@
                     : '-'
                 }}
               </div>
-              <div class="q-ml-sm"v-if="personnel.address.addressLocality">
+              <div class="q-ml-sm" v-if="personnel.address.addressLocality">
                 {{
                   personnel.address.addressLocality
                     ? personnel.address.addressLocality
@@ -179,7 +178,7 @@
                     : '-'
                 }}
               </div>
-              <div class="row q-ml-sm"v-if="personnel.address.addressCountry">
+              <div class="row q-ml-sm" v-if="personnel.address.addressCountry">
                 {{
                   personnel.address.addressCountry
                     ? personnel.address.addressCountry
@@ -482,28 +481,36 @@
           ><img src="~assets/addAdjustor.svg"
         /></q-btn>
         <div class="actions-div ">
-          <div
-            v-if="!params.industry"
-            class="q-ml-xs row q-pr-md"
-          
-          >
-          <div class=" row">
-       <div @click="filterDialog = true" class="q-ml-md">  <img src="~assets/filter.svg" /><span class="heading-light">Filter</span></div>
-        
-          <q-btn
-            v-if="params.industry"
-            class="q-ml-auto q-pr-md"
-            color="white"
-            text-color="grey"
-            @click="clearFilter()"
-            flat
-            dense
-            style="font-weight: 400"
-            >Clear</q-btn
-          >
-       <div class="q-ml-auto edit-icon  q-mb-xl " > <q-btn color="primary"class="q-mr-lg "size="sm" label="Assign" @click="assignDialog=true"/></div>
-           </div>
-             </div>
+          <div v-if="!params.industry" class="q-ml-xs row q-pr-md">
+            <div class=" row">
+              <div @click="filterDialog = true" class="q-ml-md">
+                <img src="~assets/filter.svg" /><span class="heading-light"
+                  >Filter</span
+                >
+              </div>
+
+              <q-btn
+                v-if="params.industry"
+                class="q-ml-auto q-pr-md"
+                color="white"
+                text-color="grey"
+                @click="clearFilter()"
+                flat
+                dense
+                style="font-weight: 400"
+                >Clear</q-btn
+              >
+              <div class="q-ml-auto edit-icon  q-mb-xl ">
+                <q-btn
+                  color="primary"
+                  class="q-mr-lg "
+                  size="sm"
+                  label="Assign"
+                  @click="assignDialog = true"
+                />
+              </div>
+            </div>
+          </div>
         </div>
         <div class="mobile-container-page">
           <div v-if="carrierPersonnel.personnel">
@@ -670,7 +677,7 @@
             v-for="filter in claimRoles"
             :key="filter.id"
             class="filters-list-item"
-      >
+          >
             <div class="row">
               {{ filter }}
               <q-radio
@@ -686,7 +693,7 @@
     </q-dialog>
 
     <!-- Assign Dialog  -->
-        <q-dialog
+    <q-dialog
       v-model="assignDialog"
       persistent
       :maximized="true"
@@ -694,32 +701,40 @@
       transition-hide="slide-down"
     >
       <q-card class="bg-white">
-     <div class="mobile-container-page-without-search">
-        <div class="form-heading q-ml-sm q-ma-md text-h5"> Assin to Claim as</div>
-        <div class="clients-list q-ma-lg ">
-          <div
-            v-for="filter in claimRoles"
-            :key="filter.id"
-           class="q-ma-md q-pt-sm"
-        >
-            <div class="row">
-               <q-radio
-                v-model="assignFilter"
-                :val="filter.machineValue"
-                dense
-              />
-          <span class="q-ml-sm q-mt-xs"> {{ filter }}</span>
-           </div>
+        <div class="mobile-container-page-without-search">
+          <div class="form-heading q-ml-sm q-ma-md text-h5">
+            Assin to Claim as
           </div>
-       </div>
-     </div>
-        <div class="row">
-           <div class="q-ml-auto"> <q-btn color="primary"@click="assignDialog=false" flat label="cancel"/></div>
-            <div > <q-btn color="primary" flat label="assign"/></div>
+          <div class="clients-list q-ma-lg ">
+            <div
+              v-for="filter in claimRoles"
+              :key="filter.id"
+              class="q-ma-md q-pt-sm"
+            >
+              <div class="row">
+                <q-radio
+                  v-model="assignFilter"
+                  :val="filter.machineValue"
+                  dense
+                />
+                <span class="q-ml-sm q-mt-xs"> {{ filter }}</span>
+              </div>
             </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="q-ml-auto">
+            <q-btn
+              color="primary"
+              @click="assignDialog = false"
+              flat
+              label="cancel"
+            />
+          </div>
+          <div><q-btn color="primary" flat label="assign" /></div>
+        </div>
       </q-card>
     </q-dialog>
-
   </q-page>
 </template>
 
@@ -749,16 +764,16 @@ export default {
     AddCarrier,
     AddCarrierPersonnel
   },
- 
+
   data() {
     return {
-      assignDialog:false,
-      assignFilter:'',
+      assignDialog: false,
+      assignFilter: '',
       personnelID: '',
       id: '',
       editPersonnelDialog: false,
       selectedFilter: '',
-    filterDialog: false,
+      filterDialog: false,
       personnel: {
         honorific: {
           id: '',
@@ -958,7 +973,7 @@ export default {
               machineValue: 'adjuster'
             },
             note: this.editPersonnel.notes,
-          phoneNumber:this.editPersonnel.phoneNumber,
+            phoneNumber: this.editPersonnel.phoneNumber,
             address: this.editPersonnel.address
           }
         }
@@ -988,6 +1003,9 @@ export default {
       this.editPersonnel.address = this.selectedClaimCarrier.carrier.personnel[
         index
       ].address;
+      this.editPersonnel.notes = this.selectedClaimCarrier.carrier.personnel[
+        index
+      ].note;
     },
 
     validateDate,
@@ -1032,7 +1050,7 @@ export default {
         : '';
       this.insuranceDetails.policyNumber = this.policy.policyInfo.number
         ? this.policy.policyInfo.number
-        : ' ';
+        : '';
       this.insuranceDetails.insuranceClaimNumber = this.policy.policyInfo
         .claimNumber
         ? this.policy.policyInfo.claimNumber
@@ -1139,7 +1157,7 @@ export default {
       this.personnel.departmentName = '';
     },
     //This Function is called when we click on adjustor list and select a personnel
- async onSelectPersonnel(personnel) {
+    async onSelectPersonnel(personnel) {
       const payload1 = {
         claimID: this.selectedClaimId,
         carrierID: this.selectedClaimCarrier.id,
@@ -1152,9 +1170,8 @@ export default {
               value: 'Adjuster',
               machineValue: 'adjuster'
             },
-            note: personnel.notes,
-          
-            phoneNumber:personnel.phoneNumber,
+            note: personnel.note,
+            phoneNumber: personnel.phoneNumber,
             address: personnel.address
           }
         }
@@ -1163,8 +1180,7 @@ export default {
       this.adjustorListDialog = false;
       this.getClaimCarrier(this.$route.params.id);
     },
-  
-    
+
     async onDelete(id) {
       const carrier = {
         claimID: this.selectedClaimId,
@@ -1273,8 +1289,7 @@ export default {
     onAddCarrierClick() {
       this.carriersListDialog = true;
       this.carrierName = this.selectedClaimCarrier.carrier.name;
-    },
-    
+    }
   }
 };
 </script>
