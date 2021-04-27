@@ -147,9 +147,7 @@
           </template>
         </q-input>
       </div>
-    </q-card>
 
-    <q-card class="q-pa-sm q-mt-sm">
       <div class="row">
         <q-btn-toggle
           v-model="contractInfo.buttonGroup"
@@ -240,6 +238,7 @@
         </div>
       </div>
     </q-card>
+
     <q-card class="q-pa-sm q-mt-sm">
       <span class="form-heading">Accept or Cancel Claim ?</span>
       <p>
@@ -260,8 +259,7 @@
           options-dense
         ></q-select>
       </div>
-    </q-card>
-    <q-card class="q-pa-sm q-mt-sm">
+
       <span class="form-heading">Reason For Cancellation</span>
       <div class="floating-label">
         <textarea
@@ -269,7 +267,7 @@
           class="full-width"
           v-model="contractInfo.reasonForCancellationText"
           style="resize: none"
-        ></textarea>
+        />
       </div>
     </q-card>
   </div>

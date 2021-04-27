@@ -743,7 +743,7 @@ export default {
   },
   data() {
     return {
-      step: 5,
+      step: 7,
       stepClickValidTill: 0,
       mortgageObject: {
         vendorsListDialog: false,
@@ -1688,7 +1688,6 @@ export default {
 
   .form {
     height: calc(100vh - 140px);
-    padding: 10px;
   }
 }
 </style>
