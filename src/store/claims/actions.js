@@ -456,7 +456,6 @@ export async function editClaimNumber({ dispatch, state }, payload) {
   }
 }
 export async function editClaimPhase({ dispatch, state }, payload) {
-  console;
   dispatch('setLoading', true);
 
   try {
