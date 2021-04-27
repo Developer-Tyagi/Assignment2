@@ -242,20 +242,25 @@ export default {
 
       if (success) {
         const payload = {
-          fname: this.estimatingInfo.fname,
-          lname: this.estimatingInfo.lname,
-          honorific: {
-            id: this.estimatingInfo.honorific3.id,
-            value: this.estimatingInfo.honorific3.title,
-            machineValue: this.estimatingInfo.honorific3.machineValue
+          type: 'user',
+          contact: {
+            fname: this.estimatingInfo.fname,
+            lname: this.estimatingInfo.lname,
+            honorific: {
+              id: this.estimatingInfo.honorific3.id,
+              value: this.estimatingInfo.honorific3.title,
+              machineValue: this.estimatingInfo.honorific3.machineValue
+            },
+            phoneNumber: [
+              {
+                type: this.estimatingInfo.addEstimatorInfo.type,
+                number: this.estimatingInfo.addEstimatorInfo.phone
+              }
+            ]
           },
           email: this.estimatingInfo.email,
-          phoneNumber: [
-            {
-              type: this.estimatingInfo.addEstimatorInfo.type,
-              number: this.estimatingInfo.addEstimatorInfo.phone
-            }
-          ],
+
+          roles: ['estimator'],
           companyName: this.estimatingInfo.companyName
         };
 

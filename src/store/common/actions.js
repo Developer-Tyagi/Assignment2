@@ -103,6 +103,7 @@ export async function getPlansInfo({ commit, dispatch }) {
 }
 
 export async function getRoles({ commit, dispatch }) {
+  console.log('hi');
   dispatch('setLoading', true);
   try {
     const { data } = await request.get('/roles');
