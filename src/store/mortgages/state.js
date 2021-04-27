@@ -2,6 +2,7 @@ export default function() {
   return {
     mortgages: [],
     selectedMortgage: {},
-    mortgagePersonnel: []
+    mortgagePersonnel: [],
+    claimRoles: ['Adjuster']
   };
 }
