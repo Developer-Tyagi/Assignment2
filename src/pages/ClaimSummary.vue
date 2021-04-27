@@ -305,7 +305,7 @@
           label="Save"
           color="primary"
           class="button-width-90"
-          @click="onSaveButtonClick(2)"
+          @click="onSaveButtonClick('claimDeadline')"
           size="'xl'"
         />
       </q-card>
@@ -364,7 +364,7 @@
           label="Save"
           color="primary"
           class="button-width-90"
-          @click="onSaveButtonClick(1)"
+          @click="onSaveButtonClick('claimSummary')"
           size="'xl'"
         />
       </q-card>
@@ -436,7 +436,7 @@
           label="Save"
           color="primary"
           class="button-width-90"
-          @click="onSaveButtonClick(2)"
+          @click="onSaveButtonClick('editClaimTimeline')"
           size="'xl'"
         />
       </q-card>
@@ -553,7 +553,7 @@
           label="Save"
           color="primary"
           class="button-width-90"
-          @click="onSaveButtonClick()"
+          @click="onSaveButtonClick('lossDetailsBox')"
           size="'xl'"
         />
       </q-card>
@@ -685,20 +685,21 @@ export default {
       this.claimPhase.created = this.getSelectedClaim.phases[index].created;
       this.editClaimTimeline = true;
     },
-    onSaveButtonClick(value) {
-      if (value == 1) {
+    async onSaveButtonClick(value) {
+      if (value == 'claimSummary') {
         let payload = {
           id: this.selectedClaimId,
           data: { policyInfo: this.policyInfo }
         };
-        this.editClaimInfo(payload);
+        await this.editClaimInfo(payload);
       } else {
         let payload = {
           id: this.selectedClaimId,
           data: { lossInfo: this.lossInfo }
         };
-        this.editClaimInfo(payload);
+        await this.editClaimInfo(payload);
       }
+      this[value] = false;
     },
 
     lossDateOption(dateopn) {
