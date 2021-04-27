@@ -227,7 +227,7 @@ export async function addEstimator({ dispatch, state }, payload) {
   try {
     const { data } = await request.post(
       '/users',
-      buildApiData('estimator', payload)
+      buildApiData('users', payload)
     );
     dispatch('setLoading', false);
   } catch (e) {

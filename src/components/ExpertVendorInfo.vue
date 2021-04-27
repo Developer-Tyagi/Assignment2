@@ -1,7 +1,6 @@
 <template>
   <div class="bg-white full-width">
-    <!-- Add Vendor Dialog -->
-
+    <!-- add vendor dialog -->
     <q-dialog
       v-model="addVendorDialog"
       persistent
@@ -12,14 +11,13 @@
       <q-card>
         <AddVendor
           @onCloseAddVendor="onCloseAddVendorDialogBox"
-          @closeDialog="closeAddVendorDialog"
-          :componentName="vendorDialogName"
-          :selectedIndustryType="industryTypeValue"
+          @closeDialog="addVendorDialog = false"
         />
       </q-card>
     </q-dialog>
+    <!--  -->
 
-    <!-- Vendor List Dialog -->
+    <!-- vendor list dialogbox -->
     <q-dialog
       v-model="vendorsListDialog"
       persistent
@@ -29,18 +27,20 @@
     >
       <q-card>
         <CustomBar
+          :dialogName="constants.industries.VENDOR"
           @closeDialog="vendorsListDialog = false"
-          :dialogName="vendorDialogName"
         />
         <VendorsList
-          :carrierName="expertVendorInfo.carrierName"
-          :selective="true"
-          @selectedVendor="onClosingVendorSelectDialog"
-          ref="list"
-          :showFilter="showVendorDialogFilters"
-          :filterName="vendorDialogFilterByIndustry"
-          :valueName="valueName"
-          @addVendor="(addVendorDialog = true), (vendorsListDialog = false)"
+          :selectVendor="true"
+          :showVendorDetails="false"
+          @addVendor="
+            vendorsListDialog = false;
+            addVendorDialog = true;
+          "
+          :showFilter="false"
+          :industryType="''"
+          :selectedVendorName="''"
+          @afterSelecting="onSelectingVendorList"
         />
       </q-card>
     </q-dialog>

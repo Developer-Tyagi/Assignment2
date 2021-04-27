@@ -2,8 +2,8 @@
   <q-page>
     <div class="bg-white full-width">
       <CustomBar
-        :dialogName="'Add ' + componentName"
-        @closeDialog="closeDialog(false)"
+        :dialogName="'Add Vendor'"
+        @closeDialog="$emit('closeDialog', false)"
       />
       <q-form
         class="q-pa-lg"
@@ -214,7 +214,7 @@
           @click="onAddVendorButtonClick"
           size="'xl'"
         >
-          Add {{ componentName }}
+          Add Vendor
         </q-btn>
       </q-form>
     </div>
@@ -222,8 +222,6 @@
 </template>
 
 <script>
-import AddressService from '@utils/country';
-const addressService = new AddressService();
 import { mapGetters, mapActions } from 'vuex';
 import { constants } from '@utils/constant';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
@@ -234,9 +232,6 @@ export default {
   name: 'AddVendor',
 
   props: {
-    componentName: {
-      type: String
-    },
     isEdit: {
       type: Boolean
     },
@@ -251,8 +246,6 @@ export default {
       constants: constants,
       industryFilterDisabled: false,
       options: '',
-      countries: [],
-      states: [],
       isShowRemoveButton: false,
       vendor: {
         id: '',
@@ -333,41 +326,6 @@ export default {
     this.getVendorIndustries();
     this.getTitles();
     this.getContactTypes();
-
-    if (this.componentName === constants.industries.CARRIER) {
-      let industryType = this.vendorIndustries.find(
-        o => o.machineValue === constants.industries.CARRIER
-      );
-      if (industryType.name && industryType.id) {
-        this.vendor.industry.value = industryType.name;
-        this.vendor.industry.id = industryType.id;
-        this.vendor.industry.machineValue = industryType.machineValue;
-      }
-    }
-
-    if (this.componentName === constants.industries.EXPERTVENDOR) {
-      let industryType = this.vendorIndustries.find(
-        o => o.machineValue === this.selectedIndustryType.machineValue
-      );
-      if (industryType.name && industryType.id) {
-        this.vendor.industry.value = industryType.name;
-        this.vendor.industry.id = industryType.id;
-        this.vendor.industry.machineValue = industryType.machineValue;
-      }
-    } else if (
-      this.componentName === constants.industries.MORTGAGE ||
-      this.componentName === constants.industries.SECONDARYMORTGAGE
-    ) {
-      let industryType = this.vendorIndustries.find(
-        o => o.machineValue === constants.industries.MORTGAGE
-      );
-
-      if (industryType.name && industryType.id) {
-        this.vendor.industry.value = industryType.name;
-        this.vendor.industry.id = industryType.id;
-        this.vendor.industry.machineValue = industryType.machineValue;
-      }
-    }
   },
 
   methods: {
@@ -420,46 +378,30 @@ export default {
       this.vendor.industry.machineValue = result.machineValue;
     },
 
-    onCountrySelect(country) {
-      this.states = addressService.getStates(country);
-    },
-
     async onAddVendorButtonClick() {
       const success = await this.$refs.vendorForm.validate();
-
-      if (success && !this.isEdit) {
-        const response = await this.addVendor(this.vendor);
-        this.successMessage(constants.successMessages.VENDOR);
-        this.getVendors();
-        if (response) {
-          this.vendor.id = response.id;
-          this.$emit('onCloseAddVendor', true, this.vendor, this.componentName);
-          this.closeDialog(true);
+      if (success) {
+        if (!this.isEdit) {
+          const response = await this.addVendor(this.vendor);
+          this.getVendors();
+          if (response) {
+            this.vendor.id = response.id;
+            this.$emit('onCloseAddVendor', this.vendor);
+            this.$emit('closeDialog', true);
+          }
+        } else {
+          this.vendor.id = this.selectedVendor.id;
+          await this.editVendorInfo(this.vendor);
+          this.$emit('closeDialog', true);
+          this.getVendorDetails(this.vendor.id);
         }
-      } else if (success && this.isEdit) {
-        this.vendor.id = this.selectedVendor.id;
-        await this.editVendorInfo(this.vendor);
-        this.closeDialog(true);
-        this.getVendorDetails(this.vendor.id);
       }
-    },
-
-    closeDialog(flag) {
-      this.$emit('closeDialog', flag);
     }
   },
 
   created() {
-    if (this.componentName == constants.industries.VENDOR) {
-      this.industryFilterDisabled = true;
-    }
-    if (this.componentName == constants.industries.EXPERTVENDOR) {
-      this.industryFilterDisabled = false;
-    }
-
+    this.industryFilterDisabled = true;
     this.options = this.vendorIndustries;
-    this.countries = addressService.getCountries();
-    this.onCountrySelect('United States');
   }
 };
 </script>

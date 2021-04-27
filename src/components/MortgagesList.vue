@@ -31,13 +31,15 @@
       <div
         v-for="mortgage in mortgages"
         :key="mortgage.id"
-        class="mortgage-list-item clients-list  "
-        style="overflow-y: auto;"
+        class="mortgage-list-item clients-list"
+        style="overflow-y: auto"
       >
-        <q-item-section v-if="mortgageDetails">
-          <span class="text-bold" @click="onMortgageNameClick(mortgage)">{{
-            mortgage.name
-          }}</span>
+        <q-item-section @click="onSelectMortgage(mortgage, $event)">
+          <span
+            class="text-bold fit-content"
+            @click="onMortgageNameClick(mortgage, $event)"
+            >{{ mortgage.name }}</span
+          >
           <div v-if="mortgage.address">
             <div>
               {{ mortgage.address ? mortgage.address.houseNumber : '-' }} ,
@@ -75,11 +77,14 @@
                 class="q-ml-auto"
                 color="primary"
                 size="sm"
-                @click="sendMap(mortgage.address)"
+                @click="sendMap(mortgage.address, $event)"
               ></q-icon>
             </div>
           </div>
-          <div class="q-mt-xs" v-for="phone in mortgage.phoneNumber">
+          <div
+            class="q-mt-xs fit-content"
+            v-for="phone in mortgage.phoneNumber"
+          >
             <span v-if="phone.type">{{ phone.type }} : </span>
             <span
               class="clickLink"
@@ -88,53 +93,13 @@
             >
           </div>
           <span
-            class="click-link"
+            class="click-link fit-content"
             @click="onEmailClick(mortgage.email, $event)"
             >{{ mortgage.email }}</span
           >
         </q-item-section>
-        <q-item-section v-else @click="onSelectMortgage(mortgage.id)"
-          ><span class="text-bold">{{ mortgage.name }}</span>
-
-          <div v-if="mortgage.address">
-            <div>
-              {{ mortgage.address ? mortgage.address.houseNumber : '-' }}
-              {{
-                mortgage.address.streetAddress
-                  ? mortgage.address.streetAddress
-                  : '-'
-              }}
-            </div>
-            <div>
-              {{
-                mortgage.address.addressLocality
-                  ? mortgage.address.addressLocality
-                  : '-'
-              }},{{
-                mortgage.address.addressRegion
-                  ? mortgage.address.addressRegion
-                  : '-'
-              }}
-            </div>
-            <div class="row">
-              {{
-                mortgage.address.addressCountry
-                  ? mortgage.address.addressCountry
-                  : '-'
-              }}
-            </div>
-          </div>
-          <div class="q-mt-xs" v-for="phone in mortgage.phoneNumber">
-            <span v-if="phone.type">{{ phone.type }} : </span>
-            <span
-              class="clickLink"
-              @click="onPhoneNumberClick(phone.number, $event)"
-              >{{ phone.number }}</span
-            >
-          </div>
-        </q-item-section>
         <q-icon
-          v-if="mortgage.name === demo"
+          v-if="mortgage.name === selectedMortgageName"
           name="done"
           size="xs"
           class="q-ml-auto"
@@ -148,7 +113,7 @@ import { mapActions, mapGetters } from 'vuex';
 import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
 export default {
   name: 'MortgagesList',
-  props: ['mortgageDetails', 'demo'],
+  props: ['showMortgageDetails', 'selectMortgage', 'selectedMortgageName'],
   data() {
     return {
       searchText: '',
@@ -171,24 +136,31 @@ export default {
       this.searchText = '';
       this.search();
     },
+
     onEmailClick,
     onPhoneNumberClick,
     sendMap,
 
-    onMortgageNameClick(mortgage) {
-      this.$router.push('/mortgage-details/' + mortgage.id);
+    onMortgageNameClick(mortgage, e) {
+      if (this.showMortgageDetails) {
+        e.stopPropagation();
+        this.$router.push('/mortgage-details/' + mortgage.id);
+      }
     },
-    async onSelectMortgage(id) {
-      await this.getMortgageDetails(id);
-      this.$emit('onCloseMortgageSelect', true);
+
+    async onSelectMortgage(mortagage, e) {
+      if (this.selectMortgage) {
+        e.stopPropagation();
+      }
     },
 
     search(event) {
       this.params.name = event;
       this.getMortgages(this.params);
     },
+
     onAddButtonClick() {
-      this.$emit('addCarrier', true);
+      this.$emit('addMortagage', true);
     }
   }
 };

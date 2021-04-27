@@ -2,8 +2,8 @@
   <q-page>
     <div class="bg-white full-width">
       <CustomBar
-        :dialogName="'Add ' + componentName"
-        @closeDialog="closeDialog(false)"
+        :dialogName="'Add Carrier'"
+        @closeDialog="$emit('closeDialog', false)"
       />
       <q-form
         class="q-pa-lg"
@@ -74,10 +74,7 @@
                   'You have entered an invalid email address!'
               ]"
             />
-            <div
-              class="row"
-              v-if="componentName === constants.industries.CARRIER"
-            >
+            <div class="row">
               <p class="q-mx-none q-my-auto">
                 <label> Can Claim be Filed by email</label>
               </p>
@@ -97,7 +94,7 @@
             />
           </q-card>
           <div>
-            <q-card class="q-ma-xs q-pa-sm  q-mt-md">
+            <q-card class="q-ma-xs q-pa-sm q-mt-md">
               <p class="form-heading">Contact Info</p>
 
               <div class="q-mt-sm">
@@ -128,7 +125,7 @@
                 <div class="row justify-between">
                   <q-select
                     dense
-                    class="col-5 "
+                    class="col-5"
                     v-model="carrier.contact.phoneNumber[0].type"
                     :options="contactTypes"
                     option-value="machineValue"
@@ -178,10 +175,10 @@
         <q-btn
           color="primary"
           class="full-width q-mt-auto text-capitalize"
-          @click="onAddVendorButtonClick"
+          @click="onAddCarrierButtonClick"
           size="'xl'"
         >
-          Add {{ componentName }}
+          Add Carrier
         </q-btn>
       </q-form>
     </div>
@@ -201,9 +198,6 @@ export default {
   name: 'AddCarrier',
 
   props: {
-    componentName: {
-      type: String
-    },
     isEdit: {
       type: Boolean
     },
@@ -314,44 +308,28 @@ export default {
       selectedTitle.machineValue = selected.machineValue;
     },
 
-    onCountrySelect(country) {
-      this.states = addressService.getStates(country);
-    },
-
-    async onAddVendorButtonClick() {
+    async onAddCarrierButtonClick() {
       const success = await this.$refs.carrierForm.validate();
-
-      if (success && !this.isEdit) {
-        const response = await this.addCarrier(this.carrier);
-        this.getCarriers();
-        if (response) {
-          this.carrier.id = response.id;
-
-          this.$emit('onAddCarrier', this.carrier.id);
-          this.$emit(
-            'onCloseAddVendor',
-            true,
-            this.carrier,
-            this.componentName
-          );
-          this.closeDialog(true);
+      if (success) {
+        if (!this.isEdit) {
+          const response = await this.addCarrier(this.carrier);
+          this.getCarriers();
+          if (response) {
+            this.carrier.id = response.id;
+            if (this.claimCarrier) {
+              this.$emit('onAddCarrier', this.carrier.id);
+            }
+            this.$emit('onCloseAddCarrier', this.carrier);
+            this.$emit('closeDialog', true);
+          }
+        } else {
+          this.carrier.id = this.selectedCarrier.id;
+          await this.editCarrierInfo(this.carrier);
+          this.getCarrierDetails(this.carrier.id);
+          this.$emit('closeDialog', true);
         }
-      } else if (success) {
-        this.carrier.id = this.selectedCarrier.id;
-        await this.editCarrierInfo(this.carrier);
-        this.getCarrierDetails(this.carrier.id);
-        this.closeDialog(true);
       }
-    },
-
-    closeDialog(flag) {
-      this.$emit('closeDialog', flag);
     }
-  },
-
-  created() {
-    this.countries = addressService.getCountries();
-    this.onCountrySelect('United States');
   }
 };
 </script>

@@ -283,17 +283,70 @@
               <span class="stepper-heading">Insurance Details (Optional)</span>
 
               <div
-                v-model="insuranceDetails.carrierName"
                 class="custom-select"
-                @click="onAddVendorDialogClick(constants.industries.CARRIER)"
+                @click="carriersListDialog = true"
+                v-if="!insuranceDetails.carrierName"
               >
-                <div class="select-text">
-                  {{
-                    insuranceDetails.carrierName
-                      ? insuranceDetails.carrierName
-                      : 'Enter Carrier Details'
-                  }}
-                </div>
+                <div class="select-text">Click for choosing a carrier</div>
+              </div>
+              <div>
+                <q-card
+                  bordered
+                  v-if="insuranceDetails.carrierName"
+                  @click="carriersListDialog = true"
+                  class="q-my-md q-pa-md"
+                >
+                  <div class="text-bold">
+                    {{ insuranceDetails.carrierName }}
+                  </div>
+                  <div
+                    v-if="
+                      insuranceDetails.address &&
+                        insuranceDetails.address.streetAddress
+                    "
+                  >
+                    <div>
+                      {{
+                        insuranceDetails.address
+                          ? insuranceDetails.address.houseNumber
+                          : '-'
+                      }}
+                      ,
+                      {{
+                        insuranceDetails.address.streetAddress
+                          ? insuranceDetails.address.streetAddress
+                          : '-'
+                      }}
+                    </div>
+                    <div>
+                      {{
+                        insuranceDetails.address.addressLocality
+                          ? insuranceDetails.address.addressLocality
+                          : '-'
+                      }}
+                      ,
+                      {{
+                        insuranceDetails.address.addressRegion
+                          ? insuranceDetails.address.addressRegion
+                          : '-'
+                      }}
+                    </div>
+                    <div class="row">
+                      {{
+                        insuranceDetails.address.addressCountry
+                          ? insuranceDetails.address.addressCountry
+                          : '-'
+                      }}
+                      -
+                      {{
+                        insuranceDetails.address.postalCode
+                          ? insuranceDetails.address.postalCode
+                          : '-'
+                      }}
+                    </div>
+                  </div>
+                  <div>{{ insuranceDetails.email }}</div>
+                </q-card>
               </div>
               <q-input
                 dense
@@ -360,16 +413,71 @@
                 />
                 <div
                   v-else-if="sourceDetails.type == constants.industries.VENDOR"
-                  class="custom-select"
-                  @click="onAddVendorDialogClick(constants.industries.VENDOR)"
                 >
-                  <div class="select-text">
-                    {{
-                      sourceDetails.id
-                        ? sourceDetails.details
-                        : 'Select Lead Source'
-                    }}
+                  <div
+                    class="custom-select"
+                    @click="vendorsListDialog = true"
+                    v-if="!sourceDetails.details"
+                  >
+                    <div class="select-text">Click for choosing a vendor</div>
                   </div>
+                  <q-card
+                    bordered
+                    v-if="sourceDetails.details"
+                    @click="vendorsListDialog = true"
+                    class="q-my-md q-pa-md"
+                  >
+                    <div class="text-bold">
+                      {{ sourceDetails.details }}
+                    </div>
+                    <div
+                      v-if="
+                        sourceDetails.address &&
+                          sourceDetails.address.streetAddress
+                      "
+                    >
+                      <div>
+                        {{
+                          sourceDetails.address
+                            ? sourceDetails.address.houseNumber
+                            : '-'
+                        }}
+                        ,
+                        {{
+                          sourceDetails.address.streetAddress
+                            ? sourceDetails.address.streetAddress
+                            : '-'
+                        }}
+                      </div>
+                      <div>
+                        {{
+                          sourceDetails.address.addressLocality
+                            ? sourceDetails.address.addressLocality
+                            : '-'
+                        }}
+                        ,
+                        {{
+                          sourceDetails.address.addressRegion
+                            ? sourceDetails.address.addressRegion
+                            : '-'
+                        }}
+                      </div>
+                      <div class="row">
+                        {{
+                          sourceDetails.address.addressCountry
+                            ? sourceDetails.address.addressCountry
+                            : '-'
+                        }}
+                        -
+                        {{
+                          sourceDetails.address.postalCode
+                            ? sourceDetails.address.postalCode
+                            : '-'
+                        }}
+                      </div>
+                    </div>
+                    <div>{{ sourceDetails.email }}</div>
+                  </q-card>
                 </div>
                 <div v-else-if="sourceDetails.type == 'client'">
                   <q-select
@@ -549,6 +657,7 @@
       </div>
     </div>
 
+    <!-- vendor list dialogbox -->
     <q-dialog
       v-model="vendorsListDialog"
       persistent
@@ -558,21 +667,49 @@
     >
       <q-card>
         <CustomBar
-          :dialogName="vendorDialogName"
+          :dialogName="constants.industries.VENDOR"
           @closeDialog="vendorsListDialog = false"
         />
         <VendorsList
-          :selective="true"
-          @selectedVendor="onClosingVendorSelectDialog"
-          ref="list"
-          :showFilter="showVendorDialogFilters"
-          :filterName="vendorDialogFilterByIndustry"
-          :valueName="valueName"
-          @addVendor="addVendorDialog = true"
+          :selectVendor="true"
+          :showVendorDetails="false"
+          @addVendor="
+            vendorsListDialog = false;
+            addVendorDialog = true;
+          "
+          :showFilter="true"
+          :selectedVendorName="sourceDetails.details"
+          @afterSelecting="onSelectingVendorList"
         />
       </q-card>
     </q-dialog>
-
+    <!-- carrier list dialogbox  -->
+    <q-dialog
+      v-model="carriersListDialog"
+      persistent
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <CustomBar
+          :dialogName="constants.industries.CARRIER"
+          @closeDialog="carriersListDialog = false"
+        />
+        <CarriersList
+          :selectCarrier="true"
+          :showCarrierDetails="false"
+          :claimCarrier="false"
+          :selectedCarrierName="insuranceDetails.carrierName"
+          @addCarrier="
+            carriersListDialog = false;
+            addCarrierDialog = true;
+          "
+          @afterSelecting="onSelectingCarrierList"
+        />
+      </q-card>
+    </q-dialog>
+    <!-- add vendor dialog -->
     <q-dialog
       v-model="addVendorDialog"
       persistent
@@ -583,8 +720,22 @@
       <q-card>
         <AddVendor
           @onCloseAddVendor="onCloseAddVendorDialogBox"
-          @closeDialog="closeAddVendorDialog"
-          :componentName="vendorDialogName"
+          @closeDialog="addVendorDialog = false"
+        />
+      </q-card>
+    </q-dialog>
+    <!-- add carrier dialog -->
+    <q-dialog
+      v-model="addCarrierDialog"
+      persistent
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <AddCarrier
+          @onCloseAddCarrier="onCloseAddCarrierDialogBox"
+          @closeDialog="addCarrierDialog = false"
         />
       </q-card>
     </q-dialog>
@@ -594,18 +745,22 @@
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { validateEmail, validateDate, successMessage } from '@utils/validation';
 import { dateToSend } from '@utils/date';
+import { constants } from '@utils/constant';
+import { date } from 'quasar';
 
 import VendorsList from 'components/VendorsList';
-import { constants } from '@utils/constant';
+import CarriersList from 'components/CarriersList';
 import AddVendor from 'components/AddVendor';
+import AddCarrier from 'components/AddCarrier';
 import CustomBar from 'components/CustomBar';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
-import { date } from 'quasar';
 
 export default {
   components: {
     VendorsList,
     AddVendor,
+    CarriersList,
+    AddCarrier,
     AutoCompleteAddress,
     CustomBar
   },
@@ -629,6 +784,8 @@ export default {
       addVendorDialog: false,
       showSubInspectionType: false,
       vendorsListDialog: false,
+      carriersListDialog: false,
+      addCarrierDialog: false,
       showVendorDialogFilters: false,
       vendorDialogName: '',
       vendorDialogFilterByIndustry: '',
@@ -672,12 +829,16 @@ export default {
       insuranceDetails: {
         policyNumber: '',
         carrierName: '',
-        carrierId: ''
+        carrierId: '',
+        address: {},
+        email: ''
       },
       sourceDetails: {
         id: '',
         type: '',
-        details: ''
+        details: '',
+        address: '',
+        email: ''
       },
       schedulingDetails: {
         isAutomaticScheduling: false,
@@ -710,44 +871,6 @@ export default {
 
     successMessage,
 
-    onAddVendorDialogClick(name) {
-      this.valueName = name;
-      this.vendorDialogName = name;
-      if (name === constants.industries.CARRIER) {
-        this.showVendorDialogFilters = false;
-
-        this.vendorDialogFilterByIndustry = constants.industries.CARRIER;
-      } else {
-        this.showVendorDialogFilters = true;
-        this.vendorDialogFilterByIndustry = '';
-      }
-      this.vendorsListDialog = true;
-    },
-
-    // This function value is coming through props form add-vendor Page!
-
-    onCloseAddVendorDialogBox(result, selected, industryType) {
-      if (industryType === 'carrier') {
-        this.onClosingVendorSelectDialog(
-          selected,
-          selected.industry.machineValue
-        );
-      }
-      if (industryType === 'vendor') {
-        this.onClosingVendorSelectDialog(selected, industryType);
-      }
-    },
-
-    onClosingVendorSelectDialog(vendor, dialogName) {
-      if (dialogName === constants.industries.VENDOR) {
-        this.sourceDetails.id = vendor.id;
-        this.sourceDetails.details = vendor.name;
-      } else {
-        this.insuranceDetails.carrierId = vendor.id;
-        this.insuranceDetails.carrierName = vendor.name;
-      }
-      this.vendorsListDialog = false;
-    },
     setTypes(types, data) {
       const obj = types.find(item => {
         return item.id === data.id;
@@ -756,6 +879,7 @@ export default {
       data.machineValue = obj.machineValue;
       data.value = obj.name;
     },
+
     setTitleName() {
       const title = this.titles.find(obj => {
         return obj.id === this.primaryDetails.honorific.id;
@@ -875,44 +999,14 @@ export default {
       });
     },
 
-    closeVendorsList() {
-      this.vendorsListDialog = false;
-    },
-
     validateEmail,
     validateDate,
 
     onChangingSourceType() {
       this.sourceDetails.id = '';
       this.sourceDetails.details = '';
-    },
-
-    addSelectedVendor(e) {
-      this.sourceDetails = {
-        id: e.id,
-        details: e.name
-      };
-      this.closeVendorsList();
-    },
-
-    closeAddVendorDialog(e) {
-      this.addVendorDialog = false;
-      this.vendorsListDialog = true;
-      if (e) {
-        if (this.vendorDialogName === constants.industries.CARRIER) {
-          let params = {
-            industry: constants.industries.CARRIER,
-            name: ''
-          };
-          this.$refs.list.getVendors(params);
-          this.successMessage(constants.successMessages.CARRIER);
-        } else {
-          this.$refs.list.getVendors();
-          this.successMessage(constants.successMessages.VENDOR);
-        }
-        this.vendorsListDialog = false;
-      }
-      this.vendorsListDialog = false;
+      this.sourceDetails.address = '';
+      this.sourceDetails.email = '';
     },
 
     async onStepClick(index) {
@@ -957,6 +1051,40 @@ export default {
           v => v.name.toLowerCase().indexOf(search) > -1
         );
       });
+    },
+
+    onSelectingCarrierList(carrier) {
+      this.insuranceDetails.carrierId = carrier.id;
+      this.insuranceDetails.carrierName = carrier.name;
+      this.insuranceDetails.address = carrier.address;
+      this.insuranceDetails.email = carrier.email;
+      this.carriersListDialog = false;
+    },
+
+    onCloseAddCarrierDialogBox(carrier) {
+      this.insuranceDetails.carrierId = carrier.id;
+      this.insuranceDetails.carrierName = carrier.name;
+      this.insuranceDetails.address = carrier.address;
+      this.insuranceDetails.email = carrier.email;
+      this.carriersListDialog = false;
+      this.addCarrierDialog = false;
+    },
+
+    onSelectingVendorList(vendor) {
+      this.sourceDetails.id = vendor.id;
+      this.sourceDetails.details = vendor.name;
+      this.sourceDetails.address = vendor.address;
+      this.sourceDetails.email = vendor.email;
+      this.vendorsListDialog = false;
+    },
+
+    onCloseAddVendorDialogBox(vendor) {
+      this.sourceDetails.id = vendor.id;
+      this.sourceDetails.details = vendor.name;
+      this.sourceDetails.address = vendor.address;
+      this.sourceDetails.email = vendor.email;
+      this.vendorsListDialog = false;
+      this.addVendorDialog = false;
     }
   },
 

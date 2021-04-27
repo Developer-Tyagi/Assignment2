@@ -1,8 +1,8 @@
 <template>
   <q-page>
-    <div style=" height: calc(100vh - 50px); overflow-y: auto">
+    <div style="height: calc(100vh - 50px); overflow-y: auto">
       <ClaimDetail />
-      <q-card class="q-ma-md q-pa-md  ">
+      <q-card class="q-ma-md q-pa-md">
         <div class="text-bold row q-pa-sm">
           Carrier Info
           <q-icon
@@ -110,8 +110,8 @@
           Carrier info not added yet.
         </div>
       </q-card>
-      <q-card class="q-ma-md q-pa-md ">
-        <span class=" text-bold col q-ma-xs "> Adjusters Info</span>
+      <q-card class="q-ma-md q-pa-md">
+        <span class="text-bold col q-ma-xs"> Adjusters Info</span>
         <div class="row">
           <span class="text-bold col q-ma-xs q-mt-md"> Field Adjuster</span>
           <img
@@ -186,7 +186,7 @@
         </div>
 
         <q-separator />
-        <div class="row ">
+        <div class="row">
           <span class="text-bold col q-ma-xs q-mt-md"> Desk Adjuster</span>
           <img
             class="q-mx-xs q-my-auto"
@@ -259,7 +259,7 @@
         </div>
       </q-card>
 
-      <q-card class="q-ma-md q-pa-md  ">
+      <q-card class="q-ma-md q-pa-md">
         <div class="row q-mt-xs">
           <span class="text-bold"> Policy Info</span>
           <q-icon
@@ -270,7 +270,7 @@
             @click="onEditPolicyInfo"
           />
         </div>
-        <div class=" q-ml-xs">
+        <div class="q-ml-xs">
           <div class="row q-mt-sm">
             <span class="heading-light col"> Policy Number </span>
             <span class="q-ml-md col">
@@ -321,15 +321,11 @@
           </div>
           <div class="row q-mt-xs">
             <span class="heading-light col"> Appraisal Clause </span>
-            <span class="q-ml-md col">
-              -
-            </span>
+            <span class="q-ml-md col"> - </span>
           </div>
           <div class="row q-mt-xs">
             <span class="heading-light col"> Total Amount of Policy </span>
-            <span class="q-ml-md col">
-              -
-            </span>
+            <span class="q-ml-md col"> - </span>
           </div>
           <div class="row q-mt-xs">
             <span class="heading-light col"> Dwelling Limit (A) </span>
@@ -374,27 +370,19 @@
 
           <div class="row q-mt-xs">
             <span class="heading-light col"> Ordinance or Law</span>
-            <span class="q-ml-md col">
-              -
-            </span>
+            <span class="q-ml-md col"> - </span>
           </div>
           <div class="row q-mt-xs">
             <span class="heading-light col"> Debris Removal</span>
-            <span class="q-ml-md col">
-              -
-            </span>
+            <span class="q-ml-md col"> - </span>
           </div>
           <div class="row q-mt-xs">
             <span class="heading-light col"> Mold Fungi</span>
-            <span class="q-ml-md col">
-              -
-            </span>
+            <span class="q-ml-md col"> - </span>
           </div>
           <div class="row q-mt-xs">
             <span class="heading-light col"> Business Interruption</span>
-            <span class="q-ml-md col">
-              -
-            </span>
+            <span class="q-ml-md col"> - </span>
           </div>
           <div class="row q-mt-xs">
             <span class="heading-light col"> Depreciation</span>
@@ -419,14 +407,14 @@
           <div class="row q-mt-xs">
             <span class="heading-light col"> Additional Details</span>
           </div>
-          <q-card class=" q-mt-sm q-pa-sm full-width q-mb-sm row">
-            <span class="q-mb-lg col "> -</span>
+          <q-card class="q-mt-sm q-pa-sm full-width q-mb-sm row">
+            <span class="q-mb-lg col"> -</span>
           </q-card>
           <div class="row q-mt-xs">
-            <span class="heading-light col "> Notes</span>
+            <span class="heading-light col"> Notes</span>
           </div>
-          <q-card class=" q-pa-sm full-width q-mt-sm  row">
-            <span class="q-mb-lg col "> -</span>
+          <q-card class="q-pa-sm full-width q-mt-sm row">
+            <span class="q-mb-lg col"> -</span>
           </q-card>
         </div>
       </q-card>
@@ -446,7 +434,7 @@
           @closeDialog="insuranceInfoDialog = false"
           :dialogName="'Insurance Info'"
         />
-        <div class="q-ma-sm  mobile-container-page-without-search">
+        <div class="q-ma-sm mobile-container-page-without-search">
           <q-form ref="insuranceInfoForm" class="form-height">
             <InsuranceInfo :insuranceDetails="insuranceDetails" />
           </q-form>
@@ -478,11 +466,11 @@
         />
         <CarriersList
           @addCarrier="openAddCarrierDialog"
-          :carrierDetails="false"
+          :showCarrierDetails="false"
           :selectCarrier="true"
           @afterSelecting="onCloseCarrierList"
           :claimCarrier="true"
-          :carrierName="carrierName"
+          :selectedCarrierName="carrierName"
         />
       </q-card>
     </q-dialog>
@@ -531,8 +519,8 @@
             <div
               v-for="personnel in carrierPersonnel.personnel"
               :key="carrierPersonnel.personnel.id"
-              class="carrier-list-item clients-list "
-              style="overflow-y: auto;"
+              class="carrier-list-item clients-list"
+              style="overflow-y: auto"
             >
               <q-item-section @click="onSelectPersonnel(personnel.id)">
                 <span>
@@ -588,8 +576,8 @@
               </q-item-section>
             </div>
           </div>
-          <div v-else class="full-height full-width column ">
-            <div class=" column absolute-center">
+          <div v-else class="full-height full-width column">
+            <div class="column absolute-center">
               <div style="color: #666666,align-items: center">
                 You haven't added a Adjustor yet.
               </div>

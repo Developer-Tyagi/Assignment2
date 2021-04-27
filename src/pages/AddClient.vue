@@ -743,7 +743,7 @@ export default {
   },
   data() {
     return {
-      step: 0,
+      step: 5,
       stepClickValidTill: 0,
       mortgageObject: {
         vendorsListDialog: false,

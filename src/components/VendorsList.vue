@@ -42,14 +42,16 @@
       <div
         v-for="vendor in vendors"
         :key="vendor.id"
-        class="vendor-list-item clients-list "
-        @click="selectVendor(vendor)"
-        style="overflow-y: auto;"
+        class="vendor-list-item clients-list"
+        @click="onVendorSelect(vendor, $event)"
+        style="overflow-y: auto"
       >
-        <q-item-section v-if="vendorDetails">
-          <span class="text-bold" @click="onVendorNameClick(vendor)">{{
-            vendor.name
-          }}</span>
+        <q-item-section>
+          <span
+            class="text-bold fit-content"
+            @click="onVendorNameClick(vendor, $event)"
+            >{{ vendor.name }}</span
+          >
           <div v-if="vendor.address">
             <div>
               {{ vendor.address ? vendor.address.houseNumber : '-' }} ,
@@ -83,13 +85,13 @@
               <q-icon
                 name="place"
                 color="primary"
-                @click="sendMap(vendor.address)"
+                @click="sendMap(vendor.address, $event)"
                 class="q-ml-auto"
                 size="sm"
               ></q-icon>
             </div>
           </div>
-          <div class="q-mt-xs" v-for="phone in vendor.phoneNumber">
+          <div class="q-mt-xs fit-content" v-for="phone in vendor.phoneNumber">
             <span v-if="phone.type">{{ phone.type }} : </span>
             <span
               class="clickLink"
@@ -98,59 +100,13 @@
             >
           </div>
           <span
-            class="click-link"
+            class="click-link fit-content"
             @click="onEmailClick(vendor.email, $event)"
             >{{ vendor.email }}</span
           >
         </q-item-section>
-        <span v-else
-          ><span class="text-bold">{{ vendor.name }}</span>
-          <div v-if="vendor.address">
-            <div>
-              {{ vendor.address ? vendor.address.houseNumber : '-' }}
-              {{
-                vendor.address.streetAddress
-                  ? vendor.address.streetAddress
-                  : '-'
-              }}
-            </div>
-            <div>
-              {{
-                vendor.address.addressLocality
-                  ? vendor.address.addressLocality
-                  : '-'
-              }},{{
-                vendor.address.addressRegion
-                  ? vendor.address.addressRegion
-                  : '-'
-              }}
-            </div>
-            <div class="row">
-              {{
-                vendor.address.addressCountry
-                  ? vendor.address.addressCountry
-                  : '-'
-              }}
-              <q-icon
-                name="place"
-                color="primary"
-                @click="sendMap(vendor.address)"
-                class="q-ml-auto edit-icon"
-                size="sm"
-              ></q-icon>
-            </div>
-          </div>
-          <div class="q-mt-xs" v-for="phone in vendor.phoneNumber">
-            <span v-if="phone.type">{{ phone.type }} : </span>
-            <span
-              class="clickLink"
-              @click="onPhoneNumberClick(phone.number, $event)"
-              >{{ phone.number }}</span
-            >
-          </div>
-        </span>
         <q-icon
-          v-if="vendor.name === carrierName"
+          v-if="vendor.name === selectedVendorName"
           name="done"
           size="xs"
           class="q-ml-auto"
@@ -209,12 +165,11 @@ import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
 export default {
   name: 'VendorsList',
   props: [
-    'carrierName',
-    'selective',
+    'selectedVendorName',
+    'selectVendor',
     'showFilter',
     'filterName',
-    'valueName',
-    'vendorDetails'
+    'showVendorDetails'
   ],
   data() {
     return {
@@ -248,9 +203,14 @@ export default {
     onEmailClick,
     onPhoneNumberClick,
     sendMap,
-    onVendorNameClick(vendor) {
-      this.$router.push('/vendor-details/' + vendor.id);
+
+    onVendorNameClick(vendor, e) {
+      if (this.showVendorDetails) {
+        e.stopPropogation();
+        this.$router.push('/vendor-details/' + vendor.id);
+      }
     },
+
     applyFilter() {
       this.params.industry = this.selectedFilter;
       this.getVendors(this.params);
@@ -262,15 +222,10 @@ export default {
       this.getVendors(this.params);
     },
 
-    selectVendor(vendor) {
-      const dialogName = this.valueName;
-
-      if (this.selective) {
-        if (!this.showFilter) {
-          this.$emit('selectedVendor', vendor, dialogName);
-        } else {
-          this.$emit('selectedVendor', vendor, dialogName);
-        }
+    onVendorSelect(vendor, e) {
+      if (this.selectVendor) {
+        e.stopPropagation();
+        this.$emit('afterSelecting', vendor);
       }
     },
 

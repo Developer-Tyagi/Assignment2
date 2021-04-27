@@ -10,10 +10,10 @@
       <div>
         <div v-if="log">
           <!-- This is for showing the Property details  -->
-          <q-card class="q-pa-md q-ma-sm" v-for="(log, index) in log">
+          <q-card class="q-pa-md q-ma-sm" v-for="(logItem, index) in log">
             <div class="row q-my-sm">
               <div class="col-10 heading-light">
-                {{ log.created | moment('DD/MM/YYYY, HH:mm') }}
+                {{ logItem.created | moment('DD/MM/YYYY, HH:mm') }}
               </div>
               <q-icon
                 size="xs"
@@ -24,12 +24,12 @@
               ></q-icon>
               <q-icon class="q-ml-sm" name="delete" size="sm" color="primary" />
             </div>
-            <div>{{ log.title }}</div>
+            <div>{{ logItem.title }}</div>
             <div class="heading-light q-my-sm">
-              Entered by {{ log.user.name }}
+              Entered by {{ logItem.user.name }}
             </div>
             <p class="heading-light q-my-sm text-caption">
-              {{ log.detail ? log.detail : '' }}
+              {{ logItem.detail ? logItem.detail : '-' }}
             </p>
           </q-card>
         </div>
