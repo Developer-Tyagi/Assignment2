@@ -342,6 +342,7 @@ export default {
       addAditionalPhoneNumberToggle: false,
 
       personnel: {
+        options: [],
         role: { value: null, id: '', machineValue: '' },
         honorific: {
           id: '',
@@ -371,14 +372,7 @@ export default {
           }
         ],
         email: '',
-        defaultRoles: [
-          'Manager',
-          'Personnel',
-          'Technical Architect',
-          'Tester',
-          'Engineer',
-          'Plumber'
-        ],
+
         notes: ''
       }
     };
@@ -388,7 +382,6 @@ export default {
       'contactTypes',
       'titles',
       'carrierPersonnel',
-      'defaultRoles',
       'selectedCarrier',
       'claimRoles'
     ])
@@ -415,7 +408,7 @@ export default {
       this.personnel.role.value = null;
       if (val === ' ') {
         update(() => {
-          this.options = this.claimRoles;
+          this.personnel.options = this.claimRoles;
         });
         return;
       }
@@ -450,6 +443,12 @@ export default {
         index
       ].phoneNumber;
       this.id = this.carrierPersonnel.personnel[index].id;
+      this.personnel.role.value = this.carrierPersonnel.personnel[
+        index
+      ].role.value;
+      this.personnel.role.machineValue = this.carrierPersonnel.personnel[
+        index
+      ].role.machineValue;
     },
     async onEditSave() {
       const payload = {
@@ -458,17 +457,18 @@ export default {
         data: {
           personnel: {
             honorific: {
-              id: this.honorific.id,
-              value: this.honorific.value,
-              machineValue: this.honorific.machineValue
+              id: this.personnel.honorific.id,
+              value: this.personnel.honorific.value,
+              machineValue: this.personnel.honorific.machineValue
             },
             fname: this.personnel.fname,
             lname: this.personnel.lname,
             email: this.personnel.email,
             phoneNumber: this.personnel.phoneNumber,
+
             role: {
-              value: this.personnel.value,
-              machineValue: this.personnel.machineValue
+              value: this.personnel.role.value,
+              machineValue: this.personnel.role.machineValue
             },
             address: {
               ...this.personnel.address
@@ -477,6 +477,9 @@ export default {
           }
         }
       };
+      if (!this.personnel.role.id) {
+        delete payload.data.personnel.role;
+      }
       await this.editCarrierPersonnel(payload);
       this.getCarrierPersonnel(this.$route.params.id);
       this.editPersonnelDialog = false;
@@ -537,8 +540,8 @@ export default {
             email: this.personnel.email,
             phoneNumber: this.personnel.phoneNumber,
             role: {
-              value: this.personnel.value,
-              machineValue: this.personnel.machineValue
+              value: this.personnel.role.value,
+              machineValue: this.personnel.role.machineValue
             },
             address: {
               ...this.personnel.address
@@ -547,6 +550,9 @@ export default {
           }
         }
       };
+      if (!this.personnel.role.id) {
+        delete payload.data.personnel.role;
+      }
       await this.addCarrierPersonnel(payload);
       this.addPersonnelDialog = false;
       this.getCarrierPersonnel(this.$route.params.id);
@@ -561,6 +567,8 @@ export default {
       this.personnel.address.postalCode = '';
       this.personnel.notes = '';
       this.personnel.departmentName = '';
+      this.personnel.role.value = '';
+      this.personnel.role.machineValue = '';
     }
   }
 };
