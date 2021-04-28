@@ -146,7 +146,11 @@
               Estimated Loss Amount
             </span>
             <span class="q-ml-md col">
-              -
+              {{
+                getSelectedClaim.lossInfo.estimatedLossAmt
+                  ? getSelectedClaim.lossInfo.estimatedLossAmt
+                  : '-'
+              }}
             </span>
           </div>
           <div class="row q-mt-sm">
@@ -154,9 +158,10 @@
               Property Value at Time of Loss
             </span>
             <span class="q-ml-md col" v-if="getSelectedClaim.lossInfo">
+              $
               {{
-                getSelectedClaim.lossInfo.propertyDesc
-                  ? getSelectedClaim.lossInfo.propertyDesc
+                getSelectedClaim.lossInfo.propertyValue
+                  ? getSelectedClaim.lossInfo.propertyValue
                   : '-'
               }}
             </span>
@@ -510,21 +515,21 @@
                   dense
                   mask="#.#"
                   type="number"
-                  v-model.number="lossInfo.estimatedLossAmount"
-                  placeholder="Dwelling Limit (A)"
+                  v-model.number="lossInfo.estimatedLossAmt"
+                  placeholder="Estimated Loss Amount"
                   style="margin-left: auto; width: 50%"
                   prefix="$"
                   class="input-extra-padding"
                 />
               </div>
               <div class="row" style="align-items: center">
-                <span class="form-heading">Estimated Loss Amount</span>
+                <span class="form-heading">Property Loss Amount</span>
                 <q-input
                   dense
                   mask="#.#"
                   type="number"
                   v-model.number="lossInfo.propertyValue"
-                  placeholder="Dwelling Limit (A)"
+                  placeholder="Property Loss Amount"
                   style="margin-left: auto; width: 50%"
                   prefix="$"
                   class="input-extra-padding"
@@ -535,7 +540,7 @@
                 rows="5"
                 required
                 class="full-width"
-                v-model="lossInfo.cause.desc"
+                v-model="lossInfo.desc"
                 style="resize: none"
               />
               <div class="row">
@@ -590,6 +595,7 @@ export default {
       },
       lossInfo: {
         dateOfLoss: '',
+        desc: '',
         reason: {
           id: '',
           machineValue: '',
@@ -600,16 +606,13 @@ export default {
           value: '',
           machineValue: ''
         },
-        date: '2020-09-24T11:18:06+00:00',
         cause: {
           id: '',
           value: '',
-          machineValue: '',
-          desc: ''
+          machineValue: ''
         },
-        desc: 'Loss description',
-        estimatedLossAmount: 2000.2,
-        propertyValue: 1200
+        estimatedLossAmt: '',
+        propertyValue: ''
       },
       contractInfo: {
         fees: {
@@ -669,6 +672,7 @@ export default {
     this.contractInfo.fees.rate = this.getSelectedClaim.contractInfo.fees.rate;
     this.isHabitable = this.getSelectedClaim.lossInfo.isHabitable;
     this.isFemaClaim = this.getSelectedClaim.lossInfo.isFEMA;
+    this.lossInfo.desc = this.getSelectedClaim.lossInfo.desc;
 
     if (this.getSelectedClaim.lossInfo.cause) {
       this.lossInfo.cause = this.getSelectedClaim.lossInfo.cause;
