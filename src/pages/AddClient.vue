@@ -1072,7 +1072,7 @@ export default {
     };
   },
 
-  created() {
+  async created() {
     this.getRoles();
     this.getLossCauses();
     this.getSeverityClaim();
@@ -1096,6 +1096,7 @@ export default {
     );
 
     if (this.selectedLead.id) {
+      await this.getLeadDetails(this.selectedLead.id);
       console.log(this.selectedLead);
       this.honorific1 = {
         id: this.selectedLead.primaryContact.honorific.id,
@@ -1189,39 +1190,12 @@ export default {
       'getPropertyTypes',
       'getRoles',
       'getSeverityClaim',
-      'addClaim'
+      'addClaim',
+      'getLeadDetails'
     ]),
     ...mapMutations(['setSelectedLead']),
     successMessage,
 
-    async addAnotherVendor() {
-      const success = await this.$refs.expertVendorInfoForm.validate();
-      let len = this.expertVendorInfo.vendors.length;
-
-      if (
-        this.expertVendorInfo.vendors[len - 1].value == 'Select Vendor' ||
-        this.expertVendorInfo.vendors[len - 1].value == null
-      ) {
-        this.$q.notify({
-          message: 'Please Select the vendor first',
-          position: 'top',
-          type: 'negative'
-        });
-      } else {
-        if (success) {
-          this.expertVendorInfo.industry.push({
-            id: this.expertVendorInfo.industry.id,
-            value: this.expertVendorInfo.industry.value
-          });
-          let len = this.expertVendorInfo.vendors.length;
-          this.expertVendorInfo.vendors.push({
-            id: this.expertVendorInfo.vendors[len - 1].id,
-            value: this.expertVendorInfo.vendors[len - 1].value
-          });
-          this.expertVendorInfo.vendors[len].value = 'Select Vendor';
-        }
-      }
-    },
     lossAddressSame() {
       if (this.lossInfo.isLossAddressSameAsClientToggle) {
         this.lossInfo.lossAddressDetails = this.clientAddressDetails;

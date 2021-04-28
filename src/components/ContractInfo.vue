@@ -221,7 +221,6 @@
             val => (val && val.length > 0) || 'Please select the Source Detail'
           ]"
         />
-
         <div
           v-else-if="
             contractInfo.sourceDetails.type == constants.industries.VENDOR
