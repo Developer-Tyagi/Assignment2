@@ -174,7 +174,7 @@ const routes = [
         component: () => import('src/pages/UpdateLossInfo.vue')
       },
       {
-        path: 'client-documents',
+        path: 'client-documents/:directoryId',
         name: 'Documents',
         caseSensitive: true,
         component: () => import('pages/ClientDocuments.vue')

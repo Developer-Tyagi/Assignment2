@@ -19,7 +19,7 @@
               : '-'
           }}
         </div>
-        <div class="row  q-ml-md q-my-md heading-light">
+        <div class="row q-ml-md q-my-md heading-light">
           <div>
             {{
               editSelectedClient.attributes.meta
@@ -43,7 +43,7 @@
           :key="dialogBox.name"
           @click="clientDetailsDailogBoxOpen(dialogBox.name)"
         >
-          <div class="full-width ">
+          <div class="full-width">
             <q-card class="q-ma-sm q-pa-md"> {{ dialogBox.name }} </q-card>
 
             <div class="q-mr-lg q-ml-auto" v-if="dialogBox.validForm == true">
@@ -81,7 +81,9 @@ export default {
       if (value == 'Client Info') {
         this.$router.push('/client-details');
       } else if (value == 'Documents') {
-        this.$router.push('/client-documents');
+        this.$router.push(
+          `/client-documents/${this.editSelectedClient.attributes.directoryID}`
+        );
       }
       if (value == 'Properties and Claims') {
         this.$router.push('/property-details');

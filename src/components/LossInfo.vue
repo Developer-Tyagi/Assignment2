@@ -374,7 +374,9 @@
       />
     </q-card>
     <q-card class="q-pa-sm q-mt-sm">
-      <span class="form-heading">Loss Description to Dwelling</span>
+      <span class="form-heading"
+        >Loss Description to Dwelling <small style="color: red">*</small></span
+      >
       <textarea
         rows="5"
         required

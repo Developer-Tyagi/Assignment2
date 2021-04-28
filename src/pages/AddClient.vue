@@ -1083,7 +1083,7 @@ export default {
     this.getPolicyTypes();
     this.getContactTypes();
     this.getPolicyCategory();
-    this.contractInfo.time = date.formatDate(Date.now(), 'HH:mm:ss:aa');
+    this.contractInfo.time = date.formatDate(Date.now(), 'hh:mm A');
     this.companyPersonnel.startDate = this.companyPersonnel.endDate = this.contractInfo.firstContractDate = this.contractInfo.contractDate = this.insuranceDetails.policyEffectiveDate = this.lossInfo.dateOfLoss = this.lossInfo.deadlineDate = this.lossInfo.recovDeadline = date.formatDate(
       Date.now(),
       'MM/DD/YYYY'
@@ -1096,40 +1096,46 @@ export default {
     );
 
     if (this.selectedLead.id) {
+      console.log(this.selectedLead);
+      this.honorific1 = {
+        id: this.selectedLead.primaryContact.honorific.id,
+        value: this.selectedLead.primaryContact.honorific.value,
+        machineValue: this.selectedLead.primaryContact.honorific.machineValue
+      };
       this.insuredDetails.fname = this.selectedLead.primaryContact.fname;
       this.insuredDetails.lname = this.selectedLead.primaryContact.lname;
       this.insuredDetails.email = this.selectedLead.primaryContact.email;
       this.insuredDetails.phone = this.selectedLead.primaryContact.phoneNumber[0].number;
       this.insuredDetails.type = this.selectedLead.primaryContact.phoneNumber[0].type;
-      this.contractInfo.sourceDetails.id = this.selectedLead.leadSource.id;
-      this.contractInfo.sourceDetails.type = this.selectedLead.leadSource.type;
-      this.honorific1.id = this.selectedLead.primaryContact.honorific.id;
-      this.honorific1.value = this.selectedLead.primaryContact.honorific.value;
-      this.honorific1.machineValue = this.selectedLead.primaryContact.honorific.machineValue;
       this.propertyDescription = this.selectedLead.lossDesc;
-      this.lossInfo.lossAddressDetails.houseNumber = this.selectedLead.lossLocation.houseNumber;
-      this.lossInfo.lossAddressDetails.addressCountry = this.selectedLead.lossLocation.addressCountry;
-      this.lossInfo.lossAddressDetails.addressLocality = this.selectedLead.lossLocation.addressLocality;
-      this.lossInfo.lossAddressDetails.addressRegion = this.selectedLead.lossLocation.addressRegion;
-      this.lossInfo.lossAddressDetails.postalCode = this.selectedLead.lossLocation.postalCode;
-      this.lossInfo.lossAddressDetails.streetAddress = this.selectedLead.lossLocation.streetAddress;
+      this.clientAddressDetails.houseNumber = this.selectedLead.lossLocation.houseNumber;
+      this.clientAddressDetails.addressCountry = this.selectedLead.lossLocation.addressCountry;
+      this.clientAddressDetails.addressLocality = this.selectedLead.lossLocation.addressLocality;
+      this.clientAddressDetails.addressRegion = this.selectedLead.lossLocation.addressRegion;
+      this.clientAddressDetails.postalCode = this.selectedLead.lossLocation.postalCode;
+      this.clientAddressDetails.streetAddress = this.selectedLead.lossLocation.streetAddress;
       this.lossInfo.descriptionDwelling = this.selectedLead.lossDesc;
+      this.contractInfo.sourceDetails.id = this.selectedLead.leadSource
+        ? this.selectedLead.leadSource.id
+        : '';
+      this.contractInfo.sourceDetails.type = this.selectedLead.leadSource
+        ? this.selectedLead.leadSource.type
+        : '';
       this.contractInfo.sourceDetails.details = this.selectedLead.leadSource
         ? this.selectedLead.leadSource.detail
-        : null;
-
+        : '';
       this.insuranceDetails.carrierName = this.selectedLead.carrier
         ? this.selectedLead.carrier.value
-        : null;
+        : '';
       this.insuranceDetails.carrierId = this.selectedLead.carrier
         ? this.selectedLead.carrier.id
-        : null;
+        : '';
       this.insuranceDetails.policyNumber = this.selectedLead.policyNumber
         ? this.selectedLead.policyNumber
-        : null;
-      this.lossInfo.causeOfLoss = this.selectedLead.lossCause.value
-        ? this.selectedLead.lossCause
-        : null;
+        : '';
+      this.lossInfo.causeOfLoss = this.selectedLead.lossCause
+        ? this.selectedLead.lossCause.value
+        : '';
 
       this.lossInfo.dateOfLoss = date.formatDate(
         this.selectedLead.dateofLoss,
@@ -1425,6 +1431,7 @@ export default {
         this.setPayloadForClaim(responseData);
       }
     },
+
     /*Payload for Claim*/
     async setPayloadForClaim(responseData) {
       const payload = {

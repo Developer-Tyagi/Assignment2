@@ -114,9 +114,9 @@
         <q-input
           v-model="contractInfo.time"
           now
-          format24h
           lazy-rules
           :rules="[val => (val && val.length > 0) || 'Invalid time!']"
+          :with-seconds="false"
         >
           <template v-slot:append>
             <q-icon name="access_time" class="cursor-pointer">
@@ -126,7 +126,7 @@
                 ref="qTimeProxy"
               >
                 <q-time
-                  mask="hh[h and ]mm[ minutes (]A)"
+                  mask="hh:mm A"
                   v-model="contractInfo.time"
                   @input="closeTimeDialog"
                 >
@@ -187,7 +187,9 @@
     </q-card>
 
     <q-card class="q-pa-sm q-mt-sm">
-      <span class="form-heading"> Source Of Claim </span>
+      <span class="form-heading">
+        Source Of Claim <span style="color: red">*</span>
+      </span>
       <div>
         <q-select
           class="required"
@@ -205,6 +207,7 @@
           ]"
         />
         <q-input
+          class="required"
           v-if="
             contractInfo.sourceDetails.type != constants.industries.VENDOR &&
               contractInfo.sourceDetails.type != '' &&
@@ -229,7 +232,9 @@
             @click="contractInfo.vendorsListDialog = true"
             v-if="!contractInfo.sourceDetails.details"
           >
-            <div class="select-text">Click for choosing a vendor</div>
+            <div class="select-text">
+              Click for choosing a vendor <span style="color: red">*</span>
+            </div>
           </div>
           <q-card
             bordered

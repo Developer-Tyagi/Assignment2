@@ -10,8 +10,12 @@ export default {
 
   data() {
     return {
-      directoryId: '1HD84t8eOK25ZJGtPfMJOk4rjwM9zrv8t'
+      directoryId: ''
     };
+  },
+
+  created() {
+    this.directoryId = this.$route.params.directoryId;
   }
 };
 </script>
