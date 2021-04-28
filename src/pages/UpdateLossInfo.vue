@@ -55,15 +55,16 @@
             <div class="form-heading ">Loss Info</div>
             <div class="form-heading">Address :</div>
 
-            <div>
+            <div v-if="lossInfo.attributes.lossInfo.property.streetAddress">
               {{
                 lossInfo.attributes.lossInfo.property.streetAddress
                   ? lossInfo.attributes.lossInfo.property.streetAddress
                   : '-'
               }}
             </div>
+            <div v-else>-</div>
 
-            <div>
+            <div v-if="lossInfo.attributes.lossInfo.property.addressLocality">
               {{
                 lossInfo.attributes.lossInfo.property.addressLocality
                   ? lossInfo.attributes.lossInfo.property.addressLocality
@@ -75,14 +76,21 @@
                   : '-'
               }}
             </div>
-            <div>
+            <div v-else>-</div>
+            <div v-if="lossInfo.attributes.lossInfo.property.addressRegion">
               {{ lossInfo.attributes.lossInfo.property.addressRegion }},
               {{ lossInfo.attributes.lossInfo.property.addressCountry }}
             </div>
+            <div v-else>-</div>
 
             <div class="form-heading  ">Property Type :</div>
 
-            <div>
+            <div
+              v-if="
+                lossInfo.attributes.lossInfo.property &&
+                  lossInfo.attributes.lossInfo.property.propertyType
+              "
+            >
               {{ lossInfo.attributes.lossInfo.property.propertyType.value }}
             </div>
 
