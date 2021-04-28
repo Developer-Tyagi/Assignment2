@@ -507,7 +507,25 @@ export async function deleteClaimNotes({ commit, dispatch }, payload) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: 'Error in deleting Property.'
+      message: 'Error in deleting Notes.'
+    });
+  }
+}
+export async function editClaimInfo({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      `/claims/${payload.id}/info`,
+      buildApiData('claims', payload.data)
+    );
+    dispatch('setLoading', false);
+    return data;
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'Failed to update claim Info! please try again !'
     });
   }
 }
