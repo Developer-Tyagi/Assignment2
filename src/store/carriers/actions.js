@@ -63,11 +63,13 @@ export async function addCarrierPersonnel({ dispatch, state }, payload) {
       `/carriers/${payload.id}/personnel`,
       buildApiData('claimcarrier', payload.data)
     );
+
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'positive',
       message: 'Personnel added Successfully!'
     });
+    return data;
   } catch (e) {
     console.log(e);
     dispatch('setLoading', false);
@@ -82,6 +84,7 @@ export async function getCarrierPersonnel({ commit, dispatch }, id) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.get(`/carriers/${id}/personnel`);
+
     commit('setCarrierPersonnel', data);
     dispatch('setLoading', false);
   } catch (e) {
@@ -232,13 +235,14 @@ export async function deleteClaimCarrier({ commit, dispatch }, carrier) {
   }
 }
 
-export async function addClaimPersonnel({ dispatch, state }, payload) {
+export async function addClaimPersonnel({ dispatch, state }, payload1) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.post(
-      `/claims/${payload.claimID}/carriers/${payload.carrierID}/personnel`,
-      buildApiData('claimcarrier', payload.data)
+      `/claims/${payload1.claimID}/carriers/${payload1.carrierID}/personnel`,
+      buildApiData('claimcarrier', payload1.data)
     );
+
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'positive',
@@ -276,6 +280,48 @@ export async function deleteClaimCarrierPersonnel(
     dispatch('setNotification', {
       type: 'negative',
       message: 'Error in deleting carrier.'
+    });
+  }
+}
+
+// Edit claim personnel info
+
+export async function editCarrierPersonnelToClaim({ dispatch }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.patch(
+      `/claims/${payload.claimID}/carriers/${payload.carrierID}/personnel/${payload.id}`,
+      buildApiData('claimcarrier', payload.data)
+    );
+
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Personnel  Updated !'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'failed to update Personnel'
+    });
+  }
+}
+
+//View List of Claim Roles
+
+export async function getClaimRoles({ commit, dispatch }) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get('/claimroles');
+    commit('setClaimRoles', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
     });
   }
 }
