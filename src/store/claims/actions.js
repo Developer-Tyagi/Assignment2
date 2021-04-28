@@ -493,3 +493,21 @@ export async function getPhases({ commit, dispatch }) {
     });
   }
 }
+export async function deleteClaimNotes({ commit, dispatch }, payload) {
+  dispatch('setLoading', true);
+  try {
+    await request.del(`/claims/${payload.id}/notes/${payload.noteId}`);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Property  Deleted !'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'Error in deleting Property.'
+    });
+  }
+}
