@@ -209,7 +209,7 @@
           lazy-rules
           :rules="[
             val =>
-              dateLiesBetween(val) || 'Date is before policy effective date!'
+              dateLiesBetween(val) || 'Date is after policy effective date!'
           ]"
         >
           <template v-slot:append>
@@ -639,7 +639,7 @@
           <div class="row">
             <div class="q-px-xs row">
               <div v-if="!mortgageInfo.mortgageDetails[0]['id']">
-                Select Mortgage
+                Click to select Mortagage
               </div>
               <div
                 v-else

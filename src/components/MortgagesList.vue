@@ -35,11 +35,7 @@
         style="overflow-y: auto"
       >
         <q-item-section @click="onSelectMortgage(mortgage, $event)">
-          <span
-            class="text-bold fit-content"
-            @click="onMortgageNameClick(mortgage, $event)"
-            >{{ mortgage.name }}</span
-          >
+          <span class="text-bold fit-content">{{ mortgage.name }}</span>
           <div v-if="mortgage.address">
             <div>
               {{ mortgage.address ? mortgage.address.houseNumber : '-' }} ,
@@ -148,9 +144,12 @@ export default {
       }
     },
 
-    async onSelectMortgage(mortagage, e) {
+    async onSelectMortgage(mortgage, e) {
       if (this.selectMortgage) {
         e.stopPropagation();
+        this.$emit('afterSelecting', mortgage);
+      } else {
+        this.$router.push('/mortgage-details/' + mortgage.id);
       }
     },
 

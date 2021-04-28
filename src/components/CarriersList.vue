@@ -161,12 +161,6 @@ export default {
     onPhoneNumberClick,
     sendMap,
 
-    // onCarrierNameClick(carrier, e) {
-    //   if (this.showCarrierDetails) {
-    //     e.stopPropagation();
-    //   }
-    // },
-
     search(event) {
       this.params.name = event;
       this.getCarriers(this.params);
