@@ -3,6 +3,7 @@ export default function() {
     carriers: [],
     selectedCarrier: [],
     carrierPersonnel: [],
-    selectedClaimCarrier: []
+    selectedClaimCarrier: [],
+    claimRoles: []
   };
 }

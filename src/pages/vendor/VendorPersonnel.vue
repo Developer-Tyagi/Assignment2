@@ -187,7 +187,7 @@
               v-model="name"
               class="col-5"
               label="Default Roles"
-              :options="personnel.defaultRoles"
+              :options="claimRoles"
               option-value="name"
               behavior="menu"
               emit-value
@@ -474,7 +474,8 @@ export default {
       'titles',
       'vendorPersonnel',
       'defaultRoles',
-      'selectedVendor'
+      'selectedVendor',
+      'claimRoles'
     ])
   },
   created() {
@@ -491,7 +492,8 @@ export default {
       'getVendorPersonnel',
       'getVendorDetails',
       'editVendorPersonnel',
-      'deleteVendorPersonnel'
+      'deleteVendorPersonnel',
+      'getClaimRoles'
     ]),
     onEdit(index) {
       this.editPersonnelDialog = true;
