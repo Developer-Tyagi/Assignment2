@@ -328,12 +328,12 @@
             <div class="q-px-sm">
               <q-input
                 class="q-py-sm"
-                v-model="policyInfo.fileNumber"
+                v-model="fileNumber"
                 label="File Number"
               />
               <q-input
                 class="q-py-sm"
-                v-model="policyInfo.claimFee"
+                v-model.number="contractInfo.fees.rate"
                 label="Claim Fee(%)"
               />
               <q-input
@@ -611,9 +611,13 @@ export default {
         estimatedLossAmount: 2000.2,
         propertyValue: 1200
       },
-
+      contractInfo: {
+        fees: {
+          rate: null
+        }
+      },
+      fileNumber: '',
       policyInfo: {
-        claimFee: '',
         reasonForClaim: '',
         sourceOfClaim: '',
         contractDetails: '',
@@ -623,7 +627,6 @@ export default {
         number: '',
         isClaimFiled: true,
         isForcedPlaced: true,
-        fileNumber: '',
         priorPayment: 1234.09,
         limitReason: 'reason for limits or denial',
         effectiveDate: '2020-09-24T11:18:06Z',
@@ -653,7 +656,7 @@ export default {
     this.getClaimReasons();
     this.getLossCauses();
     this.lossInfo.dateOfLoss = dateToShow(this.getSelectedClaim.lossInfo.date);
-    this.policyInfo.fileNumber = this.getSelectedClaim.fileNumber;
+    this.fileNumber = this.getSelectedClaim.fileNumber;
     this.DeadLineDate = dateToShow(this.getSelectedClaim.lossInfo.deadlineDate);
     this.recovDDDate = dateToShow(this.getSelectedClaim.lossInfo.recovDDDate);
     this.policyInfo.carrierNotifyDate = dateToShow(
@@ -663,7 +666,7 @@ export default {
     this.policyInfo.dateOfFirstContact = dateToShow(
       this.getSelectedClaim.contractInfo.dateOfFirstContact
     );
-    this.policyInfo.claimFee = this.getSelectedClaim.contractInfo.fees.rate;
+    this.contractInfo.fees.rate = this.getSelectedClaim.contractInfo.fees.rate;
     this.isHabitable = this.getSelectedClaim.lossInfo.isHabitable;
     this.isFemaClaim = this.getSelectedClaim.lossInfo.isFEMA;
 
@@ -689,8 +692,14 @@ export default {
       if (value == 'claimSummary') {
         let payload = {
           id: this.selectedClaimId,
-          data: { policyInfo: this.policyInfo }
+          data: {
+            fileNumber: this.fileNumber,
+
+            contractInfo: this.contractInfo,
+            policyInfo: this.policyInfo
+          }
         };
+        console.log(payload, 65656);
         await this.editClaimInfo(payload);
       } else {
         let payload = {
@@ -699,6 +708,7 @@ export default {
         };
         await this.editClaimInfo(payload);
       }
+      await this.getSingleClaimDetails(this.selectedClaimId);
       this[value] = false;
     },
 
