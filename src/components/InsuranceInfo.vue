@@ -321,6 +321,83 @@
             class="input-extra-padding"
           />
         </div>
+        <div class="row" style="align-items: center">
+          <span class="form-heading" style="width: 50%"
+            >Has Appraisal Cause</span
+          >
+          <q-toggle
+            class="q-ml-auto"
+            v-model="insuranceDetails.hasAppraisalClause"
+          />
+        </div>
+        <div class="row" style="align-items: center">
+          <span class="form-heading" style="width: 50%">Total Amount</span>
+          <q-input
+            mask="#.#"
+            type="number"
+            v-model.number="insuranceDetails.totalAmount"
+            placeholder="Total Amount"
+            prefix="$"
+            style="margin-left: auto; width: 50%"
+            dense
+            class="input-extra-padding"
+          />
+        </div>
+        <div class="row" style="align-items: center">
+          <span class="form-heading" style="width: 50%">Ordinance or Law</span>
+          <q-input
+            mask="#.#"
+            type="number"
+            v-model.number="insuranceDetails.ordinance"
+            placeholder="Ordinance or Law"
+            prefix="$"
+            style="margin-left: auto; width: 50%"
+            dense
+            class="input-extra-padding"
+          />
+        </div>
+        <div class="row" style="align-items: center">
+          <span class="form-heading" style="width: 50%">Debris Removal</span>
+          <q-input
+            mask="#.#"
+            type="number"
+            v-model.number="insuranceDetails.debrisRemoval"
+            placeholder="Debris Removal"
+            prefix="$"
+            style="margin-left: auto; width: 50%"
+            dense
+            class="input-extra-padding"
+          />
+        </div>
+        <div class="row" style="align-items: center">
+          <span class="form-heading" style="width: 50%">Mold/Fungi</span>
+          <q-input
+            mask="#.#"
+            type="number"
+            v-model.number="insuranceDetails.mold"
+            placeholder="Mold/Fungi"
+            prefix="$"
+            style="margin-left: auto; width: 50%"
+            dense
+            class="input-extra-padding"
+          />
+        </div>
+
+        <div class="row" style="align-items: center">
+          <span class="form-heading" style="width: 50%"
+            >Business Interruption</span
+          >
+          <q-input
+            mask="#.#"
+            type="number"
+            v-model.number="insuranceDetails.businessInt"
+            placeholder="Business Interruption"
+            prefix="$"
+            style="margin-left: auto; width: 50%"
+            dense
+            class="input-extra-padding"
+          />
+        </div>
       </q-card>
       <q-card class="q-pa-sm q-mt-sm">
         <span class="form-heading">Reason for Limits/Denial</span>

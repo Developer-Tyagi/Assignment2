@@ -281,7 +281,13 @@
           </div>
           <div class="row q-mt-xs">
             <span class="heading-light col"> Total Amount of Policy </span>
-            <span class="q-ml-md col"> - </span>
+            <span class="q-ml-md col">
+              {{
+                policy.policyInfo.totalAmount
+                  ? policy.policyInfo.totalAmount
+                  : '-'
+              }}</span
+            >
           </div>
           <div class="row q-mt-xs">
             <span class="heading-light col"> Dwelling Limit (A) </span>
@@ -326,28 +332,42 @@
 
           <div class="row q-mt-xs">
             <span class="heading-light col"> Ordinance or Law</span>
-            <span class="q-ml-md col"> - </span>
+            <span class="q-ml-md col">
+              {{
+                policy.policyInfo.ordinance ? policy.policyInfo.ordinance : '-'
+              }}</span
+            >
           </div>
           <div class="row q-mt-xs">
             <span class="heading-light col"> Debris Removal</span>
-            <span class="q-ml-md col"> - </span>
+            <span class="q-ml-md col">
+              {{
+                policy.policyInfo.debrisRemoval
+                  ? policy.policyInfo.debrisRemoval
+                  : '-'
+              }}
+            </span>
           </div>
           <div class="row q-mt-xs">
             <span class="heading-light col"> Mold Fungi</span>
-            <span class="q-ml-md col"> - </span>
+            <span class="q-ml-md col">
+              {{ policy.policyInfo.mold ? policy.policyInfo.mold : '-' }}</span
+            >
           </div>
           <div class="row q-mt-xs">
             <span class="heading-light col"> Business Interruption</span>
-            <span class="q-ml-md col"> - </span>
+            <span class="q-ml-md col">
+              {{
+                policy.policyInfo.businessInt
+                  ? policy.policyInfo.businessInt
+                  : '-'
+              }}
+            </span>
           </div>
           <div class="row q-mt-xs">
             <span class="heading-light col"> Depreciation</span>
             <span class="q-ml-md col">
-              {{
-                policy.policyInfo.depreciation
-                  ? policy.policyInfo.depreciation
-                  : '-'
-              }}
+              {{ policy.policyInfo ? policy.policyInfo.depreciation : '-' }}
             </span>
           </div>
           <div class="row q-mt-xs">
@@ -855,6 +875,12 @@ export default {
       carrierListDialog: false,
       insuranceInfoDialog: false,
       insuranceDetails: {
+        totalAmount: '',
+        ordinance: '',
+        debrisRemoval: '',
+        mold: '',
+        businessInt: '',
+        hasAppraisalClause: false,
         hasClaimBeenFilledToggle: false,
         isThisIsForcedPlacedPolicyToggle: false,
         policy: {
@@ -1014,6 +1040,12 @@ export default {
       this.insuranceDetails.policy.id = this.policy.policyInfo.type.id
         ? this.policy.policyInfo.type.id
         : '';
+      this.insuranceDetails.totalAmount = this.policy.policyInfo.totalAmount;
+      this.insuranceDetails.ordinance = this.policy.policyInfo.ordinance;
+      this.insuranceDetails.debrisRemoval = this.policy.policyInfo.debrisRemoval;
+      this.insuranceDetails.mold = this.policy.policyInfo.mold;
+
+      this.insuranceDetails.businessInt = this.policy.policyInfo.businessInt;
 
       this.insuranceDetails.policy.value = this.policy.policyInfo.type.value
         ? this.policy.policyInfo.type.value
@@ -1194,6 +1226,7 @@ export default {
               number: this.insuranceDetails.policyNumber,
               isClaimFiled: this.hasClaimBeenFilledToggle,
               isForcedPlaced: this.isThisIsForcedPlacedPolicyToggle,
+              hasAppraisalClause: this.hasAppraisalClause,
               claimNumber: this.insuranceDetails.insuranceClaimNumber,
               category: {
                 id: this.insuranceDetails.policyCategory.id,
@@ -1229,6 +1262,19 @@ export default {
                   ? this.insuranceDetails.lossOfUSD
                   : 0
               },
+              totalAmount: this.insuranceDetails.totalAmount
+                ? this.insuranceDetails.totalAmount
+                : 0,
+              ordinance: this.insuranceDetails.ordinance
+                ? this.insuranceDetails.ordinance
+                : 0,
+              debrisRemoval: this.insuranceDetails.debrisRemoval
+                ? this.insuranceDetails.debrisRemoval
+                : 0,
+              mold: this.insuranceDetails.mold ? this.insuranceDetails.mold : 0,
+              businessInt: this.insuranceDetails.businessInt
+                ? this.insuranceDetails.businessInt
+                : 0,
               deductibleAmount: this.insuranceDetails.deductible
                 ? this.insuranceDetails.deductible
                 : 0,
