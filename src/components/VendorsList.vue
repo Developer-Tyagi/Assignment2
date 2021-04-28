@@ -200,6 +200,7 @@ export default {
     selectFilter(filter) {
       this.selectedFilter = filter.id;
     },
+
     onEmailClick,
     onPhoneNumberClick,
     sendMap,

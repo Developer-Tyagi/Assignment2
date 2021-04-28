@@ -50,33 +50,33 @@
       />
     </q-card>
     <q-card class="q-ma-md q-pa-md q-mt-sm">
-      <div>
-        <!-- <div
+      <div v-if="carrierPersonnel.phoneNumber">
+        <div
           class="row justify-between"
           v-for="(addPhone, index) in carrierPersonnel.phoneNumber"
           v-if="index >= 0"
-        > -->
-        <q-select
-          dense
-          v-model="carrierPersonnel.phoneNumber[0].type"
-          class="col-5"
-          label="Type"
-          :options="contactTypes"
-          option-value="machineValue"
-          option-label="name"
-          map-options
-          options-dense
-          emit-value
-        />
-        <q-input
-          dense
-          v-model.number="carrierPersonnel.phoneNumber[0].number"
-          label="Phone"
-          class="col-6"
-          mask="(###) ###-####"
-        />
-        <!-- </div> -->
-        <!-- <div class="row">
+        >
+          <q-select
+            dense
+            v-model="carrierPersonnel.phoneNumber[index].type"
+            class="col-5"
+            label="Type"
+            :options="contactTypes"
+            option-value="machineValue"
+            option-label="name"
+            map-options
+            options-dense
+            emit-value
+          />
+          <q-input
+            dense
+            v-model.number="carrierPersonnel.phoneNumber[index].number"
+            label="Phone"
+            class="col-6"
+            mask="(###) ###-####"
+          />
+        </div>
+        <div class="row">
           <q-btn
             outline
             class="q-mt-sm"
@@ -85,16 +85,15 @@
             label="Add"
             style="margin-right: auto"
           />
-
-          <q-btn
+          <!-- <q-btn
             v-if="carrierPersonnel.phoneNumber.length > 1"
             outline
             @click="RemoveAnotherContact"
             class="q-mt-sm"
             color="primary"
             label="Remove"
-          />
-        </div> -->
+          /> -->
+        </div>
       </div>
     </q-card>
     <q-card class="q-ma-md q-pa-md q-mt-xs">
@@ -136,7 +135,7 @@ export default {
     this.getContactTypes();
     this.getTitles();
   },
-  method: {
+  methods: {
     ...mapActions(['getContactTypes', 'getTitles']),
     setTitleName() {
       const title = this.titles.find(obj => {
@@ -144,23 +143,23 @@ export default {
       });
       this.carrierPersonnel.honorific.value = title.value;
       this.carrierPersonnel.honorific.machineValue = title.machineValue;
+    },
+    // For adding multiple Contact Numbers
+    addAnotherContact() {
+      let len = this.carrierPersonnel.phoneNumber.length;
+      if (this.carrierPersonnel.phoneNumber[len - 1].number.length == 14) {
+        this.carrierPersonnel.phoneNumber.push({
+          type: '',
+          number: ''
+        });
+      } else {
+        this.$q.notify({
+          message: 'Please fill the absove contact first',
+          position: 'top',
+          type: 'negative'
+        });
+      }
     }
-    // For adding multiple Contact Numbers in ClientInfo
-    // addAnotherContact() {
-    //   let len = this.carrierPersonnel.phoneNumber.length;
-    //   if (this.carrierPersonnel.phoneNumber[len - 1].number.length == 14) {
-    //     this.carrierPersonnel.phoneNumber.push({
-    //       type: '',
-    //       number: ''
-    //     });
-    //   } else {
-    //     this.$q.notify({
-    //       message: 'Please fill the absove contact first',
-    //       position: 'top',
-    //       type: 'negative'
-    //     });
-    //   }
-    // }
   }
 };
 </script>

@@ -173,12 +173,13 @@ export default {
       }
     };
   },
+
   computed: {
     ...mapGetters(['personnel', 'selectedClaimId', 'roleTypes', 'userRoles'])
   },
 
   methods: {
-    ...mapActions(['getPersonnelInfo', 'addCompanyPersonnel']),
+    ...mapActions(['getPersonnelInfo', 'addCompanyPersonnel', 'getAllUsers']),
 
     validateDate,
 
@@ -187,11 +188,8 @@ export default {
         return item.id === data.id;
       });
 
-      data.role.value = obj.name;
-      data.role.machineValue = obj.machineValue;
-
-      this.params.role = data.role.machineValue;
-      this.getAllUsers(this.params);
+      console.log('hi');
+      this.getAllUsers({ roles: obj.machineValue });
       this.companyPersonnel.isFieldDisable = false;
     }
   }

@@ -248,7 +248,6 @@ export default {
   },
   created() {
     this.getEstimators();
-    console.log(this.estimatingInfo);
   },
   computed: {
     ...mapGetters(['estimators', 'contactTypes', 'titles'])
@@ -327,7 +326,6 @@ export default {
     },
 
     selectEstimator(value) {
-      console.log(value.contact.phoneNumber[0]);
       this.estimatingInfo.addEstimatorValue.name = value.contact.fname;
       this.estimatingInfo.addEstimatorValue.phone = {
         phoneNumber: value.contact.phoneNumber
