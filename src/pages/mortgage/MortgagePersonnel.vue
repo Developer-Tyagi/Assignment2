@@ -598,6 +598,9 @@ export default {
           }
         }
       };
+      if (!this.personnel.role.id) {
+        delete payload.data.personnel.role;
+      }
       await this.editMortgagePersonnel(payload);
       await this.getMortgagePersonnel(this.$route.params.id);
       this.editPersonnelDialog = false;
@@ -669,6 +672,9 @@ export default {
           }
         }
       };
+      if (!this.personnel.role.id) {
+        delete payload.data.personnel.role;
+      }
       await this.addMortgagePersonnel(payload);
       this.addPersonnelDialog = false;
       this.getMortgagePersonnel(this.$route.params.id);

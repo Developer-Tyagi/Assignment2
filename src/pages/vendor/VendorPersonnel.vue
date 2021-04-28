@@ -336,15 +336,33 @@
               novalidate="true"
               label="Email"
             />
-            <q-select
-              v-model="name"
-              class="col-5"
-              label="Default Roles"
-              :options="personnel.defaultRoles"
-              option-value="name"
-              behavior="menu"
-              emit-value
-            />
+            <div>
+              <q-select
+                v-model="personnel.role.value"
+                dense
+                class="full-width"
+                use-input
+                input-debounce="0"
+                option-label="name"
+                label="Default Roles"
+                :options="options"
+                option-value="name"
+                @input="setClaimRoles"
+                @filter="searchFilterBy"
+                behavior="menu"
+                options-dense
+                emit-value
+                options-dense
+              >
+                <template v-slot:no-option>
+                  <q-item>
+                    <q-item-section class="text-black">
+                      No results
+                    </q-item-section>
+                  </q-item>
+                </template>
+              </q-select>
+            </div>
           </q-card>
           <q-card class="q-ma-md q-pa-md q-mt-sm"
             ><span class="text-bold">Address Details</span>
@@ -584,6 +602,9 @@ export default {
           }
         }
       };
+      if (!this.personnel.role.id) {
+        delete payload.data.personnel.role;
+      }
       await this.editVendorPersonnel(payload);
       this.getVendorPersonnel(this.$route.params.id);
       this.editPersonnelDialog = false;
@@ -654,6 +675,9 @@ export default {
           }
         }
       };
+      if (!this.personnel.role.id) {
+        delete payload.data.personnel.role;
+      }
       await this.addVendorPersonnel(payload);
       this.addPersonnelDialog = false;
       this.getVendorPersonnel(this.$route.params.id);

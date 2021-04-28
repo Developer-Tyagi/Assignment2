@@ -31,15 +31,34 @@
         novalidate="true"
         label="Email"
       />
-      <q-select
-        v-model="carrierPersonnel.name"
-        class=" col-5"
-        label="Default Roles"
-        :options="carrierPersonnel.defaultRoles"
-        option-value="name"
-        behavior="menu"
-        emit-value
-      />
+
+      <div>
+        <q-select
+          v-model="carrierPersonnel.role.value"
+          dense
+          class="full-width"
+          use-input
+          input-debounce="0"
+          option-label="name"
+          label="Default Roles"
+          :options="carrierPersonnel.options"
+          option-value="name"
+          @input="setClaimRoles"
+          @filter="searchFilterBy"
+          behavior="menu"
+          options-dense
+          emit-value
+          options-dense
+        >
+          <template v-slot:no-option>
+            <q-item>
+              <q-item-section class="text-black">
+                No results
+              </q-item-section>
+            </q-item>
+          </template>
+        </q-select>
+      </div>
     </q-card>
     <q-card class="q-ma-md q-pa-md q-mt-sm"
       ><span class="text-bold">Address Details</span>
@@ -85,14 +104,14 @@
             label="Add"
             style="margin-right: auto"
           />
-          <!-- <q-btn
+          <q-btn
             v-if="carrierPersonnel.phoneNumber.length > 1"
             outline
             @click="RemoveAnotherContact"
             class="q-mt-sm"
             color="primary"
             label="Remove"
-          /> -->
+          />
         </div>
       </div>
     </q-card>
@@ -129,20 +148,52 @@ export default {
     return {};
   },
   computed: {
-    ...mapGetters(['contactTypes', 'titles', 'defaultRoles'])
+    ...mapGetters(['contactTypes', 'titles', 'claimRoles'])
   },
   created() {
     this.getContactTypes();
     this.getTitles();
+    this.getClaimRoles();
   },
   methods: {
-    ...mapActions(['getContactTypes', 'getTitles']),
+    ...mapActions(['getContactTypes', 'getTitles', 'getClaimRoles']),
     setTitleName() {
       const title = this.titles.find(obj => {
         return obj.id === this.carrierPersonnel.honorific.id;
       });
       this.carrierPersonnel.honorific.value = title.value;
       this.carrierPersonnel.honorific.machineValue = title.machineValue;
+    },
+    searchFilterBy(val, update) {
+      this.carrierPersonnel.role.value = null;
+      if (val === ' ') {
+        update(() => {
+          this.carrierPersonnel.options = this.claimRoles;
+        });
+        return;
+      }
+
+      update(() => {
+        const search = val.toLowerCase();
+        this.carrierPersonnel.options = this.claimRoles.filter(
+          v => v.name.toLowerCase().indexOf(search) > -1
+        );
+      });
+    },
+    RemoveAnotherContact() {
+      this.carrierPersonnel.phoneNumber.pop();
+    },
+    setClaimRoles() {
+      const selectedName = this.carrierPersonnel.role.value;
+      const result = this.claimRoles.find(obj => {
+        return obj.name === selectedName;
+      });
+
+      this.carrierPersonnel.role.value = result.name;
+
+      this.carrierPersonnel.role.id = result.id;
+
+      this.carrierPersonnel.role.machineValue = result.machineValue;
     },
     // For adding multiple Contact Numbers
     addAnotherContact() {
