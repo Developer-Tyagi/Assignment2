@@ -32,13 +32,7 @@ import { onEmailClick, onPhoneNumberClick } from '@utils/clickable';
 export default {
   data() {
     return {
-      dialogBoxes: [
-        { name: 'Mortgage Info' },
-        { name: 'Personnel' },
-        { name: 'Open Claims' },
-        { name: 'Claim History' },
-        { name: 'Files' }
-      ]
+      dialogBoxes: [{ name: 'Mortgage Info' }, { name: 'Personnel' }]
     };
   },
   computed: {
