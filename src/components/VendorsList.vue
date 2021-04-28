@@ -47,11 +47,7 @@
         style="overflow-y: auto"
       >
         <q-item-section>
-          <span
-            class="text-bold fit-content"
-            @click="onVendorNameClick(vendor, $event)"
-            >{{ vendor.name }}</span
-          >
+          <span class="text-bold fit-content">{{ vendor.name }}</span>
           <div v-if="vendor.address">
             <div>
               {{ vendor.address ? vendor.address.houseNumber : '-' }} ,
@@ -205,13 +201,6 @@ export default {
     onPhoneNumberClick,
     sendMap,
 
-    onVendorNameClick(vendor, e) {
-      if (this.showVendorDetails) {
-        e.stopPropogation();
-        this.$router.push('/vendor-details/' + vendor.id);
-      }
-    },
-
     applyFilter() {
       this.params.industry = this.selectedFilter;
       this.getVendors(this.params);
@@ -227,6 +216,8 @@ export default {
       if (this.selectVendor) {
         e.stopPropagation();
         this.$emit('afterSelecting', vendor);
+      } else {
+        this.$router.push('/vendor-details/' + vendor.id);
       }
     },
 

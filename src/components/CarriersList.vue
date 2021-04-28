@@ -35,11 +35,7 @@
         style="overflow-y: auto"
       >
         <q-item-section @click="onSelectCarrier(carrier, $event)">
-          <span
-            class="text-bold fit-content"
-            @click="onCarrierNameClick(carrier, $event)"
-            >{{ carrier.name }}</span
-          >
+          <span class="text-bold fit-content">{{ carrier.name }}</span>
           <div v-if="carrier.address">
             <div>
               {{ carrier.address ? carrier.address.houseNumber : '-' }} ,
@@ -155,18 +151,21 @@ export default {
         };
         await this.addClaimCarrier(payload);
       }
-      this.$emit('afterSelecting', carrier);
+      if (this.selectCarrier) {
+        this.$emit('afterSelecting', carrier);
+      } else {
+        this.$router.push('/carrier-details/' + carrier.id);
+      }
     },
     onEmailClick,
     onPhoneNumberClick,
     sendMap,
 
-    onCarrierNameClick(carrier, e) {
-      if (this.showCarrierDetails) {
-        e.stopPropagation();
-        this.$router.push('/carrier-details/' + carrier.id);
-      }
-    },
+    // onCarrierNameClick(carrier, e) {
+    //   if (this.showCarrierDetails) {
+    //     e.stopPropagation();
+    //   }
+    // },
 
     search(event) {
       this.params.name = event;
