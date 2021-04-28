@@ -23,3 +23,10 @@ export function setSelectedClaimCarrier(state, carrier = {}) {
     ...carrier.attributes
   };
 }
+export function setClaimRoles(state, claimRoles) {
+  state.claimRoles = claimRoles.map(role => ({
+    machineValue: role.attributes.machineValue,
+    name: role.attributes.value,
+    id: role.id
+  }));
+}

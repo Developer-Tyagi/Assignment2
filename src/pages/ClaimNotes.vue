@@ -63,8 +63,7 @@
       </q-card>
     </q-dialog>
     <div>
-      <div class="actions-div">
-        <q-separator vertical inset></q-separator>
+      <div class=" icon-top ">
         <q-btn @click="addNote" flat class="q-ml-auto"
           ><img src="~assets/add.svg"
         /></q-btn>
@@ -91,13 +90,19 @@
                     <br />
                     {{ claimNotes.attributes.notes[index].desc }}
 
-                    <div class="row">
+                    <div class="row edit-icon ">
                       <q-icon
                         name="create"
                         color="primary"
-                        class="edit-icon"
+                        class=""
                         @click="onEditButtonClick(index)"
-                      ></q-icon>
+                      />
+                      <q-icon
+                        name="delete"
+                        color="primary"
+                        class="q-ml-sm "
+                        @click="onclickDelete(index)"
+                      />
                     </div>
                   </div>
                 </div>
@@ -160,11 +165,23 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getClaimNotes', 'addClaimNotes', 'editClaimNotes']),
+    ...mapActions([
+      'getClaimNotes',
+      'addClaimNotes',
+      'editClaimNotes',
+      'deleteClaimNotes'
+    ]),
     onEditButtonClick(index) {
       this.noteId = this.claimNotes.attributes.notes[index].id;
       this.editNoteDialogBox = true;
       this.editNote = this.claimNotes.attributes.notes[index].desc;
+    },
+    onclickDelete(index) {
+      const payload = {
+        id: this.selectedClaimId,
+        noteId: this.claimNotes.attributes.notes[index].id
+      };
+      this.deleteClaimNotes(payload);
     },
     addNote() {
       this.addNoteDialog = true;

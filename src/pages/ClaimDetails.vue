@@ -70,7 +70,11 @@
                 <div class=" q-py-md row">
                   <div class="heading-light">Current Claim Number :</div>
                   <div class="q-px-lg ">
-                    {{ getSelectedClaim.policyInfo.claimNumber }}
+                    {{
+                      getSelectedClaim.policyInfo.claimNumber
+                        ? getSelectedClaim.policyInfo.claimNumber
+                        : '-'
+                    }}
                   </div>
                 </div>
                 <div class=" q-pb-lg row  ">

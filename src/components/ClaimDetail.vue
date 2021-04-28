@@ -19,13 +19,20 @@
       </div>
       <div class="col  q-ml-md">
         <span v-if="getSelectedClaim.lossInfo">
-          {{
-            getSelectedClaim.lossInfo
-              ? getSelectedClaim.lossInfo.property
-                ? getSelectedClaim.lossInfo.property.propertyType.value
-                : ''
-              : '-'
-          }}
+          <span
+            v-if="
+              getSelectedClaim.lossInfo.property &&
+                getSelectedClaim.lossInfo.property.propertyType
+            "
+          >
+            {{
+              getSelectedClaim.lossInfo
+                ? getSelectedClaim.lossInfo.property
+                  ? getSelectedClaim.lossInfo.property.propertyType.value
+                  : ''
+                : '-'
+            }}
+          </span>
         </span>
       </div>
     </div>
