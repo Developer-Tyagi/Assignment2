@@ -57,33 +57,33 @@
 
             <div>
               {{
-                lossInfo.attributes.lossInfo.address.streetAddress
-                  ? lossInfo.attributes.lossInfo.address.streetAddress
+                lossInfo.attributes.lossInfo.property.streetAddress
+                  ? lossInfo.attributes.lossInfo.property.streetAddress
                   : '-'
               }}
             </div>
 
             <div>
               {{
-                lossInfo.attributes.lossInfo.address.addressLocality
-                  ? lossInfo.attributes.lossInfo.address.addressLocality
+                lossInfo.attributes.lossInfo.property.addressLocality
+                  ? lossInfo.attributes.lossInfo.property.addressLocality
                   : '-'
               }},
               {{
-                lossInfo.attributes.lossInfo.address.houseNumber
-                  ? lossInfo.attributes.lossInfo.address.houseNumber
+                lossInfo.attributes.lossInfo.property.houseNumber
+                  ? lossInfo.attributes.lossInfo.property.houseNumber
                   : '-'
               }}
             </div>
             <div>
-              {{ lossInfo.attributes.lossInfo.address.addressRegion }},
-              {{ lossInfo.attributes.lossInfo.address.addressCountry }}
+              {{ lossInfo.attributes.lossInfo.property.addressRegion }},
+              {{ lossInfo.attributes.lossInfo.property.addressCountry }}
             </div>
 
             <div class="form-heading  ">Property Type :</div>
 
             <div>
-              {{ lossInfo.attributes.lossInfo.propertyType.value }}
+              {{ lossInfo.attributes.lossInfo.property.propertyType.value }}
             </div>
 
             <div class="form-heading ">Property Description :</div>

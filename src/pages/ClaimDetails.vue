@@ -181,11 +181,11 @@ export default {
       ClaimDetails: [
         { name: 'Claim Summary' },
         { name: 'Loss Info' },
+        { name: 'Activity Log & Message Archive' },
+        { name: 'Carrier & Policy' },
         { name: 'Tasks' },
         { name: 'Settlements' },
-        { name: 'Activity Log & Message Archive' },
         { name: 'Company Personnel' },
-        { name: 'Carrier & Policy' },
         { name: 'Mortgages and Liens' },
         { name: 'Files' },
         { name: 'Notes' },

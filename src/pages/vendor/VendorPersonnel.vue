@@ -183,15 +183,34 @@
               novalidate="true"
               label="Email"
             />
-            <q-select
-              v-model="name"
-              class="col-5"
-              label="Default Roles"
-              :options="claimRoles"
-              option-value="name"
-              behavior="menu"
-              emit-value
-            />
+
+            <div>
+              <q-select
+                v-model="personnel.role.value"
+                dense
+                class="full-width"
+                use-input
+                input-debounce="0"
+                option-label="name"
+                label="Default Roles"
+                :options="options"
+                option-value="name"
+                @input="setClaimRoles"
+                @filter="searchFilterBy"
+                behavior="menu"
+                options-dense
+                emit-value
+                options-dense
+              >
+                <template v-slot:no-option>
+                  <q-item>
+                    <q-item-section class="text-black">
+                      No results
+                    </q-item-section>
+                  </q-item>
+                </template>
+              </q-select>
+            </div>
           </q-card>
           <q-card class="q-ma-md q-pa-md q-mt-sm"
             ><span class="text-bold">Address Details</span>
@@ -422,6 +441,7 @@ export default {
   },
   data() {
     return {
+      options: [],
       id: '',
       name: '',
       addPersonnelDialog: false,
@@ -433,6 +453,7 @@ export default {
         machineValue: 'mr_'
       },
       personnel: {
+        role: { value: null, id: '', machineValue: '' },
         fname: '',
         lname: '',
         departmentName: '',
@@ -483,6 +504,7 @@ export default {
     this.getVendorPersonnel(this.$route.params.id);
     this.getContactTypes();
     this.getTitles();
+    this.getClaimRoles();
   },
   methods: {
     ...mapActions([
@@ -495,6 +517,34 @@ export default {
       'deleteVendorPersonnel',
       'getClaimRoles'
     ]),
+    searchFilterBy(val, update) {
+      this.personnel.role.value = null;
+      if (val === ' ') {
+        update(() => {
+          this.options = this.claimRoles;
+        });
+        return;
+      }
+
+      update(() => {
+        const search = val.toLowerCase();
+        this.options = this.claimRoles.filter(
+          v => v.name.toLowerCase().indexOf(search) > -1
+        );
+      });
+    },
+    setClaimRoles() {
+      const selectedName = this.personnel.role.value;
+      const result = this.claimRoles.find(obj => {
+        return obj.name === selectedName;
+      });
+
+      this.personnel.role.value = result.name;
+
+      this.personnel.role.id = result.id;
+
+      this.personnel.role.machineValue = result.machineValue;
+    },
     onEdit(index) {
       this.editPersonnelDialog = true;
       this.personnel.fname = this.vendorPersonnel.personnel[index].fname;
@@ -523,9 +573,10 @@ export default {
             email: this.personnel.email,
             phoneNumber: this.personnel.phoneNumber,
             role: {
-              value: 'Adjuster',
-              machineValue: 'adjuster'
+              value: this.personnel.role.value,
+              machineValue: this.personnel.role.machineValue
             },
+
             address: {
               ...this.personnel.address
             },
@@ -593,8 +644,8 @@ export default {
             email: this.personnel.email,
             phoneNumber: this.personnel.phoneNumber,
             role: {
-              value: 'Adjuster',
-              machineValue: 'adjuster'
+              value: this.personnel.role.value,
+              machineValue: this.personnel.role.machineValue
             },
             address: {
               ...this.personnel.address
