@@ -1,21 +1,73 @@
 <template>
   <div class="bg-white full-width">
     <!-- Insurance Info -->
-
     <div>
       <q-card class="q-pa-sm">
         <div
           class="custom-select"
-          v-model="insuranceDetails.carrierName"
-          @click="onAddVendorDialogClick(constants.industries.CARRIER)"
+          @click="carriersListDialog = true"
+          v-if="!insuranceDetails.carrierName"
         >
-          <div class="select-text">
-            {{
-              insuranceDetails.carrierName
-                ? insuranceDetails.carrierName
-                : 'Enter Carrier Details'
-            }}
-          </div>
+          <div class="select-text">Click for choosing a carrier</div>
+        </div>
+        <div>
+          <q-card
+            bordered
+            v-if="insuranceDetails.carrierName"
+            @click="carriersListDialog = true"
+            class="q-my-md q-pa-md"
+          >
+            <div class="text-bold">
+              {{ insuranceDetails.carrierName }}
+            </div>
+            <div
+              v-if="
+                insuranceDetails.address &&
+                  insuranceDetails.address.streetAddress
+              "
+            >
+              <div>
+                {{
+                  insuranceDetails.address
+                    ? insuranceDetails.address.houseNumber
+                    : '-'
+                }}
+                ,
+                {{
+                  insuranceDetails.address.streetAddress
+                    ? insuranceDetails.address.streetAddress
+                    : '-'
+                }}
+              </div>
+              <div>
+                {{
+                  insuranceDetails.address.addressLocality
+                    ? insuranceDetails.address.addressLocality
+                    : '-'
+                }}
+                ,
+                {{
+                  insuranceDetails.address.addressRegion
+                    ? insuranceDetails.address.addressRegion
+                    : '-'
+                }}
+              </div>
+              <div class="row">
+                {{
+                  insuranceDetails.address.addressCountry
+                    ? insuranceDetails.address.addressCountry
+                    : '-'
+                }}
+                -
+                {{
+                  insuranceDetails.address.postalCode
+                    ? insuranceDetails.address.postalCode
+                    : '-'
+                }}
+              </div>
+            </div>
+            <div>{{ insuranceDetails.email }}</div>
+          </q-card>
         </div>
         <q-input
           v-model="insuranceDetails.policyNumber"
@@ -282,10 +334,10 @@
         </div>
       </q-card>
     </div>
-    <!-- Vendor List Dialog -->
 
+    <!-- Carrier List Dialog -->
     <q-dialog
-      v-model="vendorsListDialog"
+      v-model="carriersListDialog"
       persistent
       :maximized="true"
       transition-show="slide-up"
@@ -293,36 +345,35 @@
     >
       <q-card>
         <CustomBar
-          @closeDialog="vendorsListDialog = false"
-          :dialogName="vendorDialogName"
+          :dialogName="constants.industries.CARRIER"
+          @closeDialog="carriersListDialog = false"
         />
-        <VendorsList
-          :carrierName="insuranceDetails.carrierName"
-          :selective="true"
-          @selectedVendor="onClosingVendorSelectDialog"
-          ref="list"
-          :showFilter="showVendorDialogFilters"
-          :filterName="vendorDialogFilterByIndustry"
-          :valueName="valueName"
-          @addVendor="(addVendorDialog = true), (vendorsListDialog = false)"
+        <CarriersList
+          :selectCarrier="true"
+          :showCarrierDetails="false"
+          :claimCarrier="false"
+          :selectedCarrierName="insuranceDetails.carrierName"
+          @addCarrier="
+            carriersListDialog = false;
+            addCarrierDialog = true;
+          "
+          @afterSelecting="onSelectingCarrierList"
         />
       </q-card>
     </q-dialog>
 
-    <!-- Add Vendor Dialog -->
-
+    <!-- add carrier dialog -->
     <q-dialog
-      v-model="addVendorDialog"
+      v-model="addCarrierDialog"
       persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
     >
       <q-card>
-        <AddVendor
-          @onCloseAddVendor="onCloseAddVendorDialogBox"
-          @closeDialog="closeAddVendorDialog"
-          :componentName="vendorDialogName"
+        <AddCarrier
+          @onCloseAddCarrier="onCloseAddCarrierDialogBox"
+          @closeDialog="addCarrierDialog = false"
         />
       </q-card>
     </q-dialog>
@@ -331,19 +382,19 @@
 <script>
 import { constants } from '@utils/constant';
 import CustomBar from 'components/CustomBar';
-import VendorsList from 'components/VendorsList';
+import CarriersList from 'components/CarriersList';
 import { validateDate } from '@utils/validation';
 import { mapGetters, mapActions } from 'vuex';
 import { successMessage } from '@utils/validation';
-import AddVendor from 'components/AddVendor';
+import AddCarrier from 'components/AddCarrier';
 import { date } from 'quasar';
 
 export default {
   name: 'AddClaim',
   components: {
     CustomBar,
-    VendorsList,
-    AddVendor
+    CarriersList,
+    AddCarrier
   },
   props: {
     insuranceDetails: {
@@ -359,9 +410,8 @@ export default {
       vendorDialogFilterByIndustry: '',
       showVendorDialogFilters: false,
       valueName: '',
-      addVendorDialog: false,
-      vendorsListDialog: false,
-      vendorDialogName: '',
+      addCarrierDialog: false,
+      carriersListDialog: false,
       constants: constants
     };
   },
@@ -374,39 +424,24 @@ export default {
   methods: {
     ...mapActions(['getVendors']),
     successMessage,
-    closeAddVendorDialog(e) {
-      this.addVendorDialog = false;
-
-      if (e) {
-        this.vendorsListDialog = false;
-      } else {
-        this.vendorsListDialog = true;
-      }
-    },
 
     //Add Vendor close list
 
-    async onCloseAddVendorDialogBox(result, selected) {
-      if (result) {
-        await this.getVendors();
-        this.successMessage(constants.successMessages.CARRIER);
-        this.onClosingVendorSelectDialog(selected, this.valueName);
-      }
+    onSelectingCarrierList(carrier) {
+      this.insuranceDetails.carrierId = carrier.id;
+      this.insuranceDetails.carrierName = carrier.name;
+      this.insuranceDetails.address = carrier.address;
+      this.insuranceDetails.email = carrier.email;
+      this.carriersListDialog = false;
     },
-    async onAddVendorDialogClick(name) {
-      this.valueName = name;
-      this.vendorDialogName = constants.industries.CARRIER;
 
-      this.showVendorDialogFilters = false;
-      this.vendorDialogFilterByIndustry = constants.industries.CARRIER;
-      this.vendorDialogName = name;
-      this.vendorsListDialog = true;
-    },
-    async onClosingVendorSelectDialog(vendor) {
-      this.insuranceDetails.carrierId = vendor.id;
-      this.insuranceDetails.carrierName = vendor.name;
-
-      this.vendorsListDialog = false;
+    onCloseAddCarrierDialogBox(carrier) {
+      this.insuranceDetails.carrierId = carrier.id;
+      this.insuranceDetails.carrierName = carrier.name;
+      this.insuranceDetails.address = carrier.address;
+      this.insuranceDetails.email = carrier.email;
+      this.carriersListDialog = false;
+      this.addCarrierDialog = false;
     },
 
     validateDate,

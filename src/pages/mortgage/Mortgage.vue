@@ -5,8 +5,9 @@
     }"
   >
     <MortgagesList
-      @addCarrier="openAddMortgageDialog"
-      :mortgageDetails="true"
+      @addMortagage="addMortgageDialog = true"
+      :showMortgageDetails="true"
+      :selectMortgage="false"
     />
     <q-dialog
       v-model="addMortgageDialog"
@@ -16,11 +17,7 @@
       transition-hide="slide-down"
     >
       <q-card>
-        <AddMortgage
-          @closeDialog="closeAddMortgageDialog"
-          :componentName="constants.industries.MORTGAGE"
-          :isEdit="false"
-        />
+        <AddMortgage @closeDialog="addMortgageDialog = false" :isEdit="false" />
       </q-card>
     </q-dialog>
   </div>
@@ -45,6 +42,7 @@ export default {
     closeAddMortgageDialog(e) {
       this.addMortgageDialog = false;
     },
+
     openAddMortgageDialog(e) {
       this.addMortgageDialog = e;
     }

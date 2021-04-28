@@ -75,7 +75,7 @@ export async function getSingleClientProperty({ commit, dispatch }, id) {
 export async function getEstimators({ commit, dispatch }) {
   dispatch('setLoading', true);
   try {
-    const { data } = await request.get('/users?role=estimator');
+    const { data } = await request.get('/users');
 
     commit('setEstimators', data);
 
@@ -227,9 +227,10 @@ export async function addEstimator({ dispatch, state }, payload) {
   try {
     const { data } = await request.post(
       '/users',
-      buildApiData('estimator', payload)
+      buildApiData('users', payload)
     );
     dispatch('setLoading', false);
+    return true;
   } catch (e) {
     console.log(e);
     dispatch('setLoading', false);

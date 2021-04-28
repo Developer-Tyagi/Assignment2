@@ -182,15 +182,33 @@
               novalidate="true"
               label="Email"
             />
-            <q-select
-              v-model="name"
-              class=" col-5"
-              label="Default Roles"
-              :options="personnel.defaultRoles"
-              option-value="name"
-              behavior="menu"
-              emit-value
-            />
+            <div>
+              <q-select
+                v-model="personnel.role.value"
+                dense
+                class="full-width"
+                use-input
+                input-debounce="0"
+                option-label="name"
+                label="Default Roles"
+                :options="options"
+                option-value="name"
+                @input="setClaimRoles"
+                @filter="searchFilterBy"
+                behavior="menu"
+                options-dense
+                emit-value
+                options-dense
+              >
+                <template v-slot:no-option>
+                  <q-item>
+                    <q-item-section class="text-black">
+                      No results
+                    </q-item-section>
+                  </q-item>
+                </template>
+              </q-select>
+            </div>
           </q-card>
           <q-card class="q-ma-md q-pa-md q-mt-sm"
             ><span class="text-bold">Address Details</span>
@@ -316,15 +334,33 @@
               novalidate="true"
               label="Email"
             />
-            <q-select
-              v-model="name"
-              class=" col-5"
-              label="Default Roles"
-              :options="personnel.defaultRoles"
-              option-value="name"
-              behavior="menu"
-              emit-value
-            />
+            <div>
+              <q-select
+                dense
+                class="full-width"
+                v-model="personnel.role.value"
+                use-input
+                input-debounce="0"
+                option-label="name"
+                label="Default Roles"
+                :options="options"
+                option-value="name"
+                @input="setClaimRoles"
+                @filter="searchFilterBy"
+                behavior="menu"
+                options-dense
+                emit-value
+                options-dense
+              >
+                <template v-slot:no-option>
+                  <q-item>
+                    <q-item-section class="text-black">
+                      No results
+                    </q-item-section>
+                  </q-item>
+                </template>
+              </q-select>
+            </div>
           </q-card>
           <q-card class="q-ma-md q-pa-md q-mt-sm"
             ><span class="text-bold">Address Details</span>
@@ -421,6 +457,7 @@ export default {
   },
   data() {
     return {
+      options: [],
       id: '',
       name: '',
       addPersonnelDialog: false,
@@ -432,6 +469,7 @@ export default {
         machineValue: 'mr_'
       },
       personnel: {
+        role: { value: null, id: '', machineValue: '' },
         fname: '',
         lname: '',
         departmentName: '',
@@ -455,14 +493,7 @@ export default {
           }
         ],
         email: '',
-        defaultRoles: [
-          'Manager',
-          'Personnel',
-          'Technical Architect',
-          'Tester',
-          'Engineer',
-          'Plumber'
-        ],
+
         notes: ''
       }
     };
@@ -473,7 +504,8 @@ export default {
       'titles',
       'mortgagePersonnel',
       'defaultRoles',
-      'selectedMortgage'
+      'selectedMortgage',
+      'claimRoles'
     ])
   },
   created() {
@@ -481,6 +513,7 @@ export default {
     this.getMortgagePersonnel(this.$route.params.id);
     this.getContactTypes();
     this.getTitles();
+    this.getClaimRoles();
   },
   methods: {
     ...mapActions([
@@ -490,8 +523,37 @@ export default {
       'getMortgagePersonnel',
       'getMortgageDetails',
       'editMortgagePersonnel',
-      'deleteMortgagePersonnel'
+      'deleteMortgagePersonnel',
+      'getClaimRoles'
     ]),
+    searchFilterBy(val, update) {
+      this.personnel.role.value = null;
+      if (val === ' ') {
+        update(() => {
+          this.options = this.claimRoles;
+        });
+        return;
+      }
+
+      update(() => {
+        const search = val.toLowerCase();
+        this.options = this.claimRoles.filter(
+          v => v.name.toLowerCase().indexOf(search) > -1
+        );
+      });
+    },
+    setClaimRoles() {
+      const selectedName = this.personnel.role.value;
+      const result = this.claimRoles.find(obj => {
+        return obj.name === selectedName;
+      });
+
+      this.personnel.role.value = result.name;
+
+      this.personnel.role.id = result.id;
+
+      this.personnel.role.machineValue = result.machineValue;
+    },
     onEdit(index) {
       this.editPersonnelDialog = true;
       this.personnel.fname = this.mortgagePersonnel.personnel[index].fname;
@@ -503,6 +565,12 @@ export default {
         index
       ].phoneNumber;
       this.id = this.mortgagePersonnel.personnel[index].id;
+      this.personnel.role.value = this.mortgagePersonnel.personnel[
+        index
+      ].role.value;
+      this.personnel.role.machineValue = this.mortgagePersonnel.personnel[
+        index
+      ].role.machineValue;
     },
     async onEditSave() {
       const payload = {
@@ -520,8 +588,8 @@ export default {
             email: this.personnel.email,
             phoneNumber: this.personnel.phoneNumber,
             role: {
-              value: 'Adjuster',
-              machineValue: 'adjuster'
+              value: this.personnel.role.value,
+              machineValue: this.personnel.role.machineValue
             },
             address: {
               ...this.personnel.address
@@ -531,7 +599,7 @@ export default {
         }
       };
       await this.editMortgagePersonnel(payload);
-      this.getMortgagePersonnel(this.$route.params.id);
+      await this.getMortgagePersonnel(this.$route.params.id);
       this.editPersonnelDialog = false;
     },
     async onDelete(index) {
@@ -543,6 +611,7 @@ export default {
       this.getMortgagePersonnel(this.$route.params.id);
     },
     // For adding multiple Contact Numbers in ClientInfo
+
     addAnotherContact() {
       let len = this.personnel.phoneNumber.length;
       if (this.personnel.phoneNumber[len - 1].number.length == 14) {
@@ -590,8 +659,8 @@ export default {
             email: this.personnel.email,
             phoneNumber: this.personnel.phoneNumber,
             role: {
-              value: 'Adjuster',
-              machineValue: 'adjuster'
+              value: this.personnel.role.value,
+              machineValue: this.personnel.role.machineValue
             },
             address: {
               ...this.personnel.address
@@ -603,18 +672,21 @@ export default {
       await this.addMortgagePersonnel(payload);
       this.addPersonnelDialog = false;
       this.getMortgagePersonnel(this.$route.params.id);
+      this.personnel.role = {};
       this.personnel.fname = '';
       this.personnel.lname = '';
-      this.personnel.email = '';
+      this.personnel.departmentName = '';
       this.personnel.address.houseNumber = '';
       this.personnel.address.addressCountry = '';
       this.personnel.address.addressLocality = '';
       this.personnel.address.addressRegion = '';
-      this.personnel.address.streetAddress = '';
+      this.personnel.address.postOfficeBoxNumber = '';
       this.personnel.address.postalCode = '';
+      this.personnel.address.streetAddress = '';
+      this.personnel.address.isPresent = false;
+      this.personnel.phoneNumber = [{ type: 'main', number: '' }];
+      this.personnel.email = '';
       this.personnel.notes = '';
-      this.personnel.departmentName = '';
-      this.personnel.phoneNumber.length = 0;
     }
   }
 };

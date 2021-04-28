@@ -212,13 +212,17 @@ export async function editInsurancePolicy({ dispatch, state }, payload) {
       buildApiData('claimpolicy', payload.data)
     );
     dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Insurance & Policy Info has been  Updated !'
+    });
     return true;
   } catch (e) {
     console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response[0].title
+      message: 'Error in updating please try again !.'
     });
     return false;
   }
@@ -489,6 +493,24 @@ export async function getPhases({ commit, dispatch }) {
     });
   }
 }
+export async function deleteClaimNotes({ commit, dispatch }, payload) {
+  dispatch('setLoading', true);
+  try {
+    await request.del(`/claims/${payload.id}/notes/${payload.noteId}`);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Property  Deleted !'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'Error in deleting Notes.'
+    });
+  }
+}
 export async function editClaimInfo({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
@@ -503,7 +525,7 @@ export async function editClaimInfo({ dispatch, state }, payload) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: 'Failed to update claim Number! please try again !'
+      message: 'Failed to update claim Info! please try again !'
     });
   }
 }

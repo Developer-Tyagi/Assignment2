@@ -155,7 +155,6 @@
 import { mapGetters, mapActions } from 'vuex';
 
 import { validateDate } from '@utils/validation';
-import { date } from 'quasar';
 
 export default {
   name: 'CompanyPersonnel',
@@ -174,29 +173,23 @@ export default {
       }
     };
   },
+
   computed: {
-    ...mapGetters([
-      'personnel',
-      'selectedClaimId',
-      'roleTypes',
-      'getRoles',
-      'userRoles'
-    ])
+    ...mapGetters(['personnel', 'selectedClaimId', 'roleTypes', 'userRoles'])
   },
 
   methods: {
-    ...mapActions(['getPersonnelInfo', 'getAllUsers', 'addCompanyPersonnel']),
+    ...mapActions(['getPersonnelInfo', 'addCompanyPersonnel', 'getAllUsers']),
+
     validateDate,
+
     setTypes(types, data) {
       const obj = types.find(item => {
         return item.id === data.id;
       });
 
-      data.role.value = obj.name;
-      data.role.machineValue = obj.machineValue;
-
-      this.params.role = data.role.machineValue;
-      this.getAllUsers(this.params);
+      console.log('hi');
+      this.getAllUsers({ roles: obj.machineValue });
       this.companyPersonnel.isFieldDisable = false;
     }
   }

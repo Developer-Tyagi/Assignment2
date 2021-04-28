@@ -520,10 +520,7 @@
             ref="vendorInfo"
           >
             <div class="q-pa-md form-card">
-              <ExpertVendorInfo
-                :expertVendorInfo="expertVendorInfo"
-                @addAnotherVendor="addAnotherVendor"
-              />
+              <ExpertVendorInfo :expertVendorInfo="expertVendorInfo" />
             </div>
             <div class="row q-pt-md">
               <div>
@@ -816,7 +813,6 @@ export default {
         value: '',
         machineValue: ''
       },
-      expertVendorInfoDialog: false,
       isCreateClientButtonDisabled: true,
       stepArr: [
         { name: 'Client Info', ref: 'clientInfo' },
@@ -832,11 +828,6 @@ export default {
       vendorIndustriesOptions: [],
       lossAddressNameOptions: ['Others'],
       constants: constants,
-      companyPersonnelDialog: false,
-      contractInfoDialog: false,
-      officeTaskDialog: false,
-      estimatingInfoDialog: false,
-      lossInfoDialog: false,
       maximizedToggle: true,
       clientInfoDailog: false,
       primaryDetails: {
@@ -1045,18 +1036,12 @@ export default {
 
       typeOfLoss: [],
       expertVendorInfo: {
-        expertVendorButton: true,
-        carrierName: '',
-        carrierId: '',
-        vendorIndustriesOptions: [],
+        isAlreadyHiredVendor: [{ industry: '', vendor: {} }],
+        isHiredByClaimguru: [{ industry: '', vendor: {} }],
         anyOtherExpertHiredToggle: false,
         vendorExpertHiredToggle: false,
         notes: '',
-        internalNotes: '',
-
-        vendors: [{ id: '', value: null }],
-        id: '',
-        industry: [{ value: null, id: '', machineValue: '' }]
+        internalNotes: ''
       },
       officeTask: {
         officeActionTypes: '',
@@ -1088,8 +1073,16 @@ export default {
   },
 
   created() {
-    // this.getRoles();
+    this.getRoles();
     this.getLossCauses();
+    this.getSeverityClaim();
+    this.getClaimReasons();
+    this.getVendors(this.$route.params.id);
+    this.getClientTypes();
+    this.getPropertyTypes();
+    this.getPolicyTypes();
+    this.getContactTypes();
+    this.getPolicyCategory();
     this.contractInfo.time = date.formatDate(Date.now(), 'HH:mm:ss:aa');
     this.companyPersonnel.startDate = this.companyPersonnel.endDate = this.contractInfo.firstContractDate = this.contractInfo.contractDate = this.insuranceDetails.policyEffectiveDate = this.lossInfo.dateOfLoss = this.lossInfo.deadlineDate = this.lossInfo.recovDeadline = date.formatDate(
       Date.now(),
@@ -1101,14 +1094,6 @@ export default {
       }),
       'MM/DD/YYYY'
     );
-    this.getSeverityClaim();
-    this.getClaimReasons();
-    this.getVendors(this.$route.params.id);
-    this.getClientTypes();
-    this.getPropertyTypes();
-    this.getPolicyTypes();
-    this.getContactTypes();
-    this.getPolicyCategory();
 
     if (this.selectedLead.id) {
       this.insuredDetails.fname = this.selectedLead.primaryContact.fname;
@@ -1151,9 +1136,6 @@ export default {
         'MM/DD/YYYY'
       );
     }
-
-    this.countries = addressService.getCountries();
-    this.onCountrySelect('United States');
   },
 
   computed: {
@@ -1178,8 +1160,6 @@ export default {
       'getEstimators',
       'addEstimator',
       'addIndustry',
-      // 'getRoles',
-      // 'getAllUsers',
       'vendorIndustries',
       'propertyTypes'
     ])
@@ -1201,12 +1181,13 @@ export default {
       'getPolicyCategory',
       'getVendorIndustries',
       'getPropertyTypes',
-      // 'getRoles',
+      'getRoles',
       'getSeverityClaim',
       'addClaim'
     ]),
     ...mapMutations(['setSelectedLead']),
     successMessage,
+
     async addAnotherVendor() {
       const success = await this.$refs.expertVendorInfoForm.validate();
       let len = this.expertVendorInfo.vendors.length;
@@ -1542,7 +1523,7 @@ export default {
           isSecondClaim: false
         },
         expertInfo: {
-          vendor: this.expertVendorInfo.vendors,
+          vendors: [],
           notes: this.expertVendorInfo.notes,
           internalNotes: this.expertVendorInfo.internalNotes
         },
@@ -1578,9 +1559,36 @@ export default {
           }
         ]
       };
+      if (
+        !this.companyPersonnel.personnel.role.value &&
+        !this.companyPersonnel.personnel.role.machineValue
+      ) {
+        delete payload.personnel;
+      }
+
+      if (
+        this.expertVendorInfo.isAlreadyHiredVendor.length ||
+        this.expertVendorInfo.isHiredByClaimguru.length
+      ) {
+        const vendorsAlreadyExist = this.expertVendorInfo.isAlreadyHiredVendor.map(
+          val => ({
+            id: val.id,
+            value: val.name,
+            isAlreadyHired: true
+          })
+        );
+        const vendorsHired = this.expertVendorInfo.isHiredByClaimguru.map(
+          val => ({
+            id: val.id,
+            value: val.name,
+            isAlreadyHired: false
+          })
+        );
+
+        payload.expertInfo.vendors = vendorsAlreadyExist.concat(vendorsHired);
+      }
       this.addClaim(payload).then(() => {
         this.setSelectedLead();
-
         //Routing to Client if Client Creation is Successful
         this.$router.push('/clients');
       });

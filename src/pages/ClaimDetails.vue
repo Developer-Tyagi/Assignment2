@@ -70,7 +70,11 @@
                 <div class=" q-py-md row">
                   <div class="heading-light">Current Claim Number :</div>
                   <div class="q-px-lg ">
-                    {{ getSelectedClaim.policyInfo.claimNumber }}
+                    {{
+                      getSelectedClaim.policyInfo.claimNumber
+                        ? getSelectedClaim.policyInfo.claimNumber
+                        : '-'
+                    }}
                   </div>
                 </div>
                 <div class=" q-pb-lg row  ">
@@ -298,7 +302,7 @@ export default {
           this.$router.push(`/insurance-policy/${this.selectedClaimId}`);
           break;
         case 'Mortgages and Liens':
-          this.$router.push('/mortgage-liens');
+          this.$router.push(`/mortgage-liens/${this.selectedClaimId}`);
           break;
         case 'Files':
           this.$router.push({

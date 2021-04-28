@@ -256,6 +256,12 @@
         class="required"
         label="Cause of loss description"
         v-model="lossInfo.causeOfLoss.desc"
+        lazy-rules
+        :rules="[
+          val =>
+            (val && val.length > 0) ||
+            'Please fill the cause of loss description'
+        ]"
       >
       </q-input>
 
@@ -664,7 +670,7 @@
             />
             <div class="mobile-container-page q-pa-sm form-height">
               <q-form ref="estimatingInfoForm">
-                <Mortgage
+                <MortgageForm
                   :mortgageInfo="mortgageInfo"
                   :isThereSecondMortgageToggle="true"
                 />
@@ -693,7 +699,7 @@ import { validateDate } from '@utils/validation';
 import { mapGetters, mapActions } from 'vuex';
 import AddVendor from 'components/AddVendor';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
-import Mortgage from 'components/Mortgage';
+import MortgageForm from 'components/MortgageForm';
 
 export default {
   name: 'LossInfo',
@@ -702,7 +708,7 @@ export default {
     VendorsList,
     AddVendor,
     AutoCompleteAddress,
-    Mortgage
+    MortgageForm
   },
 
   props: {

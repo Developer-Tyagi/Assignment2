@@ -1,6 +1,32 @@
 <template>
   <div class="bg-white full-width">
-    <!-- Add vendor Dialog -->
+    <!-- vendor list dialogbox -->
+    <q-dialog
+      v-model="contractInfo.vendorsListDialog"
+      persistent
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <CustomBar
+          :dialogName="constants.industries.VENDOR"
+          @closeDialog="contractInfo.vendorsListDialog = false"
+        />
+        <VendorsList
+          :selectVendor="true"
+          :showVendorDetails="false"
+          @addVendor="
+            contractInfo.vendorsListDialog = false;
+            contractInfo.addVendorDialog = true;
+          "
+          :showFilter="true"
+          :selectedVendorName="contractInfo.sourceDetails.details"
+          @afterSelecting="onSelectingVendorList"
+        />
+      </q-card>
+    </q-dialog>
+    <!-- add vendor dialog -->
     <q-dialog
       v-model="contractInfo.addVendorDialog"
       persistent
@@ -11,36 +37,7 @@
       <q-card>
         <AddVendor
           @onCloseAddVendor="onCloseAddVendorDialogBox"
-          @closeDialog="closeAddVendorDialog"
-          :componentName="contractInfo.vendorDialogName"
-        />
-      </q-card>
-    </q-dialog>
-    <!-- Vendor list Dialog -->
-    <q-dialog
-      v-model="contractInfo.vendorsListDialog"
-      persistent
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <CustomBar
-          @closeDialog="contractInfo.vendorsListDialog = false"
-          :dialogName="contractInfo.vendorDialogName"
-        />
-        <VendorsList
-          :carrierName="contractInfo.carrierName"
-          :selective="true"
-          @selectedVendor="onClosingVendorSelectDialog"
-          ref="list"
-          :showFilter="contractInfo.showVendorDialogFilters"
-          :filterName="contractInfo.vendorDialogFilterByIndustry"
-          :valueName="contractInfo.valueName"
-          @addVendor="
-            (contractInfo.addVendorDialog = true),
-              (contractInfo.vendorsListDialog = false)
-          "
+          @closeDialog="contractInfo.addVendorDialog = false"
         />
       </q-card>
     </q-dialog>
@@ -147,9 +144,7 @@
           </template>
         </q-input>
       </div>
-    </q-card>
 
-    <q-card class="q-pa-sm q-mt-sm">
       <div class="row">
         <q-btn-toggle
           v-model="contractInfo.buttonGroup"
@@ -223,23 +218,80 @@
             val => (val && val.length > 0) || 'Please select the Source Detail'
           ]"
         />
+
         <div
           v-else-if="
             contractInfo.sourceDetails.type == constants.industries.VENDOR
           "
-          class="custom-select"
-          @click="onAddVendorDialogClick(constants.industries.VENDOR)"
         >
-          <div class="select-text">
-            {{
-              contractInfo.sourceDetails.id
-                ? contractInfo.sourceDetails.details
-                : 'Select Lead Source'
-            }}
+          <div
+            class="custom-select"
+            @click="contractInfo.vendorsListDialog = true"
+            v-if="!contractInfo.sourceDetails.details"
+          >
+            <div class="select-text">Click for choosing a vendor</div>
           </div>
+          <q-card
+            bordered
+            v-if="contractInfo.sourceDetails.details"
+            @click="contractInfo.vendorsListDialog = true"
+            class="q-my-md q-pa-md"
+          >
+            <div class="text-bold">
+              {{ contractInfo.sourceDetails.details }}
+            </div>
+            <div
+              v-if="
+                contractInfo.sourceDetails.address &&
+                  contractInfo.sourceDetails.address.streetAddress
+              "
+            >
+              <div>
+                {{
+                  contractInfo.sourceDetails.address
+                    ? contractInfo.sourceDetails.address.houseNumber
+                    : '-'
+                }}
+                ,
+                {{
+                  contractInfo.sourceDetails.address.streetAddress
+                    ? contractInfo.sourceDetails.address.streetAddress
+                    : '-'
+                }}
+              </div>
+              <div>
+                {{
+                  contractInfo.sourceDetails.address.addressLocality
+                    ? contractInfo.sourceDetails.address.addressLocality
+                    : '-'
+                }}
+                ,
+                {{
+                  contractInfo.sourceDetails.address.addressRegion
+                    ? contractInfo.sourceDetails.address.addressRegion
+                    : '-'
+                }}
+              </div>
+              <div class="row">
+                {{
+                  contractInfo.sourceDetails.address.addressCountry
+                    ? contractInfo.sourceDetails.address.addressCountry
+                    : '-'
+                }}
+                -
+                {{
+                  contractInfo.sourceDetails.address.postalCode
+                    ? contractInfo.sourceDetails.address.postalCode
+                    : '-'
+                }}
+              </div>
+            </div>
+            <div>{{ contractInfo.sourceDetails.email }}</div>
+          </q-card>
         </div>
       </div>
     </q-card>
+
     <q-card class="q-pa-sm q-mt-sm">
       <span class="form-heading">Accept or Cancel Claim ?</span>
       <p>
@@ -260,8 +312,7 @@
           options-dense
         ></q-select>
       </div>
-    </q-card>
-    <q-card class="q-pa-sm q-mt-sm">
+
       <span class="form-heading">Reason For Cancellation</span>
       <div class="floating-label">
         <textarea
@@ -269,7 +320,7 @@
           class="full-width"
           v-model="contractInfo.reasonForCancellationText"
           style="resize: none"
-        ></textarea>
+        />
       </div>
     </q-card>
   </div>
@@ -300,7 +351,6 @@ export default {
   data() {
     return {
       constants: constants,
-      // valueName: '',
       reasonForCancellation: [
         'Client Cancelled',
         'Insufficient Coverage',
@@ -324,54 +374,34 @@ export default {
       this.$refs.qTimeProxy.hide();
     },
     successMessage,
-    async onCloseAddVendorDialogBox(result, selected) {
-      if (result) {
-        await this.getVendors();
-        this.successMessage(constants.successMessages.VENDOR);
-        this.onClosingVendorSelectDialog(selected, this.contractInfo.valueName);
-      }
-    },
 
     onChangingSourceType() {
       this.contractInfo.sourceDetails.id = '';
       this.contractInfo.sourceDetails.details = '';
       this.contractInfo.sourceDetails.machineValue = '';
+      this.contractInfo.sourceDetails.address = '';
+      this.contractInfo.sourceDetails.email = '';
     },
-    async onAddVendorDialogClick(name) {
-      this.contractInfo.valueName = name;
-      this.contractInfo.vendorDialogName = constants.industries.VENDOR;
-      this.contractInfo.showVendorDialogFilters = true;
-      this.contractInfo.vendorDialogFilterByIndustry = '';
-      this.contractInfo.vendorDialogName = name;
-      this.contractInfo.vendorsListDialog = true;
-    },
-    async onClosingVendorSelectDialog(vendor) {
+
+    onSelectingVendorList(vendor) {
       this.contractInfo.sourceDetails.id = vendor.id;
       this.contractInfo.sourceDetails.details = vendor.name;
-
+      this.contractInfo.sourceDetails.address = vendor.address;
+      this.contractInfo.sourceDetails.email = vendor.email;
       this.contractInfo.vendorsListDialog = false;
     },
 
-    closeAddVendorDialog(e) {
+    onCloseAddVendorDialogBox(vendor) {
+      this.contractInfo.sourceDetails.id = vendor.id;
+      this.contractInfo.sourceDetails.details = vendor.name;
+      this.contractInfo.sourceDetails.address = vendor.address;
+      this.contractInfo.sourceDetails.email = vendor.email;
+      this.contractInfo.vendorsListDialog = false;
       this.contractInfo.addVendorDialog = false;
-      if (e) {
-        // this.$refs.list.getVendors(params);
-        this.contractInfo.vendorsListDialog = false;
-      } else {
-        this.contractInfo.vendorsListDialog = true;
-      }
     },
 
     validateDate,
-    validateTime,
-    async onAddVendorDialogClick(name) {
-      this.contractInfo.valueName = name;
-      this.contractInfo.vendorDialogName = constants.industries.VENDOR;
-      this.contractInfo.showVendorDialogFilters = true;
-      this.contractInfo.vendorDialogFilterByIndustry = '';
-      this.contractInfo.vendorDialogName = name;
-      this.contractInfo.vendorsListDialog = true;
-    }
+    validateTime
   }
 };
 </script>

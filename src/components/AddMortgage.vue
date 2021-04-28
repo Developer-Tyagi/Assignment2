@@ -2,7 +2,7 @@
   <q-page>
     <div class="bg-white full-width">
       <CustomBar
-        :dialogName="'Add ' + componentName"
+        :dialogName="'Add Mortgage'"
         @closeDialog="closeDialog(false)"
       />
       <q-form
@@ -75,18 +75,6 @@
                   'You have entered an invalid email address!'
               ]"
             />
-            <div
-              class="row"
-              v-if="componentName === constants.industries.CARRIER"
-            >
-              <p class="q-mx-none q-my-auto">
-                <label> Can Claim be Filed by email</label>
-              </p>
-              <q-toggle
-                class="q-ml-auto"
-                v-model="mortgage.meta.claimFiledByEmail"
-              />
-            </div>
           </q-card>
           <q-card class="q-ma-xs q-pa-sm q-mt-md">
             <p class="form-heading">Mortgage Address</p>
@@ -98,7 +86,7 @@
             />
           </q-card>
           <div>
-            <q-card class="q-ma-xs q-pa-sm  q-mt-md">
+            <q-card class="q-ma-xs q-pa-sm q-mt-md">
               <p class="form-heading">Contact Info</p>
 
               <div class="q-mt-sm">
@@ -129,7 +117,7 @@
                 <div class="row justify-between">
                   <q-select
                     dense
-                    class="col-5 "
+                    class="col-5"
                     v-model="mortgage.contact.phoneNumber[0].type"
                     :options="contactTypes"
                     option-value="machineValue"
@@ -182,7 +170,7 @@
             @click="onAddMortgageButtonClick"
             size="'xl'"
           >
-            Add {{ componentName }}
+            Add Mortgage
           </q-btn>
         </div>
       </q-form>
@@ -202,9 +190,6 @@ import { validateEmail, validateUrl } from '@utils/validation';
 export default {
   name: 'AddMortgage',
   props: {
-    componentName: {
-      type: String
-    },
     isEdit: {
       type: Boolean
     }
@@ -313,41 +298,29 @@ export default {
       selectedTitle.machineValue = selected.machineValue;
     },
 
-    onCountrySelect(country) {
-      this.states = addressService.getStates(country);
-    },
-
     async onAddMortgageButtonClick() {
       const success = await this.$refs.mortgageForm.validate();
-      if (success && !this.isEdit) {
-        const response = await this.addClaimMortgage(this.mortgage);
-        this.getMortgages();
-        if (response) {
-          this.mortgage.id = response.id;
-          this.$emit(
-            'onCloseAddVendor',
-            true,
-            this.mortgage,
-            this.componentName
-          );
+      if (success) {
+        if (!this.isEdit) {
+          const response = await this.addClaimMortgage(this.mortgage);
+          this.getMortgages();
+          if (response) {
+            this.mortgage.id = response.id;
+            this.$emit('onCloseAddMortgage', this.mortgage);
+            this.closeDialog(true);
+          }
+        } else {
+          this.mortgage.id = this.selectedMortgage.id;
+          await this.editMortgageInfo(this.mortgage);
           this.closeDialog(true);
+          this.getMortgageDetails(this.mortgage.id);
         }
-      } else {
-        this.mortgage.id = this.selectedMortgage.id;
-        await this.editMortgageInfo(this.mortgage);
-        this.closeDialog(true);
-        this.getMortgageDetails(this.mortgage.id);
       }
     },
 
     closeDialog(flag) {
       this.$emit('closeDialog', flag);
     }
-  },
-
-  created() {
-    this.countries = addressService.getCountries();
-    this.onCountrySelect('United States');
   }
 };
 </script>

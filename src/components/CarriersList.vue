@@ -31,13 +31,15 @@
       <div
         v-for="carrier in carriers"
         :key="carrier.id"
-        class="carrier-list-item clients-list "
-        style="overflow-y: auto;"
+        class="carrier-list-item clients-list"
+        style="overflow-y: auto"
       >
-        <q-item-section v-if="carrierDetails">
-          <span class="text-bold" @click="onVendorNameClick(carrier)">{{
-            carrier.name
-          }}</span>
+        <q-item-section @click="onSelectCarrier(carrier, $event)">
+          <span
+            class="text-bold fit-content"
+            @click="onCarrierNameClick(carrier, $event)"
+            >{{ carrier.name }}</span
+          >
           <div v-if="carrier.address">
             <div>
               {{ carrier.address ? carrier.address.houseNumber : '-' }} ,
@@ -75,11 +77,11 @@
                 class="q-ml-auto"
                 color="primary"
                 size="sm"
-                @click="sendMap(carrier.address)"
+                @click="sendMap(carrier.address, $event)"
               ></q-icon>
             </div>
           </div>
-          <div class="q-mt-xs" v-for="phone in carrier.phoneNumber">
+          <div class="q-mt-xs fit-content" v-for="phone in carrier.phoneNumber">
             <span v-if="phone.type">{{ phone.type }} : </span>
             <span
               class="clickLink"
@@ -88,64 +90,13 @@
             >
           </div>
           <span
-            class="click-link"
+            class="click-link fit-content"
             @click="onEmailClick(carrier.email, $event)"
             >{{ carrier.email }}</span
           >
         </q-item-section>
-        <q-item-section @click="onSelectCarrier(carrier)" v-else>
-          <span
-            ><span class="text-bold" @click="onSelectCarrier(carrier)">{{
-              carrier.name
-            }}</span>
-            <div v-if="carrier.address">
-              <div>
-                {{ carrier.address ? carrier.address.houseNumber : '-' }}
-                {{
-                  carrier.address.streetAddress
-                    ? carrier.address.streetAddress
-                    : '-'
-                }}
-              </div>
-              <div>
-                {{
-                  carrier.address.addressLocality
-                    ? carrier.address.addressLocality
-                    : '-'
-                }},{{
-                  carrier.address.addressRegion
-                    ? carrier.address.addressRegion
-                    : '-'
-                }}
-              </div>
-              <div class="row">
-                {{
-                  carrier.address.addressCountry
-                    ? carrier.address.addressCountry
-                    : '-'
-                }}
-                <q-icon
-                  name="place"
-                  class="q-ml-auto "
-                  color="primary"
-                  size="sm"
-                  v-if="carrierDetails"
-                  @click="sendMap(carrier.address)"
-                ></q-icon>
-              </div>
-            </div>
-            <div class="q-mt-xs" v-for="phone in carrier.phoneNumber">
-              <span v-if="phone.type">{{ phone.type }} : </span>
-              <span
-                class="clickLink"
-                @click="onPhoneNumberClick(phone.number, $event)"
-                >{{ phone.number }}</span
-              >
-            </div>
-          </span>
-        </q-item-section>
         <q-icon
-          v-if="carrier.name === carrierName"
+          v-if="carrier.name === selectedCarrierName"
           name="done"
           size="xs"
           class="q-ml-auto"
@@ -159,7 +110,13 @@ import { mapActions, mapGetters } from 'vuex';
 import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
 export default {
   name: 'CarriersList',
-  props: ['carrierDetails', 'selectCarrier', 'carrierName'],
+  props: [
+    'showCarrierDetails',
+    'selectCarrier',
+    'carrierName',
+    'claimCarrier',
+    'selectedCarrierName'
+  ],
 
   data() {
     return {
@@ -179,35 +136,43 @@ export default {
 
   methods: {
     ...mapActions(['getCarriers', 'addClaimCarrier', 'getSelectedClaim']),
+
     onSearchBackButtonClick() {
       this.searchText = '';
       this.search();
     },
 
-    async onSelectCarrier(carrier) {
-      const payload = {
-        id: this.selectedClaimId,
-        data: {
-          carrier: {
-            carrierID: carrier.id
+    async onSelectCarrier(carrier, e) {
+      e.stopPropagation();
+      if (this.claimCarrier) {
+        const payload = {
+          id: this.selectedClaimId,
+          data: {
+            carrier: {
+              carrierID: carrier.id
+            }
           }
-        }
-      };
-      await this.addClaimCarrier(payload);
-      this.$emit('afterSelecting', true);
+        };
+        await this.addClaimCarrier(payload);
+      }
+      this.$emit('afterSelecting', carrier);
     },
     onEmailClick,
     onPhoneNumberClick,
     sendMap,
 
-    onVendorNameClick(carrier) {
-      this.$router.push('/carrier-details/' + carrier.id);
+    onCarrierNameClick(carrier, e) {
+      if (this.showCarrierDetails) {
+        e.stopPropagation();
+        this.$router.push('/carrier-details/' + carrier.id);
+      }
     },
 
     search(event) {
       this.params.name = event;
       this.getCarriers(this.params);
     },
+
     onAddButtonClick() {
       this.$emit('addCarrier', true);
     }
