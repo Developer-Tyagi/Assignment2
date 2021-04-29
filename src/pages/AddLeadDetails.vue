@@ -803,7 +803,7 @@ export default {
   data() {
     return {
       valueName: '',
-      step: 2,
+      step: 0,
       stepClickValidTill: 0,
       clientOptions: [],
       stepArr: [
