@@ -34,8 +34,8 @@
       </q-card>
     </q-dialog>
     <div>
-      <div class="actions-div">
-        <q-btn @click="addNote" flat class="q-ml-auto q-mt-md">
+      <div class="icon-top">
+        <q-btn @click="addNote" flat>
           <img src="~assets/addNote.svg" />
         </q-btn>
       </div>

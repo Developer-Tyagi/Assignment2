@@ -36,7 +36,6 @@
 
       <div class="clients-list ">
         <!-- This is for showing the Loss Info details   -->
-
         <div class="clients-list">
           <div class="row">
             <div class="row ">
@@ -45,7 +44,7 @@
                 size="sm"
                 name="create"
                 color="primary"
-                class=" col q-pa-sm absolute-right "
+                class=" icon-top "
                 @click="onEditIconClick"
               ></q-icon>
             </div>
