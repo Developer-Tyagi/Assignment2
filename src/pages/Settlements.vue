@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <div v-if="settlement.attributes">
-      <div class="actions-div">
+      <div class="icon-top">
         <q-btn @click="onClickAddButton" flat class="q-ml-auto"
           ><img src="~assets/addSettlement.svg"
         /></q-btn>
@@ -42,7 +42,7 @@
             class="q-ma-sm"
             v-for="(settlement, index) in settlement.attributes.settlements"
           >
-            <q-card class="q-mt-md">
+            <q-card class="q-mt-md" @click="onClickEdit(index, 'show')">
               <div class="row q-pa-md justify-between">
                 <div>
                   <q-badge
@@ -65,16 +65,10 @@
                 <div>
                   <q-icon
                     class="q-my-auto"
-                    name="edit"
+                    name="input"
                     size="sm"
                     color="primary"
                     @click="onClickEdit(index, 'show')"
-                  />
-                  <q-icon
-                    class="q-ml-xs"
-                    name="delete"
-                    size="sm"
-                    color="primary"
                   />
                 </div>
               </div>
@@ -1420,6 +1414,7 @@ export default {
       }
 
       this.settlementDialog = false;
+      this.settlementShowDialog = false;
       this.getSettlements(this.selectedClaimId);
     }
   }
