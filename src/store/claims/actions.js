@@ -500,7 +500,7 @@ export async function deleteClaimNotes({ commit, dispatch }, payload) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'positive',
-      message: 'Property  Deleted !'
+      message: 'Notes  Deleted !'
     });
   } catch (e) {
     console.log(e);
