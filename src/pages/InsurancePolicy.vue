@@ -483,7 +483,7 @@
     >
       <q-card>
         <CustomBar
-          @closeDialog="adjustorListDialog = false"
+          @closeDialog="(adjustorListDialog = false), (onClickUncheck = false)"
           :dialogName="'Select Adjustor'"
         />
         <q-btn
