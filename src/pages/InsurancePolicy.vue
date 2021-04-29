@@ -230,47 +230,51 @@
           <div class="row q-mt-sm">
             <span class="heading-light col"> Policy Number </span>
             <span class="q-ml-md col">
-              {{ policy.policyInfo.number ? policy.policyInfo.number : '-' }}
+              {{ policy.policyInfo ? policy.policyInfo.number : '-' }}
             </span>
           </div>
           <div class="row q-mt-xs">
             <span class="heading-light col"> Claim Number </span>
             <span class="q-ml-md col">
-              {{
+              <!-- {{
                 policy.policyInfo.claimNumber
                   ? policy.policyInfo.claimNumber
                   : '-'
-              }}
+              }} -->
             </span>
           </div>
           <div class="row q-mt-xs">
             <span class="heading-light col"> Start Date </span>
-            <span class="q-ml-md col">
+            <span class="q-ml-md col" v-if="policy.policyInfo">
               {{ policy.policyInfo.effectiveDate | moment('MM/DD/YYYY') }}
             </span>
           </div>
           <div class="row q-mt-xs">
             <span class="heading-light col"> End Date </span>
-            <span class="q-ml-md col">
+            <span class="q-ml-md col" v-if="policy.policyInfo">
               {{ policy.policyInfo.expirationDate | moment('MM/DD/YYYY') }}
             </span>
           </div>
           <div class="row q-mt-xs">
             <span class="heading-light col"> Category </span>
-            <span class="q-ml-md col">
+            <!-- <span class="q-ml-md col" v-if="policy.policyInfo.category">
               {{
-                policy.policyInfo.category.value
+                policy.policyInfo.category
                   ? policy.policyInfo.category.value
+                    ? policy.policyInfo.category.value
+                    : '-'
                   : '-'
               }}
-            </span>
+            </span> -->
           </div>
           <div class="row q-mt-xs">
             <span class="heading-light col"> Policy Type </span>
             <span class="q-ml-md col">
               {{
-                policy.policyInfo.type.value
+                policy.policyInfo.type
                   ? policy.policyInfo.type.value
+                    ? policy.policyInfo.type.value
+                    : '-'
                   : '-'
               }}
             </span>
@@ -1091,7 +1095,7 @@ export default {
       this.insuranceDetails.deductible = this.policy.policyInfo.deductibleAmount;
       this.insuranceDetails.priorPayment = this.policy.policyInfo.priorPayment;
       this.insuranceDetails.reasonsOfLD = this.policy.policyInfo.limitReason;
-      this.insuranceDetails.carrierName = this.policy.policyInfo.carrier.value
+      this.insuranceDetails.carrierName = this.policy.policyInfo.carrier
         ? this.policy.policyInfo.carrier.value
         : '';
       this.insuranceDetails.carrierId = this.policy.policyInfo.carrier.id

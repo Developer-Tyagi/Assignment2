@@ -98,7 +98,11 @@
                 <div class=" q-py-md row">
                   <div class="heading-light">Current phase :</div>
                   <div class="q-px-lg ">
-                    {{ getSelectedClaim.status.value }}
+                    {{
+                      getSelectedClaim.status
+                        ? getSelectedClaim.status.value
+                        : '-'
+                    }}
                   </div>
                 </div>
                 <div class="q-mb-sm">
