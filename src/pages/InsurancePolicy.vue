@@ -130,11 +130,7 @@
                 {{ personnel.name ? personnel.name : '-' }}</span
               >
               <div v-if="personnel.role">
-                <q-badge
-                  class="q-px-sm q-py-xs q-ml-xs"
-                  size="xs"
-                  v-if="personnel.role.value"
-                >
+                <q-badge class="q-px-sm q-py-xs q-ml-xs" size="xs">
                   {{ personnel.role.value }}</q-badge
                 >
               </div>
@@ -1056,7 +1052,6 @@ export default {
     //This Function is for prefilling the values while editing the Adjustor
 
     onEditAdjustorPersonnel(index) {
-      console.log(this.selectedClaimCarrier.carrier.personnel[index], 98);
       this.id = this.selectedClaimCarrier.carrier.personnel[index].id;
       this.personnelID = this.selectedClaimCarrier.carrier.personnel[
         index
@@ -1194,16 +1189,12 @@ export default {
     },
 
     onAddAdjustorClick() {
+      this.isAssignDisabled = true;
       this.adjustorListDialog = true;
-
-      // console.log(this.carrierId, 'id is ');
-      console.log(this.selectedClaimCarrier.carrier.carrierID, 87);
-      // this.getCarrierPersonnel(this.selectedClaimCarrier.carrier.carrierID);
       const paramsObject = {
         id: this.selectedClaimCarrier.carrier.carrierID,
         params: ''
       };
-
       this.getCarrierPersonnel(paramsObject);
     },
     //This Function is for when create a new personnel
@@ -1256,25 +1247,46 @@ export default {
     },
     //This Function is called when we click on adjustor list and select a personnel
     async onSelectPersonnel(personnel) {
-      const payload1 = {
+      const urlID = {
         claimID: this.selectedClaimId,
-        carrierID: this.selectedClaimCarrier.id,
-        data: {
-          personnel: {
-            personnelID: personnel.id,
-            name: personnel.fname + ' ' + personnel.lname,
-            email: personnel.email,
-            role: {
-              value: this.filterName,
-              machineValue: this.assignFilter
-            },
-            note: personnel.note,
-            phoneNumber: personnel.phoneNumber,
-            address: personnel.address
-          }
-        }
+        carrierID: this.selectedClaimCarrier.id
       };
-      await this.addClaimPersonnel(payload1);
+      const payload1 = {
+        personnelID: personnel.id,
+        name: personnel.fname + ' ' + personnel.lname,
+        email: personnel.email,
+        note: personnel.note,
+        phoneNumber: personnel.phoneNumber,
+        address: personnel.address
+      };
+      if (this.assignDialog) {
+        const payload2 = {
+          ...urlID,
+          data: {
+            personnel: {
+              ...payload1,
+              role: { value: this.filterName, machineValue: this.assignFilter }
+            }
+          }
+        };
+
+        await this.addClaimPersonnel(payload2);
+      } else {
+        const payload2 = {
+          ...urlID,
+          data: {
+            personnel: {
+              ...payload1,
+              role: {
+                value: this.personnel.role.value,
+                machineValue: this.personnel.role.machineValue
+              }
+            }
+          }
+        };
+
+        await this.addClaimPersonnel(payload2);
+      }
       this.assignDialog = false;
       this.adjustorListDialog = false;
       this.getClaimCarrier(this.$route.params.id);
