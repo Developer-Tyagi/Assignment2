@@ -290,7 +290,25 @@
                 }}
               </div>
             </div>
-            <div>{{ contractInfo.sourceDetails.email }}</div>
+            <div>
+              Phone:
+              <span
+                class="clickLink"
+                @click="
+                  onPhoneNumberClick(contractInfo.sourceDetails.phone, $event)
+                "
+              >
+                {{ contractInfo.sourceDetails.phone }}</span
+              >
+            </div>
+            <div>
+              Email:<span
+                class="clickLink"
+                @click="onEmailClick(contractInfo.sourceDetails.email, $event)"
+              >
+                {{ contractInfo.sourceDetails.email }}</span
+              >
+            </div>
           </q-card>
         </div>
       </div>
@@ -338,6 +356,7 @@ import { validateDate, validateTime } from '@utils/validation';
 import { mapGetters, mapActions } from 'vuex';
 import { constants } from '@utils/constant';
 import VendorsList from 'components/VendorsList';
+import { onPhoneNumberClick, onEmailClick } from '@utils/clickable';
 
 export default {
   name: 'ContractInfo',
@@ -378,6 +397,8 @@ export default {
       this.$refs.qTimeProxy.hide();
     },
     successMessage,
+    onPhoneNumberClick,
+    onEmailClick,
 
     onChangingSourceType() {
       this.contractInfo.sourceDetails.id = '';
@@ -385,6 +406,7 @@ export default {
       this.contractInfo.sourceDetails.machineValue = '';
       this.contractInfo.sourceDetails.address = '';
       this.contractInfo.sourceDetails.email = '';
+      this.contractInfo.sourceDetails.phone = '';
     },
 
     onSelectingVendorList(vendor) {
@@ -392,6 +414,9 @@ export default {
       this.contractInfo.sourceDetails.details = vendor.name;
       this.contractInfo.sourceDetails.address = vendor.address;
       this.contractInfo.sourceDetails.email = vendor.email;
+      this.contractInfo.sourceDetails.phone = vendor.phoneNumber
+        ? vendor.phoneNumber[0].number
+        : '';
       this.contractInfo.vendorsListDialog = false;
     },
 
@@ -400,6 +425,9 @@ export default {
       this.contractInfo.sourceDetails.details = vendor.name;
       this.contractInfo.sourceDetails.address = vendor.address;
       this.contractInfo.sourceDetails.email = vendor.email;
+      this.contractInfo.sourceDetails.phone = vendor.phoneNumber
+        ? vendor.phoneNumber[0].number
+        : '';
       this.contractInfo.vendorsListDialog = false;
       this.contractInfo.addVendorDialog = false;
     },

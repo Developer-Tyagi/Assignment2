@@ -164,7 +164,23 @@
                 }}
               </div>
             </div>
-            <div>{{ item.vendor.email }}</div>
+            <div>
+              Phone:
+              <span
+                class="clickLink"
+                @click="onPhoneNumberClick(item.vendor.phone, $event)"
+              >
+                {{ item.vendor.phone }}</span
+              >
+            </div>
+            <div>
+              Email:<span
+                class="clickLink"
+                @click="onEmailClick(item.vendor.email, $event)"
+              >
+                {{ item.vendor.email }}</span
+              >
+            </div>
           </q-card>
         </div>
       </div>
@@ -289,7 +305,23 @@
                 }}
               </div>
             </div>
-            <div>{{ item.vendor.email }}</div>
+            <div>
+              Phone:
+              <span
+                class="clickLink"
+                @click="onPhoneNumberClick(item.vendor.phone, $event)"
+              >
+                {{ item.vendor.phone }}</span
+              >
+            </div>
+            <div>
+              Email:<span
+                class="clickLink"
+                @click="onEmailClick(item.vendor.email, $event)"
+              >
+                {{ item.vendor.email }}</span
+              >
+            </div>
           </q-card>
         </div>
       </div>
@@ -332,6 +364,8 @@ import CustomBar from 'components/CustomBar';
 import VendorsList from 'components/VendorsList';
 import { mapGetters, mapActions } from 'vuex';
 import AddVendor from 'components/AddVendor';
+import { onPhoneNumberClick, onEmailClick } from '@utils/clickable';
+
 export default {
   name: 'ExpertVendorInfo',
   components: {
@@ -367,6 +401,8 @@ export default {
   methods: {
     ...mapActions(['getVendors', 'addIndustry', 'getVendorIndustries']),
 
+    onPhoneNumberClick,
+    onEmailClick,
     //This function is user for searching Industries and  add others option at the last
 
     async onAddVendorDialogClick(name, index) {
@@ -390,6 +426,9 @@ export default {
       this.selectedArray[this.selectedIndex].vendor.email = vendor.email;
       this.selectedArray[this.selectedIndex].vendor.address = vendor.address;
       this.selectedArray[this.selectedIndex].vendor.value = vendor.name;
+      this.selectedArray[this.selectedIndex].vendor.phone = vendor.phoneNumber
+        ? vendor.phoneNumber[0].number
+        : '';
       this.vendorsListDialog = false;
     },
 
@@ -398,6 +437,9 @@ export default {
       this.selectedArray[this.selectedIndex].vendor.email = vendor.email;
       this.selectedArray[this.selectedIndex].vendor.address = vendor.address;
       this.selectedArray[this.selectedIndex].vendor.value = vendor.name;
+      this.selectedArray[this.selectedIndex].vendor.phone = vendor.phoneNumber
+        ? vendor.phoneNumber[0].number
+        : '';
       this.vendorsListDialog = false;
       this.addVendorDialog = false;
     },

@@ -345,7 +345,25 @@
                       }}
                     </div>
                   </div>
-                  <div>{{ insuranceDetails.email }}</div>
+                  <div>
+                    Phone:
+                    <span
+                      class="clickLink"
+                      @click="
+                        onPhoneNumberClick(insuranceDetails.phone, $event)
+                      "
+                    >
+                      {{ insuranceDetails.phone }}</span
+                    >
+                  </div>
+                  <div>
+                    Email:<span
+                      class="clickLink"
+                      @click="onEmailClick(insuranceDetails.email, $event)"
+                    >
+                      {{ insuranceDetails.email }}</span
+                    >
+                  </div>
                 </q-card>
               </div>
               <q-input
@@ -476,7 +494,23 @@
                         }}
                       </div>
                     </div>
-                    <div>{{ sourceDetails.email }}</div>
+                    <div>
+                      Phone:
+                      <span
+                        class="clickLink"
+                        @click="onPhoneNumberClick(sourceDetails.phone, $event)"
+                      >
+                        {{ sourceDetails.phone }}</span
+                      >
+                    </div>
+                    <div>
+                      Email:<span
+                        class="clickLink"
+                        @click="onEmailClick(sourceDetails.email, $event)"
+                      >
+                        {{ sourceDetails.email }}</span
+                      >
+                    </div>
                   </q-card>
                 </div>
                 <div v-else-if="sourceDetails.type == 'client'">
@@ -744,6 +778,7 @@
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { validateEmail, validateDate, successMessage } from '@utils/validation';
+import { onPhoneNumberClick, onEmailClick } from '@utils/clickable';
 import { dateToSend } from '@utils/date';
 import { constants } from '@utils/constant';
 import { date } from 'quasar';
@@ -768,7 +803,7 @@ export default {
   data() {
     return {
       valueName: '',
-      step: 0,
+      step: 2,
       stepClickValidTill: 0,
       clientOptions: [],
       stepArr: [
@@ -870,6 +905,8 @@ export default {
     ...mapMutations(['setSelectedClient']),
 
     successMessage,
+    onPhoneNumberClick,
+    onEmailClick,
 
     setTypes(types, data) {
       const obj = types.find(item => {
@@ -1058,6 +1095,9 @@ export default {
       this.insuranceDetails.carrierName = carrier.name;
       this.insuranceDetails.address = carrier.address;
       this.insuranceDetails.email = carrier.email;
+      this.insuranceDetails.phone = carrier.phoneNumber
+        ? carrier.phoneNumber[0].number
+        : '';
       this.carriersListDialog = false;
     },
 
@@ -1066,6 +1106,9 @@ export default {
       this.insuranceDetails.carrierName = carrier.name;
       this.insuranceDetails.address = carrier.address;
       this.insuranceDetails.email = carrier.email;
+      this.insuranceDetails.phone = carrier.phoneNumber
+        ? carrier.phoneNumber[0].number
+        : '';
       this.carriersListDialog = false;
       this.addCarrierDialog = false;
     },
@@ -1075,6 +1118,9 @@ export default {
       this.sourceDetails.details = vendor.name;
       this.sourceDetails.address = vendor.address;
       this.sourceDetails.email = vendor.email;
+      this.sourceDetails.phone = vendor.phoneNumber
+        ? vendor.phoneNumber[0].number
+        : '';
       this.vendorsListDialog = false;
     },
 
@@ -1083,6 +1129,9 @@ export default {
       this.sourceDetails.details = vendor.name;
       this.sourceDetails.address = vendor.address;
       this.sourceDetails.email = vendor.email;
+      this.sourceDetails.phone = vendor.phoneNumber
+        ? vendor.phoneNumber[0].number
+        : '';
       this.vendorsListDialog = false;
       this.addVendorDialog = false;
     }

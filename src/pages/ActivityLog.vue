@@ -10,7 +10,11 @@
       <div>
         <div v-if="log">
           <!-- This is for showing the Property details  -->
-          <q-card class="q-pa-md q-ma-sm" v-for="(logItem, index) in log">
+          <q-card
+            class="q-pa-md q-ma-sm"
+            v-for="(logItem, index) in log"
+            :key="logItem.name"
+          >
             <div class="row q-my-sm">
               <div class="col-10 heading-light">
                 {{ logItem.created | moment('DD/MM/YYYY, HH:mm') }}

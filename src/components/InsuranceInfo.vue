@@ -66,7 +66,23 @@
                 }}
               </div>
             </div>
-            <div>{{ insuranceDetails.email }}</div>
+            <div>
+              Phone:
+              <span
+                class="clickLink"
+                @click="onPhoneNumberClick(insuranceDetails.phone, $event)"
+              >
+                {{ insuranceDetails.phone }}</span
+              >
+            </div>
+            <div>
+              Email:<span
+                class="clickLink"
+                @click="onEmailClick(insuranceDetails.email, $event)"
+              >
+                {{ insuranceDetails.email }}</span
+              >
+            </div>
           </q-card>
         </div>
         <q-input
@@ -465,6 +481,7 @@ import { mapGetters, mapActions } from 'vuex';
 import { successMessage } from '@utils/validation';
 import AddCarrier from 'components/AddCarrier';
 import { date } from 'quasar';
+import { onPhoneNumberClick, onEmailClick } from '@utils/clickable';
 
 export default {
   name: 'AddClaim',
@@ -501,6 +518,8 @@ export default {
   methods: {
     ...mapActions(['getVendors']),
     successMessage,
+    onPhoneNumberClick,
+    onEmailClick,
 
     //Add Vendor close list
 
@@ -509,6 +528,9 @@ export default {
       this.insuranceDetails.carrierName = carrier.name;
       this.insuranceDetails.address = carrier.address;
       this.insuranceDetails.email = carrier.email;
+      this.insuranceDetails.phone = carrier.phoneNumber
+        ? carrier.phoneNumber[0].number
+        : '';
       this.carriersListDialog = false;
     },
 
@@ -517,6 +539,9 @@ export default {
       this.insuranceDetails.carrierName = carrier.name;
       this.insuranceDetails.address = carrier.address;
       this.insuranceDetails.email = carrier.email;
+      this.insuranceDetails.phone = carrier.phoneNumber
+        ? carrier.phoneNumber[0].number
+        : '';
       this.carriersListDialog = false;
       this.addCarrierDialog = false;
     },
