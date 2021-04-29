@@ -16,7 +16,8 @@
             <div
               :class="{
                 'icon-div-selected': index == step,
-                'icon-div': index != step
+                'icon-div-done': index < step,
+                'icon-div': index > step
               }"
               class="q-mx-auto"
             >
@@ -47,7 +48,6 @@
             <q-card class="form-card q-pa-md">
               <div class="stepper-heading">Primary Contact</div>
               <q-select
-                filled
                 dense
                 class="required"
                 v-model="primaryDetails.honorific.id"
@@ -67,7 +67,6 @@
               />
 
               <q-input
-                filled
                 dense
                 class="required"
                 v-model="primaryDetails.firstName"
@@ -78,7 +77,6 @@
                 ]"
               />
               <q-input
-                filled
                 dense
                 class="required"
                 v-model="primaryDetails.lastName"
@@ -90,7 +88,6 @@
               />
               <div class="row justify-between">
                 <q-select
-                  filled
                   dense
                   class="required col-5"
                   v-model="primaryDetails.selectedContactType"
@@ -108,7 +105,6 @@
                   ]"
                 />
                 <q-input
-                  filled
                   dense
                   class="required col-6"
                   v-model.number="primaryDetails.phoneNumber"
@@ -123,7 +119,6 @@
                 />
               </div>
               <q-input
-                filled
                 dense
                 class="required"
                 v-model="primaryDetails.email"
@@ -149,7 +144,6 @@
               </div>
               <div v-if="primaryDetails.isOrganization">
                 <q-input
-                  filled
                   dense
                   class="required"
                   v-model="primaryDetails.organizationName"
@@ -178,7 +172,7 @@
           </q-form>
           <q-form
             @submit="onNextButtonClick(1)"
-            @reset="step--"
+            @reset="onBackButtonClick(1)"
             :hidden="step != 1"
             ref="loss"
           >
@@ -275,7 +269,7 @@
           </q-form>
           <q-form
             @submit="onNextButtonClick(2)"
-            @reset="step--"
+            @reset="onBackButtonClick(2)"
             :hidden="step != 2"
             ref="insurance"
           >
@@ -396,7 +390,7 @@
           </q-form>
           <q-form
             @submit="onNextButtonClick(3)"
-            @reset="step--"
+            @reset="onBackButtonClick(3)"
             :hidden="step != 3"
             ref="source"
           >
@@ -569,7 +563,7 @@
           </q-form>
           <q-form
             @submit="onNextButtonClick(4)"
-            @reset="step--"
+            @reset="onBackButtonClick(4)"
             :hidden="step != 4"
             ref="note"
           >
@@ -601,7 +595,7 @@
           </q-form>
           <q-form
             @submit="onSubmit"
-            @reset="step--"
+            @reset="onBackButtonClick(5)"
             :hidden="step != 5"
             ref="schedule"
           >
@@ -1071,6 +1065,12 @@ export default {
       if (this.stepClickValidTill < this.step) {
         this.stepClickValidTill = this.step;
       }
+      document.getElementById('step').scrollLeft += 50;
+    },
+
+    onBackButtonClick() {
+      this.step--;
+      document.getElementById('step').scrollLeft -= 50;
     },
 
     searchFilterBy(val, update) {
@@ -1149,17 +1149,6 @@ export default {
     ])
   },
 
-  watch: {
-    step(newValue, oldValue) {
-      var el = document.getElementById('step');
-      if (newValue === 6) {
-        el.scroll(100, 0);
-      } else if (newValue < 6) {
-        el.scroll(-100, 0);
-      }
-    }
-  },
-
   created() {
     //Current Date
     this.lossDetails.dateOfLoss = date.formatDate(Date.now(), 'MM/DD/YYYY');
@@ -1231,7 +1220,7 @@ export default {
       border-radius: 50%;
     }
     .icon-div-done {
-      background: $primary;
+      background: green;
       display: flex;
       height: 18px;
       width: 18px;

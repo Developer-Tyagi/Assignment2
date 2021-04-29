@@ -11,7 +11,8 @@
             <div
               :class="{
                 'icon-div-selected': index == step,
-                'icon-div': index != step
+                'icon-div-done': index < step,
+                'icon-div': index > step
               }"
               class="q-mx-auto"
             >
@@ -390,7 +391,7 @@
           <!-- Mailing Address -->
           <q-form
             @submit="onNextButtonClick(1)"
-            @reset="step--"
+            @reset="onBackButtonClick(1)"
             :hidden="step != 1"
             ref="mailingInfo"
           >
@@ -439,7 +440,7 @@
           <!-- Insurance Info -->
           <q-form
             @submit="onNextButtonClick(2)"
-            @reset="step--"
+            @reset="onBackButtonClick(2)"
             :hidden="step != 2"
             ref="insuranceInfo"
           >
@@ -471,7 +472,7 @@
           <!-- Loss Info -->
           <q-form
             @submit="onNextButtonClick(3)"
-            @reset="step--"
+            @reset="onBackButtonClick(3)"
             :hidden="step != 3"
             ref="lossInfo"
           >
@@ -515,7 +516,7 @@
           <!-- Expert /Vendor Info -->
           <q-form
             @submit="onNextButtonClick(4)"
-            @reset="step--"
+            @reset="onBackButtonClick(4)"
             :hidden="step != 4"
             ref="vendorInfo"
           >
@@ -547,7 +548,7 @@
           <!-- Estimating Info -->
           <q-form
             @submit="onNextButtonClick(5)"
-            @reset="step--"
+            @reset="onBackButtonClick(5)"
             :hidden="step != 5"
             ref="estimatingInfo"
           >
@@ -579,7 +580,7 @@
           <!-- Contract Info Dialog -->
           <q-form
             @submit="onNextButtonClick(6)"
-            @reset="step--"
+            @reset="onBackButtonClick(6)"
             :hidden="step != 6"
             ref="contractInfo"
           >
@@ -611,7 +612,7 @@
           <!-- Company Personnel Dialog-->
           <q-form
             @submit="onNextButtonClick(7)"
-            @reset="step--"
+            @reset="onBackButtonClick(7)"
             :hidden="step != 7"
             ref="personnelInfo"
           >
@@ -643,7 +644,7 @@
           <!-- Office Task -->
           <q-form
             @submit="createClientButtonClick()"
-            @reset="step--"
+            @reset="onBackButtonClick(8)"
             :hidden="step != 8"
             ref="officeTaskInfo"
           >
@@ -1602,6 +1603,12 @@ export default {
       if (this.stepClickValidTill < this.step) {
         this.stepClickValidTill = this.step;
       }
+      document.getElementById('step').scrollLeft += 50;
+    },
+
+    onBackButtonClick() {
+      this.step--;
+      document.getElementById('step').scrollLeft -= 50;
     }
   }
   /*----------------------end of method-----------------------------------*/
@@ -1646,7 +1653,7 @@ export default {
       border-radius: 50%;
     }
     .icon-div-done {
-      background: $primary;
+      background: green;
       display: flex;
       height: 18px;
       width: 18px;

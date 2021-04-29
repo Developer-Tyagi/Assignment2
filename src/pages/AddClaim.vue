@@ -11,7 +11,8 @@
             <div
               :class="{
                 'icon-div-selected': index == step,
-                'icon-div': index != step
+                'icon-div-done': index < step,
+                'icon-div': index > step
               }"
               class="q-mx-auto"
             >
@@ -57,7 +58,7 @@
           </q-form>
           <q-form
             @submit="onNextButtonClick(1)"
-            @reset="step--"
+            @reset="onBackButtonClick(1)"
             :hidden="step != 1"
             ref="lossInfo"
           >
@@ -100,7 +101,7 @@
           </q-form>
           <q-form
             @submit="onNextButtonClick(2)"
-            @reset="step--"
+            @reset="onBackButtonClick(2)"
             :hidden="step != 2"
             ref="expertInfo"
           >
@@ -134,7 +135,7 @@
           </q-form>
           <q-form
             @submit="onNextButtonClick(3)"
-            @reset="step--"
+            @reset="onBackButtonClick(3)"
             :hidden="step != 3"
             ref="estimatingInfo"
           >
@@ -165,7 +166,7 @@
           </q-form>
           <q-form
             @submit="onNextButtonClick(4)"
-            @reset="step--"
+            @reset="onBackButtonClick(4)"
             :hidden="step != 4"
             ref="contractInfo"
           >
@@ -196,7 +197,7 @@
           </q-form>
           <q-form
             @submit="onNextButtonClick(5)"
-            @reset="step--"
+            @reset="onBackButtonClick(5)"
             :hidden="step != 5"
             ref="personnelInfo"
           >
@@ -227,7 +228,7 @@
           </q-form>
           <q-form
             @submit="setPayloadForClaim(selectedClientId)"
-            @reset="step--"
+            @reset="onBackButtonClick(6)"
             :hidden="step != 6"
             ref="officeTaskInfo"
           >
@@ -1059,6 +1060,12 @@ export default {
       if (this.stepClickValidTill < this.step) {
         this.stepClickValidTill = this.step;
       }
+      document.getElementById('step').scrollLeft += 50;
+    },
+
+    onBackButtonClick() {
+      this.step--;
+      document.getElementById('step').scrollLeft -= 50;
     },
 
     validateEmail,
@@ -1123,7 +1130,7 @@ export default {
       border-radius: 50%;
     }
     .icon-div-done {
-      background: $primary;
+      background: green;
       display: flex;
       height: 18px;
       width: 18px;
