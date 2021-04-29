@@ -1250,39 +1250,6 @@ export default {
       }
     },
 
-    createClientDailogBoxOpen(value) {
-      switch (value) {
-        case 'Client Info':
-          this.clientInfoDailog = true;
-          break;
-        case 'Mailing Address':
-          this.mailingAddressDialog = true;
-          break;
-        case 'Insurance Info':
-          this.insuranceInfoDialog = true;
-          break;
-        case 'Loss Info':
-          this.lossInfoDialog = true;
-          break;
-        case 'Expert/Vendor Info':
-          this.expertVendorInfoDialog = true;
-          break;
-        case 'Estimating Info':
-          this.estimatingInfoDialog = true;
-          break;
-        case 'Office Task':
-          this.officeTaskDialog = true;
-          break;
-        case 'Company Personnel':
-          this.companyPersonnelDialog = true;
-          break;
-        case 'Documents':
-          this.documentsDialog = true;
-          break;
-        case 'Contract Info':
-          this.contractInfoDialog = true;
-      }
-    },
     validateDate,
     validateTime,
 
@@ -1547,28 +1514,28 @@ export default {
       ) {
         delete payload.personnel;
       }
-
       if (
         this.expertVendorInfo.isAlreadyHiredVendor.length ||
         this.expertVendorInfo.isHiredByClaimguru.length
       ) {
-        const vendorsAlreadyExist = this.expertVendorInfo.isAlreadyHiredVendor.map(
+        let vendorsAlreadyExist = this.expertVendorInfo.isAlreadyHiredVendor.map(
           val => ({
-            id: val.id,
-            value: val.name,
+            id: val.vendor.id,
+            value: val.vendor.value,
             isAlreadyHired: true
           })
         );
-        const vendorsHired = this.expertVendorInfo.isHiredByClaimguru.map(
+        let vendorsHired = this.expertVendorInfo.isHiredByClaimguru.map(
           val => ({
-            id: val.id,
-            value: val.name,
+            id: val.vendor.id,
+            value: val.vendor.value,
             isAlreadyHired: false
           })
         );
 
         payload.expertInfo.vendors = vendorsAlreadyExist.concat(vendorsHired);
       }
+      console.log(payload);
       this.addClaim(payload).then(() => {
         this.setSelectedLead();
         //Routing to Client if Client Creation is Successful
