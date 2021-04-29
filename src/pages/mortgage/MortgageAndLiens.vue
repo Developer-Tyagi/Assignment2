@@ -1,12 +1,8 @@
 <template>
   <q-page>
     <div>
-      <div class="actions-div">
-        <q-separator vertical></q-separator>
-        <q-btn
-          @click="mortgageObject.mortgageInfoDialog = true"
-          flat
-          class="q-ml-auto q-mt-md"
+      <div class="icon-top">
+        <q-btn @click="mortgageObject.mortgageInfoDialog = true" flat
           ><img src="~assets/addMortgage.svg"
         /></q-btn>
       </div>

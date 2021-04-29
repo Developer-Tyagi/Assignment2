@@ -1,7 +1,7 @@
 <template>
   <q-page>
-    <div class="actions-div">
-      <q-btn @click="addLogDialog = true" flat class="q-ml-auto"
+    <div class="icon-top">
+      <q-btn @click="addLogDialog = true" flat
         ><img src="~assets/add.svg"
       /></q-btn>
     </div>
