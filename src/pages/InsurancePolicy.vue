@@ -236,11 +236,7 @@
           <div class="row q-mt-xs">
             <span class="heading-light col"> Claim Number </span>
             <span class="q-ml-md col">
-              <!-- {{
-                policy.policyInfo.claimNumber
-                  ? policy.policyInfo.claimNumber
-                  : '-'
-              }} -->
+              {{ policy.policyInfo ? policy.policyInfo.claimNumber : '-' }}
             </span>
           </div>
           <div class="row q-mt-xs">
@@ -257,7 +253,7 @@
           </div>
           <div class="row q-mt-xs">
             <span class="heading-light col"> Category </span>
-            <!-- <span class="q-ml-md col" v-if="policy.policyInfo.category">
+            <span class="q-ml-md col" v-if="policy.policyInfo.category">
               {{
                 policy.policyInfo.category
                   ? policy.policyInfo.category.value
@@ -265,7 +261,7 @@
                     : '-'
                   : '-'
               }}
-            </span> -->
+            </span>
           </div>
           <div class="row q-mt-xs">
             <span class="heading-light col"> Policy Type </span>
