@@ -720,7 +720,7 @@ export default {
   },
   data() {
     return {
-      step: 8,
+      step: 0,
       stepClickValidTill: 0,
       mortgageObject: {
         vendorsListDialog: false,
