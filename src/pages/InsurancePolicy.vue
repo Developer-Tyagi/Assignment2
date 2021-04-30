@@ -937,8 +937,6 @@ export default {
 
   created() {
     this.getClaimCarrier(this.selectedClaimId);
-    this.getCarrierPersonnel(this.selectedClaimCarrier.carrier.id);
-    this.getCarrierPersonnel(this.selectedClaimCarrier.carrier.carrierID);
     this.getContactTypes();
     this.getTitles();
     if (this.$route.params.id) {
@@ -1056,16 +1054,15 @@ export default {
         : '';
 
       this.insuranceDetails.policyCategory.id = this.policy.policyInfo.category
-        .id
         ? this.policy.policyInfo.category.id
         : '';
 
       this.insuranceDetails.policyCategory.value = this.policy.policyInfo
-        .category.value
+        .category
         ? this.policy.policyInfo.category.value
         : '';
       this.insuranceDetails.policyCategory.machineValue = this.policy.policyInfo
-        .category.machineValue
+        .category
         ? this.policy.policyInfo.category.machineValue
         : '';
       this.insuranceDetails.policyNumber = this.policy.policyInfo.number
