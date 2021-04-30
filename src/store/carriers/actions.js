@@ -80,11 +80,13 @@ export async function addCarrierPersonnel({ dispatch, state }, payload) {
   }
 }
 
-export async function getCarrierPersonnel({ commit, dispatch }, id) {
+export async function getCarrierPersonnel({ commit, dispatch }, paramsObject) {
   dispatch('setLoading', true);
   try {
-    const { data } = await request.get(`/carriers/${id}/personnel`);
-
+    const { data } = await request.get(
+      `/carriers/${paramsObject.id}/personnel`,
+      paramsObject.params
+    );
     commit('setCarrierPersonnel', data);
     dispatch('setLoading', false);
   } catch (e) {

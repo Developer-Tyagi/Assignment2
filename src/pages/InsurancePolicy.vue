@@ -126,7 +126,9 @@
             v-for="(personnel, index) in selectedClaimCarrier.carrier.personnel"
           >
             <div class="q-pa-sm text-bold row">
-              {{ personnel.name ? personnel.name : '-' }}
+              <span v-if="personnel.name">
+                {{ personnel.name ? personnel.name : '-' }}</span
+              >
               <div v-if="personnel.role">
                 <q-badge class="q-px-sm q-py-xs q-ml-xs" size="xs">
                   {{ personnel.role.value }}</q-badge
@@ -396,6 +398,7 @@
       </q-card>
       <q-separator />
     </div>
+
     <!-- Insurance Info Dialog -->
 
     <q-dialog
@@ -470,6 +473,7 @@
     </q-dialog>
 
     <!-- Adjustor List Dialog  -->
+
     <q-dialog
       v-model="adjustorListDialog"
       persistent
@@ -479,7 +483,7 @@
     >
       <q-card>
         <CustomBar
-          @closeDialog="adjustorListDialog = false"
+          @closeDialog="(adjustorListDialog = false), (onClickUncheck = false)"
           :dialogName="'Select Adjustor'"
         />
         <q-btn
@@ -496,10 +500,11 @@
                   >Filter</span
                 >
               </div>
-
+            </div>
+            <div class="q-ml-auto edit-icon">
               <q-btn
-                v-if="params.industry"
-                class="q-ml-auto q-pr-md"
+                v-if="params.role"
+                class="q-ml-auto "
                 color="white"
                 text-color="grey"
                 @click="clearFilter()"
@@ -508,15 +513,14 @@
                 style="font-weight: 400"
                 >Clear</q-btn
               >
-              <div class="q-ml-auto edit-icon q-mb-xl">
-                <q-btn
-                  color="primary"
-                  class="q-mr-lg"
-                  size="sm"
-                  label="Assign"
-                  @click="assignDialog = true"
-                />
-              </div>
+              <q-btn
+                :disabled="isAssignDisabled"
+                color="primary"
+                class="q-mr-lg"
+                size="sm"
+                label="Assign"
+                @click="assignDialog = true"
+              />
             </div>
           </div>
         </div>
@@ -528,7 +532,7 @@
               class="carrier-list-item clients-list"
               style="overflow-y: auto"
             >
-              <q-item-section @click="onSelectPersonnel(personnel)">
+              <q-item-section @click="onCheckPersonnel(personnel)">
                 <span>
                   <span class="text-bold"
                     >{{ personnel.fname }} {{ personnel.lname }}</span
@@ -580,6 +584,12 @@
                   >
                 </span>
               </q-item-section>
+              <q-icon
+                v-if="checkID === personnel.id && onClickUncheck"
+                name="done"
+                size="xs"
+                class="q-ml-auto"
+              />
             </div>
           </div>
           <div v-else class="full-height full-width column">
@@ -602,6 +612,7 @@
     </q-dialog>
 
     <!-- Add Adjustor Dialog -->
+
     <q-dialog
       v-model="addPersonnelDialog"
       persistent
@@ -687,7 +698,7 @@
             class="filters-list-item"
           >
             <div class="row">
-              {{ filter }}
+              {{ filter.name }}
               <q-radio
                 v-model="selectedFilter"
                 :val="filter.machineValue"
@@ -700,48 +711,54 @@
       </q-card>
     </q-dialog>
 
-    <!-- Assign Dialog  -->
-    <q-dialog
-      v-model="assignDialog"
-      persistent
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card class="bg-white">
-        <div class="mobile-container-page-without-search">
-          <div class="form-heading q-ml-sm q-ma-md text-h5">
-            Assin to Claim as
-          </div>
-          <div class="clients-list q-ma-lg">
-            <div
-              v-for="filter in claimRoles"
-              :key="filter.id"
-              class="q-ma-md q-pt-sm"
-            >
-              <div class="row">
-                <q-radio
-                  v-model="assignFilter"
-                  :val="filter.machineValue"
-                  dense
-                />
-                <span class="q-ml-sm q-mt-xs"> {{ filter }}</span>
-              </div>
+    <!-- Assign Dialog -->
+
+    <q-dialog v-model="assignDialog">
+      <q-layout view="Lhh lpR fff" container class="bg-white">
+        <div class="form-heading q-ml-sm q-ma-md text-h5">
+          Assign to Claim as
+        </div>
+        <div class="clients-list q-ma-lg">
+          <div
+            v-for="filter in claimRoles"
+            :key="filter.id"
+            class="q-ma-md q-pt-sm"
+          >
+            <div class="row">
+              <q-radio
+                @input="setFilterName(filter.name)"
+                v-model="assignFilter"
+                :val="filter.machineValue"
+                dense
+                class="q-mb-lg"
+              />
+              <q-card-section class="q-pt-none">
+                <span class="q-ml-sm q-mt-xs"> {{ filter.name }}</span>
+              </q-card-section>
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="q-ml-auto">
-            <q-btn
-              color="primary"
-              @click="assignDialog = false"
-              flat
-              label="cancel"
-            />
+        <q-footer class="bg-white q-mb-md">
+          <div class="row">
+            <div class="q-ml-auto">
+              <q-btn
+                @click="assignDialog = false"
+                color="primary"
+                flat
+                label="cancel"
+              />
+            </div>
+            <div>
+              <q-btn
+                color="primary"
+                flat
+                label="assign"
+                @click="onSelectPersonnel(personnelObject)"
+              />
+            </div>
           </div>
-          <div><q-btn color="primary" flat label="assign" /></div>
-        </div>
-      </q-card>
+        </q-footer>
+      </q-layout>
     </q-dialog>
   </q-page>
 </template>
@@ -775,6 +792,15 @@ export default {
 
   data() {
     return {
+      params: {
+        role: '',
+        name: ''
+      },
+      onClickUncheck: false,
+      isAssignDisabled: true,
+      filterName: '',
+      personnelObject: {},
+      checkID: '',
       assignDialog: false,
       assignFilter: '',
       personnelID: '',
@@ -783,6 +809,8 @@ export default {
       selectedFilter: '',
       filterDialog: false,
       personnel: {
+        options: [],
+        role: { id: '', value: null, machineValue: '' },
         honorific: {
           id: '',
           value: 'Mr.',
@@ -811,17 +839,12 @@ export default {
           }
         ],
         email: '',
-        defaultRoles: [
-          'Manager',
-          'Personnel',
-          'Technical Architect',
-          'Tester',
-          'Engineer',
-          'Plumber'
-        ],
+
         notes: ''
       },
       editPersonnel: {
+        options: [],
+        role: { id: '', value: null, machineValue: '' },
         honorific: {
           id: '',
           value: 'Mr.',
@@ -850,14 +873,7 @@ export default {
           }
         ],
         email: '',
-        defaultRoles: [
-          'Manager',
-          'Personnel',
-          'Technical Architect',
-          'Tester',
-          'Engineer',
-          'Plumber'
-        ],
+
         notes: ''
       },
       addPersonnelDialog: false,
@@ -925,7 +941,6 @@ export default {
       'contactTypes',
       'titles',
       'carriers',
-      'carrierPersonnel',
       'claimRoles'
     ]),
     formatDate(value) {
@@ -944,6 +959,7 @@ export default {
     }
     this.getPolicyCategory();
     this.getPolicyTypes();
+    this.getClaimRoles();
   },
   methods: {
     ...mapActions([
@@ -966,10 +982,43 @@ export default {
       'editCarrierPersonnelToClaim',
       'getClaimRoles'
     ]),
-    applyFilter() {
+
+    async applyFilter() {
+      if (this.filterName) {
+        this.params.role = this.filterName;
+      }
+      this.params.role = this.selectedFilter;
+      const paramsObject = {
+        id: this.selectedClaimCarrier.carrier.carrierID,
+        params: this.params
+      };
+      await this.getCarrierPersonnel(paramsObject);
       this.filterDialog = false;
     },
-
+    clearFilter() {
+      this.params.role = '';
+      this.selectedFilter = '';
+      const paramsObject = {
+        id: this.selectedClaimCarrier.carrier.carrierID,
+        params: this.params
+      };
+      this.getCarrierPersonnel(paramsObject);
+    },
+    setFilterName(name) {
+      this.filterName = name;
+    },
+    onCheckPersonnel(personnel) {
+      this.checkID = personnel.id;
+      this.personnelObject = personnel;
+      if (this.onClickUncheck) {
+        this.onClickUncheck = false;
+        this.isAssignDisabled = true;
+      } else {
+        this.onClickUncheck = true;
+        this.isAssignDisabled = false;
+      }
+      // this.onClickUncheck = true;
+    },
     async onEditSaveCarrierPersonnel() {
       const payload = {
         claimID: this.selectedClaimId,
@@ -981,8 +1030,8 @@ export default {
             name: this.editPersonnel.fname + this.editPersonnel.lname,
             email: this.editPersonnel.email,
             role: {
-              value: 'Adjuster',
-              machineValue: 'adjuster'
+              value: this.editPersonnel.role.value,
+              machineValue: this.editPersonnel.role.machineValue
             },
             note: this.editPersonnel.notes,
             phoneNumber: this.editPersonnel.phoneNumber,
@@ -990,6 +1039,9 @@ export default {
           }
         }
       };
+      if (!this.editPersonnel.role.id) {
+        delete payload.data.editPersonnel.role;
+      }
       await this.editCarrierPersonnelToClaim(payload);
       this.editPersonnelDialog = false;
       this.getClaimCarrier(this.$route.params.id);
@@ -1018,11 +1070,18 @@ export default {
       this.editPersonnel.notes = this.selectedClaimCarrier.carrier.personnel[
         index
       ].note;
+      this.editPersonnel.role.value = this.selectedClaimCarrier.carrier.personnel[
+        index
+      ].role.value;
+      this.editPersonnel.role.machineValue = this.selectedClaimCarrier.carrier.personnel[
+        index
+      ].role.machineValue;
     },
 
     validateDate,
     onEmailClick,
     onPhoneNumberClick,
+
     onEditPolicyInfo() {
       this.insuranceInfoDialog = true;
       this.insuranceDetails.hasClaimBeenFilledToggle = this.policy.policyInfo
@@ -1127,8 +1186,13 @@ export default {
     },
 
     onAddAdjustorClick() {
+      this.isAssignDisabled = true;
       this.adjustorListDialog = true;
-      this.getCarrierPersonnel(this.selectedClaimCarrier.carrier.carrierID);
+      const paramsObject = {
+        id: this.selectedClaimCarrier.carrier.carrierID,
+        params: ''
+      };
+      this.getCarrierPersonnel(paramsObject);
     },
     //This Function is for when create a new personnel
 
@@ -1147,8 +1211,8 @@ export default {
             email: this.personnel.email,
             phoneNumber: this.personnel.phoneNumber,
             role: {
-              value: 'Adjuster',
-              machineValue: 'adjuster'
+              value: this.personnel.role.value,
+              machineValue: this.personnel.role.machineValue
             },
             address: {
               ...this.personnel.address
@@ -1157,6 +1221,9 @@ export default {
           }
         }
       };
+      if (!this.personnel.role.id) {
+        delete payload.data.personnel.role;
+      }
       const response = await this.addCarrierPersonnel(payload);
       this.addPersonnelDialog = false;
       this.getCarrierPersonnel(this.selectedClaimCarrier.carrier.carrierID);
@@ -1172,30 +1239,56 @@ export default {
       this.personnel.address.postalCode = '';
       this.personnel.notes = '';
       this.personnel.departmentName = '';
+      this.personnel.role.value = '';
+      this.personnel.role.machineValue = '';
     },
     //This Function is called when we click on adjustor list and select a personnel
     async onSelectPersonnel(personnel) {
-      const payload1 = {
+      const urlID = {
         claimID: this.selectedClaimId,
-        carrierID: this.selectedClaimCarrier.id,
-        data: {
-          personnel: {
-            personnelID: personnel.id,
-            name: personnel.fname + ' ' + personnel.lname,
-            email: personnel.email,
-            role: {
-              value: 'Adjuster',
-              machineValue: 'adjuster'
-            },
-            note: personnel.note,
-            phoneNumber: personnel.phoneNumber,
-            address: personnel.address
-          }
-        }
+        carrierID: this.selectedClaimCarrier.id
       };
-      await this.addClaimPersonnel(payload1);
+      const payload1 = {
+        personnelID: personnel.id,
+        name: personnel.fname + ' ' + personnel.lname,
+        email: personnel.email,
+        note: personnel.note,
+        phoneNumber: personnel.phoneNumber,
+        address: personnel.address
+      };
+      if (this.assignDialog) {
+        const payload2 = {
+          ...urlID,
+          data: {
+            personnel: {
+              ...payload1,
+              role: { value: this.filterName, machineValue: this.assignFilter }
+            }
+          }
+        };
+
+        await this.addClaimPersonnel(payload2);
+      } else {
+        const payload2 = {
+          ...urlID,
+          data: {
+            personnel: {
+              ...payload1,
+              role: {
+                value: this.personnel.role.value,
+                machineValue: this.personnel.role.machineValue
+              }
+            }
+          }
+        };
+
+        await this.addClaimPersonnel(payload2);
+      }
+      this.assignDialog = false;
       this.adjustorListDialog = false;
       this.getClaimCarrier(this.$route.params.id);
+      this.filterName = '';
+      this.assignFilter = '';
     },
 
     async onDelete(id) {
@@ -1207,6 +1300,7 @@ export default {
       this.getClaimCarrier(this.selectedClaimId);
       this.carrierName = '';
     },
+
     async onSaveButtonClick() {
       let success = false;
       success = await this.$refs.insuranceInfoForm.validate();
@@ -1299,6 +1393,7 @@ export default {
         this.$router.push(`/insurance-policy/${this.selectedClaimId}`);
       }
     },
+
     async selecting() {
       this.carriersListDialog = false;
       await this.getClaimCarrier(this.selectedClaimId);
