@@ -30,9 +30,11 @@ export function setWorkflowAction(state, workflowAction) {
   }));
 }
 
-export function setAllWorkFlow(state, allAction) {
-  state.allAction = allAction.map(workaction => ({
+export function setAllWorkFlow(state, allActions) {
+  state.allAction = allActions.map(workaction => ({
     name: workaction.attributes.name,
-    createdDesc: workaction.attributes.createdDesc
+    createdDesc: workaction.attributes.createdDesc,
+    dueDesc: workaction.attributes.dueDesc,
+    selected: true
   }));
 }

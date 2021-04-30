@@ -649,29 +649,7 @@
             ref="officeTaskInfo"
           >
             <div class="q-pa-md form-card">
-              <q-card class="q-pa-sm q-mt-sm">
-                <q-select
-                  dense
-                  v-model="officeTask.officeActionTypes"
-                  :options="officeActionRequiredTypes"
-                  label="Office Action Required"
-                  class="input-extra-padding"
-                />
-                <q-select
-                  dense
-                  v-model="officeTask.officeTaskTypes"
-                  :options="officeTaskRequiredTypes"
-                  label="Office Task Required"
-                  class="input-extra-padding"
-                />
-                <div class="row">
-                  <p>Additional Office Task Required</p>
-                  <q-toggle
-                    class="q-ml-auto"
-                    v-model="additionalOfficeTaskRequiredToggle"
-                  />
-                </div>
-              </q-card>
+              <OfficeTask :officeTask="officeTask" />
             </div>
 
             <div class="row q-pt-md">
@@ -707,7 +685,7 @@ import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import AddressService from '@utils/country';
 import ContractInfo from 'components/ContractInfo';
 import CompanyPersonnel from 'components/CompanyPersonnel';
-
+import OfficeTask from 'components/OfficeTask';
 import EstimatingInfo from 'components/EstimatingInfo';
 import LossInfo from 'components/LossInfo';
 import ExpertVendorInfo from 'components/ExpertVendorInfo';
@@ -737,11 +715,12 @@ export default {
     ExpertVendorInfo,
     EstimatingInfo,
     ContractInfo,
-    CompanyPersonnel
+    CompanyPersonnel,
+    OfficeTask
   },
   data() {
     return {
-      step: 0,
+      step: 8,
       stepClickValidTill: 0,
       mortgageObject: {
         vendorsListDialog: false,
@@ -1045,8 +1024,7 @@ export default {
         internalNotes: ''
       },
       officeTask: {
-        officeActionTypes: '',
-        officeTaskTypes: ''
+        officeActionRequired: false
       },
       mailingAddressDetails: {
         addressCountry: '',
@@ -1066,10 +1044,7 @@ export default {
       isMailingAddressSameToggle: false,
       isThereaCoInsuredToggle: false,
       states: [],
-      countries: [],
-      additionalOfficeTaskRequiredToggle: false,
-      officeActionRequiredTypes: [],
-      officeTaskRequiredTypes: []
+      countries: []
     };
   },
 
