@@ -513,11 +513,73 @@
               </div>
             </div>
           </q-form>
-          <!-- Expert /Vendor Info -->
+          <!-- Property -->
           <q-form
             @submit="onNextButtonClick(4)"
             @reset="onBackButtonClick(4)"
             :hidden="step != 4"
+            ref="property"
+          >
+            <div class="q-pa-md form-card">Property Info</div>
+            <div class="row q-pt-md">
+              <div>
+                <q-btn
+                  icon="keyboard_backspace"
+                  text-color="primary"
+                  padding="md"
+                  type="reset"
+                />
+                <span class="q-ml-md text-color-grey">Back</span>
+              </div>
+              <div class="q-ml-auto">
+                <span class="q-mr-md text-color-grey"> Next</span>
+                <q-btn
+                  class="rotate-180"
+                  icon="keyboard_backspace"
+                  text-color="primary"
+                  padding="md"
+                  type="submit"
+                />
+              </div>
+            </div>
+          </q-form>
+          <!-- Damage Structure -->
+          <q-form
+            @submit="onNextButtonClick(5)"
+            @reset="onBackButtonClick(5)"
+            :hidden="step != 5"
+            ref="property"
+          >
+            <div class="q-pa-md form-card">
+              Damage structure
+            </div>
+            <div class="row q-pt-md">
+              <div>
+                <q-btn
+                  icon="keyboard_backspace"
+                  text-color="primary"
+                  padding="md"
+                  type="reset"
+                />
+                <span class="q-ml-md text-color-grey">Back</span>
+              </div>
+              <div class="q-ml-auto">
+                <span class="q-mr-md text-color-grey"> Next</span>
+                <q-btn
+                  class="rotate-180"
+                  icon="keyboard_backspace"
+                  text-color="primary"
+                  padding="md"
+                  type="submit"
+                />
+              </div>
+            </div>
+          </q-form>
+          <!-- Expert /Vendor Info -->
+          <q-form
+            @submit="onNextButtonClick(6)"
+            @reset="onBackButtonClick(6)"
+            :hidden="step != 6"
             ref="vendorInfo"
           >
             <div class="q-pa-md form-card">
@@ -547,9 +609,9 @@
           </q-form>
           <!-- Estimating Info -->
           <q-form
-            @submit="onNextButtonClick(5)"
-            @reset="onBackButtonClick(5)"
-            :hidden="step != 5"
+            @submit="onNextButtonClick(7)"
+            @reset="onBackButtonClick(7)"
+            :hidden="step != 7"
             ref="estimatingInfo"
           >
             <div class="q-pa-md form-card">
@@ -579,9 +641,9 @@
           </q-form>
           <!-- Contract Info Dialog -->
           <q-form
-            @submit="onNextButtonClick(6)"
-            @reset="onBackButtonClick(6)"
-            :hidden="step != 6"
+            @submit="onNextButtonClick(8)"
+            @reset="onBackButtonClick(8)"
+            :hidden="step != 8"
             ref="contractInfo"
           >
             <div class="q-pa-md form-card">
@@ -611,9 +673,9 @@
           </q-form>
           <!-- Company Personnel Dialog-->
           <q-form
-            @submit="onNextButtonClick(7)"
-            @reset="onBackButtonClick(7)"
-            :hidden="step != 7"
+            @submit="onNextButtonClick(9)"
+            @reset="onBackButtonClick(9)"
+            :hidden="step != 9"
             ref="personnelInfo"
           >
             <div class="q-pa-md form-card">
@@ -644,8 +706,8 @@
           <!-- Office Task -->
           <q-form
             @submit="createClientButtonClick()"
-            @reset="onBackButtonClick(8)"
-            :hidden="step != 8"
+            @reset="onBackButtonClick(10)"
+            :hidden="step != 10"
             ref="officeTaskInfo"
           >
             <div class="q-pa-md form-card">
@@ -799,6 +861,8 @@ export default {
         { name: 'Mailing Address', ref: 'mailingInfo' },
         { name: 'Insurance Info', ref: 'insuranceInfo' },
         { name: 'Loss Info', ref: 'lossInfo' },
+        { name: 'property Info', ref: 'property' },
+        { name: 'Damage Structure', ref: 'structure' },
         { name: 'Expert/Vendor Info', ref: 'vendorInfo' },
         { name: 'Estimating Info', ref: 'estimatingInfo' },
         { name: 'Contract Info', ref: 'contractInfo' },
