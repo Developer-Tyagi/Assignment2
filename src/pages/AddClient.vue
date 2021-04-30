@@ -1073,7 +1073,6 @@ export default {
 
     if (this.selectedLead.id) {
       await this.getLeadDetails(this.selectedLead.id);
-      console.log(this.selectedLead);
       this.honorific1 = {
         id: this.selectedLead.primaryContact.honorific.id,
         value: this.selectedLead.primaryContact.honorific.value,
@@ -1510,10 +1509,21 @@ export default {
 
         payload.expertInfo.vendors = vendorsAlreadyExist.concat(vendorsHired);
       }
-      console.log(payload);
-      this.addClaim(payload).then(() => {
+
+      const response = await this.addClaim(payload);
+      if (response && response.id) {
+        this.addMultipleOfficeTask(response.id);
+      }
+    },
+
+    addMultipleOfficeTask(id) {
+      const payload = {
+        id: id,
+        tasks: this.officeTask
+      };
+
+      this.addMultipleTaskToClaim(payload).then(() => {
         this.setSelectedLead();
-        //Routing to Client if Client Creation is Successful
         this.$router.push('/clients');
       });
     },

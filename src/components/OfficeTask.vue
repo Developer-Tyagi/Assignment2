@@ -10,11 +10,11 @@
         />
       </div>
       <div v-if="showOfficeActions" class="office-task-list">
-        <div class="column" v-for="action in allAction">
+        <div class="column" v-for="action in officeTaskActions">
           <div class="row q-pa-sm">
             <div class="flex">
               <q-checkbox
-                v-model="action.selected"
+                v-model="action.isEnabled"
                 color="$primary"
                 class="q-my-auto q-mr-md"
               />
@@ -29,6 +29,7 @@
       </div>
     </q-card>
     <q-btn
+      v-if="officeTask.officeActionRequired"
       class="q-ml-auto flex q-mt-md"
       color="primary"
       @click="addNewTaskDialog = true"
@@ -50,14 +51,14 @@
           <q-form ref="addTask">
             <q-input
               label="Task Name"
-              v-model="taskName"
+              v-model="newTask.name"
               lazy-rules
               :rules="[
                 val => (val && val.length > 0) || 'Please enter the task name'
               ]"
             />
             <q-input
-              v-model="dueDate"
+              v-model="newTask.dueDate"
               mask="##/##/####"
               label="Task Date"
               lazy-rules
@@ -95,7 +96,7 @@
                 {{ priority ? 'High' : 'Low' }}
               </p>
 
-              <q-toggle v-model="priority" />
+              <q-toggle v-model="newTask.priority" />
             </div>
           </q-form>
         </div>
@@ -128,22 +129,26 @@ export default {
     return {
       showOfficeActions: false,
       addNewTaskDialog: false,
-      priority: false,
-      dueDate: '',
-      taskName: '',
-      assign: ''
+
+      newTask: {
+        dueDate: '',
+        name: '',
+        isEnabled: true,
+        assignedTo: [],
+        priority: false
+      }
     };
   },
   computed: {
-    ...mapGetters(['allAction'])
+    ...mapGetters(['officeTaskActions'])
   },
 
   created() {
-    this.getAllWorkFlow('claim_new_claim');
+    this.getOfficeTaskActions();
   },
-  // 'getOfficeActionTasks','officeActionTasks'
+
   methods: {
-    ...mapActions(['getAllWorkFlow']),
+    ...mapActions(['getOfficeTaskActions']),
 
     onOfficeTaskToggleButton() {
       this.showOfficeActions = this.officeTask.officeActionRequired;
@@ -151,6 +156,17 @@ export default {
 
     addTask() {
       this.$refs.addTask.validate();
+      this.newTask.priority = this.newTask.priority ? 'high' : 'low';
+      this.officeTask = getOfficeTaskActions.push(this.newTask);
+      this.newTask = {
+        dueDate: '',
+        name: '',
+        isEnabled: true,
+        assignedTo: [],
+        priority: false
+      };
+      this.officeTask.actions = this.officeTaskActions;
+      this.addNewTaskDialog = false;
     }
   }
 };

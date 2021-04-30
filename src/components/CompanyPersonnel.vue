@@ -188,7 +188,6 @@ export default {
         return item.id === data.id;
       });
 
-      console.log('hi');
       this.getAllUsers({ roles: obj.machineValue });
       this.companyPersonnel.isFieldDisable = false;
     }

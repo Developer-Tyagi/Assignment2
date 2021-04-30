@@ -2,9 +2,9 @@
   <q-page>
     <div class="listing-height">
       <ClaimDetail />
-      <q-card class="q-ma-md q-pa-md  ">
+      <q-card class="q-ma-md q-pa-md">
         <div class="row q-ml-xs justify-between">
-          <div class="text-bold  q-mt-xs">Claim Summary</div>
+          <div class="text-bold q-mt-xs">Claim Summary</div>
           <div>
             <q-icon
               class="q-ml-xs"
@@ -15,7 +15,7 @@
             />
           </div>
         </div>
-        <div class=" q-ml-xs">
+        <div class="q-ml-xs">
           <div class="row q-mt-sm">
             <span class="heading-light col-4"> File Number </span>
             <span class="q-ml-md col">
@@ -52,7 +52,7 @@
             </span>
           </div>
           <div class="row q-mt-sm">
-            <span class="heading-light col-4 "> Date of Contract </span>
+            <span class="heading-light col-4"> Date of Contract </span>
             <span class="q-ml-md" v-if="getSelectedClaim.contractInfo">
               {{
                 getSelectedClaim.contractInfo.dateOfFirstContact
@@ -87,10 +87,10 @@
         </div>
       </q-card>
 
-      <q-card class="q-ma-md q-pa-md ">
-        <div class="row q-ml-xs justify-between ">
-          <div class="text-bold  q-mt-xs">Claim Deadlines</div>
-          <div class=" q-mt-xs">
+      <q-card class="q-ma-md q-pa-md">
+        <div class="row q-ml-xs justify-between">
+          <div class="text-bold q-mt-xs">Claim Deadlines</div>
+          <div class="q-mt-xs">
             <q-icon
               class="q-ml-xs"
               name="edit"
@@ -100,7 +100,7 @@
             />
           </div>
         </div>
-        <div class=" q-ml-xs ">
+        <div class="q-ml-xs">
           <div class="row q-mt-sm">
             <span class="heading-light col-4">
               Tolling Date / Statute Deadline
@@ -118,33 +118,29 @@
         </div>
       </q-card>
 
-      <q-card class="q-ma-md q-pa-md  ">
+      <q-card class="q-ma-md q-pa-md">
         <div class="row q-ml-xs justify-between">
-          <div class="text-bold  q-mt-xs">Loss Details</div>
+          <div class="text-bold q-mt-xs">Loss Details</div>
           <div>
             <q-icon
               name="create"
               color="primary"
-              class="col "
+              class="col"
               size="xs"
               @click="lossDetailsBox = true"
             ></q-icon>
           </div>
         </div>
-        <div class=" q-ml-xs ">
+        <div class="q-ml-xs">
           <div class="row q-mt-sm">
-            <span class="heading-light col-4">
-              Date & Time of Loss
-            </span>
+            <span class="heading-light col-4"> Date & Time of Loss </span>
             <span class="q-ml-md col">
               {{ getSelectedClaim.lossInfo.date | moment('MM/DD/YYYY') }}
             </span>
           </div>
 
           <div class="row q-mt-sm">
-            <span class="heading-light col-4">
-              Estimated Loss Amount
-            </span>
+            <span class="heading-light col-4"> Estimated Loss Amount </span>
             <span class="q-ml-md col">
               {{
                 getSelectedClaim.lossInfo.estimatedLossAmt
@@ -182,11 +178,11 @@
       <div class="form-heading q-ml-md col q-mb-md">Claim Timeline</div>
       <div v-for="(phase, index) in getSelectedClaim.phases">
         <div class="row">
-          <div class="col-2 q-ml-md ">
+          <div class="col-2 q-ml-md">
             <q-avatar
-              class="q-ma-sm "
+              class="q-ma-sm"
               size="50px"
-              style="background-color:#ECA74C"
+              style="background-color: #eca74c"
               font-size="15px"
               text-color="white"
             >
@@ -199,7 +195,7 @@
               >
             </q-avatar>
           </div>
-          <div class="col row q-ml-lg q-mt-sm ">
+          <div class="col row q-ml-lg q-mt-sm">
             <div class="col-10">
               <span class="text-bold">
                 {{
@@ -213,7 +209,7 @@
             <q-icon
               name="create"
               color="primary"
-              class="col "
+              class="col"
               size="xs"
               @click="onClickeditClaimTimeline(index)"
             ></q-icon>
@@ -703,7 +699,6 @@ export default {
             policyInfo: this.policyInfo
           }
         };
-        console.log(payload, 65656);
         await this.editClaimInfo(payload);
       } else {
         let payload = {

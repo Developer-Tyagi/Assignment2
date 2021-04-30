@@ -33,8 +33,14 @@ export function setWorkflowAction(state, workflowAction) {
 export function setAllWorkFlow(state, allActions) {
   state.allAction = allActions.map(workaction => ({
     name: workaction.attributes.name,
-    createdDesc: workaction.attributes.createdDesc,
-    dueDesc: workaction.attributes.dueDesc,
-    selected: true
+    createdDesc: workaction.attributes.createdDesc
+  }));
+}
+
+export function setOfficeTaskActions(state, actions) {
+  console.log(actions);
+  state.officeTaskActions = actions.map(action => ({
+    id: action.id,
+    ...action.attributes
   }));
 }
