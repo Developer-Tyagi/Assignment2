@@ -4,6 +4,7 @@ export default function() {
     actionCompletion: [],
     actionReason: [],
     workflowAction: [],
-    allAction: []
+    allAction: [],
+    officeTaskActions: []
   };
 }

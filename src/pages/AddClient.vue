@@ -725,29 +725,7 @@
             ref="officeTaskInfo"
           >
             <div class="q-pa-md form-card">
-              <q-card class="q-pa-sm q-mt-sm">
-                <q-select
-                  dense
-                  v-model="officeTask.officeActionTypes"
-                  :options="officeActionRequiredTypes"
-                  label="Office Action Required"
-                  class="input-extra-padding"
-                />
-                <q-select
-                  dense
-                  v-model="officeTask.officeTaskTypes"
-                  :options="officeTaskRequiredTypes"
-                  label="Office Task Required"
-                  class="input-extra-padding"
-                />
-                <div class="row">
-                  <p>Additional Office Task Required</p>
-                  <q-toggle
-                    class="q-ml-auto"
-                    v-model="additionalOfficeTaskRequiredToggle"
-                  />
-                </div>
-              </q-card>
+              <OfficeTask :officeTask="officeTask" />
             </div>
 
             <div class="row q-pt-md">
@@ -783,7 +761,7 @@ import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import AddressService from '@utils/country';
 import ContractInfo from 'components/ContractInfo';
 import CompanyPersonnel from 'components/CompanyPersonnel';
-
+import OfficeTask from 'components/OfficeTask';
 import EstimatingInfo from 'components/EstimatingInfo';
 import PropertyInfo from 'components/PropertyInfo';
 import LossInfo from 'components/LossInfo';
@@ -815,7 +793,8 @@ export default {
     EstimatingInfo,
     ContractInfo,
     CompanyPersonnel,
-    PropertyInfo
+    PropertyInfo,
+    OfficeTask
   },
   data() {
     return {
@@ -1125,8 +1104,7 @@ export default {
         internalNotes: ''
       },
       officeTask: {
-        officeActionTypes: '',
-        officeTaskTypes: ''
+        officeActionRequired: false
       },
       mailingAddressDetails: {
         addressCountry: '',
@@ -1146,10 +1124,7 @@ export default {
       isMailingAddressSameToggle: false,
       isThereaCoInsuredToggle: false,
       states: [],
-      countries: [],
-      additionalOfficeTaskRequiredToggle: false,
-      officeActionRequiredTypes: [],
-      officeTaskRequiredTypes: []
+      countries: []
     };
   },
 
@@ -1178,7 +1153,6 @@ export default {
 
     if (this.selectedLead.id) {
       await this.getLeadDetails(this.selectedLead.id);
-      console.log(this.selectedLead);
       this.honorific1 = {
         id: this.selectedLead.primaryContact.honorific.id,
         value: this.selectedLead.primaryContact.honorific.value,
@@ -1330,39 +1304,6 @@ export default {
       }
     },
 
-    createClientDailogBoxOpen(value) {
-      switch (value) {
-        case 'Client Info':
-          this.clientInfoDailog = true;
-          break;
-        case 'Mailing Address':
-          this.mailingAddressDialog = true;
-          break;
-        case 'Insurance Info':
-          this.insuranceInfoDialog = true;
-          break;
-        case 'Loss Info':
-          this.lossInfoDialog = true;
-          break;
-        case 'Expert/Vendor Info':
-          this.expertVendorInfoDialog = true;
-          break;
-        case 'Estimating Info':
-          this.estimatingInfoDialog = true;
-          break;
-        case 'Office Task':
-          this.officeTaskDialog = true;
-          break;
-        case 'Company Personnel':
-          this.companyPersonnelDialog = true;
-          break;
-        case 'Documents':
-          this.documentsDialog = true;
-          break;
-        case 'Contract Info':
-          this.contractInfoDialog = true;
-      }
-    },
     validateDate,
     validateTime,
 
@@ -1627,31 +1568,42 @@ export default {
       ) {
         delete payload.personnel;
       }
-
       if (
         this.expertVendorInfo.isAlreadyHiredVendor.length ||
         this.expertVendorInfo.isHiredByClaimguru.length
       ) {
-        const vendorsAlreadyExist = this.expertVendorInfo.isAlreadyHiredVendor.map(
+        let vendorsAlreadyExist = this.expertVendorInfo.isAlreadyHiredVendor.map(
           val => ({
-            id: val.id,
-            value: val.name,
+            id: val.vendor.id,
+            value: val.vendor.value,
             isAlreadyHired: true
           })
         );
-        const vendorsHired = this.expertVendorInfo.isHiredByClaimguru.map(
+        let vendorsHired = this.expertVendorInfo.isHiredByClaimguru.map(
           val => ({
-            id: val.id,
-            value: val.name,
+            id: val.vendor.id,
+            value: val.vendor.value,
             isAlreadyHired: false
           })
         );
 
         payload.expertInfo.vendors = vendorsAlreadyExist.concat(vendorsHired);
       }
-      this.addClaim(payload).then(() => {
+
+      const response = await this.addClaim(payload);
+      if (response && response.id) {
+        this.addMultipleOfficeTask(response.id);
+      }
+    },
+
+    addMultipleOfficeTask(id) {
+      const payload = {
+        id: id,
+        tasks: this.officeTask
+      };
+
+      this.addMultipleTaskToClaim(payload).then(() => {
         this.setSelectedLead();
-        //Routing to Client if Client Creation is Successful
         this.$router.push('/clients');
       });
     },
