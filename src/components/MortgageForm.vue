@@ -1,19 +1,77 @@
 <template>
   <div>
     <!-- Mortgage Form -->
-    <div
-      class="custom-select"
-      v-model="mortgageInfo.mortgageDetails[0].id"
-      @click="onSelectMortgageClick"
-    >
-      <div class="select-text">
-        {{
-          mortgageInfo.mortgageDetails[0].value
-            ? mortgageInfo.mortgageDetails[0].value
-            : 'Enter Mortgage Company'
-        }}
+    <div class="custom-select" v-if="!mortgageInfo.mortgageName">
+      <div class="select-text" @click="mortgageList = true">
+        Click for choosing a Mortgage
       </div>
     </div>
+
+    <div>
+      <q-card
+        bordered
+        v-if="mortgageInfo.mortgageName"
+        @click="mortgageList = true"
+        class="q-my-md q-pa-md"
+      >
+        <div class="text-bold">{{ mortgageInfo.mortgageName }}</div>
+        <div v-if="mortgageInfo.address && mortgageInfo.address.streetAddress">
+          <div>
+            {{ mortgageInfo.address ? mortgageInfo.address.houseNumber : '-' }}
+            ,
+            {{
+              mortgageInfo.address.streetAddress
+                ? mortgageInfo.address.streetAddress
+                : '-'
+            }}
+          </div>
+          <div>
+            {{
+              mortgageInfo.address.addressLocality
+                ? mortgageInfo.address.addressLocality
+                : '-'
+            }}
+            ,
+            {{
+              mortgageInfo.address.addressRegion
+                ? mortgageInfo.address.addressRegion
+                : '-'
+            }}
+          </div>
+          <div class="row">
+            {{
+              mortgageInfo.address.addressCountry
+                ? mortgageInfo.address.addressCountry
+                : '-'
+            }}
+            -
+            {{
+              mortgageInfo.address.postalCode
+                ? mortgageInfo.address.postalCode
+                : '-'
+            }}
+          </div>
+        </div>
+        <div>
+          Phone:
+          <span
+            class="clickLink"
+            @click="onPhoneNumberClick(mortgageInfo.phone, $event)"
+          >
+            {{ mortgageInfo.phone }}</span
+          >
+        </div>
+        <div>
+          Email:<span
+            class="clickLink"
+            @click="onEmailClick(mortgageInfo.email, $event)"
+          >
+            {{ mortgageInfo.email }}</span
+          >
+        </div>
+      </q-card>
+    </div>
+
     <q-input
       dense
       v-model="mortgageInfo.mortgageDetails[0].loanNumber"
@@ -31,7 +89,7 @@
       v-model="mortgageInfo.mortgageDetails[0].notes"
       style="resize: none"
     />
-    <div class="row" v-if="mortgageInfo.isThereSecondMortgageToggle">
+    <div class="row" v-if="isThereSecondMortgage">
       <span class="form-heading"> Is there a 2nd mortgage on the home? </span>
 
       <q-toggle
@@ -43,17 +101,81 @@
     <div v-if="mortgageInfo.isSecondMortgageHome">
       <div
         class="custom-select"
-        v-model="mortgageInfo.mortgageDetails[1].id"
-        @click="onAddVendorDialogClick(constants.industries.SECONDARYMORTGAGE)"
+        @click="mortgageList = true"
+        v-if="!mortgageInfo.mortgageName"
       >
-        <div class="select-text">
-          {{
-            mortgageInfo.mortgageDetails[1].value
-              ? mortgageInfo.mortgageDetails[1].value
-              : 'Enter Mortgage Company'
-          }}
-        </div>
+        <div class="select-text">Click for choosing a Second Mortgage</div>
       </div>
+
+      <div>
+        <q-card
+          bordered
+          v-if="mortgageInfo.mortgageName"
+          @click="mortgageList = true"
+          class="q-my-md q-pa-md"
+        >
+          <div class="text-bold">{{ mortgageInfo.mortgageName }}</div>
+          <div
+            v-if="mortgageInfo.address && mortgageInfo.address.streetAddress"
+          >
+            <div>
+              {{
+                mortgageInfo.address ? mortgageInfo.address.houseNumber : '-'
+              }}
+              ,
+              {{
+                mortgageInfo.address.streetAddress
+                  ? mortgageInfo.address.streetAddress
+                  : '-'
+              }}
+            </div>
+            <div>
+              {{
+                mortgageInfo.address.addressLocality
+                  ? mortgageInfo.address.addressLocality
+                  : '-'
+              }}
+              ,
+              {{
+                mortgageInfo.address.addressRegion
+                  ? mortgageInfo.address.addressRegion
+                  : '-'
+              }}
+            </div>
+            <div class="row">
+              {{
+                mortgageInfo.address.addressCountry
+                  ? mortgageInfo.address.addressCountry
+                  : '-'
+              }}
+              -
+              {{
+                mortgageInfo.address.postalCode
+                  ? mortgageInfo.address.postalCode
+                  : '-'
+              }}
+            </div>
+          </div>
+          <div>
+            Phone:
+            <span
+              class="clickLink"
+              @click="onPhoneNumberClick(mortgageInfo.phone, $event)"
+            >
+              {{ mortgageInfo.phone }}</span
+            >
+          </div>
+          <div>
+            Email:<span
+              class="clickLink"
+              @click="onEmailClick(mortgageInfo.email, $event)"
+            >
+              {{ mortgageInfo.email }}</span
+            >
+          </div>
+        </q-card>
+      </div>
+
       <q-input
         dense
         v-model="mortgageInfo.mortgageDetails[1].loanNumber"
@@ -74,7 +196,7 @@
     </div>
     <!-- Mortgage List -->
     <q-dialog
-      v-model="mortgageInfo.mortgageList"
+      v-model="mortgageList"
       persistent
       :maximized="true"
       transition-show="slide-up"
@@ -83,19 +205,19 @@
       <q-card>
         <CustomBar
           :dialogName="'Mortgages'"
-          @closeDialog="mortgageInfo.mortgageList = false"
+          @closeDialog="mortgageList = false"
         />
         <MortgagesList
-          @addCarrier="openAddMortgageDialog"
-          :mortgageDetails="false"
-          @onSelectMortgage="onSelectMortgage"
+          selectMortgage="true"
+          @addMortagage="addMortgageDialog = true"
+          @afterSelecting="onSelectingMortgageList"
         />
       </q-card>
     </q-dialog>
 
-    <!-- Add Mortgage List -->
+    <!-- Add Mortgage  -->
     <q-dialog
-      v-model="mortgageInfo.addMortgageDialog"
+      v-model="addMortgageDialog"
       persistent
       :maximized="true"
       transition-show="slide-up"
@@ -103,9 +225,10 @@
     >
       <q-card>
         <AddMortgage
-          @closeDialog="mortgageInfo.addMortgageDialog = false"
+          @closeDialog="addMortgageDialog = false"
           :componentName="constants.industries.MORTGAGE"
           :isEdit="false"
+          @onCloseAddMortgage="onCloseAddMortgageDialogBox"
         />
       </q-card>
     </q-dialog>
@@ -128,22 +251,63 @@ export default {
   props: {
     mortgageInfo: {
       type: Object
+    },
+    isThereSecondMortgage: {
+      type: Boolean
     }
   },
   data() {
     return {
-      constants: constants
+      addMortgageDialog: false,
+      constants: constants,
+      mortgageList: false
     };
   },
-  // computed: { ...mapGetters(['']) },
+
   methods: {
     ...mapActions(['']),
     onSelectMortgageClick() {
       this.mortgageInfo.mortgageList = true;
+      this.mortgageInfo.addMortgageDialog = true;
     },
-    onSelectMortgage(mortgage) {},
+
+    onSecondMortgageToggle() {
+      if (this.mortgageInfo.isSecondMortgageHome) {
+        this.mortgageInfo.mortgageDetails.push({
+          id: '',
+          value: '',
+          loanNumber: '',
+          accountNumber: '',
+          isPrimary: false,
+          notes: ''
+        });
+        console.log(this.mortgageInfo.mortgageDetails, 'ARRAY');
+      } else {
+        this.mortgageInfo.mortgageDetails.pop();
+      }
+    },
+    onCloseAddMortgageDialogBox(mortgage) {
+      this.mortgageInfo.carrierId = mortgage.id;
+      this.mortgageInfo.carrierName = mortgage.name;
+      this.mortgageInfo.address = mortgage.address;
+      this.mortgageInfo.email = mortgage.email;
+      this.mortgageInfo.phone = mortgage.phoneNumber
+        ? mortgage.phoneNumber[0].number
+        : '';
+      this.mortgageList = false;
+      this.addMortgageDialog = false;
+    },
     openAddMortgageDialog() {
       this.mortgageInfo.addMortgageDialog = true;
+    },
+    onSelectingMortgageList(mortgage) {
+      this.mortgageInfo.mortgageName = mortgage.name;
+      this.mortgageInfo.address = mortgage.address;
+      this.mortgageInfo.email = mortgage.email;
+      this.mortgageInfo.phone = mortgage.phoneNumber
+        ? mortgage.phoneNumber[0].number
+        : '';
+      this.mortgageList = false;
     }
   }
 };
