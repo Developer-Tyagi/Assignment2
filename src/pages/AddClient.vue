@@ -484,7 +484,6 @@
                 :isMailingAddressEnable="true"
                 :lossAddressSameAsClient="true"
                 :isAddressRequired="true"
-                :mortgageInfo="mortgageObject"
                 :policyDate="{
                   policyEffectiveDate: insuranceDetails.policyEffectiveDate,
                   policyExpireDate: insuranceDetails.policyExpireDate
@@ -584,7 +583,7 @@
           >
             <div class="q-pa-sm form-card">
               <MortgageForm
-                :mortgageInfo="mortgageObject"
+                :mortgage="mortgageInfo"
                 :isThereSecondMortgage="true"
               />
             </div>
@@ -822,29 +821,20 @@ export default {
   },
   data() {
     return {
-      step: 0,
+      step: 6,
       stepClickValidTill: 0,
-      mortgageObject: {
-        vendorsListDialog: false,
-        vendorDialogFilterByIndustry: '',
-        showVendorDialogFilters: false,
-        addVendorDialog: false,
-        vendorDialogName: '',
-        valueName: '',
-        isSecondMortgageHome: false,
-        isMortgageHomeToggle: false,
-        mortgageInfoDialog: false,
-        mortgageDetails: [
-          {
-            id: '',
-            value: '',
-            loanNumber: '',
-            accountNumber: '',
-            isPrimary: true,
-            notes: ''
-          }
-        ]
-      },
+
+      mortgageInfo: [
+        {
+          id: '',
+          value: '',
+          loanNumber: '',
+          accountNumber: '',
+          isPrimary: true,
+          notes: ''
+        }
+      ],
+
       industryTypeValue: '',
       property: {
         value: '',

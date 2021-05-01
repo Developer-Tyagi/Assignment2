@@ -11,7 +11,7 @@
       <q-card
         bordered
         v-if="mortgageInfo.mortgageName"
-        @click="mortgageList = true"
+        @click="onChooseMortgageClick(index)"
         class="q-my-md q-pa-md"
       >
         <div class="text-bold">{{ mortgageInfo.mortgageName }}</div>
@@ -101,7 +101,7 @@
     <div v-if="mortgageInfo.isSecondMortgageHome">
       <div
         class="custom-select"
-        @click="mortgageList = true"
+        @click="onChooseMortgageClick(index)"
         v-if="!mortgageInfo.mortgageName"
       >
         <div class="select-text">Click for choosing a Second Mortgage</div>
@@ -249,8 +249,8 @@ export default {
     AddMortgage
   },
   props: {
-    mortgageInfo: {
-      type: Object
+    mortgage: {
+      type: Array
     },
     isThereSecondMortgage: {
       type: Boolean
@@ -258,19 +258,25 @@ export default {
   },
   data() {
     return {
+      selectedIndex: 0,
       addMortgageDialog: false,
       constants: constants,
       mortgageList: false
     };
   },
-
+  created() {
+    console.log(this.mortgageInfo, 'mortgage');
+  },
   methods: {
     ...mapActions(['']),
     onSelectMortgageClick() {
       this.mortgageInfo.mortgageList = true;
       this.mortgageInfo.addMortgageDialog = true;
     },
-
+    onChooseMortgageClick(index) {
+      this.selectedIndex = index;
+      this.mortgageList = true;
+    },
     onSecondMortgageToggle() {
       if (this.mortgageInfo.isSecondMortgageHome) {
         this.mortgageInfo.mortgageDetails.push({
@@ -287,8 +293,8 @@ export default {
       }
     },
     onCloseAddMortgageDialogBox(mortgage) {
-      this.mortgageInfo.carrierId = mortgage.id;
-      this.mortgageInfo.carrierName = mortgage.name;
+      this.mortgageInfo.mortgageId = mortgage.id;
+      this.mortgageInfo.mortgageName = mortgage.name;
       this.mortgageInfo.address = mortgage.address;
       this.mortgageInfo.email = mortgage.email;
       this.mortgageInfo.phone = mortgage.phoneNumber
@@ -301,6 +307,7 @@ export default {
       this.mortgageInfo.addMortgageDialog = true;
     },
     onSelectingMortgageList(mortgage) {
+      this.mortgageInfo.mortgageId = mortgage.id;
       this.mortgageInfo.mortgageName = mortgage.name;
       this.mortgageInfo.address = mortgage.address;
       this.mortgageInfo.email = mortgage.email;
