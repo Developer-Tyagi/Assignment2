@@ -821,9 +821,8 @@ export default {
   },
   data() {
     return {
-      step: 6,
+      step: 0,
       stepClickValidTill: 0,
-
       mortgageInfo: [
         {
           id: '',
@@ -1504,7 +1503,7 @@ export default {
             }
           }
         },
-        mortgageInfo: this.mortgageObject.mortgageDetails,
+        mortgageInfo: this.mortgageInfo,
         lossInfo: {
           property: {
             id: responseData.propertyId
@@ -1650,6 +1649,7 @@ export default {
       if (this.stepClickValidTill < this.step) {
         this.stepClickValidTill = this.step;
       }
+
       document.getElementById('step').scrollLeft += 50;
     },
 
