@@ -484,7 +484,6 @@
                 :isMailingAddressEnable="true"
                 :lossAddressSameAsClient="true"
                 :isAddressRequired="true"
-                :mortgageInfo="mortgageObject"
                 :policyDate="{
                   policyEffectiveDate: insuranceDetails.policyEffectiveDate,
                   policyExpireDate: insuranceDetails.policyExpireDate
@@ -575,11 +574,47 @@
               </div>
             </div>
           </q-form>
-          <!-- Expert /Vendor Info -->
+          <!-- Mortgage Info -->
           <q-form
             @submit="onNextButtonClick(6)"
             @reset="onBackButtonClick(6)"
             :hidden="step != 6"
+            ref="mortgageInfo"
+          >
+            <div class="q-pa-sm form-card">
+              <MortgageForm
+                :mortgage="mortgageInfo"
+                :isThereSecondMortgage="true"
+              />
+            </div>
+
+            <div class="row q-pt-md">
+              <div>
+                <q-btn
+                  icon="keyboard_backspace"
+                  text-color="primary"
+                  padding="md"
+                  type="reset"
+                />
+                <span class="q-ml-md text-color-grey">Back</span>
+              </div>
+              <div class="q-ml-auto">
+                <span class="q-mr-md text-color-grey"> Next</span>
+                <q-btn
+                  class="rotate-180"
+                  icon="keyboard_backspace"
+                  text-color="primary"
+                  padding="md"
+                  type="submit"
+                />
+              </div>
+            </div>
+          </q-form>
+          <!-- Expert /Vendor Info -->
+          <q-form
+            @submit="onNextButtonClick(7)"
+            @reset="onBackButtonClick(7)"
+            :hidden="step != 7"
             ref="vendorInfo"
           >
             <div class="q-pa-md form-card">
@@ -763,6 +798,8 @@ import { constants } from '@utils/constant';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import VendorsList from 'components/VendorsList';
 import AddVendor from 'components/AddVendor';
+import MortgageForm from 'components/MortgageForm';
+import MortgagesList from 'components/MortgagesList';
 import { date } from 'quasar';
 const addressService = new AddressService();
 export default {
@@ -778,33 +815,25 @@ export default {
     EstimatingInfo,
     ContractInfo,
     CompanyPersonnel,
-    OfficeTask
+    OfficeTask,
+    MortgageForm,
+    MortgagesList
   },
   data() {
     return {
       step: 0,
       stepClickValidTill: 0,
-      mortgageObject: {
-        vendorsListDialog: false,
-        vendorDialogFilterByIndustry: '',
-        showVendorDialogFilters: false,
-        addVendorDialog: false,
-        vendorDialogName: '',
-        valueName: '',
-        isSecondMortgageHome: false,
-        isMortgageHomeToggle: false,
-        mortgageInfoDialog: false,
-        mortgageDetails: [
-          {
-            id: '',
-            value: '',
-            loanNumber: '',
-            accountNumber: '',
-            isPrimary: true,
-            notes: ''
-          }
-        ]
-      },
+      mortgageInfo: [
+        {
+          id: '',
+          value: '',
+          loanNumber: '',
+          accountNumber: '',
+          isPrimary: true,
+          notes: ''
+        }
+      ],
+
       industryTypeValue: '',
       property: {
         value: '',
@@ -863,6 +892,7 @@ export default {
         { name: 'Loss Info', ref: 'lossInfo' },
         { name: 'property Info', ref: 'property' },
         { name: 'Damage Structure', ref: 'structure' },
+        { name: 'Mortgage Info', ref: 'mortgageInfo' },
         { name: 'Expert/Vendor Info', ref: 'vendorInfo' },
         { name: 'Estimating Info', ref: 'estimatingInfo' },
         { name: 'Contract Info', ref: 'contractInfo' },
@@ -1473,7 +1503,7 @@ export default {
             }
           }
         },
-        mortgageInfo: this.mortgageObject.mortgageDetails,
+        mortgageInfo: this.mortgageInfo,
         lossInfo: {
           property: {
             id: responseData.propertyId
@@ -1619,6 +1649,7 @@ export default {
       if (this.stepClickValidTill < this.step) {
         this.stepClickValidTill = this.step;
       }
+
       document.getElementById('step').scrollLeft += 50;
     },
 

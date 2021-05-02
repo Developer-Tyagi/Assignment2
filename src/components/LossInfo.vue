@@ -620,74 +620,6 @@
           v-model="lossInfo.doesTheOfficeNeedToProvidePpifToTheInsuredToggle"
         />
       </div>
-
-      <!-- Mortgage Details -->
-      <div v-if="isMailingAddressEnable">
-        <div class="row">
-          <p class="q-my-auto form-heading">Is there a mortgage on the home?</p>
-          <q-toggle
-            class="q-ml-auto"
-            v-model="mortgageInfo.isMortgageHomeToggle"
-            @input="onToggleButtonClick"
-          />
-        </div>
-
-        <div
-          v-if="mortgageInfo.isMortgageHomeToggle"
-          @click="mortgageInfo.mortgageInfoDialog = true"
-        >
-          <div class="row">
-            <div class="q-px-xs row">
-              <div v-if="!mortgageInfo.mortgageDetails[0]['id']">
-                Click to select Mortagage
-              </div>
-              <div
-                v-else
-                class="select-text"
-                v-for="(mortgageDetail, index) in mortgageInfo.mortgageDetails"
-              >
-                <span>
-                  {{ mortgageDetail.value }}
-                </span>
-                <span v-if="mortgageInfo.mortgageDetails.length - 1 > index">
-                  ,
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Mortgage Dialog -->
-        <q-dialog
-          v-model="mortgageInfo.mortgageInfoDialog"
-          persistent
-          :maximized="true"
-          transition-show="slide-up"
-          transition-hide="slide-down"
-        >
-          <q-card>
-            <CustomBar
-              @closeDialog="mortgageInfo.mortgageInfoDialog = false"
-              :dialogName="'Mortagage Info'"
-            />
-            <div class="mobile-container-page q-pa-sm form-height">
-              <q-form ref="estimatingInfoForm">
-                <MortgageForm
-                  :mortgageInfo="mortgageInfo"
-                  :isThereSecondMortgageToggle="true"
-                />
-              </q-form>
-            </div>
-            <q-btn
-              label="Save"
-              color="primary"
-              class="button-width-90"
-              @click="mortgageInfo.mortgageInfoDialog = false"
-              size="'xl'"
-            />
-          </q-card>
-        </q-dialog>
-      </div>
     </q-card>
   </div>
 </template>
@@ -717,9 +649,7 @@ export default {
     lossInfo: {
       type: Object
     },
-    mortgageInfo: {
-      type: Object
-    },
+
     isMailingAddressEnable: {
       type: Boolean,
       required: false
@@ -743,27 +673,6 @@ export default {
 
   data() {
     return {
-      mortgageInfo: {
-        vendorsListDialog: false,
-        vendorDialogFilterByIndustry: '',
-        showVendorDialogFilters: false,
-        addVendorDialog: false,
-        vendorDialogName: '',
-        valueName: '',
-        isSecondMortgageHome: false,
-        isMortgageHomeToggle: false,
-        mortgageInfoDialog: false,
-        mortgageDetails: [
-          {
-            id: '',
-            value: '',
-            loanNumber: '',
-            accountNumber: '',
-            isPrimary: true,
-            notes: ''
-          }
-        ]
-      },
       constants: constants,
       lossAddressDetails: {
         houseNumber: '',
@@ -784,7 +693,6 @@ export default {
   },
   created() {
     this.lossInfo.purchaseDate = date.formatDate(Date.now(), 'MM/DD/YYYY');
-    this.$emit('isMortgageDetails', false);
 
     this.getVendors(this.$route.params.id);
   },
@@ -835,34 +743,7 @@ export default {
         this.lossInfo.ppDamagedItems.length = 0;
       }
     },
-    closeAddVendorDialog(e) {
-      this.mortgageInfo.addVendorDialog = false;
-      // this.getVendors();
-      if (e) {
-        this.mortgageInfo.vendorsListDialog = false;
-      } else {
-        this.mortgageInfo.vendorsListDialog = true;
-      }
-    },
 
-    onToggleButtonClick() {
-      if (this.mortgageInfo.mortgageDetails.length > 1) {
-        this.mortgageInfo.mortgageDetails.pop();
-      }
-      if (!this.mortgageInfo.isMortgageHomeToggle) {
-        this.mortgageInfo.isSecondMortgageHome = false;
-        this.mortgageInfo.mortgageDetails = [
-          {
-            id: '',
-            value: '',
-            loanNumber: '',
-            accountNumber: '',
-            isPrimary: true,
-            notes: ''
-          }
-        ];
-      }
-    },
     validateDate,
     setTypes(types, data) {
       const obj = types.find(item => {
@@ -878,38 +759,7 @@ export default {
     deletePPDamagedItem(index) {
       this.$delete(this.lossInfo.ppDamagedItems, index);
     },
-    onSecondMortgageToggle() {
-      if (this.lossInfo.isSecondMortgageHome) {
-        this.lossInfo.mortgageDetails.push({
-          id: '',
-          value: '',
-          loanNumber: '',
-          accountNumber: '',
-          isPrimary: false,
-          notes: ''
-        });
-      } else {
-        this.lossInfo.mortgageDetails.pop();
-      }
-    },
-    onMortgageToggleButtonClick() {
-      if (this.lossInfo.mortgageDetails.length > 1) {
-        this.lossInfo.mortgageDetails.pop();
-      }
-      if (!this.mortgageInfo.isMortgageHomeToggle) {
-        this.lossInfo.isSecondMortgageHome = false;
-        this.lossInfo.mortgageDetails = [
-          {
-            id: '',
-            value: '',
-            loanNumber: '',
-            accountNumber: '',
-            isPrimary: true,
-            notes: ''
-          }
-        ];
-      }
-    },
+
     addPPDamagedItems() {
       this.lossInfo.PPdamagedItemsDailog = false;
       this.lossInfo.ppDamagedItems.push({
