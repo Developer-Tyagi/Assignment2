@@ -65,166 +65,187 @@
         <div class="mobile-container-page-without-search">
           <div class="form-height">
             <q-card class=" q-ma-sm q-pa-sm ">
-              <q-input
-                class="required"
-                dense
-                v-model.number="lossInfo.quantity"
-                label="Quantity"
-                type="number"
-                :rules="[
-                  val => (val && val.length > 0) || 'Please fill the Quantity'
-                ]"
-              />
-              <q-input
-                class="required"
-                dense
-                v-model="lossInfo.PPDamageName"
-                label="Name of item"
-                :rules="[
-                  val => (val && val.length > 0) || 'Please fill Item Name'
-                ]"
-              />
-              <q-input
-                dense
-                v-model="lossInfo.serialNumber"
-                label="Serial Number"
-              />
-
-              <q-input
-                class="required"
-                dense
-                v-model="lossInfo.PPDamageDescription"
-                label="Description of Damages"
-                autogrow
-                :rules="[
-                  val =>
-                    (val && val.length > 0) ||
-                    'Please fill Description of Damages'
-                ]"
-              />
-              <q-input
-                class="required"
-                dense
-                v-model="lossInfo.PPDamageItemDescription"
-                label="Description of Item"
-                autogrow
-                :rules="[
-                  val =>
-                    (val && val.length > 0) || 'Please fill Description of Item'
-                ]"
-              />
-              <div class="row justify-between q-ma-sm">
-                <div class="q-mt-sm">Purchase Price</div>
-                <div>
-                  <q-input
-                    class="required"
+              <q-form ref="PropertyInfo">
+                <div class="row justify-between">
+                  <div class="q-ml-sm q-mt-sm">Quantity</div>
+                  <div>
+                    <q-input
+                      class="required"
+                      dense
+                      v-model.number="lossInfo.quantity"
+                      label="Quantity"
+                      type="number"
+                      :rules="[val => val || 'Please fill the Quantity']"
+                    />
+                  </div>
+                </div>
+                <div class="row justify-between">
+                  <div class="q-ml-sm q-mt-sm">Name of item</div>
+                  <div>
+                    <q-input
+                      class="required"
+                      dense
+                      v-model="lossInfo.PPDamageName"
+                      label="Name of item"
+                      :rules="[
+                        val =>
+                          (val && val.length > 0) || 'Please fill Item Name'
+                      ]"
+                    />
+                  </div>
+                </div>
+                <div class="row justify-between">
+                  <div class="q-ml-sm q-mt-sm">Serial Number</div>
+                  <div>
+                    <q-input
+                      dense
+                      v-model="lossInfo.serialNumber"
+                      label="Serial Number"
+                    />
+                  </div>
+                </div>
+                <div class="q-ml-sm q-mt-sm">Description of Damages</div>
+                <div class="q-ma-sm">
+                  <textarea
+                    class="required full-width"
                     dense
-                    type="number"
-                    v-model.number="lossInfo.purchasePrice"
-                    label="Purchase Price"
+                    v-model="lossInfo.PPDamageDescription"
+                    label="Description of Damages"
+                    rows="3"
                     :rules="[
                       val =>
-                        (val && val.length > 0) || 'Please fill  Purchase Price'
+                        (val && val.length > 0) ||
+                        'Please fill Description of Damages'
+                    ]"
+                  />
+                </div>
+                <div class="q-ml-sm q-mt-sm">Description of Items</div>
+                <div class="q-ma-sm">
+                  <textarea
+                    class="required full-width "
+                    v-model="lossInfo.PPDamageItemDescription"
+                    label="Description of Item"
+                    rows="3"
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) ||
+                        'Please fill Description of Item'
+                    ]"
+                  />
+                </div>
+                <div class="row justify-between q-ml-sm">
+                  <div class="q-mt-sm">Purchase Price</div>
+                  <div>
+                    <q-input
+                      class="required"
+                      dense
+                      type="number"
+                      v-model.number="lossInfo.purchasePrice"
+                      label="Purchase Price"
+                      :rules="[val => val || 'Please fill  Purchase Price']"
+                    >
+                      <template v-slot:prepend>
+                        <q-icon name="$" color="primary"></q-icon> </template
+                    ></q-input>
+                  </div>
+                </div>
+
+                <q-radio
+                  v-model="lossInfo.repairReplaceRadio"
+                  val="Repair"
+                  label="Repair"
+                  :rules="[val => val || 'Please fill Replace Cost']"
+                ></q-radio>
+                <q-radio
+                  class="q-ml-none"
+                  v-model="lossInfo.repairReplaceRadio"
+                  val="Replace"
+                  label="Replace"
+                ></q-radio>
+                <div
+                  class="row justify-between q-my-sm"
+                  v-if="lossInfo.repairReplaceRadio == 'Repair'"
+                >
+                  <div class="q-mt-sm q-ml-sm">Repair Cost</div>
+                  <div>
+                    <q-input
+                      class="required"
+                      dense
+                      type="number"
+                      v-model.number="lossInfo.PPDamagedItemCost"
+                      label="Repair Cost"
+                      :rules="[val => val || 'Please fill repair cost']"
+                    >
+                      <template v-slot:prepend>
+                        <q-icon
+                          name="$"
+                          color="primary"
+                          class="q-mb-sm"
+                        ></q-icon> </template
+                    ></q-input>
+                  </div>
+                </div>
+                <div
+                  class="row justify-between q-my-sm "
+                  v-if="lossInfo.repairReplaceRadio == 'Replace'"
+                >
+                  <div class="q-mt-sm q-ml-sm">Replace Cost</div>
+                  <div>
+                    <q-input
+                      class="required"
+                      dense
+                      type="number"
+                      v-model.number="lossInfo.PPDamagedItemCost"
+                      label="Replace Cost"
+                      :rules="[val => val || 'Please fill Replace Cost']"
+                    >
+                      <template v-slot:prepend>
+                        <q-icon
+                          name="$"
+                          color="primary"
+                          class="q-mb-sm"
+                        ></q-icon> </template
+                    ></q-input>
+                  </div>
+                </div>
+
+                <div class="text-bold q-mt-md">Purchase date</div>
+                <div class="full-width">
+                  <q-input
+                    class="required"
+                    v-model="lossInfo.purchaseDate"
+                    mask="##/##/####"
+                    label="MM/DD/YYYY"
+                    lazy-rules
+                    :rules="[
+                      val =>
+                        (validateDate(val) && val && val.length > 0) ||
+                        'Invalid date!'
                     ]"
                   >
-                    <template v-slot:prepend>
-                      <q-icon name="$" color="primary"></q-icon> </template
-                  ></q-input>
-                </div>
-              </div>
-
-              <q-radio
-                v-model="lossInfo.repairReplaceRadio"
-                val="Repair"
-                label="Repair"
-              ></q-radio>
-              <q-radio
-                class="q-ml-none"
-                v-model="lossInfo.repairReplaceRadio"
-                val="Replace"
-                label="Replace"
-              ></q-radio>
-              <div
-                class="row justify-between q-my-sm"
-                v-if="lossInfo.repairReplaceRadio == 'Repair'"
-              >
-                <div class="q-mt-sm">Repair Cost</div>
-                <div>
-                  <q-input
-                    class="required"
-                    dense
-                    type="number"
-                    v-model.number="lossInfo.PPDamagedItemCost"
-                    label="Repair Cost"
-                  >
-                    <template v-slot:prepend>
+                    <template v-slot:append>
                       <q-icon
-                        name="$"
+                        name="event"
+                        size="sm"
                         color="primary"
-                        class="q-mb-sm"
-                      ></q-icon> </template
-                  ></q-input>
-                </div>
-              </div>
-              <div
-                class="row justify-between q-my-sm "
-                v-if="lossInfo.repairReplaceRadio == 'Replace'"
-              >
-                <div class="q-mt-sm">Replace Cost</div>
-                <div>
-                  <q-input
-                    class="required"
-                    dense
-                    type="number"
-                    v-model.number="lossInfo.PPDamagedItemCost"
-                    label="Replace Cost"
-                  >
-                    <template v-slot:prepend>
-                      <q-icon
-                        name="$"
-                        color="primary"
-                        class="q-mb-sm"
-                      ></q-icon> </template
-                  ></q-input>
-                </div>
-              </div>
-
-              <div class="text-bold q-mt-md">Purchase date</div>
-              <div class="full-width">
-                <q-input
-                  class="required"
-                  v-model="lossInfo.purchaseDate"
-                  mask="##/##/####"
-                  label="MM/DD/YYYY"
-                  lazy-rules
-                  :rules="[
-                    val =>
-                      (validateDate(val) && val && val.length > 0) ||
-                      'Invalid date!'
-                  ]"
-                >
-                  <template v-slot:append>
-                    <q-icon
-                      name="event"
-                      size="sm"
-                      color="primary"
-                      class="cursor-pointer"
-                    >
-                      <q-popup-proxy
-                        ref="qDateProxy"
-                        transition-show="scale"
-                        transition-hide="scale"
+                        class="cursor-pointer"
                       >
-                        <q-date
-                          v-model="lossInfo.purchaseDate"
-                          @input="() => $refs.qDateProxy.hide()"
-                          mask="MM/DD/YYYY"
-                        ></q-date>
-                      </q-popup-proxy>
-                    </q-icon>
-                  </template>
-                </q-input>
-              </div>
+                        <q-popup-proxy
+                          ref="qDateProxy"
+                          transition-show="scale"
+                          transition-hide="scale"
+                        >
+                          <q-date
+                            v-model="lossInfo.purchaseDate"
+                            @input="() => $refs.qDateProxy.hide()"
+                            mask="MM/DD/YYYY"
+                          ></q-date>
+                        </q-popup-proxy>
+                      </q-icon>
+                    </template>
+                  </q-input>
+                </div>
+              </q-form>
             </q-card>
             <br />
           </div>
@@ -297,9 +318,9 @@
         </q-btn>
       </div>
       <div class="row">
-        <p class="q-mt-md form-heading">
-          Is there damage to personal property?
-        </p>
+        <div class=" col-8  q-mt-md form-heading">
+          Is there damage to personal operty?
+        </div>
         <q-toggle
           class="q-ml-auto"
           v-model="lossInfo.isThereDamageToPersonalPropertyToggle"
@@ -307,9 +328,9 @@
         />
       </div>
       <div class="row" v-if="lossInfo.isThereDamageToPersonalPropertyToggle">
-        <p class="q-mx-none q-my-auto form-heading">
+        <div class="col-8  q-mx-none q-my-auto form-heading">
           Is the PA filling out the PPIF at this inspection?
-        </p>
+        </div>
         <q-toggle
           class="q-ml-auto"
           v-model="lossInfo.isPAFillingOutToggle"
@@ -337,7 +358,7 @@
               v-for="(item, index) in lossInfo.ppDamagedItems"
               v-if="lossInfo.ppDamagedItems.length"
             >
-              <q-card flat bordered>
+              <q-card class="q-pa-sm">
                 <div class="text-right">
                   <q-icon
                     v-if="lossInfo.ppDamagedItems.length >= 1"
@@ -349,12 +370,17 @@
                     @click="deletePPDamagedItem(index)"
                   />
                 </div>
-                <div class="row">
-                  <div class="text-bold q-ml-sm text-capitalize q-pt-xs">
+                <div class="row justify-between">
+                  <div>
+                    <q-badge class="q-pa-sm" color="grey-6">
+                      {{ item.radio }}</q-badge
+                    >
+                  </div>
+                  <div class="text-bold  text-capitalize q-pt-xs">
                     {{ item.name }}
                   </div>
-                  <div class="q-ml-auto q-pt-xs" style="margin-right: 30px">
-                    {{ '$' + item.cost }}
+                  <div class="q-pt-xs q-mr-sm text-bold">
+                    {{ '$' + ' ' + item.cost }}
                   </div>
                 </div>
                 <div
@@ -363,20 +389,44 @@
                   <p>{{ item.desc }}</p>
                   <p>{{ item.itemDesc }}</p>
                 </div>
-                <div class="q-ma-sm q-ml-xs">
-                  {{ item.serialNumber }}
+                <div class="row justify-between">
+                  <div class="heading-light col-4">Purchase Price</div>
+                  <div class="heading-light ">$</div>
+                  <div class=" q-mr-sm ">
+                    {{ item.purchasePrice }}
+                  </div>
                 </div>
-                <div class="q-ma-sm q-ml-xs">
-                  {{ item.purchaseDate }}
+                <div class="row justify-between ">
+                  <div class="heading-light col-4">{{ item.radio }} Price</div>
+                  <div class="heading-light">$</div>
+                  <div class=" q-mr-sm ">
+                    {{ item.purchasePrice }}
+                  </div>
                 </div>
-                <div class="q-ma-sm q-ml-xs">
-                  {{ '$' + item.purchasePrice }}
-                </div>
-                <div class="q-ma-sm q-ml-xs">
-                  {{ item.quantity }}
-                </div>
-                <div class="q-ma-sm">
-                  {{ item.radio }}
+                <div class="q-my-sm">
+                  <q-separator />
+                  <div class="row  justify-between q-my-sm">
+                    <div class="heading-light">
+                      Quantity
+                    </div>
+                    <div class="q-mr-sm">
+                      {{ item.quantity }}
+                    </div>
+                  </div>
+                  <div class="row justify-between  q-my-sm">
+                    <div class="heading-light ">
+                      Serial Number
+                    </div>
+                    <div class="q-mr-sm">
+                      {{ item.serialNumber ? item.serialNumber : '-' }}
+                    </div>
+                  </div>
+                  <div class="row   justify-between q-my-sm">
+                    <div class="heading-light  ">Purchase Date</div>
+                    <div class="q-mr-sm">
+                      {{ item.purchaseDate }}
+                    </div>
+                  </div>
                 </div>
               </q-card>
             </div>
@@ -402,9 +452,9 @@
             lossInfo.isThereDamageToPersonalPropertyToggle
         "
       >
-        <p class="q-mx-none q-my-auto form-heading">
+        <div class="col-8  q-mx-none q-my-auto form-heading">
           Is the adjuster going to fill out the PPIF at a later date?
-        </p>
+        </div>
         <q-toggle
           v-if="lossInfo.isThereDamageToPersonalPropertyToggle"
           class="q-ml-auto"
@@ -420,9 +470,9 @@
             !lossInfo.isPAFillingOutToggle
         "
       >
-        <p class="q-mx-none q-my-auto form-heading">
+        <div class="col-8  q-mx-none q-my-auto form-heading">
           Is the client going to prepare the PPIFs?
-        </p>
+        </div>
         <q-toggle
           v-if="lossInfo.isThereDamageToPersonalPropertyToggle"
           class="q-ml-auto"
@@ -436,9 +486,9 @@
             lossInfo.isPAFillingOutToggle == false
         "
       >
-        <p class="q-mx-none q-my-auto form-heading">
+        <div class="col-8  q-mx-none q-my-auto form-heading">
           Do you want to send the insured a PPIF?
-        </p>
+        </div>
         <q-toggle
           v-if="lossInfo.isThereDamageToPersonalPropertyToggle"
           class="q-ml-auto"
@@ -446,9 +496,9 @@
         />
       </div>
       <div class="row" v-if="lossInfo.isPAFillingOutToggle == false">
-        <p class="q-mx-none q-my-auto form-heading">
+        <div class="col-8  q-mx-none q-my-auto form-heading">
           Was a PPIF provided to the insured?
-        </p>
+        </div>
         <q-toggle
           class="q-ml-auto"
           v-model="lossInfo.wasAppifProvidedToTheInsuredToggle"
@@ -461,9 +511,9 @@
             lossInfo.wasAppifProvidedToTheInsuredToggle == false
         "
       >
-        <p class="q-mx-none q-my-auto form-heading">
+        <div class=" col-9 q-mx-none q-my-auto form-heading">
           Does Claim Guru need to provide the insured with a PPIF?
-        </p>
+        </div>
         <q-toggle
           class="q-ml-auto"
           v-model="lossInfo.doesTheOfficeNeedToProvidePpifToTheInsuredToggle"
@@ -691,28 +741,31 @@ export default {
         ];
       }
     },
-    addPPDamagedItems() {
-      this.lossInfo.PPdamagedItemsDailog = false;
-      this.lossInfo.ppDamagedItems.push({
-        name: this.lossInfo.PPDamageName,
-        desc: this.lossInfo.PPDamageDescription,
-        cost: this.lossInfo.PPDamagedItemCost,
-        serialNumber: this.lossInfo.serialNumber,
-        radio: this.lossInfo.repairReplaceRadio,
-        itemDesc: this.lossInfo.PPDamageItemDescription,
-        purchaseDate: this.lossInfo.purchaseDate,
-        purchasePrice: this.lossInfo.purchasePrice,
-        quantity: this.lossInfo.quantity
-      });
-      this.lossInfo.PPDamageName = '';
-      this.lossInfo.PPDamageDescription = '';
-      this.lossInfo.serialNumber = '';
-      this.lossInfo.PPDamagedItemCost = '';
-      this.lossInfo.repairReplaceRadio = false;
-      this.lossInfo.PPDamageItemDescription = '';
+    async addPPDamagedItems() {
+      const success = await this.$refs.PropertyInfo.validate();
+      if (success) {
+        this.lossInfo.PPdamagedItemsDailog = false;
+        this.lossInfo.ppDamagedItems.push({
+          name: this.lossInfo.PPDamageName,
+          desc: this.lossInfo.PPDamageDescription,
+          cost: this.lossInfo.PPDamagedItemCost,
+          serialNumber: this.lossInfo.serialNumber,
+          radio: this.lossInfo.repairReplaceRadio,
+          itemDesc: this.lossInfo.PPDamageItemDescription,
+          purchaseDate: this.lossInfo.purchaseDate,
+          purchasePrice: this.lossInfo.purchasePrice,
+          quantity: this.lossInfo.quantity
+        });
+        this.lossInfo.PPDamageName = '';
+        this.lossInfo.PPDamageDescription = '';
+        this.lossInfo.serialNumber = '';
+        this.lossInfo.PPDamagedItemCost = '';
+        this.lossInfo.repairReplaceRadio = 'Replace';
+        this.lossInfo.PPDamageItemDescription = '';
 
-      this.lossInfo.purchasePrice = '';
-      this.lossInfo.quantity = '';
+        this.lossInfo.purchasePrice = '';
+        this.lossInfo.quantity = '';
+      }
     },
     addDamagedItems() {
       this.lossInfo.osDamagedItems.push({

@@ -798,7 +798,7 @@ export default {
   },
   data() {
     return {
-      step: 1,
+      step: 4,
       stepClickValidTill: 0,
       mortgageObject: {
         vendorsListDialog: false,
@@ -988,7 +988,7 @@ export default {
           }
         },
         isLossAddressSameAsClientToggle: false,
-        repairReplaceRadio: '',
+        repairReplaceRadio: 'Replace',
         serialNumber: '',
         PPDamageName: '',
         PPDamageDescription: '',
