@@ -81,7 +81,7 @@
                     transition-hide="scale"
                   >
                     <q-date
-                      v-model="dueDate"
+                      v-model="newTask.dueDate"
                       @input="() => $refs.qDateProxy.hide()"
                       mask="MM/DD/YYYY"
                     ></q-date>
@@ -89,11 +89,11 @@
                 </q-icon>
               </template>
             </q-input>
-            <q-input label="Assign" v-model="assign" />
+            <q-input label="Assign" v-model="newTask.assign" />
             <div class="row">
               <p class="q-my-auto text-bold">Priority</p>
               <p class="q-my-auto q-ml-auto q-mr-md">
-                {{ priority ? 'High' : 'Low' }}
+                {{ newTask.priority ? 'High' : 'Low' }}
               </p>
 
               <q-toggle v-model="newTask.priority" />

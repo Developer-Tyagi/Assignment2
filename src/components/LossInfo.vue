@@ -453,72 +453,172 @@
         >
         </q-btn>
       </div>
-      <!-- Mortgage Details -->
-      <div v-if="isMailingAddressEnable">
-        <div class="row">
-          <p class="q-my-auto form-heading">Is there a mortgage on the home?</p>
-          <q-toggle
-            class="q-ml-auto"
-            v-model="mortgageInfo.isMortgageHomeToggle"
-            @input="onToggleButtonClick"
-          />
-        </div>
+      <div class="row">
+        <p class="q-mt-md form-heading">
+          Is there damage to personal property?
+        </p>
+        <q-toggle
+          class="q-ml-auto"
+          v-model="lossInfo.isThereDamageToPersonalPropertyToggle"
+          @input="onPersonalPropertyToggleButtonOff"
+        />
+      </div>
+      <div class="row" v-if="lossInfo.isThereDamageToPersonalPropertyToggle">
+        <p class="q-mx-none q-my-auto form-heading">
+          Is the PA filling out the PPIF at this inspection?
+        </p>
+        <q-toggle
+          class="q-ml-auto"
+          v-model="lossInfo.isPAFillingOutToggle"
+          @input="onPersonalPropertyToggleButtonOff"
+        />
+      </div>
 
+      <!-- Persnol Property Damage List -->
+      <div
+        v-if="
+          lossInfo.isThereDamageToPersonalPropertyToggle &&
+            lossInfo.isPAFillingOutToggle
+        "
+      >
+        <br />
         <div
-          v-if="mortgageInfo.isMortgageHomeToggle"
-          @click="mortgageInfo.mortgageInfoDialog = true"
+          v-if="lossInfo.ppDamagedItems.length >= 1"
+          flat
+          bordered
+          scroll
+          class="q-mt-xs"
         >
-          <div class="row">
-            <div class="q-px-xs row">
-              <div v-if="!mortgageInfo.mortgageDetails[0]['id']">
-                Click to select Mortagage
-              </div>
-              <div
-                v-else
-                class="select-text"
-                v-for="(mortgageDetail, index) in mortgageInfo.mortgageDetails"
-              >
-                <span>
-                  {{ mortgageDetail.value }}
-                </span>
-                <span v-if="mortgageInfo.mortgageDetails.length - 1 > index">
-                  ,
-                </span>
-              </div>
+          <div class="items-start q-gutter-md">
+            <div
+              v-for="(item, index) in lossInfo.ppDamagedItems"
+              v-if="lossInfo.ppDamagedItems.length"
+            >
+              <q-card flat bordered>
+                <div class="text-right">
+                  <q-icon
+                    v-if="lossInfo.ppDamagedItems.length >= 1"
+                    class="q-ma-xs"
+                    size="xs"
+                    dense
+                    color="primary"
+                    name="close"
+                    @click="deletePPDamagedItem(index)"
+                  />
+                </div>
+                <div class="row">
+                  <div class="text-bold q-ml-sm text-capitalize q-pt-xs">
+                    {{ item.name }}
+                  </div>
+                  <div class="q-ml-auto q-pt-xs" style="margin-right: 30px">
+                    {{ '$' + item.cost }}
+                  </div>
+                </div>
+                <div
+                  class="q-ml-sm text-capitalize q-pt-xs text-caption q-mr-xl q-my-xs q-px-xs q-ma-xs"
+                >
+                  <p>{{ item.desc }}</p>
+                  <p>{{ item.itemDesc }}</p>
+                </div>
+                <div class="q-ma-sm q-ml-xs">
+                  {{ item.serialNumber }}
+                </div>
+                <div class="q-ma-sm q-ml-xs">
+                  {{ item.purchaseDate }}
+                </div>
+                <div class="q-ma-sm q-ml-xs">
+                  {{ '$' + item.purchasePrice }}
+                </div>
+                <div class="q-ma-sm q-ml-xs">
+                  {{ item.quantity }}
+                </div>
+                <div class="q-ma-sm">
+                  {{ item.radio }}
+                </div>
+              </q-card>
             </div>
           </div>
         </div>
-
-        <!-- Mortgage Dialog -->
-        <q-dialog
-          v-model="mortgageInfo.mortgageInfoDialog"
-          persistent
-          :maximized="true"
-          transition-show="slide-up"
-          transition-hide="slide-down"
-        >
-          <q-card>
-            <CustomBar
-              @closeDialog="mortgageInfo.mortgageInfoDialog = false"
-              :dialogName="'Mortagage Info'"
-            />
-            <div class="mobile-container-page q-pa-sm form-height">
-              <q-form ref="estimatingInfoForm">
-                <MortgageForm
-                  :mortgageInfo="mortgageInfo"
-                  :isThereSecondMortgageToggle="true"
-                />
-              </q-form>
-            </div>
-            <q-btn
-              label="Save"
-              color="primary"
-              class="button-width-90"
-              @click="mortgageInfo.mortgageInfoDialog = false"
-              size="'xl'"
-            />
-          </q-card>
-        </q-dialog>
+        <div>
+          <q-btn
+            label="add item"
+            name="add"
+            class="q-mt-sm"
+            icon="add"
+            size="sm"
+            color="primary"
+            @click="lossInfo.PPdamagedItemsDailog = true"
+          >
+          </q-btn>
+        </div>
+      </div>
+      <div
+        class="row"
+        v-if="
+          !lossInfo.isPAFillingOutToggle &&
+            lossInfo.isThereDamageToPersonalPropertyToggle
+        "
+      >
+        <p class="q-mx-none q-my-auto form-heading">
+          Is the adjuster going to fill out the PPIF at a later date?
+        </p>
+        <q-toggle
+          v-if="lossInfo.isThereDamageToPersonalPropertyToggle"
+          class="q-ml-auto"
+          v-model="lossInfo.isAdjustorFillOutLaterDate"
+        />
+      </div>
+      <div
+        class="row"
+        v-if="
+          !lossInfo.isAdjustorFillOutLaterDate &&
+            lossInfo.isThereDamageToPersonalPropertyToggle &&
+            !lossInfo.isAdjustorFillOutLaterDate &&
+            !lossInfo.isPAFillingOutToggle
+        "
+      >
+        <p class="q-mx-none q-my-auto form-heading">
+          Is the client going to prepare the PPIFs?
+        </p>
+        <q-toggle
+          v-if="lossInfo.isThereDamageToPersonalPropertyToggle"
+          class="q-ml-auto"
+          v-model="lossInfo.isClientGoingToPreparePPIF"
+        />
+      </div>
+      <div
+        class="row"
+        v-if="
+          lossInfo.isClientGoingToPreparePPIF &&
+            lossInfo.isThereDamageToPersonalPropertyToggle
+        "
+      >
+        <p class="q-mx-none q-my-auto form-heading">
+          Do you want to send the insured a PPIF?
+        </p>
+        <q-toggle
+          v-if="lossInfo.isThereDamageToPersonalPropertyToggle"
+          class="q-ml-auto"
+          v-model="lossInfo.doYouWantToSendInsuredPPIF"
+        />
+      </div>
+      <div class="row">
+        <p class="q-mx-none q-my-auto form-heading">
+          Was a PPIF provided to the insured?
+        </p>
+        <q-toggle
+          class="q-ml-auto"
+          v-model="lossInfo.wasAppifProvidedToTheInsuredToggle"
+        />
+      </div>
+      <div class="row">
+        <p class="q-mx-none q-my-auto form-heading">
+          Does Claim Guru PPIF need to be provided?
+        </p>
+        <q-toggle
+          class="q-ml-auto"
+          v-model="lossInfo.doesTheOfficeNeedToProvidePpifToTheInsuredToggle"
+        />
       </div>
     </q-card>
   </div>
@@ -549,9 +649,7 @@ export default {
     lossInfo: {
       type: Object
     },
-    mortgageInfo: {
-      type: Object
-    },
+
     isMailingAddressEnable: {
       type: Boolean,
       required: false
@@ -575,27 +673,6 @@ export default {
 
   data() {
     return {
-      mortgageInfo: {
-        vendorsListDialog: false,
-        vendorDialogFilterByIndustry: '',
-        showVendorDialogFilters: false,
-        addVendorDialog: false,
-        vendorDialogName: '',
-        valueName: '',
-        isSecondMortgageHome: false,
-        isMortgageHomeToggle: false,
-        mortgageInfoDialog: false,
-        mortgageDetails: [
-          {
-            id: '',
-            value: '',
-            loanNumber: '',
-            accountNumber: '',
-            isPrimary: true,
-            notes: ''
-          }
-        ]
-      },
       constants: constants,
       lossAddressDetails: {
         houseNumber: '',
@@ -616,7 +693,6 @@ export default {
   },
   created() {
     this.lossInfo.purchaseDate = date.formatDate(Date.now(), 'MM/DD/YYYY');
-    this.$emit('isMortgageDetails', false);
 
     this.getVendors(this.$route.params.id);
   },
@@ -667,34 +743,7 @@ export default {
         this.lossInfo.ppDamagedItems.length = 0;
       }
     },
-    closeAddVendorDialog(e) {
-      this.mortgageInfo.addVendorDialog = false;
-      // this.getVendors();
-      if (e) {
-        this.mortgageInfo.vendorsListDialog = false;
-      } else {
-        this.mortgageInfo.vendorsListDialog = true;
-      }
-    },
 
-    onToggleButtonClick() {
-      if (this.mortgageInfo.mortgageDetails.length > 1) {
-        this.mortgageInfo.mortgageDetails.pop();
-      }
-      if (!this.mortgageInfo.isMortgageHomeToggle) {
-        this.mortgageInfo.isSecondMortgageHome = false;
-        this.mortgageInfo.mortgageDetails = [
-          {
-            id: '',
-            value: '',
-            loanNumber: '',
-            accountNumber: '',
-            isPrimary: true,
-            notes: ''
-          }
-        ];
-      }
-    },
     validateDate,
     setTypes(types, data) {
       const obj = types.find(item => {
@@ -710,38 +759,7 @@ export default {
     deletePPDamagedItem(index) {
       this.$delete(this.lossInfo.ppDamagedItems, index);
     },
-    onSecondMortgageToggle() {
-      if (this.lossInfo.isSecondMortgageHome) {
-        this.lossInfo.mortgageDetails.push({
-          id: '',
-          value: '',
-          loanNumber: '',
-          accountNumber: '',
-          isPrimary: false,
-          notes: ''
-        });
-      } else {
-        this.lossInfo.mortgageDetails.pop();
-      }
-    },
-    onMortgageToggleButtonClick() {
-      if (this.lossInfo.mortgageDetails.length > 1) {
-        this.lossInfo.mortgageDetails.pop();
-      }
-      if (!this.mortgageInfo.isMortgageHomeToggle) {
-        this.lossInfo.isSecondMortgageHome = false;
-        this.lossInfo.mortgageDetails = [
-          {
-            id: '',
-            value: '',
-            loanNumber: '',
-            accountNumber: '',
-            isPrimary: true,
-            notes: ''
-          }
-        ];
-      }
-    },
+
     addPPDamagedItems() {
       this.lossInfo.PPdamagedItemsDailog = false;
       this.lossInfo.ppDamagedItems.push({
