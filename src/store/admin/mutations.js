@@ -38,7 +38,6 @@ export function setAllWorkFlow(state, allActions) {
 }
 
 export function setOfficeTaskActions(state, actions) {
-  console.log(actions);
   state.officeTaskActions = actions.map(action => ({
     id: action.id,
     ...action.attributes

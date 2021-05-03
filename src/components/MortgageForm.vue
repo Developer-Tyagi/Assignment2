@@ -249,9 +249,7 @@ export default {
       mortgageList: false
     };
   },
-  created() {
-    console.log(this.mortgage, 'mortgage');
-  },
+  created() {},
   methods: {
     ...mapActions(['']),
     onSelectMortgageClick() {
