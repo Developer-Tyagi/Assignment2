@@ -21,7 +21,6 @@ export function setSelectedLead(state, lead) {
       id: lead.id,
       ...lead.attributes
     };
-    console.log(lead.id, 'in muta');
   } else {
     state.selectedLead = {
       id: '',
