@@ -238,6 +238,9 @@ export default {
     },
     isThereSecondMortgage: {
       type: Boolean
+    },
+    isEdit: {
+      type: Boolean
     }
   },
   data() {
@@ -282,6 +285,7 @@ export default {
       this.mortgage[this.selectedIndex].phone = mortgage.phoneNumber
         ? mortgage.phoneNumber[0].number
         : '';
+
       this.mortgageList = false;
       this.addMortgageDialog = false;
     },
