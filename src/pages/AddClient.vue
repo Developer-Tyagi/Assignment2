@@ -1096,26 +1096,10 @@ export default {
       },
 
       estimatingInfo: {
-        addEstimatorDialog: false,
-        addEstimatorValue: { name: '' },
-        honorific3: {
-          id: '',
-          value: '',
-          machineValue: ''
-        },
-        name: '',
-        fname: '',
-        lname: '',
-        email: '',
-        phone: '',
-        type: '',
-        companyName: '',
-        estimatorsListDialog: false,
-
-        estimatorToBeAssigned: '',
+        doesAnEstimatorNeedToBeAssignedToggle: false,
+        estimatorID: '',
         scopeTimeNeeded: '',
-        notesToTheEstimator: '',
-        doesAnEstimatorNeedToBeAssignedToggle: false
+        notesToTheEstimator: ''
       },
       insuranceInfoDialog: false,
 
@@ -1246,8 +1230,6 @@ export default {
       'personnelRoles',
       'roleTypes',
       'userRoles',
-      'getEstimators',
-      'addEstimator',
       'addIndustry',
       'vendorIndustries',
       'propertyTypes'
@@ -1594,6 +1576,13 @@ export default {
         !this.companyPersonnel.personnel.role.machineValue
       ) {
         delete payload.personnel;
+      }
+      if (this.estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle) {
+        payload.estimatingInfo = {
+          estimatorID: this.estimatingInfo.estimatorID,
+          scopeTimeNeeded: this.estimatingInfo.scopeTimeNeeded,
+          notesToTheEstimator: this.estimatingInfo.notesToTheEstimator
+        };
       }
       if (
         this.expertVendorInfo.isAlreadyHiredVendor.length ||

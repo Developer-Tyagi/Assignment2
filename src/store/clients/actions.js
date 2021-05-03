@@ -230,7 +230,7 @@ export async function addEstimator({ dispatch, state }, payload) {
       buildApiData('users', payload)
     );
     dispatch('setLoading', false);
-    return true;
+    return data;
   } catch (e) {
     console.log(e);
     dispatch('setLoading', false);

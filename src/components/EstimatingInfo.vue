@@ -9,7 +9,7 @@
         <q-toggle
           class="q-ml-auto"
           v-model="estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle"
-          @input="EstimatorToggleChange"
+          @input="estimatorToggleChange"
         />
       </div>
 
@@ -17,27 +17,27 @@
         <div
           class="custom-select"
           @click="onClickEstimatorOpen"
-          v-if="!estimatingInfo.addEstimatorValue.name"
+          v-if="!estimatingInfo.estimatorID"
         >
           <div class="select-text">Click for choosing a estimator</div>
         </div>
         <div>
           <q-card
             bordered
-            v-if="estimatingInfo.addEstimatorValue.name"
+            v-if="estimatingInfo.estimatorID"
             @click="onClickEstimatorOpen"
             class="q-my-md q-pa-md"
           >
             <div class="text-bold">
-              {{ estimatingInfo.addEstimatorValue.name }}
+              {{ estimatingInfo.name }}
             </div>
-            <div class="row" v-if="estimatingInfo.addEstimatorValue.phone">
-              {{ estimatingInfo.addEstimatorValue.phone.type }} :
+            <div class="row" v-if="estimatingInfo.phone">
+              {{ estimatingInfo.phone.type }} :
               <span>
-                {{ estimatingInfo.addEstimatorValue.phone.phoneNumber }}
+                {{ estimatingInfo.phone.phoneNumber }}
               </span>
             </div>
-            <div>{{ estimatingInfo.addEstimatorValue.email }}</div>
+            <div>{{ estimatingInfo.email }}</div>
           </q-card>
         </div>
       </div>
@@ -48,6 +48,7 @@
         placeholder="Scope time needed"
         class="time-input"
         type="time"
+        style="outline: none"
       />
       <q-input
         v-if="estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle"
@@ -60,7 +61,7 @@
     </q-card>
     <!-- Estimators List Dialog -->
     <q-dialog
-      v-model="estimatingInfo.estimatorsListDialog"
+      v-model="estimatorsListDialog"
       persistent
       :maximized="true"
       transition-show="slide-up"
@@ -69,7 +70,7 @@
       <q-card>
         <CustomBar
           :dialogName="'Estimators'"
-          @closeDialog="estimatingInfo.estimatorsListDialog = false"
+          @closeDialog="estimatorsListDialog = false"
         />
         <div class="vendor-list">
           <div class="actions-div">
@@ -81,8 +82,8 @@
             <q-separator vertical></q-separator>
             <q-btn
               @click="
-                estimatingInfo.addEstimatorDialog = true;
-                estimatingInfo.estimatorsListDialog = false;
+                addEstimatorDialog = true;
+                estimatorsListDialog = false;
               "
               flat
             >
@@ -127,7 +128,7 @@
 
     <!-- Add Estimator Dialog -->
     <q-dialog
-      v-model="estimatingInfo.addEstimatorDialog"
+      v-model="addEstimatorDialog"
       persistent
       :maximized="true"
       transition-show="slide-up"
@@ -135,7 +136,7 @@
     >
       <q-card>
         <CustomBar
-          @closeDialog="estimatingInfo.addEstimatorDialog = false"
+          @closeDialog="addEstimatorDialog = false"
           :dialogName="'Add New Estimator'"
         />
         <div class="mobile-container-page-without-search">
@@ -143,12 +144,12 @@
             <q-select
               class="required"
               dense
-              v-model="estimatingInfo.honorific3.id"
+              v-model="addEstimatorDialogInfo.honorific.id"
               :options="titles"
               option-value="id"
               option-label="value"
               map-options
-              @input="setTitleName(estimatingInfo.honorific3)"
+              @input="setTitleName(addEstimatorDialogInfo.honorific)"
               behavior="menu"
               emit-value
               options-dense
@@ -162,7 +163,7 @@
             <q-input
               class="required"
               dense
-              v-model="estimatingInfo.fname"
+              v-model="addEstimatorDialogInfo.fname"
               lazy-rules
               :rules="[
                 val => (val && val.length > 0) || 'Please fill the First name'
@@ -171,7 +172,7 @@
             />
 
             <q-input
-              v-model="estimatingInfo.lname"
+              v-model="addEstimatorDialogInfo.lname"
               label="Last Name"
               dense
               class="input-extra-padding"
@@ -179,7 +180,7 @@
             <q-input
               class="required"
               dense
-              v-model="estimatingInfo.email"
+              v-model="addEstimatorDialogInfo.email"
               label="Email"
               lazy-rules
               :rules="[
@@ -191,7 +192,7 @@
             <div class="row justify-between">
               <q-select
                 class="col-5 input-extra-padding"
-                v-model="estimatingInfo.type"
+                v-model="addEstimatorDialogInfo.type"
                 :options="contactTypes"
                 option-value="machineValue"
                 option-label="name"
@@ -205,14 +206,14 @@
               <q-input
                 dense
                 class="col-6 input-extra-padding"
-                v-model.number="estimatingInfo.phone"
+                v-model.number="addEstimatorDialogInfo.phone"
                 label="Phone"
                 mask="(###) ###-####"
               />
             </div>
             <q-input
               dense
-              v-model="estimatingInfo.companyName"
+              v-model="addEstimatorDialog.companyName"
               label="Company name"
             />
           </q-form>
@@ -244,7 +245,24 @@ export default {
     }
   },
   data() {
-    return {};
+    return {
+      addEstimatorDialog: false,
+      estimatorsListDialog: false,
+      addEstimatorDialogInfo: {
+        honorific: {
+          id: '',
+          value: '',
+          machineValue: ''
+        },
+        name: '',
+        fname: '',
+        lname: '',
+        email: '',
+        phone: '',
+        type: '',
+        companyName: ''
+      }
+    };
   },
   created() {
     this.getEstimators();
@@ -256,6 +274,7 @@ export default {
     ...mapActions(['getEstimators', 'addEstimator']),
     validateEmail,
     successMessage,
+
     async onCloseAddEstimator() {
       const success = await this.$refs.addEstimatorForm.validate();
 
@@ -263,32 +282,41 @@ export default {
         const payload = {
           type: 'user',
           contact: {
-            fname: this.estimatingInfo.fname,
-            lname: this.estimatingInfo.lname,
+            fname: this.addEstimatorDialogInfo.fname,
+            lname: this.addEstimatorDialogInfo.lname,
             honorific: {
-              id: this.estimatingInfo.honorific3.id,
-              value: this.estimatingInfo.honorific3.title,
-              machineValue: this.estimatingInfo.honorific3.machineValue
+              id: this.addEstimatorDialogInfo.honorific.id,
+              value: this.addEstimatorDialogInfo.honorific.title,
+              machineValue: this.addEstimatorDialogInfo.honorific.machineValue
             },
             phoneNumber: [
               {
-                type: this.estimatingInfo.type,
-                number: this.estimatingInfo.phone
+                type: this.addEstimatorDialogInfo.type,
+                number: this.addEstimatorDialogInfo.phone
               }
             ]
           },
-          email: this.estimatingInfo.email,
+          email: this.addEstimatorDialogInfo.email,
 
           roles: ['estimator'],
-          companyName: this.estimatingInfo.companyName
+          companyName: this.addEstimatorDialogInfo.companyName
         };
 
-        const response = this.addEstimator(payload);
+        const response = await this.addEstimator(payload);
         if (response) {
-          this.estimatingInfo.addEstimatorValue.name = this.estimatingInfo.fname;
-          this.estimatingInfo.addEstimatorDialog = false;
-          this.successMessage(constants.successMessages.ESTIMATOR);
-          this.getEstimators();
+          this.estimatingInfo.estimatorID = response.id;
+          this.estimatingInfo.name = response.attributes.contact.fname;
+          this.estimatingInfo.phone = {
+            phoneNumber: response.attributes.contact.phoneNumber
+              ? response.attributes.contact.phoneNumber[0].number
+              : '',
+            type: response.attributes.contact.phoneNumber
+              ? response.attributes.contact.phoneNumber[0].type
+              : 'main'
+          };
+
+          this.estimatingInfo.email = response.attributes.email;
+          this.addEstimatorDialog = false;
         }
       }
     },
@@ -301,41 +329,42 @@ export default {
       selectedTitle.value = selected.title;
       selectedTitle.machineValue = selected.machineValue;
     },
+
     onClickEstimatorOpen() {
       this.getEstimators();
-      this.estimatingInfo.estimatorsListDialog = true;
+      this.estimatorsListDialog = true;
     },
-    EstimatorToggleChange() {
-      this.estimatingInfo.addEstimatorInfo = {
+
+    estimatorToggleChange() {
+      this.addEstimatorDialogInfo = {
         name: '',
         fname: '',
         lname: '',
         email: '',
         phone: '',
-        type: ''
+        type: '',
+        honorific: {
+          id: '',
+          value: '',
+          machineValue: ''
+        }
       };
-      this.estimatingInfo.honorific3.id = '';
-      this.estimatingInfo.addEstimatorValue.name = '';
-      this.estimatingInfo.fname = '';
-      this.estimatingInfo.lname = '';
-      this.estimatingInfo.email = '';
-      this.estimatingInfo.phone = '';
-      this.estimatingInfo.type = '';
     },
 
     selectEstimator(value) {
-      this.estimatingInfo.addEstimatorValue.name = value.contact.fname;
-      this.estimatingInfo.addEstimatorValue.phone = {
+      this.estimatingInfo.estimatorID = value.id;
+      this.estimatingInfo.name = value.contact.fname;
+      this.estimatingInfo.phone = {
         phoneNumber: value.contact.phoneNumber
           ? value.contact.phoneNumber[0].number
-          : '-',
+          : '',
         type: value.contact.phoneNumber
           ? value.contact.phoneNumber[0].type
           : 'main'
       };
 
-      this.estimatingInfo.addEstimatorValue.email = value.email;
-      this.estimatingInfo.estimatorsListDialog = false;
+      this.estimatingInfo.email = value.email;
+      this.estimatorsListDialog = false;
     }
   }
 };
