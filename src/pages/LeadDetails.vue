@@ -147,7 +147,6 @@
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import moment from 'moment';
 import { onEmailClick, onPhoneNumberClick } from '@utils/clickable';
 
 export default {
