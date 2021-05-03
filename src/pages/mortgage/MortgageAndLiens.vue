@@ -238,7 +238,7 @@ export default {
           loanNumber: '',
           accountNumber: '',
           isPrimary: true,
-          notes: ''
+          note: ''
         }
       ],
       editMortgageInfo: [
@@ -248,7 +248,7 @@ export default {
           loanNumber: '',
           accountNumber: '',
           isPrimary: true,
-          notes: ''
+          note: ''
         }
       ]
     };
@@ -288,7 +288,7 @@ export default {
       this.editMortgageInfo[0].isPrimary = this.mortgage.mortgages[
         index
       ].isPrimary;
-      this.editMortgageInfo[0].notes = this.mortgage.mortgages[index].note;
+      this.editMortgageInfo[0].note = this.mortgage.mortgages[index].note;
       this.id = this.mortgage.mortgages[index].id;
       this.mortgageID = this.mortgage.mortgages[index].mortgageID;
     },
@@ -302,7 +302,7 @@ export default {
             loanNumber: this.editMortgageInfo[0].loanNumber,
             accountNumber: this.editMortgageInfo[0].accountNumber,
             isPrimary: this.editMortgageInfo[0].isPrimary,
-            notes: this.editMortgageInfo[0].notes
+            note: this.editMortgageInfo[0].note
           }
         }
       };
@@ -338,7 +338,7 @@ export default {
             loanNumber: this.mortgageInfo[0].loanNumber,
             accountNumber: this.mortgageInfo[0].accountNumber,
             isPrimary: this.mortgageInfo[0].isPrimary,
-            notes: this.mortgageInfo[0].notes
+            note: this.mortgageInfo[0].note
           }
         }
       };
@@ -351,7 +351,7 @@ export default {
       this.mortgageInfo[0].value = '';
       this.mortgageInfo[0].loanNumber = '';
       this.mortgageInfo[0].accountNumber = '';
-      this.mortgageInfo[0].notes = '';
+      this.mortgageInfo[0].note = '';
     }
   }
 };
