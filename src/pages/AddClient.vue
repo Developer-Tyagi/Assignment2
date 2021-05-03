@@ -1613,8 +1613,11 @@ export default {
             isAlreadyHired: false
           })
         );
-
-        payload.expertInfo.vendors = vendorsAlreadyExist.concat(vendorsHired);
+        if (vendorsAlreadyExist[0].id) {
+          payload.expertInfo.vendors = vendorsAlreadyExist.concat(vendorsHired);
+        } else {
+          payload.expertInfo.vendors = vendorsHired;
+        }
       }
 
       const response = await this.addClaim(payload);
