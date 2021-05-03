@@ -519,7 +519,7 @@
             :hidden="step != 4"
             ref="property"
           >
-            <div class="q-pa-md form-card " style="min-height: 400px;">
+            <div class="q-pa-md form-card" style="min-height: 400px">
               <PropertyInfo
                 :lossInfo="lossInfo"
                 @lossAddressSame="lossAddressSame"
@@ -563,9 +563,7 @@
             :hidden="step != 5"
             ref="property"
           >
-            <div class="q-pa-md form-card">
-              Damage structure
-            </div>
+            <div class="q-pa-md form-card">Damage structure</div>
             <div class="row q-pt-md">
               <div>
                 <q-btn
@@ -658,9 +656,9 @@
           </q-form>
           <!-- Estimating Info -->
           <q-form
-            @submit="onNextButtonClick(7)"
-            @reset="onBackButtonClick(7)"
-            :hidden="step != 7"
+            @submit="onNextButtonClick(8)"
+            @reset="onBackButtonClick(8)"
+            :hidden="step != 8"
             ref="estimatingInfo"
           >
             <div class="q-pa-md form-card">
@@ -690,9 +688,9 @@
           </q-form>
           <!-- Contract Info Dialog -->
           <q-form
-            @submit="onNextButtonClick(8)"
-            @reset="onBackButtonClick(8)"
-            :hidden="step != 8"
+            @submit="onNextButtonClick(9)"
+            @reset="onBackButtonClick(9)"
+            :hidden="step != 9"
             ref="contractInfo"
           >
             <div class="q-pa-md form-card">
@@ -722,9 +720,9 @@
           </q-form>
           <!-- Company Personnel Dialog-->
           <q-form
-            @submit="onNextButtonClick(9)"
-            @reset="onBackButtonClick(9)"
-            :hidden="step != 9"
+            @submit="onNextButtonClick(10)"
+            @reset="onBackButtonClick(10)"
+            :hidden="step != 10"
             ref="personnelInfo"
           >
             <div class="q-pa-md form-card">
@@ -755,8 +753,8 @@
           <!-- Office Task -->
           <q-form
             @submit="createClientButtonClick()"
-            @reset="onBackButtonClick(10)"
-            :hidden="step != 10"
+            @reset="onBackButtonClick(11)"
+            :hidden="step != 11"
             ref="officeTaskInfo"
           >
             <div class="q-pa-md form-card">
