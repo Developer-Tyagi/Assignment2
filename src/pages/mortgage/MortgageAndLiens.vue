@@ -6,7 +6,9 @@
       /></q-btn>
     </div>
     <div>
-      <ClaimDetail />
+      <div>
+        <ClaimDetail />
+      </div>
       <div class="q-mt-sm" v-if="mortgage.mortgages">
         <q-card
           class="q-ma-md q-pa-md "
@@ -315,7 +317,6 @@ export default {
       };
       await this.deleteClaimMortgageInfo(mortgage);
       this.getMortgage(this.selectedClaimId);
-      // this.$router.push('/mortgages');
     },
     onNameClick(value) {
       this.$router.push('/vendor-details/' + value);
