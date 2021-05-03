@@ -4,10 +4,17 @@
       <div>
         <div class=" q-mx-lg q-mt-md">
           <div class="q-ml-none text-primary">
-            {{ selectedLead['primaryContact']['fname'] }}
-            {{ selectedLead.primaryContact.lname }}
+            <div class="row">
+              {{ selectedLead['primaryContact']['fname'] }}
+              {{ selectedLead.primaryContact.lname }}
+            </div>
+            <q-icon
+              name="create"
+              color="primary"
+              class="edit-icon icon-top"
+              @click="editLeadButtonClick"
+            ></q-icon>
           </div>
-
           <div class="row  q-mt-sm">
             <span class="heading-light col-3"> Email </span>
             <span
@@ -72,7 +79,6 @@
         <q-expansion-item
           group="leadGroup"
           label="Loss Info"
-          default-opened
           header-class="text-primary"
         >
           <q-card>
@@ -235,7 +241,7 @@ export default {
     onEmailClick,
     onPhoneNumberClick,
     sendMap,
-
+    editLeadButtonClick() {},
     onConvertLeadToClientButtonClick(selectedLead) {
       let payload = {
         attributes: selectedLead
