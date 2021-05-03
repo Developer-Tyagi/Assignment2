@@ -834,7 +834,7 @@ export default {
   },
   data() {
     return {
-      step: 11,
+      step: 0,
       stepClickValidTill: 0,
       mortgageInfo: [
         {
