@@ -49,7 +49,7 @@
       <span class="heading-light col-3"> Organization Name </span>
       <span class="q-ml-md col"> {{ selectedLead.organizationName }}</span>
     </div>
-    <div class="row  q-mt-sm" v-if="selectedLead.organizationName">
+    <div class="row  q-mt-sm" v-if="selectedLead.inspectionInfo">
       <span class="heading-light col-3"> Inspection Type </span>
       <span class="q-ml-md col">
         {{

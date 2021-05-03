@@ -17,9 +17,14 @@ export function moveActiveToArchive(state, leadId) {
 
 export function setSelectedLead(state, lead) {
   if (lead && (lead.id || lead.attributes.id)) {
-    state.selectedLead = lead.attributes;
+    state.selectedLead = {
+      id: lead.id,
+      ...lead.attributes
+    };
+    console.log(lead.id, 'in muta');
   } else {
     state.selectedLead = {
+      id: '',
       isOrganization: false,
       organizationName: '',
       primaryContact: {

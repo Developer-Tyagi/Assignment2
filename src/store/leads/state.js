@@ -3,6 +3,7 @@ export default function() {
     activeLeads: [],
     archivedLeads: [],
     selectedLead: {
+      id: '',
       isOrganization: false,
       organizationName: '',
       primaryContact: {
