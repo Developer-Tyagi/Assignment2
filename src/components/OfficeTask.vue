@@ -114,6 +114,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import CustomBar from 'components/CustomBar';
+import { validateDate } from '@utils/validation';
 export default {
   name: 'OfficeTask',
   props: {
@@ -157,7 +158,7 @@ export default {
     addTask() {
       this.$refs.addTask.validate();
       this.newTask.priority = this.newTask.priority ? 'high' : 'low';
-      this.officeTask = getOfficeTaskActions.push(this.newTask);
+      this.officeTaskActions.push(this.newTask);
       this.newTask = {
         dueDate: '',
         name: '',
@@ -167,7 +168,9 @@ export default {
       };
       this.officeTask.actions = this.officeTaskActions;
       this.addNewTaskDialog = false;
-    }
+    },
+
+    validateDate
   }
 };
 </script>
