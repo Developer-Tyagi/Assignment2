@@ -527,7 +527,6 @@
                 :isMailingAddressEnable="true"
                 :lossAddressSameAsClient="true"
                 :isAddressRequired="true"
-                :mortgageInfo="mortgageObject"
                 :policyDate="{
                   policyEffectiveDate: insuranceDetails.policyEffectiveDate,
                   policyExpireDate: insuranceDetails.policyExpireDate
@@ -835,7 +834,7 @@ export default {
   },
   data() {
     return {
-      step: 0,
+      step: 11,
       stepClickValidTill: 0,
       mortgageInfo: [
         {
