@@ -223,6 +223,12 @@ const routes = [
         component: () => import('pages/ActivityLog.vue')
       },
       {
+        path: 'personal-property',
+        name: 'Personal Property ',
+        caseSensitive: true,
+        component: () => import('pages/PersonalProperty.vue')
+      },
+      {
         path: 'add-client',
         name: 'create client',
         caseSensitive: true,
