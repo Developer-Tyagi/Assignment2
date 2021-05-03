@@ -62,6 +62,28 @@
         </q-card-section>
       </q-card>
     </q-dialog>
+    <!-- Alert delete Box -->
+    <q-dialog v-model="alert">
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">Alert</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          Are you sure ! You want to delete This Note!
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn
+            flat
+            label="Delete"
+            color="primary"
+            v-close-popup
+            @click="onclickDelete(indexValue)"
+          ></q-btn>
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
     <div>
       <div class=" icon-top ">
         <q-btn @click="addNote" flat class="q-ml-auto"
@@ -101,7 +123,7 @@
                         name="delete"
                         color="primary"
                         class="q-ml-sm "
-                        @click="onclickDelete(index)"
+                        @click="deleteThisNote(index)"
                       />
                     </div>
                   </div>
@@ -142,6 +164,8 @@ export default {
   components: { CustomBar },
   data() {
     return {
+      indexValue: null,
+      alert: false,
       addNoteDialog: false,
       editNoteDialogBox: false,
       note: '',
@@ -171,17 +195,24 @@ export default {
       'editClaimNotes',
       'deleteClaimNotes'
     ]),
+    deleteThisNote(index) {
+      this.alert = true;
+      this.indexValue = index;
+    },
+
     onEditButtonClick(index) {
       this.noteId = this.claimNotes.attributes.notes[index].id;
       this.editNoteDialogBox = true;
       this.editNote = this.claimNotes.attributes.notes[index].desc;
     },
-    onclickDelete(index) {
+    async onclickDelete(index) {
       const payload = {
         id: this.selectedClaimId,
         noteId: this.claimNotes.attributes.notes[index].id
       };
-      this.deleteClaimNotes(payload);
+      await this.deleteClaimNotes(payload);
+
+      await this.getClaimNotes(this.selectedClaimId);
     },
     addNote() {
       this.addNoteDialog = true;
