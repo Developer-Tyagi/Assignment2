@@ -152,7 +152,7 @@
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import LeadDetail from 'components/LeadDetail';
-import { onEmailClick, onPhoneNumberClick } from '@utils/clickable';
+import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
 export default {
   data() {
     return {};
@@ -170,6 +170,7 @@ export default {
     ...mapMutations(['setSelectedLead']),
     onEmailClick,
     onPhoneNumberClick,
+    sendMap,
 
     onConvertLeadToClientButtonClick(selectedLead) {
       let payload = {
