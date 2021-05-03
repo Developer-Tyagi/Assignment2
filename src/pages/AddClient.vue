@@ -519,7 +519,21 @@
             :hidden="step != 4"
             ref="property"
           >
-            <div class="q-pa-md form-card">Property Info</div>
+            <div class="q-pa-md form-card " style="min-height: 400px;">
+              <PropertyInfo
+                :lossInfo="lossInfo"
+                @lossAddressSame="lossAddressSame"
+                :lossAddressToggleShow="true"
+                :isMailingAddressEnable="true"
+                :lossAddressSameAsClient="true"
+                :isAddressRequired="true"
+                :mortgageInfo="mortgageObject"
+                :policyDate="{
+                  policyEffectiveDate: insuranceDetails.policyEffectiveDate,
+                  policyExpireDate: insuranceDetails.policyExpireDate
+                }"
+              />
+            </div>
             <div class="row q-pt-md">
               <div>
                 <q-btn
@@ -784,6 +798,7 @@ import ContractInfo from 'components/ContractInfo';
 import CompanyPersonnel from 'components/CompanyPersonnel';
 import OfficeTask from 'components/OfficeTask';
 import EstimatingInfo from 'components/EstimatingInfo';
+import PropertyInfo from 'components/PropertyInfo';
 import LossInfo from 'components/LossInfo';
 import ExpertVendorInfo from 'components/ExpertVendorInfo';
 import InsuranceInfo from 'components/InsuranceInfo';
@@ -815,6 +830,7 @@ export default {
     EstimatingInfo,
     ContractInfo,
     CompanyPersonnel,
+    PropertyInfo,
     OfficeTask,
     MortgageForm,
     MortgagesList
@@ -890,7 +906,7 @@ export default {
         { name: 'Mailing Address', ref: 'mailingInfo' },
         { name: 'Insurance Info', ref: 'insuranceInfo' },
         { name: 'Loss Info', ref: 'lossInfo' },
-        { name: 'property Info', ref: 'property' },
+        { name: 'Personal Property', ref: 'property' },
         { name: 'Damage Structure', ref: 'structure' },
         { name: 'Mortgage Info', ref: 'mortgageInfo' },
         { name: 'Expert/Vendor Info', ref: 'vendorInfo' },
@@ -1002,7 +1018,7 @@ export default {
           }
         },
         isLossAddressSameAsClientToggle: false,
-        repairReplaceRadio: '',
+        repairReplaceRadio: 'Replace',
         serialNumber: '',
         PPDamageName: '',
         PPDamageDescription: '',
