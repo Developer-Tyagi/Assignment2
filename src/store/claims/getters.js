@@ -10,3 +10,4 @@ export const settlement = state => state.settlement;
 export const claimTasks = state => state.claimTasks;
 export const mortgage = state => state.mortgage;
 export const phases = state => state.phases;
+export const damageInfo = state => state.damageInfo;
