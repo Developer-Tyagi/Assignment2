@@ -41,7 +41,7 @@ export async function addClaimMortgage({ dispatch, state }, payload) {
   }
 }
 
-// View a single Carrier
+// View a single Mortgage
 export async function getMortgageDetails({ commit, dispatch }, id) {
   dispatch('setLoading', true);
   try {
@@ -178,6 +178,51 @@ export async function editMortgageInfo({ dispatch, state }, mortgage) {
 export async function deleteClaimMortgage({ dispatch }, mortgage) {
   dispatch('setLoading', true);
   console.log(mortgage, 'actions');
+  try {
+    await request.del(
+      `/claims/${mortgage.claimID}/mortgages/${mortgage.mortgageID}`
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Mortgage  Deleted !'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'Error in deleting mortgage.'
+    });
+  }
+}
+
+//API for Update claim mortgage
+export async function updateMortgageInfo({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.put(
+      `/claims/${payload.claimID}/mortgages/${payload.mortgageID}`,
+      buildApiData('claimmortgage', payload.data)
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Mortgage Info  Updated !'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'failed to update mortgage'
+    });
+  }
+}
+
+//Remove mortgage info for given claim
+export async function deleteClaimMortgageInfo({ commit, dispatch }, mortgage) {
+  dispatch('setLoading', true);
   try {
     await request.del(
       `/claims/${mortgage.claimID}/mortgages/${mortgage.mortgageID}`

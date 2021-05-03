@@ -3,7 +3,9 @@ export function setClaims(state, claims) {
 }
 
 export function setMortgage(state, mortgage) {
-  state.mortgage = mortgage;
+  state.mortgage = {
+    ...mortgage.attributes
+  };
 }
 
 export function setClaim(state, claim) {

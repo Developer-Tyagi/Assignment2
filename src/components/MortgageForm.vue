@@ -238,6 +238,9 @@ export default {
     },
     isThereSecondMortgage: {
       type: Boolean
+    },
+    isEdit: {
+      type: Boolean
     }
   },
   data() {
@@ -249,9 +252,7 @@ export default {
       mortgageList: false
     };
   },
-  created() {
-    console.log(this.mortgage, 'mortgage');
-  },
+  created() {},
   methods: {
     ...mapActions(['']),
     onSelectMortgageClick() {
@@ -284,6 +285,7 @@ export default {
       this.mortgage[this.selectedIndex].phone = mortgage.phoneNumber
         ? mortgage.phoneNumber[0].number
         : '';
+
       this.mortgageList = false;
       this.addMortgageDialog = false;
     },

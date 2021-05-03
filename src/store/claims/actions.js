@@ -412,6 +412,7 @@ export async function getMortgage({ commit, dispatch }, id) {
     const { data } = await request.get(`/claims/${id}/mortgages`);
     commit('setMortgage', data);
     dispatch('setLoading', false);
+    return data;
   } catch (e) {
     console.log(e);
     dispatch('setLoading', false);
