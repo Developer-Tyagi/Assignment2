@@ -286,11 +286,9 @@ export default {
         const response = this.addEstimator(payload);
         if (response) {
           this.estimatingInfo.addEstimatorValue.name = this.estimatingInfo.fname;
-
           this.estimatingInfo.addEstimatorDialog = false;
-          this.getEstimators();
           this.successMessage(constants.successMessages.ESTIMATOR);
-          // this.carrierName = this.addEstimatorInfo.fname;
+          this.getEstimators();
         }
       }
     },
