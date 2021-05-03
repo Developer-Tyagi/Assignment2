@@ -132,7 +132,7 @@ export async function getWorkflowAction({ commit, dispatch }) {
   }
 }
 
-export async function getOfficeTaskActions({ commit, dispatch }, params) {
+export async function getOfficeTaskActions({ commit, dispatch }) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.get(`/workflows/claim_new_claim/actions`);
