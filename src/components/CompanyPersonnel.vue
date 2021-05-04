@@ -14,7 +14,9 @@
         label="Select Role"
       />
       <div class="form-heading q-mt-lg">Person Party</div>
+
       <q-select
+        v-if="userRoles.length"
         v-model="companyPersonnel.personParty"
         :options="userRoles"
         :disable="companyPersonnel.isFieldDisable"
@@ -172,6 +174,10 @@ export default {
         role: ''
       }
     };
+  },
+
+  created() {
+    console.log(this.companyPersonnel);
   },
 
   computed: {
