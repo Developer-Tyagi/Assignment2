@@ -276,7 +276,8 @@ export default {
     },
 
     onLeadListClick(lead) {
-      this.$router.push('/details/' + lead.id);
+      // this.$router.push('/details/' + lead.id);
+      this.$router.push('/lead-details/' + lead.id);
     },
 
     search() {
