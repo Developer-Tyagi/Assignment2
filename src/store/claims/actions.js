@@ -265,7 +265,67 @@ export async function getLog({ commit, dispatch }, id) {
     });
   }
 }
+export async function getDamageInfo({ commit, dispatch }, id) {
+  dispatch('setLoading', true);
+  try {
+    // const { data } = await request.get(`claims/${id}/logs`);
+    const data = {
+      id: '605f78dfaad6d08d6385320d',
+      type: 'damageinfo',
+      attributes: {
+        damageItemInfo: {
+          isPPDamaged: true,
+          isPPIFFillNow: true,
+          isPPIFFillLater: false,
+          isClientPreparePPIF: true,
+          isPPIFSendToInsure: true,
+          personal: [
+            {
+              quantity: 2,
+              name: 'Foo',
+              serialNumber: '12121212121212',
+              desc: 'Other structure damage description',
+              purchasePrice: 20.23,
+              purchaseDate: '2020-09-24T11:18:06+00:00',
+              isRepaired: true
+            },
+            {
+              quantity: 10,
+              name: 'Beds',
+              serialNumber: '12121212121212',
+              desc:
+                'Other structure damage description structure damage description  structure damage description  description',
+              purchasePrice: 20.23,
+              purchaseDate: '2020-09-24T11:18:06+00:00',
+              isRepaired: false
+            }
+          ],
+          otherStructure: [
+            {
+              quantity: 2,
+              name: 'Foo',
+              serialNumber: '12121212121212',
+              desc: 'Other structure damage description',
+              purchasePrice: 20.23,
+              purchaseDate: '2020-09-24T11:18:06+00:00',
+              isRepaired: true
+            }
+          ]
+        }
+      }
+    };
 
+    commit('setDamageInfo', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+  }
+}
 export async function getClaimTasks({ commit, dispatch }, id) {
   dispatch('setLoading', true);
   try {

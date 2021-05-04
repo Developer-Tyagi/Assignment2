@@ -361,6 +361,13 @@
               <q-card class="q-pa-sm">
                 <div class="text-right">
                   <q-icon
+                    class="q-ma-xs"
+                    dense
+                    color="primary"
+                    name="create"
+                    @click="OnEditPPdamageItem(index)"
+                  />
+                  <q-icon
                     v-if="lossInfo.ppDamagedItems.length >= 1"
                     class="q-ma-xs"
                     size="xs"
@@ -380,39 +387,15 @@
                     {{ item.name }}
                   </div>
                   <div class="q-pt-xs q-mr-sm text-bold">
-                    {{ '$' + ' ' + item.cost }}
+                    {{ item.quantity }}
                   </div>
                 </div>
                 <div
                   class="q-ml-sm text-capitalize q-pt-xs text-caption q-mr-xl q-my-xs q-px-xs q-ma-xs"
                 >
                   <p>{{ item.desc }}</p>
-                  <p>{{ item.itemDesc }}</p>
-                </div>
-                <div class="row justify-between">
-                  <div class="heading-light col-4">Purchase Price</div>
-                  <div class="heading-light ">$</div>
-                  <div class=" q-mr-sm ">
-                    {{ item.purchasePrice }}
-                  </div>
-                </div>
-                <div class="row justify-between ">
-                  <div class="heading-light col-4">{{ item.radio }} Price</div>
-                  <div class="heading-light">$</div>
-                  <div class=" q-mr-sm ">
-                    {{ item.purchasePrice }}
-                  </div>
                 </div>
                 <div class="q-my-sm">
-                  <q-separator />
-                  <div class="row  justify-between q-my-sm">
-                    <div class="heading-light">
-                      Quantity
-                    </div>
-                    <div class="q-mr-sm">
-                      {{ item.quantity }}
-                    </div>
-                  </div>
                   <div class="row justify-between  q-my-sm">
                     <div class="heading-light ">
                       Serial Number
@@ -426,6 +409,14 @@
                     <div class="q-mr-sm">
                       {{ item.purchaseDate }}
                     </div>
+                  </div>
+                </div>
+                <q-separator />
+                <div class="q-my-sm row justify-between">
+                  <div class="heading-light col-4">Purchase Price</div>
+                  <div class="heading-light ">$</div>
+                  <div class=" q-mr-sm ">
+                    {{ item.purchasePrice }}
                   </div>
                 </div>
               </q-card>
@@ -651,6 +642,27 @@ export default {
       } else {
         return false;
       }
+    },
+    OnEditPPdamageItem(index) {
+      this.lossInfo.quantity = this.lossInfo.ppDamagedItems[index].quantity;
+      this.lossInfo.PPDamageName = this.lossInfo.ppDamagedItems[index].name;
+      this.lossInfo.PPDamageDescription = this.lossInfo.ppDamagedItems[
+        index
+      ].desc;
+      this.lossInfo.serialNumber = this.lossInfo.ppDamagedItems[
+        index
+      ].serialNumber;
+      this.lossInfo.purchasePrice = this.lossInfo.ppDamagedItems[
+        index
+      ].purchasePrice;
+      this.lossInfo.purchaseDate = this.lossInfo.ppDamagedItems[
+        index
+      ].purchaseDate;
+      this.lossInfo.repairReplaceRadio = this.lossInfo.ppDamagedItems[
+        index
+      ].radio;
+
+      this.lossInfo.PPdamagedItemsDailog = true;
     },
 
     onDamageOsToggleButtonOff() {

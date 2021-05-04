@@ -21,6 +21,10 @@ export function setLog(state, log) {
     id: action.id
   }));
 }
+
+export function setDamageInfo(state, damageInfo) {
+  state.damageInfo = damageInfo.attributes;
+}
 export function setClaimNotes(state, claims) {
   state.claimNotes = claims;
 }
