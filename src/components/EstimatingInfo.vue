@@ -31,16 +31,27 @@
             <div class="text-bold">
               {{ estimatingInfo.name }}
             </div>
-            <div class="row" v-if="estimatingInfo.phone">
-              {{ estimatingInfo.phone.type }} :
-              <span>
-                {{ estimatingInfo.phone.phoneNumber }}
-              </span>
+            <div>
+              Phone:
+              <span
+                class="clickLink"
+                @click="onPhoneNumberClick(estimatingInfo.phone, $event)"
+              >
+                {{ estimatingInfo.phone.phoneNumber }}</span
+              >
             </div>
-            <div>{{ estimatingInfo.email }}</div>
+            <div>
+              Email:<span
+                class="clickLink"
+                @click="onEmailClick(estimatingInfo.email, $event)"
+              >
+                {{ estimatingInfo.email }}</span
+              >
+            </div>
           </q-card>
         </div>
       </div>
+      <p class="form-heading q-mb-none">Scope time</p>
       <input
         v-if="estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle"
         dense
@@ -120,7 +131,14 @@
                 {{ estimator.contact.phoneNumber[0].number }}
               </span>
             </div>
-            <div>{{ estimator.email }}</div>
+            <div>
+              Email:<span
+                class="clickLink"
+                @click="onEmailClick(estimator.email, $event)"
+              >
+                {{ estimator.email }}</span
+              >
+            </div>
           </div>
         </div>
       </q-card>
@@ -136,7 +154,7 @@
     >
       <q-card>
         <CustomBar
-          @closeDialog="addEstimatorDialog = false"
+          @closeDialog="closeAddEstimatorDialog"
           :dialogName="'Add New Estimator'"
         />
         <div class="mobile-container-page-without-search">
@@ -235,6 +253,8 @@ import { validateEmail } from '@utils/validation';
 import CustomBar from 'components/CustomBar';
 import { successMessage } from '@utils/validation';
 import { constants } from '@utils/constant';
+import { onPhoneNumberClick, onEmailClick } from '@utils/clickable';
+
 export default {
   name: 'EstimatingInfo',
   components: { CustomBar },
@@ -318,6 +338,20 @@ export default {
           this.estimatingInfo.email = response.attributes.email;
           this.addEstimatorDialog = false;
         }
+        this.addEstimatorDialogInfo = {
+          honorific: {
+            id: '',
+            value: '',
+            machineValue: ''
+          },
+          name: '',
+          fname: '',
+          lname: '',
+          email: '',
+          phone: '',
+          type: '',
+          companyName: ''
+        };
       }
     },
 
@@ -351,6 +385,24 @@ export default {
       };
     },
 
+    closeAddEstimatorDialog() {
+      this.addEstimatorDialogInfo = {
+        honorific: {
+          id: '',
+          value: '',
+          machineValue: ''
+        },
+        name: '',
+        fname: '',
+        lname: '',
+        email: '',
+        phone: '',
+        type: '',
+        companyName: ''
+      };
+      this.addEstimatorDialog = false;
+    },
+
     selectEstimator(value) {
       this.estimatingInfo.estimatorID = value.id;
       this.estimatingInfo.name = value.contact.fname;
@@ -365,7 +417,9 @@ export default {
 
       this.estimatingInfo.email = value.email;
       this.estimatorsListDialog = false;
-    }
+    },
+    onPhoneNumberClick,
+    onEmailClick
   }
 };
 </script>
