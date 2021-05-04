@@ -101,6 +101,19 @@
 <script>
 import { mapActions } from 'vuex';
 import { getToken, getCurrentUser } from '@utils/auth';
+import {
+  Capacitor,
+  Plugins,
+  PushNotification,
+  PushNotificationToken,
+  PushNotificationActionPerformed
+} from '@capacitor/core';
+
+const isPushNotificationsAvailable = Capacitor.isPluginAvailable(
+  'PushNotifications'
+);
+const { PushNotifications } = Plugins;
+
 export default {
   name: 'Login',
   data() {
@@ -127,6 +140,32 @@ export default {
       if (this.login.email && this.login.password) {
         const response = await this.userLogin(loginData);
         if (response) {
+          if (isPushNotificationsAvailable) {
+            PushNotifications.requestPermission().then(result => {
+              if (result.granted) {
+                // Register with Apple / Google to receive push via APNS/FCM
+                PushNotifications.register();
+              } else {
+                // Show some error
+              }
+            });
+            PushNotifications.addListener(
+              'registration',
+              PushNotificationToken => {
+                console.log(
+                  'Push registration success, token: ' +
+                    PushNotificationToken.value
+                );
+                this.signupData.registrationTokens.push(
+                  PushNotificationToken.value
+                );
+              }
+            );
+            PushNotifications.addListener('registrationError', any => {
+              console.log('Error on registration: ' + JSON.stringify(any));
+            });
+          }
+
           this.getUserInfo();
         }
       }
