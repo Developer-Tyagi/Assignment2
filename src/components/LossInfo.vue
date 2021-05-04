@@ -716,18 +716,12 @@ export default {
     ]),
 
     lossDateOption(dateopn) {
-      return dateopn <= date.formatDate(Date.now(), 'YYYY/MM/DD');
-    },
-
-    dateLiesBetween(val) {
-      if (
-        Date.parse(val) <= Date.parse(this.policyDate.policyExpireDate) &&
-        Date.parse(val) >= Date.parse(this.policyDate.policyEffectiveDate)
-      ) {
-        return true;
-      } else {
-        return false;
-      }
+      return (
+        dateopn >=
+          date.formatDate(this.policyDate.policyEffectiveDate, 'YYYY/MM/DD') &&
+        dateopn <=
+          date.formatDate(this.policyDate.policyExpireDate, 'YYYY/MM/DD')
+      );
     },
 
     onDamageOsToggleButtonOff() {
