@@ -29,6 +29,7 @@
         emit-value
         map-options
       />
+      <div v-else>No user exist for this role.</div>
     </q-card>
     <q-card class="q-mt-sm q-pa-sm">
       <div class="form-heading q-mt-lg">Commision/Fee</div>
@@ -166,14 +167,7 @@ export default {
     }
   },
   data() {
-    return {
-      role: {
-        machineValue: ''
-      },
-      params: {
-        role: ''
-      }
-    };
+    return {};
   },
 
   created() {
