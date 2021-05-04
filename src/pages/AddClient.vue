@@ -834,7 +834,7 @@ export default {
   },
   data() {
     return {
-      step: 4,
+      step: 0,
       stepClickValidTill: 0,
       mortgageInfo: [
         {
@@ -982,6 +982,8 @@ export default {
         purchaseDate: '',
         purchasePrice: '',
         quantity: '',
+        repairCost: null,
+        replaceCost: null,
         PPDamageItemDescription: '',
         isPAFillingOutToggle: true,
         doYouWantToSendInsuredPPIF: false,
@@ -1426,6 +1428,7 @@ export default {
       if (!this.selectedLead.id) {
         delete payload.leadID;
       }
+      this.setPayloadForClaim(56);
       const response = await this.addClient(payload);
       this.setSelectedLead();
       if (response && response.id) {
@@ -1441,7 +1444,7 @@ export default {
     async setPayloadForClaim(responseData) {
       const payload = {
         client: {
-          id: responseData.id,
+          // id: responseData.id,
           fname: this.insuredDetails.fname,
           lname: this.insuredDetails.lname
         },
@@ -1521,18 +1524,22 @@ export default {
           serverity: {
             ...this.lossInfo.severityOfClaimType
           },
-          isPPDamaged: this.lossInfo.isThereDamageToPersonalPropertyToggle,
-          isPPIFFillNow: this.lossInfo.isPAFillingOutToggle,
-          isPPIFFillLater: this.lossInfo.isAdjustorFillOutLaterDate,
-          isClientPreparePPIF: this.lossInfo.isClientGoingToPreparePPIF,
-          isPPIFSendToInsure: this.lossInfo.doYouWantToSendInsuredPPIF,
           OSDamageItems: this.lossInfo.osDamagedItems,
-          PPDamageItems: this.lossInfo.ppDamagedItems,
           isPPIF: this.lossInfo.wasAppifProvidedToTheInsuredToggle,
           isNeedPPIF: this.lossInfo
             .doesTheOfficeNeedToProvidePpifToTheInsuredToggle,
           hasHomeMortgage: this.lossInfo.isMortgageHomeToggle,
           isSecondClaim: false
+        },
+        damageInfo: {
+          personal: {
+            isDamaged: this.lossInfo.isThereDamageToPersonalPropertyToggle,
+            isPPIFFillNow: this.lossInfo.isPAFillingOutToggle,
+            isPPIFFillLater: this.lossInfo.isAdjustorFillOutLaterDate,
+            isClientPreparePPIF: this.lossInfo.isClientGoingToPreparePPIF,
+            isPPIFSendToInsure: this.lossInfo.doYouWantToSendInsuredPPIF,
+            items: this.lossInfo.ppDamagedItems
+          }
         },
         expertInfo: {
           vendors: [],
@@ -1571,6 +1578,7 @@ export default {
           }
         ]
       };
+      console.log(payload, 76);
       if (
         !this.companyPersonnel.personnel.role.value &&
         !this.companyPersonnel.personnel.role.machineValue

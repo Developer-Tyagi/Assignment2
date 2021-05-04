@@ -4,7 +4,7 @@
       <ClaimDetail />
       <q-card
         class="q-ma-sm q-pa-sm"
-        v-for="(damage, index) in damageInfo.damageItemInfo.personal"
+        v-for="(damage, index) in damageInfo.damageInfo.personal.items"
       >
         <div class="row justify-between">
           <div>
@@ -16,7 +16,11 @@
             {{ damage.name }}
           </div>
           <div class="q-pt-xs q-mr-sm ">
-            <q-icon name="create" color="primary" @click="onClickEdit(index)" />
+            <q-icon
+              name="create"
+              color="primary"
+              @click="OnEditPPdamageItem(index)"
+            />
           </div>
         </div>
 
@@ -24,6 +28,7 @@
           class="q-ml-sm text-capitalize q-pt-xs text-caption q-mr-xl q-my-xs q-px-xs q-ma-xs"
         >
           <p>{{ damage.desc }}</p>
+          <p>{{ damage.damageDesc }}</p>
         </div>
         <div class="q-my-sm">
           <div class="row justify-between  q-my-sm">
@@ -51,10 +56,23 @@
         </div>
         <q-separator />
         <div class="q-my-sm row justify-between">
-          <div class="heading-light ">Purchase Price</div>
+          <div class="heading-light col-3">Purchase Price</div>
           <div class="heading-light ">$</div>
           <div class="">
             {{ damage.purchasePrice }}
+          </div>
+        </div>
+        <div class="q-my-sm row justify-between">
+          <div class="heading-light col-3 ">
+            {{ damage.replaceCost == null ? 'Repair' : 'Replace' }} Cost
+          </div>
+          <div class="heading-light ">$</div>
+          <div class="">
+            {{
+              damage.replaceCost == null
+                ? damage.repairCost
+                : damage.replaceCost
+            }}
           </div>
         </div>
       </q-card>
@@ -262,8 +280,9 @@
             <q-btn
               label="Save"
               color="primary"
-              class="full-width q-mt-lg text-capitalize"
+              class="full-width text-capitalize"
               size="'xl'"
+              @click="onClickSave"
             ></q-btn>
           </div>
         </q-card>
@@ -280,49 +299,19 @@ import PropertyInfo from 'components/PropertyInfo';
 import moment from 'moment';
 import { date } from 'quasar';
 import { dateToShow } from '@utils/date';
-
+import { dateToSend } from '@utils/date';
 export default {
   name: 'PersonalProperty',
   components: { CustomBar, ClaimDetail, PropertyInfo },
-  // props: {
-  //   lossInfo: {
-  //     type: Object
-  //   },
-  //   mortgageInfo: {
-  //     type: Object
-  //   },
-  //   isMailingAddressEnable: {
-  //     type: Boolean,
-  //     required: false
-  //   },
-  //   lossAddressToggleShow: {
-  //     type: Boolean,
-  //     required: false
-  //   },
-  //   isAddressRequired: {
-  //     type: Boolean,
-  //     required: false
-  //   },
-  //   lossAddressSameAsClient: {
-  //     type: Boolean,
-  //     required: false
-  //   },
-  //   policyDate: {
-  //     type: Object
-  //   }
-  // },
   data() {
     return {
       PPdamagedItemsDailog: false,
       lossInfo: {
+        itemId: '',
         purchaseDate: '',
         purchasePrice: '',
         quantity: '',
         PPDamageItemDescription: '',
-
-        PPdamagedItemsDailog: false,
-        ppDamagedItems: [],
-
         repairReplaceRadio: 'Replace',
         serialNumber: '',
         PPDamageName: '',
@@ -356,10 +345,74 @@ export default {
     this.getSingleClaimDetails(this.selectedClaimId);
   },
   methods: {
-    ...mapActions(['getSingleClaimDetails', 'editClaimInfo', 'getDamageInfo']),
-    onClickEdit(index) {
-      console.log(index);
+    ...mapActions([
+      'getSingleClaimDetails',
+      'editClaimInfo',
+      'getDamageInfo',
+      'updateDamageItem'
+    ]),
+    OnEditPPdamageItem(index) {
+      this.isEdit = true;
+      this.itemId = this.damageInfo.damageInfo.personal.items[index].id;
+      this.currentIndex = index;
+      this.lossInfo.quantity = this.damageInfo.damageInfo.personal.items[
+        index
+      ].quantity;
+      this.lossInfo.PPDamageName = this.damageInfo.damageInfo.personal.items[
+        index
+      ].name;
+      this.lossInfo.PPDamageDescription = this.damageInfo.damageInfo.personal.items[
+        index
+      ].desc;
+      this.lossInfo.PPDamageItemDescription = this.damageInfo.damageInfo.personal.items[
+        index
+      ].damageDesc;
+      this.lossInfo.serialNumber = this.damageInfo.damageInfo.personal.items[
+        index
+      ].serialNumber;
+      this.lossInfo.purchasePrice = this.damageInfo.damageInfo.personal.items[
+        index
+      ].purchasePrice;
+      this.lossInfo.purchaseDate = dateToShow(
+        this.damageInfo.damageInfo.personal.items[index].purchaseDate
+      );
+
+      this.lossInfo.repairReplaceRadio =
+        this.damageInfo.damageInfo.personal.items[index].replaceCost != null
+          ? 'Replace'
+          : 'Repair';
+
+      this.lossInfo.PPDamagedItemCost =
+        this.damageInfo.damageInfo.personal.items[index].replaceCost != null
+          ? this.damageInfo.damageInfo.personal.items[index].replaceCost
+          : this.damageInfo.damageInfo.personal.items[index].repairCost;
+
       this.PPdamagedItemsDailog = true;
+    },
+
+    async onClickSave() {
+      const payload = {
+        id: this.selectedClaimId,
+        itemId: this.itemId,
+        damageInfo: {
+          personal: {
+            item: {
+              quantity: this.lossInfo.quantity,
+              name: this.lossInfo.PPDamageName,
+              serialNumber: this.lossInfo.serialNumber,
+              desc: this.lossInfo.PPDamageDescription,
+              damageDesc: this.lossInfo.PPDamageItemDescription,
+              purchasePrice: this.lossInfo.purchasePrice,
+              purchaseDate: dateToSend(this.lossInfo.purchaseDate)
+            }
+          }
+        }
+      };
+      const success = await this.updateDamageItem(payload);
+      if (success) {
+        await this.getDamageInfo(this.selectedClaimId);
+        this.PPdamagedItemsDailog = false;
+      }
     }
   }
 };

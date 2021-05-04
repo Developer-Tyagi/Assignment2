@@ -265,56 +265,95 @@ export async function getLog({ commit, dispatch }, id) {
     });
   }
 }
+
+export async function updateDamageItem({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      `/claims/${payload.id}/damageinfo/${payload.itemId}`,
+      buildApiData('damageinfo', payload)
+    );
+
+    dispatch('setLoading', false);
+    return data;
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+    return false;
+  }
+}
+
 export async function getDamageInfo({ commit, dispatch }, id) {
   dispatch('setLoading', true);
   try {
-    // const { data } = await request.get(`claims/${id}/logs`);
+    // const { data } = await request.get(`claims/${id}/damageinfo`);
     const data = {
-      id: '605f78dfaad6d08d6385320d',
+      id: '60913eb721196b2105b39900',
       type: 'damageinfo',
       attributes: {
-        damageItemInfo: {
-          isPPDamaged: true,
-          isPPIFFillNow: true,
-          isPPIFFillLater: false,
-          isClientPreparePPIF: true,
-          isPPIFSendToInsure: true,
-          personal: [
-            {
-              quantity: 2,
-              name: 'Foo',
-              serialNumber: '12121212121212',
-              desc: 'Other structure damage description',
-              purchasePrice: 20.23,
-              purchaseDate: '2020-09-24T11:18:06+00:00',
-              isRepaired: true
-            },
-            {
-              quantity: 10,
-              name: 'Beds',
-              serialNumber: '12121212121212',
-              desc:
-                'Other structure damage description structure damage description  structure damage description  description',
-              purchasePrice: 20.23,
-              purchaseDate: '2020-09-24T11:18:06+00:00',
-              isRepaired: false
-            }
-          ],
-          otherStructure: [
-            {
-              quantity: 2,
-              name: 'Foo',
-              serialNumber: '12121212121212',
-              desc: 'Other structure damage description',
-              purchasePrice: 20.23,
-              purchaseDate: '2020-09-24T11:18:06+00:00',
-              isRepaired: true
-            }
-          ]
+        damageInfo: {
+          created: '2021-05-04T12:31:51.096Z',
+          updated: '2021-05-04T12:31:51.096Z',
+          personal: {
+            isDamaged: true,
+            isPPIFFillNow: true,
+            isPPIFFillLater: false,
+            isClientPreparePPIF: true,
+            isPPIFSendToInsure: true,
+            items: [
+              {
+                id: '98888898898988',
+                quantity: 2,
+                name: 'Foo',
+                serialNumber: '12121212121212',
+                desc: 'Other structure damage description',
+                purchasePrice: 20.23,
+                repairCost: null,
+                replaceCost: 0,
+                damageDesc: 'ldjlfds',
+                purchaseDate: '2020-09-24T11:18:06Z'
+              },
+              {
+                id: '4444444444',
+                quantity: 2,
+                name: 'Foo',
+                serialNumber: '12121212121212',
+                desc: 'Other structure damage description',
+                purchasePrice: 20.23,
+                repairCost: 90,
+                replaceCost: null,
+                damageDesc: 'ldjlfds',
+                purchaseDate: '2020-09-24T11:18:06Z'
+              }
+            ]
+          },
+          otherStructure: {
+            isDamaged: true,
+            isPPIFFillNow: true,
+            isPPIFFillLater: false,
+            isClientPreparePPIF: true,
+            isPPIFSendToInsure: true,
+            items: [
+              {
+                id: '60913eb721196b2105b39903',
+                quantity: 2,
+                name: 'Foo',
+                serialNumber: '12121212121212',
+                desc: 'Other structure damage description',
+                purchasePrice: 20.23,
+                repairCost: 34,
+                replaceCost: null,
+                purchaseDate: '2020-09-24T11:18:06Z'
+              }
+            ]
+          }
         }
       }
     };
-
     commit('setDamageInfo', data);
     dispatch('setLoading', false);
   } catch (e) {

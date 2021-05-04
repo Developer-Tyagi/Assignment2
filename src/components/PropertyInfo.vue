@@ -1,54 +1,5 @@
 <template>
   <div class="bg-white full-width">
-    <!-- Damaged Items Dialog Box -->
-    <!-- <q-dialog
-      v-model="lossInfo.damagedItemsDailog"
-      persistent
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <CustomBar
-          @closeDialog="lossInfo.damagedItemsDailog = false"
-          :dialogName="'Add Items'"
-        />
-        <div class="mobile-container-page-without-search">
-          <div class="form-height">
-            <div class="q-page bg-white">
-              <div class="full-width">
-                <q-input dense v-model="lossInfo.OSDamageName" label="Name" />
-                <q-input
-                  dense
-                  v-model="lossInfo.OSDamageDescription"
-                  label="Description"
-                  autogrow
-                />
-                <q-input
-                  dense
-                  mask="#.#"
-                  type="number"
-                  v-model.number="lossInfo.OSDamagedItemCost"
-                  label="Item Cost"
-                >
-                  <template v-slot:prepend>
-                    <q-icon name="$" color="primary" class="q-mb-sm"></q-icon>
-                  </template>
-                </q-input>
-              </div>
-              <br />
-            </div>
-          </div>
-          <q-btn
-            label="Save"
-            color="primary"
-            class="full-width q-mt-auto text-capitalize"
-            size="'xl'"
-            @click="addDamagedItems"
-          ></q-btn>
-        </div>
-      </q-card>
-    </q-dialog> -->
     <!-- PP Damaged Items Dialog Box -->
     <q-dialog
       v-model="lossInfo.PPdamagedItemsDailog"
@@ -172,7 +123,7 @@
                       class="required"
                       dense
                       type="number"
-                      v-model.number="lossInfo.PPDamagedItemCost"
+                      v-model.number="lossInfo.repairCost"
                       label="Repair Cost"
                       :rules="[val => val || 'Please fill repair cost']"
                     >
@@ -195,7 +146,7 @@
                       class="required"
                       dense
                       type="number"
-                      v-model.number="lossInfo.PPDamagedItemCost"
+                      v-model.number="lossInfo.replaceCost"
                       label="Replace Cost"
                       :rules="[val => val || 'Please fill Replace Cost']"
                     >
@@ -259,64 +210,7 @@
         </div>
       </q-card>
     </q-dialog>
-
     <q-card class="q-pa-sm q-mt-sm">
-      <div v-if="lossInfo.isDamageOSToggle">
-        <br />
-        <div
-          v-if="lossInfo.osDamagedItems.length >= 1"
-          flat
-          bordered
-          scroll
-          style="margin-top: 20px"
-        >
-          <div class="items-start q-gutter-md">
-            <div
-              v-for="(item, index) in lossInfo.osDamagedItems"
-              v-if="lossInfo.osDamagedItems.length"
-            >
-              <q-card flat bordered>
-                <div class="text-right">
-                  <q-icon
-                    v-if="lossInfo.osDamagedItems.length >= 1"
-                    size="xs"
-                    class="q-ma-xs"
-                    dense
-                    color="primary"
-                    name="close"
-                    @click="deleteDamagedItem(index)"
-                  />
-                </div>
-                <div>
-                  <div class="row">
-                    <div class="text-bold q-ml-sm text-capitalize q-pt-xs">
-                      {{ item.name }}
-                    </div>
-                    <div class="q-ml-auto q-pt-xs" style="margin-right: 30px">
-                      {{ '$' + item.cost }}
-                    </div>
-                  </div>
-                  <div
-                    class="q-ml-sm text-capitalize q-pt-xs text-caption q-mr-xl q-my-xs q-px-xs q-ma-xs"
-                  >
-                    <p>{{ item.desc }}</p>
-                  </div>
-                </div>
-              </q-card>
-            </div>
-          </div>
-        </div>
-        <!-- <q-btn
-          label="add item"
-          name="add"
-          class="q-mt-sm"
-          icon="add"
-          size="sm"
-          color="primary"
-          @click="lossInfo.damagedItemsDailog = true"
-        > -->
-        <!-- </q-btn> -->
-      </div>
       <div class="row">
         <div class=" col-8  q-mt-md form-heading">
           Is there damage to personal operty?
@@ -394,6 +288,8 @@
                   class="q-ml-sm text-capitalize q-pt-xs text-caption q-mr-xl q-my-xs q-px-xs q-ma-xs"
                 >
                   <p>{{ item.desc }}</p>
+
+                  <p>{{ item.itemDesc }}</p>
                 </div>
                 <div class="q-my-sm">
                   <div class="row justify-between  q-my-sm">
@@ -417,6 +313,17 @@
                   <div class="heading-light ">$</div>
                   <div class=" q-mr-sm ">
                     {{ item.purchasePrice }}
+                  </div>
+                </div>
+                <div class="q-my-sm row justify-between">
+                  <div class="heading-light col-4 ">{{ item.radio }} Cost</div>
+                  <div class="heading-light ">$</div>
+                  <div class="">
+                    {{
+                      item.radio == 'Replace'
+                        ? item.replaceCost
+                        : item.repairCost
+                    }}
                   </div>
                 </div>
               </q-card>
@@ -646,14 +553,15 @@ export default {
       }
     },
     addNewItem() {
-      console.log(43);
       this.lossInfo.quantity = '';
       this.lossInfo.PPDamageName = '';
       this.lossInfo.PPDamageDescription = '';
       this.lossInfo.serialNumber = '';
       this.lossInfo.purchasePrice = '';
-      this.lossInfo.purchaseDate = '';
+      this.lossInfo.purchaseDate = date.formatDate(Date.now(), 'MM/DD/YYYY');
       this.lossInfo.repairReplaceRadio = '';
+      this.lossInfo.repairCost = null;
+      this.lossInfo.replaceCost = null;
       this.lossInfo.PPdamagedItemsDailog = true;
     },
     OnEditPPdamageItem(index) {
@@ -676,6 +584,13 @@ export default {
       this.lossInfo.repairReplaceRadio = this.lossInfo.ppDamagedItems[
         index
       ].radio;
+      this.lossInfo.PPDamageItemDescription = this.lossInfo.ppDamagedItems[
+        index
+      ].itemDesc;
+      this.lossInfo.repairCost = this.lossInfo.ppDamagedItems[index].repairCost;
+      this.lossInfo.replaceCost = this.lossInfo.ppDamagedItems[
+        index
+      ].replaceCost;
 
       this.lossInfo.PPdamagedItemsDailog = true;
     },
@@ -777,20 +692,21 @@ export default {
           this.lossInfo.ppDamagedItems[this.currentIndex] = {
             name: this.lossInfo.PPDamageName,
             desc: this.lossInfo.PPDamageDescription,
-            cost: this.lossInfo.PPDamagedItemCost,
             serialNumber: this.lossInfo.serialNumber,
             radio: this.lossInfo.repairReplaceRadio,
+            repairCost: this.lossInfo.repairCost,
+            replaceCost: this.lossInfo.replaceCost,
             itemDesc: this.lossInfo.PPDamageItemDescription,
             purchaseDate: this.lossInfo.purchaseDate,
             purchasePrice: this.lossInfo.purchasePrice,
             quantity: this.lossInfo.quantity
           };
-          console.log(6);
         } else {
           this.lossInfo.ppDamagedItems.push({
             name: this.lossInfo.PPDamageName,
             desc: this.lossInfo.PPDamageDescription,
-            cost: this.lossInfo.PPDamagedItemCost,
+            repairCost: this.lossInfo.repairCost,
+            replaceCost: this.lossInfo.replaceCost,
             serialNumber: this.lossInfo.serialNumber,
             radio: this.lossInfo.repairReplaceRadio,
             itemDesc: this.lossInfo.PPDamageItemDescription,
@@ -811,18 +727,7 @@ export default {
         this.lossInfo.quantity = '';
       }
     },
-    // addDamagedItems() {
-    //   this.lossInfo.osDamagedItems.push({
-    //     name: this.lossInfo.OSDamageName,
-    //     desc: this.lossInfo.OSDamageDescription,
-    //     cost: this.lossInfo.OSDamagedItemCost
-    //   });
 
-    //   this.lossInfo.damagedItemsDailog = false;
-    //   this.lossInfo.OSDamageName = '';
-    //   this.lossInfo.OSDamageDescription = '';
-    //   this.lossInfo.OSDamagedItemCost = '';
-    // },
     lossAddressSameToggleClick() {
       if (this.lossInfo.isLossAddressSameAsClientToggle) {
         this.$emit('lossAddressSame', true);
