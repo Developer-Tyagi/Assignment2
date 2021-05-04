@@ -153,19 +153,21 @@ export default {
       this.showOfficeActions = this.officeTask.officeActionRequired;
     },
 
-    addTask() {
-      this.$refs.addTask.validate();
-      this.newTask.priority = this.newTask.priority ? 'high' : 'low';
-      this.officeTaskActions.push(this.newTask);
-      this.newTask = {
-        dueDate: '',
-        name: '',
-        isEnabled: true,
-        assignedTo: [],
-        priority: false
-      };
-      this.officeTask.actions = this.officeTaskActions;
-      this.addNewTaskDialog = false;
+    async addTask() {
+      const success = await this.$refs.addTask.validate();
+      if (success) {
+        this.newTask.priority = this.newTask.priority ? 'high' : 'low';
+        this.officeTaskActions.push(this.newTask);
+        this.newTask = {
+          dueDate: '',
+          name: '',
+          isEnabled: true,
+          assignedTo: [],
+          priority: false
+        };
+        this.officeTask.actions = this.officeTaskActions;
+        this.addNewTaskDialog = false;
+      }
     },
 
     validateDate
