@@ -1,40 +1,37 @@
 <template>
   <div class="bg-white full-width">
-    <q-card class="q-pa-sm office-task-card">
-      <div class="row">
-        <p class="q-my-auto text-bold">Office Action Required</p>
-        <q-toggle
-          class="q-ml-auto"
-          v-model="officeTask.officeActionRequired"
-          @input="onOfficeTaskToggleButton()"
-        />
-      </div>
-      <div v-if="showOfficeActions" class="office-task-list">
-        <div class="column" v-for="action in officeTaskActions">
+    <q-card class="q-pa-md">
+      <div>
+        <div class="column" v-for="task in tasks.tasks">
           <div class="row q-pa-sm">
             <div class="flex">
               <q-checkbox
-                v-model="action.isEnabled"
+                v-model="task.isEnabled"
                 color="$primary"
                 class="q-my-auto q-mr-md"
               />
             </div>
             <div class="column">
-              <span class="text-bold text-capitalize">{{ action.name }}</span>
-              <span>{{ action.createdDesc }}</span>
-              <span>{{ action.dueDesc }}</span>
+              <span class="text-bold text-capitalize" v-if="task.name">{{
+                task.name
+              }}</span>
+              <span v-if="task.addedDesc">{{ task.addedDesc }}</span>
+              <span v-if="task.dueDesc">{{ task.dueDesc }}</span>
             </div>
           </div>
         </div>
       </div>
     </q-card>
+
     <q-btn
-      v-if="officeTask.officeActionRequired"
-      class="q-ml-auto flex q-mt-md"
+      label="add custom task"
+      class="fixed-bottom q-my-md q-mx-auto"
       color="primary"
       @click="addNewTaskDialog = true"
-      >add custom task</q-btn
-    >
+      size="md"
+      style="width: 90%"
+    />
+
     <q-dialog
       v-model="addNewTaskDialog"
       persistent
@@ -50,6 +47,7 @@
         <div class="mobile-container-page q-pa-sm form-height">
           <q-form ref="addTask">
             <q-input
+              class="required"
               label="Task Name"
               v-model="newTask.name"
               lazy-rules
@@ -58,6 +56,7 @@
               ]"
             />
             <q-input
+              class="required"
               v-model="newTask.dueDate"
               mask="##/##/####"
               label="Task Date"
@@ -115,13 +114,9 @@
 import { mapActions, mapGetters } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import { validateDate } from '@utils/validation';
+import { dateToSend } from '@utils/date';
 export default {
   name: 'OfficeTask',
-  props: {
-    officeTask: {
-      type: Object
-    }
-  },
 
   components: {
     CustomBar
@@ -140,44 +135,46 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['officeTaskActions'])
+    ...mapGetters(['tasks'])
   },
   created() {
-    this.getOfficeTaskActions();
+    this.getOfficeTasks(this.$route.params.id);
   },
 
   methods: {
-    ...mapActions(['getOfficeTaskActions']),
+    ...mapActions(['getOfficeTasks', 'addOfficeTask']),
 
-    onOfficeTaskToggleButton() {
-      this.showOfficeActions = this.officeTask.officeActionRequired;
-    },
-
-    addTask() {
-      this.$refs.addTask.validate();
-      this.newTask.priority = this.newTask.priority ? 'high' : 'low';
-      this.officeTaskActions.push(this.newTask);
-      this.newTask = {
-        dueDate: '',
-        name: '',
-        isEnabled: true,
-        assignedTo: [],
-        priority: false
-      };
-      this.officeTask.actions = this.officeTaskActions;
-      this.addNewTaskDialog = false;
+    async addTask() {
+      const success = await this.$refs.addTask.validate();
+      if (success) {
+        const payload = {
+          id: this.$route.params.id,
+          data: {
+            name: this.newTask.name,
+            isEnabled: false,
+            priority: this.newTask.priority ? 'high' : 'low',
+            assignedTo: [],
+            actions: {
+              onComplete: [],
+              onOverdue: []
+            },
+            dueDate: dateToSend(this.newTask.dueDate),
+            isCompleted: false,
+            completedOn: null,
+            note: this.newTask.assign
+          }
+        };
+        await this.addOfficeTask(payload);
+        this.addNewTaskDialog = false;
+        this.newTask.name = '';
+        this.newTask.priority = false;
+        this.newTask.dueDate = '';
+        this.newTask.assign = '';
+      }
     },
 
     validateDate
   }
 };
 </script>
-<style>
-.office-task-card {
-  max-height: calc(100vh - 250px);
-}
-.office-task-list {
-  height: calc(100vh - 365px);
-  overflow-y: auto;
-}
-</style>
+<style></style>

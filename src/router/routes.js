@@ -156,6 +156,12 @@ const routes = [
         component: () => import('src/pages/ClaimSummary.vue')
       },
       {
+        path: 'claim-tasks/:id',
+        name: 'claim tasks ',
+        caseSensitive: true,
+        component: () => import('src/pages/ClaimTasks.vue')
+      },
+      {
         path: 'claim-files/:claimId',
         name: 'files ',
         caseSensitive: true,
