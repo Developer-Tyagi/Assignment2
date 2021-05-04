@@ -5,7 +5,6 @@ variables:
   DOCKER_REGISTRY: us-west1-docker.pkg.dev
 
 stages:
-  - test
   - build
   - deploy
   - cleanup
@@ -17,13 +16,16 @@ build_review_image:
   services:
     - docker:18.09.9-dind
   variables:
+    GOOGLE_APPLICATION_CREDENTIALS: /tmp/key.json
+    SOPS_KMS: projects/pre-prod-286801/locations/global/keyRings/sops/cryptoKeys/sops-key
+    APP_ENV: review
     DOCKER_HOST: tcp://127.0.0.1:2375
     DOCKER_IMAGE: us-west1-docker.pkg.dev/pre-prod-286801/claimguru/claimguru-ui:${CI_MERGE_REQUEST_IID}
   script:
-    - cp $env_review .env
+    - echo "$SERVICE_ACCOUNT_KEY" > /tmp/key.json
+    - sops --kms ${SOPS_KMS} -d docker/env.$APP_ENV > .env
     - docker build -t ${DOCKER_IMAGE} .
-    - echo "$SERVICE_ACCOUNT_KEY" > key.json
-    - docker login -u _json_key --password-stdin https://${DOCKER_REGISTRY} < key.json
+    - docker login -u _json_key --password-stdin https://${DOCKER_REGISTRY} < /tmp/key.json
     - docker push ${DOCKER_IMAGE}
   tags:
     - pre-production
@@ -88,13 +90,16 @@ build_master_image:
   services:
     - docker:18.09.9-dind
   variables:
+    GOOGLE_APPLICATION_CREDENTIALS: /tmp/key.json
+    SOPS_KMS: projects/pre-prod-286801/locations/global/keyRings/sops/cryptoKeys/sops-key
+    APP_ENV: pre-production
     DOCKER_HOST: tcp://127.0.0.1:2375
     DOCKER_IMAGE: us-west1-docker.pkg.dev/pre-prod-286801/claimguru/claimguru-ui
   script:
-    - cp $env_pre_prod .env
+    - echo "$SERVICE_ACCOUNT_KEY" > /tmp/key.json
+    - sops --kms ${SOPS_KMS} -d docker/env.$APP_ENV > .env
     - docker build -t ${DOCKER_IMAGE} .
-    - echo "$SERVICE_ACCOUNT_KEY" > key.json
-    - docker login -u _json_key --password-stdin https://${DOCKER_REGISTRY} < key.json
+    - docker login -u _json_key --password-stdin https://${DOCKER_REGISTRY} < /tmp/key.json
     - docker push ${DOCKER_IMAGE}
   tags:
     - pre-production
@@ -135,13 +140,16 @@ build_demo_image:
   services:
     - docker:18.09.9-dind
   variables:
+    GOOGLE_APPLICATION_CREDENTIALS: /tmp/key.json
+    SOPS_KMS: projects/pre-prod-286801/locations/global/keyRings/sops/cryptoKeys/sops-key
+    APP_ENV: demo
     DOCKER_HOST: tcp://127.0.0.1:2375
     DOCKER_IMAGE: us-west1-docker.pkg.dev/pre-prod-286801/claimguru/claimguru-ui:demo
   script:
-    - cp $env_demo .env
+    - echo "$SERVICE_ACCOUNT_KEY" > /tmp/key.json
+    - sops --kms ${SOPS_KMS} -d docker/env.$APP_ENV > .env
     - docker build -t ${DOCKER_IMAGE} .
-    - echo "$SERVICE_ACCOUNT_KEY" > key.json
-    - docker login -u _json_key --password-stdin https://${DOCKER_REGISTRY} < key.json
+    - docker login -u _json_key --password-stdin https://${DOCKER_REGISTRY} < /tmp/key.json
     - docker push ${DOCKER_IMAGE}
   tags:
     - pre-production
