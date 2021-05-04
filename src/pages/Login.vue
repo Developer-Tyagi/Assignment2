@@ -108,6 +108,7 @@ import {
   PushNotificationToken,
   PushNotificationActionPerformed
 } from '@capacitor/core';
+import { LocalStorage } from 'quasar';
 
 const isPushNotificationsAvailable = Capacitor.isPluginAvailable(
   'PushNotifications'
@@ -156,9 +157,7 @@ export default {
                   'Push registration success, token: ' +
                     PushNotificationToken.value
                 );
-                this.signupData.registrationTokens.push(
-                  PushNotificationToken.value
-                );
+                localStorage.setItem('fmcToken', PushNotificationToken.value);
               }
             );
             PushNotifications.addListener('registrationError', any => {
