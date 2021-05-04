@@ -202,15 +202,13 @@
 
       <div class="full-width">
         <q-input
+          class="required"
           dense
           v-model="lossInfo.dateOfLoss"
           mask="##/##/####"
           label="MM/DD/YYYY"
           lazy-rules
-          :rules="[
-            val =>
-              dateLiesBetween(val) || 'Date is after policy effective date!'
-          ]"
+          :rules="[val => validateDate(val) || 'Loss of date is mandatory']"
         >
           <template v-slot:append>
             <q-icon
