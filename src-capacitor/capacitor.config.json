@@ -1,7 +1,12 @@
 {
-  "appId": "org.capacitor.quasar.app",
+  "appId": "com.claimguru.preprod",
   "appName": "claimguru",
   "bundledWebRuntime": false,
   "npmClient": "yarn",
-  "webDir": "www"
+  "webDir": "www",
+  "plugins": {
+    "PushNotifications": {
+      "presentationOptions": ["badge", "sound", "alert"]
+    }
+  }
 }
