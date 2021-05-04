@@ -52,6 +52,7 @@ review_deploy:
     - sed -i "s/CI_COMMIT_SHORT_SHA/${CI_COMMIT_SHORT_SHA}/g" k8s/dev/crd-spec.yaml
     - sed -i "s/CI_MERGE_REQUEST_IID/${CI_MERGE_REQUEST_IID}/g" k8s/dev/crd-spec.yaml
     - sed -i "s~DOCKER_IMAGE~${DOCKER_IMAGE}~g" k8s/dev/crd-spec.yaml
+    - sed -i "s/CI_JOB_ID/${CI_JOB_ID}/g" k8s/dev/crd-spec.yaml
     - kubectl apply -f k8s/dev/crd-spec.yaml --namespace ${KUBE_NAMESPACE}
   environment:
     name: review/$CI_COMMIT_REF_NAME
@@ -124,6 +125,7 @@ pre_prod_deploy:
     - kubectl create secret generic app-sa-key --from-file /tmp/key.json --namespace ${KUBE_NAMESPACE} --dry-run -o yaml | kubectl apply -f -
     - sed -i "s/CI_COMMIT_SHORT_SHA/${CI_COMMIT_SHORT_SHA}/g" k8s/pre-prod/crd-spec.yaml
     - sed -i "s~DOCKER_IMAGE~${DOCKER_IMAGE}~g" k8s/pre-prod/crd-spec.yaml
+    - sed -i "s/CI_JOB_ID/${CI_JOB_ID}/g" k8s/pre-prod/crd-spec.yaml
     - kubectl apply -f k8s/pre-prod/crd-spec.yaml --namespace ${KUBE_NAMESPACE}
   environment:
     name: pre-production
@@ -175,6 +177,7 @@ demo_deploy:
     - kubectl create secret generic app-sa-key --from-file /tmp/key.json --namespace ${KUBE_NAMESPACE} --dry-run -o yaml | kubectl apply -f -
     - sed -i "s/CI_COMMIT_SHORT_SHA/${CI_COMMIT_SHORT_SHA}/g" k8s/demo/crd-spec.yaml
     - sed -i "s~DOCKER_IMAGE~${DOCKER_IMAGE}~g" k8s/demo/crd-spec.yaml
+    - sed -i "s/CI_JOB_ID/${CI_JOB_ID}/g" k8s/demo/crd-spec.yaml
     - kubectl apply -f k8s/demo/crd-spec.yaml --namespace ${KUBE_NAMESPACE}
   environment:
     name: demo
