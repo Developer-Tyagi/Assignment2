@@ -1,7 +1,7 @@
 <template>
   <div class="bg-white full-width">
     <!-- Damaged Items Dialog Box -->
-    <q-dialog
+    <!-- <q-dialog
       v-model="lossInfo.damagedItemsDailog"
       persistent
       :maximized="true"
@@ -48,7 +48,7 @@
           ></q-btn>
         </div>
       </q-card>
-    </q-dialog>
+    </q-dialog> -->
     <!-- PP Damaged Items Dialog Box -->
     <q-dialog
       v-model="lossInfo.PPdamagedItemsDailog"
@@ -306,7 +306,7 @@
             </div>
           </div>
         </div>
-        <q-btn
+        <!-- <q-btn
           label="add item"
           name="add"
           class="q-mt-sm"
@@ -314,8 +314,8 @@
           size="sm"
           color="primary"
           @click="lossInfo.damagedItemsDailog = true"
-        >
-        </q-btn>
+        > -->
+        <!-- </q-btn> -->
       </div>
       <div class="row">
         <div class=" col-8  q-mt-md form-heading">
@@ -431,7 +431,7 @@
             icon="add"
             size="sm"
             color="primary"
-            @click="lossInfo.PPdamagedItemsDailog = true"
+            @click="addNewItem()"
           >
           </q-btn>
         </div>
@@ -565,6 +565,8 @@ export default {
 
   data() {
     return {
+      isEdit: '',
+      currentIndex: '',
       mortgageInfo: {
         vendorsListDialog: false,
         vendorDialogFilterByIndustry: '',
@@ -643,7 +645,20 @@ export default {
         return false;
       }
     },
+    addNewItem() {
+      console.log(43);
+      this.lossInfo.quantity = '';
+      this.lossInfo.PPDamageName = '';
+      this.lossInfo.PPDamageDescription = '';
+      this.lossInfo.serialNumber = '';
+      this.lossInfo.purchasePrice = '';
+      this.lossInfo.purchaseDate = '';
+      this.lossInfo.repairReplaceRadio = '';
+      this.lossInfo.PPdamagedItemsDailog = true;
+    },
     OnEditPPdamageItem(index) {
+      this.isEdit = true;
+      this.currentIndex = index;
       this.lossInfo.quantity = this.lossInfo.ppDamagedItems[index].quantity;
       this.lossInfo.PPDamageName = this.lossInfo.ppDamagedItems[index].name;
       this.lossInfo.PPDamageDescription = this.lossInfo.ppDamagedItems[
@@ -755,19 +770,36 @@ export default {
     },
     async addPPDamagedItems() {
       const success = await this.$refs.PropertyInfo.validate();
+      if (this.isEdit == true) {
+      }
       if (success) {
+        if (this.isEdit == true) {
+          this.lossInfo.ppDamagedItems[this.currentIndex] = {
+            name: this.lossInfo.PPDamageName,
+            desc: this.lossInfo.PPDamageDescription,
+            cost: this.lossInfo.PPDamagedItemCost,
+            serialNumber: this.lossInfo.serialNumber,
+            radio: this.lossInfo.repairReplaceRadio,
+            itemDesc: this.lossInfo.PPDamageItemDescription,
+            purchaseDate: this.lossInfo.purchaseDate,
+            purchasePrice: this.lossInfo.purchasePrice,
+            quantity: this.lossInfo.quantity
+          };
+          console.log(6);
+        } else {
+          this.lossInfo.ppDamagedItems.push({
+            name: this.lossInfo.PPDamageName,
+            desc: this.lossInfo.PPDamageDescription,
+            cost: this.lossInfo.PPDamagedItemCost,
+            serialNumber: this.lossInfo.serialNumber,
+            radio: this.lossInfo.repairReplaceRadio,
+            itemDesc: this.lossInfo.PPDamageItemDescription,
+            purchaseDate: this.lossInfo.purchaseDate,
+            purchasePrice: this.lossInfo.purchasePrice,
+            quantity: this.lossInfo.quantity
+          });
+        }
         this.lossInfo.PPdamagedItemsDailog = false;
-        this.lossInfo.ppDamagedItems.push({
-          name: this.lossInfo.PPDamageName,
-          desc: this.lossInfo.PPDamageDescription,
-          cost: this.lossInfo.PPDamagedItemCost,
-          serialNumber: this.lossInfo.serialNumber,
-          radio: this.lossInfo.repairReplaceRadio,
-          itemDesc: this.lossInfo.PPDamageItemDescription,
-          purchaseDate: this.lossInfo.purchaseDate,
-          purchasePrice: this.lossInfo.purchasePrice,
-          quantity: this.lossInfo.quantity
-        });
         this.lossInfo.PPDamageName = '';
         this.lossInfo.PPDamageDescription = '';
         this.lossInfo.serialNumber = '';
@@ -779,18 +811,18 @@ export default {
         this.lossInfo.quantity = '';
       }
     },
-    addDamagedItems() {
-      this.lossInfo.osDamagedItems.push({
-        name: this.lossInfo.OSDamageName,
-        desc: this.lossInfo.OSDamageDescription,
-        cost: this.lossInfo.OSDamagedItemCost
-      });
+    // addDamagedItems() {
+    //   this.lossInfo.osDamagedItems.push({
+    //     name: this.lossInfo.OSDamageName,
+    //     desc: this.lossInfo.OSDamageDescription,
+    //     cost: this.lossInfo.OSDamagedItemCost
+    //   });
 
-      this.lossInfo.damagedItemsDailog = false;
-      this.lossInfo.OSDamageName = '';
-      this.lossInfo.OSDamageDescription = '';
-      this.lossInfo.OSDamagedItemCost = '';
-    },
+    //   this.lossInfo.damagedItemsDailog = false;
+    //   this.lossInfo.OSDamageName = '';
+    //   this.lossInfo.OSDamageDescription = '';
+    //   this.lossInfo.OSDamagedItemCost = '';
+    // },
     lossAddressSameToggleClick() {
       if (this.lossInfo.isLossAddressSameAsClientToggle) {
         this.$emit('lossAddressSame', true);
