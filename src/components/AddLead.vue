@@ -1262,6 +1262,15 @@ export default {
         .inspectionInfo
         ? this.selectedLead.inspectionInfo.duration
         : '';
+      this.primaryDetails.isOrganization = this.selectedLead.isOrganization
+        ? this.selectedLead.isOrganization
+        : '';
+      if (!this.selectedLead.isOrganization) {
+        this.primaryDetails.isOrganization = false;
+      }
+      this.primaryDetails.organizationName = this.selectedLead.isOrganization
+        ? this.selectedLead.organizationName
+        : '';
     }
 
     //Current Date
