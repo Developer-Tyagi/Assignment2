@@ -12,7 +12,7 @@ stages:
 # This task creates image for MR review
 build_review_image:
   stage: build
-  image: docker:git
+  image: us-west1-docker.pkg.dev/pre-prod-286801/cilalabs/common-utils/git-sops
   services:
     - docker:18.09.9-dind
   variables:
@@ -86,7 +86,7 @@ review_cleanup:
 # This task creates master image.
 build_master_image:
   stage: build
-  image: docker:git
+  image: us-west1-docker.pkg.dev/pre-prod-286801/cilalabs/common-utils/git-sops
   services:
     - docker:18.09.9-dind
   variables:
@@ -136,7 +136,7 @@ pre_prod_deploy:
 # This task creates demo image.
 build_demo_image:
   stage: build
-  image: docker:git
+  image: us-west1-docker.pkg.dev/pre-prod-286801/cilalabs/common-utils/git-sops
   services:
     - docker:18.09.9-dind
   variables:
