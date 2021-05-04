@@ -117,6 +117,12 @@ const routes = [
         caseSensitive: true,
         component: () => import('pages/AddLeadDetails.vue')
       },
+      {
+        path: 'edit-lead-details/:id?',
+        name: 'edit  lead',
+        caseSensitive: true,
+        component: () => import('pages/EditLeadDetails.vue')
+      },
 
       {
         path: 'clients',

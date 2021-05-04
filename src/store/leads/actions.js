@@ -92,3 +92,26 @@ export async function getLeadDetails({ commit, dispatch }, id) {
     });
   }
 }
+
+export async function editLeadDetails({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.patch(
+      `/leads/${payload.id}`,
+      buildApiData('claims', payload.data)
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Lead Info Updated Successfully!'
+    });
+    return data;
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'Failed to update Lead Info! please try again !'
+    });
+  }
+}

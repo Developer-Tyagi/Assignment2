@@ -221,8 +221,8 @@
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import CustomBar from 'components/CustomBar';
-
 import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
+
 export default {
   data() {
     return {};
@@ -241,7 +241,10 @@ export default {
     onEmailClick,
     onPhoneNumberClick,
     sendMap,
-    editLeadButtonClick() {},
+    editLeadButtonClick() {
+      this.isEdit = true;
+      this.$router.push('/edit-lead-details/' + this.$route.params.id);
+    },
     onConvertLeadToClientButtonClick(selectedLead) {
       let payload = {
         attributes: selectedLead

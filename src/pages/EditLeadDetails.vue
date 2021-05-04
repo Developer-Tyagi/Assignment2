@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <AddLead :isEdit="false" />
+    <AddLead :isEdit="true" />
   </q-page>
 </template>
 <script>
