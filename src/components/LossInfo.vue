@@ -208,7 +208,7 @@
           mask="##/##/####"
           label="MM/DD/YYYY"
           lazy-rules
-          :rules="[val => validateDate(val) || 'Loss of date is mandatory']"
+          :rules="[val => dateLiesBetween(val)]"
         >
           <template v-slot:append>
             <q-icon
@@ -720,6 +720,21 @@ export default {
         dateopn <=
           date.formatDate(this.policyDate.policyExpireDate, 'YYYY/MM/DD')
       );
+    },
+
+    dateLiesBetween(val) {
+      if (validateDate(val)) {
+        if (
+          Date.parse(val) <= Date.parse(this.policyDate.policyExpireDate) &&
+          Date.parse(val) >= Date.parse(this.policyDate.policyEffectiveDate)
+        ) {
+          return true;
+        } else {
+          return 'Date is after policy effective date';
+        }
+      } else {
+        return 'Invalid date';
+      }
     },
 
     onDamageOsToggleButtonOff() {
