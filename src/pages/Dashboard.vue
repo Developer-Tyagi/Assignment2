@@ -58,9 +58,7 @@
             <span class="q-ml-auto">Recent Activity</span>
           </div>
           <div class="row">
-            <span>
-              <small class="opacity-50"> File No. {{ dashboard }}</small></span
-            >
+            <span> <small class="opacity-50"> File No. 12345678</small></span>
             <span class="q-ml-auto">
               <small class="opacity-50"> Date of Activity</small></span
             >
