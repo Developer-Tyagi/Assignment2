@@ -1,5 +1,6 @@
 <template>
   <div class="bg-white full-width">
+    <ClaimDetail />
     <q-card class="q-pa-md">
       <div>
         <div class="column" v-for="task in tasks.tasks">
@@ -113,13 +114,15 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import CustomBar from 'components/CustomBar';
+import ClaimDetail from 'components/ClaimDetail';
 import { validateDate } from '@utils/validation';
 import { dateToSend } from '@utils/date';
 export default {
   name: 'OfficeTask',
 
   components: {
-    CustomBar
+    CustomBar,
+    ClaimDetail
   },
   data() {
     return {
