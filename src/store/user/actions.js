@@ -386,7 +386,7 @@ export async function sendPushNotificationToken({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.post(
-      '/pushtokens',
+      'users/pushtokens',
       buildApiData('pushtokens', payload)
     );
     this.setFCMToken(payload.token);
@@ -409,12 +409,11 @@ export async function deletePushNotificationToken(
 ) {
   dispatch('setLoading', true);
   try {
-    await request.delWithData(`/pushtokens}`, payload);
+    const { data } = await request.delWithData(
+      `users/pushtokens}`,
+      buildApiData('pushtokens', payload)
+    );
     dispatch('setLoading', false);
-    dispatch('setNotification', {
-      type: 'positive',
-      message: 'Carrier  has been deleted successfully !'
-    });
   } catch (e) {
     console.log(e);
     dispatch('setLoading', false);
