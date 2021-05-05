@@ -7,7 +7,11 @@ export function setMortgage(state, mortgage) {
     ...mortgage.attributes
   };
 }
-
+export function setOfficeTasks(state, tasks) {
+  state.tasks = {
+    ...tasks.attributes
+  };
+}
 export function setClaim(state, claim) {
   state.claim = {
     id: claim.id,

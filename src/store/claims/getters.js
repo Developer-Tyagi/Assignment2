@@ -11,3 +11,4 @@ export const claimTasks = state => state.claimTasks;
 export const mortgage = state => state.mortgage;
 export const phases = state => state.phases;
 export const damageInfo = state => state.damageInfo;
+export const tasks = state => state.tasks;
