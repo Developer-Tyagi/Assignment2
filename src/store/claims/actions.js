@@ -290,70 +290,7 @@ export async function updateDamageItem({ dispatch, state }, payload) {
 export async function getDamageInfo({ commit, dispatch }, id) {
   dispatch('setLoading', true);
   try {
-    // const { data } = await request.get(`claims/${id}/damageinfo`);
-    const data = {
-      id: '60913eb721196b2105b39900',
-      type: 'damageinfo',
-      attributes: {
-        damageInfo: {
-          created: '2021-05-04T12:31:51.096Z',
-          updated: '2021-05-04T12:31:51.096Z',
-          personal: {
-            isDamaged: true,
-            isPPIFFillNow: true,
-            isPPIFFillLater: false,
-            isClientPreparePPIF: true,
-            isPPIFSendToInsure: true,
-            items: [
-              {
-                id: '98888898898988',
-                quantity: 2,
-                name: 'Foo',
-                serialNumber: '12121212121212',
-                desc: 'Other structure damage description',
-                purchasePrice: 20.23,
-                repairCost: null,
-                replaceCost: 0,
-                damageDesc: 'ldjlfds',
-                purchaseDate: '2020-09-24T11:18:06Z'
-              },
-              {
-                id: '4444444444',
-                quantity: 2,
-                name: 'Foo',
-                serialNumber: '12121212121212',
-                desc: 'Other structure damage description',
-                purchasePrice: 20.23,
-                repairCost: 90,
-                replaceCost: null,
-                damageDesc: 'ldjlfds',
-                purchaseDate: '2020-09-24T11:18:06Z'
-              }
-            ]
-          },
-          otherStructure: {
-            isDamaged: true,
-            isPPIFFillNow: true,
-            isPPIFFillLater: false,
-            isClientPreparePPIF: true,
-            isPPIFSendToInsure: true,
-            items: [
-              {
-                id: '60913eb721196b2105b39903',
-                quantity: 2,
-                name: 'Foo',
-                serialNumber: '12121212121212',
-                desc: 'Other structure damage description',
-                purchasePrice: 20.23,
-                repairCost: 34,
-                replaceCost: null,
-                purchaseDate: '2020-09-24T11:18:06Z'
-              }
-            ]
-          }
-        }
-      }
-    };
+    const { data } = await request.get(`claims/${id}/damageinfo`);
     commit('setDamageInfo', data);
     dispatch('setLoading', false);
   } catch (e) {
