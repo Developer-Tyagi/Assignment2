@@ -1255,7 +1255,8 @@ export default {
       'getRoles',
       'getSeverityClaim',
       'addClaim',
-      'getLeadDetails'
+      'getLeadDetails',
+      'addMultipleTaskToClaim'
     ]),
     ...mapMutations(['setSelectedLead']),
     successMessage,
