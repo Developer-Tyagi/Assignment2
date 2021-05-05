@@ -110,6 +110,7 @@ import {
   removeToken,
   removeCurrentUser,
   removeFCMToken,
+  getCurrentUser,
   getFCMToken
 } from '@utils/auth';
 import { removeFirebaseToken } from '@utils/firebase';
