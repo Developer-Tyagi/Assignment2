@@ -141,8 +141,7 @@ export default {
       if (this.login.email && this.login.password) {
         const response = await this.userLogin(loginData);
         if (response) {
-          const userInfo = await this.getUserInfo();
-          if (userInfo && isPushNotificationsAvailable) {
+          if (isPushNotificationsAvailable) {
             PushNotifications.requestPermission().then(result => {
               if (result.granted) {
                 PushNotifications.register();
@@ -152,11 +151,9 @@ export default {
             PushNotifications.addListener(
               'registration',
               PushNotificationToken => {
-                const payload = {
-                  token: PushNotificationToken.value,
-                  userID: userInfo.id
-                };
-                this.sendPushNotificationToken(payload);
+                this.sendPushNotificationToken({
+                  token: PushNotificationToken.value
+                });
               }
             );
             PushNotifications.addListener('registrationError', any => {

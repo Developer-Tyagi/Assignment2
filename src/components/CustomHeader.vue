@@ -110,7 +110,6 @@ import {
   removeToken,
   removeCurrentUser,
   removeFCMToken,
-  getCurrentUser,
   getFCMToken
 } from '@utils/auth';
 import { removeFirebaseToken } from '@utils/firebase';
@@ -196,8 +195,7 @@ export default {
 
     async logout() {
       const payload = {
-        token: this.getFCMToken(),
-        userID: this.getCurrentUser().id
+        token: this.getFCMToken()
       };
       await this.deletePushNotificationToken(payload);
       await this.removeFirebaseToken();
@@ -211,7 +209,6 @@ export default {
     removeCurrentUser,
     removeFCMToken,
     getFCMToken,
-    getCurrentUser,
     removeFirebaseToken,
 
     onMenuButtonClick() {
