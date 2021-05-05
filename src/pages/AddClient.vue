@@ -770,7 +770,7 @@
             :hidden="step != 5"
             ref="property"
           >
-            <div class="q-pa-md form-card">
+            <q-card class="q-pa-md form-card">
               <div class="row">
                 <p class="q-mx-none q-my-auto form-heading">
                   Is there damage to other structures?
@@ -907,7 +907,7 @@
                   policyExpireDate: insuranceDetails.policyExpireDate
                 }"
               />
-            </div>
+            </q-card>
             <div class="row q-pt-md">
               <div>
                 <q-btn
