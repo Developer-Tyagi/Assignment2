@@ -417,9 +417,5 @@ export async function deletePushNotificationToken(
   } catch (e) {
     console.log(e);
     dispatch('setLoading', false);
-    dispatch('setNotification', {
-      type: 'negative',
-      message: 'Error in deleting carrier.'
-    });
   }
 }
