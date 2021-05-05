@@ -202,15 +202,13 @@
 
       <div class="full-width">
         <q-input
+          class="required"
           dense
           v-model="lossInfo.dateOfLoss"
           mask="##/##/####"
           label="MM/DD/YYYY"
           lazy-rules
-          :rules="[
-            val =>
-              dateLiesBetween(val) || 'Date is after policy effective date!'
-          ]"
+          :rules="[val => dateLiesBetween(val)]"
         >
           <template v-slot:append>
             <q-icon
@@ -716,17 +714,26 @@ export default {
     ]),
 
     lossDateOption(dateopn) {
-      return dateopn <= date.formatDate(Date.now(), 'YYYY/MM/DD');
+      return (
+        dateopn >=
+          date.formatDate(this.policyDate.policyEffectiveDate, 'YYYY/MM/DD') &&
+        dateopn <=
+          date.formatDate(this.policyDate.policyExpireDate, 'YYYY/MM/DD')
+      );
     },
 
     dateLiesBetween(val) {
-      if (
-        Date.parse(val) <= Date.parse(this.policyDate.policyExpireDate) &&
-        Date.parse(val) >= Date.parse(this.policyDate.policyEffectiveDate)
-      ) {
-        return true;
+      if (validateDate(val)) {
+        if (
+          Date.parse(val) <= Date.parse(this.policyDate.policyExpireDate) &&
+          Date.parse(val) >= Date.parse(this.policyDate.policyEffectiveDate)
+        ) {
+          return true;
+        } else {
+          return 'Date is after policy effective date';
+        }
       } else {
-        return false;
+        return 'Invalid date';
       }
     },
 

@@ -38,7 +38,6 @@
           </div>
         </div>
         <div
-          class=""
           v-for="dialogBox in dialogBoxes"
           :key="dialogBox.name"
           @click="clientDetailsDailogBoxOpen(dialogBox.name)"

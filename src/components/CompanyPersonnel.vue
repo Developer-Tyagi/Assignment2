@@ -4,7 +4,8 @@
       <div class="form-heading q-mt-lg">Personnel Role</div>
       <q-select
         v-model="companyPersonnel.personnel.id"
-        :options="roleTypes"
+        :options="options"
+        use-input
         option-value="id"
         option-label="name"
         map-options
@@ -12,9 +13,14 @@
         options-dense
         @input="setTypes(roleTypes, companyPersonnel.personnel)"
         label="Select Role"
+        @filter="searchFilterBy"
+        input-debounce="0"
+        behavior="menu"
       />
       <div class="form-heading q-mt-lg">Person Party</div>
+
       <q-select
+        v-if="userRoles.length"
         v-model="companyPersonnel.personParty"
         :options="userRoles"
         :disable="companyPersonnel.isFieldDisable"
@@ -27,6 +33,7 @@
         emit-value
         map-options
       />
+      <div v-else>No user exist for this role.</div>
     </q-card>
     <q-card class="q-mt-sm q-pa-sm">
       <div class="form-heading q-mt-lg">Commision/Fee</div>
@@ -165,12 +172,7 @@ export default {
   },
   data() {
     return {
-      role: {
-        machineValue: ''
-      },
-      params: {
-        role: ''
-      }
+      options: []
     };
   },
 
@@ -184,12 +186,30 @@ export default {
     validateDate,
 
     setTypes(types, data) {
+      this.companyPersonnel.personParty = '';
       const obj = types.find(item => {
         return item.id === data.id;
       });
 
       this.getAllUsers({ roles: obj.machineValue });
       this.companyPersonnel.isFieldDisable = false;
+    },
+
+    searchFilterBy(val, update) {
+      this.companyPersonnel.personnel.id = null;
+      if (val === ' ') {
+        update(() => {
+          this.options = this.roleTypes;
+        });
+        return;
+      }
+
+      update(() => {
+        const search = val.toLowerCase();
+        this.options = this.roleTypes.filter(
+          v => v.name.toLowerCase().indexOf(search) > -1
+        );
+      });
     }
   }
 };

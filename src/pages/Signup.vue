@@ -435,35 +435,19 @@
                 <div class="column col-5">
                   <q-input
                     dense
-                    v-model="user.SSNumber"
+                    v-model="user.SSN"
                     name="ssNumber"
                     color="primary"
-                    label="Social Security Number"
+                    label="SSN/EID"
                     class="required"
                     filled
                     lazy-rules
                     :rules="[
                       val =>
                         (val && val.length == 11) ||
-                        'Please fill social security number'
+                        'Please fill SSN or EID'
                     ]"
                     mask="###-##-####"
-                  />
-                  <q-input
-                    dense
-                    v-model="user.EINumber"
-                    name="eiNumber"
-                    color="primary"
-                    label="Employee Identification Number"
-                    class="required"
-                    filled
-                    lazy-rules
-                    :rules="[
-                      val =>
-                        (val && val.length == 10) ||
-                        'Please fill employee identification number'
-                    ]"
-                    mask="##-#######"
                   />
                   <div class="text-h5">Credit Card Info</div>
                   <PaymentCard

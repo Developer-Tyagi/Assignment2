@@ -98,6 +98,12 @@ const routes = [
         caseSensitive: true,
         component: () => import('pages/Leads.vue')
       },
+      {
+        path: 'lead-details/:id',
+        name: 'lead details',
+        caseSensitive: true,
+        component: () => import('pages/LeadDetail.vue')
+      },
 
       {
         path: 'add-lead',
@@ -112,11 +118,12 @@ const routes = [
         component: () => import('pages/AddLeadDetails.vue')
       },
       {
-        path: 'details/:id',
-        name: 'lead details',
+        path: 'edit-lead-details/:id?',
+        name: 'edit  lead',
         caseSensitive: true,
-        component: () => import('pages/LeadDetails.vue')
+        component: () => import('pages/EditLeadDetails.vue')
       },
+
       {
         path: 'clients',
         name: 'clients',
@@ -153,6 +160,12 @@ const routes = [
         name: 'claim summary ',
         caseSensitive: true,
         component: () => import('src/pages/ClaimSummary.vue')
+      },
+      {
+        path: 'claim-tasks/:id',
+        name: 'claim tasks ',
+        caseSensitive: true,
+        component: () => import('src/pages/ClaimTasks.vue')
       },
       {
         path: 'claim-files/:claimId',

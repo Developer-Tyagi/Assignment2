@@ -12,6 +12,7 @@ export default function() {
     claimTasks: [],
     mortgage: [],
     phases: [],
-    damageInfo: []
+    damageInfo: [],
+    tasks: []
   };
 }

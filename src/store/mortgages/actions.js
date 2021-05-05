@@ -177,7 +177,6 @@ export async function editMortgageInfo({ dispatch, state }, mortgage) {
 
 export async function deleteClaimMortgage({ dispatch }, mortgage) {
   dispatch('setLoading', true);
-  console.log(mortgage, 'actions');
   try {
     await request.del(
       `/claims/${mortgage.claimID}/mortgages/${mortgage.mortgageID}`
