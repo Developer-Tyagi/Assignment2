@@ -1612,20 +1612,26 @@ export default {
 
       const response = await this.addClaim(payload);
       if (response && response.id) {
-        this.addMultipleOfficeTask(response.id);
+        if (this.officeTask.officeActionRequired) {
+          this.addMultipleOfficeTask(response.id);
+        } else {
+          this.setSelectedLead();
+          this.$router.push('/clients');
+        }
       }
     },
 
-    addMultipleOfficeTask(id) {
+    async addMultipleOfficeTask(id) {
       const payload = {
         id: id,
-        tasks: this.officeTask
+        tasks: this.officeTask.actions
       };
 
-      this.addMultipleTaskToClaim(payload).then(() => {
+      const response = await this.addMultipleTaskToClaim(payload);
+      if (response) {
         this.setSelectedLead();
         this.$router.push('/clients');
-      });
+      }
     },
 
     validateEmail,
