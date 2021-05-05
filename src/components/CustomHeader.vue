@@ -109,6 +109,7 @@
 import {
   removeToken,
   removeCurrentUser,
+  removeFCMToken,
   getCurrentUser,
   getFCMToken
 } from '@utils/auth';
@@ -201,7 +202,6 @@ export default {
       await this.deletePushNotificationToken(payload);
       await this.removeFirebaseToken();
       this.removeFCMToken();
-
       this.removeToken();
       this.removeCurrentUser();
       location.reload();
