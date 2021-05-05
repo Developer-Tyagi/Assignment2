@@ -410,7 +410,7 @@ export async function deletePushNotificationToken(
   dispatch('setLoading', true);
   try {
     const { data } = await request.delWithData(
-      `users/pushtokens}`,
+      `users/pushtokens`,
       buildApiData('pushtokens', payload)
     );
     dispatch('setLoading', false);
