@@ -614,7 +614,7 @@
                           <div class="row   justify-between q-my-sm">
                             <div class="heading-light  ">Purchase Date</div>
                             <div class="q-mr-sm">
-                              {{ item.purchaseDate }}
+                              {{ item.purchaseDate | moment('DD/MM/YYYY') }}
                             </div>
                           </div>
                         </div>
@@ -855,7 +855,7 @@
                           <div class="row   justify-between q-my-sm">
                             <div class="heading-light  ">Purchase Date</div>
                             <div class="q-mr-sm">
-                              {{ item.purchaseDate }}
+                              {{ item.purchaseDate | moment('DD/MM/YYYY') }}
                             </div>
                           </div>
                         </div>
@@ -1179,7 +1179,7 @@ export default {
   },
   data() {
     return {
-      step: 0,
+      step: 4,
       stepClickValidTill: 0,
       mortgageInfo: [
         {
