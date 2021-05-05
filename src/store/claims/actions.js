@@ -239,13 +239,17 @@ export async function updateLossInfo({ dispatch, state }, payload) {
     );
 
     dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Loss Info Updated Successfully! please try again !'
+    });
     return data;
   } catch (e) {
     console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response[0].title
+      message: 'Failed to update loss info! please try again !'
     });
     return false;
   }
