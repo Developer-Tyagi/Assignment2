@@ -51,6 +51,7 @@
         <div class="mobile-container-page q-pa-sm form-height">
           <q-form ref="addTask">
             <q-input
+              class="required"
               label="Task Name"
               v-model="newTask.name"
               lazy-rules
@@ -59,9 +60,10 @@
               ]"
             />
             <q-input
+              class="required"
               v-model="newTask.dueDate"
               mask="##/##/####"
-              label="Task Date"
+              label="MM/DD/YYYY"
               lazy-rules
               :rules="[
                 val =>
