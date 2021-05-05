@@ -982,6 +982,8 @@ export default {
         purchaseDate: '',
         purchasePrice: '',
         quantity: '',
+        repairCost: null,
+        replaceCost: null,
         PPDamageItemDescription: '',
         isPAFillingOutToggle: true,
         doYouWantToSendInsuredPPIF: false,
@@ -1522,18 +1524,22 @@ export default {
           serverity: {
             ...this.lossInfo.severityOfClaimType
           },
-          isPPDamaged: this.lossInfo.isThereDamageToPersonalPropertyToggle,
-          isPPIFFillNow: this.lossInfo.isPAFillingOutToggle,
-          isPPIFFillLater: this.lossInfo.isAdjustorFillOutLaterDate,
-          isClientPreparePPIF: this.lossInfo.isClientGoingToPreparePPIF,
-          isPPIFSendToInsure: this.lossInfo.doYouWantToSendInsuredPPIF,
           OSDamageItems: this.lossInfo.osDamagedItems,
-          PPDamageItems: this.lossInfo.ppDamagedItems,
           isPPIF: this.lossInfo.wasAppifProvidedToTheInsuredToggle,
           isNeedPPIF: this.lossInfo
             .doesTheOfficeNeedToProvidePpifToTheInsuredToggle,
           hasHomeMortgage: this.lossInfo.isMortgageHomeToggle,
           isSecondClaim: false
+        },
+        damageInfo: {
+          personal: {
+            isDamaged: this.lossInfo.isThereDamageToPersonalPropertyToggle,
+            isPPIFFillNow: this.lossInfo.isPAFillingOutToggle,
+            isPPIFFillLater: this.lossInfo.isAdjustorFillOutLaterDate,
+            isClientPreparePPIF: this.lossInfo.isClientGoingToPreparePPIF,
+            isPPIFSendToInsure: this.lossInfo.doYouWantToSendInsuredPPIF,
+            items: this.lossInfo.ppDamagedItems
+          }
         },
         expertInfo: {
           vendors: [],
@@ -1572,6 +1578,7 @@ export default {
           }
         ]
       };
+
       if (
         !this.companyPersonnel.personnel.role.value &&
         !this.companyPersonnel.personnel.role.machineValue
