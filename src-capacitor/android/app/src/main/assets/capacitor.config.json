@@ -4,7 +4,9 @@
   "bundledWebRuntime": false,
   "npmClient": "yarn",
   "webDir": "www",
-  "server": {
-    "url": "http://192.168.18.244:8081"
+  "plugins": {
+    "PushNotifications": {
+      "presentationOptions": ["badge", "sound", "alert"]
+    }
   }
 }

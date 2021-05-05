@@ -101,6 +101,20 @@
 <script>
 import { mapActions } from 'vuex';
 import { getToken, getCurrentUser } from '@utils/auth';
+import {
+  Capacitor,
+  Plugins,
+  PushNotification,
+  PushNotificationToken,
+  PushNotificationActionPerformed
+} from '@capacitor/core';
+import { Screen } from 'quasar';
+
+const isPushNotificationsAvailable = Capacitor.isPluginAvailable(
+  'PushNotifications'
+);
+const { PushNotifications } = Plugins;
+
 export default {
   name: 'Login',
   data() {
@@ -113,7 +127,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(['userLogin', 'getUserInfo']),
+    ...mapActions(['userLogin', 'getUserInfo', 'sendPushNotificationToken']),
 
     async onUserLogin() {
       const loginData = {
@@ -127,7 +141,30 @@ export default {
       if (this.login.email && this.login.password) {
         const response = await this.userLogin(loginData);
         if (response) {
-          this.getUserInfo();
+          if (isPushNotificationsAvailable) {
+            PushNotifications.requestPermission().then(result => {
+              if (result.granted) {
+                PushNotifications.register();
+              } else {
+              }
+            });
+            PushNotifications.addListener(
+              'registration',
+              PushNotificationToken => {
+                this.sendPushNotificationToken({
+                  token: PushNotificationToken.value
+                });
+              }
+            );
+            PushNotifications.addListener('registrationError', any => {
+              console.log('Error on registration: ' + JSON.stringify(any));
+            });
+          }
+          if (Screen.width < 992) {
+            this.$router.push('/dashboard');
+          } else {
+            this.$router.push('/manage-users');
+          }
         }
       }
     }
@@ -174,4 +211,3 @@ export default {
   }
 }
 </style>
-;

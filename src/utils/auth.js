@@ -2,6 +2,7 @@ import { LocalStorage } from 'quasar';
 
 const tokenName = 'access_token';
 const currentUser = 'current_user';
+const fcmToken = 'fcmToken';
 
 export function setToken(token) {
   LocalStorage.set(tokenName, token);
@@ -25,6 +26,18 @@ export function removeCurrentUser() {
 
 export function getCurrentUser() {
   return LocalStorage.getItem(currentUser);
+}
+
+export function setFCMToken(token) {
+  LocalStorage.set(fcmToken, token);
+}
+
+export function removeFCMToken() {
+  LocalStorage.remove(fcmToken);
+}
+
+export function getFCMToken() {
+  return LocalStorage.getItem(fcmToken);
 }
 
 export function guardMyroute(to, from, next) {

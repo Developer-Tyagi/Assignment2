@@ -18,7 +18,6 @@
           </q-btn>
         </div>
       </div>
-
       <div class="q-mt-sm" style="height: calc(100% - 47px); overflow: auto">
         <table>
           <thead>
