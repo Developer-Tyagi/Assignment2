@@ -113,9 +113,12 @@ import {
   getCurrentUser,
   getFCMToken
 } from '@utils/auth';
+import { Capacitor } from '@capacitor/core';
 import { removeFirebaseToken } from '@utils/firebase';
-
 import { mapActions } from 'vuex';
+const isPushNotificationsAvailable = Capacitor.isPluginAvailable(
+  'PushNotifications'
+);
 export default {
   name: 'CustomHeader',
   data() {
@@ -195,10 +198,12 @@ export default {
     ...mapActions(['deletePushNotificationToken']),
 
     async logout() {
-      const payload = {
-        token: this.getFCMToken()
-      };
-      await this.deletePushNotificationToken(payload);
+      if (!isPushNotificationsAvailable) {
+        const payload = {
+          token: this.getFCMToken()
+        };
+        await this.deletePushNotificationToken(payload);
+      }
       await this.removeFirebaseToken();
       this.removeFCMToken();
       this.removeToken();
