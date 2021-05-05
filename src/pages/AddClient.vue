@@ -1202,10 +1202,19 @@ export default {
       this.insuranceDetails.policyNumber = this.selectedLead.policyNumber
         ? this.selectedLead.policyNumber
         : '';
-      this.lossInfo.causeOfLoss = this.selectedLead.lossCause
-        ? this.selectedLead.lossCause.value
+      this.lossInfo.causeOfLoss.id = this.selectedLead.lossCause
+        ? this.selectedLead.lossCause.id
         : '';
 
+      this.lossInfo.causeOfLoss.value = this.selectedLead.lossCause
+        ? this.selectedLead.lossCause.value
+        : '';
+      this.lossInfo.causeOfLoss.machineValue = this.selectedLead.lossCause
+        ? this.selectedLead.lossCause.machineValue
+        : '';
+      this.lossInfo.causeOfLoss.desc = this.selectedLead.lossCause
+        ? this.selectedLead.lossCause.desc
+        : '';
       this.lossInfo.dateOfLoss = date.formatDate(
         this.selectedLead.dateofLoss,
         'MM/DD/YYYY'
