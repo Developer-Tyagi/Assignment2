@@ -108,7 +108,7 @@ import {
   PushNotificationToken,
   PushNotificationActionPerformed
 } from '@capacitor/core';
-import { LocalStorage } from 'quasar';
+import { Screen } from 'quasar';
 
 const isPushNotificationsAvailable = Capacitor.isPluginAvailable(
   'PushNotifications'
@@ -127,7 +127,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(['userLogin', 'getUserInfo']),
+    ...mapActions(['userLogin', 'getUserInfo', 'sendPushNotificationToken']),
 
     async onUserLogin() {
       const loginData = {
@@ -141,31 +141,33 @@ export default {
       if (this.login.email && this.login.password) {
         const response = await this.userLogin(loginData);
         if (response) {
-          if (isPushNotificationsAvailable) {
+          const userInfo = await this.getUserInfo();
+          if (userInfo && isPushNotificationsAvailable) {
             PushNotifications.requestPermission().then(result => {
               if (result.granted) {
-                // Register with Apple / Google to receive push via APNS/FCM
                 PushNotifications.register();
               } else {
-                // Show some error
               }
             });
             PushNotifications.addListener(
               'registration',
               PushNotificationToken => {
-                console.log(
-                  'Push registration success, token: ' +
-                    PushNotificationToken.value
-                );
-                localStorage.setItem('fmcToken', PushNotificationToken.value);
+                const payload = {
+                  token: PushNotificationToken.value,
+                  userID: userInfo.id
+                };
+                this.sendPushNotificationToken(payload);
               }
             );
             PushNotifications.addListener('registrationError', any => {
               console.log('Error on registration: ' + JSON.stringify(any));
             });
           }
-
-          this.getUserInfo();
+          if (Screen.width < 992) {
+            this.$router.push('/dashboard');
+          } else {
+            this.$router.push('/manage-users');
+          }
         }
       }
     }

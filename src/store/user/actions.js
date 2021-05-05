@@ -1,8 +1,7 @@
 import request from '@api';
 import { buildApiData } from '@utils/api';
-import { setToken, setCurrentUser } from '@utils/auth';
+import { setToken, setCurrentUser, setFCMToken } from '@utils/auth';
 import firebaseAuthorization from '@utils/firebase';
-import { Screen } from 'quasar';
 
 export async function userLogin({ commit, dispatch }, formData) {
   const { data } = formData;
@@ -35,16 +34,8 @@ export async function getUserInfo({ dispatch, state }) {
   try {
     const { data } = await request.get('/users/me');
     setCurrentUser(data);
-    if (
-      (data.attributes['onboard'] &&
-        data.attributes['onboard']['isCompleted']) ||
-      Screen.width < 992
-    ) {
-      this.$router.push('/dashboard');
-    } else {
-      this.$router.push('/manage-users');
-    }
     dispatch('setLoading', false);
+    return data;
   } catch (e) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
@@ -387,6 +378,49 @@ export async function setOnboard({ dispatch, state }, payload) {
     dispatch('setNotification', {
       type: 'negative',
       message: e.response[0].title
+    });
+  }
+}
+
+export async function sendPushNotificationToken({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      '/pushtokens',
+      buildApiData('pushtokens', payload)
+    );
+    this.setFCMToken(payload.token);
+    dispatch('setLoading', false);
+    return true;
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+    return false;
+  }
+}
+
+export async function deletePushNotificationToken(
+  { commit, dispatch },
+  payload
+) {
+  dispatch('setLoading', true);
+  try {
+    await request.delWithData(`/pushtokens}`, payload);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Carrier  has been deleted successfully !'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'Error in deleting carrier.'
     });
   }
 }

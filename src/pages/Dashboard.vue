@@ -71,17 +71,8 @@
 <script>
 export default {
   data() {
-    return {
-      dashboard: ''
-    };
-  },
-
-  created() {
-    console.log('hi');
-    this.dashboard = localStorage.getItem('fmcToken');
-  },
-
-  methods: {}
+    return {};
+  }
 };
 </script>
 <style>

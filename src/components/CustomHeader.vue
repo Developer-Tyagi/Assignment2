@@ -106,8 +106,13 @@
   </div>
 </template>
 <script>
-import { removeToken, removeCurrentUser } from '@utils/auth';
-import { getCurrentUser } from 'src/utils/auth';
+import {
+  removeToken,
+  removeCurrentUser,
+  getCurrentUser,
+  getFCMToken
+} from '@utils/auth';
+import { mapActions } from 'vuex';
 export default {
   name: 'CustomHeader',
   data() {
@@ -182,16 +187,27 @@ export default {
       ]
     };
   },
+
   methods: {
-    logout() {
+    ...mapActions(['deletePushNotificationToken']),
+
+    async logout() {
       this.removeToken();
       this.removeCurrentUser();
-      // this.$router.push('/login');
+      const payload = {
+        token: this.getFCMToken(),
+        userID: this.getCurrentUser().id
+      };
+      await this.deletePushNotificationToken(payload);
+      this.removeFCMToken();
       location.reload();
     },
 
     removeToken,
     removeCurrentUser,
+    removeFCMToken,
+    getFCMToken,
+    getCurrentUser,
 
     onMenuButtonClick() {
       this.isLeftSidePanelOpen = !this.isLeftSidePanelOpen;
