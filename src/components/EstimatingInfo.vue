@@ -51,7 +51,12 @@
           </q-card>
         </div>
       </div>
-      <p class="form-heading q-mb-none">Scope time</p>
+      <p
+        class="form-heading q-mb-none"
+        v-if="estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle"
+      >
+        Scope time
+      </p>
       <input
         v-if="estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle"
         dense

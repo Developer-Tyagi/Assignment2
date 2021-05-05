@@ -95,8 +95,8 @@ export async function addMultipleTaskToClaim({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.post(
-      `claims/${payload.id}/tasks`,
-      buildApiData('claimtask', payload.tasks)
+      `claims/${payload.id}/batch-tasks`,
+      buildApiData('claimtask', { tasks: payload.tasks.actions })
     );
     dispatch('setLoading', false);
     dispatch('setNotification', {

@@ -10,13 +10,14 @@
         />
       </div>
       <div v-if="showOfficeActions" class="office-task-list">
-        <div class="column" v-for="action in officeTaskActions">
+        <div class="column" v-for="(action, index) in officeTaskActions">
           <div class="row q-pa-sm">
             <div class="flex">
               <q-checkbox
                 v-model="action.isEnabled"
                 color="$primary"
                 class="q-my-auto q-mr-md"
+                @input="changeEnableField(action, index)"
               />
             </div>
             <div class="column">
@@ -115,6 +116,8 @@
 import { mapActions, mapGetters } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import { validateDate } from '@utils/validation';
+import { dateToSend } from '@utils/date';
+
 export default {
   name: 'OfficeTask',
   props: {
@@ -142,8 +145,13 @@ export default {
   computed: {
     ...mapGetters(['officeTaskActions'])
   },
-  created() {
-    this.getOfficeTaskActions();
+  async created() {
+    await this.getOfficeTaskActions();
+    this.officeTaskActions.forEach(element => {
+      delete element.id;
+      delete element.created;
+      delete element.updated;
+    });
   },
 
   methods: {
@@ -151,12 +159,22 @@ export default {
 
     onOfficeTaskToggleButton() {
       this.showOfficeActions = this.officeTask.officeActionRequired;
+      if (this.showOfficeActions) {
+        this.officeTask.actions = this.officeTaskActions;
+      } else {
+        this.officeTask.actions = [];
+      }
+    },
+
+    changeEnableField(action, index) {
+      this.officeTask.actions[index] = action;
     },
 
     async addTask() {
       const success = await this.$refs.addTask.validate();
       if (success) {
         this.newTask.priority = this.newTask.priority ? 'high' : 'low';
+        this.newTask.dueDate = dateToSend(this.newTask.dueDate);
         this.officeTaskActions.push(this.newTask);
         this.newTask = {
           dueDate: '',
