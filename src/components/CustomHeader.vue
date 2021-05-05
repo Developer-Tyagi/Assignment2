@@ -216,6 +216,7 @@ export default {
     removeFCMToken,
     getFCMToken,
     removeFirebaseToken,
+    getCurrentUser,
 
     onMenuButtonClick() {
       this.isLeftSidePanelOpen = !this.isLeftSidePanelOpen;
@@ -246,7 +247,8 @@ export default {
     } else {
       this.intViewportWidth = 300;
     }
-    if (getCurrentUser().attributes) {
+    console.log(getCurrentUser());
+    if (this.getCurrentUser().attributes) {
       this.user = getCurrentUser().attributes;
     }
     if (this.$q.screen.width < 992) {

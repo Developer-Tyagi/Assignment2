@@ -34,5 +34,5 @@ export function refreshToken() {
 }
 
 export function removeFirebaseToken() {
-  firebaseApp.getItems().deleteToken();
+  firebase.getItems().deleteToken();
 }

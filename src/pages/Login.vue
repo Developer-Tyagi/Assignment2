@@ -141,11 +141,11 @@ export default {
       if (this.login.email && this.login.password) {
         const response = await this.userLogin(loginData);
         if (response) {
+          await this.getUserInfo();
           if (isPushNotificationsAvailable) {
             PushNotifications.requestPermission().then(result => {
               if (result.granted) {
                 PushNotifications.register();
-              } else {
               }
             });
             PushNotifications.addListener(
