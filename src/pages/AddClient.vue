@@ -1428,7 +1428,6 @@ export default {
       if (!this.selectedLead.id) {
         delete payload.leadID;
       }
-      this.setPayloadForClaim(56);
       const response = await this.addClient(payload);
       this.setSelectedLead();
       if (response && response.id) {
@@ -1444,7 +1443,7 @@ export default {
     async setPayloadForClaim(responseData) {
       const payload = {
         client: {
-          // id: responseData.id,
+          id: responseData.id,
           fname: this.insuredDetails.fname,
           lname: this.insuredDetails.lname
         },
@@ -1578,7 +1577,7 @@ export default {
           }
         ]
       };
-      console.log(payload, 76);
+
       if (
         !this.companyPersonnel.personnel.role.value &&
         !this.companyPersonnel.personnel.role.machineValue
