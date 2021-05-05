@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getToken, removeToken, removeCurrentUser } from '@utils/auth';
+import { getToken } from '@utils/auth';
 import { refreshToken } from '@utils/firebase';
 const baseURL = `${process.env.API}/v1`;
 const axiosInstance = axios.create({

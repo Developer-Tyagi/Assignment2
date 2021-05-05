@@ -32,3 +32,7 @@ export function refreshToken() {
       if (error) throw error;
     });
 }
+
+export function removeFirebaseToken() {
+  firebaseApp.getItems().deleteToken();
+}

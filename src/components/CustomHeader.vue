@@ -112,6 +112,8 @@ import {
   getCurrentUser,
   getFCMToken
 } from '@utils/auth';
+import { removeFirebaseToken } from '@utils/firebase';
+
 import { mapActions } from 'vuex';
 export default {
   name: 'CustomHeader',
@@ -192,14 +194,16 @@ export default {
     ...mapActions(['deletePushNotificationToken']),
 
     async logout() {
-      this.removeToken();
-      this.removeCurrentUser();
       const payload = {
         token: this.getFCMToken(),
         userID: this.getCurrentUser().id
       };
       await this.deletePushNotificationToken(payload);
+      await this.removeFirebaseToken();
       this.removeFCMToken();
+
+      this.removeToken();
+      this.removeCurrentUser();
       location.reload();
     },
 
@@ -208,6 +212,7 @@ export default {
     removeFCMToken,
     getFCMToken,
     getCurrentUser,
+    removeFirebaseToken,
 
     onMenuButtonClick() {
       this.isLeftSidePanelOpen = !this.isLeftSidePanelOpen;
