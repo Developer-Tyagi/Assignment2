@@ -612,7 +612,7 @@
                 dense
                 v-if="schedulingDetails.isAutomaticScheduling"
                 :class="{ required: schedulingDetails.isAutomaticScheduling }"
-                v-model="schedulingDetails.inspectionType"
+                v-model="schedulingDetails.inspectionTypeId"
                 :options="inspectionTypes"
                 label="Type of Inspection"
                 option-label="value"
@@ -880,11 +880,13 @@ export default {
       },
       schedulingDetails: {
         isAutomaticScheduling: false,
-        inspectionType: '',
+        inspectionTypeId: '',
         subInspectionType: '',
         subInspectionMachineValue: '',
         inspectionDuration: '',
-        subInspectionTypeValue: ''
+        subInspectionTypeValue: '',
+        inspectionTypeMachineValue: '',
+        inspectionTypeValue: ''
       },
       notes: '',
       vendorSelected: '',
@@ -934,8 +936,9 @@ export default {
 
     onInspectionTypesSelect() {
       const selectedInspectionType = this.inspectionTypes.find(
-        type => type.id === this.schedulingDetails.inspectionType
+        type => type.id === this.schedulingDetails.inspectionTypeId
       );
+
       if (
         selectedInspectionType.subtypes &&
         selectedInspectionType.subtypes.length > 1
@@ -945,16 +948,19 @@ export default {
         this.schedulingDetails.inspectionDuration = '';
         this.schedulingDetails.subInspectionTypeValue = '';
         this.showSubInspectionType = true;
+        this.schedulingDetails.inspectionTypeValue =
+          selectedInspectionType.value;
+        this.schedulingDetails.inspectionTypeMachineValue =
+          selectedInspectionType.machineValue;
       } else {
+        this.schedulingDetails.inspectionTypeValue =
+          selectedInspectionType.value;
+        this.schedulingDetails.inspectionTypeMachineValue =
+          selectedInspectionType.machineValue;
         this.showSubInspectionType = false;
-        this.schedulingDetails.subInspectionType =
-          selectedInspectionType.subtypes[0].id;
+
         this.schedulingDetails.inspectionDuration =
           selectedInspectionType.subtypes[0].duration;
-        this.schedulingDetails.subInspectionTypeValue =
-          selectedInspectionType.subtypes[0].value;
-        this.schedulingDetails.subInspectionMachineValue =
-          selectedInspectionType.subtypes[0].machineValue;
       }
     },
 
@@ -1000,8 +1006,12 @@ export default {
           policyNumber: this.insuranceDetails.policyNumber,
           isAutomaticScheduling: this.schedulingDetails.isAutomaticScheduling,
           notes: this.notes,
+
           inspectionInfo: {
-            id: this.schedulingDetails.inspectionType,
+            parentID: this.schedulingDetails.inspectionTypeId,
+            pValue: this.schedulingDetails.inspectionTypeValue,
+            pMachineValue: this.schedulingDetails.inspectionTypeMachineValue,
+            id: this.schedulingDetails.subInspectionType,
             duration: parseFloat(this.schedulingDetails.inspectionDuration),
             value: this.schedulingDetails.subInspectionTypeValue,
             machineValue: this.schedulingDetails.subInspectionMachineValue
@@ -1013,7 +1023,15 @@ export default {
           },
           carrier: {
             id: '',
-            value: ''
+            value: '',
+            email: this.insuranceDetails.email,
+            phoneNumber: [
+              {
+                type: '',
+                number: this.insuranceDetails.phone
+              }
+            ],
+            address: this.insuranceDetails.address
           }
         };
 
@@ -1074,8 +1092,12 @@ export default {
             policyNumber: this.insuranceDetails.policyNumber,
             isAutomaticScheduling: this.schedulingDetails.isAutomaticScheduling,
             notes: this.notes,
+
             inspectionInfo: {
-              id: this.schedulingDetails.inspectionType,
+              parentID: this.schedulingDetails.inspectionTypeId,
+              pValue: this.schedulingDetails.inspectionTypeValue,
+              pMachineValue: this.schedulingDetails.inspectionTypeMachineValue,
+              id: this.schedulingDetails.subInspectionType,
               duration: parseFloat(this.schedulingDetails.inspectionDuration),
               value: this.schedulingDetails.subInspectionTypeValue,
               machineValue: this.schedulingDetails.subInspectionMachineValue
@@ -1087,7 +1109,15 @@ export default {
             },
             carrier: {
               id: this.insuranceDetails.carrierId,
-              value: this.insuranceDetails.carrierName
+              value: this.insuranceDetails.carrierName,
+              email: this.insuranceDetails.email,
+              phoneNumber: [
+                {
+                  type: '',
+                  number: this.insuranceDetails.phone
+                }
+              ],
+              address: this.insuranceDetails.address
             }
           }
         };
@@ -1256,13 +1286,37 @@ export default {
       this.insuranceDetails.carrierId = this.selectedLead.carrier
         ? this.selectedLead.carrier.id
         : '';
-      this.schedulingDetails.inspectionType = this.selectedLead.inspectionInfo
-        ? this.selectedLead.inspectionInfo.value
+      this.insuranceDetails.address = this.selectedLead.carrier
+        ? this.selectedLead.carrier.address
         : '';
-      this.schedulingDetails.inspectionDuration = this.selectedLead
+      this.insuranceDetails.email = this.selectedLead.carrier
+        ? this.selectedLead.carrier.email
+        : '';
+      this.insuranceDetails.phone = this.selectedLead.carrier
+        ? this.selectedLead.carrier.phoneNumber[0].number
+        : '';
+
+      this.schedulingDetails.inspectionTypeValue = this.selectedLead
         .inspectionInfo
-        ? this.selectedLead.inspectionInfo.duration
+        ? this.selectedLead.inspectionInfo.pValue
         : '';
+      this.schedulingDetails.inspectionTypeId = this.selectedLead.inspectionInfo
+        ? this.selectedLead.inspectionInfo.parentID
+        : '';
+      this.schedulingDetails.inspectionTypeMachineValue = this.selectedLead
+        .inspectionInfo
+        ? this.selectedLead.inspectionInfo.pMachineValue
+        : '';
+
+      this.schedulingDetails.inspectionDuration = this.selectedLead.inspectionInfo.duration;
+      this.onInspectionTypesSelect();
+      if (this.selectedLead.inspectionInfo.id) {
+        this.showSubInspectionType = true;
+        this.schedulingDetails.subInspectionType = this.selectedLead.inspectionInfo.id;
+        this.schedulingDetails.subInspectionTypeValue = this.selectedLead.inspectionInfo.value;
+        this.schedulingDetails.subInspectionMachineValue = this.selectedLead.inspectionInfo.machineValue;
+        this.schedulingDetails.inspectionDuration = this.selectedLead.inspectionInfo.duration;
+      }
       this.primaryDetails.isOrganization = this.selectedLead.isOrganization
         ? this.selectedLead.isOrganization
         : '';

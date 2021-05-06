@@ -63,8 +63,19 @@
               {{ selectedLead.organizationName }}</span
             >
           </div>
-          <div class="row  q-mt-sm" v-if="selectedLead.inspectionInfo">
+
+          <div class="row  q-mt-sm" v-if="selectedLead.inspectionInfo.pValue">
             <span class="heading-light col-3"> Inspection Type </span>
+            <span class="q-ml-md col">
+              {{
+                selectedLead.inspectionInfo.pValue
+                  ? selectedLead.inspectionInfo.pValue
+                  : '-'
+              }}</span
+            >
+          </div>
+          <div class="row  q-mt-sm" v-if="selectedLead.inspectionInfo.value">
+            <span class="heading-light col-3">Sub Inspection Type </span>
             <span class="q-ml-md col">
               {{
                 selectedLead.inspectionInfo.value
