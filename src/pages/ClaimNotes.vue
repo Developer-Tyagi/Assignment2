@@ -15,11 +15,8 @@
         />
         <q-card-section>
           <div class="mobile-container-page-without-search form-height">
-            <q-input
-              class="full-width"
-              label="Take notes here"
-              v-model="editNote"
-            />
+            <div class="q-py-xs">Notes</div>
+            <textarea class="full-width" v-model="editNote" />
           </div>
           <q-btn
             @click="onEditSaveButtonClick"
@@ -45,10 +42,12 @@
           @closeDialog="addNoteDialog = false"
         />
         <q-card-section>
-          <div class="mobile-container-page-without-search form-height">
-            <q-input
-              class="full-width"
-              label="Take notes here"
+          <div class="mobile-container-page">
+            <div class="q-py-xs">Notes</div>
+            <textarea
+              rows="4"
+              placeholder="Take Notes here..."
+              style="width: 100% ;border-radius:8px;"
               v-model="note"
             />
           </div>
@@ -99,6 +98,7 @@
       </div>
 
       <div class="mobile-container-page">
+        <ClaimDetail />
         <div v-if="claimNotes.attributes.notes">
           <div
             class="clients-list q-ma-sm "
@@ -110,14 +110,13 @@
             >
               <q-item-section>
                 <div class="client-list-item">
-                  <div class="row">
-                    {{
-                      claimNotes.attributes.notes[index].created
-                        | moment('MM/DD/YYYY/, HH:mm')
-                    }}
-
-                    <br />
-                    {{ claimNotes.attributes.notes[index].desc }}
+                  <div class="row ">
+                    <div class=" q-mb-sm">
+                      {{
+                        claimNotes.attributes.notes[index].created
+                          | moment('MM/DD/YYYY, hh:mm A')
+                      }}
+                    </div>
 
                     <div class="row edit-icon ">
                       <q-icon
@@ -134,6 +133,7 @@
                       />
                     </div>
                   </div>
+                  {{ claimNotes.attributes.notes[index].desc }}
                 </div>
               </q-item-section>
             </div>
@@ -144,14 +144,6 @@
             <div style="color: #666666,align-items: center">
               You haven't added a Note yet.
             </div>
-            <img
-              class="q-mx-lg q-pt-sm"
-              src="~assets/add.svg"
-              alt="add_icon"
-              width="130px"
-              height="100px"
-              @click="addNote"
-            />
           </div>
         </div>
       </div>
@@ -165,10 +157,11 @@ import CustomBar from 'components/CustomBar';
 import moment from 'moment';
 import { successMessage } from '@utils/validation';
 import { constants } from '@utils/constant';
+import ClaimDetail from 'components/ClaimDetail';
 
 export default {
   name: 'Clients',
-  components: { CustomBar },
+  components: { CustomBar, ClaimDetail },
   data() {
     return {
       indexValue: null,
