@@ -2047,7 +2047,10 @@ export default {
       ) {
         delete payload.personnel;
       }
-      if (this.estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle) {
+      if (
+        this.estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle &&
+        this.estimatingInfo.estimatorID
+      ) {
         payload.estimatingInfo = {
           estimatorID: this.estimatingInfo.estimatorID,
           scopeTimeNeeded: this.estimatingInfo.scopeTimeNeeded,
