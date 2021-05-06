@@ -98,7 +98,7 @@
                 <div class="heading-light col-3">Phone Number</div>
                 <div class="q-mt-xs col-6 q-ml-none">
                   <div class="row" v-for="phone in personnel.phoneNumber">
-                    <div class="col-3">
+                    <div class="col-3" v-if="phone.number">
                       {{ phone.type ? phone.type : '-' }}
                     </div>
                     <div
