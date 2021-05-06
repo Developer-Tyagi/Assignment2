@@ -34,5 +34,5 @@ export function refreshToken() {
 }
 
 export function removeFirebaseToken() {
-  firebase.getItems().deleteToken();
+  firebaseAuthorization.signOut();
 }

@@ -199,10 +199,7 @@ export default {
 
     async logout() {
       if (!isPushNotificationsAvailable) {
-        const payload = {
-          token: this.getFCMToken()
-        };
-        await this.deletePushNotificationToken(payload);
+        await this.deletePushNotificationToken(this.getFCMToken());
       }
       await this.removeFirebaseToken();
       this.removeFCMToken();

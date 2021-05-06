@@ -403,16 +403,10 @@ export async function sendPushNotificationToken({ dispatch, state }, payload) {
   }
 }
 
-export async function deletePushNotificationToken(
-  { commit, dispatch },
-  payload
-) {
+export async function deletePushNotificationToken({ commit, dispatch }, token) {
   dispatch('setLoading', true);
   try {
-    const { data } = await request.delWithData(
-      `users/pushtokens`,
-      buildApiData('pushtokens', payload)
-    );
+    const { data } = await request.del(`/users/pushtokens/${token}`);
     dispatch('setLoading', false);
   } catch (e) {
     console.log(e);
