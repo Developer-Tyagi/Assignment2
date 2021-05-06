@@ -211,7 +211,8 @@
           v-if="
             contractInfo.sourceDetails.type != constants.industries.VENDOR &&
               contractInfo.sourceDetails.type != '' &&
-              contractInfo.sourceDetails.type != 'google'
+              contractInfo.sourceDetails.type != 'google' &&
+              contractInfo.sourceDetails.type != 'client'
           "
           type="text"
           placeholder="Enter Source details"
@@ -311,6 +312,35 @@
             </div>
           </q-card>
         </div>
+        <div v-if="contractInfo.sourceDetails.type == 'client'">
+          <q-select
+            dense
+            class="full-width input-extra-padding"
+            v-model="contractInfo.sourceDetails.details"
+            use-input
+            input-debounce="0"
+            option-label="name"
+            label="Search"
+            :options="clientOptions"
+            @filter="searchFilterBy"
+            option-value="id"
+            behavior="menu"
+            options-dense
+            emit-value
+            map-options
+            :rules="[
+              val => (val && val.length > 0) || 'Please select the client'
+            ]"
+          >
+            <template v-slot:no-option>
+              <q-item>
+                <q-item-section class="text-black">
+                  No results
+                </q-item-section>
+              </q-item>
+            </template>
+          </q-select>
+        </div>
       </div>
     </q-card>
 
@@ -373,6 +403,7 @@ export default {
 
   data() {
     return {
+      clientOptions: [],
       constants: constants,
       reasonForCancellation: [
         'Client Cancelled',
@@ -388,10 +419,10 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['leadSources', 'vendors'])
+    ...mapGetters(['leadSources', 'vendors', 'clients'])
   },
   methods: {
-    ...mapActions(['getVendors']),
+    ...mapActions(['getVendors', 'getClients']),
     //This function is for closing the time popup
     closeTimeDialog() {
       this.$refs.qTimeProxy.hide();
@@ -399,7 +430,22 @@ export default {
     successMessage,
     onPhoneNumberClick,
     onEmailClick,
+    searchFilterBy(val, update) {
+      this.contractInfo.sourceDetails.details = null;
+      if (val === ' ') {
+        update(() => {
+          this.clientOptions = this.clients;
+        });
+        return;
+      }
 
+      update(() => {
+        const search = val.toLowerCase();
+        this.clientOptions = this.clients.filter(
+          v => v.name.toLowerCase().indexOf(search) > -1
+        );
+      });
+    },
     onChangingSourceType() {
       this.contractInfo.sourceDetails.id = '';
       this.contractInfo.sourceDetails.details = '';

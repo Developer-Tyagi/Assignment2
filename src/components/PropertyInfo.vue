@@ -204,220 +204,12 @@
             label="Save"
             color="primary"
             class="full-width q-mt-auto text-capitalize"
-            @click="addPPDamagedItems"
+            @click="addPPDamagedItems()"
             size="'xl'"
           ></q-btn>
         </div>
       </q-card>
     </q-dialog>
-    <q-card class="q-pa-sm q-mt-sm">
-      <div class="row">
-        <div class=" col-8  q-mt-md form-heading">
-          Is there damage to personal operty?
-        </div>
-        <q-toggle
-          class="q-ml-auto"
-          v-model="lossInfo.isThereDamageToPersonalPropertyToggle"
-          @input="onPersonalPropertyToggleButtonOff"
-        />
-      </div>
-      <div class="row" v-if="lossInfo.isThereDamageToPersonalPropertyToggle">
-        <div class="col-8  q-mx-none q-my-auto form-heading">
-          Is the PA filling out the PPIF at this inspection?
-        </div>
-        <q-toggle
-          class="q-ml-auto"
-          v-model="lossInfo.isPAFillingOutToggle"
-          @input="onPersonalPropertyToggleButtonOff"
-        />
-      </div>
-
-      <!-- Persnol Property Damage List -->
-      <div
-        v-if="
-          lossInfo.isThereDamageToPersonalPropertyToggle &&
-            lossInfo.isPAFillingOutToggle
-        "
-      >
-        <br />
-        <div
-          v-if="lossInfo.ppDamagedItems.length >= 1"
-          flat
-          bordered
-          scroll
-          class="q-mt-xs"
-        >
-          <div class="items-start q-gutter-md">
-            <div
-              v-for="(item, index) in lossInfo.ppDamagedItems"
-              v-if="lossInfo.ppDamagedItems.length"
-            >
-              <q-card class="q-pa-sm">
-                <div class="text-right">
-                  <q-icon
-                    class="q-ma-xs"
-                    dense
-                    color="primary"
-                    name="create"
-                    @click="OnEditPPdamageItem(index)"
-                  />
-                  <q-icon
-                    v-if="lossInfo.ppDamagedItems.length >= 1"
-                    class="q-ma-xs"
-                    size="xs"
-                    dense
-                    color="primary"
-                    name="close"
-                    @click="deletePPDamagedItem(index)"
-                  />
-                </div>
-                <div class="row justify-between">
-                  <div>
-                    <q-badge class="q-pa-sm" color="grey-6">
-                      {{ item.radio }}</q-badge
-                    >
-                  </div>
-                  <div class="text-bold  text-capitalize q-pt-xs">
-                    {{ item.name }}
-                  </div>
-                  <div class="q-pt-xs q-mr-sm text-bold">
-                    {{ item.quantity }}
-                  </div>
-                </div>
-                <div
-                  class="q-ml-sm text-capitalize q-pt-xs text-caption q-mr-xl q-my-xs q-px-xs q-ma-xs"
-                >
-                  <p>{{ item.desc }}</p>
-
-                  <p>{{ item.itemDesc }}</p>
-                </div>
-                <div class="q-my-sm">
-                  <div class="row justify-between  q-my-sm">
-                    <div class="heading-light ">
-                      Serial Number
-                    </div>
-                    <div class="q-mr-sm">
-                      {{ item.serialNumber ? item.serialNumber : '-' }}
-                    </div>
-                  </div>
-                  <div class="row   justify-between q-my-sm">
-                    <div class="heading-light  ">Purchase Date</div>
-                    <div class="q-mr-sm">
-                      {{ item.purchaseDate }}
-                    </div>
-                  </div>
-                </div>
-                <q-separator />
-                <div class="q-my-sm row justify-between">
-                  <div class="heading-light col-4">Purchase Price</div>
-                  <div class="heading-light ">$</div>
-                  <div class=" q-mr-sm ">
-                    {{ item.purchasePrice }}
-                  </div>
-                </div>
-                <div class="q-my-sm row justify-between">
-                  <div class="heading-light col-4 ">{{ item.radio }} Cost</div>
-                  <div class="heading-light ">$</div>
-                  <div class="">
-                    {{
-                      item.radio == 'Replace'
-                        ? item.replaceCost
-                        : item.repairCost
-                    }}
-                  </div>
-                </div>
-              </q-card>
-            </div>
-          </div>
-        </div>
-        <div>
-          <q-btn
-            label="add item"
-            name="add"
-            class="q-mt-sm"
-            icon="add"
-            size="sm"
-            color="primary"
-            @click="addNewItem()"
-          >
-          </q-btn>
-        </div>
-      </div>
-      <div
-        class="row"
-        v-if="
-          !lossInfo.isPAFillingOutToggle &&
-            lossInfo.isThereDamageToPersonalPropertyToggle
-        "
-      >
-        <div class="col-8  q-mx-none q-my-auto form-heading">
-          Is the adjuster going to fill out the PPIF at a later date?
-        </div>
-        <q-toggle
-          v-if="lossInfo.isThereDamageToPersonalPropertyToggle"
-          class="q-ml-auto"
-          v-model="lossInfo.isAdjustorFillOutLaterDate"
-        />
-      </div>
-      <div
-        class="row"
-        v-if="
-          !lossInfo.isAdjustorFillOutLaterDate &&
-            lossInfo.isThereDamageToPersonalPropertyToggle &&
-            !lossInfo.isAdjustorFillOutLaterDate &&
-            !lossInfo.isPAFillingOutToggle
-        "
-      >
-        <div class="col-8  q-mx-none q-my-auto form-heading">
-          Is the client going to prepare the PPIFs?
-        </div>
-        <q-toggle
-          v-if="lossInfo.isThereDamageToPersonalPropertyToggle"
-          class="q-ml-auto"
-          v-model="lossInfo.isClientGoingToPreparePPIF"
-        />
-      </div>
-      <div
-        class="row"
-        v-if="
-          lossInfo.isClientGoingToPreparePPIF &&
-            lossInfo.isPAFillingOutToggle == false
-        "
-      >
-        <div class="col-8  q-mx-none q-my-auto form-heading">
-          Do you want to send the insured a PPIF?
-        </div>
-        <q-toggle
-          v-if="lossInfo.isThereDamageToPersonalPropertyToggle"
-          class="q-ml-auto"
-          v-model="lossInfo.doYouWantToSendInsuredPPIF"
-        />
-      </div>
-      <div class="row" v-if="lossInfo.isPAFillingOutToggle == false">
-        <div class="col-8  q-mx-none q-my-auto form-heading">
-          Was a PPIF provided to the insured?
-        </div>
-        <q-toggle
-          class="q-ml-auto"
-          v-model="lossInfo.wasAppifProvidedToTheInsuredToggle"
-        />
-      </div>
-      <div
-        class="row"
-        v-if="
-          lossInfo.isPAFillingOutToggle == false &&
-            lossInfo.wasAppifProvidedToTheInsuredToggle == false
-        "
-      >
-        <div class=" col-9 q-mx-none q-my-auto form-heading">
-          Does Claim Guru need to provide the insured with a PPIF?
-        </div>
-        <q-toggle
-          class="q-ml-auto"
-          v-model="lossInfo.doesTheOfficeNeedToProvidePpifToTheInsuredToggle"
-        />
-      </div>
-    </q-card>
   </div>
 </template>
 <script>
@@ -428,6 +220,7 @@ import CustomBar from 'components/CustomBar';
 import VendorsList from 'components/VendorsList';
 import { validateDate } from '@utils/validation';
 import { mapGetters, mapActions } from 'vuex';
+import { dateToSend } from '@utils/date';
 import AddVendor from 'components/AddVendor';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import MortgageForm from 'components/MortgageForm';
@@ -435,36 +228,17 @@ import MortgageForm from 'components/MortgageForm';
 export default {
   name: 'PropertyInfo',
   components: {
-    CustomBar,
-    VendorsList,
-    AddVendor,
-    AutoCompleteAddress,
-    MortgageForm
+    CustomBar
   },
 
   props: {
+    damageType: {
+      type: String
+    },
     lossInfo: {
       type: Object
     },
-    mortgageInfo: {
-      type: Object
-    },
-    isMailingAddressEnable: {
-      type: Boolean,
-      required: false
-    },
-    lossAddressToggleShow: {
-      type: Boolean,
-      required: false
-    },
-    isAddressRequired: {
-      type: Boolean,
-      required: false
-    },
-    lossAddressSameAsClient: {
-      type: Boolean,
-      required: false
-    },
+
     policyDate: {
       type: Object
     }
@@ -472,7 +246,7 @@ export default {
 
   data() {
     return {
-      isEdit: '',
+      isEdit: false,
       currentIndex: '',
       mortgageInfo: {
         vendorsListDialog: false,
@@ -552,90 +326,7 @@ export default {
         return false;
       }
     },
-    addNewItem() {
-      this.lossInfo.quantity = '';
-      this.lossInfo.PPDamageName = '';
-      this.lossInfo.PPDamageDescription = '';
-      this.lossInfo.serialNumber = '';
-      this.lossInfo.purchasePrice = '';
-      this.lossInfo.purchaseDate = date.formatDate(Date.now(), 'MM/DD/YYYY');
-      this.lossInfo.repairReplaceRadio = '';
-      this.lossInfo.repairCost = null;
-      this.lossInfo.replaceCost = null;
-      this.lossInfo.PPdamagedItemsDailog = true;
-    },
-    OnEditPPdamageItem(index) {
-      this.isEdit = true;
-      this.currentIndex = index;
-      this.lossInfo.quantity = this.lossInfo.ppDamagedItems[index].quantity;
-      this.lossInfo.PPDamageName = this.lossInfo.ppDamagedItems[index].name;
-      this.lossInfo.PPDamageDescription = this.lossInfo.ppDamagedItems[
-        index
-      ].desc;
-      this.lossInfo.serialNumber = this.lossInfo.ppDamagedItems[
-        index
-      ].serialNumber;
-      this.lossInfo.purchasePrice = this.lossInfo.ppDamagedItems[
-        index
-      ].purchasePrice;
-      this.lossInfo.purchaseDate = this.lossInfo.ppDamagedItems[
-        index
-      ].purchaseDate;
-      this.lossInfo.repairReplaceRadio = this.lossInfo.ppDamagedItems[
-        index
-      ].radio;
-      this.lossInfo.PPDamageItemDescription = this.lossInfo.ppDamagedItems[
-        index
-      ].itemDesc;
-      this.lossInfo.repairCost = this.lossInfo.ppDamagedItems[index].repairCost;
-      this.lossInfo.replaceCost = this.lossInfo.ppDamagedItems[
-        index
-      ].replaceCost;
 
-      this.lossInfo.PPdamagedItemsDailog = true;
-    },
-
-    onDamageOsToggleButtonOff() {
-      if (!this.lossInfo.isDamageOSToggle) {
-        this.lossInfo.osDamagedItems.length = 0;
-      }
-    },
-    onPersonalPropertyToggleButtonOff() {
-      if (
-        !this.lossInfo.isThereDamageToPersonalPropertyToggle ||
-        !this.lossInfo.isPAFillingOutToggle
-      ) {
-        this.lossInfo.ppDamagedItems.length = 0;
-      }
-    },
-    closeAddVendorDialog(e) {
-      this.mortgageInfo.addVendorDialog = false;
-      // this.getVendors();
-      if (e) {
-        this.mortgageInfo.vendorsListDialog = false;
-      } else {
-        this.mortgageInfo.vendorsListDialog = true;
-      }
-    },
-
-    onToggleButtonClick() {
-      if (this.mortgageInfo.mortgageDetails.length > 1) {
-        this.mortgageInfo.mortgageDetails.pop();
-      }
-      if (!this.mortgageInfo.isMortgageHomeToggle) {
-        this.mortgageInfo.isSecondMortgageHome = false;
-        this.mortgageInfo.mortgageDetails = [
-          {
-            id: '',
-            value: '',
-            loanNumber: '',
-            accountNumber: '',
-            isPrimary: true,
-            notes: ''
-          }
-        ];
-      }
-    },
     validateDate,
     setTypes(types, data) {
       const obj = types.find(item => {
@@ -648,73 +339,68 @@ export default {
     deleteDamagedItem(index) {
       this.$delete(this.lossInfo.osDamagedItems, index);
     },
-    deletePPDamagedItem(index) {
-      this.$delete(this.lossInfo.ppDamagedItems, index);
-    },
-    onSecondMortgageToggle() {
-      if (this.lossInfo.isSecondMortgageHome) {
-        this.lossInfo.mortgageDetails.push({
-          id: '',
-          value: '',
-          loanNumber: '',
-          accountNumber: '',
-          isPrimary: false,
-          notes: ''
-        });
-      } else {
-        this.lossInfo.mortgageDetails.pop();
-      }
-    },
-    onMortgageToggleButtonClick() {
-      if (this.lossInfo.mortgageDetails.length > 1) {
-        this.lossInfo.mortgageDetails.pop();
-      }
-      if (!this.mortgageInfo.isMortgageHomeToggle) {
-        this.lossInfo.isSecondMortgageHome = false;
-        this.lossInfo.mortgageDetails = [
-          {
-            id: '',
-            value: '',
-            loanNumber: '',
-            accountNumber: '',
-            isPrimary: true,
-            notes: ''
-          }
-        ];
-      }
-    },
+
     async addPPDamagedItems() {
       const success = await this.$refs.PropertyInfo.validate();
-      if (this.isEdit == true) {
-      }
       if (success) {
-        if (this.isEdit == true) {
-          this.lossInfo.ppDamagedItems[this.currentIndex] = {
-            name: this.lossInfo.PPDamageName,
-            desc: this.lossInfo.PPDamageDescription,
-            serialNumber: this.lossInfo.serialNumber,
-            radio: this.lossInfo.repairReplaceRadio,
-            repairCost: this.lossInfo.repairCost,
-            replaceCost: this.lossInfo.replaceCost,
-            itemDesc: this.lossInfo.PPDamageItemDescription,
-            purchaseDate: this.lossInfo.purchaseDate,
-            purchasePrice: this.lossInfo.purchasePrice,
-            quantity: this.lossInfo.quantity
-          };
+        if (this.lossInfo.damageType == 'property') {
+          if (this.isEdit == true) {
+            this.lossInfo.ppDamagedItems[this.currentIndex] = {
+              name: this.lossInfo.PPDamageName,
+              desc: this.lossInfo.PPDamageDescription,
+              serialNumber: this.lossInfo.serialNumber,
+              radio: this.lossInfo.repairReplaceRadio,
+              repairCost: this.lossInfo.repairCost,
+              replaceCost: this.lossInfo.replaceCost,
+              itemDesc: this.lossInfo.PPDamageItemDescription,
+              purchaseDate: this.lossInfo.purchaseDate,
+              purchasePrice: this.lossInfo.purchasePrice,
+              quantity: this.lossInfo.quantity
+            };
+          } else {
+            this.lossInfo.ppDamagedItems.push({
+              name: this.lossInfo.PPDamageName,
+              desc: this.lossInfo.PPDamageDescription,
+              repairCost: this.lossInfo.repairCost,
+              replaceCost: this.lossInfo.replaceCost,
+              serialNumber: this.lossInfo.serialNumber,
+              radio: this.lossInfo.repairReplaceRadio,
+              itemDesc: this.lossInfo.PPDamageItemDescription,
+              purchaseDate: dateToSend(this.lossInfo.purchaseDate),
+              purchasePrice: this.lossInfo.purchasePrice,
+              quantity: this.lossInfo.quantity
+            });
+          }
         } else {
-          this.lossInfo.ppDamagedItems.push({
-            name: this.lossInfo.PPDamageName,
-            desc: this.lossInfo.PPDamageDescription,
-            repairCost: this.lossInfo.repairCost,
-            replaceCost: this.lossInfo.replaceCost,
-            serialNumber: this.lossInfo.serialNumber,
-            radio: this.lossInfo.repairReplaceRadio,
-            itemDesc: this.lossInfo.PPDamageItemDescription,
-            purchaseDate: this.lossInfo.purchaseDate,
-            purchasePrice: this.lossInfo.purchasePrice,
-            quantity: this.lossInfo.quantity
-          });
+          if (this.isEdit == true) {
+            this.lossInfo.osDamagedItems[this.currentIndex] = {
+              name: this.lossInfo.PPDamageName,
+              desc: this.lossInfo.PPDamageDescription,
+              serialNumber: this.lossInfo.serialNumber,
+              radio: this.lossInfo.repairReplaceRadio,
+              repairCost: this.lossInfo.repairCost,
+              replaceCost: this.lossInfo.replaceCost,
+              itemDesc: this.lossInfo.PPDamageItemDescription,
+              purchaseDate: dateToSend(this.lossInfo.purchaseDate),
+              purchasePrice: this.lossInfo.purchasePrice,
+              quantity: this.lossInfo.quantity
+            };
+          } else {
+            this.lossInfo.osDamagedItems.push({
+              name: this.lossInfo.PPDamageName,
+              desc: this.lossInfo.PPDamageDescription,
+              repairCost: this.lossInfo.repairCost,
+              replaceCost: this.lossInfo.replaceCost,
+              serialNumber: this.lossInfo.serialNumber,
+              radio: this.lossInfo.repairReplaceRadio,
+              itemDesc: this.lossInfo.PPDamageItemDescription,
+              purchaseDate: dateToSend(this.lossInfo.purchaseDate),
+              purchasePrice: this.lossInfo.purchasePrice,
+              quantity: this.lossInfo.quantity
+            });
+          }
         }
+
         this.lossInfo.PPdamagedItemsDailog = false;
         this.lossInfo.PPDamageName = '';
         this.lossInfo.PPDamageDescription = '';
