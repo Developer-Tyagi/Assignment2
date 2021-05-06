@@ -724,13 +724,14 @@ export default {
 
     dateLiesBetween(val) {
       if (validateDate(val)) {
-        if (
-          Date.parse(val) <= Date.parse(this.policyDate.policyExpireDate) &&
-          Date.parse(val) >= Date.parse(this.policyDate.policyEffectiveDate)
+        if (Date.parse(val) < Date.parse(this.policyDate.policyEffectiveDate)) {
+          return 'Date is before policy effective date';
+        } else if (
+          Date.parse(val) > Date.parse(this.policyDate.policyExpireDate)
         ) {
-          return true;
+          return 'Date is after policy expiry date';
         } else {
-          return 'Date is after policy effective date';
+          return true;
         }
       } else {
         return 'Invalid date';

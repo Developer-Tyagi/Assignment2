@@ -519,9 +519,9 @@
             :hidden="step != 4"
             ref="property"
           >
-            <q-card class=" q-pa-md form-card" style="min-height: 400px">
+            <q-card class="q-pa-md form-card" style="min-height: 400px">
               <div class="row">
-                <div class=" col-8  q-mt-md form-heading">
+                <div class="col-8 q-mt-md form-heading">
                   Is there damage to personal operty?
                 </div>
                 <q-toggle
@@ -534,7 +534,7 @@
                 class="row"
                 v-if="lossInfo.isThereDamageToPersonalPropertyToggle"
               >
-                <div class="col-8  q-mx-none q-my-auto form-heading">
+                <div class="col-8 q-mx-none q-my-auto form-heading">
                   Is the PA filling out the PPIF at this inspection?
                 </div>
                 <q-toggle
@@ -588,7 +588,7 @@
                               {{ item.radio }}</q-badge
                             >
                           </div>
-                          <div class="text-bold  text-capitalize q-pt-xs">
+                          <div class="text-bold text-capitalize q-pt-xs">
                             {{ item.name }}
                           </div>
                           <div class="q-pt-xs q-mr-sm text-bold">
@@ -603,16 +603,14 @@
                           <p>{{ item.itemDesc }}</p>
                         </div>
                         <div class="q-my-sm">
-                          <div class="row justify-between  q-my-sm">
-                            <div class="heading-light ">
-                              Serial Number
-                            </div>
+                          <div class="row justify-between q-my-sm">
+                            <div class="heading-light">Serial Number</div>
                             <div class="q-mr-sm">
                               {{ item.serialNumber ? item.serialNumber : '-' }}
                             </div>
                           </div>
-                          <div class="row   justify-between q-my-sm">
-                            <div class="heading-light  ">Purchase Date</div>
+                          <div class="row justify-between q-my-sm">
+                            <div class="heading-light">Purchase Date</div>
                             <div class="q-mr-sm">
                               {{ item.purchaseDate | moment('DD/MM/YYYY') }}
                             </div>
@@ -621,16 +619,16 @@
                         <q-separator />
                         <div class="q-my-sm row justify-between">
                           <div class="heading-light col-4">Purchase Price</div>
-                          <div class="heading-light ">$</div>
-                          <div class=" q-mr-sm ">
+                          <div class="heading-light">$</div>
+                          <div class="q-mr-sm">
                             {{ item.purchasePrice }}
                           </div>
                         </div>
                         <div class="q-my-sm row justify-between">
-                          <div class="heading-light col-4 ">
+                          <div class="heading-light col-4">
                             {{ item.radio }} Cost
                           </div>
-                          <div class="heading-light ">$</div>
+                          <div class="heading-light">$</div>
                           <div class="">
                             {{
                               item.radio == 'Replace'
@@ -663,7 +661,7 @@
                     lossInfo.isThereDamageToPersonalPropertyToggle
                 "
               >
-                <div class="col-8  q-mx-none q-my-auto form-heading">
+                <div class="col-8 q-mx-none q-my-auto form-heading">
                   Is the adjuster going to fill out the PPIF at a later date?
                 </div>
                 <q-toggle
@@ -681,7 +679,7 @@
                     !lossInfo.isPAFillingOutToggle
                 "
               >
-                <div class="col-8  q-mx-none q-my-auto form-heading">
+                <div class="col-8 q-mx-none q-my-auto form-heading">
                   Is the client going to prepare the PPIFs?
                 </div>
                 <q-toggle
@@ -697,7 +695,7 @@
                     lossInfo.isPAFillingOutToggle == false
                 "
               >
-                <div class="col-8  q-mx-none q-my-auto form-heading">
+                <div class="col-8 q-mx-none q-my-auto form-heading">
                   Do you want to send the insured a PPIF?
                 </div>
                 <q-toggle
@@ -707,7 +705,7 @@
                 />
               </div>
               <div class="row" v-if="lossInfo.isPAFillingOutToggle == false">
-                <div class="col-8  q-mx-none q-my-auto form-heading">
+                <div class="col-8 q-mx-none q-my-auto form-heading">
                   Was a PPIF provided to the insured?
                 </div>
                 <q-toggle
@@ -722,7 +720,7 @@
                     lossInfo.wasAppifProvidedToTheInsuredToggle == false
                 "
               >
-                <div class=" col-9 q-mx-none q-my-auto form-heading">
+                <div class="col-9 q-mx-none q-my-auto form-heading">
                   Does Claim Guru need to provide the insured with a PPIF?
                 </div>
                 <q-toggle
@@ -829,7 +827,7 @@
                               {{ item.radio }}</q-badge
                             >
                           </div>
-                          <div class="text-bold  text-capitalize q-pt-xs">
+                          <div class="text-bold text-capitalize q-pt-xs">
                             {{ item.name }}
                           </div>
                           <div class="q-pt-xs q-mr-sm text-bold">
@@ -844,16 +842,14 @@
                           <p>{{ item.itemDesc }}</p>
                         </div>
                         <div class="q-my-sm">
-                          <div class="row justify-between  q-my-sm">
-                            <div class="heading-light ">
-                              Serial Number
-                            </div>
+                          <div class="row justify-between q-my-sm">
+                            <div class="heading-light">Serial Number</div>
                             <div class="q-mr-sm">
                               {{ item.serialNumber ? item.serialNumber : '-' }}
                             </div>
                           </div>
-                          <div class="row   justify-between q-my-sm">
-                            <div class="heading-light  ">Purchase Date</div>
+                          <div class="row justify-between q-my-sm">
+                            <div class="heading-light">Purchase Date</div>
                             <div class="q-mr-sm">
                               {{ item.purchaseDate | moment('DD/MM/YYYY') }}
                             </div>
@@ -862,16 +858,16 @@
                         <q-separator />
                         <div class="q-my-sm row justify-between">
                           <div class="heading-light col-4">Purchase Price</div>
-                          <div class="heading-light ">$</div>
-                          <div class=" q-mr-sm ">
+                          <div class="heading-light">$</div>
+                          <div class="q-mr-sm">
                             {{ item.purchasePrice }}
                           </div>
                         </div>
                         <div class="q-my-sm row justify-between">
-                          <div class="heading-light col-4 ">
+                          <div class="heading-light col-4">
                             {{ item.radio }} Cost
                           </div>
-                          <div class="heading-light ">$</div>
+                          <div class="heading-light">$</div>
                           <div class="">
                             {{
                               item.radio == 'Replace'
@@ -1179,7 +1175,7 @@ export default {
   },
   data() {
     return {
-      step: 4,
+      step: 0,
       stepClickValidTill: 0,
       mortgageInfo: [
         {
