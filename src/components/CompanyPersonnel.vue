@@ -73,7 +73,7 @@
             <q-icon name="%" color="primary"></q-icon>
           </template>
           <template v-slot:append v-else>
-            <span class="form-heading">/hour</span>
+            <span class="form-heading text-primary">/hour</span>
           </template></q-input
         >
       </div>
@@ -204,7 +204,7 @@ export default {
 
     dateGreaterThan(val) {
       if (validateDate(val)) {
-        if (Date.parse(val) > Date.parse(this.companyPersonnel.startDate)) {
+        if (Date.parse(val) >= Date.parse(this.companyPersonnel.startDate)) {
           return true;
         } else {
           return 'End Date should be  greater than Start date';

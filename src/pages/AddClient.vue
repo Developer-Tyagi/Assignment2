@@ -372,6 +372,56 @@
                   :isChecksEnable="true"
                   :isAsteriskMark="true"
                 />
+                <div class="row">
+                  <p class="q-mx-none q-my-auto">Tenant Occupied</p>
+                  <q-toggle
+                    class="q-ml-auto"
+                    v-model="tenantOccupiedToggle"
+                    @input="onTenantToggleOff"
+                  />
+                </div>
+
+                <div v-if="tenantOccupiedToggle">
+                  <q-input
+                    dense
+                    v-model="tenantOccupied.name"
+                    label="Tenant Name"
+                  />
+
+                  <div class="row justify-between">
+                    <q-select
+                      dense
+                      class="required col-5"
+                      v-model="tenantOccupied.type"
+                      label="Type"
+                      :options="contactTypes"
+                      option-value="machineValue"
+                      option-label="name"
+                      map-options
+                      options-dense
+                      emit-value
+                      behavior="menu"
+                      lazy-rules
+                      :rules="[
+                        val =>
+                          (val && val.length > 0) || 'Please select phone type'
+                      ]"
+                    />
+                    <q-input
+                      dense
+                      class="required col-6"
+                      v-model.number="tenantOccupied.phone"
+                      label="Phone"
+                      mask="(###) ###-####"
+                      lazy-rules
+                      :rules="[
+                        val =>
+                          (val && val.length == 14) ||
+                          'Please enter the phone number'
+                      ]"
+                    />
+                  </div>
+                </div>
               </q-card>
             </div>
 
@@ -1177,6 +1227,12 @@ export default {
     return {
       step: 0,
       stepClickValidTill: 0,
+      tenantOccupiedToggle: false,
+      tenantOccupied: {
+        name: '',
+        phone: '',
+        type: ''
+      },
       mortgageInfo: [
         {
           id: '',
@@ -1618,6 +1674,13 @@ export default {
         this.lossInfo.osDamagedItems.length = 0;
       }
     },
+    onTenantToggleOff() {
+      if (!this.tenantOccupiedToggle) {
+        this.tenantOccupied.name = '';
+        this.tenantOccupied.type = '';
+        this.tenantOccupied.phone = '';
+      }
+    },
     onPersonalPropertyToggleButtonOff() {
       if (
         !this.lossInfo.isThereDamageToPersonalPropertyToggle ||
@@ -1860,7 +1923,14 @@ export default {
           mailingAddress: {
             ...this.mailingAddressDetails
           },
-          phoneNumbers: this.phoneNumber
+          phoneNumbers: this.phoneNumber,
+          tenantInfo: {
+            name: this.tenantOccupied.name,
+            phoneNumber: {
+              type: this.tenantOccupied.type,
+              number: this.tenantOccupied.phone
+            }
+          }
         },
         property: {
           name: this.lossAddressName,
@@ -1879,6 +1949,9 @@ export default {
       /* if coInsuredDetails toggle is off it well not send the coInsured details */
       if (!this.isThereaCoInsuredToggle) {
         delete payload.insuredInfo.secondary;
+      }
+      if (!this.tenantOccupiedToggle) {
+        delete payload.clientData.insuredInfo.tenantInfo;
       }
       if (!this.selectedLead.id) {
         delete payload.leadID;
