@@ -617,19 +617,19 @@
                           </div>
                         </div>
                         <q-separator />
-                        <div class="q-my-sm row justify-between">
-                          <div class="heading-light col-4">Purchase Price</div>
-                          <div class="heading-light">$</div>
+                        <div class="q-my-sm row ">
+                          <div class="heading-light col-7">Purchase Price</div>
+                          <div class="heading-light col-3">$</div>
                           <div class="q-mr-sm">
                             {{ item.purchasePrice }}
                           </div>
                         </div>
-                        <div class="q-my-sm row justify-between">
-                          <div class="heading-light col-4">
+                        <div class="q-my-sm row ">
+                          <div class="heading-light col-7">
                             {{ item.radio }} Cost
                           </div>
-                          <div class="heading-light">$</div>
-                          <div class="">
+                          <div class="heading-light col-3">$</div>
+                          <div>
                             {{
                               item.radio == 'Replace'
                                 ? item.replaceCost
@@ -856,19 +856,19 @@
                           </div>
                         </div>
                         <q-separator />
-                        <div class="q-my-sm row justify-between">
-                          <div class="heading-light col-4">Purchase Price</div>
-                          <div class="heading-light">$</div>
+                        <div class="q-my-sm row ">
+                          <div class="heading-light col-7">Purchase Price</div>
+                          <div class="heading-light col-3">$</div>
                           <div class="q-mr-sm">
                             {{ item.purchasePrice }}
                           </div>
                         </div>
-                        <div class="q-my-sm row justify-between">
-                          <div class="heading-light col-4">
+                        <div class="q-my-sm row ">
+                          <div class="heading-light col-7">
                             {{ item.radio }} Cost
                           </div>
-                          <div class="heading-light">$</div>
-                          <div class="">
+                          <div class="heading-light col-3">$</div>
+                          <div>
                             {{
                               item.radio == 'Replace'
                                 ? item.replaceCost
@@ -1175,7 +1175,7 @@ export default {
   },
   data() {
     return {
-      step: 0,
+      step: 5,
       stepClickValidTill: 0,
       mortgageInfo: [
         {
@@ -1320,6 +1320,8 @@ export default {
         }
       },
       lossInfo: {
+        currentIndex: '',
+        isEdit: 'noneditable',
         damageType: '',
         purchaseDate: '',
         purchasePrice: '',
@@ -1636,7 +1638,7 @@ export default {
       this.$delete(this.lossInfo.osDamagedItems, index);
     },
     addNewItem(val) {
-      this.isEdit = false;
+      this.lossInfo.isEdit = 'noneditable';
       this.lossInfo.quantity = '';
       this.lossInfo.PPDamageName = '';
       this.lossInfo.PPDamageDescription = '';
@@ -1655,9 +1657,10 @@ export default {
     },
     OnEditPPdamageItem(index) {
       if (this.lossInfo.damageType == 'property') {
-        this.isEdit = true;
+        this.lossInfo.isEdit = 'editable';
 
-        this.currentIndex = index;
+        this.lossInfo.currentIndex = index;
+        console.log(this.lossInfo.currentIndex, index);
         this.lossInfo.quantity = this.lossInfo.ppDamagedItems[index].quantity;
         this.lossInfo.PPDamageName = this.lossInfo.ppDamagedItems[index].name;
         this.lossInfo.PPDamageDescription = this.lossInfo.ppDamagedItems[
@@ -1685,9 +1688,10 @@ export default {
 
         this.lossInfo.PPdamagedItemsDailog = true;
       } else {
-        this.isEdit = true;
+        this.lossInfo.isEdit = 'editable';
 
-        this.currentIndex = index;
+        this.lossInfo.currentIndex = index;
+        console.log(this.lossInfo.currentIndex, index);
         this.lossInfo.quantity = this.lossInfo.osDamagedItems[index].quantity;
         this.lossInfo.PPDamageName = this.lossInfo.osDamagedItems[index].name;
         this.lossInfo.PPDamageDescription = this.lossInfo.osDamagedItems[
@@ -1738,6 +1742,7 @@ export default {
         }
       }
     },
+
     // For adding multiple Contact Numbers in ClientInfo
     addAnotherContact() {
       let len = this.phoneNumber.length;

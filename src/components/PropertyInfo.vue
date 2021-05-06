@@ -246,8 +246,6 @@ export default {
 
   data() {
     return {
-      isEdit: false,
-      currentIndex: '',
       mortgageInfo: {
         vendorsListDialog: false,
         vendorDialogFilterByIndustry: '',
@@ -341,11 +339,18 @@ export default {
     },
 
     async addPPDamagedItems() {
+      console.log(
+        this.lossInfo.isEdit,
+        this.lossInfo.damageType,
+        this.lossInfo.currentIndex,
+        7
+      );
       const success = await this.$refs.PropertyInfo.validate();
       if (success) {
         if (this.lossInfo.damageType == 'property') {
-          if (this.isEdit == true) {
-            this.lossInfo.ppDamagedItems[this.currentIndex] = {
+          if (this.lossInfo.isEdit == 'editable') {
+            console.log('n00');
+            this.lossInfo.ppDamagedItems[this.lossInfo.currentIndex] = {
               name: this.lossInfo.PPDamageName,
               desc: this.lossInfo.PPDamageDescription,
               serialNumber: this.lossInfo.serialNumber,
@@ -372,8 +377,8 @@ export default {
             });
           }
         } else {
-          if (this.isEdit == true) {
-            this.lossInfo.osDamagedItems[this.currentIndex] = {
+          if (this.lossInfo.isEdit == 'editable') {
+            this.lossInfo.osDamagedItems[this.lossInfo.currentIndex] = {
               name: this.lossInfo.PPDamageName,
               desc: this.lossInfo.PPDamageDescription,
               serialNumber: this.lossInfo.serialNumber,
