@@ -699,6 +699,9 @@ export default {
       this.personnel.notes = '';
       this.personnel.departmentName = '';
       this.personnel.phoneNumber = [{ type: 'main', number: '' }];
+      this.personnel.role.id = '';
+      this.personnel.role.value = '';
+      this.personnel.role.machineValue = '';
     }
   }
 };
