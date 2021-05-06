@@ -38,7 +38,7 @@
                 />
               </div>
               <div class="row q-mt-sm">
-                <div class="heading-light col-3">Address Details</div>
+                <div class="heading-light col-3 ">Address Details</div>
                 <div class="col-7" v-if="personnel.address">
                   {{
                     personnel.address.houseNumber
@@ -88,7 +88,7 @@
               <div class="row q-mt-sm" v-if="personnel.email">
                 <span class="heading-light col-3"> Email </span>
                 <span
-                  class="q-ml-sm col clickLink"
+                  class="q-ml-none col clickLink"
                   @click="onEmailClick(personnel.email, $event)"
                 >
                   {{ personnel.email ? personnel.email : '-' }}</span
@@ -96,7 +96,7 @@
               </div>
               <div class="row">
                 <div class="heading-light col-3">Phone Number</div>
-                <div class="q-mt-xs col-6 q-ml-xs">
+                <div class="q-mt-xs col-6 q-ml-none">
                   <div class="row" v-for="phone in personnel.phoneNumber">
                     <div class="col-3">
                       {{ phone.type ? phone.type : '-' }}
@@ -112,9 +112,15 @@
               </div>
 
               <div class="row q-mt-sm q-mb-sm">
-                <span class="heading-light col-2"> Notes: </span>
-                <span class="q-ml-md col" v-if="personnel.note">
+                <span class="heading-light col-3 "> Notes: </span>
+                <span class="q-ml-none col" v-if="personnel.note">
                   {{ personnel.note ? personnel.note : '-' }}</span
+                >
+              </div>
+              <div class="row q-mt-sm q-mb-sm">
+                <span class="heading-light col-3 "> Role: </span>
+                <span class="q-ml-none col" v-if="personnel.role">
+                  {{ personnel.role.value ? personnel.role.value : '-' }}</span
                 >
               </div>
             </q-card>
@@ -692,7 +698,7 @@ export default {
       this.personnel.address.postalCode = '';
       this.personnel.notes = '';
       this.personnel.departmentName = '';
-      this.personnel.phoneNumber.length = 0;
+      this.personnel.phoneNumber = [{ type: 'main', number: '' }];
     }
   }
 };
