@@ -151,7 +151,6 @@ export default {
             PushNotifications.addListener(
               'registration',
               PushNotificationToken => {
-                alert('Push token:' + PushNotificationToken.value);
                 this.sendPushNotificationToken({
                   token: PushNotificationToken.value
                 });

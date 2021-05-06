@@ -59,7 +59,6 @@
           </div>
           <div class="row">
             <span> <small class="opacity-50"> File No. 12345678</small></span>
-            <span v-if="pushToken">{{ pushToken }}</span>
             <span class="q-ml-auto">
               <small class="opacity-50"> Date of Activity</small></span
             >
@@ -70,21 +69,7 @@
   </q-page>
 </template>
 <script>
-import { getFCMToken } from '@utils/auth';
-
-export default {
-  data() {
-    return { pushToken: '' };
-  },
-
-  created() {
-    this.pushToken = this.getFCMToken();
-  },
-
-  methods: {
-    getFCMToken
-  }
-};
+export default {};
 </script>
 <style>
 .my-card {
