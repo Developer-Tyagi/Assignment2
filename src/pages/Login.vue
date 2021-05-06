@@ -142,6 +142,10 @@ export default {
         const response = await this.userLogin(loginData);
         if (response) {
           await this.getUserInfo();
+          console.log(
+            isPushNotificationsAvailable,
+            'isPushNotificationsAvailable'
+          );
           if (isPushNotificationsAvailable) {
             PushNotifications.requestPermission().then(result => {
               if (result.granted) {
