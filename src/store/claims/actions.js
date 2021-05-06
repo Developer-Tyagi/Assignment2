@@ -241,7 +241,7 @@ export async function updateLossInfo({ dispatch, state }, payload) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'positive',
-      message: 'Loss Info Updated Successfully! please try again !'
+      message: 'Loss Info Updated Successfully !'
     });
     return data;
   } catch (e) {
