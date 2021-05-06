@@ -519,7 +519,7 @@
                     label="Search"
                     :options="clientOptions"
                     @filter="searchFilterBy"
-                    option-value="id"
+                    option-value="name"
                     behavior="menu"
                     options-dense
                     emit-value
@@ -1037,6 +1037,7 @@ export default {
         } else {
           payload.leadSource.details = this.sourceDetails.details;
         }
+
         this.addLeads(payload).then(() => {
           this.setSelectedClient();
         });
