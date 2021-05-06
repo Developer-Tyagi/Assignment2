@@ -521,8 +521,8 @@
           >
             <q-card class="q-pa-md form-card" style="min-height: 400px">
               <div class="row">
-                <div class="col-8 q-mt-md form-heading">
-                  Is there damage to personal operty?
+                <div class="col-9 q-mt-md form-heading">
+                  Is there damage to personal property?
                 </div>
                 <q-toggle
                   class="q-ml-auto"
@@ -732,7 +732,6 @@
               </div>
               <PropertyInfo
                 :lossInfo="lossInfo"
-                :isAddressRequired="true"
                 :policyDate="{
                   policyEffectiveDate: insuranceDetails.policyEffectiveDate,
                   policyExpireDate: insuranceDetails.policyExpireDate
@@ -780,13 +779,13 @@
                 />
               </div>
 
-              <PropertyInfo
+              <!-- <PropertyInfo
                 :lossInfo="lossInfo"
                 :policyDate="{
                   policyEffectiveDate: insuranceDetails.policyEffectiveDate,
                   policyExpireDate: insuranceDetails.policyExpireDate
                 }"
-              />
+              /> -->
 
               <div v-if="lossInfo.isDamageOSToggle">
                 <br />
@@ -1615,6 +1614,7 @@ export default {
     ]),
     ...mapMutations(['setSelectedLead']),
     successMessage,
+
     onDamageOsToggleButtonOff() {
       if (!this.lossInfo.isDamageOSToggle) {
         this.lossInfo.osDamagedItems.length = 0;
