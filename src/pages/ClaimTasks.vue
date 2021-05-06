@@ -1,38 +1,41 @@
 <template>
-  <div class="bg-white full-width">
-    <ClaimDetail />
-    <q-card class="q-pa-md">
-      <div>
-        <div class="column" v-for="task in tasks.tasks">
-          <div class="row q-pa-sm">
-            <div class="flex">
-              <q-checkbox
-                v-model="task.isEnabled"
-                color="$primary"
-                class="q-my-auto q-mr-md"
-              />
-            </div>
-            <div class="column">
-              <span class="text-bold text-capitalize" v-if="task.name">{{
-                task.name
-              }}</span>
-              <span v-if="task.addedDesc">{{ task.addedDesc }}</span>
-              <span v-if="task.dueDesc">{{ task.dueDesc }}</span>
+  <div>
+    <div class="mobile-container-page">
+      <ClaimDetail />
+      <q-card class="q-pa-md">
+        <div>
+          <div class="column" v-for="task in tasks.tasks">
+            <div class="row q-pa-sm">
+              <div class="flex">
+                <q-checkbox
+                  v-model="task.isEnabled"
+                  color="$primary"
+                  class="q-my-auto q-mr-md"
+                />
+              </div>
+              <div class="column">
+                <span class="text-bold text-capitalize" v-if="task.name">{{
+                  task.name
+                }}</span>
+                <span v-if="task.addedDesc">{{ task.addedDesc }}</span>
+                <span v-if="task.dueDesc">{{ task.dueDesc }}</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </q-card>
-
+      </q-card>
+    </div>
     <q-btn
       label="add custom task"
-      class="fixed-bottom q-my-md q-mx-auto"
       color="primary"
+      class=" fixed-bottom full-width q-mt-auto text-capitalize"
       @click="addNewTaskDialog = true"
       size="md"
       style="width: 90%"
     />
 
+    <!-- class=" q-my-md q-mx-auto" -->
+    <!-- style="width: 90%" -->
     <q-dialog
       v-model="addNewTaskDialog"
       persistent
@@ -45,7 +48,7 @@
           :dialogName="'Add New Task'"
           @closeDialog="addNewTaskDialog = false"
         />
-        <div class="mobile-container-page q-pa-sm form-height">
+        <div class="mobile-container-page form-height q-pa-md">
           <q-form ref="addTask">
             <q-input
               class="required"
@@ -56,11 +59,12 @@
                 val => (val && val.length > 0) || 'Please enter the task name'
               ]"
             />
+            <span class="text-bold">Task Date</span>
             <q-input
               class="required"
               v-model="newTask.dueDate"
               mask="##/##/####"
-              label="Task Date"
+              label="MM/DD/YYYY"
               lazy-rules
               :rules="[
                 val =>
@@ -169,6 +173,7 @@ export default {
         };
         await this.addOfficeTask(payload);
         this.addNewTaskDialog = false;
+        this.getOfficeTasks(this.$route.params.id);
         this.newTask.name = '';
         this.newTask.priority = false;
         this.newTask.dueDate = '';
@@ -180,4 +185,3 @@ export default {
   }
 };
 </script>
-<style></style>
