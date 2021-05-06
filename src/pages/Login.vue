@@ -142,10 +142,6 @@ export default {
         const response = await this.userLogin(loginData);
         if (response) {
           await this.getUserInfo();
-          console.log(
-            isPushNotificationsAvailable,
-            'isPushNotificationsAvailable'
-          );
           if (isPushNotificationsAvailable) {
             PushNotifications.requestPermission().then(result => {
               if (result.granted) {
@@ -155,14 +151,14 @@ export default {
             PushNotifications.addListener(
               'registration',
               PushNotificationToken => {
-                console.log('Push token:' + PushNotificationToken.value);
+                alert('Push token:' + PushNotificationToken.value);
                 this.sendPushNotificationToken({
                   token: PushNotificationToken.value
                 });
               }
             );
             PushNotifications.addListener('registrationError', any => {
-              console.log('Error on registration: ' + JSON.stringify(any));
+              alert('Error on registration: ' + JSON.stringify(any));
             });
           }
           if (Screen.width < 992) {
