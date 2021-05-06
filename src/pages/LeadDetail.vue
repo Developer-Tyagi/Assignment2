@@ -47,12 +47,29 @@
             >
           </div>
 
-          <div class="row  q-mt-sm" v-if="selectedLead.leadSource">
-            <span class="heading-light col-3"> Lead Source </span>
+          <div
+            class="row  q-mt-sm"
+            v-if="selectedLead.leadSource.type != 'google'"
+          >
+            <span class="heading-light col-3">
+              Lead Source
+            </span>
             <span class="q-ml-md col">
               {{
                 selectedLead.leadSource.detail
                   ? selectedLead.leadSource.detail
+                  : '-'
+              }}</span
+            >
+          </div>
+          <div v-else class="row  q-mt-sm">
+            <span class="heading-light col-3">
+              Lead Source
+            </span>
+            <span class="q-ml-md col">
+              {{
+                selectedLead.leadSource.type
+                  ? selectedLead.leadSource.type
                   : '-'
               }}</span
             >

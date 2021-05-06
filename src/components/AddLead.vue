@@ -422,7 +422,10 @@
                   placeholder="Enter Source details"
                   v-model="sourceDetails.details"
                   lazy-rules
-                  :rules="[val => (val && val.length > 0) || '']"
+                  :rules="[
+                    val =>
+                      (val && val.length > 0) || 'Please select source detail'
+                  ]"
                 />
                 <div
                   v-else-if="sourceDetails.type == constants.industries.VENDOR"
@@ -1243,12 +1246,9 @@ export default {
         : '';
       this.schedulingDetails.isAutomaticScheduling = this.selectedLead.isAutomaticScheduling;
       this.notes = this.selectedLead.notes;
-      this.sourceDetails = this.selectedLead.leadSource
-        ? this.selectedLead.leadSource
-        : '';
-      this.sourceDetails.details = this.selectedLead.leadSource
-        ? this.selectedLead.leadSource.detail
-        : '';
+      this.sourceDetails.id = this.selectedLead.leadSource.id;
+      this.sourceDetails.type = this.selectedLead.leadSource.type;
+      this.sourceDetails.details = this.selectedLead.leadSource.detail;
       this.insuranceDetails.carrierName = this.selectedLead.carrier
         ? this.selectedLead.carrier.value
         : '';
@@ -1271,6 +1271,8 @@ export default {
       this.primaryDetails.organizationName = this.selectedLead.isOrganization
         ? this.selectedLead.organizationName
         : '';
+
+      this.insuranceDetails.policyNumber = this.selectedLead.policyNumber;
     }
 
     //Current Date
