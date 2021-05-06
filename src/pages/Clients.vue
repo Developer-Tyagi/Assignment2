@@ -56,7 +56,9 @@
                 <div><span>File No. 12345678</span></div>
                 <div class="row justify-between">
                   <div>Status: Negotiation</div>
-                  <div>{{ client.created | moment('DD/MM/YYYY') }}</div>
+                  <div>
+                    {{ client.created | moment('MM/DD/YYYY, HH:mm A') }}
+                  </div>
                 </div>
               </div>
             </q-item-section>
