@@ -157,7 +157,7 @@ export default {
               }
             );
             PushNotifications.addListener('registrationError', any => {
-              console.log('Error on registration: ' + JSON.stringify(any));
+              alert('Error on registration: ' + JSON.stringify(any));
             });
           }
           if (Screen.width < 992) {

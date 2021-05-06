@@ -389,7 +389,6 @@ export async function sendPushNotificationToken({ dispatch, state }, payload) {
       'users/pushtokens',
       buildApiData('pushtokens', payload)
     );
-    this.setFCMToken(payload.token);
     dispatch('setLoading', false);
     return true;
   } catch (e) {

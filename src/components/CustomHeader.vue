@@ -244,7 +244,6 @@ export default {
     } else {
       this.intViewportWidth = 300;
     }
-    console.log(getCurrentUser());
     if (this.getCurrentUser().attributes) {
       this.user = getCurrentUser().attributes;
     }
