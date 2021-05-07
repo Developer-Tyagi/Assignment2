@@ -160,28 +160,15 @@ export default {
               alert('Error on registration: ' + JSON.stringify(any));
             });
           }
-          if (Screen.width < 992) {
-            this.$router.push('/dashboard');
-          } else {
-            this.$router.push('/manage-users');
-          }
+          this.$router.push('/dashboard');
         }
       }
     }
   },
 
   created() {
-    if (getToken()) {
-      if (
-        (getCurrentUser() &&
-          getCurrentUser().attributes['onboard'] &&
-          getCurrentUser().attributes['onboard']['isCompleted']) ||
-        this.$q.screen.width < 992
-      ) {
-        this.$router.push('/dashboard');
-      } else {
-        this.$router.push('/manage-users');
-      }
+    if (getToken() && getCurrentUser()) {
+      this.$router.push('/dashboard');
     }
   }
 };
