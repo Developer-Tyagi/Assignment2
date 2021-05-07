@@ -1131,6 +1131,9 @@ export default {
         .claimNumber
         ? this.policy.policyInfo.claimNumber
         : '-';
+      if (this.policy.policyInfo.claimNumber) {
+        this.insuranceDetails.hasClaimBeenFilledToggle = true;
+      }
       this.insuranceDetails.policyEffectiveDate = this.policy.policyInfo.effectiveDate;
       this.insuranceDetails.policyExpireDate = this.policy.policyInfo.expirationDate;
 
