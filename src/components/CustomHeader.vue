@@ -70,7 +70,7 @@
             <q-item
               clickable
               v-ripple
-              v-for="link in linksData"
+              v-for="link in sidebarItems"
               :key="link.title"
               @click="routeTo(link)"
               v-bind="link"
@@ -131,21 +131,25 @@ export default {
       linksData: [
         {
           title: 'Dashboard',
+          key: 'dashboard',
           link: '/dashboard',
           description: 'View Dashboard and details'
         },
         {
           title: 'Leads',
+          key: 'leads',
           link: '/leads-dashboard',
           description: 'View Lead Dashboard, Add New Lead and Manage Leads.'
         },
         {
           title: 'Clients',
+          key: 'clients',
           link: '/clients',
           description: 'View, Add and Manage Clients.'
         },
         {
           title: 'Claims',
+          key: 'claims',
           link: '/claims',
           description: 'View, Add and Manage Claims.'
         },
@@ -157,11 +161,13 @@ export default {
         // },
         {
           title: 'Vendors',
+          key: 'vendors',
           link: '/vendors',
           description: 'View, Add and Manage all types of Vendors.'
         },
         {
           title: 'Carriers',
+          key: 'carriers',
           link: '/carriers',
           description: 'View, Add and Manage all types of Carriers.'
         },
@@ -172,24 +178,42 @@ export default {
         // },
         {
           title: 'Mortgages',
+          key: 'mortagages',
           link: '/mortgages',
           description: 'View, Add and Manage all types of Mortgages.'
         },
         {
           title: 'Admin',
+          key: 'admin',
           link: '/admin',
           description: 'Setup Company , account, email, actions etc.'
         },
         {
           title: 'Manage Users',
+          key: 'manage-users',
           link: '/manage-users',
           description: 'View, Add and Manage all types of Vendors.'
         },
         {
           title: 'Configuration',
+          key: 'configuration',
           link: '/configuration',
           description: 'View, Add and Manage all types of configuration.'
         }
+      ],
+      sidebarItems: [],
+      estimator: ['dashboard', 'claims'],
+      owner: [
+        'dashboard',
+        'leads',
+        'clients',
+        'claims',
+        'vendors',
+        'carriers',
+        'mortagages',
+        'admin',
+        'manage-users',
+        'configuration'
       ]
     };
   },
@@ -229,6 +253,19 @@ export default {
 
     routeTo(link) {
       this.$router.push(link.link);
+    },
+
+    createSidebarMenuItems() {
+      const roles = getCurrentUser().attributes.roles;
+      roles.forEach(role => {
+        this[role].forEach(item => {
+          let obj = this.linksData.find(link => link.key === item);
+          let index = this.sidebarItems.findIndex(x => x.key === obj.key);
+          if (index < 0) {
+            this.sidebarItems.push(obj);
+          }
+        });
+      });
     }
   },
 
@@ -246,6 +283,7 @@ export default {
     }
     if (this.getCurrentUser().attributes) {
       this.user = getCurrentUser().attributes;
+      this.createSidebarMenuItems();
     }
     if (this.$q.screen.width < 992) {
       this.isLeftSidePanelOpen = false;

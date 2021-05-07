@@ -30,6 +30,12 @@ const routes = [
         caseSensitive: true,
         component: () => import('pages/Information.vue')
       },
+      {
+        path: 'access-denied',
+        name: 'access-denied',
+        caseSensitive: true,
+        component: () => import('pages/AccessDenied.vue')
+      },
       { path: '', redirect: 'login' }
     ]
   },

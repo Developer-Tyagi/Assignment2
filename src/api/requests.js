@@ -34,6 +34,8 @@ axiosInstance.interceptors.response.use(
         url: err.error.config.url,
         params: err.error.config.params
       });
+    } else if (error.response.status === 403) {
+      window.location.href = '/access-denied';
     } else {
       if (typeof error.response === 'object') {
         throw {
