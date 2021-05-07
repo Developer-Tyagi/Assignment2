@@ -37,11 +37,11 @@
           </div>
 
           <div class="row q-mt-sm">
-            <span
+            <div
               class="col-7 heading-light"
               v-if="selectedClaimCarrier.carrier.address"
             >
-              <div class="row">
+              <div>
                 {{
                   selectedClaimCarrier.carrier.address.houseNumber
                     ? selectedClaimCarrier.carrier.address.houseNumber
@@ -67,18 +67,29 @@
                     : '-'
                 }}
               </div>
-              <div class="row">
+              <div>
                 {{
                   selectedClaimCarrier.carrier.address.addressCountry
                     ? selectedClaimCarrier.carrier.address.addressCountry
                     : '-'
                 }},
+
                 {{
                   selectedClaimCarrier.carrier.address.postalCode
                     ? selectedClaimCarrier.carrier.address.postalCode
                     : '-'
                 }}
+
+                <q-icon
+                  name="place"
+                  color="primary"
+                  class="q-ml-auto"
+                  @click="sendMap(selectedClaimCarrier.carrier.address)"
+                  style="position: absolute ;right: 20px"
+                  size="sm"
+                ></q-icon>
               </div>
+
               <div
                 class="q-mt-xs"
                 v-for="phone in selectedClaimCarrier.carrier.phoneNumber"
@@ -103,7 +114,7 @@
                     : '-'
                 }}</span
               >
-            </span>
+            </div>
           </div>
         </div>
         <div v-else class="heading-light col q-ma-xs">
@@ -982,7 +993,7 @@ export default {
       'editCarrierPersonnelToClaim',
       'getClaimRoles'
     ]),
-
+    sendMap,
     async applyFilter() {
       if (this.filterName) {
         this.params.role = this.filterName;
