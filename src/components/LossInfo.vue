@@ -714,12 +714,28 @@ export default {
     ]),
 
     lossDateOption(dateopn) {
-      return (
-        dateopn >=
-          date.formatDate(this.policyDate.policyEffectiveDate, 'YYYY/MM/DD') &&
-        dateopn <=
-          date.formatDate(this.policyDate.policyExpireDate, 'YYYY/MM/DD')
-      );
+      if (
+        date.formatDate(Date.now(), 'YYYY/MM/DD') <
+        date.formatDate(this.policyDate.policyExpireDate, 'YYYY/MM/DD')
+      ) {
+        return (
+          dateopn >=
+            date.formatDate(
+              this.policyDate.policyEffectiveDate,
+              'YYYY/MM/DD'
+            ) && dateopn <= date.formatDate(Date.now(), 'YYYY/MM/DD')
+        );
+      } else {
+        return (
+          dateopn >=
+            date.formatDate(
+              this.policyDate.policyEffectiveDate,
+              'YYYY/MM/DD'
+            ) &&
+          dateopn <=
+            date.formatDate(this.policyDate.policyExpireDate, 'YYYY/MM/DD')
+        );
+      }
     },
 
     dateLiesBetween(val) {
