@@ -17,7 +17,7 @@
           >
             <div class="row q-my-sm">
               <div class="col-10 heading-light">
-                {{ logItem.created | moment('DD/MM/YYYY, HH:mm') }}
+                {{ logItem.created | moment('DD/MM/YYYY, hh:mm A') }}
               </div>
               <q-icon
                 size="xs"
@@ -29,12 +29,16 @@
               <q-icon class="q-ml-sm" name="delete" size="sm" color="primary" />
             </div>
             <div>{{ logItem.title }}</div>
-            <div class="heading-light q-my-sm">
-              Entered by {{ logItem.user.name }}
-            </div>
+
             <p class="heading-light q-my-sm text-caption">
               {{ logItem.detail ? logItem.detail : '-' }}
             </p>
+            <p class="heading-light q-my-sm text-caption">
+              {{ logItem.note ? logItem.note : '-' }}
+            </p>
+            <div class="heading-light q-my-sm">
+              Entered by {{ logItem.user.name }}
+            </div>
           </q-card>
         </div>
         <div v-else class="q-ma-xl heading-light text-italic">
@@ -107,22 +111,32 @@
 
         <div class="mobile-container-page-without-search q-ma-sm">
           <q-form ref="activityEditLogForm" class="form-height">
+            <div v-if="isFieldDisable == false">
+              <q-input
+                v-model="edit.title"
+                class="full-width required"
+                label="Title"
+                :disable="isFieldDisable"
+                :rules="[
+                  val => (val && val.length > 0) || 'Please fill the title    '
+                ]"
+              />
+            </div>
+            <div v-else>
+              <div class="heading-light">
+                {{ date | moment('MMM DD, YYYY, hh:mm A') }}
+              </div>
+              <div class="q-mt-sm">{{ edit.title }}</div>
+              <div class="heading-light q-mt-sm">Entered By {{ name }}</div>
+            </div>
             <q-input
-              v-model="edit.title"
-              class="full-width required"
-              label="Title"
-              :disable="isFieldDisable"
-              :rules="[
-                val => (val && val.length > 0) || 'Please fill the title    '
-              ]"
-            />
-            <q-input
+              v-if="isFieldDisable == false"
               v-model="edit.details"
               class="full-width"
               label="Details"
               :disable="isFieldDisable"
             /><br />
-            <span class="form-heading">Notes</span>
+            <span class=" heading-light q-pt-sm"> Additional Notes</span>
             <div class="floating-label">
               <textarea
                 rows="5"
@@ -157,6 +171,8 @@ export default {
   components: { CustomBar, ClaimDetail },
   data() {
     return {
+      name: '',
+      date: '',
       isFieldDisable: true,
       title: '',
       details: '',
@@ -194,6 +210,9 @@ export default {
     ...mapMutations(['setSelectedClaimId', 'setLog']),
     // Edit Function
     onClickEdit(index) {
+      console.log(this.log[index].created);
+      this.date = this.log[index].created;
+      this.name = this.log[index].user.name;
       this.edit.title = this.log[index].title;
       this.edit.title = this.log[index].title;
       this.edit.details = this.log[index].detail;
