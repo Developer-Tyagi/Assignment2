@@ -42,11 +42,23 @@ export function getFCMToken() {
 
 export function guardMyroute(to, from, next) {
   var isAuthenticated = false;
-  if (getToken()) isAuthenticated = true;
-  else isAuthenticated = false;
+  if (getToken()) {
+    // if (userIsAllowedToRoute(to)) {
+    isAuthenticated = true;
+    // } else {
+    //   isAuthenticated = false;
+    // }
+  } else {
+    isAuthenticated = false;
+  }
   if (isAuthenticated) {
     next();
   } else {
     next('/login');
   }
+}
+
+function userIsAllowedToRoute(route) {
+  const userRoles = getCurrentUser().attributes.roles;
+  console.log(route.name);
 }
