@@ -16,8 +16,24 @@
         label="Title"
         options-dense
       />
-      <q-input dense v-model="carrierPersonnel.fname" label="First Name" />
-      <q-input dense v-model="carrierPersonnel.lname" label="Last Name" />
+      <q-input
+        dense
+        v-model="carrierPersonnel.fname"
+        label="First Name"
+        class="required"
+        lazy-rules
+        :rules="[
+          val => (val && val.length > 0) || 'Please fill the first name'
+        ]"
+      />
+      <q-input
+        dense
+        v-model="carrierPersonnel.lname"
+        label="Last Name"
+        class="required"
+        lazy-rules
+        :rules="[val => (val && val.length > 0) || 'Please fill the last name']"
+      />
       <q-input
         dense
         v-model="carrierPersonnel.departmentName"
@@ -29,7 +45,10 @@
         input
         type="email"
         novalidate="true"
+        class="required"
         label="Email"
+        lazy-rules
+        :rules="[val => (val && val.length > 0) || 'Please fill the email']"
       />
 
       <div>
