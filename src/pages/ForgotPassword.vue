@@ -102,6 +102,7 @@ export default {
         const res = await this.userLogin(loginData);
         if (res) {
           this.getUserInfo();
+          this.$router.push('/dashboard');
         }
       }
     }
