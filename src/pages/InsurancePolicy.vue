@@ -246,12 +246,7 @@
               {{ policy.policyInfo ? policy.policyInfo.number : '-' }}
             </span>
           </div>
-          <div class="row q-mt-xs">
-            <span class="heading-light col"> Claim Number </span>
-            <span class="q-ml-md col">
-              {{ policy.policyInfo ? policy.policyInfo.claimNumber : '-' }}
-            </span>
-          </div>
+
           <div class="row q-mt-xs">
             <span class="heading-light col"> Start Date </span>
             <span class="q-ml-md col" v-if="policy.policyInfo">
@@ -266,7 +261,10 @@
           </div>
           <div class="row q-mt-xs">
             <span class="heading-light col"> Category </span>
-            <span class="q-ml-md col" v-if="policy.policyInfo.category">
+            <span
+              class="q-ml-md col"
+              v-if="policy.policyInfo && policy.policyInfo.category"
+            >
               {{
                 policy.policyInfo.category
                   ? policy.policyInfo.category.value
@@ -426,7 +424,10 @@
         />
         <div class="q-ma-sm mobile-container-page-without-search">
           <q-form ref="insuranceInfoForm" class="form-height">
-            <InsuranceInfo :insuranceDetails="insuranceDetails" />
+            <InsuranceInfo
+              :insuranceDetails="insuranceDetails"
+              :policyInfo="true"
+            />
           </q-form>
 
           <q-btn
@@ -1095,10 +1096,6 @@ export default {
 
     onEditPolicyInfo() {
       this.insuranceInfoDialog = true;
-      this.insuranceDetails.hasClaimBeenFilledToggle = this.policy.policyInfo
-        .isClaimFiled
-        ? this.policy.policyInfo.isClaimFiled
-        : false;
 
       this.insuranceDetails.isThisIsForcedPlacedPolicyToggle = this.policy
         .policyInfo.isForcedPlaced
@@ -1138,13 +1135,6 @@ export default {
       this.insuranceDetails.policyNumber = this.policy.policyInfo.number
         ? this.policy.policyInfo.number
         : '';
-      this.insuranceDetails.insuranceClaimNumber = this.policy.policyInfo
-        .claimNumber
-        ? this.policy.policyInfo.claimNumber
-        : '-';
-      if (this.policy.policyInfo.claimNumber) {
-        this.insuranceDetails.hasClaimBeenFilledToggle = true;
-      }
       this.insuranceDetails.policyEffectiveDate = this.policy.policyInfo.effectiveDate;
       this.insuranceDetails.policyExpireDate = this.policy.policyInfo.expirationDate;
 
@@ -1161,14 +1151,6 @@ export default {
       this.insuranceDetails.deductible = this.policy.policyInfo.deductibleAmount;
       this.insuranceDetails.priorPayment = this.policy.policyInfo.priorPayment;
       this.insuranceDetails.reasonsOfLD = this.policy.policyInfo.limitReason;
-      this.insuranceDetails.carrierName = this.policy.policyInfo.carrier
-        ? this.policy.policyInfo.carrier.value
-        : '';
-      this.insuranceDetails.carrierId = this.policy.policyInfo.carrier.id
-        ? this.policy.policyInfo.carrier.id
-        : ''.value
-        ? this.policy.policyInfo.carrier.value
-        : '';
     },
     async onCloseCarrierList() {
       this.carriersListDialog = false;
@@ -1324,15 +1306,10 @@ export default {
           id: this.selectedClaimId,
           data: {
             policyInfo: {
-              carrier: {
-                id: this.insuranceDetails.carrierId,
-                value: this.insuranceDetails.carrierName
-              },
               number: this.insuranceDetails.policyNumber,
               isClaimFiled: this.hasClaimBeenFilledToggle,
               isForcedPlaced: this.isThisIsForcedPlacedPolicyToggle,
               hasAppraisalClause: this.hasAppraisalClause,
-              claimNumber: this.insuranceDetails.insuranceClaimNumber,
               category: {
                 id: this.insuranceDetails.policyCategory.id,
                 value: this.insuranceDetails.policyCategory.value,
