@@ -1481,6 +1481,7 @@ export default {
         },
         carrierName: '',
         carrierId: '',
+        hasAppraisalClause: false,
         insuranceClaimNumber: '',
         policyNumber: '',
         policyEffectiveDate: '',
@@ -1807,7 +1808,7 @@ export default {
 
       if (this.phoneNumber[len - 1].number.length == 14) {
         this.phoneNumber.push({
-          type: '',
+          type: 'Main',
           number: ''
         });
       } else {
@@ -1951,7 +1952,7 @@ export default {
         delete payload.insuredInfo.secondary;
       }
       if (!this.tenantOccupiedToggle) {
-        delete payload.clientData.insuredInfo.tenantInfo;
+        delete payload.insuredInfo.tenantInfo;
       }
       if (!this.selectedLead.id) {
         delete payload.leadID;
