@@ -210,7 +210,6 @@ export default {
     ...mapMutations(['setSelectedClaimId', 'setLog']),
     // Edit Function
     onClickEdit(index) {
-      console.log(this.log[index].created);
       this.date = this.log[index].created;
       this.name = this.log[index].user.name;
       this.edit.title = this.log[index].title;
