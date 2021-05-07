@@ -158,135 +158,160 @@
           @closeDialog="addPersonnelDialog = false"
         />
         <div class="mobile-container-page">
-          <q-card class="q-ma-md q-pa-md q-mt-sm">
-            <q-select
-              class="required"
-              dense
-              v-model="honorific.id"
-              :options="titles"
-              option-value="id"
-              option-label="value"
-              map-options
-              options-dense
-              behavior="menu"
-              @input="setTitleName(honorific)"
-              emit-value
-              label="Title"
-              options-dense
-            />
-            <q-input dense v-model="personnel.fname" label="First Name" />
-            <q-input dense v-model="personnel.lname" label="Last Name" />
-            <q-input
-              dense
-              v-model="personnel.departmentName"
-              label="Organization / Department Name"
-            />
-            <q-input
-              dense
-              v-model="personnel.email"
-              input
-              type="email"
-              novalidate="true"
-              label="Email"
-            />
-
-            <div>
+          <q-form ref="vendorPersonnelForm">
+            <q-card class="q-ma-md q-pa-md q-mt-sm">
               <q-select
-                v-model="personnel.role.value"
+                class="required"
                 dense
-                class="full-width"
-                use-input
-                input-debounce="0"
-                option-label="name"
-                label="Default Roles"
-                :options="options"
-                option-value="name"
-                @input="setClaimRoles"
-                @filter="searchFilterBy"
+                v-model="honorific.id"
+                :options="titles"
+                option-value="id"
+                option-label="value"
+                map-options
+                options-dense
                 behavior="menu"
-                options-dense
+                @input="setTitleName(honorific)"
                 emit-value
+                label="Title"
                 options-dense
-              >
-                <template v-slot:no-option>
-                  <q-item>
-                    <q-item-section class="text-black">
-                      No results
-                    </q-item-section>
-                  </q-item>
-                </template>
-              </q-select>
-            </div>
-          </q-card>
-          <q-card class="q-ma-md q-pa-md q-mt-sm"
-            ><span class="text-bold">Address Details</span>
-            <AutoCompleteAddress
-              :id="'PersonnelInfo'"
-              :address="personnel.address"
-              :isDropBoxEnable="false"
-              :isChecksEnable="false"
-            />
-          </q-card>
-          <q-card class="q-ma-md q-pa-md q-mt-sm">
-            <div>
-              <div
-                class="row justify-between"
-                v-for="(addPhone, index) in personnel.phoneNumber"
-                v-if="index >= 0"
-              >
+              />
+              <q-input
+                dense
+                v-model="personnel.fname"
+                class="required"
+                label="First Name"
+                lazy-rules
+                :rules="[
+                  val => (val && val.length > 0) || 'Please fill the first name'
+                ]"
+              />
+              <q-input
+                dense
+                v-model="personnel.lname"
+                class="required"
+                label="Last Name"
+                lazy-rules
+                :rules="[
+                  val => (val && val.length > 0) || 'Please fill the last name'
+                ]"
+              />
+              <q-input
+                dense
+                v-model="personnel.departmentName"
+                label="Organization / Department Name"
+              />
+              <q-input
+                dense
+                v-model="personnel.email"
+                input
+                class="required"
+                type="email"
+                novalidate="true"
+                label="Email"
+                lazy-rules
+                :rules="[
+                  val => (val && val.length > 0) || 'Please fill the email'
+                ]"
+              />
+
+              <div>
                 <q-select
+                  v-model="personnel.role.value"
                   dense
-                  v-model="personnel.phoneNumber[index].type"
-                  class="col-5"
-                  label="Type"
-                  :options="contactTypes"
-                  option-value="machineValue"
+                  class="full-width"
+                  use-input
+                  input-debounce="0"
                   option-label="name"
-                  map-options
+                  label="Default Roles"
+                  :options="options"
+                  option-value="name"
+                  @input="setClaimRoles"
+                  @filter="searchFilterBy"
+                  behavior="menu"
                   options-dense
                   emit-value
-                />
-                <q-input
-                  dense
-                  v-model.number="personnel.phoneNumber[index].number"
-                  label="Phone"
-                  class="col-6"
-                  mask="(###) ###-####"
-                />
+                  options-dense
+                >
+                  <template v-slot:no-option>
+                    <q-item>
+                      <q-item-section class="text-black">
+                        No results
+                      </q-item-section>
+                    </q-item>
+                  </template>
+                </q-select>
               </div>
-              <div class="row">
-                <q-btn
-                  outline
-                  class="q-mt-sm"
-                  @click="addAnotherContact"
-                  color="primary"
-                  label="Add"
-                  style="margin-right: auto"
-                />
-
-                <q-btn
-                  v-if="personnel.phoneNumber.length > 1"
-                  outline
-                  @click="RemoveAnotherContact"
-                  class="q-mt-sm"
-                  color="primary"
-                  label="Remove"
-                />
-              </div>
-            </div>
-          </q-card>
-          <q-card class="q-ma-md q-pa-md q-mt-xs">
-            <div class="form-heading q-mt-sm q-mb-sm">Notes</div>
-            <div class="floating-label">
-              <textarea
-                rows="3"
-                class="full-width"
-                v-model="personnel.notes"
-                style="resize: none"
-                placeholder="Take notes here..."
+            </q-card>
+            <q-card class="q-ma-md q-pa-md q-mt-sm"
+              ><span class="text-bold">Address Details</span>
+              <AutoCompleteAddress
+                :id="'PersonnelInfo'"
+                :address="personnel.address"
+                :isDropBoxEnable="false"
+                :isChecksEnable="false"
               />
-            </div>
-          </q-card>
+            </q-card>
+            <q-card class="q-ma-md q-pa-md q-mt-sm">
+              <div>
+                <div
+                  class="row justify-between"
+                  v-for="(addPhone, index) in personnel.phoneNumber"
+                  v-if="index >= 0"
+                >
+                  <q-select
+                    dense
+                    v-model="personnel.phoneNumber[index].type"
+                    class="col-5"
+                    label="Type"
+                    :options="contactTypes"
+                    option-value="machineValue"
+                    option-label="name"
+                    map-options
+                    options-dense
+                    emit-value
+                  />
+                  <q-input
+                    dense
+                    v-model.number="personnel.phoneNumber[index].number"
+                    label="Phone"
+                    class="col-6"
+                    mask="(###) ###-####"
+                  />
+                </div>
+                <div class="row">
+                  <q-btn
+                    outline
+                    class="q-mt-sm"
+                    @click="addAnotherContact"
+                    color="primary"
+                    label="Add"
+                    style="margin-right: auto"
+                  />
+
+                  <q-btn
+                    v-if="personnel.phoneNumber.length > 1"
+                    outline
+                    @click="RemoveAnotherContact"
+                    class="q-mt-sm"
+                    color="primary"
+                    label="Remove"
+                  />
+                </div>
+              </div>
+            </q-card>
+            <q-card class="q-ma-md q-pa-md q-mt-xs">
+              <div class="form-heading q-mt-sm q-mb-sm">Notes</div>
+              <div class="floating-label">
+                <textarea
+                  rows="3"
+                  class="full-width"
+                  v-model="personnel.notes"
+                  style="resize: none"
+                  placeholder="Take notes here..."
+                />
+              </div>
+            </q-card>
+          </q-form>
         </div>
         <q-btn
           @click="onSave"
@@ -311,134 +336,159 @@
           @closeDialog="editPersonnelDialog = false"
         />
         <div class="mobile-container-page">
-          <q-card class="q-ma-md q-pa-md q-mt-sm">
-            <q-select
-              class="required"
-              dense
-              v-model="honorific.id"
-              :options="titles"
-              option-value="id"
-              option-label="value"
-              map-options
-              options-dense
-              behavior="menu"
-              @input="setTitleName(honorific)"
-              emit-value
-              label="Title"
-              options-dense
-            />
-            <q-input dense v-model="personnel.fname" label="First Name" />
-            <q-input dense v-model="personnel.lname" label="Last Name" />
-            <q-input
-              dense
-              v-model="personnel.departmentName"
-              label="Organization / Department Name"
-            />
-            <q-input
-              dense
-              v-model="personnel.email"
-              input
-              type="email"
-              novalidate="true"
-              label="Email"
-            />
-            <div>
+          <q-form ref="EditPersonnelForm">
+            <q-card class="q-ma-md q-pa-md q-mt-sm">
               <q-select
-                v-model="personnel.role.value"
+                class="required"
                 dense
-                class="full-width"
-                use-input
-                input-debounce="0"
-                option-label="name"
-                label="Default Roles"
-                :options="options"
-                option-value="name"
-                @input="setClaimRoles"
-                @filter="searchFilterBy"
+                v-model="honorific.id"
+                :options="titles"
+                option-value="id"
+                option-label="value"
+                map-options
+                options-dense
                 behavior="menu"
-                options-dense
+                @input="setTitleName(honorific)"
                 emit-value
+                label="Title"
                 options-dense
-              >
-                <template v-slot:no-option>
-                  <q-item>
-                    <q-item-section class="text-black">
-                      No results
-                    </q-item-section>
-                  </q-item>
-                </template>
-              </q-select>
-            </div>
-          </q-card>
-          <q-card class="q-ma-md q-pa-md q-mt-sm"
-            ><span class="text-bold">Address Details</span>
-            <AutoCompleteAddress
-              :id="'PersonnelInfoEdit'"
-              :address="personnel.address"
-              :isDropBoxEnable="false"
-              :isChecksEnable="false"
-            />
-          </q-card>
-          <q-card class="q-ma-md q-pa-md q-mt-sm">
-            <div>
-              <div
-                class="row justify-between"
-                v-for="(addPhone, index) in personnel.phoneNumber"
-                v-if="index >= 0"
-              >
+              />
+              <q-input
+                dense
+                class="required"
+                v-model="personnel.fname"
+                label="First Name"
+                lazy-rules
+                :rules="[
+                  val => (val && val.length > 0) || 'Please fill the first name'
+                ]"
+              />
+              <q-input
+                dense
+                class="required"
+                v-model="personnel.lname"
+                label="Last Name"
+                lazy-rules
+                :rules="[
+                  val => (val && val.length > 0) || 'Please fill the last name'
+                ]"
+              />
+              <q-input
+                dense
+                v-model="personnel.departmentName"
+                label="Organization / Department Name"
+              />
+              <q-input
+                dense
+                class="required"
+                v-model="personnel.email"
+                input
+                type="email"
+                novalidate="true"
+                label="Email"
+                lazy-rules
+                :rules="[
+                  val => (val && val.length > 0) || 'Please fill the email'
+                ]"
+              />
+              <div>
                 <q-select
+                  v-model="personnel.role.value"
                   dense
-                  v-model="personnel.phoneNumber[index].type"
-                  class="col-5"
-                  label="Type"
-                  :options="contactTypes"
-                  option-value="machineValue"
+                  class="full-width"
+                  use-input
+                  input-debounce="0"
                   option-label="name"
-                  map-options
+                  label="Default Roles"
+                  :options="options"
+                  option-value="name"
+                  @input="setClaimRoles"
+                  @filter="searchFilterBy"
+                  behavior="menu"
                   options-dense
                   emit-value
-                />
-                <q-input
-                  dense
-                  v-model.number="personnel.phoneNumber[index].number"
-                  label="Phone"
-                  class="col-6"
-                  mask="(###) ###-####"
-                />
+                  options-dense
+                >
+                  <template v-slot:no-option>
+                    <q-item>
+                      <q-item-section class="text-black">
+                        No results
+                      </q-item-section>
+                    </q-item>
+                  </template>
+                </q-select>
               </div>
-              <div class="row">
-                <q-btn
-                  outline
-                  class="q-mt-sm"
-                  @click="addAnotherContact"
-                  color="primary"
-                  label="Add"
-                  style="margin-right: auto"
-                />
-
-                <q-btn
-                  v-if="personnel.phoneNumber.length > 1"
-                  outline
-                  @click="RemoveAnotherContact"
-                  class="q-mt-sm"
-                  color="primary"
-                  label="Remove"
-                />
-              </div>
-            </div>
-          </q-card>
-          <q-card class="q-ma-md q-pa-md q-mt-xs">
-            <div class="form-heading q-mt-sm q-mb-sm">Notes</div>
-            <div class="floating-label">
-              <textarea
-                rows="3"
-                class="full-width"
-                v-model="personnel.notes"
-                style="resize: none"
-                placeholder="Take notes here..."
+            </q-card>
+            <q-card class="q-ma-md q-pa-md q-mt-sm"
+              ><span class="text-bold">Address Details</span>
+              <AutoCompleteAddress
+                :id="'PersonnelInfoEdit'"
+                :address="personnel.address"
+                :isDropBoxEnable="false"
+                :isChecksEnable="false"
               />
-            </div>
-          </q-card>
+            </q-card>
+            <q-card class="q-ma-md q-pa-md q-mt-sm">
+              <div>
+                <div
+                  class="row justify-between"
+                  v-for="(addPhone, index) in personnel.phoneNumber"
+                  v-if="index >= 0"
+                >
+                  <q-select
+                    dense
+                    v-model="personnel.phoneNumber[index].type"
+                    class="col-5"
+                    label="Type"
+                    :options="contactTypes"
+                    option-value="machineValue"
+                    option-label="name"
+                    map-options
+                    options-dense
+                    emit-value
+                  />
+                  <q-input
+                    dense
+                    v-model.number="personnel.phoneNumber[index].number"
+                    label="Phone"
+                    class="col-6"
+                    mask="(###) ###-####"
+                  />
+                </div>
+                <div class="row">
+                  <q-btn
+                    outline
+                    class="q-mt-sm"
+                    @click="addAnotherContact"
+                    color="primary"
+                    label="Add"
+                    style="margin-right: auto"
+                  />
+
+                  <q-btn
+                    v-if="personnel.phoneNumber.length > 1"
+                    outline
+                    @click="RemoveAnotherContact"
+                    class="q-mt-sm"
+                    color="primary"
+                    label="Remove"
+                  />
+                </div>
+              </div>
+            </q-card>
+            <q-card class="q-ma-md q-pa-md q-mt-xs">
+              <div class="form-heading q-mt-sm q-mb-sm">Notes</div>
+              <div class="floating-label">
+                <textarea
+                  rows="3"
+                  class="full-width"
+                  v-model="personnel.notes"
+                  style="resize: none"
+                  placeholder="Take notes here..."
+                />
+              </div>
+            </q-card>
+          </q-form>
         </div>
         <q-btn
           @click="onEditSave"
@@ -579,41 +629,50 @@ export default {
       this.personnel.phoneNumber = this.vendorPersonnel.personnel[
         index
       ].phoneNumber;
+      this.personnel.role.value = this.vendorPersonnel.personnel[
+        index
+      ].role.value;
+      this.personnel.role.machineValue = this.vendorPersonnel.personnel[
+        index
+      ].role.machineValue;
       this.id = this.vendorPersonnel.personnel[index].id;
     },
     async onEditSave() {
-      const payload = {
-        id: this.$route.params.id,
-        personnelId: this.id,
-        data: {
-          personnel: {
-            honorific: {
-              id: this.honorific.id,
-              value: this.honorific.value,
-              machineValue: this.honorific.machineValue
-            },
-            fname: this.personnel.fname,
-            lname: this.personnel.lname,
-            email: this.personnel.email,
-            phoneNumber: this.personnel.phoneNumber,
-            role: {
-              value: this.personnel.role.value,
-              machineValue: this.personnel.role.machineValue
-            },
+      const success = await this.$refs.EditPersonnelForm.validate();
+      if (success) {
+        const payload = {
+          id: this.$route.params.id,
+          personnelId: this.id,
+          data: {
+            personnel: {
+              honorific: {
+                id: this.honorific.id,
+                value: this.honorific.value,
+                machineValue: this.honorific.machineValue
+              },
+              fname: this.personnel.fname,
+              lname: this.personnel.lname,
+              email: this.personnel.email,
+              phoneNumber: this.personnel.phoneNumber,
+              role: {
+                value: this.personnel.role.value,
+                machineValue: this.personnel.role.machineValue
+              },
 
-            address: {
-              ...this.personnel.address
-            },
-            note: this.personnel.notes
+              address: {
+                ...this.personnel.address
+              },
+              note: this.personnel.notes
+            }
           }
+        };
+        if (!this.personnel.role.id) {
+          delete payload.data.personnel.role;
         }
-      };
-      if (!this.personnel.role.id) {
-        delete payload.data.personnel.role;
+        await this.editVendorPersonnel(payload);
+        this.getVendorPersonnel(this.$route.params.id);
+        this.editPersonnelDialog = false;
       }
-      await this.editVendorPersonnel(payload);
-      this.getVendorPersonnel(this.$route.params.id);
-      this.editPersonnelDialog = false;
     },
     async onDelete(index) {
       const vendor = {
@@ -657,51 +716,54 @@ export default {
     },
 
     async onSave() {
-      const payload = {
-        id: this.$route.params.id,
-        data: {
-          personnel: {
-            honorific: {
-              id: this.honorific.id,
-              value: this.honorific.value,
-              machineValue: this.honorific.machineValue
-            },
-            fname: this.personnel.fname,
-            lname: this.personnel.lname,
-            email: this.personnel.email,
-            phoneNumber: this.personnel.phoneNumber,
-            role: {
-              value: this.personnel.role.value,
-              machineValue: this.personnel.role.machineValue
-            },
-            address: {
-              ...this.personnel.address
-            },
-            note: this.personnel.notes
+      const success = await this.$refs.vendorPersonnelForm.validate();
+      if (success) {
+        const payload = {
+          id: this.$route.params.id,
+          data: {
+            personnel: {
+              honorific: {
+                id: this.honorific.id,
+                value: this.honorific.value,
+                machineValue: this.honorific.machineValue
+              },
+              fname: this.personnel.fname,
+              lname: this.personnel.lname,
+              email: this.personnel.email,
+              phoneNumber: this.personnel.phoneNumber,
+              role: {
+                value: this.personnel.role.value,
+                machineValue: this.personnel.role.machineValue
+              },
+              address: {
+                ...this.personnel.address
+              },
+              note: this.personnel.notes
+            }
           }
+        };
+        if (!this.personnel.role.id) {
+          delete payload.data.personnel.role;
         }
-      };
-      if (!this.personnel.role.id) {
-        delete payload.data.personnel.role;
+        await this.addVendorPersonnel(payload);
+        this.addPersonnelDialog = false;
+        this.getVendorPersonnel(this.$route.params.id);
+        this.personnel.fname = '';
+        this.personnel.lname = '';
+        this.personnel.email = '';
+        this.personnel.address.houseNumber = '';
+        this.personnel.address.addressCountry = '';
+        this.personnel.address.addressLocality = '';
+        this.personnel.address.addressRegion = '';
+        this.personnel.address.streetAddress = '';
+        this.personnel.address.postalCode = '';
+        this.personnel.notes = '';
+        this.personnel.departmentName = '';
+        this.personnel.phoneNumber = [{ type: 'main', number: '' }];
+        this.personnel.role.id = '';
+        this.personnel.role.value = '';
+        this.personnel.role.machineValue = '';
       }
-      await this.addVendorPersonnel(payload);
-      this.addPersonnelDialog = false;
-      this.getVendorPersonnel(this.$route.params.id);
-      this.personnel.fname = '';
-      this.personnel.lname = '';
-      this.personnel.email = '';
-      this.personnel.address.houseNumber = '';
-      this.personnel.address.addressCountry = '';
-      this.personnel.address.addressLocality = '';
-      this.personnel.address.addressRegion = '';
-      this.personnel.address.streetAddress = '';
-      this.personnel.address.postalCode = '';
-      this.personnel.notes = '';
-      this.personnel.departmentName = '';
-      this.personnel.phoneNumber = [{ type: 'main', number: '' }];
-      this.personnel.role.id = '';
-      this.personnel.role.value = '';
-      this.personnel.role.machineValue = '';
     }
   }
 };
