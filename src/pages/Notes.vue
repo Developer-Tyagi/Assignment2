@@ -35,42 +35,42 @@
     </q-dialog>
     <div>
       <div class="icon-top">
-        <q-btn @click="addNote" flat>
+        <q-btn @click="addNote" v-if="!addNoteDialog" flat>
           <img src="~assets/addNote.svg" />
         </q-btn>
       </div>
       <div class="mobile-container-page">
+        <div class="q-ml-md q-mt-md text-h6">
+          {{
+            editSelectedClient.attributes.insuredInfo.primary.fname
+              ? editSelectedClient.attributes.insuredInfo.primary.fname
+              : '-'
+          }}
+          {{
+            editSelectedClient.attributes.insuredInfo.primary.lname
+              ? editSelectedClient.attributes.insuredInfo.primary.lname
+              : '-'
+          }}
+        </div>
+        <div class="row q-ml-md q-my-md heading-light">
+          <div>
+            {{
+              editSelectedClient.attributes.meta
+                ? editSelectedClient.attributes.meta.totalClaims
+                : 0
+            }}
+            - Total Claims
+          </div>
+          <div class="q-ml-xl">
+            {{
+              editSelectedClient.attributes.meta
+                ? editSelectedClient.attributes.meta.openClaims
+                : 0
+            }}
+            - Open Claim
+          </div>
+        </div>
         <div v-if="editSelectedClient.attributes.notes">
-          <div class="q-ml-md q-mt-md text-h6">
-            {{
-              editSelectedClient.attributes.insuredInfo.primary.fname
-                ? editSelectedClient.attributes.insuredInfo.primary.fname
-                : '-'
-            }}
-            {{
-              editSelectedClient.attributes.insuredInfo.primary.lname
-                ? editSelectedClient.attributes.insuredInfo.primary.lname
-                : '-'
-            }}
-          </div>
-          <div class="row q-ml-md q-my-md heading-light">
-            <div>
-              {{
-                editSelectedClient.attributes.meta
-                  ? editSelectedClient.attributes.meta.totalClaims
-                  : 0
-              }}
-              - Total Claims
-            </div>
-            <div class="q-ml-xl">
-              {{
-                editSelectedClient.attributes.meta
-                  ? editSelectedClient.attributes.meta.openClaims
-                  : 0
-              }}
-              - Open Claim
-            </div>
-          </div>
           <div
             class="clients-list"
             v-if="editSelectedClient.attributes.notes.length"
@@ -82,16 +82,25 @@
               <q-item-section>
                 <div class="client-list-item">
                   <div>
-                    <div class="heading-light q-pb-md">
-                      {{
-                        editSelectedClient.attributes.notes[index].addedAt
-                          | moment('DD/MM/YYYY/, HH:mm')
-                      }}
+                    <div class="row">
+                      <div class="heading-light q-pb-md">
+                        {{
+                          editSelectedClient.attributes.notes[index].addedAt
+                            | moment('DD/MM/YYYY, hh:mm A')
+                        }}
+                      </div>
+                      <div class="row edit-icon ">
+                        <q-icon name="create" color="primary" />
+                        <q-icon
+                          name="delete"
+                          color="primary"
+                          class="q-ml-sm "
+                        />
+                      </div>
                     </div>
                     <div>
                       {{ editSelectedClient.attributes.notes[index].desc }}
                     </div>
-                    <div class="row"></div>
                   </div>
                 </div>
               </q-item-section>

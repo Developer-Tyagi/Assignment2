@@ -57,7 +57,7 @@
                 <div class="row justify-between">
                   <div>Status: Negotiation</div>
                   <div>
-                    {{ client.created | moment('MM/DD/YYYY, HH:mm A') }}
+                    {{ client.created | moment('MM/DD/YYYY, hh:mm A') }}
                   </div>
                 </div>
               </div>

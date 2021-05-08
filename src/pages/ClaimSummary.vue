@@ -46,7 +46,7 @@
             <span class="q-ml-md col">
               {{
                 getSelectedClaim.contractInfo.fees.rate
-                  ? getSelectedClaim.contractInfo.fees.rate
+                  ? '$' + ' ' + getSelectedClaim.contractInfo.fees.rate
                   : '-'
               }}
             </span>
@@ -144,7 +144,7 @@
             <span class="q-ml-md col">
               {{
                 getSelectedClaim.lossInfo.estimatedLossAmt
-                  ? getSelectedClaim.lossInfo.estimatedLossAmt
+                  ? '$' + ' ' + getSelectedClaim.lossInfo.estimatedLossAmt
                   : '-'
               }}
             </span>
@@ -154,10 +154,9 @@
               Property Value at Time of Loss
             </span>
             <span class="q-ml-md col" v-if="getSelectedClaim.lossInfo">
-              $
               {{
                 getSelectedClaim.lossInfo.propertyValue
-                  ? getSelectedClaim.lossInfo.propertyValue
+                  ? '$' + ' ' + getSelectedClaim.lossInfo.propertyValue
                   : '-'
               }}
             </span>
