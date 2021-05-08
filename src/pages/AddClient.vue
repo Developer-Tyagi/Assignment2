@@ -1481,6 +1481,9 @@ export default {
         },
         carrierName: '',
         carrierId: '',
+        address: {},
+        email: '',
+        phone: '',
         hasAppraisalClause: false,
         insuranceClaimNumber: '',
         policyNumber: '',
@@ -1597,6 +1600,15 @@ export default {
         : '';
       this.insuranceDetails.carrierId = this.selectedLead.carrier
         ? this.selectedLead.carrier.id
+        : '';
+      this.insuranceDetails.email = this.selectedLead.carrier
+        ? this.selectedLead.carrier.email
+        : '';
+      this.insuranceDetails.address = this.selectedLead.carrier
+        ? this.selectedLead.carrier.address
+        : '';
+      this.insuranceDetails.phone = this.selectedLead.carrier
+        ? this.selectedLead.carrier.phoneNumber[0].number
         : '';
       this.insuranceDetails.policyNumber = this.selectedLead.policyNumber
         ? this.selectedLead.policyNumber

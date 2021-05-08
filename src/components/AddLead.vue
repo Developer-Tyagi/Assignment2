@@ -879,7 +879,8 @@ export default {
         type: '',
         details: '',
         address: '',
-        email: ''
+        email: '',
+        phone: ''
       },
       schedulingDetails: {
         isAutomaticScheduling: false,
@@ -1022,7 +1023,15 @@ export default {
           leadSource: {
             id: '',
             type: this.sourceDetails.type,
-            detail: this.sourceDetails.details
+            detail: this.sourceDetails.details,
+            address: this.sourceDetails.address,
+            email: this.sourceDetails.email,
+            phoneNumber: [
+              {
+                type: '',
+                number: this.sourceDetails.phone
+              }
+            ]
           },
           carrier: {
             id: '',
@@ -1108,7 +1117,15 @@ export default {
             leadSource: {
               id: this.sourceDetails.id,
               type: this.sourceDetails.type,
-              detail: this.sourceDetails.details
+              detail: this.sourceDetails.details,
+              address: this.sourceDetails.address,
+              email: this.sourceDetails.email,
+              phoneNumber: [
+                {
+                  type: '',
+                  number: this.sourceDetails.phone
+                }
+              ]
             },
             carrier: {
               id: this.insuranceDetails.carrierId,
@@ -1283,9 +1300,6 @@ export default {
       this.insuranceDetails.carrierName = this.selectedLead.carrier
         ? this.selectedLead.carrier.value
         : '';
-      this.insuranceDetails.carrierId = this.selectedLead.carrier
-        ? this.selectedLead.carrier.id
-        : '';
       this.insuranceDetails.address = this.selectedLead.carrier
         ? this.selectedLead.carrier.address
         : '';
@@ -1295,7 +1309,9 @@ export default {
       this.insuranceDetails.phone = this.selectedLead.carrier
         ? this.selectedLead.carrier.phoneNumber[0].number
         : '';
-
+      this.insuranceDetails.carrierId = this.selectedLead.carrier
+        ? this.selectedLead.carrier.id
+        : '';
       this.schedulingDetails.inspectionTypeValue = this.selectedLead
         .inspectionInfo
         ? this.selectedLead.inspectionInfo.pValue
