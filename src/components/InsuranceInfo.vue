@@ -6,14 +6,14 @@
         <div
           class="custom-select"
           @click="carriersListDialog = true"
-          v-if="!insuranceDetails.carrierName"
+          v-if="!insuranceDetails.carrierName && !policyInfo"
         >
           <div class="select-text">Click for choosing a carrier</div>
         </div>
         <div>
           <q-card
             bordered
-            v-if="insuranceDetails.carrierName"
+            v-if="insuranceDetails.carrierName && !policyInfo"
             @click="carriersListDialog = true"
             class="q-my-md q-pa-md"
           >
@@ -86,6 +86,7 @@
           </q-card>
         </div>
         <q-input
+          v-if="!policyInfo"
           v-model="insuranceDetails.policyNumber"
           label="Policy Number"
           dense
@@ -95,7 +96,7 @@
             val => (val && val.length > 0) || 'Please fill the policy number'
           ]"
         />
-        <div class="row">
+        <div class="row" v-if="!policyInfo">
           <p class="q-my-auto form-heading">Has claim been filed?</p>
           <q-toggle
             class="q-ml-auto"
@@ -103,7 +104,7 @@
           />
         </div>
         <q-input
-          v-if="insuranceDetails.hasClaimBeenFilledToggle"
+          v-if="insuranceDetails.hasClaimBeenFilledToggle && !policyInfo"
           v-model="insuranceDetails.insuranceClaimNumber"
           label="Insurance Claim Number"
           dense
@@ -493,6 +494,9 @@ export default {
   props: {
     insuranceDetails: {
       type: Object
+    },
+    policyInfo: {
+      type: Boolean
     },
     lossInfo: {
       type: Object
