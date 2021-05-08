@@ -337,6 +337,7 @@ export default {
     if (!this.selectedClientId) {
       this.$router.push('/clients');
     }
+    this.getSingleClientDetails(this.selectedClientId);
     this.getPropertyTypes();
     this.getSingleClientProperty(this.selectedClientId);
   },

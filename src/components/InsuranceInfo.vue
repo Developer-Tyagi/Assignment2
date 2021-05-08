@@ -348,7 +348,9 @@
           />
         </div>
         <div class="row" style="align-items: center">
-          <span class="form-heading" style="width: 50%">Total Amount</span>
+          <span class="form-heading" style="width: 50%"
+            >Total Amount of policy</span
+          >
           <q-input
             mask="#.#"
             type="number"
