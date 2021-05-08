@@ -2,32 +2,35 @@
   <div>
     <q-card class="q-pa-sm">
       <div class="form-heading q-mt-lg">Personnel Role</div>
+
       <q-select
-        v-model="companyPersonnel.personnel.id"
-        :options="options"
+        v-model="companyPersonnel.personnel.value"
+        :options="companyPersonnel.options"
         use-input
-        option-value="id"
+        option-value="value"
         option-label="name"
         map-options
         emit-value
         options-dense
-        @input="setTypes(roleTypes, companyPersonnel.personnel)"
+        @input="setTypes(roleTypes, companyPersonnel.personnel.value)"
         label="Select Role"
         @filter="searchFilterBy"
         input-debounce="0"
         behavior="menu"
       />
       <div class="form-heading q-mt-lg">Person Party</div>
+
       <q-select
         v-if="allUsers.length"
-        v-model="companyPersonnel.personParty"
+        v-model="companyPersonnel.personParty.id"
         :options="allUsers"
         :disable="companyPersonnel.isFieldDisable"
         :label="
           companyPersonnel.isFieldDisable ? 'Select a Role' : 'Select a Party'
         "
+        @input="setPersonTypes(allUsers, companyPersonnel.personParty)"
         option-label="name"
-        option-value="name"
+        option-value="id"
         options-dense
         emit-value
         behavior="menu"
@@ -193,12 +196,22 @@ export default {
     validateDate,
 
     async setTypes(types, data) {
-      this.companyPersonnel.personParty = '';
+      const obj = types.find(item => {
+        return item.name === data.name;
+      });
+
+      data.machineValue = obj.machineValue;
+      data.id = obj.id;
+
+      await this.getAllUsers({ role: obj.machineValue });
+      this.companyPersonnel.isFieldDisable = false;
+    },
+    async setPersonTypes(types, data) {
       const obj = types.find(item => {
         return item.id === data.id;
       });
-
-      await this.getAllUsers({ role: obj.machineValue });
+      data.machineValue = obj.machineValue;
+      data.value = obj.name;
       this.companyPersonnel.isFieldDisable = false;
     },
 
@@ -218,14 +231,14 @@ export default {
       this.companyPersonnel.personnel.id = null;
       if (val === ' ') {
         update(() => {
-          this.options = this.roleTypes;
+          this.companyPersonnel.options = this.roleTypes;
         });
         return;
       }
 
       update(() => {
         const search = val.toLowerCase();
-        this.options = this.roleTypes.filter(
+        this.companyPersonnel.options = this.roleTypes.filter(
           v => v.name.toLowerCase().indexOf(search) > -1
         );
       });

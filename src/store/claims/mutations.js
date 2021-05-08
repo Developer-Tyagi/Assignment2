@@ -32,8 +32,10 @@ export function setDamageInfo(state, damageInfo) {
 export function setClaimNotes(state, claims) {
   state.claimNotes = claims;
 }
-export function setPersonnel(state, claims) {
-  state.personnel = claims;
+export function setPersonnel(state, personnel) {
+  state.personnel = {
+    ...personnel.attributes
+  };
 }
 export function setPolicy(state, policy) {
   // state.policy = policy.attributes;

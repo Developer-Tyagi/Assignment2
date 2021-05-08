@@ -1276,6 +1276,7 @@ export default {
         buttonGroup: 'dollar'
       },
       companyPersonnel: {
+        options: [],
         notes: '',
         endDate: '',
         startDate: '',
@@ -1284,9 +1285,17 @@ export default {
         isFieldDisable: true,
         personnel: {
           id: '',
-          role: ''
+          value: '',
+          machineValue: ''
         },
-        personParty: '',
+        role: {
+          machineValue: ''
+        },
+
+        personParty: {
+          id: '',
+          name: ''
+        },
         notes: '',
         filterRole: []
       },
@@ -1947,6 +1956,7 @@ export default {
           propertyDesc: this.propertyDescription
         }
       };
+
       /* if coInsuredDetails toggle is off it well not send the coInsured details */
       if (!this.isThereaCoInsuredToggle) {
         delete payload.insuredInfo.secondary;
@@ -2096,11 +2106,11 @@ export default {
 
         personnel: [
           {
-            personnelID: '',
-            name: this.companyPersonnel.personParty.name,
+            personnelID: this.companyPersonnel.personParty.id,
+            name: this.companyPersonnel.personParty.value,
             role: {
-              value: this.companyPersonnel.personnel.role,
-              machineValue: this.companyPersonnel.personnel.role.machineValue
+              value: this.companyPersonnel.personnel.value.name,
+              machineValue: this.companyPersonnel.personnel.value.machineValue
             },
             note: this.companyPersonnel.notes,
             fees: {
@@ -2116,11 +2126,12 @@ export default {
       };
 
       if (
-        !this.companyPersonnel.personnel.role.value &&
-        !this.companyPersonnel.personnel.role.machineValue
+        !this.companyPersonnel.personnel.value.name &&
+        !this.companyPersonnel.personnel.value.machineValue
       ) {
         delete payload.personnel;
       }
+
       if (
         this.estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle &&
         this.estimatingInfo.estimatorID
