@@ -202,7 +202,8 @@ export default {
 
       data.machineValue = obj.machineValue;
       data.id = obj.id;
-
+      this.companyPersonnel.personParty.id = '';
+      this.companyPersonnel.personParty.name = '';
       await this.getAllUsers({ role: obj.machineValue });
       this.companyPersonnel.isFieldDisable = false;
     },
