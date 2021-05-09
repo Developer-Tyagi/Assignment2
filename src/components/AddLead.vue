@@ -840,9 +840,9 @@ export default {
 
         selectedContactType: '',
         honorific: {
-          id: '',
-          value: '',
-          machineValue: ''
+          id: '602a5eaa312a2b57ac2b00ad',
+          value: 'Mr',
+          machineValue: 'mr'
         }
       },
       lossDetails: {

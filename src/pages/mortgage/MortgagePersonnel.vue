@@ -520,10 +520,11 @@ export default {
       editPersonnelDialog: false,
       addAditionalPhoneNumberToggle: false,
       honorific: {
-        id: '',
-        value: 'Mr.',
-        machineValue: 'mr_'
+        id: '602a5eaa312a2b57ac2b00ad',
+        value: 'Mr',
+        machineValue: 'mr'
       },
+
       personnel: {
         role: { value: null, id: '', machineValue: '' },
         fname: '',
