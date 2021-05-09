@@ -1,8 +1,13 @@
 <template>
   <q-page>
-    <div class="actions-div">
-      <q-separator vertical inset></q-separator>
-      <q-btn @click="addPersonnelDialog = true" flat class="q-ml-auto"
+    <div class="row" v-if="!addPersonnelDialog">
+      <div class="col-10"></div>
+      <q-btn
+        size="sm"
+        name="create"
+        class=" icon-top "
+        flat
+        @click="addPersonnelDialog = true"
         ><img src="~assets/add.svg"
       /></q-btn>
     </div>
