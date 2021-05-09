@@ -787,6 +787,7 @@ import AddVendor from 'components/AddVendor';
 import AddCarrier from 'components/AddCarrier';
 import CustomBar from 'components/CustomBar';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
+import { dateToShow } from '@utils/date';
 
 export default {
   components: {
@@ -1282,7 +1283,7 @@ export default {
       this.primaryDetails.email = this.selectedLead.primaryContact.email;
       this.lossAddress = this.selectedLead.lossLocation;
       this.lossDetails.lossDesc = this.selectedLead.lossDesc;
-      this.lossDetails.dateOfLoss = this.selectedLead.dateofLoss;
+      this.lossDetails.dateOfLoss = dateToShow(this.selectedLead.dateofLoss);
       this.lossDetails.causeOfLoss.id = this.selectedLead.lossCause
         ? this.selectedLead.lossCause.id
         : '';
