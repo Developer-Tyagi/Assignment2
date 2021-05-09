@@ -72,7 +72,7 @@ export async function editPersonnel({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.patch(
-      `/claims/${payload.id}/personnel/${payload.companyData.personnel.id}`,
+      `/claims/${payload.id}/personnel/${payload.personnelId}`,
       buildApiData('claimpersonnel', payload.companyData)
     );
     dispatch('setLoading', false);
@@ -604,6 +604,29 @@ export async function getOfficeTasks({ commit, dispatch }, id) {
     dispatch('setNotification', {
       type: 'negative',
       message: e.response[0].title
+    });
+  }
+}
+
+//API for Deleting the Claim Company Personnel Info
+
+export async function deleteClaimPersonnel({ dispatch }, payload) {
+  dispatch('setLoading', true);
+  try {
+    await request.del(
+      `/claims/${payload.claimID}/personnel/${payload.personnelID}`
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Personnel  Deleted !'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'Error in deleting Personnel.'
     });
   }
 }

@@ -68,102 +68,90 @@
         ><img src="~assets/add.svg"
       /></q-btn>
     </div>
-    <div class="mobile-container-page ">
+    <div class="mobile-container-page">
+      <ClaimDetail />
       <div class="q-pa-md">
-        <div class="clients-list">
-          <div v-if="personnel.attributes.personnel">
-            <div
-              class="clients-list q-pa-md"
-              v-for="index in personnel.attributes.personnel.length"
+        <div v-if="personnel.personnel">
+          <div>
+            <q-card
+              class="q-pa-md q-ma-sm"
+              v-for="(personnel, index) in personnel.personnel"
             >
-              <div class="row">
-                <span class="col-11 form-heading">
-                  {{
-                    personnel.attributes.personnel[index - 1]
-                      ? personnel.attributes.personnel[index - 1].name
-                      : '-'
-                  }}
-                </span>
-
+              <div class="text-bold text-capitalize q-mt-xs row">
+                <div class="col-10 ">
+                  {{ personnel.name }}
+                </div>
                 <q-icon
-                  @click="onEditButtonClick"
-                  class=" col q-pt-xs"
+                  @click="onEditButtonClick(index)"
+                  class="q-my-auto col"
                   name="edit"
                   color="primary"
-                  size="sm"
+                  size="xs"
+                />
+                <q-icon
+                  class="q-my-auto"
+                  name="delete"
+                  size="xs"
+                  color="primary"
+                  @click="onDelete(index)"
                 />
               </div>
 
-              <div>
-                {{
-                  personnel.attributes.personnel[index - 1]
-                    ? personnel.attributes.personnel[index - 1].role
-                    : '-'
-                }}
+              <div class="row  q-mt-sm" v-if="personnel.role">
+                <span class="heading-light col-3"> Role:</span>
+                <span class="q-ml-lg col"> {{ personnel.role.value }}</span>
               </div>
-              <div>
-                Notes:
-                {{
-                  personnel.attributes.personnel[index - 1]
-                    ? personnel.attributes.personnel[index - 1].note
-                    : '-'
-                }}
+              <div class="row  q-mt-sm" v-if="personnel.name">
+                <span class="heading-light col-3"> Person Party:</span>
+                <span class="q-ml-lg col"> {{ personnel.name }}</span>
               </div>
-
-              <div
-                v-if="
-                  personnel.attributes.personnel[index - 1].fees.type ==
-                    'dollar'
-                "
-              >
-                Fee :
-
-                {{
-                  personnel.attributes.personnel[index - 1]
-                    ? '$' + personnel.attributes.personnel[index - 1].fees.rate
-                    : '-'
-                }}
+              <div class="row  q-mt-sm" v-if="personnel.fees">
+                <span class="heading-light col-3"> Fee:</span>
+                <span class="q-ml-lg col">
+                  <div v-if="personnel.fees.type == 'dollar'">
+                    {{ personnel ? '$' + personnel.fees.rate : '-' }}
+                  </div>
+                  <div v-else-if="personnel.fees.type == 'update'">
+                    {{ personnel ? personnel.fees.rate + ' /hour' : '-' }}
+                  </div>
+                  <div v-else>
+                    {{ personnel ? personnel.fees.rate + ' %' : '-' }}
+                  </div>
+                </span>
               </div>
-              <div
-                v-else-if="
-                  personnel.attributes.personnel[index - 1].fees.type ==
-                    'update'
-                "
-              >
-                Fee -
-                {{
-                  personnel.attributes.personnel[index - 1]
-                    ? personnel.attributes.personnel[index - 1].fees.rate +
-                      ' /hour'
-                    : '-'
-                }}
+              <div class="row  q-mt-sm" v-if="personnel.startDate">
+                <span class="heading-light col-3"> Start Date:</span>
+                <span class="q-ml-lg col">
+                  {{ personnel.startDate | moment('MM/DD/YYYY') }}</span
+                >
               </div>
-              <div v-else>
-                Fee -
-                {{
-                  personnel.attributes.personnel[index - 1]
-                    ? personnel.attributes.personnel[index - 1].fees.rate + ' %'
-                    : '-'
-                }}
+              <div class="row  q-mt-sm" v-if="personnel.endDate">
+                <span class="heading-light col-3"> End Date:</span>
+                <span class="q-ml-lg col">
+                  {{ personnel.endDate | moment('MM/DD/YYYY') }}</span
+                >
               </div>
-
-              <div></div>
-            </div>
+              <div class="row  q-mt-sm" v-if="personnel.note">
+                <span class="heading-light col-3"> Note:</span>
+                <span class="q-ml-lg col"> {{ personnel.note }}</span>
+              </div>
+            </q-card>
           </div>
-          <div v-else class="full-height full-width column ">
-            <div class=" column absolute-center">
-              <div style="color: #666666,align-items: center">
-                You haven't added a Company Personnel yet.
-              </div>
-              <img
-                class="q-mx-lg q-pt-sm"
-                src="~assets/add.svg"
-                alt="add_icon"
-                width="130px"
-                height="100px"
-                @click="addCompanyPersonnelDailog = true"
-              />
+        </div>
+
+        <div v-else class="full-height full-width column">
+          <div class=" column absolute-center q-mt-xl">
+            <div style="color: #666666,align-items: center;margin-top:100px">
+              You haven't added a Company Personnel yet.
             </div>
+            <img
+              class="q-mx-lg q-pt-sm"
+              src="~assets/add.svg"
+              alt="add_icon"
+              width="130px"
+              height="100px"
+              @click="addCompanyPersonnelDailog = true"
+            />
           </div>
         </div>
       </div>
@@ -174,37 +162,45 @@
 import { mapGetters, mapActions } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import CompanyPersonnel from 'components/CompanyPersonnel';
+import ClaimDetail from 'components/ClaimDetail';
 import { dateToSend } from '@utils/date';
 
 import { validateDate } from '@utils/validation';
 import { date } from 'quasar';
 
 export default {
-  components: { CustomBar, CompanyPersonnel },
+  components: { CustomBar, CompanyPersonnel, ClaimDetail },
   data() {
     return {
+      personnelId: '',
       //This Object is for Editing Existing Company Personnel
       companyPersonnel: {
         notes: '',
+        options: [],
         endDate: '',
         startDate: '',
         buttonGroup: 'dollar',
         claimFeeRate: '',
-
         isFieldDisable: true,
-
         personnel: {
           id: '',
-          role: ''
+          value: '',
+          machineValue: ''
         },
-        personParty: '',
-
+        personParty: {
+          id: '',
+          name: ''
+        },
+        role: {
+          machineValue: ''
+        },
         notes: '',
-
         filterRole: []
       },
+
       //This Object is for Adding new Company Personnel
       companyPersonnelPost: {
+        options: [],
         notes: '',
         endDate: '',
         startDate: '',
@@ -213,9 +209,17 @@ export default {
         isFieldDisable: true,
         personnel: {
           id: '',
-          role: ''
+          role: '',
+          value: '',
+          machineValue: ''
         },
-        personParty: '',
+        personParty: {
+          id: '',
+          name: ''
+        },
+        role: {
+          machineValue: ''
+        },
         notes: '',
         filterRole: []
       },
@@ -244,7 +248,8 @@ export default {
       'getAllUsers',
       'addCompanyPersonnel',
       'getRoles',
-      'editPersonnel'
+      'editPersonnel',
+      'deleteClaimPersonnel'
     ]),
     //This Function is for Adding new Company Personnel
     async onSaveButtonClick() {
@@ -257,51 +262,78 @@ export default {
           id: this.selectedClaimId,
           companyData: {
             personnel: {
-              id: this.companyPersonnelPost.personnel.id,
-              name: this.companyPersonnelPost.personParty.name,
-              role: this.companyPersonnelPost.personnel.role,
+              personnelID: this.companyPersonnelPost.personParty.id,
+              name: this.companyPersonnelPost.personParty.value,
+              role: {
+                value: this.companyPersonnelPost.personnel.value.name,
+                machineValue: this.companyPersonnelPost.personnel.value
+                  .machineValue
+              },
               note: this.companyPersonnelPost.notes,
               fees: {
+                type: this.companyPersonnelPost.buttonGroup,
                 rate: this.companyPersonnelPost.claimFeeRate
                   ? this.companyPersonnelPost.claimFeeRate
-                  : 0,
-                type: this.companyPersonnelPost.buttonGroup
+                  : 0
               },
               startDate: dateToSend(this.companyPersonnelPost.startDate),
               endDate: dateToSend(this.companyPersonnelPost.endDate)
             }
           }
         };
+        if (!this.companyPersonnelPost.personParty.id) {
+          delete payload.companyData.personnel;
+        }
         await this.addCompanyPersonnel(payload);
         await this.getPersonnelInfo(this.selectedClaimId);
-
-        this.$router.push('/company-personnel');
+        this.companyPersonnelPost.personParty.id = '';
+        this.companyPersonnelPost.personParty.value = '';
+        this.companyPersonnelPost.personnel.id = '';
+        this.companyPersonnelPost.personnel.value = '';
+        this.companyPersonnelPost.personnel.machineValue = '';
+        this.companyPersonnelPost.notes = '';
+        this.companyPersonnelPost.buttonGroup = '';
+        this.companyPersonnelPost.claimFeeRate = '';
+        this.companyPersonnel.startDate = this.companyPersonnelPost.startDate = this.companyPersonnelPost.endDate = this.companyPersonnel.endDate = date.formatDate(
+          Date.now(),
+          'MM/DD/YYYY'
+        );
       }
     },
-    onEditButtonClick() {
+    onEditButtonClick(index) {
       this.companyPersonnelDailog = true;
       this.companyPersonnel.isFieldDisable = false;
-      let index = this.personnel.attributes.personnel.length;
+      this.personnelId = this.personnel.personnel[index].id;
 
-      this.companyPersonnel.personnel.id = this.personnel.attributes.personnel[
-        index - 1
-      ].id;
-      this.companyPersonnel.personnel.role = this.personnel.attributes.personnel[
-        index - 1
-      ].role;
-      this.companyPersonnel.notes = this.personnel.attributes.personnel[
-        index - 1
-      ].note;
-      this.companyPersonnel.personParty = this.personnel.attributes.personnel[
-        index - 1
+      this.companyPersonnel.personnel.id = this.personnel.personnel[index].id;
+
+      this.companyPersonnel.personnel.value = this.personnel.personnel[
+        index
+      ].role.value;
+      this.companyPersonnel.personnel.machineValue = this.personnel.personnel[
+        index
+      ].role.machineValue;
+      this.companyPersonnel.notes = this.personnel.personnel[index].note;
+      this.companyPersonnel.personParty.id = this.personnel.personnel[
+        index
+      ].personnelID;
+      this.companyPersonnel.personParty.name = this.personnel.personnel[
+        index
       ].name;
-
-      this.companyPersonnel.buttonGroup = this.personnel.attributes.personnel[
-        index - 1
+      this.companyPersonnel.buttonGroup = this.personnel.personnel[
+        index
       ].fees.type;
-      this.companyPersonnel.claimFeeRate = this.personnel.attributes.personnel[
-        index - 1
+      this.companyPersonnel.claimFeeRate = this.personnel.personnel[
+        index
       ].fees.rate;
+    },
+    async onDelete(index) {
+      const personnel = {
+        claimID: this.selectedClaimId,
+        personnelID: this.personnel.personnel[index].id
+      };
+      await this.deleteClaimPersonnel(personnel);
+      await this.getPersonnelInfo(this.selectedClaimId);
     },
     //This Function is for Editing Existing Company Personnel
     async onEditSaveButtonClick() {
@@ -313,13 +345,17 @@ export default {
 
         const payload = {
           id: this.selectedClaimId,
+          personnelId: this.personnelId,
           companyData: {
             personnel: {
-              id: this.companyPersonnel.personnel.id,
-              name: this.companyPersonnel.personParty.name,
-              role: this.companyPersonnel.personnel.role,
+              personnelID: this.companyPersonnel.personParty.id,
+              name: this.companyPersonnel.personParty.value,
+              role: {
+                value: this.companyPersonnel.personnel.value.name,
+                machineValue: this.companyPersonnel.personnel.value.machineValue
+              },
               note: this.companyPersonnel.notes,
-              fess: {
+              fees: {
                 type: this.companyPersonnel.buttonGroup,
                 rate: this.companyPersonnel.claimFeeRate
                   ? this.companyPersonnel.claimFeeRate
@@ -330,7 +366,9 @@ export default {
             }
           }
         };
-
+        if (!this.companyPersonnel.personParty.id) {
+          delete payload.companyData.personnel;
+        }
         await this.editPersonnel(payload);
         await this.getPersonnelInfo(this.selectedClaimId);
 
