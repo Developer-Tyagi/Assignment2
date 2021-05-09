@@ -31,7 +31,6 @@
     </div>
     <q-dialog
       v-model="editClaimDetails"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"

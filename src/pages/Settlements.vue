@@ -2,7 +2,11 @@
   <q-page>
     <div v-if="settlement.attributes">
       <div class="icon-top">
-        <q-btn @click="onClickAddButton" flat class="q-ml-auto"
+        <q-btn
+          @click="onClickAddButton"
+          flat
+          class="q-ml-auto"
+          v-if="settlementShowDialog == false"
           ><img src="~assets/addSettlement.svg"
         /></q-btn>
       </div>
@@ -28,7 +32,12 @@
             </div>
           </div>
           <div class="row q-py-sm">
-            <div class="heading-light q-ml-sm col-5">Initial Offer</div>
+            <div
+              class="heading-light q-ml-sm col-5 text-primary "
+              @click="editInitialOffer = true"
+            >
+              Initial Offer
+            </div>
             <div class="col-3" style="margin-left: 7.5%">$</div>
             <div class="q-ml-lg text-bold">
               {{ settlement.attributes.intialOffer }}
@@ -116,6 +125,28 @@
         />
       </div>
     </div>
+    <q-dialog
+      v-model="editInitialOffer"
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card style="width: 350px;height:160px;">
+        <q-card-section class="items-center ">
+          <div class="q-pa-md heading-light">
+            Enter Initial Offer
+          </div>
+        </q-card-section>
+        <div class="row text-primary justify-end q-mt-lg">
+          <div class="  q-pa-md" @click="editInitialOffer = false">
+            CANCEL
+          </div>
+          <div class=" q-pa-md text-bold">
+            CHANGE
+          </div>
+        </div>
+      </q-card>
+    </q-dialog>
     <!-- This Dialog box is for editing the Data of settlements -->
     <q-dialog
       v-model="settlementDialog"
@@ -1126,6 +1157,7 @@ export default {
   data() {
     return {
       status: '',
+      editInitialOffer: false,
       currentIndex: '',
       settlementShowDialog: false,
       totalReplacementCost: '',
