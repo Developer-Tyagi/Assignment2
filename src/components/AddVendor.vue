@@ -223,6 +223,9 @@ export default {
     isEdit: {
       type: Boolean
     },
+    industryValue: {
+      type: Object
+    },
     selectedIndustryType: {
       type: String
     }
@@ -390,6 +393,11 @@ export default {
   created() {
     this.industryFilterDisabled = true;
     this.options = this.vendorIndustries;
+    if (this.industryValue) {
+      this.vendor.industry.value = this.industryValue.name;
+      this.vendor.industry.machineValue = this.industryValue.machineValue;
+      this.industryFilterDisabled = false;
+    }
   }
 };
 </script>
