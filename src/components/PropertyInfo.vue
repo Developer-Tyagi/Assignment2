@@ -334,85 +334,12 @@ export default {
       data.machineValue = obj.machineValue;
       data.value = obj.name;
     },
-    OnEditPPdamageItem(index) {
-      if (this.lossInfo.damageType == 'property') {
-        this.lossInfo.isEdit = 'editable';
-
-        this.lossInfo.currentIndex = index;
-        console.log(this.lossInfo.currentIndex, index);
-        this.lossInfo.quantity = this.lossInfo.ppDamagedItems[index].quantity;
-        this.lossInfo.PPDamageName = this.lossInfo.ppDamagedItems[index].name;
-        this.lossInfo.PPDamageDescription = this.lossInfo.ppDamagedItems[
-          index
-        ].desc;
-        this.lossInfo.serialNumber = this.lossInfo.ppDamagedItems[
-          index
-        ].serialNumber;
-        this.lossInfo.purchasePrice = this.lossInfo.ppDamagedItems[
-          index
-        ].purchasePrice;
-        this.purchaseDate = this.lossInfo.ppDamagedItems[index].purchaseDate;
-        this.lossInfo.repairReplaceRadio = this.lossInfo.ppDamagedItems[
-          index
-        ].radio;
-        this.lossInfo.PPDamageItemDescription = this.lossInfo.ppDamagedItems[
-          index
-        ].itemDesc;
-        this.lossInfo.repairCost = this.lossInfo.ppDamagedItems[
-          index
-        ].repairCost;
-        this.lossInfo.replaceCost = this.lossInfo.ppDamagedItems[
-          index
-        ].replaceCost;
-
-        this.lossInfo.PPdamagedItemsDailog = true;
-      } else {
-        this.lossInfo.isEdit = 'editable';
-        console.log(8);
-
-        this.lossInfo.currentIndex = index;
-        console.log(this.lossInfo.currentIndex, index);
-        this.lossInfo.quantity = this.lossInfo.osDamagedItems[index].quantity;
-        this.lossInfo.PPDamageName = this.lossInfo.osDamagedItems[index].name;
-        this.lossInfo.PPDamageDescription = this.lossInfo.osDamagedItems[
-          index
-        ].desc;
-        this.lossInfo.serialNumber = this.lossInfo.osDamagedItems[
-          index
-        ].serialNumber;
-        this.lossInfo.purchasePrice = this.lossInfo.osDamagedItems[
-          index
-        ].purchasePrice;
-        this.purchaseDate = this.lossInfo.osDamagedItems[index].purchaseDate;
-        this.lossInfo.repairReplaceRadio = this.lossInfo.osDamagedItems[
-          index
-        ].radio;
-        this.lossInfo.PPDamageItemDescription = this.lossInfo.osDamagedItems[
-          index
-        ].itemDesc;
-        this.lossInfo.repairCost = this.lossInfo.osDamagedItems[
-          index
-        ].repairCost;
-        this.lossInfo.replaceCost = this.lossInfo.osDamagedItems[
-          index
-        ].replaceCost;
-
-        this.lossInfo.PPdamagedItemsDailog = true;
-      }
-    },
 
     async addPPDamagedItems() {
-      console.log(
-        this.lossInfo.isEdit,
-        this.lossInfo.damageType,
-        this.lossInfo.currentIndex,
-        7
-      );
       const success = await this.$refs.PropertyInfo.validate();
       if (success) {
         if (this.lossInfo.damageType == 'property') {
           if (this.lossInfo.isEdit == 'editable') {
-            console.log('n00');
             this.lossInfo.ppDamagedItems[this.lossInfo.currentIndex] = {
               name: this.lossInfo.PPDamageName,
               desc: this.lossInfo.PPDamageDescription,
@@ -425,6 +352,12 @@ export default {
               purchasePrice: this.lossInfo.purchasePrice,
               quantity: this.lossInfo.quantity
             };
+            this.$emit(
+              'loss',
+              this.lossInfo.ppDamagedItems[this.lossInfo.currentIndex],
+              this.lossInfo.currentIndex,
+              'ppDamagedItems'
+            );
           } else {
             this.lossInfo.ppDamagedItems.push({
               name: this.lossInfo.PPDamageName,
@@ -453,7 +386,12 @@ export default {
               purchasePrice: this.lossInfo.purchasePrice,
               quantity: this.lossInfo.quantity
             };
-            console.log(this.lossInfo.osDamagedItems, 989);
+            this.$emit(
+              'loss',
+              this.lossInfo.osDamagedItems[this.lossInfo.currentIndex],
+              this.lossInfo.currentIndex,
+              'osDamagedItems'
+            );
           } else {
             this.lossInfo.osDamagedItems.push({
               name: this.lossInfo.PPDamageName,

@@ -779,14 +779,6 @@
                 />
               </div>
 
-              <!-- <PropertyInfo
-                :lossInfo="lossInfo"
-                :policyDate="{
-                  policyEffectiveDate: insuranceDetails.policyEffectiveDate,
-                  policyExpireDate: insuranceDetails.policyExpireDate
-                }"
-              /> -->
-
               <div v-if="lossInfo.isDamageOSToggle">
                 <br />
                 <div
@@ -802,6 +794,7 @@
                       v-if="lossInfo.osDamagedItems.length"
                     >
                       <q-card class="q-pa-sm">
+                        {{ item }}
                         <div class="text-right">
                           <q-icon
                             class="q-ma-xs"
@@ -892,11 +885,7 @@
               </div>
               <PropertyInfo
                 :lossInfo="lossInfo"
-                @lossAddressSame="lossAddressSame"
-                :lossAddressToggleShow="true"
-                :isMailingAddressEnable="true"
-                :lossAddressSameAsClient="true"
-                :isAddressRequired="true"
+                @loss="lossValue"
                 :policyDate="{
                   policyEffectiveDate: insuranceDetails.policyEffectiveDate,
                   policyExpireDate: insuranceDetails.policyExpireDate
@@ -1174,7 +1163,7 @@ export default {
   },
   data() {
     return {
-      step: 5,
+      step: 0,
       stepClickValidTill: 0,
       mortgageInfo: [
         {
@@ -1620,6 +1609,22 @@ export default {
         this.lossInfo.osDamagedItems.length = 0;
       }
     },
+    lossValue(value, index, damageType) {
+      this.lossInfo[damageType][index] = value;
+      this.lossInfo[damageType].push({
+        name: '',
+        desc: '',
+        repairCost: '',
+        replaceCost: '',
+        serialNumber: '',
+        radio: '',
+        itemDesc: '',
+        purchaseDate: '',
+        purchasePrice: '',
+        quantity: ''
+      });
+      this.lossInfo[damageType].pop();
+    },
     onPersonalPropertyToggleButtonOff() {
       if (
         !this.lossInfo.isThereDamageToPersonalPropertyToggle ||
@@ -1660,7 +1665,6 @@ export default {
         this.lossInfo.isEdit = 'editable';
 
         this.lossInfo.currentIndex = index;
-        console.log(this.lossInfo.currentIndex, index);
         this.lossInfo.quantity = this.lossInfo.ppDamagedItems[index].quantity;
         this.lossInfo.PPDamageName = this.lossInfo.ppDamagedItems[index].name;
         this.lossInfo.PPDamageDescription = this.lossInfo.ppDamagedItems[
@@ -1689,9 +1693,7 @@ export default {
         this.lossInfo.PPdamagedItemsDailog = true;
       } else {
         this.lossInfo.isEdit = 'editable';
-
         this.lossInfo.currentIndex = index;
-        console.log(this.lossInfo.currentIndex, index);
         this.lossInfo.quantity = this.lossInfo.osDamagedItems[index].quantity;
         this.lossInfo.PPDamageName = this.lossInfo.osDamagedItems[index].name;
         this.lossInfo.PPDamageDescription = this.lossInfo.osDamagedItems[
