@@ -1071,7 +1071,7 @@
                   icon="keyboard_backspace"
                   text-color="primary"
                   padding="md"
-                  type="submit"
+                  @click="validateEstimatingInfo"
                 />
               </div>
             </div>
@@ -1225,7 +1225,7 @@ export default {
   },
   data() {
     return {
-      step: 0,
+      step: 8,
       stepClickValidTill: 0,
       tenantOccupiedToggle: false,
       tenantOccupied: {
@@ -1842,6 +1842,15 @@ export default {
     },
     RemoveAnotherContact() {
       this.phoneNumber.pop();
+    },
+    validateEstimatingInfo() {
+      if (this.estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle) {
+        if (this.estimatingInfo.name && this.estimatingInfo.scopeTimeNeeded) {
+          this.step = this.step + 1;
+        }
+      } else {
+        this.step = this.step + 1;
+      }
     },
 
     onaddAditionalPhoneNumberToggle() {
