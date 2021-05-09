@@ -423,30 +423,6 @@ export default {
     deletePPDamagedItem(index) {
       this.$delete(this.lossInfo.ppDamagedItems, index);
     },
-
-    // addPPDamagedItems() {
-    //   this.lossInfo.PPdamagedItemsDailog = false;
-    //   this.lossInfo.ppDamagedItems.push({
-    //     name: this.lossInfo.PPDamageName,
-    //     desc: this.lossInfo.PPDamageDescription,
-    //     cost: this.lossInfo.PPDamagedItemCost,
-    //     serialNumber: this.lossInfo.serialNumber,
-    //     radio: this.lossInfo.repairReplaceRadio,
-    //     itemDesc: this.lossInfo.PPDamageItemDescription,
-    //     purchaseDate: this.lossInfo.purchaseDate,
-    //     purchasePrice: this.lossInfo.purchasePrice,
-    //     quantity: this.lossInfo.quantity
-    //   });
-    //   this.lossInfo.PPDamageName = '';
-    //   this.lossInfo.PPDamageDescription = '';
-    //   this.lossInfo.serialNumber = '';
-    //   this.lossInfo.PPDamagedItemCost = '';
-    //   this.lossInfo.repairReplaceRadio = false;
-    //   this.lossInfo.PPDamageItemDescription = '';
-
-    //   this.lossInfo.purchasePrice = '';
-    //   this.lossInfo.quantity = '';
-    // },
     addDamagedItems() {
       this.lossInfo.osDamagedItems.push({
         name: this.lossInfo.OSDamageName,
