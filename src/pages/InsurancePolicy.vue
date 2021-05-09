@@ -1051,7 +1051,10 @@ export default {
           }
         }
       };
-      if (!this.editPersonnel.role.id) {
+      if (
+        !this.editPersonnel.role.id &&
+        !this.editPersonnel.role.machineValue
+      ) {
         delete payload.data.editPersonnel.role;
       }
       await this.editCarrierPersonnelToClaim(payload);
@@ -1217,7 +1220,7 @@ export default {
           }
         }
       };
-      if (!this.personnel.role.id) {
+      if (!this.personnel.role.id && !this.personnel.role.machineValue) {
         delete payload.data.personnel.role;
       }
       const response = await this.addCarrierPersonnel(payload);
