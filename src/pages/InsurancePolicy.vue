@@ -664,9 +664,11 @@
           :dialogName="'Edit Personnel'"
           @closeDialog="editPersonnelDialog = false"
         />
-        <div class="mobile-container-page">
-          <AddCarrierPersonnel :carrierPersonnel="editPersonnel" />
-        </div>
+        <q-form ref="editPersonnel">
+          <div class="mobile-container-page">
+            <AddCarrierPersonnel :carrierPersonnel="editPersonnel" />
+          </div>
+        </q-form>
         <q-btn
           @click="onEditSaveCarrierPersonnel"
           label="Save"
@@ -1032,34 +1034,37 @@ export default {
       // this.onClickUncheck = true;
     },
     async onEditSaveCarrierPersonnel() {
-      const payload = {
-        claimID: this.selectedClaimId,
-        carrierID: this.selectedClaimCarrier.id,
-        id: this.id,
-        data: {
-          personnel: {
-            personnelID: this.personnelID,
-            name: this.editPersonnel.fname + this.editPersonnel.lname,
-            email: this.editPersonnel.email,
-            role: {
-              value: this.editPersonnel.role.value,
-              machineValue: this.editPersonnel.role.machineValue
-            },
-            note: this.editPersonnel.notes,
-            phoneNumber: this.editPersonnel.phoneNumber,
-            address: this.editPersonnel.address
+      const success = await this.$refs.editPersonnel.validate();
+      if (success) {
+        const payload = {
+          claimID: this.selectedClaimId,
+          carrierID: this.selectedClaimCarrier.id,
+          id: this.id,
+          data: {
+            personnel: {
+              personnelID: this.personnelID,
+              name: this.editPersonnel.fname + ' ' + this.editPersonnel.lname,
+              email: this.editPersonnel.email,
+              role: {
+                value: this.editPersonnel.role.value,
+                machineValue: this.editPersonnel.role.machineValue
+              },
+              note: this.editPersonnel.notes,
+              phoneNumber: this.editPersonnel.phoneNumber,
+              address: this.editPersonnel.address
+            }
           }
+        };
+        if (
+          !this.editPersonnel.role.id &&
+          !this.editPersonnel.role.machineValue
+        ) {
+          delete payload.data.editPersonnel.role;
         }
-      };
-      if (
-        !this.editPersonnel.role.id &&
-        !this.editPersonnel.role.machineValue
-      ) {
-        delete payload.data.editPersonnel.role;
+        await this.editCarrierPersonnelToClaim(payload);
+        this.editPersonnelDialog = false;
+        this.getClaimCarrier(this.$route.params.id);
       }
-      await this.editCarrierPersonnelToClaim(payload);
-      this.editPersonnelDialog = false;
-      this.getClaimCarrier(this.$route.params.id);
     },
 
     //This Function is for prefilling the values while editing the Adjustor
@@ -1069,10 +1074,12 @@ export default {
       this.personnelID = this.selectedClaimCarrier.carrier.personnel[
         index
       ].personnelID;
-      this.editPersonnelDialog = true;
-      this.editPersonnel.fname = this.selectedClaimCarrier.carrier.personnel[
+      const name = this.selectedClaimCarrier.carrier.personnel[
         index
-      ].name;
+      ].name.split(' ');
+      this.editPersonnelDialog = true;
+      this.editPersonnel.fname = name[0];
+      this.editPersonnel.lname = name[1];
       this.editPersonnel.email = this.selectedClaimCarrier.carrier.personnel[
         index
       ].email;
