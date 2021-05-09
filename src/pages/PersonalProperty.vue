@@ -409,6 +409,7 @@ export default {
         }
       };
       const success = await this.updateDamageItem(payload);
+      console.log(success);
       if (success) {
         await this.getDamageInfo(this.selectedClaimId);
         this.PPdamagedItemsDailog = false;

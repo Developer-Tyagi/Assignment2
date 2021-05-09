@@ -279,7 +279,7 @@ export async function updateDamageItem({ dispatch, state }, payload) {
     );
 
     dispatch('setLoading', false);
-    return data;
+    return true;
   } catch (e) {
     console.log(e);
     dispatch('setLoading', false);
