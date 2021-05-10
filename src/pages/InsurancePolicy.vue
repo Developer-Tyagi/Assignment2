@@ -85,7 +85,7 @@
                   color="primary"
                   class="q-ml-auto"
                   @click="sendMap(selectedClaimCarrier.carrier.address)"
-                  style="position: absolute ;right: 20px"
+                  style="position: absolute; right: 20px"
                   size="sm"
                 ></q-icon>
               </div>
@@ -498,13 +498,7 @@
           @closeDialog="(adjustorListDialog = false), (onClickUncheck = false)"
           :dialogName="'Select Adjustor'"
         />
-        <q-btn
-          @click="addPersonnelDialog = true"
-          flat
-          :class="{
-            'icon-top': !$q.platform.is.iphone,
-            'icon-top-ios': $q.platform.is.iphone
-          }"
+        <q-btn @click="addPersonnelDialog = true" flat class="icon-top"
           ><img src="~assets/addAdjustor.svg"
         /></q-btn>
         <div class="actions-div">

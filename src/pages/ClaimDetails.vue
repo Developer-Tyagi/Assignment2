@@ -4,10 +4,7 @@
       <div class="column full-height">
         <div>
           <q-icon
-            :class="{
-              'icon-top': !$q.platform.is.iphone,
-              'icon-top-ios': $q.platform.is.iphone
-            }"
+            class="icon-top"
             @click="editClaimDetails = true"
             name="more_vert"
             size="sm"

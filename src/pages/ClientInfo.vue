@@ -42,10 +42,7 @@
             <q-icon
               name="create"
               color="primary"
-              :class="{
-                'icon-top': !$q.platform.is.iphone,
-                'icon-top-ios': $q.platform.is.iphone
-              }"
+              class="icon-top"
               @click="editClientInfoDailog = true"
             ></q-icon>
           </div>

@@ -1,12 +1,7 @@
 <template>
   <q-page>
     <div v-if="settlement.attributes">
-      <div
-        :class="{
-          'icon-top': !$q.platform.is.iphone,
-          'icon-top-ios': $q.platform.is.iphone
-        }"
-      >
+      <div class="icon-top">
         <q-btn
           @click="onClickAddButton"
           flat

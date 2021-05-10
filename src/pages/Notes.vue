@@ -34,12 +34,7 @@
       </q-card>
     </q-dialog>
     <div>
-      <div
-        :class="{
-          'icon-top': !$q.platform.is.iphone,
-          'icon-top-ios': $q.platform.is.iphone
-        }"
-      >
+      <div class="icon-top">
         <q-btn @click="addNote" v-if="!addNoteDialog" flat>
           <img src="~assets/addNote.svg" />
         </q-btn>
