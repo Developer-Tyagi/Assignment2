@@ -2,80 +2,85 @@
   <q-page>
     <div class="listing-height">
       <ClaimDetail />
-      <q-card
-        class="q-ma-sm q-pa-sm"
-        v-for="(damage, index) in damageInfo.damageInfo.personal.items"
-      >
-        <div class="row justify-between">
-          <div>
-            <q-badge class="q-pa-sm" color="grey-6">
-              {{ damage.isRepaired == true ? 'Repair' : 'Replace' }}
-            </q-badge>
-          </div>
-          <div class="text-bold  text-capitalize q-pt-xs">
-            {{ damage.name }}
-          </div>
-          <div class="q-pt-xs q-mr-sm ">
-            <q-icon
-              name="create"
-              color="primary"
-              @click="OnEditPPdamageItem(index)"
-            />
-          </div>
-        </div>
-
-        <div
-          class="q-ml-sm text-capitalize q-pt-xs text-caption q-mr-xl q-my-xs q-px-xs q-ma-xs"
+      <div v-if="damageInfo.damageInfo.personal.items">
+        <q-card
+          class="q-ma-sm q-pa-sm"
+          v-for="(damage, index) in damageInfo.damageInfo.personal.items"
         >
-          <p>{{ damage.desc }}</p>
-          <p>{{ damage.damageDesc }}</p>
-        </div>
-        <div class="q-my-sm">
-          <div class="row justify-between  q-my-sm">
-            <div class="heading-light ">
-              Quantity
+          <div class="row justify-between">
+            <div>
+              <q-badge class="q-pa-sm" color="grey-6">
+                {{ damage.isRepaired == true ? 'Repair' : 'Replace' }}
+              </q-badge>
             </div>
-            <div class="q-mr-sm">
-              {{ damage.quantity }}
+            <div class="text-bold  text-capitalize q-pt-xs">
+              {{ damage.name }}
             </div>
-          </div>
-          <div class="row justify-between  q-my-sm">
-            <div class="heading-light ">
-              Serial Number
-            </div>
-            <div class="q-mr-sm">
-              {{ damage.serialNumber }}
+            <div class="q-pt-xs q-mr-sm ">
+              <q-icon
+                name="create"
+                color="primary"
+                @click="OnEditPPdamageItem(index)"
+              />
             </div>
           </div>
-          <div class="row   justify-between q-my-sm">
-            <div class="heading-light  ">Purchase Date</div>
-            <div class="q-mr-sm">
-              {{ damage.purchaseDate | moment('DD/MM/YYYY') }}
+
+          <div
+            class="q-ml-sm text-capitalize q-pt-xs text-caption q-mr-xl q-my-xs q-px-xs q-ma-xs"
+          >
+            <p>{{ damage.desc }}</p>
+            <p>{{ damage.damageDesc }}</p>
+          </div>
+          <div class="q-my-sm">
+            <div class="row justify-between  q-my-sm">
+              <div class="heading-light ">
+                Quantity
+              </div>
+              <div class="q-mr-sm">
+                {{ damage.quantity }}
+              </div>
+            </div>
+            <div class="row justify-between  q-my-sm">
+              <div class="heading-light ">
+                Serial Number
+              </div>
+              <div class="q-mr-sm">
+                {{ damage.serialNumber }}
+              </div>
+            </div>
+            <div class="row   justify-between q-my-sm">
+              <div class="heading-light  ">Purchase Date</div>
+              <div class="q-mr-sm">
+                {{ damage.purchaseDate | moment('DD/MM/YYYY') }}
+              </div>
             </div>
           </div>
-        </div>
-        <q-separator />
-        <div class="q-my-sm row justify-between">
-          <div class="heading-light col-3">Purchase Price</div>
-          <div class="heading-light ">$</div>
-          <div class="">
-            {{ damage.purchasePrice }}
+          <q-separator />
+          <div class="q-my-sm row justify-between">
+            <div class="heading-light col-3">Purchase Price</div>
+            <div class="heading-light ">$</div>
+            <div class="">
+              {{ damage.purchasePrice }}
+            </div>
           </div>
-        </div>
-        <div class="q-my-sm row justify-between">
-          <div class="heading-light col-3 ">
-            {{ damage.replaceCost == null ? 'Repair' : 'Replace' }} Cost
+          <div class="q-my-sm row justify-between">
+            <div class="heading-light col-3 ">
+              {{ damage.replaceCost == null ? 'Repair' : 'Replace' }} Cost
+            </div>
+            <div class="heading-light ">$</div>
+            <div class="">
+              {{
+                damage.replaceCost == null
+                  ? damage.repairCost
+                  : damage.replaceCost
+              }}
+            </div>
           </div>
-          <div class="heading-light ">$</div>
-          <div class="">
-            {{
-              damage.replaceCost == null
-                ? damage.repairCost
-                : damage.replaceCost
-            }}
-          </div>
-        </div>
-      </q-card>
+        </q-card>
+      </div>
+      <div v-else class=" full-width text-center q-mt-xl heading-light">
+        You have not added any Damage property yet!
+      </div>
     </div>
     <q-dialog
       v-model="PPdamagedItemsDailog"
@@ -295,14 +300,13 @@
 import { mapGetters, mapActions } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import ClaimDetail from 'components/ClaimDetail';
-import PropertyInfo from 'components/PropertyInfo';
 import moment from 'moment';
 import { date } from 'quasar';
 import { dateToShow } from '@utils/date';
 import { dateToSend } from '@utils/date';
 export default {
   name: 'PersonalProperty',
-  components: { CustomBar, ClaimDetail, PropertyInfo },
+  components: { CustomBar, ClaimDetail },
   data() {
     return {
       PPdamagedItemsDailog: false,
@@ -408,6 +412,7 @@ export default {
           }
         }
       };
+      await this.updateDamageItem(payload);
       const success = await this.updateDamageItem(payload);
       console.log(success);
       if (success) {
