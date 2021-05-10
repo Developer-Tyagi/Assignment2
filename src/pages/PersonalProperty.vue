@@ -412,18 +412,13 @@ export default {
           }
         }
       };
-<<<<<<< HEAD
       await this.updateDamageItem(payload);
-      await this.getDamageInfo(this.selectedClaimId);
-      this.PPdamagedItemsDailog = false;
-=======
       const success = await this.updateDamageItem(payload);
       console.log(success);
       if (success) {
         await this.getDamageInfo(this.selectedClaimId);
         this.PPdamagedItemsDailog = false;
       }
->>>>>>> 782eb34bbcb856c4ec108377b04adc6ee043633d
     }
   }
 };
