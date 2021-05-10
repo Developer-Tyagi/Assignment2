@@ -571,8 +571,8 @@
           >
             <q-card class="q-pa-md form-card" style="min-height: 400px">
               <div class="row">
-                <div class="col-8 q-mt-md form-heading">
-                  Is there damage to personal operty?
+                <div class="col-9 q-mt-md form-heading">
+                  Is there damage to personal property?
                 </div>
                 <q-toggle
                   class="q-ml-auto"
@@ -646,7 +646,7 @@
                           </div>
                         </div>
                         <div
-                          class="q-ml-sm text-capitalize q-pt-xs text-caption q-mr-xl q-my-xs q-px-xs q-ma-xs"
+                          class=" text-capitalize q-pt-xs text-caption q-mr-xl q-my-xs q-pr-xs "
                         >
                           <p>{{ item.desc }}</p>
 
@@ -667,19 +667,19 @@
                           </div>
                         </div>
                         <q-separator />
-                        <div class="q-my-sm row justify-between">
-                          <div class="heading-light col-4">Purchase Price</div>
-                          <div class="heading-light">$</div>
+                        <div class="q-my-sm row ">
+                          <div class="heading-light col-7">Purchase Price</div>
+                          <div class="heading-light col-3">$</div>
                           <div class="q-mr-sm">
                             {{ item.purchasePrice }}
                           </div>
                         </div>
-                        <div class="q-my-sm row justify-between">
-                          <div class="heading-light col-4">
+                        <div class="q-my-sm row ">
+                          <div class="heading-light col-7">
                             {{ item.radio }} Cost
                           </div>
-                          <div class="heading-light">$</div>
-                          <div class="">
+                          <div class="heading-light col-3">$</div>
+                          <div>
                             {{
                               item.radio == 'Replace'
                                 ? item.replaceCost
@@ -782,7 +782,6 @@
               </div>
               <PropertyInfo
                 :lossInfo="lossInfo"
-                :isAddressRequired="true"
                 :policyDate="{
                   policyEffectiveDate: insuranceDetails.policyEffectiveDate,
                   policyExpireDate: insuranceDetails.policyExpireDate
@@ -829,14 +828,6 @@
                   @input="onDamageOsToggleButtonOff"
                 />
               </div>
-
-              <PropertyInfo
-                :lossInfo="lossInfo"
-                :policyDate="{
-                  policyEffectiveDate: insuranceDetails.policyEffectiveDate,
-                  policyExpireDate: insuranceDetails.policyExpireDate
-                }"
-              />
 
               <div v-if="lossInfo.isDamageOSToggle">
                 <br />
@@ -885,7 +876,7 @@
                           </div>
                         </div>
                         <div
-                          class="q-ml-sm text-capitalize q-pt-xs text-caption q-mr-xl q-my-xs q-px-xs q-ma-xs"
+                          class=" text-capitalize q-pt-xs text-caption q-mr-xl q-my-xs q-px-xs "
                         >
                           <p>{{ item.desc }}</p>
 
@@ -906,19 +897,19 @@
                           </div>
                         </div>
                         <q-separator />
-                        <div class="q-my-sm row justify-between">
-                          <div class="heading-light col-4">Purchase Price</div>
-                          <div class="heading-light">$</div>
+                        <div class="q-my-sm row ">
+                          <div class="heading-light col-7">Purchase Price</div>
+                          <div class="heading-light col-3">$</div>
                           <div class="q-mr-sm">
                             {{ item.purchasePrice }}
                           </div>
                         </div>
-                        <div class="q-my-sm row justify-between">
-                          <div class="heading-light col-4">
+                        <div class="q-my-sm row ">
+                          <div class="heading-light col-7">
                             {{ item.radio }} Cost
                           </div>
-                          <div class="heading-light">$</div>
-                          <div class="">
+                          <div class="heading-light col-3">$</div>
+                          <div>
                             {{
                               item.radio == 'Replace'
                                 ? item.replaceCost
@@ -943,11 +934,7 @@
               </div>
               <PropertyInfo
                 :lossInfo="lossInfo"
-                @lossAddressSame="lossAddressSame"
-                :lossAddressToggleShow="true"
-                :isMailingAddressEnable="true"
-                :lossAddressSameAsClient="true"
-                :isAddressRequired="true"
+                @loss="lossValue"
                 :policyDate="{
                   policyEffectiveDate: insuranceDetails.policyEffectiveDate,
                   policyExpireDate: insuranceDetails.policyExpireDate
@@ -1385,6 +1372,8 @@ export default {
         }
       },
       lossInfo: {
+        currentIndex: '',
+        isEdit: 'noneditable',
         damageType: '',
         purchaseDate: '',
         purchasePrice: '',
@@ -1691,10 +1680,27 @@ export default {
     ]),
     ...mapMutations(['setSelectedLead']),
     successMessage,
+
     onDamageOsToggleButtonOff() {
       if (!this.lossInfo.isDamageOSToggle) {
         this.lossInfo.osDamagedItems.length = 0;
       }
+    },
+    lossValue(value, index, damageType) {
+      this.lossInfo[damageType][index] = value;
+      this.lossInfo[damageType].push({
+        name: '',
+        desc: '',
+        repairCost: '',
+        replaceCost: '',
+        serialNumber: '',
+        radio: '',
+        itemDesc: '',
+        purchaseDate: '',
+        purchasePrice: '',
+        quantity: ''
+      });
+      this.lossInfo[damageType].pop();
     },
     onTenantToggleOff() {
       if (!this.tenantOccupiedToggle) {
@@ -1721,7 +1727,7 @@ export default {
       this.$delete(this.lossInfo.osDamagedItems, index);
     },
     addNewItem(val) {
-      this.isEdit = false;
+      this.lossInfo.isEdit = 'noneditable';
       this.lossInfo.quantity = '';
       this.lossInfo.PPDamageName = '';
       this.lossInfo.PPDamageDescription = '';
@@ -1740,9 +1746,9 @@ export default {
     },
     OnEditPPdamageItem(index) {
       if (this.lossInfo.damageType == 'property') {
-        this.isEdit = true;
+        this.lossInfo.isEdit = 'editable';
 
-        this.currentIndex = index;
+        this.lossInfo.currentIndex = index;
         this.lossInfo.quantity = this.lossInfo.ppDamagedItems[index].quantity;
         this.lossInfo.PPDamageName = this.lossInfo.ppDamagedItems[index].name;
         this.lossInfo.PPDamageDescription = this.lossInfo.ppDamagedItems[
@@ -1770,9 +1776,8 @@ export default {
 
         this.lossInfo.PPdamagedItemsDailog = true;
       } else {
-        this.isEdit = true;
-
-        this.currentIndex = index;
+        this.lossInfo.isEdit = 'editable';
+        this.lossInfo.currentIndex = index;
         this.lossInfo.quantity = this.lossInfo.osDamagedItems[index].quantity;
         this.lossInfo.PPDamageName = this.lossInfo.osDamagedItems[index].name;
         this.lossInfo.PPDamageDescription = this.lossInfo.osDamagedItems[
@@ -1823,6 +1828,7 @@ export default {
         }
       }
     },
+
     // For adding multiple Contact Numbers in ClientInfo
     addAnotherContact() {
       let len = this.phoneNumber.length;

@@ -246,8 +246,6 @@ export default {
 
   data() {
     return {
-      isEdit: false,
-      currentIndex: '',
       mortgageInfo: {
         vendorsListDialog: false,
         vendorDialogFilterByIndustry: '',
@@ -336,16 +334,13 @@ export default {
       data.machineValue = obj.machineValue;
       data.value = obj.name;
     },
-    deleteDamagedItem(index) {
-      this.$delete(this.lossInfo.osDamagedItems, index);
-    },
 
     async addPPDamagedItems() {
       const success = await this.$refs.PropertyInfo.validate();
       if (success) {
         if (this.lossInfo.damageType == 'property') {
-          if (this.isEdit == true) {
-            this.lossInfo.ppDamagedItems[this.currentIndex] = {
+          if (this.lossInfo.isEdit == 'editable') {
+            this.lossInfo.ppDamagedItems[this.lossInfo.currentIndex] = {
               name: this.lossInfo.PPDamageName,
               desc: this.lossInfo.PPDamageDescription,
               serialNumber: this.lossInfo.serialNumber,
@@ -357,6 +352,12 @@ export default {
               purchasePrice: this.lossInfo.purchasePrice,
               quantity: this.lossInfo.quantity
             };
+            this.$emit(
+              'loss',
+              this.lossInfo.ppDamagedItems[this.lossInfo.currentIndex],
+              this.lossInfo.currentIndex,
+              'ppDamagedItems'
+            );
           } else {
             this.lossInfo.ppDamagedItems.push({
               name: this.lossInfo.PPDamageName,
@@ -372,8 +373,8 @@ export default {
             });
           }
         } else {
-          if (this.isEdit == true) {
-            this.lossInfo.osDamagedItems[this.currentIndex] = {
+          if (this.lossInfo.isEdit == 'editable') {
+            this.lossInfo.osDamagedItems[this.lossInfo.currentIndex] = {
               name: this.lossInfo.PPDamageName,
               desc: this.lossInfo.PPDamageDescription,
               serialNumber: this.lossInfo.serialNumber,
@@ -385,6 +386,12 @@ export default {
               purchasePrice: this.lossInfo.purchasePrice,
               quantity: this.lossInfo.quantity
             };
+            this.$emit(
+              'loss',
+              this.lossInfo.osDamagedItems[this.lossInfo.currentIndex],
+              this.lossInfo.currentIndex,
+              'osDamagedItems'
+            );
           } else {
             this.lossInfo.osDamagedItems.push({
               name: this.lossInfo.PPDamageName,
