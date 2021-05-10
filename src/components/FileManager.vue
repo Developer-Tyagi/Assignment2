@@ -1,5 +1,15 @@
 <template>
   <q-page>
+    <q-icon
+      :class="{
+        'icon-top': !$q.platform.is.iphone,
+        'icon-top-ios': $q.platform.is.iphone
+      }"
+      @click="uploadFilesOptions = true"
+      name="more_vert"
+      size="sm"
+    />
+
     <div>
       <div class="actions-div justify-between q-px-md">
         <q-breadcrumbs class="text-primary" active-color="grey" gutter="none">
@@ -116,6 +126,40 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+    <q-dialog
+      v-model="uploadFilesOptions"
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+      :position="'bottom'"
+    >
+      <q-card style="width: 550px; height:150px">
+        <div class="text-center text-h7 form-heading">Create New</div>
+        <q-card-section class="items-center">
+          <div class="row q-ml-xl">
+            <q-btn
+              name="upload"
+              @click="addFolderDialog = true"
+              icon="create_new_folder"
+              text-color="primary"
+              class="q-ml-sm"
+            />
+            <q-btn
+              class="q-ml-md"
+              icon="cloud_upload"
+              text-color="primary"
+              style="width: 50px"
+            />
+            <q-btn
+              class="q-ml-md"
+              icon="add_a_photo"
+              text-color="primary"
+              style="width: 50px"
+            />
+          </div>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -138,7 +182,8 @@ export default {
       addFolderDialog: false,
       addFileDialog: false,
       folderName: '',
-      fileName: ''
+      fileName: '',
+      uploadFilesOptions: false
     };
   },
 

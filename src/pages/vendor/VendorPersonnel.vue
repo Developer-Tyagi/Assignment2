@@ -1,11 +1,10 @@
 <template>
   <q-page>
     <div class="row" v-if="!addPersonnelDialog">
-      <div class="col-10"></div>
       <q-btn
         size="sm"
         name="create"
-        class=" icon-top "
+        class=" icon-top"
         flat
         @click="addPersonnelDialog = true"
         ><img src="~assets/add.svg"
