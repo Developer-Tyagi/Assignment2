@@ -60,8 +60,8 @@
 }
 .icon-top-ios {
   position: fixed;
-  right: calc(((50px - 1em) / 2)+15px);
-  top: 10px;
+  right: 10px;
+  top: calc(((50px - 1em) / 2)+15px);
   z-index: 10000;
 }
 .edit-icon {
