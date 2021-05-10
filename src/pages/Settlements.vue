@@ -1,7 +1,12 @@
 <template>
   <q-page>
     <div v-if="settlement.attributes">
-      <div class="icon-top">
+      <div
+        :class="{
+          'icon-top': !$q.platform.is.iphone,
+          'icon-top-ios': $q.platform.is.iphone
+        }"
+      >
         <q-btn
           @click="onClickAddButton"
           flat
@@ -33,7 +38,7 @@
           </div>
           <div class="row q-py-sm">
             <div
-              class="heading-light q-ml-sm col-5 text-primary "
+              class="heading-light q-ml-sm col-5 text-primary"
               @click="editInitialOffer = true"
             >
               Initial Offer
@@ -131,19 +136,13 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card style="width: 350px;height:160px;">
-        <q-card-section class="items-center ">
-          <div class="q-pa-md heading-light">
-            Enter Initial Offer
-          </div>
+      <q-card style="width: 350px; height: 160px">
+        <q-card-section class="items-center">
+          <div class="q-pa-md heading-light">Enter Initial Offer</div>
         </q-card-section>
         <div class="row text-primary justify-end q-mt-lg">
-          <div class="  q-pa-md" @click="editInitialOffer = false">
-            CANCEL
-          </div>
-          <div class=" q-pa-md text-bold">
-            CHANGE
-          </div>
+          <div class="q-pa-md" @click="editInitialOffer = false">CANCEL</div>
+          <div class="q-pa-md text-bold">CHANGE</div>
         </div>
       </q-card>
     </q-dialog>

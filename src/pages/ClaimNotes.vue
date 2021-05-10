@@ -47,7 +47,7 @@
             <textarea
               rows="4"
               placeholder="Take Notes here..."
-              style="width: 100% ;border-radius:8px;"
+              style="width: 100%; border-radius: 8px"
               v-model="note"
             />
           </div>
@@ -91,7 +91,12 @@
       </q-card>
     </q-dialog>
     <div>
-      <div class=" icon-top ">
+      <div
+        :class="{
+          'icon-top': !$q.platform.is.iphone,
+          'icon-top-ios': $q.platform.is.iphone
+        }"
+      >
         <q-btn @click="addNote" flat class="q-ml-auto"
           ><img src="~assets/add.svg"
         /></q-btn>
@@ -101,7 +106,7 @@
         <ClaimDetail />
         <div v-if="claimNotes.attributes.notes">
           <div
-            class="clients-list q-ma-sm "
+            class="clients-list q-ma-sm"
             v-if="claimNotes.attributes.notes.length"
           >
             <div
@@ -110,15 +115,15 @@
             >
               <q-item-section>
                 <div class="client-list-item">
-                  <div class="row ">
-                    <div class=" q-mb-sm">
+                  <div class="row">
+                    <div class="q-mb-sm">
                       {{
                         claimNotes.attributes.notes[index].created
                           | moment('MM/DD/YYYY, hh:mm A')
                       }}
                     </div>
 
-                    <div class="row edit-icon ">
+                    <div class="row edit-icon">
                       <q-icon
                         name="create"
                         color="primary"
@@ -128,7 +133,7 @@
                       <q-icon
                         name="delete"
                         color="primary"
-                        class="q-ml-sm "
+                        class="q-ml-sm"
                         @click="deleteThisNote(index)"
                       />
                     </div>
@@ -140,7 +145,7 @@
           </div>
         </div>
         <div v-else class="full-height full-width column">
-          <div class=" column absolute-center">
+          <div class="column absolute-center">
             <div style="color: #666666,align-items: center">
               You haven't added a Note yet.
             </div>

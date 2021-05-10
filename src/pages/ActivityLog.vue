@@ -1,6 +1,11 @@
 <template>
   <q-page>
-    <div class="icon-top">
+    <div
+      :class="{
+        'icon-top': !$q.platform.is.iphone,
+        'icon-top-ios': $q.platform.is.iphone
+      }"
+    >
       <q-btn @click="addLogDialog = true" flat
         ><img src="~assets/add.svg"
       /></q-btn>

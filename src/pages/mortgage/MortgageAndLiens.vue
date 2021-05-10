@@ -1,6 +1,12 @@
 <template>
   <div>
-    <div class="icon-top" v-if="!mortgageInfoDialog">
+    <div
+      :class="{
+        'icon-top': !$q.platform.is.iphone,
+        'icon-top-ios': $q.platform.is.iphone
+      }"
+      v-if="!mortgageInfoDialog"
+    >
       <q-btn @click="mortgageInfoDialog = true" flat
         ><img src="~assets/addMortgage.svg"
       /></q-btn>
@@ -11,7 +17,7 @@
       </div>
       <div class="q-mt-sm" v-if="mortgage.mortgages">
         <q-card
-          class="q-ma-md q-pa-md "
+          class="q-ma-md q-pa-md"
           v-for="(mortgage, index) in mortgage.mortgages"
         >
           <div class="text-bold text-capitalize q-mt-xs row">
@@ -73,14 +79,14 @@
                   name="place"
                   color="primary"
                   @click="sendMap(mortgage.address)"
-                  style="position: absolute ;right: 20px"
+                  style="position: absolute; right: 20px"
                   size="sm"
                 ></q-icon>
               </div>
             </div>
           </div>
-          <div class="row  q-mt-sm" v-if="mortgage.email">
-            <span class="heading-light col-3 "> Email </span>
+          <div class="row q-mt-sm" v-if="mortgage.email">
+            <span class="heading-light col-3"> Email </span>
             <span
               class="q-ml-none col clickLink"
               @click="onEmailClick(mortgage.email, $event)"
@@ -91,12 +97,12 @@
           <div class="row">
             <div class="heading-light col-3">Phone Number</div>
             <div class="q-mt-xs col-6 q-ml-none">
-              <div class=" row " v-for="phone in mortgage.phoneNumber">
-                <div class="col-3 ">
+              <div class="row" v-for="phone in mortgage.phoneNumber">
+                <div class="col-3">
                   {{ phone.type ? phone.type : '-' }}
                 </div>
                 <div
-                  class="clickLink "
+                  class="clickLink"
                   @click="onPhoneNumberClick(phone.number, $event)"
                 >
                   {{ phone.number ? phone.number : '-' }}
@@ -105,20 +111,20 @@
             </div>
           </div>
 
-          <div class="row  q-mt-sm q-mb-sm">
-            <span class="heading-light col-3 "> Notes: </span>
+          <div class="row q-mt-sm q-mb-sm">
+            <span class="heading-light col-3"> Notes: </span>
             <span class="col q-ml-none" v-if="mortgage.note">
               {{ mortgage.note ? mortgage.note : '-' }}</span
             >
           </div>
-          <div class="row  q-mt-sm" v-if="mortgage.loanNumber">
-            <span class="heading-light col-3 "> Loan Number: </span>
+          <div class="row q-mt-sm" v-if="mortgage.loanNumber">
+            <span class="heading-light col-3"> Loan Number: </span>
             <span class="q-ml-none col">
               {{ mortgage.loanNumber ? mortgage.loanNumber : '-' }}</span
             >
           </div>
-          <div class="row  q-mt-sm " v-if="mortgage.accountNumber">
-            <span class="heading-light col-3 "> Account Number: </span>
+          <div class="row q-mt-sm" v-if="mortgage.accountNumber">
+            <span class="heading-light col-3"> Account Number: </span>
             <span class="q-ml-none col">
               {{ mortgage.accountNumber ? mortgage.accountNumber : '-' }}</span
             >
@@ -127,7 +133,7 @@
       </div>
       <div v-else class="full-height full-width">
         <div class="absolute-center">
-          <div style="color: #666666; width:110%;">
+          <div style="color: #666666; width: 110%">
             You haven't added a Mortgage yet.
           </div>
           <img
@@ -155,7 +161,7 @@
           @closeDialog="mortgageInfoDialog = false"
           :dialogName="'Mortagage Info'"
         />
-        <div class="mobile-container-page q-pa-sm form-height ">
+        <div class="mobile-container-page q-pa-sm form-height">
           <q-form ref="estimatingInfoForm">
             <MortgageForm
               :mortgage="mortgageInfo"
@@ -187,7 +193,7 @@
           @closeDialog="editMortgageInfoDialog = false"
           :dialogName="' Edit Mortagage Info'"
         />
-        <div class="mobile-container-page q-pa-sm form-height  ">
+        <div class="mobile-container-page q-pa-sm form-height">
           <q-form ref="estimatingInfoForm">
             <MortgageForm
               :mortgage="editMortgageInfo"

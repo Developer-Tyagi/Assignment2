@@ -34,7 +34,12 @@
       </q-card>
     </q-dialog>
     <div>
-      <div class="icon-top">
+      <div
+        :class="{
+          'icon-top': !$q.platform.is.iphone,
+          'icon-top-ios': $q.platform.is.iphone
+        }"
+      >
         <q-btn @click="addNote" v-if="!addNoteDialog" flat>
           <img src="~assets/addNote.svg" />
         </q-btn>
@@ -89,13 +94,9 @@
                             | moment('DD/MM/YYYY, hh:mm A')
                         }}
                       </div>
-                      <div class="row edit-icon ">
+                      <div class="row edit-icon">
                         <q-icon name="create" color="primary" />
-                        <q-icon
-                          name="delete"
-                          color="primary"
-                          class="q-ml-sm "
-                        />
+                        <q-icon name="delete" color="primary" class="q-ml-sm" />
                       </div>
                     </div>
                     <div>
