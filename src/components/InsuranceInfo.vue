@@ -231,12 +231,15 @@
           behavior="menu"
           v-model="insuranceDetails.policy.id"
           option-value="id"
+          use-input
+          input-debounce="0"
           option-label="name"
           map-options
           emit-value
           options-dense
-          :options="policyTypes"
+          :options="policyOptions"
           @input="setTypes(policyTypes, insuranceDetails.policy)"
+          @filter="searchFilterBy"
           label="Policy Type"
           :rules="[
             val => (val && val.length > 0) || 'Please select the policy type'
@@ -507,6 +510,7 @@ export default {
 
   data() {
     return {
+      policyOptions: [],
       vendorDialogFilterByIndustry: '',
       showVendorDialogFilters: false,
       valueName: '',
@@ -538,6 +542,22 @@ export default {
         ? carrier.phoneNumber[0].number
         : '';
       this.carriersListDialog = false;
+    },
+    searchFilterBy(val, update) {
+      this.insuranceDetails.policy.id = null;
+      if (val === ' ') {
+        update(() => {
+          this.policyOptions = this.policyTypes;
+        });
+        return;
+      }
+
+      update(() => {
+        const search = val.toLowerCase();
+        this.policyOptions = this.policyTypes.filter(
+          v => v.name.toLowerCase().indexOf(search) > -1
+        );
+      });
     },
 
     onCloseAddCarrierDialogBox(carrier) {

@@ -194,14 +194,18 @@
         <q-select
           class="required"
           v-model="contractInfo.sourceDetails.type"
-          :options="leadSources"
+          :options="sourceOfClaim"
           option-label="name"
+          use-input
+          input-debounce="0"
           option-value="value"
           options-dense
           emit-value
           map-options
+          behavior="menu"
           options-dense
           @input="onChangingSourceType()"
+          @filter="searchBySource"
           :rules="[
             val => (val && val.length > 0) || 'Please select the Source type'
           ]"
@@ -404,6 +408,7 @@ export default {
   data() {
     return {
       clientOptions: [],
+      sourceOfClaim: [],
       constants: constants,
       reasonForCancellation: [
         'Client Cancelled',
@@ -464,6 +469,22 @@ export default {
         ? vendor.phoneNumber[0].number
         : '';
       this.contractInfo.vendorsListDialog = false;
+    },
+    searchBySource(val, update) {
+      this.contractInfo.sourceDetails.type = null;
+      if (val === ' ') {
+        update(() => {
+          this.sourceOfClaim = this.leadSources;
+        });
+        return;
+      }
+
+      update(() => {
+        const search = val.toLowerCase();
+        this.sourceOfClaim = this.leadSources.filter(
+          v => v.name.toLowerCase().indexOf(search) > -1
+        );
+      });
     },
 
     onCloseAddVendorDialogBox(vendor) {

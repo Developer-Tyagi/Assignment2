@@ -214,10 +214,13 @@
                 option-label="name"
                 map-options
                 options-dense
+                use-input
+                input-debounce="0"
                 behavior="menu"
                 emit-value
-                :options="lossCauses"
+                :options="lossCauseOptions"
                 @input="setTypes(lossCauses, lossDetails.causeOfLoss)"
+                @filter="searchByCause"
                 label="Cause of Loss"
               />
 
@@ -396,13 +399,17 @@
                 <q-select
                   dense
                   v-model="sourceDetails.type"
-                  :options="leadSources"
+                  :options="leadSource"
                   option-label="name"
                   option-value="value"
+                  use-input
+                  input-debounce="0"
+                  behavior="menu"
                   options-dense
                   emit-value
                   map-options
                   @input="onChangingSourceType()"
+                  @filter="searchBySource"
                   class="input-extra-padding"
                 />
                 <q-input
@@ -804,6 +811,8 @@ export default {
   },
   data() {
     return {
+      lossCauseOptions: [],
+      leadSource: [],
       valueName: '',
       step: 0,
       stepClickValidTill: 0,
@@ -924,6 +933,23 @@ export default {
       data.value = obj.name;
     },
 
+    searchByCause(val, update) {
+      this.lossDetails.causeOfLoss.id = null;
+      if (val === ' ') {
+        update(() => {
+          this.lossCauseOptions = this.lossCauses;
+        });
+        return;
+      }
+
+      update(() => {
+        const search = val.toLowerCase();
+        this.lossCauseOptions = this.lossCauses.filter(
+          v => v.name.toLowerCase().indexOf(search) > -1
+        );
+      });
+    },
+
     setTitleName() {
       const title = this.titles.find(obj => {
         return obj.id === this.primaryDetails.honorific.id;
@@ -932,6 +958,22 @@ export default {
       this.primaryDetails.honorific.value = title.value;
 
       this.primaryDetails.honorific.machineValue = title.machineValue;
+    },
+    searchBySource(val, update) {
+      this.sourceDetails.type = null;
+      if (val === ' ') {
+        update(() => {
+          this.leadSource = this.lossCauses;
+        });
+        return;
+      }
+
+      update(() => {
+        const search = val.toLowerCase();
+        this.leadSource = this.lossCauses.filter(
+          v => v.name.toLowerCase().indexOf(search) > -1
+        );
+      });
     },
 
     onInspectionTypesSelect() {
