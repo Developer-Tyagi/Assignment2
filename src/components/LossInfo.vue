@@ -187,10 +187,13 @@
         option-value="id"
         option-label="name"
         map-options
+        use-input
+        input-debounce="0"
         options-dense
         emit-value
-        :options="claimReasons"
+        :options="claimReasonOptions"
         @input="setTypes(claimReasons, lossInfo.reasonClaim)"
+        @filter="searchFilterBy"
         label="Reason for Claim"
         :rules="[
           val => (val && val.length > 0) || 'Please select the reason for claim'
@@ -243,9 +246,12 @@
         option-label="name"
         map-options
         options-dense
+        use-input
+        input-debounce="0"
         emit-value
-        :options="lossCauses"
+        :options="lossCauseOptions"
         @input="setTypes(lossCauses, lossInfo.causeOfLoss)"
+        @filter="searchByCause"
         label="Cause of Loss"
       />
 
@@ -671,6 +677,8 @@ export default {
 
   data() {
     return {
+      claimReasonOptions: [],
+      lossCauseOptions: [],
       constants: constants,
       lossAddressDetails: {
         houseNumber: '',
@@ -738,6 +746,23 @@ export default {
       }
     },
 
+    searchFilterBy(val, update) {
+      this.lossInfo.reasonClaim.id = null;
+      if (val === ' ') {
+        update(() => {
+          this.claimReasonOptions = this.claimReasons;
+        });
+        return;
+      }
+
+      update(() => {
+        const search = val.toLowerCase();
+        this.claimReasonOptions = this.claimReasons.filter(
+          v => v.name.toLowerCase().indexOf(search) > -1
+        );
+      });
+    },
+
     dateLiesBetween(val) {
       if (validateDate(val)) {
         if (Date.parse(val) < Date.parse(this.policyDate.policyEffectiveDate)) {
@@ -752,6 +777,22 @@ export default {
       } else {
         return 'Invalid date';
       }
+    },
+    searchByCause(val, update) {
+      this.lossInfo.causeOfLoss.id = null;
+      if (val === ' ') {
+        update(() => {
+          this.lossCauseOptions = this.lossCauses;
+        });
+        return;
+      }
+
+      update(() => {
+        const search = val.toLowerCase();
+        this.lossCauseOptions = this.lossCauses.filter(
+          v => v.name.toLowerCase().indexOf(search) > -1
+        );
+      });
     },
 
     onDamageOsToggleButtonOff() {
