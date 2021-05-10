@@ -248,6 +248,12 @@ const routes = [
         component: () => import('pages/PersonalProperty.vue')
       },
       {
+        path: 'other-damage',
+        name: 'Other Damage ',
+        caseSensitive: true,
+        component: () => import('pages/OtherDamageProperty.vue')
+      },
+      {
         path: 'add-client',
         name: 'create client',
         caseSensitive: true,

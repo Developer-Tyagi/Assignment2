@@ -1225,7 +1225,7 @@ export default {
   },
   data() {
     return {
-      step: 8,
+      step: 0,
       stepClickValidTill: 0,
       tenantOccupiedToggle: false,
       tenantOccupied: {
@@ -1327,15 +1327,15 @@ export default {
         isOrganization: false,
         organizationName: ''
       },
-      honorific: {
+      honorific1: {
         id: '602a5eaa312a2b57ac2b00ad',
-        value: 'Mr',
-        machineValue: 'mr'
+        value: 'Mr.',
+        machineValue: 'mr_'
       },
       honorific2: {
         id: '602a5eaa312a2b57ac2b00ad',
-        value: 'Mr',
-        machineValue: 'mr'
+        value: 'Mr.',
+        machineValue: 'mr_'
       },
 
       client: {
@@ -1845,8 +1845,14 @@ export default {
     },
     validateEstimatingInfo() {
       if (this.estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle) {
-        if (this.estimatingInfo.name && this.estimatingInfo.scopeTimeNeeded) {
+        if (this.estimatingInfo.name) {
           this.step = this.step + 1;
+        } else {
+          this.$q.notify({
+            message: 'Please Choose a estimator',
+            position: 'top',
+            type: 'negative'
+          });
         }
       } else {
         this.step = this.step + 1;

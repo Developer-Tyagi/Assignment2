@@ -185,6 +185,7 @@ export default {
         { name: 'Claim Summary' },
         { name: 'Loss Info' },
         { name: 'Property Details' },
+        { name: 'Other Damage Details' },
         { name: 'Activity Log & Message Archive' },
         { name: 'Carrier & Policy' },
         { name: 'Tasks' },
@@ -290,6 +291,9 @@ export default {
           break;
         case 'Property Details':
           this.$router.push('/personal-property');
+          break;
+        case 'Other Damage Details':
+          this.$router.push('/other-damage');
           break;
         case 'Settlements':
           this.$router.push('/settlements');

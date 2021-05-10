@@ -4,7 +4,7 @@
       <ClaimDetail />
       <q-card
         class="q-ma-sm q-pa-sm"
-        v-for="(damage, index) in damageInfo.damageInfo.personal.items"
+        v-for="(damage, index) in damageInfo.damageInfo.otherStructure.items"
       >
         <div class="row justify-between">
           <div>
@@ -25,7 +25,7 @@
         </div>
 
         <div
-          class="q-ml-sm text-capitalize q-pt-xs text-caption q-mr-xl q-my-xs q-px-xs q-ma-xs"
+          class=" text-capitalize q-pt-xs text-caption q-mr-xl q-my-xs q-px-xs "
         >
           <p>{{ damage.desc }}</p>
           <p>{{ damage.damageDesc }}</p>
@@ -297,11 +297,11 @@ import CustomBar from 'components/CustomBar';
 import ClaimDetail from 'components/ClaimDetail';
 import PropertyInfo from 'components/PropertyInfo';
 import moment from 'moment';
-import { date } from 'quasar';
+
 import { dateToShow } from '@utils/date';
 import { dateToSend } from '@utils/date';
 export default {
-  name: 'PersonalProperty',
+  name: 'OtherDamage',
   components: { CustomBar, ClaimDetail, PropertyInfo },
   data() {
     return {
@@ -353,39 +353,41 @@ export default {
     ]),
     OnEditPPdamageItem(index) {
       this.isEdit = true;
-      this.itemId = this.damageInfo.damageInfo.personal.items[index].id;
+      this.itemId = this.damageInfo.damageInfo.otherStructure.items[index].id;
       this.currentIndex = index;
-      this.lossInfo.quantity = this.damageInfo.damageInfo.personal.items[
+      this.lossInfo.quantity = this.damageInfo.damageInfo.otherStructure.items[
         index
       ].quantity;
-      this.lossInfo.PPDamageName = this.damageInfo.damageInfo.personal.items[
+      this.lossInfo.PPDamageName = this.damageInfo.damageInfo.otherStructure.items[
         index
       ].name;
-      this.lossInfo.PPDamageDescription = this.damageInfo.damageInfo.personal.items[
+      this.lossInfo.PPDamageDescription = this.damageInfo.damageInfo.otherStructure.items[
         index
       ].desc;
-      this.lossInfo.PPDamageItemDescription = this.damageInfo.damageInfo.personal.items[
+      this.lossInfo.PPDamageItemDescription = this.damageInfo.damageInfo.otherStructure.items[
         index
       ].damageDesc;
-      this.lossInfo.serialNumber = this.damageInfo.damageInfo.personal.items[
+      this.lossInfo.serialNumber = this.damageInfo.damageInfo.otherStructure.items[
         index
       ].serialNumber;
-      this.lossInfo.purchasePrice = this.damageInfo.damageInfo.personal.items[
+      this.lossInfo.purchasePrice = this.damageInfo.damageInfo.otherStructure.items[
         index
       ].purchasePrice;
       this.lossInfo.purchaseDate = dateToShow(
-        this.damageInfo.damageInfo.personal.items[index].purchaseDate
+        this.damageInfo.damageInfo.otherStructure.items[index].purchaseDate
       );
 
       this.lossInfo.repairReplaceRadio =
-        this.damageInfo.damageInfo.personal.items[index].replaceCost != null
+        this.damageInfo.damageInfo.otherStructure.items[index].replaceCost !=
+        null
           ? 'Replace'
           : 'Repair';
 
       this.lossInfo.PPDamagedItemCost =
-        this.damageInfo.damageInfo.personal.items[index].replaceCost != null
-          ? this.damageInfo.damageInfo.personal.items[index].replaceCost
-          : this.damageInfo.damageInfo.personal.items[index].repairCost;
+        this.damageInfo.damageInfo.otherStructure.items[index].replaceCost !=
+        null
+          ? this.damageInfo.damageInfo.otherStructure.items[index].replaceCost
+          : this.damageInfo.damageInfo.otherStructure.items[index].repairCost;
 
       this.PPdamagedItemsDailog = true;
     },
@@ -395,7 +397,7 @@ export default {
         id: this.selectedClaimId,
         itemId: this.itemId,
         damageInfo: {
-          personal: {
+          otherStructure: {
             item: {
               quantity: this.lossInfo.quantity,
               name: this.lossInfo.PPDamageName,
@@ -409,7 +411,6 @@ export default {
         }
       };
       const success = await this.updateDamageItem(payload);
-      console.log(success);
       if (success) {
         await this.getDamageInfo(this.selectedClaimId);
         this.PPdamagedItemsDailog = false;
