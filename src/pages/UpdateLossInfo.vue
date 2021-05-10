@@ -39,17 +39,20 @@
         </q-card>
       </q-dialog>
 
-      <div class="clients-list ">
+      <div class="clients-list">
         <!-- This is for showing the Loss Info details   -->
         <div class="clients-list">
           <div class="row">
-            <div class="row ">
+            <div class="row">
               <div class="col-10"></div>
               <q-icon
                 size="sm"
                 name="create"
                 color="primary"
-                class=" icon-top "
+                :class="{
+                  'icon-top': !$q.platform.is.iphone,
+                  'icon-top-ios': $q.platform.is.iphone
+                }"
                 @click="onEditIconClick"
               ></q-icon>
             </div>
@@ -57,11 +60,9 @@
         </div>
       </div>
 
-      <q-card class="q-ma-md q-pa-md ">
+      <q-card class="q-ma-md q-pa-md">
         <div class="row q-mt-sm" v-if="lossInfo.attributes.lossInfo.property">
-          <div class="heading-light col-3">
-            Address Details
-          </div>
+          <div class="heading-light col-3">Address Details</div>
           <div
             class="col-7"
             v-if="lossInfo.attributes.lossInfo.property.streetAddress"
@@ -97,7 +98,7 @@
                 name="place"
                 color="primary"
                 @click="sendMap(lossInfo.attributes.lossInfo.property)"
-                style="position: absolute ;right: 20px"
+                style="position: absolute; right: 20px"
                 size="sm"
               ></q-icon>
             </div>
@@ -105,7 +106,7 @@
         </div>
 
         <div
-          class="row  q-mt-sm"
+          class="row q-mt-sm"
           v-if="
             lossInfo.attributes.lossInfo.property &&
               lossInfo.attributes.lossInfo.property.propertyType
@@ -117,7 +118,7 @@
           >
         </div>
         <div
-          class="row  q-mt-sm"
+          class="row q-mt-sm"
           v-if="
             lossInfo.attributes.lossInfo &&
               lossInfo.attributes.lossInfo.propertyDesc
@@ -133,7 +134,7 @@
           >
         </div>
         <div
-          class="row  q-mt-sm"
+          class="row q-mt-sm"
           v-if="
             lossInfo.attributes.lossInfo &&
               lossInfo.attributes.lossInfo.claimReason
@@ -149,7 +150,7 @@
           >
         </div>
         <div
-          class="row  q-mt-sm"
+          class="row q-mt-sm"
           v-if="
             lossInfo.attributes.lossInfo &&
               lossInfo.attributes.lossInfo.serverity
@@ -165,7 +166,7 @@
           >
         </div>
         <div
-          class="row  q-mt-sm"
+          class="row q-mt-sm"
           v-if="
             lossInfo.attributes.lossInfo && lossInfo.attributes.lossInfo.cause
           "
@@ -180,7 +181,7 @@
           >
         </div>
         <div
-          class="row  q-mt-sm"
+          class="row q-mt-sm"
           v-if="
             lossInfo.attributes.lossInfo && lossInfo.attributes.lossInfo.date
           "
@@ -192,7 +193,7 @@
         </div>
 
         <div
-          class="row  q-mt-sm"
+          class="row q-mt-sm"
           v-if="
             lossInfo.attributes.lossInfo &&
               lossInfo.attributes.lossInfo.deadlineDate
@@ -206,7 +207,7 @@
           >
         </div>
         <div
-          class="row  q-mt-sm"
+          class="row q-mt-sm"
           v-if="
             lossInfo.attributes.lossInfo &&
               lossInfo.attributes.lossInfo.recovDDDate
@@ -220,7 +221,7 @@
           >
         </div>
         <div
-          class="row  q-mt-sm"
+          class="row q-mt-sm"
           v-if="
             lossInfo.attributes.lossInfo &&
               lossInfo.attributes.lossInfo.claimReason
@@ -236,7 +237,7 @@
           >
         </div>
         <div
-          class="row  q-mt-sm"
+          class="row q-mt-sm"
           v-if="
             lossInfo.attributes.lossInfo && lossInfo.attributes.lossInfo.desc
           "

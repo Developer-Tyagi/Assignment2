@@ -2,16 +2,17 @@
   <div>
     <q-card class="q-pa-sm">
       <div class="form-heading q-mt-lg">Personnel Role</div>
+
       <q-select
-        v-model="companyPersonnel.personnel.id"
-        :options="options"
+        v-model="companyPersonnel.personnel.value"
+        :options="companyPersonnel.options"
         use-input
-        option-value="id"
+        option-value="value"
         option-label="name"
         map-options
         emit-value
         options-dense
-        @input="setTypes(roleTypes, companyPersonnel.personnel)"
+        @input="setTypes(roleTypes, companyPersonnel.personnel.value)"
         label="Select Role"
         @filter="searchFilterBy"
         input-debounce="0"
@@ -20,17 +21,19 @@
       <div class="form-heading q-mt-lg">Person Party</div>
 
       <q-select
-        v-if="userRoles.length"
-        v-model="companyPersonnel.personParty"
-        :options="userRoles"
+        v-if="allUsers.length"
+        v-model="companyPersonnel.personParty.id"
+        :options="allUsers"
         :disable="companyPersonnel.isFieldDisable"
         :label="
           companyPersonnel.isFieldDisable ? 'Select a Role' : 'Select a Party'
         "
+        @input="setPersonTypes(allUsers, companyPersonnel.personParty)"
         option-label="name"
-        option-value="machineValue"
+        option-value="id"
         options-dense
         emit-value
+        behavior="menu"
         map-options
       />
       <div v-else>No user exist for this role.</div>
@@ -57,6 +60,7 @@
           type="number"
           v-model.number="companyPersonnel.claimFeeRate"
           label="Claim Fee Rate"
+          label-color="primary"
           style="width: 50%"
           ><template
             v-slot:prepend
@@ -72,7 +76,7 @@
             <q-icon name="%" color="primary"></q-icon>
           </template>
           <template v-slot:append v-else>
-            <span class="form-heading">/hour</span>
+            <span class="form-heading text-primary">/hour</span>
           </template></q-input
         >
       </div>
@@ -120,7 +124,7 @@
           mask="##/##/####"
           label="MM/DD/YYYY"
           lazy-rules
-          :rules="[val => validateDate(val) || 'Invalid date!']"
+          :rules="[val => dateGreaterThan(val)]"
         >
           <template v-slot:append>
             <q-icon
@@ -177,7 +181,13 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['personnel', 'selectedClaimId', 'roleTypes', 'userRoles'])
+    ...mapGetters([
+      'personnel',
+      'selectedClaimId',
+      'roleTypes',
+      'userRoles',
+      'allUsers'
+    ])
   },
 
   methods: {
@@ -185,28 +195,51 @@ export default {
 
     validateDate,
 
-    setTypes(types, data) {
-      this.companyPersonnel.personParty = '';
+    async setTypes(types, data) {
+      const obj = types.find(item => {
+        return item.name === data.name;
+      });
+
+      data.machineValue = obj.machineValue;
+      data.id = obj.id;
+      this.companyPersonnel.personParty.id = '';
+      this.companyPersonnel.personParty.name = '';
+      await this.getAllUsers({ role: obj.machineValue });
+      this.companyPersonnel.isFieldDisable = false;
+    },
+    async setPersonTypes(types, data) {
       const obj = types.find(item => {
         return item.id === data.id;
       });
-
-      this.getAllUsers({ roles: obj.machineValue });
+      data.machineValue = obj.machineValue;
+      data.value = obj.name;
       this.companyPersonnel.isFieldDisable = false;
+    },
+
+    dateGreaterThan(val) {
+      if (validateDate(val)) {
+        if (Date.parse(val) >= Date.parse(this.companyPersonnel.startDate)) {
+          return true;
+        } else {
+          return 'End Date should be  greater than Start date';
+        }
+      } else {
+        return 'Invalid date';
+      }
     },
 
     searchFilterBy(val, update) {
       this.companyPersonnel.personnel.id = null;
       if (val === ' ') {
         update(() => {
-          this.options = this.roleTypes;
+          this.companyPersonnel.options = this.roleTypes;
         });
         return;
       }
 
       update(() => {
         const search = val.toLowerCase();
-        this.options = this.roleTypes.filter(
+        this.companyPersonnel.options = this.roleTypes.filter(
           v => v.name.toLowerCase().indexOf(search) > -1
         );
       });

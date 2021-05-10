@@ -157,10 +157,9 @@ export default {
       'deleteMortgageInfo',
       'editMortgageInfo'
     ]),
-
+    sendMap,
     onEmailClick,
     onPhoneNumberClick,
-    sendMap,
 
     closeAddMortgageDialog(e) {
       this.addMortgageDialog = false;

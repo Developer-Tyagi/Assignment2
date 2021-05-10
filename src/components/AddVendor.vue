@@ -223,6 +223,9 @@ export default {
     isEdit: {
       type: Boolean
     },
+    industryValue: {
+      type: Object
+    },
     selectedIndustryType: {
       type: String
     }
@@ -254,10 +257,11 @@ export default {
           lname: '',
           email: '',
           honorific: {
-            id: '',
-            value: 'Mr.',
-            machineValue: 'mr_'
+            id: '602a5eaa312a2b57ac2b00ad',
+            value: 'Mr',
+            machineValue: 'mr'
           },
+
           phoneNumber: [
             {
               type: 'main',
@@ -390,6 +394,11 @@ export default {
   created() {
     this.industryFilterDisabled = true;
     this.options = this.vendorIndustries;
+    if (this.industryValue) {
+      this.vendor.industry.value = this.industryValue.name;
+      this.vendor.industry.machineValue = this.industryValue.machineValue;
+      this.industryFilterDisabled = false;
+    }
   }
 };
 </script>

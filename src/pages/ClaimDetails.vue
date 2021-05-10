@@ -4,7 +4,10 @@
       <div class="column full-height">
         <div>
           <q-icon
-            class="icon-top"
+            :class="{
+              'icon-top': !$q.platform.is.iphone,
+              'icon-top-ios': $q.platform.is.iphone
+            }"
             @click="editClaimDetails = true"
             name="more_vert"
             size="sm"
@@ -18,7 +21,7 @@
                 v-for="item in ClaimDetails"
                 :key="item.name"
                 @click="onClickClaimItems(item.name)"
-                class=" row q-ma-sm"
+                class="row q-ma-sm"
               >
                 <q-card class="q-ma-xs q-pa-md full-width">
                   {{ item.name }}
@@ -31,14 +34,13 @@
     </div>
     <q-dialog
       v-model="editClaimDetails"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
       :position="'bottom'"
     >
-      <q-card style="width: 350px;">
-        <q-card-section class="items-center ">
+      <q-card style="width: 350px">
+        <q-card-section class="items-center">
           <div
             class="q-pa-md heading-light"
             @click="editClaimNumberDialogOnClick('Claim Number')"
@@ -46,7 +48,7 @@
             Edit Claim Number
           </div>
           <div
-            class=" q-pa-md heading-light"
+            class="q-pa-md heading-light"
             @click="editClaimNumberDialogOnClick('Claim Phase')"
           >
             Edit Current Phase
@@ -61,15 +63,15 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card style="width: 350px;height:370px;">
-        <q-card-section class="items-center ">
+      <q-card style="width: 350px; height: 370px">
+        <q-card-section class="items-center">
           <q-form ref="claimEditForm">
             <div class="text-bold">{{ editDialogName }}</div>
-            <div style="height:250px; ">
+            <div style="height: 250px">
               <div v-if="editDialogName == 'Claim Number'">
-                <div class=" q-py-md row">
+                <div class="q-py-md row">
                   <div class="heading-light">Current Claim Number :</div>
-                  <div class="q-px-lg ">
+                  <div class="q-px-lg">
                     {{
                       getSelectedClaim.policyInfo.claimNumber
                         ? getSelectedClaim.policyInfo.claimNumber
@@ -77,13 +79,13 @@
                     }}
                   </div>
                 </div>
-                <div class=" q-pb-lg row  ">
+                <div class="q-pb-lg row">
                   <div class="heading-light">New Claim Number</div>
                   <div class="q-ml-xl">
                     <q-input
                       class="required"
                       label=" Claim Number"
-                      style="width:130px;height:20px;"
+                      style="width: 130px; height: 20px"
                       v-if="editDialogName == 'Claim Number'"
                       v-model="editInputValue"
                       lazy-rules
@@ -95,9 +97,9 @@
                 </div>
               </div>
               <div v-else>
-                <div class=" q-py-md row">
+                <div class="q-py-md row">
                   <div class="heading-light">Current phase :</div>
-                  <div class="q-px-lg ">
+                  <div class="q-px-lg">
                     {{
                       getSelectedClaim.status
                         ? getSelectedClaim.status.value
@@ -137,16 +139,16 @@
                   rows="5"
                   class="full-width"
                   v-model="notes"
-                  style="resize: none;height:80px;"
+                  style="resize: none; height: 80px"
                 ></textarea>
               </div>
             </div>
             <div class="row text-primary justify-end q-mt-lg">
-              <div class="  q-pa-md" @click="editClaimNumberDialog = false">
+              <div class="q-pa-md" @click="editClaimNumberDialog = false">
                 CANCEL
               </div>
               <div
-                class=" q-pa-md text-bold"
+                class="q-pa-md text-bold"
                 @click="onClickChange(editDialogName)"
               >
                 CHANGE
@@ -186,6 +188,7 @@ export default {
         { name: 'Claim Summary' },
         { name: 'Loss Info' },
         { name: 'Property Details' },
+        { name: 'Other Damage Details' },
         { name: 'Activity Log & Message Archive' },
         { name: 'Carrier & Policy' },
         { name: 'Tasks' },
@@ -291,6 +294,9 @@ export default {
           break;
         case 'Property Details':
           this.$router.push('/personal-property');
+          break;
+        case 'Other Damage Details':
+          this.$router.push('/other-damage');
           break;
         case 'Settlements':
           this.$router.push('/settlements');

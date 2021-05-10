@@ -372,6 +372,56 @@
                   :isChecksEnable="true"
                   :isAsteriskMark="true"
                 />
+                <div class="row">
+                  <p class="q-mx-none q-my-auto">Tenant Occupied</p>
+                  <q-toggle
+                    class="q-ml-auto"
+                    v-model="tenantOccupiedToggle"
+                    @input="onTenantToggleOff"
+                  />
+                </div>
+
+                <div v-if="tenantOccupiedToggle">
+                  <q-input
+                    dense
+                    v-model="tenantOccupied.name"
+                    label="Tenant Name"
+                  />
+
+                  <div class="row justify-between">
+                    <q-select
+                      dense
+                      class="required col-5"
+                      v-model="tenantOccupied.type"
+                      label="Type"
+                      :options="contactTypes"
+                      option-value="machineValue"
+                      option-label="name"
+                      map-options
+                      options-dense
+                      emit-value
+                      behavior="menu"
+                      lazy-rules
+                      :rules="[
+                        val =>
+                          (val && val.length > 0) || 'Please select phone type'
+                      ]"
+                    />
+                    <q-input
+                      dense
+                      class="required col-6"
+                      v-model.number="tenantOccupied.phone"
+                      label="Phone"
+                      mask="(###) ###-####"
+                      lazy-rules
+                      :rules="[
+                        val =>
+                          (val && val.length == 14) ||
+                          'Please enter the phone number'
+                      ]"
+                    />
+                  </div>
+                </div>
               </q-card>
             </div>
 
@@ -1009,7 +1059,7 @@
                   icon="keyboard_backspace"
                   text-color="primary"
                   padding="md"
-                  type="submit"
+                  @click="validateEstimatingInfo"
                 />
               </div>
             </div>
@@ -1165,6 +1215,12 @@ export default {
     return {
       step: 0,
       stepClickValidTill: 0,
+      tenantOccupiedToggle: false,
+      tenantOccupied: {
+        name: '',
+        phone: '',
+        type: ''
+      },
       mortgageInfo: [
         {
           id: '',
@@ -1208,6 +1264,7 @@ export default {
         buttonGroup: 'dollar'
       },
       companyPersonnel: {
+        options: [],
         notes: '',
         endDate: '',
         startDate: '',
@@ -1216,9 +1273,17 @@ export default {
         isFieldDisable: true,
         personnel: {
           id: '',
-          role: ''
+          value: '',
+          machineValue: ''
         },
-        personParty: '',
+        role: {
+          machineValue: ''
+        },
+
+        personParty: {
+          id: '',
+          name: ''
+        },
         notes: '',
         filterRole: []
       },
@@ -1251,14 +1316,14 @@ export default {
         organizationName: ''
       },
       honorific1: {
-        id: '',
-        value: '',
-        machineValue: ''
+        id: '602a5eaa312a2b57ac2b00ad',
+        value: 'Mr.',
+        machineValue: 'mr_'
       },
       honorific2: {
-        id: '',
-        value: '',
-        machineValue: ''
+        id: '602a5eaa312a2b57ac2b00ad',
+        value: 'Mr.',
+        machineValue: 'mr_'
       },
 
       client: {
@@ -1415,6 +1480,10 @@ export default {
         },
         carrierName: '',
         carrierId: '',
+        address: {},
+        email: '',
+        phone: '',
+        hasAppraisalClause: false,
         insuranceClaimNumber: '',
         policyNumber: '',
         policyEffectiveDate: '',
@@ -1531,6 +1600,15 @@ export default {
       this.insuranceDetails.carrierId = this.selectedLead.carrier
         ? this.selectedLead.carrier.id
         : '';
+      this.insuranceDetails.email = this.selectedLead.carrier
+        ? this.selectedLead.carrier.email
+        : '';
+      this.insuranceDetails.address = this.selectedLead.carrier
+        ? this.selectedLead.carrier.address
+        : '';
+      this.insuranceDetails.phone = this.selectedLead.carrier
+        ? this.selectedLead.carrier.phoneNumber[0].number
+        : '';
       this.insuranceDetails.policyNumber = this.selectedLead.policyNumber
         ? this.selectedLead.policyNumber
         : '';
@@ -1624,6 +1702,13 @@ export default {
         quantity: ''
       });
       this.lossInfo[damageType].pop();
+    },
+    onTenantToggleOff() {
+      if (!this.tenantOccupiedToggle) {
+        this.tenantOccupied.name = '';
+        this.tenantOccupied.type = '';
+        this.tenantOccupied.phone = '';
+      }
     },
     onPersonalPropertyToggleButtonOff() {
       if (
@@ -1751,7 +1836,7 @@ export default {
 
       if (this.phoneNumber[len - 1].number.length == 14) {
         this.phoneNumber.push({
-          type: '',
+          type: 'Main',
           number: ''
         });
       } else {
@@ -1764,6 +1849,21 @@ export default {
     },
     RemoveAnotherContact() {
       this.phoneNumber.pop();
+    },
+    validateEstimatingInfo() {
+      if (this.estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle) {
+        if (this.estimatingInfo.name) {
+          this.step = this.step + 1;
+        } else {
+          this.$q.notify({
+            message: 'Please Choose a estimator',
+            position: 'top',
+            type: 'negative'
+          });
+        }
+      } else {
+        this.step = this.step + 1;
+      }
     },
 
     onaddAditionalPhoneNumberToggle() {
@@ -1867,7 +1967,14 @@ export default {
           mailingAddress: {
             ...this.mailingAddressDetails
           },
-          phoneNumbers: this.phoneNumber
+          phoneNumbers: this.phoneNumber,
+          tenantInfo: {
+            name: this.tenantOccupied.name,
+            phoneNumber: {
+              type: this.tenantOccupied.type,
+              number: this.tenantOccupied.phone
+            }
+          }
         },
         property: {
           name: this.lossAddressName,
@@ -1883,9 +1990,13 @@ export default {
           propertyDesc: this.propertyDescription
         }
       };
+
       /* if coInsuredDetails toggle is off it well not send the coInsured details */
       if (!this.isThereaCoInsuredToggle) {
         delete payload.insuredInfo.secondary;
+      }
+      if (!this.tenantOccupiedToggle) {
+        delete payload.insuredInfo.tenantInfo;
       }
       if (!this.selectedLead.id) {
         delete payload.leadID;
@@ -2029,11 +2140,11 @@ export default {
 
         personnel: [
           {
-            personnelID: '',
-            name: this.companyPersonnel.personParty.name,
+            personnelID: this.companyPersonnel.personParty.id,
+            name: this.companyPersonnel.personParty.value,
             role: {
-              value: this.companyPersonnel.personnel.role,
-              machineValue: this.companyPersonnel.personnel.role.machineValue
+              value: this.companyPersonnel.personnel.value.name,
+              machineValue: this.companyPersonnel.personnel.value.machineValue
             },
             note: this.companyPersonnel.notes,
             fees: {
@@ -2049,12 +2160,16 @@ export default {
       };
 
       if (
-        !this.companyPersonnel.personnel.role.value &&
-        !this.companyPersonnel.personnel.role.machineValue
+        !this.companyPersonnel.personnel.value.name &&
+        !this.companyPersonnel.personnel.value.machineValue
       ) {
         delete payload.personnel;
       }
-      if (this.estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle) {
+
+      if (
+        this.estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle &&
+        this.estimatingInfo.estimatorID
+      ) {
         payload.estimatingInfo = {
           estimatorID: this.estimatingInfo.estimatorID,
           scopeTimeNeeded: this.estimatingInfo.scopeTimeNeeded,

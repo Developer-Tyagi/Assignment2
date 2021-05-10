@@ -422,7 +422,10 @@
                   placeholder="Enter Source details"
                   v-model="sourceDetails.details"
                   lazy-rules
-                  :rules="[val => (val && val.length > 0) || '']"
+                  :rules="[
+                    val =>
+                      (val && val.length > 0) || 'Please select source detail'
+                  ]"
                 />
                 <div
                   v-else-if="sourceDetails.type == constants.industries.VENDOR"
@@ -612,7 +615,7 @@
                 dense
                 v-if="schedulingDetails.isAutomaticScheduling"
                 :class="{ required: schedulingDetails.isAutomaticScheduling }"
-                v-model="schedulingDetails.inspectionType"
+                v-model="schedulingDetails.inspectionTypeId"
                 :options="inspectionTypes"
                 label="Type of Inspection"
                 option-label="value"
@@ -784,6 +787,7 @@ import AddVendor from 'components/AddVendor';
 import AddCarrier from 'components/AddCarrier';
 import CustomBar from 'components/CustomBar';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
+import { dateToShow } from '@utils/date';
 
 export default {
   components: {
@@ -837,9 +841,9 @@ export default {
 
         selectedContactType: '',
         honorific: {
-          id: '',
-          value: '',
-          machineValue: ''
+          id: '602a5eaa312a2b57ac2b00ad',
+          value: 'Mr',
+          machineValue: 'mr'
         }
       },
       lossDetails: {
@@ -876,15 +880,18 @@ export default {
         type: '',
         details: '',
         address: '',
-        email: ''
+        email: '',
+        phone: ''
       },
       schedulingDetails: {
         isAutomaticScheduling: false,
-        inspectionType: '',
+        inspectionTypeId: '',
         subInspectionType: '',
         subInspectionMachineValue: '',
         inspectionDuration: '',
-        subInspectionTypeValue: ''
+        subInspectionTypeValue: '',
+        inspectionTypeMachineValue: '',
+        inspectionTypeValue: ''
       },
       notes: '',
       vendorSelected: '',
@@ -934,8 +941,9 @@ export default {
 
     onInspectionTypesSelect() {
       const selectedInspectionType = this.inspectionTypes.find(
-        type => type.id === this.schedulingDetails.inspectionType
+        type => type.id === this.schedulingDetails.inspectionTypeId
       );
+
       if (
         selectedInspectionType.subtypes &&
         selectedInspectionType.subtypes.length > 1
@@ -945,16 +953,19 @@ export default {
         this.schedulingDetails.inspectionDuration = '';
         this.schedulingDetails.subInspectionTypeValue = '';
         this.showSubInspectionType = true;
+        this.schedulingDetails.inspectionTypeValue =
+          selectedInspectionType.value;
+        this.schedulingDetails.inspectionTypeMachineValue =
+          selectedInspectionType.machineValue;
       } else {
+        this.schedulingDetails.inspectionTypeValue =
+          selectedInspectionType.value;
+        this.schedulingDetails.inspectionTypeMachineValue =
+          selectedInspectionType.machineValue;
         this.showSubInspectionType = false;
-        this.schedulingDetails.subInspectionType =
-          selectedInspectionType.subtypes[0].id;
+
         this.schedulingDetails.inspectionDuration =
           selectedInspectionType.subtypes[0].duration;
-        this.schedulingDetails.subInspectionTypeValue =
-          selectedInspectionType.subtypes[0].value;
-        this.schedulingDetails.subInspectionMachineValue =
-          selectedInspectionType.subtypes[0].machineValue;
       }
     },
 
@@ -1000,8 +1011,12 @@ export default {
           policyNumber: this.insuranceDetails.policyNumber,
           isAutomaticScheduling: this.schedulingDetails.isAutomaticScheduling,
           notes: this.notes,
+
           inspectionInfo: {
-            id: this.schedulingDetails.inspectionType,
+            parentID: this.schedulingDetails.inspectionTypeId,
+            pValue: this.schedulingDetails.inspectionTypeValue,
+            pMachineValue: this.schedulingDetails.inspectionTypeMachineValue,
+            id: this.schedulingDetails.subInspectionType,
             duration: parseFloat(this.schedulingDetails.inspectionDuration),
             value: this.schedulingDetails.subInspectionTypeValue,
             machineValue: this.schedulingDetails.subInspectionMachineValue
@@ -1009,11 +1024,27 @@ export default {
           leadSource: {
             id: '',
             type: this.sourceDetails.type,
-            detail: this.sourceDetails.details
+            detail: this.sourceDetails.details,
+            address: this.sourceDetails.address,
+            email: this.sourceDetails.email,
+            phoneNumber: [
+              {
+                type: '',
+                number: this.sourceDetails.phone
+              }
+            ]
           },
           carrier: {
             id: '',
-            value: ''
+            value: '',
+            email: this.insuranceDetails.email,
+            phoneNumber: [
+              {
+                type: '',
+                number: this.insuranceDetails.phone
+              }
+            ],
+            address: this.insuranceDetails.address
           }
         };
 
@@ -1074,8 +1105,12 @@ export default {
             policyNumber: this.insuranceDetails.policyNumber,
             isAutomaticScheduling: this.schedulingDetails.isAutomaticScheduling,
             notes: this.notes,
+
             inspectionInfo: {
-              id: this.schedulingDetails.inspectionType,
+              parentID: this.schedulingDetails.inspectionTypeId,
+              pValue: this.schedulingDetails.inspectionTypeValue,
+              pMachineValue: this.schedulingDetails.inspectionTypeMachineValue,
+              id: this.schedulingDetails.subInspectionType,
               duration: parseFloat(this.schedulingDetails.inspectionDuration),
               value: this.schedulingDetails.subInspectionTypeValue,
               machineValue: this.schedulingDetails.subInspectionMachineValue
@@ -1083,11 +1118,27 @@ export default {
             leadSource: {
               id: this.sourceDetails.id,
               type: this.sourceDetails.type,
-              detail: this.sourceDetails.details
+              detail: this.sourceDetails.details,
+              address: this.sourceDetails.address,
+              email: this.sourceDetails.email,
+              phoneNumber: [
+                {
+                  type: '',
+                  number: this.sourceDetails.phone
+                }
+              ]
             },
             carrier: {
               id: this.insuranceDetails.carrierId,
-              value: this.insuranceDetails.carrierName
+              value: this.insuranceDetails.carrierName,
+              email: this.insuranceDetails.email,
+              phoneNumber: [
+                {
+                  type: '',
+                  number: this.insuranceDetails.phone
+                }
+              ],
+              address: this.insuranceDetails.address
             }
           }
         };
@@ -1232,7 +1283,7 @@ export default {
       this.primaryDetails.email = this.selectedLead.primaryContact.email;
       this.lossAddress = this.selectedLead.lossLocation;
       this.lossDetails.lossDesc = this.selectedLead.lossDesc;
-      this.lossDetails.dateOfLoss = this.selectedLead.dateofLoss;
+      this.lossDetails.dateOfLoss = dateToShow(this.selectedLead.dateofLoss);
       this.lossDetails.causeOfLoss.id = this.selectedLead.lossCause
         ? this.selectedLead.lossCause.id
         : '';
@@ -1244,25 +1295,45 @@ export default {
         : '';
       this.schedulingDetails.isAutomaticScheduling = this.selectedLead.isAutomaticScheduling;
       this.notes = this.selectedLead.notes;
-      this.sourceDetails = this.selectedLead.leadSource
-        ? this.selectedLead.leadSource
-        : '';
-      this.sourceDetails.details = this.selectedLead.leadSource
-        ? this.selectedLead.leadSource.detail
-        : '';
+      this.sourceDetails.id = this.selectedLead.leadSource.id;
+      this.sourceDetails.type = this.selectedLead.leadSource.type;
+      this.sourceDetails.details = this.selectedLead.leadSource.detail;
       this.insuranceDetails.carrierName = this.selectedLead.carrier
         ? this.selectedLead.carrier.value
+        : '';
+      this.insuranceDetails.address = this.selectedLead.carrier
+        ? this.selectedLead.carrier.address
+        : '';
+      this.insuranceDetails.email = this.selectedLead.carrier
+        ? this.selectedLead.carrier.email
+        : '';
+      this.insuranceDetails.phone = this.selectedLead.carrier
+        ? this.selectedLead.carrier.phoneNumber[0].number
         : '';
       this.insuranceDetails.carrierId = this.selectedLead.carrier
         ? this.selectedLead.carrier.id
         : '';
-      this.schedulingDetails.inspectionType = this.selectedLead.inspectionInfo
-        ? this.selectedLead.inspectionInfo.value
-        : '';
-      this.schedulingDetails.inspectionDuration = this.selectedLead
+      this.schedulingDetails.inspectionTypeValue = this.selectedLead
         .inspectionInfo
-        ? this.selectedLead.inspectionInfo.duration
+        ? this.selectedLead.inspectionInfo.pValue
         : '';
+      this.schedulingDetails.inspectionTypeId = this.selectedLead.inspectionInfo
+        ? this.selectedLead.inspectionInfo.parentID
+        : '';
+      this.schedulingDetails.inspectionTypeMachineValue = this.selectedLead
+        .inspectionInfo
+        ? this.selectedLead.inspectionInfo.pMachineValue
+        : '';
+
+      this.schedulingDetails.inspectionDuration = this.selectedLead.inspectionInfo.duration;
+      this.onInspectionTypesSelect();
+      if (this.selectedLead.inspectionInfo.id) {
+        this.showSubInspectionType = true;
+        this.schedulingDetails.subInspectionType = this.selectedLead.inspectionInfo.id;
+        this.schedulingDetails.subInspectionTypeValue = this.selectedLead.inspectionInfo.value;
+        this.schedulingDetails.subInspectionMachineValue = this.selectedLead.inspectionInfo.machineValue;
+        this.schedulingDetails.inspectionDuration = this.selectedLead.inspectionInfo.duration;
+      }
       this.primaryDetails.isOrganization = this.selectedLead.isOrganization
         ? this.selectedLead.isOrganization
         : '';
@@ -1272,6 +1343,8 @@ export default {
       this.primaryDetails.organizationName = this.selectedLead.isOrganization
         ? this.selectedLead.organizationName
         : '';
+
+      this.insuranceDetails.policyNumber = this.selectedLead.policyNumber;
     }
 
     //Current Date

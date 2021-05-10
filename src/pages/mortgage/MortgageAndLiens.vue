@@ -1,17 +1,23 @@
 <template>
-  <q-page>
-    <div class="icon-top">
+  <div>
+    <div
+      :class="{
+        'icon-top': !$q.platform.is.iphone,
+        'icon-top-ios': $q.platform.is.iphone
+      }"
+      v-if="!mortgageInfoDialog"
+    >
       <q-btn @click="mortgageInfoDialog = true" flat
         ><img src="~assets/addMortgage.svg"
       /></q-btn>
     </div>
-    <div>
+    <div class="listing-height">
       <div>
         <ClaimDetail />
       </div>
       <div class="q-mt-sm" v-if="mortgage.mortgages">
         <q-card
-          class="q-ma-md q-pa-md "
+          class="q-ma-md q-pa-md"
           v-for="(mortgage, index) in mortgage.mortgages"
         >
           <div class="text-bold text-capitalize q-mt-xs row">
@@ -73,16 +79,16 @@
                   name="place"
                   color="primary"
                   @click="sendMap(mortgage.address)"
-                  style="position: absolute ;right: 20px"
+                  style="position: absolute; right: 20px"
                   size="sm"
                 ></q-icon>
               </div>
             </div>
           </div>
-          <div class="row  q-mt-sm" v-if="mortgage.email">
+          <div class="row q-mt-sm" v-if="mortgage.email">
             <span class="heading-light col-3"> Email </span>
             <span
-              class="q-ml-sm col clickLink"
+              class="q-ml-none col clickLink"
               @click="onEmailClick(mortgage.email, $event)"
             >
               {{ mortgage.email ? mortgage.email : '-' }}</span
@@ -90,13 +96,13 @@
           </div>
           <div class="row">
             <div class="heading-light col-3">Phone Number</div>
-            <div class="q-mt-xs col-6 q-ml-xs">
-              <div class=" row " v-for="phone in mortgage.phoneNumber">
-                <div class="col-3 q-ml-xs">
+            <div class="q-mt-xs col-6 q-ml-none">
+              <div class="row" v-for="phone in mortgage.phoneNumber">
+                <div class="col-3">
                   {{ phone.type ? phone.type : '-' }}
                 </div>
                 <div
-                  class="clickLink "
+                  class="clickLink"
                   @click="onPhoneNumberClick(phone.number, $event)"
                 >
                   {{ phone.number ? phone.number : '-' }}
@@ -105,21 +111,21 @@
             </div>
           </div>
 
-          <div class="row  q-mt-sm q-mb-sm">
-            <span class="heading-light col-2"> Notes: </span>
-            <span class="q-ml-md col" v-if="mortgage.note">
+          <div class="row q-mt-sm q-mb-sm">
+            <span class="heading-light col-3"> Notes: </span>
+            <span class="col q-ml-none" v-if="mortgage.note">
               {{ mortgage.note ? mortgage.note : '-' }}</span
             >
           </div>
-          <div class="row  q-mt-sm" v-if="mortgage.loanNumber">
+          <div class="row q-mt-sm" v-if="mortgage.loanNumber">
             <span class="heading-light col-3"> Loan Number: </span>
-            <span class="q-ml-sm col">
+            <span class="q-ml-none col">
               {{ mortgage.loanNumber ? mortgage.loanNumber : '-' }}</span
             >
           </div>
-          <div class="row  q-mt-sm" v-if="mortgage.accountNumber">
+          <div class="row q-mt-sm" v-if="mortgage.accountNumber">
             <span class="heading-light col-3"> Account Number: </span>
-            <span class="q-ml-sm col">
+            <span class="q-ml-none col">
               {{ mortgage.accountNumber ? mortgage.accountNumber : '-' }}</span
             >
           </div>
@@ -127,7 +133,7 @@
       </div>
       <div v-else class="full-height full-width">
         <div class="absolute-center">
-          <div style="color: #666666; width:110%;">
+          <div style="color: #666666; width: 110%">
             You haven't added a Mortgage yet.
           </div>
           <img
@@ -155,7 +161,7 @@
           @closeDialog="mortgageInfoDialog = false"
           :dialogName="'Mortagage Info'"
         />
-        <div class="mobile-container-page q-pa-sm form-height  ">
+        <div class="mobile-container-page q-pa-sm form-height">
           <q-form ref="estimatingInfoForm">
             <MortgageForm
               :mortgage="mortgageInfo"
@@ -187,7 +193,7 @@
           @closeDialog="editMortgageInfoDialog = false"
           :dialogName="' Edit Mortagage Info'"
         />
-        <div class="mobile-container-page q-pa-sm form-height  ">
+        <div class="mobile-container-page q-pa-sm form-height">
           <q-form ref="estimatingInfoForm">
             <MortgageForm
               :mortgage="editMortgageInfo"
@@ -206,7 +212,7 @@
         />
       </q-card>
     </q-dialog>
-  </q-page>
+  </div>
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex';
@@ -216,7 +222,7 @@ import { constants } from '@utils/constant';
 import AddMortgage from 'components/AddMortgage';
 import { successMessage } from '@utils/validation';
 import MortgageForm from 'components/MortgageForm';
-import { onEmailClick, onPhoneNumberClick } from '@utils/clickable';
+import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
 export default {
   components: {
     CustomBar,
@@ -288,7 +294,7 @@ export default {
       this.editMortgageInfo[0].isPrimary = this.mortgage.mortgages[
         index
       ].isPrimary;
-      this.editMortgageInfo[0].note = this.mortgage.mortgages[index].note;
+      this.editMortgageInfo[0].notes = this.mortgage.mortgages[index].note;
       this.id = this.mortgage.mortgages[index].id;
       this.mortgageID = this.mortgage.mortgages[index].mortgageID;
     },
@@ -302,7 +308,7 @@ export default {
             loanNumber: this.editMortgageInfo[0].loanNumber,
             accountNumber: this.editMortgageInfo[0].accountNumber,
             isPrimary: this.editMortgageInfo[0].isPrimary,
-            note: this.editMortgageInfo[0].note
+            note: this.editMortgageInfo[0].notes
           }
         }
       };
@@ -328,6 +334,7 @@ export default {
     successMessage,
     onPhoneNumberClick,
     onEmailClick,
+    sendMap,
     async onSaveButtonClick() {
       const payload = {
         id: this.selectedClaimId,
@@ -338,7 +345,7 @@ export default {
             loanNumber: this.mortgageInfo[0].loanNumber,
             accountNumber: this.mortgageInfo[0].accountNumber,
             isPrimary: this.mortgageInfo[0].isPrimary,
-            note: this.mortgageInfo[0].note
+            note: this.mortgageInfo[0].notes
           }
         }
       };
@@ -356,3 +363,9 @@ export default {
   }
 };
 </script>
+<style lang="scss">
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent; /* make scrollbar transparent */
+}
+</style>

@@ -2,85 +2,80 @@
   <q-page>
     <div class="listing-height">
       <ClaimDetail />
-      <div v-if="damageInfo.damageInfo.personal.items">
-        <q-card
-          class="q-ma-sm q-pa-sm"
-          v-for="(damage, index) in damageInfo.damageInfo.personal.items"
-        >
-          <div class="row justify-between">
-            <div>
-              <q-badge class="q-pa-sm" color="grey-6">
-                {{ damage.isRepaired == true ? 'Repair' : 'Replace' }}
-              </q-badge>
-            </div>
-            <div class="text-bold  text-capitalize q-pt-xs">
-              {{ damage.name }}
-            </div>
-            <div class="q-pt-xs q-mr-sm ">
-              <q-icon
-                name="create"
-                color="primary"
-                @click="OnEditPPdamageItem(index)"
-              />
-            </div>
+      <q-card
+        class="q-ma-sm q-pa-sm"
+        v-for="(damage, index) in damageInfo.damageInfo.otherStructure.items"
+      >
+        <div class="row justify-between">
+          <div>
+            <q-badge class="q-pa-sm" color="grey-6">
+              {{ damage.isRepaired == true ? 'Repair' : 'Replace' }}
+            </q-badge>
           </div>
+          <div class="text-bold  text-capitalize q-pt-xs">
+            {{ damage.name }}
+          </div>
+          <div class="q-pt-xs q-mr-sm ">
+            <q-icon
+              name="create"
+              color="primary"
+              @click="OnEditPPdamageItem(index)"
+            />
+          </div>
+        </div>
 
-          <div
-            class="q-ml-sm text-capitalize q-pt-xs text-caption q-mr-xl q-my-xs q-px-xs q-ma-xs"
-          >
-            <p>{{ damage.desc }}</p>
-            <p>{{ damage.damageDesc }}</p>
-          </div>
-          <div class="q-my-sm">
-            <div class="row justify-between  q-my-sm">
-              <div class="heading-light ">
-                Quantity
-              </div>
-              <div class="q-mr-sm">
-                {{ damage.quantity }}
-              </div>
+        <div
+          class=" text-capitalize q-pt-xs text-caption q-mr-xl q-my-xs q-px-xs "
+        >
+          <p>{{ damage.desc }}</p>
+          <p>{{ damage.damageDesc }}</p>
+        </div>
+        <div class="q-my-sm">
+          <div class="row justify-between  q-my-sm">
+            <div class="heading-light ">
+              Quantity
             </div>
-            <div class="row justify-between  q-my-sm">
-              <div class="heading-light ">
-                Serial Number
-              </div>
-              <div class="q-mr-sm">
-                {{ damage.serialNumber }}
-              </div>
-            </div>
-            <div class="row   justify-between q-my-sm">
-              <div class="heading-light  ">Purchase Date</div>
-              <div class="q-mr-sm">
-                {{ damage.purchaseDate | moment('DD/MM/YYYY') }}
-              </div>
+            <div class="q-mr-sm">
+              {{ damage.quantity }}
             </div>
           </div>
-          <q-separator />
-          <div class="q-my-sm row justify-between">
-            <div class="heading-light col-3">Purchase Price</div>
-            <div class="heading-light ">$</div>
-            <div class="">
-              {{ damage.purchasePrice }}
+          <div class="row justify-between  q-my-sm">
+            <div class="heading-light ">
+              Serial Number
+            </div>
+            <div class="q-mr-sm">
+              {{ damage.serialNumber }}
             </div>
           </div>
-          <div class="q-my-sm row justify-between">
-            <div class="heading-light col-3 ">
-              {{ damage.replaceCost == null ? 'Repair' : 'Replace' }} Cost
-            </div>
-            <div class="heading-light ">$</div>
-            <div class="">
-              {{
-                damage.replaceCost == null
-                  ? damage.repairCost
-                  : damage.replaceCost
-              }}
+          <div class="row   justify-between q-my-sm">
+            <div class="heading-light  ">Purchase Date</div>
+            <div class="q-mr-sm">
+              {{ damage.purchaseDate | moment('DD/MM/YYYY') }}
             </div>
           </div>
-        </q-card>
-      </div>
-      <div v-else class=" full-width text-center q-mt-xl heading-light">
-        You have not added any Damage property yet!
-      </div>
+        </div>
+        <q-separator />
+        <div class="q-my-sm row justify-between">
+          <div class="heading-light col-3">Purchase Price</div>
+          <div class="heading-light ">$</div>
+          <div class="">
+            {{ damage.purchasePrice }}
+          </div>
+        </div>
+        <div class="q-my-sm row justify-between">
+          <div class="heading-light col-3 ">
+            {{ damage.replaceCost == null ? 'Repair' : 'Replace' }} Cost
+          </div>
+          <div class="heading-light ">$</div>
+          <div class="">
+            {{
+              damage.replaceCost == null
+                ? damage.repairCost
+                : damage.replaceCost
+            }}
+          </div>
+        </div>
+      </q-card>
     </div>
     <q-dialog
       v-model="PPdamagedItemsDailog"
@@ -300,13 +295,14 @@
 import { mapGetters, mapActions } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import ClaimDetail from 'components/ClaimDetail';
+import PropertyInfo from 'components/PropertyInfo';
 import moment from 'moment';
-import { date } from 'quasar';
+
 import { dateToShow } from '@utils/date';
 import { dateToSend } from '@utils/date';
 export default {
-  name: 'PersonalProperty',
-  components: { CustomBar, ClaimDetail },
+  name: 'OtherDamage',
+  components: { CustomBar, ClaimDetail, PropertyInfo },
   data() {
     return {
       PPdamagedItemsDailog: false,
@@ -357,39 +353,41 @@ export default {
     ]),
     OnEditPPdamageItem(index) {
       this.isEdit = true;
-      this.itemId = this.damageInfo.damageInfo.personal.items[index].id;
+      this.itemId = this.damageInfo.damageInfo.otherStructure.items[index].id;
       this.currentIndex = index;
-      this.lossInfo.quantity = this.damageInfo.damageInfo.personal.items[
+      this.lossInfo.quantity = this.damageInfo.damageInfo.otherStructure.items[
         index
       ].quantity;
-      this.lossInfo.PPDamageName = this.damageInfo.damageInfo.personal.items[
+      this.lossInfo.PPDamageName = this.damageInfo.damageInfo.otherStructure.items[
         index
       ].name;
-      this.lossInfo.PPDamageDescription = this.damageInfo.damageInfo.personal.items[
+      this.lossInfo.PPDamageDescription = this.damageInfo.damageInfo.otherStructure.items[
         index
       ].desc;
-      this.lossInfo.PPDamageItemDescription = this.damageInfo.damageInfo.personal.items[
+      this.lossInfo.PPDamageItemDescription = this.damageInfo.damageInfo.otherStructure.items[
         index
       ].damageDesc;
-      this.lossInfo.serialNumber = this.damageInfo.damageInfo.personal.items[
+      this.lossInfo.serialNumber = this.damageInfo.damageInfo.otherStructure.items[
         index
       ].serialNumber;
-      this.lossInfo.purchasePrice = this.damageInfo.damageInfo.personal.items[
+      this.lossInfo.purchasePrice = this.damageInfo.damageInfo.otherStructure.items[
         index
       ].purchasePrice;
       this.lossInfo.purchaseDate = dateToShow(
-        this.damageInfo.damageInfo.personal.items[index].purchaseDate
+        this.damageInfo.damageInfo.otherStructure.items[index].purchaseDate
       );
 
       this.lossInfo.repairReplaceRadio =
-        this.damageInfo.damageInfo.personal.items[index].replaceCost != null
+        this.damageInfo.damageInfo.otherStructure.items[index].replaceCost !=
+        null
           ? 'Replace'
           : 'Repair';
 
       this.lossInfo.PPDamagedItemCost =
-        this.damageInfo.damageInfo.personal.items[index].replaceCost != null
-          ? this.damageInfo.damageInfo.personal.items[index].replaceCost
-          : this.damageInfo.damageInfo.personal.items[index].repairCost;
+        this.damageInfo.damageInfo.otherStructure.items[index].replaceCost !=
+        null
+          ? this.damageInfo.damageInfo.otherStructure.items[index].replaceCost
+          : this.damageInfo.damageInfo.otherStructure.items[index].repairCost;
 
       this.PPdamagedItemsDailog = true;
     },
@@ -399,7 +397,7 @@ export default {
         id: this.selectedClaimId,
         itemId: this.itemId,
         damageInfo: {
-          personal: {
+          otherStructure: {
             item: {
               quantity: this.lossInfo.quantity,
               name: this.lossInfo.PPDamageName,
@@ -412,18 +410,11 @@ export default {
           }
         }
       };
-<<<<<<< HEAD
-      await this.updateDamageItem(payload);
-      await this.getDamageInfo(this.selectedClaimId);
-      this.PPdamagedItemsDailog = false;
-=======
       const success = await this.updateDamageItem(payload);
-      console.log(success);
       if (success) {
         await this.getDamageInfo(this.selectedClaimId);
         this.PPdamagedItemsDailog = false;
       }
->>>>>>> 782eb34bbcb856c4ec108377b04adc6ee043633d
     }
   }
 };

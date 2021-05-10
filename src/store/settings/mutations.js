@@ -4,11 +4,10 @@ export function setInspectionTypes(state, inspectionTypes) {
     id: inspectionType.id
   }));
 }
-
-export function setAllUsers(state, allUsers) {
-  state.allUsers = allUsers.map(allUser => ({
+export function setAllUsers(state, Users) {
+  state.allUsers = Users.map(allUser => ({
     attributes: allUser.attributes,
-    name: allUser.attributes.value,
+    name: allUser.attributes.name,
     id: allUser.id
   }));
 }

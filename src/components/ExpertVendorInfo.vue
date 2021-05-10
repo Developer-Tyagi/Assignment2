@@ -39,6 +39,7 @@
         <AddVendor
           @onCloseAddVendor="onCloseAddVendorDialogBox"
           @closeDialog="addVendorDialog = false"
+          :industryValue="industryValue"
         />
       </q-card>
     </q-dialog>
@@ -70,6 +71,7 @@
           :options="vendorIndustries"
           option-value="machineValue"
           behavior="menu"
+          @input="setVendorType(index)"
           emit-value
           map-options
           lazy-rules
@@ -184,14 +186,26 @@
           </q-card>
         </div>
       </div>
-      <q-btn
-        v-if="expertVendorInfo.anyOtherExpertHiredToggle"
-        class="q-ma-none q-mb-sm"
-        size="sm"
-        label="Add More"
-        color="primary"
-        @click="addAnotherVendor(expertVendorInfo.isAlreadyHiredVendor)"
-      />
+      <div class=" row justify-between">
+        <div>
+          <q-btn
+            v-if="expertVendorInfo.anyOtherExpertHiredToggle"
+            size="sm"
+            label="Add More"
+            color="primary"
+            @click="addAnotherVendor(expertVendorInfo.isAlreadyHiredVendor)"
+          />
+        </div>
+        <div>
+          <q-btn
+            v-if="expertVendorInfo.isAlreadyHiredVendor.length > 1"
+            size="sm"
+            label="remove"
+            color="primary"
+            @click="removeAnotherVendor(expertVendorInfo.isAlreadyHiredVendor)"
+          />
+        </div>
+      </div>
     </q-card>
 
     <q-card class="q-pa-sm q-mt-sm">
@@ -380,6 +394,7 @@ export default {
   },
   data() {
     return {
+      industryValue: '',
       constants: constants,
       industryName: '',
       selectedVendorName: '',
@@ -431,6 +446,14 @@ export default {
         : '';
       this.vendorsListDialog = false;
     },
+    setVendorType(index) {
+      const val = this.expertVendorInfo.isAlreadyHiredVendor[index].industry;
+
+      const result = this.vendorIndustries.find(obj => {
+        return obj.machineValue == val;
+      });
+      this.industryValue = result;
+    },
 
     onCloseAddVendorDialogBox(vendor) {
       this.selectedArray[this.selectedIndex].vendor.id = vendor.id;
@@ -449,6 +472,9 @@ export default {
       if (array[len - 1].industry && array[len - 1].vendor.id) {
         array.push({ industry: '', vendor: {} });
       }
+    },
+    removeAnotherVendor(array) {
+      array.pop();
     },
 
     openVendorSelect(item, index, array) {

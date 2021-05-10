@@ -2,7 +2,7 @@
   <q-page>
     <div class="mobile-container-page-without-search">
       <div>
-        <div class=" q-mx-lg q-mt-md">
+        <div class="q-mx-lg q-mt-md">
           <div class="q-ml-none text-primary">
             <div class="row">
               {{ selectedLead['primaryContact']['fname'] }}
@@ -11,11 +11,14 @@
             <q-icon
               name="create"
               color="primary"
-              class="edit-icon icon-top"
+              :class="{
+                'icon-top': !$q.platform.is.iphone,
+                'icon-top-ios': $q.platform.is.iphone
+              }"
               @click="editLeadButtonClick"
             ></q-icon>
           </div>
-          <div class="row  q-mt-sm">
+          <div class="row q-mt-sm">
             <span class="heading-light col-3"> Email </span>
             <span
               class="q-ml-md col clickLink"
@@ -28,7 +31,7 @@
               }}</span
             >
           </div>
-          <div class="row  q-mt-sm">
+          <div class="row q-mt-sm">
             <span class="heading-light col-3"> Phone Number </span>
             <span
               class="q-ml-md col clickLink"
@@ -47,7 +50,10 @@
             >
           </div>
 
-          <div class="row  q-mt-sm" v-if="selectedLead.leadSource">
+          <div
+            class="row q-mt-sm"
+            v-if="selectedLead.leadSource.type != 'google'"
+          >
             <span class="heading-light col-3"> Lead Source </span>
             <span class="q-ml-md col">
               {{
@@ -57,14 +63,35 @@
               }}</span
             >
           </div>
-          <div class="row  q-mt-sm" v-if="selectedLead.organizationName">
+          <div v-else class="row q-mt-sm">
+            <span class="heading-light col-3"> Lead Source </span>
+            <span class="q-ml-md col">
+              {{
+                selectedLead.leadSource.type
+                  ? selectedLead.leadSource.type
+                  : '-'
+              }}</span
+            >
+          </div>
+          <div class="row q-mt-sm" v-if="selectedLead.organizationName">
             <span class="heading-light col-3"> Organization Name </span>
             <span class="q-ml-md col">
               {{ selectedLead.organizationName }}</span
             >
           </div>
-          <div class="row  q-mt-sm" v-if="selectedLead.inspectionInfo">
+
+          <div class="row q-mt-sm" v-if="selectedLead.inspectionInfo.pValue">
             <span class="heading-light col-3"> Inspection Type </span>
+            <span class="q-ml-md col">
+              {{
+                selectedLead.inspectionInfo.pValue
+                  ? selectedLead.inspectionInfo.pValue
+                  : '-'
+              }}</span
+            >
+          </div>
+          <div class="row q-mt-sm" v-if="selectedLead.inspectionInfo.value">
+            <span class="heading-light col-3">Sub Inspection Type </span>
             <span class="q-ml-md col">
               {{
                 selectedLead.inspectionInfo.value
@@ -87,7 +114,7 @@
                 <div class="heading-light q-mt-none col-4 lightHeading">
                   Loss Address
                 </div>
-                <div class="col-6  q-ml-md ">
+                <div class="col-6 q-ml-md">
                   <div>
                     {{
                       selectedLead.lossLocation.streetAddress

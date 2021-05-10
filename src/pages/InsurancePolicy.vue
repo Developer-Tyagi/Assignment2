@@ -37,11 +37,11 @@
           </div>
 
           <div class="row q-mt-sm">
-            <span
+            <div
               class="col-7 heading-light"
               v-if="selectedClaimCarrier.carrier.address"
             >
-              <div class="row">
+              <div>
                 {{
                   selectedClaimCarrier.carrier.address.houseNumber
                     ? selectedClaimCarrier.carrier.address.houseNumber
@@ -67,18 +67,29 @@
                     : '-'
                 }}
               </div>
-              <div class="row">
+              <div>
                 {{
                   selectedClaimCarrier.carrier.address.addressCountry
                     ? selectedClaimCarrier.carrier.address.addressCountry
                     : '-'
                 }},
+
                 {{
                   selectedClaimCarrier.carrier.address.postalCode
                     ? selectedClaimCarrier.carrier.address.postalCode
                     : '-'
                 }}
+
+                <q-icon
+                  name="place"
+                  color="primary"
+                  class="q-ml-auto"
+                  @click="sendMap(selectedClaimCarrier.carrier.address)"
+                  style="position: absolute ;right: 20px"
+                  size="sm"
+                ></q-icon>
               </div>
+
               <div
                 class="q-mt-xs"
                 v-for="phone in selectedClaimCarrier.carrier.phoneNumber"
@@ -103,7 +114,7 @@
                     : '-'
                 }}</span
               >
-            </span>
+            </div>
           </div>
         </div>
         <div v-else class="heading-light col q-ma-xs">
@@ -235,12 +246,7 @@
               {{ policy.policyInfo ? policy.policyInfo.number : '-' }}
             </span>
           </div>
-          <div class="row q-mt-xs">
-            <span class="heading-light col"> Claim Number </span>
-            <span class="q-ml-md col">
-              {{ policy.policyInfo ? policy.policyInfo.claimNumber : '-' }}
-            </span>
-          </div>
+
           <div class="row q-mt-xs">
             <span class="heading-light col"> Start Date </span>
             <span class="q-ml-md col" v-if="policy.policyInfo">
@@ -255,7 +261,10 @@
           </div>
           <div class="row q-mt-xs">
             <span class="heading-light col"> Category </span>
-            <span class="q-ml-md col" v-if="policy.policyInfo.category">
+            <span
+              class="q-ml-md col"
+              v-if="policy.policyInfo && policy.policyInfo.category"
+            >
               {{
                 policy.policyInfo.category
                   ? policy.policyInfo.category.value
@@ -415,7 +424,10 @@
         />
         <div class="q-ma-sm mobile-container-page-without-search">
           <q-form ref="insuranceInfoForm" class="form-height">
-            <InsuranceInfo :insuranceDetails="insuranceDetails" />
+            <InsuranceInfo
+              :insuranceDetails="insuranceDetails"
+              :policyInfo="true"
+            />
           </q-form>
 
           <q-btn
@@ -489,7 +501,10 @@
         <q-btn
           @click="addPersonnelDialog = true"
           flat
-          class="q-ml-auto icon-top"
+          :class="{
+            'icon-top': !$q.platform.is.iphone,
+            'icon-top-ios': $q.platform.is.iphone
+          }"
           ><img src="~assets/addAdjustor.svg"
         /></q-btn>
         <div class="actions-div">
@@ -504,7 +519,7 @@
             <div class="q-ml-auto edit-icon">
               <q-btn
                 v-if="params.role"
-                class="q-ml-auto "
+                class="q-ml-auto"
                 color="white"
                 text-color="grey"
                 @click="clearFilter()"
@@ -652,9 +667,11 @@
           :dialogName="'Edit Personnel'"
           @closeDialog="editPersonnelDialog = false"
         />
-        <div class="mobile-container-page">
-          <AddCarrierPersonnel :carrierPersonnel="editPersonnel" />
-        </div>
+        <q-form ref="editPersonnel">
+          <div class="mobile-container-page">
+            <AddCarrierPersonnel :carrierPersonnel="editPersonnel" />
+          </div>
+        </q-form>
         <q-btn
           @click="onEditSaveCarrierPersonnel"
           label="Save"
@@ -982,7 +999,7 @@ export default {
       'editCarrierPersonnelToClaim',
       'getClaimRoles'
     ]),
-
+    sendMap,
     async applyFilter() {
       if (this.filterName) {
         this.params.role = this.filterName;
@@ -1020,31 +1037,37 @@ export default {
       // this.onClickUncheck = true;
     },
     async onEditSaveCarrierPersonnel() {
-      const payload = {
-        claimID: this.selectedClaimId,
-        carrierID: this.selectedClaimCarrier.id,
-        id: this.id,
-        data: {
-          personnel: {
-            personnelID: this.personnelID,
-            name: this.editPersonnel.fname + this.editPersonnel.lname,
-            email: this.editPersonnel.email,
-            role: {
-              value: this.editPersonnel.role.value,
-              machineValue: this.editPersonnel.role.machineValue
-            },
-            note: this.editPersonnel.notes,
-            phoneNumber: this.editPersonnel.phoneNumber,
-            address: this.editPersonnel.address
+      const success = await this.$refs.editPersonnel.validate();
+      if (success) {
+        const payload = {
+          claimID: this.selectedClaimId,
+          carrierID: this.selectedClaimCarrier.id,
+          id: this.id,
+          data: {
+            personnel: {
+              personnelID: this.personnelID,
+              name: this.editPersonnel.fname + ' ' + this.editPersonnel.lname,
+              email: this.editPersonnel.email,
+              role: {
+                value: this.editPersonnel.role.value,
+                machineValue: this.editPersonnel.role.machineValue
+              },
+              note: this.editPersonnel.notes,
+              phoneNumber: this.editPersonnel.phoneNumber,
+              address: this.editPersonnel.address
+            }
           }
+        };
+        if (
+          !this.editPersonnel.role.id &&
+          !this.editPersonnel.role.machineValue
+        ) {
+          delete payload.data.editPersonnel.role;
         }
-      };
-      if (!this.editPersonnel.role.id) {
-        delete payload.data.editPersonnel.role;
+        await this.editCarrierPersonnelToClaim(payload);
+        this.editPersonnelDialog = false;
+        this.getClaimCarrier(this.$route.params.id);
       }
-      await this.editCarrierPersonnelToClaim(payload);
-      this.editPersonnelDialog = false;
-      this.getClaimCarrier(this.$route.params.id);
     },
 
     //This Function is for prefilling the values while editing the Adjustor
@@ -1054,10 +1077,12 @@ export default {
       this.personnelID = this.selectedClaimCarrier.carrier.personnel[
         index
       ].personnelID;
-      this.editPersonnelDialog = true;
-      this.editPersonnel.fname = this.selectedClaimCarrier.carrier.personnel[
+      const name = this.selectedClaimCarrier.carrier.personnel[
         index
-      ].name;
+      ].name.split(' ');
+      this.editPersonnelDialog = true;
+      this.editPersonnel.fname = name[0];
+      this.editPersonnel.lname = name[1];
       this.editPersonnel.email = this.selectedClaimCarrier.carrier.personnel[
         index
       ].email;
@@ -1084,10 +1109,6 @@ export default {
 
     onEditPolicyInfo() {
       this.insuranceInfoDialog = true;
-      this.insuranceDetails.hasClaimBeenFilledToggle = this.policy.policyInfo
-        .isClaimFiled
-        ? this.policy.policyInfo.isClaimFiled
-        : false;
 
       this.insuranceDetails.isThisIsForcedPlacedPolicyToggle = this.policy
         .policyInfo.isForcedPlaced
@@ -1127,10 +1148,6 @@ export default {
       this.insuranceDetails.policyNumber = this.policy.policyInfo.number
         ? this.policy.policyInfo.number
         : '';
-      this.insuranceDetails.insuranceClaimNumber = this.policy.policyInfo
-        .claimNumber
-        ? this.policy.policyInfo.claimNumber
-        : '-';
       this.insuranceDetails.policyEffectiveDate = this.policy.policyInfo.effectiveDate;
       this.insuranceDetails.policyExpireDate = this.policy.policyInfo.expirationDate;
 
@@ -1147,14 +1164,6 @@ export default {
       this.insuranceDetails.deductible = this.policy.policyInfo.deductibleAmount;
       this.insuranceDetails.priorPayment = this.policy.policyInfo.priorPayment;
       this.insuranceDetails.reasonsOfLD = this.policy.policyInfo.limitReason;
-      this.insuranceDetails.carrierName = this.policy.policyInfo.carrier
-        ? this.policy.policyInfo.carrier.value
-        : '';
-      this.insuranceDetails.carrierId = this.policy.policyInfo.carrier.id
-        ? this.policy.policyInfo.carrier.id
-        : ''.value
-        ? this.policy.policyInfo.carrier.value
-        : '';
     },
     async onCloseCarrierList() {
       this.carriersListDialog = false;
@@ -1221,7 +1230,7 @@ export default {
           }
         }
       };
-      if (!this.personnel.role.id) {
+      if (!this.personnel.role.id && !this.personnel.role.machineValue) {
         delete payload.data.personnel.role;
       }
       const response = await this.addCarrierPersonnel(payload);
@@ -1310,15 +1319,10 @@ export default {
           id: this.selectedClaimId,
           data: {
             policyInfo: {
-              carrier: {
-                id: this.insuranceDetails.carrierId,
-                value: this.insuranceDetails.carrierName
-              },
               number: this.insuranceDetails.policyNumber,
               isClaimFiled: this.hasClaimBeenFilledToggle,
               isForcedPlaced: this.isThisIsForcedPlacedPolicyToggle,
               hasAppraisalClause: this.hasAppraisalClause,
-              claimNumber: this.insuranceDetails.insuranceClaimNumber,
               category: {
                 id: this.insuranceDetails.policyCategory.id,
                 value: this.insuranceDetails.policyCategory.value,

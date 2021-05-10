@@ -30,6 +30,12 @@ const routes = [
         caseSensitive: true,
         component: () => import('pages/Information.vue')
       },
+      {
+        path: 'access-denied',
+        name: 'access-denied',
+        caseSensitive: true,
+        component: () => import('pages/AccessDenied.vue')
+      },
       { path: '', redirect: 'login' }
     ]
   },
@@ -240,6 +246,12 @@ const routes = [
         name: 'Personal Property ',
         caseSensitive: true,
         component: () => import('pages/PersonalProperty.vue')
+      },
+      {
+        path: 'other-damage',
+        name: 'Other Damage ',
+        caseSensitive: true,
+        component: () => import('pages/OtherDamageProperty.vue')
       },
       {
         path: 'add-client',
