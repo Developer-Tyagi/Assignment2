@@ -85,7 +85,7 @@
                   color="primary"
                   class="q-ml-auto"
                   @click="sendMap(selectedClaimCarrier.carrier.address)"
-                  style="position: absolute ;right: 20px"
+                  style="position: absolute; right: 20px"
                   size="sm"
                 ></q-icon>
               </div>
@@ -498,14 +498,8 @@
           @closeDialog="(adjustorListDialog = false), (onClickUncheck = false)"
           :dialogName="'Select Adjustor'"
         />
-        <q-btn
-          @click="addPersonnelDialog = true"
-          flat
-          :class="{
-            'icon-top': !$q.platform.is.iphone,
-            'icon-top-ios': $q.platform.is.iphone
-          }"
-          ><img src="~assets/addAdjustor.svg"
+        <q-btn @click="addPersonnelDialog = true" flat class="icon-top"
+          ><img src="~assets/addAdjustor.svg" height="24" width="24"
         /></q-btn>
         <div class="actions-div">
           <div v-if="!params.industry" class="q-ml-xs row q-pr-md">
@@ -1432,12 +1426,6 @@ export default {
 ::-webkit-scrollbar {
   width: 0px;
   background: transparent; /* make scrollbar transparent */
-}
-.icon-top {
-  position: fixed;
-  right: 10px;
-  top: 10px;
-  z-index: 10000;
 }
 .filters-list-item {
   color: #666666;

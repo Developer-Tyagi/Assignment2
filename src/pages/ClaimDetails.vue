@@ -1,18 +1,13 @@
 <template>
   <q-page>
+    <q-icon
+      class="icon-top"
+      @click="editClaimDetails = true"
+      name="more_vert"
+    />
     <div class="mobile-container-page-without-search">
       <div class="column full-height">
         <div>
-          <q-icon
-            :class="{
-              'icon-top': !$q.platform.is.iphone,
-              'icon-top-ios': $q.platform.is.iphone
-            }"
-            @click="editClaimDetails = true"
-            name="more_vert"
-            size="sm"
-          />
-
           <div class="mobile-container-page">
             <ClaimDetail />
 
@@ -336,11 +331,3 @@ export default {
   }
 };
 </script>
-<style>
-.icon-top {
-  position: fixed;
-  right: 10px;
-  top: 10px;
-  z-index: 10000;
-}
-</style>

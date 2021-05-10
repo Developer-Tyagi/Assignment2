@@ -1,9 +1,5 @@
 <template>
-  <div
-    :class="{
-      'mobile-container-page-without-search': !$q.platform.is.iphone
-    }"
-  >
+  <div class="mobile-container-page-without-search">
     <div class="actions-div">
       <q-input
         dense

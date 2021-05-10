@@ -5,10 +5,10 @@
       <q-btn
         size="sm"
         name="create"
-        class=" icon-top "
+        class="icon-top"
         flat
         @click="addPersonnelDialog = true"
-        ><img src="~assets/add.svg"
+        ><img src="~assets/add.svg" height="24" width="24"
       /></q-btn>
     </div>
     <div class="mobile-container-page">
@@ -18,10 +18,10 @@
         </span>
         <div v-if="carrierPersonnel.personnel">
           <div
-            class="q-mt-sm "
+            class="q-mt-sm"
             v-for="(personnel, index) in carrierPersonnel.personnel"
           >
-            <q-card class="q-ma-sm q-pa-sm ">
+            <q-card class="q-ma-sm q-pa-sm">
               <div class="text-bold text-capitalize q-mt-xs row">
                 <div class="col-10">
                   {{ personnel.fname }} {{ personnel.lname }}
@@ -42,7 +42,7 @@
                   @click="onDelete(index)"
                 />
               </div>
-              <div class="row q-mt-sm ">
+              <div class="row q-mt-sm">
                 <div class="heading-light col-3">Address Details</div>
                 <div class="col-7" v-if="personnel.address">
                   {{
@@ -84,13 +84,13 @@
                       name="place"
                       color="primary"
                       @click="sendMap(personnel.address)"
-                      style="position: absolute ;right: 20px"
+                      style="position: absolute; right: 20px"
                       size="sm"
                     ></q-icon>
                   </div>
                 </div>
               </div>
-              <div class="row  q-mt-sm" v-if="personnel.email">
+              <div class="row q-mt-sm" v-if="personnel.email">
                 <span class="heading-light col-3"> Email </span>
                 <span
                   class="q-ml-none col clickLink"
@@ -102,12 +102,12 @@
               <div class="row">
                 <div class="heading-light col-3">Phone Number</div>
                 <div class="q-mt-xs col-6 q-ml-none">
-                  <div class=" row " v-for="phone in personnel.phoneNumber">
-                    <div class="col-3 ">
+                  <div class="row" v-for="phone in personnel.phoneNumber">
+                    <div class="col-3">
                       {{ phone.type ? phone.type : '-' }}
                     </div>
                     <div
-                      class="clickLink "
+                      class="clickLink"
                       @click="onPhoneNumberClick(phone.number, $event)"
                     >
                       {{ phone.number ? phone.number : '-' }}
@@ -116,14 +116,14 @@
                 </div>
               </div>
 
-              <div class="row  q-mt-sm q-mb-sm">
-                <span class="heading-light col-3 "> Notes: </span>
+              <div class="row q-mt-sm q-mb-sm">
+                <span class="heading-light col-3"> Notes: </span>
                 <span class="q-ml-none col" v-if="personnel.note">
                   {{ personnel.note ? personnel.note : '-' }}</span
                 >
               </div>
-              <div class="row  q-mt-sm q-mb-sm">
-                <span class="heading-light col-3 "> Role </span>
+              <div class="row q-mt-sm q-mb-sm">
+                <span class="heading-light col-3"> Role </span>
                 <span class="q-ml-none col" v-if="personnel.role">
                   {{ personnel.role.value ? personnel.role.value : '-' }}</span
                 >
@@ -133,7 +133,7 @@
         </div>
         <div v-else class="full-height full-width">
           <div class="absolute-center">
-            <div style="color: #666666; width:110%;">
+            <div style="color: #666666; width: 110%">
               You haven't added a Personnel yet.
             </div>
             <img
@@ -331,7 +331,7 @@
               </div>
             </q-card>
             <q-card class="q-ma-md q-pa-md q-mt-xs">
-              <div class="form-heading  q-mt-sm  q-mb-sm">Notes</div>
+              <div class="form-heading q-mt-sm q-mb-sm">Notes</div>
               <div class="floating-label">
                 <textarea
                   rows="3"

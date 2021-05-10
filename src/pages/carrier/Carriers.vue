@@ -1,9 +1,5 @@
 <template>
-  <div
-    :class="{
-      'mobile-container-page-without-search': !$q.platform.is.iphone
-    }"
-  >
+  <div class="mobile-container-page-without-search">
     <CarriersList @addCarrier="openAddCarrierDialog" :carrierDetails="true" />
     <q-dialog
       v-model="addCarrierDialog"

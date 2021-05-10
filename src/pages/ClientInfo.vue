@@ -42,10 +42,7 @@
             <q-icon
               name="create"
               color="primary"
-              :class="{
-                'icon-top': !$q.platform.is.iphone,
-                'icon-top-ios': $q.platform.is.iphone
-              }"
+              class="icon-top"
               @click="editClientInfoDailog = true"
             ></q-icon>
           </div>
@@ -991,11 +988,5 @@ export default {
   height: calc(100vh - 130px);
   overflow: auto;
   margin: 10px;
-}
-.icon-top {
-  position: fixed;
-  right: 20px;
-  top: 10px;
-  z-index: 10000;
 }
 </style>

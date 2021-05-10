@@ -1,13 +1,8 @@
 <template>
   <q-page>
-    <div
-      :class="{
-        'mobile-container-page-without-search': !$q.platform.is.iphone,
-        'mobile-container-page': $q.platform.is.iphone
-      }"
-    >
+    <div class="mobile-container-page-without-search">
       <div class="listing-height q-pa-md mobile-container-page">
-        <div class="q-ml-md  text-h6">
+        <div class="q-ml-md text-h6">
           {{ selectedCarrier.name ? selectedCarrier.name : '-' }}
         </div>
 
@@ -17,7 +12,7 @@
           :key="dialogBox.name"
           @click="vendorDetailsDailogBoxOpen(dialogBox.name)"
         >
-          <div class="full-width ">
+          <div class="full-width">
             <q-card class="q-ma-sm q-pa-md"> {{ dialogBox.name }} </q-card>
           </div>
         </div>

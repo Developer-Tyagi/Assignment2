@@ -91,12 +91,7 @@
       </q-card>
     </q-dialog>
     <div>
-      <div
-        :class="{
-          'icon-top': !$q.platform.is.iphone,
-          'icon-top-ios': $q.platform.is.iphone
-        }"
-      >
+      <div class="icon-top">
         <q-btn @click="addNote" flat class="q-ml-auto"
           ><img src="~assets/add.svg"
         /></q-btn>
