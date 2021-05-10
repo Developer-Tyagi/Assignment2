@@ -508,7 +508,7 @@ export async function addSingleVendor({ dispatch, state }, payload) {
       buildApiData('claimvendor', payload.data)
     );
     dispatch('setLoading', false);
-    return data;
+    return true;
   } catch (e) {
     console.log(e);
     dispatch('setLoading', false);

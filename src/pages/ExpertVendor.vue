@@ -186,16 +186,12 @@ import CustomBar from 'components/CustomBar';
 import ClaimDetail from 'components/ClaimDetail';
 import { constants } from '@utils/constant';
 import ExpertVendorInfo from 'components/ExpertVendorInfo';
-import AddMortgage from 'components/AddMortgage';
 import { successMessage } from '@utils/validation';
-import MortgageForm from 'components/MortgageForm';
 import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
 export default {
   components: {
     CustomBar,
-    MortgageForm,
     ClaimDetail,
-    AddMortgage,
     ExpertVendorInfo
   },
   data() {
@@ -222,12 +218,7 @@ export default {
         notes: '',
         internalNotes: ''
       },
-      editMortgageInfo: [
-        {
-          id: '',
-          value: ''
-        }
-      ],
+
       id: '',
       mortgageID: '',
       expertVendorDialogBox: false,
@@ -242,14 +233,7 @@ export default {
     await this.getClaimVendors(this.selectedClaimId);
   },
   methods: {
-    ...mapActions([
-      'getMortgages',
-      'addSingleVendor',
-      'getClaimVendors',
-      'updateMortgageInfo',
-      'deleteClaimMortgageInfo',
-      'deleteClaimVendor'
-    ]),
+    ...mapActions(['addSingleVendor', 'getClaimVendors', 'deleteClaimVendor']),
     setVendorId(value) {
       this.vendorId = value;
     },
@@ -289,10 +273,6 @@ export default {
     onNameClick(value) {
       this.$router.push('/vendor-details/' + value);
     },
-    openAddMortgageDialog() {
-      this.mortgageListDialog = true;
-      this.getMortgages(this.selectedClaimId);
-    },
     successMessage,
     onPhoneNumberClick,
     onEmailClick,
@@ -307,15 +287,12 @@ export default {
         }
       };
 
-      await this.addSingleVendor(payload);
-      this.successMessage(constants.successMessages.EXPERTVENDOR);
-      this.expertVendorDialogBox = false;
-      this.getClaimVendors(this.selectedClaimId);
-      this.mortgageInfo[0].id = '';
-      this.mortgageInfo[0].value = '';
-      this.mortgageInfo[0].loanNumber = '';
-      this.mortgageInfo[0].accountNumber = '';
-      this.mortgageInfo[0].note = '';
+      const success = await this.addSingleVendor(payload);
+      if (success) {
+        this.successMessage(constants.successMessages.EXPERTVENDOR);
+        this.expertVendorDialogBox = false;
+        this.getClaimVendors(this.selectedClaimId);
+      }
     }
   }
 };
