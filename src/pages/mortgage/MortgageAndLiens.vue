@@ -2,7 +2,7 @@
   <div>
     <div class="icon-top" v-if="!mortgageInfoDialog">
       <q-btn @click="mortgageInfoDialog = true" flat
-        ><img src="~assets/addMortgage.svg"
+        ><img src="~assets/addMortgage.svg" height="24" width="24"
       /></q-btn>
     </div>
     <div class="listing-height">

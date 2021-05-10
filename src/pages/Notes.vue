@@ -36,7 +36,7 @@
     <div>
       <div class="icon-top">
         <q-btn @click="addNote" v-if="!addNoteDialog" flat>
-          <img src="~assets/addNote.svg" />
+          <img src="~assets/addNote.svg" height="24" width="24" />
         </q-btn>
       </div>
       <div class="mobile-container-page">

@@ -989,10 +989,4 @@ export default {
   overflow: auto;
   margin: 10px;
 }
-.icon-top {
-  position: fixed;
-  right: 20px;
-  top: 10px;
-  z-index: 10000;
-}
 </style>

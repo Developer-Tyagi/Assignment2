@@ -7,7 +7,7 @@
           flat
           class="q-ml-auto"
           v-if="settlementShowDialog == false"
-          ><img src="~assets/addSettlement.svg"
+          ><img src="~assets/addSettlement.svg" height="24" width="24"
         /></q-btn>
       </div>
       <div class="mobile-container-page">
