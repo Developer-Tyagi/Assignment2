@@ -19,6 +19,7 @@ export const constants = {
     LOSSINFO_UPDATED: 'Loss Info Updated Successfully !',
     ESTIMATOR: 'Estimator Created Successfully !',
     MORTGAGE: 'Mortage Created Successfully !',
+    EXPERTVENDOR: 'Expert vendor Created successfully !',
     VENDOR: 'Vendor Created Successfully !',
     CARRIER: 'Carrier Added Successfully !',
     CLAIM_EDITED: 'Claim  Number Edited  Successfully !',

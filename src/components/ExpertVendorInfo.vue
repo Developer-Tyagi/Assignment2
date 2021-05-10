@@ -46,7 +46,7 @@
     <!-- Expert Vendor Info -->
 
     <q-card class="q-pa-sm">
-      <div class="row">
+      <div class="row" v-if="!claimExpertVendor">
         <p class="form-heading q-mx-none q-my-auto">
           Has the insured hired any vendors?
         </p>
@@ -62,6 +62,7 @@
         v-if="expertVendorInfo.anyOtherExpertHiredToggle"
       >
         <q-select
+          v-if="!claimExpertVendor"
           class="full-width"
           v-model="item.industry"
           use-input
@@ -80,21 +81,6 @@
           ]"
         >
         </q-select>
-        <!-- This will Show the input when industry Type is Others -->
-        <!-- <q-input
-          v-model="industryType.value"
-          v-if="expertVendorInfo.industry[index].value == 'Others'"
-          label="Enter New Industry Type"
-          dense
-          class="input-extra-padding"
-        /> -->
-        <!-- <q-btn
-          class="q-my-md"
-          v-if="expertVendorInfo.industry[index].value == 'Others'"
-          label="Add"
-          outline
-          @click="addAnotherIndustry(index)"
-        /> -->
 
         <div>
           <div
@@ -186,7 +172,7 @@
           </q-card>
         </div>
       </div>
-      <div class=" row justify-between">
+      <div class=" row justify-between" v-if="!claimExpertVendor">
         <div>
           <q-btn
             v-if="expertVendorInfo.anyOtherExpertHiredToggle"
@@ -208,7 +194,7 @@
       </div>
     </q-card>
 
-    <q-card class="q-pa-sm q-mt-sm">
+    <q-card class="q-pa-sm q-mt-sm" v-if="!claimExpertVendor">
       <div class="row">
         <span class="form-heading"
           >Does Claim Guru need to assign any vendors?</span
@@ -241,22 +227,6 @@
           ]"
         >
         </q-select>
-        <!-- This will Show the input when industry Type is Others -->
-        <!-- <q-input
-          v-model="industryType.value"
-          v-if="expertVendorInfo.industry[index].value == 'Others'"
-          label="Enter New Industry Type"
-          dense
-          class="input-extra-padding"
-        /> -->
-        <!-- <q-btn
-          class="q-my-md"
-          v-if="expertVendorInfo.industry[index].value == 'Others'"
-          label="Add"
-          outline
-          @click="addAnotherIndustry(index)"
-        /> -->
-
         <div>
           <div
             class="custom-select"
@@ -275,9 +245,7 @@
             "
             class="q-my-md q-pa-md"
           >
-            <div class="text-bold">
-              {{ item.vendor.value }}
-            </div>
+            <div class="text-bold">{{ item.vendor.value }}kk</div>
             <div
               v-if="item.vendor.address && item.vendor.address.streetAddress"
             >
@@ -349,7 +317,7 @@
       />
     </q-card>
 
-    <q-card class="q-pa-sm q-mt-sm">
+    <q-card class="q-pa-sm q-mt-sm" v-if="!claimExpertVendor">
       <div>
         <span class="form-heading">Notes</span>
         <textarea
@@ -390,6 +358,12 @@ export default {
   props: {
     expertVendorInfo: {
       type: Object
+    },
+    claimExpertVendor: {
+      type: Boolean
+    },
+    item: {
+      type: Object
     }
   },
   data() {
@@ -403,6 +377,13 @@ export default {
       addVendorDialog: false,
       vendorsListDialog: false
     };
+  },
+  created() {
+    // This is for Claim Exp Vendor
+    if (this.claimExpertVendor) {
+      this.expertVendorInfo.isAlreadyHiredVendor[0].industry = 'vendor';
+      this.expertVendorInfo.anyOtherExpertHiredToggle = true;
+    }
   },
 
   computed: {
@@ -445,6 +426,7 @@ export default {
         ? vendor.phoneNumber[0].number
         : '';
       this.vendorsListDialog = false;
+      this.$emit('vendorId', vendor.id);
     },
     setVendorType(index) {
       const val = this.expertVendorInfo.isAlreadyHiredVendor[index].industry;
@@ -463,6 +445,7 @@ export default {
       this.selectedArray[this.selectedIndex].vendor.phone = vendor.phoneNumber
         ? vendor.phoneNumber[0].number
         : '';
+      this.$emit('vendorId', vendor.id);
       this.vendorsListDialog = false;
       this.addVendorDialog = false;
     },
