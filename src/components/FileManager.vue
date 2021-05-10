@@ -1,15 +1,16 @@
 <template>
   <q-page>
-    <q-icon
-      :class="{
-        'icon-top': !$q.platform.is.iphone,
-        'icon-top-ios': $q.platform.is.iphone
-      }"
-      @click="uploadFilesOptions = true"
-      name="more_vert"
-      size="sm"
-    />
-
+    <div class="icon-top">
+      <q-icon
+        :class="{
+          'icon-top': !$q.platform.is.iphone,
+          'icon-top-ios': $q.platform.is.iphone
+        }"
+        @click="uploadFilesOptions = true"
+        name="more_vert"
+        size="sm"
+      />
+    </div>
     <div>
       <div class="actions-div justify-between q-px-md">
         <q-breadcrumbs class="text-primary" active-color="grey" gutter="none">
@@ -24,22 +25,7 @@
             @click="onBreadCrumbClick(breadCrumb)"
           ></q-breadcrumbs-el>
         </q-breadcrumbs>
-        <div>
-          <q-btn
-            name="camera"
-            @click="addFile"
-            icon="camera_enhance"
-            text-color="primary"
-          />
-          <q-btn name="add" @click="" icon="post_add" text-color="primary" />
-          <q-btn
-            name="upload"
-            @click="addFolderDialog = true"
-            icon="create_new_folder"
-            text-color="primary"
-            class="q-ml-sm"
-          />
-        </div>
+        <div></div>
       </div>
       <div class="mobile-container-page overflow-y">
         <div
@@ -51,24 +37,28 @@
             >Back</span
           >
         </div>
-        <div
-          v-for="doc in documents"
-          class="row-div"
-          @click="onClickOnFile(doc)"
-        >
+        <div v-for="doc in documents" class="row-div">
           <div
             v-if="doc.type == 'folder'"
-            class="vertical-center q-px-md q-py-xs"
+            class="vertical-center q-px-md q-py-xs "
           >
             <q-icon name="folder" size="sm" color="primary" />
-            <span class="q-pl-md">{{ doc.name }}</span>
+            <div class="q-pl-md" @click="onClickOnFile(doc)">
+              {{ doc.name }}
+            </div>
+            <q-icon
+              @click="uploadFilesOptions = true"
+              name="more_vert"
+              size="sm"
+              class="q-ml-auto"
+            />
           </div>
           <div
             v-if="doc.type != 'folder'"
             class="vertical-center q-px-md q-py-sm"
           >
             <q-icon :name="iconType(doc.type)" size="sm" color="primary" />
-            <span class="q-pl-md">{{ doc.name }}</span>
+            <span class="q-pl-md ">{{ doc.name }}</span>
           </div>
         </div>
         <div v-if="!documents.length" class="fixed-heading">
@@ -133,29 +123,41 @@
       transition-hide="slide-down"
       :position="'bottom'"
     >
-      <q-card style="width: 550px; height:150px">
-        <div class="text-center text-h7 form-heading">Create New</div>
-        <q-card-section class="items-center">
+      <q-card style="width: 550px; height:200px">
+        <div class="text-center text-h7 q-mt-md q-mr-xl text-bold">
+          Create New
+        </div>
+        <q-card-section class="items-center form-heading q-ml-md">
           <div class="row q-ml-xl">
-            <q-btn
-              name="upload"
-              @click="addFolderDialog = true"
-              icon="create_new_folder"
-              text-color="primary"
-              class="q-ml-sm"
-            />
-            <q-btn
-              class="q-ml-md"
-              icon="cloud_upload"
-              text-color="primary"
-              style="width: 50px"
-            />
-            <q-btn
-              class="q-ml-md"
-              icon="add_a_photo"
-              text-color="primary"
-              style="width: 50px"
-            />
+            <div class="column">
+              <q-btn
+                name="upload"
+                @click="addFolderDialog = true"
+                icon="create_new_folder"
+                text-color="primary"
+                class="q-ml-sm"
+              />
+              <div class="form-heading q-ml-md">Folder</div>
+            </div>
+            <div class="column">
+              <q-btn
+                class="q-ml-md"
+                icon="cloud_upload"
+                text-color="primary"
+                @click="addFile"
+                style="width: 50px"
+              />
+              <div class="form-heading q-ml-md">Upload</div>
+            </div>
+            <div class="column">
+              <q-btn
+                class="q-ml-md"
+                icon="add_a_photo"
+                text-color="primary"
+                style="width: 50px"
+              />
+              <div class="form-heading q-ml-md">Scan</div>
+            </div>
           </div>
         </q-card-section>
       </q-card>
@@ -224,6 +226,7 @@ export default {
           link: document.attributes.webViewLink
         }));
         this.addFolderDialog = false;
+        this.uploadFilesOptions = false;
         this.folderName = '';
         this.setLoading(false);
       }
@@ -242,6 +245,7 @@ export default {
         await this.createDocuments(formData);
         this.fileName = '';
         this.addFileDialog = false;
+        this.uploadFilesOptions = false;
         const { data } = await request.get(
           `/documents?parent_id=${this.depth[this.depth.length - 1].id}`
         );
