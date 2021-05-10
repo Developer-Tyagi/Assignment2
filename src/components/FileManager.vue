@@ -156,7 +156,7 @@
                 text-color="primary"
                 style="width: 50px"
               />
-              <div class="form-heading q-ml-md">Scan</div>
+              <div class="form-heading q-ml-lg">Scan</div>
             </div>
           </div>
         </q-card-section>
