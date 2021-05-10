@@ -646,7 +646,7 @@
                           </div>
                         </div>
                         <div
-                          class=" text-capitalize q-pt-xs text-caption q-mr-xl q-my-xs q-px-xs "
+                          class=" text-capitalize q-pt-xs text-caption q-mr-xl q-my-xs q-pr-xs "
                         >
                           <p>{{ item.desc }}</p>
 
@@ -844,7 +844,6 @@
                       v-if="lossInfo.osDamagedItems.length"
                     >
                       <q-card class="q-pa-sm">
-                        {{ item }}
                         <div class="text-right">
                           <q-icon
                             class="q-ma-xs"
