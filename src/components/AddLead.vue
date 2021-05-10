@@ -819,7 +819,7 @@ export default {
       lossCauseOptions: [],
       leadSource: [],
       valueName: '',
-      step: 3,
+      step: 0,
       stepClickValidTill: 0,
       clientOptions: [],
       stepArr: [
