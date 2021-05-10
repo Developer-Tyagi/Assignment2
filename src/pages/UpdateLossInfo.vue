@@ -1,5 +1,12 @@
 <template>
   <q-page>
+    <q-icon
+      size="sm"
+      name="create"
+      color="primary"
+      class="icon-top"
+      @click="onEditIconClick"
+    ></q-icon>
     <div class="listing-height">
       <ClaimDetail />
       <q-dialog
@@ -38,27 +45,6 @@
           </div>
         </q-card>
       </q-dialog>
-
-      <div class="clients-list">
-        <!-- This is for showing the Loss Info details   -->
-        <div class="clients-list">
-          <div class="row">
-            <div class="row">
-              <div class="col-10"></div>
-              <q-icon
-                size="sm"
-                name="create"
-                color="primary"
-                :class="{
-                  'icon-top': !$q.platform.is.iphone,
-                  'icon-top-ios': $q.platform.is.iphone
-                }"
-                @click="onEditIconClick"
-              ></q-icon>
-            </div>
-          </div>
-        </div>
-      </div>
 
       <q-card class="q-ma-md q-pa-md">
         <div class="row q-mt-sm" v-if="lossInfo.attributes.lossInfo.property">

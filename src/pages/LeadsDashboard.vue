@@ -1,12 +1,7 @@
 <template>
   <q-page>
     <div>
-      <div
-        :class="{
-          'mobile-container-page-without-search': !$q.platform.is.iphone,
-          'mobile-container-page': $q.platform.is.iphone
-        }"
-      >
+      <div class="mobile-container-page-without-search">
         <div class="row q-pa-sm">
           <q-card
             dark

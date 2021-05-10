@@ -1,13 +1,8 @@
 <template>
   <q-page>
-    <div
-      :class="{
-        'icon-top': !$q.platform.is.iphone,
-        'icon-top-ios': $q.platform.is.iphone
-      }"
-    >
+    <div class="icon-top">
       <q-btn @click="addLogDialog = true" flat
-        ><img src="~assets/add.svg"
+        ><img src="~assets/add.svg" height="24" width="24"
       /></q-btn>
     </div>
     <div class="mobile-container-page">
@@ -141,7 +136,7 @@
               label="Details"
               :disable="isFieldDisable"
             /><br />
-            <span class=" heading-light q-pt-sm"> Additional Notes</span>
+            <span class="heading-light q-pt-sm"> Additional Notes</span>
             <div class="floating-label">
               <textarea
                 rows="5"
