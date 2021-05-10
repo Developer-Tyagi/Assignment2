@@ -1,16 +1,14 @@
 <template>
   <q-page>
-    <div class="icon-top">
-      <q-icon
-        :class="{
-          'icon-top': !$q.platform.is.iphone,
-          'icon-top-ios': $q.platform.is.iphone
-        }"
-        @click="uploadFilesOptions = true"
-        name="more_vert"
-        size="sm"
-      />
-    </div>
+    <q-icon
+      :class="{
+        'icon-top': !$q.platform.is.iphone,
+        'icon-top-ios': $q.platform.is.iphone
+      }"
+      @click="uploadFilesOptions = true"
+      name="more_vert"
+      size="sm"
+    />
     <div>
       <div class="actions-div justify-between q-px-md">
         <q-breadcrumbs class="text-primary" active-color="grey" gutter="none">
