@@ -1,11 +1,6 @@
 <template>
   <q-page>
-    <div
-      :class="{
-        'mobile-container-page-without-search': !$q.platform.is.iphone,
-        'mobile-container-page': $q.platform.is.iphone
-      }"
-    >
+    <div class="mobile-container-page-without-search">
       <div class="stepper">
         <div class="step justify-between" id="step">
           <div
@@ -788,7 +783,7 @@ import AddCarrier from 'components/AddCarrier';
 import CustomBar from 'components/CustomBar';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import { dateToShow } from '@utils/date';
-
+import { Platform } from 'quasar';
 export default {
   components: {
     VendorsList,

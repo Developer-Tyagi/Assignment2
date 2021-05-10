@@ -141,7 +141,7 @@
               label="Details"
               :disable="isFieldDisable"
             /><br />
-            <span class=" heading-light q-pt-sm"> Additional Notes</span>
+            <span class="heading-light q-pt-sm"> Additional Notes</span>
             <div class="floating-label">
               <textarea
                 rows="5"
