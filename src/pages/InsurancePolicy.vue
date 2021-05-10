@@ -501,7 +501,10 @@
         <q-btn
           @click="addPersonnelDialog = true"
           flat
-          class="q-ml-auto icon-top"
+          :class="{
+            'icon-top': !$q.platform.is.iphone,
+            'icon-top-ios': $q.platform.is.iphone
+          }"
           ><img src="~assets/addAdjustor.svg"
         /></q-btn>
         <div class="actions-div">
@@ -516,7 +519,7 @@
             <div class="q-ml-auto edit-icon">
               <q-btn
                 v-if="params.role"
-                class="q-ml-auto "
+                class="q-ml-auto"
                 color="white"
                 text-color="grey"
                 @click="clearFilter()"
