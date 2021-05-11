@@ -7,6 +7,11 @@ export function setMortgage(state, mortgage) {
     ...mortgage.attributes
   };
 }
+export function setClaimVendors(state, vendorLists) {
+  state.vendorLists = {
+    ...vendorLists.attributes
+  };
+}
 export function setOfficeTasks(state, tasks) {
   state.tasks = {
     ...tasks.attributes
