@@ -684,3 +684,66 @@ export async function deleteClaimVendor({ commit, dispatch }, vendor) {
     });
   }
 }
+// API for Set permission to given directory
+export async function shareFolderAndFiles({ dispatch }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      `/directories/${payload.id}/setaccess`,
+      buildApiData('setaccess', payload.shareData)
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'shared !'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'failed to share'
+    });
+  }
+}
+
+//API for Delete given document
+
+export async function deleteDocument({ dispatch }, documentID) {
+  dispatch('setLoading', true);
+  try {
+    await request.del(`/documents/${documentID}`);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Document  Deleted !'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'Error in deleting document.'
+    });
+  }
+}
+//API for Delete given Directory
+
+export async function deleteDirectory({ dispatch }, id) {
+  dispatch('setLoading', true);
+  try {
+    await request.del(`/directories/${id}`);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Folder  Deleted !'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'Error in deleting folder.'
+    });
+  }
+}

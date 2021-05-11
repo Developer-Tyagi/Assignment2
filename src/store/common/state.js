@@ -8,6 +8,10 @@ export default function() {
     userRoles: [],
     lossCauses: [],
     roleTypes: [],
+    fileRoleOptions: [
+      { value: 'View Access', name: 'reader' },
+      { value: 'Edit Access', name: 'writer' }
+    ],
     leadSources: [
       { value: '', name: 'None' },
       { value: 'client', name: 'Prior Client' },
