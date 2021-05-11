@@ -46,15 +46,29 @@
                     {{ user.name }}
                   </div>
                   <div class="col-3">
-                    <div
-                      class="col-2 "
-                      v-if="user.mailingAddress.streetAddress"
-                    >
-                      {{ user.mailingAddress.streetAddress }},{{
+                    <div class="q-mr-md  " v-if="user.mailingAddress">
+                      {{
+                        user.mailingAddress.streetAddress
+                          ? user.mailingAddress.streetAddress
+                          : '-'
+                      }},{{
                         user.mailingAddress.addressRegion
-                      }},{{ user.mailingAddress.addressLocality }} ,
-                      {{ user.mailingAddress.addressCountry }},{{
+                          ? user.mailingAddress.addressRegion
+                          : '-'
+                      }},{{
+                        user.mailingAddress.addressLocality
+                          ? user.mailingAddress.addressLocality
+                          : '-'
+                      }}
+                      ,
+                      {{
+                        user.mailingAddress.addressCountry
+                          ? user.mailingAddress.addressCountry
+                          : '-'
+                      }},{{
                         user.mailingAddress.postalCode
+                          ? user.mailingAddress.postalCode
+                          : '-'
                       }}
                     </div>
                   </div>
@@ -63,7 +77,13 @@
                       user.phoneNumber.number ? user.phoneNumber.number : '-'
                     }}
                   </div>
-                  <div class="col">{{ user.mailingAddress.postalCode }}</div>
+                  <div class="col">
+                    {{
+                      user.mailingAddress.postalCode
+                        ? user.mailingAddress.postalCode
+                        : '-'
+                    }}
+                  </div>
                 </div>
 
                 <div class="row q-mt-xl text-bold">
@@ -239,7 +259,7 @@
                     ]"
                   />
                 </div>
-                <div>
+                <div class="row">
                   <q-input
                     dense
                     v-model="users.email"
@@ -254,6 +274,54 @@
                         'You have entered an invalid email address!'
                     ]"
                   />
+                  <q-select
+                    dense
+                    outlined
+                    filled
+                    options-dense
+                    class="q-mx-md col-5 input-extra-padding required"
+                    v-model="selectedRole"
+                    :options="userRole"
+                    label="Role"
+                    color="primary"
+                    behavior="menu"
+                    options-selected-class="text-deep-orange"
+                    lazy-rules
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) || 'Please enter the user role!'
+                    ]"
+                  >
+                    <template v-slot:option="scope">
+                      <q-expansion-item
+                        expand-separator
+                        group="somegroup"
+                        :default-opened="hasChild(scope)"
+                        header-class="text-weight-bold"
+                        :label="scope.opt.label"
+                      >
+                        <template v-for="child in scope.opt.children">
+                          <q-item
+                            :key="child.label"
+                            clickable
+                            v-ripple
+                            v-close-popup
+                            @click="selectedRole = child.label"
+                            :class="{
+                              'bg-light-oragne-1': selectedRole === child.label
+                            }"
+                          >
+                            <q-item-section>
+                              <q-item-label
+                                v-html="child.label"
+                                class="q-ml-md"
+                              ></q-item-label>
+                            </q-item-section>
+                          </q-item>
+                        </template>
+                      </q-expansion-item>
+                    </template>
+                  </q-select>
                 </div>
               </q-card>
               <q-card class="q-mx-md q-pa-sm">
@@ -665,6 +733,18 @@ export default {
       userId: '',
       editUserInfoDialog: false,
       priority: false,
+      selectedRole: '',
+      userRole: [
+        {
+          label: 'Paid',
+          children: []
+        },
+        {
+          label: 'Un-paid',
+          children: []
+        }
+      ],
+      selectedRole: '',
       users: {
         fname: '',
         lname: '',
@@ -673,6 +753,7 @@ export default {
           number: ''
         },
         email: '',
+        roles: [],
         mailingAddress: {
           addressCountry: '',
           addressLocality: '',
@@ -755,8 +836,17 @@ export default {
       'workflowAction',
       'getWorkflow',
       'allAction',
-      'contactTypes'
+      'contactTypes',
+      'roleTypes'
     ])
+  },
+  watch: {
+    selectedRole(newVal, oldVal) {
+      if (newVal) {
+        var user = this.roleTypes.find(o => o.name === newVal);
+        this.users.roles[0] = user.machineValue;
+      }
+    }
   },
   methods: {
     ...mapActions([
@@ -769,7 +859,8 @@ export default {
       'getContactTypes',
       'editUserInfo',
       'getUserInfo',
-      'removeCurrentUser'
+      'removeCurrentUser',
+      'getRoles'
     ]),
     validateEmail,
 
@@ -779,15 +870,18 @@ export default {
         this.editUserInfoDialog = false;
         const payload = {
           id: this.userId,
-          contact: {
-            fname: this.users.fname,
-            lname: this.users.lname
-          },
-          email: this.users.email,
-          mailingAddress: this.users.mailingAddress,
-          phoneNumber: {
-            type: this.users.contact.type,
-            number: this.users.contact.number
+          data: {
+            contact: {
+              fname: this.users.fname,
+              lname: this.users.lname
+            },
+            email: this.users.email,
+            role: this.users.roles,
+            mailingAddress: this.users.mailingAddress,
+            phoneNumber: {
+              type: this.users.contact.type,
+              number: this.users.contact.number
+            }
           }
         };
         await this.editUserInfo(payload);
@@ -801,6 +895,9 @@ export default {
         this.users.email = this.user.email;
         this.users.mailingAddress = this.user.mailingAddress;
       }
+    },
+    hasChild(scope) {
+      return scope.opt.children.some(c => c.label === this.selectedRole);
     },
     // For Api Calling
     async claimActionItem(mValue) {
@@ -961,6 +1058,21 @@ export default {
     this.getWorkflowAction();
     this.claimType = 'claim_new_claim';
     await this.claimActionItem(this.claimType);
+    this.getRoles().then(async () => {
+      this.roleTypes.forEach(val => {
+        if (val.isPaid) {
+          this.userRole[0].children.push({
+            label: val.name,
+            value: val.machineValue
+          });
+        } else {
+          this.userRole[1].children.push({
+            label: val.name,
+            value: val.machineValue
+          });
+        }
+      });
+    });
   }
 };
 </script>

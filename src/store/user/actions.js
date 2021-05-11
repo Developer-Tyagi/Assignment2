@@ -34,7 +34,7 @@ export async function getUserInfo({ dispatch, state }) {
   try {
     const { data } = await request.get('/users/me');
     setCurrentUser(data);
-    console.log(data);
+
     dispatch('setLoading', false);
     return data;
   } catch (e) {
@@ -418,7 +418,7 @@ export async function editUserInfo({ dispatch, state }, user) {
   try {
     const { data } = await request.patch(
       `/users/${user.id}`,
-      buildApiData('users', user)
+      buildApiData('users', user.data)
     );
     dispatch('setLoading', false);
     dispatch('setNotification', {
