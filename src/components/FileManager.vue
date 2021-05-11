@@ -14,9 +14,7 @@
     <div>
       <div class="actions-div justify-between q-px-md">
         <q-breadcrumbs class="text-primary" active-color="grey" gutter="none">
-          <template v-slot:separator>
-        
-          </template>
+          <template v-slot:separator> </template>
           <div
             v-if="depth.length > 1"
             class="row-div vertical-center q-px-sm q-py-xs "
@@ -24,11 +22,9 @@
           >
             <q-icon name="reply" size="sm" color="primary" />
           </div>
- <q-breadcrumbs-el
-          @click="onBreadCrumbClick(depth[currentPath], index)"
-          >{{depth[currentPath-1]?depth[currentPath-1].name:'-'}}
-          </q-breadcrumbs-el>
-          
+          <q-breadcrumbs-el
+            @click="onBreadCrumbClick(depth[currentPath], index)"
+            >{{ depth[currentPath - 1] ? depth[currentPath - 1].name : '-' }}
           </q-breadcrumbs-el>
         </q-breadcrumbs>
         <div>
@@ -62,8 +58,7 @@
             class="vertical-center q-px-md q-py-sm"
           >
             <q-icon :name="iconType(doc.type)" size="sm" color="primary" />
-            <span class="q-pl-md ">{{ doc.name }}</span
-            >
+            <span class="q-pl-md ">{{ doc.name }}</span>
             <q-icon
               @click="onShareClick(index)"
               name="more_vert"
@@ -207,7 +202,7 @@
                 icon="delete"
                 text-color="primary"
                 style="width: 50px"
-                @click="alert=true,foldersAndFilesOptions=false"
+                @click="(alert = true), (foldersAndFilesOptions = false)"
               />
               <div class="form-heading q-ml-md">
                 Remove
@@ -225,8 +220,8 @@
       persistent
       transition-show="scale"
       transition-hide="scale"
-   >
-      <q-card  style="width: 500px">
+    >
+      <q-card style="width: 500px">
         <q-card-section class="row items-center">
           <q-avatar
             icon="folder"
@@ -271,17 +266,7 @@
               </div>
             </q-card>
           </div>
-
-          <!-- <q-btn
-            :disabled="isAssignDisabled"
-            color="primary"
-            class="q-mt-md"
-            size="sm"
-            label="Assign"
-            @click="assignDialog = true"
-          /> -->
         </q-card-section>
-
         <q-card-actions align="right">
           <q-btn
             flat
@@ -303,11 +288,11 @@
 
     <q-dialog v-model="assignDialog">
       <q-layout view="Lhh lpR fff" container class="bg-white">
-            <div class="mobile-container-page">
-        <div class="text-bold q-ma-sm q-mb-none">
-         Select Person/Group
-        </div>
-    
+        <div class="mobile-container-page">
+          <div class="text-bold q-ma-sm q-mb-none">
+            Select Person/Group
+          </div>
+
           <div class="q-ma-lg">
             <q-card>
               <div class="text-center q-mt-lg text-bold ">Users</div>
@@ -348,7 +333,7 @@
                     v-model="assignFilter"
                     :val="filter.name"
                     dense
-                     size="xs"
+                    size="xs"
                     class="q-mb-xs"
                   />
                   <div class="q-pt-none">
@@ -381,7 +366,7 @@
         </div>
       </q-layout>
     </q-dialog>
-     <!-- Alert delete Box -->
+    <!-- Alert delete Box -->
     <q-dialog v-model="alert">
       <q-card>
         <q-card-section>
@@ -389,7 +374,7 @@
         </q-card-section>
 
         <q-card-section class="q-pt-none">
-          Are you sure ! You want to delete this 
+          Are you sure ! You want to delete this
         </q-card-section>
 
         <q-card-actions align="right">
@@ -427,8 +412,8 @@ export default {
 
   data() {
     return {
-      alert:false,
-      currentPath:'',
+      alert: false,
+      currentPath: '',
       depth: [],
       documents: [],
       addFolderDialog: false,
@@ -481,23 +466,22 @@ export default {
       this.allFolder = true;
     },
     async removeDocument() {
-      const id = this.allFolderId ?this.allFolderId : this.documentID;
-   
- if (this.allFolder) {
-  this.deleteDirectory(id);
-   this.onBackButtonClick();
-          const { data } = await request.get(
-        `/documents?parent_id=${this.depth[this.depth.length - 1].id}`
-      );
-      this.documents = data.map(document => ({
-        name: document.attributes.name,
-        id: document.id,
-        type: document.attributes.mimeType,
-        link: document.attributes.webViewLink
-      }));
-    }else{
-   
-   await this.deleteDocument(id);
+      const id = this.allFolderId ? this.allFolderId : this.documentID;
+
+      if (this.allFolder) {
+        this.deleteDirectory(id);
+        this.onBackButtonClick();
+        const { data } = await request.get(
+          `/documents?parent_id=${this.depth[this.depth.length - 1].id}`
+        );
+        this.documents = data.map(document => ({
+          name: document.attributes.name,
+          id: document.id,
+          type: document.attributes.mimeType,
+          link: document.attributes.webViewLink
+        }));
+      } else {
+        await this.deleteDocument(id);
       }
       const { data } = await request.get(
         `/documents?parent_id=${this.depth[this.depth.length - 1].id}`
@@ -512,7 +496,7 @@ export default {
       this.assignDialog = false;
       this.shareDialog = false;
       this.foldersAndFilesOptions = false;
-      this.allFolder=false;
+      this.allFolder = false;
     },
     onShareClick(index) {
       this.foldersAndFilesOptions = true;
@@ -542,7 +526,7 @@ export default {
     setUsersName(name) {
       this.userRole = name;
     },
-    
+
     async addFile() {
       const imageData = await Camera.getPhoto({
         quality: 100,
@@ -582,7 +566,7 @@ export default {
         this.setLoading(false);
       }
     },
-  
+
     async addPdfFileToServer() {
       if (this.fileName) {
         this.setLoading(true);
@@ -663,29 +647,26 @@ export default {
     },
 
     async onClickOnFile(document) {
-         this.allFolderId = document.id;
+      this.allFolderId = document.id;
       if (document.type == 'folder') {
         this.setLoading(true);
         const { data } = await request.get(
           `/documents?parent_id=${document.id}`
         );
-        if(this.allFolder){
-   this.allFolderId = document.id;
+        if (this.allFolder) {
+          this.allFolderId = document.id;
         }
-     this.documents = data.map(document => ({
+        this.documents = data.map(document => ({
           name: document.attributes.name,
           id: document.id,
           type: document.attributes.mimeType,
           link: document.attributes.webViewLink
         }));
-     
-        
+
         this.depth.push({ name: document.name, id: document.id });
         const length = this.depth.length;
-    
-      this.currentPath = length;
-   
-       
+
+        this.currentPath = length;
 
         this.setLoading(false);
       } else {
@@ -694,8 +675,7 @@ export default {
     },
 
     async onBackButtonClick() {
-    
-      const documentId = this.depth[this.depth.length-2].id;
+      const documentId = this.depth[this.depth.length - 2].id;
       this.setLoading(true);
       const { data } = await request.get(`/documents?parent_id=${documentId}`);
       this.documents = data.map(document => ({
