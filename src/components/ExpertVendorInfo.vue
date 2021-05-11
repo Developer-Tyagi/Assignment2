@@ -62,7 +62,6 @@
         v-if="expertVendorInfo.anyOtherExpertHiredToggle"
       >
         <q-select
-          v-if="!claimExpertVendor"
           class="full-width"
           v-model="item.industry"
           use-input
@@ -245,7 +244,7 @@
             "
             class="q-my-md q-pa-md"
           >
-            <div class="text-bold">{{ item.vendor.value }}kk</div>
+            <div class="text-bold">{{ item.vendor.value }}</div>
             <div
               v-if="item.vendor.address && item.vendor.address.streetAddress"
             >
@@ -379,9 +378,9 @@ export default {
     };
   },
   created() {
+    this.getVendorIndustries();
     // This is for Claim Exp Vendor
     if (this.claimExpertVendor) {
-      this.expertVendorInfo.isAlreadyHiredVendor[0].industry = 'vendor';
       this.expertVendorInfo.anyOtherExpertHiredToggle = true;
     }
   },
