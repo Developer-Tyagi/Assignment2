@@ -444,7 +444,7 @@ export default {
       this.selectedArray[this.selectedIndex].vendor.phone = vendor.phoneNumber
         ? vendor.phoneNumber[0].number
         : '';
-      this.$emit('vendorId', vendor.id, vendor.name);
+      this.$emit('vendorId', vendor);
       this.vendorsListDialog = false;
       this.addVendorDialog = false;
     },
