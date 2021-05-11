@@ -1,41 +1,47 @@
 <template>
   <q-page>
-    <q-icon
+    <q-btn
       :class="{
-        'icon-top': !$q.platform.is.iphone,
+        'file-add-icon': !$q.platform.is.iphone,
         'icon-top-ios': $q.platform.is.iphone
       }"
       @click="uploadFilesOptions = true"
-      name="more_vert"
       size="sm"
-    />
+      flat
+      v-if="!assignDialog"
+      ><img src="~assets/add.svg"
+    /></q-btn>
     <div>
       <div class="actions-div justify-between q-px-md">
         <q-breadcrumbs class="text-primary" active-color="grey" gutter="none">
           <template v-slot:separator>
-            <q-icon size="1.5em" name="chevron_right" color="primary" />
+        
           </template>
-          <q-breadcrumbs-el
-            class="text-capitalize"
-            v-for="breadCrumb in depth"
-            :key="breadCrumb.name"
-            :label="breadCrumb.name"
-            @click="onBreadCrumbClick(breadCrumb)"
-          ></q-breadcrumbs-el>
+          <div
+            v-if="depth.length > 1"
+            class="row-div vertical-center q-px-sm q-py-xs "
+            @click="onBackButtonClick"
+          >
+            <q-icon name="reply" size="sm" color="primary" />
+          </div>
+ <q-breadcrumbs-el
+          @click="onBreadCrumbClick(depth[currentPath], index)"
+          >{{depth[currentPath-1]?depth[currentPath-1].name:'-'}}
+          </q-breadcrumbs-el>
+          
+          </q-breadcrumbs-el>
         </q-breadcrumbs>
-        <div></div>
+        <div>
+          <q-icon
+            @click="onClickTopMenu"
+            name="more_vert"
+            size="sm"
+            class="q-ml-auto"
+          />
+        </div>
       </div>
       <div class="mobile-container-page overflow-y">
-        <div
-          v-if="depth.length > 1"
-          class="row-div vertical-center q-px-md q-py-xs"
-          @click="onBackButtonClick"
-        >
-          <q-icon name="reply" size="sm" color="primary" /><span class="q-pl-md"
-            >Back</span
-          >
-        </div>
-        <div v-for="doc in documents" class="row-div">
+        <div v-for="(doc, index) in documents" class="row-div">
           <div
             v-if="doc.type == 'folder'"
             class="vertical-center q-px-md q-py-xs "
@@ -45,7 +51,7 @@
               {{ doc.name }}
             </div>
             <q-icon
-              @click="uploadFilesOptions = true"
+              @click="onShareClick(index)"
               name="more_vert"
               size="sm"
               class="q-ml-auto"
@@ -56,14 +62,22 @@
             class="vertical-center q-px-md q-py-sm"
           >
             <q-icon :name="iconType(doc.type)" size="sm" color="primary" />
-            <span class="q-pl-md ">{{ doc.name }}</span>
+            <span class="q-pl-md ">{{ doc.name }}</span
+            >
+            <q-icon
+              @click="onShareClick(index)"
+              name="more_vert"
+              size="sm"
+              class="q-ml-auto "
+            />
           </div>
         </div>
         <div v-if="!documents.length" class="fixed-heading">
-          <span>No file in this folder</span>
+          <span>This folder is empty</span>
         </div>
       </div>
     </div>
+    <!-- Add Folder Dialog -->
 
     <q-dialog v-model="addFolderDialog" persistent>
       <q-card>
@@ -87,6 +101,9 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+
+    <!-- Add File Dialog  -->
+
     <q-dialog v-model="addFileDialog" persistent>
       <q-card>
         <q-card-section class="row items-center">
@@ -114,6 +131,9 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+
+    <!-- Upload File Options Dialog  -->
+
     <q-dialog
       v-model="uploadFilesOptions"
       :maximized="true"
@@ -122,7 +142,7 @@
       :position="'bottom'"
     >
       <q-card style="width: 550px; height:200px">
-        <div class="text-center text-h7 q-mt-md q-mr-xl text-bold">
+        <div class="text-center q-mt-md text-bold">
           Create New
         </div>
         <q-card-section class="items-center form-heading q-ml-md">
@@ -160,11 +180,241 @@
         </q-card-section>
       </q-card>
     </q-dialog>
+
+    <q-dialog
+      v-model="foldersAndFilesOptions"
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+      :position="'bottom'"
+    >
+      <q-card style="width: 550px; height:200px">
+        <q-card-section class="items-center form-heading q-ml-md">
+          <div class="row q-ml-xl ">
+            <div class="column q-ml-xl">
+              <q-btn
+                name="upload"
+                icon="share"
+                @click="(shareDialog = true), (foldersAndFilesOptions = false)"
+                text-color="primary"
+                class="q-ml-sm"
+              />
+              <div class="form-heading q-ml-md">Share</div>
+            </div>
+            <div class="column">
+              <q-btn
+                class="q-ml-md"
+                icon="delete"
+                text-color="primary"
+                style="width: 50px"
+                @click="alert=true,foldersAndFilesOptions=false"
+              />
+              <div class="form-heading q-ml-md">
+                Remove
+              </div>
+            </div>
+          </div>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+
+    <!-- Share Files And Folder Dialog -->
+
+    <q-dialog
+      v-model="shareDialog"
+      persistent
+      transition-show="scale"
+      transition-hide="scale"
+   >
+      <q-card  style="width: 500px">
+        <q-card-section class="row items-center">
+          <q-avatar
+            icon="folder"
+            color="primary"
+            text-color="white"
+            size="md"
+          />
+          <span class="q-ml-sm">Share</span>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none ">
+          <div>
+            <q-select
+              v-model="role.value"
+              dense
+              class="full-width"
+              option-label="name"
+              label="Roles"
+              autofocus
+              :options="fileRoleOptions"
+              option-value="name"
+              behavior="menu"
+              options-dense
+              emit-value
+              options-dense
+            >
+            </q-select>
+          </div>
+
+          <div class="custom-select" @click="assignDialog = true">
+            <div class="select-text" v-if="!assignFilter">
+              Click Person / Group
+            </div>
+            <q-card
+              bordered
+              v-if="assignFilter"
+              @click="assignDialog = true"
+              class="q-my-md q-pa-md"
+            >
+              <div class="text-bold">
+                {{ assignFilter }}
+              </div>
+            </q-card>
+          </div>
+
+          <!-- <q-btn
+            :disabled="isAssignDisabled"
+            color="primary"
+            class="q-mt-md"
+            size="sm"
+            label="Assign"
+            @click="assignDialog = true"
+          /> -->
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn
+            flat
+            label="Cancel"
+            color="primary"
+            @click="shareDialog = false"
+          />
+          <q-btn
+            flat
+            label="Assign "
+            color="primary"
+            @click="onAssignClick()"
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
+    <!-- Assign Dialog -->
+
+    <q-dialog v-model="assignDialog">
+      <q-layout view="Lhh lpR fff" container class="bg-white">
+            <div class="mobile-container-page">
+        <div class="text-bold q-ma-sm q-mb-none">
+         Select Person/Group
+        </div>
+    
+          <div class="q-ma-lg">
+            <q-card>
+              <div class="text-center q-mt-lg text-bold ">Users</div>
+              <q-separator class="bg-primary" />
+              <div
+                v-for="user in allUsers"
+                :key="user.id"
+                class="q-ml-xs q-pt-sm"
+              >
+                <div class="row">
+                  <q-radio
+                    @input="setUsersName(user.name)"
+                    v-model="assignFilter"
+                    :val="user.name"
+                    dense
+                    size="xs"
+                    class="q-mb-xs"
+                  />
+                  <div class="q-pt-none">
+                    <span class="q-ml-sm q-mt-xs"> {{ user.name }}</span>
+                  </div>
+                </div>
+              </div>
+            </q-card>
+          </div>
+          <div class="q-ma-lg">
+            <q-card>
+              <div class="text-center q-mt-lg text-bold ">Roles</div>
+              <q-separator class="bg-primary" />
+              <div
+                v-for="filter in claimRoles"
+                :key="filter.id"
+                class="q-ml-xs q-pt-sm"
+              >
+                <div class="row">
+                  <q-radio
+                    @input="setFilterName(filter.name)"
+                    v-model="assignFilter"
+                    :val="filter.name"
+                    dense
+                     size="xs"
+                    class="q-mb-xs"
+                  />
+                  <div class="q-pt-none">
+                    <span class="q-ml-sm q-mt-xs"> {{ filter.name }}</span>
+                  </div>
+                </div>
+              </div>
+            </q-card>
+          </div>
+          <q-footer class="bg-white q-mb-md">
+            <div class="row">
+              <div class="q-ml-auto">
+                <q-btn
+                  @click="assignDialog = false"
+                  color="primary"
+                  flat
+                  label="cancel"
+                />
+              </div>
+              <div>
+                <q-btn
+                  color="primary"
+                  flat
+                  label="Select"
+                  @click="assignDialog = false"
+                />
+              </div>
+            </div>
+          </q-footer>
+        </div>
+      </q-layout>
+    </q-dialog>
+     <!-- Alert delete Box -->
+    <q-dialog v-model="alert">
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">Alert</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          Are you sure ! You want to delete this 
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn
+            flat
+            label="Cancel"
+            color="primary"
+            v-close-popup
+            @click="alert = false"
+          ></q-btn>
+          <q-btn
+            flat
+            label="Delete"
+            color="primary"
+            v-close-popup
+            @click="removeDocument()"
+          ></q-btn>
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
 <script>
-import { mapActions, mapMutations } from 'vuex';
+import { mapActions, mapMutations, mapGetters } from 'vuex';
 import request from '@api';
 import { jsPDF } from 'jspdf';
 import { Plugins, CameraResultType, CameraDirection } from '@capacitor/core';
@@ -177,19 +427,122 @@ export default {
 
   data() {
     return {
+      alert:false,
+      currentPath:'',
       depth: [],
       documents: [],
       addFolderDialog: false,
       addFileDialog: false,
       folderName: '',
       fileName: '',
-      uploadFilesOptions: false
+      uploadFilesOptions: false,
+      foldersAndFilesOptions: false,
+      shareDialog: false,
+      options: [],
+      role: { value: null, id: '', machineValue: '' },
+      isAssignDisabled: true,
+      assignDialog: false,
+      filterName: '',
+      userRole: '',
+      assignFilter: '',
+      documentID: '',
+      allFolderId: '',
+      assignUser: '',
+      allFolder: false
     };
   },
+  computed: {
+    ...mapGetters([
+      'fileRoleOptions',
+      'selectedClaimId',
+      'claimRoles',
+      'allUsers'
+    ])
+  },
 
+  created() {
+    this.getClaimRoles();
+    this.getAllUsers();
+  },
   methods: {
-    ...mapActions(['createDocuments', 'createDirectories']),
+    ...mapActions([
+      'createDocuments',
+      'createDirectories',
+      'getClaimRoles',
+      'shareFolderAndFiles',
+      'deleteDocument',
+      'getFolderDocuments',
+      'getAllUsers',
+      'deleteDirectory'
+    ]),
     ...mapMutations(['setLoading']),
+    onClickTopMenu() {
+      this.foldersAndFilesOptions = true;
+      this.allFolder = true;
+    },
+    async removeDocument() {
+      const id = this.allFolderId ?this.allFolderId : this.documentID;
+   
+ if (this.allFolder) {
+  this.deleteDirectory(id);
+   this.onBackButtonClick();
+          const { data } = await request.get(
+        `/documents?parent_id=${this.depth[this.depth.length - 1].id}`
+      );
+      this.documents = data.map(document => ({
+        name: document.attributes.name,
+        id: document.id,
+        type: document.attributes.mimeType,
+        link: document.attributes.webViewLink
+      }));
+    }else{
+   
+   await this.deleteDocument(id);
+      }
+      const { data } = await request.get(
+        `/documents?parent_id=${this.depth[this.depth.length - 1].id}`
+      );
+      this.documents = data.map(document => ({
+        name: document.attributes.name,
+        id: document.id,
+        type: document.attributes.mimeType,
+        link: document.attributes.webViewLink
+      }));
+
+      this.assignDialog = false;
+      this.shareDialog = false;
+      this.foldersAndFilesOptions = false;
+      this.allFolder=false;
+    },
+    onShareClick(index) {
+      this.foldersAndFilesOptions = true;
+      this.documentID = this.documents[index].id;
+    },
+    async onAssignClick() {
+      const payload = {
+        id: this.documentID,
+        shareData: {
+          type: this.assignFilter,
+          role: this.role.value,
+
+          id: this.documentID
+        }
+      };
+
+      await this.shareFolderAndFiles(payload);
+      this.assignDialog = false;
+      this.shareDialog = false;
+      this.foldersAndFilesOptions = false;
+      this.role.value = '';
+      this.assignFilter = '';
+    },
+    setFilterName(name) {
+      this.filterName = name;
+    },
+    setUsersName(name) {
+      this.userRole = name;
+    },
+    
     async addFile() {
       const imageData = await Camera.getPhoto({
         quality: 100,
@@ -229,7 +582,7 @@ export default {
         this.setLoading(false);
       }
     },
-
+  
     async addPdfFileToServer() {
       if (this.fileName) {
         this.setLoading(true);
@@ -295,13 +648,14 @@ export default {
         const { data } = await request.get(
           `/documents?parent_id=${this.directoryId}`
         );
+
         this.documents = data.map(document => ({
           name: document.attributes.name,
           id: document.id,
           type: document.attributes.mimeType,
           link: document.attributes.webViewLink
         }));
-        this.depth.push({ name: 'home', id: this.directoryId });
+        this.depth.push({ name: '', id: this.directoryId });
         this.setLoading(false);
       } catch (e) {
         this.setLoading(false);
@@ -309,18 +663,30 @@ export default {
     },
 
     async onClickOnFile(document) {
+         this.allFolderId = document.id;
       if (document.type == 'folder') {
         this.setLoading(true);
         const { data } = await request.get(
           `/documents?parent_id=${document.id}`
         );
-        this.documents = data.map(document => ({
+        if(this.allFolder){
+   this.allFolderId = document.id;
+        }
+     this.documents = data.map(document => ({
           name: document.attributes.name,
           id: document.id,
           type: document.attributes.mimeType,
           link: document.attributes.webViewLink
         }));
+     
+        
         this.depth.push({ name: document.name, id: document.id });
+        const length = this.depth.length;
+    
+      this.currentPath = length;
+   
+       
+
         this.setLoading(false);
       } else {
         window.open(document.link);
@@ -328,7 +694,8 @@ export default {
     },
 
     async onBackButtonClick() {
-      const documentId = this.depth[this.depth.length - 2].id;
+    
+      const documentId = this.depth[this.depth.length-2].id;
       this.setLoading(true);
       const { data } = await request.get(`/documents?parent_id=${documentId}`);
       this.documents = data.map(document => ({
@@ -338,6 +705,7 @@ export default {
         link: document.attributes.webViewLink
       }));
       this.depth.pop();
+      this.currentPath = this.depth.length;
       this.setLoading(false);
     },
 
@@ -387,5 +755,16 @@ export default {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+}
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent; /* make scrollbar transparent */
+}
+.file-add-icon {
+  position: absolute;
+  right: 5px;
+  top: -40px;
+  font-size: 24px;
+  z-index: 10000;
 }
 </style>
