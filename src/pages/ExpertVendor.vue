@@ -149,6 +149,13 @@
           />
           <div class="mobile-container-page q-pa-sm form-height">
             <q-form ref="estimatingInfoForm">
+              <q-card class="row q-pa-sm">
+                <p class="form-heading q-mx-none q-my-auto">
+                  Is this vendor already hired ?
+                </p>
+                <q-toggle class="q-ml-auto" v-model="isAlreadyHired" />
+              </q-card>
+
               <ExpertVendorInfo
                 :expertVendorInfo="expertVendorInfo"
                 :claimExpertVendor="true"
@@ -188,6 +195,8 @@ export default {
       alert: false,
       currentIndex: '',
       vendorId: '',
+      isAlreadyHired: false,
+      vendorName: '',
       item: {
         value: '',
         address: {
@@ -226,7 +235,8 @@ export default {
   methods: {
     ...mapActions(['addSingleVendor', 'getClaimVendors', 'deleteClaimVendor']),
     setVendorId(value) {
-      this.vendorId = value;
+      this.vendorId = value.id;
+      this.vendorName = value.name;
     },
     onDelete(index) {
       this.currentIndex = index;
@@ -252,7 +262,9 @@ export default {
         id: this.selectedClaimId,
         data: {
           vendor: {
-            vendorID: this.vendorId
+            vendorID: this.vendorId,
+            value: this.vendorName,
+            isAlreadyHired: this.isAlreadyHired
           }
         }
       };
