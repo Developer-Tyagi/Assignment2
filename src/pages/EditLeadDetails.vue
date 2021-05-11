@@ -1,7 +1,5 @@
 <template>
-  <q-page>
-    <AddLead :isEdit="true" />
-  </q-page>
+  <AddLead :isEdit="true" />
 </template>
 <script>
 import AddLead from 'components/AddLead';
@@ -31,7 +29,7 @@ export default {
   .step {
     display: flex;
     overflow-x: auto;
-    padding: 10px;
+    padding: 10px 10px 0 10px;
 
     .icon-div-selected {
       background: $primary;
