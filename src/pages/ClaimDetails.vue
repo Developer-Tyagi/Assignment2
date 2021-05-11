@@ -190,6 +190,7 @@ export default {
         { name: 'Settlements' },
         { name: 'Company Personnel' },
         { name: 'Mortgages and Liens' },
+        { name: 'Expert Vendor' },
         { name: 'Files' },
         { name: 'Notes' },
         { name: 'MatterPort' },
@@ -312,6 +313,9 @@ export default {
           break;
         case 'Mortgages and Liens':
           this.$router.push(`/mortgage-liens/${this.selectedClaimId}`);
+          break;
+        case 'Expert Vendor':
+          this.$router.push(`/expert-vendor/${this.selectedClaimId}`);
           break;
         case 'Files':
           this.$router.push({

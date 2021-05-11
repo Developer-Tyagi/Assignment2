@@ -333,6 +333,12 @@ const routes = [
         component: () => import('pages/mortgage/MortgageAndLiens.vue')
       },
       {
+        path: 'expert-vendor/:id',
+        name: 'Expert vendor ',
+        caseSensitive: true,
+        component: () => import('pages/ExpertVendor.vue')
+      },
+      {
         path: 'mortgage-details/:id',
         name: 'mortgage details',
         caseSensitive: true,

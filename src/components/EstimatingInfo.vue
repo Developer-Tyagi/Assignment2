@@ -275,7 +275,7 @@ export default {
       estimatorsListDialog: false,
       addEstimatorDialogInfo: {
         honorific: {
-          id: '602a5eaa312a2b57ac2b00ad',
+          id: '',
           value: 'Mr.',
           machineValue: 'mr_'
         },
@@ -346,8 +346,8 @@ export default {
         this.addEstimatorDialogInfo = {
           honorific: {
             id: '',
-            value: '',
-            machineValue: ''
+            value: 'Mr.',
+            machineValue: 'mr_'
           },
           name: '',
           fname: '',
@@ -384,8 +384,8 @@ export default {
         type: '',
         honorific: {
           id: '',
-          value: '',
-          machineValue: ''
+          value: 'Mr.',
+          machineValue: 'mr_'
         }
       };
     },
@@ -394,8 +394,8 @@ export default {
       this.addEstimatorDialogInfo = {
         honorific: {
           id: '',
-          value: '',
-          machineValue: ''
+          value: 'Mr.',
+          machineValue: 'mr_'
         },
         name: '',
         fname: '',

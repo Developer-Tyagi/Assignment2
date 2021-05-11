@@ -445,6 +445,23 @@ export async function getSingleClaims({ commit, dispatch }, id) {
   }
 }
 
+export async function getClaimVendors({ commit, dispatch }, id) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get(`/claims/${id}/vendors`);
+    commit('setClaimVendors', data);
+    dispatch('setLoading', false);
+    return data;
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+  }
+}
+
 // This API is for getting Mortgage Info
 export async function getMortgage({ commit, dispatch }, id) {
   dispatch('setLoading', true);
@@ -479,6 +496,25 @@ export async function addMortgage({ dispatch, state }, payload) {
     dispatch('setNotification', {
       type: 'negative',
       message: 'Failed to create Mortgage! please try again !'
+    });
+  }
+}
+
+export async function addSingleVendor({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      `/claims/${payload.id}/vendors`,
+      buildApiData('claimvendor', payload.data)
+    );
+    dispatch('setLoading', false);
+    return true;
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'Failed to create expert vendor! please try again !'
     });
   }
 }
@@ -630,7 +666,24 @@ export async function deleteClaimPersonnel({ dispatch }, payload) {
     });
   }
 }
-
+export async function deleteClaimVendor({ commit, dispatch }, vendor) {
+  dispatch('setLoading', true);
+  try {
+    await request.del(`/claims/${vendor.claimID}/vendors/${vendor.vendorId}`);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Vendor  Deleted !'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'Error in deleting Vendor.'
+    });
+  }
+}
 // API for Set permission to given directory
 export async function shareFolderAndFiles({ dispatch }, payload) {
   dispatch('setLoading', true);

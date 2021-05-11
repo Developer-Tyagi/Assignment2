@@ -246,7 +246,6 @@
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
-import { Platform } from 'quasar';
 export default {
   data() {
     return {};
@@ -254,7 +253,6 @@ export default {
 
   components: { CustomBar },
   created() {
-    console.log(Platform, 'hi');
     this.getLeadDetails(this.$route.params.id);
   },
   computed: {
