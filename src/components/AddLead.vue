@@ -963,14 +963,14 @@ export default {
       this.sourceDetails.type = null;
       if (val === ' ') {
         update(() => {
-          this.leadSource = this.lossCauses;
+          this.leadSource = this.leadSources;
         });
         return;
       }
 
       update(() => {
         const search = val.toLowerCase();
-        this.leadSource = this.lossCauses.filter(
+        this.leadSource = this.leadSources.filter(
           v => v.name.toLowerCase().indexOf(search) > -1
         );
       });
