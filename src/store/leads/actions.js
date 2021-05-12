@@ -1,22 +1,32 @@
 import request from '@api';
 import { buildApiData } from '@utils/api';
 export async function getActiveLeadsList(
-  { commit, dispatch },
+  {
+    rootState: {
+      common: { isOnline }
+    },
+    commit,
+    dispatch
+  },
   searchString = ''
 ) {
   dispatch('setLoading', true);
-  try {
-    const { data } = await request.get('/leads', { name: searchString });
-    commit('setActiveLeads', data);
-    dispatch('setLoading', false);
-  } catch (e) {
-    console.log(e);
-    dispatch('setLoading', false);
-    dispatch('setNotification', {
-      type: 'negative',
-      message: e.response[0].title
-    });
-  }
+
+  if (isOnline) {
+    console.log(isOnline);
+    try {
+      const { data } = await request.get('/leads', { name: searchString });
+      commit('setActiveLeads', data);
+      dispatch('setLoading', false);
+    } catch (e) {
+      console.log(e);
+      dispatch('setLoading', false);
+      dispatch('setNotification', {
+        type: 'negative',
+        message: e.response[0].title
+      });
+    }
+  } else commit('setOfflineActiveLeads');
 }
 export async function getArchivedLeadsList({ commit, dispatch }, searchString) {
   dispatch('setLoading', true);

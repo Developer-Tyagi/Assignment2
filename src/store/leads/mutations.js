@@ -10,6 +10,10 @@ export async function setActiveLeads(state, leads) {
   await localDB.activeLeads.bulkAdd(activeLeads);
 }
 
+export async function setOfflineActiveLeads(state) {
+  state.activeLeads = await getCollection('activeLeads').toArray();
+}
+
 export function setArchivedLeads(state, leads) {
   state.archivedLeads = leads.map(lead => ({
     ...lead.attributes,
