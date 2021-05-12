@@ -34,6 +34,7 @@ export async function getUserInfo({ dispatch, state }) {
   try {
     const { data } = await request.get('/users/me');
     setCurrentUser(data);
+
     dispatch('setLoading', false);
     return data;
   } catch (e) {
@@ -410,5 +411,26 @@ export async function deletePushNotificationToken({ commit, dispatch }, token) {
   } catch (e) {
     console.log(e);
     dispatch('setLoading', false);
+  }
+}
+export async function editUserInfo({ dispatch, state }, user) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.patch(
+      `/users/${user.id}`,
+      buildApiData('users', user.data)
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Vendor info  Updated !'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'failed to update vendor'
+    });
   }
 }
