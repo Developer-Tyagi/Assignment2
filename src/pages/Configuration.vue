@@ -8,7 +8,8 @@
     />
     <div class="col-10">
       <div class="my-font text-bold row q-ma-md">Setup Company Account</div>
-      <div class="q-mx-md" flat bordered>
+
+      <div class="q-mx-md" flat bordered v-if="tab.key != 'template'">
         <div class="row full-width justify-between">
           <span class="text-bold" style="line-height: 36px">{{
             tab.name
@@ -20,11 +21,11 @@
         <div
           class="bg-grey-3 q-mt-md"
           style="
-            position: relative;
-            height: calc(100vh - 170px);
-            overflow: auto;
-            display: flex;
-          "
+              position: relative;
+              height: calc(100vh - 170px);
+              overflow: auto;
+              display: flex;
+            "
         >
           <table class="table" v-if="table.length">
             <thead>
@@ -97,6 +98,53 @@
           </table>
 
           <div class="q-pa-lg q-ma-auto" v-else>You Have Not Added AnyYet</div>
+        </div>
+      </div>
+      <div v-else>
+        <div class="q-pa-md q-gutter-sm">
+          <q-card class="q-pa-sm" style="height:500px;">
+            <div class="text-bold q-my-xs">TITLE</div>
+            <div><q-input outlined v-model="title" /></div>
+            <div class="text-bold q-py-sm">BODY</div>
+            <q-editor
+              v-model="editor"
+              :definitions="{
+                save: {
+                  tip: 'Save your work',
+                  icon: 'save',
+                  label: 'Save',
+                  handler: uploadIt
+                },
+                upload: {
+                  tip: 'Upload to cloud',
+                  icon: 'cloud_upload',
+                  label: 'Upload',
+                  handler: insertImg
+                }
+              }"
+              :toolbar="[
+                [
+                  'bold',
+                  'italic',
+                  'strike',
+                  'underline',
+                  'right',
+                  'center',
+                  'justify',
+                  'left',
+                  'print'
+                ],
+                ['upload', 'save']
+              ]"
+            ></q-editor>
+          </q-card>
+          <div class="row justify-center">
+            <q-btn
+              color="primary"
+              label="Save"
+              class="align-content-center  q-my-lg"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -225,6 +273,10 @@ export default {
 
   data() {
     return {
+      title: '',
+      editor:
+        'After you define a new button,' +
+        ' you have to make sure to put it in the toolbar too!',
       dialogBox: false,
       dialogBoxName: {},
       tab: {},
@@ -248,7 +300,8 @@ export default {
         { name: 'Property Type', key: 'propertyType' },
         { name: 'Claim Reason', key: 'claimReason' },
         { name: 'Loss Cause', key: 'lossCause' },
-        { name: 'Claim Severity', key: 'claimSeverity' }
+        { name: 'Claim Severity', key: 'claimSeverity' },
+        { name: 'Template', key: 'template' }
       ]
     };
   },
@@ -303,6 +356,46 @@ export default {
       'getClaimReasons',
       'getLossCauses'
     ]),
+    saveWork() {
+      this.$q.notify({
+        message: 'Saved your text to local storage',
+        color: 'green-4',
+        textColor: 'white',
+        icon: 'cloud_done'
+      });
+    },
+    insertImg() {
+      // insertImg method
+      const post = this.post;
+      // create an input file element to open file dialog
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = '.png, .jpg'; // file extensions allowed
+      let file;
+      input.onchange = _ => {
+        const files = Array.from(input.files);
+        file = files[0];
+
+        // lets load the file as dataUrl
+        const reader = new FileReader();
+        let dataUrl = '';
+        reader.onloadend = function() {
+          dataUrl = reader.result;
+          // append result to the body of your post
+          this.editor += '<div><img src="' + dataUrl + '" /></div>';
+        };
+        reader.readAsDataURL(file);
+      };
+      input.click();
+    },
+    uploadIt() {
+      this.$q.notify({
+        message: 'Server unavailable. Check connectivity.',
+        color: 'red-5',
+        textColor: 'white',
+        icon: 'warning'
+      });
+    },
 
     async setSelectedTab(e) {
       this.tab = e;
