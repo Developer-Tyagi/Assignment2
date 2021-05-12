@@ -55,6 +55,7 @@ module.exports = function(/* ctx */) {
           // Add your own alias like this
           '@api': path.resolve(__dirname, './src/api'),
           '@utils': path.resolve(__dirname, './src/utils'),
+          '@services': path.resolve(__dirname, './src/services'),
           '@capacitor': path.resolve(
             __dirname,
             './src-capacitor/node_modules/@capacitor'
