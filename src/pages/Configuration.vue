@@ -274,9 +274,7 @@ export default {
   data() {
     return {
       title: '',
-      editor:
-        'After you define a new button,' +
-        ' you have to make sure to put it in the toolbar too!',
+      editor: '',
       dialogBox: false,
       dialogBoxName: {},
       tab: {},
