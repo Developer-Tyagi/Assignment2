@@ -425,7 +425,7 @@ export default {
         ? vendor.phoneNumber[0].number
         : '';
       this.vendorsListDialog = false;
-      this.$emit('vendorId', vendor.id);
+      this.$emit('vendorId', vendor);
     },
     setVendorType(index) {
       const val = this.expertVendorInfo.isAlreadyHiredVendor[index].industry;
@@ -444,7 +444,7 @@ export default {
       this.selectedArray[this.selectedIndex].vendor.phone = vendor.phoneNumber
         ? vendor.phoneNumber[0].number
         : '';
-      this.$emit('vendorId', vendor.id);
+      this.$emit('vendorId', vendor);
       this.vendorsListDialog = false;
       this.addVendorDialog = false;
     },
