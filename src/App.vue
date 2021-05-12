@@ -4,10 +4,11 @@
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   name: 'App',
+  methods: { ...mapActions(['changeNetworkStatus']) },
   computed: {
     ...mapGetters(['showLoading', 'notification'])
   },
@@ -31,6 +32,18 @@ export default {
         });
       }
     }
+  },
+  created() {
+    window.addEventListener('load', () => {
+      // now we listen for network status changes
+      window.addEventListener('online', () => {
+        this.changeNetworkStatus(true);
+      });
+
+      window.addEventListener('offline', () => {
+        this.changeNetworkStatus(false);
+      });
+    });
   }
 };
 </script>
