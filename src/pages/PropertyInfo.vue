@@ -61,7 +61,7 @@
                       alt="Claimguru"
                       src="~assets/logo.png"
                       spinner-color="white"
-                      style="height: 135px; max-width: 120px"
+                      style="height: auto; max-width: 120px"
                     ></q-img>
                   </div>
                   <div class=" col-5 q-pa-sm">
