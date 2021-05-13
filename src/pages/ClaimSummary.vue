@@ -7,6 +7,7 @@
           <div class="text-bold q-mt-xs">Claim Summary</div>
           <div>
             <q-icon
+              v-if="userRole != 'estimator'"
               class="q-ml-xs"
               name="edit"
               size="xs"
@@ -87,7 +88,7 @@
         </div>
       </q-card>
 
-      <q-card class="q-ma-md q-pa-md">
+      <q-card class="q-ma-md q-pa-md" v-if="userRole != 'estimator'">
         <div class="row q-ml-xs justify-between">
           <div class="text-bold q-mt-xs">Claim Deadlines</div>
           <div class="q-mt-xs">
@@ -173,53 +174,56 @@
           </div>
         </div>
       </q-card>
-
-      <div class="form-heading q-ml-md col q-mb-md">Claim Timeline</div>
-      <div v-for="(phase, index) in getSelectedClaim.phases">
-        <div class="row">
-          <div class="col-2 q-ml-md">
-            <q-avatar
-              class="q-ma-sm"
-              size="50px"
-              style="background-color: #eca74c"
-              font-size="15px"
-              text-color="white"
-            >
-              <span>
-                {{
-                  getSelectedClaim.phases[index].created
-                    ? getSelectedClaim.phases[index].created
-                    : '-' | moment('D MMM')
-                }}</span
+      <div v-if="userRole != 'estimator'">
+        <div class="form-heading q-ml-md col q-mb-md">
+          Claim Timeline
+        </div>
+        <div v-for="(phase, index) in getSelectedClaim.phases">
+          <div class="row">
+            <div class="col-2 q-ml-md">
+              <q-avatar
+                class="q-ma-sm"
+                size="50px"
+                style="background-color: #eca74c"
+                font-size="15px"
+                text-color="white"
               >
-            </q-avatar>
-          </div>
-          <div class="col row q-ml-lg q-mt-sm">
-            <div class="col-10">
-              <span class="text-bold">
+                <span>
+                  {{
+                    getSelectedClaim.phases[index].created
+                      ? getSelectedClaim.phases[index].created
+                      : '-' | moment('D MMM')
+                  }}</span
+                >
+              </q-avatar>
+            </div>
+            <div class="col row q-ml-lg q-mt-sm">
+              <div class="col-10">
+                <span class="text-bold">
+                  {{
+                    getSelectedClaim.phases[index].value
+                      ? getSelectedClaim.phases[index].value
+                      : '-'
+                  }}</span
+                >
+              </div>
+
+              <q-icon
+                name="create"
+                color="primary"
+                class="col"
+                size="xs"
+                @click="onClickeditClaimTimeline(index)"
+              ></q-icon>
+
+              <div class="q-mb-xl heading-light">
+                Phase changed to
                 {{
                   getSelectedClaim.phases[index].value
                     ? getSelectedClaim.phases[index].value
                     : '-'
-                }}</span
-              >
-            </div>
-
-            <q-icon
-              name="create"
-              color="primary"
-              class="col"
-              size="xs"
-              @click="onClickeditClaimTimeline(index)"
-            ></q-icon>
-
-            <div class="q-mb-xl heading-light">
-              Phase changed to
-              {{
-                getSelectedClaim.phases[index].value
-                  ? getSelectedClaim.phases[index].value
-                  : '-'
-              }}
+                }}
+              </div>
             </div>
           </div>
         </div>
@@ -458,6 +462,7 @@
           <q-card class="q-mx-sm">
             <div class="q-px-md">
               <q-input
+                v-if="userRole != 'estimator'"
                 dense
                 v-model="lossInfo.dateOfLoss"
                 mask="##/##/####"
@@ -486,6 +491,7 @@
                 </template>
               </q-input>
               <q-select
+                v-if="userRole != 'estimator'"
                 dense
                 v-model="lossInfo.cause.id"
                 behavior="menu"
@@ -538,11 +544,11 @@
                 v-model="lossInfo.desc"
                 style="resize: none"
               />
-              <div class="row">
+              <div class="row" v-if="userRole != 'estimator'">
                 <div>FEMA Claim</div>
                 <q-toggle class="q-ml-auto" v-model="isFemaClaim" />
               </div>
-              <div class="row">
+              <div class="row" v-if="userRole != 'estimator'">
                 <div>Property is not habitable</div>
                 <q-toggle class="q-ml-auto" v-model="isHabitable" />
               </div>
@@ -568,7 +574,7 @@ import ClaimDetail from 'components/ClaimDetail';
 import moment from 'moment';
 import { date } from 'quasar';
 import { dateToShow } from '@utils/date';
-
+import { getCurrentUser } from '@utils/auth';
 export default {
   name: 'Claims',
   components: { CustomBar, ClaimDetail },
@@ -648,6 +654,7 @@ export default {
   },
 
   created() {
+    this.userRole = getCurrentUser().attributes.roles[0];
     if (!this.selectedClaimId) {
       this.$router.push('/clients');
     }

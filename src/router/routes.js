@@ -11,6 +11,7 @@ const routes = [
         caseSensitive: true,
         component: () => import('pages/Login.vue')
       },
+
       {
         path: 'signup',
         name: 'signup',
@@ -49,6 +50,12 @@ const routes = [
         name: 'dashboard',
         caseSensitive: true,
         component: () => import('pages/Dashboard.vue')
+      },
+      {
+        path: 'document-upload',
+        name: 'document upload ',
+        caseSensitive: true,
+        component: () => import('pages/DocumentUpload.vue')
       },
       {
         path: 'configuration',
@@ -179,6 +186,7 @@ const routes = [
         caseSensitive: true,
         component: () => import('pages/ClaimFiles.vue')
       },
+
       {
         path: 'claim-action-items/:claimId',
         name: 'action items ',
