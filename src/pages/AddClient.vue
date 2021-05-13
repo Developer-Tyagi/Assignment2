@@ -2025,8 +2025,9 @@ export default {
             value: this.insuranceDetails.carrierName
           },
           number: this.insuranceDetails.policyNumber,
-          isClaimFiled: this.hasClaimBeenFilledToggle,
-          isForcedPlaced: this.isThisIsForcedPlacedPolicyToggle,
+          isClaimFiled: this.insuranceDetails.hasClaimBeenFilledToggle,
+          isForcedPlaced: this.insuranceDetails
+            .isThisIsForcedPlacedPolicyToggle,
           claimNumber: this.insuranceDetails.insuranceClaimNumber,
           category: {
             id: this.insuranceDetails.policyCategory.id,
