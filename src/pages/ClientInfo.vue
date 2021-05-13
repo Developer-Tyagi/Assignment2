@@ -1,5 +1,14 @@
 <template>
   <q-page>
+    <div class="row">
+      <q-icon
+        name="create"
+        color="primary"
+        class="icon-top"
+        v-if="!editClientInfoDailog"
+        @click="editClientInfoDailog = true"
+      ></q-icon>
+    </div>
     <div class="listing-height">
       <!-- This is for showing the client details   -->
       <div class="q-ma-md row justify-between">
@@ -38,14 +47,6 @@
 
       <q-card class="q-ma-md q-ma-sm">
         <div class="client-list q-pa-sm">
-          <div class="row">
-            <q-icon
-              name="create"
-              color="primary"
-              class="icon-top"
-              @click="editClientInfoDailog = true"
-            ></q-icon>
-          </div>
           <div class="row">
             <div class="heading-light col-xs-4 lightHeading">
               Insured Details
@@ -226,7 +227,11 @@
           </div>
 
           <div class="q-mt-md row">
-            <div class="q-mt-none col-xs-4 heading-light">Tenant Details</div>
+            <div class="q-mt-none col-xs-4 heading-light">
+              Tenant Details{{
+                editSelectedClient.attributes.insuredInfo.tenantInfo
+              }}
+            </div>
             <div
               class="column q-ml-md"
               v-if="editSelectedClient.attributes.insuredInfo.tenantInfo"
