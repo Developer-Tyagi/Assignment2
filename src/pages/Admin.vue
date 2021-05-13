@@ -265,7 +265,7 @@
                     v-model="users.email"
                     style="width:270px;"
                     label="Email"
-                    class="q-mx-md  col-5 required"
+                    class="q-mx-md  col-5 required input-extra-padding"
                     outlined
                     lazy-rules
                     :rules="[
@@ -279,7 +279,7 @@
                     outlined
                     filled
                     options-dense
-                    class="q-mx-md col-5 input-extra-padding required"
+                    class="q-mx-sm col-5 input-extra-padding required "
                     v-model="selectedRole"
                     :options="userRole"
                     label="Role"
@@ -331,6 +331,7 @@
                   :isDropBoxEnable="false"
                   :isChecksEnable="false"
                   :value="true"
+                  :view="'web'"
                 />
               </q-card>
             </div>
