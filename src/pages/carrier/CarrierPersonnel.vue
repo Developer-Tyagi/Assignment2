@@ -5,7 +5,7 @@
       <q-btn
         size="sm"
         name="create"
-        class="icon-top"
+        class="add-icon"
         flat
         @click="addPersonnelDialog = true"
         ><img src="~assets/add.svg" height="24" width="24"
