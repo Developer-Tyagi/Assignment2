@@ -106,8 +106,9 @@
             <div class="text-bold q-my-xs">TITLE</div>
             <div><q-input outlined v-model="title" /></div>
             <div class="text-bold q-py-sm">BODY</div>
+
             <q-editor
-              v-model="editor"
+              v-model="post.body"
               :definitions="{
                 save: {
                   tip: 'Save your work',
@@ -117,7 +118,7 @@
                 },
                 upload: {
                   tip: 'Upload to cloud',
-                  icon: 'cloud_upload',
+                  icon: 'insert_photo',
                   label: 'Upload',
                   handler: insertImg
                 }
@@ -136,7 +137,8 @@
                 ],
                 ['upload', 'save']
               ]"
-            ></q-editor>
+            >
+            </q-editor>
           </q-card>
           <div class="row justify-center">
             <q-btn
@@ -273,8 +275,16 @@ export default {
 
   data() {
     return {
+      definitions: {
+        insert_img: {
+          tip: 'Insertar Imagen',
+          icon: 'photo',
+          handler: this.insertImg // handler will call insertImg() method
+        }
+      },
       title: '',
       editor: '',
+      post: { body: '' },
       dialogBox: false,
       dialogBoxName: {},
       tab: {},
@@ -354,14 +364,6 @@ export default {
       'getClaimReasons',
       'getLossCauses'
     ]),
-    saveWork() {
-      this.$q.notify({
-        message: 'Saved your text to local storage',
-        color: 'green-4',
-        textColor: 'white',
-        icon: 'cloud_done'
-      });
-    },
     insertImg() {
       // insertImg method
       const post = this.post;
@@ -379,12 +381,22 @@ export default {
         let dataUrl = '';
         reader.onloadend = function() {
           dataUrl = reader.result;
+
           // append result to the body of your post
-          this.editor += '<div><img src="' + dataUrl + '" /></div>';
+          post.body +=
+            '<div><img src="' + dataUrl + '" style="height:200px;" /></div>';
         };
         reader.readAsDataURL(file);
       };
       input.click();
+    },
+    saveWork() {
+      this.$q.notify({
+        message: 'Saved your text to local storage',
+        color: 'green-4',
+        textColor: 'white',
+        icon: 'cloud_done'
+      });
     },
     uploadIt() {
       this.$q.notify({
