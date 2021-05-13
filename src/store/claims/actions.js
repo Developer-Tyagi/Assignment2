@@ -747,3 +747,61 @@ export async function deleteDirectory({ dispatch }, id) {
     });
   }
 }
+
+// API is for View list of template types for estimator account only
+export async function getTemplates({ commit, dispatch }) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get('/templatetypes');
+
+    commit('setTemplateTypes', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+  }
+}
+// API for Get document for claim.
+export async function getClaimDocument({ commit, dispatch }, claimID) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get(`/claims/${claimID}/documents`);
+    commit('setClaimDocument', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+  }
+}
+
+// API for Upload document to claim
+export async function uploadClaimDocument({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      `/claims/${payload.id}/documents`,
+      payload.formData
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'File Uploaded Successfully!'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+    return false;
+  }
+}
