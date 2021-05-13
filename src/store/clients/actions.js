@@ -191,15 +191,18 @@ export async function editClient({ dispatch, state }, payload) {
       `/clients/${payload.id}/info`,
       buildApiData('clients', payload.clientData)
     );
-
     dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Client Info Updated Successfully !'
+    });
     return data;
   } catch (e) {
     console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response[0].title
+      message: 'failed to updated client info'
     });
   }
 }

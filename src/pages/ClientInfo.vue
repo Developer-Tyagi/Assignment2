@@ -228,9 +228,7 @@
 
           <div class="q-mt-md row">
             <div class="q-mt-none col-xs-4 heading-light">
-              Tenant Details{{
-                editSelectedClient.attributes.insuredInfo.tenantInfo
-              }}
+              Tenant Details
             </div>
             <div
               class="column q-ml-md"
@@ -956,11 +954,8 @@ export default {
           delete payload.clientData.insuredInfo.tenantInfo;
         }
 
-        this.editClient(payload).then(async () => {
-          this.successMessage(constants.successMessages.CLIENT_INFO);
-        });
-
-        await this.getSingleClientDetails(this.selectedClientId);
+        await this.editClient(payload);
+        this.getSingleClientDetails(this.selectedClientId);
         this.$router.push('/client-details');
       }
     },
