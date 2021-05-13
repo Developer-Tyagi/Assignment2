@@ -263,9 +263,9 @@
                   <q-input
                     dense
                     v-model="users.email"
-                    style="width:270px;"
+                    style=""
                     label="Email"
-                    class="q-mx-md  col-5 required input-extra-padding"
+                    class="q-mx-md  col-5 required "
                     outlined
                     lazy-rules
                     :rules="[
@@ -279,7 +279,7 @@
                     outlined
                     filled
                     options-dense
-                    class="q-mx-sm col-5 input-extra-padding required "
+                    class="q-mx-md required col-5 input-extra-padding "
                     v-model="selectedRole"
                     :options="userRole"
                     label="Role"
@@ -756,6 +756,7 @@ export default {
         email: '',
         roles: [],
         mailingAddress: {
+          houseNumber: '',
           addressCountry: '',
           addressLocality: '',
           addressRegion: '',
@@ -931,7 +932,12 @@ export default {
       this.users.contact.type = this.user.phoneNumber.type;
       this.users.contact.number = this.user.phoneNumber.number;
       this.users.email = this.user.email;
-      this.users.mailingAddress = this.user.mailingAddress;
+      this.users.mailingAddress.addressCountry = this.user.mailingAddress.addressCountry;
+      this.users.mailingAddress.addressRegion = this.user.mailingAddress.addressRegion;
+      this.users.mailingAddress.addressLocality = this.user.mailingAddress.addressLocality;
+      this.users.mailingAddress.houseNumber = this.user.mailingAddress.houseNumber;
+      this.users.mailingAddress.streetAddress = this.user.mailingAddress.streetAddress;
+      this.users.mailingAddress.postalCode = this.user.mailingAddress.postalCode;
       this.editUserInfoDialog = true;
     },
     // Action OverDue Sub Dropdown Index set
