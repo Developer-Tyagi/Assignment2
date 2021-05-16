@@ -218,6 +218,7 @@
           :options="vendorIndustries"
           option-value="machineValue"
           behavior="menu"
+          @input="setVendorTypeForAssignVendor(index)"
           emit-value
           map-options
           lazy-rules
@@ -306,14 +307,27 @@
           </q-card>
         </div>
       </div>
-      <q-btn
-        v-if="expertVendorInfo.vendorExpertHiredToggle"
-        class="q-ma-none q-mb-sm"
-        size="sm"
-        label="Add More"
-        color="primary"
-        @click="addAnotherVendor(expertVendorInfo.isHiredByClaimguru)"
-      />
+      <div class="row justify-between">
+        <div>
+          <q-btn
+            v-if="expertVendorInfo.vendorExpertHiredToggle"
+            class="q-ma-none q-mb-sm"
+            size="sm"
+            label="Add More"
+            color="primary"
+            @click="addAnotherVendor(expertVendorInfo.isHiredByClaimguru)"
+          />
+        </div>
+        <div>
+          <q-btn
+            v-if="expertVendorInfo.isHiredByClaimguru.length > 1"
+            size="sm"
+            label="remove"
+            color="primary"
+            @click="removeAnotherVendor(expertVendorInfo.isHiredByClaimguru)"
+          />
+        </div>
+      </div>
     </q-card>
 
     <q-card class="q-pa-sm q-mt-sm" v-if="!claimExpertVendor">
@@ -434,6 +448,15 @@ export default {
     },
     setVendorType(index) {
       const val = this.expertVendorInfo.isAlreadyHiredVendor[index].industry;
+
+      const result = this.vendorIndustries.find(obj => {
+        return obj.machineValue == val;
+      });
+      this.industryValue = result;
+    },
+
+    setVendorTypeForAssignVendor(index) {
+      const val = this.expertVendorInfo.isHiredByClaimguru[index].industry;
 
       const result = this.vendorIndustries.find(obj => {
         return obj.machineValue == val;
