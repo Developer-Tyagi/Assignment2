@@ -355,9 +355,6 @@ export default {
     AddVendor
   },
   props: {
-    expertVendorInfo: {
-      type: Object
-    },
     claimExpertVendor: {
       type: Boolean
     },
@@ -367,6 +364,14 @@ export default {
   },
   data() {
     return {
+      expertVendorInfo: {
+        isAlreadyHiredVendor: [{ industry: '', vendor: {} }],
+        isHiredByClaimguru: [{ industry: '', vendor: {} }],
+        anyOtherExpertHiredToggle: false,
+        vendorExpertHiredToggle: false,
+        notes: '',
+        internalNotes: ''
+      },
       industryValue: '',
       constants: constants,
       industryName: '',
@@ -450,6 +455,7 @@ export default {
     },
 
     addAnotherVendor(array) {
+      console.log(array);
       const len = array.length;
       if (array[len - 1].industry && array[len - 1].vendor.id) {
         array.push({ industry: '', vendor: {} });
