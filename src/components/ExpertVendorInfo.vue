@@ -455,7 +455,6 @@ export default {
     },
 
     addAnotherVendor(array) {
-      console.log(array);
       const len = array.length;
       if (array[len - 1].industry && array[len - 1].vendor.id) {
         array.push({ industry: '', vendor: {} });
