@@ -99,7 +99,6 @@
               </div>
             </div>
           </q-form>
-          <!-- <.............................> -->
           <q-form
             @submit="onNextButtonClick(2)"
             @reset="onBackButtonClick(2)"
@@ -1037,90 +1036,6 @@ export default {
         typeOfLoss: ''
       },
 
-      // lossInfo: {
-      //   isDisable: '',
-      //   lossAddressNameOptions: ['Others'],
-      //   isMortgageHomeToggle: false,
-      //   vendorsListDialog: false,
-      //   vendorDialogFilterByIndustry: '',
-      //   showVendorDialogFilters: false,
-      //   addVendorDialog: false,
-      //   vendorDialogName: '',
-      //   valueName: '',
-      //   lossAddressNameDropdown: '',
-      //   wasAppifProvidedToTheInsuredToggle: false,
-      //   doesTheOfficeNeedToProvidePpifToTheInsuredToggle: false,
-      //   PPdamagedItemsDailog: false,
-      //   ppDamagedItems: [],
-      //   damagedItemsDailog: false,
-      //   osDamagedItems: [],
-      //   isDamageOSToggle: false,
-      //   isThereDamageToPersonalPropertyToggle: false,
-      //   femaClaimToggle: false,
-      //   isStateOfEmergencyToggle: false,
-      //   isTheHomeHabitable: false,
-      //   lossAddressDetails: {
-      //     houseNumber: '',
-      //     addressCountry: '',
-      //     addressRegion: '',
-      //     addressLocality: '',
-      //     postalCode: '',
-      //     streetAddress: '',
-      //     postOfficeBoxNumber: '4',
-      //     dropBox: {
-      //       info: '',
-      //       isPresent: false
-      //     }
-      //   },
-      //   isLossAddressSameAsClientToggle: false,
-      //   repairReplaceRadio: '',
-      //   serialNumber: '',
-      //   PPDamageName: '',
-      //   PPDamageDescription: '',
-      //   PPDamagedItemCost: '',
-      //   lossAddressName: '',
-      //   OSDamageDescription: '',
-      //   OSDamageName: '',
-
-      //   DescriptionOfLoss: '',
-
-      //   OSDamagedItemCost: '',
-      //   dateOfLoss: '',
-      //   propertyDescription: '',
-      //   damagePersnalPropertyDescription: '',
-      //   reasonClaim: {
-      //     value: '',
-      //     id: '',
-      //     machineValue: ''
-      //   },
-      //   deadlineDate: '',
-      //   recovDeadline: '',
-      //   nameOfEmergency: '',
-      //   descriptionDwelling: '',
-      //   damageDescription: '',
-      //   property: {
-      //     value: '',
-      //     id: '',
-      //     machineValue: ''
-      //   },
-      //   insuranceAdjustorName: '',
-      //   whereDidTheLossOccur: '',
-      //   other: '',
-      //   severityOfClaimType: {
-      //     id: '',
-      //     value: '',
-      //     machineValue: ''
-      //   },
-      //   causeOfLoss: {
-      //     value: '',
-      //     id: '',
-      //     machineValue: ''
-      //   },
-      //   describeTheLoss: '',
-      //   insuranceAdjustorPhone: '',
-      //   insuranceAdjustorPhoneType: '',
-      //   typeOfLoss: ''
-      // },
       insuranceDetails: {
         hasClaimBeenFilledToggle: false,
         isThisIsForcedPlacedPolicyToggle: false,
@@ -1137,6 +1052,7 @@ export default {
         },
         carrierName: '',
         carrierId: '',
+        hasAppraisalClause: false,
         insuranceClaimNumber: '',
         policyNumber: '',
         policyEffectiveDate: '',
@@ -1237,7 +1153,7 @@ export default {
       const obj = this.setClientProperty.find(item => {
         return item.id === this.propertyId;
       });
-      // this.lossInfo.lossAddressNameDropdown = obj.attributes.name;
+      this.lossInfo.lossAddressNameDropdown = obj.attributes.name;
       this.lossInfo.isDisable = true;
     } else {
       this.lossInfo.lossAddressNameDropdown = 'Others';
