@@ -14,11 +14,21 @@ export async function setOfflineActiveLeads(state) {
   state.activeLeads = await getCollection('activeLeads').toArray();
 }
 
-export function setArchivedLeads(state, leads) {
-  state.archivedLeads = leads.map(lead => ({
+export async function setArchivedLeads(state, leads) {
+  const archivedLeadsCollection = await getCollection('archivedLeads');
+  const archivedLeads = leads.map(lead => ({
     ...lead.attributes,
     id: lead.id
   }));
+  state.archivedLeads = archivedLeads;
+  if ((await archivedLeadsCollection.count()) > 0) {
+    await archivedLeadsCollection.delete([]);
+  }
+  await localDB.archivedLeads.bulkAdd(archivedLeads);
+}
+
+export async function setOfflineArchivedLeads(state) {
+  state.archivedLeads = await getCollection('archivedLeads').toArray();
 }
 
 export function moveActiveToArchive(state, leadId) {

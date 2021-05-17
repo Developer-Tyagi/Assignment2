@@ -1108,6 +1108,7 @@ export default {
 
         this.addLeads(payload).then(() => {
           this.setSelectedClient();
+          this.$router.push('/leads');
         });
       } else {
         const payload = {

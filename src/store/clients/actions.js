@@ -1,21 +1,35 @@
 import request from '@api';
 import { buildApiData } from '@utils/api';
 
-export async function getClients({ commit, dispatch }, searchString = '') {
+export async function getClients(
+  {
+    rootState: {
+      common: { isOnline }
+    },
+    commit,
+    dispatch
+  },
+  searchString = ''
+) {
   dispatch('setLoading', true);
-  try {
-    const { data } = await request.get('/clients', {
-      name: searchString
-    });
-    commit('setClients', data);
+  if (isOnline) {
+    try {
+      const { data } = await request.get('/clients', {
+        name: searchString
+      });
+      commit('setClients', data);
+      dispatch('setLoading', false);
+    } catch (e) {
+      console.log(e);
+      dispatch('setLoading', false);
+      dispatch('setNotification', {
+        type: 'negative',
+        message: e.response[0].title
+      });
+    }
+  } else {
+    commit('setOfflineClients', searchString);
     dispatch('setLoading', false);
-  } catch (e) {
-    console.log(e);
-    dispatch('setLoading', false);
-    dispatch('setNotification', {
-      type: 'negative',
-      message: e.response[0].title
-    });
   }
 }
 
