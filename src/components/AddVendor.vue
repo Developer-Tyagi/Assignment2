@@ -201,8 +201,8 @@
           class="full-width q-mt-auto text-capitalize"
           @click="onAddVendorButtonClick"
           size="'xl'"
+          :label="isEdit ? 'SAVE' : 'Add Vendor'"
         >
-          Add Vendor
         </q-btn>
       </q-form>
     </div>

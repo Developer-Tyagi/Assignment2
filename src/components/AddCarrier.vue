@@ -177,8 +177,8 @@
           class="full-width q-mt-auto text-capitalize"
           @click="onAddCarrierButtonClick"
           size="'xl'"
+          :label="isEdit ? 'SAVE' : 'Add Carrier'"
         >
-          Add Carrier
         </q-btn>
       </q-form>
     </div>
