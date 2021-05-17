@@ -169,8 +169,8 @@
             class="full-width q-mt-auto text-capitalize"
             @click="onAddMortgageButtonClick"
             size="'xl'"
+            :label="isEdit ? 'SAVE' : 'Add Mortgage'"
           >
-            Add Mortgage
           </q-btn>
         </div>
       </q-form>

@@ -319,7 +319,7 @@
         </div>
         <q-btn
           @click="onSave"
-          label="Save"
+          label="Add Personnel"
           color="primary"
           class="button-width-90 q-mt-lg"
           size="'xl'"
