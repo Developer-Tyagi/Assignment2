@@ -174,10 +174,12 @@
                   </div>
                   <div class="row q-ma-md">
                     <div class="col-4 heading-light">Cause Of Loss</div>
-                    <div>
-                      {{ claim.lossCause ? claim.lossCause.value : '-' }}
-                    </div>
+                    <span>
+                      {{ claim.lossCause ? claim.lossCause.value : '' }} -
+                      {{ claim.lossCause ? claim.lossCause.desc : '' }}
+                    </span>
                   </div>
+
                   <q-separator />
                 </div>
               </div>
