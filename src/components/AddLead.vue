@@ -814,7 +814,7 @@ export default {
       lossCauseOptions: [],
       leadSource: [],
       valueName: '',
-      step: 4,
+      step: 0,
       stepClickValidTill: 0,
       clientOptions: [],
       stepArr: [
@@ -845,9 +845,9 @@ export default {
 
         selectedContactType: 'Main',
         honorific: {
-          id: '602a5eaa312a2b57ac2b00ad',
-          value: 'Mr',
-          machineValue: 'mr'
+          id: '',
+          value: 'Mr.',
+          machineValue: 'mr_'
         }
       },
       lossDetails: {
