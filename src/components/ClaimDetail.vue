@@ -120,6 +120,12 @@
           getSelectedClaim.lossInfo.cause
             ? getSelectedClaim.lossInfo.cause.value
             : '-'
+        }}
+        -
+        {{
+          getSelectedClaim.lossInfo.cause
+            ? getSelectedClaim.lossInfo.cause.desc
+            : '-'
         }}</span
       >
     </div>
