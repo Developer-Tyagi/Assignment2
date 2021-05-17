@@ -40,19 +40,31 @@ export async function getAllUsers({ commit, dispatch }, params) {
 export function setNotification({ commit }, notification) {
   commit('setNotification', notification);
 }
-export async function getLossCauses({ commit, dispatch }) {
-  dispatch('setLoading', true);
-  try {
-    const { data } = await request.get('/losscauses');
-    commit('setLossCause', data);
+
+export async function getLossCauses({
+  rootState: {
+    common: { isOnline }
+  },
+  commit,
+  dispatch
+}) {
+  if (isOnline) {
+    dispatch('setLoading', true);
+    try {
+      const { data } = await request.get('/losscauses');
+      commit('setLossCause', data);
+      dispatch('setLoading', false);
+    } catch (e) {
+      console.log(e);
+      dispatch('setLoading', false);
+      dispatch('setNotification', {
+        type: 'negative',
+        message: e.response[0].title
+      });
+    }
+  } else {
+    commit('setOfflineLossCauses');
     dispatch('setLoading', false);
-  } catch (e) {
-    console.log(e);
-    dispatch('setLoading', false);
-    dispatch('setNotification', {
-      type: 'negative',
-      message: e.response[0].title
-    });
   }
 }
 export async function getContactTypes({

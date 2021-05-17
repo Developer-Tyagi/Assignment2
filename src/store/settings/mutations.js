@@ -13,6 +13,10 @@ export async function setInspectionTypes(state, types) {
   await localDB.inspectionTypes.bulkAdd(inspectionTypes);
 }
 
+export async function setOfflineInspectionTypes(state) {
+  state.inspectionTypes = await getCollection('inspectionTypes').toArray();
+}
+
 export function setAllUsers(state, Users) {
   state.allUsers = Users.map(allUser => ({
     attributes: allUser.attributes,

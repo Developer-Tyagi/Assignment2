@@ -114,7 +114,8 @@ export async function addLeads(
       return false;
     }
   } else {
-    await localDB.activeLeads.add({ ...payload, offline: true });
+    const id = makeId();
+    await localDB.activeLeads.add({ ...payload, offline: true, id: id });
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'warning',
@@ -161,4 +162,17 @@ export async function editLeadDetails({ dispatch, state }, payload) {
       message: 'Failed to update Lead Info! please try again !'
     });
   }
+}
+
+export function makeId() {
+  var result = [];
+  var characters =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  var charactersLength = characters.length;
+  for (var i = 0; i < 20; i++) {
+    result.push(
+      characters.charAt(Math.floor(Math.random() * charactersLength))
+    );
+  }
+  return result.join('');
 }

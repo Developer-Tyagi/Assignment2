@@ -11,8 +11,7 @@ localDB.version(1).stores({
   carriers: 'id',
   lossCauses: 'id',
   contactTypes: 'id',
-  inspectionTypes: 'id',
-  addLead: '++id'
+  inspectionTypes: 'id'
 });
 
 export function getCollection(name) {
