@@ -52,3 +52,8 @@ export function setRoles(state, roles) {
     isPaid: type.attributes.isPaid
   }));
 }
+
+export function setNetworkStatus(state, isOnline) {
+  state.isOnline = isOnline;
+  console.log(state.isOnline);
+}

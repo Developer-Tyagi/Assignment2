@@ -1,5 +1,17 @@
-export function setActiveLeads(state, leads) {
-  state.activeLeads = leads.map(lead => ({ ...lead.attributes, id: lead.id }));
+import localDB, { getCollection } from '@services/dexie';
+
+export async function setActiveLeads(state, leads) {
+  const activeLeadsCollection = await getCollection('activeLeads');
+  const activeLeads = leads.map(lead => ({ ...lead.attributes, id: lead.id }));
+  state.activeLeads = activeLeads;
+  if ((await activeLeadsCollection.count()) > 0) {
+    await activeLeadsCollection.delete([]);
+  }
+  await localDB.activeLeads.bulkAdd(activeLeads);
+}
+
+export async function setOfflineActiveLeads(state) {
+  state.activeLeads = await getCollection('activeLeads').toArray();
 }
 
 export function setArchivedLeads(state, leads) {

@@ -29,6 +29,7 @@ export default function() {
         name: 'Office',
         price: 249
       }
-    ]
+    ],
+    isOnline: navigator.onLine
   };
 }

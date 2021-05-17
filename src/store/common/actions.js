@@ -169,3 +169,7 @@ export async function createDirectories({ dispatch, state }, payload) {
     return false;
   }
 }
+
+export async function changeNetworkStatus({ commit }, isOnline) {
+  commit('setNetworkStatus', isOnline);
+}
