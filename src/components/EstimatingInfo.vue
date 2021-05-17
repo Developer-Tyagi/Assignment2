@@ -167,9 +167,9 @@
             <q-select
               class="required"
               dense
-              v-model="addEstimatorDialogInfo.honorific.id"
+              v-model="addEstimatorDialogInfo.honorific.value"
               :options="titles"
-              option-value="id"
+              option-value="value"
               option-label="value"
               map-options
               @input="setTitleName(addEstimatorDialogInfo.honorific)"
@@ -280,11 +280,11 @@ export default {
           machineValue: 'mr_'
         },
         name: '',
-        fname: '',
+        fname: 'hhhhhhh',
         lname: '',
         email: '',
         phone: '',
-        type: '',
+        type: 'yyyyyyy',
         companyName: ''
       }
     };
@@ -362,11 +362,11 @@ export default {
 
     setTitleName(selectedTitle) {
       const selected = this.titles.find(obj => {
-        return obj.id === selectedTitle.id;
+        return obj.value === selectedTitle.value;
       });
 
-      selectedTitle.value = selected.title;
       selectedTitle.machineValue = selected.machineValue;
+      selectedTitle.id = selected.id;
     },
 
     onClickEstimatorOpen() {
