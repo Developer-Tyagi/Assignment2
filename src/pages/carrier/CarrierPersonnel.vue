@@ -197,7 +197,7 @@
                 dense
                 v-model="personnel.honorific.value"
                 :options="titles"
-                option-value="id"
+                option-value="value"
                 option-label="value"
                 map-options
                 options-dense
@@ -383,9 +383,9 @@ export default {
         options: [],
         role: { value: null, id: '', machineValue: '' },
         honorific: {
-          id: '602a5eaa312a2b57ac2b00ad',
-          value: 'Mr',
-          machineValue: 'mr'
+          id: '',
+          value: 'Mr.',
+          machineValue: 'mr_'
         },
         fname: '',
         lname: '',
@@ -569,10 +569,10 @@ export default {
 
     setTitleName() {
       const title = this.titles.find(obj => {
-        return obj.id === this.personnel.honorific.id;
+        return obj.value === this.personnel.honorific.value;
       });
 
-      this.personnel.honorific.value = title.value;
+      this.personnel.honorific.id = title.id;
 
       this.personnel.honorific.machineValue = title.machineValue;
     },
