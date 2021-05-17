@@ -41,14 +41,12 @@ review_deploy:
     DOCKER_IMAGE: us-west1-docker.pkg.dev/pre-prod-286801/claimguru/claimguru-ui:${CI_MERGE_REQUEST_IID}
     KUBE_NAMESPACE: claimguru-ui-${CI_MERGE_REQUEST_IID}
     GOOGLE_APPLICATION_CREDENTIALS: /tmp/key.json
-    SOPS_KMS: projects/pre-prod-286801/locations/global/keyRings/sops/cryptoKeys/sops-key
   script:
     - echo "$SERVICE_ACCOUNT_KEY" > /tmp/key.json
     - echo $CI_MERGE_REQUEST_IID
     - kubectl version
     - kubectl create namespace ${KUBE_NAMESPACE} --dry-run -o yaml | kubectl apply -f -
     - kubectl label namespace ${KUBE_NAMESPACE} istio-injection=enabled --dry-run -o yaml | kubectl apply -f -
-    - kubectl create secret generic app-sa-key --from-file /tmp/key.json --namespace ${KUBE_NAMESPACE} --dry-run -o yaml | kubectl apply -f -
     - sed -i "s/CI_COMMIT_SHORT_SHA/${CI_COMMIT_SHORT_SHA}/g" k8s/dev/crd-spec.yaml
     - sed -i "s/CI_MERGE_REQUEST_IID/${CI_MERGE_REQUEST_IID}/g" k8s/dev/crd-spec.yaml
     - sed -i "s~DOCKER_IMAGE~${DOCKER_IMAGE}~g" k8s/dev/crd-spec.yaml
@@ -116,13 +114,11 @@ pre_prod_deploy:
     DOCKER_IMAGE: us-west1-docker.pkg.dev/pre-prod-286801/claimguru/claimguru-ui
     KUBE_NAMESPACE: claimguru
     GOOGLE_APPLICATION_CREDENTIALS: /tmp/key.json
-    SOPS_KMS: projects/pre-prod-286801/locations/global/keyRings/sops/cryptoKeys/sops-key
   script:
     - echo "$SERVICE_ACCOUNT_KEY" > /tmp/key.json
     - kubectl version
     - kubectl create namespace ${KUBE_NAMESPACE} --dry-run -o yaml | kubectl apply -f -
     - kubectl label namespace ${KUBE_NAMESPACE} istio-injection=enabled --dry-run -o yaml | kubectl apply -f -
-    - kubectl create secret generic app-sa-key --from-file /tmp/key.json --namespace ${KUBE_NAMESPACE} --dry-run -o yaml | kubectl apply -f -
     - sed -i "s/CI_COMMIT_SHORT_SHA/${CI_COMMIT_SHORT_SHA}/g" k8s/pre-prod/crd-spec.yaml
     - sed -i "s~DOCKER_IMAGE~${DOCKER_IMAGE}~g" k8s/pre-prod/crd-spec.yaml
     - sed -i "s/CI_JOB_ID/${CI_JOB_ID}/g" k8s/pre-prod/crd-spec.yaml
@@ -168,13 +164,11 @@ demo_deploy:
     DOCKER_IMAGE: us-west1-docker.pkg.dev/pre-prod-286801/claimguru/claimguru-ui:demo
     KUBE_NAMESPACE: demo-claimguru
     GOOGLE_APPLICATION_CREDENTIALS: /tmp/key.json
-    SOPS_KMS: projects/pre-prod-286801/locations/global/keyRings/sops/cryptoKeys/sops-key
   script:
     - echo "$SERVICE_ACCOUNT_KEY" > /tmp/key.json
     - kubectl version
     - kubectl create namespace ${KUBE_NAMESPACE} --dry-run -o yaml | kubectl apply -f -
     - kubectl label namespace ${KUBE_NAMESPACE} istio-injection=enabled --dry-run -o yaml | kubectl apply -f -
-    - kubectl create secret generic app-sa-key --from-file /tmp/key.json --namespace ${KUBE_NAMESPACE} --dry-run -o yaml | kubectl apply -f -
     - sed -i "s/CI_COMMIT_SHORT_SHA/${CI_COMMIT_SHORT_SHA}/g" k8s/demo/crd-spec.yaml
     - sed -i "s~DOCKER_IMAGE~${DOCKER_IMAGE}~g" k8s/demo/crd-spec.yaml
     - sed -i "s/CI_JOB_ID/${CI_JOB_ID}/g" k8s/demo/crd-spec.yaml
