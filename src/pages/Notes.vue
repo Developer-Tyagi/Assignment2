@@ -33,6 +33,39 @@
         </q-card-section>
       </q-card>
     </q-dialog>
+    <!-- Edit Note Dialog  -->
+    <q-dialog
+      v-model="editNoteDialog"
+      persistent
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <CustomBar
+          :dialogName="'Edit Note'"
+          @closeDialog="editNoteDialog = false"
+        />
+        <q-card-section>
+          <div class="mobile-container-page-without-search form-height">
+            <div class="q-py-xs">Notes</div>
+            <textarea
+              v-model="editNote"
+              rows="4"
+              placeholder="Take Notes here..."
+              style="width: 100%"
+            />
+          </div>
+          <q-btn
+            @click="onEditSave"
+            label="Save"
+            color="primary"
+            class="button-width-90"
+            size="'xl'"
+          />
+        </q-card-section>
+      </q-card>
+    </q-dialog>
     <div>
       <div class="icon-top">
         <q-btn @click="addNote" v-if="!addNoteDialog" flat>
@@ -90,8 +123,21 @@
                         }}
                       </div>
                       <div class="row edit-icon">
-                        <q-icon name="create" color="primary" />
-                        <q-icon name="delete" color="primary" class="q-ml-sm" />
+                        <q-icon
+                          name="create"
+                          color="primary"
+                          @click="onEdit(index)"
+                        />
+                        <q-icon
+                          name="delete"
+                          color="primary"
+                          @click="
+                            deleteNote(
+                              editSelectedClient.attributes.notes[index].id
+                            )
+                          "
+                          class="q-ml-sm"
+                        />
                       </div>
                     </div>
                     <div>
@@ -137,7 +183,10 @@ export default {
   data() {
     return {
       addNoteDialog: false,
-      note: ''
+      note: '',
+      editNoteDialog: false,
+      editNote: '',
+      noteId: ''
     };
   },
 
@@ -158,17 +207,54 @@ export default {
     this.getSingleClientDetails(this.selectedClientId);
   },
   methods: {
-    ...mapActions(['getSingleClientDetails', 'addNotes']),
+    ...mapActions([
+      'getSingleClientDetails',
+      'addNotes',
+      'deletedClientNote',
+      'editClientNotes'
+    ]),
     ...mapMutations(['setSelectedClientId']),
 
     addNote() {
       this.addNoteDialog = true;
     },
+    onEdit(index) {
+      this.editNoteDialog = true;
+      this.editNote = this.editSelectedClient.attributes.notes[index].desc;
+      this.noteId = this.editSelectedClient.attributes.notes[index].id;
+    },
+    async onEditSave() {
+      const payload = {
+        clientId: this.selectedClientId,
+        noteId: this.noteId,
+        data: {
+          note: {
+            desc: this.editNote
+          }
+        }
+      };
+      await this.editClientNotes(payload);
+      this.editNoteDialog = false;
+
+      this.editNote = '';
+
+      this.getSingleClientDetails(this.selectedClientId);
+    },
+    async deleteNote(id) {
+      const payload = {
+        clientId: this.selectedClientId,
+        noteId: id
+      };
+      await this.deletedClientNote(payload);
+      this.getSingleClientDetails(this.selectedClientId);
+    },
     async onSave() {
       const payload = {
         id: this.selectedClientId,
         notesData: {
-          note: this.note
+          note: {
+            desc: this.note
+          }
         }
       };
       await this.addNotes(payload);
