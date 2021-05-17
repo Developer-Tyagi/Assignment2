@@ -1311,7 +1311,11 @@ export default {
     ])
   },
 
-  created() {
+  async created() {
+    await this.getInspectionTypes();
+    await this.getContactTypes();
+    await this.getTitles();
+    await this.getLossCauses();
     if (this.isEdit) {
       this.primaryDetails.honorific = this.selectedLead.primaryContact.honorific;
       this.primaryDetails.firstName = this.selectedLead.primaryContact.fname;
@@ -1389,10 +1393,7 @@ export default {
     this.lossDetails.dateOfLoss = date.formatDate(Date.now(), 'MM/DD/YYYY');
 
     // TODO : Have to change primary details object, so that selected client can be assigned as it is.
-    this.getInspectionTypes();
-    this.getContactTypes();
-    this.getTitles();
-    this.getLossCauses();
+
     this.getClients().then(() => {
       if (this.$route.params.id) {
         let selectedClient = this.clients.find(

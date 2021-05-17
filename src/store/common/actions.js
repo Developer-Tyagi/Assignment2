@@ -210,7 +210,7 @@ export async function syncLocalDataBase({ dispatch, state }) {
       delete lead['offline'];
       dispatch('addLeads', lead).then(response => {
         if (response) {
-          localDB.addLead
+          localDB.activeLeads
             .where('id')
             .equals(id)
             .delete();

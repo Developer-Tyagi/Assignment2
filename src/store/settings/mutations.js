@@ -1,10 +1,10 @@
 import localDB, { getCollection } from '@services/dexie';
 
 export async function setInspectionTypes(state, types) {
-  const inspectionTypesCollection = await getCollection('activeLeads');
+  const inspectionTypesCollection = await getCollection('inspectionTypes');
   const inspectionTypes = types.map(type => ({
-    ...type.attributes,
-    id: type.id
+    id: type.id,
+    ...type.attributes
   }));
   state.inspectionTypes = inspectionTypes;
   if ((await inspectionTypesCollection.count()) > 0) {

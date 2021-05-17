@@ -23,6 +23,7 @@ export async function getInspectionTypes({
       });
     }
   } else {
+    console.log('hi');
     commit('setOfflineInspectionTypes', data);
     dispatch('setLoading', false);
   }
