@@ -6,8 +6,8 @@
         dense
         behavior="menu"
         class="required"
-        v-model="lossInfo.reasonClaim.id"
-        option-value="id"
+        v-model="lossInfo.reasonClaim.value"
+        option-value="name"
         option-label="name"
         map-options
         use-input
@@ -64,8 +64,8 @@
         class="input-extra-padding"
         dense
         behavior="menu"
-        v-model="lossInfo.causeOfLoss.id"
-        option-value="id"
+        v-model="lossInfo.causeOfLoss.value"
+        option-value="name"
         option-label="name"
         map-options
         options-dense
@@ -185,8 +185,8 @@
         class="required"
         dense
         behavior="menu"
-        v-model="lossInfo.severityOfClaimType.id"
-        option-value="id"
+        v-model="lossInfo.severityOfClaimType.value"
+        option-value="name"
         option-label="name"
         map-options
         emit-value
@@ -468,11 +468,11 @@ export default {
     validateDate,
     setTypes(types, data) {
       const obj = types.find(item => {
-        return item.id === data.id;
+        return item.value === data.name;
       });
 
       data.machineValue = obj.machineValue;
-      data.value = obj.name;
+      data.id = obj.id;
     },
     deleteDamagedItem(index) {
       this.$delete(this.lossInfo.osDamagedItems, index);

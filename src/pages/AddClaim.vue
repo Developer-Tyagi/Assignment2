@@ -1020,14 +1020,16 @@ export default {
         isThisIsForcedPlacedPolicyToggle: false,
         policy: {
           id: '',
-          value: ''
+          value: '',
+          machineValue: ''
         },
         type: '',
         details: '',
         id: '',
         policyCategory: {
           id: '',
-          value: ''
+          value: '',
+          machineValue: ''
         },
         carrierName: '',
         carrierId: '',
