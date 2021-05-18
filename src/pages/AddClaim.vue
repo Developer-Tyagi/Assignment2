@@ -634,7 +634,7 @@
           </q-form>
           <q-form
             @submit="onNextButtonClick(8)"
-            @reset="onBackButtonClick(9)"
+            @reset="onBackButtonClick(8)"
             :hidden="step != 8"
             ref="personnelInfo"
           >
@@ -670,31 +670,8 @@
             ref="officeTaskInfo"
           >
             <div class="q-pa-md form-card">
-              <q-card class="q-pa-sm q-mt-sm">
-                <q-select
-                  dense
-                  v-model="officeTask.officeActionTypes"
-                  :options="officeActionRequiredTypes"
-                  label="Office Action Required"
-                  class="input-extra-padding"
-                />
-                <q-select
-                  dense
-                  v-model="officeTask.officeTaskTypes"
-                  :options="officeTaskRequiredTypes"
-                  label="Office Task Required"
-                  class="input-extra-padding"
-                />
-                <div class="row">
-                  <p>Additional Office Task Required</p>
-                  <q-toggle
-                    class="q-ml-auto"
-                    v-model="additionalOfficeTaskRequiredToggle"
-                  />
-                </div>
-              </q-card>
+              <OfficeTask :officeTask="officeTask" />
             </div>
-
             <div class="row q-pt-md">
               <div>
                 <q-btn
@@ -748,6 +725,7 @@ import { mapGetters, mapActions, mapMutations } from 'vuex';
 import VendorsList from 'components/VendorsList';
 import AddVendor from 'components/AddVendor';
 import PropertyInfo from 'components/PropertyInfo';
+import OfficeTask from 'components/OfficeTask';
 import { date } from 'quasar';
 
 const addressService = new AddressService();
@@ -766,6 +744,7 @@ export default {
     EstimatingInfo,
     ContractInfo,
     MortgageForm,
+    OfficeTask,
     MortgagesList,
     CompanyPersonnel
   },
@@ -1105,7 +1084,8 @@ export default {
       },
       officeTask: {
         officeActionTypes: '',
-        officeTaskTypes: ''
+        officeTaskTypes: '',
+        officeActionRequired: false
       },
 
       addAditionalPhoneNumberToggle: false,
