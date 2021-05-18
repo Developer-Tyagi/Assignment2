@@ -1582,6 +1582,24 @@ export default {
           hasHomeMortgage: this.lossInfo.isMortgageHomeToggle,
           isSecondClaim: false
         },
+        damageInfo: {
+          personal: {
+            isDamaged: this.lossInfo.isThereDamageToPersonalPropertyToggle,
+            isPPIFFillNow: this.lossInfo.isPAFillingOutToggle,
+            isPPIFFillLater: this.lossInfo.isAdjustorFillOutLaterDate,
+            isClientPreparePPIF: this.lossInfo.isClientGoingToPreparePPIF,
+            isPPIFSendToInsure: this.lossInfo.doYouWantToSendInsuredPPIF,
+            items: this.lossInfo.ppDamagedItems
+          },
+          otherStructure: {
+            isDamaged: this.lossInfo.isThereDamageToPersonalPropertyToggle,
+            isPPIFFillNow: this.lossInfo.isPAFillingOutToggle,
+            isPPIFFillLater: this.lossInfo.isAdjustorFillOutLaterDate,
+            isClientPreparePPIF: this.lossInfo.isClientGoingToPreparePPIF,
+            isPPIFSendToInsure: this.lossInfo.doYouWantToSendInsuredPPIF,
+            items: this.lossInfo.osDamagedItems
+          }
+        },
         expertInfo: {
           isVendorAssigned: this.expertVendorInfo.vendorExpertHiredToggle,
           vendor: this.expertVendorInfo.vendors,
