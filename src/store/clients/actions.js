@@ -404,7 +404,7 @@ export async function updateClaimTimeline({ dispatch, state }, payload) {
 export async function getClientStatistics({ commit, dispatch }) {
   dispatch('setLoading', true);
   try {
-    const { data } = await request.get('/claimstatistics');
+    const { data } = await request.get('/clientstatistics');
     console.log(data, 'data is');
     commit('setClientStatistics', data);
     dispatch('setLoading', false);

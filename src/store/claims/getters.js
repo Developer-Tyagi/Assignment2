@@ -15,5 +15,4 @@ export const tasks = state => state.tasks;
 export const vendorLists = state => state.vendorLists;
 export const templateOptions = state => state.templateOptions;
 export const claimDocument = state => state.claimDocument;
-
 export const claimStatic = state => state.claimStatic;

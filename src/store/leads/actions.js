@@ -180,7 +180,7 @@ export function makeId() {
 export async function getLeadStatistics({ commit, dispatch }) {
   dispatch('setLoading', true);
   try {
-    const { data } = await request.get('/claimstatistics');
+    const { data } = await request.get('/leadstatistics');
     commit('setLeadStatistics', data);
     dispatch('setLoading', false);
   } catch (e) {
