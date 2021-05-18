@@ -45,9 +45,9 @@
               <q-select
                 dense
                 class="required"
-                v-model="primaryDetails.honorific.id"
+                v-model="primaryDetails.honorific.value"
                 :options="titles"
-                option-value="id"
+                option-value="value"
                 option-label="value"
                 map-options
                 options-dense
@@ -843,11 +843,11 @@ export default {
         email: '',
         phoneNumber: '',
 
-        selectedContactType: '',
+        selectedContactType: 'Main',
         honorific: {
-          id: '602a5eaa312a2b57ac2b00ad',
-          value: 'Mr',
-          machineValue: 'mr'
+          id: '',
+          value: 'Mr.',
+          machineValue: 'mr_'
         }
       },
       lossDetails: {
@@ -952,12 +952,11 @@ export default {
 
     setTitleName() {
       const title = this.titles.find(obj => {
-        return obj.id === this.primaryDetails.honorific.id;
+        return obj.value === this.primaryDetails.honorific.value;
       });
-
-      this.primaryDetails.honorific.value = title.value;
-
       this.primaryDetails.honorific.machineValue = title.machineValue;
+
+      this.primaryDetails.honorific.id = title.id;
     },
     searchBySource(val, update) {
       this.sourceDetails.type = null;

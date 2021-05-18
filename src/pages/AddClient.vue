@@ -46,8 +46,8 @@
                 <q-select
                   dense
                   class="required"
-                  v-model="client.id"
-                  option-value="id"
+                  v-model="client.machineValue"
+                  option-value="machineValue"
                   option-label="name"
                   map-options
                   emit-value
@@ -90,10 +90,10 @@
                 <span class="form-heading">Insured Details</span>
                 <q-select
                   dense
-                  v-model="honorific1.id"
+                  v-model="honorific1.machineValue"
                   class="required"
                   :options="titles"
-                  option-value="id"
+                  option-value="machineValue"
                   option-label="value"
                   map-options
                   options-dense
@@ -252,10 +252,10 @@
                   <span class="form-heading">Co-insured Details</span>
                   <q-select
                     dense
-                    v-model="honorific2.id"
+                    v-model="honorific2.machineValue"
                     class="required"
                     :options="titles"
-                    option-value="id"
+                    option-value="machineValue"
                     option-label="value"
                     map-options
                     @input="setTitleName(2)"
@@ -345,8 +345,8 @@
                   dense
                   behavior="menu"
                   class="required"
-                  v-model="property.id"
-                  option-value="id"
+                  v-model="property.machineValue"
+                  option-value="machineValue"
                   option-label="name"
                   map-options
                   options-dense
@@ -1886,19 +1886,22 @@ export default {
     //This function is used for setting the title name,machine value from its Id
     setTitleName(val) {
       const titleResult = this.titles.find(obj => {
-        return obj.id === this['honorific' + val].id;
+        return obj.machineValue === this['honorific' + val].machineValue;
       });
       this['honorific' + val].title = titleResult.value;
-      this['honorific' + val].machineValue = titleResult.machineValue;
+      this['honorific' + val].id = titleResult.id;
     },
     //This function is used for seting the client Type and  Id from client Info
+
     setTypes(types, data, type) {
+      console.log(data, 8787);
       const obj = types.find(item => {
-        return item.id === data.id;
+        return item.machineValue === data.machineValue;
       });
 
-      data.machineValue = obj.machineValue;
+      data.id = obj.id;
       data.value = obj.name;
+      console.log(data, 766);
     },
 
     /* Here If Malling address toggle is on , then the address of the client Info will set to maling Address too*/
