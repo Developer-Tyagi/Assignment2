@@ -11,7 +11,14 @@ localDB.version(1).stores({
   carriers: 'id',
   lossCauses: 'id',
   contactTypes: 'id',
-  inspectionTypes: 'id'
+  inspectionTypes: 'id',
+  clientTypes: 'id',
+  claimReasons: 'id',
+  claimSeverities: 'id',
+  propertyTypes: 'id',
+  policyTypes: 'id',
+  policyCategories: 'id',
+  roles: 'id'
 });
 
 export function getCollection(name) {

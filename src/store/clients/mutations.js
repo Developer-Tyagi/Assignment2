@@ -44,43 +44,94 @@ export function setSelectedClaimId(state, id) {
   state.selectedClaimId = id;
 }
 
-export function setPropertyTypes(state, types) {
-  state.propertyTypes = types.map(type => ({
+export async function setPropertyTypes(state, types) {
+  const propertyTypesCollection = await getCollection('propertyTypes');
+  const propertyTypes = types.map(type => ({
     name: type.attributes.value,
     machineValue: type.attributes.machineValue,
     id: type.id
   }));
-}
-export function setPolicyTypes(state, types) {
-  state.policyTypes = types.map(type => ({
-    name: type.attributes.value,
-    machineValue: type.attributes.machineValue,
-    id: type.id
-  }));
-}
-
-export function setClaimReasons(state, types) {
-  state.claimReasons = types.map(type => ({
-    name: type.attributes.value,
-    machineValue: type.attributes.machineValue,
-
-    id: type.id
-  }));
+  state.propertyTypes = propertyTypes;
+  if ((await propertyTypesCollection.count()) > 0) {
+    await propertyTypesCollection.delete([]);
+  }
+  await localDB.propertyTypes.bulkAdd(propertyTypes);
 }
 
-export function setClaimSeverity(state, types) {
-  state.claimSeverity = types.map(type => ({
-    name: type.attributes.value,
-    machineValue: type.attributes.machineValue,
-    id: type.id
-  }));
+export async function setOfflinePropertyTypes(state) {
+  state.propertyTypes = await getCollection('propertyTypes').toArray();
 }
-export function setPolicyCategory(state, types) {
-  state.policyCategories = types.map(type => ({
+
+export async function setPolicyTypes(state, types) {
+  const policyTypesCollection = await getCollection('policyTypes');
+  const policyTypes = types.map(type => ({
     name: type.attributes.value,
     machineValue: type.attributes.machineValue,
     id: type.id
   }));
+  state.policyTypes = policyTypes;
+  if ((await policyTypesCollection.count()) > 0) {
+    await policyTypesCollection.delete([]);
+  }
+  await localDB.policyTypes.bulkAdd(policyTypes);
+}
+
+export async function setOfflinePolicyTypes(state) {
+  state.policyTypes = await getCollection('policyTypes').toArray();
+}
+
+export async function setClaimReasons(state, reasons) {
+  const claimReasonsCollection = await getCollection('claimReasons');
+  const claimReasons = reasons.map(reason => ({
+    id: reason.id,
+    name: reason.attributes.value,
+    machineValue: reason.attributes.machineValue
+  }));
+  state.claimReasons = claimReasons;
+  if ((await claimReasonsCollection.count()) > 0) {
+    await claimReasonsCollection.delete([]);
+  }
+  await localDB.claimReasons.bulkAdd(claimReasons);
+}
+
+export async function setOfflineClaimReasons(state) {
+  state.claimReasons = await getCollection('claimReasons').toArray();
+}
+
+export async function setClaimSeverities(state, types) {
+  const claimSeveritiesCollection = await getCollection('claimSeverities');
+  const claimSeverity = types.map(type => ({
+    name: type.attributes.value,
+    machineValue: type.attributes.machineValue,
+    id: type.id
+  }));
+  state.claimSeverity = claimSeverity;
+  if ((await claimSeveritiesCollection.count()) > 0) {
+    await claimSeveritiesCollection.delete([]);
+  }
+  await localDB.claimSeverities.bulkAdd(claimSeverity);
+}
+
+export async function setOfflineClaimSeverities(state) {
+  state.claimSeverities = await getCollection('claimSeverities').toArray();
+}
+
+export async function setPolicyCategories(state, types) {
+  const policyCategoriesCollection = await getCollection('policyCategories');
+  const policyCategories = types.map(type => ({
+    name: type.attributes.value,
+    machineValue: type.attributes.machineValue,
+    id: type.id
+  }));
+  state.policyCategories = policyCategories;
+  if ((await policyCategoriesCollection.count()) > 0) {
+    await policyCategoriesCollection.delete([]);
+  }
+  await localDB.policyCategories.bulkAdd(policyCategories);
+}
+
+export async function setOfflinePolicyCategories(state) {
+  state.clients = await getCollection('clients').toArray();
 }
 
 export function setSelectedClient(state, client) {

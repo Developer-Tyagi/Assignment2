@@ -646,7 +646,7 @@
                           </div>
                         </div>
                         <div
-                          class=" text-capitalize q-pt-xs text-caption q-mr-xl q-my-xs q-pr-xs "
+                          class="text-capitalize q-pt-xs text-caption q-mr-xl q-my-xs q-pr-xs"
                         >
                           <p>{{ item.desc }}</p>
 
@@ -667,14 +667,14 @@
                           </div>
                         </div>
                         <q-separator />
-                        <div class="q-my-sm row ">
+                        <div class="q-my-sm row">
                           <div class="heading-light col-7">Purchase Price</div>
                           <div class="heading-light col-3">$</div>
                           <div class="q-mr-sm">
                             {{ item.purchasePrice }}
                           </div>
                         </div>
-                        <div class="q-my-sm row ">
+                        <div class="q-my-sm row">
                           <div class="heading-light col-7">
                             {{ item.radio }} Cost
                           </div>
@@ -876,7 +876,7 @@
                           </div>
                         </div>
                         <div
-                          class=" text-capitalize q-pt-xs text-caption q-mr-xl q-my-xs q-px-xs "
+                          class="text-capitalize q-pt-xs text-caption q-mr-xl q-my-xs q-px-xs"
                         >
                           <p>{{ item.desc }}</p>
 
@@ -897,14 +897,14 @@
                           </div>
                         </div>
                         <q-separator />
-                        <div class="q-my-sm row ">
+                        <div class="q-my-sm row">
                           <div class="heading-light col-7">Purchase Price</div>
                           <div class="heading-light col-3">$</div>
                           <div class="q-mr-sm">
                             {{ item.purchasePrice }}
                           </div>
                         </div>
-                        <div class="q-my-sm row ">
+                        <div class="q-my-sm row">
                           <div class="heading-light col-7">
                             {{ item.radio }} Cost
                           </div>
@@ -1542,16 +1542,16 @@ export default {
   },
 
   async created() {
-    this.getRoles();
-    this.getLossCauses();
-    this.getSeverityClaim();
-    this.getClaimReasons();
-    this.getVendors(this.$route.params.id);
-    this.getClientTypes();
-    this.getPropertyTypes();
-    this.getPolicyTypes();
-    this.getContactTypes();
-    this.getPolicyCategory();
+    await this.getClientTypes();
+    await this.getTitles();
+    await this.getContactTypes();
+    await this.getLossCauses();
+    await this.getSeverityClaim();
+    await this.getClaimReasons();
+    await this.getPropertyTypes();
+    await this.getPolicyTypes();
+    await this.getPolicyCategory();
+    await this.getRoles();
     this.contractInfo.time = date.formatDate(Date.now(), 'hh:mm A');
     this.companyPersonnel.startDate = this.companyPersonnel.endDate = this.contractInfo.firstContractDate = this.contractInfo.contractDate = this.insuranceDetails.policyEffectiveDate = this.lossInfo.dateOfLoss = this.lossInfo.deadlineDate = this.lossInfo.recovDeadline = date.formatDate(
       Date.now(),
@@ -1565,7 +1565,7 @@ export default {
     );
 
     if (this.selectedLead.id) {
-      await this.getLeadDetails(this.selectedLead.id);
+      // await this.getLeadDetails(this.selectedLead.id);
       this.honorific1 = {
         id: this.selectedLead.primaryContact.honorific.id,
         value: this.selectedLead.primaryContact.honorific.value,
@@ -1650,13 +1650,12 @@ export default {
       'personnelRoles',
       'roleTypes',
       'userRoles',
-      'addIndustry',
       'vendorIndustries',
       'propertyTypes'
     ])
   },
+
   mounted() {
-    this.getTitles();
     this.getVendorIndustries();
   },
   methods: {
@@ -1676,7 +1675,8 @@ export default {
       'getSeverityClaim',
       'addClaim',
       'getLeadDetails',
-      'addMultipleTaskToClaim'
+      'addMultipleTaskToClaim',
+      'addIndustry'
     ]),
     ...mapMutations(['setSelectedLead']),
     successMessage,
@@ -2001,7 +2001,6 @@ export default {
         delete payload.leadID;
       }
       const response = await this.addClient(payload);
-      this.setSelectedLead();
       if (response && response.id) {
         const responseData = {
           id: response.id,
@@ -2205,7 +2204,6 @@ export default {
         if (this.officeTask.officeActionRequired) {
           this.addMultipleOfficeTask(response.id);
         } else {
-          this.setSelectedLead();
           this.$router.push('/clients');
         }
       }
