@@ -185,12 +185,12 @@ demo_deploy:
 # This task creates image associated with tag
 build_tag_image:
   stage: build
-  image: us-west1-docker.pkg.dev/claimguru-97138/claimguru/common-utils/git-sops
+  image: cilalabs/kubeninja
   services:
     - docker:18.09.9-dind
   variables:
     GOOGLE_APPLICATION_CREDENTIALS: /tmp/key.json
-    SOPS_KMS: projects/carli-293118/locations/global/keyRings/sops/cryptoKeys/sops-key
+    SOPS_KMS: projects/claimguru-97138/locations/global/keyRings/sops/cryptoKeys/sops-key
     APP_ENV: production
     DOCKER_HOST: tcp://127.0.0.1:2375
     DOCKER_IMAGE: us-west1-docker.pkg.dev/claimguru-97138/claimguru/claimguru-ui:${CI_COMMIT_TAG}
@@ -209,7 +209,7 @@ build_tag_image:
 prod_deploy:
   stage: deploy
   image:
-    name: us-west1-docker.pkg.dev/claimguru-97138/claimguru/common-utils/kubeninja
+    name: cilalabs/kubeninja
   variables:
     KUBE_NAMESPACE: claimguru
     GOOGLE_APPLICATION_CREDENTIALS: /tmp/key.json
