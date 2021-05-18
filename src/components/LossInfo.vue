@@ -6,8 +6,8 @@
         dense
         behavior="menu"
         class="required"
-        v-model="lossInfo.reasonClaim.id"
-        option-value="id"
+        v-model="lossInfo.reasonClaim.value"
+        option-value="name"
         option-label="name"
         map-options
         use-input
@@ -64,8 +64,8 @@
         class="input-extra-padding"
         dense
         behavior="menu"
-        v-model="lossInfo.causeOfLoss.id"
-        option-value="id"
+        v-model="lossInfo.causeOfLoss.value"
+        option-value="name"
         option-label="name"
         map-options
         options-dense
@@ -185,8 +185,8 @@
         class="required"
         dense
         behavior="menu"
-        v-model="lossInfo.severityOfClaimType.id"
-        option-value="id"
+        v-model="lossInfo.severityOfClaimType.value"
+        option-value="name"
         option-label="name"
         map-options
         emit-value
@@ -382,27 +382,14 @@ export default {
       });
     },
 
-    onPersonalPropertyToggleButtonOff() {
-      if (
-        !this.lossInfo.isThereDamageToPersonalPropertyToggle ||
-        !this.lossInfo.isPAFillingOutToggle
-      ) {
-        this.lossInfo.ppDamagedItems.length = 0;
-      }
-    },
-
     validateDate,
     setTypes(types, data) {
       const obj = types.find(item => {
-        return item.id === data.id;
+        return item.name === data.value;
       });
 
       data.machineValue = obj.machineValue;
-      data.value = obj.name;
-    },
-
-    deletePPDamagedItem(index) {
-      this.$delete(this.lossInfo.ppDamagedItems, index);
+      data.id = obj.id;
     },
     addDamagedItems() {
       this.lossInfo.osDamagedItems.push({

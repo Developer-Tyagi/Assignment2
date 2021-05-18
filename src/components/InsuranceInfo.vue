@@ -206,8 +206,8 @@
           class="required"
           dense
           behavior="menu"
-          v-model="insuranceDetails.policyCategory.id"
-          option-value="id"
+          v-model="insuranceDetails.policyCategory.value"
+          option-value="name"
           option-label="name"
           map-options
           options-dense
@@ -229,8 +229,8 @@
           class="required"
           dense
           behavior="menu"
-          v-model="insuranceDetails.policy.id"
-          option-value="id"
+          v-model="insuranceDetails.policy.value"
+          option-value="name"
           use-input
           input-debounce="0"
           option-label="name"
@@ -576,11 +576,11 @@ export default {
 
     setTypes(types, data) {
       const obj = types.find(item => {
-        return item.id === data.id;
+        return item.name === data.value;
       });
 
       data.machineValue = obj.machineValue;
-      data.value = obj.name;
+      data.id = obj.id;
     },
     onChaningPolicyEffectiveDate(dateRef) {
       this.insuranceDetails.policyExpireDate = date.formatDate(

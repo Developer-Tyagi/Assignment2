@@ -46,8 +46,8 @@
                 <q-select
                   dense
                   class="required"
-                  v-model="client.machineValue"
-                  option-value="machineValue"
+                  v-model="client.value"
+                  option-value="name"
                   option-label="name"
                   map-options
                   emit-value
@@ -90,10 +90,10 @@
                 <span class="form-heading">Insured Details</span>
                 <q-select
                   dense
-                  v-model="honorific1.machineValue"
+                  v-model="honorific1.value"
                   class="required"
                   :options="titles"
-                  option-value="machineValue"
+                  option-value="value"
                   option-label="value"
                   map-options
                   options-dense
@@ -252,10 +252,10 @@
                   <span class="form-heading">Co-insured Details</span>
                   <q-select
                     dense
-                    v-model="honorific2.machineValue"
+                    v-model="honorific2.value"
                     class="required"
                     :options="titles"
-                    option-value="machineValue"
+                    option-value="value"
                     option-label="value"
                     map-options
                     @input="setTitleName(2)"
@@ -345,8 +345,8 @@
                   dense
                   behavior="menu"
                   class="required"
-                  v-model="property.machineValue"
-                  option-value="machineValue"
+                  v-model="property.value"
+                  option-value="name"
                   option-label="name"
                   map-options
                   options-dense
@@ -1315,12 +1315,12 @@ export default {
         organizationName: ''
       },
       honorific1: {
-        id: '602a5eaa312a2b57ac2b00ad',
+        id: '',
         value: 'Mr.',
         machineValue: 'mr_'
       },
       honorific2: {
-        id: '602a5eaa312a2b57ac2b00ad',
+        id: '',
         value: 'Mr.',
         machineValue: 'mr_'
       },
@@ -1468,14 +1468,16 @@ export default {
         isThisIsForcedPlacedPolicyToggle: false,
         policy: {
           id: '',
-          value: ''
+          value: '',
+          machineValue: ''
         },
         type: '',
         details: '',
         id: '',
         policyCategory: {
           id: '',
-          value: ''
+          value: '',
+          machineValue: ''
         },
         carrierName: '',
         carrierId: '',
@@ -1886,22 +1888,20 @@ export default {
     //This function is used for setting the title name,machine value from its Id
     setTitleName(val) {
       const titleResult = this.titles.find(obj => {
-        return obj.machineValue === this['honorific' + val].machineValue;
+        return obj.value === this['honorific' + val].value;
       });
-      this['honorific' + val].title = titleResult.value;
+      this['honorific' + val].machineValue = titleResult.machineValue;
       this['honorific' + val].id = titleResult.id;
     },
     //This function is used for seting the client Type and  Id from client Info
 
     setTypes(types, data, type) {
-      console.log(data, 8787);
       const obj = types.find(item => {
-        return item.machineValue === data.machineValue;
+        return item.value === data.name;
       });
 
       data.id = obj.id;
-      data.value = obj.name;
-      console.log(data, 766);
+      data.machineValue = obj.machineValue;
     },
 
     /* Here If Malling address toggle is on , then the address of the client Info will set to maling Address too*/
