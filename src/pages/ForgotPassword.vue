@@ -61,6 +61,19 @@
 </template>
 <script>
 import { mapActions } from 'vuex';
+import {
+  Capacitor,
+  Plugins,
+  PushNotification,
+  PushNotificationToken,
+  PushNotificationActionPerformed
+} from '@capacitor/core';
+import { Screen } from 'quasar';
+
+const isPushNotificationsAvailable = Capacitor.isPluginAvailable(
+  'PushNotifications'
+);
+const { PushNotifications } = Plugins;
 export default {
   name: 'forgotPassword',
   data() {
@@ -101,7 +114,25 @@ export default {
         };
         const res = await this.userLogin(loginData);
         if (res) {
-          this.getUserInfo();
+          await this.getUserInfo();
+          if (isPushNotificationsAvailable) {
+            PushNotifications.requestPermission().then(result => {
+              if (result.granted) {
+                PushNotifications.register();
+              }
+            });
+            PushNotifications.addListener(
+              'registration',
+              PushNotificationToken => {
+                this.sendPushNotificationToken({
+                  token: PushNotificationToken.value
+                });
+              }
+            );
+            PushNotifications.addListener('registrationError', any => {
+              alert('Error on registration: ' + JSON.stringify(any));
+            });
+          }
           this.$router.push('/dashboard');
         }
       }

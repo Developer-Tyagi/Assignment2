@@ -45,9 +45,9 @@
               <q-select
                 dense
                 class="required"
-                v-model="primaryDetails.honorific.id"
+                v-model="primaryDetails.honorific.value"
                 :options="titles"
-                option-value="id"
+                option-value="value"
                 option-label="value"
                 map-options
                 options-dense
@@ -843,11 +843,11 @@ export default {
         email: '',
         phoneNumber: '',
 
-        selectedContactType: '',
+        selectedContactType: 'Main',
         honorific: {
-          id: '602a5eaa312a2b57ac2b00ad',
-          value: 'Mr',
-          machineValue: 'mr'
+          id: '',
+          value: 'Mr.',
+          machineValue: 'mr_'
         }
       },
       lossDetails: {
@@ -952,12 +952,11 @@ export default {
 
     setTitleName() {
       const title = this.titles.find(obj => {
-        return obj.id === this.primaryDetails.honorific.id;
+        return obj.value === this.primaryDetails.honorific.value;
       });
-
-      this.primaryDetails.honorific.value = title.value;
-
       this.primaryDetails.honorific.machineValue = title.machineValue;
+
+      this.primaryDetails.honorific.id = title.id;
     },
     searchBySource(val, update) {
       this.sourceDetails.type = null;
@@ -1108,6 +1107,7 @@ export default {
 
         this.addLeads(payload).then(() => {
           this.setSelectedClient();
+          this.$router.push('/leads');
         });
       } else {
         const payload = {
@@ -1312,7 +1312,11 @@ export default {
     ])
   },
 
-  created() {
+  async created() {
+    await this.getInspectionTypes();
+    await this.getContactTypes();
+    await this.getTitles();
+    await this.getLossCauses();
     if (this.isEdit) {
       this.primaryDetails.honorific = this.selectedLead.primaryContact.honorific;
       this.primaryDetails.firstName = this.selectedLead.primaryContact.fname;
@@ -1389,10 +1393,7 @@ export default {
     this.lossDetails.dateOfLoss = date.formatDate(Date.now(), 'MM/DD/YYYY');
 
     // TODO : Have to change primary details object, so that selected client can be assigned as it is.
-    this.getInspectionTypes();
-    this.getContactTypes();
-    this.getTitles();
-    this.getLossCauses();
+
     this.getClients().then(() => {
       if (this.$route.params.id) {
         let selectedClient = this.clients.find(

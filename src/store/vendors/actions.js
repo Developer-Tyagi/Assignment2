@@ -1,20 +1,33 @@
 import request from '@api';
 import { buildApiData } from '@utils/api';
 
-export async function getVendors({ commit, dispatch }, params) {
+export async function getVendors(
+  {
+    rootState: {
+      common: { isOnline }
+    },
+    commit,
+    dispatch
+  },
+  params
+) {
   dispatch('setLoading', true);
-  try {
-    const { data } = await request.get('/vendors', params);
-
-    commit('setvendors', data);
+  if (isOnline) {
+    try {
+      const { data } = await request.get('/vendors', params);
+      commit('setVendors', data);
+      dispatch('setLoading', false);
+    } catch (e) {
+      console.log(e);
+      dispatch('setLoading', false);
+      dispatch('setNotification', {
+        type: 'negative',
+        message: e.response[0].title
+      });
+    }
+  } else {
+    commit('setOfflineVendors', params);
     dispatch('setLoading', false);
-  } catch (e) {
-    console.log(e);
-    dispatch('setLoading', false);
-    dispatch('setNotification', {
-      type: 'negative',
-      message: e.response[0].title
-    });
   }
 }
 //View a single vendor
