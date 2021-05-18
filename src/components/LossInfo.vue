@@ -384,7 +384,6 @@ export default {
 
     validateDate,
     setTypes(types, data) {
-      console.log(data, 4334);
       const obj = types.find(item => {
         return item.name === data.value;
       });
