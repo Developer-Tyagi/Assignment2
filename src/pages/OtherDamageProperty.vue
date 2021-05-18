@@ -58,8 +58,9 @@
           <q-separator />
           <div class="q-my-sm row justify-between">
             <div class="heading-light col-3">Purchase Price</div>
-            <div class="heading-light ">$</div>
-            <div class="">
+
+            <div>
+              <span class="heading-light ">$</span>
               {{ damage.purchasePrice }}
             </div>
           </div>
@@ -67,8 +68,9 @@
             <div class="heading-light col-3 ">
               {{ damage.replaceCost == null ? 'Repair' : 'Replace' }} Cost
             </div>
-            <div class="heading-light ">$</div>
-            <div class="">
+
+            <div>
+              <span class="heading-light ">$</span>
               {{
                 damage.replaceCost == null
                   ? damage.repairCost

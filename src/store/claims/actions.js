@@ -596,6 +596,10 @@ export async function editClaimInfo({ dispatch, state }, payload) {
       buildApiData('claims', payload.data)
     );
     dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Claim info updated successfully !'
+    });
     return data;
   } catch (e) {
     console.log(e);

@@ -212,75 +212,6 @@
         style="resize: none"
       />
     </q-card>
-    <q-card class="q-pa-sm q-mt-sm">
-      <div class="row">
-        <p class="q-mx-none q-my-auto form-heading">
-          Is there damage to other structures?
-        </p>
-        <q-toggle
-          class="q-ml-auto"
-          v-model="lossInfo.isDamageOSToggle"
-          @input="onDamageOsToggleButtonOff"
-        />
-      </div>
-
-      <div v-if="lossInfo.isDamageOSToggle">
-        <br />
-        <div
-          v-if="lossInfo.osDamagedItems.length >= 1"
-          flat
-          bordered
-          scroll
-          style="margin-top: 20px"
-        >
-          <div class="items-start q-gutter-md">
-            <div
-              v-for="(item, index) in lossInfo.osDamagedItems"
-              v-if="lossInfo.osDamagedItems.length"
-            >
-              <q-card flat bordered>
-                <div class="text-right">
-                  <q-icon
-                    v-if="lossInfo.osDamagedItems.length >= 1"
-                    size="xs"
-                    class="q-ma-xs"
-                    dense
-                    color="primary"
-                    name="close"
-                    @click="deleteDamagedItem(index)"
-                  />
-                </div>
-                <div>
-                  <div class="row">
-                    <div class="text-bold q-ml-sm text-capitalize q-pt-xs">
-                      {{ item.name }}
-                    </div>
-                    <div class="q-ml-auto q-pt-xs" style="margin-right: 30px">
-                      {{ '$' + item.cost }}
-                    </div>
-                  </div>
-                  <div
-                    class="q-ml-sm text-capitalize q-pt-xs text-caption q-mr-xl q-my-xs q-px-xs q-ma-xs"
-                  >
-                    <p>{{ item.desc }}</p>
-                  </div>
-                </div>
-              </q-card>
-            </div>
-          </div>
-        </div>
-        <q-btn
-          label="add item"
-          name="add"
-          class="q-mt-sm"
-          icon="add"
-          size="sm"
-          color="primary"
-          @click="lossInfo.damagedItemsDailog = true"
-        >
-        </q-btn>
-      </div>
-    </q-card>
   </div>
 </template>
 <script>
@@ -451,11 +382,6 @@ export default {
       });
     },
 
-    onDamageOsToggleButtonOff() {
-      if (!this.lossInfo.isDamageOSToggle) {
-        this.lossInfo.osDamagedItems.length = 0;
-      }
-    },
     onPersonalPropertyToggleButtonOff() {
       if (
         !this.lossInfo.isThereDamageToPersonalPropertyToggle ||
@@ -474,9 +400,7 @@ export default {
       data.machineValue = obj.machineValue;
       data.id = obj.id;
     },
-    deleteDamagedItem(index) {
-      this.$delete(this.lossInfo.osDamagedItems, index);
-    },
+
     deletePPDamagedItem(index) {
       this.$delete(this.lossInfo.ppDamagedItems, index);
     },
