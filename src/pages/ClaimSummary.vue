@@ -213,7 +213,7 @@
                 color="primary"
                 class="col"
                 size="xs"
-                @click="onClickeditClaimTimeline(index)"
+                @click="onClickEditClaimTimeline(index)"
               ></q-icon>
 
               <div class="q-mb-xl heading-light">
@@ -445,6 +445,7 @@
         />
       </q-card>
     </q-dialog>
+
     <!-- Loss Detail dialog -->
     <q-dialog
       v-model="lossDetailsBox"
@@ -573,13 +574,14 @@ import CustomBar from 'components/CustomBar';
 import ClaimDetail from 'components/ClaimDetail';
 import moment from 'moment';
 import { date } from 'quasar';
-import { dateToShow } from '@utils/date';
+import { dateToShow, dateToSend } from '@utils/date';
 import { getCurrentUser } from '@utils/auth';
 export default {
   name: 'Claims',
   components: { CustomBar, ClaimDetail },
   data() {
     return {
+      phase: '',
       rating: 1,
       claimDeadline: false,
       claimSummary: false,
@@ -687,15 +689,21 @@ export default {
       'getSingleClaimDetails',
       'getClaimReasons',
       'getLossCauses',
-      'editClaimInfo'
+      'editClaimInfo',
+      'updateClaimTimeline'
     ]),
-    onClickeditClaimTimeline(index) {
-      this.claimPhase.value = this.getSelectedClaim.phases[index].value;
-      this.claimPhase.created = this.getSelectedClaim.phases[index].created;
+    onClickEditClaimTimeline(index) {
+      this.claimPhase.notes = this.getSelectedClaim.phases[index].value;
+      this.claimPhase.created = dateToShow(
+        this.getSelectedClaim.phases[index].created
+      );
+      this.phase = this.getSelectedClaim.phases[index].value;
       this.editClaimTimeline = true;
     },
+
     async onSaveButtonClick(value) {
       if (value == 'claimSummary') {
+        this.editClaimTimeline = true;
         let payload = {
           id: this.selectedClaimId,
           data: {
@@ -706,6 +714,20 @@ export default {
           }
         };
         await this.editClaimInfo(payload);
+      } else if (value == 'editClaimTimeline') {
+        let payload = {
+          id: this.selectedClaimId,
+          phase: this.phase,
+          data: {
+            phase: {
+              note: this.claimPhase.notes,
+              created: dateToSend(this.claimPhase.created)
+            }
+          }
+        };
+        await this.updateClaimTimeline(payload);
+        await this.getSingleClaimDetails(this.selectedClaimId);
+        this.editClaimTimeline = false;
       } else {
         let payload = {
           id: this.selectedClaimId,
