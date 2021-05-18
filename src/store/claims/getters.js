@@ -13,3 +13,5 @@ export const phases = state => state.phases;
 export const damageInfo = state => state.damageInfo;
 export const tasks = state => state.tasks;
 export const vendorLists = state => state.vendorLists;
+export const templateOptions = state => state.templateOptions;
+export const claimDocument = state => state.claimDocument;

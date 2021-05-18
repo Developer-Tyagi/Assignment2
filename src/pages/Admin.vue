@@ -262,10 +262,11 @@
                 <div class="row">
                   <q-input
                     dense
+                    disable
                     v-model="users.email"
-                    style="width:270px;"
+                    style=""
                     label="Email"
-                    class="q-mx-md  col-5 required"
+                    class="q-mx-md  col-5 required "
                     outlined
                     lazy-rules
                     :rules="[
@@ -274,54 +275,6 @@
                         'You have entered an invalid email address!'
                     ]"
                   />
-                  <q-select
-                    dense
-                    outlined
-                    filled
-                    options-dense
-                    class="q-mx-md col-5 input-extra-padding required"
-                    v-model="selectedRole"
-                    :options="userRole"
-                    label="Role"
-                    color="primary"
-                    behavior="menu"
-                    options-selected-class="text-deep-orange"
-                    lazy-rules
-                    :rules="[
-                      val =>
-                        (val && val.length > 0) || 'Please enter the user role!'
-                    ]"
-                  >
-                    <template v-slot:option="scope">
-                      <q-expansion-item
-                        expand-separator
-                        group="somegroup"
-                        :default-opened="hasChild(scope)"
-                        header-class="text-weight-bold"
-                        :label="scope.opt.label"
-                      >
-                        <template v-for="child in scope.opt.children">
-                          <q-item
-                            :key="child.label"
-                            clickable
-                            v-ripple
-                            v-close-popup
-                            @click="selectedRole = child.label"
-                            :class="{
-                              'bg-light-oragne-1': selectedRole === child.label
-                            }"
-                          >
-                            <q-item-section>
-                              <q-item-label
-                                v-html="child.label"
-                                class="q-ml-md"
-                              ></q-item-label>
-                            </q-item-section>
-                          </q-item>
-                        </template>
-                      </q-expansion-item>
-                    </template>
-                  </q-select>
                 </div>
               </q-card>
               <q-card class="q-mx-md q-pa-sm">
@@ -331,6 +284,7 @@
                   :isDropBoxEnable="false"
                   :isChecksEnable="false"
                   :value="true"
+                  :view="'web'"
                 />
               </q-card>
             </div>
@@ -734,16 +688,6 @@ export default {
       editUserInfoDialog: false,
       priority: false,
       selectedRole: '',
-      userRole: [
-        {
-          label: 'Paid',
-          children: []
-        },
-        {
-          label: 'Un-paid',
-          children: []
-        }
-      ],
       selectedRole: '',
       users: {
         fname: '',
@@ -755,6 +699,7 @@ export default {
         email: '',
         roles: [],
         mailingAddress: {
+          houseNumber: '',
           addressCountry: '',
           addressLocality: '',
           addressRegion: '',
@@ -840,14 +785,7 @@ export default {
       'roleTypes'
     ])
   },
-  watch: {
-    selectedRole(newVal, oldVal) {
-      if (newVal) {
-        var user = this.roleTypes.find(o => o.name === newVal);
-        this.users.roles[0] = user.machineValue;
-      }
-    }
-  },
+
   methods: {
     ...mapActions([
       'getActionOverDues',
@@ -858,9 +796,7 @@ export default {
       'addWorkflowAction',
       'getContactTypes',
       'editUserInfo',
-      'getUserInfo',
-      'removeCurrentUser',
-      'getRoles'
+      'getUserInfo'
     ]),
     validateEmail,
 
@@ -885,7 +821,6 @@ export default {
           }
         };
         await this.editUserInfo(payload);
-        await this.removeCurrentUser();
         await this.getUserInfo();
         this.user = getCurrentUser().attributes;
         this.users.fname = this.user.contact.fname;
@@ -930,7 +865,12 @@ export default {
       this.users.contact.type = this.user.phoneNumber.type;
       this.users.contact.number = this.user.phoneNumber.number;
       this.users.email = this.user.email;
-      this.users.mailingAddress = this.user.mailingAddress;
+      this.users.mailingAddress.addressCountry = this.user.mailingAddress.addressCountry;
+      this.users.mailingAddress.addressRegion = this.user.mailingAddress.addressRegion;
+      this.users.mailingAddress.addressLocality = this.user.mailingAddress.addressLocality;
+      this.users.mailingAddress.houseNumber = this.user.mailingAddress.houseNumber;
+      this.users.mailingAddress.streetAddress = this.user.mailingAddress.streetAddress;
+      this.users.mailingAddress.postalCode = this.user.mailingAddress.postalCode;
       this.editUserInfoDialog = true;
     },
     // Action OverDue Sub Dropdown Index set
@@ -1058,21 +998,6 @@ export default {
     this.getWorkflowAction();
     this.claimType = 'claim_new_claim';
     await this.claimActionItem(this.claimType);
-    this.getRoles().then(async () => {
-      this.roleTypes.forEach(val => {
-        if (val.isPaid) {
-          this.userRole[0].children.push({
-            label: val.name,
-            value: val.machineValue
-          });
-        } else {
-          this.userRole[1].children.push({
-            label: val.name,
-            value: val.machineValue
-          });
-        }
-      });
-    });
   }
 };
 </script>

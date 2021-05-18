@@ -96,7 +96,7 @@
                   :options="titles"
                   option-label="value"
                   label="Title"
-                  option-value="id"
+                  option-value="value"
                   @input="setTitleName(mortgage.contact.honorific)"
                   emit-value
                   behavior="menu"
@@ -169,8 +169,8 @@
             class="full-width q-mt-auto text-capitalize"
             @click="onAddMortgageButtonClick"
             size="'xl'"
+            :label="isEdit ? 'SAVE' : 'Add Mortgage'"
           >
-            Add Mortgage
           </q-btn>
         </div>
       </q-form>
@@ -220,9 +220,9 @@ export default {
           lname: '',
           email: '',
           honorific: {
-            id: '602a5eaa312a2b57ac2b00ad',
-            value: 'Mr',
-            machineValue: 'mr'
+            id: '',
+            value: 'Mr.',
+            machineValue: 'mr_'
           },
           phoneNumber: [
             {
@@ -291,10 +291,10 @@ export default {
 
     setTitleName(selectedTitle) {
       const selected = this.titles.find(obj => {
-        return obj.id === selectedTitle.id;
+        return obj.value === selectedTitle.value;
       });
 
-      selectedTitle.value = selected.title;
+      selectedTitle.id = selected.id;
       selectedTitle.machineValue = selected.machineValue;
     },
 

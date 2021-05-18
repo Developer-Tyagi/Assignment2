@@ -81,47 +81,57 @@ export async function addLeadToArchiveList({ commit, dispatch }, leadId) {
   }
 }
 
-export async function addLeads(
-  {
-    rootState: {
-      common: { isOnline }
-    },
-    dispatch,
-    commit
-  },
-  payload
-) {
-  dispatch('setLoading', true);
-  if (isOnline) {
-    try {
-      const { data } = await request.post(
-        '/leads',
-        buildApiData('leads', payload)
-      );
-      dispatch('setLoading', false);
-      dispatch('setNotification', {
-        type: 'positive',
-        message: 'Lead Created'
-      });
-      return true;
-    } catch (e) {
-      console.log(e);
-      dispatch('setLoading', false);
-      dispatch('setNotification', {
-        type: 'negative',
-        message: e.response[0].detail
-      });
-      return false;
-    }
-  } else {
-    const id = makeId();
-    await localDB.activeLeads.add({ ...payload, offline: true, id: id });
+export async function addLeadRemote({ commit }, payload) {
+  try {
+    const { data } = await request.post(
+      '/leads',
+      buildApiData('leads', payload)
+    );
     dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Lead Created'
+    });
+    return data;
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].detail
+    });
+    return false;
+  }
+}
+
+export async function addLeadLocal({ dispatch }, payload) {
+  try {
+    await localDB.activeLeads.add({ ...payload, offline: true, id: makeId() });
     dispatch('setNotification', {
       type: 'warning',
       message: 'Lead Created in the local database'
     });
     this.$router.push('/leads');
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+export async function addLeads(
+  {
+    rootState: {
+      common: { isOnline }
+    },
+    dispatch
+  },
+  payload
+) {
+  dispatch('setLoading', true);
+  if (isOnline) {
+    await dispatch('addLeadRemote', payload);
+    return true;
+  } else {
+    dispatch('addLeadLocal', payload);
   }
 }
 

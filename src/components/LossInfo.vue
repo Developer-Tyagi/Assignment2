@@ -6,8 +6,8 @@
         dense
         behavior="menu"
         class="required"
-        v-model="lossInfo.reasonClaim.id"
-        option-value="id"
+        v-model="lossInfo.reasonClaim.value"
+        option-value="name"
         option-label="name"
         map-options
         use-input
@@ -64,8 +64,8 @@
         class="input-extra-padding"
         dense
         behavior="menu"
-        v-model="lossInfo.causeOfLoss.id"
-        option-value="id"
+        v-model="lossInfo.causeOfLoss.value"
+        option-value="name"
         option-label="name"
         map-options
         options-dense
@@ -185,8 +185,8 @@
         class="required"
         dense
         behavior="menu"
-        v-model="lossInfo.severityOfClaimType.id"
-        option-value="id"
+        v-model="lossInfo.severityOfClaimType.value"
+        option-value="name"
         option-label="name"
         map-options
         emit-value
@@ -211,75 +211,6 @@
         v-model="lossInfo.descriptionDwelling"
         style="resize: none"
       />
-    </q-card>
-    <q-card class="q-pa-sm q-mt-sm">
-      <div class="row">
-        <p class="q-mx-none q-my-auto form-heading">
-          Is there damage to other structures?
-        </p>
-        <q-toggle
-          class="q-ml-auto"
-          v-model="lossInfo.isDamageOSToggle"
-          @input="onDamageOsToggleButtonOff"
-        />
-      </div>
-
-      <div v-if="lossInfo.isDamageOSToggle">
-        <br />
-        <div
-          v-if="lossInfo.osDamagedItems.length >= 1"
-          flat
-          bordered
-          scroll
-          style="margin-top: 20px"
-        >
-          <div class="items-start q-gutter-md">
-            <div
-              v-for="(item, index) in lossInfo.osDamagedItems"
-              v-if="lossInfo.osDamagedItems.length"
-            >
-              <q-card flat bordered>
-                <div class="text-right">
-                  <q-icon
-                    v-if="lossInfo.osDamagedItems.length >= 1"
-                    size="xs"
-                    class="q-ma-xs"
-                    dense
-                    color="primary"
-                    name="close"
-                    @click="deleteDamagedItem(index)"
-                  />
-                </div>
-                <div>
-                  <div class="row">
-                    <div class="text-bold q-ml-sm text-capitalize q-pt-xs">
-                      {{ item.name }}
-                    </div>
-                    <div class="q-ml-auto q-pt-xs" style="margin-right: 30px">
-                      {{ '$' + item.cost }}
-                    </div>
-                  </div>
-                  <div
-                    class="q-ml-sm text-capitalize q-pt-xs text-caption q-mr-xl q-my-xs q-px-xs q-ma-xs"
-                  >
-                    <p>{{ item.desc }}</p>
-                  </div>
-                </div>
-              </q-card>
-            </div>
-          </div>
-        </div>
-        <q-btn
-          label="add item"
-          name="add"
-          class="q-mt-sm"
-          icon="add"
-          size="sm"
-          color="primary"
-          @click="lossInfo.damagedItemsDailog = true"
-        >
-        </q-btn>
-      </div>
     </q-card>
   </div>
 </template>
@@ -451,34 +382,14 @@ export default {
       });
     },
 
-    onDamageOsToggleButtonOff() {
-      if (!this.lossInfo.isDamageOSToggle) {
-        this.lossInfo.osDamagedItems.length = 0;
-      }
-    },
-    onPersonalPropertyToggleButtonOff() {
-      if (
-        !this.lossInfo.isThereDamageToPersonalPropertyToggle ||
-        !this.lossInfo.isPAFillingOutToggle
-      ) {
-        this.lossInfo.ppDamagedItems.length = 0;
-      }
-    },
-
     validateDate,
     setTypes(types, data) {
       const obj = types.find(item => {
-        return item.id === data.id;
+        return item.name === data.value;
       });
 
       data.machineValue = obj.machineValue;
-      data.value = obj.name;
-    },
-    deleteDamagedItem(index) {
-      this.$delete(this.lossInfo.osDamagedItems, index);
-    },
-    deletePPDamagedItem(index) {
-      this.$delete(this.lossInfo.ppDamagedItems, index);
+      data.id = obj.id;
     },
     addDamagedItems() {
       this.lossInfo.osDamagedItems.push({

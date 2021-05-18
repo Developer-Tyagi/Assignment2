@@ -16,30 +16,32 @@
         <div class="q-mx-md">
           <q-separator class="q-my-sm" />
           <div class="row q-py-sm">
-            <div class="q-ml-sm heading-light col-5">Total net Claimed</div>
-            <div class="col-3" style="margin-left: 7.5%">$</div>
-            <div class="q-ml-lg text-bold">
+            <div class="heading-light">Total net Claimed</div>
+
+            <div class="q-ml-auto text-bold">
+              <span class=" heading-light">$</span>
               {{ settlement.attributes.totalNetClaimed }}
             </div>
           </div>
           <div class="row q-py-sm">
-            <div class="heading-light q-ml-sm col-5">
+            <div class="heading-light">
               Total replacement Cost
             </div>
-            <div class="col-3" style="margin-left: 7.5%">$</div>
-            <div class="q-ml-lg text-bold">
+
+            <div class="q-ml-auto text-bold">
+              <span class="heading-light">$</span>
               {{ settlement.attributes.totalReplCost }}
             </div>
           </div>
           <div class="row q-py-sm">
             <div
-              class="heading-light q-ml-sm col-5 text-primary"
+              class="heading-light text-primary"
               @click="editInitialOffer = true"
             >
               Initial Offer
             </div>
-            <div class="col-3" style="margin-left: 7.5%">$</div>
-            <div class="q-ml-lg text-bold">
+            <div class="q-ml-auto text-bold">
+              <span class="heading-light">$</span>
               {{ settlement.attributes.intialOffer }}
             </div>
           </div>
@@ -73,7 +75,7 @@
 
                 <div>
                   <q-icon
-                    class="q-my-auto"
+                    class="q-my-auto "
                     name="input"
                     size="sm"
                     color="primary"
@@ -81,20 +83,20 @@
                   />
                 </div>
               </div>
+
               <div class="q-mx-md">
                 <div class="row">
-                  <div class="heading-light col-6">Replacement Cost</div>
-                  <div class="heading-light col-4">$</div>
-
-                  <div class="text-bold">
+                  <div class="heading-light">Replacement Cost</div>
+                  <div class="text-bold q-ml-auto">
+                    <span class="heading-light ">$</span>
                     {{ settlement.amounts.replacementCost }}
                   </div>
                 </div>
                 <div class="row q-py-lg">
-                  <div class="heading-light col-6">Net Settlement</div>
-                  <div class="heading-light col-4">$</div>
+                  <div class="heading-light">Net Settlement</div>
 
-                  <div class="text-bold">
+                  <div class="text-bold q-ml-auto">
+                    <span class="heading-light">$</span>
                     {{ settlement.amounts.netSettlement }}
                   </div>
                 </div>
@@ -681,6 +683,7 @@
                     class="q-ml-xs"
                     name="delete"
                     size="sm"
+                    @click="onDeleteSettelment(currentIndex)"
                     color="primary"
                   />
                 </div>
@@ -1245,7 +1248,8 @@ export default {
       'getSettlements',
       'getSettlementTypes',
       'addSettlement',
-      'editSettlement'
+      'editSettlement',
+      'deleteClaimSettelment'
     ]),
     onClickAddButton() {
       this.isEdit = false;
@@ -1347,6 +1351,15 @@ export default {
       } else {
         this.settlementDialog = true;
       }
+    },
+    async onDeleteSettelment() {
+      const payload = {
+        claimId: this.selectedClaimId,
+        settlementId: this.setId
+      };
+      await this.deleteClaimSettelment(payload);
+      this.settlementShowDialog = false;
+      this.getSettlements(this.selectedClaimId);
     },
     // Setting data for dropDown
     setTypes(data) {

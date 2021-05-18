@@ -95,7 +95,12 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['clients', 'selectedClientId', 'editSelectedClaim'])
+    ...mapGetters([
+      'clients',
+      'selectedClientId',
+      'editSelectedClaim',
+      'selectedLead'
+    ])
   },
 
   created() {
@@ -103,7 +108,7 @@ export default {
   },
   methods: {
     ...mapActions(['getClients', 'getSingleClientDetails']),
-    ...mapMutations(['setSelectedClientId']),
+    ...mapMutations(['setSelectedClientId', 'setSelectedLead']),
 
     onSearchBackButtonClick() {
       this.searchText = '';
@@ -116,6 +121,7 @@ export default {
     },
     addClient() {
       this.$router.push('/add-client');
+      this.selectedLead.id = '';
     },
 
     search(e) {

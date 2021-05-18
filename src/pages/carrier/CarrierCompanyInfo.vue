@@ -79,7 +79,7 @@
         </div>
         <div class="row q-mt-sm " v-for="phone in selectedCarrier.phoneNumber">
           <span class="heading-light col-3"> Phone Number </span>
-          <span class="col" v-if="phone.type">
+          <span class="col q-ml-md " v-if="phone.type">
             {{ phone.type }} :
             <span
               class="clickLink "

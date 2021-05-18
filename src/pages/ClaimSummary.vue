@@ -7,11 +7,12 @@
           <div class="text-bold q-mt-xs">Claim Summary</div>
           <div>
             <q-icon
+              v-if="userRole != 'estimator'"
               class="q-ml-xs"
               name="edit"
               size="xs"
               color="primary"
-              @click="claimSummary = true"
+              @click="onEditClaimSummary"
             />
           </div>
         </div>
@@ -43,13 +44,33 @@
           </div>
           <div class="row q-mt-sm">
             <span class="heading-light col-4"> Claim Fees </span>
-            <span class="q-ml-md col">
+            <div
+              class="q-ml-md col"
+              v-if="getSelectedClaim.contractInfo.fees.type == 'dollar'"
+            >
               {{
                 getSelectedClaim.contractInfo.fees.rate
                   ? '$' + ' ' + getSelectedClaim.contractInfo.fees.rate
                   : '-'
               }}
-            </span>
+            </div>
+            <div
+              class="q-ml-md col"
+              v-else-if="getSelectedClaim.contractInfo.fees.type == 'update'"
+            >
+              {{
+                getSelectedClaim.contractInfo.fees.rate
+                  ? getSelectedClaim.contractInfo.fees.rate + ' /hour'
+                  : '-'
+              }}
+            </div>
+            <div class="q-ml-md col" v-else>
+              {{
+                getSelectedClaim.contractInfo.fees.rate
+                  ? getSelectedClaim.contractInfo.fees.rate + ' %'
+                  : '-'
+              }}
+            </div>
           </div>
           <div class="row q-mt-sm">
             <span class="heading-light col-4"> Date of Contract </span>
@@ -87,7 +108,7 @@
         </div>
       </q-card>
 
-      <q-card class="q-ma-md q-pa-md">
+      <q-card class="q-ma-md q-pa-md" v-if="userRole != 'estimator'">
         <div class="row q-ml-xs justify-between">
           <div class="text-bold q-mt-xs">Claim Deadlines</div>
           <div class="q-mt-xs">
@@ -173,53 +194,56 @@
           </div>
         </div>
       </q-card>
-
-      <div class="form-heading q-ml-md col q-mb-md">Claim Timeline</div>
-      <div v-for="(phase, index) in getSelectedClaim.phases">
-        <div class="row">
-          <div class="col-2 q-ml-md">
-            <q-avatar
-              class="q-ma-sm"
-              size="50px"
-              style="background-color: #eca74c"
-              font-size="15px"
-              text-color="white"
-            >
-              <span>
-                {{
-                  getSelectedClaim.phases[index].created
-                    ? getSelectedClaim.phases[index].created
-                    : '-' | moment('D MMM')
-                }}</span
+      <div v-if="userRole != 'estimator'">
+        <div class="form-heading q-ml-md col q-mb-md">
+          Claim Timeline
+        </div>
+        <div v-for="(phase, index) in getSelectedClaim.phases">
+          <div class="row">
+            <div class="col-2 q-ml-md">
+              <q-avatar
+                class="q-ma-sm"
+                size="50px"
+                style="background-color: #eca74c"
+                font-size="15px"
+                text-color="white"
               >
-            </q-avatar>
-          </div>
-          <div class="col row q-ml-lg q-mt-sm">
-            <div class="col-10">
-              <span class="text-bold">
+                <span>
+                  {{
+                    getSelectedClaim.phases[index].created
+                      ? getSelectedClaim.phases[index].created
+                      : '-' | moment('D MMM')
+                  }}</span
+                >
+              </q-avatar>
+            </div>
+            <div class="col row q-ml-lg q-mt-sm">
+              <div class="col-10">
+                <span class="text-bold">
+                  {{
+                    getSelectedClaim.phases[index].value
+                      ? getSelectedClaim.phases[index].value
+                      : '-'
+                  }}</span
+                >
+              </div>
+
+              <q-icon
+                name="create"
+                color="primary"
+                class="col"
+                size="xs"
+                @click="onClickEditClaimTimeline(index)"
+              ></q-icon>
+
+              <div class="q-mb-xl heading-light">
+                Phase changed to
                 {{
                   getSelectedClaim.phases[index].value
                     ? getSelectedClaim.phases[index].value
                     : '-'
-                }}</span
-              >
-            </div>
-
-            <q-icon
-              name="create"
-              color="primary"
-              class="col"
-              size="xs"
-              @click="onClickeditClaimTimeline(index)"
-            ></q-icon>
-
-            <div class="q-mb-xl heading-light">
-              Phase changed to
-              {{
-                getSelectedClaim.phases[index].value
-                  ? getSelectedClaim.phases[index].value
-                  : '-'
-              }}
+                }}
+              </div>
             </div>
           </div>
         </div>
@@ -331,21 +355,73 @@
                 v-model="fileNumber"
                 label="File Number"
               />
-              <q-input
+              <!-- <q-input
                 class="q-py-sm"
                 v-model.number="contractInfo.fees.rate"
                 label="Claim Fee(%)"
-              />
+              /> -->
+              <div class="row">
+                <q-btn-toggle
+                  v-model="contractInfo.fees.type"
+                  push
+                  glossy
+                  toggle-color="primary"
+                  :options="[
+                    { label: '$', value: 'dollar' },
+                    { label: '%', value: 'percentage' },
+                    { value: 'update', icon: 'update' }
+                  ]"
+                />
+              </div>
+              <div class="row" style="align-items: center">
+                <q-input
+                  class="q-ml-auto full-width"
+                  mask="#.#"
+                  type="number"
+                  v-model.number="contractInfo.fees.rate"
+                  label="Claim Fee Rate"
+                  label-color="primary"
+                  style="width: 50%"
+                  ><template
+                    v-slot:prepend
+                    v-if="contractInfo.fees.type == 'dollar'"
+                  >
+                    <q-icon name="$" color="primary" class="q-mb-sm"></q-icon>
+                  </template>
+
+                  <template
+                    v-slot:append
+                    v-else-if="contractInfo.fees.type == 'percentage'"
+                  >
+                    <q-icon name="%" color="primary"></q-icon>
+                  </template>
+                  <template v-slot:append v-else>
+                    <span class="form-heading text-primary">/hour</span>
+                  </template></q-input
+                >
+              </div>
               <q-input
                 class="q-py-sm"
                 v-model="policyInfo.carrierNotifyDate"
                 label="Date Notified"
                 disable
               />
-              <q-input
-                class="q-py-sm"
-                v-model="policyInfo.reasonForClaim"
-                label="Reason For Claim"
+
+              <q-select
+                dense
+                behavior="menu"
+                v-model="lossInfo.reasonClaim.value"
+                option-value="name"
+                option-label="name"
+                map-options
+                use-input
+                input-debounce="0"
+                options-dense
+                emit-value
+                :options="claimReasonOptions"
+                @input="setClaimReasons(claimReasons, lossInfo.reasonClaim)"
+                @filter="searchFilterBy"
+                label="Reason for Claim"
               />
             </div>
           </q-card>
@@ -441,6 +517,7 @@
         />
       </q-card>
     </q-dialog>
+
     <!-- Loss Detail dialog -->
     <q-dialog
       v-model="lossDetailsBox"
@@ -458,6 +535,7 @@
           <q-card class="q-mx-sm">
             <div class="q-px-md">
               <q-input
+                v-if="userRole != 'estimator'"
                 dense
                 v-model="lossInfo.dateOfLoss"
                 mask="##/##/####"
@@ -486,6 +564,7 @@
                 </template>
               </q-input>
               <q-select
+                v-if="userRole != 'estimator'"
                 dense
                 v-model="lossInfo.cause.id"
                 behavior="menu"
@@ -538,11 +617,11 @@
                 v-model="lossInfo.desc"
                 style="resize: none"
               />
-              <div class="row">
+              <div class="row" v-if="userRole != 'estimator'">
                 <div>FEMA Claim</div>
                 <q-toggle class="q-ml-auto" v-model="isFemaClaim" />
               </div>
-              <div class="row">
+              <div class="row" v-if="userRole != 'estimator'">
                 <div>Property is not habitable</div>
                 <q-toggle class="q-ml-auto" v-model="isHabitable" />
               </div>
@@ -567,13 +646,15 @@ import CustomBar from 'components/CustomBar';
 import ClaimDetail from 'components/ClaimDetail';
 import moment from 'moment';
 import { date } from 'quasar';
-import { dateToShow } from '@utils/date';
-
+import { dateToShow, dateToSend } from '@utils/date';
+import { getCurrentUser } from '@utils/auth';
 export default {
   name: 'Claims',
   components: { CustomBar, ClaimDetail },
   data() {
     return {
+      claimReasonOptions: [],
+      phase: '',
       rating: 1,
       claimDeadline: false,
       claimSummary: false,
@@ -588,6 +669,7 @@ export default {
         created: '',
         notes: ''
       },
+
       lossInfo: {
         dateOfLoss: '',
         desc: '',
@@ -596,7 +678,7 @@ export default {
           machineValue: '',
           value: ''
         },
-        claimReason: {
+        reasonClaim: {
           id: '',
           value: '',
           machineValue: ''
@@ -611,12 +693,12 @@ export default {
       },
       contractInfo: {
         fees: {
-          rate: null
+          rate: '',
+          type: ''
         }
       },
       fileNumber: '',
       policyInfo: {
-        reasonForClaim: '',
         sourceOfClaim: '',
         contractDetails: '',
         dateOfFirstContact: '',
@@ -638,7 +720,8 @@ export default {
       'getSelectedClaim',
       'setClientProperty',
       'selectedClaimId',
-      'lossCauses'
+      'lossCauses',
+      'claimReasons'
     ]),
     formatDate(value) {
       if (value) {
@@ -648,6 +731,7 @@ export default {
   },
 
   created() {
+    this.userRole = getCurrentUser().attributes.roles[0];
     if (!this.selectedClaimId) {
       this.$router.push('/clients');
     }
@@ -660,11 +744,6 @@ export default {
     this.policyInfo.carrierNotifyDate = dateToShow(
       this.getSelectedClaim.contractInfo.date
     );
-    this.policyInfo.reasonForClaim = this.getSelectedClaim.lossInfo.claimReason.value;
-    this.policyInfo.dateOfFirstContact = dateToShow(
-      this.getSelectedClaim.contractInfo.dateOfFirstContact
-    );
-    this.contractInfo.fees.rate = this.getSelectedClaim.contractInfo.fees.rate;
     this.isHabitable = this.getSelectedClaim.lossInfo.isHabitable;
     this.isFemaClaim = this.getSelectedClaim.lossInfo.isFEMA;
     this.lossInfo.desc = this.getSelectedClaim.lossInfo.desc;
@@ -680,25 +759,94 @@ export default {
       'getSingleClaimDetails',
       'getClaimReasons',
       'getLossCauses',
-      'editClaimInfo'
+      'editClaimInfo',
+      'updateClaimTimeline'
     ]),
-    onClickeditClaimTimeline(index) {
-      this.claimPhase.value = this.getSelectedClaim.phases[index].value;
-      this.claimPhase.created = this.getSelectedClaim.phases[index].created;
+    onClickEditClaimTimeline(index) {
+      this.claimPhase.notes = this.getSelectedClaim.phases[index].value;
+      this.claimPhase.created = dateToShow(
+        this.getSelectedClaim.phases[index].created
+      );
+      this.phase = this.getSelectedClaim.phases[index].value;
       this.editClaimTimeline = true;
     },
+    onEditClaimSummary() {
+      this.claimSummary = true;
+      this.lossInfo.reasonClaim.id = this.getSelectedClaim.lossInfo.claimReason.id;
+      this.lossInfo.reasonClaim.value = this.getSelectedClaim.lossInfo.claimReason.value;
+      this.lossInfo.reasonClaim.machineValue = this.getSelectedClaim.lossInfo.claimReason.machineValue;
+      this.policyInfo.dateOfFirstContact = dateToShow(
+        this.getSelectedClaim.contractInfo.dateOfFirstContact
+      );
+
+      this.contractInfo.fees.rate = this.getSelectedClaim.contractInfo.fees.rate;
+      this.contractInfo.fees.type = this.getSelectedClaim.contractInfo.fees.type;
+    },
+    searchFilterBy(val, update) {
+      this.lossInfo.reasonClaim.id = null;
+      if (val === ' ') {
+        update(() => {
+          this.claimReasonOptions = this.claimReasons;
+        });
+        return;
+      }
+
+      update(() => {
+        const search = val.toLowerCase();
+        this.claimReasonOptions = this.claimReasons.filter(
+          v => v.name.toLowerCase().indexOf(search) > -1
+        );
+      });
+    },
+    setTypes(types, data) {
+      const obj = types.find(item => {
+        return item.id === data.id;
+      });
+
+      data.machineValue = obj.machineValue;
+      data.value = obj.name;
+    },
+    setClaimReasons(types, data) {
+      const obj = types.find(item => {
+        return item.value === data.name;
+      });
+
+      data.machineValue = obj.machineValue;
+      data.id = obj.name;
+    },
+
     async onSaveButtonClick(value) {
       if (value == 'claimSummary') {
         let payload = {
           id: this.selectedClaimId,
           data: {
             fileNumber: this.fileNumber,
-
             contractInfo: this.contractInfo,
-            policyInfo: this.policyInfo
+            policyInfo: this.policyInfo,
+            lossInfo: {
+              claimReason: {
+                id: this.lossInfo.reasonClaim.id,
+                value: this.lossInfo.reasonClaim.value,
+                machineValue: this.lossInfo.reasonClaim.machineValue
+              }
+            }
           }
         };
         await this.editClaimInfo(payload);
+      } else if (value == 'editClaimTimeline') {
+        let payload = {
+          id: this.selectedClaimId,
+          phase: this.phase,
+          data: {
+            phase: {
+              note: this.claimPhase.notes,
+              created: dateToSend(this.claimPhase.created)
+            }
+          }
+        };
+        await this.updateClaimTimeline(payload);
+        await this.getSingleClaimDetails(this.selectedClaimId);
+        this.editClaimTimeline = false;
       } else {
         let payload = {
           id: this.selectedClaimId,

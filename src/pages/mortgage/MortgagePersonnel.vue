@@ -5,7 +5,7 @@
       <q-btn
         size="sm"
         name="create"
-        class="icon-top"
+        class="add-icon"
         flat
         @click="addPersonnelDialog = true"
         ><img src="~assets/add.svg"
@@ -169,7 +169,7 @@
                 dense
                 v-model="honorific.value"
                 :options="titles"
-                option-value="id"
+                option-value="value"
                 option-label="value"
                 map-options
                 options-dense
@@ -318,7 +318,7 @@
         </div>
         <q-btn
           @click="onSave"
-          label="Save"
+          label="Add Personnel"
           color="primary"
           class="button-width-90 q-mt-lg"
           size="'xl'"
@@ -346,7 +346,7 @@
                 dense
                 v-model="honorific.value"
                 :options="titles"
-                option-value="id"
+                option-value="value"
                 option-label="value"
                 map-options
                 options-dense
@@ -525,9 +525,9 @@ export default {
       editPersonnelDialog: false,
       addAditionalPhoneNumberToggle: false,
       honorific: {
-        id: '602a5eaa312a2b57ac2b00ad',
-        value: 'Mr',
-        machineValue: 'mr'
+        id: '',
+        value: 'Mr.',
+        machineValue: 'mr_'
       },
 
       personnel: {
@@ -719,10 +719,10 @@ export default {
 
     setTitleName() {
       const title = this.titles.find(obj => {
-        return obj.id === this.honorific.id;
+        return obj.value === this.honorific.value;
       });
 
-      this.honorific.value = title.value;
+      this.honorific.id = title.id;
 
       this.honorific.machineValue = title.machineValue;
     },

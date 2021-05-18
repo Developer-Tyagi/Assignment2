@@ -78,3 +78,14 @@ export function setPhases(state, phases) {
     id: type.id
   }));
 }
+export function setTemplateTypes(state, types) {
+  state.templateOptions = types.map(type => ({
+    name: type.attributes.value,
+    machineValue: type.attributes.machineValue,
+    id: type.id
+  }));
+}
+
+export function setClaimDocument(state, claimDocument) {
+  state.claimDocument = claimDocument;
+}

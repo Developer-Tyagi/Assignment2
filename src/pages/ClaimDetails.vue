@@ -11,7 +11,7 @@
           <div class="mobile-container-page">
             <ClaimDetail />
 
-            <q-item-section class="q-mt-md">
+            <q-item-section class="q-mt-md" v-if="userRole != 'estimator'">
               <div
                 v-for="item in ClaimDetails"
                 :key="item.name"
@@ -20,6 +20,27 @@
               >
                 <q-card class="q-ma-xs q-pa-md full-width">
                   {{ item.name }}
+                </q-card>
+              </div>
+            </q-item-section>
+
+            <q-item-section class="q-mt-md" v-if="userRole == 'estimator'">
+              <div>
+                <q-card
+                  class="q-ma-xs q-pa-md full-width"
+                  @click="$router.push('/claim-summary')"
+                >
+                  Claim Summary
+                </q-card>
+                <q-card
+                  class="q-ma-xs q-pa-md full-width"
+                  @click="
+                    $router.push({
+                      path: `/document-upload`
+                    })
+                  "
+                >
+                  Document Upload
                 </q-card>
               </div>
             </q-item-section>
@@ -163,6 +184,7 @@ import ClaimDetail from 'components/ClaimDetail';
 import { onEmailClick } from '@utils/clickable';
 import { successMessage } from '@utils/validation';
 import { constants } from '@utils/constant';
+import { getCurrentUser } from '@utils/auth';
 export default {
   components: { ClaimDetail },
   data() {
@@ -178,7 +200,6 @@ export default {
         value: '',
         machineValue: ''
       },
-
       ClaimDetails: [
         { name: 'Claim Summary' },
         { name: 'Loss Info' },
@@ -196,7 +217,8 @@ export default {
         { name: 'MatterPort' },
         { name: 'Time Tracking' },
         { name: 'Claim Ledger' }
-      ]
+      ],
+      userRole: ''
     };
   },
 
@@ -208,6 +230,7 @@ export default {
     this.getSingleClaimDetails(this.selectedClaimId);
     this.getPhases();
     this.options = this.phases;
+    this.userRole = getCurrentUser().attributes.roles[0];
   },
   methods: {
     ...mapActions([
@@ -322,6 +345,7 @@ export default {
             path: `/claim-files/${this.selectedClaimId}`
           });
           break;
+
         case 'Notes':
           this.$router.push('/claim-notes');
           break;

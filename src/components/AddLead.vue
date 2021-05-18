@@ -45,9 +45,9 @@
               <q-select
                 dense
                 class="required"
-                v-model="primaryDetails.honorific.id"
+                v-model="primaryDetails.honorific.value"
                 :options="titles"
-                option-value="id"
+                option-value="value"
                 option-label="value"
                 map-options
                 options-dense
@@ -843,11 +843,11 @@ export default {
         email: '',
         phoneNumber: '',
 
-        selectedContactType: '',
+        selectedContactType: 'Main',
         honorific: {
-          id: '602a5eaa312a2b57ac2b00ad',
-          value: 'Mr',
-          machineValue: 'mr'
+          id: '',
+          value: 'Mr.',
+          machineValue: 'mr_'
         }
       },
       lossDetails: {
@@ -952,12 +952,11 @@ export default {
 
     setTitleName() {
       const title = this.titles.find(obj => {
-        return obj.id === this.primaryDetails.honorific.id;
+        return obj.value === this.primaryDetails.honorific.value;
       });
-
-      this.primaryDetails.honorific.value = title.value;
-
       this.primaryDetails.honorific.machineValue = title.machineValue;
+
+      this.primaryDetails.honorific.id = title.id;
     },
     searchBySource(val, update) {
       this.sourceDetails.type = null;
@@ -1115,6 +1114,7 @@ export default {
           id: this.selectedLead.id,
           data: {
             isOrganization: this.primaryDetails.isOrganization,
+            organizationName: this.primaryDetails.organizationName,
             primaryContact: {
               honorific: {
                 id: this.primaryDetails.honorific.id,
@@ -1180,8 +1180,9 @@ export default {
             }
           }
         };
-        if (payload['isOrganization']) {
-          payload['organizationName'] = this.primaryDetails.organizationName;
+
+        if (this.primaryDetails.isOrganization == false) {
+          delete payload.organizationName;
         }
         if (!this.insuranceDetails.carrierId) {
           delete payload.carrier;
@@ -1324,6 +1325,15 @@ export default {
       this.primaryDetails.phoneNumber = this.selectedLead.primaryContact.phoneNumber[0].number;
       this.primaryDetails.email = this.selectedLead.primaryContact.email;
       this.lossAddress = this.selectedLead.lossLocation;
+      this.primaryDetails.isOrganization = this.selectedLead.isOrganization
+        ? this.selectedLead.isOrganization
+        : '';
+      if (!this.selectedLead.isOrganization) {
+        this.primaryDetails.isOrganization = false;
+      }
+      this.primaryDetails.organizationName = this.selectedLead.isOrganization
+        ? this.selectedLead.organizationName
+        : '';
       this.lossDetails.lossDesc = this.selectedLead.lossDesc;
       this.lossDetails.dateOfLoss = dateToShow(this.selectedLead.dateofLoss);
       this.lossDetails.causeOfLoss.id = this.selectedLead.lossCause
@@ -1335,6 +1345,7 @@ export default {
       this.lossDetails.causeOfLoss.machineValue = this.selectedLead.lossCause
         ? this.selectedLead.lossCause.machineValue
         : '';
+      this.insuranceDetails.policyNumber = this.selectedLead.policyNumber;
       this.schedulingDetails.isAutomaticScheduling = this.selectedLead.isAutomaticScheduling;
       this.notes = this.selectedLead.notes;
       this.sourceDetails.id = this.selectedLead.leadSource.id;
@@ -1376,17 +1387,6 @@ export default {
         this.schedulingDetails.subInspectionMachineValue = this.selectedLead.inspectionInfo.machineValue;
         this.schedulingDetails.inspectionDuration = this.selectedLead.inspectionInfo.duration;
       }
-      this.primaryDetails.isOrganization = this.selectedLead.isOrganization
-        ? this.selectedLead.isOrganization
-        : '';
-      if (!this.selectedLead.isOrganization) {
-        this.primaryDetails.isOrganization = false;
-      }
-      this.primaryDetails.organizationName = this.selectedLead.isOrganization
-        ? this.selectedLead.organizationName
-        : '';
-
-      this.insuranceDetails.policyNumber = this.selectedLead.policyNumber;
     }
 
     //Current Date

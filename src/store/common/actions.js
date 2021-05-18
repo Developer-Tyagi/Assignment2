@@ -236,19 +236,16 @@ export function changeNetworkStatus({ commit, dispatch }, isOnline) {
 }
 
 export async function syncLocalDataBase({ dispatch, state }) {
-  let leadsLocalCollection = await getCollection('activeLeads').toArray();
-  leadsLocalCollection.forEach(lead => {
+  const offlineLeads = await getCollection('activeLeads')
+    .toArray()
+    .filter(lead => lead.offline);
+  offlineLeads.forEach(({ id, offline, ...lead }) => {
     if (lead['offline']) {
-      const id = lead.id;
-      delete lead['id'];
-      delete lead['offline'];
-      dispatch('addLeads', lead).then(response => {
-        if (response) {
-          localDB.activeLeads
-            .where('id')
-            .equals(id)
-            .delete();
-        }
+      dispatch('addRemoteLead', lead).then(response => {
+        localDB.activeLeads
+          .where('id')
+          .equals(id)
+          .modify({ id: response.id, offline: false });
       });
     }
   });

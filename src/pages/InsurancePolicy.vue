@@ -785,7 +785,7 @@ import CarriersList from 'components/CarriersList';
 import { validateDate } from '@utils/validation';
 import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
 import AddCarrierPersonnel from 'components/AddCarrierPersonnel';
-
+import { dateToShow } from '@utils/date';
 import { dateToSend } from '@utils/date';
 import { date } from 'quasar';
 import { constants } from '@utils/constant';
@@ -971,6 +971,10 @@ export default {
     this.getPolicyCategory();
     this.getPolicyTypes();
     this.getClaimRoles();
+    this.insuranceDetails.policyEffectiveDate = this.insuranceDetails.policyExpireDate = date.formatDate(
+      Date.now(),
+      'MM/DD/YYYY'
+    );
   },
   methods: {
     ...mapActions([
@@ -1142,12 +1146,11 @@ export default {
       this.insuranceDetails.policyNumber = this.policy.policyInfo.number
         ? this.policy.policyInfo.number
         : '';
-      this.insuranceDetails.policyEffectiveDate = this.policy.policyInfo.effectiveDate;
-      this.insuranceDetails.policyExpireDate = this.policy.policyInfo.expirationDate;
-
-      this.insuranceDetails.policyEffectiveDate = this.insuranceDetails.policyExpireDate = date.formatDate(
-        Date.now(),
-        'MM/DD/YYYY'
+      this.insuranceDetails.policyEffectiveDate = dateToShow(
+        this.policy.policyInfo.effectiveDate
+      );
+      this.insuranceDetails.policyExpireDate = dateToShow(
+        this.policy.policyInfo.expirationDate
       );
 
       this.insuranceDetails.dwellingLimitA = this.policy.policyInfo.limitCoverage.dwelling;
@@ -1314,8 +1317,9 @@ export default {
           data: {
             policyInfo: {
               number: this.insuranceDetails.policyNumber,
-              isClaimFiled: this.hasClaimBeenFilledToggle,
-              isForcedPlaced: this.isThisIsForcedPlacedPolicyToggle,
+              isClaimFiled: this.insuranceDetails.hasClaimBeenFilledToggle,
+              isForcedPlaced: this.insuranceDetails
+                .isThisIsForcedPlacedPolicyToggle,
               hasAppraisalClause: this.hasAppraisalClause,
               category: {
                 id: this.insuranceDetails.policyCategory.id,

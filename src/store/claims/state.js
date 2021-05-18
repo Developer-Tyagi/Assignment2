@@ -14,6 +14,8 @@ export default function() {
     vendorLists: [],
     phases: [],
     damageInfo: [],
-    tasks: []
+    tasks: [],
+    templateOptions: [],
+    claimDocument: []
   };
 }

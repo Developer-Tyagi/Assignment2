@@ -1,6 +1,7 @@
 <template>
-  <div>
+  <div v-if="!view">
     <div
+      v-if="!isFieldsDisable"
       :class="{
         'no-visibility': isFieldsDisable,
         visibility: !isFieldsDisable
@@ -47,6 +48,7 @@
       lazy-rules
       :rules="[val => checkValidations(val) || 'Please fill the city']"
     />
+
     <q-select
       dense
       :class="{ required: isAsteriskMark }"
@@ -75,6 +77,116 @@
       lazy-rules
       :rules="[val => checkValidations(val) || 'Please fill the zip code']"
     />
+    <div class="row" v-if="isDropBoxEnable">
+      <p class="q-mx-none q-my-auto">Gate / Dropbox</p>
+      <q-toggle
+        class="q-ml-auto"
+        v-model="address.dropBox.isPresent"
+        @input="onToggleButtonOff"
+      />
+    </div>
+    <q-input
+      dense
+      v-if="address.dropBox.isPresent && isDropBoxEnable"
+      v-model="address.dropBox.info"
+      class="required"
+      label="Gate/ Dropbox"
+      :rules="[val => checkValidations(val) || 'Please fill the dropbox info']"
+    />
+  </div>
+  <div class=" q-pa-sm" v-else>
+    <div
+      :class="{
+        'no-visibility': isFieldsDisable,
+        visibility: !isFieldsDisable
+      }"
+    >
+      <input
+        type="text"
+        :id="'id' + id"
+        class="input-autocomplete"
+        :v-model="'model' + id"
+        :disabled="isFieldsDisable"
+        placeholder="AutoComplete address"
+        style="border: 1px solid #D3D3D3 ;border-radius: 4px;height:46px;"
+      />
+    </div>
+    <div class="row justify-between q-mt-sm">
+      <q-input
+        outlined
+        dense
+        :class="{ required: isAsteriskMark }"
+        style="width:46%;"
+        v-model="address.houseNumber"
+        label="House/Flat No"
+        lazy-rules
+        :rules="[
+          val => checkValidations(val) || 'Please fill the house or flat no'
+        ]"
+      />
+      <q-input
+        dense
+        outlined
+        :class="{ required: isAsteriskMark }"
+        style="width:46%;"
+        v-model="address.streetAddress"
+        label="Street"
+        lazy-rules
+        :rules="[
+          val => checkValidations(val) || 'Please fill the street address'
+        ]"
+      />
+    </div>
+    <div class="row justify-between ">
+      <q-input
+        dense
+        outlined
+        :class="{ required: isAsteriskMark }"
+        style="width:46%;"
+        v-model="address.addressLocality"
+        label="City"
+        lazy-rules
+        :rules="[val => checkValidations(val) || 'Please fill the city']"
+      />
+
+      <q-select
+        dense
+        outlined
+        :class="{ required: isAsteriskMark }"
+        v-model="address.addressRegion"
+        :options="states"
+        class="q-ml-sm"
+        style="width:46%;"
+        label="State"
+        behavior="menu"
+        lazy-rules
+        :rules="[val => checkValidations(val) || 'Please fill the state']"
+      />
+    </div>
+    <div class="row justify-between">
+      <q-select
+        dense
+        outlined
+        :class="{ required: isAsteriskMark }"
+        v-model="address.addressCountry"
+        label="Country"
+        behavior="menu"
+        style="width:46%;"
+        lazy-rules
+        :rules="[val => checkValidations(val) || 'Please fill the country']"
+      />
+
+      <q-input
+        outlined
+        dense
+        style="width:46%;"
+        :class="{ required: isAsteriskMark }"
+        v-model="address.postalCode"
+        label="ZIP Code"
+        lazy-rules
+        :rules="[val => checkValidations(val) || 'Please fill the zip code']"
+      />
+    </div>
     <div class="row" v-if="isDropBoxEnable">
       <p class="q-mx-none q-my-auto">Gate / Dropbox</p>
       <q-toggle
@@ -127,6 +239,9 @@ export default {
     isFieldsDisable: {
       type: Boolean,
       required: false
+    },
+    view: {
+      type: String
     }
   },
 

@@ -217,15 +217,18 @@ export async function editClient({ dispatch, state }, payload) {
       `/clients/${payload.id}/info`,
       buildApiData('clients', payload.clientData)
     );
-
     dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Client Info Updated Successfully !'
+    });
     return data;
   } catch (e) {
     console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response[0].title
+      message: 'failed to updated client info'
     });
   }
 }
@@ -399,5 +402,68 @@ export async function getPolicyCategory({
   } else {
     commit('setOfflinePolicyCategories');
     dispatch('setLoading', false);
+  }
+}
+export async function deletedClientNote({ commit, dispatch }, payload) {
+  dispatch('setLoading', true);
+  try {
+    await request.del(`/clients/${payload.clientId}/notes/${payload.noteId}`);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Note  Deleted !'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'Error in deleting note.'
+    });
+  }
+}
+export async function editClientNotes({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.patch(
+      `/clients/${payload.clientId}/notes/${payload.noteId}`,
+      buildApiData('clients', payload.data)
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Note updated successfully !'
+    });
+    return data;
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'failed to update note'
+    });
+  }
+}
+
+export async function updateClaimTimeline({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.patch(
+      `/claims/${payload.id}/phases/${payload.phase}`,
+      buildApiData('clients', payload.data)
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Phase updated successfully !'
+    });
+    return data;
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'failed to update phase'
+    });
   }
 }

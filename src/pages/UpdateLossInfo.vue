@@ -163,8 +163,14 @@
               lossInfo.attributes.lossInfo.cause
                 ? lossInfo.attributes.lossInfo.cause.value
                 : '-'
-            }}</span
-          >
+            }}
+            -
+            {{
+              lossInfo.attributes.lossInfo.cause
+                ? lossInfo.attributes.lossInfo.cause.desc
+                : '-'
+            }}
+          </span>
         </div>
         <div
           class="row q-mt-sm"
