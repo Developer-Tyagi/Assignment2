@@ -429,6 +429,26 @@ export async function editSettlement({ dispatch, state }, payload) {
   }
 }
 
+export async function deleteClaimSettelment({ commit, dispatch }, payload) {
+  dispatch('setLoading', true);
+  try {
+    await request.del(
+      `/claims/${payload.claimId}/settlements/${payload.settlementId}`
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Settlement  Deleted !'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'Error in deleting settlement.'
+    });
+  }
+}
 export async function getSingleClaims({ commit, dispatch }, id) {
   dispatch('setLoading', true);
   try {
