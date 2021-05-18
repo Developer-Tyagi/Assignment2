@@ -744,17 +744,6 @@ export default {
     this.policyInfo.carrierNotifyDate = dateToShow(
       this.getSelectedClaim.contractInfo.date
     );
-    // this.policyInfo.reasonForClaim = this.getSelectedClaim.lossInfo.claimReason.value;
-    // this.policyInfo.claimReason.id = this.getSelectedClaim.lossInfo.claimReason.id;
-    // this.policyInfo.claimReason.value = this.getSelectedClaim.lossInfo.claimReason.value;
-    // this.policyInfo.claimReason.machineValue = this.getSelectedClaim.lossInfo.claimReason.machineValue;
-    // this.policyInfo.dateOfFirstContact = dateToShow(
-    //   this.getSelectedClaim.contractInfo.dateOfFirstContact
-    // );
-    // this.contractInfo.fees.rate = this.getSelectedClaim.contractInfo.fees.rate;
-    // this.contractInfo.fees.type = this.getSelectedClaim.contractInfo.fees.type;
-    // console.log(this.contractInfo.fees.type, 'jnj');
-    // console.log(this.getSelectedClaim.contractInfo.fees.type);
     this.isHabitable = this.getSelectedClaim.lossInfo.isHabitable;
     this.isFemaClaim = this.getSelectedClaim.lossInfo.isFEMA;
     this.lossInfo.desc = this.getSelectedClaim.lossInfo.desc;
