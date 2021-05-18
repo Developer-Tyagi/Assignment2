@@ -1,19 +1,30 @@
 import request from '@api';
 import { buildApiData } from '@utils/api';
 
-export async function getInspectionTypes({ commit, dispatch }) {
+export async function getInspectionTypes({
+  rootState: {
+    common: { isOnline }
+  },
+  commit,
+  dispatch
+}) {
   dispatch('setLoading', true);
-  try {
-    const { data } = await request.get('/inspections');
-    commit('setInspectionTypes', data);
+  if (isOnline) {
+    try {
+      const { data } = await request.get('/inspections');
+      commit('setInspectionTypes', data);
+      dispatch('setLoading', false);
+    } catch (e) {
+      console.log(e);
+      dispatch('setLoading', false);
+      dispatch('setNotification', {
+        type: 'negative',
+        message: e.response[0].title
+      });
+    }
+  } else {
+    commit('setOfflineInspectionTypes');
     dispatch('setLoading', false);
-  } catch (e) {
-    console.log(e);
-    dispatch('setLoading', false);
-    dispatch('setNotification', {
-      type: 'negative',
-      message: e.response[0].title
-    });
   }
 }
 

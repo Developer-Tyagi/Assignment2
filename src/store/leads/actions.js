@@ -1,5 +1,7 @@
 import request from '@api';
 import { buildApiData } from '@utils/api';
+import localDB from '@services/dexie';
+
 export async function getActiveLeadsList(
   {
     rootState: {
@@ -11,9 +13,7 @@ export async function getActiveLeadsList(
   searchString = ''
 ) {
   dispatch('setLoading', true);
-
   if (isOnline) {
-    console.log(isOnline);
     try {
       const { data } = await request.get('/leads', { name: searchString });
       commit('setActiveLeads', data);
@@ -26,26 +26,45 @@ export async function getActiveLeadsList(
         message: e.response[0].title
       });
     }
-  } else commit('setOfflineActiveLeads');
-}
-export async function getArchivedLeadsList({ commit, dispatch }, searchString) {
-  dispatch('setLoading', true);
-  try {
-    const { data } = await request.get('/leads', {
-      name: searchString,
-      archive: true
-    });
-    commit('setArchivedLeads', data);
+  } else {
+    commit('setOfflineActiveLeads', searchString);
     dispatch('setLoading', false);
-  } catch (e) {
-    console.log(e);
-    dispatch('setLoading', false);
-    dispatch('setNotification', {
-      type: 'negative',
-      message: e.response[0].title
-    });
   }
 }
+
+export async function getArchivedLeadsList(
+  {
+    rootState: {
+      common: { isOnline }
+    },
+    commit,
+    dispatch
+  },
+  searchString
+) {
+  dispatch('setLoading', true);
+  if (isOnline) {
+    try {
+      const { data } = await request.get('/leads', {
+        name: searchString,
+        archive: true
+      });
+      commit('setArchivedLeads', data);
+      dispatch('setLoading', false);
+    } catch (e) {
+      console.log(e);
+      dispatch('setLoading', false);
+      dispatch('setNotification', {
+        type: 'negative',
+        message: e.response[0].title
+      });
+    }
+  } else {
+    commit('setOfflineArchivedLeads', searchString);
+    dispatch('setLoading', false);
+  }
+}
+
 export async function addLeadToArchiveList({ commit, dispatch }, leadId) {
   dispatch('setLoading', true);
   try {
@@ -62,28 +81,47 @@ export async function addLeadToArchiveList({ commit, dispatch }, leadId) {
   }
 }
 
-export async function addLeads({ dispatch, state }, payload) {
+export async function addLeads(
+  {
+    rootState: {
+      common: { isOnline }
+    },
+    dispatch,
+    commit
+  },
+  payload
+) {
   dispatch('setLoading', true);
-  try {
-    const { data } = await request.post(
-      '/leads',
-      buildApiData('leads', payload)
-    );
-
+  if (isOnline) {
+    try {
+      const { data } = await request.post(
+        '/leads',
+        buildApiData('leads', payload)
+      );
+      dispatch('setLoading', false);
+      dispatch('setNotification', {
+        type: 'positive',
+        message: 'Lead Created'
+      });
+      return true;
+    } catch (e) {
+      console.log(e);
+      dispatch('setLoading', false);
+      dispatch('setNotification', {
+        type: 'negative',
+        message: e.response[0].detail
+      });
+      return false;
+    }
+  } else {
+    const id = makeId();
+    await localDB.activeLeads.add({ ...payload, offline: true, id: id });
     dispatch('setLoading', false);
     dispatch('setNotification', {
-      type: 'positive',
-      message: 'Lead Created'
+      type: 'warning',
+      message: 'Lead Created in the local database'
     });
     this.$router.push('/leads');
-  } catch (e) {
-    console.log(e);
-    dispatch('setLoading', false);
-    dispatch('setNotification', {
-      type: 'negative',
-      message: e.response[0].detail
-    });
-    return false;
   }
 }
 
@@ -124,4 +162,17 @@ export async function editLeadDetails({ dispatch, state }, payload) {
       message: 'Failed to update Lead Info! please try again !'
     });
   }
+}
+
+export function makeId() {
+  var result = [];
+  var characters =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  var charactersLength = characters.length;
+  for (var i = 0; i < 20; i++) {
+    result.push(
+      characters.charAt(Math.floor(Math.random() * charactersLength))
+    );
+  }
+  return result.join('');
 }

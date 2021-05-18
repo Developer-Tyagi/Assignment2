@@ -1,5 +1,7 @@
 import request from '@api';
 import { buildApiData } from 'src/utils/api';
+import localDB, { getCollection } from '@services/dexie';
+
 export function setLoading({ commit }, value) {
   commit('setLoading', value);
 }
@@ -38,50 +40,84 @@ export async function getAllUsers({ commit, dispatch }, params) {
 export function setNotification({ commit }, notification) {
   commit('setNotification', notification);
 }
-export async function getLossCauses({ commit, dispatch }) {
-  dispatch('setLoading', true);
-  try {
-    const { data } = await request.get('/losscauses');
-    commit('setLossCause', data);
+
+export async function getLossCauses({
+  rootState: {
+    common: { isOnline }
+  },
+  commit,
+  dispatch
+}) {
+  if (isOnline) {
+    dispatch('setLoading', true);
+    try {
+      const { data } = await request.get('/losscauses');
+      commit('setLossCause', data);
+      dispatch('setLoading', false);
+    } catch (e) {
+      console.log(e);
+      dispatch('setLoading', false);
+      dispatch('setNotification', {
+        type: 'negative',
+        message: e.response[0].title
+      });
+    }
+  } else {
+    commit('setOfflineLossCauses');
     dispatch('setLoading', false);
-  } catch (e) {
-    console.log(e);
-    dispatch('setLoading', false);
-    dispatch('setNotification', {
-      type: 'negative',
-      message: e.response[0].title
-    });
   }
 }
-export async function getContactTypes({ commit, dispatch }) {
-  dispatch('setLoading', true);
-  try {
-    const { data } = await request.get('/phonetypes');
-    commit('setContactTypes', data);
+export async function getContactTypes({
+  rootState: {
+    common: { isOnline }
+  },
+  commit,
+  dispatch
+}) {
+  if (isOnline) {
+    dispatch('setLoading', true);
+    try {
+      const { data } = await request.get('/phonetypes');
+      commit('setContactTypes', data);
+      dispatch('setLoading', false);
+    } catch (e) {
+      console.log(e);
+      dispatch('setLoading', false);
+      dispatch('setNotification', {
+        type: 'negative',
+        message: e.response[0].title
+      });
+    }
+  } else {
+    commit('setOfflineContactTypes');
     dispatch('setLoading', false);
-  } catch (e) {
-    console.log(e);
-    dispatch('setLoading', false);
-    dispatch('setNotification', {
-      type: 'negative',
-      message: e.response[0].title
-    });
   }
 }
 
-export async function getTitles({ commit, dispatch }) {
+export async function getTitles({
+  rootState: {
+    common: { isOnline }
+  },
+  commit,
+  dispatch
+}) {
   dispatch('setLoading', true);
-  try {
-    const { data } = await request.get('/honorifics');
-    commit('setTitles', data);
+  if (isOnline) {
+    try {
+      const { data } = await request.get('/honorifics');
+      commit('setTitles', data);
+      dispatch('setLoading', false);
+    } catch (e) {
+      console.log(e);
+      dispatch('setLoading', false);
+      dispatch('setNotification', {
+        type: 'negative',
+        message: e.response[0].title
+      });
+    }
+  } else {
+    commit('setOfflineTitles');
     dispatch('setLoading', false);
-  } catch (e) {
-    console.log(e);
-    dispatch('setLoading', false);
-    dispatch('setNotification', {
-      type: 'negative',
-      message: e.response[0].title
-    });
   }
 }
 
@@ -170,6 +206,28 @@ export async function createDirectories({ dispatch, state }, payload) {
   }
 }
 
-export async function changeNetworkStatus({ commit }, isOnline) {
+export function changeNetworkStatus({ commit, dispatch }, isOnline) {
   commit('setNetworkStatus', isOnline);
+  if (isOnline) {
+    dispatch('syncLocalDataBase');
+  }
+}
+
+export async function syncLocalDataBase({ dispatch, state }) {
+  let leadsLocalCollection = await getCollection('activeLeads').toArray();
+  leadsLocalCollection.forEach(lead => {
+    if (lead['offline']) {
+      const id = lead.id;
+      delete lead['id'];
+      delete lead['offline'];
+      dispatch('addLeads', lead).then(response => {
+        if (response) {
+          localDB.activeLeads
+            .where('id')
+            .equals(id)
+            .delete();
+        }
+      });
+    }
+  });
 }

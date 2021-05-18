@@ -255,6 +255,7 @@ export default {
     this.getActiveLeadsList();
     this.getArchivedLeadsList();
   },
+
   methods: {
     ...mapActions([
       'getActiveLeadsList',
@@ -328,7 +329,7 @@ export default {
         this.openSearchInput = false;
       }
 
-      if (oldVal === 'newLeads') {
+      if (newVal === 'newLeads') {
         this.getActiveLeadsList();
       } else {
         this.getArchivedLeadsList();

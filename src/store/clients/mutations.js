@@ -1,9 +1,21 @@
-export function setClients(state, clients) {
-  state.clients = clients.map(client => ({
+import localDB, { getCollection } from '@services/dexie';
+
+export async function setClients(state, clientsData) {
+  const clientsCollection = await getCollection('clients');
+  const clients = clientsData.map(client => ({
     ...client.attributes,
     id: client.id,
     name: client.attributes.insuredInfo.primary['fname']
   }));
+  state.clients = clients;
+  if ((await clientsCollection.count()) > 0) {
+    await clientsCollection.delete([]);
+  }
+  await localDB.clients.bulkAdd(clients);
+}
+
+export async function setOfflineClients(state) {
+  state.clients = await getCollection('clients').toArray();
 }
 
 export function setSelectedEditClient(state, client) {

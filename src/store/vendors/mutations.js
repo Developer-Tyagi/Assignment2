@@ -1,11 +1,24 @@
-export function setvendors(state, vendors) {
-  state.vendors = vendors.map(vendor => ({
+import localDB, { getCollection } from '@services/dexie';
+
+export async function setVendors(state, vendorsData) {
+  const vendorsCollection = await getCollection('vendors');
+  const vendors = vendorsData.map(carrier => ({
     ...vendor.attributes,
     id: vendor.id,
     machineValue: vendor.attributes.machineValue,
     selected: false
   }));
+  state.vendors = vendors;
+  if ((await vendorsCollection.count()) > 0) {
+    await vendorsCollection.delete([]);
+  }
+  await localDB.vendors.bulkAdd(vendors);
 }
+
+export async function setOfflinevendors(state) {
+  state.vendors = await getCollection('vendors').toArray();
+}
+
 export function setSelectedVendor(state, vendor) {
   state.selectedVendor = {
     id: vendor.id,
