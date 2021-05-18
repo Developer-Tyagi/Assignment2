@@ -399,3 +399,21 @@ export async function updateClaimTimeline({ dispatch, state }, payload) {
     });
   }
 }
+
+// API for View Client statistics
+export async function getClientStatistics({ commit, dispatch }) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get('/claimstatistics');
+    console.log(data, 'data is');
+    commit('setClientStatistics', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+  }
+}

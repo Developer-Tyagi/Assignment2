@@ -4,25 +4,26 @@
       <q-card-section class="row">
         <div class="col-3">
           <div class="my-card">
-            <p class="card-text">50</p>
+            <p class="card-text">{{ claimStatic.open }}</p>
           </div>
+
           <p class="text"><small>Open Claims</small></p>
         </div>
         <div class="col-3">
           <div class="my-card">
-            <p class="card-text">50</p>
+            <p class="card-text">{{ claimStatic.recentUpdated }}</p>
           </div>
           <p class="text"><small>Claims with recent activity</small></p>
         </div>
         <div class="col-3">
           <div class="my-card">
-            <p class="card-text">150</p>
+            <p class="card-text">{{ clientStatic.new }}</p>
           </div>
           <p class="text"><small>Clients</small></p>
         </div>
         <div class="col-3">
           <div class="my-card">
-            <p class="card-text">4</p>
+            <p class="card-text">{{ clientStatic.open }}</p>
           </div>
           <p class="text"><small>Clients with Open Claims</small></p>
         </div>
@@ -37,11 +38,11 @@
         <q-card-section class="row q-py-sm q-px-none">
           <div class="col-6 q-pa-md border-right">
             <span><small>New Claims</small></span>
-            <span class="text-bold float-right">10</span>
+            <span class="text-bold float-right"> {{ claimStatic.new }}</span>
           </div>
           <div class="col-6 q-pa-md">
             <span><small>New Leads</small></span>
-            <span class="text-bold float-right">0</span>
+            <span class="text-bold float-right"> {{ leadStatic.new }}</span>
           </div>
         </q-card-section>
       </q-card>
@@ -69,7 +70,24 @@
   </q-page>
 </template>
 <script>
-export default {};
+import { mapActions, mapGetters } from 'vuex';
+export default {
+  created() {
+    this.getClaimStatistics();
+    this.getLeadStatistics();
+    this.getClientStatistics();
+  },
+  methods: {
+    ...mapActions([
+      'getClaimStatistics',
+      'getLeadStatistics',
+      'getClientStatistics'
+    ])
+  },
+  computed: {
+    ...mapGetters(['claimStatic', 'leadStatic', 'clientStatic'])
+  }
+};
 </script>
 <style>
 .my-card {

@@ -176,3 +176,19 @@ export function makeId() {
   }
   return result.join('');
 }
+// API for View lead statistics
+export async function getLeadStatistics({ commit, dispatch }) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get('/claimstatistics');
+    commit('setLeadStatistics', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+  }
+}

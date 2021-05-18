@@ -89,3 +89,9 @@ export function setTemplateTypes(state, types) {
 export function setClaimDocument(state, claimDocument) {
   state.claimDocument = claimDocument;
 }
+
+export function setClaimStatistics(state, claimStatic) {
+  state.claimStatic = {
+    ...claimStatic.attributes
+  };
+}
