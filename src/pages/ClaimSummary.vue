@@ -12,7 +12,7 @@
               name="edit"
               size="xs"
               color="primary"
-              @click="claimSummary = true"
+              @click="onEditClaimSummary"
             />
           </div>
         </div>
@@ -44,13 +44,33 @@
           </div>
           <div class="row q-mt-sm">
             <span class="heading-light col-4"> Claim Fees </span>
-            <span class="q-ml-md col">
+            <div
+              class="q-ml-md col"
+              v-if="getSelectedClaim.contractInfo.fees.type == 'dollar'"
+            >
               {{
                 getSelectedClaim.contractInfo.fees.rate
                   ? '$' + ' ' + getSelectedClaim.contractInfo.fees.rate
                   : '-'
               }}
-            </span>
+            </div>
+            <div
+              class="q-ml-md col"
+              v-else-if="getSelectedClaim.contractInfo.fees.type == 'update'"
+            >
+              {{
+                getSelectedClaim.contractInfo.fees.rate
+                  ? getSelectedClaim.contractInfo.fees.rate + ' /hour'
+                  : '-'
+              }}
+            </div>
+            <div class="q-ml-md col" v-else>
+              {{
+                getSelectedClaim.contractInfo.fees.rate
+                  ? getSelectedClaim.contractInfo.fees.rate + ' %'
+                  : '-'
+              }}
+            </div>
           </div>
           <div class="row q-mt-sm">
             <span class="heading-light col-4"> Date of Contract </span>
@@ -335,21 +355,73 @@
                 v-model="fileNumber"
                 label="File Number"
               />
-              <q-input
+              <!-- <q-input
                 class="q-py-sm"
                 v-model.number="contractInfo.fees.rate"
                 label="Claim Fee(%)"
-              />
+              /> -->
+              <div class="row">
+                <q-btn-toggle
+                  v-model="contractInfo.fees.type"
+                  push
+                  glossy
+                  toggle-color="primary"
+                  :options="[
+                    { label: '$', value: 'dollar' },
+                    { label: '%', value: 'percentage' },
+                    { value: 'update', icon: 'update' }
+                  ]"
+                />
+              </div>
+              <div class="row" style="align-items: center">
+                <q-input
+                  class="q-ml-auto full-width"
+                  mask="#.#"
+                  type="number"
+                  v-model.number="contractInfo.fees.rate"
+                  label="Claim Fee Rate"
+                  label-color="primary"
+                  style="width: 50%"
+                  ><template
+                    v-slot:prepend
+                    v-if="contractInfo.fees.type == 'dollar'"
+                  >
+                    <q-icon name="$" color="primary" class="q-mb-sm"></q-icon>
+                  </template>
+
+                  <template
+                    v-slot:append
+                    v-else-if="contractInfo.fees.type == 'percentage'"
+                  >
+                    <q-icon name="%" color="primary"></q-icon>
+                  </template>
+                  <template v-slot:append v-else>
+                    <span class="form-heading text-primary">/hour</span>
+                  </template></q-input
+                >
+              </div>
               <q-input
                 class="q-py-sm"
                 v-model="policyInfo.carrierNotifyDate"
                 label="Date Notified"
                 disable
               />
-              <q-input
-                class="q-py-sm"
-                v-model="policyInfo.reasonForClaim"
-                label="Reason For Claim"
+
+              <q-select
+                dense
+                behavior="menu"
+                v-model="lossInfo.reasonClaim.value"
+                option-value="name"
+                option-label="name"
+                map-options
+                use-input
+                input-debounce="0"
+                options-dense
+                emit-value
+                :options="claimReasonOptions"
+                @input="setClaimReasons(claimReasons, lossInfo.reasonClaim)"
+                @filter="searchFilterBy"
+                label="Reason for Claim"
               />
             </div>
           </q-card>
@@ -581,6 +653,7 @@ export default {
   components: { CustomBar, ClaimDetail },
   data() {
     return {
+      claimReasonOptions: [],
       phase: '',
       rating: 1,
       claimDeadline: false,
@@ -596,6 +669,7 @@ export default {
         created: '',
         notes: ''
       },
+
       lossInfo: {
         dateOfLoss: '',
         desc: '',
@@ -604,7 +678,7 @@ export default {
           machineValue: '',
           value: ''
         },
-        claimReason: {
+        reasonClaim: {
           id: '',
           value: '',
           machineValue: ''
@@ -619,12 +693,12 @@ export default {
       },
       contractInfo: {
         fees: {
-          rate: null
+          rate: '',
+          type: ''
         }
       },
       fileNumber: '',
       policyInfo: {
-        reasonForClaim: '',
         sourceOfClaim: '',
         contractDetails: '',
         dateOfFirstContact: '',
@@ -646,7 +720,8 @@ export default {
       'getSelectedClaim',
       'setClientProperty',
       'selectedClaimId',
-      'lossCauses'
+      'lossCauses',
+      'claimReasons'
     ]),
     formatDate(value) {
       if (value) {
@@ -669,11 +744,17 @@ export default {
     this.policyInfo.carrierNotifyDate = dateToShow(
       this.getSelectedClaim.contractInfo.date
     );
-    this.policyInfo.reasonForClaim = this.getSelectedClaim.lossInfo.claimReason.value;
-    this.policyInfo.dateOfFirstContact = dateToShow(
-      this.getSelectedClaim.contractInfo.dateOfFirstContact
-    );
-    this.contractInfo.fees.rate = this.getSelectedClaim.contractInfo.fees.rate;
+    // this.policyInfo.reasonForClaim = this.getSelectedClaim.lossInfo.claimReason.value;
+    // this.policyInfo.claimReason.id = this.getSelectedClaim.lossInfo.claimReason.id;
+    // this.policyInfo.claimReason.value = this.getSelectedClaim.lossInfo.claimReason.value;
+    // this.policyInfo.claimReason.machineValue = this.getSelectedClaim.lossInfo.claimReason.machineValue;
+    // this.policyInfo.dateOfFirstContact = dateToShow(
+    //   this.getSelectedClaim.contractInfo.dateOfFirstContact
+    // );
+    // this.contractInfo.fees.rate = this.getSelectedClaim.contractInfo.fees.rate;
+    // this.contractInfo.fees.type = this.getSelectedClaim.contractInfo.fees.type;
+    // console.log(this.contractInfo.fees.type, 'jnj');
+    // console.log(this.getSelectedClaim.contractInfo.fees.type);
     this.isHabitable = this.getSelectedClaim.lossInfo.isHabitable;
     this.isFemaClaim = this.getSelectedClaim.lossInfo.isFEMA;
     this.lossInfo.desc = this.getSelectedClaim.lossInfo.desc;
@@ -700,17 +781,66 @@ export default {
       this.phase = this.getSelectedClaim.phases[index].value;
       this.editClaimTimeline = true;
     },
+    onEditClaimSummary() {
+      this.claimSummary = true;
+      this.lossInfo.reasonClaim.id = this.getSelectedClaim.lossInfo.claimReason.id;
+      this.lossInfo.reasonClaim.value = this.getSelectedClaim.lossInfo.claimReason.value;
+      this.lossInfo.reasonClaim.machineValue = this.getSelectedClaim.lossInfo.claimReason.machineValue;
+      this.policyInfo.dateOfFirstContact = dateToShow(
+        this.getSelectedClaim.contractInfo.dateOfFirstContact
+      );
+
+      this.contractInfo.fees.rate = this.getSelectedClaim.contractInfo.fees.rate;
+      this.contractInfo.fees.type = this.getSelectedClaim.contractInfo.fees.type;
+    },
+    searchFilterBy(val, update) {
+      this.lossInfo.reasonClaim.id = null;
+      if (val === ' ') {
+        update(() => {
+          this.claimReasonOptions = this.claimReasons;
+        });
+        return;
+      }
+
+      update(() => {
+        const search = val.toLowerCase();
+        this.claimReasonOptions = this.claimReasons.filter(
+          v => v.name.toLowerCase().indexOf(search) > -1
+        );
+      });
+    },
+    setTypes(types, data) {
+      const obj = types.find(item => {
+        return item.id === data.id;
+      });
+
+      data.machineValue = obj.machineValue;
+      data.value = obj.name;
+    },
+    setClaimReasons(types, data) {
+      const obj = types.find(item => {
+        return item.value === data.name;
+      });
+
+      data.machineValue = obj.machineValue;
+      data.id = obj.name;
+    },
 
     async onSaveButtonClick(value) {
       if (value == 'claimSummary') {
-        this.editClaimTimeline = true;
         let payload = {
           id: this.selectedClaimId,
           data: {
             fileNumber: this.fileNumber,
-
             contractInfo: this.contractInfo,
-            policyInfo: this.policyInfo
+            policyInfo: this.policyInfo,
+            lossInfo: {
+              claimReason: {
+                id: this.lossInfo.reasonClaim.id,
+                value: this.lossInfo.reasonClaim.value,
+                machineValue: this.lossInfo.reasonClaim.machineValue
+              }
+            }
           }
         };
         await this.editClaimInfo(payload);

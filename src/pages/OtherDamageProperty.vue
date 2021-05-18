@@ -48,7 +48,7 @@
             </div>
           </div>
           <div class="row   justify-between q-my-sm">
-            <div class="heading-light  ">Purchase Date</div>
+            <div class="heading-light">Purchase Date</div>
             <div class="q-mr-sm">
               {{ damage.purchaseDate | moment('DD/MM/YYYY') }}
             </div>
@@ -57,17 +57,18 @@
         <q-separator />
         <div class="q-my-sm row justify-between">
           <div class="heading-light col-3">Purchase Price</div>
-          <div class="heading-light ">$</div>
+
           <div class="">
-            {{ damage.purchasePrice }}
+            <span class="heading-light"> $</span> {{ damage.purchasePrice }}
           </div>
         </div>
         <div class="q-my-sm row justify-between">
           <div class="heading-light col-3 ">
             {{ damage.replaceCost == null ? 'Repair' : 'Replace' }} Cost
           </div>
-          <div class="heading-light ">$</div>
+
           <div class="">
+            <span class="heading-light"> $</span>
             {{
               damage.replaceCost == null
                 ? damage.repairCost
