@@ -8,15 +8,16 @@
             class="lead-dashboard-card"
             @click="$router.push('/leads')"
           >
-            <div class="value">0</div>
+            <div class="value">{{ leadStatic.new }}</div>
+
             <div class="text">New Leads</div>
           </q-card>
           <q-card dark class="lead-dashboard-card">
-            <div class="value">6</div>
+            <div class="value">{{ leadStatic.converted }}</div>
             <div class="text">Converted Leads</div>
           </q-card>
           <q-card dark class="lead-dashboard-card">
-            <div class="value">2</div>
+            <div class="value">{{ leadStatic.dead }}</div>
             <div class="text">Dead Leads</div>
           </q-card>
         </div>
@@ -62,7 +63,7 @@
 
 <script>
 import BarChartComponent from 'components/BarChart';
-
+import { mapActions, mapGetters } from 'vuex';
 export default {
   components: {
     BarChartComponent
@@ -102,9 +103,11 @@ export default {
     };
   },
   mounted() {
+    this.getLeadStatistics();
     this.fillData();
   },
   methods: {
+    ...mapActions(['getLeadStatistics']),
     fillData() {
       this.datacollection = {
         labels: [
@@ -125,6 +128,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['leadStatic']),
     myStyles() {
       return {
         height: '600px'
