@@ -5,13 +5,18 @@
         {{ getSelectedClaim.client.fname }}
         {{ getSelectedClaim.client.lname }}</span
       >
-      <q-rating
-        v-model="rating"
+
+      <q-icon
         class="q-ml-auto"
         size="1em"
-        :max="1"
+        :name="getSelectedClaim.isFavourite ? 'star' : 'star_border'"
+        @click="onClickFavorite"
         color="primary"
-      ></q-rating>
+      >
+        <q-tooltip anchor="center right" self="center left" :offset="[10, 10]">
+          Mark claim as favourite
+        </q-tooltip>
+      </q-icon>
     </div>
     <div class="row">
       <div class="heading-light col-3 ">
@@ -140,7 +145,7 @@ export default {
   name: 'Claims',
   components: { CustomBar },
   data() {
-    return { rating: 1 };
+    return {};
   },
 
   computed: {
@@ -159,7 +164,18 @@ export default {
     this.getSingleClaimDetails(this.selectedClaimId);
   },
   methods: {
-    ...mapActions(['getSingleClaimDetails'])
+    ...mapActions([
+      'getSingleClaimDetails',
+      'markClaimUnFavorite',
+      'markClaimFavorite'
+    ]),
+    async onClickFavorite() {
+      if (this.getSelectedClaim.isFavourite == false) {
+        await this.markClaimUnFavorite(this.selectedClaimId);
+      } else {
+        await this.markClaimFavorite(this.selectedClaimId);
+      }
+    }
   }
 };
 </script>

@@ -127,7 +127,7 @@
       </div>
       <div v-else class="full-height full-width">
         <div class="absolute-center">
-          <div style="color: #666666; width: 110%">
+          <div style="color: #666666; width: 110%;margin-top:120px">
             You haven't added a Mortgage yet.
           </div>
           <img

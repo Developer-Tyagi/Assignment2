@@ -64,8 +64,8 @@
         <span>Claims Watch List</span>
         <span class="float-right">See all</span>
       </div>
-      <div v-if="claims.data">
-        <q-card class="q-mt-sm" v-for="claim in claims.data">
+      <div v-if="claims">
+        <q-card class="q-mt-sm" v-for="claim in claims">
           <q-card-section>
             <div class="row">
               <span class="heading-light"
@@ -143,6 +143,7 @@
           </q-card-section>
         </q-card>
       </div>
+
       <div v-else class="full-height full-width column">
         <div class="absolute-center ">
           <div style="color: #666666,align-items: center" class="text-center">
