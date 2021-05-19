@@ -49,7 +49,7 @@
               <div class="row">
                 <div class="col-3">Carrier</div>
 
-                <div class="">
+                <div>
                   {{
                     claim.attributes.carrier
                       ? claim.attributes.carrier.value
@@ -62,7 +62,7 @@
               <div class="row">
                 <div class="col-3">Claim No.</div>
 
-                <div class="">
+                <div>
                   {{ claim.attributes.number ? claim.attributes.number : '-' }}
                 </div>
               </div>

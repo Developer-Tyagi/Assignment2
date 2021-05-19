@@ -16,6 +16,7 @@ export default function() {
     damageInfo: [],
     tasks: [],
     templateOptions: [],
-    claimDocument: []
+    claimDocument: [],
+    claimStatic: {}
   };
 }

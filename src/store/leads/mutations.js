@@ -79,3 +79,8 @@ export function setSelectedLead(state, lead) {
     };
   }
 }
+export function setLeadStatistics(state, leadStatic) {
+  state.leadStatic = {
+    ...leadStatic.attributes
+  };
+}

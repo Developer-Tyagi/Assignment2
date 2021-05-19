@@ -86,3 +86,8 @@ export function setPolicyCategory(state, types) {
 export function setSelectedClient(state, client) {
   state.selectedClient = client;
 }
+export function setClientStatistics(state, clientStatic) {
+  state.clientStatic = {
+    ...clientStatic.attributes
+  };
+}
