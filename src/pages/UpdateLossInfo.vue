@@ -5,6 +5,7 @@
       name="create"
       color="primary"
       class="icon-top"
+      v-if="!lossInfoDialog"
       @click="onEditIconClick"
     ></q-icon>
     <div class="listing-height">

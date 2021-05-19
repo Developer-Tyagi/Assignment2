@@ -405,7 +405,6 @@ export async function getClientStatistics({ commit, dispatch }) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.get('/clientstatistics');
-    console.log(data, 'data is');
     commit('setClientStatistics', data);
     dispatch('setLoading', false);
   } catch (e) {
