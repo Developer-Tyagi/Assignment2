@@ -104,7 +104,26 @@
         <div class="q-pa-md q-gutter-sm">
           <q-card class="q-pa-sm" style="height:500px;">
             <div class="text-bold q-my-xs">TITLE</div>
-            <div><q-input outlined v-model="title" /></div>
+            <div>
+              <q-select
+                dense
+                class="input-extra-padding q-ma-sm required"
+                v-model="templatetype.value"
+                option-value="name"
+                option-label="name"
+                map-options
+                options-dense
+                behavior="menu"
+                emit-value
+                :options="templateOptions"
+                @input="setTypes(templatetype.value)"
+                label="List of Templates"
+                lazy-rules
+                :rules="[
+                  val => (val && val.length > 0) || 'Please fill the template'
+                ]"
+              />
+            </div>
             <div class="text-bold q-py-sm">BODY</div>
 
             <q-editor
@@ -144,6 +163,7 @@
             <q-btn
               color="primary"
               label="Save"
+              @click="onSaveTemplate"
               class="align-content-center  q-my-lg"
             />
           </div>
@@ -275,6 +295,7 @@ export default {
 
   data() {
     return {
+      templatetype: { value: '', machineValue: '' },
       definitions: {
         insert_img: {
           tip: 'Insertar Imagen',
@@ -315,6 +336,7 @@ export default {
   },
 
   created() {
+    this.getTemplates();
     this.getInspectionTypes().then(async () => {
       this.table = this.inspectionTypes;
     });
@@ -333,7 +355,8 @@ export default {
       'propertyTypes',
       'claimReasons',
       'lossCauses',
-      'claimSeverity'
+      'claimSeverity',
+      'templateOptions'
     ])
   },
 
@@ -362,8 +385,26 @@ export default {
       'getPropertyTypes',
       'getSeverityClaim',
       'getClaimReasons',
-      'getLossCauses'
+      'getLossCauses',
+      'getTemplates',
+      'addTemplate'
     ]),
+    async onSaveTemplate() {
+      const payload = {
+        value: this.post.body,
+        type: {
+          machineValue: this.templatetype.machineValue,
+          value: this.templatetype.value
+        }
+      };
+      await this.addTemplate(payload);
+    },
+    setTypes(value) {
+      const obj = this.templateOptions.find(item => {
+        return item.name === value;
+      });
+      this.templatetype.machineValue = obj.machineValue;
+    },
     insertImg() {
       // insertImg method
       const post = this.post;
