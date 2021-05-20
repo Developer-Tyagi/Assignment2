@@ -751,8 +751,6 @@ export default {
       rol: [],
       arrOfRoles: [],
       value: {},
-      value1: true,
-      allUsers: ['dsdssd', 'adds', 'ssdsdd', 'dsddsdsd'],
       userId: '',
       editUserInfoDialog: false,
       priority: false,
@@ -911,7 +909,6 @@ export default {
         return true;
       }
       return false;
-      // permissions[ind].machineValue;
     },
 
     async onSaveEditedButton() {
