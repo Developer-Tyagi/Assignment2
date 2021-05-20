@@ -203,7 +203,151 @@ export async function getRoles({ commit, dispatch }) {
     //         value: 'Office Manager',
     //         machineValue: 'office_manager',
     //         isPaid: false,
-    //         permissions: null
+    //         permissions: []
+    //       }
+    //     },
+    //     {
+    //       id: '605470d5f5a23cc12fea11ed',
+    //       type: 'roles',
+    //       attributes: {
+    //         created: '2021-03-19T09:37:25.892Z',
+    //         updated: '2021-03-19T09:37:25.892Z',
+    //         value: 'Office Manager',
+    //         machineValue: 'office_manager',
+    //         isPaid: false,
+    //         permissions: []
+    //       }
+    //     },
+    //     {
+    //       id: '605470d5f5a23cc12fea11ed',
+    //       type: 'roles',
+    //       attributes: {
+    //         created: '2021-03-19T09:37:25.892Z',
+    //         updated: '2021-03-19T09:37:25.892Z',
+    //         value: 'Officeeee eeeee',
+    //         machineValue: 'office_manager',
+    //         isPaid: false,
+    //         permissions: ['view_all_claims']
+    //       }
+    //     },
+    //     {
+    //       id: '605470d5f5a23cc12fea11ed',
+    //       type: 'roles',
+    //       attributes: {
+    //         created: '2021-03-19T09:37:25.892Z',
+    //         updated: '2021-03-19T09:37:25.892Z',
+    //         value: 'Office Manager',
+    //         machineValue: 'office_manager',
+    //         isPaid: false,
+    //         permissions: []
+    //       }
+    //     },
+    //     {
+    //       id: '605470d5f5a23cc12fea11ed',
+    //       type: 'roles',
+    //       attributes: {
+    //         created: '2021-03-19T09:37:25.892Z',
+    //         updated: '2021-03-19T09:37:25.892Z',
+    //         value: 'Office Manager',
+    //         machineValue: 'office_manager',
+    //         isPaid: false,
+    //         permissions: []
+    //       }
+    //     },
+    //     {
+    //       id: '605470d5f5a23cc12fea11ed',
+    //       type: 'roles',
+    //       attributes: {
+    //         created: '2021-03-19T09:37:25.892Z',
+    //         updated: '2021-03-19T09:37:25.892Z',
+    //         value: 'Office Manager',
+    //         machineValue: 'office_manager',
+    //         isPaid: false,
+    //         permissions: []
+    //       }
+    //     },
+    //     {
+    //       id: '605470d5f5a23cc12fea11ed',
+    //       type: 'roles',
+    //       attributes: {
+    //         created: '2021-03-19T09:37:25.892Z',
+    //         updated: '2021-03-19T09:37:25.892Z',
+    //         value: 'Office Manager',
+    //         machineValue: 'office_manager',
+    //         isPaid: false,
+    //         permissions: []
+    //       }
+    //     },
+    //     {
+    //       id: '605470d5f5a23cc12fea11ed',
+    //       type: 'roles',
+    //       attributes: {
+    //         created: '2021-03-19T09:37:25.892Z',
+    //         updated: '2021-03-19T09:37:25.892Z',
+    //         value: 'Office Manager',
+    //         machineValue: 'office_manager',
+    //         isPaid: false,
+    //         permissions: []
+    //       }
+    //     },
+    //     {
+    //       id: '605470d5f5a23cc12fea11ed',
+    //       type: 'roles',
+    //       attributes: {
+    //         created: '2021-03-19T09:37:25.892Z',
+    //         updated: '2021-03-19T09:37:25.892Z',
+    //         value: 'Office Manager',
+    //         machineValue: 'office_manager',
+    //         isPaid: false,
+    //         permissions: []
+    //       }
+    //     },
+    //     {
+    //       id: '605470d5f5a23cc12fea11ed',
+    //       type: 'roles',
+    //       attributes: {
+    //         created: '2021-03-19T09:37:25.892Z',
+    //         updated: '2021-03-19T09:37:25.892Z',
+    //         value: 'Office Manager',
+    //         machineValue: 'office_manager',
+    //         isPaid: false,
+    //         permissions: []
+    //       }
+    //     },
+    //     {
+    //       id: '605470d5f5a23cc12fea11ed',
+    //       type: 'roles',
+    //       attributes: {
+    //         created: '2021-03-19T09:37:25.892Z',
+    //         updated: '2021-03-19T09:37:25.892Z',
+    //         value: 'Office Manager',
+    //         machineValue: 'office_manager',
+    //         isPaid: false,
+    //         permissions: []
+    //       }
+    //     },
+    //     {
+    //       id: '605470d5f5a23cc12fea11ed',
+    //       type: 'roles',
+    //       attributes: {
+    //         created: '2021-03-19T09:37:25.892Z',
+    //         updated: '2021-03-19T09:37:25.892Z',
+    //         value: 'Office Manager',
+    //         machineValue: 'office_manager',
+    //         isPaid: false,
+    //         permissions: []
+    //       }
+    //     },
+    //     {
+    //       id: '605470d5f5a23cc12fea11ed',
+    //       type: 'roles',
+    //       attributes: {
+    //         created: '2021-03-19T09:37:25.892Z',
+    //         updated: '2021-03-19T09:37:25.892Z',
+    //         value: 'Himanshu',
+    //         machineValue: 'office_manager',
+    //         isPaid: false,
+    //         permissions: ['view_all_claims']
     //       }
     //     }
     //   ]
@@ -313,4 +457,24 @@ export async function syncLocalDataBase({ dispatch, state }) {
       });
     }
   });
+}
+
+export async function setMultiplePermission({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      '/roles/setpermission',
+      buildApiData('roles', payload)
+    );
+
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+    return false;
+  }
 }
