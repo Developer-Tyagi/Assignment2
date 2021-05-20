@@ -99,6 +99,166 @@
                 </div>
               </q-card>
             </q-tab-panel>
+            <q-tab-panel name="groupPermission">
+              <q-card class="q-pa-lg" flat bordered>
+                <div style="overflow-x:auto;">
+                  <table>
+                    <div
+                      class="row"
+                      style="height: calc(100% - 407px); overflow: auto"
+                    >
+                      <div class="column text-bold " style="width:150px; ">
+                        <div style="padding: 10px 10px; font-size:10px;">
+                          Permission/Role
+                        </div>
+                        <div
+                          class="q-p-xl"
+                          v-for="(user, index) in permissions"
+                          style="height:32.1px; font-size:10px;"
+                        >
+                          <div style=" height:30px; font-size:10px;">
+                            {{ user.machineValue }}{{ index }}
+                          </div>
+                          <q-separator />
+                        </div>
+                      </div>
+
+                      <div
+                        class="column "
+                        style="padding: 5px,10px;border:1px solid #ccc;  font-size:10px;"
+                      >
+                        <div class="row">
+                          <div
+                            v-for="(user, index) in arrOfRoles"
+                            class="row"
+                            style="padding: 1px 10px;border:1px solid #ccc; height:34px; font-size:10px;"
+                          >
+                            <div style="font-size:10px;width:50px;">
+                              {{ user.value.name }}
+                            </div>
+                          </div>
+                        </div>
+
+                        <table class="">
+                          <!-- <tr>
+                        <td v-for="(user, index) in roleTypes">
+                          {{ user.name }}
+                        </td>
+                      </tr> -->
+
+                          <tbody>
+                            <tr v-for="(us, ind) in permissions.length">
+                              <td
+                                v-for="(user, index) in arrOfRoles"
+                                style="padding: 0px 9px;border:1px solid #ccc;height:30px; font-size:10px;"
+                              >
+                                <!-- [{name:'himams',claim:'false',carrier:true,lead:true},{name:'himams',claim:'false',carrier:true,lead:true}
+                            ,{name:'himams',claim:'false',carrier:true,lead:true}] -->
+                                <!-- {{ user.value.machineValue }}{{ user }} -->
+                                <div v-if="user.value.permission != null">
+                                  <div
+                                    v-if="
+                                      test(
+                                        permissions[ind].machineValue,
+                                        user.value.machineValue,
+                                        index
+                                      )
+                                    "
+                                  >
+                                    <q-icon
+                                      color="primary"
+                                      name="check_circle"
+                                      size="sm"
+                                      @click="rolePermission(ind, index)"
+                                    />
+                                  </div>
+                                  <div v-else>
+                                    <q-icon
+                                      color="primary"
+                                      name=" radio_button_unchecked"
+                                      size="sm"
+                                    />
+                                  </div>
+                                </div>
+                                <!-- <q-checkbox
+                              v-if="
+                                test(
+                                  permissions[ind].machineValue,
+                                  user.machineValue,
+                                  index
+                                )
+                              "
+                              v-model="user.label"
+                              @input="rolePermission(ind, index)"
+                            /> -->
+                                <!-- <q-checkbox
+                              v-else
+                              v-model="user.label"
+                              @input="rolePermission(ind, index)"
+                            /> -->
+                                <div v-if="user.permission != null">
+                                  <!-- {{ user ? user.permission[ind] : '-' }} -->
+                                  {{ ind }},{{ index }}
+                                  <!-- {{ permissions[ind].machineValue }} -->
+                                </div>
+                                <div>
+                                  <!-- <q-checkbox v-model="value[index]" /> -->
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </table>
+                </div>
+
+                <!-- <div
+                  class="q-mt-sm"
+                  style="height: calc(100% - 47px); overflow: auto"
+                > -->
+                <!-- <table>
+                    <thead>
+                      <tr
+                        class="text-bold text-h6 text-white"
+                        style="height: 30px"
+                      >
+                        <th style="width: 15%"></th>
+                        <th style="width: 15%">Contact Name</th>
+                        <th style="width: 15%">Email</th>
+                        <th>Phone</th>
+                        <th>Member Since</th>
+                        <th>Roles</th>
+                        <th>Last Access</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="user in allUsers">
+                        <td class="text-center">
+                          hh
+                        </td>
+                        <td class="text-primary text-center">
+                          <span class="clickable">hh</span><span> - </span>
+                        </td>
+                        <td class="text-primary text-center">
+                          <span class="clickable">sdds</span><span> - </span>
+                        </td>
+                        <td class="text-center">-</td>
+                        <td class="text-center">
+                          kkk
+                        </td>
+                        <td class="text-center">-</td>
+
+                        <td class="text-center">-</td>
+                        <td class="text-center"></td>
+                      </tr>
+                    </tbody>
+                  </table> -->
+                <!-- </div> -->
+              </q-card>
+            </q-tab-panel>
             <q-tab-panel name="actionItems">
               <q-card class="q-pa-lg" flat bordered>
                 <div class="text-h6 text-bold">Claim Action Item</div>
@@ -684,6 +844,10 @@ export default {
 
   data() {
     return {
+      arrOfRoles: [],
+      value: {},
+      value1: true,
+      allUsers: ['dsdssd', 'adds', 'ssdsdd', 'dsddsdsd'],
       userId: '',
       editUserInfoDialog: false,
       priority: false,
@@ -782,7 +946,8 @@ export default {
       'getWorkflow',
       'allAction',
       'contactTypes',
-      'roleTypes'
+      'roleTypes',
+      'permissions'
     ])
   },
 
@@ -796,9 +961,34 @@ export default {
       'addWorkflowAction',
       'getContactTypes',
       'editUserInfo',
-      'getUserInfo'
+      'getUserInfo',
+      'getRoles',
+      'getPermissions'
     ]),
     validateEmail,
+    rolePermission(per, role) {
+      console.log(per, role);
+    },
+    test(val, role, index) {
+      console.log(index);
+
+      console.log(this.roleTypes[index].permission.includes(val));
+      // const result = this.roleTypes[index].permission.find(obj => {
+      //   // console.log(obj.machineValue, 6565);
+      //   const var1 = obj.machineValue === val;
+      //   if (var1) {
+      //     console.log(obj.machineValue, val, role, 'inside');
+      //   }
+      //   return obj.machineValue === val;
+      // });
+
+      if (this.roleTypes[index].permission.includes(val)) {
+        this.arrOfRoles[index].label = true;
+        return true;
+      }
+      return false;
+      // permissions[ind].machineValue;
+    },
 
     async onSaveEditedButton() {
       const success = await this.$refs.addUserForm.validate();
@@ -998,6 +1188,17 @@ export default {
     this.getWorkflowAction();
     this.claimType = 'claim_new_claim';
     await this.claimActionItem(this.claimType);
+    this.getRoles().then(async () => {
+      this.roleTypes.forEach(val => {
+        this.arrOfRoles.push({
+          label: '',
+          value: val
+        });
+      });
+    });
+    this.getPermissions();
+    console.log(this.roleTypes, 'roles');
+    // this.arrOfRoles.data = this.roleTypes;
   }
 };
 </script>
@@ -1009,4 +1210,26 @@ export default {
 ::-webkit-scrollbar {
   width: 0px;
 }
+tr:nth-child(even) {
+  background-color: $grey-3 !important;
+}
+
+// table thead th {
+//   position: sticky;
+//   top: 0;
+//   z-index: 10;
+// }
+// table {
+//   border-collapse: collapse;
+//   width: 500px;
+// }
+// th {
+//   background: red;
+//   // padding: 8px 10px;
+//   border: 1px solid #ccc;
+// }
+// td {
+//   // padding: 8px 10px;
+//   border: 1px solid #ccc;
+// }
 </style>

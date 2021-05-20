@@ -84,7 +84,15 @@ export function setRoles(state, roles) {
     name: type.attributes.value,
     machineValue: type.attributes.machineValue,
     id: type.id,
+    permission: type.attributes.permissions,
     isPaid: type.attributes.isPaid
+  }));
+}
+export function setPermissions(state, permission) {
+  state.permissions = permission.map(type => ({
+    name: type.attributes.value,
+    machineValue: type.attributes.machineValue,
+    id: type.id
   }));
 }
 

@@ -8,6 +8,7 @@ export default function() {
     userRoles: [],
     lossCauses: [],
     roleTypes: [],
+    permissions: [],
     fileRoleOptions: [
       { value: 'View Access', name: 'reader' },
       { value: 'Edit Access', name: 'writer' }
