@@ -13,6 +13,7 @@ export const plans = state => state.plans;
 export const clientTypes = state => state.clientTypes;
 
 export const roleTypes = state => state.roleTypes;
+export const permissions = state => state.permissions;
 
 export const userRoles = state => state.userRoles;
 

@@ -99,6 +99,68 @@
                 </div>
               </q-card>
             </q-tab-panel>
+            <q-tab-panel name="groupPermission">
+              <q-card class="q-pa-lg  " flat bordered>
+                <div class="row">
+                  <div class="" style="width:150px;">
+                    <div class="column text-bold ">
+                      <div
+                        style="height:47px; padding: 12px 20px;border:1px solid #ccc; font-size:15px;"
+                      >
+                        Permission/Role
+                      </div>
+                      <table>
+                        <tr v-for="(user, index) in permissions">
+                          <th style="height:26px; font-size:10px;">
+                            {{ user.name }}
+                          </th>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+
+                  <div class="col " style="overflow-x:auto;">
+                    <table>
+                      <tr>
+                        <th v-for="(user, index) in roleTypes">
+                          {{ user.name }}
+                        </th>
+                      </tr>
+
+                      <tr v-for="(us, ind) in permissions.length">
+                        <td align="center" v-for="(user, index) in arrOfRoles">
+                          <div
+                            v-if="
+                              user.value.permission != null &&
+                                test(
+                                  permissions[ind].machineValue,
+                                  user.machineValue,
+                                  index
+                                )
+                            "
+                          >
+                            <q-icon
+                              color="primary"
+                              name="check_circle"
+                              size="sm"
+                              @click="rolePermission(ind, index)"
+                            />
+                          </div>
+                          <div v-else>
+                            <q-icon
+                              color="primary"
+                              name=" radio_button_unchecked"
+                              size="sm"
+                              @click="rolePermission(ind, index)"
+                            />
+                          </div>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </q-card>
+            </q-tab-panel>
             <q-tab-panel name="actionItems">
               <q-card class="q-pa-lg" flat bordered>
                 <div class="text-h6 text-bold">Claim Action Item</div>
@@ -684,6 +746,11 @@ export default {
 
   data() {
     return {
+      newRole: { id: '', value: '', machine: '' },
+      newPermission: '',
+      rol: [],
+      arrOfRoles: [],
+      value: {},
       userId: '',
       editUserInfoDialog: false,
       priority: false,
@@ -782,7 +849,8 @@ export default {
       'getWorkflow',
       'allAction',
       'contactTypes',
-      'roleTypes'
+      'roleTypes',
+      'permissions'
     ])
   },
 
@@ -796,9 +864,52 @@ export default {
       'addWorkflowAction',
       'getContactTypes',
       'editUserInfo',
-      'getUserInfo'
+      'getUserInfo',
+      'getRoles',
+      'getPermissions',
+      'setMultiplePermission'
     ]),
     validateEmail,
+    async rolePermission(per, role) {
+      this.newPermission = this.permissions[per].machineValue;
+      this.newRole.id = this.roleTypes[role].id;
+      this.newRole.value = this.roleTypes[role].name;
+      this.newRole.machineValue = this.roleTypes[role].machineValue;
+      if (this.roleTypes[role].permission == null) {
+        this.rol.push(this.newPermission);
+      } else {
+        this.rol = this.roleTypes[role].permission;
+        this.rol.push(this.newPermission);
+      }
+      const payload = [
+        {
+          id: this.newRole.id,
+          value: this.newRole.value,
+          machineValue: this.newRole.machineValue,
+          permissions: this.rol
+        }
+      ];
+
+      this.setMultiplePermission(payload).then(async () => {
+        await this.getRoles().then(async () => {
+          this.roleTypes.forEach(val => {
+            this.arrOfRoles.push({
+              label: '',
+              value: val
+            });
+          });
+        });
+      });
+
+      this.tab = 'groupPermission';
+    },
+    test(val, role, index) {
+      if (this.roleTypes[index].permission.includes(val)) {
+        this.arrOfRoles[index].label = true;
+        return true;
+      }
+      return false;
+    },
 
     async onSaveEditedButton() {
       const success = await this.$refs.addUserForm.validate();
@@ -998,6 +1109,15 @@ export default {
     this.getWorkflowAction();
     this.claimType = 'claim_new_claim';
     await this.claimActionItem(this.claimType);
+    this.getRoles().then(async () => {
+      this.roleTypes.forEach(val => {
+        this.arrOfRoles.push({
+          label: '',
+          value: val
+        });
+      });
+    });
+    this.getPermissions();
   }
 };
 </script>
@@ -1005,8 +1125,13 @@ export default {
 .q-dialog__inner--minimized > div {
   max-width: 80%;
 }
+tr:nth-child(even) {
+  background-color: $grey-3 !important;
+}
 
-::-webkit-scrollbar {
-  width: 0px;
+th {
+  background: lightgray;
+
+  border: 1px solid #ccc;
 }
 </style>
