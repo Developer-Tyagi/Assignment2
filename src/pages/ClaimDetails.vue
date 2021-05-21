@@ -23,10 +23,9 @@
                 </q-card>
               </div>
             </q-item-section>
-
             <q-item-section class="q-mt-md" v-if="userRole == 'estimator'">
               <div>
-                <q-card
+                <!-- <q-card
                   class="q-ma-xs q-pa-md full-width"
                   @click="$router.push('/claim-summary')"
                 >
@@ -41,7 +40,7 @@
                   "
                 >
                   Document Upload
-                </q-card>
+                </q-card> -->
               </div>
             </q-item-section>
           </div>

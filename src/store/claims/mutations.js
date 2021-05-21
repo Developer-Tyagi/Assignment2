@@ -89,7 +89,21 @@ export function setTemplateTypes(state, types) {
 export function setClaimDocument(state, claimDocument) {
   state.claimDocument = claimDocument;
 }
+export function setClaimPhoto(state, claimPhoto) {
+  // state.claimPhoto = { ...claimPhoto.attributes };
+  state.claimPhoto = claimPhoto;
+}
+export function setClaimSketch(state, claimSketch) {
+  state.claimSketch = { ...claimSketch.attributes };
+}
 
+export function setAdditionalDocs(state, additionalDocs) {
+  state.additionalDocs = { ...additionalDocs.attributes };
+}
+
+export function setEsxDocs(state, esxDocs) {
+  state.esxDocs = { ...esxDocs.attributes };
+}
 export function setClaimStatistics(state, claimStatic) {
   state.claimStatic = {
     ...claimStatic.attributes

@@ -17,6 +17,10 @@ export default function() {
     tasks: [],
     templateOptions: [],
     claimDocument: [],
-    claimStatic: {}
+    claimStatic: {},
+    claimPhoto: [],
+    claimSketch: [],
+    additionalDocs: [],
+    esxDocs: []
   };
 }
