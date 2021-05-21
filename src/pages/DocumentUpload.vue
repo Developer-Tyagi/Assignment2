@@ -896,7 +896,7 @@ export default {
 
   methods: {
     ...mapActions([
-      'getClaimDocument',
+      'getClaimEstimateDoc',
       'uploadClaimDocument',
       'getClaimPhoto',
       'getClaimSketch',
@@ -1201,7 +1201,7 @@ export default {
   },
 
   async created() {
-    this.getClaimDocument(this.selectedClaimId);
+    this.getClaimEstimateDoc(this.selectedClaimId);
     this.getClaimPhoto(this.selectedClaimId);
     this.getClaimSketch(this.selectedClaimId);
     this.getAdditionalDocs(this.selectedClaimId);

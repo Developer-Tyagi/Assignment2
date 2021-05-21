@@ -790,7 +790,7 @@ export async function getTemplates({ commit, dispatch }) {
   }
 }
 // API for Get document for claim.
-export async function getClaimDocument({ commit, dispatch }, claimID) {
+export async function getClaimEstimateDoc({ commit, dispatch }, claimID) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.get(`/claims/${claimID}/documents/estimate`);
