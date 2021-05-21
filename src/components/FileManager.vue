@@ -446,6 +446,7 @@ export default {
   },
 
   created() {
+    this.getClaimDocument(this.selectedClaimId);
     this.getClaimRoles();
     this.getAllUsers();
   },
@@ -535,7 +536,6 @@ export default {
         direction: CameraDirection.Rear
       });
       this.setLoading(true);
-
       const jsPDFObj = new jsPDF('p', 'mm');
       jsPDFObj.addImage(imageData.dataUrl, 10, 10);
       this.pdfImage = jsPDFObj.output('datauristring');

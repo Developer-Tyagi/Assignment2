@@ -16,3 +16,7 @@ export const vendorLists = state => state.vendorLists;
 export const templateOptions = state => state.templateOptions;
 export const claimDocument = state => state.claimDocument;
 export const claimStatic = state => state.claimStatic;
+export const claimSketch = state => state.claimSketch;
+export const claimPhoto = state => state.claimPhoto;
+export const additionalDocs = state => state.additionalDocs;
+export const esxDocs = state => state.esxDocs;

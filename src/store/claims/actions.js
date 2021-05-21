@@ -790,11 +790,83 @@ export async function getTemplates({ commit, dispatch }) {
   }
 }
 // API for Get document for claim.
-export async function getClaimDocument({ commit, dispatch }, claimID) {
+export async function getClaimEstimateDoc({ commit, dispatch }, claimID) {
   dispatch('setLoading', true);
   try {
-    const { data } = await request.get(`/claims/${claimID}/documents`);
+    const { data } = await request.get(`/claims/${claimID}/documents/estimate`);
     commit('setClaimDocument', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+  }
+}
+// API for Get uploaded photos .
+export async function getClaimPhoto({ commit, dispatch }, claimID) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get(
+      `/claims/${claimID}/documents/photo_report`
+    );
+
+    commit('setClaimPhoto', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+  }
+}
+
+// API for Get claim Sketches .
+export async function getClaimSketch({ commit, dispatch }, claimID) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get(`/claims/${claimID}/documents/sketch`);
+    commit('setClaimSketch', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+  }
+}
+
+// API for Get all Additional Documents  .
+export async function getAdditionalDocs({ commit, dispatch }, claimID) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get(
+      `/claims/${claimID}/documents/additional_doc`
+    );
+    commit('setAdditionalDocs', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+  }
+}
+getEsxDocs;
+// API for Get all ESXs Documents .
+export async function getEsxDocs({ commit, dispatch }, claimID) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get(`/claims/${claimID}/documents/esx`);
+    commit('setEsxDocs', data);
     dispatch('setLoading', false);
   } catch (e) {
     console.log(e);
@@ -883,6 +955,30 @@ export async function markClaimUnFavorite({ dispatch, state }, claimID) {
     dispatch('setNotification', {
       type: 'positive',
       message: 'Claim marked as unfavourite!'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+    return false;
+  }
+}
+
+// API for Complete estimate
+export async function completeEstimate({ dispatch, state }, claimID) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      `/claims/${claimID}/complete-estimate
+`
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Claim Estimate Completed!'
     });
   } catch (e) {
     console.log(e);

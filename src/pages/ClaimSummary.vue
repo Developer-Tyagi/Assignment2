@@ -1,5 +1,11 @@
 <template>
   <q-page>
+    <q-icon
+      class="icon-top"
+      @click="menuItemDialog = true"
+      name="more_vert"
+      v-if="userRole == 'estimator'"
+    />
     <div class="listing-height">
       <ClaimDetail />
       <q-card class="q-ma-md q-pa-md">
@@ -42,7 +48,7 @@
               }}
             </span>
           </div>
-          <div class="row q-mt-sm">
+          <div class="row q-mt-sm" v-if="getSelectedClaim.contractInfo">
             <span class="heading-light col-4"> Claim Fees </span>
             <div
               class="q-ml-md col"
@@ -148,11 +154,12 @@
               color="primary"
               class="col"
               size="xs"
+              v-if="userRole != 'estimator'"
               @click="lossDetailsBox = true"
             ></q-icon>
           </div>
         </div>
-        <div class="q-ml-xs">
+        <div class="q-ml-xs" v-if="getSelectedClaim.lossInfo">
           <div class="row q-mt-sm">
             <span class="heading-light col-4"> Date & Time of Loss </span>
             <span class="q-ml-md col">
@@ -637,6 +644,22 @@
         />
       </q-card>
     </q-dialog>
+    <!-- Claim Summary Menu Item -->
+    <q-dialog
+      v-model="menuItemDialog"
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+      :position="'bottom'"
+    >
+      <q-card style="width: 350px">
+        <q-card-section class="items-center">
+          <div class="q-pa-md heading-light" @click="onClickUploadDocument">
+            Upload Documents
+          </div>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -653,6 +676,7 @@ export default {
   components: { CustomBar, ClaimDetail },
   data() {
     return {
+      menuItemDialog: false,
       claimReasonOptions: [],
       phase: '',
       rating: 1,
@@ -868,6 +892,9 @@ export default {
       this.lossInfo.cause.id = obj.id;
       this.lossInfo.cause.machineValue = obj.machineValue;
       this.lossInfo.cause.value = obj.name;
+    },
+    onClickUploadDocument() {
+      this.$router.push('/document-upload');
     }
   }
 };

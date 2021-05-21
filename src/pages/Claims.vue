@@ -136,7 +136,7 @@
 <script>
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import moment from 'moment';
-
+import { getCurrentUser } from '@utils/auth';
 export default {
   name: 'Claims',
   data() {
@@ -162,6 +162,7 @@ export default {
 
   created() {
     this.getClaims();
+    this.userRole = getCurrentUser().attributes.roles[0];
   },
   methods: {
     ...mapActions([
@@ -191,6 +192,10 @@ export default {
     onClickingOnClaim(claim) {
       this.setSelectedClaimId(claim.id);
       this.$router.push('/claim-details');
+      if (this.userRole == 'estimator') {
+        this.setSelectedClaimId(claim.id);
+        this.$router.push('/claim-summary');
+      }
     }
   }
 };
