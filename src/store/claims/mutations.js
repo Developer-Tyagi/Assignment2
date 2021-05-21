@@ -90,8 +90,7 @@ export function setClaimDocument(state, claimDocument) {
   state.claimDocument = claimDocument;
 }
 export function setClaimPhoto(state, claimPhoto) {
-  // state.claimPhoto = { ...claimPhoto.attributes };
-  state.claimPhoto = claimPhoto;
+  state.claimPhoto = { ...claimPhoto.attributes };
 }
 export function setClaimSketch(state, claimSketch) {
   state.claimSketch = { ...claimSketch.attributes };
