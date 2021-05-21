@@ -825,6 +825,36 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+
+    <!-- Alert delete Box -->
+    <q-dialog v-model="alertDailog">
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">Alert</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          Are you sure ! You want to delete this
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn
+            flat
+            label="Cancel"
+            color="primary"
+            v-close-popup
+            @click="alertDailog = false"
+          ></q-btn>
+          <q-btn
+            flat
+            label="Delete"
+            color="primary"
+            v-close-popup
+            @click="removeDocument()"
+          ></q-btn>
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 <script>
@@ -836,6 +866,8 @@ const { Camera } = Plugins;
 export default {
   data() {
     return {
+      driveId: '',
+      alertDailog: false,
       files: '',
       upload1Dialog: false,
       upload2Dialog: false,
@@ -902,10 +934,23 @@ export default {
       'getClaimSketch',
       'getAdditionalDocs',
       'getEsxDocs',
-      'completeEstimate'
+      'completeEstimate',
+      'deleteClaimDocument'
     ]),
     ...mapMutations(['setLoading']),
-
+    async removeDocument() {
+      const payload = {
+        claimID: this.selectedClaimId,
+        driveID: this.driveId
+      };
+      await this.deleteClaimDocument(payload);
+      this.getClaimPhoto(this.selectedClaimId);
+    },
+    onDeleteDocument(index) {
+      this.alertDailog = true;
+      console.log(this.claimPhoto.documents[index]);
+      this.driveId = this.claimPhoto.documents[index].parentID;
+    },
     onDocClick(document) {
       window.open(document.webViewLink);
     },
