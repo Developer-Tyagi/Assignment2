@@ -31,6 +31,7 @@ export default function() {
         price: 249
       }
     ],
+    tokens: [],
     isOnline: navigator.onLine
   };
 }

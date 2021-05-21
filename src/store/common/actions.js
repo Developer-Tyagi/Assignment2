@@ -283,3 +283,20 @@ export async function setMultiplePermission({ dispatch, state }, payload) {
     return false;
   }
 }
+
+export async function getTemplateToken({ commit, dispatch }) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get('/template-tokens');
+
+    commit('setTemplateToken', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+  }
+}
