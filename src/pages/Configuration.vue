@@ -140,6 +140,12 @@
                   icon: 'insert_photo',
                   label: 'Upload',
                   handler: insertImg
+                },
+                create: {
+                  tip: 'Upload token',
+                  icon: 'add_circle',
+                  label: 'Token',
+                  handler: tokenDialog
                 }
               }"
               :toolbar="[
@@ -154,7 +160,7 @@
                   'left',
                   'print'
                 ],
-                ['upload', 'save']
+                ['upload', 'save', 'create']
               ]"
             >
             </q-editor>
@@ -280,21 +286,63 @@
         </div>
       </q-card>
     </q-dialog>
+    <!-- Token Dialog Box -->
+    <q-dialog
+      v-model="tokenDialogBox"
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card style="width: 45%; height: 75vh">
+        <div class="row justify-end" style="height: 50px">
+          <q-btn dense flat icon="close" color="black" v-close-popup>
+            <q-tooltip>Close</q-tooltip>
+          </q-btn>
+        </div>
+        <table class="  table ">
+          <tr>
+            <th class="table-th1 " style="width:20%; align-items: center;">
+              NAME
+            </th>
+            <th class="table-th" style="width:20%">VALUE</th>
+            <th class="table-th" style="width:20%">DESCRIPTION</th>
+          </tr>
+          <tr class="table-tr" v-for="(user, index) in tokens">
+            <td class="table-td" style="width:20%">
+              {{ user.name }}
+            </td>
+            <td
+              class="table-td clickable text-primary"
+              style="height:26px; font-size:10px;"
+              @click="setValueToTemplate(user.value)"
+            >
+              {{ user.value }}
+            </td>
+            <td class="table-td" style="height:26px; font-size:10px;">
+              {{ user.desc }}
+            </td>
+          </tr>
+        </table>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import { validateEmail } from '@utils/validation';
 import SubSideBar from 'components/SubSideBar';
+import CustomBar from 'components/CustomBar';
 
 export default {
   name: 'SetConfiguration',
   components: {
-    SubSideBar
+    SubSideBar,
+    CustomBar
   },
 
   data() {
     return {
+      tokenDialogBox: false,
       templatetype: { value: '', machineValue: '' },
       definitions: {
         insert_img: {
@@ -337,6 +385,7 @@ export default {
 
   created() {
     this.getTemplates();
+    this.getTemplateToken();
     this.getInspectionTypes().then(async () => {
       this.table = this.inspectionTypes;
     });
@@ -356,7 +405,8 @@ export default {
       'claimReasons',
       'lossCauses',
       'claimSeverity',
-      'templateOptions'
+      'templateOptions',
+      'tokens'
     ])
   },
 
@@ -387,7 +437,8 @@ export default {
       'getClaimReasons',
       'getLossCauses',
       'getTemplates',
-      'addTemplate'
+      'addTemplate',
+      'getTemplateToken'
     ]),
     async onSaveTemplate() {
       const payload = {
@@ -446,6 +497,13 @@ export default {
         textColor: 'white',
         icon: 'warning'
       });
+    },
+    tokenDialog() {
+      this.tokenDialogBox = true;
+    },
+    setValueToTemplate(value) {
+      this.post.body += value;
+      this.tokenDialogBox = false;
     },
 
     async setSelectedTab(e) {
@@ -614,6 +672,13 @@ export default {
   overflow: auto;
 }
 .table-th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: orangered;
+  color: white;
+}
+.table-th1 {
   position: sticky;
   top: 0;
   z-index: 2;
