@@ -58,7 +58,9 @@
             class="vertical-center q-px-md q-py-sm"
           >
             <q-icon :name="iconType(doc.type)" size="sm" color="primary" />
-            <span class="q-pl-md ">{{ doc.name }}</span>
+            <span class="q-pl-md" @click="onDocumentClick(doc.link)">{{
+              doc.name
+            }}</span>
             <q-icon
               @click="onShareClick(index)"
               name="more_vert"
@@ -446,7 +448,6 @@ export default {
   },
 
   created() {
-    this.getClaimDocument(this.selectedClaimId);
     this.getClaimRoles();
     this.getAllUsers();
   },
@@ -462,6 +463,9 @@ export default {
       'deleteDirectory'
     ]),
     ...mapMutations(['setLoading']),
+    onDocumentClick(link) {
+      window.open(link);
+    },
     onClickTopMenu() {
       this.foldersAndFilesOptions = true;
       this.allFolder = true;
