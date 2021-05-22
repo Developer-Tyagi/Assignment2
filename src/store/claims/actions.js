@@ -1011,3 +1011,72 @@ export async function deleteClaimDocument({ commit, dispatch }, payload) {
     });
   }
 }
+
+// API for Getting Proof of loss Document
+export async function getProofOfLossDoc({ commit, dispatch }, claimID) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get(
+      `/claims/${claimID}/documents/proof_of_loss`
+    );
+    commit('setProofOfLoss', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+  }
+}
+
+// API for Approve Proof of loss doc
+
+export async function approveProofOfLoss({ dispatch, state }, claimID) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      `/claims/${claimID}/approve-pol
+`
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Approved!'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+    return false;
+  }
+}
+
+// API forRegenerate Proof of loss doc
+
+export async function regenerateProofOfLoss({ dispatch, state }, claimID) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      `/claims/${claimID}/regenerate-pol
+`
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Regenerated successfully!'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+    return false;
+  }
+}

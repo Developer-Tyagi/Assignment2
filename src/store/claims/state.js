@@ -21,6 +21,7 @@ export default function() {
     claimPhoto: [],
     claimSketch: [],
     additionalDocs: [],
-    esxDocs: []
+    esxDocs: [],
+    proofOfLoss: {}
   };
 }

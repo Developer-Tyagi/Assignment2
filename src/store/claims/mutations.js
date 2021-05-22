@@ -108,3 +108,6 @@ export function setClaimStatistics(state, claimStatic) {
     ...claimStatic.attributes
   };
 }
+export function setProofOfLoss(state, proofOfLoss) {
+  state.proofOfLoss = { ...proofOfLoss.attributes };
+}

@@ -20,3 +20,4 @@ export const claimSketch = state => state.claimSketch;
 export const claimPhoto = state => state.claimPhoto;
 export const additionalDocs = state => state.additionalDocs;
 export const esxDocs = state => state.esxDocs;
+export const proofOfLoss = state => state.proofOfLoss;

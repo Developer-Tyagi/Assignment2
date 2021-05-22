@@ -186,7 +186,12 @@ const routes = [
         caseSensitive: true,
         component: () => import('pages/ClaimFiles.vue')
       },
-
+      {
+        path: 'proof-of-loss/:claimId',
+        name: 'Proof of Loss ',
+        caseSensitive: true,
+        component: () => import('pages/ProofOfLoss.vue')
+      },
       {
         path: 'claim-action-items/:claimId',
         name: 'action items ',
