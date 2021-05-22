@@ -6,20 +6,11 @@
       size="sm"
       class="icon-top"
     />
-    <!-- {{ proofOfLoss }} -->
 
     <div class="vertical-center q-px-md q-py-sm ">
-      <div class="row">
+      <div class="row q-mt-sm">
         <q-icon name="picture_as_pdf" size="sm" color="primary" />
-        <span class="q-pl-md"> {{ proofOfLoss.documents.name }}</span>
-        <!-- {{ proofOfLoss.documents.webViewLink }} -->
-        <iframe
-          src="https://drive.google.com/file/d/1afMjjtRBxAGbQr79YUM4NA2JvyxRaEcq/view?usp=drivesdk"
-          width="100%"
-          height="500px"
-        >
-        </iframe>
-
+        <span class="q-pl-md "> {{ proofOfLoss.documents.name }}</span>
         <q-icon
           @click="onClickSideMenu"
           name="more_vert"
@@ -39,10 +30,7 @@
     >
       <q-card style="width: 350px">
         <q-card-section class="items-center">
-          <div
-            class="q-pa-md heading-light"
-            @click="editClaimNumberDialogOnClick('Claim Number')"
-          >
+          <div class="q-pa-md heading-light" @click="onApprove()">
             Approve
           </div>
           <div
@@ -51,10 +39,7 @@
           >
             Edit Claim Details
           </div>
-          <div
-            class="q-pa-md heading-light"
-            @click="editClaimNumberDialogOnClick('Claim Phase')"
-          >
+          <div class="q-pa-md heading-light" @click="onRegenerateClick()">
             Regenerate
           </div>
         </q-card-section>
@@ -117,16 +102,18 @@ export default {
   },
 
   created() {
-    // this.link = this.proofOfLoss.documents.webViewLink;
-    // console.log(this.link);
     this.getProofOfLossDoc(this.selectedClaimId);
   },
   methods: {
-    ...mapActions(['getProofOfLossDoc']),
+    ...mapActions(['getProofOfLossDoc', 'approveProofOfLoss']),
     ...mapMutations(['setLoading']),
     onClickTopMenu() {
       this.menuItemsOptions = true;
       this.allFolder = true;
+    },
+    async onApprove() {
+      await this.approveProofOfLoss(this.selectedClaimId);
+      this.menuItemsOptions = false;
     },
     onClickSideMenu() {
       this.sideMenuOptionsDialog = true;

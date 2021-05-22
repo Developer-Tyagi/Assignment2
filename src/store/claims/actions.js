@@ -1024,3 +1024,28 @@ export async function getProofOfLossDoc({ commit, dispatch }, claimID) {
     });
   }
 }
+
+// API for Approve Proof of loss doc
+
+export async function approveProofOfLoss({ dispatch, state }, claimID) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      `/claims/${claimID}/approve-pol
+`
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Approved!'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+    return false;
+  }
+}
