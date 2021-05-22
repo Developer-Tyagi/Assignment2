@@ -128,7 +128,7 @@
                           icon="delete"
                           size="sm"
                           text-color="primary"
-                          @click="onDeleteDocument(index)"
+                          @click="onDeleteDocument(doc, index)"
                           flat
                         />
                       </div>
@@ -220,7 +220,7 @@
                         icon="delete"
                         size="sm"
                         text-color="primary"
-                        @click="onDeleteDocument(index)"
+                        @click="onDeleteDocument(doc, index)"
                         flat
                       />
                     </div>
@@ -397,6 +397,14 @@
                       <span class="q-pl-md" @click="onDocClick(doc)">
                         {{ doc.name }}</span
                       >
+                      <q-btn
+                        class="q-ml-auto"
+                        icon="delete"
+                        size="sm"
+                        text-color="primary"
+                        @click="onDeleteDocument(doc, index)"
+                        flat
+                      />
                     </div>
                   </div>
                 </div>
@@ -867,6 +875,7 @@ export default {
   data() {
     return {
       driveId: '',
+      docType: '',
       alertDailog: false,
       files: '',
       upload1Dialog: false,
@@ -943,13 +952,46 @@ export default {
         claimID: this.selectedClaimId,
         driveID: this.driveId
       };
+
       await this.deleteClaimDocument(payload);
-      this.getClaimPhoto(this.selectedClaimId);
+      this.driveId = '';
+      switch (this.docType) {
+        case 'estimate':
+          break;
+        case 'additional_doc':
+          this.getAdditionalDocs(this.selectedClaimId);
+          break;
+        case 'photo_report':
+          this.getClaimPhoto(this.selectedClaimId);
+          break;
+        case 'sketch':
+          this.getClaimSketch(this.selectedClaimId);
+          break;
+        case 'esx':
+          this.getEsxDocs(this.selectedClaimId);
+          break;
+      }
     },
-    onDeleteDocument(index) {
+    onDeleteDocument(doc, index) {
       this.alertDailog = true;
-      console.log(this.claimPhoto.documents[index]);
-      this.driveId = this.claimPhoto.documents[index].parentID;
+      this.docType = doc.type;
+      switch (this.docType) {
+        case 'additional_doc':
+          this.driveId = this.additionalDocs.documents[index].driveID;
+          break;
+        case 'estimate':
+          this.driveId = this.claimDocument.documents[index].driveID;
+          break;
+        case 'photo_report':
+          this.driveId = this.claimPhoto.documents[index].driveID;
+          break;
+        case 'sketch':
+          this.driveId = this.claimSketch.documents[index].driveID;
+          break;
+        case 'esx':
+          this.driveId = this.esxDocs.documents[index].driveID;
+          break;
+      }
     },
     onDocClick(document) {
       window.open(document.webViewLink);
