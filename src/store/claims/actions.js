@@ -995,24 +995,9 @@ export async function completeEstimate({ dispatch, state }, claimID) {
 export async function getProofOfLossDoc({ commit, dispatch }, claimID) {
   dispatch('setLoading', true);
   try {
-    // const { data } = await request.get(
-    //   `/claims/${claimID}/documents/proof_of_loss`
-    // );
-    const data = {
-      attributes: {
-        claimID: '608170437c19a0c474b5a34b',
-        documents: {
-          created: '2021-05-20T08:33:06.91Z',
-          updated: '2021-05-20T08:33:06.91Z',
-          parentID: '17Pm4os59Lg2t7CW8HThT1vH9hPCd1Bai',
-          name: 'LossDoc',
-          webViewLink:
-            'https://drive.google.com/file/d/1d4AEnSAGjZ79SreWTKZVKgnRwJpx-J8Y/view?usp=drivesdk',
-          type: 'photo_report',
-          mimeType: ''
-        }
-      }
-    };
+    const { data } = await request.get(
+      `/claims/${claimID}/documents/proof_of_loss`
+    );
     commit('setProofOfLoss', data);
     dispatch('setLoading', false);
   } catch (e) {
