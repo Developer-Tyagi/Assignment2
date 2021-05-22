@@ -991,6 +991,27 @@ export async function completeEstimate({ dispatch, state }, claimID) {
   }
 }
 
+export async function deleteClaimDocument({ commit, dispatch }, payload) {
+  dispatch('setLoading', true);
+  try {
+    await request.del(
+      `/claims/${payload.claimID}/documents/${payload.driveID}`
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Document  Deleted !'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'Error in deleting document.'
+    });
+  }
+}
+
 // API for Getting Proof of loss Document
 export async function getProofOfLossDoc({ commit, dispatch }, claimID) {
   dispatch('setLoading', true);
