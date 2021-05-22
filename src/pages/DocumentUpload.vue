@@ -128,7 +128,7 @@
                           icon="delete"
                           size="sm"
                           text-color="primary"
-                          @click="onDeleteDocument(index)"
+                          @click="onDeleteDocument(doc, index)"
                           flat
                         />
                       </div>
@@ -220,7 +220,7 @@
                         icon="delete"
                         size="sm"
                         text-color="primary"
-                        @click="onDeleteDocument(index)"
+                        @click="onDeleteDocument(doc, index)"
                         flat
                       />
                     </div>
@@ -397,6 +397,14 @@
                       <span class="q-pl-md" @click="onDocClick(doc)">
                         {{ doc.name }}</span
                       >
+                      <q-btn
+                        class="q-ml-auto"
+                        icon="delete"
+                        size="sm"
+                        text-color="primary"
+                        @click="onDeleteDocument(doc, index)"
+                        flat
+                      />
                     </div>
                   </div>
                 </div>
@@ -825,6 +833,36 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+
+    <!-- Alert delete Box -->
+    <q-dialog v-model="alertDailog">
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">Alert</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          Are you sure ! You want to delete this
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn
+            flat
+            label="Cancel"
+            color="primary"
+            v-close-popup
+            @click="alertDailog = false"
+          ></q-btn>
+          <q-btn
+            flat
+            label="Delete"
+            color="primary"
+            v-close-popup
+            @click="removeDocument()"
+          ></q-btn>
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 <script>
@@ -836,6 +874,9 @@ const { Camera } = Plugins;
 export default {
   data() {
     return {
+      driveId: '',
+      docType: '',
+      alertDailog: false,
       files: '',
       upload1Dialog: false,
       upload2Dialog: false,
@@ -902,10 +943,56 @@ export default {
       'getClaimSketch',
       'getAdditionalDocs',
       'getEsxDocs',
-      'completeEstimate'
+      'completeEstimate',
+      'deleteClaimDocument'
     ]),
     ...mapMutations(['setLoading']),
+    async removeDocument() {
+      const payload = {
+        claimID: this.selectedClaimId,
+        driveID: this.driveId
+      };
 
+      await this.deleteClaimDocument(payload);
+      this.driveId = '';
+      switch (this.docType) {
+        case 'estimate':
+          break;
+        case 'additional_doc':
+          this.getAdditionalDocs(this.selectedClaimId);
+          break;
+        case 'photo_report':
+          this.getClaimPhoto(this.selectedClaimId);
+          break;
+        case 'sketch':
+          this.getClaimSketch(this.selectedClaimId);
+          break;
+        case 'esx':
+          this.getEsxDocs(this.selectedClaimId);
+          break;
+      }
+    },
+    onDeleteDocument(doc, index) {
+      this.alertDailog = true;
+      this.docType = doc.type;
+      switch (this.docType) {
+        case 'additional_doc':
+          this.driveId = this.additionalDocs.documents[index].driveID;
+          break;
+        case 'estimate':
+          this.driveId = this.claimDocument.documents[index].driveID;
+          break;
+        case 'photo_report':
+          this.driveId = this.claimPhoto.documents[index].driveID;
+          break;
+        case 'sketch':
+          this.driveId = this.claimSketch.documents[index].driveID;
+          break;
+        case 'esx':
+          this.driveId = this.esxDocs.documents[index].driveID;
+          break;
+      }
+    },
     onDocClick(document) {
       window.open(document.webViewLink);
     },
