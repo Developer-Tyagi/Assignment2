@@ -1049,3 +1049,28 @@ export async function approveProofOfLoss({ dispatch, state }, claimID) {
     return false;
   }
 }
+
+// API forRegenerate Proof of loss doc
+
+export async function regenerateProofOfLoss({ dispatch, state }, claimID) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      `/claims/${claimID}/regenerate-pol
+`
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Regenerated successfully!'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+    return false;
+  }
+}
