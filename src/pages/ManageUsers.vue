@@ -358,15 +358,6 @@
             <div class="col">{{ singleUserData.email }}</div>
           </div>
         </q-card>
-
-        <!-- <div class="row justify-center">
-          <q-btn
-            color="primary"
-            label="submit and Proceed"
-            class="q-mb-lg"
-            @click="onSubmit"
-          />
-        </div> -->
       </q-card>
     </q-dialog>
     <!-- for editing single user detail -->
