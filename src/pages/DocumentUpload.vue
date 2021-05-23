@@ -42,13 +42,38 @@
           >
             <div class="stepper-heading">Upload Your Estimate</div>
             <q-card class="form-card q-pa-md">
-              <div class="row">
+              <div
+                v-for="(doc, index) in claimDocument.attributes.documents"
+                class="row-div"
+              >
+                <div class="vertical-center q-px-md q-py-sm">
+                  <div class="row">
+                    <q-icon name="picture_as_pdf" size="sm" color="primary" />
+                    <span class="q-pl-md" @click="onDocClick(doc)">
+                      {{ doc.name }}</span
+                    >
+                    <q-btn
+                      class="q-ml-auto"
+                      icon="delete"
+                      size="sm"
+                      text-color="primary"
+                      @click="onDeleteDocument(doc, index)"
+                      flat
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                class="row"
+                v-if="claimDocument.attributes.documents.length < 1"
+              >
                 <div class="column">
                   <q-btn
                     class="q-ml-md"
                     icon="cloud_upload"
                     text-color="primary"
                     style="width: 50px"
+                    @click="onClickUploadButton('upload')"
                   />
                   <div class="form-heading q-ml-md">Upload</div>
                   <input
@@ -62,7 +87,7 @@
                   <q-btn
                     class="q-ml-md"
                     icon="add_a_photo"
-                    @click="addFile"
+                    @click="addFile('estimate')"
                     text-color="primary"
                     style="width: 50px"
                   />
@@ -556,6 +581,43 @@
       </q-card>
     </q-dialog>
 
+    <!-- Add EstimateDialog Dialog  -->
+
+    <q-dialog v-model="addEstimateDialog" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-avatar
+            icon="folder"
+            color="primary"
+            text-color="white"
+            size="md"
+          />
+          <span class="q-ml-sm">Add file as</span>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          <q-input dense dense v-model="estimateFileName" autofocus />
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn
+            flat
+            label="Cancel"
+            color="primary"
+            @click="addEstimateDialog = false"
+          />
+          <q-btn
+            flat
+            label="Submit"
+            color="primary"
+            @click="addPdfFileToServer('estimate')"
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
+    addEstimateDialog
+
     <!--    Add Sketches Dialog -->
 
     <q-dialog v-model="addSketchesDialog" persistent>
@@ -690,6 +752,40 @@
             label="Submit"
             color="primary"
             @click="uploadPdfToServer('upload1')"
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+    <!-- uploadEstimateDialog File Dialog -->
+
+    <q-dialog v-model="uploadEstimateDialog" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-avatar
+            icon="folder"
+            color="primary"
+            text-color="white"
+            size="md"
+          />
+          <span class="q-ml-sm">Add file as</span>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          <q-input dense dense v-model="uploadEstimateFileName" autofocus />
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn
+            flat
+            label="Cancel"
+            color="primary"
+            @click="uploadEstimateDialog = false"
+          />
+          <q-btn
+            flat
+            label="Submit"
+            color="primary"
+            @click="uploadPdfToServer('upload')"
           />
         </q-card-actions>
       </q-card>
@@ -874,6 +970,10 @@ const { Camera } = Plugins;
 export default {
   data() {
     return {
+      addEstimateDialog: false,
+      uploadEstimateDialog: false,
+      uploadEstimateFileName: '',
+      estimateFileName: '',
       driveId: '',
       docType: '',
       alertDailog: false,
@@ -957,6 +1057,7 @@ export default {
       this.driveId = '';
       switch (this.docType) {
         case 'estimate':
+          this.getClaimEstimateDoc(this.selectedClaimId);
           break;
         case 'additional_doc':
           this.getAdditionalDocs(this.selectedClaimId);
@@ -980,7 +1081,8 @@ export default {
           this.driveId = this.additionalDocs.documents[index].driveID;
           break;
         case 'estimate':
-          this.driveId = this.claimDocument.documents[index].driveID;
+          this.driveId = this.claimDocument.attributes.documents[index].driveID;
+
           break;
         case 'photo_report':
           this.driveId = this.claimPhoto.documents[index].driveID;
@@ -1006,6 +1108,24 @@ export default {
     async uploadPdfToServer(value) {
       const formData = new FormData();
       switch (value) {
+        case 'upload':
+          var pdfData = document.getElementById('uploadFile').value;
+          formData.append(
+            'file',
+            this.dataURItoBlob(pdfData),
+            this.uploadEstimateFileName
+          );
+          formData.append('type', 'estimate');
+          const payload6 = {
+            id: this.selectedClaimId,
+            formData: formData
+          };
+          await this.uploadClaimDocument(payload6);
+          this.uploadEstimateFileName = '';
+          this.uploadEstimateDialog = false;
+          this.getClaimEstimateDoc(this.selectedClaimId);
+          this.setLoading(false);
+          break;
         case 'upload1':
           var pdfData = document.getElementById('uploadFile').value;
           formData.append(
@@ -1083,6 +1203,10 @@ export default {
     },
     async onClickUploadButton(value) {
       switch (value) {
+        case 'upload':
+          await document.getElementById('uploadFile').click();
+          this.uploadEstimateDialog = true;
+          break;
         case 'upload1':
           await document.getElementById('uploadFile').click();
           this.upload1Dialog = true;
@@ -1160,6 +1284,9 @@ export default {
       // jsPDFObj.addImage(imageData.dataUrl, 10, 10);
       this.pdfImage = imageData.dataUrl;
       switch (value) {
+        case 'estimate':
+          this.addEstimateDialog = true;
+          break;
         case 'uploadPhoto':
           this.addFileDialog = true;
           break;
@@ -1184,6 +1311,24 @@ export default {
       this.setLoading(true);
       const formData = new FormData();
       switch (value) {
+        // estimateFileName
+        case 'estimate':
+          formData.append(
+            'file',
+            this.dataURItoBlob(this.pdfImage),
+            this.estimateFileName
+          );
+          formData.append('type', 'estimate');
+          const Estimatepayload = {
+            id: this.selectedClaimId,
+            formData: formData
+          };
+          await this.uploadClaimDocument(Estimatepayload);
+          this.estimateFileName = '';
+          this.addEstimateDialog = false;
+          this.getClaimEstimateDoc(this.selectedClaimId);
+          this.setLoading(false);
+          break;
         case 'uploadSketch':
           formData.append(
             'file',
