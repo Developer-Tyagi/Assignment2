@@ -293,35 +293,46 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card style="width: 45%; height: 75vh">
-        <div class="row justify-end" style="height: 50px">
+      <q-card class="q-ma-sm" style="width: 35%; height: 75vh">
+        <div class=" row justify-end" style="height: 50px">
           <q-btn dense flat icon="close" color="black" v-close-popup>
             <q-tooltip>Close</q-tooltip>
           </q-btn>
         </div>
-        <table class="  table ">
+        <table class="table ">
           <tr>
-            <th class="table-th1 " style="width:20%; align-items: center;">
+            <th class="table-th1 " style="width:26%;">
               NAME
             </th>
-            <th class="table-th" style="width:20%">VALUE</th>
-            <th class="table-th" style="width:20%">DESCRIPTION</th>
+            <th class="table-th" style="">VALUE</th>
+            <th class="table-th" style="">DESCRIPTION</th>
           </tr>
-          <tr class="table-tr" v-for="(user, index) in tokens">
-            <td class="table-td" style="width:20%">
-              {{ user.name }}
-            </td>
-            <td
-              class="table-td clickable text-primary"
-              style="height:26px; font-size:10px;"
-              @click="setValueToTemplate(user.value)"
+        </table>
+
+        <table class="q-ma-md  table ">
+          <div class="full-width" v-for="(usr, index) in tokens">
+            <q-expansion-item
+              class="q-mx-md"
+              expand-separator
+              :label="`${usr.group}`"
             >
-              {{ user.value }}
-            </td>
-            <td class="table-td" style="height:26px; font-size:10px;">
-              {{ user.desc }}
-            </td>
-          </tr>
+              <tr class="table-tr" v-for="(user, ind) in usr.tokens">
+                <td class="table-td" style="width:20%">
+                  {{ user.name }}
+                </td>
+                <td
+                  class="table-td clickable text-primary"
+                  style="height:26px; font-size:10px;"
+                  @click="setValueToTemplate(user.value)"
+                >
+                  {{ user.value }}
+                </td>
+                <td class="table-td" style="height:26px; font-size:10px;">
+                  {{ user.desc }}
+                </td>
+              </tr>
+            </q-expansion-item>
+          </div>
         </table>
       </q-card>
     </q-dialog>
