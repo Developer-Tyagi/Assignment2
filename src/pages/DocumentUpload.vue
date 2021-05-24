@@ -46,7 +46,7 @@
                 v-for="(doc, index) in claimDocument.attributes.documents"
                 class="row-div"
               >
-                <div class="vertical-center q-px-md q-py-sm">
+                <div class="vertical-center q-px-sm q-py-sm">
                   <div class="row">
                     <q-icon
                       :name="iconType(doc.mimeType)"
@@ -84,7 +84,7 @@
                     id="uploadFile"
                     type="file"
                     hidden
-                    @change="onFileInputClick('estimate', $event)"
+                    @change="onFileInputClick"
                     accept="application/pdf"
                   />
                 </div>
@@ -143,11 +143,12 @@
                     v-for="(doc, index) in claimPhoto.documents"
                     class="row-div"
                   >
-                    <div class="vertical-center q-px-md q-py-sm">
-                      <div class="row">
+                    <div class="vertical-center q-px-sm q-py-sm">
+                      <div class="row q-ml-none ">
                         <q-icon
                           :name="iconType(doc.mimeType)"
                           size="sm"
+                          class="q-ml-none"
                           color="primary"
                         />
                         <span class="q-pl-md" @click="onDocClick(doc)">
@@ -172,7 +173,7 @@
                         id="uploadFile"
                         type="file"
                         hidden
-                        @change="onFileInputClick('photos', $event)"
+                        @change="onFileInputClick"
                         accept="application/pdf"
                       />
                       <q-btn
@@ -236,7 +237,7 @@
                   v-for="(doc, index) in claimSketch.documents"
                   class="row-div"
                 >
-                  <div class="vertical-center q-px-md q-py-sm">
+                  <div class="vertical-center q-px-sm q-py-sm">
                     <div class="row">
                       <q-icon
                         :name="iconType(doc.mimeType)"
@@ -265,11 +266,11 @@
                       id="uploadFile"
                       type="file"
                       hidden
-                      @change="onFileInputClick('sketch', $event)"
+                      @change="onFileInputClick"
                       accept="application/pdf"
                     />
                     <q-btn
-                      class="q-ml-md bg-red"
+                      class="q-ml-md"
                       icon="cloud_upload"
                       text-color="primary"
                       style="width: 50px"
@@ -419,8 +420,8 @@
                   v-for="(doc, index) in additionalDocs.documents"
                   class="row-div"
                 >
-                  <div class="vertical-center q-px-md q-py-sm">
-                    <div class="row">
+                  <div class="vertical-center q-px-xs q-py-sm ">
+                    <div class="row ">
                       <q-icon
                         :name="iconType(doc.mimeType)"
                         size="sm"
@@ -448,7 +449,7 @@
                       id="uploadFile"
                       type="file"
                       hidden
-                      @change="onFileInputClick('additional-docs', $event)"
+                      @change="onFileInputClick"
                       accept="application/pdf"
                     />
                     <q-btn
@@ -976,11 +977,7 @@ const { Camera } = Plugins;
 export default {
   data() {
     return {
-      test: '',
-      estimateFileURI: '',
-      photoFileURI: '',
-      sketchFileURI: '',
-      additionalFileURI: '',
+      dataURl: '',
       addEstimateDialog: false,
       uploadEstimateDialog: false,
       uploadEstimateFileName: '',
@@ -1084,24 +1081,8 @@ export default {
           break;
       }
     },
-    async onFileInputClick(value, event) {
-      console.log(value, 'val');
-      this.estimateFileURI = await this.getBase64(event.target.files[0]);
-      // switch (value) {
-      //   case 'estimate':
-      //     this.estimateFileURI = await this.getBase64(event.target.files[0]);
-      //     break;
-      //   case 'photos':
-      //     this.photoFileURI = await this.getBase64(event.target.files[0]);
-      //     break;
-      //   case 'sketch':
-      //     console.log('hello');
-      //     this.sketchFileURI = await this.getBase64(event.target.files[0]);
-      //     console.log(this.sketchFileURI, 98);
-      //     break;
-      //   case 'additional-docs':
-      //     this.additionalFileURI = await this.getBase64(event.target.files[0]);
-      // }
+    async onFileInputClick(event) {
+      this.dataURl = await this.getBase64(event.target.files[0]);
     },
     getBase64(file) {
       return new Promise((resolve, reject) => {
@@ -1147,11 +1128,9 @@ export default {
       const formData = new FormData();
       switch (value) {
         case 'upload':
-          console.log(this.estimateFileURI);
-
           formData.append(
             'file',
-            this.dataURItoBlob(this.estimateFileURI),
+            this.dataURItoBlob(this.dataURl),
             this.uploadEstimateFileName
           );
           formData.append('type', 'estimate');
@@ -1164,12 +1143,12 @@ export default {
           this.uploadEstimateDialog = false;
           this.getClaimEstimateDoc(this.selectedClaimId);
           this.setLoading(false);
-          this.estimateFileURI = '';
+          this.dataURl = '';
           break;
         case 'upload1':
           formData.append(
             'file',
-            this.dataURItoBlob(this.estimateFileURI),
+            this.dataURItoBlob(this.dataURl),
             this.upload1FileName
           );
 
@@ -1183,13 +1162,11 @@ export default {
           this.upload1Dialog = false;
           this.getClaimPhoto(this.selectedClaimId);
           this.setLoading(false);
-          this.estimateFileURI = '';
           break;
         case 'upload2':
-          console.log(this.sketchFileURI, 'sketch uri return variable');
           formData.append(
             'file',
-            this.dataURItoBlob(this.estimateFileURI),
+            this.dataURItoBlob(this.dataURl),
             this.upload2FileName
           );
           formData.append('type', 'sketch');
@@ -1202,30 +1179,11 @@ export default {
           this.upload2Dialog = false;
           this.getClaimSketch(this.selectedClaimId);
           this.setLoading(false);
-          this.estimateFileURI = '';
-          break;
-        case 'upload3':
-          formData.append(
-            'file',
-            this.dataURItoBlob(this.sketchFileURI),
-            this.upload3FileName
-          );
-          formData.append('type', 'esx');
-          const payload3 = {
-            id: this.selectedClaimId,
-            formData: formData
-          };
-          await this.uploadClaimDocument(payload3);
-          this.upload3FileName = '';
-          this.upload3Dialog = false;
-          this.getEsxDocs(this.selectedClaimId);
-          this.setLoading(false);
-
           break;
         case 'upload4':
           formData.append(
             'file',
-            this.dataURItoBlob(this.additionalFileURI),
+            this.dataURItoBlob(this.dataURl),
             this.upload4FileName
           );
           formData.append('type', 'additional_doc');
@@ -1239,6 +1197,24 @@ export default {
           this.getAdditionalDocs(this.selectedClaimId);
           this.setLoading(false);
           break;
+        // case 'upload3':
+        //   formData.append(
+        //     'file',
+        //     this.dataURItoBlob(this.dataURl),
+        //     this.upload3FileName
+        //   );
+        //   formData.append('type', 'esx');
+        //   const payload3 = {
+        //     id: this.selectedClaimId,
+        //     formData: formData
+        //   };
+        //   await this.uploadClaimDocument(payload3);
+        //   this.upload3FileName = '';
+        //   this.upload3Dialog = false;
+        //   this.getEsxDocs(this.selectedClaimId);
+        //   this.setLoading(false);
+        //   this.dataURl = '';
+        //   break;
       }
     },
     async onClickUploadButton(value) {
@@ -1255,14 +1231,14 @@ export default {
           await document.getElementById('uploadFile').click();
           this.upload2Dialog = true;
           break;
-        // case 'upload3':
-        //   await document.getElementById('uploadEsxFile').click();
-        //   this.upload3Dialog = true;
-        //   break;
         case 'upload4':
           await document.getElementById('uploadFile').click();
           this.upload4Dialog = true;
           break;
+        // case 'upload3':
+        //   await document.getElementById('uploadEsxFile').click();
+        //   this.upload3Dialog = true;
+        //   break;
       }
     },
 
