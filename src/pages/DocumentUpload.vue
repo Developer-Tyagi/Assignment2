@@ -48,7 +48,11 @@
               >
                 <div class="vertical-center q-px-md q-py-sm">
                   <div class="row">
-                    <q-icon name="picture_as_pdf" size="sm" color="primary" />
+                    <q-icon
+                      :name="iconType(doc.mimeType)"
+                      size="sm"
+                      color="primary"
+                    />
                     <span class="q-pl-md" @click="onDocClick(doc)">
                       {{ doc.name }}</span
                     >
@@ -80,6 +84,7 @@
                     id="uploadFile"
                     type="file"
                     hidden
+                    @change="onFileInputClick('estimate', $event)"
                     accept="application/pdf"
                   />
                 </div>
@@ -167,6 +172,7 @@
                         id="uploadFile"
                         type="file"
                         hidden
+                        @change="onFileInputClick('photos', $event)"
                         accept="application/pdf"
                       />
                       <q-btn
@@ -259,10 +265,11 @@
                       id="uploadFile"
                       type="file"
                       hidden
+                      @change="onFileInputClick('sketch', $event)"
                       accept="application/pdf"
                     />
                     <q-btn
-                      class="q-ml-md"
+                      class="q-ml-md bg-red"
                       icon="cloud_upload"
                       text-color="primary"
                       style="width: 50px"
@@ -441,6 +448,7 @@
                       id="uploadFile"
                       type="file"
                       hidden
+                      @change="onFileInputClick('additional-docs', $event)"
                       accept="application/pdf"
                     />
                     <q-btn
@@ -615,8 +623,6 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
-
-    addEstimateDialog
 
     <!--    Add Sketches Dialog -->
 
@@ -970,6 +976,11 @@ const { Camera } = Plugins;
 export default {
   data() {
     return {
+      test: '',
+      estimateFileURI: '',
+      photoFileURI: '',
+      sketchFileURI: '',
+      additionalFileURI: '',
       addEstimateDialog: false,
       uploadEstimateDialog: false,
       uploadEstimateFileName: '',
@@ -1073,6 +1084,33 @@ export default {
           break;
       }
     },
+    async onFileInputClick(value, event) {
+      console.log(value, 'val');
+      this.estimateFileURI = await this.getBase64(event.target.files[0]);
+      // switch (value) {
+      //   case 'estimate':
+      //     this.estimateFileURI = await this.getBase64(event.target.files[0]);
+      //     break;
+      //   case 'photos':
+      //     this.photoFileURI = await this.getBase64(event.target.files[0]);
+      //     break;
+      //   case 'sketch':
+      //     console.log('hello');
+      //     this.sketchFileURI = await this.getBase64(event.target.files[0]);
+      //     console.log(this.sketchFileURI, 98);
+      //     break;
+      //   case 'additional-docs':
+      //     this.additionalFileURI = await this.getBase64(event.target.files[0]);
+      // }
+    },
+    getBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+      });
+    },
     onDeleteDocument(doc, index) {
       this.alertDailog = true;
       this.docType = doc.type;
@@ -1109,10 +1147,11 @@ export default {
       const formData = new FormData();
       switch (value) {
         case 'upload':
-          var pdfData = document.getElementById('uploadFile').value;
+          console.log(this.estimateFileURI);
+
           formData.append(
             'file',
-            this.dataURItoBlob(pdfData),
+            this.dataURItoBlob(this.estimateFileURI),
             this.uploadEstimateFileName
           );
           formData.append('type', 'estimate');
@@ -1125,12 +1164,12 @@ export default {
           this.uploadEstimateDialog = false;
           this.getClaimEstimateDoc(this.selectedClaimId);
           this.setLoading(false);
+          this.estimateFileURI = '';
           break;
         case 'upload1':
-          var pdfData = document.getElementById('uploadFile').value;
           formData.append(
             'file',
-            this.dataURItoBlob(pdfData),
+            this.dataURItoBlob(this.estimateFileURI),
             this.upload1FileName
           );
 
@@ -1144,12 +1183,13 @@ export default {
           this.upload1Dialog = false;
           this.getClaimPhoto(this.selectedClaimId);
           this.setLoading(false);
+          this.estimateFileURI = '';
           break;
         case 'upload2':
-          var pdfData = document.getElementById('uploadFile').value;
+          console.log(this.sketchFileURI, 'sketch uri return variable');
           formData.append(
             'file',
-            this.dataURItoBlob(pdfData),
+            this.dataURItoBlob(this.estimateFileURI),
             this.upload2FileName
           );
           formData.append('type', 'sketch');
@@ -1162,13 +1202,12 @@ export default {
           this.upload2Dialog = false;
           this.getClaimSketch(this.selectedClaimId);
           this.setLoading(false);
+          this.estimateFileURI = '';
           break;
-
         case 'upload3':
-          var pdfData = document.getElementById('uploadEsxFile').value;
           formData.append(
             'file',
-            this.dataURItoBlob(pdfData),
+            this.dataURItoBlob(this.sketchFileURI),
             this.upload3FileName
           );
           formData.append('type', 'esx');
@@ -1181,12 +1220,12 @@ export default {
           this.upload3Dialog = false;
           this.getEsxDocs(this.selectedClaimId);
           this.setLoading(false);
+
           break;
         case 'upload4':
-          var pdfData = document.getElementById('uploadFile').value;
           formData.append(
             'file',
-            this.dataURItoBlob(pdfData),
+            this.dataURItoBlob(this.additionalFileURI),
             this.upload4FileName
           );
           formData.append('type', 'additional_doc');
@@ -1199,6 +1238,7 @@ export default {
           this.upload4Dialog = false;
           this.getAdditionalDocs(this.selectedClaimId);
           this.setLoading(false);
+          break;
       }
     },
     async onClickUploadButton(value) {
@@ -1311,7 +1351,6 @@ export default {
       this.setLoading(true);
       const formData = new FormData();
       switch (value) {
-        // estimateFileName
         case 'estimate':
           formData.append(
             'file',

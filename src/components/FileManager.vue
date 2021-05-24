@@ -57,7 +57,9 @@
             v-if="doc.type != 'folder'"
             class="vertical-center q-px-md q-py-sm"
           >
-            <q-icon :name="iconType(doc.type)" size="sm" color="primary" />
+            <q-icon :name="iconType(doc.type)" size="sm" color="primary" />{{
+              doc
+            }}
             <span class="q-pl-md" @click="onDocumentClick(doc.link)">{{
               doc.name
             }}</span>
