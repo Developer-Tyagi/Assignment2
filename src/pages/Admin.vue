@@ -143,7 +143,7 @@
                               color="primary"
                               name="check_circle"
                               size="sm"
-                              @click="rolePermission(ind, index)"
+                              @click="rolePermission(ind, index, 'selected')"
                             />
                           </div>
                           <div v-else>
@@ -151,7 +151,7 @@
                               color="primary"
                               name=" radio_button_unchecked"
                               size="sm"
-                              @click="rolePermission(ind, index)"
+                              @click="rolePermission(ind, index, 'unselected')"
                             />
                           </div>
                         </td>
@@ -870,36 +870,67 @@ export default {
       'setMultiplePermission'
     ]),
     validateEmail,
-    async rolePermission(per, role) {
-      this.newPermission = this.permissions[per].machineValue;
-      this.newRole.id = this.roleTypes[role].id;
-      this.newRole.value = this.roleTypes[role].name;
-      this.newRole.machineValue = this.roleTypes[role].machineValue;
-      if (this.roleTypes[role].permission == null) {
-        this.rol.push(this.newPermission);
-      } else {
-        this.rol = this.roleTypes[role].permission;
-        this.rol.push(this.newPermission);
-      }
-      const payload = [
-        {
-          id: this.newRole.id,
-          value: this.newRole.value,
-          machineValue: this.newRole.machineValue,
-          permissions: this.rol
+    async rolePermission(per, role, value) {
+      if (value == 'unselected') {
+        this.newPermission = this.permissions[per].machineValue;
+        this.newRole.id = this.roleTypes[role].id;
+        this.newRole.value = this.roleTypes[role].name;
+        this.newRole.machineValue = this.roleTypes[role].machineValue;
+        if (this.roleTypes[role].permission == null) {
+          this.rol.push(this.newPermission);
+        } else {
+          this.rol = this.roleTypes[role].permission;
+          this.rol.push(this.newPermission);
         }
-      ];
-
-      this.setMultiplePermission(payload).then(async () => {
-        await this.getRoles().then(async () => {
-          this.roleTypes.forEach(val => {
-            this.arrOfRoles.push({
-              label: '',
-              value: val
+        const payload = [
+          {
+            id: this.newRole.id,
+            value: this.newRole.value,
+            machineValue: this.newRole.machineValue,
+            permissions: this.rol
+          }
+        ];
+        this.setMultiplePermission(payload).then(async () => {
+          this.arrOfRoles = [];
+          await this.getRoles().then(async () => {
+            this.roleTypes.forEach(val => {
+              this.arrOfRoles.push({
+                label: '',
+                value: val
+              });
             });
           });
         });
-      });
+      } else {
+        this.newPermission = this.permissions[per].machineValue;
+        this.newRole.id = this.roleTypes[role].id;
+        this.newRole.value = this.roleTypes[role].name;
+        this.newRole.machineValue = this.roleTypes[role].machineValue;
+
+        var index = this.roleTypes[role].permission.indexOf(this.newPermission);
+
+        this.rol = this.roleTypes[role].permission;
+        this.rol.splice(index, 1);
+        const payload = [
+          {
+            id: this.newRole.id,
+            value: this.newRole.value,
+            machineValue: this.newRole.machineValue,
+            permissions: this.rol
+          }
+        ];
+        this.setMultiplePermission(payload).then(async () => {
+          this.arrOfRoles = [];
+          await this.getRoles().then(async () => {
+            this.roleTypes.forEach(val => {
+              this.arrOfRoles.push({
+                label: '',
+                value: val
+              });
+            });
+          });
+        });
+      }
 
       this.tab = 'groupPermission';
     },
