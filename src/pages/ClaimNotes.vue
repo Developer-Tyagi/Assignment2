@@ -91,13 +91,11 @@
       </q-card>
     </q-dialog>
     <div>
-      <div class="icon-top">
-        <q-btn @click="addNote" flat class="q-ml-auto"
-          ><img src="~assets/add.svg"
-        /></q-btn>
-      </div>
+      <q-icon @click="addNote" flat class="q-ml-auto icon-top"
+        ><img src="~assets/add.svg"
+      /></q-icon>
 
-      <div class="mobile-container-page">
+      <div class="listing-height">
         <ClaimDetail />
         <div v-if="claimNotes.attributes.notes">
           <div
@@ -111,27 +109,27 @@
               <q-item-section>
                 <div class="client-list-item">
                   <div class="row">
-                    <div class="q-mb-sm">
+                    <div class=" heading-light  col-10">
                       {{
                         claimNotes.attributes.notes[index].created
                           | moment('MM/DD/YYYY, hh:mm A')
                       }}
                     </div>
 
-                    <div class="row edit-icon">
-                      <q-icon
-                        name="create"
-                        color="primary"
-                        class=""
-                        @click="onEditButtonClick(index)"
-                      />
-                      <q-icon
-                        name="delete"
-                        color="primary"
-                        class="q-ml-sm"
-                        @click="deleteThisNote(index)"
-                      />
-                    </div>
+                    <q-icon
+                      name="create"
+                      color="primary"
+                      size="xs"
+                      class="q-my-auto col"
+                      @click="onEditButtonClick(index)"
+                    />
+                    <q-icon
+                      name="delete"
+                      size="xs"
+                      color="primary"
+                      class="q-ml-auto"
+                      @click="deleteThisNote(index)"
+                    />
                   </div>
                   {{ claimNotes.attributes.notes[index].desc }}
                 </div>

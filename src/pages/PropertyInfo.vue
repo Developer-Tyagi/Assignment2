@@ -1,222 +1,218 @@
 <template>
   <q-page>
-    <div>
-      <div>
-        <div class="q-ml-md q-mt-md text-h6">
+    <div class="listing-height">
+      <div class="q-ml-md q-mt-md text-h6">
+        {{
+          editSelectedClient.attributes.insuredInfo.primary.fname
+            ? editSelectedClient.attributes.insuredInfo.primary.fname
+            : '-'
+        }}
+        {{
+          editSelectedClient.attributes.insuredInfo.primary.lname
+            ? editSelectedClient.attributes.insuredInfo.primary.lname
+            : '-'
+        }}
+      </div>
+      <div class="row heading-light q-ml-md q-my-md">
+        <div>
           {{
-            editSelectedClient.attributes.insuredInfo.primary.fname
-              ? editSelectedClient.attributes.insuredInfo.primary.fname
-              : '-'
+            editSelectedClient.attributes.meta
+              ? editSelectedClient.attributes.meta.totalClaims
+              : 0
           }}
+          - Total Claims
+        </div>
+        <div class="q-ml-xl">
           {{
-            editSelectedClient.attributes.insuredInfo.primary.lname
-              ? editSelectedClient.attributes.insuredInfo.primary.lname
-              : '-'
+            editSelectedClient.attributes.meta
+              ? editSelectedClient.attributes.meta.openClaims
+              : 0
           }}
+          - Open Claim
         </div>
-        <div class="row heading-light q-ml-md q-my-md">
-          <div>
-            {{
-              editSelectedClient.attributes.meta
-                ? editSelectedClient.attributes.meta.totalClaims
-                : 0
-            }}
-            - Total Claims
-          </div>
-          <div class="q-ml-xl">
-            {{
-              editSelectedClient.attributes.meta
-                ? editSelectedClient.attributes.meta.openClaims
-                : 0
-            }}
-            - Open Claim
-          </div>
-        </div>
+      </div>
 
-        <q-card
-          class="text-primary q-ma-md q-pa-md"
-          flat
-          bordered
-          @click="onClickAddAnotherProperty"
-        >
-          + Add Another Property</q-card
-        >
-        <!-- //pointer -->
-        <div class="q-ma-md q-pa-xs ">
-          <div v-if="setClientProperty.length">
-            <q-card
-              class="q-my-sm"
-              flat
-              bordered
-              v-for="i in setClientProperty.length"
-              :key="setClientProperty.id"
-            >
-              <div v-if="setClientProperty">
-                <div class="row q-ma-sm">
-                  <div
-                    class="col-4 bg-red q-mb-xl q-mt-md"
-                    style="border-radius: 8px"
-                  >
-                    <q-img
-                      alt="Claimguru"
-                      src="~assets/logo.png"
-                      spinner-color="white"
-                      style="height: auto; max-width: 120px"
-                    ></q-img>
-                  </div>
-                  <div class=" col-5 q-pa-sm">
-                    <div class="heading-light">Property Name</div>
-                    <div>
-                      {{
-                        setClientProperty[i - 1].attributes.name
-                          ? setClientProperty[i - 1].attributes.name
-                          : '-'
-                      }}
-                    </div>
-                    <div>
-                      {{
-                        setClientProperty[i - 1].attributes.streetAddress
-                          ? setClientProperty[i - 1].attributes.streetAddress
-                          : '-'
-                      }}
-                    </div>
-                    {{
-                      setClientProperty[i - 1].attributes.addressRegion
-                        ? setClientProperty[i - 1].attributes.addressRegion
-                        : '-'
-                    }}
-                    {{
-                      setClientProperty[i - 1].attributes.addressCountry
-                        ? setClientProperty[i - 1].attributes.addressCountry
-                        : '-'
-                    }}
-                    <div>
-                      {{
-                        setClientProperty[i - 1].attributes.addressLocality
-                          ? setClientProperty[i - 1].attributes.addressLocality
-                          : '-'
-                      }}
-                    </div>
-                    {{
-                      setClientProperty[i - 1].attributes.houseNumber
-                        ? setClientProperty[i - 1].attributes.houseNumber
-                        : '-'
-                    }}
-                    <div>
-                      <div class="heading-light">
-                        {{
-                          setClientProperty[i - 1].attributes.openClaims
-                            ? setClientProperty[i - 1].attributes.openClaims
-                            : '0'
-                        }}
-                        - Open Claim
-                      </div>
-                    </div>
-                  </div>
-                  <div>
-                    <q-icon
-                      size="sm"
-                      name="create"
-                      color="primary"
-                      class="q-ml-sm q-mt-xs"
-                      @click="editPropertyAddress(i - 1)"
-                    ></q-icon>
-                    <q-icon
-                      size="sm"
-                      name="delete"
-                      color="primary"
-                      class=" q-mt-xs"
-                      @click="deletePropertyAddress(i - 1)"
-                    />
-                  </div>
-                </div>
-
+      <q-card
+        class="text-primary q-ma-md q-pa-md"
+        flat
+        bordered
+        @click="onClickAddAnotherProperty"
+      >
+        + Add Another Property</q-card
+      >
+      <!-- //pointer -->
+      <div class="q-ma-md q-pa-xs ">
+        <div v-if="setClientProperty.length">
+          <q-card
+            class="q-my-sm"
+            flat
+            bordered
+            v-for="i in setClientProperty.length"
+            :key="setClientProperty.id"
+          >
+            <div v-if="setClientProperty">
+              <div class="row q-ma-sm">
                 <div
-                  class="q-mt-sm"
-                  v-for="claim in setClientProperty[i - 1].attributes.claims"
-                  :key="claim.id"
+                  class="col-4 bg-red q-mb-xl q-mt-md"
+                  style="border-radius: 8px"
                 >
-                  <div class="row q-mx-md">
-                    <div class="heading-light col-4 q-mx-xs">
-                      Claim Number:
-                    </div>
-                    <div class="row justify-between q-ml-sm col-7">
-                      <div
-                        @click="onClickClaimNumber(claim)"
-                        class="click-link"
-                      >
-                        {{ claim.number ? claim.number : '-' }}
-                      </div>
-                    </div>
-                  </div>
-                  <!-- badge -->
+                  <q-img
+                    alt="Claimguru"
+                    src="~assets/logo.png"
+                    spinner-color="white"
+                    style="height: auto; max-width: 120px"
+                  ></q-img>
+                </div>
+                <div class=" col-5 q-pa-sm">
+                  <div class="heading-light">Property Name</div>
                   <div>
-                    <q-badge
-                      class="q-px-lg q-mx-md"
-                      style="background-color: #eca74c"
-                      >{{ claim.status ? claim.status : '-' }}</q-badge
-                    >
+                    {{
+                      setClientProperty[i - 1].attributes.name
+                        ? setClientProperty[i - 1].attributes.name
+                        : '-'
+                    }}
                   </div>
-                  <!-- pointer3 -->
-                  <div class="row q-ma-md">
-                    <div class="col-4 heading-light">Insurane Carrier</div>
-                    <div>{{ claim.carrier ? claim.carrier.value : '-' }}</div>
+                  <div>
+                    {{
+                      setClientProperty[i - 1].attributes.streetAddress
+                        ? setClientProperty[i - 1].attributes.streetAddress
+                        : '-'
+                    }}
                   </div>
-                  <div class="row q-ma-md">
-                    <div class="col-4 heading-light">Date of Loss</div>
-                    <div>{{ claim.lossDate ? claim.lossDate : '-' }}</div>
+                  {{
+                    setClientProperty[i - 1].attributes.addressRegion
+                      ? setClientProperty[i - 1].attributes.addressRegion
+                      : '-'
+                  }}
+                  {{
+                    setClientProperty[i - 1].attributes.addressCountry
+                      ? setClientProperty[i - 1].attributes.addressCountry
+                      : '-'
+                  }}
+                  <div>
+                    {{
+                      setClientProperty[i - 1].attributes.addressLocality
+                        ? setClientProperty[i - 1].attributes.addressLocality
+                        : '-'
+                    }}
                   </div>
-                  <div class="row q-ma-md">
-                    <div class="col-4 heading-light">Policy Number</div>
-                    <div>
-                      {{ claim.policyNumber ? claim.policyNumber : '-' }}
+                  {{
+                    setClientProperty[i - 1].attributes.houseNumber
+                      ? setClientProperty[i - 1].attributes.houseNumber
+                      : '-'
+                  }}
+                  <div>
+                    <div class="heading-light">
+                      {{
+                        setClientProperty[i - 1].attributes.openClaims
+                          ? setClientProperty[i - 1].attributes.openClaims
+                          : '0'
+                      }}
+                      - Open Claim
                     </div>
                   </div>
-                  <div class="row q-ma-md">
-                    <div class="col-4 heading-light">Cause Of Loss</div>
-                    <span>
-                      {{ claim.lossCause ? claim.lossCause.value : '' }} -
-                      {{ claim.lossCause ? claim.lossCause.desc : '' }}
-                    </span>
-                  </div>
-
-                  <q-separator />
+                </div>
+                <div>
+                  <q-icon
+                    size="sm"
+                    name="create"
+                    color="primary"
+                    class="q-ml-sm q-mt-xs"
+                    @click="editPropertyAddress(i - 1)"
+                  ></q-icon>
+                  <q-icon
+                    size="sm"
+                    name="delete"
+                    color="primary"
+                    class=" q-mt-xs"
+                    @click="deletePropertyAddress(i - 1)"
+                  />
                 </div>
               </div>
-              <!-- Add Claim -->
-              <div>
-                <q-card
-                  class="text-primary q-ma-md q-pa-md"
-                  flat
-                  bordered
-                  @click="
-                    $router.push(`/add-claim/${setClientProperty[i - 1].id}`)
-                  "
-                >
-                  + Add Another Claim to this property</q-card
-                >
-              </div>
-            </q-card>
-          </div>
-          <div v-else class="full-height full-width column">
-            <div class="column absolute-center">
-              <div style="color: #666666,align-items: center">
-                You haven't added a property yet.
-              </div>
 
-              <img
-                class="q-mx-lg q-pt-sm"
-                src="~assets/add.svg"
-                alt="add_icon"
-                width="130px"
-                height="100px"
-                @click="addNewPropertyDialog = true"
-              />
+              <div
+                class="q-mt-sm"
+                v-for="claim in setClientProperty[i - 1].attributes.claims"
+                :key="claim.id"
+              >
+                <div class="row q-mx-md">
+                  <div class="heading-light col-4 q-mx-xs">
+                    Claim Number:
+                  </div>
+                  <div class="row justify-between q-ml-sm col-7">
+                    <div @click="onClickClaimNumber(claim)" class="click-link">
+                      {{ claim.number ? claim.number : '-' }}
+                    </div>
+                  </div>
+                </div>
+                <!-- badge -->
+                <div>
+                  <q-badge
+                    class="q-px-lg q-mx-md"
+                    style="background-color: #eca74c"
+                    >{{ claim.status ? claim.status : '-' }}</q-badge
+                  >
+                </div>
+                <!-- pointer3 -->
+                <div class="row q-ma-md">
+                  <div class="col-4 heading-light">Insurane Carrier</div>
+                  <div>{{ claim.carrier ? claim.carrier.value : '-' }}</div>
+                </div>
+                <div class="row q-ma-md">
+                  <div class="col-4 heading-light">Date of Loss</div>
+                  <div>{{ claim.lossDate ? claim.lossDate : '-' }}</div>
+                </div>
+                <div class="row q-ma-md">
+                  <div class="col-4 heading-light">Policy Number</div>
+                  <div>
+                    {{ claim.policyNumber ? claim.policyNumber : '-' }}
+                  </div>
+                </div>
+                <div class="row q-ma-md">
+                  <div class="col-4 heading-light">Cause Of Loss</div>
+                  <span>
+                    {{ claim.lossCause ? claim.lossCause.value : '' }} -
+                    {{ claim.lossCause ? claim.lossCause.desc : '' }}
+                  </span>
+                </div>
+
+                <q-separator />
+              </div>
             </div>
+            <!-- Add Claim -->
+            <div>
+              <q-card
+                class="text-primary q-ma-md q-pa-md"
+                flat
+                bordered
+                @click="
+                  $router.push(`/add-claim/${setClientProperty[i - 1].id}`)
+                "
+              >
+                + Add Another Claim to this property</q-card
+              >
+            </div>
+          </q-card>
+        </div>
+        <div v-else class="full-height full-width column">
+          <div class="column absolute-center">
+            <div style="color: #666666,align-items: center">
+              You haven't added a property yet.
+            </div>
+
+            <img
+              class="q-mx-lg q-pt-sm"
+              src="~assets/add.svg"
+              alt="add_icon"
+              width="130px"
+              height="100px"
+              @click="addNewPropertyDialog = true"
+            />
           </div>
         </div>
       </div>
     </div>
+
     <!-- This Dialog Box is for adding a new property  -->
     <q-dialog
       v-model="addNewPropertyDialog"
@@ -502,5 +498,9 @@ export default {
   height: calc(100vh - 150px);
   overflow: auto;
   margin: 10px;
+}
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent; /* make scrollbar transparent */
 }
 </style>
