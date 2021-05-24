@@ -83,9 +83,9 @@
                   <input
                     id="uploadFile"
                     type="file"
+                    accept="image/*,.pdf"
                     hidden
                     @change="onFileInputClick"
-                    accept="application/pdf"
                   />
                 </div>
                 <div>
@@ -174,7 +174,7 @@
                         type="file"
                         hidden
                         @change="onFileInputClick"
-                        accept="application/pdf"
+                        accept="image/*,.pdf"
                       />
                       <q-btn
                         class="q-ml-md"
@@ -267,7 +267,7 @@
                       type="file"
                       hidden
                       @change="onFileInputClick"
-                      accept="application/pdf"
+                      accept="image/*,.pdf"
                     />
                     <q-btn
                       class="q-ml-md"
@@ -450,7 +450,7 @@
                       type="file"
                       hidden
                       @change="onFileInputClick"
-                      accept="application/pdf"
+                      accept="image/*,.pdf"
                     />
                     <q-btn
                       class="q-ml-md"
