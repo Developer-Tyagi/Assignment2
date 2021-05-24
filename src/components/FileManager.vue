@@ -57,9 +57,7 @@
             v-if="doc.type != 'folder'"
             class="vertical-center q-px-md q-py-sm"
           >
-            <q-icon :name="iconType(doc.type)" size="sm" color="primary" />{{
-              doc
-            }}
+            <q-icon :name="iconType(doc.type)" size="sm" color="primary" />
             <span class="q-pl-md" @click="onDocumentClick(doc.link)">{{
               doc.name
             }}</span>
@@ -161,15 +159,23 @@
                 class="q-ml-md"
                 icon="cloud_upload"
                 text-color="primary"
-                @click="addFile"
                 style="width: 50px"
+                @click="onClickUploadButton"
               />
               <div class="form-heading q-ml-md">Upload</div>
+              <input
+                id="uploadFile"
+                type="file"
+                accept="image/*,.pdf"
+                hidden
+                @change="onFileInputClick"
+              />
             </div>
             <div class="column">
               <q-btn
                 class="q-ml-md"
                 icon="add_a_photo"
+                @click="addFile"
                 text-color="primary"
                 style="width: 50px"
               />
@@ -399,6 +405,40 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+
+    <!-- Upload File Dialog -->
+    <q-dialog v-model="uploadFileDailog" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-avatar
+            icon="folder"
+            color="primary"
+            text-color="white"
+            size="md"
+          />
+          <span class="q-ml-sm">Add file as</span>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          <q-input dense dense v-model="uploadFileName" autofocus />
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn
+            flat
+            label="Cancel"
+            color="primary"
+            @click="uploadFileDailog = false"
+          />
+          <q-btn
+            flat
+            label="Submit"
+            color="primary"
+            @click="uploadPdfToServer"
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -417,6 +457,8 @@ export default {
   data() {
     return {
       alert: false,
+      uploadFileName: '',
+      uploadFileDailog: false,
       currentPath: '',
       depth: [],
       documents: [],
@@ -467,6 +509,48 @@ export default {
     ...mapMutations(['setLoading']),
     onDocumentClick(link) {
       window.open(link);
+    },
+    async onFileInputClick(event) {
+      this.dataURl = await this.getBase64(event.target.files[0]);
+    },
+    getBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+      });
+    },
+    async onClickUploadButton(value) {
+      await document.getElementById('uploadFile').click();
+      this.uploadFileDailog = true;
+    },
+    async uploadPdfToServer() {
+      if (this.uploadFileName) {
+        this.setLoading(true);
+        const formData = new FormData();
+        formData.append('parentID', this.depth[this.depth.length - 1].id);
+        formData.append(
+          'file',
+          this.dataURItoBlob(this.dataURl),
+          this.uploadFileName
+        );
+        await this.createDocuments(formData);
+        this.uploadFileName = '';
+        this.uploadFilesOptions = false;
+        this.uploadFileDailog = false;
+
+        const { data } = await request.get(
+          `/documents?parent_id=${this.depth[this.depth.length - 1].id}`
+        );
+        this.documents = data.map(document => ({
+          name: document.attributes.name,
+          id: document.id,
+          type: document.attributes.mimeType,
+          link: document.attributes.webViewLink
+        }));
+        this.setLoading(false);
+      }
     },
     onClickTopMenu() {
       this.foldersAndFilesOptions = true;
@@ -542,9 +626,10 @@ export default {
         direction: CameraDirection.Rear
       });
       this.setLoading(true);
-      const jsPDFObj = new jsPDF('p', 'mm');
-      jsPDFObj.addImage(imageData.dataUrl, 10, 10);
-      this.pdfImage = jsPDFObj.output('datauristring');
+      // const jsPDFObj = new jsPDF('p', 'mm');
+      // jsPDFObj.addImage(imageData.dataUrl, 10, 10);
+      // this.pdfImage = jsPDFObj.output('datauristring');
+      this.pdfImage = imageData.dataUrl;
       this.addFileDialog = true;
       this.setLoading(false);
     },
