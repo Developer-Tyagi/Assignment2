@@ -222,28 +222,35 @@
         <div class="row justify-between">
           <div class="ex1" style="heigth:230px;overflow: scroll;">
             <div class="column" v-for="child in userRole">
-              <q-card class="text-bold">{{ child.label }}</q-card>
-              <q-card
-                class="q-ma-xs"
+              <div class="text-bold">{{ child.label }}</div>
+              <div
+                class="clickable q-ma-xs q-mx-sm "
                 flat
                 bordered
                 v-for="item in child.children"
                 @click="setRoleToMain(item.value)"
-                >{{ item.label }}</q-card
               >
+                {{ item.label }}
+              </div>
             </div>
           </div>
-          <div><q-icon name="sync_alt" style="margin-top:25vh;" /></div>
+          <div>
+            <q-icon name="sync_alt" size="md" style="margin-top:25vh;" />
+          </div>
           <q-card class="ex1 q-mt-xl q-ml-xl">
-            <q-card
+            <div
               class="q-ma-xs"
               flat
               bordered
               @click="removeRole(index)"
               v-for="(item, index) in selected_roles"
-              >{{ item }}</q-card
-            ></q-card
-          >
+            >
+              <div class="clickable  q-mx-sm row justify-between">
+                {{ item }}
+                <q-icon name="delete" color="primary" size="sm" />
+              </div>
+            </div>
+          </q-card>
         </div>
 
         <div class="row justify-center">
