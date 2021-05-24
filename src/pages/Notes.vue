@@ -67,12 +67,11 @@
       </q-card>
     </q-dialog>
     <div>
-      <div class="icon-top">
-        <q-btn @click="addNote" v-if="!addNoteDialog" flat>
-          <img src="~assets/addNote.svg" height="24" width="24" />
-        </q-btn>
-      </div>
-      <div class="mobile-container-page">
+      <q-icon @click="addNote" v-if="!addNoteDialog" class="icon-top" flat>
+        <img src="~assets/addNote.svg" />
+      </q-icon>
+
+      <div class="listing-height">
         <div class="q-ml-md q-mt-md text-h6">
           {{
             editSelectedClient.attributes.insuredInfo.primary.fname
@@ -116,29 +115,31 @@
                 <div class="client-list-item">
                   <div>
                     <div class="row">
-                      <div class="heading-light q-pb-md">
+                      <div class="heading-light  col-10">
                         {{
                           editSelectedClient.attributes.notes[index].addedAt
-                            | moment('DD/MM/YYYY, hh:mm A')
+                            | moment('MM/DD/YYYY, hh:mm A')
                         }}
                       </div>
-                      <div class="row edit-icon">
-                        <q-icon
-                          name="create"
-                          color="primary"
-                          @click="onEdit(index)"
-                        />
-                        <q-icon
-                          name="delete"
-                          color="primary"
-                          @click="
-                            deleteNote(
-                              editSelectedClient.attributes.notes[index].id
-                            )
-                          "
-                          class="q-ml-sm"
-                        />
-                      </div>
+
+                      <q-icon
+                        name="create"
+                        color="primary"
+                        size="xs"
+                        class="q-my-auto col"
+                        @click="onEdit(index)"
+                      />
+                      <q-icon
+                        name="delete"
+                        size="xs"
+                        color="primary"
+                        @click="
+                          deleteNote(
+                            editSelectedClient.attributes.notes[index].id
+                          )
+                        "
+                        class="q-ml-auto"
+                      />
                     </div>
                     <div>
                       {{ editSelectedClient.attributes.notes[index].desc }}
