@@ -370,7 +370,7 @@ export default {
     this.getClaimReasons();
     this.getLossCauses();
     this.getSeverityClaim();
-    this.lossDetails.deadlineDate = this.lossDetails.dateOfLoss = this.lossDetails.policyEffectiveDate = this.lossDetails.recovDeadline = date.formatDate(
+    this.lossDetails.policyEffectiveDate = date.formatDate(
       Date.now(),
       'MM/DD/YYYY'
     );
@@ -428,6 +428,7 @@ export default {
     },
     onEditIconClick() {
       this.lossInfoDialog = true;
+
       //This is For Prefilling Values in Loss Info Form
       this.lossDetails.descriptionDwelling = this.lossInfo.attributes.lossInfo.desc;
       this.lossDetails.lossAddressName = this.lossInfo.attributes.lossInfo.lossAddressName;
@@ -437,6 +438,12 @@ export default {
       this.lossDetails.reasonClaim = this.lossInfo.attributes.lossInfo.claimReason;
       this.lossDetails.deadlineDate = dateToShow(
         this.lossInfo.attributes.lossInfo.deadlineDate
+      );
+      this.lossDetails.dateOfLoss = dateToShow(
+        this.lossInfo.attributes.lossInfo.date
+      );
+      this.lossDetails.recovDeadline = dateToShow(
+        this.lossInfo.attributes.lossInfo.recovDDDate
       );
       this.lossDetails.recovDDDate = this.lossInfo.attributes.lossInfo.recovDDDate;
       this.lossDetails.isTheHomeHabitable = this.lossInfo.attributes.lossInfo.isHabitable;
