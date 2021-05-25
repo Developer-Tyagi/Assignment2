@@ -199,10 +199,16 @@ export default {
           key: 'configuration',
           link: '/configuration',
           description: 'View, Add and Manage all types of configuration.'
+        },
+        {
+          title: 'Profile',
+          key: 'profile',
+          link: '/edit-profile',
+          description: 'Edit profile '
         }
       ],
       sidebarItems: [],
-      estimator: ['dashboard', 'claims'],
+      estimator: ['dashboard', 'claims', 'profile'],
       owner: [
         'dashboard',
         'leads',
