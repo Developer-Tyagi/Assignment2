@@ -968,12 +968,13 @@ export async function markClaimUnFavorite({ dispatch, state }, claimID) {
 }
 
 // API for Complete estimate
-export async function completeEstimate({ dispatch, state }, claimID) {
+export async function completeEstimate({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.post(
-      `/claims/${claimID}/complete-estimate
-`
+      `/claims/${payload.claimID}/complete-estimate
+`,
+      buildApiData('complete-estimate', payload.data)
     );
     dispatch('setLoading', false);
     dispatch('setNotification', {

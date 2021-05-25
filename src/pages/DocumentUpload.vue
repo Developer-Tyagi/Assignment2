@@ -1120,7 +1120,17 @@ export default {
     async onSubmit() {
       const success = await this.$refs.estimateAmount.validate();
       if (success) {
-        await this.completeEstimate(this.selectedClaimId);
+        const payload = {
+          claimID: this.selectedClaimId,
+          data: {
+            estimatedLossAmt: this.estimatedLossAmt,
+            propertyValue: this.propertyValue
+          }
+        };
+        if (!this.propertyValue) {
+          delete payload.data.propertyValue;
+        }
+        await this.completeEstimate(payload);
         this.$router.push('/claim-summary');
       }
     },
