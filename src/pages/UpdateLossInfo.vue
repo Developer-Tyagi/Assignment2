@@ -22,28 +22,29 @@
             @closeDialog="lossInfoDialog = false"
             :dialogName="'Loss Info'"
           />
-          <div class="mobile-container-page-without-search q-pa-md">
-            <q-form ref="lossInfoForm" class="form-height">
-              <LossInfo
-                :lossInfo="lossDetails"
-                :isMailingAddressEnable="false"
-                :lossAddressSameAsClient="false"
-                :isAddressRequired="false"
-                :policyDate="{
-                  policyEffectiveDate: lossDetails.policyEffectiveDate,
-                  policyExpireDate: lossDetails.policyExpireDate
-                }"
-              />
-            </q-form>
-
-            <q-btn
-              label="Save"
-              color="primary"
-              class="button-width-90"
-              @click="onSaveButtonClick"
-              size="'xl'"
-            />
-          </div>
+          <q-card class="q-ma-sm q-pa-sm">
+            <div class="mobile-container-page  listing-height">
+              <q-form ref="lossInfoForm">
+                <LossInfo
+                  :lossInfo="lossDetails"
+                  :isMailingAddressEnable="false"
+                  :lossAddressSameAsClient="false"
+                  :isAddressRequired="false"
+                  :policyDate="{
+                    policyEffectiveDate: lossDetails.policyEffectiveDate,
+                    policyExpireDate: lossDetails.policyExpireDate
+                  }"
+                />
+              </q-form>
+            </div>
+          </q-card>
+          <q-btn
+            label="Save"
+            color="primary"
+            class="full-width  text-capitalize"
+            @click="onSaveButtonClick"
+            size="'xl'"
+          ></q-btn>
         </q-card>
       </q-dialog>
 

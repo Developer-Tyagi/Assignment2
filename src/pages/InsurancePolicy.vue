@@ -498,9 +498,11 @@
           @closeDialog="(adjustorListDialog = false), (onClickUncheck = false)"
           :dialogName="'Select Adjustor'"
         />
-        <q-btn @click="addPersonnelDialog = true" flat class="icon-top"
-          ><img src="~assets/addAdjustor.svg" height="24" width="24"
-        /></q-btn>
+
+        <q-btn @click="addPersonnelDialog = true" flat class="add-icon">
+          <img src="~assets/addAdjustor.svg" height="120" width="24" />
+        </q-btn>
+
         <div class="actions-div">
           <div v-if="!params.industry" class="q-ml-xs row q-pr-md">
             <div class="row">
