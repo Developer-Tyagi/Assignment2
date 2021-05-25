@@ -12,7 +12,7 @@
       ><img src="~assets/add.svg"
     /></q-btn>
     <div>
-      <div class="actions-div justify-between q-px-md">
+      <div class="actions-div justify-between q-px-md" v-if="depth.length > 1">
         <q-breadcrumbs class="text-primary" active-color="grey" gutter="none">
           <template v-slot:separator> </template>
           <div
@@ -29,6 +29,7 @@
         </q-breadcrumbs>
         <div>
           <q-icon
+            v-if="depth.length > 1"
             @click="onClickTopMenu"
             name="more_vert"
             size="sm"
@@ -206,7 +207,8 @@
               />
               <div class="form-heading q-ml-md">Share</div>
             </div>
-            <div class="column">
+
+            <div class="column" v-if="!isSystemGen">
               <q-btn
                 class="q-ml-md"
                 icon="delete"
@@ -456,6 +458,7 @@ export default {
 
   data() {
     return {
+      isSystemGen: '',
       alert: false,
       uploadFileName: '',
       uploadFileDailog: false,
@@ -590,6 +593,12 @@ export default {
       this.allFolder = false;
     },
     onShareClick(index) {
+      if (
+        this.documents[index].properties &&
+        this.documents[index].properties.isSystemGen
+      ) {
+        this.isSystemGen = this.documents[index].properties.isSystemGen;
+      }
       this.foldersAndFilesOptions = true;
       this.documentID = this.documents[index].id;
     },
