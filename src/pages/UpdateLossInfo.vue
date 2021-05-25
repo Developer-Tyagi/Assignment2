@@ -39,7 +39,7 @@
             <q-btn
               label="Save"
               color="primary"
-              class="button-width-90"
+              class="full-width q-mt-auto text-capitalize"
               @click="onSaveButtonClick"
               size="'xl'"
             />

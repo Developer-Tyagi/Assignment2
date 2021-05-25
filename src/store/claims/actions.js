@@ -279,6 +279,10 @@ export async function updateDamageItem({ dispatch, state }, payload) {
     );
 
     dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Property info updated Successfully!'
+    });
     return true;
   } catch (e) {
     console.log(e);
