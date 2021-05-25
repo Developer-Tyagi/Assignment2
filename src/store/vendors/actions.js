@@ -1,6 +1,7 @@
 import request from '@api';
 import { buildApiData } from '@utils/api';
-
+import localDB, { getCollection } from '@services/dexie';
+import { makeId } from '../leads/actions';
 export async function getVendors(
   {
     rootState: {
@@ -46,15 +47,35 @@ export async function getVendorDetails({ commit, dispatch }, id) {
     });
   }
 }
-export async function addVendor({ dispatch, state }, payload) {
+
+export async function addVendor(
+  {
+    rootState: {
+      common: { isOnline }
+    },
+    dispatch
+  },
+  payload
+) {
   dispatch('setLoading', true);
+  if (isOnline) {
+    return await dispatch('addVendorRemote', payload);
+  } else {
+    return await dispatch('addVendorLocal', payload);
+  }
+}
+
+export async function addVendorRemote({ commit, dispatch }, payload) {
   try {
     const { data } = await request.post(
       '/vendors',
       buildApiData('vendors', payload)
     );
     dispatch('setLoading', false);
-
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Vendor Created'
+    });
     return data;
   } catch (e) {
     console.log(e);
@@ -64,6 +85,20 @@ export async function addVendor({ dispatch, state }, payload) {
       message: e.response[0].detail
     });
     return false;
+  }
+}
+
+export async function addVendorLocal({ dispatch }, payload) {
+  try {
+    let vendor = { ...payload, offline: true, id: makeId() };
+    await localDB.vendors.add(vendor);
+    dispatch('setNotification', {
+      type: 'warning',
+      message: 'Vendor created in the local database'
+    });
+    return vendor;
+  } catch (e) {
+    console.log(e);
   }
 }
 
@@ -143,20 +178,34 @@ export async function deleteVendorPersonnel({ commit, dispatch }, vendor) {
     });
   }
 }
-export async function getVendorIndustries({ commit, dispatch }) {
+
+export async function getVendorIndustries({
+  rootState: {
+    common: { isOnline }
+  },
+  commit,
+  dispatch
+}) {
   dispatch('setLoading', true);
-  try {
-    const { data } = await request.get('/industries');
-    commit('setvendorsIndustries', data);
+  if (isOnline) {
+    try {
+      const { data } = await request.get('/industries');
+      commit('setvendorsIndustries', data);
+      dispatch('setLoading', false);
+    } catch (e) {
+      console.log(e);
+      dispatch('setLoading', false);
+      dispatch('setNotification', {
+        type: 'negative',
+        message: e.response[0].title
+      });
+    }
+  } else {
+    commit('setOfflineVendorIndustries');
     dispatch('setLoading', false);
-  } catch (e) {
-    dispatch('setLoading', false);
-    dispatch('setNotification', {
-      type: 'negative',
-      message: e.response[0].title
-    });
   }
 }
+
 export async function deleteVendorInfo({ commit, dispatch }, vendor) {
   dispatch('setLoading', true);
   try {

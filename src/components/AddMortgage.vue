@@ -304,7 +304,7 @@ export default {
         if (!this.isEdit) {
           const response = await this.addClaimMortgage(this.mortgage);
           this.getMortgages();
-          if (response) {
+          if (response.id) {
             this.mortgage.id = response.id;
             this.$emit('onCloseAddMortgage', this.mortgage);
             this.closeDialog(true);

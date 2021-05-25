@@ -6,9 +6,12 @@ localDB.version(1).stores({
   activeLeads: 'id',
   archivedLeads: 'id',
   clients: 'id',
+  claims: 'id',
   titles: 'id',
   vendors: 'id',
   carriers: 'id',
+  mortgages: 'id',
+  estimators: 'id',
   lossCauses: 'id',
   contactTypes: 'id',
   inspectionTypes: 'id',
@@ -18,7 +21,9 @@ localDB.version(1).stores({
   propertyTypes: 'id',
   policyTypes: 'id',
   policyCategories: 'id',
-  roles: 'id'
+  roles: 'id',
+  vendorIndustry: 'id',
+  tasks: 'id'
 });
 
 export function getCollection(name) {

@@ -131,7 +131,7 @@ export async function setPolicyCategories(state, types) {
 }
 
 export async function setOfflinePolicyCategories(state) {
-  state.clients = await getCollection('clients').toArray();
+  state.policyCategories = await getCollection('policyCategories').toArray();
 }
 
 export function setSelectedClient(state, client) {

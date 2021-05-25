@@ -1,5 +1,7 @@
 import request from '@api';
 import { buildApiData } from '@utils/api';
+import localDB, { getCollection } from '@services/dexie';
+import { makeId } from '../leads/actions';
 
 export async function getClients(
   {
@@ -109,29 +111,83 @@ export async function addClient(
     rootState: {
       common: { isOnline }
     },
-    dispatch,
-    commit
+    dispatch
   },
   payload
 ) {
+  dispatch('setLoading', true);
   if (isOnline) {
-    dispatch('setLoading', true);
-    try {
-      const { data } = await request.post(
-        '/clients',
-        buildApiData('clients', payload)
-      );
-      dispatch('setLoading', false);
-      return data;
-    } catch (e) {
-      console.log(e);
-      dispatch('setLoading', false);
-      dispatch('setNotification', {
-        type: 'negative',
-        message: 'Failed to create Client! please try again !'
-      });
-    }
+    const data = await dispatch('addClientRemote', payload);
+    return data;
   } else {
+    dispatch('addClientLocal', payload);
+  }
+}
+
+export async function addClientRemote({ commit }, payload) {
+  try {
+    const { data } = await request.post(
+      '/clients',
+      buildApiData('clients', payload)
+    );
+    return data;
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+}
+
+export async function addClientLocal({ dispatch }, payload) {
+  try {
+    let client = { ...payload, offline: true, id: makeId() };
+    await localDB.clients.add(client);
+    return client;
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+}
+
+export async function addMultipleTaskToClaim(
+  {
+    rootState: {
+      common: { isOnline }
+    },
+    dispatch
+  },
+  payload
+) {
+  dispatch('setLoading', true);
+  if (isOnline) {
+    const data = await dispatch('addClientRemote', payload);
+    return data;
+  } else {
+    dispatch('addClientLocal', payload);
+  }
+}
+
+export async function addMultipleTaskRemote({ commit }, payload) {
+  try {
+    const { data } = await request.post(
+      `claims/${payload.id}/batch-tasks`,
+      buildApiData('claimtask', { tasks: payload.tasks })
+    );
+    dispatch('setLoading', false);
+    return data;
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+}
+
+export async function addMultipleTaskLocal({ dispatch }, payload) {
+  try {
+    let task = { ...payload, offline: true };
+    await localDB.tasks.add(task);
+    return task;
+  } catch (e) {
+    console.log(e);
+    return false;
   }
 }
 
@@ -142,7 +198,6 @@ export async function addNotes({ dispatch, state }, payload) {
       `/clients/${payload.id}/notes`,
       buildApiData('clients', payload.notesData)
     );
-
     dispatch('setLoading', false);
     return data;
   } catch (e) {
@@ -233,41 +288,99 @@ export async function editClient({ dispatch, state }, payload) {
   }
 }
 
-export async function addClaim({ dispatch, state }, payload) {
+export async function addClaim(
+  {
+    rootState: {
+      common: { isOnline }
+    },
+    dispatch
+  },
+  payload
+) {
   dispatch('setLoading', true);
+  if (isOnline) {
+    const data = await dispatch('addClaimRemote', payload);
+    return data;
+  } else {
+    dispatch('addClaimLocal', payload);
+  }
+}
+
+export async function addClaimRemote({ commit }, payload) {
   try {
     const { data } = await request.post(
       '/claims',
       buildApiData('claims', payload)
     );
-    dispatch('setLoading', false);
     return data;
   } catch (e) {
     console.log(e);
-    dispatch('setLoading', false);
-    dispatch('setNotification', {
-      type: 'negative',
-      message: e.response[0].title
-    });
+    return false;
   }
 }
 
-export async function addEstimator({ dispatch, state }, payload) {
+export async function addClaimLocal({ dispatch }, payload) {
+  try {
+    let claim = { ...payload, offline: true, id: makeId() };
+    await localDB.claims.add(claim);
+    return claim;
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+}
+
+export async function addEstimator(
+  {
+    rootState: {
+      common: { isOnline }
+    },
+    dispatch
+  },
+  payload
+) {
   dispatch('setLoading', true);
+  if (isOnline) {
+    return await dispatch('addEstimatorRemote', payload);
+  } else {
+    return await dispatch('addEstimatorLocal', payload);
+  }
+}
+
+export async function addEstimatorRemote({ commit, dispatch }, payload) {
   try {
     const { data } = await request.post(
       '/users',
       buildApiData('users', payload)
     );
     dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Estimator Created'
+    });
     return data;
   } catch (e) {
     console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response[0].title
+      message: e.response[0].detail
     });
+    return false;
+  }
+}
+
+export async function addEstimatorLocal({ dispatch }, payload) {
+  try {
+    let estimator = { ...payload, offline: true, id: makeId() };
+    await localDB.estimators.add(estimator);
+    dispatch('setNotification', {
+      type: 'warning',
+      message: 'Estimator created in the local database'
+    });
+    return estimator;
+  } catch (e) {
+    console.log(e);
   }
 }
 

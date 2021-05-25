@@ -314,13 +314,13 @@ export default {
         if (!this.isEdit) {
           const response = await this.addCarrier(this.carrier);
           this.getCarriers();
-          if (response) {
+          if (response.id) {
             this.carrier.id = response.id;
             if (this.claimCarrier) {
               this.$emit('onAddCarrier', this.carrier.id);
             }
-            this.$emit('onCloseAddCarrier', this.carrier);
             this.$emit('closeDialog', true);
+            this.$emit('onCloseAddCarrier', this.carrier);
           }
         } else {
           this.carrier.id = this.selectedCarrier.id;
