@@ -23,7 +23,8 @@ localDB.version(1).stores({
   policyCategories: 'id',
   roles: 'id',
   vendorIndustry: 'id',
-  tasks: 'id'
+  tasks: 'id',
+  officeTasks: 'id'
 });
 
 export function getCollection(name) {

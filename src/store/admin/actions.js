@@ -108,18 +108,29 @@ export async function getWorkflowAction({ commit, dispatch }) {
   }
 }
 
-export async function getOfficeTaskActions({ commit, dispatch }) {
-  dispatch('setLoading', true);
-  try {
-    const { data } = await request.get(`/workflows/claim_new_claim/actions`);
-    commit('setOfficeTaskActions', data);
+export async function getOfficeTaskActions({
+  rootState: {
+    common: { isOnline }
+  },
+  commit,
+  dispatch
+}) {
+  if (isOnline) {
+    dispatch('setLoading', true);
+    try {
+      const { data } = await request.get(`/workflows/claim_new_claim/actions`);
+      commit('setOfficeTaskActions', data);
+      dispatch('setLoading', false);
+    } catch (e) {
+      console.log(e);
+      dispatch('setLoading', false);
+      dispatch('setNotification', {
+        type: 'negative',
+        message: e.response[0].title
+      });
+    }
+  } else {
+    commit('setOfflineOfficeTaskActions');
     dispatch('setLoading', false);
-  } catch (e) {
-    console.log(e);
-    dispatch('setLoading', false);
-    dispatch('setNotification', {
-      type: 'negative',
-      message: e.response[0].title
-    });
   }
 }

@@ -246,57 +246,65 @@ export async function storeIdsToLocalStorage(type, old, current) {
 export async function syncLocalDataBase({ dispatch, state }) {
   let offlineCarriers = await getCollection('carriers').toArray();
   offlineCarriers = offlineCarriers.filter(carrier => carrier.offline);
-  offlineCarriers.forEach(({ id, offline, ...carrier }) => {
-    dispatch('addCarrierRemote', carrier).then(response => {
-      if (response || response.id) {
-        storeIdsToLocalStorage('carrier', id, response.id);
-        localDB.carriers
-          .where('id')
-          .equals(id)
-          .modify({ id: response.id, offline: false });
-      }
+  if (offlineCarriers.length > 0) {
+    offlineCarriers.forEach(({ id, offline, ...carrier }) => {
+      dispatch('addCarrierRemote', carrier).then(response => {
+        if (response || response.id) {
+          storeIdsToLocalStorage('carrier', id, response.id);
+          localDB.carriers
+            .where('id')
+            .equals(id)
+            .modify({ id: response.id, offline: false });
+        }
+      });
     });
-  });
+  }
+
   let offlineVendors = await getCollection('vendors').toArray();
   offlineVendors = offlineVendors.filter(vendor => vendor.offline);
-  offlineVendors.forEach(({ id, offline, ...vendor }) => {
-    dispatch('addVendorRemote', vendor).then(response => {
-      if (response || response.id) {
-        storeIdsToLocalStorage('vendor', id, response.id);
-        localDB.vendors
-          .where('id')
-          .equals(id)
-          .modify({ id: response.id, offline: false });
-      }
+  if (offlineVendors.length > 0) {
+    offlineVendors.forEach(({ id, offline, ...vendor }) => {
+      dispatch('addVendorRemote', vendor).then(response => {
+        if (response || response.id) {
+          storeIdsToLocalStorage('vendor', id, response.id);
+          localDB.vendors
+            .where('id')
+            .equals(id)
+            .modify({ id: response.id, offline: false });
+        }
+      });
     });
-  });
+  }
+
   let offlineLeads = await getCollection('activeLeads').toArray();
   offlineLeads = offlineLeads.filter(lead => lead.offline);
-  offlineLeads.forEach(({ id, offline, ...lead }) => {
-    if (lead.carrier) {
-      const items = LocalStorage.getItem('carrier');
-      const index = items.findIndex(item => item.oldId === lead.carrier.id);
-      if (index > -1) {
-        lead.carrier.id = items[index].newId;
+  if (offlineLeads.length > 0) {
+    offlineLeads.forEach(({ id, offline, ...lead }) => {
+      if (lead.carrier) {
+        const items = LocalStorage.getItem('carrier');
+        const index = items.findIndex(item => item.oldId === lead.carrier.id);
+        if (index > -1) {
+          lead.carrier.id = items[index].newId;
+        }
       }
-    }
-    if (lead.vendor) {
-      const items = LocalStorage.getItem('vendor');
-      const index = items.findIndex(item => item.oldId === lead.vendor.id);
-      if (index > -1) {
-        lead.vendor.id = items[index].newId;
+      if (lead.vendor) {
+        const items = LocalStorage.getItem('vendor');
+        const index = items.findIndex(item => item.oldId === lead.vendor.id);
+        if (index > -1) {
+          lead.vendor.id = items[index].newId;
+        }
       }
-    }
-    dispatch('addLeadRemote', lead).then(response => {
-      if (response || response.id) {
-        storeIdsToLocalStorage('lead', id, response.id);
-        localDB.activeLeads
-          .where('id')
-          .equals(id)
-          .modify({ id: response.id, offline: false });
-      }
+      dispatch('addLeadRemote', lead).then(response => {
+        if (response || response.id) {
+          storeIdsToLocalStorage('lead', id, response.id);
+          localDB.activeLeads
+            .where('id')
+            .equals(id)
+            .modify({ id: response.id, offline: false });
+        }
+      });
     });
-  });
+  }
 
   let offlineClients = await getCollection('clients').toArray();
   offlineClients = offlineClients.filter(client => client.offline);

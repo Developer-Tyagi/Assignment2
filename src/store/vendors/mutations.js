@@ -10,7 +10,7 @@ export async function setVendors(state, vendorsData) {
   }));
   state.vendors = vendors;
   if ((await vendorsCollection.count()) > 0) {
-    await carriersCollection.delete([]);
+    await vendorsCollection.delete([]);
   }
   await localDB.vendors.bulkAdd(vendors);
 }

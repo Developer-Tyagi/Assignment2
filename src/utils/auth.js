@@ -60,5 +60,4 @@ export function guardMyroute(to, from, next) {
 
 function userIsAllowedToRoute(route) {
   const userRoles = getCurrentUser().attributes.roles;
-  console.log(route.name);
 }
