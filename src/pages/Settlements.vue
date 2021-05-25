@@ -15,23 +15,26 @@
 
         <div class="q-mx-md">
           <q-separator class="q-my-sm" />
-          <div class="row q-py-sm">
-            <div class="heading-light">Total net Claimed</div>
 
-            <div class="q-ml-auto text-bold">
-              <span class=" heading-light">$</span>
-              {{ settlement.attributes.totalNetClaimed }}
-            </div>
-          </div>
           <div class="row q-py-sm">
             <div class="heading-light">
-              Total replacement Cost
+              Total Replacement Cost
             </div>
 
             <div class="q-ml-auto text-bold">
               <span class="heading-light">$</span>
               {{ settlement.attributes.totalReplCost }}
             </div>
+
+          <div class="row q-py-sm">
+            <div class="heading-light">Total Net Claimed</div>
+
+            <div class="q-ml-auto text-bold">
+              <span class=" heading-light">$</span>
+              {{ settlement.attributes.netClaimed }}
+            </div>
+
+          </div>
           </div>
           <div class="row q-py-sm">
             <div
@@ -288,12 +291,12 @@
               </div>
 
               <div class="row" style="align-items: center">
-                <span class="col-5 text-bold">Net Settlement </span>
+                <span class="col-5 text-bold">Gross Settlement </span>
                 <span>=</span>
                 <q-input
                   dense
                   borderless
-                  v-model.number="netSettlement"
+                  v-model.number="grossSettlement"
                   mask="#.#"
                   type="number"
                   style="margin-left: auto; width: 50%; font-size: 19px"
@@ -333,11 +336,11 @@
               </div>
 
               <div class="row" style="align-items: center">
-                <span class="col-5 text-bold">Total Settlement </span>
+                <span class="col-5 text-bold">Net Settlement </span>
                 <span>=</span>
                 <q-input
                   dense
-                  v-model.number="totalSettlement"
+                  v-model.number="netSettlement"
                   mask="#.#"
                   type="number"
                   style="margin-left: auto; width: 50%; font-size: 19px"
