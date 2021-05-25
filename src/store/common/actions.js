@@ -201,6 +201,25 @@ export async function createDocuments({ dispatch, state }, formData) {
     return false;
   }
 }
+export async function setSingleRole({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.patch(
+      `/users/${payload.id}/roles`,
+      buildApiData('users', payload.data)
+    );
+
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+    return false;
+  }
+}
 
 export async function createDirectories({ dispatch, state }, payload) {
   dispatch('setLoading', true);

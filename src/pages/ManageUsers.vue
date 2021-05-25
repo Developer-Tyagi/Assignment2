@@ -94,7 +94,7 @@
                       <q-item
                         clickable
                         v-close-popup
-                        @click="addNewRoles = true"
+                        @click="openDialogForRole(user)"
                       >
                         <q-item-section>
                           <q-item-label>Set Role</q-item-label>
@@ -207,69 +207,58 @@
         </div>
       </q-card>
     </q-dialog>
-    <q-dialog v-model="addNewRoles" persistent>
-      <q-card style="width: 700vw">
+    <q-dialog v-model="addNewRoles" persistent :maximized="true">
+      <q-card style="width:50%;max-height:70%;">
         <q-bar class="row justify-between bg-primary" style="height: 50px">
           <div class="col-4 q-px-xs text-bold text-white">Add New role</div>
           <q-btn dense flat icon="close" color="white" v-close-popup>
             <q-tooltip>Close</q-tooltip>
           </q-btn>
         </q-bar>
-        <q-select
-          c
-          dense
-          outlined
-          filled
-          options-dense
-          class="q-mx-md col-5 input-extra-padding required q-mt-md"
-          v-model="newRole"
-          :options="userRole"
-          behavior="menu"
-          label="Role"
-          color="primary"
-          options-selected-class="text-deep-orange"
-          lazy-rules
-          :rules="[
-            val => (val && val.length > 0) || 'Please enter the user role!'
-          ]"
-        >
-          <template v-slot:option="scope">
-            <q-expansion-item
-              expand-separator
-              group="somegroup"
-              :default-opened="hasChild(scope)"
-              header-class="text-weight-bold"
-              :label="scope.opt.label"
+        <div class=" q-mx-xl q-mt-md text-bold row justify-between">
+          <div class=" q-ml-xl ">All Roles</div>
+          <div class="col-3">Roles Granted</div>
+        </div>
+        <div class="row justify-between">
+          <div class="ex1" style="heigth:230px;overflow: scroll;">
+            <div class="column" v-for="child in userRole">
+              <div class="text-bold">{{ child.label }}</div>
+              <div
+                class="clickable q-ma-xs q-mx-sm "
+                flat
+                bordered
+                v-for="item in child.children"
+                @click="setRoleToMain(item.value)"
+              >
+                {{ item.label }}
+              </div>
+            </div>
+          </div>
+          <div>
+            <q-icon name="sync_alt" size="md" style="margin-top:25vh;" />
+          </div>
+          <q-card class="ex1 q-mt-xl q-ml-xl">
+            <div
+              class="q-ma-xs"
+              flat
+              bordered
+              @click="removeRole(index)"
+              v-for="(item, index) in selected_roles"
             >
-              <template v-for="child in scope.opt.children">
-                <q-item
-                  :key="child.label"
-                  clickable
-                  v-ripple
-                  v-close-popup
-                  @click="selectedRole = child.label"
-                  :class="{
-                    'bg-light-oragne-1': selectedRole === child.label
-                  }"
-                >
-                  <q-item-section>
-                    <q-item-label
-                      v-html="child.label"
-                      class="q-ml-md"
-                    ></q-item-label>
-                  </q-item-section>
-                </q-item>
-              </template>
-            </q-expansion-item>
-          </template>
-        </q-select>
+              <div class="clickable  q-mx-sm row justify-between">
+                {{ item }}
+                <q-icon name="delete" color="primary" size="sm" />
+              </div>
+            </div>
+          </q-card>
+        </div>
 
         <div class="row justify-center">
           <q-btn
             color="primary"
-            label="submit and Proceed"
+            label="Set Role"
             class="q-mb-lg"
-            @click="onSubmit"
+            @click="onSaveChangeRole"
           />
         </div>
       </q-card>
@@ -486,8 +475,10 @@ export default {
 
   data() {
     return {
+      selected_roles: [],
       editUserInfoDialog: false,
       userId: '',
+      singleUserID: '',
 
       singleUser: {
         fname: '',
@@ -601,16 +592,43 @@ export default {
       'getAllUsers',
       'getRoles',
       'getContactTypes',
-      'editUserInfo'
+      'editUserInfo',
+      'setSingleRole'
     ]),
 
     onEmailClick,
     onPhoneNumberClick,
+    openDialogForRole(existingRoles) {
+      this.singleUserID = existingRoles.id;
+      this.selected_roles = existingRoles.attributes.roles;
+      this.addNewRoles = true;
+    },
+    onSaveChangeRole() {
+      const payload = {
+        id: this.singleUserID,
+        data: {
+          roles: this.selected_roles
+        }
+      };
+      this.setSingleRole(payload);
+      this.selected_roles = [];
+      this.addNewRoles = false;
+    },
+    removeRole(index) {
+      this.selected_roles.splice(index, 1);
+    },
     // this is for showing the data of single selected user
     viewInfoDialogBoxOpen(value) {
       this.userId = value.id;
       this.singleUserData = value.attributes;
       this.viewInfoDialogBox = true;
+    },
+    setRoleToMain(value) {
+      let present = this.selected_roles.includes(value);
+      if (present) {
+      } else {
+        this.selected_roles.push(value);
+      }
     },
     async onSaveEditedButton() {
       const success = await this.$refs.addUserForm.validate();
@@ -723,9 +741,9 @@ export default {
 };
 </script>
 <style lang="scss">
-::-webkit-scrollbar {
-  width: 0px;
-}
+// ::-webkit-scrollbar {
+//   width: 0px;
+// }
 tr:nth-child(even) {
   background-color: $grey-3 !important;
 }
@@ -745,5 +763,11 @@ th {
 td {
   padding: 8px 16px;
   border: 1px solid #ccc;
+}
+div.ex1 {
+  width: 30%;
+  height: 400px;
+  overflow: scroll;
+  margin: 5%;
 }
 </style>
