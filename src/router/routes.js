@@ -328,6 +328,12 @@ const routes = [
         component: () => import('pages/Claims.vue')
       },
       {
+        path: 'edit-profile',
+        name: 'User Profile',
+        caseSensitive: true,
+        component: () => import('pages/UserProfile.vue')
+      },
+      {
         path: 'settings',
         name: 'settings',
         caseSensitive: true,
