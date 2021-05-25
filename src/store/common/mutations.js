@@ -97,11 +97,7 @@ export function setPermissions(state, permission) {
 }
 export function setTemplateToken(state, token) {
   console.log(token, 76);
-  state.tokens = token.map(type => ({
-    name: type.name,
-    value: type.value,
-    desc: type.desc
-  }));
+  state.tokens = token.data;
 }
 
 export function setNetworkStatus(state, isOnline) {
