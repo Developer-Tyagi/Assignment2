@@ -51,7 +51,7 @@
               @click="onShareClick(index)"
               name="more_vert"
               size="sm"
-              class="q-ml-auto"
+              class="q-ml-auto "
             />
           </div>
           <div
@@ -458,6 +458,7 @@ export default {
 
   data() {
     return {
+      id: '',
       isSystemGen: '',
       alert: false,
       uploadFileName: '',
@@ -560,11 +561,19 @@ export default {
       this.allFolder = true;
     },
     async removeDocument() {
-      const id = this.allFolderId ? this.allFolderId : this.documentID;
+      if (this.allFolder) {
+        this.id = this.allFolderId;
+        this.deleteDirectory(this.id);
+        this.id = '';
+      } else {
+        this.id = this.documentID;
+        await this.deleteDocument(this.id);
+      }
 
       if (this.allFolder) {
-        this.deleteDirectory(id);
-        this.onBackButtonClick();
+        this.allFolder = false;
+        this.depth.pop();
+        this.currentPath = this.depth.length;
         const { data } = await request.get(
           `/documents?parent_id=${this.depth[this.depth.length - 1].id}`
         );
@@ -574,8 +583,6 @@ export default {
           type: document.attributes.mimeType,
           link: document.attributes.webViewLink
         }));
-      } else {
-        await this.deleteDocument(id);
       }
       const { data } = await request.get(
         `/documents?parent_id=${this.depth[this.depth.length - 1].id}`
@@ -591,6 +598,7 @@ export default {
       this.shareDialog = false;
       this.foldersAndFilesOptions = false;
       this.allFolder = false;
+      this.id = '';
     },
     onShareClick(index) {
       if (
