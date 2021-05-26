@@ -112,9 +112,11 @@ export default {
           const payload = {
             claimID: this.selectedClaimId,
             data: {
-              estimatorID: this.estimatorInfo.estimatorID,
-              scopeTimeNeeded: this.estimatorInfo.scopeTimeNeeded,
-              notesToTheEstimator: this.estimatorInfo.notesToTheEstimator
+              estimator: {
+                estimatorID: this.estimatorInfo.estimatorID,
+                scopeTimeNeeded: this.estimatorInfo.scopeTimeNeeded,
+                notesToTheEstimator: this.estimatorInfo.notesToTheEstimator
+              }
             }
           };
           await this.addClaimEstimator(payload);
