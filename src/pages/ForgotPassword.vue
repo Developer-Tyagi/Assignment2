@@ -129,6 +129,20 @@ export default {
                 });
               }
             );
+            PushNotifications.addListener(
+              'pushNotificationActionPerformed',
+              PushNotificationActionPerformed => {
+                if (
+                  PushNotificationActionPerformed.notification.data.action ==
+                  'uploadEstimateDoc'
+                ) {
+                  this.setSelectedClaimId(
+                    PushNotificationActionPerformed.notification.data.claimID
+                  );
+                  this.$router.push('/document-upload');
+                }
+              }
+            );
             PushNotifications.addListener('registrationError', any => {
               alert('Error on registration: ' + JSON.stringify(any));
             });

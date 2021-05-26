@@ -108,7 +108,7 @@ import {
   PushNotificationToken,
   PushNotificationActionPerformed
 } from '@capacitor/core';
-import { Screen } from 'quasar';
+import { Mutation, Screen } from 'quasar';
 
 const isPushNotificationsAvailable = Capacitor.isPluginAvailable(
   'PushNotifications'
@@ -128,6 +128,7 @@ export default {
   },
   methods: {
     ...mapActions(['userLogin', 'getUserInfo', 'sendPushNotificationToken']),
+    ...mapMutations('setSelectedClaimId'),
 
     async onUserLogin() {
       const loginData = {
@@ -155,6 +156,20 @@ export default {
                 this.sendPushNotificationToken({
                   token: PushNotificationToken.value
                 });
+              }
+            );
+            PushNotifications.addListener(
+              'pushNotificationActionPerformed',
+              PushNotificationActionPerformed => {
+                if (
+                  PushNotificationActionPerformed.notification.data.action ==
+                  'uploadEstimateDoc'
+                ) {
+                  this.setSelectedClaimId(
+                    PushNotificationActionPerformed.notification.data.claimID
+                  );
+                  this.$router.push('/document-upload');
+                }
               }
             );
             PushNotifications.addListener('registrationError', any => {
