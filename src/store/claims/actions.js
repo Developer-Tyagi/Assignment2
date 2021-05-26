@@ -1085,3 +1085,44 @@ export async function regenerateProofOfLoss({ dispatch, state }, claimID) {
     return false;
   }
 }
+
+// API for Get estimator info for claim
+export async function getEstimateInfo({ commit, dispatch }, claimID) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get(`/claims/${claimID}/estimators`);
+    commit('setEstimator', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+  }
+}
+
+export async function addClaimEstimator({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      `/claims/${payload.claimID}/estimators
+`,
+      buildApiData('claimestimator', payload.data)
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Estimator added successfully!'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+    return false;
+  }
+}
