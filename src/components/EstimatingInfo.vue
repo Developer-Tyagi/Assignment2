@@ -243,7 +243,7 @@
           <q-btn
             label="Add Estimator"
             color="primary"
-            class="full-width q-mt-auto text-capitalize"
+            class="button-width-90"
             @click="onCloseAddEstimator('addEstimatorDialog')"
             size="'xl'"
           />

@@ -23,7 +23,7 @@
             :dialogName="'Loss Info'"
           />
           <q-card class="q-ma-sm q-pa-sm">
-            <div class="mobile-container-page  listing-height">
+            <div class=" mobile-container-page">
               <q-form ref="lossInfoForm">
                 <LossInfo
                   :lossInfo="lossDetails"
@@ -37,14 +37,16 @@
                 />
               </q-form>
             </div>
+            <div class="q-mx-md">
+              <q-btn
+                label="Save"
+                color="primary"
+                class="button-width-90"
+                @click="onSaveButtonClick"
+                size="'xl'"
+              ></q-btn>
+            </div>
           </q-card>
-          <q-btn
-            label="Save"
-            color="primary"
-            class="full-width  text-capitalize"
-            @click="onSaveButtonClick"
-            size="'xl'"
-          ></q-btn>
         </q-card>
       </q-dialog>
 

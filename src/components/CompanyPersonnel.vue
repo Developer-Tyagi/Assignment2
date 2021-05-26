@@ -13,7 +13,7 @@
         emit-value
         options-dense
         @input="setTypes(roleTypes, companyPersonnel.personnel.value)"
-        label="Select Role"
+        label="Selectt Role"
         @filter="searchFilterBy"
         input-debounce="0"
         behavior="menu"
