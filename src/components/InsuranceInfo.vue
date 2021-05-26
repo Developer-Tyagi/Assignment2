@@ -340,7 +340,7 @@
             class="input-extra-padding"
           />
         </div>
-        <div class="bg-red" v-if="showAppraisal">
+        <div v-if="showAppraisal">
           <div class="row" style="align-items: center">
             <span class="form-heading" style="width: 50%"
               >Has Appraisal Cause</span
