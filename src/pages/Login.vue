@@ -109,6 +109,7 @@ import {
   PushNotificationActionPerformed
 } from '@capacitor/core';
 import { Screen } from 'quasar';
+import { constants } from '@utils/constant';
 
 const isPushNotificationsAvailable = Capacitor.isPluginAvailable(
   'PushNotifications'
@@ -143,6 +144,7 @@ export default {
       if (this.login.email && this.login.password) {
         const response = await this.userLogin(loginData);
         if (response) {
+          console.log();
           await this.getUserInfo();
           if (isPushNotificationsAvailable) {
             PushNotifications.requestPermission().then(result => {
@@ -162,8 +164,8 @@ export default {
               'pushNotificationActionPerformed',
               PushNotificationActionPerformed => {
                 if (
-                  PushNotificationActionPerformed.notification.data.action ==
-                  'uploadEstimateDoc'
+                  PushNotificationActionPerformed.notification.data.action ===
+                  constants.Notification.UPLOAD_ESTIMATOR
                 ) {
                   this.setSelectedClaimId(
                     PushNotificationActionPerformed.notification.data.claimID

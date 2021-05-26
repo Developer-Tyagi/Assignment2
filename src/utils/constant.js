@@ -7,6 +7,9 @@ export const constants = {
     EXPERTVENDOR: 'expert-vendor'
   },
   ORGANIZATION: 'organization',
+  Notification: {
+    UPLOAD_ESTIMATOR: 'uploadEstimateDoc'
+  },
   successMessages: {
     LOGS: 'Logs Added Successfully !',
     CLAIM: 'Claim Added Successfully !',
