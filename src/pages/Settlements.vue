@@ -154,7 +154,7 @@
         </q-card-section>
         <div class="row text-primary justify-end q-mt-lg">
           <div class="q-pa-md" @click="editInitialOffer = false">CANCEL</div>
-          <div class="q-pa-md text-bold">CHANGE</div>
+          <div class="q-pa-md text-bold">SAVE</div>
         </div>
       </q-card>
     </q-dialog>
