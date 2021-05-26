@@ -19,11 +19,21 @@
 
         <div class="row q-mt-sm">
           <span class="heading-light col-2"> Email</span>
-          <span class="q-ml-lg col"> {{ estimator.estimator.email }}</span>
+          <span
+            class="q-ml-lg col clickLink"
+            @click="onEmailClick(estimator.estimator.email, $event)"
+          >
+            {{ estimator.estimator.email }}</span
+          >
         </div>
         <div class="row q-mt-sm" v-if="estimator.estimator.phoneNumber">
           <span class="heading-light col-2"> Phone Number</span>
-          <span class="q-ml-lg col">
+          <span
+            class="q-ml-lg col clickLink"
+            @click="
+              onPhoneNumberClick(estimator.estimator.phoneNumber[0], $event)
+            "
+          >
             {{ estimator.estimator.phoneNumber[0].type }}
             {{ estimator.estimator.phoneNumber[0].number }}</span
           >
@@ -65,6 +75,7 @@
 import { mapGetters, mapActions } from 'vuex';
 import EstimatingInfo from 'components/EstimatingInfo';
 import CustomBar from 'components/CustomBar';
+import { onPhoneNumberClick, onEmailClick } from '@utils/clickable';
 import ClaimDetail from 'components/ClaimDetail';
 export default {
   components: {
@@ -93,6 +104,8 @@ export default {
   },
   methods: {
     ...mapActions(['getEstimateInfo', 'addClaimEstimator']),
+    onPhoneNumberClick,
+    onEmailClick,
     async validateEstimatingInfo() {
       if (this.estimatorInfo.doesAnEstimatorNeedToBeAssignedToggle) {
         if (this.estimatorInfo.name) {
