@@ -14,8 +14,7 @@
     <div>
       <q-card class="q-pa-md q-ma-md">
         <div class="text-bold">
-          {{ estimator.estimator.fname ? estimator.estimator.fname : '-' }}
-          {{ estimator.estimator.lname ? estimator.estimator.lname : '-' }}
+          {{ estimator.estimator.name ? estimator.estimator.name : '-' }}
         </div>
 
         <div class="row q-mt-sm">

@@ -62,8 +62,8 @@
         ></q-btn>
       </q-card>
     </q-dialog>
-    <div class="actions-div">
-      <q-separator vertical inset></q-separator>
+
+    <div class="add-icon" v-if="!addCompanyPersonnelDailog">
       <q-btn @click="addCompanyPersonnelDailog = true" flat class="q-ml-auto"
         ><img src="~assets/add.svg"
       /></q-btn>
