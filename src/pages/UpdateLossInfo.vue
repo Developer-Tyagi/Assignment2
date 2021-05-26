@@ -377,18 +377,6 @@ export default {
     });
     this.getLossCauses();
     this.getSeverityClaim();
-    // this.lossDetails.policyEffectiveDate = date.formatDate(
-    //   Date.now(),
-    //   'MM/DD/YYYY'
-    // );
-    // this.lossDetails.policyExpireDate = date.formatDate(
-    //   date.addToDate(Date.now(), {
-    //     year: 1
-    //   }),
-    //   'MM/DD/YYYY'
-    // );
-    // this.lossDetails.policyEffectiveDate = this.claim.policyInfo.effectiveDate;
-    // this.lossDetails.policyExpireDate = this.claim.policyInfo.expirationDate;
   },
   methods: {
     ...mapActions([
@@ -437,7 +425,6 @@ export default {
       }
     },
     onEditIconClick() {
-      console.log(this.lossInfo.attributes, 76);
       this.lossInfoDialog = true;
 
       //This is For Prefilling Values in Loss Info Form
