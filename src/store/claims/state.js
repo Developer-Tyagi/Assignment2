@@ -16,6 +16,12 @@ export default function() {
     damageInfo: [],
     tasks: [],
     templateOptions: [],
-    claimDocument: []
+    claimDocument: [],
+    claimStatic: {},
+    claimPhoto: [],
+    claimSketch: [],
+    additionalDocs: [],
+    esxDocs: [],
+    proofOfLoss: {}
   };
 }

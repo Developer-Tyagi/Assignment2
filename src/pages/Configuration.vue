@@ -104,7 +104,26 @@
         <div class="q-pa-md q-gutter-sm">
           <q-card class="q-pa-sm" style="height:500px;">
             <div class="text-bold q-my-xs">TITLE</div>
-            <div><q-input outlined v-model="title" /></div>
+            <div>
+              <q-select
+                dense
+                class="input-extra-padding q-ma-sm required"
+                v-model="templatetype.value"
+                option-value="name"
+                option-label="name"
+                map-options
+                options-dense
+                behavior="menu"
+                emit-value
+                :options="templateOptions"
+                @input="setTypes(templatetype.value)"
+                label="List of Templates"
+                lazy-rules
+                :rules="[
+                  val => (val && val.length > 0) || 'Please fill the template'
+                ]"
+              />
+            </div>
             <div class="text-bold q-py-sm">BODY</div>
 
             <q-editor
@@ -121,6 +140,12 @@
                   icon: 'insert_photo',
                   label: 'Upload',
                   handler: insertImg
+                },
+                create: {
+                  tip: 'Upload token',
+                  icon: 'add_circle',
+                  label: 'Token',
+                  handler: tokenDialog
                 }
               }"
               :toolbar="[
@@ -135,7 +160,7 @@
                   'left',
                   'print'
                 ],
-                ['upload', 'save']
+                ['upload', 'save', 'create']
               ]"
             >
             </q-editor>
@@ -144,6 +169,7 @@
             <q-btn
               color="primary"
               label="Save"
+              @click="onSaveTemplate"
               class="align-content-center  q-my-lg"
             />
           </div>
@@ -260,21 +286,75 @@
         </div>
       </q-card>
     </q-dialog>
+    <!-- Token Dialog Box -->
+    <q-dialog
+      v-model="tokenDialogBox"
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card class="q-ma-sm" style="width: 35%; height: 75vh">
+        <div class=" row justify-end" style="height: 50px">
+          <q-btn dense flat icon="close" color="black" v-close-popup>
+            <q-tooltip>Close</q-tooltip>
+          </q-btn>
+        </div>
+        <table class="table ">
+          <tr>
+            <th class="table-th1 " style="width:26%;">
+              NAME
+            </th>
+            <th class="table-th" style="">VALUE</th>
+            <th class="table-th" style="">DESCRIPTION</th>
+          </tr>
+        </table>
+
+        <table class="q-ma-md  table ">
+          <div class="full-width" v-for="(usr, index) in tokens">
+            <q-expansion-item
+              class="q-mx-md"
+              expand-separator
+              :label="`${usr.group}`"
+            >
+              <tr class="table-tr" v-for="(user, ind) in usr.tokens">
+                <td class="table-td" style="width:20%">
+                  {{ user.name }}
+                </td>
+                <td
+                  class="table-td clickable text-primary"
+                  style="height:26px; font-size:10px;"
+                  @click="setValueToTemplate(user.value)"
+                >
+                  {{ user.value }}
+                </td>
+                <td class="table-td" style="height:26px; font-size:10px;">
+                  {{ user.desc }}
+                </td>
+              </tr>
+            </q-expansion-item>
+          </div>
+        </table>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import { validateEmail } from '@utils/validation';
 import SubSideBar from 'components/SubSideBar';
+import CustomBar from 'components/CustomBar';
 
 export default {
   name: 'SetConfiguration',
   components: {
-    SubSideBar
+    SubSideBar,
+    CustomBar
   },
 
   data() {
     return {
+      tokenDialogBox: false,
+      templatetype: { value: '', machineValue: '' },
       definitions: {
         insert_img: {
           tip: 'Insertar Imagen',
@@ -315,6 +395,8 @@ export default {
   },
 
   created() {
+    this.getTemplates();
+    this.getTemplateToken();
     this.getInspectionTypes().then(async () => {
       this.table = this.inspectionTypes;
     });
@@ -333,7 +415,9 @@ export default {
       'propertyTypes',
       'claimReasons',
       'lossCauses',
-      'claimSeverity'
+      'claimSeverity',
+      'templateOptions',
+      'tokens'
     ])
   },
 
@@ -362,8 +446,27 @@ export default {
       'getPropertyTypes',
       'getSeverityClaim',
       'getClaimReasons',
-      'getLossCauses'
+      'getLossCauses',
+      'getTemplates',
+      'addTemplate',
+      'getTemplateToken'
     ]),
+    async onSaveTemplate() {
+      const payload = {
+        value: this.post.body,
+        type: {
+          machineValue: this.templatetype.machineValue,
+          value: this.templatetype.value
+        }
+      };
+      await this.addTemplate(payload);
+    },
+    setTypes(value) {
+      const obj = this.templateOptions.find(item => {
+        return item.name === value;
+      });
+      this.templatetype.machineValue = obj.machineValue;
+    },
     insertImg() {
       // insertImg method
       const post = this.post;
@@ -405,6 +508,13 @@ export default {
         textColor: 'white',
         icon: 'warning'
       });
+    },
+    tokenDialog() {
+      this.tokenDialogBox = true;
+    },
+    setValueToTemplate(value) {
+      this.post.body += value;
+      this.tokenDialogBox = false;
     },
 
     async setSelectedTab(e) {
@@ -573,6 +683,13 @@ export default {
   overflow: auto;
 }
 .table-th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: orangered;
+  color: white;
+}
+.table-th1 {
   position: sticky;
   top: 0;
   z-index: 2;

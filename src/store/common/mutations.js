@@ -96,6 +96,7 @@ export async function setRoles(state, roles) {
     name: type.attributes.value,
     machineValue: type.attributes.machineValue,
     id: type.id,
+    permission: type.attributes.permissions,
     isPaid: type.attributes.isPaid
   }));
   state.roleTypes = roleTypes;
@@ -107,6 +108,17 @@ export async function setRoles(state, roles) {
 
 export async function setOfflineRoles(state) {
   state.roleTypes = await getCollection('roles').toArray();
+}
+export function setPermissions(state, permission) {
+  state.permissions = permission.map(type => ({
+    name: type.attributes.value,
+    machineValue: type.attributes.machineValue,
+    id: type.id
+  }));
+}
+export function setTemplateToken(state, token) {
+  console.log(token, 76);
+  state.tokens = token.data;
 }
 
 export function setNetworkStatus(state, isOnline) {

@@ -147,3 +147,8 @@ export async function setOfflinePolicyCategories(state) {
 export function setSelectedClient(state, client) {
   state.selectedClient = client;
 }
+export function setClientStatistics(state, clientStatic) {
+  state.clientStatic = {
+    ...clientStatic.attributes
+  };
+}

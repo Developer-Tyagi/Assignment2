@@ -24,81 +24,97 @@
           <img src="~assets/filter.svg" />
         </div>
       </div>
-      <div class="mobile-container-page">
-        <div class="clients-list" v-if="claims.length">
-          <div
-            class="clients-list"
-            v-for="(claim, index) in claims"
-            :key="claim.id"
-            @click="onClickingOnClaim(claim)"
-          >
-            <div class="client-list-item">
-              <div class="row text-bold q-pb-md">
-                {{ claim.attributes.client.fname }}
-                {{ claim.attributes.client.lname }}
-                <span class="q-ml-auto">
-                  <q-rating
-                    v-model="ratingModel"
+      <div class="mobile-container-page ">
+        <div class="clients-list " v-if="claims.length">
+          <div>
+            <div
+              class="clients-list "
+              v-for="(claim, index) in claims"
+              :key="claim.id"
+            >
+              <div class="client-list-item">
+                <div class="row  text-bold q-pb-md  ">
+                  <div class="col-10" @click="onClickingOnClaim(claim)">
+                    {{ claim.attributes.client.fname }}
+                    {{ claim.attributes.client.lname }}
+                  </div>
+
+                  <q-icon
                     class="q-ml-auto"
                     size="1em"
-                    :max="1"
-                    color="primary"
-                  ></q-rating>
-                </span>
-              </div>
-              <div class="row">
-                <div class="col-3">Carrier</div>
-
-                <div class="">
-                  {{
-                    claim.attributes.carrier
-                      ? claim.attributes.carrier.value
-                        ? claim.attributes.carrier.value
-                        : ''
-                      : '-'
-                  }}
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-3">Claim No.</div>
-
-                <div class="">
-                  {{ claim.attributes.number ? claim.attributes.number : '-' }}
-                </div>
-              </div>
-
-              <div class="row justify-between q-pt-xs">
-                <div v-if="claim.attributes.status">
-                  <q-badge
-                    class="q-px-md q-py-sm"
-                    :style="
-                      claim.attributes.status.isCancelled == false
-                        ? 'background-color:#ECA74C;'
-                        : 'background-color:#EF9A9A;'
+                    :name="
+                      claim.attributes.isFavourite ? 'star' : 'star_border'
                     "
+                    @click="onClickFavorite(index)"
+                    color="primary"
                   >
-                    {{
-                      claim.attributes.status
-                        ? claim.attributes.status.isCancelled == false
-                          ? 'OPEN'
-                          : 'CANCELLED'
-                        : ''
-                    }}</q-badge
-                  >
+                    <q-tooltip
+                      anchor="center right"
+                      self="center left"
+                      :offset="[10, 10]"
+                    >
+                      Mark claim as favourite
+                    </q-tooltip>
+                  </q-icon>
                 </div>
+                <div @click="onClickingOnClaim(claim)">
+                  <div class="row">
+                    <div class="col-3">Carrier</div>
 
-                <div column>
-                  <div>
-                    {{
-                      claim.attributes.lossInfo.cause
-                        ? claim.attributes.lossInfo.cause
-                          ? claim.attributes.lossInfo.cause.value
-                          : ''
-                        : '-'
-                    }}
+                    <div>
+                      {{
+                        claim.attributes.carrier
+                          ? claim.attributes.carrier.value
+                            ? claim.attributes.carrier.value
+                            : ''
+                          : '-'
+                      }}
+                    </div>
                   </div>
-                  <div>
-                    {{ claim.attributes.created | moment('DD/MM/YYYY') }}
+                  <div class="row">
+                    <div class="col-3">Claim No.</div>
+
+                    <div>
+                      {{
+                        claim.attributes.number ? claim.attributes.number : '-'
+                      }}
+                    </div>
+                  </div>
+
+                  <div class="row justify-between q-pt-xs">
+                    <div v-if="claim.attributes.status">
+                      <q-badge
+                        class="q-px-md q-py-sm"
+                        :style="
+                          claim.attributes.status.isCancelled == false
+                            ? 'background-color:#ECA74C;'
+                            : 'background-color:#EF9A9A;'
+                        "
+                      >
+                        {{
+                          claim.attributes.status
+                            ? claim.attributes.status.isCancelled == false
+                              ? 'OPEN'
+                              : 'CANCELLED'
+                            : ''
+                        }}</q-badge
+                      >
+                    </div>
+
+                    <div column>
+                      <div>
+                        {{
+                          claim.attributes.lossInfo.cause
+                            ? claim.attributes.lossInfo.cause
+                              ? claim.attributes.lossInfo.cause.value
+                              : ''
+                            : '-'
+                        }}
+                      </div>
+                      <div>
+                        {{ claim.attributes.created | moment('DD/MM/YYYY') }}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -120,7 +136,7 @@
 <script>
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import moment from 'moment';
-
+import { getCurrentUser } from '@utils/auth';
 export default {
   name: 'Claims',
   data() {
@@ -130,14 +146,13 @@ export default {
       params: {
         name: ''
       },
-      ratingModel: 2,
       searchText: '',
       openSearchInput: false
     };
   },
 
   computed: {
-    ...mapGetters(['claims']),
+    ...mapGetters(['claims', 'selectedClaimId']),
     formatDate(value) {
       if (value) {
         return moment(String(value)).format('MM/DD/YYYY');
@@ -147,16 +162,28 @@ export default {
 
   created() {
     this.getClaims();
+    this.userRole = getCurrentUser().attributes.roles[0];
   },
   methods: {
-    ...mapActions(['getClaims']),
+    ...mapActions([
+      'getClaims',
+      'markClaimFavorite',
+      'getSelectedClaim',
+      'markClaimUnFavorite'
+    ]),
     ...mapMutations(['setSelectedClaimId']),
 
     onSearchBackButtonClick() {
       this.searchText = '';
       this.search();
     },
-
+    async onClickFavorite(index) {
+      if (this.claims[index].attributes.isFavourite == false) {
+        await this.markClaimUnFavorite(this.selectedClaimId);
+      } else {
+        await this.markClaimFavorite(this.selectedClaimId);
+      }
+    },
     search(event) {
       this.params.name = event;
       this.getClaims(this.params);
@@ -165,6 +192,10 @@ export default {
     onClickingOnClaim(claim) {
       this.setSelectedClaimId(claim.id);
       this.$router.push('/claim-details');
+      if (this.userRole == 'estimator') {
+        this.setSelectedClaimId(claim.id);
+        this.$router.push('/claim-summary');
+      }
     }
   }
 };

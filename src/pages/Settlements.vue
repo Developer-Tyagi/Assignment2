@@ -15,32 +15,42 @@
 
         <div class="q-mx-md">
           <q-separator class="q-my-sm" />
-          <div class="row q-py-sm">
-            <div class="heading-light">Total net Claimed</div>
 
-            <div class="q-ml-auto text-bold">
-              <span class=" heading-light">$</span>
-              {{ settlement.attributes.totalNetClaimed }}
-            </div>
-          </div>
-          <div class="row q-py-sm">
-            <div class="heading-light">
-              Total replacement Cost
+          <div class="row q-py-sm ">
+            <div class="col-6 heading-light  ">
+              Total Replacement Cost
             </div>
 
-            <div class="q-ml-auto text-bold">
-              <span class="heading-light">$</span>
+            <div class=" col row justify-between  q-ml-auto text-bold">
+              <div class="heading-light">$</div>
               {{ settlement.attributes.totalReplCost }}
+            </div>
+
+            <!-- <div class="row q-py-sm">
+              <div class="heading-light">Total Net Claimed</div>
+
+              <div class="q-ml-auto text-bold">
+                <span class=" heading-light">$</span>
+                {{ settlement.attributes.netClaimed }}
+              </div>
+            </div> -->
+          </div>
+          <div class="row q-py-sm ">
+            <div class="col-6 heading-light">Total Net Claimed</div>
+
+            <div class=" col row justify-between  q-ml-auto text-bold">
+              <div class=" heading-light">$</div>
+              {{ settlement.attributes.netClaimed }}
             </div>
           </div>
           <div class="row q-py-sm">
             <div
-              class="heading-light text-primary"
+              class=" col-6 heading-light text-primary"
               @click="editInitialOffer = true"
             >
               Initial Offer
             </div>
-            <div class="q-ml-auto text-bold">
+            <div class="  col row justify-between q-ml-auto text-bold">
               <span class="heading-light">$</span>
               {{ settlement.attributes.intialOffer }}
             </div>
@@ -288,7 +298,7 @@
               </div>
 
               <div class="row" style="align-items: center">
-                <span class="col-5 text-bold">Net Settlement </span>
+                <span class="col-5 text-bold">Gross Settlement </span>
                 <span>=</span>
                 <q-input
                   dense
@@ -333,7 +343,7 @@
               </div>
 
               <div class="row" style="align-items: center">
-                <span class="col-5 text-bold">Total Settlement </span>
+                <span class="col-5 text-bold">Net Settlement </span>
                 <span>=</span>
                 <q-input
                   dense
@@ -742,6 +752,7 @@
                 <span>=</span>
                 <q-input
                   dense
+                  disable
                   v-model.number="actualValue"
                   mask="#.#"
                   type="number"
@@ -788,10 +799,11 @@
               </div>
 
               <div class="row" style="align-items: center">
-                <span class="col-5 text-bold">Net Settlement </span>
+                <span class="col-5 text-bold">Gross Settlement</span>
                 <span>=</span>
                 <q-input
                   dense
+                  disable
                   borderless
                   v-model.number="netSettlement"
                   mask="#.#"
@@ -838,10 +850,11 @@
               </div>
 
               <div class="row" style="align-items: center">
-                <span class="col-5 text-bold">Total Settlement </span>
+                <span class="col-5 text-bold">Net Settlement </span>
                 <span>=</span>
                 <q-input
                   dense
+                  disable
                   v-model.number="totalSettlement"
                   mask="#.#"
                   type="number"
@@ -1297,13 +1310,13 @@ export default {
       this.amounts = this.settlement.attributes.settlements[val].amounts;
       this.totalSettlement = this.settlement.attributes.settlements[
         val
-      ].amounts.totalSettlement;
+      ].amounts.netSettlement;
       this.actualValue = this.settlement.attributes.settlements[
         val
       ].amounts.actualCash;
       this.netSettlement = this.settlement.attributes.settlements[
         val
-      ].amounts.netSettlement;
+      ].amounts.grossSettlement;
       this.buttonGroup = this.settlement.attributes.settlements[val].isAccepted;
 
       this.isFinal = this.settlement.attributes.settlements[val].isFinal;
@@ -1412,14 +1425,28 @@ export default {
           isFinal: this.isFinal,
           isAccepted: this.buttonGroup,
           amounts: {
-            replacementCost: this.amounts.replacementCost,
-            recoverable: this.amounts.recoverable,
-            nonRecoverable: this.amounts.nonRecoverable,
-            otherAdjustment: this.amounts.otherAdjustment,
+            replacementCost: this.amounts.replacementCost
+              ? this.amounts.replacementCost
+              : 0,
+            recoverable: this.amounts.recoverable
+              ? this.amounts.recoverable
+              : 0,
+            nonRecoverable: this.amounts.nonRecoverable
+              ? this.amounts.nonRecoverable
+              : 0,
+            otherAdjustment: this.amounts.otherAdjustment
+              ? this.amounts.otherAdjustment
+              : 0,
             otherAdjustmentDesc: 'Side settlement',
-            deductibleApplied: this.amounts.deductibleApplied,
-            policyLimit: this.amounts.policyLimit,
+            deductibleApplied: this.amounts.deductibleApplied
+              ? this.amounts.deductibleApplied
+              : 0,
+            policyLimit: this.amounts.policyLimit
+              ? this.amounts.policyLimit
+              : 0,
             priorPayment: this.amounts.priorPayment
+              ? this.amounts.priorPayment
+              : 0
           },
           offeredDate: dateToSend(this.offeredDate),
           paymentExpDate: dateToSend(this.paymentExpDate),

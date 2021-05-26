@@ -5,6 +5,7 @@
       name="create"
       color="primary"
       class="icon-top"
+      v-if="!lossInfoDialog"
       @click="onEditIconClick"
     ></q-icon>
     <div class="listing-height">
@@ -21,28 +22,29 @@
             @closeDialog="lossInfoDialog = false"
             :dialogName="'Loss Info'"
           />
-          <div class="mobile-container-page-without-search q-pa-md">
-            <q-form ref="lossInfoForm" class="form-height">
-              <LossInfo
-                :lossInfo="lossDetails"
-                :isMailingAddressEnable="false"
-                :lossAddressSameAsClient="false"
-                :isAddressRequired="false"
-                :policyDate="{
-                  policyEffectiveDate: lossDetails.policyEffectiveDate,
-                  policyExpireDate: lossDetails.policyExpireDate
-                }"
-              />
-            </q-form>
-
-            <q-btn
-              label="Save"
-              color="primary"
-              class="button-width-90"
-              @click="onSaveButtonClick"
-              size="'xl'"
-            />
-          </div>
+          <q-card class="q-ma-sm q-pa-sm">
+            <div class="mobile-container-page  listing-height">
+              <q-form ref="lossInfoForm">
+                <LossInfo
+                  :lossInfo="lossDetails"
+                  :isMailingAddressEnable="false"
+                  :lossAddressSameAsClient="false"
+                  :isAddressRequired="false"
+                  :policyDate="{
+                    policyEffectiveDate: lossDetails.policyEffectiveDate,
+                    policyExpireDate: lossDetails.policyExpireDate
+                  }"
+                />
+              </q-form>
+            </div>
+          </q-card>
+          <q-btn
+            label="Save"
+            color="primary"
+            class="full-width  text-capitalize"
+            @click="onSaveButtonClick"
+            size="'xl'"
+          ></q-btn>
         </q-card>
       </q-dialog>
 
@@ -368,7 +370,7 @@ export default {
     this.getClaimReasons();
     this.getLossCauses();
     this.getSeverityClaim();
-    this.lossDetails.deadlineDate = this.lossDetails.dateOfLoss = this.lossDetails.policyEffectiveDate = this.lossDetails.recovDeadline = date.formatDate(
+    this.lossDetails.policyEffectiveDate = date.formatDate(
       Date.now(),
       'MM/DD/YYYY'
     );
@@ -426,6 +428,7 @@ export default {
     },
     onEditIconClick() {
       this.lossInfoDialog = true;
+
       //This is For Prefilling Values in Loss Info Form
       this.lossDetails.descriptionDwelling = this.lossInfo.attributes.lossInfo.desc;
       this.lossDetails.lossAddressName = this.lossInfo.attributes.lossInfo.lossAddressName;
@@ -435,6 +438,12 @@ export default {
       this.lossDetails.reasonClaim = this.lossInfo.attributes.lossInfo.claimReason;
       this.lossDetails.deadlineDate = dateToShow(
         this.lossInfo.attributes.lossInfo.deadlineDate
+      );
+      this.lossDetails.dateOfLoss = dateToShow(
+        this.lossInfo.attributes.lossInfo.date
+      );
+      this.lossDetails.recovDeadline = dateToShow(
+        this.lossInfo.attributes.lossInfo.recovDDDate
       );
       this.lossDetails.recovDDDate = this.lossInfo.attributes.lossInfo.recovDDDate;
       this.lossDetails.isTheHomeHabitable = this.lossInfo.attributes.lossInfo.isHabitable;

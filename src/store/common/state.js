@@ -8,6 +8,7 @@ export default function() {
     userRoles: [],
     lossCauses: [],
     roleTypes: [],
+    permissions: [],
     fileRoleOptions: [
       { value: 'View Access', name: 'reader' },
       { value: 'Edit Access', name: 'writer' }
@@ -30,6 +31,7 @@ export default function() {
         price: 249
       }
     ],
+    tokens: [],
     isOnline: navigator.onLine
   };
 }

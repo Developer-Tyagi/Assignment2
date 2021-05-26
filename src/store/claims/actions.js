@@ -293,6 +293,10 @@ export async function updateDamageItem({ dispatch, state }, payload) {
     );
 
     dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Property info updated Successfully!'
+    });
     return true;
   } catch (e) {
     console.log(e);
@@ -804,11 +808,83 @@ export async function getTemplates({ commit, dispatch }) {
   }
 }
 // API for Get document for claim.
-export async function getClaimDocument({ commit, dispatch }, claimID) {
+export async function getClaimEstimateDoc({ commit, dispatch }, claimID) {
   dispatch('setLoading', true);
   try {
-    const { data } = await request.get(`/claims/${claimID}/documents`);
+    const { data } = await request.get(`/claims/${claimID}/documents/estimate`);
     commit('setClaimDocument', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+  }
+}
+// API for Get uploaded photos .
+export async function getClaimPhoto({ commit, dispatch }, claimID) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get(
+      `/claims/${claimID}/documents/photo_report`
+    );
+
+    commit('setClaimPhoto', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+  }
+}
+
+// API for Get claim Sketches .
+export async function getClaimSketch({ commit, dispatch }, claimID) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get(`/claims/${claimID}/documents/sketch`);
+    commit('setClaimSketch', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+  }
+}
+
+// API for Get all Additional Documents  .
+export async function getAdditionalDocs({ commit, dispatch }, claimID) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get(
+      `/claims/${claimID}/documents/additional_doc`
+    );
+    commit('setAdditionalDocs', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+  }
+}
+getEsxDocs;
+// API for Get all ESXs Documents .
+export async function getEsxDocs({ commit, dispatch }, claimID) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get(`/claims/${claimID}/documents/esx`);
+    commit('setEsxDocs', data);
     dispatch('setLoading', false);
   } catch (e) {
     console.log(e);
@@ -832,6 +908,186 @@ export async function uploadClaimDocument({ dispatch, state }, payload) {
     dispatch('setNotification', {
       type: 'positive',
       message: 'File Uploaded Successfully!'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+    return false;
+  }
+}
+// API for View claim statistics
+export async function getClaimStatistics({ commit, dispatch }) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get('/claimstatistics');
+    commit('setClaimStatistics', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+  }
+}
+// API for to mark claim as favourite
+
+export async function markClaimFavorite({ dispatch, state }, claimID) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      `/claims/${claimID}/favourite
+`
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Claim marked as favourite!'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+    return false;
+  }
+}
+
+//  API for Mark the claim as unfavourite
+
+export async function markClaimUnFavorite({ dispatch, state }, claimID) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      `/claims/${claimID}/unfavourite
+`
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Claim marked as unfavourite!'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+    return false;
+  }
+}
+
+// API for Complete estimate
+export async function completeEstimate({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      `/claims/${payload.claimID}/complete-estimate
+`,
+      buildApiData('complete-estimate', payload.data)
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Claim Estimate Completed!'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+    return false;
+  }
+}
+
+export async function deleteClaimDocument({ commit, dispatch }, payload) {
+  dispatch('setLoading', true);
+  try {
+    await request.del(
+      `/claims/${payload.claimID}/documents/${payload.driveID}`
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Document  Deleted !'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'Error in deleting document.'
+    });
+  }
+}
+
+// API for Getting Proof of loss Document
+export async function getProofOfLossDoc({ commit, dispatch }, claimID) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get(
+      `/claims/${claimID}/documents/proof_of_loss`
+    );
+    commit('setProofOfLoss', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+  }
+}
+
+// API for Approve Proof of loss doc
+
+export async function approveProofOfLoss({ dispatch, state }, claimID) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      `/claims/${claimID}/approve-pol
+`
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Approved!'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+    return false;
+  }
+}
+
+// API forRegenerate Proof of loss doc
+
+export async function regenerateProofOfLoss({ dispatch, state }, claimID) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      `/claims/${claimID}/regenerate-pol
+`
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Regenerated successfully!'
     });
   } catch (e) {
     console.log(e);

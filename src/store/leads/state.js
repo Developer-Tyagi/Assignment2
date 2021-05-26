@@ -1,6 +1,7 @@
 export default function() {
   return {
     activeLeads: [],
+    leadStatic: {},
     archivedLeads: [],
     selectedLead: {
       id: '',

@@ -86,7 +86,6 @@
           </q-card>
         </div>
         <q-input
-          v-if="!policyInfo"
           v-model="insuranceDetails.policyNumber"
           label="Policy Number"
           dense

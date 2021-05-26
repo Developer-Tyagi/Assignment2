@@ -23,27 +23,6 @@
                 </q-card>
               </div>
             </q-item-section>
-
-            <q-item-section class="q-mt-md" v-if="userRole == 'estimator'">
-              <div>
-                <q-card
-                  class="q-ma-xs q-pa-md full-width"
-                  @click="$router.push('/claim-summary')"
-                >
-                  Claim Summary
-                </q-card>
-                <q-card
-                  class="q-ma-xs q-pa-md full-width"
-                  @click="
-                    $router.push({
-                      path: `/document-upload`
-                    })
-                  "
-                >
-                  Document Upload
-                </q-card>
-              </div>
-            </q-item-section>
           </div>
         </div>
       </div>
@@ -213,6 +192,7 @@ export default {
         { name: 'Mortgages and Liens' },
         { name: 'Expert Vendor' },
         { name: 'Files' },
+        { name: 'Proof Of Loss' },
         { name: 'Notes' },
         { name: 'MatterPort' },
         { name: 'Time Tracking' },
@@ -345,7 +325,9 @@ export default {
             path: `/claim-files/${this.selectedClaimId}`
           });
           break;
-
+        case 'Proof Of Loss':
+          this.$router.push({ path: `/proof-of-loss/${this.selectedClaimId}` });
+          break;
         case 'Notes':
           this.$router.push('/claim-notes');
           break;
