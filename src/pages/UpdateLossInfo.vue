@@ -24,6 +24,8 @@
           />
           <q-card class="q-ma-sm q-pa-sm">
             <div class="mobile-container-page  listing-height">
+              <!-- {{ claim.policyInfo.effectiveDate }}989
+              {{ claim.policyInfo.expirationDate }} -->
               <q-form ref="lossInfoForm">
                 <LossInfo
                   :lossInfo="lossDetails"
@@ -349,7 +351,8 @@ export default {
       'propertyTypes',
       'claimReasons',
       'lossCauses',
-      'claimSeverity'
+      'claimSeverity',
+      'claim'
     ]),
 
     formatDate(value) {
@@ -368,18 +371,22 @@ export default {
     this.setSelectedClaimId(this.selectedClaimId);
     this.getPropertyTypes();
     this.getClaimReasons();
+    this.getSingleClaims(this.selectedClaimId);
     this.getLossCauses();
     this.getSeverityClaim();
-    this.lossDetails.policyEffectiveDate = date.formatDate(
-      Date.now(),
-      'MM/DD/YYYY'
-    );
-    this.lossDetails.policyExpireDate = date.formatDate(
-      date.addToDate(Date.now(), {
-        year: 1
-      }),
-      'MM/DD/YYYY'
-    );
+    // this.lossDetails.policyEffectiveDate = date.formatDate(
+    //   Date.now(),
+    //   'MM/DD/YYYY'
+    // );
+    // this.lossDetails.policyExpireDate = date.formatDate(
+    //   date.addToDate(Date.now(), {
+    //     year: 1
+    //   }),
+    //   'MM/DD/YYYY'
+    // );
+    console.log(this.claim.policyInfo.effectiveDate, 'uuuu');
+    this.lossDetails.policyEffectiveDate = this.claim.policyInfo.effectiveDate;
+    this.lossDetails.policyExpireDate = this.claim.policyInfo.expirationDate;
   },
   methods: {
     ...mapActions([
@@ -388,7 +395,8 @@ export default {
       'getClaimReasons',
       'getLossCauses',
       'getSeverityClaim',
-      'updateLossInfo'
+      'updateLossInfo',
+      'getSingleClaims'
     ]),
     ...mapMutations(['setSelectedClaimId']),
     sendMap,
@@ -427,6 +435,7 @@ export default {
       }
     },
     onEditIconClick() {
+      console.log(this.lossInfo.attributes, 76);
       this.lossInfoDialog = true;
 
       //This is For Prefilling Values in Loss Info Form
