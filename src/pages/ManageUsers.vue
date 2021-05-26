@@ -741,9 +741,6 @@ export default {
 };
 </script>
 <style lang="scss">
-// ::-webkit-scrollbar {
-//   width: 0px;
-// }
 tr:nth-child(even) {
   background-color: $grey-3 !important;
 }
