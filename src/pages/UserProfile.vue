@@ -240,7 +240,9 @@ export default {
       this.users.contact.type = this.user.phoneNumber
         ? this.user.phoneNumber.type
         : '';
-      this.users.contact.number = this.user.phoneNumber.number;
+      this.users.contact.number = this.user.phoneNumber
+        ? this.user.phoneNumber.number
+        : '';
 
       this.users.email = this.user.email;
       if (this.user.mailingAddress) {
