@@ -145,7 +145,12 @@
     >
       <q-card style="width: 350px; height: 160px">
         <q-card-section class="items-center">
-          <q-input class="q-pa-xs" dense label="Enter Initial Offer" />
+          <q-input
+            class="q-pa-xs"
+            v-model="initialOffer"
+            dense
+            label="Enter Initial Offer"
+          />
         </q-card-section>
         <div class="row text-primary justify-end q-mt-lg">
           <div class="q-pa-md" @click="editInitialOffer = false">CANCEL</div>
@@ -1166,6 +1171,7 @@ export default {
   components: { CustomBar, ClaimDetail },
   data() {
     return {
+      initialOffer: '',
       status: '',
       editInitialOffer: false,
       currentIndex: '',
