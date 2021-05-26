@@ -13,10 +13,10 @@
                 {{ damage.isRepaired == true ? 'Repair' : 'Replace' }}
               </q-badge>
             </div>
-            <div class="text-bold  text-capitalize q-pt-xs">
+            <div class="text-bold text-capitalize q-pt-xs">
               {{ damage.name }}
             </div>
-            <div class="q-pt-xs q-mr-sm ">
+            <div class="q-pt-xs q-mr-sm">
               <q-icon
                 name="create"
                 color="primary"
@@ -32,24 +32,20 @@
             <p>{{ damage.damageDesc }}</p>
           </div>
           <div class="q-my-sm">
-            <div class="row justify-between  q-my-sm">
-              <div class="heading-light ">
-                Quantity
-              </div>
+            <div class="row justify-between q-my-sm">
+              <div class="heading-light">Quantity</div>
               <div class="q-mr-sm">
                 {{ damage.quantity }}
               </div>
             </div>
-            <div class="row justify-between  q-my-sm">
-              <div class="heading-light ">
-                Serial Number
-              </div>
+            <div class="row justify-between q-my-sm">
+              <div class="heading-light">Serial Number</div>
               <div class="q-mr-sm">
                 {{ damage.serialNumber }}
               </div>
             </div>
-            <div class="row   justify-between q-my-sm">
-              <div class="heading-light  ">Purchase Date</div>
+            <div class="row justify-between q-my-sm">
+              <div class="heading-light">Purchase Date</div>
               <div class="q-mr-sm">
                 {{ damage.purchaseDate | moment('MM/DD/YYYY') }}
               </div>
@@ -57,20 +53,18 @@
           </div>
           <q-separator />
           <div class="row">
-            <div class="heading-light">
-              Purchase Price
-            </div>
+            <div class="heading-light">Purchase Price</div>
             <div class="q-ml-auto">
-              <span class="heading-light ">$</span> {{ damage.purchasePrice }}
+              <span class="heading-light">$</span> {{ damage.purchasePrice }}
             </div>
           </div>
-          <div class=" row ">
+          <div class="row">
             <div class="heading-light">
               {{ damage.replaceCost == null ? 'Repair' : 'Replace' }} Cost
             </div>
 
             <div class="q-ml-auto">
-              <span class="heading-light ">$</span>
+              <span class="heading-light">$</span>
               {{
                 damage.replaceCost == null
                   ? damage.repairCost
@@ -80,7 +74,7 @@
           </div>
         </q-card>
       </div>
-      <div v-else class=" full-width text-center q-mt-xl heading-light">
+      <div v-else class="full-width text-center q-mt-xl heading-light">
         You have not added any Damage property yet!
       </div>
     </div>
@@ -155,7 +149,7 @@
               <div class="q-ml-sm q-mt-sm">Description of Items</div>
               <div class="q-ma-sm">
                 <textarea
-                  class="required full-width "
+                  class="required full-width"
                   v-model="lossInfo.PPDamageItemDescription"
                   label="Description of Item"
                   rows="3"
@@ -219,7 +213,7 @@
                 </div>
               </div>
               <div
-                class="row justify-between q-my-sm "
+                class="row justify-between q-my-sm"
                 v-if="lossInfo.repairReplaceRadio == 'Replace'"
               >
                 <div class="q-mt-sm q-ml-sm">Replace Cost</div>

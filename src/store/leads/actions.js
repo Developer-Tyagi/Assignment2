@@ -81,7 +81,7 @@ export async function addLeadToArchiveList({ commit, dispatch }, leadId) {
   }
 }
 
-export async function addLeadRemote({ commit }, payload) {
+export async function addLeadRemote({ commit, dispatch }, payload) {
   try {
     const { data } = await request.post(
       '/leads',

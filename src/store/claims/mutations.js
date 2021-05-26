@@ -1,5 +1,19 @@
-export function setClaims(state, claims) {
-  state.claims = claims;
+import localDB, { getCollection } from '@services/dexie';
+
+export async function setClaims(state, claimsData) {
+  const claimsCollection = await getCollection('claims');
+  const claims = claimsData.map(claim => ({
+    ...claim
+  }));
+  state.carriers = claims;
+  if ((await claimsCollection.count()) > 0) {
+    await claimsCollection.delete([]);
+  }
+  await localDB.claims.bulkAdd(claims);
+}
+
+export async function setOfflineClaims(state) {
+  state.claims = await getCollection('claims').toArray();
 }
 
 export function setMortgage(state, mortgage) {
@@ -7,6 +21,7 @@ export function setMortgage(state, mortgage) {
     ...mortgage.attributes
   };
 }
+
 export function setClaimVendors(state, vendorLists) {
   state.vendorLists = {
     ...vendorLists.attributes

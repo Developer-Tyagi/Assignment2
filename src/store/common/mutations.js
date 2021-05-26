@@ -4,13 +4,24 @@ export function setLoading(state, value) {
   state.showLoading = value;
 }
 
-export function setClientTypes(state, types) {
-  state.clientTypes = types.map(type => ({
-    name: type.attributes.value,
-    machineValue: type.attributes.machineValue,
-    id: type.id
+export async function setClientTypes(state, typesData) {
+  const clientTypesCollection = await getCollection('clientTypes');
+  const types = typesData.map(types => ({
+    name: types.attributes.value,
+    id: types.id,
+    machineValue: types.attributes.machineValue
   }));
+  state.clientTypes = types;
+  if ((await clientTypesCollection.count()) > 0) {
+    await clientTypesCollection.delete([]);
+  }
+  await localDB.clientTypes.bulkAdd(types);
 }
+
+export async function setOfflineClientTypes(state) {
+  state.clientTypes = await getCollection('clientTypes').toArray();
+}
+
 export function setUserRoles(state, userRoles) {
   state.userRoles = userRoles.map(type => ({
     name: type.attributes.name,
@@ -79,14 +90,24 @@ export async function setOfflineLossCauses(state) {
   state.lossCauses = await getCollection('lossCauses').toArray();
 }
 
-export function setRoles(state, roles) {
-  state.roleTypes = roles.map(type => ({
+export async function setRoles(state, roles) {
+  const rolesCollection = await getCollection('roles');
+  const roleTypes = roles.map(type => ({
     name: type.attributes.value,
     machineValue: type.attributes.machineValue,
     id: type.id,
     permission: type.attributes.permissions,
     isPaid: type.attributes.isPaid
   }));
+  state.roleTypes = roleTypes;
+  if ((await rolesCollection.count()) > 0) {
+    await rolesCollection.delete([]);
+  }
+  await localDB.roles.bulkAdd(roleTypes);
+}
+
+export async function setOfflineRoles(state) {
+  state.roleTypes = await getCollection('roles').toArray();
 }
 export function setPermissions(state, permission) {
   state.permissions = permission.map(type => ({

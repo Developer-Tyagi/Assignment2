@@ -269,9 +269,9 @@ export default {
         attributes: lead
       };
       this.setSelectedLead(payload);
-
       this.$router.push('/add-client');
     },
+
     addLead() {
       this.$router.push('/add-lead');
     },

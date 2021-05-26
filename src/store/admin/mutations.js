@@ -1,3 +1,5 @@
+import localDB, { getCollection } from '@services/dexie';
+
 export function setActionOverDues(state, actionOverDues) {
   state.actionOverDues = actionOverDues.map(actionOverDues => ({
     ...actionOverDues.attributes,
@@ -37,9 +39,19 @@ export function setAllWorkFlow(state, allActions) {
   }));
 }
 
-export function setOfficeTaskActions(state, actions) {
-  state.officeTaskActions = actions.map(action => ({
+export async function setOfficeTaskActions(state, actionsData) {
+  const officeTaskActionsCollection = await getCollection('officeTasks');
+  const officeTaskActions = actionsData.map(action => ({
     id: action.id,
     ...action.attributes
   }));
+  state.officeTaskActions = officeTaskActions;
+  if ((await officeTaskActionsCollection.count()) > 0) {
+    await officeTaskActionsCollection.delete([]);
+  }
+  await localDB.officeTasks.bulkAdd(officeTaskActions);
+}
+
+export async function setOfflineOfficeTaskActions(state) {
+  state.officeTaskActions = await getCollection('officeTasks').toArray();
 }

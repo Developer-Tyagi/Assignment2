@@ -1,33 +1,65 @@
 import request from '@api';
 import { buildApiData } from '@utils/api';
+import localDB, { getCollection } from '@services/dexie';
+import { makeId } from '../leads/actions';
 
-export async function getMortgages({ commit, dispatch }, params) {
-  dispatch('setLoading', true);
-  try {
-    const { data } = await request.get('/mortgages', params);
-    commit('setMortgages', data);
+export async function getMortgages(
+  {
+    rootState: {
+      common: { isOnline }
+    },
+    commit,
+    dispatch
+  },
+  params
+) {
+  if (isOnline) {
+    dispatch('setLoading', true);
+    try {
+      const { data } = await request.get('/mortgages', params);
+      commit('setMortgages', data);
+      dispatch('setLoading', false);
+    } catch (e) {
+      console.log(e);
+      dispatch('setLoading', false);
+      dispatch('setNotification', {
+        type: 'negative',
+        message: e.response[0].title
+      });
+    }
+  } else {
+    commit('setOfflineMortgages', params);
     dispatch('setLoading', false);
-  } catch (e) {
-    console.log(e);
-    dispatch('setLoading', false);
-    dispatch('setNotification', {
-      type: 'negative',
-      message: e.response[0].title
-    });
   }
 }
-export async function addClaimMortgage({ dispatch, state }, payload) {
+
+export async function addClaimMortgage(
+  {
+    rootState: {
+      common: { isOnline }
+    },
+    dispatch
+  },
+  payload
+) {
   dispatch('setLoading', true);
+  if (isOnline) {
+    return await dispatch('addMortgageRemote', payload);
+  } else {
+    return await dispatch('addMortgageLocal', payload);
+  }
+}
+
+export async function addMortgageRemote({ commit, dispatch }, payload) {
   try {
     const { data } = await request.post(
       '/mortgages',
       buildApiData('mortgages', payload)
     );
-    // commit('setSelectedMortgage');
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'positive',
-      message: 'Mortgage added Successfully!'
+      message: 'Mortgages Created'
     });
     return data;
   } catch (e) {
@@ -35,9 +67,23 @@ export async function addClaimMortgage({ dispatch, state }, payload) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: 'Mortgage not added, please try again !'
+      message: e.response[0].detail
     });
     return false;
+  }
+}
+
+export async function addMortgageLocal({ dispatch }, payload) {
+  try {
+    let mortgage = { ...payload, offline: true, id: makeId() };
+    await localDB.mortgages.add(mortgage);
+    dispatch('setNotification', {
+      type: 'warning',
+      message: 'Mortgage created in the local database'
+    });
+    return mortgage;
+  } catch (e) {
+    console.log(e);
   }
 }
 

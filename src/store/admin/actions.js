@@ -91,30 +91,6 @@ export async function addWorkflowAction({ dispatch, state }, payload) {
   }
 }
 
-export async function addMultipleTaskToClaim({ dispatch, state }, payload) {
-  dispatch('setLoading', true);
-  try {
-    const { data } = await request.post(
-      `claims/${payload.id}/batch-tasks`,
-      buildApiData('claimtask', { tasks: payload.tasks })
-    );
-    dispatch('setLoading', false);
-    dispatch('setNotification', {
-      type: 'positive',
-      message: 'Office tasks  added !'
-    });
-    return true;
-  } catch (e) {
-    console.log(e);
-    dispatch('setLoading', false);
-    dispatch('setNotification', {
-      type: 'negative',
-      message: e.response[0].title
-    });
-    return false;
-  }
-}
-
 export async function getWorkflowAction({ commit, dispatch }) {
   dispatch('setLoading', true);
   try {
@@ -132,18 +108,29 @@ export async function getWorkflowAction({ commit, dispatch }) {
   }
 }
 
-export async function getOfficeTaskActions({ commit, dispatch }) {
-  dispatch('setLoading', true);
-  try {
-    const { data } = await request.get(`/workflows/claim_new_claim/actions`);
-    commit('setOfficeTaskActions', data);
+export async function getOfficeTaskActions({
+  rootState: {
+    common: { isOnline }
+  },
+  commit,
+  dispatch
+}) {
+  if (isOnline) {
+    dispatch('setLoading', true);
+    try {
+      const { data } = await request.get(`/workflows/claim_new_claim/actions`);
+      commit('setOfficeTaskActions', data);
+      dispatch('setLoading', false);
+    } catch (e) {
+      console.log(e);
+      dispatch('setLoading', false);
+      dispatch('setNotification', {
+        type: 'negative',
+        message: e.response[0].title
+      });
+    }
+  } else {
+    commit('setOfflineOfficeTaskActions');
     dispatch('setLoading', false);
-  } catch (e) {
-    console.log(e);
-    dispatch('setLoading', false);
-    dispatch('setNotification', {
-      type: 'negative',
-      message: e.response[0].title
-    });
   }
 }

@@ -376,7 +376,7 @@ export default {
         if (!this.isEdit) {
           const response = await this.addVendor(this.vendor);
           this.getVendors();
-          if (response) {
+          if (response.id) {
             this.vendor.id = response.id;
             this.$emit('onCloseAddVendor', this.vendor);
             this.$emit('closeDialog', true);

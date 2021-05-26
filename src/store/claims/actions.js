@@ -91,19 +91,33 @@ export async function editPersonnel({ dispatch, state }, payload) {
 }
 
 //API for Getting All Claims
-export async function getClaims({ commit, dispatch }, params) {
+export async function getClaims(
+  {
+    rootState: {
+      common: { isOnline }
+    },
+    commit,
+    dispatch
+  },
+  params
+) {
   dispatch('setLoading', true);
-  try {
-    const { data } = await request.get('/claims', params);
-    commit('setClaims', data);
+  if (isOnline) {
+    try {
+      const { data } = await request.get('/claims', params);
+      commit('setClaims', data);
+      dispatch('setLoading', false);
+    } catch (e) {
+      console.log(e);
+      dispatch('setLoading', false);
+      dispatch('setNotification', {
+        type: 'negative',
+        message: e.response[0].title
+      });
+    }
+  } else {
+    commit('setOfflineClaims', params);
     dispatch('setLoading', false);
-  } catch (e) {
-    console.log(e);
-    dispatch('setLoading', false);
-    dispatch('setNotification', {
-      type: 'negative',
-      message: e.response[0].title
-    });
   }
 }
 
