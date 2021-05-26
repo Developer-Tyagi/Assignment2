@@ -297,30 +297,25 @@ export async function storeIdsToLocalStorage(type, old, current) {
   LocalStorage.set(type, oldItems);
 }
 
-export async function syncLocalDataBase({ dispatch, state }) {
-  await dispatch('syncCarriers');
-  await dispatch('syncVendors');
-  await dispatch('syncMortgages');
-  await dispatch('syncEstimators');
-  await dispatch('syncLeads');
-  await dispatch('syncClients');
-  await dispatch('syncClaims');
-  await dispatch('syncOfficeTasks');
-}
-
 export async function syncCarriers({ dispatch }) {
   let offlineCarriers = await getCollection('carriers').toArray();
   offlineCarriers = offlineCarriers.filter(carrier => carrier.offline);
   if (offlineCarriers.length > 0) {
-    offlineCarriers.forEach(async ({ id, offline, ...carrier }) => {
-      const response = await dispatch('addCarrierRemote', carrier);
-      if (response || response.id) {
-        await storeIdsToLocalStorage('carrier', id, response.id);
-        localDB.carriers
-          .where('id')
-          .equals(id)
-          .modify({ id: response.id, offline: false });
-      }
+    const createCarriers = offlineCarriers.map(({ id, offline, ...carrier }) =>
+      dispatch('addCarrierRemote', carrier)
+    );
+
+    return Promise.allSettled(createCarriers).then(carriers => {
+      carriers.forEach(({ status, value }) => {
+        if (status === 'fullfilled') {
+          storeIdsToLocalStorage('carrier', id, response.id);
+          localDB.carriers
+            .where('id')
+            .equals(id)
+            .modify({ id: response.id, offline: false });
+        }
+      });
+      return true;
     });
   }
 }
@@ -612,4 +607,15 @@ export async function getTemplateToken({ commit, dispatch }) {
       message: e.response[0].title
     });
   }
+}
+
+export async function syncLocalDataBase({ dispatch, state }) {
+  await dispatch('syncCarriers');
+  await dispatch('syncVendors');
+  await dispatch('syncMortgages');
+  await dispatch('syncEstimators');
+  await dispatch('syncLeads');
+  await dispatch('syncClients');
+  await dispatch('syncClaims');
+  await dispatch('syncOfficeTasks');
 }
