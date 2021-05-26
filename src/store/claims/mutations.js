@@ -5,7 +5,7 @@ export async function setClaims(state, claimsData) {
   const claims = claimsData.map(claim => ({
     ...claim
   }));
-  state.carriers = claims;
+  state.claims = claims;
   if ((await claimsCollection.count()) > 0) {
     await claimsCollection.delete([]);
   }
