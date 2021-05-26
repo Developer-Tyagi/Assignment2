@@ -14,7 +14,8 @@
     <div>
       <q-card class="q-pa-md q-ma-md">
         <div class="text-bold">
-          {{ estimator.estimator.fname }} {{ estimator.estimator.lname }}
+          {{ estimator.estimator.fname ? estimator.estimator.fname : '-' }}
+          {{ estimator.estimator.lname ? estimator.estimator.lname : '-' }}
         </div>
 
         <div class="row q-mt-sm">
@@ -23,7 +24,9 @@
             class="q-ml-lg col clickLink"
             @click="onEmailClick(estimator.estimator.email, $event)"
           >
-            {{ estimator.estimator.email }}</span
+            {{
+              estimator.estimator.email ? estimator.estimator.email : '-'
+            }}</span
           >
         </div>
         <div class="row q-mt-sm" v-if="estimator.estimator.phoneNumber">
@@ -34,8 +37,16 @@
               onPhoneNumberClick(estimator.estimator.phoneNumber[0], $event)
             "
           >
-            {{ estimator.estimator.phoneNumber[0].type }}
-            {{ estimator.estimator.phoneNumber[0].number }}</span
+            {{
+              estimator.estimator.phoneNumber[0].type
+                ? estimator.estimator.phoneNumber[0].type
+                : '-'
+            }}
+            {{
+              estimator.estimator.phoneNumber[0].number
+                ? estimator.estimator.phoneNumber[0].number
+                : '-'
+            }}</span
           >
         </div>
       </q-card>
@@ -56,7 +67,10 @@
         />
         <div class="q-ma-md mobile-container-page listing-height">
           <q-form>
-            <EstimatingInfo :estimatingInfo="estimatorInfo" />
+            <EstimatingInfo
+              :estimatingInfo="estimatorInfo"
+              :estimatorAssignToggle="false"
+            />
           </q-form>
         </div>
         <q-btn
@@ -87,7 +101,7 @@ export default {
     return {
       addEstimatorDialog: false,
       estimatorInfo: {
-        doesAnEstimatorNeedToBeAssignedToggle: false,
+        doesAnEstimatorNeedToBeAssignedToggle: true,
         estimatorID: '',
         scopeTimeNeeded: '',
         notesToTheEstimator: ''
