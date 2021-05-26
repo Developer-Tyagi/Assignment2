@@ -135,8 +135,8 @@ export default {
               'pushNotificationActionPerformed',
               PushNotificationActionPerformed => {
                 if (
-                  PushNotificationActionPerformed.notification.data.action ==
-                  'uploadEstimateDoc'
+                  PushNotificationActionPerformed.notification.data.action ===
+                  constants.Notification.UPLOAD_ESTIMATOR
                 ) {
                   this.setSelectedClaimId(
                     PushNotificationActionPerformed.notification.data.claimID
