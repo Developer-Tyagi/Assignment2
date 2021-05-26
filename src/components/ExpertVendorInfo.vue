@@ -205,7 +205,7 @@
             size="sm"
             label="Add More"
             color="primary"
-            type="submit"
+            @click="addAnotherVendor(expertVendorInfo.isAlreadyHiredVendor)"
           />
         </div>
         <div>
