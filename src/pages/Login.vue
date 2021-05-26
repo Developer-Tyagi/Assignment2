@@ -99,7 +99,7 @@
   </q-page>
 </template>
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapMutations } from 'vuex';
 import { getToken, getCurrentUser } from '@utils/auth';
 import {
   Capacitor,
@@ -108,7 +108,7 @@ import {
   PushNotificationToken,
   PushNotificationActionPerformed
 } from '@capacitor/core';
-import { Mutation, Screen } from 'quasar';
+import { Screen } from 'quasar';
 
 const isPushNotificationsAvailable = Capacitor.isPluginAvailable(
   'PushNotifications'

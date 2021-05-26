@@ -60,7 +60,8 @@
   </q-page>
 </template>
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapMutations } from 'vuex';
+
 import {
   Capacitor,
   Plugins,
@@ -87,6 +88,7 @@ export default {
   },
   methods: {
     ...mapActions(['verifyOobCode', 'setPassword', 'userLogin', 'getUserInfo']),
+    ...mapMutations('setSelectedClaimId'),
 
     checkConfirmPassword() {
       if (this.password.password === this.password.confirm) {
