@@ -427,6 +427,7 @@
             <InsuranceInfo
               :insuranceDetails="insuranceDetails"
               :policyInfo="true"
+              :showAppraisal="true"
             />
           </q-form>
 
