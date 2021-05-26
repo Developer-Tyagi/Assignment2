@@ -88,21 +88,30 @@ export async function getSingleClientProperty({ commit, dispatch }, id) {
   }
 }
 
-export async function getEstimators({ commit, dispatch }) {
+export async function getEstimators({
+  rootState: {
+    common: { isOnline }
+  },
+  commit,
+  dispatch
+}) {
   dispatch('setLoading', true);
-  try {
-    const { data } = await request.get('/users');
-
-    commit('setEstimators', data);
-
+  if (isOnline) {
+    try {
+      const { data } = await request.get('/users');
+      commit('setEstimators', data);
+      dispatch('setLoading', false);
+    } catch (e) {
+      console.log(e);
+      dispatch('setLoading', false);
+      dispatch('setNotification', {
+        type: 'negative',
+        message: e.response[0].title
+      });
+    }
+  } else {
+    commit('setOfflineEstimators');
     dispatch('setLoading', false);
-  } catch (e) {
-    console.log(e);
-    dispatch('setLoading', false);
-    dispatch('setNotification', {
-      type: 'negative',
-      message: e.response[0].title
-    });
   }
 }
 
@@ -117,10 +126,9 @@ export async function addClient(
 ) {
   dispatch('setLoading', true);
   if (isOnline) {
-    const data = await dispatch('addClientRemote', payload);
-    return data;
+    return await dispatch('addClientRemote', payload);
   } else {
-    dispatch('addClientLocal', payload);
+    return await dispatch('addClientLocal', payload);
   }
 }
 
@@ -139,7 +147,12 @@ export async function addClientRemote({ commit }, payload) {
 
 export async function addClientLocal({ dispatch }, payload) {
   try {
-    let client = { ...payload, offline: true, id: makeId() };
+    let client = {
+      ...payload,
+      offline: true,
+      id: makeId(),
+      propertyID: makeId()
+    };
     await localDB.clients.add(client);
     return client;
   } catch (e) {
@@ -159,10 +172,9 @@ export async function addMultipleTaskToClaim(
 ) {
   dispatch('setLoading', true);
   if (isOnline) {
-    const data = await dispatch('addClientRemote', payload);
-    return data;
+    return await dispatch('addClientRemote', payload);
   } else {
-    dispatch('addClientLocal', payload);
+    return await dispatch('addClientLocal', payload);
   }
 }
 
@@ -299,10 +311,10 @@ export async function addClaim(
 ) {
   dispatch('setLoading', true);
   if (isOnline) {
-    const data = await dispatch('addClaimRemote', payload);
-    return data;
+    return await dispatch('addClaimRemote', payload);
+    return;
   } else {
-    dispatch('addClaimLocal', payload);
+    return await dispatch('addClaimLocal', payload);
   }
 }
 

@@ -30,11 +30,21 @@ export function setSelectedClientProperty(state, client) {
   state.setClientProperty = client;
 }
 
-export function setEstimators(state, estimators) {
-  state.estimators = estimators.map(estimator => ({
+export async function setEstimators(state, estimatorsData) {
+  const estimatorsCollection = await getCollection('estimators');
+  const estimators = estimatorsData.map(estimator => ({
     ...estimator.attributes,
     id: estimator.id
   }));
+  state.estimators = estimators;
+  if ((await estimatorsCollection.count()) > 0) {
+    await estimatorsCollection.delete([]);
+  }
+  await localDB.estimators.bulkAdd(estimators);
+}
+
+export async function setOfflineEstimators(state) {
+  state.estimators = await getCollection('estimators').toArray();
 }
 
 export function setSelectedClientId(state, id) {

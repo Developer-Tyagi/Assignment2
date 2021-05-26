@@ -1,19 +1,35 @@
 import request from '@api';
 import { buildApiData } from '@utils/api';
+import localDB, { getCollection } from '@services/dexie';
+import { makeId } from '../leads/actions';
 
-export async function getMortgages({ commit, dispatch }, params) {
-  dispatch('setLoading', true);
-  try {
-    const { data } = await request.get('/mortgages', params);
-    commit('setMortgages', data);
+export async function getMortgages(
+  {
+    rootState: {
+      common: { isOnline }
+    },
+    commit,
+    dispatch
+  },
+  params
+) {
+  if (isOnline) {
+    dispatch('setLoading', true);
+    try {
+      const { data } = await request.get('/mortgages', params);
+      commit('setMortgages', data);
+      dispatch('setLoading', false);
+    } catch (e) {
+      console.log(e);
+      dispatch('setLoading', false);
+      dispatch('setNotification', {
+        type: 'negative',
+        message: e.response[0].title
+      });
+    }
+  } else {
+    commit('setOfflineMortgages', params);
     dispatch('setLoading', false);
-  } catch (e) {
-    console.log(e);
-    dispatch('setLoading', false);
-    dispatch('setNotification', {
-      type: 'negative',
-      message: e.response[0].title
-    });
   }
 }
 

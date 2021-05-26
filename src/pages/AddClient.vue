@@ -2004,10 +2004,13 @@ export default {
         delete payload.leadID;
       }
       const response = await this.addClient(payload);
+
       if (response && response.id) {
         const responseData = {
           id: response.id,
-          propertyId: response.attributes.propertyID
+          propertyId: response.attributes
+            ? response.attributes.propertyID
+            : response.propertyID
         };
         this.setPayloadForClaim(responseData);
       }
@@ -2080,7 +2083,6 @@ export default {
           property: {
             id: responseData.propertyId
           },
-
           claimReason: {
             ...this.lossInfo.reasonClaim
           },
