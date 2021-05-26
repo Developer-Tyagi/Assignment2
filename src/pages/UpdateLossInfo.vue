@@ -24,8 +24,6 @@
           />
           <q-card class="q-ma-sm q-pa-sm">
             <div class="mobile-container-page  listing-height">
-              <!-- {{ claim.policyInfo.effectiveDate }}989
-              {{ claim.policyInfo.expirationDate }} -->
               <q-form ref="lossInfoForm">
                 <LossInfo
                   :lossInfo="lossDetails"
