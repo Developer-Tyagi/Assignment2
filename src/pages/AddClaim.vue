@@ -41,7 +41,10 @@
             ref="insuranceInfo"
           >
             <div class="q-pa-sm form-card">
-              <InsuranceInfo :insuranceDetails="insuranceDetails" />
+              <InsuranceInfo
+                :insuranceDetails="insuranceDetails"
+                :showAppraisal="false"
+              />
             </div>
             <div class="row q-pt-md">
               <div class="q-ml-auto">
