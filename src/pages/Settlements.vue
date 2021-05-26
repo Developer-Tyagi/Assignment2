@@ -145,7 +145,7 @@
     >
       <q-card style="width: 350px; height: 160px">
         <q-card-section class="items-center">
-          <div class="q-pa-md heading-light">Enter Initial Offer</div>
+          <q-input class="q-pa-xs" dense label="Enter Initial Offer" />
         </q-card-section>
         <div class="row text-primary justify-end q-mt-lg">
           <div class="q-pa-md" @click="editInitialOffer = false">CANCEL</div>
