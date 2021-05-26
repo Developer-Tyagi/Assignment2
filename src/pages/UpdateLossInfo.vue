@@ -362,7 +362,7 @@ export default {
     }
   },
 
-  created() {
+  async created() {
     if (!this.selectedClaimId) {
       this.$router.push('/clients');
     }
@@ -371,7 +371,10 @@ export default {
     this.setSelectedClaimId(this.selectedClaimId);
     this.getPropertyTypes();
     this.getClaimReasons();
-    this.getSingleClaims(this.selectedClaimId);
+    await this.getSingleClaims(this.selectedClaimId).then(() => {
+      this.lossDetails.policyEffectiveDate = this.claim.policyInfo.effectiveDate;
+      this.lossDetails.policyExpireDate = this.claim.policyInfo.expirationDate;
+    });
     this.getLossCauses();
     this.getSeverityClaim();
     // this.lossDetails.policyEffectiveDate = date.formatDate(
@@ -384,9 +387,8 @@ export default {
     //   }),
     //   'MM/DD/YYYY'
     // );
-    console.log(this.claim.policyInfo.effectiveDate, 'uuuu');
-    this.lossDetails.policyEffectiveDate = this.claim.policyInfo.effectiveDate;
-    this.lossDetails.policyExpireDate = this.claim.policyInfo.expirationDate;
+    // this.lossDetails.policyEffectiveDate = this.claim.policyInfo.effectiveDate;
+    // this.lossDetails.policyExpireDate = this.claim.policyInfo.expirationDate;
   },
   methods: {
     ...mapActions([

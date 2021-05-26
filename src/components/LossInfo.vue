@@ -2,7 +2,6 @@
   <div class="bg-white full-width">
     <!-- Loss Info -->
     <q-card class="q-pa-sm">
-      {{ policyDate }}
       <q-select
         dense
         behavior="menu"
