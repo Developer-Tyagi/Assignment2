@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <div class="icon-top">
+    <div class="add-icon">
       <q-btn @click="addLogDialog = true" flat
         ><img src="~assets/add.svg" height="24" width="24"
       /></q-btn>

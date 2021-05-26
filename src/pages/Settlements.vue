@@ -1,13 +1,13 @@
 <template>
   <q-page>
     <div v-if="settlement.attributes">
-      <div class="icon-top">
+      <div class="add-icon">
         <q-btn
           @click="onClickAddButton"
           flat
           class="q-ml-auto"
           v-if="settlementShowDialog == false"
-          ><img src="~assets/addSettlement.svg" height="24" width="24"
+          ><img src="~assets/addSettlement.svg" height="24" width="20"
         /></q-btn>
       </div>
       <div class="mobile-container-page">
