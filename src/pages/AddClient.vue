@@ -742,7 +742,8 @@
                 class="row"
                 v-if="
                   lossInfo.isClientGoingToPreparePPIF &&
-                    lossInfo.isPAFillingOutToggle == false
+                    lossInfo.isPAFillingOutToggle == false &&
+                    lossInfo.isAdjustorFillOutLaterDate == false
                 "
               >
                 <div class="col-8 q-mx-none q-my-auto form-heading">

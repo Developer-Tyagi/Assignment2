@@ -82,19 +82,46 @@
         </q-select>
 
         <div>
-          <div
-            class="custom-select"
-            @click="
-              openVendorSelect(
-                item,
-                index,
-                expertVendorInfo.isAlreadyHiredVendor
-              )
-            "
+          <q-input
+            class="q-mr-md"
+            v-model="item.vendor.value"
+            style="color: transparent"
+            maxlength="0"
+            placeholder="Click add for choosing a vendor"
             v-if="!item.vendor.value"
+            lazy-rules
+            :rules="[
+              val =>
+                (val && val.length > 0) || 'Please fill the Vendor Industry'
+            ]"
           >
-            <div class="select-text">Click for choosing a vendor</div>
-          </div>
+            <q-icon
+              class="q-mt-md"
+              name="person_add"
+              size="sm"
+              @click="
+                openVendorSelect(
+                  item,
+                  index,
+                  expertVendorInfo.isAlreadyHiredVendor
+                )
+              "
+              v-if="!item.vendor.value"
+            />
+            <!-- <div
+              class="custom-select full-width bg-red"
+              @click="
+                openVendorSelect(
+                  item,
+                  index,
+                  expertVendorInfo.isAlreadyHiredVendor
+                )
+              "
+              v-if="!item.vendor.value"
+            >
+              <div class="select-text">Click for choosing a vendor</div>
+            </div> -->
+          </q-input>
           <q-card
             bordered
             v-if="item.vendor.value"
@@ -178,7 +205,7 @@
             size="sm"
             label="Add More"
             color="primary"
-            @click="addAnotherVendor(expertVendorInfo.isAlreadyHiredVendor)"
+            type="submit"
           />
         </div>
         <div>
@@ -374,18 +401,13 @@ export default {
     },
     item: {
       type: Object
+    },
+    expertVendorInfo: {
+      type: Object
     }
   },
   data() {
     return {
-      expertVendorInfo: {
-        isAlreadyHiredVendor: [{ industry: '', vendor: {} }],
-        isHiredByClaimguru: [{ industry: '', vendor: {} }],
-        anyOtherExpertHiredToggle: false,
-        vendorExpertHiredToggle: false,
-        notes: '',
-        internalNotes: ''
-      },
       industryValue: '',
       constants: constants,
       industryName: '',
