@@ -876,6 +876,10 @@ export default {
           id: this.selectedClaimId,
           data: { lossInfo: this.lossInfo }
         };
+        if (!this.lossInfo.estimatedLossAmt && !this.lossInfo.propertyValue) {
+          delete payload.data.lossInfo.estimatedLossAmt;
+          delete payload.data.lossInfo.propertyValue;
+        }
         await this.editClaimInfo(payload);
       }
       await this.getSingleClaimDetails(this.selectedClaimId);

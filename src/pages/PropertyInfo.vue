@@ -160,7 +160,10 @@
                 </div>
                 <div class="row q-ma-md">
                   <div class="col-4 heading-light">Date of Loss</div>
-                  <div>{{ claim.lossDate ? claim.lossDate : '-' }}</div>
+                  <div v-if="claim.lossDate">
+                    {{ claim.lossDate | moment('MM/DD/YYYY') }}
+                  </div>
+                  <div v-else>-</div>
                 </div>
                 <div class="row q-ma-md">
                   <div class="col-4 heading-light">Policy Number</div>

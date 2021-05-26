@@ -12,7 +12,7 @@
       ><img src="~assets/add.svg"
     /></q-btn>
     <div>
-      <div class="actions-div justify-between q-px-md">
+      <div class="actions-div justify-between q-px-md" v-if="depth.length > 1">
         <q-breadcrumbs class="text-primary" active-color="grey" gutter="none">
           <template v-slot:separator> </template>
           <div
@@ -29,6 +29,7 @@
         </q-breadcrumbs>
         <div>
           <q-icon
+            v-if="depth.length > 1"
             @click="onClickTopMenu"
             name="more_vert"
             size="sm"
@@ -50,7 +51,7 @@
               @click="onShareClick(index)"
               name="more_vert"
               size="sm"
-              class="q-ml-auto"
+              class="q-ml-auto "
             />
           </div>
           <div
@@ -206,7 +207,8 @@
               />
               <div class="form-heading q-ml-md">Share</div>
             </div>
-            <div class="column">
+
+            <div class="column" v-if="!isSystemGen">
               <q-btn
                 class="q-ml-md"
                 icon="delete"
@@ -456,6 +458,8 @@ export default {
 
   data() {
     return {
+      id: '',
+      isSystemGen: '',
       alert: false,
       uploadFileName: '',
       uploadFileDailog: false,
@@ -557,11 +561,19 @@ export default {
       this.allFolder = true;
     },
     async removeDocument() {
-      const id = this.allFolderId ? this.allFolderId : this.documentID;
+      if (this.allFolder) {
+        this.id = this.allFolderId;
+        this.deleteDirectory(this.id);
+        this.id = '';
+      } else {
+        this.id = this.documentID;
+        await this.deleteDocument(this.id);
+      }
 
       if (this.allFolder) {
-        this.deleteDirectory(id);
-        this.onBackButtonClick();
+        this.allFolder = false;
+        this.depth.pop();
+        this.currentPath = this.depth.length;
         const { data } = await request.get(
           `/documents?parent_id=${this.depth[this.depth.length - 1].id}`
         );
@@ -571,8 +583,6 @@ export default {
           type: document.attributes.mimeType,
           link: document.attributes.webViewLink
         }));
-      } else {
-        await this.deleteDocument(id);
       }
       const { data } = await request.get(
         `/documents?parent_id=${this.depth[this.depth.length - 1].id}`
@@ -588,8 +598,15 @@ export default {
       this.shareDialog = false;
       this.foldersAndFilesOptions = false;
       this.allFolder = false;
+      this.id = '';
     },
     onShareClick(index) {
+      if (
+        this.documents[index].properties &&
+        this.documents[index].properties.isSystemGen
+      ) {
+        this.isSystemGen = this.documents[index].properties.isSystemGen;
+      }
       this.foldersAndFilesOptions = true;
       this.documentID = this.documents[index].id;
     },
