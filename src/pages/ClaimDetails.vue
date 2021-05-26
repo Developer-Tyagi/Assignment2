@@ -48,6 +48,9 @@
           >
             Edit Current Phase
           </div>
+          <div class="q-pa-md heading-light" @click="onClickUploadDocument">
+            Upload Documents
+          </div>
         </q-card-section>
       </q-card>
     </q-dialog>
@@ -194,6 +197,7 @@ export default {
         { name: 'Files' },
         { name: 'Proof Of Loss' },
         { name: 'Notes' },
+        { name: 'Estimator Info' },
         { name: 'MatterPort' },
         { name: 'Time Tracking' },
         { name: 'Claim Ledger' }
@@ -238,7 +242,9 @@ export default {
         );
       });
     },
-
+    onClickUploadDocument() {
+      this.$router.push('/document-upload');
+    },
     setTypes(value) {
       const obj = this.phases.find(item => {
         return item.name === value;
@@ -320,6 +326,11 @@ export default {
         case 'Expert Vendor':
           this.$router.push(`/expert-vendor/${this.selectedClaimId}`);
           break;
+
+        case 'Estimator Info': {
+          this.$router.push(`/estimator-info/${this.selectedClaimId}`);
+          break;
+        }
         case 'Files':
           this.$router.push({
             path: `/claim-files/${this.selectedClaimId}`

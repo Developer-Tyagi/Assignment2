@@ -22,6 +22,7 @@ export default function() {
     claimSketch: [],
     additionalDocs: [],
     esxDocs: [],
-    proofOfLoss: {}
+    proofOfLoss: {},
+    estimator: {}
   };
 }

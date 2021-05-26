@@ -2,7 +2,7 @@
   <div class="bg-white full-width">
     <!-- Estimating  Info -->
     <q-card class="q-pa-sm">
-      <div class="row">
+      <div class="row" v-if="estimatorAssignToggle">
         <p class="form-heading q-my-auto">
           Does Estimator need to be assigned?
         </p>
@@ -267,6 +267,9 @@ export default {
   props: {
     estimatingInfo: {
       type: Object
+    },
+    estimatorAssignToggle: {
+      type: Boolean
     }
   },
   data() {

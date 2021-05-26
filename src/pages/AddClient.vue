@@ -1043,7 +1043,10 @@
             ref="estimatingInfo"
           >
             <div class="q-pa-md form-card">
-              <EstimatingInfo :estimatingInfo="estimatingInfo" />
+              <EstimatingInfo
+                :estimatingInfo="estimatingInfo"
+                :estimatorAssignToggle="true"
+              />
             </div>
             <div class="row q-pt-md">
               <div>

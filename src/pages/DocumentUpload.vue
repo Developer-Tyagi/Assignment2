@@ -971,6 +971,7 @@
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { Plugins, CameraResultType, CameraDirection } from '@capacitor/core';
+import { getCurrentUser } from '@utils/auth';
 // import { jsPDF } from 'jspdf';
 const { Camera } = Plugins;
 
@@ -1131,7 +1132,11 @@ export default {
           delete payload.data.propertyValue;
         }
         await this.completeEstimate(payload);
-        this.$router.push('/claim-summary');
+        if (this.userRole == 'estimator') {
+          this.$router.push('/claim-summary');
+        } else {
+          this.$router.push('/claim-details');
+        }
       }
     },
     async uploadPdfToServer(value) {
@@ -1458,6 +1463,7 @@ export default {
   },
 
   async created() {
+    this.userRole = getCurrentUser().attributes.roles[0];
     this.getClaimEstimateDoc(this.selectedClaimId);
     this.getClaimPhoto(this.selectedClaimId);
     this.getClaimSketch(this.selectedClaimId);

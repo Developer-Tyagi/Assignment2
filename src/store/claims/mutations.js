@@ -126,3 +126,6 @@ export function setClaimStatistics(state, claimStatic) {
 export function setProofOfLoss(state, proofOfLoss) {
   state.proofOfLoss = { ...proofOfLoss.attributes };
 }
+export function setEstimator(state, estimator) {
+  state.estimator = { ...estimator.attributes };
+}
