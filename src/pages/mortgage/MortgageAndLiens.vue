@@ -127,7 +127,7 @@
       </div>
       <div v-else class="full-height full-width">
         <div class="absolute-center">
-          <div style="color: #666666; width: 110%;margin-top:120px">
+          <div style="color: #666666; width: 110%; margin-top: 120px">
             You haven't added a Mortgage yet.
           </div>
           <img
@@ -145,7 +145,6 @@
     <!-- Mortgage Dialog -->
     <q-dialog
       v-model="mortgageInfoDialog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
@@ -177,7 +176,6 @@
     <!-- Edit Mortgage Dialog  -->
     <q-dialog
       v-model="editMortgageInfoDialog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"

@@ -3,7 +3,6 @@
     <!--  Edit Note Dialog -->
     <q-dialog
       v-model="editNoteDialogBox"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
@@ -31,7 +30,6 @@
     <!-- Add  Note Dialog -->
     <q-dialog
       v-model="addNoteDialog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
@@ -109,7 +107,7 @@
               <q-item-section>
                 <div class="client-list-item">
                   <div class="row">
-                    <div class=" heading-light  col-10">
+                    <div class="heading-light col-10">
                       {{
                         dateWithTime(claimNotes.attributes.notes[index].created)
                       }}

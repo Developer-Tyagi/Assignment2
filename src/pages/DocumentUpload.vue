@@ -119,7 +119,7 @@
             :hidden="step != 1"
             ref="photos"
           >
-            <q-card class="q-pa-md  q-mb-md ">
+            <q-card class="q-pa-md q-mb-md">
               <div class="row">
                 <p class="q-mx-none q-my-auto">
                   <label>
@@ -135,16 +135,14 @@
             </q-card>
             <div v-if="!isGenerateReport">
               <q-card class="q-pa-md form-card">
-                <div class="stepper-heading q-mb-md">
-                  Please Upload Photos
-                </div>
+                <div class="stepper-heading q-mb-md">Please Upload Photos</div>
                 <div v-for="(item, index) in claimDocumentArray">
                   <div
                     v-for="(doc, index) in claimPhoto.documents"
                     class="row-div"
                   >
                     <div class="vertical-center q-px-sm q-py-sm">
-                      <div class="row q-ml-none ">
+                      <div class="row q-ml-none">
                         <q-icon
                           :name="iconType(doc.mimeType)"
                           size="sm"
@@ -183,9 +181,7 @@
                         style="width: 50px"
                         @click="onClickUploadButton('upload1')"
                       />
-                      <div class="form-heading q-ml-md">
-                        Upload
-                      </div>
+                      <div class="form-heading q-ml-md">Upload</div>
                     </div>
                   </div>
                   <div>
@@ -230,7 +226,7 @@
             :hidden="step != 2"
             ref="sketches"
           >
-            <span class="stepper-heading ">Please Upload Sketches</span>
+            <span class="stepper-heading">Please Upload Sketches</span>
             <q-card class="q-pa-md form-card">
               <div v-for="(item, index) in claimSketches">
                 <div
@@ -276,9 +272,7 @@
                       style="width: 50px"
                       @click="onClickUploadButton('upload2')"
                     />
-                    <div class="form-heading q-ml-md">
-                      Upload
-                    </div>
+                    <div class="form-heading q-ml-md">Upload</div>
                   </div>
                 </div>
                 <div>
@@ -420,8 +414,8 @@
                   v-for="(doc, index) in additionalDocs.documents"
                   class="row-div"
                 >
-                  <div class="vertical-center q-px-xs q-py-sm ">
-                    <div class="row ">
+                  <div class="vertical-center q-px-xs q-py-sm">
+                    <div class="row">
                       <q-icon
                         :name="iconType(doc.mimeType)"
                         size="sm"
@@ -459,9 +453,7 @@
                       style="width: 50px"
                       @click="onClickUploadButton('upload4')"
                     />
-                    <div class="form-heading q-ml-md">
-                      Upload
-                    </div>
+                    <div class="form-heading q-ml-md">Upload</div>
                   </div>
                 </div>
                 <div>
@@ -562,7 +554,7 @@
 
     <!-- Add Photo Dialog  -->
 
-    <q-dialog v-model="addFileDialog" persistent>
+    <q-dialog v-model="addFileDialog">
       <q-card>
         <q-card-section class="row items-center">
           <q-avatar
@@ -592,7 +584,7 @@
 
     <!-- Add EstimateDialog Dialog  -->
 
-    <q-dialog v-model="addEstimateDialog" persistent>
+    <q-dialog v-model="addEstimateDialog">
       <q-card>
         <q-card-section class="row items-center">
           <q-avatar
@@ -627,7 +619,7 @@
 
     <!--    Add Sketches Dialog -->
 
-    <q-dialog v-model="addSketchesDialog" persistent>
+    <q-dialog v-model="addSketchesDialog">
       <q-card>
         <q-card-section class="row items-center">
           <q-avatar
@@ -662,7 +654,7 @@
 
     <!-- Add Additional Document Dialog  -->
 
-    <q-dialog v-model="additionalDocsDialog" persistent>
+    <q-dialog v-model="additionalDocsDialog">
       <q-card>
         <q-card-section class="row items-center">
           <q-avatar
@@ -696,7 +688,7 @@
     </q-dialog>
     <!-- Add ESX  Document Dialog  -->
 
-    <q-dialog v-model="esxDialog" persistent>
+    <q-dialog v-model="esxDialog">
       <q-card>
         <q-card-section class="row items-center">
           <q-avatar
@@ -731,7 +723,7 @@
 
     <!-- Upload1 File Dialog under photos  -->
 
-    <q-dialog v-model="upload1Dialog" persistent>
+    <q-dialog v-model="upload1Dialog">
       <q-card>
         <q-card-section class="row items-center">
           <q-avatar
@@ -765,7 +757,7 @@
     </q-dialog>
     <!-- uploadEstimateDialog File Dialog -->
 
-    <q-dialog v-model="uploadEstimateDialog" persistent>
+    <q-dialog v-model="uploadEstimateDialog">
       <q-card>
         <q-card-section class="row items-center">
           <q-avatar
@@ -799,7 +791,7 @@
     </q-dialog>
     <!-- Upload1 File Dialog under photos  -->
 
-    <q-dialog v-model="upload1Dialog" persistent>
+    <q-dialog v-model="upload1Dialog">
       <q-card>
         <q-card-section class="row items-center">
           <q-avatar
@@ -834,7 +826,7 @@
 
     <!-- Upload 2 File Dialog under photos  -->
 
-    <q-dialog v-model="upload2Dialog" persistent>
+    <q-dialog v-model="upload2Dialog">
       <q-card>
         <q-card-section class="row items-center">
           <q-avatar
@@ -869,7 +861,7 @@
 
     <!-- Upload3 File Dialog under photos  -->
 
-    <q-dialog v-model="upload3Dialog" persistent>
+    <q-dialog v-model="upload3Dialog">
       <q-card>
         <q-card-section class="row items-center">
           <q-avatar
@@ -904,7 +896,7 @@
 
     <!-- Upload 4 File Dialog under photos  -->
 
-    <q-dialog v-model="upload4Dialog" persistent>
+    <q-dialog v-model="upload4Dialog">
       <q-card>
         <q-card-section class="row items-center">
           <q-avatar

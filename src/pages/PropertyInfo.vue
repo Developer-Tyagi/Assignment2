@@ -41,7 +41,7 @@
         + Add Another Property</q-card
       >
       <!-- //pointer -->
-      <div class="q-ma-md q-pa-xs ">
+      <div class="q-ma-md q-pa-xs">
         <div v-if="setClientProperty.length">
           <q-card
             class="q-my-sm"
@@ -63,7 +63,7 @@
                     style="height: auto; max-width: 120px"
                   ></q-img>
                 </div>
-                <div class=" col-5 q-pa-sm">
+                <div class="col-5 q-pa-sm">
                   <div class="heading-light">Property Name</div>
                   <div>
                     {{
@@ -124,7 +124,7 @@
                     size="sm"
                     name="delete"
                     color="primary"
-                    class=" q-mt-xs"
+                    class="q-mt-xs"
                     @click="deletePropertyAddress(i - 1)"
                   />
                 </div>
@@ -136,9 +136,7 @@
                 :key="claim.id"
               >
                 <div class="row q-mx-md">
-                  <div class="heading-light col-4 q-mx-xs">
-                    Claim Number:
-                  </div>
+                  <div class="heading-light col-4 q-mx-xs">Claim Number:</div>
                   <div class="row justify-between q-ml-sm col-7">
                     <div @click="onClickClaimNumber(claim)" class="click-link">
                       {{ claim.number ? claim.number : '-' }}
@@ -219,7 +217,6 @@
     <!-- This Dialog Box is for adding a new property  -->
     <q-dialog
       v-model="addNewPropertyDialog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"

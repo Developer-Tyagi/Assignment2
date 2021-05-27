@@ -12,7 +12,6 @@
       <ClaimDetail />
       <q-dialog
         v-model="lossInfoDialog"
-        persistent
         :maximized="true"
         transition-show="slide-up"
         transition-hide="slide-down"
@@ -23,7 +22,7 @@
             :dialogName="'Loss Info'"
           />
           <q-card class="q-ma-sm q-pa-sm">
-            <div class=" mobile-container-page">
+            <div class="mobile-container-page">
               <q-form ref="lossInfoForm">
                 <LossInfo
                   :lossInfo="lossDetails"

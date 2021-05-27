@@ -54,7 +54,6 @@
 
     <q-dialog
       v-model="addEstimatorDialog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"

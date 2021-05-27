@@ -694,7 +694,6 @@
     <!-- vendor list dialogbox -->
     <q-dialog
       v-model="vendorsListDialog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
@@ -720,7 +719,6 @@
     <!-- carrier list dialogbox  -->
     <q-dialog
       v-model="carriersListDialog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
@@ -746,7 +744,6 @@
     <!-- add vendor dialog -->
     <q-dialog
       v-model="addVendorDialog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
@@ -761,7 +758,6 @@
     <!-- add carrier dialog -->
     <q-dialog
       v-model="addCarrierDialog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"

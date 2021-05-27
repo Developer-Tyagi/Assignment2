@@ -96,9 +96,9 @@
             </div>
           </q-card>
         </div>
-        <div v-else class=" full-width">
-          <div class=" q-mt-md  q-ml-xl">
-            <div style="color: #666666;">
+        <div v-else class="full-width">
+          <div class="q-mt-md q-ml-xl">
+            <div style="color: #666666">
               You haven't added a Expert Vendor ..
             </div>
           </div>
@@ -137,7 +137,6 @@
       <!-- Mortgage Dialog -->
       <q-dialog
         v-model="expertVendorDialogBox"
-        persistent
         :maximized="true"
         transition-show="slide-up"
         transition-hide="slide-down"

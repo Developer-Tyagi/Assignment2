@@ -3,7 +3,6 @@
     <!-- PP Damaged Items Dialog Box -->
     <q-dialog
       v-model="lossInfo.PPdamagedItemsDailog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
@@ -15,7 +14,7 @@
         />
         <div class="mobile-container-page-without-search">
           <div class="form-height">
-            <q-card class=" q-ma-sm q-pa-sm ">
+            <q-card class="q-ma-sm q-pa-sm">
               <q-form ref="PropertyInfo">
                 <div class="row justify-between">
                   <div class="q-ml-sm q-mt-sm">Quantity</div>
@@ -73,7 +72,7 @@
                 <div class="q-ml-sm q-mt-sm">Description of Items</div>
                 <div class="q-ma-sm">
                   <textarea
-                    class="required full-width "
+                    class="required full-width"
                     v-model="lossInfo.PPDamageItemDescription"
                     label="Description of Item"
                     rows="3"
@@ -137,7 +136,7 @@
                   </div>
                 </div>
                 <div
-                  class="row justify-between q-my-sm "
+                  class="row justify-between q-my-sm"
                   v-if="lossInfo.repairReplaceRadio == 'Replace'"
                 >
                   <div class="q-mt-sm q-ml-sm">Replace Cost</div>

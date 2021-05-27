@@ -7,7 +7,6 @@
     />
     <q-dialog
       v-model="addMortgageDialog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"

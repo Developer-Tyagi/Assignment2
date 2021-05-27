@@ -4,7 +4,7 @@
       <q-btn
         size="sm"
         name="create"
-        class=" add-icon"
+        class="add-icon"
         flat
         @click="addPersonnelDialog = true"
         ><img src="~assets/add.svg"
@@ -42,7 +42,7 @@
                 />
               </div>
               <div class="row q-mt-sm">
-                <div class="heading-light col-3 ">Address Details</div>
+                <div class="heading-light col-3">Address Details</div>
                 <div class="col-7" v-if="personnel.address">
                   {{
                     personnel.address.houseNumber
@@ -83,7 +83,7 @@
                       name="place"
                       color="primary"
                       @click="sendMap(personnel.address)"
-                      style="position: absolute ;right: 20px"
+                      style="position: absolute; right: 20px"
                       size="sm"
                     ></q-icon>
                   </div>
@@ -116,13 +116,13 @@
               </div>
 
               <div class="row q-mt-sm q-mb-sm">
-                <span class="heading-light col-3 "> Notes: </span>
+                <span class="heading-light col-3"> Notes: </span>
                 <span class="q-ml-none col" v-if="personnel.note">
                   {{ personnel.note ? personnel.note : '-' }}</span
                 >
               </div>
               <div class="row q-mt-sm q-mb-sm">
-                <span class="heading-light col-3 "> Role: </span>
+                <span class="heading-light col-3"> Role: </span>
                 <span class="q-ml-none col" v-if="personnel.role">
                   {{ personnel.role.value ? personnel.role.value : '-' }}</span
                 >
@@ -151,7 +151,6 @@
     <!-- Add Personnel Dialog -->
     <q-dialog
       v-model="addPersonnelDialog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
@@ -329,7 +328,6 @@
     <!-- Edit Personnel Dialog -->
     <q-dialog
       v-model="editPersonnelDialog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"

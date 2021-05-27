@@ -110,7 +110,7 @@
       </div>
     </div>
 
-    <q-dialog v-model="addUserDialogBox" persistent>
+    <q-dialog v-model="addUserDialogBox">
       <q-card style="max-width: 70vw">
         <q-bar class="row justify-between bg-primary" style="height: 50px">
           <div class="col-4 q-px-xs text-bold text-white">Add User</div>
@@ -207,24 +207,24 @@
         </div>
       </q-card>
     </q-dialog>
-    <q-dialog v-model="addNewRoles" persistent :maximized="true">
-      <q-card style="width:50%;max-height:70%;">
+    <q-dialog v-model="addNewRoles" :maximized="true">
+      <q-card style="width: 50%; max-height: 70%">
         <q-bar class="row justify-between bg-primary" style="height: 50px">
           <div class="col-4 q-px-xs text-bold text-white">Add New role</div>
           <q-btn dense flat icon="close" color="white" v-close-popup>
             <q-tooltip>Close</q-tooltip>
           </q-btn>
         </q-bar>
-        <div class=" q-mx-xl q-mt-md text-bold row justify-between">
-          <div class=" q-ml-xl ">All Roles</div>
+        <div class="q-mx-xl q-mt-md text-bold row justify-between">
+          <div class="q-ml-xl">All Roles</div>
           <div class="col-3">Roles Granted</div>
         </div>
         <div class="row justify-between">
-          <div class="ex1" style="heigth:230px;overflow: scroll;">
+          <div class="ex1" style="heigth: 230px; overflow: scroll">
             <div class="column" v-for="child in userRole">
               <div class="text-bold">{{ child.label }}</div>
               <div
-                class="clickable q-ma-xs q-mx-sm "
+                class="clickable q-ma-xs q-mx-sm"
                 flat
                 bordered
                 v-for="item in child.children"
@@ -235,7 +235,7 @@
             </div>
           </div>
           <div>
-            <q-icon name="sync_alt" size="md" style="margin-top:25vh;" />
+            <q-icon name="sync_alt" size="md" style="margin-top: 25vh" />
           </div>
           <q-card class="ex1 q-mt-xl q-ml-xl">
             <div
@@ -245,7 +245,7 @@
               @click="removeRole(index)"
               v-for="(item, index) in selected_roles"
             >
-              <div class="clickable  q-mx-sm row justify-between">
+              <div class="clickable q-mx-sm row justify-between">
                 {{ item }}
                 <q-icon name="delete" color="primary" size="sm" />
               </div>
@@ -264,8 +264,8 @@
       </q-card>
     </q-dialog>
     <!-- View/Edit  -->
-    <q-dialog v-model="viewInfoDialogBox" persistent :maximized="true">
-      <q-card style="max-width:900px;height:60vh;">
+    <q-dialog v-model="viewInfoDialogBox" :maximized="true">
+      <q-card style="max-width: 900px; height: 60vh">
         <q-bar class="row justify-between bg-primary" style="height: 50px">
           <div class="col-4 q-px-xs text-bold text-white">View/Edit</div>
           <q-btn dense flat icon="close" color="white" v-close-popup>
@@ -288,11 +288,11 @@
           </div>
           <q-separator />
           <div class="row q-mt-xs">
-            <div class="col-3 column  ">
+            <div class="col-3 column">
               {{ singleUserData.name ? singleUserData.name : '-' }}
             </div>
             <div class="col-3">
-              <div class="q-mr-md  " v-if="singleUserData.mailingAddress">
+              <div class="q-mr-md" v-if="singleUserData.mailingAddress">
                 {{
                   singleUserData.mailingAddress.streetAddress
                     ? singleUserData.mailingAddress.streetAddress
@@ -352,7 +352,6 @@
     <!-- for editing single user detail -->
     <q-dialog
       v-model="editUserInfoDialog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
@@ -366,9 +365,9 @@
         </q-bar>
         <div style="height: calc(100% - 140px); overflow: auto" class="q-pa-md">
           <q-form ref="addUserForm" class="q-pa-md">
-            <div class=" q-mt-xs ">
+            <div class="q-mt-xs">
               <q-card class="q-mx-md q-pa-sm q-mb-sm">
-                <div class="row  full-width">
+                <div class="row full-width">
                   <q-input
                     v-model="singleUser.fname"
                     dense
@@ -426,7 +425,7 @@
                     v-model="singleUser.email"
                     style=""
                     label="Email"
-                    class="q-mx-md  col-5 required "
+                    class="q-mx-md col-5 required"
                     outlined
                     lazy-rules
                     :rules="[

@@ -22,7 +22,8 @@ export default {
         route == 'vendors' ||
         route == 'admin' ||
         route == 'settings' ||
-        route == 'claims'
+        route == 'claims' ||
+        route == 'mortgage'
       ) {
         this.$router.push('/dashboard');
       } else if (route == 'leads') {

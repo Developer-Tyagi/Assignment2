@@ -3,7 +3,6 @@
     <!-- Company Personnel  Dialog Box for adding Info  -->
     <q-dialog
       v-model="addCompanyPersonnelDailog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
@@ -34,7 +33,6 @@
     <!-- Company Personnel Dialog Box for Editing Info -->
     <q-dialog
       v-model="companyPersonnelDailog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
@@ -78,7 +76,7 @@
               v-for="(personnel, index) in personnel.personnel"
             >
               <div class="text-bold text-capitalize q-mt-xs row">
-                <div class="col-10 ">
+                <div class="col-10">
                   {{ personnel.name }}
                 </div>
                 <q-icon
@@ -97,15 +95,15 @@
                 />
               </div>
 
-              <div class="row  q-mt-sm" v-if="personnel.role">
+              <div class="row q-mt-sm" v-if="personnel.role">
                 <span class="heading-light col-3"> Role:</span>
                 <span class="q-ml-lg col"> {{ personnel.role.value }}</span>
               </div>
-              <div class="row  q-mt-sm" v-if="personnel.name">
+              <div class="row q-mt-sm" v-if="personnel.name">
                 <span class="heading-light col-3"> Person Party:</span>
                 <span class="q-ml-lg col"> {{ personnel.name }}</span>
               </div>
-              <div class="row  q-mt-sm" v-if="personnel.fees">
+              <div class="row q-mt-sm" v-if="personnel.fees">
                 <span class="heading-light col-3"> Fee:</span>
                 <span class="q-ml-lg col">
                   <div v-if="personnel.fees.type == 'dollar'">
@@ -119,19 +117,19 @@
                   </div>
                 </span>
               </div>
-              <div class="row  q-mt-sm" v-if="personnel.startDate">
+              <div class="row q-mt-sm" v-if="personnel.startDate">
                 <span class="heading-light col-3"> Start Date:</span>
                 <span class="q-ml-lg col">
                   {{ dateToShow(personnel.startDate) }}</span
                 >
               </div>
-              <div class="row  q-mt-sm" v-if="personnel.endDate">
+              <div class="row q-mt-sm" v-if="personnel.endDate">
                 <span class="heading-light col-3"> End Date:</span>
                 <span class="q-ml-lg col">
                   {{ dateToShow(personnel.endDate) }}</span
                 >
               </div>
-              <div class="row  q-mt-sm" v-if="personnel.note">
+              <div class="row q-mt-sm" v-if="personnel.note">
                 <span class="heading-light col-3"> Note:</span>
                 <span class="q-ml-lg col"> {{ personnel.note }}</span>
               </div>
@@ -140,7 +138,7 @@
         </div>
 
         <div v-else class="full-height full-width column">
-          <div class=" column absolute-center q-mt-xl">
+          <div class="column absolute-center q-mt-xl">
             <div style="color: #666666,align-items: center;margin-top:100px">
               You haven't added a Company Personnel yet.
             </div>

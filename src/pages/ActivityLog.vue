@@ -49,7 +49,6 @@
     <!-- This Dialog Box is for adding a new log  -->
     <q-dialog
       v-model="addLogDialog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
@@ -98,7 +97,6 @@
     <!-- This Dialog Box is for editing a new log -->
     <q-dialog
       v-model="editLogDialog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"

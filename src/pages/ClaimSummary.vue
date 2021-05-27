@@ -199,9 +199,7 @@
         </div>
       </q-card>
       <div v-if="userRole != 'estimator'">
-        <div class="form-heading q-ml-md col q-mb-md">
-          Claim Timeline
-        </div>
+        <div class="form-heading q-ml-md col q-mb-md">Claim Timeline</div>
         <div v-for="(phase, index) in getSelectedClaim.phases">
           <div class="row">
             <div class="col-2 q-ml-md">
@@ -255,7 +253,6 @@
     </div>
     <q-dialog
       v-model="claimDeadline"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
@@ -341,7 +338,6 @@
     <!-- Claim Summary -->
     <q-dialog
       v-model="claimSummary"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
@@ -452,7 +448,6 @@
     <!-- Timeline Dialog -->
     <q-dialog
       v-model="editClaimTimeline"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
@@ -525,7 +520,6 @@
     <!-- Loss Detail dialog -->
     <q-dialog
       v-model="lossDetailsBox"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"

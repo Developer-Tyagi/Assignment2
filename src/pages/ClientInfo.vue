@@ -229,9 +229,7 @@
           </div>
 
           <div class="q-mt-md row">
-            <div class="q-mt-none col-xs-4 heading-light">
-              Tenant Details
-            </div>
+            <div class="q-mt-none col-xs-4 heading-light">Tenant Details</div>
             <div
               class="column q-ml-md"
               v-if="editSelectedClient.attributes.insuredInfo.tenantInfo"
@@ -276,7 +274,6 @@
     <!-- Client Info Edit Dialog -->
     <q-dialog
       v-model="editClientInfoDailog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"

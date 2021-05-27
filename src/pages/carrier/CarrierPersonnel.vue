@@ -152,7 +152,6 @@
     <!-- Add Personnel Dialog -->
     <q-dialog
       v-model="addPersonnelDialog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
@@ -179,7 +178,6 @@
     <!-- Edit Personnel Dialog -->
     <q-dialog
       v-model="editPersonnelDialog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"

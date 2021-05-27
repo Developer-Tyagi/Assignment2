@@ -13,10 +13,10 @@
                 {{ damage.isRepaired == true ? 'Repair' : 'Replace' }}
               </q-badge>
             </div>
-            <div class="text-bold  text-capitalize q-pt-xs">
+            <div class="text-bold text-capitalize q-pt-xs">
               {{ damage.name }}
             </div>
-            <div class="q-pt-xs q-mr-sm ">
+            <div class="q-pt-xs q-mr-sm">
               <q-icon
                 name="create"
                 color="primary"
@@ -26,30 +26,26 @@
           </div>
 
           <div
-            class=" text-capitalize q-pt-xs text-caption q-mr-xl q-my-xs q-px-xs "
+            class="text-capitalize q-pt-xs text-caption q-mr-xl q-my-xs q-px-xs"
           >
             <p>{{ damage.desc }}</p>
             <p>{{ damage.damageDesc }}</p>
           </div>
           <div class="q-my-sm">
-            <div class="row justify-between  q-my-sm">
-              <div class="heading-light ">
-                Quantity
-              </div>
+            <div class="row justify-between q-my-sm">
+              <div class="heading-light">Quantity</div>
               <div class="q-mr-sm">
                 {{ damage.quantity }}
               </div>
             </div>
-            <div class="row justify-between  q-my-sm">
-              <div class="heading-light ">
-                Serial Number
-              </div>
+            <div class="row justify-between q-my-sm">
+              <div class="heading-light">Serial Number</div>
               <div class="q-mr-sm">
                 {{ damage.serialNumber }}
               </div>
             </div>
-            <div class="row   justify-between q-my-sm">
-              <div class="heading-light  ">Purchase Date</div>
+            <div class="row justify-between q-my-sm">
+              <div class="heading-light">Purchase Date</div>
               <div class="q-mr-sm">
                 {{ dateToShow(damage.purchaseDate) }}
               </div>
@@ -60,17 +56,17 @@
             <div class="heading-light col-3">Purchase Price</div>
 
             <div>
-              <span class="heading-light ">$</span>
+              <span class="heading-light">$</span>
               {{ damage.purchasePrice }}
             </div>
           </div>
           <div class="q-my-sm row justify-between">
-            <div class="heading-light col-3 ">
+            <div class="heading-light col-3">
               {{ damage.replaceCost == null ? 'Repair' : 'Replace' }} Cost
             </div>
 
             <div>
-              <span class="heading-light ">$</span>
+              <span class="heading-light">$</span>
               {{
                 damage.replaceCost == null
                   ? damage.repairCost
@@ -80,13 +76,12 @@
           </div>
         </q-card>
       </div>
-      <div v-else class=" full-width text-center q-mt-xl heading-light">
+      <div v-else class="full-width text-center q-mt-xl heading-light">
         You have not added any Damage items yet!
       </div>
     </div>
     <q-dialog
       v-model="PPdamagedItemsDailog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
@@ -99,7 +94,7 @@
           />
           <div class="mobile-container-page-without-search">
             <div class="form-height">
-              <q-card class=" q-ma-sm q-pa-sm ">
+              <q-card class="q-ma-sm q-pa-sm">
                 <q-form ref="PropertyInfo">
                   <div class="row justify-between">
                     <div class="q-ml-sm q-mt-sm">Quantity</div>
@@ -157,7 +152,7 @@
                   <div class="q-ml-sm q-mt-sm">Description of Items</div>
                   <div class="q-ma-sm">
                     <textarea
-                      class="required full-width "
+                      class="required full-width"
                       v-model="lossInfo.PPDamageItemDescription"
                       label="Description of Item"
                       rows="3"
@@ -221,7 +216,7 @@
                     </div>
                   </div>
                   <div
-                    class="row justify-between q-my-sm "
+                    class="row justify-between q-my-sm"
                     v-if="lossInfo.repairReplaceRadio == 'Replace'"
                   >
                     <div class="q-mt-sm q-ml-sm">Replace Cost</div>

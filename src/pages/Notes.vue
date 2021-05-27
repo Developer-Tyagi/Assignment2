@@ -3,7 +3,6 @@
     <!-- Note Dialog -->
     <q-dialog
       v-model="addNoteDialog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
@@ -36,7 +35,6 @@
     <!-- Edit Note Dialog  -->
     <q-dialog
       v-model="editNoteDialog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
@@ -115,7 +113,7 @@
                 <div class="client-list-item">
                   <div>
                     <div class="row">
-                      <div class="heading-light  col-10">
+                      <div class="heading-light col-10">
                         {{
                           dateWithTime(
                             editSelectedClient.attributes.notes[index].addedAt

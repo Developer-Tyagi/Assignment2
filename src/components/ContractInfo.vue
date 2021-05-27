@@ -3,7 +3,6 @@
     <!-- vendor list dialogbox -->
     <q-dialog
       v-model="contractInfo.vendorsListDialog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
@@ -29,7 +28,6 @@
     <!-- add vendor dialog -->
     <q-dialog
       v-model="contractInfo.addVendorDialog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
@@ -338,9 +336,7 @@
           >
             <template v-slot:no-option>
               <q-item>
-                <q-item-section class="text-black">
-                  No results
-                </q-item-section>
+                <q-item-section class="text-black"> No results </q-item-section>
               </q-item>
             </template>
           </q-select>
