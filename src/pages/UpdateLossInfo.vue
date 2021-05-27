@@ -351,7 +351,8 @@ export default {
       'propertyTypes',
       'claimReasons',
       'lossCauses',
-      'claimSeverity'
+      'claimSeverity',
+      'claim'
     ]),
 
     formatDate(value) {
@@ -361,7 +362,7 @@ export default {
     }
   },
 
-  created() {
+  async created() {
     if (!this.selectedClaimId) {
       this.$router.push('/clients');
     }
@@ -370,18 +371,12 @@ export default {
     this.setSelectedClaimId(this.selectedClaimId);
     this.getPropertyTypes();
     this.getClaimReasons();
+    await this.getSingleClaims(this.selectedClaimId).then(() => {
+      this.lossDetails.policyEffectiveDate = this.claim.policyInfo.effectiveDate;
+      this.lossDetails.policyExpireDate = this.claim.policyInfo.expirationDate;
+    });
     this.getLossCauses();
     this.getSeverityClaim();
-    this.lossDetails.policyEffectiveDate = date.formatDate(
-      Date.now(),
-      'MM/DD/YYYY'
-    );
-    this.lossDetails.policyExpireDate = date.formatDate(
-      date.addToDate(Date.now(), {
-        year: 1
-      }),
-      'MM/DD/YYYY'
-    );
   },
   methods: {
     ...mapActions([
@@ -390,7 +385,8 @@ export default {
       'getClaimReasons',
       'getLossCauses',
       'getSeverityClaim',
-      'updateLossInfo'
+      'updateLossInfo',
+      'getSingleClaims'
     ]),
     ...mapMutations(['setSelectedClaimId']),
     sendMap,
