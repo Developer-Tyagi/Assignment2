@@ -51,7 +51,7 @@
               @click="onShareClick(index)"
               name="more_vert"
               size="sm"
-              class="q-ml-auto "
+              class="q-ml-auto"
             />
           </div>
           <div
@@ -208,7 +208,10 @@
               <div class="form-heading q-ml-md">Share</div>
             </div>
 
-            <div class="column" v-if="!isSystemGen">
+            <div
+              class="column"
+              v-if="documents[index] && documents[index].properties == null"
+            >
               <q-btn
                 class="q-ml-md"
                 icon="delete"
@@ -458,6 +461,7 @@ export default {
 
   data() {
     return {
+      index: '',
       id: '',
       isSystemGen: '',
       alert: false,
@@ -551,7 +555,8 @@ export default {
           name: document.attributes.name,
           id: document.id,
           type: document.attributes.mimeType,
-          link: document.attributes.webViewLink
+          link: document.attributes.webViewLink,
+          properties: document.attributes.properties
         }));
         this.setLoading(false);
       }
@@ -581,7 +586,8 @@ export default {
           name: document.attributes.name,
           id: document.id,
           type: document.attributes.mimeType,
-          link: document.attributes.webViewLink
+          link: document.attributes.webViewLink,
+          properties: document.attributes.properties
         }));
       }
       const { data } = await request.get(
@@ -609,6 +615,7 @@ export default {
       }
       this.foldersAndFilesOptions = true;
       this.documentID = this.documents[index].id;
+      this.index = index;
     },
     async onAssignClick() {
       const payload = {
@@ -666,7 +673,8 @@ export default {
           name: document.attributes.name,
           id: document.id,
           type: document.attributes.mimeType,
-          link: document.attributes.webViewLink
+          link: document.attributes.webViewLink,
+          properties: document.attributes.properties
         }));
         this.addFolderDialog = false;
         this.uploadFilesOptions = false;
@@ -696,7 +704,8 @@ export default {
           name: document.attributes.name,
           id: document.id,
           type: document.attributes.mimeType,
-          link: document.attributes.webViewLink
+          link: document.attributes.webViewLink,
+          properties: document.attributes.properties
         }));
         this.setLoading(false);
       }
@@ -745,7 +754,8 @@ export default {
           name: document.attributes.name,
           id: document.id,
           type: document.attributes.mimeType,
-          link: document.attributes.webViewLink
+          link: document.attributes.webViewLink,
+          properties: document.attributes.properties
         }));
         this.depth.push({ name: '', id: this.directoryId });
         this.setLoading(false);
@@ -768,7 +778,8 @@ export default {
           name: document.attributes.name,
           id: document.id,
           type: document.attributes.mimeType,
-          link: document.attributes.webViewLink
+          link: document.attributes.webViewLink,
+          properties: document.attributes.properties
         }));
 
         this.depth.push({ name: document.name, id: document.id });
@@ -790,7 +801,8 @@ export default {
         name: document.attributes.name,
         id: document.id,
         type: document.attributes.mimeType,
-        link: document.attributes.webViewLink
+        link: document.attributes.webViewLink,
+        properties: document.attributes.properties
       }));
       this.depth.pop();
       this.currentPath = this.depth.length;
@@ -816,7 +828,8 @@ export default {
         name: document.attributes.name,
         id: document.id,
         type: document.attributes.mimeType,
-        link: document.attributes.webViewLink
+        link: document.attributes.webViewLink,
+        properties: document.attributes.properties
       }));
       this.depth.splice(index + 1);
       this.setLoading(false);
