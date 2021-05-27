@@ -123,8 +123,8 @@
               <thead>
                 <tr class="table-tr">
                   <th class="table-th">Name</th>
-                  <th class="table-th">Template Value></th>
-                  <th class="table-th">Action></th>
+                  <th class="table-th">Template Value</th>
+                  <th class="table-th">Action</th>
                 </tr>
               </thead>
               <tbody>
