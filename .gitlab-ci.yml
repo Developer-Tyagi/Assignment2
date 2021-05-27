@@ -185,7 +185,7 @@ demo_deploy:
 # This task creates image associated with tag
 build_tag_image:
   stage: build
-  image: cilalabs/kubeninja
+  image: us-west1-docker.pkg.dev/claimguru-97138/claimguru/common-utils/git-sops
   services:
     - docker:18.09.9-dind
   variables:
