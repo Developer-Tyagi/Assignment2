@@ -43,7 +43,11 @@
         </div>
       </div>
       <div class="q-ml-md">Date & Time of First Contact</div>
-      <div class="q-ml-md">{{ showingDate }},{{ showingTime }}</div>
+      <div class="q-ml-md">
+        {{
+          editSelectedClient.attributes.created | moment('MM/DD/YYYY, hh:mm A')
+        }}
+      </div>
 
       <q-card class="q-ma-md q-ma-sm">
         <div class="client-list q-pa-sm">
@@ -664,8 +668,6 @@ export default {
 
   data() {
     return {
-      showingDate: '',
-      showingTime: '',
       mailingAddressDetails: {
         addressCountry: '',
         addressRegion: '',
@@ -764,8 +766,6 @@ export default {
     if (!this.selectedClientId) {
       this.$router.push('/clients');
     }
-    this.showingDate = dateToShow(this.editSelectedClient.attributes.created);
-    this.showingTime = dateToTime(this.editSelectedClient.attributes.created);
   },
 
   created() {

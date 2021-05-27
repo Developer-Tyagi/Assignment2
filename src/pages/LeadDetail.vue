@@ -146,7 +146,7 @@
                   Date of Loss
                 </div>
                 <div class="column q-ml-md">
-                  {{ selectedLead.dateofLoss | moment('DD/MM/YYYY') }}
+                  {{ selectedLead.dateofLoss | moment('MM/DD/YYYY') }}
                 </div>
               </div>
               <div class="q-mt-md row">

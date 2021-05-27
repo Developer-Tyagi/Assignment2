@@ -51,7 +51,7 @@
             <div class="row   justify-between q-my-sm">
               <div class="heading-light  ">Purchase Date</div>
               <div class="q-mr-sm">
-                {{ damage.purchaseDate | moment('DD/MM/YYYY') }}
+                {{ damage.purchaseDate | moment('MM/DD/YYYY') }}
               </div>
             </div>
           </div>

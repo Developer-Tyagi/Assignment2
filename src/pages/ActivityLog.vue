@@ -17,7 +17,7 @@
           >
             <div class="row q-my-sm">
               <div class="col-10 heading-light">
-                {{ logItem.created | moment('DD/MM/YYYY, hh:mm A') }}
+                {{ logItem.created | moment('MM/DD/YYYY, hh:mm A') }}
               </div>
               <q-icon
                 size="xs"

@@ -112,7 +112,7 @@
                         }}
                       </div>
                       <div>
-                        {{ claim.attributes.created | moment('DD/MM/YYYY') }}
+                        {{ claim.attributes.created | moment('MM/DD/YYYY') }}
                       </div>
                     </div>
                   </div>

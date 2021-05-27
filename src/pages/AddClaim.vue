@@ -201,7 +201,7 @@
                           <div class="row justify-between q-my-sm">
                             <div class="heading-light">Purchase Date</div>
                             <div class="q-mr-sm">
-                              {{ item.purchaseDate | moment('DD/MM/YYYY') }}
+                              {{ item.purchaseDate | moment('MM/DD/YYYY') }}
                             </div>
                           </div>
                         </div>
@@ -431,7 +431,7 @@
                           <div class="row justify-between q-my-sm">
                             <div class="heading-light">Purchase Date</div>
                             <div class="q-mr-sm">
-                              {{ item.purchaseDate | moment('DD/MM/YYYY') }}
+                              {{ item.purchaseDate | moment('MM/DD/YYYY') }}
                             </div>
                           </div>
                         </div>

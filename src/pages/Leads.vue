@@ -107,14 +107,14 @@
                           </span>
                         </span>
                         <span class="q-ml-auto" v-if="lead.lastVisted">
-                          {{ lead.lastVisted | moment('DD/MM/YYYY') }}
+                          {{ lead.lastVisted | moment('MM/DD/YYYY') }}
                         </span>
                         <span v-else class="q-ml-auto"> - </span>
                       </div>
                       <div>
                         Date of Loss:
                         <span v-if="lead.dateofLoss">{{
-                          lead.dateofLoss | moment('DD/MM/YYYY')
+                          lead.dateofLoss | moment('MM/DD/YYYY')
                         }}</span>
                         <span v-else> - </span>
                       </div>
@@ -194,7 +194,7 @@
                         </span>
                       </span>
                       <span class="q-ml-auto" v-if="lead.lastVisted">
-                        {{ lead.lastVisted | moment('DD/MM/YYYY') }}
+                        {{ lead.lastVisted | moment('MM/DD/YYYY') }}
                       </span>
                       <span v-else class="q-ml-auto"> - </span>
                     </div>
@@ -202,7 +202,7 @@
                       Date of Loss:
                       <span v-if="lead.dateofLoss">{{
                         lead.dateofLoss &&
-                          lead.dateofLoss | moment('DD/MM/YYYY')
+                          lead.dateofLoss | moment('MM/DD/YYYY')
                       }}</span>
                       <span v-else> - </span>
                     </div>

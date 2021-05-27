@@ -137,7 +137,7 @@
             </div>
             <div class="row">
               <div class="q-ml-auto">
-                {{ claim.attributes.created | moment('DD/MM/YYYY') }}
+                {{ claim.attributes.created | moment('MM/DD/YYYY') }}
               </div>
             </div>
           </q-card-section>
