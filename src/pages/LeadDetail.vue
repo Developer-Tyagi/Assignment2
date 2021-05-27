@@ -146,7 +146,7 @@
                   Date of Loss
                 </div>
                 <div class="column q-ml-md">
-                  {{ selectedLead.dateofLoss | moment('DD/MM/YYYY') }}
+                  {{ dateToShow(selectedLead.dateofLoss) }}
                 </div>
               </div>
               <div class="q-mt-md row">
@@ -246,6 +246,7 @@
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import CustomBar from 'components/CustomBar';
+import { dateToShow } from '@utils/date';
 import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
 export default {
   data() {
@@ -265,6 +266,7 @@ export default {
     onEmailClick,
     onPhoneNumberClick,
     sendMap,
+    dateToShow,
     editLeadButtonClick() {
       this.isEdit = true;
       this.$router.push('/edit-lead-details/' + this.$route.params.id);

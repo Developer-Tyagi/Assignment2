@@ -111,8 +111,7 @@
                   <div class="row">
                     <div class=" heading-light  col-10">
                       {{
-                        claimNotes.attributes.notes[index].created
-                          | moment('MM/DD/YYYY, hh:mm A')
+                        dateWithTime(claimNotes.attributes.notes[index].created)
                       }}
                     </div>
 
@@ -153,6 +152,7 @@
 import { mapGetters, mapActions } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import moment from 'moment';
+import { dateWithTime } from '@utils/date';
 import { successMessage } from '@utils/validation';
 import { constants } from '@utils/constant';
 import ClaimDetail from 'components/ClaimDetail';
@@ -193,6 +193,7 @@ export default {
       'editClaimNotes',
       'deleteClaimNotes'
     ]),
+    dateWithTime,
     deleteThisNote(index) {
       this.alert = true;
       this.indexValue = index;

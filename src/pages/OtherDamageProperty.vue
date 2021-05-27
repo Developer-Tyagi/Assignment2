@@ -51,7 +51,7 @@
             <div class="row   justify-between q-my-sm">
               <div class="heading-light  ">Purchase Date</div>
               <div class="q-mr-sm">
-                {{ damage.purchaseDate | moment('DD/MM/YYYY') }}
+                {{ dateToShow(damage.purchaseDate) }}
               </div>
             </div>
           </div>
@@ -287,7 +287,7 @@
             <q-btn
               label="Save"
               color="primary"
-              class="full-width text-capitalize"
+              class="button-width-90"
               size="'xl'"
               @click="onClickSave"
             ></q-btn>
@@ -398,7 +398,7 @@ export default {
 
       this.PPdamagedItemsDailog = true;
     },
-
+    dateToShow,
     async onClickSave() {
       const payload = {
         id: this.selectedClaimId,

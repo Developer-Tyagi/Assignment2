@@ -60,7 +60,8 @@
   </q-page>
 </template>
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapMutations } from 'vuex';
+
 import {
   Capacitor,
   Plugins,
@@ -87,6 +88,7 @@ export default {
   },
   methods: {
     ...mapActions(['verifyOobCode', 'setPassword', 'userLogin', 'getUserInfo']),
+    ...mapMutations('setSelectedClaimId'),
 
     checkConfirmPassword() {
       if (this.password.password === this.password.confirm) {
@@ -127,6 +129,20 @@ export default {
                 this.sendPushNotificationToken({
                   token: PushNotificationToken.value
                 });
+              }
+            );
+            PushNotifications.addListener(
+              'pushNotificationActionPerformed',
+              PushNotificationActionPerformed => {
+                if (
+                  PushNotificationActionPerformed.notification.data.action ===
+                  constants.Notification.UPLOAD_ESTIMATOR
+                ) {
+                  this.setSelectedClaimId(
+                    PushNotificationActionPerformed.notification.data.claimID
+                  );
+                  this.$router.push('/document-upload');
+                }
               }
             );
             PushNotifications.addListener('registrationError', any => {

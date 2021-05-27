@@ -62,8 +62,8 @@
         ></q-btn>
       </q-card>
     </q-dialog>
-    <div class="actions-div">
-      <q-separator vertical inset></q-separator>
+
+    <div class="add-icon" v-if="!addCompanyPersonnelDailog">
       <q-btn @click="addCompanyPersonnelDailog = true" flat class="q-ml-auto"
         ><img src="~assets/add.svg"
       /></q-btn>
@@ -122,13 +122,13 @@
               <div class="row  q-mt-sm" v-if="personnel.startDate">
                 <span class="heading-light col-3"> Start Date:</span>
                 <span class="q-ml-lg col">
-                  {{ personnel.startDate | moment('MM/DD/YYYY') }}</span
+                  {{ dateToShow(personnel.startDate) }}</span
                 >
               </div>
               <div class="row  q-mt-sm" v-if="personnel.endDate">
                 <span class="heading-light col-3"> End Date:</span>
                 <span class="q-ml-lg col">
-                  {{ personnel.endDate | moment('MM/DD/YYYY') }}</span
+                  {{ dateToShow(personnel.endDate) }}</span
                 >
               </div>
               <div class="row  q-mt-sm" v-if="personnel.note">
@@ -164,7 +164,7 @@ import CustomBar from 'components/CustomBar';
 import CompanyPersonnel from 'components/CompanyPersonnel';
 import ClaimDetail from 'components/ClaimDetail';
 import { dateToSend } from '@utils/date';
-
+import { dateToShow } from '@utils/date';
 import { validateDate } from '@utils/validation';
 import { date } from 'quasar';
 
@@ -300,6 +300,7 @@ export default {
         );
       }
     },
+    dateToShow,
     onEditButtonClick(index) {
       this.companyPersonnelDailog = true;
       this.companyPersonnel.isFieldDisable = false;

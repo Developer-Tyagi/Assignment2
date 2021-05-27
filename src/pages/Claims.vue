@@ -112,7 +112,7 @@
                         }}
                       </div>
                       <div>
-                        {{ claim.attributes.created | moment('DD/MM/YYYY') }}
+                        {{ dateToShow(claim.attributes.created) }}
                       </div>
                     </div>
                   </div>
@@ -136,6 +136,7 @@
 <script>
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import moment from 'moment';
+import { dateToShow } from '@utils/date';
 import { getCurrentUser } from '@utils/auth';
 export default {
   name: 'Claims',
@@ -172,7 +173,7 @@ export default {
       'markClaimUnFavorite'
     ]),
     ...mapMutations(['setSelectedClaimId']),
-
+    dateToShow,
     onSearchBackButtonClick() {
       this.searchText = '';
       this.search();

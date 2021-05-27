@@ -23,7 +23,7 @@
             :dialogName="'Loss Info'"
           />
           <q-card class="q-ma-sm q-pa-sm">
-            <div class="mobile-container-page  listing-height">
+            <div class=" mobile-container-page">
               <q-form ref="lossInfoForm">
                 <LossInfo
                   :lossInfo="lossDetails"
@@ -37,14 +37,16 @@
                 />
               </q-form>
             </div>
+            <div class="q-mx-md">
+              <q-btn
+                label="Save"
+                color="primary"
+                class="button-width-90"
+                @click="onSaveButtonClick"
+                size="'xl'"
+              ></q-btn>
+            </div>
           </q-card>
-          <q-btn
-            label="Save"
-            color="primary"
-            class="full-width  text-capitalize"
-            @click="onSaveButtonClick"
-            size="'xl'"
-          ></q-btn>
         </q-card>
       </q-dialog>
 
@@ -182,7 +184,7 @@
         >
           <span class="heading-light col-2"> Date of Loss:</span>
           <span class="q-ml-lg col">
-            {{ lossInfo.attributes.lossInfo.date | moment('MM/DD/YYYY') }}</span
+            {{ dateToShow(lossInfo.attributes.lossInfo.date) }}</span
           >
         </div>
 
@@ -195,9 +197,7 @@
         >
           <span class="heading-light col-2"> Deadline Date:</span>
           <span class="q-ml-lg col">
-            {{
-              lossInfo.attributes.lossInfo.deadlineDate | moment('MM/DD/YYYY')
-            }}</span
+            {{ dateToShow(lossInfo.attributes.lossInfo.deadlineDate) }}</span
           >
         </div>
         <div
@@ -209,9 +209,7 @@
         >
           <span class="heading-light col-2"> Recovery Date:</span>
           <span class="q-ml-lg col">
-            {{
-              lossInfo.attributes.lossInfo.recovDDDate | moment('MM/DD/YYYY')
-            }}</span
+            {{ dateToShow(lossInfo.attributes.lossInfo.recovDDDate) }}</span
           >
         </div>
         <div
@@ -392,7 +390,7 @@ export default {
       this.isMortgageHomeToggle = false;
     },
     validateDate,
-
+    dateToShow,
     async onSaveButtonClick() {
       let success = false;
       success = await this.$refs.lossInfoForm.validate();

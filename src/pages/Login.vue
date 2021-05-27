@@ -99,7 +99,7 @@
   </q-page>
 </template>
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapMutations } from 'vuex';
 import { getToken, getCurrentUser } from '@utils/auth';
 import {
   Capacitor,
@@ -109,6 +109,7 @@ import {
   PushNotificationActionPerformed
 } from '@capacitor/core';
 import { Screen } from 'quasar';
+import { constants } from '@utils/constant';
 
 const isPushNotificationsAvailable = Capacitor.isPluginAvailable(
   'PushNotifications'
@@ -128,6 +129,7 @@ export default {
   },
   methods: {
     ...mapActions(['userLogin', 'getUserInfo', 'sendPushNotificationToken']),
+    ...mapMutations('setSelectedClaimId'),
 
     async onUserLogin() {
       const loginData = {
@@ -142,6 +144,7 @@ export default {
       if (this.login.email && this.login.password) {
         const response = await this.userLogin(loginData);
         if (response) {
+          console.log();
           await this.getUserInfo();
           if (isPushNotificationsAvailable) {
             PushNotifications.requestPermission().then(result => {
@@ -155,6 +158,20 @@ export default {
                 this.sendPushNotificationToken({
                   token: PushNotificationToken.value
                 });
+              }
+            );
+            PushNotifications.addListener(
+              'pushNotificationActionPerformed',
+              PushNotificationActionPerformed => {
+                if (
+                  PushNotificationActionPerformed.notification.data.action ===
+                  constants.Notification.UPLOAD_ESTIMATOR
+                ) {
+                  this.setSelectedClaimId(
+                    PushNotificationActionPerformed.notification.data.claimID
+                  );
+                  this.$router.push('/document-upload');
+                }
               }
             );
             PushNotifications.addListener('registrationError', any => {

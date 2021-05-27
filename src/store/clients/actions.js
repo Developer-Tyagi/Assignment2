@@ -172,9 +172,9 @@ export async function addMultipleTaskToClaim(
 ) {
   dispatch('setLoading', true);
   if (isOnline) {
-    return await dispatch('addClientRemote', payload);
+    return await dispatch('addMultipleTaskRemote', payload);
   } else {
-    return await dispatch('addClientLocal', payload);
+    return await dispatch('addMultipleTaskLocal', payload);
   }
 }
 

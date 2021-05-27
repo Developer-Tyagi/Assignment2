@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <div class="icon-top " v-if="!expertVendorDialogBox">
+    <div class="add-icon" v-if="!expertVendorDialogBox">
       <q-btn @click="expertVendorDialogBox = true" flat
         ><img src="~assets/add.svg" height="24" width="24"
       /></q-btn>

@@ -1,13 +1,13 @@
 <template>
   <q-page>
     <div v-if="settlement.attributes">
-      <div class="icon-top">
+      <div class="add-icon">
         <q-btn
           @click="onClickAddButton"
           flat
           class="q-ml-auto"
           v-if="settlementShowDialog == false"
-          ><img src="~assets/addSettlement.svg" height="24" width="24"
+          ><img src="~assets/addSettlement.svg" height="24" width="20"
         /></q-btn>
       </div>
       <div class="mobile-container-page">
@@ -145,11 +145,16 @@
     >
       <q-card style="width: 350px; height: 160px">
         <q-card-section class="items-center">
-          <div class="q-pa-md heading-light">Enter Initial Offer</div>
+          <q-input
+            class="q-pa-xs"
+            v-model="initialOffer"
+            dense
+            label="Enter Initial Offer"
+          />
         </q-card-section>
         <div class="row text-primary justify-end q-mt-lg">
           <div class="q-pa-md" @click="editInitialOffer = false">CANCEL</div>
-          <div class="q-pa-md text-bold">CHANGE</div>
+          <div class="q-pa-md text-bold">SAVE</div>
         </div>
       </q-card>
     </q-dialog>
@@ -1166,6 +1171,7 @@ export default {
   components: { CustomBar, ClaimDetail },
   data() {
     return {
+      initialOffer: '',
       status: '',
       editInitialOffer: false,
       currentIndex: '',

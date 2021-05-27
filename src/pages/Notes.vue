@@ -117,8 +117,9 @@
                     <div class="row">
                       <div class="heading-light  col-10">
                         {{
-                          editSelectedClient.attributes.notes[index].addedAt
-                            | moment('MM/DD/YYYY, hh:mm A')
+                          dateWithTime(
+                            editSelectedClient.attributes.notes[index].addedAt
+                          )
                         }}
                       </div>
 
@@ -175,6 +176,7 @@
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import moment from 'moment';
+import { dateWithTime } from '@utils/date';
 import { successMessage } from '@utils/validation';
 import { constants } from '@utils/constant';
 
@@ -214,6 +216,7 @@ export default {
       'deletedClientNote',
       'editClientNotes'
     ]),
+    dateWithTime,
     ...mapMutations(['setSelectedClientId']),
 
     addNote() {

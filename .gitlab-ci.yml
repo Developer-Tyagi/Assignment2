@@ -185,7 +185,7 @@ demo_deploy:
 # This task creates image associated with tag
 build_tag_image:
   stage: build
-  image: cilalabs/kubeninja
+  image: us-west1-docker.pkg.dev/claimguru-97138/claimguru/common-utils/git-sops
   services:
     - docker:18.09.9-dind
   variables:
@@ -198,7 +198,7 @@ build_tag_image:
     - echo "$PROD_SERVICE_ACCOUNT_KEY"  > /tmp/key.json
     - sops --kms ${SOPS_KMS} -d docker/env.$APP_ENV > .env
     - docker build -t ${DOCKER_IMAGE} .
-    - docker login -u _json_key --password-stdin https://${GCR_REGISTRY_NAME} < /tmp/key.json
+    - docker login -u _json_key --password-stdin https://${DOCKER_REGISTRY} < /tmp/key.json
     - docker push ${DOCKER_IMAGE}
   tags:
     - production

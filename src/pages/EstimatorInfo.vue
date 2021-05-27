@@ -14,8 +14,7 @@
     <div>
       <q-card class="q-pa-md q-ma-md">
         <div class="text-bold">
-          {{ estimator.estimator.fname ? estimator.estimator.fname : '-' }}
-          {{ estimator.estimator.lname ? estimator.estimator.lname : '-' }}
+          {{ estimator.estimator.name ? estimator.estimator.name : '-' }}
         </div>
 
         <div class="row q-mt-sm">
@@ -65,7 +64,7 @@
           @closeDialog="addEstimatorDialog = false"
           :dialogName="'Estimating Info'"
         />
-        <div class="q-ma-md mobile-container-page listing-height">
+        <div class="q-ma-sm mobile-container-page listing-height">
           <q-form>
             <EstimatingInfo
               :estimatingInfo="estimatorInfo"
@@ -76,7 +75,7 @@
         <q-btn
           label="Save"
           color="primary"
-          class="full-width  text-capitalize"
+          class="button-width-90"
           size="'xl'"
           @click="validateEstimatingInfo"
         />
