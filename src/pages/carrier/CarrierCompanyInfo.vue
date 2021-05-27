@@ -4,13 +4,13 @@
       <span class="text-bold text-h6 q-ml-md">
         {{ selectedCarrier.name ? selectedCarrier.name : '-' }}
       </span>
-      <q-card class="q-ma-sm q-pa-sm ">
-        <div class="q-my-auto row q-mt-xs ">
+      <q-card class="q-ma-sm q-pa-sm">
+        <div class="q-my-auto row q-mt-xs">
           <q-icon
             size="xs"
             name="create "
             color="primary"
-            class="q-ml-auto "
+            class="q-ml-auto"
             @click="onEdit"
           ></q-icon>
 
@@ -68,7 +68,7 @@
               ></q-icon></div
           ></span>
         </div>
-        <div class="row  q-mt-sm" v-if="selectedCarrier.email">
+        <div class="row q-mt-sm" v-if="selectedCarrier.email">
           <span class="heading-light col-3"> Email </span>
           <span
             class="q-ml-md col clickLink"
@@ -77,28 +77,28 @@
             {{ selectedCarrier.email ? selectedCarrier.email : '-' }}</span
           >
         </div>
-        <div class="row q-mt-sm " v-for="phone in selectedCarrier.phoneNumber">
+        <div class="row q-mt-sm" v-for="phone in selectedCarrier.phoneNumber">
           <span class="heading-light col-3"> Phone Number </span>
-          <span class="col q-ml-md " v-if="phone.type">
+          <span class="col q-ml-md" v-if="phone.type">
             {{ phone.type }} :
             <span
-              class="clickLink "
+              class="clickLink"
               @click="onPhoneNumberClick(phone.number, $event)"
               >{{ phone.number }}</span
             ></span
           >
         </div>
-        <div class="row  q-mt-sm" v-if="selectedCarrier.info">
+        <div class="row q-mt-sm" v-if="selectedCarrier.info">
           <span class="heading-light col-3"> Website: </span>
-          <span class="q-ml-md col ">
+          <span class="q-ml-md col">
             {{
               selectedCarrier.info.website ? selectedCarrier.info.website : '-'
             }}</span
           >
         </div>
-        <div class="row  q-mt-sm" v-if="selectedCarrier.info">
+        <div class="row q-mt-sm" v-if="selectedCarrier.info">
           <span class="heading-light col-3"> Notes: </span>
-          <span class="q-ml-md col ">
+          <span class="q-ml-md col">
             {{
               selectedCarrier.info.notes ? selectedCarrier.info.notes : '-'
             }}</span
@@ -108,7 +108,6 @@
     </div>
     <q-dialog
       v-model="addCarrierDialog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"

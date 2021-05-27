@@ -181,7 +181,6 @@
     <!-- Mortgage List -->
     <q-dialog
       v-model="mortgageList"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
@@ -202,7 +201,6 @@
     <!-- Add Mortgage  -->
     <q-dialog
       v-model="addMortgageDialog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"

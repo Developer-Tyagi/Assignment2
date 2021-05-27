@@ -11,7 +11,6 @@
 
     <q-dialog
       v-model="addVendorDialog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"

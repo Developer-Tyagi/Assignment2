@@ -3,7 +3,6 @@
     <CarriersList @addCarrier="openAddCarrierDialog" :carrierDetails="true" />
     <q-dialog
       v-model="addCarrierDialog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"

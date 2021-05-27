@@ -440,7 +440,6 @@
     <!-- Carrier List Dialog -->
     <q-dialog
       v-model="carriersListDialog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
@@ -467,7 +466,6 @@
     <!-- add carrier dialog -->
     <q-dialog
       v-model="addCarrierDialog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"

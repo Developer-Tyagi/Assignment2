@@ -16,12 +16,10 @@
         <div class="q-mx-md">
           <q-separator class="q-my-sm" />
 
-          <div class="row q-py-sm ">
-            <div class="col-6 heading-light  ">
-              Total Replacement Cost
-            </div>
+          <div class="row q-py-sm">
+            <div class="col-6 heading-light">Total Replacement Cost</div>
 
-            <div class=" col row justify-between  q-ml-auto text-bold">
+            <div class="col row justify-between q-ml-auto text-bold">
               <div class="heading-light">$</div>
               {{ settlement.attributes.totalReplCost }}
             </div>
@@ -35,22 +33,22 @@
               </div>
             </div> -->
           </div>
-          <div class="row q-py-sm ">
+          <div class="row q-py-sm">
             <div class="col-6 heading-light">Total Net Claimed</div>
 
-            <div class=" col row justify-between  q-ml-auto text-bold">
-              <div class=" heading-light">$</div>
+            <div class="col row justify-between q-ml-auto text-bold">
+              <div class="heading-light">$</div>
               {{ settlement.attributes.netClaimed }}
             </div>
           </div>
           <div class="row q-py-sm">
             <div
-              class=" col-6 heading-light text-primary"
+              class="col-6 heading-light text-primary"
               @click="editInitialOffer = true"
             >
               Initial Offer
             </div>
-            <div class="  col row justify-between q-ml-auto text-bold">
+            <div class="col row justify-between q-ml-auto text-bold">
               <span class="heading-light">$</span>
               {{ settlement.attributes.intialOffer }}
             </div>
@@ -85,7 +83,7 @@
 
                 <div>
                   <q-icon
-                    class="q-my-auto "
+                    class="q-my-auto"
                     name="input"
                     size="sm"
                     color="primary"
@@ -98,7 +96,7 @@
                 <div class="row">
                   <div class="heading-light">Replacement Cost</div>
                   <div class="text-bold q-ml-auto">
-                    <span class="heading-light ">$</span>
+                    <span class="heading-light">$</span>
                     {{ settlement.amounts.replacementCost }}
                   </div>
                 </div>
@@ -161,7 +159,6 @@
     <!-- This Dialog box is for editing the Data of settlements -->
     <q-dialog
       v-model="settlementDialog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
@@ -656,7 +653,6 @@
     <!-- This Dialog Box is Only For Showing Data Not Editing -->
     <q-dialog
       v-model="settlementShowDialog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"

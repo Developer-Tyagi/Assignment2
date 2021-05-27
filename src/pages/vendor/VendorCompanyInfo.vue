@@ -5,12 +5,12 @@
         {{ selectedVendor.name ? selectedVendor.name : '-' }}
       </span>
       <q-card class="q-ma-sm q-pa-sm">
-        <div class="q-my-auto row q-mt-xs ">
+        <div class="q-my-auto row q-mt-xs">
           <q-icon
             size="xs"
             name="create "
             color="primary"
-            class="q-ml-auto "
+            class="q-ml-auto"
             @click="onEdit"
           ></q-icon>
 
@@ -70,7 +70,7 @@
               ></q-icon></div
           ></span>
         </div>
-        <div class="row  q-mt-sm" v-if="selectedVendor.email">
+        <div class="row q-mt-sm" v-if="selectedVendor.email">
           <span class="heading-light col-3"> Email </span>
           <span
             class="q-ml-md col clickLink"
@@ -79,28 +79,28 @@
             {{ selectedVendor.email ? selectedVendor.email : '-' }}</span
           >
         </div>
-        <div class="row q-mt-sm " v-for="phone in selectedVendor.phoneNumber">
+        <div class="row q-mt-sm" v-for="phone in selectedVendor.phoneNumber">
           <span class="heading-light col-3"> Phone Number </span>
           <span class="col q-ml-md" v-if="phone.type">
             {{ phone.type }} :
             <span
-              class="clickLink "
+              class="clickLink"
               @click="onPhoneNumberClick(phone.number, $event)"
               >{{ phone.number }}</span
             ></span
           >
         </div>
-        <div class="row  q-mt-sm" v-if="selectedVendor.info">
+        <div class="row q-mt-sm" v-if="selectedVendor.info">
           <span class="heading-light col-3"> Website: </span>
-          <span class="q-ml-md col ">
+          <span class="q-ml-md col">
             {{
               selectedVendor.info.website ? selectedVendor.info.website : '-'
             }}</span
           >
         </div>
-        <div class="row  q-mt-sm" v-if="selectedVendor.info">
+        <div class="row q-mt-sm" v-if="selectedVendor.info">
           <span class="heading-light col-3"> Notes: </span>
-          <span class="q-ml-md col ">
+          <span class="q-ml-md col">
             {{
               selectedVendor.info.notes ? selectedVendor.info.notes : '-'
             }}</span
@@ -110,7 +110,6 @@
     </div>
     <q-dialog
       v-model="addMortgageDialog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"

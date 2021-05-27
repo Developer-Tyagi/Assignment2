@@ -18,11 +18,11 @@
         <q-separator />
 
         <div class="row q-mt-xs">
-          <div class="col-3 column  ">
+          <div class="col-3 column">
             {{ user.name }}
           </div>
           <div class="col-3">
-            <div class="q-mr-md  " v-if="user.mailingAddress">
+            <div class="q-mr-md" v-if="user.mailingAddress">
               {{
                 user.mailingAddress.streetAddress
                   ? user.mailingAddress.streetAddress
@@ -72,7 +72,6 @@
     <!-- Dialog For user Data -->
     <q-dialog
       v-model="editUserInfoDialog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
@@ -86,9 +85,9 @@
         </q-bar>
         <div style="height: calc(100% - 140px); overflow: auto" class="q-pa-md">
           <q-form ref="addUserForm" class="q-pa-md">
-            <div class=" q-mt-xs ">
+            <div class="q-mt-xs">
               <q-card class="q-mx-md q-pa-sm q-mb-sm">
-                <div class="row  full-width">
+                <div class="row full-width">
                   <q-input
                     v-model="users.fname"
                     dense
@@ -146,7 +145,7 @@
                     v-model="users.email"
                     style=""
                     label="Email"
-                    class="q-mx-md  col-5 required "
+                    class="q-mx-md col-5 required"
                     outlined
                     lazy-rules
                     :rules="[

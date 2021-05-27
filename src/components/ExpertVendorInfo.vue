@@ -3,7 +3,6 @@
     <!-- vendor list dialogbox -->
     <q-dialog
       v-model="vendorsListDialog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
@@ -30,7 +29,6 @@
     <!-- add vendor dialog -->
     <q-dialog
       v-model="addVendorDialog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
@@ -198,7 +196,7 @@
           </q-card>
         </div>
       </div>
-      <div class=" row justify-between" v-if="!claimExpertVendor">
+      <div class="row justify-between" v-if="!claimExpertVendor">
         <div>
           <q-btn
             v-if="expertVendorInfo.anyOtherExpertHiredToggle"

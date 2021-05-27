@@ -42,11 +42,11 @@
                 <q-separator />
                 <div class="row q-mt-xs">
                   <!-- {{ user }} -->
-                  <div class="col-3 column  ">
+                  <div class="col-3 column">
                     {{ user.name }}
                   </div>
                   <div class="col-3">
-                    <div class="q-mr-md  " v-if="user.mailingAddress">
+                    <div class="q-mr-md" v-if="user.mailingAddress">
                       {{
                         user.mailingAddress.streetAddress
                           ? user.mailingAddress.streetAddress
@@ -100,18 +100,23 @@
               </q-card>
             </q-tab-panel>
             <q-tab-panel name="groupPermission">
-              <q-card class="q-pa-lg  " flat bordered>
+              <q-card class="q-pa-lg" flat bordered>
                 <div class="row">
-                  <div class="" style="width:150px;">
-                    <div class="column text-bold ">
+                  <div class="" style="width: 150px">
+                    <div class="column text-bold">
                       <div
-                        style="height:47px; padding: 12px 20px;border:1px solid #ccc; font-size:15px;"
+                        style="
+                          height: 47px;
+                          padding: 12px 20px;
+                          border: 1px solid #ccc;
+                          font-size: 15px;
+                        "
                       >
                         Permission/Role
                       </div>
                       <table>
                         <tr v-for="(user, index) in permissions">
-                          <th style="height:26px; font-size:10px;">
+                          <th style="height: 26px; font-size: 10px">
                             {{ user.name }}
                           </th>
                         </tr>
@@ -119,7 +124,7 @@
                     </div>
                   </div>
 
-                  <div class="col " style="overflow-x:auto;">
+                  <div class="col" style="overflow-x: auto">
                     <table>
                       <tr>
                         <th v-for="(user, index) in roleTypes">
@@ -254,7 +259,6 @@
     <!-- Dialog For user Data -->
     <q-dialog
       v-model="editUserInfoDialog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
@@ -268,9 +272,9 @@
         </q-bar>
         <div style="height: calc(100% - 140px); overflow: auto" class="q-pa-md">
           <q-form ref="addUserForm" class="q-pa-md">
-            <div class=" q-mt-xs ">
+            <div class="q-mt-xs">
               <q-card class="q-mx-md q-pa-sm q-mb-sm">
-                <div class="row  full-width">
+                <div class="row full-width">
                   <q-input
                     v-model="users.fname"
                     dense
@@ -328,7 +332,7 @@
                     v-model="users.email"
                     style=""
                     label="Email"
-                    class="q-mx-md  col-5 required "
+                    class="q-mx-md col-5 required"
                     outlined
                     lazy-rules
                     :rules="[
@@ -364,7 +368,7 @@
     </q-dialog>
 
     <!-- Dialog Box for Adding Action Items -->
-    <q-dialog v-model="addDefaultActionDialogBox" persistent>
+    <q-dialog v-model="addDefaultActionDialogBox">
       <q-card style="width: 60%; height: 88vh">
         <q-bar class="row justify-between bg-primary" style="height: 50px">
           <div class="q-px-xs text-bold text-white">Add Action Item</div>

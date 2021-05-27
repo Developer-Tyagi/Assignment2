@@ -17,7 +17,7 @@
           <template v-slot:separator> </template>
           <div
             v-if="depth.length > 1"
-            class="row-div vertical-center q-px-sm q-py-xs "
+            class="row-div vertical-center q-px-sm q-py-xs"
             @click="onBackButtonClick"
           >
             <q-icon name="reply" size="sm" color="primary" />
@@ -41,7 +41,7 @@
         <div v-for="(doc, index) in documents" class="row-div">
           <div
             v-if="doc.type == 'folder'"
-            class="vertical-center q-px-md q-py-xs "
+            class="vertical-center q-px-md q-py-xs"
           >
             <q-icon name="folder" size="sm" color="primary" />
             <div class="q-pl-md" @click="onClickOnFile(doc)">
@@ -51,7 +51,7 @@
               @click="onShareClick(index)"
               name="more_vert"
               size="sm"
-              class="q-ml-auto "
+              class="q-ml-auto"
             />
           </div>
           <div
@@ -66,7 +66,7 @@
               @click="onShareClick(index)"
               name="more_vert"
               size="sm"
-              class="q-ml-auto "
+              class="q-ml-auto"
             />
           </div>
         </div>
@@ -77,7 +77,7 @@
     </div>
     <!-- Add Folder Dialog -->
 
-    <q-dialog v-model="addFolderDialog" persistent>
+    <q-dialog v-model="addFolderDialog">
       <q-card>
         <q-card-section class="row items-center">
           <q-avatar
@@ -102,7 +102,7 @@
 
     <!-- Add File Dialog  -->
 
-    <q-dialog v-model="addFileDialog" persistent>
+    <q-dialog v-model="addFileDialog">
       <q-card>
         <q-card-section class="row items-center">
           <q-avatar
@@ -139,10 +139,8 @@
       transition-hide="slide-down"
       :position="'bottom'"
     >
-      <q-card style="width: 550px; height:200px">
-        <div class="text-center q-mt-md text-bold">
-          Create New
-        </div>
+      <q-card style="width: 550px; height: 200px">
+        <div class="text-center q-mt-md text-bold">Create New</div>
         <q-card-section class="items-center form-heading q-ml-md">
           <div class="row q-ml-xl">
             <div class="column">
@@ -194,9 +192,9 @@
       transition-hide="slide-down"
       :position="'bottom'"
     >
-      <q-card style="width: 550px; height:200px">
+      <q-card style="width: 550px; height: 200px">
         <q-card-section class="items-center form-heading q-ml-md">
-          <div class="row q-ml-xl ">
+          <div class="row q-ml-xl">
             <div class="column q-ml-xl">
               <q-btn
                 name="upload"
@@ -216,9 +214,7 @@
                 style="width: 50px"
                 @click="(alert = true), (foldersAndFilesOptions = false)"
               />
-              <div class="form-heading q-ml-md">
-                Remove
-              </div>
+              <div class="form-heading q-ml-md">Remove</div>
             </div>
           </div>
         </q-card-section>
@@ -229,7 +225,6 @@
 
     <q-dialog
       v-model="shareDialog"
-      persistent
       transition-show="scale"
       transition-hide="scale"
     >
@@ -244,7 +239,7 @@
           <span class="q-ml-sm">Share</span>
         </q-card-section>
 
-        <q-card-section class="q-pt-none ">
+        <q-card-section class="q-pt-none">
           <div>
             <q-select
               v-model="role.value"
@@ -301,13 +296,11 @@
     <q-dialog v-model="assignDialog">
       <q-layout view="Lhh lpR fff" container class="bg-white">
         <div class="mobile-container-page">
-          <div class="text-bold q-ma-sm q-mb-none">
-            Select Person/Group
-          </div>
+          <div class="text-bold q-ma-sm q-mb-none">Select Person/Group</div>
 
           <div class="q-ma-lg">
             <q-card>
-              <div class="text-center q-mt-lg text-bold ">Users</div>
+              <div class="text-center q-mt-lg text-bold">Users</div>
               <q-separator class="bg-primary" />
               <div
                 v-for="user in allUsers"
@@ -332,7 +325,7 @@
           </div>
           <div class="q-ma-lg">
             <q-card>
-              <div class="text-center q-mt-lg text-bold ">Roles</div>
+              <div class="text-center q-mt-lg text-bold">Roles</div>
               <q-separator class="bg-primary" />
               <div
                 v-for="filter in claimRoles"
@@ -409,7 +402,7 @@
     </q-dialog>
 
     <!-- Upload File Dialog -->
-    <q-dialog v-model="uploadFileDailog" persistent>
+    <q-dialog v-model="uploadFileDailog">
       <q-card>
         <q-card-section class="row items-center">
           <q-avatar

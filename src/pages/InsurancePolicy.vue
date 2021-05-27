@@ -412,7 +412,6 @@
 
     <q-dialog
       v-model="insuranceInfoDialog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
@@ -446,7 +445,6 @@
 
     <q-dialog
       v-model="carriersListDialog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
@@ -471,7 +469,6 @@
 
     <q-dialog
       v-model="addCarrierDialog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
@@ -489,7 +486,6 @@
 
     <q-dialog
       v-model="adjustorListDialog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
@@ -627,7 +623,6 @@
 
     <q-dialog
       v-model="addPersonnelDialog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
@@ -654,7 +649,6 @@
 
     <q-dialog
       v-model="editPersonnelDialog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
@@ -683,7 +677,6 @@
 
     <q-dialog
       v-model="filterDialog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"

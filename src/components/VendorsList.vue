@@ -107,7 +107,6 @@
     </div>
     <q-dialog
       v-model="filterDialog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"

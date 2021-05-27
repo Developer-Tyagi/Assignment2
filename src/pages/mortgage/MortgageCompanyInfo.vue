@@ -4,13 +4,13 @@
       <span class="text-bold text-h6 q-ml-md">
         {{ selectedMortgage.name ? selectedMortgage.name : '-' }}
       </span>
-      <q-card class="q-ma-sm q-pa-sm ">
-        <div class="q-my-auto row q-mt-xs ">
+      <q-card class="q-ma-sm q-pa-sm">
+        <div class="q-my-auto row q-mt-xs">
           <q-icon
             size="xs"
             name="create "
             color="primary"
-            class="q-ml-auto "
+            class="q-ml-auto"
             @click="onEdit"
           ></q-icon>
 
@@ -70,7 +70,7 @@
               ></q-icon></div
           ></span>
         </div>
-        <div class="row  q-mt-sm" v-if="selectedMortgage.email">
+        <div class="row q-mt-sm" v-if="selectedMortgage.email">
           <span class="heading-light col-3"> Email </span>
           <span
             class="q-ml-md col clickLink"
@@ -79,23 +79,20 @@
             {{ selectedMortgage.email ? selectedMortgage.email : '-' }}</span
           >
         </div>
-        <div
-          class="row q-mt-sm  "
-          v-for="phone in selectedMortgage.phoneNumber"
-        >
+        <div class="row q-mt-sm" v-for="phone in selectedMortgage.phoneNumber">
           <span class="heading-light col-3"> Phone Number </span>
           <span class="col q-ml-md" v-if="phone.type">
             {{ phone.type }} :
             <span
-              class="clickLink "
+              class="clickLink"
               @click="onPhoneNumberClick(phone.number, $event)"
               >{{ phone.number ? phone.number : '-' }}</span
             ></span
           >
         </div>
-        <div class="row  q-mt-sm" v-if="selectedMortgage.info">
+        <div class="row q-mt-sm" v-if="selectedMortgage.info">
           <span class="heading-light col-3"> Website: </span>
-          <span class="q-ml-md col ">
+          <span class="q-ml-md col">
             {{
               selectedMortgage.info.website
                 ? selectedMortgage.info.website
@@ -103,9 +100,9 @@
             }}</span
           >
         </div>
-        <div class="row  q-mt-sm" v-if="selectedMortgage.info">
+        <div class="row q-mt-sm" v-if="selectedMortgage.info">
           <span class="heading-light col-3"> Notes: </span>
-          <span class="q-ml-md col ">
+          <span class="q-ml-md col">
             {{
               selectedMortgage.info.notes ? selectedMortgage.info.notes : '-'
             }}</span
@@ -116,7 +113,6 @@
 
     <q-dialog
       v-model="addMortgageDialog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"

@@ -38,7 +38,6 @@
     <!-- style="width: 90%" -->
     <q-dialog
       v-model="addNewTaskDialog"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
