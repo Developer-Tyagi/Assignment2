@@ -544,6 +544,7 @@
                 v-model="lossInfo.dateOfLoss"
                 mask="##/##/####"
                 label="MM/DD/YYYY"
+                :rules="[val => dateLiesBetween(val)]"
               >
                 <template v-slot:append>
                   <q-icon
@@ -665,6 +666,7 @@ import { mapGetters, mapActions } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import ClaimDetail from 'components/ClaimDetail';
 import moment from 'moment';
+import { validateDate } from '@utils/validation';
 import { date } from 'quasar';
 import { dateToShow, dateToSend } from '@utils/date';
 import { getCurrentUser } from '@utils/auth';
@@ -673,6 +675,10 @@ export default {
   components: { CustomBar, ClaimDetail },
   data() {
     return {
+      policyDate: {
+        policyEffectiveDate: '',
+        policyExpireDate: ''
+      },
       menuItemDialog: false,
       claimReasonOptions: [],
       phase: '',
@@ -751,7 +757,7 @@ export default {
     }
   },
 
-  created() {
+  async created() {
     this.userRole = getCurrentUser().attributes.roles[0];
     if (!this.selectedClaimId) {
       this.$router.push('/clients');
@@ -772,8 +778,10 @@ export default {
     if (this.getSelectedClaim.lossInfo.cause) {
       this.lossInfo.cause = this.getSelectedClaim.lossInfo.cause;
     }
-
-    this.getSingleClaimDetails(this.selectedClaimId);
+    await this.getSingleClaimDetails(this.selectedClaimId).then(() => {
+      this.policyDate.policyEffectiveDate = this.getSelectedClaim.policyInfo.effectiveDate;
+      this.policyDate.policyExpireDate = this.getSelectedClaim.policyInfo.expirationDate;
+    });
   },
   methods: {
     ...mapActions([
@@ -784,6 +792,8 @@ export default {
       'updateClaimTimeline'
     ]),
     dateToShow,
+    validateDate,
+
     onClickEditClaimTimeline(index) {
       this.claimPhase.notes = this.getSelectedClaim.phases[index].value;
       this.claimPhase.created = dateToShow(
@@ -791,6 +801,22 @@ export default {
       );
       this.phase = this.getSelectedClaim.phases[index].value;
       this.editClaimTimeline = true;
+    },
+    dateLiesBetween(val) {
+      console.log(val, 878);
+      if (validateDate(val)) {
+        if (Date.parse(val) < Date.parse(this.policyDate.policyEffectiveDate)) {
+          return 'Date is before policy effective date';
+        } else if (
+          Date.parse(val) > Date.parse(this.policyDate.policyExpireDate)
+        ) {
+          return 'Date is after policy expiry date';
+        } else {
+          return true;
+        }
+      } else {
+        return 'Invalid date';
+      }
     },
     onEditClaimSummary() {
       this.claimSummary = true;
@@ -883,9 +909,29 @@ export default {
       await this.getSingleClaimDetails(this.selectedClaimId);
       this[value] = false;
     },
-
     lossDateOption(dateopn) {
-      return dateopn <= date.formatDate(Date.now(), 'YYYY/MM/DD');
+      if (
+        date.formatDate(Date.now(), 'YYYY/MM/DD') <
+        date.formatDate(this.policyDate.policyExpireDate, 'YYYY/MM/DD')
+      ) {
+        return (
+          dateopn >=
+            date.formatDate(
+              this.policyDate.policyEffectiveDate,
+              'YYYY/MM/DD'
+            ) && dateopn <= date.formatDate(Date.now(), 'YYYY/MM/DD')
+        );
+      } else {
+        return (
+          dateopn >=
+            date.formatDate(
+              this.policyDate.policyEffectiveDate,
+              'YYYY/MM/DD'
+            ) &&
+          dateopn <=
+            date.formatDate(this.policyDate.policyExpireDate, 'YYYY/MM/DD')
+        );
+      }
     },
     setTypes(data) {
       const obj = this.lossCauses.find(item => {

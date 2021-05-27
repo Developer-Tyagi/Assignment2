@@ -1065,7 +1065,7 @@
                   icon="keyboard_backspace"
                   text-color="primary"
                   padding="md"
-                  @click="validateEstimatingInfo"
+                  type="submit"
                 />
               </div>
             </div>
