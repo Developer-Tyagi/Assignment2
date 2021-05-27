@@ -14,13 +14,27 @@
       </div>
 
       <div v-if="estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle">
-        <div
-          class="custom-select"
-          @click="onClickEstimatorOpen"
+        <q-input
+          class="q-mr-md"
+          v-model="estimatingInfo.estimatorID"
+          style="color: transparent"
+          maxlength="0"
+          placeholder="Click add for choosing a estimator"
           v-if="!estimatingInfo.estimatorID"
+          lazy-rules
+          :rules="[
+            val => (val && val.length > 0) || 'Please Choose the Estimator'
+          ]"
         >
-          <div class="select-text">Click for choosing a estimator</div>
-        </div>
+          <q-icon
+            class="q-mt-md"
+            name="person_add"
+            size="sm"
+            @click="onClickEstimatorOpen"
+            v-if="!estimatingInfo.estimatorID"
+          />
+        </q-input>
+
         <div>
           <q-card
             bordered
