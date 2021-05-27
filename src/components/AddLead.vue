@@ -923,7 +923,7 @@ export default {
     successMessage,
     onPhoneNumberClick,
     onEmailClick,
-
+    dateToShow,
     setTypes(types, data) {
       const obj = types.find(item => {
         return item.id === data.id;

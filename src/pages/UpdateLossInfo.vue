@@ -182,7 +182,7 @@
         >
           <span class="heading-light col-2"> Date of Loss:</span>
           <span class="q-ml-lg col">
-            {{ lossInfo.attributes.lossInfo.date | moment('MM/DD/YYYY') }}</span
+            {{ dateToShow(lossInfo.attributes.lossInfo.date) }}</span
           >
         </div>
 
@@ -195,9 +195,7 @@
         >
           <span class="heading-light col-2"> Deadline Date:</span>
           <span class="q-ml-lg col">
-            {{
-              lossInfo.attributes.lossInfo.deadlineDate | moment('MM/DD/YYYY')
-            }}</span
+            {{ dateToShow(lossInfo.attributes.lossInfo.deadlineDate) }}</span
           >
         </div>
         <div
@@ -209,9 +207,7 @@
         >
           <span class="heading-light col-2"> Recovery Date:</span>
           <span class="q-ml-lg col">
-            {{
-              lossInfo.attributes.lossInfo.recovDDDate | moment('MM/DD/YYYY')
-            }}</span
+            {{ dateToShow(lossInfo.attributes.lossInfo.recovDDDate) }}</span
           >
         </div>
         <div
@@ -396,7 +392,7 @@ export default {
       this.isMortgageHomeToggle = false;
     },
     validateDate,
-
+    dateToShow,
     async onSaveButtonClick() {
       let success = false;
       success = await this.$refs.lossInfoForm.validate();

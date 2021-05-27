@@ -57,7 +57,7 @@
                 <div class="row justify-between">
                   <div>Status: Negotiation</div>
                   <div>
-                    {{ client.created | moment('MM/DD/YYYY, hh:mm A') }}
+                    {{ dateWithTime(client.created) }}
                   </div>
                 </div>
               </div>
@@ -84,7 +84,7 @@
 
 <script>
 import { mapGetters, mapActions, mapMutations } from 'vuex';
-
+import { dateWithTime } from '@utils/date';
 export default {
   name: 'Clients',
   data() {
@@ -104,7 +104,7 @@ export default {
   methods: {
     ...mapActions(['getClients', 'getSingleClientDetails']),
     ...mapMutations(['setSelectedClientId', 'setSelectedLead']),
-
+    dateWithTime,
     onSearchBackButtonClick() {
       this.searchText = '';
       this.search();

@@ -201,7 +201,7 @@
                           <div class="row justify-between q-my-sm">
                             <div class="heading-light">Purchase Date</div>
                             <div class="q-mr-sm">
-                              {{ item.purchaseDate | moment('MM/DD/YYYY') }}
+                              {{ dateToShow(item.purchaseDate) }}
                             </div>
                           </div>
                         </div>
@@ -431,7 +431,7 @@
                           <div class="row justify-between q-my-sm">
                             <div class="heading-light">Purchase Date</div>
                             <div class="q-mr-sm">
-                              {{ item.purchaseDate | moment('MM/DD/YYYY') }}
+                              {{ dateToShow(item.purchaseDate) }}
                             </div>
                           </div>
                         </div>
@@ -726,7 +726,7 @@ import {
   successMessage
 } from '@utils/validation';
 import { constants } from '@utils/constant';
-import { dateToSend } from '@utils/date';
+import { dateToSend, dateToShow } from '@utils/date';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import VendorsList from 'components/VendorsList';
 import AddVendor from 'components/AddVendor';
@@ -1213,6 +1213,7 @@ export default {
         this.lossInfo.osDamagedItems.length = 0;
       }
     },
+    dateToShow,
     lossValue(value, index, damageType) {
       this.lossInfo[damageType][index] = value;
       this.lossInfo[damageType].push({

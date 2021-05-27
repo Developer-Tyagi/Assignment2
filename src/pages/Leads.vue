@@ -107,14 +107,14 @@
                           </span>
                         </span>
                         <span class="q-ml-auto" v-if="lead.lastVisted">
-                          {{ lead.lastVisted | moment('MM/DD/YYYY') }}
+                          {{ dateToShow(lead.lastVisted) }}
                         </span>
                         <span v-else class="q-ml-auto"> - </span>
                       </div>
                       <div>
                         Date of Loss:
                         <span v-if="lead.dateofLoss">{{
-                          lead.dateofLoss | moment('MM/DD/YYYY')
+                          dateToShow(lead.dateofLoss)
                         }}</span>
                         <span v-else> - </span>
                       </div>
@@ -194,15 +194,14 @@
                         </span>
                       </span>
                       <span class="q-ml-auto" v-if="lead.lastVisted">
-                        {{ lead.lastVisted | moment('MM/DD/YYYY') }}
+                        {{ dateToShow(lead.lastVisted) }}
                       </span>
                       <span v-else class="q-ml-auto"> - </span>
                     </div>
                     <div>
                       Date of Loss:
                       <span v-if="lead.dateofLoss">{{
-                        lead.dateofLoss &&
-                          lead.dateofLoss | moment('MM/DD/YYYY')
+                        lead.dateofLoss && dateToShow(lead.dateofLoss)
                       }}</span>
                       <span v-else> - </span>
                     </div>
@@ -231,6 +230,7 @@
 <script>
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import moment from 'moment';
+import { dateToShow } from '@utils/date';
 import { onPhoneNumberClick } from '@utils/clickable';
 
 export default {
@@ -262,6 +262,7 @@ export default {
       'getArchivedLeadsList',
       'addLeadToArchiveList'
     ]),
+    dateToShow,
     ...mapMutations(['setSelectedLead']),
 
     onCreateClientButtonClick(lead) {

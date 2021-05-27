@@ -137,7 +137,7 @@
             </div>
             <div class="row">
               <div class="q-ml-auto">
-                {{ claim.attributes.created | moment('MM/DD/YYYY') }}
+                {{ dateToShow(claim.attributes.created) }}
               </div>
             </div>
           </q-card-section>
@@ -156,6 +156,7 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import { dateToShow } from '@utils/date';
 export default {
   data() {
     return {
@@ -177,7 +178,8 @@ export default {
       'getLeadStatistics',
       'getClientStatistics',
       'getClaims'
-    ])
+    ]),
+    dateToShow
   },
   computed: {
     ...mapGetters(['claimStatic', 'leadStatic', 'clientStatic', 'claims'])

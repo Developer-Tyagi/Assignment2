@@ -44,9 +44,7 @@
       </div>
       <div class="q-ml-md">Date & Time of First Contact</div>
       <div class="q-ml-md">
-        {{
-          editSelectedClient.attributes.created | moment('MM/DD/YYYY, hh:mm A')
-        }}
+        {{ dateWithTime(editSelectedClient.attributes.created) }}
       </div>
 
       <q-card class="q-ma-md q-ma-sm">
@@ -657,7 +655,8 @@ import { mapGetters, mapActions } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import { validateEmail, successMessage } from '@utils/validation';
 import AddressService from '@utils/country';
-import { dateToTime, dateToShow } from '@utils/date';
+
+import { dateWithTime } from '@utils/date';
 import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import { constants } from '@utils/constant';
@@ -836,7 +835,7 @@ export default {
       'getSingleClientDetails'
     ]),
     sendMap,
-
+    dateWithTime,
     setTypes(types, data) {
       const obj = types.find(item => {
         return item.id === data.id;
