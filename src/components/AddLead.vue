@@ -209,8 +209,8 @@
               <q-select
                 dense
                 class="input-extra-padding"
-                v-model="lossDetails.causeOfLoss.id"
-                option-value="id"
+                v-model="lossDetails.causeOfLoss.value"
+                option-value="name"
                 option-label="name"
                 map-options
                 options-dense
@@ -926,11 +926,11 @@ export default {
 
     setTypes(types, data) {
       const obj = types.find(item => {
-        return item.id === data.id;
+        return item.name === data.value;
       });
 
       data.machineValue = obj.machineValue;
-      data.value = obj.name;
+      data.id = obj.id;
     },
 
     searchByCause(val, update) {
