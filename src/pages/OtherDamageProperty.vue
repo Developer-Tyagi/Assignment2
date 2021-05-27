@@ -287,7 +287,7 @@
             <q-btn
               label="Save"
               color="primary"
-              class="full-width text-capitalize"
+              class="button-width-90"
               size="'xl'"
               @click="onClickSave"
             ></q-btn>

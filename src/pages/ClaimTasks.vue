@@ -28,7 +28,7 @@
     <q-btn
       label="add custom task"
       color="primary"
-      class=" fixed-bottom full-width q-mt-auto text-capitalize"
+      class="button-width-90"
       @click="addNewTaskDialog = true"
       size="md"
       style="width: 90%"

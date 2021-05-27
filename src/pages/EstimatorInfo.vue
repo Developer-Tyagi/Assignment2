@@ -64,7 +64,7 @@
           @closeDialog="addEstimatorDialog = false"
           :dialogName="'Estimating Info'"
         />
-        <div class="q-ma-md mobile-container-page listing-height">
+        <div class="q-ma-sm mobile-container-page listing-height">
           <q-form>
             <EstimatingInfo
               :estimatingInfo="estimatorInfo"
@@ -75,7 +75,7 @@
         <q-btn
           label="Save"
           color="primary"
-          class="full-width  text-capitalize"
+          class="button-width-90"
           size="'xl'"
           @click="validateEstimatingInfo"
         />
