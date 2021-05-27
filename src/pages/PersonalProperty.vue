@@ -47,7 +47,7 @@
             <div class="row justify-between q-my-sm">
               <div class="heading-light">Purchase Date</div>
               <div class="q-mr-sm">
-                {{ damage.purchaseDate | moment('MM/DD/YYYY') }}
+                {{ dateToShow(damage.purchaseDate) }}
               </div>
             </div>
           </div>
@@ -347,6 +347,7 @@ export default {
       'getDamageInfo',
       'updateDamageItem'
     ]),
+    dateToShow,
     OnEditPPdamageItem(index) {
       this.isEdit = true;
       this.itemId = this.damageInfo.damageInfo.personal.items[index].id;

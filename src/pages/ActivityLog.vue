@@ -17,7 +17,7 @@
           >
             <div class="row q-my-sm">
               <div class="col-10 heading-light">
-                {{ logItem.created | moment('DD/MM/YYYY, hh:mm A') }}
+                {{ dateWithTime(logItem.created) }}
               </div>
               <q-icon
                 size="xs"
@@ -124,7 +124,7 @@
             </div>
             <div v-else>
               <div class="heading-light">
-                {{ date | moment('MMM DD, YYYY, hh:mm A') }}
+                {{ dateWithTime(date) }}
               </div>
               <div class="q-mt-sm">{{ edit.title }}</div>
               <div class="heading-light q-mt-sm">Entered By {{ name }}</div>
@@ -165,6 +165,7 @@ import CustomBar from 'components/CustomBar';
 import moment from 'moment';
 import { successMessage } from '@utils/validation';
 import { constants } from '@utils/constant';
+import { dateWithTime } from '@utils/date';
 import ClaimDetail from 'components/ClaimDetail';
 export default {
   name: 'ActivityLog',
@@ -196,6 +197,7 @@ export default {
       this.$router.push('/clients');
     }
   },
+
   computed: {
     ...mapGetters(['selectedClaimId', 'log']),
 
@@ -226,6 +228,7 @@ export default {
         this.isFieldDisable = false;
       }
     },
+    dateWithTime,
     //  Save Function
     async onSaveButtonClick() {
       let success = true;

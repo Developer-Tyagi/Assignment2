@@ -115,7 +115,7 @@
     <div class="row  q-mt-sm">
       <span class="heading-light col-3"> Loss Date </span>
       <span class="q-ml-md col" v-if="getSelectedClaim.lossInfo">
-        {{ getSelectedClaim.lossInfo.date | moment('MM/DD/YYYY') }}</span
+        {{ dateToShow(getSelectedClaim.lossInfo.date) }}</span
       >
     </div>
     <div class="row q-mt-sm">
@@ -140,7 +140,7 @@
 import { mapGetters, mapActions } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import moment from 'moment';
-
+import { dateToShow } from '@utils/date';
 export default {
   name: 'Claims',
   components: { CustomBar },
@@ -169,6 +169,7 @@ export default {
       'markClaimUnFavorite',
       'markClaimFavorite'
     ]),
+    dateToShow,
     async onClickFavorite() {
       if (this.getSelectedClaim.isFavourite == false) {
         await this.markClaimUnFavorite(this.selectedClaimId);

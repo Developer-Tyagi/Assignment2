@@ -81,17 +81,14 @@
           <div class="row q-mt-sm">
             <span class="heading-light col-4"> Date of Contract </span>
             <span class="q-ml-md" v-if="getSelectedClaim.contractInfo">
-              {{
-                getSelectedClaim.contractInfo.dateOfFirstContact
-                  | moment('MM/DD/YYYY')
-              }}
+              {{ dateToShow(getSelectedClaim.contractInfo.dateOfFirstContact) }}
             </span>
             <span class="q-ml-md" v-else> MM/DD/YYYY</span>
           </div>
           <div class="row q-mt-sm">
             <span class="heading-light col-4"> Date of Notified </span>
             <span class="q-ml-md" v-if="getSelectedClaim.contractInfo">
-              {{ getSelectedClaim.contractInfo.date | moment('MM/DD/YYYY') }}
+              {{ dateToShow(getSelectedClaim.contractInfo.date) }}
             </span>
             <span v-else class="q-ml-md"> MM/DD/YYYY</span>
           </div>
@@ -163,7 +160,7 @@
           <div class="row q-mt-sm">
             <span class="heading-light col-4"> Date & Time of Loss </span>
             <span class="q-ml-md col">
-              {{ getSelectedClaim.lossInfo.date | moment('MM/DD/YYYY') }}
+              {{ dateToShow(getSelectedClaim.lossInfo.date) }}
             </span>
           </div>
 
@@ -786,6 +783,7 @@ export default {
       'editClaimInfo',
       'updateClaimTimeline'
     ]),
+    dateToShow,
     onClickEditClaimTimeline(index) {
       this.claimPhase.notes = this.getSelectedClaim.phases[index].value;
       this.claimPhase.created = dateToShow(

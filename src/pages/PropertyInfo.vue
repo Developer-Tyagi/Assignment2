@@ -161,7 +161,7 @@
                 <div class="row q-ma-md">
                   <div class="col-4 heading-light">Date of Loss</div>
                   <div v-if="claim.lossDate">
-                    {{ claim.lossDate | moment('MM/DD/YYYY') }}
+                    {{ dateToShow(claim.lossDate) }}
                   </div>
                   <div v-else>-</div>
                 </div>
@@ -298,6 +298,7 @@ import { mapGetters, mapActions, mapMutations } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import moment from 'moment';
+import { dateToShow } from '@utils/date';
 import { successMessage } from '@utils/validation';
 import { constants } from '@utils/constant';
 
@@ -371,6 +372,7 @@ export default {
 
       this.$router.push('/claim-details');
     },
+    dateToShow,
     setTypes(types, data) {
       const obj = types.find(item => {
         return item.id === data.id;

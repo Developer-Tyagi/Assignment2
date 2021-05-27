@@ -665,7 +665,7 @@
                           <div class="row justify-between q-my-sm">
                             <div class="heading-light">Purchase Date</div>
                             <div class="q-mr-sm">
-                              {{ item.purchaseDate | moment('DD/MM/YYYY') }}
+                              {{ dateToShow(item.purchaseDate) }}
                             </div>
                           </div>
                         </div>
@@ -896,7 +896,7 @@
                           <div class="row justify-between q-my-sm">
                             <div class="heading-light">Purchase Date</div>
                             <div class="q-mr-sm">
-                              {{ item.purchaseDate | moment('DD/MM/YYYY') }}
+                              {{ dateToShow(item.purchaseDate) }}
                             </div>
                           </div>
                         </div>
@@ -1184,7 +1184,8 @@ import PropertyInfo from 'components/PropertyInfo';
 import LossInfo from 'components/LossInfo';
 import ExpertVendorInfo from 'components/ExpertVendorInfo';
 import InsuranceInfo from 'components/InsuranceInfo';
-import { dateToSend } from '@utils/date';
+import { dateToSend, dateToShow } from '@utils/date';
+
 import {
   validateEmail,
   validateDate,
@@ -1689,7 +1690,7 @@ export default {
     ]),
     ...mapMutations(['setSelectedLead']),
     successMessage,
-
+    dateToShow,
     onDamageOsToggleButtonOff() {
       if (!this.lossInfo.isDamageOSToggle) {
         this.lossInfo.osDamagedItems.length = 0;
