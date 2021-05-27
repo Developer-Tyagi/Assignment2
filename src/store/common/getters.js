@@ -14,6 +14,7 @@ export const clientTypes = state => state.clientTypes;
 
 export const roleTypes = state => state.roleTypes;
 export const permissions = state => state.permissions;
+export const templates = state => state.templates;
 
 export const userRoles = state => state.userRoles;
 
