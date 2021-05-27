@@ -8,7 +8,7 @@
     />
 
     <div class="vertical-center q-px-md q-py-sm ">
-      <div class="row q-mt-sm">
+      <div class="row q-mt-sm" v-if="proofOfLoss.documents.length">
         <q-icon name="picture_as_pdf" size="sm" color="primary" />
         <span
           class="q-pl-md"
@@ -18,6 +18,14 @@
             proofOfLoss.documents.name ? proofOfLoss.documents.name : '-'
           }}</span
         >
+      </div>
+
+      <div v-else class="full-height full-width column">
+        <div class="column absolute-center">
+          <div style="color: #666666,align-items: center">
+            no document found
+          </div>
+        </div>
       </div>
     </div>
 
