@@ -72,7 +72,10 @@
               <td class="text-center">-</td>
 
               <td class="text-center">-</td>
-              <td class="text-center">
+              <td
+                class="text-center"
+                v-if="user.attributes.roles[0].machineValue != 'owner'"
+              >
                 <div>
                   <q-btn-dropdown label="Action" style="width: 100px" outline>
                     <q-list style="width: 100px">
@@ -527,7 +530,7 @@ export default {
           lname: ''
         },
         email: '',
-        roles: [{ value: '', machineValue: '' }]
+        roles: []
       },
       options: [
         'View/Edit',
@@ -576,8 +579,7 @@ export default {
     selectedRole(newVal, oldVal) {
       if (newVal) {
         var user = this.roleTypes.find(o => o.name === newVal);
-        this.users.roles[0].value = user.name;
-        this.users.roles[0].machineValue = user.machineValue;
+        this.users.roles[0] = user.machineValue;
       }
     }
   },
@@ -602,7 +604,6 @@ export default {
       this.selected_roles = existingRoles.attributes.roles;
       this.addNewRoles = true;
     },
-
     onSaveChangeRole() {
       const payload = {
         id: this.singleUserID,
