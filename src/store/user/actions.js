@@ -422,7 +422,7 @@ export async function editUserInfo({ dispatch, state }, user) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'positive',
-      message: 'Vendor info  Updated !'
+      message: 'User info  Updated !'
     });
   } catch (e) {
     console.log(e);
