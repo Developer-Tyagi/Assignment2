@@ -88,7 +88,7 @@ export default {
   },
   methods: {
     ...mapActions(['verifyOobCode', 'setPassword', 'userLogin', 'getUserInfo']),
-    ...mapMutations('setSelectedClaimId'),
+    ...mapMutations(['setSelectedClaimId']),
 
     checkConfirmPassword() {
       if (this.password.password === this.password.confirm) {

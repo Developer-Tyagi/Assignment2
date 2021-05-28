@@ -264,7 +264,7 @@ export default {
     createSidebarMenuItems() {
       const roles = getCurrentUser().attributes.roles;
       roles.forEach(role => {
-        this[role].forEach(item => {
+        this[role.machineValue].forEach(item => {
           let obj = this.linksData.find(link => link.key === item);
           let index = this.sidebarItems.findIndex(x => x.key === obj.key);
           if (index < 0) {
