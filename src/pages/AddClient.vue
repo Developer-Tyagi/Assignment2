@@ -2218,7 +2218,10 @@ export default {
 
       const response = await this.addClaim(payload);
       if (response && response.id) {
-        if (this.officeTask.officeActionRequired) {
+        if (
+          this.officeTask.officeActionRequired &&
+          this.officeTask.actions.length
+        ) {
           this.addMultipleOfficeTask(response.id);
         } else {
           this.$router.push('/clients');

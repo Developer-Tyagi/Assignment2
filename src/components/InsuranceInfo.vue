@@ -586,13 +586,16 @@ export default {
       data.machineValue = obj.machineValue;
       data.id = obj.id;
     },
-    onChaningPolicyEffectiveDate(dateRef) {
-      this.insuranceDetails.policyExpireDate = date.formatDate(
-        date.addToDate(this.insuranceDetails.policyEffectiveDate, {
-          year: 1
-        }),
-        'MM/DD/YYYY'
-      );
+    async onChaningPolicyEffectiveDate(newValue) {
+      this.$nextTick(function() {
+        this.insuranceDetails.policyExpireDate = date.formatDate(
+          date.addToDate(this.insuranceDetails.policyEffectiveDate, {
+            year: 1
+          }),
+          'MM/DD/YYYY'
+        );
+        this.$refs.qDateProxy.hide();
+      });
     }
   }
 };
