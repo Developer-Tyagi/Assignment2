@@ -45,6 +45,11 @@ spec:
           #   limits:
           #     memory: "100Mi"
           #     cpu: "10m"
+      tolerations:
+        - key: 'workloadType'
+          operator: 'Equal'
+          value: 'app'
+          effect: 'NoSchedule'
 ---
 # Service
 apiVersion: v1
