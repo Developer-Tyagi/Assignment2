@@ -9,6 +9,7 @@ export default function() {
     lossCauses: [],
     roleTypes: [],
     permissions: [],
+    templates: [],
     fileRoleOptions: [
       { value: 'View Access', name: 'reader' },
       { value: 'Edit Access', name: 'writer' }

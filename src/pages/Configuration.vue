@@ -101,77 +101,56 @@
         </div>
       </div>
       <div v-else>
-        <div class="q-pa-md q-gutter-sm">
-          <q-card class="q-pa-sm" style="height: 500px">
-            <div class="text-bold q-my-xs">TITLE</div>
-            <div>
-              <q-select
-                dense
-                class="input-extra-padding q-ma-sm required"
-                v-model="templatetype.value"
-                option-value="name"
-                option-label="name"
-                map-options
-                options-dense
-                behavior="menu"
-                emit-value
-                :options="templateOptions"
-                @input="setTypes(templatetype.value)"
-                label="List of Templates"
-                lazy-rules
-                :rules="[
-                  val => (val && val.length > 0) || 'Please fill the template'
-                ]"
-              />
-            </div>
-            <div class="text-bold q-py-sm">BODY</div>
+        <div class="q-mx-md">
+          <div class="row full-width justify-between">
+            <span class="text-bold" style="line-height: 36px">{{
+              tab.name
+            }}</span>
+            <q-btn @click="addTemplateDialogBox = true" color="primary">
+              Add Template
+            </q-btn>
+          </div>
+          <div
+            class="bg-grey-3 q-mt-md"
+            style="
+            position: relative;
+            height: calc(100vh - 170px);
+            overflow: auto;
+            display: flex;
+          "
+          >
+            <table class="table" v-if="table.length">
+              <thead>
+                <tr class="table-tr">
+                  <th class="table-th">Name</th>
+                  <th class="table-th">Template Value</th>
+                  <th class="table-th">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="table-tr" v-for="list in templates">
+                  <td class="table-td">{{ list.name.type.value }}</td>
+                  <td class="table-td">{{ list.name.value }}</td>
+                  <td class="table-td">
+                    <span>
+                      <q-icon size="sm" color="primary" name="create" />
+                    </span>
+                    <span>
+                      <q-icon
+                        class="q-ml-xs"
+                        size="sm"
+                        color="primary"
+                        name="delete"
+                      />
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
 
-            <q-editor
-              v-model="post.body"
-              :definitions="{
-                save: {
-                  tip: 'Save your work',
-                  icon: 'save',
-                  label: 'Save',
-                  handler: uploadIt
-                },
-                upload: {
-                  tip: 'Upload to cloud',
-                  icon: 'insert_photo',
-                  label: 'Upload',
-                  handler: insertImg
-                },
-                create: {
-                  tip: 'Upload token',
-                  icon: 'add_circle',
-                  label: 'Token',
-                  handler: tokenDialog
-                }
-              }"
-              :toolbar="[
-                [
-                  'bold',
-                  'italic',
-                  'strike',
-                  'underline',
-                  'right',
-                  'center',
-                  'justify',
-                  'left',
-                  'print'
-                ],
-                ['upload', 'save', 'create']
-              ]"
-            >
-            </q-editor>
-          </q-card>
-          <div class="row justify-center">
-            <q-btn
-              color="primary"
-              label="Save"
-              @click="onSaveTemplate"
-              class="align-content-center q-my-lg"
-            />
+            <div class="q-pa-lg q-ma-auto" v-else>
+              You Have Not Added AnyYet
+            </div>
           </div>
         </div>
       </div>
@@ -334,6 +313,104 @@
         </table>
       </q-card>
     </q-dialog>
+    <q-dialog
+      v-model="addTemplateDialogBox"
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card style="height: 70%;width:60%;">
+        <div class="row justify-between bg-primary" style="height: 50px">
+          <div class=" text-white text-h6 q-pa-sm">Add Template</div>
+          <q-btn dense flat icon="close" color="black" v-close-popup>
+            <q-tooltip>Close</q-tooltip>
+          </q-btn>
+        </div>
+        <div class="q-mx-lg">
+          <div
+            style="
+            height: calc(100vh - 450px);
+            overflow-y: auto;
+            margin-bottom: 10px;
+          "
+          >
+            <div class="text-bold q-mt-md ">Template Name</div>
+            <div class="q-mb-md">
+              <q-input label="Template Name" />
+            </div>
+            <div class="text-bold ">Template Type</div>
+            <div>
+              <q-select
+                dense
+                class="input-extra-padding q-ma-sm required"
+                v-model="templatetype.value"
+                option-value="name"
+                option-label="name"
+                map-options
+                options-dense
+                behavior="menu"
+                emit-value
+                :options="templateOptions"
+                @input="setTypes(templatetype.value)"
+                label="List of Templates"
+                lazy-rules
+                :rules="[
+                  val => (val && val.length > 0) || 'Please fill the template'
+                ]"
+              />
+            </div>
+            <div class="text-bold q-py-sm">BODY</div>
+
+            <q-editor
+              v-model="post.body"
+              :definitions="{
+                save: {
+                  tip: 'Save your work',
+                  icon: 'save',
+                  label: 'Save',
+                  handler: uploadIt
+                },
+                upload: {
+                  tip: 'Upload to cloud',
+                  icon: 'insert_photo',
+                  label: 'Upload',
+                  handler: insertImg
+                },
+                create: {
+                  tip: 'Upload token',
+                  icon: 'add_circle',
+                  label: 'Token',
+                  handler: tokenDialog
+                }
+              }"
+              :toolbar="[
+                [
+                  'bold',
+                  'italic',
+                  'strike',
+                  'underline',
+                  'right',
+                  'center',
+                  'justify',
+                  'left',
+                  'print'
+                ],
+                ['upload', 'save', 'create']
+              ]"
+            >
+            </q-editor>
+          </div>
+          <div class="row justify-center">
+            <q-btn
+              color="primary"
+              label="Save"
+              @click="onSaveTemplate"
+              class="align-content-center q-my-lg"
+            />
+          </div>
+        </div>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 <script>
@@ -351,6 +428,7 @@ export default {
 
   data() {
     return {
+      addTemplateDialogBox: false,
       tokenDialogBox: false,
       templatetype: { value: '', machineValue: '' },
       definitions: {
@@ -395,6 +473,7 @@ export default {
   created() {
     this.getTemplates();
     this.getTemplateToken();
+    this.getAllTemplate();
     this.getInspectionTypes().then(async () => {
       this.table = this.inspectionTypes;
     });
@@ -415,7 +494,8 @@ export default {
       'lossCauses',
       'claimSeverity',
       'templateOptions',
-      'tokens'
+      'tokens',
+      'templates'
     ])
   },
 
@@ -447,7 +527,8 @@ export default {
       'getLossCauses',
       'getTemplates',
       'addTemplate',
-      'getTemplateToken'
+      'getTemplateToken',
+      'getAllTemplate'
     ]),
     async onSaveTemplate() {
       const payload = {
@@ -457,7 +538,11 @@ export default {
           value: this.templatetype.value
         }
       };
-      await this.addTemplate(payload);
+      const success = await this.addTemplate(payload);
+      if (success) {
+        this.addTemplateDialogBox = false;
+        await this.getAllTemplate();
+      }
     },
     setTypes(value) {
       const obj = this.templateOptions.find(item => {

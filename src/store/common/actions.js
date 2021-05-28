@@ -272,6 +272,7 @@ export async function addTemplate({ dispatch, state }, payload) {
     );
 
     dispatch('setLoading', false);
+    return true;
   } catch (e) {
     console.log(e);
     dispatch('setLoading', false);
@@ -280,6 +281,21 @@ export async function addTemplate({ dispatch, state }, payload) {
       message: e.response[0].title
     });
     return false;
+  }
+}
+export async function getAllTemplate({ commit, dispatch }) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get('/templates');
+    commit('setAllTemplate', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
   }
 }
 
