@@ -47,7 +47,15 @@
                   <div class="row">
                     <span
                       >Mob:
-                      <span>
+                      <span
+                        class="clickLink"
+                        @click="
+                          onPhoneNumberClick(
+                            client.insuredInfo.primary.phoneNumber[0].number,
+                            $event
+                          )
+                        "
+                      >
                         {{ client.insuredInfo.primary.phoneNumber[0].number }}
                       </span>
                     </span>
@@ -85,6 +93,8 @@
 <script>
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import { dateWithTime } from '@utils/date';
+import { onPhoneNumberClick } from '@utils/clickable';
+
 export default {
   name: 'Clients',
   data() {
@@ -105,6 +115,7 @@ export default {
     ...mapActions(['getClients', 'getSingleClientDetails']),
     ...mapMutations(['setSelectedClientId', 'setSelectedLead']),
     dateWithTime,
+    onPhoneNumberClick,
     onSearchBackButtonClick() {
       this.searchText = '';
       this.search();

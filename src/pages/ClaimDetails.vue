@@ -5,28 +5,23 @@
       @click="editClaimDetails = true"
       name="more_vert"
     />
-    <div class="mobile-container-page-without-search">
-      <div class="column full-height">
-        <div>
-          <div class="mobile-container-page">
-            <ClaimDetail />
 
-            <q-item-section class="q-mt-md" v-if="userRole != 'estimator'">
-              <div
-                v-for="item in ClaimDetails"
-                :key="item.name"
-                @click="onClickClaimItems(item.name)"
-                class="row q-ma-sm"
-              >
-                <q-card class="q-ma-xs q-pa-md full-width">
-                  {{ item.name }}
-                </q-card>
-              </div>
-            </q-item-section>
-          </div>
+    <div class=" listing-height">
+      <ClaimDetail />
+      <q-item-section class="q-mt-md" v-if="userRole != 'estimator'">
+        <div
+          v-for="item in ClaimDetails"
+          :key="item.name"
+          @click="onClickClaimItems(item.name)"
+          class="row q-ma-sm"
+        >
+          <q-card class="q-ma-xs q-pa-md full-width">
+            {{ item.name }}
+          </q-card>
         </div>
-      </div>
+      </q-item-section>
     </div>
+
     <q-dialog
       v-model="editClaimDetails"
       :maximized="true"
@@ -352,3 +347,9 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent; /* make scrollbar transparent */
+}
+</style>
