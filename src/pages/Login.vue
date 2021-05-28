@@ -144,7 +144,6 @@ export default {
       if (this.login.email && this.login.password) {
         const response = await this.userLogin(loginData);
         if (response) {
-          console.log();
           await this.getUserInfo();
           if (isPushNotificationsAvailable) {
             PushNotifications.requestPermission().then(result => {

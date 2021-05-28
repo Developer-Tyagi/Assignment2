@@ -160,6 +160,7 @@ export async function getRoles({
     dispatch('setLoading', true);
     try {
       const { data } = await request.get('/roles');
+
       commit('setRoles', data);
       dispatch('setLoading', false);
     } catch (e) {

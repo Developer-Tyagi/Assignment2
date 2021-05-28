@@ -34,7 +34,6 @@ export async function getUserInfo({ dispatch, state }) {
   try {
     const { data } = await request.get('/users/me');
     setCurrentUser(data);
-
     dispatch('setLoading', false);
     return data;
   } catch (e) {
