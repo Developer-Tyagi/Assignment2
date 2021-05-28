@@ -1581,12 +1581,15 @@ export default {
         value: this.selectedLead.primaryContact.honorific.value,
         machineValue: this.selectedLead.primaryContact.honorific.machineValue
       };
+      this.primaryDetails.isOrganization = this.selectedLead.isOrganization;
+      if (this.primaryDetails.isOrganization) {
+        this.primaryDetails.organizationName = this.selectedLead.organizationName;
+      }
       this.insuredDetails.fname = this.selectedLead.primaryContact.fname;
       this.insuredDetails.lname = this.selectedLead.primaryContact.lname;
       this.insuredDetails.email = this.selectedLead.primaryContact.email;
       this.insuredDetails.phone = this.selectedLead.primaryContact.phoneNumber[0].number;
       this.insuredDetails.type = this.selectedLead.primaryContact.phoneNumber[0].type;
-      this.propertyDescription = this.selectedLead.lossDesc;
       this.clientAddressDetails.houseNumber = this.selectedLead.lossLocation.houseNumber;
       this.clientAddressDetails.addressCountry = this.selectedLead.lossLocation.addressCountry;
       this.clientAddressDetails.addressLocality = this.selectedLead.lossLocation.addressLocality;
