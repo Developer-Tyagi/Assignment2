@@ -113,15 +113,22 @@ export default {
         labels: [
           'New Lead',
           'Scheduled',
-          'Visited',
-          'Follow up ',
+          // 'Visited',
+          // 'Follow up ',
           'Leads Converted',
           'Dead Leads'
         ],
         datasets: [
           {
             backgroundColor: '#1B2854',
-            data: [5, 8, 15, 10, 7, 3]
+            data: [
+              this.leadStatic.new,
+              this.leadStatic.scheduled,
+              // 15,
+              // 10,
+              this.leadStatic.converted,
+              this.leadStatic.dead
+            ]
           }
         ]
       };
