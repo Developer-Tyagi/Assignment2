@@ -222,7 +222,6 @@ export default {
   created() {
     this.getContactTypes();
     if (getCurrentUser().attributes) {
-      console.log(getCurrentUser().attributes, 667);
       this.user = getCurrentUser().attributes;
       this.userId = getCurrentUser().id;
     }
