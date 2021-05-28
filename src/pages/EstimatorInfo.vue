@@ -1,54 +1,61 @@
 <template>
   <q-page>
-    <div class="row" v-if="!addEstimatorDialog">
-      <q-btn
-        size="sm"
-        name="create"
-        class="add-icon"
-        flat
-        @click="addEstimatorDialog = true"
-        ><img src="~assets/add.svg"
-      /></q-btn>
-    </div>
     <ClaimDetail />
     <div>
-      <q-card class="q-pa-md q-ma-md">
-        <div class="text-bold">
-          {{ estimator.estimator.name ? estimator.estimator.name : '-' }}
-        </div>
+      <div v-if="estimator.estimator">
+        <q-card class="q-pa-md q-ma-md">
+          <div class="text-bold">
+            {{ estimator.estimator.name ? estimator.estimator.name : '-' }}
+          </div>
 
-        <div class="row q-mt-sm">
-          <span class="heading-light col-2"> Email</span>
-          <span
-            class="q-ml-lg col clickLink"
-            @click="onEmailClick(estimator.estimator.email, $event)"
-          >
-            {{
-              estimator.estimator.email ? estimator.estimator.email : '-'
-            }}</span
-          >
+          <div class="row q-mt-sm">
+            <span class="heading-light col-2"> Email</span>
+            <span
+              class="q-ml-lg col clickLink"
+              @click="onEmailClick(estimator.estimator.email, $event)"
+            >
+              {{
+                estimator.estimator.email ? estimator.estimator.email : '-'
+              }}</span
+            >
+          </div>
+          <div class="row q-mt-sm" v-if="estimator.estimator.phoneNumber">
+            <span class="heading-light col-2"> Phone Number</span>
+            <span
+              class="q-ml-lg col clickLink"
+              @click="
+                onPhoneNumberClick(estimator.estimator.phoneNumber[0], $event)
+              "
+            >
+              {{
+                estimator.estimator.phoneNumber[0].type
+                  ? estimator.estimator.phoneNumber[0].type
+                  : '-'
+              }}
+              {{
+                estimator.estimator.phoneNumber[0].number
+                  ? estimator.estimator.phoneNumber[0].number
+                  : '-'
+              }}</span
+            >
+          </div>
+        </q-card>
+      </div>
+      <div v-else class="full-height full-width">
+        <div class="absolute-center">
+          <div style="color: #666666; width: 110%; margin-top: 120px">
+            You haven't added a estimator yet.
+          </div>
+          <img
+            class="q-mx-lg q-pt-sm"
+            src="~assets/add.svg"
+            alt="add_icon"
+            @click="addEstimatorDialog = true"
+            width="130px"
+            height="100px"
+          />
         </div>
-        <div class="row q-mt-sm" v-if="estimator.estimator.phoneNumber">
-          <span class="heading-light col-2"> Phone Number</span>
-          <span
-            class="q-ml-lg col clickLink"
-            @click="
-              onPhoneNumberClick(estimator.estimator.phoneNumber[0], $event)
-            "
-          >
-            {{
-              estimator.estimator.phoneNumber[0].type
-                ? estimator.estimator.phoneNumber[0].type
-                : '-'
-            }}
-            {{
-              estimator.estimator.phoneNumber[0].number
-                ? estimator.estimator.phoneNumber[0].number
-                : '-'
-            }}</span
-          >
-        </div>
-      </q-card>
+      </div>
     </div>
     <!-- Add Estimator Dialog  -->
 
