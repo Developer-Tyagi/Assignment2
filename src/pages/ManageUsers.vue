@@ -33,10 +33,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr
-              v-for="user in allUsers"
-              v-if="user.attributes.roles[0] != 'owner'"
-            >
+            <tr v-for="user in allUsers">
               <td class="text-center">
                 {{
                   user.attributes.contact.fname
@@ -68,7 +65,9 @@
               </td>
               <td class="text-center">-</td>
               <td class="text-center">
-                {{ user.attributes.roles ? user.attributes.roles[0] : '-' }}
+                {{
+                  user.attributes.roles ? user.attributes.roles[0].value : '-'
+                }}
               </td>
               <td class="text-center">-</td>
 
@@ -528,7 +527,7 @@ export default {
           lname: ''
         },
         email: '',
-        roles: []
+        roles: [{ value: '', machineValue: '' }]
       },
       options: [
         'View/Edit',
@@ -577,7 +576,8 @@ export default {
     selectedRole(newVal, oldVal) {
       if (newVal) {
         var user = this.roleTypes.find(o => o.name === newVal);
-        this.users.roles[0] = user.machineValue;
+        this.users.roles[0].value = user.name;
+        this.users.roles[0].machineValue = user.machineValue;
       }
     }
   },
@@ -602,6 +602,7 @@ export default {
       this.selected_roles = existingRoles.attributes.roles;
       this.addNewRoles = true;
     },
+
     onSaveChangeRole() {
       const payload = {
         id: this.singleUserID,
