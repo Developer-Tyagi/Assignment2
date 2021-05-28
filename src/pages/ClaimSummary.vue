@@ -752,7 +752,7 @@ export default {
   },
 
   async created() {
-    this.userRole = getCurrentUser().attributes.roles[0];
+    this.userRole = getCurrentUser().attributes.roles[0].machineValue;
     if (!this.selectedClaimId) {
       this.$router.push('/clients');
     }

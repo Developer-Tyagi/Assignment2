@@ -163,7 +163,7 @@ export default {
 
   created() {
     this.getClaims();
-    this.userRole = getCurrentUser().attributes.roles[0];
+    this.userRole = getCurrentUser().attributes.roles[0].machineValue;
   },
   methods: {
     ...mapActions([
