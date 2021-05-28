@@ -530,7 +530,7 @@ export default {
           lname: ''
         },
         email: '',
-        roles: []
+        roles: [{ value: '', machineValue: '' }]
       },
       options: [
         'View/Edit',
@@ -579,7 +579,8 @@ export default {
     selectedRole(newVal, oldVal) {
       if (newVal) {
         var user = this.roleTypes.find(o => o.name === newVal);
-        this.users.roles[0] = user.machineValue;
+        this.users.roles[0].value = user.name;
+        this.users.roles[0].machineValue = user.machineValue;
       }
     }
   },
