@@ -230,7 +230,7 @@
                 flat
                 bordered
                 v-for="item in child.children"
-                @click="setRoleToMain(item.value)"
+                @click="setRoleToMain(item)"
               >
                 {{ item.label }}
               </div>
@@ -248,7 +248,7 @@
               v-for="(item, index) in selected_roles"
             >
               <div class="clickable q-mx-sm row justify-between">
-                {{ item }}
+                {{ item.value }}
                 <q-icon name="delete" color="primary" size="sm" />
               </div>
             </div>
@@ -476,7 +476,7 @@ export default {
 
   data() {
     return {
-      selected_roles: [],
+      selected_roles: [{ value: '', machineValue: '' }],
       editUserInfoDialog: false,
       userId: '',
       singleUserID: '',
@@ -629,7 +629,10 @@ export default {
       let present = this.selected_roles.includes(value);
       if (present) {
       } else {
-        this.selected_roles.push(value);
+        this.selected_roles.push({
+          value: value.label,
+          machineValue: value.value
+        });
       }
     },
     async onSaveEditedButton() {

@@ -209,7 +209,7 @@ export default {
     this.getSingleClaimDetails(this.selectedClaimId);
     this.getPhases();
     this.options = this.phases;
-    this.userRole = getCurrentUser().attributes.roles[0];
+    this.userRole = getCurrentUser().attributes.roles[0].machineValue;
   },
   methods: {
     ...mapActions([
