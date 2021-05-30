@@ -513,6 +513,8 @@ export default {
     },
     async onFileInputClick(event) {
       this.dataURl = await this.getBase64(event.target.files[0]);
+
+      await this.uploadPdfToServer();
     },
     getBase64(file) {
       return new Promise((resolve, reject) => {
@@ -524,35 +526,28 @@ export default {
     },
     async onClickUploadButton(value) {
       await document.getElementById('uploadFile').click();
-      this.uploadFileDailog = true;
     },
     async uploadPdfToServer() {
-      if (this.uploadFileName) {
-        this.setLoading(true);
-        const formData = new FormData();
-        formData.append('parentID', this.depth[this.depth.length - 1].id);
-        formData.append(
-          'file',
-          this.dataURItoBlob(this.dataURl),
-          this.uploadFileName
-        );
-        await this.createDocuments(formData);
-        this.uploadFileName = '';
-        this.uploadFilesOptions = false;
-        this.uploadFileDailog = false;
+      this.setLoading(true);
+      const formData = new FormData();
+      formData.append('parentID', this.depth[this.depth.length - 1].id);
+      formData.append('file', this.dataURItoBlob(this.dataURl), 'sonali');
+      await this.createDocuments(formData);
+      this.uploadFileName = '';
+      this.uploadFilesOptions = false;
+      this.uploadFileDailog = false;
 
-        const { data } = await request.get(
-          `/documents?parent_id=${this.depth[this.depth.length - 1].id}`
-        );
-        this.documents = data.map(document => ({
-          name: document.attributes.name,
-          id: document.id,
-          type: document.attributes.mimeType,
-          link: document.attributes.webViewLink,
-          properties: document.attributes.properties
-        }));
-        this.setLoading(false);
-      }
+      const { data } = await request.get(
+        `/documents?parent_id=${this.depth[this.depth.length - 1].id}`
+      );
+      this.documents = data.map(document => ({
+        name: document.attributes.name,
+        id: document.id,
+        type: document.attributes.mimeType,
+        link: document.attributes.webViewLink,
+        properties: document.attributes.properties
+      }));
+      this.setLoading(false);
     },
     onClickTopMenu() {
       this.foldersAndFilesOptions = true;
@@ -647,7 +642,7 @@ export default {
       // jsPDFObj.addImage(imageData.dataUrl, 10, 10);
       // this.pdfImage = jsPDFObj.output('datauristring');
       this.pdfImage = imageData.dataUrl;
-      this.addFileDialog = true;
+      this.addPdfFileToServer();
       this.setLoading(false);
     },
 
@@ -677,31 +672,25 @@ export default {
     },
 
     async addPdfFileToServer() {
-      if (this.fileName) {
-        this.setLoading(true);
-        const formData = new FormData();
-        formData.append('parentID', this.depth[this.depth.length - 1].id);
-        formData.append(
-          'file',
-          this.dataURItoBlob(this.pdfImage),
-          this.fileName
-        );
-        await this.createDocuments(formData);
-        this.fileName = '';
-        this.addFileDialog = false;
-        this.uploadFilesOptions = false;
-        const { data } = await request.get(
-          `/documents?parent_id=${this.depth[this.depth.length - 1].id}`
-        );
-        this.documents = data.map(document => ({
-          name: document.attributes.name,
-          id: document.id,
-          type: document.attributes.mimeType,
-          link: document.attributes.webViewLink,
-          properties: document.attributes.properties
-        }));
-        this.setLoading(false);
-      }
+      this.setLoading(true);
+      const formData = new FormData();
+      formData.append('parentID', this.depth[this.depth.length - 1].id);
+      formData.append('file', this.dataURItoBlob(this.pdfImage), 'sonali');
+      await this.createDocuments(formData);
+      this.fileName = '';
+      this.addFileDialog = false;
+      this.uploadFilesOptions = false;
+      const { data } = await request.get(
+        `/documents?parent_id=${this.depth[this.depth.length - 1].id}`
+      );
+      this.documents = data.map(document => ({
+        name: document.attributes.name,
+        id: document.id,
+        type: document.attributes.mimeType,
+        link: document.attributes.webViewLink,
+        properties: document.attributes.properties
+      }));
+      this.setLoading(false);
     },
 
     dataURItoBlob(dataURI) {
