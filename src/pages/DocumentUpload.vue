@@ -783,7 +783,7 @@ export default {
       const formData = new FormData();
       switch (value) {
         case 'upload':
-          formData.append('file', this.dataURItoBlob(this.dataURl), 'sonali');
+          formData.append('file', this.dataURItoBlob(this.dataURl));
           formData.append('type', 'estimate');
           const payload6 = {
             id: this.selectedClaimId,
@@ -797,7 +797,7 @@ export default {
           this.dataURl = '';
           break;
         case 'upload1':
-          formData.append('file', this.dataURItoBlob(this.dataURl), 'sonali');
+          formData.append('file', this.dataURItoBlob(this.dataURl));
 
           formData.append('type', 'photo_report');
           const payload1 = {
@@ -810,7 +810,7 @@ export default {
           this.setLoading(false);
           break;
         case 'upload2':
-          formData.append('file', this.dataURItoBlob(this.dataURl), 'sonali');
+          formData.append('file', this.dataURItoBlob(this.dataURl));
           formData.append('type', 'sketch');
           const payload = {
             id: this.selectedClaimId,
@@ -822,7 +822,7 @@ export default {
           this.setLoading(false);
           break;
         case 'upload4':
-          formData.append('file', this.dataURItoBlob(this.dataURl), 'sonali');
+          formData.append('file', this.dataURItoBlob(this.dataURl));
           formData.append('type', 'additional_doc');
           const payload4 = {
             id: this.selectedClaimId,
