@@ -531,7 +531,7 @@ export default {
       this.setLoading(true);
       const formData = new FormData();
       formData.append('parentID', this.depth[this.depth.length - 1].id);
-      formData.append('file', this.dataURItoBlob(this.dataURl), 'sonali');
+      formData.append('file', this.dataURItoBlob(this.dataURl));
       await this.createDocuments(formData);
       this.uploadFileName = '';
       this.uploadFilesOptions = false;
@@ -675,7 +675,7 @@ export default {
       this.setLoading(true);
       const formData = new FormData();
       formData.append('parentID', this.depth[this.depth.length - 1].id);
-      formData.append('file', this.dataURItoBlob(this.pdfImage), 'sonali');
+      formData.append('file', this.dataURItoBlob(this.pdfImage));
       await this.createDocuments(formData);
       this.fileName = '';
       this.addFileDialog = false;
