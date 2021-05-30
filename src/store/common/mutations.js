@@ -118,7 +118,6 @@ export function setPermissions(state, permission) {
 }
 
 export function setAllTemplate(state, templates) {
-  console.log(templates);
   state.templates = templates.map(type => ({
     name: type.attributes,
 
@@ -127,7 +126,6 @@ export function setAllTemplate(state, templates) {
 }
 
 export function setTemplateToken(state, token) {
-  console.log(token, 76);
   state.tokens = token.data;
 }
 

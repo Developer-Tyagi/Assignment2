@@ -465,8 +465,6 @@ export async function syncLeads({ dispatch }) {
         const createdLeads = leads
           .filter(({ status }) => status === 'fulfilled')
           .map(({ value }) => {
-            console.log(value);
-
             storeIdsToLocalStorage('lead', value.localId, value.id);
             return localDB.activeLeads
               .where('id')
@@ -486,8 +484,12 @@ export async function syncClients({ dispatch }) {
   offlineClients = offlineClients.filter(client => client.offline);
   if (offlineClients.length > 0) {
     const createClients = offlineClients.map(
-      ({ id: localId, offline, ...client }) =>
-        dispatch('addClientRemote', client).then(res => ({ ...res, localId }))
+      ({ id: localId, propertyID: propId, offline, ...client }) =>
+        dispatch('addClientRemote', client).then(res => ({
+          ...res,
+          localId,
+          propId
+        }))
     );
     return new Promise((resolve, reject) =>
       Promise.allSettled(createClients).then(clients => {
@@ -495,7 +497,11 @@ export async function syncClients({ dispatch }) {
           .filter(({ status }) => status === 'fulfilled')
           .map(({ value }) => {
             storeIdsToLocalStorage('client', value.localId, value.id);
-
+            storeIdsToLocalStorage(
+              'property',
+              value.propId,
+              value.attributes.propertyID
+            );
             return localDB.clients
               .where('id')
               .equals(value.localId)
@@ -538,7 +544,7 @@ export async function syncClaims({ dispatch }) {
         }
         if (claim.mortgageInfo && claim.mortgageInfo.length > 0) {
           const items = LocalStorage.getItem('mortgage') || [];
-          claim.mortagageInfo.forEach(mortgage => {
+          claim.mortgageInfo.forEach(mortgage => {
             const index = items.findIndex(item => item.oldId === mortgage.id);
             if (index > -1) {
               mortgage.id = items[index].newId;
@@ -578,8 +584,7 @@ export async function syncClaims({ dispatch }) {
         const createdClaims = claims
           .filter(({ status }) => status === 'fulfilled')
           .map(({ value }) => {
-            storeIdsToLocalStorage('claims', value.localId, value.id);
-
+            storeIdsToLocalStorage('claim', value.localId, value.id);
             return localDB.claims
               .where('id')
               .equals(value.localId)
@@ -733,6 +738,17 @@ export async function getTemplateToken({ commit, dispatch }) {
   }
 }
 
+export async function clearLocalStorage() {
+  LocalStorage.remove('carrier');
+  LocalStorage.remove('vendor');
+  LocalStorage.remove('lead');
+  LocalStorage.remove('client');
+  LocalStorage.remove('property');
+  LocalStorage.remove('mortgage');
+  LocalStorage.remove('estimator');
+  LocalStorage.remove('claim');
+}
+
 export async function syncLocalDataBase({ dispatch, state }) {
   await dispatch('syncCarriers');
   await dispatch('syncVendors');
@@ -742,4 +758,5 @@ export async function syncLocalDataBase({ dispatch, state }) {
   await dispatch('syncClients');
   await dispatch('syncClaims');
   await dispatch('syncOfficeTasks');
+  await clearLocalStorage();
 }

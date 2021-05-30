@@ -797,7 +797,6 @@ export default {
       this.editClaimTimeline = true;
     },
     dateLiesBetween(val) {
-      console.log(val, 878);
       if (validateDate(val)) {
         if (Date.parse(val) < Date.parse(this.policyDate.policyEffectiveDate)) {
           return 'Date is before policy effective date';
