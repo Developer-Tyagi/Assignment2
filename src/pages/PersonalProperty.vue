@@ -273,15 +273,14 @@
               </div>
             </q-form>
           </div>
+          <q-btn
+            label="Save"
+            color="primary"
+            class="button-width-90 text-capitalize"
+            size="'xl'"
+            @click="onClickSave"
+          ></q-btn>
         </q-card>
-
-        <q-btn
-          label="Save"
-          color="primary"
-          class="full-width text-capitalize"
-          size="'xl'"
-          @click="onClickSave"
-        ></q-btn>
       </q-card>
     </q-dialog>
   </q-page>
@@ -305,6 +304,8 @@ export default {
         itemId: '',
         purchaseDate: '',
         purchasePrice: '',
+        repairCost: null,
+        replaceCost: null,
         quantity: '',
         PPDamageItemDescription: '',
         repairReplaceRadio: 'Replace',
@@ -396,6 +397,14 @@ export default {
               quantity: this.lossInfo.quantity,
               name: this.lossInfo.PPDamageName,
               serialNumber: this.lossInfo.serialNumber,
+              repairCost:
+                this.lossInfo.repairReplaceRadio == 'Repair'
+                  ? this.lossInfo.PPDamagedItemCost
+                  : null,
+              replaceCost:
+                this.lossInfo.repairReplaceRadio == 'Replace'
+                  ? this.lossInfo.PPDamagedItemCost
+                  : null,
               desc: this.lossInfo.PPDamageDescription,
               damageDesc: this.lossInfo.PPDamageItemDescription,
               purchasePrice: this.lossInfo.purchasePrice,
@@ -404,6 +413,9 @@ export default {
           }
         }
       };
+      // if (!this.lossInfo.repairReplaceRadio == 'Repair') {
+      //   delete payload.damageInfo;
+      // }
 
       const success = await this.updateDamageItem(payload);
       if (success) {
