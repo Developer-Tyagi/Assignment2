@@ -341,7 +341,7 @@ export default {
           },
           email: this.addEstimatorDialogInfo.email,
 
-          roles: ['estimator'],
+          roles: [{ value: 'Estimator', machineValue: 'estimator' }],
           companyName: this.addEstimatorDialogInfo.companyName
         };
 
