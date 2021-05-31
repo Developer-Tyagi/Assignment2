@@ -219,7 +219,7 @@
           <div class="col-3">Roles Granted</div>
         </div>
         <div class="row justify-between">
-          <q-card class="ex1" style="heigth: 230px; overflow: scroll">
+          <q-card class="extra-padding" style="heigth: 230px; overflow: scroll">
             <div
               class="column"
               v-for="(child, index) in userRole"
@@ -239,7 +239,7 @@
           <div>
             <q-icon name="sync_alt" size="md" style="margin-top: 25vh" />
           </div>
-          <q-card class="ex1 q-mt-xl q-ml-xl">
+          <q-card class="extra-padding q-mt-xl q-ml-xl">
             <div
               class="q-ma-xs"
               flat
@@ -776,7 +776,7 @@ td {
   padding: 8px 16px;
   border: 1px solid #ccc;
 }
-div.ex1 {
+div.extra-padding {
   width: 30%;
   height: 400px;
   overflow: scroll;
