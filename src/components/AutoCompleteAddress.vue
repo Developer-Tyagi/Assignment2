@@ -94,7 +94,7 @@
       :rules="[val => checkValidations(val) || 'Please fill the dropbox info']"
     />
   </div>
-  <div class=" q-pa-sm" v-else>
+  <div class="q-pa-sm" v-else>
     <div
       :class="{
         'no-visibility': isFieldsDisable,
@@ -108,7 +108,7 @@
         :v-model="'model' + id"
         :disabled="isFieldsDisable"
         placeholder="AutoComplete address"
-        style="border: 1px solid #D3D3D3 ;border-radius: 4px;height:46px;"
+        style="border: 1px solid #d3d3d3; border-radius: 4px; height: 46px"
       />
     </div>
     <div class="row justify-between q-mt-sm">
@@ -116,7 +116,7 @@
         outlined
         dense
         :class="{ required: isAsteriskMark }"
-        style="width:46%;"
+        style="width: 46%"
         v-model="address.houseNumber"
         label="House/Flat No"
         lazy-rules
@@ -128,7 +128,7 @@
         dense
         outlined
         :class="{ required: isAsteriskMark }"
-        style="width:46%;"
+        style="width: 46%"
         v-model="address.streetAddress"
         label="Street"
         lazy-rules
@@ -137,12 +137,12 @@
         ]"
       />
     </div>
-    <div class="row justify-between ">
+    <div class="row justify-between">
       <q-input
         dense
         outlined
         :class="{ required: isAsteriskMark }"
-        style="width:46%;"
+        style="width: 46%"
         v-model="address.addressLocality"
         label="City"
         lazy-rules
@@ -156,7 +156,7 @@
         v-model="address.addressRegion"
         :options="states"
         class="q-ml-sm"
-        style="width:46%;"
+        style="width: 46%"
         label="State"
         behavior="menu"
         lazy-rules
@@ -171,7 +171,7 @@
         v-model="address.addressCountry"
         label="Country"
         behavior="menu"
-        style="width:46%;"
+        style="width: 46%"
         lazy-rules
         :rules="[val => checkValidations(val) || 'Please fill the country']"
       />
@@ -179,7 +179,7 @@
       <q-input
         outlined
         dense
-        style="width:46%;"
+        style="width: 46%"
         :class="{ required: isAsteriskMark }"
         v-model="address.postalCode"
         label="ZIP Code"

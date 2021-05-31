@@ -461,7 +461,6 @@ export async function syncLeads({ dispatch }) {
 
     return new Promise((resolve, reject) =>
       Promise.allSettled(createLeads).then(leads => {
-        console.log(leads);
         const createdLeads = leads
           .filter(({ status }) => status === 'fulfilled')
           .map(({ value }) => {
@@ -530,8 +529,8 @@ export async function syncClaims({ dispatch }) {
         const propIndex = propItems.findIndex(
           item => item.oldId === claim.lossInfo.property.id
         );
-        if (index > -1) {
-          claim.client.id = propItems[propIndex].newId;
+        if (propIndex > -1) {
+          claim.lossInfo.property.id = propItems[propIndex].newId;
         }
         if (claim.policyInfo.carrier.value) {
           const items = LocalStorage.getItem('carrier') || [];
