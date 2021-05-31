@@ -145,9 +145,7 @@ export default {
                 }
               }
             );
-            PushNotifications.addListener('registrationError', any => {
-              alert('Error on registration: ' + JSON.stringify(any));
-            });
+            PushNotifications.addListener('registrationError', any => {});
           }
           this.$router.push('/dashboard');
         }
