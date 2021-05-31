@@ -942,7 +942,7 @@ export default {
       const formData = new FormData();
       switch (value) {
         case 'estimate':
-          formData.append('file', this.dataURItoBlob(this.pdfImage), 'kuldeep');
+          formData.append('file', this.dataURItoBlob(this.pdfImage));
           formData.append('type', 'estimate');
           const Estimatepayload = {
             id: this.selectedClaimId,
@@ -955,7 +955,7 @@ export default {
           this.setLoading(false);
           break;
         case 'uploadSketch':
-          formData.append('file', this.dataURItoBlob(this.pdfImage), 'kuldeep');
+          formData.append('file', this.dataURItoBlob(this.pdfImage));
           formData.append('type', 'sketch');
           const sketchPayload = {
             id: this.selectedClaimId,
@@ -967,7 +967,7 @@ export default {
           this.setLoading(false);
           break;
         case 'uploadPhoto':
-          formData.append('file', this.dataURItoBlob(this.pdfImage), 'kuldeep');
+          formData.append('file', this.dataURItoBlob(this.pdfImage));
           formData.append('type', 'photo_report');
           const payload1 = {
             id: this.selectedClaimId,
@@ -978,7 +978,7 @@ export default {
           this.setLoading(false);
           break;
         case 'additionalDocs':
-          formData.append('file', this.dataURItoBlob(this.pdfImage), 'kuldeep');
+          formData.append('file', this.dataURItoBlob(this.pdfImage));
           formData.append('type', 'additional_doc');
           const payload2 = {
             id: this.selectedClaimId,
@@ -990,7 +990,7 @@ export default {
           this.setLoading(false);
           break;
         case 'esxFile':
-          formData.append('file', this.dataURItoBlob(this.pdfImage), 'kuldeep');
+          formData.append('file', this.dataURItoBlob(this.pdfImage));
           formData.append('type', 'esx');
           const payload3 = {
             id: this.selectedClaimId,
