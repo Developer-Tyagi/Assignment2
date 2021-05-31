@@ -222,34 +222,41 @@
           <div class="col-3">Roles Granted</div>
         </div>
         <div class="row justify-between">
-          <div class="ex1" style="heigth: 230px; overflow: scroll">
-            <div class="column" v-for="child in userRole">
-              <div class="text-bold">{{ child.label }}</div>
+          <q-card class="extra-padding" style="heigth: 230px; overflow: scroll">
+            <div
+              class="column"
+              v-for="(child, index) in userRole"
+              v-if="index < 1"
+            >
               <div
                 class="clickable q-ma-xs q-mx-sm"
                 flat
                 bordered
-                v-for="item in child.children"
-                @click="setRoleToMain(item)"
+                v-for="(item, ind) in child.children"
+                @click="setRoleToMain(item, ind)"
               >
                 {{ item.label }}
               </div>
             </div>
-          </div>
+          </q-card>
           <div>
             <q-icon name="sync_alt" size="md" style="margin-top: 25vh" />
           </div>
-          <q-card class="ex1 q-mt-xl q-ml-xl">
+          <q-card class="extra-padding q-mt-xl q-ml-xl">
             <div
               class="q-ma-xs"
               flat
               bordered
-              @click="removeRole(index)"
               v-for="(item, index) in selected_roles"
             >
               <div class="clickable q-mx-sm row justify-between">
-                {{ item.value }}
-                <q-icon name="delete" color="primary" size="sm" />
+                {{ item.machineValue }}
+                <q-icon
+                  name="delete"
+                  color="primary"
+                  size="sm"
+                  @click="removeRole(index)"
+                />
               </div>
             </div>
           </q-card>
@@ -476,7 +483,8 @@ export default {
 
   data() {
     return {
-      selected_roles: [{ value: '', machineValue: '' }],
+      currentRoles: [],
+      selected_roles: [],
       editUserInfoDialog: false,
       userId: '',
       singleUserID: '',
@@ -625,8 +633,12 @@ export default {
       this.singleUserData = value.attributes;
       this.viewInfoDialogBox = true;
     },
-    setRoleToMain(value) {
-      let present = this.selected_roles.includes(value);
+    setRoleToMain(value, index) {
+      this.selected_roles.forEach(val => {
+        this.currentRoles = val.machineValue;
+      });
+
+      let present = this.currentRoles.includes(value.value);
       if (present) {
       } else {
         this.selected_roles.push({
@@ -766,7 +778,7 @@ td {
   padding: 8px 16px;
   border: 1px solid #ccc;
 }
-div.ex1 {
+div.extra-padding {
   width: 30%;
   height: 400px;
   overflow: scroll;
