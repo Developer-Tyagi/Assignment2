@@ -80,6 +80,7 @@
         type="time"
         style="outline: none"
       />
+
       <q-input
         v-if="estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle"
         dense
@@ -340,7 +341,7 @@ export default {
           },
           email: this.addEstimatorDialogInfo.email,
 
-          roles: ['estimator'],
+          roles: [{ value: 'Estimator', machineValue: 'estimator' }],
           companyName: this.addEstimatorDialogInfo.companyName
         };
 

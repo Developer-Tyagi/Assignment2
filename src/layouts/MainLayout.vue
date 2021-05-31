@@ -14,7 +14,7 @@ export default {
   components: { CustomHeader },
   methods: {
     onBackButtonClick() {
-      this.userRole = getCurrentUser().attributes.roles[0];
+      this.userRole = getCurrentUser().attributes.roles[0].machineValue;
       const route = this.$router.currentRoute.fullPath.substring(1);
       if (
         route == 'leads-dashboard' ||

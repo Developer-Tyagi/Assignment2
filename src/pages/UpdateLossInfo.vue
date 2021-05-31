@@ -381,7 +381,8 @@ export default {
       'getLossCauses',
       'getSeverityClaim',
       'updateLossInfo',
-      'getSingleClaims'
+      'getSingleClaims',
+      'getSingleClaimDetails'
     ]),
     ...mapMutations(['setSelectedClaimId']),
     sendMap,
@@ -417,6 +418,7 @@ export default {
         this.lossInfoDialog = false;
         this.getLossInfo(this.selectedClaimId);
         this.$router.push('/loss-info');
+        this.getSingleClaimDetails(this.selectedClaimId);
       }
     },
     onEditIconClick() {

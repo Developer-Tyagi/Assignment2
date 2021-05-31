@@ -77,7 +77,7 @@
                     icon="cloud_upload"
                     text-color="primary"
                     style="width: 50px"
-                    @click="onClickUploadButton('upload')"
+                    @click="onClickUploadButton"
                   />
                   <div class="form-heading q-ml-md">Upload</div>
                   <input
@@ -85,7 +85,7 @@
                     type="file"
                     accept="image/*,.pdf"
                     hidden
-                    @change="onFileInputClick"
+                    @change="onEstimateFileInputClick"
                   />
                 </div>
                 <div>
@@ -171,7 +171,7 @@
                         id="uploadFile"
                         type="file"
                         hidden
-                        @change="onFileInputClick"
+                        @change="onPhotoFileInputClick"
                         accept="image/*,.pdf"
                       />
                       <q-btn
@@ -179,7 +179,7 @@
                         icon="cloud_upload"
                         text-color="primary"
                         style="width: 50px"
-                        @click="onClickUploadButton('upload1')"
+                        @click="onClickUploadButton"
                       />
                       <div class="form-heading q-ml-md">Upload</div>
                     </div>
@@ -262,15 +262,15 @@
                       id="uploadFile"
                       type="file"
                       hidden
-                      @change="onFileInputClick"
+                      @change="onSketchFileInputClick"
                       accept="image/*,.pdf"
                     />
                     <q-btn
-                      class="q-ml-md"
+                      class="q-ml-md "
                       icon="cloud_upload"
                       text-color="primary"
                       style="width: 50px"
-                      @click="onClickUploadButton('upload2')"
+                      @click="onClickUploadButton"
                     />
                     <div class="form-heading q-ml-md">Upload</div>
                   </div>
@@ -443,7 +443,7 @@
                       id="uploadFile"
                       type="file"
                       hidden
-                      @change="onFileInputClick"
+                      @change="onDocFileInputClick"
                       accept="image/*,.pdf"
                     />
                     <q-btn
@@ -451,7 +451,7 @@
                       icon="cloud_upload"
                       text-color="primary"
                       style="width: 50px"
-                      @click="onClickUploadButton('upload4')"
+                      @click="onClickUploadButton"
                     />
                     <div class="form-heading q-ml-md">Upload</div>
                   </div>
@@ -499,7 +499,7 @@
             <q-card class="q-pa-md form-card">
               <div class="row" style="align-items: center">
                 <span class="form-heading">Estimated Loss Amount</span>
-                <q-input
+                <!-- <q-input
                   dense
                   mask="#.#"
                   type="number"
@@ -510,7 +510,22 @@
                   class="input-extra-padding required"
                   lazy-rules
                   :rules="[val => val || 'please fill Estimated Loss Amount']"
-                />
+                /> -->
+                <q-input
+                  dense
+                  v-model.number="estimatedLossAmt"
+                  mask="#.#"
+                  type="number"
+                  class="required"
+                  label="Estimated Loss Amount"
+                  style="margin-left: auto; width: 50%"
+                  lazy-rules
+                  :rules="[val => val || 'please fill Estimated Loss Amount']"
+                >
+                  <template v-slot:prepend>
+                    <q-icon name="$" size="sm"></q-icon>
+                  </template>
+                </q-input>
               </div>
               <div class="row" style="align-items: center">
                 <span class="form-heading">Property Loss Amount</span>
@@ -519,11 +534,16 @@
                   mask="#.#"
                   type="number"
                   v-model.number="propertyValue"
-                  placeholder="Property Loss Amount"
+                  label="Property Loss Amount"
                   style="margin-left: auto; width: 50%"
-                  prefix="$"
-                  class="input-extra-padding"
-                />
+                  class="input-extra-padding required"
+                  lazy-rules
+                  :rules="[val => val || 'please fill Property Loss Amount']"
+                >
+                  <template v-slot:prepend>
+                    <q-icon name="$" size="sm"></q-icon>
+                  </template>
+                </q-input>
               </div>
             </q-card>
             <div class="row q-pt-md">
@@ -551,383 +571,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Add Photo Dialog  -->
-
-    <q-dialog v-model="addFileDialog">
-      <q-card>
-        <q-card-section class="row items-center">
-          <q-avatar
-            icon="folder"
-            color="primary"
-            text-color="white"
-            size="md"
-          />
-          <span class="q-ml-sm">Add file as</span>
-        </q-card-section>
-
-        <q-card-section class="q-pt-none">
-          <q-input dense dense v-model="fileName" autofocus />
-        </q-card-section>
-
-        <q-card-actions align="right">
-          <q-btn flat label="Cancel" color="primary" @click="closeAddFile" />
-          <q-btn
-            flat
-            label="Submit"
-            color="primary"
-            @click="addPdfFileToServer('uploadPhoto')"
-          />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
-
-    <!-- Add EstimateDialog Dialog  -->
-
-    <q-dialog v-model="addEstimateDialog">
-      <q-card>
-        <q-card-section class="row items-center">
-          <q-avatar
-            icon="folder"
-            color="primary"
-            text-color="white"
-            size="md"
-          />
-          <span class="q-ml-sm">Add file as</span>
-        </q-card-section>
-
-        <q-card-section class="q-pt-none">
-          <q-input dense dense v-model="estimateFileName" autofocus />
-        </q-card-section>
-
-        <q-card-actions align="right">
-          <q-btn
-            flat
-            label="Cancel"
-            color="primary"
-            @click="addEstimateDialog = false"
-          />
-          <q-btn
-            flat
-            label="Submit"
-            color="primary"
-            @click="addPdfFileToServer('estimate')"
-          />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
-
-    <!--    Add Sketches Dialog -->
-
-    <q-dialog v-model="addSketchesDialog">
-      <q-card>
-        <q-card-section class="row items-center">
-          <q-avatar
-            icon="folder"
-            color="primary"
-            text-color="white"
-            size="md"
-          />
-          <span class="q-ml-sm">Add sketch as</span>
-        </q-card-section>
-
-        <q-card-section class="q-pt-none">
-          <q-input dense dense v-model="sketchName" autofocus />
-        </q-card-section>
-
-        <q-card-actions align="right">
-          <q-btn
-            flat
-            label="Cancel"
-            color="primary"
-            @click="addSketchesDialog = false"
-          />
-          <q-btn
-            flat
-            label="Submit"
-            color="primary"
-            @click="addPdfFileToServer('uploadSketch')"
-          />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
-
-    <!-- Add Additional Document Dialog  -->
-
-    <q-dialog v-model="additionalDocsDialog">
-      <q-card>
-        <q-card-section class="row items-center">
-          <q-avatar
-            icon="folder"
-            color="primary"
-            text-color="white"
-            size="md"
-          />
-          <span class="q-ml-sm">Add sketch as</span>
-        </q-card-section>
-
-        <q-card-section class="q-pt-none">
-          <q-input dense dense v-model="addDocName" autofocus />
-        </q-card-section>
-
-        <q-card-actions align="right">
-          <q-btn
-            flat
-            label="Cancel"
-            color="primary"
-            @click="additionalDocsDialog = false"
-          />
-          <q-btn
-            flat
-            label="Submit"
-            color="primary"
-            @click="addPdfFileToServer('additionalDocs')"
-          />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
-    <!-- Add ESX  Document Dialog  -->
-
-    <q-dialog v-model="esxDialog">
-      <q-card>
-        <q-card-section class="row items-center">
-          <q-avatar
-            icon="folder"
-            color="primary"
-            text-color="white"
-            size="md"
-          />
-          <span class="q-ml-sm">Add esx file as</span>
-        </q-card-section>
-
-        <q-card-section class="q-pt-none">
-          <q-input dense dense v-model="esxFileName" autofocus />
-        </q-card-section>
-
-        <q-card-actions align="right">
-          <q-btn
-            flat
-            label="Cancel"
-            color="primary"
-            @click="esxDialog = false"
-          />
-          <q-btn
-            flat
-            label="Submit"
-            color="primary"
-            @click="addPdfFileToServer('esxFile')"
-          />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
-
-    <!-- Upload1 File Dialog under photos  -->
-
-    <q-dialog v-model="upload1Dialog">
-      <q-card>
-        <q-card-section class="row items-center">
-          <q-avatar
-            icon="folder"
-            color="primary"
-            text-color="white"
-            size="md"
-          />
-          <span class="q-ml-sm">Add file as</span>
-        </q-card-section>
-
-        <q-card-section class="q-pt-none">
-          <q-input dense dense v-model="upload1FileName" autofocus />
-        </q-card-section>
-
-        <q-card-actions align="right">
-          <q-btn
-            flat
-            label="Cancel"
-            color="primary"
-            @click="upload1Dialog = false"
-          />
-          <q-btn
-            flat
-            label="Submit"
-            color="primary"
-            @click="uploadPdfToServer('upload1')"
-          />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
-    <!-- uploadEstimateDialog File Dialog -->
-
-    <q-dialog v-model="uploadEstimateDialog">
-      <q-card>
-        <q-card-section class="row items-center">
-          <q-avatar
-            icon="folder"
-            color="primary"
-            text-color="white"
-            size="md"
-          />
-          <span class="q-ml-sm">Add file as</span>
-        </q-card-section>
-
-        <q-card-section class="q-pt-none">
-          <q-input dense dense v-model="uploadEstimateFileName" autofocus />
-        </q-card-section>
-
-        <q-card-actions align="right">
-          <q-btn
-            flat
-            label="Cancel"
-            color="primary"
-            @click="uploadEstimateDialog = false"
-          />
-          <q-btn
-            flat
-            label="Submit"
-            color="primary"
-            @click="uploadPdfToServer('upload')"
-          />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
-    <!-- Upload1 File Dialog under photos  -->
-
-    <q-dialog v-model="upload1Dialog">
-      <q-card>
-        <q-card-section class="row items-center">
-          <q-avatar
-            icon="folder"
-            color="primary"
-            text-color="white"
-            size="md"
-          />
-          <span class="q-ml-sm">Add file as</span>
-        </q-card-section>
-
-        <q-card-section class="q-pt-none">
-          <q-input dense dense v-model="upload1FileName" autofocus />
-        </q-card-section>
-
-        <q-card-actions align="right">
-          <q-btn
-            flat
-            label="Cancel"
-            color="primary"
-            @click="upload1Dialog = false"
-          />
-          <q-btn
-            flat
-            label="Submit"
-            color="primary"
-            @click="uploadPdfToServer('upload1')"
-          />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
-
-    <!-- Upload 2 File Dialog under photos  -->
-
-    <q-dialog v-model="upload2Dialog">
-      <q-card>
-        <q-card-section class="row items-center">
-          <q-avatar
-            icon="folder"
-            color="primary"
-            text-color="white"
-            size="md"
-          />
-          <span class="q-ml-sm">Add file as</span>
-        </q-card-section>
-
-        <q-card-section class="q-pt-none">
-          <q-input dense dense v-model="upload2FileName" autofocus />
-        </q-card-section>
-
-        <q-card-actions align="right">
-          <q-btn
-            flat
-            label="Cancel"
-            color="primary"
-            @click="upload2Dialog = false"
-          />
-          <q-btn
-            flat
-            label="Submit"
-            color="primary"
-            @click="uploadPdfToServer('upload2')"
-          />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
-
-    <!-- Upload3 File Dialog under photos  -->
-
-    <q-dialog v-model="upload3Dialog">
-      <q-card>
-        <q-card-section class="row items-center">
-          <q-avatar
-            icon="folder"
-            color="primary"
-            text-color="white"
-            size="md"
-          />
-          <span class="q-ml-sm">Add file as</span>
-        </q-card-section>
-
-        <q-card-section class="q-pt-none">
-          <q-input dense dense v-model="upload3FileName" autofocus />
-        </q-card-section>
-
-        <q-card-actions align="right">
-          <q-btn
-            flat
-            label="Cancel"
-            color="primary"
-            @click="upload3Dialog = false"
-          />
-          <q-btn
-            flat
-            label="Submit"
-            color="primary"
-            @click="uploadPdfToServer('upload3')"
-          />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
-
-    <!-- Upload 4 File Dialog under photos  -->
-
-    <q-dialog v-model="upload4Dialog">
-      <q-card>
-        <q-card-section class="row items-center">
-          <q-avatar
-            icon="folder"
-            color="primary"
-            text-color="white"
-            size="md"
-          />
-          <span class="q-ml-sm">Add file as</span>
-        </q-card-section>
-
-        <q-card-section class="q-pt-none">
-          <q-input dense dense v-model="upload4FileName" autofocus />
-        </q-card-section>
-
-        <q-card-actions align="right">
-          <q-btn
-            flat
-            label="Cancel"
-            color="primary"
-            @click="upload4Dialog = false"
-          />
-          <q-btn
-            flat
-            label="Submit"
-            color="primary"
-            @click="uploadPdfToServer('upload4')"
-          />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
 
     <!-- Alert delete Box -->
     <q-dialog v-model="alertDailog">
@@ -971,22 +614,13 @@ export default {
   data() {
     return {
       dataURl: '',
-      addEstimateDialog: false,
-      uploadEstimateDialog: false,
+
       uploadEstimateFileName: '',
       estimateFileName: '',
       driveId: '',
       docType: '',
       alertDailog: false,
       files: '',
-      upload1Dialog: false,
-      upload2Dialog: false,
-      upload3Dialog: false,
-      upload4Dialog: false,
-      upload1FileName: '',
-      upload2FileName: '',
-      upload3FileName: '',
-      upload4FileName: '',
       model: null,
       fileName: '',
       sketchName: '',
@@ -1074,9 +708,23 @@ export default {
           break;
       }
     },
-    async onFileInputClick(event) {
+    async onEstimateFileInputClick(event) {
       this.dataURl = await this.getBase64(event.target.files[0]);
+      this.uploadPdfToServer('upload');
     },
+    async onPhotoFileInputClick(event) {
+      this.dataURl = await this.getBase64(event.target.files[0]);
+      this.uploadPdfToServer('upload1');
+    },
+    async onSketchFileInputClick(event) {
+      this.dataURl = await this.getBase64(event.target.files[0]);
+      this.uploadPdfToServer('upload2');
+    },
+    async onDocFileInputClick(event) {
+      this.dataURl = await this.getBase64(event.target.files[0]);
+      this.uploadPdfToServer('upload4');
+    },
+    onFileInputClick() {},
     getBase64(file) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -1135,11 +783,7 @@ export default {
       const formData = new FormData();
       switch (value) {
         case 'upload':
-          formData.append(
-            'file',
-            this.dataURItoBlob(this.dataURl),
-            this.uploadEstimateFileName
-          );
+          formData.append('file', this.dataURItoBlob(this.dataURl));
           formData.append('type', 'estimate');
           const payload6 = {
             id: this.selectedClaimId,
@@ -1153,11 +797,7 @@ export default {
           this.dataURl = '';
           break;
         case 'upload1':
-          formData.append(
-            'file',
-            this.dataURItoBlob(this.dataURl),
-            this.upload1FileName
-          );
+          formData.append('file', this.dataURItoBlob(this.dataURl));
 
           formData.append('type', 'photo_report');
           const payload1 = {
@@ -1165,42 +805,30 @@ export default {
             formData: formData
           };
           await this.uploadClaimDocument(payload1);
-          this.upload1FileName = '';
-          this.upload1Dialog = false;
+
           this.getClaimPhoto(this.selectedClaimId);
           this.setLoading(false);
           break;
         case 'upload2':
-          formData.append(
-            'file',
-            this.dataURItoBlob(this.dataURl),
-            this.upload2FileName
-          );
+          formData.append('file', this.dataURItoBlob(this.dataURl));
           formData.append('type', 'sketch');
           const payload = {
             id: this.selectedClaimId,
             formData: formData
           };
           await this.uploadClaimDocument(payload);
-          this.upload2FileName = '';
-          this.upload2Dialog = false;
+
           this.getClaimSketch(this.selectedClaimId);
           this.setLoading(false);
           break;
         case 'upload4':
-          formData.append(
-            'file',
-            this.dataURItoBlob(this.dataURl),
-            this.upload4FileName
-          );
+          formData.append('file', this.dataURItoBlob(this.dataURl));
           formData.append('type', 'additional_doc');
           const payload4 = {
             id: this.selectedClaimId,
             formData: formData
           };
           await this.uploadClaimDocument(payload4);
-          this.upload4FileName = '';
-          this.upload4Dialog = false;
           this.getAdditionalDocs(this.selectedClaimId);
           this.setLoading(false);
           break;
@@ -1224,29 +852,8 @@ export default {
         //   break;
       }
     },
-    async onClickUploadButton(value) {
-      switch (value) {
-        case 'upload':
-          await document.getElementById('uploadFile').click();
-          this.uploadEstimateDialog = true;
-          break;
-        case 'upload1':
-          await document.getElementById('uploadFile').click();
-          this.upload1Dialog = true;
-          break;
-        case 'upload2':
-          await document.getElementById('uploadFile').click();
-          this.upload2Dialog = true;
-          break;
-        case 'upload4':
-          await document.getElementById('uploadFile').click();
-          this.upload4Dialog = true;
-          break;
-        // case 'upload3':
-        //   await document.getElementById('uploadEsxFile').click();
-        //   this.upload3Dialog = true;
-        //   break;
-      }
+    onClickUploadButton() {
+      document.getElementById('uploadFile').click();
     },
 
     closeAddFile() {
@@ -1302,26 +909,26 @@ export default {
         resultType: CameraResultType.DataUrl,
         direction: CameraDirection.Rear
       });
-      this.setLoading(true);
+      await this.setLoading(true);
       // const jsPDFObj = new jsPDF('p', 'mm');
       // jsPDFObj.addImage(imageData.dataUrl, 10, 10);
       this.pdfImage = imageData.dataUrl;
+
       switch (value) {
         case 'estimate':
-          this.addEstimateDialog = true;
+          this.addPdfFileToServer('estimate');
           break;
         case 'uploadPhoto':
-          this.addFileDialog = true;
+          this.addPdfFileToServer('uploadPhoto');
           break;
         case 'uploadSketches':
-          this.addSketchesDialog = true;
-
+          console.log('hello');
+          this.addPdfFileToServer('uploadSketch');
           break;
         case 'additionalDocs':
-          this.additionalDocsDialog = true;
+          this.addPdfFileToServer('additionalDocs');
           break;
         case 'esx':
-          this.esxDialog = true;
       }
       this.setLoading(false);
     },
@@ -1335,87 +942,62 @@ export default {
       const formData = new FormData();
       switch (value) {
         case 'estimate':
-          formData.append(
-            'file',
-            this.dataURItoBlob(this.pdfImage),
-            this.estimateFileName
-          );
+          formData.append('file', this.dataURItoBlob(this.pdfImage));
           formData.append('type', 'estimate');
           const Estimatepayload = {
             id: this.selectedClaimId,
             formData: formData
           };
           await this.uploadClaimDocument(Estimatepayload);
-          this.estimateFileName = '';
-          this.addEstimateDialog = false;
+          // this.estimateFileName = '';
+          // this.addEstimateDialog = false;
           this.getClaimEstimateDoc(this.selectedClaimId);
           this.setLoading(false);
           break;
         case 'uploadSketch':
-          formData.append(
-            'file',
-            this.dataURItoBlob(this.pdfImage),
-            this.sketchName
-          );
+          formData.append('file', this.dataURItoBlob(this.pdfImage));
           formData.append('type', 'sketch');
-          const payload = {
+          const sketchPayload = {
             id: this.selectedClaimId,
             formData: formData
           };
-          await this.uploadClaimDocument(payload);
-          this.sketchName = '';
-          this.addSketchesDialog = false;
+          await this.uploadClaimDocument(sketchPayload);
+
           this.getClaimSketch(this.selectedClaimId);
           this.setLoading(false);
           break;
         case 'uploadPhoto':
-          formData.append(
-            'file',
-            this.dataURItoBlob(this.pdfImage),
-            this.fileName
-          );
+          formData.append('file', this.dataURItoBlob(this.pdfImage));
           formData.append('type', 'photo_report');
           const payload1 = {
             id: this.selectedClaimId,
             formData: formData
           };
           await this.uploadClaimDocument(payload1);
-          this.fileName = '';
-          this.addFileDialog = false;
           this.getClaimPhoto(this.selectedClaimId);
           this.setLoading(false);
           break;
         case 'additionalDocs':
-          formData.append(
-            'file',
-            this.dataURItoBlob(this.pdfImage),
-            this.addDocName
-          );
+          formData.append('file', this.dataURItoBlob(this.pdfImage));
           formData.append('type', 'additional_doc');
           const payload2 = {
             id: this.selectedClaimId,
             formData: formData
           };
           await this.uploadClaimDocument(payload2);
-          this.addDocName = '';
-          this.additionalDocsDialog = false;
+
           this.getAdditionalDocs(this.selectedClaimId);
           this.setLoading(false);
           break;
         case 'esxFile':
-          formData.append(
-            'file',
-            this.dataURItoBlob(this.pdfImage),
-            this.esxFileName
-          );
+          formData.append('file', this.dataURItoBlob(this.pdfImage));
           formData.append('type', 'esx');
           const payload3 = {
             id: this.selectedClaimId,
             formData: formData
           };
           await this.uploadClaimDocument(payload3);
-          this.esxFileName = '';
-          this.esxDialog = false;
+
           this.getEsxDocs(this.selectedClaimId);
           this.setLoading(false);
           break;
@@ -1455,7 +1037,7 @@ export default {
   },
 
   async created() {
-    this.userRole = getCurrentUser().attributes.roles[0];
+    this.userRole = getCurrentUser().attributes.roles[0].machineValue;
     this.getClaimEstimateDoc(this.selectedClaimId);
     this.getClaimPhoto(this.selectedClaimId);
     this.getClaimSketch(this.selectedClaimId);

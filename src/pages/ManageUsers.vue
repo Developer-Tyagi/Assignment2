@@ -72,7 +72,10 @@
               <td class="text-center">-</td>
 
               <td class="text-center">-</td>
-              <td class="text-center">
+              <td
+                class="text-center"
+                v-if="user.attributes.roles[0].machineValue != 'owner'"
+              >
                 <div>
                   <q-btn-dropdown label="Action" style="width: 100px" outline>
                     <q-list style="width: 100px">
@@ -610,7 +613,6 @@ export default {
       this.selected_roles = existingRoles.attributes.roles;
       this.addNewRoles = true;
     },
-
     onSaveChangeRole() {
       const payload = {
         id: this.singleUserID,

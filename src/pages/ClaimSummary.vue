@@ -752,7 +752,7 @@ export default {
   },
 
   async created() {
-    this.userRole = getCurrentUser().attributes.roles[0];
+    this.userRole = getCurrentUser().attributes.roles[0].machineValue;
     if (!this.selectedClaimId) {
       this.$router.push('/clients');
     }
@@ -797,7 +797,6 @@ export default {
       this.editClaimTimeline = true;
     },
     dateLiesBetween(val) {
-      console.log(val, 878);
       if (validateDate(val)) {
         if (Date.parse(val) < Date.parse(this.policyDate.policyEffectiveDate)) {
           return 'Date is before policy effective date';

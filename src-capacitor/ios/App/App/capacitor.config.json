@@ -6,11 +6,10 @@
   "webDir": "www",
   "plugins": {
     "PushNotifications": {
-      "presentationOptions": [
-        "badge",
-        "sound",
-        "alert"
-      ]
+      "presentationOptions": ["badge", "sound", "alert"]
     }
+  },
+  "server": {
+    "url": "http://192.168.0.169:8080"
   }
 }

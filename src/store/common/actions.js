@@ -2,6 +2,7 @@ import request from '@api';
 import { buildApiData } from 'src/utils/api';
 import localDB, { getCollection } from '@services/dexie';
 import { LocalStorage } from 'quasar';
+import { estimator } from '../claims/getters';
 
 export function setLoading({ commit }, value) {
   commit('setLoading', value);
@@ -318,22 +319,26 @@ export async function syncCarriers({ dispatch }) {
   let offlineCarriers = await getCollection('carriers').toArray();
   offlineCarriers = offlineCarriers.filter(carrier => carrier.offline);
   if (offlineCarriers.length > 0) {
-    const createCarriers = offlineCarriers.map(({ id, offline, ...carrier }) =>
-      dispatch('addCarrierRemote', carrier)
+    const createCarriers = offlineCarriers.map(
+      ({ id: localId, offline, ...carrier }) =>
+        dispatch('addCarrierRemote', carrier).then(res => ({ ...res, localId }))
     );
-
-    return Promise.allSettled(createCarriers).then(carriers => {
-      carriers.forEach(({ status, value }) => {
-        if (status === 'fullfilled') {
-          storeIdsToLocalStorage('carrier', id, response.id);
-          localDB.carriers
-            .where('id')
-            .equals(id)
-            .modify({ id: response.id, offline: false });
-        }
-      });
-      return true;
-    });
+    return new Promise((resolve, reject) =>
+      Promise.allSettled(createCarriers).then(carriers => {
+        const createdCarriers = carriers
+          .filter(({ status }) => status === 'fulfilled')
+          .map(({ value }) => {
+            storeIdsToLocalStorage('carrier', value.localId, value.id);
+            return localDB.carriers
+              .where('id')
+              .equals(value.localId)
+              .modify({ id: value.id, offline: false });
+          });
+        return Promise.allSettled(createdCarriers).then(results => {
+          resolve('All');
+        });
+      })
+    );
   }
 }
 
@@ -341,16 +346,27 @@ export async function syncVendors({ dispatch }) {
   let offlineVendors = await getCollection('vendors').toArray();
   offlineVendors = offlineVendors.filter(vendor => vendor.offline);
   if (offlineVendors.length > 0) {
-    offlineVendors.forEach(async ({ id, offline, ...vendor }) => {
-      const response = await dispatch('addVendorRemote', vendor);
-      if (response || response.id) {
-        await storeIdsToLocalStorage('vendor', id, response.id);
-        localDB.vendors
-          .where('id')
-          .equals(id)
-          .modify({ id: response.id, offline: false });
-      }
-    });
+    const createVendors = offlineVendors.map(
+      ({ id: localId, offline, ...vendor }) =>
+        dispatch('addVendorRemote', vendor).then(res => ({ ...res, localId }))
+    );
+    return new Promise((resolve, reject) =>
+      Promise.allSettled(createVendors).then(vendors => {
+        const createdVendors = vendors
+          .filter(({ status }) => status === 'fulfilled')
+          .map(({ value }) => {
+            storeIdsToLocalStorage('vendor', value.localId, value.id);
+
+            return localDB.vendors
+              .where('id')
+              .equals(value.localId)
+              .modify({ id: value.id, offline: false });
+          });
+        return Promise.allSettled(createdVendors).then(results => {
+          resolve('All');
+        });
+      })
+    );
   }
 }
 
@@ -358,16 +374,30 @@ export async function syncMortgages({ dispatch }) {
   let offlineMortgages = await getCollection('mortgages').toArray();
   offlineMortgages = offlineMortgages.filter(mortgage => mortgage.offline);
   if (offlineMortgages.length > 0) {
-    offlineMortgages.forEach(async ({ id, offline, ...mortgage }) => {
-      const response = await dispatch('addMortgageRemote', mortgage);
-      if (response || response.id) {
-        await storeIdsToLocalStorage('mortgage', id, response.id);
-        localDB.mortgages
-          .where('id')
-          .equals(id)
-          .modify({ id: response.id, offline: false });
-      }
-    });
+    const createMortgages = offlineMortgages.map(
+      ({ id: localId, offline, ...mortgage }) =>
+        dispatch('addMortgageRemote', mortgage).then(res => ({
+          ...res,
+          localId
+        }))
+    );
+    return new Promise((resolve, reject) =>
+      Promise.allSettled(createMortgages).then(mortgages => {
+        const createdMortgages = mortgages
+          .filter(({ status }) => status === 'fulfilled')
+          .map(({ value: { id, localId } }) => {
+            storeIdsToLocalStorage('mortgage', localId, id);
+
+            return localDB.mortgages
+              .where('id')
+              .equals(localId)
+              .modify({ id, offline: false });
+          });
+        return Promise.allSettled(createdMortgages).then(results => {
+          resolve('All');
+        });
+      })
+    );
   }
 }
 
@@ -375,16 +405,30 @@ export async function syncEstimators({ dispatch }) {
   let offlineEstimators = await getCollection('estimators').toArray();
   offlineEstimators = offlineEstimators.filter(estimator => estimator.offline);
   if (offlineEstimators.length > 0) {
-    offlineEstimators.forEach(async ({ id, offline, ...estimator }) => {
-      const response = await dispatch('addEstimatorRemote', estimators);
-      if (response || response.id) {
-        await storeIdsToLocalStorage('estimator', id, response.id);
-        localDB.estimators
-          .where('id')
-          .equals(id)
-          .modify({ id: response.id, offline: false });
-      }
-    });
+    const createEstimators = offlineEstimators.map(
+      ({ id: localId, offline, ...estimator }) =>
+        dispatch('addEstimatorRemote', estimator).then(res => ({
+          ...res,
+          localId
+        }))
+    );
+    return new Promise((resolve, reject) =>
+      Promise.allSettled(createEstimators).then(estimators => {
+        const createdEstimators = estimators
+          .filter(({ status }) => status === 'fulfilled')
+          .map(({ value }) => {
+            storeIdsToLocalStorage('estimator', value.localId, value.id);
+
+            return localDB.estimators
+              .where('id')
+              .equals(value.localId)
+              .modify({ id: value.id, offline: false });
+          });
+        return Promise.allSettled(createdEstimators).then(results => {
+          resolve('All');
+        });
+      })
+    );
   }
 }
 
@@ -392,57 +436,90 @@ export async function syncLeads({ dispatch }) {
   let offlineLeads = await getCollection('activeLeads').toArray();
   offlineLeads = offlineLeads.filter(lead => lead.offline);
   if (offlineLeads.length > 0) {
-    offlineLeads.forEach(async ({ id, offline, ...lead }) => {
-      if (lead.carrier) {
-        const items = LocalStorage.getItem('carrier') || [];
-        const index = items.findIndex(item => item.oldId === lead.carrier.id);
-        console.log(items, index, lead.carrier.id);
-        if (index > -1) {
-          lead.carrier.id = items[index].newId;
+    const createLeads = offlineLeads.map(
+      ({ id: localId, offline, ...lead }) => {
+        if (lead.carrier) {
+          const items = LocalStorage.getItem('carrier') || [];
+          const index = items.findIndex(item => item.oldId === lead.carrier.id);
+          if (index > -1) {
+            lead.carrier.id = items[index].newId;
+          }
         }
-      }
-      if (lead.vendor) {
-        const items = LocalStorage.getItem('vendor') || [];
-        const index = items.findIndex(item => item.oldId === lead.vendor.id);
-        if (index > -1) {
-          lead.vendor.id = items[index].newId;
+        if (lead.vendor) {
+          const items = LocalStorage.getItem('vendor') || [];
+          const index = items.findIndex(item => item.oldId === lead.vendor.id);
+          if (index > -1) {
+            lead.vendor.id = items[index].newId;
+          }
         }
+        return dispatch('addLeadRemote', lead).then(res => ({
+          ...res,
+          localId
+        }));
       }
-      const response = await dispatch('addLeadRemote', lead);
-      if (response || response.id) {
-        storeIdsToLocalStorage('lead', id, response.id);
-        localDB.activeLeads
-          .where('id')
-          .equals(id)
-          .modify({ id: response.id, offline: false });
-      }
-    });
+    );
+
+    return new Promise((resolve, reject) =>
+      Promise.allSettled(createLeads).then(leads => {
+        const createdLeads = leads
+          .filter(({ status }) => status === 'fulfilled')
+          .map(({ value }) => {
+            storeIdsToLocalStorage('lead', value.localId, value.id);
+            return localDB.activeLeads
+              .where('id')
+              .equals(value.localId)
+              .modify({ id: value.id, offline: false });
+          });
+        return Promise.allSettled(createdLeads).then(results => {
+          resolve('All');
+        });
+      })
+    );
   }
 }
 
 export async function syncClients({ dispatch }) {
   let offlineClients = await getCollection('clients').toArray();
   offlineClients = offlineClients.filter(client => client.offline);
-  offlineClients.forEach(({ id, offline, ...client }) => {
-    dispatch('addClientRemote', client).then(response => {
-      if (response || response.id) {
-        storeIdsToLocalStorage('client', id, response.id);
-        storeIdsToLocalStorage('property', id, response.attributes.propertyID);
-        localDB.clients
-          .where('id')
-          .equals(id)
-          .modify({ id: response.id, offline: false });
-      }
-    });
-  });
+  if (offlineClients.length > 0) {
+    const createClients = offlineClients.map(
+      ({ id: localId, propertyID: propId, offline, ...client }) =>
+        dispatch('addClientRemote', client).then(res => ({
+          ...res,
+          localId,
+          propId
+        }))
+    );
+    return new Promise((resolve, reject) =>
+      Promise.allSettled(createClients).then(clients => {
+        const createdClients = clients
+          .filter(({ status }) => status === 'fulfilled')
+          .map(({ value }) => {
+            storeIdsToLocalStorage('client', value.localId, value.id);
+            storeIdsToLocalStorage(
+              'property',
+              value.propId,
+              value.attributes.propertyID
+            );
+            return localDB.clients
+              .where('id')
+              .equals(value.localId)
+              .modify({ id: value.id, offline: false });
+          });
+        return Promise.allSettled(createdClients).then(results => {
+          resolve('All');
+        });
+      })
+    );
+  }
 }
 
 export async function syncClaims({ dispatch }) {
   let offlineClaims = await getCollection('claims').toArray();
   offlineClaims = offlineClaims.filter(claim => claim.offline);
-  offlineClaims.forEach(({ id, offline, ...claim }) => {
-    dispatch('addClaimRemote', claim).then(response => {
-      if (response || response.id) {
+  if (offlineClaims.length > 0) {
+    const createClaims = offlineClaims.map(
+      ({ id: localId, offline, ...claim }) => {
         const items = LocalStorage.getItem('client') || [];
         const index = items.findIndex(item => item.oldId === claim.client.id);
         if (index > -1) {
@@ -452,8 +529,8 @@ export async function syncClaims({ dispatch }) {
         const propIndex = propItems.findIndex(
           item => item.oldId === claim.lossInfo.property.id
         );
-        if (index > -1) {
-          claim.client.id = propItems[propIndex].newId;
+        if (propIndex > -1) {
+          claim.lossInfo.property.id = propItems[propIndex].newId;
         }
         if (claim.policyInfo.carrier.value) {
           const items = LocalStorage.getItem('carrier') || [];
@@ -466,7 +543,7 @@ export async function syncClaims({ dispatch }) {
         }
         if (claim.mortgageInfo && claim.mortgageInfo.length > 0) {
           const items = LocalStorage.getItem('mortgage') || [];
-          claim.mortagageInfo.forEach(mortgage => {
+          claim.mortgageInfo.forEach(mortgage => {
             const index = items.findIndex(item => item.oldId === mortgage.id);
             if (index > -1) {
               mortgage.id = items[index].newId;
@@ -495,27 +572,61 @@ export async function syncClaims({ dispatch }) {
             claim.estimatingInfo.estimatorID = items[index].newId;
           }
         }
-        storeIdsToLocalStorage('claim', id, response.id);
-        localDB.claims
-          .where('id')
-          .equals(id)
-          .modify({ id: response.id, offline: false });
+        return dispatch('addClaimRemote', claim).then(res => ({
+          ...res,
+          localId
+        }));
       }
-    });
-  });
+    );
+    return new Promise((resolve, reject) =>
+      Promise.allSettled(createClaims).then(claims => {
+        const createdClaims = claims
+          .filter(({ status }) => status === 'fulfilled')
+          .map(({ value }) => {
+            storeIdsToLocalStorage('claim', value.localId, value.id);
+            return localDB.claims
+              .where('id')
+              .equals(value.localId)
+              .modify({ id: value.id, offline: false });
+          });
+        return Promise.allSettled(createdClaims).then(results => {
+          resolve('All');
+        });
+      })
+    );
+  }
 }
 
 export async function syncOfficeTasks({ dispatch }) {
   let offlineTasks = await getCollection('tasks').toArray();
   offlineTasks = offlineTasks.filter(task => task.offline);
-  offlineTasks.forEach(({ id, offline, ...task }) => {
-    const items = LocalStorage.getItem('claim') || [];
-    const index = items.findIndex(item => item.oldId === task.id);
-    if (index > -1) {
-      task.id = items[index].newId;
-      dispatch('addMultipleTaskRemote', task);
-    }
-  });
+  if (offlineTasks.length > 0) {
+    const createOfficeTasks = offlineTasks.map(
+      ({ id: localId, offline, ...task }) => {
+        const items = LocalStorage.getItem('claim') || [];
+        const index = items.findIndex(item => item.oldId === task.id);
+        if (index > -1) {
+          task.id = items[index].newId;
+        }
+        dispatch('addMultipleTaskRemote', task).then(res => ({
+          ...res,
+          localId
+        }));
+      }
+    );
+    return new Promise((resolve, reject) =>
+      Promise.allSettled(createOfficeTasks).then(tasks => {
+        const createOfficeTasks = tasks
+          .filter(({ status }) => status === 'fulfilled')
+          .map(({ value }) => {
+            return;
+          });
+        return Promise.allSettled(createdClients).then(results => {
+          resolve('All');
+        });
+      })
+    );
+  }
 }
 
 export async function setMultiplePermission({ dispatch, state }, payload) {
@@ -626,6 +737,17 @@ export async function getTemplateToken({ commit, dispatch }) {
   }
 }
 
+export async function clearLocalStorage() {
+  LocalStorage.remove('carrier');
+  LocalStorage.remove('vendor');
+  LocalStorage.remove('lead');
+  LocalStorage.remove('client');
+  LocalStorage.remove('property');
+  LocalStorage.remove('mortgage');
+  LocalStorage.remove('estimator');
+  LocalStorage.remove('claim');
+}
+
 export async function syncLocalDataBase({ dispatch, state }) {
   await dispatch('syncCarriers');
   await dispatch('syncVendors');
@@ -635,4 +757,5 @@ export async function syncLocalDataBase({ dispatch, state }) {
   await dispatch('syncClients');
   await dispatch('syncClaims');
   await dispatch('syncOfficeTasks');
+  await clearLocalStorage();
 }

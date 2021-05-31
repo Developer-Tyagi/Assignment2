@@ -72,7 +72,10 @@
                       }}
                     </div>
                   </div>
-                  <div class="col">
+                  <div
+                    class="col clickable text-primary"
+                    @click="onPhoneNumberClick(user.phoneNumber.number, $event)"
+                  >
                     {{
                       user.phoneNumber.number ? user.phoneNumber.number : '-'
                     }}
@@ -95,7 +98,12 @@
                   <div class="col">
                     {{ user.contact.fname }} {{ user.contact.lname }}
                   </div>
-                  <div class="col">{{ user.email }}</div>
+                  <div
+                    class="col clickable text-primary"
+                    @click="onEmailClick(user.email, $event)"
+                  >
+                    {{ user.email }}
+                  </div>
                 </div>
               </q-card>
             </q-tab-panel>
@@ -127,8 +135,8 @@
                   <div class="col" style="overflow-x: auto">
                     <table>
                       <tr>
-                        <th v-for="(user, index) in roleTypes">
-                          {{ user.name }}
+                        <th v-for="(user, index) in arrOfRoles">
+                          {{ user.value.name }}
                         </th>
                       </tr>
 
@@ -741,6 +749,7 @@
 import SubSideBar from 'components/SubSideBar';
 import { mapGetters, mapActions } from 'vuex';
 import { getCurrentUser } from 'src/utils/auth';
+import { onPhoneNumberClick, onEmailClick } from '@utils/clickable';
 import { validateEmail } from '@utils/validation';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 
@@ -838,7 +847,6 @@ export default {
       tab: '',
       adminSettings: [
         { name: 'Account Summary', key: 'accountSummary' },
-        { name: 'Company Setup', key: 'companySetup' },
         { name: 'Group Permission ', key: 'groupPermission' },
         { name: ' Action items', key: 'actionItems' }
       ]
@@ -859,6 +867,8 @@ export default {
   },
 
   methods: {
+    onPhoneNumberClick,
+    onEmailClick,
     ...mapActions([
       'getActionOverDues',
       'getActionCompletion',
@@ -898,10 +908,12 @@ export default {
           this.arrOfRoles = [];
           await this.getRoles().then(async () => {
             this.roleTypes.forEach(val => {
-              this.arrOfRoles.push({
-                label: '',
-                value: val
-              });
+              if (val.isPaid == true) {
+                this.arrOfRoles.push({
+                  label: '',
+                  value: val
+                });
+              }
             });
           });
         });
@@ -1097,7 +1109,7 @@ export default {
         },
         due: {
           type: '',
-          interval: '',
+          interval: null,
           unit: 'days'
         },
         notes: ''
@@ -1146,10 +1158,12 @@ export default {
     await this.claimActionItem(this.claimType);
     this.getRoles().then(async () => {
       this.roleTypes.forEach(val => {
-        this.arrOfRoles.push({
-          label: '',
-          value: val
-        });
+        if (val.isPaid == true) {
+          this.arrOfRoles.push({
+            label: '',
+            value: val
+          });
+        }
       });
     });
     this.getPermissions();
