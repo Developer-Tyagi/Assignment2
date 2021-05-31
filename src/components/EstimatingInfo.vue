@@ -80,6 +80,7 @@
         type="time"
         style="outline: none"
       />
+
       <q-input
         v-if="estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle"
         dense
