@@ -841,7 +841,7 @@ export default {
         machineValue: ''
       },
 
-      step: 5,
+      step: 0,
       stepClickValidTill: 0,
 
       stepArr: [
