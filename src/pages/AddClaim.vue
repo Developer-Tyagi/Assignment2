@@ -1077,19 +1077,14 @@ export default {
       },
 
       expertVendorInfo: {
-        expertVendorButton: true,
-        carrierName: '',
-        carrierId: '',
-        vendorIndustriesOptions: [],
+        isAlreadyHiredVendor: [{ industry: '', vendor: {} }],
+        isHiredByClaimguru: [{ industry: '', vendor: {} }],
         anyOtherExpertHiredToggle: false,
         vendorExpertHiredToggle: false,
         notes: '',
-        internalNotes: '',
-
-        vendors: [{ id: '', value: null }],
-        id: '',
-        industry: [{ value: null, id: '', machineValue: '' }]
+        internalNotes: ''
       },
+
       officeTask: {
         officeActionTypes: '',
         officeTaskTypes: '',
