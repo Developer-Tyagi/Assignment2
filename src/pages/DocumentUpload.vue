@@ -130,7 +130,14 @@
               </div>
 
               <span class="stepper-heading" v-if="isGenerateReport">
-                get Reports from Photo ID App
+                <!-- get Reports from Photo ID App -->
+                <q-btn
+                  color="primary"
+                  class=" q-mt-auto text-capitalize"
+                  @click="getReportClick"
+                  label="Get Report"
+                >
+                </q-btn>
               </span>
             </q-card>
             <div v-if="!isGenerateReport">
@@ -679,9 +686,13 @@ export default {
       'getAdditionalDocs',
       'getEsxDocs',
       'completeEstimate',
-      'deleteClaimDocument'
+      'deleteClaimDocument',
+      'generatePhotoReport'
     ]),
     ...mapMutations(['setLoading']),
+    async getReportClick() {
+      await this.generatePhotoReport(this.selectedClaimId);
+    },
     async removeDocument() {
       const payload = {
         claimID: this.selectedClaimId,

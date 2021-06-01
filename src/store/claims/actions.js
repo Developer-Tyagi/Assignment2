@@ -1140,3 +1140,27 @@ export async function addClaimEstimator({ dispatch, state }, payload) {
     return false;
   }
 }
+
+// API for Generate PhotoID report
+export async function generatePhotoReport({ dispatch, state }, claimID) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      `/claims/${claimID}/generate-photo-report
+`
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Estimator added successfully!'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+    return false;
+  }
+}
