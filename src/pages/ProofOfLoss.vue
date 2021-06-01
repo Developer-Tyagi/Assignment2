@@ -51,11 +51,41 @@
           <div class="q-pa-md heading-light" @click="onRegenerateClick()">
             Regenerate
           </div>
-              </div>
+
           <div class="q-pa-md heading-light" @click="onUploadPOL">
-           Upload Notarized POL
+            Upload Notarized POL
+          </div>
+          <div class="q-pa-md heading-light" @click="onSendingPOL()">
+            Sending Proof Of Loss
           </div>
         </q-card-section>
+      </q-card>
+    </q-dialog>
+    <!-- Alert Question Box -->
+    <q-dialog v-model="alert">
+      <q-card>
+        <q-card-section> </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          do you want to send an estimate and proof of loss to carrier?
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn
+            flat
+            label="Cancel"
+            color="primary"
+            v-close-popup
+            @click="alert = false"
+          ></q-btn>
+          <q-btn
+            flat
+            label="send"
+            color="primary"
+            v-close-popup
+            @click="onSendClick()"
+          ></q-btn>
+        </q-card-actions>
       </q-card>
     </q-dialog>
   </q-page>
@@ -68,7 +98,8 @@ export default {
   data() {
     return {
       menuItemsDialog: false,
-      menuItemsOptions: false
+      menuItemsOptions: false,
+      alert: false
     };
   },
   computed: {
@@ -82,15 +113,22 @@ export default {
     ...mapActions([
       'getProofOfLossDoc',
       'approveProofOfLoss',
-      'regenerateProofOfLoss'
+      'regenerateProofOfLoss',
+      'sendPOLToCarrier'
     ]),
     ...mapMutations(['setLoading']),
     onClickTopMenu() {
       this.menuItemsOptions = true;
       this.allFolder = true;
     },
-    onUploadPOL(){
-this.$router.push('/pol-document/'+this.selectedClaimId)
+    onSendingPOL() {
+      this.alert = true;
+    },
+    async onSendClick() {
+      await this.sendPOLToCarrier(this.selectedClaimId);
+    },
+    onUploadPOL() {
+      this.$router.push('/pol-document/' + this.selectedClaimId);
     },
     onDocClick(link) {
       window.open(link);
