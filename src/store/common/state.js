@@ -24,14 +24,8 @@ export default function() {
       { value: 'google', name: 'Google' },
       { value: 'other', name: 'Other' }
     ],
-    plans: [
-      {
-        id: '3',
-        machineValue: 'office',
-        name: 'Office',
-        price: 249
-      }
-    ],
+    plans: [],
+
     tokens: [],
     isOnline: navigator.onLine
   };

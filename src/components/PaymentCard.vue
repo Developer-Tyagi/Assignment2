@@ -5,9 +5,7 @@
   </div>
 </template>
 <script>
-const stripe = Stripe(
-  'pk_test_51IJWePEK8DUf1aFSQMUUHOdf4eFYmSgUaXxDdu31oqO5gDNcjTw6NF8ECGgWhyUXqZRk4xTWIVTgm72LfKx0eNYM00ntmzs1ns'
-);
+const stripe = Stripe(process.env.STRIPE_API_KEY);
 export default {
   name: 'PaymentCard',
 

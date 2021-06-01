@@ -20,7 +20,7 @@
               <div>
                 <div>
                   <span class="text-h5 text-weight-medium"
-                    >${{ plan.price }}</span
+                    >${{ plan.plans[0] ? plan.plans[0].amount : '-' }}</span
                   >
                   /month
                 </div>
@@ -63,7 +63,7 @@
                 <div class="text-h6 text-weight-medium">Total</div>
                 <div>
                   <span class="text-h5 text-weight-medium"
-                    >${{ plans[this.plan - 1].price }}</span
+                    >${{ plans[this.plan - 1].plans[0].amount }}</span
                   >/month
                 </div>
               </div>
@@ -444,8 +444,7 @@
                     lazy-rules
                     :rules="[
                       val =>
-                        (val && val.length == 11) ||
-                        'Please fill SSN or EID'
+                        (val && val.length == 11) || 'Please fill SSN or EID'
                     ]"
                     mask="###-##-####"
                   />
@@ -690,11 +689,12 @@ export default {
     ...mapGetters(['plans', 'contactTypes'])
   },
 
-  created() {
+  async created() {
     if (getToken()) {
       this.$router.push('/dashboard');
     } else {
-      // this.getPlansInfo();
+      await this.getPlansInfo();
+
       const index = this.plans.findIndex(
         o => o.machineValue === this.$route.query.plan
       );
