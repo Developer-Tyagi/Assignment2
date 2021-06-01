@@ -51,6 +51,10 @@
           <div class="q-pa-md heading-light" @click="onRegenerateClick()">
             Regenerate
           </div>
+              </div>
+          <div class="q-pa-md heading-light" @click="onUploadPOL">
+           Upload Notarized POL
+          </div>
         </q-card-section>
       </q-card>
     </q-dialog>
@@ -84,6 +88,9 @@ export default {
     onClickTopMenu() {
       this.menuItemsOptions = true;
       this.allFolder = true;
+    },
+    onUploadPOL(){
+this.$router.push('/pol-document/'+this.selectedClaimId)
     },
     onDocClick(link) {
       window.open(link);
