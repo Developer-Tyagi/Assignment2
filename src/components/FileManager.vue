@@ -513,6 +513,10 @@ export default {
     },
     async onFileInputClick(event) {
       this.dataURl = await this.getBase64(event.target.files[0]);
+      const file = document.getElementById('uploadFile').value;
+      this.selectFile = file.split('\\').pop();
+      this.selectFile = this.selectFile.split('.');
+      await this.uploadPdfToServer();
     },
     getBase64(file) {
       return new Promise((resolve, reject) => {
@@ -524,35 +528,33 @@ export default {
     },
     async onClickUploadButton(value) {
       await document.getElementById('uploadFile').click();
-      this.uploadFileDailog = true;
     },
     async uploadPdfToServer() {
-      if (this.uploadFileName) {
-        this.setLoading(true);
-        const formData = new FormData();
-        formData.append('parentID', this.depth[this.depth.length - 1].id);
-        formData.append(
-          'file',
-          this.dataURItoBlob(this.dataURl),
-          this.uploadFileName
-        );
-        await this.createDocuments(formData);
-        this.uploadFileName = '';
-        this.uploadFilesOptions = false;
-        this.uploadFileDailog = false;
+      this.setLoading(true);
+      const formData = new FormData();
+      formData.append('parentID', this.depth[this.depth.length - 1].id);
+      formData.append(
+        'file',
+        this.dataURItoBlob(this.dataURl),
+        this.selectFile[0]
+      );
+      console.log(formData);
+      await this.createDocuments(formData);
+      this.selectFile[0] = '';
+      this.uploadFilesOptions = false;
+      this.uploadFileDailog = false;
 
-        const { data } = await request.get(
-          `/documents?parent_id=${this.depth[this.depth.length - 1].id}`
-        );
-        this.documents = data.map(document => ({
-          name: document.attributes.name,
-          id: document.id,
-          type: document.attributes.mimeType,
-          link: document.attributes.webViewLink,
-          properties: document.attributes.properties
-        }));
-        this.setLoading(false);
-      }
+      const { data } = await request.get(
+        `/documents?parent_id=${this.depth[this.depth.length - 1].id}`
+      );
+      this.documents = data.map(document => ({
+        name: document.attributes.name,
+        id: document.id,
+        type: document.attributes.mimeType,
+        link: document.attributes.webViewLink,
+        properties: document.attributes.properties
+      }));
+      this.setLoading(false);
     },
     onClickTopMenu() {
       this.foldersAndFilesOptions = true;

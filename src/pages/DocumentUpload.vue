@@ -922,7 +922,6 @@ export default {
           this.addPdfFileToServer('uploadPhoto');
           break;
         case 'uploadSketches':
-          console.log('hello');
           this.addPdfFileToServer('uploadSketch');
           break;
         case 'additionalDocs':

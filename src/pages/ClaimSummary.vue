@@ -647,7 +647,7 @@
       <q-card style="width: 350px">
         <q-card-section class="items-center">
           <div class="q-pa-md heading-light" @click="onClickUploadDocument">
-            Upload Documents
+            Upload Estimate Documents
           </div>
         </q-card-section>
       </q-card>
