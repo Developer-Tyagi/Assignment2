@@ -251,7 +251,6 @@ export async function getReportDownload({ commit, dispatch }, payload) {
     const { data } = await request.get(
       `/reports?format=${payload.name}&type=${payload.type}`
     );
-    // commit('setClaim', data);
     dispatch('setLoading', false);
     return data;
   } catch (e) {
