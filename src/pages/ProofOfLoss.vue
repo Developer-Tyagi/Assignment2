@@ -125,7 +125,12 @@ export default {
       this.alert = true;
     },
     async onSendClick() {
-      await this.sendPOLToCarrier(this.selectedClaimId);
+      const payload = {
+        claimID: this.selectedClaimId,
+        data: {}
+      };
+      await this.sendPOLToCarrier(payload);
+      this.menuItemsOptions = false;
     },
     onUploadPOL() {
       this.$router.push('/pol-document/' + this.selectedClaimId);

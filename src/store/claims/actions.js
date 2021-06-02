@@ -1161,12 +1161,13 @@ export async function getClaimPOLDocument({ commit, dispatch }, claimID) {
 }
 
 //  API for Send Proof of loss doc
-export async function sendPOLToCarrier({ dispatch }, claimID) {
+export async function sendPOLToCarrier({ dispatch }, payload) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.post(
-      `/claims/${claimID}/send-pol
-`
+      `/claims/${payload.claimID}/send-pol
+`,
+      buildApiData('', payload.data)
     );
     dispatch('setLoading', false);
     dispatch('setNotification', {
@@ -1178,7 +1179,7 @@ export async function sendPOLToCarrier({ dispatch }, claimID) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response[0].title
+      message: 'no personnel has been assigned to carrier'
     });
     return false;
   }

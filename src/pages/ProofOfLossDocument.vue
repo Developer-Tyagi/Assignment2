@@ -113,7 +113,11 @@ export default {
     ]),
     ...mapMutations(['setLoading']),
     async onSendClick() {
-      await this.sendPOLToCarrier(this.selectedClaimId);
+      const payload = {
+        claimID: this.selectedClaimId,
+        data: {}
+      };
+      await this.sendPOLToCarrier(payload);
     },
     onClickUploadButton() {
       document.getElementById('uploadFile').click();
