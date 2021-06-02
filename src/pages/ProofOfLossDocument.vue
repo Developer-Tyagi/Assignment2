@@ -93,6 +93,7 @@
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { Plugins, CameraResultType, CameraDirection } from '@capacitor/core';
+import { getBase64 } from '@utils/common';
 const { Camera } = Plugins;
 export default {
   data() {
@@ -136,14 +137,8 @@ export default {
       this.selectFile = this.selectFile.split('.');
       this.uploadPdfToServer();
     },
-    getBase64(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = error => reject(error);
-      });
-    },
+
+    getBase64,
     dataURItoBlob(dataURI) {
       // convert base64/URLEncoded data component to raw binary data held in a string
       var byteString;
