@@ -20,7 +20,9 @@
               <div>
                 <div>
                   <span class="text-h5 text-weight-medium"
-                    >${{ plan.plans[0] ? plan.plans[0].amount : '-' }}</span
+                    >${{
+                      plan.plans[0] ? plan.plans[0].amount / 100 : '-'
+                    }}</span
                   >
                   /month
                 </div>
@@ -63,7 +65,7 @@
                 <div class="text-h6 text-weight-medium">Total</div>
                 <div>
                   <span class="text-h5 text-weight-medium"
-                    >${{ plans[this.plan - 1].plans[0].amount }}</span
+                    >${{ plans[this.plan - 1].plans[0].amount / 100 }}</span
                   >/month
                 </div>
               </div>
@@ -103,6 +105,7 @@
                       val => (val && val.length > 0) || 'Please fill first name'
                     ]"
                   />
+
                   <q-input
                     dense
                     v-model="user.contact.lname"
@@ -114,6 +117,19 @@
                     lazy-rules
                     :rules="[
                       val => (val && val.length > 0) || 'Please fill last name'
+                    ]"
+                  />
+                  <q-input
+                    dense
+                    name="firstName"
+                    v-model="photoIDEmail"
+                    color="primary"
+                    label="Photo Id Email"
+                    filled
+                    lazy-rules
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) || 'Please fill photo id email'
                     ]"
                   />
                   <q-input
@@ -533,6 +549,7 @@ export default {
           email: '',
           phoneNumber: [{ number: '' }]
         },
+        photoIDEmail: '',
         mailingAddress: {
           addressCountry: '',
           addressLocality: '',
