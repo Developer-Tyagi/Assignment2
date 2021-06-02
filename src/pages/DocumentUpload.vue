@@ -712,7 +712,7 @@ export default {
         data: {}
       };
       const response = await this.generatePhotoReport(payload);
-      console.log(response);
+
       this.photoReport = response;
     },
     async removeDocument() {

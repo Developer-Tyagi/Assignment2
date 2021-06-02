@@ -538,7 +538,7 @@ export default {
         this.dataURItoBlob(this.dataURl),
         this.selectFile[0]
       );
-      console.log(formData);
+
       await this.createDocuments(formData);
       this.selectFile[0] = '';
       this.uploadFilesOptions = false;
