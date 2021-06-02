@@ -119,12 +119,10 @@
             :hidden="step != 1"
             ref="photos"
           >
-            <q-card class="q-pa-md q-mb-md">
+            <q-card class=" q-mb-md">
               <div class="row">
-                <p class="q-mx-none q-my-auto">
-                  <label>
-                    are you using photo id app to generate a Report</label
-                  >
+                <p class="q-mx-none q-my-auto q-ml-sm">
+                  Are you using photo id app to generate a Report
                 </p>
                 <q-toggle class="q-ml-auto" v-model="isGenerateReport" />
               </div>
@@ -132,12 +130,30 @@
               <span class="stepper-heading" v-if="isGenerateReport">
                 <!-- get Reports from Photo ID App -->
                 <q-btn
+                  v-if="!photoReport"
                   color="primary"
-                  class=" q-mt-auto text-capitalize"
+                  class=" q-mt-auto text-capitalize q-ma-sm"
                   @click="getReportClick"
                   label="Get Report"
                 >
                 </q-btn>
+                <div class="vertical-center q-px-sm q-py-sm" v-if="photoReport">
+                  <div class="row">
+                    <q-icon
+                      :name="
+                        iconType(photoReport.attributes.documents[0].mimeType)
+                      "
+                      size="sm"
+                      color="primary"
+                    />
+                    <span
+                      class="q-pl-md"
+                      @click="onDocClick(photoReport.attributes.documents[0])"
+                    >
+                      {{ photoReport.attributes.documents[0].name }}</span
+                    >
+                  </div>
+                </div>
               </span>
             </q-card>
             <div v-if="!isGenerateReport">
@@ -621,7 +637,7 @@ export default {
   data() {
     return {
       dataURl: '',
-
+      photoReport: '',
       uploadEstimateFileName: '',
       estimateFileName: '',
       driveId: '',
@@ -691,7 +707,13 @@ export default {
     ]),
     ...mapMutations(['setLoading']),
     async getReportClick() {
-      await this.generatePhotoReport(this.selectedClaimId);
+      const payload = {
+        claimID: this.selectedClaimId,
+        data: {}
+      };
+      const response = await this.generatePhotoReport(payload);
+      console.log(response);
+      this.photoReport = response;
     },
     async removeDocument() {
       const payload = {
@@ -933,7 +955,6 @@ export default {
           this.addPdfFileToServer('uploadPhoto');
           break;
         case 'uploadSketches':
-          console.log('hello');
           this.addPdfFileToServer('uploadSketch');
           break;
         case 'additionalDocs':

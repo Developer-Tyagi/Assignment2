@@ -878,7 +878,7 @@ export async function getAdditionalDocs({ commit, dispatch }, claimID) {
     });
   }
 }
-getEsxDocs;
+
 // API for Get all ESXs Documents .
 export async function getEsxDocs({ commit, dispatch }, claimID) {
   dispatch('setLoading', true);
@@ -1141,19 +1141,60 @@ export async function addClaimEstimator({ dispatch, state }, payload) {
   }
 }
 
-// API for Generate PhotoID report
-export async function generatePhotoReport({ dispatch, state }, claimID) {
+// API for Get POL document for claim.
+export async function getClaimPOLDocument({ commit, dispatch }, claimID) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get(
+      `/claims/${claimID}/documents/pol_notarized`
+    );
+    commit('setPOLClaimDocument', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+  }
+}
+
+//  API for Send Proof of loss doc
+export async function sendPOLToCarrier({ dispatch }, payload) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.post(
-      `/claims/${claimID}/generate-photo-report
-`
+      `/claims/${payload.claimID}/send-pol
+`,
+      buildApiData('', payload.data)
     );
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'positive',
-      message: 'Estimator added successfully!'
+      message: 'Send successfully!'
     });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'no personnel has been assigned to carrier'
+    });
+    return false;
+  }
+}
+// API for Generate PhotoID report
+export async function generatePhotoReport({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      `/claims/${payload.claimID}/generate-photo-report
+    `,
+      buildApiData('', payload.data)
+    );
+    dispatch('setLoading', false);
+    return data;
   } catch (e) {
     console.log(e);
     dispatch('setLoading', false);
