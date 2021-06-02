@@ -64,6 +64,12 @@ const routes = [
         component: () => import('pages/Configuration.vue')
       },
       {
+        path: 'reports',
+        name: 'reports',
+        caseSensitive: true,
+        component: () => import('pages/Reports.vue')
+      },
+      {
         path: 'account',
         name: 'account',
         caseSensitive: true,

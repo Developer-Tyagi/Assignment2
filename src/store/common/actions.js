@@ -245,6 +245,23 @@ export async function setSingleRole({ dispatch, state }, payload) {
     return false;
   }
 }
+export async function getReportDownload({ commit, dispatch }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get(
+      `/reports?format=${payload.name}&type=${payload.type}`
+    );
+    dispatch('setLoading', false);
+    return data;
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+  }
+}
 
 export async function createDirectories({ dispatch, state }, payload) {
   dispatch('setLoading', true);

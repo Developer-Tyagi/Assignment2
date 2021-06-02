@@ -183,6 +183,12 @@ export default {
           description: 'View, Add and Manage all types of Mortgages.'
         },
         {
+          title: 'Reports',
+          key: 'reports',
+          link: '/reports',
+          description: 'Download files.'
+        },
+        {
           title: 'Admin',
           key: 'admin',
           link: '/admin',
@@ -217,6 +223,7 @@ export default {
         'vendors',
         'carriers',
         'mortagages',
+        'reports',
         'admin',
         'manage-users',
         'configuration'

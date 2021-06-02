@@ -106,6 +106,95 @@
                   </div>
                 </div>
               </q-card>
+              <q-card class="q-pa-lg q-mt-lg" flat bordered>
+                <div class="row justify-between">
+                  <div class="text-h5">Company Details</div>
+                  <div class="text-h5">
+                    <q-icon
+                      name="create"
+                      color="primary"
+                      @click="onEditClick"
+                    />
+                  </div>
+                </div>
+
+                <div class="row q-mt-lg text-bold">
+                  <div class="col">Company Name</div>
+                  <div class="col">Company Address</div>
+                  <div class="col">Company Mobile</div>
+                  <div class="col">Postal Company Code</div>
+                </div>
+                <q-separator />
+                <div class="row q-mt-xs">
+                  <!-- {{ user }} -->
+                  <div class="col-3 column">
+                    {{ user.name }}
+                  </div>
+                  <div class="col-3">
+                    <div class="q-mr-md" v-if="user.mailingAddress">
+                      {{
+                        user.mailingAddress.streetAddress
+                          ? user.mailingAddress.streetAddress
+                          : '-'
+                      }},{{
+                        user.mailingAddress.addressRegion
+                          ? user.mailingAddress.addressRegion
+                          : '-'
+                      }},{{
+                        user.mailingAddress.addressLocality
+                          ? user.mailingAddress.addressLocality
+                          : '-'
+                      }}
+                      ,
+                      {{
+                        user.mailingAddress.addressCountry
+                          ? user.mailingAddress.addressCountry
+                          : '-'
+                      }},{{
+                        user.mailingAddress.postalCode
+                          ? user.mailingAddress.postalCode
+                          : '-'
+                      }}
+                    </div>
+                  </div>
+                  <div
+                    class="col clickable text-primary"
+                    @click="onPhoneNumberClick(user.phoneNumber.number, $event)"
+                  >
+                    {{
+                      user.phoneNumber.number ? user.phoneNumber.number : '-'
+                    }}
+                  </div>
+                  <div class="col">
+                    {{
+                      user.mailingAddress.postalCode
+                        ? user.mailingAddress.postalCode
+                        : '-'
+                    }}
+                  </div>
+                </div>
+
+                <div class="row q-mt-xl text-bold">
+                  <div class="col">Company Administrator</div>
+                  <div class="col">Photo ID Email</div>
+                  <div class="col">Photo ID Api Key</div>
+                </div>
+                <q-separator />
+                <div class="row q-mt-xs">
+                  <div class="col">
+                    {{ user.contact.fname }} {{ user.contact.lname }}
+                  </div>
+                  <div class="col">
+                    {{ user.contact.fname }} {{ user.contact.lname }}
+                  </div>
+                  <div
+                    class="col clickable text-primary"
+                    @click="onEmailClick(user.email, $event)"
+                  >
+                    {{ user.email }}
+                  </div>
+                </div>
+              </q-card>
             </q-tab-panel>
             <q-tab-panel name="groupPermission">
               <q-card class="q-pa-lg" flat bordered>
@@ -273,7 +362,119 @@
     >
       <q-card style="width: 40%; height: 75vh">
         <q-bar class="row justify-between bg-primary" style="height: 50px">
-          <div class="q-px-xs text-bold text-white">Edit User Info</div>
+          <div class="q-px-xs text-bold text-white">Edit Account Summary</div>
+          <q-btn dense flat icon="close" color="white" v-close-popup>
+            <q-tooltip>Close</q-tooltip>
+          </q-btn>
+        </q-bar>
+        <div style="height: calc(100% - 140px); overflow: auto" class="q-pa-md">
+          <q-form ref="addUserForm" class="q-pa-md">
+            <div class="q-mt-xs">
+              <q-card class="q-mx-md q-pa-sm q-mb-sm">
+                <div class="row full-width">
+                  <q-input
+                    v-model="users.fname"
+                    dense
+                    class="q-mx-md col-5 input-extra-padding"
+                    outlined
+                    label="First name"
+                  />
+
+                  <q-input
+                    dense
+                    v-model="users.lname"
+                    class="q-mx-md col-5 input-extra-padding"
+                    outlined
+                    label="Last name"
+                  />
+                </div>
+                <div class="row">
+                  <q-select
+                    dense
+                    v-model="users.contact.type"
+                    class="q-mx-md col-5 input-extra-padding"
+                    :options="contactTypes"
+                    option-value="machineValue"
+                    option-label="name"
+                    map-options
+                    outlined
+                    options-dense
+                    behavior="menu"
+                    label="Type"
+                    emit-value
+                    lazy-rules
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) || 'Please select phone type'
+                    ]"
+                  />
+                  <q-input
+                    dense
+                    v-model="users.contact.number"
+                    outlined
+                    class="q-mx-md required col-5 input-extra-padding"
+                    label="Phone"
+                    mask="(###) ###-####"
+                    lazy-rules
+                    :rules="[
+                      val =>
+                        (val && val.length == 14) || 'Please enter phone number'
+                    ]"
+                  />
+                </div>
+                <div class="row">
+                  <q-input
+                    dense
+                    disable
+                    v-model="users.email"
+                    style=""
+                    label="Email"
+                    class="q-mx-md col-5 required"
+                    outlined
+                    lazy-rules
+                    :rules="[
+                      val =>
+                        validateEmail(val) ||
+                        'You have entered an invalid email address!'
+                    ]"
+                  />
+                </div>
+              </q-card>
+              <q-card class="q-mx-md q-pa-sm">
+                <AutoCompleteAddress
+                  :id="'AddVendor'"
+                  :address="users.mailingAddress"
+                  :isDropBoxEnable="false"
+                  :isChecksEnable="false"
+                  :value="true"
+                  :view="'web'"
+                />
+              </q-card>
+            </div>
+          </q-form>
+        </div>
+        <div class="row justify-center">
+          <q-btn
+            color="primary"
+            label="Save"
+            class="align-content-center col-2 q-my-lg"
+            @click="onSaveEditedButton"
+          />
+        </div>
+      </q-card>
+    </q-dialog>
+    <!-- editing organization info dialog -->
+    <q-dialog
+      v-model="editOrganizsationInfoDialog"
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card style="width: 40%; height: 75vh">
+        <q-bar class="row justify-between bg-primary" style="height: 50px">
+          <div class="q-px-xs text-bold text-white">
+            Edit Organization Summary
+          </div>
           <q-btn dense flat icon="close" color="white" v-close-popup>
             <q-tooltip>Close</q-tooltip>
           </q-btn>
@@ -765,10 +966,36 @@ export default {
       arrOfRoles: [],
       value: {},
       userId: '',
+      editOrganizsationInfoDialog: false,
       editUserInfoDialog: false,
       priority: false,
       selectedRole: '',
       selectedRole: '',
+      organization: {
+        users: {
+          fname: '',
+          lname: '',
+          contact: {
+            type: 'main',
+            number: ''
+          },
+          email: '',
+          roles: [],
+          mailingAddress: {
+            houseNumber: '',
+            addressCountry: '',
+            addressLocality: '',
+            addressRegion: '',
+            postOfficeBoxNumber: '',
+            postalCode: '',
+            streetAddress: '',
+            dropBox: {
+              info: '',
+              isPresent: false
+            }
+          }
+        }
+      },
       users: {
         fname: '',
         lname: '',
