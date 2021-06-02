@@ -104,6 +104,10 @@ export function setTemplateTypes(state, types) {
 export function setClaimDocument(state, claimDocument) {
   state.claimDocument = claimDocument;
 }
+export function setPOLClaimDocument(state, claimPOLDocument) {
+  state.claimPOLDocument = { ...claimPOLDocument.attributes };
+}
+
 export function setClaimPhoto(state, claimPhoto) {
   state.claimPhoto = { ...claimPhoto.attributes };
 }

@@ -199,6 +199,13 @@ const routes = [
         component: () => import('pages/ProofOfLoss.vue')
       },
       {
+        path: 'pol-document/:claimId',
+        name: 'Upload Notarized POL',
+        caseSensitive: true,
+        component: () => import('pages/ProofOfLossDocument.vue')
+      },
+
+      {
         path: 'claim-action-items/:claimId',
         name: 'action items ',
         caseSensitive: true,

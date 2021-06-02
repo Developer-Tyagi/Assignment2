@@ -22,3 +22,4 @@ export const additionalDocs = state => state.additionalDocs;
 export const esxDocs = state => state.esxDocs;
 export const proofOfLoss = state => state.proofOfLoss;
 export const estimator = state => state.estimator;
+export const claimPOLDocument = state => state.claimPOLDocument;

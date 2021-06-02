@@ -878,7 +878,7 @@ export async function getAdditionalDocs({ commit, dispatch }, claimID) {
     });
   }
 }
-getEsxDocs;
+
 // API for Get all ESXs Documents .
 export async function getEsxDocs({ commit, dispatch }, claimID) {
   dispatch('setLoading', true);
@@ -1136,6 +1136,50 @@ export async function addClaimEstimator({ dispatch, state }, payload) {
     dispatch('setNotification', {
       type: 'negative',
       message: e.response[0].title
+    });
+    return false;
+  }
+}
+
+// API for Get POL document for claim.
+export async function getClaimPOLDocument({ commit, dispatch }, claimID) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get(
+      `/claims/${claimID}/documents/pol_notarized`
+    );
+    commit('setPOLClaimDocument', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+  }
+}
+
+//  API for Send Proof of loss doc
+export async function sendPOLToCarrier({ dispatch }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      `/claims/${payload.claimID}/send-pol
+`,
+      buildApiData('', payload.data)
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Send successfully!'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'no personnel has been assigned to carrier'
     });
     return false;
   }
