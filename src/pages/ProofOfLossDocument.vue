@@ -63,9 +63,7 @@
     <!-- Alert Question Box -->
     <q-dialog v-model="alert">
       <q-card>
-        <q-card-section> </q-card-section>
-
-        <q-card-section class="q-pt-none">
+        <q-card-section class="q-pt-lg">
           do you want to send an estimate and proof of loss to carrier?
         </q-card-section>
 
