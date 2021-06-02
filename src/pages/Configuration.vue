@@ -48,15 +48,15 @@
                 <td class="table-td">{{ list.value || list.name }}</td>
                 <td class="table-td">
                   <span>
-                    <q-icon size="sm" color="primary" name="create" />
+                    <!-- <q-icon size="sm" color="primary" name="create" /> -->
                   </span>
                   <span>
-                    <q-icon
+                    <!-- <q-icon
                       class="q-ml-xs"
                       size="sm"
                       color="primary"
                       name="delete"
-                    />
+                    /> -->
                   </span>
                 </td>
               </tr>
@@ -81,15 +81,15 @@
                   <div>&nbsp;</div>
                   <div v-for="type in list.subtypes">
                     <span>
-                      <q-icon size="sm" color="primary" name="create" />
+                      <!-- <q-icon size="sm" color="primary" name="create" /> -->
                     </span>
                     <span>
-                      <q-icon
+                      <!-- <q-icon
                         class="q-ml-xs"
                         size="sm"
                         color="primary"
                         name="delete"
-                      />
+                      /> -->
                     </span>
                   </div>
                 </td>

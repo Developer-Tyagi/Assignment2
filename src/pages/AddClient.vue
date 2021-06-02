@@ -670,19 +670,21 @@
                           </div>
                         </div>
                         <q-separator />
-                        <div class="q-my-sm row">
+                        <div class="q-my-sm row justify-between">
                           <div class="heading-light col-7">Purchase Price</div>
-                          <div class="heading-light col-3">$</div>
+
                           <div class="q-mr-sm">
-                            {{ item.purchasePrice }}
+                            <span class="heading-light ">$ </span
+                            >{{ item.purchasePrice }}
                           </div>
                         </div>
-                        <div class="q-my-sm row">
+                        <div class="q-my-sm row justify-between">
                           <div class="heading-light col-7">
                             {{ item.radio }} Cost
                           </div>
-                          <div class="heading-light col-3">$</div>
-                          <div>
+
+                          <div class="q-mr-sm">
+                            <span class=" heading-light ">$ </span>
                             {{
                               item.radio == 'Replace'
                                 ? item.replaceCost
