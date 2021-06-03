@@ -113,11 +113,11 @@
           <div
             class="bg-grey-3 q-mt-md"
             style="
-            position: relative;
-            height: calc(100vh - 170px);
-            overflow: auto;
-            display: flex;
-          "
+              position: relative;
+              height: calc(100vh - 170px);
+              overflow: auto;
+              display: flex;
+            "
           >
             <table class="table" v-if="table.length">
               <thead>
@@ -313,32 +313,33 @@
         </table>
       </q-card>
     </q-dialog>
+
     <q-dialog
       v-model="addTemplateDialogBox"
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card style="height: 70%;width:60%;">
+      <q-card style="height: 80%; width: 60%">
         <div class="row justify-between bg-primary" style="height: 50px">
-          <div class=" text-white text-h6 q-pa-sm">Add Template</div>
-          <q-btn dense flat icon="close" color="black" v-close-popup>
+          <div class="text-white text-h6 q-pa-sm">Add Template</div>
+          <q-btn dense flat icon="close" color="white" v-close-popup>
             <q-tooltip>Close</q-tooltip>
           </q-btn>
         </div>
         <div class="q-mx-lg">
           <div
             style="
-            height: calc(100vh - 450px);
-            overflow-y: auto;
-            margin-bottom: 10px;
-          "
+              height: calc(100% - 100px);
+              overflow-y: auto;
+              margin-bottom: 10px;
+            "
           >
-            <div class="text-bold q-mt-md ">Template Name</div>
+            <div class="text-bold q-mt-md">Template Name</div>
             <div class="q-mb-md">
               <q-input label="Template Name" />
             </div>
-            <div class="text-bold ">Template Type</div>
+            <div class="text-bold">Template Type</div>
             <div>
               <q-select
                 dense
@@ -361,8 +362,9 @@
             </div>
             <div class="text-bold q-py-sm">BODY</div>
 
-            <q-editor
+            <!-- <q-editor
               v-model="post.body"
+              :dense="$q.screen.lt.md"
               :definitions="{
                 save: {
                   tip: 'Save your work',
@@ -395,17 +397,70 @@
                   'left',
                   'print'
                 ],
+                [
+                  {
+                    label: $q.lang.editor.formatting,
+                    icon: $q.iconSet.editor.formatting,
+                    list: 'no-icons',
+                    options: ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'code']
+                  },
+                  {
+                    label: $q.lang.editor.fontSize,
+                    icon: $q.iconSet.editor.fontSize,
+                    fixedLabel: true,
+                    fixedIcon: true,
+                    list: 'no-icons',
+                    options: [
+                      'size-1',
+                      'size-2',
+                      'size-3',
+                      'size-4',
+                      'size-5',
+                      'size-6',
+                      'size-7'
+                    ]
+                  },
+                  {
+                    label: $q.lang.editor.defaultFont,
+                    icon: $q.iconSet.editor.font,
+                    fixedIcon: true,
+                    list: 'no-icons',
+                    options: [
+                      'default_font',
+                      'arial',
+                      'arial_black',
+                      'comic_sans',
+                      'courier_new',
+                      'impact',
+                      'lucida_grande',
+                      'times_new_roman',
+                      'verdana'
+                    ]
+                  },
+                  'removeFormat'
+                ],
                 ['upload', 'save', 'create']
               ]"
+              :fonts="{
+                arial: 'Arial',
+                arial_black: 'Arial Black',
+                comic_sans: 'Comic Sans MS',
+                courier_new: 'Courier New',
+                impact: 'Impact',
+                lucida_grande: 'Lucida Grande',
+                times_new_roman: 'Times New Roman',
+                verdana: 'Verdana'
+              }"
             >
-            </q-editor>
+            </q-editor> -->
+            <Ckeditor :markup="post.body"></Ckeditor>
           </div>
           <div class="row justify-center">
             <q-btn
               color="primary"
               label="Save"
               @click="onSaveTemplate"
-              class="align-content-center q-my-lg"
+              class="align-content-center"
             />
           </div>
         </div>
@@ -418,12 +473,15 @@ import { mapGetters, mapActions } from 'vuex';
 import { validateEmail } from '@utils/validation';
 import SubSideBar from 'components/SubSideBar';
 import CustomBar from 'components/CustomBar';
+import Ckeditor from 'components/Ckeditor';
+import { event } from 'quasar';
 
 export default {
   name: 'SetConfiguration',
   components: {
     SubSideBar,
-    CustomBar
+    CustomBar,
+    Ckeditor
   },
 
   data() {
@@ -439,8 +497,10 @@ export default {
         }
       },
       title: '',
-      editor: '',
-      post: { body: '' },
+      post: { body: '<p>hi</p>' },
+      editorConfig: {
+        // The configuration of the editor.
+      },
       dialogBox: false,
       dialogBoxName: {},
       tab: {},
@@ -544,6 +604,14 @@ export default {
         await this.getAllTemplate();
       }
     },
+
+    pasteCapture() {
+      console.log(event);
+    },
+    dragCapture() {
+      console.log(event);
+    },
+
     setTypes(value) {
       const obj = this.templateOptions.find(item => {
         return item.name === value;
