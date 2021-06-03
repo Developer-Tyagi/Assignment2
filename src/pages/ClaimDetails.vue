@@ -8,7 +8,7 @@
 
     <div class=" listing-height">
       <ClaimDetail />
-      <q-item-section class="q-mt-md" v-if="userRole != 'estimator'">
+      <!-- <q-item-section class="q-mt-md" v-if="userRole != 'estimator'">
         <div
           v-for="item in ClaimDetails"
           :key="item.name"
@@ -19,7 +19,202 @@
             {{ item.name }}
           </q-card>
         </div>
-      </q-item-section>
+      </q-item-section> -->
+
+      <q-list bordered class="q-mt-xs">
+        <q-expansion-item
+          group="leadGroup"
+          label="   Claim Summary"
+          header-class="text-primary"
+        >
+          <q-card>
+            <q-card-section> <ClaimSummary /> </q-card-section>
+          </q-card>
+        </q-expansion-item>
+
+        <q-separator></q-separator>
+        <q-expansion-item
+          group="leadGroup"
+          label="Loss Info"
+          header-class="text-primary"
+        >
+          <q-card>
+            <q-card-section> <UpdateLossInfo /> </q-card-section>
+          </q-card>
+        </q-expansion-item>
+
+        <q-separator></q-separator>
+        <q-expansion-item
+          group="leadGroup"
+          label="Property Details"
+          header-class="text-primary"
+        >
+          <q-card>
+            <!-- <q-card-section> <PropertyInfo /> </q-card-section> -->
+          </q-card>
+        </q-expansion-item>
+        <q-separator></q-separator>
+        <q-expansion-item
+          group="leadGroup"
+          label="Other Damage Details"
+          header-class="text-primary"
+        >
+          <q-card>
+            <!-- <q-card-section> <PropertyInfo /> </q-card-section> -->
+          </q-card>
+        </q-expansion-item>
+        <q-separator></q-separator>
+        <q-expansion-item
+          group="leadGroup"
+          label="Activity Log & Message Archive"
+          header-class="text-primary"
+        >
+          <q-card>
+            <!-- <q-card-section> <PropertyInfo /> </q-card-section> -->
+          </q-card>
+        </q-expansion-item>
+        <q-separator></q-separator>
+        <q-expansion-item
+          group="leadGroup"
+          label="Carrier & Policy"
+          header-class="text-primary"
+        >
+          <q-card>
+            <!-- <q-card-section> <PropertyInfo /> </q-card-section> -->
+          </q-card>
+        </q-expansion-item>
+
+        <q-separator></q-separator>
+        <q-expansion-item
+          group="leadGroup"
+          label="Tasks"
+          header-class="text-primary"
+        >
+          <q-card>
+            <!-- <q-card-section> <PropertyInfo /> </q-card-section> -->
+          </q-card>
+        </q-expansion-item>
+        <q-separator></q-separator>
+        <q-expansion-item
+          group="leadGroup"
+          label="Settlements"
+          header-class="text-primary"
+        >
+          <q-card>
+            <!-- <q-card-section> <PropertyInfo /> </q-card-section> -->
+          </q-card>
+        </q-expansion-item>
+
+        <q-separator></q-separator>
+        <q-expansion-item
+          group="leadGroup"
+          label="Company Personnel"
+          header-class="text-primary"
+        >
+          <q-card>
+            <!-- <q-card-section> <PropertyInfo /> </q-card-section> -->
+          </q-card>
+        </q-expansion-item>
+
+        <q-separator></q-separator>
+        <q-expansion-item
+          group="leadGroup"
+          label="Mortgages and Liens"
+          header-class="text-primary"
+        >
+          <q-card>
+            <!-- <q-card-section> <PropertyInfo /> </q-card-section> -->
+          </q-card>
+        </q-expansion-item>
+
+        <q-separator></q-separator>
+        <q-expansion-item
+          group="leadGroup"
+          label="Expert Vendor"
+          header-class="text-primary"
+        >
+          <q-card>
+            <!-- <q-card-section> <PropertyInfo /> </q-card-section> -->
+          </q-card>
+        </q-expansion-item>
+
+        <q-separator></q-separator>
+        <q-expansion-item
+          group="leadGroup"
+          label="Files"
+          header-class="text-primary"
+        >
+          <q-card>
+            <!-- <q-card-section> <PropertyInfo /> </q-card-section> -->
+          </q-card>
+        </q-expansion-item>
+
+        <q-separator></q-separator>
+        <q-expansion-item
+          group="leadGroup"
+          label="Proof Of Loss"
+          header-class="text-primary"
+        >
+          <q-card>
+            <!-- <q-card-section> <PropertyInfo /> </q-card-section> -->
+          </q-card>
+        </q-expansion-item>
+
+        <q-separator></q-separator>
+        <q-expansion-item
+          group="leadGroup"
+          label="Notes"
+          header-class="text-primary"
+        >
+          <q-card>
+            <!-- <q-card-section> <PropertyInfo /> </q-card-section> -->
+          </q-card>
+        </q-expansion-item>
+
+        <q-separator></q-separator>
+        <q-expansion-item
+          group="leadGroup"
+          label="Estimator Info"
+          header-class="text-primary"
+        >
+          <q-card>
+            <!-- <q-card-section> <PropertyInfo /> </q-card-section> -->
+          </q-card>
+        </q-expansion-item>
+
+        <q-separator></q-separator>
+        <q-expansion-item
+          group="leadGroup"
+          label="MatterPort"
+          header-class="text-primary"
+        >
+          <q-card>
+            <!-- <q-card-section> <PropertyInfo /> </q-card-section> -->
+          </q-card>
+        </q-expansion-item>
+
+        <q-separator></q-separator>
+        <q-expansion-item
+          group="leadGroup"
+          label="Time Tracking"
+          header-class="text-primary"
+        >
+          <q-card>
+            <!-- <q-card-section> <PropertyInfo /> </q-card-section> -->
+          </q-card>
+        </q-expansion-item>
+
+        <q-separator></q-separator>
+        <q-expansion-item
+          group="leadGroup"
+          label="Claim Ledger"
+          header-class="text-primary"
+        >
+          <q-card>
+            <!-- <q-card-section> <PropertyInfo /> </q-card-section> -->
+          </q-card>
+        </q-expansion-item>
+      </q-list>
     </div>
 
     <q-dialog
@@ -158,12 +353,24 @@
 import { mapGetters, mapActions } from 'vuex';
 import moment from 'moment';
 import ClaimDetail from 'components/ClaimDetail';
+import ClaimSummary from 'src/pages/ClaimSummary';
+import UpdateLossInfo from 'src/pages/UpdateLossInfo';
+import PropertyInfo from 'src/pages/PropertyInfo';
+import ActivityLog from 'src/pages/ActivityLog';
+import OtherDamageProperty from 'src/pages/OtherDamageProperty';
 import { onEmailClick } from '@utils/clickable';
 import { successMessage } from '@utils/validation';
 import { constants } from '@utils/constant';
 import { getCurrentUser } from '@utils/auth';
 export default {
-  components: { ClaimDetail },
+  components: {
+    ClaimDetail,
+    ClaimSummary,
+    UpdateLossInfo,
+    PropertyInfo,
+    OtherDamageProperty,
+    ActivityLog
+  },
   data() {
     return {
       options: '',

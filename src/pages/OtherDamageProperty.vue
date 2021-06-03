@@ -303,7 +303,7 @@ import moment from 'moment';
 import { dateToShow } from '@utils/date';
 import { dateToSend } from '@utils/date';
 export default {
-  name: 'OtherDamage',
+  name: 'OtherDamageProperty',
   components: { CustomBar, ClaimDetail, PropertyInfo },
   data() {
     return {
