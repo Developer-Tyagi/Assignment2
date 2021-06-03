@@ -281,21 +281,21 @@
               <div class="row">
                 <div class="column">
                   <div>
-                    <input
-                      id="uploadFile"
-                      type="file"
-                      hidden
-                      @change="onSketchFileInputClick"
-                      accept="image/*,.pdf"
-                    />
                     <q-btn
                       class="q-ml-md "
                       icon="cloud_upload"
                       text-color="primary"
                       style="width: 50px"
-                      @click="onClickUploadButton"
+                      @click="onClickSketchUploadButton"
                     />
                     <div class="form-heading q-ml-md">Upload</div>
+                    <input
+                      id="uploadSketchFile"
+                      type="file"
+                      @change="onSketchFileInputClick"
+                      accept="image/*,.pdf"
+                      hidden
+                    />
                   </div>
                 </div>
                 <div>
@@ -745,14 +745,17 @@ export default {
       this.dataURl = await this.getBase64(event.target.files[0]);
       this.uploadPdfToServer('upload');
     },
+
     async onPhotoFileInputClick(event) {
       this.dataURl = await this.getBase64(event.target.files[0]);
       this.uploadPdfToServer('upload1');
     },
+
     async onSketchFileInputClick(event) {
       this.dataURl = await this.getBase64(event.target.files[0]);
       this.uploadPdfToServer('upload2');
     },
+
     async onDocFileInputClick(event) {
       this.dataURl = await this.getBase64(event.target.files[0]);
       this.uploadPdfToServer('upload4');
@@ -840,6 +843,7 @@ export default {
           await this.uploadClaimDocument(payload1);
 
           this.getClaimPhoto(this.selectedClaimId);
+          this.dataURl = '';
           this.setLoading(false);
           break;
         case 'upload2':
@@ -852,6 +856,7 @@ export default {
           await this.uploadClaimDocument(payload);
 
           this.getClaimSketch(this.selectedClaimId);
+          this.dataURl = '';
           this.setLoading(false);
           break;
         case 'upload4':
@@ -888,7 +893,9 @@ export default {
     onClickUploadButton() {
       document.getElementById('uploadFile').click();
     },
-
+    onClickSketchUploadButton() {
+      document.getElementById('uploadSketchFile').click();
+    },
     closeAddFile() {
       this.fileName = '';
       this.addFileDialog = false;
