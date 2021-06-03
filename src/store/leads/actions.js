@@ -128,10 +128,10 @@ export async function addLeads(
 ) {
   dispatch('setLoading', true);
   if (isOnline) {
-    await dispatch('addLeadRemote', payload);
+    await dispatch('addLeadRemote', payload.data);
     return true;
   } else {
-    dispatch('addLeadLocal', payload);
+    dispatch('addLeadLocal', payload.data);
   }
 }
 

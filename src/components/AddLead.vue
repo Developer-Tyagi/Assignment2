@@ -977,6 +977,7 @@ export default {
       );
 
       if (
+        selectedInspectionType &&
         selectedInspectionType.subtypes &&
         selectedInspectionType.subtypes.length > 1
       ) {
@@ -1017,9 +1018,11 @@ export default {
     },
 
     async onSubmit() {
-      if (!this.isEdit) {
-        const payload = {
+      const payload = {
+        id: this.selectedLead.id,
+        data: {
           isOrganization: this.primaryDetails.isOrganization,
+          organizationName: this.primaryDetails.organizationName,
           primaryContact: {
             honorific: {
               id: this.primaryDetails.honorific.id,
@@ -1029,7 +1032,12 @@ export default {
             fname: this.primaryDetails.firstName,
             lname: this.primaryDetails.lastName,
             email: this.primaryDetails.email,
-            phoneNumber: []
+            phoneNumber: [
+              {
+                type: this.primaryDetails.selectedContactType,
+                number: this.primaryDetails.phoneNumber
+              }
+            ]
           },
           lossLocation: {
             ...this.lossAddress
@@ -1054,7 +1062,7 @@ export default {
             machineValue: this.schedulingDetails.subInspectionMachineValue
           },
           leadSource: {
-            id: '',
+            id: this.sourceDetails.id,
             type: this.sourceDetails.type,
             detail: this.sourceDetails.details,
             address: this.sourceDetails.address,
@@ -1067,8 +1075,8 @@ export default {
             ]
           },
           carrier: {
-            id: '',
-            value: '',
+            id: this.insuranceDetails.carrierId,
+            value: this.insuranceDetails.carrierName,
             email: this.insuranceDetails.email,
             phoneNumber: [
               {
@@ -1078,113 +1086,26 @@ export default {
             ],
             address: this.insuranceDetails.address
           }
-        };
+        }
+      };
 
-        if (payload['isOrganization']) {
-          payload['organizationName'] = this.primaryDetails.organizationName;
-        }
-        if (this.insuranceDetails.carrierId) {
-          payload['carrier']['id'] = this.insuranceDetails.carrierId;
-          payload['carrier']['value'] = this.insuranceDetails.carrierName;
-        } else {
-          delete payload['carrier'];
-        }
-        if (this.primaryDetails.phoneNumber) {
-          payload.primaryContact['phoneNumber'].push({
-            type: this.primaryDetails.selectedContactType,
-            number: this.primaryDetails.phoneNumber
-          });
-        }
-        if (this.sourceDetails.type == constants.industries.VENDOR) {
-          payload.leadSource.id = this.sourceDetails.id;
-        } else {
-          payload.leadSource.details = this.sourceDetails.details;
-        }
-
+      if (this.primaryDetails.isOrganization == false) {
+        delete payload.organizationName;
+      }
+      if (!this.insuranceDetails.carrierId) {
+        delete payload.data.carrier;
+      }
+      if (!this.insuranceDetails.address.postalCode) {
+        delete payload.data.carrier.address;
+      }
+      if (this.isEdit) {
+        await this.editLeadDetails(payload);
+        this.$router.push('/lead-details/' + this.selectedLead.id);
+      } else {
         this.addLeads(payload).then(() => {
           this.setSelectedClient();
           this.$router.push('/leads');
         });
-      } else {
-        const payload = {
-          id: this.selectedLead.id,
-          data: {
-            isOrganization: this.primaryDetails.isOrganization,
-            organizationName: this.primaryDetails.organizationName,
-            primaryContact: {
-              honorific: {
-                id: this.primaryDetails.honorific.id,
-                value: this.primaryDetails.honorific.value,
-                machineValue: this.primaryDetails.honorific.machineValue
-              },
-              fname: this.primaryDetails.firstName,
-              lname: this.primaryDetails.lastName,
-              email: this.primaryDetails.email,
-              phoneNumber: [
-                {
-                  type: this.primaryDetails.selectedContactType,
-                  number: this.primaryDetails.phoneNumber
-                }
-              ]
-            },
-            lossLocation: {
-              ...this.lossAddress
-            },
-            lossDesc: this.lossDetails.lossDesc,
-            dateofLoss: dateToSend(this.lossDetails.dateOfLoss),
-            lossCause: this.lossDetails.causeOfLoss.value
-              ? this.lossDetails.causeOfLoss
-              : null,
-
-            policyNumber: this.insuranceDetails.policyNumber,
-            isAutomaticScheduling: this.schedulingDetails.isAutomaticScheduling,
-            notes: this.notes,
-
-            inspectionInfo: {
-              parentID: this.schedulingDetails.inspectionTypeId,
-              pValue: this.schedulingDetails.inspectionTypeValue,
-              pMachineValue: this.schedulingDetails.inspectionTypeMachineValue,
-              id: this.schedulingDetails.subInspectionType,
-              duration: parseFloat(this.schedulingDetails.inspectionDuration),
-              value: this.schedulingDetails.subInspectionTypeValue,
-              machineValue: this.schedulingDetails.subInspectionMachineValue
-            },
-            leadSource: {
-              id: this.sourceDetails.id,
-              type: this.sourceDetails.type,
-              detail: this.sourceDetails.details,
-              address: this.sourceDetails.address,
-              email: this.sourceDetails.email,
-              phoneNumber: [
-                {
-                  type: '',
-                  number: this.sourceDetails.phone
-                }
-              ]
-            },
-            carrier: {
-              id: this.insuranceDetails.carrierId,
-              value: this.insuranceDetails.carrierName,
-              email: this.insuranceDetails.email,
-              phoneNumber: [
-                {
-                  type: '',
-                  number: this.insuranceDetails.phone
-                }
-              ],
-              address: this.insuranceDetails.address
-            }
-          }
-        };
-
-        if (this.primaryDetails.isOrganization == false) {
-          delete payload.organizationName;
-        }
-        if (!this.insuranceDetails.carrierId) {
-          delete payload.carrier;
-        }
-        await this.editLeadDetails(payload);
-        this.$router.push('/lead-details/' + this.selectedLead.id);
       }
     },
 
@@ -1374,7 +1295,10 @@ export default {
         ? this.selectedLead.inspectionInfo.pMachineValue
         : '';
 
-      this.schedulingDetails.inspectionDuration = this.selectedLead.inspectionInfo.duration;
+      this.schedulingDetails.inspectionDuration = this.selectedLead
+        .inspectionInfo
+        ? this.selectedLead.inspectionInfo.duration
+        : '';
       this.onInspectionTypesSelect();
       if (this.selectedLead.inspectionInfo.id) {
         this.showSubInspectionType = true;
