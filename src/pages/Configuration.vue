@@ -453,7 +453,7 @@
               }"
             >
             </q-editor> -->
-            <ckeditor v-model="post.body" :config="editorConfig"></ckeditor>
+            <Ckeditor :markup="post.body"></Ckeditor>
           </div>
           <div class="row justify-center">
             <q-btn
@@ -473,13 +473,15 @@ import { mapGetters, mapActions } from 'vuex';
 import { validateEmail } from '@utils/validation';
 import SubSideBar from 'components/SubSideBar';
 import CustomBar from 'components/CustomBar';
+import Ckeditor from 'components/Ckeditor';
 import { event } from 'quasar';
 
 export default {
   name: 'SetConfiguration',
   components: {
     SubSideBar,
-    CustomBar
+    CustomBar,
+    Ckeditor
   },
 
   data() {
@@ -495,7 +497,7 @@ export default {
         }
       },
       title: '',
-      post: { body: '' },
+      post: { body: '<p>hi</p>' },
       editorConfig: {
         // The configuration of the editor.
       },
