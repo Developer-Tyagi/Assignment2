@@ -538,7 +538,7 @@ export default {
           lname: ''
         },
         email: '',
-        roles: [{ value: '', machineValue: '' }]
+        roles: [{ value: '', machineValue: '', isPaid: '' }]
       },
       options: [
         'View/Edit',
@@ -570,12 +570,14 @@ export default {
         if (val.isPaid) {
           this.userRole[0].children.push({
             label: val.name,
-            value: val.machineValue
+            value: val.machineValue,
+            isPaid: true
           });
         } else {
           this.userRole[1].children.push({
             label: val.name,
-            value: val.machineValue
+            value: val.machineValue,
+            isPaid: false
           });
         }
       });
@@ -589,6 +591,7 @@ export default {
         var user = this.roleTypes.find(o => o.name === newVal);
         this.users.roles[0].value = user.name;
         this.users.roles[0].machineValue = user.machineValue;
+        this.users.roles[0].isPaid = user.isPaid;
       }
     }
   },
@@ -637,13 +640,14 @@ export default {
       this.selected_roles.forEach(val => {
         this.currentRoles = val.machineValue;
       });
-
       let present = this.currentRoles.includes(value.value);
+
       if (present) {
       } else {
         this.selected_roles.push({
           value: value.label,
-          machineValue: value.value
+          machineValue: value.value,
+          isPaid: value.isPaid
         });
       }
     },
@@ -741,7 +745,7 @@ export default {
             lname: ''
           },
           email: '',
-          roles: []
+          roles: [{ value: '', machineValue: '', isPaid: '' }]
         };
         this.selectedRole = '';
       }
