@@ -95,6 +95,7 @@
 import { mapActions, mapMutations, mapGetters } from 'vuex';
 
 export default {
+  name: 'ProofOfLoss',
   data() {
     return {
       menuItemsDialog: false,

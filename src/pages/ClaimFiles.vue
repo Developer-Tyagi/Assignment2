@@ -14,7 +14,7 @@
 import FileManager from 'components/FileManager';
 import { mapActions, mapGetters } from 'vuex';
 export default {
-  name: 'claim-files',
+  name: 'ClaimFiles',
   components: { FileManager },
   data() {
     return {};

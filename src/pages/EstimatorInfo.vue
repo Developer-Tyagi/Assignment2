@@ -97,6 +97,7 @@ import CustomBar from 'components/CustomBar';
 import { onPhoneNumberClick, onEmailClick } from '@utils/clickable';
 import ClaimDetail from 'components/ClaimDetail';
 export default {
+  name: 'ClaimEstimatingInfo',
   components: {
     EstimatingInfo,
     CustomBar,

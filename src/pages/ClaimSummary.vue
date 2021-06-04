@@ -8,104 +8,101 @@
     />
 
     <!-- <ClaimDetail /> -->
-    <q-card class="q-ma-sm q-pa-sm">
-      <div class="row q-ml-xs justify-between">
-        <div class="text-bold q-mt-xs">Claim Summary</div>
-        <div>
-          <q-icon
-            v-if="userRole != 'estimator'"
-            class="q-ml-xs"
-            name="edit"
-            size="xs"
-            color="primary"
-            @click="onEditClaimSummary"
-          />
-        </div>
-      </div>
-      <div class="q-ml-xs">
-        <div class="row q-mt-sm">
-          <span class="heading-light col-4"> File Number </span>
-          <span class="q-ml-md col">
-            {{
-              getSelectedClaim.fileNumber ? getSelectedClaim.fileNumber : '-'
-            }}
-          </span>
-        </div>
-        <div class="row q-mt-sm">
-          <span class="heading-light col-4"> Claim Number </span>
-          <span class="q-ml-md col">
-            {{ getSelectedClaim.number ? getSelectedClaim.number : '-' }}
-          </span>
-        </div>
 
-        <div class="row q-mt-sm">
-          <span class="heading-light col-4"> Claim Reason </span>
-          <span class="q-ml-md col" v-if="getSelectedClaim.lossInfo">
-            {{
-              getSelectedClaim.lossInfo.claimReason
-                ? getSelectedClaim.lossInfo.claimReason.value
-                : '-'
-            }}
-          </span>
+    <div class="row q-ml-xs justify-between">
+      <div class="text-bold q-mt-xs">Claim Summary</div>
+      <div>
+        <q-icon
+          v-if="userRole != 'estimator'"
+          class="q-ml-xs"
+          name="edit"
+          size="xs"
+          color="primary"
+          @click="onEditClaimSummary"
+        />
+      </div>
+    </div>
+    <div class="q-ml-xs">
+      <div class="row q-mt-sm">
+        <span class="heading-light col-4"> File Number </span>
+        <span class="q-ml-md col">
+          {{ getSelectedClaim.fileNumber ? getSelectedClaim.fileNumber : '-' }}
+        </span>
+      </div>
+      <div class="row q-mt-sm">
+        <span class="heading-light col-4"> Claim Number </span>
+        <span class="q-ml-md col">
+          {{ getSelectedClaim.number ? getSelectedClaim.number : '-' }}
+        </span>
+      </div>
+
+      <div class="row q-mt-sm">
+        <span class="heading-light col-4"> Claim Reason </span>
+        <span class="q-ml-md col" v-if="getSelectedClaim.lossInfo">
+          {{
+            getSelectedClaim.lossInfo.claimReason
+              ? getSelectedClaim.lossInfo.claimReason.value
+              : '-'
+          }}
+        </span>
+      </div>
+      <div class="row q-mt-sm" v-if="getSelectedClaim.contractInfo">
+        <span class="heading-light col-4"> Claim Fees </span>
+        <div
+          class="q-ml-md col"
+          v-if="getSelectedClaim.contractInfo.fees.type == 'dollar'"
+        >
+          {{
+            getSelectedClaim.contractInfo.fees.rate
+              ? '$' + ' ' + getSelectedClaim.contractInfo.fees.rate
+              : '-'
+          }}
         </div>
-        <div class="row q-mt-sm" v-if="getSelectedClaim.contractInfo">
-          <span class="heading-light col-4"> Claim Fees </span>
-          <div
-            class="q-ml-md col"
-            v-if="getSelectedClaim.contractInfo.fees.type == 'dollar'"
-          >
-            {{
-              getSelectedClaim.contractInfo.fees.rate
-                ? '$' + ' ' + getSelectedClaim.contractInfo.fees.rate
-                : '-'
-            }}
-          </div>
-          <div
-            class="q-ml-md col"
-            v-else-if="getSelectedClaim.contractInfo.fees.type == 'update'"
-          >
-            {{
-              getSelectedClaim.contractInfo.fees.rate
-                ? getSelectedClaim.contractInfo.fees.rate + ' /hour'
-                : '-'
-            }}
-          </div>
-          <div class="q-ml-md col" v-else>
-            {{
-              getSelectedClaim.contractInfo.fees.rate
-                ? getSelectedClaim.contractInfo.fees.rate + ' %'
-                : '-'
-            }}
-          </div>
+        <div
+          class="q-ml-md col"
+          v-else-if="getSelectedClaim.contractInfo.fees.type == 'update'"
+        >
+          {{
+            getSelectedClaim.contractInfo.fees.rate
+              ? getSelectedClaim.contractInfo.fees.rate + ' /hour'
+              : '-'
+          }}
         </div>
-        <div class="row q-mt-sm">
-          <span class="heading-light col-4"> Date of Contract </span>
-          <span class="q-ml-md" v-if="getSelectedClaim.contractInfo">
-            {{ dateToShow(getSelectedClaim.contractInfo.dateOfFirstContact) }}
-          </span>
-          <span class="q-ml-md" v-else> MM/DD/YYYY</span>
-        </div>
-        <div class="row q-mt-sm">
-          <span class="heading-light col-4"> Date of Notified </span>
-          <span class="q-ml-md" v-if="getSelectedClaim.contractInfo">
-            {{ dateToShow(getSelectedClaim.contractInfo.date) }}
-          </span>
-          <span v-else class="q-ml-md"> MM/DD/YYYY</span>
-        </div>
-        <div class="row q-mt-sm">
-          <span class="heading-light col-4"> Open Since </span>
-          <span class="q-ml-md col">
-            {{ getSelectedClaim.sinceOpen ? getSelectedClaim.sinceOpen : '-' }}
-          </span>
-        </div>
-        <div class="row q-mt-sm">
-          <span class="heading-light col-4"> Loss Since </span>
-          <span class="q-ml-md col">
-            {{ getSelectedClaim.sinceLoss ? getSelectedClaim.sinceLoss : '-' }}
-          </span>
+        <div class="q-ml-md col" v-else>
+          {{
+            getSelectedClaim.contractInfo.fees.rate
+              ? getSelectedClaim.contractInfo.fees.rate + ' %'
+              : '-'
+          }}
         </div>
       </div>
-    </q-card>
+      <div class="row q-mt-sm">
+        <span class="heading-light col-4"> Date of Contract </span>
+        <span class="q-ml-md" v-if="getSelectedClaim.contractInfo">
+          {{ dateToShow(getSelectedClaim.contractInfo.dateOfFirstContact) }}
+        </span>
+        <span class="q-ml-md" v-else> MM/DD/YYYY</span>
+      </div>
+      <div class="row q-mt-sm">
+        <span class="heading-light col-4"> Date of Notified </span>
+        <span class="q-ml-md" v-if="getSelectedClaim.contractInfo">
+          {{ dateToShow(getSelectedClaim.contractInfo.date) }}
+        </span>
+        <span v-else class="q-ml-md"> MM/DD/YYYY</span>
+      </div>
+      <div class="row q-mt-sm">
+        <span class="heading-light col-4"> Open Since </span>
+        <span class="q-ml-md col">
+          {{ getSelectedClaim.sinceOpen ? getSelectedClaim.sinceOpen : '-' }}
+        </span>
+      </div>
+      <div class="row q-mt-sm">
+        <span class="heading-light col-4"> Loss Since </span>
+        <span class="q-ml-md col">
+          {{ getSelectedClaim.sinceLoss ? getSelectedClaim.sinceLoss : '-' }}
+        </span>
+      </div>
+    </div>
 
     <q-card class="q-ma-md q-pa-md" v-if="userRole != 'estimator'">
       <div class="row q-ml-xs justify-between">

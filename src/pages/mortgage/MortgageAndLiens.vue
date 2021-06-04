@@ -216,6 +216,7 @@ import { successMessage } from '@utils/validation';
 import MortgageForm from 'components/MortgageForm';
 import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
 export default {
+  name: 'MortgageAndLiens',
   components: {
     CustomBar,
     MortgageForm,

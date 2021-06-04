@@ -121,7 +121,7 @@ import ClaimDetail from 'components/ClaimDetail';
 import { validateDate } from '@utils/validation';
 import { dateToSend } from '@utils/date';
 export default {
-  name: 'OfficeTask',
+  name: 'ClaimTask',
 
   components: {
     CustomBar,

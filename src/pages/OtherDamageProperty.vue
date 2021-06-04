@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <div class="listing-height">
-      <ClaimDetail />
+      <!-- <ClaimDetail /> -->
       <div v-if="damageInfo.damageInfo.otherStructure.items">
         <q-card
           class="q-ma-sm q-pa-sm"

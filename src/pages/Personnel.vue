@@ -167,6 +167,7 @@ import { validateDate } from '@utils/validation';
 import { date } from 'quasar';
 
 export default {
+  name: 'CompanyPersonnel',
   components: { CustomBar, CompanyPersonnel, ClaimDetail },
   data() {
     return {

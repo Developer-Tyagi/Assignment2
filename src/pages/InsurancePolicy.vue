@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <div style="height: calc(100vh - 50px); overflow-y: auto">
-      <ClaimDetail />
+      <!-- <ClaimDetail /> -->
       <q-card class="q-ma-md q-pa-md">
         <div class="text-bold row q-pa-sm">
           Carrier Info
@@ -787,7 +787,7 @@ import { date } from 'quasar';
 import { constants } from '@utils/constant';
 
 export default {
-  name: 'InsurancePolicy',
+  name: 'CarrierAndPolicy',
   components: {
     CustomBar,
     InsuranceInfo,

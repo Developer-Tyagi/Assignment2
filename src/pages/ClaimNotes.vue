@@ -156,7 +156,7 @@ import { constants } from '@utils/constant';
 import ClaimDetail from 'components/ClaimDetail';
 
 export default {
-  name: 'Clients',
+  name: 'ClaimNotes',
   components: { CustomBar, ClaimDetail },
   data() {
     return {

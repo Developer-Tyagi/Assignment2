@@ -184,6 +184,7 @@ import ExpertVendorInfo from 'components/ExpertVendorInfo';
 import { successMessage } from '@utils/validation';
 import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
 export default {
+  name: 'ClaimExpertVendor',
   components: {
     CustomBar,
     ClaimDetail,
