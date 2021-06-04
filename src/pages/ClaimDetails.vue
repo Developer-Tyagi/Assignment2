@@ -70,7 +70,7 @@
           header-class="text-primary"
         >
           <q-card>
-            <!-- <q-card-section> <PropertyInfo /> </q-card-section> -->
+            <q-card-section> <ActivityLog /> </q-card-section>
           </q-card>
         </q-expansion-item>
         <q-separator></q-separator>

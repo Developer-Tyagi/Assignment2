@@ -8,7 +8,7 @@
     />
 
     <!-- <ClaimDetail /> -->
-    <q-card class="q-ma-md q-pa-md">
+    <q-card class="q-ma-sm q-pa-sm">
       <div class="row q-ml-xs justify-between">
         <div class="text-bold q-mt-xs">Claim Summary</div>
         <div>

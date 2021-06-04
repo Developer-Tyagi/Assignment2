@@ -6,7 +6,7 @@
       /></q-btn>
     </div>
     <div class="mobile-container-page">
-      <ClaimDetail />
+      <!-- <ClaimDetail /> -->
       <div>
         <div v-if="log">
           <!-- This is for showing the Property details  -->
