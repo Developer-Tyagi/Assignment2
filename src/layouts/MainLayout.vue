@@ -30,6 +30,8 @@ export default {
         this.$router.push('/leads-dashboard');
       } else if (route == 'claim-summary' && this.userRole == 'estimator') {
         this.$router.push('/claims');
+      } else if (route == 'claims') {
+        this.$store.commit('setClaims');
       } else {
         this.$router.go(-1);
       }

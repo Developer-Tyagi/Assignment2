@@ -108,9 +108,7 @@ export default {
     ...mapGetters(['clients', 'selectedClientId', 'selectedLead'])
   },
 
-  created() {
-    this.getClients();
-  },
+  created() {},
   methods: {
     ...mapActions(['getClients', 'getSingleClientDetails']),
     ...mapMutations(['setSelectedClientId', 'setSelectedLead']),
@@ -131,7 +129,10 @@ export default {
     },
 
     search(e) {
-      this.getClients(this.searchText ? this.searchText : '');
+      const payload = {
+        name: this.searchText ? this.searchText : ''
+      };
+      this.getClients(payload);
     }
   }
 };

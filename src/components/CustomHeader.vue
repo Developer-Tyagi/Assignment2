@@ -81,7 +81,7 @@
                   (link.title != 'Configuration' || $q.screen.width > 992)
               "
             >
-              <q-item-section>
+              <q-item-section @click="onClickMenuItem(link.title)">
                 <p class="title">{{ link.title }}</p>
                 <p class="description">
                   {{ link.description }}
@@ -232,7 +232,13 @@ export default {
   },
 
   methods: {
-    ...mapActions(['deletePushNotificationToken']),
+    ...mapActions([
+      'deletePushNotificationToken',
+      'getClaims',
+      'getActiveLeadsList',
+      'getArchivedLeadsList',
+      'getClients'
+    ]),
 
     async logout() {
       if (!isPushNotificationsAvailable) {
@@ -244,7 +250,24 @@ export default {
       this.removeCurrentUser();
       location.reload();
     },
-
+    onClickMenuItem(name) {
+      if (name == 'Claims') {
+        this.getClaims();
+      } else if (name == 'Leads') {
+        const payload = {
+          searchString: '',
+          new: ''
+        };
+        this.getActiveLeadsList(payload);
+        this.getArchivedLeadsList();
+      } else if ((name = 'Clients')) {
+        const payload = {
+          name: '',
+          status: ''
+        };
+        this.getClients(payload);
+      }
+    },
     removeToken,
     removeCurrentUser,
     removeFCMToken,

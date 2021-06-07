@@ -11,13 +11,15 @@ export async function getClients(
     commit,
     dispatch
   },
-  searchString = ''
+  payload
+  // searchString = ''
 ) {
   dispatch('setLoading', true);
   if (isOnline) {
     try {
       const { data } = await request.get('/clients', {
-        name: searchString
+        status: payload.status,
+        name: payload.searchString
       });
       commit('setClients', data);
       dispatch('setLoading', false);
@@ -30,7 +32,7 @@ export async function getClients(
       });
     }
   } else {
-    commit('setOfflineClients', searchString);
+    commit('setOfflineClients', payload);
     dispatch('setLoading', false);
   }
 }

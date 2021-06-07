@@ -237,6 +237,7 @@ export default {
   name: 'Leads',
   data() {
     return {
+      payload: '',
       searchText: '',
       panel: 'newLeads'
     };
@@ -251,10 +252,7 @@ export default {
     }
   },
 
-  created() {
-    this.getActiveLeadsList();
-    this.getArchivedLeadsList();
-  },
+  created() {},
 
   methods: {
     ...mapActions([
@@ -284,9 +282,14 @@ export default {
 
     search() {
       if (this.panel === 'newLeads') {
-        this.getActiveLeadsList(this.searchText ? this.searchText : '');
+        this.payload = {
+          searchString: this.searchText ? this.searchText : '',
+          new: ''
+        };
+
+        this.getActiveLeadsList(this.payload);
       } else {
-        this.getArchivedLeadsList(this.searchText ? this.searchText : '');
+        this.getArchivedLeadsList();
       }
     },
 

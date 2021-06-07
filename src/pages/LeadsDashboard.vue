@@ -12,11 +12,15 @@
 
             <div class="text">New Leads</div>
           </q-card>
-          <q-card dark class="lead-dashboard-card">
+          <q-card
+            dark
+            class="lead-dashboard-card"
+            @click="onConvertedLeadClick"
+          >
             <div class="value">{{ leadStatic.converted }}</div>
             <div class="text">Converted Leads</div>
           </q-card>
-          <q-card dark class="lead-dashboard-card">
+          <q-card dark class="lead-dashboard-card" @click="onDeadLeadClick">
             <div class="value">{{ leadStatic.dead }}</div>
             <div class="text">Dead Leads</div>
           </q-card>
@@ -107,7 +111,7 @@ export default {
     this.fillData();
   },
   methods: {
-    ...mapActions(['getLeadStatistics']),
+    ...mapActions(['getLeadStatistics', 'getActiveLeadsList']),
     fillData() {
       this.datacollection = {
         labels: [
@@ -132,6 +136,24 @@ export default {
           }
         ]
       };
+    },
+    onDeadLeadClick() {
+      this.$router.push('/leads');
+      const payload = {
+        searchString: '',
+        name: '',
+        status: 'archived'
+      };
+      this.getActiveLeadsList(payload);
+    },
+    onConvertedLeadClick() {
+      this.$router.push('/leads');
+      const payload = {
+        searchString: '',
+        name: '',
+        status: 'converted'
+      };
+      this.getActiveLeadsList(payload);
     }
   },
   computed: {

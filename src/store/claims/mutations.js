@@ -1,6 +1,6 @@
 import localDB, { getCollection } from '@services/dexie';
 
-export async function setClaims(state, claimsData) {
+export async function setClaims(state, claimsData = []) {
   const claimsCollection = await getCollection('claims');
   const claims = claimsData.map(claim => ({
     ...claim
