@@ -21,7 +21,7 @@
           </div>
           <p class="text"><small>Claims with recent activity</small></p>
         </div>
-        <div class="col-3" @click="$router.push('/clients')">
+        <div class="col-3" @click="onClientsClick">
           <div class="my-card">
             <p class="card-text">
               {{ clientStatic.active ? clientStatic.active : '-' }}
@@ -191,6 +191,10 @@ export default {
         status: 'open'
       };
       this.getClaims(params);
+    },
+    onClientsClick() {
+      this.$router.push('/clients');
+      this.getClients();
     },
     onClickNewClaims() {
       this.$router.push('/claims');
