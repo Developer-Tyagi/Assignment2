@@ -1,10 +1,11 @@
 <template>
-  <q-page>
+  <div>
     <q-icon
       size="sm"
       name="create"
       color="primary"
       class="icon-top"
+      q-page
       v-if="!lossInfoDialog"
       @click="onEditIconClick"
     ></q-icon>
@@ -238,7 +239,7 @@
         >
       </div>
     </q-card>
-  </q-page>
+  </div>
 </template>
 <script>
 import { mapGetters, mapActions, mapMutations } from 'vuex';
