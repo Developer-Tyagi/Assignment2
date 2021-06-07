@@ -33,16 +33,6 @@
             align="justify"
             narrow-indicator
           >
-            <q-tab
-              name="newLeads"
-              :label="`Active Leads-${activeLeads.length}`"
-              class="text-capitalize"
-            ></q-tab>
-            <q-tab
-              name="oldLeads"
-              :label="`Old Leads-${archivedLeads.length}`"
-              class="text-capitalize"
-            ></q-tab>
           </q-tabs>
           <q-tab-panels
             v-model="panel"
