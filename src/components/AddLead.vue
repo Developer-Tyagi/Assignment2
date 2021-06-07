@@ -1102,10 +1102,16 @@ export default {
       if (this.isEdit) {
         await this.editLeadDetails(payload);
         this.$router.push('/lead-details/' + this.selectedLead.id);
+        this.getActiveLeadsList();
       } else {
         this.addLeads(payload).then(() => {
+          const payload = {
+            new: '',
+            status: ''
+          };
+          this.getActiveLeadsList(payload);
           this.setSelectedClient();
-          this.getActiveLeadsList();
+
           this.$router.push('/leads');
         });
       }

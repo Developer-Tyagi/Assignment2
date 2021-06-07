@@ -3,11 +3,7 @@
     <div>
       <div class="mobile-container-page-without-search">
         <div class="row q-pa-sm">
-          <q-card
-            dark
-            class="lead-dashboard-card"
-            @click="$router.push('/leads')"
-          >
+          <q-card dark class="lead-dashboard-card" @click="onClickNewLead">
             <div class="value">{{ leadStatic.new }}</div>
 
             <div class="text">New Leads</div>
@@ -111,7 +107,11 @@ export default {
     this.fillData();
   },
   methods: {
-    ...mapActions(['getLeadStatistics', 'getActiveLeadsList']),
+    ...mapActions([
+      'getLeadStatistics',
+      'getActiveLeadsList',
+      'getArchivedLeadsList'
+    ]),
     fillData() {
       this.datacollection = {
         labels: [
@@ -137,6 +137,15 @@ export default {
         ]
       };
     },
+    onClickNewLead() {
+      this.$router.push('/leads');
+      const payload = {
+        new: '',
+        status: ''
+      };
+      this.getActiveLeadsList(payload);
+      this.getArchivedLeadsList();
+    },
     onDeadLeadClick() {
       this.$router.push('/leads');
       const payload = {
@@ -153,6 +162,7 @@ export default {
         name: '',
         status: 'converted'
       };
+
       this.getActiveLeadsList(payload);
     }
   },
