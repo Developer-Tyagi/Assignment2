@@ -649,7 +649,12 @@
                           </div>
                         </div>
                         <div
-                          class="text-capitalize q-pt-xs text-caption q-mr-xl q-my-xs q-pr-xs"
+                          class="
+                            text-capitalize
+                            q-pt-xs
+                            text-caption
+                            q-mr-xl q-my-xs q-pr-xs
+                          "
                         >
                           <p>{{ item.desc }}</p>
 
@@ -674,7 +679,7 @@
                           <div class="heading-light col-7">Purchase Price</div>
 
                           <div class="q-mr-sm">
-                            <span class="heading-light ">$ </span
+                            <span class="heading-light">$ </span
                             >{{ item.purchasePrice }}
                           </div>
                         </div>
@@ -684,7 +689,7 @@
                           </div>
 
                           <div class="q-mr-sm">
-                            <span class=" heading-light ">$ </span>
+                            <span class="heading-light">$ </span>
                             {{
                               item.radio == 'Replace'
                                 ? item.replaceCost
@@ -882,7 +887,12 @@
                           </div>
                         </div>
                         <div
-                          class="text-capitalize q-pt-xs text-caption q-mr-xl q-my-xs q-px-xs"
+                          class="
+                            text-capitalize
+                            q-pt-xs
+                            text-caption
+                            q-mr-xl q-my-xs q-px-xs
+                          "
                         >
                           <p>{{ item.desc }}</p>
 
@@ -2026,6 +2036,8 @@ export default {
             : response.propertyID
         };
         this.setPayloadForClaim(responseData);
+      } else {
+        this.$router.push('/clients');
       }
     },
 
@@ -2224,6 +2236,7 @@ export default {
           this.officeTask.officeActionRequired &&
           this.officeTask.actions.length
         ) {
+          console.log(this.officeTask.actions.length);
           this.addMultipleOfficeTask(response.id);
         } else {
           this.$router.push('/clients');

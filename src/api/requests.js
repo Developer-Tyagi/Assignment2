@@ -25,29 +25,31 @@ axiosInstance.interceptors.response.use(
   response => {
     return response.data;
   },
-  error => {
-    if (error.response.status === 401) {
-      refreshToken();
-      return axiosInstance.request({
-        method: err.error.config.method,
-        url: err.error.config.url,
-        params: err.error.config.params
-      });
-    } else if (error.response.status === 403) {
-      window.location.href = '/access-denied';
-    } else {
-      if (typeof error.response === 'object') {
-        throw {
-          response: error.response.data.errors,
-          status: error.response.status,
-          type: 'multiple'
-        };
+  async error => {
+    {
+      if (error.response.status === 401) {
+        await refreshToken();
+        return axiosInstance.request({
+          method: error.config.method,
+          url: error.config.url,
+          params: error.config.params
+        });
+      } else if (error.response.status === 403) {
+        window.location.href = '/access-denied';
       } else {
-        throw {
-          response: error.response.data,
-          status: error.response.status,
-          type: 'single'
-        };
+        if (typeof error.response === 'object') {
+          throw {
+            response: error.response.data.errors,
+            status: error.response.status,
+            type: 'multiple'
+          };
+        } else {
+          throw {
+            response: error.response.data,
+            status: error.response.status,
+            type: 'single'
+          };
+        }
       }
     }
   }
