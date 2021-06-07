@@ -1,5 +1,5 @@
 <template>
-  <q-page>
+  <div>
     <q-icon
       @click="onClickTopMenu"
       name="more_vert"
@@ -88,7 +88,7 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
-  </q-page>
+  </div>
 </template>
 
 <script>

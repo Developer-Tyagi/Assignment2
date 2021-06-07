@@ -6,9 +6,6 @@
       /></q-btn>
     </div>
     <div class="listing-height">
-      <div>
-        <ClaimDetail />
-      </div>
       <div class="q-mt-sm" v-if="mortgage.mortgages">
         <q-card
           class="q-ma-md q-pa-md"

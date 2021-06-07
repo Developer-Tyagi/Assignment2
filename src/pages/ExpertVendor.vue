@@ -1,109 +1,105 @@
 <template>
-  <q-page>
+  <div>
     <div class="add-icon" v-if="!expertVendorDialogBox">
       <q-btn @click="expertVendorDialogBox = true" flat
         ><img src="~assets/add.svg" height="24" width="24"
       /></q-btn>
     </div>
     <div>
-      <div class="listing-height">
-        <div>
-          <ClaimDetail />
-        </div>
-        <div class="q-mt-sm" v-if="vendorLists.Vendors">
-          <q-card
-            class="q-ma-md q-pa-md"
-            v-for="(vendor, index) in vendorLists.Vendors"
-          >
-            <div class="text-bold text-capitalize q-mt-xs row justify-between">
-              <span class="q-my-auto"> {{ vendor.name }}</span>
-              <q-icon
-                class="q-my-auto"
-                name="delete"
-                size="xs"
-                color="primary"
-                @click="onDelete(index)"
-              />
-            </div>
-            <div class="row q-mt-sm">
-              <div class="heading-light col-3">Address Details</div>
-              <div class="col-7" v-if="vendor.address">
+      <div class="q-mt-sm" v-if="vendorLists.Vendors">
+        <q-card
+          class="q-ma-md q-pa-md"
+          v-for="(vendor, index) in vendorLists.Vendors"
+        >
+          <div class="text-bold text-capitalize q-mt-xs row justify-between">
+            <span class="q-my-auto"> {{ vendor.name }}</span>
+            <q-icon
+              class="q-my-auto"
+              name="delete"
+              size="xs"
+              color="primary"
+              @click="onDelete(index)"
+            />
+          </div>
+          <div class="row q-mt-sm">
+            <div class="heading-light col-3">Address Details</div>
+            <div class="col-7" v-if="vendor.address">
+              {{
+                vendor.address.houseNumber ? vendor.address.houseNumber : '-'
+              }}
+              ,
+              {{
+                vendor.address.streetAddress
+                  ? vendor.address.streetAddress
+                  : '-'
+              }}
+              <div class="">
                 {{
-                  vendor.address.houseNumber ? vendor.address.houseNumber : '-'
+                  vendor.address.addressLocality
+                    ? vendor.address.addressLocality
+                    : '-'
                 }}
                 ,
                 {{
-                  vendor.address.streetAddress
-                    ? vendor.address.streetAddress
+                  vendor.address.addressRegion
+                    ? vendor.address.addressRegion
                     : '-'
                 }}
-                <div class="">
-                  {{
-                    vendor.address.addressLocality
-                      ? vendor.address.addressLocality
-                      : '-'
-                  }}
-                  ,
-                  {{
-                    vendor.address.addressRegion
-                      ? vendor.address.addressRegion
-                      : '-'
-                  }}
+              </div>
+              <div>
+                {{
+                  vendor.address.addressCountry
+                    ? vendor.address.addressCountry
+                    : '-'
+                }},
+                {{
+                  vendor.address.postalCode ? vendor.address.postalCode : '-'
+                }}
+                <q-icon
+                  name="place"
+                  color="primary"
+                  @click="sendMap(vendor.address)"
+                  style="position: absolute; right: 20px"
+                  size="sm"
+                ></q-icon>
+              </div>
+            </div>
+          </div>
+          <div class="row q-mt-sm" v-if="vendor.email">
+            <span class="heading-light col-3"> Email </span>
+            <span
+              class="q-ml-none col clickLink"
+              @click="onEmailClick(vendor.email, $event)"
+            >
+              {{ vendor.email ? vendor.email : '-' }}</span
+            >
+          </div>
+          <div class="row">
+            <div class="heading-light col-3">Phone Number</div>
+            <div class="q-mt-xs col-6 q-ml-none">
+              <div class="row" v-for="phone in vendor.phoneNumber">
+                <div class="col-3">
+                  {{ phone.type ? phone.type : '-' }}
                 </div>
-                <div>
-                  {{
-                    vendor.address.addressCountry
-                      ? vendor.address.addressCountry
-                      : '-'
-                  }},
-                  {{
-                    vendor.address.postalCode ? vendor.address.postalCode : '-'
-                  }}
-                  <q-icon
-                    name="place"
-                    color="primary"
-                    @click="sendMap(vendor.address)"
-                    style="position: absolute; right: 20px"
-                    size="sm"
-                  ></q-icon>
+                <div
+                  class="clickLink"
+                  @click="onPhoneNumberClick(phone.number, $event)"
+                >
+                  {{ phone.number ? phone.number : '-' }}
                 </div>
               </div>
             </div>
-            <div class="row q-mt-sm" v-if="vendor.email">
-              <span class="heading-light col-3"> Email </span>
-              <span
-                class="q-ml-none col clickLink"
-                @click="onEmailClick(vendor.email, $event)"
-              >
-                {{ vendor.email ? vendor.email : '-' }}</span
-              >
-            </div>
-            <div class="row">
-              <div class="heading-light col-3">Phone Number</div>
-              <div class="q-mt-xs col-6 q-ml-none">
-                <div class="row" v-for="phone in vendor.phoneNumber">
-                  <div class="col-3">
-                    {{ phone.type ? phone.type : '-' }}
-                  </div>
-                  <div
-                    class="clickLink"
-                    @click="onPhoneNumberClick(phone.number, $event)"
-                  >
-                    {{ phone.number ? phone.number : '-' }}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </q-card>
-        </div>
-        <div v-else class="full-width">
-          <div class="q-mt-md q-ml-xl">
-            <div style="color: #666666">
-              You haven't added a Expert Vendor ..
-            </div>
+          </div>
+        </q-card>
+      </div>
+      <div v-else class="full-width">
+        <div class="q-mt-md q-ml-xl">
+          <div style="color: #666666">
+            You haven't added a Expert Vendor ..
           </div>
         </div>
       </div>
+
       <!-- delete Dialog Box -->
       <q-dialog v-model="alert">
         <q-card>
@@ -173,7 +169,7 @@
         </q-card>
       </q-dialog>
     </div>
-  </q-page>
+  </div>
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex';

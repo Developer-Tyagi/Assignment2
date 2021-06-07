@@ -1,6 +1,5 @@
 <template>
-  <q-page>
-    <ClaimDetail />
+  <div>
     <div>
       <div v-if="estimator.estimator">
         <q-card class="q-pa-md q-ma-md">
@@ -87,7 +86,7 @@
         />
       </q-card>
     </q-dialog>
-  </q-page>
+  </div>
 </template>
 
 <script>

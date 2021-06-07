@@ -1,412 +1,407 @@
 <template>
-  <q-page>
-    <div style="height: calc(100vh - 50px); overflow-y: auto">
-      <!-- <ClaimDetail /> -->
-      <q-card class="q-ma-md q-pa-md">
-        <div class="text-bold row q-pa-sm">
-          Carrier Info
-          <q-icon
-            v-if="selectedClaimCarrier.carrier.id"
-            size="xs"
-            name="create "
-            color="primary"
-            @click="onAddCarrierClick"
-            class="q-ml-auto"
-          ></q-icon>
-          <q-icon
-            v-if="selectedClaimCarrier.carrier.id"
-            class="q-my-auto q-ml-sm"
-            name="delete"
-            size="xs"
-            color="primary"
-            @click="onDelete(selectedClaimCarrier.carrier.id)"
-          />
-          <img
-            v-if="!selectedClaimCarrier.carrier.id"
-            class="q-ml-auto"
-            src="~assets/add.svg"
-            alt="add_icon"
-            height="20px"
-            @click="onAddCarrierClick"
-          />
+  <div>
+    <q-card class="q-ma-md q-pa-md">
+      <div class="text-bold row q-pa-sm">
+        Carrier Info
+        <q-icon
+          v-if="selectedClaimCarrier.carrier.id"
+          size="xs"
+          name="create "
+          color="primary"
+          @click="onAddCarrierClick"
+          class="q-ml-auto"
+        ></q-icon>
+        <q-icon
+          v-if="selectedClaimCarrier.carrier.id"
+          class="q-my-auto q-ml-sm"
+          name="delete"
+          size="xs"
+          color="primary"
+          @click="onDelete(selectedClaimCarrier.carrier.id)"
+        />
+        <img
+          v-if="!selectedClaimCarrier.carrier.id"
+          class="q-ml-auto"
+          src="~assets/add.svg"
+          alt="add_icon"
+          height="20px"
+          @click="onAddCarrierClick"
+        />
+      </div>
+
+      <div class="q-pa-sm" v-if="selectedClaimCarrier.carrier.id">
+        <div class="text-bold row" v-model="carrierName">
+          {{ selectedClaimCarrier.carrier.name }}
         </div>
 
-        <div class="q-pa-sm" v-if="selectedClaimCarrier.carrier.id">
-          <div class="text-bold row" v-model="carrierName">
-            {{ selectedClaimCarrier.carrier.name }}
-          </div>
-
-          <div class="row q-mt-sm">
-            <div
-              class="col-7 heading-light"
-              v-if="selectedClaimCarrier.carrier.address"
-            >
-              <div>
-                {{
-                  selectedClaimCarrier.carrier.address.houseNumber
-                    ? selectedClaimCarrier.carrier.address.houseNumber
-                    : '-'
-                }}
-                ,
-                {{
-                  selectedClaimCarrier.carrier.address.streetAddress
-                    ? selectedClaimCarrier.carrier.address.streetAddress
-                    : '-'
-                }}
-              </div>
-              <div>
-                {{
-                  selectedClaimCarrier.carrier.address.addressLocality
-                    ? selectedClaimCarrier.carrier.address.addressLocality
-                    : '-'
-                }}
-                ,
-                {{
-                  selectedClaimCarrier.carrier.address.addressRegion
-                    ? selectedClaimCarrier.carrier.address.addressRegion
-                    : '-'
-                }}
-              </div>
-              <div>
-                {{
-                  selectedClaimCarrier.carrier.address.addressCountry
-                    ? selectedClaimCarrier.carrier.address.addressCountry
-                    : '-'
-                }},
-
-                {{
-                  selectedClaimCarrier.carrier.address.postalCode
-                    ? selectedClaimCarrier.carrier.address.postalCode
-                    : '-'
-                }}
-
-                <q-icon
-                  name="place"
-                  color="primary"
-                  class="q-ml-auto"
-                  @click="sendMap(selectedClaimCarrier.carrier.address)"
-                  style="position: absolute; right: 20px"
-                  size="sm"
-                ></q-icon>
-              </div>
-
-              <div
-                class="q-mt-xs"
-                v-for="phone in selectedClaimCarrier.carrier.phoneNumber"
-              >
-                <span v-if="phone.type"
-                  >{{ phone.type ? phone.type : '-' }} :
-                </span>
-                <span
-                  class="clickLink"
-                  @click="onPhoneNumberClick(phone.number, $event)"
-                  >{{ phone.number ? phone.number : '-' }}</span
-                >
-              </div>
-              <span
-                class="click-link"
-                @click="
-                  onEmailClick(selectedClaimCarrier.carrier.email, $event)
-                "
-                >{{
-                  selectedClaimCarrier.carrier.email
-                    ? selectedClaimCarrier.carrier.email
-                    : '-'
-                }}</span
-              >
-            </div>
-          </div>
-        </div>
-        <div v-else class="heading-light col q-ma-xs">
-          Carrier info not added yet.
-        </div>
-      </q-card>
-      <q-card class="q-ma-md q-pa-md">
-        <div class="row">
-          <span class="text-bold col q-ma-xs"> Carrier Personnel Info</span>
-          <img
-            class="q-mx-xs q-my-auto"
-            src="~assets/add.svg"
-            alt="add_icon"
-            height="20px"
-            @click="onAddAdjustorClick"
-          />
-        </div>
-        <div v-if="selectedClaimCarrier.carrier.personnel">
+        <div class="row q-mt-sm">
           <div
-            v-for="(personnel, index) in selectedClaimCarrier.carrier.personnel"
+            class="col-7 heading-light"
+            v-if="selectedClaimCarrier.carrier.address"
           >
-            <div class="q-pa-sm text-bold row">
-              <span v-if="personnel.name">
-                {{ personnel.name ? personnel.name : '-' }}</span
-              >
-              <div v-if="personnel.role">
-                <q-badge class="q-px-sm q-py-xs q-ml-xs" size="xs">
-                  {{ personnel.role.value }}</q-badge
-                >
-              </div>
+            <div>
+              {{
+                selectedClaimCarrier.carrier.address.houseNumber
+                  ? selectedClaimCarrier.carrier.address.houseNumber
+                  : '-'
+              }}
+              ,
+              {{
+                selectedClaimCarrier.carrier.address.streetAddress
+                  ? selectedClaimCarrier.carrier.address.streetAddress
+                  : '-'
+              }}
+            </div>
+            <div>
+              {{
+                selectedClaimCarrier.carrier.address.addressLocality
+                  ? selectedClaimCarrier.carrier.address.addressLocality
+                  : '-'
+              }}
+              ,
+              {{
+                selectedClaimCarrier.carrier.address.addressRegion
+                  ? selectedClaimCarrier.carrier.address.addressRegion
+                  : '-'
+              }}
+            </div>
+            <div>
+              {{
+                selectedClaimCarrier.carrier.address.addressCountry
+                  ? selectedClaimCarrier.carrier.address.addressCountry
+                  : '-'
+              }},
+
+              {{
+                selectedClaimCarrier.carrier.address.postalCode
+                  ? selectedClaimCarrier.carrier.address.postalCode
+                  : '-'
+              }}
+
               <q-icon
-                v-if="personnel.id"
-                size="xs"
-                name="create "
+                name="place"
                 color="primary"
                 class="q-ml-auto"
-                @click="onEditAdjustorPersonnel(index)"
+                @click="sendMap(selectedClaimCarrier.carrier.address)"
+                style="position: absolute; right: 20px"
+                size="sm"
               ></q-icon>
-              <q-icon
-                v-if="personnel.id"
-                class="q-my-auto q-ml-sm"
-                name="delete"
-                size="xs"
-                color="primary"
-                s
-                @click="onDeleteAdjustor(personnel.id)"
-              />
             </div>
 
-            <span class="col-7 heading-light" v-if="personnel.address">
-              <div class="row q-ml-sm" v-if="personnel.address.houseNumber">
-                {{
-                  personnel.address.houseNumber
-                    ? personnel.address.houseNumber
-                    : '-'
-                }}
-                ,
-                {{
-                  personnel.address.streetAddress
-                    ? personnel.address.streetAddress
-                    : '-'
-                }}
-              </div>
-              <div class="q-ml-sm" v-if="personnel.address.addressLocality">
-                {{
-                  personnel.address.addressLocality
-                    ? personnel.address.addressLocality
-                    : '-'
-                }}
-                ,
-                {{
-                  personnel.address.addressRegion
-                    ? personnel.address.addressRegion
-                    : '-'
-                }}
-              </div>
-              <div class="row q-ml-sm" v-if="personnel.address.addressCountry">
-                {{
-                  personnel.address.addressCountry
-                    ? personnel.address.addressCountry
-                    : '-'
-                }},
-                {{
-                  personnel.address.postalCode
-                    ? personnel.address.postalCode
-                    : '-'
-                }}
-              </div>
-            </span>
-            <span
-              class="click-link q-ml-sm"
-              @click="onEmailClick(personnel.email, $event)"
-              >{{ personnel.email ? personnel.email : '-' }}</span
+            <div
+              class="q-mt-xs"
+              v-for="phone in selectedClaimCarrier.carrier.phoneNumber"
             >
-            <div class="q-mt-xs q-ml-sm" v-for="phone in personnel.phoneNumber">
-              <div v-if="phone.type && phone.number">
-                <span>{{ phone.type ? phone.type : '-' }} : </span>
-                <span
-                  class="clickLink"
-                  @click="onPhoneNumberClick(phone.number, $event)"
-                  >{{ phone.number ? phone.number : '-' }}</span
-                >
-              </div>
-              <div v-else>No Phone</div>
+              <span v-if="phone.type"
+                >{{ phone.type ? phone.type : '-' }} :
+              </span>
+              <span
+                class="clickLink"
+                @click="onPhoneNumberClick(phone.number, $event)"
+                >{{ phone.number ? phone.number : '-' }}</span
+              >
             </div>
-
-            <q-separator class="q-mb-sm q-mt-sm" />
+            <span
+              class="click-link"
+              @click="onEmailClick(selectedClaimCarrier.carrier.email, $event)"
+              >{{
+                selectedClaimCarrier.carrier.email
+                  ? selectedClaimCarrier.carrier.email
+                  : '-'
+              }}</span
+            >
           </div>
         </div>
-        <div v-else class="heading-light q-ma-xs">
-          no personnel has been added.
+      </div>
+      <div v-else class="heading-light col q-ma-xs">
+        Carrier info not added yet.
+      </div>
+    </q-card>
+    <q-card class="q-ma-md q-pa-md">
+      <div class="row">
+        <span class="text-bold col q-ma-xs"> Carrier Personnel Info</span>
+        <img
+          class="q-mx-xs q-my-auto"
+          src="~assets/add.svg"
+          alt="add_icon"
+          height="20px"
+          @click="onAddAdjustorClick"
+        />
+      </div>
+      <div v-if="selectedClaimCarrier.carrier.personnel">
+        <div
+          v-for="(personnel, index) in selectedClaimCarrier.carrier.personnel"
+        >
+          <div class="q-pa-sm text-bold row">
+            <span v-if="personnel.name">
+              {{ personnel.name ? personnel.name : '-' }}</span
+            >
+            <div v-if="personnel.role">
+              <q-badge class="q-px-sm q-py-xs q-ml-xs" size="xs">
+                {{ personnel.role.value }}</q-badge
+              >
+            </div>
+            <q-icon
+              v-if="personnel.id"
+              size="xs"
+              name="create "
+              color="primary"
+              class="q-ml-auto"
+              @click="onEditAdjustorPersonnel(index)"
+            ></q-icon>
+            <q-icon
+              v-if="personnel.id"
+              class="q-my-auto q-ml-sm"
+              name="delete"
+              size="xs"
+              color="primary"
+              s
+              @click="onDeleteAdjustor(personnel.id)"
+            />
+          </div>
+
+          <span class="col-7 heading-light" v-if="personnel.address">
+            <div class="row q-ml-sm" v-if="personnel.address.houseNumber">
+              {{
+                personnel.address.houseNumber
+                  ? personnel.address.houseNumber
+                  : '-'
+              }}
+              ,
+              {{
+                personnel.address.streetAddress
+                  ? personnel.address.streetAddress
+                  : '-'
+              }}
+            </div>
+            <div class="q-ml-sm" v-if="personnel.address.addressLocality">
+              {{
+                personnel.address.addressLocality
+                  ? personnel.address.addressLocality
+                  : '-'
+              }}
+              ,
+              {{
+                personnel.address.addressRegion
+                  ? personnel.address.addressRegion
+                  : '-'
+              }}
+            </div>
+            <div class="row q-ml-sm" v-if="personnel.address.addressCountry">
+              {{
+                personnel.address.addressCountry
+                  ? personnel.address.addressCountry
+                  : '-'
+              }},
+              {{
+                personnel.address.postalCode
+                  ? personnel.address.postalCode
+                  : '-'
+              }}
+            </div>
+          </span>
+          <span
+            class="click-link q-ml-sm"
+            @click="onEmailClick(personnel.email, $event)"
+            >{{ personnel.email ? personnel.email : '-' }}</span
+          >
+          <div class="q-mt-xs q-ml-sm" v-for="phone in personnel.phoneNumber">
+            <div v-if="phone.type && phone.number">
+              <span>{{ phone.type ? phone.type : '-' }} : </span>
+              <span
+                class="clickLink"
+                @click="onPhoneNumberClick(phone.number, $event)"
+                >{{ phone.number ? phone.number : '-' }}</span
+              >
+            </div>
+            <div v-else>No Phone</div>
+          </div>
+
+          <q-separator class="q-mb-sm q-mt-sm" />
         </div>
-      </q-card>
-      <q-card class="q-ma-md q-pa-md">
+      </div>
+      <div v-else class="heading-light q-ma-xs">
+        no personnel has been added.
+      </div>
+    </q-card>
+    <q-card class="q-ma-md q-pa-md">
+      <div class="row q-mt-xs">
+        <span class="text-bold"> Policy Info</span>
+        <q-icon
+          name="edit"
+          size="xs"
+          color="primary"
+          class="q-ml-auto"
+          @click="onEditPolicyInfo"
+        />
+      </div>
+      <div class="q-ml-xs">
+        <div class="row q-mt-sm">
+          <span class="heading-light col"> Policy Number </span>
+          <span class="q-ml-md col">
+            {{ policy.policyInfo ? policy.policyInfo.number : '-' }}
+          </span>
+        </div>
+
         <div class="row q-mt-xs">
-          <span class="text-bold"> Policy Info</span>
-          <q-icon
-            name="edit"
-            size="xs"
-            color="primary"
-            class="q-ml-auto"
-            @click="onEditPolicyInfo"
-          />
+          <span class="heading-light col"> Start Date </span>
+          <span class="q-ml-md col" v-if="policy.policyInfo">
+            {{ policy.policyInfo.effectiveDate | moment('MM/DD/YYYY') }}
+          </span>
         </div>
-        <div class="q-ml-xs">
-          <div class="row q-mt-sm">
-            <span class="heading-light col"> Policy Number </span>
-            <span class="q-ml-md col">
-              {{ policy.policyInfo ? policy.policyInfo.number : '-' }}
-            </span>
-          </div>
-
-          <div class="row q-mt-xs">
-            <span class="heading-light col"> Start Date </span>
-            <span class="q-ml-md col" v-if="policy.policyInfo">
-              {{ policy.policyInfo.effectiveDate | moment('MM/DD/YYYY') }}
-            </span>
-          </div>
-          <div class="row q-mt-xs">
-            <span class="heading-light col"> End Date </span>
-            <span class="q-ml-md col" v-if="policy.policyInfo">
-              {{ policy.policyInfo.expirationDate | moment('MM/DD/YYYY') }}
-            </span>
-          </div>
-          <div class="row q-mt-xs">
-            <span class="heading-light col"> Category </span>
-            <span
-              class="q-ml-md col"
-              v-if="policy.policyInfo && policy.policyInfo.category"
-            >
-              {{
-                policy.policyInfo.category
+        <div class="row q-mt-xs">
+          <span class="heading-light col"> End Date </span>
+          <span class="q-ml-md col" v-if="policy.policyInfo">
+            {{ policy.policyInfo.expirationDate | moment('MM/DD/YYYY') }}
+          </span>
+        </div>
+        <div class="row q-mt-xs">
+          <span class="heading-light col"> Category </span>
+          <span
+            class="q-ml-md col"
+            v-if="policy.policyInfo && policy.policyInfo.category"
+          >
+            {{
+              policy.policyInfo.category
+                ? policy.policyInfo.category.value
                   ? policy.policyInfo.category.value
-                    ? policy.policyInfo.category.value
-                    : '-'
                   : '-'
-              }}
-            </span>
-          </div>
-          <div class="row q-mt-xs">
-            <span class="heading-light col"> Policy Type </span>
-            <span class="q-ml-md col">
-              {{
-                policy.policyInfo.type
-                  ? policy.policyInfo.type.value
-                    ? policy.policyInfo.type.value
-                    : '-'
-                  : '-'
-              }}
-            </span>
-          </div>
-          <div class="row q-mt-xs">
-            <span class="heading-light col"> Appraisal Clause </span>
-            <span class="q-ml-md col"> - </span>
-          </div>
-          <div class="row q-mt-xs">
-            <span class="heading-light col"> Total Amount of Policy </span>
-            <span class="q-ml-md col">
-              {{
-                policy.policyInfo.totalAmount
-                  ? policy.policyInfo.totalAmount
-                  : '-'
-              }}</span
-            >
-          </div>
-          <div class="row q-mt-xs">
-            <span class="heading-light col"> Dwelling Limit (A) </span>
-            <span class="q-ml-md col">
-              {{
-                policy.policyInfo.limitCoverage.dwelling
-                  ? policy.policyInfo.limitCoverage.dwelling
-                  : '-'
-              }}
-            </span>
-          </div>
-          <div class="row q-mt-xs">
-            <span class="heading-light col"> Other Structures (B) </span>
-            <span class="q-ml-md col">
-              {{
-                policy.policyInfo.limitCoverage.otherStructure
-                  ? policy.policyInfo.limitCoverage.otherStructure
-                  : '-'
-              }}
-            </span>
-          </div>
-          <div class="row q-mt-xs">
-            <span class="heading-light col"> Contents Limit (C) </span>
-            <span class="q-ml-md col">
-              {{
-                policy.policyInfo.limitCoverage.content
-                  ? policy.policyInfo.limitCoverage.content
-                  : '-'
-              }}
-            </span>
-          </div>
-          <div class="row q-mt-xs">
-            <span class="heading-light col"> Loss of Use/Ale Limit (D) </span>
-            <span class="q-ml-md col">
-              {{
-                policy.policyInfo.limitCoverage.lossOfUse
-                  ? policy.policyInfo.limitCoverage.lossOfUse
-                  : '-'
-              }}
-            </span>
-          </div>
-
-          <div class="row q-mt-xs">
-            <span class="heading-light col"> Ordinance or Law</span>
-            <span class="q-ml-md col">
-              {{
-                policy.policyInfo.ordinance ? policy.policyInfo.ordinance : '-'
-              }}</span
-            >
-          </div>
-          <div class="row q-mt-xs">
-            <span class="heading-light col"> Debris Removal</span>
-            <span class="q-ml-md col">
-              {{
-                policy.policyInfo.debrisRemoval
-                  ? policy.policyInfo.debrisRemoval
-                  : '-'
-              }}
-            </span>
-          </div>
-          <div class="row q-mt-xs">
-            <span class="heading-light col"> Mold Fungi</span>
-            <span class="q-ml-md col">
-              {{ policy.policyInfo.mold ? policy.policyInfo.mold : '-' }}</span
-            >
-          </div>
-          <div class="row q-mt-xs">
-            <span class="heading-light col"> Business Interruption</span>
-            <span class="q-ml-md col">
-              {{
-                policy.policyInfo.businessInt
-                  ? policy.policyInfo.businessInt
-                  : '-'
-              }}
-            </span>
-          </div>
-          <div class="row q-mt-xs">
-            <span class="heading-light col"> Depreciation</span>
-            <span class="q-ml-md col">
-              {{ policy.policyInfo ? policy.policyInfo.depreciation : '-' }}
-            </span>
-          </div>
-          <div class="row q-mt-xs">
-            <span class="heading-light col">Deductible</span>
-            <span class="q-ml-md col">
-              {{
-                policy.policyInfo.deductibleAmount
-                  ? policy.policyInfo.deductibleAmount
-                  : '-'
-              }}
-            </span>
-          </div>
-          <div class="row q-mt-xs">
-            <span class="heading-light col"> Additional Details</span>
-          </div>
-          <q-card class="q-mt-sm q-pa-sm full-width q-mb-sm row">
-            <span class="q-mb-lg col"> -</span>
-          </q-card>
-          <div class="row q-mt-xs">
-            <span class="heading-light col"> Notes</span>
-          </div>
-          <q-card class="q-pa-sm full-width q-mt-sm row">
-            <span class="q-mb-lg col"> -</span>
-          </q-card>
+                : '-'
+            }}
+          </span>
         </div>
-      </q-card>
-      <q-separator />
-    </div>
+        <div class="row q-mt-xs">
+          <span class="heading-light col"> Policy Type </span>
+          <span class="q-ml-md col">
+            {{
+              policy.policyInfo.type
+                ? policy.policyInfo.type.value
+                  ? policy.policyInfo.type.value
+                  : '-'
+                : '-'
+            }}
+          </span>
+        </div>
+        <div class="row q-mt-xs">
+          <span class="heading-light col"> Appraisal Clause </span>
+          <span class="q-ml-md col"> - </span>
+        </div>
+        <div class="row q-mt-xs">
+          <span class="heading-light col"> Total Amount of Policy </span>
+          <span class="q-ml-md col">
+            {{
+              policy.policyInfo.totalAmount
+                ? policy.policyInfo.totalAmount
+                : '-'
+            }}</span
+          >
+        </div>
+        <div class="row q-mt-xs">
+          <span class="heading-light col"> Dwelling Limit (A) </span>
+          <span class="q-ml-md col">
+            {{
+              policy.policyInfo.limitCoverage.dwelling
+                ? policy.policyInfo.limitCoverage.dwelling
+                : '-'
+            }}
+          </span>
+        </div>
+        <div class="row q-mt-xs">
+          <span class="heading-light col"> Other Structures (B) </span>
+          <span class="q-ml-md col">
+            {{
+              policy.policyInfo.limitCoverage.otherStructure
+                ? policy.policyInfo.limitCoverage.otherStructure
+                : '-'
+            }}
+          </span>
+        </div>
+        <div class="row q-mt-xs">
+          <span class="heading-light col"> Contents Limit (C) </span>
+          <span class="q-ml-md col">
+            {{
+              policy.policyInfo.limitCoverage.content
+                ? policy.policyInfo.limitCoverage.content
+                : '-'
+            }}
+          </span>
+        </div>
+        <div class="row q-mt-xs">
+          <span class="heading-light col"> Loss of Use/Ale Limit (D) </span>
+          <span class="q-ml-md col">
+            {{
+              policy.policyInfo.limitCoverage.lossOfUse
+                ? policy.policyInfo.limitCoverage.lossOfUse
+                : '-'
+            }}
+          </span>
+        </div>
+
+        <div class="row q-mt-xs">
+          <span class="heading-light col"> Ordinance or Law</span>
+          <span class="q-ml-md col">
+            {{
+              policy.policyInfo.ordinance ? policy.policyInfo.ordinance : '-'
+            }}</span
+          >
+        </div>
+        <div class="row q-mt-xs">
+          <span class="heading-light col"> Debris Removal</span>
+          <span class="q-ml-md col">
+            {{
+              policy.policyInfo.debrisRemoval
+                ? policy.policyInfo.debrisRemoval
+                : '-'
+            }}
+          </span>
+        </div>
+        <div class="row q-mt-xs">
+          <span class="heading-light col"> Mold Fungi</span>
+          <span class="q-ml-md col">
+            {{ policy.policyInfo.mold ? policy.policyInfo.mold : '-' }}</span
+          >
+        </div>
+        <div class="row q-mt-xs">
+          <span class="heading-light col"> Business Interruption</span>
+          <span class="q-ml-md col">
+            {{
+              policy.policyInfo.businessInt
+                ? policy.policyInfo.businessInt
+                : '-'
+            }}
+          </span>
+        </div>
+        <div class="row q-mt-xs">
+          <span class="heading-light col"> Depreciation</span>
+          <span class="q-ml-md col">
+            {{ policy.policyInfo ? policy.policyInfo.depreciation : '-' }}
+          </span>
+        </div>
+        <div class="row q-mt-xs">
+          <span class="heading-light col">Deductible</span>
+          <span class="q-ml-md col">
+            {{
+              policy.policyInfo.deductibleAmount
+                ? policy.policyInfo.deductibleAmount
+                : '-'
+            }}
+          </span>
+        </div>
+        <div class="row q-mt-xs">
+          <span class="heading-light col"> Additional Details</span>
+        </div>
+        <q-card class="q-mt-sm q-pa-sm full-width q-mb-sm row">
+          <span class="q-mb-lg col"> -</span>
+        </q-card>
+        <div class="row q-mt-xs">
+          <span class="heading-light col"> Notes</span>
+        </div>
+        <q-card class="q-pa-sm full-width q-mt-sm row">
+          <span class="q-mb-lg col"> -</span>
+        </q-card>
+      </div>
+    </q-card>
+    <q-separator />
 
     <!-- Insurance Info Dialog -->
 
@@ -767,7 +762,7 @@
         </q-footer>
       </q-layout>
     </q-dialog>
-  </q-page>
+  </div>
 </template>
 
 <script>

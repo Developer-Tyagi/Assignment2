@@ -1,30 +1,28 @@
 <template>
   <div>
-    <div class="mobile-container-page">
-      <ClaimDetail />
-      <q-card class="q-pa-md">
-        <div>
-          <div class="column" v-for="task in tasks.tasks">
-            <div class="row q-pa-sm">
-              <div class="flex">
-                <q-checkbox
-                  v-model="task.isEnabled"
-                  color="$primary"
-                  class="q-my-auto q-mr-md"
-                />
-              </div>
-              <div class="column">
-                <span class="text-bold text-capitalize" v-if="task.name">{{
-                  task.name
-                }}</span>
-                <span v-if="task.addedDesc">{{ task.addedDesc }}</span>
-                <span v-if="task.dueDesc">{{ task.dueDesc }}</span>
-              </div>
+    <q-card class="q-pa-md">
+      <div>
+        <div class="column" v-for="task in tasks.tasks">
+          <div class="row q-pa-sm">
+            <div class="flex">
+              <q-checkbox
+                v-model="task.isEnabled"
+                color="$primary"
+                class="q-my-auto q-mr-md"
+              />
+            </div>
+            <div class="column">
+              <span class="text-bold text-capitalize" v-if="task.name">{{
+                task.name
+              }}</span>
+              <span v-if="task.addedDesc">{{ task.addedDesc }}</span>
+              <span v-if="task.dueDesc">{{ task.dueDesc }}</span>
             </div>
           </div>
         </div>
-      </q-card>
-    </div>
+      </div>
+    </q-card>
+
     <q-btn
       label="add custom task"
       color="primary"

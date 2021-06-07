@@ -1,5 +1,5 @@
 <template>
-  <q-page>
+  <div>
     <!-- Company Personnel  Dialog Box for adding Info  -->
     <q-dialog
       v-model="addCompanyPersonnelDailog"
@@ -66,95 +66,93 @@
         ><img src="~assets/add.svg"
       /></q-btn>
     </div>
-    <div class="mobile-container-page">
-      <ClaimDetail />
-      <div class="q-pa-md">
-        <div v-if="personnel.personnel">
-          <div>
-            <q-card
-              class="q-pa-md q-ma-sm"
-              v-for="(personnel, index) in personnel.personnel"
-            >
-              <div class="text-bold text-capitalize q-mt-xs row">
-                <div class="col-10">
-                  {{ personnel.name }}
-                </div>
-                <q-icon
-                  @click="onEditButtonClick(index)"
-                  class="q-my-auto col"
-                  name="edit"
-                  color="primary"
-                  size="xs"
-                />
-                <q-icon
-                  class="q-my-auto"
-                  name="delete"
-                  size="xs"
-                  color="primary"
-                  @click="onDelete(index)"
-                />
-              </div>
 
-              <div class="row q-mt-sm" v-if="personnel.role">
-                <span class="heading-light col-3"> Role:</span>
-                <span class="q-ml-lg col"> {{ personnel.role.value }}</span>
+    <div class="q-pa-md">
+      <div v-if="personnel.personnel">
+        <div>
+          <q-card
+            class="q-pa-md q-ma-sm"
+            v-for="(personnel, index) in personnel.personnel"
+          >
+            <div class="text-bold text-capitalize q-mt-xs row">
+              <div class="col-10">
+                {{ personnel.name }}
               </div>
-              <div class="row q-mt-sm" v-if="personnel.name">
-                <span class="heading-light col-3"> Person Party:</span>
-                <span class="q-ml-lg col"> {{ personnel.name }}</span>
-              </div>
-              <div class="row q-mt-sm" v-if="personnel.fees">
-                <span class="heading-light col-3"> Fee:</span>
-                <span class="q-ml-lg col">
-                  <div v-if="personnel.fees.type == 'dollar'">
-                    {{ personnel ? '$' + personnel.fees.rate : '-' }}
-                  </div>
-                  <div v-else-if="personnel.fees.type == 'update'">
-                    {{ personnel ? personnel.fees.rate + ' /hour' : '-' }}
-                  </div>
-                  <div v-else>
-                    {{ personnel ? personnel.fees.rate + ' %' : '-' }}
-                  </div>
-                </span>
-              </div>
-              <div class="row q-mt-sm" v-if="personnel.startDate">
-                <span class="heading-light col-3"> Start Date:</span>
-                <span class="q-ml-lg col">
-                  {{ dateToShow(personnel.startDate) }}</span
-                >
-              </div>
-              <div class="row q-mt-sm" v-if="personnel.endDate">
-                <span class="heading-light col-3"> End Date:</span>
-                <span class="q-ml-lg col">
-                  {{ dateToShow(personnel.endDate) }}</span
-                >
-              </div>
-              <div class="row q-mt-sm" v-if="personnel.note">
-                <span class="heading-light col-3"> Note:</span>
-                <span class="q-ml-lg col"> {{ personnel.note }}</span>
-              </div>
-            </q-card>
-          </div>
-        </div>
-
-        <div v-else class="full-height full-width column">
-          <div class="column absolute-center q-mt-xl">
-            <div style="color: #666666,align-items: center;margin-top:100px">
-              You haven't added a Company Personnel yet.
+              <q-icon
+                @click="onEditButtonClick(index)"
+                class="q-my-auto col"
+                name="edit"
+                color="primary"
+                size="xs"
+              />
+              <q-icon
+                class="q-my-auto"
+                name="delete"
+                size="xs"
+                color="primary"
+                @click="onDelete(index)"
+              />
             </div>
-            <img
-              class="q-mx-lg q-pt-sm"
-              src="~assets/add.svg"
-              alt="add_icon"
-              width="130px"
-              height="100px"
-              @click="addCompanyPersonnelDailog = true"
-            />
+
+            <div class="row q-mt-sm" v-if="personnel.role">
+              <span class="heading-light col-3"> Role:</span>
+              <span class="q-ml-lg col"> {{ personnel.role.value }}</span>
+            </div>
+            <div class="row q-mt-sm" v-if="personnel.name">
+              <span class="heading-light col-3"> Person Party:</span>
+              <span class="q-ml-lg col"> {{ personnel.name }}</span>
+            </div>
+            <div class="row q-mt-sm" v-if="personnel.fees">
+              <span class="heading-light col-3"> Fee:</span>
+              <span class="q-ml-lg col">
+                <div v-if="personnel.fees.type == 'dollar'">
+                  {{ personnel ? '$' + personnel.fees.rate : '-' }}
+                </div>
+                <div v-else-if="personnel.fees.type == 'update'">
+                  {{ personnel ? personnel.fees.rate + ' /hour' : '-' }}
+                </div>
+                <div v-else>
+                  {{ personnel ? personnel.fees.rate + ' %' : '-' }}
+                </div>
+              </span>
+            </div>
+            <div class="row q-mt-sm" v-if="personnel.startDate">
+              <span class="heading-light col-3"> Start Date:</span>
+              <span class="q-ml-lg col">
+                {{ dateToShow(personnel.startDate) }}</span
+              >
+            </div>
+            <div class="row q-mt-sm" v-if="personnel.endDate">
+              <span class="heading-light col-3"> End Date:</span>
+              <span class="q-ml-lg col">
+                {{ dateToShow(personnel.endDate) }}</span
+              >
+            </div>
+            <div class="row q-mt-sm" v-if="personnel.note">
+              <span class="heading-light col-3"> Note:</span>
+              <span class="q-ml-lg col"> {{ personnel.note }}</span>
+            </div>
+          </q-card>
+        </div>
+      </div>
+
+      <div v-else class="full-height full-width column">
+        <div class="column absolute-center q-mt-xl">
+          <div style="color: #666666,align-items: center;margin-top:100px">
+            You haven't added a Company Personnel yet.
           </div>
+          <img
+            class="q-mx-lg q-pt-sm"
+            src="~assets/add.svg"
+            alt="add_icon"
+            width="130px"
+            height="100px"
+            @click="addCompanyPersonnelDailog = true"
+          />
         </div>
       </div>
     </div>
-  </q-page>
+  </div>
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex';
