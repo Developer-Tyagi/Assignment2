@@ -210,6 +210,22 @@ export async function getFolderDocuments({ commit, dispatch }) {
   }
 }
 
+export async function getOrganization({ commit, dispatch }) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get('/organizations/info');
+    commit('setOrganization', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+  }
+}
+
 export async function createDocuments({ dispatch, state }, formData) {
   dispatch('setLoading', true);
   try {
@@ -302,6 +318,68 @@ export async function addTemplate({ dispatch, state }, payload) {
     return false;
   }
 }
+export async function editTemplate({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.patch(
+      `/templates/${payload.type.machineValue}`,
+      buildApiData('templatetypes/', payload)
+    );
+
+    dispatch('setLoading', false);
+    return true;
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+    return false;
+  }
+}
+export async function deleteTemplate({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.del(
+      `/templates/${payload.type}`,
+      buildApiData('templatetypes/', payload)
+    );
+
+    dispatch('setLoading', false);
+    return true;
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+    return false;
+  }
+}
+
+export async function addTemplateType({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      '/templatetypes',
+      buildApiData('templatetypes', payload)
+    );
+
+    dispatch('setLoading', false);
+    return true;
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+    return false;
+  }
+}
+
 export async function getAllTemplate({ commit, dispatch }) {
   dispatch('setLoading', true);
   try {

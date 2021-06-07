@@ -27,6 +27,7 @@ export default function() {
     plans: [],
 
     tokens: [],
+    organization: [],
     isOnline: navigator.onLine
   };
 }

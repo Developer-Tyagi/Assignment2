@@ -113,7 +113,7 @@
                     <q-icon
                       name="create"
                       color="primary"
-                      @click="onEditClick"
+                      @click="onEditClickOrganization"
                     />
                   </div>
                 </div>
@@ -121,54 +121,53 @@
                 <div class="row q-mt-lg text-bold">
                   <div class="col">Company Name</div>
                   <div class="col">Company Address</div>
-                  <div class="col">Company Mobile</div>
+                  <div class="col">Company website</div>
+
                   <div class="col">Postal Company Code</div>
                 </div>
                 <q-separator />
+
                 <div class="row q-mt-xs">
-                  <!-- {{ user }} -->
                   <div class="col-3 column">
-                    {{ user.name }}
+                    {{ organization.name }}
                   </div>
                   <div class="col-3">
-                    <div class="q-mr-md" v-if="user.mailingAddress">
+                    <div
+                      class="q-mr-md"
+                      v-if="organization.billingInfo.address"
+                    >
                       {{
-                        user.mailingAddress.streetAddress
-                          ? user.mailingAddress.streetAddress
+                        organization.billingInfo.address.streetAddress
+                          ? organization.billingInfo.address.streetAddress
                           : '-'
                       }},{{
-                        user.mailingAddress.addressRegion
-                          ? user.mailingAddress.addressRegion
+                        organization.billingInfo.address.addressRegion
+                          ? organization.billingInfo.address.addressRegion
                           : '-'
                       }},{{
-                        user.mailingAddress.addressLocality
-                          ? user.mailingAddress.addressLocality
+                        organization.billingInfo.address.addressLocality
+                          ? organization.billingInfo.address.addressLocality
                           : '-'
                       }}
                       ,
                       {{
-                        user.mailingAddress.addressCountry
-                          ? user.mailingAddress.addressCountry
+                        organization.billingInfo.address.addressCountry
+                          ? organization.billingInfo.address.addressCountry
                           : '-'
                       }},{{
-                        user.mailingAddress.postalCode
-                          ? user.mailingAddress.postalCode
+                        organization.billingInfo.address.postalCode
+                          ? organization.billingInfo.address.postalCode
                           : '-'
                       }}
                     </div>
                   </div>
-                  <div
-                    class="col clickable text-primary"
-                    @click="onPhoneNumberClick(user.phoneNumber.number, $event)"
-                  >
-                    {{
-                      user.phoneNumber.number ? user.phoneNumber.number : '-'
-                    }}
+                  <div class="col ">
+                    {{ organization.website ? organization.website : '-' }}
                   </div>
                   <div class="col">
                     {{
-                      user.mailingAddress.postalCode
-                        ? user.mailingAddress.postalCode
+                      organization.billingInfo.address.postalCode
+                        ? organization.billingInfo.address.postalCode
                         : '-'
                     }}
                   </div>
@@ -182,16 +181,24 @@
                 <q-separator />
                 <div class="row q-mt-xs">
                   <div class="col">
-                    {{ user.contact.fname }} {{ user.contact.lname }}
+                    {{ organization.name }}
                   </div>
                   <div class="col">
-                    {{ user.contact.fname }} {{ user.contact.lname }}
+                    {{
+                      organization.photoIDAPIKey
+                        ? organization.photoIDAPIKey
+                        : '-'
+                    }}
                   </div>
                   <div
                     class="col clickable text-primary"
                     @click="onEmailClick(user.email, $event)"
                   >
-                    {{ user.email }}
+                    {{
+                      organization.photoIDEmail
+                        ? organization.photoIDEmail
+                        : '-'
+                    }}
                   </div>
                 </div>
               </q-card>
@@ -485,7 +492,7 @@
               <q-card class="q-mx-md q-pa-sm q-mb-sm">
                 <div class="row full-width">
                   <q-input
-                    v-model="users.fname"
+                    v-model="organizations.users.fname"
                     dense
                     class="q-mx-md col-5 input-extra-padding"
                     outlined
@@ -494,53 +501,19 @@
 
                   <q-input
                     dense
-                    v-model="users.lname"
+                    v-model="organizations.users.lname"
                     class="q-mx-md col-5 input-extra-padding"
                     outlined
-                    label="Last name"
-                  />
-                </div>
-                <div class="row">
-                  <q-select
-                    dense
-                    v-model="users.contact.type"
-                    class="q-mx-md col-5 input-extra-padding"
-                    :options="contactTypes"
-                    option-value="machineValue"
-                    option-label="name"
-                    map-options
-                    outlined
-                    options-dense
-                    behavior="menu"
-                    label="Type"
-                    emit-value
-                    lazy-rules
-                    :rules="[
-                      val =>
-                        (val && val.length > 0) || 'Please select phone type'
-                    ]"
-                  />
-                  <q-input
-                    dense
-                    v-model="users.contact.number"
-                    outlined
-                    class="q-mx-md required col-5 input-extra-padding"
-                    label="Phone"
-                    mask="(###) ###-####"
-                    lazy-rules
-                    :rules="[
-                      val =>
-                        (val && val.length == 14) || 'Please enter phone number'
-                    ]"
+                    label="PhotoId Api key"
                   />
                 </div>
                 <div class="row">
                   <q-input
                     dense
                     disable
-                    v-model="users.email"
+                    v-model="organizations.users.email"
                     style=""
-                    label="Email"
+                    label="PhotoId  Email"
                     class="q-mx-md col-5 required"
                     outlined
                     lazy-rules
@@ -550,12 +523,25 @@
                         'You have entered an invalid email address!'
                     ]"
                   />
+
+                  <q-input
+                    dense
+                    v-model="organizations.users.contact.number"
+                    outlined
+                    class="q-mx-md required col-5 input-extra-padding"
+                    label="Website"
+                    lazy-rules
+                    :rules="[
+                      val =>
+                        (val && val.length == 14) || 'Please enter phone number'
+                    ]"
+                  />
                 </div>
               </q-card>
               <q-card class="q-mx-md q-pa-sm">
                 <AutoCompleteAddress
                   :id="'AddVendor'"
-                  :address="users.mailingAddress"
+                  :address="organizations.users.mailingAddress"
                   :isDropBoxEnable="false"
                   :isChecksEnable="false"
                   :value="true"
@@ -971,7 +957,7 @@ export default {
       priority: false,
       selectedRole: '',
       selectedRole: '',
-      organization: {
+      organizations: {
         users: {
           fname: '',
           lname: '',
@@ -1089,7 +1075,8 @@ export default {
       'allAction',
       'contactTypes',
       'roleTypes',
-      'permissions'
+      'permissions',
+      'organization'
     ])
   },
 
@@ -1108,7 +1095,8 @@ export default {
       'getUserInfo',
       'getRoles',
       'getPermissions',
-      'setMultiplePermission'
+      'setMultiplePermission',
+      'getOrganization'
     ]),
     validateEmail,
     async rolePermission(per, role, value) {
@@ -1258,6 +1246,21 @@ export default {
       this.users.mailingAddress.postalCode = this.user.mailingAddress.postalCode;
       this.editUserInfoDialog = true;
     },
+    onEditClickOrganization() {
+      this.organizations.users.fname = this.organization.name;
+      this.organizations.users.lname = this.organization.photoIDAPIKey;
+
+      this.organizations.users.contact.number = this.organization.website;
+      this.organizations.users.email = this.organization.photoIDEmail;
+      this.organizations.users.mailingAddress.addressCountry = this.organization.billingInfo.address.addressCountry;
+      this.organizations.users.mailingAddress.addressRegion = this.organization.billingInfo.address.addressRegion;
+      this.organizations.users.mailingAddress.addressLocality = this.organization.billingInfo.address.addressLocality;
+      this.organizations.users.mailingAddress.houseNumber = this.organization.billingInfo.address.houseNumber;
+      this.organizations.users.mailingAddress.streetAddress = this.organization.billingInfo.address.streetAddress;
+      this.organizations.users.mailingAddress.postalCode = this.organization.billingInfo.address.postalCode;
+
+      this.editOrganizsationInfoDialog = true;
+    },
     // Action OverDue Sub Dropdown Index set
 
     setSubType(val, index) {
@@ -1374,6 +1377,7 @@ export default {
   },
 
   async created() {
+    this.getOrganization();
     this.getContactTypes();
     this.tab = 'accountSummary';
     if (getCurrentUser().attributes) {

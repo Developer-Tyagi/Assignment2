@@ -106,7 +106,7 @@
             <span class="text-bold" style="line-height: 36px">{{
               tab.name
             }}</span>
-            <q-btn @click="addTemplateDialogBox = true" color="primary">
+            <q-btn @click="openAddTemplateBox" color="primary">
               Add Template
             </q-btn>
           </div>
@@ -123,17 +123,23 @@
               <thead>
                 <tr class="table-tr">
                   <th class="table-th">Name</th>
-                  <th class="table-th">Template Value</th>
+
                   <th class="table-th">Action</th>
                 </tr>
               </thead>
+
               <tbody>
                 <tr class="table-tr" v-for="list in templates">
                   <td class="table-td">{{ list.name.type.value }}</td>
-                  <td class="table-td">{{ list.name.value }}</td>
+
                   <td class="table-td">
                     <span>
-                      <q-icon size="sm" color="primary" name="create" />
+                      <q-icon
+                        size="sm"
+                        color="primary"
+                        name="create"
+                        @click="onEditTemplate(list)"
+                      />
                     </span>
                     <span>
                       <q-icon
@@ -141,6 +147,7 @@
                         size="sm"
                         color="primary"
                         name="delete"
+                        @click="onDeleteTemplate(list)"
                       />
                     </span>
                   </td>
@@ -335,11 +342,7 @@
               margin-bottom: 10px;
             "
           >
-            <div class="text-bold q-mt-md">Template Name</div>
-            <div class="q-mb-md">
-              <q-input label="Template Name" />
-            </div>
-            <div class="text-bold">Template Type</div>
+            <div class="text-bold q-mt-xl">Template Type</div>
             <div>
               <q-select
                 dense
@@ -453,7 +456,10 @@
               }"
             >
             </q-editor> -->
-            <Ckeditor :markup="post.body"></Ckeditor>
+            <Ckeditor
+              :markup="post.body"
+              @updateMarkup="updateMarkup"
+            ></Ckeditor>
           </div>
           <div class="row justify-center">
             <q-btn
@@ -464,6 +470,35 @@
             />
           </div>
         </div>
+      </q-card>
+    </q-dialog>
+    <!-- delete dialog -->
+    <q-dialog v-model="alert">
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">Alert</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          Are you sure ! You want to delete This Template!
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn
+            flat
+            label="Cancel"
+            color="primary"
+            v-close-popup
+            @click="alert = false"
+          ></q-btn>
+          <q-btn
+            flat
+            label="Delete"
+            color="primary"
+            v-close-popup
+            @click="onDeleteConfirmation(indexValue)"
+          ></q-btn>
+        </q-card-actions>
       </q-card>
     </q-dialog>
   </q-page>
@@ -486,6 +521,9 @@ export default {
 
   data() {
     return {
+      indexValue: '',
+      isEdit: false,
+      alert: false,
       addTemplateDialogBox: false,
       tokenDialogBox: false,
       templatetype: { value: '', machineValue: '' },
@@ -497,7 +535,7 @@ export default {
         }
       },
       title: '',
-      post: { body: '<p>hi</p>' },
+      post: { body: '' },
       editorConfig: {
         // The configuration of the editor.
       },
@@ -525,6 +563,7 @@ export default {
         { name: 'Claim Reason', key: 'claimReason' },
         { name: 'Loss Cause', key: 'lossCause' },
         { name: 'Claim Severity', key: 'claimSeverity' },
+        { name: 'Template Type', key: 'templateType' },
         { name: 'Template', key: 'template' }
       ]
     };
@@ -588,21 +627,73 @@ export default {
       'getTemplates',
       'addTemplate',
       'getTemplateToken',
-      'getAllTemplate'
+      'getAllTemplate',
+      'editTemplate',
+      'deleteTemplate',
+      'addTemplateType'
     ]),
+    updateMarkup(val) {
+      this.post.body = val;
+    },
+
+    openAddTemplateBox() {
+      this.isEdit = false;
+      this.addTemplateDialogBox = true;
+    },
+
     async onSaveTemplate() {
-      const payload = {
-        value: this.post.body,
-        type: {
-          machineValue: this.templatetype.machineValue,
-          value: this.templatetype.value
+      if (this.isEdit) {
+        const payload = {
+          value: this.post.body,
+          type: {
+            machineValue: this.templatetype.machineValue,
+            value: this.templatetype.value
+          }
+        };
+        const success = await this.editTemplate(payload);
+        if (success) {
+          this.addTemplateDialogBox = false;
+          await this.getAllTemplate();
         }
-      };
-      const success = await this.addTemplate(payload);
-      if (success) {
-        this.addTemplateDialogBox = false;
-        await this.getAllTemplate();
+      } else {
+        const payload = {
+          value: this.post.body,
+          type: {
+            machineValue: this.templatetype.machineValue,
+            value: this.templatetype.value
+          }
+        };
+        const success = await this.addTemplate(payload);
+        if (success) {
+          this.addTemplateDialogBox = false;
+          await this.getAllTemplate();
+        }
       }
+
+      this.post.body = '';
+      this.templatetype.value = '';
+      this.templatetype.machineValue = '';
+
+      this.isEdit = false;
+    },
+    async onDeleteConfirmation(val) {
+      const payload = {
+        type: this.indexValue
+      };
+      await this.deleteTemplate(payload);
+      await this.getAllTemplate();
+    },
+    onDeleteTemplate(value) {
+      this.indexValue = value.name.type.machineValue;
+      this.alert = true;
+    },
+    onEditTemplate(value) {
+      this.isEdit = true;
+      this.post.body = value.name.value;
+      this.templatetype.value = value.name.type.value;
+      this.templatetype.machineValue = value.name.type.machineValue;
+
+      this.addTemplateDialogBox = true;
     },
 
     pasteCapture() {
@@ -715,6 +806,9 @@ export default {
           await this.getSeverityClaim();
           this.table = this.claimSeverity;
           break;
+        case 'templateType':
+          await this.getTemplates();
+          this.table = this.templateOptions;
       }
     },
 
@@ -764,6 +858,9 @@ export default {
             break;
           case 'claimSeverity':
             var response = await this.addClaimSeverity(this.payload);
+            break;
+          case 'templateType':
+            var response = await this.addTemplateType(this.payload);
             break;
         }
         if (response) {

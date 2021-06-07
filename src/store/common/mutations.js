@@ -72,6 +72,10 @@ export async function setOfflineContactTypes(state) {
 export function setPlans(state, plans) {
   state.plans = plans.map(plan => ({ ...plan.attributes, id: plan.id }));
 }
+export function setOrganization(state, org) {
+  state.organization = org.attributes;
+}
+
 export async function setLossCause(state, causes) {
   const lossCausesCollection = await getCollection('lossCauses');
   const lossCauses = causes.map(cause => ({
