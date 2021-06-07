@@ -2236,7 +2236,6 @@ export default {
           this.officeTask.officeActionRequired &&
           this.officeTask.actions.length
         ) {
-          console.log(this.officeTask.actions.length);
           this.addMultipleOfficeTask(response.id);
         } else {
           this.$router.push('/clients');
