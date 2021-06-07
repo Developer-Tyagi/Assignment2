@@ -16,9 +16,14 @@ export async function getActiveLeadsList(
 
   if (isOnline) {
     try {
+      if (!payload.new) {
+        delete payload.new;
+      } else if (!payload.status) {
+        delete payload.status;
+      }
+      payload.searchString ? payload.searchString : '';
       const { data } = await request.get('/leads', {
         new: payload.new,
-        name: payload.searchString,
         status: payload.status
       });
 

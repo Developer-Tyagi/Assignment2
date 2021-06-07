@@ -911,7 +911,8 @@ export default {
       'getVendors',
       'getLossCauses',
       'getLeadDetails',
-      'editLeadDetails'
+      'editLeadDetails',
+      'getActiveLeadsList'
     ]),
 
     ...mapMutations(['setSelectedClient']),
@@ -1104,6 +1105,7 @@ export default {
       } else {
         this.addLeads(payload).then(() => {
           this.setSelectedClient();
+          this.getActiveLeadsList();
           this.$router.push('/leads');
         });
       }
