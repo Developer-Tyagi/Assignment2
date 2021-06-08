@@ -89,10 +89,11 @@
       </q-card>
     </q-dialog>
     <div>
-      <q-icon @click="addNote" flat class="q-ml-auto icon-top"
-        ><img src="~assets/add.svg"
-      /></q-icon>
-
+      <div class="row" v-if="claimNotes.attributes.notes">
+        <q-icon @click="addNote" flat class="q-ml-auto q-mb-md q-mr-xl"
+          ><img src="~assets/add.svg"
+        /></q-icon>
+      </div>
       <div v-if="claimNotes.attributes.notes">
         <div
           class="clients-list q-ma-sm"
@@ -132,11 +133,28 @@
           </div>
         </div>
       </div>
-      <div v-else class="full-height full-width column">
-        <div class="column absolute-center">
-          <div style="color: #666666,align-items: center">
+      <div v-else class="full-width text-center">
+        <div class="q-mt-xs">
+          <div style="color: #666666">
             You haven't added a Note yet.
           </div>
+          <div class="text-center">
+            <img
+              src="~assets/add.svg"
+              width="30px"
+              height="30px"
+              @click="addNote"
+            />
+          </div>
+          <!-- <div class=" q-mb-xl">
+            <img
+              class="q-mx-xs q-pt-xs"
+              src="~assets/add.svg"
+              width="30px"
+              height="30px"
+              @click="addNote"
+            />
+          </div> -->
         </div>
       </div>
     </div>

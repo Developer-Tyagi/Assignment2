@@ -224,7 +224,7 @@
         no personnel has been added.
       </div>
     </q-card>
-    <q-card class="q-ma-md q-pa-md">
+    <q-card class="q-ma-md q-pa-md" v-if="policy.policyInfo">
       <div class="row q-mt-xs">
         <span class="text-bold"> Policy Info</span>
         <q-icon
@@ -782,7 +782,7 @@ import { date } from 'quasar';
 import { constants } from '@utils/constant';
 
 export default {
-  name: 'InsurancePolicy',
+  name: 'CarrierAndPolicy',
   components: {
     CustomBar,
     InsuranceInfo,
@@ -953,12 +953,11 @@ export default {
   },
 
   created() {
+    console.log('sonali');
     this.getClaimCarrier(this.selectedClaimId);
     this.getContactTypes();
     this.getTitles();
-    if (this.$route.params.id) {
-      this.getPolicy(this.$route.params.id);
-    }
+    this.getPolicy(this.selectedClaimId);
     this.getPolicyCategory();
     this.getPolicyTypes();
     this.getClaimRoles();
@@ -1055,7 +1054,7 @@ export default {
         }
         await this.editCarrierPersonnelToClaim(payload);
         this.editPersonnelDialog = false;
-        this.getClaimCarrier(this.$route.params.id);
+        this.getClaimCarrier(this.selectedClaimId);
       }
     },
 
@@ -1178,7 +1177,7 @@ export default {
         personnelD: id
       };
       await this.deleteClaimCarrierPersonnel(adjustor);
-      this.$router.push(`/insurance-policy/${this.selectedClaimId}`);
+
       this.getClaimCarrier(this.selectedClaimId);
     },
 
@@ -1283,7 +1282,7 @@ export default {
       }
       this.assignDialog = false;
       this.adjustorListDialog = false;
-      this.getClaimCarrier(this.$route.params.id);
+      this.getClaimCarrier(this.selectedClaimId);
       this.filterName = '';
       this.assignFilter = '';
     },
@@ -1383,7 +1382,6 @@ export default {
         await this.editInsurancePolicy(payload);
         this.insuranceInfoDialog = false;
         this.getPolicy(this.selectedClaimId);
-        this.$router.push(`/insurance-policy/${this.selectedClaimId}`);
       }
     },
 

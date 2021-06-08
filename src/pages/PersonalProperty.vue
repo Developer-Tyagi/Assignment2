@@ -72,7 +72,7 @@
         </div>
       </q-card>
     </div>
-    <div v-else class="full-width text-center q-mt-xl heading-light">
+    <div v-else class="full-width text-center q-mt-sm heading-light">
       You have not added any Damage property yet!
     </div>
 

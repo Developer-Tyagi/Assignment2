@@ -411,7 +411,7 @@ export default {
         await this.updateLossInfo(payload);
         this.lossInfoDialog = false;
         this.getLossInfo(this.selectedClaimId);
-        this.$router.push('/loss-info');
+
         this.getSingleClaimDetails(this.selectedClaimId);
       }
     },

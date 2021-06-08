@@ -120,16 +120,14 @@
           ><img src="~assets/add.svg"
         /></q-btn>
       </div>
-      <div class="absolute-center">
+      <div class="full-width  text-center">
         You Dont Have Any Settlements !
         <img
+          class="text-center"
           src="~assets/add.svg"
-          alt="add_icon"
-          width="80px"
-          height="80px"
-          style="margin-left: 55px"
+          width="30px"
+          height="30px"
           @click="onClickAddButton"
-          class="q-mb-auto q-mx-auto q-mt-sm"
         />
       </div>
     </div>

@@ -123,9 +123,8 @@ export async function getClaims(
 
 export async function getPolicy({ commit, dispatch }, id) {
   dispatch('setLoading', true);
-  const { data } = await request.get(`/claims/${id}/policy`);
-
   try {
+    const { data } = await request.get(`/claims/${id}/policy`);
     commit('setPolicy', data);
     dispatch('setLoading', false);
   } catch (e) {

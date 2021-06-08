@@ -75,7 +75,7 @@
           @show="insurancePolicy = true"
         >
           <q-card v-if="insurancePolicy">
-            <q-card-section> <InsurancePolicy /> </q-card-section>
+            <q-card-section> <CarrierAndPolicy /> </q-card-section>
           </q-card>
         </q-expansion-item>
 
@@ -110,7 +110,7 @@
           @show="companyPersonnel = true"
         >
           <q-card v-if="companyPersonnel">
-            <q-card-section> <CompanyPersonnel /> </q-card-section>
+            <q-card-section> <ClaimPersonnel /> </q-card-section>
           </q-card>
         </q-expansion-item>
 
@@ -179,7 +179,7 @@
           group="claimGroup"
           label="Estimator Info"
           header-class="text-primary"
-          @show="estimatingInfo"
+          @show="estimatingInfo = true"
         >
           <q-card v-if="estimatingInfo">
             <q-card-section> <ClaimEstimatingInfo /> </q-card-section>
@@ -362,10 +362,10 @@ import UpdateLossInfo from 'src/pages/UpdateLossInfo';
 import PersonalProperty from 'src/pages/PersonalProperty';
 import ActivityLog from 'src/pages/ActivityLog';
 import OtherDamageProperty from 'src/pages/OtherDamageProperty';
-import InsurancePolicy from 'src/pages/InsurancePolicy';
+import CarrierAndPolicy from 'src/pages/InsurancePolicy';
 import ClaimTask from 'src/pages/ClaimTasks';
 import Settlements from 'src/pages/Settlements';
-import CompanyPersonnel from 'src/pages/Personnel';
+import ClaimPersonnel from 'src/pages/Personnel';
 import MortgageAndLiens from 'src/pages/mortgage/MortgageAndLiens';
 import ClaimExpertVendor from 'src/pages/ExpertVendor';
 import ProofOfLoss from 'src/pages/ProofOfLoss';
@@ -384,10 +384,10 @@ export default {
     PersonalProperty,
     OtherDamageProperty,
     ActivityLog,
-    InsurancePolicy,
+    CarrierAndPolicy,
     ClaimTask,
     Settlements,
-    CompanyPersonnel,
+    ClaimPersonnel,
     MortgageAndLiens,
     ClaimExpertVendor,
     ClaimFiles,

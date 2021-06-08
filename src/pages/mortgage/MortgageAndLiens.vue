@@ -124,17 +124,17 @@
           </div>
         </q-card>
       </div>
-      <div v-else class="full-height full-width">
-        <div class="absolute-center">
-          <div style="color: #666666; width: 100%;margin-top:25px">
+      <div v-else class="full-height  text-center">
+        <div class="q-mt-xs">
+          <div style="color: #666666;">
             You haven't added a Mortgage yet.
           </div>
           <img
-            class="q-mx-lg q-pt-sm q-mb-xl"
+            class="text-center"
             src="~assets/add.svg"
             @click="mortgageInfoDialog = true"
-            width="70px"
-            height="50px"
+            width="30px"
+            height="30px"
           />
         </div>
       </div>
@@ -309,7 +309,7 @@ export default {
     },
     async onDelete(index) {
       const mortgage = {
-        claimID: this.$route.params.id,
+        claimID: this.selectedClaimId,
         mortgageID: this.mortgage.mortgages[index].id
       };
       await this.deleteClaimMortgageInfo(mortgage);

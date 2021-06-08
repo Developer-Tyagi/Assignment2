@@ -13,7 +13,7 @@
           @closeDialog="addCompanyPersonnelDailog = false"
         />
 
-        <div class="mobile-container-page-without-search form-height">
+        <div class="mobile-container-page">
           <q-form ref="addCompanyForm">
             <CompanyPersonnel :companyPersonnel="companyPersonnelPost" />
           </q-form>
@@ -62,8 +62,8 @@
     </q-dialog>
 
     <div class="q-pa-md">
-      <div class="row">
-        <div class="q-ml-auto" v-if="!addCompanyPersonnelDailog">
+      <div class="row" v-if="personnel.personnel">
+        <div class="q-ml-auto">
           <q-btn
             @click="addCompanyPersonnelDailog = true"
             flat
@@ -140,17 +140,16 @@
         </div>
       </div>
 
-      <div v-else class="full-height full-width column">
-        <div class="column absolute-center q-mt-xl">
-          <div style="color: #666666,align-items: center;margin-top:100px">
+      <div v-else class="full-height text-center">
+        <div class="q-mt-xs">
+          <div style="color: #666666">
             You haven't added a Company Personnel yet.
           </div>
           <img
-            class="q-mx-lg q-pt-sm"
+            class="text-center"
             src="~assets/add.svg"
-            alt="add_icon"
-            width="130px"
-            height="100px"
+            width="30px"
+            height="30px"
             @click="addCompanyPersonnelDailog = true"
           />
         </div>
@@ -169,7 +168,7 @@ import { validateDate } from '@utils/validation';
 import { date } from 'quasar';
 
 export default {
-  name: 'CompanyPersonnel',
+  name: 'ClaimPersonnel',
   components: { CustomBar, CompanyPersonnel, ClaimDetail },
   data() {
     return {
@@ -232,10 +231,6 @@ export default {
     ...mapGetters(['personnel', 'selectedClaimId', 'roleTypes', 'userRoles'])
   },
   created() {
-    if (!this.selectedClaimId) {
-      this.$router.push('/clients');
-    }
-
     this.getRoles();
     this.getPersonnelInfo(this.selectedClaimId);
     this.companyPersonnel.startDate = this.companyPersonnelPost.startDate = this.companyPersonnelPost.endDate = this.companyPersonnel.endDate = date.formatDate(
@@ -373,8 +368,6 @@ export default {
         }
         await this.editPersonnel(payload);
         await this.getPersonnelInfo(this.selectedClaimId);
-
-        this.$router.push('/company-personnel');
       }
     },
     validateDate

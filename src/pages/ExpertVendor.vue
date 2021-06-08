@@ -1,9 +1,14 @@
 <template>
   <div>
-    <div class="add-icon" v-if="!expertVendorDialogBox">
-      <q-btn @click="expertVendorDialogBox = true" flat
-        ><img src="~assets/add.svg" height="24" width="24"
-      /></q-btn>
+    <div class="row">
+      <div
+        class="q-ml-auto"
+        v-if="!expertVendorDialogBox && vendorLists.Vendors"
+      >
+        <q-btn @click="expertVendorDialogBox = true" flat
+          ><img src="~assets/add.svg" height="24" width="24"
+        /></q-btn>
+      </div>
     </div>
     <div>
       <div class="q-mt-sm" v-if="vendorLists.Vendors">
@@ -92,10 +97,18 @@
           </div>
         </q-card>
       </div>
-      <div v-else class="full-width">
-        <div class="q-mt-md q-ml-xl">
+      <div v-else class="full-width  text-center">
+        <div class="q-mt-xs">
           <div style="color: #666666">
-            You haven't added a Expert Vendor ..
+            You haven't added a Expert Vendor
+          </div>
+          <div class="text-center">
+            <img
+              src="~assets/add.svg"
+              width="30px"
+              height="30px"
+              @click="expertVendorDialogBox = true"
+            />
           </div>
         </div>
       </div>
@@ -240,7 +253,7 @@ export default {
     },
     async deleteSingleExpert(index) {
       const vendor = {
-        claimID: this.$route.params.id,
+        claimID: this.selectedClaimId,
         vendorId: this.vendorLists.Vendors[index].id
       };
       await this.deleteClaimVendor(vendor);
