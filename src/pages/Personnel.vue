@@ -61,13 +61,17 @@
       </q-card>
     </q-dialog>
 
-    <div class="add-icon" v-if="!addCompanyPersonnelDailog">
-      <q-btn @click="addCompanyPersonnelDailog = true" flat class="q-ml-auto"
-        ><img src="~assets/add.svg"
-      /></q-btn>
-    </div>
-
     <div class="q-pa-md">
+      <div class="row">
+        <div class="q-ml-auto" v-if="!addCompanyPersonnelDailog">
+          <q-btn
+            @click="addCompanyPersonnelDailog = true"
+            flat
+            class="q-ml-auto"
+            ><img src="~assets/add.svg"
+          /></q-btn>
+        </div>
+      </div>
       <div v-if="personnel.personnel">
         <div>
           <q-card

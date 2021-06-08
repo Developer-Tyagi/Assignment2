@@ -782,7 +782,7 @@ import { date } from 'quasar';
 import { constants } from '@utils/constant';
 
 export default {
-  name: 'CarrierAndPolicy',
+  name: 'InsurancePolicy',
   components: {
     CustomBar,
     InsuranceInfo,

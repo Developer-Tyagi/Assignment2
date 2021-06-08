@@ -1,11 +1,13 @@
 <template>
   <div>
-    <div class="add-icon" v-if="!mortgageInfoDialog">
-      <q-btn @click="mortgageInfoDialog = true" flat
-        ><img src="~assets/addMortgage.svg" height="130" width="24"
-      /></q-btn>
-    </div>
-    <div class="listing-height">
+    <div>
+      <div class="row q-mt-md ">
+        <div class="q-ml-auto" v-if="!mortgageInfoDialog && mortgage.mortgages">
+          <q-btn @click="mortgageInfoDialog = true" flat
+            ><img src="~assets/addMortgage.svg" height="50" width="24"
+          /></q-btn>
+        </div>
+      </div>
       <div class="q-mt-sm" v-if="mortgage.mortgages">
         <q-card
           class="q-ma-md q-pa-md"
@@ -124,16 +126,15 @@
       </div>
       <div v-else class="full-height full-width">
         <div class="absolute-center">
-          <div style="color: #666666; width: 110%; margin-top: 120px">
+          <div style="color: #666666; width: 100%;margin-top:25px">
             You haven't added a Mortgage yet.
           </div>
           <img
-            class="q-mx-lg q-pt-sm"
+            class="q-mx-lg q-pt-sm q-mb-xl"
             src="~assets/add.svg"
-            alt="add_icon"
             @click="mortgageInfoDialog = true"
-            width="130px"
-            height="100px"
+            width="70px"
+            height="50px"
           />
         </div>
       </div>

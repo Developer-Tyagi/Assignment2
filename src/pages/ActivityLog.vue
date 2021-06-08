@@ -1,12 +1,13 @@
 <template>
   <div>
-    <div class="add-icon">
-      <q-btn @click="addLogDialog = true" flat
-        ><img src="~assets/add.svg" height="24" width="24"
-      /></q-btn>
-    </div>
-
     <div>
+      <div class="row">
+        <div class="q-ml-auto">
+          <q-btn @click="addLogDialog = true" flat
+            ><img src="~assets/add.svg" height="24" width="24"
+          /></q-btn>
+        </div>
+      </div>
       <div v-if="log">
         <!-- This is for showing the Property details  -->
         <q-card

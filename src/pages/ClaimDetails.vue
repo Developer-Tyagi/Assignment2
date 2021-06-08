@@ -75,7 +75,7 @@
           @show="insurancePolicy = true"
         >
           <q-card v-if="insurancePolicy">
-            <q-card-section> <CarrierAndPolicy /> </q-card-section>
+            <q-card-section> <InsurancePolicy /> </q-card-section>
           </q-card>
         </q-expansion-item>
 
@@ -362,7 +362,7 @@ import UpdateLossInfo from 'src/pages/UpdateLossInfo';
 import PersonalProperty from 'src/pages/PersonalProperty';
 import ActivityLog from 'src/pages/ActivityLog';
 import OtherDamageProperty from 'src/pages/OtherDamageProperty';
-import CarrierAndPolicy from 'src/pages/InsurancePolicy';
+import InsurancePolicy from 'src/pages/InsurancePolicy';
 import ClaimTask from 'src/pages/ClaimTasks';
 import Settlements from 'src/pages/Settlements';
 import CompanyPersonnel from 'src/pages/Personnel';
@@ -384,7 +384,7 @@ export default {
     PersonalProperty,
     OtherDamageProperty,
     ActivityLog,
-    CarrierAndPolicy,
+    InsurancePolicy,
     ClaimTask,
     Settlements,
     CompanyPersonnel,

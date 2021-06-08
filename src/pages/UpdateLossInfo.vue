@@ -1,15 +1,5 @@
 <template>
   <div>
-    <q-icon
-      size="sm"
-      name="create"
-      color="primary"
-      class="icon-top"
-      q-page
-      v-if="!lossInfoDialog"
-      @click="onEditIconClick"
-    ></q-icon>
-
     <!-- <ClaimDetail /> -->
     <q-dialog
       v-model="lossInfoDialog"
@@ -52,7 +42,8 @@
 
     <q-card class="q-ma-sm q-pa-sm">
       <div class="row q-mt-sm" v-if="lossInfo.attributes.lossInfo.property">
-        <div class="heading-light col-3">Address Details</div>
+        <div class="heading-light col-2">Address Details</div>
+
         <div
           class="col-7"
           v-if="lossInfo.attributes.lossInfo.property.streetAddress"
@@ -93,6 +84,14 @@
             ></q-icon>
           </div>
         </div>
+        <q-icon
+          size="xs"
+          name="create"
+          color="primary"
+          class="q-ml-auto"
+          v-if="!lossInfoDialog"
+          @click="onEditIconClick"
+        ></q-icon>
       </div>
 
       <div
