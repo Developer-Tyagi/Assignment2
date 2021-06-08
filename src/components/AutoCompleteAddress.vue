@@ -257,6 +257,8 @@ export default {
   },
 
   mounted() {
+    this.address.addressCountry = 'United States';
+    this.onCountrySelect(this.address.addressCountry);
     this['obj' + this.id] = new google.maps.places.Autocomplete(
       document.getElementById('id' + this.id),
       {
@@ -265,8 +267,6 @@ export default {
       }
     );
     this['obj' + this.id].addListener('place_changed', this.fillInAddress);
-    this.address.addressCountry = 'United States';
-    this.onCountrySelect(this.address.addressCountry);
   },
 
   methods: {
