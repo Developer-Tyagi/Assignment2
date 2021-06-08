@@ -208,7 +208,7 @@ export default {
       const params = {
         new: true
       };
-      console.log(params, 'params in page');
+
       this.getActiveLeadsList(params);
     },
     onClickClaimRecentActivity() {

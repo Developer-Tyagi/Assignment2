@@ -14,6 +14,7 @@
             @click="onConvertedLeadClick"
           >
             <div class="value">{{ leadStatic.converted }}</div>
+
             <div class="text">Converted Leads</div>
           </q-card>
           <q-card dark class="lead-dashboard-card" @click="onDeadLeadClick">
@@ -63,7 +64,8 @@
 
 <script>
 import BarChartComponent from 'components/BarChart';
-import { mapActions, mapGetters } from 'vuex';
+
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 export default {
   components: {
     BarChartComponent
@@ -112,6 +114,7 @@ export default {
       'getActiveLeadsList',
       'getArchivedLeadsList'
     ]),
+    ...mapMutations(['setConvertedLead']),
     fillData() {
       this.datacollection = {
         labels: [
@@ -143,6 +146,7 @@ export default {
         new: '',
         status: ''
       };
+      this.setConvertedLead('Active');
       this.getActiveLeadsList(payload);
       this.getArchivedLeadsList();
     },
@@ -153,6 +157,7 @@ export default {
         name: '',
         status: 'archived'
       };
+      this.setConvertedLead('Dead');
       this.getActiveLeadsList(payload);
     },
     onConvertedLeadClick() {
@@ -162,7 +167,7 @@ export default {
         name: '',
         status: 'converted'
       };
-
+      this.setConvertedLead('Converted');
       this.getActiveLeadsList(payload);
     }
   },
