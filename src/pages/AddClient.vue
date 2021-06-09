@@ -1235,7 +1235,7 @@ export default {
   },
   data() {
     return {
-      step: 0,
+      step: 8,
       stepClickValidTill: 0,
       tenantOccupiedToggle: false,
       tenantOccupied: {
