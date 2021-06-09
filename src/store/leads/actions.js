@@ -10,12 +10,23 @@ export async function getActiveLeadsList(
     commit,
     dispatch
   },
-  searchString = ''
+  payload
 ) {
   dispatch('setLoading', true);
+
   if (isOnline) {
     try {
-      const { data } = await request.get('/leads', { name: searchString });
+      if (!payload.new) {
+        delete payload.new;
+      } else if (!payload.status) {
+        delete payload.status;
+      }
+      payload.searchString ? payload.searchString : '';
+      const { data } = await request.get('/leads', {
+        new: payload.new,
+        status: payload.status
+      });
+
       commit('setActiveLeads', data);
       dispatch('setLoading', false);
     } catch (e) {
@@ -27,7 +38,7 @@ export async function getActiveLeadsList(
       });
     }
   } else {
-    commit('setOfflineActiveLeads', searchString);
+    commit('setOfflineActiveLeads', payload);
     dispatch('setLoading', false);
   }
 }
