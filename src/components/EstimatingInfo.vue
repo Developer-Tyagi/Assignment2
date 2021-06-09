@@ -251,7 +251,7 @@
             </div>
             <q-input
               dense
-              v-model="addEstimatorDialog.companyName"
+              v-model="addEstimatorDialogInfo.companyName"
               label="Company name"
             />
           </q-form>
@@ -298,11 +298,11 @@ export default {
           machineValue: 'mr_'
         },
         name: '',
-        fname: 'hhhhhhh',
+        fname: '',
         lname: '',
         email: '',
         phone: '',
-        type: 'yyyyyyy',
+        type: '',
         companyName: ''
       }
     };
@@ -341,7 +341,9 @@ export default {
           },
           email: this.addEstimatorDialogInfo.email,
 
-          roles: [{ value: 'Estimator', machineValue: 'estimator' }],
+          roles: [
+            { value: 'Estimator', machineValue: 'estimator', isPaid: true }
+          ],
           companyName: this.addEstimatorDialogInfo.companyName
         };
 
