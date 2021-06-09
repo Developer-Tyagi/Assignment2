@@ -164,7 +164,7 @@ const routes = [
       },
       {
         path: 'claim-details',
-        name: 'claim details ',
+        name: 'claim details',
         caseSensitive: true,
         component: () => import('pages/ClaimDetails.vue')
       },

@@ -6,7 +6,7 @@
       name="more_vert"
     />
 
-    <div class=" listing-height">
+    <div class="listing-height">
       <ClaimDetail />
       <q-list bordered class="q-mt-xs" v-if="userRole != 'estimator'">
         <q-expansion-item

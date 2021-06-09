@@ -63,7 +63,7 @@
                 </div>
                 <div><span>File No. 12345678</span></div>
                 <div class="row justify-between">
-                  <div>Status: Negotiation</div>
+                  <div>Status: {{ client.status }}</div>
                   <div>
                     {{ dateWithTime(client.created) }}
                   </div>
