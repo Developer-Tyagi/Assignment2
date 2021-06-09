@@ -3,27 +3,41 @@
     <CustomHeader @backButton="onBackButtonClick" />
     <q-page-container>
       <router-view />
-      <q-page-sticky
-        position="bottom-right"
-        :offset="[30, 18]"
-        v-if="
-          $route.name != 'add new leads' &&
-            $route.name != 'Add Claim' &&
-            $route.name != 'create client' &&
-            $route.name != 'edit  lead' &&
-            $route.name != 'vendors'
-        "
-      >
-        <div class="dot ">
-          <q-icon
-            class="q-pa-md"
-            name="add"
-            size="sm"
-            color="white"
-            @click="onClickAddUpIcon"
-          />
-        </div>
-      </q-page-sticky>
+      <div id="navbar">
+        <q-page-sticky
+          position="bottom-right"
+          :offset="[30, 18]"
+          v-if="
+            $route.name != 'add new leads' &&
+              $route.name != 'Add Claim' &&
+              $route.name != 'create client' &&
+              $route.name != 'edit  lead' &&
+              $route.name != 'vendors' &&
+              $route.name != 'configuration  ' &&
+              $route.name != 'manage users' &&
+              $route.name != 'admin' &&
+              $route.name != 'reports' &&
+              $route.name != 'signup' &&
+              $route.name != 'set-password' &&
+              $route.name != 'payment' &&
+              $route.name != 'loss info' &&
+              $route.name != 'Documents' &&
+              $route.name != 'properties and claims ' &&
+              $route.name != 'notes' &&
+              $route.name != 'Company Personnel'
+          "
+        >
+          <div class="dot ">
+            <q-icon
+              class="q-pa-md"
+              name="add"
+              size="sm"
+              color="white"
+              @click="onClickAddUpIcon"
+            />
+          </div>
+        </q-page-sticky>
+      </div>
       <q-dialog
         v-model="openDialog"
         :maximized="true"
@@ -31,43 +45,25 @@
         transition-hide="slide-down"
         :position="'bottom'"
       >
-        <q-card style="width: 550px; height: 200px">
-          <q-card-section class=" text-center  ">
-            <div class="text-bold">
-              <!-- Add Directly -->
-
-              <q-icon
-                name="expand_more"
-                size="lg"
-                @click="openDialog = false"
-              />
-            </div>
-            <div class="row justify-between q-mt-md">
-              <q-card
-                class="bg-grey-3 q-pa-sm"
-                @click="$router.push('/add-client')"
-                >Add Client</q-card
-              >
-              <q-card
-                class="bg-grey-3 q-pa-sm"
-                @click="$router.push('/add-client')"
-                >Add Claim</q-card
-              >
-              <q-card class="bg-grey-3 q-pa-sm" @click="$router.push('/leads')"
-                >Add Lead</q-card
-              >
-            </div>
-            <div class="row justify-between q-mt-lg">
-              <q-card
-                class="bg-grey-3 q-pa-sm"
-                @click="$router.push('/mortgages')"
-                >Add mortgage</q-card
-              >
-              <q-card
-                class="bg-grey-3 q-pa-sm"
-                @click="$router.push('/carriers')"
-                >Add Carrier</q-card
-              >
+        <q-card style="width: 550px; height: 220px">
+          <q-card-section class="   ">
+            <div class="text-bold"></div>
+            <div class="q-ml-md heading-light">
+              <div class=" q-pa-sm" @click="$router.push('/add-client')">
+                Add Client
+              </div>
+              <div class=" q-pa-sm" @click="$router.push('/add-client')">
+                Add Claim
+              </div>
+              <div class=" q-pa-sm" @click="$router.push('/leads')">
+                Add Lead
+              </div>
+              <div class="q-pa-sm" @click="$router.push('/mortgages')">
+                Add mortgage
+              </div>
+              <div class=" q-pa-sm" @click="$router.push('/carriers')">
+                Add Carrier
+              </div>
             </div>
           </q-card-section>
         </q-card>
