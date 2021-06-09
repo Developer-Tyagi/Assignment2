@@ -1,12 +1,13 @@
 <template>
-  <q-page>
-    <q-icon
-      @click="onClickTopMenu"
-      name="more_vert"
-      size="sm"
-      class="icon-top"
-    />
-
+  <div>
+    <div class="row">
+      <q-icon
+        @click="onClickTopMenu"
+        name="more_vert"
+        size="sm"
+        class="q-ml-auto"
+      />
+    </div>
     <div class="vertical-center q-px-md q-py-sm ">
       <div class="row q-mt-sm" v-if="proofOfLoss.documents.length">
         <q-icon name="picture_as_pdf" size="sm" color="primary" />
@@ -88,13 +89,14 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
-  </q-page>
+  </div>
 </template>
 
 <script>
 import { mapActions, mapMutations, mapGetters } from 'vuex';
 
 export default {
+  name: 'ProofOfLoss',
   data() {
     return {
       menuItemsDialog: false,

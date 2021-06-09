@@ -1,13 +1,12 @@
 <template>
   <div>
-    <div class="add-icon" v-if="!mortgageInfoDialog">
-      <q-btn @click="mortgageInfoDialog = true" flat
-        ><img src="~assets/addMortgage.svg" height="130" width="24"
-      /></q-btn>
-    </div>
-    <div class="listing-height">
-      <div>
-        <ClaimDetail />
+    <div>
+      <div class="row q-mt-md ">
+        <div class="q-ml-auto" v-if="!mortgageInfoDialog && mortgage.mortgages">
+          <q-btn @click="mortgageInfoDialog = true" flat
+            ><img src="~assets/addMortgage.svg" height="50" width="24"
+          /></q-btn>
+        </div>
       </div>
       <div class="q-mt-sm" v-if="mortgage.mortgages">
         <q-card
@@ -125,18 +124,17 @@
           </div>
         </q-card>
       </div>
-      <div v-else class="full-height full-width">
-        <div class="absolute-center">
-          <div style="color: #666666; width: 110%; margin-top: 120px">
+      <div v-else class="full-height  text-center">
+        <div class="q-mt-xs">
+          <div style="color: #666666;">
             You haven't added a Mortgage yet.
           </div>
           <img
-            class="q-mx-lg q-pt-sm"
+            class="text-center"
             src="~assets/add.svg"
-            alt="add_icon"
             @click="mortgageInfoDialog = true"
-            width="130px"
-            height="100px"
+            width="30px"
+            height="30px"
           />
         </div>
       </div>
@@ -216,6 +214,7 @@ import { successMessage } from '@utils/validation';
 import MortgageForm from 'components/MortgageForm';
 import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
 export default {
+  name: 'MortgageAndLiens',
   components: {
     CustomBar,
     MortgageForm,
@@ -310,7 +309,7 @@ export default {
     },
     async onDelete(index) {
       const mortgage = {
-        claimID: this.$route.params.id,
+        claimID: this.selectedClaimId,
         mortgageID: this.mortgage.mortgages[index].id
       };
       await this.deleteClaimMortgageInfo(mortgage);

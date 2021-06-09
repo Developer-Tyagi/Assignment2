@@ -1,5 +1,5 @@
 <template>
-  <q-page>
+  <div>
     <!--  Edit Note Dialog -->
     <q-dialog
       v-model="editNoteDialogBox"
@@ -89,61 +89,76 @@
       </q-card>
     </q-dialog>
     <div>
-      <q-icon @click="addNote" flat class="q-ml-auto icon-top"
-        ><img src="~assets/add.svg"
-      /></q-icon>
-
-      <div class="listing-height">
-        <ClaimDetail />
-        <div v-if="claimNotes.attributes.notes">
+      <div class="row" v-if="claimNotes.attributes.notes">
+        <q-icon @click="addNote" flat class="q-ml-auto q-mb-md q-mr-xl"
+          ><img src="~assets/add.svg"
+        /></q-icon>
+      </div>
+      <div v-if="claimNotes.attributes.notes">
+        <div
+          class="clients-list q-ma-sm"
+          v-if="claimNotes.attributes.notes.length"
+        >
           <div
-            class="clients-list q-ma-sm"
-            v-if="claimNotes.attributes.notes.length"
+            class="clients-list"
+            v-for="(note, index) in claimNotes.attributes.notes"
           >
-            <div
-              class="clients-list"
-              v-for="(note, index) in claimNotes.attributes.notes"
-            >
-              <q-item-section>
-                <div class="client-list-item">
-                  <div class="row">
-                    <div class="heading-light col-10">
-                      {{
-                        dateWithTime(claimNotes.attributes.notes[index].created)
-                      }}
-                    </div>
-
-                    <q-icon
-                      name="create"
-                      color="primary"
-                      size="xs"
-                      class="q-my-auto col"
-                      @click="onEditButtonClick(index)"
-                    />
-                    <q-icon
-                      name="delete"
-                      size="xs"
-                      color="primary"
-                      class="q-ml-auto"
-                      @click="deleteThisNote(index)"
-                    />
+            <q-item-section>
+              <div class="client-list-item">
+                <div class="row">
+                  <div class="heading-light col-10">
+                    {{
+                      dateWithTime(claimNotes.attributes.notes[index].created)
+                    }}
                   </div>
-                  {{ claimNotes.attributes.notes[index].desc }}
+
+                  <q-icon
+                    name="create"
+                    color="primary"
+                    size="xs"
+                    class="q-my-auto col"
+                    @click="onEditButtonClick(index)"
+                  />
+                  <q-icon
+                    name="delete"
+                    size="xs"
+                    color="primary"
+                    class="q-ml-auto"
+                    @click="deleteThisNote(index)"
+                  />
                 </div>
-              </q-item-section>
-            </div>
-          </div>
-        </div>
-        <div v-else class="full-height full-width column">
-          <div class="column absolute-center">
-            <div style="color: #666666,align-items: center">
-              You haven't added a Note yet.
-            </div>
+                {{ claimNotes.attributes.notes[index].desc }}
+              </div>
+            </q-item-section>
           </div>
         </div>
       </div>
+      <div v-else class="full-width text-center">
+        <div class="q-mt-xs">
+          <div style="color: #666666">
+            You haven't added a Note yet.
+          </div>
+          <div class="text-center">
+            <img
+              src="~assets/add.svg"
+              width="30px"
+              height="30px"
+              @click="addNote"
+            />
+          </div>
+          <!-- <div class=" q-mb-xl">
+            <img
+              class="q-mx-xs q-pt-xs"
+              src="~assets/add.svg"
+              width="30px"
+              height="30px"
+              @click="addNote"
+            />
+          </div> -->
+        </div>
+      </div>
     </div>
-  </q-page>
+  </div>
 </template>
 
 <script>
@@ -156,7 +171,7 @@ import { constants } from '@utils/constant';
 import ClaimDetail from 'components/ClaimDetail';
 
 export default {
-  name: 'Clients',
+  name: 'ClaimNotes',
   components: { CustomBar, ClaimDetail },
   data() {
     return {

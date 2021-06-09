@@ -1,6 +1,5 @@
 <template>
-  <q-page>
-    <ClaimDetail />
+  <div>
     <div>
       <div v-if="estimator.estimator">
         <q-card class="q-pa-md q-ma-md">
@@ -87,7 +86,7 @@
         />
       </q-card>
     </q-dialog>
-  </q-page>
+  </div>
 </template>
 
 <script>
@@ -97,6 +96,7 @@ import CustomBar from 'components/CustomBar';
 import { onPhoneNumberClick, onEmailClick } from '@utils/clickable';
 import ClaimDetail from 'components/ClaimDetail';
 export default {
+  name: 'ClaimEstimatingInfo',
   components: {
     EstimatingInfo,
     CustomBar,

@@ -1,17 +1,16 @@
 <template>
-  <q-page>
-    <q-btn
-      :class="{
-        'file-add-icon': !$q.platform.is.iphone,
-        'icon-top-ios': $q.platform.is.iphone
-      }"
-      @click="uploadFilesOptions = true"
-      size="sm"
-      flat
-      v-if="!assignDialog"
-      ><img src="~assets/add.svg"
-    /></q-btn>
+  <div>
     <div>
+      <div class="row">
+        <q-btn
+          class="q-ml-auto"
+          @click="uploadFilesOptions = true"
+          size="sm"
+          flat
+          v-if="!assignDialog"
+          ><img src="~assets/add.svg"
+        /></q-btn>
+      </div>
       <div class="actions-div justify-between q-px-md" v-if="depth.length > 1">
         <q-breadcrumbs class="text-primary" active-color="grey" gutter="none">
           <template v-slot:separator> </template>
@@ -37,7 +36,7 @@
           />
         </div>
       </div>
-      <div class="mobile-container-page overflow-y">
+      <div class="">
         <div v-for="(doc, index) in documents" class="row-div">
           <div
             v-if="doc.type == 'folder'"
@@ -437,7 +436,7 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
-  </q-page>
+  </div>
 </template>
 
 <script>

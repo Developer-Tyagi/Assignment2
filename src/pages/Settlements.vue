@@ -1,30 +1,29 @@
 <template>
-  <q-page>
+  <div>
     <div v-if="settlement.attributes">
-      <div class="add-icon">
-        <q-btn
-          @click="onClickAddButton"
-          flat
-          class="q-ml-auto"
-          v-if="settlementShowDialog == false"
-          ><img src="~assets/addSettlement.svg" height="24" width="20"
-        /></q-btn>
-      </div>
-      <div class="mobile-container-page">
-        <ClaimDetail />
+      <div class="q-mx-md">
+        <div class="row">
+          <div class="q-ml-auto">
+            <q-btn
+              @click="onClickAddButton"
+              flat
+              class="q-ml-auto"
+              v-if="settlementShowDialog == false"
+              ><img src="~assets/addSettlement.svg" height="24" width="20"
+            /></q-btn>
+          </div>
+        </div>
+        <q-separator class="q-my-sm" />
 
-        <div class="q-mx-md">
-          <q-separator class="q-my-sm" />
+        <div class="row q-py-sm">
+          <div class="col-6 heading-light">Total Replacement Cost</div>
 
-          <div class="row q-py-sm">
-            <div class="col-6 heading-light">Total Replacement Cost</div>
+          <div class="col row justify-between q-ml-auto text-bold">
+            <div class="heading-light">$</div>
+            {{ settlement.attributes.totalReplCost }}
+          </div>
 
-            <div class="col row justify-between q-ml-auto text-bold">
-              <div class="heading-light">$</div>
-              {{ settlement.attributes.totalReplCost }}
-            </div>
-
-            <!-- <div class="row q-py-sm">
+          <!-- <div class="row q-py-sm">
               <div class="heading-light">Total Net Claimed</div>
 
               <div class="q-ml-auto text-bold">
@@ -32,87 +31,86 @@
                 {{ settlement.attributes.netClaimed }}
               </div>
             </div> -->
-          </div>
-          <div class="row q-py-sm">
-            <div class="col-6 heading-light">Total Net Claimed</div>
-
-            <div class="col row justify-between q-ml-auto text-bold">
-              <div class="heading-light">$</div>
-              {{ settlement.attributes.netClaimed }}
-            </div>
-          </div>
-          <div class="row q-py-sm">
-            <div
-              class="col-6 heading-light text-primary"
-              @click="editInitialOffer = true"
-            >
-              Initial Offer
-            </div>
-            <div class="col row justify-between q-ml-auto text-bold">
-              <span class="heading-light">$</span>
-              {{ settlement.attributes.intialOffer }}
-            </div>
-          </div>
-          <q-separator class="q-my-sm" />
         </div>
-        <!-- card -working -->
-        <div>
+        <div class="row q-py-sm">
+          <div class="col-6 heading-light">Total Net Claimed</div>
+
+          <div class="col row justify-between q-ml-auto text-bold">
+            <div class="heading-light">$</div>
+            {{ settlement.attributes.netClaimed }}
+          </div>
+        </div>
+        <div class="row q-py-sm">
           <div
-            class="q-ma-sm"
-            v-for="(settlement, index) in settlement.attributes.settlements"
+            class="col-6 heading-light text-primary"
+            @click="editInitialOffer = true"
           >
-            <q-card class="q-mt-md" @click="onClickEdit(index, 'show')">
-              <div class="row q-pa-md justify-between">
-                <div>
-                  <q-badge
-                    class="q-pa-sm"
-                    :color="
-                      settlement.status == 'Accepted'
-                        ? 'green'
-                        : settlement.status == 'Rejected'
-                        ? 'primary'
-                        : 'grey'
-                    "
-                  >
-                    {{ settlement.status }}</q-badge
-                  >
-                </div>
-                <div class="heading-light">
-                  {{ settlement.description.value }}
-                </div>
-
-                <div>
-                  <q-icon
-                    class="q-my-auto"
-                    name="input"
-                    size="sm"
-                    color="primary"
-                    @click="onClickEdit(index, 'show')"
-                  />
-                </div>
-              </div>
-
-              <div class="q-mx-md">
-                <div class="row">
-                  <div class="heading-light">Replacement Cost</div>
-                  <div class="text-bold q-ml-auto">
-                    <span class="heading-light">$</span>
-                    {{ settlement.amounts.replacementCost }}
-                  </div>
-                </div>
-                <div class="row q-py-lg">
-                  <div class="heading-light">Net Settlement</div>
-
-                  <div class="text-bold q-ml-auto">
-                    <span class="heading-light">$</span>
-                    {{ settlement.amounts.netSettlement }}
-                  </div>
-                </div>
-              </div>
-            </q-card>
+            Initial Offer
           </div>
-          <q-separator />
+          <div class="col row justify-between q-ml-auto text-bold">
+            <span class="heading-light">$</span>
+            {{ settlement.attributes.intialOffer }}
+          </div>
         </div>
+        <q-separator class="q-my-sm" />
+      </div>
+      <!-- card -working -->
+      <div>
+        <div
+          class="q-ma-sm"
+          v-for="(settlement, index) in settlement.attributes.settlements"
+        >
+          <q-card class="q-mt-md" @click="onClickEdit(index, 'show')">
+            <div class="row q-pa-md justify-between">
+              <div>
+                <q-badge
+                  class="q-pa-sm"
+                  :color="
+                    settlement.status == 'Accepted'
+                      ? 'green'
+                      : settlement.status == 'Rejected'
+                      ? 'primary'
+                      : 'grey'
+                  "
+                >
+                  {{ settlement.status }}</q-badge
+                >
+              </div>
+              <div class="heading-light">
+                {{ settlement.description.value }}
+              </div>
+
+              <div>
+                <q-icon
+                  class="q-my-auto"
+                  name="input"
+                  size="sm"
+                  color="primary"
+                  @click="onClickEdit(index, 'show')"
+                />
+              </div>
+            </div>
+
+            <div class="q-mx-md">
+              <div class="row">
+                <div class="heading-light">Replacement Cost</div>
+                <div class="text-bold q-ml-auto">
+                  <span class="heading-light">$</span>
+                  {{ settlement.amounts.replacementCost }}
+                </div>
+              </div>
+              <div class="row q-py-lg">
+                <div class="heading-light">Net Settlement</div>
+
+                <div class="text-bold q-ml-auto">
+                  <span class="heading-light">$</span>
+                  {{ settlement.amounts.netSettlement }}
+                </div>
+              </div>
+            </div>
+          </q-card>
+        </div>
+        <q-separator />
       </div>
     </div>
     <div v-else>
@@ -122,16 +120,14 @@
           ><img src="~assets/add.svg"
         /></q-btn>
       </div>
-      <div class="absolute-center">
+      <div class="full-width  text-center">
         You Dont Have Any Settlements !
         <img
+          class="text-center"
           src="~assets/add.svg"
-          alt="add_icon"
-          width="80px"
-          height="80px"
-          style="margin-left: 55px"
+          width="30px"
+          height="30px"
           @click="onClickAddButton"
-          class="q-mb-auto q-mx-auto q-mt-sm"
         />
       </div>
     </div>
@@ -1147,7 +1143,7 @@
         </div>
       </q-card>
     </q-dialog>
-  </q-page>
+  </div>
 </template>
 
 <script>

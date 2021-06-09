@@ -1,51 +1,51 @@
 <template>
-  <q-page>
-    <div class="add-icon">
-      <q-btn @click="addLogDialog = true" flat
-        ><img src="~assets/add.svg" height="24" width="24"
-      /></q-btn>
-    </div>
-    <div class="mobile-container-page">
-      <ClaimDetail />
-      <div>
-        <div v-if="log">
-          <!-- This is for showing the Property details  -->
-          <q-card
-            class="q-pa-md q-ma-sm"
-            v-for="(logItem, index) in log"
-            :key="logItem.name"
-          >
-            <div class="row q-my-sm">
-              <div class="col-10 heading-light">
-                {{ dateWithTime(logItem.created) }}
-              </div>
-              <q-icon
-                size="xs"
-                name="create"
-                color="primary"
-                class="col q-pt-xs"
-                @click="onClickEdit(index)"
-              ></q-icon>
-              <q-icon class="q-ml-sm" name="delete" size="sm" color="primary" />
-            </div>
-            <div>{{ logItem.title }}</div>
-
-            <p class="heading-light q-my-sm text-caption">
-              {{ logItem.detail ? logItem.detail : '-' }}
-            </p>
-            <p class="heading-light q-my-sm text-caption">
-              {{ logItem.note ? logItem.note : '-' }}
-            </p>
-            <div class="heading-light q-my-sm">
-              Entered by {{ logItem.user.name }}
-            </div>
-          </q-card>
-        </div>
-        <div v-else class="q-ma-xl heading-light text-italic">
-          There is No activity Log present at this Moment
+  <div>
+    <div>
+      <div class="row">
+        <div class="q-ml-auto">
+          <q-btn @click="addLogDialog = true" flat
+            ><img src="~assets/add.svg" height="24" width="24"
+          /></q-btn>
         </div>
       </div>
+      <div v-if="log">
+        <!-- This is for showing the Property details  -->
+        <q-card
+          class="q-pa-md q-ma-sm"
+          v-for="(logItem, index) in log"
+          :key="logItem.name"
+        >
+          <div class="row q-my-sm">
+            <div class="col-10 heading-light">
+              {{ dateWithTime(logItem.created) }}
+            </div>
+            <q-icon
+              size="xs"
+              name="create"
+              color="primary"
+              class="col q-pt-xs"
+              @click="onClickEdit(index)"
+            ></q-icon>
+            <q-icon class="q-ml-sm" name="delete" size="sm" color="primary" />
+          </div>
+          <div>{{ logItem.title }}</div>
+
+          <p class="heading-light q-my-sm text-caption">
+            {{ logItem.detail ? logItem.detail : '-' }}
+          </p>
+          <p class="heading-light q-my-sm text-caption">
+            {{ logItem.note ? logItem.note : '-' }}
+          </p>
+          <div class="heading-light q-my-sm">
+            Entered by {{ logItem.user.name }}
+          </div>
+        </q-card>
+      </div>
+      <div v-else class="q-ma-xl heading-light text-italic">
+        There is No activity Log present at this Moment
+      </div>
     </div>
+
     <!-- This Dialog Box is for adding a new log  -->
     <q-dialog
       v-model="addLogDialog"
@@ -154,7 +154,7 @@
         </div>
       </q-card>
     </q-dialog>
-  </q-page>
+  </div>
 </template>
 
 <script>

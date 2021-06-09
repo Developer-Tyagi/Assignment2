@@ -4,7 +4,7 @@
       :directoryId="claim.rootDirectoryID"
       v-if="claim.rootDirectoryID"
     />
-    <div v-else class="fixed-heading">
+    <div v-else class="text-center">
       <span>No directory found</span>
     </div>
   </div>
@@ -14,7 +14,7 @@
 import FileManager from 'components/FileManager';
 import { mapActions, mapGetters } from 'vuex';
 export default {
-  name: 'claim-files',
+  name: 'ClaimFiles',
   components: { FileManager },
   data() {
     return {};

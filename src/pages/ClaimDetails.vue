@@ -8,18 +8,217 @@
 
     <div class=" listing-height">
       <ClaimDetail />
-      <q-item-section class="q-mt-md" v-if="userRole != 'estimator'">
-        <div
-          v-for="item in ClaimDetails"
-          :key="item.name"
-          @click="onClickClaimItems(item.name)"
-          class="row q-ma-sm"
+      <q-list bordered class="q-mt-xs" v-if="userRole != 'estimator'">
+        <q-expansion-item
+          group="claimGroup"
+          label="   Claim Summary"
+          header-class="text-primary"
+          @show="claimSummary = true"
         >
-          <q-card class="q-ma-xs q-pa-md full-width">
-            {{ item.name }}
+          <q-card v-if="claimSummary">
+            <q-card-section> <ClaimSummary /> </q-card-section>
           </q-card>
-        </div>
-      </q-item-section>
+        </q-expansion-item>
+
+        <q-separator></q-separator>
+        <q-expansion-item
+          group="claimGroup"
+          label="Loss Info"
+          header-class="text-primary"
+          @show="lossInfo = true"
+        >
+          <q-card v-if="lossInfo">
+            <q-card-section>
+              <UpdateLossInfo />
+            </q-card-section>
+          </q-card>
+        </q-expansion-item>
+
+        <q-separator></q-separator>
+        <q-expansion-item
+          group="claimGroup"
+          label="Property Details"
+          header-class="text-primary"
+          @show="personalProperty = true"
+        >
+          <q-card v-if="personalProperty">
+            <q-card-section> <PersonalProperty /> </q-card-section>
+          </q-card>
+        </q-expansion-item>
+        <q-separator></q-separator>
+        <q-expansion-item
+          group="claimGroup"
+          label="Other Damage Details"
+          header-class="text-primary"
+          @show="otherDamage = true"
+        >
+          <q-card v-if="otherDamage">
+            <q-card-section> <OtherDamageProperty /> </q-card-section>
+          </q-card>
+        </q-expansion-item>
+        <q-separator></q-separator>
+        <q-expansion-item
+          group="claimGroup"
+          label="Activity Log & Message Archive"
+          header-class="text-primary"
+          @show="activityLog = true"
+        >
+          <q-card v-if="activityLog">
+            <q-card-section> <ActivityLog /> </q-card-section>
+          </q-card>
+        </q-expansion-item>
+        <q-separator></q-separator>
+        <q-expansion-item
+          group="claimGroup"
+          label="Carrier & Policy"
+          header-class="text-primary"
+          @show="insurancePolicy = true"
+        >
+          <q-card v-if="insurancePolicy">
+            <q-card-section> <CarrierAndPolicy /> </q-card-section>
+          </q-card>
+        </q-expansion-item>
+
+        <q-separator></q-separator>
+        <q-expansion-item
+          group="claimGroup"
+          label="Tasks"
+          header-class="text-primary"
+          @show="claimTask = true"
+        >
+          <q-card v-if="claimTask">
+            <q-card-section> <ClaimTask /> </q-card-section>
+          </q-card>
+        </q-expansion-item>
+        <q-separator></q-separator>
+        <q-expansion-item
+          group="claimGroup"
+          label="Settlements"
+          header-class="text-primary"
+          @show="settlements = true"
+        >
+          <q-card v-if="settlements">
+            <q-card-section> <Settlements /> </q-card-section>
+          </q-card>
+        </q-expansion-item>
+
+        <q-separator></q-separator>
+        <q-expansion-item
+          group="claimGroup"
+          label="Company Personnel"
+          header-class="text-primary"
+          @show="companyPersonnel = true"
+        >
+          <q-card v-if="companyPersonnel">
+            <q-card-section> <ClaimPersonnel /> </q-card-section>
+          </q-card>
+        </q-expansion-item>
+
+        <q-separator></q-separator>
+        <q-expansion-item
+          group="claimGroup"
+          label="Mortgages and Liens"
+          header-class="text-primary"
+          @show="mortgageAndLiens = true"
+        >
+          <q-card v-if="mortgageAndLiens">
+            <q-card-section> <MortgageAndLiens /> </q-card-section>
+          </q-card>
+        </q-expansion-item>
+
+        <q-separator></q-separator>
+        <q-expansion-item
+          group="claimGroup"
+          label="Expert Vendor"
+          header-class="text-primary"
+          @show="expertVendor = true"
+        >
+          <q-card v-if="expertVendor">
+            <q-card-section> <ClaimExpertVendor /> </q-card-section>
+          </q-card>
+        </q-expansion-item>
+
+        <q-separator></q-separator>
+        <q-expansion-item
+          group="claimGroup"
+          label="Files"
+          header-class="text-primary"
+          @show="files = true"
+        >
+          <q-card v-if="files">
+            <q-card-section> <ClaimFiles /> </q-card-section>
+          </q-card>
+        </q-expansion-item>
+
+        <q-separator></q-separator>
+        <q-expansion-item
+          group="claimGroup"
+          label="Proof Of Loss"
+          header-class="text-primary"
+          @show="proofOfLoss = true"
+        >
+          <q-card v-if="proofOfLoss">
+            <q-card-section> <ProofOfLoss /> </q-card-section>
+          </q-card>
+        </q-expansion-item>
+
+        <q-separator></q-separator>
+        <q-expansion-item
+          group="claimGroup"
+          label="Notes"
+          header-class="text-primary"
+          @show="notes = true"
+        >
+          <q-card v-if="notes">
+            <q-card-section> <ClaimNotes /> </q-card-section>
+          </q-card>
+        </q-expansion-item>
+
+        <q-separator></q-separator>
+        <q-expansion-item
+          group="claimGroup"
+          label="Estimator Info"
+          header-class="text-primary"
+          @show="estimatingInfo = true"
+        >
+          <q-card v-if="estimatingInfo">
+            <q-card-section> <ClaimEstimatingInfo /> </q-card-section>
+          </q-card>
+        </q-expansion-item>
+
+        <q-separator></q-separator>
+        <q-expansion-item
+          group="claimGroup"
+          label="MatterPort"
+          header-class="text-primary"
+        >
+          <q-card>
+            <!-- <q-card-section> <PropertyInfo /> </q-card-section> -->
+          </q-card>
+        </q-expansion-item>
+
+        <q-separator></q-separator>
+        <q-expansion-item
+          group="claimGroup"
+          label="Time Tracking"
+          header-class="text-primary"
+        >
+          <q-card>
+            <!-- <q-card-section> <PropertyInfo /> </q-card-section> -->
+          </q-card>
+        </q-expansion-item>
+
+        <q-separator></q-separator>
+        <q-expansion-item
+          group="claimGroup"
+          label="Claim Ledger"
+          header-class="text-primary"
+        >
+          <q-card>
+            <!-- <q-card-section> <PropertyInfo /> </q-card-section> -->
+          </q-card>
+        </q-expansion-item>
+      </q-list>
     </div>
 
     <q-dialog
@@ -158,14 +357,61 @@
 import { mapGetters, mapActions } from 'vuex';
 import moment from 'moment';
 import ClaimDetail from 'components/ClaimDetail';
+import ClaimSummary from 'src/pages/ClaimSummary';
+import UpdateLossInfo from 'src/pages/UpdateLossInfo';
+import PersonalProperty from 'src/pages/PersonalProperty';
+import ActivityLog from 'src/pages/ActivityLog';
+import OtherDamageProperty from 'src/pages/OtherDamageProperty';
+import CarrierAndPolicy from 'src/pages/InsurancePolicy';
+import ClaimTask from 'src/pages/ClaimTasks';
+import Settlements from 'src/pages/Settlements';
+import ClaimPersonnel from 'src/pages/Personnel';
+import MortgageAndLiens from 'src/pages/mortgage/MortgageAndLiens';
+import ClaimExpertVendor from 'src/pages/ExpertVendor';
+import ProofOfLoss from 'src/pages/ProofOfLoss';
+import ClaimFiles from 'src/pages/ClaimFiles';
+import ClaimNotes from 'src/pages/ClaimNotes';
+import ClaimEstimatingInfo from 'src/pages/EstimatorInfo';
 import { onEmailClick } from '@utils/clickable';
 import { successMessage } from '@utils/validation';
 import { constants } from '@utils/constant';
 import { getCurrentUser } from '@utils/auth';
 export default {
-  components: { ClaimDetail },
+  components: {
+    ClaimDetail,
+    ClaimSummary,
+    UpdateLossInfo,
+    PersonalProperty,
+    OtherDamageProperty,
+    ActivityLog,
+    CarrierAndPolicy,
+    ClaimTask,
+    Settlements,
+    ClaimPersonnel,
+    MortgageAndLiens,
+    ClaimExpertVendor,
+    ClaimFiles,
+    ProofOfLoss,
+    ClaimNotes,
+    ClaimEstimatingInfo
+  },
   data() {
     return {
+      estimatingInfo: false,
+      notes: false,
+      proofOfLoss: false,
+      files: false,
+      expertVendor: false,
+      claimSummary: false,
+      lossInfo: false,
+      personalProperty: false,
+      otherDamage: false,
+      activityLog: false,
+      insurancePolicy: false,
+      claimTask: false,
+      settlements: false,
+      companyPersonnel: false,
+      mortgageAndLiens: false,
       options: '',
       rating: 1,
       editClaimDetails: false,
@@ -220,7 +466,9 @@ export default {
     ]),
     onEmailClick,
     successMessage,
-
+    onClaimSummaryShow() {
+      this.claimSummary = true;
+    },
     searchFilterBy(val, update) {
       this.claimPhase.value = null;
       if (val === ' ') {
