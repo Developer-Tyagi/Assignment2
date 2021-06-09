@@ -33,16 +33,6 @@
             align="justify"
             narrow-indicator
           >
-            <q-tab
-              name="newLeads"
-              :label="`Active Leads-${activeLeads.length}`"
-              class="text-capitalize"
-            ></q-tab>
-            <q-tab
-              name="oldLeads"
-              :label="`Old Leads-${archivedLeads.length}`"
-              class="text-capitalize"
-            ></q-tab>
           </q-tabs>
           <q-tab-panels
             v-model="panel"
@@ -237,6 +227,7 @@ export default {
   name: 'Leads',
   data() {
     return {
+      payload: '',
       searchText: '',
       panel: 'newLeads'
     };
@@ -251,10 +242,7 @@ export default {
     }
   },
 
-  created() {
-    this.getActiveLeadsList();
-    this.getArchivedLeadsList();
-  },
+  created() {},
 
   methods: {
     ...mapActions([
@@ -284,9 +272,14 @@ export default {
 
     search() {
       if (this.panel === 'newLeads') {
-        this.getActiveLeadsList(this.searchText ? this.searchText : '');
+        this.payload = {
+          searchString: this.searchText ? this.searchText : '',
+          new: ''
+        };
+
+        this.getActiveLeadsList(this.payload);
       } else {
-        this.getArchivedLeadsList(this.searchText ? this.searchText : '');
+        this.getArchivedLeadsList();
       }
     },
 

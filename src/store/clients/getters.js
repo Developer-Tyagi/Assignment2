@@ -14,4 +14,5 @@ export const setSelectedClient = state => state.setSelectedClient;
 export const editSelectedClient = state => state.editSelectedClient;
 export const setClientProperty = state => state.setClientProperty;
 export const getSelectedClaim = state => state.getSelectedClaim;
+
 export const clientStatic = state => state.clientStatic;

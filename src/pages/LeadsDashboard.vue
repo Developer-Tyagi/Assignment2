@@ -3,20 +3,21 @@
     <div>
       <div class="mobile-container-page-without-search">
         <div class="row q-pa-sm">
-          <q-card
-            dark
-            class="lead-dashboard-card"
-            @click="$router.push('/leads')"
-          >
+          <q-card dark class="lead-dashboard-card" @click="onClickNewLead">
             <div class="value">{{ leadStatic.new }}</div>
 
             <div class="text">New Leads</div>
           </q-card>
-          <q-card dark class="lead-dashboard-card">
+          <q-card
+            dark
+            class="lead-dashboard-card"
+            @click="onConvertedLeadClick"
+          >
             <div class="value">{{ leadStatic.converted }}</div>
+
             <div class="text">Converted Leads</div>
           </q-card>
-          <q-card dark class="lead-dashboard-card">
+          <q-card dark class="lead-dashboard-card" @click="onDeadLeadClick">
             <div class="value">{{ leadStatic.dead }}</div>
             <div class="text">Dead Leads</div>
           </q-card>
@@ -63,7 +64,8 @@
 
 <script>
 import BarChartComponent from 'components/BarChart';
-import { mapActions, mapGetters } from 'vuex';
+
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 export default {
   components: {
     BarChartComponent
@@ -107,7 +109,12 @@ export default {
     this.fillData();
   },
   methods: {
-    ...mapActions(['getLeadStatistics']),
+    ...mapActions([
+      'getLeadStatistics',
+      'getActiveLeadsList',
+      'getArchivedLeadsList'
+    ]),
+    ...mapMutations(['setConvertedLead']),
     fillData() {
       this.datacollection = {
         labels: [
@@ -132,6 +139,36 @@ export default {
           }
         ]
       };
+    },
+    onClickNewLead() {
+      this.$router.push('/leads');
+      const payload = {
+        new: '',
+        status: ''
+      };
+      this.setConvertedLead('Active');
+      this.getActiveLeadsList(payload);
+      this.getArchivedLeadsList();
+    },
+    onDeadLeadClick() {
+      this.$router.push('/leads');
+      const payload = {
+        searchString: '',
+        name: '',
+        status: 'archived'
+      };
+      this.setConvertedLead('Dead');
+      this.getActiveLeadsList(payload);
+    },
+    onConvertedLeadClick() {
+      this.$router.push('/leads');
+      const payload = {
+        searchString: '',
+        name: '',
+        status: 'converted'
+      };
+      this.setConvertedLead('Converted');
+      this.getActiveLeadsList(payload);
     }
   },
   computed: {

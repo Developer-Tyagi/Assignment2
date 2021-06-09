@@ -4,6 +4,7 @@ export async function setActiveLeads(state, leads) {
   const activeLeadsCollection = await getCollection('activeLeads');
   const activeLeads = leads.map(lead => ({ ...lead.attributes, id: lead.id }));
   state.activeLeads = activeLeads;
+
   if ((await activeLeadsCollection.count()) > 0) {
     await activeLeadsCollection.delete([]);
   }
@@ -83,4 +84,7 @@ export function setLeadStatistics(state, leadStatic) {
   state.leadStatic = {
     ...leadStatic.attributes
   };
+}
+export function setConvertedLead(state, converted) {
+  state.converted = converted;
 }

@@ -27,8 +27,10 @@
           <img src="~assets/left-arrow.svg" alt="back-arrow" />
         </q-btn>
         <div class="text-uppercase text-bold text-black q-mx-auto">
+          <span v-if="$route.name == 'Leads'">{{ converted }}</span>
           {{ $route.name }}
         </div>
+
         <q-btn class="no-visibility button-50" flat>
           <img src="~assets/left-arrow.svg" alt="back-arrow" />
         </q-btn>
@@ -81,7 +83,7 @@
                   (link.title != 'Configuration' || $q.screen.width > 992)
               "
             >
-              <q-item-section>
+              <q-item-section @click="onClickMenuItem(link.title)">
                 <p class="title">{{ link.title }}</p>
                 <p class="description">
                   {{ link.description }}
@@ -115,12 +117,13 @@ import {
 } from '@utils/auth';
 import { Capacitor } from '@capacitor/core';
 import { removeFirebaseToken } from '@utils/firebase';
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 const isPushNotificationsAvailable = Capacitor.isPluginAvailable(
   'PushNotifications'
 );
 export default {
   name: 'CustomHeader',
+
   data() {
     return {
       user: {
@@ -232,8 +235,14 @@ export default {
   },
 
   methods: {
-    ...mapActions(['deletePushNotificationToken']),
-
+    ...mapActions([
+      'deletePushNotificationToken',
+      'getClaims',
+      'getActiveLeadsList',
+      'getArchivedLeadsList',
+      'getClients'
+    ]),
+    ...mapMutations(['setConvertedLead']),
     async logout() {
       if (!isPushNotificationsAvailable) {
         await this.deletePushNotificationToken(this.getFCMToken());
@@ -244,7 +253,24 @@ export default {
       this.removeCurrentUser();
       location.reload();
     },
-
+    onClickMenuItem(name) {
+      if (name == 'Claims') {
+        this.getClaims();
+      } else if (name == 'Leads') {
+        const payload = {
+          searchString: '',
+          new: ''
+        };
+        this.getActiveLeadsList(payload);
+        this.getArchivedLeadsList();
+      } else if ((name = 'Clients')) {
+        const payload = {
+          name: '',
+          status: ''
+        };
+        this.getClients(payload);
+      }
+    },
     removeToken,
     removeCurrentUser,
     removeFCMToken,
@@ -262,6 +288,7 @@ export default {
 
     onBackClick() {
       this.$emit('backButton');
+      this.setConvertedLead('');
     },
 
     routeTo(link) {
@@ -285,7 +312,8 @@ export default {
   computed: {
     currentRouteName() {
       return this.$router.history.current.path.substring(1);
-    }
+    },
+    ...mapGetters(['converted'])
   },
 
   created() {

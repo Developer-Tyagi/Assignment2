@@ -113,10 +113,12 @@ const routes = [
       },
       {
         path: 'leads',
-        name: 'leads',
+        name: 'Leads',
+
         caseSensitive: true,
         component: () => import('pages/Leads.vue')
       },
+
       {
         path: 'lead-details/:id',
         name: 'lead details',

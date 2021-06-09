@@ -2,16 +2,18 @@
   <q-page class="q-px-md q-py-md mobile-container-page listing-height">
     <q-card>
       <q-card-section class="row">
-        <div class="col-3">
+        <div class="col-3" @click="onOpenClaimsClick">
           <div class="my-card">
             <p class="card-text">
               {{ claimStatic.open ? claimStatic.open : '-' }}
             </p>
           </div>
 
-          <p class="text"><small>Open Claims</small></p>
+          <p class="text">
+            <small>Open Claims</small>
+          </p>
         </div>
-        <div class="col-3">
+        <div class="col-3" @click="onClickClaimRecentActivity">
           <div class="my-card">
             <p class="card-text">
               {{ claimStatic.recentUpdated ? claimStatic.recentUpdated : '-' }}
@@ -19,7 +21,7 @@
           </div>
           <p class="text"><small>Claims with recent activity</small></p>
         </div>
-        <div class="col-3">
+        <div class="col-3" @click="onClientsClick">
           <div class="my-card">
             <p class="card-text">
               {{ clientStatic.active ? clientStatic.active : '-' }}
@@ -27,7 +29,7 @@
           </div>
           <p class="text"><small>Clients</small></p>
         </div>
-        <div class="col-3">
+        <div class="col-3" @click="onOpenClientsClick">
           <div class="my-card">
             <p class="card-text">
               {{ clientStatic.openClaims ? clientStatic.openClaims : '-' }}
@@ -44,13 +46,13 @@
       </div>
       <q-card class="q-mt-sm">
         <q-card-section class="row q-py-sm q-px-none">
-          <div class="col-6 q-pa-md border-right">
+          <div class="col-6 q-pa-md border-right" @click="onClickNewClaims">
             <span><small>New Claims</small></span>
             <span class="text-bold float-right">
               {{ claimStatic.new ? claimStatic.new : '-' }}</span
             >
           </div>
-          <div class="col-6 q-pa-md">
+          <div class="col-6 q-pa-md" @click="onClickNewLeads">
             <span><small>New Leads</small></span>
             <span class="text-bold float-right">
               {{ leadStatic.new ? leadStatic.new : '-' }}</span
@@ -177,9 +179,52 @@ export default {
       'getClaimStatistics',
       'getLeadStatistics',
       'getClientStatistics',
-      'getClaims'
+      'getClaims',
+      'getClients',
+      'getActiveLeadsList'
     ]),
-    dateToShow
+    dateToShow,
+    onOpenClaimsClick() {
+      this.$router.push('/claims');
+
+      const params = {
+        status: 'open'
+      };
+      this.getClaims(params);
+    },
+    onClientsClick() {
+      this.$router.push('/clients');
+      this.getClients();
+    },
+    onClickNewClaims() {
+      this.$router.push('/claims');
+      const params = {
+        new: true
+      };
+      this.getClaims(params);
+    },
+    onClickNewLeads() {
+      this.$router.push('/leads');
+      const params = {
+        new: true
+      };
+
+      this.getActiveLeadsList(params);
+    },
+    onClickClaimRecentActivity() {
+      this.$router.push('/claims');
+      const params = {
+        recent_activity: true
+      };
+      this.getClaims(params);
+    },
+    onOpenClientsClick() {
+      this.$router.push('/clients');
+      const params = {
+        status: 'open'
+      };
+      this.getClients(params);
+    }
   },
   computed: {
     ...mapGetters(['claimStatic', 'leadStatic', 'clientStatic', 'claims'])
