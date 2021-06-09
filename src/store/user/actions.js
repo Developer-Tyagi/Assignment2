@@ -64,6 +64,25 @@ export async function createUserForOrganization({ dispatch, state }, payload) {
     return false;
   }
 }
+export async function updateUserForOrganization({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.patch(
+      '/organizations',
+      buildApiData('organizations', payload.data)
+    );
+    dispatch('setLoading', false);
+    return true;
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].detail
+    });
+    return false;
+  }
+}
 
 export async function addUser({ dispatch, state }, payload) {
   dispatch('setLoading', true);
