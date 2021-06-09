@@ -46,8 +46,7 @@
         :position="'bottom'"
       >
         <q-card style="width: 550px; height: 220px">
-          <q-card-section class="   ">
-            <div class="text-bold"></div>
+          <q-card-section>
             <div class="q-ml-md heading-light">
               <div class=" q-pa-sm" @click="$router.push('/add-client')">
                 Add Client
