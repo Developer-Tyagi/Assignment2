@@ -2160,6 +2160,7 @@ export default {
           notes: this.expertVendorInfo.notes,
           internalNotes: this.expertVendorInfo.internalNotes
         },
+
         contractInfo: {
           date: dateToSend(this.contractInfo.contractDate),
           fees: {

@@ -4,6 +4,7 @@
       <q-icon
         @click="onClickTopMenu"
         name="more_vert"
+        v-if="proofOfLoss.documents.length"
         size="sm"
         class="q-ml-auto"
       />

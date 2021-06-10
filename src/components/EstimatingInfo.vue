@@ -34,7 +34,6 @@
             v-if="!estimatingInfo.estimatorID"
           />
         </q-input>
-
         <div>
           <q-card
             bordered
@@ -42,25 +41,89 @@
             @click="onClickEstimatorOpen"
             class="q-my-md q-pa-md"
           >
-            <div class="text-bold">
+            <div class="text-bold q-ml-sm">
               {{ estimatingInfo.name }}
             </div>
-            <div>
-              Phone:
-              <span
-                class="clickLink"
-                @click="onPhoneNumberClick(estimatingInfo.phone, $event)"
+            <span
+              class="col-7 heading-light"
+              v-if="estimatingInfo.mailingAddress"
+            >
+              <div
+                class="row q-ml-sm"
+                v-if="estimatingInfo.mailingAddress.houseNumber"
               >
-                {{ estimatingInfo.phone.phoneNumber }}</span
+                {{
+                  estimatingInfo.mailingAddress.houseNumber
+                    ? estimatingInfo.mailingAddress.houseNumber
+                    : '-'
+                }}
+                ,
+                {{
+                  estimatingInfo.mailingAddress.streetAddress
+                    ? estimatingInfo.mailingAddress.streetAddress
+                    : '-'
+                }}
+              </div>
+              <div
+                class="q-ml-sm"
+                v-if="estimatingInfo.mailingAddress.addressLocality"
               >
-            </div>
-            <div>
-              Email:<span
-                class="clickLink"
-                @click="onEmailClick(estimatingInfo.email, $event)"
+                {{
+                  estimatingInfo.mailingAddress.addressLocality
+                    ? estimatingInfo.mailingAddress.addressLocality
+                    : '-'
+                }}
+                ,
+                {{
+                  estimatingInfo.mailingAddress.addressRegion
+                    ? estimatingInfo.mailingAddress.addressRegion
+                    : '-'
+                }}
+              </div>
+              <div
+                class="row q-ml-sm"
+                v-if="estimatingInfo.mailingAddress.addressCountry"
               >
-                {{ estimatingInfo.email }}</span
+                {{
+                  estimatingInfo.mailingAddress.addressCountry
+                    ? estimatingInfo.mailingAddress.addressCountry
+                    : '-'
+                }},
+                {{
+                  estimatingInfo.mailingAddress.postalCode
+                    ? estimatingInfo.mailingAddress.postalCode
+                    : '-'
+                }}
+              </div>
+            </span>
+            <span
+              class="click-link q-ml-sm"
+              @click="onEmailClick(estimatingInfo.email, $event)"
+              >{{ estimatingInfo.email ? estimatingInfo.email : '-' }}</span
+            >
+            <div class="q-mt-xs q-ml-sm">
+              <div
+                v-if="estimatingInfo.phone.type && estimatingInfo.phone.number"
               >
+                <span
+                  >{{
+                    estimatingInfo.phone.type ? estimatingInfo.phone.type : '-'
+                  }}
+                  :
+                </span>
+                <span
+                  class="clickLink"
+                  @click="
+                    onPhoneNumberClick(estimatingInfo.phone.number, $event)
+                  "
+                  >{{
+                    estimatingInfo.phone.number
+                      ? estimatingInfo.phone.number
+                      : '-'
+                  }}</span
+                >
+              </div>
+              <div v-else>No Phone</div>
             </div>
           </q-card>
         </div>
@@ -127,36 +190,70 @@
             class="vendor-list-item column"
             @click="selectEstimator(estimator)"
           >
-            <div class="text-bold">
+            <div class="text-bold ">
               {{ estimator.contact.fname }} {{ estimator.contact.lname }}
             </div>
             <div>{{ estimator.companyName }}</div>
-            <div
-              class="row"
-              v-if="
-                estimator.contact.phoneNumber &&
-                  estimator.contact.phoneNumber.length
-              "
-            >
-              {{ estimator.contact.phoneNumber[0].type }} :
-              <span
-                class="click-link"
-                @click="
-                  onPhoneNumberClick(
-                    estimator.contact.phoneNumber[0].number,
-                    $event
-                  )
-                "
-              >
-                {{ estimator.contact.phoneNumber[0].number }}
-              </span>
-            </div>
+
             <div>
-              Email:<span
-                class="clickLink"
+              <div v-if="estimator.mailingAddress">
+                <div>
+                  {{
+                    estimator.mailingAddress
+                      ? estimator.mailingAddress.houseNumber
+                      : '-'
+                  }}
+                  ,
+                  {{
+                    estimator.mailingAddress.streetAddress
+                      ? estimator.mailingAddress.streetAddress
+                      : '-'
+                  }}
+                </div>
+                <div>
+                  {{
+                    estimator.mailingAddress.addressLocality
+                      ? estimator.mailingAddress.addressLocality
+                      : '-'
+                  }}
+                  ,
+                  {{
+                    estimator.mailingAddress.addressRegion
+                      ? estimator.mailingAddress.addressRegion
+                      : '-'
+                  }}
+                </div>
+                <div class="row">
+                  {{
+                    estimator.mailingAddress.addressCountry
+                      ? estimator.mailingAddress.addressCountry
+                      : '-'
+                  }}
+                  -
+                  {{
+                    estimator.mailingAddress.postalCode
+                      ? estimator.mailingAddress.postalCode
+                      : '-'
+                  }}
+                </div>
+              </div>
+
+              <div class="q-mt-xs fit-content" v-if="estimator.phoneNumber">
+                <span v-if="estimator.phoneNumber.type"
+                  >{{ estimator.phoneNumber.type }} :
+                </span>
+                <span
+                  class="clickLink"
+                  @click="
+                    onPhoneNumberClick(estimator.phoneNumber.number, $event)
+                  "
+                  >{{ estimator.phoneNumber.number }}</span
+                >
+              </div>
+              <span
+                class="click-link fit-content"
                 @click="onEmailClick(estimator.email, $event)"
-              >
-                {{ estimator.email }}</span
+                >{{ estimator.email }}</span
               >
             </div>
           </div>
@@ -442,7 +539,7 @@ export default {
           ? value.contact.phoneNumber[0].type
           : 'main'
       };
-
+      this.estimatingInfo.mailingAddress = value.mailingAddress;
       this.estimatingInfo.email = value.email;
       this.estimatorsListDialog = false;
     },
