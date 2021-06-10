@@ -1034,9 +1034,7 @@ export async function deleteClaimDocument({ commit, dispatch }, payload) {
 export async function getProofOfLossDoc({ commit, dispatch }, claimID) {
   dispatch('setLoading', true);
   try {
-    const { data } = await request.get(
-      `/claims/${claimID}/documents/proof_of_loss`
-    );
+    const { data } = await request.get(`/claims/${claimID}/documents/pol`);
     commit('setProofOfLoss', data);
     dispatch('setLoading', false);
   } catch (e) {

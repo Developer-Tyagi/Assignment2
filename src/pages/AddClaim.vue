@@ -1629,7 +1629,16 @@ export default {
       ) {
         delete payload.personnel;
       }
-
+      if (
+        this.estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle &&
+        this.estimatingInfo.estimatorID
+      ) {
+        payload.estimatingInfo = {
+          estimatorID: this.estimatingInfo.estimatorID,
+          scopeTimeNeeded: this.estimatingInfo.scopeTimeNeeded,
+          notesToTheEstimator: this.estimatingInfo.notesToTheEstimator
+        };
+      }
       this.addClaim(payload).then(() => {
         this.setSelectedLead();
         this.successMessage(constants.successMessages.CLAIM);
