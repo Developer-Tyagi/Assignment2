@@ -5,7 +5,11 @@
         class="q-ml-auto"
         v-if="!expertVendorDialogBox && vendorLists.Vendors"
       >
-        <q-btn @click="expertVendorDialogBox = true" flat
+        <q-btn
+          @click="
+            (expertVendorDialogBox = true), $emit('expertVendorClaim', true)
+          "
+          flat
           ><img src="~assets/add.svg" height="24" width="24"
         /></q-btn>
       </div>
@@ -152,7 +156,9 @@
       >
         <q-card>
           <CustomBar
-            @closeDialog="expertVendorDialogBox = false"
+            @closeDialog="
+              (expertVendorDialogBox = false), $emit('expertVendorClaim', false)
+            "
             :dialogName="'Expert Vendor'"
           />
           <div class="mobile-container-page q-pa-sm form-height">

@@ -10,7 +10,9 @@
       <q-card>
         <CustomBar
           :dialogName="' Add Company Personnel'"
-          @closeDialog="addCompanyPersonnelDailog = false"
+          @closeDialog="
+            (addCompanyPersonnelDailog = false), $emit('addPersonnel', false)
+          "
         />
 
         <div class="mobile-container-page">
@@ -40,7 +42,9 @@
       <q-card>
         <CustomBar
           :dialogName="' Edit Company Personnel'"
-          @closeDialog="companyPersonnelDailog = false"
+          @closeDialog="
+            (companyPersonnelDailog = false), $emit('addPersonnel', false)
+          "
         />
 
         <div class="mobile-container-page-without-search form-height">
@@ -65,7 +69,9 @@
       <div class="row" v-if="personnel.personnel">
         <div class="q-ml-auto">
           <q-btn
-            @click="addCompanyPersonnelDailog = true"
+            @click="
+              (addCompanyPersonnelDailog = true), $emit('addPersonnel', true)
+            "
             flat
             class="q-ml-auto"
             ><img src="~assets/add.svg"
@@ -299,6 +305,7 @@ export default {
     dateToShow,
     onEditButtonClick(index) {
       this.companyPersonnelDailog = true;
+      this.$emit('addPersonnel', true);
       this.companyPersonnel.isFieldDisable = false;
       this.personnelId = this.personnel.personnel[index].id;
 

@@ -413,7 +413,9 @@
     >
       <q-card>
         <CustomBar
-          @closeDialog="insuranceInfoDialog = false"
+          @closeDialog="
+            (insuranceInfoDialog = false), $emit('editCarrierDialog', false)
+          "
           :dialogName="'Insurance Info'"
         />
         <div class="q-ma-sm mobile-container-page-without-search">
@@ -446,7 +448,9 @@
     >
       <q-card>
         <CustomBar
-          @closeDialog="carriersListDialog = false"
+          @closeDialog="
+            (carriersListDialog = false), $emit('editCarrierDialog', false)
+          "
           :dialogName="'Select Carrier'"
         />
         <CarriersList
@@ -487,7 +491,11 @@
     >
       <q-card>
         <CustomBar
-          @closeDialog="(adjustorListDialog = false), (onClickUncheck = false)"
+          @closeDialog="
+            (adjustorListDialog = false),
+              (onClickUncheck = false),
+              $emit('editCarrierDialog', false)
+          "
           :dialogName="'Select Adjustor'"
         />
 
@@ -953,7 +961,6 @@ export default {
   },
 
   created() {
-    console.log('sonali');
     this.getClaimCarrier(this.selectedClaimId);
     this.getContactTypes();
     this.getTitles();
@@ -1097,7 +1104,7 @@ export default {
 
     onEditPolicyInfo() {
       this.insuranceInfoDialog = true;
-
+      this.$emit('editCarrierDialog', true);
       this.insuranceDetails.isThisIsForcedPlacedPolicyToggle = this.policy
         .policyInfo.isForcedPlaced
         ? this.policy.policyInfo.isForcedPlaced
@@ -1184,6 +1191,7 @@ export default {
     onAddAdjustorClick() {
       this.isAssignDisabled = true;
       this.adjustorListDialog = true;
+      this.$emit('editCarrierDialog', true);
       const paramsObject = {
         id: this.selectedClaimCarrier.carrier.carrierID,
         params: ''
@@ -1405,6 +1413,7 @@ export default {
     },
     onAddCarrierClick() {
       this.carriersListDialog = true;
+      this.$emit('editCarrierDialog', true);
       this.carrierName = this.selectedClaimCarrier.carrier.name;
     }
   }

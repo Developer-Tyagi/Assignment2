@@ -3,7 +3,9 @@
     <div>
       <div class="row q-mt-md ">
         <div class="q-ml-auto" v-if="!mortgageInfoDialog && mortgage.mortgages">
-          <q-btn @click="mortgageInfoDialog = true" flat
+          <q-btn
+            @click="(mortgageInfoDialog = true), $emit('addMortgage', true)"
+            flat
             ><img src="~assets/addMortgage.svg" height="50" width="24"
           /></q-btn>
         </div>
@@ -149,7 +151,9 @@
     >
       <q-card>
         <CustomBar
-          @closeDialog="mortgageInfoDialog = false"
+          @closeDialog="
+            (mortgageInfoDialog = false), $emit('addMortgage', false)
+          "
           :dialogName="'Mortagage Info'"
         />
         <div class="mobile-container-page q-pa-sm form-height">
@@ -180,7 +184,9 @@
     >
       <q-card>
         <CustomBar
-          @closeDialog="editMortgageInfoDialog = false"
+          @closeDialog="
+            (editMortgageInfoDialog = false), $emit('addMortgage', false)
+          "
           :dialogName="' Edit Mortagage Info'"
         />
         <div class="mobile-container-page q-pa-sm form-height">
@@ -267,6 +273,7 @@ export default {
 
     onEdit(index) {
       this.mortgageInfoDialog = false;
+      this.$emit('addMortgage', true);
       this.editMortgageInfoDialog = true;
       this.editMortgageInfo[0].id = this.mortgage.mortgages[index].id;
       this.editMortgageInfo[0].value = this.mortgage.mortgages[index].name;

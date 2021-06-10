@@ -10,7 +10,9 @@
       <q-card>
         <CustomBar
           :dialogName="'Edit Note'"
-          @closeDialog="editNoteDialogBox = false"
+          @closeDialog="
+            (editNoteDialogBox = false), $emit('claimNoteDailog', false)
+          "
         />
         <q-card-section>
           <div class="mobile-container-page-without-search form-height">
@@ -37,7 +39,9 @@
       <q-card>
         <CustomBar
           :dialogName="'Add New Note'"
-          @closeDialog="addNoteDialog = false"
+          @closeDialog="
+            (addNoteDialog = false), $emit('claimNoteDailog', false)
+          "
         />
         <q-card-section>
           <div class="mobile-container-page">
@@ -215,6 +219,7 @@ export default {
     onEditButtonClick(index) {
       this.noteId = this.claimNotes.attributes.notes[index].id;
       this.editNoteDialogBox = true;
+      this.$emit('claimNoteDailog', true);
       this.editNote = this.claimNotes.attributes.notes[index].desc;
     },
     async onclickDelete(index) {
@@ -228,6 +233,7 @@ export default {
     },
     addNote() {
       this.addNoteDialog = true;
+      this.$emit('claimNoteDailog', true);
     },
     async onEditSaveButtonClick() {
       const payload = {

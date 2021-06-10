@@ -1,12 +1,24 @@
 <template>
   <q-page>
     <q-icon
+      v-if="
+        !claimSummaryDialog &&
+          !lossInfoDialog &&
+          !activityLogDialog &&
+          !carrierDialog &&
+          !editTask &&
+          !addSettlement &&
+          !addPersonnel &&
+          !addMortgageDialog &&
+          !addClaimNotes &&
+          !claimExpertVendor
+      "
       class="icon-top"
       @click="editClaimDetails = true"
       name="more_vert"
     />
 
-    <div class=" listing-height">
+    <div class="listing-height">
       <ClaimDetail />
       <q-list bordered class="q-mt-xs" v-if="userRole != 'estimator'">
         <q-expansion-item
@@ -16,7 +28,9 @@
           @show="claimSummary = true"
         >
           <q-card v-if="claimSummary">
-            <q-card-section> <ClaimSummary /> </q-card-section>
+            <q-card-section>
+              <ClaimSummary @claimSummaryDialog="onEditClaimSummary" />
+            </q-card-section>
           </q-card>
         </q-expansion-item>
 
@@ -29,7 +43,7 @@
         >
           <q-card v-if="lossInfo">
             <q-card-section>
-              <UpdateLossInfo />
+              <UpdateLossInfo @editLossInoDialog="onEditLossInfo" />
             </q-card-section>
           </q-card>
         </q-expansion-item>
@@ -64,7 +78,9 @@
           @show="activityLog = true"
         >
           <q-card v-if="activityLog">
-            <q-card-section> <ActivityLog /> </q-card-section>
+            <q-card-section>
+              <ActivityLog @ActivityLogDialog="onEditAcitivtyLog" />
+            </q-card-section>
           </q-card>
         </q-expansion-item>
         <q-separator></q-separator>
@@ -75,7 +91,9 @@
           @show="insurancePolicy = true"
         >
           <q-card v-if="insurancePolicy">
-            <q-card-section> <CarrierAndPolicy /> </q-card-section>
+            <q-card-section>
+              <CarrierAndPolicy @editCarrierDialog="onEditCarrier" />
+            </q-card-section>
           </q-card>
         </q-expansion-item>
 
@@ -87,7 +105,9 @@
           @show="claimTask = true"
         >
           <q-card v-if="claimTask">
-            <q-card-section> <ClaimTask /> </q-card-section>
+            <q-card-section>
+              <ClaimTask @taskDialog="onEditTask" />
+            </q-card-section>
           </q-card>
         </q-expansion-item>
         <q-separator></q-separator>
@@ -98,7 +118,9 @@
           @show="settlements = true"
         >
           <q-card v-if="settlements">
-            <q-card-section> <Settlements /> </q-card-section>
+            <q-card-section>
+              <Settlements @onAddSettlement="onAddSettlement" />
+            </q-card-section>
           </q-card>
         </q-expansion-item>
 
@@ -110,7 +132,9 @@
           @show="companyPersonnel = true"
         >
           <q-card v-if="companyPersonnel">
-            <q-card-section> <ClaimPersonnel /> </q-card-section>
+            <q-card-section>
+              <ClaimPersonnel @addPersonnel="onAddPersonnelClick" />
+            </q-card-section>
           </q-card>
         </q-expansion-item>
 
@@ -122,7 +146,9 @@
           @show="mortgageAndLiens = true"
         >
           <q-card v-if="mortgageAndLiens">
-            <q-card-section> <MortgageAndLiens /> </q-card-section>
+            <q-card-section>
+              <MortgageAndLiens @addMortgage="onAddMortgage" />
+            </q-card-section>
           </q-card>
         </q-expansion-item>
 
@@ -134,7 +160,9 @@
           @show="expertVendor = true"
         >
           <q-card v-if="expertVendor">
-            <q-card-section> <ClaimExpertVendor /> </q-card-section>
+            <q-card-section>
+              <ClaimExpertVendor @expertVendorClaim="addExpertVendor" />
+            </q-card-section>
           </q-card>
         </q-expansion-item>
 
@@ -170,7 +198,9 @@
           @show="notes = true"
         >
           <q-card v-if="notes">
-            <q-card-section> <ClaimNotes /> </q-card-section>
+            <q-card-section>
+              <ClaimNotes @claimNoteDailog="onAddNoteClick" />
+            </q-card-section>
           </q-card>
         </q-expansion-item>
 
@@ -397,6 +427,16 @@ export default {
   },
   data() {
     return {
+      claimExpertVendor: '',
+      editTask: '',
+      addClaimNotes: '',
+      addMortgageDialog: '',
+      addPersonnel: '',
+      addSettlement: '',
+      claimSummaryDialog: '',
+      carrierDialog: '',
+      activityLogDialog: '',
+      lossInfoDialog: '',
       estimatingInfo: false,
       notes: false,
       proofOfLoss: false,
@@ -466,6 +506,36 @@ export default {
     ]),
     onEmailClick,
     successMessage,
+    addExpertVendor(value) {
+      this.claimExpertVendor = value;
+    },
+    onAddNoteClick(value) {
+      this.addClaimNotes = value;
+    },
+    onEditClaimSummary(value) {
+      this.claimSummaryDialog = value;
+    },
+    onAddMortgage(value) {
+      this.addMortgageDialog = value;
+    },
+    onAddPersonnelClick(value) {
+      this.addPersonnel = value;
+    },
+    onAddSettlement(value) {
+      this.addSettlement = value;
+    },
+    onEditTask(value) {
+      this.editTask = value;
+    },
+    onEditCarrier(value) {
+      this.carrierDialog = value;
+    },
+    onEditAcitivtyLog(value) {
+      this.activityLogDialog = value;
+    },
+    onEditLossInfo(value) {
+      this.lossInfoDialog = value;
+    },
     onClaimSummaryShow() {
       this.claimSummary = true;
     },

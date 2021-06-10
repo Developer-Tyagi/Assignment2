@@ -27,7 +27,7 @@
       label="add custom task"
       color="primary"
       class="button-width-90"
-      @click="addNewTaskDialog = true"
+      @click="(addNewTaskDialog = true), $emit('taskDialog', true)"
       size="md"
       style="width: 90%"
     />
@@ -43,7 +43,7 @@
       <q-card>
         <CustomBar
           :dialogName="'Add New Task'"
-          @closeDialog="addNewTaskDialog = false"
+          @closeDialog="(addNewTaskDialog = false), $emit('taskDialog', false)"
         />
         <div class="mobile-container-page form-height q-pa-md">
           <q-form ref="addTask">
