@@ -446,15 +446,17 @@
             ref="mailingInfo"
           >
             <q-card class="q-pa-md form-card">
-              <div class="row">
-                <span class="form-heading">
+              <div class="row justify-between">
+                <div class=" col-8  form-heading">
                   Is the Mailing Address same as the Loss Address ?
-                </span>
-                <q-toggle
-                  class="q-ml-auto"
-                  v-model="isMailingAddressSameToggle"
-                  @input="mailingAddressSame"
-                />
+                </div>
+                <div>
+                  <q-toggle
+                    class="q-ml-auto"
+                    v-model="isMailingAddressSameToggle"
+                    @input="mailingAddressSame"
+                  />
+                </div>
               </div>
               <AutoCompleteAddress
                 :id="'ClientMailing'"

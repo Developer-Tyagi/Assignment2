@@ -487,7 +487,7 @@
           </q-btn>
         </q-bar>
         <div style="height: calc(100% - 140px); overflow: auto" class="q-pa-md">
-          <q-form ref="addUserForm" class="q-pa-md">
+          <q-form ref="addUserFormOrganization" class="q-pa-md">
             <div class="q-mt-xs">
               <q-card class="q-mx-md q-pa-sm q-mb-sm">
                 <div class="row full-width">
@@ -505,12 +505,12 @@
                     class="q-mx-md col-5 input-extra-padding"
                     outlined
                     label="PhotoId Api key"
+                    disable
                   />
                 </div>
                 <div class="row">
                   <q-input
                     dense
-                    disable
                     v-model="organizations.users.email"
                     style=""
                     label="PhotoId  Email"
@@ -521,19 +521,6 @@
                       val =>
                         validateEmail(val) ||
                         'You have entered an invalid email address!'
-                    ]"
-                  />
-
-                  <q-input
-                    dense
-                    v-model="organizations.users.contact.number"
-                    outlined
-                    class="q-mx-md required col-5 input-extra-padding"
-                    label="Website"
-                    lazy-rules
-                    :rules="[
-                      val =>
-                        (val && val.length == 14) || 'Please enter phone number'
                     ]"
                   />
                 </div>
@@ -556,7 +543,7 @@
             color="primary"
             label="Save"
             class="align-content-center col-2 q-my-lg"
-            @click="onSaveEditedButton"
+            @click="onSaveEditedButtonOrganization"
           />
         </div>
       </q-card>
@@ -961,10 +948,7 @@ export default {
         users: {
           fname: '',
           lname: '',
-          contact: {
-            type: 'main',
-            number: ''
-          },
+
           email: '',
           roles: [],
           mailingAddress: {
@@ -1096,7 +1080,8 @@ export default {
       'getRoles',
       'getPermissions',
       'setMultiplePermission',
-      'getOrganization'
+      'getOrganization',
+      'updateUserForOrganization'
     ]),
     validateEmail,
     async rolePermission(per, role, value) {
@@ -1171,6 +1156,26 @@ export default {
         return true;
       }
       return false;
+    },
+    async onSaveEditedButtonOrganization() {
+      const success = await this.$refs.addUserFormOrganization.validate();
+      if (success) {
+        this.editUserInfoDialog = false;
+        const payload = {
+          data: {
+            name: this.organizations.users.fname,
+            photoIDAPIKey: this.organizations.users.lname,
+
+            photoIDEmail: this.organizations.users.email,
+            billingInfo: {
+              address: this.organizations.users.mailingAddress
+            }
+          }
+        };
+        await this.updateUserForOrganization(payload);
+        await this.getOrganization();
+        this.editOrganizsationInfoDialog = false;
+      }
     },
 
     async onSaveEditedButton() {
@@ -1250,7 +1255,7 @@ export default {
       this.organizations.users.fname = this.organization.name;
       this.organizations.users.lname = this.organization.photoIDAPIKey;
 
-      this.organizations.users.contact.number = this.organization.website;
+      // this.organizations.users.contact.number = this.organization.website;
       this.organizations.users.email = this.organization.photoIDEmail;
       this.organizations.users.mailingAddress.addressCountry = this.organization.billingInfo.address.addressCountry;
       this.organizations.users.mailingAddress.addressRegion = this.organization.billingInfo.address.addressRegion;

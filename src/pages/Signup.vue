@@ -121,8 +121,7 @@
                   />
                   <q-input
                     dense
-                    name="firstName"
-                    v-model="photoIDEmail"
+                    v-model="user.photoIDEmail"
                     color="primary"
                     label="Photo Id Email"
                     filled
@@ -540,6 +539,7 @@ export default {
         email: '',
         name: '',
         website: '',
+        photoIDEmail: '',
         phoneNumber: {
           number: ''
         },
@@ -549,7 +549,7 @@ export default {
           email: '',
           phoneNumber: [{ number: '' }]
         },
-        photoIDEmail: '',
+
         mailingAddress: {
           addressCountry: '',
           addressLocality: '',
