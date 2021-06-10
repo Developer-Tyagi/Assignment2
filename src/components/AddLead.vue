@@ -1093,12 +1093,13 @@ export default {
       if (this.primaryDetails.isOrganization == false) {
         delete payload.organizationName;
       }
-      if (!this.insuranceDetails.carrierId) {
-        delete payload.data.carrier;
-      }
-      if (!this.insuranceDetails.address.postalCode) {
+      if (!this.insuranceDetails.address) {
         delete payload.data.carrier.address;
       }
+      if (!this.insuranceDetails.carrierName) {
+        delete payload.data.carrier;
+      }
+
       if (this.isEdit) {
         await this.editLeadDetails(payload);
         this.$router.push('/lead-details/' + this.selectedLead.id);

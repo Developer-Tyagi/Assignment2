@@ -16,14 +16,14 @@
               :name="index + 1"
               class="column no-wrap justify-between"
             >
-              <div class="text-h5 text-weight-medium">{{ plan.name }}</div>
+              <div class="text-h5 text-weight-medium">
+                {{ plan.name ? plan.name : '-' }}
+              </div>
               <div>
                 <div>
-                  <span class="text-h5 text-weight-medium"
-                    >${{
-                      plan.plans[0] ? plan.plans[0].amount / 100 : '-'
-                    }}</span
-                  >
+                  <span class="text-h5 text-weight-medium">
+                    ${{ plan.plans[0] ? plan.plans[0].amount / 100 : '-' }}
+                  </span>
                   /month
                 </div>
                 <div>Starting Price</div>
@@ -64,8 +64,12 @@
               <div class="row justify-between">
                 <div class="text-h6 text-weight-medium">Total</div>
                 <div>
-                  <span class="text-h5 text-weight-medium"
-                    >${{ plans[this.plan - 1].plans[0].amount / 100 }}</span
+                  <span class="text-h5 text-weight-medium">
+                    ${{
+                      plans[this.plan - 1]
+                        ? plans[this.plan - 1].plans[0].amount / 100
+                        : '-'
+                    }} </span
                   >/month
                 </div>
               </div>
@@ -243,6 +247,7 @@
                           (val && val.length > 0) || 'Please fill your city'
                       ]"
                     />
+
                     <q-input
                       dense
                       v-model="user.mailingAddress.postalCode"
@@ -260,18 +265,18 @@
                     />
                   </div>
                   <div class="row justify-between">
-                    <q-input
+                    <q-select
                       dense
                       v-model="user.mailingAddress.addressRegion"
-                      name="state"
-                      color="primary"
-                      label="State"
-                      class="col-6 required"
                       filled
+                      :options="states"
+                      class="col-6 required"
+                      label="State"
+                      behavior="menu"
                       lazy-rules
                       :rules="[
                         val =>
-                          (val && val.length > 0) || 'Please fill your state'
+                          (val && val.length > 0) || 'Please fill your State'
                       ]"
                     />
                     <q-input
@@ -414,20 +419,20 @@
                     />
                   </div>
                   <div class="row justify-between">
-                    <q-input
+                    <q-select
                       dense
                       v-model="user.billingInfo.address.addressRegion"
-                      name="state"
-                      color="primary"
+                      filled
+                      :options="states"
                       class="col-6 required"
                       label="State"
-                      filled
+                      behavior="menu"
                       lazy-rules
+                      :disable="isBillingAddressSame"
                       :rules="[
                         val =>
-                          (val && val.length > 0) || 'Please fill your state'
+                          (val && val.length > 0) || 'Please fill your State'
                       ]"
-                      :disable="isBillingAddressSame"
                     />
                     <q-input
                       dense
@@ -513,6 +518,8 @@ import { constants } from '@utils/constant';
 import { getToken, getCurrentUser } from '@utils/auth.js';
 import PaymentCard from 'components/PaymentCard';
 import { validateEmail, validateUrl } from '@utils/validation';
+import AddressService from '@utils/country';
+const addressService = new AddressService();
 
 export default {
   components: { PaymentCard },
@@ -524,6 +531,8 @@ export default {
       autocompleteAddress: '',
       autocomplete1: {},
       autocomplete2: {},
+      countries: [],
+      states: [],
       isValidPlan: true,
       isBillingAddressSame: true,
       isAddressFieldEnable: false,
@@ -637,6 +646,7 @@ export default {
         autoPopulateAddress.houseNumber =
           place[this.getPlaceName('street_number', place)].long_name;
       }
+
       this.isAddressFieldEnable = true;
       this.autocompleteAddress = '';
     },
@@ -662,12 +672,12 @@ export default {
       } else {
         this.autocomplete2 = new google.maps.places.Autocomplete(
           document.getElementById('autocomplete2'),
-          { types: ['geocode'] }
+          { types: ['geocode'], componentRestrictions: { country: 'us' } }
         );
 
         this.autocomplete2.addListener('place_changed', this.fillInAddress);
         this.user.billingInfo.address = {
-          addressCountry: '',
+          addressCountry: 'United States',
           addressLocality: '',
           addressRegion: '',
           postOfficeBoxNumber: '',
@@ -728,9 +738,14 @@ export default {
 
   mounted() {
     if (this.isValidPlan) {
+      this.user.mailingAddress.addressCountry = 'United States';
+      this.user.billingInfo.address.addressCountry = 'United States';
+      this.states = addressService.getStates(
+        this.user.mailingAddress.addressCountry
+      );
       this.autocomplete1 = new google.maps.places.Autocomplete(
         document.getElementById('autocomplete1'),
-        { types: ['geocode'] }
+        { types: ['geocode'], componentRestrictions: { country: 'us' } }
       );
       this.autocomplete1.addListener('place_changed', this.fillInAddress);
     }

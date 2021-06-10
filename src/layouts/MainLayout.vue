@@ -24,7 +24,9 @@
               $route.name != 'Documents' &&
               $route.name != 'properties and claims ' &&
               $route.name != 'notes' &&
-              $route.name != 'Company Personnel'
+              $route.name != 'Company Personnel' &&
+              $route.name != 'add new lead' &&
+              $route.name != 'lead details'
           "
         >
           <div class="dot ">
