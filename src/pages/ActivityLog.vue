@@ -3,7 +3,9 @@
     <div>
       <div class="row">
         <div class="q-ml-auto">
-          <q-btn @click="addLogDialog = true" flat
+          <q-btn
+            @click="(addLogDialog = true), $emit('ActivityLogDialog', true)"
+            flat
             ><img src="~assets/add.svg" height="24" width="24"
           /></q-btn>
         </div>
@@ -103,7 +105,9 @@
     >
       <q-card>
         <CustomBar
-          @closeDialog="editLogDialog = false"
+          @closeDialog="
+            (editLogDialog = false), $emit('ActivityLogDialog', false)
+          "
           :dialogName="'Edit Log'"
         />
 
@@ -218,6 +222,7 @@ export default {
 
       this.edit.notes = this.log[index].note;
       this.editLogDialog = true;
+      this.$emit('ActivityLogDialog', true);
       this.logId = this.log[index].id;
 
       if (this.log[index].isSystemGen == true) {
@@ -274,6 +279,7 @@ export default {
       this.title = '';
       this.details = '';
       this.notes = '';
+      this.$emit('ActivityLogDialog', false);
     }
   }
 };

@@ -161,7 +161,9 @@
     >
       <q-card>
         <CustomBar
-          @closeDialog="settlementDialog = false"
+          @closeDialog="
+            (settlementDialog = false), $emit('onAddSettlement', false)
+          "
           :dialogName="'Settlements'"
         />
         <div class="q-ma-sm mobile-container-page-without-search">
@@ -1264,6 +1266,7 @@ export default {
     ]),
     onClickAddButton() {
       this.isEdit = false;
+      this.$emit('onAddSettlement', true);
       this.description = {
         value: '',
         id: '',

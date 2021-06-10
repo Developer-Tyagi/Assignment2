@@ -113,7 +113,7 @@
             name="edit"
             size="xs"
             color="primary"
-            @click="claimDeadline = true"
+            @click="(claimDeadline = true), $emit('claimSummaryDialog', true)"
           />
         </div>
       </div>
@@ -145,7 +145,7 @@
             class="col"
             size="xs"
             v-if="userRole != 'estimator'"
-            @click="lossDetailsBox = true"
+            @click="(lossDetailsBox = true), $emit('claimSummaryDialog', true)"
           ></q-icon>
         </div>
       </div>
@@ -252,7 +252,9 @@
     >
       <q-card>
         <CustomBar
-          @closeDialog="claimDeadline = false"
+          @closeDialog="
+            (claimDeadline = false), $emit('claimSummaryDialog', false)
+          "
           :dialogName="'Edit Claim Deadlines'"
         />
         <div class="q-ma-sm mobile-container-page">
@@ -337,7 +339,9 @@
     >
       <q-card>
         <CustomBar
-          @closeDialog="claimSummary = false"
+          @closeDialog="
+            (claimSummary = false), $emit('claimSummaryDialog', false)
+          "
           :dialogName="'Edit Claim Summary'"
         />
         <div class="q-ma-sm mobile-container-page">
@@ -447,7 +451,9 @@
     >
       <q-card>
         <CustomBar
-          @closeDialog="editClaimTimeline = false"
+          @closeDialog="
+            (editClaimTimeline = false), $emit('claimSummaryDialog', false)
+          "
           :dialogName="'Edit Claim Deadlines'"
         />
         <div class="q-ma-sm mobile-container-page">
@@ -519,7 +525,9 @@
     >
       <q-card>
         <CustomBar
-          @closeDialog="lossDetailsBox = false"
+          @closeDialog="
+            (lossDetailsBox = false), $emit('claimSummaryDialog', false)
+          "
           :dialogName="'Edit Loss Details'"
         />
         <div class="q-ma-sm mobile-container-page">
@@ -787,6 +795,7 @@ export default {
         this.getSelectedClaim.phases[index].created
       );
       this.phase = this.getSelectedClaim.phases[index].value;
+      this.$emit('claimSummaryDialog', true);
       this.editClaimTimeline = true;
     },
     dateLiesBetween(val) {
@@ -806,6 +815,7 @@ export default {
     },
     onEditClaimSummary() {
       this.claimSummary = true;
+      this.$emit('claimSummaryDialog', true);
       this.lossInfo.reasonClaim.id = this.getSelectedClaim.lossInfo.claimReason.id;
       this.lossInfo.reasonClaim.value = this.getSelectedClaim.lossInfo.claimReason.value;
       this.lossInfo.reasonClaim.machineValue = this.getSelectedClaim.lossInfo.claimReason.machineValue;

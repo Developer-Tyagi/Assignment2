@@ -9,7 +9,9 @@
     >
       <q-card>
         <CustomBar
-          @closeDialog="lossInfoDialog = false"
+          @closeDialog="
+            (lossInfoDialog = false), $emit('editLossInoDialog', false)
+          "
           :dialogName="'Loss Info'"
         />
         <q-card class="q-ma-sm q-pa-sm">
@@ -417,7 +419,7 @@ export default {
     },
     onEditIconClick() {
       this.lossInfoDialog = true;
-
+      this.$emit('editLossInoDialog', true);
       //This is For Prefilling Values in Loss Info Form
       this.lossDetails.descriptionDwelling = this.lossInfo.attributes.lossInfo.desc;
       this.lossDetails.lossAddressName = this.lossInfo.attributes.lossInfo.lossAddressName;
