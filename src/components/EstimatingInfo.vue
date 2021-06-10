@@ -304,11 +304,14 @@ export default {
         phone: '',
         type: '',
         companyName: ''
+      },
+      params: {
+        role: 'estimator'
       }
     };
   },
   created() {
-    this.getEstimators();
+    this.getEstimators(this.params);
   },
   computed: {
     ...mapGetters(['estimators', 'contactTypes', 'titles'])
@@ -390,7 +393,7 @@ export default {
     },
 
     onClickEstimatorOpen() {
-      this.getEstimators();
+      this.getEstimators(this.params);
       this.estimatorsListDialog = true;
     },
 

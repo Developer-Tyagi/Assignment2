@@ -90,17 +90,20 @@ export async function getSingleClientProperty({ commit, dispatch }, id) {
   }
 }
 
-export async function getEstimators({
-  rootState: {
-    common: { isOnline }
+export async function getEstimators(
+  {
+    rootState: {
+      common: { isOnline }
+    },
+    commit,
+    dispatch
   },
-  commit,
-  dispatch
-}) {
+  params
+) {
   dispatch('setLoading', true);
   if (isOnline) {
     try {
-      const { data } = await request.get('/users');
+      const { data } = await request.get('/users', params);
       commit('setEstimators', data);
       dispatch('setLoading', false);
     } catch (e) {
@@ -112,7 +115,7 @@ export async function getEstimators({
       });
     }
   } else {
-    commit('setOfflineEstimators');
+    commit('setOfflineEstimators', params);
     dispatch('setLoading', false);
   }
 }
