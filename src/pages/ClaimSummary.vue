@@ -11,6 +11,8 @@
       <div v-if="userRole == 'estimator'">
         <ClaimDetail />
       </div>
+    </div>
+    <q-card class="q-ma-md q-pa-md">
       <div class="text-bold q-mt-xs">Claim Summary</div>
       <div>
         <q-icon
@@ -22,8 +24,6 @@
           @click="onEditClaimSummary"
         />
       </div>
-    </div>
-    <div class="q-ml-xs">
       <div class="row q-mt-sm">
         <span class="heading-light col-4"> File Number </span>
         <span class="q-ml-md col">
@@ -103,7 +103,7 @@
           {{ getSelectedClaim.sinceLoss ? getSelectedClaim.sinceLoss : '-' }}
         </span>
       </div>
-    </div>
+    </q-card>
 
     <q-card class="q-ma-md q-pa-md" v-if="userRole != 'estimator'">
       <div class="row q-ml-xs justify-between">
@@ -193,8 +193,10 @@
         </div>
       </div>
     </q-card>
-    <div>
-      <div class="form-heading q-ml-md col q-mb-md">Claim Timeline</div>
+    <div v-if="userRole != 'estimator'">
+      <div class="form-heading q-ml-md col q-mb-md">
+        Claim Timeline
+      </div>
       <div v-for="(phase, index) in getSelectedClaim.phases">
         <div class="row">
           <div class="col-2 q-ml-md">
