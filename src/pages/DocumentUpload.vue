@@ -463,7 +463,7 @@
                 <div class="column">
                   <div>
                     <input
-                      id="uploadFile"
+                      id="uploadDocFile"
                       type="file"
                       hidden
                       @change="onDocFileInputClick"
@@ -474,7 +474,7 @@
                       icon="cloud_upload"
                       text-color="primary"
                       style="width: 50px"
-                      @click="onClickUploadButton"
+                      @click="onClickAdditionalUploadButton"
                     />
                     <div class="form-heading q-ml-md">Upload</div>
                   </div>
@@ -892,6 +892,9 @@ export default {
     },
     onClickUploadButton() {
       document.getElementById('uploadFile').click();
+    },
+    onClickAdditionalUploadButton() {
+      document.getElementById('uploadDocFile').click();
     },
     onClickSketchUploadButton() {
       document.getElementById('uploadSketchFile').click();
