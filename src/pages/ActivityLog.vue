@@ -1,15 +1,6 @@
 <template>
   <div>
     <div>
-      <div class="row">
-        <div class="q-ml-auto">
-          <q-btn
-            @click="(addLogDialog = true), $emit('ActivityLogDialog', true)"
-            flat
-            ><img src="~assets/add.svg" height="24" width="24"
-          /></q-btn>
-        </div>
-      </div>
       <div v-if="log">
         <!-- This is for showing the Property details  -->
         <q-card
@@ -45,6 +36,15 @@
       </div>
       <div v-else class="q-ma-xl heading-light text-italic">
         There is No activity Log present at this Moment
+      </div>
+      <div class="row" v-if="log">
+        <div class="q-ml-auto">
+          <q-btn
+            @click="(addLogDialog = true), $emit('ActivityLogDialog', true)"
+            label="Add Log"
+            color="primary"
+          ></q-btn>
+        </div>
       </div>
     </div>
 

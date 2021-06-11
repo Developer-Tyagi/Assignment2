@@ -13,11 +13,11 @@
       </div>
     </div>
     <q-card class="q-ma-md q-pa-md">
-      <div class="text-bold q-mt-xs">Claim Summary</div>
-      <div>
+      <div class="text-bold q-mt-xs row">
+        Claim Summary
         <q-icon
           v-if="userRole != 'estimator'"
-          class="q-ml-xs"
+          class="q-ml-auto"
           name="edit"
           size="xs"
           color="primary"

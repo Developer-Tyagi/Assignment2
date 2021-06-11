@@ -27,13 +27,13 @@
           <span
             v-if="
               getSelectedClaim.lossInfo.property &&
-                getSelectedClaim.lossInfo.property.propertyType
+                getSelectedClaim.lossInfo.property.name
             "
           >
             {{
               getSelectedClaim.lossInfo
                 ? getSelectedClaim.lossInfo.property
-                  ? getSelectedClaim.lossInfo.property.propertyType.value
+                  ? getSelectedClaim.lossInfo.property.name
                   : ''
                 : '-'
             }}

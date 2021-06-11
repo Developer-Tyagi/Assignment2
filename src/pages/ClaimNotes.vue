@@ -93,11 +93,6 @@
       </q-card>
     </q-dialog>
     <div>
-      <div class="row" v-if="claimNotes.attributes.notes">
-        <q-icon @click="addNote" flat class="q-ml-auto q-mb-md q-mr-xl"
-          ><img src="~assets/add.svg"
-        /></q-icon>
-      </div>
       <div v-if="claimNotes.attributes.notes">
         <div
           class="clients-list q-ma-sm"
@@ -160,6 +155,14 @@
             />
           </div> -->
         </div>
+      </div>
+      <div class="row" v-if="claimNotes.attributes.notes">
+        <q-btn
+          @click="addNote"
+          color="primary"
+          label="Add Note"
+          class="q-ml-auto "
+        ></q-btn>
       </div>
     </div>
   </div>

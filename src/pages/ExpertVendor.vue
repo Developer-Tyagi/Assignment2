@@ -1,19 +1,5 @@
 <template>
   <div>
-    <div class="row">
-      <div
-        class="q-ml-auto"
-        v-if="!expertVendorDialogBox && vendorLists.Vendors"
-      >
-        <q-btn
-          @click="
-            (expertVendorDialogBox = true), $emit('expertVendorClaim', true)
-          "
-          flat
-          ><img src="~assets/add.svg" height="24" width="24"
-        /></q-btn>
-      </div>
-    </div>
     <div>
       <div class="q-mt-sm" v-if="vendorLists.Vendors">
         <q-card
@@ -116,7 +102,20 @@
           </div>
         </div>
       </div>
-
+      <div class="row">
+        <div
+          class="q-ml-auto"
+          v-if="!expertVendorDialogBox && vendorLists.Vendors"
+        >
+          <q-btn
+            @click="
+              (expertVendorDialogBox = true), $emit('expertVendorClaim', true)
+            "
+            color="primary"
+            label="Add Expert Vendor"
+          ></q-btn>
+        </div>
+      </div>
       <!-- delete Dialog Box -->
       <q-dialog v-model="alert">
         <q-card>

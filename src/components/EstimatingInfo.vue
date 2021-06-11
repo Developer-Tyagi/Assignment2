@@ -103,7 +103,9 @@
             >
             <div class="q-mt-xs q-ml-sm">
               <div
-                v-if="estimatingInfo.phone.type && estimatingInfo.phone.number"
+                v-if="
+                  estimatingInfo.phone.phoneNumber && estimatingInfo.phone.type
+                "
               >
                 <span
                   >{{
@@ -114,11 +116,11 @@
                 <span
                   class="clickLink"
                   @click="
-                    onPhoneNumberClick(estimatingInfo.phone.number, $event)
+                    onPhoneNumberClick(estimatingInfo.phone.phoneNumber, $event)
                   "
                   >{{
-                    estimatingInfo.phone.number
-                      ? estimatingInfo.phone.number
+                    estimatingInfo.phone.phoneNumber
+                      ? estimatingInfo.phone.phoneNumber
                       : '-'
                   }}</span
                 >
@@ -238,16 +240,22 @@
                 </div>
               </div>
 
-              <div class="q-mt-xs fit-content" v-if="estimator.phoneNumber">
-                <span v-if="estimator.phoneNumber.type"
-                  >{{ estimator.phoneNumber.type }} :
+              <div
+                class="q-mt-xs fit-content"
+                v-if="estimator.contact.phoneNumber"
+              >
+                <span v-if="estimator.contact.phoneNumber.type"
+                  >{{ estimator.contact.phoneNumber[0].type }} :
                 </span>
                 <span
                   class="clickLink"
                   @click="
-                    onPhoneNumberClick(estimator.phoneNumber.number, $event)
+                    onPhoneNumberClick(
+                      estimator.contact.phoneNumber.number[0],
+                      $event
+                    )
                   "
-                  >{{ estimator.phoneNumber.number }}</span
+                  >{{ estimator.contact.phoneNumber[0].number }}</span
                 >
               </div>
               <span
