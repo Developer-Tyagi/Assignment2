@@ -128,12 +128,8 @@
                     v-model="user.photoIDEmail"
                     color="primary"
                     label="Photo Id Email"
+                    class="q-pb-md"
                     filled
-                    lazy-rules
-                    :rules="[
-                      val =>
-                        (val && val.length > 0) || 'Please fill photo id email'
-                    ]"
                   />
                   <q-input
                     dense
