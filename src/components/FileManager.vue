@@ -1,16 +1,6 @@
 <template>
   <div>
     <div>
-      <div class="row">
-        <q-btn
-          class="q-ml-auto"
-          @click="uploadFilesOptions = true"
-          size="sm"
-          flat
-          v-if="!assignDialog"
-          ><img src="~assets/add.svg"
-        /></q-btn>
-      </div>
       <div class="actions-div justify-between q-px-md" v-if="depth.length > 1">
         <q-breadcrumbs class="text-primary" active-color="grey" gutter="none">
           <template v-slot:separator> </template>
@@ -36,7 +26,7 @@
           />
         </div>
       </div>
-      <div class="">
+      <div>
         <div v-for="(doc, index) in documents" class="row-div">
           <div
             v-if="doc.type == 'folder'"
@@ -72,6 +62,16 @@
         <div v-if="!documents.length" class="fixed-heading">
           <span>This folder is empty</span>
         </div>
+      </div>
+      <div class="row">
+        <q-btn
+          class="q-ml-auto"
+          @click="uploadFilesOptions = true"
+          size="sm"
+          label="Add"
+          color="primary"
+          v-if="!assignDialog"
+        ></q-btn>
       </div>
     </div>
     <!-- Add Folder Dialog -->

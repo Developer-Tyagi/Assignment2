@@ -14,10 +14,10 @@
         <q-icon name="picture_as_pdf" size="sm" color="primary" />
         <span
           class="q-pl-md"
-          @click="onDocClick(proofOfLoss.documents.webViewLink)"
+          @click="onDocClick(proofOfLoss.documents[0].webViewLink)"
         >
           {{
-            proofOfLoss.documents.name ? proofOfLoss.documents.name : '-'
+            proofOfLoss.documents[0].name ? proofOfLoss.documents[0].name : '-'
           }}</span
         >
       </div>

@@ -2,7 +2,7 @@
   <div>
     <div v-if="settlement.attributes">
       <div class="q-mx-md">
-        <div class="row">
+        <!-- <div class="row">
           <div class="q-ml-auto">
             <q-btn
               @click="onClickAddButton"
@@ -12,7 +12,7 @@
               ><img src="~assets/addSettlement.svg" height="24" width="20"
             /></q-btn>
           </div>
-        </div>
+        </div> -->
         <q-separator class="q-my-sm" />
 
         <div class="row q-py-sm">
@@ -52,8 +52,10 @@
             {{ settlement.attributes.intialOffer }}
           </div>
         </div>
+
         <q-separator class="q-my-sm" />
       </div>
+
       <!-- card -working -->
       <div>
         <div
@@ -111,6 +113,17 @@
           </q-card>
         </div>
         <q-separator />
+      </div>
+      <div class="row q-mb-sm q-mt-sm">
+        <div class="q-ml-auto">
+          <q-btn
+            @click="onClickAddButton"
+            color="primary"
+            class="q-ml-auto"
+            label="Add Settlement"
+            v-if="settlementShowDialog == false"
+          ></q-btn>
+        </div>
       </div>
     </div>
     <div v-else>

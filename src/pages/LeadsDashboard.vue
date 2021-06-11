@@ -165,7 +165,7 @@ export default {
       const payload = {
         searchString: '',
         name: '',
-        status: 'converted'
+        status: 'Converted'
       };
       this.setConvertedLead('Converted');
       this.getActiveLeadsList(payload);

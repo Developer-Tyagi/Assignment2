@@ -1,18 +1,9 @@
 <template>
   <div>
     <div>
-      <div class="row q-mt-md ">
-        <div class="q-ml-auto" v-if="!mortgageInfoDialog && mortgage.mortgages">
-          <q-btn
-            @click="(mortgageInfoDialog = true), $emit('addMortgage', true)"
-            flat
-            ><img src="~assets/addMortgage.svg" height="50" width="24"
-          /></q-btn>
-        </div>
-      </div>
-      <div class="q-mt-sm" v-if="mortgage.mortgages">
+      <div v-if="mortgage.mortgages">
         <q-card
-          class="q-ma-md q-pa-md"
+          class="q-ma-sm q-pa-sm"
           v-for="(mortgage, index) in mortgage.mortgages"
         >
           <div class="text-bold text-capitalize q-mt-xs row">
@@ -138,6 +129,15 @@
             width="30px"
             height="30px"
           />
+        </div>
+      </div>
+      <div class="row ">
+        <div class="q-ml-auto" v-if="!mortgageInfoDialog && mortgage.mortgages">
+          <q-btn
+            @click="(mortgageInfoDialog = true), $emit('addMortgage', true)"
+            label="Add Mortgage"
+            color="primary"
+          ></q-btn>
         </div>
       </div>
     </div>
