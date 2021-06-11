@@ -74,8 +74,13 @@ export default {
   },
 
   created() {
+    const payload = {
+      searchString: this.searchText ? this.searchText : '',
+      status: ''
+    };
+
+    this.getClients(payload);
     this.options = this.clients;
-    this.getClients();
     if (this.selectedClient) {
       this.isNewLead = false;
       this.clientSelected = this.selectedClient;
