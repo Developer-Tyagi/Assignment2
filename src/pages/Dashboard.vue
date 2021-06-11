@@ -190,8 +190,6 @@ export default {
     ...mapMutations(['setSelectedClaimId']),
     dateToShow,
     openClaimDetail(value) {
-      // console.log(value, 8);
-      // const id = value.id;
       this.setSelectedClaimId(value.id);
       this.$router.push('/claim-details');
     },
