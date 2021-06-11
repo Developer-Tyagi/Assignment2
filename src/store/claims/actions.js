@@ -1191,14 +1191,15 @@ export async function generatePhotoReport({ dispatch, state }, payload) {
       buildApiData('', payload.data)
     );
     dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Report Generated'
+    });
     return data;
   } catch (e) {
     console.log(e);
     dispatch('setLoading', false);
-    dispatch('setNotification', {
-      type: 'negative',
-      message: e.response[0].title
-    });
+
     return false;
   }
 }

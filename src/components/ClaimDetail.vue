@@ -1,5 +1,17 @@
 <template>
   <div class=" q-mx-lg q-mt-md">
+    <q-badge
+      color="red"
+      v-if="
+        !getSelectedClaim.meta ||
+          (getSelectedClaim.meta &&
+            getSelectedClaim.meta.isEstimateDone != true)
+      "
+    >
+      Claim has been submitted for uploading estimation documents
+      <q-icon name="warning" color="white" class="q-ml-xs"></q-icon>
+    </q-badge>
+
     <div class="row">
       <span class="text-primary" v-if="getSelectedClaim.client">
         {{ getSelectedClaim.client.fname }}
@@ -97,9 +109,9 @@
       >
     </div>
     <div class="row q-mt-sm ">
-      <span class="heading-light col-3 "> Claim Number </span>
-      <span class="q-ml-md col-8" v-if="getSelectedClaim.number">
-        {{ getSelectedClaim.number ? getSelectedClaim.number : '-' }}</span
+      <span class="heading-light col-3"> Claim Number </span>
+      <span class="q-ml-md col-8">
+        {{ getSelectedClaim.number ? getSelectedClaim.number : '- - -' }}</span
       >
     </div>
     <div class="row q-mt-sm ">

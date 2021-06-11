@@ -124,19 +124,14 @@
                 <p class="q-mx-none q-my-auto q-ml-sm">
                   Are you using photo id app to generate a Report
                 </p>
+
                 <q-toggle class="q-ml-auto" v-model="isGenerateReport" />
               </div>
 
               <span class="stepper-heading" v-if="isGenerateReport">
                 <!-- get Reports from Photo ID App -->
-                <q-btn
-                  v-if="!photoReport"
-                  color="primary"
-                  class=" q-mt-auto text-capitalize q-ma-sm"
-                  @click="getReportClick"
-                  label="Get Report"
-                >
-                </q-btn>
+                <!-- v-if="!photoReport" -->
+
                 <div class="vertical-center q-px-sm q-py-sm" v-if="photoReport">
                   <div class="row">
                     <q-icon
@@ -154,11 +149,20 @@
                     >
                   </div>
                 </div>
+                <q-btn
+                  color="primary"
+                  class=" q-mt-auto text-capitalize q-ma-sm"
+                  @click="getReportClick"
+                  :label="!photoReport ? 'Get Report' : 'Regenerate Report'"
+                >
+                </q-btn>
               </span>
             </q-card>
             <div v-if="!isGenerateReport">
               <q-card class="q-pa-md form-card">
-                <div class="stepper-heading q-mb-md">Please Upload Photos</div>
+                <div class="stepper-heading q-mb-md">
+                  Please Upload Photos
+                </div>
                 <div v-for="(item, index) in claimDocumentArray">
                   <div
                     v-for="(doc, index) in claimPhoto.documents"
@@ -714,6 +718,13 @@ export default {
       const response = await this.generatePhotoReport(payload);
 
       this.photoReport = response;
+      if (!response) {
+        this.$q.notify({
+          message: 'Assignment link has not been generated yet ',
+          position: 'top',
+          type: 'negative'
+        });
+      }
     },
     async removeDocument() {
       const payload = {
@@ -938,11 +949,23 @@ export default {
       array.push({ id: '', value: '', machineValue: '' });
     },
 
-    onNextButtonClick() {
+    async onNextButtonClick() {
       this.step++;
       if (this.stepClickValidTill < this.step) {
         this.stepClickValidTill = this.step;
       }
+      if (this.step == 1) {
+        const payload = {
+          claimID: this.selectedClaimId,
+          data: {}
+        };
+        const response = await this.generatePhotoReport(payload);
+        if (response) {
+          this.isGenerateReport = true;
+          this.photoReport = response;
+        }
+      }
+
       document.getElementById('step').scrollLeft += 50;
     },
     async addFile(value) {
