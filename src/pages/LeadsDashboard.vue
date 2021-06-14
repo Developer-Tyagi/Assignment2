@@ -155,7 +155,7 @@ export default {
       const payload = {
         searchString: '',
         name: '',
-        status: 'archived'
+        phase: 'archived'
       };
       this.setConvertedLead('Dead');
       this.getActiveLeadsList(payload);
@@ -165,7 +165,7 @@ export default {
       const payload = {
         searchString: '',
         name: '',
-        status: 'Converted'
+        phase: 'Converted'
       };
       this.setConvertedLead('Converted');
       this.getActiveLeadsList(payload);

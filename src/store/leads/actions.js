@@ -18,13 +18,13 @@ export async function getActiveLeadsList(
     try {
       if (!payload.new) {
         delete payload.new;
-      } else if (!payload.status) {
-        delete payload.status;
+      } else if (!payload.phase) {
+        delete payload.phase;
       }
       payload.searchString ? payload.searchString : '';
       const { data } = await request.get('/leads', {
         new: payload.new,
-        status: payload.status
+        phase: payload.phase
       });
 
       commit('setActiveLeads', data);
