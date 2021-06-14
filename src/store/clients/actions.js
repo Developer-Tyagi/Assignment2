@@ -143,6 +143,7 @@ export async function addClientRemote({ commit }, payload) {
       '/clients',
       buildApiData('clients', payload)
     );
+
     return data;
   } catch (e) {
     console.log(e);
@@ -323,12 +324,13 @@ export async function addClaim(
   }
 }
 
-export async function addClaimRemote({ commit }, payload) {
+export async function addClaimRemote({ dispatch, commit }, payload) {
   try {
     const { data } = await request.post(
       '/claims',
       buildApiData('claims', payload)
     );
+    dispatch('setLoading', false);
     return data;
   } catch (e) {
     console.log(e);
