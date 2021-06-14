@@ -7,6 +7,9 @@
       <q-card class="q-ma-sm q-pa-sm">
         <div class="q-my-auto row q-mt-xs">
           <q-icon
+            :style="
+              selectedCarrier.isEditable == false ? 'visibility:hidden;' : ''
+            "
             size="xs"
             name="create "
             color="primary"

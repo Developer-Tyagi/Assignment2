@@ -27,6 +27,9 @@
                   {{ personnel.fname }} {{ personnel.lname }}
                 </span>
                 <q-icon
+                  :style="
+                    personnel.isEditable == false ? 'visibility:hidden;' : ''
+                  "
                   size="xs"
                   name="create "
                   color="primary"

@@ -38,13 +38,14 @@
                     ? user.mailingAddress.addressLocality
                     : '-'
                 }}
-              </div>
 
+                {{
+                  user.mailingAddress.addressCountry
+                    ? user.mailingAddress.addressCountry
+                    : '-'
+                }},
+              </div>
               {{
-                user.mailingAddress.addressCountry
-                  ? user.mailingAddress.addressCountry
-                  : '-'
-              }},{{
                 user.mailingAddress.postalCode
                   ? user.mailingAddress.postalCode
                   : '-'
@@ -85,12 +86,10 @@
       transition-hide="slide-down"
     >
       <q-card style="width: 100%; height: 100vh">
-        <q-bar class="row justify-between  bg-primary" style="height: 50px">
-          <div class="q-px-xs text-bold text-white">Edit User Info</div>
-          <q-btn dense flat icon="close" color="white" v-close-popup>
-            <q-tooltip>Close</q-tooltip>
-          </q-btn>
-        </q-bar>
+        <CustomBar
+          :dialogName="'Edit User'"
+          @closeDialog="editUserInfoDialog = false"
+        />
         <div style="height: calc(100% - 140px); overflow: auto" class="">
           <q-form ref="addUserForm" class="q-pa-md">
             <div class="q-mt-xs">
@@ -187,10 +186,11 @@
 <script>
 import { getCurrentUser } from 'src/utils/auth';
 import { mapGetters, mapActions } from 'vuex';
+import CustomBar from 'components/CustomBar';
 import { validateEmail } from '@utils/validation';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 export default {
-  components: { AutoCompleteAddress },
+  components: { AutoCompleteAddress, CustomBar },
   name: 'UserProfile',
   data() {
     return {
