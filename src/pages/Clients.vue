@@ -108,7 +108,13 @@ export default {
     ...mapGetters(['clients', 'selectedClientId', 'selectedLead'])
   },
 
-  created() {},
+  created() {
+    const payload = {
+      status: '',
+      name: ''
+    };
+    this.getClients(payload);
+  },
   methods: {
     ...mapActions(['getClients', 'getSingleClientDetails']),
     ...mapMutations(['setSelectedClientId', 'setSelectedLead']),

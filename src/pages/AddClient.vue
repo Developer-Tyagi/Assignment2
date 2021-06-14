@@ -2237,6 +2237,7 @@ export default {
       }
 
       const response = await this.addClaim(payload);
+
       if (response && response.id) {
         if (
           this.officeTask.officeActionRequired &&
