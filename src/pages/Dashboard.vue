@@ -67,7 +67,11 @@
         <span class="float-right">See all</span>
       </div>
       <div v-if="claims">
-        <q-card class="q-mt-sm" v-for="claim in claims">
+        <q-card
+          class="q-mt-sm"
+          v-for="claim in claims"
+          @click="openClaimDetail(claim)"
+        >
           <q-card-section>
             <div class="row">
               <span class="heading-light"
@@ -157,7 +161,7 @@
   </q-page>
 </template>
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { dateToShow } from '@utils/date';
 export default {
   data() {
@@ -183,7 +187,12 @@ export default {
       'getClients',
       'getActiveLeadsList'
     ]),
+    ...mapMutations(['setSelectedClaimId']),
     dateToShow,
+    openClaimDetail(value) {
+      this.setSelectedClaimId(value.id);
+      this.$router.push('/claim-details');
+    },
     onOpenClaimsClick() {
       this.$router.push('/claims');
 

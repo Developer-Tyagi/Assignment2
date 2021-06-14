@@ -676,7 +676,12 @@
                 <span class="q-ml-md text-color-grey">Back</span>
               </div>
               <div class="q-ml-auto">
-                <span class="q-mr-md text-color-grey"> Add Lead</span>
+                <span v-if="isEdit == true" class="q-mr-md text-color-grey">
+                  Edit Lead</span
+                >
+                <span v-if="isEdit == false" class="q-mr-md text-color-grey">
+                  Add Lead</span
+                >
                 <q-btn
                   class="rotate-180"
                   icon="keyboard_backspace"
@@ -1322,8 +1327,11 @@ export default {
     this.lossDetails.dateOfLoss = date.formatDate(Date.now(), 'MM/DD/YYYY');
 
     // TODO : Have to change primary details object, so that selected client can be assigned as it is.
-
-    this.getClients().then(() => {
+    const payload = {
+      searchString: this.searchText ? this.searchText : '',
+      status: ''
+    };
+    this.getClients(payload).then(() => {
       if (this.$route.params.id) {
         let selectedClient = this.clients.find(
           client => client.id === this.$route.params.id
