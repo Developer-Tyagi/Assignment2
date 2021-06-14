@@ -505,7 +505,6 @@
                     class="q-mx-md col-5 input-extra-padding"
                     outlined
                     label="PhotoId Api key"
-                    disable
                   />
                 </div>
                 <div class="row">

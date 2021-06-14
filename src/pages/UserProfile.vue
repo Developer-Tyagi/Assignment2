@@ -9,34 +9,37 @@
           </div>
         </div>
 
-        <div class="row q-mt-lg text-bold">
-          <div class="col">Company Name</div>
-          <div class="col">Company Address</div>
-          <div class="col">Company Mobile</div>
-          <div class="col">Postal Company Code</div>
-        </div>
-        <q-separator />
-
-        <div class="row q-mt-xs">
-          <div class="col-3 column">
-            {{ user.name }}
+        <div class=" q-mt-lg q-pa-sm ">
+          <div class="row justify-between">
+            <div class=" text-bold">Company Name</div>
+            <div>
+              {{ user.name }}
+            </div>
           </div>
-          <div class="col-3">
-            <div class="q-mr-md" v-if="user.mailingAddress">
+          <div class="row justify-between">
+            <div class="text-bold">Company Address</div>
+
+            <div class="column" v-if="user.mailingAddress">
               {{
                 user.mailingAddress.streetAddress
                   ? user.mailingAddress.streetAddress
                   : '-'
-              }},{{
+              }},
+
+              {{
                 user.mailingAddress.addressRegion
                   ? user.mailingAddress.addressRegion
                   : '-'
-              }},{{
-                user.mailingAddress.addressLocality
-                  ? user.mailingAddress.addressLocality
-                  : '-'
-              }}
-              ,
+              }},
+
+              <div>
+                {{
+                  user.mailingAddress.addressLocality
+                    ? user.mailingAddress.addressLocality
+                    : '-'
+                }}
+              </div>
+
               {{
                 user.mailingAddress.addressCountry
                   ? user.mailingAddress.addressCountry
@@ -48,25 +51,30 @@
               }}
             </div>
           </div>
-          <div class="col">
+          <div class="row justify-between">
+            <div class="text-bold">Company Mobile</div>
             {{ user.phoneNumber ? user.phoneNumber.number : '-' }}
           </div>
-          <div class="col" v-if="user.mailingAddress">
-            {{ user.mailingAddress ? user.mailingAddress.postalCode : '-' }}
+          <div class="row justify-between">
+            <div class="text-bold">Postal Company Code</div>
+            <div v-if="user.mailingAddress">
+              {{ user.mailingAddress ? user.mailingAddress.postalCode : '-' }}
+            </div>
           </div>
-        </div>
-
-        <div class="row q-mt-xl text-bold">
-          <div class="col">Company Administrator</div>
-          <div class="col">Administrator Email</div>
         </div>
         <q-separator />
-        <div class="row q-mt-xs">
-          <div class="col">
-            {{ user.contact.fname }} {{ user.contact.lname }}
+
+        <q-card class=" q-mt-md ">
+          <div class="row justify-between">
+            <div class="text-bold">Company Administrator</div>
+            <div>{{ user.contact.fname }} {{ user.contact.lname }}</div>
           </div>
-          <div class="col">{{ user.email }}</div>
-        </div>
+          <div class="row justify-between">
+            <div class="text-bold">Administrator Email</div>
+            <div>{{ user.email }}</div>
+          </div>
+        </q-card>
+        <q-separator />
       </q-card>
     </div>
     <!-- Dialog For user Data -->
@@ -76,23 +84,22 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card style="width: 40%; height: 75vh">
-        <q-bar class="row justify-between bg-primary" style="height: 50px">
+      <q-card style="width: 100%; height: 100vh">
+        <q-bar class="row justify-between  bg-primary" style="height: 50px">
           <div class="q-px-xs text-bold text-white">Edit User Info</div>
           <q-btn dense flat icon="close" color="white" v-close-popup>
             <q-tooltip>Close</q-tooltip>
           </q-btn>
         </q-bar>
-        <div style="height: calc(100% - 140px); overflow: auto" class="q-pa-md">
+        <div style="height: calc(100% - 140px); overflow: auto" class="">
           <q-form ref="addUserForm" class="q-pa-md">
             <div class="q-mt-xs">
-              <q-card class="q-mx-md q-pa-sm q-mb-sm">
-                <div class="row full-width">
+              <q-card class="q-pa-sm q-mb-sm">
+                <div class=" full-width">
                   <q-input
                     v-model="users.fname"
                     dense
                     class="q-mx-md col-5 input-extra-padding"
-                    outlined
                     label="First name"
                   />
 
@@ -100,20 +107,18 @@
                     dense
                     v-model="users.lname"
                     class="q-mx-md col-5 input-extra-padding"
-                    outlined
                     label="Last name"
                   />
                 </div>
-                <div class="row">
+                <div class="row justify-between">
                   <q-select
                     dense
                     v-model="users.contact.type"
-                    class="q-mx-md col-5 input-extra-padding"
+                    class="q-mx-md col-4 input-extra-padding"
                     :options="contactTypes"
                     option-value="machineValue"
                     option-label="name"
                     map-options
-                    outlined
                     options-dense
                     behavior="menu"
                     label="Type"
@@ -127,8 +132,7 @@
                   <q-input
                     dense
                     v-model="users.contact.number"
-                    outlined
-                    class="q-mx-md required col-5 input-extra-padding"
+                    class=" required col-5 input-extra-padding"
                     label="Phone"
                     mask="(###) ###-####"
                     lazy-rules
@@ -138,7 +142,7 @@
                     ]"
                   />
                 </div>
-                <div class="row">
+                <div>
                   <q-input
                     dense
                     disable
@@ -146,7 +150,6 @@
                     style=""
                     label="Email"
                     class="q-mx-md col-5 required"
-                    outlined
                     lazy-rules
                     :rules="[
                       val =>
@@ -156,24 +159,23 @@
                   />
                 </div>
               </q-card>
-              <q-card class="q-mx-md q-pa-sm">
+              <q-card class="q-pa-sm">
                 <AutoCompleteAddress
                   :id="'AddVendor'"
                   :address="users.mailingAddress"
                   :isDropBoxEnable="false"
                   :isChecksEnable="false"
                   :value="false"
-                  :view="'web'"
                 />
               </q-card>
             </div>
           </q-form>
         </div>
-        <div class="row justify-center">
+        <div>
           <q-btn
             color="primary"
             label="Save"
-            class="align-content-center col-2 q-my-lg"
+            class=" button-width-90 q-my-lg"
             @click="onSaveEditedButton"
           />
         </div>
