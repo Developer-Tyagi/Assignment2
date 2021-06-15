@@ -66,11 +66,14 @@ export async function addVendor(
 }
 
 export async function addVendorRemote({ commit, dispatch }, payload) {
+  console.log(payload, 'payload is');
   try {
     const { data } = await request.post(
       '/vendors',
-      buildApiData('vendors', payload)
+
+      buildApiData('users', payload)
     );
+
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'positive',
@@ -229,7 +232,7 @@ export async function editVendorInfo({ dispatch, state }, vendor) {
   try {
     const { data } = await request.patch(
       `/vendors/${vendor.id}`,
-      buildApiData('vendors', vendor)
+      buildApiData('users', vendor)
     );
     dispatch('setLoading', false);
     dispatch('setNotification', {

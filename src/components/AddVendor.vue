@@ -22,7 +22,7 @@
             <q-input
               dense
               class="required"
-              v-model="vendor.name"
+              v-model="vendor.companyName"
               label=" Company Name"
               lazy-rules
               :rules="[
@@ -66,7 +66,7 @@
               <q-select
                 dense
                 class="col-5"
-                v-model="vendor.phoneNumber[0].type"
+                v-model="vendor.phoneNumber.type"
                 :options="contactTypes"
                 option-value="machineValue"
                 option-label="name"
@@ -83,7 +83,7 @@
               <q-input
                 dense
                 class="required col-6"
-                v-model.number="vendor.phoneNumber[0].number"
+                v-model.number="vendor.phoneNumber.number"
                 label="Phone"
                 mask="(###) ###-####"
                 lazy-rules
@@ -111,7 +111,7 @@
             <p class="form-heading">Company's Address</p>
             <AutoCompleteAddress
               :id="'AddVendor'"
-              :address="vendor.address"
+              :address="vendor.mailingAddress"
               :isDropBoxEnable="false"
               :isChecksEnable="false"
               :value="true"
@@ -239,18 +239,11 @@ export default {
       options: '',
       isShowRemoveButton: false,
       vendor: {
-        id: '',
-        name: '',
+        type: 'user',
         email: '',
-        industry: { value: null, id: '', machineValue: '' },
-        phoneNumber: [
-          {
-            type: 'main',
-            number: ''
-          }
-        ],
-        meta: {
-          claimFiledByEmail: false
+        phoneNumber: {
+          type: 'main',
+          number: ''
         },
         contact: {
           fname: '',
@@ -269,7 +262,13 @@ export default {
             }
           ]
         },
-        address: {
+        roles: [
+          {
+            value: 'Vendor',
+            machineValue: 'vendor'
+          }
+        ],
+        mailingAddress: {
           addressCountry: '',
           addressLocality: '',
           addressRegion: '',
@@ -281,6 +280,15 @@ export default {
             isPresent: false
           }
         },
+        id: '',
+        companyName: '',
+
+        industry: { value: null, id: '', machineValue: '' },
+
+        meta: {
+          claimFiledByEmail: false
+        },
+
         info: {
           website: '',
           notes: ''
@@ -300,20 +308,29 @@ export default {
 
   mounted() {
     if (this.isEdit) {
-      this.vendor.industry = this.selectedVendor.industry;
-      this.vendor.name = this.selectedVendor.name;
+      if (this.selectedVendor.industry) {
+        this.vendor.industry = this.selectedVendor.industry;
+      }
+
+      this.vendor.companyName = this.selectedVendor.companyName;
       this.vendor.email = this.selectedVendor.email;
-      this.vendor.phoneNumber[0].number = this.selectedVendor.phoneNumber[0].number;
-      this.vendor.phoneNumber[0].type = this.selectedVendor.phoneNumber[0].type;
-      if (this.selectedVendor.address) {
-        this.vendor.address = this.selectedVendor.address;
+      this.vendor.phoneNumber.number = this.selectedVendor.phoneNumber.number;
+      this.vendor.phoneNumber.type = this.selectedVendor.phoneNumber.type;
+      if (this.selectedVendor.mailingAddress) {
+        this.vendor.mailingAddress = this.selectedVendor.mailingAddress;
       }
       this.vendor.contact.fname = this.selectedVendor.contact.fname;
       this.vendor.contact.lname = this.selectedVendor.contact.lname;
       this.vendor.contact.phoneNumber = this.selectedVendor.contact.phoneNumber;
       this.vendor.contact.email = this.selectedVendor.contact.email;
-      this.vendor.info.website = this.selectedVendor.info.website;
-      this.vendor.info.notes = this.selectedVendor.info.notes;
+      this.vendor.info.website =
+        this.selectedVendor.info && this.selectedVendor.info.website
+          ? this.selectedVendor.info.website
+          : '';
+      this.vendor.info.notes =
+        this.selectedVendor.info && this.selectedVendor.info.notes
+          ? this.selectedVendor.info.notes
+          : '';
     }
     this.getVendorIndustries();
     this.getTitles();
@@ -374,6 +391,9 @@ export default {
       const success = await this.$refs.vendorForm.validate();
       if (success) {
         if (!this.isEdit) {
+          if (!this.vendor.mailingAddress.streetAddress) {
+            delete this.vendor.mailingAddress;
+          }
           const response = await this.addVendor(this.vendor);
           this.getVendors();
           if (response.id) {

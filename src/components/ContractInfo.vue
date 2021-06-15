@@ -232,63 +232,65 @@
           <div
             class="custom-select"
             @click="contractInfo.vendorsListDialog = true"
-            v-if="!contractInfo.sourceDetails.details"
+            v-if="!contractInfo.sourceDetails.email"
           >
             <div class="select-text">
-              Click for choosing a vendor <span style="color: red">*</span>
+              Click for choosing a vendor
+              <span style="color: red">*</span>
             </div>
           </div>
           <q-card
             bordered
-            v-if="contractInfo.sourceDetails.details"
+            v-if="contractInfo.sourceDetails.email"
             @click="contractInfo.vendorsListDialog = true"
             class="q-my-md q-pa-md"
           >
             <div class="text-bold">
               {{ contractInfo.sourceDetails.details }}
             </div>
+
             <div
               v-if="
-                contractInfo.sourceDetails.address &&
-                  contractInfo.sourceDetails.address.streetAddress
+                contractInfo.sourceDetails.mailingAddress &&
+                  contractInfo.sourceDetails.mailingAddress.streetAddress
               "
             >
               <div>
                 {{
-                  contractInfo.sourceDetails.address
-                    ? contractInfo.sourceDetails.address.houseNumber
+                  contractInfo.sourceDetails.mailingAddress
+                    ? contractInfo.sourceDetails.mailingAddress.houseNumber
                     : '-'
                 }}
                 ,
                 {{
-                  contractInfo.sourceDetails.address.streetAddress
-                    ? contractInfo.sourceDetails.address.streetAddress
+                  contractInfo.sourceDetails.mailingAddress.streetAddress
+                    ? contractInfo.sourceDetails.mailingAddress.streetAddress
                     : '-'
                 }}
               </div>
               <div>
                 {{
-                  contractInfo.sourceDetails.address.addressLocality
-                    ? contractInfo.sourceDetails.address.addressLocality
+                  contractInfo.sourceDetails.mailingAddress.addressLocality
+                    ? contractInfo.sourceDetails.mailingAddress.addressLocality
                     : '-'
                 }}
                 ,
                 {{
-                  contractInfo.sourceDetails.address.addressRegion
-                    ? contractInfo.sourceDetails.address.addressRegion
+                  contractInfo.sourceDetails.mailingAddress.addressRegion
+                    ? contractInfo.sourceDetails.mailingAddress.addressRegion
                     : '-'
                 }}
               </div>
               <div class="row">
                 {{
-                  contractInfo.sourceDetails.address.addressCountry
-                    ? contractInfo.sourceDetails.address.addressCountry
+                  contractInfo.sourceDetails.mailingAddress.addressCountry
+                    ? contractInfo.sourceDetails.mailingAddress.addressCountry
                     : '-'
                 }}
                 -
                 {{
-                  contractInfo.sourceDetails.address.postalCode
-                    ? contractInfo.sourceDetails.address.postalCode
+                  contractInfo.sourceDetails.mailingAddress.postalCode
+                    ? contractInfo.sourceDetails.mailingAddress.postalCode
                     : '-'
                 }}
               </div>
@@ -459,10 +461,10 @@ export default {
     onSelectingVendorList(vendor) {
       this.contractInfo.sourceDetails.id = vendor.id;
       this.contractInfo.sourceDetails.details = vendor.name;
-      this.contractInfo.sourceDetails.address = vendor.address;
+      this.contractInfo.sourceDetails.mailingAddress = vendor.mailingAddress;
       this.contractInfo.sourceDetails.email = vendor.email;
       this.contractInfo.sourceDetails.phone = vendor.phoneNumber
-        ? vendor.phoneNumber[0].number
+        ? vendor.phoneNumber.number
         : '';
       this.contractInfo.vendorsListDialog = false;
     },
@@ -486,10 +488,10 @@ export default {
     onCloseAddVendorDialogBox(vendor) {
       this.contractInfo.sourceDetails.id = vendor.id;
       this.contractInfo.sourceDetails.details = vendor.name;
-      this.contractInfo.sourceDetails.address = vendor.address;
+      this.contractInfo.sourceDetails.mailingAddress = vendor.mailingAddress;
       this.contractInfo.sourceDetails.email = vendor.email;
       this.contractInfo.sourceDetails.phone = vendor.phoneNumber
-        ? vendor.phoneNumber[0].number
+        ? vendor.phoneNumber.number
         : '';
       this.contractInfo.vendorsListDialog = false;
       this.contractInfo.addVendorDialog = false;
