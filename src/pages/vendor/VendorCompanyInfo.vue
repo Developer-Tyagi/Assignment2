@@ -24,48 +24,48 @@
         </div>
         <div class="row q-mt-sm">
           <span class="heading-light col-3">Address Details</span>
-          <span class="col-7 q-ml-md" v-if="selectedVendor.address">
+          <span class="col-7 q-ml-md" v-if="selectedVendor.mailingAddress">
             <div class="row">
               {{
-                selectedVendor.address.houseNumber
-                  ? selectedVendor.address.houseNumber
+                selectedVendor.mailingAddress.houseNumber
+                  ? selectedVendor.mailingAddress.houseNumber
                   : '-'
               }}
               ,
               {{
-                selectedVendor.address.streetAddress
-                  ? selectedVendor.address.streetAddress
+                selectedVendor.mailingAddress.streetAddress
+                  ? selectedVendor.mailingAddress.streetAddress
                   : '-'
               }}
             </div>
             <div>
               {{
-                selectedVendor.address.addressLocality
-                  ? selectedVendor.address.addressLocality
+                selectedVendor.mailingAddress.addressLocality
+                  ? selectedVendor.mailingAddress.addressLocality
                   : '-'
               }}
               ,
               {{
-                selectedVendor.address.addressRegion
-                  ? selectedVendor.address.addressRegion
+                selectedVendor.mailingAddress.addressRegion
+                  ? selectedVendor.mailingAddress.addressRegion
                   : '-'
               }}
             </div>
             <div class="row">
               {{
-                selectedVendor.address.addressCountry
-                  ? selectedVendor.address.addressCountry
+                selectedVendor.mailingAddress.addressCountry
+                  ? selectedVendor.mailingAddress.addressCountry
                   : '-'
               }},
               {{
-                selectedVendor.address.postalCode
-                  ? selectedVendor.address.postalCode
+                selectedVendor.mailingAddress.postalCode
+                  ? selectedVendor.mailingAddress.postalCode
                   : '-'
               }}
               <q-icon
                 name="place"
                 color="primary"
-                @click="sendMap(selectedVendor.address)"
+                @click="sendMap(selectedVendor.mailingAddress)"
                 class="edit-icon"
               ></q-icon></div
           ></span>
@@ -79,14 +79,16 @@
             {{ selectedVendor.email ? selectedVendor.email : '-' }}</span
           >
         </div>
-        <div class="row q-mt-sm" v-for="phone in selectedVendor.phoneNumber">
+        <div class="row q-mt-sm" v-if="selectedVendor.phoneNumber">
           <span class="heading-light col-3"> Phone Number </span>
-          <span class="col q-ml-md" v-if="phone.type">
-            {{ phone.type }} :
+          <span class="col q-ml-md" v-if="selectedVendor.phoneNumber.type">
+            {{ selectedVendor.phoneNumber.type }} :
             <span
               class="clickLink"
-              @click="onPhoneNumberClick(phone.number, $event)"
-              >{{ phone.number }}</span
+              @click="
+                onPhoneNumberClick(selectedVendor.phoneNumber.number, $event)
+              "
+              >{{ selectedVendor.phoneNumber.number }}</span
             ></span
           >
         </div>

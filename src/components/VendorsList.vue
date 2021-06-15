@@ -43,52 +43,63 @@
         style="overflow-y: auto"
       >
         <q-item-section>
-          <span class="text-bold fit-content">{{ vendor.name }}</span>
-          <div v-if="vendor.address">
+          <span class="text-bold fit-content">{{
+            vendor.name ? vendor.name : ''
+          }}</span>
+          <div v-if="vendor.mailingAddress">
             <div>
-              {{ vendor.address ? vendor.address.houseNumber : '-' }} ,
               {{
-                vendor.address.streetAddress
-                  ? vendor.address.streetAddress
+                vendor.mailingAddress ? vendor.mailingAddress.houseNumber : '-'
+              }}
+              ,
+              {{
+                vendor.mailingAddress.streetAddress
+                  ? vendor.mailingAddress.streetAddress
                   : '-'
               }}
             </div>
             <div>
               {{
-                vendor.address.addressLocality
-                  ? vendor.address.addressLocality
+                vendor.mailingAddress.addressLocality
+                  ? vendor.mailingAddress.addressLocality
                   : '-'
               }}
               ,
               {{
-                vendor.address.addressRegion
-                  ? vendor.address.addressRegion
+                vendor.mailingAddress.addressRegion
+                  ? vendor.mailingAddress.addressRegion
                   : '-'
               }}
             </div>
             <div class="row">
               {{
-                vendor.address.addressCountry
-                  ? vendor.address.addressCountry
+                vendor.mailingAddress.addressCountry
+                  ? vendor.mailingAddress.addressCountry
                   : '-'
               }}
               -
-              {{ vendor.address.postalCode ? vendor.address.postalCode : '-' }}
+              {{
+                vendor.mailingAddress.postalCode
+                  ? vendor.mailingAddress.postalCode
+                  : '-'
+              }}
               <q-icon
                 name="place"
                 color="primary"
-                @click="sendMap(vendor.address, $event)"
+                @click="sendMap(vendor.mailingAddress, $event)"
                 class="q-ml-auto"
                 size="sm"
               ></q-icon>
             </div>
           </div>
-          <div class="q-mt-xs fit-content" v-for="phone in vendor.phoneNumber">
-            <span v-if="phone.type">{{ phone.type }} : </span>
+          <div class="q-mt-xs fit-content" v-if="vendor.phoneNumber">
+            <span v-if="vendor.phoneNumber.type"
+              >{{ vendor.phoneNumber.type }} :
+            </span>
             <span
               class="clickLink"
-              @click="onPhoneNumberClick(phone.number, $event)"
-              >{{ phone.number }}</span
+              @click="onPhoneNumberClick(vendor.phoneNumber.number, $event)"
+              >{{ vendor.phoneNumber.number }}</span
             >
           </div>
           <span
