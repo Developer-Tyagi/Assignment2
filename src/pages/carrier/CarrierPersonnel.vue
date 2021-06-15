@@ -28,6 +28,9 @@
                 </div>
                 <q-icon
                   size="xs"
+                  :style="
+                    personnel.isEditable == false ? 'visibility:hidden;' : ''
+                  "
                   name="create "
                   color="primary"
                   class="q-my-auto col"
