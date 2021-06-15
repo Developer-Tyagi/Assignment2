@@ -402,6 +402,14 @@ export default {
               quantity: this.lossInfo.quantity,
               name: this.lossInfo.PPDamageName,
               serialNumber: this.lossInfo.serialNumber,
+              repairCost:
+                this.lossInfo.repairReplaceRadio == 'Repair'
+                  ? this.lossInfo.PPDamagedItemCost
+                  : null,
+              replaceCost:
+                this.lossInfo.repairReplaceRadio == 'Replace'
+                  ? this.lossInfo.PPDamagedItemCost
+                  : null,
               desc: this.lossInfo.PPDamageDescription,
               damageDesc: this.lossInfo.PPDamageItemDescription,
               purchasePrice: this.lossInfo.purchasePrice,

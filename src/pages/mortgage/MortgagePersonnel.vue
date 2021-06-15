@@ -37,6 +37,9 @@
                   @click="onEdit(index)"
                 ></q-icon>
                 <q-icon
+                  :style="
+                    personnel.isEditable == false ? 'visibility:hidden;' : ''
+                  "
                   class="q-my-auto"
                   name="delete"
                   size="xs"

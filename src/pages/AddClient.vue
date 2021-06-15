@@ -1965,7 +1965,7 @@ export default {
           primary: {
             honorific: {
               id: this.honorific1.id,
-              value: this.honorific1.title,
+              value: this.honorific1.value,
               machineValue: this.honorific1.machineValue
             },
             fname: this.insuredDetails.fname,
