@@ -47,7 +47,7 @@
         <div class="heading-light col-2">Address Details</div>
 
         <div
-          class="col-7"
+          class="col-7 q-ml-lg"
           v-if="lossInfo.attributes.lossInfo.property.streetAddress"
         >
           {{
