@@ -18,6 +18,9 @@
           ></q-icon>
 
           <q-icon
+            :style="
+              selectedCarrier.isEditable == false ? 'visibility:hidden;' : ''
+            "
             class="q-my-auto"
             name="delete"
             size="xs"
