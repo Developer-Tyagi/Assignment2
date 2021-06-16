@@ -214,7 +214,8 @@
             contractInfo.sourceDetails.type != constants.industries.VENDOR &&
               contractInfo.sourceDetails.type != '' &&
               contractInfo.sourceDetails.type != 'google' &&
-              contractInfo.sourceDetails.type != 'client'
+              contractInfo.sourceDetails.type != 'client' &&
+              contractInfo.sourceDetails.type != 'none'
           "
           type="text"
           placeholder="Enter Source details"

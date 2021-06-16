@@ -10,16 +10,16 @@
         </div>
 
         <div class=" q-mt-lg q-pa-sm ">
-          <div class="row justify-between">
-            <div class=" text-bold">Company Name</div>
+          <div class="row ">
+            <div class="col-5 text-bold">User Name</div>
             <div>
               {{ user.name }}
             </div>
           </div>
-          <div class="row justify-between">
-            <div class="text-bold">Company Address</div>
+          <div class="row ">
+            <div class="col-5  text-bold">Address</div>
 
-            <div class="column" v-if="user.mailingAddress">
+            <div class="column col-6" v-if="user.mailingAddress">
               {{
                 user.mailingAddress.streetAddress
                   ? user.mailingAddress.streetAddress
@@ -32,19 +32,18 @@
                   : '-'
               }},
 
-              <div>
-                {{
-                  user.mailingAddress.addressLocality
-                    ? user.mailingAddress.addressLocality
-                    : '-'
-                }}
+              {{
+                user.mailingAddress.addressLocality
+                  ? user.mailingAddress.addressLocality
+                  : '-'
+              }}
 
-                {{
-                  user.mailingAddress.addressCountry
-                    ? user.mailingAddress.addressCountry
-                    : '-'
-                }},
-              </div>
+              {{
+                user.mailingAddress.addressCountry
+                  ? user.mailingAddress.addressCountry
+                  : '-'
+              }},
+
               {{
                 user.mailingAddress.postalCode
                   ? user.mailingAddress.postalCode
@@ -52,30 +51,31 @@
               }}
             </div>
           </div>
-          <div class="row justify-between">
-            <div class="text-bold">Company Mobile</div>
-            {{ user.phoneNumber ? user.phoneNumber.number : '-' }}
+          <div class="row ">
+            <div class=" col-5 text-bold">Mobile</div>
+            <div
+              class="col clickable text-primary"
+              @click="onPhoneNumberClick(user.phoneNumber.number, $event)"
+            >
+              {{ user.phoneNumber ? user.phoneNumber.number : '-' }}
+            </div>
           </div>
-          <div class="row justify-between">
-            <div class="text-bold">Postal Company Code</div>
+          <div class="row q-mt-sm">
+            <div class="text-bold col-5 ">Postal Code</div>
             <div v-if="user.mailingAddress">
               {{ user.mailingAddress ? user.mailingAddress.postalCode : '-' }}
             </div>
           </div>
+          <div class="row q-mt-sm">
+            <div class=" col-5 text-bold">Email</div>
+            <div
+              class="col clickable text-primary"
+              @click="onEmailClick(user.email, $event)"
+            >
+              {{ user.email }}
+            </div>
+          </div>
         </div>
-        <q-separator />
-
-        <q-card class=" q-mt-md ">
-          <div class="row justify-between">
-            <div class="text-bold">Company Administrator</div>
-            <div>{{ user.contact.fname }} {{ user.contact.lname }}</div>
-          </div>
-          <div class="row justify-between">
-            <div class="text-bold">Administrator Email</div>
-            <div>{{ user.email }}</div>
-          </div>
-        </q-card>
-        <q-separator />
       </q-card>
     </div>
     <!-- Dialog For user Data -->
@@ -188,6 +188,7 @@ import { getCurrentUser } from 'src/utils/auth';
 import { mapGetters, mapActions } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import { validateEmail } from '@utils/validation';
+import { onPhoneNumberClick, onEmailClick } from '@utils/clickable';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 export default {
   components: { AutoCompleteAddress, CustomBar },
@@ -233,6 +234,8 @@ export default {
   },
   methods: {
     validateEmail,
+    onPhoneNumberClick,
+    onEmailClick,
     ...mapActions(['getContactTypes', 'editUserInfo', 'getUserInfo']),
     onEditClick() {
       this.users.fname = this.user.contact.fname;

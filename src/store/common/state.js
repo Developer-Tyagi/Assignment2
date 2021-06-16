@@ -15,7 +15,7 @@ export default function() {
       { value: 'Edit Access', name: 'writer' }
     ],
     leadSources: [
-      { value: '', name: 'None' },
+      { value: 'none', name: 'None' },
       { value: 'client', name: 'Prior Client' },
       { value: 'vendor', name: 'Vendor' },
       { value: 'affiliate', name: 'Affiliate' },
