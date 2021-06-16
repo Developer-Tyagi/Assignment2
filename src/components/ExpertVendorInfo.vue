@@ -86,7 +86,7 @@
             style="color: transparent"
             maxlength="0"
             placeholder="Click add for choosing a vendor"
-            v-if="!item.vendor.value"
+            v-if="!item.vendor.email"
             lazy-rules
             :rules="[
               val =>
@@ -104,7 +104,6 @@
                   expertVendorInfo.isAlreadyHiredVendor
                 )
               "
-              v-if="!item.vendor.value"
             />
             <!-- <div
               class="custom-select full-width bg-red"
@@ -122,7 +121,7 @@
           </q-input>
           <q-card
             bordered
-            v-if="item.vendor.value"
+            v-if="item.vendor.email"
             @click="
               openVendorSelect(
                 item,
@@ -135,43 +134,49 @@
             <div class="text-bold">
               {{ item.vendor.value }}
             </div>
+
             <div
-              v-if="item.vendor.address && item.vendor.address.streetAddress"
+              v-if="
+                item.vendor.mailingAddress &&
+                  item.vendor.mailingAddress.streetAddress
+              "
             >
               <div>
                 {{
-                  item.vendor.address ? item.vendor.address.houseNumber : '-'
+                  item.vendor.mailingAddress
+                    ? item.vendor.mailingAddress.houseNumber
+                    : '-'
                 }}
                 ,
                 {{
-                  item.vendor.address.streetAddress
-                    ? item.vendor.address.streetAddress
+                  item.vendor.mailingAddress.streetAddress
+                    ? item.vendor.mailingAddress.streetAddress
                     : '-'
                 }}
               </div>
               <div>
                 {{
-                  item.vendor.address.addressLocality
-                    ? item.vendor.address.addressLocality
+                  item.vendor.mailingAddress.addressLocality
+                    ? item.vendor.mailingAddress.addressLocality
                     : '-'
                 }}
                 ,
                 {{
-                  item.vendor.address.addressRegion
-                    ? item.vendor.address.addressRegion
+                  item.vendor.mailingAddress.addressRegion
+                    ? item.vendor.mailingAddress.addressRegion
                     : '-'
                 }}
               </div>
               <div class="row">
                 {{
-                  item.vendor.address.addressCountry
-                    ? item.vendor.address.addressCountry
+                  item.vendor.mailingAddress.addressCountry
+                    ? item.vendor.mailingAddress.addressCountry
                     : '-'
                 }}
                 -
                 {{
-                  item.vendor.address.postalCode
-                    ? item.vendor.address.postalCode
+                  item.vendor.mailingAddress.postalCode
+                    ? item.vendor.mailingAddress.postalCode
                     : '-'
                 }}
               </div>
@@ -260,8 +265,11 @@
             "
             v-if="!item.vendor.value"
           >
-            <div class="select-text">Click for choosing a vendor</div>
+            <div class="select-text">
+              Click for choosing a vendor
+            </div>
           </div>
+
           <q-card
             bordered
             v-if="item.vendor.value"
@@ -272,42 +280,47 @@
           >
             <div class="text-bold">{{ item.vendor.value }}</div>
             <div
-              v-if="item.vendor.address && item.vendor.address.streetAddress"
+              v-if="
+                item.vendor.mailingAddress &&
+                  item.vendor.mailingAddress.streetAddress
+              "
             >
               <div>
                 {{
-                  item.vendor.address ? item.vendor.address.houseNumber : '-'
+                  item.vendor.mailingAddress
+                    ? item.vendor.mailingAddress.houseNumber
+                    : '-'
                 }}
                 ,
                 {{
-                  item.vendor.address.streetAddress
-                    ? item.vendor.address.streetAddress
+                  item.vendor.mailingAddress.streetAddress
+                    ? item.vendor.mailingAddress.streetAddress
                     : '-'
                 }}
               </div>
               <div>
                 {{
-                  item.vendor.address.addressLocality
-                    ? item.vendor.address.addressLocality
+                  item.vendor.mailingAddress.addressLocality
+                    ? item.vendor.mailingAddress.addressLocality
                     : '-'
                 }}
                 ,
                 {{
-                  item.vendor.address.addressRegion
-                    ? item.vendor.address.addressRegion
+                  item.vendor.mailingAddress.addressRegion
+                    ? item.vendor.mailingAddress.addressRegion
                     : '-'
                 }}
               </div>
               <div class="row">
                 {{
-                  item.vendor.address.addressCountry
-                    ? item.vendor.address.addressCountry
+                  item.vendor.mailingAddress.addressCountry
+                    ? item.vendor.mailingAddress.addressCountry
                     : '-'
                 }}
                 -
                 {{
-                  item.vendor.address.postalCode
-                    ? item.vendor.address.postalCode
+                  item.vendor.mailingAddress.postalCode
+                    ? item.vendor.mailingAddress.postalCode
                     : '-'
                 }}
               </div>
@@ -458,10 +471,11 @@ export default {
     onSelectingVendorList(vendor) {
       this.selectedArray[this.selectedIndex].vendor.id = vendor.id;
       this.selectedArray[this.selectedIndex].vendor.email = vendor.email;
-      this.selectedArray[this.selectedIndex].vendor.address = vendor.address;
+      this.selectedArray[this.selectedIndex].vendor.mailingAddress =
+        vendor.mailingAddress;
       this.selectedArray[this.selectedIndex].vendor.value = vendor.name;
       this.selectedArray[this.selectedIndex].vendor.phone = vendor.phoneNumber
-        ? vendor.phoneNumber[0].number
+        ? vendor.phoneNumber.number
         : '';
       this.vendorsListDialog = false;
       this.$emit('vendorId', vendor);
@@ -487,11 +501,13 @@ export default {
     onCloseAddVendorDialogBox(vendor) {
       this.selectedArray[this.selectedIndex].vendor.id = vendor.id;
       this.selectedArray[this.selectedIndex].vendor.email = vendor.email;
-      this.selectedArray[this.selectedIndex].vendor.address = vendor.address;
+      this.selectedArray[this.selectedIndex].vendor.mailingAddress =
+        vendor.mailingAddress;
       this.selectedArray[this.selectedIndex].vendor.value = vendor.name;
       this.selectedArray[this.selectedIndex].vendor.phone = vendor.phoneNumber
-        ? vendor.phoneNumber[0].number
+        ? vendor.phoneNumber.number
         : '';
+
       this.$emit('vendorId', vendor);
       this.vendorsListDialog = false;
       this.addVendorDialog = false;

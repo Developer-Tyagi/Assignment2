@@ -66,7 +66,6 @@ export async function addVendor(
 }
 
 export async function addVendorRemote({ commit, dispatch }, payload) {
-  console.log(payload, 'payload is');
   try {
     const { data } = await request.post(
       '/vendors',

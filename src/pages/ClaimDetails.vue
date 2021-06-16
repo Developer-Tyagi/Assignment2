@@ -20,7 +20,11 @@
 
     <div class="listing-height">
       <ClaimDetail />
-      <q-list bordered class="q-mt-xs" v-if="userRole != 'estimator'">
+      <q-list
+        bordered
+        class="q-mt-xs"
+        v-if="userRole != 'estimator' || userRole != 'vendor'"
+      >
         <q-expansion-item
           group="claimGroup"
           label="   Claim Summary"

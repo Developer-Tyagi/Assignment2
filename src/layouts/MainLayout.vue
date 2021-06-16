@@ -97,7 +97,10 @@ export default {
         this.$router.push('/dashboard');
       } else if (route == 'leads') {
         this.$router.push('/leads-dashboard');
-      } else if (route == 'claim-summary' && this.userRole == 'estimator') {
+      } else if (
+        (route == 'claim-summary' && this.userRole == 'estimator') ||
+        this.userRole == 'vendor'
+      ) {
         this.$router.push('/claims');
       } else if (route == 'claims') {
         this.$store.commit('setClaims');
