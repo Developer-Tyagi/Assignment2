@@ -192,7 +192,8 @@ export default {
     onClickingOnClaim(claim) {
       this.setSelectedClaimId(claim.id);
       this.$router.push('/claim-details');
-      if (this.userRole == 'estimator') {
+      if (this.userRole == 'estimator' || this.userRole == 'vendor') {
+        console.log(this.userRole, 'user');
         this.setSelectedClaimId(claim.id);
         this.$router.push('/claim-summary');
       }

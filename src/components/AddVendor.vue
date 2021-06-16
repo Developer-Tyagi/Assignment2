@@ -182,7 +182,7 @@
             <p class="form-heading">Other Info</p>
             <q-input
               dense
-              v-model="vendor.info.website"
+              v-model="vendor.website"
               label="Website"
               lazy-rules
               :rules="[val => validateUrl(val) || 'Please fill your website']"
@@ -190,7 +190,7 @@
             <q-input
               class="q-mb-sm"
               dense
-              v-model="vendor.info.notes"
+              v-model="vendor.notes"
               label="Notes"
             />
           </q-card>
@@ -289,10 +289,8 @@ export default {
           claimFiledByEmail: false
         },
 
-        info: {
-          website: '',
-          notes: ''
-        }
+        website: '',
+        notes: ''
       }
     };
   },
@@ -323,13 +321,13 @@ export default {
       this.vendor.contact.lname = this.selectedVendor.contact.lname;
       this.vendor.contact.phoneNumber = this.selectedVendor.contact.phoneNumber;
       this.vendor.contact.email = this.selectedVendor.contact.email;
-      this.vendor.info.website =
-        this.selectedVendor.info && this.selectedVendor.info.website
-          ? this.selectedVendor.info.website
+      this.vendor.website =
+        this.selectedVendor && this.selectedVendor.website
+          ? this.selectedVendor.website
           : '';
-      this.vendor.info.notes =
-        this.selectedVendor.info && this.selectedVendor.info.notes
-          ? this.selectedVendor.info.notes
+      this.vendor.notes =
+        this.selectedVendor && this.selectedVendor.notes
+          ? this.selectedVendor.notes
           : '';
     }
     this.getVendorIndustries();

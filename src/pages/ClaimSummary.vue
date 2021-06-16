@@ -4,15 +4,15 @@
       class="add-icon"
       @click="menuItemDialog = true"
       name="more_vert"
-      v-if="userRole == 'estimator'"
+      v-if="userRole == 'estimator' || userRole == 'vendor'"
     />
     <div
       :class="{
-        'mobile-container-page': userRole == 'estimator'
+        'mobile-container-page': userRole == 'estimator' || userRole == 'vendor'
       }"
     >
       <div class="row q-ml-xs justify-between">
-        <div v-if="userRole == 'estimator'">
+        <div v-if="userRole == 'estimator' || userRole == 'vendor'">
           <ClaimDetail />
         </div>
       </div>
@@ -21,7 +21,7 @@
         <div class="text-bold q-mt-xs row">
           Claim Summary
           <q-icon
-            v-if="userRole != 'estimator'"
+            v-if="userRole != 'estimator' && userRole != 'vendor'"
             class="q-ml-auto"
             name="edit"
             size="xs"
@@ -112,7 +112,10 @@
         </div>
       </q-card>
 
-      <q-card class="q-ma-md q-pa-md" v-if="userRole != 'estimator'">
+      <q-card
+        class="q-ma-md q-pa-md"
+        v-if="userRole != 'estimator' && userRole != 'vendor'"
+      >
         <div class="row q-ml-xs justify-between">
           <div class="text-bold q-mt-xs">Claim Deadlines</div>
           <div class="q-mt-xs">
@@ -152,7 +155,7 @@
               color="primary"
               class="col"
               size="xs"
-              v-if="userRole != 'estimator'"
+              v-if="userRole != 'estimator' && userRole != 'vendor'"
               @click="
                 (lossDetailsBox = true), $emit('claimSummaryDialog', true)
               "
@@ -202,7 +205,7 @@
           </div>
         </div>
       </q-card>
-      <div v-if="userRole != 'estimator'">
+      <div v-if="userRole != 'estimator' && userRole != 'vendor'">
         <div class="form-heading q-ml-md col q-mb-md">
           Claim Timeline
         </div>
@@ -547,7 +550,7 @@
           <q-card class="q-mx-sm">
             <div class="q-px-md">
               <q-input
-                v-if="userRole != 'estimator'"
+                v-if="userRole != 'estimator' && userRole != 'vendor'"
                 dense
                 v-model="lossInfo.dateOfLoss"
                 mask="##/##/####"
@@ -577,7 +580,7 @@
                 </template>
               </q-input>
               <q-select
-                v-if="userRole != 'estimator'"
+                v-if="userRole != 'estimator' && userRole != 'vendor'"
                 dense
                 v-model="lossInfo.cause.id"
                 behavior="menu"
@@ -630,11 +633,17 @@
                 v-model="lossInfo.desc"
                 style="resize: none"
               />
-              <div class="row" v-if="userRole != 'estimator'">
+              <div
+                class="row"
+                v-if="userRole != 'estimator' && userRole != 'vendor'"
+              >
                 <div>FEMA Claim</div>
                 <q-toggle class="q-ml-auto" v-model="isFemaClaim" />
               </div>
-              <div class="row" v-if="userRole != 'estimator'">
+              <div
+                class="row"
+                v-if="userRole != 'estimator' && userRole != 'vendor'"
+              >
                 <div>Property is not habitable</div>
                 <q-toggle class="q-ml-auto" v-model="isHabitable" />
               </div>
@@ -660,8 +669,19 @@
     >
       <q-card style="width: 350px">
         <q-card-section class="items-center">
-          <div class="q-pa-md heading-light" @click="onClickUploadDocument">
+          <div
+            v-if="userRole == 'estimator'"
+            class="q-pa-md heading-light"
+            @click="onClickUploadDocument"
+          >
             Upload Estimate Documents
+          </div>
+          <div
+            v-if="userRole == 'vendor'"
+            class="q-pa-md heading-light"
+            @click="onClickUploadDocument"
+          >
+            Upload Vendor Documents
           </div>
         </q-card-section>
       </q-card>

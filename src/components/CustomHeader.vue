@@ -218,6 +218,7 @@ export default {
       ],
       sidebarItems: [],
       estimator: ['dashboard', 'claims', 'profile'],
+      vendor: ['dashboard', 'claims', 'profile'],
       owner: [
         'dashboard',
         'leads',
