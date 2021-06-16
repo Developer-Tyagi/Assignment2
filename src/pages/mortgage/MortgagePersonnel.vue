@@ -27,6 +27,9 @@
                   {{ personnel.fname }} {{ personnel.lname }}
                 </span>
                 <q-icon
+                  :style="
+                    personnel.isEditable == false ? 'visibility:hidden;' : ''
+                  "
                   size="xs"
                   name="create "
                   color="primary"
@@ -34,6 +37,9 @@
                   @click="onEdit(index)"
                 ></q-icon>
                 <q-icon
+                  :style="
+                    personnel.isEditable == false ? 'visibility:hidden;' : ''
+                  "
                   class="q-my-auto"
                   name="delete"
                   size="xs"

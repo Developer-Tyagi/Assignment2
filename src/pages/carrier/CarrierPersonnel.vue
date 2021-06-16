@@ -28,6 +28,9 @@
                 </div>
                 <q-icon
                   size="xs"
+                  :style="
+                    personnel.isEditable == false ? 'visibility:hidden;' : ''
+                  "
                   name="create "
                   color="primary"
                   class="q-my-auto col"
@@ -35,6 +38,9 @@
                 ></q-icon>
 
                 <q-icon
+                  :style="
+                    personnel.isEditable == false ? 'visibility:hidden;' : ''
+                  "
                   class="q-my-auto"
                   name="delete"
                   size="sm"
