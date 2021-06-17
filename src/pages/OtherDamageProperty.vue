@@ -1,8 +1,7 @@
 <template>
   <div>
     <div v-if="damageInfo.damageInfo.otherStructure.items">
-      <q-card
-        class=" q-pa-sm"
+      <div
         v-for="(damage, index) in damageInfo.damageInfo.otherStructure.items"
       >
         <div class="row justify-between">
@@ -30,49 +29,58 @@
           <p>{{ damage.damageDesc }}</p>
         </div>
         <div class="q-my-sm">
-          <div class="row justify-between q-my-sm">
-            <div class="heading-light">Quantity</div>
-            <div class="q-mr-sm">
+          <div class="q-mt-md row">
+            <div class="heading-light q-mt-none col-6 lightHeading">
+              Quantity
+            </div>
+            <div class="column">
               {{ damage.quantity }}
             </div>
           </div>
-          <div class="row justify-between q-my-sm">
-            <div class="heading-light">Serial Number</div>
-            <div class="q-mr-sm">
+          <div class="q-mt-md row">
+            <div class="heading-light q-mt-none col-6 lightHeading">
+              Serial Number
+            </div>
+            <div class="column">
               {{ damage.serialNumber }}
             </div>
           </div>
-          <div class="row justify-between q-my-sm">
-            <div class="heading-light">Purchase Date</div>
-            <div class="q-mr-sm">
+          <div class="q-mt-md row">
+            <div class="heading-light q-mt-none col-6 lightHeading">
+              Purchase Date
+            </div>
+            <div class="column">
               {{ dateToShow(damage.purchaseDate) }}
             </div>
           </div>
         </div>
-        <q-separator />
-        <div class="q-my-sm row justify-between">
-          <div class="heading-light col-3">Purchase Price</div>
-
-          <div>
-            <span class="heading-light">$</span>
-            {{ damage.purchasePrice }}
+        <q-separator class="q-mt-sm q-mb-sm" />
+        <div class="q-mt-md row">
+          <div class="heading-light q-mt-none col-6 lightHeading">
+            Purchase Price
+          </div>
+          <div class="column">
+            <div>
+              <span class="heading-light">$</span> {{ damage.purchasePrice }}
+            </div>
           </div>
         </div>
-        <div class="q-my-sm row justify-between">
-          <div class="heading-light col-3">
+        <div class="q-mt-md row">
+          <div class="heading-light q-mt-none col-6  lightHeading">
             {{ damage.replaceCost == null ? 'Repair' : 'Replace' }} Cost
           </div>
-
-          <div>
-            <span class="heading-light">$</span>
-            {{
-              damage.replaceCost == null
-                ? damage.repairCost
-                : damage.replaceCost
-            }}
+          <div class="column">
+            <div>
+              <span class="heading-light">$</span>
+              {{
+                damage.replaceCost == null
+                  ? damage.repairCost
+                  : damage.replaceCost
+              }}
+            </div>
           </div>
         </div>
-      </q-card>
+      </div>
     </div>
     <div v-else class="full-width text-center q-mt-sm heading-light">
       You have not added any Damage items yet!

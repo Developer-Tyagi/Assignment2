@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- <ClaimDetail /> -->
     <q-dialog
       v-model="lossInfoDialog"
       :maximized="true"
@@ -41,205 +40,222 @@
         </q-card>
       </q-card>
     </q-dialog>
+    <div class="row">
+      <q-icon
+        size="xs"
+        name="create"
+        color="primary"
+        class="q-ml-auto"
+        v-if="!lossInfoDialog"
+        @click="onEditIconClick"
+      ></q-icon>
+    </div>
 
-    <q-card class="q-pa-sm">
-      <div class="row q-mt-sm" v-if="lossInfo.attributes.lossInfo.property">
-        <div class="heading-light col-2">Address Details</div>
-
-        <div
-          class="col-7"
-          v-if="lossInfo.attributes.lossInfo.property.streetAddress"
-        >
+    <div class="q-mt-md row" v-if="lossInfo.attributes.lossInfo.property">
+      <div class="heading-light q-mt-none col-4 lightHeading">
+        Address Details
+      </div>
+      <div
+        class="col-6 q-ml-md"
+        v-if="lossInfo.attributes.lossInfo.property.streetAddress"
+      >
+        {{
+          lossInfo.attributes.lossInfo.property.houseNumber
+            ? lossInfo.attributes.lossInfo.property.houseNumber
+            : '-'
+        }}
+        ,
+        {{
+          lossInfo.attributes.lossInfo.property.streetAddress
+            ? lossInfo.attributes.lossInfo.property.streetAddress
+            : '-'
+        }}
+        <div>
           {{
-            lossInfo.attributes.lossInfo.property.houseNumber
-              ? lossInfo.attributes.lossInfo.property.houseNumber
+            lossInfo.attributes.lossInfo.property.addressLocality
+              ? lossInfo.attributes.lossInfo.property.addressLocality
               : '-'
           }}
           ,
-          {{
-            lossInfo.attributes.lossInfo.property.streetAddress
-              ? lossInfo.attributes.lossInfo.property.streetAddress
-              : '-'
-          }}
-          <div>
-            {{
-              lossInfo.attributes.lossInfo.property.addressLocality
-                ? lossInfo.attributes.lossInfo.property.addressLocality
-                : '-'
-            }}
-            ,
-            {{ lossInfo.attributes.lossInfo.property.addressRegion }},
-          </div>
-          <div>
-            {{ lossInfo.attributes.lossInfo.property.addressCountry }},
-            {{
-              lossInfo.attributes.lossInfo.property.postalCode
-                ? lossInfo.attributes.lossInfo.property.postalCode
-                : '-'
-            }}
-            <q-icon
-              name="place"
-              color="primary"
-              @click="sendMap(lossInfo.attributes.lossInfo.property)"
-              style="position: absolute; right: 20px"
-              size="sm"
-            ></q-icon>
-          </div>
+          {{ lossInfo.attributes.lossInfo.property.addressRegion }},
         </div>
-        <q-icon
-          size="xs"
-          name="create"
-          color="primary"
-          class="q-ml-auto"
-          v-if="!lossInfoDialog"
-          @click="onEditIconClick"
-        ></q-icon>
-      </div>
-
-      <div
-        class="row q-mt-sm"
-        v-if="
-          lossInfo.attributes.lossInfo.property &&
-            lossInfo.attributes.lossInfo.property.propertyType
-        "
-      >
-        <span class="heading-light col-2"> Property Type :</span>
-        <span class="q-ml-lg col">
-          {{ lossInfo.attributes.lossInfo.property.propertyType.value }}</span
-        >
-      </div>
-      <div
-        class="row q-mt-sm"
-        v-if="
-          lossInfo.attributes.lossInfo &&
-            lossInfo.attributes.lossInfo.propertyDesc
-        "
-      >
-        <span class="heading-light col-2"> Property Description :</span>
-        <span class="q-ml-lg col">
+        <div>
+          {{ lossInfo.attributes.lossInfo.property.addressCountry }},
           {{
-            lossInfo.attributes.lossInfo.propertyDesc
-              ? lossInfo.attributes.lossInfo.propertyDesc
-              : '-'
-          }}</span
-        >
-      </div>
-      <div
-        class="row q-mt-sm"
-        v-if="
-          lossInfo.attributes.lossInfo &&
-            lossInfo.attributes.lossInfo.claimReason
-        "
-      >
-        <span class="heading-light col-2"> Claim Reason:</span>
-        <span class="q-ml-lg col">
-          {{
-            lossInfo.attributes.lossInfo.claimReason.value
-              ? lossInfo.attributes.lossInfo.claimReason.value
-              : '-'
-          }}</span
-        >
-      </div>
-      <div
-        class="row q-mt-sm"
-        v-if="
-          lossInfo.attributes.lossInfo && lossInfo.attributes.lossInfo.serverity
-        "
-      >
-        <span class="heading-light col-2"> Serverity:</span>
-        <span class="q-ml-lg col">
-          {{
-            lossInfo.attributes.lossInfo.serverity.value
-              ? lossInfo.attributes.lossInfo.serverity.value
-              : '-'
-          }}</span
-        >
-      </div>
-      <div
-        class="row q-mt-sm"
-        v-if="
-          lossInfo.attributes.lossInfo && lossInfo.attributes.lossInfo.cause
-        "
-      >
-        <span class="heading-light col-2"> Cause of Loss:</span>
-        <span class="q-ml-lg col">
-          {{
-            lossInfo.attributes.lossInfo.cause
-              ? lossInfo.attributes.lossInfo.cause.value
+            lossInfo.attributes.lossInfo.property.postalCode
+              ? lossInfo.attributes.lossInfo.property.postalCode
               : '-'
           }}
-          -
-          {{
-            lossInfo.attributes.lossInfo.cause
-              ? lossInfo.attributes.lossInfo.cause.desc
-              : '-'
-          }}
-        </span>
+          <q-icon
+            name="place"
+            color="primary"
+            @click="sendMap(lossInfo.attributes.lossInfo.property)"
+            style="position: absolute; right: 20px"
+            size="sm"
+            class="q-mb-md"
+          ></q-icon>
+        </div>
       </div>
-      <div
-        class="row q-mt-sm"
-        v-if="lossInfo.attributes.lossInfo && lossInfo.attributes.lossInfo.date"
-      >
-        <span class="heading-light col-2"> Date of Loss:</span>
-        <span class="q-ml-lg col">
-          {{ dateToShow(lossInfo.attributes.lossInfo.date) }}</span
-        >
+    </div>
+    <div
+      class="q-mt-md row"
+      v-if="
+        lossInfo.attributes.lossInfo.property &&
+          lossInfo.attributes.lossInfo.property.propertyType
+      "
+    >
+      <div class="heading-light q-mt-none col-xs-4 lightHeading">
+        Property Type
       </div>
+      <div class="column q-ml-md">
+        {{ lossInfo.attributes.lossInfo.property.propertyType.value }}
+      </div>
+    </div>
+    <div
+      class="q-mt-md row"
+      v-if="
+        lossInfo.attributes.lossInfo &&
+          lossInfo.attributes.lossInfo.propertyDesc
+      "
+    >
+      <div class="heading-light q-mt-none col-xs-4 lightHeading">
+        Property Description :
+      </div>
+      <div class="column q-ml-md">
+        {{
+          lossInfo.attributes.lossInfo.propertyDesc
+            ? lossInfo.attributes.lossInfo.propertyDesc
+            : '-'
+        }}
+      </div>
+    </div>
+    <div
+      class="q-mt-md row"
+      v-if="
+        lossInfo.attributes.lossInfo && lossInfo.attributes.lossInfo.claimReason
+      "
+    >
+      <div class="heading-light q-mt-none col-xs-4 lightHeading">
+        Claim Reason:
+      </div>
+      <div class="column q-ml-md">
+        {{
+          lossInfo.attributes.lossInfo.claimReason.value
+            ? lossInfo.attributes.lossInfo.claimReason.value
+            : '-'
+        }}
+      </div>
+    </div>
+    <div
+      class="q-mt-md row"
+      v-if="
+        lossInfo.attributes.lossInfo && lossInfo.attributes.lossInfo.serverity
+      "
+    >
+      <div class="heading-light q-mt-none col-xs-4 lightHeading">
+        Serverity:
+      </div>
+      <div class="column q-ml-md">
+        {{
+          lossInfo.attributes.lossInfo.serverity.value
+            ? lossInfo.attributes.lossInfo.serverity.value
+            : '-'
+        }}
+      </div>
+    </div>
+    <div
+      class="q-mt-md row"
+      v-if="lossInfo.attributes.lossInfo && lossInfo.attributes.lossInfo.cause"
+    >
+      <div class="heading-light q-mt-none col-xs-4 lightHeading">
+        Cause of Loss:
+      </div>
+      <div class="column q-ml-md">
+        {{
+          lossInfo.attributes.lossInfo.cause
+            ? lossInfo.attributes.lossInfo.cause.value
+            : '-'
+        }}
+        -
+        {{
+          lossInfo.attributes.lossInfo.cause
+            ? lossInfo.attributes.lossInfo.cause.desc
+            : '-'
+        }}
+      </div>
+    </div>
+    <div
+      class="q-mt-md row"
+      v-if="lossInfo.attributes.lossInfo && lossInfo.attributes.lossInfo.date"
+    >
+      <div class="heading-light q-mt-none col-xs-4 lightHeading">
+        Date of Loss:
+      </div>
+      <div class="column q-ml-md">
+        {{ dateToShow(lossInfo.attributes.lossInfo.date) }}
+      </div>
+    </div>
 
-      <div
-        class="row q-mt-sm"
-        v-if="
-          lossInfo.attributes.lossInfo &&
-            lossInfo.attributes.lossInfo.deadlineDate
-        "
-      >
-        <span class="heading-light col-2"> Deadline Date:</span>
-        <span class="q-ml-lg col">
-          {{ dateToShow(lossInfo.attributes.lossInfo.deadlineDate) }}</span
-        >
+    <div
+      class="q-mt-md row"
+      v-if="
+        lossInfo.attributes.lossInfo &&
+          lossInfo.attributes.lossInfo.deadlineDate
+      "
+    >
+      <div class="heading-light q-mt-none col-xs-4 lightHeading">
+        Deadline Date:
       </div>
-      <div
-        class="row q-mt-sm"
-        v-if="
-          lossInfo.attributes.lossInfo &&
-            lossInfo.attributes.lossInfo.recovDDDate
-        "
-      >
-        <span class="heading-light col-2"> Recovery Date:</span>
-        <span class="q-ml-lg col">
-          {{ dateToShow(lossInfo.attributes.lossInfo.recovDDDate) }}</span
-        >
+      <div class="column q-ml-md">
+        {{ dateToShow(lossInfo.attributes.lossInfo.deadlineDate) }}
       </div>
-      <div
-        class="row q-mt-sm"
-        v-if="
-          lossInfo.attributes.lossInfo &&
-            lossInfo.attributes.lossInfo.claimReason
-        "
-      >
-        <span class="heading-light col-2"> Reason For Claim:</span>
-        <span class="q-ml-lg col">
-          {{
-            lossInfo.attributes.lossInfo.claimReason.value
-              ? lossInfo.attributes.lossInfo.claimReason.value
-              : '-'
-          }}</span
-        >
+    </div>
+
+    <div
+      class="q-mt-md row"
+      v-if="
+        lossInfo.attributes.lossInfo && lossInfo.attributes.lossInfo.recovDDDate
+      "
+    >
+      <div class="heading-light q-mt-none col-xs-4 lightHeading">
+        Recovery Date:
       </div>
-      <div
-        class="row q-mt-sm"
-        v-if="lossInfo.attributes.lossInfo && lossInfo.attributes.lossInfo.desc"
-      >
-        <span class="heading-light col-2"> Loss Description:</span>
-        <span class="q-ml-lg col">
-          {{
-            lossInfo.attributes.lossInfo.desc
-              ? lossInfo.attributes.lossInfo.desc
-              : '-'
-          }}</span
-        >
+      <div class="column q-ml-md">
+        {{ dateToShow(lossInfo.attributes.lossInfo.recovDDDate) }}
       </div>
-    </q-card>
+    </div>
+    <div
+      class="q-mt-md row"
+      v-if="
+        lossInfo.attributes.lossInfo && lossInfo.attributes.lossInfo.claimReason
+      "
+    >
+      <div class="heading-light q-mt-none col-xs-4 lightHeading">
+        Reason For Claim:
+      </div>
+      <div class="column q-ml-md">
+        {{
+          lossInfo.attributes.lossInfo.claimReason.value
+            ? lossInfo.attributes.lossInfo.claimReason.value
+            : '-'
+        }}
+      </div>
+    </div>
+    <div
+      class="q-mt-md row"
+      v-if="lossInfo.attributes.lossInfo && lossInfo.attributes.lossInfo.desc"
+    >
+      <div class="heading-light q-mt-none col-xs-4 lightHeading">
+        Loss Description:
+      </div>
+      <div class="column q-ml-md">
+        {{
+          lossInfo.attributes.lossInfo.desc
+            ? lossInfo.attributes.lossInfo.desc
+            : '-'
+        }}
+      </div>
+    </div>
   </div>
 </template>
 <script>
