@@ -1,37 +1,49 @@
 <template>
   <div>
-    <q-card class="q-pa-md">
-      <div>
-        <div class="column" v-for="task in tasks.tasks">
-          <div class="row q-pa-sm">
-            <div class="flex">
-              <q-checkbox
-                v-model="task.isEnabled"
-                color="$primary"
-                class="q-my-auto q-mr-md"
-              />
-            </div>
-            <div class="column">
-              <span class="text-bold text-capitalize" v-if="task.name">{{
-                task.name
-              }}</span>
-              <span v-if="task.addedDesc">{{ task.addedDesc }}</span>
-              <span v-if="task.dueDesc">{{ task.dueDesc }}</span>
-            </div>
+    <div v-if="tasks.tasks">
+      <div class="column" v-for="task in tasks.tasks">
+        <div class="row q-pa-sm">
+          <div class="flex">
+            <q-checkbox
+              v-model="task.isEnabled"
+              color="$primary"
+              class="q-my-auto q-mr-md"
+            />
+          </div>
+          <div class="column">
+            <span class="text-bold text-capitalize" v-if="task.name">{{
+              task.name
+            }}</span>
+            <span v-if="task.addedDesc">{{ task.addedDesc }}</span>
+            <span v-if="task.dueDesc">{{ task.dueDesc }}</span>
           </div>
         </div>
       </div>
-    </q-card>
-
-    <q-btn
-      label="add custom task"
-      color="primary"
-      class="button-width-90"
-      @click="(addNewTaskDialog = true), $emit('taskDialog', true)"
-      size="md"
-      style="width: 90%"
-    />
-
+    </div>
+    <div v-else class="full-height text-center">
+      <div class="q-mt-xs">
+        <div style="color: #666666">
+          You haven't added a Task yet.
+        </div>
+        <img
+          class="text-center"
+          src="~assets/add.svg"
+          width="30px"
+          height="30px"
+          @click="(addNewTaskDialog = true), $emit('taskDialog', true)"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="q-ml-auto">
+        <q-btn
+          v-if="tasks.tasks"
+          @click="(addNewTaskDialog = true), $emit('taskDialog', true)"
+          label="add custom task"
+          color="primary"
+        ></q-btn>
+      </div>
+    </div>
     <!-- class=" q-my-md q-mx-auto" -->
     <!-- style="width: 90%" -->
     <q-dialog

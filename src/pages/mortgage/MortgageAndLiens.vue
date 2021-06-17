@@ -3,7 +3,7 @@
     <div>
       <div v-if="mortgage.mortgages">
         <q-card
-          class="q-mt-sm q-pa-sm"
+          class=" q-pa-sm"
           v-for="(mortgage, index) in mortgage.mortgages"
         >
           <div class="text-bold text-capitalize q-mt-xs row">

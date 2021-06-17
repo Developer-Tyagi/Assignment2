@@ -51,7 +51,7 @@
       ></q-icon>
     </div>
 
-    <div class="q-mt-md row" v-if="lossInfo.attributes.lossInfo.property">
+    <div class="row" v-if="lossInfo.attributes.lossInfo.property">
       <div class="heading-light q-mt-none col-4 lightHeading">
         Address Details
       </div>
