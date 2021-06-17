@@ -44,8 +44,9 @@
       >
         <q-item-section>
           <span class="text-bold fit-content">{{
-            vendor.name ? vendor.name : ''
+            vendor.companyName ? vendor.companyName : ''
           }}</span>
+          <span>{{ vendor.name ? vendor.name : '' }}</span>
           <div v-if="vendor.mailingAddress">
             <div>
               {{

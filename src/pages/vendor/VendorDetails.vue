@@ -27,7 +27,10 @@ import { onEmailClick, onPhoneNumberClick } from '@utils/clickable';
 export default {
   data() {
     return {
-      dialogBoxes: [{ name: 'Vendor Info' }, { name: 'Personnel' }]
+      dialogBoxes: [
+        { name: 'Vendor Info' }
+        // { name: 'Personnel' }
+      ]
     };
   },
   computed: {
