@@ -53,7 +53,7 @@
         <div class="q-my-sm row justify-between">
           <div class="heading-light col-3">Purchase Price</div>
 
-          <div>
+          <div class="q-mr-sm">
             <span class="heading-light">$</span>
             {{ damage.purchasePrice }}
           </div>
@@ -63,7 +63,7 @@
             {{ damage.replaceCost == null ? 'Repair' : 'Replace' }} Cost
           </div>
 
-          <div>
+          <div class="q-mr-sm">
             <span class="heading-light">$</span>
             {{
               damage.replaceCost == null
