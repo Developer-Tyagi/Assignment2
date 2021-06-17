@@ -1865,7 +1865,7 @@ export default {
 
       if (this.phoneNumber[len - 1].number.length == 14) {
         this.phoneNumber.push({
-          type: 'Main',
+          type: 'main',
           number: ''
         });
       } else {

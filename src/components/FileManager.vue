@@ -59,8 +59,11 @@
             />
           </div>
         </div>
-        <div v-if="!documents.length" class="fixed-heading">
-          <span>This folder is empty</span>
+        <div
+          v-if="!documents.length"
+          class=" heading-light row justify-center "
+        >
+          <div>This folder is empty</div>
         </div>
       </div>
       <div class="row">

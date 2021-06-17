@@ -1,5 +1,5 @@
 <template>
-  <q-page>
+  <div>
     <!-- Note Dialog -->
     <q-dialog
       v-model="addNoteDialog"
@@ -65,12 +65,21 @@
       </q-card>
     </q-dialog>
     <div>
-      <q-icon @click="addNote" v-if="!addNoteDialog" class="icon-top" flat>
-        <img src="~assets/addNote.svg" />
-      </q-icon>
+      <div class="row justify-end" v-if="editSelectedClient.attributes.notes">
+        <q-icon @click="addNote" v-if="!addNoteDialog" flat>
+          <img src="~assets/addNote.svg" />
+        </q-icon>
+      </div>
+      <!-- <div class="justify-end bg-red">
+        <div>
+          <q-icon @click="addNote" v-if="!addNoteDialog" flat>
+            <img src="~assets/addNote.svg" />
+          </q-icon>
+        </div>
+      </div> -->
 
-      <div class="listing-height">
-        <div class="q-ml-md q-mt-md text-h6">
+      <div>
+        <!-- <div class="q-ml-md q-mt-md text-h6">
           {{
             editSelectedClient.attributes.insuredInfo.primary.fname
               ? editSelectedClient.attributes.insuredInfo.primary.fname
@@ -81,8 +90,8 @@
               ? editSelectedClient.attributes.insuredInfo.primary.lname
               : '-'
           }}
-        </div>
-        <div class="row q-ml-md q-my-md heading-light">
+        </div> -->
+        <!-- <div class="row q-ml-md q-my-md heading-light">
           <div>
             {{
               editSelectedClient.attributes.meta
@@ -99,7 +108,7 @@
             }}
             - Open Claim
           </div>
-        </div>
+        </div> -->
         <div v-if="editSelectedClient.attributes.notes">
           <div
             class="clients-list"
@@ -149,7 +158,22 @@
             </div>
           </div>
         </div>
-        <div v-else class="full-height full-width column">
+        <div v-else class="full-width text-center">
+          <div class="q-mt-xs">
+            <div style="color: #666666">
+              You haven't added a Note yet.
+            </div>
+            <div class="text-center">
+              <img
+                src="~assets/add.svg"
+                width="30px"
+                height="30px"
+                @click="addNote"
+              />
+            </div>
+          </div>
+        </div>
+        <!-- <div v-else class="full-height full-width column">
           <div class="column absolute-center">
             <div style="color: #666666,align-items: center">
               You haven't added a Note yet.
@@ -164,10 +188,10 @@
               @click="addNote"
             />
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
-  </q-page>
+  </div>
 </template>
 
 <script>
@@ -179,7 +203,7 @@ import { successMessage } from '@utils/validation';
 import { constants } from '@utils/constant';
 
 export default {
-  name: 'Clients',
+  name: 'NotesDetails',
   components: { CustomBar },
   data() {
     return {

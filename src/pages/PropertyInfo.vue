@@ -1,7 +1,7 @@
 <template>
-  <q-page>
-    <div class="listing-height">
-      <div class="q-ml-md q-mt-md text-h6">
+  <div>
+    <div>
+      <!-- <div class="q-ml-md q-mt-md text-h6">
         {{
           editSelectedClient.attributes.insuredInfo.primary.fname
             ? editSelectedClient.attributes.insuredInfo.primary.fname
@@ -12,8 +12,8 @@
             ? editSelectedClient.attributes.insuredInfo.primary.lname
             : '-'
         }}
-      </div>
-      <div class="row heading-light q-ml-md q-my-md">
+      </div> -->
+      <!-- <div class="row heading-light q-ml-md q-my-md">
         <div>
           {{
             editSelectedClient.attributes.meta
@@ -30,10 +30,10 @@
           }}
           - Open Claim
         </div>
-      </div>
+      </div> -->
 
       <q-card
-        class="text-primary q-ma-md q-pa-md"
+        class="text-primary q-pa-md"
         flat
         bordered
         @click="onClickAddAnotherProperty"
@@ -41,7 +41,7 @@
         + Add Another Property</q-card
       >
       <!-- //pointer -->
-      <div class="q-ma-md q-pa-xs">
+      <div class="q-mx-md q-pa-xs">
         <div v-if="setClientProperty.length">
           <q-card
             class="q-my-sm"
@@ -287,7 +287,7 @@
         </div>
       </q-card>
     </q-dialog>
-  </q-page>
+  </div>
 </template>
 
 <script>

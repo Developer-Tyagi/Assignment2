@@ -1,47 +1,17 @@
 <template>
-  <q-page>
-    <div class="row">
-      <q-icon
-        name="create"
-        color="primary"
-        class="icon-top"
-        v-if="!editClientInfoDailog"
-        @click="editClientInfoDailog = true"
-      ></q-icon>
-    </div>
-    <div class="listing-height">
-      <!-- This is for showing the client details   -->
-      <div class="q-ma-md row justify-between">
-        <div class="text-h6">
-          {{ editSelectedClient.attributes.insuredInfo.primary.fname }}
-          {{ editSelectedClient.attributes.insuredInfo.primary.lname }}
-        </div>
-        <div>
-          <q-badge
-            v-if="editSelectedClient.attributes.isOrganizationPolicyholder"
-          >
-            Policy Holder</q-badge
-          >
-        </div>
+  <div>
+    <div>
+      <div class="row justify-end">
+        <q-icon
+          name="create"
+          color="primary"
+          size="sm"
+          class=""
+          v-if="!editClientInfoDailog"
+          @click="editClientInfoDailog = true"
+        ></q-icon>
       </div>
-      <div class="row q-ml-md q-my-md heading-light">
-        <div>
-          {{
-            editSelectedClient.attributes.meta
-              ? editSelectedClient.attributes.meta.totalClaims
-              : 0
-          }}
-          - Total Claims
-        </div>
-        <div class="q-ml-xl">
-          {{
-            editSelectedClient.attributes.meta
-              ? editSelectedClient.attributes.meta.openClaims
-              : 0
-          }}
-          - Open Claim
-        </div>
-      </div>
+
       <div class="q-ml-md">Date & Time of First Contact</div>
       <div class="q-ml-md">
         {{ dateWithTime(editSelectedClient.attributes.created) }}
@@ -645,7 +615,7 @@
         ></q-btn>
       </q-card>
     </q-dialog>
-  </q-page>
+  </div>
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex';
