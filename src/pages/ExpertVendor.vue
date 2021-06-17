@@ -3,7 +3,7 @@
     <div>
       <div class="q-mt-sm" v-if="vendorLists.Vendors">
         <q-card
-          class="q-ma-md q-pa-md"
+          class="q-mt-sm q-pa-md"
           v-for="(vendor, index) in vendorLists.Vendors"
         >
           <div class="text-bold text-capitalize q-mt-xs row justify-between">
@@ -104,7 +104,7 @@
       </div>
       <div class="row">
         <div
-          class="q-ml-auto"
+          class="q-ml-auto q-mt-sm"
           v-if="!expertVendorDialogBox && vendorLists.Vendors"
         >
           <q-btn

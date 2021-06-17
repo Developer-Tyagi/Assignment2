@@ -1,6 +1,6 @@
 <template>
   <div>
-    <q-card class="q-ma-md q-pa-md">
+    <q-card class="q-pa-md">
       <div class="text-bold row q-pa-sm">
         Carrier Info
         <q-icon
@@ -117,7 +117,7 @@
         Carrier info not added yet.
       </div>
     </q-card>
-    <q-card class="q-ma-md q-pa-md">
+    <q-card class="q-mt-sm  q-pa-md">
       <div class="row">
         <span class="text-bold col q-ma-xs"> Carrier Personnel Info</span>
         <img
@@ -224,7 +224,7 @@
         no personnel has been added.
       </div>
     </q-card>
-    <q-card class="q-ma-md q-pa-md" v-if="policy.policyInfo">
+    <q-card class="q-mt-sm  q-pa-md" v-if="policy.policyInfo">
       <div class="row q-mt-xs">
         <span class="text-bold"> Policy Info</span>
         <q-icon

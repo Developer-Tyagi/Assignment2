@@ -67,7 +67,7 @@
 
     <div v-if="personnel.personnel">
       <q-card
-        class="q-pa-md q-ma-sm"
+        class="q-pa-md q-mt-sm"
         v-for="(personnel, index) in personnel.personnel"
       >
         <div class="text-bold text-capitalize q-mt-xs row">
@@ -144,7 +144,7 @@
       </div>
     </div>
     <div class="row" v-if="personnel.personnel">
-      <div class="q-ml-auto">
+      <div class="q-ml-auto q-mt-sm ">
         <q-btn
           @click="
             (addCompanyPersonnelDailog = true), $emit('addPersonnel', true)

@@ -4,7 +4,7 @@
       <div v-if="log">
         <!-- This is for showing the Property details  -->
         <q-card
-          class="q-pa-md q-ma-sm"
+          class="q-pa-md q-mt-sm"
           v-for="(logItem, index) in log"
           :key="logItem.name"
         >
@@ -38,7 +38,7 @@
         There is No activity Log present at this Moment
       </div>
       <div class="row" v-if="log">
-        <div class="q-ml-auto">
+        <div class="q-ml-auto q-mt-sm">
           <q-btn
             @click="(addLogDialog = true), $emit('ActivityLogDialog', true)"
             label="Add Log"

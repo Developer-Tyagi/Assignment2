@@ -2,7 +2,7 @@
   <div>
     <div v-if="damageInfo.damageInfo.personal.items">
       <q-card
-        class="q-ma-sm q-pa-sm"
+        class="q-pa-sm"
         v-for="(damage, index) in damageInfo.damageInfo.personal.items"
       >
         <div class="row justify-between">

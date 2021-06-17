@@ -17,7 +17,7 @@
         </div>
       </div>
 
-      <q-card class="q-ma-md q-pa-md">
+      <q-card class="q-pa-md">
         <div class="text-bold q-mt-xs row">
           Claim Summary
           <q-icon
@@ -113,7 +113,7 @@
       </q-card>
 
       <q-card
-        class="q-ma-md q-pa-md"
+        class="q-mt-sm  q-pa-md"
         v-if="userRole != 'estimator' && userRole != 'vendor'"
       >
         <div class="row q-ml-xs justify-between">
@@ -146,7 +146,7 @@
         </div>
       </q-card>
 
-      <q-card class="q-ma-md q-pa-md">
+      <q-card class="q-mt-sm q-pa-md">
         <div class="row q-ml-xs justify-between">
           <div class="text-bold q-mt-xs">Loss Details</div>
           <div>

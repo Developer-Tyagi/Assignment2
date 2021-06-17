@@ -42,7 +42,7 @@
       </q-card>
     </q-dialog>
 
-    <q-card class="q-ma-sm q-pa-sm">
+    <q-card class="q-pa-sm">
       <div class="row q-mt-sm" v-if="lossInfo.attributes.lossInfo.property">
         <div class="heading-light col-2">Address Details</div>
 

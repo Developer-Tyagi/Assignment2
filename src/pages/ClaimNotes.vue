@@ -94,16 +94,13 @@
     </q-dialog>
     <div>
       <div v-if="claimNotes.attributes.notes">
-        <div
-          class="clients-list q-ma-sm"
+        <q-card
+          class="q-pa-md q-mt-sm"
           v-if="claimNotes.attributes.notes.length"
         >
-          <div
-            class="clients-list"
-            v-for="(note, index) in claimNotes.attributes.notes"
-          >
+          <div v-for="(note, index) in claimNotes.attributes.notes">
             <q-item-section>
-              <div class="client-list-item">
+              <div>
                 <div class="row">
                   <div class="heading-light col-10">
                     {{
@@ -130,7 +127,7 @@
               </div>
             </q-item-section>
           </div>
-        </div>
+        </q-card>
       </div>
       <div v-else class="full-width text-center">
         <div class="q-mt-xs">
@@ -161,7 +158,7 @@
           @click="addNote"
           color="primary"
           label="Add Note"
-          class="q-ml-auto "
+          class="q-ml-auto q-mt-sm "
         ></q-btn>
       </div>
     </div>
