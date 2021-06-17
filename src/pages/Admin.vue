@@ -34,10 +34,10 @@
                 </div>
 
                 <div class="row q-mt-lg text-bold">
-                  <div class="col">Company Name</div>
-                  <div class="col">Company Address</div>
-                  <div class="col">Company Mobile</div>
-                  <div class="col">Postal Company Code</div>
+                  <div class="col">Name</div>
+                  <div class="col">Address</div>
+                  <div class="col">Mobile</div>
+                  <div class="col">Postal Code</div>
                 </div>
                 <q-separator />
                 <div class="row q-mt-xs">
@@ -90,14 +90,10 @@
                 </div>
 
                 <div class="row q-mt-xl text-bold">
-                  <div class="col">Company Administrator</div>
                   <div class="col">Administrator Email</div>
                 </div>
                 <q-separator />
                 <div class="row q-mt-xs">
-                  <div class="col">
-                    {{ user.contact.fname }} {{ user.contact.lname }}
-                  </div>
                   <div
                     class="col clickable text-primary"
                     @click="onEmailClick(user.email, $event)"
@@ -183,13 +179,6 @@
                   <div class="col">
                     {{ organization.name }}
                   </div>
-                  <div class="col">
-                    {{
-                      organization.photoIDAPIKey
-                        ? organization.photoIDAPIKey
-                        : '-'
-                    }}
-                  </div>
                   <div
                     class="col clickable text-primary"
                     @click="onEmailClick(user.email, $event)"
@@ -197,6 +186,13 @@
                     {{
                       organization.photoIDEmail
                         ? organization.photoIDEmail
+                        : '-'
+                    }}
+                  </div>
+                  <div class="col text-primary">
+                    {{
+                      organization.photoIDAPIKey
+                        ? organization.photoIDAPIKey
                         : '-'
                     }}
                   </div>
@@ -511,16 +507,10 @@
                   <q-input
                     dense
                     v-model="organizations.users.email"
-                    style=""
                     label="PhotoId  Email"
-                    class="q-mx-md col-5 required"
+                    class="q-mx-md col-5 "
                     outlined
                     lazy-rules
-                    :rules="[
-                      val =>
-                        validateEmail(val) ||
-                        'You have entered an invalid email address!'
-                    ]"
                   />
                 </div>
               </q-card>

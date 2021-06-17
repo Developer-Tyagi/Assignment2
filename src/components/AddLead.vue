@@ -418,7 +418,8 @@
                     sourceDetails.type != constants.industries.VENDOR &&
                       sourceDetails.type != '' &&
                       sourceDetails.type != 'google' &&
-                      sourceDetails.type != 'client'
+                      sourceDetails.type != 'client' &&
+                      sourceDetails.type != 'none'
                   "
                   type="text"
                   placeholder="Enter Source details"
@@ -676,12 +677,8 @@
                 <span class="q-ml-md text-color-grey">Back</span>
               </div>
               <div class="q-ml-auto">
-                <span v-if="isEdit == true" class="q-mr-md text-color-grey">
-                  Edit Lead</span
-                >
-                <span v-if="isEdit == false" class="q-mr-md text-color-grey">
-                  Add Lead</span
-                >
+                <span class="q-mr-md text-color-grey"> Save</span>
+
                 <q-btn
                   class="rotate-180"
                   icon="keyboard_backspace"

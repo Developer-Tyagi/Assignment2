@@ -1,7 +1,7 @@
 <template>
-  <q-page>
-    <div class="mobile-container-page-without-search">
-      <div class="q-pa-xs column full-height">
+  <div>
+    <div class="mobile-container-page ">
+      <div class="q-pa-xs column ">
         <div class="q-ml-md q-mt-md text-h6">
           {{
             editSelectedClient.attributes.insuredInfo.primary.fname
@@ -32,7 +32,102 @@
             - Open Claim
           </div>
         </div>
-        <div
+        <q-list bordered class="q-mt-xs">
+          <q-expansion-item
+            group="clientGroup"
+            label="Client Info"
+            header-class="text-primary"
+          >
+            <q-card-section><ClientInfo /> </q-card-section>
+          </q-expansion-item>
+
+          <q-separator></q-separator>
+          <q-expansion-item
+            group="clientGroup"
+            label="Property and Claim"
+            header-class="text-primary"
+          >
+            <q-card-section><PropertyInfo /> </q-card-section>
+          </q-expansion-item>
+          <!-- <q-expansion-item
+            group="clientGroup"
+            label="Policy Info"
+            header-class="text-primary"
+          >
+            <q-card>
+              <q-card-section>
+                <div class="q-mt-md row">
+                  <div class="heading-light q-mt-none col-xs-4 lightHeading">
+                    Policy Number
+                  </div>
+                  <div class="column q-ml-md">
+                    {{
+                      selectedLead.policyNumber
+                        ? selectedLead.policyNumber
+                        : '-'
+                    }}
+                  </div>
+                </div>
+                <div class="q-mt-md row">
+                  <div class="heading-light q-mt-none col-xs-4 lightHeading">
+                    Carrier Details
+                  </div>
+                  <div class="column q-ml-md" v-if="selectedLead.carrier">
+                    {{
+                      selectedLead.carrier.value
+                        ? selectedLead.carrier.value
+                        : '-'
+                    }}
+                  </div>
+                </div>
+              </q-card-section>
+            </q-card>
+          </q-expansion-item> -->
+
+          <q-separator></q-separator>
+          <q-expansion-item
+            group="clientGroup"
+            label="File"
+            header-class="text-primary"
+          >
+            <q-card-section>
+              <FileManager
+                :directoryId="editSelectedClient.attributes.directoryID"
+              />
+            </q-card-section>
+          </q-expansion-item>
+
+          <!-- <q-expansion-item
+            group="clientGroup"
+            label="Notes"
+            header-class="text-primary"
+          >
+            <q-card>
+              <q-card-section>
+                <div class="q-mt-md row">
+                  <div class="heading-light q-mt-none col-xs-4 lightHeading">
+                    Notes
+                  </div>
+                  <div class="column q-ml-md" v-if="selectedLead.notes">
+                    {{ selectedLead.notes }}
+                  </div>
+                </div>
+              </q-card-section>
+            </q-card>
+          </q-expansion-item> -->
+
+          <q-separator></q-separator>
+          <q-expansion-item
+            group="clientGroup"
+            label="Notes "
+            header-class="text-primary"
+          >
+            <q-card-section>
+              <NotesDetails />
+            </q-card-section>
+          </q-expansion-item>
+        </q-list>
+        <!-- <div
           v-for="dialogBox in dialogBoxes"
           :key="dialogBox.name"
           @click="clientDetailsDailogBoxOpen(dialogBox.name)"
@@ -44,14 +139,19 @@
               <q-icon size="xs" color="primary" name="done" />
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
-  </q-page>
+  </div>
 </template>
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import CustomBar from 'components/CustomBar';
+import ClientInfo from 'src/pages/ClientInfo';
+import PropertyInfo from 'src/pages/PropertyInfo';
+import NotesDetails from 'src/pages/Notes';
+import FileManager from 'components/FileManager';
+
 export default {
   data() {
     return {
@@ -64,7 +164,13 @@ export default {
     };
   },
 
-  components: { CustomBar },
+  components: {
+    CustomBar,
+    ClientInfo,
+    PropertyInfo,
+    FileManager,
+    NotesDetails
+  },
   computed: {
     ...mapGetters(['editSelectedClient', 'selectedClientId'])
   },

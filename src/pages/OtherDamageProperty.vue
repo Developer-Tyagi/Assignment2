@@ -8,7 +8,7 @@
         <div class="row justify-between">
           <div>
             <q-badge class="q-pa-sm" color="grey-6">
-              {{ damage.isRepaired == true ? 'Repair' : 'Replace' }}
+              {{ damage.repairCost == null ? 'Relace' : 'Repair' }}
             </q-badge>
           </div>
           <div class="text-bold text-capitalize q-pt-xs">
