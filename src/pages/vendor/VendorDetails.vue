@@ -1,30 +1,32 @@
 <template>
   <q-page>
-    <div class="mobile-container-page-without-search">
-      <div class="listing-height q-pa-md mobile-container-page">
-        <div class="q-ml-md text-h6">
-          {{ selectedVendor.name ? selectedVendor.name : '-' }}
-        </div>
-
-        <div
-          class=""
-          v-for="dialogBox in dialogBoxes"
-          :key="dialogBox.name"
-          @click="vendorDetailsDailogBoxOpen(dialogBox.name)"
+    <!-- <div class="q-ml-md text-h6">
+        {{ selectedVendor.name ? selectedVendor.name : '-' }}
+      </div> -->
+    <div class="mobile-container-page">
+      <q-list bordered>
+        <q-expansion-item
+          group="vendorGroup"
+          label="Vendor Info"
+          header-class="text-primary"
         >
-          <div class="full-width">
-            <q-card class="q-ma-sm q-pa-md"> {{ dialogBox.name }} </q-card>
-          </div>
-        </div>
-      </div>
+          <q-card-section>
+            <q-card-section>
+              <VendorCompanyInfo />
+            </q-card-section>
+          </q-card-section>
+        </q-expansion-item>
+      </q-list>
     </div>
   </q-page>
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import { onEmailClick, onPhoneNumberClick } from '@utils/clickable';
+import VendorCompanyInfo from 'src/pages/vendor/VendorCompanyInfo';
 
 export default {
+  components: { VendorCompanyInfo },
   data() {
     return {
       dialogBoxes: [

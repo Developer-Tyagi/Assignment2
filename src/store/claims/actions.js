@@ -1203,3 +1203,22 @@ export async function generatePhotoReport({ dispatch, state }, payload) {
     return false;
   }
 }
+
+export async function deleteActivityLogt({ commit, dispatch }, payload) {
+  dispatch('setLoading', true);
+  try {
+    await request.del(`/claims/${payload.claimID}/logs/${payload.logId}`);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Log  Deleted !'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'Error in deleting log.'
+    });
+  }
+}

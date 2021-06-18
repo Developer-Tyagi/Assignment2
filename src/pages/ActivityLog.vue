@@ -4,7 +4,7 @@
       <div v-if="log">
         <!-- This is for showing the Property details  -->
         <q-card
-          class="q-pa-md q-ma-sm"
+          class="q-pa-md q-mt-sm"
           v-for="(logItem, index) in log"
           :key="logItem.name"
         >
@@ -19,7 +19,14 @@
               class="col q-pt-xs"
               @click="onClickEdit(index)"
             ></q-icon>
-            <q-icon class="q-ml-sm" name="delete" size="sm" color="primary" />
+            <q-icon
+              class="q-ml-sm"
+              name="delete"
+              size="sm"
+              color="primary"
+              :style="logItem.isSystemGen == true ? 'visibility:hidden;' : ''"
+              @click="onClickDelete(logItem.id)"
+            />
           </div>
           <div>{{ logItem.title }}</div>
 
@@ -38,7 +45,7 @@
         There is No activity Log present at this Moment
       </div>
       <div class="row" v-if="log">
-        <div class="q-ml-auto">
+        <div class="q-ml-auto q-mt-sm">
           <q-btn
             @click="(addLogDialog = true), $emit('ActivityLogDialog', true)"
             label="Add Log"
@@ -210,7 +217,13 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getSingleClaimDetails', 'getLog', 'addLog', 'editLog']),
+    ...mapActions([
+      'getSingleClaimDetails',
+      'getLog',
+      'addLog',
+      'editLog',
+      'deleteActivityLogt'
+    ]),
     ...mapMutations(['setSelectedClaimId', 'setLog']),
     // Edit Function
     onClickEdit(index) {
@@ -230,6 +243,14 @@ export default {
       } else {
         this.isFieldDisable = false;
       }
+    },
+    async onClickDelete(id) {
+      const payload = {
+        claimID: this.selectedClaimId,
+        logId: id
+      };
+      await this.deleteActivityLogt(payload);
+      this.getLog(this.selectedClaimId);
     },
     dateWithTime,
     //  Save Function
