@@ -71,7 +71,6 @@
       <span class="col-7 q-ml-md" v-else>-</span>
     </div>
 
-  
     <div class="q-mt-sm row" v-if="selectedVendor.email">
       <div class="heading-light q-mt-none col-xs-4 lightHeading">
         Email
@@ -83,27 +82,24 @@
         {{ selectedVendor.email ? selectedVendor.email : '-' }}
       </div>
     </div>
-     <div class="q-mt-sm row" v-if="selectedVendor.phoneNumber">
+    <div class="q-mt-sm row" v-if="selectedVendor.phoneNumber">
       <div class="heading-light q-mt-none col-xs-4 lightHeading">
         Phone Number
       </div>
       <div
-      v-if="selectedVendor.phoneNumber.type"
-        class="column q-ml-md " 
+        v-if="selectedVendor.phoneNumber.type"
+        class="column q-ml-md "
         @click="onEmailClick(selectedVendor.email, $event)"
       >
-       {{ selectedVendor.phoneNumber.type }} :
+        {{ selectedVendor.phoneNumber.type }} :
       </div>
-        <span
-          class="clickLink"
-          @click="onPhoneNumberClick(selectedVendor.phoneNumber.number, $event)"
-          >{{ selectedVendor.phoneNumber.number }}</span
-        ></span
+      <span
+        class="clickLink"
+        @click="onPhoneNumberClick(selectedVendor.phoneNumber.number, $event)"
+        >{{ selectedVendor.phoneNumber.number }}</span
       >
     </div>
-  
 
-   
     <div class="row q-mt-sm" v-if="selectedVendor.info">
       <span class="heading-light col-3"> Website: </span>
       <span class="q-ml-md col">
