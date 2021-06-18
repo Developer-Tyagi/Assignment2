@@ -1,34 +1,47 @@
 <template>
-  <q-page>
+  <div>
     <div class="mobile-container-page-without-search">
-      <div class="listing-height q-pa-md mobile-container-page">
-        <div class="q-ml-md text-h6">
-          {{ selectedCarrier.name ? selectedCarrier.name : '-' }}
-        </div>
-
-        <div
-          class=""
-          v-for="dialogBox in dialogBoxes"
-          :key="dialogBox.name"
-          @click="vendorDetailsDailogBoxOpen(dialogBox.name)"
-        >
-          <div class="full-width">
-            <q-card class="q-ma-sm q-pa-md"> {{ dialogBox.name }} </q-card>
-          </div>
-        </div>
+      <div class="q-ml-md text-h6 q-ma-md">
+        {{ selectedCarrier.name ? selectedCarrier.name : '-' }}
       </div>
+
+      <q-list bordered class="q-mt-xs">
+        <q-expansion-item
+          group="carrierGroup"
+          label="Carrier Info"
+          header-class="text-primary"
+        >
+          <q-card>
+            <q-card-section> <CarrierCompanyInfo /> </q-card-section>
+          </q-card>
+        </q-expansion-item>
+
+        <q-separator></q-separator>
+
+        <q-expansion-item
+          group="carrierGroup"
+          label="Carrier Personnel"
+          header-class="text-primary"
+        >
+          <q-card>
+            <q-card-section><CarrierPersonnel /> </q-card-section>
+          </q-card>
+        </q-expansion-item>
+
+        <q-separator></q-separator>
+      </q-list>
     </div>
-  </q-page>
+  </div>
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import { onEmailClick, onPhoneNumberClick } from '@utils/clickable';
-
+import CarrierCompanyInfo from 'src/pages/carrier/CarrierCompanyInfo';
+import CarrierPersonnel from 'src/pages/carrier/CarrierPersonnel';
 export default {
+  components: { CarrierCompanyInfo, CarrierPersonnel },
   data() {
-    return {
-      dialogBoxes: [{ name: 'Carrier Info' }, { name: 'Personnel' }]
-    };
+    return {};
   },
   computed: {
     ...mapGetters(['selectedCarrier'])
@@ -37,16 +50,7 @@ export default {
   methods: {
     ...mapActions(['getCarrierDetails']),
     onEmailClick,
-    onPhoneNumberClick,
-    vendorDetailsDailogBoxOpen(value) {
-      switch (value) {
-        case 'Carrier Info':
-          this.$router.push('/carrier-company-info/' + this.$route.params.id);
-          break;
-        case 'Personnel':
-          this.$router.push('/carrier-personnel/' + this.$route.params.id);
-      }
-    }
+    onPhoneNumberClick
   },
   mounted() {
     this.getCarrierDetails(this.$route.params.id);
