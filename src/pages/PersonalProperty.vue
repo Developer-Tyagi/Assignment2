@@ -1,16 +1,14 @@
 <template>
   <div>
     <div v-if="damageInfo.damageInfo.personal.items">
-      <q-card
-        class="q-ma-sm q-pa-sm"
-        v-for="(damage, index) in damageInfo.damageInfo.personal.items"
-      >
+      <div v-for="(damage, index) in damageInfo.damageInfo.personal.items">
         <div class="row justify-between">
           <div>
             <q-badge class="q-pa-sm" color="grey-6">
               {{ damage.repairCost == null ? 'Relace' : 'Repair' }}
             </q-badge>
           </div>
+
           <div class="text-bold text-capitalize q-pt-xs">
             {{ damage.name }}
           </div>
@@ -24,53 +22,64 @@
         </div>
 
         <div
-          class="q-ml-sm text-capitalize q-pt-xs text-caption q-mr-xl q-my-xs q-px-xs q-ma-xs"
+          class="text-capitalize q-pt-xs text-caption q-mr-xl q-my-xs q-px-xs"
         >
           <p>{{ damage.desc }}</p>
           <p>{{ damage.damageDesc }}</p>
         </div>
-        <div class="q-my-sm">
-          <div class="row justify-between q-my-sm">
-            <div class="heading-light">Quantity</div>
-            <div class="q-mr-sm">
-              {{ damage.quantity }}
-            </div>
+
+        <div class="q-mt-md row">
+          <div class="heading-light q-mt-none col-6 lightHeading">
+            Quantity
           </div>
-          <div class="row justify-between q-my-sm">
-            <div class="heading-light">Serial Number</div>
-            <div class="q-mr-sm">
-              {{ damage.serialNumber }}
-            </div>
+          <div class="column">
+            {{ damage.quantity }}
           </div>
-          <div class="row justify-between q-my-sm">
-            <div class="heading-light">Purchase Date</div>
-            <div class="q-mr-sm">
-              {{ dateToShow(damage.purchaseDate) }}
+        </div>
+        <div class="q-mt-md row">
+          <div class="heading-light q-mt-none col-6 lightHeading">
+            Serial Number
+          </div>
+          <div class="column">
+            {{ damage.serialNumber }}
+          </div>
+        </div>
+        <div class="q-mt-md row">
+          <div class="heading-light q-mt-none col-6 lightHeading">
+            Purchase Date
+          </div>
+          <div class="column">
+            {{ dateToShow(damage.purchaseDate) }}
+          </div>
+        </div>
+
+        <q-separator class="q-mt-sm q-mb-sm" />
+        <div class="q-mt-md row">
+          <div class="heading-light q-mt-none col-6 lightHeading">
+            Purchase Price
+          </div>
+          <div class="column">
+            <div>
+              <span class="heading-light">$</span> {{ damage.purchasePrice }}
             </div>
           </div>
         </div>
-        <q-separator />
-        <div class="row justify-between q-my-sm">
-          <div class="heading-light">Purchase Price</div>
-          <div class="q-mr-sm">
-            <span class="heading-light">$</span> {{ damage.purchasePrice }}
-          </div>
-        </div>
-        <div class="row justify-between q-my-sm">
-          <div class="heading-light">
+        <div class="q-mt-md row">
+          <div class="heading-light q-mt-none col-6 lightHeading">
             {{ damage.replaceCost == null ? 'Repair' : 'Replace' }} Cost
           </div>
-
-          <div class="q-mr-sm">
-            <span class="heading-light">$</span>
-            {{
-              damage.replaceCost == null
-                ? damage.repairCost
-                : damage.replaceCost
-            }}
+          <div class="column">
+            <div>
+              <span class="heading-light">$</span>
+              {{
+                damage.replaceCost == null
+                  ? damage.repairCost
+                  : damage.replaceCost
+              }}
+            </div>
           </div>
         </div>
-      </q-card>
+      </div>
     </div>
     <div v-else class="full-width text-center q-mt-sm heading-light">
       You have not added any Damage property yet!

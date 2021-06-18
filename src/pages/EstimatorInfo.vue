@@ -2,7 +2,7 @@
   <div>
     <div>
       <div v-if="estimator.estimator">
-        <q-card class="q-pa-md q-ma-md">
+        <q-card class="q-pa-md">
           <div class="text-bold">
             {{ estimator.estimator.name ? estimator.estimator.name : '-' }}
           </div>

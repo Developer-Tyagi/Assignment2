@@ -3,7 +3,7 @@
     <div>
       <div v-if="mortgage.mortgages">
         <q-card
-          class="q-ma-sm q-pa-sm"
+          class=" q-pa-sm"
           v-for="(mortgage, index) in mortgage.mortgages"
         >
           <div class="text-bold text-capitalize q-mt-xs row">
@@ -132,7 +132,10 @@
         </div>
       </div>
       <div class="row ">
-        <div class="q-ml-auto" v-if="!mortgageInfoDialog && mortgage.mortgages">
+        <div
+          class="q-ml-auto q-mt-sm "
+          v-if="!mortgageInfoDialog && mortgage.mortgages"
+        >
           <q-btn
             @click="(mortgageInfoDialog = true), $emit('addMortgage', true)"
             label="Add Mortgage"
