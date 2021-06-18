@@ -1,9 +1,5 @@
 <template>
   <div>
-    <span class="text-bold text-h6 ">
-      {{ selectedCarrier.name ? selectedCarrier.name : '-' }}
-    </span>
-
     <div class="q-my-auto row ">
       <q-icon
         :style="selectedCarrier.isEditable == false ? 'visibility:hidden;' : ''"

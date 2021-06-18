@@ -1,8 +1,5 @@
 <template>
   <div>
-    <span class="text-bold text-h6">
-      {{ selectedMortgage.name ? selectedMortgage.name : '-' }}
-    </span>
     <div class="q-my-auto row">
       <q-icon
         :style="

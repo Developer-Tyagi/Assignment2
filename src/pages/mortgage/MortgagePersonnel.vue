@@ -8,9 +8,6 @@
         >
           <q-card class="q-pa-sm">
             <div class="text-bold text-capitalize  row">
-              <span class="q-my-auto">
-                {{ personnel.fname }} {{ personnel.lname }}
-              </span>
               <q-icon
                 :style="
                   personnel.isEditable == false ? 'visibility:hidden;' : ''

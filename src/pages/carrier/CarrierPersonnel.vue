@@ -4,8 +4,7 @@
       <div v-if="carrierPersonnel.personnel">
         <div v-for="(personnel, index) in carrierPersonnel.personnel">
           <q-card class="q-pa-sm q-mb-sm ">
-            <div class="text-bold text-capitalize q-mt-xs row">
-              <div>{{ personnel.fname }} {{ personnel.lname }}</div>
+            <div class="text-bold text-capitalize row">
               <q-icon
                 size="xs"
                 :style="
