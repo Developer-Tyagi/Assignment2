@@ -1,34 +1,42 @@
 <template>
-  <q-page>
-    <div class="mobile-container-page-without-search">
-      <div class="listing-height q-pa-md mobile-container-page">
-        <div class="q-ml-md text-h6">
-          {{ selectedMortgage.name ? selectedMortgage.name : '-' }}
-        </div>
-
-        <div
-          class=""
-          v-for="dialogBox in dialogBoxes"
-          :key="dialogBox.name"
-          @click="vendorDetailsDailogBoxOpen(dialogBox.name)"
-        >
-          <div class="full-width">
-            <q-card class="q-ma-sm q-pa-md"> {{ dialogBox.name }} </q-card>
-          </div>
-        </div>
-      </div>
+  <div>
+    <div class="q-ml-md text-h6 q-ma-md">
+      {{ selectedMortgage.name ? selectedMortgage.name : '-' }}
     </div>
-  </q-page>
+
+    <div class="mobile-container-page">
+      <q-list bordered>
+        <q-expansion-item
+          group="mortgageGroup"
+          label="Mortgage Info"
+          header-class="text-primary"
+        >
+          <q-card-section>
+            <MortgageCompanyInfo />
+          </q-card-section>
+        </q-expansion-item>
+        <q-expansion-item
+          group="mortgageGroup"
+          label="Mortgage Personnel"
+          header-class="text-primary"
+        >
+          <q-card-section>
+            <MortgagePersonnel />
+          </q-card-section>
+        </q-expansion-item>
+      </q-list>
+    </div>
+  </div>
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import { onEmailClick, onPhoneNumberClick } from '@utils/clickable';
-
+import MortgageCompanyInfo from 'src/pages/mortgage/MortgageCompanyInfo';
+import MortgagePersonnel from 'src/pages/mortgage/MortgagePersonnel';
 export default {
+  components: { MortgageCompanyInfo, MortgagePersonnel },
   data() {
-    return {
-      dialogBoxes: [{ name: 'Mortgage Info' }, { name: 'Personnel' }]
-    };
+    return {};
   },
   computed: {
     ...mapGetters(['selectedMortgage'])
@@ -37,16 +45,7 @@ export default {
   methods: {
     ...mapActions(['getMortgageDetails']),
     onEmailClick,
-    onPhoneNumberClick,
-    vendorDetailsDailogBoxOpen(value) {
-      switch (value) {
-        case 'Mortgage Info':
-          this.$router.push('/mortgage-company-info/' + this.$route.params.id);
-          break;
-        case 'Personnel':
-          this.$router.push('/mortgage-personnel/' + this.$route.params.id);
-      }
-    }
+    onPhoneNumberClick
   },
   mounted() {
     this.getMortgageDetails(this.$route.params.id);

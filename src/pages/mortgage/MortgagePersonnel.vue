@@ -1,155 +1,147 @@
 <template>
-  <q-page>
-    <div class="row" v-if="!addPersonnelDialog">
-      <div class="col-10"></div>
-      <q-btn
-        size="sm"
-        name="create"
-        class="add-icon"
-        flat
-        @click="addPersonnelDialog = true"
-        ><img src="~assets/add.svg"
-      /></q-btn>
-    </div>
-    <div class="mobile-container-page">
-      <div class="q-pa-sm">
-        <span class="text-bold text-h6 q-ml-md">
-          {{ selectedMortgage.name ? selectedMortgage.name : '-' }}
-        </span>
-        <div v-if="mortgagePersonnel.personnel">
-          <div
-            class="q-mt-sm"
-            v-for="(personnel, index) in mortgagePersonnel.personnel"
-          >
-            <q-card class="q-ma-sm q-pa-sm">
-              <div class="text-bold text-capitalize q-mt-xs row">
-                <span class="q-my-auto">
-                  {{ personnel.fname }} {{ personnel.lname }}
-                </span>
-                <q-icon
-                  :style="
-                    personnel.isEditable == false ? 'visibility:hidden;' : ''
-                  "
-                  size="xs"
-                  name="create "
-                  color="primary"
-                  class="q-ml-auto"
-                  @click="onEdit(index)"
-                ></q-icon>
-                <q-icon
-                  :style="
-                    personnel.isEditable == false ? 'visibility:hidden;' : ''
-                  "
-                  class="q-my-auto"
-                  name="delete"
-                  size="xs"
-                  color="primary"
-                  @click="onDelete(index)"
-                />
-              </div>
-              <div class="row q-mt-sm">
-                <div class="heading-light col-3">Address Details</div>
-                <div class="col-7" v-if="personnel.address">
+  <div>
+    <div class="q-pa-sm">
+      <div v-if="mortgagePersonnel.personnel">
+        <div
+          class="q-mt-sm"
+          v-for="(personnel, index) in mortgagePersonnel.personnel"
+        >
+          <q-card class="q-pa-sm">
+            <div class="text-bold text-capitalize  row">
+              <q-icon
+                :style="
+                  personnel.isEditable == false ? 'visibility:hidden;' : ''
+                "
+                size="xs"
+                name="create "
+                color="primary"
+                class="q-ml-auto"
+                @click="onEdit(index)"
+              ></q-icon>
+              <q-icon
+                :style="
+                  personnel.isEditable == false ? 'visibility:hidden;' : ''
+                "
+                class="q-my-auto"
+                name="delete"
+                size="xs"
+                color="primary"
+                @click="onDelete(index)"
+              />
+            </div>
+            <div class="row q-mt-sm">
+              <div class="heading-light col-3">Address Details</div>
+              <div class="col-7" v-if="personnel.address">
+                {{
+                  personnel.address.houseNumber
+                    ? personnel.address.houseNumber
+                    : '-'
+                }}
+                ,
+                {{
+                  personnel.address.streetAddress
+                    ? personnel.address.streetAddress
+                    : '-'
+                }}
+                <div class="">
                   {{
-                    personnel.address.houseNumber
-                      ? personnel.address.houseNumber
+                    personnel.address.addressLocality
+                      ? personnel.address.addressLocality
                       : '-'
                   }}
                   ,
                   {{
-                    personnel.address.streetAddress
-                      ? personnel.address.streetAddress
+                    personnel.address.addressRegion
+                      ? personnel.address.addressRegion
                       : '-'
                   }}
-                  <div class="">
-                    {{
-                      personnel.address.addressLocality
-                        ? personnel.address.addressLocality
-                        : '-'
-                    }}
-                    ,
-                    {{
-                      personnel.address.addressRegion
-                        ? personnel.address.addressRegion
-                        : '-'
-                    }}
-                  </div>
-                  <div>
-                    {{
-                      personnel.address.addressCountry
-                        ? personnel.address.addressCountry
-                        : '-'
-                    }},
-                    {{
-                      personnel.address.postalCode
-                        ? personnel.address.postalCode
-                        : '-'
-                    }}
-                    <q-icon
-                      name="place"
-                      color="primary"
-                      @click="sendMap(personnel.address)"
-                      style="position: absolute; right: 20px"
-                      size="sm"
-                    ></q-icon>
-                  </div>
+                </div>
+                <div>
+                  {{
+                    personnel.address.addressCountry
+                      ? personnel.address.addressCountry
+                      : '-'
+                  }},
+                  {{
+                    personnel.address.postalCode
+                      ? personnel.address.postalCode
+                      : '-'
+                  }}
+                  <q-icon
+                    name="place"
+                    color="primary"
+                    @click="sendMap(personnel.address)"
+                    style="position: absolute; right: 20px"
+                    size="sm"
+                  ></q-icon>
                 </div>
               </div>
-              <div class="row q-mt-sm" v-if="personnel.email">
-                <span class="heading-light col-3"> Email </span>
-                <span
-                  class="q-ml-none col clickLink"
-                  @click="onEmailClick(personnel.email, $event)"
-                >
-                  {{ personnel.email ? personnel.email : '-' }}</span
-                >
-              </div>
-              <div class="row">
-                <div class="heading-light col-3">Phone Number</div>
-                <div class="q-mt-xs col-6 q-ml-none">
-                  <div class="row" v-for="phone in personnel.phoneNumber">
-                    <div class="col-3">
-                      {{ phone.type ? phone.type : '-' }}
-                    </div>
-                    <div
-                      class="clickLink"
-                      @click="onPhoneNumberClick(phone.number, $event)"
-                    >
-                      {{ phone.number ? phone.number : '-' }}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row q-mt-sm q-mb-sm">
-                <span class="heading-light col-3"> Notes: </span>
-                <span class="q-ml-none col" v-if="personnel.note">
-                  {{ personnel.note ? personnel.note : '-' }}</span
-                >
-              </div>
-              <div class="row q-mt-sm q-mb-sm">
-                <span class="heading-light col-3"> Role: </span>
-                <span class="q-ml-none col" v-if="personnel.role">
-                  {{ personnel.role.value ? personnel.role.value : '-' }}</span
-                >
-              </div>
-            </q-card>
-          </div>
-        </div>
-        <div v-else class="full-height full-width">
-          <div class="absolute-center">
-            <div style="color: #666666; width: 110%">
-              You haven't added a Personnel yet.
             </div>
-            <img
-              class="q-mx-lg q-pt-sm"
-              src="~assets/add.svg"
-              alt="add_icon"
-              @click="addPersonnelDialog = true"
-              width="130px"
-              height="100px"
-            />
+            <div class="row q-mt-sm" v-if="personnel.email">
+              <span class="heading-light col-3"> Email </span>
+              <span
+                class="q-ml-none col clickLink"
+                @click="onEmailClick(personnel.email, $event)"
+              >
+                {{ personnel.email ? personnel.email : '-' }}</span
+              >
+            </div>
+            <div class="row">
+              <div class="heading-light col-3">Phone Number</div>
+              <div class="q-mt-xs col-6 q-ml-none">
+                <div class="row" v-for="phone in personnel.phoneNumber">
+                  <div class="col-3">
+                    {{ phone.type ? phone.type : '-' }}
+                  </div>
+                  <div
+                    class="clickLink"
+                    @click="onPhoneNumberClick(phone.number, $event)"
+                  >
+                    {{ phone.number ? phone.number : '-' }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row q-mt-sm q-mb-sm">
+              <span class="heading-light col-3"> Notes: </span>
+              <span class="q-ml-none col" v-if="personnel.note">
+                {{ personnel.note ? personnel.note : '-' }}</span
+              >
+            </div>
+            <div class="row q-mt-sm q-mb-sm">
+              <span class="heading-light col-3"> Role: </span>
+              <span class="q-ml-none col" v-if="personnel.role">
+                {{ personnel.role.value ? personnel.role.value : '-' }}</span
+              >
+            </div>
+          </q-card>
+        </div>
+      </div>
+
+      <div v-else class="full-height text-center">
+        <div class="q-mt-xs">
+          <div style="color: #666666">
+            You haven't added a Personnel yet.
           </div>
+          <img
+            class="text-center"
+            src="~assets/add.svg"
+            width="30px"
+            height="30px"
+            @click="addPersonnelDialog = true"
+          />
+        </div>
+      </div>
+
+      <div class="row" v-if="mortgagePersonnel.personnel">
+        <div class="q-ml-auto">
+          <q-btn
+            @click="addPersonnelDialog = true"
+            label="Add Personnel"
+            class="q-ml-auto q-mt-sm"
+            color="primary"
+          ></q-btn>
         </div>
       </div>
     </div>
@@ -506,7 +498,7 @@
         />
       </q-card>
     </q-dialog>
-  </q-page>
+  </div>
 </template>
 
 <script>
