@@ -66,10 +66,7 @@
     </q-dialog>
 
     <div v-if="personnel.personnel">
-      <q-card
-        class="q-pa-md q-mt-sm"
-        v-for="(personnel, index) in personnel.personnel"
-      >
+      <q-card class="q-pa-md" v-for="(personnel, index) in personnel.personnel">
         <div class="text-bold text-capitalize q-mt-xs row">
           <div class="col-10">
             {{ personnel.name }}

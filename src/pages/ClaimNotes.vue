@@ -94,10 +94,7 @@
     </q-dialog>
     <div>
       <div v-if="claimNotes.attributes.notes">
-        <q-card
-          class="q-pa-md q-mt-sm"
-          v-if="claimNotes.attributes.notes.length"
-        >
+        <q-card class="q-pa-md" v-if="claimNotes.attributes.notes.length">
           <div v-for="(note, index) in claimNotes.attributes.notes">
             <q-item-section>
               <div>

@@ -224,12 +224,12 @@
       </div>
       <q-separator class="q-mt-sm q-mb-sm" />
       <div v-if="userRole != 'estimator' && userRole != 'vendor'">
-        <div class="form-heading q-ml-md col q-mb-md">
+        <div class="form-heading q-ml-sm col q-mb-md">
           Claim Timeline
         </div>
         <div v-for="(phase, index) in getSelectedClaim.phases">
           <div class="row">
-            <div class="col-2 q-ml-md">
+            <div class="col-2 ">
               <q-avatar
                 class="q-ma-sm"
                 size="50px"

@@ -22,7 +22,7 @@
         </div>
 
         <div
-          class="q-ml-sm text-capitalize q-pt-xs text-caption q-mr-xl q-my-xs q-px-xs q-ma-xs"
+          class="text-capitalize q-pt-xs text-caption q-mr-xl q-my-xs q-px-xs"
         >
           <p>{{ damage.desc }}</p>
           <p>{{ damage.damageDesc }}</p>
