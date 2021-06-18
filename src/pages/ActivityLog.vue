@@ -19,7 +19,14 @@
               class="col q-pt-xs"
               @click="onClickEdit(index)"
             ></q-icon>
-            <q-icon class="q-ml-sm" name="delete" size="sm" color="primary" />
+            <q-icon
+              class="q-ml-sm"
+              name="delete"
+              size="sm"
+              color="primary"
+              :style="logItem.isSystemGen == true ? 'visibility:hidden;' : ''"
+              @click="onClickDelete(logItem.id)"
+            />
           </div>
           <div>{{ logItem.title }}</div>
 
@@ -210,7 +217,13 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getSingleClaimDetails', 'getLog', 'addLog', 'editLog']),
+    ...mapActions([
+      'getSingleClaimDetails',
+      'getLog',
+      'addLog',
+      'editLog',
+      'deleteActivityLogt'
+    ]),
     ...mapMutations(['setSelectedClaimId', 'setLog']),
     // Edit Function
     onClickEdit(index) {
@@ -230,6 +243,14 @@ export default {
       } else {
         this.isFieldDisable = false;
       }
+    },
+    async onClickDelete(id) {
+      const payload = {
+        claimID: this.selectedClaimId,
+        logId: id
+      };
+      await this.deleteActivityLogt(payload);
+      this.getLog(this.selectedClaimId);
     },
     dateWithTime,
     //  Save Function
