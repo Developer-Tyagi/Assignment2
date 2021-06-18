@@ -30,10 +30,10 @@
           </div>
           <div>{{ logItem.title }}</div>
 
-          <p class="heading-light q-my-sm text-caption">
+          <p class="heading-light q-my-sm text-caption " v-if="logItem.detail">
             {{ logItem.detail ? logItem.detail : '-' }}
           </p>
-          <p class="heading-light q-my-sm text-caption">
+          <p class="heading-light q-my-sm text-caption" v-if="logItem.note">
             {{ logItem.note ? logItem.note : '-' }}
           </p>
           <div class="heading-light q-my-sm">

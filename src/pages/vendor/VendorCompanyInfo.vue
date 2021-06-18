@@ -4,7 +4,7 @@
       {{ selectedVendor.name ? selectedVendor.name : '-' }}
     </span>
 
-    <div class="q-my-auto row q-mt-xs">
+    <div class="q-my-auto row">
       <q-icon
         size="xs"
         name="create "

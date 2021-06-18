@@ -5,9 +5,7 @@
         <div v-for="(personnel, index) in carrierPersonnel.personnel">
           <q-card class="q-pa-sm q-mb-sm ">
             <div class="text-bold text-capitalize q-mt-xs row">
-              <div class="col-10">
-                {{ personnel.fname }} {{ personnel.lname }}
-              </div>
+              <div>{{ personnel.fname }} {{ personnel.lname }}</div>
               <q-icon
                 size="xs"
                 :style="
@@ -15,7 +13,7 @@
                 "
                 name="create "
                 color="primary"
-                class="q-my-auto col"
+                class="q-ml-auto "
                 @click="onEdit(index)"
               ></q-icon>
 
@@ -25,7 +23,7 @@
                 "
                 class="q-my-auto"
                 name="delete"
-                size="sm"
+                size="xs"
                 color="primary"
                 @click="onDelete(index)"
               />

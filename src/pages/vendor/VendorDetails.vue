@@ -11,9 +11,7 @@
           header-class="text-primary"
         >
           <q-card-section>
-            <q-card-section>
-              <VendorCompanyInfo />
-            </q-card-section>
+            <VendorCompanyInfo />
           </q-card-section>
         </q-expansion-item>
       </q-list>

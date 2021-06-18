@@ -1,10 +1,10 @@
 <template>
   <div>
-    <span class="text-bold text-h6 q-ml-xs">
+    <span class="text-bold text-h6 ">
       {{ selectedCarrier.name ? selectedCarrier.name : '-' }}
     </span>
 
-    <div class="q-my-auto row">
+    <div class="q-my-auto row ">
       <q-icon
         :style="selectedCarrier.isEditable == false ? 'visibility:hidden;' : ''"
         size="xs"
@@ -24,7 +24,7 @@
       />
     </div>
     <div class="row q-mt-sm">
-      <span class="heading-light col-3">Address Details</span>
+      <span class="heading-light col-4">Address Details</span>
       <span class="col-7 q-ml-md" v-if="selectedCarrier.address">
         {{
           selectedCarrier.address.houseNumber
@@ -71,7 +71,7 @@
     </div>
 
     <div class="row q-mt-sm" v-if="selectedCarrier.email">
-      <span class="heading-light col-3"> Email </span>
+      <span class="heading-light q-mt-none col-xs-4 lightHeading"> Email </span>
       <span
         class="q-ml-md col clickLink"
         @click="onEmailClick(selectedCarrier.email, $event)"
@@ -80,7 +80,9 @@
       >
     </div>
     <div class="row q-mt-sm" v-for="phone in selectedCarrier.phoneNumber">
-      <span class="heading-light col-3"> Phone Number </span>
+      <span class="heading-light q-mt-none col-xs-4 lightHeading">
+        Phone Number
+      </span>
       <span class="col q-ml-md" v-if="phone.type">
         {{ phone.type }} :
         <span
@@ -91,7 +93,7 @@
       >
     </div>
     <div class="row q-mt-sm" v-if="selectedCarrier.info">
-      <span class="heading-light col-3"> Website: </span>
+      <span class="heading-light col-4"> Website: </span>
       <span class="q-ml-md col">
         {{
           selectedCarrier.info.website ? selectedCarrier.info.website : '-'
@@ -99,7 +101,7 @@
       >
     </div>
     <div class="row q-mt-sm" v-if="selectedCarrier.info">
-      <span class="heading-light col-3"> Notes: </span>
+      <span class="heading-light col-4"> Notes: </span>
       <span class="q-ml-md col">
         {{
           selectedCarrier.info.notes ? selectedCarrier.info.notes : '-'
