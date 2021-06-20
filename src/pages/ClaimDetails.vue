@@ -227,6 +227,7 @@
           header-class="text-primary"
         >
           <q-card>
+            <!-- <q-card-section> <ClaimEstimatingInfo /> </q-card-section> -->
             <!-- <q-card-section> <PropertyInfo /> </q-card-section> -->
           </q-card>
         </q-expansion-item>
@@ -249,7 +250,7 @@
           header-class="text-primary"
         >
           <q-card>
-            <!-- <q-card-section> <PropertyInfo /> </q-card-section> -->
+            <q-card-section> <ClaimLedger /> </q-card-section>
           </q-card>
         </q-expansion-item>
       </q-list>
@@ -405,6 +406,8 @@ import ClaimExpertVendor from 'src/pages/ExpertVendor';
 import ProofOfLoss from 'src/pages/ProofOfLoss';
 import ClaimFiles from 'src/pages/ClaimFiles';
 import ClaimNotes from 'src/pages/ClaimNotes';
+import ClaimLedger from 'src/pages/ClaimLedger';
+
 import ClaimEstimatingInfo from 'src/pages/EstimatorInfo';
 import { onEmailClick } from '@utils/clickable';
 import { successMessage } from '@utils/validation';
@@ -427,6 +430,7 @@ export default {
     ClaimFiles,
     ProofOfLoss,
     ClaimNotes,
+    ClaimLedger,
     ClaimEstimatingInfo
   },
   data() {
