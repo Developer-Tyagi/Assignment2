@@ -263,7 +263,7 @@
             @click="
               openVendorSelect(item, index, expertVendorInfo.isHiredByClaimguru)
             "
-            v-if="!item.vendor.value"
+            v-if="!item.vendor.email"
           >
             <div class="select-text">
               Click for choosing a vendor
@@ -272,7 +272,7 @@
 
           <q-card
             bordered
-            v-if="item.vendor.value"
+            v-if="item.vendor.email"
             @click="
               openVendorSelect(item, index, expertVendorInfo.isHiredByClaimguru)
             "
