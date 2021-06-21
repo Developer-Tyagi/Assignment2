@@ -327,7 +327,7 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card style="height: 80%; width: 60%">
+      <q-card style="height: 85%; width: 60%">
         <div class="row justify-between bg-primary" style="height: 50px">
           <div class="text-white text-h6 q-pa-sm">Add Template</div>
           <q-btn dense flat icon="close" color="white" v-close-popup>
