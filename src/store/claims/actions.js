@@ -19,6 +19,23 @@ export async function getPersonnelInfo({ commit, dispatch }, id) {
   }
 }
 
+export async function getAccountDetails({ commit, dispatch }, id) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get(`/claims/${id}/accounts`);
+
+    commit('setAccountDetails', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+  }
+}
+
 //API for Editing the Activity logs  editLog
 
 export async function editLog({ dispatch, state }, payload) {

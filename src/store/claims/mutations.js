@@ -57,6 +57,11 @@ export function setPersonnel(state, personnel) {
     ...personnel.attributes
   };
 }
+export function setAccountDetails(state, account) {
+  state.account = {
+    ...account.attributes
+  };
+}
 export function setPolicy(state, policy) {
   // state.policy = policy.attributes;
   state.policy = {

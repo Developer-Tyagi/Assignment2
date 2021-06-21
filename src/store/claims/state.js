@@ -5,6 +5,7 @@ export default function() {
     log: [],
     claimNotes: [],
     personnel: [],
+    account: [],
     policy: [],
     lossInfo: [],
     settlementType: [],
