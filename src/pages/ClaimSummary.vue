@@ -16,7 +16,7 @@
           <ClaimDetail />
         </div>
       </div>
-      <div class="text-bold  row">
+      <div class="text-bold q-ml-sm  row">
         Claim Summary
         <q-icon
           v-if="userRole != 'estimator' && userRole != 'vendor'"
@@ -27,7 +27,7 @@
           @click="onEditClaimSummary"
         />
       </div>
-      <div class="q-mt-md row">
+      <div class="q-mt-md q-ml-sm row">
         <div class="heading-light q-mt-none col-xs-4 lightHeading">
           File Number
         </div>
@@ -36,7 +36,7 @@
         </div>
       </div>
 
-      <div class="q-mt-md row">
+      <div class="q-mt-md q-ml-sm row">
         <div class="heading-light q-mt-none col-xs-4 lightHeading">
           Claim Number
         </div>
@@ -45,7 +45,7 @@
         </div>
       </div>
 
-      <div class="q-mt-md row">
+      <div class="q-mt-md  q-ml-sm row">
         <div class="heading-light q-mt-none col-xs-4 lightHeading">
           Claim Reason
         </div>
@@ -57,7 +57,7 @@
           }}
         </div>
       </div>
-      <div class="q-mt-md row">
+      <div class="q-mt-md q-ml-sm row">
         <div class="heading-light q-mt-none col-xs-4 lightHeading">
           Claim Fees
         </div>
@@ -91,7 +91,7 @@
           </div>
         </div>
       </div>
-      <div class="q-mt-md row">
+      <div class="q-mt-md row q-ml-sm">
         <div class="heading-light q-mt-none col-xs-4 lightHeading">
           Date of Contract
         </div>
@@ -100,7 +100,7 @@
         </div>
         <div v-else class="q-ml-md">MM/DD/YYYY</div>
       </div>
-      <div class="q-mt-md row">
+      <div class="q-mt-md row q-ml-sm">
         <div class="heading-light q-mt-none col-xs-4 lightHeading">
           Date of Notified
         </div>
@@ -109,7 +109,7 @@
         </div>
         <div v-else class="q-ml-md">MM/DD/YYYY</div>
       </div>
-      <div class="q-mt-md row">
+      <div class="q-mt-md row q-ml-sm">
         <div class="heading-light q-mt-none col-xs-4 lightHeading">
           Open Since
         </div>
@@ -118,7 +118,7 @@
         </div>
       </div>
       <div class="q-mt-md row">
-        <div class="heading-light q-mt-none col-xs-4 lightHeading">
+        <div class="heading-light q-ml-sm q-mt-none col-xs-4 lightHeading">
           Loss Since
         </div>
         <div class="column q-ml-md">
@@ -126,13 +126,11 @@
         </div>
       </div>
       <q-separator class="q-mt-sm q-mb-sm" />
-      <div
-        class="row  justify-between"
-        v-if="userRole != 'estimator' && userRole != 'vendor'"
-      >
-        <div class="text-bold q-mt-sm ">Claim Deadlines</div>
-        <div class="q-mt-xs">
+      <div class="row  justify-between">
+        <div class="text-bold q-mt-sm q-ml-sm ">Claim Deadlines</div>
+        <div class="row">
           <q-icon
+            v-if="userRole != 'estimator' && userRole != 'vendor'"
             class="q-ml-xs"
             name="edit"
             size="xs"
@@ -142,7 +140,7 @@
         </div>
       </div>
       <div class="q-mt-md row">
-        <div class="heading-light q-mt-none col-xs-4 lightHeading">
+        <div class="heading-light q-ml-sm q-mt-none col-xs-4 lightHeading">
           Tolling Date / Statute Deadline
         </div>
         <div class="column q-ml-md">
@@ -150,7 +148,7 @@
         </div>
       </div>
       <div class="q-mt-md row">
-        <div class="heading-light q-mt-none col-xs-4 lightHeading">
+        <div class="heading-light q-ml-sm q-mt-none col-xs-4 lightHeading">
           Recoverable Depreciation Due
         </div>
         <div class="column q-ml-md">
@@ -160,7 +158,7 @@
 
       <q-separator class="q-mt-sm q-mb-sm" />
       <div class="row q-ml-xs justify-between">
-        <div class="text-bold q-mt-xs">Loss Details</div>
+        <div class="text-bold q-mt-xs q-ml-xs">Loss Details</div>
         <div>
           <q-icon
             name="create"
