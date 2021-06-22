@@ -2,7 +2,7 @@
   <ckeditor
     v-model="editorData"
     :config="config"
-    editorUrl="https://cdn.ckeditor.com/4.14.0/full-all/ckeditor.js"
+    editorUrl="/ckeditor/ckeditor.js"
     @change="$emit('updateMarkup', val)"
   />
 </template>
@@ -22,13 +22,16 @@ export default {
     editorData: '',
     config: {
       height: 150,
-      extraPlugins: '',
-      // availableTokens: [
-      //   ['', ''],
-      //   ['token1', 'token1'],
-      //   ['token2', 'token2'],
-      //   ['token3', 'token3']
-      // ],
+      extraPlugins: 'token',
+      availableTokens: [
+        ['', ''],
+        ['token1', 'token1'],
+        ['token2', 'token2'],
+        ['token3', 'token3']
+      ],
+      // Configure token string
+      tokenStart: '[[',
+      tokenEnd: ']]',
       removeButtons:
         'Source,Save,ExportPdf,Preview,Print,Scayt,Form,Textarea,TextField,Select,Button,ImageButton,HiddenField,CopyFormatting,RemoveFormat,Language,BidiRtl,BidiLtr,Link,Unlink,Anchor,Flash,Smiley,SpecialChar,PageBreak,Iframe,About,ShowBlocks,Maximize',
       // filebrowserBrowseUrl: '/apps/ckfinder/3.4.5/ckfinder.html',
