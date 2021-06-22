@@ -65,11 +65,6 @@
       </q-card>
     </q-dialog>
     <div>
-      <div class="row justify-end" v-if="editSelectedClient.attributes.notes">
-        <q-icon @click="addNote" v-if="!addNoteDialog" flat>
-          <img src="~assets/addNote.svg" />
-        </q-icon>
-      </div>
       <!-- <div class="justify-end bg-red">
         <div>
           <q-icon @click="addNote" v-if="!addNoteDialog" flat>
@@ -172,6 +167,15 @@
               />
             </div>
           </div>
+        </div>
+        <div class="row">
+          <q-btn
+            v-if="editSelectedClient.attributes.notes"
+            @click="addNote"
+            color="primary"
+            label="Add Note"
+            class="q-ml-auto "
+          ></q-btn>
         </div>
         <!-- <div v-else class="full-height full-width column">
           <div class="column absolute-center">

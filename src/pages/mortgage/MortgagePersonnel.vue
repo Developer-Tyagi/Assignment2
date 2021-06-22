@@ -8,6 +8,9 @@
         >
           <q-card class="q-pa-sm">
             <div class="text-bold text-capitalize  row">
+              <div class="col-10">
+                {{ personnel.fname }} {{ personnel.lname }}
+              </div>
               <q-icon
                 :style="
                   personnel.isEditable == false ? 'visibility:hidden;' : ''
@@ -29,6 +32,7 @@
                 @click="onDelete(index)"
               />
             </div>
+
             <div class="row q-mt-sm">
               <div class="heading-light col-3">Address Details</div>
               <div class="col-7" v-if="personnel.address">
