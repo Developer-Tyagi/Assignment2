@@ -126,13 +126,11 @@
         </div>
       </div>
       <q-separator class="q-mt-sm q-mb-sm" />
-      <div
-        class="row  justify-between"
-        v-if="userRole != 'estimator' && userRole != 'vendor'"
-      >
-        <div class="text-bold q-mt-sm ">Claim Deadlines</div>
-        <div class="q-mt-xs">
+      <div class="row  justify-between">
+        <div class="text-bold q-mt-sm q-ml-sm ">Claim Deadlines</div>
+        <div class="row">
           <q-icon
+            v-if="userRole != 'estimator' && userRole != 'vendor'"
             class="q-ml-xs"
             name="edit"
             size="xs"
@@ -160,7 +158,7 @@
 
       <q-separator class="q-mt-sm q-mb-sm" />
       <div class="row q-ml-xs justify-between">
-        <div class="text-bold q-mt-xs q-ml-sm">Loss Details</div>
+        <div class="text-bold q-mt-xs q-ml-xs">Loss Details</div>
         <div>
           <q-icon
             name="create"
