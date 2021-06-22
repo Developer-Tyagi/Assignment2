@@ -1,82 +1,77 @@
 <template>
   <div>
+    <div class="actions-div justify-between q-px-md" v-if="depth.length > 1">
+      <q-breadcrumbs class="text-primary" active-color="grey" gutter="none">
+        <template v-slot:separator> </template>
+        <div
+          v-if="depth.length > 1"
+          class="row-div vertical-center q-px-sm q-py-xs"
+          @click="onBackButtonClick"
+        >
+          <q-icon name="reply" size="sm" color="primary" />
+        </div>
+        <q-breadcrumbs-el @click="onBreadCrumbClick(depth[currentPath], index)"
+          >{{ depth[currentPath - 1] ? depth[currentPath - 1].name : '-' }}
+        </q-breadcrumbs-el>
+      </q-breadcrumbs>
+      <div>
+        <q-icon
+          v-if="depth.length > 1"
+          @click="onClickTopMenu"
+          name="more_vert"
+          size="sm"
+          class="q-ml-auto"
+        />
+      </div>
+    </div>
     <div>
-      <div class="actions-div justify-between q-px-md" v-if="depth.length > 1">
-        <q-breadcrumbs class="text-primary" active-color="grey" gutter="none">
-          <template v-slot:separator> </template>
-          <div
-            v-if="depth.length > 1"
-            class="row-div vertical-center q-px-sm q-py-xs"
-            @click="onBackButtonClick"
-          >
-            <q-icon name="reply" size="sm" color="primary" />
+      <div v-for="(doc, index) in documents" class="row-div">
+        <div
+          v-if="doc.type == 'folder'"
+          class="vertical-center q-px-md q-py-xs"
+        >
+          <q-icon name="folder" size="sm" color="primary" />
+          <div class="q-pl-md" @click="onClickOnFile(doc)">
+            {{ doc.name }}
           </div>
-          <q-breadcrumbs-el
-            @click="onBreadCrumbClick(depth[currentPath], index)"
-            >{{ depth[currentPath - 1] ? depth[currentPath - 1].name : '-' }}
-          </q-breadcrumbs-el>
-        </q-breadcrumbs>
-        <div>
           <q-icon
-            v-if="depth.length > 1"
-            @click="onClickTopMenu"
+            @click="onShareClick(index)"
+            name="more_vert"
+            size="sm"
+            class="q-ml-auto"
+          />
+        </div>
+        <div
+          v-if="doc.type != 'folder'"
+          class="vertical-center q-px-md q-py-sm"
+        >
+          <q-icon :name="iconType(doc.type)" size="sm" color="primary" />
+          <span class="q-pl-md" @click="onDocumentClick(doc.link)">{{
+            doc.name
+          }}</span>
+          <q-icon
+            @click="onShareClick(index)"
             name="more_vert"
             size="sm"
             class="q-ml-auto"
           />
         </div>
       </div>
-      <div>
-        <div v-for="(doc, index) in documents" class="row-div">
-          <div
-            v-if="doc.type == 'folder'"
-            class="vertical-center q-px-md q-py-xs"
-          >
-            <q-icon name="folder" size="sm" color="primary" />
-            <div class="q-pl-md" @click="onClickOnFile(doc)">
-              {{ doc.name }}
-            </div>
-            <q-icon
-              @click="onShareClick(index)"
-              name="more_vert"
-              size="sm"
-              class="q-ml-auto"
-            />
-          </div>
-          <div
-            v-if="doc.type != 'folder'"
-            class="vertical-center q-px-md q-py-sm"
-          >
-            <q-icon :name="iconType(doc.type)" size="sm" color="primary" />
-            <span class="q-pl-md" @click="onDocumentClick(doc.link)">{{
-              doc.name
-            }}</span>
-            <q-icon
-              @click="onShareClick(index)"
-              name="more_vert"
-              size="sm"
-              class="q-ml-auto"
-            />
-          </div>
-        </div>
-        <div
-          v-if="!documents.length"
-          class=" heading-light row justify-center "
-        >
-          <div>This folder is empty</div>
-        </div>
-      </div>
-      <div class="row">
-        <q-btn
-          class="q-ml-auto"
-          @click="uploadFilesOptions = true"
-          size="sm"
-          label="Add"
-          color="primary"
-          v-if="!assignDialog"
-        ></q-btn>
+      <div v-if="!documents.length" class=" heading-light row justify-center ">
+        <div>This folder is empty</div>
       </div>
     </div>
+    <div class="row">
+      <q-btn
+        class="q-ml-auto"
+        @click="uploadFilesOptions = true"
+        size="sm"
+        label="Add"
+        color="primary"
+        v-if="!assignDialog"
+      ></q-btn>
+    </div>
+
     <!-- Add Folder Dialog -->
 
     <q-dialog v-model="addFolderDialog">
