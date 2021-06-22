@@ -1642,7 +1642,7 @@ export default {
       this.addClaim(payload).then(() => {
         this.setSelectedLead();
         this.successMessage(constants.successMessages.CLAIM);
-        this.$router.push('/property-details');
+        this.$router.push('/view-client');
       });
     },
 
