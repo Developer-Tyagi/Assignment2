@@ -436,13 +436,13 @@
                   <div
                     class="custom-select"
                     @click="vendorsListDialog = true"
-                    v-if="!sourceDetails.details"
+                    v-if="!sourceDetails.email"
                   >
                     <div class="select-text">Click for choosing a vendor</div>
                   </div>
                   <q-card
                     bordered
-                    v-if="sourceDetails.details"
+                    v-if="sourceDetails.email"
                     @click="vendorsListDialog = true"
                     class="q-my-md q-pa-md"
                   >
@@ -451,46 +451,46 @@
                     </div>
                     <div
                       v-if="
-                        sourceDetails.address &&
-                          sourceDetails.address.streetAddress
+                        sourceDetails.mailingAddress &&
+                          sourceDetails.mailingAddress.streetAddress
                       "
                     >
                       <div>
                         {{
-                          sourceDetails.address
-                            ? sourceDetails.address.houseNumber
+                          sourceDetails.mailingAddress
+                            ? sourceDetails.mailingAddress.houseNumber
                             : '-'
                         }}
                         ,
                         {{
-                          sourceDetails.address.streetAddress
-                            ? sourceDetails.address.streetAddress
+                          sourceDetails.mailingAddress.streetAddress
+                            ? sourceDetails.mailingAddress.streetAddress
                             : '-'
                         }}
                       </div>
                       <div>
                         {{
-                          sourceDetails.address.addressLocality
-                            ? sourceDetails.address.addressLocality
+                          sourceDetails.mailingAddress.addressLocality
+                            ? sourceDetails.mailingAddress.addressLocality
                             : '-'
                         }}
                         ,
                         {{
-                          sourceDetails.address.addressRegion
-                            ? sourceDetails.address.addressRegion
+                          sourceDetails.mailingAddress.addressRegion
+                            ? sourceDetails.mailingAddress.addressRegion
                             : '-'
                         }}
                       </div>
                       <div class="row">
                         {{
-                          sourceDetails.address.addressCountry
-                            ? sourceDetails.address.addressCountry
+                          sourceDetails.mailingAddress.addressCountry
+                            ? sourceDetails.mailingAddress.addressCountry
                             : '-'
                         }}
                         -
                         {{
-                          sourceDetails.address.postalCode
-                            ? sourceDetails.address.postalCode
+                          sourceDetails.mailingAddress.postalCode
+                            ? sourceDetails.mailingAddress.postalCode
                             : '-'
                         }}
                       </div>
@@ -1068,7 +1068,7 @@ export default {
             id: this.sourceDetails.id,
             type: this.sourceDetails.type,
             detail: this.sourceDetails.details,
-            address: this.sourceDetails.address,
+            address: this.sourceDetails.mailingAddress,
             email: this.sourceDetails.email,
             phoneNumber: [
               {
@@ -1126,7 +1126,7 @@ export default {
     onChangingSourceType() {
       this.sourceDetails.id = '';
       this.sourceDetails.details = '';
-      this.sourceDetails.address = '';
+      this.sourceDetails.mailingAddress = '';
       this.sourceDetails.email = '';
     },
 
@@ -1206,10 +1206,10 @@ export default {
     onSelectingVendorList(vendor) {
       this.sourceDetails.id = vendor.id;
       this.sourceDetails.details = vendor.name;
-      this.sourceDetails.address = vendor.address;
+      this.sourceDetails.mailingAddress = vendor.mailingAddress;
       this.sourceDetails.email = vendor.email;
       this.sourceDetails.phone = vendor.phoneNumber
-        ? vendor.phoneNumber[0].number
+        ? vendor.phoneNumber.number
         : '';
       this.vendorsListDialog = false;
     },
@@ -1217,10 +1217,10 @@ export default {
     onCloseAddVendorDialogBox(vendor) {
       this.sourceDetails.id = vendor.id;
       this.sourceDetails.details = vendor.name;
-      this.sourceDetails.address = vendor.address;
+      this.sourceDetails.mailingAddress = vendor.mailingAddress;
       this.sourceDetails.email = vendor.email;
       this.sourceDetails.phone = vendor.phoneNumber
-        ? vendor.phoneNumber[0].number
+        ? vendor.phoneNumber.number
         : '';
       this.vendorsListDialog = false;
       this.addVendorDialog = false;
