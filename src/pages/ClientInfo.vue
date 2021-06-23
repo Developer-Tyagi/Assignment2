@@ -8,7 +8,7 @@
         size="xs"
         class="q-ml-auto"
         v-if="!editClientInfoDailog"
-        @click="editClientInfoDailog = true"
+        @click="onEditClick"
       ></q-icon>
     </div>
     <div class="q-ml-md">
@@ -736,57 +736,6 @@ export default {
     this.getContactTypes();
     this.countries = addressService.getCountries();
     this.onCountrySelect('United States');
-
-    // Client info Editable & prefilled Details
-
-    this.client.id = this.editSelectedClient.attributes.type.id;
-    this.client.value = this.editSelectedClient.attributes.type.value;
-    this.client.machineValue = this.editSelectedClient.attributes.type.machineValue;
-    this.honorific1.id = this.editSelectedClient.attributes.insuredInfo.primary.honorific.id;
-    this.honorific1.value = this.editSelectedClient.attributes.insuredInfo.primary.honorific.value;
-    this.honorific1.machineValue = this.editSelectedClient.attributes.insuredInfo.primary.honorific.machineValue;
-    this.insuredDetails.fname = this.editSelectedClient.attributes.insuredInfo.primary.fname;
-    this.insuredDetails.lname = this.editSelectedClient.attributes.insuredInfo.primary.lname;
-
-    if (this.editSelectedClient.attributes.isOrganizationPolicyholder) {
-      this.policyHolder.isPolicyHolder = this.editSelectedClient.attributes.isOrganizationPolicyholder;
-    }
-    if (this.editSelectedClient.attributes.isOrganization) {
-      this.primaryDetails.isOrganization = true;
-      this.primaryDetails.isOrganization = this.editSelectedClient.attributes.isOrganization;
-      this.primaryDetails.organizationName = this.editSelectedClient.attributes.organizationName;
-    }
-    this.insuredDetails.type = this.editSelectedClient.attributes.insuredInfo.primary.phoneNumber[0].type;
-    this.insuredDetails.phone = this.editSelectedClient.attributes.insuredInfo.primary.phoneNumber[0].number;
-    this.insuredDetails.email = this.editSelectedClient.attributes.insuredInfo.primary.email;
-
-    if (this.editSelectedClient.attributes.insuredInfo.secondary) {
-      this.isThereaCoInsuredToggle = true;
-      this.honorific2.id = this.editSelectedClient.attributes.insuredInfo.secondary.honorific.id;
-      this.honorific2.value = this.editSelectedClient.attributes.insuredInfo.secondary.honorific.value;
-      this.honorific2.machineValue = this.editSelectedClient.attributes.insuredInfo.secondary.honorific.machineValue;
-      this.coInsuredDetails.fname = this.editSelectedClient.attributes.insuredInfo.secondary.fname;
-      this.coInsuredDetails.lname = this.editSelectedClient.attributes.insuredInfo.secondary.lname;
-      this.coInsuredDetails.type = this.editSelectedClient.attributes.insuredInfo.secondary.phoneNumber[0].type;
-
-      this.coInsuredDetails.phone = this.editSelectedClient.attributes.insuredInfo.secondary.phoneNumber[0].number;
-      this.coInsuredDetails.email = this.editSelectedClient.attributes.insuredInfo.secondary.email;
-    }
-    if (this.editSelectedClient.attributes.insuredInfo.phoneNumbers[0].number) {
-      this.addAditionalPhoneNumberToggle = true;
-      this.phoneNumber = this.editSelectedClient.attributes.insuredInfo.phoneNumbers;
-    } else {
-      this.addAditionalPhoneNumberToggle = false;
-    }
-    if (this.editSelectedClient.attributes.insuredInfo.tenantInfo) {
-      this.tenantOccupiedToggle = true;
-      this.tenantOccupied.name = this.editSelectedClient.attributes.insuredInfo.tenantInfo.name;
-      this.tenantOccupied.type = this.editSelectedClient.attributes.insuredInfo.tenantInfo.phoneNumber.type;
-      this.tenantOccupied.phone = this.editSelectedClient.attributes.insuredInfo.tenantInfo.phoneNumber.number;
-    }
-    // Client Address Editable & prefilled Details
-    this.clientAddressDetails = this.editSelectedClient.attributes.insuredInfo.mailingAddress;
-    this.mailingAddressDetails = this.editSelectedClient.attributes.insuredInfo.mailingAddress;
   },
 
   methods: {
@@ -807,7 +756,59 @@ export default {
       data.machineValue = obj.machineValue;
       data.value = obj.name;
     },
+    onEditClick() {
+      this.editClientInfoDailog = true;
+      this.client.id = this.editSelectedClient.attributes.type.id;
+      this.client.value = this.editSelectedClient.attributes.type.value;
+      this.client.machineValue = this.editSelectedClient.attributes.type.machineValue;
+      this.honorific1.id = this.editSelectedClient.attributes.insuredInfo.primary.honorific.id;
+      this.honorific1.value = this.editSelectedClient.attributes.insuredInfo.primary.honorific.value;
+      this.honorific1.machineValue = this.editSelectedClient.attributes.insuredInfo.primary.honorific.machineValue;
+      this.insuredDetails.fname = this.editSelectedClient.attributes.insuredInfo.primary.fname;
+      this.insuredDetails.lname = this.editSelectedClient.attributes.insuredInfo.primary.lname;
 
+      if (this.editSelectedClient.attributes.isOrganizationPolicyholder) {
+        this.policyHolder.isPolicyHolder = this.editSelectedClient.attributes.isOrganizationPolicyholder;
+      }
+      if (this.editSelectedClient.attributes.isOrganization) {
+        this.primaryDetails.isOrganization = true;
+        this.primaryDetails.isOrganization = this.editSelectedClient.attributes.isOrganization;
+        this.primaryDetails.organizationName = this.editSelectedClient.attributes.organizationName;
+      }
+      this.insuredDetails.type = this.editSelectedClient.attributes.insuredInfo.primary.phoneNumber[0].type;
+      this.insuredDetails.phone = this.editSelectedClient.attributes.insuredInfo.primary.phoneNumber[0].number;
+      this.insuredDetails.email = this.editSelectedClient.attributes.insuredInfo.primary.email;
+
+      if (this.editSelectedClient.attributes.insuredInfo.secondary) {
+        this.isThereaCoInsuredToggle = true;
+        this.honorific2.id = this.editSelectedClient.attributes.insuredInfo.secondary.honorific.id;
+        this.honorific2.value = this.editSelectedClient.attributes.insuredInfo.secondary.honorific.value;
+        this.honorific2.machineValue = this.editSelectedClient.attributes.insuredInfo.secondary.honorific.machineValue;
+        this.coInsuredDetails.fname = this.editSelectedClient.attributes.insuredInfo.secondary.fname;
+        this.coInsuredDetails.lname = this.editSelectedClient.attributes.insuredInfo.secondary.lname;
+        this.coInsuredDetails.type = this.editSelectedClient.attributes.insuredInfo.secondary.phoneNumber[0].type;
+
+        this.coInsuredDetails.phone = this.editSelectedClient.attributes.insuredInfo.secondary.phoneNumber[0].number;
+        this.coInsuredDetails.email = this.editSelectedClient.attributes.insuredInfo.secondary.email;
+      }
+      if (
+        this.editSelectedClient.attributes.insuredInfo.phoneNumbers[0].number
+      ) {
+        this.addAditionalPhoneNumberToggle = true;
+        this.phoneNumber = this.editSelectedClient.attributes.insuredInfo.phoneNumbers;
+      } else {
+        this.addAditionalPhoneNumberToggle = false;
+      }
+      if (this.editSelectedClient.attributes.insuredInfo.tenantInfo) {
+        this.tenantOccupiedToggle = true;
+        this.tenantOccupied.name = this.editSelectedClient.attributes.insuredInfo.tenantInfo.name;
+        this.tenantOccupied.type = this.editSelectedClient.attributes.insuredInfo.tenantInfo.phoneNumber.type;
+        this.tenantOccupied.phone = this.editSelectedClient.attributes.insuredInfo.tenantInfo.phoneNumber.number;
+      }
+      // Client Address Editable & prefilled Details
+      this.clientAddressDetails = this.editSelectedClient.attributes.insuredInfo.mailingAddress;
+      this.mailingAddressDetails = this.editSelectedClient.attributes.insuredInfo.mailingAddress;
+    },
     // For adding multiple Contact Numbers in ClientInfo
     addAnotherContact() {
       let len = this.phoneNumber.length;
@@ -918,7 +919,8 @@ export default {
 
         await this.editClient(payload);
         this.getSingleClientDetails(this.selectedClientId);
-        this.$router.push('/client-details');
+
+        this.$router.push('/view-client');
       }
     },
     onCountrySelect(country) {
