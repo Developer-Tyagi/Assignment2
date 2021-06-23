@@ -21,7 +21,6 @@ export default {
     ...mapActions(['getSingleClientDetails'])
   },
   created() {
-    // this.directoryId = this.$route.params.directoryId;
     this.getSingleClientDetails(this.selectedClientId);
     this.directoryId = this.editSelectedClient.attributes.directoryID;
   }
