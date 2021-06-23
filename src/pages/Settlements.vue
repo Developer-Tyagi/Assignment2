@@ -98,7 +98,7 @@
                 <div class="heading-light">Replacement Cost</div>
                 <div class="text-bold q-ml-auto">
                   <span class="heading-light">$</span>
-                  <!-- {{ settlement.amount.replacementCost }} -->
+                  {{ settlement.amount.replacementCost }}
                 </div>
               </div>
               <div class="row q-py-lg">
@@ -1275,7 +1275,8 @@ export default {
       'getSettlementTypes',
       'addSettlement',
       'editSettlement',
-      'deleteClaimSettelment'
+      'deleteClaimSettelment',
+      'getAccountDetails'
     ]),
     onClickAddButton() {
       this.isEdit = false;
@@ -1321,7 +1322,7 @@ export default {
       this.description = this.settlement.attributes.settlements[
         val
       ].description;
-      // this.amounts = this.settlement.attributes.settlements[val].amount;
+      this.amounts = this.settlement.attributes.settlements[val].amount;
       this.totalSettlement = this.settlement.attributes.settlements[
         val
       ].amount.netSettlement;
@@ -1424,7 +1425,6 @@ export default {
       }
     },
     async onSaveButtonClick() {
-      console.log(777);
       let success = false;
       success = await this.$refs.settlementForm.validate();
 
@@ -1497,6 +1497,7 @@ export default {
       this.settlementDialog = false;
       this.settlementShowDialog = false;
       this.getSettlements(this.selectedClaimId);
+      this.getAccountDetails(this.selectedClaimId);
     }
   }
 };
