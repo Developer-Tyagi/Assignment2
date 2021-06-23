@@ -38,7 +38,7 @@
             </div>
             {{ account.pendingDisbursement }}
           </div>
-          <!-- settlment -->
+
           <q-card class="q-my-sm" v-for="settlement in account.settlements">
             <div class="row q-px-md q-pt-xs justify-center">
               <div>{{ settlement.desc }}</div>
@@ -77,26 +77,38 @@
               label="Payment"
               header-class="text-primary"
             >
-              <!-- {{ payment }} -->
-              <div class="row justify-between">
+              <div class="heading-light q-ml-sm">
+                Payments Issued by Carrier
+              </div>
+              <div class="row justify-between q-my-sm">
                 <div class="heading-light q-ml-sm">Total Recieved</div>
+                <div class="heading-light q-ml-sm">$</div>
+
                 <div class="q-mr-sm">{{ payment.totalReplCost }}</div>
               </div>
               <div>
-                <q-card class="q-pa-sm q-ma-sm" v-for="pay in payment.payments">
-                  <div class="row justify-between">
-                    <div class="heading-light">Date</div>
-                    <div>{{ pay.receviedDate | moment('MM/DD/YYYY') }}</div>
-                  </div>
-                  <div class="row justify-between">
-                    <div class="heading-light">Amount</div>
-                    <div>{{ pay.amount }}</div>
-                  </div>
-                  <div class="row justify-between">
-                    <div class="heading-light">Reference Number</div>
-                    <div>{{ pay.reference }}</div>
-                  </div>
-                </q-card>
+                <div v-if="payment.payments != null">
+                  <q-card
+                    class="q-pa-sm q-ma-sm"
+                    v-for="pay in payment.payments"
+                  >
+                    <div class="row justify-between">
+                      <div class="heading-light">Date</div>
+                      <div>{{ pay.receviedDate | moment('MM/DD/YYYY') }}</div>
+                    </div>
+                    <div class="row justify-between">
+                      <div class="heading-light">Amount</div>
+                      <div>{{ pay.amount }}</div>
+                    </div>
+                    <div class="row justify-between">
+                      <div class="heading-light">Reference Number</div>
+                      <div>{{ pay.reference }}</div>
+                    </div>
+                  </q-card>
+                </div>
+                <div v-else class="text-center heading-light q-my-md">
+                  No Payment Is added Yet !
+                </div>
               </div>
               <div class="justify-end row q-mr-sm">
                 <q-btn
@@ -113,32 +125,49 @@
               label="Expenses"
               header-class="text-primary"
             >
-              <div>
-                <q-card
-                  class="q-ma-xs q-pa-md"
-                  v-for="expense in expenses.expenses"
-                >
-                  <div class="row justify-between">
-                    <div class="heading-light">Date</div>
-                    <div>{{ expense.receviedDate | moment('MM/DD/YYYY') }}</div>
+              <div v-if="expenses.expenses != null">
+                <q-card class="q-ma-xs" v-for="expense in expenses.expenses">
+                  <div class=" row justify-end">
+                    <div class="q-mr-xs">
+                      <q-icon
+                        name="create"
+                        size="xs"
+                        color="primary"
+                        @click="editExpense(expense)"
+                      />
+                      <q-icon
+                        class="q-mx-xs"
+                        name="delete"
+                        size="xs"
+                        color="primary"
+                      />
+                    </div>
                   </div>
-                  <div class="row justify-between">
-                    <div class="heading-light">Payee</div>
-                    <div>{{ expense.amount }}</div>
-                  </div>
-                  <div class="row justify-between">
-                    <div class="heading-light">Reference</div>
-                    <div>{{ expense.reference }}</div>
-                  </div>
-                  <div class="row justify-between">
-                    <div class="heading-light">PaygetAllPaymentable By</div>
-                    <div>{{ expense.responsible.value }}</div>
-                  </div>
-                  <div class="row justify-between">
-                    <div class="heading-light">Note</div>
-                    <div>{{ expense.desc }}</div>
+                  <div class="q-pa-sm">
+                    <div class="row q-mt-xs justify-between">
+                      <div class="heading-light">Date</div>
+                      <div>
+                        {{ expense.receviedDate | moment('MM/DD/YYYY') }}
+                      </div>
+                    </div>
+                    <div class="row justify-between">
+                      <div class="heading-light">Payee</div>
+                      <div>{{ expense.amount }}</div>
+                    </div>
+                    <div class="row justify-between">
+                      <div class="heading-light">Reference</div>
+                      <div>{{ expense.reference }}</div>
+                    </div>
+
+                    <div class="row justify-between">
+                      <div class="heading-light">Note</div>
+                      <div>{{ expense.desc }}</div>
+                    </div>
                   </div>
                 </q-card>
+              </div>
+              <div v-else class="text-center heading-light q-my-md">
+                No Expense is Added Yet !
               </div>
 
               <div class=" row justify-end">
@@ -392,19 +421,7 @@
                 class="input-extra-padding"
               />
             </div>
-            <div class="row" style="align-items: center">
-              <span class="">Expense Amount</span>
 
-              <q-input
-                dense
-                v-model.number="addexpenses.amount"
-                mask="#.#"
-                type="number"
-                style="margin-left: auto; width: 50%"
-                prefix="$"
-                class="input-extra-padding"
-              />
-            </div>
             <div class="row" style="align-items: center">
               <span class=""> Company Fee</span>
 
@@ -416,9 +433,6 @@
 
               <q-input
                 dense
-                v-model.number="addexpenses.responsible.value"
-                mask="#.#"
-                type="number"
                 style="margin-left: auto; width: 50%"
                 prefix="$"
                 class="input-extra-padding"
@@ -428,11 +442,9 @@
               <span class="">Resposible Party</span>
 
               <q-input
+                v-model="addexpenses.responsible.value"
                 dense
-                mask="#.#"
-                type="number"
                 style="margin-left: auto; width: 50%"
-                prefix="$"
                 class="input-extra-padding"
               />
             </div>
@@ -442,7 +454,7 @@
               <q-toggle class="q-ml-auto" v-model="toggleOnOff" />
             </div>
             <div class="row" style="align-items: center">
-              <span class="">Invoice reference#</span>
+              <span class="">Invoice reference Number</span>
 
               <q-input
                 dense
@@ -455,7 +467,7 @@
               />
             </div>
 
-            <div>Notes</div>
+            <div>Description</div>
             <textarea v-model="addexpenses.desc" rows="3" class="full-width" />
           </q-form>
         </div>
@@ -778,6 +790,7 @@ import { dateToShow } from '@utils/date';
 import { onPhoneNumberClick, onEmailClick } from '@utils/clickable';
 import ClaimDetail from 'components/ClaimDetail';
 import { validateDate } from '@utils/validation';
+import { dateToSend } from '@utils/date';
 export default {
   name: 'ClaimLedger',
   components: {
@@ -799,7 +812,7 @@ export default {
       },
       addexpenses: {
         amount: '',
-        receviedDate: '',
+        receviedDate: '2020-09-24T11:18:06Z',
         reference: '',
         responsible: {
           value: 'Client',
@@ -853,7 +866,7 @@ export default {
         id: this.selectedClaimId,
         data: {
           amount: this.payments.amount,
-          receviedDate: this.payments.paidToDate,
+          receviedDate: dateToSend(this.payments.date),
           reference: this.payments.checkReference,
           settlements: [
             {
@@ -878,8 +891,14 @@ export default {
 
       const success = await this.addExpenses(payload);
       if (success) {
+        await this.getAllExpenses(this.selectedClaimId);
+        await this.getAccountDetails(this.selectedClaimId);
         this.addExpensesDialog = false;
       }
+    },
+    editExpense(value) {
+      this.addexpenses = value;
+      this.addExpensesDialog = true;
     }
   }
 };

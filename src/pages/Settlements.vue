@@ -98,7 +98,7 @@
                 <div class="heading-light">Replacement Cost</div>
                 <div class="text-bold q-ml-auto">
                   <span class="heading-light">$</span>
-                  {{ settlement.amounts.replacementCost }}
+                  <!-- {{ settlement.amount.replacementCost }} -->
                 </div>
               </div>
               <div class="row q-py-lg">
@@ -106,7 +106,7 @@
 
                 <div class="text-bold q-ml-auto">
                   <span class="heading-light">$</span>
-                  {{ settlement.amounts.netSettlement }}
+                  {{ settlement.amount.netSettlement }}
                 </div>
               </div>
             </div>
@@ -1321,16 +1321,16 @@ export default {
       this.description = this.settlement.attributes.settlements[
         val
       ].description;
-      this.amounts = this.settlement.attributes.settlements[val].amounts;
+      // this.amounts = this.settlement.attributes.settlements[val].amount;
       this.totalSettlement = this.settlement.attributes.settlements[
         val
-      ].amounts.netSettlement;
+      ].amount.netSettlement;
       this.actualValue = this.settlement.attributes.settlements[
         val
-      ].amounts.actualCash;
+      ].amount.actualCash;
       this.netSettlement = this.settlement.attributes.settlements[
         val
-      ].amounts.grossSettlement;
+      ].amount.grossSettlement;
       this.buttonGroup = this.settlement.attributes.settlements[val].isAccepted;
 
       this.isFinal = this.settlement.attributes.settlements[val].isFinal;
@@ -1424,6 +1424,7 @@ export default {
       }
     },
     async onSaveButtonClick() {
+      console.log(777);
       let success = false;
       success = await this.$refs.settlementForm.validate();
 
@@ -1438,7 +1439,7 @@ export default {
           },
           isFinal: this.isFinal,
           isAccepted: this.buttonGroup,
-          amounts: {
+          amount: {
             replacementCost: this.amounts.replacementCost
               ? this.amounts.replacementCost
               : 0,

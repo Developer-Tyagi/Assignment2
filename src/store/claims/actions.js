@@ -23,34 +23,6 @@ export async function getAccountDetails({ commit, dispatch }, id) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.get(`/claims/${id}/accounts`);
-    // const data = {
-    //   type: 'claimaccounts',
-    //   attributes: {
-    //     claimID: '60542e5ab32e591a23cf09b3',
-    //     netClaimed: 1500,
-    //     totalReplCost: 2100,
-    //     totalPayment: 1500,
-    //     totalExpense: 3000,
-    //     pendingDisbursement: 2500,
-    //     intialOffer: 0,
-    //     settlements: [
-    //       {
-    //         id: '1212121212121212',
-    //         desc: 'Dwelling',
-    //         netSettlement: 1200,
-    //         outstanding: 900,
-    //         totalPaid: 300
-    //       },
-    //       {
-    //         id: '1212121212121212',
-    //         desc: 'hgg',
-    //         netSettlement: 1200,
-    //         outstanding: 900,
-    //         totalPaid: 300
-    //       }
-    //     ]
-    //   }
-    // };
 
     commit('setAccountDetails', data);
     dispatch('setLoading', false);
@@ -85,54 +57,7 @@ export async function getAllExpenses({ commit, dispatch }, id) {
   dispatch('setLoading', true);
   try {
     console.log(888888888888);
-    // const { data } = await request.get(`/claims/${id}/payments`);
-    const data = {
-      type: 'claimexpenses',
-      attributes: {
-        claimID: '60d16dad2d23fe08a65c03b7',
-        expenses: [
-          {
-            created: '2021-06-22T05:26:23.177Z',
-            updated: '2021-06-22T05:26:23.177Z',
-            id: '60d1747f9f15085b4296e326',
-            receviedDate: '2020-09-24T11:18:06Z',
-            amount: 0,
-            reference: 'CH-00011',
-            responsible: {
-              value: 'Company',
-              machineValue: 'company'
-            },
-            desc: '1st checked recevied'
-          },
-          {
-            created: '2021-06-22T05:26:08.701Z',
-            updated: '2021-06-22T05:26:08.701Z',
-            id: '60d174709f15085b4296e325',
-            receviedDate: '2020-09-24T11:18:06Z',
-            amount: 0,
-            reference: 'CH-00ss011',
-            responsible: {
-              value: 'Company',
-              machineValue: 'company'
-            },
-            desc: '2st checked recevied'
-          },
-          {
-            created: '2021-06-22T05:25:26.307Z',
-            updated: '2021-06-22T05:25:26.307Z',
-            id: '60d174469f15085b4296e324',
-            receviedDate: '2020-09-24T11:18:06Z',
-            amount: 0,
-            reference: 'CH-00011',
-            responsible: {
-              value: 'Client',
-              machineValue: 'client'
-            },
-            desc: '3st checked recevied'
-          }
-        ]
-      }
-    };
+    const { data } = await request.get(`/claims/${id}/expenses`);
 
     commit('setAllExpenses', data);
     dispatch('setLoading', false);
