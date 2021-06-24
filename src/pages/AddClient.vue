@@ -1237,7 +1237,7 @@ export default {
   },
   data() {
     return {
-      step: 0,
+      step: 9,
       stepClickValidTill: 0,
       tenantOccupiedToggle: false,
       tenantOccupied: {
@@ -1623,6 +1623,9 @@ export default {
       this.contractInfo.sourceDetails.details = this.selectedLead.leadSource
         ? this.selectedLead.leadSource.detail
         : '';
+
+      console.log(this.contractInfo.sourceDetails, 'add client me');
+      console.log(this.selectedLead.leadSource, ' api me');
       this.insuranceDetails.carrierName = this.selectedLead.carrier
         ? this.selectedLead.carrier.value
         : '';

@@ -9,6 +9,7 @@
           group="vendorGroup"
           label="Vendor Info"
           header-class="text-primary"
+          default-opened
         >
           <q-card-section>
             <VendorCompanyInfo />
