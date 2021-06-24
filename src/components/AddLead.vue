@@ -888,7 +888,7 @@ export default {
         type: '',
         details: '',
         mailingAddress: {},
-        phone: [{ type: '', number: '' }],
+        phone: {},
         email: '',
         companyName: ''
       },
@@ -1206,6 +1206,7 @@ export default {
     onSelectingVendorList(vendor) {
       this.sourceDetails.id = vendor.id;
       this.sourceDetails.details = vendor.name;
+      this.sourceDetails.companyName = vendor.companyName;
       this.sourceDetails.mailingAddress = vendor.mailingAddress;
       this.sourceDetails.email = vendor.email;
       this.sourceDetails.phone = vendor.phoneNumber
@@ -1216,6 +1217,7 @@ export default {
 
     onCloseAddVendorDialogBox(vendor) {
       this.sourceDetails.id = vendor.id;
+      this.sourceDetails.companyName = vendor.companyName;
       this.sourceDetails.details =
         vendor.contact.fname + ' ' + vendor.contact.lname;
       this.sourceDetails.mailingAddress = vendor.mailingAddress;
@@ -1249,7 +1251,6 @@ export default {
     await this.getLossCauses();
     if (this.isEdit) {
       this.getVendorDetails(this.selectedLead.leadSource.id);
-      console.log(this.selectedVendor.mailingAddress, 'sonali');
       this.primaryDetails.honorific = this.selectedLead.primaryContact.honorific;
       this.primaryDetails.firstName = this.selectedLead.primaryContact.fname;
       this.primaryDetails.lastName = this.selectedLead.primaryContact.lname;

@@ -1237,7 +1237,7 @@ export default {
   },
   data() {
     return {
-      step: 9,
+      step: 0,
       stepClickValidTill: 0,
       tenantOccupiedToggle: false,
       tenantOccupied: {
@@ -1276,7 +1276,11 @@ export default {
         sourceDetails: {
           id: '',
           type: '',
-          details: ''
+          details: '',
+          mailingAddress: {},
+          phone: {},
+          email: '',
+          companyName: ''
         },
         time: '',
         contractDate: '',
@@ -1593,6 +1597,7 @@ export default {
 
     if (this.selectedLead.id) {
       // await this.getLeadDetails(this.selectedLead.id);
+      this.getVendorDetails(this.selectedLead.leadSource.id);
       this.honorific1 = {
         id: this.selectedLead.primaryContact.honorific.id,
         value: this.selectedLead.primaryContact.honorific.value,
@@ -1621,11 +1626,12 @@ export default {
         ? this.selectedLead.leadSource.type
         : '';
       this.contractInfo.sourceDetails.details = this.selectedLead.leadSource
-        ? this.selectedLead.leadSource.detail
+        ? this.selectedVendor.name
         : '';
-
-      console.log(this.contractInfo.sourceDetails, 'add client me');
-      console.log(this.selectedLead.leadSource, ' api me');
+      this.contractInfo.sourceDetails.mailingAddress = this.selectedVendor.mailingAddress;
+      this.contractInfo.sourceDetails.email == this.selectedVendor.email;
+      this.contractInfo.sourceDetails.phone = this.selectedVendor.phoneNumber;
+      this.contractInfo.sourceDetails.companyName = this.selectedVendor.companyName;
       this.insuranceDetails.carrierName = this.selectedLead.carrier
         ? this.selectedLead.carrier.value
         : '';
@@ -1666,6 +1672,7 @@ export default {
 
   computed: {
     ...mapGetters([
+      'selectedVendor',
       'selectedLead',
       'contactTypes',
       'clientTypes',
@@ -1693,6 +1700,7 @@ export default {
   },
   methods: {
     ...mapActions([
+      'getVendorDetails',
       'addClient',
       'getClaimReasons',
       'getLossCauses',
@@ -2173,7 +2181,11 @@ export default {
               : 0
           },
           dateOfFirstContact: dateToSend(this.contractInfo.firstContractDate),
-          source: this.contractInfo.sourceDetails
+          source: {
+            id: this.contractInfo.sourceDetails.id,
+            type: this.contractInfo.sourceDetails.type,
+            detail: this.contractInfo.sourceDetails.details
+          }
         },
 
         personnel: [

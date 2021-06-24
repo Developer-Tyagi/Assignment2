@@ -233,7 +233,7 @@
           <div
             class="custom-select"
             @click="contractInfo.vendorsListDialog = true"
-            v-if="!contractInfo.sourceDetails.email"
+            v-if="!contractInfo.sourceDetails.id"
           >
             <div class="select-text">
               Click for choosing a vendor
@@ -242,12 +242,19 @@
           </div>
           <q-card
             bordered
-            v-if="contractInfo.sourceDetails.email"
+            v-if="contractInfo.sourceDetails.id"
             @click="contractInfo.vendorsListDialog = true"
             class="q-my-md q-pa-md"
           >
             <div class="text-bold">
-              {{ contractInfo.sourceDetails.details }}
+              {{ contractInfo.sourceDetails.companyName }}
+            </div>
+            <div v-if="contractInfo.sourceDetails.details">
+              {{
+                contractInfo.sourceDetails.details
+                  ? contractInfo.sourceDetails.details
+                  : '-'
+              }}
             </div>
 
             <div
@@ -301,10 +308,13 @@
               <span
                 class="clickLink"
                 @click="
-                  onPhoneNumberClick(contractInfo.sourceDetails.phone, $event)
+                  onPhoneNumberClick(
+                    contractInfo.sourceDetails.phone.number,
+                    $event
+                  )
                 "
               >
-                {{ contractInfo.sourceDetails.phone }}</span
+                {{ contractInfo.sourceDetails.phone.number }}</span
               >
             </div>
             <div>
@@ -454,7 +464,7 @@ export default {
       this.contractInfo.sourceDetails.id = '';
       this.contractInfo.sourceDetails.details = '';
       this.contractInfo.sourceDetails.machineValue = '';
-      this.contractInfo.sourceDetails.address = '';
+      this.contractInfo.sourceDetails.mailingAddress = '';
       this.contractInfo.sourceDetails.email = '';
       this.contractInfo.sourceDetails.phone = '';
     },
@@ -462,6 +472,7 @@ export default {
     onSelectingVendorList(vendor) {
       this.contractInfo.sourceDetails.id = vendor.id;
       this.contractInfo.sourceDetails.details = vendor.name;
+      this.contractInfo.sourceDetails.companyName = vendor.companyName;
       this.contractInfo.sourceDetails.mailingAddress = vendor.mailingAddress;
       this.contractInfo.sourceDetails.email = vendor.email;
       this.contractInfo.sourceDetails.phone = vendor.phoneNumber
@@ -488,7 +499,9 @@ export default {
 
     onCloseAddVendorDialogBox(vendor) {
       this.contractInfo.sourceDetails.id = vendor.id;
-      this.contractInfo.sourceDetails.details = vendor.name;
+      this.contractInfo.sourceDetails.details =
+        vendor.contact.fname + ' ' + vendor.contact.lname;
+      this.contractInfo.sourceDetails.companyName = vendor.companyName;
       this.contractInfo.sourceDetails.mailingAddress = vendor.mailingAddress;
       this.contractInfo.sourceDetails.email = vendor.email;
       this.contractInfo.sourceDetails.phone = vendor.phoneNumber
