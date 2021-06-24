@@ -274,60 +274,12 @@
     </q-dialog>
     <!-- Token Dialog Box -->
     <q-dialog
-      v-model="tokenDialogBox"
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card class="q-ma-sm" style="width: 35%; height: 75vh">
-        <div class="row justify-end" style="height: 50px">
-          <q-btn dense flat icon="close" color="black" v-close-popup>
-            <q-tooltip>Close</q-tooltip>
-          </q-btn>
-        </div>
-        <table class="table">
-          <tr>
-            <th class="table-th1" style="width: 26%">NAME</th>
-            <th class="table-th" style="">VALUE</th>
-            <th class="table-th" style="">DESCRIPTION</th>
-          </tr>
-        </table>
-
-        <table class="q-ma-md table">
-          <div class="full-width" v-for="(usr, index) in tokens">
-            <q-expansion-item
-              class="q-mx-md"
-              expand-separator
-              :label="`${usr.group}`"
-            >
-              <tr class="table-tr" v-for="(user, ind) in usr.tokens">
-                <td class="table-td" style="width: 20%">
-                  {{ user.name }}
-                </td>
-                <td
-                  class="table-td clickable text-primary"
-                  style="height: 26px; font-size: 10px"
-                  @click="setValueToTemplate(user.value)"
-                >
-                  {{ user.value }}
-                </td>
-                <td class="table-td" style="height: 26px; font-size: 10px">
-                  {{ user.desc }}
-                </td>
-              </tr>
-            </q-expansion-item>
-          </div>
-        </table>
-      </q-card>
-    </q-dialog>
-
-    <q-dialog
       v-model="addTemplateDialogBox"
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card style="height: 80%; width: 60%">
+      <q-card style="height: 85%; width: 60%">
         <div class="row justify-between bg-primary" style="height: 50px">
           <div class="text-white text-h6 q-pa-sm">Add Template</div>
           <q-btn dense flat icon="close" color="white" v-close-popup>
@@ -364,100 +316,9 @@
               />
             </div>
             <div class="text-bold q-py-sm">BODY</div>
-
-            <!-- <q-editor
-              v-model="post.body"
-              :dense="$q.screen.lt.md"
-              :definitions="{
-                save: {
-                  tip: 'Save your work',
-                  icon: 'save',
-                  label: 'Save',
-                  handler: uploadIt
-                },
-                upload: {
-                  tip: 'Upload to cloud',
-                  icon: 'insert_photo',
-                  label: 'Upload',
-                  handler: insertImg
-                },
-                create: {
-                  tip: 'Upload token',
-                  icon: 'add_circle',
-                  label: 'Token',
-                  handler: tokenDialog
-                }
-              }"
-              :toolbar="[
-                [
-                  'bold',
-                  'italic',
-                  'strike',
-                  'underline',
-                  'right',
-                  'center',
-                  'justify',
-                  'left',
-                  'print'
-                ],
-                [
-                  {
-                    label: $q.lang.editor.formatting,
-                    icon: $q.iconSet.editor.formatting,
-                    list: 'no-icons',
-                    options: ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'code']
-                  },
-                  {
-                    label: $q.lang.editor.fontSize,
-                    icon: $q.iconSet.editor.fontSize,
-                    fixedLabel: true,
-                    fixedIcon: true,
-                    list: 'no-icons',
-                    options: [
-                      'size-1',
-                      'size-2',
-                      'size-3',
-                      'size-4',
-                      'size-5',
-                      'size-6',
-                      'size-7'
-                    ]
-                  },
-                  {
-                    label: $q.lang.editor.defaultFont,
-                    icon: $q.iconSet.editor.font,
-                    fixedIcon: true,
-                    list: 'no-icons',
-                    options: [
-                      'default_font',
-                      'arial',
-                      'arial_black',
-                      'comic_sans',
-                      'courier_new',
-                      'impact',
-                      'lucida_grande',
-                      'times_new_roman',
-                      'verdana'
-                    ]
-                  },
-                  'removeFormat'
-                ],
-                ['upload', 'save', 'create']
-              ]"
-              :fonts="{
-                arial: 'Arial',
-                arial_black: 'Arial Black',
-                comic_sans: 'Comic Sans MS',
-                courier_new: 'Courier New',
-                impact: 'Impact',
-                lucida_grande: 'Lucida Grande',
-                times_new_roman: 'Times New Roman',
-                verdana: 'Verdana'
-              }"
-            >
-            </q-editor> -->
             <Ckeditor
               :markup="post.body"
+              :templateTokens="templateTokens"
               @updateMarkup="updateMarkup"
             ></Ckeditor>
           </div>
@@ -509,7 +370,6 @@ import { validateEmail } from '@utils/validation';
 import SubSideBar from 'components/SubSideBar';
 import CustomBar from 'components/CustomBar';
 import Ckeditor from 'components/Ckeditor';
-import { event } from 'quasar';
 
 export default {
   name: 'SetConfiguration',
@@ -526,6 +386,7 @@ export default {
       alert: false,
       addTemplateDialogBox: false,
       tokenDialogBox: false,
+      templateTokens: [],
       templatetype: { value: '', machineValue: '' },
       definitions: {
         insert_img: {
@@ -536,12 +397,9 @@ export default {
       },
       title: '',
       post: { body: '' },
-      editorConfig: {
-        // The configuration of the editor.
-      },
       dialogBox: false,
       dialogBoxName: {},
-      tab: {},
+      tab: { name: 'Inspection Type', key: 'inspectionType' },
       table: [],
       inspectionType: {
         value: '',
@@ -569,14 +427,10 @@ export default {
     };
   },
 
-  created() {
-    this.getTemplates();
-    this.getTemplateToken();
-    this.getAllTemplate();
+  async created() {
     this.getInspectionTypes().then(async () => {
       this.table = this.inspectionTypes;
     });
-    this.tab = this.configurationType[0];
   },
 
   computed: {
@@ -632,12 +486,22 @@ export default {
       'deleteTemplate',
       'addTemplateType'
     ]),
+
     updateMarkup(val) {
       this.post.body = val;
     },
 
     openAddTemplateBox() {
       this.isEdit = false;
+      this.templateTokens = [];
+      this.tokens.forEach(val => {
+        val.attributes.tokens.forEach(token => {
+          let arr = [];
+          arr[0] = token.name;
+          arr[1] = token.value;
+          this.templateTokens.push(arr);
+        });
+      });
       this.addTemplateDialogBox = true;
     },
 
@@ -673,9 +537,9 @@ export default {
       this.post.body = '';
       this.templatetype.value = '';
       this.templatetype.machineValue = '';
-
       this.isEdit = false;
     },
+
     async onDeleteConfirmation(val) {
       const payload = {
         type: this.indexValue
@@ -683,10 +547,12 @@ export default {
       await this.deleteTemplate(payload);
       await this.getAllTemplate();
     },
+
     onDeleteTemplate(value) {
       this.indexValue = value.name.type.machineValue;
       this.alert = true;
     },
+
     onEditTemplate(value) {
       this.isEdit = true;
       this.post.body = value.name.value;
@@ -696,45 +562,13 @@ export default {
       this.addTemplateDialogBox = true;
     },
 
-    pasteCapture() {
-      console.log(event);
-    },
-    dragCapture() {
-      console.log(event);
-    },
-
     setTypes(value) {
       const obj = this.templateOptions.find(item => {
         return item.name === value;
       });
       this.templatetype.machineValue = obj.machineValue;
     },
-    insertImg() {
-      // insertImg method
-      const post = this.post;
-      // create an input file element to open file dialog
-      const input = document.createElement('input');
-      input.type = 'file';
-      input.accept = '.png, .jpg'; // file extensions allowed
-      let file;
-      input.onchange = _ => {
-        const files = Array.from(input.files);
-        file = files[0];
 
-        // lets load the file as dataUrl
-        const reader = new FileReader();
-        let dataUrl = '';
-        reader.onloadend = function() {
-          dataUrl = reader.result;
-
-          // append result to the body of your post
-          post.body +=
-            '<div><img src="' + dataUrl + '" style="height:200px;" /></div>';
-        };
-        reader.readAsDataURL(file);
-      };
-      input.click();
-    },
     saveWork() {
       this.$q.notify({
         message: 'Saved your text to local storage',
@@ -743,6 +577,7 @@ export default {
         icon: 'cloud_done'
       });
     },
+
     uploadIt() {
       this.$q.notify({
         message: 'Server unavailable. Check connectivity.',
@@ -751,9 +586,11 @@ export default {
         icon: 'warning'
       });
     },
+
     tokenDialog() {
       this.tokenDialogBox = true;
     },
+
     setValueToTemplate(value) {
       this.post.body += value;
       this.tokenDialogBox = false;
@@ -809,6 +646,12 @@ export default {
         case 'templateType':
           await this.getTemplates();
           this.table = this.templateOptions;
+          break;
+        case 'template':
+          await this.getTemplates();
+          await this.getAllTemplate();
+          await this.getTemplateToken();
+          this.table = this.templates;
       }
     },
 
@@ -826,7 +669,6 @@ export default {
                 ].value = this.inspectionType.value;
               }
             }
-
             var response = await this.addInspectionType(this.inspectionType);
             break;
           case 'honorific':

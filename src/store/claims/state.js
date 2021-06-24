@@ -6,6 +6,8 @@ export default function() {
     claimNotes: [],
     personnel: [],
     account: [],
+    payment: [],
+    expenses: [],
     policy: [],
     lossInfo: [],
     settlementType: [],

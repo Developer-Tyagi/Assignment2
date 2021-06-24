@@ -452,6 +452,7 @@
                     <div>
                       {{ sourceDetails.details }}
                     </div>
+
                     <div
                       v-if="
                         sourceDetails.mailingAddress &&
@@ -1215,7 +1216,8 @@ export default {
 
     onCloseAddVendorDialogBox(vendor) {
       this.sourceDetails.id = vendor.id;
-      this.sourceDetails.details = vendor.name;
+      this.sourceDetails.details =
+        vendor.contact.fname + ' ' + vendor.contact.lname;
       this.sourceDetails.mailingAddress = vendor.mailingAddress;
       this.sourceDetails.email = vendor.email;
       this.sourceDetails.phone = vendor.phoneNumber

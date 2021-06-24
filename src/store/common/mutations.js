@@ -130,7 +130,7 @@ export function setAllTemplate(state, templates) {
 }
 
 export function setTemplateToken(state, token) {
-  state.tokens = token.data;
+  state.tokens = token;
 }
 
 export function setNetworkStatus(state, isOnline) {

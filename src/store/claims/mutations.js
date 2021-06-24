@@ -57,6 +57,19 @@ export function setPersonnel(state, personnel) {
     ...personnel.attributes
   };
 }
+
+export function setAllPayment(state, payment) {
+  state.payment = {
+    ...payment.attributes
+  };
+}
+
+export function setAllExpenses(state, expenses) {
+  state.expenses = {
+    ...expenses.attributes
+  };
+}
+
 export function setAccountDetails(state, account) {
   state.account = {
     ...account.attributes
