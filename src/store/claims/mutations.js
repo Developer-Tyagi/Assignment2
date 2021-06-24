@@ -129,6 +129,10 @@ export function setPOLClaimDocument(state, claimPOLDocument) {
 export function setClaimPhoto(state, claimPhoto) {
   state.claimPhoto = { ...claimPhoto.attributes };
 }
+export function setVendorDocument(state, vendorDocument) {
+  state.vendorDocument = { ...vendorDocument.attributes };
+}
+
 export function setClaimSketch(state, claimSketch) {
   state.claimSketch = { ...claimSketch.attributes };
 }
