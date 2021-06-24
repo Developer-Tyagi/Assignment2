@@ -255,8 +255,43 @@
                 </template>
               </q-input>
             </div>
+            <div style="border-style: ridge ">
+              <div class="row justify-between" style="align-items: center">
+                <span class="col-6 q-pt-xs q-ml-md">Settlements</span>
+                <span class="col-5">Amounts</span>
+              </div>
+
+              <div class="q-pa-sm " v-if="showValue">
+                <div
+                  class="row justify-between"
+                  v-for="(settlement, index) in account.settlements"
+                >
+                  <div class=" col-6 q-mt-md">
+                    {{ index + 1 }}.
+                    <span class="q-ml-sm">{{ settlement.desc }}</span>
+                  </div>
+                  <div class="col-5">
+                    <q-input
+                      dense
+                      v-model.number="payments.settlements[index].amountPaid"
+                      prefix="$"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
             <div class="row" style="align-items: center">
-              <span class="">Amount of Payment</span>
+              <span class="">Check Reference #</span>
+
+              <q-input
+                dense
+                v-model="payments.checkReference"
+                style="margin-left: auto; width: 50%"
+                class="input-extra-padding"
+              />
+            </div>
+            <div class="row" style="align-items: center">
+              <span class="">Amount Of Payment</span>
 
               <q-input
                 dense
@@ -268,32 +303,7 @@
                 class="input-extra-padding"
               />
             </div>
-            <div class="row" style="align-items: center">
-              <span class="">Check Reference #</span>
-
-              <q-input
-                dense
-                v-model="payments.checkReference"
-                mask="#.#"
-                type="number"
-                style="margin-left: auto; width: 50%"
-                class="input-extra-padding"
-              />
-            </div>
-            <div class="row" style="align-items: center">
-              <span class="">Net Settlement</span>
-
-              <q-input
-                dense
-                v-model.number="payments.netSettlement"
-                mask="#.#"
-                type="number"
-                style="margin-left: auto; width: 50%"
-                prefix="$"
-                class="input-extra-padding"
-              />
-            </div>
-            <div class="row" style="align-items: center">
+            <!-- <div class="row" style="align-items: center">
               <span class="">Paid to Date</span>
 
               <q-input
@@ -305,8 +315,8 @@
                 prefix="$"
                 class="input-extra-padding"
               />
-            </div>
-            <div class="row" style="align-items: center">
+            </div> -->
+            <!-- <div class="row" style="align-items: center">
               <span class="">Outstanding</span>
 
               <q-input
@@ -318,8 +328,8 @@
                 prefix="$"
                 class="input-extra-padding"
               />
-            </div>
-            <div class="row" style="align-items: center">
+            </div> -->
+            <!-- <div class="row" style="align-items: center">
               <span class="">Aim To Apply</span>
 
               <q-input
@@ -331,7 +341,7 @@
                 prefix="$"
                 class="input-extra-padding"
               />
-            </div>
+            </div> -->
             <div>Notes</div>
             <textarea v-model="payments.notes" rows="3" class="full-width" />
           </q-form>
@@ -409,7 +419,7 @@
                 class="input-extra-padding"
               />
             </div>
-            <div class="row" style="align-items: center">
+            <!-- <div class="row" style="align-items: center">
               <span class=""> Amount Collected</span>
 
               <q-input
@@ -420,7 +430,7 @@
                 style="margin-left: auto; width: 50%"
                 class="input-extra-padding"
               />
-            </div>
+            </div> -->
 
             <div class="row" style="align-items: center">
               <span class=""> Company Fee</span>
@@ -433,8 +443,8 @@
 
               <q-input
                 dense
+                v-model="addexpenses.payee"
                 style="margin-left: auto; width: 50%"
-                prefix="$"
                 class="input-extra-padding"
               />
             </div>
@@ -442,7 +452,7 @@
               <span class="">Resposible Party</span>
 
               <q-input
-                v-model="addexpenses.responsible.value"
+                v-model="addexpenses.payableBy.value"
                 dense
                 style="margin-left: auto; width: 50%"
                 class="input-extra-padding"
@@ -459,10 +469,7 @@
               <q-input
                 dense
                 v-model="addexpenses.reference"
-                mask="#.#"
-                type="number"
                 style="margin-left: auto; width: 50%"
-                prefix="$"
                 class="input-extra-padding"
               />
             </div>
@@ -800,23 +807,27 @@ export default {
   },
   data() {
     return {
+      showValue: false,
+
       payments: {
         date: '',
         amountsOfPayment: '',
         checkReference: '',
         netSettlement: '',
         paidToDate: '',
+        settlements: [],
         outstanding: '',
         aimToApply: '',
         notes: ''
       },
       addexpenses: {
         amount: '',
-        receviedDate: '2020-09-24T11:18:06Z',
+        receviedDate: '',
         reference: '',
-        responsible: {
-          value: 'Client',
-          machineValue: 'client'
+        payee: '',
+        payableBy: {
+          value: '',
+          machineValue: ''
         },
         desc: ''
       },
@@ -840,11 +851,21 @@ export default {
     ])
   },
 
-  created() {
+  async created() {
     this.getEstimateInfo(this.selectedClaimId);
     this.getAllPayment(this.selectedClaimId);
-    this.getAccountDetails(this.selectedClaimId);
+    // this.getAccountDetails(this.selectedClaimId);
     this.getAllExpenses(this.selectedClaimId);
+
+    await this.getAccountDetails(this.selectedClaimId).then(async () => {
+      this.account.settlements.forEach(val => {
+        this.payments.settlements.push({
+          id: val.id,
+          amountPaid: ''
+        });
+        this.showValue = true;
+      });
+    });
   },
   methods: {
     ...mapActions([
@@ -865,15 +886,11 @@ export default {
       const payload = {
         id: this.selectedClaimId,
         data: {
-          amount: this.payments.amount,
+          amount: this.payments.amountsOfPayment,
+
           receviedDate: dateToSend(this.payments.date),
           reference: this.payments.checkReference,
-          settlements: [
-            {
-              id: '1212121212121212',
-              amountPaid: 300.0
-            }
-          ],
+          settlements: this.payments.settlements,
           note: this.payments.notes
         }
       };
@@ -883,10 +900,23 @@ export default {
         this.addPaymentDialog = false;
       }
     },
+
     async addExpensesSaveClick() {
       const payload = {
         id: this.selectedClaimId,
-        data: this.addexpenses
+
+        data: {
+          addexpenses: {
+            amount: this.addexpenses.amount,
+            receviedDate: dateToSend(this.addexpenses.receviedDate),
+            reference: this.addexpenses.reference,
+            payee: this.addexpenses.amount,
+            payableBy: {
+              value: this.addexpenses.payableBy.value
+            },
+            desc: this.addexpenses.desc
+          }
+        }
       };
 
       const success = await this.addExpenses(payload);
