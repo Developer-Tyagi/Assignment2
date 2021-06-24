@@ -54,7 +54,9 @@
                 selectedLead.leadSource.type != 'google'
             "
           >
-            <span class="heading-light col-3"> Lead Source </span>
+            <span class="heading-light col-3">
+              Lead Source
+            </span>
             <span class="q-ml-md col">
               {{
                 selectedLead.leadSource.detail

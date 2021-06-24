@@ -447,6 +447,9 @@
                     class="q-my-md q-pa-md"
                   >
                     <div class="text-bold">
+                      {{ sourceDetails.companyName }}
+                    </div>
+                    <div>
                       {{ sourceDetails.details }}
                     </div>
 
@@ -500,9 +503,11 @@
                       Phone:
                       <span
                         class="clickLink"
-                        @click="onPhoneNumberClick(sourceDetails.phone, $event)"
+                        @click="
+                          onPhoneNumberClick(sourceDetails.phone.number, $event)
+                        "
                       >
-                        {{ sourceDetails.phone }}</span
+                        {{ sourceDetails.phone.number }}</span
                       >
                     </div>
                     <div>
@@ -882,9 +887,10 @@ export default {
         id: '',
         type: '',
         details: '',
-        address: '',
+        mailingAddress: {},
+        phone: {},
         email: '',
-        phone: ''
+        companyName: ''
       },
       schedulingDetails: {
         isAutomaticScheduling: false,
@@ -904,6 +910,7 @@ export default {
 
   methods: {
     ...mapActions([
+      'getVendorDetails',
       'getClients',
       'addLeads',
       'getInspectionTypes',
@@ -1068,15 +1075,7 @@ export default {
           leadSource: {
             id: this.sourceDetails.id,
             type: this.sourceDetails.type,
-            detail: this.sourceDetails.details,
-            address: this.sourceDetails.mailingAddress,
-            email: this.sourceDetails.email,
-            phoneNumber: [
-              {
-                type: '',
-                number: this.sourceDetails.phone
-              }
-            ]
+            detail: this.sourceDetails.details
           },
           carrier: {
             id: this.insuranceDetails.carrierId,
@@ -1207,6 +1206,7 @@ export default {
     onSelectingVendorList(vendor) {
       this.sourceDetails.id = vendor.id;
       this.sourceDetails.details = vendor.name;
+      this.sourceDetails.companyName = vendor.companyName;
       this.sourceDetails.mailingAddress = vendor.mailingAddress;
       this.sourceDetails.email = vendor.email;
       this.sourceDetails.phone = vendor.phoneNumber
@@ -1217,6 +1217,7 @@ export default {
 
     onCloseAddVendorDialogBox(vendor) {
       this.sourceDetails.id = vendor.id;
+      this.sourceDetails.companyName = vendor.companyName;
       this.sourceDetails.details =
         vendor.contact.fname + ' ' + vendor.contact.lname;
       this.sourceDetails.mailingAddress = vendor.mailingAddress;
@@ -1238,6 +1239,7 @@ export default {
       'titles',
       'vendors',
       'lossCauses',
+      'selectedVendor',
       'selectedLead'
     ])
   },
@@ -1248,6 +1250,7 @@ export default {
     await this.getTitles();
     await this.getLossCauses();
     if (this.isEdit) {
+      this.getVendorDetails(this.selectedLead.leadSource.id);
       this.primaryDetails.honorific = this.selectedLead.primaryContact.honorific;
       this.primaryDetails.firstName = this.selectedLead.primaryContact.fname;
       this.primaryDetails.lastName = this.selectedLead.primaryContact.lname;
@@ -1278,9 +1281,14 @@ export default {
       this.insuranceDetails.policyNumber = this.selectedLead.policyNumber;
       this.schedulingDetails.isAutomaticScheduling = this.selectedLead.isAutomaticScheduling;
       this.notes = this.selectedLead.notes;
-      this.sourceDetails.id = this.selectedLead.leadSource.id;
+
+      this.sourceDetails.id = this.selectedVendor.id;
       this.sourceDetails.type = this.selectedLead.leadSource.type;
-      this.sourceDetails.details = this.selectedLead.leadSource.detail;
+      this.sourceDetails.details = this.selectedVendor.name;
+      this.sourceDetails.mailingAddress = this.selectedVendor.mailingAddress;
+      this.sourceDetails.email = this.selectedVendor.email;
+      this.sourceDetails.phone = this.selectedVendor.phoneNumber;
+      this.sourceDetails.companyName = this.selectedVendor.companyName;
       this.insuranceDetails.carrierName = this.selectedLead.carrier
         ? this.selectedLead.carrier.value
         : '';
