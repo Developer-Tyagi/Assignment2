@@ -36,6 +36,41 @@ export async function getAccountDetails({ commit, dispatch }, id) {
   }
 }
 
+export async function getAllPayment({ commit, dispatch }, id) {
+  dispatch('setLoading', true);
+  try {
+    console.log(888888888888);
+    const { data } = await request.get(`/claims/${id}/payments`);
+
+    commit('setAllPayment', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+  }
+}
+export async function getAllExpenses({ commit, dispatch }, id) {
+  dispatch('setLoading', true);
+  try {
+    console.log(888888888888);
+    const { data } = await request.get(`/claims/${id}/expenses`);
+
+    commit('setAllExpenses', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+  }
+}
+
 //API for Editing the Activity logs  editLog
 
 export async function editLog({ dispatch, state }, payload) {
@@ -58,6 +93,53 @@ export async function editLog({ dispatch, state }, payload) {
       type: 'negative',
       message: 'failed to update Activity Log'
     });
+  }
+}
+
+export async function addPayment({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      `/claims/${payload.id}/payments`,
+      buildApiData('claimpayments', payload.data)
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Successfully Added Payment !'
+    });
+    return true;
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'Failed to Add Payment'
+    });
+    return false;
+  }
+}
+export async function addExpenses({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      `/claims/${payload.id}/expenses`,
+      buildApiData('claimexpenses', payload.data)
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Successfully Added Expenses !'
+    });
+    return true;
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'Failed to Add Expenses'
+    });
+    return false;
   }
 }
 

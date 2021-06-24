@@ -24,3 +24,5 @@ export const proofOfLoss = state => state.proofOfLoss;
 export const estimator = state => state.estimator;
 export const account = state => state.account;
 export const claimPOLDocument = state => state.claimPOLDocument;
+export const payment = state => state.payment;
+export const expenses = state => state.expenses;
