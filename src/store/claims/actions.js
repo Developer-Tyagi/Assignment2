@@ -39,7 +39,6 @@ export async function getAccountDetails({ commit, dispatch }, id) {
 export async function getAllPayment({ commit, dispatch }, id) {
   dispatch('setLoading', true);
   try {
-    console.log(888888888888);
     const { data } = await request.get(`/claims/${id}/payments`);
 
     commit('setAllPayment', data);
@@ -56,7 +55,6 @@ export async function getAllPayment({ commit, dispatch }, id) {
 export async function getAllExpenses({ commit, dispatch }, id) {
   dispatch('setLoading', true);
   try {
-    console.log(888888888888);
     const { data } = await request.get(`/claims/${id}/expenses`);
 
     commit('setAllExpenses', data);
