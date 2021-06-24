@@ -58,10 +58,14 @@
             style="width: calc(100% - 54px)"
           >
             <div class="text-capitalize ellipsis full-width">
-              {{ user.name || 'Unknown' }}
+              {{
+                user.roles[0].machineValue == 'vendor'
+                  ? user.companyName
+                  : user.name
+              }}
             </div>
             <div style="font-size: 11px; opacity: 80%" @click="">
-              {{ user.contact.fname ? user.contact.fname : '-' }}
+              {{ user.contact.fname ? user.contact.fname : '' }}
             </div>
           </div>
         </div>

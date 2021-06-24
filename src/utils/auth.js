@@ -2,6 +2,7 @@ import { LocalStorage } from 'quasar';
 
 const tokenName = 'access_token';
 const currentUser = 'current_user';
+const currentUserRole = 'current_user_role';
 const fcmToken = 'fcmToken';
 
 export function setToken(token) {
@@ -18,10 +19,13 @@ export function getToken() {
 
 export function setCurrentUser(user) {
   LocalStorage.set(currentUser, user);
+  const role = user.attributes.roles[0].machineValue;
+  LocalStorage.set(currentUserRole, role);
 }
 
 export function removeCurrentUser() {
   LocalStorage.remove(currentUser);
+  LocalStorage.remove(currentUserRole);
 }
 
 export function getCurrentUser() {
