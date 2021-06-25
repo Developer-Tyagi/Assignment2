@@ -9,15 +9,28 @@
           </div>
         </div>
 
-        <div class=" q-mt-lg q-pa-sm ">
-          <div class="row ">
-            <div class="col-5 text-bold">User Name</div>
+        <div class="q-mt-lg q-pa-sm">
+          <div class="row">
+            <div
+              class="col-5 text-bold"
+              v-if="user.roles[0].machineValue == 'vendor'"
+            >
+              Company Name
+            </div>
             <div>
-              {{ user.name }}
+              {{
+                user.roles[0].machineValue == 'vendor'
+                  ? user.companyName
+                  : user.name
+              }}
             </div>
           </div>
-          <div class="row ">
-            <div class="col-5  text-bold">Address</div>
+          <div class="row" v-if="user.name">
+            <div class="col-5 text-bold">User Name</div>
+            <div>{{ user.name }}</div>
+          </div>
+          <div class="row">
+            <div class="col-5 text-bold">Address</div>
 
             <div class="column col-6" v-if="user.mailingAddress">
               {{
@@ -51,8 +64,8 @@
               }}
             </div>
           </div>
-          <div class="row ">
-            <div class=" col-5 text-bold">Mobile</div>
+          <div class="row">
+            <div class="col-5 text-bold">Mobile</div>
             <div
               class="col clickable text-primary"
               @click="onPhoneNumberClick(user.phoneNumber.number, $event)"
@@ -61,13 +74,13 @@
             </div>
           </div>
           <div class="row q-mt-sm">
-            <div class="text-bold col-5 ">Postal Code</div>
+            <div class="text-bold col-5">Postal Code</div>
             <div v-if="user.mailingAddress">
               {{ user.mailingAddress ? user.mailingAddress.postalCode : '-' }}
             </div>
           </div>
           <div class="row q-mt-sm">
-            <div class=" col-5 text-bold">Email</div>
+            <div class="col-5 text-bold">Email</div>
             <div
               class="col clickable text-primary"
               @click="onEmailClick(user.email, $event)"
@@ -94,7 +107,14 @@
           <q-form ref="addUserForm" class="q-pa-md">
             <div class="q-mt-xs">
               <q-card class="q-pa-sm q-mb-sm">
-                <div class=" full-width">
+                <div class="full-width">
+                  <q-input
+                    v-model="users.companyName"
+                    dense
+                    class="q-mx-md col-5 input-extra-padding"
+                    label="Company name"
+                  />
+
                   <q-input
                     v-model="users.fname"
                     dense
@@ -131,7 +151,7 @@
                   <q-input
                     dense
                     v-model="users.contact.number"
-                    class=" required col-5 input-extra-padding"
+                    class="required col-5 input-extra-padding"
                     label="Phone"
                     mask="(###) ###-####"
                     lazy-rules
@@ -174,7 +194,7 @@
           <q-btn
             color="primary"
             label="Save"
-            class=" button-width-90 q-my-lg"
+            class="button-width-90 q-my-lg"
             @click="onSaveEditedButton"
           />
         </div>
@@ -222,6 +242,7 @@ export default {
       }
     };
   },
+
   created() {
     this.getContactTypes();
     if (getCurrentUser().attributes) {
@@ -229,6 +250,7 @@ export default {
       this.userId = getCurrentUser().id;
     }
   },
+
   computed: {
     ...mapGetters(['contactTypes'])
   },
@@ -237,7 +259,9 @@ export default {
     onPhoneNumberClick,
     onEmailClick,
     ...mapActions(['getContactTypes', 'editUserInfo', 'getUserInfo']),
+
     onEditClick() {
+      this.users.companyName = this.user.companyName;
       this.users.fname = this.user.contact.fname;
       this.users.lname = this.user.contact.lname;
       this.users.contact.type = this.user.phoneNumber
@@ -299,6 +323,7 @@ export default {
         await this.editUserInfo(payload);
         await this.getUserInfo();
         this.user = getCurrentUser().attributes;
+        this.users.companyName = this.user.companyName;
         this.users.fname = this.user.contact.fname;
         this.users.lname = this.user.contact.lname;
         this.users.contact.type = this.user.phoneNumber.type;

@@ -330,7 +330,7 @@
                 }}
               </div>
             </div>
-            <div class="col">
+            <div class="col" v-if="singleUserData.contact.phoneNumber.length">
               {{
                 singleUserData.contact.phoneNumber
                   ? singleUserData.contact.phoneNumber[0].number
@@ -515,7 +515,11 @@ export default {
           }
         }
       },
-      singleUserData: [],
+      singleUserData: {
+        contact: {
+          phoneNumber: []
+        }
+      },
       newRole: '',
       addNewRoles: false,
       viewInfoDialogBox: false,
