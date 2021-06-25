@@ -24,12 +24,34 @@ export default {
     showEditor: false,
     config: {
       height: 150,
+      toolbarGroups: [
+        { name: 'document', groups: ['mode', 'document', 'doctools'] },
+        { name: 'clipboard', groups: ['clipboard', 'undo'] },
+        { name: 'forms', groups: ['forms'] },
+        { name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
+        {
+          name: 'editing',
+          groups: ['find', 'selection', 'spellchecker', 'editing']
+        },
+        {
+          name: 'paragraph',
+          groups: ['list', 'indent', 'blocks', 'align', 'bidi', 'paragraph']
+        },
+        { name: 'links', groups: ['links'] },
+        { name: 'insert', groups: ['insert'] },
+        '/',
+        { name: 'styles', groups: ['styles'] },
+        { name: 'colors', groups: ['colors'] },
+        { name: 'tools', groups: ['tools'] },
+        { name: 'others', groups: ['others'] },
+        { name: 'about', groups: ['about'] }
+      ],
       extraPlugins: 'token',
+      clipboard_defaultContentType: 'text',
       availableTokens: [],
-      tokenStart: '',
-      tokenEnd: '',
+      tabSpaces: 4,
       removeButtons:
-        'Source,Save,ExportPdf,Preview,Print,Scayt,Form,Textarea,TextField,Select,Button,ImageButton,HiddenField,CopyFormatting,RemoveFormat,Language,BidiRtl,BidiLtr,Link,Unlink,Anchor,Flash,Smiley,SpecialChar,PageBreak,Iframe,About,ShowBlocks,Maximize'
+        'Save,NewPage,ExportPdf,Preview,Print,Templates,Cut,Copy,Paste,PasteText,PasteFromWord,Undo,Redo,SelectAll,Scayt,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Source,CreateDiv,Blockquote,About,Maximize,ShowBlocks,Flash,Smiley,SpecialChar,Iframe,PageBreak,Anchor,Unlink,Link,BidiLtr,BidiRtl,Language',
       // filebrowserBrowseUrl: '/apps/ckfinder/3.4.5/ckfinder.html',
       // filebrowserImageBrowseUrl: '/apps/ckfinder/3.4.5/ckfinder.html?type=Images',
       // filebrowserUploadMethod: 'form',
@@ -49,6 +71,7 @@ export default {
       // format_tags: 'p;h1;h2;h3;pre',
       // // Simplify the Image and Link dialog windows. The "Advanced" tab is not needed in most cases.
       // removeDialogTabs: 'image:advanced;link:advanced'
+      pasteFromWordRemoveFontStyles: false
     }
   }),
 
