@@ -20,6 +20,7 @@ export default function() {
     tasks: [],
     templateOptions: [],
     claimDocument: [],
+    vendorDocument: [],
     claimStatic: {},
     claimPhoto: [],
     claimSketch: [],

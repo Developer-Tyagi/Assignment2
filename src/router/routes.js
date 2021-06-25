@@ -58,6 +58,12 @@ const routes = [
         component: () => import('pages/DocumentUpload.vue')
       },
       {
+        path: 'vendor-document',
+        name: ' upload document ',
+        caseSensitive: true,
+        component: () => import('pages/VendorDocument.vue')
+      },
+      {
         path: 'configuration',
         name: 'configuration',
         caseSensitive: true,

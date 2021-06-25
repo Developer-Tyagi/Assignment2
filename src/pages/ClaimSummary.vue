@@ -704,14 +704,14 @@
           <div
             v-if="userRole == 'estimator'"
             class="q-pa-md heading-light"
-            @click="onClickUploadDocument"
+            @click="onClickUploadDocument('estimate')"
           >
             Upload Estimate Documents
           </div>
           <div
             v-if="userRole == 'vendor'"
             class="q-pa-md heading-light"
-            @click="onClickUploadDocument"
+            @click="onClickUploadDocument('vendor')"
           >
             Upload Vendor Documents
           </div>
@@ -1003,8 +1003,12 @@ export default {
       this.lossInfo.cause.machineValue = obj.machineValue;
       this.lossInfo.cause.value = obj.name;
     },
-    onClickUploadDocument() {
-      this.$router.push('/document-upload');
+    onClickUploadDocument(value) {
+      if (value == 'estimate') {
+        this.$router.push('/document-upload');
+      } else {
+        this.$router.push('/vendor-document');
+      }
     }
   }
 };

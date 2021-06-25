@@ -280,6 +280,12 @@
           <div class="q-pa-md heading-light" @click="onClickUploadDocument">
             Upload Estimate Documents
           </div>
+          <div
+            class="q-pa-md heading-light"
+            @click="$router.push('/vendor-document')"
+          >
+            Upload Vendor Documents
+          </div>
         </q-card-section>
       </q-card>
     </q-dialog>
