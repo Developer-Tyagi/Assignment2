@@ -20,11 +20,11 @@ export default {
     return {};
   },
   async created() {
-    await this.getSingleClaims(this.$route.params.claimId);
+    await this.getSingleClaims(this.selectedClaimId);
   },
 
   computed: {
-    ...mapGetters(['claim'])
+    ...mapGetters(['claim', 'selectedClaimId'])
   },
 
   methods: {
