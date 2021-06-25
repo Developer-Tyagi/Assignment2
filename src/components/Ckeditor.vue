@@ -92,7 +92,7 @@ export default {
 
   methods: {
     prefill() {
-      // this.editorData = this.markup;
+      this.editorData = this.markup;
     }
   }
 };
