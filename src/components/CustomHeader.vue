@@ -237,6 +237,32 @@ export default {
         'admin',
         'manage-users',
         'configuration'
+      ],
+      office_manager: [
+        'dashboard',
+        'leads',
+        'clients',
+        'claims',
+        'vendors',
+        'carriers',
+        'mortagages',
+        'reports',
+        'admin',
+        'manage-users',
+        'configuration'
+      ],
+      office_staff: [
+        'dashboard',
+        'leads',
+        'clients',
+        'claims',
+        'vendors',
+        'carriers',
+        'mortagages',
+        'reports',
+        'admin',
+        'manage-users',
+        'configuration'
       ]
     };
   },
