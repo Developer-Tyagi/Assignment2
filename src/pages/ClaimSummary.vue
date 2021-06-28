@@ -57,10 +57,7 @@
           }}
         </div>
       </div>
-      <div
-        class="q-mt-md q-ml-sm row"
-        v-if="userRole != 'estimator' && userRole != 'vendor'"
-      >
+      <div class="q-mt-md q-ml-sm row" v-if="userRole != 'vendor'">
         <div class="heading-light q-mt-none col-xs-4 lightHeading">
           Claim Fees
         </div>
@@ -94,10 +91,7 @@
           </div>
         </div>
       </div>
-      <div
-        class="q-mt-md row q-ml-sm"
-        v-if="userRole != 'estimator' && userRole != 'vendor'"
-      >
+      <div class="q-mt-md row q-ml-sm" v-if="userRole != 'vendor'">
         <div class="heading-light q-mt-none col-xs-4 lightHeading">
           Date of Contract
         </div>
@@ -106,10 +100,7 @@
         </div>
         <div v-else class="q-ml-md">MM/DD/YYYY</div>
       </div>
-      <div
-        class="q-mt-md row q-ml-sm"
-        v-if="userRole != 'estimator' && userRole != 'vendor'"
-      >
+      <div class="q-mt-md row q-ml-sm" v-if="userRole != 'vendor'">
         <div class="heading-light q-mt-none col-xs-4 lightHeading">
           Date of Notified
         </div>
@@ -118,10 +109,7 @@
         </div>
         <div v-else class="q-ml-md">MM/DD/YYYY</div>
       </div>
-      <div
-        class="q-mt-md row q-ml-sm"
-        v-if="userRole != 'estimator' && userRole != 'vendor'"
-      >
+      <div class="q-mt-md row q-ml-sm" v-if="userRole != 'vendor'">
         <div class="heading-light q-mt-none col-xs-4 lightHeading">
           Open Since
         </div>
@@ -129,10 +117,7 @@
           {{ getSelectedClaim.sinceOpen ? getSelectedClaim.sinceOpen : '-' }}
         </div>
       </div>
-      <div
-        class="q-mt-md row"
-        v-if="userRole != 'estimator' && userRole != 'vendor'"
-      >
+      <div class="q-mt-md row" v-if="userRole != 'vendor'">
         <div class="heading-light q-ml-sm q-mt-none col-xs-4 lightHeading">
           Loss Since
         </div>
@@ -142,7 +127,7 @@
       </div>
       <q-separator class="q-mt-sm q-mb-sm" />
 
-      <div v-if="userRole != 'estimator' && userRole != 'vendor'">
+      <div v-if="userRole != 'vendor'">
         <div class="row justify-between">
           <div class="text-bold q-mt-sm q-ml-sm">Claim Deadlines</div>
           <div class="row">
@@ -173,7 +158,7 @@
         </div>
         <q-separator class="q-mt-sm q-mb-sm" />
       </div>
-      <div v-if="userRole != 'estimator' && userRole != 'vendor'">
+      <div v-if="userRole != 'vendor'">
         <div class="row q-ml-xs justify-between">
           <div class="text-bold q-mt-xs q-ml-xs">Loss Details</div>
           <div>
@@ -239,7 +224,7 @@
         </div>
         <q-separator class="q-mt-sm q-mb-sm" />
       </div>
-      <div v-if="userRole != 'estimator' && userRole != 'vendor'">
+      <div v-if="userRole != 'vendor'">
         <div class="form-heading q-ml-sm col q-mb-md">Claim Timeline</div>
         <div v-for="(phase, index) in getSelectedClaim.phases">
           <div class="row">
