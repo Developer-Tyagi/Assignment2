@@ -318,7 +318,7 @@ const routes = [
         component: () => import('src/pages/vendor/VendorPersonnel.vue')
       },
       {
-        path: 'carriers',
+        path: 'carriers/:add?',
         name: 'carriers',
         caseSensitive: true,
         component: () => import('pages/carrier/Carriers.vue')
@@ -361,7 +361,7 @@ const routes = [
         component: () => import('pages/Settings.vue')
       },
       {
-        path: 'mortgages',
+        path: 'mortgages/:add?',
         name: 'mortgages',
         caseSensitive: true,
         component: () => import('pages/mortgage/Mortgage.vue')

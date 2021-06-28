@@ -95,10 +95,7 @@
         </div></span
       >
     </div>
-    <div
-      class="row q-mt-sm"
-      v-if="userRole != 'estimator' && userRole != 'vendor'"
-    >
+    <div class="row q-mt-sm" v-if="userRole != 'vendor'">
       <span class="heading-light col-3"> Claim Email </span>
       <span
         class="q-ml-md col clickLink"
@@ -115,10 +112,7 @@
         {{ getSelectedClaim.number ? getSelectedClaim.number : '- - -' }}</span
       >
     </div>
-    <div
-      class="row q-mt-sm"
-      v-if="userRole != 'estimator' && userRole != 'vendor'"
-    >
+    <div class="row q-mt-sm" v-if="userRole != 'vendor'">
       <span class="heading-light col-3"> Current Phase </span>
       <span class="q-ml-md col-8">
         {{
@@ -157,6 +151,7 @@ import { mapGetters, mapActions } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import moment from 'moment';
 import { dateToShow } from '@utils/date';
+import { getCurrentUser } from '@utils/auth';
 export default {
   name: 'Claims',
   components: { CustomBar },

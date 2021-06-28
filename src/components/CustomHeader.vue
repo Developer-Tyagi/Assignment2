@@ -16,6 +16,8 @@
                 $route.name === 'leads dashboard' ||
                 $route.name === 'vendors' ||
                 $route.name === 'settings' ||
+                $route.name === 'carriers' ||
+                $route.name === 'mortgages' ||
                 $route.name === 'manage users' ||
                 $route.name === 'admin' ||
                 $route.name === 'claims' ||
