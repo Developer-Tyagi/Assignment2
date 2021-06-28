@@ -9,28 +9,25 @@
         class="q-ml-auto"
       />
     </div>
-    <div class="vertical-center q-px-md q-py-sm ">
-      <div class="row q-mt-sm" v-if="proofOfLoss.documents.length">
+
+    <div class="row q-mt-sm" v-if="proofOfLoss.documents.length">
+      <div
+        class="vertical-center q-px-md q-py-sm "
+        v-for="(pol, index) in proofOfLoss.documents"
+      >
         <q-icon name="picture_as_pdf" size="sm" color="primary" />
-        <span
-          class="q-pl-md"
-          @click="onDocClick(proofOfLoss.documents[0].webViewLink)"
-        >
-          {{
-            proofOfLoss.documents[0].name ? proofOfLoss.documents[0].name : '-'
-          }}</span
+        <span class="q-pl-md" @click="onDocClick(pol.webViewLink)">
+          {{ pol.name ? pol.name : '-' }}</span
         >
       </div>
-
-      <div v-else class="full-height full-width column">
-        <div class="column absolute-center">
-          <div style="color: #666666,align-items: center">
-            no document found
-          </div>
+    </div>
+    <div v-else class="full-height full-width column">
+      <div class="column absolute-center">
+        <div style="color: #666666,align-items: center">
+          no document found
         </div>
       </div>
     </div>
-
     <!-- Top Menu Items Dialog -->
     <q-dialog
       v-model="menuItemsOptions"
@@ -58,7 +55,7 @@
             Upload Notarized POL
           </div>
           <div class="q-pa-md heading-light" @click="onSendingPOL()">
-            Sending Proof Of Loss
+            Send Proof of Loss
           </div>
         </q-card-section>
       </q-card>
