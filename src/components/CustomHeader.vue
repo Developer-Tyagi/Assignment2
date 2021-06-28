@@ -247,7 +247,6 @@ export default {
         'carriers',
         'mortagages',
         'reports',
-        'admin',
         'manage-users',
         'configuration'
       ],
@@ -260,7 +259,6 @@ export default {
         'carriers',
         'mortagages',
         'reports',
-        'admin',
         'manage-users',
         'configuration'
       ]
