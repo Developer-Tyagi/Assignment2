@@ -154,7 +154,7 @@
                       </div>
                     </div>
                     <div class="row justify-between">
-                      <div class="heading-light">Payee</div>
+                      <div class="heading-light">Amount</div>
                       <div>{{ expense.amount }}</div>
                     </div>
                     <div class="row justify-between">
@@ -163,8 +163,8 @@
                     </div>
 
                     <div class="row justify-between">
-                      <div class="heading-light">Note</div>
-                      <div>{{ expense.desc }}</div>
+                      <div class="heading-light">Payee</div>
+                      <div>{{ expense.payee }}</div>
                     </div>
                   </div>
                 </q-card>
@@ -189,7 +189,6 @@
               label="Disbursement"
               header-class="text-primary"
             >
-              {{ disbursements }}
               <div v-if="disbursements.disbursements != null">
                 <q-card
                   class="q-pa-sm q-ma-sm"
@@ -274,6 +273,7 @@
                     >
                       <q-date
                         v-model="payments.date"
+                        @input="() => $refs.qDateProxy.hide()"
                         mask="MM/DD/YYYY"
                       ></q-date>
                     </q-popup-proxy>
@@ -448,6 +448,7 @@
                     >
                       <q-date
                         v-model="addexpenses.receviedDate"
+                        @input="() => $refs.qDateProxy.hide()"
                         mask="MM/DD/YYYY"
                       ></q-date>
                     </q-popup-proxy>
@@ -498,7 +499,7 @@
               />
             </div>
             <div class="row" style="align-items: center">
-              <span class="">Resposible Party</span>
+              <span class="">Payable By</span>
 
               <q-select
                 v-model="addexpenses.payableBy.value"
@@ -557,367 +558,303 @@
     >
       <q-card>
         <CustomBar
-          @closeDialog="addDisbursementDialog = false"
+          @closeDialog="closeDisbursmentBox"
           :dialogName="'Add Claim  Disbursment'"
         />
         <div class="q-ma-sm mobile-container-page listing-height">
           <q-form>
-            <q-card class="q-ma-sm q-pa-sm">
-              <div class="row" style="align-items: center">
-                <span class="heading-light">Amount </span>
-                {{ fakeDisbustments }}343
-
-                <q-input
-                  dense
-                  v-model.number="addDisbursement.amount"
-                  mask="#.#"
-                  type="number"
-                  style="margin-left: auto; width: 50%"
-                  prefix="$"
-                  class="input-extra-padding"
-                />
-              </div>
-              <div class="row" style="align-items: center">
-                <span class="heading-light">Paid To Client </span>
-
-                <q-input
-                  dense
-                  v-model.number="addDisbursement.paidToClient"
-                  mask="#.#"
-                  type="number"
-                  style="margin-left: auto; width: 50%"
-                  prefix="$"
-                  class="input-extra-padding"
-                />
-              </div>
-              <div class="row" style="align-items: center">
-                <span class="heading-light">Paid To Company </span>
-
-                <q-input
-                  dense
-                  v-model.number="addDisbursement.paidToCompany"
-                  mask="#.#"
-                  type="number"
-                  style="margin-left: auto; width: 50%"
-                  prefix="$"
-                  class="input-extra-padding"
-                />
-              </div>
-              <div>
-                <div class="row justify-between" style="align-items: center">
-                  <span class="col-6 q-pt-xs q-ml-md">Expenses</span>
-                  <span class="col-5">Amounts</span>
-                </div>
-
-                <div class="q-pa-sm  q-ma-sm">
-                  <div
-                    class="row justify-between"
-                    v-for="(settlement, index) in expenses.expenses"
-                  >
-                    <div class=" col-6 q-mt-md">
-                      {{ index + 1 }}.
-                      <span class="q-ml-sm">
-                        {{ settlement.desc }}
-                      </span>
-                    </div>
-                    <div class="col-5" v-if="showExpences">
-                      <q-input
-                        dense
-                        mask="#.#"
-                        type="number"
-                        prefix="$"
-                        v-model.number="addDisbursement.expenses[index].paid"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </q-card>
             <q-card class="q-mx-sm q-pa-sm">
-              <span class="">Opening Balance </span>
-              <div class="row" style="align-items: center">
-                <span class="heading-light">Amount Available </span>
-                <div style="margin-left: auto; width: 50%">
-                  <!-- {{ account.totalPayment }} -->
-                  {{ fakeDisbustments }}343
+              <span class="q-my-md">Opening Balance </span>
+              <div class="row q-my-sm">
+                <span class="col-8 heading-light">Amount Available </span>
+                <div>
+                  {{ account.totalPayment ? account.totalPayment : '-' }}
                 </div>
-                <!-- <q-input
-                  dense
-                  v-model.number="amountsOfPayment"
-                  mask="#.#"
-                  type="number"
-                  style="margin-left: auto; width: 50%"
-                  prefix="$"
-                  class="input-extra-padding"
-                /> -->
               </div>
-              <div class="row" style="align-items: center">
-                <span class="heading-light">Amount to Disburse</span>
+              <div class="row justify-between">
+                <span class=" q-mt-md heading-light">Amount to Disburse</span>
                 <q-input
                   dense
                   v-model.number="addDisbursement.amountToDisbuse"
                   mask="#.#"
                   type="number"
-                  style="margin-left: auto; width: 50%"
                   prefix="$"
-                  class="input-extra-padding"
+                  class="col-4 "
                 />
               </div>
-              <div class="row" style="align-items: center">
-                <span class="col-5 heading-light">
+              <div class="row justify-between q-my-sm">
+                <span class="col-5   heading-light">
                   Outstanding Expenses Payable By both company and Client
                 </span>
-                <!-- <q-input
-                  dense
-                  v-model="checkReference"
-                  mask="#.#"
-                  prefix="$"
-                  type="number"
-                  style="margin-left: auto; width: 50%"
-                  class="input-extra-padding"
-                /> -->
+                <span class="col-4">
+                  {{ totalExpensesOfClientAndCompany }}</span
+                >
               </div>
-              <!-- <div class="q-pa-md" style="border-style: ridge ">
-                <div class="row bg-red justify-between">
-                  {{ clientAndCompany }}
-                  <div class="q-my-xs">{{ clientAndCompany.desc }}himanshu</div>
-                  <div>
-                    <q-toggle size="xs" v-model="wantToPay" @input="setValue" />
-                  </div>
-                  <div class="q-my-xs">{{ clientAndCompany.amount }}</div>
-                </div>
-              </div> -->
-              <table class="full-width">
-                <tr>
-                  <td>
-                    Name
-                  </td>
-                  <td>
-                    Due
-                  </td>
-                  <td>
-                    Action
-                  </td>
-                  <td>
-                    Value
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    Himanshu
-                  </td>
-                  <td>
-                    8777
-                  </td>
-                  <td>
-                    <q-toggle size="xs" v-model="wantToPay" @input="setValue" />
-                  </td>
-                  <td>
-                    <q-input style="width:100px;" prefix="$" class=" col-2 " />
-                  </td>
-                </tr>
-              </table>
+              <div v-if="clientAndCompany.length > 0">
+                <table class="full-width">
+                  <tr>
+                    <td style="width:30%;">
+                      Name
+                    </td>
+                    <td style="width:30%;">
+                      Due
+                    </td>
 
-              <div class="row" style="align-items: center">
-                <span class="">Net Expense To Pay</span>
-                <q-input
-                  dense
-                  v-model.number="amountsOfPayment"
-                  mask="#.#"
-                  type="number"
-                  style="margin-left: auto; width: 50%"
-                  prefix="$"
-                  class="input-extra-padding"
-                />
+                    <td style="width:30%;">
+                      Value
+                    </td>
+                  </tr>
+
+                  <tr v-for="(exp, index) in clientAndCompany">
+                    <td>
+                      {{ exp.payee ? exp.payee : '-' }}
+                    </td>
+                    <td>
+                      {{ exp.amount ? exp.amount : '-' }}
+                    </td>
+                    <!-- <td>
+                    <q-toggle size="xs" v-model="wantToPay" @input="setValue" />
+                  </td> -->
+                    <td>
+                      <q-input
+                        v-model="clientAndCompanyAmount[index]"
+                        prefix="$"
+                        class=" col-2 "
+                      />
+                    </td>
+                  </tr>
+                </table>
+
+                <div class="q-mt-sm  row full-width justify-end">
+                  <q-btn
+                    size="xs"
+                    label="add"
+                    color="primary"
+                    @click="onFillingValue()"
+                  />
+                </div>
               </div>
-              <div class="row" style="align-items: center">
-                <span class="heading-light"> Net Amount to Disburse</span>
-                <q-input
-                  dense
-                  v-model.number="amountsOfPayment"
-                  mask="#.#"
-                  type="number"
-                  style="margin-left: auto; width: 50%"
-                  prefix="$"
-                  class="input-extra-padding"
-                />
+
+              <div class="row q-my-md">
+                <span class="col-8">Net Expense To Pay</span>
+                <div>
+                  {{ netExpenseToPayByBoth ? netExpenseToPayByBoth : 0 }}
+                </div>
               </div>
-              <div class="row" style="align-items: center">
-                <span class="col-5 heading-light"
+              <div class="row q-my-sm">
+                <span class="heading-light col-8 q-my-xs">
+                  Net Amount to Disburse</span
+                >
+                {{ addDisbursement.amountToDisbuse - netExpenseToPayByBoth }}
+              </div>
+              <div class="row q-my-sm">
+                <span class="col-8 heading-light"
                   >Client Expenses Exempt from Company Fee</span
                 >
-                <q-input
-                  dense
-                  v-model.number="amountsOfPayment"
-                  mask="#.#"
-                  type="number"
-                  style="margin-left: auto; width: 50%"
-                  prefix="$"
-                  class="input-extra-padding"
-                />
+                0
               </div>
               <div class="row" style="align-items: center">
-                <span class="heading-light">Amount Subject to Company Fee</span>
-                <q-input
-                  dense
-                  mask="#.#"
-                  type="number"
-                  style="margin-left: auto; width: 50%"
-                  prefix="$"
-                  class="input-extra-padding"
-                />
-              </div>
-              <div class="row" style="align-items: center">
-                <span class="heading-light"> Company Fee Type</span>
-                <q-input
-                  dense
-                  v-model.number="amountsOfPayment"
-                  mask="#.#"
-                  type="number"
-                  style="margin-left: auto; width: 50%"
-                  prefix="$"
-                  class="input-extra-padding"
-                />
-              </div>
-              <div class="row" style="align-items: center">
-                <span class="heading-light">Percentage</span>
-                <q-input
-                  dense
-                  mask="#.#"
-                  type="number"
-                  style="margin-left: auto; width: 50%"
-                  prefix="$"
-                  class="input-extra-padding"
-                />
-              </div>
-              <div class="row" style="align-items: center">
-                <span class="heading-light">Company Fee</span>
-                <q-input
-                  dense
-                  mask="#.#"
-                  type="number"
-                  style="margin-left: auto; width: 50%"
-                  prefix="$"
-                  class="input-extra-padding"
-                />
-              </div>
-              <div class="row" style="align-items: center">
-                <span class="heading-light">Company Starting Balance</span>
-                <q-input
-                  dense
-                  mask="#.#"
-                  type="number"
-                  style="margin-left: auto; width: 50%"
-                  prefix="$"
-                  class="input-extra-padding"
-                />
-              </div>
-              <div class="row" style="align-items: center">
-                <span class="heading-light">Client Starting Balance</span>
-                <q-input
-                  dense
-                  mask="#.#"
-                  type="number"
-                  style="margin-left: auto; width: 50%"
-                  prefix="$"
-                  class="input-extra-padding"
-                />
-              </div>
-            </q-card>
-            <q-card class="q-ma-sm q-pa-sm">
-              <span class="">Client Breakdown </span>
-              <div class="row" style="align-items: center">
-                <span class="heading-light">Client Starting Balance</span>
-                <q-input
-                  dense
-                  mask="#.#"
-                  type="number"
-                  style="margin-left: auto; width: 50%"
-                  prefix="$"
-                  class="input-extra-padding"
-                />
-              </div>
-              <div class="row" style="align-items: center">
-                <span class="heading-light">Total Amount to Client</span>
-                <q-input
-                  dense
-                  mask="#.#"
-                  type="number"
-                  style="margin-left: auto; width: 50%"
-                  prefix="$"
-                  class="input-extra-padding"
-                />
-              </div>
-              <div class="row" style="align-items: center">
-                <span class="heading-light">Expenses Payable by Client</span>
-                <q-input
-                  dense
-                  mask="#.#"
-                  type="number"
-                  style="margin-left: auto; width: 50%"
-                  prefix="$"
-                  class="input-extra-padding"
-                />
-              </div>
-            </q-card>
-            <q-card class="q-ma-sm q-pa-sm">
-              <span class="">Company Breakdown </span>
-              <div class="row" style="align-items: center">
-                <span class="heading-light">Company Starting Balance</span>
-                <q-input
-                  dense
-                  mask="#.#"
-                  type="number"
-                  style="margin-left: auto; width: 50%"
-                  prefix="$"
-                  class="input-extra-padding"
-                />
-              </div>
-              <div class="row" style="align-items: center">
-                <span class="heading-light">Expenses Payable by Company</span>
-                <q-input
-                  dense
-                  mask="#.#"
-                  type="number"
-                  style="margin-left: auto; width: 50%"
-                  prefix="$"
-                  class="input-extra-padding"
-                />
-              </div>
-              <div class="row" style="align-items: center">
-                <span class="heading-light"
-                  >Amount Available for Commission Calculations</span
+                <span class="heading-light col-8"
+                  >Amount Subject to Company Fee</span
                 >
+                {{
+                  addDisbursement.amountToDisbuse - netExpenseToPayByBoth
+                    ? addDisbursement.amountToDisbuse - netExpenseToPayByBoth
+                    : 0
+                }}
+              </div>
+              <div class=" q-mt-md  row justify-between">
+                <div class="col-4 q-mt-sm heading-light">Company Fee Type</div>
+
+                <q-btn-toggle
+                  v-model="feesType"
+                  push
+                  glossy
+                  toggle-color="primary"
+                  :options="[
+                    { label: ' $', value: 'dollar' },
+                    { label: ' %', value: 'percentage' }
+                  ]"
+                ></q-btn-toggle>
+              </div>
+
+              <div v-if="feesType == 'percentage'" class="row justify-between">
+                <span class="q-mt-sm  heading-light">Company Fee</span>
                 <q-input
                   dense
+                  v-model="partialCompanyValue"
                   mask="#.#"
                   type="number"
-                  style="margin-left: auto; width: 50%"
                   prefix="$"
-                  class="input-extra-padding"
+                  @input="CalculationOfCompanyFee(partialCompanyValue)"
+                  class=" col-4 "
                 />
               </div>
-              <div class="row" style="align-items: center">
-                <span class="heading-light">Expenses/Fees Owed to Company</span>
+              <div v-else class="row justify-between">
+                <span class="q-mt-sm  heading-light">Company Fee</span>
                 <q-input
                   dense
+                  v-model="addDisbursement.companyFee"
                   mask="#.#"
                   type="number"
-                  style="margin-left: auto; width: 50%"
                   prefix="$"
-                  class="input-extra-padding"
+                  class=" col-4 "
                 />
               </div>
+              <div class="row q-mt-lg">
+                <span class=" col-8 heading-light"
+                  >Company Starting Balance</span
+                >
+                {{
+                  addDisbursement.companyFee ? addDisbursement.companyFee : 0
+                }}
+              </div>
+              <div class="row q-my-sm ">
+                <span class="heading-light col-8">Client Starting Balance</span>
+                {{
+                  addDisbursement.amountToDisbuse -
+                    netExpenseToPayByBoth -
+                    addDisbursement.companyFee
+                }}
+              </div>
+            </q-card>
+            <q-card class="q-ma-sm q-pa-sm">
+              <span class="q-my-sm">Client Breakdown </span>
+              <div class="row q-my-sm">
+                <span class="col-8 heading-light">Client Starting Balance</span>
+                {{
+                  addDisbursement.amountToDisbuse -
+                    netExpenseToPayByBoth -
+                    addDisbursement.companyFee
+                }}
+              </div>
+
               <div class="row" style="align-items: center">
-                <span class="heading-light">Total Amount to Company</span>
-                <q-input
-                  dense
-                  mask="#.#"
-                  type="number"
-                  style="margin-left: auto; width: 50%"
-                  prefix="$"
-                  class="input-extra-padding"
-                />
+                <span class="heading-light col-8"
+                  >Expenses Payable by Client</span
+                >
+                {{ totalExpensesOfClient }}
+              </div>
+              <div v-if="clientOnly.length > 0">
+                <table class=" q-my-md full-width">
+                  <tr>
+                    <td style="width:30%;">
+                      Name
+                    </td>
+                    <td style="width:30%;">
+                      Due
+                    </td>
+                    <!-- <td>
+                    Action
+                  </td> -->
+                    <td style="width:30%;">
+                      Value
+                    </td>
+                  </tr>
+
+                  <tr v-for="(exp, index) in clientOnly">
+                    <td>
+                      {{ exp.payee }}
+                    </td>
+                    <td>
+                      {{ exp.amount }}
+                    </td>
+                    <!-- <td>
+                    <q-toggle size="xs" v-model="wantToPay" @input="setValue" />
+                  </td> -->
+                    <td>
+                      <q-input
+                        v-model="clientAmount[index]"
+                        prefix="$"
+                        class=" col-2"
+                      />
+                    </td>
+                  </tr>
+                </table>
+
+                <div class="x-my-sm  row justify-end">
+                  <q-btn
+                    size="xs"
+                    label="add"
+                    color="primary"
+                    @click="onFillingClient()"
+                  />
+                </div>
+              </div>
+
+              <div class=" q-my-sm row justify-between">
+                <span class="heading-light ">Total Amount to Client</span>
+                <div class="q-mr-xl">
+                  {{ netExpenseToPayByClient }}
+                </div>
+              </div>
+            </q-card>
+            <q-card class="q-ma-sm q-pa-sm">
+              <span class="q-my-sm">Company Breakdown </span>
+              <div class="q-my-sm row ">
+                <span class="heading-light col-8 "
+                  >Company Starting Balance</span
+                >
+                <div class="q-mr-xl">
+                  {{ addDisbursement.companyFee }}
+                </div>
+              </div>
+              <div class="q-my-sm row">
+                <span class="heading-light col-8"
+                  >Expenses Payable by Company</span
+                >
+                {{ totalExpensesOfCompany }}
+              </div>
+              <div v-if="companyOnly.length > 0">
+                <table class="full-width">
+                  <tr>
+                    <td style="width:30%;">
+                      Name
+                    </td>
+                    <td style="width:30%;">
+                      Due
+                    </td>
+
+                    <td style="width:30%;">
+                      Value
+                    </td>
+                  </tr>
+
+                  <tr v-for="(exp, index) in companyOnly">
+                    <td>
+                      {{ exp.payee }}
+                    </td>
+                    <td>
+                      {{ exp.amount }}
+                    </td>
+                    <!-- <td>
+                    <q-toggle size="xs" v-model="wantToPay" @input="setValue" />
+                  </td> -->
+                    <td>
+                      <q-input
+                        v-model="companyAmounts[index]"
+                        prefix="$"
+                        class=" col-2 "
+                      />
+                    </td>
+                  </tr>
+                </table>
+
+                <div class=" q-my-sm row justify-end">
+                  <q-btn
+                    size="xs"
+                    label="add"
+                    color="primary"
+                    @click="onFillingCompany()"
+                  />
+                </div>
+              </div>
+
+              <div class="row  q-my-md   ">
+                <span class="heading-light col-8">Total Amount to Company</span>
+                <div class=" q-mr-xl">
+                  {{ netExpenseToPayByCompany }}
+                </div>
               </div>
             </q-card>
           </q-form>
@@ -952,6 +889,20 @@ export default {
   },
   data() {
     return {
+      partialCompanyValue: '',
+      finalExpenses: [],
+      totalAmount: null,
+      netExpenseToPayByBoth: null,
+      netExpenseToPayByClient: 0,
+      netExpenseToPayByCompany: 0,
+      clientAndCompanyAmount: [],
+      clientAmount: [],
+      feesType: 'dollar',
+
+      companyAmounts: [],
+      totalExpensesOfClient: 0,
+      totalExpensesOfClientAndCompany: 0,
+      totalExpensesOfCompany: 0,
       wantToPay: false,
       clientAndCompany: [],
       clientOnly: [],
@@ -977,6 +928,8 @@ export default {
         notes: ''
       },
       addDisbursement: {
+        companyFee: 0,
+
         amountToDisbuse: '',
         amount: '',
         paidToClient: '',
@@ -1020,27 +973,28 @@ export default {
     this.getAllPayment(this.selectedClaimId);
     this.getAllDisbursements(this.selectedClaimId);
     this.getAllExpenses(this.selectedClaimId);
+    await this.getAccountDetails(this.selectedClaimId);
 
     await this.getAccountDetails(this.selectedClaimId).then(async () => {
       this.account.settlements.forEach(val => {
         this.payments.settlements.push({
           id: val.id,
-          amountPaid: ''
+          amountPaid: 0
         });
         this.showValue = true;
       });
     });
 
-    await this.getAllExpenses(this.selectedClaimId).then(async () => {
-      this.expenses.expenses.forEach(val => {
-        console.log(val);
-        this.addDisbursement.expenses.push({
-          id: val.id,
-          paid: ''
-        });
-        this.showExpences = true;
-      });
-    });
+    // await this.getAllExpenses(this.selectedClaimId).then(async () => {
+    //   this.expenses.expenses.forEach(val => {
+
+    //     this.addDisbursement.expenses.push({
+    //       id: val.id,
+    //       paid: 0
+    //     });
+    //     this.showExpences = true;
+    //   });
+    // });
   },
   methods: {
     ...mapActions([
@@ -1059,30 +1013,84 @@ export default {
     validateDate,
     dateToShow,
 
-    setValue() {
-      console.log(8787);
+    onFillingClient() {
+      for (var i in this.clientAmount) {
+        this.clientOnly[i].paid = parseInt(this.clientAmount[i]);
+        this.totalAmount += parseInt(this.clientAmount[i]);
+      }
+
+      this.netExpenseToPayByClient = this.totalAmount;
+    },
+    CalculationOfCompanyFee(value) {
+      this.addDisbursement.companyFee =
+        (value / 100) *
+        (this.addDisbursement.amountToDisbuse - this.netExpenseToPayByBoth);
+    },
+    onFillingCompany() {
+      let total = 0;
+      for (var i in this.companyAmounts) {
+        this.companyOnly[i].paid = parseInt(this.companyAmounts[i]);
+        total += parseInt(this.companyAmounts[i]);
+      }
+      this.netExpenseToPayByCompany = total;
+    },
+
+    onFillingValue() {
+      let total = 0;
+      for (var i in this.clientAndCompanyAmount) {
+        this.clientAndCompany[i].paid = parseInt(
+          this.clientAndCompanyAmount[i]
+        );
+
+        total += parseInt(this.clientAndCompanyAmount[i]);
+      }
+      this.netExpenseToPayByBoth = total;
+    },
+    closeDisbursmentBox() {
+      this.clientAndCompany = [];
+      this.clientOnly = [];
+      this.companyOnly = [];
+      this.addDisbursementDialog = false;
     },
 
     openDisbursementBox() {
-      console.log(this.expenses);
+      if (this.expenses.expenses) {
+        this.expenses.expenses.forEach(val => {
+          if (val.payableBy.machineValue == 'client_company') {
+            this.clientAndCompany.push({
+              amount: val.amount,
+              id: val.id,
+              payee: val.payee,
+              paid: 0
+            });
+            this.totalExpensesOfClientAndCompany =
+              this.totalExpensesOfClientAndCompany + val.amount;
+          }
+          if (val.payableBy.machineValue == 'client') {
+            this.clientOnly.push({
+              amount: val.amount,
+              id: val.id,
+              payee: val.payee,
+              paid: 0
+            });
 
-      this.expenses.expenses.forEach(val => {
-        console.log(val.payableBy.machineValue);
-        if (val.payableBy.machineValue == 'client_company') {
-          this.clientAndCompany = val;
-        }
-        if (val.payableBy.machineValue == 'client') {
-          this.clientOnly = val;
-        }
-        if (val.payableBy.machineValue == 'company') {
-          this.companyOnly = val;
-        }
-        //   this.payments.settlements.push({
-        //     id: val.id,
-        //     amountPaid: ''
-        //   });
-        this.showValue = true;
-      });
+            this.totalExpensesOfClient =
+              this.totalExpensesOfClient + val.amount;
+          }
+          if (val.payableBy.machineValue == 'company') {
+            this.companyOnly.push({
+              amount: val.amount,
+              id: val.id,
+              payee: val.payee,
+              paid: 0
+            });
+            this.totalExpensesOfCompany =
+              this.totalExpensesOfCompany + val.amount;
+          }
+
+          this.showValue = true;
+        });
+      }
 
       this.addDisbursementDialog = true;
     },
@@ -1102,11 +1110,12 @@ export default {
 
       const success = await this.addPayment(payload);
       if (success) {
+        this.getAllPayment(this.selectedClaimId);
+        await this.getAccountDetails(this.selectedClaimId);
         this.addPaymentDialog = false;
       }
     },
 
-    // this.addexpenses.payableBy.machineValue=
     setResponsibleBy(data) {
       const obj = this.options.find(item => {
         return item.value === data.value;
@@ -1140,13 +1149,32 @@ export default {
       }
     },
     async onSaveDisbursement() {
+      this.clientAndCompany.forEach(val => {
+        this.finalExpenses.push({
+          id: val.id,
+          paid: parseInt(val.paid)
+        });
+      });
+      this.clientOnly.forEach(val => {
+        this.finalExpenses.push({
+          id: val.id,
+          paid: parseInt(val.paid)
+        });
+      });
+      this.companyOnly.forEach(val => {
+        this.finalExpenses.push({
+          id: val.id,
+          paid: parseInt(val.paid)
+        });
+      });
+
       const payload = {
         id: this.selectedClaimId,
         data: {
-          amount: this.addDisbursement.amount,
-          paidToClient: this.addDisbursement.paidToClient,
-          paidToCompany: this.addDisbursement.paidToCompany,
-          expenses: this.addDisbursement.expenses
+          amount: this.addDisbursement.amountToDisbuse,
+          paidToClient: this.netExpenseToPayByClient,
+          paidToCompany: this.netExpenseToPayByCompany,
+          expenses: this.finalExpenses
         }
       };
       const success = await this.createDisbursement(payload);

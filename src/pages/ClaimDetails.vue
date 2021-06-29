@@ -248,8 +248,9 @@
           group="claimGroup"
           label="Claim Ledger"
           header-class="text-primary"
+          @show="claimLedgeInfo = true"
         >
-          <q-card>
+          <q-card v-if="claimLedgeInfo">
             <q-card-section> <ClaimLedger /> </q-card-section>
           </q-card>
         </q-expansion-item>
@@ -446,6 +447,7 @@ export default {
       activityLogDialog: '',
       lossInfoDialog: '',
       estimatingInfo: false,
+      claimLedgeInfo: false,
       notes: false,
       proofOfLoss: false,
       files: false,
