@@ -760,7 +760,11 @@ export default {
       this.primaryDetails.isOrganization = this.editSelectedClient.attributes.isOrganization;
       this.primaryDetails.organizationName = this.editSelectedClient.attributes.organizationName;
     }
-    this.insuredDetails.type = this.editSelectedClient.attributes.insuredInfo.primary.phoneNumber[0].type;
+    this.insuredDetails.type = this.editSelectedClient.attributes.insuredInfo
+      .primary.phoneNumber[0].type
+      ? this.editSelectedClient.attributes.insuredInfo.primary.phoneNumber[0]
+          .type
+      : 'Mr_';
     this.insuredDetails.phone = this.editSelectedClient.attributes.insuredInfo.primary.phoneNumber[0].number;
     this.insuredDetails.email = this.editSelectedClient.attributes.insuredInfo.primary.email;
 

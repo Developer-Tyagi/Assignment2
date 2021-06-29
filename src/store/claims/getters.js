@@ -26,3 +26,4 @@ export const account = state => state.account;
 export const claimPOLDocument = state => state.claimPOLDocument;
 export const payment = state => state.payment;
 export const expenses = state => state.expenses;
+export const disbursements = state => state.disbursements;
