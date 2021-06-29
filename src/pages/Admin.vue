@@ -202,22 +202,23 @@
             <q-tab-panel name="groupPermission">
               <q-card class="q-pa-lg" flat bordered>
                 <div class="row">
-                  <div class="" style="width: 150px">
+                  <div class="" style="width:350px">
                     <div class="column text-bold">
                       <div
                         style="
                           height: 50px;
-                          padding: 10px 15px;
+                        
                           border: 1px solid #ccc;
                           font-size: 15px;
                         "
+                        class="text-center"
                       >
                         Permission/Role
                       </div>
                       <table style="height:40px;">
                         <tr v-for="(user, index) in permissions">
                           <th style="height: 40px; font-size: 10px;">
-                            <div class="q-mt-sm">
+                            <div style="padding:11.5px;">
                               {{ user.name }}
                             </div>
                           </th>
@@ -230,7 +231,7 @@
                     <table>
                       <tr>
                         <th v-for="(user, index) in arrOfRoles">
-                          <div style="height:45px;">
+                          <div style="height:45px;width:100px">
                             {{ user.value.name }}
                           </div>
                         </th>
