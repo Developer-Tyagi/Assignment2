@@ -21,7 +21,7 @@
           </div>
           <p class="text"><small>Claims with recent activity</small></p>
         </div>
-        <div class="col-3" @click="onClientsClick">
+        <div v-if="isClickable" class="col-3" @click="onClientsClick">
           <div class="my-card">
             <p class="card-text">
               {{ clientStatic.active ? clientStatic.active : '-' }}
@@ -29,7 +29,24 @@
           </div>
           <p class="text"><small>Clients</small></p>
         </div>
-        <div class="col-3" @click="onOpenClientsClick">
+        <div v-else class="col-3">
+          <div class="my-card">
+            <p class="card-text">
+              {{ clientStatic.active ? clientStatic.active : '-' }}
+            </p>
+          </div>
+          <p class="text"><small>Clients</small></p>
+        </div>
+
+        <div v-if="isClickable" class="col-3" @click="onOpenClientsClick">
+          <div class="my-card">
+            <p class="card-text">
+              {{ clientStatic.openClaims ? clientStatic.openClaims : '-' }}
+            </p>
+          </div>
+          <p class="text"><small>Clients with Open Claims</small></p>
+        </div>
+        <div v-else class="col-3">
           <div class="my-card">
             <p class="card-text">
               {{ clientStatic.openClaims ? clientStatic.openClaims : '-' }}
@@ -163,9 +180,11 @@
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { dateToShow } from '@utils/date';
+import { getCurrentUser } from 'src/utils/auth';
 export default {
   data() {
     return {
+      isClickable: false,
       params: {
         favourite: ''
       }
@@ -173,8 +192,15 @@ export default {
   },
   created() {
     this.getClaimStatistics();
-    this.getLeadStatistics();
-    this.getClientStatistics();
+    var index = getCurrentUser().attributes.roles.findIndex(
+      std => std.machineValue === 'vendor' || std.machineValue === 'estimator'
+    );
+    if (index < 0) {
+      this.isClickable = true;
+      this.getLeadStatistics();
+      this.getClientStatistics();
+    }
+
     this.params.favourite = true;
     this.getClaims(this.params);
   },
