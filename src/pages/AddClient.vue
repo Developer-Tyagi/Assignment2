@@ -1596,7 +1596,7 @@ export default {
     );
 
     if (this.selectedLead.id) {
-      // await this.getLeadDetails(this.selectedLead.id);
+      await this.getLeadDetails(this.selectedLead.id);
       this.getVendorDetails(this.selectedLead.leadSource.id);
       this.honorific1 = {
         id: this.selectedLead.primaryContact.honorific.id,

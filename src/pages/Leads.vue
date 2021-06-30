@@ -248,8 +248,7 @@ export default {
     ...mapActions([
       'getActiveLeadsList',
       'getArchivedLeadsList',
-      'addLeadToArchiveList',
-      'getLeadDetails'
+      'addLeadToArchiveList'
     ]),
     dateToShow,
     ...mapMutations(['setSelectedLead']),
@@ -260,7 +259,6 @@ export default {
       };
       this.setSelectedLead(payload);
       this.$router.push('/add-client');
-      this.getLeadDetails(lead.id);
     },
 
     addLead() {
