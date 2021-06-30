@@ -844,6 +844,47 @@ export async function deleteClaimPersonnel({ dispatch }, payload) {
     });
   }
 }
+
+export async function deleteExpenses({ dispatch }, payload) {
+  dispatch('setLoading', true);
+  try {
+    await request.del(
+      `/claims/${payload.claimID}/expenses/${payload.expenseID}`
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Expense  Deleted !'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'Error in deleting Expense.'
+    });
+  }
+}
+export async function deletePayment({ dispatch }, payload) {
+  dispatch('setLoading', true);
+  try {
+    await request.del(
+      `/claims/${payload.claimID}/payments/${payload.expenseID}`
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Expense  Deleted !'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'Error in deleting Expense.'
+    });
+  }
+}
 export async function deleteClaimVendor({ commit, dispatch }, vendor) {
   dispatch('setLoading', true);
   try {

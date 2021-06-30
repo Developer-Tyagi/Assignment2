@@ -95,6 +95,24 @@
                     class="q-pa-sm q-ma-sm"
                     v-for="pay in payment.payments"
                   >
+                    <div class=" row justify-end">
+                      <div class="q-mr-xs">
+                        <!-- <q-icon
+                          name="create"
+                          size="xs"
+                          color="primary"
+                          @click="editExpense(expense)"
+                        /> -->
+                        ppp
+                        <!-- <q-icon
+                          class="q-mx-xs"
+                          name="delete"
+                          size="xs"
+                          @click="deletePayment(pay)"
+                          color="primary"
+                        /> -->
+                      </div>
+                    </div>
                     <div class="row justify-between">
                       <div class="heading-light">Date</div>
                       <div>{{ pay.receviedDate | moment('MM/DD/YYYY') }}</div>
@@ -142,6 +160,7 @@
                         class="q-mx-xs"
                         name="delete"
                         size="xs"
+                        @click="deleteExpense(expense)"
                         color="primary"
                       />
                     </div>
@@ -1006,12 +1025,34 @@ export default {
       'addPayment',
       'getAllDisbursements',
       'addExpenses',
-      'createDisbursement'
+      'createDisbursement',
+      'deleteExpenses',
+      'deletePayment'
     ]),
     onPhoneNumberClick,
     onEmailClick,
     validateDate,
     dateToShow,
+
+    async deleteExpense(value) {
+      const payload = {
+        claimID: this.selectedClaimId,
+        expenseID: value.id
+      };
+      await this.deleteExpenses(payload);
+      await this.getAllExpenses(this.selectedClaimId);
+      await this.getAccountDetails(this.selectedClaimId);
+    },
+
+    // async deletePayment(value) {
+    //   const payload = {
+    //     claimID: this.selectedClaimId,
+    //     expenseID: value.id
+    //   };
+    //   await this.deletePayment(payload);
+    //   await this.getAllPayment(this.selectedClaimId);
+    //   await this.getAccountDetails(this.selectedClaimId);
+    // },
 
     onFillingClient() {
       for (var i in this.clientAmount) {
