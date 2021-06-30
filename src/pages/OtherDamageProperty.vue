@@ -1,7 +1,8 @@
 <template>
   <div>
     <div v-if="damageInfo.damageInfo.otherStructure.items">
-      <div
+      <q-card
+        class="q-pa-md q-mb-sm"
         v-for="(damage, index) in damageInfo.damageInfo.otherStructure.items"
       >
         <div class="row justify-between">
@@ -80,7 +81,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </q-card>
     </div>
     <div v-else class="full-width text-center q-mt-sm heading-light">
       You have not added any Damage items yet!

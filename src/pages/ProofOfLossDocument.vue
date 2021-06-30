@@ -1,33 +1,25 @@
 <template>
   <q-page>
     <q-card class="form-card q-pa-md q-ma-md">
-      <div class="vertical-center q-px-sm q-py-sm">
-        <div
-          class="row"
-          v-if="claimPOLDocument.documents && claimPOLDocument.documents.length"
-        >
-          <q-icon
-            :name="iconType(claimPOLDocument.documents[0].mimeType)"
-            size="sm"
-            color="primary"
-          />
-          <span
-            class="q-pl-md"
-            @click="onDocClick(claimPOLDocument.documents[0])"
-          >
-            {{ claimPOLDocument.documents[0].name }}</span
-          >
+      <div
+        class="vertical-center q-px-sm q-py-sm"
+        v-for="(doc, index) in claimPOLDocument.documents"
+      >
+        <div class="row">
+          <q-icon :name="iconType(doc.mimeType)" size="sm" color="primary" />
+          <span class="q-pl-md" @click="onDocClick(doc)"> {{ doc.name }}</span>
           <q-btn
             class="q-ml-auto"
             icon="delete"
             size="sm"
+            @click="onDeleteDocument(index)"
             text-color="primary"
             flat
           />
         </div>
       </div>
 
-      <div class="row" v-if="claimPOLDocument.documents.length < 1">
+      <div class="row">
         <div class="row">
           <div class="column">
             <q-btn
@@ -85,6 +77,35 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+    <!-- Alert delete Box -->
+    <q-dialog v-model="alertDailog">
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">Alert</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          Are you sure ! You want to delete this
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn
+            flat
+            label="Cancel"
+            color="primary"
+            v-close-popup
+            @click="alertDailog = false"
+          ></q-btn>
+          <q-btn
+            flat
+            label="Delete"
+            color="primary"
+            v-close-popup
+            @click="removeDocument()"
+          ></q-btn>
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -95,7 +116,13 @@ import { getBase64 } from '@utils/common';
 const { Camera } = Plugins;
 export default {
   data() {
-    return { dataURl: '', selectFile: '', alert: false };
+    return {
+      dataURl: '',
+      selectFile: '',
+      alert: false,
+      driveId: '',
+      alertDailog: false
+    };
   },
 
   computed: {
@@ -109,9 +136,24 @@ export default {
     ...mapActions([
       'uploadClaimDocument',
       'getClaimPOLDocument',
-      'sendPOLToCarrier'
+      'sendPOLToCarrier',
+      'deleteClaimDocument'
     ]),
     ...mapMutations(['setLoading']),
+    async removeDocument() {
+      const payload = {
+        claimID: this.selectedClaimId,
+        driveID: this.driveId
+      };
+
+      await this.deleteClaimDocument(payload);
+      this.driveId = '';
+      this.getClaimPOLDocument(this.selectedClaimId);
+    },
+    onDeleteDocument(index) {
+      this.alertDailog = true;
+      this.driveId = this.claimPOLDocument.documents[index].driveID;
+    },
     async onSendClick() {
       const payload = {
         claimID: this.selectedClaimId,

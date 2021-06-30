@@ -202,22 +202,25 @@
             <q-tab-panel name="groupPermission">
               <q-card class="q-pa-lg" flat bordered>
                 <div class="row">
-                  <div class="" style="width: 150px">
+                  <div class="" style="width:350px">
                     <div class="column text-bold">
                       <div
                         style="
-                          height: 47px;
-                          padding: 12px 20px;
+                          height: 50px;
+                        
                           border: 1px solid #ccc;
                           font-size: 15px;
                         "
+                        class="text-center"
                       >
                         Permission/Role
                       </div>
-                      <table>
+                      <table style="height:40px;">
                         <tr v-for="(user, index) in permissions">
-                          <th style="height: 26px; font-size: 10px">
-                            {{ user.name }}
+                          <th style="height: 40px; font-size: 10px;">
+                            <div style="padding:11.5px;">
+                              {{ user.name }}
+                            </div>
                           </th>
                         </tr>
                       </table>
@@ -228,13 +231,16 @@
                     <table>
                       <tr>
                         <th v-for="(user, index) in arrOfRoles">
-                          {{ user.value.name }}
+                          <div style="height:45px;width:100px">
+                            {{ user.value.name }}
+                          </div>
                         </th>
                       </tr>
 
                       <tr v-for="(us, ind) in permissions.length">
                         <td align="center" v-for="(user, index) in arrOfRoles">
                           <div
+                            style="height: 40px;"
                             v-if="
                               user.value.permission != null &&
                                 test(
@@ -245,15 +251,15 @@
                             "
                           >
                             <q-icon
-                              color="primary"
+                              color="primary  q-mt-sm"
                               name="check_circle"
                               size="sm"
                               @click="rolePermission(ind, index, 'selected')"
                             />
                           </div>
-                          <div v-else>
+                          <div v-else style="height: 40px;">
                             <q-icon
-                              color="primary"
+                              color="primary q-mt-sm"
                               name=" radio_button_unchecked"
                               size="sm"
                               @click="rolePermission(ind, index, 'unselected')"
@@ -1097,12 +1103,10 @@ export default {
           this.arrOfRoles = [];
           await this.getRoles().then(async () => {
             this.roleTypes.forEach(val => {
-              if (val.isPaid == true) {
-                this.arrOfRoles.push({
-                  label: '',
-                  value: val
-                });
-              }
+              this.arrOfRoles.push({
+                label: '',
+                value: val
+              });
             });
           });
         });
@@ -1383,12 +1387,10 @@ export default {
     await this.claimActionItem(this.claimType);
     this.getRoles().then(async () => {
       this.roleTypes.forEach(val => {
-        if (val.isPaid == true) {
-          this.arrOfRoles.push({
-            label: '',
-            value: val
-          });
-        }
+        this.arrOfRoles.push({
+          label: '',
+          value: val
+        });
       });
     });
     this.getPermissions();

@@ -39,6 +39,12 @@ export default {
     openAddCarrierDialog(e) {
       this.addCarrierDialog = e;
     }
+  },
+
+  created() {
+    if (this.$route.params.add) {
+      this.addCarrierDialog = true;
+    }
   }
 };
 </script>

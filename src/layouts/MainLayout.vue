@@ -30,7 +30,7 @@
               $route.name != 'Leads'
           "
         >
-          <div class="dot ">
+          <div class="dot">
             <q-icon
               class="q-pa-md"
               name="add"
@@ -51,19 +51,19 @@
         <q-card style="width: 550px; height: 220px">
           <q-card-section>
             <div class="q-ml-md heading-light">
-              <div class=" q-pa-sm" @click="$router.push('/add-client')">
+              <div class="q-pa-sm" @click="$router.push('/add-client')">
                 Add Client
               </div>
-              <div class=" q-pa-sm" @click="$router.push('/add-client')">
+              <div class="q-pa-sm" @click="$router.push('/add-client')">
                 Add Claim
               </div>
-              <div class=" q-pa-sm" @click="$router.push('/leads')">
+              <div class="q-pa-sm" @click="$router.push('/add-lead')">
                 Add Lead
               </div>
-              <div class="q-pa-sm" @click="$router.push('/mortgages')">
+              <div class="q-pa-sm" @click="$router.push('/mortgages/' + true)">
                 Add mortgage
               </div>
-              <div class=" q-pa-sm" @click="$router.push('/carriers')">
+              <div class="q-pa-sm" @click="$router.push('/carriers/' + true)">
                 Add Carrier
               </div>
             </div>
@@ -85,7 +85,7 @@ export default {
   methods: {
     onBackButtonClick() {
       this.userRole = getCurrentUser().attributes.roles[0].machineValue;
-      const route = this.$router.currentRoute.fullPath.substring(1);
+      const route = this.$router.currentRoute.fullPath.split('/')[1];
       if (
         route == 'leads-dashboard' ||
         route == 'clients' ||
@@ -98,6 +98,8 @@ export default {
         this.$router.push('/dashboard');
       } else if (route == 'leads') {
         this.$router.push('/leads-dashboard');
+      } else if (route == 'add-lead') {
+        this.$router.push('/leads');
       } else if (
         (route == 'claim-summary' && this.userRole == 'estimator') ||
         this.userRole == 'vendor'

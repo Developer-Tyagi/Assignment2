@@ -153,24 +153,24 @@
                 </div>
                 <!-- pointer3 -->
                 <div class="row q-ma-md">
-                  <div class="col-4 heading-light">Insurane Carrier</div>
+                  <div class="col-5 heading-light">Insurane Carrier</div>
                   <div>{{ claim.carrier ? claim.carrier.value : '-' }}</div>
                 </div>
                 <div class="row q-ma-md">
-                  <div class="col-4 heading-light">Date of Loss</div>
+                  <div class="col-5 heading-light">Date of Loss</div>
                   <div v-if="claim.lossDate">
                     {{ dateToShow(claim.lossDate) }}
                   </div>
                   <div v-else>-</div>
                 </div>
                 <div class="row q-ma-md">
-                  <div class="col-4 heading-light">Policy Number</div>
+                  <div class="col-5 heading-light">Policy Number</div>
                   <div>
                     {{ claim.policyNumber ? claim.policyNumber : '-' }}
                   </div>
                 </div>
                 <div class="row q-ma-md">
-                  <div class="col-4 heading-light">Cause Of Loss</div>
+                  <div class="col-5 heading-light">Cause Of Loss</div>
                   <span>
                     {{ claim.lossCause ? claim.lossCause.value : '' }} -
                     {{ claim.lossCause ? claim.lossCause.desc : '' }}
@@ -487,7 +487,7 @@ export default {
         this.property.machineValue = '';
 
         this.getSingleClientProperty(this.selectedClientId);
-        this.$router.push('/property-details');
+        this.$router.push('/view-client');
       }
     },
     successMessage

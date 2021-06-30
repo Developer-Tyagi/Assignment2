@@ -41,6 +41,12 @@ export default {
     openAddMortgageDialog(e) {
       this.addMortgageDialog = e;
     }
+  },
+
+  created() {
+    if (this.$route.params.add) {
+      this.addMortgageDialog = true;
+    }
   }
 };
 </script>

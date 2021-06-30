@@ -725,49 +725,48 @@
 
     <q-dialog v-model="assignDialog">
       <q-layout view="Lhh lpR fff" container class="bg-white">
-        <div class="form-heading q-ml-sm q-ma-md text-h5">
-          Assign to Claim as
-        </div>
-        <div class="clients-list q-ma-lg">
-          <div
-            v-for="filter in claimRoles"
-            :key="filter.id"
-            class="q-ma-md q-pt-sm"
-          >
+        <div class="mobile-container-page">
+          <div class="form-heading q-ml-sm text-h5">
+            Assign to Claim as
+          </div>
+          <div class=" q-ma-lg">
+            <div v-for="filter in claimRoles" :key="filter.id" class="q-mt-xs">
+              <div class="row">
+                <q-radio
+                  @input="setFilterName(filter.name)"
+                  v-model="assignFilter"
+                  :val="filter.machineValue"
+                  dense
+                  class="q-mb-lg"
+                />
+                <div class="q-pt-none">
+                  <span class="q-ml-sm q-mt-xs"> {{ filter.name }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white q-mb-md  ">
             <div class="row">
-              <q-radio
-                @input="setFilterName(filter.name)"
-                v-model="assignFilter"
-                :val="filter.machineValue"
-                dense
-                class="q-mb-lg"
-              />
-              <q-card-section class="q-pt-none">
-                <span class="q-ml-sm q-mt-xs"> {{ filter.name }}</span>
-              </q-card-section>
+              <div class="q-ml-auto">
+                <q-btn
+                  @click="assignDialog = false"
+                  color="primary"
+                  flat
+                  label="cancel"
+                />
+              </div>
+              <div>
+                <q-btn
+                  color="primary"
+                  flat
+                  label="assign"
+                  @click="onSelectPersonnel(personnelObject)"
+                />
+              </div>
             </div>
           </div>
         </div>
-        <q-footer class="bg-white q-mb-md">
-          <div class="row">
-            <div class="q-ml-auto">
-              <q-btn
-                @click="assignDialog = false"
-                color="primary"
-                flat
-                label="cancel"
-              />
-            </div>
-            <div>
-              <q-btn
-                color="primary"
-                flat
-                label="assign"
-                @click="onSelectPersonnel(personnelObject)"
-              />
-            </div>
-          </div>
-        </q-footer>
       </q-layout>
     </q-dialog>
   </div>
@@ -961,13 +960,14 @@ export default {
   },
 
   created() {
+    this.getClaimRoles();
     this.getClaimCarrier(this.selectedClaimId);
     this.getContactTypes();
     this.getTitles();
     this.getPolicy(this.selectedClaimId);
     this.getPolicyCategory();
     this.getPolicyTypes();
-    this.getClaimRoles();
+
     this.insuranceDetails.policyEffectiveDate = this.insuranceDetails.policyExpireDate = date.formatDate(
       Date.now(),
       'MM/DD/YYYY'

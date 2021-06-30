@@ -115,7 +115,7 @@ export async function setOfflineRoles(state) {
 }
 export function setPermissions(state, permission) {
   state.permissions = permission.map(type => ({
-    name: type.attributes.value,
+    name: type.attributes.desc,
     machineValue: type.attributes.machineValue,
     id: type.id
   }));
@@ -130,7 +130,7 @@ export function setAllTemplate(state, templates) {
 }
 
 export function setTemplateToken(state, token) {
-  state.tokens = token.data;
+  state.tokens = token;
 }
 
 export function setNetworkStatus(state, isOnline) {

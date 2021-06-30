@@ -91,9 +91,7 @@
             header-class="text-primary"
           >
             <q-card-section>
-              <FileManager
-                :directoryId="editSelectedClient.attributes.directoryID"
-              />
+              <ClientDocument />
             </q-card-section>
           </q-expansion-item>
 
@@ -145,13 +143,12 @@
   </div>
 </template>
 <script>
-import { mapActions, mapGetters, mapMutations } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import ClientInfo from 'src/pages/ClientInfo';
 import PropertyInfo from 'src/pages/PropertyInfo';
 import NotesDetails from 'src/pages/Notes';
-import FileManager from 'components/FileManager';
-
+import ClientDocument from 'src/pages/ClientDocuments';
+import { mapActions, mapGetters } from 'vuex';
 export default {
   data() {
     return {
@@ -168,7 +165,7 @@ export default {
     CustomBar,
     ClientInfo,
     PropertyInfo,
-    FileManager,
+    ClientDocument,
     NotesDetails
   },
   computed: {

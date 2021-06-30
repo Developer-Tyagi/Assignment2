@@ -1584,10 +1584,15 @@ export default {
             items: this.lossInfo.osDamagedItems
           }
         },
+        // expertInfo: {
+        //   isVendorAssigned: this.expertVendorInfo.vendorExpertHiredToggle,
+        //   vendor: this.expertVendorInfo.vendors,
+        //   isInsuredHired: this.expertVendorInfo.anyOtherExpertHiredToggle,
+        //   notes: this.expertVendorInfo.notes,
+        //   internalNotes: this.expertVendorInfo.internalNotes
+        // },
         expertInfo: {
-          isVendorAssigned: this.expertVendorInfo.vendorExpertHiredToggle,
-          vendor: this.expertVendorInfo.vendors,
-          isInsuredHired: this.expertVendorInfo.anyOtherExpertHiredToggle,
+          vendors: [],
           notes: this.expertVendorInfo.notes,
           internalNotes: this.expertVendorInfo.internalNotes
         },
@@ -1639,10 +1644,44 @@ export default {
           notesToTheEstimator: this.estimatingInfo.notesToTheEstimator
         };
       }
+      if (
+        this.estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle &&
+        this.estimatingInfo.estimatorID
+      ) {
+        payload.estimatingInfo = {
+          estimatorID: this.estimatingInfo.estimatorID,
+          scopeTimeNeeded: this.estimatingInfo.scopeTimeNeeded,
+          notesToTheEstimator: this.estimatingInfo.notesToTheEstimator
+        };
+      }
+      if (
+        this.expertVendorInfo.isAlreadyHiredVendor.length ||
+        this.expertVendorInfo.isHiredByClaimguru.length
+      ) {
+        let vendorsAlreadyExist = this.expertVendorInfo.isAlreadyHiredVendor.map(
+          val => ({
+            id: val.vendor.id,
+            value: val.vendor.value,
+            isAlreadyHired: true
+          })
+        );
+        let vendorsHired = this.expertVendorInfo.isHiredByClaimguru.map(
+          val => ({
+            id: val.vendor.id,
+            value: val.vendor.value,
+            isAlreadyHired: false
+          })
+        );
+        if (vendorsAlreadyExist[0].id) {
+          payload.expertInfo.vendors = vendorsAlreadyExist.concat(vendorsHired);
+        } else {
+          payload.expertInfo.vendors = vendorsHired;
+        }
+      }
       this.addClaim(payload).then(() => {
         this.setSelectedLead();
         this.successMessage(constants.successMessages.CLAIM);
-        this.$router.push('/property-details');
+        this.$router.push('/view-client');
       });
     },
 

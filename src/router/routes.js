@@ -58,6 +58,12 @@ const routes = [
         component: () => import('pages/DocumentUpload.vue')
       },
       {
+        path: 'vendor-document',
+        name: ' upload document ',
+        caseSensitive: true,
+        component: () => import('pages/VendorDocument.vue')
+      },
+      {
         path: 'configuration',
         name: 'configuration',
         caseSensitive: true,
@@ -318,7 +324,7 @@ const routes = [
         component: () => import('src/pages/vendor/VendorPersonnel.vue')
       },
       {
-        path: 'carriers',
+        path: 'carriers/:add?',
         name: 'carriers',
         caseSensitive: true,
         component: () => import('pages/carrier/Carriers.vue')
@@ -361,7 +367,7 @@ const routes = [
         component: () => import('pages/Settings.vue')
       },
       {
-        path: 'mortgages',
+        path: 'mortgages/:add?',
         name: 'mortgages',
         caseSensitive: true,
         component: () => import('pages/mortgage/Mortgage.vue')

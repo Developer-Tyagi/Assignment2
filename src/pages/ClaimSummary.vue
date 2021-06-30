@@ -16,7 +16,7 @@
           <ClaimDetail />
         </div>
       </div>
-      <div class="text-bold  row">
+      <div class="text-bold q-ml-sm row">
         Claim Summary
         <q-icon
           v-if="userRole != 'estimator' && userRole != 'vendor'"
@@ -27,7 +27,7 @@
           @click="onEditClaimSummary"
         />
       </div>
-      <div class="q-mt-md row">
+      <div class="q-mt-md q-ml-sm row">
         <div class="heading-light q-mt-none col-xs-4 lightHeading">
           File Number
         </div>
@@ -36,7 +36,7 @@
         </div>
       </div>
 
-      <div class="q-mt-md row">
+      <div class="q-mt-md q-ml-sm row">
         <div class="heading-light q-mt-none col-xs-4 lightHeading">
           Claim Number
         </div>
@@ -45,7 +45,7 @@
         </div>
       </div>
 
-      <div class="q-mt-md row">
+      <div class="q-mt-md q-ml-sm row">
         <div class="heading-light q-mt-none col-xs-4 lightHeading">
           Claim Reason
         </div>
@@ -57,7 +57,7 @@
           }}
         </div>
       </div>
-      <div class="q-mt-md row">
+      <div class="q-mt-md q-ml-sm row" v-if="userRole != 'vendor'">
         <div class="heading-light q-mt-none col-xs-4 lightHeading">
           Claim Fees
         </div>
@@ -73,7 +73,7 @@
             }}
           </div>
           <div
-            class=" col"
+            class="col"
             v-else-if="getSelectedClaim.contractInfo.fees.type == 'update'"
           >
             {{
@@ -82,7 +82,7 @@
                 : '-'
             }}
           </div>
-          <div class=" col" v-else>
+          <div class="col" v-else>
             {{
               getSelectedClaim.contractInfo.fees.rate
                 ? getSelectedClaim.contractInfo.fees.rate + ' %'
@@ -91,7 +91,7 @@
           </div>
         </div>
       </div>
-      <div class="q-mt-md row">
+      <div class="q-mt-md row q-ml-sm" v-if="userRole != 'vendor'">
         <div class="heading-light q-mt-none col-xs-4 lightHeading">
           Date of Contract
         </div>
@@ -100,7 +100,7 @@
         </div>
         <div v-else class="q-ml-md">MM/DD/YYYY</div>
       </div>
-      <div class="q-mt-md row">
+      <div class="q-mt-md row q-ml-sm" v-if="userRole != 'vendor'">
         <div class="heading-light q-mt-none col-xs-4 lightHeading">
           Date of Notified
         </div>
@@ -109,7 +109,7 @@
         </div>
         <div v-else class="q-ml-md">MM/DD/YYYY</div>
       </div>
-      <div class="q-mt-md row">
+      <div class="q-mt-md row q-ml-sm" v-if="userRole != 'vendor'">
         <div class="heading-light q-mt-none col-xs-4 lightHeading">
           Open Since
         </div>
@@ -117,8 +117,8 @@
           {{ getSelectedClaim.sinceOpen ? getSelectedClaim.sinceOpen : '-' }}
         </div>
       </div>
-      <div class="q-mt-md row">
-        <div class="heading-light q-mt-none col-xs-4 lightHeading">
+      <div class="q-mt-md row" v-if="userRole != 'vendor'">
+        <div class="heading-light q-ml-sm q-mt-none col-xs-4 lightHeading">
           Loss Since
         </div>
         <div class="column q-ml-md">
@@ -126,110 +126,109 @@
         </div>
       </div>
       <q-separator class="q-mt-sm q-mb-sm" />
-      <div
-        class="row  justify-between"
-        v-if="userRole != 'estimator' && userRole != 'vendor'"
-      >
-        <div class="text-bold q-mt-sm ">Claim Deadlines</div>
-        <div class="q-mt-xs">
-          <q-icon
-            class="q-ml-xs"
-            name="edit"
-            size="xs"
-            color="primary"
-            @click="(claimDeadline = true), $emit('claimSummaryDialog', true)"
-          />
-        </div>
-      </div>
-      <div class="q-mt-md row">
-        <div class="heading-light q-mt-none col-xs-4 lightHeading">
-          Tolling Date / Statute Deadline
-        </div>
-        <div class="column q-ml-md">
-          {{ DeadLineDate }}
-        </div>
-      </div>
-      <div class="q-mt-md row">
-        <div class="heading-light q-mt-none col-xs-4 lightHeading">
-          Recoverable Depreciation Due
-        </div>
-        <div class="column q-ml-md">
-          {{ recovDDDate }}
-        </div>
-      </div>
 
-      <q-separator class="q-mt-sm q-mb-sm" />
-      <div class="row q-ml-xs justify-between">
-        <div class="text-bold q-mt-xs">Loss Details</div>
-        <div>
-          <q-icon
-            name="create"
-            color="primary"
-            class="col"
-            size="xs"
-            v-if="userRole != 'estimator' && userRole != 'vendor'"
-            @click="(lossDetailsBox = true), $emit('claimSummaryDialog', true)"
-          ></q-icon>
+      <div v-if="userRole != 'vendor'">
+        <div class="row justify-between">
+          <div class="text-bold q-mt-sm q-ml-sm">Claim Deadlines</div>
+          <div class="row">
+            <q-icon
+              class="q-ml-xs"
+              name="edit"
+              size="xs"
+              color="primary"
+              @click="(claimDeadline = true), $emit('claimSummaryDialog', true)"
+            />
+          </div>
         </div>
-      </div>
-
-      <div class="q-ml-xs" v-if="getSelectedClaim.lossInfo">
         <div class="q-mt-md row">
-          <div class="heading-light q-mt-none col-xs-4 lightHeading">
-            Date & Time of Loss
+          <div class="heading-light q-ml-sm q-mt-none col-xs-4 lightHeading">
+            Tolling Date / Statute Deadline
           </div>
           <div class="column q-ml-md">
-            {{ dateToShow(getSelectedClaim.lossInfo.date) }}
+            {{ DeadLineDate }}
           </div>
         </div>
-
         <div class="q-mt-md row">
-          <div class="heading-light q-mt-none col-xs-4 lightHeading">
-            Estimated Loss Amount
+          <div class="heading-light q-ml-sm q-mt-none col-xs-4 lightHeading">
+            Recoverable Depreciation Due
           </div>
           <div class="column q-ml-md">
-            {{
-              getSelectedClaim.lossInfo.estimatedLossAmt
-                ? '$' + ' ' + getSelectedClaim.lossInfo.estimatedLossAmt
-                : '-'
-            }}
+            {{ recovDDDate }}
+          </div>
+        </div>
+        <q-separator class="q-mt-sm q-mb-sm" />
+      </div>
+      <div v-if="userRole != 'vendor'">
+        <div class="row q-ml-xs justify-between">
+          <div class="text-bold q-mt-xs q-ml-xs">Loss Details</div>
+          <div>
+            <q-icon
+              name="create"
+              color="primary"
+              class="col"
+              size="xs"
+              v-if="userRole != 'estimator' && userRole != 'vendor'"
+              @click="
+                (lossDetailsBox = true), $emit('claimSummaryDialog', true)
+              "
+            ></q-icon>
           </div>
         </div>
 
-        <div class="row q-mt-sm">
-          <span class="heading-light col-4">
-            Property Value at Time of Loss
-          </span>
-          <span class="q-ml-md col" v-if="getSelectedClaim.lossInfo">
-            {{
-              getSelectedClaim.lossInfo.propertyValue
-                ? '$' + ' ' + getSelectedClaim.lossInfo.propertyValue
-                : '-'
-            }}
-          </span>
-        </div>
+        <div class="q-ml-xs" v-if="getSelectedClaim.lossInfo">
+          <div class="q-mt-md row">
+            <div class="heading-light q-mt-none col-xs-4 lightHeading">
+              Date & Time of Loss
+            </div>
+            <div class="column q-ml-md">
+              {{ dateToShow(getSelectedClaim.lossInfo.date) }}
+            </div>
+          </div>
 
-        <div class="row q-mt-sm">
-          <span class="heading-light col-4">
-            Loss Description
-          </span>
-          <span class="q-ml-md col" v-if="getSelectedClaim.lossInfo">
-            {{
-              getSelectedClaim.lossInfo.desc
-                ? getSelectedClaim.lossInfo.desc
-                : '-'
-            }}
-          </span>
+          <div class="q-mt-md row">
+            <div class="heading-light q-mt-none col-xs-4 lightHeading">
+              Estimated Loss Amount
+            </div>
+            <div class="column q-ml-md">
+              {{
+                getSelectedClaim.lossInfo.estimatedLossAmt
+                  ? '$' + ' ' + getSelectedClaim.lossInfo.estimatedLossAmt
+                  : '-'
+              }}
+            </div>
+          </div>
+
+          <div class="row q-mt-sm">
+            <span class="heading-light col-4">
+              Property Value at Time of Loss
+            </span>
+            <span class="q-ml-md col" v-if="getSelectedClaim.lossInfo">
+              {{
+                getSelectedClaim.lossInfo.propertyValue
+                  ? '$' + ' ' + getSelectedClaim.lossInfo.propertyValue
+                  : '-'
+              }}
+            </span>
+          </div>
+
+          <div class="row q-mt-sm">
+            <span class="heading-light col-4"> Loss Description </span>
+            <span class="q-ml-md col" v-if="getSelectedClaim.lossInfo">
+              {{
+                getSelectedClaim.lossInfo.desc
+                  ? getSelectedClaim.lossInfo.desc
+                  : '-'
+              }}
+            </span>
+          </div>
         </div>
+        <q-separator class="q-mt-sm q-mb-sm" />
       </div>
-      <q-separator class="q-mt-sm q-mb-sm" />
-      <div v-if="userRole != 'estimator' && userRole != 'vendor'">
-        <div class="form-heading q-ml-sm col q-mb-md">
-          Claim Timeline
-        </div>
+      <div v-if="userRole != 'vendor'">
+        <div class="form-heading q-ml-sm col q-mb-md">Claim Timeline</div>
         <div v-for="(phase, index) in getSelectedClaim.phases">
           <div class="row">
-            <div class="col-2 ">
+            <div class="col-2">
               <q-avatar
                 class="q-ma-sm"
                 size="50px"
@@ -690,14 +689,14 @@
           <div
             v-if="userRole == 'estimator'"
             class="q-pa-md heading-light"
-            @click="onClickUploadDocument"
+            @click="onClickUploadDocument('estimate')"
           >
             Upload Estimate Documents
           </div>
           <div
             v-if="userRole == 'vendor'"
             class="q-pa-md heading-light"
-            @click="onClickUploadDocument"
+            @click="onClickUploadDocument('vendor')"
           >
             Upload Vendor Documents
           </div>
@@ -989,8 +988,12 @@ export default {
       this.lossInfo.cause.machineValue = obj.machineValue;
       this.lossInfo.cause.value = obj.name;
     },
-    onClickUploadDocument() {
-      this.$router.push('/document-upload');
+    onClickUploadDocument(value) {
+      if (value == 'estimate') {
+        this.$router.push('/document-upload');
+      } else {
+        this.$router.push('/vendor-document');
+      }
     }
   }
 };

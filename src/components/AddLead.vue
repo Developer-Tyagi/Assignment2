@@ -436,61 +436,65 @@
                   <div
                     class="custom-select"
                     @click="vendorsListDialog = true"
-                    v-if="!sourceDetails.details"
+                    v-if="!sourceDetails.email"
                   >
                     <div class="select-text">Click for choosing a vendor</div>
                   </div>
                   <q-card
                     bordered
-                    v-if="sourceDetails.details"
+                    v-if="sourceDetails.email"
                     @click="vendorsListDialog = true"
                     class="q-my-md q-pa-md"
                   >
                     <div class="text-bold">
+                      {{ sourceDetails.companyName }}
+                    </div>
+                    <div>
                       {{ sourceDetails.details }}
                     </div>
+
                     <div
                       v-if="
-                        sourceDetails.address &&
-                          sourceDetails.address.streetAddress
+                        sourceDetails.mailingAddress &&
+                          sourceDetails.mailingAddress.streetAddress
                       "
                     >
                       <div>
                         {{
-                          sourceDetails.address
-                            ? sourceDetails.address.houseNumber
+                          sourceDetails.mailingAddress
+                            ? sourceDetails.mailingAddress.houseNumber
                             : '-'
                         }}
                         ,
                         {{
-                          sourceDetails.address.streetAddress
-                            ? sourceDetails.address.streetAddress
+                          sourceDetails.mailingAddress.streetAddress
+                            ? sourceDetails.mailingAddress.streetAddress
                             : '-'
                         }}
                       </div>
                       <div>
                         {{
-                          sourceDetails.address.addressLocality
-                            ? sourceDetails.address.addressLocality
+                          sourceDetails.mailingAddress.addressLocality
+                            ? sourceDetails.mailingAddress.addressLocality
                             : '-'
                         }}
                         ,
                         {{
-                          sourceDetails.address.addressRegion
-                            ? sourceDetails.address.addressRegion
+                          sourceDetails.mailingAddress.addressRegion
+                            ? sourceDetails.mailingAddress.addressRegion
                             : '-'
                         }}
                       </div>
                       <div class="row">
                         {{
-                          sourceDetails.address.addressCountry
-                            ? sourceDetails.address.addressCountry
+                          sourceDetails.mailingAddress.addressCountry
+                            ? sourceDetails.mailingAddress.addressCountry
                             : '-'
                         }}
                         -
                         {{
-                          sourceDetails.address.postalCode
-                            ? sourceDetails.address.postalCode
+                          sourceDetails.mailingAddress.postalCode
+                            ? sourceDetails.mailingAddress.postalCode
                             : '-'
                         }}
                       </div>
@@ -499,9 +503,11 @@
                       Phone:
                       <span
                         class="clickLink"
-                        @click="onPhoneNumberClick(sourceDetails.phone, $event)"
+                        @click="
+                          onPhoneNumberClick(sourceDetails.phone.number, $event)
+                        "
                       >
-                        {{ sourceDetails.phone }}</span
+                        {{ sourceDetails.phone.number }}</span
                       >
                     </div>
                     <div>
@@ -881,9 +887,10 @@ export default {
         id: '',
         type: '',
         details: '',
-        address: '',
+        mailingAddress: {},
+        phone: {},
         email: '',
-        phone: ''
+        companyName: ''
       },
       schedulingDetails: {
         isAutomaticScheduling: false,
@@ -903,6 +910,7 @@ export default {
 
   methods: {
     ...mapActions([
+      'getVendorDetails',
       'getClients',
       'addLeads',
       'getInspectionTypes',
@@ -1067,15 +1075,7 @@ export default {
           leadSource: {
             id: this.sourceDetails.id,
             type: this.sourceDetails.type,
-            detail: this.sourceDetails.details,
-            address: this.sourceDetails.address,
-            email: this.sourceDetails.email,
-            phoneNumber: [
-              {
-                type: '',
-                number: this.sourceDetails.phone
-              }
-            ]
+            detail: this.sourceDetails.details
           },
           carrier: {
             id: this.insuranceDetails.carrierId,
@@ -1126,7 +1126,7 @@ export default {
     onChangingSourceType() {
       this.sourceDetails.id = '';
       this.sourceDetails.details = '';
-      this.sourceDetails.address = '';
+      this.sourceDetails.mailingAddress = '';
       this.sourceDetails.email = '';
     },
 
@@ -1206,21 +1206,24 @@ export default {
     onSelectingVendorList(vendor) {
       this.sourceDetails.id = vendor.id;
       this.sourceDetails.details = vendor.name;
-      this.sourceDetails.address = vendor.address;
+      this.sourceDetails.companyName = vendor.companyName;
+      this.sourceDetails.mailingAddress = vendor.mailingAddress;
       this.sourceDetails.email = vendor.email;
       this.sourceDetails.phone = vendor.phoneNumber
-        ? vendor.phoneNumber[0].number
+        ? vendor.phoneNumber.number
         : '';
       this.vendorsListDialog = false;
     },
 
     onCloseAddVendorDialogBox(vendor) {
       this.sourceDetails.id = vendor.id;
-      this.sourceDetails.details = vendor.name;
-      this.sourceDetails.address = vendor.address;
+      this.sourceDetails.companyName = vendor.companyName;
+      this.sourceDetails.details =
+        vendor.contact.fname + ' ' + vendor.contact.lname;
+      this.sourceDetails.mailingAddress = vendor.mailingAddress;
       this.sourceDetails.email = vendor.email;
       this.sourceDetails.phone = vendor.phoneNumber
-        ? vendor.phoneNumber[0].number
+        ? vendor.phoneNumber.number
         : '';
       this.vendorsListDialog = false;
       this.addVendorDialog = false;
@@ -1236,6 +1239,7 @@ export default {
       'titles',
       'vendors',
       'lossCauses',
+      'selectedVendor',
       'selectedLead'
     ])
   },
@@ -1246,6 +1250,7 @@ export default {
     await this.getTitles();
     await this.getLossCauses();
     if (this.isEdit) {
+      this.getVendorDetails(this.selectedLead.leadSource.id);
       this.primaryDetails.honorific = this.selectedLead.primaryContact.honorific;
       this.primaryDetails.firstName = this.selectedLead.primaryContact.fname;
       this.primaryDetails.lastName = this.selectedLead.primaryContact.lname;
@@ -1276,9 +1281,14 @@ export default {
       this.insuranceDetails.policyNumber = this.selectedLead.policyNumber;
       this.schedulingDetails.isAutomaticScheduling = this.selectedLead.isAutomaticScheduling;
       this.notes = this.selectedLead.notes;
-      this.sourceDetails.id = this.selectedLead.leadSource.id;
+
+      this.sourceDetails.id = this.selectedVendor.id;
       this.sourceDetails.type = this.selectedLead.leadSource.type;
-      this.sourceDetails.details = this.selectedLead.leadSource.detail;
+      this.sourceDetails.details = this.selectedVendor.name;
+      this.sourceDetails.mailingAddress = this.selectedVendor.mailingAddress;
+      this.sourceDetails.email = this.selectedVendor.email;
+      this.sourceDetails.phone = this.selectedVendor.phoneNumber;
+      this.sourceDetails.companyName = this.selectedVendor.companyName;
       this.insuranceDetails.carrierName = this.selectedLead.carrier
         ? this.selectedLead.carrier.value
         : '';

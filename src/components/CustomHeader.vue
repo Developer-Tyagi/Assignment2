@@ -16,6 +16,8 @@
                 $route.name === 'leads dashboard' ||
                 $route.name === 'vendors' ||
                 $route.name === 'settings' ||
+                $route.name === 'carriers' ||
+                $route.name === 'mortgages' ||
                 $route.name === 'manage users' ||
                 $route.name === 'admin' ||
                 $route.name === 'claims' ||
@@ -58,10 +60,14 @@
             style="width: calc(100% - 54px)"
           >
             <div class="text-capitalize ellipsis full-width">
-              {{ user.name || 'Unknown' }}
+              {{
+                user.roles[0].machineValue == 'vendor'
+                  ? user.companyName
+                  : user.name
+              }}
             </div>
             <div style="font-size: 11px; opacity: 80%" @click="">
-              {{ user.contact.fname ? user.contact.fname : '-' }}
+              {{ user.contact.fname ? user.contact.fname : '' }}
             </div>
           </div>
         </div>
@@ -229,6 +235,30 @@ export default {
         'mortagages',
         'reports',
         'admin',
+        'manage-users',
+        'configuration'
+      ],
+      office_manager: [
+        'dashboard',
+        'leads',
+        'clients',
+        'claims',
+        'vendors',
+        'carriers',
+        'mortagages',
+        'reports',
+        'manage-users',
+        'configuration'
+      ],
+      office_staff: [
+        'dashboard',
+        'leads',
+        'clients',
+        'claims',
+        'vendors',
+        'carriers',
+        'mortagages',
+        'reports',
         'manage-users',
         'configuration'
       ]

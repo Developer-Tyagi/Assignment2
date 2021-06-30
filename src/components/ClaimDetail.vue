@@ -1,5 +1,5 @@
 <template>
-  <div class=" q-mx-lg q-mt-md">
+  <div class="q-mx-lg q-mt-md">
     <q-badge
       color="red"
       v-if="
@@ -31,10 +31,8 @@
       </q-icon>
     </div>
     <div class="row">
-      <div class="heading-light col-3 ">
-        Name of the property
-      </div>
-      <div class="col  q-ml-md">
+      <div class="heading-light col-3">Name of the property</div>
+      <div class="col q-ml-md">
         <span v-if="getSelectedClaim.lossInfo">
           <span
             v-if="
@@ -97,7 +95,7 @@
         </div></span
       >
     </div>
-    <div class="row  q-mt-sm">
+    <div class="row q-mt-sm" v-if="userRole != 'vendor'">
       <span class="heading-light col-3"> Claim Email </span>
       <span
         class="q-ml-md col clickLink"
@@ -108,14 +106,14 @@
         }}</span
       >
     </div>
-    <div class="row q-mt-sm ">
+    <div class="row q-mt-sm">
       <span class="heading-light col-3"> Claim Number </span>
       <span class="q-ml-md col-8">
         {{ getSelectedClaim.number ? getSelectedClaim.number : '- - -' }}</span
       >
     </div>
-    <div class="row q-mt-sm ">
-      <span class="heading-light col-3 "> Current Phase </span>
+    <div class="row q-mt-sm" v-if="userRole != 'vendor'">
+      <span class="heading-light col-3"> Current Phase </span>
       <span class="q-ml-md col-8">
         {{
           getSelectedClaim.currentPhase
@@ -124,7 +122,7 @@
         }}</span
       >
     </div>
-    <div class="row  q-mt-sm">
+    <div class="row q-mt-sm">
       <span class="heading-light col-3"> Loss Date </span>
       <span class="q-ml-md col" v-if="getSelectedClaim.lossInfo">
         {{ dateToShow(getSelectedClaim.lossInfo.date) }}</span
@@ -153,11 +151,14 @@ import { mapGetters, mapActions } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import moment from 'moment';
 import { dateToShow } from '@utils/date';
+import { getCurrentUser } from '@utils/auth';
 export default {
   name: 'Claims',
   components: { CustomBar },
   data() {
-    return {};
+    return {
+      userRole: ''
+    };
   },
 
   computed: {
@@ -173,6 +174,7 @@ export default {
     if (!this.selectedClaimId) {
       this.$router.push('/clients');
     }
+    this.userRole = getCurrentUser().attributes.roles[0].machineValue;
     this.getSingleClaimDetails(this.selectedClaimId);
   },
   methods: {

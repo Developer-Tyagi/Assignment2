@@ -1000,6 +1000,25 @@ export async function getClaimEstimateDoc({ commit, dispatch }, claimID) {
     });
   }
 }
+
+// API for Get uploaded photos .
+export async function getVendorDocument({ commit, dispatch }, claimID) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get(`/claims/${claimID}/documents/vendor`);
+
+    commit('setVendorDocument', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+  }
+}
+
 // API for Get uploaded photos .
 export async function getClaimPhoto({ commit, dispatch }, claimID) {
   dispatch('setLoading', true);
@@ -1096,6 +1115,30 @@ export async function uploadClaimDocument({ dispatch, state }, payload) {
     return false;
   }
 }
+
+export async function uploadVendorDocument({ dispatch }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      `/claims/${payload.id}/documents`,
+      payload.formData
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'File Uploaded Successfully!'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+    return false;
+  }
+}
+
 // API for View claim statistics
 export async function getClaimStatistics({ commit, dispatch }) {
   dispatch('setLoading', true);

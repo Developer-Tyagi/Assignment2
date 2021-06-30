@@ -54,13 +54,16 @@
                 <span
                   class="clickable"
                   v-if="
-                    user.attributes['phoneNumber'] &&
-                      user.attributes['phoneNumber']['number']
+                    user.attributes.contact.phoneNumber &&
+                      user.attributes.contact.phoneNumber[0].number
                   "
                   @click="
-                    onPhoneNumberClick(user.attributes.phoneNumber, $event)
+                    onPhoneNumberClick(
+                      user.attributes.contact.phoneNumber[0].number,
+                      $event
+                    )
                   "
-                  >{{ user.attributes.phoneNumber['number'] }}</span
+                  >{{ user.attributes.contact.phoneNumber[0].number }}</span
                 ><span v-else> - </span>
               </td>
               <td class="text-center">-</td>
@@ -327,10 +330,10 @@
                 }}
               </div>
             </div>
-            <div class="col">
+            <div class="col" v-if="singleUserData.contact.phoneNumber.length">
               {{
-                singleUserData.phoneNumber
-                  ? singleUserData.phoneNumber.number
+                singleUserData.contact.phoneNumber
+                  ? singleUserData.contact.phoneNumber[0].number
                   : '-'
               }}
             </div>
@@ -512,7 +515,11 @@ export default {
           }
         }
       },
-      singleUserData: [],
+      singleUserData: {
+        contact: {
+          phoneNumber: []
+        }
+      },
       newRole: '',
       addNewRoles: false,
       viewInfoDialogBox: false,
@@ -660,19 +667,22 @@ export default {
           data: {
             contact: {
               fname: this.singleUser.fname,
-              lname: this.singleUser.lname
+              lname: this.singleUser.lname,
+              phoneNumber: [
+                {
+                  type: this.singleUser.contact.type,
+                  number: this.singleUser.contact.number
+                }
+              ]
             },
             email: this.singleUser.email,
             role: this.singleUser.roles,
-            mailingAddress: this.singleUser.mailingAddress,
-            phoneNumber: {
-              type: this.singleUser.contact.type,
-              number: this.singleUser.contact.number
-            }
+            mailingAddress: this.singleUser.mailingAddress
           }
         };
+
         await this.editUserInfo(payload);
-        await this.getAllUsers();
+        this.getAllUsers();
         this.singleUser.mailingAddress = {
           houseNumber: '',
           addressCountry: '',
@@ -692,11 +702,11 @@ export default {
     onEditClick() {
       this.singleUser.fname = this.singleUserData.contact.fname;
       this.singleUser.lname = this.singleUserData.contact.lname;
-      this.singleUser.contact.type = this.singleUserData.phoneNumber
-        ? this.singleUserData.phoneNumber.type
+      this.singleUser.contact.type = this.singleUserData
+        ? this.singleUserData.contact.phoneNumber[0].type
         : '';
-      this.singleUser.contact.number = this.singleUserData.phoneNumber
-        ? this.singleUserData.phoneNumber.number
+      this.singleUser.contact.number = this.singleUserData
+        ? this.singleUserData.contact.phoneNumber[0].number
         : '';
       this.singleUser.email = this.singleUserData.email;
       if (this.singleUserData.mailingAddress) {
