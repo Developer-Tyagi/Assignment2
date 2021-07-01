@@ -117,7 +117,7 @@ export default {
   },
   methods: {
     ...mapActions(['getClients', 'getSingleClientDetails']),
-    ...mapMutations(['setSelectedClientId', 'setSelectedLead']),
+    ...mapMutations(['setSelectedLead']),
     dateWithTime,
     onPhoneNumberClick,
     onSearchBackButtonClick() {
@@ -125,9 +125,7 @@ export default {
       this.search();
     },
     onClientsListClick(client) {
-      this.setSelectedClientId(client.id);
-
-      this.$router.push('/view-client');
+      this.$router.push('/view-client/' + client.id);
     },
     addClient() {
       this.$router.push('/add-client');

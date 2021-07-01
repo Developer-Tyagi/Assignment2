@@ -925,7 +925,7 @@ export default {
       'getActiveLeadsList'
     ]),
 
-    ...mapMutations(['setSelectedClient']),
+    ...mapMutations(['setSelectedClient', 'isLastRouteEdit']),
 
     successMessage,
     onPhoneNumberClick,
@@ -1106,6 +1106,7 @@ export default {
         await this.editLeadDetails(payload);
         this.$router.push('/lead-details/' + this.selectedLead.id);
         this.getActiveLeadsList();
+        this.isLastRouteEdit(true);
       } else {
         this.addLeads(payload).then(() => {
           const payload = {
@@ -1114,7 +1115,6 @@ export default {
           };
           this.getActiveLeadsList(payload);
           this.setSelectedClient();
-
           this.$router.push('/leads');
         });
       }

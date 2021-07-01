@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="mobile-container-page ">
-      <div class="q-pa-xs column ">
+    <div class="mobile-container-page">
+      <div class="q-pa-xs column">
         <div class="q-ml-md q-mt-md text-h6">
           {{
             editSelectedClient.attributes.insuredInfo.primary.fname
@@ -148,7 +148,7 @@ import ClientInfo from 'src/pages/ClientInfo';
 import PropertyInfo from 'src/pages/PropertyInfo';
 import NotesDetails from 'src/pages/Notes';
 import ClientDocument from 'src/pages/ClientDocuments';
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 export default {
   data() {
     return {
@@ -173,6 +173,7 @@ export default {
   },
   methods: {
     ...mapActions(['getSingleClientDetails']),
+    ...mapMutations(['setSelectedClientId']),
 
     clientDetailsDailogBoxOpen(value) {
       if (value == 'Client Info') {
@@ -192,7 +193,8 @@ export default {
   },
 
   created() {
-    this.getSingleClientDetails(this.selectedClientId);
+    this.setSelectedClientId(this.$route.params.id);
+    this.getSingleClientDetails(this.$route.params.id);
   }
 };
 </script>
