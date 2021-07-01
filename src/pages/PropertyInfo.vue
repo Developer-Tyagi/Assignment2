@@ -487,7 +487,7 @@ export default {
         this.property.machineValue = '';
 
         this.getSingleClientProperty(this.selectedClientId);
-        this.$router.push('/view-client');
+        this.$router.push('/view-client/' + this.selectedClientId);
       }
     },
     successMessage
