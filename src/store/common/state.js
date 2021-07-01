@@ -25,7 +25,7 @@ export default function() {
       { value: 'other', name: 'Other' }
     ],
     plans: [],
-
+    isEdit: false,
     tokens: [],
     organization: [],
     isOnline: navigator.onLine

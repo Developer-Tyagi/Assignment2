@@ -158,7 +158,7 @@ const routes = [
         component: () => import('pages/Clients.vue')
       },
       {
-        path: 'view-client',
+        path: 'view-client/:id',
         name: 'client details',
 
         caseSensitive: true,

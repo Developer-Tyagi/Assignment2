@@ -76,13 +76,18 @@
 <script>
 import CustomHeader from 'components/CustomHeader';
 import { getCurrentUser } from '@utils/auth';
+import { mapGetters, mapMutations } from 'vuex';
 export default {
   name: 'MainLayout',
   components: { CustomHeader },
   data() {
     return { openDialog: false };
   },
+  computed: {
+    ...mapGetters(['isEdit'])
+  },
   methods: {
+    ...mapMutations(['isLastRouteEdit']),
     onBackButtonClick() {
       this.userRole = getCurrentUser().attributes.roles[0].machineValue;
       const route = this.$router.currentRoute.fullPath.split('/')[1];
@@ -108,7 +113,12 @@ export default {
       } else if (route == 'claims') {
         this.$store.commit('setClaims');
       } else {
-        this.$router.go(-1);
+        if (this.isEdit) {
+          this.isLastRouteEdit(false);
+          this.$router.go(-3);
+        } else {
+          this.$router.go(-1);
+        }
       }
     },
     onClickAddUpIcon() {

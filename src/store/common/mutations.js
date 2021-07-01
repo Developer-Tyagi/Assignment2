@@ -135,5 +135,8 @@ export function setTemplateToken(state, token) {
 
 export function setNetworkStatus(state, isOnline) {
   state.isOnline = isOnline;
-  console.log(state.isOnline);
+}
+
+export function isLastRouteEdit(state, isEdit) {
+  state.isEdit = isEdit;
 }
