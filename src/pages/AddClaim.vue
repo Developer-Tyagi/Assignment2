@@ -185,7 +185,12 @@
                           </div>
                         </div>
                         <div
-                          class=" text-capitalize q-pt-xs text-caption q-mr-xl q-my-xs q-pr-xs "
+                          class="
+                            text-capitalize
+                            q-pt-xs
+                            text-caption
+                            q-mr-xl q-my-xs q-pr-xs
+                          "
                         >
                           <p>{{ item.desc }}</p>
 
@@ -206,14 +211,14 @@
                           </div>
                         </div>
                         <q-separator />
-                        <div class="q-my-sm row ">
+                        <div class="q-my-sm row">
                           <div class="heading-light col-7">Purchase Price</div>
                           <div class="heading-light col-3">$</div>
                           <div class="q-mr-sm">
                             {{ item.purchasePrice }}
                           </div>
                         </div>
-                        <div class="q-my-sm row ">
+                        <div class="q-my-sm row">
                           <div class="heading-light col-7">
                             {{ item.radio }} Cost
                           </div>
@@ -415,7 +420,12 @@
                           </div>
                         </div>
                         <div
-                          class=" text-capitalize q-pt-xs text-caption q-mr-xl q-my-xs q-px-xs "
+                          class="
+                            text-capitalize
+                            q-pt-xs
+                            text-caption
+                            q-mr-xl q-my-xs q-px-xs
+                          "
                         >
                           <p>{{ item.desc }}</p>
 
@@ -436,14 +446,14 @@
                           </div>
                         </div>
                         <q-separator />
-                        <div class="q-my-sm row ">
+                        <div class="q-my-sm row">
                           <div class="heading-light col-7">Purchase Price</div>
                           <div class="heading-light col-3">$</div>
                           <div class="q-mr-sm">
                             {{ item.purchasePrice }}
                           </div>
                         </div>
-                        <div class="q-my-sm row ">
+                        <div class="q-my-sm row">
                           <div class="heading-light col-7">
                             {{ item.radio }} Cost
                           </div>
@@ -1681,7 +1691,7 @@ export default {
       this.addClaim(payload).then(() => {
         this.setSelectedLead();
         this.successMessage(constants.successMessages.CLAIM);
-        this.$router.push('/view-client');
+        this.$router.push('/view-client/' + this.selectedClientId);
       });
     },
 

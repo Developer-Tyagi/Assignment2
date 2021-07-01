@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="q-ml-md row ">
+    <div class="q-ml-md row">
       Date & Time of First Contact
       <q-icon
         name="create"
@@ -18,9 +18,7 @@
     <q-card class="q-pa-md">
       <div class="client-list q-pa-sm">
         <div class="row">
-          <div class="heading-light col-xs-4 lightHeading">
-            Insured Details
-          </div>
+          <div class="heading-light col-xs-4 lightHeading">Insured Details</div>
           <div class="q-ml-md column">
             <div class="">
               {{ editSelectedClient.attributes.insuredInfo.primary.fname }}
@@ -920,7 +918,7 @@ export default {
         await this.editClient(payload);
         this.getSingleClientDetails(this.selectedClientId);
 
-        this.$router.push('/view-client');
+        this.$router.push('/view-client/' + this.selectedClientId);
       }
     },
     onCountrySelect(country) {
