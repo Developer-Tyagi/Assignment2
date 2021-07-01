@@ -8,6 +8,7 @@ export default function() {
     account: [],
     payment: [],
     expenses: [],
+    disbursements: [],
     policy: [],
     lossInfo: [],
     settlementType: [],

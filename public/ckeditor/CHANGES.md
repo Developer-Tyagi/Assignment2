@@ -981,7 +981,7 @@ Other Changes:
   _ [#108](https://github.com/WebSpellChecker/ckeditor-plugin-scayt/issues/108): Latest SCAYT copies the ID of the editor element to the iframe.
   _ SCAYT stops working when CKEditor [Undo plugin](https://ckeditor.com/cke4/addon/undo) not enabled.
   _ Issue with pasting SCAYT markup in CKEditor.
-  * SCAYT stops working after pressing the *Cancel\* button in the WSC dialog.
+  - SCAYT stops working after pressing the \*Cancel\* button in the WSC dialog.
 
 ## CKEditor 4.5.5
 

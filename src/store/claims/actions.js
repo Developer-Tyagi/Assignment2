@@ -68,6 +68,22 @@ export async function getAllExpenses({ commit, dispatch }, id) {
     });
   }
 }
+export async function getAllDisbursements({ commit, dispatch }, id) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get(`/claims/${id}/disbursements`);
+
+    commit('setAllDisbursements', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+  }
+}
 
 //API for Editing the Activity logs  editLog
 
@@ -91,6 +107,30 @@ export async function editLog({ dispatch, state }, payload) {
       type: 'negative',
       message: 'failed to update Activity Log'
     });
+  }
+}
+
+export async function createDisbursement({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      `/claims/${payload.id}/disbursements`,
+      buildApiData('claimdisbursements', payload.data)
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Successfully Added Disbursements !'
+    });
+    return true;
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'Failed to Add Disbursements'
+    });
+    return false;
   }
 }
 
@@ -801,6 +841,47 @@ export async function deleteClaimPersonnel({ dispatch }, payload) {
     dispatch('setNotification', {
       type: 'negative',
       message: 'Error in deleting Personnel.'
+    });
+  }
+}
+
+export async function deleteExpenses({ dispatch }, payload) {
+  dispatch('setLoading', true);
+  try {
+    await request.del(
+      `/claims/${payload.claimID}/expenses/${payload.expenseID}`
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Expense  Deleted !'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'Error in deleting Expense.'
+    });
+  }
+}
+export async function deletePayment({ dispatch }, payload) {
+  dispatch('setLoading', true);
+  try {
+    await request.del(
+      `/claims/${payload.claimID}/payments/${payload.expenseID}`
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Expense  Deleted !'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'Error in deleting Expense.'
     });
   }
 }

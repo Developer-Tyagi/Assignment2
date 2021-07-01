@@ -63,6 +63,11 @@ export function setAllPayment(state, payment) {
     ...payment.attributes
   };
 }
+export function setAllDisbursements(state, disbursements) {
+  state.disbursements = {
+    ...disbursements.attributes
+  };
+}
 
 export function setAllExpenses(state, expenses) {
   state.expenses = {
