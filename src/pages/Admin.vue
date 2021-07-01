@@ -200,77 +200,66 @@
               </q-card>
             </q-tab-panel>
             <q-tab-panel name="groupPermission">
-              <q-card class="q-pa-lg" flat bordered>
-                <div class="row">
-                  <div class="" style="width:350px">
-                    <div class="column text-bold">
+              <div class="row">
+                <div class="col">
+                  <table>
+                    <tr>
                       <div
                         style="
                           height: 50px;
-                        
-                          border: 1px solid #ccc;
+                         border: 1px solid #ccc;
                           font-size: 15px;
+                         
                         "
-                        class="text-center"
+                        class="text-center "
                       >
-                        Permission/Role
+                        <div class="q-mt-sm text-bold">Permission/Role</div>
                       </div>
-                      <table style="height:40px;">
-                        <tr v-for="(user, index) in permissions">
-                          <th style="height: 40px; font-size: 10px;">
-                            <div style="padding:11.5px;">
-                              {{ user.name }}
-                            </div>
-                          </th>
-                        </tr>
-                      </table>
-                    </div>
-                  </div>
+                      <th v-for="(user, index) in arrOfRoles">
+                        <div style="height:45px;width:100px">
+                          {{ user.value.name }}
+                        </div>
+                      </th>
+                    </tr>
 
-                  <div class="col" style="overflow-x: auto">
-                    <table>
-                      <tr>
-                        <th v-for="(user, index) in arrOfRoles">
-                          <div style="height:45px;width:100px">
-                            {{ user.value.name }}
-                          </div>
-                        </th>
-                      </tr>
-
-                      <tr v-for="(us, ind) in permissions.length">
-                        <td align="center" v-for="(user, index) in arrOfRoles">
-                          <div
-                            style="height: 40px;"
-                            v-if="
-                              user.value.permission != null &&
-                                test(
-                                  permissions[ind].machineValue,
-                                  user.machineValue,
-                                  index
-                                )
-                            "
-                          >
-                            <q-icon
-                              color="primary  q-mt-sm"
-                              name="check_circle"
-                              size="sm"
-                              @click="rolePermission(ind, index, 'selected')"
-                            />
-                          </div>
-                          <div v-else style="height: 40px;">
-                            <q-icon
-                              color="primary q-mt-sm"
-                              name=" radio_button_unchecked"
-                              size="sm"
-                              @click="rolePermission(ind, index, 'unselected')"
-                            />
-                          </div>
-                        </td>
-                      </tr>
-                    </table>
-                  </div>
+                    <tr v-for="(us, ind) in permissions">
+                      <th
+                        style="height: 40px; font-size: 10px;font-weight:normal;text-align: left;"
+                      >
+                        {{ us.name }}
+                      </th>
+                      <td align="center" v-for="(user, index) in arrOfRoles">
+                        <div
+                          style="height: 40px;"
+                          v-if="
+                            user.value.permission != null &&
+                              test(
+                                permissions[ind].machineValue,
+                                user.machineValue,
+                                index
+                              )
+                          "
+                        >
+                          <q-icon
+                            color="primary  q-mt-sm"
+                            name="check_circle"
+                            size="sm"
+                            @click="rolePermission(ind, index, 'selected')"
+                          />
+                        </div>
+                        <div v-else style="height: 40px;">
+                          <q-icon
+                            color="primary q-mt-sm"
+                            name=" radio_button_unchecked"
+                            size="sm"
+                            @click="rolePermission(ind, index, 'unselected')"
+                          />
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
-              </q-card>
+              </div>
             </q-tab-panel>
             <q-tab-panel name="actionItems">
               <q-card class="q-pa-lg" flat bordered>
