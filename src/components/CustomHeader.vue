@@ -275,7 +275,7 @@ export default {
     ]),
     ...mapMutations(['setConvertedLead']),
     async logout() {
-      if (!isPushNotificationsAvailable) {
+      if (this.getFCMToken()) {
         await this.deletePushNotificationToken(this.getFCMToken());
       }
       await this.removeFirebaseToken();
