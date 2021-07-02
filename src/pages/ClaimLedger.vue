@@ -25,7 +25,7 @@
             </div>
             <div class="col row justify-between q-ml-auto ">
               <span class="heading-light">$</span>
-              {{ account.totalReplCost }}
+              {{ account.netClaimed }}
             </div>
           </div>
           <div class="row q-py-sm">
@@ -123,14 +123,14 @@
                   </q-card>
                 </div>
                 <div v-else class="text-center heading-light q-my-md">
-                  No Payment Is added Yet !
+                  No Payment Is Received Yet !
                 </div>
               </div>
               <div class="justify-end row q-mr-sm">
                 <q-btn
                   @click="openAddPaymentDialog"
-                  label="Add Payment"
-                  size="xs"
+                  label="Add "
+                  size="sm"
                   class="q-ml-sm"
                   color="primary"
                 />
@@ -184,13 +184,13 @@
                 </q-card>
               </div>
               <div v-else class="text-center heading-light q-my-md">
-                No Expense is Added Yet !
+                No Expense is Received Yet !
               </div>
 
               <div class=" row justify-end">
                 <div class="q-mr-md q-mt-sm">
                   <q-btn
-                    size="xs"
+                    size="sm"
                     color="primary"
                     label="Add"
                     @click="openAddExpensesDialog"
@@ -223,14 +223,14 @@
                 </q-card>
               </div>
               <div v-else class="text-center heading-light q-my-md">
-                No Disbursement Is added Yet !
+                No Disbursement Is Received Yet !
               </div>
               <div class=" row justify-end">
                 <div class="q-mr-md q-mt-sm">
                   <q-btn
-                    size="xs"
+                    size="sm"
                     color="primary"
-                    label="Add Disbursement"
+                    label="Add "
                     @click="openDisbursementBox"
                   />
                 </div>
@@ -393,13 +393,13 @@
         <div class="q-ma-sm mobile-container-page listing-height">
           <q-form ref="paymentForm">
             <div class="row" style="align-items: center">
-              <span class="">Recieved Date</span>
+              <span>Recieved Date</span>
 
               <q-input
                 dense
                 v-model="payments.date"
                 mask="##/##/####"
-                label="DD/MM/YYYY"
+                label="MM/DD/YYYY"
                 style="margin-left: auto; width: 50%"
                 lazy-rules
                 class="required"
@@ -440,6 +440,7 @@
                 type="number"
                 style="margin-left: auto; width: 50%"
                 prefix="$"
+                @blur="remainingCalculation(payments.amountsOfPayment)"
                 class="input-extra-padding"
                 lazy-rules
                 :rules="[val => val || 'Please fill Amount of payment']"
@@ -473,19 +474,19 @@
                     <span class="">{{ settlement.desc }}</span>
                   </div>
                   <div class=" q-mx-md row justify-between" style="">
-                    <span class="">Net Settlement</span>
-                    <span class="">{{ settlement.netSettlement }}</span>
+                    <span c>Net Settlement</span>
+                    <span>$ {{ settlement.netSettlement }}</span>
                   </div>
                   <div class="q-mx-md  row justify-between" style="">
-                    <span class="">Paid To Date</span>
-                    <span class="">{{ settlement.totalPaid }}</span>
+                    <span>Paid To Date</span>
+                    <span>$ {{ settlement.totalPaid }}</span>
                   </div>
                   <div class="q-mx-md  row justify-between" style="">
                     <span class="">Outstanding</span>
-                    <span class="">{{ settlement.outstanding }}</span>
+                    <span class="">$ {{ settlement.outstanding }}</span>
                   </div>
                   <div class=" q-ml-md  row" style="align-items: center">
-                    <span class="">Amt To Apply</span>pp
+                    <span class="">Amt To Apply</span>
 
                     <q-input
                       dense
@@ -497,21 +498,12 @@
                       :rules="[val => val || 'Please fill Amount']"
                     />
                   </div>
-                  <!-- <div class="col-5"> -->
-                  <!-- <q-input
-                      dense
-                      v-model.number="payments.settlements[index].amountPaid"
-                      prefix="$"
-                    /> -->
-                  <!-- </div> -->
                 </div>
                 <div class="row justify-between q-mr-lg q-ml-md q-my-md ">
                   <div class="">
                     Remaining Amount
                   </div>
-                  <div>
-                    {{ payments.remainingAmout }}
-                  </div>
+                  <div>$ {{ payments.remainingAmout }}</div>
                 </div>
               </div>
             </div>
@@ -529,6 +521,7 @@
         />
       </q-card>
     </q-dialog>
+
     <q-dialog
       v-model="addExpensesDialog"
       :maximized="true"
@@ -982,6 +975,7 @@ import { onPhoneNumberClick, onEmailClick } from '@utils/clickable';
 import ClaimDetail from 'components/ClaimDetail';
 import { validateDate } from '@utils/validation';
 import { dateToSend } from '@utils/date';
+import { date } from 'quasar';
 export default {
   name: 'ClaimLedger',
   components: {
@@ -1090,7 +1084,6 @@ export default {
         this.showValue = true;
       });
     });
-
     // await this.getAllExpenses(this.selectedClaimId).then(async () => {
     //   this.expenses.expenses.forEach(val => {
 
@@ -1122,6 +1115,7 @@ export default {
     onEmailClick,
     validateDate,
     dateToShow,
+    dateToSend,
 
     openAddExpensesDialog() {
       this.isExpenseEdit = false;
@@ -1137,8 +1131,15 @@ export default {
         },
         desc: ''
       }),
-        (this.expenseID = '');
+        (this.addexpenses.receviedDate = date.formatDate(
+          Date.now(),
+          'MM/DD/YYYY'
+        ));
+      this.expenseID = '';
       this.addExpensesDialog = true;
+    },
+    remainingCalculation() {
+      this.payments.remainingAmout = this.payments.amountsOfPayment;
     },
 
     calculateRemainingAmount(index) {
@@ -1146,7 +1147,7 @@ export default {
       for (let i in this.payments.settlements) {
         sum = sum + this.payments.settlements[i].amountPaid;
       }
-      this.payments.remainingAmout = sum;
+      this.payments.remainingAmout = this.payments.amountsOfPayment - sum;
     },
 
     async onClickSaveEditPayment() {
@@ -1198,7 +1199,7 @@ export default {
     },
     openAddPaymentDialog() {
       this.editPaymentId = '';
-      this.payments.date = '';
+      this.payments.date = date.formatDate(Date.now(), 'MM/DD/YYYY');
       this.payments.amountsOfPayment = '';
       this.payments.checkReference = '';
       this.payments.notes = '';
@@ -1231,6 +1232,11 @@ export default {
     },
     setCompanyTotalAmount(value) {
       this.netExpenseToPayByCompany = parseInt(value);
+    },
+    formatDate(value) {
+      if (value) {
+        return moment(String(value)).format('MM/DD/YYYY');
+      }
     },
     CalculationOfCompanyFee(value) {
       this.addDisbursement.companyFee = this.netExpenseToPayByCompany =
