@@ -129,7 +129,7 @@ export default {
   },
   methods: {
     ...mapActions(['userLogin', 'getUserInfo', 'sendPushNotificationToken']),
-    ...mapMutations('setSelectedClaimId'),
+    ...mapMutations(['setSelectedClaimId']),
 
     async onUserLogin() {
       const loginData = {

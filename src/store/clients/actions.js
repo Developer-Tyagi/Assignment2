@@ -184,7 +184,7 @@ export async function addMultipleTaskToClaim(
   }
 }
 
-export async function addMultipleTaskRemote({ commit }, payload) {
+export async function addMultipleTaskRemote({ dispatch }, payload) {
   try {
     const { data } = await request.post(
       `claims/${payload.id}/batch-tasks`,
