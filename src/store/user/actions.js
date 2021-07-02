@@ -408,7 +408,10 @@ export async function sendPushNotificationToken({ dispatch, state }, payload) {
       'users/pushtokens',
       buildApiData('pushtokens', payload)
     );
+
+    setFCMToken(payload.token);
     dispatch('setLoading', false);
+
     return true;
   } catch (e) {
     console.log(e);
