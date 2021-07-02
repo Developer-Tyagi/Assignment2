@@ -277,9 +277,10 @@ export default {
     async logout() {
       if (this.getFCMToken()) {
         await this.deletePushNotificationToken(this.getFCMToken());
+        await this.removeFCMToken();
       }
       await this.removeFirebaseToken();
-      this.removeFCMToken();
+
       this.removeToken();
       this.removeCurrentUser();
       location.reload();

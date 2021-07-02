@@ -9,7 +9,7 @@ module.exports = function(/* ctx */) {
   return {
     //remove this as per the requirement
     bin: {
-      linuxAndroidStudio: '/home/anni/android-studio/bin/studio.sh'
+      linuxAndroidStudio: '/home/sonali/android-studio/bin/studio.sh'
     },
     // https://quasar.dev/quasar-cli/supporting-ts
     supportTS: false,
