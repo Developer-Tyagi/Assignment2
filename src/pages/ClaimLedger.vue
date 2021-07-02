@@ -83,12 +83,7 @@
               <div class="heading-light q-ml-sm">
                 Payments Issued by Carrier
               </div>
-              <!-- <div class="row justify-between q-my-sm">
-                <div class="heading-light q-ml-sm">Total Recieved</div>
-                <div class="heading-light q-ml-sm">$</div>
 
-                <div class="q-mr-sm">{{ payment.totalReplCost }}</div>
-              </div> -->
               <div>
                 <div v-if="payment.payments != null">
                   <q-card
@@ -97,20 +92,20 @@
                   >
                     <div class=" row justify-end">
                       <div class="q-mr-xs">
-                        <!-- <q-icon
+                        <q-icon
                           name="create"
                           size="xs"
                           color="primary"
-                          @click="editExpense(expense)"
-                        /> -->
-                        ppp
-                        <!-- <q-icon
+                          @click="editPayments(pay)"
+                        />
+
+                        <q-icon
                           class="q-mx-xs"
                           name="delete"
                           size="xs"
                           @click="deletePayment(pay)"
                           color="primary"
-                        /> -->
+                        />
                       </div>
                     </div>
                     <div class="row justify-between">
@@ -133,7 +128,7 @@
               </div>
               <div class="justify-end row q-mr-sm">
                 <q-btn
-                  @click="addPaymentDialog = true"
+                  @click="openAddPaymentDialog"
                   label="Add Payment"
                   size="xs"
                   class="q-ml-sm"
@@ -198,7 +193,7 @@
                     size="xs"
                     color="primary"
                     label="Add"
-                    @click="addExpensesDialog = true"
+                    @click="openAddExpensesDialog"
                   />
                 </div>
               </div>
@@ -219,7 +214,7 @@
                   </div>
                   <div class="row justify-between">
                     <div class="heading-light">Paid To Company</div>
-                    <div>{{ pay.paidToCompany }}</div>
+                    <div>{{ pay.paidToCompany ? pay.paidToCompany : 0 }}</div>
                   </div>
                   <div class="row justify-between">
                     <div class="heading-light">Paid To Client</div>
@@ -247,20 +242,19 @@
         </div>
       </div>
     </div>
-    <!-- Add Estimator Dialog  -->
     <q-dialog
-      v-model="addPaymentDialog"
+      v-model="editPaymentDialog"
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
     >
       <q-card>
         <CustomBar
-          @closeDialog="addPaymentDialog = false"
-          :dialogName="'Add Claim Payment '"
+          @closeDialog="editPaymentDialog = false"
+          :dialogName="'Edit Claim Payment '"
         />
         <div class="q-ma-sm mobile-container-page listing-height">
-          <q-form>
+          <q-form ref="EditPaymentForm">
             <div class="row" style="align-items: center">
               <span class="">Recieved Date</span>
 
@@ -268,15 +262,10 @@
                 dense
                 v-model="payments.date"
                 mask="##/##/####"
-                label="DD/MM/YYYY"
+                label="MM/DD/YYYY"
                 style="margin-left: auto; width: 50%"
                 lazy-rules
                 class="required"
-                :rules="[
-                  val =>
-                    (val && val.length > 0 && validateDate(val)) ||
-                    'Invalid date!'
-                ]"
               >
                 <template v-slot:append>
                   <q-icon
@@ -306,11 +295,12 @@
               <q-input
                 dense
                 v-model.number="payments.amountsOfPayment"
-                mask="#.#"
                 type="number"
                 style="margin-left: auto; width: 50%"
                 prefix="$"
                 class="input-extra-padding"
+                lazy-rules
+                :rules="[val => val > 0 || 'Please fill Amount of payment']"
               />
             </div>
             <div class="row" style="align-items: center">
@@ -358,6 +348,153 @@
                       style="margin-left: auto; width: 20%"
                       v-model.number="payments.settlements[index].amountPaid"
                       prefix="$"
+                      lazy-rules
+                      @blur="calculateRemainingAmount(index)"
+                      :rules="[val => val || 'Please fill Amount']"
+                    />
+                  </div>
+                </div>
+                <div class="row justify-between q-mr-lg q-ml-md q-my-md ">
+                  <div class="">
+                    Remaining Amount
+                  </div>
+                  <div>
+                    {{ payments.remainingAmout }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div>Notes</div>
+            <textarea v-model="payments.notes" rows="3" class="full-width" />
+          </q-form>
+        </div>
+        <q-btn
+          label="Save"
+          color="primary"
+          class="button-width-90"
+          @click="onClickSaveEditPayment"
+          size="'xl'"
+        />
+      </q-card>
+    </q-dialog>
+    <!-- edit Payment Dialog  -->
+    <q-dialog
+      v-model="addPaymentDialog"
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <CustomBar
+          @closeDialog="addPaymentDialog = false"
+          :dialogName="'Add Claim Payment '"
+        />
+        <div class="q-ma-sm mobile-container-page listing-height">
+          <q-form ref="paymentForm">
+            <div class="row" style="align-items: center">
+              <span class="">Recieved Date</span>
+
+              <q-input
+                dense
+                v-model="payments.date"
+                mask="##/##/####"
+                label="DD/MM/YYYY"
+                style="margin-left: auto; width: 50%"
+                lazy-rules
+                class="required"
+                :rules="[
+                  val =>
+                    (val && val.length > 0 && validateDate(val)) ||
+                    'Invalid date!'
+                ]"
+              >
+                <template v-slot:append>
+                  <q-icon
+                    name="event"
+                    size="sm"
+                    color="primary"
+                    class="cursor-pointer"
+                  >
+                    <q-popup-proxy
+                      ref="qDateProxy"
+                      transition-show="scale"
+                      transition-hide="scale"
+                    >
+                      <q-date
+                        v-model="payments.date"
+                        @input="() => $refs.qDateProxy.hide()"
+                        mask="MM/DD/YYYY"
+                      ></q-date>
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
+              </q-input>
+            </div>
+            <div class="row" style="align-items: center">
+              <span class="">Amount Of Payment</span>
+
+              <q-input
+                dense
+                v-model.number="payments.amountsOfPayment"
+                type="number"
+                style="margin-left: auto; width: 50%"
+                prefix="$"
+                class="input-extra-padding"
+                lazy-rules
+                :rules="[val => val || 'Please fill Amount of payment']"
+              />
+            </div>
+            <div class="row" style="align-items: center">
+              <span class="">Check Reference #</span>
+
+              <q-input
+                dense
+                v-model="payments.checkReference"
+                style="margin-left: auto; width: 50%"
+                class="input-extra-padding"
+                lazy-rules
+                :rules="[val => val.length > 0 || 'Please fill Reference']"
+              />
+            </div>
+            <div style="border-style: ridge ">
+              <div class=" q-mt-sm row justify-between">
+                <span class="col-7 q-pt-xs q-ml-md">Settlements</span>
+                <span class="col-4">Amounts</span>
+              </div>
+
+              <div class="q-pa-sm " v-if="showValue">
+                <div
+                  class=" justify-between"
+                  v-for="(settlement, index) in account.settlements"
+                >
+                  <div class=" col-6 q-mt-md">
+                    {{ index + 1 }}.
+                    <span class="">{{ settlement.desc }}</span>
+                  </div>
+                  <div class=" q-mx-md row justify-between" style="">
+                    <span class="">Net Settlement</span>
+                    <span class="">{{ settlement.netSettlement }}</span>
+                  </div>
+                  <div class="q-mx-md  row justify-between" style="">
+                    <span class="">Paid To Date</span>
+                    <span class="">{{ settlement.totalPaid }}</span>
+                  </div>
+                  <div class="q-mx-md  row justify-between" style="">
+                    <span class="">Outstanding</span>
+                    <span class="">{{ settlement.outstanding }}</span>
+                  </div>
+                  <div class=" q-ml-md  row" style="align-items: center">
+                    <span class="">Amt To Apply</span>pp
+
+                    <q-input
+                      dense
+                      style="margin-left: auto; width: 20%"
+                      v-model.number="payments.settlements[index].amountPaid"
+                      prefix="$"
+                      lazy-rules
+                      @blur="calculateRemainingAmount(index)"
+                      :rules="[val => val || 'Please fill Amount']"
                     />
                   </div>
                   <!-- <div class="col-5"> -->
@@ -368,48 +505,17 @@
                     /> -->
                   <!-- </div> -->
                 </div>
+                <div class="row justify-between q-mr-lg q-ml-md q-my-md ">
+                  <div class="">
+                    Remaining Amount
+                  </div>
+                  <div>
+                    {{ payments.remainingAmout }}
+                  </div>
+                </div>
               </div>
             </div>
 
-            <!-- <div class="row" style="align-items: center">
-              <span class="">Paid to Date</span>
-
-              <q-input
-                dense
-                v-model.number="payments.paidToDate"
-                mask="#.#"
-                type="number"
-                style="margin-left: auto; width: 50%"
-                prefix="$"
-                class="input-extra-padding"
-              />
-            </div> -->
-            <!-- <div class="row" style="align-items: center">
-              <span class="">Outstanding</span>
-
-              <q-input
-                v-model="payments.outstanding"
-                dense
-                mask="#.#"
-                type="number"
-                style="margin-left: auto; width: 50%"
-                prefix="$"
-                class="input-extra-padding"
-              />
-            </div> -->
-            <!-- <div class="row" style="align-items: center">
-              <span class="">Aim To Apply</span>
-
-              <q-input
-                dense
-                v-model="payments.aimToApply"
-                mask="#.#"
-                type="number"
-                style="margin-left: auto; width: 50%"
-                prefix="$"
-                class="input-extra-padding"
-              />
-            </div> -->
             <div>Notes</div>
             <textarea v-model="payments.notes" rows="3" class="full-width" />
           </q-form>
@@ -613,14 +719,14 @@
                 <table class="full-width">
                   <tr>
                     <td style="width:30%;">
-                      Name
+                      Payee
                     </td>
                     <td style="width:30%;">
                       Due
                     </td>
 
                     <td style="width:30%;">
-                      Value
+                      Pay
                     </td>
                   </tr>
 
@@ -639,19 +745,11 @@
                         v-model="clientAndCompanyAmount[index]"
                         prefix="$"
                         class=" col-2 "
+                        @blur="onFillingValue()"
                       />
                     </td>
                   </tr>
                 </table>
-
-                <div class="q-mt-sm  row full-width justify-end">
-                  <q-btn
-                    size="xs"
-                    label="add"
-                    color="primary"
-                    @click="onFillingValue()"
-                  />
-                </div>
               </div>
 
               <div class="row q-my-md">
@@ -714,6 +812,7 @@
                 <q-input
                   dense
                   v-model="addDisbursement.companyFee"
+                  @input="setCompanyTotalAmount(addDisbursement.companyFee)"
                   mask="#.#"
                   type="number"
                   prefix="$"
@@ -786,19 +885,11 @@
                         v-model="clientAmount[index]"
                         prefix="$"
                         class=" col-2"
+                        @blur="onFillingClient()"
                       />
                     </td>
                   </tr>
                 </table>
-
-                <div class="x-my-sm  row justify-end">
-                  <q-btn
-                    size="xs"
-                    label="add"
-                    color="primary"
-                    @click="onFillingClient()"
-                  />
-                </div>
               </div>
 
               <div class=" q-my-sm row justify-between">
@@ -854,19 +945,11 @@
                         v-model="companyAmounts[index]"
                         prefix="$"
                         class=" col-2 "
+                        @blur="onFillingCompany()"
                       />
                     </td>
                   </tr>
                 </table>
-
-                <div class=" q-my-sm row justify-end">
-                  <q-btn
-                    size="xs"
-                    label="add"
-                    color="primary"
-                    @click="onFillingCompany()"
-                  />
-                </div>
               </div>
 
               <div class="row  q-my-md   ">
@@ -908,6 +991,9 @@ export default {
   },
   data() {
     return {
+      expenseID: '',
+      editPaymentId: '',
+      isExpenseEdit: false,
       partialCompanyValue: '',
       finalExpenses: [],
       totalAmount: null,
@@ -917,7 +1003,6 @@ export default {
       clientAndCompanyAmount: [],
       clientAmount: [],
       feesType: 'dollar',
-
       companyAmounts: [],
       totalExpensesOfClient: 0,
       totalExpensesOfClientAndCompany: 0,
@@ -936,6 +1021,7 @@ export default {
       ],
 
       payments: {
+        remainingAmout: 0,
         date: '',
         amountsOfPayment: '',
         checkReference: '',
@@ -972,7 +1058,8 @@ export default {
       addPaymentDialog: false,
       toggleOnOff: false,
       addExpensesDialog: false,
-      addDisbursementDialog: false
+      addDisbursementDialog: false,
+      editPaymentDialog: false
     };
   },
 
@@ -1027,12 +1114,65 @@ export default {
       'addExpenses',
       'createDisbursement',
       'deleteExpenses',
-      'deletePayment'
+      'deleteSinglePayment',
+      'editPayment',
+      'editExpenses'
     ]),
     onPhoneNumberClick,
     onEmailClick,
     validateDate,
     dateToShow,
+
+    openAddExpensesDialog() {
+      this.isExpenseEdit = false;
+
+      (this.addexpenses = {
+        amount: '',
+        receviedDate: '',
+        reference: '',
+        payee: '',
+        payableBy: {
+          value: '',
+          machineValue: ''
+        },
+        desc: ''
+      }),
+        (this.expenseID = '');
+      this.addExpensesDialog = true;
+    },
+
+    calculateRemainingAmount(index) {
+      let sum = 0;
+      for (let i in this.payments.settlements) {
+        sum = sum + this.payments.settlements[i].amountPaid;
+      }
+      this.payments.remainingAmout = sum;
+    },
+
+    async onClickSaveEditPayment() {
+      const valid = await this.$refs.EditPaymentForm.validate();
+      if (valid) {
+        const payload = {
+          id: this.selectedClaimId,
+          paymentID: this.editPaymentId,
+
+          data: {
+            amount: this.payments.amountsOfPayment,
+
+            receviedDate: dateToSend(this.payments.date),
+            reference: this.payments.checkReference,
+            settlements: this.payments.settlements,
+            note: this.payments.notes
+          }
+        };
+        const success = await this.editPayment(payload);
+        if (success) {
+          await this.getAllPayment(this.selectedClaimId);
+          await this.getAccountDetails(this.selectedClaimId);
+          this.editPaymentDialog = false;
+        }
+      }
+    },
 
     async deleteExpense(value) {
       const payload = {
@@ -1043,18 +1183,45 @@ export default {
       await this.getAllExpenses(this.selectedClaimId);
       await this.getAccountDetails(this.selectedClaimId);
     },
+    editPayments(value) {
+      this.editPaymentId = value.id;
+      this.payments.date = value.receviedDate;
+      this.payments.amountsOfPayment = value.amount;
+      this.payments.checkReference = value.reference;
+      this.payments.notes = value.notes ? value.notes : '';
+      for (let i in this.payments.settlements) {
+        this.payments.settlements[i].amountPaid = value.settlements[i]
+          ? value.settlements[i].amountPaid
+          : 0;
+      }
+      this.editPaymentDialog = true;
+    },
+    openAddPaymentDialog() {
+      this.editPaymentId = '';
+      this.payments.date = '';
+      this.payments.amountsOfPayment = '';
+      this.payments.checkReference = '';
+      this.payments.notes = '';
+      for (let i in this.payments.settlements) {
+        this.payments.settlements[i].amountPaid = 0;
+      }
 
-    // async deletePayment(value) {
-    //   const payload = {
-    //     claimID: this.selectedClaimId,
-    //     expenseID: value.id
-    //   };
-    //   await this.deletePayment(payload);
-    //   await this.getAllPayment(this.selectedClaimId);
-    //   await this.getAccountDetails(this.selectedClaimId);
-    // },
+      // this.payments.settlements = [];
+      this.addPaymentDialog = true;
+    },
+
+    async deletePayment(value) {
+      const payload = {
+        claimID: this.selectedClaimId,
+        paymentId: value.id
+      };
+      await this.deleteSinglePayment(payload);
+      await this.getAllPayment(this.selectedClaimId);
+      await this.getAccountDetails(this.selectedClaimId);
+    },
 
     onFillingClient() {
+      this.totalAmount = 0;
       for (var i in this.clientAmount) {
         this.clientOnly[i].paid = parseInt(this.clientAmount[i]);
         this.totalAmount += parseInt(this.clientAmount[i]);
@@ -1062,10 +1229,14 @@ export default {
 
       this.netExpenseToPayByClient = this.totalAmount;
     },
+    setCompanyTotalAmount(value) {
+      this.netExpenseToPayByCompany = parseInt(value);
+    },
     CalculationOfCompanyFee(value) {
-      this.addDisbursement.companyFee =
+      this.addDisbursement.companyFee = this.netExpenseToPayByCompany =
         (value / 100) *
         (this.addDisbursement.amountToDisbuse - this.netExpenseToPayByBoth);
+      this.netExpenseToPayByCompany;
     },
     onFillingCompany() {
       let total = 0;
@@ -1088,6 +1259,9 @@ export default {
       this.netExpenseToPayByBoth = total;
     },
     closeDisbursmentBox() {
+      this.addDisbursement.amountToDisbuse = 0;
+      this.partialCompanyValue = 0;
+      this.addDisbursement.companyFee = 0;
       this.clientAndCompany = [];
       this.clientOnly = [];
       this.companyOnly = [];
@@ -1095,6 +1269,12 @@ export default {
     },
 
     openDisbursementBox() {
+      this.addDisbursement.amountToDisbuse = 0;
+      this.partialCompanyValue = 0;
+      this.addDisbursement.companyFee = 0;
+      this.clientAndCompany = [];
+      this.clientOnly = [];
+      this.companyOnly = [];
       if (this.expenses.expenses) {
         this.expenses.expenses.forEach(val => {
           if (val.payableBy.machineValue == 'client_company') {
@@ -1132,28 +1312,34 @@ export default {
           this.showValue = true;
         });
       }
+      this.netExpenseToPayByClient = this.totalExpensesOfClient;
+      this.netExpenseToPayByCompany = this.totalExpensesOfCompany;
+      this.feesType = this.account.fees.type;
 
       this.addDisbursementDialog = true;
     },
 
     async onClickSavePayment() {
-      const payload = {
-        id: this.selectedClaimId,
-        data: {
-          amount: this.payments.amountsOfPayment,
+      const valid = await this.$refs.paymentForm.validate();
+      if (valid) {
+        const payload = {
+          id: this.selectedClaimId,
+          data: {
+            amount: this.payments.amountsOfPayment,
 
-          receviedDate: dateToSend(this.payments.date),
-          reference: this.payments.checkReference,
-          settlements: this.payments.settlements,
-          note: this.payments.notes
+            receviedDate: dateToSend(this.payments.date),
+            reference: this.payments.checkReference,
+            settlements: this.payments.settlements,
+            note: this.payments.notes
+          }
+        };
+
+        const success = await this.addPayment(payload);
+        if (success) {
+          this.getAllPayment(this.selectedClaimId);
+          await this.getAccountDetails(this.selectedClaimId);
+          this.addPaymentDialog = false;
         }
-      };
-
-      const success = await this.addPayment(payload);
-      if (success) {
-        this.getAllPayment(this.selectedClaimId);
-        await this.getAccountDetails(this.selectedClaimId);
-        this.addPaymentDialog = false;
       }
     },
 
@@ -1168,6 +1354,7 @@ export default {
     async addExpensesSaveClick() {
       const payload = {
         id: this.selectedClaimId,
+        expenseID: this.expenseID,
 
         data: {
           amount: this.addexpenses.amount,
@@ -1182,12 +1369,20 @@ export default {
         }
       };
 
-      const success = await this.addExpenses(payload);
-      if (success) {
-        await this.getAllExpenses(this.selectedClaimId);
-        await this.getAccountDetails(this.selectedClaimId);
-        this.addExpensesDialog = false;
+      if (this.isExpenseEdit) {
+        const success = await this.editExpenses(payload);
+        if (success) {
+          await this.getAllExpenses(this.selectedClaimId);
+          await this.getAccountDetails(this.selectedClaimId);
+        }
+      } else {
+        const success = await this.addExpenses(payload);
+        if (success) {
+          await this.getAllExpenses(this.selectedClaimId);
+          await this.getAccountDetails(this.selectedClaimId);
+        }
       }
+      this.addExpensesDialog = false;
     },
     async onSaveDisbursement() {
       this.clientAndCompany.forEach(val => {
@@ -1222,11 +1417,16 @@ export default {
       if (success) {
         await this.getAllDisbursements(this.selectedClaimId);
         await this.getAccountDetails(this.selectedClaimId);
+        this.clientAndCompany = [];
+        this.clientOnly = [];
+        this.companyOnly = [];
         this.addDisbursementDialog = false;
       }
     },
     editExpense(value) {
+      this.isExpenseEdit = true;
       this.addexpenses = value;
+      this.expenseID = value.id;
       this.addExpensesDialog = true;
     }
   }

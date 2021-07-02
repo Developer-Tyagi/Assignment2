@@ -856,6 +856,7 @@ export async function deleteExpenses({ dispatch }, payload) {
       type: 'positive',
       message: 'Expense  Deleted !'
     });
+    return true;
   } catch (e) {
     console.log(e);
     dispatch('setLoading', false);
@@ -865,11 +866,56 @@ export async function deleteExpenses({ dispatch }, payload) {
     });
   }
 }
-export async function deletePayment({ dispatch }, payload) {
+export async function editExpenses({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.patch(
+      `/claims/${payload.id}/expenses/${payload.expenseID}`,
+      buildApiData('claimexpenses', payload.data)
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Expense  Updated !'
+    });
+    return true;
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'failed to update Expense'
+    });
+    return false;
+  }
+}
+export async function editPayment({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.patch(
+      `/claims/${payload.id}/payments/${payload.paymentID}`,
+      buildApiData('claimpayments', payload.data)
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Payment  Updated !'
+    });
+    return true;
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'failed to update Payment'
+    });
+  }
+}
+export async function deleteSinglePayment({ dispatch }, payload) {
   dispatch('setLoading', true);
   try {
     await request.del(
-      `/claims/${payload.claimID}/payments/${payload.expenseID}`
+      `/claims/${payload.claimID}/payments/${payload.paymentId}`
     );
     dispatch('setLoading', false);
     dispatch('setNotification', {
