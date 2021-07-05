@@ -12,7 +12,7 @@
         map-options
         emit-value
         options-dense
-        @input="setTypes(roleTypes, companyPersonnel.personnel.value)"
+        @input="setTypes(claimRoles, companyPersonnel.personnel.value)"
         label="Select Role"
         @filter="searchFilterBy"
         input-debounce="0"
@@ -24,13 +24,10 @@
         v-if="allUsers.length"
         v-model="companyPersonnel.personParty.id"
         :options="allUsers"
-        :disable="companyPersonnel.isFieldDisable"
-        :label="
-          companyPersonnel.isFieldDisable ? 'Select a Role' : 'Select a Party'
-        "
         @input="setPersonTypes(allUsers, companyPersonnel.personParty)"
         option-label="name"
         option-value="id"
+        label="Select Person"
         options-dense
         emit-value
         behavior="menu"
@@ -179,19 +176,27 @@ export default {
       options: []
     };
   },
-
+  created() {
+    this.getClaimRoles();
+    this.getAllUsers();
+  },
   computed: {
     ...mapGetters([
       'personnel',
       'selectedClaimId',
-      'roleTypes',
+      'claimRoles',
       'userRoles',
       'allUsers'
     ])
   },
 
   methods: {
-    ...mapActions(['getPersonnelInfo', 'addCompanyPersonnel', 'getAllUsers']),
+    ...mapActions([
+      'getPersonnelInfo',
+      'addCompanyPersonnel',
+      'getAllUsers',
+      'getClaimRoles'
+    ]),
 
     validateDate,
 
@@ -204,8 +209,6 @@ export default {
       data.id = obj.id;
       this.companyPersonnel.personParty.id = '';
       this.companyPersonnel.personParty.name = '';
-      await this.getAllUsers({ role: obj.machineValue });
-      this.companyPersonnel.isFieldDisable = false;
     },
     async setPersonTypes(types, data) {
       const obj = types.find(item => {
@@ -213,7 +216,6 @@ export default {
       });
       data.machineValue = obj.machineValue;
       data.value = obj.name;
-      this.companyPersonnel.isFieldDisable = false;
     },
 
     dateGreaterThan(val) {
@@ -232,14 +234,14 @@ export default {
       this.companyPersonnel.personnel.id = null;
       if (val === ' ') {
         update(() => {
-          this.companyPersonnel.options = this.roleTypes;
+          this.companyPersonnel.options = this.claimRoles;
         });
         return;
       }
 
       update(() => {
         const search = val.toLowerCase();
-        this.companyPersonnel.options = this.roleTypes.filter(
+        this.companyPersonnel.options = this.claimRoles.filter(
           v => v.name.toLowerCase().indexOf(search) > -1
         );
       });
