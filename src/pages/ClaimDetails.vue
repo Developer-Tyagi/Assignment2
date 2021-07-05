@@ -125,7 +125,7 @@
             <q-card-section>
               <Settlements
                 @onAddSettlement="onAddSettlement"
-                @afterAddition="refeshFlag"
+                @afterAddition="refreshFlag"
               />
             </q-card-section>
           </q-card>
@@ -551,7 +551,7 @@ export default {
     onAddSettlement(value) {
       this.addSettlement = value;
     },
-    refeshFlag(value) {
+    refreshFlag(value) {
       this.claimLedgeInfo = false;
     },
     onEditTask(value) {
