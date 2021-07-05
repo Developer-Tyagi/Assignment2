@@ -15,13 +15,12 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['editSelectedClient', 'selectedClientId'])
+    ...mapGetters(['editSelectedClient'])
   },
   methods: {
     ...mapActions(['getSingleClientDetails'])
   },
   created() {
-    this.getSingleClientDetails(this.selectedClientId);
     this.directoryId = this.editSelectedClient.attributes.directoryID;
   }
 };

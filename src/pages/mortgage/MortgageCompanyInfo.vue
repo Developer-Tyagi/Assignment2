@@ -145,9 +145,7 @@ export default {
   computed: {
     ...mapGetters(['selectedMortgage'])
   },
-  mounted() {
-    this.getMortgageDetails(this.$route.params.id);
-  },
+
   methods: {
     ...mapActions([
       'getMortgageDetails',

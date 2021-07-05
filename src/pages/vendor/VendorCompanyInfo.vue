@@ -145,11 +145,9 @@ export default {
   computed: {
     ...mapGetters(['selectedVendor'])
   },
-  mounted() {
-    this.getVendorDetails(this.$route.params.id);
-  },
+
   methods: {
-    ...mapActions(['getVendorDetails', 'deleteVendorInfo']),
+    ...mapActions(['deleteVendorInfo']),
     onEmailClick,
     onPhoneNumberClick,
     sendMap,

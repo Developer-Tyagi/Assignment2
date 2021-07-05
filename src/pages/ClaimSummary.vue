@@ -804,12 +804,6 @@ export default {
 
   async created() {
     this.userRole = getCurrentUser().attributes.roles[0].machineValue;
-    if (!this.selectedClaimId) {
-      this.$router.push('/clients');
-    }
-    this.getSingleClaimDetails(this.selectedClaimId);
-    this.getClaimReasons();
-    this.getLossCauses();
     this.lossInfo.dateOfLoss = dateToShow(this.getSelectedClaim.lossInfo.date);
     this.fileNumber = this.getSelectedClaim.fileNumber;
     this.DeadLineDate = dateToShow(this.getSelectedClaim.lossInfo.deadlineDate);
@@ -865,6 +859,8 @@ export default {
       }
     },
     onEditClaimSummary() {
+      this.getClaimReasons();
+      this.getLossCauses();
       this.claimSummary = true;
       this.$emit('claimSummaryDialog', true);
       this.lossInfo.reasonClaim.id = this.getSelectedClaim.lossInfo.claimReason.id;
