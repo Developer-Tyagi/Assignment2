@@ -55,7 +55,7 @@
         <q-separator></q-separator>
         <q-expansion-item
           group="claimGroup"
-          label="Property Details"
+          label=" Property Damage"
           header-class="text-primary"
           @show="personalProperty = true"
         >

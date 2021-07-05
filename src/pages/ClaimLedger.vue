@@ -256,7 +256,7 @@
         <div class="q-ma-sm mobile-container-page listing-height">
           <q-form ref="EditPaymentForm">
             <div class="row" style="align-items: center">
-              <span class="">Recieved Date</span>
+              <span class="heading-light">Recieved Date</span>
 
               <q-input
                 dense
@@ -290,7 +290,7 @@
               </q-input>
             </div>
             <div class="row" style="align-items: center">
-              <span class="">Amount Of Payment</span>
+              <span class="heading-light">Amount Of Payment</span>
 
               <q-input
                 dense
@@ -304,7 +304,7 @@
               />
             </div>
             <div class="row" style="align-items: center">
-              <span class="">Check Reference #</span>
+              <span class="heading-light">Check Reference #</span>
 
               <q-input
                 dense
@@ -315,8 +315,10 @@
             </div>
             <div style="border-style: ridge ">
               <div class=" q-mt-sm row justify-between">
-                <span class="col-7 q-pt-xs q-ml-md">Settlements</span>
-                <span class="col-4">Amounts</span>
+                <span class="col-7 q-pt-xs q-ml-md heading-light"
+                  >Settlements</span
+                >
+                <span class="col-4 heading-light">Amounts</span>
               </div>
 
               <div class="q-pa-sm " v-if="showValue">
@@ -329,19 +331,19 @@
                     <span class="">{{ settlement.desc }}</span>
                   </div>
                   <div class=" q-mx-md row justify-between" style="">
-                    <span class="">Net Settlement</span>
+                    <span class="heading-light">Net Settlement</span>
                     <span class="">{{ settlement.netSettlement }}</span>
                   </div>
                   <div class="q-mx-md  row justify-between" style="">
-                    <span class="">Paid To Date</span>
+                    <span class="heading-light">Paid To Date</span>
                     <span class="">{{ settlement.totalPaid }}</span>
                   </div>
                   <div class="q-mx-md  row justify-between" style="">
-                    <span class="">Outstanding</span>
+                    <span class="heading-light">Outstanding</span>
                     <span class="">{{ settlement.outstanding }}</span>
                   </div>
                   <div class=" q-ml-md  row" style="align-items: center">
-                    <span class="">Amt To Apply</span>
+                    <span class="heading-light">Amt To Apply</span>
 
                     <q-input
                       dense
@@ -355,7 +357,7 @@
                   </div>
                 </div>
                 <div class="row justify-between q-mr-lg q-ml-md q-my-md ">
-                  <div class="">
+                  <div class="heading-light">
                     Remaining Amount
                   </div>
                   <div>
@@ -365,7 +367,7 @@
               </div>
             </div>
 
-            <div>Notes</div>
+            <div class="heading-light">Notes</div>
             <textarea v-model="payments.notes" rows="3" class="full-width" />
           </q-form>
         </div>
@@ -393,7 +395,7 @@
         <div class="q-ma-sm mobile-container-page listing-height">
           <q-form ref="paymentForm">
             <div class="row" style="align-items: center">
-              <span>Recieved Date</span>
+              <span class="heading-light">Recieved Date</span>
 
               <q-input
                 dense
@@ -432,7 +434,7 @@
               </q-input>
             </div>
             <div class="row" style="align-items: center">
-              <span class="">Amount Of Payment</span>
+              <span class="heading-light">Amount Of Payment</span>
 
               <q-input
                 dense
@@ -447,7 +449,7 @@
               />
             </div>
             <div class="row" style="align-items: center">
-              <span class="">Check Reference #</span>
+              <span class="heading-light">Check Reference #</span>
 
               <q-input
                 dense
@@ -458,37 +460,40 @@
                 :rules="[val => val.length > 0 || 'Please fill Reference']"
               />
             </div>
-            <div style="border-style: ridge ">
-              <div class=" q-mt-sm row justify-between">
-                <span class="col-7 q-pt-xs q-ml-md">Settlements</span>
-                <span class="col-4">Amounts</span>
-              </div>
+            <div class="q-ma-sm">
+              <!-- <div class=" q-mt-sm row justify-between">
+                <span class="col-7 bg-red q-pt-xs q-ml-md">Settlements</span>
+                <span class="col-3">Amounts</span>
+              </div> -->
 
               <div class="q-pa-sm " v-if="showValue">
-                <div
-                  class=" justify-between"
+                <q-card
+                  class="q-pa-xs"
                   v-for="(settlement, index) in account.settlements"
                 >
-                  <div class=" col-6 q-mt-md">
-                    {{ index + 1 }}.
-                    <span class="">{{ settlement.desc }}</span>
+                  <div class=" row q-mt-md justify-center">
+                    <!-- {{ index + 1 }}. -->
+                    <div class="heading-light ">
+                      {{ settlement.desc }}
+                    </div>
                   </div>
                   <div class=" q-mx-md row justify-between" style="">
-                    <span c>Net Settlement</span>
+                    <span class="heading-light">Net Settlement</span>
                     <span>$ {{ settlement.netSettlement }}</span>
                   </div>
                   <div class="q-mx-md  row justify-between" style="">
-                    <span>Paid To Date</span>
+                    <span class="heading-light">Paid To Date</span>
                     <span>$ {{ settlement.totalPaid }}</span>
                   </div>
                   <div class="q-mx-md  row justify-between" style="">
-                    <span class="">Outstanding</span>
+                    <span class="heading-light">Outstanding</span>
                     <span class="">$ {{ settlement.outstanding }}</span>
                   </div>
-                  <div class=" q-ml-md  row" style="align-items: center">
-                    <span class="">Amt To Apply</span>
+                  <div class="q-mb-md q-ml-md  row" style="align-items: center">
+                    <span class="heading-light">Amt To Apply</span>
 
                     <q-input
+                      class="q-px-sm"
                       dense
                       style="margin-left: auto; width: 20%"
                       v-model.number="payments.settlements[index].amountPaid"
@@ -498,9 +503,9 @@
                       :rules="[val => val || 'Please fill Amount']"
                     />
                   </div>
-                </div>
+                </q-card>
                 <div class="row justify-between q-mr-lg q-ml-md q-my-md ">
-                  <div class="">
+                  <div class="heading-light">
                     Remaining Amount
                   </div>
                   <div>$ {{ payments.remainingAmout }}</div>
@@ -508,7 +513,7 @@
               </div>
             </div>
 
-            <div>Notes</div>
+            <div class="heading-light">Notes</div>
             <textarea v-model="payments.notes" rows="3" class="full-width" />
           </q-form>
         </div>
@@ -536,7 +541,7 @@
         <div class="q-ma-sm mobile-container-page listing-height">
           <q-form>
             <div class="row" style="align-items: center">
-              <span class="">Recieved Date</span>
+              <span class="heading-light  ">Recieved Date</span>
 
               <q-input
                 dense
@@ -575,7 +580,7 @@
               </q-input>
             </div>
             <div class="row" style="align-items: center">
-              <span class="">Expense Amount</span>
+              <span class="heading-light">Expense Amount</span>
 
               <q-input
                 dense
@@ -587,27 +592,15 @@
                 class="input-extra-padding"
               />
             </div>
-            <!-- <div class="row" style="align-items: center">
-              <span class=""> Amount Collected</span>
-
-              <q-input
-                dense
-                v-model="addexpenses.reference"
-                mask="#.#"
-                type="number"
-                style="margin-left: auto; width: 50%"
-                class="input-extra-padding"
-              />
-            </div> -->
 
             <div class="row" style="align-items: center">
-              <span class=""> Company Fee</span>
+              <span class="heading-light"> Company Fee</span>
 
               <q-toggle class="q-ml-auto" v-model="toggleOnOff" />
             </div>
 
             <div class="row" style="align-items: center">
-              <span class="">Payee</span>
+              <span class="heading-light">Payee</span>
 
               <q-input
                 dense
@@ -617,7 +610,7 @@
               />
             </div>
             <div class="row" style="align-items: center">
-              <span class="">Payable By</span>
+              <span class="heading-light">Payable By</span>
 
               <q-select
                 v-model="addexpenses.payableBy.value"
@@ -630,21 +623,14 @@
                 style="margin-left: auto; width: 50%"
                 class="input-extra-padding"
               ></q-select>
-
-              <!-- <q-input
-                v-model="addexpenses.payableBy.value"
-                dense
-                style="margin-left: auto; width: 50%"
-                class="input-extra-padding"
-              /> -->
             </div>
             <div class="row" style="align-items: center">
-              <span class=""> Exclude from Company Fee</span>
+              <span class="heading-light"> Exclude from Company Fee</span>
 
               <q-toggle class="q-ml-auto" v-model="toggleOnOff" />
             </div>
             <div class="row" style="align-items: center">
-              <span class="">Invoice reference Number</span>
+              <span class="heading-light">Invoice reference Number</span>
 
               <q-input
                 dense
@@ -654,7 +640,7 @@
               />
             </div>
 
-            <div>Description</div>
+            <div class="heading-light">Description</div>
             <textarea v-model="addexpenses.desc" rows="3" class="full-width" />
           </q-form>
         </div>
@@ -1275,6 +1261,7 @@ export default {
     },
 
     openDisbursementBox() {
+      this.totalExpensesOfClient = this.totalExpensesOfClientAndCompany = this.totalExpensesOfCompany = 0;
       this.addDisbursement.amountToDisbuse = 0;
       this.partialCompanyValue = 0;
       this.addDisbursement.companyFee = 0;
