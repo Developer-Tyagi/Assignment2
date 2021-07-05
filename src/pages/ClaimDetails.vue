@@ -123,7 +123,10 @@
         >
           <q-card v-if="settlements">
             <q-card-section>
-              <Settlements @onAddSettlement="onAddSettlement" />
+              <Settlements
+                @onAddSettlement="onAddSettlement"
+                @afterAddition="refeshFlag"
+              />
             </q-card-section>
           </q-card>
         </q-expansion-item>
@@ -248,7 +251,7 @@
           group="claimGroup"
           label="Claim Ledger"
           header-class="text-primary"
-          @show="claimLedgeInfo = true"
+          @show="scrollToTop"
         >
           <q-card v-if="claimLedgeInfo">
             <q-card-section> <ClaimLedger /> </q-card-section>
@@ -442,6 +445,7 @@ export default {
   },
   data() {
     return {
+      flag: null,
       claimExpertVendor: '',
       editTask: '',
       addClaimNotes: '',
@@ -522,9 +526,16 @@ export default {
     ]),
     onEmailClick,
     successMessage,
+
+    scrollToTop() {
+      console.log(6565);
+      this.claimLedgeInfo = true;
+      window.scrollTo(0, 0);
+    },
     addExpertVendor(value) {
       this.claimExpertVendor = value;
     },
+
     onAddNoteClick(value) {
       this.addClaimNotes = value;
     },
@@ -539,6 +550,9 @@ export default {
     },
     onAddSettlement(value) {
       this.addSettlement = value;
+    },
+    refeshFlag(value) {
+      this.claimLedgeInfo = false;
     },
     onEditTask(value) {
       this.editTask = value;
