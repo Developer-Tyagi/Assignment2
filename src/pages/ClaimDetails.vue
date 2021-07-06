@@ -17,7 +17,8 @@
       @click="editClaimDetails = true"
       name="more_vert"
     />
-    <div class="listing-height">
+
+    <div class="listing-height " id="scroll-bottom">
       <ClaimDetail />
       <q-list
         bordered
@@ -250,10 +251,13 @@
           group="claimGroup"
           label="Claim Ledger"
           header-class="text-primary"
-          @show="scrollToTop"
+          @show="scrollDown"
+          @hide="scrollDown"
         >
           <q-card v-if="claimLedgeInfo">
-            <q-card-section> <ClaimLedger /> </q-card-section>
+            <q-card-section>
+              <ClaimLedger @scrollAfterCreation="scrollAfterCreation" />
+            </q-card-section>
           </q-card>
         </q-expansion-item>
       </q-list>
@@ -526,10 +530,11 @@ export default {
     onEmailClick,
     successMessage,
 
-    scrollToTop() {
-      console.log(6565);
+    scrollAfterCreation() {
+      document.getElementById('scroll-bottom').scrollTo(0, 1552);
+    },
+    async scrollDown() {
       this.claimLedgeInfo = true;
-      window.scrollTo(0, 0);
     },
     addExpertVendor(value) {
       this.claimExpertVendor = value;
