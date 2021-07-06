@@ -65,45 +65,7 @@
       </q-card>
     </q-dialog>
     <div>
-      <!-- <div class="justify-end bg-red">
-        <div>
-          <q-icon @click="addNote" v-if="!addNoteDialog" flat>
-            <img src="~assets/addNote.svg" />
-          </q-icon>
-        </div>
-      </div> -->
-
       <div>
-        <!-- <div class="q-ml-md q-mt-md text-h6">
-          {{
-            editSelectedClient.attributes.insuredInfo.primary.fname
-              ? editSelectedClient.attributes.insuredInfo.primary.fname
-              : '-'
-          }}
-          {{
-            editSelectedClient.attributes.insuredInfo.primary.lname
-              ? editSelectedClient.attributes.insuredInfo.primary.lname
-              : '-'
-          }}
-        </div> -->
-        <!-- <div class="row q-ml-md q-my-md heading-light">
-          <div>
-            {{
-              editSelectedClient.attributes.meta
-                ? editSelectedClient.attributes.meta.totalClaims
-                : 0
-            }}
-            - Total Claims
-          </div>
-          <div class="q-ml-xl">
-            {{
-              editSelectedClient.attributes.meta
-                ? editSelectedClient.attributes.meta.openClaims
-                : 0
-            }}
-            - Open Claim
-          </div>
-        </div> -->
         <div v-if="editSelectedClient.attributes.notes">
           <div
             class="clients-list"
@@ -177,22 +139,6 @@
             class="q-ml-auto "
           ></q-btn>
         </div>
-        <!-- <div v-else class="full-height full-width column">
-          <div class="column absolute-center">
-            <div style="color: #666666,align-items: center">
-              You haven't added a Note yet.
-            </div>
-
-            <img
-              class="q-mx-lg q-pt-sm"
-              src="~assets/add.svg"
-              alt="add_icon"
-              width="130px"
-              height="100px"
-              @click="addNote"
-            />
-          </div>
-        </div> -->
       </div>
     </div>
   </div>
@@ -227,14 +173,7 @@ export default {
       'notes'
     ])
   },
-  formatDate(value) {
-    if (value) {
-      return moment(String(value)).format('MM/DD/YYYY', 'HH:MM');
-    }
-  },
-  created() {
-    this.getSingleClientDetails(this.selectedClientId);
-  },
+
   methods: {
     ...mapActions([
       'getSingleClientDetails',

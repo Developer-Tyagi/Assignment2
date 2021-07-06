@@ -661,6 +661,34 @@
         </div>
       </q-card>
     </q-dialog>
+    <q-dialog v-model="alert">
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">Alert</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          Are you sure ! You want to delete this settlement!
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn
+            flat
+            label="Cancel"
+            color="primary"
+            v-close-popup
+            @click="alert = false"
+          ></q-btn>
+          <q-btn
+            flat
+            label="Delete"
+            color="primary"
+            v-close-popup
+            @click="onclickDelete(indexValue)"
+          ></q-btn>
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
     <!-- This Dialog Box is Only For Showing Data Not Editing -->
     <q-dialog
       v-model="settlementShowDialog"
@@ -1180,6 +1208,8 @@ export default {
     return {
       initialOffer: '',
       status: '',
+      alert: false,
+      indexValue: '',
       editInitialOffer: false,
       currentIndex: '',
       settlementShowDialog: false,
@@ -1249,16 +1279,7 @@ export default {
   },
 
   async created() {
-    if (this.selectedClaimId) {
-      this.getSettlementTypes();
-      await this.getSettlements(this.selectedClaimId);
-    } else {
-      this.$router.push('/clients');
-    }
-
-    this.getPolicyCategory();
-    this.getPolicyTypes();
-    this.getSettlementTypes();
+    await this.getSettlements(this.selectedClaimId);
     this.totalNetValue = this.settlement.attributes.totalNetClaimed;
     this.totalReplacementCost = this.settlement.attributes.totalReplCost;
     this.initialCost = this.settlement.attributes.intialOffer;
@@ -1312,6 +1333,9 @@ export default {
         'MM/DD/YYYY'
       );
       this.settlementDialog = true;
+      this.getPolicyCategory();
+      this.getPolicyTypes();
+      this.getSettlementTypes();
     },
     onClickEdit(val, dialogName) {
       this.currentIndex = val;
@@ -1380,7 +1404,7 @@ export default {
         this.settlementDialog = true;
       }
     },
-    async onDeleteSettelment() {
+    async onclickDelete(index) {
       const payload = {
         claimId: this.selectedClaimId,
         settlementId: this.setId
@@ -1388,6 +1412,10 @@ export default {
       await this.deleteClaimSettelment(payload);
       this.settlementShowDialog = false;
       this.getSettlements(this.selectedClaimId);
+      this.$emit('afterAddition', true);
+    },
+    async onDeleteSettelment() {
+      this.alert = true;
     },
     // Setting data for dropDown
     setTypes(data) {
@@ -1493,6 +1521,8 @@ export default {
       } else {
         await this.addSettlement(payload);
       }
+
+      this.$emit('afterAddition', true);
 
       this.settlementDialog = false;
       this.settlementShowDialog = false;

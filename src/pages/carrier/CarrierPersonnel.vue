@@ -104,17 +104,12 @@
               </div>
             </div>
 
-            <div class="row ">
+            <div class="row">
               <span class="heading-light col-3"> Notes: </span>
               <span class="q-ml-none col" v-if="personnel.note">
                 {{ personnel.note ? personnel.note : '-' }}</span
               >
-            </div>
-            <div class="row q-mb-sm">
-              <span class="heading-light col-3"> Role </span>
-              <span class="q-ml-none col" v-if="personnel.role">
-                {{ personnel.role.value ? personnel.role.value : '-' }}</span
-              >
+              <span v-else>-</span>
             </div>
           </q-card>
         </div>
@@ -239,34 +234,6 @@
                   val => (val && val.length > 0) || 'Please fill the email'
                 ]"
               />
-
-              <div>
-                <q-select
-                  v-model="personnel.role.value"
-                  dense
-                  class="full-width"
-                  use-input
-                  input-debounce="0"
-                  option-label="name"
-                  label="Default Roles"
-                  :options="options"
-                  option-value="name"
-                  @input="setClaimRoles"
-                  @filter="searchFilterBy"
-                  behavior="menu"
-                  options-dense
-                  emit-value
-                  options-dense
-                >
-                  <template v-slot:no-option>
-                    <q-item>
-                      <q-item-section class="text-black">
-                        No results
-                      </q-item-section>
-                    </q-item>
-                  </template>
-                </q-select>
-              </div>
             </q-card>
             <q-card class="q-ma-md q-pa-md q-mt-sm"
               ><span class="text-bold">Address Details</span>
@@ -376,7 +343,7 @@ export default {
 
       personnel: {
         options: [],
-        role: { value: null, id: '', machineValue: '' },
+
         honorific: {
           id: '',
           value: 'Mr.',
@@ -415,8 +382,7 @@ export default {
       'contactTypes',
       'titles',
       'carrierPersonnel',
-      'selectedCarrier',
-      'claimRoles'
+      'selectedCarrier'
     ])
   },
   created() {
@@ -424,11 +390,7 @@ export default {
       id: this.$route.params.id
     };
     this.getCarrierPersonnel(params);
-    this.getCarrierDetails(this.$route.params.id);
     // this.getCarrierPersonnel(this.$route.params.id);
-    this.getContactTypes();
-    this.getTitles();
-    this.getClaimRoles();
   },
   methods: {
     ...mapActions([
@@ -438,39 +400,13 @@ export default {
       'getCarrierPersonnel',
       'getCarrierDetails',
       'editCarrierPersonnel',
-      'deleteCarrierPersonnel',
-      'getClaimRoles'
+      'deleteCarrierPersonnel'
     ]),
-    searchFilterBy(val, update) {
-      this.personnel.role.value = null;
-      if (val === ' ') {
-        update(() => {
-          this.personnel.options = this.claimRoles;
-        });
-        return;
-      }
 
-      update(() => {
-        const search = val.toLowerCase();
-        this.options = this.claimRoles.filter(
-          v => v.name.toLowerCase().indexOf(search) > -1
-        );
-      });
-    },
-    setClaimRoles() {
-      const selectedName = this.personnel.role.value;
-      const result = this.claimRoles.find(obj => {
-        return obj.name === selectedName;
-      });
-
-      this.personnel.role.value = result.name;
-
-      this.personnel.role.id = result.id;
-
-      this.personnel.role.machineValue = result.machineValue;
-    },
     onEdit(index) {
       this.editPersonnelDialog = true;
+      this.getContactTypes();
+      this.getTitles();
       this.personnel.fname = this.carrierPersonnel.personnel[index].fname;
       this.personnel.lname = this.carrierPersonnel.personnel[index].lname;
       this.personnel.email = this.carrierPersonnel.personnel[index].email;
@@ -480,12 +416,6 @@ export default {
         index
       ].phoneNumber;
       this.id = this.carrierPersonnel.personnel[index].id;
-      this.personnel.role.value = this.carrierPersonnel.personnel[
-        index
-      ].role.value;
-      this.personnel.role.machineValue = this.carrierPersonnel.personnel[
-        index
-      ].role.machineValue;
     },
     async onEditSave() {
       const success = this.$refs.editPersonnelForm.validate();
@@ -505,10 +435,6 @@ export default {
               email: this.personnel.email,
               phoneNumber: this.personnel.phoneNumber,
 
-              role: {
-                value: this.personnel.role.value,
-                machineValue: this.personnel.role.machineValue
-              },
               address: {
                 ...this.personnel.address
               },
@@ -516,9 +442,7 @@ export default {
             }
           }
         };
-        if (!this.personnel.role.id) {
-          delete payload.data.personnel.role;
-        }
+
         await this.editCarrierPersonnel(payload);
         const params = {
           id: this.$route.params.id
@@ -588,10 +512,7 @@ export default {
               lname: this.personnel.lname,
               email: this.personnel.email,
               phoneNumber: this.personnel.phoneNumber,
-              role: {
-                value: this.personnel.role.value,
-                machineValue: this.personnel.role.machineValue
-              },
+
               address: {
                 ...this.personnel.address
               },
@@ -599,9 +520,7 @@ export default {
             }
           }
         };
-        if (!this.personnel.role.id) {
-          delete payload.data.personnel.role;
-        }
+
         await this.addCarrierPersonnel(payload);
         this.addPersonnelDialog = false;
         const params = {
@@ -619,8 +538,6 @@ export default {
         this.personnel.address.postalCode = '';
         this.personnel.notes = '';
         this.personnel.departmentName = '';
-        this.personnel.role.value = '';
-        this.personnel.role.machineValue = '';
       }
     }
   }

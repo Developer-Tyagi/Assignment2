@@ -135,9 +135,7 @@ export default {
   computed: {
     ...mapGetters(['selectedCarrier'])
   },
-  mounted() {
-    this.getCarrierDetails(this.$route.params.id);
-  },
+
   methods: {
     ...mapActions(['getCarrierDetails', 'deleteCarrierInfo']),
     onEmailClick,

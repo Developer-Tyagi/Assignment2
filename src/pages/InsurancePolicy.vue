@@ -499,7 +499,7 @@
           :dialogName="'Select Adjustor'"
         />
 
-        <q-btn @click="addPersonnelDialog = true" flat class="add-icon">
+        <q-btn @click="onClickAddAdjustor" flat class="add-icon">
           <img src="~assets/addAdjustor.svg" height="120" width="24" />
         </q-btn>
 
@@ -960,14 +960,8 @@ export default {
   },
 
   created() {
-    this.getClaimRoles();
     this.getClaimCarrier(this.selectedClaimId);
-    this.getContactTypes();
-    this.getTitles();
     this.getPolicy(this.selectedClaimId);
-    this.getPolicyCategory();
-    this.getPolicyTypes();
-
     this.insuranceDetails.policyEffectiveDate = this.insuranceDetails.policyExpireDate = date.formatDate(
       Date.now(),
       'MM/DD/YYYY'
@@ -983,8 +977,6 @@ export default {
       'getClaimCarrier',
       'deleteClaimCarrier',
       'getClaimCarrierPersonnel',
-      'getContactTypes',
-      'getTitles',
       'addCarrierPersonnel',
       'getCarrierPersonnel',
       'addClaimPersonnel',
@@ -1015,6 +1007,10 @@ export default {
         params: this.params
       };
       this.getCarrierPersonnel(paramsObject);
+    },
+    onClickAddAdjustor() {
+      this.addPersonnelDialog = true;
+      this.getClaimRoles();
     },
     setFilterName(name) {
       this.filterName = name;
@@ -1105,6 +1101,8 @@ export default {
 
     onEditPolicyInfo() {
       this.insuranceInfoDialog = true;
+      this.getPolicyCategory();
+      this.getPolicyTypes();
       this.$emit('editCarrierDialog', true);
       this.insuranceDetails.isThisIsForcedPlacedPolicyToggle = this.policy
         .policyInfo.isForcedPlaced
