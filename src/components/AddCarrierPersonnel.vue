@@ -144,7 +144,6 @@ export default {
   created() {
     this.getContactTypes();
     this.getTitles();
-    this.getClaimRoles();
   },
   methods: {
     ...mapActions(['getContactTypes', 'getTitles']),

@@ -407,7 +407,6 @@ export default {
       this.editPersonnelDialog = true;
       this.getContactTypes();
       this.getTitles();
-      this.getClaimRoles();
       this.personnel.fname = this.carrierPersonnel.personnel[index].fname;
       this.personnel.lname = this.carrierPersonnel.personnel[index].lname;
       this.personnel.email = this.carrierPersonnel.personnel[index].email;
