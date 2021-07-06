@@ -524,6 +524,7 @@
                 style="font-weight: 400"
                 >Clear</q-btn
               >
+              <!-- Commented for some time -->
               <!-- <q-btn
                 :disabled="isAssignDisabled"
                 color="primary"
