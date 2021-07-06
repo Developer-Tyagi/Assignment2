@@ -103,7 +103,7 @@
                           class="q-mx-xs"
                           name="delete"
                           size="xs"
-                          @click="deletePayment(pay)"
+                          @click="deletePrePayment(pay)"
                           color="primary"
                         />
                       </div>
@@ -143,7 +143,12 @@
             >
               <div v-if="expenses.expenses != null">
                 <q-card class="q-ma-xs" v-for="expense in expenses.expenses">
-                  <div class=" row justify-end">
+                  <div class=" row justify-between">
+                    <div class="q-pl-sm q-pt-xs">
+                      <q-badge color="primary">
+                        {{ expense.payableBy.value }}</q-badge
+                      >
+                    </div>
                     <div class="q-mr-xs">
                       <q-icon
                         name="create"
@@ -161,6 +166,11 @@
                     </div>
                   </div>
                   <div class="q-pa-sm">
+                    <!-- <div class="row q-mt-xs justify-center">
+                      <div class="heading-light">
+                        {{ expense.payableBy.value }}
+                      </div>
+                    </div> -->
                     <div class="row q-mt-xs justify-between">
                       <div class="heading-light">Date</div>
                       <div>
@@ -313,24 +323,19 @@
                 class="input-extra-padding"
               />
             </div>
-            <div style="border-style: ridge ">
-              <div class=" q-mt-sm row justify-between">
-                <span class="col-7 q-pt-xs q-ml-md heading-light"
-                  >Settlements</span
-                >
-                <span class="col-4 heading-light">Amounts</span>
-              </div>
-
+            <div>
               <div class="q-pa-sm " v-if="showValue">
-                <div
-                  class=" justify-between"
+                <q-card
+                  class="q-ma-sm justify-between"
                   v-for="(settlement, index) in account.settlements"
                 >
-                  <div class=" col-6 q-mt-md">
-                    {{ index + 1 }}.
-                    <span class="">{{ settlement.desc }}</span>
+                  <div class=" q-pt-sm row justify-center">
+                    <div>
+                      {{ settlement.desc }}
+                    </div>
                   </div>
-                  <div class=" q-mx-md row justify-between" style="">
+
+                  <div class=" q-mx-md row justify-between">
                     <span class="heading-light">Net Settlement</span>
                     <span class="">{{ settlement.netSettlement }}</span>
                   </div>
@@ -355,7 +360,7 @@
                       :rules="[val => val || 'Please fill Amount']"
                     />
                   </div>
-                </div>
+                </q-card>
                 <div class="row justify-between q-mr-lg q-ml-md q-my-md ">
                   <div class="heading-light">
                     Remaining Amount
@@ -468,12 +473,11 @@
 
               <div class="q-pa-sm " v-if="showValue">
                 <q-card
-                  class="q-pa-xs"
+                  class="q-my-sm q-pa-xs"
                   v-for="(settlement, index) in account.settlements"
                 >
                   <div class=" row q-mt-md justify-center">
-                    <!-- {{ index + 1 }}. -->
-                    <div class="heading-light ">
+                    <div>
                       {{ settlement.desc }}
                     </div>
                   </div>
@@ -686,6 +690,7 @@
                   class="col-4 "
                 />
               </div>
+              <q-separator class="q-mt-sm" />
               <div class="row justify-between q-my-sm">
                 <span class="col-5   heading-light">
                   Outstanding Expenses Payable By both company and Client
@@ -732,11 +737,12 @@
               </div>
 
               <div class="row q-my-md">
-                <span class="col-8">Net Expense To Pay</span>
+                <span class="col-8 heading-light">Net Expense To Pay</span>
                 <div>
                   {{ netExpenseToPayByBoth ? netExpenseToPayByBoth : 0 }}
                 </div>
               </div>
+              <q-separator />
               <div class="row q-my-sm">
                 <span class="heading-light col-8 q-my-xs">
                   Net Amount to Disburse</span
@@ -797,6 +803,13 @@
                   prefix="$"
                   class=" col-4 "
                 />
+              </div>
+
+              <div class="row q-mt-lg">
+                <span class=" col-8 heading-light">Calculated Company Fee</span>
+                {{
+                  addDisbursement.companyFee ? addDisbursement.companyFee : 0
+                }}
               </div>
               <div class="row q-mt-lg">
                 <span class=" col-8 heading-light"
@@ -949,6 +962,62 @@
         />
       </q-card>
     </q-dialog>
+    <q-dialog v-model="alert">
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">Alert</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          Are you sure ! You want to delete this payment!
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn
+            flat
+            label="Cancel"
+            color="primary"
+            v-close-popup
+            @click="alert = false"
+          ></q-btn>
+          <q-btn
+            flat
+            label="Delete"
+            color="primary"
+            v-close-popup
+            @click="deletePayment(currenPaymentID)"
+          ></q-btn>
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+    <q-dialog v-model="alertForExpense">
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">Alert</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          Are you sure ! You want to delete this Expense!
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn
+            flat
+            label="Cancel"
+            color="primary"
+            v-close-popup
+            @click="alert = false"
+          ></q-btn>
+          <q-btn
+            flat
+            label="Delete"
+            color="primary"
+            v-close-popup
+            @click="deleteFinalexpense(currentExpenseID)"
+          ></q-btn>
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -971,7 +1040,11 @@ export default {
   },
   data() {
     return {
+      currenPaymentID: '',
       expenseID: '',
+      alert: false,
+      alertForExpense: false,
+      currentExpenseID: '',
       editPaymentId: '',
       isExpenseEdit: false,
       partialCompanyValue: '',
@@ -1053,7 +1126,6 @@ export default {
       'disbursements'
     ])
   },
-
   async created() {
     this.getEstimateInfo(this.selectedClaimId);
     this.getAllPayment(this.selectedClaimId);
@@ -1070,16 +1142,6 @@ export default {
         this.showValue = true;
       });
     });
-    // await this.getAllExpenses(this.selectedClaimId).then(async () => {
-    //   this.expenses.expenses.forEach(val => {
-
-    //     this.addDisbursement.expenses.push({
-    //       id: val.id,
-    //       paid: 0
-    //     });
-    //     this.showExpences = true;
-    //   });
-    // });
   },
   methods: {
     ...mapActions([
@@ -1160,19 +1222,23 @@ export default {
         }
       }
     },
-
-    async deleteExpense(value) {
+    async deleteFinalexpense() {
       const payload = {
         claimID: this.selectedClaimId,
-        expenseID: value.id
+        expenseID: this.currentExpenseID
       };
       await this.deleteExpenses(payload);
       await this.getAllExpenses(this.selectedClaimId);
       await this.getAccountDetails(this.selectedClaimId);
     },
+
+    async deleteExpense(value) {
+      this.currentExpenseID = value.id;
+      this.alertForExpense = true;
+    },
     editPayments(value) {
       this.editPaymentId = value.id;
-      this.payments.date = value.receviedDate;
+      this.payments.date = dateToShow(value.receviedDate);
       this.payments.amountsOfPayment = value.amount;
       this.payments.checkReference = value.reference;
       this.payments.notes = value.notes ? value.notes : '';
@@ -1196,11 +1262,15 @@ export default {
       // this.payments.settlements = [];
       this.addPaymentDialog = true;
     },
+    deletePrePayment(value) {
+      this.currenPaymentID = value.id;
+      this.alert = true;
+    },
 
     async deletePayment(value) {
       const payload = {
         claimID: this.selectedClaimId,
-        paymentId: value.id
+        paymentId: this.currenPaymentID
       };
       await this.deleteSinglePayment(payload);
       await this.getAllPayment(this.selectedClaimId);
@@ -1301,6 +1371,7 @@ export default {
             this.totalExpensesOfCompany =
               this.totalExpensesOfCompany + val.amount;
           }
+          this.addDisbursement.companyFee = this.account.fees.rate;
 
           this.showValue = true;
         });
@@ -1420,6 +1491,7 @@ export default {
       this.isExpenseEdit = true;
       this.addexpenses = value;
       this.expenseID = value.id;
+      this.addexpenses.receviedDate = dateToShow(value.receviedDate);
       this.addExpensesDialog = true;
     }
   }
