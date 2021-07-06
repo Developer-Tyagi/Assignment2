@@ -1279,16 +1279,7 @@ export default {
   },
 
   async created() {
-    if (this.selectedClaimId) {
-      this.getSettlementTypes();
-      await this.getSettlements(this.selectedClaimId);
-    } else {
-      this.$router.push('/clients');
-    }
-
-    this.getPolicyCategory();
-    this.getPolicyTypes();
-    this.getSettlementTypes();
+    await this.getSettlements(this.selectedClaimId);
     this.totalNetValue = this.settlement.attributes.totalNetClaimed;
     this.totalReplacementCost = this.settlement.attributes.totalReplCost;
     this.initialCost = this.settlement.attributes.intialOffer;
@@ -1342,6 +1333,9 @@ export default {
         'MM/DD/YYYY'
       );
       this.settlementDialog = true;
+      this.getPolicyCategory();
+      this.getPolicyTypes();
+      this.getSettlementTypes();
     },
     onClickEdit(val, dialogName) {
       this.currentIndex = val;

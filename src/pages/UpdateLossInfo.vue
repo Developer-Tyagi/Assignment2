@@ -373,17 +373,12 @@ export default {
     if (!this.selectedClaimId) {
       this.$router.push('/clients');
     }
-
     this.getLossInfo(this.selectedClaimId);
     this.setSelectedClaimId(this.selectedClaimId);
-    this.getPropertyTypes();
-    this.getClaimReasons();
     await this.getSingleClaims(this.selectedClaimId).then(() => {
       this.lossDetails.policyEffectiveDate = this.claim.policyInfo.effectiveDate;
       this.lossDetails.policyExpireDate = this.claim.policyInfo.expirationDate;
     });
-    this.getLossCauses();
-    this.getSeverityClaim();
   },
   methods: {
     ...mapActions([
@@ -435,6 +430,10 @@ export default {
     },
     onEditIconClick() {
       this.lossInfoDialog = true;
+      this.getPropertyTypes();
+      this.getClaimReasons();
+      this.getLossCauses();
+      this.getSeverityClaim();
       this.$emit('editLossInoDialog', true);
       //This is For Prefilling Values in Loss Info Form
       this.lossDetails.descriptionDwelling = this.lossInfo.attributes.lossInfo.desc;

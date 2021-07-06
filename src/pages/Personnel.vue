@@ -228,7 +228,6 @@ export default {
     ...mapGetters(['personnel', 'selectedClaimId', 'roleTypes', 'userRoles'])
   },
   created() {
-    this.getRoles();
     this.getPersonnelInfo(this.selectedClaimId);
     this.companyPersonnel.startDate = this.companyPersonnelPost.startDate = this.companyPersonnelPost.endDate = this.companyPersonnel.endDate = date.formatDate(
       Date.now(),
@@ -296,6 +295,7 @@ export default {
     dateToShow,
     onEditButtonClick(index) {
       this.companyPersonnelDailog = true;
+      this.getRoles();
       this.$emit('addPersonnel', true);
       this.companyPersonnel.isFieldDisable = false;
       this.personnelId = this.personnel.personnel[index].id;
