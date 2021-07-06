@@ -258,7 +258,7 @@
             </q-select>
           </div>
 
-          <div class="custom-select" @click="assignDialog = true">
+          <div class="custom-select" @click="onSelectPersonOrGroup">
             <div class="select-text" v-if="!assignFilter">
               Click Person / Group
             </div>
@@ -489,10 +489,6 @@ export default {
     ])
   },
 
-  created() {
-    this.getClaimRoles();
-    this.getAllUsers();
-  },
   methods: {
     ...mapActions([
       'createDocuments',
@@ -507,6 +503,11 @@ export default {
     ...mapMutations(['setLoading']),
     onDocumentClick(link) {
       window.open(link);
+    },
+    onSelectPersonOrGroup() {
+      this.getClaimRoles();
+      this.getAllUsers();
+      this.assignDialog = true;
     },
     async onFileInputClick(event) {
       this.dataURl = await this.getBase64(event.target.files[0]);

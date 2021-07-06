@@ -10,9 +10,12 @@
           group="carrierGroup"
           label="Carrier Info"
           header-class="text-primary"
+          @show="carrierInfo = true"
         >
           <q-card>
-            <q-card-section> <CarrierCompanyInfo /> </q-card-section>
+            <q-card-section v-if="carrierInfo">
+              <CarrierCompanyInfo />
+            </q-card-section>
           </q-card>
         </q-expansion-item>
 
@@ -22,9 +25,12 @@
           group="carrierGroup"
           label="Carrier Personnel"
           header-class="text-primary"
+          @show="carrierPersonnel = true"
         >
           <q-card>
-            <q-card-section><CarrierPersonnel /> </q-card-section>
+            <q-card-section v-if="carrierPersonnel"
+              ><CarrierPersonnel />
+            </q-card-section>
           </q-card>
         </q-expansion-item>
 
@@ -41,7 +47,7 @@ import CarrierPersonnel from 'src/pages/carrier/CarrierPersonnel';
 export default {
   components: { CarrierCompanyInfo, CarrierPersonnel },
   data() {
-    return {};
+    return { carrierPersonnel: false, carrierInfo: false };
   },
   computed: {
     ...mapGetters(['selectedCarrier'])

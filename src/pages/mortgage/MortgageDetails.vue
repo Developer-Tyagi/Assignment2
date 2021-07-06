@@ -10,8 +10,9 @@
           group="mortgageGroup"
           label="Mortgage Info"
           header-class="text-primary"
+          @show="mortgageInfo = true"
         >
-          <q-card-section>
+          <q-card-section v-if="mortgageInfo">
             <MortgageCompanyInfo />
           </q-card-section>
         </q-expansion-item>
@@ -19,8 +20,9 @@
           group="mortgageGroup"
           label="Mortgage Personnel"
           header-class="text-primary"
+          @show="mortgagePersonnel = true"
         >
-          <q-card-section>
+          <q-card-section v-if="mortgagePersonnel">
             <MortgagePersonnel />
           </q-card-section>
         </q-expansion-item>
@@ -36,7 +38,10 @@ import MortgagePersonnel from 'src/pages/mortgage/MortgagePersonnel';
 export default {
   components: { MortgageCompanyInfo, MortgagePersonnel },
   data() {
-    return {};
+    return {
+      mortgageInfo: false,
+      mortgagePersonnel: false
+    };
   },
   computed: {
     ...mapGetters(['selectedMortgage'])

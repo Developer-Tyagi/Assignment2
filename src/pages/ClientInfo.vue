@@ -722,16 +722,8 @@ export default {
       'selectedClientId'
     ])
   },
-  mounted() {
-    if (!this.selectedClientId) {
-      this.$router.push('/clients');
-    }
-  },
 
   created() {
-    this.getClientTypes();
-    this.getTitles();
-    this.getContactTypes();
     this.countries = addressService.getCountries();
     this.onCountrySelect('United States');
   },
@@ -756,6 +748,9 @@ export default {
     },
     onEditClick() {
       this.editClientInfoDailog = true;
+      this.getClientTypes();
+      this.getTitles();
+      this.getContactTypes();
       this.client.id = this.editSelectedClient.attributes.type.id;
       this.client.value = this.editSelectedClient.attributes.type.value;
       this.client.machineValue = this.editSelectedClient.attributes.type.machineValue;
