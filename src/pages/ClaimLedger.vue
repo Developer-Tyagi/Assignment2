@@ -1134,14 +1134,17 @@ export default {
     await this.getAccountDetails(this.selectedClaimId);
 
     await this.getAccountDetails(this.selectedClaimId).then(async () => {
-      this.account.settlements.forEach(val => {
-        this.payments.settlements.push({
-          id: val.id,
-          amountPaid: 0
+      if (this.account.settlements) {
+        this.account.settlements.forEach(val => {
+          this.payments.settlements.push({
+            id: val.id,
+            amountPaid: 0
+          });
+          this.showValue = true;
         });
-        this.showValue = true;
-      });
+      }
     });
+    this.$emit('scrollAfterCreation', true);
   },
   methods: {
     ...mapActions([
