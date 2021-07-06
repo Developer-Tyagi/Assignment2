@@ -136,11 +136,11 @@
             <span v-if="personnel.name">
               {{ personnel.name ? personnel.name : '-' }}</span
             >
-            <div v-if="personnel.role">
+            <!-- <div v-if="personnel.role">
               <q-badge class="q-px-sm q-py-xs q-ml-xs" size="xs">
                 {{ personnel.role.value }}</q-badge
               >
-            </div>
+            </div> -->
             <q-icon
               v-if="personnel.id"
               size="xs"
@@ -524,14 +524,15 @@
                 style="font-weight: 400"
                 >Clear</q-btn
               >
-              <q-btn
+              <!-- Commented for some time -->
+              <!-- <q-btn
                 :disabled="isAssignDisabled"
                 color="primary"
                 class="q-mr-lg"
                 size="sm"
                 label="Assign"
                 @click="assignDialog = true"
-              />
+              /> -->
             </div>
           </div>
         </div>
@@ -1016,6 +1017,7 @@ export default {
       this.filterName = name;
     },
     onCheckPersonnel(personnel) {
+      this.onSelectPersonnel(personnel);
       this.checkID = personnel.id;
       this.personnelObject = personnel;
       if (this.onClickUncheck) {
