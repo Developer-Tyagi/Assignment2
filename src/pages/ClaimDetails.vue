@@ -17,7 +17,6 @@
       @click="editClaimDetails = true"
       name="more_vert"
     />
-
     <div class="listing-height">
       <ClaimDetail />
       <q-list

@@ -37,8 +37,9 @@
             group="clientGroup"
             label="Client Info"
             header-class="text-primary"
+            @show="clientInfo = true"
           >
-            <q-card-section><ClientInfo /> </q-card-section>
+            <q-card-section v-if="clientInfo"><ClientInfo /> </q-card-section>
           </q-expansion-item>
 
           <q-separator></q-separator>
@@ -46,98 +47,37 @@
             group="clientGroup"
             label="Property and Claim"
             header-class="text-primary"
+            @show="propertyAndClaim = true"
           >
-            <q-card-section><PropertyInfo /> </q-card-section>
+            <q-card-section v-if="propertyAndClaim"
+              ><PropertyInfo />
+            </q-card-section>
           </q-expansion-item>
-          <!-- <q-expansion-item
-            group="clientGroup"
-            label="Policy Info"
-            header-class="text-primary"
-          >
-            <q-card>
-              <q-card-section>
-                <div class="q-mt-md row">
-                  <div class="heading-light q-mt-none col-xs-4 lightHeading">
-                    Policy Number
-                  </div>
-                  <div class="column q-ml-md">
-                    {{
-                      selectedLead.policyNumber
-                        ? selectedLead.policyNumber
-                        : '-'
-                    }}
-                  </div>
-                </div>
-                <div class="q-mt-md row">
-                  <div class="heading-light q-mt-none col-xs-4 lightHeading">
-                    Carrier Details
-                  </div>
-                  <div class="column q-ml-md" v-if="selectedLead.carrier">
-                    {{
-                      selectedLead.carrier.value
-                        ? selectedLead.carrier.value
-                        : '-'
-                    }}
-                  </div>
-                </div>
-              </q-card-section>
-            </q-card>
-          </q-expansion-item> -->
 
           <q-separator></q-separator>
           <q-expansion-item
             group="clientGroup"
             label="File"
             header-class="text-primary"
+            @show="file = true"
           >
-            <q-card-section>
+            <q-card-section v-if="file">
               <ClientDocument />
             </q-card-section>
           </q-expansion-item>
-
-          <!-- <q-expansion-item
-            group="clientGroup"
-            label="Notes"
-            header-class="text-primary"
-          >
-            <q-card>
-              <q-card-section>
-                <div class="q-mt-md row">
-                  <div class="heading-light q-mt-none col-xs-4 lightHeading">
-                    Notes
-                  </div>
-                  <div class="column q-ml-md" v-if="selectedLead.notes">
-                    {{ selectedLead.notes }}
-                  </div>
-                </div>
-              </q-card-section>
-            </q-card>
-          </q-expansion-item> -->
 
           <q-separator></q-separator>
           <q-expansion-item
             group="clientGroup"
             label="Notes "
             header-class="text-primary"
+            @show="notes = true"
           >
-            <q-card-section>
+            <q-card-section v-if="notes">
               <NotesDetails />
             </q-card-section>
           </q-expansion-item>
         </q-list>
-        <!-- <div
-          v-for="dialogBox in dialogBoxes"
-          :key="dialogBox.name"
-          @click="clientDetailsDailogBoxOpen(dialogBox.name)"
-        >
-          <div class="full-width">
-            <q-card class="q-ma-sm q-pa-md"> {{ dialogBox.name }} </q-card>
-
-            <div class="q-mr-lg q-ml-auto" v-if="dialogBox.validForm == true">
-              <q-icon size="xs" color="primary" name="done" />
-            </div>
-          </div>
-        </div> -->
       </div>
     </div>
   </div>
@@ -152,12 +92,10 @@ import { mapActions, mapGetters, mapMutations } from 'vuex';
 export default {
   data() {
     return {
-      dialogBoxes: [
-        { name: 'Client Info' },
-        { name: 'Properties and Claims' },
-        { name: 'Documents' },
-        { name: 'Notes' }
-      ]
+      clientInfo: false,
+      propertyAndClaim: false,
+      file: false,
+      notes: false
     };
   },
 
@@ -173,23 +111,7 @@ export default {
   },
   methods: {
     ...mapActions(['getSingleClientDetails']),
-    ...mapMutations(['setSelectedClientId']),
-
-    clientDetailsDailogBoxOpen(value) {
-      if (value == 'Client Info') {
-        this.$router.push('/client-details');
-      } else if (value == 'Documents') {
-        this.$router.push(
-          `/client-documents/${this.editSelectedClient.attributes.directoryID}`
-        );
-      }
-      if (value == 'Properties and Claims') {
-        this.$router.push('/property-details');
-      }
-      if (value == 'Notes') {
-        this.$router.push('/note-details');
-      }
-    }
+    ...mapMutations(['setSelectedClientId'])
   },
 
   created() {

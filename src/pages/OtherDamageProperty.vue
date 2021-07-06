@@ -350,8 +350,6 @@ export default {
     if (!this.selectedClaimId) {
       this.$router.push('/clients');
     }
-
-    this.getSingleClaimDetails(this.selectedClaimId);
   },
   methods: {
     ...mapActions([

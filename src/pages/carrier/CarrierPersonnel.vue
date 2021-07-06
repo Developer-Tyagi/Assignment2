@@ -390,11 +390,7 @@ export default {
       id: this.$route.params.id
     };
     this.getCarrierPersonnel(params);
-    this.getCarrierDetails(this.$route.params.id);
     // this.getCarrierPersonnel(this.$route.params.id);
-    this.getContactTypes();
-    this.getTitles();
-    this.getClaimRoles();
   },
   methods: {
     ...mapActions([
@@ -409,6 +405,9 @@ export default {
 
     onEdit(index) {
       this.editPersonnelDialog = true;
+      this.getContactTypes();
+      this.getTitles();
+      this.getClaimRoles();
       this.personnel.fname = this.carrierPersonnel.personnel[index].fname;
       this.personnel.lname = this.carrierPersonnel.personnel[index].lname;
       this.personnel.email = this.carrierPersonnel.personnel[index].email;

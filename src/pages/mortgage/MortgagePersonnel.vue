@@ -509,11 +509,7 @@ export default {
     ])
   },
   created() {
-    this.getMortgageDetails(this.$route.params.id);
     this.getMortgagePersonnel(this.$route.params.id);
-    this.getContactTypes();
-    this.getTitles();
-    this.getClaimRoles();
   },
   methods: {
     ...mapActions([
@@ -528,6 +524,9 @@ export default {
 
     onEdit(index) {
       this.editPersonnelDialog = true;
+      this.getContactTypes();
+      this.getTitles();
+      this.getClaimRoles();
       this.personnel.fname = this.mortgagePersonnel.personnel[index].fname;
       this.personnel.lname = this.mortgagePersonnel.personnel[index].lname;
       this.personnel.email = this.mortgagePersonnel.personnel[index].email;

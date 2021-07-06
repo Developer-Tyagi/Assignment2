@@ -336,7 +336,7 @@ export default {
       this.$router.push('/clients');
     }
     this.getSingleClientDetails(this.selectedClientId);
-    this.getPropertyTypes();
+
     this.getSingleClientProperty(this.selectedClientId);
   },
   computed: {
@@ -393,6 +393,7 @@ export default {
     // Editing Property Address
     editPropertyAddress(index) {
       this.isEdit = true;
+      this.getPropertyTypes();
       this.propertyId = this.setClientProperty[index].id;
 
       this.propertyName = this.setClientProperty[index].attributes.name;
