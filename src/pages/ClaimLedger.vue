@@ -369,25 +369,21 @@
                       prefix="$"
                       lazy-rules
                       @blur="calculateRemainingAmount(index)"
-                      :rules="[
-                        val =>
-                          (val && val < checkValidation()) ||
-                          'Please fill Correct Amount'
-                      ]"
                     />
                   </div>
                 </q-card>
                 <div
                   v-if="payments.remainingAmount < 0"
-                  class="  bg-primary row justify-between q-mr-lg q-ml-md q-my-md "
+                  class="  row justify-between q-mr-lg q-ml-md q-my-md "
                 >
-                  <div class="heading-light text-white">
+                  <div class="heading-light ">
                     Remaining Amount
                   </div>
-                  <div>
-                    {{ payments.remainingAmount }}
+                  <div class="bg-primary ">
+                    {{ payments.remainingAmount }} ( Over)
                   </div>
                 </div>
+
                 <div
                   v-else
                   class="row justify-between q-mr-lg q-ml-md q-my-md "
@@ -407,6 +403,7 @@
           </q-form>
         </div>
         <q-btn
+          :disable="payments.remainingAmount < 0"
           label="Save"
           color="primary"
           class="button-width-90"
@@ -491,8 +488,6 @@
                 v-model="payments.checkReference"
                 style="margin-left: auto; width: 50%"
                 class="input-extra-padding"
-                lazy-rules
-                :rules="[val => val.length > 0 || 'Please fill Reference']"
               />
             </div>
             <div class="q-ma-sm">
@@ -532,25 +527,19 @@
                       style="margin-left: auto; width: 30%"
                       v-model.number="payments.settlements[index].amountPaid"
                       prefix="$"
-                      lazy-rules
                       @blur="calculateRemainingAmount(index)"
-                      :rules="[
-                        val =>
-                          (val && val < checkValidation()) ||
-                          'Please fill Correct Amount'
-                      ]"
                     />
                   </div>
                 </q-card>
                 <div
                   v-if="payments.remainingAmount < 0"
-                  class="  bg-primary row justify-between q-mr-lg q-ml-md q-my-md "
+                  class="  row justify-between q-mr-lg q-ml-md q-my-md "
                 >
-                  <div class="heading-light text-white">
+                  <div class="heading-light ">
                     Remaining Amount
                   </div>
-                  <div>
-                    {{ payments.remainingAmount }}
+                  <div class="bg-primary ">
+                    {{ payments.remainingAmount }} ( Over)
                   </div>
                 </div>
                 <div
@@ -571,6 +560,7 @@
         </div>
         <q-btn
           label="Save"
+          :disable="payments.remainingAmount < 0"
           color="primary"
           class="button-width-90"
           @click="onClickSavePayment"
@@ -749,6 +739,7 @@
                   type="number"
                   prefix="$"
                   class="col-4 "
+                  @blur="setValueForClientAndCompany"
                   :rules="[
                     val =>
                       (val && val < checkValidationForDisbursement()) ||
@@ -850,7 +841,7 @@
                 }}
               </div>
               <div class=" q-mt-md  row ">
-                <div class="col-8 q-my-sm heading-light">Company Fee Type</div>
+                <div class="col-7 q-my-sm heading-light">Company Fee Type</div>
 
                 <q-btn-toggle
                   v-model="feesType"
@@ -872,10 +863,13 @@
                   v-model="partialCompanyValue"
                   mask="#.#"
                   type="number"
-                  prefix="$"
                   @input="CalculationOfCompanyFee(partialCompanyValue)"
                   class=" col-4 "
-                />
+                >
+                  <template v-slot:append>
+                    <span class="text-bold" style="font-size:20px;">%</span>
+                  </template></q-input
+                >
               </div>
               <div v-else-if="feesType == 'update'">
                 <div class="row q-mt-md  justify-between">
@@ -887,11 +881,14 @@
                     @blur="hourToFeeCalculation"
                     @input="CalculationOfCompanyFee(partialCompanyValue)"
                     class=" col-3"
+                    outlined
                   >
-                    <template v-slot:append>
+                    <!-- <template v-slot:append>
                       <span class="text-bold" style="font-size:20px;">/hr</span>
-                    </template></q-input
-                  >
+                    </template> -->
+                  </q-input>
+                  <div class="q-mt-sm text-h6">*</div>
+
                   <q-input
                     dense
                     v-model="partialCompanyValue"
@@ -901,7 +898,11 @@
                     @blur="hourToFeeCalculation"
                     @input="CalculationOfCompanyFee(partialCompanyValue)"
                     class=" col-4 "
-                  />
+                  >
+                    <template v-slot:append>
+                      <span class="text-bold" style="font-size:20px;">/hr</span>
+                    </template>
+                  </q-input>
                 </div>
               </div>
 
@@ -1348,25 +1349,34 @@ export default {
     validateDate,
     dateToShow,
     dateToSend,
-
+    /* Toggle button Function  for company   */
     setValueToPayCompany(i) {
       this.companyAmounts[i] = this.companyOnly[i].amount;
       this.onFillingCompany();
     },
-
+    /* Toggle button Function for client     */
     setValueToPayClient(i) {
       this.clientAmount[i] = this.clientOnly[i].amount;
       this.onFillingClient();
     },
+    /* Toggle button Function for company and client     */
     setValueToPayClientAndCompany(i) {
       this.clientAndCompanyAmount[i] = this.clientAndCompany[i].amount;
       this.onFillingValue();
     },
-
+    /* Hour To Fees Calculation     */
     hourToFeeCalculation() {
       this.addDisbursement.companyFee =
         this.companyPerHour * this.partialCompanyValue;
+
+      this.netExpenseToPayByClient =
+        this.addDisbursement.amountToDisbuse -
+        this.addDisbursement.companyFee -
+        this.netExpenseToPayByBoth;
+
+      this.netExpenseToPayByCompany = this.addDisbursement.companyFee;
     },
+    /* Open Expenses Dialog Box     */
 
     openAddExpensesDialog() {
       this.isExpenseEdit = false;
@@ -1389,81 +1399,8 @@ export default {
       this.expenseID = '';
       this.addExpensesDialog = true;
     },
-    remainingCalculation() {
-      this.payments.remainingAmount = this.payments.amountsOfPayment;
-    },
-    checkValidationForDisbursement() {
-      return this.account.pendingDisbursement + 1;
-    },
-    checkValidation() {
-      let sum = 0;
-      for (let i in this.payments.settlements) {
-        sum = sum + this.payments.settlements[i].amountPaid;
-      }
-      this.payments.remainingAmount = this.payments.amountsOfPayment - sum;
-      return this.payments.remainingAmount;
-    },
+    /* Open Payment Dialog Box     */
 
-    calculateRemainingAmount(index) {
-      let sum = 0;
-      for (let i in this.payments.settlements) {
-        sum = sum + this.payments.settlements[i].amountPaid;
-      }
-      this.payments.remainingAmount = this.payments.amountsOfPayment - sum;
-    },
-
-    async onClickSaveEditPayment() {
-      const valid = await this.$refs.EditPaymentForm.validate();
-      if (valid) {
-        const payload = {
-          id: this.selectedClaimId,
-          paymentID: this.editPaymentId,
-
-          data: {
-            amount: this.payments.amountsOfPayment,
-
-            receviedDate: dateToSend(this.payments.date),
-            reference: this.payments.checkReference,
-            settlements: this.payments.settlements,
-            note: this.payments.notes
-          }
-        };
-        const success = await this.editPayment(payload);
-        if (success) {
-          await this.getAllPayment(this.selectedClaimId);
-          await this.getAccountDetails(this.selectedClaimId);
-          this.editPaymentDialog = false;
-        }
-      }
-    },
-    async deleteFinalexpense() {
-      const payload = {
-        claimID: this.selectedClaimId,
-        expenseID: this.currentExpenseID
-      };
-      await this.deleteExpenses(payload);
-      await this.getAllExpenses(this.selectedClaimId);
-      await this.getAccountDetails(this.selectedClaimId);
-    },
-
-    async deleteExpense(value) {
-      this.currentExpenseID = value.id;
-      this.alertForExpense = true;
-    },
-    editPayments(value) {
-      this.editPaymentId = value.id;
-      this.payments.remainingAmount = 0;
-      this.payments.date = dateToShow(value.receviedDate);
-      this.payments.amountsOfPayment = value.amount;
-      this.payments.checkReference = value.reference;
-      this.payments.notes = value.notes ? value.notes : '';
-      for (let i in this.payments.settlements) {
-        this.payments.settlements[i].amountPaid = value.settlements[i]
-          ? value.settlements[i].amountPaid
-          : 0;
-      }
-      this.editPaymentDialog = true;
-    },
     openAddPaymentDialog() {
       this.editPaymentId = '';
       this.payments.date = date.formatDate(Date.now(), 'MM/DD/YYYY');
@@ -1477,99 +1414,22 @@ export default {
       // this.payments.settlements = [];
       this.addPaymentDialog = true;
     },
-    deletePrePayment(value) {
-      this.currenPaymentID = value.id;
-      this.alert = true;
-    },
-    askToDeleteDisbursement(value) {
-      this.currentDisbursementID = value.id;
-      this.alertForDisbursement = true;
-    },
-    async deleteDisbursement(value) {
-      const payload = {
-        claimID: this.selectedClaimId,
-        paymentId: this.currentDisbursementID
-      };
-      await this.deleteSingleDisbursement(payload);
-      await this.getAllDisbursements(this.selectedClaimId);
-      await this.getAccountDetails(this.selectedClaimId);
-    },
-
-    async deletePayment(value) {
-      const payload = {
-        claimID: this.selectedClaimId,
-        paymentId: this.currenPaymentID
-      };
-      await this.deleteSinglePayment(payload);
-      await this.getAllPayment(this.selectedClaimId);
-      await this.getAccountDetails(this.selectedClaimId);
-    },
-    onFillingCompany() {
-      let total = 0;
-      for (var i in this.companyAmounts) {
-        this.companyOnly[i].paid = parseInt(this.companyAmounts[i]);
-        total += parseInt(this.companyAmounts[i]);
-      }
-      this.netExpenseToPayByCompany = this.totalExpensesOfCompany - total;
-    },
-
-    onFillingClient() {
-      this.totalAmount = 0;
-      for (var i in this.clientAmount) {
-        this.clientOnly[i].paid = parseInt(this.clientAmount[i]);
-        this.totalAmount += parseInt(this.clientAmount[i]);
-      }
-
-      this.netExpenseToPayByClient =
-        this.totalExpensesOfClient - this.totalAmount;
-    },
-    setCompanyTotalAmount(value) {
-      this.netExpenseToPayByCompany = parseInt(value);
-    },
-    formatDate(value) {
-      if (value) {
-        return moment(String(value)).format('MM/DD/YYYY');
-      }
-    },
-    CalculationOfCompanyFee(value) {
-      this.addDisbursement.companyFee = this.netExpenseToPayByCompany =
-        (value / 100) *
-        (this.addDisbursement.amountToDisbuse - this.netExpenseToPayByBoth);
-      this.netExpenseToPayByCompany;
-    },
-
-    onFillingValue() {
-      let total = 0;
-      for (var i in this.clientAndCompanyAmount) {
-        this.clientAndCompany[i].paid = parseInt(
-          this.clientAndCompanyAmount[i]
-        );
-
-        total += parseInt(this.clientAndCompanyAmount[i]);
-      }
-      this.netExpenseToPayByBoth = total;
-    },
-    closeDisbursmentBox() {
-      this.addDisbursement.amountToDisbuse = 0;
-      this.partialCompanyValue = 0;
-      this.addDisbursement.companyFee = 0;
-      this.clientAndCompany = [];
-      this.clientOnly = [];
-      this.companyOnly = [];
-      this.addDisbursementDialog = false;
-    },
+    /* Open Disbursement Dialog Box     */
 
     openDisbursementBox() {
+      this.companyPerHour = 0;
       this.totalExpensesOfClient = this.totalExpensesOfClientAndCompany = this.totalExpensesOfCompany = 0;
-      this.addDisbursement.amountToDisbuse = 0;
-      this.partialCompanyValue = 0;
-      this.addDisbursement.companyFee = 0;
+      this.addDisbursement.amountToDisbuse = this.account.pendingDisbursement;
+      this.addDisbursement.companyFee = this.partialCompanyValue = this.account.fees.rate;
+      this.netExpenseToPayByClient =
+        this.addDisbursement.amountToDisbuse - this.addDisbursement.companyFee;
       this.clientAndCompany = [];
       this.wantToPay = [];
       this.wantToPayClient = [];
       this.wantToPayCompany = [];
       this.clientOnly = [];
       this.companyOnly = [];
+      /* Dividing the array into 3 different array ! client , company, client & company     */
       if (this.expenses.expenses) {
         this.expenses.expenses.forEach(val => {
           if (val.payableBy.machineValue == 'client_company') {
@@ -1606,16 +1466,215 @@ export default {
               this.totalExpensesOfCompany + val.amount;
             this.wantToPayCompany.push({ value: false });
           }
-          this.addDisbursement.companyFee = this.partialCompanyValue = this.account.fees.rate;
 
           this.showValue = true;
         });
       }
-      this.netExpenseToPayByClient = this.totalExpensesOfClient;
-      this.netExpenseToPayByCompany = this.totalExpensesOfCompany;
+
+      this.netExpenseToPayByCompany = this.account.fees.rate;
       this.feesType = this.account.fees.type;
+      if (this.account.fees.type == 'update') {
+        this.hourToFeeCalculation();
+      } else if (this.account.fees.type == 'percentage') {
+        this.CalculationOfCompanyFee(this.partialCompanyValue);
+      }
 
       this.addDisbursementDialog = true;
+    },
+
+    /* delete Api's   */
+
+    /* delete Expense   */
+    async deleteFinalexpense() {
+      const payload = {
+        claimID: this.selectedClaimId,
+        expenseID: this.currentExpenseID
+      };
+      await this.deleteExpenses(payload);
+      await this.getAllExpenses(this.selectedClaimId);
+      await this.getAccountDetails(this.selectedClaimId);
+    },
+    /* delete Disbursement   */
+    async deleteDisbursement(value) {
+      const payload = {
+        claimID: this.selectedClaimId,
+        paymentId: this.currentDisbursementID
+      };
+      await this.deleteSingleDisbursement(payload);
+      await this.getAllDisbursements(this.selectedClaimId);
+      await this.getAccountDetails(this.selectedClaimId);
+    },
+    /* delete Payment   */
+    async deletePayment(value) {
+      const payload = {
+        claimID: this.selectedClaimId,
+        paymentId: this.currenPaymentID
+      };
+      await this.deleteSinglePayment(payload);
+      await this.getAllPayment(this.selectedClaimId);
+      await this.getAccountDetails(this.selectedClaimId);
+    },
+
+    /* All The Calculations   */
+
+    remainingCalculation() {
+      this.payments.remainingAmount = this.payments.amountsOfPayment;
+    },
+    checkValidationForDisbursement() {
+      return this.account.pendingDisbursement + 1;
+    },
+    checkValidation() {
+      let sum = 0;
+      for (let i in this.payments.settlements) {
+        sum = sum + this.payments.settlements[i].amountPaid;
+      }
+      this.payments.remainingAmount = this.payments.amountsOfPayment - sum;
+      return this.payments.remainingAmount;
+    },
+
+    calculateRemainingAmount(index) {
+      let sum = 0;
+      for (let i in this.payments.settlements) {
+        sum = sum + this.payments.settlements[i].amountPaid;
+      }
+      this.payments.remainingAmount = this.payments.amountsOfPayment - sum;
+    },
+    /* Save Api for Payment    */
+
+    async onClickSaveEditPayment() {
+      const valid = await this.$refs.EditPaymentForm.validate();
+      if (valid) {
+        const payload = {
+          id: this.selectedClaimId,
+          paymentID: this.editPaymentId,
+
+          data: {
+            amount: this.payments.amountsOfPayment,
+
+            receviedDate: dateToSend(this.payments.date),
+            reference: this.payments.checkReference,
+            settlements: this.payments.settlements,
+            note: this.payments.notes
+          }
+        };
+        const success = await this.editPayment(payload);
+        if (success) {
+          await this.getAllPayment(this.selectedClaimId);
+          await this.getAccountDetails(this.selectedClaimId);
+          this.editPaymentDialog = false;
+        }
+      }
+    },
+
+    async deleteExpense(value) {
+      this.currentExpenseID = value.id;
+      this.alertForExpense = true;
+    },
+    editPayments(value) {
+      this.editPaymentId = value.id;
+      this.payments.remainingAmount = 0;
+      this.payments.date = dateToShow(value.receviedDate);
+      this.payments.amountsOfPayment = value.amount;
+      this.payments.checkReference = value.reference;
+      this.payments.notes = value.notes ? value.notes : '';
+      for (let i in this.payments.settlements) {
+        this.payments.settlements[i].amountPaid = value.settlements[i]
+          ? value.settlements[i].amountPaid
+          : 0;
+      }
+      this.editPaymentDialog = true;
+    },
+
+    deletePrePayment(value) {
+      this.currenPaymentID = value.id;
+      this.alert = true;
+    },
+    askToDeleteDisbursement(value) {
+      this.currentDisbursementID = value.id;
+      this.alertForDisbursement = true;
+    },
+
+    onFillingCompany() {
+      let total = 0;
+      for (var i in this.companyAmounts) {
+        this.companyOnly[i].paid = parseInt(this.companyAmounts[i]);
+        total += parseInt(this.companyAmounts[i]);
+      }
+      this.netExpenseToPayByCompany = this.addDisbursement.companyFee - total;
+      // this.netExpenseToPayByCompany = this.totalExpensesOfCompany - total;
+    },
+
+    onFillingClient() {
+      this.totalAmount = 0;
+      for (var i in this.clientAmount) {
+        this.clientOnly[i].paid = parseInt(this.clientAmount[i]);
+        this.totalAmount += parseInt(this.clientAmount[i]);
+      }
+      this.netExpenseToPayByClient =
+        this.addDisbursement.amountToDisbuse -
+        this.addDisbursement.companyFee -
+        this.totalAmount -
+        this.netExpenseToPayByBoth;
+    },
+    setCompanyTotalAmount(value) {
+      this.netExpenseToPayByCompany = parseInt(value);
+      this.netExpenseToPayByClient =
+        this.addDisbursement.amountToDisbuse -
+        this.addDisbursement.companyFee -
+        this.netExpenseToPayByBoth;
+    },
+    formatDate(value) {
+      if (value) {
+        return moment(String(value)).format('MM/DD/YYYY');
+      }
+    },
+    CalculationOfCompanyFee(value) {
+      this.addDisbursement.companyFee = this.netExpenseToPayByCompany =
+        (value / 100) *
+        (this.addDisbursement.amountToDisbuse - this.netExpenseToPayByBoth);
+      this.netExpenseToPayByCompany;
+
+      this.netExpenseToPayByClient =
+        this.addDisbursement.amountToDisbuse -
+        this.addDisbursement.companyFee -
+        this.netExpenseToPayByBoth;
+
+      this.netExpenseToPayByCompany = this.addDisbursement.companyFee;
+    },
+    setValueForClientAndCompany() {
+      this.netExpenseToPayByClient =
+        this.addDisbursement.amountToDisbuse -
+        this.addDisbursement.companyFee -
+        this.netExpenseToPayByBoth;
+
+      this.netExpenseToPayByCompany = this.addDisbursement.companyFee;
+    },
+
+    onFillingValue() {
+      let total = 0;
+      for (var i in this.clientAndCompanyAmount) {
+        this.clientAndCompany[i].paid = parseInt(
+          this.clientAndCompanyAmount[i]
+        );
+
+        total += parseInt(this.clientAndCompanyAmount[i]);
+      }
+      this.netExpenseToPayByBoth = total;
+      this.netExpenseToPayByClient =
+        this.addDisbursement.amountToDisbuse -
+        this.addDisbursement.companyFee -
+        this.netExpenseToPayByBoth;
+
+      this.netExpenseToPayByCompany = this.addDisbursement.companyFee;
+    },
+    closeDisbursmentBox() {
+      this.addDisbursement.amountToDisbuse = 0;
+      this.partialCompanyValue = 0;
+      this.addDisbursement.companyFee = 0;
+      this.clientAndCompany = [];
+      this.clientOnly = [];
+      this.companyOnly = [];
+      this.addDisbursementDialog = false;
     },
 
     async onClickSavePayment() {
