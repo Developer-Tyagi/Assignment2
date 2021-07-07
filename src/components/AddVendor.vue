@@ -330,6 +330,7 @@ export default {
           ? this.selectedVendor.notes
           : '';
     }
+    this.getTitles();
   },
 
   methods: {
@@ -407,7 +408,6 @@ export default {
   },
 
   created() {
-    this.getTitles();
     this.getContactTypes();
     this.industryFilterDisabled = true;
     this.options = this.vendorIndustries;

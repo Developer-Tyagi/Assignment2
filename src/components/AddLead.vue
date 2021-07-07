@@ -1153,6 +1153,17 @@ export default {
     },
 
     onNextButtonClick() {
+      switch (this.step) {
+        case 0:
+          this.getLossCauses();
+          break;
+        case 4:
+          this.getInspectionTypes();
+          break;
+        case 2:
+          this.getVendorIndustries();
+          this.getVendors(this.params);
+      }
       this.step++;
       if (this.stepClickValidTill < this.step) {
         this.stepClickValidTill = this.step;
@@ -1247,12 +1258,9 @@ export default {
   },
 
   async created() {
-    await this.getInspectionTypes();
     await this.getContactTypes();
     await this.getTitles();
-    await this.getLossCauses();
-    this.getVendorIndustries();
-    this.getVendors(this.params);
+
     if (this.isEdit) {
       this.getVendorDetails(this.selectedLead.leadSource.id);
       this.primaryDetails.honorific = this.selectedLead.primaryContact.honorific;
