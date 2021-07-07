@@ -49,7 +49,6 @@ export default {
     return {
       Value: 'pdf',
       TypeOfClient: '',
-      // options: ['claim', 'client']
       options: [
         { value: 'Claims', machineValue: 'claims' },
         { value: 'Clients', machineValue: 'clients' }
