@@ -835,12 +835,13 @@ export default {
         isFieldDisable: true,
         personnel: {
           id: '',
-          role: {
-            value: '',
-            machineValue: ''
-          }
+          value: '',
+          machineValue: ''
         },
-        personParty: '',
+        personParty: {
+          id: '',
+          name: ''
+        },
         filterRole: []
       },
 

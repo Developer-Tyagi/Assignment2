@@ -5,7 +5,7 @@
 
       <q-select
         v-model="companyPersonnel.personnel.value"
-        :options="companyPersonnel.options"
+        :options="claimRoles"
         use-input
         option-value="value"
         option-label="name"
@@ -22,11 +22,11 @@
 
       <q-select
         v-if="allUsers.length"
-        v-model="companyPersonnel.personParty.id"
+        v-model="companyPersonnel.personParty.value"
         :options="allUsers"
-        @input="setPersonTypes(allUsers, companyPersonnel.personParty)"
+        @input="setTypes(allUsers, companyPersonnel.personParty.value)"
         option-label="name"
-        option-value="id"
+        option-value="value"
         label="Select Person"
         options-dense
         emit-value
@@ -207,16 +207,14 @@ export default {
 
       data.machineValue = obj.machineValue;
       data.id = obj.id;
-      this.companyPersonnel.personParty.id = '';
-      this.companyPersonnel.personParty.name = '';
     },
-    async setPersonTypes(types, data) {
-      const obj = types.find(item => {
-        return item.id === data.id;
-      });
-      data.machineValue = obj.machineValue;
-      data.value = obj.name;
-    },
+    // async setPersonTypes(types, data) {
+    //   const obj = types.find(item => {
+    //     return item.id === data.id;
+    //   });
+    //   data.machineValue = obj.machineValue;
+    //   data.value = obj.name;
+    // },
 
     dateGreaterThan(val) {
       if (validateDate(val)) {
