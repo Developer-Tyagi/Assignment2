@@ -30,7 +30,7 @@
               $route.name != 'Leads'
           "
         >
-          <div class="dot">
+          <div class="dot" v-if="checkUserRoleType() == false">
             <q-icon
               class="q-pa-md"
               name="add"
@@ -88,6 +88,18 @@ export default {
   },
   methods: {
     ...mapMutations(['isLastRouteEdit']),
+
+    checkUserRoleType() {
+      if (getCurrentUser().attributes.roles[0].machineValue == 'estimator') {
+        return true;
+      } else if (
+        getCurrentUser().attributes.roles[0].machineValue == 'vendor'
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    },
     onBackButtonClick() {
       this.userRole = getCurrentUser().attributes.roles[0].machineValue;
       const route = this.$router.currentRoute.fullPath.split('/')[1];
