@@ -835,12 +835,13 @@ export default {
         isFieldDisable: true,
         personnel: {
           id: '',
-          role: {
-            value: '',
-            machineValue: ''
-          }
+          value: '',
+          machineValue: ''
         },
-        personParty: '',
+        personParty: {
+          id: '',
+          name: ''
+        },
         filterRole: []
       },
 
@@ -1620,11 +1621,11 @@ export default {
 
         personnel: [
           {
-            id: this.companyPersonnel.personnel.id,
-            name: this.companyPersonnel.personParty.name,
+            id: this.companyPersonnel.personParty.id,
+            name: this.companyPersonnel.personParty.value,
             role: {
-              value: this.companyPersonnel.personnel.role.value,
-              machineValue: this.companyPersonnel.personnel.role.machineValue
+              value: this.companyPersonnel.personnel.value.name,
+              machineValue: this.companyPersonnel.personnel.value.machineValue
             },
             note: this.companyPersonnel.notes,
             fees: {
@@ -1639,8 +1640,8 @@ export default {
         ]
       };
       if (
-        !this.companyPersonnel.personnel.role.value &&
-        !this.companyPersonnel.personnel.role.machineValue
+        !this.companyPersonnel.personnel.value &&
+        !this.companyPersonnel.personnel.value.machineValue
       ) {
         delete payload.personnel;
       }

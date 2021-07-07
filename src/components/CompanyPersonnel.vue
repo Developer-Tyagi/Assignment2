@@ -5,7 +5,7 @@
 
       <q-select
         v-model="companyPersonnel.personnel.value"
-        :options="companyPersonnel.options"
+        :options="claimRoles"
         use-input
         option-value="value"
         option-label="name"
@@ -33,6 +33,7 @@
         behavior="menu"
         map-options
       />
+
       <div v-else>No user exist for this role.</div>
     </q-card>
     <q-card class="q-mt-sm q-pa-sm">
@@ -207,8 +208,6 @@ export default {
 
       data.machineValue = obj.machineValue;
       data.id = obj.id;
-      this.companyPersonnel.personParty.id = '';
-      this.companyPersonnel.personParty.name = '';
     },
     async setPersonTypes(types, data) {
       const obj = types.find(item => {
@@ -216,6 +215,7 @@ export default {
       });
       data.machineValue = obj.machineValue;
       data.value = obj.name;
+      data.name = obj.name;
     },
 
     dateGreaterThan(val) {
