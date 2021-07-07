@@ -911,6 +911,26 @@ export async function editPayment({ dispatch, state }, payload) {
     });
   }
 }
+export async function deleteSingleDisbursement({ dispatch }, payload) {
+  dispatch('setLoading', true);
+  try {
+    await request.del(
+      `/claims/${payload.claimID}/disbursements/${payload.paymentId}`
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Disbursements  Deleted !'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'Error in deleting Disbursements.'
+    });
+  }
+}
 export async function deleteSinglePayment({ dispatch }, payload) {
   dispatch('setLoading', true);
   try {
