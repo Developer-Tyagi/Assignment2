@@ -287,8 +287,6 @@ export default {
   created() {
     this.lossInfo.purchaseDate = date.formatDate(Date.now(), 'MM/DD/YYYY');
     this.$emit('isMortgageDetails', false);
-
-    // this.getVendors(this.$route.params.id);
   },
   computed: {
     ...mapGetters([

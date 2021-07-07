@@ -1124,8 +1124,6 @@ export default {
   },
 
   created() {
-    // this.getClaimRoles();
-    // this.getAllUsers();
     this.propertyId = this.$route.params.clientId;
     // this.getSingleClientDetails(this.selectedClientId);
     // this.getSingleClientProperty(this.selectedClientId);
@@ -1134,15 +1132,7 @@ export default {
       Date.now(),
       'MM/DD/YYYY'
     );
-    // this.getVendors(this.$route.params.id);
-    // this.getClientTypes();
-
-    // this.getPropertyTypes();
     this.getPolicyTypes();
-    // this.getLossCauses();
-    // this.getSeverityClaim();
-    // this.getClaimReasons();
-    // this.getContactTypes();
     this.getPolicyCategory();
     if (this.propertyId) {
       const obj = this.setClientProperty.find(item => {
@@ -1187,10 +1177,6 @@ export default {
     ])
   },
 
-  // mounted() {
-  //   this.getTitles();
-  //   this.getVendorIndustries();
-  // },
   methods: {
     ...mapActions([
       'getClaimRoles',
