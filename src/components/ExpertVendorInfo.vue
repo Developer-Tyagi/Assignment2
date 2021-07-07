@@ -430,7 +430,6 @@ export default {
     };
   },
   created() {
-    this.getVendorIndustries();
     // This is for Claim Exp Vendor
     if (this.claimExpertVendor) {
       this.expertVendorInfo.anyOtherExpertHiredToggle = true;

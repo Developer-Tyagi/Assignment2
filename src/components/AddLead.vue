@@ -911,6 +911,8 @@ export default {
   methods: {
     ...mapActions([
       'getVendorDetails',
+      'getVendors',
+      'getVendorIndustries',
       'getClients',
       'addLeads',
       'getInspectionTypes',
@@ -1249,6 +1251,8 @@ export default {
     await this.getContactTypes();
     await this.getTitles();
     await this.getLossCauses();
+    this.getVendorIndustries();
+    this.getVendors(this.params);
     if (this.isEdit) {
       this.getVendorDetails(this.selectedLead.leadSource.id);
       this.primaryDetails.honorific = this.selectedLead.primaryContact.honorific;

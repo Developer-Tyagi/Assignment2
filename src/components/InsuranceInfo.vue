@@ -523,9 +523,7 @@ export default {
       constants: constants
     };
   },
-  created() {
-    this.getVendors(this.$route.params.id);
-  },
+
   computed: {
     ...mapGetters(['policyTypes', 'policyCategories'])
   },

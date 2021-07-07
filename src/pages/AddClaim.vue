@@ -1123,24 +1123,25 @@ export default {
   },
 
   created() {
-    this.getRoles();
+    // this.getClaimRoles();
+    // this.getAllUsers();
     this.propertyId = this.$route.params.clientId;
-    this.getSingleClientDetails(this.selectedClientId);
-    this.getSingleClientProperty(this.selectedClientId);
+    // this.getSingleClientDetails(this.selectedClientId);
+    // this.getSingleClientProperty(this.selectedClientId);
     this.contractInfo.time = date.formatDate(Date.now(), 'HH:mm:ss:aa');
     this.companyPersonnel.startDate = this.companyPersonnel.endDate = this.contractInfo.firstContractDate = this.contractInfo.contractDate = this.insuranceDetails.policyEffectiveDate = this.insuranceDetails.policyExpireDate = this.lossInfo.dateOfLoss = this.lossInfo.deadlineDate = this.lossInfo.recovDeadline = date.formatDate(
       Date.now(),
       'MM/DD/YYYY'
     );
-    this.getVendors(this.$route.params.id);
-    this.getClientTypes();
+    // this.getVendors(this.$route.params.id);
+    // this.getClientTypes();
 
-    this.getPropertyTypes();
+    // this.getPropertyTypes();
     this.getPolicyTypes();
-    this.getLossCauses();
-    this.getSeverityClaim();
-    this.getClaimReasons();
-    this.getContactTypes();
+    // this.getLossCauses();
+    // this.getSeverityClaim();
+    // this.getClaimReasons();
+    // this.getContactTypes();
     this.getPolicyCategory();
     if (this.propertyId) {
       const obj = this.setClientProperty.find(item => {
@@ -1185,12 +1186,14 @@ export default {
     ])
   },
 
-  mounted() {
-    this.getTitles();
-    this.getVendorIndustries();
-  },
+  // mounted() {
+  //   this.getTitles();
+  //   this.getVendorIndustries();
+  // },
   methods: {
     ...mapActions([
+      'getClaimRoles',
+      'getAllUsers',
       'addClient',
       'getVendors',
       'getEstimators',
@@ -1716,6 +1719,20 @@ export default {
     },
 
     onNextButtonClick() {
+      switch (this.step) {
+        case 0:
+          this.getLossCauses();
+          this.getClaimReasons();
+          this.getSeverityClaim();
+          break;
+        case 4:
+          this.getVendorIndustries();
+          break;
+        case 7:
+          this.getClaimRoles();
+          this.getAllUsers();
+          break;
+      }
       this.step++;
       if (this.stepClickValidTill < this.step) {
         this.stepClickValidTill = this.step;

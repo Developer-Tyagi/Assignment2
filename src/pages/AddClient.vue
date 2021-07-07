@@ -1576,13 +1576,8 @@ export default {
     await this.getClientTypes();
     await this.getTitles();
     await this.getContactTypes();
-    await this.getLossCauses();
-    await this.getSeverityClaim();
-    await this.getClaimReasons();
     await this.getPropertyTypes();
-    await this.getPolicyTypes();
-    await this.getPolicyCategory();
-    await this.getRoles();
+
     this.contractInfo.time = date.formatDate(Date.now(), 'hh:mm A');
     this.companyPersonnel.startDate = this.companyPersonnel.endDate = this.contractInfo.firstContractDate = this.contractInfo.contractDate = this.insuranceDetails.policyEffectiveDate = this.lossInfo.dateOfLoss = this.lossInfo.deadlineDate = this.lossInfo.recovDeadline = date.formatDate(
       Date.now(),
@@ -1695,11 +1690,10 @@ export default {
     ])
   },
 
-  mounted() {
-    this.getVendorIndustries();
-  },
   methods: {
     ...mapActions([
+      'getAllUsers',
+      'getClaimRoles',
       'getVendorDetails',
       'addClient',
       'getClaimReasons',
@@ -2301,6 +2295,25 @@ export default {
     },
 
     onNextButtonClick() {
+      switch (this.step) {
+        case 1:
+          this.getPolicyTypes();
+          this.getPolicyCategory();
+          break;
+        case 2:
+          this.getLossCauses();
+          this.getClaimReasons();
+          this.getSeverityClaim();
+          break;
+        case 6:
+          this.getVendorIndustries();
+          break;
+        case 9:
+          this.getClaimRoles();
+          this.getAllUsers();
+          break;
+      }
+
       this.step++;
       if (this.stepClickValidTill < this.step) {
         this.stepClickValidTill = this.step;

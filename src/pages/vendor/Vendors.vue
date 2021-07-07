@@ -29,6 +29,7 @@
 <script>
 import VendorsList from 'components/VendorsList';
 import AddVendor from 'components/AddVendor';
+import { mapGetters, mapActions } from 'vuex';
 import { constants } from '@utils/constant';
 export default {
   name: 'Vendors',
@@ -40,8 +41,27 @@ export default {
       constants: constants
     };
   },
-
+  created() {
+    this.getTitles();
+    this.getContactTypes();
+    this.getVendorIndustries();
+    this.getVendors(this.params);
+  },
+  computed: {
+    ...mapGetters([
+      'contactTypes',
+      'vendorIndustries',
+      'titles',
+      'selectedVendor'
+    ])
+  },
   methods: {
+    ...mapActions([
+      'getVendorIndustries',
+      'getTitles',
+      'getContactTypes',
+      'getVendors'
+    ]),
     closeAddVendorDialog(e) {
       this.addVendorDialog = false;
       if (e) {
