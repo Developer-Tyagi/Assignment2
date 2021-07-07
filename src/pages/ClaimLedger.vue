@@ -378,14 +378,14 @@
                   </div>
                 </q-card>
                 <div
-                  v-if="payments.remainingAmout < 0"
+                  v-if="payments.remainingAmount < 0"
                   class="  bg-primary row justify-between q-mr-lg q-ml-md q-my-md "
                 >
                   <div class="heading-light text-white">
                     Remaining Amount
                   </div>
                   <div>
-                    {{ payments.remainingAmout }}
+                    {{ payments.remainingAmount }}
                   </div>
                 </div>
                 <div
@@ -396,7 +396,7 @@
                     Remaining Amount
                   </div>
                   <div>
-                    {{ payments.remainingAmout }}
+                    {{ payments.remainingAmount }}
                   </div>
                 </div>
               </div>
@@ -543,14 +543,14 @@
                   </div>
                 </q-card>
                 <div
-                  v-if="payments.remainingAmout < 0"
+                  v-if="payments.remainingAmount < 0"
                   class="  bg-primary row justify-between q-mr-lg q-ml-md q-my-md "
                 >
                   <div class="heading-light text-white">
                     Remaining Amount
                   </div>
                   <div>
-                    {{ payments.remainingAmout }}
+                    {{ payments.remainingAmount }}
                   </div>
                 </div>
                 <div
@@ -560,7 +560,7 @@
                   <div class="heading-light">
                     Remaining Amount
                   </div>
-                  <div>$ {{ payments.remainingAmout }}</div>
+                  <div>$ {{ payments.remainingAmount }}</div>
                 </div>
               </div>
             </div>
@@ -1254,7 +1254,7 @@ export default {
       ],
 
       payments: {
-        remainingAmout: 0,
+        remainingAmount: 0,
         date: '',
         amountsOfPayment: '',
         checkReference: '',
@@ -1390,7 +1390,7 @@ export default {
       this.addExpensesDialog = true;
     },
     remainingCalculation() {
-      this.payments.remainingAmout = this.payments.amountsOfPayment;
+      this.payments.remainingAmount = this.payments.amountsOfPayment;
     },
     checkValidationForDisbursement() {
       return this.account.pendingDisbursement + 1;
@@ -1400,8 +1400,8 @@ export default {
       for (let i in this.payments.settlements) {
         sum = sum + this.payments.settlements[i].amountPaid;
       }
-      this.payments.remainingAmout = this.payments.amountsOfPayment - sum;
-      return this.payments.remainingAmout;
+      this.payments.remainingAmount = this.payments.amountsOfPayment - sum;
+      return this.payments.remainingAmount;
     },
 
     calculateRemainingAmount(index) {
@@ -1409,7 +1409,7 @@ export default {
       for (let i in this.payments.settlements) {
         sum = sum + this.payments.settlements[i].amountPaid;
       }
-      this.payments.remainingAmout = this.payments.amountsOfPayment - sum;
+      this.payments.remainingAmount = this.payments.amountsOfPayment - sum;
     },
 
     async onClickSaveEditPayment() {
@@ -1452,7 +1452,7 @@ export default {
     },
     editPayments(value) {
       this.editPaymentId = value.id;
-      this.payments.remainingAmout = 0;
+      this.payments.remainingAmount = 0;
       this.payments.date = dateToShow(value.receviedDate);
       this.payments.amountsOfPayment = value.amount;
       this.payments.checkReference = value.reference;
