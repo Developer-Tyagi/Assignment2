@@ -145,7 +145,7 @@
                 <q-card class="q-ma-xs" v-for="expense in expenses.expenses">
                   <div class=" row justify-between">
                     <div class="q-pl-sm q-pt-xs">
-                      <q-badge color="primary">
+                      <q-badge color="green">
                         {{ expense.payableBy.value }}</q-badge
                       >
                     </div>
@@ -347,31 +347,51 @@
 
                   <div class=" q-mx-md row justify-between">
                     <span class="heading-light">Net Settlement</span>
-                    <span class="">{{ settlement.netSettlement }}</span>
+                    <span class="">$ {{ settlement.netSettlement }}</span>
                   </div>
                   <div class="q-mx-md  row justify-between" style="">
                     <span class="heading-light">Paid To Date</span>
-                    <span class="">{{ settlement.totalPaid }}</span>
+
+                    <span class="">$ {{ settlement.totalPaid }}</span>
                   </div>
                   <div class="q-mx-md  row justify-between" style="">
                     <span class="heading-light">Outstanding</span>
-                    <span class="">{{ settlement.outstanding }}</span>
+
+                    <span class="">$ {{ settlement.outstanding }}</span>
                   </div>
                   <div class=" q-ml-md  row" style="align-items: center">
                     <span class="heading-light">Amt To Apply</span>
 
                     <q-input
                       dense
-                      style="margin-left: auto; width: 20%"
+                      style="margin-left: auto; width: 30%"
                       v-model.number="payments.settlements[index].amountPaid"
                       prefix="$"
                       lazy-rules
                       @blur="calculateRemainingAmount(index)"
-                      :rules="[val => val || 'Please fill Amount']"
+                      :rules="[
+                        val =>
+                          (val && val < checkValidation()) ||
+                          'Please fill Correct Amount'
+                      ]"
                     />
                   </div>
                 </q-card>
-                <div class="row justify-between q-mr-lg q-ml-md q-my-md ">
+                <div
+                  v-if="payments.remainingAmout < 0"
+                  class="  bg-primary row justify-between q-mr-lg q-ml-md q-my-md "
+                >
+                  <div class="heading-light text-white">
+                    Remaining Amount
+                  </div>
+                  <div>
+                    {{ payments.remainingAmout }}
+                  </div>
+                </div>
+                <div
+                  v-else
+                  class="row justify-between q-mr-lg q-ml-md q-my-md "
+                >
                   <div class="heading-light">
                     Remaining Amount
                   </div>
@@ -509,16 +529,34 @@
                     <q-input
                       class="q-px-sm"
                       dense
-                      style="margin-left: auto; width: 20%"
+                      style="margin-left: auto; width: 30%"
                       v-model.number="payments.settlements[index].amountPaid"
                       prefix="$"
                       lazy-rules
                       @blur="calculateRemainingAmount(index)"
-                      :rules="[val => val || 'Please fill Amount']"
+                      :rules="[
+                        val =>
+                          (val && val < checkValidation()) ||
+                          'Please fill Correct Amount'
+                      ]"
                     />
                   </div>
                 </q-card>
-                <div class="row justify-between q-mr-lg q-ml-md q-my-md ">
+                <div
+                  v-if="payments.remainingAmout < 0"
+                  class="  bg-primary row justify-between q-mr-lg q-ml-md q-my-md "
+                >
+                  <div class="heading-light text-white">
+                    Remaining Amount
+                  </div>
+                  <div>
+                    {{ payments.remainingAmout }}
+                  </div>
+                </div>
+                <div
+                  v-else
+                  class="row justify-between q-mr-lg q-ml-md q-my-md "
+                >
                   <div class="heading-light">
                     Remaining Amount
                   </div>
@@ -553,7 +591,7 @@
           :dialogName="'Add Claim  Expenses'"
         />
         <div class="q-ma-sm mobile-container-page listing-height">
-          <q-form>
+          <q-form ref="addExpensesForm">
             <div class="row" style="align-items: center">
               <span class="heading-light  ">Recieved Date</span>
 
@@ -604,6 +642,8 @@
                 style="margin-left: auto; width: 50%"
                 prefix="$"
                 class="input-extra-padding"
+                lazy-rules
+                :rules="[val => val > 0 || 'Please fill Amount ']"
               />
             </div>
 
@@ -621,6 +661,8 @@
                 v-model="addexpenses.payee"
                 style="margin-left: auto; width: 50%"
                 class="input-extra-padding"
+                lazy-rules
+                :rules="[val => (val && val.length > 0) || 'Please fill Payee']"
               />
             </div>
             <div class="row" style="align-items: center">
@@ -636,6 +678,10 @@
                 @input="setResponsibleBy(addexpenses.payableBy.value)"
                 style="margin-left: auto; width: 50%"
                 class="input-extra-padding"
+                lazy-rules
+                :rules="[
+                  val => (val && val.length > 0) || 'Please fill Payable By'
+                ]"
               ></q-select>
             </div>
             <div class="row" style="align-items: center">
@@ -667,7 +713,7 @@
         />
       </q-card>
     </q-dialog>
-    <!-- Expenses Dialog Box -->
+    <!-- Disbursement Dialog Box -->
     <q-dialog
       v-model="addDisbursementDialog"
       :maximized="true"
@@ -686,7 +732,12 @@
               <div class="row q-my-sm">
                 <span class="col-8 heading-light">Amount Available </span>
                 <div>
-                  $ {{ account.totalPayment ? account.totalPayment : '-' }}
+                  $
+                  {{
+                    account.pendingDisbursement
+                      ? account.pendingDisbursement
+                      : '0'
+                  }}
                 </div>
               </div>
               <div class="row justify-between">
@@ -698,6 +749,11 @@
                   type="number"
                   prefix="$"
                   class="col-4 "
+                  :rules="[
+                    val =>
+                      (val && val < checkValidationForDisbursement()) ||
+                      'Amount Exceeds Above'
+                  ]"
                 />
               </div>
               <q-separator class="q-mt-sm" />
@@ -729,7 +785,7 @@
                       </td>
 
                       <td style="width:30%;">
-                        Pay
+                        Paid
                       </td>
                     </tr>
 
@@ -926,7 +982,7 @@
                         Pay ?
                       </td>
                       <td style="width:30%;">
-                        Pay
+                        Paid
                       </td>
                     </tr>
 
@@ -960,7 +1016,9 @@
 
               <div class=" q-my-sm row ">
                 <span class=" col-8 ">Total Amount to Client</span>
-                <div class="q-mr-xl">$ {{ netExpenseToPayByClient }}</div>
+                <div class="q-mr-xl text-bold">
+                  $ {{ netExpenseToPayByClient }}
+                </div>
               </div>
             </q-card>
             <q-card class="q-ma-sm q-pa-sm">
@@ -997,7 +1055,7 @@
                       </td>
 
                       <td style="width:30%;">
-                        Pay
+                        Paid
                       </td>
                     </tr>
 
@@ -1035,7 +1093,9 @@
 
               <div class="row  q-my-md   ">
                 <span class=" col-8">Total Amount to Company</span>
-                <div class=" q-mr-xl">$ {{ netExpenseToPayByCompany }}</div>
+                <div class=" q-mr-xl text-bold">
+                  $ {{ netExpenseToPayByCompany }}
+                </div>
               </div>
             </q-card>
           </q-form>
@@ -1332,6 +1392,17 @@ export default {
     remainingCalculation() {
       this.payments.remainingAmout = this.payments.amountsOfPayment;
     },
+    checkValidationForDisbursement() {
+      return this.account.pendingDisbursement + 1;
+    },
+    checkValidation() {
+      let sum = 0;
+      for (let i in this.payments.settlements) {
+        sum = sum + this.payments.settlements[i].amountPaid;
+      }
+      this.payments.remainingAmout = this.payments.amountsOfPayment - sum;
+      return this.payments.remainingAmout;
+    },
 
     calculateRemainingAmount(index) {
       let sum = 0;
@@ -1381,6 +1452,7 @@ export default {
     },
     editPayments(value) {
       this.editPaymentId = value.id;
+      this.payments.remainingAmout = 0;
       this.payments.date = dateToShow(value.receviedDate);
       this.payments.amountsOfPayment = value.amount;
       this.payments.checkReference = value.reference;
@@ -1432,6 +1504,14 @@ export default {
       await this.getAllPayment(this.selectedClaimId);
       await this.getAccountDetails(this.selectedClaimId);
     },
+    onFillingCompany() {
+      let total = 0;
+      for (var i in this.companyAmounts) {
+        this.companyOnly[i].paid = parseInt(this.companyAmounts[i]);
+        total += parseInt(this.companyAmounts[i]);
+      }
+      this.netExpenseToPayByCompany = this.totalExpensesOfCompany - total;
+    },
 
     onFillingClient() {
       this.totalAmount = 0;
@@ -1440,7 +1520,8 @@ export default {
         this.totalAmount += parseInt(this.clientAmount[i]);
       }
 
-      this.netExpenseToPayByClient = this.totalAmount;
+      this.netExpenseToPayByClient =
+        this.totalExpensesOfClient - this.totalAmount;
     },
     setCompanyTotalAmount(value) {
       this.netExpenseToPayByCompany = parseInt(value);
@@ -1455,14 +1536,6 @@ export default {
         (value / 100) *
         (this.addDisbursement.amountToDisbuse - this.netExpenseToPayByBoth);
       this.netExpenseToPayByCompany;
-    },
-    onFillingCompany() {
-      let total = 0;
-      for (var i in this.companyAmounts) {
-        this.companyOnly[i].paid = parseInt(this.companyAmounts[i]);
-        total += parseInt(this.companyAmounts[i]);
-      }
-      this.netExpenseToPayByCompany = total;
     },
 
     onFillingValue() {
@@ -1578,37 +1651,40 @@ export default {
     },
 
     async addExpensesSaveClick() {
-      const payload = {
-        id: this.selectedClaimId,
-        expenseID: this.expenseID,
+      const validate = await this.$refs.addExpensesForm.validate();
+      if (validate) {
+        const payload = {
+          id: this.selectedClaimId,
+          expenseID: this.expenseID,
 
-        data: {
-          amount: this.addexpenses.amount,
-          receviedDate: dateToSend(this.addexpenses.receviedDate),
-          reference: this.addexpenses.reference,
-          payee: this.addexpenses.payee,
-          payableBy: {
-            value: this.addexpenses.payableBy.value,
-            machineValue: this.addexpenses.payableBy.machineValue
-          },
-          desc: this.addexpenses.desc
-        }
-      };
+          data: {
+            amount: this.addexpenses.amount,
+            receviedDate: dateToSend(this.addexpenses.receviedDate),
+            reference: this.addexpenses.reference,
+            payee: this.addexpenses.payee,
+            payableBy: {
+              value: this.addexpenses.payableBy.value,
+              machineValue: this.addexpenses.payableBy.machineValue
+            },
+            desc: this.addexpenses.desc
+          }
+        };
 
-      if (this.isExpenseEdit) {
-        const success = await this.editExpenses(payload);
-        if (success) {
-          await this.getAllExpenses(this.selectedClaimId);
-          await this.getAccountDetails(this.selectedClaimId);
+        if (this.isExpenseEdit) {
+          const success = await this.editExpenses(payload);
+          if (success) {
+            await this.getAllExpenses(this.selectedClaimId);
+            await this.getAccountDetails(this.selectedClaimId);
+          }
+        } else {
+          const success = await this.addExpenses(payload);
+          if (success) {
+            await this.getAllExpenses(this.selectedClaimId);
+            await this.getAccountDetails(this.selectedClaimId);
+          }
         }
-      } else {
-        const success = await this.addExpenses(payload);
-        if (success) {
-          await this.getAllExpenses(this.selectedClaimId);
-          await this.getAccountDetails(this.selectedClaimId);
-        }
+        this.addExpensesDialog = false;
       }
-      this.addExpensesDialog = false;
     },
     async onSaveDisbursement() {
       this.clientAndCompany.forEach(val => {
