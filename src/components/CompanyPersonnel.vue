@@ -22,17 +22,18 @@
 
       <q-select
         v-if="allUsers.length"
-        v-model="companyPersonnel.personParty.value"
+        v-model="companyPersonnel.personParty.id"
         :options="allUsers"
-        @input="setTypes(allUsers, companyPersonnel.personParty.value)"
+        @input="setPersonTypes(allUsers, companyPersonnel.personParty)"
         option-label="name"
-        option-value="value"
+        option-value="id"
         label="Select Person"
         options-dense
         emit-value
         behavior="menu"
         map-options
       />
+
       <div v-else>No user exist for this role.</div>
     </q-card>
     <q-card class="q-mt-sm q-pa-sm">
@@ -208,13 +209,14 @@ export default {
       data.machineValue = obj.machineValue;
       data.id = obj.id;
     },
-    // async setPersonTypes(types, data) {
-    //   const obj = types.find(item => {
-    //     return item.id === data.id;
-    //   });
-    //   data.machineValue = obj.machineValue;
-    //   data.value = obj.name;
-    // },
+    async setPersonTypes(types, data) {
+      const obj = types.find(item => {
+        return item.id === data.id;
+      });
+      data.machineValue = obj.machineValue;
+      data.value = obj.name;
+      data.name = obj.name;
+    },
 
     dateGreaterThan(val) {
       if (validateDate(val)) {
