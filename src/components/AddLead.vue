@@ -1153,18 +1153,18 @@ export default {
     },
 
     onNextButtonClick() {
-      switch (this.step) {
-        case 0:
+      this.step++;
+      switch (this.stepArr[this.step].ref) {
+        case 'loss':
           this.getLossCauses();
           break;
-        case 4:
+        case 'schedule':
           this.getInspectionTypes();
           break;
-        case 2:
+        case 'source':
           this.getVendorIndustries();
           this.getVendors(this.params);
       }
-      this.step++;
       if (this.stepClickValidTill < this.step) {
         this.stepClickValidTill = this.step;
       }

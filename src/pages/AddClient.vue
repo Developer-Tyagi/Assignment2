@@ -2295,26 +2295,25 @@ export default {
     },
 
     onNextButtonClick() {
-      switch (this.step) {
-        case 1:
+      this.step++;
+      switch (this.stepArr[this.step].ref) {
+        case 'insuranceInfo':
           this.getPolicyTypes();
           this.getPolicyCategory();
           break;
-        case 2:
+        case 'lossInfo':
           this.getLossCauses();
           this.getClaimReasons();
           this.getSeverityClaim();
           break;
-        case 6:
+        case 'vendorInfo':
           this.getVendorIndustries();
           break;
-        case 9:
+        case 'personnelInfo':
           this.getClaimRoles();
           this.getAllUsers();
           break;
       }
-
-      this.step++;
       if (this.stepClickValidTill < this.step) {
         this.stepClickValidTill = this.step;
       }
