@@ -90,9 +90,8 @@ export default {
     ...mapMutations(['isLastRouteEdit']),
 
     checkUserRoleType() {
-      if (getCurrentUser().attributes.roles[0].machineValue == 'estimator') {
-        return true;
-      } else if (
+      if (
+        getCurrentUser().attributes.roles[0].machineValue == 'estimator' ||
         getCurrentUser().attributes.roles[0].machineValue == 'vendor'
       ) {
         return true;
