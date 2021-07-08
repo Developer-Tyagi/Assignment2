@@ -7,6 +7,10 @@
             outlined
             v-model="TypeOfClient"
             :options="options"
+            option-label="value"
+            option-value="machineValue"
+            map-options
+            emit-value
             label="Report Type"
           ></q-select>
         </div>
@@ -45,7 +49,10 @@ export default {
     return {
       Value: 'pdf',
       TypeOfClient: '',
-      options: ['claim', 'client']
+      options: [
+        { value: 'Claims', machineValue: 'claims' },
+        { value: 'Clients', machineValue: 'clients' }
+      ]
     };
   },
 
