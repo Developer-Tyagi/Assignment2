@@ -1,7 +1,7 @@
 <template>
   <q-page style="min-height: calc(100vh - 77px)">
     <div class="signup-container q-px-md q-py-lg">
-      <div v-if="isValidPlan" class="row justify-between">
+      <div v-if="isValidPlan" class="row justify-between ">
         <div class="col-3">
           <q-carousel
             v-model="plan"

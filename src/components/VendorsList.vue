@@ -193,7 +193,6 @@ export default {
     if (this.filterName) {
       this.params.industry = this.filterName;
     }
-    this.getVendorIndustries();
     this.getVendors(this.params);
   },
 

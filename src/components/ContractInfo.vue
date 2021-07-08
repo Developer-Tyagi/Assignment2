@@ -428,9 +428,6 @@ export default {
       ]
     };
   },
-  created() {
-    this.getVendors(this.$route.params.id);
-  },
 
   computed: {
     ...mapGetters(['leadSources', 'vendors', 'clients'])

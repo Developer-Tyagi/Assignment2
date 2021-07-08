@@ -415,9 +415,7 @@ export default {
       }
     };
   },
-  created() {
-    this.getEstimators(this.params);
-  },
+
   computed: {
     ...mapGetters(['estimators', 'contactTypes', 'titles'])
   },

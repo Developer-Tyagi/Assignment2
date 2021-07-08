@@ -1018,8 +1018,10 @@ export default {
     },
     onCheckPersonnel(personnel) {
       this.onSelectPersonnel(personnel);
+
       this.checkID = personnel.id;
       this.personnelObject = personnel;
+
       if (this.onClickUncheck) {
         this.onClickUncheck = false;
         this.isAssignDisabled = true;
@@ -1041,24 +1043,17 @@ export default {
               personnelID: this.personnelID,
               name: this.editPersonnel.fname + ' ' + this.editPersonnel.lname,
               email: this.editPersonnel.email,
-              role: {
-                value: this.editPersonnel.role.value,
-                machineValue: this.editPersonnel.role.machineValue
-              },
+
               note: this.editPersonnel.notes,
               phoneNumber: this.editPersonnel.phoneNumber,
               address: this.editPersonnel.address
             }
           }
         };
-        if (
-          !this.editPersonnel.role.id &&
-          !this.editPersonnel.role.machineValue
-        ) {
-          delete payload.data.editPersonnel.role;
-        }
+
         await this.editCarrierPersonnelToClaim(payload);
         this.editPersonnelDialog = false;
+        this.$emit('editCarrierDialog', false);
         this.getClaimCarrier(this.selectedClaimId);
       }
     },
@@ -1074,6 +1069,7 @@ export default {
         index
       ].name.split(' ');
       this.editPersonnelDialog = true;
+      this.$emit('editCarrierDialog', true);
       this.editPersonnel.fname = name[0];
       this.editPersonnel.lname = name[1];
       this.editPersonnel.email = this.selectedClaimCarrier.carrier.personnel[
@@ -1088,12 +1084,6 @@ export default {
       this.editPersonnel.notes = this.selectedClaimCarrier.carrier.personnel[
         index
       ].note;
-      this.editPersonnel.role.value = this.selectedClaimCarrier.carrier.personnel[
-        index
-      ].role.value;
-      this.editPersonnel.role.machineValue = this.selectedClaimCarrier.carrier.personnel[
-        index
-      ].role.machineValue;
     },
 
     validateDate,
@@ -1161,10 +1151,12 @@ export default {
     },
     async onCloseCarrierList() {
       this.carriersListDialog = false;
+      this.$emit('editCarrierDialog', false);
       await this.getClaimCarrier(this.selectedClaimId);
     },
     async onSetCarrier(carrierID) {
       this.carriersListDialog = false;
+
       await this.getClaimCarrier(this.selectedClaimId);
       const payload = {
         id: this.selectedClaimId,
@@ -1214,10 +1206,7 @@ export default {
             lname: this.personnel.lname,
             email: this.personnel.email,
             phoneNumber: this.personnel.phoneNumber,
-            role: {
-              value: this.personnel.role.value,
-              machineValue: this.personnel.role.machineValue
-            },
+
             address: {
               ...this.personnel.address
             },
@@ -1225,13 +1214,12 @@ export default {
           }
         }
       };
-      if (!this.personnel.role.id && !this.personnel.role.machineValue) {
-        delete payload.data.personnel.role;
-      }
+
       const response = await this.addCarrierPersonnel(payload);
       this.addPersonnelDialog = false;
       this.getCarrierPersonnel(this.selectedClaimCarrier.carrier.carrierID);
       this.onSelectPersonnel(response.attributes.personnel);
+
       this.personnel.fname = '';
       this.personnel.lname = '';
       this.personnel.email = '';
@@ -1243,8 +1231,6 @@ export default {
       this.personnel.address.postalCode = '';
       this.personnel.notes = '';
       this.personnel.departmentName = '';
-      this.personnel.role.value = '';
-      this.personnel.role.machineValue = '';
     },
     //This Function is called when we click on adjustor list and select a personnel
     async onSelectPersonnel(personnel) {
@@ -1289,8 +1275,11 @@ export default {
         await this.addClaimPersonnel(payload2);
       }
       this.assignDialog = false;
+      this.$emit('editCarrierDialog', false);
       this.adjustorListDialog = false;
+
       this.getClaimCarrier(this.selectedClaimId);
+
       this.filterName = '';
       this.assignFilter = '';
     },

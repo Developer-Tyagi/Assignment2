@@ -330,9 +330,7 @@ export default {
           ? this.selectedVendor.notes
           : '';
     }
-    this.getVendorIndustries();
     this.getTitles();
-    this.getContactTypes();
   },
 
   methods: {
@@ -410,6 +408,7 @@ export default {
   },
 
   created() {
+    this.getContactTypes();
     this.industryFilterDisabled = true;
     this.options = this.vendorIndustries;
     if (this.industryValue) {

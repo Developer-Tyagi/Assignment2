@@ -911,6 +911,8 @@ export default {
   methods: {
     ...mapActions([
       'getVendorDetails',
+      'getVendors',
+      'getVendorIndustries',
       'getClients',
       'addLeads',
       'getInspectionTypes',
@@ -1152,6 +1154,17 @@ export default {
 
     onNextButtonClick() {
       this.step++;
+      switch (this.stepArr[this.step].ref) {
+        case 'loss':
+          this.getLossCauses();
+          break;
+        case 'schedule':
+          this.getInspectionTypes();
+          break;
+        case 'source':
+          this.getVendorIndustries();
+          this.getVendors(this.params);
+      }
       if (this.stepClickValidTill < this.step) {
         this.stepClickValidTill = this.step;
       }
@@ -1245,10 +1258,9 @@ export default {
   },
 
   async created() {
-    await this.getInspectionTypes();
     await this.getContactTypes();
     await this.getTitles();
-    await this.getLossCauses();
+
     if (this.isEdit) {
       this.getVendorDetails(this.selectedLead.leadSource.id);
       this.primaryDetails.honorific = this.selectedLead.primaryContact.honorific;

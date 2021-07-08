@@ -709,7 +709,7 @@ export default {
       'deleteClaimDocument',
       'generatePhotoReport'
     ]),
-    ...mapMutations(['setLoading']),
+    ...mapMutations(['setLoading', 'isLastRouteEdit']),
     async getReportClick() {
       const payload = {
         claimID: this.selectedClaimId,
@@ -822,6 +822,7 @@ export default {
         if (this.userRole == 'estimator') {
           this.$router.push('/claim-summary');
         } else {
+          this.isLastRouteEdit(true);
           this.$router.push('/claim-details');
         }
       }

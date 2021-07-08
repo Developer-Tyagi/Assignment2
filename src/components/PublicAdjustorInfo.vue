@@ -2,7 +2,7 @@
   <div class="bg-white full-width">
     <div class="form-heading text-bold">CLAIM PERSONNEL</div>
     <div class="form-heading q-mt-lg">Personnel Role</div>
-
+    {{ publicAdjustorInfo.personnel[0].id }}
     <q-select
       dense
       v-model="publicAdjustorInfo.personnel[0].id"

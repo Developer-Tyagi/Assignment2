@@ -1124,24 +1124,16 @@ export default {
   },
 
   created() {
-    this.getRoles();
     this.propertyId = this.$route.params.clientId;
-    this.getSingleClientDetails(this.selectedClientId);
-    this.getSingleClientProperty(this.selectedClientId);
+    //TODO
+    // this.getSingleClientDetails(this.selectedClientId);
+    // this.getSingleClientProperty(this.selectedClientId);
     this.contractInfo.time = date.formatDate(Date.now(), 'HH:mm:ss:aa');
     this.companyPersonnel.startDate = this.companyPersonnel.endDate = this.contractInfo.firstContractDate = this.contractInfo.contractDate = this.insuranceDetails.policyEffectiveDate = this.insuranceDetails.policyExpireDate = this.lossInfo.dateOfLoss = this.lossInfo.deadlineDate = this.lossInfo.recovDeadline = date.formatDate(
       Date.now(),
       'MM/DD/YYYY'
     );
-    this.getVendors(this.$route.params.id);
-    this.getClientTypes();
-
-    this.getPropertyTypes();
     this.getPolicyTypes();
-    this.getLossCauses();
-    this.getSeverityClaim();
-    this.getClaimReasons();
-    this.getContactTypes();
     this.getPolicyCategory();
     if (this.propertyId) {
       const obj = this.setClientProperty.find(item => {
@@ -1186,12 +1178,10 @@ export default {
     ])
   },
 
-  mounted() {
-    this.getTitles();
-    this.getVendorIndustries();
-  },
   methods: {
     ...mapActions([
+      'getClaimRoles',
+      'getAllUsers',
       'addClient',
       'getVendors',
       'getEstimators',
@@ -1213,7 +1203,7 @@ export default {
       'getRoles',
       'getAllUsers'
     ]),
-    ...mapMutations(['setSelectedLead']),
+    ...mapMutations(['setSelectedLead', 'isLastRouteEdit']),
     onDamageOsToggleButtonOff() {
       if (!this.lossInfo.isDamageOSToggle) {
         this.lossInfo.osDamagedItems.length = 0;
@@ -1621,7 +1611,7 @@ export default {
 
         personnel: [
           {
-            id: this.companyPersonnel.personParty.id,
+            personnelID: this.companyPersonnel.personParty.id,
             name: this.companyPersonnel.personParty.value,
             role: {
               value: this.companyPersonnel.personnel.value.name,
@@ -1692,6 +1682,7 @@ export default {
       this.addClaim(payload).then(() => {
         this.setSelectedLead();
         this.successMessage(constants.successMessages.CLAIM);
+        this.isLastRouteEdit(true);
         this.$router.push('/view-client/' + this.selectedClientId);
       });
     },
@@ -1718,6 +1709,20 @@ export default {
 
     onNextButtonClick() {
       this.step++;
+      switch (this.stepArr[this.step].ref) {
+        case 'lossInfo':
+          this.getLossCauses();
+          this.getClaimReasons();
+          this.getSeverityClaim();
+          break;
+        case 'expertInfo':
+          this.getVendorIndustries();
+          break;
+        case 'personnelInfo':
+          this.getClaimRoles();
+          this.getAllUsers();
+          break;
+      }
       if (this.stepClickValidTill < this.step) {
         this.stepClickValidTill = this.step;
       }

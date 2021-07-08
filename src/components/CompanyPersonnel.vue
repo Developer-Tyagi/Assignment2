@@ -177,10 +177,7 @@ export default {
       options: []
     };
   },
-  created() {
-    this.getClaimRoles();
-    this.getAllUsers();
-  },
+
   computed: {
     ...mapGetters([
       'personnel',
