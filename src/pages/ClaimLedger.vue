@@ -148,6 +148,12 @@
                       <q-badge color="green">
                         {{ expense.payableBy.value }}</q-badge
                       >
+                      <q-badge
+                        class="q-ml-sm"
+                        v-if="expense.amount - expense.paid < 1"
+                        color="grey"
+                        >Paid</q-badge
+                      >
                     </div>
                     <div class="q-mr-xs">
                       <q-icon
@@ -178,17 +184,20 @@
                       </div>
                     </div>
                     <div class="row justify-between">
+                      <div class="heading-light">Payee</div>
+                      <div>{{ expense.payee }}</div>
+                    </div>
+                    <div class="row justify-between">
                       <div class="heading-light">Amount</div>
                       <div>$ {{ expense.amount }}</div>
                     </div>
                     <div class="row justify-between">
+                      <div class="heading-light">Balance</div>
+                      <div>$ {{ expense.amount - expense.paid }}</div>
+                    </div>
+                    <div class="row justify-between">
                       <div class="heading-light">Reference</div>
                       <div>{{ expense.reference }}</div>
-                    </div>
-
-                    <div class="row justify-between">
-                      <div class="heading-light">Payee</div>
-                      <div>{{ expense.payee }}</div>
                     </div>
                   </div>
                 </q-card>
@@ -380,7 +389,7 @@
                     Remaining Amount
                   </div>
                   <div class="bg-primary ">
-                    {{ payments.remainingAmount }} ( Over)
+                    $ {{ payments.remainingAmount }} ( Over)
                   </div>
                 </div>
 
@@ -391,9 +400,7 @@
                   <div class="heading-light">
                     Remaining Amount
                   </div>
-                  <div>
-                    {{ payments.remainingAmount }}
-                  </div>
+                  <div>$ {{ payments.remainingAmount }}</div>
                 </div>
               </div>
             </div>
@@ -539,7 +546,7 @@
                     Remaining Amount
                   </div>
                   <div class="bg-primary ">
-                    {{ payments.remainingAmount }} ( Over)
+                    $ {{ payments.remainingAmount }} ( Over)
                   </div>
                 </div>
                 <div
@@ -651,8 +658,6 @@
                 v-model="addexpenses.payee"
                 style="margin-left: auto; width: 50%"
                 class="input-extra-padding"
-                lazy-rules
-                :rules="[val => (val && val.length > 0) || 'Please fill Payee']"
               />
             </div>
             <div class="row" style="align-items: center">
@@ -715,8 +720,9 @@
           @closeDialog="closeDisbursmentBox"
           :dialogName="'Add Claim  Disbursment'"
         />
+
         <div class="q-ma-sm mobile-container-page listing-height">
-          <q-form>
+          <q-form ref="DisbursementForm">
             <q-card class="q-mx-sm q-pa-sm">
               <span class="q-my-md">Opening Balance </span>
               <div class="row q-my-sm">
@@ -742,7 +748,7 @@
                   @blur="setValueForClientAndCompany"
                   :rules="[
                     val =>
-                      (val && val < checkValidationForDisbursement()) ||
+                      val < checkValidationForDisbursement() ||
                       'Amount Exceeds Above'
                   ]"
                 />
@@ -788,7 +794,7 @@
                         {{ exp.payee ? exp.payee : '-' }}
                       </td>
                       <td>
-                        {{ exp.amount ? exp.amount : '-' }}
+                        {{ exp.amount ? exp.amount - exp.dilivered : '-' }}
                       </td>
                       <td>
                         <q-toggle
@@ -799,6 +805,7 @@
                       </td>
                       <td>
                         <q-input
+                          :disable="wantToPay[index].value == false"
                           v-model="clientAndCompanyAmount[index]"
                           prefix="$"
                           class=" col-2 "
@@ -994,7 +1001,7 @@
                       <td>
                         {{ exp.payee }}
                       </td>
-                      <td>$ {{ exp.amount }}</td>
+                      <td>$ {{ exp.amount - exp.dilivered }}</td>
                       <q-toggle
                         size="xs"
                         class="q-mt-sm"
@@ -1003,6 +1010,7 @@
                       />
                       <td>
                         <q-input
+                          :disable="wantToPayClient[index].value == false"
                           v-model="clientAmount[index]"
                           prefix="$"
                           dense
@@ -1068,7 +1076,7 @@
                         {{ exp.payee }}
                       </td>
                       <td>
-                        {{ exp.amount }}
+                        {{ exp.amount - exp.dilivered }}
                       </td>
                       <td>
                         <q-toggle
@@ -1080,6 +1088,7 @@
                       </td>
                       <td>
                         <q-input
+                          :disable="wantToPayCompany[index].value == false"
                           v-model="companyAmounts[index]"
                           prefix="$"
                           dense
@@ -1417,6 +1426,9 @@ export default {
     /* Open Disbursement Dialog Box     */
 
     openDisbursementBox() {
+      this.clientAndCompanyAmount = [];
+      this.companyAmounts = [];
+      this.clientAmount = [];
       this.companyPerHour = 0;
       this.totalExpensesOfClient = this.totalExpensesOfClientAndCompany = this.totalExpensesOfCompany = 0;
       this.addDisbursement.amountToDisbuse = this.account.pendingDisbursement;
@@ -1437,6 +1449,7 @@ export default {
               amount: val.amount,
               id: val.id,
               payee: val.payee,
+              dilivered: val.paid,
               paid: 0
             });
             this.totalExpensesOfClientAndCompany =
@@ -1448,6 +1461,7 @@ export default {
               amount: val.amount,
               id: val.id,
               payee: val.payee,
+              dilivered: val.paid,
               paid: 0
             });
 
@@ -1460,6 +1474,7 @@ export default {
               amount: val.amount,
               id: val.id,
               payee: val.payee,
+              dilivered: val.paid,
               paid: 0
             });
             this.totalExpensesOfCompany =
@@ -1502,6 +1517,7 @@ export default {
       };
       await this.deleteSingleDisbursement(payload);
       await this.getAllDisbursements(this.selectedClaimId);
+      await this.getAllExpenses(this.selectedClaimId);
       await this.getAccountDetails(this.selectedClaimId);
     },
     /* delete Payment   */
@@ -1746,6 +1762,14 @@ export default {
       }
     },
     async onSaveDisbursement() {
+      if (this.addDisbursement.amountToDisbuse < 1) {
+        this.$q.notify({
+          message: 'Amount to Disburse can Not be less than $1  ',
+          position: 'top',
+          type: 'negative'
+        });
+        return;
+      }
       this.clientAndCompany.forEach(val => {
         this.finalExpenses.push({
           id: val.id,
@@ -1778,6 +1802,7 @@ export default {
       if (success) {
         await this.getAllDisbursements(this.selectedClaimId);
         await this.getAccountDetails(this.selectedClaimId);
+        await this.getAllExpenses(this.selectedClaimId);
         this.clientAndCompany = [];
         this.clientOnly = [];
         this.companyOnly = [];
