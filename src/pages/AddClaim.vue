@@ -1125,6 +1125,7 @@ export default {
 
   created() {
     this.propertyId = this.$route.params.clientId;
+    //TODO
     // this.getSingleClientDetails(this.selectedClientId);
     // this.getSingleClientProperty(this.selectedClientId);
     this.contractInfo.time = date.formatDate(Date.now(), 'HH:mm:ss:aa');
