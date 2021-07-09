@@ -1,7 +1,7 @@
 <template>
   <div>
     <q-card class="q-pa-md">
-      <div class="text-bold row q-pa-sm">
+      <div class="form-heading  row q-ml-sm">
         Carrier Info
         <q-icon
           v-if="selectedClaimCarrier.carrier.id"
@@ -30,7 +30,7 @@
       </div>
 
       <div class="q-pa-sm" v-if="selectedClaimCarrier.carrier.id">
-        <div class="text-bold row" v-model="carrierName">
+        <div class="form-heading  row" v-model="carrierName">
           {{ selectedClaimCarrier.carrier.name }}
         </div>
 
@@ -119,7 +119,7 @@
     </q-card>
     <q-card class="q-mt-sm  q-pa-md">
       <div class="row">
-        <span class="text-bold col q-ma-xs"> Carrier Personnel Info</span>
+        <span class="form-heading col q-ma-xs"> Carrier Personnel Info</span>
         <img
           class="q-mx-xs q-my-auto"
           src="~assets/add.svg"
@@ -226,7 +226,7 @@
     </q-card>
     <q-card class="q-mt-sm  q-pa-md" v-if="policy.policyInfo">
       <div class="row q-mt-xs">
-        <span class="text-bold"> Policy Info</span>
+        <span class="form-heading "> Policy Info</span>
         <q-icon
           name="edit"
           size="xs"

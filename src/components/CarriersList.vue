@@ -27,11 +27,11 @@
       <div
         v-for="carrier in carriers"
         :key="carrier.id"
-        class="carrier-list-item clients-list"
+        class="listing-item clients-list"
         style="overflow-y: auto"
       >
         <q-item-section @click="onSelectCarrier(carrier, $event)">
-          <span class="text-bold fit-content">{{ carrier.name }}</span>
+          <span class="form-heading  fit-content">{{ carrier.name }}</span>
           <div v-if="carrier.address">
             <div>
               {{ carrier.address ? carrier.address.houseNumber : '-' }} ,
@@ -168,12 +168,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss">
-.carrier-list-item {
-  padding: 20px;
-  border-bottom: 1px solid lightgray;
-  text-transform: capitalize;
-  display: flex;
-}
-</style>

@@ -32,7 +32,7 @@
         </div>
 
         <div class="q-mt-md row">
-          <div class="heading-light q-mt-none col-6 lightHeading">
+          <div class="heading-light q-mt-none col-6 ">
             Quantity
           </div>
           <div class="column">
@@ -40,7 +40,7 @@
           </div>
         </div>
         <div class="q-mt-md row">
-          <div class="heading-light q-mt-none col-6 lightHeading">
+          <div class="heading-light q-mt-none col-6 ">
             Serial Number
           </div>
           <div class="column">
@@ -48,7 +48,7 @@
           </div>
         </div>
         <div class="q-mt-md row">
-          <div class="heading-light q-mt-none col-6 lightHeading">
+          <div class="heading-light q-mt-none col-6 ">
             Purchase Date
           </div>
           <div class="column">
@@ -58,7 +58,7 @@
 
         <q-separator class="q-mt-sm q-mb-sm" />
         <div class="q-mt-md row">
-          <div class="heading-light q-mt-none col-6 lightHeading">
+          <div class="heading-light q-mt-none col-6 ">
             Purchase Price
           </div>
           <div class="column">
@@ -68,7 +68,7 @@
           </div>
         </div>
         <div class="q-mt-md row">
-          <div class="heading-light q-mt-none col-6 lightHeading">
+          <div class="heading-light q-mt-none col-6 ">
             {{ damage.replaceCost == null ? 'Repair' : 'Replace' }} Cost
           </div>
           <div class="column">

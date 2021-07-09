@@ -27,11 +27,11 @@
       <div
         v-for="mortgage in mortgages"
         :key="mortgage.id"
-        class="mortgage-list-item clients-list"
+        class="listing-item clients-list"
         style="overflow-y: auto"
       >
         <q-item-section @click="onSelectMortgage(mortgage, $event)">
-          <span class="text-bold fit-content">{{ mortgage.name }}</span>
+          <span class="form-heading  fit-content">{{ mortgage.name }}</span>
           <div v-if="mortgage.address">
             <div>
               {{ mortgage.address ? mortgage.address.houseNumber : '-' }} ,
@@ -160,12 +160,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss">
-.mortgage-list-item {
-  padding: 20px;
-  border-bottom: 1px solid lightgray;
-  text-transform: capitalize;
-  display: flex;
-}
-</style>

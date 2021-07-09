@@ -7,7 +7,7 @@
           v-for="(personnel, index) in mortgagePersonnel.personnel"
         >
           <q-card class="q-pa-sm">
-            <div class="text-bold text-capitalize  row">
+            <div class="form-heading text-capitalize  row">
               <div class="col-10">
                 {{ personnel.fname }} {{ personnel.lname }}
               </div>

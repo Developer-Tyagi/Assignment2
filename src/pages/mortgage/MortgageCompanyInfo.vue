@@ -72,7 +72,7 @@
       ></span>
     </div>
     <div class="row q-mt-sm" v-if="selectedMortgage.email">
-      <span class="heading-light q-mt-none col-xs-4 lightHeading"> Email </span>
+      <span class="heading-light q-mt-none col-xs-4 "> Email </span>
       <span
         class="q-ml-md col clickLink"
         @click="onEmailClick(selectedMortgage.email, $event)"
@@ -81,7 +81,7 @@
       >
     </div>
     <div class="row q-mt-sm" v-for="phone in selectedMortgage.phoneNumber">
-      <span class="heading-light q-mt-none col-xs-4 lightHeading">
+      <span class="heading-light q-mt-none col-xs-4 ">
         Phone Number
       </span>
       <span class="col q-ml-md" v-if="phone.type">

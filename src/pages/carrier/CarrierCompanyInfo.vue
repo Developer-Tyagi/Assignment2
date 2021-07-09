@@ -67,7 +67,7 @@
     </div>
 
     <div class="row q-mt-sm" v-if="selectedCarrier.email">
-      <span class="heading-light q-mt-none col-xs-4 lightHeading"> Email </span>
+      <span class="heading-light q-mt-none col-xs-4 "> Email </span>
       <span
         class="q-ml-md col clickLink"
         @click="onEmailClick(selectedCarrier.email, $event)"
@@ -76,7 +76,7 @@
       >
     </div>
     <div class="row q-mt-sm" v-for="phone in selectedCarrier.phoneNumber">
-      <span class="heading-light q-mt-none col-xs-4 lightHeading">
+      <span class="heading-light q-mt-none col-xs-4 ">
         Phone Number
       </span>
       <span class="col q-ml-md" v-if="phone.type">

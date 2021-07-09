@@ -2,7 +2,7 @@
   <div>
     <div class="mobile-container-page">
       <div class="q-pa-xs column">
-        <div class="q-ml-md q-mt-md text-h6">
+        <div class="q-ml-md q-mt-md form-heading">
           {{
             editSelectedClient.attributes.insuredInfo.primary.fname
               ? editSelectedClient.attributes.insuredInfo.primary.fname

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="mobile-container-page-without-search">
-      <div class="q-ml-md text-h6 q-ma-md">
+      <div class="form-heading  q-ma-md">
         {{ selectedCarrier.name ? selectedCarrier.name : '-' }}
       </div>
 

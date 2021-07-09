@@ -38,12 +38,12 @@
       <div
         v-for="vendor in vendors"
         :key="vendor.id"
-        class="vendor-list-item clients-list"
+        class="listing-item clients-list"
         @click="onVendorSelect(vendor, $event)"
         style="overflow-y: auto"
       >
         <q-item-section>
-          <span class="text-bold fit-content">{{
+          <span class="form-heading  fit-content">{{
             vendor.companyName ? vendor.companyName : ''
           }}</span>
           <span>{{ vendor.name ? vendor.name : '' }}</span>
@@ -245,12 +245,6 @@ export default {
   display: flex;
   border-bottom: 1px solid #0000001f;
   align-items: center;
-}
-.vendor-list-item {
-  padding: 20px;
-  border-bottom: 1px solid lightgray;
-  text-transform: capitalize;
-  display: flex;
 }
 
 .filters-list-item {

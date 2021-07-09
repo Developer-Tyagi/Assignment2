@@ -114,7 +114,7 @@
           <q-card>
             <q-card-section>
               <div class="q-mt-md row">
-                <div class="heading-light q-mt-none col-4 lightHeading">
+                <div class="heading-light q-mt-none col-4 ">
                   Loss Address
                 </div>
                 <div class="col-6 q-ml-md">
@@ -147,7 +147,7 @@
                 </div>
               </div>
               <div class="q-mt-md row">
-                <div class="heading-light q-mt-none col-xs-4 lightHeading">
+                <div class="heading-light q-mt-none col-xs-4 ">
                   Date of Loss
                 </div>
                 <div class="column q-ml-md">
@@ -155,7 +155,7 @@
                 </div>
               </div>
               <div class="q-mt-md row">
-                <div class="heading-light q-mt-none col-xs-4 lightHeading">
+                <div class="heading-light q-mt-none col-xs-4 ">
                   Loss Description
                 </div>
                 <div class="column q-ml-md">
@@ -163,7 +163,7 @@
                 </div>
               </div>
               <div class="q-mt-md row">
-                <div class="heading-light q-mt-none col-xs-4 lightHeading">
+                <div class="heading-light q-mt-none col-xs-4 ">
                   Loss Cause
                 </div>
                 <div class="column q-ml-md" v-if="selectedLead.lossCause">
@@ -188,7 +188,7 @@
           <q-card>
             <q-card-section>
               <div class="q-mt-md row">
-                <div class="heading-light q-mt-none col-xs-4 lightHeading">
+                <div class="heading-light q-mt-none col-xs-4 ">
                   Policy Number
                 </div>
                 <div class="column q-ml-md">
@@ -198,7 +198,7 @@
                 </div>
               </div>
               <div class="q-mt-md row">
-                <div class="heading-light q-mt-none col-xs-4 lightHeading">
+                <div class="heading-light q-mt-none col-xs-4 ">
                   Carrier Details
                 </div>
                 <div class="column q-ml-md" v-if="selectedLead.carrier">
@@ -223,7 +223,7 @@
           <q-card>
             <q-card-section>
               <div class="q-mt-md row">
-                <div class="heading-light q-mt-none col-xs-4 lightHeading">
+                <div class="heading-light q-mt-none col-xs-4 ">
                   Notes
                 </div>
                 <div class="column q-ml-md" v-if="selectedLead.notes">
