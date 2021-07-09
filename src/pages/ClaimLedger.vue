@@ -145,13 +145,13 @@
                 <q-card class="q-ma-xs" v-for="expense in expenses.expenses">
                   <div class=" row justify-between">
                     <div class="q-pl-sm q-pt-xs">
-                      <q-badge color="green">
+                      <q-badge color="primary">
                         {{ expense.payableBy.value }}</q-badge
                       >
                       <q-badge
                         class="q-ml-sm"
                         v-if="expense.amount - expense.paid < 1"
-                        color="grey"
+                        color="green"
                         >Paid</q-badge
                       >
                     </div>
@@ -227,7 +227,8 @@
                   class="q-pa-sm q-ma-sm"
                   v-for="pay in disbursements.disbursements"
                 >
-                  <div class="row justify-end">
+                  <div class="q-my-sm row justify-between">
+                    <div>Total : ${{ pay.amount }}</div>
                     <div class="heading-light">
                       <q-icon
                         name="delete"
@@ -237,17 +238,41 @@
                       />
                     </div>
                   </div>
+
                   <div class="row justify-between">
-                    <div class="heading-light">Amount</div>
-                    <div>$ {{ pay.amount }}</div>
+                    <div class="col-3">Payee</div>
+                    <div class="col-2">Amount</div>
+                    <div class="col-2">Type</div>
+                  </div>
+                  <div class=" q-my-sm row justify-between">
+                    <div class="col-3 heading-light">Company</div>
+
+                    <div class=" col-2 heading-light">
+                      $ {{ pay.paidToCompany ? pay.paidToCompany : 0 }}
+                    </div>
+                    <div class="col-2 heading-light">Company</div>
                   </div>
                   <div class="row justify-between">
-                    <div class="heading-light">Paid To Company</div>
-                    <div>$ {{ pay.paidToCompany ? pay.paidToCompany : 0 }}</div>
+                    <div class="col-3 heading-light">Client</div>
+
+                    <div class="col-2 heading-light">
+                      $ {{ pay.paidToClient ? pay.paidToClient : 0 }}
+                    </div>
+                    <div class=" col-2 heading-light">Client</div>
                   </div>
-                  <div class="row justify-between">
-                    <div class="heading-light">Paid To Client</div>
-                    <div>$ {{ pay.paidToClient }}</div>
+                  <!-- {{ finalExpenses }} -->
+                  <div
+                    class="q-mt-sm row justify-between"
+                    v-for="exp in pay.expenses"
+                  >
+                    <div class=" col-3 heading-light">
+                      {{ exp.payee ? exp.payee : '-' }}
+                    </div>
+
+                    <div class="  col-2 heading-light">
+                      $ {{ exp.paid ? exp.paid : 0 }}
+                    </div>
+                    <div class="  col-2 heading-light">Vendor</div>
                   </div>
                 </q-card>
               </div>
@@ -759,7 +784,11 @@
                   Outstanding Expenses Payable By both company and Client
                 </span>
                 <span class="col-4">
-                  $ {{ totalExpensesOfClientAndCompany }}</span
+                  $
+                  {{
+                    totalExpensesOfClientAndCompany -
+                      alreadyPaidByClientAndCompany
+                  }}</span
                 >
               </div>
               <div>
@@ -800,7 +829,12 @@
                         <q-toggle
                           size="xs"
                           v-model="wantToPay[index].value"
-                          @input="setValueToPayClientAndCompany(index)"
+                          @input="
+                            setValueToPayClientAndCompany(
+                              index,
+                              exp.amount - exp.dilivered
+                            )
+                          "
                         />
                       </td>
                       <td>
@@ -968,7 +1002,7 @@
                 <span class="heading-light col-8"
                   >Expenses Payable by Client</span
                 >
-                $ {{ totalExpensesOfClient }}
+                $ {{ totalExpensesOfClient - alreadyPaidByClient }}
               </div>
               <div>
                 <q-card
@@ -1006,7 +1040,9 @@
                         size="xs"
                         class="q-mt-sm"
                         v-model="wantToPayClient[index].value"
-                        @input="setValueToPayClient(index)"
+                        @input="
+                          setValueToPayClient(index, exp.amount - exp.dilivered)
+                        "
                       />
                       <td>
                         <q-input
@@ -1042,7 +1078,7 @@
                 <span class="heading-light col-8"
                   >Expenses Payable by Company</span
                 >
-                $ {{ totalExpensesOfCompany }}
+                $ {{ totalExpensesOfCompany - alreadyPaidByCompany }}
               </div>
               <div>
                 <q-card
@@ -1083,7 +1119,12 @@
                           class="q-pt-sm"
                           size="xs"
                           v-model="wantToPayCompany[index].value"
-                          @input="setValueToPayCompany(index)"
+                          @input="
+                            setValueToPayCompany(
+                              index,
+                              exp.amount - exp.dilivered
+                            )
+                          "
                         />
                       </td>
                       <td>
@@ -1228,6 +1269,9 @@ export default {
       currenPaymentID: '',
       currentDisbursementID: '',
       expenseID: '',
+      alreadyPaidByClient: 0,
+      alreadyPaidByCompany: 0,
+      alreadyPaidByClientAndCompany: 0,
       alert: false,
       alertForExpense: false,
       alertForDisbursement: false,
@@ -1359,18 +1403,19 @@ export default {
     dateToShow,
     dateToSend,
     /* Toggle button Function  for company   */
-    setValueToPayCompany(i) {
-      this.companyAmounts[i] = this.companyOnly[i].amount;
+    setValueToPayCompany(i, value) {
+      this.companyAmounts[i] = value;
+      // this.companyOnly[i].amount;
       this.onFillingCompany();
     },
     /* Toggle button Function for client     */
-    setValueToPayClient(i) {
-      this.clientAmount[i] = this.clientOnly[i].amount;
+    setValueToPayClient(i, value) {
+      this.clientAmount[i] = value;
       this.onFillingClient();
     },
     /* Toggle button Function for company and client     */
-    setValueToPayClientAndCompany(i) {
-      this.clientAndCompanyAmount[i] = this.clientAndCompany[i].amount;
+    setValueToPayClientAndCompany(i, value) {
+      this.clientAndCompanyAmount[i] = value;
       this.onFillingValue();
     },
     /* Hour To Fees Calculation     */
@@ -1426,6 +1471,13 @@ export default {
     /* Open Disbursement Dialog Box     */
 
     openDisbursementBox() {
+      this.totalExpensesOfClientAndCompany = 0;
+      this.totalExpensesOfCompany = 0;
+      this.totalExpensesOfClient = 0;
+      this.finalExpenses = [];
+      this.alreadyPaidByClientAndCompany = 0;
+      this.alreadyPaidByClient = 0;
+      this.alreadyPaidByCompany = 0;
       this.clientAndCompanyAmount = [];
       this.companyAmounts = [];
       this.clientAmount = [];
@@ -1452,6 +1504,8 @@ export default {
               dilivered: val.paid,
               paid: 0
             });
+            this.alreadyPaidByClientAndCompany =
+              this.alreadyPaidByClientAndCompany + val.paid;
             this.totalExpensesOfClientAndCompany =
               this.totalExpensesOfClientAndCompany + val.amount;
             this.wantToPay.push({ value: false });
@@ -1464,6 +1518,7 @@ export default {
               dilivered: val.paid,
               paid: 0
             });
+            this.alreadyPaidByClient = this.alreadyPaidByClient + val.paid;
 
             this.totalExpensesOfClient =
               this.totalExpensesOfClient + val.amount;
@@ -1477,6 +1532,7 @@ export default {
               dilivered: val.paid,
               paid: 0
             });
+            this.alreadyPaidByCompany = this.alreadyPaidByCompany + val.paid;
             this.totalExpensesOfCompany =
               this.totalExpensesOfCompany + val.amount;
             this.wantToPayCompany.push({ value: false });
