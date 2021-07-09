@@ -3,7 +3,9 @@
     <div>
       <div v-if="vendorLists.Vendors">
         <q-card class="q-pa-md" v-for="(vendor, index) in vendorLists.Vendors">
-          <div class="text-bold text-capitalize q-mt-xs row justify-between">
+          <div
+            class="form-heading  text-capitalize q-mt-xs row justify-between"
+          >
             <span class="q-my-auto"> {{ vendor.name }}</span>
             <q-icon
               class="q-my-auto"

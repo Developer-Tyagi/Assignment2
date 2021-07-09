@@ -28,7 +28,7 @@
           <div class="clients-list" v-for="client in clients" :key="client.id">
             <q-item-section @click="onClientsListClick(client)">
               <div class="client-list-item">
-                <div class="row text-bold q-pb-md">
+                <div class="row form-heading  q-pb-md">
                   <span>
                     {{ client['insuredInfo']['primary']['fname'] }}
 

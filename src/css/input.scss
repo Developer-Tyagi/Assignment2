@@ -43,7 +43,12 @@
   color: #333333;
   font-weight: bold;
   font-size: 14px;
-  margin-top: 10px;
+}
+.listing-item {
+  padding: 15px;
+  border-bottom: 1px solid lightgray;
+  text-transform: capitalize;
+  display: flex;
 }
 .listing-height {
   height: calc(100vh - 50px);

@@ -11,7 +11,7 @@
             />
           </div>
           <div class="column">
-            <span class="text-bold text-capitalize" v-if="task.name">{{
+            <span class="form-heading  text-capitalize" v-if="task.name">{{
               task.name
             }}</span>
             <span v-if="task.addedDesc">{{ task.addedDesc }}</span>

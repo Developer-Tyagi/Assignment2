@@ -6,7 +6,7 @@
           class=" q-pa-sm"
           v-for="(mortgage, index) in mortgage.mortgages"
         >
-          <div class="text-bold text-capitalize q-mt-xs row">
+          <div class="form-heading  text-capitalize q-mt-xs row">
             <span class="q-my-auto"> {{ mortgage.name }}</span>
             <q-icon
               size="xs"

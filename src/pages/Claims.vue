@@ -33,7 +33,7 @@
               :key="claim.id"
             >
               <div class="client-list-item">
-                <div class="row  text-bold q-pb-md  ">
+                <div class="row  form-heading q-pb-md  ">
                   <div class="col-10" @click="onClickingOnClaim(claim)">
                     {{ claim.attributes.client.fname }}
                     {{ claim.attributes.client.lname }}

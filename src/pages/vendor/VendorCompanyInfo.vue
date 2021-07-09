@@ -1,6 +1,6 @@
 <template>
   <div>
-    <span class="text-bold text-h6 ">
+    <span class="form-heading text-h6 ">
       {{ selectedVendor.name ? selectedVendor.name : '-' }}
     </span>
 
@@ -72,7 +72,7 @@
     </div>
 
     <div class="q-mt-sm row" v-if="selectedVendor.email">
-      <div class="heading-light q-mt-none col-xs-4 lightHeading">
+      <div class="heading-light q-mt-none col-xs-4 ">
         Email
       </div>
       <div
@@ -83,7 +83,7 @@
       </div>
     </div>
     <div class="q-mt-sm row" v-if="selectedVendor.phoneNumber">
-      <div class="heading-light q-mt-none col-xs-4 lightHeading">
+      <div class="heading-light q-mt-none col-xs-4 ">
         Phone Number
       </div>
       <div

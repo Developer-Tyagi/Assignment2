@@ -67,7 +67,7 @@
 
     <div v-if="personnel.personnel">
       <q-card class="q-pa-md" v-for="(personnel, index) in personnel.personnel">
-        <div class="text-bold text-capitalize q-mt-xs row">
+        <div class="form-heading  text-capitalize q-mt-xs row">
           <div class="col-10">
             {{ personnel.name }}
           </div>

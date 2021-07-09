@@ -1533,12 +1533,6 @@ export default {
 };
 </script>
 <style lang="scss">
-.form-heading {
-  color: #333333;
-  font-weight: bold;
-  font-size: 14px;
-  margin-top: 10px;
-}
 .client-list-item {
   padding: 5px;
   background-color: #f4f4f4;

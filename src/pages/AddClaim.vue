@@ -1745,11 +1745,6 @@ export default {
   width: 0px;
   background: transparent; /* make scrollbar transparent */
 }
-.form-heading {
-  color: #333333;
-  font-weight: bold;
-  font-size: 14px;
-}
 
 .form-list {
   color: #333333;

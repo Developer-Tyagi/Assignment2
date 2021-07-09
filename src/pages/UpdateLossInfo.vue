@@ -52,7 +52,7 @@
     </div>
 
     <div class="row" v-if="lossInfo.attributes.lossInfo.property">
-      <div class="heading-light q-mt-none col-4 lightHeading">
+      <div class="heading-light q-mt-none col-4 ">
         Address Details
       </div>
       <div
@@ -104,7 +104,7 @@
           lossInfo.attributes.lossInfo.property.propertyType
       "
     >
-      <div class="heading-light q-mt-none col-xs-4 lightHeading">
+      <div class="heading-light q-mt-none col-xs-4 ">
         Property Type
       </div>
       <div class="column q-ml-md">
@@ -118,7 +118,7 @@
           lossInfo.attributes.lossInfo.propertyDesc
       "
     >
-      <div class="heading-light q-mt-none col-xs-4 lightHeading">
+      <div class="heading-light q-mt-none col-xs-4 ">
         Property Description :
       </div>
       <div class="column q-ml-md">
@@ -135,7 +135,7 @@
         lossInfo.attributes.lossInfo && lossInfo.attributes.lossInfo.claimReason
       "
     >
-      <div class="heading-light q-mt-none col-xs-4 lightHeading">
+      <div class="heading-light q-mt-none col-xs-4 ">
         Claim Reason:
       </div>
       <div class="column q-ml-md">
@@ -152,7 +152,7 @@
         lossInfo.attributes.lossInfo && lossInfo.attributes.lossInfo.serverity
       "
     >
-      <div class="heading-light q-mt-none col-xs-4 lightHeading">
+      <div class="heading-light q-mt-none col-xs-4 ">
         Serverity:
       </div>
       <div class="column q-ml-md">
@@ -167,7 +167,7 @@
       class="q-mt-md row"
       v-if="lossInfo.attributes.lossInfo && lossInfo.attributes.lossInfo.cause"
     >
-      <div class="heading-light q-mt-none col-xs-4 lightHeading">
+      <div class="heading-light q-mt-none col-xs-4 ">
         Cause of Loss:
       </div>
       <div class="column q-ml-md">
@@ -188,7 +188,7 @@
       class="q-mt-md row"
       v-if="lossInfo.attributes.lossInfo && lossInfo.attributes.lossInfo.date"
     >
-      <div class="heading-light q-mt-none col-xs-4 lightHeading">
+      <div class="heading-light q-mt-none col-xs-4 ">
         Date of Loss:
       </div>
       <div class="column q-ml-md">
@@ -203,7 +203,7 @@
           lossInfo.attributes.lossInfo.deadlineDate
       "
     >
-      <div class="heading-light q-mt-none col-xs-4 lightHeading">
+      <div class="heading-light q-mt-none col-xs-4 ">
         Deadline Date:
       </div>
       <div class="column q-ml-md">
@@ -217,7 +217,7 @@
         lossInfo.attributes.lossInfo && lossInfo.attributes.lossInfo.recovDDDate
       "
     >
-      <div class="heading-light q-mt-none col-xs-4 lightHeading">
+      <div class="heading-light q-mt-none col-xs-4 ">
         Recovery Date:
       </div>
       <div class="column q-ml-md">
@@ -230,7 +230,7 @@
         lossInfo.attributes.lossInfo && lossInfo.attributes.lossInfo.claimReason
       "
     >
-      <div class="heading-light q-mt-none col-xs-4 lightHeading">
+      <div class="heading-light q-mt-none col-xs-4 ">
         Reason For Claim:
       </div>
       <div class="column q-ml-md">
@@ -245,7 +245,7 @@
       class="q-mt-md row"
       v-if="lossInfo.attributes.lossInfo && lossInfo.attributes.lossInfo.desc"
     >
-      <div class="heading-light q-mt-none col-xs-4 lightHeading">
+      <div class="heading-light q-mt-none col-xs-4 ">
         Loss Description:
       </div>
       <div class="column q-ml-md">

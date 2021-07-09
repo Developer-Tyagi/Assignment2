@@ -18,7 +18,7 @@
     <q-card class="q-pa-md">
       <div class="client-list q-pa-sm">
         <div class="row">
-          <div class="heading-light col-xs-4 lightHeading">Insured Details</div>
+          <div class="heading-light col-xs-4 ">Insured Details</div>
           <div class="q-ml-md column">
             <div class="">
               {{ editSelectedClient.attributes.insuredInfo.primary.fname }}
@@ -58,7 +58,7 @@
         </div>
 
         <div class="q-mt-md row">
-          <div class="heading-light q-mt-none col-xs-4 lightHeading">
+          <div class="heading-light q-mt-none col-xs-4 ">
             Co-Insured Details
           </div>
           <div class="column q-ml-md">
@@ -127,7 +127,7 @@
         </div>
 
         <div class="q-mt-md row">
-          <div class="heading-light q-mt-none col-xs-4 lightHeading">
+          <div class="heading-light q-mt-none col-xs-4 ">
             Address Details
           </div>
           <div class="column q-ml-md">
@@ -175,7 +175,7 @@
           </div>
         </div>
         <div class="q-mt-md row">
-          <div class="heading-light q-mt-none col-xs-4 lightHeading">
+          <div class="heading-light q-mt-none col-xs-4 ">
             Additional Phone Numbers
           </div>
           <div class="column q-ml-md">

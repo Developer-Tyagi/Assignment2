@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="q-ml-md text-h6 q-ma-md">
+    <div class="form-heading q-ma-md">
       {{ selectedMortgage.name ? selectedMortgage.name : '-' }}
     </div>
 

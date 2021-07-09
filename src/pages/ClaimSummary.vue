@@ -16,7 +16,7 @@
           <ClaimDetail />
         </div>
       </div>
-      <div class="text-bold q-ml-sm row">
+      <div class="form-heading q-ml-sm  row">
         Claim Summary
         <q-icon
           v-if="userRole != 'estimator' && userRole != 'vendor'"
@@ -28,7 +28,7 @@
         />
       </div>
       <div class="q-mt-md q-ml-sm row">
-        <div class="heading-light q-mt-none col-xs-4 lightHeading">
+        <div class="heading-light q-mt-none col-xs-4 ">
           File Number
         </div>
         <div class="column q-ml-md">
@@ -37,7 +37,7 @@
       </div>
 
       <div class="q-mt-md q-ml-sm row">
-        <div class="heading-light q-mt-none col-xs-4 lightHeading">
+        <div class="heading-light q-mt-none col-xs-4 ">
           Claim Number
         </div>
         <div class="column q-ml-md">
@@ -46,7 +46,7 @@
       </div>
 
       <div class="q-mt-md q-ml-sm row">
-        <div class="heading-light q-mt-none col-xs-4 lightHeading">
+        <div class="heading-light q-mt-none col-xs-4 ">
           Claim Reason
         </div>
         <div class="column q-ml-md" v-if="getSelectedClaim.lossInfo">
@@ -58,7 +58,7 @@
         </div>
       </div>
       <div class="q-mt-md q-ml-sm row" v-if="userRole != 'vendor'">
-        <div class="heading-light q-mt-none col-xs-4 lightHeading">
+        <div class="heading-light q-mt-none col-xs-4 ">
           Claim Fees
         </div>
         <div class="column q-ml-md" v-if="getSelectedClaim.contractInfo">
@@ -92,7 +92,7 @@
         </div>
       </div>
       <div class="q-mt-md row q-ml-sm" v-if="userRole != 'vendor'">
-        <div class="heading-light q-mt-none col-xs-4 lightHeading">
+        <div class="heading-light q-mt-none col-xs-4 ">
           Date of Contract
         </div>
         <div class="column q-ml-md" v-if="getSelectedClaim.contractInfo">
@@ -101,7 +101,7 @@
         <div v-else class="q-ml-md">MM/DD/YYYY</div>
       </div>
       <div class="q-mt-md row q-ml-sm" v-if="userRole != 'vendor'">
-        <div class="heading-light q-mt-none col-xs-4 lightHeading">
+        <div class="heading-light q-mt-none col-xs-4 ">
           Date of Notified
         </div>
         <div class="column q-ml-md" v-if="getSelectedClaim.contractInfo">
@@ -110,7 +110,7 @@
         <div v-else class="q-ml-md">MM/DD/YYYY</div>
       </div>
       <div class="q-mt-md row q-ml-sm" v-if="userRole != 'vendor'">
-        <div class="heading-light q-mt-none col-xs-4 lightHeading">
+        <div class="heading-light q-mt-none col-xs-4 ">
           Open Since
         </div>
         <div class="column q-ml-md">
@@ -118,7 +118,7 @@
         </div>
       </div>
       <div class="q-mt-md row" v-if="userRole != 'vendor'">
-        <div class="heading-light q-ml-sm q-mt-none col-xs-4 lightHeading">
+        <div class="heading-light q-ml-sm q-mt-none col-xs-4 ">
           Loss Since
         </div>
         <div class="column q-ml-md">
@@ -129,7 +129,7 @@
 
       <div v-if="userRole != 'vendor'">
         <div class="row justify-between">
-          <div class="text-bold q-mt-sm q-ml-sm">Claim Deadlines</div>
+          <div class=" q-mt-sm form-heading q-ml-sm ">Claim Deadlines</div>
           <div class="row">
             <q-icon
               class="q-ml-xs"
@@ -141,7 +141,7 @@
           </div>
         </div>
         <div class="q-mt-md row">
-          <div class="heading-light q-ml-sm q-mt-none col-xs-4 lightHeading">
+          <div class="heading-light q-ml-sm q-mt-none col-xs-4 ">
             Tolling Date / Statute Deadline
           </div>
           <div class="column q-ml-md">
@@ -149,7 +149,7 @@
           </div>
         </div>
         <div class="q-mt-md row">
-          <div class="heading-light q-ml-sm q-mt-none col-xs-4 lightHeading">
+          <div class="heading-light q-ml-sm q-mt-none col-xs-4 ">
             Recoverable Depreciation Due
           </div>
           <div class="column q-ml-md">
@@ -159,8 +159,8 @@
         <q-separator class="q-mt-sm q-mb-sm" />
       </div>
       <div v-if="userRole != 'vendor'">
-        <div class="row q-ml-xs justify-between">
-          <div class="text-bold q-mt-xs q-ml-xs">Loss Details</div>
+        <div class="row  justify-between">
+          <div class="form-heading q-ml-sm   q-mt-xs ">Loss Details</div>
           <div>
             <q-icon
               name="create"
@@ -177,7 +177,7 @@
 
         <div class="q-ml-xs" v-if="getSelectedClaim.lossInfo">
           <div class="q-mt-md row">
-            <div class="heading-light q-mt-none col-xs-4 lightHeading">
+            <div class="heading-light q-mt-none col-xs-4">
               Date & Time of Loss
             </div>
             <div class="column q-ml-md">
@@ -186,7 +186,7 @@
           </div>
 
           <div class="q-mt-md row">
-            <div class="heading-light q-mt-none col-xs-4 lightHeading">
+            <div class="heading-light q-mt-none col-xs-4 ">
               Estimated Loss Amount
             </div>
             <div class="column q-ml-md">
@@ -225,7 +225,7 @@
         <q-separator class="q-mt-sm q-mb-sm" />
       </div>
       <div v-if="userRole != 'vendor'">
-        <div class="form-heading q-ml-sm col q-mb-md">Claim Timeline</div>
+        <div class="form-heading q-ml-sm  col q-mb-md">Claim Timeline</div>
         <div v-for="(phase, index) in getSelectedClaim.phases">
           <div class="row">
             <div class="col-2">
