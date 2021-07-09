@@ -952,6 +952,18 @@ export default {
 
     async onNextButtonClick() {
       this.step++;
+
+      switch (this.stepArr[this.step].ref) {
+        case 'photos':
+          this.getClaimPhoto(this.selectedClaimId);
+          break;
+        case 'sketches':
+          this.getClaimSketch(this.selectedClaimId);
+          break;
+        case 'additionalDoc':
+          this.getAdditionalDocs(this.selectedClaimId);
+          break;
+      }
       if (this.stepClickValidTill < this.step) {
         this.stepClickValidTill = this.step;
       }
@@ -1105,10 +1117,8 @@ export default {
   async created() {
     this.userRole = getCurrentUser().attributes.roles[0].machineValue;
     this.getClaimEstimateDoc(this.selectedClaimId);
-    this.getClaimPhoto(this.selectedClaimId);
-    this.getClaimSketch(this.selectedClaimId);
-    this.getAdditionalDocs(this.selectedClaimId);
-    this.getEsxDocs(this.selectedClaimId);
+    //ToDo
+    // this.getEsxDocs(this.selectedClaimId);
   }
 };
 </script>
