@@ -215,6 +215,7 @@
                       >
                         <div class="q-mt-sm text-bold">Permission/Role</div>
                       </div>
+
                       <th v-for="(user, index) in arrOfRoles">
                         <div style="height:45px;width:100px">
                           {{ user.value.name }}
