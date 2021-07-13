@@ -203,26 +203,36 @@
               <div class="row">
                 <div class="col">
                   <table>
-                    <tr>
-                      <div
-                        style="
+                    <thead>
+                      <tr>
+                        <div
+                          style="
                           height: 50px;
                          border: 1px solid #ccc;
                           font-size: 15px;
-                         
+                         overflow: auto;
+                        position: sticky;
+                        top: 0;
+                     z-index: 10;
+      
                         "
-                        class="text-center"
-                      >
-                        <div class="q-mt-sm text-bold">Permission/Role</div>
-                      </div>
-
-                      <th v-for="(user, index) in arrOfRoles">
-                        <div style="height:45px;width:100px">
-                          {{ user.value.name }}
+                          class="text-center bg-white"
+                        >
+                          <div class="q-mt-sm text-bold" style="height: 30px;">
+                            Permission/Role
+                          </div>
                         </div>
-                      </th>
-                    </tr>
 
+                        <th
+                          v-for="(user, index) in arrOfRoles"
+                          style="height: 30px;"
+                        >
+                          <div style="height:45px;width:100px;">
+                            {{ user.value.name }}
+                          </div>
+                        </th>
+                      </tr>
+                    </thead>
                     <tr v-for="(us, ind) in permissions">
                       <th
                         style="height: 40px; font-size: 10px;font-weight:normal;text-align: left;"
@@ -1399,5 +1409,10 @@ th {
   background: lightgray;
 
   border: 1px solid #ccc;
+}
+table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 </style>
