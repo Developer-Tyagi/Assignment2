@@ -228,7 +228,11 @@
                   v-for="pay in disbursements.disbursements"
                 >
                   <div class="q-my-sm row justify-between">
-                    <div>Total : ${{ pay.amount }}</div>
+                    <div class="row">
+                      <div>Date - {{ pay.created | moment('MM/DD/YYYY') }}</div>
+
+                      <div class="q-ml-sm">Total : ${{ pay.amount }}</div>
+                    </div>
                     <div class="heading-light">
                       <q-icon
                         name="delete"
@@ -816,6 +820,7 @@
                     </tr>
 
                     <tr
+                      v-if="exp.amount - exp.dilivered != 0"
                       class="heading-light"
                       v-for="(exp, index) in clientAndCompany"
                     >
@@ -1029,6 +1034,7 @@
                     </tr>
 
                     <tr
+                      v-if="exp.amount - exp.dilivered != 0"
                       class="heading-light"
                       v-for="(exp, index) in clientOnly"
                     >
@@ -1106,6 +1112,7 @@
 
                     <tr
                       class="heading-light"
+                      v-if="exp.amount - exp.dilivered"
                       v-for="(exp, index) in companyOnly"
                     >
                       <td>
@@ -1404,18 +1411,33 @@ export default {
     dateToSend,
     /* Toggle button Function  for company   */
     setValueToPayCompany(i, value) {
-      this.companyAmounts[i] = value;
+      if (this.wantToPayCompany[i].value) {
+        this.companyAmounts[i] = value;
+      } else {
+        this.companyAmounts[i] = 0;
+      }
+
       // this.companyOnly[i].amount;
       this.onFillingCompany();
     },
     /* Toggle button Function for client     */
     setValueToPayClient(i, value) {
-      this.clientAmount[i] = value;
+      if (this.wantToPayClient[i].value) {
+        this.clientAmount[i] = value;
+      } else {
+        this.clientAmount[i] = 0;
+      }
+
       this.onFillingClient();
     },
     /* Toggle button Function for company and client     */
     setValueToPayClientAndCompany(i, value) {
-      this.clientAndCompanyAmount[i] = value;
+      if (this.wantToPay[i].value) {
+        this.clientAndCompanyAmount[i] = value;
+      } else {
+        this.clientAndCompanyAmount[i] = 0;
+      }
+      // this.clientAndCompanyAmount[i] = value;
       this.onFillingValue();
     },
     /* Hour To Fees Calculation     */
