@@ -187,7 +187,7 @@ export default {
         // },
         {
           title: 'Mortgages',
-          key: 'mortagages',
+          key: 'mortgages',
           link: '/mortgages',
           description: 'View, Add and Manage all types of Mortgages.'
         },
@@ -232,7 +232,7 @@ export default {
         'claims',
         'vendors',
         'carriers',
-        'mortagages',
+        'mortgages',
         'reports',
         'admin',
         'manage-users',
@@ -245,7 +245,7 @@ export default {
         'claims',
         'vendors',
         'carriers',
-        'mortagages',
+        'mortgages',
         'reports',
         'manage-users',
         'configuration'
@@ -257,7 +257,7 @@ export default {
         'claims',
         'vendors',
         'carriers',
-        'mortagages',
+        'mortgages',
         'reports',
         'manage-users',
         'configuration'

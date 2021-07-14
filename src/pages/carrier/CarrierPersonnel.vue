@@ -27,7 +27,7 @@
                 name="delete"
                 size="xs"
                 color="primary"
-                @click="onDelete(index)"
+                @click="onClickDelete(index)"
               />
             </div>
             <div class="row ">
@@ -315,6 +315,28 @@
         />
       </q-card>
     </q-dialog>
+
+    <q-dialog v-model="deleteAlertDialog">
+      <q-card>
+        <DeleteAlert />
+        <q-card-actions align="right">
+          <q-btn
+            flat
+            label="Cancel"
+            color="primary"
+            v-close-popup
+            @click="deleteAlertDialog = false"
+          ></q-btn>
+          <q-btn
+            flat
+            label="Delete"
+            color="primary"
+            v-close-popup
+            @click="onPersonnelDelete"
+          ></q-btn>
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -324,16 +346,19 @@ import CustomBar from 'components/CustomBar';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import AddCarrierPersonnel from 'components/AddCarrierPersonnel';
 import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
-
+import DeleteAlert from 'components/DeleteAlert';
 export default {
   name: 'CarrierPersonnel',
   components: {
     CustomBar,
     AutoCompleteAddress,
-    AddCarrierPersonnel
+    AddCarrierPersonnel,
+    DeleteAlert
   },
   data() {
     return {
+      valueIndex: '',
+      deleteAlertDialog: false,
       options: [],
       name: '',
       id: '',
@@ -452,10 +477,14 @@ export default {
         this.editPersonnelDialog = false;
       }
     },
-    async onDelete(index) {
+    onClickDelete(index) {
+      this.deleteAlertDialog = true;
+      this.valueIndex = index;
+    },
+    async onPersonnelDelete() {
       const vendor = {
         id: this.$route.params.id,
-        personnelId: this.carrierPersonnel.personnel[index].id
+        personnelId: this.carrierPersonnel.personnel[this.valueIndex].id
       };
       await this.deleteCarrierPersonnel(vendor);
       const params = {

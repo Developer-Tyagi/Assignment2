@@ -1162,13 +1162,7 @@
     </q-dialog>
     <q-dialog v-model="alert">
       <q-card>
-        <q-card-section>
-          <div class="text-h6">Alert</div>
-        </q-card-section>
-
-        <q-card-section class="q-pt-none">
-          Are you sure ! You want to delete this payment!
-        </q-card-section>
+        <DeleteAlert />
 
         <q-card-actions align="right">
           <q-btn
@@ -1190,13 +1184,7 @@
     </q-dialog>
     <q-dialog v-model="alertForDisbursement">
       <q-card>
-        <q-card-section>
-          <div class="text-h6">Alert</div>
-        </q-card-section>
-
-        <q-card-section class="q-pt-none">
-          Are you sure ! You want to delete this Disbursement!
-        </q-card-section>
+        <DeleteAlert />
 
         <q-card-actions align="right">
           <q-btn
@@ -1218,13 +1206,7 @@
     </q-dialog>
     <q-dialog v-model="alertForExpense">
       <q-card>
-        <q-card-section>
-          <div class="text-h6">Alert</div>
-        </q-card-section>
-
-        <q-card-section class="q-pt-none">
-          Are you sure ! You want to delete this Expense!
-        </q-card-section>
+        <DeleteAlert />
 
         <q-card-actions align="right">
           <q-btn
@@ -1257,12 +1239,14 @@ import ClaimDetail from 'components/ClaimDetail';
 import { validateDate } from '@utils/validation';
 import { dateToSend } from '@utils/date';
 import { date } from 'quasar';
+import DeleteAlert from 'components/DeleteAlert';
 export default {
   name: 'ClaimLedger',
   components: {
     EstimatingInfo,
     CustomBar,
-    ClaimDetail
+    ClaimDetail,
+    DeleteAlert
   },
   data() {
     return {

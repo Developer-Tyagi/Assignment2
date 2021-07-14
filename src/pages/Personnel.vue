@@ -83,7 +83,7 @@
             name="delete"
             size="xs"
             color="primary"
-            @click="onDelete(index)"
+            @click="onClickDelete(index)"
           />
         </div>
 
@@ -143,21 +143,42 @@
     <div class="row" v-if="personnel.personnel">
       <div class="q-ml-auto q-mt-sm ">
         <q-btn
-          @click="
-            (addCompanyPersonnelDailog = true), $emit('addPersonnel', true)
-          "
+          @click="onClickAddPersonnel"
           label="Add Personnel"
           class="q-ml-auto"
           color="primary"
         ></q-btn>
       </div>
     </div>
+    \
+    <q-dialog v-model="deleteAlertDialog">
+      <q-card>
+        <DeleteAlert />
+        <q-card-actions align="right">
+          <q-btn
+            flat
+            label="Cancel"
+            color="primary"
+            v-close-popup
+            @click="deleteAlertDialog = false"
+          ></q-btn>
+          <q-btn
+            flat
+            label="Delete"
+            color="primary"
+            v-close-popup
+            @click="onPersonnelDelete"
+          ></q-btn>
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import CompanyPersonnel from 'components/CompanyPersonnel';
+import DeleteAlert from 'components/DeleteAlert';
 import ClaimDetail from 'components/ClaimDetail';
 import { dateToSend } from '@utils/date';
 import { dateToShow } from '@utils/date';
@@ -166,9 +187,11 @@ import { date } from 'quasar';
 
 export default {
   name: 'ClaimPersonnel',
-  components: { CustomBar, CompanyPersonnel, ClaimDetail },
+  components: { CustomBar, CompanyPersonnel, ClaimDetail, DeleteAlert },
   data() {
     return {
+      deleteAlertDialog: false,
+      valueIndex: '',
       personnelId: '',
       //This Object is for Editing Existing Company Personnel
       companyPersonnel: {
@@ -225,7 +248,14 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['personnel', 'selectedClaimId', 'roleTypes', 'userRoles'])
+    ...mapGetters([
+      'personnel',
+      'selectedClaimId',
+      'roleTypes',
+      'userRoles',
+      ' claimRoles',
+      'allUsers'
+    ])
   },
   created() {
     this.getPersonnelInfo(this.selectedClaimId);
@@ -237,12 +267,23 @@ export default {
   methods: {
     ...mapActions([
       'getPersonnelInfo',
-      'getAllUsers',
       'addCompanyPersonnel',
       'getRoles',
       'editPersonnel',
-      'deleteClaimPersonnel'
+      'deleteClaimPersonnel',
+      'getClaimRoles',
+      'getAllUsers'
     ]),
+    onClickAddPersonnel() {
+      this.addCompanyPersonnelDailog = true;
+      this.$emit('addPersonnel', true);
+      this.getClaimRoles();
+      this.getAllUsers();
+    },
+    onClickDelete(index) {
+      this.deleteAlertDialog = true;
+      this.valueIndex = index;
+    },
     //This Function is for Adding new Company Personnel
     async onSaveButtonClick() {
       let success = false;
@@ -322,10 +363,10 @@ export default {
         index
       ].fees.rate;
     },
-    async onDelete(index) {
+    async onPersonnelDelete() {
       const personnel = {
         claimID: this.selectedClaimId,
-        personnelID: this.personnel.personnel[index].id
+        personnelID: this.personnel.personnel[this.valueIndex].id
       };
       await this.deleteClaimPersonnel(personnel);
       await this.getPersonnelInfo(this.selectedClaimId);

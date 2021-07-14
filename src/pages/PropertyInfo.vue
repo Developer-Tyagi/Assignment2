@@ -1,37 +1,6 @@
 <template>
   <div>
     <div>
-      <!-- <div class="q-ml-md q-mt-md text-h6">
-        {{
-          editSelectedClient.attributes.insuredInfo.primary.fname
-            ? editSelectedClient.attributes.insuredInfo.primary.fname
-            : '-'
-        }}
-        {{
-          editSelectedClient.attributes.insuredInfo.primary.lname
-            ? editSelectedClient.attributes.insuredInfo.primary.lname
-            : '-'
-        }}
-      </div> -->
-      <!-- <div class="row heading-light q-ml-md q-my-md">
-        <div>
-          {{
-            editSelectedClient.attributes.meta
-              ? editSelectedClient.attributes.meta.totalClaims
-              : 0
-          }}
-          - Total Claims
-        </div>
-        <div class="q-ml-xl">
-          {{
-            editSelectedClient.attributes.meta
-              ? editSelectedClient.attributes.meta.openClaims
-              : 0
-          }}
-          - Open Claim
-        </div>
-      </div> -->
-
       <q-card
         class="text-primary q-pa-md"
         flat
@@ -40,14 +9,14 @@
       >
         + Add Another Property</q-card
       >
-      <!-- //pointer -->
+
       <div class="q-mx-md q-pa-xs">
         <div v-if="setClientProperty.length">
           <q-card
             class="q-my-sm"
             flat
             bordered
-            v-for="i in setClientProperty.length"
+            v-for="(i, index) in setClientProperty.length"
             :key="setClientProperty.id"
           >
             <div v-if="setClientProperty">
@@ -118,14 +87,14 @@
                     name="create"
                     color="primary"
                     class="q-ml-sm q-mt-xs"
-                    @click="editPropertyAddress(i - 1)"
+                    @click="editPropertyAddress(index)"
                   ></q-icon>
                   <q-icon
                     size="sm"
                     name="delete"
                     color="primary"
                     class="q-mt-xs"
-                    @click="deletePropertyAddress(i - 1)"
+                    @click="onDeleteProperty(index)"
                   />
                 </div>
               </div>
@@ -287,6 +256,30 @@
         </div>
       </q-card>
     </q-dialog>
+
+    <!-- Delete Alert Dialog -->
+
+    <q-dialog v-model="deleteAlertDialog">
+      <q-card>
+        <DeleteAlert />
+        <q-card-actions align="right">
+          <q-btn
+            flat
+            label="Cancel"
+            color="primary"
+            v-close-popup
+            @click="deleteAlertDialog = false"
+          ></q-btn>
+          <q-btn
+            flat
+            label="Delete"
+            color="primary"
+            v-close-popup
+            @click="deletePropertyAddress"
+          ></q-btn>
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -294,6 +287,7 @@
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
+import DeleteAlert from 'components/DeleteAlert';
 import moment from 'moment';
 import { dateToShow } from '@utils/date';
 import { successMessage } from '@utils/validation';
@@ -304,6 +298,8 @@ export default {
 
   data() {
     return {
+      valueIndex: '',
+      deleteAlertDialog: false,
       isEdit: '',
       propertyId: '',
       propertyAddressDetails: {
@@ -330,7 +326,7 @@ export default {
     };
   },
 
-  components: { CustomBar, AutoCompleteAddress },
+  components: { CustomBar, AutoCompleteAddress, DeleteAlert },
   created() {
     if (!this.selectedClientId) {
       this.$router.push('/clients');
@@ -369,6 +365,10 @@ export default {
 
       this.$router.push('/claim-details');
     },
+    onDeleteProperty(index) {
+      this.deleteAlertDialog = true;
+      this.valueIndex = index;
+    },
     dateToShow,
     setTypes(types, data) {
       const obj = types.find(item => {
@@ -381,10 +381,10 @@ export default {
 
     // Deleting Property Address
 
-    async deletePropertyAddress(index) {
+    async deletePropertyAddress() {
       const payload = {
         id: this.selectedClientId,
-        propertyId: this.setClientProperty[index].id
+        propertyId: this.setClientProperty[this.valueIndex].id
       };
 
       await this.deletedPropertyAddress(payload);
@@ -446,6 +446,7 @@ export default {
         machineValue: ''
       };
       this.addNewPropertyDialog = true;
+      this.getPropertyTypes();
     },
 
     async onSaveButtonClick() {

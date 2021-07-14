@@ -16,7 +16,7 @@
         name="delete"
         size="xs"
         color="primary"
-        @click="onDelete"
+        @click="onClickDelete"
       />
     </div>
     <div class="row q-mt-sm">
@@ -119,6 +119,27 @@
         />
       </q-card>
     </q-dialog>
+    <q-dialog v-model="deleteAlertDialog">
+      <q-card>
+        <DeleteAlert />
+        <q-card-actions align="right">
+          <q-btn
+            flat
+            label="Cancel"
+            color="primary"
+            v-close-popup
+            @click="deleteAlertDialog = false"
+          ></q-btn>
+          <q-btn
+            flat
+            label="Delete"
+            color="primary"
+            v-close-popup
+            @click="onCarrierDelete"
+          ></q-btn>
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 <script>
@@ -126,11 +147,17 @@ import { mapGetters, mapActions } from 'vuex';
 import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
 import AddCarrier from 'components/AddCarrier';
 import { constants } from '@utils/constant';
+import DeleteAlert from 'components/DeleteAlert';
+
 export default {
   name: 'CarrierCompanyInfo',
-  components: { AddCarrier },
+  components: { AddCarrier, DeleteAlert },
   data() {
-    return { addCarrierDialog: false, constants: constants };
+    return {
+      deleteAlertDialog: false,
+      addCarrierDialog: false,
+      constants: constants
+    };
   },
   computed: {
     ...mapGetters(['selectedCarrier'])
@@ -144,7 +171,10 @@ export default {
     onEdit() {
       this.addCarrierDialog = true;
     },
-    async onDelete() {
+    onClickDelete() {
+      this.deleteAlertDialog = true;
+    },
+    async onCarrierDelete() {
       const carrier = {
         id: this.$route.params.id
       };

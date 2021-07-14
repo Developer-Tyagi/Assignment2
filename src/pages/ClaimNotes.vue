@@ -66,13 +66,7 @@
     <!-- Alert delete Box -->
     <q-dialog v-model="alert">
       <q-card>
-        <q-card-section>
-          <div class="text-h6">Alert</div>
-        </q-card-section>
-
-        <q-card-section class="q-pt-none">
-          Are you sure ! You want to delete This Note!
-        </q-card-section>
+        <DeleteAlert />
 
         <q-card-actions align="right">
           <q-btn
@@ -170,10 +164,10 @@ import { dateWithTime } from '@utils/date';
 import { successMessage } from '@utils/validation';
 import { constants } from '@utils/constant';
 import ClaimDetail from 'components/ClaimDetail';
-
+import DeleteAlert from 'components/DeleteAlert';
 export default {
   name: 'ClaimNotes',
-  components: { CustomBar, ClaimDetail },
+  components: { CustomBar, ClaimDetail, DeleteAlert },
   data() {
     return {
       indexValue: null,

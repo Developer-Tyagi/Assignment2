@@ -56,13 +56,7 @@
     <!-- Alert delete Box -->
     <q-dialog v-model="alertDailog">
       <q-card>
-        <q-card-section>
-          <div class="text-h6">Alert</div>
-        </q-card-section>
-
-        <q-card-section class="q-pt-none">
-          Are you sure ! You want to delete this
-        </q-card-section>
+        <DeleteAlert />
 
         <q-card-actions align="right">
           <q-btn
@@ -88,10 +82,11 @@
 <script>
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import { Plugins, CameraResultType, CameraDirection } from '@capacitor/core';
+import DeleteAlert from 'components/DeleteAlert';
 const { Camera } = Plugins;
 export default {
   name: 'VendorDocument',
-
+  components: { DeleteAlert },
   data() {
     return {
       driveId: '',

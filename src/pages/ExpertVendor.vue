@@ -96,7 +96,7 @@
               src="~assets/add.svg"
               width="30px"
               height="30px"
-              @click="expertVendorDialogBox = true"
+              @click="onAddExpertVendorClick"
             />
           </div>
         </div>
@@ -118,13 +118,7 @@
       <!-- delete Dialog Box -->
       <q-dialog v-model="alert">
         <q-card>
-          <q-card-section>
-            <div class="text-h6">Alert</div>
-          </q-card-section>
-
-          <q-card-section class="q-pt-none">
-            Are you sure ! You want to delete This Expert vendor!
-          </q-card-section>
+          <DeleteAlert />
 
           <q-card-actions align="right">
             <q-btn
@@ -196,12 +190,14 @@ import { constants } from '@utils/constant';
 import ExpertVendorInfo from 'components/ExpertVendorInfo';
 import { successMessage } from '@utils/validation';
 import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
+import DeleteAlert from 'components/DeleteAlert';
 export default {
   name: 'ClaimExpertVendor',
   components: {
     CustomBar,
     ClaimDetail,
-    ExpertVendorInfo
+    ExpertVendorInfo,
+    DeleteAlert
   },
   data() {
     return {
@@ -246,10 +242,19 @@ export default {
     await this.getClaimVendors(this.selectedClaimId);
   },
   methods: {
-    ...mapActions(['addSingleVendor', 'getClaimVendors', 'deleteClaimVendor']),
+    ...mapActions([
+      'addSingleVendor',
+      'getClaimVendors',
+      'deleteClaimVendor',
+      'getVendorIndustries'
+    ]),
     setVendorId(value) {
       this.vendorId = value.id;
       this.vendorName = value.name;
+    },
+    onAddExpertVendorClick() {
+      this.expertVendorDialogBox = true;
+      this.getVendorIndustries();
     },
     onDelete(index) {
       this.currentIndex = index;

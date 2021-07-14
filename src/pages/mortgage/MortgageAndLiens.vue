@@ -20,7 +20,7 @@
               name="delete"
               size="xs"
               color="primary"
-              @click="onDelete(index)"
+              @click="onClickDelete(index)"
             />
           </div>
           <div class="row q-mt-sm">
@@ -211,6 +211,28 @@
         />
       </q-card>
     </q-dialog>
+
+    <q-dialog v-model="deleteAlertDialog">
+      <q-card>
+        <DeleteAlert />
+        <q-card-actions align="right">
+          <q-btn
+            flat
+            label="Cancel"
+            color="primary"
+            v-close-popup
+            @click="deleteAlertDialog = false"
+          ></q-btn>
+          <q-btn
+            flat
+            label="Delete"
+            color="primary"
+            v-close-popup
+            @click="onDeleteMortgage"
+          ></q-btn>
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 <script>
@@ -218,6 +240,7 @@ import { mapGetters, mapActions } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import ClaimDetail from 'components/ClaimDetail';
 import { constants } from '@utils/constant';
+import DeleteAlert from 'components/DeleteAlert';
 import AddMortgage from 'components/AddMortgage';
 import { successMessage } from '@utils/validation';
 import MortgageForm from 'components/MortgageForm';
@@ -228,10 +251,12 @@ export default {
     CustomBar,
     MortgageForm,
     ClaimDetail,
-    AddMortgage
+    AddMortgage,
+    DeleteAlert
   },
   data() {
     return {
+      deleteAlertDialog: false,
       id: '',
       mortgageID: '',
       mortgageInfoDialog: false,
@@ -317,10 +342,14 @@ export default {
       this.editMortgageInfoDialog = false;
       this.getMortgage(this.selectedClaimId);
     },
-    async onDelete(index) {
+    onClickDelete(index) {
+      this.deleteAlertDialog = true;
+      this.valueIndex = index;
+    },
+    async onDeleteMortgage() {
       const mortgage = {
         claimID: this.selectedClaimId,
-        mortgageID: this.mortgage.mortgages[index].id
+        mortgageID: this.mortgage.mortgages[this.valueIndex].id
       };
       await this.deleteClaimMortgageInfo(mortgage);
       this.getMortgage(this.selectedClaimId);

@@ -374,14 +374,7 @@
     <!-- Alert delete Box -->
     <q-dialog v-model="alert">
       <q-card>
-        <q-card-section>
-          <div class="text-h6">Alert</div>
-        </q-card-section>
-
-        <q-card-section class="q-pt-none">
-          Are you sure ! You want to delete this
-        </q-card-section>
-
+        <DeleteAlert />
         <q-card-actions align="right">
           <q-btn
             flat
@@ -442,11 +435,12 @@ import { mapActions, mapMutations, mapGetters } from 'vuex';
 import request from '@api';
 import { jsPDF } from 'jspdf';
 import { Plugins, CameraResultType, CameraDirection } from '@capacitor/core';
-
+import DeleteAlert from 'components/DeleteAlert';
 const { Camera } = Plugins;
 
 export default {
   name: 'FileManager',
+  components: { DeleteAlert },
   props: ['directoryId'],
 
   data() {

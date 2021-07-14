@@ -20,7 +20,7 @@
         name="delete"
         size="xs"
         color="primary"
-        @click="onDelete"
+        @click="onClickDelete"
       />
     </div>
     <div class="row">
@@ -126,6 +126,28 @@
         />
       </q-card>
     </q-dialog>
+
+    <q-dialog v-model="deleteAlertDialog">
+      <q-card>
+        <DeleteAlert />
+        <q-card-actions align="right">
+          <q-btn
+            flat
+            label="Cancel"
+            color="primary"
+            v-close-popup
+            @click="deleteAlertDialog = false"
+          ></q-btn>
+          <q-btn
+            flat
+            label="Delete"
+            color="primary"
+            v-close-popup
+            @click="onDeleteMortgage"
+          ></q-btn>
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 <script>
@@ -133,11 +155,13 @@ import { mapGetters, mapActions } from 'vuex';
 import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
 import AddMortgage from 'components/AddMortgage';
 import { constants } from '@utils/constant';
+import DeleteAlert from 'components/DeleteAlert';
 export default {
   name: 'Mortgage',
-  components: { AddMortgage },
+  components: { AddMortgage, DeleteAlert },
   data() {
     return {
+      deleteAlertDialog: false,
       addMortgageDialog: false,
       constants: constants
     };
@@ -159,7 +183,10 @@ export default {
     closeAddMortgageDialog(e) {
       this.addMortgageDialog = false;
     },
-    async onDelete() {
+    onClickDelete() {
+      this.deleteAlertDialog = true;
+    },
+    async onDeleteMortgage() {
       const mortgage = {
         id: this.$route.params.id
       };

@@ -25,7 +25,7 @@
               size="sm"
               color="primary"
               :style="logItem.isSystemGen == true ? 'visibility:hidden;' : ''"
-              @click="onClickDelete(logItem.id)"
+              @click="onClickDelete(index)"
             />
           </div>
           <div>{{ logItem.title }}</div>
@@ -165,6 +165,28 @@
         </div>
       </q-card>
     </q-dialog>
+
+    <q-dialog v-model="deleteAlertDialog">
+      <q-card>
+        <DeleteAlert />
+        <q-card-actions align="right">
+          <q-btn
+            flat
+            label="Cancel"
+            color="primary"
+            v-close-popup
+            @click="deleteAlertDialog = false"
+          ></q-btn>
+          <q-btn
+            flat
+            label="Delete"
+            color="primary"
+            v-close-popup
+            @click="onDeleteLog"
+          ></q-btn>
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -172,15 +194,18 @@
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import moment from 'moment';
+import DeleteAlert from 'components/DeleteAlert';
 import { successMessage } from '@utils/validation';
 import { constants } from '@utils/constant';
 import { dateWithTime } from '@utils/date';
 import ClaimDetail from 'components/ClaimDetail';
 export default {
   name: 'ActivityLog',
-  components: { CustomBar, ClaimDetail },
+  components: { CustomBar, ClaimDetail, DeleteAlert },
   data() {
     return {
+      valueIndex: '',
+      deleteAlertDialog: false,
       name: '',
       date: '',
       isFieldDisable: true,
@@ -244,10 +269,14 @@ export default {
         this.isFieldDisable = false;
       }
     },
-    async onClickDelete(id) {
+    onClickDelete(index) {
+      this.deleteAlertDialog = true;
+      this.valueIndex = index;
+    },
+    async onDeleteLog() {
       const payload = {
         claimID: this.selectedClaimId,
-        logId: id
+        logId: this.log[this.valueIndex].id
       };
       await this.deleteActivityLogt(payload);
       this.getLog(this.selectedClaimId);
