@@ -759,6 +759,22 @@ export async function getTemplateToken({ commit, dispatch }) {
     });
   }
 }
+export async function getAccess({ commit, dispatch }) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get('/pageaccess');
+
+    commit('setAccess', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+  }
+}
 
 export async function clearLocalStorage() {
   LocalStorage.remove('carrier');

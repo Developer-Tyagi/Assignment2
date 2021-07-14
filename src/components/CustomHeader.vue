@@ -187,7 +187,7 @@ export default {
         // },
         {
           title: 'Mortgages',
-          key: 'mortagages',
+          key: 'mortgages',
           link: '/mortgages',
           description: 'View, Add and Manage all types of Mortgages.'
         },
@@ -222,46 +222,7 @@ export default {
           description: 'Edit profile '
         }
       ],
-      sidebarItems: [],
-      estimator: ['dashboard', 'claims', 'profile'],
-      vendor: ['dashboard', 'claims', 'profile'],
-      owner: [
-        'dashboard',
-        'leads',
-        'clients',
-        'claims',
-        'vendors',
-        'carriers',
-        'mortagages',
-        'reports',
-        'admin',
-        'manage-users',
-        'configuration'
-      ],
-      office_manager: [
-        'dashboard',
-        'leads',
-        'clients',
-        'claims',
-        'vendors',
-        'carriers',
-        'mortagages',
-        'reports',
-        'manage-users',
-        'configuration'
-      ],
-      office_staff: [
-        'dashboard',
-        'leads',
-        'clients',
-        'claims',
-        'vendors',
-        'carriers',
-        'mortagages',
-        'reports',
-        'manage-users',
-        'configuration'
-      ]
+      sidebarItems: []
     };
   },
 
@@ -271,9 +232,11 @@ export default {
       'getClaims',
       'getActiveLeadsList',
       'getArchivedLeadsList',
-      'getClients'
+      'getClients',
+      'getAccess'
     ]),
     ...mapMutations(['setConvertedLead']),
+
     async logout() {
       if (this.getFCMToken()) {
         await this.deletePushNotificationToken(this.getFCMToken());
@@ -328,15 +291,12 @@ export default {
     },
 
     createSidebarMenuItems() {
-      const roles = getCurrentUser().attributes.roles;
-      roles.forEach(role => {
-        this[role.machineValue].forEach(item => {
-          let obj = this.linksData.find(link => link.key === item);
-          let index = this.sidebarItems.findIndex(x => x.key === obj.key);
-          if (index < 0) {
-            this.sidebarItems.push(obj);
-          }
-        });
+      this.pageAccess.forEach(item => {
+        let obj = this.linksData.find(link => link.key === item);
+        let index = this.sidebarItems.findIndex(x => x.key === obj.key);
+        if (index < 0) {
+          this.sidebarItems.push(obj);
+        }
       });
     }
   },
@@ -345,10 +305,10 @@ export default {
     currentRouteName() {
       return this.$router.history.current.path.substring(1);
     },
-    ...mapGetters(['converted'])
+    ...mapGetters(['converted', 'pageAccess'])
   },
 
-  created() {
+  async created() {
     if (window.innerWidth * 0.9 < 300) {
       this.intViewportWidth = window.innerWidth * 0.9;
     } else {
@@ -356,6 +316,7 @@ export default {
     }
     if (this.getCurrentUser().attributes) {
       this.user = getCurrentUser().attributes;
+      await this.getAccess();
       this.createSidebarMenuItems();
     }
     if (this.$q.screen.width < 992) {
