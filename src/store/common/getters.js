@@ -20,5 +20,6 @@ export const userRoles = state => state.userRoles;
 
 export const fileRoleOptions = state => state.fileRoleOptions;
 export const tokens = state => state.tokens;
+export const pageAccess = state => state.pageAccess;
 export const organization = state => state.organization;
 export const isEdit = state => state.isEdit;

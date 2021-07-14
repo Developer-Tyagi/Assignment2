@@ -133,6 +133,10 @@ export function setTemplateToken(state, token) {
   state.tokens = token;
 }
 
+export function setAccess(state, access) {
+  state.pageAccess = access.attributes.pages;
+}
+
 export function setNetworkStatus(state, isOnline) {
   state.isOnline = isOnline;
 }

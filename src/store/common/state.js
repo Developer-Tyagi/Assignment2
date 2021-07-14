@@ -27,6 +27,7 @@ export default function() {
     plans: [],
     isEdit: false,
     tokens: [],
+    pageAccess: [],
     organization: [],
     isOnline: navigator.onLine
   };
