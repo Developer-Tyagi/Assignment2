@@ -1,6 +1,7 @@
 export default function() {
   return {
     converted: 'Converted',
+    isShowConvertButton: '',
     activeLeads: [],
     leadStatic: {},
     archivedLeads: [],
