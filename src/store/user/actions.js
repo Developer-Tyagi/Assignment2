@@ -472,7 +472,7 @@ export async function editUserProfile({ dispatch, state }, user) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: 'failed to update vendor'
+      message: 'failed to update User'
     });
   }
 }
