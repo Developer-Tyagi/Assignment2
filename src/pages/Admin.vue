@@ -1071,6 +1071,7 @@ export default {
       'addWorkflowAction',
       'getContactTypes',
       'editUserInfo',
+      'editUserProfile',
       'getUserInfo',
       'getRoles',
       'getPermissions',
@@ -1191,7 +1192,8 @@ export default {
             }
           }
         };
-        await this.editUserInfo(payload);
+        // await this.editUserInfo(payload);
+        await this.editUserProfile(payload);
         await this.getUserInfo();
         this.user = getCurrentUser().attributes;
         this.users.fname = this.user.contact.fname;
