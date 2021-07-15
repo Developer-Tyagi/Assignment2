@@ -455,3 +455,24 @@ export async function editUserInfo({ dispatch, state }, user) {
     });
   }
 }
+export async function editUserProfile({ dispatch, state }, user) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      '/users/me',
+      buildApiData('users', user.data)
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'User info  Updated !'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'failed to update User'
+    });
+  }
+}
