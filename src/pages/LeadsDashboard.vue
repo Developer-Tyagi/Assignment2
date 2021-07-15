@@ -163,8 +163,6 @@ export default {
     },
     onConvertedLeadClick() {
       this.$store.commit('setShowConvertButton', false);
-      // const query = { showConvertedButton: true };
-
       this.$router.push({ path: '/leads' });
 
       const payload = {
