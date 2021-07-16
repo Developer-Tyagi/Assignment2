@@ -331,10 +331,16 @@
               </div>
             </div>
             <div
-              class="col"
+              class="col clickLink"
               v-if="
                 singleUserData.contact.phoneNumber &&
                   singleUserData.contact.phoneNumber.length
+              "
+              @click="
+                onPhoneNumberClick(
+                  singleUserData.contact.phoneNumber[0].number,
+                  $event
+                )
               "
             >
               {{
@@ -365,8 +371,17 @@
               {{ singleUserData.contact ? singleUserData.contact.fname : '-' }}
               {{ singleUserData.contact ? singleUserData.contact.lname : '-' }}
             </div>
-            <div class="col">{{ singleUserData.email }}</div>
-            <div class="col" v-if="singleUserData.photoIDEmail">
+            <div
+              class="col clickLink"
+              @click="onEmailClick(singleUserData.email, $event)"
+            >
+              {{ singleUserData.email }}
+            </div>
+            <div
+              class="col clickLink"
+              v-if="singleUserData.photoIDEmail"
+              @click="onEmailClick(singleUserData.photoIDEmail, $event)"
+            >
               {{ singleUserData.photoIDEmail }}
             </div>
           </div>
