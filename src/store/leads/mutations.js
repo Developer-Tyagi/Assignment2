@@ -88,3 +88,6 @@ export function setLeadStatistics(state, leadStatic) {
 export function setConvertedLead(state, converted) {
   state.converted = converted;
 }
+export function setShowConvertButton(state, converted) {
+  state.isShowConvertButton = converted;
+}

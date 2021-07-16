@@ -141,6 +141,7 @@ export default {
       };
     },
     onClickNewLead() {
+      this.$store.commit('setShowConvertButton', true);
       this.$router.push('/leads');
       const payload = {
         new: '',
@@ -161,7 +162,9 @@ export default {
       this.getActiveLeadsList(payload);
     },
     onConvertedLeadClick() {
-      this.$router.push('/leads');
+      this.$store.commit('setShowConvertButton', false);
+      this.$router.push({ path: '/leads' });
+
       const payload = {
         searchString: '',
         name: '',
