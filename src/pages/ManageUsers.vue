@@ -330,7 +330,13 @@
                 }}
               </div>
             </div>
-            <div class="col" v-if="singleUserData.contact.phoneNumber.length">
+            <div
+              class="col"
+              v-if="
+                singleUserData.contact.phoneNumber &&
+                  singleUserData.contact.phoneNumber.length
+              "
+            >
               {{
                 singleUserData.contact.phoneNumber
                   ? singleUserData.contact.phoneNumber[0].number
@@ -349,6 +355,9 @@
           <div class="row q-mt-xl text-bold">
             <div class="col">Company Administrator</div>
             <div class="col">Administrator Email</div>
+            <div class="col" v-if="singleUserData.photoIDEmail">
+              Photo ID Email
+            </div>
           </div>
           <q-separator />
           <div class="row q-mt-xs">
@@ -357,6 +366,9 @@
               {{ singleUserData.contact ? singleUserData.contact.lname : '-' }}
             </div>
             <div class="col">{{ singleUserData.email }}</div>
+            <div class="col" v-if="singleUserData.photoIDEmail">
+              {{ singleUserData.photoIDEmail }}
+            </div>
           </div>
         </q-card>
       </q-card>
@@ -446,6 +458,22 @@
                         'You have entered an invalid email address!'
                     ]"
                   />
+                  <div
+                    v-if="
+                      singleUserData.roles &&
+                        singleUserData.roles[0].value == 'Estimator'
+                    "
+                  >
+                    <q-input
+                      dense
+                      v-model="singleUser.photoIdEmail"
+                      style=""
+                      label="Photo ID Email"
+                      class="q-mx-md col-5"
+                      lazy-rules
+                      outlined
+                    />
+                  </div>
                 </div>
               </q-card>
               <q-card class="q-mx-md q-pa-sm">
@@ -500,6 +528,7 @@ export default {
           number: ''
         },
         email: '',
+        photoIdEmail: '',
         roles: [],
         mailingAddress: {
           houseNumber: '',
@@ -676,6 +705,7 @@ export default {
               ]
             },
             email: this.singleUser.email,
+            photoIDEmail: this.singleUser.photoIdEmail,
             role: this.singleUser.roles,
             mailingAddress: this.singleUser.mailingAddress
           }
@@ -683,6 +713,7 @@ export default {
 
         await this.editUserInfo(payload);
         this.getAllUsers();
+
         this.singleUser.mailingAddress = {
           houseNumber: '',
           addressCountry: '',
@@ -690,6 +721,7 @@ export default {
           addressRegion: '',
           postOfficeBoxNumber: '',
           postalCode: '',
+
           streetAddress: '',
           dropBox: {
             info: '',
@@ -708,7 +740,13 @@ export default {
       this.singleUser.contact.number = this.singleUserData
         ? this.singleUserData.contact.phoneNumber[0].number
         : '';
+
       this.singleUser.email = this.singleUserData.email;
+
+      if (this.singleUserData.roles[0].value == 'estimator') {
+        this.singleUser.photoIdEmail = this.singleUserData.photoIDEmail;
+      }
+
       if (this.singleUserData.mailingAddress) {
         this.singleUser.mailingAddress.addressCountry = this.singleUserData
           .mailingAddress.addressCountry
