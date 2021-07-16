@@ -471,6 +471,11 @@
                       label="Photo ID Email"
                       class="q-mx-md col-5"
                       lazy-rules
+                      :rules="[
+                        val =>
+                          validateNonRequiredEmail(val) ||
+                          'You have entered an invalid email address!'
+                      ]"
                       outlined
                     />
                   </div>
@@ -505,7 +510,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
-import { validateEmail } from '@utils/validation';
+import { validateEmail, validateNonRequiredEmail } from '@utils/validation';
 import { onEmailClick, onPhoneNumberClick } from '@utils/clickable';
 
 export default {
@@ -634,7 +639,7 @@ export default {
 
   methods: {
     validateEmail,
-
+    validateNonRequiredEmail,
     ...mapActions([
       'addUser',
       'setOnboard',
@@ -734,16 +739,18 @@ export default {
     onEditClick() {
       this.singleUser.fname = this.singleUserData.contact.fname;
       this.singleUser.lname = this.singleUserData.contact.lname;
-      this.singleUser.contact.type = this.singleUserData
-        ? this.singleUserData.contact.phoneNumber[0].type
-        : '';
-      this.singleUser.contact.number = this.singleUserData
-        ? this.singleUserData.contact.phoneNumber[0].number
-        : '';
+
+      this.singleUser.contact.type =
+        this.singleUserData && this.singleUserData.contact.phoneNumber
+          ? this.singleUserData.contact.phoneNumber[0].type
+          : '';
+      this.singleUser.contact.number =
+        this.singleUserData && this.singleUserData.contact.phoneNumber
+          ? this.singleUserData.contact.phoneNumber[0].number
+          : '';
 
       this.singleUser.email = this.singleUserData.email;
-
-      if (this.singleUserData.roles[0].value == 'estimator') {
+      if (this.singleUserData.roles[0].value == 'Estimator') {
         this.singleUser.photoIdEmail = this.singleUserData.photoIDEmail;
       }
 
