@@ -238,6 +238,7 @@
       </q-list>
 
       <q-btn
+        v-if="isShowConvertButton == true"
         label="Convert Lead to Client"
         class="fixed-bottom q-my-md q-mx-auto"
         color="primary"
@@ -263,7 +264,7 @@ export default {
     this.getLeadDetails(this.$route.params.id);
   },
   computed: {
-    ...mapGetters(['selectedLead'])
+    ...mapGetters(['selectedLead', 'isShowConvertButton'])
   },
   methods: {
     ...mapActions(['getLeadDetails']),

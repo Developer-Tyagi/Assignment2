@@ -88,6 +88,15 @@
               {{ user.email }}
             </div>
           </div>
+          <div class="row q-mt-sm">
+            <div class="col-5 text-bold">Photo ID Email</div>
+            <div
+              class="col clickable text-primary"
+              @click="onEmailClick(user.email, $event)"
+            >
+              {{ user.photoIDEmail }}
+            </div>
+          </div>
         </div>
       </q-card>
     </div>
@@ -176,6 +185,13 @@
                         'You have entered an invalid email address!'
                     ]"
                   />
+                  <q-input
+                    dense
+                    v-model="users.photoIdEmail"
+                    style=""
+                    label="Photo ID Email"
+                    class="q-mx-md col-5"
+                  />
                 </div>
               </q-card>
               <q-card class="q-pa-sm">
@@ -225,6 +241,7 @@ export default {
           number: ''
         },
         email: '',
+        photoIdEmail: '',
         roles: [],
         mailingAddress: {
           houseNumber: '',
@@ -258,7 +275,12 @@ export default {
     validateEmail,
     onPhoneNumberClick,
     onEmailClick,
-    ...mapActions(['getContactTypes', 'editUserInfo', 'getUserInfo']),
+    ...mapActions([
+      'getContactTypes',
+      'editUserInfo',
+      'getUserInfo',
+      'editUserProfile'
+    ]),
 
     onEditClick() {
       this.users.companyName = this.user.companyName;
@@ -272,6 +294,7 @@ export default {
         : '';
 
       this.users.email = this.user.email;
+      this.users.photoIdEmail = this.user.photoIDEmail;
       if (this.user.mailingAddress) {
         this.users.mailingAddress.addressCountry = this.user.mailingAddress
           ? this.user.mailingAddress.addressCountry
@@ -312,6 +335,7 @@ export default {
               lname: this.users.lname
             },
             email: this.users.email,
+            photoIDEmail: this.users.photoIdEmail,
             role: this.users.roles,
             mailingAddress: this.users.mailingAddress,
             phoneNumber: {
@@ -320,7 +344,7 @@ export default {
             }
           }
         };
-        await this.editUserInfo(payload);
+        await this.editUserProfile(payload);
         await this.getUserInfo();
         this.user = getCurrentUser().attributes;
         this.users.companyName = this.user.companyName;

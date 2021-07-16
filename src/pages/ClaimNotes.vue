@@ -66,24 +66,10 @@
     <!-- Alert delete Box -->
     <q-dialog v-model="alert">
       <q-card>
-        <DeleteAlert />
-
-        <q-card-actions align="right">
-          <q-btn
-            flat
-            label="Cancel"
-            color="primary"
-            v-close-popup
-            @click="alert = false"
-          ></q-btn>
-          <q-btn
-            flat
-            label="Delete"
-            color="primary"
-            v-close-popup
-            @click="onclickDelete(indexValue)"
-          ></q-btn>
-        </q-card-actions>
+        <DeleteAlert
+          @close="alert = false"
+          @onDelete="onclickDelete(indexValue)"
+        />
       </q-card>
     </q-dialog>
     <div>
