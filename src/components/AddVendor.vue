@@ -396,9 +396,6 @@ export default {
           if (!this.vendor.mailingAddress.streetAddress) {
             delete this.vendor.mailingAddress;
           }
-          // if (!this.vendor.contact.fname) {
-          //   delete this.vendor.contact;
-          // }
           const response = await this.addVendor(this.vendor);
           this.getVendors();
           if (response.id) {

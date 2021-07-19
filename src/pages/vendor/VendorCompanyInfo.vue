@@ -3,9 +3,6 @@
     <div class="form-heading ">
       {{ selectedVendor.name ? selectedVendor.companyName : '-' }}
     </div>
-    <!-- <span class="form-heading text-h6 ">
-      {{ selectedVendor.name ? selectedVendor.name : '-' }}
-    </span> -->
 
     <div class=" row">
       <q-icon
@@ -119,7 +116,12 @@
         </div>
         <div
           class="clickLink"
-          @click="onEmailClick(selectedVendor.contact.email, $event)"
+          @click="
+            onPhoneNumberClick(
+              selectedVendor.contact.phoneNumber[0].number,
+              $event
+            )
+          "
         >
           {{
             selectedVendor ? selectedVendor.contact.phoneNumber[0].number : '-'
