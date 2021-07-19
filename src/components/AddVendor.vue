@@ -128,7 +128,7 @@
                   :options="titles"
                   option-label="value"
                   label="Title"
-                  option-value="id"
+                  option-value="value"
                   @input="setTitleName(vendor.contact.honorific)"
                   emit-value
                   behavior="menu"
@@ -250,7 +250,7 @@ export default {
           lname: '',
           email: '',
           honorific: {
-            id: '602a5eaa312a2b57ac2b00ad',
+            id: '',
             value: 'Mr',
             machineValue: 'mr'
           },
@@ -310,6 +310,8 @@ export default {
         this.vendor.industry = this.selectedVendor.industry;
       }
 
+      this.vendor.contact.honorific = this.selectedVendor.contact.honorific;
+
       this.vendor.companyName = this.selectedVendor.companyName;
       this.vendor.email = this.selectedVendor.email;
       this.vendor.phoneNumber.number = this.selectedVendor.phoneNumber.number;
@@ -365,10 +367,10 @@ export default {
 
     setTitleName(selectedTitle) {
       const selected = this.titles.find(obj => {
-        return obj.id === selectedTitle.id;
+        return obj.value === selectedTitle.value;
       });
 
-      selectedTitle.value = selected.title;
+      selectedTitle.id = selected.id;
       selectedTitle.machineValue = selected.machineValue;
     },
 
