@@ -27,7 +27,7 @@
                 name="delete"
                 size="xs"
                 color="primary"
-                @click="onDelete(index)"
+                @click="onClickDelete(index)"
               />
             </div>
             <div class="row ">
@@ -315,6 +315,15 @@
         />
       </q-card>
     </q-dialog>
+
+    <q-dialog v-model="deleteAlertDialog">
+      <q-card>
+        <DeleteAlert
+          @close="deleteAlertDialog = false"
+          @onDelete="onPersonnelDelete"
+        />
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -324,16 +333,19 @@ import CustomBar from 'components/CustomBar';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import AddCarrierPersonnel from 'components/AddCarrierPersonnel';
 import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
-
+import DeleteAlert from 'components/DeleteAlert';
 export default {
   name: 'CarrierPersonnel',
   components: {
     CustomBar,
     AutoCompleteAddress,
-    AddCarrierPersonnel
+    AddCarrierPersonnel,
+    DeleteAlert
   },
   data() {
     return {
+      valueIndex: '',
+      deleteAlertDialog: false,
       options: [],
       name: '',
       id: '',
@@ -452,10 +464,14 @@ export default {
         this.editPersonnelDialog = false;
       }
     },
-    async onDelete(index) {
+    onClickDelete(index) {
+      this.deleteAlertDialog = true;
+      this.valueIndex = index;
+    },
+    async onPersonnelDelete() {
       const vendor = {
         id: this.$route.params.id,
-        personnelId: this.carrierPersonnel.personnel[index].id
+        personnelId: this.carrierPersonnel.personnel[this.valueIndex].id
       };
       await this.deleteCarrierPersonnel(vendor);
       const params = {

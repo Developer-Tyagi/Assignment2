@@ -29,7 +29,7 @@
                 name="delete"
                 size="xs"
                 color="primary"
-                @click="onDelete(index)"
+                @click="onClickDelete(index)"
               />
             </div>
 
@@ -443,6 +443,14 @@
         />
       </q-card>
     </q-dialog>
+    <q-dialog v-model="deleteAlertDialog">
+      <q-card>
+        <DeleteAlert
+          @close="deleteAlertDialog = false"
+          @onDelete="onPersonnelDelete"
+        />
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -451,14 +459,17 @@ import { mapGetters, mapActions } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
-
+import DeleteAlert from 'components/DeleteAlert';
 export default {
   components: {
     CustomBar,
-    AutoCompleteAddress
+    AutoCompleteAddress,
+    DeleteAlert
   },
   data() {
     return {
+      valueIndex: '',
+      deleteAlertDialog: false,
       options: [],
       id: '',
       name: '',
@@ -582,10 +593,14 @@ export default {
         this.personnel.notes = '';
       }
     },
-    async onDelete(index) {
+    onClickDelete(index) {
+      this.deleteAlertDialog = true;
+      this.valueIndex = index;
+    },
+    async onPersonnelDelete() {
       const vendor = {
         id: this.$route.params.id,
-        personnelId: this.mortgagePersonnel.personnel[index].id
+        personnelId: this.mortgagePersonnel.personnel[this.valueIndex].id
       };
       await this.deleteMortgagePersonnel(vendor);
       this.getMortgagePersonnel(this.$route.params.id);

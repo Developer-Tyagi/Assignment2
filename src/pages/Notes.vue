@@ -98,11 +98,7 @@
                         name="delete"
                         size="xs"
                         color="primary"
-                        @click="
-                          deleteNote(
-                            editSelectedClient.attributes.notes[index].id
-                          )
-                        "
+                        @click="onDeleteClick(index)"
                         class="q-ml-auto"
                       />
                     </div>
@@ -141,12 +137,22 @@
         </div>
       </div>
     </div>
+
+    <q-dialog v-model="deleteAlertDialog">
+      <q-card>
+        <DeleteAlert
+          @close="deleteAlertDialog = false"
+          @onDelete="deleteNote"
+        />
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import CustomBar from 'components/CustomBar';
+import DeleteAlert from 'components/DeleteAlert';
 import moment from 'moment';
 import { dateWithTime } from '@utils/date';
 import { successMessage } from '@utils/validation';
@@ -154,9 +160,11 @@ import { constants } from '@utils/constant';
 
 export default {
   name: 'NotesDetails',
-  components: { CustomBar },
+  components: { CustomBar, DeleteAlert },
   data() {
     return {
+      valueIndex: '',
+      deleteAlertDialog: false,
       addNoteDialog: false,
       note: '',
       editNoteDialog: false,
@@ -187,6 +195,10 @@ export default {
     addNote() {
       this.addNoteDialog = true;
     },
+    onDeleteClick(index) {
+      this.deleteAlertDialog = true;
+      this.valueIndex = index;
+    },
     onEdit(index) {
       this.editNoteDialog = true;
       this.editNote = this.editSelectedClient.attributes.notes[index].desc;
@@ -209,10 +221,10 @@ export default {
 
       this.getSingleClientDetails(this.selectedClientId);
     },
-    async deleteNote(id) {
+    async deleteNote() {
       const payload = {
         clientId: this.selectedClientId,
-        noteId: id
+        noteId: this.editSelectedClient.attributes.notes[this.valueIndex].id
       };
       await this.deletedClientNote(payload);
       this.getSingleClientDetails(this.selectedClientId);

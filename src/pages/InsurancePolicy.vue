@@ -17,7 +17,7 @@
           name="delete"
           size="xs"
           color="primary"
-          @click="onDelete(selectedClaimCarrier.carrier.id)"
+          @click="onClickDelete(selectedClaimCarrier.carrier.id)"
         />
         <img
           v-if="!selectedClaimCarrier.carrier.id"
@@ -156,7 +156,7 @@
               size="xs"
               color="primary"
               s
-              @click="onDeleteAdjustor(personnel.id)"
+              @click="onClickPersonnelDelete(personnel.id)"
             />
           </div>
 
@@ -770,6 +770,22 @@
         </div>
       </q-layout>
     </q-dialog>
+    <q-dialog v-model="deleteAlertDialog">
+      <q-card>
+        <DeleteAlert
+          @close="deleteAlertDialog = false"
+          @onDelete="onDeleteCarrier"
+        />
+      </q-card>
+    </q-dialog>
+    <q-dialog v-model="deletePersonnelAlert">
+      <q-card>
+        <DeleteAlert
+          @close="deletePersonnelAlert = false"
+          @onDelete="onDeleteAdjustor"
+        />
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -778,8 +794,10 @@ import { mapGetters, mapActions } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import ClaimDetail from 'components/ClaimDetail';
 import moment from 'moment';
+
 import InsuranceInfo from 'components/InsuranceInfo';
 import AddCarrier from 'components/AddCarrier';
+import DeleteAlert from 'components/DeleteAlert';
 import CarriersList from 'components/CarriersList';
 import { validateDate } from '@utils/validation';
 import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
@@ -797,11 +815,16 @@ export default {
     ClaimDetail,
     CarriersList,
     AddCarrier,
-    AddCarrierPersonnel
+    AddCarrierPersonnel,
+    DeleteAlert
   },
 
   data() {
     return {
+      personnelId: '',
+      deletePersonnelAlert: false,
+      deleteAlertDialog: false,
+      carrierID: '',
       params: {
         role: '',
         name: ''
@@ -1000,6 +1023,7 @@ export default {
       await this.getCarrierPersonnel(paramsObject);
       this.filterDialog = false;
     },
+
     clearFilter() {
       this.params.role = '';
       this.selectedFilter = '';
@@ -1169,17 +1193,20 @@ export default {
       await this.addClaimCarrier(payload);
       this.getClaimCarrier(this.selectedClaimId);
     },
-    async onDeleteAdjustor(id) {
+    onClickPersonnelDelete(id) {
+      this.deletePersonnelAlert = true;
+      this.personnelId = id;
+    },
+    async onDeleteAdjustor() {
       const adjustor = {
         claimID: this.selectedClaimId,
         carrierID: this.selectedClaimCarrier.carrier.id,
-        personnelD: id
+        personnelD: this.personnelId
       };
       await this.deleteClaimCarrierPersonnel(adjustor);
 
       this.getClaimCarrier(this.selectedClaimId);
     },
-
     onAddAdjustorClick() {
       this.isAssignDisabled = true;
       this.adjustorListDialog = true;
@@ -1284,16 +1311,19 @@ export default {
       this.assignFilter = '';
     },
 
-    async onDelete(id) {
+    async onClickDelete(id) {
+      this.deleteAlertDialog = true;
+      this.carrierID = id;
+    },
+    async onDeleteCarrier() {
       const carrier = {
         claimID: this.selectedClaimId,
-        carrierID: id
+        carrierID: this.carrierID
       };
       await this.deleteClaimCarrier(carrier);
       this.getClaimCarrier(this.selectedClaimId);
       this.carrierName = '';
     },
-
     async onSaveButtonClick() {
       let success = false;
       success = await this.$refs.insuranceInfoForm.validate();

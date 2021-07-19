@@ -18,7 +18,7 @@
         name="delete"
         size="xs"
         color="primary"
-        @click="onDelete"
+        @click="onClickDelete"
       />
     </div>
     <div class="row">
@@ -129,6 +129,15 @@
         />
       </q-card>
     </q-dialog>
+
+    <q-dialog v-model="deleteAlertDialog">
+      <q-card>
+        <DeleteAlert
+          @close="deleteAlertDialog = false"
+          @onDelete="onVendorDelete"
+        />
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 <script>
@@ -136,11 +145,16 @@ import { mapGetters, mapActions } from 'vuex';
 import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
 import AddVendor from 'components/AddVendor';
 import { constants } from '@utils/constant';
+import DeleteAlert from 'components/DeleteAlert';
 export default {
   name: 'VendorCompanyInfo',
-  components: { AddVendor },
+  components: { AddVendor, DeleteAlert },
   data() {
-    return { addMortgageDialog: false, constants: constants };
+    return {
+      deleteAlertDialog: false,
+      addMortgageDialog: false,
+      constants: constants
+    };
   },
   computed: {
     ...mapGetters(['selectedVendor'])
@@ -151,7 +165,10 @@ export default {
     onEmailClick,
     onPhoneNumberClick,
     sendMap,
-    async onDelete() {
+    onClickDelete() {
+      this.deleteAlertDialog = true;
+    },
+    async onVendorDelete() {
       const vendor = {
         id: this.$route.params.id
       };
