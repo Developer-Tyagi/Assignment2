@@ -2,9 +2,10 @@
   <q-page>
     <div class="bg-white full-width">
       <CustomBar
-        :dialogName="'Add Vendor'"
+        :dialogName="componentName"
         @closeDialog="$emit('closeDialog', false)"
       />
+
       <q-form
         class="q-pa-lg"
         style="height: calc(100vh - 51px)"
@@ -223,6 +224,9 @@ export default {
     isEdit: {
       type: Boolean
     },
+    componentName: {
+      type: String
+    },
     industryValue: {
       type: Object
     },
@@ -392,6 +396,9 @@ export default {
           if (!this.vendor.mailingAddress.streetAddress) {
             delete this.vendor.mailingAddress;
           }
+          // if (!this.vendor.contact.fname) {
+          //   delete this.vendor.contact;
+          // }
           const response = await this.addVendor(this.vendor);
           this.getVendors();
           if (response.id) {

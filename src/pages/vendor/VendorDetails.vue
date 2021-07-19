@@ -1,23 +1,24 @@
 <template>
-  <q-page>
+  <div>
     <!-- <div class="q-ml-md text-h6">
         {{ selectedVendor.name ? selectedVendor.name : '-' }}
       </div> -->
-    <div class="mobile-container-page">
-      <q-list bordered>
-        <q-expansion-item
-          group="vendorGroup"
-          label="Vendor Info"
-          header-class="text-primary"
-          default-opened
-        >
-          <q-card-section>
-            <VendorCompanyInfo />
-          </q-card-section>
-        </q-expansion-item>
-      </q-list>
-    </div>
-  </q-page>
+
+    <q-list bordered>
+      <q-expansion-item
+        group="vendorGroup"
+        label="Vendor Info"
+        header-class="text-primary"
+        default-opened
+        dense
+        class="q-mt-xs"
+      >
+        <q-card-section>
+          <VendorCompanyInfo />
+        </q-card-section>
+      </q-expansion-item>
+    </q-list>
+  </div>
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex';
