@@ -1,10 +1,10 @@
 <template>
-  <div>
-    <span class="form-heading text-h6 ">
-      {{ selectedVendor.name ? selectedVendor.name : '-' }}
-    </span>
+  <div class="">
+    <div class="form-heading ">
+      {{ selectedVendor.name ? selectedVendor.companyName : '-' }}
+    </div>
 
-    <div class="q-my-auto row">
+    <div class=" row">
       <q-icon
         size="xs"
         name="create "
@@ -22,7 +22,9 @@
       />
     </div>
     <div class="row">
-      <span class="heading-light col-4">Address Details</span>
+      <span class="heading-light col-4 " v-if="selectedVendor.mailingAddress"
+        >Address Details</span
+      >
       <span class="col-7 q-ml-md" v-if="selectedVendor.mailingAddress">
         <div class="row">
           {{
@@ -68,12 +70,12 @@
             class="edit-icon"
           ></q-icon></div
       ></span>
-      <span class="col-7 q-ml-md" v-else>-</span>
+      <span class="col-7 q-ml-md" v-else></span>
     </div>
 
     <div class="q-mt-sm row" v-if="selectedVendor.email">
       <div class="heading-light q-mt-none col-xs-4 ">
-        Email
+        Company Email
       </div>
       <div
         class="column q-ml-md clickLink"
@@ -84,7 +86,7 @@
     </div>
     <div class="q-mt-sm row" v-if="selectedVendor.phoneNumber">
       <div class="heading-light q-mt-none col-xs-4 ">
-        Phone Number
+        Company Number
       </div>
       <div
         v-if="selectedVendor.phoneNumber.type"
@@ -99,14 +101,40 @@
         >{{ selectedVendor.phoneNumber.number }}</span
       >
     </div>
+    <div class="q-mt-sm row" v-if="selectedVendor.contact">
+      <div class="heading-light q-mt-none col-xs-4 ">
+        Contact Info
+      </div>
+      <div class="column q-ml-md ">
+        {{ selectedVendor ? selectedVendor.contact.fname : '-' }}
+        {{ selectedVendor ? selectedVendor.contact.lname : '-' }}
+        <div
+          class="clickLink"
+          @click="onEmailClick(selectedVendor.contact.email, $event)"
+        >
+          {{ selectedVendor ? selectedVendor.contact.email : '-' }}
+        </div>
+        <div
+          class="clickLink"
+          @click="
+            onPhoneNumberClick(
+              selectedVendor.contact.phoneNumber[0].number,
+              $event
+            )
+          "
+        >
+          {{
+            selectedVendor ? selectedVendor.contact.phoneNumber[0].number : '-'
+          }}
+        </div>
+      </div>
+    </div>
 
-    <div class="row q-mt-sm" v-if="selectedVendor.info">
-      <span class="heading-light col-3"> Website: </span>
+    <div class="row q-mt-sm" v-if="selectedVendor">
+      <span class="heading-light col-4"> Website: </span>
       <span class="q-ml-md col">
-        {{
-          selectedVendor.info.website ? selectedVendor.info.website : '-'
-        }}</span
-      >
+        {{ selectedVendor.website ? selectedVendor.website : '-' }}
+      </span>
     </div>
     <div class="row q-mt-sm" v-if="selectedVendor.info">
       <span class="heading-light col-3"> Notes: </span>
@@ -124,7 +152,7 @@
       <q-card>
         <AddVendor
           @closeDialog="closeAddVendorDialog"
-          :componentName="constants.industries.VENDOR"
+          :componentName="'Edit Vendor'"
           :isEdit="true"
         />
       </q-card>

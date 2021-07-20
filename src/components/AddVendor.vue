@@ -2,9 +2,10 @@
   <q-page>
     <div class="bg-white full-width">
       <CustomBar
-        :dialogName="'Add Vendor'"
+        :dialogName="componentName"
         @closeDialog="$emit('closeDialog', false)"
       />
+
       <q-form
         class="q-pa-lg"
         style="height: calc(100vh - 51px)"
@@ -232,6 +233,9 @@ export default {
   props: {
     isEdit: {
       type: Boolean
+    },
+    componentName: {
+      type: String
     },
     industryValue: {
       type: Object
