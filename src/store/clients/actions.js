@@ -12,14 +12,14 @@ export async function getClients(
     dispatch
   },
   payload
-  // searchString = ''
 ) {
   dispatch('setLoading', true);
+
   if (isOnline) {
     try {
       const { data } = await request.get('/clients', {
         status: payload.status,
-        name: payload.searchString
+        name: payload.name
       });
       commit('setClients', data);
       dispatch('setLoading', false);
