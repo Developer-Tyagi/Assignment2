@@ -4,30 +4,38 @@
       <div class="q-pa-xs column">
         <div class="q-ml-md q-mt-md form-heading">
           {{
-            editSelectedClient.attributes.insuredInfo.primary.fname
+            editSelectedClient.attributes
               ? editSelectedClient.attributes.insuredInfo.primary.fname
+                ? editSelectedClient.attributes.insuredInfo.primary.fname
+                : '-'
               : '-'
           }}
           {{
-            editSelectedClient.attributes.insuredInfo.primary.lname
+            editSelectedClient.attributes
               ? editSelectedClient.attributes.insuredInfo.primary.lname
+                ? editSelectedClient.attributes.insuredInfo.primary.lname
+                : '-'
               : '-'
           }}
         </div>
         <div class="row q-ml-md q-my-md heading-light">
           <div>
             {{
-              editSelectedClient.attributes.meta
-                ? editSelectedClient.attributes.meta.totalClaims
-                : 0
+              editSelectedClient.attributes
+                ? editSelectedClient.attributes.meta
+                  ? editSelectedClient.attributes.meta.totalClaims
+                  : 0
+                : '-'
             }}
             - Total Claims
           </div>
           <div class="q-ml-xl">
             {{
-              editSelectedClient.attributes.meta
-                ? editSelectedClient.attributes.meta.openClaims
-                : 0
+              editSelectedClient.attributes
+                ? editSelectedClient.attributes.meta
+                  ? editSelectedClient.attributes.meta.openClaims
+                  : 0
+                : '-'
             }}
             - Open Claim
           </div>
