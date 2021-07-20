@@ -53,11 +53,11 @@
                       size="sm"
                       color="primary"
                     />
-                    <span class="q-pl-md" @click="onDocClick(doc)">
+                    <span class="q-pl-md col-8 " @click="onDocClick(doc)">
                       {{ doc.name }}</span
                     >
                     <q-btn
-                      class="q-ml-auto"
+                      class="q-ml-auto q-mb-xl"
                       icon="delete"
                       size="sm"
                       text-color="primary"
@@ -176,11 +176,11 @@
                           class="q-ml-none"
                           color="primary"
                         />
-                        <span class="q-pl-md" @click="onDocClick(doc)">
+                        <span class="q-pl-md col-8" @click="onDocClick(doc)">
                           {{ doc.name }}</span
                         >
                         <q-btn
-                          class="q-ml-auto"
+                          class="q-ml-auto q-mb-xl"
                           icon="delete"
                           size="sm"
                           text-color="primary"
@@ -267,11 +267,11 @@
                         size="sm"
                         color="primary"
                       />
-                      <span class="q-pl-md" @click="onDocClick(doc)">
+                      <span class="q-pl-md col-8" @click="onDocClick(doc)">
                         {{ doc.name }}</span
                       >
                       <q-btn
-                        class="q-ml-auto"
+                        class="q-ml-auto q-mb-xl"
                         icon="delete"
                         size="sm"
                         text-color="primary"
@@ -448,11 +448,11 @@
                         size="sm"
                         color="primary"
                       />
-                      <span class="q-pl-md" @click="onDocClick(doc)">
+                      <span class="q-pl-md col-8" @click="onDocClick(doc)">
                         {{ doc.name }}</span
                       >
                       <q-btn
-                        class="q-ml-auto"
+                        class="q-ml-auto q-mb-xl"
                         icon="delete"
                         size="sm"
                         text-color="primary"

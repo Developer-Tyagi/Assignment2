@@ -541,7 +541,7 @@
             <div
               v-for="personnel in carrierPersonnel.personnel"
               :key="carrierPersonnel.personnel.id"
-              class="carrier-list-item clients-list"
+              class="listing-item clients-list"
               style="overflow-y: auto"
             >
               <q-item-section @click="onCheckPersonnel(personnel)">
