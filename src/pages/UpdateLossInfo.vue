@@ -170,7 +170,7 @@
       <div class="heading-light q-mt-none col-xs-4 ">
         Cause of Loss:
       </div>
-      <div class="column q-ml-md">
+      <div class="column  col-7 q-ml-md">
         {{
           lossInfo.attributes.lossInfo.cause
             ? lossInfo.attributes.lossInfo.cause.value
@@ -248,7 +248,7 @@
       <div class="heading-light q-mt-none col-xs-4 ">
         Loss Description:
       </div>
-      <div class="column q-ml-md">
+      <div class="column col-7 q-ml-md">
         {{
           lossInfo.attributes.lossInfo.desc
             ? lossInfo.attributes.lossInfo.desc
@@ -436,24 +436,45 @@ export default {
       this.getSeverityClaim();
       this.$emit('editLossInoDialog', true);
       //This is For Prefilling Values in Loss Info Form
-      this.lossDetails.descriptionDwelling = this.lossInfo.attributes.lossInfo.desc;
+      if (this.lossInfo.attributes.lossInfo.desc) {
+        this.lossDetails.descriptionDwelling = this.lossInfo.attributes.lossInfo.desc;
+      }
+
       this.lossDetails.lossAddressName = this.lossInfo.attributes.lossInfo.lossAddressName;
       this.lossDetails.addressID = this.lossInfo.attributes.lossInfo.addressID;
       this.lossDetails.property = this.lossInfo.attributes.lossInfo.propertyType;
-      this.lossDetails.severityOfClaimType = this.lossInfo.attributes.lossInfo.serverity;
-      this.lossDetails.reasonClaim = this.lossInfo.attributes.lossInfo.claimReason;
-      this.lossDetails.deadlineDate = dateToShow(
-        this.lossInfo.attributes.lossInfo.deadlineDate
-      );
-      this.lossDetails.dateOfLoss = dateToShow(
-        this.lossInfo.attributes.lossInfo.date
-      );
-      this.lossDetails.recovDeadline = dateToShow(
-        this.lossInfo.attributes.lossInfo.recovDDDate
-      );
-      this.lossDetails.recovDDDate = this.lossInfo.attributes.lossInfo.recovDDDate;
-      this.lossDetails.isTheHomeHabitable = this.lossInfo.attributes.lossInfo.isHabitable;
-      this.lossDetails.femaClaimToggle = this.lossInfo.attributes.lossInfo.isFEMA;
+      if (this.lossInfo.attributes.lossInfo.serverity) {
+        this.lossDetails.severityOfClaimType = this.lossInfo.attributes.lossInfo.serverity;
+      }
+
+      if (this.lossInfo.attributes.lossInfo.claimReason) {
+        this.lossDetails.reasonClaim = this.lossInfo.attributes.lossInfo.claimReason;
+      }
+      if (this.lossInfo.attributes.lossInfo.deadlineDate) {
+        this.lossDetails.deadlineDate = dateToShow(
+          this.lossInfo.attributes.lossInfo.deadlineDate
+        );
+      }
+
+      if (this.lossInfo.attributes.lossInfo.date) {
+        this.lossDetails.dateOfLoss = dateToShow(
+          this.lossInfo.attributes.lossInfo.date
+        );
+      }
+      if (this.lossInfo.attributes.lossInfo.recovDDDate) {
+        this.lossDetails.recovDeadline = dateToShow(
+          this.lossInfo.attributes.lossInfo.recovDDDate
+        );
+      }
+
+      this.lossDetails.isTheHomeHabitable = this.lossInfo.attributes.lossInfo
+        .isHabitable
+        ? this.lossInfo.attributes.lossInfo.isHabitable
+        : false;
+      this.lossDetails.femaClaimToggle = this.lossInfo.attributes.lossInfo
+        .isFEMA
+        ? this.lossInfo.attributes.lossInfo.isFEMA
+        : false;
       this.lossDetails.isStateOfEmergencyToggle = this.lossInfo.attributes
         .lossInfo.isEmergency
         ? this.lossInfo.attributes.lossInfo.isEmergency

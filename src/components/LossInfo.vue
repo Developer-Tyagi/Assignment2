@@ -34,7 +34,7 @@
           mask="##/##/####"
           label="MM/DD/YYYY"
           lazy-rules
-          :rules="[val => dateLiesBetween(val)]"
+          :rules="[val => val && dateLiesBetween(val)]"
         >
           <template v-slot:append>
             <q-icon
@@ -100,8 +100,6 @@
           v-model="lossInfo.deadlineDate"
           mask="##/##/####"
           label="MM/DD/YYYY"
-          lazy-rules
-          :rules="[val => validateDate(val) || 'Invalid date!']"
         >
           <template v-slot:append>
             <q-icon
@@ -134,10 +132,6 @@
           v-model="lossInfo.recovDeadline"
           mask="##/##/####"
           label="MM/DD/YYYY"
-          lazy-rules
-          :rules="[
-            val => (val.length > 0 && validateDate(val)) || 'Invalid date!'
-          ]"
         >
           <template v-slot:append>
             <q-icon
