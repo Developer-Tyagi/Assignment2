@@ -172,8 +172,13 @@
                   class="q-mb-md"
                   dense
                   v-model="vendor.contact.email"
-                  novalidate="true"
                   label="Email"
+                  lazy-rules
+                  :rules="[
+                    val =>
+                      validateNonRequiredEmail(val) ||
+                      'You have entered an invalid email address!'
+                  ]"
                 />
               </div>
             </q-card>
@@ -214,7 +219,12 @@ import { mapGetters, mapActions } from 'vuex';
 import { constants } from '@utils/constant';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import CustomBar from 'components/CustomBar';
-import { validateEmail, validateUrl, successMessage } from '@utils/validation';
+import {
+  validateEmail,
+  validateNonRequiredEmail,
+  validateUrl,
+  successMessage
+} from '@utils/validation';
 
 export default {
   name: 'AddVendor',
@@ -346,6 +356,7 @@ export default {
       'editVendorInfo'
     ]),
     validateEmail,
+    validateNonRequiredEmail,
     validateUrl,
     successMessage,
     searchFilterBy(val, update) {

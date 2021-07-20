@@ -6,6 +6,18 @@ export function validateEmail(mail) {
   return false;
 }
 
+// This Function is used for validating the non required mails
+
+export function validateNonRequiredEmail(mail) {
+  const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  if (mail) {
+    if (regex.test(mail)) {
+      return true;
+    }
+    return false;
+  }
+  return true;
+}
 export function validateUrl(url) {
   const regex = /^((https?|ftp|smtp):\/\/)?(www.)?[a-z0-9]+\.[a-z]+(\/[a-zA-Z0-9#]+\/?)*$/;
 

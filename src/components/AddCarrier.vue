@@ -148,7 +148,12 @@
                   class="q-mb-md"
                   dense
                   v-model="carrier.contact.email"
-                  novalidate="true"
+                  lazy-rules
+                  :rules="[
+                    val =>
+                      validateNonRequiredEmail(val) ||
+                      'You have entered an invalid email address!'
+                  ]"
                   label="Email"
                 />
               </div>
@@ -192,7 +197,11 @@ import { mapGetters, mapActions } from 'vuex';
 import { constants } from '@utils/constant';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import CustomBar from 'components/CustomBar';
-import { validateEmail, validateUrl } from '@utils/validation';
+import {
+  validateEmail,
+  validateNonRequiredEmail,
+  validateUrl
+} from '@utils/validation';
 
 export default {
   name: 'AddCarrier',
@@ -298,7 +307,7 @@ export default {
     ]),
     validateEmail,
     validateUrl,
-
+    validateNonRequiredEmail,
     setTitleName(selectedTitle) {
       const selected = this.titles.find(obj => {
         return obj.id === selectedTitle.id;

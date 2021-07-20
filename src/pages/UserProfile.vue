@@ -88,7 +88,10 @@
               {{ user.email }}
             </div>
           </div>
-          <div class="row q-mt-sm">
+          <div
+            class="row q-mt-sm"
+            v-if="user.roles[0].machineValue == 'estimator'"
+          >
             <div class="col-5 text-bold">Photo ID Email</div>
             <div
               class="col clickable text-primary"
@@ -186,6 +189,7 @@
                     ]"
                   />
                   <q-input
+                    v-if="user.roles[0].machineValue == 'estimator'"
                     dense
                     v-model="users.photoIdEmail"
                     style=""
@@ -294,7 +298,9 @@ export default {
         : '';
 
       this.users.email = this.user.email;
-      this.users.photoIdEmail = this.user.photoIDEmail;
+      if (this.user.roles[0].machineValue == 'estimator') {
+        this.users.photoIdEmail = this.user.photoIDEmail;
+      }
       if (this.user.mailingAddress) {
         this.users.mailingAddress.addressCountry = this.user.mailingAddress
           ? this.user.mailingAddress.addressCountry
