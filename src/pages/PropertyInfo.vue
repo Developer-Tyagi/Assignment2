@@ -394,32 +394,45 @@ export default {
     editPropertyAddress(index) {
       this.isEdit = true;
       this.getPropertyTypes();
-      this.propertyId = this.setClientProperty[index].id;
+      this.propertyId = this.setClientProperty[index].id
+        ? this.setClientProperty[index].id
+        : '';
 
-      this.propertyName = this.setClientProperty[index].attributes.name;
+      this.propertyName = this.setClientProperty[index].attributes.name
+        ? this.setClientProperty[index].attributes.name
+        : '';
       this.propertyDescription = this.setClientProperty[
         index
       ].attributes.propertyDesc;
-      this.property = this.setClientProperty[index].attributes.propertyType;
-      this.propertyAddressDetails.houseNumber = this.setClientProperty[
-        index
-      ].attributes.houseNumber;
-      this.propertyAddressDetails.addressCountry = this.setClientProperty[
-        index
-      ].attributes.addressCountry;
+      this.property = this.setClientProperty[index].attributes.propertyType
+        ? this.setClientProperty[index].attributes.propertyType
+        : '';
+      this.propertyAddressDetails.houseNumber = this.setClientProperty[index]
+        .attributes.houseNumber
+        ? this.setClientProperty[index].attributes.houseNumber
+        : '';
+      this.propertyAddressDetails.addressCountry = this.setClientProperty[index]
+        .attributes.addressCountry
+        ? this.setClientProperty[index].attributes.addressCountry
+        : '';
 
       this.propertyAddressDetails.addressLocality = this.setClientProperty[
         index
-      ].attributes.addressLocality;
-      this.propertyAddressDetails.addressRegion = this.setClientProperty[
-        index
-      ].attributes.addressRegion;
-      this.propertyAddressDetails.postalCode = this.setClientProperty[
-        index
-      ].attributes.postalCode;
-      this.propertyAddressDetails.streetAddress = this.setClientProperty[
-        index
-      ].attributes.streetAddress;
+      ].attributes.addressLocality
+        ? this.setClientProperty[index].attributes.addressLocality
+        : '';
+      this.propertyAddressDetails.addressRegion = this.setClientProperty[index]
+        .attributes.addressRegion
+        ? this.setClientProperty[index].attributes.addressRegion
+        : '';
+      this.propertyAddressDetails.postalCode = this.setClientProperty[index]
+        .attributes.postalCode
+        ? this.setClientProperty[index].attributes.postalCode
+        : '';
+      this.propertyAddressDetails.streetAddress = this.setClientProperty[index]
+        .attributes.streetAddress
+        ? this.setClientProperty[index].attributes.streetAddress
+        : '';
       this.addNewPropertyDialog = true;
     },
 

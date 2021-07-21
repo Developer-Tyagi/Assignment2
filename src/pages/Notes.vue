@@ -189,8 +189,12 @@ export default {
     },
     onEdit(index) {
       this.editNoteDialog = true;
-      this.editNote = this.editSelectedClient.attributes.notes[index].desc;
-      this.noteId = this.editSelectedClient.attributes.notes[index].id;
+      this.editNote = this.editSelectedClient.attributes.notes[index].desc
+        ? this.editSelectedClient.attributes.notes[index].desc
+        : '';
+      this.noteId = this.editSelectedClient.attributes.notes[index].id
+        ? this.editSelectedClient.attributes.notes[index].id
+        : '';
     },
     async onEditSave() {
       const payload = {
