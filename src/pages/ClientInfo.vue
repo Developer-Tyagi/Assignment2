@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="q-ml-md row">
+    <div class="q-ml-md  row">
       Date & Time of First Contact
       <q-icon
         name="create"
@@ -751,52 +751,135 @@ export default {
       this.getClientTypes();
       this.getTitles();
       this.getContactTypes();
-      this.client.id = this.editSelectedClient.attributes.type.id;
-      this.client.value = this.editSelectedClient.attributes.type.value;
-      this.client.machineValue = this.editSelectedClient.attributes.type.machineValue;
-      this.honorific1.id = this.editSelectedClient.attributes.insuredInfo.primary.honorific.id;
-      this.honorific1.value = this.editSelectedClient.attributes.insuredInfo.primary.honorific.value;
-      this.honorific1.machineValue = this.editSelectedClient.attributes.insuredInfo.primary.honorific.machineValue;
-      this.insuredDetails.fname = this.editSelectedClient.attributes.insuredInfo.primary.fname;
+      this.client.id = this.editSelectedClient.attributes.type.id
+        ? this.editSelectedClient.attributes.type.id
+        : '';
+      this.client.value = this.editSelectedClient.attributes.type.value
+        ? this.editSelectedClient.attributes.type.value
+        : '';
+      this.client.machineValue = this.editSelectedClient.attributes.type
+        .machineValue
+        ? this.editSelectedClient.attributes.type.machineValue
+        : '';
+      this.honorific1.id = this.editSelectedClient.attributes.insuredInfo
+        .primary.honorific.id
+        ? this.editSelectedClient.attributes.insuredInfo.primary.honorific.id
+        : '';
+      this.honorific1.value = this.editSelectedClient.attributes.insuredInfo
+        .primary.honorific.value
+        ? this.editSelectedClient.attributes.insuredInfo.primary.honorific.value
+        : '';
+      this.honorific1.machineValue = this.editSelectedClient.attributes
+        .insuredInfo.primary.honorific.machineValue
+        ? this.editSelectedClient.attributes.insuredInfo.primary.honorific
+            .machineValue
+        : '';
+      this.insuredDetails.fname = this.editSelectedClient.attributes.insuredInfo
+        .primary.fname
+        ? this.editSelectedClient.attributes.insuredInfo.primary.fname
+        : '';
       this.insuredDetails.lname = this.editSelectedClient.attributes.insuredInfo.primary.lname;
 
       if (this.editSelectedClient.attributes.isOrganizationPolicyholder) {
-        this.policyHolder.isPolicyHolder = this.editSelectedClient.attributes.isOrganizationPolicyholder;
+        this.policyHolder.isPolicyHolder = this.editSelectedClient.attributes
+          .isOrganizationPolicyholder
+          ? this.editSelectedClient.attributes.isOrganizationPolicyholder
+          : '';
       }
       if (this.editSelectedClient.attributes.isOrganization) {
         this.primaryDetails.isOrganization = true;
-        this.primaryDetails.isOrganization = this.editSelectedClient.attributes.isOrganization;
-        this.primaryDetails.organizationName = this.editSelectedClient.attributes.organizationName;
+        this.primaryDetails.isOrganization = this.editSelectedClient.attributes
+          .isOrganization
+          ? this.editSelectedClient.attributes.isOrganization
+          : '';
+        this.primaryDetails.organizationName = this.editSelectedClient
+          .attributes.organizationName
+          ? this.editSelectedClient.attributes.organizationName
+          : '';
       }
-      this.insuredDetails.type = this.editSelectedClient.attributes.insuredInfo.primary.phoneNumber[0].type;
-      this.insuredDetails.phone = this.editSelectedClient.attributes.insuredInfo.primary.phoneNumber[0].number;
-      this.insuredDetails.email = this.editSelectedClient.attributes.insuredInfo.primary.email;
+      this.insuredDetails.type = this.editSelectedClient.attributes.insuredInfo
+        .primary.phoneNumber[0].type
+        ? this.editSelectedClient.attributes.insuredInfo.primary.phoneNumber[0]
+            .type
+        : '';
+      this.insuredDetails.phone = this.editSelectedClient.attributes.insuredInfo
+        .primary.phoneNumber[0].number
+        ? this.editSelectedClient.attributes.insuredInfo.primary.phoneNumber[0]
+            .number
+        : '';
+      this.insuredDetails.email = this.editSelectedClient.attributes.insuredInfo
+        .primary.email
+        ? this.editSelectedClient.attributes.insuredInfo.primary.email
+        : '';
 
       if (this.editSelectedClient.attributes.insuredInfo.secondary) {
         this.isThereaCoInsuredToggle = true;
-        this.honorific2.id = this.editSelectedClient.attributes.insuredInfo.secondary.honorific.id;
-        this.honorific2.value = this.editSelectedClient.attributes.insuredInfo.secondary.honorific.value;
-        this.honorific2.machineValue = this.editSelectedClient.attributes.insuredInfo.secondary.honorific.machineValue;
-        this.coInsuredDetails.fname = this.editSelectedClient.attributes.insuredInfo.secondary.fname;
-        this.coInsuredDetails.lname = this.editSelectedClient.attributes.insuredInfo.secondary.lname;
-        this.coInsuredDetails.type = this.editSelectedClient.attributes.insuredInfo.secondary.phoneNumber[0].type;
+        this.honorific2.id = this.editSelectedClient.attributes.insuredInfo
+          .secondary.honorific.id
+          ? this.editSelectedClient.attributes.insuredInfo.secondary.honorific
+              .id
+          : '';
+        this.honorific2.value = this.editSelectedClient.attributes.insuredInfo
+          .secondary.honorific.value
+          ? this.editSelectedClient.attributes.insuredInfo.secondary.honorific
+              .value
+          : '';
+        this.honorific2.machineValue = this.editSelectedClient.attributes
+          .insuredInfo.secondary.honorific.machineValue
+          ? this.editSelectedClient.attributes.insuredInfo.secondary.honorific
+              .machineValue
+          : '';
+        this.coInsuredDetails.fname = this.editSelectedClient.attributes
+          .insuredInfo.secondary.fname
+          ? this.editSelectedClient.attributes.insuredInfo.secondary.fname
+          : '';
+        this.coInsuredDetails.lname = this.editSelectedClient.attributes
+          .insuredInfo.secondary.lname
+          ? this.editSelectedClient.attributes.insuredInfo.secondary.lname
+          : '';
+        this.coInsuredDetails.type = this.editSelectedClient.attributes
+          .insuredInfo.secondary.phoneNumber[0].type
+          ? this.editSelectedClient.attributes.insuredInfo.secondary
+              .phoneNumber[0].type
+          : '';
 
-        this.coInsuredDetails.phone = this.editSelectedClient.attributes.insuredInfo.secondary.phoneNumber[0].number;
-        this.coInsuredDetails.email = this.editSelectedClient.attributes.insuredInfo.secondary.email;
+        this.coInsuredDetails.phone = this.editSelectedClient.attributes
+          .insuredInfo.secondary.phoneNumber[0].number
+          ? this.editSelectedClient.attributes.insuredInfo.secondary
+              .phoneNumber[0].number
+          : '';
+        this.coInsuredDetails.email = this.editSelectedClient.attributes
+          .insuredInfo.secondary.email
+          ? this.editSelectedClient.attributes.insuredInfo.secondary.email
+          : '';
       }
       if (
         this.editSelectedClient.attributes.insuredInfo.phoneNumbers[0].number
       ) {
         this.addAditionalPhoneNumberToggle = true;
-        this.phoneNumber = this.editSelectedClient.attributes.insuredInfo.phoneNumbers;
+        this.phoneNumber = this.editSelectedClient.attributes.insuredInfo
+          .phoneNumbers
+          ? this.editSelectedClient.attributes.insuredInfo.phoneNumbers
+          : '';
       } else {
         this.addAditionalPhoneNumberToggle = false;
       }
       if (this.editSelectedClient.attributes.insuredInfo.tenantInfo) {
         this.tenantOccupiedToggle = true;
-        this.tenantOccupied.name = this.editSelectedClient.attributes.insuredInfo.tenantInfo.name;
-        this.tenantOccupied.type = this.editSelectedClient.attributes.insuredInfo.tenantInfo.phoneNumber.type;
-        this.tenantOccupied.phone = this.editSelectedClient.attributes.insuredInfo.tenantInfo.phoneNumber.number;
+        this.tenantOccupied.name = this.editSelectedClient.attributes
+          .insuredInfo.tenantInfo.name
+          ? this.editSelectedClient.attributes.insuredInfo.tenantInfo.name
+          : '';
+        this.tenantOccupied.type = this.editSelectedClient.attributes
+          .insuredInfo.tenantInfo.phoneNumber.type
+          ? this.editSelectedClient.attributes.insuredInfo.tenantInfo
+              .phoneNumber.type
+          : '';
+        this.tenantOccupied.phone = this.editSelectedClient.attributes
+          .insuredInfo.tenantInfo.phoneNumber.number
+          ? this.editSelectedClient.attributes.insuredInfo.tenantInfo
+              .phoneNumber.number
+          : '';
       }
       // Client Address Editable & prefilled Details
       this.clientAddressDetails = this.editSelectedClient.attributes.insuredInfo.mailingAddress;
