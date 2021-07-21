@@ -1094,17 +1094,24 @@ export default {
       ].name.split(' ');
       this.editPersonnelDialog = true;
       this.$emit('editCarrierDialog', true);
-      this.editPersonnel.fname = name[0];
-      this.editPersonnel.lname = name[1];
+
+      this.editPersonnel.fname = name && name[0] ? name[0] : '';
+      this.editPersonnel.lname = name && name[1] ? name[1] : '';
       this.editPersonnel.email = this.selectedClaimCarrier.carrier.personnel[
         index
-      ].email;
-      this.editPersonnel.phoneNumber = this.selectedClaimCarrier.carrier.personnel[
-        index
-      ].phoneNumber;
-      this.editPersonnel.address = this.selectedClaimCarrier.carrier.personnel[
-        index
-      ].address;
+      ].email
+        ? this.selectedClaimCarrier.carrier.personnel[index].email
+        : '';
+      this.editPersonnel.phoneNumber = this.selectedClaimCarrier.carrier
+        .personnel[index].phoneNumber
+        ? this.selectedClaimCarrier.carrier.personnel[index].phoneNumber
+        : '';
+      if (this.selectedClaimCarrier.carrier.personnel[index].address) {
+        this.editPersonnel.address = this.selectedClaimCarrier.carrier.personnel[
+          index
+        ].address;
+      }
+
       this.editPersonnel.notes = this.selectedClaimCarrier.carrier.personnel[
         index
       ].note;
@@ -1124,45 +1131,53 @@ export default {
         ? this.policy.policyInfo.isForcedPlaced
         : false;
 
-      this.insuranceDetails.policy.id = this.policy.policyInfo.type.id
-        ? this.policy.policyInfo.type.id
-        : '';
       this.insuranceDetails.totalAmount = this.policy.policyInfo.totalAmount;
       this.insuranceDetails.ordinance = this.policy.policyInfo.ordinance;
       this.insuranceDetails.debrisRemoval = this.policy.policyInfo.debrisRemoval;
       this.insuranceDetails.mold = this.policy.policyInfo.mold;
 
       this.insuranceDetails.businessInt = this.policy.policyInfo.businessInt;
+      if (this.policy.policyInfo.type) {
+        this.insuranceDetails.policy.id = this.policy.policyInfo.type.id
+          ? this.policy.policyInfo.type.id
+          : '';
+        this.insuranceDetails.policy.value = this.policy.policyInfo.type.value
+          ? this.policy.policyInfo.type.value
+          : '';
+        this.insuranceDetails.policy.machineValue = this.policy.policyInfo.type
+          .machineValue
+          ? this.policy.policyInfo.type.machineValue
+          : '';
+      }
+      if (this.policy.policyInfo.category) {
+        this.insuranceDetails.policyCategory.id = this.policy.policyInfo
+          .category
+          ? this.policy.policyInfo.category.id
+          : '';
 
-      this.insuranceDetails.policy.value = this.policy.policyInfo.type.value
-        ? this.policy.policyInfo.type.value
-        : '';
-      this.insuranceDetails.policy.machineValue = this.policy.policyInfo.type
-        .machineValue
-        ? this.policy.policyInfo.type.machineValue
-        : '';
+        this.insuranceDetails.policyCategory.value = this.policy.policyInfo
+          .category
+          ? this.policy.policyInfo.category.value
+          : '';
+        this.insuranceDetails.policyCategory.machineValue = this.policy
+          .policyInfo.category
+          ? this.policy.policyInfo.category.machineValue
+          : '';
+      }
 
-      this.insuranceDetails.policyCategory.id = this.policy.policyInfo.category
-        ? this.policy.policyInfo.category.id
-        : '';
-
-      this.insuranceDetails.policyCategory.value = this.policy.policyInfo
-        .category
-        ? this.policy.policyInfo.category.value
-        : '';
-      this.insuranceDetails.policyCategory.machineValue = this.policy.policyInfo
-        .category
-        ? this.policy.policyInfo.category.machineValue
-        : '';
       this.insuranceDetails.policyNumber = this.policy.policyInfo.number
         ? this.policy.policyInfo.number
         : '';
-      this.insuranceDetails.policyEffectiveDate = dateToShow(
-        this.policy.policyInfo.effectiveDate
-      );
-      this.insuranceDetails.policyExpireDate = dateToShow(
-        this.policy.policyInfo.expirationDate
-      );
+      if (this.policy.policyInfo.effectiveDate) {
+        this.insuranceDetails.policyEffectiveDate = dateToShow(
+          this.policy.policyInfo.effectiveDate
+        );
+      }
+      if (this.policy.policyInfo.expirationDate) {
+        this.insuranceDetails.policyExpireDate = dateToShow(
+          this.policy.policyInfo.expirationDate
+        );
+      }
 
       this.insuranceDetails.dwellingLimitA = this.policy.policyInfo.limitCoverage.dwelling;
       this.insuranceDetails.contentsLimit = this.policy.policyInfo.limitCoverage.content;
