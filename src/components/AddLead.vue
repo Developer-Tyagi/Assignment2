@@ -782,7 +782,12 @@
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { validateEmail, validateDate, successMessage } from '@utils/validation';
-import { onPhoneNumberClick, onEmailClick } from '@utils/clickable';
+import {
+  onPhoneNumberClick,
+  onEmailClick,
+  sendPhoneNumber
+} from '@utils/clickable';
+
 import { dateToSend } from '@utils/date';
 import { constants } from '@utils/constant';
 import { date } from 'quasar';
@@ -933,6 +938,7 @@ export default {
     onPhoneNumberClick,
     onEmailClick,
     dateToShow,
+    sendPhoneNumber,
     setTypes(types, data) {
       const obj = types.find(item => {
         return item.name === data.value;
@@ -941,7 +947,6 @@ export default {
       data.machineValue = obj.machineValue;
       data.id = obj.id;
     },
-
     searchByCause(val, update) {
       this.lossDetails.causeOfLoss.id = null;
       if (val === ' ') {
@@ -1048,7 +1053,7 @@ export default {
             phoneNumber: [
               {
                 type: this.primaryDetails.selectedContactType,
-                number: this.primaryDetails.phoneNumber
+                number: sendPhoneNumber(this.primaryDetails.phoneNumber)
               }
             ]
           },
