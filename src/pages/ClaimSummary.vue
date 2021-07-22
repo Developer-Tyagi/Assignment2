@@ -168,9 +168,7 @@
               class="col"
               size="xs"
               v-if="userRole != 'estimator' && userRole != 'vendor'"
-              @click="
-                (lossDetailsBox = true), $emit('claimSummaryDialog', true)
-              "
+              @click="onEditLossDetails()"
             ></q-icon>
           </div>
         </div>
@@ -804,20 +802,14 @@ export default {
 
   async created() {
     this.userRole = getCurrentUser().attributes.roles[0].machineValue;
-    this.lossInfo.dateOfLoss = dateToShow(this.getSelectedClaim.lossInfo.date);
+
     this.fileNumber = this.getSelectedClaim.fileNumber;
     this.DeadLineDate = dateToShow(this.getSelectedClaim.lossInfo.deadlineDate);
     this.recovDDDate = dateToShow(this.getSelectedClaim.lossInfo.recovDDDate);
     this.policyInfo.carrierNotifyDate = dateToShow(
       this.getSelectedClaim.contractInfo.date
     );
-    this.isHabitable = this.getSelectedClaim.lossInfo.isHabitable;
-    this.isFemaClaim = this.getSelectedClaim.lossInfo.isFEMA;
-    this.lossInfo.desc = this.getSelectedClaim.lossInfo.desc;
 
-    if (this.getSelectedClaim.lossInfo.cause) {
-      this.lossInfo.cause = this.getSelectedClaim.lossInfo.cause;
-    }
     await this.getSingleClaimDetails(this.selectedClaimId).then(() => {
       this.policyDate.policyEffectiveDate = this.getSelectedClaim.policyInfo.effectiveDate;
       this.policyDate.policyExpireDate = this.getSelectedClaim.policyInfo.expirationDate;
@@ -833,7 +825,40 @@ export default {
     ]),
     dateToShow,
     validateDate,
-
+    onEditLossDetails() {
+      this.lossDetailsBox = true;
+      this.getLossCauses();
+      this.$emit('claimSummaryDialog', true);
+      if (this.getSelectedClaim.lossInfo) {
+        this.isHabitable = this.getSelectedClaim.lossInfo.isHabitable
+          ? this.getSelectedClaim.lossInfo.isHabitable
+          : false;
+        this.isFemaClaim = this.getSelectedClaim.lossInfo.isFEMA
+          ? this.getSelectedClaim.lossInfo.isFEMA
+          : false;
+        this.lossInfo.desc = this.getSelectedClaim.lossInfo.desc
+          ? this.getSelectedClaim.lossInfo.desc
+          : '';
+        this.lossInfo.estimatedLossAmt = this.getSelectedClaim.lossInfo
+          .estimatedLossAmt
+          ? this.getSelectedClaim.lossInfo.estimatedLossAmt
+          : null;
+        this.lossInfo.propertyValue = this.getSelectedClaim.lossInfo
+          .propertyValue
+          ? this.getSelectedClaim.lossInfo.propertyValue
+          : null;
+        if (this.getSelectedClaim.lossInfo.cause) {
+          this.lossInfo.cause.id = this.getSelectedClaim.lossInfo.cause.id;
+          this.lossInfo.cause.value = this.getSelectedClaim.lossInfo.cause.value;
+          this.lossInfo.cause.machineValue = this.getSelectedClaim.lossInfo.cause.machineValue;
+        }
+        if (this.getSelectedClaim.lossInfo.date) {
+          this.lossInfo.dateOfLoss = dateToShow(
+            this.getSelectedClaim.lossInfo.date
+          );
+        }
+      }
+    },
     onClickEditClaimTimeline(index) {
       this.claimPhase.notes = this.getSelectedClaim.phases[index].value;
       this.claimPhase.created = dateToShow(
@@ -863,15 +888,27 @@ export default {
       this.getLossCauses();
       this.claimSummary = true;
       this.$emit('claimSummaryDialog', true);
-      this.lossInfo.reasonClaim.id = this.getSelectedClaim.lossInfo.claimReason.id;
-      this.lossInfo.reasonClaim.value = this.getSelectedClaim.lossInfo.claimReason.value;
-      this.lossInfo.reasonClaim.machineValue = this.getSelectedClaim.lossInfo.claimReason.machineValue;
+      if (this.getSelectedClaim.lossInfo.claimReason) {
+        this.lossInfo.reasonClaim.id = this.getSelectedClaim.lossInfo.claimReason.id;
+        this.lossInfo.reasonClaim.value = this.getSelectedClaim.lossInfo.claimReason.value;
+        this.lossInfo.reasonClaim.machineValue = this.getSelectedClaim.lossInfo.claimReason.machineValue;
+      }
+
       this.policyInfo.dateOfFirstContact = dateToShow(
         this.getSelectedClaim.contractInfo.dateOfFirstContact
       );
+      if (
+        this.getSelectedClaim.contractInfo.fees &&
+        this.getSelectedClaim.contractInfo.fees.rate
+      ) {
+        this.contractInfo.fees.rate = this.getSelectedClaim.contractInfo.fees.rate;
+      }
 
-      this.contractInfo.fees.rate = this.getSelectedClaim.contractInfo.fees.rate;
-      this.contractInfo.fees.type = this.getSelectedClaim.contractInfo.fees.type;
+      this.contractInfo.fees.type =
+        this.getSelectedClaim.contractInfo.fees &&
+        this.getSelectedClaim.contractInfo.fees.type
+          ? this.getSelectedClaim.contractInfo.fees.type
+          : '';
     },
     searchFilterBy(val, update) {
       this.lossInfo.reasonClaim.id = null;
