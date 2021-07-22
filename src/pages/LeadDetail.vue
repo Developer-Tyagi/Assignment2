@@ -120,6 +120,13 @@
                 <div class="col-6 q-ml-md">
                   <div>
                     {{
+                      selectedLead.lossLocation.houseNumber
+                        ? selectedLead.lossLocation.houseNumber
+                        : '-'
+                    }}
+
+                    ,
+                    {{
                       selectedLead.lossLocation.streetAddress
                         ? selectedLead.lossLocation.streetAddress
                         : '-'
