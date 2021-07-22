@@ -1,6 +1,10 @@
 <template>
   <div>
-    <div v-if="damageInfo.damageInfo.personal.items">
+    <div
+      v-if="
+        damageInfo.damageInfo.personal && damageInfo.damageInfo.personal.items
+      "
+    >
       <q-card
         class="q-pa-md q-mb-sm"
         v-for="(damage, index) in damageInfo.damageInfo.personal.items"
