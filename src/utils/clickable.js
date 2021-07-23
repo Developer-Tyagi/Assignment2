@@ -15,3 +15,11 @@ export function sendMap(address) {
   let addressURI = encodeURI(uri);
   window.open(`https://www.google.com/maps/search/?api=1&query=${addressURI}`);
 }
+export function sendPhoneNumber(value) {
+  let specialChars = '!()-[ ]/{}|:<>?,.';
+
+  for (let i = 0; i < specialChars.length; i++) {
+    value = value.replace(new RegExp('\\' + specialChars[i], 'gi'), '');
+  }
+  return value;
+}
