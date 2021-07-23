@@ -24,7 +24,8 @@ export async function getActiveLeadsList(
       payload.searchString ? payload.searchString : '';
       const { data } = await request.get('/leads', {
         new: payload.new,
-        phase: payload.phase
+        phase: payload.phase,
+        name: payload.searchString
       });
 
       commit('setActiveLeads', data);
