@@ -81,7 +81,7 @@
             <span
               class="clickLink"
               @click="onPhoneNumberClick(phone.number, $event)"
-              >{{ phone.number }}</span
+              >{{ showPhoneNumber(phone.number) }}</span
             >
           </div>
           <span
@@ -102,7 +102,12 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
+import {
+  onEmailClick,
+  onPhoneNumberClick,
+  sendMap,
+  showPhoneNumber
+} from '@utils/clickable';
 export default {
   name: 'MortgagesList',
   props: ['showMortgageDetails', 'selectMortgage', 'selectedMortgageName'],
@@ -132,6 +137,7 @@ export default {
     onEmailClick,
     onPhoneNumberClick,
     sendMap,
+    showPhoneNumber,
 
     onMortgageNameClick(mortgage, e) {
       if (this.showMortgageDetails) {

@@ -98,7 +98,7 @@
       <span
         class="clickLink"
         @click="onPhoneNumberClick(selectedVendor.phoneNumber.number, $event)"
-        >{{ selectedVendor.phoneNumber.number }}</span
+        >{{ showPhoneNumber(selectedVendor.phoneNumber.number) }}</span
       >
     </div>
     <div class="q-mt-sm row" v-if="selectedVendor.contact">
@@ -124,7 +124,9 @@
           "
         >
           {{
-            selectedVendor ? selectedVendor.contact.phoneNumber[0].number : '-'
+            selectedVendor
+              ? showPhoneNumber(selectedVendor.contact.phoneNumber[0].number)
+              : '-'
           }}
         </div>
       </div>
@@ -173,6 +175,7 @@ import { mapGetters, mapActions } from 'vuex';
 import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
 import AddVendor from 'components/AddVendor';
 import { constants } from '@utils/constant';
+import { showPhoneNumber } from '@utils/clickable';
 import DeleteAlert from 'components/DeleteAlert';
 export default {
   name: 'VendorCompanyInfo',
@@ -193,6 +196,7 @@ export default {
     onEmailClick,
     onPhoneNumberClick,
     sendMap,
+    showPhoneNumber,
     onClickDelete() {
       this.deleteAlertDialog = true;
     },
