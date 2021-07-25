@@ -228,7 +228,12 @@ import { getCurrentUser } from 'src/utils/auth';
 import { mapGetters, mapActions } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import { validateEmail } from '@utils/validation';
-import { onPhoneNumberClick, onEmailClick } from '@utils/clickable';
+import {
+  onPhoneNumberClick,
+  onEmailClick,
+  sendPhoneNumber
+} from '@utils/clickable';
+
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 export default {
   components: { AutoCompleteAddress, CustomBar },
@@ -279,6 +284,7 @@ export default {
     validateEmail,
     onPhoneNumberClick,
     onEmailClick,
+    sendPhoneNumber,
     ...mapActions([
       'getContactTypes',
       'editUserInfo',
@@ -346,7 +352,7 @@ export default {
             mailingAddress: this.users.mailingAddress,
             phoneNumber: {
               type: this.users.contact.type,
-              number: this.users.contact.number
+              number: sendPhoneNumber(this.users.contact.number)
             }
           }
         };

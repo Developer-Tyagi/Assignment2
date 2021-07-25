@@ -218,6 +218,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import { constants } from '@utils/constant';
+import { sendPhoneNumber } from '@utils/clickable';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import CustomBar from 'components/CustomBar';
 import {
@@ -402,21 +403,75 @@ export default {
 
     async onAddVendorButtonClick() {
       const success = await this.$refs.vendorForm.validate();
+
+      const payload = {
+        type: 'user',
+        email: this.vendor.email,
+        phoneNumber: {
+          type: this.vendor.phoneNumber.type,
+          number: sendPhoneNumber(this.vendor.phoneNumber.number)
+        },
+        contact: {
+          fname: '',
+          lname: '',
+          email: '',
+          honorific: {
+            id: this.vendor.contact.honorific.id,
+            value: this.vendor.contact.honorific.value,
+            machineValue: this.vendor.contact.honorific.machineValue
+          },
+
+          phoneNumber: [
+            {
+              type: this.vendor.contact.phoneNumber[0].type,
+              number: sendPhoneNumber(this.vendor.contact.phoneNumber[0].number)
+            }
+          ]
+        },
+        roles: [
+          {
+            value: 'Vendor',
+            machineValue: 'vendor'
+          }
+        ],
+        mailingAddress: this.vendor.mailingAddress,
+        id: this.vendor.id,
+        companyName: this.vendor.companyName,
+
+        industry: {
+          value: this.vendor.industry.value,
+          id: this.vendor.industry.id,
+          machineValue: this.vendor.industry.machineValue
+        },
+
+        meta: {
+          claimFiledByEmail: this.vendor.claimFiledByEmail
+        },
+
+        website: this.vendor.website,
+        notes: this.vendor.notes
+      };
+
       if (success) {
         if (!this.isEdit) {
           if (!this.vendor.mailingAddress.streetAddress) {
             delete this.vendor.mailingAddress;
           }
-          const response = await this.addVendor(this.vendor);
+          // console.log(this.vendor);
+
+          const response = await this.addVendor(payload);
           this.getVendors();
           if (response.id) {
             this.vendor.id = response.id;
-            this.$emit('onCloseAddVendor', this.vendor);
+            payload.id = response.id;
+            this.$emit('onCloseAddVendor', payload);
             this.$emit('closeDialog', true);
           }
         } else {
           this.vendor.id = this.selectedVendor.id;
-          await this.editVendorInfo(this.vendor);
+          payload.id = this.selectedVendor.id;
+
+          await this.editVendorInfo(payload);
           this.$emit('closeDialog', true);
           this.getVendorDetails(this.vendor.id);
         }
