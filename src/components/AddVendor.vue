@@ -457,7 +457,6 @@ export default {
           if (!this.vendor.mailingAddress.streetAddress) {
             delete this.vendor.mailingAddress;
           }
-          // console.log(this.vendor);
 
           const response = await this.addVendor(payload);
           this.getVendors();
