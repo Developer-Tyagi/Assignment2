@@ -44,7 +44,10 @@
                   </span>
                 </div>
                 <div class="row">
-                  <div class="row">
+                  <div
+                    class="row"
+                    v-if="client.insuredInfo.primary.phoneNumber"
+                  >
                     <span
                       >Mob:
                       <span
@@ -67,7 +70,7 @@
                 </div>
                 <div><span>File No. 12345678</span></div>
                 <div class="row justify-between">
-                  <div>Status: {{ client.status }}</div>
+                  <div>Status: {{ client.status ? client.status : '-' }}</div>
                   <div>
                     {{ dateWithTime(client.created) }}
                   </div>
