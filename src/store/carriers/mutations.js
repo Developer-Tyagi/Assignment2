@@ -2,15 +2,18 @@ import localDB, { getCollection } from '@services/dexie';
 
 export async function setCarriers(state, carriersData) {
   const carriersCollection = await getCollection('carriers');
-  const carriers = carriersData.map(carrier => ({
+  const carriers = carriersData.data.map(carrier => ({
     ...carrier.attributes,
     id: carrier.id
   }));
   state.carriers = carriers;
-  if ((await carriersCollection.count()) > 0) {
+
+  if ((await carriersCollection.count()) > 0 && !carriersData.params) {
     await carriersCollection.delete([]);
   }
-  await localDB.carriers.bulkAdd(carriers);
+  if (!carriersData.params) {
+    await localDB.carriers.bulkAdd(carriers);
+  }
 }
 
 export async function setOfflineCarriers(state) {
