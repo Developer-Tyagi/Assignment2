@@ -1202,6 +1202,7 @@ import LossInfo from 'components/LossInfo';
 import ExpertVendorInfo from 'components/ExpertVendorInfo';
 import InsuranceInfo from 'components/InsuranceInfo';
 import { dateToSend, dateToShow } from '@utils/date';
+import { sendPhoneNumber } from '@utils/clickable';
 
 import {
   validateEmail,
@@ -1716,6 +1717,7 @@ export default {
     ...mapMutations(['setSelectedLead']),
     successMessage,
     dateToShow,
+    sendPhoneNumber,
     onDamageOsToggleButtonOff() {
       if (!this.lossInfo.isDamageOSToggle) {
         this.lossInfo.osDamagedItems.length = 0;
@@ -1979,7 +1981,7 @@ export default {
             phoneNumber: [
               {
                 type: this.insuredDetails.type,
-                number: this.insuredDetails.phone
+                number: sendPhoneNumber(this.insuredDetails.phone)
               }
             ]
           },
@@ -1995,7 +1997,7 @@ export default {
             phoneNumber: [
               {
                 type: this.coInsuredDetails.type,
-                number: this.coInsuredDetails.phone
+                number: sendPhoneNumber(this.coInsuredDetails.phone)
               }
             ]
           },

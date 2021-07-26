@@ -23,3 +23,19 @@ export function sendPhoneNumber(value) {
   }
   return value;
 }
+
+export function showPhoneNumber(value) {
+  var number = '';
+  for (let i = 0; i < value.length; i++) {
+    if (i === 0) {
+      number += '(';
+    } else if (i == 3) {
+      number += ')';
+      number += ' ';
+    } else if (i == 6) {
+      number += '-';
+    }
+    number += value[i];
+  }
+  return number;
+}

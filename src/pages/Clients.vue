@@ -56,7 +56,11 @@
                           )
                         "
                       >
-                        {{ client.insuredInfo.primary.phoneNumber[0].number }}
+                        {{
+                          showPhoneNumber(
+                            client.insuredInfo.primary.phoneNumber[0].number
+                          )
+                        }}
                       </span>
                     </span>
                   </div>
@@ -93,7 +97,7 @@
 <script>
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import { dateWithTime } from '@utils/date';
-import { onPhoneNumberClick } from '@utils/clickable';
+import { onPhoneNumberClick, showPhoneNumber } from '@utils/clickable';
 
 export default {
   name: 'Clients',
@@ -120,6 +124,7 @@ export default {
     ...mapMutations(['setSelectedLead']),
     dateWithTime,
     onPhoneNumberClick,
+    showPhoneNumber,
     onSearchBackButtonClick() {
       this.searchText = '';
       this.search();

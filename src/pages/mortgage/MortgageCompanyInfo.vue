@@ -89,7 +89,7 @@
         <span
           class="clickLink"
           @click="onPhoneNumberClick(phone.number, $event)"
-          >{{ phone.number ? phone.number : '-' }}</span
+          >{{ phone.number ? showPhoneNumber(phone.number) : '-' }}</span
         ></span
       >
     </div>
@@ -139,7 +139,12 @@
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
+import {
+  onEmailClick,
+  onPhoneNumberClick,
+  sendMap,
+  showPhoneNumber
+} from '@utils/clickable';
 import AddMortgage from 'components/AddMortgage';
 import { constants } from '@utils/constant';
 import DeleteAlert from 'components/DeleteAlert';
@@ -166,6 +171,7 @@ export default {
     sendMap,
     onEmailClick,
     onPhoneNumberClick,
+    showPhoneNumber,
 
     closeAddMortgageDialog(e) {
       this.addMortgageDialog = false;

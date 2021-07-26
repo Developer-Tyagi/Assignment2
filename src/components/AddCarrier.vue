@@ -195,6 +195,7 @@ import AddressService from '@utils/country';
 const addressService = new AddressService();
 import { mapGetters, mapActions } from 'vuex';
 import { constants } from '@utils/constant';
+import { sendPhoneNumber } from '@utils/clickable';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import CustomBar from 'components/CustomBar';
 import {
@@ -241,7 +242,7 @@ export default {
           lname: '',
           email: '',
           honorific: {
-            id: '602a5eaa312a2b57ac2b00ad',
+            id: '',
             value: 'Mr',
             machineValue: 'mr'
           },
@@ -308,6 +309,7 @@ export default {
     validateEmail,
     validateUrl,
     validateNonRequiredEmail,
+    sendPhoneNumber,
     setTitleName(selectedTitle) {
       const selected = this.titles.find(obj => {
         return obj.id === selectedTitle.id;
@@ -319,21 +321,61 @@ export default {
 
     async onAddCarrierButtonClick() {
       const success = await this.$refs.carrierForm.validate();
+      const payload = {
+        id: this.carrier.id,
+        name: this.carrier.name,
+        email: this.carrier.email,
+        phoneNumber: [
+          {
+            type: this.carrier.phoneNumber[0].type,
+            number: sendPhoneNumber(this.carrier.phoneNumber[0].number)
+          }
+        ],
+        meta: {
+          claimFiledByEmail: this.carrier.meta.claimFiledByEmail
+        },
+        contact: {
+          fname: this.carrier.contact.fname,
+          lname: this.carrier.contact.lname,
+          email: this.carrier.contact.email,
+          honorific: {
+            id: this.carrier.contact.honorific.id,
+            value: this.carrier.contact.honorific.value,
+            machineValue: this.carrier.contact.honorific.machineValue
+          },
+          phoneNumber: [
+            {
+              type: this.carrier.contact.phoneNumber[0].type,
+              number: sendPhoneNumber(
+                this.carrier.contact.phoneNumber[0].number
+              )
+            }
+          ]
+        },
+        address: this.carrier.address,
+        info: {
+          website: this.carrier.info.website,
+          notes: this.carrier.info.notes
+        }
+      };
+
       if (success) {
         if (!this.isEdit) {
-          const response = await this.addCarrier(this.carrier);
+          const response = await this.addCarrier(payload);
           this.getCarriers();
           if (response.id) {
             this.carrier.id = response.id;
+            payload.id = response.id;
             if (this.claimCarrier) {
               this.$emit('onAddCarrier', this.carrier.id);
             }
             this.$emit('closeDialog', true);
-            this.$emit('onCloseAddCarrier', this.carrier);
+            this.$emit('onCloseAddCarrier', payload);
           }
         } else {
           this.carrier.id = this.selectedCarrier.id;
-          await this.editCarrierInfo(this.carrier);
+          payload.id = this.selectedCarrier.id;
+          await this.editCarrierInfo(payload);
           this.getCarrierDetails(this.carrier.id);
           this.$emit('closeDialog', true);
         }
