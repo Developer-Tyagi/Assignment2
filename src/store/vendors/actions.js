@@ -16,7 +16,8 @@ export async function getVendors(
   if (isOnline) {
     try {
       const { data } = await request.get('/vendors', params);
-      commit('setVendors', data);
+      const payload = { data: data, params: params };
+      commit('setVendors', payload);
       dispatch('setLoading', false);
     } catch (e) {
       console.log(e);
