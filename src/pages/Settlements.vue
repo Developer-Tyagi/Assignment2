@@ -194,6 +194,12 @@
                 behavior="menu"
                 emit-value
                 @input="setTypes(settlementType)"
+                lazy-rules
+                :rules="[
+                  val =>
+                    (val && val.length > 0) ||
+                    'Please fill the settlement description '
+                ]"
               />
               <div class="row q-pa-md justify-between">
                 <div class="q-mt-sm">Final Settlement</div>
@@ -649,15 +655,14 @@
                 />
               </div>
             </q-card>
-
-            <q-btn
-              label="Save"
-              color="primary"
-              class="button-width-90"
-              @click="onSaveButtonClick()"
-              size="'xl'"
-            />
           </q-form>
+          <q-btn
+            label="Save"
+            color="primary"
+            class="button-width-90"
+            @click="onSaveButtonClick()"
+            size="'xl'"
+          />
         </div>
       </q-card>
     </q-dialog>
