@@ -188,6 +188,7 @@ import AddressService from '@utils/country';
 const addressService = new AddressService();
 import { mapGetters, mapActions } from 'vuex';
 import { constants } from '@utils/constant';
+import { sendPhoneNumber } from '@utils/clickable';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import CustomBar from 'components/CustomBar';
 import {
@@ -298,6 +299,7 @@ export default {
     validateEmail,
     validateUrl,
     validateNonRequiredEmail,
+    sendPhoneNumber,
     setTitleName(selectedTitle) {
       const selected = this.titles.find(obj => {
         return obj.value === selectedTitle.value;
@@ -309,18 +311,57 @@ export default {
 
     async onAddMortgageButtonClick() {
       const success = await this.$refs.mortgageForm.validate();
+      const payload = {
+        id: this.mortgage.id,
+        name: this.mortgage.name,
+        email: this.mortgage.email,
+        phoneNumber: [
+          {
+            type: this.mortgage.phoneNumber[0].type,
+            number: sendPhoneNumber(this.mortgage.phoneNumber[0].number)
+          }
+        ],
+        meta: {
+          claimFiledByEmail: this.mortgage.meta.claimFiledByEmail
+        },
+        contact: {
+          fname: this.mortgage.contact.fname,
+          lname: this.mortgage.contact.lname,
+          email: this.mortgage.contact.email,
+          honorific: {
+            id: this.mortgage.contact.honorific.id,
+            value: this.mortgage.contact.honorific.value,
+            machineValue: this.mortgage.contact.honorific.machineValue
+          },
+          phoneNumber: [
+            {
+              type: this.mortgage.contact.phoneNumber[0].type,
+              number: sendPhoneNumber(
+                this.mortgage.contact.phoneNumber[0].number
+              )
+            }
+          ]
+        },
+        address: this.mortgage.address,
+        info: {
+          website: this.mortgage.info.website,
+          notes: this.mortgage.info.notes
+        }
+      };
       if (success) {
         if (!this.isEdit) {
-          const response = await this.addClaimMortgage(this.mortgage);
+          const response = await this.addClaimMortgage(payload);
           this.getMortgages();
           if (response.id) {
             this.mortgage.id = response.id;
-            this.$emit('onCloseAddMortgage', this.mortgage);
+            payload.id = response.id;
+            this.$emit('onCloseAddMortgage', payload);
             this.closeDialog(true);
           }
         } else {
           this.mortgage.id = this.selectedMortgage.id;
-          await this.editMortgageInfo(this.mortgage);
+          payload.id = this.selectedMortgage.id;
+          await this.editMortgageInfo(payload);
           this.closeDialog(true);
           this.getMortgageDetails(this.mortgage.id);
         }

@@ -93,7 +93,11 @@
                               )
                             "
                           >
-                            {{ lead.primaryContact.phoneNumber[0].number }}
+                            {{
+                              showPhoneNumber(
+                                lead.primaryContact.phoneNumber[0].number
+                              )
+                            }}
                           </span>
                         </span>
                         <span class="q-ml-auto" v-if="lead.lastVisted">
@@ -180,7 +184,11 @@
                               lead.primaryContact.phoneNumber.length
                           "
                         >
-                          {{ lead.primaryContact.phoneNumber[0].number }}
+                          {{
+                            showPhoneNumber(
+                              lead.primaryContact.phoneNumber[0].number
+                            )
+                          }}
                         </span>
                       </span>
                       <span class="q-ml-auto" v-if="lead.lastVisted">
@@ -221,7 +229,7 @@
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import moment from 'moment';
 import { dateToShow } from '@utils/date';
-import { onPhoneNumberClick } from '@utils/clickable';
+import { onPhoneNumberClick, showPhoneNumber } from '@utils/clickable';
 
 export default {
   name: 'Leads',
@@ -252,6 +260,7 @@ export default {
     ]),
     dateToShow,
     ...mapMutations(['setSelectedLeadOnline', 'setSelectedLeadOffline']),
+    showPhoneNumber,
 
     onCreateClientButtonClick(lead) {
       if (this.isOnline) {
