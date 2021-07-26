@@ -927,7 +927,6 @@ export default {
       'getClients',
       'getVendors',
       'getLossCauses',
-      'getLeadDetails',
       'editLeadDetails',
       'getActiveLeadsList'
     ]),

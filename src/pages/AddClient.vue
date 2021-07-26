@@ -1574,6 +1574,7 @@ export default {
 
   async created() {
     await this.getClientTypes();
+
     await this.getTitles();
     await this.getContactTypes();
     await this.getPropertyTypes();
@@ -1686,7 +1687,8 @@ export default {
       'roleTypes',
       'userRoles',
       'vendorIndustries',
-      'propertyTypes'
+      'propertyTypes',
+      'isOnline'
     ])
   },
 
@@ -1713,7 +1715,7 @@ export default {
       'addMultipleTaskToClaim',
       'addIndustry'
     ]),
-    ...mapMutations(['setSelectedLead']),
+    ...mapMutations(['setSelectedLeadOffline', 'setSelectedLeadOnline']),
     successMessage,
     dateToShow,
     onDamageOsToggleButtonOff() {
@@ -2267,7 +2269,11 @@ export default {
 
       const response = await this.addMultipleTaskToClaim(payload);
       if (response) {
-        this.setSelectedLead();
+        if (this.isOnline) {
+          this.setSelectedLeadOnline();
+        } else {
+          this.setSelectedLeadOffline();
+        }
         this.$router.push('/clients');
       }
     },

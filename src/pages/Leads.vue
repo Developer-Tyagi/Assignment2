@@ -234,7 +234,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['activeLeads', 'archivedLeads']),
+    ...mapGetters(['activeLeads', 'archivedLeads', 'isOnline']),
     formatDate(value) {
       if (value) {
         return moment(String(value)).format('MM/DD/YYYY');
@@ -251,13 +251,17 @@ export default {
       'addLeadToArchiveList'
     ]),
     dateToShow,
-    ...mapMutations(['setSelectedLead']),
+    ...mapMutations(['setSelectedLeadOnline', 'setSelectedLeadOffline']),
 
     onCreateClientButtonClick(lead) {
-      let payload = {
-        attributes: lead
-      };
-      this.setSelectedLead(payload);
+      if (this.isOnline) {
+        let payload = {
+          attributes: lead
+        };
+        this.setSelectedLeadOnline(payload);
+      } else {
+        this.setSelectedLeadOffline(lead);
+      }
       this.$router.push('/add-client');
     },
 

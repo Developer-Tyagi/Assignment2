@@ -338,6 +338,7 @@ export async function editTemplate({ dispatch, state }, payload) {
     return false;
   }
 }
+
 export async function deleteTemplate({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
