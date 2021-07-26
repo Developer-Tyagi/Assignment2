@@ -121,7 +121,6 @@ export default {
   },
   methods: {
     ...mapActions(['getClients', 'getSingleClientDetails']),
-    ...mapMutations(['setSelectedLead']),
     dateWithTime,
     onPhoneNumberClick,
     showPhoneNumber,

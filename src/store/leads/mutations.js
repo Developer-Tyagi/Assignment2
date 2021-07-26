@@ -38,7 +38,7 @@ export function moveActiveToArchive(state, leadId) {
   state.activeLeads.splice(index, 1);
 }
 
-export function setSelectedLead(state, lead) {
+export function setSelectedLeadOnline(state, lead) {
   if (lead && (lead.id || lead.attributes.id)) {
     state.selectedLead = {
       id: lead.id,
@@ -80,6 +80,49 @@ export function setSelectedLead(state, lead) {
     };
   }
 }
+
+export function setSelectedLeadOffline(state, lead) {
+  if (lead && lead.id) {
+    state.selectedLead = {
+      ...lead
+    };
+  } else {
+    state.selectedLead = {
+      id: '',
+      isOrganization: false,
+      organizationName: '',
+      primaryContact: {
+        fname: '',
+        lname: '',
+        email: '',
+        phoneNumber: [
+          {
+            type: '',
+            number: ''
+          }
+        ]
+      },
+      lastVisted: '',
+      visited: [],
+      lossLocation: {
+        addressCountry: '',
+        addressLocality: '',
+        addressRegion: '',
+        postOfficeBoxNumber: '',
+        postalCode: '',
+        streetAddress: ''
+      },
+      lossDesc: '',
+      lossDetails: '',
+      dateOfLoss: '',
+      carrier: '',
+      policyNumber: '',
+      isAutomaticScheduling: false,
+      notes: ''
+    };
+  }
+}
+
 export function setLeadStatistics(state, leadStatic) {
   state.leadStatic = {
     ...leadStatic.attributes

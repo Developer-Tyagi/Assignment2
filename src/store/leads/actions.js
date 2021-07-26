@@ -147,11 +147,29 @@ export async function addLeads(
   }
 }
 
-export async function getLeadDetails({ commit, dispatch }, id) {
+export async function getLeadDetails(
+  {
+    rootState: {
+      leads: { activeLeads },
+      common: { isOnline }
+    },
+    commit,
+    dispatch
+  },
+  id
+) {
   dispatch('setLoading', true);
   try {
-    const { data } = await request.get(`/leads/${id}`);
-    commit('setSelectedLead', data);
+    if (isOnline) {
+      const { data } = await request.get(`/leads/${id}`);
+      commit('setSelectedLeadOnline', data);
+    } else {
+      const data = activeLeads.find(lead => {
+        return lead.id === id;
+      });
+      commit('setSelectedLeadOffline', data);
+    }
+
     dispatch('setLoading', false);
   } catch (e) {
     console.log(e);
