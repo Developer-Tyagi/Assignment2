@@ -180,11 +180,11 @@
           :dialogName="'Settlements'"
         />
         <div class="q-ma-sm mobile-container-page-without-search">
-          <q-form ref="settlementForm" class="form-height">
+          <q-form ref="AddSettlementForm" class="form-height">
             <q-card flat bordered>
               <q-select
                 v-model="description.id"
-                class="q-pa-md"
+                class="q-pa-md required"
                 option-label="value"
                 option-value="id"
                 :options="settlementType"
@@ -649,15 +649,15 @@
                 />
               </div>
             </q-card>
-          </q-form>
 
-          <q-btn
-            label="Save"
-            color="primary"
-            class="button-width-90"
-            @click="onSaveButtonClick()"
-            size="'xl'"
-          />
+            <q-btn
+              label="Save"
+              color="primary"
+              class="button-width-90"
+              @click="onSaveButtonClick()"
+              size="'xl'"
+            />
+          </q-form>
         </div>
       </q-card>
     </q-dialog>
@@ -1453,81 +1453,81 @@ export default {
       }
     },
     async onSaveButtonClick() {
-      let success = false;
-      success = await this.$refs.settlementForm.validate();
+      const success = await this.$refs.AddSettlementForm.validate();
+      if (success) {
+        const payload = {
+          id: this.selectedClaimId,
+          setId: this.setId,
+          data: {
+            description: {
+              id: this.description.id,
+              value: this.description.value,
+              machineValue: this.description.machineValue
+            },
+            isFinal: this.isFinal,
+            isAccepted: this.buttonGroup,
+            amount: {
+              replacementCost: this.amounts.replacementCost
+                ? this.amounts.replacementCost
+                : 0,
+              recoverable: this.amounts.recoverable
+                ? this.amounts.recoverable
+                : 0,
+              nonRecoverable: this.amounts.nonRecoverable
+                ? this.amounts.nonRecoverable
+                : 0,
+              otherAdjustment: this.amounts.otherAdjustment
+                ? this.amounts.otherAdjustment
+                : 0,
+              otherAdjustmentDesc: 'Side settlement',
+              deductibleApplied: this.amounts.deductibleApplied
+                ? this.amounts.deductibleApplied
+                : 0,
+              policyLimit: this.amounts.policyLimit
+                ? this.amounts.policyLimit
+                : 0,
+              priorPayment: this.amounts.priorPayment
+                ? this.amounts.priorPayment
+                : 0
+            },
+            offeredDate: dateToSend(this.offeredDate),
+            paymentExpDate: dateToSend(this.paymentExpDate),
+            isProofOfLossReq: this.isProofOfLossReq,
 
-      const payload = {
-        id: this.selectedClaimId,
-        setId: this.setId,
-        data: {
-          description: {
-            id: this.description.id,
-            value: this.description.value,
-            machineValue: this.description.machineValue
-          },
-          isFinal: this.isFinal,
-          isAccepted: this.buttonGroup,
-          amount: {
-            replacementCost: this.amounts.replacementCost
-              ? this.amounts.replacementCost
-              : 0,
-            recoverable: this.amounts.recoverable
-              ? this.amounts.recoverable
-              : 0,
-            nonRecoverable: this.amounts.nonRecoverable
-              ? this.amounts.nonRecoverable
-              : 0,
-            otherAdjustment: this.amounts.otherAdjustment
-              ? this.amounts.otherAdjustment
-              : 0,
-            otherAdjustmentDesc: 'Side settlement',
-            deductibleApplied: this.amounts.deductibleApplied
-              ? this.amounts.deductibleApplied
-              : 0,
-            policyLimit: this.amounts.policyLimit
-              ? this.amounts.policyLimit
-              : 0,
-            priorPayment: this.amounts.priorPayment
-              ? this.amounts.priorPayment
-              : 0
-          },
-          offeredDate: dateToSend(this.offeredDate),
-          paymentExpDate: dateToSend(this.paymentExpDate),
-          isProofOfLossReq: this.isProofOfLossReq,
+            proofOfLossInfo:
+              this.isProofOfLossReq == true
+                ? {
+                    reqDate: dateToSend(this.proofOfLossInfo.reqDate),
+                    dueDate: dateToSend(this.proofOfLossInfo.dueDate),
+                    sentClientDate: dateToSend(
+                      this.proofOfLossInfo.sentClientDate
+                    ),
+                    recvClientDate: dateToSend(
+                      this.proofOfLossInfo.recvClientDate
+                    ),
+                    sentCarrierDate: dateToSend(
+                      this.proofOfLossInfo.sentCarrierDate
+                    ),
+                    resRecvDate: dateToSend(this.proofOfLossInfo.resRecvDate)
+                  }
+                : null,
 
-          proofOfLossInfo:
-            this.isProofOfLossReq == true
-              ? {
-                  reqDate: dateToSend(this.proofOfLossInfo.reqDate),
-                  dueDate: dateToSend(this.proofOfLossInfo.dueDate),
-                  sentClientDate: dateToSend(
-                    this.proofOfLossInfo.sentClientDate
-                  ),
-                  recvClientDate: dateToSend(
-                    this.proofOfLossInfo.recvClientDate
-                  ),
-                  sentCarrierDate: dateToSend(
-                    this.proofOfLossInfo.sentCarrierDate
-                  ),
-                  resRecvDate: dateToSend(this.proofOfLossInfo.resRecvDate)
-                }
-              : null,
-
-          notes: this.notes
+            notes: this.notes
+          }
+        };
+        if (this.isEdit == true) {
+          await this.editSettlement(payload);
+        } else {
+          await this.addSettlement(payload);
         }
-      };
-      if (this.isEdit == true) {
-        await this.editSettlement(payload);
-      } else {
-        await this.addSettlement(payload);
+
+        this.$emit('afterAddition', true);
+
+        this.settlementDialog = false;
+        this.settlementShowDialog = false;
+        this.getSettlements(this.selectedClaimId);
+        this.getAccountDetails(this.selectedClaimId);
       }
-
-      this.$emit('afterAddition', true);
-
-      this.settlementDialog = false;
-      this.settlementShowDialog = false;
-      this.getSettlements(this.selectedClaimId);
-      this.getAccountDetails(this.selectedClaimId);
     }
   }
 };
