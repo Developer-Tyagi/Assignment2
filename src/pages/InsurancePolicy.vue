@@ -87,30 +87,28 @@
                 size="sm"
               ></q-icon>
             </div>
-
-            <div
-              class="q-mt-xs"
-              v-for="phone in selectedClaimCarrier.carrier.phoneNumber"
-            >
-              <span v-if="phone.type"
-                >{{ phone.type ? phone.type : '-' }} :
-              </span>
-              <span
-                class="clickLink"
-                @click="onPhoneNumberClick(phone.number, $event)"
-                >{{ phone.number ? phone.number : '-' }}</span
-              >
-            </div>
-            <span
-              class="click-link"
-              @click="onEmailClick(selectedClaimCarrier.carrier.email, $event)"
-              >{{
-                selectedClaimCarrier.carrier.email
-                  ? selectedClaimCarrier.carrier.email
-                  : '-'
-              }}</span
-            >
           </div>
+        </div>
+        <div
+          class="q-mt-xs"
+          v-for="phone in selectedClaimCarrier.carrier.phoneNumber"
+        >
+          <span v-if="phone.type">{{ phone.type ? phone.type : '-' }} : </span>
+          <span
+            class="clickLink"
+            @click="onPhoneNumberClick(phone.number, $event)"
+            >{{ phone.number ? phone.number : '-' }}</span
+          >
+        </div>
+        <div
+          class="click-link"
+          @click="onEmailClick(selectedClaimCarrier.carrier.email, $event)"
+        >
+          {{
+            selectedClaimCarrier.carrier.email
+              ? selectedClaimCarrier.carrier.email
+              : '-'
+          }}
         </div>
       </div>
       <div v-else class="heading-light col q-ma-xs">
@@ -1098,10 +1096,12 @@ export default {
       const name = this.selectedClaimCarrier.carrier.personnel[
         index
       ].name.split(' ');
+
       this.editPersonnelDialog = true;
       this.$emit('editCarrierDialog', true);
 
       this.editPersonnel.fname = name && name[0] ? name[0] : '';
+
       this.editPersonnel.lname = name && name[1] ? name[1] : '';
       this.editPersonnel.email = this.selectedClaimCarrier.carrier.personnel[
         index

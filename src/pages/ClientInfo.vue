@@ -270,23 +270,6 @@
         <div class="mobile-container-page-without-search form-height">
           <q-form ref="clientForm">
             <q-card class="q-ma-sm q-pa-sm">
-              <!-- <q-select
-                dense
-                class="required"
-                v-model="client.id"
-                option-value="id"
-                option-label="name"
-                map-options
-                emit-value
-                options-dense
-                :options="clientTypes"
-                @input="setTypes(clientTypes, client)"
-                label="Client Type"
-                :rules="[
-                  val =>
-                    (val && val.length > 0) || 'Please select the client type'
-                ]"
-              /> -->
               <q-select
                 dense
                 class="required"
@@ -307,25 +290,7 @@
               />
 
               <span class="form-heading">Insured Details</span>
-              <!-- <q-select
-                dense
-                v-model="honorific1.id"
-                class="required"
-                :options="titles"
-                option-value="id"
-                option-label="value"
-                map-options
-                options-dense
-                behavior="menu"
-                @input="setTitleName(1)"
-                emit-value
-                label="Title"
-                lazy-rules
-                options-dense
-                :rules="[
-                  val => (val && val.length > 0) || 'Please select the Title'
-                ]"
-              /> -->
+
               <q-select
                 dense
                 v-model="honorific1.value"
@@ -447,24 +412,6 @@
               <div v-if="isThereaCoInsuredToggle" style="font-size: 20px">
                 <span class="form-heading">Co-insured Details</span>
 
-                <!-- <q-select
-                  dense
-                  v-model="honorific2.id"
-                  class="required"
-                  :options="titles"
-                  option-value="id"
-                  option-label="value"
-                  map-options
-                  @input="setTitleName(2)"
-                  emit-value
-                  options-dense
-                  behavior="menu"
-                  label="Title"
-                  lazy-rules
-                  :rules="[
-                    val => (val && val.length > 0) || 'Please select the Title'
-                  ]"
-                /> -->
                 <q-select
                   dense
                   v-model="honorific2.value"
@@ -703,19 +650,19 @@ export default {
 
   data() {
     return {
-      mailingAddressDetails: {
-        addressCountry: '',
-        addressRegion: '',
-        addressLocality: '',
-        postalCode: '',
-        houseNumber: '',
-        streetAddress: '',
-        postOfficeBoxNumber: '4',
-        dropBox: {
-          info: '',
-          isPresent: false
-        }
-      },
+      // mailingAddressDetails: {
+      //   addressCountry: '',
+      //   addressRegion: '',
+      //   addressLocality: '',
+      //   postalCode: '',
+      //   houseNumber: '',
+      //   streetAddress: '',
+      //   postOfficeBoxNumber: '4',
+      //   dropBox: {
+      //     info: '',
+      //     isPresent: false
+      //   }
+      // },
       primaryDetails: {
         isOrganization: false,
         organizationName: ''
@@ -742,7 +689,7 @@ export default {
         addressLocality: '',
         postalCode: '',
         streetAddress: '',
-        postOfficeBoxNumber: '4',
+        postOfficeBoxNumber: '',
         dropBox: {
           info: '',
           isPresent: false
@@ -830,11 +777,9 @@ export default {
       if (this.editSelectedClient.attributes.type) {
         this.client = this.editSelectedClient.attributes.type;
       }
-
-      this.honorific1 = this.editSelectedClient.attributes.insuredInfo.primary
-        .honorific
-        ? this.editSelectedClient.attributes.insuredInfo.primary.honorific
-        : null;
+      if (this.editSelectedClient.attributes.insuredInfo.primary.honorific) {
+        this.honorific1 = this.editSelectedClient.attributes.insuredInfo.primary.honorific;
+      }
 
       this.insuredDetails.fname = this.editSelectedClient.attributes.insuredInfo
         .primary.fname
@@ -894,53 +839,61 @@ export default {
           .insuredInfo.secondary.lname
           ? this.editSelectedClient.attributes.insuredInfo.secondary.lname
           : '';
-        this.coInsuredDetails.type = this.editSelectedClient.attributes
-          .insuredInfo.secondary.phoneNumber[0].type
-          ? this.editSelectedClient.attributes.insuredInfo.secondary
-              .phoneNumber[0].type
-          : '';
+        if (
+          this.editSelectedClient.attributes.insuredInfo.secondary.phoneNumber
+        ) {
+          this.coInsuredDetails.type = this.editSelectedClient.attributes
+            .insuredInfo.secondary.phoneNumber[0].type
+            ? this.editSelectedClient.attributes.insuredInfo.secondary
+                .phoneNumber[0].type
+            : '';
 
-        this.coInsuredDetails.phone = this.editSelectedClient.attributes
-          .insuredInfo.secondary.phoneNumber[0].number
-          ? this.editSelectedClient.attributes.insuredInfo.secondary
-              .phoneNumber[0].number
-          : '';
+          this.coInsuredDetails.phone = this.editSelectedClient.attributes
+            .insuredInfo.secondary.phoneNumber[0].number
+            ? this.editSelectedClient.attributes.insuredInfo.secondary
+                .phoneNumber[0].number
+            : '';
+        }
+
         this.coInsuredDetails.email = this.editSelectedClient.attributes
           .insuredInfo.secondary.email
           ? this.editSelectedClient.attributes.insuredInfo.secondary.email
           : '';
       }
-      // if (
-      //   this.editSelectedClient.attributes.insuredInfo.phoneNumbers[0].number
-      // ) {
-      //   this.addAditionalPhoneNumberToggle = true;
-      //   this.phoneNumber = this.editSelectedClient.attributes.insuredInfo
-      //     .phoneNumbers
-      //     ? this.editSelectedClient.attributes.insuredInfo.phoneNumbers
-      //     : '';
-      // } else {
-      //   this.addAditionalPhoneNumberToggle = false;
-      // }
-      // if (this.editSelectedClient.attributes.insuredInfo.tenantInfo) {
-      //   this.tenantOccupiedToggle = true;
-      //   this.tenantOccupied.name = this.editSelectedClient.attributes
-      //     .insuredInfo.tenantInfo.name
-      //     ? this.editSelectedClient.attributes.insuredInfo.tenantInfo.name
-      //     : '';
-      //   this.tenantOccupied.type = this.editSelectedClient.attributes
-      //     .insuredInfo.tenantInfo.phoneNumber.type
-      //     ? this.editSelectedClient.attributes.insuredInfo.tenantInfo
-      //         .phoneNumber.type
-      //     : '';
-      //   this.tenantOccupied.phone = this.editSelectedClient.attributes
-      //     .insuredInfo.tenantInfo.phoneNumber.number
-      //     ? this.editSelectedClient.attributes.insuredInfo.tenantInfo
-      //         .phoneNumber.number
-      //     : '';
-      // }
+      if (
+        this.editSelectedClient.attributes.insuredInfo.phoneNumbers &&
+        this.editSelectedClient.attributes.insuredInfo.phoneNumbers[0].number
+      ) {
+        this.addAditionalPhoneNumberToggle = true;
+        this.phoneNumber = this.editSelectedClient.attributes.insuredInfo
+          .phoneNumbers
+          ? this.editSelectedClient.attributes.insuredInfo.phoneNumbers
+          : '';
+      } else {
+        this.addAditionalPhoneNumberToggle = false;
+      }
+      if (this.editSelectedClient.attributes.insuredInfo.tenantInfo) {
+        this.tenantOccupiedToggle = true;
+        this.tenantOccupied.name = this.editSelectedClient.attributes
+          .insuredInfo.tenantInfo.name
+          ? this.editSelectedClient.attributes.insuredInfo.tenantInfo.name
+          : '';
+        this.tenantOccupied.type = this.editSelectedClient.attributes
+          .insuredInfo.tenantInfo.phoneNumber.type
+          ? this.editSelectedClient.attributes.insuredInfo.tenantInfo
+              .phoneNumber.type
+          : '';
+        this.tenantOccupied.phone = this.editSelectedClient.attributes
+          .insuredInfo.tenantInfo.phoneNumber.number
+          ? this.editSelectedClient.attributes.insuredInfo.tenantInfo
+              .phoneNumber.number
+          : '';
+      }
       // Client Address Editable & prefilled Details
-      // this.clientAddressDetails = this.editSelectedClient.attributes.insuredInfo.mailingAddress;
-      // this.mailingAddressDetails = this.editSelectedClient.attributes.insuredInfo.mailingAddress;
+      if (this.editSelectedClient.attributes.insuredInfo.mailingAddress) {
+        this.clientAddressDetails = this.editSelectedClient.attributes.insuredInfo.mailingAddress;
+        // this.mailingAddressDetails = this.editSelectedClient.attributes.insuredInfo.mailingAddress;
+      }
     },
     // For adding multiple Contact Numbers in ClientInfo
     addAnotherContact() {
@@ -1029,9 +982,9 @@ export default {
               address: {
                 ...this.clientAddressDetails
               },
-              mailingAddress: {
-                ...this.mailingAddressDetails
-              },
+              // mailingAddress: {
+              //   ...this.mailingAddressDetails
+              // },
               phoneNumbers: this.phoneNumber,
               tenantInfo: {
                 name: this.tenantOccupied.name,
