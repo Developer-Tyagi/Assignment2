@@ -282,9 +282,15 @@
             }}
           </span>
         </div>
-        <div class="row q-mt-xs">
+        <div class="row q-mt-xs" v-if="policy.policyInfo">
           <span class="heading-light col"> Appraisal Clause </span>
-          <span class="q-ml-md col"> - </span>
+          <span class="q-ml-md col">
+            {{
+              policy.policyInfo.hasAppraisalClause
+                ? policy.policyInfo.hasAppraisalClause
+                : '-'
+            }}</span
+          >
         </div>
         <div class="row q-mt-xs">
           <span class="heading-light col"> Total Amount of Policy </span>
@@ -1130,7 +1136,7 @@ export default {
         .policyInfo.isForcedPlaced
         ? this.policy.policyInfo.isForcedPlaced
         : false;
-
+      this.insuranceDetails.hasAppraisalClause = this.policy.policyInfo.hasAppraisalClause;
       this.insuranceDetails.totalAmount = this.policy.policyInfo.totalAmount;
       this.insuranceDetails.ordinance = this.policy.policyInfo.ordinance;
       this.insuranceDetails.debrisRemoval = this.policy.policyInfo.debrisRemoval;
@@ -1352,7 +1358,7 @@ export default {
               isClaimFiled: this.insuranceDetails.hasClaimBeenFilledToggle,
               isForcedPlaced: this.insuranceDetails
                 .isThisIsForcedPlacedPolicyToggle,
-              hasAppraisalClause: this.hasAppraisalClause,
+              hasAppraisalClause: this.insuranceDetails.hasAppraisalClause,
               category: {
                 id: this.insuranceDetails.policyCategory.id,
                 value: this.insuranceDetails.policyCategory.value,

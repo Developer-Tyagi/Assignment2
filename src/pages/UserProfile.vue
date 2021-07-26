@@ -121,6 +121,7 @@
               <q-card class="q-pa-sm q-mb-sm">
                 <div class="full-width">
                   <q-input
+                    v-if="user.roles[0].machineValue != 'owner'"
                     v-model="users.companyName"
                     dense
                     class="q-mx-md col-5 input-extra-padding"
