@@ -650,19 +650,19 @@ export default {
 
   data() {
     return {
-      // mailingAddressDetails: {
-      //   addressCountry: '',
-      //   addressRegion: '',
-      //   addressLocality: '',
-      //   postalCode: '',
-      //   houseNumber: '',
-      //   streetAddress: '',
-      //   postOfficeBoxNumber: '4',
-      //   dropBox: {
-      //     info: '',
-      //     isPresent: false
-      //   }
-      // },
+      mailingAddressDetails: {
+        addressCountry: '',
+        addressRegion: '',
+        addressLocality: '',
+        postalCode: '',
+        houseNumber: '',
+        streetAddress: '',
+        postOfficeBoxNumber: '4',
+        dropBox: {
+          info: '',
+          isPresent: false
+        }
+      },
       primaryDetails: {
         isOrganization: false,
         organizationName: ''
@@ -891,8 +891,43 @@ export default {
       }
       // Client Address Editable & prefilled Details
       if (this.editSelectedClient.attributes.insuredInfo.mailingAddress) {
-        this.clientAddressDetails = this.editSelectedClient.attributes.insuredInfo.mailingAddress;
-        // this.mailingAddressDetails = this.editSelectedClient.attributes.insuredInfo.mailingAddress;
+        this.clientAddressDetails.addressCountry = this.editSelectedClient
+          .attributes.insuredInfo.mailingAddress.addressCountry
+          ? this.editSelectedClient.attributes.insuredInfo.mailingAddress
+              .addressCountry
+          : null;
+        this.clientAddressDetails.addressLocality = this.editSelectedClient.attributes.insuredInfo.mailingAddress.addressLocality;
+        this.clientAddressDetails.addressRegion = this.editSelectedClient
+          .attributes.insuredInfo.mailingAddress.addressRegion
+          ? this.editSelectedClient.attributes.insuredInfo.mailingAddress
+              .addressRegion
+          : null;
+        this.clientAddressDetails.houseNumber = this.editSelectedClient
+          .attributes.insuredInfo.mailingAddress.houseNumber
+          ? this.editSelectedClient.attributes.insuredInfo.mailingAddress
+              .houseNumber
+          : '';
+        this.clientAddressDetails.postalCode = this.editSelectedClient
+          .attributes.insuredInfo.mailingAddress.postalCode
+          ? this.editSelectedClient.attributes.insuredInfo.mailingAddress
+              .postalCode
+          : '';
+        this.clientAddressDetails.streetAddress = this.editSelectedClient
+          .attributes.insuredInfo.mailingAddress.streetAddress
+          ? this.editSelectedClient.attributes.insuredInfo.mailingAddress
+              .streetAddress
+          : '';
+        if (
+          this.editSelectedClient.attributes.insuredInfo.mailingAddress
+            .dropBox &&
+          this.editSelectedClient.attributes.insuredInfo.mailingAddress.dropBox
+            .isPresent
+        ) {
+          this.clientAddressDetails.dropBox.isPresent = this.editSelectedClient.attributes.insuredInfo.mailingAddress.dropBox.isPresent;
+          this.clientAddressDetails.dropBox.info = this.editSelectedClient.attributes.insuredInfo.mailingAddress.dropBox.info;
+        }
+
+        this.mailingAddressDetails = this.editSelectedClient.attributes.insuredInfo.mailingAddress;
       }
     },
     // For adding multiple Contact Numbers in ClientInfo
