@@ -72,7 +72,7 @@
       ></span>
     </div>
     <div class="row q-mt-sm" v-if="selectedMortgage.email">
-      <span class="heading-light q-mt-none col-xs-4 "> Email </span>
+      <span class="heading-light q-mt-none col-xs-4 "> Company Email </span>
       <span
         class="q-ml-md col clickLink"
         @click="onEmailClick(selectedMortgage.email, $event)"
@@ -82,9 +82,9 @@
     </div>
     <div class="row q-mt-sm" v-for="phone in selectedMortgage.phoneNumber">
       <span class="heading-light q-mt-none col-xs-4 ">
-        Phone Number
+        Company Number
       </span>
-      <span class="col q-ml-md" v-if="phone.type">
+      <span class="col q-ml-md" v-if="phone && phone.type">
         {{ phone.type }} :
         <span
           class="clickLink"
@@ -93,7 +93,37 @@
         ></span
       >
     </div>
-
+    <div class="q-mt-sm row" v-if="selectedMortgage.contact">
+      <div class="heading-light q-mt-none col-xs-4 ">
+        Contact Info
+      </div>
+      <div class="column q-ml-md ">
+        {{ selectedMortgage ? selectedMortgage.contact.fname : '-' }}
+        {{ selectedMortgage ? selectedMortgage.contact.lname : '-' }}
+        <div
+          class="clickLink"
+          @click="onEmailClick(selectedMortgage.contact.email, $event)"
+        >
+          {{ selectedMortgage ? selectedMortgage.contact.email : '-' }}
+        </div>
+        <div
+          v-if="selectedMortgage.contact.phoneNumber"
+          class="clickLink"
+          @click="
+            onPhoneNumberClick(
+              selectedMortgage.contact.phoneNumber[0].number,
+              $event
+            )
+          "
+        >
+          {{
+            selectedMortgage
+              ? showPhoneNumber(selectedMortgage.contact.phoneNumber[0].number)
+              : '-'
+          }}
+        </div>
+      </div>
+    </div>
     <div class="row q-mt-sm" v-if="selectedMortgage.info">
       <span class="heading-light col-4"> Website </span>
       <span class="q-ml-md col">
