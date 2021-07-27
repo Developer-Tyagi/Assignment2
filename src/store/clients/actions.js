@@ -217,6 +217,10 @@ export async function addNotes({ dispatch, state }, payload) {
       buildApiData('clients', payload.notesData)
     );
     dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Notes Added Successfully !'
+    });
     return data;
   } catch (e) {
     console.log(e);
