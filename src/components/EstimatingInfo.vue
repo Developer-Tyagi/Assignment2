@@ -186,83 +186,86 @@
               <img src="~assets/add.svg"
             /></q-btn>
           </div>
-          <div
-            v-for="estimator in estimators"
-            :key="estimator.id"
-            class="vendor-list-item column"
-            @click="selectEstimator(estimator)"
-          >
-            <div class="text-bold ">
-              {{ estimator.contact.fname }} {{ estimator.contact.lname }}
-            </div>
-            <div>{{ estimator.companyName }}</div>
-
-            <div>
-              <div v-if="estimator.mailingAddress">
-                <div>
-                  {{
-                    estimator.mailingAddress
-                      ? estimator.mailingAddress.houseNumber
-                      : '-'
-                  }}
-                  ,
-                  {{
-                    estimator.mailingAddress.streetAddress
-                      ? estimator.mailingAddress.streetAddress
-                      : '-'
-                  }}
-                </div>
-                <div>
-                  {{
-                    estimator.mailingAddress.addressLocality
-                      ? estimator.mailingAddress.addressLocality
-                      : '-'
-                  }}
-                  ,
-                  {{
-                    estimator.mailingAddress.addressRegion
-                      ? estimator.mailingAddress.addressRegion
-                      : '-'
-                  }}
-                </div>
-                <div class="row">
-                  {{
-                    estimator.mailingAddress.addressCountry
-                      ? estimator.mailingAddress.addressCountry
-                      : '-'
-                  }}
-                  -
-                  {{
-                    estimator.mailingAddress.postalCode
-                      ? estimator.mailingAddress.postalCode
-                      : '-'
-                  }}
-                </div>
+          <div class="mobile-container-page" v-if="estimators.length">
+            <div
+              v-for="estimator in estimators"
+              :key="estimator.id"
+              class="q-pa-sm clients-list"
+              @click="selectEstimator(estimator)"
+              style="overflow-y: auto"
+            >
+              <div class="text-bold ">
+                {{ estimator.contact.fname }} {{ estimator.contact.lname }}
               </div>
+              <div>{{ estimator.companyName }}</div>
 
-              <div
-                class="q-mt-xs fit-content"
-                v-if="estimator.contact.phoneNumber"
-              >
-                <span v-if="estimator.contact.phoneNumber.type"
-                  >{{ estimator.contact.phoneNumber[0].type }} :
-                </span>
+              <div>
+                <div v-if="estimator.mailingAddress">
+                  <div>
+                    {{
+                      estimator.mailingAddress
+                        ? estimator.mailingAddress.houseNumber
+                        : '-'
+                    }}
+                    ,
+                    {{
+                      estimator.mailingAddress.streetAddress
+                        ? estimator.mailingAddress.streetAddress
+                        : '-'
+                    }}
+                  </div>
+                  <div>
+                    {{
+                      estimator.mailingAddress.addressLocality
+                        ? estimator.mailingAddress.addressLocality
+                        : '-'
+                    }}
+                    ,
+                    {{
+                      estimator.mailingAddress.addressRegion
+                        ? estimator.mailingAddress.addressRegion
+                        : '-'
+                    }}
+                  </div>
+                  <div class="row">
+                    {{
+                      estimator.mailingAddress.addressCountry
+                        ? estimator.mailingAddress.addressCountry
+                        : '-'
+                    }}
+                    -
+                    {{
+                      estimator.mailingAddress.postalCode
+                        ? estimator.mailingAddress.postalCode
+                        : '-'
+                    }}
+                  </div>
+                </div>
+
+                <div
+                  class="q-mt-xs fit-content"
+                  v-if="estimator.contact.phoneNumber"
+                >
+                  <span v-if="estimator.contact.phoneNumber.type"
+                    >{{ estimator.contact.phoneNumber[0].type }} :
+                  </span>
+                  <span
+                    class="clickLink"
+                    @click="
+                      onPhoneNumberClick(
+                        estimator.contact.phoneNumber.number[0],
+                        $event
+                      )
+                    "
+                    >{{ estimator.contact.phoneNumber[0].number }}</span
+                  >
+                </div>
                 <span
-                  class="clickLink"
-                  @click="
-                    onPhoneNumberClick(
-                      estimator.contact.phoneNumber.number[0],
-                      $event
-                    )
-                  "
-                  >{{ estimator.contact.phoneNumber[0].number }}</span
+                  class="click-link fit-content"
+                  @click="onEmailClick(estimator.email, $event)"
+                  >{{ estimator.email }}</span
                 >
               </div>
-              <span
-                class="click-link fit-content"
-                @click="onEmailClick(estimator.email, $event)"
-                >{{ estimator.email }}</span
-              >
             </div>
           </div>
         </div>

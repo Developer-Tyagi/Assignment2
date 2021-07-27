@@ -87,30 +87,28 @@
                 size="sm"
               ></q-icon>
             </div>
-
-            <div
-              class="q-mt-xs"
-              v-for="phone in selectedClaimCarrier.carrier.phoneNumber"
-            >
-              <span v-if="phone.type"
-                >{{ phone.type ? phone.type : '-' }} :
-              </span>
-              <span
-                class="clickLink"
-                @click="onPhoneNumberClick(phone.number, $event)"
-                >{{ phone.number ? phone.number : '-' }}</span
-              >
-            </div>
-            <span
-              class="click-link"
-              @click="onEmailClick(selectedClaimCarrier.carrier.email, $event)"
-              >{{
-                selectedClaimCarrier.carrier.email
-                  ? selectedClaimCarrier.carrier.email
-                  : '-'
-              }}</span
-            >
           </div>
+        </div>
+        <div
+          class="q-mt-xs"
+          v-for="phone in selectedClaimCarrier.carrier.phoneNumber"
+        >
+          <span v-if="phone.type">{{ phone.type ? phone.type : '-' }} : </span>
+          <span
+            class="clickLink"
+            @click="onPhoneNumberClick(phone.number, $event)"
+            >{{ phone.number ? phone.number : '-' }}</span
+          >
+        </div>
+        <div
+          class="click-link"
+          @click="onEmailClick(selectedClaimCarrier.carrier.email, $event)"
+        >
+          {{
+            selectedClaimCarrier.carrier.email
+              ? selectedClaimCarrier.carrier.email
+              : '-'
+          }}
         </div>
       </div>
       <div v-else class="heading-light col q-ma-xs">
@@ -282,9 +280,15 @@
             }}
           </span>
         </div>
-        <div class="row q-mt-xs">
+        <div class="row q-mt-xs" v-if="policy.policyInfo">
           <span class="heading-light col"> Appraisal Clause </span>
-          <span class="q-ml-md col"> - </span>
+          <span class="q-ml-md col">
+            {{
+              policy.policyInfo.hasAppraisalClause
+                ? policy.policyInfo.hasAppraisalClause
+                : '-'
+            }}</span
+          >
         </div>
         <div class="row q-mt-xs">
           <span class="heading-light col"> Total Amount of Policy </span>
@@ -1092,10 +1096,12 @@ export default {
       const name = this.selectedClaimCarrier.carrier.personnel[
         index
       ].name.split(' ');
+
       this.editPersonnelDialog = true;
       this.$emit('editCarrierDialog', true);
 
       this.editPersonnel.fname = name && name[0] ? name[0] : '';
+
       this.editPersonnel.lname = name && name[1] ? name[1] : '';
       this.editPersonnel.email = this.selectedClaimCarrier.carrier.personnel[
         index
@@ -1130,7 +1136,7 @@ export default {
         .policyInfo.isForcedPlaced
         ? this.policy.policyInfo.isForcedPlaced
         : false;
-
+      this.insuranceDetails.hasAppraisalClause = this.policy.policyInfo.hasAppraisalClause;
       this.insuranceDetails.totalAmount = this.policy.policyInfo.totalAmount;
       this.insuranceDetails.ordinance = this.policy.policyInfo.ordinance;
       this.insuranceDetails.debrisRemoval = this.policy.policyInfo.debrisRemoval;
@@ -1352,7 +1358,7 @@ export default {
               isClaimFiled: this.insuranceDetails.hasClaimBeenFilledToggle,
               isForcedPlaced: this.insuranceDetails
                 .isThisIsForcedPlacedPolicyToggle,
-              hasAppraisalClause: this.hasAppraisalClause,
+              hasAppraisalClause: this.insuranceDetails.hasAppraisalClause,
               category: {
                 id: this.insuranceDetails.policyCategory.id,
                 value: this.insuranceDetails.policyCategory.value,

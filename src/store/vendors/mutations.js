@@ -2,17 +2,19 @@ import localDB, { getCollection } from '@services/dexie';
 
 export async function setVendors(state, vendorsData) {
   const vendorsCollection = await getCollection('vendors');
-  const vendors = vendorsData.map(vendor => ({
+  const vendors = vendorsData.data.map(vendor => ({
     ...vendor.attributes,
     id: vendor.id,
     machineValue: vendor.attributes.machineValue,
     selected: false
   }));
   state.vendors = vendors;
-  if ((await vendorsCollection.count()) > 0) {
+  if ((await vendorsCollection.count()) > 0 && !vendorsData.params) {
     await vendorsCollection.delete([]);
   }
-  await localDB.vendors.bulkAdd(vendors);
+  if (!vendorsData.params) {
+    await localDB.vendors.bulkAdd(vendors);
+  }
 }
 
 export async function setOfflineVendors(state, params) {

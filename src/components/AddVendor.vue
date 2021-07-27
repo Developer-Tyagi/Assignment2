@@ -455,7 +455,7 @@ export default {
       if (success) {
         if (!this.isEdit) {
           if (!this.vendor.mailingAddress.streetAddress) {
-            delete this.vendor.mailingAddress;
+            delete payload.mailingAddress;
           }
 
           const response = await this.addVendor(payload);

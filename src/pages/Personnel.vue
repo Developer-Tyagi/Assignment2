@@ -150,7 +150,7 @@
         ></q-btn>
       </div>
     </div>
-    \
+
     <q-dialog v-model="deleteAlertDialog">
       <q-card>
         <DeleteAlert

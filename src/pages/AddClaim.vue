@@ -1174,7 +1174,8 @@ export default {
       'selectedClientId',
       'setClientProperty',
       'roleTypes',
-      'userRoles'
+      'userRoles',
+      'isOnline'
     ])
   },
 
@@ -1203,7 +1204,11 @@ export default {
       'getRoles',
       'getAllUsers'
     ]),
-    ...mapMutations(['setSelectedLead', 'isLastRouteEdit']),
+    ...mapMutations([
+      'setSelectedLeadOffline',
+      'setSelectedLeadOnline',
+      'isLastRouteEdit'
+    ]),
     onDamageOsToggleButtonOff() {
       if (!this.lossInfo.isDamageOSToggle) {
         this.lossInfo.osDamagedItems.length = 0;
@@ -1680,7 +1685,11 @@ export default {
         }
       }
       this.addClaim(payload).then(() => {
-        this.setSelectedLead();
+        if (this.isOnline) {
+          this.setSelectedLeadOnline();
+        } else {
+          this.setSelectedLeadOffline();
+        }
         this.successMessage(constants.successMessages.CLAIM);
         this.isLastRouteEdit(true);
         this.$router.push('/view-client/' + this.selectedClientId);

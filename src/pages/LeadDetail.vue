@@ -120,6 +120,13 @@
                 <div class="col-6 q-ml-md">
                   <div>
                     {{
+                      selectedLead.lossLocation.houseNumber
+                        ? selectedLead.lossLocation.houseNumber
+                        : '-'
+                    }}
+
+                    ,
+                    {{
                       selectedLead.lossLocation.streetAddress
                         ? selectedLead.lossLocation.streetAddress
                         : '-'
@@ -264,11 +271,11 @@ export default {
     this.getLeadDetails(this.$route.params.id);
   },
   computed: {
-    ...mapGetters(['selectedLead', 'isShowConvertButton'])
+    ...mapGetters(['selectedLead', 'isShowConvertButton', 'isOnline'])
   },
   methods: {
     ...mapActions(['getLeadDetails']),
-    ...mapMutations(['setSelectedLead']),
+    ...mapMutations(['setSelectedLeadOnline', 'setSelectedLeadOffline']),
     onEmailClick,
     onPhoneNumberClick,
     sendMap,
@@ -278,10 +285,11 @@ export default {
       this.$router.push('/edit-lead-details/' + this.$route.params.id);
     },
     onConvertLeadToClientButtonClick(selectedLead) {
-      let payload = {
-        attributes: selectedLead
-      };
-      this.setSelectedLead(payload);
+      if (this.isOnline) {
+        this.setSelectedLeadOnline(selectedLead);
+      } else {
+        this.setSelectedLeadOffline(selectedLead);
+      }
       this.$router.push('/add-client');
     }
   }

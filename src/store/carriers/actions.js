@@ -17,7 +17,8 @@ export async function getCarriers(
   if (isOnline) {
     try {
       const { data } = await request.get('/carriers', params);
-      commit('setCarriers', data);
+      const payload = { data: data, params: params };
+      commit('setCarriers', payload);
       dispatch('setLoading', false);
     } catch (e) {
       console.log(e);
