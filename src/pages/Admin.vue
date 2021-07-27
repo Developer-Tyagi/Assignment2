@@ -77,7 +77,9 @@
                     @click="onPhoneNumberClick(user.phoneNumber.number, $event)"
                   >
                     {{
-                      user.phoneNumber.number ? user.phoneNumber.number : '-'
+                      user.phoneNumber.number
+                        ? showPhoneNumber(user.phoneNumber.number)
+                        : '-'
                     }}
                   </div>
                   <div class="col">
@@ -768,7 +770,7 @@
                 size="md"
                 color="primary"
                 name="add"
-                @click="Addlick"
+                @click="addAnotherOnClick"
               />
             </div>
             <div
@@ -918,7 +920,11 @@
 import SubSideBar from 'components/SubSideBar';
 import { mapGetters, mapActions } from 'vuex';
 import { getCurrentUser } from 'src/utils/auth';
-import { onPhoneNumberClick, onEmailClick } from '@utils/clickable';
+import {
+  onPhoneNumberClick,
+  onEmailClick,
+  showPhoneNumber
+} from '@utils/clickable';
 import { validateEmail } from '@utils/validation';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 
@@ -1062,6 +1068,7 @@ export default {
   methods: {
     onPhoneNumberClick,
     onEmailClick,
+    showPhoneNumber,
     ...mapActions([
       'getActionOverDues',
       'getActionCompletion',
@@ -1304,10 +1311,30 @@ export default {
     },
     // OnSaveButtonClick
     async onClickSaveButton() {
+      /* This Filter function is used for elimination the null and empty values from the array     */
+      this.actions.actions.onComplete.forEach(val => {
+        val.task = val.task.filter(function(el) {
+          return el != '';
+        });
+      });
+
+      this.actions.actions.onOverdue.forEach(val => {
+        val.task = val.task.filter(function(el) {
+          return el != '';
+        });
+      });
+
+      this.actions.createWhen.task = this.actions.createWhen.task.filter(
+        function(el) {
+          return el != '';
+        }
+      );
+
       const param = { machineValue: this.claimType, data: this.actions };
       await this.addWorkflowAction(param);
       this.addDefaultActionDialogBox = false;
       this.getAllWorkFlow(this.claimType);
+      /*  Clearing the form     */
       this.actions = {
         name: '',
         isEnabled: false,
@@ -1351,7 +1378,7 @@ export default {
       this.actions.actions.onComplete.splice(val, 1);
     },
 
-    Addlick() {
+    addAnotherOnClick() {
       this.actions.actions.onComplete.push({
         type: '',
         task: []
