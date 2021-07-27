@@ -80,7 +80,11 @@
                 v-if="editSelectedClient.attributes.insuredInfo.secondary"
               >
                 <span
-                  v-if="editSelectedClient.attributes.insuredInfo.secondary"
+                  v-if="
+                    editSelectedClient.attributes.insuredInfo.secondary &&
+                      editSelectedClient.attributes.insuredInfo.secondary
+                        .phoneNumber
+                  "
                   class="clickLink"
                   @click="
                     onPhoneNumberClick(
@@ -130,23 +134,35 @@
           <div class="heading-light q-mt-none col-xs-4 ">
             Address Details
           </div>
-          <div class="column q-ml-md">
+          <div
+            class="column q-ml-md"
+            v-if="editSelectedClient.attributes.insuredInfo.mailingAddress"
+          >
             <div>
               {{
                 editSelectedClient.attributes.insuredInfo.mailingAddress
                   .houseNumber
+                  ? editSelectedClient.attributes.insuredInfo.mailingAddress
+                      .houseNumber
+                  : ''
               }}
             </div>
             <div>
               {{
                 editSelectedClient.attributes.insuredInfo.mailingAddress
                   .streetAddress
+                  ? editSelectedClient.attributes.insuredInfo.mailingAddress
+                      .streetAddress
+                  : ''
               }}
             </div>
             <div>
               {{
                 editSelectedClient.attributes.insuredInfo.mailingAddress
                   .addressRegion
+                  ? editSelectedClient.attributes.insuredInfo.mailingAddress
+                      .addressRegion
+                  : ''
               }}
               {{
                 editSelectedClient.attributes.insuredInfo.mailingAddress
@@ -160,6 +176,9 @@
               {{
                 editSelectedClient.attributes.insuredInfo.mailingAddress
                   .addressCountry
+                  ? editSelectedClient.attributes.insuredInfo.mailingAddress
+                      .addressCountry
+                  : ''
               }}
               <q-icon
                 name="place"
@@ -254,11 +273,12 @@
               <q-select
                 dense
                 class="required"
-                v-model="client.id"
-                option-value="id"
+                v-model="client.value"
+                option-value="name"
                 option-label="name"
                 map-options
                 emit-value
+                behavior="menu"
                 options-dense
                 :options="clientTypes"
                 @input="setTypes(clientTypes, client)"
@@ -268,13 +288,15 @@
                     (val && val.length > 0) || 'Please select the client type'
                 ]"
               />
+
               <span class="form-heading">Insured Details</span>
+
               <q-select
                 dense
-                v-model="honorific1.id"
+                v-model="honorific1.value"
                 class="required"
                 :options="titles"
-                option-value="id"
+                option-value="value"
                 option-label="value"
                 map-options
                 options-dense
@@ -392,10 +414,10 @@
 
                 <q-select
                   dense
-                  v-model="honorific2.id"
+                  v-model="honorific2.value"
                   class="required"
                   :options="titles"
-                  option-value="id"
+                  option-value="value"
                   option-label="value"
                   map-options
                   @input="setTitleName(2)"
@@ -667,7 +689,7 @@ export default {
         addressLocality: '',
         postalCode: '',
         streetAddress: '',
-        postOfficeBoxNumber: '4',
+        postOfficeBoxNumber: '',
         dropBox: {
           info: '',
           isPresent: false
@@ -740,51 +762,39 @@ export default {
     dateWithTime,
     setTypes(types, data) {
       const obj = types.find(item => {
-        return item.id === data.id;
+        return item.value === data.name;
       });
 
+      data.id = obj.id;
       data.machineValue = obj.machineValue;
-      data.value = obj.name;
     },
     onEditClick() {
       this.editClientInfoDailog = true;
       this.getClientTypes();
       this.getTitles();
       this.getContactTypes();
-      this.client.id = this.editSelectedClient.attributes.type.id
-        ? this.editSelectedClient.attributes.type.id
-        : '';
-      this.client.value = this.editSelectedClient.attributes.type.value
-        ? this.editSelectedClient.attributes.type.value
-        : '';
-      this.client.machineValue = this.editSelectedClient.attributes.type
-        .machineValue
-        ? this.editSelectedClient.attributes.type.machineValue
-        : '';
-      this.honorific1.id = this.editSelectedClient.attributes.insuredInfo
-        .primary.honorific.id
-        ? this.editSelectedClient.attributes.insuredInfo.primary.honorific.id
-        : '';
-      this.honorific1.value = this.editSelectedClient.attributes.insuredInfo
-        .primary.honorific.value
-        ? this.editSelectedClient.attributes.insuredInfo.primary.honorific.value
-        : '';
-      this.honorific1.machineValue = this.editSelectedClient.attributes
-        .insuredInfo.primary.honorific.machineValue
-        ? this.editSelectedClient.attributes.insuredInfo.primary.honorific
-            .machineValue
-        : '';
+
+      if (this.editSelectedClient.attributes.type) {
+        this.client = this.editSelectedClient.attributes.type;
+      }
+      if (this.editSelectedClient.attributes.insuredInfo.primary.honorific) {
+        this.honorific1 = this.editSelectedClient.attributes.insuredInfo.primary.honorific;
+      }
+
       this.insuredDetails.fname = this.editSelectedClient.attributes.insuredInfo
         .primary.fname
         ? this.editSelectedClient.attributes.insuredInfo.primary.fname
         : '';
-      this.insuredDetails.lname = this.editSelectedClient.attributes.insuredInfo.primary.lname;
+      this.insuredDetails.lname = this.editSelectedClient.attributes.insuredInfo
+        .primary.lname
+        ? this.editSelectedClient.attributes.insuredInfo.primary.lname
+        : '';
 
       if (this.editSelectedClient.attributes.isOrganizationPolicyholder) {
         this.policyHolder.isPolicyHolder = this.editSelectedClient.attributes
           .isOrganizationPolicyholder
           ? this.editSelectedClient.attributes.isOrganizationPolicyholder
-          : '';
+          : false;
       }
       if (this.editSelectedClient.attributes.isOrganization) {
         this.primaryDetails.isOrganization = true;
@@ -797,38 +807,30 @@ export default {
           ? this.editSelectedClient.attributes.organizationName
           : '';
       }
-      this.insuredDetails.type = this.editSelectedClient.attributes.insuredInfo
-        .primary.phoneNumber[0].type
-        ? this.editSelectedClient.attributes.insuredInfo.primary.phoneNumber[0]
-            .type
-        : '';
-      this.insuredDetails.phone = this.editSelectedClient.attributes.insuredInfo
-        .primary.phoneNumber[0].number
-        ? this.editSelectedClient.attributes.insuredInfo.primary.phoneNumber[0]
-            .number
-        : '';
-      this.insuredDetails.email = this.editSelectedClient.attributes.insuredInfo
-        .primary.email
-        ? this.editSelectedClient.attributes.insuredInfo.primary.email
-        : '';
+      if (this.editSelectedClient.attributes.insuredInfo.primary.phoneNumber) {
+        this.insuredDetails.type = this.editSelectedClient.attributes
+          .insuredInfo.primary.phoneNumber[0].type
+          ? this.editSelectedClient.attributes.insuredInfo.primary
+              .phoneNumber[0].type
+          : '';
+        this.insuredDetails.phone = this.editSelectedClient.attributes
+          .insuredInfo.primary.phoneNumber[0].number
+          ? this.editSelectedClient.attributes.insuredInfo.primary
+              .phoneNumber[0].number
+          : '';
+      }
+      if (this.editSelectedClient.attributes.insuredInfo.primary.email) {
+        this.insuredDetails.email = this.editSelectedClient.attributes.insuredInfo.primary.email;
+      }
 
       if (this.editSelectedClient.attributes.insuredInfo.secondary) {
         this.isThereaCoInsuredToggle = true;
-        this.honorific2.id = this.editSelectedClient.attributes.insuredInfo
-          .secondary.honorific.id
-          ? this.editSelectedClient.attributes.insuredInfo.secondary.honorific
-              .id
-          : '';
-        this.honorific2.value = this.editSelectedClient.attributes.insuredInfo
-          .secondary.honorific.value
-          ? this.editSelectedClient.attributes.insuredInfo.secondary.honorific
-              .value
-          : '';
-        this.honorific2.machineValue = this.editSelectedClient.attributes
-          .insuredInfo.secondary.honorific.machineValue
-          ? this.editSelectedClient.attributes.insuredInfo.secondary.honorific
-              .machineValue
-          : '';
+        if (
+          this.editSelectedClient.attributes.insuredInfo.secondary.honorific
+        ) {
+          this.honorific2 = this.editSelectedClient.attributes.insuredInfo.secondary.honorific;
+        }
+
         this.coInsuredDetails.fname = this.editSelectedClient.attributes
           .insuredInfo.secondary.fname
           ? this.editSelectedClient.attributes.insuredInfo.secondary.fname
@@ -837,23 +839,29 @@ export default {
           .insuredInfo.secondary.lname
           ? this.editSelectedClient.attributes.insuredInfo.secondary.lname
           : '';
-        this.coInsuredDetails.type = this.editSelectedClient.attributes
-          .insuredInfo.secondary.phoneNumber[0].type
-          ? this.editSelectedClient.attributes.insuredInfo.secondary
-              .phoneNumber[0].type
-          : '';
+        if (
+          this.editSelectedClient.attributes.insuredInfo.secondary.phoneNumber
+        ) {
+          this.coInsuredDetails.type = this.editSelectedClient.attributes
+            .insuredInfo.secondary.phoneNumber[0].type
+            ? this.editSelectedClient.attributes.insuredInfo.secondary
+                .phoneNumber[0].type
+            : '';
 
-        this.coInsuredDetails.phone = this.editSelectedClient.attributes
-          .insuredInfo.secondary.phoneNumber[0].number
-          ? this.editSelectedClient.attributes.insuredInfo.secondary
-              .phoneNumber[0].number
-          : '';
+          this.coInsuredDetails.phone = this.editSelectedClient.attributes
+            .insuredInfo.secondary.phoneNumber[0].number
+            ? this.editSelectedClient.attributes.insuredInfo.secondary
+                .phoneNumber[0].number
+            : '';
+        }
+
         this.coInsuredDetails.email = this.editSelectedClient.attributes
           .insuredInfo.secondary.email
           ? this.editSelectedClient.attributes.insuredInfo.secondary.email
           : '';
       }
       if (
+        this.editSelectedClient.attributes.insuredInfo.phoneNumbers &&
         this.editSelectedClient.attributes.insuredInfo.phoneNumbers[0].number
       ) {
         this.addAditionalPhoneNumberToggle = true;
@@ -882,8 +890,45 @@ export default {
           : '';
       }
       // Client Address Editable & prefilled Details
-      this.clientAddressDetails = this.editSelectedClient.attributes.insuredInfo.mailingAddress;
-      this.mailingAddressDetails = this.editSelectedClient.attributes.insuredInfo.mailingAddress;
+      if (this.editSelectedClient.attributes.insuredInfo.mailingAddress) {
+        this.clientAddressDetails.addressCountry = this.editSelectedClient
+          .attributes.insuredInfo.mailingAddress.addressCountry
+          ? this.editSelectedClient.attributes.insuredInfo.mailingAddress
+              .addressCountry
+          : null;
+        this.clientAddressDetails.addressLocality = this.editSelectedClient.attributes.insuredInfo.mailingAddress.addressLocality;
+        this.clientAddressDetails.addressRegion = this.editSelectedClient
+          .attributes.insuredInfo.mailingAddress.addressRegion
+          ? this.editSelectedClient.attributes.insuredInfo.mailingAddress
+              .addressRegion
+          : null;
+        this.clientAddressDetails.houseNumber = this.editSelectedClient
+          .attributes.insuredInfo.mailingAddress.houseNumber
+          ? this.editSelectedClient.attributes.insuredInfo.mailingAddress
+              .houseNumber
+          : '';
+        this.clientAddressDetails.postalCode = this.editSelectedClient
+          .attributes.insuredInfo.mailingAddress.postalCode
+          ? this.editSelectedClient.attributes.insuredInfo.mailingAddress
+              .postalCode
+          : '';
+        this.clientAddressDetails.streetAddress = this.editSelectedClient
+          .attributes.insuredInfo.mailingAddress.streetAddress
+          ? this.editSelectedClient.attributes.insuredInfo.mailingAddress
+              .streetAddress
+          : '';
+        if (
+          this.editSelectedClient.attributes.insuredInfo.mailingAddress
+            .dropBox &&
+          this.editSelectedClient.attributes.insuredInfo.mailingAddress.dropBox
+            .isPresent
+        ) {
+          this.clientAddressDetails.dropBox.isPresent = this.editSelectedClient.attributes.insuredInfo.mailingAddress.dropBox.isPresent;
+          this.clientAddressDetails.dropBox.info = this.editSelectedClient.attributes.insuredInfo.mailingAddress.dropBox.info;
+        }
+
+        this.mailingAddressDetails = this.editSelectedClient.attributes.insuredInfo.mailingAddress;
+      }
     },
     // For adding multiple Contact Numbers in ClientInfo
     addAnotherContact() {
@@ -940,7 +985,7 @@ export default {
               primary: {
                 honorific: {
                   id: this.honorific1.id,
-                  value: this.honorific1.title,
+                  value: this.honorific1.value,
                   machineValue: this.honorific1.machineValue
                 },
                 fname: this.insuredDetails.fname,
@@ -956,7 +1001,7 @@ export default {
               secondary: {
                 honorific: {
                   id: this.honorific2.id,
-                  value: this.honorific2.title,
+                  value: this.honorific2.value,
                   machineValue: this.honorific2.machineValue
                 },
                 fname: this.coInsuredDetails.fname,
@@ -1006,10 +1051,10 @@ export default {
     successMessage,
     setTitleName(val) {
       const titleResult = this.titles.find(obj => {
-        return obj.id === this['honorific' + val].id;
+        return obj.value === this['honorific' + val].value;
       });
-      this['honorific' + val].title = titleResult.value;
       this['honorific' + val].machineValue = titleResult.machineValue;
+      this['honorific' + val].id = titleResult.id;
     },
     onPhoneNumberClick,
     onEmailClick
