@@ -1017,9 +1017,9 @@ export default {
               address: {
                 ...this.clientAddressDetails
               },
-              // mailingAddress: {
-              //   ...this.mailingAddressDetails
-              // },
+              mailingAddress: {
+                ...this.mailingAddressDetails
+              },
               phoneNumbers: this.phoneNumber,
               tenantInfo: {
                 name: this.tenantOccupied.name,
