@@ -289,14 +289,27 @@ export default {
     routeTo(link) {
       this.$router.push(link.link);
     },
+    isEmpty(obj) {
+      for (var prop in obj) {
+        if (obj.hasOwnProperty(prop)) return false;
+      }
+
+      return true;
+    },
 
     createSidebarMenuItems() {
       this.pageAccess.forEach(item => {
         let obj = this.linksData.find(link => link.key === item);
-        let index = this.sidebarItems.findIndex(x => x.key === obj.key);
-        if (index < 0) {
-          this.sidebarItems.push(obj);
+        if (!this.isEmpty(obj)) {
+          let index = this.sidebarItems.findIndex(x => x.key === obj.key);
+          if (index < 0) {
+            this.sidebarItems.push(obj);
+          }
         }
+        // let index = this.sidebarItems.findIndex(x => x.key === obj.key);
+        // if (index < 0) {
+        //   this.sidebarItems.push(obj);
+        // }
       });
     }
   },
