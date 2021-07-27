@@ -306,10 +306,6 @@ export default {
             this.sidebarItems.push(obj);
           }
         }
-        // let index = this.sidebarItems.findIndex(x => x.key === obj.key);
-        // if (index < 0) {
-        //   this.sidebarItems.push(obj);
-        // }
       });
     }
   },
