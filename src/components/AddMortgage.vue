@@ -350,6 +350,9 @@ export default {
       };
       if (success) {
         if (!this.isEdit) {
+          if (!this.mortgage.address.streetAddress) {
+            delete payload.address;
+          }
           const response = await this.addClaimMortgage(payload);
           this.getMortgages();
           if (response.id) {
