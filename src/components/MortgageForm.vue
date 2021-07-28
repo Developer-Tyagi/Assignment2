@@ -58,7 +58,9 @@
             class="clickLink"
             @click="onPhoneNumberClick(mortgage[0].phone, $event)"
           >
-            {{ mortgage[0].phone }}</span
+            {{
+              mortgage[0].phone ? showPhoneNumber(mortgage[0].phone) : '-'
+            }}</span
           >
         </div>
         <div>
@@ -222,6 +224,7 @@ import CustomBar from 'components/CustomBar';
 import MortgagesList from 'components/MortgagesList';
 import { mapGetters, mapActions } from 'vuex';
 import { constants } from '@utils/constant';
+import { showPhoneNumber } from '@utils/clickable';
 import AddMortgage from 'components/AddMortgage';
 export default {
   name: 'Mortgage',
@@ -252,6 +255,7 @@ export default {
   },
   created() {},
   methods: {
+    showPhoneNumber,
     ...mapActions(['']),
     onSelectMortgageClick() {
       this.mortgage.mortgageList = true;

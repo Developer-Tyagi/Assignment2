@@ -84,7 +84,7 @@
         <span
           class="clickLink"
           @click="onPhoneNumberClick(phone.number, $event)"
-          >{{ phone.number }}</span
+          >{{ phone.number ? showPhoneNumber(phone.number) : '' }}</span
         ></span
       >
     </div>
@@ -131,7 +131,12 @@
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
+import {
+  onEmailClick,
+  onPhoneNumberClick,
+  sendMap,
+  showPhoneNumber
+} from '@utils/clickable';
 import AddCarrier from 'components/AddCarrier';
 import { constants } from '@utils/constant';
 import DeleteAlert from 'components/DeleteAlert';
@@ -155,6 +160,7 @@ export default {
     onEmailClick,
     onPhoneNumberClick,
     sendMap,
+    showPhoneNumber,
     onEdit() {
       this.addCarrierDialog = true;
     },

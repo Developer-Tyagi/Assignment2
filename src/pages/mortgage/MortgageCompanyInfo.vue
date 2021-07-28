@@ -143,6 +143,7 @@ import {
   onEmailClick,
   onPhoneNumberClick,
   sendMap,
+  sendPhoneNumber,
   showPhoneNumber
 } from '@utils/clickable';
 import AddMortgage from 'components/AddMortgage';
@@ -172,6 +173,7 @@ export default {
     onEmailClick,
     onPhoneNumberClick,
     showPhoneNumber,
+    sendPhoneNumber,
 
     closeAddMortgageDialog(e) {
       this.addMortgageDialog = false;

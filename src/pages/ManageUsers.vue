@@ -63,7 +63,11 @@
                       $event
                     )
                   "
-                  >{{ user.attributes.contact.phoneNumber[0].number }}</span
+                  >{{
+                    showPhoneNumber(
+                      user.attributes.contact.phoneNumber[0].number
+                    )
+                  }}</span
                 ><span v-else> - </span>
               </td>
               <td class="text-center">-</td>
@@ -345,7 +349,9 @@
             >
               {{
                 singleUserData.contact.phoneNumber
-                  ? singleUserData.contact.phoneNumber[0].number
+                  ? showPhoneNumber(
+                      singleUserData.contact.phoneNumber[0].number
+                    )
                   : '-'
               }}
             </div>
@@ -443,6 +449,7 @@
                         (val && val.length > 0) || 'Please select phone type'
                     ]"
                   />
+
                   <q-input
                     dense
                     v-model="singleUser.contact.number"
@@ -526,7 +533,12 @@
 import { mapGetters, mapActions } from 'vuex';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import { validateEmail, validateNonRequiredEmail } from '@utils/validation';
-import { onEmailClick, onPhoneNumberClick } from '@utils/clickable';
+import {
+  onEmailClick,
+  onPhoneNumberClick,
+  sendPhoneNumber,
+  showPhoneNumber
+} from '@utils/clickable';
 
 export default {
   name: 'Manage-User',
@@ -666,6 +678,8 @@ export default {
     ]),
 
     onEmailClick,
+    showPhoneNumber,
+    sendPhoneNumber,
     onPhoneNumberClick,
     openDialogForRole(existingRoles) {
       this.singleUserID = existingRoles.id;
@@ -720,7 +734,7 @@ export default {
               phoneNumber: [
                 {
                   type: this.singleUser.contact.type,
-                  number: this.singleUser.contact.number
+                  number: sendPhoneNumber(this.singleUser.contact.number)
                 }
               ]
             },
@@ -761,7 +775,7 @@ export default {
           : '';
       this.singleUser.contact.number =
         this.singleUserData && this.singleUserData.contact.phoneNumber
-          ? this.singleUserData.contact.phoneNumber[0].number
+          ? showPhoneNumber(this.singleUserData.contact.phoneNumber[0].number)
           : '';
 
       this.singleUser.email = this.singleUserData.email;
