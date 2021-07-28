@@ -4,7 +4,7 @@
       class="add-icon"
       @click="menuItemDialog = true"
       name="more_vert"
-      v-if="userRole == 'estimator' || userRole == 'vendor'"
+      v-if="estimatorDocument == 'esti_docs' || vendorDocument == 'vendor_docs'"
     />
     <div
       :class="{
@@ -718,6 +718,8 @@ export default {
   components: { CustomBar, ClaimDetail },
   data() {
     return {
+      estimatorDocument: '',
+      vendorDocument: '',
       policyDate: {
         policyEffectiveDate: '',
         policyExpireDate: ''
@@ -791,7 +793,8 @@ export default {
       'setClientProperty',
       'selectedClaimId',
       'lossCauses',
-      'claimReasons'
+      'claimReasons',
+      'pageAccess'
     ]),
     formatDate(value) {
       if (value) {
@@ -801,6 +804,13 @@ export default {
   },
 
   async created() {
+    this.getAccess();
+    this.pageAccess.find(obj => {
+      if (obj == 'esti_docs' || obj == 'vendor_docs') {
+        this.estimatorDocument = obj;
+        this.vendorDocument = obj;
+      }
+    });
     this.userRole = getCurrentUser().attributes.roles[0].machineValue;
 
     this.fileNumber = this.getSelectedClaim.fileNumber;
@@ -821,7 +831,8 @@ export default {
       'getClaimReasons',
       'getLossCauses',
       'editClaimInfo',
-      'updateClaimTimeline'
+      'updateClaimTimeline',
+      'getAccess'
     ]),
     dateToShow,
     validateDate,

@@ -20,7 +20,9 @@
       />
     </div>
     <div class="row q-mt-sm">
-      <span class="heading-light col-4">Address Details</span>
+      <span class="heading-light col-4" v-if="selectedCarrier.address"
+        >Address Details</span
+      >
       <span class="col-7 q-ml-md" v-if="selectedCarrier.address">
         {{
           selectedCarrier.address.houseNumber
