@@ -14,7 +14,7 @@
         />
         <q-card-section>
           <div class="mobile-container-page-without-search form-height">
-            <div class="q-py-xs">Notes</div>
+            <div class="q-py-xs">Notes<small style="color: red">*</small></div>
             <textarea
               v-model="note"
               rows="4"
@@ -155,7 +155,6 @@ import CustomBar from 'components/CustomBar';
 import DeleteAlert from 'components/DeleteAlert';
 import moment from 'moment';
 import { dateWithTime } from '@utils/date';
-import { successMessage } from '@utils/validation';
 import { constants } from '@utils/constant';
 
 export default {
@@ -244,12 +243,10 @@ export default {
       };
       await this.addNotes(payload);
       this.addNoteDialog = false;
-      this.successMessage(constants.successMessages.NOTES_ADDED);
       this.note = '';
 
       this.getSingleClientDetails(this.selectedClientId);
-    },
-    successMessage
+    }
   }
 };
 </script>
