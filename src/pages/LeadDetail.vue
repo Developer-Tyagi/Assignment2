@@ -9,6 +9,7 @@
               {{ selectedLead.primaryContact.lname }}
             </div>
             <q-icon
+              v-if="isShowConvertButton"
               name="create"
               color="primary"
               class="icon-top"
