@@ -67,7 +67,7 @@
     </div>
 
     <div class="row q-mt-sm" v-if="selectedCarrier.email">
-      <span class="heading-light q-mt-none col-xs-4 "> Email </span>
+      <span class="heading-light q-mt-none col-xs-4 ">Company Email </span>
       <span
         class="q-ml-md col clickLink"
         @click="onEmailClick(selectedCarrier.email, $event)"
@@ -77,7 +77,7 @@
     </div>
     <div class="row q-mt-sm" v-for="phone in selectedCarrier.phoneNumber">
       <span class="heading-light q-mt-none col-xs-4 ">
-        Phone Number
+        Company Number
       </span>
       <span class="col q-ml-md" v-if="phone.type">
         {{ phone.type }} :
@@ -87,6 +87,37 @@
           >{{ phone.number }}</span
         ></span
       >
+    </div>
+    <div class="q-mt-sm row" v-if="selectedCarrier.contact">
+      <div class="heading-light q-mt-none col-xs-4 ">
+        Contact Info
+      </div>
+      <div class="column q-ml-md ">
+        {{ selectedCarrier ? selectedCarrier.contact.fname : '-' }}
+        {{ selectedCarrier ? selectedCarrier.contact.lname : '-' }}
+        <div
+          class="clickLink"
+          @click="onEmailClick(selectedCarrier.contact.email, $event)"
+        >
+          {{ selectedCarrier ? selectedCarrier.contact.email : '-' }}
+        </div>
+        <div
+          v-if="selectedCarrier.contact && selectedCarrier.contact.phoneNumber"
+          class="clickLink"
+          @click="
+            onPhoneNumberClick(
+              selectedCarrier.contact.phoneNumber[0].number,
+              $event
+            )
+          "
+        >
+          {{
+            selectedCarrier.contact.phoneNumber
+              ? showPhoneNumber(selectedCarrier.contact.phoneNumber[0].number)
+              : '-'
+          }}
+        </div>
+      </div>
     </div>
     <div class="row q-mt-sm" v-if="selectedCarrier.info">
       <span class="heading-light col-4"> Website: </span>
@@ -135,7 +166,7 @@ import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
 import AddCarrier from 'components/AddCarrier';
 import { constants } from '@utils/constant';
 import DeleteAlert from 'components/DeleteAlert';
-
+import { showPhoneNumber } from '@utils/clickable';
 export default {
   name: 'CarrierCompanyInfo',
   components: { AddCarrier, DeleteAlert },
@@ -155,6 +186,7 @@ export default {
     onEmailClick,
     onPhoneNumberClick,
     sendMap,
+    showPhoneNumber,
     onEdit() {
       this.addCarrierDialog = true;
     },
