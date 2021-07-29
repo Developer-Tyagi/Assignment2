@@ -41,7 +41,9 @@
             >
               {{
                 selectedLead.primaryContact.phoneNumber[0].number
-                  ? selectedLead.primaryContact.phoneNumber[0].number
+                  ? showPhoneNumber(
+                      selectedLead.primaryContact.phoneNumber[0].number
+                    )
                   : '-'
               }}</span
             >
@@ -260,7 +262,12 @@
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import { dateToShow } from '@utils/date';
-import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
+import {
+  onEmailClick,
+  onPhoneNumberClick,
+  sendMap,
+  showPhoneNumber
+} from '@utils/clickable';
 export default {
   data() {
     return {};
@@ -280,6 +287,7 @@ export default {
     onPhoneNumberClick,
     sendMap,
     dateToShow,
+    showPhoneNumber,
     editLeadButtonClick() {
       this.isEdit = true;
       this.$router.push('/edit-lead-details/' + this.$route.params.id);

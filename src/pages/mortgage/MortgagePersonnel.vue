@@ -101,7 +101,7 @@
                     class="clickLink"
                     @click="onPhoneNumberClick(phone.number, $event)"
                   >
-                    {{ phone.number ? phone.number : '-' }}
+                    {{ phone.number ? showPhoneNumber(phone.number) : '-' }}
                   </div>
                 </div>
               </div>
@@ -458,7 +458,13 @@
 import { mapGetters, mapActions } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
-import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
+import {
+  onEmailClick,
+  onPhoneNumberClick,
+  sendMap,
+  sendPhoneNumber,
+  showPhoneNumber
+} from '@utils/clickable';
 import DeleteAlert from 'components/DeleteAlert';
 export default {
   components: {
@@ -563,7 +569,12 @@ export default {
               fname: this.personnel.fname,
               lname: this.personnel.lname,
               email: this.personnel.email,
-              phoneNumber: this.personnel.phoneNumber,
+              phoneNumber: [
+                {
+                  type: this.personnel.phoneNumber[0].type,
+                  number: sendPhoneNumber(this.personnel.phoneNumber[0].number)
+                }
+              ],
 
               address: {
                 ...this.personnel.address
@@ -628,6 +639,8 @@ export default {
     onEmailClick,
     onPhoneNumberClick,
     sendMap,
+    sendPhoneNumber,
+    showPhoneNumber,
 
     setTitleName() {
       const title = this.titles.find(obj => {
@@ -654,7 +667,12 @@ export default {
               fname: this.personnel.fname,
               lname: this.personnel.lname,
               email: this.personnel.email,
-              phoneNumber: this.personnel.phoneNumber,
+              phoneNumber: [
+                {
+                  type: this.personnel.phoneNumber[0].type,
+                  number: sendPhoneNumber(this.personnel.phoneNumber[0].number)
+                }
+              ],
 
               address: {
                 ...this.personnel.address
