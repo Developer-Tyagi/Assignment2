@@ -246,7 +246,7 @@
                           style="height: 40px;"
                           v-if="
                             user.value.permission != null &&
-                              test(
+                              checkPermission(
                                 permissions[ind].machineValue,
                                 user.machineValue,
                                 index
@@ -1152,7 +1152,7 @@ export default {
 
       this.tab = 'groupPermission';
     },
-    test(val, role, index) {
+    checkPermission(val, role, index) {
       if (this.roleTypes[index].permission.includes(val)) {
         this.arrOfRoles[index].label = true;
         return true;
