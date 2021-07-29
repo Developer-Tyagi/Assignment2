@@ -361,6 +361,9 @@ export default {
 
       if (success) {
         if (!this.isEdit) {
+          if (!this.carrier.address.streetAddress) {
+            delete payload.address;
+          }
           const response = await this.addCarrier(payload);
           this.getCarriers();
           if (response.id) {

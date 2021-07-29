@@ -24,7 +24,9 @@
       />
     </div>
     <div class="row">
-      <span class="heading-light col-4">Address Details </span>
+      <span class="heading-light col-4" v-if="selectedMortgage.address"
+        >Address Details
+      </span>
 
       <span class="col-7 q-ml-md" v-if="selectedMortgage.address">
         {{
