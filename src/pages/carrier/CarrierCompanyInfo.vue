@@ -164,12 +164,7 @@
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import {
-  onEmailClick,
-  onPhoneNumberClick,
-  sendMap,
-  showPhoneNumber
-} from '@utils/clickable';
+import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
 import AddCarrier from 'components/AddCarrier';
 import { constants } from '@utils/constant';
 import DeleteAlert from 'components/DeleteAlert';
