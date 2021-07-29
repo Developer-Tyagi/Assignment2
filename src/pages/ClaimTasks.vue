@@ -5,9 +5,10 @@
         <div class="row q-pa-sm">
           <div class="flex">
             <q-checkbox
-              v-model="task.isEnabled"
+              v-model="task.isCompleted"
               color="$primary"
               class="q-my-auto q-mr-md"
+              @input="setTaskAsCompleted(task)"
             />
           </div>
           <div class="column">
@@ -151,14 +152,26 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['tasks'])
+    ...mapGetters(['tasks', 'selectedClaimId'])
   },
   created() {
-    this.getOfficeTasks(this.$route.params.id);
+    this.getOfficeTasks(this.selectedClaimId);
   },
 
   methods: {
-    ...mapActions(['getOfficeTasks', 'addOfficeTask']),
+    ...mapActions(['getOfficeTasks', 'addOfficeTask', 'taskComplete']),
+
+    async setTaskAsCompleted(value) {
+      const payload = {
+        claimID: this.selectedClaimId,
+        taskId: value.id,
+        data: {
+          machineValue: value.machineValue
+        }
+      };
+      await this.taskComplete(payload);
+      this.getOfficeTasks(this.selectedClaimId);
+    },
 
     async addTask() {
       const success = await this.$refs.addTask.validate();

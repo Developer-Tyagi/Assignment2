@@ -1509,3 +1509,50 @@ export async function deleteActivityLogt({ commit, dispatch }, payload) {
     });
   }
 }
+
+// export async function taskComplate({ dispatch, state }, payload) {
+//   dispatch('setLoading', true);
+//   try {
+//     const { data } = await request.post(
+//       `/claims/${claimID}/tasks/${taskId}
+// `
+//     );
+//     dispatch('setLoading', false);
+//     dispatch('setNotification', {
+//       type: 'positive',
+//       message: 'Task Completed!'
+//     });
+//   } catch (e) {
+//     console.log(e);
+//     dispatch('setLoading', false);
+//     dispatch('setNotification', {
+//       type: 'negative',
+//       message: e.response[0].title
+//     });
+//     return false;
+//   }
+// }
+
+export async function taskComplete({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      `/claims/${payload.claimID}/tasks/${payload.taskId}/complete
+`,
+      buildApiData('claimtask', payload.data)
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Estimator added successfully!'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+    return false;
+  }
+}

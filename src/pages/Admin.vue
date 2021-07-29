@@ -751,6 +751,7 @@
                 outlined
                 v-model="actions.actions.onComplete[index].task[1]"
                 behavior="menu"
+                option-value="machineValue"
                 option-label="value"
                 :options="
                   actionCompletion[indexOfSubTypeOfCompletion].subOptions[
