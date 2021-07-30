@@ -1238,7 +1238,7 @@ export default {
   },
   data() {
     return {
-      step: 0,
+      step: 8,
       stepClickValidTill: 0,
       tenantOccupiedToggle: false,
       tenantOccupied: {
@@ -1962,6 +1962,14 @@ export default {
     },
     //Creating Client (here currently  we are sending Source Detail blank ,later it will change as per client requirement)
     async createClientButtonClick() {
+      /****-----------For changing each number in array to Formated number -------- ******************/
+      let phoneNumberArray = [];
+      this.phoneNumber.forEach(val => {
+        phoneNumberArray.push({
+          type: val.type,
+          number: sendPhoneNumber(val.number)
+        });
+      });
       const payload = {
         isOrganization: this.primaryDetails.isOrganization,
         organizationName: this.primaryDetails.organizationName,
@@ -2006,12 +2014,13 @@ export default {
           mailingAddress: {
             ...this.mailingAddressDetails
           },
-          phoneNumbers: this.phoneNumber,
+          /****----------- -------- ******************/
+          phoneNumbers: phoneNumberArray,
           tenantInfo: {
             name: this.tenantOccupied.name,
             phoneNumber: {
               type: this.tenantOccupied.type,
-              number: this.tenantOccupied.phone
+              number: sendPhoneNumber(this.tenantOccupied.phone)
             }
           }
         },

@@ -120,7 +120,7 @@
                   "
                   >{{
                     estimatingInfo.phone.phoneNumber
-                      ? estimatingInfo.phone.phoneNumber
+                      ? showPhoneNumber(estimatingInfo.phone.phoneNumber)
                       : '-'
                   }}</span
                 >
@@ -381,7 +381,12 @@ import { validateEmail } from '@utils/validation';
 import CustomBar from 'components/CustomBar';
 import { successMessage } from '@utils/validation';
 import { constants } from '@utils/constant';
-import { onPhoneNumberClick, onEmailClick } from '@utils/clickable';
+import {
+  onPhoneNumberClick,
+  onEmailClick,
+  showPhoneNumber,
+  sendPhoneNumber
+} from '@utils/clickable';
 
 export default {
   name: 'EstimatingInfo',
@@ -410,7 +415,7 @@ export default {
         lname: '',
         email: '',
         phone: '',
-        type: '',
+        type: 'main',
         companyName: ''
       },
       params: {
@@ -444,7 +449,7 @@ export default {
             phoneNumber: [
               {
                 type: this.addEstimatorDialogInfo.type,
-                number: this.addEstimatorDialogInfo.phone
+                number: sendPhoneNumber(this.addEstimatorDialogInfo.phone)
               }
             ]
           },
@@ -553,7 +558,9 @@ export default {
       this.estimatorsListDialog = false;
     },
     onPhoneNumberClick,
-    onEmailClick
+    onEmailClick,
+    showPhoneNumber,
+    sendPhoneNumber
   }
 };
 </script>
