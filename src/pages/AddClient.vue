@@ -1238,7 +1238,7 @@ export default {
   },
   data() {
     return {
-      step: 8,
+      step: 0,
       stepClickValidTill: 0,
       tenantOccupiedToggle: false,
       tenantOccupied: {
@@ -1962,7 +1962,7 @@ export default {
     },
     //Creating Client (here currently  we are sending Source Detail blank ,later it will change as per client requirement)
     async createClientButtonClick() {
-      /****-----------For changing each number in array to Formated number -------- ******************/
+      /*********For changing each number in array to Formated number **************************/
       let phoneNumberArray = [];
       this.phoneNumber.forEach(val => {
         phoneNumberArray.push({
@@ -2014,7 +2014,7 @@ export default {
           mailingAddress: {
             ...this.mailingAddressDetails
           },
-          /****----------- -------- ******************/
+
           phoneNumbers: phoneNumberArray,
           tenantInfo: {
             name: this.tenantOccupied.name,
