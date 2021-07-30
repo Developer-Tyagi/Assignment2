@@ -1,11 +1,11 @@
 <template>
   <div>
     <div v-if="tasks.tasks">
-      <div class="column" v-for="task in tasks.tasks">
+      <div class="column" v-for="(task, index) in tasks.tasks">
         <div class="row q-pa-sm">
-          <div class="flex">
+          <div class="flex" v-if="isShow">
             <q-checkbox
-              v-model="task.isCompleted"
+              v-model="taskShow[index].value"
               color="$primary"
               class="q-my-auto q-mr-md"
               @input="setTaskAsCompleted(task)"
@@ -140,6 +140,8 @@ export default {
   },
   data() {
     return {
+      isShow: false,
+      taskShow: [],
       showOfficeActions: false,
       addNewTaskDialog: false,
       newTask: {
@@ -154,22 +156,43 @@ export default {
   computed: {
     ...mapGetters(['tasks', 'selectedClaimId'])
   },
-  created() {
-    this.getOfficeTasks(this.selectedClaimId);
+  async created() {
+    await this.getOfficeTasks(this.selectedClaimId);
+
+    await this.tasks.tasks.forEach(val => {
+      this.taskShow.push({
+        value: val.isCompleted
+      });
+    });
+    this.isShow = true;
   },
 
   methods: {
-    ...mapActions(['getOfficeTasks', 'addOfficeTask', 'taskComplete']),
+    ...mapActions([
+      'getOfficeTasks',
+      'addOfficeTask',
+      'taskComplete',
+      'taskUncomplete'
+    ]),
 
     async setTaskAsCompleted(value) {
-      const payload = {
-        claimID: this.selectedClaimId,
-        taskId: value.id,
-        data: {
-          machineValue: value.machineValue
-        }
-      };
-      await this.taskComplete(payload);
+      if (value.isCompleted) {
+        const payload = {
+          claimID: this.selectedClaimId,
+          taskId: value.id
+        };
+        await this.taskUncomplete(payload);
+      } else {
+        const payload = {
+          claimID: this.selectedClaimId,
+          taskId: value.id,
+          data: {
+            machineValue: value.machineValue
+          }
+        };
+        await this.taskComplete(payload);
+      }
+
       this.getOfficeTasks(this.selectedClaimId);
     },
 

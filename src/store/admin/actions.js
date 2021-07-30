@@ -4,7 +4,7 @@ import { buildApiData } from '@utils/api';
 export async function getActionOverDues({ commit, dispatch }, params) {
   dispatch('setLoading', true);
   try {
-    const { data } = await request.get('/actionoverdues', params);
+    const { data } = await request.get(`/actionoverdues?workflowID=${params}`);
 
     commit('setActionOverDues', data);
     dispatch('setLoading', false);
@@ -22,7 +22,9 @@ export async function getActionCompletion({ commit, dispatch }, params) {
   dispatch('setLoading', true);
 
   try {
-    const { data } = await request.get('/actioncompletions', params);
+    const { data } = await request.get(
+      `/actioncompletions?workflowID=${params}`
+    );
 
     commit('setActionCompletion', data);
     dispatch('setLoading', false);
@@ -38,7 +40,7 @@ export async function getActionCompletion({ commit, dispatch }, params) {
 export async function getActionReasons({ commit, dispatch }, params) {
   dispatch('setLoading', true);
   try {
-    const { data } = await request.get('/actionreasons', params);
+    const { data } = await request.get(`/actionreasons?workflowID=${params}`);
 
     commit('setActionReasons', data);
     dispatch('setLoading', false);
