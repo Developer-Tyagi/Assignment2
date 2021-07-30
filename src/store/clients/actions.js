@@ -2,7 +2,8 @@ import request from '@api';
 import { buildApiData } from '@utils/api';
 import localDB, { getCollection } from '@services/dexie';
 import { makeId } from '../leads/actions';
-
+import { constants } from '@utils/constant';
+import { date } from 'quasar';
 export async function getClients(
   {
     rootState: {
@@ -157,7 +158,9 @@ export async function addClientLocal({ dispatch }, payload) {
       ...payload,
       offline: true,
       id: makeId(),
-      propertyID: makeId()
+      propertyID: makeId(),
+      created: date.formatDate(Date.now(), constants.UTCFORMAT),
+      updated: date.formatDate(Date.now(), constants.UTCFORMAT)
     };
     await localDB.clients.add(client);
     return client;

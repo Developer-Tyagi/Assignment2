@@ -16,6 +16,9 @@ export async function setClients(state, clientsData) {
 
 export async function setOfflineClients(state) {
   state.clients = await getCollection('clients').toArray();
+  state.clients.sort(function(a, b) {
+    return new Date(b.updated).getTime() - new Date(a.updated).getTime();
+  });
 }
 
 export function setSelectedEditClient(state, client) {
