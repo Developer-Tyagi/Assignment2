@@ -1,6 +1,8 @@
 import request from '@api';
 import { buildApiData } from '@utils/api';
 import localDB from '@services/dexie';
+import { date } from 'quasar';
+import { constants } from '@utils/constant';
 
 export async function getActiveLeadsList(
   {
@@ -118,7 +120,14 @@ export async function addLeadRemote({ commit, dispatch }, payload) {
 
 export async function addLeadLocal({ dispatch }, payload) {
   try {
-    await localDB.activeLeads.add({ ...payload, offline: true, id: makeId() });
+    await localDB.activeLeads.add({
+      ...payload,
+      offline: true,
+      id: makeId(),
+      created: date.formatDate(Date.now(), constants.UTCFORMAT),
+      updated: date.formatDate(Date.now(), constants.UTCFORMAT)
+    });
+
     dispatch('setNotification', {
       type: 'warning',
       message: 'Lead Created in the local database'

@@ -13,6 +13,10 @@ export async function setActiveLeads(state, leads) {
 
 export async function setOfflineActiveLeads(state) {
   state.activeLeads = await getCollection('activeLeads').toArray();
+
+  state.activeLeads.sort(function(a, b) {
+    return new Date(b.updated).getTime() - new Date(a.updated).getTime();
+  });
 }
 
 export async function setArchivedLeads(state, leads) {

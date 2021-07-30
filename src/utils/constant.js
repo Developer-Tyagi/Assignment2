@@ -6,6 +6,7 @@ export const constants = {
     VENDOR: 'vendor',
     EXPERTVENDOR: 'expert-vendor'
   },
+  UTCFORMAT: 'YYYY-MM-DDTHH:mm:ss.sssZ',
   ORGANIZATION: 'organization',
   Notification: {
     UPLOAD_ESTIMATOR: 'uploadEstimateDoc'
