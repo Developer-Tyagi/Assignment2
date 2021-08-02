@@ -85,6 +85,7 @@
                     <q-date
                       v-model="newTask.dueDate"
                       @input="() => $refs.qDateProxy.hide()"
+                      :options="taskDateValidation"
                       mask="MM/DD/YYYY"
                     ></q-date>
                   </q-popup-proxy>
@@ -117,6 +118,7 @@
 import { mapActions, mapGetters } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import { validateDate } from '@utils/validation';
+import { date } from 'quasar';
 import { dateToSend } from '@utils/date';
 
 export default {
@@ -157,6 +159,11 @@ export default {
 
   methods: {
     ...mapActions(['getOfficeTaskActions']),
+
+    /*********It will show all the dates from tommorow !**********/
+    taskDateValidation(dateopn) {
+      return dateopn > date.formatDate(Date.now(), 'YYYY/MM/DD');
+    },
 
     onOfficeTaskToggleButton() {
       this.showOfficeActions = this.officeTask.officeActionRequired;
