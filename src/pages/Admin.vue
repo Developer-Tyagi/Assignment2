@@ -624,16 +624,50 @@
                 Default Priority <span class="text-red">*</span> :
               </div>
             </div>
-            <div class="col-4">
+            <div class="col-2 ">
               <q-toggle v-model="priority" left-label @input="TogglePriority" />
               <q-badge color="primary" v-if="priority == true">High</q-badge>
               <q-badge v-else color="primary">Low</q-badge>
             </div>
 
-            <div class="col-1-1 row">
+            <div class="col row">
               <div class="q-py-sm text-bold">Assign To :</div>
-              <div class="q-ml-sm q-pt-sm text-bold">
-                <q-badge color="primary" label="Select" @click="" />
+              <div class="q-ml-sm col-7 row   text-bold">
+                <q-select
+                  dense
+                  outlined
+                  v-model="actions.assignedTo[0].type"
+                  options-dense
+                  behavior="menu"
+                  option-label="value"
+                  :options="assignTo"
+                  @input="callAssignApi(actions.assignedTo[0].type)"
+                  option-value="machineValue"
+                  map-options
+                  emit-value
+                  label="Assign To"
+                  class="input-extra-padding"
+                  style="width: 200px"
+                />
+
+                <q-select
+                  v-if="actions.assignedTo[0].type"
+                  v-model="actions.assignedTo[0].name"
+                  dense
+                  outlined
+                  options-dense
+                  behavior="menu"
+                  option-label="name"
+                  :options="assignToSubOption"
+                  option-value="machineValue"
+                  @input="setAssignTo(actions.assignedTo[0].name)"
+                  map-options
+                  emit-value
+                  class=" q-ml-sm input-extra-padding"
+                  style="width: 200px"
+                />
+
+                <!-- <q-badge color="primary" label="Select" @click="" /> -->
               </div>
             </div>
           </div>
@@ -935,6 +969,12 @@ export default {
 
   data() {
     return {
+      assignTo: [
+        { value: 'User', machineValue: 'user' },
+        { value: 'Role', machineValue: 'role' }
+      ],
+      assignee: '',
+      assignToSubOption: [],
       newRole: { id: '', value: '', machine: '' },
       newPermission: '',
       rol: [],
@@ -1003,7 +1043,7 @@ export default {
         priority: 'low',
         assignedTo: [
           {
-            type: 'user',
+            type: '',
             name: '',
             id: ''
           }
@@ -1062,7 +1102,8 @@ export default {
       'contactTypes',
       'roleTypes',
       'permissions',
-      'organization'
+      'organization',
+      'allUsers'
     ])
   },
 
@@ -1081,6 +1122,7 @@ export default {
       'editUserInfo',
       'editUserProfile',
       'getUserInfo',
+      'getAllUsers',
       'getRoles',
       'getPermissions',
       'setMultiplePermission',
@@ -1088,6 +1130,46 @@ export default {
       'updateUserForOrganization'
     ]),
     validateEmail,
+
+    async callAssignApi(val) {
+      this.assignToSubOption = [];
+      this.actions.assignedTo[0].name = '';
+      this.assignee = val;
+      if (val == 'user') {
+        await this.getAllUsers();
+        this.allUsers.forEach(user => {
+          this.assignToSubOption.push({
+            machineValue: user.name,
+            name: user.name,
+            id: user.id
+          });
+        });
+      } else {
+        await this.getRoles();
+        this.roleTypes.forEach(user => {
+          this.assignToSubOption.push({
+            machineValue: user.machineValue,
+            name: user.name,
+            id: user.id
+          });
+        });
+      }
+    },
+    setAssignTo(val) {
+      if (this.assignee == 'user') {
+        const obj = this.allUsers.find(item => {
+          return item.name === val;
+        });
+
+        this.actions.assignedTo[0].id = obj.id;
+      } else {
+        const obj = this.roleTypes.find(item => {
+          return item.machineValue === val;
+        });
+        this.actions.assignedTo[0].id = obj.id;
+      }
+    },
+
     async rolePermission(per, role, value) {
       if (value == 'unselected') {
         this.newPermission = this.permissions[per].machineValue;
@@ -1346,7 +1428,7 @@ export default {
         priority: 'low',
         assignedTo: [
           {
-            type: 'user',
+            type: '',
             name: '',
             id: ''
           }

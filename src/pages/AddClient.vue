@@ -1239,6 +1239,7 @@ export default {
   data() {
     return {
       step: 0,
+      finalOfficeTask: [],
       stepClickValidTill: 0,
       tenantOccupiedToggle: false,
       tenantOccupied: {
@@ -1960,6 +1961,7 @@ export default {
         };
       }
     },
+
     //Creating Client (here currently  we are sending Source Detail blank ,later it will change as per client requirement)
     async createClientButtonClick() {
       /*********For changing each number in array to Formated number **************************/
@@ -2273,9 +2275,16 @@ export default {
     },
 
     async addMultipleOfficeTask(id) {
+      if (this.officeTask.actions) {
+        this.officeTask.actions.forEach(val => {
+          if (val.isEnabled == true) {
+            this.finalOfficeTask.push(val);
+          }
+        });
+      }
       const payload = {
         id: id,
-        tasks: this.officeTask.actions
+        tasks: this.finalOfficeTask
       };
 
       const response = await this.addMultipleTaskToClaim(payload);
