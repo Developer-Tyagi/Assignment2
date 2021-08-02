@@ -1961,16 +1961,7 @@ export default {
         };
       }
     },
-    // async createClientButtonClick(responseData) {
-    //   if (this.officeTask.actions) {
-    //     this.officeTask.actions.forEach(val => {
-    //       if (val.isEnabled == true) {
-    //         this.finalOfficeTask.push(val);
-    //       }
-    //     });
-    //     console.log(this.officeTask.actions, 9, this.finalOfficeTask);
-    //   }
-    // },
+
     //Creating Client (here currently  we are sending Source Detail blank ,later it will change as per client requirement)
     async createClientButtonClick() {
       /*********For changing each number in array to Formated number **************************/
