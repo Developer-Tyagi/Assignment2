@@ -156,6 +156,73 @@ export async function addLeads(
   }
 }
 
+export async function editLeadDetails(
+  {
+    rootState: {
+      common: { isOnline }
+    },
+    dispatch
+  },
+  payload
+) {
+  dispatch('setLoading', true);
+  if (isOnline) {
+    await dispatch('editLeadRemote', payload);
+    return true;
+  } else {
+    dispatch('editLeadLocal', payload);
+  }
+}
+
+export async function editLeadLocal({ dispatch }, payload) {
+  try {
+    await localDB.activeLeads
+      .where('id')
+      .equals(payload.id)
+      .modify({
+        ...payload.data,
+        updated: date.formatDate(Date.now(), constants.UTCFORMAT),
+        offline: true,
+
+        id: payload.id
+      });
+
+    dispatch('setNotification', {
+      type: 'warning',
+      message: 'Lead Updated in the local database'
+    });
+
+    this.$router.push('/leads');
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+export async function editLeadRemote({ commit, dispatch }, payload) {
+  try {
+    const { data } = await request.patch(
+      `/leads/${payload.id}`,
+      buildApiData('leads', payload)
+    );
+
+    dispatch('setLoading', false);
+
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Lead Info Updated Successfully!'
+    });
+    return data;
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'Failed to update Lead Info! please try again !'
+    });
+    return false;
+  }
+}
+
 export async function getLeadDetails(
   {
     rootState: {
@@ -186,29 +253,6 @@ export async function getLeadDetails(
     dispatch('setNotification', {
       type: 'negative',
       message: e.response[0].title
-    });
-  }
-}
-
-export async function editLeadDetails({ dispatch, state }, payload) {
-  dispatch('setLoading', true);
-  try {
-    const { data } = await request.patch(
-      `/leads/${payload.id}`,
-      buildApiData('claims', payload.data)
-    );
-    dispatch('setLoading', false);
-    dispatch('setNotification', {
-      type: 'positive',
-      message: 'Lead Info Updated Successfully!'
-    });
-    return data;
-  } catch (e) {
-    console.log(e);
-    dispatch('setLoading', false);
-    dispatch('setNotification', {
-      type: 'negative',
-      message: 'Failed to update Lead Info! please try again !'
     });
   }
 }
