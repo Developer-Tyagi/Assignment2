@@ -47,6 +47,7 @@
           :dialogName="'Add New Task'"
           @closeDialog="addNewTaskDialog = false"
         />
+
         <div class="mobile-container-page q-pa-sm form-height">
           <q-form ref="addTask">
             <q-input
@@ -92,7 +93,44 @@
                 </q-icon>
               </template>
             </q-input>
-            <q-input label="Assign" v-model="newTask.assign" />
+            <q-select
+              v-model="newTask.assignedTo[0].type"
+              dense
+              options-dense
+              behavior="menu"
+              option-label="value"
+              :options="assignTo"
+              @input="callAssignApi(newTask.assignedTo[0].type)"
+              option-value="machineValue"
+              map-options
+              emit-value
+              label="Assign To"
+              class=" required input-extra-padding"
+              :rules="[
+                val => (val && val.length > 0) || 'Please select any category'
+              ]"
+            />
+            <div>
+              <q-select
+                v-if="newTask.assignedTo[0].type"
+                v-model="newTask.assignedTo[0].name"
+                dense
+                options-dense
+                behavior="menu"
+                option-label="name"
+                :options="assignToSubOption"
+                option-value="machineValue"
+                @input="setAssignTo(newTask.assignedTo[0].name)"
+                map-options
+                label="Listing"
+                emit-value
+                class="  required input-extra-padding"
+                :rules="[
+                  val => (val && val.length > 0) || 'Please select any user '
+                ]"
+              />
+            </div>
+
             <div class="row">
               <p class="q-my-auto text-bold">Priority</p>
               <p class="q-my-auto q-ml-auto q-mr-md">
@@ -134,19 +172,31 @@ export default {
   },
   data() {
     return {
+      assignTo: [
+        { value: 'User', machineValue: 'user' },
+        { value: 'Role', machineValue: 'role' }
+      ],
+      assignee: '',
+      assignToSubOption: [],
       showOfficeActions: false,
       addNewTaskDialog: false,
       newTask: {
         dueDate: '',
         name: '',
         isEnabled: true,
-        assignedTo: [],
+        assignedTo: [
+          {
+            type: '',
+            name: '',
+            id: ''
+          }
+        ],
         priority: false
       }
     };
   },
   computed: {
-    ...mapGetters(['officeTaskActions'])
+    ...mapGetters(['officeTaskActions', 'allUsers', 'roleTypes'])
   },
   async created() {
     await this.getOfficeTaskActions();
@@ -155,14 +205,62 @@ export default {
       delete element.created;
       delete element.updated;
     });
+    await this.getAllUsers();
   },
 
   methods: {
-    ...mapActions(['getOfficeTaskActions']),
+    ...mapActions(['getOfficeTaskActions', 'getAllUsers', 'getRoles']),
 
     /*********It will show all the dates from tommorow !**********/
     taskDateValidation(dateopn) {
       return dateopn > date.formatDate(Date.now(), 'YYYY/MM/DD');
+    },
+
+    /*****It will call the Api according to the imput in the first drop down ******/
+
+    /**As user dont have machine value  but roles have ,so in case of User API we are putting value in machine
+     *  value and machine value in machineValue  in case of Roles API
+     * because we are using same drop down for roles and users ******/
+    async callAssignApi(val) {
+      this.assignToSubOption = [];
+      this.newTask.assignedTo[0].name = '';
+      this.assignee = val;
+      /**If we select User then...we will put all the user in assignToSubOption this array **/
+      if (val == 'user') {
+        await this.getAllUsers();
+        this.allUsers.forEach(user => {
+          this.assignToSubOption.push({
+            machineValue: user.name,
+            name: user.name,
+            id: user.id
+          });
+        });
+      } else {
+        /**If we select Roles then...we will put all the Roles in assignToSubOption this array **/
+        await this.getRoles();
+        this.roleTypes.forEach(user => {
+          this.assignToSubOption.push({
+            machineValue: user.machineValue,
+            name: user.name,
+            id: user.id
+          });
+        });
+      }
+    },
+    /**It will find the object from array whose value is selcted and assign ID to its object !*****/
+    setAssignTo(val) {
+      if (this.assignee == 'user') {
+        const obj = this.allUsers.find(item => {
+          return item.name === val;
+        });
+
+        this.newTask.assignedTo[0].id = obj.id;
+      } else {
+        const obj = this.roleTypes.find(item => {
+          return item.machineValue === val;
+        });
+        this.newTask.assignedTo[0].id = obj.id;
+      }
     },
 
     onOfficeTaskToggleButton() {
@@ -188,7 +286,13 @@ export default {
           dueDate: '',
           name: '',
           isEnabled: true,
-          assignedTo: [],
+          assignedTo: [
+            {
+              type: '',
+              name: '',
+              id: ''
+            }
+          ],
           priority: false
         };
         this.officeTask.actions = this.officeTaskActions;
