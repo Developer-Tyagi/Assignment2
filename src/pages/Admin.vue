@@ -594,10 +594,10 @@
                 emit-value
                 label="Created when"
                 class="input-extra-padding"
-                style="width: 250px"
+                style="width: 220px"
               />
 
-              <div class="col-2-1 q-ml-xs" v-if="actions.createWhen.type">
+              <div class="col-2 q-ml-xs" v-if="actions.createWhen.type">
                 <q-select
                   dense
                   class="col-3 input-extra-padding"
@@ -624,7 +624,7 @@
             </div>
             <!-- 3 -->
             <div class="row q-mt-md full-width">
-              <div class="col-1-1">
+              <div class="col-2">
                 <div class="q-pa-sm text-bold">
                   Default Priority <span class="text-red">*</span> :
                 </div>
@@ -734,7 +734,7 @@
               v-if="actions.actions.onComplete.length > 0"
               class="row q-mt-md full-width"
             >
-              <div class="col-1-1">
+              <div>
                 <div class="q-pa-sm text-bold" v-if="index == 0">
                   Completion Action :
                 </div>
@@ -852,7 +852,7 @@
               v-if="actions.actions.onOverdue.length > 0"
               class="row q-mt-md full-width"
             >
-              <div class="col-1-1">
+              <div>
                 <div class="q-pa-sm text-bold" v-if="index == 0">
                   OverDue Action:
                 </div>
