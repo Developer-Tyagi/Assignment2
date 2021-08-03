@@ -125,7 +125,8 @@ export async function addLeadLocal({ dispatch }, payload) {
       offline: true,
       id: makeId(),
       created: date.formatDate(Date.now(), constants.UTCFORMAT),
-      updated: date.formatDate(Date.now(), constants.UTCFORMAT)
+      updated: date.formatDate(Date.now(), constants.UTCFORMAT),
+      isCreate: true
     });
 
     dispatch('setNotification', {
@@ -183,8 +184,8 @@ export async function editLeadLocal({ dispatch }, payload) {
         ...payload.data,
         updated: date.formatDate(Date.now(), constants.UTCFORMAT),
         offline: true,
-
-        id: payload.id
+        id: payload.id,
+        isEdit: true
       });
 
     dispatch('setNotification', {

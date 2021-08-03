@@ -530,10 +530,13 @@ export async function syncEstimators({ dispatch }) {
 
 export async function syncLeads({ dispatch }) {
   let offlineLeads = await getCollection('activeLeads').toArray();
-  offlineLeads = offlineLeads.filter(lead => lead.offline);
+  offlineLeads = offlineLeads.filter(lead => lead.offline && lead.isCreate);
+
   if (offlineLeads.length > 0) {
     const createLeads = offlineLeads.map(
       ({ id: localId, offline, ...lead }) => {
+        lead.id = localId;
+        lead.offline = offline;
         if (lead.carrier) {
           const items = LocalStorage.getItem('carrier') || [];
           const index = items.findIndex(item => item.oldId === lead.carrier.id);
@@ -548,6 +551,8 @@ export async function syncLeads({ dispatch }) {
             lead.vendor.id = items[index].newId;
           }
         }
+        console.log(lead, 'lead is');
+
         return dispatch('addLeadRemote', lead).then(res => ({
           ...res,
           localId
@@ -566,6 +571,56 @@ export async function syncLeads({ dispatch }) {
               .equals(value.localId)
               .modify({ id: value.id, offline: false });
           });
+        return Promise.allSettled(createdLeads).then(results => {
+          resolve('All');
+        });
+      })
+    );
+  }
+}
+
+export async function syncEditedLeads({ dispatch }) {
+  let offlineLeads = await getCollection('activeLeads').toArray();
+  offlineLeads = offlineLeads.filter(lead => lead.offline);
+  if (offlineLeads.length > 0) {
+    const createLeads = offlineLeads.map(
+      ({ id: localId, offline, ...lead }) => {
+        lead.id = localId;
+        if (lead.carrier) {
+          const items = LocalStorage.getItem('carrier') || [];
+          const index = items.findIndex(item => item.oldId === lead.carrier.id);
+          if (index > -1) {
+            lead.carrier.id = items[index].newId;
+          }
+        }
+        if (lead.vendor) {
+          const items = LocalStorage.getItem('vendor') || [];
+          const index = items.findIndex(item => item.oldId === lead.vendor.id);
+          if (index > -1) {
+            lead.vendor.id = items[index].newId;
+          }
+        }
+        if (lead.isEdit && !lead.isCreate) {
+          return dispatch('editLeadRemote', lead).then(res => ({
+            ...res,
+            localId
+          }));
+        }
+      }
+    );
+
+    return new Promise((resolve, reject) =>
+      Promise.allSettled(createLeads).then(leads => {
+        const createdLeads = leads
+          .filter(({ status }) => status === 'fulfilled')
+          .map(({ value }) => {
+            storeIdsToLocalStorage('lead', value.localId, value.id);
+            return localDB.activeLeads
+              .where('id')
+              .equals(value.localId)
+              .modify({ id: value.id, offline: false });
+          });
+
         return Promise.allSettled(createdLeads).then(results => {
           resolve('All');
         });
@@ -794,6 +849,7 @@ export async function syncLocalDataBase({ dispatch, state }) {
   await dispatch('syncMortgages');
   await dispatch('syncEstimators');
   await dispatch('syncLeads');
+  await dispatch('syncEditedLeads');
   await dispatch('syncClients');
   await dispatch('syncClaims');
   await dispatch('syncOfficeTasks');
