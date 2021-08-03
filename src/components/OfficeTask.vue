@@ -93,7 +93,6 @@
                 </q-icon>
               </template>
             </q-input>
-            <!-- <q-input label="Assign" v-model="newTask.assign" /> -->
             <q-select
               v-model="newTask.assignedTo[0].type"
               dense
@@ -108,7 +107,7 @@
               label="Assign To"
               class=" required input-extra-padding"
               :rules="[
-                val => (val && val.length > 0) || 'Please select any value'
+                val => (val && val.length > 0) || 'Please select any category'
               ]"
             />
             <div>
@@ -127,7 +126,7 @@
                 emit-value
                 class="  required input-extra-padding"
                 :rules="[
-                  val => (val && val.length > 0) || 'Please select any '
+                  val => (val && val.length > 0) || 'Please select any user '
                 ]"
               />
             </div>
@@ -217,12 +216,16 @@ export default {
       return dateopn > date.formatDate(Date.now(), 'YYYY/MM/DD');
     },
 
-    /** Working **/
+    /*****It will call the Api according to the imput in the first drop down ******/
 
+    /**As user dont have machine value  but roles have ,so in case of User API we are putting value in machine
+     *  value and machine value in machineValue  in case of Roles API
+     * because we are using same drop down for roles and users ******/
     async callAssignApi(val) {
       this.assignToSubOption = [];
       this.newTask.assignedTo[0].name = '';
       this.assignee = val;
+      /**If we select User then...we will put all the user in assignToSubOption this array **/
       if (val == 'user') {
         await this.getAllUsers();
         this.allUsers.forEach(user => {
@@ -233,6 +236,7 @@ export default {
           });
         });
       } else {
+        /**If we select Roles then...we will put all the Roles in assignToSubOption this array **/
         await this.getRoles();
         this.roleTypes.forEach(user => {
           this.assignToSubOption.push({
@@ -243,7 +247,7 @@ export default {
         });
       }
     },
-
+    /**It will find the object from array whose value is selcted and assign ID to its object !*****/
     setAssignTo(val) {
       if (this.assignee == 'user') {
         const obj = this.allUsers.find(item => {
