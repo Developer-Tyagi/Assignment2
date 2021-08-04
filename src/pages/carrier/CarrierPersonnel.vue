@@ -528,6 +528,13 @@ export default {
     async onSave() {
       const success = await this.$refs.carrierForm.validate();
       if (success) {
+        let phoneNumberArray = [];
+        this.personnel.phoneNumber.forEach(val => {
+          phoneNumberArray.push({
+            type: val.type,
+            number: sendPhoneNumber(val.number)
+          });
+        });
         const payload = {
           id: this.$route.params.id,
           data: {
@@ -540,7 +547,7 @@ export default {
               fname: this.personnel.fname,
               lname: this.personnel.lname,
               email: this.personnel.email,
-              phoneNumber: this.personnel.phoneNumber,
+              phoneNumber: phoneNumberArray,
 
               address: {
                 ...this.personnel.address
