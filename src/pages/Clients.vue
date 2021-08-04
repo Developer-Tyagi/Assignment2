@@ -112,10 +112,11 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['clients', 'selectedClientId', 'selectedLead'])
+    ...mapGetters(['clients', 'selectedClientId', 'selectedLead', 'isOnline'])
   },
 
   created() {
+    console.log(this.isOnline, 'isonline flag');
     const payload = {
       status: '',
       name: ''
@@ -132,7 +133,15 @@ export default {
       this.search();
     },
     onClientsListClick(client) {
-      this.$router.push('/view-client/' + client.id);
+      if (this.isOnline) {
+        console.log('is Online');
+        // this.$router.push('/view-client/' + client.id);
+        this.$router.push('/edit-client', client);
+        console.log(client);
+      } else {
+        // this.$router.push('/edit-client');
+        console.log(client);
+      }
     },
     addClient() {
       this.$router.push('/add-client');
