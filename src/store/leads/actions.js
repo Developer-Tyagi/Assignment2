@@ -169,6 +169,7 @@ export async function editLeadDetails(
   dispatch('setLoading', true);
   if (isOnline) {
     await dispatch('editLeadRemote', payload);
+
     return true;
   } else {
     dispatch('editLeadLocal', payload);
@@ -203,7 +204,7 @@ export async function editLeadRemote({ commit, dispatch }, payload) {
   try {
     const { data } = await request.patch(
       `/leads/${payload.id}`,
-      buildApiData('leads', payload)
+      buildApiData('leads', payload.isEdit ? payload : payload.data)
     );
 
     dispatch('setLoading', false);
