@@ -38,8 +38,10 @@
               "
             >
               {{
-                editSelectedClient.attributes.insuredInfo.primary.phoneNumber[0]
-                  .number
+                showPhoneNumber(
+                  editSelectedClient.attributes.insuredInfo.primary
+                    .phoneNumber[0].number
+                )
               }}
             </div>
             <div
@@ -96,8 +98,10 @@
                 >
                   {{
                     editSelectedClient.attributes.insuredInfo.secondary
-                      ? editSelectedClient.attributes.insuredInfo.secondary
-                          .phoneNumber[0].number
+                      ? showPhoneNumber(
+                          editSelectedClient.attributes.insuredInfo.secondary
+                            .phoneNumber[0].number
+                        )
                       : '-'
                   }}
                 </span>
@@ -206,7 +210,7 @@
                 class="clickLink"
                 @click="onPhoneNumberClick(phone.number, $event)"
               >
-                {{ phone.number ? phone.number : '-' }}</span
+                {{ phone.number ? showPhoneNumber(phone.number) : '-' }}</span
               >
             </div>
           </div>
@@ -243,8 +247,10 @@
                 {{
                   editSelectedClient.attributes.insuredInfo.tenantInfo
                     .phoneNumber.number
-                    ? editSelectedClient.attributes.insuredInfo.tenantInfo
-                        .phoneNumber.number
+                    ? showPhoneNumber(
+                        editSelectedClient.attributes.insuredInfo.tenantInfo
+                          .phoneNumber.number
+                      )
                     : '-'
                 }}</span
               >
@@ -376,6 +382,7 @@
                     val => (val && val.length > 0) || 'Please select phone type'
                   ]"
                 />
+
                 <q-input
                   dense
                   v-model.number="insuredDetails.phone"
@@ -384,9 +391,7 @@
                   mask="(###) ###-####"
                   lazy-rules
                   :rules="[
-                    val =>
-                      (val && val.length == 14) ||
-                      'Please enter the phone number'
+                    val => val.length == 14 || 'Please enter the phone number'
                   ]"
                 />
               </div>
@@ -640,7 +645,13 @@ import { validateEmail, successMessage } from '@utils/validation';
 import AddressService from '@utils/country';
 
 import { dateWithTime } from '@utils/date';
-import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
+import {
+  onEmailClick,
+  onPhoneNumberClick,
+  sendMap,
+  sendPhoneNumber,
+  showPhoneNumber
+} from '@utils/clickable';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import { constants } from '@utils/constant';
 
@@ -760,6 +771,8 @@ export default {
     ]),
     sendMap,
     dateWithTime,
+    showPhoneNumber,
+    sendPhoneNumber,
     setTypes(types, data) {
       const obj = types.find(item => {
         return item.value === data.name;
@@ -815,8 +828,10 @@ export default {
           : '';
         this.insuredDetails.phone = this.editSelectedClient.attributes
           .insuredInfo.primary.phoneNumber[0].number
-          ? this.editSelectedClient.attributes.insuredInfo.primary
-              .phoneNumber[0].number
+          ? showPhoneNumber(
+              this.editSelectedClient.attributes.insuredInfo.primary
+                .phoneNumber[0].number
+            )
           : '';
       }
       if (this.editSelectedClient.attributes.insuredInfo.primary.email) {
@@ -850,8 +865,10 @@ export default {
 
           this.coInsuredDetails.phone = this.editSelectedClient.attributes
             .insuredInfo.secondary.phoneNumber[0].number
-            ? this.editSelectedClient.attributes.insuredInfo.secondary
-                .phoneNumber[0].number
+            ? showPhoneNumber(
+                this.editSelectedClient.attributes.insuredInfo.secondary
+                  .phoneNumber[0].number
+              )
             : '';
         }
 
@@ -865,10 +882,15 @@ export default {
         this.editSelectedClient.attributes.insuredInfo.phoneNumbers[0].number
       ) {
         this.addAditionalPhoneNumberToggle = true;
-        this.phoneNumber = this.editSelectedClient.attributes.insuredInfo
-          .phoneNumbers
-          ? this.editSelectedClient.attributes.insuredInfo.phoneNumbers
-          : '';
+        this.phoneNumber = [];
+        this.editSelectedClient.attributes.insuredInfo.phoneNumbers.forEach(
+          val => {
+            this.phoneNumber.push({
+              type: val.type,
+              number: showPhoneNumber(val.number)
+            });
+          }
+        );
       } else {
         this.addAditionalPhoneNumberToggle = false;
       }
@@ -885,8 +907,10 @@ export default {
           : '';
         this.tenantOccupied.phone = this.editSelectedClient.attributes
           .insuredInfo.tenantInfo.phoneNumber.number
-          ? this.editSelectedClient.attributes.insuredInfo.tenantInfo
-              .phoneNumber.number
+          ? showPhoneNumber(
+              this.editSelectedClient.attributes.insuredInfo.tenantInfo
+                .phoneNumber.number
+            )
           : '';
       }
       // Client Address Editable & prefilled Details
@@ -967,6 +991,14 @@ export default {
       }
     },
     async onSaveButtonClick() {
+      let phoneNumberArray = [];
+      this.phoneNumber.forEach(val => {
+        phoneNumberArray.push({
+          type: val.type,
+          number: sendPhoneNumber(val.number)
+        });
+      });
+
       let success = false;
       success = await this.$refs.clientForm.validate();
       if (success) {
@@ -994,7 +1026,7 @@ export default {
                 phoneNumber: [
                   {
                     type: this.insuredDetails.type,
-                    number: this.insuredDetails.phone
+                    number: sendPhoneNumber(this.insuredDetails.phone)
                   }
                 ]
               },
@@ -1010,7 +1042,7 @@ export default {
                 phoneNumber: [
                   {
                     type: this.coInsuredDetails.type,
-                    number: this.coInsuredDetails.phone
+                    number: sendPhoneNumber(this.coInsuredDetails.phone)
                   }
                 ]
               },
@@ -1020,12 +1052,12 @@ export default {
               mailingAddress: {
                 ...this.mailingAddressDetails
               },
-              phoneNumbers: this.phoneNumber,
+              phoneNumbers: phoneNumberArray,
               tenantInfo: {
                 name: this.tenantOccupied.name,
                 phoneNumber: {
                   type: this.tenantOccupied.type,
-                  number: this.tenantOccupied.phone
+                  number: sendPhoneNumber(this.tenantOccupied.phone)
                 }
               }
             }

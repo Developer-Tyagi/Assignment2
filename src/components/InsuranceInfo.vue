@@ -72,7 +72,11 @@
                 class="clickLink"
                 @click="onPhoneNumberClick(insuranceDetails.phone, $event)"
               >
-                {{ insuranceDetails.phone }}</span
+                {{
+                  insuranceDetails.phone
+                    ? showPhoneNumber(insuranceDetails.phone)
+                    : '-'
+                }}</span
               >
             </div>
             <div>
@@ -488,7 +492,11 @@ import { mapGetters, mapActions } from 'vuex';
 import { successMessage } from '@utils/validation';
 import AddCarrier from 'components/AddCarrier';
 import { date } from 'quasar';
-import { onPhoneNumberClick, onEmailClick } from '@utils/clickable';
+import {
+  onPhoneNumberClick,
+  onEmailClick,
+  showPhoneNumber
+} from '@utils/clickable';
 
 export default {
   name: 'AddClaim',
@@ -532,6 +540,7 @@ export default {
     successMessage,
     onPhoneNumberClick,
     onEmailClick,
+    showPhoneNumber,
 
     //Add Vendor close list
 
