@@ -567,15 +567,6 @@
                 style="width: 200px"
                 outlined
               />
-              <!-- <div class="q-pa-md text-bold">Enabled :</div>
-              <q-toggle
-                v-model="actions.isEnabled"
-                left-label
-                class="q-mt-xs"
-              />
-              <q-badge color="primary" dense style="margin: auto 10px">{{
-                actions.isEnabled ? 'Enable' : 'Disable'
-              }}</q-badge> -->
             </div>
 
             <!-- second -->
@@ -652,21 +643,6 @@
 
             <!-- 3 -->
             <div class="row q-mt-md full-width">
-              <!-- <div class="col-2">
-                <div class="q-pa-sm text-bold">
-                  Default Priority <span class="text-red">*</span> :
-                </div>
-              </div>
-              <div class="col-2 ">
-                <q-toggle
-                  v-model="priority"
-                  left-label
-                  @input="TogglePriority"
-                />
-                <q-badge color="primary" v-if="priority == true">High</q-badge>
-                <q-badge v-else color="primary">Low</q-badge>
-              </div> -->
-
               <div class=" row q-pa-xs">
                 <div class="q-py-sm text-bold">Assign To :</div>
                 <div class="q-ml-sm  row   text-bold">
@@ -711,8 +687,6 @@
                         (val && val.length > 0) || 'Please select any user '
                     ]"
                   />
-
-                  <!-- <q-badge color="primary" label="Select" @click="" /> -->
                 </div>
               </div>
             </div>
