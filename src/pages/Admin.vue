@@ -429,7 +429,8 @@
                     lazy-rules
                     :rules="[
                       val =>
-                        (val && val.length == 14) || 'Please enter phone number'
+                        (val && val.length == 14) ||
+                        'Please enter phhone number'
                     ]"
                   />
                 </div>
@@ -566,15 +567,6 @@
                 style="width: 200px"
                 outlined
               />
-              <div class="q-pa-md text-bold">Enabled :</div>
-              <q-toggle
-                v-model="actions.isEnabled"
-                left-label
-                class="q-mt-xs"
-              />
-              <q-badge color="primary" dense style="margin: auto 10px">{{
-                actions.isEnabled ? 'Enable' : 'Disable'
-              }}</q-badge>
             </div>
 
             <!-- second -->
@@ -594,13 +586,19 @@
                 emit-value
                 label="Created when"
                 class="input-extra-padding"
-                style="width: 220px"
+                style="width: 26%"
               />
 
-              <div class="col-2 q-ml-xs" v-if="actions.createWhen.type">
+              <div
+                class="q-ml-xs"
+                v-if="
+                  actions.createWhen.type &&
+                    actionReason[indexOfActionReason].additionalReasons
+                "
+              >
                 <q-select
                   dense
-                  class="col-3 input-extra-padding"
+                  class="input-extra-padding"
                   outlined
                   options-dense
                   behavior="menu"
@@ -611,6 +609,7 @@
                   emit-value
                   :options="actionReason[indexOfActionReason].additionalReasons"
                   label="Sub-option"
+                  style="width:220px"
                 >
                   <template v-slot:no-option>
                     <q-item>
@@ -622,14 +621,16 @@
                 </q-select>
               </div>
             </div>
-            <!-- 3 -->
-            <div class="row q-mt-md full-width">
-              <div class="col-2">
-                <div class="q-pa-sm text-bold">
-                  Default Priority <span class="text-red">*</span> :
-                </div>
+            <div class="row q-pa-sm">
+              <div class="q-py-md  text-bold">Enabled :</div>
+              <q-toggle v-model="actions.isEnabled" left-label class="" />
+              <q-badge color="primary" dense style="margin: auto 10px">{{
+                actions.isEnabled ? 'Enable' : 'Disable'
+              }}</q-badge>
+              <div class="q-pa-md text-bold">
+                Default Priority <span class="text-red">*</span> :
               </div>
-              <div class="col-2 ">
+              <div class="col-2 q-mt-xs">
                 <q-toggle
                   v-model="priority"
                   left-label
@@ -638,10 +639,13 @@
                 <q-badge color="primary" v-if="priority == true">High</q-badge>
                 <q-badge v-else color="primary">Low</q-badge>
               </div>
+            </div>
 
-              <div class="col row">
+            <!-- 3 -->
+            <div class="row q-mt-md full-width">
+              <div class=" row q-pa-xs">
                 <div class="q-py-sm text-bold">Assign To :</div>
-                <div class="q-ml-sm col-7 row   text-bold">
+                <div class="q-ml-sm  row   text-bold">
                   <q-select
                     dense
                     outlined
@@ -683,14 +687,13 @@
                         (val && val.length > 0) || 'Please select any user '
                     ]"
                   />
-
-                  <!-- <q-badge color="primary" label="Select" @click="" /> -->
                 </div>
               </div>
             </div>
-            <div class="row q-mt-md full-width">
-              <div class="q-pa-sm text-bold">Due Date :</div>
-              <div class="text-grey-9 text-bold q-pa-sm">Task will be Due</div>
+            <div class="q-py-sm  q-pl-xs text-bold">Due Date :</div>
+            <div class="row q-pl-xs   full-width">
+              <!-- <div class="q-pa-sm text-bold">Due Date :</div> -->
+              <div class="text-grey-9 text-bold q-py-sm">Task will be Due</div>
 
               <q-input
                 dense
@@ -698,7 +701,7 @@
                 class="q-mx-sm"
                 outlined
                 placeholder="Day"
-                style="width: 50px"
+                style="width: 20%;"
               />
 
               <q-select
@@ -721,7 +724,7 @@
 
             <div class="row q-mt-md full-width">
               <q-card
-                class="q-pa-sm q-pl-xl text-bold"
+                class="q-pa-sm q-pl-sm text-bold"
                 style="letter-spacing: 1px; width: 100%"
                 flat
                 bordered
@@ -772,7 +775,10 @@
 
               <div
                 class="q-ml-xs"
-                v-if="actions.actions.onComplete[index].type"
+                v-if="
+                  actions.actions.onComplete[index].type &&
+                    actionCompletion[indexOfSubTypeOfCompletion].subOptions
+                "
               >
                 <q-select
                   dense
@@ -801,7 +807,18 @@
               </div>
               <div
                 class="q-ml-xs"
-                v-if="actions.actions.onComplete[index].task[0]"
+                v-if="
+                  actions.actions.onComplete[index].task[0] &&
+                  actionCompletion[indexOfSubTypeOfCompletion].subOptions
+                    ? actionCompletion[indexOfSubTypeOfCompletion].subOptions[
+                        indexOfSubOfSubTypeOfCompletion
+                      ]
+                      ? actionCompletion[indexOfSubTypeOfCompletion].subOptions[
+                          indexOfSubOfSubTypeOfCompletion
+                        ].subTypes.length > 0
+                      : false
+                    : false
+                "
               >
                 <q-select
                   dense
@@ -886,7 +903,13 @@
                 />
               </div>
 
-              <div class="q-ml-xs" v-if="actions.actions.onOverdue[index].type">
+              <div
+                class="q-ml-xs"
+                v-if="
+                  actions.actions.onOverdue[index].type &&
+                    actionOverDues[indexOfSubType].subOptions
+                "
+              >
                 <q-select
                   class="input-extra-padding"
                   outlined
@@ -913,7 +936,18 @@
 
               <div
                 class="q-ml-xs"
-                v-if="actions.actions.onOverdue[index].task[0]"
+                v-if="
+                  actions.actions.onOverdue[index].task[0] &&
+                  actionOverDues[indexOfSubType].subOptions
+                    ? actionOverDues[indexOfSubType].subOptions[
+                        indexOfSubOfSubType
+                      ]
+                      ? actionOverDues[indexOfSubType].subOptions[
+                          indexOfSubOfSubType
+                        ].subTypes.length > 0
+                      : false
+                    : false
+                "
               >
                 <q-select
                   dense
@@ -992,7 +1026,8 @@ import { getCurrentUser } from 'src/utils/auth';
 import {
   onPhoneNumberClick,
   onEmailClick,
-  showPhoneNumber
+  showPhoneNumber,
+  sendPhoneNumber
 } from '@utils/clickable';
 import { validateEmail } from '@utils/validation';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
@@ -1310,9 +1345,10 @@ export default {
             email: this.users.email,
             role: this.users.roles,
             mailingAddress: this.users.mailingAddress,
+            /**TODo */
             phoneNumber: {
               type: this.users.contact.type,
-              number: this.users.contact.number
+              number: sendPhoneNumber(this.users.contact.number)
             }
           }
         };
@@ -1323,7 +1359,9 @@ export default {
         this.users.fname = this.user.contact.fname;
         this.users.lname = this.user.contact.lname;
         this.users.contact.type = this.user.phoneNumber.type;
-        this.users.contact.number = this.user.phoneNumber.number;
+        this.users.contact.number = showPhoneNumber(
+          this.user.phoneNumber.number
+        );
         this.users.email = this.user.email;
         this.users.mailingAddress = this.user.mailingAddress;
       }
@@ -1360,7 +1398,7 @@ export default {
       this.users.fname = this.user.contact.fname;
       this.users.lname = this.user.contact.lname;
       this.users.contact.type = this.user.phoneNumber.type;
-      this.users.contact.number = this.user.phoneNumber.number;
+      this.users.contact.number = showPhoneNumber(this.user.phoneNumber.number);
       this.users.email = this.user.email;
       this.users.mailingAddress.addressCountry = this.user.mailingAddress.addressCountry;
       this.users.mailingAddress.addressRegion = this.user.mailingAddress.addressRegion;
@@ -1518,7 +1556,6 @@ export default {
       var indexOfCompletionAction = this.actionCompletion.findIndex(
         std => std.machineValue === val
       );
-
       this.indexOfSubTypeOfCompletion = indexOfCompletionAction;
     }
   },
