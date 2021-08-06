@@ -821,6 +821,27 @@
                 "
               >
                 <q-select
+                  v-if="actions.actions.onComplete[index].task[0] == 'user'"
+                  dense
+                  class="input-extra-padding"
+                  outlined
+                  v-model="actions.actions.onComplete[index].task[1]"
+                  behavior="menu"
+                  option-value="id"
+                  option-label="value"
+                  :options="
+                    actionCompletion[indexOfSubTypeOfCompletion].subOptions[
+                      indexOfSubOfSubTypeOfCompletion
+                    ].subTypes
+                  "
+                  label="Sub-option"
+                  map-options
+                  emit-value
+                  options-dense
+                  style="width: 200px"
+                />
+                <q-select
+                  v-else
                   dense
                   class="input-extra-padding"
                   outlined
@@ -950,6 +971,27 @@
                 "
               >
                 <q-select
+                  v-if="actions.actions.onOverdue[index].task[0] == 'user'"
+                  dense
+                  class="col-3 input-extra-padding"
+                  outlined
+                  options-dense
+                  v-model="actions.actions.onOverdue[index].task[1]"
+                  behavior="menu"
+                  option-value="id"
+                  option-label="value"
+                  map-options
+                  emit-value
+                  :options="
+                    actionOverDues[indexOfSubType].subOptions[
+                      indexOfSubOfSubType
+                    ].subTypes
+                  "
+                  label="Sub-option"
+                  style="width: 200px"
+                />
+                <q-select
+                  v-else
                   dense
                   class="col-3 input-extra-padding"
                   outlined
@@ -965,7 +1007,7 @@
                       indexOfSubOfSubType
                     ].subTypes
                   "
-                  label="Sub-option-option"
+                  label="Sub-options"
                   style="width: 200px"
                 />
               </div>
