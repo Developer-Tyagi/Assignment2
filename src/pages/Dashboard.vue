@@ -1,178 +1,101 @@
 <template>
-  <q-page class="q-px-md q-py-md mobile-container-page listing-height">
-    <q-card>
-      <q-card-section class="row">
-        <div class="col-3" @click="onOpenClaimsClick">
-          <div class="my-card">
-            <p class="card-text">
-              {{ claimStatic.open ? claimStatic.open : '-' }}
-            </p>
+  <!-- mobile-container-page listing-height -->
+  <q-page
+    class="listing-height"
+    style="background-color:#8F8F8F;height: calc(100vh - 100px)"
+  >
+    <q-card style="border-radius: 0 0 60px 60px;">
+      <div class="row justify-between">
+        <q-card class="q-mx-sm menu-card coulmn ">
+          <div class="  row justify-center q-my-sm">
+            <img src="~assets/LEADS.svg" />
           </div>
-
-          <p class="text">
-            <small>Open Claims</small>
-          </p>
-        </div>
-        <div class="col-3" @click="onClickClaimRecentActivity">
-          <div class="my-card">
-            <p class="card-text">
-              {{ claimStatic.recentUpdated ? claimStatic.recentUpdated : '-' }}
-            </p>
+          <div
+            class="menu-card-inside text-bold text-white text-center q-pt-lg"
+          >
+            LEADS
           </div>
-          <p class="text"><small>Claims with recent activity</small></p>
-        </div>
-        <div v-if="isClickable" class="col-3" @click="onClientsClick">
-          <div class="my-card">
-            <p class="card-text">
-              {{ clientStatic.active ? clientStatic.active : '-' }}
-            </p>
+        </q-card>
+        <q-card class="q-mx-sm menu-card coulmn ">
+          <div class="  row justify-center q-my-sm">
+            <img src="~assets/CLIENTS.svg" />
           </div>
-          <p class="text"><small>Clients</small></p>
-        </div>
-        <div v-else class="col-3">
-          <div class="my-card">
-            <p class="card-text">
-              {{ clientStatic.active ? clientStatic.active : '-' }}
-            </p>
+          <div
+            class="menu-card-inside text-bold text-white text-center q-pt-lg"
+          >
+            CLIENTS
           </div>
-          <p class="text"><small>Clients</small></p>
-        </div>
-
-        <div v-if="isClickable" class="col-3" @click="onOpenClientsClick">
-          <div class="my-card">
-            <p class="card-text">
-              {{ clientStatic.openClaims ? clientStatic.openClaims : '-' }}
-            </p>
-          </div>
-          <p class="text"><small>Clients with Open Claims</small></p>
-        </div>
-        <div v-else class="col-3">
-          <div class="my-card">
-            <p class="card-text">
-              {{ clientStatic.openClaims ? clientStatic.openClaims : '-' }}
-            </p>
-          </div>
-          <p class="text"><small>Clients with Open Claims</small></p>
-        </div>
-      </q-card-section>
-    </q-card>
-    <div class="q-mt-sm">
-      <div class="q-pa-sm">
-        <span>New Claims/Clients & Leads</span>
-        <span class="float-right">Last 7 days</span>
-      </div>
-      <q-card class="q-mt-sm">
-        <q-card-section class="row q-py-sm q-px-none">
-          <div class="col-6 q-pa-md border-right" @click="onClickNewClaims">
-            <span><small>New Claims</small></span>
-            <span class="text-bold float-right">
-              {{ claimStatic.new ? claimStatic.new : '-' }}</span
-            >
-          </div>
-          <div class="col-6 q-pa-md" @click="onClickNewLeads">
-            <span><small>New Leads</small></span>
-            <span class="text-bold float-right">
-              {{ leadStatic.new ? leadStatic.new : '-' }}</span
-            >
-          </div>
-        </q-card-section>
-      </q-card>
-    </div>
-    <div class="q-mt-sm">
-      <div class="q-pa-sm">
-        <span>Claims Watch List</span>
-        <span class="float-right">See all</span>
-      </div>
-      <div v-if="claims">
-        <q-card
-          class="q-mt-sm"
-          v-for="claim in claims"
-          @click="openClaimDetail(claim)"
-        >
-          <q-card-section>
-            <div class="row">
-              <span class="heading-light"
-                >{{
-                  claim.attributes.client.fname
-                    ? claim.attributes.client.fname
-                    : '-'
-                }}
-                {{
-                  claim.attributes.client.lname
-                    ? claim.attributes.client.lname
-                    : '-'
-                }}</span
-              >
-            </div>
-            <div class="row">
-              <span>
-                <span class="heading-light">File No - </span>
-
-                {{
-                  claim.attributes.fileNumber
-                    ? claim.attributes.fileNumber
-                    : '-'
-                }}
-              </span>
-            </div>
-            <div class="row">
-              <span class="heading-light">Carrier - </span>
-
-              <div class="q-ml-xs">
-                {{
-                  claim.attributes.carrier
-                    ? claim.attributes.carrier.value
-                      ? claim.attributes.carrier.value
-                      : ''
-                    : '-'
-                }}
-              </div>
-            </div>
-            <div class="row justify-between q-pt-xs">
-              <div v-if="claim.attributes.status" class="row">
-                <q-badge
-                  class="q-px-md q-py-sm"
-                  :style="
-                    claim.attributes.status.isCancelled == false
-                      ? 'background-color:#ECA74C;'
-                      : 'background-color:#EF9A9A;'
-                  "
-                >
-                  {{
-                    claim.attributes.status
-                      ? claim.attributes.status.isCancelled == false
-                        ? 'OPEN'
-                        : 'CANCELLED'
-                      : ''
-                  }}</q-badge
-                >
-              </div>
-
-              <div class="q-ml-auto">
-                {{
-                  claim.attributes.lossInfo.cause
-                    ? claim.attributes.lossInfo.cause
-                      ? claim.attributes.lossInfo.cause.value
-                      : ''
-                    : '-'
-                }}
-              </div>
-            </div>
-            <div class="row">
-              <div class="q-ml-auto">
-                {{ dateToShow(claim.attributes.created) }}
-              </div>
-            </div>
-          </q-card-section>
         </q-card>
       </div>
-
-      <div v-else class="full-height full-width column">
-        <div class="absolute-center ">
-          <div style="color: #666666,align-items: center" class="text-center">
-            No claim has been marked as favourite.
+      <div class="row justify-between">
+        <q-card class="q-mx-sm menu-card coulmn ">
+          <div class="  row justify-center q-my-sm">
+            <img src="~assets/VENDOR.svg" />
           </div>
-        </div>
+          <div
+            class="menu-card-inside text-bold text-white text-center q-pt-lg"
+          >
+            VENDORS
+          </div>
+        </q-card>
+
+        <q-card class="q-mx-sm menu-card coulmn ">
+          <div class="  row justify-center q-my-sm">
+            <img src="~assets/CLAIMS.svg" />
+          </div>
+          <div
+            class="menu-card-inside text-bold text-white text-center q-pt-lg"
+          >
+            CLAIMS
+          </div>
+        </q-card>
+      </div>
+      <div class="row justify-between q-py-lg">
+        <q-card class="q-mx-sm menu-card coulmn ">
+          <div class="  row justify-center q-my-sm">
+            <img src="~assets/SCAN.svg" />
+          </div>
+          <div
+            class="menu-card-inside text-bold text-white text-center q-pt-sm"
+          >
+            <div>SCAN</div>
+            <div>DOCUMENT</div>
+          </div>
+        </q-card>
+
+        <q-card class="q-mx-sm menu-card coulmn ">
+          <div class="  row justify-center q-my-sm">
+            <img src="~assets/Camera.svg" />
+          </div>
+          <div
+            class="menu-card-inside text-bold text-white text-center q-pt-lg"
+          >
+            CAMERA
+          </div>
+        </q-card>
+      </div>
+    </q-card>
+    <div class=" q-ma-md row justify-between">
+      <div class="column">
+        <img src="~assets/Profile.svg" style="width:100%;" />
+        <div class="text-center text-white">PROFILE</div>
+      </div>
+      <div class="column">
+        <img src="~assets/SETTINGS.svg" style="width:100%;" />
+        <div class="text-center text-white">SETTINGS</div>
+      </div>
+      <div class="column">
+        <img
+          class="q-mx-md"
+          src="~assets/STATS.svg"
+          style="width:68%;"
+          @click="$router.push('/claimstats')"
+        />
+        <p class=" text-center text-white">CLAIMS STATS</p>
+      </div>
+      <div class="">
+        <img src="~assets/ADD.svg" style="width:100%;" />
+        <div class="text-center text-white">ADD</div>
       </div>
     </div>
   </q-page>
@@ -269,11 +192,13 @@ export default {
 <style>
 .my-card {
   display: flex;
-  background-color: #1b2854;
+  /* background-color: #1b2854; */
+  background-color: #ffffff;
   height: 3rem;
-  width: 3rem;
+  width: 4rem;
   margin: auto;
-  border-radius: 3px;
+  /* border-radius: 10px; */
+  border-radius: 20px 20px 20px 20px;
 }
 .card-text {
   color: #ffffff;
@@ -287,5 +212,30 @@ export default {
   margin: 5px auto 0 auto;
   line-height: 10px;
   max-width: 80%;
+  color: white;
+  font-weight: bold;
+}
+.menu-card {
+  background: red;
+  margin: 10px;
+  margin-left: 20px;
+  margin-right: 20px;
+  width: 36%;
+  height: 21vh;
+  border-radius: 20px 20px 60px 60px;
+  overflow: hidden;
+}
+.menu-card-inside {
+  /* background-color: red; */
+  /* height: 18vh;
+  border-radius: 60px 60px 0px 60px; */
+  /* padding: 7%; */
+  border-radius: 100% 100% 55% 55% !important;
+  height: 10vh;
+  margin-left: 10px;
+  margin-right: 10px;
+  /* width: 20vh; */
+  background-color: black;
+  position: relative;
 }
 </style>

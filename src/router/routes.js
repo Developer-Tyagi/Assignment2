@@ -124,6 +124,13 @@ const routes = [
         caseSensitive: true,
         component: () => import('pages/Leads.vue')
       },
+      {
+        path: 'claimstats',
+        name: 'Dashboard',
+
+        caseSensitive: true,
+        component: () => import('pages/ClaimStats.vue')
+      },
 
       {
         path: 'lead-details/:id',
