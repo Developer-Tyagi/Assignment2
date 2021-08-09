@@ -419,13 +419,6 @@ const routes = [
         name: 'admin',
         caseSensitive: true,
         component: () => import('pages/Admin.vue')
-      },
-      {
-        path: 'edit-client',
-        name: 'edit / view client',
-
-        caseSensitive: true,
-        component: () => import('pages/EditClient.vue')
       }
     ]
   },

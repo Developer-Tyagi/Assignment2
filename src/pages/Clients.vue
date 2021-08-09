@@ -101,7 +101,7 @@
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import { dateWithTime } from '@utils/date';
 import { onPhoneNumberClick, showPhoneNumber } from '@utils/clickable';
-
+import localDB, { getCollection } from '@services/dexie';
 export default {
   name: 'Clients',
   data() {
@@ -112,11 +112,16 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['clients', 'selectedClientId', 'selectedLead', 'isOnline'])
+    ...mapGetters([
+      'clients',
+      'selectedClientId',
+      'selectedLead',
+      'isOnline',
+      'editSelectedClient'
+    ])
   },
 
   created() {
-    console.log(this.isOnline, 'isonline flag');
     const payload = {
       status: '',
       name: ''
@@ -125,6 +130,7 @@ export default {
   },
   methods: {
     ...mapActions(['getClients', 'getSingleClientDetails']),
+    ...mapMutations(['setSelectedClient', 'setSelectedClientOffline']),
     dateWithTime,
     onPhoneNumberClick,
     showPhoneNumber,
@@ -132,15 +138,14 @@ export default {
       this.searchText = '';
       this.search();
     },
-    onClientsListClick(client) {
+    async onClientsListClick(client) {
+      this.getSingleClientDetails(client.id);
       if (this.isOnline) {
-        console.log('is Online');
-        // this.$router.push('/view-client/' + client.id);
-        this.$router.push('/edit-client', client);
-        console.log(client);
+        this.setSelectedClient(client);
+        this.$router.push('/view-client/' + client.id);
       } else {
-        // this.$router.push('/edit-client');
-        console.log(client);
+        this.setSelectedClientOffline(client);
+        this.$router.push('/add-client');
       }
     },
     addClient() {

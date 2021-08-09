@@ -2,7 +2,9 @@
   <q-bar style="background: whitesmoke; height: 51px">
     <img src="~assets/close.svg" @click="onCloseIconClick" />
     <q-space />
-    <div class="text-uppercase text-bold text-black">{{ dialogName }}</div>
+    <div class="text-uppercase text-bold text-black">
+      {{ dialogName }}
+    </div>
     <q-space />
     <img src="~assets/close.svg" class="no-visibility" />
   </q-bar>

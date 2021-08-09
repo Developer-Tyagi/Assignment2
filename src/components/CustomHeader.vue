@@ -30,7 +30,16 @@
         </q-btn>
         <div class="text-uppercase text-bold text-black q-mx-auto">
           <span v-if="$route.name == 'Leads'">{{ converted }}</span>
+
           {{ $route.name }}
+
+          <q-icon
+            v-if="$route.name == 'create client'"
+            name="edit"
+            size="xs"
+            class="edit-icon "
+            color="primary"
+          />
         </div>
 
         <q-btn class="no-visibility button-50" flat>
