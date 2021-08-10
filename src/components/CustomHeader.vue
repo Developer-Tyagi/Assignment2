@@ -1,11 +1,41 @@
 <template>
   <div>
-    <q-header bordered class="bg-white">
-      <q-toolbar class="row bg-white">
+    <q-header class="bg-white">
+      <q-toolbar
+        class="row bg-primary rounded-header "
+        v-if="$route.name === 'dashboard'"
+        style="height:100px; overflow:hidden"
+      >
+        <q-btn
+          flat
+          class=" q-ml-sm color-white button-50"
+          icon="menu"
+          aria-label="Menu"
+          @click="onMenuButtonClick"
+        ></q-btn>
+        <div class="row  col-8">
+          <!-- /** TODO **/ -->
+          <!-- <div class=" col-5  q-mt-lg">
+            <img
+              class="q-ml-lg q-my-xl "
+              src="~assets/claimLogoDashboard.png"
+              style="width:57%;background-image: linear-gradient(to right, #F19733 , #5D3A1363);"
+            />
+          </div>
+          <div class=" col-5  q-mt-lg">
+            <img
+              class="q-ml-lg q-my-xl "
+              src="~assets/dashboardHeaderLogo.png"
+              style="width:57%;background-image: linear-gradient(to right, #F19733 , #5D3A1363);"
+            />
+          </div> -->
+        </div>
+      </q-toolbar>
+      <q-toolbar class="row bg-primary rounded-header " v-else>
         <q-btn
           flat
           dense
-          class="color-grey button-50"
+          class=" q-ml-sm color-white button-50"
           icon="menu"
           aria-label="Menu"
           @click="onMenuButtonClick"
@@ -25,21 +55,21 @@
               ($q.screen.width < 992 && $route.name === 'dashboard')
           "
         ></q-btn>
-        <q-btn @click="onBackClick" flat v-else class="button-50">
-          <img src="~assets/left-arrow.svg" alt="back-arrow" />
-        </q-btn>
+        <q-icon
+          @click="onBackClick"
+          name="arrow_back"
+          size="sm"
+          v-else
+          class="button-50"
+        />
+
         <div class="text-uppercase text-bold text-black q-mx-auto">
           <span v-if="$route.name == 'Leads'">{{ converted }}</span>
+          <div class="text-white">{{ $route.name }}</div>
+        </div>
 
-          {{ $route.name }}
-
-          <q-icon
-            v-if="$route.name == 'create client'"
-            name="edit"
-            size="xs"
-            class="edit-icon "
-            color="primary"
-          />
+        <div v-if="$route.name == 'Dashboard'">
+          <q-icon name="notifications" size="sm" color="white" />
         </div>
 
         <q-btn class="no-visibility button-50" flat>
