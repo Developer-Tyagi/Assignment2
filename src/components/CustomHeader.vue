@@ -68,7 +68,7 @@
           <div class="text-white">{{ $route.name }}</div>
         </div>
 
-        <div v-if="$route.name == 'dashboard'">
+        <div v-if="$route.name == 'Dashboard'">
           <q-icon name="notifications" size="sm" color="white" />
         </div>
 
