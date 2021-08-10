@@ -14,21 +14,20 @@
           @click="onMenuButtonClick"
         ></q-btn>
         <div class="row  col-8">
-          <!-- /** TODO **/ -->
-          <!-- <div class=" col-5  q-mt-lg">
+          <div class=" col-4 column justify-center  ">
             <img
-              class="q-ml-lg q-my-xl "
+              class="q-ml-lg q-my-xl  "
               src="~assets/claimLogoDashboard.png"
-              style="width:57%;background-image: linear-gradient(to right, #F19733 , #5D3A1363);"
+              style="width:60%; background-image: radial-gradient(circle, yellow, orange, #F19733);border-radius: 15px 15px 65px 65px;"
             />
           </div>
-          <div class=" col-5  q-mt-lg">
+          <div class=" col-5  column justify-center">
             <img
-              class="q-ml-lg q-my-xl "
+              class=" q-my-xl "
               src="~assets/dashboardHeaderLogo.png"
-              style="width:57%;background-image: linear-gradient(to right, #F19733 , #5D3A1363);"
+              style="width:200px;"
             />
-          </div> -->
+          </div>
         </div>
       </q-toolbar>
       <q-toolbar class="row bg-primary rounded-header " v-else>
