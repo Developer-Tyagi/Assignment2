@@ -69,7 +69,11 @@
             {{ $route.name }}
 
             <q-icon
-              v-if="$route.name == 'create client' && !isOnline"
+              v-if="
+                $route.name == 'create client' &&
+                  !isOnline &&
+                  editSelectedClient.id
+              "
               name="edit"
               size="xs"
               class="edit-icon"
@@ -364,7 +368,7 @@ export default {
     currentRouteName() {
       return this.$router.history.current.path.substring(1);
     },
-    ...mapGetters(['converted', 'pageAccess', 'isOnline'])
+    ...mapGetters(['converted', 'pageAccess', 'isOnline', 'editSelectedClient'])
   },
 
   async created() {
