@@ -551,7 +551,6 @@ export async function syncLeads({ dispatch }) {
             lead.vendor.id = items[index].newId;
           }
         }
-        console.log(lead, 'lead is');
 
         return dispatch('addLeadRemote', lead).then(res => ({
           ...res,

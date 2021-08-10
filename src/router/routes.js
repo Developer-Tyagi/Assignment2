@@ -171,6 +171,7 @@ const routes = [
         caseSensitive: true,
         component: () => import('pages/ClientsDetails.vue')
       },
+
       {
         path: 'client-details',
         name: 'client info ',

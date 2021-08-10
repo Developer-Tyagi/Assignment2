@@ -101,7 +101,7 @@
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import { dateWithTime } from '@utils/date';
 import { onPhoneNumberClick, showPhoneNumber } from '@utils/clickable';
-
+import localDB, { getCollection } from '@services/dexie';
 export default {
   name: 'Clients',
   data() {
@@ -112,7 +112,13 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['clients', 'selectedClientId', 'selectedLead'])
+    ...mapGetters([
+      'clients',
+      'selectedClientId',
+      'selectedLead',
+      'isOnline',
+      'editSelectedClient'
+    ])
   },
 
   created() {
@@ -124,6 +130,7 @@ export default {
   },
   methods: {
     ...mapActions(['getClients', 'getSingleClientDetails']),
+    ...mapMutations(['setSelectedClient', 'setSelectedClientOffline']),
     dateWithTime,
     onPhoneNumberClick,
     showPhoneNumber,
@@ -131,8 +138,15 @@ export default {
       this.searchText = '';
       this.search();
     },
-    onClientsListClick(client) {
-      this.$router.push('/view-client/' + client.id);
+    async onClientsListClick(client) {
+      this.getSingleClientDetails(client.id);
+      if (this.isOnline) {
+        this.setSelectedClient(client);
+        this.$router.push('/view-client/' + client.id);
+      } else {
+        this.setSelectedClientOffline(client);
+        this.$router.push('/add-client');
+      }
     },
     addClient() {
       this.$router.push('/add-client');
