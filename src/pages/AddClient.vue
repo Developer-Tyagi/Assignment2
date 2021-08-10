@@ -1203,6 +1203,7 @@ import ExpertVendorInfo from 'components/ExpertVendorInfo';
 import InsuranceInfo from 'components/InsuranceInfo';
 import { dateToSend, dateToShow } from '@utils/date';
 import { sendPhoneNumber } from '@utils/clickable';
+import localDB, { getCollection } from '@services/dexie';
 
 import {
   validateEmail,
@@ -1238,6 +1239,10 @@ export default {
   },
   data() {
     return {
+      clientResponse: '',
+      propertyID: '',
+      onlineClientResponse: '',
+      selectedClaim: {},
       step: 0,
       finalOfficeTask: [],
       stepClickValidTill: 0,
@@ -1254,7 +1259,10 @@ export default {
           loanNumber: '',
           accountNumber: '',
           isPrimary: true,
-          notes: ''
+          notes: '',
+          address: {},
+          email: '',
+          phone: ''
         }
       ],
 
@@ -1575,8 +1583,504 @@ export default {
   },
 
   async created() {
-    await this.getClientTypes();
+    if (!this.isOnline && this.editSelectedClient.id) {
+      this.selectedClaim = await this.getSingleClaimDetails(
+        this.editSelectedClient.id
+      );
+      this.propertyID = this.editSelectedClient.propertyID;
 
+      if (this.editSelectedClient.id) {
+        if (this.editSelectedClient.type) {
+          this.client = this.editSelectedClient.type;
+        }
+        if (this.editSelectedClient.insuredInfo.primary.honorific) {
+          this.honorific1 = this.editSelectedClient.insuredInfo.primary.honorific;
+        }
+        this.insuredDetails.fname = this.editSelectedClient.insuredInfo.primary
+          .fname
+          ? this.editSelectedClient.insuredInfo.primary.fname
+          : '';
+        this.insuredDetails.lname = this.editSelectedClient.insuredInfo.primary
+          .lname
+          ? this.editSelectedClient.insuredInfo.primary.lname
+          : '';
+
+        if (this.editSelectedClient.isOrganizationPolicyholder) {
+          this.policyHolder.isPolicyHolder = this.editSelectedClient
+            .isOrganizationPolicyholder
+            ? this.editSelectedClient.isOrganizationPolicyholder
+            : false;
+        }
+        if (this.editSelectedClient.isOrganization) {
+          this.primaryDetails.isOrganization = true;
+          this.primaryDetails.isOrganization = this.editSelectedClient
+            .isOrganization
+            ? this.editSelectedClient.isOrganization
+            : '';
+          this.primaryDetails.organizationName = this.editSelectedClient
+            .organizationName
+            ? this.editSelectedClient.organizationName
+            : '';
+        }
+        if (this.editSelectedClient.insuredInfo.primary.phoneNumber) {
+          this.insuredDetails.type = this.editSelectedClient.insuredInfo.primary
+            .phoneNumber[0].type
+            ? this.editSelectedClient.insuredInfo.primary.phoneNumber[0].type
+            : '';
+          this.insuredDetails.phone = this.editSelectedClient.insuredInfo
+            .primary.phoneNumber[0].number
+            ? this.editSelectedClient.insuredInfo.primary.phoneNumber[0].number
+            : '';
+        }
+        if (this.editSelectedClient.insuredInfo.primary.email) {
+          this.insuredDetails.email = this.editSelectedClient.insuredInfo.primary.email;
+        }
+        if (this.editSelectedClient.property) {
+          this.property = this.editSelectedClient.property.propertyType
+            ? this.editSelectedClient.property.propertyType
+            : '';
+
+          this.lossAddressName = this.editSelectedClient.property.name
+            ? this.editSelectedClient.property.name
+            : '';
+          this.propertyDescription = this.editSelectedClient.property
+            .propertyDesc
+            ? this.editSelectedClient.property.propertyDesc
+            : '';
+        }
+        if (this.editSelectedClient.insuredInfo.secondary) {
+          this.isThereaCoInsuredToggle = true;
+          if (this.editSelectedClient.insuredInfo.secondary.honorific) {
+            this.honorific2 = this.editSelectedClient.insuredInfo.secondary.honorific;
+          }
+
+          this.coInsuredDetails.fname = this.editSelectedClient.insuredInfo
+            .secondary.fname
+            ? this.editSelectedClient.insuredInfo.secondary.fname
+            : '';
+          this.coInsuredDetails.lname = this.editSelectedClient.insuredInfo
+            .secondary.lname
+            ? this.editSelectedClient.insuredInfo.secondary.lname
+            : '';
+          if (this.editSelectedClient.insuredInfo.secondary.phoneNumber) {
+            this.coInsuredDetails.type = this.editSelectedClient.insuredInfo
+              .secondary.phoneNumber[0].type
+              ? this.editSelectedClient.insuredInfo.secondary.phoneNumber[0]
+                  .type
+              : '';
+
+            this.coInsuredDetails.phone = this.editSelectedClient.insuredInfo
+              .secondary.phoneNumber[0].number
+              ? this.editSelectedClient.insuredInfo.secondary.phoneNumber[0]
+                  .number
+              : '';
+          }
+
+          this.coInsuredDetails.email = this.editSelectedClient.insuredInfo
+            .secondary.email
+            ? this.editSelectedClient.insuredInfo.secondary.email
+            : '';
+        }
+        if (
+          this.editSelectedClient.insuredInfo.phoneNumbers &&
+          this.editSelectedClient.insuredInfo.phoneNumbers[0].number
+        ) {
+          this.addAditionalPhoneNumberToggle = true;
+          this.phoneNumber = this.editSelectedClient.insuredInfo.phoneNumbers
+            ? this.editSelectedClient.insuredInfo.phoneNumbers
+            : '';
+        } else {
+          this.addAditionalPhoneNumberToggle = false;
+        }
+        if (this.editSelectedClient.insuredInfo.tenantInfo) {
+          this.tenantOccupiedToggle = true;
+          this.tenantOccupied.name = this.editSelectedClient.insuredInfo
+            .tenantInfo.name
+            ? this.editSelectedClient.insuredInfo.tenantInfo.name
+            : '';
+          this.tenantOccupied.type = this.editSelectedClient.insuredInfo
+            .tenantInfo.phoneNumber.type
+            ? this.editSelectedClient.insuredInfo.tenantInfo.phoneNumber.type
+            : '';
+          this.tenantOccupied.phone = this.editSelectedClient.insuredInfo
+            .tenantInfo.phoneNumber.number
+            ? this.editSelectedClient.insuredInfo.tenantInfo.phoneNumber.number
+            : '';
+        }
+        // Client Address Editable & prefilled Details
+        if (this.editSelectedClient.insuredInfo.mailingAddress) {
+          this.clientAddressDetails.addressCountry = this.editSelectedClient
+            .insuredInfo.mailingAddress.addressCountry
+            ? this.editSelectedClient.insuredInfo.mailingAddress.addressCountry
+            : null;
+          this.clientAddressDetails.addressLocality = this.editSelectedClient.insuredInfo.mailingAddress.addressLocality;
+          this.clientAddressDetails.addressRegion = this.editSelectedClient
+            .insuredInfo.mailingAddress.addressRegion
+            ? this.editSelectedClient.insuredInfo.mailingAddress.addressRegion
+            : null;
+          this.clientAddressDetails.houseNumber = this.editSelectedClient
+            .insuredInfo.mailingAddress.houseNumber
+            ? this.editSelectedClient.insuredInfo.mailingAddress.houseNumber
+            : '';
+          this.clientAddressDetails.postalCode = this.editSelectedClient
+            .insuredInfo.mailingAddress.postalCode
+            ? this.editSelectedClient.insuredInfo.mailingAddress.postalCode
+            : '';
+          this.clientAddressDetails.streetAddress = this.editSelectedClient
+            .insuredInfo.mailingAddress.streetAddress
+            ? this.editSelectedClient.insuredInfo.mailingAddress.streetAddress
+            : '';
+          if (
+            this.editSelectedClient.insuredInfo.mailingAddress.dropBox &&
+            this.editSelectedClient.insuredInfo.mailingAddress.dropBox.isPresent
+          ) {
+            this.clientAddressDetails.dropBox.isPresent = this.editSelectedClient.insuredInfo.mailingAddress.dropBox.isPresent;
+            this.clientAddressDetails.dropBox.info = this.editSelectedClient.insuredInfo.mailingAddress.dropBox.info;
+          }
+
+          this.mailingAddressDetails = this.editSelectedClient.insuredInfo.mailingAddress;
+        }
+      }
+
+      //Claim Data Pre-filling
+      this.insuranceDetails.policyNumber = this.selectedClaim.policyInfo.number;
+      // insurance Info stepper  pre-filling
+      console.log(this.editSelectedClient, 'client data');
+      console.log(this.selectedClaim, 'claim data');
+      if (
+        this.selectedClaim.policyInfo &&
+        this.selectedClaim.policyInfo.carrier
+      ) {
+        this.insuranceDetails.carrierName = this.selectedClaim.policyInfo.carrier.value;
+        this.insuranceDetails.carrierId = this.selectedClaim.policyInfo.carrier.id;
+        this.insuranceDetails.address = this.selectedClaim.policyInfo.carrier.address;
+        this.insuranceDetails.email = this.selectedClaim.policyInfo.carrier
+          .email
+          ? this.selectedClaim.policyInfo.carrier.email
+          : '';
+        this.insuranceDetails.phone = this.selectedClaim.policyInfo.carrier
+          .phone
+          ? this.selectedClaim.policyInfo.carrier.phone
+          : '';
+      }
+      if (this.selectedClaim.policyInfo) {
+        this.insuranceDetails.hasClaimBeenFilledToggle = this.selectedClaim
+          .policyInfo.isClaimFiled
+          ? this.selectedClaim.policyInfo.isClaimFiled
+          : false;
+
+        if (this.selectedClaim.policyInfo.isClaimFiled) {
+          this.insuranceDetails.insuranceClaimNumber = this.selectedClaim.policyInfo.claimNumber;
+        }
+
+        this.insuranceDetails.isThisIsForcedPlacedPolicyToggle = this
+          .selectedClaim.policyInfo.isForcedPlaced
+          ? this.selectedClaim.policyInfo.isForcedPlaced
+          : false;
+
+        this.insuranceDetails.policyEffectiveDate = dateToShow(
+          this.selectedClaim.policyInfo.effectiveDate
+        );
+        this.insuranceDetails.policyExpireDate = dateToShow(
+          this.selectedClaim.policyInfo.expirationDate
+        );
+        if (this.selectedClaim.policyInfo.category) {
+          this.insuranceDetails.policyCategory.id = this.selectedClaim
+            .policyInfo.category.id
+            ? this.selectedClaim.policyInfo.category.id
+            : '';
+          this.insuranceDetails.policyCategory.value = this.selectedClaim
+            .policyInfo.category.value
+            ? this.selectedClaim.policyInfo.category.value
+            : '';
+          this.insuranceDetails.policyCategory.machineValue = this.selectedClaim
+            .policyInfo.category.machineValue
+            ? this.selectedClaim.policyInfo.category.machineValue
+            : '';
+        }
+
+        if (this.selectedClaim.policyInfo.type) {
+          this.insuranceDetails.policy.id = this.selectedClaim.policyInfo.type
+            .id
+            ? this.selectedClaim.policyInfo.type.id
+            : '';
+          this.insuranceDetails.policy.value = this.selectedClaim.policyInfo
+            .type.value
+            ? this.selectedClaim.policyInfo.type.value
+            : '';
+          this.insuranceDetails.policy.machineValue = this.selectedClaim
+            .policyInfo.type.machineValue
+            ? this.selectedClaim.policyInfo.type.machineValue
+            : '';
+        }
+
+        if (this.selectedClaim.policyInfo.limitCoverage) {
+          this.insuranceDetails.dwellingLimitA = this.selectedClaim.policyInfo
+            .limitCoverage.dwelling
+            ? this.selectedClaim.policyInfo.limitCoverage.dwelling
+            : null;
+          this.insuranceDetails.contentsLimit = this.selectedClaim.policyInfo
+            .limitCoverage.content
+            ? this.selectedClaim.policyInfo.limitCoverage.content
+            : null;
+          this.insuranceDetails.otherStructureB = this.selectedClaim.policyInfo
+            .limitCoverage.otherStructure
+            ? this.selectedClaim.policyInfo.limitCoverage.otherStructure
+            : null;
+          this.insuranceDetails.lossOfUSD = this.selectedClaim.policyInfo
+            .limitCoverage.lossOfUse
+            ? this.selectedClaim.policyInfo.limitCoverage.lossOfUse
+            : null;
+        }
+
+        this.insuranceDetails.deprecation = this.selectedClaim.policyInfo
+          .depreciation
+          ? this.selectedClaim.policyInfo.depreciation
+          : null;
+        this.insuranceDetails.deductible = this.selectedClaim.policyInfo
+          .deductibleAmount
+          ? this.selectedClaim.policyInfo.deductibleAmount
+          : null;
+        this.insuranceDetails.priorPayment = this.selectedClaim.policyInfo
+          .priorPayment
+          ? this.selectedClaim.policyInfo.priorPayment
+          : null;
+        this.insuranceDetails.reasonsOfLD = this.selectedClaim.policyInfo
+          .limitReason
+          ? this.selectedClaim.policyInfo.limitReason
+          : null;
+      }
+      // Loss Info Stepper pre-filling
+      if (this.selectedClaim.lossInfo) {
+        this.lossInfo.reasonClaim = this.selectedClaim.lossInfo.claimReason
+          ? this.selectedClaim.lossInfo.claimReason
+          : '';
+        this.lossInfo.severityOfClaimType = this.selectedClaim.lossInfo
+          .serverity
+          ? this.selectedClaim.lossInfo.serverity
+          : '';
+        this.lossInfo.nameOfEmergency = this.selectedClaim.lossInfo
+          .emergencyName
+          ? this.selectedClaim.lossInfo.emergencyName
+          : '';
+        this.lossInfo.dateOfLoss = dateToShow(this.selectedClaim.lossInfo.date)
+          ? dateToShow(this.selectedClaim.lossInfo.date)
+          : '';
+        if (this.selectedClaim.lossInfo.cause) {
+          this.lossInfo.causeOfLoss = this.selectedClaim.lossInfo.cause
+            ? this.selectedClaim.lossInfo.cause
+            : null;
+        }
+
+        this.lossInfo.deadlineDate = dateToShow(
+          this.selectedClaim.lossInfo.deadlineDate
+        )
+          ? dateToShow(this.selectedClaim.lossInfo.deadlineDate)
+          : '';
+
+        this.lossInfo.recovDeadline = dateToShow(
+          this.selectedClaim.lossInfo.recovDDDate
+        )
+          ? dateToShow(this.selectedClaim.lossInfo.recovDDDate)
+          : '';
+        this.lossInfo.femaClaimToggle = this.selectedClaim.lossInfo.isFEMA
+          ? this.selectedClaim.lossInfo.isFEMA
+          : false;
+        this.lossInfo.isStateOfEmergencyToggle = this.selectedClaim.lossInfo
+          .isEmergency
+          ? this.selectedClaim.lossInfo.isEmergency
+          : false;
+        this.lossInfo.isTheHomeHabitable = this.selectedClaim.lossInfo
+          .isHabitable
+          ? this.selectedClaim.lossInfo.isHabitable
+          : false;
+        this.lossInfo.descriptionDwelling = this.selectedClaim.lossInfo.desc
+          ? this.selectedClaim.lossInfo.desc
+          : '';
+      }
+
+      // Personnel Property data pre-filling
+      if (this.selectedClaim.damageInfo.personal) {
+        this.lossInfo.isThereDamageToPersonalPropertyToggle = this.selectedClaim
+          .damageInfo.personal.isDamaged
+          ? this.selectedClaim.damageInfo.personal.isDamaged
+          : false;
+        this.lossInfo.isPAFillingOutToggle = this.selectedClaim.damageInfo
+          .personal.isPPIFFillNow
+          ? this.selectedClaim.damageInfo.personal.isPPIFFillNow
+          : false;
+        this.lossInfo.isAdjustorFillOutLaterDate = this.selectedClaim.damageInfo
+          .personal.isPPIFFillLater
+          ? this.selectedClaim.damageInfo.personal.isPPIFFillLater
+          : false;
+        this.lossInfo.isClientGoingToPreparePPIF = this.selectedClaim.damageInfo
+          .personal.isClientPreparePPIF
+          ? this.selectedClaim.damageInfo.personal.isClientPreparePPIF
+          : false;
+        this.lossInfo.doYouWantToSendInsuredPPIF = this.selectedClaim.damageInfo
+          .personal.isPPIFSendToInsure
+          ? this.selectedClaim.damageInfo.personal.isPPIFSendToInsure
+          : false;
+
+        if (this.selectedClaim.damageInfo.personal.items) {
+          for (
+            let index = 0;
+            index < this.selectedClaim.damageInfo.personal.items.length;
+            index++
+          ) {
+            this.lossInfo.ppDamagedItems[
+              index
+            ] = this.selectedClaim.damageInfo.personal.items[index];
+          }
+        }
+      }
+
+      //Other Structure data pre-filling
+      if (this.selectedClaim.damageInfo.otherStructure) {
+        this.lossInfo.isThereDamageToPersonalPropertyToggle = this.selectedClaim
+          .damageInfo.otherStructure.isDamaged
+          ? this.selectedClaim.damageInfo.otherStructure.isDamaged
+          : false;
+        this.lossInfo.isPAFillingOutToggle = this.selectedClaim.damageInfo
+          .otherStructure.isPPIFFillNow
+          ? this.selectedClaim.damageInfo.otherStructure.isPPIFFillNow
+          : false;
+        this.lossInfo.isAdjustorFillOutLaterDate = this.selectedClaim.damageInfo
+          .otherStructure.isPPIFFillLater
+          ? this.selectedClaim.damageInfo.otherStructure.isPPIFFillLater
+          : false;
+        this.lossInfo.isClientGoingToPreparePPIF = this.selectedClaim.damageInfo
+          .otherStructure.isClientPreparePPIF
+          ? this.selectedClaim.damageInfo.otherStructure.isClientPreparePPIF
+          : false;
+        this.lossInfo.doYouWantToSendInsuredPPIF = this.selectedClaim.damageInfo
+          .otherStructure.isPPIFSendToInsure
+          ? this.selectedClaim.damageInfo.otherStructure.isPPIFSendToInsure
+          : false;
+
+        if (this.selectedClaim.damageInfo.otherStructure.items) {
+          for (
+            let index = 0;
+            index < this.selectedClaim.damageInfo.otherStructure.items.length;
+            index++
+          ) {
+            this.lossInfo.osDamagedItems[
+              index
+            ] = this.selectedClaim.damageInfo.otherStructure.items[index];
+          }
+        }
+      }
+
+      //mortgage info stepper pre-filling
+      if (this.selectedClaim.mortgageInfo) {
+        for (
+          let index = 0;
+          index < this.selectedClaim.mortgageInfo.length;
+          index++
+        ) {
+          this.mortgageInfo[index] = this.selectedClaim.mortgageInfo[index];
+        }
+      }
+      // expert vendor info pre-filling
+      // need to clear some doubts
+
+      // if (this.selectedClaim.expertInfo) {
+      //   for (
+      //     let index = 0;
+      //     index < this.selectedClaim.expertInfo.vendors.length;
+      //     index++
+      //   ) {
+      //     if (this.selectedClaim.expertInfo.vendors[index].isAlreadyHired) {
+      //       this.expertVendorInfo.anyOtherExpertHiredToggle = true;
+      //       this.expertVendorInfo.isAlreadyHiredVendor = this.selectedClaim.expertInfo.vendors[
+      //         index
+      //       ];
+      //     } else {
+      //       this.expertVendorInfo.vendorExpertHiredToggle = true;
+      //       this.expertVendorInfo.isHiredByClaimguru = this.selectedClaim.expertInfo.vendors[
+      //         index
+      //       ];
+      //     }
+      //     this.expertVendorInfo.notes = this.selectedClaim.expertInfo.notes
+      //       ? this.selectedClaim.expertInfo.notes
+      //       : '';
+      //     this.expertVendorInfo.internalNotes = this.selectedClaim.expertInfo
+      //       .internalNotes
+      //       ? this.selectedClaim.expertInfo.internalNotes
+      //       : '';
+      //   }
+      // }
+
+      //estimating info stepper
+      if (this.selectedClaim.estimatingInfo) {
+        this.estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle = true;
+        this.estimatingInfo.estimatorID = this.selectedClaim.estimatorID;
+        this.estimatingInfo.notesToTheEstimator = this.selectedClaim.estimatingInfo.notesToTheEstimator;
+        this.estimatingInfo.scopeTimeNeeded = this.selectedClaim.estimatingInfo.scopeTimeNeeded;
+      }
+
+      // Contract Info stepper pre-filling
+      if (this.selectedClaim.contractInfo) {
+        this.contractInfo.sourceDetails.id = this.selectedClaim.contractInfo
+          .source.id
+          ? this.selectedClaim.contractInfo.source.id
+          : '';
+        this.contractInfo.sourceDetails.type = this.selectedClaim.contractInfo
+          .source.type
+          ? this.selectedClaim.contractInfo.source.type
+          : '';
+        this.contractInfo.sourceDetails.details = this.selectedClaim
+          .contractInfo.source.detail
+          ? this.selectedClaim.contractInfo.source.detail
+          : '';
+        this.contractInfo.firstContractDate = dateToShow(
+          this.selectedClaim.contractInfo.dateOfFirstContact
+        );
+        this.contractInfo.contractDate = dateToShow(
+          this.selectedClaim.contractInfo.date
+        );
+        this.contractInfo.buttonGroup = this.selectedClaim.fees.type;
+
+        this.contractInfo.claimFeeRate = this.selectedClaim.fees.rate;
+
+        // this.contractInfo.reasonForCancellation = this.selectedClaim
+        //   .reasonForCancellation
+        //   ? this.selectedClaim.reasonForCancellation
+        //   : '';
+      }
+
+      //Company Personnal stepper data pre-filling
+      if (this.selectedClaim.personnel[0]) {
+        this.companyPersonnel.personParty.id = this.selectedClaim.personnel[0]
+          .personnelID
+          ? this.selectedClaim.personnel[0].personnelID
+          : '';
+        this.companyPersonnel.personnel.value = this.selectedClaim.personnel[0]
+          .role.value
+          ? this.selectedClaim.personnel[0].role.value
+          : '';
+        this.companyPersonnel.personnel.machineValue = this.selectedClaim
+          .personnel[0].role.machineValue
+          ? this.selectedClaim.personnel[0].role.machineValue
+          : '';
+        this.companyPersonnel.personParty.name = this.selectedClaim.personnel[0]
+          .name
+          ? this.selectedClaim.personnel[0].name
+          : '';
+        this.companyPersonnel.buttonGroup = this.selectedClaim.personnel[0].fees.type;
+        this.companyPersonnel.claimFeeRate = this.selectedClaim.personnel[0].fees.rate;
+        this.companyPersonnel.startDate = dateToShow(
+          this.selectedClaim.personnel[0].startDate
+        );
+        this.companyPersonnel.endDate = dateToShow(
+          this.selectedClaim.personnel[0].endDate
+        );
+        this.companyPersonnel.notes = this.selectedClaim.personnel[0].note
+          ? this.selectedClaim.personnel[0].note
+          : '';
+      }
+    }
+    await this.getClientTypes();
     await this.getTitles();
     await this.getContactTypes();
     await this.getPropertyTypes();
@@ -1670,6 +2174,7 @@ export default {
 
   computed: {
     ...mapGetters([
+      'isOnline',
       'selectedVendor',
       'selectedLead',
       'contactTypes',
@@ -1690,7 +2195,9 @@ export default {
       'userRoles',
       'vendorIndustries',
       'propertyTypes',
-      'isOnline'
+      'isOnline',
+      'editSelectedClient',
+      'getSelectedClaim'
     ])
   },
 
@@ -1715,9 +2222,18 @@ export default {
       'addClaim',
       'getLeadDetails',
       'addMultipleTaskToClaim',
-      'addIndustry'
+      'addIndustry',
+      'getSingleClaimDetails',
+      'editClientLocal',
+      'editClaimLocal'
     ]),
-    ...mapMutations(['setSelectedLeadOffline', 'setSelectedLeadOnline']),
+    ...mapMutations([
+      'setSelectedLeadOffline',
+      'setSelectedLeadOnline',
+      'setSelectedClientOffline',
+      'setSelectedEditClient'
+    ]),
+
     successMessage,
     dateToShow,
     sendPhoneNumber,
@@ -1973,85 +2489,95 @@ export default {
         });
       });
       const payload = {
-        isOrganization: this.primaryDetails.isOrganization,
-        organizationName: this.primaryDetails.organizationName,
-        leadID: this.selectedLead.id,
+        id: this.editSelectedClient.id,
+        data: {
+          isOrganization: this.primaryDetails.isOrganization,
+          organizationName: this.primaryDetails.organizationName,
+          leadID: this.selectedLead.id,
 
-        type: {
-          ...this.client
-        },
-        insuredInfo: {
-          primary: {
-            honorific: {
-              id: this.honorific1.id,
-              value: this.honorific1.value,
-              machineValue: this.honorific1.machineValue
+          type: {
+            ...this.client
+          },
+          insuredInfo: {
+            primary: {
+              honorific: {
+                id: this.honorific1.id,
+                value: this.honorific1.value,
+                machineValue: this.honorific1.machineValue
+              },
+              fname: this.insuredDetails.fname,
+              lname: this.insuredDetails.lname,
+              email: this.insuredDetails.email,
+              phoneNumber: [
+                {
+                  type: this.insuredDetails.type,
+                  number: sendPhoneNumber(this.insuredDetails.phone)
+                }
+              ]
             },
-            fname: this.insuredDetails.fname,
-            lname: this.insuredDetails.lname,
-            email: this.insuredDetails.email,
-            phoneNumber: [
-              {
-                type: this.insuredDetails.type,
-                number: sendPhoneNumber(this.insuredDetails.phone)
-              }
-            ]
-          },
-          secondary: {
-            honorific: {
-              id: this.honorific2.id,
-              value: this.honorific2.title,
-              machineValue: this.honorific2.machineValue
+            secondary: {
+              honorific: {
+                id: this.honorific2.id,
+                value: this.honorific2.title,
+                machineValue: this.honorific2.machineValue
+              },
+              fname: this.coInsuredDetails.fname,
+              lname: this.coInsuredDetails.lname,
+              email: this.coInsuredDetails.email,
+              phoneNumber: [
+                {
+                  type: this.coInsuredDetails.type,
+                  number: sendPhoneNumber(this.coInsuredDetails.phone)
+                }
+              ]
             },
-            fname: this.coInsuredDetails.fname,
-            lname: this.coInsuredDetails.lname,
-            email: this.coInsuredDetails.email,
-            phoneNumber: [
-              {
-                type: this.coInsuredDetails.type,
-                number: sendPhoneNumber(this.coInsuredDetails.phone)
-              }
-            ]
-          },
-          mailingAddress: {
-            ...this.mailingAddressDetails
-          },
+            mailingAddress: {
+              ...this.mailingAddressDetails
+            },
 
-          phoneNumbers: phoneNumberArray,
-          tenantInfo: {
-            name: this.tenantOccupied.name,
-            phoneNumber: {
-              type: this.tenantOccupied.type,
-              number: sendPhoneNumber(this.tenantOccupied.phone)
+            phoneNumbers: phoneNumberArray,
+            tenantInfo: {
+              name: this.tenantOccupied.name,
+              phoneNumber: {
+                type: this.tenantOccupied.type,
+                number: sendPhoneNumber(this.tenantOccupied.phone)
+              }
             }
-          }
-        },
-        property: {
-          name: this.lossAddressName,
-          addressCountry: this.clientAddressDetails.addressCountry,
-          addressLocality: this.clientAddressDetails.addressLocality,
-          addressRegion: this.clientAddressDetails.addressRegion,
-          postalCode: this.clientAddressDetails.postalCode,
-          streetAddress: this.clientAddressDetails.streetAddress,
-          houseNumber: this.clientAddressDetails.houseNumber,
-          propertyType: {
-            ...this.property
           },
-          propertyDesc: this.propertyDescription
+          property: {
+            name: this.lossAddressName,
+            addressCountry: this.clientAddressDetails.addressCountry,
+            addressLocality: this.clientAddressDetails.addressLocality,
+            addressRegion: this.clientAddressDetails.addressRegion,
+            postalCode: this.clientAddressDetails.postalCode,
+            streetAddress: this.clientAddressDetails.streetAddress,
+            houseNumber: this.clientAddressDetails.houseNumber,
+            propertyType: {
+              ...this.property
+            },
+            propertyDesc: this.propertyDescription
+          }
         }
       };
 
       /* if coInsuredDetails toggle is off it well not send the coInsured details */
       if (!this.isThereaCoInsuredToggle) {
-        delete payload.insuredInfo.secondary;
+        delete payload.data.insuredInfo.secondary;
       }
       if (!this.tenantOccupiedToggle) {
-        delete payload.insuredInfo.tenantInfo;
+        delete payload.data.insuredInfo.tenantInfo;
       }
       if (!this.selectedLead.id) {
         delete payload.leadID;
       }
-      const response = await this.addClient(payload);
+
+      if (!this.editSelectedClient.id) {
+        var response = await this.addClient(payload.data);
+      } else {
+        var response = await this.editClientLocal(payload);
+      }
+
+      this.clientResponse = response;
 
       if (response && response.id) {
         const responseData = {
@@ -2060,6 +2586,7 @@ export default {
             ? response.attributes.propertyID
             : response.propertyID
         };
+
         this.setPayloadForClaim(responseData);
       } else {
         this.$router.push('/clients');
@@ -2069,167 +2596,173 @@ export default {
     /*Payload for Claim*/
     async setPayloadForClaim(responseData) {
       const payload = {
-        client: {
-          id: responseData.id,
-          fname: this.insuredDetails.fname,
-          lname: this.insuredDetails.lname
-        },
-        policyInfo: {
-          carrier: {
-            id: this.insuranceDetails.carrierId,
-            value: this.insuranceDetails.carrierName
+        id: this.selectedClaim.id,
+        data: {
+          client: {
+            id: responseData.id,
+            fname: this.insuredDetails.fname,
+            lname: this.insuredDetails.lname
           },
-          number: this.insuranceDetails.policyNumber,
-          isClaimFiled: this.insuranceDetails.hasClaimBeenFilledToggle,
-          isForcedPlaced: this.insuranceDetails
-            .isThisIsForcedPlacedPolicyToggle,
-          claimNumber: this.insuranceDetails.insuranceClaimNumber,
-          category: {
-            id: this.insuranceDetails.policyCategory.id,
-            value: this.insuranceDetails.policyCategory.value,
-            machineValue: this.insuranceDetails.policyCategory.machineValue
-          },
-          type: {
-            id: this.insuranceDetails.policy.id,
-            value: this.insuranceDetails.policy.value,
-            machineValue: this.insuranceDetails.policy.machineValue
-          },
-          effectiveDate: dateToSend(this.insuranceDetails.policyEffectiveDate),
-          expirationDate: dateToSend(this.insuranceDetails.policyExpireDate),
-          limitCoverage: {
-            dwelling: this.insuranceDetails.dwellingLimitA
-              ? this.insuranceDetails.dwellingLimitA
-              : 0,
-            otherStructure: this.insuranceDetails.otherStructureB
-              ? this.insuranceDetails.otherStructureB
-              : 0,
-            content: this.insuranceDetails.contentsLimit
-              ? this.insuranceDetails.contentsLimit
-              : 0,
-            lossOfUse: this.insuranceDetails.lossOfUSD
-              ? this.insuranceDetails.lossOfUSD
-              : 0
-          },
-          deductibleAmount: this.insuranceDetails.deductible
-            ? this.insuranceDetails.deductible
-            : 0,
-          depreciation: this.insuranceDetails.deprecation
-            ? this.insuranceDetails.deprecation
-            : 0,
-          priorPayment: this.insuranceDetails.priorPayment
-            ? this.insuranceDetails.priorPayment
-            : 0,
-          limitReason: this.insuranceDetails.reasonsOfLD,
-          declaration: {
-            isDeclared: true,
-            fileInfo: {
-              id: '',
-              value: ''
-            }
-          }
-        },
-        mortgageInfo: this.mortgageInfo,
-        lossInfo: {
-          property: {
-            id: responseData.propertyId
-          },
-          claimReason: {
-            ...this.lossInfo.reasonClaim
-          },
-          date: dateToSend(this.lossInfo.dateOfLoss),
-          cause: this.lossInfo.causeOfLoss.value
-            ? this.lossInfo.causeOfLoss
-            : null,
-          deadlineDate: dateToSend(this.lossInfo.deadlineDate),
-          recovDDDate: dateToSend(this.lossInfo.recovDeadline),
-          isFEMA: this.lossInfo.femaClaimToggle,
-          isEmergency: this.lossInfo.isStateOfEmergencyToggle,
-          emergencyName: this.lossInfo.nameOfEmergency,
-          desc: this.lossInfo.descriptionDwelling,
-          isHabitable: this.lossInfo.isTheHomeHabitable,
-          serverity: {
-            ...this.lossInfo.severityOfClaimType
-          },
-          OSDamageItems: this.lossInfo.osDamagedItems,
-          isPPIF: this.lossInfo.wasAppifProvidedToTheInsuredToggle,
-          isNeedPPIF: this.lossInfo
-            .doesTheOfficeNeedToProvidePpifToTheInsuredToggle,
-          hasHomeMortgage: this.lossInfo.isMortgageHomeToggle,
-          isSecondClaim: false
-        },
-        damageInfo: {
-          personal: {
-            isDamaged: this.lossInfo.isThereDamageToPersonalPropertyToggle,
-            isPPIFFillNow: this.lossInfo.isPAFillingOutToggle,
-            isPPIFFillLater: this.lossInfo.isAdjustorFillOutLaterDate,
-            isClientPreparePPIF: this.lossInfo.isClientGoingToPreparePPIF,
-            isPPIFSendToInsure: this.lossInfo.doYouWantToSendInsuredPPIF,
-            items: this.lossInfo.ppDamagedItems
-          },
-          otherStructure: {
-            isDamaged: this.lossInfo.isThereDamageToPersonalPropertyToggle,
-            isPPIFFillNow: this.lossInfo.isPAFillingOutToggle,
-            isPPIFFillLater: this.lossInfo.isAdjustorFillOutLaterDate,
-            isClientPreparePPIF: this.lossInfo.isClientGoingToPreparePPIF,
-            isPPIFSendToInsure: this.lossInfo.doYouWantToSendInsuredPPIF,
-            items: this.lossInfo.osDamagedItems
-          }
-        },
-        expertInfo: {
-          vendors: [],
-          notes: this.expertVendorInfo.notes,
-          internalNotes: this.expertVendorInfo.internalNotes
-        },
-
-        contractInfo: {
-          date: dateToSend(this.contractInfo.contractDate),
-          fees: {
-            type: this.contractInfo.buttonGroup,
-            rate: this.contractInfo.claimFeeRate
-              ? this.contractInfo.claimFeeRate
-              : 0
-          },
-          dateOfFirstContact: dateToSend(this.contractInfo.firstContractDate),
-          source: {
-            id: this.contractInfo.sourceDetails.id,
-            type: this.contractInfo.sourceDetails.type,
-            detail: this.contractInfo.sourceDetails.details
-          }
-        },
-
-        personnel: [
-          {
-            personnelID: this.companyPersonnel.personParty.id,
-            name: this.companyPersonnel.personParty.value,
-            role: {
-              value: this.companyPersonnel.personnel.value.name,
-              machineValue: this.companyPersonnel.personnel.value.machineValue
+          policyInfo: {
+            carrier: {
+              id: this.insuranceDetails.carrierId,
+              value: this.insuranceDetails.carrierName
             },
-            note: this.companyPersonnel.notes,
-            fees: {
-              type: this.companyPersonnel.buttonGroup,
-              rate: this.companyPersonnel.claimFeeRate
-                ? this.companyPersonnel.claimFeeRate
+            number: this.insuranceDetails.policyNumber,
+            isClaimFiled: this.insuranceDetails.hasClaimBeenFilledToggle,
+            isForcedPlaced: this.insuranceDetails
+              .isThisIsForcedPlacedPolicyToggle,
+            claimNumber: this.insuranceDetails.insuranceClaimNumber,
+            category: {
+              id: this.insuranceDetails.policyCategory.id,
+              value: this.insuranceDetails.policyCategory.value,
+              machineValue: this.insuranceDetails.policyCategory.machineValue
+            },
+            type: {
+              id: this.insuranceDetails.policy.id,
+              value: this.insuranceDetails.policy.value,
+              machineValue: this.insuranceDetails.policy.machineValue
+            },
+            effectiveDate: dateToSend(
+              this.insuranceDetails.policyEffectiveDate
+            ),
+            expirationDate: dateToSend(this.insuranceDetails.policyExpireDate),
+            limitCoverage: {
+              dwelling: this.insuranceDetails.dwellingLimitA
+                ? this.insuranceDetails.dwellingLimitA
+                : 0,
+              otherStructure: this.insuranceDetails.otherStructureB
+                ? this.insuranceDetails.otherStructureB
+                : 0,
+              content: this.insuranceDetails.contentsLimit
+                ? this.insuranceDetails.contentsLimit
+                : 0,
+              lossOfUse: this.insuranceDetails.lossOfUSD
+                ? this.insuranceDetails.lossOfUSD
                 : 0
             },
-            startDate: dateToSend(this.companyPersonnel.startDate),
-            endDate: dateToSend(this.companyPersonnel.endDate)
-          }
-        ]
+            deductibleAmount: this.insuranceDetails.deductible
+              ? this.insuranceDetails.deductible
+              : 0,
+            depreciation: this.insuranceDetails.deprecation
+              ? this.insuranceDetails.deprecation
+              : 0,
+            priorPayment: this.insuranceDetails.priorPayment
+              ? this.insuranceDetails.priorPayment
+              : 0,
+            limitReason: this.insuranceDetails.reasonsOfLD,
+            declaration: {
+              isDeclared: true,
+              fileInfo: {
+                id: '',
+                value: ''
+              }
+            }
+          },
+          mortgageInfo: this.mortgageInfo,
+          lossInfo: {
+            property: {
+              id: this.isOnline ? responseData.propertyId : this.propertyID
+            },
+
+            claimReason: {
+              ...this.lossInfo.reasonClaim
+            },
+            date: dateToSend(this.lossInfo.dateOfLoss),
+            cause: this.lossInfo.causeOfLoss.value
+              ? this.lossInfo.causeOfLoss
+              : null,
+            deadlineDate: dateToSend(this.lossInfo.deadlineDate),
+            recovDDDate: dateToSend(this.lossInfo.recovDeadline),
+            isFEMA: this.lossInfo.femaClaimToggle,
+            isEmergency: this.lossInfo.isStateOfEmergencyToggle,
+            emergencyName: this.lossInfo.nameOfEmergency,
+            desc: this.lossInfo.descriptionDwelling,
+            isHabitable: this.lossInfo.isTheHomeHabitable,
+            serverity: {
+              ...this.lossInfo.severityOfClaimType
+            },
+            OSDamageItems: this.lossInfo.osDamagedItems,
+            isPPIF: this.lossInfo.wasAppifProvidedToTheInsuredToggle,
+            isNeedPPIF: this.lossInfo
+              .doesTheOfficeNeedToProvidePpifToTheInsuredToggle,
+            hasHomeMortgage: this.lossInfo.isMortgageHomeToggle,
+            isSecondClaim: false
+          },
+          damageInfo: {
+            personal: {
+              isDamaged: this.lossInfo.isThereDamageToPersonalPropertyToggle,
+              isPPIFFillNow: this.lossInfo.isPAFillingOutToggle,
+              isPPIFFillLater: this.lossInfo.isAdjustorFillOutLaterDate,
+              isClientPreparePPIF: this.lossInfo.isClientGoingToPreparePPIF,
+              isPPIFSendToInsure: this.lossInfo.doYouWantToSendInsuredPPIF,
+              items: this.lossInfo.ppDamagedItems
+            },
+            otherStructure: {
+              isDamaged: this.lossInfo.isThereDamageToPersonalPropertyToggle,
+              isPPIFFillNow: this.lossInfo.isPAFillingOutToggle,
+              isPPIFFillLater: this.lossInfo.isAdjustorFillOutLaterDate,
+              isClientPreparePPIF: this.lossInfo.isClientGoingToPreparePPIF,
+              isPPIFSendToInsure: this.lossInfo.doYouWantToSendInsuredPPIF,
+              items: this.lossInfo.osDamagedItems
+            }
+          },
+          expertInfo: {
+            vendors: [],
+            notes: this.expertVendorInfo.notes,
+            internalNotes: this.expertVendorInfo.internalNotes
+          },
+
+          contractInfo: {
+            date: dateToSend(this.contractInfo.contractDate),
+            fees: {
+              type: this.contractInfo.buttonGroup,
+              rate: this.contractInfo.claimFeeRate
+                ? this.contractInfo.claimFeeRate
+                : 0
+            },
+            dateOfFirstContact: dateToSend(this.contractInfo.firstContractDate),
+            source: {
+              id: this.contractInfo.sourceDetails.id,
+              type: this.contractInfo.sourceDetails.type,
+              detail: this.contractInfo.sourceDetails.details
+            }
+          },
+
+          personnel: [
+            {
+              personnelID: this.companyPersonnel.personParty.id,
+              name: this.companyPersonnel.personParty.value,
+              role: {
+                value: this.companyPersonnel.personnel.value.name,
+                machineValue: this.companyPersonnel.personnel.value.machineValue
+              },
+              note: this.companyPersonnel.notes,
+              fees: {
+                type: this.companyPersonnel.buttonGroup,
+                rate: this.companyPersonnel.claimFeeRate
+                  ? this.companyPersonnel.claimFeeRate
+                  : 0
+              },
+              startDate: dateToSend(this.companyPersonnel.startDate),
+              endDate: dateToSend(this.companyPersonnel.endDate)
+            }
+          ]
+        }
       };
 
       if (
         !this.companyPersonnel.personnel.value.name &&
         !this.companyPersonnel.personnel.value.machineValue
       ) {
-        delete payload.personnel;
+        delete payload.data.personnel;
       }
 
       if (
         this.estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle &&
         this.estimatingInfo.estimatorID
       ) {
-        payload.estimatingInfo = {
+        payload.data.estimatingInfo = {
           estimatorID: this.estimatingInfo.estimatorID,
           scopeTimeNeeded: this.estimatingInfo.scopeTimeNeeded,
           notesToTheEstimator: this.estimatingInfo.notesToTheEstimator
@@ -2254,13 +2787,21 @@ export default {
           })
         );
         if (vendorsAlreadyExist[0].id) {
-          payload.expertInfo.vendors = vendorsAlreadyExist.concat(vendorsHired);
+          payload.data.expertInfo.vendors = vendorsAlreadyExist.concat(
+            vendorsHired
+          );
         } else {
-          payload.expertInfo.vendors = vendorsHired;
+          payload.data.expertInfo.vendors = vendorsHired;
         }
       }
 
-      const response = await this.addClaim(payload);
+      if (this.clientResponse.isCreate && this.clientResponse.offline) {
+        var response = await this.addClaim(payload.data);
+      } else if (this.editSelectedClient.id) {
+        var response = await this.editClaimLocal(payload);
+      } else if (!this.clientResponse.offline) {
+        var response = await this.addClaim(payload.data);
+      }
 
       if (response && response.id) {
         if (

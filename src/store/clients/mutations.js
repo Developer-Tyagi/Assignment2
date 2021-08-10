@@ -21,12 +21,12 @@ export async function setOfflineClients(state) {
   });
 }
 
-export function setSelectedEditClient(state, client) {
-  state.editSelectedClient = client;
-}
-
-export function setSelectedSingleClaim(state, claim) {
-  state.getSelectedClaim = claim.attributes;
+export async function setSelectedSingleClaim(state, claim) {
+  if (claim && claim.id) {
+    state.getSelectedClaim = {
+      ...claim
+    };
+  }
 }
 
 export function setSelectedClientProperty(state, client) {
@@ -154,4 +154,15 @@ export function setClientStatistics(state, clientStatic) {
   state.clientStatic = {
     ...clientStatic.attributes
   };
+}
+
+export function setSelectedEditClient(state, client) {
+  state.editSelectedClient = client;
+}
+export function setSelectedClientOffline(state, client) {
+  if (client && client.id) {
+    state.editSelectedClient = {
+      ...client
+    };
+  }
 }

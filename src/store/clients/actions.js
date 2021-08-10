@@ -4,6 +4,7 @@ import localDB, { getCollection } from '@services/dexie';
 import { makeId } from '../leads/actions';
 import { constants } from '@utils/constant';
 import { date } from 'quasar';
+
 export async function getClients(
   {
     rootState: {
@@ -23,6 +24,7 @@ export async function getClients(
         name: payload.name
       });
       commit('setClients', data);
+
       dispatch('setLoading', false);
     } catch (e) {
       console.log(e);
@@ -38,12 +40,30 @@ export async function getClients(
   }
 }
 
-export async function getSingleClientDetails({ commit, dispatch }, id) {
+export async function getSingleClientDetails(
+  {
+    rootState: {
+      clients: { clients },
+      common: { isOnline }
+    },
+    commit,
+    dispatch
+  },
+  id
+) {
   dispatch('setLoading', true);
   try {
-    const { data } = await request.get(`/clients/${id}`);
+    if (isOnline) {
+      const { data } = await request.get(`/clients/${id}`);
+      commit('setSelectedEditClient', data);
+    } else {
+      const data = clients.find(client => {
+        return client.id === id;
+      });
 
-    commit('setSelectedEditClient', data);
+      commit('setSelectedClientOffline', data);
+    }
+
     dispatch('setLoading', false);
   } catch (e) {
     console.log(e);
@@ -57,12 +77,33 @@ export async function getSingleClientDetails({ commit, dispatch }, id) {
 
 //This API is for Viewing single claim Info
 
-export async function getSingleClaimDetails({ commit, dispatch }, id) {
+export async function getSingleClaimDetails(
+  {
+    rootState: {
+      claims: { claims },
+      common: { isOnline }
+    },
+    commit,
+    dispatch
+  },
+  id
+) {
   dispatch('setLoading', true);
-
   try {
-    const { data } = await request.get(`/claims/${id}/info`);
-    commit('setSelectedSingleClaim', data);
+    if (isOnline) {
+      const { data } = await request.get(`/claims/${id}/info`);
+      commit('setSelectedSingleClaim', data);
+    } else {
+      const data = await localDB.claims.toArray();
+
+      for (var i = 0, len = data.length; i < len; i++) {
+        if (data[i].client.id == id) {
+          var demo = data[i];
+          break;
+        }
+      }
+      return demo;
+    }
     dispatch('setLoading', false);
   } catch (e) {
     console.log(e);
@@ -157,12 +198,15 @@ export async function addClientLocal({ dispatch }, payload) {
     let client = {
       ...payload,
       offline: true,
+      isCreate: true,
       id: makeId(),
       propertyID: makeId(),
       created: date.formatDate(Date.now(), constants.UTCFORMAT),
       updated: date.formatDate(Date.now(), constants.UTCFORMAT)
     };
+
     await localDB.clients.add(client);
+
     return client;
   } catch (e) {
     console.log(e);
@@ -170,6 +214,51 @@ export async function addClientLocal({ dispatch }, payload) {
   }
 }
 
+export async function editClientLocal({ dispatch }, payload) {
+  try {
+    await localDB.clients
+      .where('id')
+      .equals(payload.id)
+      .modify({
+        ...payload.data,
+        updated: date.formatDate(Date.now(), constants.UTCFORMAT),
+        offline: true,
+        id: payload.id
+      });
+
+    // dispatch('setNotification', {
+    //   type: 'warning',
+    //   message: 'Client Updated in the local database'
+    // });
+    return payload;
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+export async function editClaimLocal({ dispatch }, payload) {
+  try {
+    await localDB.claims
+      .where('id')
+      .equals(payload.id)
+      .modify({
+        ...payload.data,
+        updated: date.formatDate(Date.now(), constants.UTCFORMAT),
+        offline: true,
+        id: payload.id
+      });
+
+    dispatch('setNotification', {
+      type: 'warning',
+      message: 'Claim Updated in the local database'
+    });
+
+    this.$router.push('/claims');
+    return payload;
+  } catch (e) {
+    console.log(e);
+  }
+}
 export async function addMultipleTaskToClaim(
   {
     rootState: {
@@ -337,6 +426,7 @@ export async function addClaimRemote({ dispatch, commit }, payload) {
       '/claims',
       buildApiData('claims', payload)
     );
+
     dispatch('setLoading', false);
     return data;
   } catch (e) {
@@ -347,8 +437,9 @@ export async function addClaimRemote({ dispatch, commit }, payload) {
 
 export async function addClaimLocal({ dispatch }, payload) {
   try {
-    let claim = { ...payload, offline: true, id: makeId() };
+    let claim = { ...payload, offline: true, isCreate: true, id: makeId() };
     await localDB.claims.add(claim);
+
     return claim;
   } catch (e) {
     console.log(e);
