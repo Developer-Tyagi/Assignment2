@@ -1282,7 +1282,7 @@ export default {
         addVendorDialog: false,
         reasonForCancellation: '',
         vendorDialogName: '',
-        reasonForCancellation: [],
+
         sourceDetails: {
           id: '',
           type: '',
@@ -2036,17 +2036,32 @@ export default {
         this.contractInfo.firstContractDate = dateToShow(
           this.selectedClaim.contractInfo.dateOfFirstContact
         );
+
+        this.contractInfo.time = date.formatDate(
+          this.selectedClaim.contractInfo.dateOfFirstContact,
+          'HH:mm'
+        );
+
         this.contractInfo.contractDate = dateToShow(
           this.selectedClaim.contractInfo.date
         );
-        this.contractInfo.buttonGroup = this.selectedClaim.fees.type;
+        this.contractInfo.buttonGroup = this.selectedClaim.contractInfo.fees.type;
 
-        this.contractInfo.claimFeeRate = this.selectedClaim.fees.rate;
-
-        // this.contractInfo.reasonForCancellation = this.selectedClaim
-        //   .reasonForCancellation
-        //   ? this.selectedClaim.reasonForCancellation
-        //   : '';
+        this.contractInfo.claimFeeRate = this.selectedClaim.contractInfo.fees.rate;
+      }
+      if (this.selectedClaim.status) {
+        this.contractInfo.cancelledToggle = this.selectedClaim.status
+          .isCancelled
+          ? this.selectedClaim.status.isCancelled
+          : false;
+        this.contractInfo.reasonForCancellation = this.selectedClaim.status
+          .reason.type
+          ? this.selectedClaim.status.reason.type
+          : '';
+        this.contractInfo.reasonForCancellationText = this.selectedClaim.status
+          .reason.value
+          ? this.selectedClaim.status.reason.value
+          : '';
       }
 
       //Company Personnal stepper data pre-filling
@@ -2722,13 +2737,20 @@ export default {
                 : 0
             },
             dateOfFirstContact: dateToSend(this.contractInfo.firstContractDate),
+
             source: {
               id: this.contractInfo.sourceDetails.id,
               type: this.contractInfo.sourceDetails.type,
               detail: this.contractInfo.sourceDetails.details
             }
           },
-
+          status: {
+            isCancelled: this.contractInfo.cancelledToggle,
+            reason: {
+              type: this.contractInfo.reasonForCancellation,
+              value: this.contractInfo.reasonForCancellationText
+            }
+          },
           personnel: [
             {
               personnelID: this.companyPersonnel.personParty.id,
