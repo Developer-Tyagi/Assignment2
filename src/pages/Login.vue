@@ -36,29 +36,28 @@
         />
       </div>
       <q-form class="column" autocapitalize="off" @submit="onUserLogin">
-        <div class="row">
-          <div class="q-mt-md" style="width: 20px">
-            <img src="~assets/icon_user.svg" class="q-mr-lg" />
+        <q-card class=" rounded row">
+          <div class="q-ml-xs column justify-center" style="width: 20px">
+            <q-icon name="person" color="primary" size="sm" />
           </div>
           <div class="q-pl-md col-10">
             <q-input
               dense
-              class="login-input full-width"
+              class=" q-py-xs login-input full-width"
               v-model="login.email"
               placeholder="Username"
               borderless
             />
           </div>
-          <q-separator :color="$q.screen.width < 624 ? 'grey' : 'white'" />
-        </div>
-        <div class="row">
-          <div class="q-mt-md" style="width: 20px">
-            <img src="~assets/lock.svg" class="q-mr-lg" />
+        </q-card>
+        <q-card class="q-mt-sm rounded row ">
+          <div class=" q-ml-xs column justify-center " style="width: 20px">
+            <q-icon name="lock" color="primary" size="sm" />
           </div>
-          <div class="q-pl-md col-10" style="width: 90%">
+          <div class="q-pl-md col-10">
             <q-input
               dense
-              class="login-input full-width"
+              class="q-py-xs  login-input full-width"
               v-model="login.password"
               placeholder="Password"
               type="password"
@@ -66,34 +65,33 @@
               :type="isPasswordVisible ? 'text' : 'password'"
               @keyup.enter="onUserLogin"
             >
-              <template v-slot:append>
-                <q-avatar>
-                  <q-icon
-                    :name="isPasswordVisible ? 'visibility' : 'visibility_off'"
-                    class="cursor-pointer"
-                    @click="isPasswordVisible = !isPasswordVisible"
-                  ></q-icon>
-                </q-avatar>
-              </template>
             </q-input>
           </div>
-          <q-separator :color="$q.screen.width < 624 ? 'grey' : 'white'" />
-        </div>
+          <div class=" col">
+            <q-icon
+              :name="isPasswordVisible ? 'visibility' : 'visibility_off'"
+              class="cursor-pointer q-mt-md    "
+              @click="isPasswordVisible = !isPasswordVisible"
+            ></q-icon>
+          </div>
+        </q-card>
         <div>
           <q-btn
             :color="$q.screen.width < 624 ? 'secondary' : 'white'"
             :outline="$q.screen.width > 624 ? true : false"
             label="Login"
             type="submit"
-            class="full-width q-my-md"
+            class=" rounded full-width q-my-md"
           ></q-btn>
         </div>
-        <a
-          href
-          :class="$q.screen.width < 624 ? 'text-primary' : 'text-white'"
-          style="text-decoration: none"
-          >Forgot Password</a
-        >
+        <div class="row justify-center">
+          <a
+            href
+            :class="$q.screen.width < 624 ? 'text-primary' : 'text-white'"
+            style="text-decoration: none"
+            >Forgot Password</a
+          >
+        </div>
       </q-form>
     </div>
   </q-page>
@@ -211,5 +209,11 @@ export default {
     font-size: 14px;
     width: 80%;
   }
+  .rounded {
+    border-radius: 15px 15px 15px 15px;
+  }
+}
+.rounded {
+  border-radius: 15px 15px 15px 15px;
 }
 </style>

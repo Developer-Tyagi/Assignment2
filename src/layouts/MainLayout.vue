@@ -28,7 +28,8 @@
               $route.name != 'add new lead' &&
               $route.name != 'lead details' &&
               $route.name != 'Leads' &&
-              $route.name != 'claim details'
+              $route.name != 'claim details' &&
+              $route.name != 'dashboard'
           "
         >
           <div class="dot" v-if="checkUserRoleType() == false">
