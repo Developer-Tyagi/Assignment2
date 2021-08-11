@@ -74,6 +74,7 @@
                   editSelectedClient.id
               "
               name="edit"
+              @click="onClickEditIcon"
               size="xs"
               class="edit-icon"
               color="white"
@@ -288,7 +289,7 @@ export default {
       'getClients',
       'getAccess'
     ]),
-    ...mapMutations(['setConvertedLead']),
+    ...mapMutations(['setConvertedLead', 'setEditOfflineClientIcon']),
 
     async logout() {
       if (this.getFCMToken()) {
@@ -300,6 +301,9 @@ export default {
       this.removeToken();
       this.removeCurrentUser();
       location.reload();
+    },
+    onClickEditIcon() {
+      this.setEditOfflineClientIcon(false);
     },
     onClickMenuItem(name) {
       if (name == 'Claims') {
@@ -367,7 +371,13 @@ export default {
     currentRouteName() {
       return this.$router.history.current.path.substring(1);
     },
-    ...mapGetters(['converted', 'pageAccess', 'isOnline', 'editSelectedClient'])
+    ...mapGetters([
+      'converted',
+      'pageAccess',
+      'isOnline',
+      'editSelectedClient',
+      'isOfflineClientEdit'
+    ])
   },
 
   async created() {

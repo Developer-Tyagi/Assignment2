@@ -5,10 +5,17 @@
       <q-card class="q-pa-sm">
         <div
           class="custom-select"
-          @click="carriersListDialog = true"
           v-if="!insuranceDetails.carrierName && !policyInfo"
         >
-          <div class="select-text">Click for choosing a carrier</div>
+          <q-btn
+            class="select-text"
+            flat
+            no-caps
+            :disabled="isOfflineClientEdit"
+            @click="carriersListDialog = true"
+          >
+            Click for choosing a carrier
+          </q-btn>
         </div>
         <div>
           <q-card
@@ -98,12 +105,14 @@
           :rules="[
             val => (val && val.length > 0) || 'Please fill the policy number'
           ]"
+          :disable="isOfflineClientEdit"
         />
         <div class="row" v-if="!policyInfo">
           <p class="q-my-auto form-heading">Has claim been filed?</p>
           <q-toggle
             class="q-ml-auto"
             v-model="insuranceDetails.hasClaimBeenFilledToggle"
+            :disable="isOfflineClientEdit"
           />
         </div>
         <q-input
@@ -118,6 +127,7 @@
               (val && val.length > 0) ||
               'Please fill the insurance claim number'
           ]"
+          :disable="isOfflineClientEdit"
         />
         <div class="row">
           <p class="q-my-auto form-heading">
@@ -127,6 +137,7 @@
           <q-toggle
             class="q-ml-auto"
             v-model="insuranceDetails.isThisIsForcedPlacedPolicyToggle"
+            :disable="isOfflineClientEdit"
           />
         </div>
       </q-card>
@@ -145,6 +156,7 @@
               val =>
                 (val && val.length > 0 && validateDate(val)) || 'Invalid date!'
             ]"
+            :disable="isOfflineClientEdit"
           >
             <template v-slot:append>
               <q-icon
@@ -162,6 +174,7 @@
                     v-model="insuranceDetails.policyEffectiveDate"
                     @input="onChaningPolicyEffectiveDate()"
                     mask="MM/DD/YYYY"
+                    :disable="isOfflineClientEdit"
                   ></q-date>
                 </q-popup-proxy>
               </q-icon>
@@ -181,6 +194,7 @@
               val =>
                 (val && val.length > 0 && validateDate(val)) || 'Invalid date!'
             ]"
+            :disable="isOfflineClientEdit"
           >
             <template v-slot:append>
               <q-icon
@@ -198,6 +212,7 @@
                     v-model="insuranceDetails.policyExpireDate"
                     @input="() => $refs.qDateProxy1.hide()"
                     mask="MM/DD/YYYY"
+                    :disable="isOfflineClientEdit"
                   ></q-date>
                 </q-popup-proxy>
               </q-icon>
@@ -227,6 +242,7 @@
           :rules="[
             val => (val && val.length > 0) || 'Please select policy category'
           ]"
+          :disable="isOfflineClientEdit"
         />
         <q-select
           class="required"
@@ -247,6 +263,7 @@
           :rules="[
             val => (val && val.length > 0) || 'Please select the policy type'
           ]"
+          :disable="isOfflineClientEdit"
         />
       </q-card>
       <q-card class="q-pa-sm q-mt-sm">
@@ -261,6 +278,7 @@
             style="margin-left: auto; width: 50%"
             prefix="$"
             class="input-extra-padding"
+            :disable="isOfflineClientEdit"
           />
         </div>
         <div class="row" style="align-items: center">
@@ -274,6 +292,7 @@
             style="margin-left: auto; width: 50%"
             dense
             class="input-extra-padding"
+            :disable="isOfflineClientEdit"
           />
         </div>
         <div class="row" style="align-items: center">
@@ -287,6 +306,7 @@
             style="margin-left: auto; width: 50%"
             dense
             class="input-extra-padding"
+            :disable="isOfflineClientEdit"
           />
         </div>
         <div class="row" style="align-items: center">
@@ -300,6 +320,7 @@
             style="margin-left: auto; width: 50%"
             dense
             class="input-extra-padding"
+            :disable="isOfflineClientEdit"
           />
         </div>
         <div class="row" style="align-items: center">
@@ -313,6 +334,7 @@
             style="margin-left: auto; width: 50%"
             dense
             class="input-extra-padding"
+            :disable="isOfflineClientEdit"
           />
         </div>
         <div class="row" style="align-items: center">
@@ -326,6 +348,7 @@
             style="margin-left: auto; width: 50%"
             dense
             class="input-extra-padding"
+            :disable="isOfflineClientEdit"
           />
         </div>
 
@@ -342,6 +365,7 @@
             style="margin-left: auto; width: 50%"
             dense
             class="input-extra-padding"
+            :disable="isOfflineClientEdit"
           />
         </div>
         <div v-if="showAppraisal">
@@ -352,6 +376,7 @@
             <q-toggle
               class="q-ml-auto"
               v-model="insuranceDetails.hasAppraisalClause"
+              :disable="isOfflineClientEdit"
             />
           </div>
           <div class="row" style="align-items: center">
@@ -367,6 +392,7 @@
               style="margin-left: auto; width: 50%"
               dense
               class="input-extra-padding"
+              :disable="isOfflineClientEdit"
             />
           </div>
           <div class="row" style="align-items: center">
@@ -382,6 +408,7 @@
               style="margin-left: auto; width: 50%"
               dense
               class="input-extra-padding"
+              :disable="isOfflineClientEdit"
             />
           </div>
           <div class="row" style="align-items: center">
@@ -395,6 +422,7 @@
               style="margin-left: auto; width: 50%"
               dense
               class="input-extra-padding"
+              :disable="isOfflineClientEdit"
             />
           </div>
           <div class="row" style="align-items: center">
@@ -408,6 +436,7 @@
               style="margin-left: auto; width: 50%"
               dense
               class="input-extra-padding"
+              :disable="isOfflineClientEdit"
             />
           </div>
 
@@ -424,6 +453,7 @@
               style="margin-left: auto; width: 50%"
               dense
               class="input-extra-padding"
+              :disable="isOfflineClientEdit"
             />
           </div>
         </div>
@@ -432,6 +462,15 @@
         <span class="form-heading">Reason for Limits/Denial</span>
         <div class="floating-label">
           <textarea
+            v-if="!isOfflineClientEdit"
+            rows="5"
+            class="full-width"
+            v-model="insuranceDetails.reasonsOfLD"
+            style="resize: none"
+          ></textarea>
+          <textarea
+            v-if="isOfflineClientEdit"
+            disabled
             rows="5"
             class="full-width"
             v-model="insuranceDetails.reasonsOfLD"
@@ -533,7 +572,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['policyTypes', 'policyCategories'])
+    ...mapGetters(['policyTypes', 'policyCategories', 'isOfflineClientEdit'])
   },
   methods: {
     ...mapActions(['getVendors']),
