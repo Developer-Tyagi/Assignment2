@@ -1282,7 +1282,7 @@ export default {
         addVendorDialog: false,
         reasonForCancellation: '',
         vendorDialogName: '',
-        reasonForCancellation: [],
+
         sourceDetails: {
           id: '',
           type: '',
@@ -1542,7 +1542,11 @@ export default {
         doesAnEstimatorNeedToBeAssignedToggle: false,
         estimatorID: '',
         scopeTimeNeeded: '',
-        notesToTheEstimator: ''
+        notesToTheEstimator: '',
+        email: '',
+        mailingAddress: {},
+        name: '',
+        phone: {}
       },
       insuranceInfoDialog: false,
 
@@ -1747,6 +1751,7 @@ export default {
       // insurance Info stepper  pre-filling
       console.log(this.editSelectedClient, 'client data');
       console.log(this.selectedClaim, 'claim data');
+
       if (
         this.selectedClaim.policyInfo &&
         this.selectedClaim.policyInfo.carrier
@@ -1982,39 +1987,69 @@ export default {
         }
       }
       // expert vendor info pre-filling
-      // need to clear some doubts
 
-      // if (this.selectedClaim.expertInfo) {
-      //   for (
-      //     let index = 0;
-      //     index < this.selectedClaim.expertInfo.vendors.length;
-      //     index++
-      //   ) {
-      //     if (this.selectedClaim.expertInfo.vendors[index].isAlreadyHired) {
-      //       this.expertVendorInfo.anyOtherExpertHiredToggle = true;
-      //       this.expertVendorInfo.isAlreadyHiredVendor = this.selectedClaim.expertInfo.vendors[
-      //         index
-      //       ];
-      //     } else {
-      //       this.expertVendorInfo.vendorExpertHiredToggle = true;
-      //       this.expertVendorInfo.isHiredByClaimguru = this.selectedClaim.expertInfo.vendors[
-      //         index
-      //       ];
-      //     }
-      //     this.expertVendorInfo.notes = this.selectedClaim.expertInfo.notes
-      //       ? this.selectedClaim.expertInfo.notes
-      //       : '';
-      //     this.expertVendorInfo.internalNotes = this.selectedClaim.expertInfo
-      //       .internalNotes
-      //       ? this.selectedClaim.expertInfo.internalNotes
-      //       : '';
-      //   }
-      // }
+      if (this.selectedClaim.expertInfo) {
+        if (this.selectedClaim.expertVendorInformation) {
+          if (this.selectedClaim.expertVendorInformation.hiredToggle) {
+            this.expertVendorInfo.anyOtherExpertHiredToggle = true;
+          }
+          if (this.selectedClaim.expertVendorInformation.alreadyHired) {
+            this.expertVendorInfo.vendorExpertHiredToggle = true;
+          }
+          for (
+            let index = 0;
+            index <
+            this.selectedClaim.expertVendorInformation.isHiredVendor.length;
+            index++
+          ) {
+            this.expertVendorInfo.isAlreadyHiredVendor[
+              index
+            ] = this.selectedClaim.expertVendorInformation.isHiredVendor[index];
+          }
+
+          for (
+            let index = 0;
+            index <
+            this.selectedClaim.expertVendorInformation.alreadyHiredVendor
+              .length;
+            index++
+          ) {
+            this.expertVendorInfo.isHiredByClaimguru[
+              index
+            ] = this.selectedClaim.expertVendorInformation.alreadyHiredVendor[
+              index
+            ];
+          }
+        }
+        this.expertVendorInfo.notes = this.selectedClaim.expertInfo.notes
+          ? this.selectedClaim.expertInfo.notes
+          : '';
+        this.expertVendorInfo.internalNotes = this.selectedClaim.expertInfo
+          .internalNotes
+          ? this.selectedClaim.expertInfo.internalNotes
+          : '';
+      }
 
       //estimating info stepper
+
       if (this.selectedClaim.estimatingInfo) {
+        this.estimatingInfo.email = this.selectedClaim.estimatingInformation
+          .email
+          ? this.selectedClaim.estimatingInformation.email
+          : '';
+        this.estimatingInfo.mailingAddress = this.selectedClaim
+          .estimatingInformation.mailingAddress
+          ? this.selectedClaim.estimatingInformation.mailingAddress
+          : null;
+        this.estimatingInfo.name = this.selectedClaim.estimatingInformation.name
+          ? this.selectedClaim.estimatingInformation.name
+          : '';
+        this.estimatingInfo.phone = this.selectedClaim.estimatingInformation
+          .phone
+          ? this.selectedClaim.estimatingInformation.phone
+          : '';
         this.estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle = true;
-        this.estimatingInfo.estimatorID = this.selectedClaim.estimatorID;
+        this.estimatingInfo.estimatorID = this.selectedClaim.estimatingInfo.estimatorID;
         this.estimatingInfo.notesToTheEstimator = this.selectedClaim.estimatingInfo.notesToTheEstimator;
         this.estimatingInfo.scopeTimeNeeded = this.selectedClaim.estimatingInfo.scopeTimeNeeded;
       }
@@ -2036,17 +2071,32 @@ export default {
         this.contractInfo.firstContractDate = dateToShow(
           this.selectedClaim.contractInfo.dateOfFirstContact
         );
+
+        this.contractInfo.time = date.formatDate(
+          this.selectedClaim.contractInfo.dateOfFirstContact,
+          'HH:mm'
+        );
+
         this.contractInfo.contractDate = dateToShow(
           this.selectedClaim.contractInfo.date
         );
-        this.contractInfo.buttonGroup = this.selectedClaim.fees.type;
+        this.contractInfo.buttonGroup = this.selectedClaim.contractInfo.fees.type;
 
-        this.contractInfo.claimFeeRate = this.selectedClaim.fees.rate;
-
-        // this.contractInfo.reasonForCancellation = this.selectedClaim
-        //   .reasonForCancellation
-        //   ? this.selectedClaim.reasonForCancellation
-        //   : '';
+        this.contractInfo.claimFeeRate = this.selectedClaim.contractInfo.fees.rate;
+      }
+      if (this.selectedClaim.status) {
+        this.contractInfo.cancelledToggle = this.selectedClaim.status
+          .isCancelled
+          ? this.selectedClaim.status.isCancelled
+          : false;
+        this.contractInfo.reasonForCancellation = this.selectedClaim.status
+          .reason.type
+          ? this.selectedClaim.status.reason.type
+          : '';
+        this.contractInfo.reasonForCancellationText = this.selectedClaim.status
+          .reason.value
+          ? this.selectedClaim.status.reason.value
+          : '';
       }
 
       //Company Personnal stepper data pre-filling
@@ -2722,13 +2772,27 @@ export default {
                 : 0
             },
             dateOfFirstContact: dateToSend(this.contractInfo.firstContractDate),
+
             source: {
               id: this.contractInfo.sourceDetails.id,
               type: this.contractInfo.sourceDetails.type,
               detail: this.contractInfo.sourceDetails.details
             }
           },
-
+          status: {
+            isCancelled: this.contractInfo.cancelledToggle,
+            reason: {
+              type: this.contractInfo.reasonForCancellation,
+              value: this.contractInfo.reasonForCancellationText
+            }
+          },
+          expertVendorInformation: {
+            isHiredVendor: this.expertVendorInfo.isAlreadyHiredVendor,
+            alreadyHiredVendor: this.expertVendorInfo.isHiredByClaimguru,
+            hiredToggle: this.expertVendorInfo.anyOtherExpertHiredToggle,
+            alreadyHired: this.expertVendorInfo.vendorExpertHiredToggle
+          },
+          estimatingInformation: this.estimatingInfo,
           personnel: [
             {
               personnelID: this.companyPersonnel.personParty.id,
@@ -2750,6 +2814,10 @@ export default {
           ]
         }
       };
+      if (this.isOnline) {
+        delete payload.data.expertVendorInformation;
+        delete payload.data.estimatingInformation;
+      }
 
       if (
         !this.companyPersonnel.personnel.value.name &&

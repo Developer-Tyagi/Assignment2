@@ -79,7 +79,18 @@
 
         <div class="text-uppercase text-bold  q-mx-auto">
           <span v-if="$route.name == 'Leads'">{{ converted }}</span>
-          <span class="text-white"> {{ $route.name }}</span>
+          <span class="text-white"> {{ $route.name }} </span>
+          <q-icon
+            v-if="
+              $route.name == 'create client' &&
+                !isOnline &&
+                editSelectedClient.id
+            "
+            name="edit"
+            size="xs"
+            class="edit-icon"
+            color="white"
+          />
         </div>
 
         <div v-if="$route.name == 'Dashboard'">
@@ -177,6 +188,7 @@ import {
 import { Capacitor } from '@capacitor/core';
 import { removeFirebaseToken } from '@utils/firebase';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
+
 const isPushNotificationsAvailable = Capacitor.isPluginAvailable(
   'PushNotifications'
 );
@@ -367,7 +379,7 @@ export default {
     currentRouteName() {
       return this.$router.history.current.path.substring(1);
     },
-    ...mapGetters(['converted', 'pageAccess'])
+    ...mapGetters(['converted', 'pageAccess', 'isOnline', 'editSelectedClient'])
   },
 
   async created() {
