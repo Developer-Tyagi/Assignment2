@@ -1,84 +1,64 @@
 <template>
   <!-- mobile-container-page listing-height -->
   <q-page
-    class="listing-height"
-    style="background-color:#8F8F8F;height: calc(100vh - 100px)"
+    class="mobile-container-page listing-height "
+    style="background-color:#8F8F8F;"
   >
     <q-card style="border-radius: 0 0 60px 60px;">
-      <div class="row justify-between">
-        <q-card class="q-mx-sm menu-card coulmn ">
-          <div class="  row justify-center q-my-sm">
-            <img src="~assets/LEADS.svg" />
-          </div>
-          <div
-            class="menu-card-inside text-bold text-white text-center q-pt-lg"
-          >
-            LEADS
-          </div>
-        </q-card>
-        <q-card class="q-mx-sm menu-card coulmn ">
-          <div class="  row justify-center q-my-sm">
-            <img src="~assets/CLIENTS.svg" />
-          </div>
-          <div
-            class="menu-card-inside text-bold text-white text-center q-pt-lg"
-          >
-            CLIENTS
-          </div>
-        </q-card>
-      </div>
-      <div class="row justify-between">
-        <q-card class="q-mx-sm menu-card coulmn ">
-          <div class="  row justify-center q-my-sm">
-            <img src="~assets/VENDOR.svg" />
-          </div>
-          <div
-            class="menu-card-inside text-bold text-white text-center q-pt-lg"
-          >
-            VENDORS
-          </div>
-        </q-card>
+      <div class="row justify-between q-py-md">
+        <img
+          class="q-ml-xl "
+          src="~assets/Leads.png"
+          style="width:30%;"
+          @click="$router.push('/add-lead')"
+        />
 
-        <q-card class="q-mx-sm menu-card coulmn ">
-          <div class="  row justify-center q-my-sm">
-            <img src="~assets/CLAIMS.svg" />
-          </div>
-          <div
-            class="menu-card-inside text-bold text-white text-center q-pt-lg"
-          >
-            CLAIMS
-          </div>
-        </q-card>
+        <img
+          class="q-mr-xl"
+          src="~assets/Clients.png"
+          style="width:30%;"
+          @click="$router.push('/add-client')"
+        />
       </div>
-      <div class="row justify-between q-py-lg">
-        <q-card class="q-mx-sm menu-card coulmn ">
-          <div class="  row justify-center q-my-sm">
-            <img src="~assets/SCAN.svg" />
-          </div>
-          <div
-            class="menu-card-inside text-bold text-white text-center q-pt-sm"
-          >
-            <div>SCAN</div>
-            <div>DOCUMENT</div>
-          </div>
-        </q-card>
+      <div class="row justify-between q-py-md">
+        <img
+          class="q-ml-xl  "
+          src="~assets/Vendor.png"
+          style="width:30%;"
+          @click="$router.push('/vendors')"
+        />
+        <img
+          class="q-mr-xl  "
+          src="~assets/Claims.png"
+          style="width:30%;"
+          @click="$router.push('/claims')"
+        />
+      </div>
+      <div class="row justify-between q-py-xl">
+        <img
+          class="q-ml-xl  "
+          src="~assets/UploadScan.png"
+          style="width:30%;"
+          @click="$router.push('/vendor-document')"
+        />
 
-        <q-card class="q-mx-sm menu-card coulmn ">
-          <div class="  row justify-center q-my-sm">
-            <img src="~assets/Camera.svg" />
-          </div>
-          <div
-            class="menu-card-inside text-bold text-white text-center q-pt-lg"
-          >
-            CAMERA
-          </div>
-        </q-card>
+        <img
+          class="q-mr-xl  "
+          src="~assets/CameraLogo.png"
+          style="width:30%;"
+        />
       </div>
     </q-card>
-    <div class=" q-ma-md row justify-between">
+    <div class=" q-ma-md q-mt-lg row justify-between ">
       <div class="column">
-        <img src="~assets/Profile.svg" style="width:100%;" />
-        <div class="text-center text-white">PROFILE</div>
+        <img
+          src="~assets/Profile.svg"
+          style="width:100%;"
+          @click="$router.push('/edit-profile')"
+        />
+        <div class="text-center text-white">
+          PROFILE
+        </div>
       </div>
       <div class="column">
         <img src="~assets/SETTINGS.svg" style="width:100%;" />

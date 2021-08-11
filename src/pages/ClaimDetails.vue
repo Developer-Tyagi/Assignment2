@@ -16,6 +16,7 @@
       class="icon-top"
       @click="editClaimDetails = true"
       name="more_vert"
+      color="white"
     />
 
     <div class="listing-height " id="scroll-bottom">

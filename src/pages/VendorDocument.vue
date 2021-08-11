@@ -23,16 +23,15 @@
         </div>
       </div>
 
-      <div class="row">
-        <div class="column">
-          <q-btn
-            class="q-ml-md"
-            icon="cloud_upload"
-            text-color="primary"
-            style="width: 50px"
+      <div class="row justify-center">
+        <div class="column q-mr-md">
+          <img
+            class="q-ml-lg q-my-xs  "
+            src="~assets/upload.svg"
+            style="width:50%;"
             @click="onClickUploadButton"
           />
-          <div class="form-heading q-ml-md">Upload</div>
+          <div class="form-heading q-ml-lg">Upload</div>
           <input
             id="uploadFile"
             type="file"
@@ -42,14 +41,13 @@
           />
         </div>
         <div>
-          <q-btn
-            class="q-ml-md"
-            icon="add_a_photo"
-            @click="addFile"
-            text-color="primary"
-            style="width: 50px"
+          <img
+            class="q-ml-lg q-my-xs  "
+            src="~assets/scan.svg"
+            style="width:50%;"
+            @click="onClickUploadButton"
           />
-          <div class="form-heading q-ml-lg">Scan</div>
+          <div class="form-heading text-center">Scan</div>
         </div>
       </div>
     </q-card>
