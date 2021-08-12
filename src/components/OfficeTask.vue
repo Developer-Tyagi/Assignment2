@@ -7,6 +7,7 @@
           class="q-ml-auto"
           v-model="officeTask.officeActionRequired"
           @input="onOfficeTaskToggleButton()"
+          :disable="isOfflineClientEdit"
         />
       </div>
       <div v-if="showOfficeActions" class="office-task-list">
@@ -196,7 +197,12 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['officeTaskActions', 'allUsers', 'roleTypes'])
+    ...mapGetters([
+      'officeTaskActions',
+      'allUsers',
+      'roleTypes',
+      'isOfflineClientEdit'
+    ])
   },
   async created() {
     await this.getOfficeTaskActions();

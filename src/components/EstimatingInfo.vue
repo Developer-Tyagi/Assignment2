@@ -10,6 +10,7 @@
           class="q-ml-auto"
           v-model="estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle"
           @input="estimatorToggleChange"
+          :disable="isOfflineClientEdit"
         />
       </div>
 
@@ -425,7 +426,12 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['estimators', 'contactTypes', 'titles'])
+    ...mapGetters([
+      'estimators',
+      'contactTypes',
+      'titles',
+      'isOfflineClientEdit'
+    ])
   },
   methods: {
     ...mapActions(['getEstimators', 'addEstimator']),

@@ -14,6 +14,7 @@
         :v-model="'model' + id"
         placeholder="AutoComplete address"
         :disabled="isFieldsDisable"
+        :disable="isOfflineClientEdit"
       />
     </div>
     <div class="row justify-between">
@@ -27,6 +28,7 @@
         :rules="[
           val => checkValidations(val) || 'Please fill the house or flat no'
         ]"
+        :disable="isOfflineClientEdit"
       />
       <q-input
         dense
@@ -38,6 +40,7 @@
         :rules="[
           val => checkValidations(val) || 'Please fill the street address'
         ]"
+        :disable="isOfflineClientEdit"
       />
     </div>
     <q-input
@@ -47,6 +50,7 @@
       label="City"
       lazy-rules
       :rules="[val => checkValidations(val) || 'Please fill the city']"
+      :disable="isOfflineClientEdit"
     />
 
     <q-select
@@ -58,6 +62,7 @@
       behavior="menu"
       lazy-rules
       :rules="[val => checkValidations(val) || 'Please fill the state']"
+      :disable="isOfflineClientEdit"
     />
     <q-select
       dense
@@ -67,6 +72,7 @@
       behavior="menu"
       lazy-rules
       :rules="[val => checkValidations(val) || 'Please fill the country']"
+      :disable="isOfflineClientEdit"
     />
 
     <q-input
@@ -76,6 +82,7 @@
       label="ZIP Code"
       lazy-rules
       :rules="[val => checkValidations(val) || 'Please fill the zip code']"
+      :disable="isOfflineClientEdit"
     />
     <div class="row" v-if="isDropBoxEnable">
       <p class="q-mx-none q-my-auto">Gate / Dropbox</p>
@@ -83,6 +90,7 @@
         class="q-ml-auto"
         v-model="address.dropBox.isPresent"
         @input="onToggleButtonOff"
+        :disable="isOfflineClientEdit"
       />
     </div>
     <q-input
@@ -123,6 +131,7 @@
         :rules="[
           val => checkValidations(val) || 'Please fill the house or flat no'
         ]"
+        :disable="isOfflineClientEdit"
       />
       <q-input
         dense
@@ -135,6 +144,7 @@
         :rules="[
           val => checkValidations(val) || 'Please fill the street address'
         ]"
+        :disable="isOfflineClientEdit"
       />
     </div>
     <div class="row justify-between">
@@ -147,6 +157,7 @@
         label="City"
         lazy-rules
         :rules="[val => checkValidations(val) || 'Please fill the city']"
+        :disable="isOfflineClientEdit"
       />
 
       <q-select
@@ -161,6 +172,7 @@
         behavior="menu"
         lazy-rules
         :rules="[val => checkValidations(val) || 'Please fill the state']"
+        :disable="isOfflineClientEdit"
       />
     </div>
     <div class="row justify-between">
@@ -174,6 +186,7 @@
         style="width: 46%"
         lazy-rules
         :rules="[val => checkValidations(val) || 'Please fill the country']"
+        :disable="isOfflineClientEdit"
       />
 
       <q-input
@@ -185,6 +198,7 @@
         label="ZIP Code"
         lazy-rules
         :rules="[val => checkValidations(val) || 'Please fill the zip code']"
+        :disable="isOfflineClientEdit"
       />
     </div>
     <div class="row" v-if="isDropBoxEnable">
@@ -193,6 +207,7 @@
         class="q-ml-auto"
         v-model="address.dropBox.isPresent"
         @input="onToggleButtonOff"
+        :disable="isOfflineClientEdit"
       />
     </div>
     <q-input
@@ -208,6 +223,7 @@
 <script>
 import AddressService from '@utils/country';
 const addressService = new AddressService();
+import { mapGetters } from 'vuex';
 export default {
   name: 'AutoCompleteAddress',
   props: {
@@ -255,7 +271,9 @@ export default {
       states: []
     };
   },
-
+  computed: {
+    ...mapGetters(['isOfflineClientEdit'])
+  },
   mounted() {
     this.address.addressCountry = 'United States';
     this.onCountrySelect(this.address.addressCountry);

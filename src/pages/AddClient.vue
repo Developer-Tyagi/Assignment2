@@ -60,6 +60,7 @@
                     val =>
                       (val && val.length > 0) || 'Please select the client type'
                   ]"
+                  :disable="isOfflineClientEdit"
                 />
                 <div class="row">
                   <p class="q-mx-none q-my-auto">
@@ -69,6 +70,7 @@
                     v-model="primaryDetails.isOrganization"
                     left-label
                     class="q-ml-auto"
+                    :disable="isOfflineClientEdit"
                   />
                 </div>
                 <div v-if="primaryDetails.isOrganization">
@@ -83,6 +85,7 @@
                         (val && val.length > 0) ||
                         'Please fill the organization name '
                     ]"
+                    :disable="isOfflineClientEdit"
                   />
                 </div>
               </q-card>
@@ -106,6 +109,7 @@
                   :rules="[
                     val => (val && val.length > 0) || 'Please select the Title'
                   ]"
+                  :disable="isOfflineClientEdit"
                 />
                 <q-input
                   dense
@@ -117,6 +121,7 @@
                       (val && val.length > 0) || 'Please fill the First name'
                   ]"
                   label="First Name"
+                  :disable="isOfflineClientEdit"
                 />
                 <q-input
                   dense
@@ -128,6 +133,7 @@
                       (val && val.length > 0) || 'Please fill the Last name'
                   ]"
                   label="Last Name"
+                  :disable="isOfflineClientEdit"
                 />
 
                 <div class="row justify-between">
@@ -148,6 +154,7 @@
                       val =>
                         (val && val.length > 0) || 'Please select phone type'
                     ]"
+                    :disable="isOfflineClientEdit"
                   />
                   <q-input
                     dense
@@ -161,6 +168,7 @@
                         (val && val.length == 14) ||
                         'Please enter the phone number'
                     ]"
+                    :disable="isOfflineClientEdit"
                   />
                 </div>
                 <q-input
@@ -174,6 +182,7 @@
                       validateEmail(val) ||
                       'You have entered an invalid email address!'
                   ]"
+                  :disable="isOfflineClientEdit"
                 />
                 <div class="row">
                   <p class="q-mx-none q-my-auto">
@@ -183,6 +192,7 @@
                     class="q-ml-auto"
                     v-model="addAditionalPhoneNumberToggle"
                     @input="onaddAditionalPhoneNumberToggle"
+                    :disable="isOfflineClientEdit"
                   />
                 </div>
                 <div v-if="addAditionalPhoneNumberToggle">
@@ -207,6 +217,7 @@
                         val =>
                           (val && val.length > 0) || 'Please select phone type'
                       ]"
+                      :disable="isOfflineClientEdit"
                     />
                     <q-input
                       v-model.number="phoneNumber[index].number"
@@ -219,6 +230,7 @@
                           (val && val.length == 14) ||
                           'Please enter the phone number'
                       ]"
+                      :disable="isOfflineClientEdit"
                     />
                   </div>
                   <div class="row justify-between q-my-sm">
@@ -229,6 +241,7 @@
                       @click="addAnotherContact"
                       color="primary"
                       label="Add"
+                      :disable="isOfflineClientEdit"
                     />
                     <q-btn
                       v-if="phoneNumber.length > 1"
@@ -237,6 +250,7 @@
                       class="q-mt-sm"
                       color="primary"
                       label="Remove"
+                      :disable="isOfflineClientEdit"
                     />
                   </div>
                 </div>
@@ -245,6 +259,7 @@
                   <q-toggle
                     class="q-ml-auto"
                     v-model="isThereaCoInsuredToggle"
+                    :disable="isOfflineClientEdit"
                   />
                 </div>
 
@@ -268,16 +283,19 @@
                       val =>
                         (val && val.length > 0) || 'Please select the Title'
                     ]"
+                    :disable="isOfflineClientEdit"
                   />
                   <q-input
                     dense
                     v-model="coInsuredDetails.fname"
                     label="First Name"
+                    :disable="isOfflineClientEdit"
                   />
                   <q-input
                     dense
                     v-model="coInsuredDetails.lname"
                     label="Last Name"
+                    :disable="isOfflineClientEdit"
                   />
                   <div class="row justify-between">
                     <q-select
@@ -298,6 +316,7 @@
                         val =>
                           (val && val.length > 0) || 'Please select phone type'
                       ]"
+                      :disable="isOfflineClientEdit"
                     />
                     <q-input
                       dense
@@ -311,6 +330,7 @@
                           (val && val.length == 14) ||
                           'Please enter the phone number'
                       ]"
+                      :disable="isOfflineClientEdit"
                     />
                   </div>
                   <q-input
@@ -326,6 +346,7 @@
                         'You have entered an invalid email address!'
                     ]"
                     label="Email"
+                    :disable="isOfflineClientEdit"
                   />
                 </div>
               </q-card>
@@ -340,6 +361,7 @@
                   :rules="[
                     val => (val && val.length > 0) || 'This is a required field'
                   ]"
+                  :disable="isOfflineClientEdit"
                 />
                 <q-select
                   dense
@@ -359,11 +381,13 @@
                       (val && val.length > 0) ||
                       'Please select the property type'
                   ]"
+                  :disable="isOfflineClientEdit"
                 />
                 <q-input
                   dense
                   v-model="propertyDescription"
                   label="Description of Property"
+                  :disable="isOfflineClientEdit"
                 />
                 <AutoCompleteAddress
                   :id="'ClientInfo'"
@@ -378,6 +402,7 @@
                     class="q-ml-auto"
                     v-model="tenantOccupiedToggle"
                     @input="onTenantToggleOff"
+                    :disable="isOfflineClientEdit"
                   />
                 </div>
 
@@ -386,6 +411,7 @@
                     dense
                     v-model="tenantOccupied.name"
                     label="Tenant Name"
+                    :disable="isOfflineClientEdit"
                   />
 
                   <div class="row justify-between">
@@ -406,6 +432,7 @@
                         val =>
                           (val && val.length > 0) || 'Please select phone type'
                       ]"
+                      :disable="isOfflineClientEdit"
                     />
                     <q-input
                       dense
@@ -419,6 +446,7 @@
                           (val && val.length == 14) ||
                           'Please enter the phone number'
                       ]"
+                      :disable="isOfflineClientEdit"
                     />
                   </div>
                 </div>
@@ -455,6 +483,7 @@
                     class="q-ml-auto"
                     v-model="isMailingAddressSameToggle"
                     @input="mailingAddressSame"
+                    :disable="isOfflineClientEdit"
                   />
                 </div>
               </div>
@@ -583,6 +612,7 @@
                   class="q-ml-auto"
                   v-model="lossInfo.isThereDamageToPersonalPropertyToggle"
                   @input="onPersonalPropertyToggleButtonOff"
+                  :disable="isOfflineClientEdit"
                 />
               </div>
               <div
@@ -839,6 +869,7 @@
                   class="q-ml-auto"
                   v-model="lossInfo.isDamageOSToggle"
                   @input="onDamageOsToggleButtonOff"
+                  :disable="isOfflineClientEdit"
                 />
               </div>
 
@@ -2247,7 +2278,8 @@ export default {
       'propertyTypes',
       'isOnline',
       'editSelectedClient',
-      'getSelectedClaim'
+      'getSelectedClaim',
+      'isOfflineClientEdit'
     ])
   },
 
@@ -2281,7 +2313,8 @@ export default {
       'setSelectedLeadOffline',
       'setSelectedLeadOnline',
       'setSelectedClientOffline',
-      'setSelectedEditClient'
+      'setSelectedEditClient',
+      'setEditOfflineClientIcon'
     ]),
 
     successMessage,

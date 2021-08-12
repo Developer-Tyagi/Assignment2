@@ -2,9 +2,15 @@
   <div>
     <!-- Mortgage Form -->
     <div class="custom-select" v-if="!mortgage[0].value">
-      <div class="select-text" @click="mortgageList = true">
+      <q-btn
+        flat
+        no-caps
+        class="select-text"
+        @click="mortgageList = true"
+        :disable="isOfflineClientEdit"
+      >
         Click for choosing a Mortgage
-      </div>
+      </q-btn>
     </div>
 
     <div>
@@ -74,8 +80,18 @@
       </q-card>
     </div>
 
-    <q-input dense v-model="mortgage[0].loanNumber" label="Loan Number" />
-    <q-input dense v-model="mortgage[0].accountNumber" label="Account Number" />
+    <q-input
+      dense
+      v-model="mortgage[0].loanNumber"
+      label="Loan Number"
+      :disable="isOfflineClientEdit"
+    />
+    <q-input
+      dense
+      v-model="mortgage[0].accountNumber"
+      label="Account Number"
+      :disable="isOfflineClientEdit"
+    />
     <div class="form-heading">Notes</div>
     <textarea
       rows="5"
@@ -90,6 +106,7 @@
         class="q-ml-auto"
         v-model="isSecondMortgageHome"
         @input="onSecondMortgageToggle"
+        :disable="isOfflineClientEdit"
       />
     </div>
     <div v-if="isSecondMortgageHome">
@@ -166,14 +183,29 @@
         </q-card>
       </div>
 
-      <q-input dense v-model="mortgage[1].loanNumber" label="Loan Number" />
+      <q-input
+        dense
+        v-model="mortgage[1].loanNumber"
+        label="Loan Number"
+        :disable="isOfflineClientEdit"
+      />
       <q-input
         dense
         v-model="mortgage[1].accountNumber"
         label="Account Number"
+        :disable="isOfflineClientEdit"
       />
       <div class="form-heading">Notes</div>
       <textarea
+        v-if="!isOfflineClientEdit"
+        rows="5"
+        class="full-width"
+        v-model="mortgage[1].notes"
+        style="resize: none"
+      />
+      <textarea
+        v-if="isOfflineClientEdit"
+        disabled
         rows="5"
         class="full-width"
         v-model="mortgage[1].notes"
@@ -253,7 +285,9 @@ export default {
       mortgageList: false
     };
   },
-  created() {},
+  computed: {
+    ...mapGetters(['isOfflineClientEdit'])
+  },
   methods: {
     showPhoneNumber,
     ...mapActions(['']),

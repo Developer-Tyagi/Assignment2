@@ -51,6 +51,7 @@
         <q-toggle
           class="q-ml-auto"
           v-model="expertVendorInfo.anyOtherExpertHiredToggle"
+          :disable="isOfflineClientEdit"
         />
       </div>
       <!-- Assigning Multiple Expert Vendors -->
@@ -232,6 +233,7 @@
           class="q-ml-auto"
           v-model="expertVendorInfo.vendorExpertHiredToggle"
           @input="onExpertVendorToggleOff"
+          :disable="isOfflineClientEdit"
         />
       </div>
       <div
@@ -372,16 +374,34 @@
       <div>
         <span class="form-heading">Notes</span>
         <textarea
+          v-if="!isOfflineClientEdit"
           rows="5"
           class="full-width"
           v-model="expertVendorInfo.notes"
           style="resize: none"
+        />
+        <textarea
+          rows="5"
+          disabled
+          class="full-width"
+          v-model="expertVendorInfo.notes"
+          style="resize: none"
+          v-if="isOfflineClientEdit"
         />
       </div>
 
       <div>
         <span class="form-heading">Internal Notes</span>
         <textarea
+          v-if="!isOfflineClientEdit"
+          rows="5"
+          class="full-width"
+          v-model="expertVendorInfo.internalNotes"
+          style="resize: none"
+        />
+        <textarea
+          v-if="isOfflineClientEdit"
+          disabled
           rows="5"
           class="full-width"
           v-model="expertVendorInfo.internalNotes"
@@ -441,7 +461,8 @@ export default {
       'policyTypes',
       'policyCategories',
       'vendorIndustries',
-      'vendors'
+      'vendors',
+      'isOfflineClientEdit'
     ])
   },
   methods: {

@@ -29,6 +29,7 @@ export default function() {
     tokens: [],
     pageAccess: [],
     organization: [],
-    isOnline: navigator.onLine
+    isOnline: navigator.onLine,
+    isOfflineClientEdit: false
   };
 }

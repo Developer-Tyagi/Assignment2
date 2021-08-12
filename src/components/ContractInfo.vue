@@ -53,6 +53,7 @@
             val =>
               (validateDate(val) && val && val.length > 0) || 'Invalid date!'
           ]"
+          :disable="isOfflineClientEdit"
         >
           <template v-slot:append>
             <q-icon
@@ -84,6 +85,7 @@
           label="MM/DD/YYYY"
           lazy-rules
           :rules="[val => validateDate(val) || 'Invalid date!']"
+          :disable="isOfflineClientEdit"
         >
           <template v-slot:append>
             <q-icon
@@ -115,6 +117,7 @@
           lazy-rules
           :rules="[val => (val && val.length > 0) || 'Invalid time!']"
           :with-seconds="false"
+          :disable="isOfflineClientEdit"
         >
           <template v-slot:append>
             <q-icon name="access_time" class="cursor-pointer">
@@ -154,6 +157,7 @@
             { label: ' %', value: 'percentage' },
             { value: 'update', icon: 'update' }
           ]"
+          :disable="isOfflineClientEdit"
         ></q-btn-toggle>
       </div>
 
@@ -166,6 +170,7 @@
           label="Claim Fee Rate"
           style="width: 50%"
           :rules="[val => val || 'Please fill the Fee rate ']"
+          :disable="isOfflineClientEdit"
         >
           <template v-slot:prepend v-if="contractInfo.buttonGroup == 'dollar'">
             <q-icon name="$" color="primary"></q-icon>
@@ -207,6 +212,7 @@
           :rules="[
             val => (val && val.length > 0) || 'Please select the Source type'
           ]"
+          :disable="isOfflineClientEdit"
         />
         <q-input
           class="required"
@@ -367,7 +373,11 @@
       </p>
       <div class="row">
         <p class="q-mx-none q-my-auto form-heading">Cancelled?</p>
-        <q-toggle class="q-ml-auto" v-model="contractInfo.cancelledToggle" />
+        <q-toggle
+          class="q-ml-auto"
+          v-model="contractInfo.cancelledToggle"
+          :disable="isOfflineClientEdit"
+        />
       </div>
       <div class="full-width">
         <q-select
@@ -375,13 +385,23 @@
           :options="reasonForCancellation"
           label="Reason For Cancellation"
           options-dense
+          :disable="isOfflineClientEdit"
         ></q-select>
       </div>
 
       <span class="form-heading">Reason For Cancellation</span>
       <div class="floating-label">
         <textarea
+          v-if="!isOfflineClientEdit"
           rows="5"
+          class="full-width"
+          v-model="contractInfo.reasonForCancellationText"
+          style="resize: none"
+        />
+        <textarea
+          v-if="isOfflineClientEdit"
+          rows="5"
+          disabled
           class="full-width"
           v-model="contractInfo.reasonForCancellationText"
           style="resize: none"
@@ -430,7 +450,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['leadSources', 'vendors', 'clients'])
+    ...mapGetters(['leadSources', 'vendors', 'clients', 'isOfflineClientEdit'])
   },
   methods: {
     ...mapActions(['getVendors', 'getClients']),

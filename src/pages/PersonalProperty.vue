@@ -337,7 +337,8 @@ export default {
       'setClientProperty',
       'selectedClaimId',
       'lossCauses',
-      'damageInfo'
+      'damageInfo',
+      'isOfflineClientEdit'
     ]),
     formatDate(value) {
       if (value) {
