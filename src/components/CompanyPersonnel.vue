@@ -17,6 +17,7 @@
         @filter="searchFilterBy"
         input-debounce="0"
         behavior="menu"
+        :disable="isOfflineClientEdit"
       />
       <div class="form-heading q-mt-lg">Person Party</div>
 
@@ -32,6 +33,7 @@
         emit-value
         behavior="menu"
         map-options
+        :disable="isOfflineClientEdit"
       />
 
       <div v-else>No user exist for this role.</div>
@@ -49,6 +51,7 @@
             { label: '%', value: 'percentage' },
             { value: 'update', icon: 'update' }
           ]"
+          :disable="isOfflineClientEdit"
         />
       </div>
       <div class="row" style="align-items: center">
@@ -60,6 +63,7 @@
           label="Claim Fee Rate"
           label-color="primary"
           style="width: 50%"
+          :disable="isOfflineClientEdit"
           ><template
             v-slot:prepend
             v-if="companyPersonnel.buttonGroup == 'dollar'"
@@ -92,6 +96,7 @@
             val =>
               (validateDate(val) && val && val.length > 0) || 'Invalid date!'
           ]"
+          :disable="isOfflineClientEdit"
         >
           <template v-slot:append>
             <q-icon
@@ -123,6 +128,7 @@
           label="MM/DD/YYYY"
           lazy-rules
           :rules="[val => dateGreaterThan(val)]"
+          :disable="isOfflineClientEdit"
         >
           <template v-slot:append>
             <q-icon
@@ -151,6 +157,15 @@
       <span class="form-heading">Notes</span>
       <div class="floating-label">
         <textarea
+          v-if="!isOfflineClientEdit"
+          rows="5"
+          class="full-width"
+          v-model="companyPersonnel.notes"
+          style="resize: none"
+        />
+        <textarea
+          v-if="isOfflineClientEdit"
+          disabled
           rows="5"
           class="full-width"
           v-model="companyPersonnel.notes"
@@ -184,7 +199,8 @@ export default {
       'selectedClaimId',
       'claimRoles',
       'userRoles',
-      'allUsers'
+      'allUsers',
+      'isOfflineClientEdit'
     ])
   },
 

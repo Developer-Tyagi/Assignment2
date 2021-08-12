@@ -21,6 +21,7 @@
         :rules="[
           val => (val && val.length > 0) || 'Please select the reason for claim'
         ]"
+        :disable="isOfflineClientEdit"
       />
     </q-card>
     <q-card class="q-pa-sm q-mt-sm">
@@ -35,6 +36,7 @@
           label="MM/DD/YYYY"
           lazy-rules
           :rules="[val => val && dateLiesBetween(val)]"
+          :disable="isOfflineClientEdit"
         >
           <template v-slot:append>
             <q-icon
@@ -76,6 +78,7 @@
         @input="setTypes(lossCauses, lossInfo.causeOfLoss)"
         @filter="searchByCause"
         label="Cause of Loss"
+        :disable="isOfflineClientEdit"
       />
 
       <q-input
@@ -89,6 +92,7 @@
             (val && val.length > 0) ||
             'Please fill the cause of loss description'
         ]"
+        :disable="isOfflineClientEdit"
       >
       </q-input>
 
@@ -100,6 +104,7 @@
           v-model="lossInfo.deadlineDate"
           mask="##/##/####"
           label="MM/DD/YYYY"
+          :disable="isOfflineClientEdit"
         >
           <template v-slot:append>
             <q-icon
@@ -117,6 +122,7 @@
                   v-model="lossInfo.deadlineDate"
                   @input="() => $refs.qDateProxy3.hide()"
                   mask="MM/DD/YYYY"
+                  :disable="isOfflineClientEdit"
                 ></q-date>
               </q-popup-proxy>
             </q-icon>
@@ -132,6 +138,7 @@
           v-model="lossInfo.recovDeadline"
           mask="##/##/####"
           label="MM/DD/YYYY"
+          :disable="isOfflineClientEdit"
         >
           <template v-slot:append>
             <q-icon
@@ -149,6 +156,7 @@
                   v-model="lossInfo.recovDeadline"
                   @input="() => $refs.qDateProxy4.hide()"
                   mask="MM/DD/YYYY"
+                  :disable="isOfflineClientEdit"
                 ></q-date>
               </q-popup-proxy>
             </q-icon>
@@ -159,21 +167,35 @@
     <q-card class="q-pa-sm q-mt-sm">
       <div class="row">
         <p class="q-my-auto form-heading">Is the Home Habitable?</p>
-        <q-toggle class="q-ml-auto" v-model="lossInfo.isTheHomeHabitable" />
+        <q-toggle
+          class="q-ml-auto"
+          v-model="lossInfo.isTheHomeHabitable"
+          :disable="isOfflineClientEdit"
+        />
       </div>
       <div class="row">
         <p class="q-mx-none q-my-auto form-heading">FEMA Claim</p>
-        <q-toggle class="q-ml-auto" v-model="lossInfo.femaClaimToggle" />
+        <q-toggle
+          class="q-ml-auto"
+          v-model="lossInfo.femaClaimToggle"
+          :disable="isOfflineClientEdit"
+        />
       </div>
       <div class="row">
         <p class="q-my-auto form-heading">State of Emergency</p>
         <q-toggle
           class="q-ml-auto"
           v-model="lossInfo.isStateOfEmergencyToggle"
+          :disable="isOfflineClientEdit"
         />
       </div>
       <div v-if="lossInfo.isStateOfEmergencyToggle">
-        <q-input dense v-model="lossInfo.nameOfEmergency" label="Related to" />
+        <q-input
+          dense
+          v-model="lossInfo.nameOfEmergency"
+          label="Related to"
+          :disable="isOfflineClientEdit"
+        />
       </div>
       <q-select
         class="required"
@@ -192,6 +214,7 @@
           val =>
             (val && val.length > 0) || 'Please select the severity of claim'
         ]"
+        :disable="isOfflineClientEdit"
       />
     </q-card>
     <q-card class="q-pa-sm q-mt-sm">
@@ -199,6 +222,16 @@
         >Loss Description to Dwelling <small style="color: red">*</small></span
       >
       <textarea
+        v-if="!isOfflineClientEdit"
+        rows="5"
+        required
+        class="full-width"
+        v-model="lossInfo.descriptionDwelling"
+        style="resize: none"
+      />
+      <textarea
+        disabled
+        v-if="isOfflineClientEdit"
         rows="5"
         required
         class="full-width"
@@ -289,7 +322,8 @@ export default {
       'claimReasons',
       'lossCauses',
       'claimSeverity',
-      'vendors'
+      'vendors',
+      'isOfflineClientEdit'
     ])
   },
   methods: {

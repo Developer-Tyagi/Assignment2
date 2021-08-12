@@ -140,7 +140,9 @@ export function setAccess(state, access) {
 export function setNetworkStatus(state, isOnline) {
   state.isOnline = isOnline;
 }
-
+export function setEditOfflineClientIcon(state, isOfflineClientEdit) {
+  state.isOfflineClientEdit = isOfflineClientEdit;
+}
 export function isLastRouteEdit(state, isEdit) {
   state.isEdit = isEdit;
 }

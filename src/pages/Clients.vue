@@ -117,7 +117,8 @@ export default {
       'selectedClientId',
       'selectedLead',
       'isOnline',
-      'editSelectedClient'
+      'editSelectedClient',
+      ' isOfflineClientEdit'
     ])
   },
 
@@ -130,7 +131,11 @@ export default {
   },
   methods: {
     ...mapActions(['getClients', 'getSingleClientDetails']),
-    ...mapMutations(['setSelectedClient', 'setSelectedClientOffline']),
+    ...mapMutations([
+      'setSelectedClient',
+      'setSelectedClientOffline',
+      'setEditOfflineClientIcon'
+    ]),
     dateWithTime,
     onPhoneNumberClick,
     showPhoneNumber,
@@ -146,6 +151,7 @@ export default {
       } else {
         this.setSelectedClientOffline(client);
         this.$router.push('/add-client');
+        this.setEditOfflineClientIcon(true);
       }
     },
     addClient() {
