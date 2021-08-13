@@ -46,7 +46,7 @@ export default {
         { name: 'others', groups: ['others'] },
         { name: 'about', groups: ['about'] }
       ],
-      extraPlugins: 'token',
+      extraPlugins: 'token,addsign',
       clipboard_defaultContentType: 'text',
       availableTokens: [],
       tabSpaces: 4,
