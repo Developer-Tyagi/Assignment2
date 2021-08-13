@@ -8,25 +8,40 @@
       >
         <q-btn
           flat
-          class=" q-ml-sm color-white button-50"
+          class=" q-ml-sm color-white button-50 "
           icon="menu"
           aria-label="Menu"
+          style="z-index:1"
           @click="onMenuButtonClick"
         ></q-btn>
-        <div class="row  col-8">
-          <div class=" col-4 column justify-center  ">
+        <div class="row">
+          <div class=" column justify-center   ">
             <img
-              class="q-ml-lg q-my-xl  "
+              class="overlay "
+              src="~assets/backComponent.svg"
+              style="width:90%;margin-left:-30%;"
+            />
+            <img
+              class="overlay q-ml-lg q-my-xl  "
               src="~assets/claimLogoDashboard.png"
-              style="width:60%; background-image: radial-gradient(circle, yellow, orange, #F19733);border-radius: 15px 15px 65px 65px;"
+              style="width:16%; "
             />
           </div>
           <div class=" col-5  column justify-center">
+            <img class=" overlay q-my-xl  " src="~assets/LogoShadow.svg" />
             <img
-              class=" q-my-xl "
-              src="~assets/dashboardHeaderLogo.png"
-              style="width:200px;"
+              class="overlay  "
+              src="~assets/Black.svg"
+              style="width:36%; margin-left:30%;"
             />
+            <img
+              class="overlay  "
+              src="~assets/White.svg"
+              style="width:36%; margin-left:27%;"
+            />
+
+            <!-- </img>
+            </img> -->
           </div>
         </div>
       </q-toolbar>
@@ -62,25 +77,20 @@
           class="button-50"
         />
 
-        <div class="text-uppercase text-bold text-black q-mx-auto">
+        <div class="text-uppercase text-bold  q-mx-auto">
           <span v-if="$route.name == 'Leads'">{{ converted }}</span>
-          <div class="text-white">
-            {{ $route.name }}
-
-            <q-icon
-              v-if="
-                $route.name == 'create client' &&
-                  !isOnline &&
-                  editSelectedClient.id &&
-                  isOfflineClientEdit
-              "
-              name="edit"
-              @click="onClickEditIcon"
-              size="xs"
-              class="edit-icon"
-              color="white"
-            />
-          </div>
+          <span class="text-white"> {{ $route.name }} </span>
+          <q-icon
+            v-if="
+              $route.name == 'create client' &&
+                !isOnline &&
+                editSelectedClient.id
+            "
+            name="edit"
+            size="xs"
+            class="edit-icon"
+            color="white"
+          />
         </div>
 
         <div v-if="$route.name == 'Dashboard'">
@@ -419,5 +429,19 @@ export default {
   opacity: 70%;
   font-size: 12px;
   margin-bottom: 0;
+}
+.overlay {
+  position: absolute;
+  bottom: 10;
+  // background: rgb(0, 0, 0);
+  // background: rgba(0, 0, 0, 0.5); /* Black see-through */
+  color: #f1f1f1;
+  width: 100%;
+
+  opacity: 4;
+  color: white;
+  // font-size: 20px;
+  // padding: 20px;
+  // text-align: center;
 }
 </style>

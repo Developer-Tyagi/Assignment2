@@ -10,7 +10,7 @@
           class="q-ml-xl "
           src="~assets/Leads.png"
           style="width:30%;"
-          @click="$router.push('/add-lead')"
+          @click="$router.push('/leads-dashboard')"
         />
 
         <img

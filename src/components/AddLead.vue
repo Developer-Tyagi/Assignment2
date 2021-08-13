@@ -44,7 +44,8 @@
               <div class="stepper-heading">Primary Contact</div>
               <q-select
                 dense
-                class="required"
+                borderless
+                class=" input-style required"
                 v-model="primaryDetails.honorific.value"
                 :options="titles"
                 option-value="value"
@@ -63,7 +64,8 @@
 
               <q-input
                 dense
-                class="required"
+                borderless
+                class=" input-style required"
                 v-model="primaryDetails.firstName"
                 label="First Name"
                 lazy-rules
@@ -73,7 +75,8 @@
               />
               <q-input
                 dense
-                class="required"
+                borderless
+                class="input-style  required"
                 v-model="primaryDetails.lastName"
                 label="Last Name"
                 lazy-rules
@@ -81,10 +84,12 @@
                   val => (val && val.length > 0) || 'Please fill the last name'
                 ]"
               />
+
               <div class="row justify-between">
                 <q-select
                   dense
-                  class="required col-5"
+                  borderless
+                  class=" input-style required col-5"
                   v-model="primaryDetails.selectedContactType"
                   :options="contactTypes"
                   option-value="machineValue"
@@ -101,7 +106,8 @@
                 />
                 <q-input
                   dense
-                  class="required col-6"
+                  borderless
+                  class=" input-style required col-6"
                   v-model.number="primaryDetails.phoneNumber"
                   label="Phone"
                   mask="(###) ###-####"
@@ -116,7 +122,8 @@
 
               <q-input
                 dense
-                class="required"
+                borderless
+                class=" input-style required"
                 v-model="primaryDetails.email"
                 label="Email"
                 lazy-rules
@@ -127,7 +134,7 @@
                 ]"
               />
 
-              <div class="row">
+              <div class="row  ">
                 <p class="q-mx-none q-my-auto">
                   Is policy holder an organization ?
                 </p>
@@ -141,7 +148,8 @@
               <div v-if="primaryDetails.isOrganization">
                 <q-input
                   dense
-                  class="required"
+                  borderless
+                  class="input-style required"
                   v-model="primaryDetails.organizationName"
                   label="Organization Name"
                   lazy-rules
@@ -177,7 +185,9 @@
 
               <div class="full-width">
                 <q-input
+                  class="input-style"
                   dense
+                  borderless
                   v-model="lossDetails.dateOfLoss"
                   mask="##/##/####"
                   label="MM/DD/YYYY"
@@ -208,7 +218,8 @@
               </div>
               <q-select
                 dense
-                class="input-extra-padding"
+                borderless
+                class="input-style input-extra-padding"
                 v-model="lossDetails.causeOfLoss.value"
                 option-value="name"
                 option-label="name"
@@ -225,7 +236,8 @@
               />
 
               <q-input
-                class="required"
+                class="input-style required"
+                borderless
                 dense
                 v-model="lossDetails.lossDesc"
                 label="Brief description of loss"
@@ -276,11 +288,15 @@
               <span class="stepper-heading">Insurance Details (Optional)</span>
 
               <div
-                class="custom-select"
+                class=""
                 @click="carriersListDialog = true"
                 v-if="!insuranceDetails.carrierName"
               >
-                <div class="select-text">Click for choosing a carrier</div>
+                <div class="input-style q-my-md">
+                  <div class="text-center">
+                    Click for choosing a carrier
+                  </div>
+                </div>
               </div>
               <div>
                 <q-card
@@ -360,7 +376,9 @@
                 </q-card>
               </div>
               <q-input
+                class="input-style"
                 dense
+                borderless
                 v-model="insuranceDetails.policyNumber"
                 label="Policy Number"
               />
@@ -398,6 +416,7 @@
               <div>
                 <q-select
                   dense
+                  borderless
                   v-model="sourceDetails.type"
                   :options="leadSource"
                   option-label="name"
@@ -410,9 +429,11 @@
                   map-options
                   @input="onChangingSourceType()"
                   @filter="searchBySource"
-                  class="input-extra-padding"
+                  class="input-style input-extra-padding"
                 />
                 <q-input
+                  borderless
+                  class="input-style"
                   dense
                   v-if="
                     sourceDetails.type != constants.industries.VENDOR &&
@@ -434,11 +455,15 @@
                   v-else-if="sourceDetails.type == constants.industries.VENDOR"
                 >
                   <div
-                    class="custom-select"
+                    class="q-mt-md"
                     @click="vendorsListDialog = true"
                     v-if="!sourceDetails.email"
                   >
-                    <div class="select-text">Click for choosing a vendor</div>
+                    <div class=" input-style">
+                      <div class=" text-center">
+                        Click for choosing a vendor
+                      </div>
+                    </div>
                   </div>
                   <q-card
                     bordered
@@ -522,8 +547,9 @@
                 </div>
                 <div v-else-if="sourceDetails.type == 'client'">
                   <q-select
+                    borderless
                     dense
-                    class="full-width input-extra-padding"
+                    class=" input-style full-width input-extra-padding"
                     v-model="sourceDetails.details"
                     use-input
                     input-debounce="0"
@@ -582,7 +608,14 @@
           >
             <q-card class="q-pa-md form-card">
               <span class="stepper-heading"> Notes</span>
-              <q-input dense label="Notes" v-model="notes" type="input" />
+              <q-input
+                class="input-style"
+                borderless
+                dense
+                label="Notes"
+                v-model="notes"
+                type="input"
+              />
             </q-card>
             <div class="row q-pt-md">
               <div>
@@ -622,11 +655,13 @@
               />
               <q-select
                 dense
+                borderless
                 v-if="schedulingDetails.isAutomaticScheduling"
                 :class="{ required: schedulingDetails.isAutomaticScheduling }"
                 v-model="schedulingDetails.inspectionTypeId"
                 :options="inspectionTypes"
                 label="Type of Inspection"
+                class="input-style"
                 option-label="value"
                 option-value="id"
                 options-dense
@@ -642,11 +677,12 @@
               />
               <q-select
                 dense
+                borderless
                 v-if="
                   schedulingDetails.isAutomaticScheduling &&
                     showSubInspectionType
                 "
-                class="required input-extra-padding"
+                class=" input-style required input-extra-padding"
                 v-model="schedulingDetails.subInspectionType"
                 :options="subInspectionTypes"
                 option-label="value"
@@ -663,8 +699,10 @@
                 ]"
               />
               <q-input
+                class="input-style"
                 v-if="schedulingDetails.isAutomaticScheduling"
                 dense
+                borderless
                 type="number"
                 mask="#.#"
                 step="0.5"
@@ -1387,3 +1425,17 @@ export default {
   }
 };
 </script>
+<style lang="scss">
+// .input-style {
+//   border: 1px solid #00000029;
+//   padding: 0px;
+//   box-shadow: 1px 2px 2px 1px #e0e0e0;
+//   border-radius: 15px 15px 15px 15px;
+//   margin-top: 5px;
+
+//   .q-field__inner {
+//     text-align: left;
+//     padding-left: 12px;
+//   }
+// }
+</style>

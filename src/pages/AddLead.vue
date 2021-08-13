@@ -2,8 +2,8 @@
   <q-page>
     <div class="mobile-container-page-without-search">
       <div class="q-pa-lg column full-height">
-        <div class="row">
-          <p class="q-mx-none q-my-auto">Is this a new lead</p>
+        <div class="row input-style q-px-xs">
+          <p class="q-mx-none q-my-auto q-ml-sm">Is this a new lead</p>
           <q-toggle
             v-model="isNewLead"
             left-label
@@ -13,7 +13,6 @@
           />
         </div>
         <div v-if="!isNewLead">
-          <q-separator></q-separator>
           <br />
           <p class="stepper-heading">
             If client already exists, select from list below
@@ -23,7 +22,8 @@
           <q-form ref="addLead">
             <q-select
               dense
-              class="full-width input-extra-padding"
+              borderless
+              class=" input-style full-width input-extra-padding"
               v-model="clientSelected"
               use-input
               input-debounce="0"
@@ -53,7 +53,7 @@
         <q-btn
           label="Continue"
           color="primary"
-          class="full-width q-mt-auto text-capitalize"
+          class="full-width q-mt-auto text-capitalize rounded"
           @click="onContinue"
           icon-right="arrow_right_alt"
           size="'xl'"
