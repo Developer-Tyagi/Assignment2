@@ -5,180 +5,190 @@
         :dialogName="'Add Mortgage'"
         @closeDialog="closeDialog(false)"
       />
-      <q-form
-        class="q-pa-lg"
-        style="height: calc(100vh - 51px)"
-        ref="mortgageForm"
-      >
-        <div
-          class="full-width"
-          style="
-            height: calc(100vh - 145px);
-            overflow-y: auto;
-            margin-bottom: 10px;
-          "
+      <div class="mobile-container-page form-color">
+        <q-form
+          class="q-pa-lg"
+          style="height: calc(100vh - 51px)"
+          ref="mortgageForm"
         >
-          <q-card class="q-ma-xs q-pa-sm">
-            <q-input
-              dense
-              class="required"
-              v-model="mortgage.name"
-              label=" Mortgage Name"
-              lazy-rules
-              :rules="[
-                val =>
-                  (val && val.length > 0) || 'Please fill the mortgage name'
-              ]"
-            />
-
-            <div class="row justify-between">
-              <q-select
-                dense
-                class="col-5"
-                v-model="mortgage.phoneNumber[0].type"
-                :options="contactTypes"
-                option-value="machineValue"
-                option-label="name"
-                map-options
-                options-dense
-                behavior="menu"
-                label="Type"
-                emit-value
-                lazy-rules
-                :rules="[
-                  val => (val && val.length > 0) || 'Please select phone type'
-                ]"
-              />
+          <div class="full-width  rounded bg-white">
+            <div class="q-ma-xs q-px-xs q-py-sm rounded">
               <q-input
                 dense
-                class="required col-6"
-                v-model.number="mortgage.phoneNumber[0].number"
-                label="Phone"
-                mask="(###) ###-####"
+                borderless
+                class="input-style input-overlay  required"
+                v-model="mortgage.name"
+                label=" Mortgage Name"
                 lazy-rules
                 :rules="[
                   val =>
-                    (val && val.length == 14) || 'Please enter phone number'
+                    (val && val.length > 0) || 'Please fill the mortgage name'
                 ]"
               />
-            </div>
-            <q-input
-              dense
-              class="required"
-              v-model="mortgage.email"
-              type="email"
-              label="Email"
-              lazy-rules
-              :rules="[
-                val =>
-                  validateEmail(val) ||
-                  'You have entered an invalid email address!'
-              ]"
-            />
-          </q-card>
-          <q-card class="q-ma-xs q-pa-sm q-mt-md">
-            <p class="form-heading">Mortgage Address</p>
-            <AutoCompleteAddress
-              :address="mortgage.address"
-              :isDropBoxEnable="false"
-              :isChecksEnable="false"
-              :value="true"
-            />
-          </q-card>
-          <div>
-            <q-card class="q-ma-xs q-pa-sm q-mt-md">
-              <p class="form-heading">Contact Info</p>
 
-              <div class="q-mt-sm">
+              <div class="row justify-between">
                 <q-select
                   dense
-                  v-model="mortgage.contact.honorific.value"
-                  :options="titles"
-                  option-label="value"
-                  label="Title"
-                  option-value="value"
-                  @input="setTitleName(mortgage.contact.honorific)"
-                  emit-value
-                  behavior="menu"
+                  borderless
+                  class=" input-style input-overlay  col-5"
+                  v-model="mortgage.phoneNumber[0].type"
+                  :options="contactTypes"
+                  option-value="machineValue"
+                  option-label="name"
                   map-options
                   options-dense
-                  class="input-extra-padding"
+                  behavior="menu"
+                  label="Type"
+                  emit-value
+                  lazy-rules
+                  :rules="[
+                    val => (val && val.length > 0) || 'Please select phone type'
+                  ]"
                 />
                 <q-input
                   dense
-                  v-model="mortgage.contact.fname"
-                  label="First Name"
-                />
-                <q-input
-                  dense
-                  v-model="mortgage.contact.lname"
-                  label="Last Name"
-                />
-                <div class="row justify-between">
-                  <q-select
-                    dense
-                    class="col-5"
-                    v-model="mortgage.contact.phoneNumber[0].type"
-                    :options="contactTypes"
-                    option-value="machineValue"
-                    option-label="name"
-                    label="Type"
-                    behavior="menu"
-                    emit-value
-                    map-options
-                    options-dense
-                  />
-                  <q-input
-                    dense
-                    class="col-6"
-                    v-model.number="mortgage.contact.phoneNumber[0].number"
-                    label="Phone1"
-                    mask="(###) ###-####"
-                  />
-                </div>
-                <q-input
-                  class="q-mb-md"
-                  dense
-                  v-model="mortgage.contact.email"
+                  borderless
+                  class="input-style input-overlay  required col-6"
+                  v-model.number="mortgage.phoneNumber[0].number"
+                  label="Phone"
+                  mask="(###) ###-####"
                   lazy-rules
                   :rules="[
                     val =>
-                      validateNonRequiredEmail(val) ||
-                      'You have entered an invalid email address!'
+                      (val && val.length == 14) || 'Please enter phone number'
                   ]"
-                  label="Email"
                 />
               </div>
-            </q-card>
+              <q-input
+                dense
+                borderless
+                class="input-style input-overlay  required"
+                v-model="mortgage.email"
+                type="email"
+                label="Email"
+                lazy-rules
+                :rules="[
+                  val =>
+                    validateEmail(val) ||
+                    'You have entered an invalid email address!'
+                ]"
+              />
+            </div>
+            <div class="q-ma-xs q-pa-sm q-mt-md">
+              <p class="form-heading">Mortgage Address</p>
+              <AutoCompleteAddress
+                :address="mortgage.address"
+                :isDropBoxEnable="false"
+                :isChecksEnable="false"
+                :value="true"
+              />
+            </div>
+            <div>
+              <div class="q-ma-xs q-pa-sm q-mt-md">
+                <p class="form-heading">Contact Info</p>
+
+                <div class="q-mt-sm">
+                  <q-select
+                    dense
+                    borderless
+                    v-model="mortgage.contact.honorific.value"
+                    :options="titles"
+                    option-label="value"
+                    label="Title"
+                    option-value="value"
+                    @input="setTitleName(mortgage.contact.honorific)"
+                    emit-value
+                    behavior="menu"
+                    map-options
+                    options-dense
+                    class="input-style input-overlay input-extra-padding"
+                  />
+                  <q-input
+                    dense
+                    class="input-style input-overlay "
+                    borderless
+                    v-model="mortgage.contact.fname"
+                    label="First Name"
+                  />
+                  <q-input
+                    dense
+                    borderless
+                    class="input-style input-overlay "
+                    v-model="mortgage.contact.lname"
+                    label="Last Name"
+                  />
+                  <div class="row justify-between">
+                    <q-select
+                      dense
+                      class="input-style input-overlay  col-5"
+                      v-model="mortgage.contact.phoneNumber[0].type"
+                      :options="contactTypes"
+                      option-value="machineValue"
+                      option-label="name"
+                      label="Type"
+                      behavior="menu"
+                      emit-value
+                      map-options
+                      options-dense
+                    />
+                    <q-input
+                      dense
+                      borderless
+                      class="input-style input-overlay  col-6"
+                      v-model.number="mortgage.contact.phoneNumber[0].number"
+                      label="Phone1"
+                      mask="(###) ###-####"
+                    />
+                  </div>
+                  <q-input
+                    class="input-style input-overlay q-mb-md"
+                    dense
+                    borderless
+                    v-model="mortgage.contact.email"
+                    lazy-rules
+                    :rules="[
+                      val =>
+                        validateNonRequiredEmail(val) ||
+                        'You have entered an invalid email address!'
+                    ]"
+                    label="Email"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="q-ma-xs q-py-sm  q-px-xs q-mt-md">
+              <p class="form-heading">Other Info</p>
+              <q-input
+                dense
+                borderless
+                class="input-style input-overlay"
+                v-model="mortgage.info.website"
+                label="Website"
+                lazy-rules
+                :rules="[val => validateUrl(val) || 'Please fill your website']"
+              />
+              <q-input
+                borderless
+                class="input-style input-overlay  q-mb-sm"
+                dense
+                v-model="mortgage.info.notes"
+                label="Notes"
+              />
+            </div>
           </div>
-          <q-card class="q-ma-xs q-pa-sm q-mt-md">
-            <p class="form-heading">Other Info</p>
-            <q-input
-              dense
-              v-model="mortgage.info.website"
-              label="Website"
-              lazy-rules
-              :rules="[val => validateUrl(val) || 'Please fill your website']"
-            />
-            <q-input
-              class="q-mb-sm"
-              dense
-              v-model="mortgage.info.notes"
-              label="Notes"
-            />
-          </q-card>
-        </div>
-        <div>
-          <q-btn
-            color="primary"
-            class="full-width q-mt-auto text-capitalize"
-            @click="onAddMortgageButtonClick"
-            size="'xl'"
-            :label="isEdit ? 'SAVE' : 'Add Mortgage'"
-          >
-          </q-btn>
-        </div>
-      </q-form>
+          <div></div>
+        </q-form>
+      </div>
+      <div class="rounded-footer">
+        <q-btn
+          color="primary"
+          class="button-width-90 q-mt-md rounded  text-capitalize"
+          @click="onAddMortgageButtonClick"
+          size="'xl'"
+          :label="isEdit ? 'SAVE' : 'Add Mortgage'"
+        >
+        </q-btn>
+      </div>
     </div>
   </q-page>
 </template>

@@ -4,7 +4,7 @@
       <q-toolbar
         class="row bg-primary rounded-header "
         v-if="$route.name === 'dashboard'"
-        style="height:100px; overflow:hidden"
+        style="height:100px; overflow:visible"
       >
         <q-btn
           flat
@@ -15,33 +15,34 @@
           @click="onMenuButtonClick"
         ></q-btn>
         <div class="row">
-          <div class=" column justify-center   ">
-            <img
-              class="overlay "
-              src="~assets/backComponent.svg"
-              style="width:90%;margin-left:-30%;"
-            />
-            <img
-              class="overlay q-ml-lg q-my-xl  "
-              src="~assets/claimLogoDashboard.png"
-              style="width:16%; "
-            />
+          <div class="  column justify-center   ">
+            <div
+              class="overlay"
+              style="width:25%;height:10vh;margin-left:5%; background: radial-gradient(closest-side,  #F6d365,#F19733,#F190);"
+            >
+              <img
+                class="overlay q-ml-lg q-my-xl  "
+                src="~assets/claimLogoDashboard.png"
+                style="margin-top:8px;height:10vh;width:80%;margin-left:15%;"
+              />
+            </div>
           </div>
           <div class=" col-5  column justify-center">
-            <img class=" overlay q-my-xl  " src="~assets/LogoShadow.svg" />
-            <img
-              class="overlay  "
-              src="~assets/Black.svg"
-              style="width:36%; margin-left:30%;"
-            />
-            <img
-              class="overlay  "
-              src="~assets/White.svg"
-              style="width:36%; margin-left:27%;"
-            />
-
-            <!-- </img>
-            </img> -->
+            <div
+              class=" overlay   "
+              style="width:30%;height:10vh;margin-left:39%; background: radial-gradient(closest-side,  #F6d365,#F19733,#F191);"
+            >
+              <img
+                class="overlay  "
+                src="~assets/Black.svg"
+                style="width:100%;height:10vh; margin-left:-10%;"
+              />
+              <img
+                class="overlay  "
+                src="~assets/White.svg"
+                style="width:100%; height:10vh;margin-left:-15%;"
+              />
+            </div>
           </div>
         </div>
       </q-toolbar>
@@ -433,15 +434,10 @@ export default {
 .overlay {
   position: absolute;
   bottom: 10;
-  // background: rgb(0, 0, 0);
-  // background: rgba(0, 0, 0, 0.5); /* Black see-through */
   color: #f1f1f1;
   width: 100%;
 
   opacity: 4;
   color: white;
-  // font-size: 20px;
-  // padding: 20px;
-  // text-align: center;
 }
 </style>
