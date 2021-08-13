@@ -5,212 +5,235 @@
         :dialogName="componentName"
         @closeDialog="$emit('closeDialog', false)"
       />
-
-      <q-form
-        class="q-pa-lg"
-        style="height: calc(100vh - 51px)"
-        ref="vendorForm"
-      >
-        <div
-          class="full-width"
-          style="
-            height: calc(100vh - 145px);
-            overflow-y: auto;
-            margin-bottom: 10px;
-          "
+      <div class="mobile-container-page form-color ">
+        <q-form
+          class="q-pa-lg "
+          style="height: calc(100vh - 51px)"
+          ref="vendorForm"
         >
-          <q-card class="q-ma-xs q-pa-sm">
-            <q-input
-              dense
-              class="required"
-              v-model="vendor.companyName"
-              label=" Company Name"
-              lazy-rules
-              :rules="[
-                val => (val && val.length > 0) || 'Please fill the company name'
-              ]"
-            />
-            <div>
-              <q-select
-                dense
-                class="full-width required"
-                v-model="vendor.industry.value"
-                use-input
-                input-debounce="0"
-                option-label="name"
-                label=" Industry"
-                :options="options"
-                option-value="name"
-                @filter="searchFilterBy"
-                @input="setVendorIndustryName"
-                behavior="menu"
-                options-dense
-                emit-value
-                :disable="!industryFilterDisabled"
-                lazy-rules
-                options-dense
-                :rules="[
-                  val =>
-                    (val && val.length > 0) || 'Please select the industry type'
-                ]"
-              >
-                <template v-slot:no-option>
-                  <q-item>
-                    <q-item-section class="text-black">
-                      No results
-                    </q-item-section>
-                  </q-item>
-                </template>
-              </q-select>
-            </div>
-            <div class="row justify-between">
-              <q-select
-                dense
-                class="col-5"
-                v-model="vendor.phoneNumber.type"
-                :options="contactTypes"
-                option-value="machineValue"
-                option-label="name"
-                map-options
-                options-dense
-                behavior="menu"
-                label="Type"
-                emit-value
-                lazy-rules
-                :rules="[
-                  val => (val && val.length > 0) || 'Please select phone type'
-                ]"
-              />
+          <div class="full-width  rounded bg-white">
+            <div class="q-ma-xs q-px-xs q-py-sm rounded ">
               <q-input
                 dense
-                class="required col-6"
-                v-model.number="vendor.phoneNumber.number"
-                label="Phone"
-                mask="(###) ###-####"
+                class="input-style input-overlay required"
+                borderless
+                v-model="vendor.companyName"
+                label=" Company Name"
                 lazy-rules
                 :rules="[
                   val =>
-                    (val && val.length == 14) || 'Please enter phone number'
+                    (val && val.length > 0) || 'Please fill the company name'
                 ]"
               />
-            </div>
-            <q-input
-              dense
-              class="required"
-              v-model="vendor.email"
-              type="email"
-              label="Email"
-              lazy-rules
-              :rules="[
-                val =>
-                  validateEmail(val) ||
-                  'You have entered an invalid email address!'
-              ]"
-            />
-          </q-card>
-          <q-card class="q-ma-xs q-pa-sm q-mt-md">
-            <p class="form-heading">Company's Address</p>
-            <AutoCompleteAddress
-              :id="'AddVendor'"
-              :address="vendor.mailingAddress"
-              :isDropBoxEnable="false"
-              :isChecksEnable="false"
-              :value="true"
-            />
-          </q-card>
-          <div>
-            <q-card class="q-ma-xs q-pa-sm q-mt-md">
-              <p class="form-heading">Contact Info</p>
-
-              <div class="q-mt-sm">
+              <div>
                 <q-select
                   dense
-                  v-model="vendor.contact.honorific.value"
-                  :options="titles"
-                  option-label="value"
-                  label="Title"
-                  option-value="value"
-                  @input="setTitleName(vendor.contact.honorific)"
-                  emit-value
+                  borderless
+                  class="input-style input-overlay  required"
+                  v-model="vendor.industry.value"
+                  use-input
+                  input-debounce="0"
+                  option-label="name"
+                  label=" Industry"
+                  :options="options"
+                  option-value="name"
+                  @filter="searchFilterBy"
+                  @input="setVendorIndustryName"
                   behavior="menu"
+                  options-dense
+                  emit-value
+                  :disable="!industryFilterDisabled"
+                  lazy-rules
+                  options-dense
+                  :rules="[
+                    val =>
+                      (val && val.length > 0) ||
+                      'Please select the industry type '
+                  ]"
+                >
+                  <template v-slot:no-option>
+                    <q-item>
+                      <q-item-section class="text-black">
+                        No results
+                      </q-item-section>
+                    </q-item>
+                  </template>
+                </q-select>
+              </div>
+              <div class="row justify-between">
+                <q-select
+                  dense
+                  borderless
+                  class="input-style input-overlay col-5"
+                  v-model="vendor.phoneNumber.type"
+                  :options="contactTypes"
+                  option-value="machineValue"
+                  option-label="name"
                   map-options
                   options-dense
-                  class="input-extra-padding"
+                  behavior="menu"
+                  label="Type"
+                  emit-value
+                  lazy-rules
+                  :rules="[
+                    val => (val && val.length > 0) || 'Please select phone type'
+                  ]"
                 />
                 <q-input
+                  borderless
                   dense
-                  v-model="vendor.contact.fname"
-                  label="First Name"
-                />
-                <q-input
-                  dense
-                  v-model="vendor.contact.lname"
-                  label="Last Name"
-                />
-                <div class="row justify-between">
-                  <q-select
-                    dense
-                    class="col-5"
-                    v-model="vendor.contact.phoneNumber[0].type"
-                    :options="contactTypes"
-                    option-value="machineValue"
-                    option-label="name"
-                    label="Type"
-                    behavior="menu"
-                    emit-value
-                    map-options
-                    options-dense
-                  />
-                  <q-input
-                    dense
-                    class="col-6"
-                    v-model.number="vendor.contact.phoneNumber[0].number"
-                    label="Phone1"
-                    mask="(###) ###-####"
-                  />
-                </div>
-                <q-input
-                  class="q-mb-md"
-                  dense
-                  v-model="vendor.contact.email"
-                  label="Email"
+                  class=" input-style input-overlay required col-6"
+                  v-model.number="vendor.phoneNumber.number"
+                  label="Phone"
+                  mask="(###) ###-####"
                   lazy-rules
                   :rules="[
                     val =>
-                      validateNonRequiredEmail(val) ||
-                      'You have entered an invalid email address!'
+                      (val && val.length == 14) || 'Please enter phone number'
                   ]"
                 />
               </div>
-            </q-card>
-          </div>
-          <q-card class="q-ma-xs q-pa-sm q-mt-md">
-            <p class="form-heading">Other Info</p>
-            <q-input
-              dense
-              v-model="vendor.website"
-              label="Website"
-              lazy-rules
-              :rules="[val => validateUrl(val) || 'Please fill your website']"
-            />
-            <q-input
-              class="q-mb-sm"
-              dense
-              v-model="vendor.notes"
-              label="Notes"
-            />
-          </q-card>
-        </div>
+              <q-input
+                borderless
+                dense
+                class="input-style input-overlay required"
+                v-model="vendor.email"
+                type="email"
+                label="Email"
+                lazy-rules
+                :rules="[
+                  val =>
+                    validateEmail(val) ||
+                    'You have entered an invalid email address!'
+                ]"
+              />
+            </div>
+            <div class="q-ma-xs q-px-xs q-mt-md">
+              <p class="form-heading">Company's Address</p>
+              <AutoCompleteAddress
+                :id="'AddVendor'"
+                :address="vendor.mailingAddress"
+                :isDropBoxEnable="false"
+                :isChecksEnable="false"
+                :value="true"
+              />
+            </div>
+            <div>
+              <div class="q-ma-xs q-pa-xs q-py-sm q-mt-md">
+                <p class="form-heading">Contact Info</p>
 
+                <div class="q-mt-sm">
+                  <q-select
+                    borderless
+                    dense
+                    v-model="vendor.contact.honorific.value"
+                    :options="titles"
+                    option-label="value"
+                    label="Title"
+                    option-value="value"
+                    @input="setTitleName(vendor.contact.honorific)"
+                    emit-value
+                    behavior="menu"
+                    map-options
+                    options-dense
+                    class="input-style input-overlay input-extra-padding"
+                  />
+                  <q-input
+                    borderless
+                    class="input-overlay input-style"
+                    dense
+                    v-model="vendor.contact.fname"
+                    label="First Name"
+                  />
+                  <q-input
+                    dense
+                    borderless
+                    class="input-style input-overlay"
+                    v-model="vendor.contact.lname"
+                    label="Last Name"
+                  />
+                  <div class="row justify-between">
+                    <q-select
+                      borderless
+                      dense
+                      class="input-style input-overlay col-5"
+                      v-model="vendor.contact.phoneNumber[0].type"
+                      :options="contactTypes"
+                      option-value="machineValue"
+                      option-label="name"
+                      label="Type"
+                      behavior="menu"
+                      emit-value
+                      map-options
+                      options-dense
+                    />
+                    <q-input
+                      dense
+                      borderless
+                      class="input-style input-overlay col-6"
+                      v-model.number="vendor.contact.phoneNumber[0].number"
+                      label="Phone1"
+                      mask="(###) ###-####"
+                    />
+                  </div>
+                  <q-input
+                    borderless
+                    class="input-style input-overlay q-mb-md"
+                    dense
+                    v-model="vendor.contact.email"
+                    label="Email"
+                    lazy-rules
+                    :rules="[
+                      val =>
+                        validateNonRequiredEmail(val) ||
+                        'You have entered an invalid email address!'
+                    ]"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="q-ma-xs q-py-sm  q-px-xs q-mt-md">
+              <p class="form-heading">Other Info</p>
+              <q-input
+                dense
+                borderless
+                class="input-style input-overlay"
+                v-model="vendor.website"
+                label="Website"
+                lazy-rules
+                :rules="[val => validateUrl(val) || 'Please fill your website']"
+              />
+              <q-input
+                borderless
+                class="input-style q-mb-sm input-overlay"
+                dense
+                v-model="vendor.notes"
+                label="Notes"
+              />
+            </div>
+          </div>
+
+          <!-- <q-btn
+            color="primary"
+            class="full-width q-mt-auto text-capitalize"
+            @click="onAddVendorButtonClick"
+            size="'xl'"
+            :label="isEdit ? 'SAVE' : 'Add Vendor'"
+          >
+          </q-btn> -->
+        </q-form>
+      </div>
+      <div class=" rounded-footer">
         <q-btn
           color="primary"
-          class="full-width q-mt-auto text-capitalize"
+          class="button-width-90 q-mt-md rounded text-capitalize"
           @click="onAddVendorButtonClick"
           size="'xl'"
+          style="z-index:20000;"
           :label="isEdit ? 'SAVE' : 'Add Vendor'"
         >
         </q-btn>
-      </q-form>
+      </div>
     </div>
   </q-page>
 </template>

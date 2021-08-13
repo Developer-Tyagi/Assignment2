@@ -10,7 +10,7 @@
       <input
         type="text"
         :id="'id' + id"
-        class="input-autocomplete"
+        class=" input-autocomplete"
         :v-model="'model' + id"
         placeholder="AutoComplete address"
         :disabled="isFieldsDisable"
@@ -19,9 +19,10 @@
     </div>
     <div class="row justify-between">
       <q-input
+        borderless
         dense
         :class="{ required: isAsteriskMark }"
-        class="col-3"
+        class="input-style input-overlay col-3"
         v-model="address.houseNumber"
         label="House/Flat No"
         lazy-rules
@@ -32,8 +33,9 @@
       />
       <q-input
         dense
+        borderless
         :class="{ required: isAsteriskMark }"
-        class="col-8"
+        class="input-style input-overlay col-8"
         v-model="address.streetAddress"
         label="Street"
         lazy-rules
@@ -45,7 +47,9 @@
     </div>
     <q-input
       dense
+      borderless
       :class="{ required: isAsteriskMark }"
+      class="input-style input-overlay"
       v-model="address.addressLocality"
       label="City"
       lazy-rules
@@ -55,9 +59,11 @@
 
     <q-select
       dense
+      borderless
       :class="{ required: isAsteriskMark }"
       v-model="address.addressRegion"
       :options="states"
+      class="input-style input-overlay"
       label="State"
       behavior="menu"
       lazy-rules
@@ -66,7 +72,9 @@
     />
     <q-select
       dense
+      borderless
       :class="{ required: isAsteriskMark }"
+      class="input-style input-overlay"
       v-model="address.addressCountry"
       label="Country"
       behavior="menu"
@@ -76,8 +84,10 @@
     />
 
     <q-input
+      borderless
       dense
       :class="{ required: isAsteriskMark }"
+      class="input-style input-overlay"
       v-model="address.postalCode"
       label="ZIP Code"
       lazy-rules
@@ -95,9 +105,10 @@
     </div>
     <q-input
       dense
+      borderless
       v-if="address.dropBox.isPresent && isDropBoxEnable"
       v-model="address.dropBox.info"
-      class="required"
+      class="input-style input-overlay required"
       label="Gate/ Dropbox"
       :rules="[val => checkValidations(val) || 'Please fill the dropbox info']"
     />
@@ -111,6 +122,7 @@
     >
       <input
         type="text"
+        borderless
         :id="'id' + id"
         class="input-autocomplete"
         :v-model="'model' + id"
