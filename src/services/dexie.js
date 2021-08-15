@@ -24,7 +24,8 @@ localDB.version(1).stores({
   roles: 'id',
   vendorIndustry: 'id',
   tasks: 'id',
-  officeTasks: 'id'
+  officeTasks: 'id',
+  allUsers: 'id'
 });
 
 export function getCollection(name) {

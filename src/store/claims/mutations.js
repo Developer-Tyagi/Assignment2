@@ -109,6 +109,7 @@ export function setClaimTasks(state, claimTasks) {
     ...task.attributes
   }));
 }
+
 export function setPhases(state, phases) {
   state.phases = phases.map(type => ({
     name: type.attributes.value,

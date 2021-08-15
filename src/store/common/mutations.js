@@ -146,3 +146,6 @@ export function setEditOfflineClientIcon(state, isOfflineClientEdit) {
 export function isLastRouteEdit(state, isEdit) {
   state.isEdit = isEdit;
 }
+export async function setOfflineUsers(state) {
+  state.allUsers = await getCollection('allUsers').toArray();
+}
