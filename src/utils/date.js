@@ -14,3 +14,6 @@ export function dateWithTime(dateString) {
 export function dateToTime(dateString) {
   return dateString ? date.formatDate(dateString, 'hh:mm') : '';
 }
+export function dateToShowWithTime(dateString) {
+  return dateString ? date.formatDate(dateString, 'YYYY-MM-DD HH:mm A') : '';
+}
