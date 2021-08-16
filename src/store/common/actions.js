@@ -772,11 +772,10 @@ export async function syncOfficeTasks({ dispatch }) {
         const index = items.findIndex(item => item.oldId === task.id);
 
         if (index > -1) {
-          console.log('in index conidtion');
           task.id = items[index].newId;
         }
         const payload = { id: items[0].newId, ...task };
-        console.log(task, 'dispatch task');
+
         dispatch('addMultipleTaskRemote', payload).then(res => ({
           ...res,
           localId
