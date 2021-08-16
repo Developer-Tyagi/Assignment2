@@ -12,7 +12,7 @@
           ref="mortgageForm"
         >
           <div class="full-width  rounded bg-white">
-            <div class="q-ma-xs q-px-xs q-py-sm rounded">
+            <div class=" rounded">
               <q-input
                 dense
                 borderless
@@ -74,8 +74,8 @@
                 ]"
               />
             </div>
-            <div class="q-ma-xs q-pa-sm q-mt-md">
-              <p class="form-heading">Mortgage Address</p>
+            <div class="q-mt-md">
+              <p class="form-heading q-mx-sm">Mortgage Address</p>
               <AutoCompleteAddress
                 :address="mortgage.address"
                 :isDropBoxEnable="false"
@@ -84,10 +84,10 @@
               />
             </div>
             <div>
-              <div class="q-ma-xs q-pa-sm q-mt-md">
-                <p class="form-heading">Contact Info</p>
+              <div class=" q-mt-md">
+                <p class="q-mx-sm form-heading">Contact Info</p>
 
-                <div class="q-mt-sm">
+                <div class="q-mt-sm ">
                   <q-select
                     dense
                     borderless
@@ -156,8 +156,8 @@
                 </div>
               </div>
             </div>
-            <div class="q-ma-xs q-py-sm  q-px-xs q-mt-md">
-              <p class="form-heading">Other Info</p>
+            <div class=" q-py-sm  q-mt-md">
+              <p class="form-heading q-mx-sm">Other Info</p>
               <q-input
                 dense
                 borderless

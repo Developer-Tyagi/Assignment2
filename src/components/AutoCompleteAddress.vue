@@ -10,7 +10,8 @@
       <input
         type="text"
         :id="'id' + id"
-        class=" input-autocomplete"
+        class=" input-style  input-autocomplete"
+        style="  margin: 0 -6px 0 -6px;"
         :v-model="'model' + id"
         placeholder="AutoComplete address"
         :disabled="isFieldsDisable"
@@ -369,12 +370,11 @@ export default {
 <style lang="scss">
 .input-autocomplete {
   width: 100%;
-  margin-left: auto;
-  border: 0;
+  // border: 0;
   line-height: 24px;
   padding: 16px 0;
-  border-bottom: 1px solid #c2c2c2;
-  outline: none;
+  // border-bottom: 1px solid #c2c2c2;
+  // outline: none;
   position: relative;
   text-transform: capitalize;
   &::placeholder {
@@ -382,7 +382,7 @@ export default {
   }
 
   &:focus {
-    border-bottom: 2px solid #f05a26;
+    // border-bottom: 2px solid #f05a26;
 
     &::placeholder {
       font-size: 12px;
