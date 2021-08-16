@@ -2,7 +2,7 @@ import request from '@api';
 import { buildApiData } from 'src/utils/api';
 import localDB, { getCollection } from '@services/dexie';
 import { LocalStorage } from 'quasar';
-import { estimator } from '../claims/getters';
+import { claim, estimator } from '../claims/getters';
 
 export function setLoading({ commit }, value) {
   commit('setLoading', value);
@@ -34,19 +34,33 @@ export async function getClientTypes({
   }
 }
 
-export async function getAllUsers({ commit, dispatch }, params) {
+export async function getAllUsers(
+  {
+    rootState: {
+      common: { isOnline }
+    },
+    commit,
+    dispatch
+  },
+  params
+) {
   dispatch('setLoading', true);
-  try {
-    const { data } = await request.get('/users', params);
-    commit('setAllUsers', data);
+  if (isOnline) {
+    try {
+      const { data } = await request.get('/users', params);
+      commit('setAllUsers', data);
+      dispatch('setLoading', false);
+    } catch (e) {
+      console.log(e);
+      dispatch('setLoading', false);
+      dispatch('setNotification', {
+        type: 'negative',
+        message: e.response[0].title
+      });
+    }
+  } else {
+    commit('setOfflineUsers', params);
     dispatch('setLoading', false);
-  } catch (e) {
-    console.log(e);
-    dispatch('setLoading', false);
-    dispatch('setNotification', {
-      type: 'negative',
-      message: e.response[0].title
-    });
   }
 }
 
@@ -754,11 +768,16 @@ export async function syncOfficeTasks({ dispatch }) {
     const createOfficeTasks = offlineTasks.map(
       ({ id: localId, offline, ...task }) => {
         const items = LocalStorage.getItem('claim') || [];
+
         const index = items.findIndex(item => item.oldId === task.id);
+
         if (index > -1) {
+          console.log('in index conidtion');
           task.id = items[index].newId;
         }
-        dispatch('addMultipleTaskRemote', task).then(res => ({
+        const payload = { id: items[0].newId, ...task };
+        console.log(task, 'dispatch task');
+        dispatch('addMultipleTaskRemote', payload).then(res => ({
           ...res,
           localId
         }));
@@ -766,12 +785,12 @@ export async function syncOfficeTasks({ dispatch }) {
     );
     return new Promise((resolve, reject) =>
       Promise.allSettled(createOfficeTasks).then(tasks => {
-        const createOfficeTasks = tasks
+        const createdOfficeTasks = tasks
           .filter(({ status }) => status === 'fulfilled')
           .map(({ value }) => {
             return;
           });
-        return Promise.allSettled(createdClients).then(results => {
+        return Promise.allSettled(createdOfficeTasks).then(results => {
           resolve('All');
         });
       })
