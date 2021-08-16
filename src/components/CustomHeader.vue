@@ -85,9 +85,11 @@
             v-if="
               $route.name == 'create client' &&
                 !isOnline &&
-                editSelectedClient.id
+                editSelectedClient.id &&
+                isOfflineClientEdit
             "
             name="edit"
+            @click="onClickEditIcon"
             size="xs"
             class="edit-icon"
             color="white"
