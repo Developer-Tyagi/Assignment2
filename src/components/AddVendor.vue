@@ -12,7 +12,7 @@
           ref="vendorForm"
         >
           <div class="full-width  rounded bg-white">
-            <div class="q-ma-xs q-px-xs q-py-sm rounded ">
+            <div class="rounded ">
               <q-input
                 dense
                 class="input-style input-overlay required"
@@ -108,8 +108,8 @@
                 ]"
               />
             </div>
-            <div class="q-ma-xs q-px-xs q-mt-md">
-              <p class="form-heading">Company's Address</p>
+            <div class=" q-mt-md">
+              <p class="q-px-sm form-heading">Company's Address</p>
               <AutoCompleteAddress
                 :id="'AddVendor'"
                 :address="vendor.mailingAddress"
@@ -119,8 +119,8 @@
               />
             </div>
             <div>
-              <div class="q-ma-xs q-pa-xs q-py-sm q-mt-md">
-                <p class="form-heading">Contact Info</p>
+              <div class=" q-py-sm q-mt-md">
+                <p class="form-heading q-mx-sm">Contact Info</p>
 
                 <div class="q-mt-sm">
                   <q-select
@@ -192,8 +192,8 @@
                 </div>
               </div>
             </div>
-            <div class="q-ma-xs q-py-sm  q-px-xs q-mt-md">
-              <p class="form-heading">Other Info</p>
+            <div class=" q-py-sm  q-mt-md">
+              <p class="form-heading q-mx-sm">Other Info</p>
               <q-input
                 dense
                 borderless
@@ -212,15 +212,6 @@
               />
             </div>
           </div>
-
-          <!-- <q-btn
-            color="primary"
-            class="full-width q-mt-auto text-capitalize"
-            @click="onAddVendorButtonClick"
-            size="'xl'"
-            :label="isEdit ? 'SAVE' : 'Add Vendor'"
-          >
-          </q-btn> -->
         </q-form>
       </div>
       <div class=" rounded-footer">
