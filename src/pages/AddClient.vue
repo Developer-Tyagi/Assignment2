@@ -1232,7 +1232,7 @@ import PropertyInfo from 'components/PropertyInfo';
 import LossInfo from 'components/LossInfo';
 import ExpertVendorInfo from 'components/ExpertVendorInfo';
 import InsuranceInfo from 'components/InsuranceInfo';
-import { dateToSend, dateToShow } from '@utils/date';
+import { dateToSend, dateToShow, dateToShowWithTime } from '@utils/date';
 import { sendPhoneNumber } from '@utils/clickable';
 import localDB, { getCollection } from '@services/dexie';
 
@@ -1270,6 +1270,7 @@ export default {
   },
   data() {
     return {
+      officeTasks: [],
       clientResponse: '',
       propertyID: '',
       onlineClientResponse: '',
@@ -1623,6 +1624,7 @@ export default {
         this.editSelectedClient.id
       );
       this.propertyID = this.editSelectedClient.propertyID;
+      this.officeTasks = await this.getClaimTasks(this.selectedClaim.id);
 
       if (this.editSelectedClient.id) {
         if (this.editSelectedClient.type) {
@@ -1780,8 +1782,6 @@ export default {
       //Claim Data Pre-filling
       this.insuranceDetails.policyNumber = this.selectedClaim.policyInfo.number;
       // insurance Info stepper  pre-filling
-      console.log(this.editSelectedClient, 'client data');
-      console.log(this.selectedClaim, 'claim data');
 
       if (
         this.selectedClaim.policyInfo &&
@@ -2099,13 +2099,8 @@ export default {
           .contractInfo.source.detail
           ? this.selectedClaim.contractInfo.source.detail
           : '';
-        this.contractInfo.firstContractDate = dateToShow(
+        this.contractInfo.firstContractDate = dateToShowWithTime(
           this.selectedClaim.contractInfo.dateOfFirstContact
-        );
-
-        this.contractInfo.time = date.formatDate(
-          this.selectedClaim.contractInfo.dateOfFirstContact,
-          'HH:mm'
         );
 
         this.contractInfo.contractDate = dateToShow(
@@ -2131,11 +2126,12 @@ export default {
       }
 
       //Company Personnal stepper data pre-filling
-      if (this.selectedClaim.personnel[0]) {
-        this.companyPersonnel.personParty.id = this.selectedClaim.personnel[0]
-          .personnelID
-          ? this.selectedClaim.personnel[0].personnelID
-          : '';
+      if (this.selectedClaim.personnel) {
+        this.companyPersonnel.personParty.id =
+          this.selectedClaim.personnel[0] &&
+          this.selectedClaim.personnel[0].personnelID
+            ? this.selectedClaim.personnel[0].personnelID
+            : '';
         this.companyPersonnel.personnel.value = this.selectedClaim.personnel[0]
           .role.value
           ? this.selectedClaim.personnel[0].role.value
@@ -2160,17 +2156,32 @@ export default {
           ? this.selectedClaim.personnel[0].note
           : '';
       }
+
+      //Office Task Stepper Prefilling
+
+      if (this.officeTasks && this.officeTasks.tasks) {
+        this.officeTask.officeActionRequired = true;
+        for (let index = 0; index < this.officeTasks.tasks.length; index++) {
+          this.officeTaskActions[index] = this.officeTasks.tasks[index];
+        }
+      }
     }
     await this.getClientTypes();
     await this.getTitles();
     await this.getContactTypes();
     await this.getPropertyTypes();
 
-    this.contractInfo.time = date.formatDate(Date.now(), 'hh:mm A');
-    this.companyPersonnel.startDate = this.companyPersonnel.endDate = this.contractInfo.firstContractDate = this.contractInfo.contractDate = this.insuranceDetails.policyEffectiveDate = this.lossInfo.dateOfLoss = this.lossInfo.deadlineDate = this.lossInfo.recovDeadline = date.formatDate(
+    this.companyPersonnel.startDate = this.companyPersonnel.endDate = this.contractInfo.contractDate = this.insuranceDetails.policyEffectiveDate = this.lossInfo.dateOfLoss = this.lossInfo.deadlineDate = this.lossInfo.recovDeadline = date.formatDate(
       Date.now(),
       'MM/DD/YYYY'
     );
+    if (this.isOnline) {
+      this.contractInfo.firstContractDate = date.formatDate(
+        Date.now(),
+        'YYYY-MM-DD HH:mm A'
+      );
+    }
+
     this.insuranceDetails.policyExpireDate = date.formatDate(
       date.addToDate(Date.now(), {
         year: 1
@@ -2279,7 +2290,9 @@ export default {
       'isOnline',
       'editSelectedClient',
       'getSelectedClaim',
-      'isOfflineClientEdit'
+      'isOfflineClientEdit',
+      'claimTasks',
+      'officeTaskActions'
     ])
   },
 
@@ -2307,7 +2320,9 @@ export default {
       'addIndustry',
       'getSingleClaimDetails',
       'editClientLocal',
-      'editClaimLocal'
+      'editClaimLocal',
+      'getClaimTasks',
+      'editMultipleTaskToClaim'
     ]),
     ...mapMutations([
       'setSelectedLeadOffline',
@@ -2319,7 +2334,9 @@ export default {
 
     successMessage,
     dateToShow,
+    dateToShowWithTime,
     sendPhoneNumber,
+
     onDamageOsToggleButtonOff() {
       if (!this.lossInfo.isDamageOSToggle) {
         this.lossInfo.osDamagedItems.length = 0;
@@ -2804,6 +2821,7 @@ export default {
                 ? this.contractInfo.claimFeeRate
                 : 0
             },
+
             dateOfFirstContact: dateToSend(this.contractInfo.firstContractDate),
 
             source: {
@@ -2847,6 +2865,7 @@ export default {
           ]
         }
       };
+
       if (this.isOnline) {
         delete payload.data.expertVendorInformation;
         delete payload.data.estimatingInformation;
@@ -2909,14 +2928,14 @@ export default {
           this.officeTask.officeActionRequired &&
           this.officeTask.actions.length
         ) {
-          this.addMultipleOfficeTask(response.id);
+          this.addMultipleOfficeTask(response);
         } else {
           this.$router.push('/clients');
         }
       }
     },
 
-    async addMultipleOfficeTask(id) {
+    async addMultipleOfficeTask(response) {
       if (this.officeTask.actions) {
         this.officeTask.actions.forEach(val => {
           if (val.isEnabled == true) {
@@ -2924,18 +2943,27 @@ export default {
           }
         });
       }
+
       const payload = {
-        id: id,
+        id: response.id,
         tasks: this.finalOfficeTask
       };
 
-      const response = await this.addMultipleTaskToClaim(payload);
+      if (response.offline && response.isCreate) {
+        var response = await this.addMultipleTaskToClaim(payload);
+      } else if (this.editSelectedClient.id) {
+        var response = await this.editMultipleTaskToClaim(payload);
+      } else {
+        var response = await this.addMultipleTaskToClaim(payload);
+      }
+
       if (response) {
         if (this.isOnline) {
           this.setSelectedLeadOnline();
         } else {
           this.setSelectedLeadOffline();
         }
+        this.finalOfficeTask = [];
         this.$router.push('/clients');
       }
     },

@@ -6,11 +6,14 @@
         <q-toggle
           class="q-ml-auto"
           v-model="officeTask.officeActionRequired"
-          @input="onOfficeTaskToggleButton()"
           :disable="isOfflineClientEdit"
         />
       </div>
-      <div v-if="showOfficeActions" class="office-task-list">
+      <div
+        v-if="officeTask.officeActionRequired"
+        class="office-task-list"
+        @click="onOfficeTaskToggleButton()"
+      >
         <div class="column" v-for="(action, index) in officeTaskActions">
           <div class="row q-pa-sm">
             <div class="flex">
@@ -206,6 +209,7 @@ export default {
   },
   async created() {
     await this.getOfficeTaskActions();
+    await this.getRoles();
     this.officeTaskActions.forEach(element => {
       delete element.id;
       delete element.created;

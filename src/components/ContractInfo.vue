@@ -77,75 +77,50 @@
           </template>
         </q-input>
       </div>
-      <span class="form-heading">Date of First Contact</span>
-      <div class="full-width">
-        <q-input
-          v-model="contractInfo.firstContractDate"
-          mask="##/##/####"
-          label="MM/DD/YYYY"
-          lazy-rules
-          :rules="[val => validateDate(val) || 'Invalid date!']"
-          :disable="isOfflineClientEdit"
-        >
-          <template v-slot:append>
-            <q-icon
-              name="event"
-              size="sm"
-              color="primary"
-              class="cursor-pointer"
+      <span class="form-heading">Date and Time of First Contact</span>
+      <q-input v-model="contractInfo.firstContractDate" dense>
+        <template v-slot:prepend>
+          <q-icon name="event" class="cursor-pointer">
+            <q-popup-proxy
+              ref="qDateProxy4"
+              transition-show="scale"
+              transition-hide="scale"
             >
-              <q-popup-proxy
-                ref="qDateProxy4"
-                transition-show="scale"
-                transition-hide="scale"
-              >
-                <q-date
-                  v-model="contractInfo.firstContractDate"
-                  @input="() => $refs.qDateProxy4.hide()"
-                  mask="MM/DD/YYYY"
-                ></q-date>
-              </q-popup-proxy>
-            </q-icon>
-          </template>
-        </q-input>
-      </div>
-      <span class="form-heading">Time Of First Contact</span>
-      <div class="full-width">
-        <q-input
-          v-model="contractInfo.time"
-          now
-          lazy-rules
-          :rules="[val => (val && val.length > 0) || 'Invalid time!']"
-          :with-seconds="false"
-          :disable="isOfflineClientEdit"
-        >
-          <template v-slot:append>
-            <q-icon name="access_time" class="cursor-pointer">
-              <q-popup-proxy
-                transition-show="scale"
-                transition-hide="scale"
-                ref="qTimeProxy"
-              >
-                <q-time
-                  mask="hh:mm A"
-                  v-model="contractInfo.time"
-                  @input="closeTimeDialog"
-                >
-                  <div class="row items-center justify-end">
-                    <q-btn
-                      v-close-popup
-                      label="Close"
-                      color="primary"
-                      flat
-                    ></q-btn>
-                  </div>
-                </q-time>
-              </q-popup-proxy>
-            </q-icon>
-          </template>
-        </q-input>
-      </div>
+              <q-date
+                v-model="contractInfo.firstContractDate"
+                @input="() => $refs.qDateProxy4.hide()"
+                mask="MM/DD/YYYY"
+              ></q-date>
+            </q-popup-proxy>
+          </q-icon>
+        </template>
 
+        <template v-slot:append>
+          <q-icon name="access_time" class="cursor-pointer">
+            <q-popup-proxy
+              transition-show="scale"
+              transition-hide="scale"
+              ref="qTimeProxy"
+            >
+              <q-time
+                v-model="contractInfo.firstContractDate"
+                mask="YYYY-MM-DD HH:mm A"
+                @input="closeTimeDialog"
+              >
+                <div class="row items-center justify-end">
+                  <q-btn
+                    v-close-popup
+                    label="Close"
+                    color="primary"
+                    flat
+                  ></q-btn>
+                </div>
+              </q-time>
+            </q-popup-proxy>
+          </q-icon>
+        </template>
+      </q-input>
+      <br />
       <div class="row">
         <q-btn-toggle
           v-model="contractInfo.buttonGroup"

@@ -226,10 +226,6 @@ export async function editClientLocal({ dispatch }, payload) {
         id: payload.id
       });
 
-    // dispatch('setNotification', {
-    //   type: 'warning',
-    //   message: 'Client Updated in the local database'
-    // });
     return payload;
   } catch (e) {
     console.log(e);
@@ -269,10 +265,30 @@ export async function addMultipleTaskToClaim(
   payload
 ) {
   dispatch('setLoading', true);
+
   if (isOnline) {
     return await dispatch('addMultipleTaskRemote', payload);
   } else {
     return await dispatch('addMultipleTaskLocal', payload);
+  }
+}
+
+export async function editMultipleTaskToClaim({ dispatch }, payload) {
+  try {
+    console.log(payload, 'edit payload id action');
+    await localDB.tasks
+      .where('id')
+      .equals(payload.id)
+      .modify({
+        ...payload,
+        updated: date.formatDate(Date.now(), constants.UTCFORMAT),
+        offline: true,
+        id: payload.id
+      });
+
+    return payload;
+  } catch (e) {
+    console.log(e);
   }
 }
 

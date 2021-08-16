@@ -1,6 +1,6 @@
 import request from '@api';
 import { buildApiData } from '@utils/api';
-
+import localDB, { getCollection } from '@services/dexie';
 //API for Getting All Personnel Info
 export async function getPersonnelInfo({ commit, dispatch }, id) {
   dispatch('setLoading', true);
@@ -460,11 +460,30 @@ export async function getDamageInfo({ commit, dispatch }, id) {
     });
   }
 }
-export async function getClaimTasks({ commit, dispatch }, id) {
+
+export async function getClaimTasks(
+  {
+    rootState: {
+      common: { isOnline }
+    },
+    commit,
+    dispatch
+  },
+  id
+) {
   dispatch('setLoading', true);
   try {
-    const { data } = await request.get(`claims/${id}/tasks`);
-    commit('setClaimTasks', data);
+    if (isOnline) {
+      const { data } = await request.get(`claims/${id}/tasks`);
+      commit('setClaimTasks', data);
+    } else {
+      const data = await localDB.tasks.toArray();
+      const demo = data.find(task => {
+        return task.id === id;
+      });
+      return demo;
+    }
+
     dispatch('setLoading', false);
   } catch (e) {
     console.log(e);
