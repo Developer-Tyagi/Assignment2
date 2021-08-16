@@ -77,8 +77,8 @@
           </template>
         </q-input>
       </div>
-
-      <q-input filled v-model="contractInfo.firstContractDate">
+      <span class="form-heading">Date and Time of First Contact</span>
+      <q-input v-model="contractInfo.firstContractDate" dense>
         <template v-slot:prepend>
           <q-icon name="event" class="cursor-pointer">
             <q-popup-proxy
@@ -120,7 +120,7 @@
           </q-icon>
         </template>
       </q-input>
-
+      <br />
       <div class="row">
         <q-btn-toggle
           v-model="contractInfo.buttonGroup"
