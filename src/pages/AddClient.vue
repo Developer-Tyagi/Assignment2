@@ -1625,6 +1625,7 @@ export default {
         this.editSelectedClient.id
       );
       this.propertyID = this.editSelectedClient.propertyID;
+
       this.officeTasks = await this.getClaimTasks(this.selectedClaim.id);
 
       if (this.editSelectedClient.id) {
@@ -2767,7 +2768,10 @@ export default {
           mortgageInfo: this.mortgageInfo,
           lossInfo: {
             property: {
-              id: this.isOnline ? responseData.propertyId : this.propertyID
+              id:
+                this.isOnline || !this.editSelectedClient.id
+                  ? responseData.propertyId
+                  : this.propertyID
             },
 
             claimReason: {
@@ -2972,6 +2976,7 @@ export default {
         this.$router.push('/clients');
         this.setEditOfflineClientIcon(false);
         this.editSelectedClient.id = '';
+        this.propertyID = '';
       }
     },
 
