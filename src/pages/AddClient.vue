@@ -219,6 +219,7 @@
                       ]"
                       :disable="isOfflineClientEdit"
                     />
+
                     <q-input
                       v-model.number="phoneNumber[index].number"
                       label="Phone"
@@ -1233,7 +1234,7 @@ import LossInfo from 'components/LossInfo';
 import ExpertVendorInfo from 'components/ExpertVendorInfo';
 import InsuranceInfo from 'components/InsuranceInfo';
 import { dateToSend, dateToShow, dateToShowWithTime } from '@utils/date';
-import { sendPhoneNumber } from '@utils/clickable';
+import { sendPhoneNumber, showPhoneNumber } from '@utils/clickable';
 import localDB, { getCollection } from '@services/dexie';
 
 import {
@@ -1723,9 +1724,13 @@ export default {
           this.editSelectedClient.insuredInfo.phoneNumbers[0].number
         ) {
           this.addAditionalPhoneNumberToggle = true;
-          this.phoneNumber = this.editSelectedClient.insuredInfo.phoneNumbers
-            ? this.editSelectedClient.insuredInfo.phoneNumbers
-            : '';
+          this.phoneNumber = [];
+          this.editSelectedClient.insuredInfo.phoneNumbers.forEach(val => {
+            this.phoneNumber.push({
+              type: val.type,
+              number: showPhoneNumber(val.number)
+            });
+          });
         } else {
           this.addAditionalPhoneNumberToggle = false;
         }
@@ -2336,7 +2341,7 @@ export default {
     dateToShow,
     dateToShowWithTime,
     sendPhoneNumber,
-
+    showPhoneNumber,
     onDamageOsToggleButtonOff() {
       if (!this.lossInfo.isDamageOSToggle) {
         this.lossInfo.osDamagedItems.length = 0;
@@ -2965,6 +2970,8 @@ export default {
         }
         this.finalOfficeTask = [];
         this.$router.push('/clients');
+        this.setEditOfflineClientIcon(false);
+        this.editSelectedClient.id = '';
       }
     },
 
