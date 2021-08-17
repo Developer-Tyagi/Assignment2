@@ -15,7 +15,7 @@
           @click="onMenuButtonClick"
         ></q-btn>
         <div class="row">
-          <div class="  column justify-center   ">
+          <div class="  column justify-center">
             <div
               class="overlay"
               style="width:25%;height:10vh;margin-left:5%; background: radial-gradient(closest-side,  #F6d365,#F19733,#F190);"
@@ -23,7 +23,7 @@
               <img
                 class="overlay q-ml-lg q-my-xl  "
                 src="~assets/claimLogoDashboard.png"
-                style="margin-top:8px;height:10vh;width:80%;margin-left:15%;"
+                style="margin-top:8px;height:10vh;width:80%;margin-left:14%;"
               />
             </div>
           </div>
@@ -112,18 +112,19 @@
       content-class="bg-side-panel"
       @hide="onMenuHide()"
     >
-      <div style="height: calc(120px)" class="q-px-md q-pt-lg">
-        <div class="row no-wrap">
-          <q-avatar
-            rounded
-            size="54px"
-            font-size="42px"
-            color="yellow-9"
-            text-color="white"
-            icon="user"
-          />
+      <div style="height: calc(100px)" class="q-px-md q-pt-lg bg-primary ">
+        <div class="row no-wrap ">
+          <div>
+            <q-avatar
+              size="54px"
+              font-size="42px"
+              color="white"
+              text-color="white"
+              icon="user"
+            />
+          </div>
           <div
-            class="column text-white q-pa-sm q-ml-sm"
+            class=" column text-white q-pa-sm q-ml-sm"
             style="width: calc(100% - 54px)"
           >
             <div class="text-capitalize ellipsis full-width">
@@ -140,7 +141,7 @@
         </div>
       </div>
       <q-scroll-area style="height: calc(100% - 220px)">
-        <div class="q-px-md">
+        <div class="q-pr-md">
           <q-list separator dark>
             <q-item
               clickable
@@ -149,7 +150,7 @@
               :key="link.title"
               @click="routeTo(link)"
               v-bind="link"
-              class="q-px-none"
+              class=" q-mt-md   bg-white rounded-sidebar q-px-none"
               v-if="
                 (link.title != 'Admin' || $q.screen.width > 992) &&
                   (link.title != 'Manage Users' || $q.screen.width > 992) &&
@@ -157,23 +158,32 @@
               "
             >
               <q-item-section @click="onClickMenuItem(link.title)">
-                <p class="title">{{ link.title }}</p>
-                <p class="description">
-                  {{ link.description }}
-                </p>
+                <div class=" row text-primary">
+                  <div class="q-ml-md col-3 column justify-center ">
+                    <q-icon name="groups" size="md" color="primary" />
+                  </div>
+                  <div class="column col-7">
+                    <div class="title text-primary col-4">{{ link.title }}</div>
+
+                    <div class=" description text-primary">
+                      {{ link.description }}
+                    </div>
+                  </div>
+                </div>
               </q-item-section>
             </q-item>
           </q-list>
         </div>
       </q-scroll-area>
-      <div style="height: 100px" class="q-px-md">
+      <div style="height: 100px" class="q-px-md q-mt-sm">
         <q-btn
-          class="q-px-md q-py-xs full-width"
+          class="button-width-90 q-mt-md rounded text-capitalize"
           color="primary"
           label="LOGOUT"
           @click="logout()"
         />
-        <p class="text-white q-mt-md" style="opacity: 50%; font-size: 12px">
+        <q-separator class="q-my-md bg-primary" />
+        <p class="text-black q-ml-md " style="opacity: 50%; font-size: 12px">
           Claimguru Version 1.0
         </p>
       </div>
@@ -419,9 +429,8 @@ export default {
 .button-50 {
   width: 50px;
 }
-
 .bg-side-panel {
-  background-color: $sidePanel;
+  background-color: #ededed;
 }
 .title {
   font-size: 16px;
@@ -441,5 +450,13 @@ export default {
 
   opacity: 4;
   color: white;
+}
+.rounded-sidebar {
+  border-radius: 0px 20px 20px 0px;
+  box-shadow: 1px 3px 2px 1px #e0e0e0;
+}
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent; /* make scrollbar transparent */
 }
 </style>
