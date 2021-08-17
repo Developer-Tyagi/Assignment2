@@ -181,7 +181,7 @@
           @click="logout()"
         />
         <q-separator class="q-my-md bg-primary" />
-        <p class="text-black " style="opacity: 50%; font-size: 12px">
+        <p class="text-black q-ml-md " style="opacity: 50%; font-size: 12px">
           Claimguru Version 1.0
         </p>
       </div>
