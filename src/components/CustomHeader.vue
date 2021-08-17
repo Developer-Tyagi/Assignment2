@@ -427,10 +427,6 @@ export default {
 .button-50 {
   width: 50px;
 }
-
-// .bg-side-panel {
-//   background-color: $sidePanel;
-// }
 .bg-side-panel {
   background-color: #ededed;
 }
