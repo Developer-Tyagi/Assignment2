@@ -2931,10 +2931,10 @@ export default {
       } else if (!this.clientResponse.offline) {
         var response = await this.addClaim(payload.data);
       }
-
       if (response && response.id) {
         if (
           this.officeTask.officeActionRequired &&
+          this.officeTask.actions &&
           this.officeTask.actions.length
         ) {
           this.addMultipleOfficeTask(response);
