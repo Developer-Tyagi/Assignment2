@@ -98,27 +98,15 @@
           <q-card-section>
             <div class="row">
               <span class="heading-light"
-                >{{
-                  claim.attributes.client.fname
-                    ? claim.attributes.client.fname
-                    : '-'
-                }}
-                {{
-                  claim.attributes.client.lname
-                    ? claim.attributes.client.lname
-                    : '-'
-                }}</span
+                >{{ claim.client.fname ? claim.client.fname : '-' }}
+                {{ claim.client.lname ? claim.client.lname : '-' }}</span
               >
             </div>
             <div class="row">
               <span>
                 <span class="heading-light">File No - </span>
 
-                {{
-                  claim.attributes.fileNumber
-                    ? claim.attributes.fileNumber
-                    : '-'
-                }}
+                {{ claim.fileNumber ? claim.fileNumber : '-' }}
               </span>
             </div>
             <div class="row">
@@ -126,27 +114,27 @@
 
               <div class="q-ml-xs">
                 {{
-                  claim.attributes.carrier
-                    ? claim.attributes.carrier.value
-                      ? claim.attributes.carrier.value
+                  claim.carrier
+                    ? claim.carrier.value
+                      ? claim.carrier.value
                       : ''
                     : '-'
                 }}
               </div>
             </div>
             <div class="row justify-between q-pt-xs">
-              <div v-if="claim.attributes.status" class="row">
+              <div v-if="claim.status" class="row">
                 <q-badge
                   class="q-px-md q-py-sm"
                   :style="
-                    claim.attributes.status.isCancelled == false
+                    claim.status.isCancelled == false
                       ? 'background-color:#ECA74C;'
                       : 'background-color:#EF9A9A;'
                   "
                 >
                   {{
-                    claim.attributes.statusrounded
-                      ? claim.attributes.status.isCancelled == false
+                    claim.statusrounded
+                      ? claim.status.isCancelled == false
                         ? 'OPEN'
                         : 'CANCELLED'
                       : ''
@@ -156,9 +144,9 @@
 
               <div class="q-ml-auto">
                 {{
-                  claim.attributes.lossInfo.cause
-                    ? claim.attributes.lossInfo.cause
-                      ? claim.attributes.lossInfo.cause.value
+                  claim.lossInfo.cause
+                    ? claim.lossInfo.cause
+                      ? claim.lossInfo.cause.value
                       : ''
                     : '-'
                 }}
@@ -166,7 +154,7 @@
             </div>
             <div class="row">
               <div class="q-ml-auto">
-                {{ dateToShow(claim.attributes.created) }}
+                {{ dateToShow(claim.created) }}
               </div>
             </div>
           </q-card-section>
@@ -198,7 +186,7 @@ export default {
   },
   created() {
     this.getClaimStatistics();
-    var index = getCurrentUser().attributes.roles.findIndex(
+    var index = getCurrentUser().roles.findIndex(
       std => std.machineValue === 'vendor' || std.machineValue === 'estimator'
     );
     if (index < 0) {

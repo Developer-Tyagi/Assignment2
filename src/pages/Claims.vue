@@ -35,16 +35,14 @@
               <div class="client-list-item">
                 <div class="row  form-heading q-pb-md  ">
                   <div class="col-10" @click="onClickingOnClaim(claim)">
-                    {{ claim.attributes.client.fname }}
-                    {{ claim.attributes.client.lname }}
+                    {{ claim.client.fname }}
+                    {{ claim.client.lname }}
                   </div>
 
                   <q-icon
                     class="q-ml-auto"
                     size="1em"
-                    :name="
-                      claim.attributes.isFavourite ? 'star' : 'star_border'
-                    "
+                    :name="claim.isFavourite ? 'star' : 'star_border'"
                     @click="onClickFavorite(index)"
                     color="primary"
                   >
@@ -63,9 +61,9 @@
 
                     <div>
                       {{
-                        claim.attributes.carrier
-                          ? claim.attributes.carrier.value
-                            ? claim.attributes.carrier.value
+                        claim.carrier
+                          ? claim.carrier.value
+                            ? claim.carrier.value
                             : ''
                           : '-'
                       }}
@@ -75,25 +73,23 @@
                     <div class="col-3">Claim No.</div>
 
                     <div>
-                      {{
-                        claim.attributes.number ? claim.attributes.number : '-'
-                      }}
+                      {{ claim.number ? claim.number : '-' }}
                     </div>
                   </div>
 
                   <div class="row justify-between q-pt-xs">
-                    <div v-if="claim.attributes.status">
+                    <div v-if="claim.status">
                       <q-badge
                         class="q-px-md q-py-sm"
                         :style="
-                          claim.attributes.status.isCancelled == false
+                          claim.status.isCancelled == false
                             ? 'background-color:#ECA74C;'
                             : 'background-color:#EF9A9A;'
                         "
                       >
                         {{
-                          claim.attributes.status
-                            ? claim.attributes.status.isCancelled == false
+                          claim.status
+                            ? claim.status.isCancelled == false
                               ? 'OPEN'
                               : 'CANCELLED'
                             : ''
@@ -104,15 +100,15 @@
                     <div column>
                       <div>
                         {{
-                          claim.attributes.lossInfo.cause
-                            ? claim.attributes.lossInfo.cause
-                              ? claim.attributes.lossInfo.cause.value
+                          claim.lossInfo.cause
+                            ? claim.lossInfo.cause
+                              ? claim.lossInfo.cause.value
                               : ''
                             : '-'
                         }}
                       </div>
                       <div>
-                        {{ dateToShow(claim.attributes.created) }}
+                        {{ dateToShow(claim.created) }}
                       </div>
                     </div>
                   </div>
@@ -161,9 +157,9 @@ export default {
     }
   },
 
-  created() {
-    this.userRole = getCurrentUser().attributes.roles[0].machineValue;
-  },
+  // created() {
+  //   this.userRole = getCurrentUser().roles[0].machineValue;
+  // },
   methods: {
     ...mapActions([
       'getClaims',
@@ -178,7 +174,7 @@ export default {
       this.search();
     },
     async onClickFavorite(index) {
-      if (this.claims[index].attributes.isFavourite == false) {
+      if (this.claims[index].isFavourite == false) {
         await this.markClaimUnFavorite(this.selectedClaimId);
       } else {
         await this.markClaimFavorite(this.selectedClaimId);
