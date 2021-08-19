@@ -2,14 +2,16 @@ import localDB, { getCollection } from '@services/dexie';
 
 export async function setClaims(state, claimsData = []) {
   const claimsCollection = await getCollection('claims');
-  const claims = claimsData.map(claim => ({
+  const claims = claimsData.data.map(claim => ({
     ...claim
   }));
   state.claims = claims;
-  if ((await claimsCollection.count()) > 0) {
+  if ((await claimsCollection.count()) > 0 && !claimsData.params) {
     await claimsCollection.delete([]);
   }
-  await localDB.claims.bulkAdd(claims);
+  if (!claimsData.params) {
+    await localDB.claims.bulkAdd(claims);
+  }
 }
 
 export async function setOfflineClaims(state) {
