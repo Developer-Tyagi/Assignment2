@@ -45,7 +45,6 @@
 .lead-dashboard-card {
   display: flex;
   flex-direction: column;
-  // background-color: #1b2854;
   background-color: $primary;
   width: calc(33.33% - 10px);
   height: 150px;
@@ -128,7 +127,6 @@ export default {
         ],
         datasets: [
           {
-            // backgroundColor: '#1B2854',
             backgroundColor: '#F84400',
 
             data: [

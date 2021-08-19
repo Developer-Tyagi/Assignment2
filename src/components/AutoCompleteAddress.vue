@@ -382,8 +382,6 @@ export default {
     font-size: 16px;
   }
   &:focus {
-    // border-bottom: 2px solid #f05a26;
-
     &::placeholder {
       font-size: 12px;
       position: absolute;
