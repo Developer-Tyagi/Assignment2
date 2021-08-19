@@ -7,13 +7,11 @@
           class="q-ml-auto"
           v-model="officeTask.officeActionRequired"
           :disable="isOfflineClientEdit"
+          @input="onOfficeTaskToggleButton()"
         />
       </div>
-      <div
-        v-if="officeTask.officeActionRequired"
-        class="office-task-list"
-        @click="onOfficeTaskToggleButton()"
-      >
+
+      <div v-if="officeTask.officeActionRequired" class="office-task-list">
         <div class="column" v-for="(action, index) in officeTaskActions">
           <div class="row q-pa-sm">
             <div class="flex">

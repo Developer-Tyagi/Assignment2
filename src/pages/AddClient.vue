@@ -1689,6 +1689,7 @@ export default {
         }
         if (this.editSelectedClient.insuredInfo.secondary) {
           this.isThereaCoInsuredToggle = true;
+
           if (this.editSelectedClient.insuredInfo.secondary.honorific) {
             this.honorific2 = this.editSelectedClient.insuredInfo.secondary.honorific;
           }
@@ -1710,8 +1711,10 @@ export default {
 
             this.coInsuredDetails.phone = this.editSelectedClient.insuredInfo
               .secondary.phoneNumber[0].number
-              ? this.editSelectedClient.insuredInfo.secondary.phoneNumber[0]
-                  .number
+              ? showPhoneNumber(
+                  this.editSelectedClient.insuredInfo.secondary.phoneNumber[0]
+                    .number
+                )
               : '';
           }
 
@@ -1773,6 +1776,7 @@ export default {
             .insuredInfo.mailingAddress.streetAddress
             ? this.editSelectedClient.insuredInfo.mailingAddress.streetAddress
             : '';
+
           if (
             this.editSelectedClient.insuredInfo.mailingAddress.dropBox &&
             this.editSelectedClient.insuredInfo.mailingAddress.dropBox.isPresent
@@ -2933,14 +2937,14 @@ export default {
       }
 
       if (response && response.id) {
-        if (
-          this.officeTask.officeActionRequired &&
-          this.officeTask.actions.length
-        ) {
-          this.addMultipleOfficeTask(response);
-        } else {
-          this.$router.push('/clients');
-        }
+        if (this.officeTask.officeActionRequired)
+          if (this.officeTask.actions && this.officeTask.actions.length) {
+            {
+              this.addMultipleOfficeTask(response);
+            }
+          } else {
+            this.$router.push('/clients');
+          }
       }
     },
 
