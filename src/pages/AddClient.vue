@@ -1691,7 +1691,13 @@ export default {
           this.isThereaCoInsuredToggle = true;
 
           if (this.editSelectedClient.insuredInfo.secondary.honorific) {
-            this.honorific2 = this.editSelectedClient.insuredInfo.secondary.honorific;
+            this.honorific2 = {
+              id: this.editSelectedClient.insuredInfo.secondary.honorific.id,
+              value: this.editSelectedClient.insuredInfo.secondary.honorific
+                .value,
+              machineValue: this.editSelectedClient.insuredInfo.secondary
+                .honorific.machineValue
+            };
           }
 
           this.coInsuredDetails.fname = this.editSelectedClient.insuredInfo
@@ -2628,7 +2634,7 @@ export default {
             secondary: {
               honorific: {
                 id: this.honorific2.id,
-                value: this.honorific2.title,
+                value: this.honorific2.value,
                 machineValue: this.honorific2.machineValue
               },
               fname: this.coInsuredDetails.fname,
@@ -2937,19 +2943,18 @@ export default {
       }
 
       if (response && response.id) {
-        if (this.officeTask.officeActionRequired)
+        if (this.officeTask.officeActionRequired) {
           if (this.officeTask.actions && this.officeTask.actions.length) {
-            {
-              this.addMultipleOfficeTask(response);
-            }
-          } else {
-            this.$router.push('/clients');
+            this.addMultipleOfficeTask(response);
           }
+        } else {
+          this.$router.push('/clients');
+        }
       }
     },
 
     async addMultipleOfficeTask(response) {
-      if (this.officeTask.actions) {
+      if (this.officeTask && this.officeTask.actions) {
         this.officeTask.actions.forEach(val => {
           if (val.isEnabled == true) {
             this.finalOfficeTask.push(val);

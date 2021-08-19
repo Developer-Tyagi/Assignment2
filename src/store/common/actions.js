@@ -768,9 +768,7 @@ export async function syncOfficeTasks({ dispatch }) {
     const createOfficeTasks = offlineTasks.map(
       ({ id: localId, offline, ...task }) => {
         const items = LocalStorage.getItem('claim') || [];
-
         const index = items.findIndex(item => item.oldId === task.id);
-
         if (index > -1) {
           task.id = items[index].newId;
         }
