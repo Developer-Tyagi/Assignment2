@@ -1689,8 +1689,10 @@ export default {
         }
         if (this.editSelectedClient.insuredInfo.secondary) {
           this.isThereaCoInsuredToggle = true;
+          console.log(this.editSelectedClient.insuredInfo.secondary, 'hono');
           if (this.editSelectedClient.insuredInfo.secondary.honorific) {
             this.honorific2 = this.editSelectedClient.insuredInfo.secondary.honorific;
+            console.log(this.honorific2, 'hono');
           }
 
           this.coInsuredDetails.fname = this.editSelectedClient.insuredInfo
@@ -1710,8 +1712,10 @@ export default {
 
             this.coInsuredDetails.phone = this.editSelectedClient.insuredInfo
               .secondary.phoneNumber[0].number
-              ? this.editSelectedClient.insuredInfo.secondary.phoneNumber[0]
-                  .number
+              ? showPhoneNumber(
+                  this.editSelectedClient.insuredInfo.secondary.phoneNumber[0]
+                    .number
+                )
               : '';
           }
 
@@ -1773,12 +1777,14 @@ export default {
             .insuredInfo.mailingAddress.streetAddress
             ? this.editSelectedClient.insuredInfo.mailingAddress.streetAddress
             : '';
+          console.log(this.editSelectedClient.insuredInfo, 44);
           if (
             this.editSelectedClient.insuredInfo.mailingAddress.dropBox &&
             this.editSelectedClient.insuredInfo.mailingAddress.dropBox.isPresent
           ) {
             this.clientAddressDetails.dropBox.isPresent = this.editSelectedClient.insuredInfo.mailingAddress.dropBox.isPresent;
             this.clientAddressDetails.dropBox.info = this.editSelectedClient.insuredInfo.mailingAddress.dropBox.info;
+            console.log(this.clientAddressDetails, 45);
           }
 
           this.mailingAddressDetails = this.editSelectedClient.insuredInfo.mailingAddress;
@@ -2164,7 +2170,7 @@ export default {
       }
 
       //Office Task Stepper Prefilling
-
+      console.log(this.officeTasks, 123);
       if (this.officeTasks && this.officeTasks.tasks) {
         this.officeTask.officeActionRequired = true;
         for (let index = 0; index < this.officeTasks.tasks.length; index++) {
@@ -2931,16 +2937,21 @@ export default {
       } else if (!this.clientResponse.offline) {
         var response = await this.addClaim(payload.data);
       }
+      console.log(response, 'res');
+      console.log(this.officeTask, '   this.officeTask');
+      // console.log(
+      //   this.officeTask.actions.length,
+      //   '    this.officeTask.actions.length'
+      // );
       if (response && response.id) {
-        if (
-          this.officeTask.officeActionRequired &&
-          this.officeTask.actions &&
-          this.officeTask.actions.length
-        ) {
-          this.addMultipleOfficeTask(response);
-        } else {
-          this.$router.push('/clients');
-        }
+        if (this.officeTask.officeActionRequired)
+          if (this.officeTask.actions && this.officeTask.actions.length) {
+            {
+              this.addMultipleOfficeTask(response);
+            }
+          } else {
+            this.$router.push('/clients');
+          }
       }
     },
 
