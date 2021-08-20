@@ -2930,10 +2930,12 @@ export default {
       }
 
       if (response && response.id) {
-        if (this.officeTask.officeActionRequired) {
-          if (this.officeTask.actions && this.officeTask.actions.length) {
-            this.addMultipleOfficeTask(response);
-          }
+        if (
+          this.officeTask.officeActionRequired &&
+          this.officeTask.actions &&
+          this.officeTask.actions.length
+        ) {
+          this.addMultipleOfficeTask(response);
         } else {
           this.$router.push('/clients');
         }
@@ -2954,9 +2956,7 @@ export default {
         tasks: this.finalOfficeTask
       };
 
-      if (response.offline && response.isCreate) {
-        var response = await this.addMultipleTaskToClaim(payload);
-      } else if (this.editSelectedClient.id) {
+      if (this.editSelectedClient.id) {
         var response = await this.editMultipleTaskToClaim(payload);
       } else {
         var response = await this.addMultipleTaskToClaim(payload);
