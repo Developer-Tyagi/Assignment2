@@ -1989,27 +1989,10 @@ export default {
 
       //Other Structure data pre-filling
       if (this.selectedClaim.damageInfo.otherStructure) {
-        this.lossInfo.isThereDamageToPersonalPropertyToggle = this.selectedClaim
-          .damageInfo.otherStructure.isDamaged
+        this.lossInfo.isDamageOSToggle = this.selectedClaim.damageInfo
+          .otherStructure.isDamaged
           ? this.selectedClaim.damageInfo.otherStructure.isDamaged
           : false;
-        this.lossInfo.isPAFillingOutToggle = this.selectedClaim.damageInfo
-          .otherStructure.isPPIFFillNow
-          ? this.selectedClaim.damageInfo.otherStructure.isPPIFFillNow
-          : false;
-        this.lossInfo.isAdjustorFillOutLaterDate = this.selectedClaim.damageInfo
-          .otherStructure.isPPIFFillLater
-          ? this.selectedClaim.damageInfo.otherStructure.isPPIFFillLater
-          : false;
-        this.lossInfo.isClientGoingToPreparePPIF = this.selectedClaim.damageInfo
-          .otherStructure.isClientPreparePPIF
-          ? this.selectedClaim.damageInfo.otherStructure.isClientPreparePPIF
-          : false;
-        this.lossInfo.doYouWantToSendInsuredPPIF = this.selectedClaim.damageInfo
-          .otherStructure.isPPIFSendToInsure
-          ? this.selectedClaim.damageInfo.otherStructure.isPPIFSendToInsure
-          : false;
-
         if (this.selectedClaim.damageInfo.otherStructure.items) {
           for (
             let index = 0;
@@ -2818,7 +2801,7 @@ export default {
               items: this.lossInfo.ppDamagedItems
             },
             otherStructure: {
-              isDamaged: this.lossInfo.isThereDamageToPersonalPropertyToggle,
+              isDamaged: this.lossInfo.isDamageOSToggle,
               isPPIFFillNow: this.lossInfo.isPAFillingOutToggle,
               isPPIFFillLater: this.lossInfo.isAdjustorFillOutLaterDate,
               isClientPreparePPIF: this.lossInfo.isClientGoingToPreparePPIF,
