@@ -595,6 +595,15 @@ export default {
         path: 'signup',
         query: { plan: this.plans[this.plan - 1].machineValue }
       });
+      const index = this.plans.findIndex(
+        o => o.machineValue === this.$route.query.plan
+      );
+      if (index > -1) {
+        this.plan = index + 1;
+        this.user.plan.id = this.plans[index].id;
+        this.user.plan.name = this.plans[index].name;
+        this.user.plan.machineValue = this.plans[index].machineValue;
+      }
     },
 
     onNextPlan() {
@@ -603,6 +612,15 @@ export default {
         path: 'signup',
         query: { plan: this.plans[this.plan - 1].machineValue }
       });
+      const index = this.plans.findIndex(
+        o => o.machineValue === this.$route.query.plan
+      );
+      if (index > -1) {
+        this.plan = index + 1;
+        this.user.plan.id = this.plans[index].id;
+        this.user.plan.name = this.plans[index].name;
+        this.user.plan.machineValue = this.plans[index].machineValue;
+      }
     },
 
     fillInAddress() {

@@ -1,9 +1,6 @@
 <template>
   <!-- mobile-container-page listing-height -->
-  <q-page
-    class="mobile-container-page listing-height "
-    style="background-color:#8F8F8F;"
-  >
+  <q-page style="background-color:#8F8F8F;">
     <q-card style="border-radius: 0 0 60px 60px;">
       <div class="row justify-between q-py-md">
         <img
@@ -17,7 +14,7 @@
           class="q-mr-xl"
           src="~assets/Clients.png"
           style="width:30%;"
-          @click="$router.push('/add-client')"
+          @click="$router.push('/clients')"
         />
       </div>
       <div class="row justify-between q-py-md">
@@ -38,7 +35,7 @@
         <img
           class="q-ml-xl  "
           src="~assets/UploadScan.png"
-          style="width:30%;"
+          style="width:30%;height:20vh"
           @click="$router.push('/vendor-document')"
         />
 
@@ -94,28 +91,21 @@ export default {
     };
   },
   created() {
-    this.getClaimStatistics();
+    // this.getClaimStatistics();
     var index = getCurrentUser().attributes.roles.findIndex(
       std => std.machineValue === 'vendor' || std.machineValue === 'estimator'
     );
     if (index < 0) {
       this.isClickable = true;
-      this.getLeadStatistics();
-      this.getClientStatistics();
+      // this.getLeadStatistics();
+      // this.getClientStatistics();
     }
 
-    this.params.favourite = true;
-    this.getClaims(this.params);
+    // this.params.favourite = true;
+    // this.getClaims(this.params);
   },
   methods: {
-    ...mapActions([
-      'getClaimStatistics',
-      'getLeadStatistics',
-      'getClientStatistics',
-      'getClaims',
-      'getClients',
-      'getActiveLeadsList'
-    ]),
+    ...mapActions(['getClients', 'getActiveLeadsList']),
     ...mapMutations(['setSelectedClaimId']),
     dateToShow,
     openClaimDetail(value) {
