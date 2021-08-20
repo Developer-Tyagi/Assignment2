@@ -105,7 +105,6 @@ export default {
     };
   },
   mounted() {
-    // this.getLeadStatistics();
     this.fillData();
   },
   methods: {
