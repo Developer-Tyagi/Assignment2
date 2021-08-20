@@ -1,9 +1,6 @@
 <template>
   <!-- mobile-container-page listing-height -->
-  <q-page
-    class="mobile-container-page listing-height "
-    style="background-color:#8F8F8F;"
-  >
+  <q-page style="background-color:#8F8F8F;">
     <q-card style="border-radius: 0 0 60px 60px;">
       <div class="row justify-between q-py-md">
         <img
@@ -17,7 +14,7 @@
           class="q-mr-xl"
           src="~assets/Clients.png"
           style="width:30%;"
-          @click="$router.push('/add-client')"
+          @click="$router.push('/clients')"
         />
       </div>
       <div class="row justify-between q-py-md">
@@ -94,28 +91,15 @@ export default {
     };
   },
   created() {
-    this.getClaimStatistics();
     var index = getCurrentUser().attributes.roles.findIndex(
       std => std.machineValue === 'vendor' || std.machineValue === 'estimator'
     );
     if (index < 0) {
       this.isClickable = true;
-      this.getLeadStatistics();
-      this.getClientStatistics();
     }
-
-    this.params.favourite = true;
-    this.getClaims(this.params);
   },
   methods: {
-    ...mapActions([
-      'getClaimStatistics',
-      'getLeadStatistics',
-      'getClientStatistics',
-      'getClaims',
-      'getClients',
-      'getActiveLeadsList'
-    ]),
+    ...mapActions(['getClients', 'getActiveLeadsList']),
     ...mapMutations(['setSelectedClaimId']),
     dateToShow,
     openClaimDetail(value) {
@@ -206,15 +190,10 @@ export default {
   overflow: hidden;
 }
 .menu-card-inside {
-  /* background-color: red; */
-  /* height: 18vh;
-  border-radius: 60px 60px 0px 60px; */
-  /* padding: 7%; */
   border-radius: 100% 100% 55% 55% !important;
   height: 10vh;
   margin-left: 10px;
   margin-right: 10px;
-  /* width: 20vh; */
   background-color: black;
   position: relative;
 }
