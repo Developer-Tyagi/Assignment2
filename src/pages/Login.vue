@@ -36,28 +36,28 @@
         />
       </div>
       <q-form class="column" autocapitalize="off" @submit="onUserLogin">
-        <q-card class=" rounded row">
+        <q-card class="rounded row">
           <div class="q-ml-xs column justify-center" style="width: 20px">
             <q-icon name="person" color="primary" size="sm" />
           </div>
           <div class="q-pl-md col-10">
             <q-input
               dense
-              class=" q-py-xs login-input full-width"
+              class="q-py-xs login-input full-width"
               v-model="login.email"
               placeholder="Username"
               borderless
             />
           </div>
         </q-card>
-        <q-card class="q-mt-sm rounded row ">
-          <div class=" q-ml-xs column justify-center " style="width: 20px">
+        <q-card class="q-mt-sm rounded row">
+          <div class="q-ml-xs column justify-center" style="width: 20px">
             <q-icon name="lock" color="primary" size="sm" />
           </div>
           <div class="q-pl-md col-10">
             <q-input
               dense
-              class="q-py-xs  login-input full-width"
+              class="q-py-xs login-input full-width"
               v-model="login.password"
               placeholder="Password"
               type="password"
@@ -67,10 +67,10 @@
             >
             </q-input>
           </div>
-          <div class=" col">
+          <div class="col">
             <q-icon
               :name="isPasswordVisible ? 'visibility' : 'visibility_off'"
-              class="cursor-pointer q-mt-md    "
+              class="cursor-pointer q-mt-md"
               @click="isPasswordVisible = !isPasswordVisible"
             ></q-icon>
           </div>
@@ -81,7 +81,7 @@
             :outline="$q.screen.width > 624 ? true : false"
             label="Login"
             type="submit"
-            class=" rounded full-width q-my-md"
+            class="rounded full-width q-my-md"
           ></q-btn>
         </div>
         <div class="row justify-center">
@@ -108,6 +108,7 @@ import {
 } from '@capacitor/core';
 import { Screen } from 'quasar';
 import { constants } from '@utils/constant';
+import { notification } from 'src/store/common/getters';
 
 const isPushNotificationsAvailable = Capacitor.isPluginAvailable(
   'PushNotifications'
@@ -141,6 +142,7 @@ export default {
 
       if (this.login.email && this.login.password) {
         const response = await this.userLogin(loginData);
+        alert(response);
         if (response) {
           await this.getUserInfo();
           if (isPushNotificationsAvailable) {
@@ -160,14 +162,28 @@ export default {
             PushNotifications.addListener(
               'pushNotificationActionPerformed',
               PushNotificationActionPerformed => {
+                alert('alert1', PushNotificationActionPerformed);
+                alert(
+                  'alert2',
+                  JSON.stringify(PushNotificationActionPerformed)
+                );
                 if (
                   PushNotificationActionPerformed.notification.data.action ===
-                  constants.Notification.UPLOAD_ESTIMATOR
+                  constants.Notification.VIEW_CLAIM_TASKS
                 ) {
                   this.setSelectedClaimId(
                     PushNotificationActionPerformed.notification.data.claimID
                   );
-                  this.$router.push('/document-upload');
+                  this.$router.push('/claim-details');
+                }
+                if (
+                  PushNotificationActionPerformed.notification.data.action ===
+                  constants.Notification.VIEW_CLAIM
+                ) {
+                  this.setSelectedClaimId(
+                    PushNotificationActionPerformed.notification.data.claimID
+                  );
+                  this.$router.push('/claim-details');
                 }
               }
             );
