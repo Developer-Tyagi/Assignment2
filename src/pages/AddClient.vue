@@ -2705,7 +2705,11 @@ export default {
           policyInfo: {
             carrier: {
               id: this.insuranceDetails.carrierId,
-              value: this.insuranceDetails.carrierName
+              value: this.insuranceDetails.carrierName,
+              address: this.insuranceDetails.address,
+
+              email: this.insuranceDetails.email,
+              phone: this.insuranceDetails.email
             },
             number: this.insuranceDetails.policyNumber,
             isClaimFiled: this.insuranceDetails.hasClaimBeenFilledToggle,
