@@ -2,55 +2,80 @@
   <div>
     <q-header class="bg-white">
       <q-toolbar
-        class="row bg-primary rounded-header "
+        class="row bg-primary rounded-header"
         v-if="$route.name === 'dashboard'"
-        style="height:100px; overflow:visible"
+        style="height: 100px; overflow: visible"
       >
         <q-btn
           flat
-          class=" q-ml-sm color-white button-50 "
+          class="q-ml-sm color-white button-50"
           icon="menu"
           aria-label="Menu"
-          style="z-index:1"
+          style="z-index: 1"
           @click="onMenuButtonClick"
         ></q-btn>
         <div class="row">
-          <div class="  column justify-center">
+          <div class="column justify-center">
             <div
               class="overlay"
-              style="width:25%;height:10vh;margin-left:5%; background: radial-gradient(closest-side,  #F6d365,#F19733,#F190);"
+              style="
+                width: 25%;
+                height: 10vh;
+                margin-left: 5%;
+                background: radial-gradient(
+                  closest-side,
+                  #f6d365,
+                  #f19733,
+                  #f190
+                );
+              "
             >
               <img
-                class="overlay q-ml-lg q-my-xl  "
+                class="overlay q-ml-lg q-my-xl"
                 src="~assets/claimLogoDashboard.png"
-                style="margin-top:8px;height:10vh;width:80%;margin-left:14%;"
+                style="
+                  margin-top: 8px;
+                  height: 10vh;
+                  width: 80%;
+                  margin-left: 14%;
+                "
               />
             </div>
           </div>
-          <div class=" col-5  column justify-center">
+          <div class="col-5 column justify-center">
             <div
-              class=" overlay   "
-              style="width:30%;height:10vh;margin-left:39%; background: radial-gradient(closest-side,  #F6d365,#F19733,#F191);"
+              class="overlay"
+              style="
+                width: 30%;
+                height: 10vh;
+                margin-left: 39%;
+                background: radial-gradient(
+                  closest-side,
+                  #f6d365,
+                  #f19733,
+                  #f191
+                );
+              "
             >
               <img
-                class="overlay  "
+                class="overlay"
                 src="~assets/Black.svg"
-                style="width:100%;height:10vh; margin-left:-10%;"
+                style="width: 100%; height: 10vh; margin-left: -10%"
               />
               <img
-                class="overlay  "
+                class="overlay"
                 src="~assets/White.svg"
-                style="width:100%; height:10vh;margin-left:-15%;"
+                style="width: 100%; height: 10vh; margin-left: -15%"
               />
             </div>
           </div>
         </div>
       </q-toolbar>
-      <q-toolbar class="row bg-primary rounded-header " v-else>
+      <q-toolbar class="row bg-primary rounded-header" v-else>
         <q-btn
           flat
           dense
-          class=" q-ml-sm color-white button-50"
+          class="q-ml-sm color-white button-50"
           icon="menu"
           aria-label="Menu"
           @click="onMenuButtonClick"
@@ -78,7 +103,7 @@
           class="button-50"
         />
 
-        <div class="text-uppercase text-bold  q-mx-auto">
+        <div class="text-uppercase text-bold q-mx-auto">
           <span v-if="$route.name == 'Leads'">{{ converted }}</span>
           <span class="text-white"> {{ $route.name }} </span>
           <q-icon
@@ -112,8 +137,8 @@
       content-class="bg-side-panel"
       @hide="onMenuHide()"
     >
-      <div style="height: calc(100px)" class="q-px-md q-pt-lg bg-primary ">
-        <div class="row no-wrap ">
+      <div style="height: calc(100px)" class="q-px-md q-pt-lg bg-primary">
+        <div class="row no-wrap">
           <div>
             <q-avatar
               size="54px"
@@ -124,7 +149,7 @@
             />
           </div>
           <div
-            class=" column text-white q-pa-sm q-ml-sm"
+            class="column text-white q-pa-sm q-ml-sm"
             style="width: calc(100% - 54px)"
           >
             <div class="text-capitalize ellipsis full-width">
@@ -150,7 +175,7 @@
               :key="link.title"
               @click="routeTo(link)"
               v-bind="link"
-              class=" q-mt-md   bg-white rounded-sidebar q-px-none"
+              class="q-mt-md bg-white rounded-sidebar q-px-none"
               v-if="
                 (link.title != 'Admin' || $q.screen.width > 992) &&
                   (link.title != 'Manage Users' || $q.screen.width > 992) &&
@@ -158,14 +183,14 @@
               "
             >
               <q-item-section @click="onClickMenuItem(link.title)">
-                <div class=" row text-primary">
-                  <div class="q-ml-md col-3 column justify-center ">
+                <div class="row text-primary">
+                  <div class="q-ml-md col-3 column justify-center">
                     <q-icon name="groups" size="md" color="primary" />
                   </div>
                   <div class="column col-7">
                     <div class="title text-primary col-4">{{ link.title }}</div>
 
-                    <div class=" description text-primary">
+                    <div class="description text-primary">
                       {{ link.description }}
                     </div>
                   </div>
@@ -183,7 +208,7 @@
           @click="logout()"
         />
         <q-separator class="q-my-md bg-primary" />
-        <p class="text-black q-ml-md " style="opacity: 50%; font-size: 12px">
+        <p class="text-black q-ml-md" style="opacity: 50%; font-size: 12px">
           Claimguru Version 1.0
         </p>
       </div>
@@ -202,9 +227,6 @@ import { Capacitor } from '@capacitor/core';
 import { removeFirebaseToken } from '@utils/firebase';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 
-const isPushNotificationsAvailable = Capacitor.isPluginAvailable(
-  'PushNotifications'
-);
 export default {
   name: 'CustomHeader',
 

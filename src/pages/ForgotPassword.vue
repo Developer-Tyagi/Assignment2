@@ -131,17 +131,26 @@ export default {
                 });
               }
             );
-            PushNotifications.addListener(
+            ushNotifications.addListener(
               'pushNotificationActionPerformed',
               PushNotificationActionPerformed => {
                 if (
                   PushNotificationActionPerformed.notification.data.action ===
-                  constants.Notification.UPLOAD_ESTIMATOR
+                  constants.Notification.VIEW_CLAIM_TASKS
                 ) {
                   this.setSelectedClaimId(
                     PushNotificationActionPerformed.notification.data.claimID
                   );
-                  this.$router.push('/document-upload');
+                  this.$router.push('/claim-details');
+                }
+                if (
+                  PushNotificationActionPerformed.notification.data.action ===
+                  constants.Notification.VIEW_CLAIM
+                ) {
+                  this.setSelectedClaimId(
+                    PushNotificationActionPerformed.notification.data.claimID
+                  );
+                  this.$router.push('/claim-details');
                 }
               }
             );

@@ -9,7 +9,9 @@ export const constants = {
   UTCFORMAT: 'YYYY-MM-DDTHH:mm:ss.sssZ',
   ORGANIZATION: 'organization',
   Notification: {
-    UPLOAD_ESTIMATOR: 'uploadEstimateDoc'
+    UPLOAD_ESTIMATOR: 'uploadEstimateDoc',
+    VIEW_CLAIM_TASKS: 'viewClaimTasks',
+    VIEW_CLAIM: 'viewClaim'
   },
   successMessages: {
     LOGS: 'Logs Added Successfully !',
