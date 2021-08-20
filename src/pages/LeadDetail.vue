@@ -11,7 +11,7 @@
             <q-icon
               v-if="isShowConvertButton"
               name="create"
-              color="primary"
+              color="white"
               class="icon-top"
               @click="editLeadButtonClick"
             ></q-icon>
@@ -250,7 +250,7 @@
       <q-btn
         v-if="isShowConvertButton == true"
         label="Convert Lead to Client"
-        class="fixed-bottom q-my-md q-mx-auto"
+        class="fixed-bottom rounded q-my-md q-mx-auto"
         color="primary"
         @click="onConvertLeadToClientButtonClick(selectedLead)"
         size="md"

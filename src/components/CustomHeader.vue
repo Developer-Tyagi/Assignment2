@@ -441,6 +441,7 @@ export default {
   opacity: 70%;
   font-size: 12px;
   margin-bottom: 0;
+  margin-top: 5px;
 }
 .overlay {
   position: absolute;
