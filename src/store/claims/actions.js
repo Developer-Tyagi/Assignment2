@@ -1578,18 +1578,20 @@ export async function taskUncomplete({ dispatch, state }, payload) {
 }
 // API for Generating Claim Document
 
-export async function generateClaimDoc({ dispatch, state }, claimID) {
+export async function generateClaimDoc({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.post(
-      `/claims/${claimID}/generate-claim-document
-`
+      `/claims/${payload.claimID}/generate-claim-document
+`,
+      buildApiData('claim-document', payload.data)
     );
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'positive',
       message: 'Claim document generated successfully!'
     });
+    return data;
   } catch (e) {
     console.log(e);
     dispatch('setLoading', false);

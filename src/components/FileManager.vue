@@ -1,5 +1,37 @@
 <template>
   <div>
+    <q-card
+      class="q-pa-sm input-style input-overlay  col-5"
+      v-if="generateClaimDocument"
+    >
+      <div class="text-bold q-mt-sm q-ml-sm">Template Type</div>
+
+      <q-select
+        dense
+        v-model="templatetype.value"
+        option-value="name"
+        option-label="name"
+        map-options
+        options-dense
+        behavior="menu"
+        emit-value
+        :options="templateOptions"
+        @input="setTypes(templatetype.value)"
+        label="List of Templates"
+        lazy-rules
+        :rules="[val => (val && val.length > 0) || 'Please fill the template']"
+      />
+      <div class="full-width column items-center q-mb-md ">
+        <q-btn
+          v-if="templatetype.value"
+          color="primary"
+          size="'xl'"
+          class="button-width-90 text-capitalize"
+          label="Generate Claim Document"
+          @click="onClickGenerateDocument"
+        />
+      </div>
+    </q-card>
     <div class="actions-div justify-between q-px-md" v-if="depth.length > 1">
       <q-breadcrumbs class="text-primary" active-color="grey" gutter="none">
         <template v-slot:separator> </template>
@@ -425,10 +457,12 @@ const { Camera } = Plugins;
 export default {
   name: 'FileManager',
   components: { DeleteAlert },
-  props: ['directoryId'],
+  props: ['directoryId', 'generateClaimDocument'],
 
   data() {
     return {
+      templatetype: { value: '', machineValue: '' },
+      generateClaimDocument: false,
       index: '',
       id: '',
       isSystemGen: '',
@@ -463,7 +497,8 @@ export default {
       'fileRoleOptions',
       'selectedClaimId',
       'claimRoles',
-      'allUsers'
+      'allUsers',
+      'templateOptions'
     ])
   },
 
@@ -476,12 +511,14 @@ export default {
       'deleteDocument',
       'getFolderDocuments',
       'getAllUsers',
-      'deleteDirectory'
+      'deleteDirectory',
+      'generateClaimDoc'
     ]),
     ...mapMutations(['setLoading']),
     onDocumentClick(link) {
       window.open(link);
     },
+
     onSelectPersonOrGroup() {
       this.getClaimRoles();
       this.getAllUsers();
@@ -803,6 +840,44 @@ export default {
         properties: document.attributes.properties
       }));
       this.depth.splice(index + 1);
+      this.setLoading(false);
+    },
+    setTypes(value) {
+      const obj = this.templateOptions.find(item => {
+        return item.name === value;
+      });
+      this.templatetype.machineValue = obj.machineValue;
+    },
+    async onClickGenerateDocument() {
+      const payload = {
+        claimID: this.selectedClaimId,
+        data: {
+          template: this.templatetype.machineValue
+        }
+      };
+      const response = await this.generateClaimDoc(payload);
+      console.log(response);
+      const { data } = await request.get(
+        `/documents?parent_id=${response.attributes.parentID}`
+      );
+
+      this.setLoading(true);
+      if (this.allFolder) {
+        this.allFolderId = document.id;
+      }
+      this.documents = data.map(document => ({
+        name: document.attributes.name,
+        id: document.id,
+        type: document.attributes.mimeType,
+        link: document.attributes.webViewLink,
+        properties: document.attributes.properties
+      }));
+
+      this.depth.push({ name: document.name, id: document.id });
+      const length = this.depth.length;
+
+      this.currentPath = length;
+      // this.depth[currentPath - 1].name
       this.setLoading(false);
     }
   },
