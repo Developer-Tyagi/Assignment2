@@ -1756,7 +1756,10 @@ export default {
             : '';
           this.tenantOccupied.phone = this.editSelectedClient.insuredInfo
             .tenantInfo.phoneNumber.number
-            ? this.editSelectedClient.insuredInfo.tenantInfo.phoneNumber.number
+            ? showPhoneNumber(
+                this.editSelectedClient.insuredInfo.tenantInfo.phoneNumber
+                  .number
+              )
             : '';
         }
         // Client Address Editable & prefilled Details
