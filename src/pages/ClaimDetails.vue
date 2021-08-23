@@ -18,7 +18,6 @@
       name="more_vert"
       color="white"
     />
-
     <div class="listing-height" id="scroll-bottom">
       <ClaimDetail />
       <q-list
@@ -105,7 +104,7 @@
 
         <q-separator></q-separator>
         <q-expansion-item
-          v-model="taskExpension"
+          v-model="taskExpansion"
           group="claimGroup"
           label="Tasks"
           header-class="text-primary"
