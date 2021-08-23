@@ -530,8 +530,10 @@ export default {
     this.userRole = getCurrentUser().attributes.roles[0].machineValue;
     if (this.notificationRouteTo == 'task') {
       this.taskExpansion = true;
+      this.claimTask = true;
     } else if (this.notificationRouteTo == 'summary') {
       this.summaryExpansion = true;
+      this.claimSummary = true;
     }
     this.setNotificationRouteTo('');
   },
