@@ -157,9 +157,9 @@ export default {
     }
   },
 
-  // created() {
-  //   this.userRole = getCurrentUser().roles[0].machineValue;
-  // },
+  created() {
+    this.userRole = getCurrentUser().attributes.roles[0].machineValue;
+  },
   methods: {
     ...mapActions([
       'getClaims',
