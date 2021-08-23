@@ -1576,3 +1576,27 @@ export async function taskUncomplete({ dispatch, state }, payload) {
     return false;
   }
 }
+// API for Generating Claim Document
+
+export async function generateClaimDoc({ dispatch, state }, claimID) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      `/claims/${claimID}/generate-claim-document
+`
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Claim document generated successfully!'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+    return false;
+  }
+}
