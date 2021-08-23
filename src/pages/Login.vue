@@ -128,7 +128,7 @@ export default {
   },
   methods: {
     ...mapActions(['userLogin', 'getUserInfo', 'sendPushNotificationToken']),
-    ...mapMutations(['setSelectedClaimId']),
+    ...mapMutations(['setSelectedClaimId', 'setNotificationRouteTo']),
 
     async onUserLogin() {
       const loginData = {
@@ -142,7 +142,6 @@ export default {
 
       if (this.login.email && this.login.password) {
         const response = await this.userLogin(loginData);
-        alert(response);
         if (response) {
           await this.getUserInfo();
           if (isPushNotificationsAvailable) {
@@ -162,11 +161,6 @@ export default {
             PushNotifications.addListener(
               'pushNotificationActionPerformed',
               PushNotificationActionPerformed => {
-                alert('alert1', PushNotificationActionPerformed);
-                alert(
-                  'alert2',
-                  JSON.stringify(PushNotificationActionPerformed)
-                );
                 if (
                   PushNotificationActionPerformed.notification.data.action ===
                   constants.Notification.VIEW_CLAIM_TASKS
@@ -174,6 +168,7 @@ export default {
                   this.setSelectedClaimId(
                     PushNotificationActionPerformed.notification.data.claimID
                   );
+                  this.setNotificationRouteTo('task');
                   this.$router.push('/claim-details');
                 }
                 if (
@@ -183,6 +178,7 @@ export default {
                   this.setSelectedClaimId(
                     PushNotificationActionPerformed.notification.data.claimID
                   );
+                  this.setNotificationRouteTo('summary');
                   this.$router.push('/claim-details');
                 }
               }
