@@ -86,7 +86,12 @@
             >
           </div>
 
-          <div class="row q-mt-sm" v-if="selectedLead.inspectionInfo.pValue">
+          <div
+            class="row q-mt-sm"
+            v-if="
+              selectedLead.inspectionInfo && selectedLead.inspectionInfo.pValue
+            "
+          >
             <span class="heading-light col-3"> Inspection Type </span>
             <span class="q-ml-md col">
               {{
@@ -96,7 +101,12 @@
               }}</span
             >
           </div>
-          <div class="row q-mt-sm" v-if="selectedLead.inspectionInfo.value">
+          <div
+            class="row q-mt-sm"
+            v-if="
+              selectedLead.inspectionInfo && selectedLead.inspectionInfo.value
+            "
+          >
             <span class="heading-light col-3">Sub Inspection Type </span>
             <span class="q-ml-md col">
               {{

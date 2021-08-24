@@ -103,7 +103,7 @@
           class="button-50"
         />
 
-        <div class="text-uppercase text-bold q-mx-auto">
+        <div class="text-uppercase text-bold  q-mx-auto">
           <span v-if="$route.name == 'Leads'">{{ converted }}</span>
           <span class="text-white"> {{ $route.name }} </span>
           <q-icon
