@@ -462,7 +462,6 @@ export default {
   data() {
     return {
       templatetype: { value: '', machineValue: '' },
-      generateClaimDocument: false,
       index: '',
       id: '',
       isSystemGen: '',
@@ -860,7 +859,7 @@ export default {
         }
       };
       const response = await this.generateClaimDoc(payload);
-      console.log(response);
+
       const { data } = await request.get(
         `/documents?parent_id=${response.attributes.parentID}`
       );
@@ -881,7 +880,7 @@ export default {
       const length = this.depth.length;
 
       this.currentPath = length;
-      // this.depth[currentPath - 1].name
+      this.depth[this.currentPath - 1].name = response.attributes.directoryName;
       this.setLoading(false);
     }
   },
