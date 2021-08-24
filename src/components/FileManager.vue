@@ -476,19 +476,10 @@ const { Camera } = Plugins;
 export default {
   name: 'FileManager',
   components: { DeleteAlert },
-  // props: ['directoryId', 'generateClaimDocument'],
-  props: {
-    directoryId: {
-      type: String
-    },
-    generateClaimDocument: {
-      type: Boolean
-    }
-  },
+  props: ['directoryId', 'generateClaimDocument'],
   data() {
     return {
       templatetype: { value: '', machineValue: '' },
-
       index: '',
       id: '',
       isSystemGen: '',
@@ -886,7 +877,7 @@ export default {
         }
       };
       const response = await this.generateClaimDoc(payload);
-      console.log(response);
+
       const { data } = await request.get(
         `/documents?parent_id=${response.attributes.parentID}`
       );
@@ -907,7 +898,7 @@ export default {
       const length = this.depth.length;
 
       this.currentPath = length;
-      // this.depth[currentPath - 1].name
+      this.depth[this.currentPath - 1].name = response.attributes.directoryName;
       this.setLoading(false);
     }
   },
