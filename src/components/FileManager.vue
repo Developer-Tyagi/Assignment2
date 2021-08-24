@@ -248,6 +248,25 @@
               />
               <div class="form-heading q-ml-md">Remove</div>
             </div>
+            <div class="column">
+              <q-btn
+                class="q-ml-md"
+                icon="pencil"
+                text-color="primary"
+                style="width: 50px"
+              />
+              <div class="form-heading q-ml-md">Sign <br />Document</div>
+            </div>
+            <div class="column">
+              <q-btn
+                class="q-ml-md"
+                icon="pencil"
+                text-color="primary"
+                style="width: 50px"
+              />
+              <div class="form-heading q-ml-md">Edit Document</div>
+            </div>
+            <!-- <div class="form-heading q-ml-md">Edit Document</div> -->
           </div>
         </q-card-section>
       </q-card>
@@ -457,12 +476,19 @@ const { Camera } = Plugins;
 export default {
   name: 'FileManager',
   components: { DeleteAlert },
-  props: ['directoryId', 'generateClaimDocument'],
-
+  // props: ['directoryId', 'generateClaimDocument'],
+  props: {
+    directoryId: {
+      type: String
+    },
+    generateClaimDocument: {
+      type: Boolean
+    }
+  },
   data() {
     return {
       templatetype: { value: '', machineValue: '' },
-      generateClaimDocument: false,
+
       index: '',
       id: '',
       isSystemGen: '',
