@@ -492,6 +492,9 @@ export default {
       allFolder: false
     };
   },
+  created() {
+    this.getTemplates();
+  },
   computed: {
     ...mapGetters([
       'fileRoleOptions',
@@ -512,7 +515,8 @@ export default {
       'getFolderDocuments',
       'getAllUsers',
       'deleteDirectory',
-      'generateClaimDoc'
+      'generateClaimDoc',
+      'getTemplates'
     ]),
     ...mapMutations(['setLoading']),
     onDocumentClick(link) {
