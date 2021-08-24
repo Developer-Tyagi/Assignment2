@@ -1,5 +1,5 @@
 <template>
-  <FileManager :directoryId="directoryId" />
+  <FileManager :directoryId="directoryId" :generateClaimDocument="false" />
 </template>
 <script>
 import FileManager from 'components/FileManager';
