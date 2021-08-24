@@ -2657,6 +2657,10 @@ export default {
             propertyType: {
               ...this.property
             },
+            dropBox: {
+              info: this.clientAddressDetails.dropBox.info,
+              isPresent: this.clientAddressDetails.dropBox.isPresent
+            },
             propertyDesc: this.propertyDescription
           }
         }
