@@ -1756,7 +1756,10 @@ export default {
             : '';
           this.tenantOccupied.phone = this.editSelectedClient.insuredInfo
             .tenantInfo.phoneNumber.number
-            ? this.editSelectedClient.insuredInfo.tenantInfo.phoneNumber.number
+            ? showPhoneNumber(
+                this.editSelectedClient.insuredInfo.tenantInfo.phoneNumber
+                  .number
+              )
             : '';
         }
         // Client Address Editable & prefilled Details
@@ -2653,6 +2656,10 @@ export default {
             houseNumber: this.clientAddressDetails.houseNumber,
             propertyType: {
               ...this.property
+            },
+            dropBox: {
+              info: this.clientAddressDetails.dropBox.info,
+              isPresent: this.clientAddressDetails.dropBox.isPresent
             },
             propertyDesc: this.propertyDescription
           }
