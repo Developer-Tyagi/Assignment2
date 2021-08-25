@@ -149,3 +149,7 @@ export function isLastRouteEdit(state, isEdit) {
 export async function setOfflineUsers(state) {
   state.allUsers = await getCollection('allUsers').toArray();
 }
+
+export async function setNotificationRouteTo(state, route) {
+  state.notificationRouteTo = route;
+}

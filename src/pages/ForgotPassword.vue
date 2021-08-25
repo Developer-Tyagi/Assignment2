@@ -70,6 +70,7 @@ import {
   PushNotificationActionPerformed
 } from '@capacitor/core';
 import { Screen } from 'quasar';
+import { setNotification } from 'src/store/common/mutations';
 
 const isPushNotificationsAvailable = Capacitor.isPluginAvailable(
   'PushNotifications'
@@ -88,7 +89,7 @@ export default {
   },
   methods: {
     ...mapActions(['verifyOobCode', 'setPassword', 'userLogin', 'getUserInfo']),
-    ...mapMutations(['setSelectedClaimId']),
+    ...mapMutations(['setSelectedClaimId', 'setNotificationRouteTo']),
 
     checkConfirmPassword() {
       if (this.password.password === this.password.confirm) {
@@ -131,17 +132,28 @@ export default {
                 });
               }
             );
-            PushNotifications.addListener(
+            ushNotifications.addListener(
               'pushNotificationActionPerformed',
               PushNotificationActionPerformed => {
                 if (
                   PushNotificationActionPerformed.notification.data.action ===
-                  constants.Notification.UPLOAD_ESTIMATOR
+                  constants.Notification.VIEW_CLAIM_TASKS
                 ) {
                   this.setSelectedClaimId(
                     PushNotificationActionPerformed.notification.data.claimID
                   );
-                  this.$router.push('/document-upload');
+                  this.setNotificationRouteTo('task');
+                  this.$router.push('/claim-details');
+                }
+                if (
+                  PushNotificationActionPerformed.notification.data.action ===
+                  constants.Notification.VIEW_CLAIM
+                ) {
+                  this.setSelectedClaimId(
+                    PushNotificationActionPerformed.notification.data.claimID
+                  );
+                  this.setNotificationRouteTo('summary');
+                  this.$router.push('/claim-details');
                 }
               }
             );

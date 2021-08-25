@@ -1689,8 +1689,15 @@ export default {
         }
         if (this.editSelectedClient.insuredInfo.secondary) {
           this.isThereaCoInsuredToggle = true;
+
           if (this.editSelectedClient.insuredInfo.secondary.honorific) {
-            this.honorific2 = this.editSelectedClient.insuredInfo.secondary.honorific;
+            this.honorific2 = {
+              id: this.editSelectedClient.insuredInfo.secondary.honorific.id,
+              value: this.editSelectedClient.insuredInfo.secondary.honorific
+                .value,
+              machineValue: this.editSelectedClient.insuredInfo.secondary
+                .honorific.machineValue
+            };
           }
 
           this.coInsuredDetails.fname = this.editSelectedClient.insuredInfo
@@ -1710,8 +1717,10 @@ export default {
 
             this.coInsuredDetails.phone = this.editSelectedClient.insuredInfo
               .secondary.phoneNumber[0].number
-              ? this.editSelectedClient.insuredInfo.secondary.phoneNumber[0]
-                  .number
+              ? showPhoneNumber(
+                  this.editSelectedClient.insuredInfo.secondary.phoneNumber[0]
+                    .number
+                )
               : '';
           }
 
@@ -1747,7 +1756,10 @@ export default {
             : '';
           this.tenantOccupied.phone = this.editSelectedClient.insuredInfo
             .tenantInfo.phoneNumber.number
-            ? this.editSelectedClient.insuredInfo.tenantInfo.phoneNumber.number
+            ? showPhoneNumber(
+                this.editSelectedClient.insuredInfo.tenantInfo.phoneNumber
+                  .number
+              )
             : '';
         }
         // Client Address Editable & prefilled Details
@@ -1773,6 +1785,7 @@ export default {
             .insuredInfo.mailingAddress.streetAddress
             ? this.editSelectedClient.insuredInfo.mailingAddress.streetAddress
             : '';
+
           if (
             this.editSelectedClient.insuredInfo.mailingAddress.dropBox &&
             this.editSelectedClient.insuredInfo.mailingAddress.dropBox.isPresent
@@ -1979,27 +1992,10 @@ export default {
 
       //Other Structure data pre-filling
       if (this.selectedClaim.damageInfo.otherStructure) {
-        this.lossInfo.isThereDamageToPersonalPropertyToggle = this.selectedClaim
-          .damageInfo.otherStructure.isDamaged
+        this.lossInfo.isDamageOSToggle = this.selectedClaim.damageInfo
+          .otherStructure.isDamaged
           ? this.selectedClaim.damageInfo.otherStructure.isDamaged
           : false;
-        this.lossInfo.isPAFillingOutToggle = this.selectedClaim.damageInfo
-          .otherStructure.isPPIFFillNow
-          ? this.selectedClaim.damageInfo.otherStructure.isPPIFFillNow
-          : false;
-        this.lossInfo.isAdjustorFillOutLaterDate = this.selectedClaim.damageInfo
-          .otherStructure.isPPIFFillLater
-          ? this.selectedClaim.damageInfo.otherStructure.isPPIFFillLater
-          : false;
-        this.lossInfo.isClientGoingToPreparePPIF = this.selectedClaim.damageInfo
-          .otherStructure.isClientPreparePPIF
-          ? this.selectedClaim.damageInfo.otherStructure.isClientPreparePPIF
-          : false;
-        this.lossInfo.doYouWantToSendInsuredPPIF = this.selectedClaim.damageInfo
-          .otherStructure.isPPIFSendToInsure
-          ? this.selectedClaim.damageInfo.otherStructure.isPPIFSendToInsure
-          : false;
-
         if (this.selectedClaim.damageInfo.otherStructure.items) {
           for (
             let index = 0;
@@ -2624,7 +2620,7 @@ export default {
             secondary: {
               honorific: {
                 id: this.honorific2.id,
-                value: this.honorific2.title,
+                value: this.honorific2.value,
                 machineValue: this.honorific2.machineValue
               },
               fname: this.coInsuredDetails.fname,
@@ -2660,6 +2656,10 @@ export default {
             houseNumber: this.clientAddressDetails.houseNumber,
             propertyType: {
               ...this.property
+            },
+            dropBox: {
+              info: this.clientAddressDetails.dropBox.info,
+              isPresent: this.clientAddressDetails.dropBox.isPresent
             },
             propertyDesc: this.propertyDescription
           }
@@ -2712,7 +2712,11 @@ export default {
           policyInfo: {
             carrier: {
               id: this.insuranceDetails.carrierId,
-              value: this.insuranceDetails.carrierName
+              value: this.insuranceDetails.carrierName,
+              address: this.insuranceDetails.address,
+
+              email: this.insuranceDetails.email,
+              phone: this.insuranceDetails.email
             },
             number: this.insuranceDetails.policyNumber,
             isClaimFiled: this.insuranceDetails.hasClaimBeenFilledToggle,
@@ -2808,7 +2812,7 @@ export default {
               items: this.lossInfo.ppDamagedItems
             },
             otherStructure: {
-              isDamaged: this.lossInfo.isThereDamageToPersonalPropertyToggle,
+              isDamaged: this.lossInfo.isDamageOSToggle,
               isPPIFFillNow: this.lossInfo.isPAFillingOutToggle,
               isPPIFFillLater: this.lossInfo.isAdjustorFillOutLaterDate,
               isClientPreparePPIF: this.lossInfo.isClientGoingToPreparePPIF,
@@ -2935,6 +2939,7 @@ export default {
       if (response && response.id) {
         if (
           this.officeTask.officeActionRequired &&
+          this.officeTask.actions &&
           this.officeTask.actions.length
         ) {
           this.addMultipleOfficeTask(response);
@@ -2945,7 +2950,7 @@ export default {
     },
 
     async addMultipleOfficeTask(response) {
-      if (this.officeTask.actions) {
+      if (this.officeTask && this.officeTask.actions) {
         this.officeTask.actions.forEach(val => {
           if (val.isEnabled == true) {
             this.finalOfficeTask.push(val);
@@ -2958,9 +2963,7 @@ export default {
         tasks: this.finalOfficeTask
       };
 
-      if (response.offline && response.isCreate) {
-        var response = await this.addMultipleTaskToClaim(payload);
-      } else if (this.editSelectedClient.id) {
+      if (this.editSelectedClient.id) {
         var response = await this.editMultipleTaskToClaim(payload);
       } else {
         var response = await this.addMultipleTaskToClaim(payload);

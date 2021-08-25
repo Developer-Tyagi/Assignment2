@@ -1,5 +1,6 @@
 export default function() {
   return {
+    notificationRouteTo: '',
     showLoading: false,
     notification: null,
     contactTypes: [],

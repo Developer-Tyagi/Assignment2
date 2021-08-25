@@ -7,7 +7,7 @@
       />
       <div class="mobile-container-page form-color">
         <q-form
-          class="q-pa-lg"
+          class="q-px-lg"
           style="height: calc(100vh - 51px)"
           ref="mortgageForm"
         >

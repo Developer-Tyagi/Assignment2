@@ -765,19 +765,19 @@ export async function syncClaims({ dispatch }) {
 export async function syncOfficeTasks({ dispatch }) {
   let offlineTasks = await getCollection('tasks').toArray();
   offlineTasks = offlineTasks.filter(task => task.offline);
+
   if (offlineTasks.length > 0) {
     const createOfficeTasks = offlineTasks.map(
       ({ id: localId, offline, ...task }) => {
         const items = LocalStorage.getItem('claim') || [];
 
-        const index = items.findIndex(item => item.oldId === task.id);
+        const index = items.findIndex(item => item.oldId === localId);
 
         if (index > -1) {
           task.id = items[index].newId;
         }
-        const payload = { id: items[0].newId, ...task };
 
-        dispatch('addMultipleTaskRemote', payload).then(res => ({
+        dispatch('addMultipleTaskRemote', task).then(res => ({
           ...res,
           localId
         }));
@@ -788,7 +788,11 @@ export async function syncOfficeTasks({ dispatch }) {
         const createdOfficeTasks = tasks
           .filter(({ status }) => status === 'fulfilled')
           .map(({ value }) => {
-            return;
+            storeIdsToLocalStorage('task', value.localId, value.id);
+            return localDB.tasks
+              .where('id')
+              .equals(value.localId)
+              .modify({ id: value.id, offline: false });
           });
         return Promise.allSettled(createdOfficeTasks).then(results => {
           resolve('All');

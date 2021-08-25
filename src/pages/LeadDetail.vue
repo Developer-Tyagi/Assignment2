@@ -11,7 +11,7 @@
             <q-icon
               v-if="isShowConvertButton"
               name="create"
-              color="primary"
+              color="white"
               class="icon-top"
               @click="editLeadButtonClick"
             ></q-icon>
@@ -86,7 +86,12 @@
             >
           </div>
 
-          <div class="row q-mt-sm" v-if="selectedLead.inspectionInfo.pValue">
+          <div
+            class="row q-mt-sm"
+            v-if="
+              selectedLead.inspectionInfo && selectedLead.inspectionInfo.pValue
+            "
+          >
             <span class="heading-light col-3"> Inspection Type </span>
             <span class="q-ml-md col">
               {{
@@ -96,7 +101,12 @@
               }}</span
             >
           </div>
-          <div class="row q-mt-sm" v-if="selectedLead.inspectionInfo.value">
+          <div
+            class="row q-mt-sm"
+            v-if="
+              selectedLead.inspectionInfo && selectedLead.inspectionInfo.value
+            "
+          >
             <span class="heading-light col-3">Sub Inspection Type </span>
             <span class="q-ml-md col">
               {{
@@ -250,7 +260,7 @@
       <q-btn
         v-if="isShowConvertButton == true"
         label="Convert Lead to Client"
-        class="fixed-bottom q-my-md q-mx-auto"
+        class="fixed-bottom rounded q-my-md q-mx-auto"
         color="primary"
         @click="onConvertLeadToClientButtonClick(selectedLead)"
         size="md"

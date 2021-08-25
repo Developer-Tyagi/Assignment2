@@ -17,3 +17,4 @@ export const organization = state => state.organization;
 export const isEdit = state => state.isEdit;
 export const isOnline = state => state.isOnline;
 export const isOfflineClientEdit = state => state.isOfflineClientEdit;
+export const notificationRouteTo = state => state.notificationRouteTo;

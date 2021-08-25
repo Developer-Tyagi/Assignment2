@@ -45,7 +45,7 @@
 .lead-dashboard-card {
   display: flex;
   flex-direction: column;
-  background-color: #1b2854;
+  background-color: $primary;
   width: calc(33.33% - 10px);
   height: 150px;
   padding: 25px 10px;
@@ -105,7 +105,6 @@ export default {
     };
   },
   mounted() {
-    this.getLeadStatistics();
     this.fillData();
   },
   methods: {
@@ -127,7 +126,8 @@ export default {
         ],
         datasets: [
           {
-            backgroundColor: '#1B2854',
+            backgroundColor: '#F84400',
+
             data: [
               this.leadStatic.new,
               this.leadStatic.scheduled,

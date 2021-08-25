@@ -152,8 +152,12 @@
           :dialogName="'Add Personnel'"
           @closeDialog="addPersonnelDialog = false"
         />
-        <div class="mobile-container-page">
-          <q-form ref="carrierForm">
+        <div class="mobile-container-page form-color">
+          <q-form
+            ref="carrierForm"
+            class="q-px-lg "
+            style="height: calc(100vh - 51px)"
+          >
             <AddCarrierPersonnel :carrierPersonnel="personnel" />
           </q-form>
         </div>
@@ -161,7 +165,7 @@
           @click="onSave"
           label="Add Personnel"
           color="primary"
-          class="button-width-90 q-mt-lg"
+          class="button-width-90 q-mt-lg rounded"
           size="'xl'"
         />
       </q-card>
@@ -173,137 +177,153 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <q-card>
+      <div class="bg-white full-width">
         <CustomBar
           :dialogName="'Edit Personnel'"
           @closeDialog="editPersonnelDialog = false"
         />
-        <div class="mobile-container-page">
-          <q-form ref="editPersonnelForm">
-            <q-card class="q-ma-md q-pa-md q-mt-sm">
-              <q-select
-                class="required"
-                dense
-                v-model="personnel.honorific.value"
-                :options="titles"
-                option-value="value"
-                option-label="value"
-                map-options
-                options-dense
-                behavior="menu"
-                @input="setTitleName(honorific)"
-                emit-value
-                label="Title"
-                options-dense
-              />
-              <q-input
-                dense
-                v-model="personnel.fname"
-                label="First Name"
-                class="required"
-                lazy-rules
-                :rules="[
-                  val => (val && val.length > 0) || 'Please fill the first name'
-                ]"
-              />
-              <q-input
-                dense
-                class="required"
-                v-model="personnel.lname"
-                label="Last Name"
-                lazy-rules
-                :rules="[
-                  val => (val && val.length > 0) || 'Please fill the last name'
-                ]"
-              />
-              <q-input
-                dense
-                v-model="personnel.departmentName"
-                label="Organization / Department Name"
-              />
-              <q-input
-                dense
-                class="required"
-                v-model="personnel.email"
-                input
-                type="email"
-                novalidate="true"
-                label="Email"
-                lazy-rules
-                :rules="[
-                  val => (val && val.length > 0) || 'Please fill the email'
-                ]"
-              />
-            </q-card>
-            <q-card class="q-ma-md q-pa-md q-mt-sm"
-              ><span class="text-bold">Address Details</span>
-              <AutoCompleteAddress
-                :address="personnel.address"
-                :isDropBoxEnable="false"
-                :isChecksEnable="false"
-              />
-            </q-card>
-            <q-card class="q-ma-md q-pa-md q-mt-sm">
-              <div>
-                <div
-                  class="row justify-between"
-                  v-for="(addPhone, index) in personnel.phoneNumber"
-                  v-if="index >= 0"
-                >
-                  <q-select
-                    dense
-                    v-model="personnel.phoneNumber[index].type"
-                    class="col-5"
-                    label="Type"
-                    :options="contactTypes"
-                    option-value="machineValue"
-                    option-label="name"
-                    map-options
-                    options-dense
-                    emit-value
-                  />
-                  <q-input
-                    dense
-                    v-model.number="personnel.phoneNumber[index].number"
-                    label="Phone"
-                    class="col-6"
-                    mask="(###) ###-####"
-                  />
-                </div>
-                <div class="row">
-                  <q-btn
-                    outline
-                    class="q-mt-sm"
-                    @click="addAnotherContact"
-                    color="primary"
-                    label="Add"
-                    style="margin-right: auto"
-                  />
+        <div class="mobile-container-page form-color">
+          <q-form
+            ref="editPersonnelForm"
+            class="q-px-lg "
+            style="height: calc(100vh - 51px)"
+          >
+            <div class="full-width rounded bg-white">
+              <div class="q-mt-sm">
+                <q-select
+                  borderless
+                  class="required input-style input-overlay"
+                  dense
+                  v-model="personnel.honorific.value"
+                  :options="titles"
+                  option-value="value"
+                  option-label="value"
+                  map-options
+                  options-dense
+                  behavior="menu"
+                  @input="setTitleName(honorific)"
+                  emit-value
+                  label="Title"
+                  options-dense
+                />
+                <q-input
+                  dense
+                  borderless
+                  v-model="personnel.fname"
+                  label="First Name"
+                  class="required input-style input-overlay"
+                  lazy-rules
+                  :rules="[
+                    val =>
+                      (val && val.length > 0) || 'Please fill the first name'
+                  ]"
+                />
+                <q-input
+                  dense
+                  borderless
+                  class="required input-style input-overlay"
+                  v-model="personnel.lname"
+                  label="Last Name"
+                  lazy-rules
+                  :rules="[
+                    val =>
+                      (val && val.length > 0) || 'Please fill the last name'
+                  ]"
+                />
+                <q-input
+                  dense
+                  borderless
+                  class="input-style input-overlay"
+                  v-model="personnel.departmentName"
+                  label="Organization / Department Name"
+                />
+                <q-input
+                  dense
+                  borderless
+                  class="required input-style input-overlay"
+                  v-model="personnel.email"
+                  input
+                  type="email"
+                  novalidate="true"
+                  label="Email"
+                  lazy-rules
+                  :rules="[
+                    val => (val && val.length > 0) || 'Please fill the email'
+                  ]"
+                />
+              </div>
+              <div class="q-mt-sm">
+                <span class="text-bold">Address Details</span>
+                <AutoCompleteAddress
+                  :address="personnel.address"
+                  :isDropBoxEnable="false"
+                  :isChecksEnable="false"
+                />
+              </div>
+              <div class=" q-mt-sm">
+                <div>
+                  <div
+                    class="row justify-between"
+                    v-for="(addPhone, index) in personnel.phoneNumber"
+                    v-if="index >= 0"
+                  >
+                    <q-select
+                      dense
+                      borderless
+                      v-model="personnel.phoneNumber[index].type"
+                      class="col-5 input-style input-overlay"
+                      label="Type"
+                      :options="contactTypes"
+                      option-value="machineValue"
+                      option-label="name"
+                      map-options
+                      options-dense
+                      emit-value
+                    />
+                    <q-input
+                      dense
+                      borderless
+                      v-model.number="personnel.phoneNumber[index].number"
+                      label="Phone"
+                      class="col-6 input-style input-overlay"
+                      mask="(###) ###-####"
+                    />
+                  </div>
+                  <div class="row">
+                    <q-btn
+                      outline
+                      class="q-mt-sm input-style input-overlay"
+                      @click="addAnotherContact"
+                      color="primary"
+                      label="Add"
+                      style="margin-right: auto"
+                    />
 
-                  <q-btn
-                    v-if="personnel.phoneNumber.length > 1"
-                    outline
-                    @click="RemoveAnotherContact"
-                    class="q-mt-sm"
-                    color="primary"
-                    label="Remove"
-                  />
+                    <q-btn
+                      v-if="personnel.phoneNumber.length > 1"
+                      outline
+                      @click="RemoveAnotherContact"
+                      class="q-mt-sm input-style input-overlay"
+                      color="primary"
+                      label="Remove"
+                    />
+                  </div>
                 </div>
               </div>
-            </q-card>
-            <q-card class="q-ma-md q-pa-md q-mt-xs">
-              <div class="form-heading q-mt-sm q-mb-sm">Notes</div>
-              <div class="floating-label">
-                <textarea
-                  rows="3"
-                  required
-                  class="full-width"
-                  v-model="personnel.notes"
-                  style="resize: none"
-                  placeholder="Take notes here..."
-                ></textarea>
+              <div class="q-mt-xs">
+                <div class="form-heading q-mt-sm q-mb-sm">Notes</div>
+                <div class="floating-label">
+                  <textarea
+                    rows="3"
+                    required
+                    class="full-width"
+                    v-model="personnel.notes"
+                    style="resize: none"
+                    placeholder="Take notes here..."
+                  ></textarea>
+                </div>
               </div>
-            </q-card>
+            </div>
           </q-form>
         </div>
         <q-btn
@@ -313,7 +333,7 @@
           class="button-width-90 q-mt-lg"
           size="'xl'"
         />
-      </q-card>
+      </div>
     </q-dialog>
 
     <q-dialog v-model="deleteAlertDialog">

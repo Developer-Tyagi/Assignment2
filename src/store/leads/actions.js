@@ -202,7 +202,7 @@ export async function editLeadLocal({ dispatch }, payload) {
 
 export async function editLeadRemote({ commit, dispatch }, payload) {
   try {
-    const { data } = await request.patch(
+    const { data } = await request.put(
       `/leads/${payload.id}`,
       buildApiData('leads', payload.isEdit ? payload : payload.data)
     );

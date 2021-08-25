@@ -219,7 +219,7 @@
               <q-select
                 dense
                 borderless
-                class="input-style input-extra-padding"
+                class="input-style q-select-style input-extra-padding"
                 v-model="lossDetails.causeOfLoss.value"
                 option-value="name"
                 option-label="name"
@@ -247,7 +247,7 @@
                     (val && val.length > 0) || 'Please fill the description'
                 ]"
               />
-              <div class="stepper-heading">Loss Location</div>
+              <div class="stepper-heading q-pt-md">Loss Location</div>
               <AutoCompleteAddress
                 :id="'LeadLoss'"
                 :address="lossAddress"
@@ -292,8 +292,8 @@
                 @click="carriersListDialog = true"
                 v-if="!insuranceDetails.carrierName"
               >
-                <div class="input-style q-my-md">
-                  <div class="text-center">
+                <div class="input-style button-style cursor-pointer q-my-md">
+                  <div class="text-center q-my-sm">
                     Click for choosing a carrier
                   </div>
                 </div>
@@ -429,7 +429,7 @@
                   map-options
                   @input="onChangingSourceType()"
                   @filter="searchBySource"
-                  class="input-style input-extra-padding"
+                  class="input-style q-select-style input-extra-padding"
                 />
                 <q-input
                   borderless
@@ -703,6 +703,7 @@
                 v-if="schedulingDetails.isAutomaticScheduling"
                 dense
                 borderless
+                style="height:58px"
                 type="number"
                 mask="#.#"
                 step="0.5"
@@ -1145,7 +1146,9 @@ export default {
       if (!this.insuranceDetails.carrierName) {
         delete payload.data.carrier;
       }
-
+      if (!this.schedulingDetails.isAutomaticScheduling) {
+        delete payload.data.inspectionInfo;
+      }
       if (this.isEdit) {
         await this.editLeadDetails(payload);
         this.$router.push('/lead-details/' + this.selectedLead.id);
@@ -1336,13 +1339,16 @@ export default {
       this.schedulingDetails.isAutomaticScheduling = this.selectedLead.isAutomaticScheduling;
       this.notes = this.selectedLead.notes;
 
-      this.sourceDetails.id = this.selectedVendor.id;
-      this.sourceDetails.type = this.selectedLead.leadSource.type;
-      this.sourceDetails.details = this.selectedVendor.name;
-      this.sourceDetails.mailingAddress = this.selectedVendor.mailingAddress;
-      this.sourceDetails.email = this.selectedVendor.email;
-      this.sourceDetails.phone = this.selectedVendor.phoneNumber;
-      this.sourceDetails.companyName = this.selectedVendor.companyName;
+      if (this.selectedLead.leadSource.type == 'vendor') {
+        this.sourceDetails.id = this.selectedVendor.id;
+        this.sourceDetails.type = this.selectedLead.leadSource.type;
+        this.sourceDetails.details = this.selectedVendor.name;
+        this.sourceDetails.mailingAddress = this.selectedVendor.mailingAddress;
+        this.sourceDetails.email = this.selectedVendor.email;
+        this.sourceDetails.phone = this.selectedVendor.phoneNumber;
+        this.sourceDetails.companyName = this.selectedVendor.companyName;
+      }
+
       this.insuranceDetails.carrierName = this.selectedLead.carrier
         ? this.selectedLead.carrier.value
         : '';
@@ -1358,6 +1364,7 @@ export default {
       this.insuranceDetails.carrierId = this.selectedLead.carrier
         ? this.selectedLead.carrier.id
         : '';
+
       this.schedulingDetails.inspectionTypeValue = this.selectedLead
         .inspectionInfo
         ? this.selectedLead.inspectionInfo.pValue
@@ -1374,6 +1381,7 @@ export default {
         .inspectionInfo
         ? this.selectedLead.inspectionInfo.duration
         : '';
+
       this.onInspectionTypesSelect();
       if (this.selectedLead.inspectionInfo.id) {
         this.showSubInspectionType = true;
@@ -1438,4 +1446,11 @@ export default {
 //     padding-left: 12px;
 //   }
 // }
+
+.q-select-style {
+  height: 58px;
+}
+.button-style {
+  height: 40px;
+}
 </style>

@@ -10,8 +10,8 @@
       <input
         type="text"
         :id="'id' + id"
-        class=" input-style  input-autocomplete"
-        style="  margin: 0 -6px 0 -6px;"
+        class=" input-style  input-overlay input-autocomplete"
+        style=" margin-left: -1%;"
         :v-model="'model' + id"
         placeholder="AutoComplete address"
         :disabled="isFieldsDisable"
@@ -369,21 +369,19 @@ export default {
 </script>
 <style lang="scss">
 .input-autocomplete {
-  width: 100%;
+  width: 102%;
   // border: 0;
   line-height: 24px;
-  padding: 16px 0;
-  // border-bottom: 1px solid #c2c2c2;
-  // outline: none;
+
+  padding: 15px 10px;
+  border-bottom: 1px solid #c2c2c2;
+  outline: none;
   position: relative;
   text-transform: capitalize;
   &::placeholder {
     font-size: 16px;
   }
-
   &:focus {
-    // border-bottom: 2px solid #f05a26;
-
     &::placeholder {
       font-size: 12px;
       position: absolute;

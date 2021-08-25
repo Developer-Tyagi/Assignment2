@@ -18,8 +18,7 @@
       name="more_vert"
       color="white"
     />
-
-    <div class="listing-height " id="scroll-bottom">
+    <div class="listing-height" id="scroll-bottom">
       <ClaimDetail />
       <q-list
         bordered
@@ -27,6 +26,7 @@
         v-if="userRole != 'estimator' || userRole != 'vendor'"
       >
         <q-expansion-item
+          v-model="summaryExpansion"
           group="claimGroup"
           label="   Claim Summary"
           header-class="text-primary"
@@ -104,6 +104,7 @@
 
         <q-separator></q-separator>
         <q-expansion-item
+          v-model="taskExpansion"
           group="claimGroup"
           label="Tasks"
           header-class="text-primary"
@@ -403,7 +404,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 import moment from 'moment';
 import ClaimDetail from 'components/ClaimDetail';
 import ClaimSummary from 'src/pages/ClaimSummary';
@@ -507,12 +508,19 @@ export default {
         { name: 'Time Tracking' },
         { name: 'Claim Ledger' }
       ],
-      userRole: ''
+      userRole: '',
+      taskExpansion: false,
+      summaryExpansion: false
     };
   },
 
   computed: {
-    ...mapGetters(['selectedClaimId', 'getSelectedClaim', 'phases'])
+    ...mapGetters([
+      'selectedClaimId',
+      'getSelectedClaim',
+      'phases',
+      'notificationRouteTo'
+    ])
   },
 
   created() {
@@ -520,6 +528,14 @@ export default {
     this.getPhases();
     this.options = this.phases;
     this.userRole = getCurrentUser().attributes.roles[0].machineValue;
+    if (this.notificationRouteTo == 'task') {
+      this.taskExpansion = true;
+      this.claimTask = true;
+    } else if (this.notificationRouteTo == 'summary') {
+      this.summaryExpansion = true;
+      this.claimSummary = true;
+    }
+    this.setNotificationRouteTo('');
   },
   methods: {
     ...mapActions([
@@ -528,6 +544,7 @@ export default {
       'editClaimPhase',
       'getPhases'
     ]),
+    ...mapMutations(['setNotificationRouteTo']),
     onEmailClick,
     successMessage,
 
