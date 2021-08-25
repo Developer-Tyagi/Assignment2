@@ -5,7 +5,7 @@
         :dialogName="'Add Mortgage'"
         @closeDialog="closeDialog(false)"
       />
-      <div class="mobile-container-page q-pt-xl form-color">
+      <div class="mobile-container-page form-color">
         <q-form
           class="q-px-lg"
           style="height: calc(100vh - 51px)"

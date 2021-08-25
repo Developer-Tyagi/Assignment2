@@ -58,7 +58,7 @@
           :dialogName="'Add New Task'"
           @closeDialog="(addNewTaskDialog = false), $emit('taskDialog', false)"
         />
-        <div class="mobile-container-page form-height q-pt-xl q-pa-md">
+        <div class="mobile-container-page form-height q-pa-md">
           <q-form ref="addTask">
             <q-input
               class="required"

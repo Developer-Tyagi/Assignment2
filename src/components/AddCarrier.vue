@@ -5,7 +5,7 @@
         :dialogName="'Add Carrier'"
         @closeDialog="$emit('closeDialog', false)"
       />
-      <div class="mobile-container-page q-mt-md form-color">
+      <div class="mobile-container-page form-color">
         <q-form
           class="q-px-lg"
           style="height: calc(100vh - 51px)"

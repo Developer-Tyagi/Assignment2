@@ -13,7 +13,7 @@
           "
           :dialogName="'Loss Info'"
         />
-        <q-card class="q-ma-sm q-pt-xl  q-pa-sm">
+        <q-card class="q-ma-sm q-pa-sm">
           <div class="mobile-container-page">
             <q-form ref="lossInfoForm">
               <LossInfo
