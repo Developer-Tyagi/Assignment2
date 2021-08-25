@@ -161,7 +161,8 @@
           <q-form ref="mortgagePersonnelForm">
             <q-card class="q-ma-md q-pa-md q-mt-sm">
               <q-select
-                class="required"
+                class="required input-style input-overlay"
+                borderless
                 dense
                 v-model="honorific.value"
                 :options="titles"
@@ -177,34 +178,39 @@
               />
               <q-input
                 dense
+                class="required input-style input-overlay"
+                borderless
                 v-model="personnel.fname"
                 label="First Name"
                 lazy-rules
                 :rules="[
                   val => (val && val.length > 0) || 'Please fill the first name'
                 ]"
-                class="required"
               />
               <q-input
                 dense
                 v-model="personnel.lname"
+                class="required input-style input-overlay"
+                borderless
                 label="Last Name"
                 lazy-rules
                 :rules="[
                   val => (val && val.length > 0) || 'Please fill the last name'
                 ]"
-                class="required"
               />
               <q-input
                 dense
                 v-model="personnel.departmentName"
+                class="required input-style input-overlay"
+                borderless
                 label="Organization / Department Name"
               />
               <q-input
                 dense
                 v-model="personnel.email"
                 input
-                class="required"
+                class="required input-style input-overlay"
+                borderless
                 type="email"
                 novalidate="true"
                 label="Email"
@@ -232,7 +238,8 @@
                   <q-select
                     dense
                     v-model="personnel.phoneNumber[index].type"
-                    class="col-5"
+                    class="col-5  input-style input-overlay"
+                    borderless
                     label="Type"
                     :options="contactTypes"
                     option-value="machineValue"
@@ -245,7 +252,8 @@
                     dense
                     v-model.number="personnel.phoneNumber[index].number"
                     label="Phone"
-                    class="col-6"
+                    class="col-6  input-style input-overlay"
+                    borderless
                     mask="(###) ###-####"
                   />
                 </div>
@@ -273,14 +281,16 @@
             <q-card class="q-ma-md q-pa-md q-mt-xs">
               <div class="form-heading q-mt-sm q-mb-sm">Notes</div>
               <div class="floating-label">
-                <textarea
+                <q-input
+                  type="textarea"
                   rows="3"
                   required
-                  class="full-width"
+                  class="col-6 q-pt-md input-style input-overlay full-width"
+                  borderless
                   v-model="personnel.notes"
-                  style="resize: none"
+                  style="resize: none ;padding-left:10px;"
                   placeholder="Take notes here..."
-                ></textarea>
+                ></q-input>
               </div>
             </q-card>
           </q-form>
@@ -310,12 +320,13 @@
           <q-form ref="editPersonnelForm">
             <q-card class="q-ma-md q-pa-md q-mt-sm">
               <q-select
-                class="required"
                 dense
                 v-model="honorific.value"
                 :options="titles"
                 option-value="value"
                 option-label="value"
+                class="required input-style input-overlay"
+                borderless
                 map-options
                 options-dense
                 behavior="menu"
@@ -327,25 +338,29 @@
               <q-input
                 dense
                 v-model="personnel.fname"
+                class="required input-style input-overlay"
+                borderless
                 label="First Name"
                 lazy-rules
                 :rules="[
                   val => (val && val.length > 0) || 'Please fill the first name'
                 ]"
-                class="required"
               />
               <q-input
                 dense
                 v-model="personnel.lname"
                 label="Last Name"
+                class="required input-style input-overlay"
+                borderless
                 lazy-rules
                 :rules="[
                   val => (val && val.length > 0) || 'Please fill the last name'
                 ]"
-                class="required"
               />
               <q-input
                 dense
+                class=" input-style input-overlay"
+                borderless
                 v-model="personnel.departmentName"
                 label="Organization / Department Name"
               />
@@ -356,11 +371,12 @@
                 type="email"
                 novalidate="true"
                 label="Email"
+                class="required input-style input-overlay"
+                borderless
                 lazy-rules
                 :rules="[
                   val => (val && val.length > 0) || 'Please fill the email'
                 ]"
-                class="required"
               />
             </q-card>
             <q-card class="q-ma-md q-pa-md q-mt-sm"
@@ -381,8 +397,9 @@
                   <q-select
                     dense
                     v-model="personnel.phoneNumber[index].type"
-                    class="col-5"
                     label="Type"
+                    class="col-5 input-style input-overlay"
+                    borderless
                     :options="contactTypes"
                     option-value="machineValue"
                     option-label="name"
@@ -393,8 +410,9 @@
                   <q-input
                     dense
                     v-model.number="personnel.phoneNumber[index].number"
+                    class="col-6 input-style input-overlay"
+                    borderless
                     label="Phone"
-                    class="col-6"
                     mask="(###) ###-####"
                   />
                 </div>
@@ -422,14 +440,16 @@
             <q-card class="q-ma-md q-pa-md q-mt-xs">
               <div class="form-heading q-mt-sm q-mb-sm">Notes</div>
               <div class="floating-label">
-                <textarea
+                <q-input
                   rows="3"
                   required
-                  class="full-width"
+                  type="textarea"
+                  class="col-6 q-pt-md input-style input-overlay full-width"
+                  borderless
                   v-model="personnel.notes"
-                  style="resize: none"
+                  style="resize: none  ;padding-left:10px;"
                   placeholder="Take notes here..."
-                ></textarea>
+                ></q-input>
               </div>
             </q-card>
           </q-form>
