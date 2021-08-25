@@ -573,7 +573,8 @@ export default {
             ? this.actors[i].role.value
             : '',
         id: this.actors[i].id,
-        type: this.actors[i].type
+        type: this.actors[i].type,
+        name: this.actors[i].name
       });
     }
   },
@@ -620,7 +621,7 @@ export default {
       const payload = {
         claimID: this.selectedClaimId,
         data: {
-          recipients: [this.claimActors],
+          recipients: this.claimActors,
           // recipients:[]
           documentIDs: [this.selectedDocumentId]
         }
