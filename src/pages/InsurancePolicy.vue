@@ -422,7 +422,7 @@
           "
           :dialogName="'Insurance Info'"
         />
-        <div class="q-ma-sm mobile-container-page-without-search">
+        <div class="q-ma-sm mobile-container-page-without-search q-pt-xl">
           <q-form ref="insuranceInfoForm" class="form-height">
             <InsuranceInfo
               :insuranceDetails="insuranceDetails"

@@ -179,7 +179,7 @@
           "
           :dialogName="'Settlements'"
         />
-        <div class="q-ma-sm mobile-container-page-without-search">
+        <div class="q-ma-sm q-mt-xl mobile-container-page-without-search">
           <q-form ref="AddSettlementForm" class="form-height">
             <q-card flat bordered>
               <q-select
@@ -706,7 +706,7 @@
           @closeDialog="settlementShowDialog = false"
           :dialogName="'Settlements'"
         />
-        <div class="q-ma-sm mobile-container-page-without-search">
+        <div class="q-ma-sm q-mt-xl mobile-container-page-without-search">
           <q-form ref="settlementForm" class="form-height">
             <!-- 2nd Card -->
             <q-card class="q-pa-md q-mt-sm" flat bordered>
@@ -1203,12 +1203,11 @@ import { validateDate } from '@utils/validation';
 import { dateToSend, dateToShow } from '@utils/date';
 import { date } from 'quasar';
 import { log } from 'src/store/claims/getters';
-import ClaimDetail from 'components/ClaimDetail';
 
 export default {
   name: 'Settlements',
 
-  components: { CustomBar, ClaimDetail },
+  components: { CustomBar }, //ClaimDetails is not in use so I removed it to make code clear.
   data() {
     return {
       initialOffer: '',

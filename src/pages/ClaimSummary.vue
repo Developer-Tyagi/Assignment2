@@ -375,7 +375,7 @@
           "
           :dialogName="'Edit Claim Summary'"
         />
-        <div class="q-ma-sm mobile-container-page">
+        <div class="q-ma-sm q-pt-xl mobile-container-page">
           <q-card class="q-mx-sm">
             <div class="q-px-sm">
               <q-input
@@ -487,7 +487,7 @@
           "
           :dialogName="'Edit Claim Deadlines'"
         />
-        <div class="q-ma-sm mobile-container-page">
+        <div class="q-ma-sm q-mt-xl mobile-container-page">
           <q-card class="q-mx-sm">
             <div class="q-px-md">
               <div class="row">
@@ -561,7 +561,7 @@
           "
           :dialogName="'Edit Loss Details'"
         />
-        <div class="q-ma-sm mobile-container-page">
+        <div class="q-ma-sm q-pt-xl mobile-container-page">
           <q-card class="q-mx-sm">
             <div class="q-px-md">
               <q-input
