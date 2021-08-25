@@ -44,7 +44,7 @@
           "
         />
         <q-card-section>
-          <div class="mobile-container-page">
+          <div class="mobile-container-page q-mt-md">
             <div class="q-py-xs">Notes</div>
             <textarea
               rows="4"

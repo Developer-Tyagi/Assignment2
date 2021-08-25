@@ -195,7 +195,7 @@
           @closeDialog="addNewPropertyDialog = false"
           :dialogName="'Add New Property'"
         />
-        <div class="mobile-container-page-without-search q-pa-sm">
+        <div class="mobile-container-page-without-search q-pt-xl q-pa-sm">
           <q-form ref="propertyAddressForm" class="form-height">
             <q-input
               dense

@@ -182,7 +182,7 @@
           :dialogName="'Edit Personnel'"
           @closeDialog="editPersonnelDialog = false"
         />
-        <div class="mobile-container-page form-color">
+        <div class="mobile-container-page q-pt-xl form-color">
           <q-form
             ref="editPersonnelForm"
             class="q-px-lg "
@@ -313,14 +313,16 @@
               <div class="q-mt-xs">
                 <div class="form-heading q-mt-sm q-mb-sm">Notes</div>
                 <div class="floating-label">
-                  <textarea
+                  <q-input
+                    type="textarea"
                     rows="3"
                     required
-                    class="full-width"
+                    borderless
+                    class="input-style input-overlay full-width"
                     v-model="personnel.notes"
                     style="resize: none"
                     placeholder="Take notes here..."
-                  ></textarea>
+                  ></q-input>
                 </div>
               </div>
             </div>

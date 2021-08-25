@@ -139,7 +139,7 @@
             "
             :dialogName="'Expert Vendor'"
           />
-          <div class="mobile-container-page q-pa-sm form-height">
+          <div class="mobile-container-page q-pa-sm q-pt-xl form-height">
             <q-form ref="estimatingInfoForm">
               <q-card class="row q-pa-sm">
                 <p class="form-heading q-mx-none q-my-auto">
