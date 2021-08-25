@@ -219,7 +219,7 @@
               <q-select
                 dense
                 borderless
-                class="input-style input-extra-padding"
+                class="input-style q-select-style input-extra-padding"
                 v-model="lossDetails.causeOfLoss.value"
                 option-value="name"
                 option-label="name"
@@ -247,7 +247,7 @@
                     (val && val.length > 0) || 'Please fill the description'
                 ]"
               />
-              <div class="stepper-heading">Loss Location</div>
+              <div class="stepper-heading q-pt-md">Loss Location</div>
               <AutoCompleteAddress
                 :id="'LeadLoss'"
                 :address="lossAddress"
@@ -292,8 +292,8 @@
                 @click="carriersListDialog = true"
                 v-if="!insuranceDetails.carrierName"
               >
-                <div class="input-style q-my-md">
-                  <div class="text-center">
+                <div class="input-style button-style cursor-pointer q-my-md">
+                  <div class="text-center q-my-sm">
                     Click for choosing a carrier
                   </div>
                 </div>
@@ -429,7 +429,7 @@
                   map-options
                   @input="onChangingSourceType()"
                   @filter="searchBySource"
-                  class="input-style input-extra-padding"
+                  class="input-style q-select-style input-extra-padding"
                 />
                 <q-input
                   borderless
@@ -703,6 +703,7 @@
                 v-if="schedulingDetails.isAutomaticScheduling"
                 dense
                 borderless
+                style="height:58px"
                 type="number"
                 mask="#.#"
                 step="0.5"
@@ -1445,4 +1446,11 @@ export default {
 //     padding-left: 12px;
 //   }
 // }
+
+.q-select-style {
+  height: 58px;
+}
+.button-style {
+  height: 40px;
+}
 </style>
