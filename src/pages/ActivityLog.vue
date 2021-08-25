@@ -68,7 +68,7 @@
           :dialogName="'Add New Log'"
         />
 
-        <div class="mobile-container-page-without-search q-pt-xl q-ma-sm">
+        <div class="mobile-container-page-without-search q-ma-sm">
           <q-form ref="activityLogForm" class="form-height">
             <q-input
               v-model="title"

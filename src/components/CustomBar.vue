@@ -1,17 +1,13 @@
 <template>
-  <q-header style="background: whitesmoke; height: 51px">
-    <div class="row">
-      <div class="q-py-md q-pl-md">
-        <img src="~assets/close.svg" @click="onCloseIconClick" />
-      </div>
-      <q-space />
-      <div class="text-uppercase q-py-md text-center text-bold text-black">
-        {{ dialogName }}
-      </div>
-      <q-space />
-      <img src="~assets/close.svg" class="no-visibility" />
+  <q-bar style="background: whitesmoke; height: 51px">
+    <img src="~assets/close.svg" @click="onCloseIconClick" />
+    <q-space />
+    <div class="text-uppercase text-bold text-black">
+      {{ dialogName }}
     </div>
-  </q-header>
+    <q-space />
+    <img src="~assets/close.svg" class="no-visibility" />
+  </q-bar>
 </template>
 <script>
 import AddressService from '@utils/country';
