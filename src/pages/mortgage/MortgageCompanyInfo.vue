@@ -40,7 +40,10 @@
             ? selectedMortgage.address.streetAddress
             : '-'
         }}
-
+        <!--this is for second address column , will add this once api is ready from backend-->
+        <div>
+          this row is for second address-2
+        </div>
         <div>
           {{
             selectedMortgage.address.addressLocality
@@ -51,13 +54,6 @@
           {{
             selectedMortgage.address.addressRegion
               ? selectedMortgage.address.addressRegion
-              : '-'
-          }}
-        </div>
-        <div>
-          {{
-            selectedMortgage.address.addressCountry
-              ? selectedMortgage.address.addressCountry
               : '-'
           }},
           {{

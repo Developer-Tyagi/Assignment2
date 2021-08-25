@@ -47,7 +47,11 @@
                     ? personnel.address.streetAddress
                     : '-'
                 }}
+                <!--this is for second address column , will add this once api is ready from backend-->
                 <div class="">
+                  this row is for second address-2
+                </div>
+                <div>
                   {{
                     personnel.address.addressLocality
                       ? personnel.address.addressLocality
@@ -59,13 +63,6 @@
                       ? personnel.address.addressRegion
                       : '-'
                   }}
-                </div>
-                <div>
-                  {{
-                    personnel.address.addressCountry
-                      ? personnel.address.addressCountry
-                      : '-'
-                  }},
                   {{
                     personnel.address.postalCode
                       ? personnel.address.postalCode
@@ -514,7 +511,6 @@ export default {
         departmentName: '',
         address: {
           houseNumber: '',
-          addressCountry: '',
           addressLocality: '',
           addressRegion: '',
           postOfficeBoxNumber: '',
@@ -612,7 +608,6 @@ export default {
         this.personnel.lname = '';
         this.personnel.departmentName = '';
         this.personnel.address.houseNumber = '';
-        this.personnel.address.addressCountry = '';
         this.personnel.address.addressLocality = '';
         this.personnel.address.addressRegion = '';
         this.personnel.address.postOfficeBoxNumber = '';
@@ -710,7 +705,6 @@ export default {
         this.personnel.lname = '';
         this.personnel.departmentName = '';
         this.personnel.address.houseNumber = '';
-        this.personnel.address.addressCountry = '';
         this.personnel.address.addressLocality = '';
         this.personnel.address.addressRegion = '';
         this.personnel.address.postOfficeBoxNumber = '';
