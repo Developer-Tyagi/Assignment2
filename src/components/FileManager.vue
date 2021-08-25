@@ -223,7 +223,7 @@
     >
       <q-card style="width: 550px; height: 200px">
         <q-card-section class="items-center form-heading q-ml-md">
-          <div class="row q-ml-xl">
+          <div class="row">
             <div class="column q-ml-xl">
               <q-btn
                 name="upload"
@@ -248,25 +248,36 @@
               />
               <div class="form-heading q-ml-md">Remove</div>
             </div>
-            <div class="column">
+
+            <div
+              class="col-3"
+              v-if="generateClaimDocument && documentType"
+              @click="onClickSignedDoc"
+            >
               <q-btn
                 class="q-ml-md"
-                icon="pencil"
+                icon="refresh"
                 text-color="primary"
                 style="width: 50px"
               />
-              <div class="form-heading q-ml-md">Sign <br />Document</div>
+              <div class="form-heading q-ml-md">
+                Fetch signed updated document
+              </div>
             </div>
-            <div class="column">
-              <q-btn
-                class="q-ml-md"
-                icon="pencil"
-                text-color="primary"
-                style="width: 50px"
-              />
-              <div class="form-heading q-ml-md">Edit Document</div>
+            <div v-else>
+              <div class="col-3" v-if="generateClaimDocument && !documentType">
+                <q-btn
+                  class="q-ml-md"
+                  icon="edit"
+                  text-color="primary"
+                  style="width: 50px"
+                  @click="onClickSignDocument(documents[index].id)"
+                />
+                <div class="form-heading q-ml-md">
+                  Sign Document
+                </div>
+              </div>
             </div>
-            <!-- <div class="form-heading q-ml-md">Edit Document</div> -->
           </div>
         </q-card-section>
       </q-card>
@@ -462,6 +473,34 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+
+    <!-- Sign Document Dialog -->
+    <q-dialog
+      v-model="signDocumentDialog"
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <CustomBar
+          dialogName="Send Document"
+          @closeDialog="signDocumentDialog = false"
+        />
+
+        <q-option-group
+          :options="claimActors"
+          type="checkbox"
+          v-model="signActor"
+        ></q-option-group>
+        <q-btn
+          label="Send"
+          color="primary"
+          class="button-width-90 fixed-bottom q-mb-xl"
+          size="'xl'"
+          @click="onClickSendDocument()"
+        />
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -472,14 +511,22 @@ import { jsPDF } from 'jspdf';
 import { Plugins, CameraResultType, CameraDirection } from '@capacitor/core';
 import DeleteAlert from 'components/DeleteAlert';
 const { Camera } = Plugins;
+import CustomBar from 'components/CustomBar';
 
 export default {
   name: 'FileManager',
-  components: { DeleteAlert },
+  components: { DeleteAlert, CustomBar },
   props: ['directoryId', 'generateClaimDocument'],
+
   data() {
     return {
+      documentType: '',
+      isSelected: true,
+      signActor: [],
+      claimActors: [],
+      selectedDocumentId: '',
       templatetype: { value: '', machineValue: '' },
+      signDocumentDialog: false,
       index: '',
       id: '',
       isSystemGen: '',
@@ -511,6 +558,24 @@ export default {
   },
   created() {
     this.getTemplates();
+    this.getAllActorToClaim();
+
+    for (var i in this.actors) {
+      const role =
+        this.actors[i].role && this.actors[i].role.value
+          ? this.actors[i].role.value
+          : '';
+
+      this.claimActors.push({
+        label: this.actors[i].name + ' - ' + role,
+        value:
+          this.actors[i].role && this.actors[i].role.value
+            ? this.actors[i].role.value
+            : '',
+        id: this.actors[i].id,
+        type: this.actors[i].type
+      });
+    }
   },
   computed: {
     ...mapGetters([
@@ -518,7 +583,8 @@ export default {
       'selectedClaimId',
       'claimRoles',
       'allUsers',
-      'templateOptions'
+      'templateOptions',
+      'actors'
     ])
   },
 
@@ -533,13 +599,36 @@ export default {
       'getAllUsers',
       'deleteDirectory',
       'generateClaimDoc',
-      'getTemplates'
+      'getTemplates',
+      'getAllActorToClaim',
+      'signDocuments',
+      'getSignedDocument'
     ]),
     ...mapMutations(['setLoading']),
+    onClickSignDocument(documentId) {
+      this.signDocumentDialog = true;
+
+      this.selectedDocumentId = documentId;
+    },
+    async onClickSignedDoc() {
+      await this.getSignedDocument(this.selectedClaimId);
+    },
     onDocumentClick(link) {
       window.open(link);
     },
-
+    async onClickSendDocument() {
+      const payload = {
+        claimID: this.selectedClaimId,
+        data: {
+          recipients: [this.claimActors],
+          // recipients:[]
+          documentIDs: [this.selectedDocumentId]
+        }
+      };
+      await this.signDocuments(payload);
+      this.signDocumentDialog = false;
+      this.foldersAndFilesOptions = false;
+    },
     onSelectPersonOrGroup() {
       this.getClaimRoles();
       this.getAllUsers();
@@ -636,6 +725,8 @@ export default {
       this.id = '';
     },
     onShareClick(index) {
+      this.documentType = this.documents[index].type == 'folder';
+
       if (
         this.documents[index].properties &&
         this.documents[index].properties.isSystemGen
@@ -795,6 +886,8 @@ export default {
 
     async onClickOnFile(document) {
       this.allFolderId = document.id;
+      this.documentType = document.type;
+
       if (document.type == 'folder') {
         this.setLoading(true);
         const { data } = await request.get(

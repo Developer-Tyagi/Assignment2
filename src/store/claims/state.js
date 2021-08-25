@@ -29,6 +29,7 @@ export default function() {
     esxDocs: [],
     proofOfLoss: {},
     estimator: {},
-    claimPOLDocument: {}
+    claimPOLDocument: {},
+    actors: []
   };
 }

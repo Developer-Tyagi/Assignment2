@@ -163,3 +163,6 @@ export function setProofOfLoss(state, proofOfLoss) {
 export function setEstimator(state, estimator) {
   state.estimator = { ...estimator.attributes };
 }
+export function setAllActors(state, actors) {
+  state.actors = { ...actors.attributes };
+}
