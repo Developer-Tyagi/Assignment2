@@ -4,8 +4,9 @@
       class="add-icon"
       @click="menuItemDialog = true"
       name="more_vert"
-      v-if="estimatorDocument == 'esti_docs' || vendorDocument == 'vendor_docs'"
+      v-if="userRole == 'estimator' || userRole == 'vendor'"
     />
+
     <div
       :class="{
         'mobile-container-page': userRole == 'estimator' || userRole == 'vendor'
