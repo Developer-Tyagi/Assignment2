@@ -70,7 +70,7 @@
       dense
       borderless
       :class="{ required: isAsteriskMark }"
-      v-model="address.addressRegion"
+      v-model="stateNameDisplay"
       :options="states"
       class="input-style input-overlay"
       label="State"
@@ -179,7 +179,7 @@
         dense
         outlined
         :class="{ required: isAsteriskMark }"
-        v-model="address.addressRegion"
+        v-model="stateNameDisplay"
         :options="states"
         class="q-ml-sm"
         style="width: 46%"
@@ -271,7 +271,8 @@ export default {
       autocomplete: {},
       autocomplete2: {},
       countries: [],
-      states: []
+      states: [],
+      stateNameDisplay: '' //this is use to display the long name of state on state select dropdown
     };
   },
   computed: {
@@ -309,6 +310,7 @@ export default {
 
     fillInAddress() {
       const place = this['obj' + this.id].getPlace().address_components;
+
       this.address.streetAddress =
         this.getPlaceName('route', place) >= 0
           ? place[this.getPlaceName('route', place)].long_name
@@ -320,12 +322,19 @@ export default {
         ? place[this.getPlaceName('administrative_area_level_2', place)]
             .long_name
         : '';
-      this.address.addressRegion = this.getPlaceName(
+      this.stateNameDisplay = this.getPlaceName(
         'administrative_area_level_1',
         place
       )
         ? place[this.getPlaceName('administrative_area_level_1', place)]
             .long_name
+        : '';
+      this.address.addressRegion = this.getPlaceName(
+        'administrative_area_level_1',
+        place
+      )
+        ? place[this.getPlaceName('administrative_area_level_1', place)]
+            .short_name
         : '';
       this.address.addressCountry = this.getPlaceName('country', place)
         ? place[this.getPlaceName('country', place)].long_name

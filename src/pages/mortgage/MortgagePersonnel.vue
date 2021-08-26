@@ -41,7 +41,6 @@
                     ? personnel.address.houseNumber
                     : '-'
                 }}
-                ,
                 {{
                   personnel.address.streetAddress
                     ? personnel.address.streetAddress

@@ -34,7 +34,6 @@
             ? selectedMortgage.address.houseNumber
             : '-'
         }}
-        ,
         {{
           selectedMortgage.address.streetAddress
             ? selectedMortgage.address.streetAddress
@@ -55,7 +54,7 @@
             selectedMortgage.address.addressRegion
               ? selectedMortgage.address.addressRegion
               : '-'
-          }},
+          }}
           {{
             selectedMortgage.address.postalCode
               ? selectedMortgage.address.postalCode
