@@ -6,7 +6,7 @@
       name="more_vert"
       v-if="userRole == 'estimator' || userRole == 'vendor'"
     />
-    <!-- v-if="estimatorDocument == 'esti_docs' || vendorDocument == 'vendor_docs'" -->
+
     <div
       :class="{
         'mobile-container-page': userRole == 'estimator' || userRole == 'vendor'
