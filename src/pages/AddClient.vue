@@ -627,6 +627,7 @@
                   class="q-ml-auto"
                   v-model="lossInfo.isPAFillingOutToggle"
                   @input="onPersonalPropertyToggleButtonOff"
+                  :disable="isOfflineClientEdit"
                 />
               </div>
               <!-- Persnol Property Damage List -->
@@ -742,6 +743,7 @@
                     icon="add"
                     size="sm"
                     color="primary"
+                    :disabled="isOfflineClientEdit"
                     @click="addNewItem('property')"
                   >
                   </q-btn>
@@ -982,6 +984,7 @@
                   size="sm"
                   color="primary"
                   @click="addNewItem('otherDamage')"
+                  :disabled="isOfflineClientEdit"
                 >
                 </q-btn>
               </div>

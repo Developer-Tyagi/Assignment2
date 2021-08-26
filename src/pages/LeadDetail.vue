@@ -85,36 +85,39 @@
               {{ selectedLead.organizationName }}</span
             >
           </div>
+          <div v-if="selectedLead.isAutomaticScheduling">
+            <div
+              class="row q-mt-sm"
+              v-if="
+                selectedLead.inspectionInfo &&
+                  selectedLead.inspectionInfo.pValue
+              "
+            >
+              <span class="heading-light col-3"> Inspection Type </span>
+              <span class="q-ml-md col">
+                {{
+                  selectedLead.inspectionInfo.pValue
+                    ? selectedLead.inspectionInfo.pValue
+                    : '-'
+                }}</span
+              >
+            </div>
 
-          <div
-            class="row q-mt-sm"
-            v-if="
-              selectedLead.inspectionInfo && selectedLead.inspectionInfo.pValue
-            "
-          >
-            <span class="heading-light col-3"> Inspection Type </span>
-            <span class="q-ml-md col">
-              {{
-                selectedLead.inspectionInfo.pValue
-                  ? selectedLead.inspectionInfo.pValue
-                  : '-'
-              }}</span
+            <div
+              class="row q-mt-sm"
+              v-if="
+                selectedLead.inspectionInfo && selectedLead.inspectionInfo.value
+              "
             >
-          </div>
-          <div
-            class="row q-mt-sm"
-            v-if="
-              selectedLead.inspectionInfo && selectedLead.inspectionInfo.value
-            "
-          >
-            <span class="heading-light col-3">Sub Inspection Type </span>
-            <span class="q-ml-md col">
-              {{
-                selectedLead.inspectionInfo.value
-                  ? selectedLead.inspectionInfo.value
-                  : '-'
-              }}</span
-            >
+              <span class="heading-light col-3">Sub Inspection Type </span>
+              <span class="q-ml-md col">
+                {{
+                  selectedLead.inspectionInfo.value
+                    ? selectedLead.inspectionInfo.value
+                    : '-'
+                }}</span
+              >
+            </div>
           </div>
         </div>
       </div>
