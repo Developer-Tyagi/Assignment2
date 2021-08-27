@@ -1686,6 +1686,7 @@ export async function getSignedDocument({ commit, dispatch }, claimID) {
     // };
     // commit('setAllActors', data);
     dispatch('setLoading', false);
+    return data;
   } catch (e) {
     console.log(e);
     dispatch('setLoading', false);

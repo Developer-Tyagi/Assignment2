@@ -606,10 +606,22 @@ export default {
       'getSignedDocument'
     ]),
     ...mapMutations(['setLoading']),
-    onClickSignDocument(documentId) {
-      this.signDocumentDialog = true;
+    async onClickSignDocument(documentId) {
+      const response = await this.getSignedDocument(this.selectedClaimId);
+      console.log(response, 'Res');
+      if (
+        response.attributes.status &&
+        response.attributes.status == 'completed'
+      ) {
+        this.signDocumentDialog = true;
 
-      this.selectedDocumentId = documentId;
+        this.selectedDocumentId = documentId;
+      } else {
+        dispatch('setNotification', {
+          type: 'positive',
+          message: 'Previous document is not signed yet!'
+        });
+      }
     },
     async onClickSignedDoc() {
       await this.getSignedDocument(this.selectedClaimId);
