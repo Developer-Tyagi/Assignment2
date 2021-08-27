@@ -252,7 +252,7 @@
             <div
               class="col-3"
               v-if="generateClaimDocument && documentType"
-              @click="onClickSignedDoc"
+              @click="onFetchDocumentClick"
             >
               <q-btn
                 class="q-ml-md"
@@ -484,20 +484,91 @@
       <q-card>
         <CustomBar
           dialogName="Send Document"
-          @closeDialog="signDocumentDialog = false"
+          @closeDialog="
+            (signDocumentDialog = false), (foldersAndFilesOptions = false)
+          "
         />
-
-        <q-option-group
-          :options="claimActors"
-          type="checkbox"
-          v-model="signActor"
-        ></q-option-group>
+        <div class="mobile-container-page q-pa-sm form-height">
+          <div class="column" v-for="(actor, index) in claimActors">
+            <div class="row q-pa-sm">
+              <div class="flex">
+                <q-checkbox
+                  v-model="actor.isEnabled"
+                  color="$primary"
+                  class="q-my-auto q-mr-md"
+                  @input="setClaimActors(actor)"
+                />
+              </div>
+              <div class="column">
+                <span
+                  >{{ actor.name }} -
+                  {{
+                    actor.role && actor.role[0].value ? actor.role[0].value : ''
+                  }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
         <q-btn
           label="Send"
           color="primary"
           class="button-width-90 fixed-bottom q-mb-xl"
           size="'xl'"
           @click="onClickSendDocument()"
+        />
+      </q-card>
+    </q-dialog>
+
+    <!-- Fetch Document Dialog -->
+
+    <q-dialog
+      v-model="documentStatusDialog"
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <CustomBar
+          dialogName="Document Status"
+          @closeDialog="
+            (documentStatusDialog = false), (foldersAndFilesOptions = false)
+          "
+        />
+        <!-- <div class="mobile-container-page q-pa-sm form-height">
+          <div class="form-heading q-ml-xl  row">
+            Reciepients
+            <div class="q-ml-xl">Status</div>
+          </div>
+        </div> -->
+        <div class="q-mt-md q-ml-xl row">
+          <div class="q-mt-none text-bold text-capitalize col-xs-4 ">
+            Recipients
+          </div>
+          <div class="column q-ml-md text-bold text-capitalize">
+            Status
+          </div>
+        </div>
+        <q-separator />
+        <div
+          class="q-mt-md q-ml-xl row"
+          v-for="doc in signedDocuments.recipients"
+        >
+          <div class="q-mt-none col-xs-4 ">
+            {{ doc.name }}
+          </div>
+          <div class="column q-ml-md">
+            {{ doc.status }}
+          </div>
+        </div>
+        <q-btn
+          label="Close"
+          color="primary"
+          class="button-width-90 fixed-bottom q-mb-xl"
+          size="'xl'"
+          @click="
+            (documentStatusDialog = false), (foldersAndFilesOptions = false)
+          "
         />
       </q-card>
     </q-dialog>
@@ -512,7 +583,7 @@ import { Plugins, CameraResultType, CameraDirection } from '@capacitor/core';
 import DeleteAlert from 'components/DeleteAlert';
 const { Camera } = Plugins;
 import CustomBar from 'components/CustomBar';
-
+import { setNotification } from 'src/store/common/mutations';
 export default {
   name: 'FileManager',
   components: { DeleteAlert, CustomBar },
@@ -520,6 +591,8 @@ export default {
 
   data() {
     return {
+      signedDocuments: '',
+      documentStatusDialog: false,
       documentType: '',
       isSelected: true,
       signActor: [],
@@ -556,27 +629,9 @@ export default {
       allFolder: false
     };
   },
-  created() {
+  async created() {
     this.getTemplates();
-    this.getAllActorToClaim();
-
-    for (var i in this.actors) {
-      const role =
-        this.actors[i].role && this.actors[i].role.value
-          ? this.actors[i].role.value
-          : '';
-
-      this.claimActors.push({
-        label: this.actors[i].name + ' - ' + role,
-        value:
-          this.actors[i].role && this.actors[i].role.value
-            ? this.actors[i].role.value
-            : '',
-        id: this.actors[i].id,
-        type: this.actors[i].type,
-        name: this.actors[i].name
-      });
-    }
+    await this.getAllActorToClaim(this.selectedClaimId);
   },
   computed: {
     ...mapGetters([
@@ -605,26 +660,64 @@ export default {
       'signDocuments',
       'getSignedDocument'
     ]),
-    ...mapMutations(['setLoading']),
+    ...mapMutations(['setLoading', 'setNotification']),
+    setClaimActors(actor) {
+      this.signActor.push({
+        id: actor.id,
+        name: actor.name,
+        type: actor.type
+      });
+    },
+
     async onClickSignDocument(documentId) {
       const response = await this.getSignedDocument(this.selectedClaimId);
-      console.log(response, 'Res');
+
+      for (var index in this.actors) {
+        // const role =
+        //   this.actors[index].roles && this.actors[index].roles[0].value
+        //     ? this.actors[index].roles[0].value
+        //     : '';
+        // console.log(role, 'role is');
+        this.claimActors.push({
+          // label: this.actors[index].name + ' - ' + role,
+          label: this.actors[index].name,
+          value:
+            this.actors[index].roles && this.actors[index].roles[0].value
+              ? this.actors[index].roles[0].value
+              : '',
+          id: this.actors[index].id,
+          type: this.actors[index].type,
+          name: this.actors[index].name,
+          isEnabled: false,
+          role: this.actors[index].roles
+        });
+      }
       if (
-        response.attributes.status &&
+        !response.attributes.status ||
         response.attributes.status == 'completed'
       ) {
         this.signDocumentDialog = true;
-
         this.selectedDocumentId = documentId;
       } else {
-        dispatch('setNotification', {
-          type: 'positive',
+        this.setNotification({
+          type: 'negative',
           message: 'Previous document is not signed yet!'
         });
       }
     },
-    async onClickSignedDoc() {
-      await this.getSignedDocument(this.selectedClaimId);
+    async onFetchDocumentClick() {
+      const response = await this.getSignedDocument(this.selectedClaimId);
+      console.log(response, 'respones of get call fresh');
+      this.signedDocuments = response.attributes;
+      if (response.attributes.status) {
+        this.documentStatusDialog = true;
+      } else {
+        this.setNotification({
+          type: 'negative',
+          message: 'there is no signed document!!'
+        });
+        this.foldersAndFilesOptions = false;
+      }
     },
     onDocumentClick(link) {
       window.open(link);
@@ -633,14 +726,16 @@ export default {
       const payload = {
         claimID: this.selectedClaimId,
         data: {
-          recipients: this.claimActors,
-          // recipients:[]
+          recipients: this.signActor,
           documentIDs: [this.selectedDocumentId]
         }
       };
+
       await this.signDocuments(payload);
       this.signDocumentDialog = false;
       this.foldersAndFilesOptions = false;
+      this.signActor = [];
+      this.claimActors = [];
     },
     onSelectPersonOrGroup() {
       this.getClaimRoles();
@@ -1040,5 +1135,9 @@ export default {
   top: -40px;
   font-size: 24px;
   z-index: 10000;
+}
+.office-task-list {
+  height: calc(100vh - 365px);
+  overflow-y: auto;
 }
 </style>

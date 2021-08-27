@@ -1606,34 +1606,8 @@ export async function generateClaimDoc({ dispatch, state }, payload) {
 export async function getAllActorToClaim({ commit, dispatch }, claimID) {
   dispatch('setLoading', true);
   try {
-    // const { data } = await request.get(`/claims/${claimID}/actors`);
-    const data = {
-      attributes: [
-        {
-          type: 'user',
-          id: 'MMSzLRo6sdPoESsnsT8e09CH0cl1',
-          name: 'Clark Kent',
-          role: {
-            value: 'Vendor',
-            machineValue: 'vendor'
-          }
-        },
-        {
-          type: 'user',
-          id: 'MMyzLRo6sdPoESsnsT8e09CH0cl1',
-          name: 'Sonali Saxena',
-          role: {
-            value: 'Estimator',
-            machineValue: 'estimator'
-          }
-        },
-        {
-          type: 'client',
-          id: '610cf443d905b0dae4c67231',
-          name: 'Bruce Wayne'
-        }
-      ]
-    };
+    const { data } = await request.get(`/claims/${claimID}/actors`);
+
     commit('setAllActors', data);
     dispatch('setLoading', false);
   } catch (e) {
@@ -1678,13 +1652,7 @@ export async function getSignedDocument({ commit, dispatch }, claimID) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.get(`/claims/${claimID}/sign-docs`);
-    // const data = {
-    //   type: 'docs-signature',
-    //   attributes: {
-    //     status: 'sent'
-    //   }
-    // };
-    // commit('setAllActors', data);
+
     dispatch('setLoading', false);
     return data;
   } catch (e) {
