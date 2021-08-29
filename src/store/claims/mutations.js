@@ -165,5 +165,4 @@ export function setEstimator(state, estimator) {
 }
 export function setAllActors(state, actors) {
   state.actors = { ...actors.attributes.actors };
-  console.log(state.actors, 1111);
 }

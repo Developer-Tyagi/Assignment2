@@ -488,8 +488,8 @@
             (signDocumentDialog = false), (foldersAndFilesOptions = false)
           "
         />
-        <div class="mobile-container-page q-pa-sm form-height">
-          <div class="column" v-for="(actor, index) in claimActors">
+        <div class="mobile-container-page q-pa-sm form-height ">
+          <div class="column " v-for="(actor, index) in claimActors">
             <div class="row q-pa-sm">
               <div class="flex">
                 <q-checkbox
@@ -499,12 +499,10 @@
                   @input="setClaimActors(actor)"
                 />
               </div>
-              <div class="column">
+              <div class="column  q-mt-sm">
                 <span
                   >{{ actor.name }} -
-                  {{
-                    actor.role && actor.role[0].value ? actor.role[0].value : ''
-                  }}
+                  {{ actor.role && actor.role ? actor.role : '' }}
                 </span>
               </div>
             </div>
@@ -673,24 +671,26 @@ export default {
       const response = await this.getSignedDocument(this.selectedClaimId);
 
       for (var index in this.actors) {
-        // const role =
-        //   this.actors[index].roles && this.actors[index].roles[0].value
-        //     ? this.actors[index].roles[0].value
-        //     : '';
-        // console.log(role, 'role is');
-        this.claimActors.push({
-          // label: this.actors[index].name + ' - ' + role,
-          label: this.actors[index].name,
-          value:
-            this.actors[index].roles && this.actors[index].roles[0].value
-              ? this.actors[index].roles[0].value
-              : '',
-          id: this.actors[index].id,
-          type: this.actors[index].type,
-          name: this.actors[index].name,
-          isEnabled: false,
-          role: this.actors[index].roles
-        });
+        for (var roleIndex in this.actors[index].roles) {
+          const role =
+            this.actors[index].roles[roleIndex] &&
+            this.actors[index].roles[roleIndex].value
+              ? this.actors[index].roles[roleIndex].value
+              : '';
+
+          this.claimActors.push({
+            label: this.actors[index].name,
+            value:
+              this.actors[index].roles && this.actors[index].roles[0].value
+                ? this.actors[index].roles[0].value
+                : '',
+            id: this.actors[index].id,
+            type: this.actors[index].type,
+            name: this.actors[index].name,
+            isEnabled: false,
+            role: role
+          });
+        }
       }
       if (
         !response.attributes.status ||
@@ -707,7 +707,7 @@ export default {
     },
     async onFetchDocumentClick() {
       const response = await this.getSignedDocument(this.selectedClaimId);
-      console.log(response, 'respones of get call fresh');
+
       this.signedDocuments = response.attributes;
       if (response.attributes.status) {
         this.documentStatusDialog = true;

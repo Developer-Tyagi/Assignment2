@@ -454,6 +454,7 @@ export async function syncCarriers({ dispatch }) {
 
 export async function syncVendors({ dispatch }) {
   let offlineVendors = await getCollection('vendors').toArray();
+  console.log(offlineVendors, 123);
   offlineVendors = offlineVendors.filter(vendor => vendor.offline);
   if (offlineVendors.length > 0) {
     const createVendors = offlineVendors.map(
