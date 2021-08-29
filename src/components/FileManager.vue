@@ -542,16 +542,23 @@
             Status
           </div>
         </div>
+
         <q-separator />
         <div
           class="q-mt-md q-ml-xl row"
           v-for="doc in signedDocuments.recipients"
         >
-          <div class="q-mt-none col-xs-4 ">
+          <div class="q-mt-none row col-xs-4 ">
             {{ doc.name }}
           </div>
           <div class="column q-ml-md">
             {{ doc.status }}
+          </div>
+          <div
+            class="q-ml-auto  q-ml-xl q-mb-xs q-mr-md"
+            v-if="doc && doc.status == 'completed'"
+          >
+            <q-icon name="check" size="md" color="primary" />
           </div>
         </div>
         <q-btn
@@ -704,7 +711,6 @@ export default {
       const response = await this.getSignedDocument(this.selectedClaimId);
 
       this.signedDocuments = response.attributes;
-
       if (response.attributes.status) {
         this.documentStatusDialog = true;
       } else {
