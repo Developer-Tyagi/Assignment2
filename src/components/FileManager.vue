@@ -533,12 +533,7 @@
             (documentStatusDialog = false), (foldersAndFilesOptions = false)
           "
         />
-        <!-- <div class="mobile-container-page q-pa-sm form-height">
-          <div class="form-heading q-ml-xl  row">
-            Reciepients
-            <div class="q-ml-xl">Status</div>
-          </div>
-        </div> -->
+
         <div class="q-mt-md q-ml-xl row">
           <div class="q-mt-none text-bold text-capitalize col-xs-4 ">
             Recipients
@@ -709,6 +704,7 @@ export default {
       const response = await this.getSignedDocument(this.selectedClaimId);
 
       this.signedDocuments = response.attributes;
+
       if (response.attributes.status) {
         this.documentStatusDialog = true;
       } else {
