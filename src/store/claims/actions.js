@@ -1602,3 +1602,65 @@ export async function generateClaimDoc({ dispatch, state }, payload) {
     return false;
   }
 }
+// Fetch all actors related to this claim
+export async function getAllActorToClaim({ commit, dispatch }, claimID) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get(`/claims/${claimID}/actors`);
+
+    commit('setAllActors', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+  }
+}
+//API for Sign Document
+
+export async function signDocuments({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      `/claims/${payload.claimID}/sign-docs
+`,
+      buildApiData('docs-signature', payload.data)
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message:
+        'Document has been sent successfully please come back once user signs the document!'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+    return false;
+  }
+}
+
+// API for Fetching documents signing status
+
+export async function getSignedDocument({ commit, dispatch }, claimID) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get(`/claims/${claimID}/sign-docs`);
+
+    dispatch('setLoading', false);
+    return data;
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+  }
+}

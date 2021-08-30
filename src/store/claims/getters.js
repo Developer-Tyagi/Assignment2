@@ -28,3 +28,4 @@ export const claimPOLDocument = state => state.claimPOLDocument;
 export const payment = state => state.payment;
 export const expenses = state => state.expenses;
 export const disbursements = state => state.disbursements;
+export const actors = state => state.actors;
