@@ -59,7 +59,7 @@
                   ,
                   {{
                     personnel.address.addressRegion
-                      ? personnel.address.addressRegion
+                      ? toGetStateShortName(personnel.address.addressRegion)
                       : '-'
                   }}
                   {{
@@ -473,6 +473,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import CustomBar from 'components/CustomBar';
+import { toGetStateShortName } from '@utils/common';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import {
   onEmailClick,
@@ -482,6 +483,7 @@ import {
   showPhoneNumber
 } from '@utils/clickable';
 import DeleteAlert from 'components/DeleteAlert';
+
 export default {
   components: {
     CustomBar,
@@ -553,6 +555,7 @@ export default {
       'editMortgagePersonnel',
       'deleteMortgagePersonnel'
     ]),
+    toGetStateShortName,
 
     onEdit(index) {
       this.editPersonnelDialog = true;
