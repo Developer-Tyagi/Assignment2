@@ -728,7 +728,7 @@ export default {
         claimID: this.selectedClaimId,
         data: {
           recipients: this.signActor,
-          documentIDs: [this.selectedDocumentId]
+          driveIDs: [this.selectedDocumentId]
         }
       };
 
