@@ -484,9 +484,7 @@
       <q-card>
         <CustomBar
           dialogName="Send Document"
-          @closeDialog="
-            (signDocumentDialog = false), (foldersAndFilesOptions = false)
-          "
+          @closeDialog="onClickCloseDialog"
         />
         <div class="mobile-container-page q-pa-sm form-height ">
           <div class="column " v-for="(actor, index) in claimActors">
@@ -661,6 +659,7 @@ export default {
       'getSignedDocument'
     ]),
     ...mapMutations(['setLoading', 'setNotification']),
+
     setClaimActors(actor) {
       this.signActor.push({
         id: actor.id,
@@ -1103,6 +1102,11 @@ export default {
       this.currentPath = length;
       this.depth[this.currentPath - 1].name = response.attributes.directoryName;
       this.setLoading(false);
+    },
+    onClickCloseDialog() {
+      this.signDocumentDialog = false;
+      this.foldersAndFilesOptions = false;
+      this.claimActors = [];
     }
   },
 
