@@ -61,7 +61,8 @@
         v-if="expertVendorInfo.anyOtherExpertHiredToggle"
       >
         <q-select
-          class="full-width"
+          borderless
+          class="required input-style input-field full-width"
           v-model="item.industry"
           use-input
           input-debounce="0"
@@ -82,7 +83,8 @@
 
         <div>
           <q-input
-            class="q-mr-md"
+            borderless
+            class="required input-style input-field"
             v-model="item.vendor.value"
             style="color: transparent"
             maxlength="0"
@@ -203,7 +205,7 @@
         </div>
       </div>
       <div class="row justify-between" v-if="!claimExpertVendor">
-        <div>
+        <div class="q-mt-md">
           <q-btn
             v-if="expertVendorInfo.anyOtherExpertHiredToggle"
             size="sm"
@@ -212,7 +214,7 @@
             @click="addAnotherVendor(expertVendorInfo.isAlreadyHiredVendor)"
           />
         </div>
-        <div>
+        <div class="q-mt-md">
           <q-btn
             v-if="expertVendorInfo.isAlreadyHiredVendor.length > 1"
             size="sm"
@@ -226,22 +228,25 @@
 
     <q-card class="q-pa-sm q-mt-sm" v-if="!claimExpertVendor">
       <div class="row">
-        <span class="form-heading"
-          >Does Claim Guru need to assign any vendors?</span
-        >
-        <q-toggle
-          class="q-ml-auto"
-          v-model="expertVendorInfo.vendorExpertHiredToggle"
-          @input="onExpertVendorToggleOff"
-          :disable="isOfflineClientEdit"
-        />
+        <div class="form-heading q-mt-sm">
+          Does Claim Guru need to assign any vendors?
+        </div>
+        <div>
+          <q-toggle
+            class="q-ml-auto"
+            v-model="expertVendorInfo.vendorExpertHiredToggle"
+            @input="onExpertVendorToggleOff"
+            :disable="isOfflineClientEdit"
+          />
+        </div>
       </div>
       <div
         v-for="(item, index) in expertVendorInfo.isHiredByClaimguru"
         v-if="expertVendorInfo.vendorExpertHiredToggle"
       >
         <q-select
-          class="full-width"
+          borderless
+          class="required input-style input-field full-width"
           v-model="item.industry"
           use-input
           input-debounce="0"
@@ -261,15 +266,15 @@
         </q-select>
         <div>
           <div
-            class="custom-select"
+            class="custom-select q-mt-md"
             @click="
               openVendorSelect(item, index, expertVendorInfo.isHiredByClaimguru)
             "
             v-if="!item.vendor.email"
           >
-            <div class="select-text">
+            <q-btn outline class="full-width">
               Click for choosing a vendor
-            </div>
+            </q-btn>
           </div>
 
           <q-card
@@ -373,17 +378,21 @@
     <q-card class="q-pa-sm q-mt-sm" v-if="!claimExpertVendor">
       <div>
         <span class="form-heading">Notes</span>
-        <textarea
+        <q-input
           v-if="!isOfflineClientEdit"
           rows="5"
-          class="full-width"
+          type="textarea"
+          borderless
+          class="required  input-style "
           v-model="expertVendorInfo.notes"
           style="resize: none"
         />
-        <textarea
+        <q-input
           rows="5"
           disabled
-          class="full-width"
+          borderless
+          type="textarea"
+          class="required  input-style"
           v-model="expertVendorInfo.notes"
           style="resize: none"
           v-if="isOfflineClientEdit"
@@ -391,19 +400,25 @@
       </div>
 
       <div>
-        <span class="form-heading">Internal Notes</span>
-        <textarea
+        <div class="q-mt-md">
+          <span class="form-heading">Internal Notes</span>
+        </div>
+        <q-input
+          borderless
+          type="textarea"
+          class="required  input-style"
           v-if="!isOfflineClientEdit"
           rows="5"
-          class="full-width"
           v-model="expertVendorInfo.internalNotes"
           style="resize: none"
         />
-        <textarea
+        <q-input
+          type="textarea"
           v-if="isOfflineClientEdit"
           disabled
           rows="5"
-          class="full-width"
+          borderless
+          class="required  input-style"
           v-model="expertVendorInfo.internalNotes"
           style="resize: none"
         />
@@ -552,3 +567,8 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+.input-field {
+  height: 55px;
+}
+</style>

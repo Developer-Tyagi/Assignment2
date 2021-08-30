@@ -53,7 +53,8 @@
         <div class="mobile-container-page q-pa-sm form-height">
           <q-form ref="addTask">
             <q-input
-              class="required"
+              borderless
+              class="input-style required input-field"
               label="Task Name"
               v-model="newTask.name"
               lazy-rules
@@ -62,7 +63,8 @@
               ]"
             />
             <q-input
-              class="required"
+              borderless
+              class="input-style required input-field"
               v-model="newTask.dueDate"
               mask="##/##/####"
               label="MM/DD/YYYY"
@@ -98,6 +100,8 @@
             <q-select
               v-model="newTask.assignedTo[0].type"
               dense
+              borderless
+              class="input-style required input-field input-extra-padding"
               options-dense
               behavior="menu"
               option-label="value"
@@ -107,7 +111,6 @@
               map-options
               emit-value
               label="Assign To"
-              class=" required input-extra-padding"
               :rules="[
                 val => (val && val.length > 0) || 'Please select any category'
               ]"
@@ -119,6 +122,8 @@
                 dense
                 options-dense
                 behavior="menu"
+                borderless
+                class="input-style required input-field input-extra-padding"
                 option-label="name"
                 :options="assignToSubOption"
                 option-value="machineValue"
@@ -126,7 +131,6 @@
                 map-options
                 label="Listing"
                 emit-value
-                class="  required input-extra-padding"
                 :rules="[
                   val => (val && val.length > 0) || 'Please select any user '
                 ]"
@@ -319,5 +323,8 @@ export default {
 .office-task-list {
   height: calc(100vh - 365px);
   overflow-y: auto;
+}
+.input-field {
+  height: 55px;
 }
 </style>

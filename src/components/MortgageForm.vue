@@ -3,9 +3,9 @@
     <!-- Mortgage Form -->
     <div class="custom-select" v-if="!mortgage[0].value">
       <q-btn
-        flat
+        style="width:100%"
         no-caps
-        class="select-text"
+        outline
         @click="mortgageList = true"
         :disable="isOfflineClientEdit"
       >
@@ -82,26 +82,31 @@
 
     <q-input
       dense
+      borderless
+      class="required input-style input-field"
       v-model="mortgage[0].loanNumber"
       label="Loan Number"
       :disable="isOfflineClientEdit"
     />
     <q-input
       dense
+      borderless
+      class="required input-style input-field"
       v-model="mortgage[0].accountNumber"
       label="Account Number"
       :disable="isOfflineClientEdit"
     />
-    <div class="form-heading">Notes</div>
-    <textarea
-      rows="5"
-      class="full-width"
+    <div class="q-ml-xs q-mt-sm form-heading">Notes</div>
+    <q-input
+      type="textarea"
+      rows="3"
+      class="q-pt-md required input-style input-overlay full-width"
+      borderless
       v-model="mortgage[0].notes"
       style="resize: none"
     />
-    <div class="row" v-if="isThereSecondMortgage">
+    <div class="row q-mt-sm q-ml-xs" v-if="isThereSecondMortgage">
       <span class="form-heading"> Is there a 2nd mortgage on the home? </span>
-
       <q-toggle
         class="q-ml-auto"
         v-model="isSecondMortgageHome"
@@ -115,7 +120,9 @@
         @click="onChooseMortgageClick(1)"
         v-if="!mortgage[1].value"
       >
-        <div class="select-text">Click for choosing a Second Mortgage</div>
+        <q-btn outline style="width:100%" class="q-mt-md"
+          >Click for choosing a Second Mortgage</q-btn
+        >
       </div>
 
       <div>
@@ -185,29 +192,35 @@
 
       <q-input
         dense
+        borderless
+        class="required input-style input-field"
         v-model="mortgage[1].loanNumber"
         label="Loan Number"
         :disable="isOfflineClientEdit"
       />
       <q-input
         dense
+        borderless
+        class="required input-style input-field"
         v-model="mortgage[1].accountNumber"
         label="Account Number"
         :disable="isOfflineClientEdit"
       />
-      <div class="form-heading">Notes</div>
-      <textarea
+      <div class="q-ml-xs q-mt-sm form-heading">Notes</div>
+      <q-input
+        type="textarea"
+        rows="3"
+        class="q-pt-md required input-style input-overlay full-width"
+        borderless
         v-if="!isOfflineClientEdit"
-        rows="5"
-        class="full-width"
         v-model="mortgage[1].notes"
         style="resize: none"
       />
-      <textarea
+      <q-input
         v-if="isOfflineClientEdit"
         disabled
         rows="5"
-        class="full-width"
+        class="textarea full-width"
         v-model="mortgage[1].notes"
         style="resize: none"
       />
