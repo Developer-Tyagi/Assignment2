@@ -743,7 +743,6 @@ export default {
       window.open(link);
     },
     async onClickSendDocument() {
-      console.log(this.emails, 'eee');
       if (this.sendToRadio != 'User') {
         var payload = {
           claimID: this.selectedClaimId,
