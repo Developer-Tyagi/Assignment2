@@ -1000,6 +1000,7 @@ export default {
       }
       await this.getSingleClaimDetails(this.selectedClaimId);
       this[value] = false;
+      this.$emit('claimSummaryDialog', false);
     },
     lossDateOption(dateopn) {
       if (
