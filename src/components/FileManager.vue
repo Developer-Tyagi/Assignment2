@@ -221,62 +221,35 @@
       transition-hide="slide-down"
       :position="'bottom'"
     >
-      <q-card style="width: 550px; height: 200px">
-        <q-card-section class="items-center form-heading q-ml-md">
-          <div class="row">
-            <div class="column q-ml-xl">
-              <q-btn
-                name="upload"
-                icon="share"
-                @click="(shareDialog = true), (foldersAndFilesOptions = false)"
-                text-color="primary"
-                class="q-ml-sm"
-              />
-              <div class="form-heading q-ml-md">Share</div>
-            </div>
-
+      <q-card style="width: 350px">
+        <q-card-section class="items-center">
+          <div
+            class="q-pa-md heading-light"
+            @click="(shareDialog = true), (foldersAndFilesOptions = false)"
+          >
+            Share
+          </div>
+          <div
+            v-if="documents[index] && documents[index].properties == null"
+            class="q-pa-md heading-light"
+            @click="(alert = true), (foldersAndFilesOptions = false)"
+          >
+            Remove
+          </div>
+          <div
+            class="q-pa-md heading-light"
+            v-if="generateClaimDocument && documentType"
+            @click="onFetchDocumentClick"
+          >
+            Fetch Signed Updated Document
+          </div>
+          <div v-else>
             <div
-              class="column"
-              v-if="documents[index] && documents[index].properties == null"
+              class="q-pa-md heading-light"
+              v-if="generateClaimDocument && !documentType"
+              @click="onClickSignDocument(documents[index].id)"
             >
-              <q-btn
-                class="q-ml-md"
-                icon="delete"
-                text-color="primary"
-                style="width: 50px"
-                @click="(alert = true), (foldersAndFilesOptions = false)"
-              />
-              <div class="form-heading q-ml-md">Remove</div>
-            </div>
-
-            <div
-              class="col-3"
-              v-if="generateClaimDocument && documentType"
-              @click="onFetchDocumentClick"
-            >
-              <q-btn
-                class="q-ml-md"
-                icon="refresh"
-                text-color="primary"
-                style="width: 50px"
-              />
-              <div class="form-heading q-ml-md">
-                Fetch signed updated document
-              </div>
-            </div>
-            <div v-else>
-              <div class="col-3" v-if="generateClaimDocument && !documentType">
-                <q-btn
-                  class="q-ml-md"
-                  icon="edit"
-                  text-color="primary"
-                  style="width: 50px"
-                  @click="onClickSignDocument(documents[index].id)"
-                />
-                <div class="form-heading q-ml-md">
-                  Sign Document
-                </div>
-              </div>
+              Sign Document
             </div>
           </div>
         </q-card-section>
@@ -487,23 +460,69 @@
           @closeDialog="onClickCloseDialog"
         />
         <div class="mobile-container-page q-pa-sm form-height ">
-          <div class="column " v-for="(actor, index) in claimActors">
-            <div class="row q-pa-sm">
-              <div class="flex">
-                <q-checkbox
-                  v-model="actor.isEnabled"
-                  color="$primary"
-                  class="q-my-auto q-mr-md"
-                  @input="setClaimActors(actor)"
-                />
-              </div>
-              <div class="column  q-mt-sm">
-                <span
-                  >{{ actor.name }} -
-                  {{ actor.role && actor.role ? actor.role : '' }}
-                </span>
+          <span>Send To</span>
+          <div>
+            <q-radio v-model="sendToRadio" val="Email" label="Email"></q-radio>
+            <q-radio
+              class="q-ml-none"
+              v-model="sendToRadio"
+              val="User"
+              label="User"
+            ></q-radio>
+          </div>
+          <div v-if="sendToRadio == 'User'">
+            <div class="column " v-for="(actor, index) in claimActors">
+              <div class="row q-pa-sm">
+                <div class="column q-mt-sm">
+                  <span style="font-weight:normal ">{{ actor.name }} </span>
+                  <div v-for="(role, index) in actor.role">
+                    <q-badge rounded>
+                      <span>{{ role.value ? role.value : '' }}</span>
+                    </q-badge>
+                  </div>
+                  <q-badge color="primary" v-if="!actor.role" rounded>
+                    <span>{{ actor.type ? actor.type : '' }}</span>
+                  </q-badge>
+                </div>
+                <div class="flex q-ml-auto ">
+                  <q-checkbox
+                    v-model="actor.isEnabled"
+                    color="$primary"
+                    size="xs"
+                    @input="setClaimActors(actor)"
+                  />
+                </div>
               </div>
             </div>
+          </div>
+          <div v-if="sendToRadio == 'Email'">
+            <div v-for="(email, index) in emails" class="row q-mt-sm">
+              <q-input
+                outlined
+                dense
+                v-model="email.id"
+                class="col-7"
+                label="Email"
+                type="email"
+                lazy-rules
+                :rules="[
+                  val =>
+                    validateEmail(val) ||
+                    'You have entered an invalid email address!'
+                ]"
+              />
+              <q-icon
+                name="delete"
+                class="col-1 cursor-pointer"
+                color="primary"
+                @click="removeEmail()"
+              />
+            </div>
+            <q-btn
+              class="cursor-pointer q-mb-md text-primary q-mt-xs"
+              @click="onClickAddEmail()"
+              label="Enter Another Email"
+            />
           </div>
         </div>
         <q-btn
@@ -582,6 +601,8 @@ import DeleteAlert from 'components/DeleteAlert';
 const { Camera } = Plugins;
 import CustomBar from 'components/CustomBar';
 import { setNotification } from 'src/store/common/mutations';
+import { validateEmail } from '@utils/validation';
+
 export default {
   name: 'FileManager',
   components: { DeleteAlert, CustomBar },
@@ -589,6 +610,8 @@ export default {
 
   data() {
     return {
+      sendToRadio: '',
+      emails: [{ id: '', type: 'external', name: '' }],
       signedDocuments: '',
       documentStatusDialog: false,
       documentType: '',
@@ -659,6 +682,10 @@ export default {
       'getSignedDocument'
     ]),
     ...mapMutations(['setLoading', 'setNotification']),
+    validateEmail,
+    removeEmail() {
+      this.emails.pop();
+    },
 
     setClaimActors(actor) {
       this.signActor.push({
@@ -672,26 +699,18 @@ export default {
       const response = await this.getSignedDocument(this.selectedClaimId);
 
       for (var index in this.actors) {
-        for (var roleIndex in this.actors[index].roles) {
-          const role =
-            this.actors[index].roles[roleIndex] &&
-            this.actors[index].roles[roleIndex].value
-              ? this.actors[index].roles[roleIndex].value
-              : '';
-
-          this.claimActors.push({
-            label: this.actors[index].name,
-            value:
-              this.actors[index].roles && this.actors[index].roles[0].value
-                ? this.actors[index].roles[0].value
-                : '',
-            id: this.actors[index].id,
-            type: this.actors[index].type,
-            name: this.actors[index].name,
-            isEnabled: false,
-            role: role
-          });
-        }
+        this.claimActors.push({
+          label: this.actors[index].name,
+          value:
+            this.actors[index].roles && this.actors[index].roles[0].value
+              ? this.actors[index].roles[0].value
+              : '',
+          id: this.actors[index].id,
+          type: this.actors[index].type,
+          name: this.actors[index].name,
+          isEnabled: false,
+          role: this.actors[index].roles
+        });
       }
       if (
         !response.attributes.status ||
@@ -724,19 +743,30 @@ export default {
       window.open(link);
     },
     async onClickSendDocument() {
-      const payload = {
-        claimID: this.selectedClaimId,
-        data: {
-          recipients: this.signActor,
-          driveIDs: [this.selectedDocumentId]
-        }
-      };
+      if (this.sendToRadio != 'User') {
+        var payload = {
+          claimID: this.selectedClaimId,
+          data: {
+            recipients: this.emails,
+            driveIDs: [this.selectedDocumentId]
+          }
+        };
+      } else {
+        var payload = {
+          claimID: this.selectedClaimId,
+          data: {
+            recipients: this.signActor,
+            driveIDs: [this.selectedDocumentId]
+          }
+        };
+      }
 
       await this.signDocuments(payload);
       this.signDocumentDialog = false;
       this.foldersAndFilesOptions = false;
       this.signActor = [];
       this.claimActors = [];
+      this.emails = [{ id: '', type: 'external', name: '' }];
     },
     onSelectPersonOrGroup() {
       this.getClaimRoles();
@@ -1103,15 +1133,18 @@ export default {
       this.depth[this.currentPath - 1].name = response.attributes.directoryName;
       this.setLoading(false);
     },
+    onClickAddEmail() {
+      this.emails.push({ id: '', type: 'external', name: '' });
+    },
     onClickCloseDialog() {
       this.signDocumentDialog = false;
       this.foldersAndFilesOptions = false;
       this.claimActors = [];
-    }
-  },
+    },
 
-  async mounted() {
-    this.getDocuments();
+    async mounted() {
+      this.getDocuments();
+    }
   }
 };
 </script>
