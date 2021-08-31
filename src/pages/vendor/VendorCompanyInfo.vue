@@ -32,14 +32,20 @@
               ? selectedVendor.mailingAddress.houseNumber
               : '-'
           }}
-          ,
           {{
-            selectedVendor.mailingAddress.streetAddress
-              ? selectedVendor.mailingAddress.streetAddress
+            selectedVendor.mailingAddress.address1
+              ? selectedVendor.mailingAddress.address1
               : '-'
           }}
         </div>
         <div>
+          {{
+            selectedVendor.mailingAddress.address2
+              ? selectedVendor.mailingAddress.address2
+              : '-'
+          }}
+        </div>
+        <div class="row">
           {{
             selectedVendor.mailingAddress.addressLocality
               ? selectedVendor.mailingAddress.addressLocality
@@ -48,16 +54,9 @@
           ,
           {{
             selectedVendor.mailingAddress.addressRegion
-              ? selectedVendor.mailingAddress.addressRegion
+              ? toGetStateShortName(selectedVendor.mailingAddress.addressRegion)
               : '-'
           }}
-        </div>
-        <div class="row">
-          {{
-            selectedVendor.mailingAddress.addressCountry
-              ? selectedVendor.mailingAddress.addressCountry
-              : '-'
-          }},
           {{
             selectedVendor.mailingAddress.postalCode
               ? selectedVendor.mailingAddress.postalCode
@@ -175,6 +174,7 @@ import { mapGetters, mapActions } from 'vuex';
 import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
 import AddVendor from 'components/AddVendor';
 import { constants } from '@utils/constant';
+import { toGetStateShortName } from '@utils/common';
 import { showPhoneNumber } from '@utils/clickable';
 import DeleteAlert from 'components/DeleteAlert';
 export default {
@@ -197,6 +197,7 @@ export default {
     onPhoneNumberClick,
     sendMap,
     showPhoneNumber,
+    toGetStateShortName,
     onClickDelete() {
       this.deleteAlertDialog = true;
     },

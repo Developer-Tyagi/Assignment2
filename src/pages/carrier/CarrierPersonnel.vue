@@ -38,13 +38,17 @@
                     ? personnel.address.houseNumber
                     : '-'
                 }}
-                ,
                 {{
-                  personnel.address.streetAddress
-                    ? personnel.address.streetAddress
-                    : '-'
+                  personnel.address.address1 ? personnel.address.address1 : '-'
                 }}
                 <div class="">
+                  {{
+                    personnel.address.address2
+                      ? personnel.address.address2
+                      : '-'
+                  }}
+                </div>
+                <div>
                   {{
                     personnel.address.addressLocality
                       ? personnel.address.addressLocality
@@ -53,16 +57,9 @@
                   ,
                   {{
                     personnel.address.addressRegion
-                      ? personnel.address.addressRegion
+                      ? toGetStateShortName(personnel.address.addressRegion)
                       : '-'
                   }}
-                </div>
-                <div>
-                  {{
-                    personnel.address.addressCountry
-                      ? personnel.address.addressCountry
-                      : '-'
-                  }},
                   {{
                     personnel.address.postalCode
                       ? personnel.address.postalCode
@@ -204,7 +201,6 @@
                   @input="setTitleName(honorific)"
                   emit-value
                   label="Title"
-                  options-dense
                 />
                 <q-input
                   dense
@@ -351,6 +347,7 @@
 import { mapGetters, mapActions } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
+import { toGetStateShortName } from '@utils/common';
 import AddCarrierPersonnel from 'components/AddCarrierPersonnel';
 import {
   onEmailClick,
@@ -397,7 +394,8 @@ export default {
           addressRegion: '',
           postOfficeBoxNumber: '',
           postalCode: '',
-          streetAddress: '',
+          address1: '',
+          address2: '',
           dropBox: {
             info: '',
             isPresent: false
@@ -440,6 +438,7 @@ export default {
       'editCarrierPersonnel',
       'deleteCarrierPersonnel'
     ]),
+    toGetStateShortName,
 
     onEdit(index) {
       this.editPersonnelDialog = true;
@@ -590,7 +589,9 @@ export default {
         this.personnel.address.addressCountry = '';
         this.personnel.address.addressLocality = '';
         this.personnel.address.addressRegion = '';
-        this.personnel.address.streetAddress = '';
+        this.personnel.address.address1 = '';
+        this.personnel.address.address2 = '';
+
         this.personnel.address.postalCode = '';
         this.personnel.notes = '';
         this.personnel.departmentName = '';

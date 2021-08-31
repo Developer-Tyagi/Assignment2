@@ -57,19 +57,25 @@
       </div>
       <div
         class="col-6 q-ml-md"
-        v-if="lossInfo.attributes.lossInfo.property.streetAddress"
+        v-if="lossInfo.attributes.lossInfo.property.address1"
       >
         {{
           lossInfo.attributes.lossInfo.property.houseNumber
             ? lossInfo.attributes.lossInfo.property.houseNumber
             : '-'
         }}
-        ,
         {{
-          lossInfo.attributes.lossInfo.property.streetAddress
-            ? lossInfo.attributes.lossInfo.property.streetAddress
+          lossInfo.attributes.lossInfo.property.address1
+            ? lossInfo.attributes.lossInfo.property.address1
             : '-'
         }}
+        <div>
+          {{
+            lossInfo.attributes.lossInfo.property.address2
+              ? lossInfo.attributes.lossInfo.property.address2
+              : '-'
+          }}
+        </div>
         <div>
           {{
             lossInfo.attributes.lossInfo.property.addressLocality
@@ -77,10 +83,13 @@
               : '-'
           }}
           ,
-          {{ lossInfo.attributes.lossInfo.property.addressRegion }},
-        </div>
-        <div>
-          {{ lossInfo.attributes.lossInfo.property.addressCountry }},
+          {{
+            lossInfo.attributes.lossInfo.property.addressRegion
+              ? toGetStateShortName(
+                  lossInfo.attributes.lossInfo.property.addressRegion
+                )
+              : '-'
+          }}
           {{
             lossInfo.attributes.lossInfo.property.postalCode
               ? lossInfo.attributes.lossInfo.property.postalCode
@@ -261,6 +270,7 @@
 <script>
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import moment from 'moment';
+import { toGetStateShortName } from '@utils/common';
 import LossInfo from 'components/LossInfo';
 import ClaimDetail from 'components/ClaimDetail';
 import { validateDate } from '@utils/validation';
@@ -393,6 +403,7 @@ export default {
     ]),
     ...mapMutations(['setSelectedClaimId']),
     sendMap,
+    toGetStateShortName,
     isMortgageDetails() {
       this.isMortgageHomeToggle = false;
     },

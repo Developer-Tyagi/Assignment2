@@ -310,12 +310,19 @@
             <div class="col-3">
               <div class="q-mr-md" v-if="singleUserData.mailingAddress">
                 {{
-                  singleUserData.mailingAddress.streetAddress
-                    ? singleUserData.mailingAddress.streetAddress
+                  singleUserData.mailingAddress.address1
+                    ? singleUserData.mailingAddress.address1
+                    : '-'
+                }}
+                {{
+                  singleUserData.mailingAddress.address2
+                    ? singleUserData.mailingAddress.address2
                     : '-'
                 }},{{
                   singleUserData.mailingAddress.addressRegion
-                    ? singleUserData.mailingAddress.addressRegion
+                    ? toGetStateShortName(
+                        singleUserData.mailingAddress.addressRegion
+                      )
                     : '-'
                 }},{{
                   singleUserData.mailingAddress.addressLocality
@@ -324,10 +331,6 @@
                 }}
                 ,
                 {{
-                  singleUserData.mailingAddress.addressCountry
-                    ? singleUserData.mailingAddress.addressCountry
-                    : '-'
-                }},{{
                   singleUserData.mailingAddress.postalCode
                     ? singleUserData.mailingAddress.postalCode
                     : '-'
@@ -532,6 +535,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
+import { toGetStateShortName } from '@utils/common';
 import { validateEmail, validateNonRequiredEmail } from '@utils/validation';
 import {
   onEmailClick,
@@ -569,7 +573,8 @@ export default {
           addressRegion: '',
           postOfficeBoxNumber: '',
           postalCode: '',
-          streetAddress: '',
+          address1: '',
+          address2: '',
           dropBox: {
             info: '',
             isPresent: false
@@ -678,6 +683,7 @@ export default {
     ]),
 
     onEmailClick,
+    toGetStateShortName,
     showPhoneNumber,
     sendPhoneNumber,
     onPhoneNumberClick,
@@ -756,7 +762,8 @@ export default {
           postOfficeBoxNumber: '',
           postalCode: '',
 
-          streetAddress: '',
+          address1: '',
+          address2: '',
           dropBox: {
             info: '',
             isPresent: false
@@ -800,9 +807,13 @@ export default {
           .mailingAddress.houseNumber
           ? this.singleUserData.mailingAddress.houseNumber
           : '';
-        this.singleUser.mailingAddress.streetAddress = this.singleUserData
-          .mailingAddress.streetAddress
-          ? this.singleUserData.mailingAddress.streetAddress
+        this.singleUser.mailingAddress.address1 = this.singleUserData
+          .mailingAddress.address1
+          ? this.singleUserData.mailingAddress.address1
+          : '';
+        this.singleUser.mailingAddress.address2 = this.singleUserData
+          .mailingAddress.address2
+          ? this.singleUserData.mailingAddress.address2
           : '';
         this.singleUser.mailingAddress.postalCode = this.singleUserData
           .mailingAddress.postalCode

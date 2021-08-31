@@ -45,10 +45,17 @@
                   ? selectedClaimCarrier.carrier.address.houseNumber
                   : '-'
               }}
-              ,
+
               {{
-                selectedClaimCarrier.carrier.address.streetAddress
-                  ? selectedClaimCarrier.carrier.address.streetAddress
+                selectedClaimCarrier.carrier.address.address1
+                  ? selectedClaimCarrier.carrier.address.address1
+                  : '-'
+              }}
+            </div>
+            <div>
+              {{
+                selectedClaimCarrier.carrier.address.address2
+                  ? selectedClaimCarrier.carrier.address.address2
                   : '-'
               }}
             </div>
@@ -61,16 +68,11 @@
               ,
               {{
                 selectedClaimCarrier.carrier.address.addressRegion
-                  ? selectedClaimCarrier.carrier.address.addressRegion
+                  ? toGetStateShortName(
+                      selectedClaimCarrier.carrier.address.addressRegion
+                    )
                   : '-'
               }}
-            </div>
-            <div>
-              {{
-                selectedClaimCarrier.carrier.address.addressCountry
-                  ? selectedClaimCarrier.carrier.address.addressCountry
-                  : '-'
-              }},
 
               {{
                 selectedClaimCarrier.carrier.address.postalCode
@@ -167,12 +169,15 @@
               }}
               ,
               {{
-                personnel.address.streetAddress
-                  ? personnel.address.streetAddress
-                  : '-'
+                personnel.address.address1 ? personnel.address.address1 : '-'
               }}
             </div>
-            <div class="q-ml-sm" v-if="personnel.address.addressLocality">
+            <div class="q-ml-sm" v-if="personnel.address.address2">
+              {{
+                personnel.address.address2 ? personnel.address.address2 : '-'
+              }}
+            </div>
+            <div class="row q-ml-sm" v-if="personnel.address.addressLocality">
               {{
                 personnel.address.addressLocality
                   ? personnel.address.addressLocality
@@ -181,16 +186,9 @@
               ,
               {{
                 personnel.address.addressRegion
-                  ? personnel.address.addressRegion
+                  ? toGetStateShortName(personnel.address.addressRegion)
                   : '-'
               }}
-            </div>
-            <div class="row q-ml-sm" v-if="personnel.address.addressCountry">
-              {{
-                personnel.address.addressCountry
-                  ? personnel.address.addressCountry
-                  : '-'
-              }},
               {{
                 personnel.address.postalCode
                   ? personnel.address.postalCode
@@ -559,26 +557,31 @@
                         personnel.address ? personnel.address.houseNumber : '-'
                       }}
                       {{
-                        personnel.address.streetAddress
-                          ? personnel.address.streetAddress
+                        personnel.address.address1
+                          ? personnel.address.address1
                           : '-'
                       }}
                     </div>
                     <div>
+                      {{
+                        personnel.address.address2
+                          ? personnel.address.address2
+                          : '-'
+                      }}
+                    </div>
+                    <div class="row">
                       {{
                         personnel.address.addressLocality
                           ? personnel.address.addressLocality
                           : '-'
                       }},{{
                         personnel.address.addressRegion
-                          ? personnel.address.addressRegion
+                          ? toGetStateShortName(personnel.address.addressRegion)
                           : '-'
                       }}
-                    </div>
-                    <div class="row">
                       {{
-                        personnel.address.addressCountry
-                          ? personnel.address.addressCountry
+                        personnel.address.postalCode
+                          ? personnel.address.postalCode
                           : '-'
                       }}
                     </div>
@@ -798,7 +801,7 @@ import { mapGetters, mapActions } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import ClaimDetail from 'components/ClaimDetail';
 import moment from 'moment';
-
+import { toGetStateShortName } from '@utils/common';
 import InsuranceInfo from 'components/InsuranceInfo';
 import AddCarrier from 'components/AddCarrier';
 import DeleteAlert from 'components/DeleteAlert';
@@ -863,7 +866,8 @@ export default {
           addressRegion: '',
           postOfficeBoxNumber: '',
           postalCode: '',
-          streetAddress: '',
+          address1: '',
+          address2: '',
           dropBox: {
             info: '',
             isPresent: false
@@ -897,7 +901,8 @@ export default {
           addressRegion: '',
           postOfficeBoxNumber: '',
           postalCode: '',
-          streetAddress: '',
+          address1: '',
+          address2: '',
           dropBox: {
             info: '',
             isPresent: false
@@ -1015,6 +1020,7 @@ export default {
       'getClaimRoles'
     ]),
     sendMap,
+    toGetStateShortName,
     async applyFilter() {
       if (this.filterName) {
         this.params.role = this.filterName;
@@ -1275,7 +1281,8 @@ export default {
       this.personnel.address.addressCountry = '';
       this.personnel.address.addressLocality = '';
       this.personnel.address.addressRegion = '';
-      this.personnel.address.streetAddress = '';
+      this.personnel.address.address1 = '';
+      this.personnel.address.address2 = '';
       this.personnel.address.postalCode = '';
       this.personnel.notes = '';
       this.personnel.departmentName = '';

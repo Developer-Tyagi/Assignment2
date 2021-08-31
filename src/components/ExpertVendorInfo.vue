@@ -141,7 +141,7 @@
             <div
               v-if="
                 item.vendor.mailingAddress &&
-                  item.vendor.mailingAddress.streetAddress
+                  item.vendor.mailingAddress.address1
               "
             >
               <div>
@@ -150,14 +150,20 @@
                     ? item.vendor.mailingAddress.houseNumber
                     : '-'
                 }}
-                ,
                 {{
-                  item.vendor.mailingAddress.streetAddress
-                    ? item.vendor.mailingAddress.streetAddress
+                  item.vendor.mailingAddress.address1
+                    ? item.vendor.mailingAddress.address1
                     : '-'
                 }}
               </div>
               <div>
+                {{
+                  item.vendor.mailingAddress.address2
+                    ? item.vendor.mailingAddress.address2
+                    : '-'
+                }}
+              </div>
+              <div class="row">
                 {{
                   item.vendor.mailingAddress.addressLocality
                     ? item.vendor.mailingAddress.addressLocality
@@ -166,17 +172,11 @@
                 ,
                 {{
                   item.vendor.mailingAddress.addressRegion
-                    ? item.vendor.mailingAddress.addressRegion
+                    ? toGetStateShortName(
+                        item.vendor.mailingAddress.addressRegion
+                      )
                     : '-'
                 }}
-              </div>
-              <div class="row">
-                {{
-                  item.vendor.mailingAddress.addressCountry
-                    ? item.vendor.mailingAddress.addressCountry
-                    : '-'
-                }}
-                -
                 {{
                   item.vendor.mailingAddress.postalCode
                     ? item.vendor.mailingAddress.postalCode
@@ -289,7 +289,7 @@
             <div
               v-if="
                 item.vendor.mailingAddress &&
-                  item.vendor.mailingAddress.streetAddress
+                  item.vendor.mailingAddress.address1
               "
             >
               <div>
@@ -298,14 +298,20 @@
                     ? item.vendor.mailingAddress.houseNumber
                     : '-'
                 }}
-                ,
                 {{
-                  item.vendor.mailingAddress.streetAddress
-                    ? item.vendor.mailingAddress.streetAddress
+                  item.vendor.mailingAddress.address1
+                    ? item.vendor.mailingAddress.address1
                     : '-'
                 }}
               </div>
               <div>
+                {{
+                  item.vendor.mailingAddress.address2
+                    ? item.vendor.mailingAddress.address2
+                    : '-'
+                }}
+              </div>
+              <div class="row">
                 {{
                   item.vendor.mailingAddress.addressLocality
                     ? item.vendor.mailingAddress.addressLocality
@@ -314,17 +320,11 @@
                 ,
                 {{
                   item.vendor.mailingAddress.addressRegion
-                    ? item.vendor.mailingAddress.addressRegion
+                    ? toGetStateShortName(
+                        item.vendor.mailingAddress.addressRegion
+                      )
                     : '-'
                 }}
-              </div>
-              <div class="row">
-                {{
-                  item.vendor.mailingAddress.addressCountry
-                    ? item.vendor.mailingAddress.addressCountry
-                    : '-'
-                }}
-                -
                 {{
                   item.vendor.mailingAddress.postalCode
                     ? item.vendor.mailingAddress.postalCode
@@ -433,6 +433,7 @@ import VendorsList from 'components/VendorsList';
 import { mapGetters, mapActions } from 'vuex';
 import AddVendor from 'components/AddVendor';
 import { onPhoneNumberClick, onEmailClick } from '@utils/clickable';
+import { toGetStateShortName } from '@utils/common';
 
 export default {
   name: 'ExpertVendorInfo',
@@ -485,6 +486,7 @@ export default {
 
     onPhoneNumberClick,
     onEmailClick,
+    toGetStateShortName,
     //This function is user for searching Industries and  add others option at the last
 
     async onAddVendorDialogClick(name, index) {

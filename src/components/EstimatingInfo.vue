@@ -61,13 +61,23 @@
                 }}
                 ,
                 {{
-                  estimatingInfo.mailingAddress.streetAddress
-                    ? estimatingInfo.mailingAddress.streetAddress
+                  estimatingInfo.mailingAddress.address1
+                    ? estimatingInfo.mailingAddress.address1
                     : '-'
                 }}
               </div>
               <div
                 class="q-ml-sm"
+                v-if="estimatingInfo.mailingAddress.address2"
+              >
+                {{
+                  estimatingInfo.mailingAddress.address2
+                    ? estimatingInfo.mailingAddress.address2
+                    : '-'
+                }}
+              </div>
+              <div
+                class="row q-ml-sm"
                 v-if="estimatingInfo.mailingAddress.addressLocality"
               >
                 {{
@@ -78,19 +88,12 @@
                 ,
                 {{
                   estimatingInfo.mailingAddress.addressRegion
-                    ? estimatingInfo.mailingAddress.addressRegion
+                    ? toGetStateShortName(
+                        estimatingInfo.mailingAddress.addressRegion
+                      )
                     : '-'
                 }}
-              </div>
-              <div
-                class="row q-ml-sm"
-                v-if="estimatingInfo.mailingAddress.addressCountry"
-              >
-                {{
-                  estimatingInfo.mailingAddress.addressCountry
-                    ? estimatingInfo.mailingAddress.addressCountry
-                    : '-'
-                }},
+
                 {{
                   estimatingInfo.mailingAddress.postalCode
                     ? estimatingInfo.mailingAddress.postalCode
@@ -211,14 +214,20 @@
                         ? estimator.mailingAddress.houseNumber
                         : '-'
                     }}
-                    ,
                     {{
-                      estimator.mailingAddress.streetAddress
-                        ? estimator.mailingAddress.streetAddress
+                      estimator.mailingAddress.address1
+                        ? estimator.mailingAddress.address1
                         : '-'
                     }}
                   </div>
                   <div>
+                    {{
+                      estimator.mailingAddress.address2
+                        ? estimator.mailingAddress.address2
+                        : '-'
+                    }}
+                  </div>
+                  <div class="row">
                     {{
                       estimator.mailingAddress.addressLocality
                         ? estimator.mailingAddress.addressLocality
@@ -227,17 +236,11 @@
                     ,
                     {{
                       estimator.mailingAddress.addressRegion
-                        ? estimator.mailingAddress.addressRegion
+                        ? toGetStateShortName(
+                            estimator.mailingAddress.addressRegion
+                          )
                         : '-'
                     }}
-                  </div>
-                  <div class="row">
-                    {{
-                      estimator.mailingAddress.addressCountry
-                        ? estimator.mailingAddress.addressCountry
-                        : '-'
-                    }}
-                    -
                     {{
                       estimator.mailingAddress.postalCode
                         ? estimator.mailingAddress.postalCode
@@ -383,6 +386,7 @@
 import { mapGetters, mapActions } from 'vuex';
 import { validateEmail } from '@utils/validation';
 import CustomBar from 'components/CustomBar';
+import { toGetStateShortName } from '@utils/common';
 import { successMessage } from '@utils/validation';
 import { constants } from '@utils/constant';
 import {
@@ -440,6 +444,7 @@ export default {
     ...mapActions(['getEstimators', 'addEstimator']),
     validateEmail,
     successMessage,
+    toGetStateShortName,
 
     async onCloseAddEstimator() {
       const success = await this.$refs.addEstimatorForm.validate();

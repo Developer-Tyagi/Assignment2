@@ -49,13 +49,19 @@
                       ? personnel.address.houseNumber
                       : '-'
                   }}
-                  ,
                   {{
-                    personnel.address.streetAddress
-                      ? personnel.address.streetAddress
+                    personnel.address.address1
+                      ? personnel.address.address1
                       : '-'
                   }}
                   <div class="">
+                    {{
+                      personnel.address.address2
+                        ? personnel.address.address2
+                        : '-'
+                    }}
+                  </div>
+                  <div>
                     {{
                       personnel.address.addressLocality
                         ? personnel.address.addressLocality
@@ -64,16 +70,10 @@
                     ,
                     {{
                       personnel.address.addressRegion
-                        ? personnel.address.addressRegion
+                        ? toGetStateShortName(personnel.address.addressRegion)
                         : '-'
                     }}
-                  </div>
-                  <div>
-                    {{
-                      personnel.address.addressCountry
-                        ? personnel.address.addressCountry
-                        : '-'
-                    }},
+
                     {{
                       personnel.address.postalCode
                         ? personnel.address.postalCode
@@ -507,6 +507,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import CustomBar from 'components/CustomBar';
+import { toGetStateShortName } from '@utils/common';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
 
@@ -540,7 +541,8 @@ export default {
           addressRegion: '',
           postOfficeBoxNumber: '',
           postalCode: '',
-          streetAddress: '',
+          address1: '',
+          address2: '',
           dropBox: {
             info: '',
             isPresent: false
@@ -593,6 +595,7 @@ export default {
       'deleteVendorPersonnel',
       'getClaimRoles'
     ]),
+    toGetStateShortName,
     searchFilterBy(val, update) {
       this.personnel.role.value = null;
       if (val === ' ') {
@@ -757,7 +760,8 @@ export default {
         this.personnel.address.addressCountry = '';
         this.personnel.address.addressLocality = '';
         this.personnel.address.addressRegion = '';
-        this.personnel.address.streetAddress = '';
+        this.personnel.address.address1 = '';
+        this.personnel.address.address2 = '';
         this.personnel.address.postalCode = '';
         this.personnel.notes = '';
         this.personnel.departmentName = '';

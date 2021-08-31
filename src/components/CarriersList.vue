@@ -34,14 +34,13 @@
           <span class="form-heading  fit-content">{{ carrier.name }}</span>
           <div v-if="carrier.address">
             <div>
-              {{ carrier.address ? carrier.address.houseNumber : '-' }} ,
-              {{
-                carrier.address.streetAddress
-                  ? carrier.address.streetAddress
-                  : '-'
-              }}
+              {{ carrier.address ? carrier.address.houseNumber : '-' }}
+              {{ carrier.address.address1 ? carrier.address.address1 : '-' }}
             </div>
             <div>
+              {{ carrier.address.address2 ? carrier.address.address2 : '-' }}
+            </div>
+            <div class="row">
               {{
                 carrier.address.addressLocality
                   ? carrier.address.addressLocality
@@ -50,17 +49,9 @@
               ,
               {{
                 carrier.address.addressRegion
-                  ? carrier.address.addressRegion
+                  ? toGetStateShortName(carrier.address.addressRegion)
                   : '-'
               }}
-            </div>
-            <div class="row">
-              {{
-                carrier.address.addressCountry
-                  ? carrier.address.addressCountry
-                  : '-'
-              }}
-              -
               {{
                 carrier.address.postalCode ? carrier.address.postalCode : '-'
               }}
@@ -99,6 +90,7 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import { toGetStateShortName } from '@utils/common';
 import {
   onEmailClick,
   onPhoneNumberClick,
@@ -133,6 +125,7 @@ export default {
 
   methods: {
     ...mapActions(['getCarriers', 'addClaimCarrier', 'getSelectedClaim']),
+    toGetStateShortName,
 
     onSearchBackButtonClick() {
       this.searchText = '';

@@ -251,7 +251,7 @@
             <div
               v-if="
                 contractInfo.sourceDetails.mailingAddress &&
-                  contractInfo.sourceDetails.mailingAddress.streetAddress
+                  contractInfo.sourceDetails.mailingAddress.address1
               "
             >
               <div>
@@ -260,14 +260,21 @@
                     ? contractInfo.sourceDetails.mailingAddress.houseNumber
                     : '-'
                 }}
-                ,
+
                 {{
-                  contractInfo.sourceDetails.mailingAddress.streetAddress
-                    ? contractInfo.sourceDetails.mailingAddress.streetAddress
+                  contractInfo.sourceDetails.mailingAddress.address1
+                    ? contractInfo.sourceDetails.mailingAddress.address1
                     : '-'
                 }}
               </div>
               <div>
+                {{
+                  contractInfo.sourceDetails.mailingAddress.address2
+                    ? contractInfo.sourceDetails.mailingAddress.address2
+                    : '-'
+                }}
+              </div>
+              <div class="row">
                 {{
                   contractInfo.sourceDetails.mailingAddress.addressLocality
                     ? contractInfo.sourceDetails.mailingAddress.addressLocality
@@ -276,17 +283,11 @@
                 ,
                 {{
                   contractInfo.sourceDetails.mailingAddress.addressRegion
-                    ? contractInfo.sourceDetails.mailingAddress.addressRegion
+                    ? toGetStateShortName(
+                        contractInfo.sourceDetails.mailingAddress.addressRegion
+                      )
                     : '-'
                 }}
-              </div>
-              <div class="row">
-                {{
-                  contractInfo.sourceDetails.mailingAddress.addressCountry
-                    ? contractInfo.sourceDetails.mailingAddress.addressCountry
-                    : '-'
-                }}
-                -
                 {{
                   contractInfo.sourceDetails.mailingAddress.postalCode
                     ? contractInfo.sourceDetails.mailingAddress.postalCode
@@ -410,6 +411,7 @@ import AddVendor from 'components/AddVendor';
 import { successMessage } from '@utils/validation';
 import { validateDate, validateTime } from '@utils/validation';
 import { mapGetters, mapActions } from 'vuex';
+import { toGetStateShortName } from '@utils/common';
 import { constants } from '@utils/constant';
 import VendorsList from 'components/VendorsList';
 import { onPhoneNumberClick, onEmailClick } from '@utils/clickable';
@@ -451,6 +453,7 @@ export default {
     closeTimeDialog() {
       this.$refs.qTimeProxy.hide();
     },
+    toGetStateShortName,
     successMessage,
     onPhoneNumberClick,
     onEmailClick,

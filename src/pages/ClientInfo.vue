@@ -152,22 +152,39 @@
                       .houseNumber
                   : ''
               }}
+              {{
+                editSelectedClient.attributes.insuredInfo.mailingAddress
+                  .address1
+                  ? editSelectedClient.attributes.insuredInfo.mailingAddress
+                      .address1
+                  : '-'
+              }}
             </div>
+
             <div>
               {{
                 editSelectedClient.attributes.insuredInfo.mailingAddress
-                  .streetAddress
+                  .address2
                   ? editSelectedClient.attributes.insuredInfo.mailingAddress
-                      .streetAddress
-                  : ''
+                      .address2
+                  : '-'
               }}
             </div>
             <div>
               {{
                 editSelectedClient.attributes.insuredInfo.mailingAddress
-                  .addressRegion
+                  .addressLocality
                   ? editSelectedClient.attributes.insuredInfo.mailingAddress
-                      .addressRegion
+                      .addressLocality
+                  : ''
+              }},
+              {{
+                editSelectedClient.attributes.insuredInfo.mailingAddress
+                  .addressRegion
+                  ? toGetStateShortName(
+                      editSelectedClient.attributes.insuredInfo.mailingAddress
+                        .addressRegion
+                    )
                   : ''
               }}
               {{
@@ -176,15 +193,6 @@
                   ? editSelectedClient.attributes.insuredInfo.mailingAddress
                       .postalCode
                   : '-'
-              }}
-            </div>
-            <div>
-              {{
-                editSelectedClient.attributes.insuredInfo.mailingAddress
-                  .addressCountry
-                  ? editSelectedClient.attributes.insuredInfo.mailingAddress
-                      .addressCountry
-                  : ''
               }}
               <q-icon
                 name="place"
@@ -688,6 +696,7 @@ import {
 } from '@utils/clickable';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import { constants } from '@utils/constant';
+import { toGetStateShortName } from '@utils/common';
 
 const addressService = new AddressService();
 export default {
@@ -701,7 +710,8 @@ export default {
         addressLocality: '',
         postalCode: '',
         houseNumber: '',
-        streetAddress: '',
+        address1: '',
+        address2: '',
         postOfficeBoxNumber: '4',
         dropBox: {
           info: '',
@@ -733,7 +743,8 @@ export default {
         addressRegion: '',
         addressLocality: '',
         postalCode: '',
-        streetAddress: '',
+        address1: '',
+        address2: '',
         postOfficeBoxNumber: '',
         dropBox: {
           info: '',
@@ -803,6 +814,7 @@ export default {
       'getContactTypes',
       'getSingleClientDetails'
     ]),
+    toGetStateShortName,
     sendMap,
     dateWithTime,
     showPhoneNumber,
@@ -970,10 +982,15 @@ export default {
           ? this.editSelectedClient.attributes.insuredInfo.mailingAddress
               .postalCode
           : '';
-        this.clientAddressDetails.streetAddress = this.editSelectedClient
-          .attributes.insuredInfo.mailingAddress.streetAddress
+        this.clientAddressDetails.address1 = this.editSelectedClient.attributes
+          .insuredInfo.mailingAddress.address1
           ? this.editSelectedClient.attributes.insuredInfo.mailingAddress
-              .streetAddress
+              .address1
+          : '';
+        this.clientAddressDetails.address2 = this.editSelectedClient.attributes
+          .insuredInfo.mailingAddress.address2
+          ? this.editSelectedClient.attributes.insuredInfo.mailingAddress
+              .address2
           : '';
         if (
           this.editSelectedClient.attributes.insuredInfo.mailingAddress

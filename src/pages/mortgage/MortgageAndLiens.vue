@@ -31,13 +31,13 @@
                   ? mortgage.address.houseNumber
                   : '-'
               }}
-              ,
-              {{
-                mortgage.address.streetAddress
-                  ? mortgage.address.streetAddress
-                  : '-'
-              }}
+              {{ mortgage.address.address1 ? mortgage.address.address1 : '-' }}
               <div class="">
+                {{
+                  mortgage.address.address2 ? mortgage.address.address2 : '-'
+                }}
+              </div>
+              <div>
                 {{
                   mortgage.address.addressLocality
                     ? mortgage.address.addressLocality
@@ -46,16 +46,10 @@
                 ,
                 {{
                   mortgage.address.addressRegion
-                    ? mortgage.address.addressRegion
+                    ? toGetStateShortName(personnel.address.addressRegion)
                     : '-'
                 }}
-              </div>
-              <div>
-                {{
-                  mortgage.address.addressCountry
-                    ? mortgage.address.addressCountry
-                    : '-'
-                }},
+
                 {{
                   mortgage.address.postalCode
                     ? mortgage.address.postalCode
@@ -228,6 +222,7 @@ import CustomBar from 'components/CustomBar';
 import ClaimDetail from 'components/ClaimDetail';
 import { constants } from '@utils/constant';
 import DeleteAlert from 'components/DeleteAlert';
+import { toGetStateShortName } from '@utils/common';
 import AddMortgage from 'components/AddMortgage';
 import { successMessage } from '@utils/validation';
 import MortgageForm from 'components/MortgageForm';
@@ -285,7 +280,7 @@ export default {
       'updateMortgageInfo',
       'deleteClaimMortgageInfo'
     ]),
-
+    toGetStateShortName,
     onEdit(index) {
       this.mortgageInfoDialog = false;
       this.$emit('addMortgage', true);
