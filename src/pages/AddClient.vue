@@ -2225,7 +2225,10 @@ export default {
 
     if (this.selectedLead.id) {
       await this.getLeadDetails(this.selectedLead.id);
-      this.getVendorDetails(this.selectedLead.leadSource.id);
+      if (this.selectedLead.leadSource && this.selectedLead.leadSource.id) {
+        this.getVendorDetails(this.selectedLead.leadSource.id);
+      }
+
       this.honorific1 = {
         id: this.selectedLead.primaryContact.honorific.id,
         value: this.selectedLead.primaryContact.honorific.value,
