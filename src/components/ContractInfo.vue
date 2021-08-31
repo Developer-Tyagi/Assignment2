@@ -368,7 +368,7 @@
       <div class="full-width">
         <q-select
           borderless
-          class="required input-style input-field  "
+          class="input-style input-field  "
           v-model="contractInfo.reasonForCancellation"
           :options="reasonForCancellation"
           label="Reason For Cancellation"

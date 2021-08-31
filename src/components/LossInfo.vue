@@ -69,7 +69,7 @@
       <q-select
         dense
         borderless
-        class="required input-extra-padding input-style input-field"
+        class="input-extra-padding input-style input-field"
         behavior="menu"
         v-model="lossInfo.causeOfLoss.value"
         option-value="name"
@@ -108,7 +108,7 @@
         <q-input
           dense
           borderless
-          class="required input-style input-field"
+          class="input-style input-field"
           v-model="lossInfo.deadlineDate"
           mask="##/##/####"
           label="MM/DD/YYYY"
@@ -144,7 +144,7 @@
         <q-input
           dense
           borderless
-          class="required input-style input-field"
+          class="input-style input-field"
           v-model="lossInfo.recovDeadline"
           mask="##/##/####"
           label="MM/DD/YYYY"
