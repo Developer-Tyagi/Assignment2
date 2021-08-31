@@ -42,16 +42,17 @@
             ref="clientInfo"
           >
             <div class="form-card q-pa-sm">
-              <q-card class="q-pa-sm q-mb-md">
+              <q-card class="q-pa-md q-mb-md">
                 <q-select
                   dense
-                  class="required"
                   v-model="client.value"
                   option-value="name"
                   option-label="name"
                   map-options
                   emit-value
                   behavior="menu"
+                  borderless
+                  class="required input-style input-field"
                   options-dense
                   :options="clientTypes"
                   @input="setTypes(clientTypes, client)"
@@ -63,7 +64,7 @@
                   :disable="isOfflineClientEdit"
                 />
                 <div class="row">
-                  <p class="q-mx-none q-my-auto">
+                  <p class="q-mx-none q-ml-sm q-my-auto">
                     Is Policyholder An Organization ?
                   </p>
                   <q-toggle
@@ -78,7 +79,8 @@
                     dense
                     v-model="primaryDetails.organizationName"
                     label="Organization Name"
-                    class="required"
+                    borderless
+                    class="required input-style input-field"
                     lazy-rules
                     :rules="[
                       val =>
@@ -89,12 +91,13 @@
                   />
                 </div>
               </q-card>
-              <q-card class="q-pa-sm q-mb-md">
-                <span class="form-heading">Insured Details</span>
+              <q-card class="q-pa-md q-mb-md">
+                <span class="form-heading q-ml-xs">Insured Details</span>
                 <q-select
                   dense
                   v-model="honorific1.value"
-                  class="required"
+                  borderless
+                  class="required input-style input-field"
                   :options="titles"
                   option-value="value"
                   option-label="value"
@@ -105,7 +108,6 @@
                   emit-value
                   label="Title"
                   lazy-rules
-                  options-dense
                   :rules="[
                     val => (val && val.length > 0) || 'Please select the Title'
                   ]"
@@ -113,7 +115,8 @@
                 />
                 <q-input
                   dense
-                  class="required"
+                  borderless
+                  class="required input-style input-field"
                   v-model="insuredDetails.fname"
                   lazy-rules
                   :rules="[
@@ -126,7 +129,8 @@
                 <q-input
                   dense
                   v-model="insuredDetails.lname"
-                  class="required"
+                  borderless
+                  class="required input-style input-field"
                   lazy-rules
                   :rules="[
                     val =>
@@ -140,7 +144,8 @@
                   <q-select
                     dense
                     v-model="insuredDetails.type"
-                    class="required col-5"
+                    borderless
+                    class="required input-style col-5 input-field"
                     :options="contactTypes"
                     option-value="machineValue"
                     option-label="name"
@@ -159,8 +164,9 @@
                   <q-input
                     dense
                     v-model.number="insuredDetails.phone"
-                    class="required col-6"
                     label="Phone"
+                    borderless
+                    class="required input-style col-6 input-field"
                     mask="(###) ###-####"
                     lazy-rules
                     :rules="[
@@ -174,7 +180,8 @@
                 <q-input
                   dense
                   v-model="insuredDetails.email"
-                  class="required"
+                  borderless
+                  class="required input-style input-field"
                   label="Email"
                   lazy-rules
                   :rules="[
@@ -185,7 +192,7 @@
                   :disable="isOfflineClientEdit"
                 />
                 <div class="row">
-                  <p class="q-mx-none q-my-auto">
+                  <p class="q-mx-none q-my-auto q-ml-xs">
                     Add additional phone number(s)
                   </p>
                   <q-toggle
@@ -203,7 +210,10 @@
                   >
                     <q-select
                       v-model="phoneNumber[index].type"
-                      class="required col-5"
+                      borderless
+                      dense
+                      style="height:55px"
+                      class="required input-style col-5"
                       label="Type"
                       :options="contactTypes"
                       option-value="machineValue"
@@ -223,9 +233,11 @@
                     <q-input
                       v-model.number="phoneNumber[index].number"
                       label="Phone"
-                      class="required col-6"
                       mask="(###) ###-####"
+                      borderless
+                      class="required col-6 input-style"
                       lazy-rules
+                      style="height:55px"
                       :rules="[
                         val =>
                           (val && val.length == 14) ||
@@ -234,7 +246,7 @@
                       :disable="isOfflineClientEdit"
                     />
                   </div>
-                  <div class="row justify-between q-my-sm">
+                  <div class="row justify-between q-ml-xs q-my-sm">
                     <q-btn
                       :disabled="isAddMorePhoneDisabled"
                       outline
@@ -256,7 +268,9 @@
                   </div>
                 </div>
                 <div class="row">
-                  <p class="q-mx-none q-my-auto">Is there a Co-insured?</p>
+                  <p class="q-mx-none q-ml-xs q-my-auto">
+                    Is there a Co-insured?
+                  </p>
                   <q-toggle
                     class="q-ml-auto"
                     v-model="isThereaCoInsuredToggle"
@@ -265,11 +279,12 @@
                 </div>
 
                 <div v-if="isThereaCoInsuredToggle" style="font-size: 20px">
-                  <span class="form-heading">Co-insured Details</span>
+                  <span class="form-heading q-ml-xs">Co-insured Details</span>
                   <q-select
                     dense
                     v-model="honorific2.value"
-                    class="required"
+                    borderless
+                    class="required input-style input-field"
                     :options="titles"
                     option-value="value"
                     option-label="value"
@@ -290,11 +305,15 @@
                     dense
                     v-model="coInsuredDetails.fname"
                     label="First Name"
+                    borderless
+                    class="required input-style input-field"
                     :disable="isOfflineClientEdit"
                   />
                   <q-input
                     dense
                     v-model="coInsuredDetails.lname"
+                    borderless
+                    class="required input-style input-field"
                     label="Last Name"
                     :disable="isOfflineClientEdit"
                   />
@@ -302,7 +321,8 @@
                     <q-select
                       dense
                       v-model="coInsuredDetails.type"
-                      class="required col-5"
+                      borderless
+                      class="required col-5 input-style input-field"
                       :options="contactTypes"
                       option-value="machineValue"
                       option-label="name"
@@ -311,7 +331,6 @@
                       behavior="menu"
                       options-dense
                       label="Type"
-                      options-dense
                       lazy-rules
                       :rules="[
                         val =>
@@ -323,7 +342,8 @@
                       dense
                       v-model.number="coInsuredDetails.phone"
                       label="Phone"
-                      class="required col-6"
+                      borderless
+                      class="required input-style col-6 input-field"
                       mask="(###) ###-####"
                       lazy-rules
                       :rules="[
@@ -339,7 +359,8 @@
                     v-model="coInsuredDetails.email"
                     input
                     type="email"
-                    class="required"
+                    borderless
+                    class="required input-style input-field"
                     lazy-rules
                     :rules="[
                       val =>
@@ -351,11 +372,12 @@
                   />
                 </div>
               </q-card>
-              <q-card class="q-pa-sm">
-                <span class="form-heading">Loss Address Details</span>
+              <q-card class="q-pa-md">
+                <span class="form-heading q-ml-xs">Loss Address Details</span>
                 <q-input
                   dense
-                  class="required"
+                  borderless
+                  class="required input-style input-field"
                   v-model="lossAddressName"
                   label="Enter  Loss Address Name "
                   lazy-rules
@@ -367,7 +389,8 @@
                 <q-select
                   dense
                   behavior="menu"
-                  class="required"
+                  borderless
+                  class="required input-style input-field"
                   v-model="property.value"
                   option-value="name"
                   option-label="name"
@@ -387,6 +410,8 @@
                 <q-input
                   dense
                   v-model="propertyDescription"
+                  borderless
+                  class="input-style input-field"
                   label="Description of Property"
                   :disable="isOfflineClientEdit"
                 />
@@ -412,18 +437,21 @@
                     dense
                     v-model="tenantOccupied.name"
                     label="Tenant Name"
+                    borderless
+                    class="required input-style input-field"
                     :disable="isOfflineClientEdit"
                   />
 
                   <div class="row justify-between">
                     <q-select
                       dense
-                      class="required col-5"
                       v-model="tenantOccupied.type"
                       label="Type"
                       :options="contactTypes"
                       option-value="machineValue"
                       option-label="name"
+                      borderless
+                      class="required input-style col-5 input-field"
                       map-options
                       options-dense
                       emit-value
@@ -437,7 +465,8 @@
                     />
                     <q-input
                       dense
-                      class="required col-6"
+                      borderless
+                      class="required input-style col-6 input-field"
                       v-model.number="tenantOccupied.phone"
                       label="Phone"
                       mask="(###) ###-####"
@@ -561,7 +590,7 @@
             :hidden="step != 3"
             ref="lossInfo"
           >
-            <div class="q-pa-md form-card">
+            <div class=" form-card">
               <LossInfo
                 :lossInfo="lossInfo"
                 @lossAddressSame="lossAddressSame"
@@ -1026,12 +1055,12 @@
             :hidden="step != 6"
             ref="mortgageInfo"
           >
-            <div class="q-pa-sm form-card">
+            <q-card class="q-pa-md  form-card">
               <MortgageForm
                 :mortgage="mortgageInfo"
                 :isThereSecondMortgage="true"
               />
-            </div>
+            </q-card>
 
             <div class="row q-pt-md">
               <div>
@@ -1062,9 +1091,9 @@
             :hidden="step != 7"
             ref="vendorInfo"
           >
-            <div class="q-pa-md form-card">
+            <q-card class="q-pa-md form-card">
               <ExpertVendorInfo :expertVendorInfo="expertVendorInfo" />
-            </div>
+            </q-card>
             <div class="row q-pt-md">
               <div>
                 <q-btn
@@ -1094,12 +1123,12 @@
             :hidden="step != 8"
             ref="estimatingInfo"
           >
-            <div class="q-pa-md form-card">
+            <q-card class="q-pa-md form-card">
               <EstimatingInfo
                 :estimatingInfo="estimatingInfo"
                 :estimatorAssignToggle="true"
               />
-            </div>
+            </q-card>
             <div class="row q-pt-md">
               <div>
                 <q-btn
@@ -1129,9 +1158,9 @@
             :hidden="step != 9"
             ref="contractInfo"
           >
-            <div class="q-pa-md form-card">
+            <q-card class="q-pa-md form-card">
               <ContractInfo :contractInfo="contractInfo" />
-            </div>
+            </q-card>
             <div class="row q-pt-md">
               <div>
                 <q-btn
@@ -1161,9 +1190,9 @@
             :hidden="step != 10"
             ref="personnelInfo"
           >
-            <div class="q-pa-md form-card">
+            <q-card class="q-pa-md form-card">
               <CompanyPersonnel :companyPersonnel="companyPersonnel" />
-            </div>
+            </q-card>
             <div class="row q-pt-md">
               <div>
                 <q-btn
@@ -3055,6 +3084,9 @@ export default {
   border-bottom: 1px solid #d3d3d3;
   padding: 10px;
   margin: 5px 0;
+}
+.input-field {
+  height: 55px;
 }
 .form-height {
   height: calc(100vh - 120px);

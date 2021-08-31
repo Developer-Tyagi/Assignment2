@@ -2,21 +2,20 @@
   <div class="bg-white full-width">
     <!-- Insurance Info -->
     <div>
-      <q-card class="q-pa-sm">
-        <div
+      <q-card class="q-pa-md">
+        <q-btn
+          style="width:100%"
+          outline
+          rounded
           class="custom-select"
           v-if="!insuranceDetails.carrierName && !policyInfo"
+          no-caps
+          :disabled="isOfflineClientEdit"
+          @click="carriersListDialog = true"
         >
-          <q-btn
-            class="select-text"
-            flat
-            no-caps
-            :disabled="isOfflineClientEdit"
-            @click="carriersListDialog = true"
-          >
-            Click for choosing a carrier
-          </q-btn>
-        </div>
+          Click for choosing a carrier
+        </q-btn>
+
         <div>
           <q-card
             bordered
@@ -100,7 +99,8 @@
           v-model="insuranceDetails.policyNumber"
           label="Policy Number"
           dense
-          class="required"
+          borderless
+          class="required input-style input-field"
           lazy-rules
           :rules="[
             val => (val && val.length > 0) || 'Please fill the policy number'
@@ -108,7 +108,7 @@
           :disable="isOfflineClientEdit"
         />
         <div class="row" v-if="!policyInfo">
-          <p class="q-my-auto form-heading">Has claim been filed?</p>
+          <p class="q-my-auto q-ml-xs form-heading">Has claim been filed?</p>
           <q-toggle
             class="q-ml-auto"
             v-model="insuranceDetails.hasClaimBeenFilledToggle"
@@ -120,7 +120,8 @@
           v-model="insuranceDetails.insuranceClaimNumber"
           label="Insurance Claim Number"
           dense
-          class="input-extra-padding"
+          borderless
+          class="required input-style input-field input-extra-padding"
           lazy-rules
           :rules="[
             val =>
@@ -130,7 +131,7 @@
           :disable="isOfflineClientEdit"
         />
         <div class="row">
-          <p class="q-my-auto form-heading">
+          <p class="q-my-auto q-ml-xs  form-heading">
             Is this is a Forced-Placed policy?
           </p>
 
@@ -141,8 +142,8 @@
           />
         </div>
       </q-card>
-      <q-card class="q-pa-sm q-mt-sm">
-        <span class="form-heading">Policy Effective date</span>
+      <q-card class="q-pa-md q-mt-sm">
+        <span class="form-heading q-ml-xs ">Policy Effective date</span>
 
         <div class="full-width">
           <q-input
@@ -151,7 +152,8 @@
             mask="##/##/####"
             label="MM/DD/YYYY"
             lazy-rules
-            class="required"
+            borderless
+            class="required input-style input-field input-extra-padding"
             :rules="[
               val =>
                 (val && val.length > 0 && validateDate(val)) || 'Invalid date!'
@@ -181,7 +183,9 @@
             </template>
           </q-input>
         </div>
-        <span class="form-heading">Policy Expiry date </span>
+        <div class="q-pt-md">
+          <span class="form-heading q-ml-xs">Policy Expiry date </span>
+        </div>
         <div class="full-width">
           <q-input
             dense
@@ -189,7 +193,8 @@
             mask="##/##/####"
             label="MM/DD/YYYY"
             lazy-rules
-            class="required"
+            borderless
+            class="required input-style input-field"
             :rules="[
               val =>
                 (val && val.length > 0 && validateDate(val)) || 'Invalid date!'
@@ -221,7 +226,8 @@
         </div>
 
         <q-select
-          class="required"
+          borderless
+          class="required input-style input-field input-extra-padding"
           dense
           behavior="menu"
           v-model="insuranceDetails.policyCategory.value"
@@ -245,7 +251,8 @@
           :disable="isOfflineClientEdit"
         />
         <q-select
-          class="required"
+          borderless
+          class="required input-style input-field "
           dense
           behavior="menu"
           v-model="insuranceDetails.policy.value"
@@ -266,18 +273,19 @@
           :disable="isOfflineClientEdit"
         />
       </q-card>
-      <q-card class="q-pa-sm q-mt-sm">
+      <q-card class="q-pa-md q-mt-sm">
         <div class="row" style="align-items: center">
           <span class="form-heading">Dwelling Limit (A)</span>
           <q-input
             dense
             mask="#.#"
+            borderless
+            class="required input-style input-field input-extra-padding"
             type="number"
             v-model.number="insuranceDetails.dwellingLimitA"
             placeholder="Dwelling Limit (A)"
             style="margin-left: auto; width: 50%"
             prefix="$"
-            class="input-extra-padding"
             :disable="isOfflineClientEdit"
           />
         </div>
@@ -286,12 +294,13 @@
           <q-input
             mask="#.#"
             type="number"
+            borderless
+            class="required input-style input-field input-extra-padding"
             v-model.number="insuranceDetails.otherStructureB"
             placeholder="Other Structure (B)"
             prefix="$"
             style="margin-left: auto; width: 50%"
             dense
-            class="input-extra-padding"
             :disable="isOfflineClientEdit"
           />
         </div>
@@ -300,12 +309,13 @@
           <q-input
             mask="#.#"
             type="number"
+            borderless
+            class="required input-style input-field input-extra-padding"
             v-model.number="insuranceDetails.contentsLimit"
             placeholder="Contents Limit (C)"
             prefix="$"
             style="margin-left: auto; width: 50%"
             dense
-            class="input-extra-padding"
             :disable="isOfflineClientEdit"
           />
         </div>
@@ -314,12 +324,13 @@
           <q-input
             mask="#.#"
             type="number"
+            borderless
+            class="required input-style input-field input-extra-padding"
             v-model.number="insuranceDetails.lossOfUSD"
             placeholder="Loss of Use Limit (D)"
             prefix="$"
             style="margin-left: auto; width: 50%"
             dense
-            class="input-extra-padding"
             :disable="isOfflineClientEdit"
           />
         </div>
@@ -333,7 +344,8 @@
             prefix="$"
             style="margin-left: auto; width: 50%"
             dense
-            class="input-extra-padding"
+            borderless
+            class="required input-style input-field input-extra-padding"
             :disable="isOfflineClientEdit"
           />
         </div>
@@ -347,7 +359,8 @@
             prefix="$"
             style="margin-left: auto; width: 50%"
             dense
-            class="input-extra-padding"
+            borderless
+            class="required input-style input-field input-extra-padding"
             :disable="isOfflineClientEdit"
           />
         </div>
@@ -364,7 +377,8 @@
             prefix="$"
             style="margin-left: auto; width: 50%"
             dense
-            class="input-extra-padding"
+            borderless
+            class="required input-style input-field input-extra-padding"
             :disable="isOfflineClientEdit"
           />
         </div>
@@ -391,7 +405,8 @@
               prefix="$"
               style="margin-left: auto; width: 50%"
               dense
-              class="input-extra-padding"
+              borderless
+              class="required input-style input-field input-extra-padding"
               :disable="isOfflineClientEdit"
             />
           </div>
@@ -407,7 +422,8 @@
               prefix="$"
               style="margin-left: auto; width: 50%"
               dense
-              class="input-extra-padding"
+              borderless
+              class="required input-style input-field input-extra-padding"
               :disable="isOfflineClientEdit"
             />
           </div>
@@ -421,7 +437,8 @@
               prefix="$"
               style="margin-left: auto; width: 50%"
               dense
-              class="input-extra-padding"
+              borderless
+              class="required input-style input-field input-extra-padding"
               :disable="isOfflineClientEdit"
             />
           </div>
@@ -435,7 +452,8 @@
               prefix="$"
               style="margin-left: auto; width: 50%"
               dense
-              class="input-extra-padding"
+              borderless
+              class="required input-style input-field input-extra-padding"
               :disable="isOfflineClientEdit"
             />
           </div>
@@ -452,22 +470,25 @@
               prefix="$"
               style="margin-left: auto; width: 50%"
               dense
-              class="input-extra-padding"
+              borderless
+              class="required input-style input-field input-extra-padding"
               :disable="isOfflineClientEdit"
             />
           </div>
         </div>
       </q-card>
-      <q-card class="q-pa-sm q-mt-sm">
-        <span class="form-heading">Reason for Limits/Denial</span>
+      <q-card class="q-pa-md q-mt-sm">
+        <span class="form-heading q-ml-xs">Reason for Limits/Denial</span>
         <div class="floating-label">
-          <textarea
+          <q-input
+            type="textarea"
+            borderless
+            class="required input-style full-width"
             v-if="!isOfflineClientEdit"
             rows="5"
-            class="full-width"
             v-model="insuranceDetails.reasonsOfLD"
             style="resize: none"
-          ></textarea>
+          ></q-input>
           <textarea
             v-if="isOfflineClientEdit"
             disabled
@@ -646,3 +667,8 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+.input-field {
+  height: 55px;
+}
+</style>
