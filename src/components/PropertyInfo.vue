@@ -53,7 +53,7 @@
                       dense
                       v-model="lossInfo.serialNumber"
                       borderless
-                      class="required col-5 input-style input-field"
+                      class="col-5 input-style input-field"
                       label="Serial Number"
                     />
                   </div>
@@ -65,7 +65,7 @@
                     dense
                     v-model="lossInfo.PPDamageDescription"
                     borderless
-                    class="required col-5 input-style input-field full-width"
+                    class="col-5 input-style input-field full-width"
                     rows="3"
                     :rules="[
                       val =>
@@ -79,7 +79,7 @@
                   <q-input
                     type="textarea"
                     borderless
-                    class="required col-5 input-style input-field full-width"
+                    class="col-5 input-style input-field full-width"
                     v-model="lossInfo.PPDamageItemDescription"
                     rows="3"
                     :rules="[

@@ -85,7 +85,7 @@
     <q-input
       dense
       borderless
-      class="required input-style input-field"
+      class="input-style input-field"
       v-model="mortgage[0].loanNumber"
       label="Loan Number"
       :disable="isOfflineClientEdit"
@@ -93,7 +93,7 @@
     <q-input
       dense
       borderless
-      class="required input-style input-field"
+      class="input-style input-field"
       v-model="mortgage[0].accountNumber"
       label="Account Number"
       :disable="isOfflineClientEdit"
@@ -117,16 +117,15 @@
       />
     </div>
     <div v-if="isSecondMortgageHome">
-      <div
-        class="custom-select"
+      <q-btn
         @click="onChooseMortgageClick(1)"
         v-if="!mortgage[1].value"
+        rounded
+        outline
+        style="width:100%"
+        class="q-mt-md"
+        >Click for choosing a Second Mortgage</q-btn
       >
-        <q-btn outline style="width:100%" class="q-mt-md"
-          >Click for choosing a Second Mortgage</q-btn
-        >
-      </div>
-
       <div>
         <q-card
           bordered
@@ -195,7 +194,7 @@
       <q-input
         dense
         borderless
-        class="required input-style input-field"
+        class="input-style input-field"
         v-model="mortgage[1].loanNumber"
         label="Loan Number"
         :disable="isOfflineClientEdit"
@@ -203,7 +202,7 @@
       <q-input
         dense
         borderless
-        class="required input-style input-field"
+        class="input-style input-field"
         v-model="mortgage[1].accountNumber"
         label="Account Number"
         :disable="isOfflineClientEdit"
