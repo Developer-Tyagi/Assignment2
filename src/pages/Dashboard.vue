@@ -1,52 +1,55 @@
 <template>
   <!-- mobile-container-page listing-height -->
-  <q-page style="background-color:#8F8F8F;">
+  <div
+    class="mobile-container-page listing-height"
+    style="background-color:#8F8F8F;"
+  >
     <q-card style="border-radius: 0 0 60px 60px;">
-      <div class="row justify-between q-py-md">
+      <div class="row justify-between q-py-sm">
         <img
-          class="q-ml-xl "
+          class="menu-left-icons"
           src="~assets/Leads.png"
           style="width:30%;"
           @click="$router.push('/leads-dashboard')"
         />
 
         <img
-          class="q-mr-xl"
+          class="menu-right-icons "
           src="~assets/Clients.png"
           style="width:30%;"
           @click="$router.push('/clients')"
         />
       </div>
-      <div class="row justify-between q-py-md">
+      <div class="row justify-between q-py-sm">
         <img
-          class="q-ml-xl  "
+          class="menu-left-icons"
           src="~assets/Vendor.png"
           style="width:30%;"
           @click="$router.push('/vendors')"
         />
         <img
-          class="q-mr-xl  "
+          class="menu-right-icons "
           src="~assets/Claims.png"
           style="width:30%;"
           @click="$router.push('/claims')"
         />
       </div>
-      <div class="row justify-between q-py-xl">
+      <div class="row justify-between q-py-sm">
         <img
-          class="q-ml-xl  "
+          class="menu-left-icons"
           src="~assets/UploadScan.png"
           style="width:30%;"
           @click="$router.push('/vendor-document')"
         />
 
         <img
-          class="q-mr-xl  "
+          class="menu-right-icons "
           src="~assets/CameraLogo.png"
           style="width:30%;"
         />
       </div>
     </q-card>
-    <div class=" q-ma-md q-mt-lg row justify-between ">
+    <div class=" q-ma-sm q-mt-md row justify-between ">
       <div class="column">
         <img
           src="~assets/Profile.svg"
@@ -75,7 +78,7 @@
         <div class="text-center text-white">ADD</div>
       </div>
     </div>
-  </q-page>
+  </div>
 </template>
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex';
@@ -196,5 +199,11 @@ export default {
   margin-right: 10px;
   background-color: black;
   position: relative;
+}
+.menu-right-icons {
+  margin-right: 60px;
+}
+.menu-left-icons {
+  margin-left: 60px;
 }
 </style>

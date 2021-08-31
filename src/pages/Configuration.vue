@@ -135,7 +135,7 @@
                   <td class="table-td">
                     <span>
                       <q-icon
-                        size="sm"
+                        size="xl"
                         color="primary"
                         name="create"
                         @click="onEditTemplate(list)"

@@ -2247,19 +2247,22 @@ export default {
       this.clientAddressDetails.postalCode = this.selectedLead.lossLocation.postalCode;
       this.clientAddressDetails.streetAddress = this.selectedLead.lossLocation.streetAddress;
       this.lossInfo.descriptionDwelling = this.selectedLead.lossDesc;
-      this.contractInfo.sourceDetails.id = this.selectedLead.leadSource
-        ? this.selectedLead.leadSource.id
-        : '';
-      this.contractInfo.sourceDetails.type = this.selectedLead.leadSource
-        ? this.selectedLead.leadSource.type
-        : '';
-      this.contractInfo.sourceDetails.details = this.selectedLead.leadSource
-        ? this.selectedVendor.name
-        : '';
-      this.contractInfo.sourceDetails.mailingAddress = this.selectedVendor.mailingAddress;
-      this.contractInfo.sourceDetails.email == this.selectedVendor.email;
-      this.contractInfo.sourceDetails.phone = this.selectedVendor.phoneNumber;
-      this.contractInfo.sourceDetails.companyName = this.selectedVendor.companyName;
+      if (this.selectedLead.leadSource) {
+        this.contractInfo.sourceDetails.id = this.selectedLead.leadSource.id
+          ? this.selectedLead.leadSource.id
+          : '';
+        this.contractInfo.sourceDetails.type = this.selectedLead.leadSource.type
+          ? this.selectedLead.leadSource.type
+          : 'none';
+        this.contractInfo.sourceDetails.details = this.selectedVendor.name
+          ? this.selectedVendor.name
+          : '';
+        this.contractInfo.sourceDetails.mailingAddress = this.selectedVendor.mailingAddress;
+        this.contractInfo.sourceDetails.email == this.selectedVendor.email;
+        this.contractInfo.sourceDetails.phone = this.selectedVendor.phoneNumber;
+        this.contractInfo.sourceDetails.companyName = this.selectedVendor.companyName;
+      }
+
       this.insuranceDetails.carrierName = this.selectedLead.carrier
         ? this.selectedLead.carrier.value
         : '';
