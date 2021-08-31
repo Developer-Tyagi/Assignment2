@@ -1,17 +1,19 @@
 <template>
   <div>
     <!-- Mortgage Form -->
-    <div class="custom-select" v-if="!mortgage[0].value">
-      <q-btn
-        style="width:100%"
-        no-caps
-        outline
-        @click="mortgageList = true"
-        :disable="isOfflineClientEdit"
-      >
-        Click for choosing a Mortgage
-      </q-btn>
-    </div>
+
+    <q-btn
+      style="width:100%"
+      no-caps
+      outline
+      class="custom-select"
+      v-if="!mortgage[0].value"
+      rounded
+      @click="mortgageList = true"
+      :disable="isOfflineClientEdit"
+    >
+      Click for choosing a Mortgage
+    </q-btn>
 
     <div>
       <q-card

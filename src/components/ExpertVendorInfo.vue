@@ -265,17 +265,17 @@
         >
         </q-select>
         <div>
-          <div
-            class="custom-select q-mt-md"
+          <q-btn
+            outline
+            rounded
+            class="custom-select q-mt-md full-width"
             @click="
               openVendorSelect(item, index, expertVendorInfo.isHiredByClaimguru)
             "
             v-if="!item.vendor.email"
           >
-            <q-btn outline class="full-width">
-              Click for choosing a vendor
-            </q-btn>
-          </div>
+            Click for choosing a vendor
+          </q-btn>
 
           <q-card
             bordered

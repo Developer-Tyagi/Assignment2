@@ -411,7 +411,7 @@
                   dense
                   v-model="propertyDescription"
                   borderless
-                  class="required input-style input-field"
+                  class="input-style input-field"
                   label="Description of Property"
                   :disable="isOfflineClientEdit"
                 />
