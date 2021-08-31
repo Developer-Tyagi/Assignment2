@@ -20,9 +20,10 @@
                   <div class="q-ml-sm q-mt-sm">Quantity</div>
                   <div>
                     <q-input
-                      class="required"
                       dense
                       v-model.number="lossInfo.quantity"
+                      borderless
+                      class="required col-5 input-style input-field"
                       label="Quantity"
                       type="number"
                       :rules="[val => val || 'Please fill the Quantity']"
@@ -33,7 +34,8 @@
                   <div class="q-ml-sm q-mt-sm">Name of item</div>
                   <div>
                     <q-input
-                      class="required"
+                      borderless
+                      class="required col-5 input-style input-field"
                       dense
                       v-model="lossInfo.PPDamageName"
                       label="Name of item"
@@ -50,17 +52,20 @@
                     <q-input
                       dense
                       v-model="lossInfo.serialNumber"
+                      borderless
+                      class="col-5 input-style input-field"
                       label="Serial Number"
                     />
                   </div>
                 </div>
                 <div class="q-ml-sm q-mt-sm">Description of Damages</div>
                 <div class="q-ma-sm">
-                  <textarea
-                    class="required full-width"
+                  <q-input
+                    type="textarea"
                     dense
                     v-model="lossInfo.PPDamageDescription"
-                    label="Description of Damages"
+                    borderless
+                    class="col-5 input-style input-field full-width"
                     rows="3"
                     :rules="[
                       val =>
@@ -71,10 +76,11 @@
                 </div>
                 <div class="q-ml-sm q-mt-sm">Description of Items</div>
                 <div class="q-ma-sm">
-                  <textarea
-                    class="required full-width"
+                  <q-input
+                    type="textarea"
+                    borderless
+                    class="col-5 input-style input-field full-width"
                     v-model="lossInfo.PPDamageItemDescription"
-                    label="Description of Item"
                     rows="3"
                     :rules="[
                       val =>
@@ -87,8 +93,9 @@
                   <div class="q-mt-sm">Purchase Price</div>
                   <div>
                     <q-input
-                      class="required"
                       dense
+                      borderless
+                      class="required col-5 input-style input-field"
                       type="number"
                       v-model.number="lossInfo.purchasePrice"
                       label="Purchase Price"
@@ -119,7 +126,8 @@
                   <div class="q-mt-sm q-ml-sm">Repair Cost</div>
                   <div>
                     <q-input
-                      class="required"
+                      borderless
+                      class="required col-5 input-style input-field"
                       dense
                       type="number"
                       v-model.number="lossInfo.repairCost"
@@ -142,7 +150,8 @@
                   <div class="q-mt-sm q-ml-sm">Replace Cost</div>
                   <div>
                     <q-input
-                      class="required"
+                      borderless
+                      class="required col-5 input-style input-field"
                       dense
                       type="number"
                       v-model.number="lossInfo.replaceCost"
@@ -162,7 +171,8 @@
                 <div class="text-bold q-mt-md">Purchase date</div>
                 <div class="full-width">
                   <q-input
-                    class="required"
+                    borderless
+                    class="required col-5  input-style input-field"
                     v-model="lossInfo.purchaseDate"
                     mask="##/##/####"
                     label="MM/DD/YYYY"
@@ -444,5 +454,8 @@ export default {
   height: calc(100vh - 120px);
   overflow: auto;
   margin: 10px;
+}
+.input-field {
+  height: 53px;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="bg-white full-width">
     <!-- Estimating  Info -->
-    <q-card class="q-pa-sm">
+    <div class="q-pa-sm">
       <div class="row" v-if="estimatorAssignToggle">
         <p class="form-heading q-my-auto">
           Does Estimator need to be assigned?
@@ -16,7 +16,8 @@
 
       <div v-if="estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle">
         <q-input
-          class="q-mr-md"
+          borderless
+          class="input-style input-field"
           v-model="estimatingInfo.estimatorID"
           style="color: transparent"
           maxlength="0"
@@ -137,12 +138,13 @@
       >
         Scope time
       </p>
-      <input
+      <q-input
         v-if="estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle"
         dense
         v-model="estimatingInfo.scopeTimeNeeded"
         placeholder="Scope time needed"
-        class="time-input"
+        borderless
+        class="input-style input-field time-input"
         type="time"
         style="outline: none"
       />
@@ -150,12 +152,13 @@
       <q-input
         v-if="estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle"
         dense
+        type="textarea"
         v-model="estimatingInfo.notesToTheEstimator"
         label="Notes to the estimator"
-        dense
-        class="input-extra-padding"
+        borderless
+        class=" input-style input-extra-padding"
       />
-    </q-card>
+    </div>
     <!-- Estimators List Dialog -->
     <q-dialog
       v-model="estimatorsListDialog"
@@ -570,8 +573,11 @@ export default {
   }
 };
 </script>
-<style>
+<style lang="scss" scoped>
 input[type='time']::-webkit-calendar-picker-indicator {
   background: none;
+}
+.input-field {
+  height: 55px;
 }
 </style>
