@@ -72,7 +72,8 @@ export function setSelectedLeadOnline(state, lead) {
         addressRegion: '',
         postOfficeBoxNumber: '',
         postalCode: '',
-        streetAddress: ''
+        address1: '',
+        address2: ''
       },
       lossDesc: '',
       lossDetails: '',
@@ -114,7 +115,8 @@ export function setSelectedLeadOffline(state, lead) {
         addressRegion: '',
         postOfficeBoxNumber: '',
         postalCode: '',
-        streetAddress: ''
+        address1: '',
+        address2: ''
       },
       lossDesc: '',
       lossDetails: '',

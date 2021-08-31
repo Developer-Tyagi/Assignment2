@@ -35,12 +35,17 @@
             : '-'
         }}
         {{
-          selectedMortgage.address.streetAddress
-            ? selectedMortgage.address.streetAddress
+          selectedMortgage.address.address1
+            ? selectedMortgage.address.address1
             : '-'
         }}
-        <!--this is for second address column , will add this once api is ready from backend-->
-        <div>this row is for second address-2</div>
+        <div>
+          {{
+            selectedMortgage.address.address2
+              ? selectedMortgage.address.address2
+              : '-'
+          }}
+        </div>
         <div>
           {{
             selectedMortgage.address.addressLocality
