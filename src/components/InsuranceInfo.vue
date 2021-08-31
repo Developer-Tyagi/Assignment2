@@ -3,20 +3,18 @@
     <!-- Insurance Info -->
     <div>
       <q-card class="q-pa-sm">
+        <span class="text-bold   q-mb-sm q-mt-sm">Carrier Info</span>
+
         <div
-          class="custom-select"
           v-if="!insuranceDetails.carrierName && !policyInfo"
+          class="select-text custom-select q-mt-sm "
+          size="md"
+          :disabled="isOfflineClientEdit"
+          @click="carriersListDialog = true"
         >
-          <q-btn
-            class="select-text"
-            flat
-            no-caps
-            :disabled="isOfflineClientEdit"
-            @click="carriersListDialog = true"
-          >
-            Click for choosing a carrier
-          </q-btn>
+          Click for choosing a carrier
         </div>
+
         <div>
           <q-card
             bordered
