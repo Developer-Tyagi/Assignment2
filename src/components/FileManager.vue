@@ -457,9 +457,7 @@
       <q-card>
         <CustomBar
           dialogName="Send Document"
-          @closeDialog="
-            (signDocumentDialog = false), (foldersAndFilesOptions = false)
-          "
+          @closeDialog="onClickCloseDialog"
         />
         <div class="mobile-container-page q-pa-sm form-height ">
           <span>Send To</span>
@@ -688,6 +686,7 @@ export default {
     removeEmail() {
       this.emails.pop();
     },
+
     setClaimActors(actor) {
       this.signActor.push({
         id: actor.id,
@@ -1137,11 +1136,16 @@ export default {
     },
     onClickAddEmail() {
       this.emails.push({ id: '', type: 'external', name: '' });
-    }
-  },
+    },
+    onClickCloseDialog() {
+      this.signDocumentDialog = false;
+      this.foldersAndFilesOptions = false;
+      this.claimActors = [];
+    },
 
-  async mounted() {
-    this.getDocuments();
+    async mounted() {
+      this.getDocuments();
+    }
   }
 };
 </script>
