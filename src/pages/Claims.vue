@@ -19,12 +19,8 @@
           @click="onSearchBackButtonClick"
           style="margin: 0 20px"
         />
-
-        <div class="q-ml-auto row q-pr-md" @click="filterDialog = true">
-          <img src="~assets/filter.svg" />
-        </div>
       </div>
-      <div class="mobile-container-page ">
+      <div class="mobile-container-page">
         <div class="clients-list " v-if="claims.length">
           <div>
             <div

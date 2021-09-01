@@ -1,7 +1,7 @@
 <template>
   <!-- mobile-container-page listing-height -->
   <div
-    class="mobile-container-page listing-height"
+    class=" mobile-container-page dashboard-height"
     style="background-color:#8F8F8F;"
   >
     <q-card style="border-radius: 0 0 60px 60px;">
@@ -49,7 +49,7 @@
         />
       </div>
     </q-card>
-    <div class=" q-ma-sm q-mt-md row justify-between ">
+    <div class=" q-ma-sm q-mb-sm row justify-between">
       <div class="column">
         <img
           src="~assets/Profile.svg"
@@ -78,6 +78,7 @@
         <div class="text-center text-white">ADD</div>
       </div>
     </div>
+
     <!-- Select Claim Dialog -->
 
     <q-dialog
@@ -92,7 +93,7 @@
           @closeDialog="selectClaimDialog = false"
         />
 
-        <div class="clients-list  listing-height " v-if="claims.length">
+        <div class="clients-list  listing-height q-mt-md" v-if="claims.length">
           <div>
             <div
               class="clients-list "
