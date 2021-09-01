@@ -73,11 +73,100 @@
         />
         <p class=" text-center text-white">CLAIMS STATS</p>
       </div>
-      <div class="">
+      <div class="" @click="onClickAddIcon">
         <img src="~assets/ADD.svg" style="width:100%;" />
         <div class="text-center text-white">ADD</div>
       </div>
     </div>
+    <q-dialog
+      v-model="openAddDialog"
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+      :position="'bottom'"
+    >
+      <q-card class="bg-grey-4 text-red" style="width: 550px; height: 315px">
+        <q-card-section>
+          <div class="q-mx-md">
+            <div class="q-pa-sm" @click="$router.push('/add-lead')">
+              <div
+                class="row bg-white"
+                style="border-radius: 10px; height: 40px"
+              >
+                <q-icon size="sm" class="q-ml-md q-my-sm">
+                  <img src="~assets/add_LEADS.svg" />
+                </q-icon>
+                <p class="text-weight-bolder text-subtitle1 q-my-sm q-pl-lg">
+                  Add Leads
+                </p>
+                <q-space />
+                <q-icon class="q-my-sm q-mr-md" size="sm" name="more_vert" />
+              </div>
+            </div>
+            <div class="q-pa-sm" @click="$router.push('/add-client')">
+              <div
+                class="row bg-white"
+                style="border-radius: 10px; height: 40px"
+              >
+                <q-icon size="sm" class="q-ml-md q-my-sm">
+                  <img src="~assets/add_CLIENTS.svg" />
+                </q-icon>
+                <p class="text-weight-bolder text-subtitle1 q-my-sm q-pl-lg">
+                  Add Clients
+                </p>
+                <q-space />
+                <q-icon class="q-my-sm q-mr-md" size="sm" name="more_vert" />
+              </div>
+            </div>
+            <div class="q-pa-sm" @click="$router.push('/mortgages/' + true)">
+              <div
+                class="row bg-white"
+                style="border-radius: 10px; height: 40px"
+              >
+                <q-icon size="sm" class="q-ml-md q-my-sm">
+                  <img src="~assets/add_mortgage.svg" />
+                </q-icon>
+                <p class="text-weight-bolder text-subtitle1 q-my-sm q-pl-lg">
+                  Add Mortgages
+                </p>
+                <q-space />
+                <q-icon class="q-my-sm q-mr-md" size="sm" name="more_vert" />
+              </div>
+            </div>
+            <div class="q-pa-sm" @click="$router.push('/carriers/' + true)">
+              <div
+                class="row bg-white"
+                style="border-radius: 10px; height: 40px"
+              >
+                <q-icon size="sm" class="q-ml-md q-my-sm">
+                  <img src="~assets/add_carriers.svg" />
+                </q-icon>
+                <p class="text-weight-bolder text-subtitle1 q-my-sm q-pl-lg">
+                  Add Carriers
+                </p>
+                <q-space />
+                <q-icon class="q-my-sm q-mr-md" size="sm" name="more_vert" />
+              </div>
+            </div>
+            <div class="q-pa-sm" @click="$router.push('/add-client')">
+              <div
+                class="row bg-white"
+                style="border-radius: 10px; height: 40px"
+              >
+                <q-icon size="sm" class="q-ml-md q-my-sm">
+                  <img src="~assets/add_claims.svg" />
+                </q-icon>
+                <p class="text-weight-bolder text-subtitle1 q-my-sm q-pl-lg">
+                  Add Claims
+                </p>
+                <q-space />
+                <q-icon class="q-my-sm q-mr-md" size="sm" name="more_vert" />
+              </div>
+            </div>
+          </div>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 <script>
@@ -88,6 +177,7 @@ export default {
   data() {
     return {
       isClickable: false,
+      openAddDialog: false,
       params: {
         favourite: ''
       }
@@ -105,6 +195,9 @@ export default {
     ...mapActions(['getClients', 'getActiveLeadsList']),
     ...mapMutations(['setSelectedClaimId']),
     dateToShow,
+    onClickAddIcon() {
+      this.openAddDialog = !this.openAddDialog;
+    },
     openClaimDetail(value) {
       this.setSelectedClaimId(value.id);
       this.$router.push('/claim-details');

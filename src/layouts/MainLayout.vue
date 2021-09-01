@@ -50,23 +50,83 @@
         transition-hide="slide-down"
         :position="'bottom'"
       >
-        <q-card style="width: 550px; height: 220px">
+        <q-card class="bg-grey-4 text-red" style="width: 550px; height: 315px">
           <q-card-section>
-            <div class="q-ml-md heading-light">
-              <div class="q-pa-sm" @click="$router.push('/add-client')">
-                Add Client
-              </div>
-              <div class="q-pa-sm" @click="$router.push('/add-client')">
-                Add Claim
-              </div>
+            <div class="q-mx-md">
               <div class="q-pa-sm" @click="$router.push('/add-lead')">
-                Add Lead
+                <div
+                  class="row bg-white"
+                  style="border-radius: 10px; height: 40px"
+                >
+                  <q-icon size="sm" class="q-ml-md q-my-sm">
+                    <img src="~assets/add_LEADS.svg" />
+                  </q-icon>
+                  <p class="text-weight-bolder text-subtitle1 q-my-sm q-pl-lg">
+                    Add Leads
+                  </p>
+                  <q-space />
+                  <q-icon class="q-my-sm q-mr-md" size="sm" name="more_vert" />
+                </div>
+              </div>
+              <div class="q-pa-sm" @click="$router.push('/add-client')">
+                <div
+                  class="row bg-white"
+                  style="border-radius: 10px; height: 40px"
+                >
+                  <q-icon size="sm" class="q-ml-md q-my-sm">
+                    <img src="~assets/add_CLIENTS.svg" />
+                  </q-icon>
+                  <p class="text-weight-bolder text-subtitle1 q-my-sm q-pl-lg">
+                    Add Clients
+                  </p>
+                  <q-space />
+                  <q-icon class="q-my-sm q-mr-md" size="sm" name="more_vert" />
+                </div>
               </div>
               <div class="q-pa-sm" @click="$router.push('/mortgages/' + true)">
-                Add mortgage
+                <div
+                  class="row bg-white"
+                  style="border-radius: 10px; height: 40px"
+                >
+                  <q-icon size="sm" class="q-ml-md q-my-sm">
+                    <img src="~assets/add_mortgage.svg" />
+                  </q-icon>
+                  <p class="text-weight-bolder text-subtitle1 q-my-sm q-pl-lg">
+                    Add Mortgages
+                  </p>
+                  <q-space />
+                  <q-icon class="q-my-sm q-mr-md" size="sm" name="more_vert" />
+                </div>
               </div>
               <div class="q-pa-sm" @click="$router.push('/carriers/' + true)">
-                Add Carrier
+                <div
+                  class="row bg-white"
+                  style="border-radius: 10px; height: 40px"
+                >
+                  <q-icon size="sm" class="q-ml-md q-my-sm">
+                    <img src="~assets/add_carriers.svg" />
+                  </q-icon>
+                  <p class="text-weight-bolder text-subtitle1 q-my-sm q-pl-lg">
+                    Add Carriers
+                  </p>
+                  <q-space />
+                  <q-icon class="q-my-sm q-mr-md" size="sm" name="more_vert" />
+                </div>
+              </div>
+              <div class="q-pa-sm" @click="$router.push('/add-client')">
+                <div
+                  class="row bg-white"
+                  style="border-radius: 10px; height: 40px"
+                >
+                  <q-icon size="sm" class="q-ml-md q-my-sm">
+                    <img src="~assets/add_claims.svg" />
+                  </q-icon>
+                  <p class="text-weight-bolder text-subtitle1 q-my-sm q-pl-lg">
+                    Add Claims
+                  </p>
+                  <q-space />
+                  <q-icon class="q-my-sm q-mr-md" size="sm" name="more_vert" />
+                </div>
               </div>
             </div>
           </q-card-section>
@@ -150,5 +210,10 @@ export default {
   background-color: $primary;
   border-radius: 50%;
   display: inline-block;
+}
+.card {
+  max-width: 100%;
+  height: 40px;
+  border-radius: 5px;
 }
 </style>
