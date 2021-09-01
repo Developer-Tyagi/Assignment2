@@ -39,7 +39,7 @@
           class="menu-left-icons"
           src="~assets/UploadScan.png"
           style="width:30%;"
-          @click="$router.push('/vendor-document')"
+          @click="selectClaimDialog = true"
         />
 
         <img
@@ -78,15 +78,85 @@
         <div class="text-center text-white">ADD</div>
       </div>
     </div>
+    <!-- Select Claim Dialog -->
+
+    <q-dialog
+      v-model="selectClaimDialog"
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <CustomBar
+          :dialogName="'Select Claim'"
+          @closeDialog="selectClaimDialog = false"
+        />
+
+        <div class="clients-list  listing-height " v-if="claims.length">
+          <div>
+            <div
+              class="clients-list "
+              v-for="(claim, index) in claims"
+              :key="claim.id"
+            >
+              <div class="client-list-item">
+                <div class="row  form-heading q-pb-md  ">
+                  <div class="col-10" @click="onClickingOnClaim(claim)">
+                    {{ claim.attributes.client.fname }}
+                    {{ claim.attributes.client.lname }}
+                  </div>
+                </div>
+                <div @click="onClickingOnClaim(claim)">
+                  <div class="row">
+                    <div class="col-3">Carrier</div>
+
+                    <div>
+                      {{
+                        claim.attributes.carrier
+                          ? claim.attributes.carrier.value
+                            ? claim.attributes.carrier.value
+                            : ''
+                          : '-'
+                      }}
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-3">Claim No.</div>
+
+                    <div>
+                      {{
+                        claim.attributes.number ? claim.attributes.number : '-'
+                      }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div v-else class="full-height full-width column">
+          <div class="column absolute-center">
+            <div style="color: #666666,align-items: center">
+              You haven't added a Claim yet.
+            </div>
+          </div>
+        </div>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { dateToShow } from '@utils/date';
 import { getCurrentUser } from 'src/utils/auth';
+import CustomBar from 'components/CustomBar';
 export default {
+  components: {
+    CustomBar
+  },
   data() {
     return {
+      selectClaimDialog: false,
       isClickable: false,
       params: {
         favourite: ''
@@ -100,10 +170,12 @@ export default {
     if (index < 0) {
       this.isClickable = true;
     }
+    this.getClaims();
   },
   methods: {
-    ...mapActions(['getClients', 'getActiveLeadsList']),
+    ...mapActions(['getClients', 'getActiveLeadsList', 'getClaims']),
     ...mapMutations(['setSelectedClaimId']),
+
     dateToShow,
     openClaimDetail(value) {
       this.setSelectedClaimId(value.id);
@@ -149,6 +221,10 @@ export default {
         status: 'open'
       };
       this.getClients(params);
+    },
+    onClickingOnClaim(claim) {
+      this.setSelectedClaimId(claim.id);
+      this.$router.push('/vendor-document');
     }
   },
   computed: {
