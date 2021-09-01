@@ -135,7 +135,7 @@
                   <td class="table-td">
                     <span>
                       <q-icon
-                        size="xl"
+                        size="sm"
                         color="primary"
                         name="create"
                         @click="onEditTemplate(list)"
@@ -555,6 +555,15 @@ export default {
 
     onEditTemplate(value) {
       this.isEdit = true;
+      this.templateTokens = [];
+      this.tokens.forEach(val => {
+        val.attributes.tokens.forEach(token => {
+          let arr = [];
+          arr[0] = token.name;
+          arr[1] = token.value;
+          this.templateTokens.push(arr);
+        });
+      });
       this.post.body = value.name.value;
       this.templatetype.value = value.name.type.value;
       this.templatetype.machineValue = value.name.type.machineValue;

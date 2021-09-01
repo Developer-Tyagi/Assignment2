@@ -651,6 +651,19 @@ export default {
     };
   },
   async created() {
+    const { data } = await request.get(
+      `/documents?parent_id=${this.directoryId}`
+    );
+
+    this.setLoading(true);
+
+    this.documents = data.map(document => ({
+      name: document.attributes.name,
+      id: document.id,
+      type: document.attributes.mimeType,
+      link: document.attributes.webViewLink,
+      properties: document.attributes.properties
+    }));
     this.getTemplates();
     await this.getAllActorToClaim(this.selectedClaimId);
   },
