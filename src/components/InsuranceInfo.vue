@@ -27,8 +27,7 @@
             </div>
             <div
               v-if="
-                insuranceDetails.address &&
-                  insuranceDetails.address.streetAddress
+                insuranceDetails.address && insuranceDetails.address.address1
               "
             >
               <div>
@@ -37,14 +36,21 @@
                     ? insuranceDetails.address.houseNumber
                     : '-'
                 }}
-                ,
+
                 {{
-                  insuranceDetails.address.streetAddress
-                    ? insuranceDetails.address.streetAddress
+                  insuranceDetails.address.address1
+                    ? insuranceDetails.address.address1
                     : '-'
                 }}
               </div>
               <div>
+                {{
+                  insuranceDetails.address.address2
+                    ? insuranceDetails.address.address2
+                    : '-'
+                }}
+              </div>
+              <div class="row">
                 {{
                   insuranceDetails.address.addressLocality
                     ? insuranceDetails.address.addressLocality
@@ -53,17 +59,11 @@
                 ,
                 {{
                   insuranceDetails.address.addressRegion
-                    ? insuranceDetails.address.addressRegion
+                    ? toGetStateShortName(
+                        insuranceDetails.address.addressRegion
+                      )
                     : '-'
                 }}
-              </div>
-              <div class="row">
-                {{
-                  insuranceDetails.address.addressCountry
-                    ? insuranceDetails.address.addressCountry
-                    : '-'
-                }}
-                -
                 {{
                   insuranceDetails.address.postalCode
                     ? insuranceDetails.address.postalCode
@@ -550,6 +550,7 @@ import { validateDate } from '@utils/validation';
 import { mapGetters, mapActions } from 'vuex';
 import { successMessage } from '@utils/validation';
 import AddCarrier from 'components/AddCarrier';
+import { toGetStateShortName } from '@utils/common';
 import { date } from 'quasar';
 import {
   onPhoneNumberClick,
@@ -600,6 +601,7 @@ export default {
     onPhoneNumberClick,
     onEmailClick,
     showPhoneNumber,
+    toGetStateShortName,
 
     //Add Vendor close list
 

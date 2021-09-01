@@ -311,7 +311,7 @@
                   <div
                     v-if="
                       insuranceDetails.address &&
-                        insuranceDetails.address.streetAddress
+                        insuranceDetails.address.address1
                     "
                   >
                     <div>
@@ -320,14 +320,21 @@
                           ? insuranceDetails.address.houseNumber
                           : '-'
                       }}
-                      ,
+
                       {{
-                        insuranceDetails.address.streetAddress
-                          ? insuranceDetails.address.streetAddress
+                        insuranceDetails.address.address1
+                          ? insuranceDetails.address.address1
                           : '-'
                       }}
                     </div>
                     <div>
+                      {{
+                        insuranceDetails.address.address2
+                          ? insuranceDetails.address.address2
+                          : '-'
+                      }}
+                    </div>
+                    <div class="row">
                       {{
                         insuranceDetails.address.addressLocality
                           ? insuranceDetails.address.addressLocality
@@ -336,17 +343,11 @@
                       ,
                       {{
                         insuranceDetails.address.addressRegion
-                          ? insuranceDetails.address.addressRegion
+                          ? toGetStateShortName(
+                              insuranceDetails.address.addressRegion
+                            )
                           : '-'
                       }}
-                    </div>
-                    <div class="row">
-                      {{
-                        insuranceDetails.address.addressCountry
-                          ? insuranceDetails.address.addressCountry
-                          : '-'
-                      }}
-                      -
                       {{
                         insuranceDetails.address.postalCode
                           ? insuranceDetails.address.postalCode
@@ -481,7 +482,7 @@
                     <div
                       v-if="
                         sourceDetails.mailingAddress &&
-                          sourceDetails.mailingAddress.streetAddress
+                          sourceDetails.mailingAddress.address1
                       "
                     >
                       <div>
@@ -492,12 +493,19 @@
                         }}
                         ,
                         {{
-                          sourceDetails.mailingAddress.streetAddress
-                            ? sourceDetails.mailingAddress.streetAddress
+                          sourceDetails.mailingAddress.address1
+                            ? sourceDetails.mailingAddress.address1
                             : '-'
                         }}
                       </div>
                       <div>
+                        {{
+                          sourceDetails.mailingAddress.address2
+                            ? sourceDetails.mailingAddress.address2
+                            : '-'
+                        }}
+                      </div>
+                      <div class="row">
                         {{
                           sourceDetails.mailingAddress.addressLocality
                             ? sourceDetails.mailingAddress.addressLocality
@@ -506,17 +514,11 @@
                         ,
                         {{
                           sourceDetails.mailingAddress.addressRegion
-                            ? sourceDetails.mailingAddress.addressRegion
+                            ? toGetStateShortName(
+                                sourceDetails.mailingAddress.addressRegion
+                              )
                             : '-'
                         }}
-                      </div>
-                      <div class="row">
-                        {{
-                          sourceDetails.mailingAddress.addressCountry
-                            ? sourceDetails.mailingAddress.addressCountry
-                            : '-'
-                        }}
-                        -
                         {{
                           sourceDetails.mailingAddress.postalCode
                             ? sourceDetails.mailingAddress.postalCode
@@ -821,6 +823,7 @@
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { validateEmail, validateDate, successMessage } from '@utils/validation';
+import { toGetStateShortName } from '@utils/common';
 import {
   onPhoneNumberClick,
   onEmailClick,
@@ -913,7 +916,8 @@ export default {
         addressRegion: '',
         addressLocality: '',
         postalCode: '',
-        streetAddress: '',
+        address1: '',
+        address2: '',
         postOfficeBoxNumber: '',
         dropBox: {
           info: '',
@@ -973,6 +977,7 @@ export default {
     ...mapMutations(['setSelectedClient', 'isLastRouteEdit']),
 
     successMessage,
+    toGetStateShortName,
     onPhoneNumberClick,
     onEmailClick,
     dateToShow,

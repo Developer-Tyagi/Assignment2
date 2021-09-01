@@ -34,14 +34,13 @@
           <span class="form-heading  fit-content">{{ mortgage.name }}</span>
           <div v-if="mortgage.address">
             <div>
-              {{ mortgage.address ? mortgage.address.houseNumber : '-' }} ,
-              {{
-                mortgage.address.streetAddress
-                  ? mortgage.address.streetAddress
-                  : '-'
-              }}
+              {{ mortgage.address ? mortgage.address.houseNumber : '-' }}
+              {{ mortgage.address.address1 ? mortgage.address.address1 : '-' }}
             </div>
             <div>
+              {{ mortgage.address.address2 ? mortgage.address.address2 : '-' }}
+            </div>
+            <div class="row">
               {{
                 mortgage.address.addressLocality
                   ? mortgage.address.addressLocality
@@ -50,17 +49,10 @@
               ,
               {{
                 mortgage.address.addressRegion
-                  ? mortgage.address.addressRegion
+                  ? toGetStateShortName(mortgage.address.addressRegion)
                   : '-'
               }}
-            </div>
-            <div class="row">
-              {{
-                mortgage.address.addressCountry
-                  ? mortgage.address.addressCountry
-                  : '-'
-              }}
-              -
+
               {{
                 mortgage.address.postalCode ? mortgage.address.postalCode : '-'
               }}
@@ -102,6 +94,7 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import { toGetStateShortName } from '@utils/common';
 import {
   onEmailClick,
   onPhoneNumberClick,
@@ -133,6 +126,7 @@ export default {
       this.searchText = '';
       this.search();
     },
+    toGetStateShortName,
 
     onEmailClick,
     onPhoneNumberClick,

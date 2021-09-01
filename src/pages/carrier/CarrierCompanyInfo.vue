@@ -29,12 +29,18 @@
             ? selectedCarrier.address.houseNumber
             : '-'
         }}
-        ,
         {{
-          selectedCarrier.address.streetAddress
-            ? selectedCarrier.address.streetAddress
+          selectedCarrier.address.address1
+            ? selectedCarrier.address.address1
             : '-'
         }}
+        <div>
+          {{
+            selectedCarrier.address.address2
+              ? selectedCarrier.address.address2
+              : '-'
+          }}
+        </div>
         <div>
           {{
             selectedCarrier.address.addressLocality
@@ -44,16 +50,9 @@
           ,
           {{
             selectedCarrier.address.addressRegion
-              ? selectedCarrier.address.addressRegion
+              ? toGetStateShortName(selectedCarrier.address.addressRegion)
               : '-'
           }}
-        </div>
-        <div>
-          {{
-            selectedCarrier.address.addressCountry
-              ? selectedCarrier.address.addressCountry
-              : '-'
-          }},
           {{
             selectedCarrier.address.postalCode
               ? selectedCarrier.address.postalCode
@@ -166,6 +165,7 @@
 import { mapGetters, mapActions } from 'vuex';
 import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
 import AddCarrier from 'components/AddCarrier';
+import { toGetStateShortName } from '@utils/common';
 import { constants } from '@utils/constant';
 import DeleteAlert from 'components/DeleteAlert';
 import { showPhoneNumber } from '@utils/clickable';
@@ -189,6 +189,7 @@ export default {
     onPhoneNumberClick,
     sendMap,
     showPhoneNumber,
+    toGetStateShortName,
     onEdit() {
       this.addCarrierDialog = true;
     },

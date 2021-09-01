@@ -1467,7 +1467,8 @@ export default {
         addressRegion: '',
         addressLocality: '',
         postalCode: '',
-        streetAddress: '',
+        address1: '',
+        address2: '',
         //This is Present in Payload but we are not taking any value like post offc number in form
         postOfficeBoxNumber: '4',
         dropBox: {
@@ -1509,7 +1510,8 @@ export default {
           addressRegion: '',
           addressLocality: '',
           postalCode: '',
-          streetAddress: '',
+          address1: '',
+          address2: '',
           postOfficeBoxNumber: '4',
           dropBox: {
             info: '',
@@ -1634,7 +1636,8 @@ export default {
         addressRegion: '',
         addressLocality: '',
         postalCode: '',
-        streetAddress: '',
+        address1: '',
+        address2: '',
         postOfficeBoxNumber: '4',
         dropBox: {
           info: '',
@@ -1813,9 +1816,13 @@ export default {
             .insuredInfo.mailingAddress.postalCode
             ? this.editSelectedClient.insuredInfo.mailingAddress.postalCode
             : '';
-          this.clientAddressDetails.streetAddress = this.editSelectedClient
-            .insuredInfo.mailingAddress.streetAddress
-            ? this.editSelectedClient.insuredInfo.mailingAddress.streetAddress
+          this.clientAddressDetails.address1 = this.editSelectedClient
+            .insuredInfo.mailingAddress.address1
+            ? this.editSelectedClient.insuredInfo.mailingAddress.address1
+            : '';
+          this.clientAddressDetails.address2 = this.editSelectedClient
+            .insuredInfo.mailingAddress.address2
+            ? this.editSelectedClient.insuredInfo.mailingAddress.address2
             : '';
 
           if (
@@ -2248,7 +2255,8 @@ export default {
       this.clientAddressDetails.addressLocality = this.selectedLead.lossLocation.addressLocality;
       this.clientAddressDetails.addressRegion = this.selectedLead.lossLocation.addressRegion;
       this.clientAddressDetails.postalCode = this.selectedLead.lossLocation.postalCode;
-      this.clientAddressDetails.streetAddress = this.selectedLead.lossLocation.streetAddress;
+      this.clientAddressDetails.address1 = this.selectedLead.lossLocation.address1;
+      this.clientAddressDetails.address2 = this.selectedLead.lossLocation.address2;
       this.lossInfo.descriptionDwelling = this.selectedLead.lossDesc;
       if (this.selectedLead.leadSource) {
         this.contractInfo.sourceDetails.id = this.selectedLead.leadSource.id
@@ -2514,7 +2522,9 @@ export default {
             addressRegion: this.selectedLead.lossLocation.addressRegion,
             addressLocality: this.selectedLead.lossLocation.addressLocality,
             postalCode: this.selectedLead.lossLocation.postalCode,
-            streetAddress: this.selectedLead.lossLocation.streetAddress,
+            address1: this.selectedLead.lossLocation.address1,
+            address2: this.selectedLead.lossLocation.address2,
+
             postOfficeBoxNumber: '',
             dropBox: {
               info: '',
@@ -2608,7 +2618,8 @@ export default {
           addressRegion: '',
           addressLocality: '',
           postalCode: '',
-          streetAddress: '',
+          address1: '',
+          address2: '',
           postOfficeBoxNumber: '',
           dropBox: {
             info: '',
@@ -2690,7 +2701,8 @@ export default {
             addressLocality: this.clientAddressDetails.addressLocality,
             addressRegion: this.clientAddressDetails.addressRegion,
             postalCode: this.clientAddressDetails.postalCode,
-            streetAddress: this.clientAddressDetails.streetAddress,
+            address1: this.clientAddressDetails.address1,
+            address2: this.clientAddressDetails.address2,
             houseNumber: this.clientAddressDetails.houseNumber,
             propertyType: {
               ...this.property

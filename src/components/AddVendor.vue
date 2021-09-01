@@ -303,7 +303,8 @@ export default {
           addressRegion: '',
           postOfficeBoxNumber: '',
           postalCode: '',
-          streetAddress: '',
+          address1: '',
+          address2: '',
           dropBox: {
             info: '',
             isPresent: false
@@ -468,7 +469,7 @@ export default {
 
       if (success) {
         if (!this.isEdit) {
-          if (!this.vendor.mailingAddress.streetAddress) {
+          if (!this.vendor.mailingAddress.address1) {
             delete payload.mailingAddress;
           }
 

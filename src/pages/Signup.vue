@@ -216,17 +216,24 @@
                   />
                   <q-input
                     dense
-                    v-model="user.mailingAddress.streetAddress"
+                    v-model="user.mailingAddress.address1"
                     name="address1"
                     color="primary"
-                    label="Street Address"
+                    label="Address 1"
                     class="required"
                     filled
                     lazy-rules
                     :rules="[
-                      val =>
-                        (val && val.length > 0) || 'Please fill street address'
+                      val => (val && val.length > 0) || 'Please fill Address 1'
                     ]"
+                  />
+                  <q-input
+                    dense
+                    v-model="user.mailingAddress.address2"
+                    name="address2"
+                    color="primary"
+                    label="Address 2"
+                    filled
                   />
                   <div class="row justify-between">
                     <q-input
@@ -368,17 +375,25 @@
                   />
                   <q-input
                     dense
-                    v-model="user.billingInfo.address.streetAddress"
+                    v-model="user.billingInfo.address.address1"
                     name="address1"
                     color="primary"
-                    label="Street Address"
+                    label="Address 1"
                     class="required"
                     filled
                     lazy-rules
                     :rules="[
-                      val =>
-                        (val && val.length > 0) || 'Please fill Street Address'
+                      val => (val && val.length > 0) || 'Please fill Address 1'
                     ]"
+                    :disable="isBillingAddressSame"
+                  />
+                  <q-input
+                    dense
+                    v-model="user.billingInfo.address.address2"
+                    name="address2"
+                    color="primary"
+                    label="Address 2"
+                    filled
                     :disable="isBillingAddressSame"
                   />
                   <div class="row justify-between">
@@ -560,7 +575,8 @@ export default {
           addressLocality: '',
           addressRegion: '',
           postalCode: '',
-          streetAddress: '',
+          address1: '',
+          address2: '',
           houseNumber: ''
         },
         billingInfo: {
@@ -570,7 +586,8 @@ export default {
             addressRegion: '',
             postOfficeBoxNumber: '',
             postalCode: '',
-            streetAddress: ''
+            address1: '',
+            address2: ''
           }
         },
         plan: {
@@ -631,7 +648,7 @@ export default {
       const addressField =
         this.step === 1 ? this.autocomplete1 : this.autocomplete2;
       const place = addressField.getPlace().address_components;
-      autoPopulateAddress.streetAddress =
+      autoPopulateAddress.address1 =
         this.getPlaceName('route', place) >= 0
           ? place[this.getPlaceName('route', place)].long_name
           : '';
@@ -696,7 +713,8 @@ export default {
           addressRegion: '',
           postOfficeBoxNumber: '',
           postalCode: '',
-          streetAddress: ''
+          address1: '',
+          address2: ''
         };
       }
     },

@@ -33,35 +33,43 @@
             <div class="col-5 text-bold">Address</div>
 
             <div class="column col-6" v-if="user.mailingAddress">
-              {{
-                user.mailingAddress.streetAddress
-                  ? user.mailingAddress.streetAddress
-                  : '-'
-              }},
+              <div>
+                {{
+                  user.mailingAddress.houseNumber
+                    ? user.mailingAddress.houseNumber
+                    : '-'
+                }}
+                {{
+                  user.mailingAddress.address1
+                    ? user.mailingAddress.address1
+                    : '-'
+                }}
+              </div>
+              <div>
+                {{
+                  user.mailingAddress.address2
+                    ? user.mailingAddress.address2
+                    : '-'
+                }}
+              </div>
+              <div>
+                {{
+                  user.mailingAddress.addressLocality
+                    ? user.mailingAddress.addressLocality
+                    : '-'
+                }},
+                {{
+                  user.mailingAddress.addressRegion
+                    ? toGetStateShortName(user.mailingAddress.addressRegion)
+                    : '-'
+                }}
 
-              {{
-                user.mailingAddress.addressRegion
-                  ? user.mailingAddress.addressRegion
-                  : '-'
-              }},
-
-              {{
-                user.mailingAddress.addressLocality
-                  ? user.mailingAddress.addressLocality
-                  : '-'
-              }}
-
-              {{
-                user.mailingAddress.addressCountry
-                  ? user.mailingAddress.addressCountry
-                  : '-'
-              }},
-
-              {{
-                user.mailingAddress.postalCode
-                  ? user.mailingAddress.postalCode
-                  : '-'
-              }}
+                {{
+                  user.mailingAddress.postalCode
+                    ? user.mailingAddress.postalCode
+                    : '-'
+                }}
+              </div>
             </div>
           </div>
           <div class="row">
@@ -227,6 +235,7 @@
 <script>
 import { getCurrentUser } from 'src/utils/auth';
 import { mapGetters, mapActions } from 'vuex';
+import { toGetStateShortName } from '@utils/common';
 import CustomBar from 'components/CustomBar';
 import { validateEmail } from '@utils/validation';
 import {
@@ -260,7 +269,8 @@ export default {
           addressRegion: '',
           postOfficeBoxNumber: '',
           postalCode: '',
-          streetAddress: '',
+          address1: '',
+          address2: '',
           dropBox: {
             info: '',
             isPresent: false
@@ -286,6 +296,7 @@ export default {
     onPhoneNumberClick,
     onEmailClick,
     sendPhoneNumber,
+    toGetStateShortName,
     ...mapActions([
       'getContactTypes',
       'editUserInfo',
@@ -324,9 +335,11 @@ export default {
           .houseNumber
           ? this.user.mailingAddress.houseNumber
           : '';
-        this.users.mailingAddress.streetAddress = this.user.mailingAddress
-          .streetAddress
-          ? this.user.mailingAddress.streetAddress
+        this.users.mailingAddress.address1 = this.user.mailingAddress.address1
+          ? this.user.mailingAddress.address1
+          : '';
+        this.users.mailingAddress.address2 = this.user.mailingAddress.address2
+          ? this.user.mailingAddress.address2
           : '';
         this.users.mailingAddress.postalCode = this.user.mailingAddress
           .postalCode

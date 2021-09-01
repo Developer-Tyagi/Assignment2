@@ -37,7 +37,7 @@
         borderless
         :class="{ required: isAsteriskMark }"
         class="input-style input-overlay col-8"
-        v-model="address.streetAddress"
+        v-model="address.address1"
         label="Address 1"
         lazy-rules
         :rules="[val => checkValidations(val) || 'Please fill the  Address 1']"
@@ -50,7 +50,7 @@
       borderless
       class="input-style input-overlay "
       style="height: 60px"
-      v-model="address_2"
+      v-model="address.address2"
       label="Address 2"
       :disable="isOfflineClientEdit"
     />
@@ -146,7 +146,7 @@
         outlined
         :class="{ required: isAsteriskMark }"
         style="width: 46%"
-        v-model="address.streetAddress"
+        v-model="address.address1"
         label="Address 1"
         lazy-rules
         :rules="[val => checkValidations(val) || 'Please fill the Address 1']"
@@ -159,7 +159,7 @@
         outlined
         :class="{ required: isAsteriskMark }"
         style="height: 60px"
-        v-model="address_2"
+        v-model="address.address2"
         label="Address 2"
         :disable="isOfflineClientEdit"
       />
@@ -265,7 +265,6 @@ export default {
 
   data() {
     return {
-      address_2: '', // this is for temporary purpose , will remove this once the address-2 field is ready from the backend side.
       addressAutoComplete: '',
       addressAutoComplete2: '',
       autocomplete: {},
@@ -310,7 +309,7 @@ export default {
     fillInAddress() {
       const place = this['obj' + this.id].getPlace().address_components;
 
-      this.address.streetAddress =
+      this.address.address1 =
         this.getPlaceName('route', place) >= 0
           ? place[this.getPlaceName('route', place)].long_name
           : '';

@@ -42,13 +42,15 @@
                     : '-'
                 }}
                 {{
-                  personnel.address.streetAddress
-                    ? personnel.address.streetAddress
-                    : '-'
+                  personnel.address.address1 ? personnel.address.address1 : '-'
                 }}
-                <!--this is for second address column , will add this once api is ready from backend-->
+
                 <div class="">
-                  this row is for second address-2
+                  {{
+                    personnel.address.address2
+                      ? personnel.address.address2
+                      : '-'
+                  }}
                 </div>
                 <div>
                   {{
@@ -516,7 +518,8 @@ export default {
           addressRegion: '',
           postOfficeBoxNumber: '',
           postalCode: '',
-          streetAddress: '',
+          address1: '',
+          address2: '',
           dropBox: {
             info: '',
             isPresent: false
@@ -614,7 +617,8 @@ export default {
         this.personnel.address.addressRegion = '';
         this.personnel.address.postOfficeBoxNumber = '';
         this.personnel.address.postalCode = '';
-        this.personnel.address.streetAddress = '';
+        this.personnel.address.address1 = '';
+        this.personnel.address.address2 = '';
         this.personnel.address.isPresent = false;
         this.personnel.phoneNumber = [{ type: 'main', number: '' }];
         this.personnel.email = '';
@@ -711,7 +715,8 @@ export default {
         this.personnel.address.addressRegion = '';
         this.personnel.address.postOfficeBoxNumber = '';
         this.personnel.address.postalCode = '';
-        this.personnel.address.streetAddress = '';
+        this.personnel.address.address1 = '';
+        this.personnel.address.address2 = '';
         this.personnel.address.isPresent = false;
         this.personnel.phoneNumber = [{ type: 'main', number: '' }];
         this.personnel.email = '';

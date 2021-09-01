@@ -23,17 +23,19 @@
         class="q-my-md q-pa-md"
       >
         <div class="text-bold">{{ mortgage[0].value }}</div>
-        <div v-if="mortgage[0].address && mortgage[0].address.streetAddress">
+        <div v-if="mortgage[0].address && mortgage[0].address.address1">
           <div>
             {{ mortgage[0].address ? mortgage[0].address.houseNumber : '-' }}
-            ,
             {{
-              mortgage[0].address.streetAddress
-                ? mortgage[0].address.streetAddress
-                : '-'
+              mortgage[0].address.address1 ? mortgage[0].address.address1 : '-'
             }}
           </div>
           <div>
+            {{
+              mortgage[0].address.address2 ? mortgage[0].address.address2 : '-'
+            }}
+          </div>
+          <div class="row">
             {{
               mortgage[0].address.addressLocality
                 ? mortgage[0].address.addressLocality
@@ -42,17 +44,9 @@
             ,
             {{
               mortgage[0].address.addressRegion
-                ? mortgage[0].address.addressRegion
+                ? toGetStateShortName(mortgage[0].address.addressRegion)
                 : '-'
             }}
-          </div>
-          <div class="row">
-            {{
-              mortgage[0].address.addressCountry
-                ? mortgage[0].address.addressCountry
-                : '-'
-            }}
-            -
             {{
               mortgage[0].address.postalCode
                 ? mortgage[0].address.postalCode
@@ -134,17 +128,24 @@
           class="q-my-md q-pa-md"
         >
           <div class="text-bold">{{ mortgage[1].value }}</div>
-          <div v-if="mortgage[1].address && mortgage[1].address.streetAddress">
+          <div v-if="mortgage[1].address && mortgage[1].address.address1">
             <div>
               {{ mortgage[1].address ? mortgage[1].address.houseNumber : '-' }}
               ,
               {{
-                mortgage[1].address.streetAddress
-                  ? mortgage[1].address.streetAddress
+                mortgage[1].address.address1
+                  ? mortgage[1].address.address1
                   : '-'
               }}
             </div>
             <div>
+              {{
+                mortgage[1].address.address2
+                  ? mortgage[1].address.address2
+                  : '-'
+              }}
+            </div>
+            <div class="row">
               {{
                 mortgage[1].address.addressLocality
                   ? mortgage[1].address.addressLocality
@@ -153,17 +154,10 @@
               ,
               {{
                 mortgage[1].address.addressRegion
-                  ? mortgage[1].address.addressRegion
+                  ? toGetStateShortName(mortgage[1].address.addressRegion)
                   : '-'
               }}
-            </div>
-            <div class="row">
-              {{
-                mortgage[1].address.addressCountry
-                  ? mortgage[1].address.addressCountry
-                  : '-'
-              }}
-              -
+
               {{
                 mortgage[1].address.postalCode
                   ? mortgage[1].address.postalCode
@@ -272,6 +266,7 @@ import { mapGetters, mapActions } from 'vuex';
 import { constants } from '@utils/constant';
 import { showPhoneNumber } from '@utils/clickable';
 import AddMortgage from 'components/AddMortgage';
+import { toGetStateShortName } from '@utils/common';
 export default {
   name: 'Mortgage',
   components: {
@@ -304,6 +299,7 @@ export default {
   },
   methods: {
     showPhoneNumber,
+    toGetStateShortName,
     ...mapActions(['']),
     onSelectMortgageClick() {
       this.mortgage.mortgageList = true;
@@ -335,7 +331,6 @@ export default {
       this.mortgage[this.selectedIndex].phone = mortgage.phoneNumber
         ? mortgage.phoneNumber[0].number
         : '';
-
       this.mortgageList = false;
       this.addMortgageDialog = false;
     },

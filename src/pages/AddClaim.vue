@@ -927,7 +927,8 @@ export default {
         addressRegion: '',
         addressLocality: '',
         postalCode: '',
-        streetAddress: '',
+        address1: '',
+        address2: '',
         postOfficeBoxNumber: '4',
         dropBox: {
           info: '',
@@ -974,7 +975,8 @@ export default {
           addressRegion: '',
           addressLocality: '',
           postalCode: '',
-          streetAddress: '',
+          address1: '',
+          address2: '',
           postOfficeBoxNumber: '4',
           dropBox: {
             info: '',
@@ -1400,7 +1402,9 @@ export default {
         addressRegion: obj.attributes.addressRegion,
         addressLocality: obj.attributes.addressLocality,
         postalCode: obj.attributes.postalCode,
-        streetAddress: obj.attributes.streetAddress,
+        address1: obj.attributes.address1,
+        address2: obj.attributes.address2,
+
         postOfficeBoxNumber: '',
         dropBox: {
           info: '',

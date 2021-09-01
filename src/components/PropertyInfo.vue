@@ -283,7 +283,8 @@ export default {
         addressRegion: '',
         addressLocality: '',
         postalCode: '',
-        streetAddress: '',
+        address1: '',
+        address2: '',
         postOfficeBoxNumber: '4',
         dropBox: {
           info: '',
@@ -437,7 +438,8 @@ export default {
           addressRegion: '',
           addressLocality: '',
           postalCode: '',
-          streetAddress: '',
+          address1: '',
+          address2: '',
           postOfficeBoxNumber: '',
           dropBox: {
             info: '',

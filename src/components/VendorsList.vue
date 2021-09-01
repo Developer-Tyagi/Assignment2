@@ -52,14 +52,20 @@
               {{
                 vendor.mailingAddress ? vendor.mailingAddress.houseNumber : '-'
               }}
-              ,
               {{
-                vendor.mailingAddress.streetAddress
-                  ? vendor.mailingAddress.streetAddress
+                vendor.mailingAddress.address1
+                  ? vendor.mailingAddress.address1
                   : '-'
               }}
             </div>
             <div>
+              {{
+                vendor.mailingAddress.address2
+                  ? vendor.mailingAddress.address2
+                  : '-'
+              }}
+            </div>
+            <div class="row">
               {{
                 vendor.mailingAddress.addressLocality
                   ? vendor.mailingAddress.addressLocality
@@ -68,17 +74,9 @@
               ,
               {{
                 vendor.mailingAddress.addressRegion
-                  ? vendor.mailingAddress.addressRegion
+                  ? toGetStateShortName(vendor.mailingAddress.addressRegion)
                   : '-'
               }}
-            </div>
-            <div class="row">
-              {{
-                vendor.mailingAddress.addressCountry
-                  ? vendor.mailingAddress.addressCountry
-                  : '-'
-              }}
-              -
               {{
                 vendor.mailingAddress.postalCode
                   ? vendor.mailingAddress.postalCode
@@ -164,6 +162,7 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import { toGetStateShortName } from '@utils/common';
 import {
   onEmailClick,
   onPhoneNumberClick,
@@ -212,6 +211,7 @@ export default {
     onPhoneNumberClick,
     sendMap,
     showPhoneNumber,
+    toGetStateShortName,
 
     applyFilter() {
       this.params.industry = this.selectedFilter;
