@@ -73,11 +73,20 @@
         />
         <p class=" text-center text-white">CLAIMS STATS</p>
       </div>
-      <div class="">
+      <div class="" @click="onClickAddUpIcon()">
         <img src="~assets/ADD.svg" style="width:100%;" />
         <div class="text-center text-white">ADD</div>
       </div>
     </div>
+    <q-dialog
+      v-model="openDialog"
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+      :position="'bottom'"
+    >
+      <AddOptions />
+    </q-dialog>
 
     <!-- Select Claim Dialog -->
 
@@ -150,15 +159,15 @@
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { dateToShow } from '@utils/date';
 import { getCurrentUser } from 'src/utils/auth';
+import AddOptions from 'components/AddOptions';
 import CustomBar from 'components/CustomBar';
 export default {
-  components: {
-    CustomBar
-  },
+  components: { CustomBar, AddOptions },
   data() {
     return {
       selectClaimDialog: false,
       isClickable: false,
+      openDialog: false,
       params: {
         favourite: ''
       }
@@ -176,6 +185,9 @@ export default {
   methods: {
     ...mapActions(['getClients', 'getActiveLeadsList', 'getClaims']),
     ...mapMutations(['setSelectedClaimId']),
+    onClickAddUpIcon() {
+      this.openDialog = true;
+    },
 
     dateToShow,
     openClaimDetail(value) {
