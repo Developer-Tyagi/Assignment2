@@ -681,6 +681,7 @@ export async function syncClients({ dispatch }) {
 
 export async function syncClaims({ dispatch }) {
   let offlineClaims = await getCollection('claims').toArray();
+
   offlineClaims = offlineClaims.filter(claim => claim.offline);
   if (offlineClaims.length > 0) {
     const createClaims = offlineClaims.map(

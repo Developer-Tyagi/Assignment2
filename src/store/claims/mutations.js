@@ -3,9 +3,11 @@ import localDB, { getCollection } from '@services/dexie';
 export async function setClaims(state, claimsData = []) {
   const claimsCollection = await getCollection('claims');
   const claims = claimsData.data.map(claim => ({
-    ...claim
+    id: claim.id,
+    ...claim.attributes
   }));
   state.claims = claims;
+
   if ((await claimsCollection.count()) > 0 && !claimsData.params) {
     await claimsCollection.delete([]);
   }
@@ -16,6 +18,9 @@ export async function setClaims(state, claimsData = []) {
 
 export async function setOfflineClaims(state) {
   state.claims = await getCollection('claims').toArray();
+  state.claims.sort(function(a, b) {
+    return new Date(b.updated).getTime() - new Date(a.updated).getTime();
+  });
 }
 
 export function setMortgage(state, mortgage) {

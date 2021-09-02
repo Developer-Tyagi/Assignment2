@@ -243,6 +243,7 @@ export async function getClaims(
     try {
       const { data } = await request.get('/claims', params);
       const payload = { data: data, params: params };
+
       commit('setClaims', payload);
       dispatch('setLoading', false);
     } catch (e) {
