@@ -47,9 +47,7 @@ function escapeRegExp(string) {
         template: '<span class="cke_token"></span>',
 
         downcast: function() {
-          return new CKEDITOR.htmlParser.text(
-            tokenStart + this.data.name + tokenEnd
-          );
+          return new CKEDITOR.htmlParser.text(this.data.name);
         },
 
         init: function() {
@@ -61,7 +59,7 @@ function escapeRegExp(string) {
         },
 
         data: function() {
-          this.element.setText(tokenStart + this.data.name + tokenEnd);
+          this.element.setText(this.data.name);
         }
       });
 
