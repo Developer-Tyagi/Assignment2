@@ -125,6 +125,26 @@
 .form-color {
   background-color: #ededed;
 }
+.back-button-style {
+  width: 50%;
+  background-color: white;
+  color: $primary;
+  border-radius: 50px 0px 0px 50px;
+  border: 2px solid $primary;
+}
+.next-button-style {
+  width: 50%;
+  color: white;
+  background-color: $primary;
+  border-radius: 0px 50px 50px 0px;
+  border: 2px solid $primary;
+}
+.single-next-button-style {
+  width: 100%;
+  background-color: $primary;
+  color: white;
+  border-radius: 50px 50px 50px 50px;
+}
 .rounded-header {
   border-radius: 0px 0px 40px 40px;
 }
