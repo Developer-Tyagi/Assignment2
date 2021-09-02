@@ -500,7 +500,7 @@
               <q-input
                 outlined
                 dense
-                v-model="email.id"
+                v-model="email.email"
                 class="col-7"
                 label="Email"
                 type="email"
@@ -611,7 +611,7 @@ export default {
   data() {
     return {
       sendToRadio: '',
-      emails: [{ id: '', type: 'external', name: '' }],
+      emails: [{ email: '', type: 'external', name: '' }],
       signedDocuments: '',
       documentStatusDialog: false,
       documentType: '',
@@ -1147,7 +1147,7 @@ export default {
       this.setLoading(false);
     },
     onClickAddEmail() {
-      this.emails.push({ id: '', type: 'external', name: '' });
+      this.emails.push({ email: '', type: 'external', name: '' });
     },
     onClickCloseDialog() {
       this.signDocumentDialog = false;
