@@ -427,9 +427,9 @@ export default {
           number: sendPhoneNumber(this.vendor.phoneNumber.number)
         },
         contact: {
-          fname: '',
-          lname: '',
-          email: '',
+          fname: this.vendor.contact.fname,
+          lname: this.vendor.contact.lname,
+          email: this.vendor.contact.email,
           honorific: {
             id: this.vendor.contact.honorific.id,
             value: this.vendor.contact.honorific.value,
