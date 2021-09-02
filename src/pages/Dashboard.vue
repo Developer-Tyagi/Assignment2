@@ -112,8 +112,8 @@
               <div class="client-list-item">
                 <div class="row  form-heading q-pb-md  ">
                   <div class="col-10" @click="onClickingOnClaim(claim)">
-                    {{ claim.attributes.client.fname }}
-                    {{ claim.attributes.client.lname }}
+                    {{ claim.client.fname }}
+                    {{ claim.client.lname }}
                   </div>
                 </div>
                 <div @click="onClickingOnClaim(claim)">
@@ -122,9 +122,9 @@
 
                     <div>
                       {{
-                        claim.attributes.carrier
-                          ? claim.attributes.carrier.value
-                            ? claim.attributes.carrier.value
+                        claim.carrier
+                          ? claim.carrier.value
+                            ? claim.carrier.value
                             : ''
                           : '-'
                       }}
@@ -134,9 +134,7 @@
                     <div class="col-3">Claim No.</div>
 
                     <div>
-                      {{
-                        claim.attributes.number ? claim.attributes.number : '-'
-                      }}
+                      {{ claim.number ? claim.number : '-' }}
                     </div>
                   </div>
                 </div>
@@ -174,7 +172,7 @@ export default {
     };
   },
   created() {
-    var index = getCurrentUser().attributes.roles.findIndex(
+    var index = getCurrentUser().roles.findIndex(
       std => std.machineValue === 'vendor' || std.machineValue === 'estimator'
     );
     if (index < 0) {

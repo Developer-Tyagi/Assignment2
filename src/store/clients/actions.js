@@ -452,7 +452,14 @@ export async function addClaimRemote({ dispatch, commit }, payload) {
 
 export async function addClaimLocal({ dispatch }, payload) {
   try {
-    let claim = { ...payload, offline: true, isCreate: true, id: makeId() };
+    let claim = {
+      ...payload,
+      offline: true,
+      isCreate: true,
+      id: makeId(),
+      created: date.formatDate(Date.now(), constants.UTCFORMAT),
+      updated: date.formatDate(Date.now(), constants.UTCFORMAT)
+    };
     await localDB.claims.add(claim);
     return claim;
   } catch (e) {
