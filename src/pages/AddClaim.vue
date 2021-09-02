@@ -767,6 +767,7 @@ export default {
 
   data() {
     return {
+      finalOfficeTask: [],
       mortgageInfo: [
         {
           id: '',
@@ -1204,7 +1205,8 @@ export default {
       'getSingleClientDetails',
       'getSingleClientProperty',
       'getRoles',
-      'getAllUsers'
+      'getAllUsers',
+      'addMultipleTaskToClaim'
     ]),
     ...mapMutations([
       'setSelectedLeadOffline',
@@ -1688,18 +1690,44 @@ export default {
           payload.expertInfo.vendors = vendorsHired;
         }
       }
-      this.addClaim(payload).then(() => {
-        if (this.isOnline) {
-          this.setSelectedLeadOnline();
-        } else {
-          this.setSelectedLeadOffline();
-        }
-        this.successMessage(constants.successMessages.CLAIM);
-        this.isLastRouteEdit(true);
-        this.$router.push('/view-client/' + this.selectedClientId);
-      });
-    },
+      var response = await this.addClaim(payload);
 
+      if (response && response.id) {
+        if (
+          this.officeTask.officeActionRequired &&
+          this.officeTask.actions &&
+          this.officeTask.actions.length
+        ) {
+          this.addMultipleOfficeTask(response);
+        } else {
+          this.$router.push('/clients');
+        }
+      }
+      if (this.isOnline) {
+        this.setSelectedLeadOnline();
+      } else {
+        this.setSelectedLeadOffline();
+      }
+      this.successMessage(constants.successMessages.CLAIM);
+      this.isLastRouteEdit(true);
+      this.$router.push('/view-client/' + this.selectedClientId);
+    },
+    async addMultipleOfficeTask(response) {
+      if (this.officeTask && this.officeTask.actions) {
+        this.officeTask.actions.forEach(val => {
+          if (val.isEnabled == true) {
+            this.finalOfficeTask.push(val);
+          }
+        });
+      }
+
+      const payload = {
+        id: response.id,
+        tasks: this.finalOfficeTask
+      };
+
+      await this.addMultipleTaskToClaim(payload);
+    },
     async onStepClick(index) {
       if (this.step < index) {
         const validation = await this.$refs[
