@@ -779,7 +779,7 @@ export default {
       this.foldersAndFilesOptions = false;
       this.signActor = [];
       this.claimActors = [];
-      this.emails = [{ id: '', type: 'external', name: '' }];
+      this.emails = [{ email: '', type: 'external', name: '' }];
     },
     onSelectPersonOrGroup() {
       this.getClaimRoles();
