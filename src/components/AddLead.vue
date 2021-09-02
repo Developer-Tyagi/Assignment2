@@ -21,14 +21,14 @@
                 size="14px"
                 name="create"
                 color="white"
-                style="margin: auto"
+                style="margin: auto;"
               />
               <q-icon
                 v-if="index < stepClickValidTill && index != step"
                 size="14px"
                 name="done"
                 color="white"
-                style="margin: auto"
+                style="margin: auto;"
               />
             </div>
             <div class="label">{{ arr.name }}</div>
@@ -45,7 +45,7 @@
               <q-select
                 dense
                 borderless
-                class=" input-style required"
+                class="input-style required"
                 v-model="primaryDetails.honorific.value"
                 :options="titles"
                 option-value="value"
@@ -65,7 +65,7 @@
               <q-input
                 dense
                 borderless
-                class=" input-style required"
+                class="input-style required"
                 v-model="primaryDetails.firstName"
                 label="First Name"
                 lazy-rules
@@ -76,7 +76,7 @@
               <q-input
                 dense
                 borderless
-                class="input-style  required"
+                class="input-style required"
                 v-model="primaryDetails.lastName"
                 label="Last Name"
                 lazy-rules
@@ -89,7 +89,7 @@
                 <q-select
                   dense
                   borderless
-                  class=" input-style required col-5"
+                  class="input-style required col-5"
                   v-model="primaryDetails.selectedContactType"
                   :options="contactTypes"
                   option-value="machineValue"
@@ -107,7 +107,7 @@
                 <q-input
                   dense
                   borderless
-                  class=" input-style required col-6"
+                  class="input-style required col-6"
                   v-model.number="primaryDetails.phoneNumber"
                   label="Phone"
                   mask="(###) ###-####"
@@ -123,7 +123,7 @@
               <q-input
                 dense
                 borderless
-                class=" input-style required"
+                class="input-style required"
                 v-model="primaryDetails.email"
                 label="Email"
                 lazy-rules
@@ -134,7 +134,7 @@
                 ]"
               />
 
-              <div class="row  ">
+              <div class="row">
                 <p class="q-mx-none q-my-auto">
                   Is policy holder an organization ?
                 </p>
@@ -161,17 +161,13 @@
                 />
               </div>
             </q-card>
-            <div class="row q-pt-md">
-              <div class="q-ml-auto">
-                <span class="q-mr-md text-color-grey">Next</span>
-                <q-btn
-                  class="rotate-180"
-                  icon="keyboard_backspace"
-                  text-color="primary"
-                  padding="md"
-                  type="submit"
-                />
-              </div>
+            <div class="row q-mt-xl q-pt-xl">
+              <q-btn
+                class="single-next-button-style"
+                label="Next"
+                padding="md"
+                type="submit"
+              />
             </div>
           </q-form>
           <q-form
@@ -257,23 +253,18 @@
               />
             </q-card>
             <div class="row q-pt-md">
-              <div>
+              <div style="width:100%;">
                 <q-btn
-                  icon="keyboard_backspace"
-                  text-color="primary"
+                  class="back-button-style"
                   padding="md"
                   type="reset"
+                  label="Back"
                 />
-                <span class="q-ml-md text-color-grey">Back</span>
-              </div>
-              <div class="q-ml-auto">
-                <span class="q-mr-md text-color-grey"> Next</span>
                 <q-btn
-                  class="rotate-180"
-                  icon="keyboard_backspace"
-                  text-color="primary"
+                  class="next-button-style"
                   padding="md"
                   type="submit"
+                  label="Next"
                 />
               </div>
             </div>
@@ -385,23 +376,18 @@
               />
             </q-card>
             <div class="row q-pt-md">
-              <div>
+              <div style="width:100%;">
                 <q-btn
-                  icon="keyboard_backspace"
-                  text-color="primary"
+                  class="back-button-style"
                   padding="md"
                   type="reset"
+                  label="Back"
                 />
-                <span class="q-ml-md text-color-grey">Back</span>
-              </div>
-              <div class="q-ml-auto">
-                <span class="q-mr-md text-color-grey"> Next</span>
                 <q-btn
-                  class="rotate-180"
-                  icon="keyboard_backspace"
-                  text-color="primary"
+                  class="next-button-style"
                   padding="md"
                   type="submit"
+                  label="Next"
                 />
               </div>
             </div>
@@ -460,8 +446,8 @@
                     @click="vendorsListDialog = true"
                     v-if="!sourceDetails.email"
                   >
-                    <div class=" input-style">
-                      <div class=" text-center">
+                    <div class="input-style">
+                      <div class="text-center">
                         Click for choosing a vendor
                       </div>
                     </div>
@@ -551,7 +537,7 @@
                   <q-select
                     borderless
                     dense
-                    class=" input-style full-width input-extra-padding"
+                    class="input-style full-width input-extra-padding"
                     v-model="sourceDetails.details"
                     use-input
                     input-debounce="0"
@@ -581,23 +567,18 @@
               </div>
             </q-card>
             <div class="row q-pt-md">
-              <div>
+              <div style="width:100%;">
                 <q-btn
-                  type="reset"
-                  icon="keyboard_backspace"
-                  text-color="primary"
+                  class="back-button-style"
                   padding="md"
+                  type="reset"
+                  label="Back"
                 />
-                <span class="q-ml-md text-color-grey">Back</span>
-              </div>
-              <div class="q-ml-auto">
-                <span class="q-mr-md text-color-grey"> Next</span>
                 <q-btn
-                  class="rotate-180"
-                  icon="keyboard_backspace"
-                  text-color="primary"
+                  class="next-button-style"
                   padding="md"
                   type="submit"
+                  label="Next"
                 />
               </div>
             </div>
@@ -620,23 +601,18 @@
               />
             </q-card>
             <div class="row q-pt-md">
-              <div>
+              <div style="width:100%;">
                 <q-btn
-                  type="reset"
-                  icon="keyboard_backspace"
-                  text-color="primary"
+                  class="back-button-style"
                   padding="md"
+                  type="reset"
+                  label="Back"
                 />
-                <span class="q-ml-md text-color-grey">Back</span>
-              </div>
-              <div class="q-ml-auto">
-                <span class="q-mr-md text-color-grey"> Next</span>
                 <q-btn
-                  class="rotate-180"
-                  icon="keyboard_backspace"
-                  text-color="primary"
+                  class="next-button-style"
                   padding="md"
                   type="submit"
+                  label="Next"
                 />
               </div>
             </div>
@@ -684,7 +660,7 @@
                   schedulingDetails.isAutomaticScheduling &&
                     showSubInspectionType
                 "
-                class=" input-style required input-extra-padding"
+                class="input-style required input-extra-padding"
                 v-model="schedulingDetails.subInspectionType"
                 :options="subInspectionTypes"
                 option-label="value"
@@ -705,7 +681,7 @@
                 v-if="schedulingDetails.isAutomaticScheduling"
                 dense
                 borderless
-                style="height:58px"
+                style="height: 58px;"
                 type="number"
                 mask="#.#"
                 step="0.5"
@@ -714,24 +690,18 @@
               />
             </q-card>
             <div class="row q-pt-md">
-              <div>
+              <div style="width:100%;">
                 <q-btn
-                  icon="keyboard_backspace"
-                  text-color="primary"
+                  class="back-button-style"
                   padding="md"
                   type="reset"
+                  label="Back"
                 />
-                <span class="q-ml-md text-color-grey">Back</span>
-              </div>
-              <div class="q-ml-auto">
-                <span class="q-mr-md text-color-grey"> Save</span>
-
                 <q-btn
-                  class="rotate-180"
-                  icon="keyboard_backspace"
-                  text-color="primary"
+                  class="next-button-style"
                   padding="md"
                   type="submit"
+                  label="Next"
                 />
               </div>
             </div>

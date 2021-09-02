@@ -484,16 +484,12 @@
             </div>
 
             <div class="row q-pt-md">
-              <div class="q-ml-auto">
-                <span class="q-mr-md text-color-grey">Next</span>
-                <q-btn
-                  class="rotate-180"
-                  icon="keyboard_backspace"
-                  text-color="primary"
-                  padding="md"
-                  type="submit"
-                />
-              </div>
+              <q-btn
+                class="single-next-button-style"
+                label="Next"
+                padding="md"
+                type="submit"
+              />
             </div>
           </q-form>
           <!-- Mailing Address -->
@@ -527,23 +523,18 @@
               />
             </q-card>
             <div class="row q-pt-md">
-              <div>
+              <div style="width:100%;">
                 <q-btn
-                  icon="keyboard_backspace"
-                  text-color="primary"
+                  class="back-button-style"
                   padding="md"
                   type="reset"
+                  label="Back"
                 />
-                <span class="q-ml-md text-color-grey">Back</span>
-              </div>
-              <div class="q-ml-auto">
-                <span class="q-mr-md text-color-grey"> Next</span>
                 <q-btn
-                  class="rotate-180"
-                  icon="keyboard_backspace"
-                  text-color="primary"
+                  class="next-button-style"
                   padding="md"
                   type="submit"
+                  label="Next"
                 />
               </div>
             </div>
@@ -562,23 +553,18 @@
               />
             </div>
             <div class="row q-pt-md">
-              <div>
+              <div style="width:100%;">
                 <q-btn
-                  icon="keyboard_backspace"
-                  text-color="primary"
+                  class="back-button-style"
                   padding="md"
                   type="reset"
+                  label="Back"
                 />
-                <span class="q-ml-md text-color-grey">Back</span>
-              </div>
-              <div class="q-ml-auto">
-                <span class="q-mr-md text-color-grey"> Next</span>
                 <q-btn
-                  class="rotate-180"
-                  icon="keyboard_backspace"
-                  text-color="primary"
+                  class="next-button-style"
                   padding="md"
                   type="submit"
+                  label="Next"
                 />
               </div>
             </div>
@@ -605,23 +591,18 @@
               />
             </div>
             <div class="row q-pt-md">
-              <div>
+              <div style="width:100%;">
                 <q-btn
-                  icon="keyboard_backspace"
-                  text-color="primary"
+                  class="back-button-style"
                   padding="md"
                   type="reset"
+                  label="Back"
                 />
-                <span class="q-ml-md text-color-grey">Back</span>
-              </div>
-              <div class="q-ml-auto">
-                <span class="q-mr-md text-color-grey"> Next</span>
                 <q-btn
-                  class="rotate-180"
-                  icon="keyboard_backspace"
-                  text-color="primary"
+                  class="next-button-style"
                   padding="md"
                   type="submit"
+                  label="Next"
                 />
               </div>
             </div>
@@ -864,23 +845,18 @@
               />
             </q-card>
             <div class="row q-pt-md">
-              <div>
+              <div style="width:100%;">
                 <q-btn
-                  icon="keyboard_backspace"
-                  text-color="primary"
+                  class="back-button-style"
                   padding="md"
                   type="reset"
+                  label="Back"
                 />
-                <span class="q-ml-md text-color-grey">Back</span>
-              </div>
-              <div class="q-ml-auto">
-                <span class="q-mr-md text-color-grey"> Next</span>
                 <q-btn
-                  class="rotate-180"
-                  icon="keyboard_backspace"
-                  text-color="primary"
+                  class="next-button-style"
                   padding="md"
                   type="submit"
+                  label="Next"
                 />
               </div>
             </div>
@@ -1027,23 +1003,18 @@
               />
             </q-card>
             <div class="row q-pt-md">
-              <div>
+              <div style="width:100%;">
                 <q-btn
-                  icon="keyboard_backspace"
-                  text-color="primary"
+                  class="back-button-style"
                   padding="md"
                   type="reset"
+                  label="Back"
                 />
-                <span class="q-ml-md text-color-grey">Back</span>
-              </div>
-              <div class="q-ml-auto">
-                <span class="q-mr-md text-color-grey"> Next</span>
                 <q-btn
-                  class="rotate-180"
-                  icon="keyboard_backspace"
-                  text-color="primary"
+                  class="next-button-style"
                   padding="md"
                   type="submit"
+                  label="Next"
                 />
               </div>
             </div>
@@ -1063,23 +1034,18 @@
             </q-card>
 
             <div class="row q-pt-md">
-              <div>
+              <div style="width:100%;">
                 <q-btn
-                  icon="keyboard_backspace"
-                  text-color="primary"
+                  class="back-button-style"
                   padding="md"
                   type="reset"
+                  label="Back"
                 />
-                <span class="q-ml-md text-color-grey">Back</span>
-              </div>
-              <div class="q-ml-auto">
-                <span class="q-mr-md text-color-grey"> Next</span>
                 <q-btn
-                  class="rotate-180"
-                  icon="keyboard_backspace"
-                  text-color="primary"
+                  class="next-button-style"
                   padding="md"
                   type="submit"
+                  label="Next"
                 />
               </div>
             </div>
@@ -1095,23 +1061,18 @@
               <ExpertVendorInfo :expertVendorInfo="expertVendorInfo" />
             </q-card>
             <div class="row q-pt-md">
-              <div>
+              <div style="width:100%;">
                 <q-btn
-                  icon="keyboard_backspace"
-                  text-color="primary"
+                  class="back-button-style"
                   padding="md"
                   type="reset"
+                  label="Back"
                 />
-                <span class="q-ml-md text-color-grey">Back</span>
-              </div>
-              <div class="q-ml-auto">
-                <span class="q-mr-md text-color-grey"> Next</span>
                 <q-btn
-                  class="rotate-180"
-                  icon="keyboard_backspace"
-                  text-color="primary"
+                  class="next-button-style"
                   padding="md"
                   type="submit"
+                  label="Next"
                 />
               </div>
             </div>
@@ -1130,23 +1091,18 @@
               />
             </q-card>
             <div class="row q-pt-md">
-              <div>
+              <div style="width:100%;">
                 <q-btn
-                  icon="keyboard_backspace"
-                  text-color="primary"
+                  class="back-button-style"
                   padding="md"
                   type="reset"
+                  label="Back"
                 />
-                <span class="q-ml-md text-color-grey">Back</span>
-              </div>
-              <div class="q-ml-auto">
-                <span class="q-mr-md text-color-grey"> Next</span>
                 <q-btn
-                  class="rotate-180"
-                  icon="keyboard_backspace"
-                  text-color="primary"
+                  class="next-button-style"
                   padding="md"
                   type="submit"
+                  label="Next"
                 />
               </div>
             </div>
@@ -1162,23 +1118,18 @@
               <ContractInfo :contractInfo="contractInfo" />
             </q-card>
             <div class="row q-pt-md">
-              <div>
+              <div style="width:100%;">
                 <q-btn
-                  icon="keyboard_backspace"
-                  text-color="primary"
+                  class="back-button-style"
                   padding="md"
                   type="reset"
+                  label="Back"
                 />
-                <span class="q-ml-md text-color-grey">Back</span>
-              </div>
-              <div class="q-ml-auto">
-                <span class="q-mr-md text-color-grey"> Next</span>
                 <q-btn
-                  class="rotate-180"
-                  icon="keyboard_backspace"
-                  text-color="primary"
+                  class="next-button-style"
                   padding="md"
                   type="submit"
+                  label="Next"
                 />
               </div>
             </div>
@@ -1194,23 +1145,18 @@
               <CompanyPersonnel :companyPersonnel="companyPersonnel" />
             </q-card>
             <div class="row q-pt-md">
-              <div>
+              <div style="width:100%;">
                 <q-btn
-                  icon="keyboard_backspace"
-                  text-color="primary"
+                  class="back-button-style"
                   padding="md"
                   type="reset"
+                  label="Back"
                 />
-                <span class="q-ml-md text-color-grey">Back</span>
-              </div>
-              <div class="q-ml-auto">
-                <span class="q-mr-md text-color-grey"> Next</span>
                 <q-btn
-                  class="rotate-180"
-                  icon="keyboard_backspace"
-                  text-color="primary"
+                  class="next-button-style"
                   padding="md"
                   type="submit"
+                  label="Next"
                 />
               </div>
             </div>
@@ -1227,23 +1173,18 @@
             </div>
 
             <div class="row q-pt-md">
-              <div>
+              <div style="width:100%;">
                 <q-btn
-                  icon="keyboard_backspace"
-                  text-color="primary"
+                  class="back-button-style"
                   padding="md"
                   type="reset"
+                  label="Back"
                 />
-                <span class="q-ml-md text-color-grey">Back</span>
-              </div>
-              <div class="q-ml-auto">
-                <span class="q-mr-md text-color-grey"> Create Client</span>
                 <q-btn
-                  class="rotate-180"
-                  icon="keyboard_backspace"
-                  text-color="primary"
+                  class="next-button-style"
                   padding="md"
                   type="submit"
+                  label="Create Client"
                 />
               </div>
             </div>
