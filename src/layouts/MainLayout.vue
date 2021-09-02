@@ -50,27 +50,7 @@
         transition-hide="slide-down"
         :position="'bottom'"
       >
-        <q-card style="width: 550px; height: 220px">
-          <q-card-section>
-            <div class="q-ml-md heading-light">
-              <div class="q-pa-sm" @click="$router.push('/add-client')">
-                Add Client
-              </div>
-              <div class="q-pa-sm" @click="$router.push('/add-client')">
-                Add Claim
-              </div>
-              <div class="q-pa-sm" @click="$router.push('/add-lead')">
-                Add Lead
-              </div>
-              <div class="q-pa-sm" @click="$router.push('/mortgages/' + true)">
-                Add mortgage
-              </div>
-              <div class="q-pa-sm" @click="$router.push('/carriers/' + true)">
-                Add Carrier
-              </div>
-            </div>
-          </q-card-section>
-        </q-card>
+        <AddOptions />
       </q-dialog>
     </q-page-container>
   </q-layout>
@@ -79,9 +59,10 @@
 import CustomHeader from 'components/CustomHeader';
 import { getCurrentUser } from '@utils/auth';
 import { mapGetters, mapMutations } from 'vuex';
+import AddOptions from 'components/AddOptions';
 export default {
   name: 'MainLayout',
-  components: { CustomHeader },
+  components: { CustomHeader, AddOptions },
   data() {
     return { openDialog: false };
   },
@@ -150,5 +131,10 @@ export default {
   background-color: $primary;
   border-radius: 50%;
   display: inline-block;
+}
+.card {
+  max-width: 100%;
+  height: 40px;
+  border-radius: 5px;
 }
 </style>

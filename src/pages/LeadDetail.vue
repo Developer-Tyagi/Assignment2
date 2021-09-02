@@ -85,36 +85,39 @@
               {{ selectedLead.organizationName }}</span
             >
           </div>
+          <div v-if="selectedLead.isAutomaticScheduling">
+            <div
+              class="row q-mt-sm"
+              v-if="
+                selectedLead.inspectionInfo &&
+                  selectedLead.inspectionInfo.pValue
+              "
+            >
+              <span class="heading-light col-3"> Inspection Type </span>
+              <span class="q-ml-md col">
+                {{
+                  selectedLead.inspectionInfo.pValue
+                    ? selectedLead.inspectionInfo.pValue
+                    : '-'
+                }}</span
+              >
+            </div>
 
-          <div
-            class="row q-mt-sm"
-            v-if="
-              selectedLead.inspectionInfo && selectedLead.inspectionInfo.pValue
-            "
-          >
-            <span class="heading-light col-3"> Inspection Type </span>
-            <span class="q-ml-md col">
-              {{
-                selectedLead.inspectionInfo.pValue
-                  ? selectedLead.inspectionInfo.pValue
-                  : '-'
-              }}</span
+            <div
+              class="row q-mt-sm"
+              v-if="
+                selectedLead.inspectionInfo && selectedLead.inspectionInfo.value
+              "
             >
-          </div>
-          <div
-            class="row q-mt-sm"
-            v-if="
-              selectedLead.inspectionInfo && selectedLead.inspectionInfo.value
-            "
-          >
-            <span class="heading-light col-3">Sub Inspection Type </span>
-            <span class="q-ml-md col">
-              {{
-                selectedLead.inspectionInfo.value
-                  ? selectedLead.inspectionInfo.value
-                  : '-'
-              }}</span
-            >
+              <span class="heading-light col-3">Sub Inspection Type </span>
+              <span class="q-ml-md col">
+                {{
+                  selectedLead.inspectionInfo.value
+                    ? selectedLead.inspectionInfo.value
+                    : '-'
+                }}</span
+              >
+            </div>
           </div>
         </div>
       </div>
@@ -138,25 +141,33 @@
                         : '-'
                     }}
 
-                    ,
                     {{
-                      selectedLead.lossLocation.streetAddress
-                        ? selectedLead.lossLocation.streetAddress
+                      selectedLead.lossLocation.address1
+                        ? selectedLead.lossLocation.address1
                         : '-'
                     }}
                   </div>
                   <div>
+                    {{
+                      selectedLead.lossLocation.address2
+                        ? selectedLead.lossLocation.address2
+                        : '-'
+                    }}
+                  </div>
+                  <div>
+                    {{
+                      selectedLead.lossLocation.addressLocality
+                        ? selectedLead.lossLocation.addressLocality
+                        : '-'
+                    }},
                     {{
                       selectedLead.lossLocation.addressRegion
-                        ? selectedLead.lossLocation.addressRegion
+                        ? toGetStateShortName(
+                            selectedLead.lossLocation.addressRegion
+                          )
                         : '-'
                     }}
-                    {{ selectedLead.lossLocation.addressRegion }}-{{
-                      selectedLead.lossLocation.postalCode
-                    }}
-                  </div>
-                  <div>
-                    {{ selectedLead.lossLocation.addressCountry }}
+                    {{ selectedLead.lossLocation.postalCode }}
                     <q-icon
                       name="place"
                       color="primary"
@@ -272,6 +283,7 @@
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import CustomBar from 'components/CustomBar';
+import { toGetStateShortName } from '@utils/common';
 import { dateToShow } from '@utils/date';
 import {
   onEmailClick,
@@ -294,6 +306,7 @@ export default {
   methods: {
     ...mapActions(['getLeadDetails']),
     ...mapMutations(['setSelectedLeadOnline', 'setSelectedLeadOffline']),
+    toGetStateShortName,
     onEmailClick,
     onPhoneNumberClick,
     sendMap,

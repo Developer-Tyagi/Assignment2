@@ -57,7 +57,14 @@
         {{
           getSelectedClaim.lossInfo.property
             ? getSelectedClaim.lossInfo.property
-              ? getSelectedClaim.lossInfo.property.streetAddress
+              ? getSelectedClaim.lossInfo.property.address1
+              : ''
+            : '-'
+        }}
+        {{
+          getSelectedClaim.lossInfo.property
+            ? getSelectedClaim.lossInfo.property
+              ? getSelectedClaim.lossInfo.property.address2
               : ''
             : '-'
         }}
@@ -81,14 +88,9 @@
           {{
             getSelectedClaim.lossInfo.property
               ? getSelectedClaim.lossInfo.property
-                ? getSelectedClaim.lossInfo.property.addressRegion
-                : ''
-              : '-'
-          }}
-          {{
-            getSelectedClaim.lossInfo.property
-              ? getSelectedClaim.lossInfo.property
-                ? getSelectedClaim.lossInfo.property.addressCountry
+                ? toGetStateShortName(
+                    getSelectedClaim.lossInfo.property.addressRegion
+                  )
                 : ''
               : '-'
           }}
@@ -151,6 +153,7 @@ import { mapGetters, mapActions } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import moment from 'moment';
 import { dateToShow } from '@utils/date';
+import { toGetStateShortName } from '@utils/common';
 import { getCurrentUser } from '@utils/auth';
 export default {
   name: 'Claims',
@@ -183,6 +186,7 @@ export default {
       'markClaimUnFavorite',
       'markClaimFavorite'
     ]),
+    toGetStateShortName,
     dateToShow,
     async onClickFavorite() {
       if (this.getSelectedClaim.isFavourite == false) {

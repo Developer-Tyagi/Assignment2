@@ -40,11 +40,12 @@
       </q-card>
     </q-dialog>
     <!-- Contract Info -->
-    <q-card class="q-pa-sm">
+    <div class="q-pa-sm">
       <span class="form-heading">Contract Date</span>
       <div class="full-width">
         <q-input
-          class="required"
+          borderless
+          class="required input-style input-field"
           v-model="contractInfo.contractDate"
           mask="##/##/####"
           label="MM/DD/YYYY"
@@ -77,8 +78,15 @@
           </template>
         </q-input>
       </div>
-      <span class="form-heading">Date and Time of First Contact</span>
-      <q-input v-model="contractInfo.firstContractDate" dense>
+      <div class="q-mt-md">
+        <span class="form-heading q-ml-xs">Date and Time of First Contact</span>
+      </div>
+      <q-input
+        borderless
+        class="required input-style input-field"
+        v-model="contractInfo.firstContractDate"
+        dense
+      >
         <template v-slot:prepend>
           <q-icon name="event" class="cursor-pointer">
             <q-popup-proxy
@@ -136,11 +144,12 @@
         ></q-btn-toggle>
       </div>
 
-      <div class="row" style="align-items: center">
+      <div class="row q-mt-md" style="align-items: center">
         <q-input
-          class="q-ml-auto full-width required"
           mask="#.#"
           type="number"
+          borderless
+          class="required input-style input-field q-ml-auto full-width "
           v-model.number="contractInfo.claimFeeRate"
           label="Claim Fee Rate"
           style="width: 50%"
@@ -162,15 +171,16 @@
           </template></q-input
         >
       </div>
-    </q-card>
+    </div>
 
-    <q-card class="q-pa-sm q-mt-sm">
+    <div class="q-pa-sm q-mt-sm">
       <span class="form-heading">
         Source Of Claim <span style="color: red">*</span>
       </span>
       <div>
         <q-select
-          class="required"
+          borderless
+          class="required input-style input-field "
           v-model="contractInfo.sourceDetails.type"
           :options="sourceOfClaim"
           option-label="name"
@@ -181,7 +191,6 @@
           emit-value
           map-options
           behavior="menu"
-          options-dense
           @input="onChangingSourceType()"
           @filter="searchBySource"
           :rules="[
@@ -190,7 +199,8 @@
           :disable="isOfflineClientEdit"
         />
         <q-input
-          class="required"
+          borderless
+          class="required input-style input-field  "
           v-if="
             contractInfo.sourceDetails.type != constants.industries.VENDOR &&
               contractInfo.sourceDetails.type != '' &&
@@ -216,10 +226,10 @@
             @click="contractInfo.vendorsListDialog = true"
             v-if="!contractInfo.sourceDetails.id"
           >
-            <div class="select-text">
+            <q-btn outline class="full-width">
               Click for choosing a vendor
               <span style="color: red">*</span>
-            </div>
+            </q-btn>
           </div>
           <q-card
             bordered
@@ -241,7 +251,7 @@
             <div
               v-if="
                 contractInfo.sourceDetails.mailingAddress &&
-                  contractInfo.sourceDetails.mailingAddress.streetAddress
+                  contractInfo.sourceDetails.mailingAddress.address1
               "
             >
               <div>
@@ -250,14 +260,21 @@
                     ? contractInfo.sourceDetails.mailingAddress.houseNumber
                     : '-'
                 }}
-                ,
+
                 {{
-                  contractInfo.sourceDetails.mailingAddress.streetAddress
-                    ? contractInfo.sourceDetails.mailingAddress.streetAddress
+                  contractInfo.sourceDetails.mailingAddress.address1
+                    ? contractInfo.sourceDetails.mailingAddress.address1
                     : '-'
                 }}
               </div>
               <div>
+                {{
+                  contractInfo.sourceDetails.mailingAddress.address2
+                    ? contractInfo.sourceDetails.mailingAddress.address2
+                    : '-'
+                }}
+              </div>
+              <div class="row">
                 {{
                   contractInfo.sourceDetails.mailingAddress.addressLocality
                     ? contractInfo.sourceDetails.mailingAddress.addressLocality
@@ -266,17 +283,11 @@
                 ,
                 {{
                   contractInfo.sourceDetails.mailingAddress.addressRegion
-                    ? contractInfo.sourceDetails.mailingAddress.addressRegion
+                    ? toGetStateShortName(
+                        contractInfo.sourceDetails.mailingAddress.addressRegion
+                      )
                     : '-'
                 }}
-              </div>
-              <div class="row">
-                {{
-                  contractInfo.sourceDetails.mailingAddress.addressCountry
-                    ? contractInfo.sourceDetails.mailingAddress.addressCountry
-                    : '-'
-                }}
-                -
                 {{
                   contractInfo.sourceDetails.mailingAddress.postalCode
                     ? contractInfo.sourceDetails.mailingAddress.postalCode
@@ -311,7 +322,8 @@
         <div v-if="contractInfo.sourceDetails.type == 'client'">
           <q-select
             dense
-            class="full-width input-extra-padding"
+            borderless
+            class="required input-style input-field  full-width input-extra-padding"
             v-model="contractInfo.sourceDetails.details"
             use-input
             input-debounce="0"
@@ -336,7 +348,7 @@
           </q-select>
         </div>
       </div>
-    </q-card>
+    </div>
 
     <q-card class="q-pa-sm q-mt-sm">
       <span class="form-heading">Accept or Cancel Claim ?</span>
@@ -356,6 +368,8 @@
       </div>
       <div class="full-width">
         <q-select
+          borderless
+          class="input-style input-field  "
           v-model="contractInfo.reasonForCancellation"
           :options="reasonForCancellation"
           label="Reason For Cancellation"
@@ -363,21 +377,26 @@
           :disable="isOfflineClientEdit"
         ></q-select>
       </div>
-
-      <span class="form-heading">Reason For Cancellation</span>
+      <div class="q-mt-md">
+        <span class="form-heading">Reason For Cancellation</span>
+      </div>
       <div class="floating-label">
-        <textarea
+        <q-input
+          type="textarea"
           v-if="!isOfflineClientEdit"
           rows="5"
-          class="full-width"
+          borderless
+          class="required input-style  full-width"
           v-model="contractInfo.reasonForCancellationText"
           style="resize: none"
         />
-        <textarea
+        <q-input
+          type="textarea"
           v-if="isOfflineClientEdit"
           rows="5"
           disabled
-          class="full-width"
+          borderless
+          class="required input-style full-width"
           v-model="contractInfo.reasonForCancellationText"
           style="resize: none"
         />
@@ -392,6 +411,7 @@ import AddVendor from 'components/AddVendor';
 import { successMessage } from '@utils/validation';
 import { validateDate, validateTime } from '@utils/validation';
 import { mapGetters, mapActions } from 'vuex';
+import { toGetStateShortName } from '@utils/common';
 import { constants } from '@utils/constant';
 import VendorsList from 'components/VendorsList';
 import { onPhoneNumberClick, onEmailClick } from '@utils/clickable';
@@ -433,6 +453,7 @@ export default {
     closeTimeDialog() {
       this.$refs.qTimeProxy.hide();
     },
+    toGetStateShortName,
     successMessage,
     onPhoneNumberClick,
     onEmailClick,
@@ -508,3 +529,8 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+.input-field {
+  height: 55px;
+}
+</style>

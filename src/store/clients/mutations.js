@@ -24,7 +24,7 @@ export async function setOfflineClients(state) {
 export async function setSelectedSingleClaim(state, claim) {
   if (claim && claim.id) {
     state.getSelectedClaim = {
-      ...claim
+      ...claim.attributes
     };
   }
 }

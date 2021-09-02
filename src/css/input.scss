@@ -54,6 +54,10 @@
   height: calc(100vh - 50px);
   overflow-y: auto;
 }
+.dashboard-height {
+  height: calc(100vh - 140px);
+  overflow-y: auto;
+}
 .clickLink {
   color: $primary;
 }

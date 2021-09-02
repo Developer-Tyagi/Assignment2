@@ -9,6 +9,8 @@
         use-input
         option-value="value"
         option-label="name"
+        borderless
+        class="input-style input-field"
         map-options
         emit-value
         options-dense
@@ -29,6 +31,8 @@
         option-label="name"
         option-value="id"
         label="Select Person"
+        borderless
+        class="input-style input-field"
         options-dense
         emit-value
         behavior="menu"
@@ -56,7 +60,8 @@
       </div>
       <div class="row" style="align-items: center">
         <q-input
-          class="q-ml-auto full-width"
+          borderless
+          class="input-style input-field full-width q-ml-auto"
           mask="#.#"
           type="number"
           v-model.number="companyPersonnel.claimFeeRate"
@@ -87,7 +92,8 @@
       <span class="form-heading">Start Date</span>
       <div class="full-width">
         <q-input
-          class="required"
+          borderless
+          class="input-style input-field required"
           v-model="companyPersonnel.startDate"
           mask="##/##/####"
           label="MM/DD/YYYY"
@@ -124,6 +130,8 @@
       <div class="full-width">
         <q-input
           v-model="companyPersonnel.endDate"
+          borderless
+          class="input-style input-field"
           mask="##/##/####"
           label="MM/DD/YYYY"
           lazy-rules
@@ -156,18 +164,22 @@
     <q-card class="q-mt-sm q-pa-sm">
       <span class="form-heading">Notes</span>
       <div class="floating-label">
-        <textarea
+        <q-input
+          type="textarea"
           v-if="!isOfflineClientEdit"
           rows="5"
-          class="full-width"
+          borderless
+          class="input-style  full-width"
           v-model="companyPersonnel.notes"
           style="resize: none"
         />
-        <textarea
+        <q-input
           v-if="isOfflineClientEdit"
           disabled
           rows="5"
-          class="full-width"
+          type="textarea"
+          borderless
+          class="input-style full-width"
           v-model="companyPersonnel.notes"
           style="resize: none"
         />
@@ -262,3 +274,8 @@ export default {
   }
 };
 </script>
+<style scoped lang="scss">
+.input-field {
+  height: 55px;
+}
+</style>

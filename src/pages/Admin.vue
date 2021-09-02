@@ -48,12 +48,19 @@
                   <div class="col-3">
                     <div class="q-mr-md" v-if="user.mailingAddress">
                       {{
-                        user.mailingAddress.streetAddress
-                          ? user.mailingAddress.streetAddress
+                        user.mailingAddress.address1
+                          ? user.mailingAddress.address1
+                          : '-'
+                      }},
+                      {{
+                        user.mailingAddress.address2
+                          ? user.mailingAddress.address2
                           : '-'
                       }},{{
                         user.mailingAddress.addressRegion
-                          ? user.mailingAddress.addressRegion
+                          ? toGetStateShortName(
+                              user.mailingAddress.addressRegion
+                            )
                           : '-'
                       }},{{
                         user.mailingAddress.addressLocality
@@ -62,10 +69,6 @@
                       }}
                       ,
                       {{
-                        user.mailingAddress.addressCountry
-                          ? user.mailingAddress.addressCountry
-                          : '-'
-                      }},{{
                         user.mailingAddress.postalCode
                           ? user.mailingAddress.postalCode
                           : '-'
@@ -135,12 +138,19 @@
                       v-if="organization.billingInfo.address"
                     >
                       {{
-                        organization.billingInfo.address.streetAddress
-                          ? organization.billingInfo.address.streetAddress
+                        organization.billingInfo.address.address1
+                          ? organization.billingInfo.address.address1
+                          : '-'
+                      }}
+                      {{
+                        organization.billingInfo.address.address2
+                          ? organization.billingInfo.address.address2
                           : '-'
                       }},{{
                         organization.billingInfo.address.addressRegion
-                          ? organization.billingInfo.address.addressRegion
+                          ? toGetStateShortName(
+                              organization.billingInfo.address.addressRegion
+                            )
                           : '-'
                       }},{{
                         organization.billingInfo.address.addressLocality
@@ -1065,6 +1075,7 @@
 import SubSideBar from 'components/SubSideBar';
 import { mapGetters, mapActions } from 'vuex';
 import { getCurrentUser } from 'src/utils/auth';
+import { toGetStateShortName } from '@utils/common';
 import {
   onPhoneNumberClick,
   onEmailClick,
@@ -1111,7 +1122,8 @@ export default {
             addressRegion: '',
             postOfficeBoxNumber: '',
             postalCode: '',
-            streetAddress: '',
+            address1: '',
+            address2: '',
             dropBox: {
               info: '',
               isPresent: false
@@ -1135,7 +1147,8 @@ export default {
           addressRegion: '',
           postOfficeBoxNumber: '',
           postalCode: '',
-          streetAddress: '',
+          address1: '',
+          address2: '',
           dropBox: {
             info: '',
             isPresent: false
@@ -1219,6 +1232,7 @@ export default {
   },
 
   methods: {
+    toGetStateShortName,
     onPhoneNumberClick,
     onEmailClick,
     showPhoneNumber,
@@ -1446,7 +1460,8 @@ export default {
       this.users.mailingAddress.addressRegion = this.user.mailingAddress.addressRegion;
       this.users.mailingAddress.addressLocality = this.user.mailingAddress.addressLocality;
       this.users.mailingAddress.houseNumber = this.user.mailingAddress.houseNumber;
-      this.users.mailingAddress.streetAddress = this.user.mailingAddress.streetAddress;
+      this.users.mailingAddress.address1 = this.user.mailingAddress.address1;
+      this.users.mailingAddress.address2 = this.user.mailingAddress.address2;
       this.users.mailingAddress.postalCode = this.user.mailingAddress.postalCode;
       this.editUserInfoDialog = true;
     },
@@ -1460,7 +1475,8 @@ export default {
       this.organizations.users.mailingAddress.addressRegion = this.organization.billingInfo.address.addressRegion;
       this.organizations.users.mailingAddress.addressLocality = this.organization.billingInfo.address.addressLocality;
       this.organizations.users.mailingAddress.houseNumber = this.organization.billingInfo.address.houseNumber;
-      this.organizations.users.mailingAddress.streetAddress = this.organization.billingInfo.address.streetAddress;
+      this.organizations.users.mailingAddress.address1 = this.organization.billingInfo.address.address1;
+      this.organizations.users.mailingAddress.address2 = this.organization.billingInfo.address.address2;
       this.organizations.users.mailingAddress.postalCode = this.organization.billingInfo.address.postalCode;
 
       this.editOrganizsationInfoDialog = true;

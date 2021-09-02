@@ -21,13 +21,11 @@
               {{
                 vendor.address.houseNumber ? vendor.address.houseNumber : '-'
               }}
-              ,
-              {{
-                vendor.address.streetAddress
-                  ? vendor.address.streetAddress
-                  : '-'
-              }}
+              {{ vendor.address.address1 ? vendor.address.address1 : '-' }}
               <div class="">
+                {{ vendor.address.address2 ? vendor.address.address2 : '-' }}
+              </div>
+              <div>
                 {{
                   vendor.address.addressLocality
                     ? vendor.address.addressLocality
@@ -36,16 +34,9 @@
                 ,
                 {{
                   vendor.address.addressRegion
-                    ? vendor.address.addressRegion
+                    ? toGetStateShortName(vendor.address.addressRegion)
                     : '-'
                 }}
-              </div>
-              <div>
-                {{
-                  vendor.address.addressCountry
-                    ? vendor.address.addressCountry
-                    : '-'
-                }},
                 {{
                   vendor.address.postalCode ? vendor.address.postalCode : '-'
                 }}
@@ -177,6 +168,7 @@ import ExpertVendorInfo from 'components/ExpertVendorInfo';
 import { successMessage } from '@utils/validation';
 import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
 import DeleteAlert from 'components/DeleteAlert';
+import { toGetStateShortName } from '@utils/common';
 export default {
   name: 'ClaimExpertVendor',
   components: {
@@ -196,7 +188,8 @@ export default {
         value: '',
         address: {
           houseNumber: '',
-          streetAddress: '',
+          address1: '',
+          address2: '',
           addressLocality: '',
           addressRegion: '',
           addressCountry: '',
@@ -234,6 +227,7 @@ export default {
       'deleteClaimVendor',
       'getVendorIndustries'
     ]),
+    toGetStateShortName,
     setVendorId(value) {
       this.vendorId = value.id;
       this.vendorName = value.name;

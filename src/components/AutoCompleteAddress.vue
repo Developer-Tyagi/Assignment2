@@ -37,15 +37,23 @@
         borderless
         :class="{ required: isAsteriskMark }"
         class="input-style input-overlay col-8"
-        v-model="address.streetAddress"
-        label="Street"
+        v-model="address.address1"
+        label="Address 1"
         lazy-rules
-        :rules="[
-          val => checkValidations(val) || 'Please fill the street address'
-        ]"
+        :rules="[val => checkValidations(val) || 'Please fill the  Address 1']"
         :disable="isOfflineClientEdit"
       />
     </div>
+    <!--this should be done once address-2 field is added in backend api-->
+    <q-input
+      dense
+      borderless
+      class="input-style input-overlay "
+      style="height: 60px"
+      v-model="address.address2"
+      label="Address 2"
+      :disable="isOfflineClientEdit"
+    />
     <q-input
       dense
       borderless
@@ -71,19 +79,6 @@
       :rules="[val => checkValidations(val) || 'Please fill the state']"
       :disable="isOfflineClientEdit"
     />
-    <q-select
-      dense
-      borderless
-      :class="{ required: isAsteriskMark }"
-      class="input-style input-overlay"
-      v-model="address.addressCountry"
-      label="Country"
-      behavior="menu"
-      lazy-rules
-      :rules="[val => checkValidations(val) || 'Please fill the country']"
-      :disable="isOfflineClientEdit"
-    />
-
     <q-input
       borderless
       dense
@@ -151,16 +146,23 @@
         outlined
         :class="{ required: isAsteriskMark }"
         style="width: 46%"
-        v-model="address.streetAddress"
-        label="Street"
+        v-model="address.address1"
+        label="Address 1"
         lazy-rules
-        :rules="[
-          val => checkValidations(val) || 'Please fill the street address'
-        ]"
+        :rules="[val => checkValidations(val) || 'Please fill the Address 1']"
         :disable="isOfflineClientEdit"
       />
     </div>
     <div class="row justify-between">
+      <q-input
+        dense
+        outlined
+        :class="{ required: isAsteriskMark }"
+        style="height: 60px"
+        v-model="address.address2"
+        label="Address 2"
+        :disable="isOfflineClientEdit"
+      />
       <q-input
         dense
         outlined
@@ -189,19 +191,6 @@
       />
     </div>
     <div class="row justify-between">
-      <q-select
-        dense
-        outlined
-        :class="{ required: isAsteriskMark }"
-        v-model="address.addressCountry"
-        label="Country"
-        behavior="menu"
-        style="width: 46%"
-        lazy-rules
-        :rules="[val => checkValidations(val) || 'Please fill the country']"
-        :disable="isOfflineClientEdit"
-      />
-
       <q-input
         outlined
         dense
@@ -319,7 +308,8 @@ export default {
 
     fillInAddress() {
       const place = this['obj' + this.id].getPlace().address_components;
-      this.address.streetAddress =
+
+      this.address.address1 =
         this.getPlaceName('route', place) >= 0
           ? place[this.getPlaceName('route', place)].long_name
           : '';
@@ -337,6 +327,7 @@ export default {
         ? place[this.getPlaceName('administrative_area_level_1', place)]
             .long_name
         : '';
+
       this.address.addressCountry = this.getPlaceName('country', place)
         ? place[this.getPlaceName('country', place)].long_name
         : '';

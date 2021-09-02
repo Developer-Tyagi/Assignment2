@@ -41,13 +41,18 @@
                     ? personnel.address.houseNumber
                     : '-'
                 }}
-                ,
                 {{
-                  personnel.address.streetAddress
-                    ? personnel.address.streetAddress
-                    : '-'
+                  personnel.address.address1 ? personnel.address.address1 : '-'
                 }}
+
                 <div class="">
+                  {{
+                    personnel.address.address2
+                      ? personnel.address.address2
+                      : '-'
+                  }}
+                </div>
+                <div>
                   {{
                     personnel.address.addressLocality
                       ? personnel.address.addressLocality
@@ -56,16 +61,9 @@
                   ,
                   {{
                     personnel.address.addressRegion
-                      ? personnel.address.addressRegion
+                      ? toGetStateShortName(personnel.address.addressRegion)
                       : '-'
                   }}
-                </div>
-                <div>
-                  {{
-                    personnel.address.addressCountry
-                      ? personnel.address.addressCountry
-                      : '-'
-                  }},
                   {{
                     personnel.address.postalCode
                       ? personnel.address.postalCode
@@ -477,6 +475,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import CustomBar from 'components/CustomBar';
+import { toGetStateShortName } from '@utils/common';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import {
   onEmailClick,
@@ -486,6 +485,7 @@ import {
   showPhoneNumber
 } from '@utils/clickable';
 import DeleteAlert from 'components/DeleteAlert';
+
 export default {
   components: {
     CustomBar,
@@ -514,12 +514,12 @@ export default {
         departmentName: '',
         address: {
           houseNumber: '',
-          addressCountry: '',
           addressLocality: '',
           addressRegion: '',
           postOfficeBoxNumber: '',
           postalCode: '',
-          streetAddress: '',
+          address1: '',
+          address2: '',
           dropBox: {
             info: '',
             isPresent: false
@@ -558,6 +558,7 @@ export default {
       'editMortgagePersonnel',
       'deleteMortgagePersonnel'
     ]),
+    toGetStateShortName,
 
     onEdit(index) {
       this.editPersonnelDialog = true;
@@ -612,12 +613,12 @@ export default {
         this.personnel.lname = '';
         this.personnel.departmentName = '';
         this.personnel.address.houseNumber = '';
-        this.personnel.address.addressCountry = '';
         this.personnel.address.addressLocality = '';
         this.personnel.address.addressRegion = '';
         this.personnel.address.postOfficeBoxNumber = '';
         this.personnel.address.postalCode = '';
-        this.personnel.address.streetAddress = '';
+        this.personnel.address.address1 = '';
+        this.personnel.address.address2 = '';
         this.personnel.address.isPresent = false;
         this.personnel.phoneNumber = [{ type: 'main', number: '' }];
         this.personnel.email = '';
@@ -710,12 +711,12 @@ export default {
         this.personnel.lname = '';
         this.personnel.departmentName = '';
         this.personnel.address.houseNumber = '';
-        this.personnel.address.addressCountry = '';
         this.personnel.address.addressLocality = '';
         this.personnel.address.addressRegion = '';
         this.personnel.address.postOfficeBoxNumber = '';
         this.personnel.address.postalCode = '';
-        this.personnel.address.streetAddress = '';
+        this.personnel.address.address1 = '';
+        this.personnel.address.address2 = '';
         this.personnel.address.isPresent = false;
         this.personnel.phoneNumber = [{ type: 'main', number: '' }];
         this.personnel.email = '';

@@ -1,7 +1,7 @@
 <template>
   <div class="bg-white full-width">
     <!-- Estimating  Info -->
-    <q-card class="q-pa-sm">
+    <div class="q-pa-sm">
       <div class="row" v-if="estimatorAssignToggle">
         <p class="form-heading q-my-auto">
           Does Estimator need to be assigned?
@@ -16,7 +16,8 @@
 
       <div v-if="estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle">
         <q-input
-          class="q-mr-md"
+          borderless
+          class="input-style input-field"
           v-model="estimatingInfo.estimatorID"
           style="color: transparent"
           maxlength="0"
@@ -60,13 +61,23 @@
                 }}
                 ,
                 {{
-                  estimatingInfo.mailingAddress.streetAddress
-                    ? estimatingInfo.mailingAddress.streetAddress
+                  estimatingInfo.mailingAddress.address1
+                    ? estimatingInfo.mailingAddress.address1
                     : '-'
                 }}
               </div>
               <div
                 class="q-ml-sm"
+                v-if="estimatingInfo.mailingAddress.address2"
+              >
+                {{
+                  estimatingInfo.mailingAddress.address2
+                    ? estimatingInfo.mailingAddress.address2
+                    : '-'
+                }}
+              </div>
+              <div
+                class="row q-ml-sm"
                 v-if="estimatingInfo.mailingAddress.addressLocality"
               >
                 {{
@@ -77,19 +88,12 @@
                 ,
                 {{
                   estimatingInfo.mailingAddress.addressRegion
-                    ? estimatingInfo.mailingAddress.addressRegion
+                    ? toGetStateShortName(
+                        estimatingInfo.mailingAddress.addressRegion
+                      )
                     : '-'
                 }}
-              </div>
-              <div
-                class="row q-ml-sm"
-                v-if="estimatingInfo.mailingAddress.addressCountry"
-              >
-                {{
-                  estimatingInfo.mailingAddress.addressCountry
-                    ? estimatingInfo.mailingAddress.addressCountry
-                    : '-'
-                }},
+
                 {{
                   estimatingInfo.mailingAddress.postalCode
                     ? estimatingInfo.mailingAddress.postalCode
@@ -137,12 +141,13 @@
       >
         Scope time
       </p>
-      <input
+      <q-input
         v-if="estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle"
         dense
         v-model="estimatingInfo.scopeTimeNeeded"
         placeholder="Scope time needed"
-        class="time-input"
+        borderless
+        class="input-style input-field time-input"
         type="time"
         style="outline: none"
       />
@@ -150,12 +155,13 @@
       <q-input
         v-if="estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle"
         dense
+        type="textarea"
         v-model="estimatingInfo.notesToTheEstimator"
         label="Notes to the estimator"
-        dense
-        class="input-extra-padding"
+        borderless
+        class=" input-style input-extra-padding"
       />
-    </q-card>
+    </div>
     <!-- Estimators List Dialog -->
     <q-dialog
       v-model="estimatorsListDialog"
@@ -208,14 +214,20 @@
                         ? estimator.mailingAddress.houseNumber
                         : '-'
                     }}
-                    ,
                     {{
-                      estimator.mailingAddress.streetAddress
-                        ? estimator.mailingAddress.streetAddress
+                      estimator.mailingAddress.address1
+                        ? estimator.mailingAddress.address1
                         : '-'
                     }}
                   </div>
                   <div>
+                    {{
+                      estimator.mailingAddress.address2
+                        ? estimator.mailingAddress.address2
+                        : '-'
+                    }}
+                  </div>
+                  <div class="row">
                     {{
                       estimator.mailingAddress.addressLocality
                         ? estimator.mailingAddress.addressLocality
@@ -224,17 +236,11 @@
                     ,
                     {{
                       estimator.mailingAddress.addressRegion
-                        ? estimator.mailingAddress.addressRegion
+                        ? toGetStateShortName(
+                            estimator.mailingAddress.addressRegion
+                          )
                         : '-'
                     }}
-                  </div>
-                  <div class="row">
-                    {{
-                      estimator.mailingAddress.addressCountry
-                        ? estimator.mailingAddress.addressCountry
-                        : '-'
-                    }}
-                    -
                     {{
                       estimator.mailingAddress.postalCode
                         ? estimator.mailingAddress.postalCode
@@ -380,6 +386,7 @@
 import { mapGetters, mapActions } from 'vuex';
 import { validateEmail } from '@utils/validation';
 import CustomBar from 'components/CustomBar';
+import { toGetStateShortName } from '@utils/common';
 import { successMessage } from '@utils/validation';
 import { constants } from '@utils/constant';
 import {
@@ -437,6 +444,7 @@ export default {
     ...mapActions(['getEstimators', 'addEstimator']),
     validateEmail,
     successMessage,
+    toGetStateShortName,
 
     async onCloseAddEstimator() {
       const success = await this.$refs.addEstimatorForm.validate();
@@ -570,8 +578,11 @@ export default {
   }
 };
 </script>
-<style>
+<style lang="scss" scoped>
 input[type='time']::-webkit-calendar-picker-indicator {
   background: none;
+}
+.input-field {
+  height: 55px;
 }
 </style>

@@ -1,52 +1,55 @@
 <template>
   <!-- mobile-container-page listing-height -->
-  <q-page style="background-color:#8F8F8F;">
+  <div
+    class=" mobile-container-page dashboard-height"
+    style="background-color:#8F8F8F;"
+  >
     <q-card style="border-radius: 0 0 60px 60px;">
-      <div class="row justify-between q-py-md">
+      <div class="row justify-between q-py-sm">
         <img
-          class="q-ml-xl "
+          class="menu-left-icons"
           src="~assets/Leads.png"
           style="width:30%;"
           @click="$router.push('/leads-dashboard')"
         />
 
         <img
-          class="q-mr-xl"
+          class="menu-right-icons "
           src="~assets/Clients.png"
           style="width:30%;"
           @click="$router.push('/clients')"
         />
       </div>
-      <div class="row justify-between q-py-md">
+      <div class="row justify-between q-py-sm">
         <img
-          class="q-ml-xl  "
+          class="menu-left-icons"
           src="~assets/Vendor.png"
           style="width:30%;"
           @click="$router.push('/vendors')"
         />
         <img
-          class="q-mr-xl  "
+          class="menu-right-icons "
           src="~assets/Claims.png"
           style="width:30%;"
           @click="$router.push('/claims')"
         />
       </div>
-      <div class="row justify-between q-py-xl">
+      <div class="row justify-between q-py-sm">
         <img
-          class="q-ml-xl  "
+          class="menu-left-icons"
           src="~assets/UploadScan.png"
           style="width:30%;"
-          @click="$router.push('/vendor-document')"
+          @click="selectClaimDialog = true"
         />
 
         <img
-          class="q-mr-xl  "
+          class="menu-right-icons "
           src="~assets/CameraLogo.png"
           style="width:30%;"
         />
       </div>
     </q-card>
-    <div class=" q-ma-md q-mt-lg row justify-between ">
+    <div class=" q-ma-sm q-mb-sm row justify-between">
       <div class="column">
         <img
           src="~assets/Profile.svg"
@@ -70,21 +73,101 @@
         />
         <p class=" text-center text-white">CLAIMS STATS</p>
       </div>
-      <div class="">
+      <div class="" @click="onClickAddUpIcon()">
         <img src="~assets/ADD.svg" style="width:100%;" />
         <div class="text-center text-white">ADD</div>
       </div>
     </div>
-  </q-page>
+    <q-dialog
+      v-model="openDialog"
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+      :position="'bottom'"
+    >
+      <AddOptions />
+    </q-dialog>
+
+    <!-- Select Claim Dialog -->
+
+    <q-dialog
+      v-model="selectClaimDialog"
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <CustomBar
+          :dialogName="'Select Claim'"
+          @closeDialog="selectClaimDialog = false"
+        />
+
+        <div class="clients-list  listing-height q-mt-md" v-if="claims.length">
+          <div>
+            <div
+              class="clients-list "
+              v-for="(claim, index) in claims"
+              :key="claim.id"
+            >
+              <div class="client-list-item">
+                <div class="row  form-heading q-pb-md  ">
+                  <div class="col-10" @click="onClickingOnClaim(claim)">
+                    {{ claim.attributes.client.fname }}
+                    {{ claim.attributes.client.lname }}
+                  </div>
+                </div>
+                <div @click="onClickingOnClaim(claim)">
+                  <div class="row">
+                    <div class="col-3">Carrier</div>
+
+                    <div>
+                      {{
+                        claim.attributes.carrier
+                          ? claim.attributes.carrier.value
+                            ? claim.attributes.carrier.value
+                            : ''
+                          : '-'
+                      }}
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-3">Claim No.</div>
+
+                    <div>
+                      {{
+                        claim.attributes.number ? claim.attributes.number : '-'
+                      }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div v-else class="full-height full-width column">
+          <div class="column absolute-center">
+            <div style="color: #666666,align-items: center">
+              You haven't added a Claim yet.
+            </div>
+          </div>
+        </div>
+      </q-card>
+    </q-dialog>
+  </div>
 </template>
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { dateToShow } from '@utils/date';
 import { getCurrentUser } from 'src/utils/auth';
+import AddOptions from 'components/AddOptions';
+import CustomBar from 'components/CustomBar';
 export default {
+  components: { CustomBar, AddOptions },
   data() {
     return {
+      selectClaimDialog: false,
       isClickable: false,
+      openDialog: false,
       params: {
         favourite: ''
       }
@@ -97,10 +180,15 @@ export default {
     if (index < 0) {
       this.isClickable = true;
     }
+    this.getClaims();
   },
   methods: {
-    ...mapActions(['getClients', 'getActiveLeadsList']),
+    ...mapActions(['getClients', 'getActiveLeadsList', 'getClaims']),
     ...mapMutations(['setSelectedClaimId']),
+    onClickAddUpIcon() {
+      this.openDialog = true;
+    },
+
     dateToShow,
     openClaimDetail(value) {
       this.setSelectedClaimId(value.id);
@@ -146,6 +234,10 @@ export default {
         status: 'open'
       };
       this.getClients(params);
+    },
+    onClickingOnClaim(claim) {
+      this.setSelectedClaimId(claim.id);
+      this.$router.push('/vendor-document');
     }
   },
   computed: {
@@ -196,5 +288,11 @@ export default {
   margin-right: 10px;
   background-color: black;
   position: relative;
+}
+.menu-right-icons {
+  margin-right: 60px;
+}
+.menu-left-icons {
+  margin-left: 60px;
 }
 </style>

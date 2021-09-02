@@ -3,21 +3,29 @@
     <div>
       <div class="mobile-container-page-without-search">
         <div class="row q-pa-sm">
-          <q-card dark class="lead-dashboard-card" @click="onClickNewLead">
+          <q-card
+            dark
+            class="lead-dashboard-card cursor-pointer"
+            @click="onClickNewLead"
+          >
             <div class="value">{{ leadStatic.new }}</div>
 
             <div class="text">New Leads</div>
           </q-card>
           <q-card
             dark
-            class="lead-dashboard-card"
+            class="lead-dashboard-card cursor-pointer"
             @click="onConvertedLeadClick"
           >
             <div class="value">{{ leadStatic.converted }}</div>
 
             <div class="text">Converted Leads</div>
           </q-card>
-          <q-card dark class="lead-dashboard-card" @click="onDeadLeadClick">
+          <q-card
+            dark
+            class="lead-dashboard-card cursor-pointer"
+            @click="onDeadLeadClick"
+          >
             <div class="value">{{ leadStatic.dead }}</div>
             <div class="text">Dead Leads</div>
           </q-card>
@@ -47,15 +55,15 @@
   flex-direction: column;
   background-color: $primary;
   width: calc(33.33% - 10px);
-  height: 150px;
+  height: 100px;
   padding: 25px 10px;
   margin: 5px;
   .value {
-    font-size: 32px;
+    font-size: 25px;
     text-align: center;
   }
   .text {
-    font-size: 14px;
+    font-size: 10px;
     text-align: center;
     line-height: 18px;
   }
@@ -64,7 +72,6 @@
 
 <script>
 import BarChartComponent from 'components/BarChart';
-
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 export default {
   components: {
@@ -106,6 +113,7 @@ export default {
   },
   mounted() {
     this.fillData();
+    this.getLeadStatistics();
   },
   methods: {
     ...mapActions([
@@ -116,14 +124,7 @@ export default {
     ...mapMutations(['setConvertedLead']),
     fillData() {
       this.datacollection = {
-        labels: [
-          'New Lead',
-          'Scheduled',
-          // 'Visited',
-          // 'Follow up ',
-          'Leads Converted',
-          'Dead Leads'
-        ],
+        labels: ['New Lead', 'Scheduled', 'Leads Converted', 'Dead Leads'],
         datasets: [
           {
             backgroundColor: '#F84400',
@@ -131,8 +132,6 @@ export default {
             data: [
               this.leadStatic.new,
               this.leadStatic.scheduled,
-              // 15,
-              // 10,
               this.leadStatic.converted,
               this.leadStatic.dead
             ]
@@ -174,6 +173,7 @@ export default {
       this.getActiveLeadsList(payload);
     }
   },
+
   computed: {
     ...mapGetters(['leadStatic']),
     myStyles() {

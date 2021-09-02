@@ -38,7 +38,8 @@ export default function() {
         addressRegion: '',
         postOfficeBoxNumber: '',
         postalCode: '',
-        streetAddress: ''
+        address1: '',
+        address2: ''
       },
       lossDesc: '',
       dateOfLoss: '',

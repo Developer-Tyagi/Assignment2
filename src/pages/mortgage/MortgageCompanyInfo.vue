@@ -25,8 +25,8 @@
     </div>
     <div class="row">
       <span class="heading-light col-4" v-if="selectedMortgage.address"
-        >Address Details
-      </span>
+        >Address Details</span
+      >
 
       <span class="col-7 q-ml-md" v-if="selectedMortgage.address">
         {{
@@ -34,13 +34,18 @@
             ? selectedMortgage.address.houseNumber
             : '-'
         }}
-        ,
         {{
-          selectedMortgage.address.streetAddress
-            ? selectedMortgage.address.streetAddress
+          selectedMortgage.address.address1
+            ? selectedMortgage.address.address1
             : '-'
         }}
-
+        <div>
+          {{
+            selectedMortgage.address.address2
+              ? selectedMortgage.address.address2
+              : '-'
+          }}
+        </div>
         <div>
           {{
             selectedMortgage.address.addressLocality
@@ -50,16 +55,9 @@
           ,
           {{
             selectedMortgage.address.addressRegion
-              ? selectedMortgage.address.addressRegion
+              ? toGetStateShortName(selectedMortgage.address.addressRegion)
               : '-'
           }}
-        </div>
-        <div>
-          {{
-            selectedMortgage.address.addressCountry
-              ? selectedMortgage.address.addressCountry
-              : '-'
-          }},
           {{
             selectedMortgage.address.postalCode
               ? selectedMortgage.address.postalCode
@@ -70,36 +68,32 @@
             color="primary"
             @click="sendMap(selectedMortgage.address)"
             class="edit-icon"
-          ></q-icon></div
-      ></span>
+          ></q-icon>
+        </div>
+      </span>
     </div>
     <div class="row q-mt-sm" v-if="selectedMortgage.email">
-      <span class="heading-light q-mt-none col-xs-4 "> Company Email </span>
+      <span class="heading-light q-mt-none col-xs-4">Company Email</span>
       <span
         class="q-ml-md col clickLink"
         @click="onEmailClick(selectedMortgage.email, $event)"
-      >
-        {{ selectedMortgage.email ? selectedMortgage.email : '-' }}</span
+        >{{ selectedMortgage.email ? selectedMortgage.email : '-' }}</span
       >
     </div>
     <div class="row q-mt-sm" v-for="phone in selectedMortgage.phoneNumber">
-      <span class="heading-light q-mt-none col-xs-4 ">
-        Company Number
-      </span>
+      <span class="heading-light q-mt-none col-xs-4">Company Number</span>
       <span class="col q-ml-md" v-if="phone && phone.type">
         {{ phone.type }} :
         <span
           class="clickLink"
           @click="onPhoneNumberClick(phone.number, $event)"
           >{{ phone.number ? showPhoneNumber(phone.number) : '-' }}</span
-        ></span
-      >
+        >
+      </span>
     </div>
     <div class="q-mt-sm row" v-if="selectedMortgage.contact">
-      <div class="heading-light q-mt-none col-xs-4 ">
-        Contact Info
-      </div>
-      <div class="column q-ml-md ">
+      <div class="heading-light q-mt-none col-xs-4">Contact Info</div>
+      <div class="column q-ml-md">
         {{ selectedMortgage ? selectedMortgage.contact.fname : '-' }}
         {{ selectedMortgage ? selectedMortgage.contact.lname : '-' }}
         <div
@@ -127,21 +121,19 @@
       </div>
     </div>
     <div class="row q-mt-sm" v-if="selectedMortgage.info">
-      <span class="heading-light col-4"> Website </span>
+      <span class="heading-light col-4">Website</span>
       <span class="q-ml-md col">
         {{
           selectedMortgage.info.website ? selectedMortgage.info.website : '-'
-        }}</span
-      >
+        }}
+      </span>
     </div>
 
     <div class="row q-mt-sm" v-if="selectedMortgage.info">
-      <span class="heading-light col-4"> Notes </span>
+      <span class="heading-light col-4">Notes</span>
       <span class="q-ml-md col">
-        {{
-          selectedMortgage.info.notes ? selectedMortgage.info.notes : '-'
-        }}</span
-      >
+        {{ selectedMortgage.info.notes ? selectedMortgage.info.notes : '-' }}
+      </span>
     </div>
 
     <q-dialog
@@ -180,6 +172,7 @@ import {
 } from '@utils/clickable';
 import AddMortgage from 'components/AddMortgage';
 import { constants } from '@utils/constant';
+import { toGetStateShortName } from '@utils/common';
 import DeleteAlert from 'components/DeleteAlert';
 export default {
   name: 'Mortgage',
@@ -206,7 +199,7 @@ export default {
     onPhoneNumberClick,
     showPhoneNumber,
     sendPhoneNumber,
-
+    toGetStateShortName,
     closeAddMortgageDialog(e) {
       this.addMortgageDialog = false;
     },

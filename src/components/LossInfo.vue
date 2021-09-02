@@ -1,11 +1,13 @@
 <template>
   <div class="bg-white full-width">
     <!-- Loss Info -->
-    <q-card class="q-pa-sm">
+
+    <q-card class="q-pa-md q-ma-xs">
       <q-select
         dense
         behavior="menu"
-        class="required"
+        borderless
+        class="required input-style"
         v-model="lossInfo.reasonClaim.value"
         option-value="name"
         option-label="name"
@@ -24,12 +26,14 @@
         :disable="isOfflineClientEdit"
       />
     </q-card>
-    <q-card class="q-pa-sm q-mt-sm">
-      <span class="form-heading">Date of Loss</span>
+
+    <q-card class="q-ma-xs form-card q-pa-md">
+      <span class="form-heading q-ml-xs">Date of Loss</span>
 
       <div class="full-width">
         <q-input
-          class="required"
+          borderless
+          class="required input-style input-field"
           dense
           v-model="lossInfo.dateOfLoss"
           mask="##/##/####"
@@ -63,8 +67,9 @@
       </div>
 
       <q-select
-        class="input-extra-padding"
         dense
+        borderless
+        class="input-extra-padding input-style input-field"
         behavior="menu"
         v-model="lossInfo.causeOfLoss.value"
         option-value="name"
@@ -83,7 +88,8 @@
 
       <q-input
         v-if="lossInfo.causeOfLoss.id"
-        class="required"
+        borderless
+        class="required input-style input-field"
         label="Cause of loss description"
         v-model="lossInfo.causeOfLoss.desc"
         lazy-rules
@@ -95,12 +101,14 @@
         :disable="isOfflineClientEdit"
       >
       </q-input>
-
-      <span class="form-heading">Deadline Date</span>
-
+      <div class="q-mt-md">
+        <span class="form-heading q-ml-xs">Deadline Date</span>
+      </div>
       <div class="full-width">
         <q-input
           dense
+          borderless
+          class="input-style input-field"
           v-model="lossInfo.deadlineDate"
           mask="##/##/####"
           label="MM/DD/YYYY"
@@ -130,11 +138,13 @@
         </q-input>
       </div>
       <br />
-      <span class="form-heading">Recov. Deprec. Deadline</span>
+      <span class="form-heading q-ml-xs">Recov. Deprec. Deadline</span>
 
       <div class="full-width">
         <q-input
           dense
+          borderless
+          class="input-style input-field"
           v-model="lossInfo.recovDeadline"
           mask="##/##/####"
           label="MM/DD/YYYY"
@@ -164,9 +174,9 @@
         </q-input>
       </div>
     </q-card>
-    <q-card class="q-pa-sm q-mt-sm">
+    <q-card class="q-ma-xs q-pa-md">
       <div class="row">
-        <p class="q-my-auto form-heading">Is the Home Habitable?</p>
+        <div class="form-heading">Is the Home Habitable?</div>
         <q-toggle
           class="q-ml-auto"
           v-model="lossInfo.isTheHomeHabitable"
@@ -174,7 +184,7 @@
         />
       </div>
       <div class="row">
-        <p class="q-mx-none q-my-auto form-heading">FEMA Claim</p>
+        <p class="q-mx-none form-heading">FEMA Claim</p>
         <q-toggle
           class="q-ml-auto"
           v-model="lossInfo.femaClaimToggle"
@@ -182,7 +192,7 @@
         />
       </div>
       <div class="row">
-        <p class="q-my-auto form-heading">State of Emergency</p>
+        <p class="form-heading">State of Emergency</p>
         <q-toggle
           class="q-ml-auto"
           v-model="lossInfo.isStateOfEmergencyToggle"
@@ -192,19 +202,22 @@
       <div v-if="lossInfo.isStateOfEmergencyToggle">
         <q-input
           dense
+          borderless
+          class="required input-style input-field"
           v-model="lossInfo.nameOfEmergency"
           label="Related to"
           :disable="isOfflineClientEdit"
         />
       </div>
       <q-select
-        class="required"
         dense
         behavior="menu"
         v-model="lossInfo.severityOfClaimType.value"
         option-value="name"
         option-label="name"
         map-options
+        borderless
+        class="required input-style input-field"
         emit-value
         options-dense
         :options="claimSeverity"
@@ -217,24 +230,28 @@
         :disable="isOfflineClientEdit"
       />
     </q-card>
-    <q-card class="q-pa-sm q-mt-sm">
+    <q-card class="q-ma-xs q-pa-md">
       <span class="form-heading"
         >Loss Description to Dwelling <small style="color: red">*</small></span
       >
-      <textarea
+      <q-input
+        type="textarea"
+        borderless
+        class="required input-style full-width"
         v-if="!isOfflineClientEdit"
         rows="5"
         required
-        class="full-width"
         v-model="lossInfo.descriptionDwelling"
         style="resize: none"
       />
-      <textarea
+      <q-input
+        type="textarea"
+        borderless
+        class="required input-style full-width"
         disabled
         v-if="isOfflineClientEdit"
         rows="5"
         required
-        class="full-width"
         v-model="lossInfo.descriptionDwelling"
         style="resize: none"
       />
@@ -300,7 +317,8 @@ export default {
         addressRegion: '',
         addressLocality: '',
         postalCode: '',
-        streetAddress: '',
+        address1: '',
+        address2: '',
         postOfficeBoxNumber: '4',
         dropBox: {
           info: '',
@@ -438,7 +456,8 @@ export default {
           addressRegion: '',
           addressLocality: '',
           postalCode: '',
-          streetAddress: '',
+          address1: '',
+          address2: '',
           postOfficeBoxNumber: '',
           dropBox: {
             info: '',
@@ -455,5 +474,8 @@ export default {
   height: calc(100vh - 120px);
   overflow: auto;
   margin: 10px;
+}
+.input-field {
+  height: 55px;
 }
 </style>

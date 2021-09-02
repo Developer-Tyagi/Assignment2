@@ -221,32 +221,35 @@
       transition-hide="slide-down"
       :position="'bottom'"
     >
-      <q-card style="width: 550px; height: 200px">
-        <q-card-section class="items-center form-heading q-ml-md">
-          <div class="row q-ml-xl">
-            <div class="column q-ml-xl">
-              <q-btn
-                name="upload"
-                icon="share"
-                @click="(shareDialog = true), (foldersAndFilesOptions = false)"
-                text-color="primary"
-                class="q-ml-sm"
-              />
-              <div class="form-heading q-ml-md">Share</div>
-            </div>
-
+      <q-card style="width: 350px">
+        <q-card-section class="items-center">
+          <div
+            class="q-pa-md heading-light"
+            @click="(shareDialog = true), (foldersAndFilesOptions = false)"
+          >
+            Share
+          </div>
+          <div
+            v-if="documents[index] && documents[index].properties == null"
+            class="q-pa-md heading-light"
+            @click="(alert = true), (foldersAndFilesOptions = false)"
+          >
+            Remove
+          </div>
+          <div
+            class="q-pa-md heading-light"
+            v-if="generateClaimDocument && documentType"
+            @click="onFetchDocumentClick"
+          >
+            Fetch Signed Updated Document
+          </div>
+          <div v-else>
             <div
-              class="column"
-              v-if="documents[index] && documents[index].properties == null"
+              class="q-pa-md heading-light"
+              v-if="generateClaimDocument && !documentType"
+              @click="onClickSignDocument(documents[index].id)"
             >
-              <q-btn
-                class="q-ml-md"
-                icon="delete"
-                text-color="primary"
-                style="width: 50px"
-                @click="(alert = true), (foldersAndFilesOptions = false)"
-              />
-              <div class="form-heading q-ml-md">Remove</div>
+              Sign Document
             </div>
           </div>
         </q-card-section>
@@ -443,6 +446,149 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+
+    <!-- Sign Document Dialog -->
+    <q-dialog
+      v-model="signDocumentDialog"
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <CustomBar
+          dialogName="Send Document"
+          @closeDialog="onClickCloseDialog"
+        />
+        <div class="mobile-container-page q-pa-sm form-height ">
+          <span>Send To</span>
+          <div>
+            <q-radio v-model="sendToRadio" val="Email" label="Email"></q-radio>
+            <q-radio
+              class="q-ml-none"
+              v-model="sendToRadio"
+              val="User"
+              label="User"
+            ></q-radio>
+          </div>
+          <div v-if="sendToRadio == 'User'">
+            <div class="column " v-for="(actor, index) in claimActors">
+              <div class="row q-pa-sm">
+                <div class="column q-mt-sm">
+                  <span style="font-weight:normal ">{{ actor.name }} </span>
+                  <div v-for="(role, index) in actor.role">
+                    <q-badge rounded>
+                      <span>{{ role.value ? role.value : '' }}</span>
+                    </q-badge>
+                  </div>
+                  <q-badge color="primary" v-if="!actor.role" rounded>
+                    <span>{{ actor.type ? actor.type : '' }}</span>
+                  </q-badge>
+                </div>
+                <div class="flex q-ml-auto ">
+                  <q-checkbox
+                    v-model="actor.isEnabled"
+                    color="$primary"
+                    size="xs"
+                    @input="setClaimActors(actor)"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div v-if="sendToRadio == 'Email'">
+            <div v-for="(email, index) in emails" class="row q-mt-sm">
+              <q-input
+                outlined
+                dense
+                v-model="email.id"
+                class="col-7"
+                label="Email"
+                type="email"
+                lazy-rules
+                :rules="[
+                  val =>
+                    validateEmail(val) ||
+                    'You have entered an invalid email address!'
+                ]"
+              />
+              <q-icon
+                name="delete"
+                class="col-1 cursor-pointer"
+                color="primary"
+                @click="removeEmail()"
+              />
+            </div>
+            <q-btn
+              class="cursor-pointer q-mb-md text-primary q-mt-xs"
+              @click="onClickAddEmail()"
+              label="Enter Another Email"
+            />
+          </div>
+        </div>
+        <q-btn
+          label="Send"
+          color="primary"
+          class="button-width-90 fixed-bottom q-mb-xl"
+          size="'xl'"
+          @click="onClickSendDocument()"
+        />
+      </q-card>
+    </q-dialog>
+
+    <!-- Fetch Document Dialog -->
+
+    <q-dialog
+      v-model="documentStatusDialog"
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <CustomBar
+          dialogName="Document Status"
+          @closeDialog="
+            (documentStatusDialog = false), (foldersAndFilesOptions = false)
+          "
+        />
+
+        <div class="q-mt-md q-ml-xl row">
+          <div class="q-mt-none text-bold text-capitalize col-xs-4 ">
+            Recipients
+          </div>
+          <div class="column q-ml-md text-bold text-capitalize">
+            Status
+          </div>
+        </div>
+
+        <q-separator />
+        <div
+          class="q-mt-md q-ml-xl row"
+          v-for="doc in signedDocuments.recipients"
+        >
+          <div class="q-mt-none row col-xs-4 ">
+            {{ doc.name }}
+          </div>
+          <div class="column q-ml-md">
+            {{ doc.status }}
+          </div>
+          <div
+            class="q-ml-auto  q-ml-xl q-mb-xs q-mr-md"
+            v-if="doc && doc.status == 'completed'"
+          >
+            <q-icon name="check" size="md" color="primary" />
+          </div>
+        </div>
+        <q-btn
+          label="Close"
+          color="primary"
+          class="button-width-90 fixed-bottom q-mb-xl"
+          size="'xl'"
+          @click="
+            (documentStatusDialog = false), (foldersAndFilesOptions = false)
+          "
+        />
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -453,15 +599,28 @@ import { jsPDF } from 'jspdf';
 import { Plugins, CameraResultType, CameraDirection } from '@capacitor/core';
 import DeleteAlert from 'components/DeleteAlert';
 const { Camera } = Plugins;
+import CustomBar from 'components/CustomBar';
+import { setNotification } from 'src/store/common/mutations';
+import { validateEmail } from '@utils/validation';
 
 export default {
   name: 'FileManager',
-  components: { DeleteAlert },
+  components: { DeleteAlert, CustomBar },
   props: ['directoryId', 'generateClaimDocument'],
 
   data() {
     return {
+      sendToRadio: '',
+      emails: [{ id: '', type: 'external', name: '' }],
+      signedDocuments: '',
+      documentStatusDialog: false,
+      documentType: '',
+      isSelected: true,
+      signActor: [],
+      claimActors: [],
+      selectedDocumentId: '',
       templatetype: { value: '', machineValue: '' },
+      signDocumentDialog: false,
       index: '',
       id: '',
       isSystemGen: '',
@@ -491,8 +650,22 @@ export default {
       allFolder: false
     };
   },
-  created() {
+  async created() {
+    const { data } = await request.get(
+      `/documents?parent_id=${this.directoryId}`
+    );
+
+    this.setLoading(true);
+
+    this.documents = data.map(document => ({
+      name: document.attributes.name,
+      id: document.id,
+      type: document.attributes.mimeType,
+      link: document.attributes.webViewLink,
+      properties: document.attributes.properties
+    }));
     this.getTemplates();
+    await this.getAllActorToClaim(this.selectedClaimId);
   },
   computed: {
     ...mapGetters([
@@ -500,7 +673,8 @@ export default {
       'selectedClaimId',
       'claimRoles',
       'allUsers',
-      'templateOptions'
+      'templateOptions',
+      'actors'
     ])
   },
 
@@ -515,13 +689,98 @@ export default {
       'getAllUsers',
       'deleteDirectory',
       'generateClaimDoc',
-      'getTemplates'
+      'getTemplates',
+      'getAllActorToClaim',
+      'signDocuments',
+      'getSignedDocument'
     ]),
-    ...mapMutations(['setLoading']),
+    ...mapMutations(['setLoading', 'setNotification']),
+    validateEmail,
+    removeEmail() {
+      this.emails.pop();
+    },
+
+    setClaimActors(actor) {
+      this.signActor.push({
+        id: actor.id,
+        name: actor.name,
+        type: actor.type
+      });
+    },
+
+    async onClickSignDocument(documentId) {
+      const response = await this.getSignedDocument(this.selectedClaimId);
+
+      for (var index in this.actors) {
+        this.claimActors.push({
+          label: this.actors[index].name,
+          value:
+            this.actors[index].roles && this.actors[index].roles[0].value
+              ? this.actors[index].roles[0].value
+              : '',
+          id: this.actors[index].id,
+          type: this.actors[index].type,
+          name: this.actors[index].name,
+          isEnabled: false,
+          role: this.actors[index].roles
+        });
+      }
+      if (
+        !response.attributes.status ||
+        response.attributes.status == 'completed'
+      ) {
+        this.signDocumentDialog = true;
+        this.selectedDocumentId = documentId;
+      } else {
+        this.setNotification({
+          type: 'negative',
+          message: 'Previous document is not signed yet!'
+        });
+      }
+    },
+    async onFetchDocumentClick() {
+      const response = await this.getSignedDocument(this.selectedClaimId);
+
+      this.signedDocuments = response.attributes;
+      if (response.attributes.status) {
+        this.documentStatusDialog = true;
+      } else {
+        this.setNotification({
+          type: 'negative',
+          message: 'there is no signed document!!'
+        });
+        this.foldersAndFilesOptions = false;
+      }
+    },
     onDocumentClick(link) {
       window.open(link);
     },
+    async onClickSendDocument() {
+      if (this.sendToRadio != 'User') {
+        var payload = {
+          claimID: this.selectedClaimId,
+          data: {
+            recipients: this.emails,
+            driveIDs: [this.selectedDocumentId]
+          }
+        };
+      } else {
+        var payload = {
+          claimID: this.selectedClaimId,
+          data: {
+            recipients: this.signActor,
+            driveIDs: [this.selectedDocumentId]
+          }
+        };
+      }
 
+      await this.signDocuments(payload);
+      this.signDocumentDialog = false;
+      this.foldersAndFilesOptions = false;
+      this.signActor = [];
+      this.claimActors = [];
+      this.emails = [{ id: '', type: 'external', name: '' }];
+    },
     onSelectPersonOrGroup() {
       this.getClaimRoles();
       this.getAllUsers();
@@ -618,6 +877,8 @@ export default {
       this.id = '';
     },
     onShareClick(index) {
+      this.documentType = this.documents[index].type == 'folder';
+
       if (
         this.documents[index].properties &&
         this.documents[index].properties.isSystemGen
@@ -777,6 +1038,8 @@ export default {
 
     async onClickOnFile(document) {
       this.allFolderId = document.id;
+      this.documentType = document.type;
+
       if (document.type == 'folder') {
         this.setLoading(true);
         const { data } = await request.get(
@@ -882,11 +1145,19 @@ export default {
       this.currentPath = length;
       this.depth[this.currentPath - 1].name = response.attributes.directoryName;
       this.setLoading(false);
-    }
-  },
+    },
+    onClickAddEmail() {
+      this.emails.push({ id: '', type: 'external', name: '' });
+    },
+    onClickCloseDialog() {
+      this.signDocumentDialog = false;
+      this.foldersAndFilesOptions = false;
+      this.claimActors = [];
+    },
 
-  async mounted() {
-    this.getDocuments();
+    async mounted() {
+      this.getDocuments();
+    }
   }
 };
 </script>
@@ -916,5 +1187,9 @@ export default {
   top: -40px;
   font-size: 24px;
   z-index: 10000;
+}
+.office-task-list {
+  height: calc(100vh - 365px);
+  overflow-y: auto;
 }
 </style>

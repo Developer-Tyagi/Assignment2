@@ -10,7 +10,7 @@
         + Add Another Property</q-card
       >
 
-      <div class="q-mx-md q-pa-xs">
+      <div class="">
         <div v-if="setClientProperty.length">
           <q-card
             class="q-my-sm"
@@ -32,7 +32,7 @@
                     style="height: auto; max-width: 120px"
                   ></q-img>
                 </div>
-                <div class="col-5 q-pa-sm">
+                <div class="col-6 q-pa-sm">
                   <div class="heading-light">Property Name</div>
                   <div>
                     {{
@@ -43,33 +43,44 @@
                   </div>
                   <div>
                     {{
-                      setClientProperty[i - 1].attributes.streetAddress
-                        ? setClientProperty[i - 1].attributes.streetAddress
+                      setClientProperty[i - 1].attributes.houseNumber
+                        ? setClientProperty[i - 1].attributes.houseNumber
+                        : '-'
+                    }}
+                    {{
+                      setClientProperty[i - 1].attributes.address1
+                        ? setClientProperty[i - 1].attributes.address1
                         : '-'
                     }}
                   </div>
-                  {{
-                    setClientProperty[i - 1].attributes.addressRegion
-                      ? setClientProperty[i - 1].attributes.addressRegion
-                      : '-'
-                  }}
-                  {{
-                    setClientProperty[i - 1].attributes.addressCountry
-                      ? setClientProperty[i - 1].attributes.addressCountry
-                      : '-'
-                  }}
+                  <div>
+                    {{
+                      setClientProperty[i - 1].attributes.address2
+                        ? setClientProperty[i - 1].attributes.address2
+                        : '-'
+                    }}
+                  </div>
                   <div>
                     {{
                       setClientProperty[i - 1].attributes.addressLocality
                         ? setClientProperty[i - 1].attributes.addressLocality
                         : '-'
                     }}
+                    ,
+                    {{
+                      setClientProperty[i - 1].attributes.addressRegion
+                        ? toGetStateShortName(
+                            setClientProperty[i - 1].attributes.addressRegion
+                          )
+                        : '-'
+                    }}
+                    {{
+                      setClientProperty[i - 1].attributes.postalCode
+                        ? setClientProperty[i - 1].attributes.postalCode
+                        : '-'
+                    }}
                   </div>
-                  {{
-                    setClientProperty[i - 1].attributes.houseNumber
-                      ? setClientProperty[i - 1].attributes.houseNumber
-                      : '-'
-                  }}
+
                   <div>
                     <div class="heading-light">
                       {{
@@ -276,6 +287,7 @@ import CustomBar from 'components/CustomBar';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import DeleteAlert from 'components/DeleteAlert';
 import moment from 'moment';
+import { toGetStateShortName } from '@utils/common';
 import { dateToShow } from '@utils/date';
 import { successMessage } from '@utils/validation';
 import { constants } from '@utils/constant';
@@ -295,7 +307,8 @@ export default {
         addressRegion: '',
         addressLocality: '',
         postalCode: '',
-        streetAddress: '',
+        address1: '',
+        address2: '',
         postOfficeBoxNumber: '4',
         dropBox: {
           info: '',
@@ -346,6 +359,7 @@ export default {
       'editedPropertyAddress',
       'deletedPropertyAddress'
     ]),
+    toGetStateShortName,
     ...mapMutations(['setSelectedClaimId']),
     onClickClaimNumber(claim) {
       this.setSelectedClaimId(claim.id);
@@ -416,9 +430,13 @@ export default {
         .attributes.postalCode
         ? this.setClientProperty[index].attributes.postalCode
         : '';
-      this.propertyAddressDetails.streetAddress = this.setClientProperty[index]
-        .attributes.streetAddress
-        ? this.setClientProperty[index].attributes.streetAddress
+      this.propertyAddressDetails.address1 = this.setClientProperty[index]
+        .attributes.address1
+        ? this.setClientProperty[index].attributes.address1
+        : '';
+      this.propertyAddressDetails.address2 = this.setClientProperty[index]
+        .attributes.address2
+        ? this.setClientProperty[index].attributes.address2
         : '';
       this.addNewPropertyDialog = true;
     },
@@ -431,7 +449,8 @@ export default {
         addressRegion: '',
         addressLocality: '',
         postalCode: '',
-        streetAddress: '',
+        address1: '',
+        address2: '',
         postOfficeBoxNumber: '4',
         dropBox: {
           info: '',
@@ -462,7 +481,8 @@ export default {
             addressLocality: this.propertyAddressDetails.addressLocality,
             addressRegion: this.propertyAddressDetails.addressRegion,
             postalCode: this.propertyAddressDetails.postalCode,
-            streetAddress: this.propertyAddressDetails.streetAddress,
+            address1: this.propertyAddressDetails.address1,
+            address2: this.propertyAddressDetails.address2,
             houseNumber: this.propertyAddressDetails.houseNumber,
             propertyType: this.property,
             PropertyDesc: this.propertyDescription
@@ -478,11 +498,11 @@ export default {
 
         this.addNewPropertyDialog = false;
         this.propertyName = '';
-        this.propertyAddressDetails.addressCountry = '';
         this.propertyAddressDetails.addressLocality = '';
         this.propertyAddressDetails.addressRegion = '';
         this.propertyAddressDetails.postalCode = '';
-        this.propertyAddressDetails.streetAddress = '';
+        this.propertyAddressDetails.address1 = '';
+        this.propertyAddressDetails.address2 = '';
         this.propertyAddressDetails.houseNumber = '';
         this.property.id = '';
         this.property.value = '';

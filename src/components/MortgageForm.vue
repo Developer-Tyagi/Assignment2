@@ -1,17 +1,19 @@
 <template>
   <div>
     <!-- Mortgage Form -->
-    <div class="custom-select" v-if="!mortgage[0].value">
-      <q-btn
-        flat
-        no-caps
-        class="select-text"
-        @click="mortgageList = true"
-        :disable="isOfflineClientEdit"
-      >
-        Click for choosing a Mortgage
-      </q-btn>
-    </div>
+
+    <q-btn
+      style="width:100%"
+      no-caps
+      outline
+      class="custom-select"
+      v-if="!mortgage[0].value"
+      rounded
+      @click="mortgageList = true"
+      :disable="isOfflineClientEdit"
+    >
+      Click for choosing a Mortgage
+    </q-btn>
 
     <div>
       <q-card
@@ -21,17 +23,19 @@
         class="q-my-md q-pa-md"
       >
         <div class="text-bold">{{ mortgage[0].value }}</div>
-        <div v-if="mortgage[0].address && mortgage[0].address.streetAddress">
+        <div v-if="mortgage[0].address && mortgage[0].address.address1">
           <div>
             {{ mortgage[0].address ? mortgage[0].address.houseNumber : '-' }}
-            ,
             {{
-              mortgage[0].address.streetAddress
-                ? mortgage[0].address.streetAddress
-                : '-'
+              mortgage[0].address.address1 ? mortgage[0].address.address1 : '-'
             }}
           </div>
           <div>
+            {{
+              mortgage[0].address.address2 ? mortgage[0].address.address2 : '-'
+            }}
+          </div>
+          <div class="row">
             {{
               mortgage[0].address.addressLocality
                 ? mortgage[0].address.addressLocality
@@ -40,17 +44,9 @@
             ,
             {{
               mortgage[0].address.addressRegion
-                ? mortgage[0].address.addressRegion
+                ? toGetStateShortName(mortgage[0].address.addressRegion)
                 : '-'
             }}
-          </div>
-          <div class="row">
-            {{
-              mortgage[0].address.addressCountry
-                ? mortgage[0].address.addressCountry
-                : '-'
-            }}
-            -
             {{
               mortgage[0].address.postalCode
                 ? mortgage[0].address.postalCode
@@ -82,26 +78,31 @@
 
     <q-input
       dense
+      borderless
+      class="input-style input-field"
       v-model="mortgage[0].loanNumber"
       label="Loan Number"
       :disable="isOfflineClientEdit"
     />
     <q-input
       dense
+      borderless
+      class="input-style input-field"
       v-model="mortgage[0].accountNumber"
       label="Account Number"
       :disable="isOfflineClientEdit"
     />
-    <div class="form-heading">Notes</div>
-    <textarea
-      rows="5"
-      class="full-width"
+    <div class="q-ml-xs q-mt-sm form-heading">Notes</div>
+    <q-input
+      type="textarea"
+      rows="3"
+      class="q-pt-md required input-style input-overlay full-width"
+      borderless
       v-model="mortgage[0].notes"
       style="resize: none"
     />
-    <div class="row" v-if="isThereSecondMortgage">
+    <div class="row q-mt-sm q-ml-xs" v-if="isThereSecondMortgage">
       <span class="form-heading"> Is there a 2nd mortgage on the home? </span>
-
       <q-toggle
         class="q-ml-auto"
         v-model="isSecondMortgageHome"
@@ -110,14 +111,15 @@
       />
     </div>
     <div v-if="isSecondMortgageHome">
-      <div
-        class="custom-select"
+      <q-btn
         @click="onChooseMortgageClick(1)"
         v-if="!mortgage[1].value"
+        rounded
+        outline
+        style="width:100%"
+        class="q-mt-md"
+        >Click for choosing a Second Mortgage</q-btn
       >
-        <div class="select-text">Click for choosing a Second Mortgage</div>
-      </div>
-
       <div>
         <q-card
           bordered
@@ -126,17 +128,24 @@
           class="q-my-md q-pa-md"
         >
           <div class="text-bold">{{ mortgage[1].value }}</div>
-          <div v-if="mortgage[1].address && mortgage[1].address.streetAddress">
+          <div v-if="mortgage[1].address && mortgage[1].address.address1">
             <div>
               {{ mortgage[1].address ? mortgage[1].address.houseNumber : '-' }}
               ,
               {{
-                mortgage[1].address.streetAddress
-                  ? mortgage[1].address.streetAddress
+                mortgage[1].address.address1
+                  ? mortgage[1].address.address1
                   : '-'
               }}
             </div>
             <div>
+              {{
+                mortgage[1].address.address2
+                  ? mortgage[1].address.address2
+                  : '-'
+              }}
+            </div>
+            <div class="row">
               {{
                 mortgage[1].address.addressLocality
                   ? mortgage[1].address.addressLocality
@@ -145,17 +154,10 @@
               ,
               {{
                 mortgage[1].address.addressRegion
-                  ? mortgage[1].address.addressRegion
+                  ? toGetStateShortName(mortgage[1].address.addressRegion)
                   : '-'
               }}
-            </div>
-            <div class="row">
-              {{
-                mortgage[1].address.addressCountry
-                  ? mortgage[1].address.addressCountry
-                  : '-'
-              }}
-              -
+
               {{
                 mortgage[1].address.postalCode
                   ? mortgage[1].address.postalCode
@@ -185,29 +187,35 @@
 
       <q-input
         dense
+        borderless
+        class="input-style input-field"
         v-model="mortgage[1].loanNumber"
         label="Loan Number"
         :disable="isOfflineClientEdit"
       />
       <q-input
         dense
+        borderless
+        class="input-style input-field"
         v-model="mortgage[1].accountNumber"
         label="Account Number"
         :disable="isOfflineClientEdit"
       />
-      <div class="form-heading">Notes</div>
-      <textarea
+      <div class="q-ml-xs q-mt-sm form-heading">Notes</div>
+      <q-input
+        type="textarea"
+        rows="3"
+        class="q-pt-md required input-style input-overlay full-width"
+        borderless
         v-if="!isOfflineClientEdit"
-        rows="5"
-        class="full-width"
         v-model="mortgage[1].notes"
         style="resize: none"
       />
-      <textarea
+      <q-input
         v-if="isOfflineClientEdit"
         disabled
         rows="5"
-        class="full-width"
+        class="textarea full-width"
         v-model="mortgage[1].notes"
         style="resize: none"
       />
@@ -258,6 +266,7 @@ import { mapGetters, mapActions } from 'vuex';
 import { constants } from '@utils/constant';
 import { showPhoneNumber } from '@utils/clickable';
 import AddMortgage from 'components/AddMortgage';
+import { toGetStateShortName } from '@utils/common';
 export default {
   name: 'Mortgage',
   components: {
@@ -290,6 +299,7 @@ export default {
   },
   methods: {
     showPhoneNumber,
+    toGetStateShortName,
     ...mapActions(['']),
     onSelectMortgageClick() {
       this.mortgage.mortgageList = true;
@@ -321,7 +331,6 @@ export default {
       this.mortgage[this.selectedIndex].phone = mortgage.phoneNumber
         ? mortgage.phoneNumber[0].number
         : '';
-
       this.mortgageList = false;
       this.addMortgageDialog = false;
     },

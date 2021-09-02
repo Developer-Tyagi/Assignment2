@@ -3,20 +3,18 @@
     <!-- Insurance Info -->
     <div>
       <q-card class="q-pa-sm">
+        <span class="text-bold   q-mb-sm q-mt-sm">Carrier Info</span>
+
         <div
-          class="custom-select"
           v-if="!insuranceDetails.carrierName && !policyInfo"
+          class="select-text custom-select q-mt-sm "
+          size="md"
+          :disabled="isOfflineClientEdit"
+          @click="carriersListDialog = true"
         >
-          <q-btn
-            class="select-text"
-            flat
-            no-caps
-            :disabled="isOfflineClientEdit"
-            @click="carriersListDialog = true"
-          >
-            Click for choosing a carrier
-          </q-btn>
+          Click for choosing a carrier
         </div>
+
         <div>
           <q-card
             bordered
@@ -29,8 +27,7 @@
             </div>
             <div
               v-if="
-                insuranceDetails.address &&
-                  insuranceDetails.address.streetAddress
+                insuranceDetails.address && insuranceDetails.address.address1
               "
             >
               <div>
@@ -39,14 +36,21 @@
                     ? insuranceDetails.address.houseNumber
                     : '-'
                 }}
-                ,
+
                 {{
-                  insuranceDetails.address.streetAddress
-                    ? insuranceDetails.address.streetAddress
+                  insuranceDetails.address.address1
+                    ? insuranceDetails.address.address1
                     : '-'
                 }}
               </div>
               <div>
+                {{
+                  insuranceDetails.address.address2
+                    ? insuranceDetails.address.address2
+                    : '-'
+                }}
+              </div>
+              <div class="row">
                 {{
                   insuranceDetails.address.addressLocality
                     ? insuranceDetails.address.addressLocality
@@ -55,17 +59,11 @@
                 ,
                 {{
                   insuranceDetails.address.addressRegion
-                    ? insuranceDetails.address.addressRegion
+                    ? toGetStateShortName(
+                        insuranceDetails.address.addressRegion
+                      )
                     : '-'
                 }}
-              </div>
-              <div class="row">
-                {{
-                  insuranceDetails.address.addressCountry
-                    ? insuranceDetails.address.addressCountry
-                    : '-'
-                }}
-                -
                 {{
                   insuranceDetails.address.postalCode
                     ? insuranceDetails.address.postalCode
@@ -100,7 +98,8 @@
           v-model="insuranceDetails.policyNumber"
           label="Policy Number"
           dense
-          class="required"
+          borderless
+          class="required input-style input-field"
           lazy-rules
           :rules="[
             val => (val && val.length > 0) || 'Please fill the policy number'
@@ -108,7 +107,7 @@
           :disable="isOfflineClientEdit"
         />
         <div class="row" v-if="!policyInfo">
-          <p class="q-my-auto form-heading">Has claim been filed?</p>
+          <p class="q-my-auto q-ml-xs form-heading">Has claim been filed?</p>
           <q-toggle
             class="q-ml-auto"
             v-model="insuranceDetails.hasClaimBeenFilledToggle"
@@ -120,7 +119,8 @@
           v-model="insuranceDetails.insuranceClaimNumber"
           label="Insurance Claim Number"
           dense
-          class="input-extra-padding"
+          borderless
+          class="required input-style input-field input-extra-padding"
           lazy-rules
           :rules="[
             val =>
@@ -130,7 +130,7 @@
           :disable="isOfflineClientEdit"
         />
         <div class="row">
-          <p class="q-my-auto form-heading">
+          <p class="q-my-auto q-ml-xs  form-heading">
             Is this is a Forced-Placed policy?
           </p>
 
@@ -141,8 +141,8 @@
           />
         </div>
       </q-card>
-      <q-card class="q-pa-sm q-mt-sm">
-        <span class="form-heading">Policy Effective date</span>
+      <q-card class="q-pa-md q-mt-sm">
+        <span class="form-heading q-ml-xs ">Policy Effective date</span>
 
         <div class="full-width">
           <q-input
@@ -151,7 +151,8 @@
             mask="##/##/####"
             label="MM/DD/YYYY"
             lazy-rules
-            class="required"
+            borderless
+            class="required input-style input-field input-extra-padding"
             :rules="[
               val =>
                 (val && val.length > 0 && validateDate(val)) || 'Invalid date!'
@@ -181,7 +182,9 @@
             </template>
           </q-input>
         </div>
-        <span class="form-heading">Policy Expiry date </span>
+        <div class="q-pt-md">
+          <span class="form-heading q-ml-xs">Policy Expiry date </span>
+        </div>
         <div class="full-width">
           <q-input
             dense
@@ -189,7 +192,8 @@
             mask="##/##/####"
             label="MM/DD/YYYY"
             lazy-rules
-            class="required"
+            borderless
+            class="required input-style input-field"
             :rules="[
               val =>
                 (val && val.length > 0 && validateDate(val)) || 'Invalid date!'
@@ -221,7 +225,8 @@
         </div>
 
         <q-select
-          class="required"
+          borderless
+          class="required input-style input-field input-extra-padding"
           dense
           behavior="menu"
           v-model="insuranceDetails.policyCategory.value"
@@ -245,7 +250,8 @@
           :disable="isOfflineClientEdit"
         />
         <q-select
-          class="required"
+          borderless
+          class="required input-style input-field "
           dense
           behavior="menu"
           v-model="insuranceDetails.policy.value"
@@ -266,18 +272,19 @@
           :disable="isOfflineClientEdit"
         />
       </q-card>
-      <q-card class="q-pa-sm q-mt-sm">
+      <q-card class="q-pa-md q-mt-sm">
         <div class="row" style="align-items: center">
           <span class="form-heading">Dwelling Limit (A)</span>
           <q-input
             dense
             mask="#.#"
+            borderless
+            class="required input-style input-field input-extra-padding"
             type="number"
             v-model.number="insuranceDetails.dwellingLimitA"
             placeholder="Dwelling Limit (A)"
             style="margin-left: auto; width: 50%"
             prefix="$"
-            class="input-extra-padding"
             :disable="isOfflineClientEdit"
           />
         </div>
@@ -286,12 +293,13 @@
           <q-input
             mask="#.#"
             type="number"
+            borderless
+            class="required input-style input-field input-extra-padding"
             v-model.number="insuranceDetails.otherStructureB"
             placeholder="Other Structure (B)"
             prefix="$"
             style="margin-left: auto; width: 50%"
             dense
-            class="input-extra-padding"
             :disable="isOfflineClientEdit"
           />
         </div>
@@ -300,12 +308,13 @@
           <q-input
             mask="#.#"
             type="number"
+            borderless
+            class="required input-style input-field input-extra-padding"
             v-model.number="insuranceDetails.contentsLimit"
             placeholder="Contents Limit (C)"
             prefix="$"
             style="margin-left: auto; width: 50%"
             dense
-            class="input-extra-padding"
             :disable="isOfflineClientEdit"
           />
         </div>
@@ -314,12 +323,13 @@
           <q-input
             mask="#.#"
             type="number"
+            borderless
+            class="required input-style input-field input-extra-padding"
             v-model.number="insuranceDetails.lossOfUSD"
             placeholder="Loss of Use Limit (D)"
             prefix="$"
             style="margin-left: auto; width: 50%"
             dense
-            class="input-extra-padding"
             :disable="isOfflineClientEdit"
           />
         </div>
@@ -333,7 +343,8 @@
             prefix="$"
             style="margin-left: auto; width: 50%"
             dense
-            class="input-extra-padding"
+            borderless
+            class="required input-style input-field input-extra-padding"
             :disable="isOfflineClientEdit"
           />
         </div>
@@ -347,7 +358,8 @@
             prefix="$"
             style="margin-left: auto; width: 50%"
             dense
-            class="input-extra-padding"
+            borderless
+            class="required input-style input-field input-extra-padding"
             :disable="isOfflineClientEdit"
           />
         </div>
@@ -364,7 +376,8 @@
             prefix="$"
             style="margin-left: auto; width: 50%"
             dense
-            class="input-extra-padding"
+            borderless
+            class="required input-style input-field input-extra-padding"
             :disable="isOfflineClientEdit"
           />
         </div>
@@ -391,7 +404,8 @@
               prefix="$"
               style="margin-left: auto; width: 50%"
               dense
-              class="input-extra-padding"
+              borderless
+              class="required input-style input-field input-extra-padding"
               :disable="isOfflineClientEdit"
             />
           </div>
@@ -407,7 +421,8 @@
               prefix="$"
               style="margin-left: auto; width: 50%"
               dense
-              class="input-extra-padding"
+              borderless
+              class="required input-style input-field input-extra-padding"
               :disable="isOfflineClientEdit"
             />
           </div>
@@ -421,7 +436,8 @@
               prefix="$"
               style="margin-left: auto; width: 50%"
               dense
-              class="input-extra-padding"
+              borderless
+              class="required input-style input-field input-extra-padding"
               :disable="isOfflineClientEdit"
             />
           </div>
@@ -435,7 +451,8 @@
               prefix="$"
               style="margin-left: auto; width: 50%"
               dense
-              class="input-extra-padding"
+              borderless
+              class="required input-style input-field input-extra-padding"
               :disable="isOfflineClientEdit"
             />
           </div>
@@ -452,22 +469,25 @@
               prefix="$"
               style="margin-left: auto; width: 50%"
               dense
-              class="input-extra-padding"
+              borderless
+              class="required input-style input-field input-extra-padding"
               :disable="isOfflineClientEdit"
             />
           </div>
         </div>
       </q-card>
-      <q-card class="q-pa-sm q-mt-sm">
-        <span class="form-heading">Reason for Limits/Denial</span>
+      <q-card class="q-pa-md q-mt-sm">
+        <span class="form-heading q-ml-xs">Reason for Limits/Denial</span>
         <div class="floating-label">
-          <textarea
+          <q-input
+            type="textarea"
+            borderless
+            class="required input-style full-width"
             v-if="!isOfflineClientEdit"
             rows="5"
-            class="full-width"
             v-model="insuranceDetails.reasonsOfLD"
             style="resize: none"
-          ></textarea>
+          ></q-input>
           <textarea
             v-if="isOfflineClientEdit"
             disabled
@@ -530,6 +550,7 @@ import { validateDate } from '@utils/validation';
 import { mapGetters, mapActions } from 'vuex';
 import { successMessage } from '@utils/validation';
 import AddCarrier from 'components/AddCarrier';
+import { toGetStateShortName } from '@utils/common';
 import { date } from 'quasar';
 import {
   onPhoneNumberClick,
@@ -580,6 +601,7 @@ export default {
     onPhoneNumberClick,
     onEmailClick,
     showPhoneNumber,
+    toGetStateShortName,
 
     //Add Vendor close list
 
@@ -646,3 +668,8 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+.input-field {
+  height: 55px;
+}
+</style>
