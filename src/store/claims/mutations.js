@@ -32,7 +32,7 @@ export async function setOfflineClaims(state) {
       count++;
     }
   }
-  this.totalClaim = count;
+
   state.totalClaim = count;
 }
 
