@@ -15,6 +15,24 @@ export async function setClients(state, clientsData) {
 }
 
 export async function setOfflineClients(state) {
+  let claims = await getCollection('claims').toArray();
+  let clients = await getCollection('clients').toArray();
+  var claimsForClient;
+  clients.forEach(client => {
+    if (client.offline) {
+      claimsForClient = claims.filter(claim => claim.client.id === client.id);
+      localDB.clients
+        .where('id')
+        .equals(client.id)
+        .modify({
+          meta: {
+            openClaims: claimsForClient.length,
+            totalClaims: claimsForClient.length
+          }
+        });
+    }
+  });
+
   state.clients = await getCollection('clients').toArray();
   state.clients.sort(function(a, b) {
     return new Date(b.updated).getTime() - new Date(a.updated).getTime();

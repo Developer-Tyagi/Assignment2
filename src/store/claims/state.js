@@ -30,7 +30,6 @@ export default function() {
     proofOfLoss: {},
     estimator: {},
     claimPOLDocument: {},
-    actors: [],
-    totalClaim: 0
+    actors: []
   };
 }
