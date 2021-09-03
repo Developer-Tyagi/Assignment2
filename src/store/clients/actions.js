@@ -202,7 +202,11 @@ export async function addClientLocal({ dispatch }, payload) {
       id: makeId(),
       propertyID: makeId(),
       created: date.formatDate(Date.now(), constants.UTCFORMAT),
-      updated: date.formatDate(Date.now(), constants.UTCFORMAT)
+      updated: date.formatDate(Date.now(), constants.UTCFORMAT),
+      meta: {
+        totalClaims: '',
+        openClaims: ''
+      }
     };
 
     await localDB.clients.add(client);

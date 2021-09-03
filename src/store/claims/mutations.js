@@ -21,19 +21,6 @@ export async function setOfflineClaims(state) {
   state.claims.sort(function(a, b) {
     return new Date(b.updated).getTime() - new Date(a.updated).getTime();
   });
-  let offlineClaims = state.claims;
-  offlineClaims = offlineClaims.filter(claim => claim.offline);
-  let offlineClients = await getCollection('clients').toArray();
-  offlineClients = offlineClients.filter(client => client.offline);
-
-  let count = 0;
-  for (var index = 0; index < offlineClaims.length; index++) {
-    if (offlineClaims[index].client.id == offlineClients[index].id) {
-      count++;
-    }
-  }
-
-  state.totalClaim = count;
 }
 
 export function setMortgage(state, mortgage) {
@@ -183,7 +170,4 @@ export function setEstimator(state, estimator) {
 }
 export function setAllActors(state, actors) {
   state.actors = { ...actors.attributes.actors };
-}
-export function setOfflineOpenClaimValue(state, totalClaim) {
-  state.totalClaim = totalClaim;
 }
