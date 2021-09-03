@@ -289,8 +289,7 @@
           </div>
           <q-btn
             label="Save"
-            color="primary"
-            class="button-width-90 text-capitalize"
+            class="single-next-button-style text-capitalize"
             size="'xl'"
             @click="onClickSave"
           ></q-btn>

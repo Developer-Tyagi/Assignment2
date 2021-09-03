@@ -96,7 +96,7 @@
           <q-btn
             label="Save"
             color="primary"
-            class="button-width-90"
+            class="single-next-button-style"
             @click="onSaveButtonClick"
             size="'xl'"
           />

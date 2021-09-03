@@ -252,20 +252,18 @@
             </div>
           </div>
         </q-card-section>
-        <div class="row justify-center q-pa-md">
-          <div>
+        <div class="row justify-center">
+          <div class="col-8">
             <q-btn
-              color="primary"
               label="Clear"
-              class="q-mx-lg"
+              class="back-button-style"
+              padding="md"
               @click="clear"
             />
-          </div>
-          <div>
             <q-btn
-              color="primary"
+              padding="md"
               label="Save"
-              class="q-mx-lg"
+              class="next-button-style"
               @click="onSubmit(tab)"
             />
           </div>
@@ -324,10 +322,10 @@
           </div>
           <div class="row justify-center">
             <q-btn
-              color="primary"
+              class="single-next-button-style"
               label="Save"
               @click="onSaveTemplate"
-              class="align-content-center"
+              style="width:20%"
             />
           </div>
         </div>

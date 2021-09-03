@@ -356,7 +356,7 @@
         <q-btn
           label="Save"
           color="primary"
-          class="button-width-90"
+          class="single-next-button-style"
           @click="onSaveButtonClick('claimDeadline')"
           size="'xl'"
         />
@@ -468,7 +468,7 @@
         <q-btn
           label="Save"
           color="primary"
-          class="button-width-90"
+          class="single-next-button-style"
           @click="onSaveButtonClick('claimSummary')"
           size="'xl'"
         />
@@ -541,7 +541,7 @@
         <q-btn
           label="Save"
           color="primary"
-          class="button-width-90"
+          class="single-next-button-style"
           @click="onSaveButtonClick('editClaimTimeline')"
           size="'xl'"
         />
@@ -669,7 +669,7 @@
         <q-btn
           label="Save"
           color="primary"
-          class="button-width-90"
+          class="single-next-button-style"
           @click="onSaveButtonClick('lossDetailsBox')"
           size="'xl'"
         />

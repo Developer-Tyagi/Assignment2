@@ -161,8 +161,7 @@
         <q-btn
           @click="onSave"
           label="Add Personnel"
-          color="primary"
-          class="button-width-90 q-mt-lg rounded"
+          class="single-next-button-style q-mt-lg rounded"
           size="'xl'"
         />
       </q-card>
@@ -325,8 +324,7 @@
         <q-btn
           @click="onEditSave"
           label="Save"
-          color="primary"
-          class="button-width-90 q-mt-lg"
+          class="single-next-button-style q-mt-lg"
           size="'xl'"
         />
       </div>

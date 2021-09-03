@@ -26,8 +26,7 @@
         <q-btn
           @click="onSaveButtonClick"
           label="Save"
-          color="primary"
-          class="button-width-90"
+          class="single-next-button-style"
           size="'xl'"
         ></q-btn>
       </q-card>
@@ -58,8 +57,7 @@
         <q-btn
           @click="onEditSaveButtonClick"
           label="Save"
-          color="primary"
-          class="button-width-90"
+          class="single-next-button-style"
           size="'xl'"
         ></q-btn>
       </q-card>
