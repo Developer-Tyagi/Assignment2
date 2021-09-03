@@ -522,7 +522,7 @@
                 @click="clearFilter()"
                 flat
                 dense
-                style="font-weight: 400"
+                label="Clear"
               ></q-btn>
               <!-- Commented for some time -->
               <!-- <q-btn
