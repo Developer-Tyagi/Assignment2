@@ -37,10 +37,16 @@
                 </div>
                 <div class="row">
                   <span>
-                    {{ client['meta'] ? client['meta']['totalClaims'] : 1 }}
+                    {{
+                      client['meta']
+                        ? client['meta']['totalClaims']
+                        : totalClaim
+                    }}
                     Total Claims /
-                    {{ client['meta'] ? client['meta']['openClaims'] : 1 }} Open
-                    Claim
+                    {{
+                      client['meta'] ? client['meta']['openClaims'] : totalClaim
+                    }}
+                    Open Claim
                   </span>
                 </div>
                 <div class="row">
@@ -118,7 +124,9 @@ export default {
       'selectedLead',
       'isOnline',
       'editSelectedClient',
-      ' isOfflineClientEdit'
+      ' isOfflineClientEdit',
+      'totalClaim',
+      'claims'
     ])
   },
 
@@ -128,9 +136,10 @@ export default {
       name: ''
     };
     this.getClients(payload);
+    this.getClaims();
   },
   methods: {
-    ...mapActions(['getClients', 'getSingleClientDetails']),
+    ...mapActions(['getClients', 'getSingleClientDetails', 'getClaims']),
     ...mapMutations([
       'setSelectedClient',
       'setSelectedClientOffline',
