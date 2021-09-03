@@ -28,7 +28,7 @@ export async function setOfflineClaims(state) {
 
   let count = 0;
   for (var index = 0; index < offlineClaims.length; index++) {
-    if (offlineClaims[0].client.id == offlineClients[0].id) {
+    if (offlineClaims[index].client.id == offlineClients[index].id) {
       count++;
     }
   }
