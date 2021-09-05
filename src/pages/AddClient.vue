@@ -1260,6 +1260,7 @@ export default {
       },
       mortgageInfo: [
         {
+          isSecondMortgageHome: false,
           id: '',
           value: '',
           loanNumber: '',
@@ -1996,7 +1997,14 @@ export default {
           index < this.selectedClaim.mortgageInfo.length;
           index++
         ) {
+          if (this.mortgageInfo[1]) {
+            if (this.selectedClaim.mortgageInfo[0].isSecondMortgageHome) {
+              this.mortgageInfo[0].isSecondMortgageHome = true;
+            }
+          }
+
           this.mortgageInfo[index] = this.selectedClaim.mortgageInfo[index];
+          console.log(this.selectedClaim.mortgageInfo, 111);
         }
       }
       // expert vendor info pre-filling
