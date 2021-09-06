@@ -214,13 +214,13 @@
           </div>
         </q-form>
       </div>
-      <div class=" rounded-footer">
+      <div class="row justify-center">
         <q-btn
           color="primary"
-          class="button-width-90 q-mt-md rounded text-capitalize"
+          class=" q-mt-md single-next-button-style text-capitalize"
           @click="onAddVendorButtonClick"
           size="'xl'"
-          style="z-index:20000;"
+          style="z-index:20000; width:90%"
           :label="isEdit ? 'SAVE' : 'Add Vendor'"
         >
         </q-btn>

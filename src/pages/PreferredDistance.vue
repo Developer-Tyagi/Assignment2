@@ -14,18 +14,22 @@
           color="light-blue"
           class="full-width"
         />
-        <q-btn color="light-blue" label="SAVE" class="full-width"></q-btn>
+        <q-btn
+          color="light-blue"
+          label="SAVE"
+          class="single-next-button-style"
+        ></q-btn>
       </div>
     </q-page>
   </q-page-container>
 </template>
 <script>
 export default {
-  name: "PreferredDistance",
+  name: 'PreferredDistance',
   data() {
     return {
-      value: 0,
+      value: 0
     };
-  },
+  }
 };
 </script>

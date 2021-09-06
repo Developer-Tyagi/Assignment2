@@ -179,10 +179,11 @@
           <div></div>
         </q-form>
       </div>
-      <div class="rounded-footer">
+      <div class="row justify-center">
         <q-btn
           color="primary"
-          class="button-width-90 q-mt-md rounded  text-capitalize"
+          style="width:90%"
+          class=" q-mt-md single-next-button-style  text-capitalize"
           @click="onAddMortgageButtonClick"
           size="'xl'"
           :label="isEdit ? 'SAVE' : 'Add Mortgage'"

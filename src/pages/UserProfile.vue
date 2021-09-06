@@ -221,9 +221,9 @@
         </div>
         <div>
           <q-btn
-            color="primary"
             label="Save"
-            class="button-width-90 q-my-lg"
+            size="md"
+            class="single-next-button-style q-mt-lg"
             @click="onSaveEditedButton"
           />
         </div>

@@ -479,7 +479,7 @@
           <q-btn
             color="primary"
             label="Save"
-            class="align-content-center col-2 q-my-lg"
+            class="single-next-button-style col-6 q-my-lg"
             @click="onSaveEditedButton"
           />
         </div>
@@ -550,7 +550,7 @@
           <q-btn
             color="primary"
             label="Save"
-            class="align-content-center col-2 q-my-lg"
+            class=" single-next-button-style col-6 q-my-lg"
             @click="onSaveEditedButtonOrganization"
           />
         </div>
@@ -1063,7 +1063,7 @@
           <q-btn
             color="primary"
             label="Save"
-            class="align-content-center col-2 q-my-lg"
+            class="single-next-button-style col-6 q-my-lg"
             @click="onClickSaveButton"
           />
         </div>

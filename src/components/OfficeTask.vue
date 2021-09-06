@@ -147,13 +147,16 @@
             </div>
           </q-form>
         </div>
-        <q-btn
-          label="Save"
-          color="primary"
-          class="button-width-90"
-          size="'xl'"
-          @click="addTask()"
-        />
+        <div class="row justify-center">
+          <q-btn
+            label="Save"
+            style="width:90%"
+            color="primary"
+            class="single-next-button-style"
+            size="'xl'"
+            @click="addTask()"
+          />
+        </div>
       </q-card>
     </q-dialog>
   </div>

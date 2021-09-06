@@ -212,7 +212,7 @@
           <q-btn
             label="Save"
             color="primary"
-            class="button-width-90 text-capitalize"
+            class="single-next-button-style text-capitalize"
             @click="addPPDamagedItems()"
             size="'xl'"
           ></q-btn>

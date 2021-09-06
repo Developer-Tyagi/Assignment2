@@ -431,8 +431,7 @@
 
           <q-btn
             label="Save"
-            color="primary"
-            class="button-width-90"
+            class="single-next-button-style"
             @click="onSaveButtonClick('insuranceInfoDialog')"
             size="'xl'"
           />
@@ -523,9 +522,8 @@
                 @click="clearFilter()"
                 flat
                 dense
-                style="font-weight: 400"
-                >Clear</q-btn
-              >
+                label="Clear"
+              ></q-btn>
               <!-- Commented for some time -->
               <!-- <q-btn
                 :disabled="isAssignDisabled"
@@ -649,8 +647,7 @@
         <q-btn
           @click="onSaveCarrierPersonnel"
           label="Save"
-          color="primary"
-          class="button-width-90 q-mt-lg"
+          class="single-next-button-style"
           size="'xl'"
         />
       </q-card>
@@ -677,8 +674,7 @@
         <q-btn
           @click="onEditSaveCarrierPersonnel"
           label="Save"
-          color="primary"
-          class="button-width-90 q-mt-lg"
+          class="single-next-button-style"
           size="'xl'"
         />
       </q-card>
