@@ -101,8 +101,7 @@
           </div>
           <q-btn
             label="save"
-            color="primary"
-            class="full-width q-mt-auto text-capitalize"
+            class="single-next-button-style q-mt-auto text-capitalize"
             @click="onAddInspection"
             size="'xl'"
           ></q-btn>

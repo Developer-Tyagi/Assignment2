@@ -442,7 +442,7 @@
           :disable="payments.remainingAmount < 0"
           label="Save"
           color="primary"
-          class="button-width-90"
+          class="single-next-button-style"
           @click="onClickSaveEditPayment"
           size="'xl'"
         />
@@ -598,7 +598,7 @@
           label="Save"
           :disable="payments.remainingAmount < 0"
           color="primary"
-          class="button-width-90"
+          class="single-next-button-style"
           @click="onClickSavePayment"
           size="'xl'"
         />
@@ -731,7 +731,7 @@
         <q-btn
           label="Save"
           color="primary"
-          class="button-width-90"
+          class="single-next-button-style"
           size="'xl'"
           @click="addExpensesSaveClick"
         />
@@ -1161,7 +1161,7 @@
         <q-btn
           label="Save"
           color="primary"
-          class="button-width-90"
+          class="single-next-button-style"
           size="'xl'"
           @click="onSaveDisbursement"
         />

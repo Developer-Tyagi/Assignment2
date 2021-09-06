@@ -39,8 +39,8 @@
                   <span>
                     {{ client['meta'] ? client['meta']['totalClaims'] : 0 }}
                     Total Claims /
-                    {{ client['meta'] ? client['meta']['openClaims'] : 0 }} Open
-                    Claim
+                    {{ client['meta'] ? client['meta']['openClaims'] : 0 }}
+                    Open Claim
                   </span>
                 </div>
                 <div class="row">

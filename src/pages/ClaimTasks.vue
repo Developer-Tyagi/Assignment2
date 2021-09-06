@@ -117,7 +117,7 @@
         <q-btn
           label="Save"
           color="primary"
-          class="button-width-90"
+          class="single-next-button-style"
           size="'xl'"
           @click="addTask()"
         />

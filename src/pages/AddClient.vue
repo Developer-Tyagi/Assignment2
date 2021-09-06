@@ -2590,6 +2590,7 @@ export default {
           type: {
             ...this.client
           },
+
           insuredInfo: {
             primary: {
               honorific: {

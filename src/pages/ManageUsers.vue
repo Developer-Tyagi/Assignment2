@@ -208,9 +208,8 @@
 
         <div class="row justify-center">
           <q-btn
-            color="primary"
             label="submit and Proceed"
-            class="q-mb-lg"
+            class="single-next-button-style q-mb-md col-6"
             @click="onSubmit"
           />
         </div>
@@ -269,11 +268,10 @@
           </q-card>
         </div>
 
-        <div class="row justify-center">
+        <div class="row justify-center q-mb-md">
           <q-btn
-            color="primary"
             label="Set Role"
-            class="q-mb-lg"
+            class="single-next-button-style col-6"
             @click="onSaveChangeRole"
           />
         </div>
@@ -521,9 +519,8 @@
         </div>
         <div class="row justify-center">
           <q-btn
-            color="primary"
             label="Save"
-            class="align-content-center col-2 q-my-lg"
+            class="single-next-button-style q-my-lg"
             @click="onSaveEditedButton"
           />
         </div>
