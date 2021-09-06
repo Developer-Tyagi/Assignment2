@@ -18,8 +18,10 @@
       name="more_vert"
       color="white"
     />
-    <div class="listing-height" id="scroll-bottom">
-      <ClaimDetail />
+    <div class="listing-height " id="scroll-bottom">
+      <div class="q-ml-md">
+        <ClaimDetail />
+      </div>
       <q-list
         bordered
         class="q-mt-xs"

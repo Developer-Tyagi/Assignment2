@@ -172,12 +172,6 @@ export default {
     };
   },
   created() {
-    var index = getCurrentUser().roles.findIndex(
-      std => std.machineValue === 'vendor' || std.machineValue === 'estimator'
-    );
-    if (index < 0) {
-      this.isClickable = true;
-    }
     this.getClaims();
   },
   methods: {
