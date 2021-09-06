@@ -8,13 +8,13 @@
               <img src="~assets/add_LEADS.svg" />
             </q-icon>
             <div
-              class="text-weight-bolder text-subtitle1 text-style q-my-sm q-pl-lg"
+              class="text-weight-bolder text-subtitle1 text-icons-style q-my-sm q-pl-lg"
             >
               Add Leads
             </div>
             <q-space />
             <q-icon
-              class="q-my-sm q-mr-md icon-color-styles"
+              class="q-my-sm q-mr-md text-icons-style"
               size="sm"
               name="more_vert"
             />
@@ -26,13 +26,13 @@
               <img src="~assets/add_CLIENTS.svg" />
             </q-icon>
             <div
-              class="text-weight-bolder text-subtitle1 text-style q-my-sm q-pl-lg"
+              class="text-weight-bolder text-subtitle1 text-icons-style q-my-sm q-pl-lg"
             >
               Add Clients
             </div>
             <q-space />
             <q-icon
-              class="q-my-sm q-mr-md icon-color-styles"
+              class="q-my-sm q-mr-md text-icons-style"
               size="sm"
               name="more_vert"
             />
@@ -44,13 +44,13 @@
               <img src="~assets/add_mortgage.svg" />
             </q-icon>
             <div
-              class="text-weight-bolder text-subtitle1 text-style q-my-sm q-pl-lg"
+              class="text-weight-bolder text-subtitle1 text-icons-style q-my-sm q-pl-lg"
             >
               Add Mortgages
             </div>
             <q-space />
             <q-icon
-              class="q-my-sm q-mr-md icon-color-styles"
+              class="q-my-sm q-mr-md text-icons-style"
               size="sm"
               name="more_vert"
             />
@@ -62,13 +62,13 @@
               <img src="~assets/add_carriers.svg" />
             </q-icon>
             <div
-              class="text-weight-bolder text-subtitle1 text-style q-my-sm q-pl-lg"
+              class="text-weight-bolder text-subtitle1 text-icons-style q-my-sm q-pl-lg"
             >
               Add Carriers
             </div>
             <q-space />
             <q-icon
-              class="q-my-sm q-mr-md icon-color-styles"
+              class="q-my-sm q-mr-md text-icons-style"
               size="sm"
               name="more_vert"
             />
@@ -80,13 +80,13 @@
               <img src="~assets/add_claims.svg" />
             </q-icon>
             <div
-              class="text-weight-bolder text-subtitle1 text-style q-my-sm q-pl-lg"
+              class="text-weight-bolder text-subtitle1 text-icons-style q-my-sm q-pl-lg"
             >
               Add Claims
             </div>
             <q-space />
             <q-icon
-              class="q-my-sm q-mr-md icon-color-styles"
+              class="q-my-sm q-mr-md text-icons-style"
               size="sm"
               name="more_vert"
             />
