@@ -1,5 +1,5 @@
 <template>
-  <q-card class="bg-grey-4 text-primary" style="width: 550px; height: 245px">
+  <q-card class="bg-grey-4 " style="width: 550px; height: 245px">
     <div>
       <div class="q-mx-md q-mt-sm">
         <div @click="$router.push('/add-lead')">
@@ -7,11 +7,17 @@
             <q-icon size="sm" class="q-ml-md q-my-sm">
               <img src="~assets/add_LEADS.svg" />
             </q-icon>
-            <p class="text-weight-bolder text-subtitle1 q-my-sm q-pl-lg">
+            <div
+              class="text-weight-bolder text-subtitle1 text-style q-my-sm q-pl-lg"
+            >
               Add Leads
-            </p>
+            </div>
             <q-space />
-            <q-icon class="q-my-sm q-mr-md" size="sm" name="more_vert" />
+            <q-icon
+              class="q-my-sm q-mr-md icon-color-styles"
+              size="sm"
+              name="more_vert"
+            />
           </div>
         </div>
         <div class="q-pt-sm" @click="$router.push('/add-client')">
@@ -19,11 +25,17 @@
             <q-icon size="sm" class="q-ml-md q-my-sm">
               <img src="~assets/add_CLIENTS.svg" />
             </q-icon>
-            <p class="text-weight-bolder text-subtitle1 q-my-sm q-pl-lg">
+            <div
+              class="text-weight-bolder text-subtitle1 text-style q-my-sm q-pl-lg"
+            >
               Add Clients
-            </p>
+            </div>
             <q-space />
-            <q-icon class="q-my-sm q-mr-md" size="sm" name="more_vert" />
+            <q-icon
+              class="q-my-sm q-mr-md icon-color-styles"
+              size="sm"
+              name="more_vert"
+            />
           </div>
         </div>
         <div class="q-pt-sm" @click="$router.push('/mortgages/' + true)">
@@ -31,11 +43,17 @@
             <q-icon size="sm" class="q-ml-md q-my-sm">
               <img src="~assets/add_mortgage.svg" />
             </q-icon>
-            <p class="text-weight-bolder text-subtitle1 q-my-sm q-pl-lg">
+            <div
+              class="text-weight-bolder text-subtitle1 text-style q-my-sm q-pl-lg"
+            >
               Add Mortgages
-            </p>
+            </div>
             <q-space />
-            <q-icon class="q-my-sm q-mr-md" size="sm" name="more_vert" />
+            <q-icon
+              class="q-my-sm q-mr-md icon-color-styles"
+              size="sm"
+              name="more_vert"
+            />
           </div>
         </div>
         <div class="q-pt-sm" @click="$router.push('/carriers/' + true)">
@@ -43,11 +61,17 @@
             <q-icon size="sm" class="q-ml-md q-my-sm">
               <img src="~assets/add_carriers.svg" />
             </q-icon>
-            <p class="text-weight-bolder text-subtitle1 q-my-sm q-pl-lg">
+            <div
+              class="text-weight-bolder text-subtitle1 text-style q-my-sm q-pl-lg"
+            >
               Add Carriers
-            </p>
+            </div>
             <q-space />
-            <q-icon class="q-my-sm q-mr-md" size="sm" name="more_vert" />
+            <q-icon
+              class="q-my-sm q-mr-md icon-color-styles"
+              size="sm"
+              name="more_vert"
+            />
           </div>
         </div>
         <div class="q-pt-sm" @click="$router.push('/add-client')">
@@ -55,11 +79,17 @@
             <q-icon size="sm" class="q-ml-md q-my-sm">
               <img src="~assets/add_claims.svg" />
             </q-icon>
-            <p class="text-weight-bolder text-subtitle1 q-my-sm q-pl-lg">
+            <div
+              class="text-weight-bolder text-subtitle1 text-style q-my-sm q-pl-lg"
+            >
               Add Claims
-            </p>
+            </div>
             <q-space />
-            <q-icon class="q-my-sm q-mr-md" size="sm" name="more_vert" />
+            <q-icon
+              class="q-my-sm q-mr-md icon-color-styles"
+              size="sm"
+              name="more_vert"
+            />
           </div>
         </div>
       </div>
