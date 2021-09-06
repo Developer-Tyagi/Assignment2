@@ -142,7 +142,10 @@
       <q-separator class="q-mt-sm q-mb-sm" />
 
       <div v-if="userRole != 'vendor'">
-        <div :class="{ 'q-ml-lg': userRole == 'estimator' }">
+      <div
+        :class="{ 'q-ml-lg': userRole == 'estimator' || userRole == 'vendor' }"
+      >
+
           <div class="row justify-between">
             <div class=" q-mt-sm form-heading ">Claim Deadlines</div>
             <q-icon
@@ -265,7 +268,10 @@
         </q-card>
       </q-dialog>
       <div v-if="userRole != 'vendor'">
-        <div :class="{ 'q-ml-lg': userRole == 'estimator' }">
+           <div
+        :class="{ 'q-ml-lg': userRole == 'estimator' || userRole == 'vendor' }"
+      >
+
           <div class="row justify-between">
             <div class="form-heading  q-mt-xs ">Loss Details</div>
             <div>
@@ -331,7 +337,10 @@
         <q-separator class="q-mt-sm q-mb-sm" />
       </div>
       <div v-if="userRole != 'vendor'">
-        <div :class="{ 'q-ml-lg': userRole == 'estimator' }">
+   <div
+        :class="{ 'q-ml-lg': userRole == 'estimator' || userRole == 'vendor' }"
+      >
+
           <div v-for="(phase, index) in getSelectedClaim.phases" :key="index">
             <div class="row  justify-between">
               <div class=" q-mt-sm form-heading">Claim Timeline</div>
