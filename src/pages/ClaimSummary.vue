@@ -1,11 +1,9 @@
 <template>
   <q-page>
     <q-icon
-      class="q-mr-sm add-icon"
+      class="add-icon"
       @click="menuItemDialog = true"
       name="more_vert"
-      color="white"
-      size="sm"
       v-if="userRole == 'estimator' || userRole == 'vendor'"
     />
 
@@ -14,390 +12,356 @@
         'mobile-container-page': userRole == 'estimator' || userRole == 'vendor'
       }"
     >
-      <div class="row q-ml-lg">
+      <div class="row q-ml-xs justify-between">
         <div v-if="userRole == 'estimator' || userRole == 'vendor'">
           <ClaimDetail />
         </div>
       </div>
-
-      <q-separator
-        v-if="userRole == 'estimator' || userRole == 'vendor'"
-        class="q-mt-sm q-mb-sm"
-      />
-      <div
-        :class="{ 'q-ml-lg': userRole == 'estimator' || userRole == 'vendor' }"
-      >
-        <div class="form-heading   row">
-          Claim Summary
-          <q-icon
-            v-if="userRole != 'estimator' && userRole != 'vendor'"
-            class="q-ml-auto"
-            name="edit"
-            size="xs"
-            color="primary"
-            @click="onEditClaimSummary"
-          />
+      <div class="form-heading q-ml-sm  row">
+        Claim Summary
+        <q-icon
+          v-if="userRole != 'estimator' && userRole != 'vendor'"
+          class="q-ml-auto"
+          name="edit"
+          size="xs"
+          color="primary"
+          @click="onEditClaimSummary"
+        />
+      </div>
+      <div class="q-mt-md q-ml-sm row">
+        <div class="heading-light q-mt-none col-xs-4 ">
+          File Number
         </div>
-        <div class="q-mt-md  row">
-          <div class="heading-light q-mt-none col-xs-4 ">
-            File Number
-          </div>
-          <div class="column q-ml-lg">
+        <div class="column q-ml-md">
+          {{ getSelectedClaim.fileNumber ? getSelectedClaim.fileNumber : '-' }}
+        </div>
+      </div>
+
+      <div class="q-mt-md q-ml-sm row">
+        <div class="heading-light q-mt-none col-xs-4 ">
+          Claim Number
+        </div>
+        <div class="column q-ml-md">
+          {{ getSelectedClaim.number ? getSelectedClaim.number : '-' }}
+        </div>
+      </div>
+
+      <div class="q-mt-md q-ml-sm row">
+        <div class="heading-light q-mt-none col-xs-4 ">
+          Claim Reason
+        </div>
+        <div class="column q-ml-md" v-if="getSelectedClaim.lossInfo">
+          {{
+            getSelectedClaim.lossInfo.claimReason
+              ? getSelectedClaim.lossInfo.claimReason.value
+              : '-'
+          }}
+        </div>
+      </div>
+      <div class="q-mt-md q-ml-sm row" v-if="userRole != 'vendor'">
+        <div class="heading-light q-mt-none col-xs-4 ">
+          Claim Fees
+        </div>
+        <div class="column q-ml-md" v-if="getSelectedClaim.contractInfo">
+          <div
+            class="col"
+            v-if="getSelectedClaim.contractInfo.fees.type == 'dollar'"
+          >
             {{
-              getSelectedClaim.fileNumber ? getSelectedClaim.fileNumber : '-'
+              getSelectedClaim.contractInfo.fees.rate
+                ? '$' + ' ' + getSelectedClaim.contractInfo.fees.rate
+                : '-'
             }}
           </div>
-        </div>
-
-        <div class="q-mt-md  row">
-          <div class="heading-light q-mt-none col-xs-4 ">
-            Claim Number
-          </div>
-          <div class="column q-ml-lg">
-            {{ getSelectedClaim.number ? getSelectedClaim.number : '-' }}
-          </div>
-        </div>
-
-        <div class="q-mt-md  row">
-          <div class="heading-light q-mt-none col-xs-4 ">
-            Claim Reason
-          </div>
-          <div class="column q-ml-lg" v-if="getSelectedClaim.lossInfo">
+          <div
+            class="col"
+            v-else-if="getSelectedClaim.contractInfo.fees.type == 'update'"
+          >
             {{
-              getSelectedClaim.lossInfo.claimReason
-                ? getSelectedClaim.lossInfo.claimReason.value
+              getSelectedClaim.contractInfo.fees.rate
+                ? getSelectedClaim.contractInfo.fees.rate + ' /hour'
+                : '-'
+            }}
+          </div>
+          <div class="col" v-else>
+            {{
+              getSelectedClaim.contractInfo.fees.rate
+                ? getSelectedClaim.contractInfo.fees.rate + ' %'
                 : '-'
             }}
           </div>
         </div>
-        <div class="q-mt-md  row" v-if="userRole != 'vendor'">
-          <div class="heading-light q-mt-none col-xs-4 ">
-            Claim Fees
-          </div>
-          <div class="column q-ml-lg" v-if="getSelectedClaim.contractInfo">
-            <div
-              class="col"
-              v-if="getSelectedClaim.contractInfo.fees.type == 'dollar'"
-            >
-              {{
-                getSelectedClaim.contractInfo.fees.rate
-                  ? '$' + ' ' + getSelectedClaim.contractInfo.fees.rate
-                  : '-'
-              }}
-            </div>
-            <div
-              class="col"
-              v-else-if="getSelectedClaim.contractInfo.fees.type == 'update'"
-            >
-              {{
-                getSelectedClaim.contractInfo.fees.rate
-                  ? getSelectedClaim.contractInfo.fees.rate + ' /hour'
-                  : '-'
-              }}
-            </div>
-            <div class="col" v-else>
-              {{
-                getSelectedClaim.contractInfo.fees.rate
-                  ? getSelectedClaim.contractInfo.fees.rate + ' %'
-                  : '-'
-              }}
-            </div>
-          </div>
+      </div>
+      <div class="q-mt-md row q-ml-sm" v-if="userRole != 'vendor'">
+        <div class="heading-light q-mt-none col-xs-4 ">
+          Date of Contract
         </div>
-        <div class="q-mt-md row " v-if="userRole != 'vendor'">
-          <div class="heading-light q-mt-none col-xs-4 ">
-            Date of Contract
-          </div>
-          <div class="column q-ml-lg" v-if="getSelectedClaim.contractInfo">
-            {{ dateToShow(getSelectedClaim.contractInfo.dateOfFirstContact) }}
-          </div>
-          <div v-else class="q-ml-md">MM/DD/YYYY</div>
+        <div class="column q-ml-md" v-if="getSelectedClaim.contractInfo">
+          {{ dateToShow(getSelectedClaim.contractInfo.dateOfFirstContact) }}
         </div>
-        <div class="q-mt-md row" v-if="userRole != 'vendor'">
-          <div class="heading-light q-mt-none col-xs-4 ">
-            Date of Notified
-          </div>
-          <div class="column q-ml-lg" v-if="getSelectedClaim.contractInfo">
-            {{ dateToShow(getSelectedClaim.contractInfo.date) }}
-          </div>
-          <div v-else class="q-ml-md">MM/DD/YYYY</div>
+        <div v-else class="q-ml-md">MM/DD/YYYY</div>
+      </div>
+      <div class="q-mt-md row q-ml-sm" v-if="userRole != 'vendor'">
+        <div class="heading-light q-mt-none col-xs-4 ">
+          Date of Notified
         </div>
-        <div class="q-mt-md row" v-if="userRole != 'vendor'">
-          <div class="heading-light q-mt-none col-xs-4 ">
-            Open Since
-          </div>
-          <div class="column q-ml-lg">
-            {{ getSelectedClaim.sinceOpen ? getSelectedClaim.sinceOpen : '-' }}
-          </div>
+        <div class="column q-ml-md" v-if="getSelectedClaim.contractInfo">
+          {{ dateToShow(getSelectedClaim.contractInfo.date) }}
         </div>
-        <div class="q-mt-md row" v-if="userRole != 'vendor'">
-          <div class="heading-light q-mt-none col-xs-4 ">
-            Loss Since
-          </div>
-          <div class="column q-ml-lg">
-            {{ getSelectedClaim.sinceLoss ? getSelectedClaim.sinceLoss : '-' }}
-          </div>
+        <div v-else class="q-ml-md">MM/DD/YYYY</div>
+      </div>
+      <div class="q-mt-md row q-ml-sm" v-if="userRole != 'vendor'">
+        <div class="heading-light q-mt-none col-xs-4 ">
+          Open Since
+        </div>
+        <div class="column q-ml-md">
+          {{ getSelectedClaim.sinceOpen ? getSelectedClaim.sinceOpen : '-' }}
+        </div>
+      </div>
+      <div class="q-mt-md row" v-if="userRole != 'vendor'">
+        <div class="heading-light q-ml-sm q-mt-none col-xs-4 ">
+          Loss Since
+        </div>
+        <div class="column q-ml-md">
+          {{ getSelectedClaim.sinceLoss ? getSelectedClaim.sinceLoss : '-' }}
         </div>
       </div>
       <q-separator class="q-mt-sm q-mb-sm" />
 
       <div v-if="userRole != 'vendor'">
-      <div
-        :class="{ 'q-ml-lg': userRole == 'estimator' || userRole == 'vendor' }"
-      >
-
-          <div class="row justify-between">
-            <div class=" q-mt-sm form-heading ">Claim Deadlines</div>
+        <div class="row justify-between">
+          <div class=" q-mt-sm form-heading q-ml-sm ">Claim Deadlines</div>
+          <div class="row">
             <q-icon
-              v-if="userRole != 'estimator'"
-              class="q-mr-xs"
+              class="q-ml-xs"
               name="edit"
               size="xs"
               color="primary"
               @click="(claimDeadline = true), $emit('claimSummaryDialog', true)"
             />
           </div>
-
-          <div class="">
-            <div class="q-mt-md row">
-              <div class="heading-light  q-mt-none col-xs-4 ">
-                Tolling Date / Statute Deadline
-              </div>
-              <div class="column q-ml-lg">
-                {{ DeadLineDate ? DeadLineDate : '-' }}
-              </div>
-            </div>
-            <div class="q-mt-md row">
-              <div class="heading-light q-mt-none col-xs-4 ">
-                Recoverable Depreciation Due
-              </div>
-              <div class="column q-ml-lg">
-                {{ recovDDDate ? recovDDDate : '-' }}
-              </div>
-            </div>
+        </div>
+        <div class="q-mt-md row">
+          <div class="heading-light q-ml-sm q-mt-none col-xs-4 ">
+            Tolling Date / Statute Deadline
+          </div>
+          <div class="column q-ml-md">
+            {{ DeadLineDate }}
+          </div>
+        </div>
+        <div class="q-mt-md row">
+          <div class="heading-light q-ml-sm q-mt-none col-xs-4 ">
+            Recoverable Depreciation Due
+          </div>
+          <div class="column q-ml-md">
+            {{ recovDDDate }}
           </div>
         </div>
         <q-separator class="q-mt-sm q-mb-sm" />
       </div>
-
-      <!--claim deadline dialog box-->
-      <q-dialog
-        v-model="claimDeadline"
-        :maximized="true"
-        transition-show="slide-up"
-        transition-hide="slide-down"
-      >
-        <q-card>
-          <CustomBar
-            @closeDialog="
-              (claimDeadline = false), $emit('claimSummaryDialog', false)
-            "
-            :dialogName="'Edit Claim Deadlines'"
-          />
-          <div class="q-ma-sm mobile-container-page">
-            <q-card class="q-mx-sm">
-              <div class="q-px-md">
-                <q-input
-                  class="q-py-sm"
-                  dense
-                  v-model="DeadLineDate"
-                  mask="##/##/####"
-                  label="Recoverable Depreciation Due"
-                >
-                  <template v-slot:append>
-                    <q-icon
-                      name="event"
-                      size="sm"
-                      color="primary"
-                      class="cursor-pointer"
-                    >
-                      <q-popup-proxy
-                        ref="qDateProxy2"
-                        transition-show="scale"
-                        transition-hide="scale"
-                      >
-                        <q-date
-                          v-model="DeadLineDate"
-                          @input="() => $refs.qDateProxy2.hide()"
-                          mask="MM/DD/YYYY"
-                          :options="lossDateOption"
-                        ></q-date>
-                      </q-popup-proxy>
-                    </q-icon>
-                  </template>
-                </q-input>
-                <q-input
-                  dense
-                  class="q-py-lg"
-                  v-model="recovDDDate"
-                  mask="##/##/####"
-                  label="Trolling Date /Statute Deadline"
-                >
-                  <template v-slot:append>
-                    <q-icon
-                      name="event"
-                      size="sm"
-                      color="primary"
-                      class="cursor-pointer"
-                    >
-                      <q-popup-proxy
-                        ref="qDateProxy2"
-                        transition-show="scale"
-                        transition-hide="scale"
-                      >
-                        <q-date
-                          v-model="recovDDDate"
-                          @input="() => $refs.qDateProxy2.hide()"
-                          mask="MM/DD/YYYY"
-                          :options="lossDateOption"
-                        ></q-date>
-                      </q-popup-proxy>
-                    </q-icon>
-                  </template>
-                </q-input>
-              </div>
-            </q-card>
-          </div>
-          <q-btn
-            label="Save"
-            color="primary"
-            class="button-width-90"
-            @click="onSaveButtonClick('claimDeadline')"
-            size="'xl'"
-          />
-        </q-card>
-      </q-dialog>
       <div v-if="userRole != 'vendor'">
-           <div
-        :class="{ 'q-ml-lg': userRole == 'estimator' || userRole == 'vendor' }"
-      >
+        <div class="row  justify-between">
+          <div class="form-heading q-ml-sm   q-mt-xs ">Loss Details</div>
+          <div>
+            <q-icon
+              name="create"
+              color="primary"
+              class="col"
+              size="xs"
+              v-if="userRole != 'estimator' && userRole != 'vendor'"
+              @click="onEditLossDetails()"
+            ></q-icon>
+          </div>
+        </div>
 
-          <div class="row justify-between">
-            <div class="form-heading  q-mt-xs ">Loss Details</div>
-            <div>
+        <div class="q-ml-xs" v-if="getSelectedClaim.lossInfo">
+          <div class="q-mt-md row">
+            <div class="heading-light q-mt-none col-xs-4">
+              Date & Time of Loss
+            </div>
+            <div class="column q-ml-md">
+              {{ dateToShow(getSelectedClaim.lossInfo.date) }}
+            </div>
+          </div>
+
+          <div class="q-mt-md row">
+            <div class="heading-light q-mt-none col-xs-4 ">
+              Estimated Loss Amount
+            </div>
+            <div class="column q-ml-md">
+              {{
+                getSelectedClaim.lossInfo.estimatedLossAmt
+                  ? '$' + ' ' + getSelectedClaim.lossInfo.estimatedLossAmt
+                  : '-'
+              }}
+            </div>
+          </div>
+
+          <div class="row q-mt-sm">
+            <span class="heading-light col-4">
+              Property Value at Time of Loss
+            </span>
+            <span class="q-ml-md col" v-if="getSelectedClaim.lossInfo">
+              {{
+                getSelectedClaim.lossInfo.propertyValue
+                  ? '$' + ' ' + getSelectedClaim.lossInfo.propertyValue
+                  : '-'
+              }}
+            </span>
+          </div>
+
+          <div class="row q-mt-sm">
+            <span class="heading-light col-4"> Loss Description </span>
+            <span class="q-ml-md col" v-if="getSelectedClaim.lossInfo">
+              {{
+                getSelectedClaim.lossInfo.desc
+                  ? getSelectedClaim.lossInfo.desc
+                  : '-'
+              }}
+            </span>
+          </div>
+        </div>
+        <q-separator class="q-mt-sm q-mb-sm" />
+      </div>
+      <div v-if="userRole != 'vendor'">
+        <div class="form-heading q-ml-sm  col q-mb-md">Claim Timeline</div>
+        <div v-for="(phase, index) in getSelectedClaim.phases">
+          <div class="row">
+            <div class="col-2">
+              <q-avatar
+                class="q-ma-sm"
+                size="50px"
+                style="background-color: #eca74c"
+                font-size="15px"
+                text-color="white"
+              >
+                <span>
+                  {{
+                    getSelectedClaim.phases[index].created
+                      ? getSelectedClaim.phases[index].created
+                      : '-' | moment('D MMM')
+                  }}</span
+                >
+              </q-avatar>
+            </div>
+            <div class="col row q-ml-lg q-mt-sm">
+              <div class="col-10">
+                <span class="text-bold">
+                  {{
+                    getSelectedClaim.phases[index].value
+                      ? getSelectedClaim.phases[index].value
+                      : '-'
+                  }}</span
+                >
+              </div>
+
               <q-icon
                 name="create"
                 color="primary"
                 class="col"
                 size="xs"
-                v-if="userRole != 'estimator' && userRole != 'vendor'"
-                @click="onEditLossDetails()"
-              ></q-icon>
-            </div>
-          </div>
-
-          <div class="" v-if="getSelectedClaim.lossInfo">
-            <div class="q-mt-md row">
-              <div class="heading-light q-mt-none col-xs-4">
-                Date & Time of Loss
-              </div>
-              <div class="column q-ml-lg">
-                {{ dateToShow(getSelectedClaim.lossInfo.date) }}
-              </div>
-            </div>
-
-            <div class="q-mt-md row">
-              <div class="heading-light q-mt-none col-xs-4 ">
-                Estimated Loss Amount
-              </div>
-              <div class="column q-ml-lg">
-                {{
-                  getSelectedClaim.lossInfo.estimatedLossAmt
-                    ? '$' + ' ' + getSelectedClaim.lossInfo.estimatedLossAmt
-                    : '-'
-                }}
-              </div>
-            </div>
-
-            <div class="row q-mt-sm">
-              <span class="heading-light col-4">
-                Property Value at Time of Loss
-              </span>
-              <span class="q-ml-lg col" v-if="getSelectedClaim.lossInfo">
-                {{
-                  getSelectedClaim.lossInfo.propertyValue
-                    ? '$' + ' ' + getSelectedClaim.lossInfo.propertyValue
-                    : '-'
-                }}
-              </span>
-            </div>
-
-            <div class="row q-mt-sm">
-              <span class="heading-light col-4"> Loss Description </span>
-              <span class="q-ml-lg col" v-if="getSelectedClaim.lossInfo">
-                {{
-                  getSelectedClaim.lossInfo.desc
-                    ? getSelectedClaim.lossInfo.desc
-                    : '-'
-                }}
-              </span>
-            </div>
-          </div>
-        </div>
-        <q-separator class="q-mt-sm q-mb-sm" />
-      </div>
-      <div v-if="userRole != 'vendor'">
-   <div
-        :class="{ 'q-ml-lg': userRole == 'estimator' || userRole == 'vendor' }"
-      >
-
-          <div v-for="(phase, index) in getSelectedClaim.phases" :key="index">
-            <div class="row  justify-between">
-              <div class=" q-mt-sm form-heading">Claim Timeline</div>
-              <q-icon
-                v-if="userRole != 'estimator'"
-                name="create"
-                color="primary"
-                class="q-mr-xs"
-                size="xs"
                 @click="onClickEditClaimTimeline(index)"
               ></q-icon>
-            </div>
 
-            <div>
-              <div class="row ">
-                <div class="col-2">
-                  <q-avatar
-                    class="q-ma-sm"
-                    size="50px"
-                    style="background-color: #eca74c"
-                    font-size="14px"
-                    text-color="white"
-                  >
-                    <span>
-                      {{
-                        getSelectedClaim.phases[index].created
-                          ? getSelectedClaim.phases[index].created
-                          : '-' | moment('D MMM')
-                      }}</span
-                    >
-                  </q-avatar>
-                </div>
-                <div class="col row q-ml-lg q-mt-sm">
-                  <div class="col-10">
-                    <span class="text-bold">
-                      {{
-                        getSelectedClaim.phases[index].value
-                          ? getSelectedClaim.phases[index].value
-                          : '-'
-                      }}</span
-                    >
-                  </div>
-                  <div class="q-mb-xl heading-light">
-                    Phase changed to
-                    {{
-                      getSelectedClaim.phases[index].value
-                        ? getSelectedClaim.phases[index].value
-                        : '-'
-                    }}
-                  </div>
-                </div>
+              <div class="q-mb-xl heading-light">
+                Phase changed to
+                {{
+                  getSelectedClaim.phases[index].value
+                    ? getSelectedClaim.phases[index].value
+                    : '-'
+                }}
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <q-dialog
+      v-model="claimDeadline"
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <CustomBar
+          @closeDialog="
+            (claimDeadline = false), $emit('claimSummaryDialog', false)
+          "
+          :dialogName="'Edit Claim Deadlines'"
+        />
+        <div class="q-ma-sm mobile-container-page">
+          <q-card class="q-mx-sm">
+            <div class="q-px-md">
+              <q-input
+                class="q-py-sm"
+                dense
+                v-model="DeadLineDate"
+                mask="##/##/####"
+                label="Recoverable Depreciation Due"
+              >
+                <template v-slot:append>
+                  <q-icon
+                    name="event"
+                    size="sm"
+                    color="primary"
+                    class="cursor-pointer"
+                  >
+                    <q-popup-proxy
+                      ref="qDateProxy2"
+                      transition-show="scale"
+                      transition-hide="scale"
+                    >
+                      <q-date
+                        v-model="DeadLineDate"
+                        @input="() => $refs.qDateProxy2.hide()"
+                        mask="MM/DD/YYYY"
+                        :options="lossDateOption"
+                      ></q-date>
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
+              </q-input>
+              <q-input
+                dense
+                class="q-py-lg"
+                v-model="recovDDDate"
+                mask="##/##/####"
+                label="Trolling Date /Statute Deadline"
+              >
+                <template v-slot:append>
+                  <q-icon
+                    name="event"
+                    size="sm"
+                    color="primary"
+                    class="cursor-pointer"
+                  >
+                    <q-popup-proxy
+                      ref="qDateProxy2"
+                      transition-show="scale"
+                      transition-hide="scale"
+                    >
+                      <q-date
+                        v-model="recovDDDate"
+                        @input="() => $refs.qDateProxy2.hide()"
+                        mask="MM/DD/YYYY"
+                        :options="lossDateOption"
+                      ></q-date>
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
+              </q-input>
+            </div>
+          </q-card>
+        </div>
+        <q-btn
+          label="Save"
+          color="primary"
+          class="single-next-button-style"
+          @click="onSaveButtonClick('claimDeadline')"
+          size="'xl'"
+        />
+      </q-card>
+    </q-dialog>
     <!-- Claim Summary -->
     <q-dialog
       v-model="claimSummary"
@@ -506,6 +470,79 @@
           color="primary"
           class="single-next-button-style"
           @click="onSaveButtonClick('claimSummary')"
+          size="'xl'"
+        />
+      </q-card>
+    </q-dialog>
+    <!-- Timeline Dialog -->
+    <q-dialog
+      v-model="editClaimTimeline"
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <CustomBar
+          @closeDialog="
+            (editClaimTimeline = false), $emit('claimSummaryDialog', false)
+          "
+          :dialogName="'Edit Claim Deadlines'"
+        />
+        <div class="q-ma-sm mobile-container-page">
+          <q-card class="q-mx-sm">
+            <div class="q-px-md">
+              <div class="row">
+                <div class="q-pa-md heading-light">Phase</div>
+                <div class="q-pa-md text-bold">{{ claimPhase.value }}</div>
+              </div>
+
+              <q-input
+                dense
+                class="q-px-md q-py-sm"
+                v-model="claimPhase.created"
+                mask="##/##/####"
+                label="Date"
+              >
+                <template v-slot:append>
+                  <q-icon
+                    name="event"
+                    size="sm"
+                    color="primary"
+                    class="cursor-pointer"
+                  >
+                    <q-popup-proxy
+                      ref="qDateProxy2"
+                      transition-show="scale"
+                      transition-hide="scale"
+                    >
+                      <q-date
+                        v-model="claimPhase.created"
+                        @input="() => $refs.qDateProxy2.hide()"
+                        mask="MM/DD/YYYY"
+                        :options="lossDateOption"
+                      ></q-date>
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
+              </q-input>
+              <div class="q-px-md">Notes</div>
+              <div class="q-pb-md q-px-md">
+                <textarea
+                  rows="5"
+                  required
+                  class="full-width"
+                  v-model="claimPhase.notes"
+                  style="resize: none"
+                />
+              </div>
+            </div>
+          </q-card>
+        </div>
+        <q-btn
+          label="Save"
+          color="primary"
+          class="single-next-button-style"
+          @click="onSaveButtonClick('editClaimTimeline')"
           size="'xl'"
         />
       </q-card>
@@ -638,79 +675,6 @@
         />
       </q-card>
     </q-dialog>
-    <!-- Timeline Dialog -->
-    <q-dialog
-      v-model="editClaimTimeline"
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <CustomBar
-          @closeDialog="
-            (editClaimTimeline = false), $emit('claimSummaryDialog', false)
-          "
-          :dialogName="'Edit Claim Deadlines'"
-        />
-        <div class="q-ma-sm mobile-container-page">
-          <q-card class="q-mx-sm">
-            <div class="q-px-md">
-              <div class="row">
-                <div class="q-pa-md heading-light">Phase</div>
-                <div class="q-pa-md text-bold">{{ claimPhase.value }}</div>
-              </div>
-
-              <q-input
-                dense
-                class="q-px-md q-py-sm"
-                v-model="claimPhase.created"
-                mask="##/##/####"
-                label="Date"
-              >
-                <template v-slot:append>
-                  <q-icon
-                    name="event"
-                    size="sm"
-                    color="primary"
-                    class="cursor-pointer"
-                  >
-                    <q-popup-proxy
-                      ref="qDateProxy2"
-                      transition-show="scale"
-                      transition-hide="scale"
-                    >
-                      <q-date
-                        v-model="claimPhase.created"
-                        @input="() => $refs.qDateProxy2.hide()"
-                        mask="MM/DD/YYYY"
-                        :options="lossDateOption"
-                      ></q-date>
-                    </q-popup-proxy>
-                  </q-icon>
-                </template>
-              </q-input>
-              <div class="q-px-md">Notes</div>
-              <div class="q-pb-md q-px-md">
-                <textarea
-                  rows="5"
-                  required
-                  class="full-width"
-                  v-model="claimPhase.notes"
-                  style="resize: none"
-                />
-              </div>
-            </div>
-          </q-card>
-        </div>
-        <q-btn
-          label="Save"
-          color="primary"
-          class="button-width-90"
-          @click="onSaveButtonClick('editClaimTimeline')"
-          size="'xl'"
-        />
-      </q-card>
-    </q-dialog>
     <!-- Claim Summary Menu Item -->
     <q-dialog
       v-model="menuItemDialog"
@@ -766,14 +730,13 @@ export default {
       phase: '',
       rating: 1,
       claimDeadline: false,
-      editClaimTimeline: false,
       claimSummary: false,
       lossDetailsBox: false,
+      editClaimTimeline: false,
       isFemaClaim: false,
       isHabitable: false,
       DeadLineDate: '',
       recovDDDate: '',
-
       claimPhase: {
         value: '',
         created: '',
@@ -850,28 +813,16 @@ export default {
       }
     });
     this.userRole = getCurrentUser().attributes.roles[0].machineValue;
+
     this.fileNumber = this.getSelectedClaim.fileNumber;
-    this.DeadLineDate =
-      this.getSelectedClaim.lossInfo &&
-      this.getSelectedClaim.lossInfo.deadlineDate
-        ? dateToShow(this.getSelectedClaim.lossInfo.deadlineDate)
-        : '-';
-    this.recovDDDate =
-      this.getSelectedClaim.lossInfo &&
-      this.getSelectedClaim.lossInfo.recovDDDate
-        ? dateToShow(this.getSelectedClaim.lossInfo.recovDDDate)
-        : '-';
-    this.policyInfo.carrierNotifyDate =
-      this.getSelectedClaim.lossInfo && this.getSelectedClaim.contractInfo.date
-        ? dateToShow(this.getSelectedClaim.contractInfo.date)
-        : '-';
+    this.DeadLineDate = dateToShow(this.getSelectedClaim.lossInfo.deadlineDate);
+    this.recovDDDate = dateToShow(this.getSelectedClaim.lossInfo.recovDDDate);
+    this.policyInfo.carrierNotifyDate = dateToShow(
+      this.getSelectedClaim.contractInfo.date
+    );
 
     await this.getSingleClaimDetails(this.selectedClaimId).then(() => {
-      this.policyDate.policyEffectiveDate =
-        this.getSelectedClaim.lossInfo &&
-        this.getSelectedClaim.policyInfo.effectiveDate
-          ? dateToShow(this.getSelectedClaim.lossInfo)
-          : '-';
+      this.policyDate.policyEffectiveDate = this.getSelectedClaim.policyInfo.effectiveDate;
       this.policyDate.policyExpireDate = this.getSelectedClaim.policyInfo.expirationDate;
     });
   },
@@ -920,7 +871,6 @@ export default {
         }
       }
     },
-
     onClickEditClaimTimeline(index) {
       this.claimPhase.notes = this.getSelectedClaim.phases[index].value;
       this.claimPhase.created = dateToShow(

@@ -1,5 +1,5 @@
 <template>
-  <div class="q-mt-md" style="width:380px">
+  <div class="q-mx-lg q-mt-md">
     <q-badge
       color="red"
       v-if="
@@ -17,8 +17,9 @@
         {{ getSelectedClaim.client.fname }}
         {{ getSelectedClaim.client.lname }}</span
       >
+
       <q-icon
-        class="q-ml-auto q-ml-xl"
+        class="q-ml-auto"
         size="1em"
         :name="getSelectedClaim.isFavourite ? 'star' : 'star_border'"
         @click="onClickFavorite"
@@ -30,8 +31,8 @@
       </q-icon>
     </div>
     <div class="row">
-      <div class="heading-light col-4 q-mt-none">Name of the property</div>
-      <div class="column q-ml-lg">
+      <div class="heading-light col-3">Name of the property</div>
+      <div class="col q-ml-md">
         <span v-if="getSelectedClaim.lossInfo">
           <span
             v-if="
@@ -51,87 +52,87 @@
       </div>
     </div>
     <div class="row q-mt-sm">
-      <div class="heading-light col-4 q-mt-none">Loss Address:</div>
-      <div class="col  q-ml-lg">
-        <span v-if="getSelectedClaim.lossInfo">
-          {{
-            getSelectedClaim.lossInfo.property
-              ? getSelectedClaim.lossInfo.property
-                ? getSelectedClaim.lossInfo.property.address1
-                : ''
-              : '-'
-          }}
-          {{
-            getSelectedClaim.lossInfo.property
-              ? getSelectedClaim.lossInfo.property
-                ? getSelectedClaim.lossInfo.property.address2
-                : ''
-              : '-'
-          }}
-          {{
-            getSelectedClaim.lossInfo.property
-              ? getSelectedClaim.lossInfo.property
-                ? getSelectedClaim.lossInfo.property.addressLocality
-                : ''
-              : '-'
-          }}
+      <span class="heading-light col-3"> Loss Address:</span>
+      <span class="col-7 q-ml-md" v-if="getSelectedClaim.lossInfo">
+        {{
+          getSelectedClaim.lossInfo.property
+            ? getSelectedClaim.lossInfo.property
+              ? getSelectedClaim.lossInfo.property.address1
+              : ''
+            : '-'
+        }}
+        {{
+          getSelectedClaim.lossInfo.property
+            ? getSelectedClaim.lossInfo.property
+              ? getSelectedClaim.lossInfo.property.address2
+              : ''
+            : '-'
+        }}
+        {{
+          getSelectedClaim.lossInfo.property
+            ? getSelectedClaim.lossInfo.property
+              ? getSelectedClaim.lossInfo.property.addressLocality
+              : ''
+            : '-'
+        }}
 
+        {{
+          getSelectedClaim.lossInfo.property
+            ? getSelectedClaim.lossInfo.property
+              ? getSelectedClaim.lossInfo.property.postalCode
+              : ''
+            : '-'
+        }}
+
+        <div>
           {{
             getSelectedClaim.lossInfo.property
               ? getSelectedClaim.lossInfo.property
-                ? getSelectedClaim.lossInfo.property.postalCode
+                ? toGetStateShortName(
+                    getSelectedClaim.lossInfo.property.addressRegion
+                  )
                 : ''
               : '-'
           }}
-
-          <div>
-            {{
-              getSelectedClaim.lossInfo.property
-                ? getSelectedClaim.lossInfo.property
-                  ? toGetStateShortName(
-                      getSelectedClaim.lossInfo.property.addressRegion
-                    )
-                  : ''
-                : '-'
-            }}
-          </div></span
-        >
-      </div>
+        </div></span
+      >
     </div>
     <div class="row q-mt-sm" v-if="userRole != 'vendor'">
-      <div class="heading-light col-4 q-mt-none">Claim Email</div>
-      <div
-        class="col  q-ml-lg clickLink"
+      <span class="heading-light col-3"> Claim Email </span>
+      <span
+        class="q-ml-md col clickLink"
         @click="onEmailClick(getSelectedClaim.claimEmail, $event)"
       >
-        {{ getSelectedClaim.claimEmail ? getSelectedClaim.claimEmail : '-' }}
-      </div>
+        {{
+          getSelectedClaim.claimEmail ? getSelectedClaim.claimEmail : '-'
+        }}</span
+      >
     </div>
     <div class="row q-mt-sm">
-      <div class="heading-light col-4 q-mt-none">Claim Number</div>
-      <div class="col  q-ml-lg ">
-        {{ getSelectedClaim.number ? getSelectedClaim.number : '- - -' }}
-      </div>
+      <span class="heading-light col-3"> Claim Number </span>
+      <span class="q-ml-md col-8">
+        {{ getSelectedClaim.number ? getSelectedClaim.number : '- - -' }}</span
+      >
     </div>
     <div class="row q-mt-sm" v-if="userRole != 'vendor'">
-      <div class="heading-light col-4 q-mt-none">Current Phase</div>
-      <div class="col  q-ml-lg">
+      <span class="heading-light col-3"> Current Phase </span>
+      <span class="q-ml-md col-8">
         {{
           getSelectedClaim.currentPhase
             ? getSelectedClaim.currentPhase.value
             : '-'
-        }}
-      </div>
+        }}</span
+      >
     </div>
     <div class="row q-mt-sm">
-      <div class="heading-light col-4 q-mt-none">Loss Date</div>
-      <div class="col  q-ml-lg" v-if="getSelectedClaim.lossInfo">
-        {{ dateToShow(getSelectedClaim.lossInfo.date) }}
-      </div>
+      <span class="heading-light col-3"> Loss Date </span>
+      <span class="q-ml-md col" v-if="getSelectedClaim.lossInfo">
+        {{ dateToShow(getSelectedClaim.lossInfo.date) }}</span
+      >
     </div>
     <div class="row q-mt-sm">
-      <div class="heading-light col-4 q-mt-none">Loss Cause</div>
-      <div class="col q-ml-lg" v-if="getSelectedClaim.lossInfo">
+      <span class="heading-light col-3"> Loss Cause </span>
+      <span class="q-ml-md col" v-if="getSelectedClaim.lossInfo">
         {{
           getSelectedClaim.lossInfo.cause
             ? getSelectedClaim.lossInfo.cause.value
@@ -142,8 +143,8 @@
           getSelectedClaim.lossInfo.cause
             ? getSelectedClaim.lossInfo.cause.desc
             : '-'
-        }}
-      </div>
+        }}</span
+      >
     </div>
   </div>
 </template>
