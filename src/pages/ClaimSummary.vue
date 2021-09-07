@@ -109,7 +109,7 @@
           <div class="heading-light q-mt-none col-xs-4 ">
             Date of Contract
           </div>
-          <div class="column q-ml-lg" v-if="getSelectedClaim.contractInfo.date">
+          <div class="column q-ml-lg" v-if="getSelectedClaim.contractInfo">
             {{ dateToShow(getSelectedClaim.contractInfo.date) }}
           </div>
           <div v-else class="q-ml-md">MM/DD/YYYY</div>
@@ -165,17 +165,19 @@
               <div class="heading-light  q-mt-none col-xs-4 ">
                 Tolling Date / Statute Deadline
               </div>
-              <div class="column q-ml-lg">
-                {{ DeadLineDate ? DeadLineDate : '-' }}
+              <div class="column q-ml-lg" v-if="getSelectedClaim.lossInfo">
+                {{ dateToShow(this.getSelectedClaim.lossInfo.deadlineDate) }}
               </div>
+              <div class="column q-ml-lg" v-else>-</div>
             </div>
             <div class="q-mt-md row">
               <div class="heading-light q-mt-none col-xs-4 ">
                 Recoverable Depreciation Due
               </div>
-              <div class="column q-ml-lg">
-                {{ recovDDDate ? recovDDDate : '-' }}
+              <div class="column q-ml-lg" v-if="getSelectedClaim.lossInfo">
+                {{ dateToShow(this.getSelectedClaim.lossInfo.recovDDDate) }}
               </div>
+              <div class="column q-ml-lg">-</div>
             </div>
           </div>
         </div>
@@ -872,10 +874,11 @@ export default {
         this.getSelectedClaim.policyInfo.effectiveDate
           ? dateToShow(this.getSelectedClaim.lossInfo)
           : '-';
-      this.policyDate.policyExpireDate = this.getSelectedClaim.policyInfo
-        .expirationDate
-        ? this.getSelectedClaim.policyInfo.expirationDate
-        : '-';
+      this.policyDate.policyExpireDate =
+        this.getSelectedClaim.lossInfo &&
+        this.getSelectedClaim.policyInfo.expirationDate
+          ? this.getSelectedClaim.policyInfo.expirationDate
+          : '-';
     });
   },
   methods: {
