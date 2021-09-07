@@ -105,10 +105,7 @@
           </div>
         </div>
 
-        <div
-          class="q-mt-md row "
-          v-if="userRole != 'vendor' || userRole != 'estimator'"
-        >
+        <div class="q-mt-md row " v-if="userRole != 'vendor'">
           <div class="heading-light q-mt-none col-xs-4 ">
             Date of Contract
           </div>
