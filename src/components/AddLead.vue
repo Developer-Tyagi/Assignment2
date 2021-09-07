@@ -1282,7 +1282,13 @@ export default {
     await this.getTitles();
 
     if (this.isEdit) {
-      this.getVendorDetails(this.selectedLead.leadSource.id);
+      if (
+        this.selectedLead.leadSource &&
+        this.selectedLead.leadSource.type == 'vendor'
+      ) {
+        this.getVendorDetails(this.selectedLead.leadSource.id);
+      }
+
       this.primaryDetails.honorific = this.selectedLead.primaryContact.honorific;
       this.primaryDetails.firstName = this.selectedLead.primaryContact.fname;
       this.primaryDetails.lastName = this.selectedLead.primaryContact.lname;
