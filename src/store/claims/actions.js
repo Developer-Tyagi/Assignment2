@@ -1560,7 +1560,8 @@ export async function taskUncomplete({ dispatch, state }, payload) {
   try {
     const { data } = await request.post(
       `/claims/${payload.claimID}/tasks/${payload.taskId}/uncomplete
-`
+`,
+      buildApiData('claimtask', payload.data)
     );
     dispatch('setLoading', false);
     dispatch('setNotification', {
