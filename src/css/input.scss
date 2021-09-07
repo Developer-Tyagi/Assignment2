@@ -1,6 +1,12 @@
 .q-field__bottom {
   padding: 3px 10px 0;
 }
+// use for icons text color in  float menu
+
+.text-icons-style {
+  color: $primary;
+  opacity: 0.75;
+}
 
 .q-field--with-bottom {
   padding-bottom: 16px !important;
