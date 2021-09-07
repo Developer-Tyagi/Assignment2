@@ -5,7 +5,10 @@ export async function setClients(state, clientsData) {
   const clients = clientsData.map(client => ({
     ...client.attributes,
     id: client.id,
-    name: client.attributes.insuredInfo.primary['fname']
+    name:
+      client.attributes.insuredInfo.primary.fname +
+      ' ' +
+      client.attributes.insuredInfo.primary.lname
   }));
   state.clients = clients;
   if ((await clientsCollection.count()) > 0) {
