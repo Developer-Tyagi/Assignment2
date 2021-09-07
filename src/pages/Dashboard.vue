@@ -12,7 +12,6 @@
           style="width:30%;"
           @click="$router.push('/leads-dashboard')"
         />
-
         <img
           class="menu-right-icons "
           src="~assets/Clients.png"
@@ -41,7 +40,6 @@
           style="width:30%;"
           @click="selectClaimDialog = true"
         />
-
         <img
           class="menu-right-icons "
           src="~assets/CameraLogo.png"
@@ -87,9 +85,7 @@
     >
       <AddOptions />
     </q-dialog>
-
     <!-- Select Claim Dialog -->
-
     <q-dialog
       v-model="selectClaimDialog"
       :maximized="true"
@@ -101,7 +97,6 @@
           :dialogName="'Select Claim'"
           @closeDialog="selectClaimDialog = false"
         />
-
         <div class="clients-list  listing-height q-mt-md" v-if="claims.length">
           <div>
             <div
@@ -119,7 +114,6 @@
                 <div @click="onClickingOnClaim(claim)">
                   <div class="row">
                     <div class="col-3">Carrier</div>
-
                     <div>
                       {{
                         claim.carrier
@@ -132,7 +126,6 @@
                   </div>
                   <div class="row">
                     <div class="col-3">Claim No.</div>
-
                     <div>
                       {{ claim.number ? claim.number : '-' }}
                     </div>
@@ -172,12 +165,6 @@ export default {
     };
   },
   created() {
-    var index = getCurrentUser().roles.findIndex(
-      std => std.machineValue === 'vendor' || std.machineValue === 'estimator'
-    );
-    if (index < 0) {
-      this.isClickable = true;
-    }
     this.getClaims();
   },
   methods: {
@@ -186,7 +173,6 @@ export default {
     onClickAddUpIcon() {
       this.openDialog = true;
     },
-
     dateToShow,
     openClaimDetail(value) {
       this.setSelectedClaimId(value.id);
@@ -194,7 +180,6 @@ export default {
     },
     onOpenClaimsClick() {
       this.$router.push('/claims');
-
       const params = {
         status: 'open'
       };
@@ -216,7 +201,6 @@ export default {
       const params = {
         new: true
       };
-
       this.getActiveLeadsList(params);
     },
     onClickClaimRecentActivity() {
@@ -246,7 +230,7 @@ export default {
 <style>
 .my-card {
   display: flex;
-  /* background-color: #1b2854; */
+  /* background-color: #1B2854; */
   background-color: #ffffff;
   height: 3rem;
   width: 4rem;
@@ -260,7 +244,6 @@ export default {
   font-weight: bold;
   margin: auto;
 }
-
 .text {
   text-align: center;
   margin: 5px auto 0 auto;
