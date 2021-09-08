@@ -183,6 +183,19 @@ export default {
         await this.addOfficeTask(payload);
         this.addNewTaskDialog = false;
         this.getOfficeTasks(this.selectedClaimId);
+        this.newTask = {
+          dueDate: '',
+          name: '',
+          isEnabled: true,
+          assignedTo: [
+            {
+              type: '',
+              name: '',
+              id: ''
+            }
+          ],
+          priority: false
+        };
       }
     },
 
