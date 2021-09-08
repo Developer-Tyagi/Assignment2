@@ -1244,7 +1244,7 @@ export async function getClaimStatistics({ commit, dispatch }) {
 }
 // API for to mark claim as favourite
 
-export async function markClaimFavorite({ dispatch, state }, claimID) {
+export async function markClaimFavourite({ dispatch, state }, claimID) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.post(
@@ -1269,7 +1269,7 @@ export async function markClaimFavorite({ dispatch, state }, claimID) {
 
 //  API for Mark the claim as unfavourite
 
-export async function markClaimUnFavorite({ dispatch, state }, claimID) {
+export async function markClaimUnFavourite({ dispatch, state }, claimID) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.post(

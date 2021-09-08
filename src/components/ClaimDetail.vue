@@ -21,7 +21,7 @@
         class="q-ml-auto q-ml-xl"
         size="1em"
         :name="getSelectedClaim.isFavourite ? 'star' : 'star_border'"
-        @click="onClickFavorite"
+        @click="onClickFavourite"
         color="primary"
       >
         <q-tooltip anchor="center right" self="center left" :offset="[10, 10]">
@@ -182,16 +182,16 @@ export default {
   methods: {
     ...mapActions([
       'getSingleClaimDetails',
-      'markClaimUnFavorite',
-      'markClaimFavorite'
+      'markClaimUnFavourite',
+      'markClaimFavourite'
     ]),
     toGetStateShortName,
     dateToShow,
-    async onClickFavorite() {
+    async onClickFavourite() {
       if (this.getSelectedClaim.isFavourite == false) {
-        await this.markClaimUnFavorite(this.selectedClaimId);
+        await this.markClaimUnFavourite(this.selectedClaimId);
       } else {
-        await this.markClaimFavorite(this.selectedClaimId);
+        await this.markClaimFavourite(this.selectedClaimId);
       }
     }
   }
