@@ -152,14 +152,15 @@
             class="column text-white q-pa-sm q-ml-sm"
             style="width: calc(100% - 54px)"
           >
-            <div class="text-capitalize ellipsis full-width">
+            <div class="text-capitalize">
               {{
                 user.roles[0].machineValue == 'vendor'
                   ? user.companyName
                   : user.name
               }}
             </div>
-            <div style="font-size: 11px; opacity: 80%" @click="">
+
+            <div style="font-size: 11px; opacity: 80%">
               {{ user.contact.fname ? user.contact.fname : '' }}
             </div>
           </div>
@@ -336,7 +337,6 @@ export default {
       'getAccess'
     ]),
     ...mapMutations(['setConvertedLead', 'setEditOfflineClientIcon']),
-
     async logout() {
       if (this.getFCMToken()) {
         await this.deletePushNotificationToken(this.getFCMToken());
