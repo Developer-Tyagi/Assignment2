@@ -3,20 +3,24 @@
     <div v-if="tasks.tasks">
       <div class="column" v-for="(task, index) in tasks.tasks">
         <div class="row q-pa-sm">
-          <div class="flex" v-if="isShow">
+          <div v-if="isShow">
             <q-checkbox
-              v-model="taskShow[index].value"
+              v-model="task.isCompleted"
               color="$primary"
               class="q-my-auto q-mr-md"
               @input="setTaskAsCompleted(task)"
             />
           </div>
-          <div class="column">
+          <div>
             <span class="form-heading  text-capitalize" v-if="task.name">{{
               task.name
             }}</span>
-            <span v-if="task.addedDesc">{{ task.addedDesc }}</span>
-            <span v-if="task.dueDesc">{{ task.dueDesc }}</span>
+            <div v-if="task.addedDesc">{{ task.addedDesc }}</div>
+            <div v-if="task.dueDesc">{{ task.dueDesc }}</div>
+
+            <div v-if="task.isCompleted" style="width:150px">
+              {{ task.completedDesc }}
+            </div>
           </div>
         </div>
       </div>
@@ -60,58 +64,7 @@
         />
         <div class="mobile-container-page form-height q-pa-md">
           <q-form ref="addTask">
-            <q-input
-              class="required"
-              label="Task Name"
-              v-model="newTask.name"
-              lazy-rules
-              :rules="[
-                val => (val && val.length > 0) || 'Please enter the task name'
-              ]"
-            />
-            <span class="text-bold">Task Date</span>
-            <q-input
-              class="required"
-              v-model="newTask.dueDate"
-              mask="##/##/####"
-              label="MM/DD/YYYY"
-              lazy-rules
-              :rules="[
-                val =>
-                  (validateDate(val) && val && val.length > 0) ||
-                  'Invalid date!'
-              ]"
-            >
-              <template v-slot:append>
-                <q-icon
-                  name="event"
-                  size="sm"
-                  color="primary"
-                  class="cursor-pointer"
-                >
-                  <q-popup-proxy
-                    ref="qDateProxy"
-                    transition-show="scale"
-                    transition-hide="scale"
-                  >
-                    <q-date
-                      v-model="newTask.dueDate"
-                      @input="() => $refs.qDateProxy.hide()"
-                      mask="MM/DD/YYYY"
-                    ></q-date>
-                  </q-popup-proxy>
-                </q-icon>
-              </template>
-            </q-input>
-            <q-input label="Assign" v-model="newTask.assign" />
-            <div class="row">
-              <p class="q-my-auto text-bold">Priority</p>
-              <p class="q-my-auto q-ml-auto q-mr-md">
-                {{ newTask.priority ? 'High' : 'Low' }}
-              </p>
-
-              <q-toggle v-model="newTask.priority" />
-            </div>
+            <AddOfficeTaskDailog :newTask="newTask" />
           </q-form>
         </div>
         <q-btn
@@ -131,12 +84,14 @@ import CustomBar from 'components/CustomBar';
 import ClaimDetail from 'components/ClaimDetail';
 import { validateDate } from '@utils/validation';
 import { dateToSend } from '@utils/date';
+import AddOfficeTaskDailog from 'components/AddOfficeTaskDailog';
 export default {
   name: 'ClaimTask',
 
   components: {
     CustomBar,
-    ClaimDetail
+    ClaimDetail,
+    AddOfficeTaskDailog
   },
   data() {
     return {
@@ -148,7 +103,13 @@ export default {
         dueDate: '',
         name: '',
         isEnabled: true,
-        assignedTo: [],
+        assignedTo: [
+          {
+            type: '',
+            name: '',
+            id: ''
+          }
+        ],
         priority: false
       }
     };
@@ -159,11 +120,14 @@ export default {
   async created() {
     await this.getOfficeTasks(this.selectedClaimId);
 
-    await this.tasks.tasks.forEach(val => {
-      this.taskShow.push({
-        value: val.isCompleted
+    if (this.tasks.tasks) {
+      await this.tasks.tasks.forEach(val => {
+        this.taskShow.push({
+          value: val.isCompleted
+        });
       });
-    });
+    }
+
     this.isShow = true;
   },
 
@@ -179,50 +143,59 @@ export default {
       if (value.isCompleted) {
         const payload = {
           claimID: this.selectedClaimId,
-          taskId: value.id
-        };
-        await this.taskUncomplete(payload);
-      } else {
-        const payload = {
-          claimID: this.selectedClaimId,
           taskId: value.id,
           data: {
             machineValue: value.machineValue
           }
         };
         await this.taskComplete(payload);
+      } else {
+        const payload = {
+          claimID: this.selectedClaimId,
+          taskId: value.id
+        };
+        await this.taskUncomplete(payload);
       }
 
-      this.getOfficeTasks(this.selectedClaimId);
+      await this.getOfficeTasks(this.selectedClaimId);
     },
 
     async addTask() {
       const success = await this.$refs.addTask.validate();
       if (success) {
         const payload = {
-          id: this.$route.params.id,
+          id: this.selectedClaimId,
           data: {
             name: this.newTask.name,
-            isEnabled: false,
+            isEnabled: true,
             priority: this.newTask.priority ? 'high' : 'low',
-            assignedTo: [],
+            assignedTo: this.newTask.assignedTo,
             actions: {
               onComplete: [],
               onOverdue: []
             },
             dueDate: dateToSend(this.newTask.dueDate),
-            isCompleted: false,
             completedOn: null,
             note: this.newTask.assign
           }
         };
+
         await this.addOfficeTask(payload);
         this.addNewTaskDialog = false;
-        this.getOfficeTasks(this.$route.params.id);
-        this.newTask.name = '';
-        this.newTask.priority = false;
-        this.newTask.dueDate = '';
-        this.newTask.assign = '';
+        this.getOfficeTasks(this.selectedClaimId);
+        this.newTask = {
+          dueDate: '',
+          name: '',
+          isEnabled: true,
+          assignedTo: [
+            {
+              type: '',
+              name: '',
+              id: ''
+            }
+          ],
+          priority: false
+        };
       }
     },
 
