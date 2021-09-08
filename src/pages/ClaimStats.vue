@@ -186,15 +186,8 @@ export default {
   },
   created() {
     this.getClaimStatistics();
-    var index = getCurrentUser().roles.findIndex(
-      std => std.machineValue === 'vendor' || std.machineValue === 'estimator'
-    );
-    if (index < 0) {
-      this.isClickable = true;
-      this.getLeadStatistics();
-      this.getClientStatistics();
-    }
-
+    this.getLeadStatistics();
+    this.getClientStatistics();
     this.params.favourite = true;
     this.getClaims(this.params);
   },

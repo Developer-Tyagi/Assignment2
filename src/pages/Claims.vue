@@ -39,7 +39,7 @@
                     class="q-ml-auto"
                     size="1em"
                     :name="claim.isFavourite ? 'star' : 'star_border'"
-                    @click="onClickFavourite(index)"
+                    @click="onClickFavourite(claim)"
                     color="primary"
                   >
                     <q-tooltip
@@ -170,18 +170,17 @@ export default {
       this.searchText = '';
       this.search();
     },
-    async onClickFavourite(index) {
-      if (this.claims[index].isFavourite == false) {
-        await this.markClaimUnFavourite(this.selectedClaimId);
+    async onClickFavourite(claim) {
+      if (claim.IsFavourite == true) {
+        await this.markClaimUnFavourite(claim.id);
       } else {
-        await this.markClaimFavourite(this.selectedClaimId);
+        await this.markClaimFavourite(claim.id);
       }
     },
     search(event) {
       this.params.name = event;
       this.getClaims(this.params);
     },
-
     onClickingOnClaim(claim) {
       this.setSelectedClaimId(claim.id);
       this.$router.push('/claim-details');
