@@ -39,7 +39,7 @@
                     class="q-ml-auto"
                     size="1em"
                     :name="claim.isFavourite ? 'star' : 'star_border'"
-                    @click="onClickFavorite(index)"
+                    @click="onClickFavourite(index)"
                     color="primary"
                   >
                     <q-tooltip
@@ -160,9 +160,9 @@ export default {
   methods: {
     ...mapActions([
       'getClaims',
-      'markClaimFavorite',
+      'markClaimFavourite',
       'getSelectedClaim',
-      'markClaimUnFavorite'
+      'markClaimUnFavourite'
     ]),
     ...mapMutations(['setSelectedClaimId']),
     dateToShow,
@@ -170,11 +170,11 @@ export default {
       this.searchText = '';
       this.search();
     },
-    async onClickFavorite(index) {
+    async onClickFavourite(index) {
       if (this.claims[index].isFavourite == false) {
-        await this.markClaimUnFavorite(this.selectedClaimId);
+        await this.markClaimUnFavourite(this.selectedClaimId);
       } else {
-        await this.markClaimFavorite(this.selectedClaimId);
+        await this.markClaimFavourite(this.selectedClaimId);
       }
     },
     search(event) {
