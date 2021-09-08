@@ -113,26 +113,16 @@ export default {
     };
   },
   computed: {
-    ...mapGetters([
-      'officeTaskActions',
-      'allUsers',
-      'roleTypes',
-      'isOfflineClientEdit'
-    ])
+    ...mapGetters([, 'allUsers', 'roleTypes', 'isOfflineClientEdit'])
   },
   async created() {
-    await this.getOfficeTaskActions();
     await this.getRoles();
-    this.officeTaskActions.forEach(element => {
-      delete element.id;
-      delete element.created;
-      delete element.updated;
-    });
+
     await this.getAllUsers();
   },
 
   methods: {
-    ...mapActions(['getOfficeTaskActions', 'getAllUsers', 'getRoles']),
+    ...mapActions(['getAllUsers', 'getRoles']),
 
     /*********It will show all the dates from tommorow !**********/
     taskDateValidation(dateopn) {
@@ -152,7 +142,6 @@ export default {
       if (val == 'user') {
         await this.getAllUsers();
         this.allUsers.forEach(user => {
-          console.log(this.allUsers);
           this.assignToSubOption.push({
             machineValue: user.name,
             name: user.name,
@@ -173,7 +162,6 @@ export default {
     },
     /**It will find the object from array whose value is selcted and assign ID to its object !*****/
     setAssignTo(val) {
-      console.log(val, 'va;');
       if (this.assignee == 'user') {
         const obj = this.allUsers.find(item => {
           return item.name === val;
@@ -185,43 +173,6 @@ export default {
           return item.machineValue === val;
         });
         this.newTask.assignedTo[0].id = obj.id;
-      }
-    },
-
-    onOfficeTaskToggleButton() {
-      this.showOfficeActions = this.officeTask.officeActionRequired;
-      if (this.showOfficeActions) {
-        this.officeTask.actions = this.officeTaskActions;
-      } else {
-        this.officeTask.actions = [];
-      }
-    },
-
-    changeEnableField(action, index) {
-      this.officeTask.actions[index] = action;
-    },
-
-    async addTask() {
-      const success = await this.$refs.addTask.validate();
-      if (success) {
-        this.newTask.priority = this.newTask.priority ? 'high' : 'low';
-        this.newTask.dueDate = dateToSend(this.newTask.dueDate);
-        this.officeTaskActions.push(this.newTask);
-        this.newTask = {
-          dueDate: '',
-          name: '',
-          isEnabled: true,
-          assignedTo: [
-            {
-              type: '',
-              name: '',
-              id: ''
-            }
-          ],
-          priority: false
-        };
-        this.officeTask.actions = this.officeTaskActions;
-        this.addNewTaskDialog = false;
       }
     },
 

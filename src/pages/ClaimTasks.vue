@@ -3,7 +3,7 @@
     <div v-if="tasks.tasks">
       <div class="column" v-for="(task, index) in tasks.tasks">
         <div class="row q-pa-sm">
-          <div class="flex" v-if="isShow">
+          <div v-if="isShow">
             <q-checkbox
               v-model="task.isCompleted"
               color="$primary"
@@ -11,12 +11,16 @@
               @input="setTaskAsCompleted(task)"
             />
           </div>
-          <div class="column">
+          <div>
             <span class="form-heading  text-capitalize" v-if="task.name">{{
               task.name
             }}</span>
-            <span v-if="task.addedDesc">{{ task.addedDesc }}</span>
-            <span v-if="task.dueDesc">{{ task.dueDesc }}</span>
+            <div v-if="task.addedDesc">{{ task.addedDesc }}</div>
+            <div v-if="task.dueDesc">{{ task.dueDesc }}</div>
+
+            <div v-if="task.isCompleted" style="width:150px">
+              {{ task.completedDesc }}
+            </div>
           </div>
         </div>
       </div>
@@ -136,9 +140,7 @@ export default {
     ]),
 
     async setTaskAsCompleted(value) {
-      console.log(value, 'val');
-      if (!value.isCompleted) {
-        console.log('if');
+      if (value.isCompleted) {
         const payload = {
           claimID: this.selectedClaimId,
           taskId: value.id,
@@ -148,16 +150,14 @@ export default {
         };
         await this.taskComplete(payload);
       } else {
-        console.log('else');
         const payload = {
           claimID: this.selectedClaimId,
-          taskId: value.id,
-          data: {}
+          taskId: value.id
         };
         await this.taskUncomplete(payload);
       }
 
-      this.getOfficeTasks(this.selectedClaimId);
+      await this.getOfficeTasks(this.selectedClaimId);
     },
 
     async addTask() {
@@ -169,17 +169,17 @@ export default {
             name: this.newTask.name,
             isEnabled: true,
             priority: this.newTask.priority ? 'high' : 'low',
-            assignedTo: this.assignedTo,
+            assignedTo: this.newTask.assignedTo,
             actions: {
               onComplete: [],
               onOverdue: []
             },
             dueDate: dateToSend(this.newTask.dueDate),
-            // isCompleted: false,
             completedOn: null,
             note: this.newTask.assign
           }
         };
+
         await this.addOfficeTask(payload);
         this.addNewTaskDialog = false;
         this.getOfficeTasks(this.selectedClaimId);

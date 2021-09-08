@@ -135,58 +135,6 @@ export default {
   methods: {
     ...mapActions(['getOfficeTaskActions', 'getAllUsers', 'getRoles']),
 
-    /*********It will show all the dates from tommorow !**********/
-    taskDateValidation(dateopn) {
-      return dateopn > date.formatDate(Date.now(), 'YYYY/MM/DD');
-    },
-
-    /*****It will call the Api according to the imput in the first drop down ******/
-
-    /**As user dont have machine value  but roles have ,so in case of User API we are putting value in machine
-     *  value and machine value in machineValue  in case of Roles API
-     * because we are using same drop down for roles and users ******/
-    async callAssignApi(val) {
-      this.assignToSubOption = [];
-      this.newTask.assignedTo[0].name = '';
-      this.assignee = val;
-      /**If we select User then...we will put all the user in assignToSubOption this array **/
-      if (val == 'user') {
-        await this.getAllUsers();
-        this.allUsers.forEach(user => {
-          this.assignToSubOption.push({
-            machineValue: user.name,
-            name: user.name,
-            id: user.id
-          });
-        });
-      } else {
-        /**If we select Roles then...we will put all the Roles in assignToSubOption this array **/
-        await this.getRoles();
-        this.roleTypes.forEach(user => {
-          this.assignToSubOption.push({
-            machineValue: user.machineValue,
-            name: user.name,
-            id: user.id
-          });
-        });
-      }
-    },
-    /**It will find the object from array whose value is selcted and assign ID to its object !*****/
-    setAssignTo(val) {
-      if (this.assignee == 'user') {
-        const obj = this.allUsers.find(item => {
-          return item.name === val;
-        });
-
-        this.newTask.assignedTo[0].id = obj.id;
-      } else {
-        const obj = this.roleTypes.find(item => {
-          return item.machineValue === val;
-        });
-        this.newTask.assignedTo[0].id = obj.id;
-      }
-    },
-
     onOfficeTaskToggleButton() {
       this.showOfficeActions = this.officeTask.officeActionRequired;
       if (this.showOfficeActions) {
