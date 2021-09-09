@@ -177,7 +177,14 @@
         />
         <div class="vendor-list">
           <div class="actions-div">
-            <q-input dense placeholder="Search" borderless class="full-width">
+            <q-input
+              dense
+              placeholder="Search"
+              v-model="searchText"
+              @input="search($event)"
+              borderless
+              class="full-width"
+            >
               <template v-slot:prepend>
                 <q-icon name="search" />
               </template>
@@ -410,6 +417,8 @@ export default {
   },
   data() {
     return {
+      searchText: '',
+
       addEstimatorDialog: false,
       estimatorsListDialog: false,
       addEstimatorDialogInfo: {
@@ -571,6 +580,15 @@ export default {
       this.estimatingInfo.email = value.email;
       this.estimatorsListDialog = false;
     },
+    search(event) {
+      const params = {
+        role: 'estimator',
+        name: ''
+      };
+      params.name = event;
+      this.getEstimators(params);
+    },
+
     onPhoneNumberClick,
     onEmailClick,
     showPhoneNumber,
