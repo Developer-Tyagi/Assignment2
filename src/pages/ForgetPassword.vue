@@ -94,13 +94,10 @@ export default {
         auth
           .sendPasswordResetEmail(this.email)
           .then(() => {
-            console.log(this.email, 'ee');
             this.successMessage(constants.successMessages.FORGOT_PASSWORD);
           })
           .catch(error => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            this.errorMessage(constants.successMessages.NO_EMAIL_EXIST);
+            this.errorMessage(error.message);
           });
       }
     }

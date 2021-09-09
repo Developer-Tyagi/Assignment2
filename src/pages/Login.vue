@@ -91,13 +91,6 @@
             style="text-decoration: none"
             >Forgot Password</a
           >
-
-          <a
-            href="/signup"
-            :class="$q.screen.width < 624 ? 'text-primary' : 'text-white'"
-            style="text-decoration: none; margin-left:40px"
-            >Signup</a
-          >
         </div>
       </q-form>
     </div>
