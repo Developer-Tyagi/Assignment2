@@ -185,8 +185,10 @@
             >
               <q-item-section @click="onClickMenuItem(link.title)">
                 <div class="row text-primary">
-                  <div class="q-ml-md col-3 column justify-center">
-                    <q-icon name="groups" size="md" color="primary" />
+                  <div class="q-ml-md col-3 q-mb-md column justify-center">
+                    <q-icon size="md">
+                      <q-img :src="getImage(link.icon)" color="primary" />
+                    </q-icon>
                   </div>
                   <div class="column col-7">
                     <div class="title text-primary col-4">{{ link.title }}</div>
@@ -243,24 +245,28 @@ export default {
           title: 'Dashboard',
           key: 'dashboard',
           link: '/dashboard',
+          icon: 'Dashboard_menu.svg',
           description: 'View Dashboard and details'
         },
         {
           title: 'Leads',
           key: 'leads',
           link: '/leads-dashboard',
+          icon: 'LEADS_menu.svg',
           description: 'View Lead Dashboard, Add New Lead and Manage Leads.'
         },
         {
           title: 'Clients',
           key: 'clients',
           link: '/clients',
+          icon: 'CLIENTS_menu.svg',
           description: 'View, Add and Manage Clients.'
         },
         {
           title: 'Claims',
           key: 'claims',
           link: '/claims',
+          icon: 'claim_menu.svg',
           description: 'View, Add and Manage Claims.'
         },
         // {
@@ -273,12 +279,14 @@ export default {
           title: 'Vendors',
           key: 'vendors',
           link: '/vendors',
+          icon: 'vendors_menu.svg',
           description: 'View, Add and Manage all types of Vendors.'
         },
         {
           title: 'Carriers',
           key: 'carriers',
           link: '/carriers',
+          icon: 'carriers_menu.svg',
           description: 'View, Add and Manage all types of Carriers.'
         },
         // {
@@ -290,36 +298,42 @@ export default {
           title: 'Mortgages',
           key: 'mortgages',
           link: '/mortgages',
+          icon: 'mortgage_menu.svg',
           description: 'View, Add and Manage all types of Mortgages.'
         },
         {
           title: 'Reports',
           key: 'reports',
           link: '/reports',
+          icon: 'reports_menu.svg',
           description: 'Download files.'
         },
         {
           title: 'Admin',
           key: 'admin',
           link: '/admin',
+          icon: 'admin_big.svg',
           description: 'Setup Company , account, email, actions etc.'
         },
         {
           title: 'Manage Users',
           key: 'manage-users',
           link: '/manage-users',
+          icon: 'manage_users_big.svg',
           description: 'View, Add and Manage all types of Vendors.'
         },
         {
           title: 'Configuration',
           key: 'configuration',
           link: '/configuration',
+          icon: 'configuration_big.svg',
           description: 'View, Add and Manage all types of configuration.'
         },
         {
           title: 'Profile',
           key: 'profile',
           link: '/edit-profile',
+          icon: 'profile_big.svg',
           description: 'Edit profile '
         }
       ],
@@ -337,6 +351,9 @@ export default {
       'getAccess'
     ]),
     ...mapMutations(['setConvertedLead', 'setEditOfflineClientIcon']),
+    getImage(icon) {
+      return require('../assets/' + icon);
+    },
     async logout() {
       if (this.getFCMToken()) {
         await this.deletePushNotificationToken(this.getFCMToken());
