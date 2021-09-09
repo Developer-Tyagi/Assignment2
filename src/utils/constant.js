@@ -30,6 +30,8 @@ export const constants = {
     CARRIER: 'Carrier Added Successfully !',
     CLAIM_EDITED: 'Claim  Number Edited  Successfully !',
     CLAIM_PHASE_EDITED: 'Claim Phase Edited  Successfully !',
-    EDIT_PROPERTY_ADDRESS: 'Property Address Edited Successfully !'
+    EDIT_PROPERTY_ADDRESS: 'Property Address Edited Successfully !',
+    FORGOT_PASSWORD: 'email has been sent, please check your email and verify',
+    NO_EMAIL_EXIST: 'no user exists with this account!'
   }
 };
