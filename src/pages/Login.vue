@@ -84,12 +84,19 @@
             class="rounded full-width q-my-md"
           ></q-btn>
         </div>
-        <div class="row justify-center">
+        <div class="row justify-center row">
           <a
             href="/forget-password"
             :class="$q.screen.width < 624 ? 'text-primary' : 'text-white'"
             style="text-decoration: none"
             >Forgot Password</a
+          >
+
+          <a
+            href="/signup"
+            :class="$q.screen.width < 624 ? 'text-primary' : 'text-white'"
+            style="text-decoration: none; margin-left:40px"
+            >Signup</a
           >
         </div>
       </q-form>
