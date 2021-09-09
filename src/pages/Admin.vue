@@ -210,6 +210,34 @@
                   </div>
                 </div>
               </q-card>
+              <q-card class="q-pa-lg q-mt-lg" flat bordered>
+                <div class="row ">
+                  <div class="text-weight-bold text-h5">Plan:</div>
+                  <div class="text-h5">Platinum</div>
+                </div>
+                <div
+                  class="row 
+                 "
+                >
+                  <div class="text-body1 text-weight-bold">Paid Users-</div>
+                  <div class="text-body1 ">{{ organization.paidUsers }}</div>
+
+                  <div class="text-body1 text-weight-bold  q-pl-xl">
+                    Unpaid Users-
+                  </div>
+                  <div class="text-body1 ">{{ organization.nonPaidUsers }}</div>
+                </div>
+
+                <!--table for paid /unpaid users-->
+                <div class="q-pa-md">
+                  <q-table
+                    :data="data"
+                    :columns="columns"
+                    row-key="name"
+                    hide-bottom
+                  />
+                </div>
+              </q-card>
             </q-tab-panel>
             <q-tab-panel name="groupPermission" class="q-pa-none">
               <div class="row">
@@ -1095,6 +1123,46 @@ export default {
         { value: 'User', machineValue: 'user' },
         { value: 'Role', machineValue: 'role' }
       ],
+      columns: [
+        {
+          name: 'paidUser',
+          label: 'Paid Users',
+          align: 'left',
+          field: row => row.paidUser
+        },
+        {
+          name: 'unPaidUser',
+          label: 'UnPaid Users',
+          align: 'left',
+          field: 'unPaidUser'
+        }
+      ],
+      data: [
+        {
+          paidUser: 'Frozen Yogurt',
+          unPaidUser: 'Yogurt'
+        },
+        {
+          paidUser: 'gurt',
+          unPaidUser: 'Yurt'
+        },
+        {
+          paidUser: 'Frozen urt',
+          unPaidUser: 'Yogrt'
+        },
+        {
+          paidUser: 'Frozen urt',
+          unPaidUser: 'Yogrt'
+        },
+        {
+          paidUser: 'Frozen urt',
+          unPaidUser: 'Yogrt'
+        },
+        {
+          paidUser: 'Frozen urt',
+          unPaidUser: 'Yogrt'
+        }
+      ],
       assignee: '',
       assignToSubOption: [],
       newRole: { id: '', value: '', machine: '' },
@@ -1620,6 +1688,7 @@ export default {
 
   async created() {
     this.getOrganization();
+
     this.getContactTypes();
     this.tab = 'accountSummary';
     if (getCurrentUser().attributes) {
