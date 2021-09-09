@@ -137,7 +137,7 @@
       content-class="bg-side-panel"
       @hide="onMenuHide()"
     >
-      <div style="height: calc(100px)" class="q-px-md q-pt-lg bg-primary">
+      <div style="height: calc(100px)" class="q-px-md q-pt-lg menu-bar-style">
         <div class="row no-wrap">
           <div>
             <q-avatar
@@ -205,8 +205,7 @@
       </q-scroll-area>
       <div style="height: 100px" class="q-px-md q-mt-sm">
         <q-btn
-          class="button-width-90 q-mt-md rounded text-capitalize"
-          color="primary"
+          class="button-width-90 q-mt-md rounded text-capitalize menu-bar-style"
           label="LOGOUT"
           @click="logout()"
         />
