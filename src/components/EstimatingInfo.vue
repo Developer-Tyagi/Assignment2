@@ -189,6 +189,16 @@
                 <q-icon name="search" />
               </template>
             </q-input>
+               <q-btn
+      v-if="params.name"
+        class="q-ml-auto q-pr-md"
+        color="white"
+        text-color="grey"
+        @click="clearFilter()"
+        flat
+        dense
+        style="font-weight: 400"
+        >Clear</q-btn
             <q-separator vertical></q-separator>
             <q-btn
               @click="
@@ -436,7 +446,8 @@ export default {
         companyName: ''
       },
       params: {
-        role: 'estimator'
+        role: 'estimator',
+        name:'',
       }
     };
   },
@@ -581,12 +592,15 @@ export default {
       this.estimatorsListDialog = false;
     },
     search(event) {
-      const params = {
-        role: 'estimator',
-        name: ''
-      };
-      params.name = event;
-      this.getEstimators(params);
+     
+      this.params.name = event;
+      this.getEstimators(this.params);
+   
+    },
+  clearFilter() {
+    this.searchText='';
+       this.params.name='';
+      this.getEstimators(this.params);
     },
 
     onPhoneNumberClick,
