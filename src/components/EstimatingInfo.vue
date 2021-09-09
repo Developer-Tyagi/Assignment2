@@ -177,11 +177,29 @@
         />
         <div class="vendor-list">
           <div class="actions-div">
-            <q-input dense placeholder="Search" borderless class="full-width">
+            <q-input
+              dense
+              placeholder="Search"
+              v-model="searchText"
+              @input="search($event)"
+              borderless
+              class="full-width"
+            >
               <template v-slot:prepend>
                 <q-icon name="search" />
               </template>
             </q-input>
+            <q-btn
+              v-if="params.name"
+              class="q-ml-auto q-pr-md"
+              color="white"
+              text-color="grey"
+              @click="clearFilter()"
+              flat
+              dense
+              style="font-weight: 400"
+              >Clear</q-btn
+            >
             <q-separator vertical></q-separator>
             <q-btn
               @click="
@@ -410,6 +428,8 @@ export default {
   },
   data() {
     return {
+      searchText: '',
+
       addEstimatorDialog: false,
       estimatorsListDialog: false,
       addEstimatorDialogInfo: {
@@ -427,7 +447,8 @@ export default {
         companyName: ''
       },
       params: {
-        role: 'estimator'
+        role: 'estimator',
+        name: ''
       }
     };
   },
@@ -571,6 +592,16 @@ export default {
       this.estimatingInfo.email = value.email;
       this.estimatorsListDialog = false;
     },
+    search(event) {
+      this.params.name = event;
+      this.getEstimators(this.params);
+    },
+    clearFilter() {
+      this.searchText = '';
+      this.params.name = '';
+      this.getEstimators(this.params);
+    },
+
     onPhoneNumberClick,
     onEmailClick,
     showPhoneNumber,
