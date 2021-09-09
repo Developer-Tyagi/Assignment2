@@ -23,7 +23,13 @@ const routes = [
         path: 'set-password',
         name: 'set-password',
         caseSensitive: true,
-        component: () => import('pages/ForgotPassword.vue')
+        component: () => import('src/pages/SetPassword.vue')
+      },
+      {
+        path: 'forget-password',
+        name: 'forget-password',
+        caseSensitive: true,
+        component: () => import('src/pages/ForgetPassword.vue')
       },
       {
         path: 'info',

@@ -61,3 +61,10 @@ export function successMessage(message) {
     position: 'top'
   });
 }
+export function errorMessage(message) {
+  return this.$q.notify({
+    type: 'negative',
+    message,
+    position: 'top'
+  });
+}

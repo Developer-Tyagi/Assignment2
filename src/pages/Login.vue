@@ -22,7 +22,7 @@
           v-if="$q.screen.width < 624"
           alt="Claimguru"
           src="~assets/claimguru_text.png"
-          class="q-mx-auto q-mb-auto"
+          class="q-mx-auto q-mb-auto "
           width="190"
           height="90"
         />
@@ -84,9 +84,9 @@
             class="rounded full-width q-my-md"
           ></q-btn>
         </div>
-        <div class="row justify-center">
+        <div class="row justify-center row">
           <a
-            href
+            href="/forget-password"
             :class="$q.screen.width < 624 ? 'text-primary' : 'text-white'"
             style="text-decoration: none"
             >Forgot Password</a

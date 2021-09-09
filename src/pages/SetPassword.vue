@@ -77,7 +77,7 @@ const isPushNotificationsAvailable = Capacitor.isPluginAvailable(
 );
 const { PushNotifications } = Plugins;
 export default {
-  name: 'forgotPassword',
+  name: 'SetPassword',
   data() {
     return {
       userId: '',
@@ -166,12 +166,15 @@ export default {
   },
 
   created() {
+    console.log(this.$route.query, 11);
     this.verifyOobCode(this.$route.query).then(response => {
+      console.log(response, 'response');
       if (response && response.data.id && response.data.attributes.email) {
         this.userId = response.data.id;
         this.userEmail = response.data.attributes.email;
         this.isLinkExpired = false;
       } else {
+        console.log('hello');
         this.isLinkExpired = true;
       }
     });
