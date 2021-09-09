@@ -189,9 +189,9 @@ export default {
     dateToShow,
     async onClickFavourite() {
       if (this.getSelectedClaim.isFavourite == false) {
-        await this.markClaimUnFavourite(this.selectedClaimId);
-      } else {
         await this.markClaimFavourite(this.selectedClaimId);
+      } else {
+        await this.markClaimUnFavourite(this.selectedClaimId);
       }
     }
   }

@@ -38,7 +38,7 @@
                   <q-icon
                     class="q-ml-auto"
                     size="1em"
-                    :name="claim.isFavourite ? 'star' : 'star_border'"
+                    :name="claim.IsFavourite ? 'star' : 'star_border'"
                     @click="onClickFavourite(claim)"
                     color="primary"
                   >
