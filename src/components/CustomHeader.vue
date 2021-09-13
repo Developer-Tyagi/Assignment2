@@ -243,8 +243,8 @@ export default {
         {
           title: 'Dashboard',
           key: 'dashboard',
-          link: '/dashboard',
           icon: 'Dashboard_menu.svg',
+          link: '/claimstats',
           description: 'View Dashboard and details'
         },
         {
