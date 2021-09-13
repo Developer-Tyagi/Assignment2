@@ -47,32 +47,38 @@
                   </div>
                   <div class="col-3">
                     <div class="q-mr-md" v-if="user.mailingAddress">
-                      {{
-                        user.mailingAddress.address1
-                          ? user.mailingAddress.address1
-                          : '-'
-                      }},
-                      {{
-                        user.mailingAddress.address2
-                          ? user.mailingAddress.address2
-                          : '-'
-                      }},{{
-                        user.mailingAddress.addressRegion
-                          ? toGetStateShortName(
-                              user.mailingAddress.addressRegion
-                            )
-                          : '-'
-                      }},{{
-                        user.mailingAddress.addressLocality
-                          ? user.mailingAddress.addressLocality
-                          : '-'
-                      }}
-                      ,
-                      {{
-                        user.mailingAddress.postalCode
-                          ? user.mailingAddress.postalCode
-                          : '-'
-                      }}
+                      <div>
+                        {{
+                          user.mailingAddress.address1
+                            ? user.mailingAddress.address1
+                            : '-'
+                        }}
+                      </div>
+                      <div>
+                        {{
+                          user.mailingAddress.address2
+                            ? user.mailingAddress.address2
+                            : '-'
+                        }}
+                      </div>
+                      <div>
+                        {{
+                          user.mailingAddress.addressLocality
+                            ? user.mailingAddress.addressLocality
+                            : '-'
+                        }}{{
+                          user.mailingAddress.addressRegion
+                            ? toGetStateShortName(
+                                user.mailingAddress.addressRegion
+                              )
+                            : '-'
+                        }}
+                        {{
+                          user.mailingAddress.postalCode
+                            ? user.mailingAddress.postalCode
+                            : '-'
+                        }}
+                      </div>
                     </div>
                   </div>
                   <div
@@ -135,38 +141,44 @@
                   <div class="col-3">
                     <div
                       class="q-mr-md"
-                      v-if="organization.billingInfo.address"
+                      v-if="
+                        organization.billingInfo &&
+                          organization.billingInfo.address
+                      "
                     >
-                      {{
-                        organization.billingInfo.address.address1
-                          ? organization.billingInfo.address.address1
-                          : '-'
-                      }}
-                      {{
-                        organization.billingInfo.address.address2
-                          ? organization.billingInfo.address.address2
-                          : '-'
-                      }},{{
-                        organization.billingInfo.address.addressRegion
-                          ? toGetStateShortName(
-                              organization.billingInfo.address.addressRegion
-                            )
-                          : '-'
-                      }},{{
-                        organization.billingInfo.address.addressLocality
-                          ? organization.billingInfo.address.addressLocality
-                          : '-'
-                      }}
-                      ,
-                      {{
-                        organization.billingInfo.address.addressCountry
-                          ? organization.billingInfo.address.addressCountry
-                          : '-'
-                      }},{{
-                        organization.billingInfo.address.postalCode
-                          ? organization.billingInfo.address.postalCode
-                          : '-'
-                      }}
+                      <div>
+                        {{
+                          organization.billingInfo.address.address1
+                            ? organization.billingInfo.address.address1
+                            : '-'
+                        }}
+                      </div>
+                      <div>
+                        {{
+                          organization.billingInfo.address.address2
+                            ? organization.billingInfo.address.address2
+                            : '-'
+                        }}
+                      </div>
+                      <div>
+                        {{
+                          organization.billingInfo.address.addressLocality
+                            ? organization.billingInfo.address.addressLocality
+                            : '-'
+                        }},{{
+                          organization.billingInfo.address.addressRegion
+                            ? toGetStateShortName(
+                                organization.billingInfo.address.addressRegion
+                              )
+                            : '-'
+                        }}
+
+                        {{
+                          organization.billingInfo.address.postalCode
+                            ? organization.billingInfo.address.postalCode
+                            : '-'
+                        }}
+                      </div>
                     </div>
                   </div>
                   <div class="col ">
@@ -174,6 +186,7 @@
                   </div>
                   <div class="col">
                     {{
+                      organization.billingInfo &&
                       organization.billingInfo.address.postalCode
                         ? organization.billingInfo.address.postalCode
                         : '-'
@@ -230,12 +243,34 @@
 
                 <!--table for paid /unpaid users-->
                 <div class="q-pa-md">
-                  <q-table
+                  <table>
+                    <thead>
+                      <tr class="text-bold text-h6 text-white">
+                        <th class="bg-primary text-white" style="width: 600px">
+                          Paid Users
+                        </th>
+                        <th class="bg-primary text-white" style="width: 600px">
+                          UnPaid Users
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="paidUnpaid in paidUnpaidUserList">
+                        <td class="text-center">
+                          {{ paidUnpaid.paidUserName }}
+                        </td>
+                        <td class="text-center">
+                          {{ paidUnpaid.unPaidUserName }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <!-- <q-table
                     :data="data"
                     :columns="columns"
                     row-key="name"
-                    hide-bottom
-                  />
+                  /> -->
                 </div>
               </q-card>
             </q-tab-panel>
@@ -1125,44 +1160,19 @@ export default {
       ],
       columns: [
         {
-          name: 'paidUser',
+          name: 'paidUserName',
           label: 'Paid Users',
           align: 'left',
-          field: row => row.paidUser
+          field: row => row.paidUserName
         },
         {
-          name: 'unPaidUser',
+          name: 'unPaidUserName',
           label: 'UnPaid Users',
           align: 'left',
-          field: 'unPaidUser'
+          field: row => row.unPaidUserName
         }
       ],
-      data: [
-        {
-          paidUser: 'Frozen Yogurt',
-          unPaidUser: 'Yogurt'
-        },
-        {
-          paidUser: 'gurt',
-          unPaidUser: 'Yurt'
-        },
-        {
-          paidUser: 'Frozen urt',
-          unPaidUser: 'Yogrt'
-        },
-        {
-          paidUser: 'Frozen urt',
-          unPaidUser: 'Yogrt'
-        },
-        {
-          paidUser: 'Frozen urt',
-          unPaidUser: 'Yogrt'
-        },
-        {
-          paidUser: 'Frozen urt',
-          unPaidUser: 'Yogrt'
-        }
-      ],
+      data: [],
       assignee: '',
       assignToSubOption: [],
       newRole: { id: '', value: '', machine: '' },
@@ -1175,17 +1185,14 @@ export default {
       editUserInfoDialog: false,
       priority: false,
       selectedRole: '',
-      selectedRole: '',
       organizations: {
         users: {
           fname: '',
           lname: '',
-
           email: '',
           roles: [],
           mailingAddress: {
             houseNumber: '',
-            addressCountry: '',
             addressLocality: '',
             addressRegion: '',
             postOfficeBoxNumber: '',
@@ -1210,7 +1217,6 @@ export default {
         roles: [],
         mailingAddress: {
           houseNumber: '',
-          addressCountry: '',
           addressLocality: '',
           addressRegion: '',
           postOfficeBoxNumber: '',
@@ -1295,7 +1301,8 @@ export default {
       'roleTypes',
       'permissions',
       'organization',
-      'allUsers'
+      'allUsers',
+      'paidUnpaidUserDetails'
     ])
   },
 
@@ -1304,6 +1311,7 @@ export default {
     onPhoneNumberClick,
     onEmailClick,
     showPhoneNumber,
+
     ...mapActions([
       'getActionOverDues',
       'getActionCompletion',
@@ -1524,7 +1532,6 @@ export default {
       this.users.contact.type = this.user.phoneNumber.type;
       this.users.contact.number = showPhoneNumber(this.user.phoneNumber.number);
       this.users.email = this.user.email;
-      this.users.mailingAddress.addressCountry = this.user.mailingAddress.addressCountry;
       this.users.mailingAddress.addressRegion = this.user.mailingAddress.addressRegion;
       this.users.mailingAddress.addressLocality = this.user.mailingAddress.addressLocality;
       this.users.mailingAddress.houseNumber = this.user.mailingAddress.houseNumber;
@@ -1539,7 +1546,6 @@ export default {
 
       // this.organizations.users.contact.number = this.organization.website;
       this.organizations.users.email = this.organization.photoIDEmail;
-      this.organizations.users.mailingAddress.addressCountry = this.organization.billingInfo.address.addressCountry;
       this.organizations.users.mailingAddress.addressRegion = this.organization.billingInfo.address.addressRegion;
       this.organizations.users.mailingAddress.addressLocality = this.organization.billingInfo.address.addressLocality;
       this.organizations.users.mailingAddress.houseNumber = this.organization.billingInfo.address.houseNumber;
@@ -1687,8 +1693,9 @@ export default {
   },
 
   async created() {
+    this.getAllUsers();
     this.getOrganization();
-
+    this.paidUnpaidUserList = this.paidUnpaidUserDetails;
     this.getContactTypes();
     this.tab = 'accountSummary';
     if (getCurrentUser().attributes) {
@@ -1720,12 +1727,19 @@ tr:nth-child(even) {
 
 th {
   background: lightgray;
-
   border: 1px solid #ccc;
 }
 table thead th {
   position: sticky;
   top: 0;
   z-index: 10;
+}
+table {
+  border-collapse: collapse;
+  width: 99.9%;
+}
+td {
+  padding: 8px 16px;
+  border: 1px solid #ccc;
 }
 </style>

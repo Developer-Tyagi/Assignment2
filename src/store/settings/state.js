@@ -1,6 +1,7 @@
 export default function() {
   return {
     inspectionTypes: [],
-    allUsers: []
+    allUsers: [],
+    paidUnpaidUserList: []
   };
 }
