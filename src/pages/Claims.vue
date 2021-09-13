@@ -38,7 +38,7 @@
                   <q-icon
                     class="q-ml-auto"
                     size="1em"
-                    :name="claim.IsFavourite ? 'star' : 'star_border'"
+                    :name="claim.isFavourite ? 'star' : 'star_border'"
                     @click="onClickFavourite(claim)"
                     color="primary"
                   >
@@ -171,9 +171,11 @@ export default {
       this.search();
     },
     async onClickFavourite(claim) {
-      if (claim.IsFavourite == true) {
+      if (claim.isFavourite == true) {
+        claim.isFavourite = false;
         await this.markClaimUnFavourite(claim.id);
       } else {
+        claim.isFavourite = true;
         await this.markClaimFavourite(claim.id);
       }
     },
