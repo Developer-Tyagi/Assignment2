@@ -65,6 +65,14 @@ export async function setEstimators(state, estimatorsData) {
     await estimatorsCollection.delete([]);
   }
   await localDB.estimators.bulkAdd(estimators);
+  var paidUsers = [];
+  var unPaidUsers = [];
+  for (let i = 0; i < estimators.length; i++) {
+    if (estimators[i].attributes.roles[0].isPaid == true) {
+      paidUsers.push(estimators[i].attributes.name);
+    } else unPaidUsers.push(estimators[i].attributes.name);
+  }
+  console.log(paidUsers, 'paid users');
 }
 
 export async function setOfflineEstimators(state) {

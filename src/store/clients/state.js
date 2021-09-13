@@ -14,6 +14,7 @@ export default function() {
     setClientProperty: [],
     getSelectedClaim: [],
     selectedClaimId: '',
-    clientStatic: {}
+    clientStatic: {},
+    paidUnpaidUsers: {}
   };
 }
