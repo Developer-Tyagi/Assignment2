@@ -70,6 +70,7 @@
         rounded
         @click="mortgageList = true"
         label="Click for choosing a Mortgage"
+        :disable="isOfflineClientEdit"
       />
     </div>
     <q-input
@@ -78,6 +79,7 @@
       class="input-style input-field"
       v-model="mortgage[0].loanNumber"
       label="Loan Number"
+      :disable="isOfflineClientEdit"
     />
     <q-input
       dense
@@ -85,6 +87,7 @@
       class="input-style input-field"
       v-model="mortgage[0].accountNumber"
       label="Account Number"
+      :disable="isOfflineClientEdit"
     />
     <div class="q-ml-xs q-mt-sm form-heading">Notes</div>
     <q-input
@@ -94,6 +97,7 @@
       borderless
       v-model="mortgage[0].notes"
       style="resize: none"
+      :disable="isOfflineClientEdit"
     />
     <div class="row q-mt-sm q-ml-xs" v-if="isThereSecondMortgage">
       <span class="form-heading"> Is there a 2nd mortgage on the home? </span>
@@ -101,6 +105,7 @@
         class="q-ml-auto"
         v-model="mortgage[0].isSecondMortgageHome"
         @input="onSecondMortgageToggle"
+        :disable="isOfflineClientEdit"
       />
     </div>
     <div v-if="mortgage[0].isSecondMortgageHome">
@@ -117,7 +122,7 @@
         <q-card
           bordered
           v-if="mortgage[1].value"
-          @click="mortgageList = true"
+          @click="onClickSecondMortgage"
           class="q-my-md q-pa-md"
         >
           <div class="text-bold">{{ mortgage[1].value }}</div>
@@ -184,6 +189,7 @@
         class="input-style input-field"
         v-model="mortgage[1].loanNumber"
         label="Loan Number"
+        :disable="isOfflineClientEdit"
       />
       <q-input
         dense
@@ -191,6 +197,7 @@
         class="input-style input-field"
         v-model="mortgage[1].accountNumber"
         label="Account Number"
+        :disable="isOfflineClientEdit"
       />
       <div class="q-ml-xs q-mt-sm form-heading">Notes</div>
       <q-input
@@ -200,15 +207,8 @@
         borderless
         v-model="mortgage[1].notes"
         style="resize: none"
+        :disable="isOfflineClientEdit"
       />
-      <!-- <q-input
-        v-if="isOfflineClientEdit"
-        disabled
-        rows="5"
-        class="textarea full-width"
-        v-model="mortgage[1].notes"
-        style="resize: none"
-      /> -->
     </div>
     <!-- Mortgage List -->
     <q-dialog
@@ -291,14 +291,20 @@ export default {
   methods: {
     showPhoneNumber,
     toGetStateShortName,
-
+    onClickSecondMortgage() {
+      if (!this.isOfflineClientEdit) {
+        this.mortgageList = true;
+      }
+    },
     onSelectMortgageClick() {
       this.mortgage.mortgageList = true;
       this.mortgage.addMortgageDialog = true;
     },
     onChooseMortgageClick(index) {
-      this.selectedIndex = index;
-      this.mortgageList = true;
+      if (!this.isOfflineClientEdit) {
+        this.selectedIndex = index;
+        this.mortgageList = true;
+      }
     },
     onSecondMortgageToggle() {
       if (this.mortgage[0].isSecondMortgageHome) {

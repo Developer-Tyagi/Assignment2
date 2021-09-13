@@ -2002,9 +2002,11 @@ export default {
               this.mortgageInfo[0].isSecondMortgageHome = true;
             }
           }
-
-          this.mortgageInfo[index] = this.selectedClaim.mortgageInfo[index];
-          console.log(this.selectedClaim.mortgageInfo, 111);
+          this.$set(
+            this.mortgageInfo,
+            index,
+            this.selectedClaim.mortgageInfo[index]
+          );
         }
       }
       // expert vendor info pre-filling
