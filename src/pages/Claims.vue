@@ -178,6 +178,7 @@ export default {
         claim.isFavourite = true;
         await this.markClaimFavourite(claim.id);
       }
+      this.getClaims();
     },
     search(event) {
       this.params.name = event;

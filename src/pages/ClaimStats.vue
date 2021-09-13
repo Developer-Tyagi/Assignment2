@@ -175,20 +175,29 @@
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { dateToShow } from '@utils/date';
 import { getCurrentUser } from 'src/utils/auth';
+
 export default {
   data() {
     return {
       isClickable: false,
       params: {
-        favourite: ''
+        favourite: '',
+        favouriteID: ''
       }
     };
   },
   created() {
     this.getClaimStatistics();
-    this.getLeadStatistics();
-    this.getClientStatistics();
+    var index = getCurrentUser().attributes.roles.findIndex(
+      std => std.machineValue === 'vendor' || std.machineValue === 'estimator'
+    );
+    if (index < 0) {
+      this.isClickable = true;
+      this.getLeadStatistics();
+      this.getClientStatistics();
+    }
     this.params.favourite = true;
+    this.params.favouriteID = getCurrentUser().id;
     this.getClaims(this.params);
   },
   methods: {
