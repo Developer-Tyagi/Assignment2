@@ -2,14 +2,14 @@
   <!-- mobile-container-page listing-height -->
 
   <q-page style="background-color:#8F8F8F;">
-    <q-card style="border-radius: 0 0 60px 60px;height:calc(100vh - 220px); ">
-      <div style="height:calc(100vh - 202px)">
+    <q-card style="border-radius: 0 0 60px 60px;height:(74vh); ">
+      <div style="height:calc(100vh - 205px)">
         <div class="row justify-between q-py-sm">
-          <div class="box left menu-left-icons ">
+          <div class="box left menu-left-icons">
             <img
               class="q-ml-lg q-mt-sm q-mb-sm image-style"
               src="~assets/LEADS.svg"
-              style="width:70%;height:70%;"
+              style="width:70%;"
               @click="$router.push('/leads-dashboard')"
             />
             <div class="box all">
@@ -22,7 +22,7 @@
             <img
               class="q-ml-lg q-mt-sm  q-mb-sm image-style"
               src="~assets/LEADS.svg"
-              style="width:70%"
+              style="width:70%;"
               @click="$router.push('/clients')"
             />
             <div class="box all">
@@ -80,7 +80,6 @@
               <p
                 style="  text-align: center;
   font-size: 15px;
- 
   font-weight: bold;"
               >
                 UPLOAD
@@ -103,11 +102,11 @@
         </div>
         <div
           style="box-shadow: 0px 0px 40px 10px  #000000;overflow: visible;width:240px"
-          class="q-mx-auto q-mt-lg bg-green row justify-center"
+          class="q-mx-auto q-mt-xl row justify-center"
         ></div>
       </div>
     </q-card>
-    <div class=" q-ma-xs row justify-between">
+    <div class="row justify-between">
       <div class="column">
         <img
           src="~assets/Profile.svg"
@@ -225,10 +224,6 @@ export default {
     };
   },
   created() {
-    // alert(this.$q.screen.height);
-    // alert(this.$q.screen.width);
-    // alert('sonali');
-    console.log(this.$q.screen.height, 'ss');
     this.getClaims();
   },
   methods: {
@@ -342,7 +337,6 @@ export default {
 }
 .box {
   height: calc(20vh);
-  //100px
   width: 150px;
   overflow: hidden;
   border: 1px solid #ccc;
@@ -354,7 +348,6 @@ export default {
   width: 150px;
   box-shadow: 5px 0 5px -5px #333;
   background-color: $primary;
-  // border-radius: 20px 20px 30px 30px;
 }
 
 .all {
@@ -372,7 +365,6 @@ export default {
   font-size: 18px;
   margin-top: 15px;
   font-weight: bold;
-  // overflow-wrap: break-word;
 }
 
 .image-style {
