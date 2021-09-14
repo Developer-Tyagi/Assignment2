@@ -1,14 +1,14 @@
 <template>
   <!-- mobile-container-page listing-height -->
-  <q-page style="background-color:#8F8F8F">
-    <!-- height:calc(100vh-230px) -->
-
-    <!-- <div style="box-shadow: 0px 30px 70px 10px  #000000;"></div> -->
-    <q-card style="border-radius: 0 0 60px 60px; height:calc(100vh - 210px); ">
-      <div class="row justify-between q-py-sm ">
+  <q-page style="background-color:#8F8F8F; ">
+    <q-card style="border-radius: 0 0 60px 60px; height:calc(100vh - 30vh);">
+      <div
+        class="row justify-between q-py-sm  "
+        style=" height:calc(100vh - 110%); "
+      >
         <div class="box left q-ml-xl">
           <img
-            class="q-ml-lg q-mt-sm"
+            class="q-ml-lg q-mt-sm q-mb-sm"
             src="~assets/LEADS.svg"
             style="width:70%"
             @click="$router.push('/leads-dashboard')"
@@ -19,10 +19,10 @@
             </p>
           </div>
         </div>
-        <div class="box left q-mr-xl">
+        <div class="box left q-mr-xl  ">
           <img
-            class="q-ml-lg q-mt-sm  text-white"
-            src="~assets/CLIENTS_menu.svg"
+            class="q-ml-lg q-mt-sm  q-mb-sm"
+            src="~assets/LEADS.svg"
             style="width:70%"
             @click="$router.push('/clients')"
           />
@@ -32,23 +32,11 @@
             </p>
           </div>
         </div>
-        <!-- <img
-          class="menu-left-icons q-mt-sm"
-          src="~assets/Leads.png"
-          style="width:30%"
-          @click="$router.push('/leads-dashboard')"
-        /> -->
-        <!-- <img
-          class="menu-right-icons q-mt-sm "
-          src="~assets/Clients.png"
-          style="width:30%;"
-          @click="$router.push('/clients')"
-        /> -->
       </div>
-      <div class="row justify-between q-py-sm">
+      <div class="row justify-between q-py-sm ">
         <div class="box left q-ml-xl">
           <img
-            class="q-ml-lg q-mt-sm"
+            class="q-ml-lg q-mt-sm  q-mb-sm"
             src="~assets/VENDOR.svg"
             style="width:70%"
             @click="$router.push('/vendors')"
@@ -59,9 +47,9 @@
             </p>
           </div>
         </div>
-        <div class="box left q-mr-xl">
+        <div class="box left q-mr-xl ">
           <img
-            class="q-ml-lg q-mt-sm"
+            class="q-ml-lg q-mt-sm  q-mb-sm"
             src="~assets/CLAIMS.svg"
             style="width:70%"
             @click="$router.push('/claims')"
@@ -85,26 +73,26 @@
           @click="$router.push('/claims')"
         /> -->
       </div>
-      <div class="row justify-between q-py-sm">
+      <div class="row justify-between q-py-sm ">
         <div class="box left q-ml-xl">
           <img
-            class="q-ml-lg q-mt-sm"
+            class="q-ml-lg q-mt-sm  q-mb-sm"
             src="~assets/DashboardLead.svg"
             style="width:70%"
             @click="selectClaimDialog = true"
           />
           <div class="box all">
-            <p
+            <div
               style="text-align: center;
   font-size: 15px;
   margin-top: 5px;
   font-weight: bold;"
             >
               SCAN
-            </p>
+            </div>
             <p
               style="  text-align: center;
-  font-size: 18px;
+  font-size: 15px;
  
   font-weight: bold;"
             >
@@ -114,7 +102,7 @@
         </div>
         <div class="box left q-mr-xl">
           <img
-            class="q-ml-lg q-mt-sm"
+            class="q-ml-lg q-mt-sm  q-mb-sm"
             src="~assets/DashboardLead.svg"
             style="width:70%"
             @click="selectClaimDialog = true"
@@ -125,38 +113,11 @@
             </p>
           </div>
         </div>
-        <!-- <img
-          class="menu-left-icons q-mt-sm"
-          src="~assets/Vendor.png"
-          style="width:30%;"
-          @click="$router.push('/vendors')"
-        />
-        <img
-          class="menu-right-icons q-mt-sm "
-          src="~assets/Claims.png"
-          style="width:30%;"
-          @click="$router.push('/claims')"
-        /> -->
       </div>
-      <!-- <div class="row justify-between q-py-sm q-mb-sm">
-        <img
-          class="menu-left-icons"
-          src="~assets/UploadScan.png"
-          style="width:30%;"
-          @click="selectClaimDialog = true"
-        />
-        <img
-          class="menu-right-icons "
-          src="~assets/CameraLogo.png"
-          style="width:30%;"
-        />
-      </div> -->
-      <div
-        style="box-shadow: 5px  5px 40px 15px  #000000; opacity:50%"
-        class="q-mt-lg"
-      ></div>
+
+      <div style="box-shadow: 5px  5px 40px 15px  #000000; opacity:50%"></div>
     </q-card>
-    <div class=" q-ma-xs  row justify-between" style="calc(100vh - 90%)">
+    <div class=" q-ma-xs  row justify-between q-mt-sm">
       <div class="column">
         <img
           src="~assets/Profile.svg"
@@ -402,7 +363,7 @@ export default {
 }
 
 .all {
-  box-shadow: 0 0 100px #ef5926;
+  box-shadow: 0 0 100px #e71e1e;
   margin-top: -15px;
   background-color: #000000;
   border-radius: 500px;
