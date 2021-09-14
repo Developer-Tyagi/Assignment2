@@ -2,23 +2,9 @@
   <div>
     <!-- Mortgage Form -->
 
-    <q-btn
-      style="width:100%"
-      no-caps
-      outline
-      class="custom-select"
-      v-if="!mortgage[0].value"
-      rounded
-      @click="mortgageList = true"
-      :disable="isOfflineClientEdit"
-    >
-      Click for choosing a Mortgage
-    </q-btn>
-
-    <div>
+    <div v-if="mortgage[0].value">
       <q-card
         bordered
-        v-if="mortgage[0].value"
         @click="onChooseMortgageClick(0)"
         class="q-my-md q-pa-md"
       >
@@ -75,7 +61,18 @@
         </div>
       </q-card>
     </div>
-
+    <div v-else>
+      <q-btn
+        style="width:100%"
+        no-caps
+        outline
+        class="custom-select"
+        rounded
+        @click="mortgageList = true"
+        label="Click for choosing a Mortgage"
+        :disable="isOfflineClientEdit"
+      />
+    </div>
     <q-input
       dense
       borderless
@@ -100,17 +97,18 @@
       borderless
       v-model="mortgage[0].notes"
       style="resize: none"
+      :disable="isOfflineClientEdit"
     />
     <div class="row q-mt-sm q-ml-xs" v-if="isThereSecondMortgage">
       <span class="form-heading"> Is there a 2nd mortgage on the home? </span>
       <q-toggle
         class="q-ml-auto"
-        v-model="isSecondMortgageHome"
+        v-model="mortgage[0].isSecondMortgageHome"
         @input="onSecondMortgageToggle"
         :disable="isOfflineClientEdit"
       />
     </div>
-    <div v-if="isSecondMortgageHome">
+    <div v-if="mortgage[0].isSecondMortgageHome">
       <q-btn
         @click="onChooseMortgageClick(1)"
         v-if="!mortgage[1].value"
@@ -118,13 +116,13 @@
         outline
         style="width:100%"
         class="q-mt-md"
-        >Click for choosing a Second Mortgage</q-btn
-      >
+        label="Click for choosing a Second Mortgage"
+      />
       <div>
         <q-card
           bordered
           v-if="mortgage[1].value"
-          @click="mortgageList = true"
+          @click="onClickSecondMortgage"
           class="q-my-md q-pa-md"
         >
           <div class="text-bold">{{ mortgage[1].value }}</div>
@@ -207,17 +205,9 @@
         rows="3"
         class="q-pt-md required input-style input-overlay full-width"
         borderless
-        v-if="!isOfflineClientEdit"
         v-model="mortgage[1].notes"
         style="resize: none"
-      />
-      <q-input
-        v-if="isOfflineClientEdit"
-        disabled
-        rows="5"
-        class="textarea full-width"
-        v-model="mortgage[1].notes"
-        style="resize: none"
+        :disable="isOfflineClientEdit"
       />
     </div>
     <!-- Mortgage List -->
@@ -262,7 +252,7 @@
 <script>
 import CustomBar from 'components/CustomBar';
 import MortgagesList from 'components/MortgagesList';
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 import { constants } from '@utils/constant';
 import { showPhoneNumber } from '@utils/clickable';
 import AddMortgage from 'components/AddMortgage';
@@ -297,20 +287,27 @@ export default {
   computed: {
     ...mapGetters(['isOfflineClientEdit'])
   },
+
   methods: {
     showPhoneNumber,
     toGetStateShortName,
-    ...mapActions(['']),
+    onClickSecondMortgage() {
+      if (!this.isOfflineClientEdit) {
+        this.mortgageList = true;
+      }
+    },
     onSelectMortgageClick() {
       this.mortgage.mortgageList = true;
       this.mortgage.addMortgageDialog = true;
     },
     onChooseMortgageClick(index) {
-      this.selectedIndex = index;
-      this.mortgageList = true;
+      if (!this.isOfflineClientEdit) {
+        this.selectedIndex = index;
+        this.mortgageList = true;
+      }
     },
     onSecondMortgageToggle() {
-      if (this.isSecondMortgageHome) {
+      if (this.mortgage[0].isSecondMortgageHome) {
         this.mortgage.push({
           id: '',
           value: '',
