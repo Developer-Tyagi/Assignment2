@@ -1,39 +1,144 @@
 <template>
   <!-- mobile-container-page listing-height -->
-  <div
-    class=" mobile-container-page dashboard-height"
-    style="background-color:#8F8F8F;"
-  >
-    <q-card style="border-radius: 0 0 60px 60px;">
-      <div class="row justify-between q-py-sm">
-        <img
-          class="menu-left-icons"
+  <q-page style="background-color:#8F8F8F">
+    <!-- height:calc(100vh-230px) -->
+
+    <!-- <div style="box-shadow: 0px 30px 70px 10px  #000000;"></div> -->
+    <q-card style="border-radius: 0 0 60px 60px; height:calc(100vh - 210px); ">
+      <div class="row justify-between q-py-sm ">
+        <div class="box left q-ml-xl">
+          <img
+            class="q-ml-lg q-mt-sm"
+            src="~assets/LEADS.svg"
+            style="width:70%"
+            @click="$router.push('/leads-dashboard')"
+          />
+          <div class="box all">
+            <p class="text-style">
+              LEADS
+            </p>
+          </div>
+        </div>
+        <div class="box left q-mr-xl">
+          <img
+            class="q-ml-lg q-mt-sm  text-white"
+            src="~assets/CLIENTS_menu.svg"
+            style="width:70%"
+            @click="$router.push('/clients')"
+          />
+          <div class="box all">
+            <p class="text-style">
+              CLIENTS
+            </p>
+          </div>
+        </div>
+        <!-- <img
+          class="menu-left-icons q-mt-sm"
           src="~assets/Leads.png"
-          style="width:30%;"
+          style="width:30%"
           @click="$router.push('/leads-dashboard')"
-        />
-        <img
-          class="menu-right-icons "
+        /> -->
+        <!-- <img
+          class="menu-right-icons q-mt-sm "
           src="~assets/Clients.png"
           style="width:30%;"
           @click="$router.push('/clients')"
-        />
+        /> -->
       </div>
       <div class="row justify-between q-py-sm">
-        <img
-          class="menu-left-icons"
+        <div class="box left q-ml-xl">
+          <img
+            class="q-ml-lg q-mt-sm"
+            src="~assets/VENDOR.svg"
+            style="width:70%"
+            @click="$router.push('/vendors')"
+          />
+          <div class="box all">
+            <p class="text-style">
+              VENDORS
+            </p>
+          </div>
+        </div>
+        <div class="box left q-mr-xl">
+          <img
+            class="q-ml-lg q-mt-sm"
+            src="~assets/CLAIMS.svg"
+            style="width:70%"
+            @click="$router.push('/claims')"
+          />
+          <div class="box all">
+            <p class="text-style">
+              CLAIMS
+            </p>
+          </div>
+        </div>
+        <!-- <img
+          class="menu-left-icons q-mt-sm"
           src="~assets/Vendor.png"
           style="width:30%;"
           @click="$router.push('/vendors')"
         />
         <img
-          class="menu-right-icons "
+          class="menu-right-icons q-mt-sm "
           src="~assets/Claims.png"
           style="width:30%;"
           @click="$router.push('/claims')"
-        />
+        /> -->
       </div>
       <div class="row justify-between q-py-sm">
+        <div class="box left q-ml-xl">
+          <img
+            class="q-ml-lg q-mt-sm"
+            src="~assets/DashboardLead.svg"
+            style="width:70%"
+            @click="selectClaimDialog = true"
+          />
+          <div class="box all">
+            <p
+              style="text-align: center;
+  font-size: 15px;
+  margin-top: 5px;
+  font-weight: bold;"
+            >
+              SCAN
+            </p>
+            <p
+              style="  text-align: center;
+  font-size: 18px;
+ 
+  font-weight: bold;"
+            >
+              UPLOAD
+            </p>
+          </div>
+        </div>
+        <div class="box left q-mr-xl">
+          <img
+            class="q-ml-lg q-mt-sm"
+            src="~assets/DashboardLead.svg"
+            style="width:70%"
+            @click="selectClaimDialog = true"
+          />
+          <div class="box all">
+            <p class="text-style">
+              CAMERA
+            </p>
+          </div>
+        </div>
+        <!-- <img
+          class="menu-left-icons q-mt-sm"
+          src="~assets/Vendor.png"
+          style="width:30%;"
+          @click="$router.push('/vendors')"
+        />
+        <img
+          class="menu-right-icons q-mt-sm "
+          src="~assets/Claims.png"
+          style="width:30%;"
+          @click="$router.push('/claims')"
+        /> -->
+      </div>
+      <!-- <div class="row justify-between q-py-sm q-mb-sm">
         <img
           class="menu-left-icons"
           src="~assets/UploadScan.png"
@@ -45,9 +150,13 @@
           src="~assets/CameraLogo.png"
           style="width:30%;"
         />
-      </div>
+      </div> -->
+      <div
+        style="box-shadow: 5px  5px 40px 15px  #000000; opacity:50%"
+        class="q-mt-lg"
+      ></div>
     </q-card>
-    <div class=" q-ma-sm q-mb-sm row justify-between">
+    <div class=" q-ma-xs  row justify-between" style="calc(100vh - 90%)">
       <div class="column">
         <img
           src="~assets/Profile.svg"
@@ -144,7 +253,7 @@
         </div>
       </q-card>
     </q-dialog>
-  </div>
+  </q-page>
 </template>
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex';
@@ -165,6 +274,7 @@ export default {
     };
   },
   created() {
+    console.log(this.$q.screen.height, 'ss');
     this.getClaims();
   },
   methods: {
@@ -227,7 +337,7 @@ export default {
   }
 };
 </script>
-<style>
+<style lang="scss">
 .my-card {
   display: flex;
   /* background-color: #1B2854; */
@@ -271,9 +381,42 @@ export default {
   position: relative;
 }
 .menu-right-icons {
-  margin-right: 60px;
+  margin-right: 70px;
 }
 .menu-left-icons {
-  margin-left: 60px;
+  margin-left: 70px;
+}
+.box {
+  height: 100px;
+  width: 150px;
+  overflow: hidden;
+  border: 1px solid #ccc;
+  border-radius: 20px 20px 30px 30px;
+}
+
+.left {
+  height: 160px;
+  width: 150px;
+  box-shadow: 5px 0 5px -5px #333;
+  background-color: $primary;
+}
+
+.all {
+  box-shadow: 0 0 100px #ef5926;
+  margin-top: -15px;
+  background-color: #000000;
+  border-radius: 500px;
+  display: inline-block;
+  border-radius: 150px 150px 0 0;
+  color: white;
+
+  text-decoration-color: red;
+}
+.text-style {
+  text-align: center;
+  font-size: 18px;
+  margin-top: 15px;
+  font-weight: bold;
+  // overflow-wrap: break-word;
 }
 </style>
