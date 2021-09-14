@@ -445,8 +445,11 @@ export async function addClaimRemote({ dispatch, commit }, payload) {
       '/claims',
       buildApiData('claims', payload)
     );
-
     dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Client and Claim Created Successfully !'
+    });
     return data;
   } catch (e) {
     console.log(e);
