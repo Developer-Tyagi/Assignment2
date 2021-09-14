@@ -226,7 +226,14 @@
               <q-card class="q-pa-lg q-mt-lg" flat bordered>
                 <div class="row ">
                   <div class=" text-h5">
-                    Plan: {{ toUpperCase(organization.plan.machineValue) }}
+                    Plan:
+                    {{
+                      toUpperCase(
+                        organization.plan && organization.plan.machineValue
+                          ? organization.plan.machineValue
+                          : '-'
+                      )
+                    }}
                   </div>
                 </div>
                 <div
