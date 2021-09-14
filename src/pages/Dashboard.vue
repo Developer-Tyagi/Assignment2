@@ -1,123 +1,113 @@
 <template>
   <!-- mobile-container-page listing-height -->
-  <q-page style="background-color:#8F8F8F; ">
-    <q-card style="border-radius: 0 0 60px 60px; height:calc(100vh - 30vh);">
-      <div
-        class="row justify-between q-py-sm  "
-        style=" height:calc(100vh - 110%); "
-      >
-        <div class="box left q-ml-xl">
-          <img
-            class="q-ml-lg q-mt-sm q-mb-sm"
-            src="~assets/LEADS.svg"
-            style="width:70%"
-            @click="$router.push('/leads-dashboard')"
-          />
-          <div class="box all">
-            <p class="text-style">
-              LEADS
-            </p>
+
+  <q-page style="background-color:#8F8F8F;">
+    <q-card style="border-radius: 0 0 60px 60px;height:calc(100vh - 220px); ">
+      <div style="height:calc(100vh - 202px)">
+        <div class="row justify-between q-py-sm">
+          <div class="box left menu-left-icons ">
+            <img
+              class="q-ml-lg q-mt-sm q-mb-sm image-style"
+              src="~assets/LEADS.svg"
+              style="width:70%;height:70%;"
+              @click="$router.push('/leads-dashboard')"
+            />
+            <div class="box all">
+              <p class="text-style">
+                LEADS
+              </p>
+            </div>
+          </div>
+          <div class="box left menu-right-icons">
+            <img
+              class="q-ml-lg q-mt-sm  q-mb-sm image-style"
+              src="~assets/LEADS.svg"
+              style="width:70%"
+              @click="$router.push('/clients')"
+            />
+            <div class="box all">
+              <p class="text-style">
+                CLIENTS
+              </p>
+            </div>
           </div>
         </div>
-        <div class="box left q-mr-xl  ">
-          <img
-            class="q-ml-lg q-mt-sm  q-mb-sm"
-            src="~assets/LEADS.svg"
-            style="width:70%"
-            @click="$router.push('/clients')"
-          />
-          <div class="box all">
-            <p class="text-style">
-              CLIENTS
-            </p>
+        <div class="row justify-between q-py-sm">
+          <div class="box left menu-left-icons ">
+            <img
+              class="q-ml-lg q-mt-sm  q-mb-sm image-style"
+              src="~assets/VENDOR.svg"
+              style="width:70%"
+              @click="$router.push('/vendors')"
+            />
+            <div class="box all">
+              <p class="text-style">
+                VENDORS
+              </p>
+            </div>
+          </div>
+          <div class="box left  menu-right-icons">
+            <img
+              class="q-ml-lg q-mt-sm  q-mb-sm image-style"
+              src="~assets/CLAIMS.svg"
+              style="width:70%"
+              @click="$router.push('/claims')"
+            />
+            <div class="box all">
+              <p class="text-style">
+                CLAIMS
+              </p>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="row justify-between q-py-sm ">
-        <div class="box left q-ml-xl">
-          <img
-            class="q-ml-lg q-mt-sm  q-mb-sm"
-            src="~assets/VENDOR.svg"
-            style="width:70%"
-            @click="$router.push('/vendors')"
-          />
-          <div class="box all">
-            <p class="text-style">
-              VENDORS
-            </p>
-          </div>
-        </div>
-        <div class="box left q-mr-xl ">
-          <img
-            class="q-ml-lg q-mt-sm  q-mb-sm"
-            src="~assets/CLAIMS.svg"
-            style="width:70%"
-            @click="$router.push('/claims')"
-          />
-          <div class="box all">
-            <p class="text-style">
-              CLAIMS
-            </p>
-          </div>
-        </div>
-        <!-- <img
-          class="menu-left-icons q-mt-sm"
-          src="~assets/Vendor.png"
-          style="width:30%;"
-          @click="$router.push('/vendors')"
-        />
-        <img
-          class="menu-right-icons q-mt-sm "
-          src="~assets/Claims.png"
-          style="width:30%;"
-          @click="$router.push('/claims')"
-        /> -->
-      </div>
-      <div class="row justify-between q-py-sm ">
-        <div class="box left q-ml-xl">
-          <img
-            class="q-ml-lg q-mt-sm  q-mb-sm"
-            src="~assets/DashboardLead.svg"
-            style="width:70%"
-            @click="selectClaimDialog = true"
-          />
-          <div class="box all">
-            <div
-              style="text-align: center;
+        <div class="row justify-between q-py-sm">
+          <div class="box left menu-left-icons ">
+            <img
+              class="q-ml-lg q-mt-sm  q-mb-sm image-style"
+              src="~assets/DashboardLead.svg"
+              style="width:70%"
+              @click="selectClaimDialog = true"
+            />
+            <div class="box all">
+              <div
+                style="text-align: center;
   font-size: 15px;
   margin-top: 5px;
   font-weight: bold;"
-            >
-              SCAN
-            </div>
-            <p
-              style="  text-align: center;
+              >
+                SCAN
+              </div>
+              <p
+                style="  text-align: center;
   font-size: 15px;
  
   font-weight: bold;"
-            >
-              UPLOAD
-            </p>
+              >
+                UPLOAD
+              </p>
+            </div>
+          </div>
+          <div class="box left menu-right-icons">
+            <img
+              class="q-ml-lg q-mt-sm  q-mb-sm image-style"
+              src="~assets/DashboardLead.svg"
+              style="width:70%"
+              @click="selectClaimDialog = true"
+            />
+            <div class="box all menu-right-icons">
+              <p class="text-style">
+                CAMERA
+              </p>
+            </div>
           </div>
         </div>
-        <div class="box left q-mr-xl">
-          <img
-            class="q-ml-lg q-mt-sm  q-mb-sm"
-            src="~assets/DashboardLead.svg"
-            style="width:70%"
-            @click="selectClaimDialog = true"
-          />
-          <div class="box all">
-            <p class="text-style">
-              CAMERA
-            </p>
-          </div>
-        </div>
+        <div
+          style="box-shadow: 0px 0px 40px 10px  #000000;overflow: visible;width:240px"
+          class="q-mx-auto q-mt-lg bg-green row justify-center"
+        ></div>
       </div>
-
-      <div style="box-shadow: 5px  5px 40px 15px  #000000; opacity:50%"></div>
     </q-card>
-    <div class=" q-ma-xs  row justify-between q-mt-sm">
+    <div class=" q-ma-xs row justify-between">
       <div class="column">
         <img
           src="~assets/Profile.svg"
@@ -235,6 +225,9 @@ export default {
     };
   },
   created() {
+    // alert(this.$q.screen.height);
+    // alert(this.$q.screen.width);
+    // alert('sonali');
     console.log(this.$q.screen.height, 'ss');
     this.getClaims();
   },
@@ -342,13 +335,14 @@ export default {
   position: relative;
 }
 .menu-right-icons {
-  margin-right: 70px;
+  margin-right: 10%;
 }
 .menu-left-icons {
-  margin-left: 70px;
+  margin-left: 10%;
 }
 .box {
-  height: 100px;
+  height: calc(20vh);
+  //100px
   width: 150px;
   overflow: hidden;
   border: 1px solid #ccc;
@@ -356,7 +350,7 @@ export default {
 }
 
 .left {
-  height: 160px;
+  height: calc(20vh);
   width: 150px;
   box-shadow: 5px 0 5px -5px #333;
   background-color: $primary;
@@ -370,7 +364,6 @@ export default {
   display: inline-block;
   border-radius: 150px 150px 0 0;
   color: white;
-
   text-decoration-color: red;
 }
 .text-style {
@@ -379,5 +372,12 @@ export default {
   margin-top: 15px;
   font-weight: bold;
   // overflow-wrap: break-word;
+}
+
+.image-style {
+  height: 13vh;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>
