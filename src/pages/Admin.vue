@@ -225,11 +225,13 @@
               </q-card>
               <q-card class="q-pa-lg q-mt-lg" flat bordered>
                 <div class="row ">
-                  <div class="text-weight-bold text-h5">Plan:</div>
-                  <div class="text-h5">Platinum</div>
+                  <div class=" text-h5">
+                    Plan: {{ toUpperCase(organization.plan.machineValue) }}
+                  </div>
                 </div>
                 <div
                   class="row 
+                  q-mt-md
                  "
                 >
                   <div class="text-body1 text-weight-bold">Paid Users-</div>
@@ -242,11 +244,11 @@
                 </div>
 
                 <!--table for paid /unpaid users-->
-                <div class="q-pa-md">
+                <div class="q-mt-md">
                   <table>
                     <thead>
                       <tr class="text-bold text-h6 text-white">
-                        <th class="bg-primary text-white" style="width: 600px">
+                        <th class="bg-primary text-white" style="width: 650px">
                           Paid Users
                         </th>
                         <th class="bg-primary text-white" style="width: 600px">
@@ -1311,7 +1313,9 @@ export default {
     onPhoneNumberClick,
     onEmailClick,
     showPhoneNumber,
-
+    toUpperCase(plan) {
+      return plan[0].toUpperCase() + plan.slice(1);
+    },
     ...mapActions([
       'getActionOverDues',
       'getActionCompletion',
