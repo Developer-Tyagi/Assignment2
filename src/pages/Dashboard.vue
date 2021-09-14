@@ -354,6 +354,7 @@ export default {
   width: 150px;
   box-shadow: 5px 0 5px -5px #333;
   background-color: $primary;
+  // border-radius: 20px 20px 30px 30px;
 }
 
 .all {

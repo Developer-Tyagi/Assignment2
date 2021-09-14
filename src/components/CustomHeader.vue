@@ -29,7 +29,7 @@
           </div>
           <div class="col-5 column justify-center">
             <div
-              class=" overlay   "
+              class=" overlay"
               style="width:30%;height:10vh;margin-left:39%; background: radial-gradient(closest-side,  #F6d365,#F19733,#F191);"
             >
               <img
