@@ -255,7 +255,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="paidUnpaid in paidUnpaidUserList">
+                      <tr v-for="paidUnpaid in paidUnpaidUserDetails">
                         <td class="text-center">
                           {{ paidUnpaid.paidUserName }}
                         </td>
@@ -1691,11 +1691,11 @@ export default {
       this.indexOfSubTypeOfCompletion = indexOfCompletionAction;
     }
   },
-
   async created() {
     this.getAllUsers();
+    this.paidUnpaidUserDetails;
     this.getOrganization();
-    this.paidUnpaidUserList = this.paidUnpaidUserDetails;
+
     this.getContactTypes();
     this.tab = 'accountSummary';
     if (getCurrentUser().attributes) {

@@ -17,13 +17,13 @@ export async function setOfflineInspectionTypes(state) {
   state.inspectionTypes = await getCollection('inspectionTypes').toArray();
 }
 
-export function setAllUsers(state, Users) {
+export function setAllUsers(state, Users = []) {
   state.allUsers = Users.map(allUser => ({
     attributes: allUser.attributes,
     name: allUser.attributes.name,
     id: allUser.id
   }));
-
+  state.paidUnpaidUserList = [];
   var paidUsers = [];
   var unPaidUsers = [];
   for (let i = 0; i < state.allUsers.length; i++) {
