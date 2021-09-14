@@ -4,7 +4,7 @@
       <q-toolbar
         class="row bg-primary rounded-header"
         v-if="$route.name === 'dashboard'"
-        style="height: 100px; overflow: visible"
+        style="height: 100px; overflow: visible; box-shadow: 20px 0px 40px 10px  #000000;"
       >
         <q-btn
           flat
@@ -18,54 +18,29 @@
           <div class="column justify-center">
             <div
               class="overlay"
-              style="
-                width: 25%;
-                height: 10vh;
-                margin-left: 5%;
-                background: radial-gradient(
-                  closest-side,
-                  #f6d365,
-                  #f19733,
-                  #f190
-                );
-              "
+              style="width:25%;height:10vh;margin-left:5%; background: radial-gradient(closest-side,  #F6d365,#F19733,#F190);"
             >
               <img
-                class="overlay q-ml-lg q-my-xl"
+                class="overlay q-ml-lg q-my-xl  "
                 src="~assets/claimLogoDashboard.png"
-                style="
-                  margin-top: 8px;
-                  height: 10vh;
-                  width: 80%;
-                  margin-left: 14%;
-                "
+                style="margin-top:8px;height:10vh;width:80%;margin-left:15%;"
               />
             </div>
           </div>
           <div class="col-5 column justify-center">
             <div
-              class="overlay"
-              style="
-                width: 30%;
-                height: 10vh;
-                margin-left: 39%;
-                background: radial-gradient(
-                  closest-side,
-                  #f6d365,
-                  #f19733,
-                  #f191
-                );
-              "
+              class=" overlay"
+              style="width:30%;height:10vh;margin-left:39%; background: radial-gradient(closest-side,  #F6d365,#F19733,#F191);"
             >
               <img
-                class="overlay"
+                class="overlay  "
                 src="~assets/Black.svg"
-                style="width: 100%; height: 10vh; margin-left: -10%"
+                style="width:100%;height:10vh; margin-left:-10%;"
               />
               <img
-                class="overlay"
+                class="overlay  "
                 src="~assets/White.svg"
-                style="width: 100%; height: 10vh; margin-left: -15%"
+                style="width:100%; height:10vh;margin-left:-15%;"
               />
             </div>
           </div>

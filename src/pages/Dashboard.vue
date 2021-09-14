@@ -1,53 +1,112 @@
 <template>
   <!-- mobile-container-page listing-height -->
-  <div
-    class=" mobile-container-page dashboard-height"
-    style="background-color:#8F8F8F;"
-  >
-    <q-card style="border-radius: 0 0 60px 60px;">
-      <div class="row justify-between q-py-sm">
-        <img
-          class="menu-left-icons"
-          src="~assets/Leads.png"
-          style="width:30%;"
-          @click="$router.push('/leads-dashboard')"
-        />
-        <img
-          class="menu-right-icons "
-          src="~assets/Clients.png"
-          style="width:30%;"
-          @click="$router.push('/clients')"
-        />
-      </div>
-      <div class="row justify-between q-py-sm">
-        <img
-          class="menu-left-icons"
-          src="~assets/Vendor.png"
-          style="width:30%;"
-          @click="$router.push('/vendors')"
-        />
-        <img
-          class="menu-right-icons "
-          src="~assets/Claims.png"
-          style="width:30%;"
-          @click="$router.push('/claims')"
-        />
-      </div>
-      <div class="row justify-between q-py-sm">
-        <img
-          class="menu-left-icons"
-          src="~assets/UploadScan.png"
-          style="width:30%;"
-          @click="selectClaimDialog = true"
-        />
-        <img
-          class="menu-right-icons "
-          src="~assets/CameraLogo.png"
-          style="width:30%;"
-        />
+
+  <q-page style="background-color:#8F8F8F;">
+    <q-card style="border-radius: 0 0 60px 60px;height:(74vh); ">
+      <div style="height:calc(100vh - 205px)">
+        <div class="row justify-between q-py-sm">
+          <div class="box left menu-left-icons">
+            <img
+              class="q-ml-lg q-mt-sm q-mb-sm image-style"
+              src="~assets/LEADS.svg"
+              style="width:70%;"
+              @click="$router.push('/leads-dashboard')"
+            />
+            <div class="box all">
+              <p class="text-style">
+                LEADS
+              </p>
+            </div>
+          </div>
+          <div class="box left menu-right-icons">
+            <img
+              class="q-ml-lg q-mt-sm  q-mb-sm image-style"
+              src="~assets/LEADS.svg"
+              style="width:70%;"
+              @click="$router.push('/clients')"
+            />
+            <div class="box all">
+              <p class="text-style">
+                CLIENTS
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="row justify-between q-py-sm">
+          <div class="box left menu-left-icons ">
+            <img
+              class="q-ml-lg q-mt-sm  q-mb-sm image-style"
+              src="~assets/VENDOR.svg"
+              style="width:70%"
+              @click="$router.push('/vendors')"
+            />
+            <div class="box all">
+              <p class="text-style">
+                VENDORS
+              </p>
+            </div>
+          </div>
+          <div class="box left  menu-right-icons">
+            <img
+              class="q-ml-lg q-mt-sm  q-mb-sm image-style"
+              src="~assets/CLAIMS.svg"
+              style="width:70%"
+              @click="$router.push('/claims')"
+            />
+            <div class="box all">
+              <p class="text-style">
+                CLAIMS
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="row justify-between q-py-sm">
+          <div class="box left menu-left-icons ">
+            <img
+              class="q-ml-lg q-mt-sm  q-mb-sm image-style"
+              src="~assets/DashboardLead.svg"
+              style="width:70%"
+              @click="selectClaimDialog = true"
+            />
+            <div class="box all">
+              <div
+                style="text-align: center;
+  font-size: 15px;
+  margin-top: 5px;
+  font-weight: bold;"
+              >
+                SCAN
+              </div>
+              <p
+                style="  text-align: center;
+  font-size: 15px;
+  font-weight: bold;"
+              >
+                UPLOAD
+              </p>
+            </div>
+          </div>
+          <div class="box left menu-right-icons">
+            <img
+              class="q-ml-lg q-mt-sm  q-mb-sm image-style"
+              src="~assets/DashboardLead.svg"
+              style="width:70%"
+              @click="selectClaimDialog = true"
+            />
+            <div class="box all menu-right-icons">
+              <p class="text-style">
+                CAMERA
+              </p>
+            </div>
+          </div>
+        </div>
+        <div
+          style="box-shadow: 0px 0px 40px 10px  #000000;overflow: visible;width:240px"
+          class="q-mx-auto q-mt-xl row justify-center"
+        ></div>
       </div>
     </q-card>
-    <div class=" q-ma-sm q-mb-sm row justify-between">
+    <div class="row justify-between">
       <div class="column">
         <img
           src="~assets/Profile.svg"
@@ -144,7 +203,7 @@
         </div>
       </q-card>
     </q-dialog>
-  </div>
+  </q-page>
 </template>
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex';
@@ -227,7 +286,7 @@ export default {
   }
 };
 </script>
-<style>
+<style lang="scss">
 .my-card {
   display: flex;
   /* background-color: #1B2854; */
@@ -271,9 +330,47 @@ export default {
   position: relative;
 }
 .menu-right-icons {
-  margin-right: 60px;
+  margin-right: 10%;
 }
 .menu-left-icons {
-  margin-left: 60px;
+  margin-left: 10%;
+}
+.box {
+  height: calc(20vh);
+  width: 150px;
+  overflow: hidden;
+  border: 1px solid #ccc;
+  border-radius: 20px 20px 30px 30px;
+}
+
+.left {
+  height: calc(20vh);
+  width: 150px;
+  box-shadow: 5px 0 5px -5px #333;
+  background-color: $primary;
+}
+
+.all {
+  box-shadow: 0 0 100px #e71e1e;
+  margin-top: -15px;
+  background-color: #000000;
+  border-radius: 500px;
+  display: inline-block;
+  border-radius: 150px 150px 0 0;
+  color: white;
+  text-decoration-color: red;
+}
+.text-style {
+  text-align: center;
+  font-size: 18px;
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+.image-style {
+  height: 13vh;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>
