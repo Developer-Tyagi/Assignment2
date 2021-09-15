@@ -205,7 +205,6 @@ export default {
   components: { CustomBar, AddOptions },
   data() {
     return {
-      email: 'sonalisaxena9755@gmail.com',
       selectClaimDialog: false,
       isClickable: false,
       openDialog: false,
