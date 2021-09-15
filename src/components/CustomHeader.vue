@@ -4,7 +4,7 @@
       <q-toolbar
         class="row bg-primary rounded-header"
         v-if="$route.name === 'dashboard'"
-        style="height: 100px; overflow: visible; box-shadow: 20px 0px 40px 10px  #000000;"
+        style="height: 100px;  box-shadow: 20px 0px 40px 10px  #000000;"
       >
         <q-btn
           flat
