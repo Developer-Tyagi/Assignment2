@@ -807,21 +807,33 @@ export default {
     async uploadPdfToServer() {
       this.setLoading(true);
       const formData = new FormData();
-      formData.append('parentID', this.depth[this.depth.length - 1].id);
+      formData.append(
+        'parentID',
+        this.depth &&
+          this.depth.length > 0 &&
+          this.depth[this.depth.length - 1].id
+          ? this.depth[this.depth.length - 1].id
+          : this.directoryId
+      );
       formData.append(
         'file',
         this.dataURItoBlob(this.dataURl),
         this.selectFile[0]
       );
-
+      console.log(formData, 'form');
       await this.createDocuments(formData);
       this.selectFile[0] = '';
       this.uploadFilesOptions = false;
       this.uploadFileDailog = false;
 
       const { data } = await request.get(
-        `/documents?parent_id=${this.depth[this.depth.length - 1].id}`
+        `/documents?parent_id=${
+          this.depth && this.depth.length > 0
+            ? this.depth[this.depth.length - 1].id
+            : this.directoryId
+        }`
       );
+
       this.documents = data.map(document => ({
         name: document.attributes.name,
         id: document.id,
@@ -850,7 +862,9 @@ export default {
         this.depth.pop();
         this.currentPath = this.depth.length;
         const { data } = await request.get(
-          `/documents?parent_id=${this.depth[this.depth.length - 1].id}`
+          `/documents?parent_id=${
+            this.depth ? this.depth[this.depth.length - 1].id : this.directoryId
+          }`
         );
         this.documents = data.map(document => ({
           name: document.attributes.name,
@@ -861,7 +875,11 @@ export default {
         }));
       }
       const { data } = await request.get(
-        `/documents?parent_id=${this.depth[this.depth.length - 1].id}`
+        `/documents?parent_id=${
+          this.depth && this.depth.length > 0
+            ? this.depth[this.depth.length - 1].id
+            : this.directoryId
+        }`
       );
       this.documents = data.map(document => ({
         name: document.attributes.name,
@@ -934,12 +952,19 @@ export default {
       if (this.folderName) {
         const payload = {
           name: this.folderName,
-          parentID: this.depth[this.depth.length - 1].id
+          parentID:
+            this.depth && this.depth.length > 0
+              ? this.depth[this.depth.length - 1].id
+              : this.directoryId
         };
         await this.createDirectories(payload);
         this.setLoading(true);
         const { data } = await request.get(
-          `/documents?parent_id=${this.depth[this.depth.length - 1].id}`
+          `/documents?parent_id=${
+            this.depth && this.depth.length > 0
+              ? this.depth[this.depth.length - 1].id
+              : this.directoryId
+          }`
         );
         this.documents = data.map(document => ({
           name: document.attributes.name,
@@ -959,19 +984,32 @@ export default {
       if (this.fileName) {
         this.setLoading(true);
         const formData = new FormData();
-        formData.append('parentID', this.depth[this.depth.length - 1].id);
+
+        formData.append(
+          'parentID',
+          this.depth && this.depth.length > 0
+            ? this.depth[this.depth.length - 1].id
+            : this.directoryId
+        );
         formData.append(
           'file',
           this.dataURItoBlob(this.pdfImage),
           this.fileName
         );
+        console.log(formData, 'form');
         await this.createDocuments(formData);
         this.fileName = '';
         this.addFileDialog = false;
         this.uploadFilesOptions = false;
+        console.log(this.depth, 'sssssss');
         const { data } = await request.get(
-          `/documents?parent_id=${this.depth[this.depth.length - 1].id}`
+          `/documents?parent_id=${
+            this.depth && this.depth.length > 0
+              ? this.depth[this.depth.length - 1].id
+              : this.directoryId
+          }`
         );
+
         this.documents = data.map(document => ({
           name: document.attributes.name,
           id: document.id,
