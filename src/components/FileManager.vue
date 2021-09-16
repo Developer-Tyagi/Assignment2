@@ -32,11 +32,11 @@
         />
       </div>
     </q-card>
-    <div class="actions-div justify-between q-px-md" v-if="depth.length > 1">
+    <div class="actions-div justify-between q-px-md" v-if="depth.length > 0">
       <q-breadcrumbs class="text-primary" active-color="grey" gutter="none">
         <template v-slot:separator> </template>
         <div
-          v-if="depth.length > 1"
+          v-if="depth.length > 0"
           class="row-div vertical-center q-px-sm q-py-xs"
           @click="onBackButtonClick"
         >
@@ -807,7 +807,14 @@ export default {
     async uploadPdfToServer() {
       this.setLoading(true);
       const formData = new FormData();
-      formData.append('parentID', this.depth[this.depth.length - 1].id);
+      formData.append(
+        'parentID',
+        this.depth &&
+          this.depth.length > 0 &&
+          this.depth[this.depth.length - 1].id
+          ? this.depth[this.depth.length - 1].id
+          : this.directoryId
+      );
       formData.append(
         'file',
         this.dataURItoBlob(this.dataURl),
@@ -820,8 +827,13 @@ export default {
       this.uploadFileDailog = false;
 
       const { data } = await request.get(
-        `/documents?parent_id=${this.depth[this.depth.length - 1].id}`
+        `/documents?parent_id=${
+          this.depth && this.depth.length > 0
+            ? this.depth[this.depth.length - 1].id
+            : this.directoryId
+        }`
       );
+
       this.documents = data.map(document => ({
         name: document.attributes.name,
         id: document.id,
@@ -850,7 +862,11 @@ export default {
         this.depth.pop();
         this.currentPath = this.depth.length;
         const { data } = await request.get(
-          `/documents?parent_id=${this.depth[this.depth.length - 1].id}`
+          `/documents?parent_id=${
+            this.depth && this.depth.length > 0
+              ? this.depth[this.depth.length - 1].id
+              : this.directoryId
+          }`
         );
         this.documents = data.map(document => ({
           name: document.attributes.name,
@@ -861,7 +877,11 @@ export default {
         }));
       }
       const { data } = await request.get(
-        `/documents?parent_id=${this.depth[this.depth.length - 1].id}`
+        `/documents?parent_id=${
+          this.depth && this.depth.length > 0
+            ? this.depth[this.depth.length - 1].id
+            : this.directoryId
+        }`
       );
       this.documents = data.map(document => ({
         name: document.attributes.name,
@@ -934,12 +954,19 @@ export default {
       if (this.folderName) {
         const payload = {
           name: this.folderName,
-          parentID: this.depth[this.depth.length - 1].id
+          parentID:
+            this.depth && this.depth.length > 0
+              ? this.depth[this.depth.length - 1].id
+              : this.directoryId
         };
         await this.createDirectories(payload);
         this.setLoading(true);
         const { data } = await request.get(
-          `/documents?parent_id=${this.depth[this.depth.length - 1].id}`
+          `/documents?parent_id=${
+            this.depth && this.depth.length > 0
+              ? this.depth[this.depth.length - 1].id
+              : this.directoryId
+          }`
         );
         this.documents = data.map(document => ({
           name: document.attributes.name,
@@ -959,19 +986,31 @@ export default {
       if (this.fileName) {
         this.setLoading(true);
         const formData = new FormData();
-        formData.append('parentID', this.depth[this.depth.length - 1].id);
+
+        formData.append(
+          'parentID',
+          this.depth && this.depth.length > 0
+            ? this.depth[this.depth.length - 1].id
+            : this.directoryId
+        );
         formData.append(
           'file',
           this.dataURItoBlob(this.pdfImage),
           this.fileName
         );
+
         await this.createDocuments(formData);
         this.fileName = '';
         this.addFileDialog = false;
         this.uploadFilesOptions = false;
         const { data } = await request.get(
-          `/documents?parent_id=${this.depth[this.depth.length - 1].id}`
+          `/documents?parent_id=${
+            this.depth && this.depth.length > 0
+              ? this.depth[this.depth.length - 1].id
+              : this.directoryId
+          }`
         );
+
         this.documents = data.map(document => ({
           name: document.attributes.name,
           id: document.id,
@@ -1068,7 +1107,10 @@ export default {
     },
 
     async onBackButtonClick() {
-      const documentId = this.depth[this.depth.length - 2].id;
+      const documentId =
+        this.depth && this.depth.length > 1
+          ? this.depth[this.depth.length - 2].id
+          : this.directoryId;
       this.setLoading(true);
       const { data } = await request.get(`/documents?parent_id=${documentId}`);
       this.documents = data.map(document => ({
