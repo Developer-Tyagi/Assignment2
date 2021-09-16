@@ -500,7 +500,6 @@
             :hidden="step != 4"
             ref="mortgageInfo"
           >
-            {{ mortgageInfo }}
             <div class="q-pa-sm form-card">
               <MortgageForm
                 :mortgage="mortgageInfo"
