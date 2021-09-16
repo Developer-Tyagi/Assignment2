@@ -3,7 +3,7 @@
     <div>
       <div v-if="mortgage.mortgages">
         <q-card
-          class=" q-pa-sm"
+          class=" q-pa-sm q-mt-md"
           v-for="(mortgage, index) in mortgage.mortgages"
         >
           <div class="form-heading  text-capitalize q-mt-xs row">
@@ -46,7 +46,7 @@
                 ,
                 {{
                   mortgage.address.addressRegion
-                    ? toGetStateShortName(personnel.address.addressRegion)
+                    ? toGetStateShortName(mortgage.address.addressRegion)
                     : '-'
                 }}
 
