@@ -500,6 +500,7 @@
             :hidden="step != 4"
             ref="mortgageInfo"
           >
+            {{ mortgageInfo }}
             <div class="q-pa-sm form-card">
               <MortgageForm
                 :mortgage="mortgageInfo"
@@ -1499,7 +1500,7 @@ export default {
             }
           }
         },
-        mortgageInfo: this.mortgageObject.mortgageDetails,
+        mortgageInfo: this.mortgageInfo,
         lossInfo: {
           lossAddressName: this.lossInfo.lossAddressNameDropdown,
           property: { id: this.propertyId },
