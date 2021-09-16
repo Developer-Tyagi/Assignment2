@@ -1499,7 +1499,7 @@ export default {
             }
           }
         },
-        mortgageInfo: this.mortgageObject.mortgageDetails,
+        mortgageInfo: this.mortgageInfo,
         lossInfo: {
           lossAddressName: this.lossInfo.lossAddressNameDropdown,
           property: { id: this.propertyId },
