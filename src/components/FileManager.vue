@@ -32,11 +32,11 @@
         />
       </div>
     </q-card>
-    <div class="actions-div justify-between q-px-md" v-if="depth.length > 1">
+    <div class="actions-div justify-between q-px-md" v-if="depth.length > 0">
       <q-breadcrumbs class="text-primary" active-color="grey" gutter="none">
         <template v-slot:separator> </template>
         <div
-          v-if="depth.length > 1"
+          v-if="depth.length > 0"
           class="row-div vertical-center q-px-sm q-py-xs"
           @click="onBackButtonClick"
         >
@@ -1106,7 +1106,10 @@ export default {
     },
 
     async onBackButtonClick() {
-      const documentId = this.depth[this.depth.length - 2].id;
+      const documentId =
+        this.depth && this.depth.length > 1
+          ? this.depth[this.depth.length - 2].id
+          : this.directoryId;
       this.setLoading(true);
       const { data } = await request.get(`/documents?parent_id=${documentId}`);
       this.documents = data.map(document => ({
