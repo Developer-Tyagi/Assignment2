@@ -820,7 +820,7 @@ export default {
         this.dataURItoBlob(this.dataURl),
         this.selectFile[0]
       );
-      console.log(formData, 'form');
+
       await this.createDocuments(formData);
       this.selectFile[0] = '';
       this.uploadFilesOptions = false;
@@ -863,7 +863,9 @@ export default {
         this.currentPath = this.depth.length;
         const { data } = await request.get(
           `/documents?parent_id=${
-            this.depth ? this.depth[this.depth.length - 1].id : this.directoryId
+            this.depth && this.depth.length > 0
+              ? this.depth[this.depth.length - 1].id
+              : this.directoryId
           }`
         );
         this.documents = data.map(document => ({
@@ -996,12 +998,11 @@ export default {
           this.dataURItoBlob(this.pdfImage),
           this.fileName
         );
-        console.log(formData, 'form');
+
         await this.createDocuments(formData);
         this.fileName = '';
         this.addFileDialog = false;
         this.uploadFilesOptions = false;
-        console.log(this.depth, 'sssssss');
         const { data } = await request.get(
           `/documents?parent_id=${
             this.depth && this.depth.length > 0
