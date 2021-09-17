@@ -2,9 +2,9 @@
   <div>
     <q-header class="bg-white">
       <q-toolbar
-        class="row bg-primary rounded-header"
+        class="row bg-primary rounded-header toolbar-shadow"
         v-if="$route.name === 'dashboard'"
-        style="height: 100px;  box-shadow: 20px 0px 40px 10px  #000000;"
+        style="height: 100px;"
       >
         <q-btn
           flat
@@ -468,6 +468,10 @@ export default {
 .rounded-sidebar {
   border-radius: 0px 20px 20px 0px;
   box-shadow: 1px 3px 2px 1px #e0e0e0;
+}
+.toolbar-shadow {
+  box-shadow: 0 52px 28px -27px rgb(0 0 0 / 20%),
+    0 76px 100px 3px rgb(0 0 0 / 14%), 0 9px 46px 8px rgb(0 0 0 / 12%);
 }
 ::-webkit-scrollbar {
   width: 0px;
