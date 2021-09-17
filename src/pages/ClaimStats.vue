@@ -89,12 +89,7 @@
         <span>Claims Watch List</span>
         <span class="float-right">See all</span>
       </div>
-      <div
-        :class="[
-          $q.screen.gt.sm ? 'claim-web-scrollable' : 'claim-mobile-scrollable'
-        ]"
-        v-if="claims.length > 0"
-      >
+      <div class="claim-list-scrollable" v-if="claims.length > 0">
         <q-card
           class="q-mt-sm"
           v-for="claim in claims"
@@ -293,18 +288,10 @@ export default {
   color: white;
   font-weight: bold;
 }
-.claim-mobile-scrollable {
+.claim-list-scrollable {
   margin: 4px, 4px;
   padding: 4px;
-  height: 54vh;
-  overflow-x: hidden;
-  overflow-y: auto;
-  text-align: justify;
-}
-.claim-web-scrollable {
-  margin: 4px, 4px;
-  padding: 4px;
-  height: 65vh;
+  height: calc(100vh - 350px);
   overflow-x: hidden;
   overflow-y: auto;
   text-align: justify;
