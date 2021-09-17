@@ -182,7 +182,7 @@
                     borderless
                     :rules="[
                       val =>
-                        toPhoneNumberValidate(val) ||
+                        (val && sendPhoneNumber(val).length == 10) ||
                         'Please enter the phone number'
                     ]"
                   />
@@ -308,16 +308,6 @@ export default {
       'getUserInfo',
       'editUserProfile'
     ]),
-    toPhoneNumberValidate(phoneNumber) {
-      var phoneNoFormat1 = /^\d{10}$/; /// this input is for format eg. 9999127722 ,8765243152
-      var phoneNoFormat2 = /^\(?([0-9]{3})\)?[)]?[ ]?([0-9]{3})[-]?([0-9]{4})$/; // this input is for format (762) 322-8768, (872) 435-9877
-      if (
-        phoneNumber.match(phoneNoFormat1) ||
-        phoneNumber.match(phoneNoFormat2)
-      )
-        return true;
-      else return false;
-    },
     onEditClick() {
       this.users.companyName = this.user.companyName;
       this.users.fname = this.user.contact.fname;
