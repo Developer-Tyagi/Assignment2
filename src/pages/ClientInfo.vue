@@ -1152,9 +1152,7 @@ export default {
   margin-bottom: 0;
   font-size: 15px;
 }
-.input-field {
-  height: 55px;
-}
+
 .form-height {
   height: calc(100vh - 130px);
   overflow: auto;

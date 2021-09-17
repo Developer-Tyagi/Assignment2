@@ -4,7 +4,7 @@
       <q-card class="q-pa-lg" flat bordered>
         <div class="row justify-between">
           <div class="text-h5">Account Summary</div>
-          <div class="text-h5">
+          <div class="text-h5 cursor-pointer">
             <q-icon name="create" color="primary" @click="onEditClick" />
           </div>
         </div>
@@ -139,14 +139,16 @@
                   <q-input
                     v-model="users.fname"
                     dense
-                    class="q-mx-md col-5 input-extra-padding"
+                    borderless
+                    class="col-5 input-extra-padding input-style input-field"
                     label="First name"
                   />
 
                   <q-input
                     dense
                     v-model="users.lname"
-                    class="q-mx-md col-5 input-extra-padding"
+                    borderless
+                    class="col-5 input-extra-padding  input-style input-field"
                     label="Last name"
                   />
                 </div>
@@ -154,8 +156,9 @@
                   <q-select
                     dense
                     v-model="users.contact.type"
-                    class="q-mx-md col-4 input-extra-padding"
+                    class=" col-4 input-extra-padding input-style input-field"
                     :options="contactTypes"
+                    borderless
                     option-value="machineValue"
                     option-label="name"
                     map-options
@@ -172,13 +175,15 @@
                   <q-input
                     dense
                     v-model="users.contact.number"
-                    class="required col-5 input-extra-padding"
+                    class="required  col-5 input-style input-field"
                     label="Phone"
                     mask="(###) ###-####"
                     lazy-rules
+                    borderless
                     :rules="[
                       val =>
-                        (val && val.length == 14) || 'Please enter phone number'
+                        (val && sendPhoneNumber(val).length == 10) ||
+                        'Please enter the phone number'
                     ]"
                   />
                 </div>
@@ -187,9 +192,9 @@
                     dense
                     disable
                     v-model="users.email"
-                    style=""
                     label="Email"
-                    class="q-mx-md col-5 required"
+                    borderless
+                    class="col-5 required input-style input-field"
                     lazy-rules
                     :rules="[
                       val =>
@@ -303,7 +308,6 @@ export default {
       'getUserInfo',
       'editUserProfile'
     ]),
-
     onEditClick() {
       this.users.companyName = this.user.companyName;
       this.users.fname = this.user.contact.fname;
