@@ -84,9 +84,11 @@
             class="rounded full-width q-my-md"
           ></q-btn>
         </div>
-        <div class="row justify-center row">
+        <div
+          class="row justify-center row"
+          @click="$router.push('/forget-password')"
+        >
           <a
-            href="/forget-password"
             :class="$q.screen.width < 624 ? 'text-primary' : 'text-white'"
             style="text-decoration: none"
             >Forgot Password</a
