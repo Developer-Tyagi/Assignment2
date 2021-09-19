@@ -1,101 +1,165 @@
 <template>
   <!-- mobile-container-page listing-height -->
 
-  <div style="background-color:#8F8F8F;height:calc(100vh - 100px)">
-    <q-card style="border-radius: 0 0 60px 60px; height:calc(100vh -230px)">
-      <div class="row justify-between q-py-sm">
-        <div class="box left menu-left-icons">
-          <img
-            class="image-style"
-            src="~assets/LEADS.svg"
-            style="width:70%;"
-            @click="$router.push('/leads')"
-          />
-          <div class="box all">
-            <p class="text-style">
-              LEADS
-            </p>
+  <div class=" " style=" background-color:#8F8F8F">
+    <div
+      class=" bg-white q-px-sm cardHeight "
+      style=" border-radius: 0 0 90px 90px; box-shadow: 0px 0px 10px 10px  #000000; "
+    >
+      <div class="gridRow row justify-between q-px-lg">
+        <div
+          class="col-5 gridRowContainer column bg-primary q-pt-sm justify-between"
+          style=" 
+          border-top-left-radius: 16px; 
+          border-top-right-radius:16px;
+          border-bottom-left-radius: 25px; 
+          border-bottom-right-radius:25px;
+          box-shadow: 0px 3px  5px rgba(0,0,0,1);"
+        >
+          <div class="col-6 self-center q-mb-md">
+            <q-icon class="gridIcon">
+              <q-img src="~assets/LEADS.svg" @click="$router.push('/leads')" />
+            </q-icon>
           </div>
-        </div>
-        <div class="box left menu-right-icons">
-          <img
-            class="q-ml-lg q-mt-sm  q-mb-sm image-style"
-            src="~assets/Clients_dashboard.svg"
-            style="width:70%;"
-            @click="$router.push('/clients')"
-          />
-          <div class="box all">
-            <p class="text-style">
-              CLIENTS
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="row justify-between q-py-sm">
-        <div class="box left menu-left-icons">
-          <img
-            class="image-style"
-            src="~assets/VENDOR.svg"
-            style="width:70%;"
-            @click="$router.push('/vendors')"
-          />
-          <div class="box all">
-            <p class="text-style">
-              VENDORS
-            </p>
-          </div>
-        </div>
-        <div class="box left menu-right-icons">
-          <img
-            class="q-ml-lg q-mt-sm  q-mb-sm image-style"
-            src="~assets/CLAIMS.svg"
-            style="width:70%;"
-            @click="$router.push('/claims')"
-          />
-          <div class="box all">
-            <p class="text-style">
-              CLAIMS
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="row justify-between q-py-sm">
-        <div class="box left menu-left-icons">
-          <img
-            class="image-style"
-            src="~assets/scan_dashboard.svg"
-            style="width:70%;"
-            @click="selectClaimDialog = true"
-          />
-          <div class="box all">
-            <div class="scan-text-style">
-              SCAN
-            </div>
-            <p class="q-ml-xl text-bold" style="font-size: 17px;">UPLOAD</p>
-          </div>
-        </div>
-        <div class="box left menu-right-icons">
-          <img
-            class="q-ml-lg q-mt-sm  q-mb-sm image-style"
-            src="~assets/camera_dashboard.svg"
-            style="width:70%;"
-            @click="$router.push('/clients')"
-          />
-          <div class="box all">
-            <p class="text-style">
-              CAMERA
-            </p>
-          </div>
-        </div>
-      </div>
-      <div
-        style="box-shadow: 0px 0px 40px 10px  #000000;overflow: visible;width:240px"
-        class="q-mx-auto row justify-center"
-      ></div>
-    </q-card>
 
-    <div class="row justify-between fixed-bottom">
-      <div class="column">
+          <div
+            class="col-4 column justify-end text-white text-center text-weight-medium text-subtitle1  all"
+          >
+            LEADS
+          </div>
+        </div>
+        <div
+          class="col-5 gridRowContainer column bg-primary  q-pt-sm	justify-between"
+          style=" 
+          border-top-left-radius: 16px; 
+          border-top-right-radius:16px;
+          border-bottom-left-radius: 25px; 
+          border-bottom-right-radius:25px;
+          box-shadow: 0px 3px  5px rgba(0,0,0,1);"
+        >
+          <div class="col-6 self-center q-mb-md">
+            <q-icon class="gridIcon">
+              <q-img
+                src="~assets/Clients_dashboard.svg"
+                @click="$router.push('/clients')"
+              />
+            </q-icon>
+          </div>
+
+          <div
+            class="col-4 column justify-end text-white text-center text-weight-medium text-subtitle1 all"
+          >
+            CLIENTS
+          </div>
+        </div>
+      </div>
+      <div class="gridRow row justify-between q-px-lg">
+        <div
+          class="col-5 gridRowContainer column bg-primary q-pt-sm  justify-between"
+          style=" 
+          border-top-left-radius: 16px; 
+          border-top-right-radius:16px;
+          border-bottom-left-radius: 25px; 
+          border-bottom-right-radius:25px;
+          box-shadow: 0px 3px  5px rgba(0,0,0,1);"
+        >
+          <div class="col-6 self-center q-mb-md">
+            <q-icon class="gridIcon">
+              <q-img
+                src="~assets/VENDOR.svg"
+                @click="$router.push('/vendors')"
+              />
+            </q-icon>
+          </div>
+          <div
+            class="col-4 column justify-end text-white text-center text-weight-medium text-subtitle1  all"
+          >
+            VENDORS
+          </div>
+        </div>
+        <div
+          class="col-5 gridRowContainer column bg-primary q-pt-sm	justify-between"
+          style=" 
+          border-top-left-radius: 16px; 
+          border-top-right-radius:16px;
+          border-bottom-left-radius: 25px; 
+          border-bottom-right-radius:25px;
+          box-shadow: 0px 3px  5px rgba(0,0,0,1);"
+        >
+          <div class="col-6 self-center q-mb-md">
+            <q-icon class="gridIcon">
+              <q-img
+                src="~assets/CLAIMS.svg"
+                @click="$router.push('/claims')"
+              />
+            </q-icon>
+          </div>
+          <div
+            class="col-4 column justify-end text-white text-center text-weight-medium text-subtitle1  all"
+          >
+            CLAIMS
+          </div>
+        </div>
+      </div>
+      <div class="gridRow row justify-between q-px-lg">
+        <div
+          class="col-5 gridRowContainer column bg-primary q-pt-sm  justify-between"
+          style=" 
+          border-top-left-radius: 16px; 
+          border-top-right-radius:16px;
+          border-bottom-left-radius: 25px; 
+          border-bottom-right-radius:25px;
+          box-shadow: 0px 3px  5px rgba(0,0,0,1);"
+        >
+          <div class="col-6 self-center q-mb-md">
+            <q-icon class="gridIcon">
+              <q-img
+                src="~assets/scan_dashboard.svg"
+                @click="selectClaimDialog = true"
+              />
+            </q-icon>
+          </div>
+          <div
+            class="col-4 column justify-end text-white text-center text-weight-medium text-caption
+ all"
+          >
+            <div class="col">SCAN</div>
+
+            <div class="col text-weight-bolder">UPLOAD</div>
+          </div>
+        </div>
+        <div
+          class="col-5 gridRowContainer column bg-primary q-pt-sm justify-between"
+          style=" 
+          border-top-left-radius: 16px; 
+          border-top-right-radius:16px;
+          border-bottom-left-radius: 25px; 
+          border-bottom-right-radius:25px;
+          box-shadow: 0px 3px  5px rgba(0,0,0,1);"
+        >
+          <div class="col-5 self-center q-mb-md q-pa-sm">
+            <q-icon class="gridIcon">
+              <q-img
+                src="~assets/camera_dashboard.svg"
+                @click="$router.push('/clients')"
+              />
+            </q-icon>
+          </div>
+          <div
+            class="col-4 column justify-end text-white text-center text-weight-medium text-subtitle1
+ all"
+          >
+            CAMERA
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- footer -->
+    <div
+      class=" row justify-between q-py-sm q-px-md"
+      style="background-color:#8F8F8F"
+    >
+      <div col-3 class="column">
         <img
           src="~assets/Profile.svg"
           style="width:100%;"
@@ -116,11 +180,17 @@
           style="width:68%;"
           @click="$router.push('/claimstats')"
         />
-        <p class=" text-center text-white">CLAIMS STATS</p>
+        <div class=" text-center text-white">CLAIMS STATS</div>
       </div>
-      <div class="" @click="onClickAddUpIcon()">
-        <img src="~assets/ADD.svg" style="width:100%;" />
-        <div class="text-center text-white">ADD</div>
+      <div class="column">
+        <img
+          src="~assets/ADD.svg"
+          style="width:100%;"
+          @click="onClickAddUpIcon()"
+        />
+        <div class="text-center text-white">
+          ADD
+        </div>
       </div>
     </div>
     <q-dialog
@@ -146,11 +216,7 @@
         />
         <div class="clients-list  listing-height q-mt-md" v-if="claims.length">
           <div>
-            <div
-              class="clients-list "
-              v-for="(claim, index) in claims"
-              :key="claim.id"
-            >
+            <div class="clients-list " v-for="claim in claims" :key="claim.id">
               <div class="client-list-item">
                 <div class="row  form-heading q-pb-md  ">
                   <div class="col-10" @click="onClickingOnClaim(claim)">
@@ -298,7 +364,7 @@ export default {
   text-align: center;
   margin: 5px auto 0 auto;
   line-height: 10px;
-  max-width: 80%;
+  max-width: 90%;
   color: white;
   font-weight: bold;
 }
@@ -342,14 +408,8 @@ export default {
 }
 
 .all {
-  box-shadow: 0 0 100px #e71e1e;
-  margin-top: -15px;
-  background-color: #000000;
-  border-radius: 500px;
-  display: inline-block;
-  border-radius: 200px 200px 0 0;
-  color: white;
-  text-decoration-color: red;
+  background-color: black;
+  clip-path: ellipse(40% 100% at 50% 100%);
 }
 .text-style {
   text-align: center;
@@ -372,5 +432,57 @@ export default {
   margin-top: 15px;
   font-weight: bold;
   margin-left: 10px;
+}
+.imageStyle {
+  height: 85%;
+}
+.cardHeight {
+  height: 69vh;
+  padding-top: 14px;
+}
+.gridRow {
+  margin-bottom: 20px;
+}
+.gridIcon {
+  font-size: 4rem;
+}
+@media only screen and (min-height: 700px) {
+  .cardHeight {
+    height: 72vh;
+    padding-top: 24px;
+  }
+  .gridRow {
+    margin-bottom: 24px;
+  }
+  .gridIcon {
+    font-size: 5rem;
+  }
+}
+@media only screen and (min-height: 800px) {
+  .cardHeight {
+    height: 75vh;
+    padding-top: 45px;
+  }
+  .gridRow {
+    margin-bottom: 45px;
+  }
+  .gridIcon {
+    font-size: 5rem;
+  }
+}
+@media only screen and (min-height: 1000px) {
+  .cardHeight {
+    height: 80vh;
+    padding-top: 65px;
+  }
+  .gridRow {
+    margin-bottom: 65px;
+  }
+  .gridIcon {
+    font-size: 7rem;
+  }
+  .gridRowContainer {
+    height: 180px !important;
+  }
 }
 </style>
