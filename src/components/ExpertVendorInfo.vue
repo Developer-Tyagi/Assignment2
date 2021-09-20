@@ -465,10 +465,13 @@ export default {
       vendorsListDialog: false
     };
   },
-  created() {
+  async created() {
     // This is for Claim Exp Vendor
     if (this.claimExpertVendor) {
       this.expertVendorInfo.anyOtherExpertHiredToggle = true;
+    }
+    if (this.expertVendorInfo.anyOtherExpertHiredToggle) {
+      await this.getVendorIndustries();
     }
   },
 
