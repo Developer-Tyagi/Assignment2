@@ -133,11 +133,7 @@
                   "
                 >
                   {{
-                    claim.statusrounded
-                      ? claim.status.isCancelled == false
-                        ? 'OPEN'
-                        : 'CANCELLED'
-                      : ''
+                    claim.status.isCancelled == false ? 'OPEN' : 'CANCELLED'
                   }}</q-badge
                 >
               </div>
