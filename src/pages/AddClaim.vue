@@ -731,7 +731,8 @@ export default {
           loanNumber: '',
           accountNumber: '',
           isPrimary: true,
-          notes: ''
+          notes: '',
+          isSecondMortgageHome: false
         }
       ],
 
