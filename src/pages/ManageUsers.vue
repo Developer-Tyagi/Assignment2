@@ -288,16 +288,16 @@
         </q-bar>
         <q-card class="q-pa-lg" flat bordered>
           <div class="row justify-between">
-            <div class="text-h5">User Data</div>
+            <div class="text-h5">Profile</div>
             <div class="text-h5">
               <q-icon name="create" color="primary" @click="onEditClick" />
             </div>
           </div>
 
           <div class="row q-mt-lg text-bold">
-            <div class="col">Company Name</div>
-            <div class="col">Company Address</div>
-            <div class="col">Company Mobile</div>
+            <div class="col">Name</div>
+            <div class="col">Address</div>
+            <div class="col">Mobile</div>
             <div class="col">Postal Company Code</div>
           </div>
           <q-separator />
@@ -307,32 +307,44 @@
             </div>
             <div class="col-3">
               <div class="q-mr-md" v-if="singleUserData.mailingAddress">
-                {{
-                  singleUserData.mailingAddress.address1
-                    ? singleUserData.mailingAddress.address1
-                    : '-'
-                }}
-                {{
-                  singleUserData.mailingAddress.address2
-                    ? singleUserData.mailingAddress.address2
-                    : '-'
-                }},{{
-                  singleUserData.mailingAddress.addressRegion
-                    ? toGetStateShortName(
-                        singleUserData.mailingAddress.addressRegion
-                      )
-                    : '-'
-                }},{{
-                  singleUserData.mailingAddress.addressLocality
-                    ? singleUserData.mailingAddress.addressLocality
-                    : '-'
-                }}
-                ,
-                {{
-                  singleUserData.mailingAddress.postalCode
-                    ? singleUserData.mailingAddress.postalCode
-                    : '-'
-                }}
+                <div>
+                  {{
+                    singleUserData.mailingAddress.houseNumber
+                      ? singleUserData.mailingAddress.houseNumber
+                      : '-'
+                  }}
+                  {{
+                    singleUserData.mailingAddress.address1
+                      ? singleUserData.mailingAddress.address1
+                      : '-'
+                  }}
+                </div>
+
+                <div>
+                  {{
+                    singleUserData.mailingAddress.address2
+                      ? singleUserData.mailingAddress.address2
+                      : '-'
+                  }}
+                </div>
+                <div>
+                  {{
+                    singleUserData.mailingAddress.addressLocality
+                      ? singleUserData.mailingAddress.addressLocality
+                      : '-'
+                  }},{{
+                    singleUserData.mailingAddress.addressRegion
+                      ? toGetStateShortName(
+                          singleUserData.mailingAddress.addressRegion
+                        )
+                      : '-'
+                  }}
+                  {{
+                    singleUserData.mailingAddress.postalCode
+                      ? singleUserData.mailingAddress.postalCode
+                      : '-'
+                  }}
+                </div>
               </div>
             </div>
             <div
@@ -366,18 +378,13 @@
           </div>
 
           <div class="row q-mt-xl text-bold">
-            <div class="col">Company Administrator</div>
-            <div class="col">Administrator Email</div>
+            <div class="col">Email</div>
             <div class="col" v-if="singleUserData.photoIDEmail">
               Photo ID Email
             </div>
           </div>
           <q-separator />
           <div class="row q-mt-xs">
-            <div class="col">
-              {{ singleUserData.contact ? singleUserData.contact.fname : '-' }}
-              {{ singleUserData.contact ? singleUserData.contact.lname : '-' }}
-            </div>
             <div
               class="col clickLink"
               @click="onEmailClick(singleUserData.email, $event)"
@@ -461,7 +468,8 @@
                     lazy-rules
                     :rules="[
                       val =>
-                        (val && val.length == 14) || 'Please enter phone number'
+                        (val && sendPhoneNumber(val).length == 10) ||
+                        'Please enter phone number'
                     ]"
                   />
                 </div>
@@ -753,7 +761,6 @@ export default {
 
         this.singleUser.mailingAddress = {
           houseNumber: '',
-          addressCountry: '',
           addressLocality: '',
           addressRegion: '',
           postOfficeBoxNumber: '',
@@ -788,10 +795,6 @@ export default {
       }
 
       if (this.singleUserData.mailingAddress) {
-        this.singleUser.mailingAddress.addressCountry = this.singleUserData
-          .mailingAddress.addressCountry
-          ? this.singleUserData.mailingAddress.addressCountry
-          : ' ';
         this.singleUser.mailingAddress.addressRegion = this.singleUserData
           .mailingAddress.addressRegion
           ? this.singleUserData.mailingAddress.addressRegion
