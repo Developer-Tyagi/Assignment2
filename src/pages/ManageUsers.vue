@@ -289,7 +289,7 @@
         <q-card class="q-pa-lg" flat bordered>
           <div class="row justify-between">
             <div class="text-h5">Profile</div>
-            <div class="text-h5">
+            <div class="text-h5 cursor-pointer">
               <q-icon name="create" color="primary" @click="onEditClick" />
             </div>
           </div>
@@ -528,6 +528,8 @@
         <div class="row justify-center">
           <q-btn
             label="Save"
+            size="md"
+            style="width:50%"
             class="single-next-button-style q-my-lg"
             @click="onSaveEditedButton"
           />

@@ -48,7 +48,7 @@
     <q-input
       dense
       borderless
-      class="input-style input-overlay "
+      class="input-style input-overlay"
       style="height: 60px"
       v-model="address.address2"
       label="Address 2"
@@ -156,9 +156,10 @@
     <div class="row justify-between">
       <q-input
         dense
+        class="q-mb-md"
         outlined
         :class="{ required: isAsteriskMark }"
-        style="height: 60px"
+        style="width: 46%"
         v-model="address.address2"
         label="Address 2"
         :disable="isOfflineClientEdit"
@@ -181,7 +182,6 @@
         :class="{ required: isAsteriskMark }"
         v-model="address.addressRegion"
         :options="states"
-        class="q-ml-sm"
         style="width: 46%"
         label="State"
         behavior="menu"
