@@ -1704,7 +1704,7 @@ export default {
       }
     },
 
-    onNextButtonClick() {
+    async onNextButtonClick() {
       this.step++;
       switch (this.stepArr[this.step].ref) {
         case 'lossInfo':
@@ -1713,7 +1713,7 @@ export default {
           this.getSeverityClaim();
           break;
         case 'expertInfo':
-          this.getVendorIndustries();
+          await this.getVendorIndustries();
           break;
         case 'personnelInfo':
           this.getClaimRoles();
