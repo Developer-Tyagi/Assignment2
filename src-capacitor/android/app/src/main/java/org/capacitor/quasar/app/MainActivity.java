@@ -1,4 +1,4 @@
-package org.capacitor.quasar.app;
+package com.claimguru.app;
 
 import android.os.Bundle;
 

@@ -1,20 +1,31 @@
 <template>
   <!-- mobile-container-page listing-height -->
 
-  <div class=" " style=" background-color:#8F8F8F">
+  <div class="" style="background-color: #8f8f8f">
     <div
-      class=" bg-white q-px-sm cardHeight "
-      style=" border-radius: 0 0 90px 90px; box-shadow: 0px 0px 10px 10px  #000000; "
+      class="bg-white q-px-sm cardHeight"
+      style="
+        border-radius: 0 0 90px 90px;
+        box-shadow: 0px 0px 10px 10px #000000;
+      "
     >
       <div class="gridRow row justify-between q-px-lg">
         <div
-          class="col-5 gridRowContainer column bg-primary q-pt-sm justify-between"
-          style=" 
-          border-top-left-radius: 16px; 
-          border-top-right-radius:16px;
-          border-bottom-left-radius: 25px; 
-          border-bottom-right-radius:25px;
-          box-shadow: 0px 3px  5px rgba(0,0,0,1);"
+          class="
+            col-5
+            gridRowContainer
+            column
+            bg-primary
+            q-pt-sm
+            justify-between
+          "
+          style="
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
+            border-bottom-left-radius: 25px;
+            border-bottom-right-radius: 25px;
+            box-shadow: 0px 3px 5px rgba(0, 0, 0, 1);
+          "
         >
           <div class="col-6 self-center q-mb-md">
             <q-icon class="gridIcon">
@@ -23,19 +34,33 @@
           </div>
 
           <div
-            class="col-4 column justify-end text-white text-center text-weight-medium text-subtitle1  all"
+            class="
+              col-4
+              column
+              justify-end
+              text-white text-center text-weight-medium text-subtitle1
+              all
+            "
           >
             LEADS
           </div>
         </div>
         <div
-          class="col-5 gridRowContainer column bg-primary  q-pt-sm	justify-between"
-          style=" 
-          border-top-left-radius: 16px; 
-          border-top-right-radius:16px;
-          border-bottom-left-radius: 25px; 
-          border-bottom-right-radius:25px;
-          box-shadow: 0px 3px  5px rgba(0,0,0,1);"
+          class="
+            col-5
+            gridRowContainer
+            column
+            bg-primary
+            q-pt-sm
+            justify-between
+          "
+          style="
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
+            border-bottom-left-radius: 25px;
+            border-bottom-right-radius: 25px;
+            box-shadow: 0px 3px 5px rgba(0, 0, 0, 1);
+          "
         >
           <div class="col-6 self-center q-mb-md">
             <q-icon class="gridIcon">
@@ -47,7 +72,13 @@
           </div>
 
           <div
-            class="col-4 column justify-end text-white text-center text-weight-medium text-subtitle1 all"
+            class="
+              col-4
+              column
+              justify-end
+              text-white text-center text-weight-medium text-subtitle1
+              all
+            "
           >
             CLIENTS
           </div>
@@ -55,13 +86,21 @@
       </div>
       <div class="gridRow row justify-between q-px-lg">
         <div
-          class="col-5 gridRowContainer column bg-primary q-pt-sm  justify-between"
-          style=" 
-          border-top-left-radius: 16px; 
-          border-top-right-radius:16px;
-          border-bottom-left-radius: 25px; 
-          border-bottom-right-radius:25px;
-          box-shadow: 0px 3px  5px rgba(0,0,0,1);"
+          class="
+            col-5
+            gridRowContainer
+            column
+            bg-primary
+            q-pt-sm
+            justify-between
+          "
+          style="
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
+            border-bottom-left-radius: 25px;
+            border-bottom-right-radius: 25px;
+            box-shadow: 0px 3px 5px rgba(0, 0, 0, 1);
+          "
         >
           <div class="col-6 self-center q-mb-md">
             <q-icon class="gridIcon">
@@ -72,19 +111,33 @@
             </q-icon>
           </div>
           <div
-            class="col-4 column justify-end text-white text-center text-weight-medium text-subtitle1  all"
+            class="
+              col-4
+              column
+              justify-end
+              text-white text-center text-weight-medium text-subtitle1
+              all
+            "
           >
             VENDORS
           </div>
         </div>
         <div
-          class="col-5 gridRowContainer column bg-primary q-pt-sm	justify-between"
-          style=" 
-          border-top-left-radius: 16px; 
-          border-top-right-radius:16px;
-          border-bottom-left-radius: 25px; 
-          border-bottom-right-radius:25px;
-          box-shadow: 0px 3px  5px rgba(0,0,0,1);"
+          class="
+            col-5
+            gridRowContainer
+            column
+            bg-primary
+            q-pt-sm
+            justify-between
+          "
+          style="
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
+            border-bottom-left-radius: 25px;
+            border-bottom-right-radius: 25px;
+            box-shadow: 0px 3px 5px rgba(0, 0, 0, 1);
+          "
         >
           <div class="col-6 self-center q-mb-md">
             <q-icon class="gridIcon">
@@ -95,7 +148,13 @@
             </q-icon>
           </div>
           <div
-            class="col-4 column justify-end text-white text-center text-weight-medium text-subtitle1  all"
+            class="
+              col-4
+              column
+              justify-end
+              text-white text-center text-weight-medium text-subtitle1
+              all
+            "
           >
             CLAIMS
           </div>
@@ -103,13 +162,21 @@
       </div>
       <div class="gridRow row justify-between q-px-lg">
         <div
-          class="col-5 gridRowContainer column bg-primary q-pt-sm  justify-between"
-          style=" 
-          border-top-left-radius: 16px; 
-          border-top-right-radius:16px;
-          border-bottom-left-radius: 25px; 
-          border-bottom-right-radius:25px;
-          box-shadow: 0px 3px  5px rgba(0,0,0,1);"
+          class="
+            col-5
+            gridRowContainer
+            column
+            bg-primary
+            q-pt-sm
+            justify-between
+          "
+          style="
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
+            border-bottom-left-radius: 25px;
+            border-bottom-right-radius: 25px;
+            box-shadow: 0px 3px 5px rgba(0, 0, 0, 1);
+          "
         >
           <div class="col-6 self-center q-mb-md">
             <q-icon class="gridIcon">
@@ -120,8 +187,13 @@
             </q-icon>
           </div>
           <div
-            class="col-4 column justify-end text-white text-center text-weight-medium text-caption
- all"
+            class="
+              col-4
+              column
+              justify-end
+              text-white text-center text-weight-medium text-caption
+              all
+            "
           >
             <div class="col">SCAN</div>
 
@@ -129,13 +201,21 @@
           </div>
         </div>
         <div
-          class="col-5 gridRowContainer column bg-primary q-pt-sm justify-between"
-          style=" 
-          border-top-left-radius: 16px; 
-          border-top-right-radius:16px;
-          border-bottom-left-radius: 25px; 
-          border-bottom-right-radius:25px;
-          box-shadow: 0px 3px  5px rgba(0,0,0,1);"
+          class="
+            col-5
+            gridRowContainer
+            column
+            bg-primary
+            q-pt-sm
+            justify-between
+          "
+          style="
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
+            border-bottom-left-radius: 25px;
+            border-bottom-right-radius: 25px;
+            box-shadow: 0px 3px 5px rgba(0, 0, 0, 1);
+          "
         >
           <div class="col-5 self-center q-mb-md q-pa-sm">
             <q-icon class="gridIcon">
@@ -146,8 +226,13 @@
             </q-icon>
           </div>
           <div
-            class="col-4 column justify-end text-white text-center text-weight-medium text-subtitle1
- all"
+            class="
+              col-4
+              column
+              justify-end
+              text-white text-center text-weight-medium text-subtitle1
+              all
+            "
           >
             CAMERA
           </div>
@@ -156,41 +241,37 @@
     </div>
     <!-- footer -->
     <div
-      class=" row justify-between q-py-sm q-px-md"
-      style="background-color:#8F8F8F"
+      class="row justify-between q-py-sm q-px-md"
+      style="background-color: #8f8f8f"
     >
       <div col-3 class="column">
         <img
           src="~assets/Profile.svg"
-          style="width:100%;"
+          style="width: 100%"
           @click="$router.push('/edit-profile')"
         />
-        <div class="text-center text-white">
-          PROFILE
-        </div>
+        <div class="text-center text-white">PROFILE</div>
       </div>
       <div class="column">
-        <img src="~assets/SETTINGS.svg" style="width:100%;" />
+        <img src="~assets/SETTINGS.svg" style="width: 100%" />
         <div class="text-center text-white">SETTINGS</div>
       </div>
       <div class="column">
         <img
           class="q-mx-md"
           src="~assets/STATS.svg"
-          style="width:68%;"
+          style="width: 68%"
           @click="$router.push('/claimstats')"
         />
-        <div class=" text-center text-white">CLAIMS STATS</div>
+        <div class="text-center text-white">CLAIMS STATS</div>
       </div>
       <div class="column">
         <img
-          src="~assets/ADD.svg"
-          style="width:100%;"
+          src="~assets/add.svg"
+          style="width: 100%"
           @click="onClickAddUpIcon()"
         />
-        <div class="text-center text-white">
-          ADD
-        </div>
+        <div class="text-center text-white">ADD</div>
       </div>
     </div>
     <q-dialog
@@ -214,11 +295,11 @@
           :dialogName="'Select Claim'"
           @closeDialog="selectClaimDialog = false"
         />
-        <div class="clients-list  listing-height q-mt-md" v-if="claims.length">
+        <div class="clients-list listing-height q-mt-md" v-if="claims.length">
           <div>
-            <div class="clients-list " v-for="claim in claims" :key="claim.id">
+            <div class="clients-list" v-for="claim in claims" :key="claim.id">
               <div class="client-list-item">
-                <div class="row  form-heading q-pb-md  ">
+                <div class="row form-heading q-pb-md">
                   <div class="col-10" @click="onClickingOnClaim(claim)">
                     {{ claim.client.fname }}
                     {{ claim.client.lname }}

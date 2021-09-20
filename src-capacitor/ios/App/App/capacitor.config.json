@@ -1,5 +1,5 @@
 {
-  "appId": "org.capacitor.quasar.app",
+  "appId": "com.claimguru.app",
   "appName": "claimguru",
   "bundledWebRuntime": false,
   "npmClient": "yarn",
@@ -8,8 +8,5 @@
     "PushNotifications": {
       "presentationOptions": ["badge", "sound", "alert"]
     }
-  },
-  "server": {
-    "url": "http://192.168.0.169:8080"
   }
 }
