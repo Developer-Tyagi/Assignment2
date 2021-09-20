@@ -1085,6 +1085,7 @@ export default {
 
   created() {
     this.propertyId = this.$route.params.clientId;
+    this.getVendorIndustries();
     //TODO
     // this.getSingleClientDetails(this.selectedClientId);
     // this.getSingleClientProperty(this.selectedClientId);
