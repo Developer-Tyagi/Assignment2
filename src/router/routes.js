@@ -124,6 +124,12 @@ const routes = [
         component: () => import('pages/LeadsDashboard.vue')
       },
       {
+        path: 'vue-signature',
+        name: 'vue-signature',
+        caseSensitive: true,
+        component: () => import('pages/VueSignaturePad.vue')
+      },
+      {
         path: 'leads',
         name: 'Leads',
 

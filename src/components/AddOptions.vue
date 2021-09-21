@@ -1,8 +1,8 @@
 <template>
   <q-card class="bg-grey-4 " style="width: 550px; height: 245px">
     <div>
-      <div class="q-mx-md q-mt-sm">
-        <div @click="$router.push('/add-lead')">
+      <div class="q-mx-md q-mt-sm bg-yellow">
+        <div @click="$router.push('/vue-signature')">
           <div class="row bg-white" style="border-radius: 10px; height: 40px">
             <q-icon size="sm" class="q-ml-md q-my-sm">
               <img src="~assets/add_LEADS.svg" />
