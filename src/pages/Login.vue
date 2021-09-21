@@ -84,17 +84,16 @@
             class="rounded full-width q-my-md"
           ></q-btn>
         </div>
-        <div>
-          <q-btn
-            color="secondary text-white"
-            outline
-            to="signup?plan=office"
-            label="SignUp"
-            class="rounded mobile-hide  full-width q-my-md"
-          ></q-btn>
+
+        <div
+          v-if="$q.screen.width > 624"
+          class="row justify-center q-my-md cursor-pointer"
+          @click="$router.push('/signup?plan=office')"
+        >
+          <a class="text-white" style="text-decoration: none">Sign Up</a>
         </div>
         <div
-          class="row justify-center row"
+          class="row justify-center cursor-pointer"
           @click="$router.push('/forget-password')"
         >
           <a
