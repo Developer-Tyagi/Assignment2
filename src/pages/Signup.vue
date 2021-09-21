@@ -461,6 +461,15 @@
                       :disable="isBillingAddressSame"
                     />
                   </div>
+
+                  <div class="row">
+                    <p class="q-my-auto text-bold">Are you a beta user ?</p>
+                    <q-checkbox
+                      class="q-ml-auto"
+                      v-model="isBeta"
+                      color="$primary"
+                    />
+                  </div>
                 </div>
 
                 <div class="column col-5">
@@ -479,11 +488,13 @@
                     ]"
                     mask="###-##-####"
                   />
-                  <div class="text-h5">Credit Card Info</div>
-                  <PaymentCard
-                    @cardDetailsAdded="cardDetailsAdded"
-                    ref="card"
-                  />
+                  <div v-if="!isBeta">
+                    <div class="text-h5">Credit Card Info</div>
+                    <PaymentCard
+                      @cardDetailsAdded="cardDetailsAdded"
+                      ref="card"
+                    />
+                  </div>
                 </div>
 
                 <q-separator />
@@ -501,7 +512,7 @@
                     label="Buy"
                     class="q-px-lg"
                     type="submit"
-                    :disabled="!isBuyButtonEnable"
+                    :disabled="isBuyButtonEnable || isBeta ? false : true"
                   />
                 </div>
               </q-form>
@@ -537,6 +548,7 @@ export default {
 
   data() {
     return {
+      isBeta: false,
       plan: 1,
       step: 1,
       autocompleteAddress: '',
