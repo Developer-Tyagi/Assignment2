@@ -231,6 +231,7 @@
                     dense
                     v-model="user.mailingAddress.address2"
                     name="address2"
+                    class="q-mb-md"
                     color="primary"
                     label="Address 2"
                     filled
@@ -392,6 +393,7 @@
                     v-model="user.billingInfo.address.address2"
                     name="address2"
                     color="primary"
+                    class="q-mb-md"
                     label="Address 2"
                     filled
                     :disable="isBillingAddressSame"
@@ -527,8 +529,8 @@
           color="primary"
           label="Back"
           class="q-px-lg q-mx-auto"
-          type="submit"
           style="width: 20%"
+          to="login"
         />
       </div>
     </div>
