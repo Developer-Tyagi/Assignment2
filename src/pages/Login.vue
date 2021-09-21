@@ -87,13 +87,13 @@
 
         <div
           v-if="$q.screen.width > 624"
-          class="row justify-center q-my-md cursor-pointer"
+          class="row justify-center  cursor-pointer"
           @click="$router.push('/signup?plan=office')"
         >
           <a class="text-white" style="text-decoration: none">Sign Up</a>
         </div>
         <div
-          class="row justify-center cursor-pointer"
+          class="row justify-center q-mt-sm cursor-pointer"
           @click="$router.push('/forget-password')"
         >
           <a
