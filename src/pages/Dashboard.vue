@@ -267,7 +267,7 @@
       </div>
       <div class="column">
         <img
-          src="~assets/add.svg"
+          src="~assets/dashboardAdd.svg"
           style="width: 100%"
           @click="onClickAddUpIcon()"
         />
