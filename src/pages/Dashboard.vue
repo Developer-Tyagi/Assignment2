@@ -6,7 +6,14 @@
       class=" bg-white q-px-sm cardHeight "
       style=" border-radius: 0 0 90px 90px; box-shadow: 0px 0px 10px 10px  #000000; "
     >
-      <div class="gridRow row justify-between q-px-lg">
+      <div id="app">
+        <VueSignaturePad width="1500px" height="1500px" ref="signaturePad" />
+        <div>
+          <button @click="save">Save</button>
+          <button @click="undo">Undo</button>
+        </div>
+      </div>
+      <!-- <div class="gridRow row justify-between q-px-lg">
         <div
           class="col-5 gridRowContainer column bg-primary q-pt-sm justify-between"
           style=" 
@@ -152,7 +159,7 @@
             CAMERA
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
     <!-- footer -->
     <div
@@ -271,6 +278,7 @@ export default {
   components: { CustomBar, AddOptions },
   data() {
     return {
+      signaturePad: '',
       selectClaimDialog: false,
       isClickable: false,
       openDialog: false,
@@ -288,7 +296,14 @@ export default {
     onClickAddUpIcon() {
       this.openDialog = true;
     },
-
+    undo() {
+      this.$refs.signaturePad.undoSignature();
+    },
+    save() {
+      const { isEmpty, data } = this.$refs.signaturePad.saveSignature();
+      console.log(isEmpty);
+      console.log(data);
+    },
     dateToShow,
     openClaimDetail(value) {
       this.setSelectedClaimId(value.id);
