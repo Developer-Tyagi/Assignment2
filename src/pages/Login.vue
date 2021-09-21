@@ -84,6 +84,15 @@
             class="rounded full-width q-my-md"
           ></q-btn>
         </div>
+        <div>
+          <q-btn
+            color="secondary text-white"
+            outline
+            to="signup?plan=office"
+            label="SignUp"
+            class="rounded mobile-hide  full-width q-my-md"
+          ></q-btn>
+        </div>
         <div
           class="row justify-center row"
           @click="$router.push('/forget-password')"
