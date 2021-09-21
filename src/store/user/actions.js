@@ -59,7 +59,10 @@ export async function createUserForOrganization({ dispatch, state }, payload) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response[0].detail
+      message:
+        e.response[0].detail == 'stripe token is missing'
+          ? 'Please ask admin to add you as a beta user'
+          : e.response[0].detail
     });
     return false;
   }
