@@ -423,21 +423,23 @@
                       emit-value
                     />
                   </div>
-                  <div class="q-pa-lg" style="height: 350px; overflow: auto">
-                    <div v-for="index in allAction" class="row q-pb-md">
-                      <div class="col-11">
-                        <div class="text-blue">
-                          {{ index.name ? index.name : '-' }}
+                  <div class="q-pa-lg">
+                    <q-scroll-area class="claim-list-scrollable">
+                      <div v-for="index in allAction" class="row q-pb-md">
+                        <div class="col-11">
+                          <div class="text-blue">
+                            {{ index.name ? index.name : '-' }}
+                          </div>
+                          <div>
+                            {{ index.createdDesc ? index.createdDesc : '-' }}
+                          </div>
                         </div>
-                        <div>
-                          {{ index.createdDesc ? index.createdDesc : '-' }}
-                        </div>
-                      </div>
 
-                      <div class="col-1 row text-h6">
-                        <q-icon size="sm" color="primary" name="create" />
+                        <div class="col-1 cursor-pointer row text-h6">
+                          <q-icon size="sm" color="primary" name="create" />
+                        </div>
                       </div>
-                    </div>
+                    </q-scroll-area>
                   </div>
                 </q-card>
               </q-card>
@@ -1752,5 +1754,11 @@ table {
 td {
   padding: 8px 16px;
   border: 1px solid #ccc;
+}
+
+.claim-list-scrollable {
+  margin: 4px, 4px;
+  padding: 4px;
+  height: calc(100vh - 350px);
 }
 </style>
