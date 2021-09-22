@@ -302,7 +302,7 @@
             class="q-pa-md heading-light"
             @click="onManuallyPushAssignmentClick"
           >
-            Push claim to photoid app
+            Push claim to photo id app
           </div>
         </q-card-section>
       </q-card>
