@@ -6,11 +6,10 @@
         flat
         bordered
         @click="onClickAddAnotherProperty"
-      >
-        + Add Another Property</q-card
+        >+ Add Another Property</q-card
       >
 
-      <div class="">
+      <div class>
         <div v-if="setClientProperty.length">
           <q-card
             class="q-my-sm"
@@ -117,7 +116,7 @@
               >
                 <div class="row q-mx-md">
                   <div class="heading-light col-4 q-mx-xs">Claim Number:</div>
-                  <div class="row justify-between q-ml-md col-7">
+                  <div class="row justify-between q-ml-lg col-6">
                     <div @click="onClickClaimNumber(claim)" class="click-link">
                       {{ claim.number ? claim.number : '-' }}
                     </div>
@@ -134,27 +133,29 @@
                 <!-- pointer3 -->
                 <div class="row q-ma-md">
                   <div class="col-5 heading-light">Insurane Carrier</div>
-                  <div>{{ claim.carrier ? claim.carrier.value : '-' }}</div>
+                  <div class="q-ml-xs">
+                    {{ claim.carrier ? claim.carrier.value : '-' }}
+                  </div>
                 </div>
                 <div class="row q-ma-md">
                   <div class="col-5 heading-light">Date of Loss</div>
-                  <div v-if="claim.lossDate">
+                  <div v-if="claim.lossDate" class="q-ml-xs">
                     {{ dateToShow(claim.lossDate) }}
                   </div>
                   <div v-else>-</div>
                 </div>
                 <div class="row q-ma-md">
                   <div class="col-5 heading-light">Policy Number</div>
-                  <div>
+                  <div class="q-ml-xs">
                     {{ claim.policyNumber ? claim.policyNumber : '-' }}
                   </div>
                 </div>
                 <div class="row q-ma-md">
                   <div class="col-5 heading-light">Cause Of Loss</div>
-                  <span>
+                  <div class="q-ml-xs">
                     {{ claim.lossCause ? claim.lossCause.value : '' }} -
                     {{ claim.lossCause ? claim.lossCause.desc : '' }}
-                  </span>
+                  </div>
                 </div>
 
                 <q-separator />
@@ -169,8 +170,7 @@
                 @click="
                   $router.push(`/add-claim/${setClientProperty[i - 1].id}`)
                 "
-              >
-                + Add Another Claim to this property</q-card
+                >+ Add Another Claim to this property</q-card
               >
             </div>
           </q-card>
@@ -210,10 +210,9 @@
           <q-form ref="propertyAddressForm" class="form-height">
             <q-input
               dense
-              class="input-style input-overlay"
+              class="input-style"
               v-model="propertyName"
               label=" Property Name"
-              style="width:90%"
               borderless
               lazy-rules
               :rules="[
@@ -223,7 +222,8 @@
             />
             <q-select
               dense
-              class="required"
+              class="required input-style"
+              borderless
               v-model="property.id"
               option-value="id"
               option-label="name"
@@ -241,9 +241,10 @@
             />
             <q-input
               dense
-              class="full-width required"
+              class="full-width required input-style"
               v-model="propertyDescription"
               label=" Description"
+              borderless
               lazy-rules
               :rules="[
                 val =>
@@ -251,13 +252,15 @@
                   'Please fill the property Description'
               ]"
             />
-            <AutoCompleteAddress
-              :id="'PropertyInfo'"
-              :address="propertyAddressDetails"
-              :isDropBoxEnable="false"
-              :isChecksEnable="true"
-              :isAsteriskMark="true"
-            />
+            <div class="q-mx-sm">
+              <AutoCompleteAddress
+                :id="'PropertyInfo'"
+                :address="propertyAddressDetails"
+                :isDropBoxEnable="false"
+                :isChecksEnable="true"
+                :isAsteriskMark="true"
+              />
+            </div>
           </q-form>
           <q-btn
             label="Save"
