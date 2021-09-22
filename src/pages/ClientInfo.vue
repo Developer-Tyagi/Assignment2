@@ -227,7 +227,7 @@
         </div>
 
         <div class="q-mt-md row">
-          <div class="q-mt-none q-ml-sm col-xs-4 heading-light">
+          <div class="q-mt-none  col-xs-4 heading-light">
             Tenant Details
           </div>
           <div

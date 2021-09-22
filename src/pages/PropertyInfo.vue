@@ -32,7 +32,7 @@
                     style="height: auto; max-width: 120px"
                   ></q-img>
                 </div>
-                <div class="col-6 q-pa-sm">
+                <div class="col-5 q-ml-lg q-mt-xs q-pa-sm">
                   <div class="heading-light">Property Name</div>
                   <div>
                     {{
@@ -92,7 +92,7 @@
                     </div>
                   </div>
                 </div>
-                <div>
+                <div class="q-mt-sm">
                   <q-icon
                     size="sm"
                     name="create"
@@ -117,7 +117,7 @@
               >
                 <div class="row q-mx-md">
                   <div class="heading-light col-4 q-mx-xs">Claim Number:</div>
-                  <div class="row justify-between q-ml-sm col-7">
+                  <div class="row justify-between q-ml-md col-7">
                     <div @click="onClickClaimNumber(claim)" class="click-link">
                       {{ claim.number ? claim.number : '-' }}
                     </div>
@@ -206,13 +206,15 @@
           @closeDialog="addNewPropertyDialog = false"
           :dialogName="'Add New Property'"
         />
-        <div class="mobile-container-page-without-search q-pa-sm">
+        <div class="mobile-container-page-without-search">
           <q-form ref="propertyAddressForm" class="form-height">
             <q-input
               dense
-              class="full-width required"
+              class="input-style input-overlay"
               v-model="propertyName"
               label=" Property Name"
+              style="width:90%"
+              borderless
               lazy-rules
               :rules="[
                 val =>
