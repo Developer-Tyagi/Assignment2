@@ -118,6 +118,16 @@
                           <q-icon name="restore_page"></q-icon>
                         </span>
                       </div>
+                      <div class="row">
+                        <q-badge color="red" v-if="!organization.photoIDAPIKey">
+                          PhotoId Key has not been added in the system
+                          <q-icon
+                            name="warning"
+                            color="white"
+                            class="q-ml-xs"
+                          ></q-icon>
+                        </q-badge>
+                      </div>
                     </q-item-section>
                   </q-item>
                   <div class="button-right">
@@ -242,7 +252,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['activeLeads', 'archivedLeads', 'isOnline']),
+    ...mapGetters(['activeLeads', 'archivedLeads', 'isOnline', 'organization']),
     formatDate(value) {
       if (value) {
         return moment(String(value)).format('MM/DD/YYYY');
@@ -250,13 +260,16 @@ export default {
     }
   },
 
-  created() {},
+  async created() {
+    await this.getOrganization();
+  },
 
   methods: {
     ...mapActions([
       'getActiveLeadsList',
       'getArchivedLeadsList',
-      'addLeadToArchiveList'
+      'addLeadToArchiveList',
+      'getOrganization'
     ]),
     dateToShow,
     ...mapMutations(['setSelectedLeadOnline', 'setSelectedLeadOffline']),

@@ -75,6 +75,16 @@
                     {{ dateWithTime(client.created) }}
                   </div>
                 </div>
+                <div class="row">
+                  <q-badge color="red" v-if="!organization.photoIDAPIKey">
+                    PhotoId Key has not been added in the system
+                    <q-icon
+                      name="warning"
+                      color="white"
+                      class="q-ml-xs"
+                    ></q-icon>
+                  </q-badge>
+                </div>
               </div>
             </q-item-section>
           </div>
@@ -118,19 +128,21 @@ export default {
       'selectedLead',
       'isOnline',
       'editSelectedClient',
-      ' isOfflineClientEdit'
+      ' isOfflineClientEdit',
+      'organization'
     ])
   },
 
-  created() {
+  async created() {
     const payload = {
       status: '',
       name: ''
     };
     this.getClients(payload);
+    await this.getOrganization();
   },
   methods: {
-    ...mapActions(['getClients', 'getSingleClientDetails']),
+    ...mapActions(['getClients', 'getSingleClientDetails', 'getOrganization']),
     ...mapMutations([
       'setSelectedClient',
       'setSelectedClientOffline',
