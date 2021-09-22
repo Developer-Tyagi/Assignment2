@@ -19,6 +19,9 @@ export async function setVendors(state, vendorsData) {
 
 export async function setOfflineVendors(state, params) {
   state.vendors = await getCollection('vendors').toArray();
+  state.vendors.sort(function(a, b) {
+    return new Date(b.updated).getTime() - new Date(a.updated).getTime();
+  });
 }
 
 export function setSelectedVendor(state, vendor) {

@@ -18,6 +18,9 @@ export async function setCarriers(state, carriersData) {
 
 export async function setOfflineCarriers(state) {
   state.carriers = await getCollection('carriers').toArray();
+  state.carriers.sort(function(a, b) {
+    return new Date(b.updated).getTime() - new Date(a.updated).getTime();
+  });
 }
 
 export function setSelectedCarrier(state, carrier) {
