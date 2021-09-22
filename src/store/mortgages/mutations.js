@@ -15,6 +15,9 @@ export async function setMortgages(state, mortgagesData) {
 
 export async function setOfflineMortgages(state) {
   state.mortgages = await getCollection('mortgages').toArray();
+  state.mortgages.sort(function(a, b) {
+    return new Date(b.updated).getTime() - new Date(a.updated).getTime();
+  });
 }
 
 export function setSelectedMortgage(state, mortgage = {}) {
