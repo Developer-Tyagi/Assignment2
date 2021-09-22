@@ -428,7 +428,7 @@ export default {
       await this.getAccess();
       this.createSidebarMenuItems();
     }
-    if (this.$q.screen.width > 992) {
+    if (this.$q.screen.width > 2733) {
       this.isLeftSidePanelOpen = true;
     }
   }
