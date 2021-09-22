@@ -297,6 +297,13 @@
           >
             Upload Vendor Documents
           </div>
+          <div
+            v-if="!getSelectedClaim.uScopeAssignmentID"
+            class="q-pa-md heading-light"
+            @click="onManuallyPushAssignmentClick"
+          >
+            Manually push the assignment to photo id app
+          </div>
         </q-card-section>
       </q-card>
     </q-dialog>
@@ -521,11 +528,13 @@ export default {
       'selectedClaimId',
       'getSelectedClaim',
       'phases',
-      'notificationRouteTo'
+      'notificationRouteTo',
+      'photoIdKey'
     ])
   },
 
-  created() {
+  async created() {
+    await this.getPhotoIdKeys();
     this.getSingleClaimDetails(this.selectedClaimId);
     this.getPhases();
     this.options = this.phases;
@@ -544,12 +553,16 @@ export default {
       'getSingleClaimDetails',
       'editClaimNumber',
       'editClaimPhase',
-      'getPhases'
+      'getPhases',
+      'generatePhotoIdAssignment',
+      'getPhotoIdKeys'
     ]),
     ...mapMutations(['setNotificationRouteTo']),
     onEmailClick,
     successMessage,
-
+    async onManuallyPushAssignmentClick() {
+      await this.generatePhotoIdAssignment(this.selectedClaimId);
+    },
     scrollAfterCreation() {
       document.getElementById('scroll-bottom').scrollTo(0, 1552);
     },

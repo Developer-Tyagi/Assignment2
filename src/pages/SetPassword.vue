@@ -132,7 +132,7 @@ export default {
                 });
               }
             );
-            ushNotifications.addListener(
+            PushNotifications.addListener(
               'pushNotificationActionPerformed',
               PushNotificationActionPerformed => {
                 if (
