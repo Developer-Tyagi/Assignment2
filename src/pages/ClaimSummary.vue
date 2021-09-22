@@ -415,19 +415,21 @@
           :dialogName="'Edit Claim Summary'"
         />
         <div class="q-ma-sm mobile-container-page">
-          <q-card class="q-mx-sm">
+          <q-card class="q-mx-sm q-pt-sm" style="height:350px">
             <div class="q-px-sm">
               <q-input
-                class="q-py-sm"
+                class="full-width q-mt-md input-style input-overlay"
                 v-model="fileNumber"
+                borderless
                 label="File Number"
               />
+
               <!-- <q-input
                 class="q-py-sm"
                 v-model.number="contractInfo.fees.rate"
                 label="Claim Fee(%)"
               /> -->
-              <div class="row">
+              <div class="row q-my-sm">
                 <q-btn-toggle
                   v-model="contractInfo.fees.type"
                   push
@@ -442,7 +444,8 @@
               </div>
               <div class="row" style="align-items: center">
                 <q-input
-                  class="q-ml-auto full-width"
+                  class="full-width  input-style"
+                  borderless
                   mask="#.#"
                   type="number"
                   v-model.number="contractInfo.fees.rate"
@@ -468,15 +471,17 @@
                 >
               </div>
               <q-input
-                class="q-py-sm"
+                class="input-style"
                 v-model="policyInfo.carrierNotifyDate"
                 label="Date Notified"
+                borderless
                 disable
               />
 
               <q-select
-                dense
+                class="input-style input-overlay"
                 behavior="menu"
+                borderless
                 v-model="lossInfo.reasonClaim.value"
                 option-value="name"
                 option-label="name"
@@ -495,7 +500,8 @@
           <q-card class="q-ma-sm">
             <div class="q-ma-sm">
               <q-input
-                class="q-py-sm"
+                class="q-py-md input-style input-overlay"
+                borderless
                 v-model="policyInfo.dateOfFirstContact"
                 label="Date of First Contact"
                 disable
