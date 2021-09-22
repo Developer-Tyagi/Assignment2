@@ -298,7 +298,10 @@
             Upload Vendor Documents
           </div>
           <div
-            v-if="!getSelectedClaim.uScopeAssignmentID"
+            v-if="
+              !getSelectedClaim.uScopeAssignmentID &&
+                !getSelectedClaim.isPhotoIDGenerated
+            "
             class="q-pa-md heading-light"
             @click="onManuallyPushAssignmentClick"
           >
