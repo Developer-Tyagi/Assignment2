@@ -128,15 +128,11 @@
             style="width: calc(100% - 54px)"
           >
             <div class="text-capitalize">
-              {{
-                user.roles[0].machineValue == 'vendor'
-                  ? user.companyName
-                  : user.name
-              }}
+              {{ user.name }}
             </div>
 
             <div style="font-size: 11px; opacity: 80%">
-              {{ user.contact.fname ? user.contact.fname : '' }}
+              {{ user.contact.fname }}
             </div>
           </div>
         </div>
@@ -212,7 +208,7 @@ export default {
       user: {
         name: ''
       },
-      isLeftSidePanelOpen: true,
+      isLeftSidePanelOpen: false,
       intViewportWidth: 0,
       linksData: [
         {
@@ -428,8 +424,8 @@ export default {
       await this.getAccess();
       this.createSidebarMenuItems();
     }
-    if (this.$q.screen.width < 992) {
-      this.isLeftSidePanelOpen = false;
+    if (this.$q.screen.width > 992) {
+      this.isLeftSidePanelOpen = true;
     }
   }
 };
