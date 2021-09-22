@@ -396,7 +396,7 @@
                   /> -->
                 </div>
 
-                <q-card class="q-my-md" scroll flat bordered>
+                <q-card class="q-mt-md ">
                   <div
                     class="row bg-grey-3 q-px-md"
                     style="align-items: center"
@@ -423,8 +423,8 @@
                       emit-value
                     />
                   </div>
-                  <div class="q-pa-lg">
-                    <q-scroll-area class="claim-list-scrollable">
+                  <div class="">
+                    <q-scroll-area class=" claim-list-scrollable">
                       <div v-for="index in allAction" class="row q-pb-md">
                         <div class="col-11">
                           <div class="text-blue">
@@ -1757,8 +1757,7 @@ td {
 }
 
 .claim-list-scrollable {
-  margin: 4px, 4px;
   padding: 4px;
-  height: calc(100vh - 350px);
+  height: calc(100vh - 290px);
 }
 </style>
