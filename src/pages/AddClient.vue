@@ -306,14 +306,14 @@
                     v-model="coInsuredDetails.fname"
                     label="First Name"
                     borderless
-                    class="required input-style input-field"
+                    class=" input-style input-field"
                     :disable="isOfflineClientEdit"
                   />
                   <q-input
                     dense
                     v-model="coInsuredDetails.lname"
                     borderless
-                    class="required input-style input-field"
+                    class="input-style input-field"
                     label="Last Name"
                     :disable="isOfflineClientEdit"
                   />
@@ -343,7 +343,7 @@
                       v-model.number="coInsuredDetails.phone"
                       label="Phone"
                       borderless
-                      class="required input-style col-6 input-field"
+                      class="input-style col-6 input-field"
                       mask="(###) ###-####"
                       lazy-rules
                       :rules="[
@@ -360,7 +360,7 @@
                     input
                     type="email"
                     borderless
-                    class="required input-style input-field"
+                    class="input-style input-field"
                     lazy-rules
                     :rules="[
                       val =>

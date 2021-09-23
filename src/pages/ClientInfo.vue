@@ -465,14 +465,14 @@
                 <q-input
                   dense
                   borderless
-                  class="required input-style input-field"
+                  class=" input-style input-field"
                   v-model="coInsuredDetails.fname"
                   label="First Name"
                 />
                 <q-input
                   dense
                   borderless
-                  class="required input-style input-field"
+                  class="input-style input-field"
                   v-model="coInsuredDetails.lname"
                   label="Last Name"
                 />
@@ -489,7 +489,6 @@
                     emit-value
                     options-dense
                     label="Type"
-                    options-dense
                     lazy-rules
                     :rules="[
                       val =>
@@ -501,7 +500,7 @@
                     v-model.number="coInsuredDetails.phone"
                     label="Phone"
                     borderless
-                    class="required col-6 input-style input-field"
+                    class="col-6 input-style input-field"
                     mask="(###) ###-####"
                     lazy-rules
                     :rules="[
@@ -517,7 +516,7 @@
                   input
                   type="email"
                   borderless
-                  class="required input-style input-field"
+                  class="input-style input-field"
                   lazy-rules
                   :rules="[
                     val =>
