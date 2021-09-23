@@ -113,7 +113,8 @@
                     <q-badge
                       color="red"
                       v-if="
-                        !claim.uScopeAssignmentID && !claim.isPhotoIDGenerated
+                        claim.uScopeAssignmentID === '' &&
+                          claim.isPhotoIDGenerated === false
                       "
                     >
                       Assignment not generated, push it manually
@@ -126,7 +127,7 @@
                     <q-badge
                       color="red"
                       v-if="
-                        !claim.uScopeAssignmentID &&
+                        claim.uScopeAssignmentID === '' &&
                           claim.isPhotoIDGenerated === null
                       "
                     >
@@ -185,7 +186,7 @@ export default {
 
   async created() {
     await this.getPhotoIdKeys();
-    this.getClaims();
+    await this.getClaims();
     this.userRole = getCurrentUser().attributes.roles[0].machineValue;
   },
   methods: {

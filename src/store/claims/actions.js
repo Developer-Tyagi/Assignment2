@@ -1676,7 +1676,7 @@ export async function generatePhotoIdAssignment({ dispatch, state }, id) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'positive',
-      message: e.response[0].detail
+      message: 'Assignment push initiated successfully'
     });
   } catch (e) {
     console.log(e);

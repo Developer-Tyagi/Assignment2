@@ -14,7 +14,7 @@
           !claimExpertVendor
       "
       class="icon-top"
-      @click="editClaimDetails = true"
+      @click="onTopMenuClick"
       name="more_vert"
       color="white"
     />
@@ -538,7 +538,7 @@ export default {
 
   async created() {
     await this.getPhotoIdKeys();
-    this.getSingleClaimDetails(this.selectedClaimId);
+    await this.getSingleClaimDetails(this.selectedClaimId);
     this.getPhases();
     this.options = this.phases;
     this.userRole = getCurrentUser().attributes.roles[0].machineValue;
@@ -565,6 +565,12 @@ export default {
     successMessage,
     async onManuallyPushAssignmentClick() {
       await this.generatePhotoIdAssignment(this.selectedClaimId);
+      this.editClaimDetails = false;
+      await this.getSingleClaimDetails(this.selectedClaimId);
+    },
+    async onTopMenuClick() {
+      setTimeout(() => this.getSingleClaimDetails(this.selectedClaimId), 5000),
+        (this.editClaimDetails = true);
     },
     scrollAfterCreation() {
       document.getElementById('scroll-bottom').scrollTo(0, 1552);
