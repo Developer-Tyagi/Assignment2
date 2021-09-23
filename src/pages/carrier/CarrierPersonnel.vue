@@ -179,17 +179,12 @@
           @closeDialog="editPersonnelDialog = false"
         />
         <div class="mobile-container-page form-color">
-          <q-form
-            ref="editPersonnelForm"
-            class="q-px-lg "
-            style="height: calc(100vh - 51px)"
-          >
-            <div class="full-width rounded bg-white">
+          <q-form ref="editPersonnelForm" class="q-pa-md ">
+            <q-card class="full-width q-pa-md bg-white">
               <div class="q-mt-sm">
                 <q-select
                   borderless
                   class="required input-style input-overlay"
-                  dense
                   v-model="personnel.honorific.value"
                   :options="titles"
                   option-value="value"
@@ -226,7 +221,6 @@
                   ]"
                 />
                 <q-input
-                  dense
                   borderless
                   class="input-style input-overlay"
                   v-model="personnel.departmentName"
@@ -263,7 +257,6 @@
                     v-if="index >= 0"
                   >
                     <q-select
-                      dense
                       borderless
                       v-model="personnel.phoneNumber[index].type"
                       class="col-5 input-style input-overlay"
@@ -276,7 +269,6 @@
                       emit-value
                     />
                     <q-input
-                      dense
                       borderless
                       v-model.number="personnel.phoneNumber[index].number"
                       label="Phone"
@@ -308,17 +300,19 @@
               <div class="q-mt-xs">
                 <div class="form-heading q-mt-sm q-mb-sm">Notes</div>
                 <div class="floating-label">
-                  <textarea
+                  <q-input
+                    type="textarea"
                     rows="3"
                     required
-                    class="full-width"
+                    borderless
+                    class="full-width input-style input-overlay"
                     v-model="personnel.notes"
                     style="resize: none"
                     placeholder="Take notes here..."
-                  ></textarea>
+                  ></q-input>
                 </div>
               </div>
-            </div>
+            </q-card>
           </q-form>
         </div>
         <q-btn
@@ -445,6 +439,14 @@ export default {
       this.personnel.fname = this.carrierPersonnel.personnel[index].fname;
       this.personnel.lname = this.carrierPersonnel.personnel[index].lname;
       this.personnel.email = this.carrierPersonnel.personnel[index].email;
+      if (
+        this.carrierPersonnel.personnel[index].dropBox &&
+        this.carrierPersonnel.personnel[index].dropBox.isPresent
+      ) {
+        this.personnel.address.dropBox = this.carrierPersonnel.personnel[
+          index
+        ].dropBox;
+      }
       this.personnel.address = this.carrierPersonnel.personnel[index].address;
       this.personnel.notes = this.carrierPersonnel.personnel[index].note;
       this.personnel.phoneNumber = this.carrierPersonnel.personnel[
@@ -531,7 +533,6 @@ export default {
     sendMap,
     sendPhoneNumber,
     showPhoneNumber,
-
     setTitleName() {
       const title = this.titles.find(obj => {
         return obj.value === this.personnel.honorific.value;
@@ -589,7 +590,6 @@ export default {
         this.personnel.address.addressRegion = '';
         this.personnel.address.address1 = '';
         this.personnel.address.address2 = '';
-
         this.personnel.address.postalCode = '';
         this.personnel.notes = '';
         this.personnel.departmentName = '';

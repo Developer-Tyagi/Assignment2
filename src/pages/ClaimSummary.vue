@@ -177,7 +177,6 @@
               <div class="column q-ml-lg" v-if="getSelectedClaim.lossInfo">
                 {{ dateToShow(this.getSelectedClaim.lossInfo.recovDDDate) }}
               </div>
-              <div class="column q-ml-lg">-</div>
             </div>
           </div>
         </div>

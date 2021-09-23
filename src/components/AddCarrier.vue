@@ -5,13 +5,9 @@
         :dialogName="'Add Carrier'"
         @closeDialog="$emit('closeDialog', false)"
       />
-      <div class="mobile-container-page form-color">
-        <q-form
-          class="q-px-lg"
-          style="height: calc(100vh - 51px)"
-          ref="carrierForm"
-        >
-          <div class="full-width rounded bg-white">
+      <div class="mobile-container-page ">
+        <q-form class="q-pa-md" ref="carrierForm">
+          <q-card class="bg-white q-pa-sm q-px-md">
             <div class="rounded">
               <q-input
                 dense
@@ -73,32 +69,30 @@
                     'You have entered an invalid email address!'
                 ]"
               />
-              <div class="row q-mx-sm">
-                <p class="q-mx-none q-my-auto">
-                  <label> Can Claim be Filed by email</label>
-                </p>
-                <q-toggle
-                  class="q-ml-auto"
-                  v-model="carrier.meta.claimFiledByEmail"
+              <div class="row q-mt-sm justify-between">
+                <div class="q-my-auto ">
+                  Can Claim be Filed by email
+                </div>
+                <q-toggle v-model="carrier.meta.claimFiledByEmail" />
+              </div>
+            </div>
+            <div class="">
+              <div class="form-heading">Carrier's Address</div>
+              <div class="q-mt-xs">
+                <AutoCompleteAddress
+                  :address="carrier.address"
+                  :isDropBoxEnable="false"
+                  :isChecksEnable="false"
+                  :value="true"
                 />
               </div>
             </div>
-            <div class="q-mt-sm">
-              <p class="form-heading q-mx-sm">Carrier's Address</p>
-              <AutoCompleteAddress
-                :address="carrier.address"
-                :isDropBoxEnable="false"
-                :isChecksEnable="false"
-                :value="true"
-              />
-            </div>
             <div>
               <div class="q-mt-md">
-                <p class="form-heading q-mx-sm">Contact Info</p>
+                <p class="form-heading">Contact Info</p>
 
                 <div class="q-mt-sm">
                   <q-select
-                    dense
                     borderless
                     v-model="carrier.contact.honorific.value"
                     :options="titles"
@@ -113,7 +107,6 @@
                     class="input-style input-overlay input-extra-padding"
                   />
                   <q-input
-                    dense
                     class="input-style input-overlay"
                     borderless
                     v-model="carrier.contact.fname"
@@ -121,14 +114,12 @@
                   />
                   <q-input
                     borderless
-                    dense
                     class="input-style input-overlay"
                     v-model="carrier.contact.lname"
                     label="Last Name"
                   />
                   <div class="row justify-between">
                     <q-select
-                      dense
                       borderless
                       class="input-style input-overlay col-5"
                       v-model="carrier.contact.phoneNumber[0].type"
@@ -142,7 +133,6 @@
                       options-dense
                     />
                     <q-input
-                      dense
                       borderless
                       class="input-style input-overlay col-6"
                       v-model.number="carrier.contact.phoneNumber[0].number"
@@ -167,7 +157,7 @@
               </div>
             </div>
             <div class=" q-mt-md">
-              <p class="form-heading q-mx-sm">Other Info</p>
+              <p class="form-heading">Other Info</p>
               <q-input
                 dense
                 class="input-style input-overlay"
@@ -180,12 +170,13 @@
               <q-input
                 class="input-style input-overlay q-mb-sm"
                 dense
+                type="textarea"
                 borderless
                 v-model="carrier.info.notes"
                 label="Notes"
               />
             </div>
-          </div>
+          </q-card>
         </q-form>
       </div>
       <div class="row justify-center">
@@ -297,9 +288,17 @@ export default {
       this.carrier.email = this.selectedCarrier.email;
       this.carrier.phoneNumber[0].number = this.selectedCarrier.phoneNumber[0].number;
       this.carrier.phoneNumber[0].type = this.selectedCarrier.phoneNumber[0].type;
+
       if (this.selectedCarrier.address) {
+        if (
+          this.selectedCarrier.address.dropBox &&
+          this.selectedCarrier.address.dropBox.isPresent
+        ) {
+          this.carrier.address.dropBox.isPresent = this.selectedCarrier.address.dropBox.isPresent;
+        }
         this.carrier.address = this.selectedCarrier.address;
       }
+
       this.carrier.contact.fname = this.selectedCarrier.contact.fname;
       this.carrier.contact.lname = this.selectedCarrier.contact.lname;
       this.carrier.contact.phoneNumber = this.selectedCarrier.contact.phoneNumber;
