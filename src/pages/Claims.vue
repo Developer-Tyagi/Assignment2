@@ -113,7 +113,7 @@
                     <q-badge
                       color="red"
                       v-if="
-                        !claim.uScopeAssignmentID && claim.isPhotoIDGenerated
+                        !claim.uScopeAssignmentID && !claim.isPhotoIDGenerated
                       "
                     >
                       Assignment not generated, push it manually
