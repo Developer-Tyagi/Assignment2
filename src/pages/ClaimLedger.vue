@@ -460,9 +460,9 @@
           @closeDialog="addPaymentDialog = false"
           :dialogName="'Add Claim Payment '"
         />
-        <div class="q-ma-sm mobile-container-page listing-height">
+        <div class="q-ma-sm q-pa-sm mobile-container-page listing-height">
           <q-form ref="paymentForm">
-            <div class="row" style="align-items: center">
+            <div class="row justify-between" style="align-items: center">
               <span class="heading-light">Recieved Date</span>
 
               <q-input
@@ -470,9 +470,10 @@
                 v-model="payments.date"
                 mask="##/##/####"
                 label="MM/DD/YYYY"
-                style="margin-left: auto; width: 50%"
+                style="width: 50%"
                 lazy-rules
-                class="required"
+                class="required q-pr-md input-style input-overlay"
+                borderless
                 :rules="[
                   val =>
                     (val && val.length > 0 && validateDate(val)) ||
@@ -501,29 +502,30 @@
                 </template>
               </q-input>
             </div>
-            <div class="row" style="align-items: center">
+            <div class="row justify-between" style="align-items: center">
               <span class="heading-light">Amount Of Payment</span>
 
               <q-input
                 dense
                 v-model.number="payments.amountsOfPayment"
                 type="number"
-                style="margin-left: auto; width: 50%"
+                style="width: 50%"
                 prefix="$"
                 @blur="remainingCalculation(payments.amountsOfPayment)"
-                class="input-extra-padding"
+                class="input-extra-padding input-style input-overlay"
+                borderless
                 lazy-rules
                 :rules="[val => val || 'Please fill Amount of payment']"
               />
             </div>
-            <div class="row" style="align-items: center">
-              <span class="heading-light">Check Reference #</span>
+            <div class="row justify-between" style="align-items: center">
+              <div class="heading-light">Check Reference #</div>
 
               <q-input
-                dense
                 v-model="payments.checkReference"
-                style="margin-left: auto; width: 50%"
-                class="input-extra-padding"
+                style="width: 50%"
+                class="input-extra-padding q-pl-xl input-style input-overlay"
+                borderless
               />
             </div>
             <div class="q-ma-sm">
@@ -591,7 +593,13 @@
             </div>
 
             <div class="heading-light">Notes</div>
-            <textarea v-model="payments.notes" rows="3" class="full-width" />
+            <q-input
+              type="textarea"
+              v-model="payments.notes"
+              rows="3"
+              class="full-width input-style input-overlay"
+              borderless
+            />
           </q-form>
         </div>
         <q-btn
@@ -616,9 +624,9 @@
           @closeDialog="addExpensesDialog = false"
           :dialogName="'Add Claim  Expenses'"
         />
-        <div class="q-ma-sm mobile-container-page listing-height">
+        <div class="q-ma-sm q-pa-sm mobile-container-page listing-height">
           <q-form ref="addExpensesForm">
-            <div class="row" style="align-items: center">
+            <div class="row justify-between" style="align-items: center">
               <span class="heading-light  ">Recieved Date</span>
 
               <q-input
@@ -626,9 +634,10 @@
                 v-model="addexpenses.receviedDate"
                 mask="##/##/####"
                 label="DD/MM/YYYY"
-                style="margin-left: auto; width: 50%"
+                style="width: 50%"
                 lazy-rules
-                class="required"
+                class="required input-style input-overlay"
+                borderless
                 :rules="[
                   val =>
                     (val && val.length > 0 && validateDate(val)) ||
@@ -657,7 +666,7 @@
                 </template>
               </q-input>
             </div>
-            <div class="row" style="align-items: center">
+            <div class="row justify-between" style="align-items: center">
               <span class="heading-light">Expense Amount</span>
 
               <q-input
@@ -665,9 +674,10 @@
                 v-model.number="addexpenses.amount"
                 mask="#.#"
                 type="number"
-                style="margin-left: auto; width: 50%"
+                style="width: 50%"
                 prefix="$"
-                class="input-extra-padding"
+                class="input-extra-padding input-style input-overlay"
+                borderless
                 lazy-rules
                 :rules="[val => val > 0 || 'Please fill Amount ']"
               />
@@ -679,29 +689,30 @@
               <q-toggle class="q-ml-auto" v-model="toggleOnOff" />
             </div>
 
-            <div class="row" style="align-items: center">
+            <div class="row justify-between" style="align-items: center">
               <span class="heading-light">Payee</span>
 
               <q-input
-                dense
                 v-model="addexpenses.payee"
-                style="margin-left: auto; width: 50%"
-                class="input-extra-padding"
+                style="width: 50%"
+                borderless
+                class="input-extra-padding input-style input-overlay"
               />
             </div>
-            <div class="row" style="align-items: center">
+            <div class="row justify-between" style="align-items: center">
               <span class="heading-light">Payable By</span>
 
               <q-select
                 v-model="addexpenses.payableBy.value"
                 :options="options"
                 dense
+                borderless
                 option-value="value"
                 option-label="value"
                 behavior="menu"
                 @input="setResponsibleBy(addexpenses.payableBy.value)"
                 style="margin-left: auto; width: 50%"
-                class="input-extra-padding"
+                class="input-extra-padding input-style input-overlay"
                 lazy-rules
                 :rules="[
                   val => (val && val.length > 0) || 'Please fill Payable By'
@@ -717,15 +728,21 @@
               <span class="heading-light">Invoice reference Number</span>
 
               <q-input
-                dense
                 v-model="addexpenses.reference"
                 style="margin-left: auto; width: 50%"
-                class="input-extra-padding"
+                class="input-extra-padding input-style input-overlay"
+                borderless
               />
             </div>
 
             <div class="heading-light">Description</div>
-            <textarea v-model="addexpenses.desc" rows="3" class="full-width" />
+            <q-input
+              type="textarea"
+              v-model="addexpenses.desc"
+              rows="3"
+              class="input-style input-overlay"
+              borderless
+            />
           </q-form>
         </div>
         <q-btn

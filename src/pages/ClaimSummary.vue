@@ -199,11 +199,11 @@
             :dialogName="'Edit Claim Deadlines'"
           />
           <div class="q-ma-sm mobile-container-page">
-            <q-card class="q-mx-sm">
-              <div class="q-px-md">
+            <q-card class="q-ma-sm q-px-sm ">
+              <div class="q-pa-sm">
                 <q-input
-                  class="q-py-sm"
-                  dense
+                  class="input-style input-overlay"
+                  borderless
                   v-model="DeadLineDate"
                   mask="##/##/####"
                   label="Recoverable Depreciation Due"
@@ -231,8 +231,8 @@
                   </template>
                 </q-input>
                 <q-input
-                  dense
-                  class="q-py-lg"
+                  class="input-style input-overlay"
+                  borderless
                   v-model="recovDDDate"
                   mask="##/##/####"
                   label="Trolling Date /Statute Deadline"
@@ -415,19 +415,21 @@
           :dialogName="'Edit Claim Summary'"
         />
         <div class="q-ma-sm mobile-container-page">
-          <q-card class="q-mx-sm">
+          <q-card class="q-mx-sm q-pa-sm q-pt-sm">
             <div class="q-px-sm">
               <q-input
-                class="q-py-sm"
+                class="full-width q-mt-md input-style input-overlay"
                 v-model="fileNumber"
+                borderless
                 label="File Number"
               />
+
               <!-- <q-input
                 class="q-py-sm"
                 v-model.number="contractInfo.fees.rate"
                 label="Claim Fee(%)"
               /> -->
-              <div class="row">
+              <div class="row q-mt-sm">
                 <q-btn-toggle
                   v-model="contractInfo.fees.type"
                   push
@@ -442,7 +444,8 @@
               </div>
               <div class="row" style="align-items: center">
                 <q-input
-                  class="q-ml-auto full-width"
+                  class="full-width  input-style"
+                  borderless
                   mask="#.#"
                   type="number"
                   v-model.number="contractInfo.fees.rate"
@@ -468,22 +471,23 @@
                 >
               </div>
               <q-input
-                class="q-py-sm"
+                class="input-style"
                 v-model="policyInfo.carrierNotifyDate"
                 label="Date Notified"
+                borderless
                 disable
               />
 
               <q-select
-                dense
+                class="input-style full-width "
                 behavior="menu"
+                borderless
                 v-model="lossInfo.reasonClaim.value"
                 option-value="name"
                 option-label="name"
                 map-options
                 use-input
                 input-debounce="0"
-                options-dense
                 emit-value
                 :options="claimReasonOptions"
                 @input="setClaimReasons(claimReasons, lossInfo.reasonClaim)"
@@ -492,10 +496,11 @@
               />
             </div>
           </q-card>
-          <q-card class="q-ma-sm">
-            <div class="q-ma-sm">
+          <q-card class="q-pa-sm  q-mt-md q-mx-sm">
+            <div class="q-px-sm">
               <q-input
-                class="q-py-sm"
+                class=" input-style full-width "
+                borderless
                 v-model="policyInfo.dateOfFirstContact"
                 label="Date of First Contact"
                 disable
@@ -529,10 +534,12 @@
         />
         <div class="q-ma-sm mobile-container-page">
           <q-card class="q-mx-sm">
-            <div class="q-px-md">
+            <div class="q-pa-md">
               <q-input
                 v-if="userRole != 'estimator' && userRole != 'vendor'"
+                borderless
                 dense
+                class="input-style input-overlay"
                 v-model="lossInfo.dateOfLoss"
                 mask="##/##/####"
                 label="MM/DD/YYYY"
@@ -565,8 +572,9 @@
                 dense
                 v-model="lossInfo.cause.id"
                 behavior="menu"
-                class="required q-py-md"
+                class="required q-py-md input-style input-overlay"
                 option-value="id"
+                borderless
                 option-label="name"
                 map-options
                 options-dense
@@ -583,39 +591,41 @@
               <div class="row" style="align-items: center">
                 <span class="form-heading">Estimated Loss Amount</span>
                 <q-input
-                  dense
                   mask="#.#"
                   type="number"
                   v-model.number="lossInfo.estimatedLossAmt"
                   placeholder="Estimated Loss Amount"
                   style="margin-left: auto; width: 50%"
                   prefix="$"
-                  class="input-extra-padding"
+                  class="input-extra-padding input-style input-overlay"
+                  borderless
                 />
               </div>
               <div class="row" style="align-items: center">
                 <span class="form-heading">Property Loss Amount</span>
                 <q-input
-                  dense
                   mask="#.#"
                   type="number"
                   v-model.number="lossInfo.propertyValue"
                   placeholder="Property Loss Amount"
                   style="margin-left: auto; width: 50%"
                   prefix="$"
-                  class="input-extra-padding"
+                  class="input-extra-padding input-style input-overlay"
+                  borderless
                 />
               </div>
               <span class="form-heading">Loss Description </span>
-              <textarea
+              <q-input
                 rows="5"
                 required
-                class="full-width"
+                type="textarea"
+                borderless
+                class="full-width input-extra-padding input-style input-overlay"
                 v-model="lossInfo.desc"
                 style="resize: none"
               />
               <div
-                class="row"
+                class="row q-mt-sm"
                 v-if="userRole != 'estimator' && userRole != 'vendor'"
               >
                 <div>FEMA Claim</div>
@@ -658,13 +668,13 @@
           <q-card class="q-mx-sm">
             <div class="q-px-md">
               <div class="row">
-                <div class="q-pa-md heading-light">Phase</div>
+                <div class="q-mt-md heading-light">Phase</div>
                 <div class="q-pa-md text-bold">{{ claimPhase.value }}</div>
               </div>
 
               <q-input
-                dense
-                class="q-px-md q-py-sm"
+                class="q-px-md q-py-sm input-style input-overlay"
+                borderless
                 v-model="claimPhase.created"
                 mask="##/##/####"
                 label="Date"
@@ -691,12 +701,14 @@
                   </q-icon>
                 </template>
               </q-input>
-              <div class="q-px-md">Notes</div>
-              <div class="q-pb-md q-px-md">
-                <textarea
-                  rows="5"
+              <div class="q-mt-md">Notes</div>
+              <div class="q-pb-md ">
+                <q-input
+                  type="textarea"
+                  rows="6"
                   required
-                  class="full-width"
+                  class="input-style input-overlay"
+                  borderless
                   v-model="claimPhase.notes"
                   style="resize: none"
                 />
