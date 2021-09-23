@@ -55,7 +55,7 @@
           aria-label="Menu"
           @click="onMenuButtonClick"
           v-if="
-            ($q.screen.width > 2733 &&
+            ($q.screen.width > 1600 &&
               ($route.name === 'dashboard' ||
                 $route.name === 'clients' ||
                 $route.name === 'leads dashboard' ||
@@ -67,7 +67,7 @@
                 $route.name === 'admin' ||
                 $route.name === 'claims' ||
                 $route.name === 'configuration')) ||
-              ($q.screen.width < 2733 && $route.name === 'dashboard')
+              ($q.screen.width < 1600 && $route.name === 'dashboard')
           "
         ></q-btn>
         <q-icon
@@ -153,9 +153,9 @@
               v-bind="link"
               class="q-mt-md bg-white rounded-sidebar q-px-none"
               v-if="
-                (link.title != 'Admin' || $q.screen.width > 2733) &&
-                  (link.title != 'Manage Users' || $q.screen.width > 2733) &&
-                  (link.title != 'Configuration' || $q.screen.width > 2733)
+                (link.title != 'Admin' || $q.screen.width > 1600) &&
+                  (link.title != 'Manage Users' || $q.screen.width > 1600) &&
+                  (link.title != 'Configuration' || $q.screen.width > 1600)
               "
             >
               <q-item-section @click="onClickMenuItem(link.title)">
@@ -428,7 +428,7 @@ export default {
       await this.getAccess();
       this.createSidebarMenuItems();
     }
-    if (this.$q.screen.width < 2733) {
+    if (this.$q.screen.width < 1600) {
       this.isLeftSidePanelOpen = false;
     }
   }

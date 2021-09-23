@@ -3,7 +3,7 @@
     <div class="q-pa-lg">
       <div class="flex column" style="height: 50vh">
         <img
-          v-if="$q.screen.width < 2733"
+          v-if="$q.screen.width < 1600"
           alt="Claimguru"
           src="~assets/claimguru_icon.png"
           class="q-mt-auto q-mx-auto"
@@ -19,7 +19,7 @@
           height="95"
         />
         <img
-          v-if="$q.screen.width < 2733"
+          v-if="$q.screen.width < 1600"
           alt="Claimguru"
           src="~assets/claimguru_text.png"
           class="q-mx-auto q-mb-auto "
@@ -77,8 +77,8 @@
         </q-card>
         <div>
           <q-btn
-            :color="$q.screen.width < 2733 ? 'secondary' : 'white'"
-            :outline="$q.screen.width > 2733 ? true : false"
+            :color="$q.screen.width < 1600 ? 'secondary' : 'white'"
+            :outline="$q.screen.width > 1600 ? true : false"
             label="Login"
             type="submit"
             class="rounded full-width q-my-md"
@@ -86,7 +86,7 @@
         </div>
 
         <div
-          v-if="$q.screen.width > 2733"
+          v-if="$q.screen.width > 1600"
           class="row justify-center  cursor-pointer"
           @click="$router.push('/signup?plan=office')"
         >
@@ -97,7 +97,7 @@
           @click="$router.push('/forget-password')"
         >
           <a
-            :class="$q.screen.width < 2733 ? 'text-primary' : 'text-white'"
+            :class="$q.screen.width < 1600 ? 'text-primary' : 'text-white'"
             style="text-decoration: none"
             >Forgot Password</a
           >
