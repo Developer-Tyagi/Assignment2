@@ -141,7 +141,7 @@
             Address Details
           </div>
           <div
-            class="column q-ml-md"
+            class="col-7 q-ml-md"
             v-if="editSelectedClient.attributes.insuredInfo.mailingAddress"
           >
             <div>
