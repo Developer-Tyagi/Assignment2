@@ -28,7 +28,7 @@ build_review_image:
     - docker login -u _json_key --password-stdin https://${DOCKER_REGISTRY} < /tmp/key.json
     - docker push ${DOCKER_IMAGE}
   tags:
-    - pre-production
+    - pre-production-tls
   only:
     - merge_requests
 
@@ -101,7 +101,7 @@ build_master_image:
     - docker login -u _json_key --password-stdin https://${DOCKER_REGISTRY} < /tmp/key.json
     - docker push ${DOCKER_IMAGE}
   tags:
-    - pre-production
+    - pre-production-tls
   only:
     - master
 
