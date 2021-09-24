@@ -83,6 +83,7 @@
         {{ selectedVendor.email ? selectedVendor.email : '-' }}
       </div>
     </div>
+
     <div class="q-mt-sm row" v-if="selectedVendor.phoneNumber">
       <div class="heading-light q-mt-none col-xs-4 ">
         Company Number
@@ -100,7 +101,7 @@
         >{{ showPhoneNumber(selectedVendor.phoneNumber.number) }}</span
       >
     </div>
-    <div class="q-mt-sm row" v-if="selectedVendor.contact">
+    <div class="q-mt-sm row">
       <div class="heading-light q-mt-none col-xs-4 ">
         Contact Info
       </div>
@@ -131,7 +132,7 @@
       </div>
     </div>
 
-    <div class="row q-mt-sm" v-if="selectedVendor">
+    <div class="row q-mt-sm" v-if="selectedVendor.website">
       <span class="heading-light col-4"> Website: </span>
       <span class="q-ml-md col">
         {{ selectedVendor.website ? selectedVendor.website : '-' }}

@@ -33,7 +33,10 @@
               />
             </div>
 
-            <div class="row q-mt-sm">
+            <div
+              class="row q-mt-sm"
+              v-if="toCheckAddressData(personnel.address)"
+            >
               <div class="heading-light col-3">Address Details</div>
               <div class="col-7" v-if="personnel.address">
                 {{
@@ -88,7 +91,7 @@
                 {{ personnel.email ? personnel.email : '-' }}</span
               >
             </div>
-            <div class="row">
+            <div class="row" v-if="toCheckPhoneNumber(personnel.phoneNumber)">
               <div class="heading-light col-3">Phone Number</div>
               <div class="q-mt-xs col-6 q-ml-none">
                 <div class="row" v-for="phone in personnel.phoneNumber">
@@ -104,8 +107,7 @@
                 </div>
               </div>
             </div>
-
-            <div class="row q-mt-sm q-mb-sm">
+            <div class="row q-mt-sm q-mb-sm" v-if="personnel.note">
               <span class="heading-light col-3"> Notes: </span>
               <span class="q-ml-none col" v-if="personnel.note">
                 {{ personnel.note ? personnel.note : '-' }}</span
@@ -474,7 +476,11 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import CustomBar from 'components/CustomBar';
-import { toGetStateShortName } from '@utils/common';
+import {
+  toGetStateShortName,
+  toCheckAddressData,
+  toCheckPhoneNumber
+} from '@utils/common';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import {
   onEmailClick,
@@ -558,6 +564,8 @@ export default {
       'deleteMortgagePersonnel'
     ]),
     toGetStateShortName,
+    toCheckAddressData,
+    toCheckPhoneNumber,
 
     onEdit(index) {
       this.editPersonnelDialog = true;
