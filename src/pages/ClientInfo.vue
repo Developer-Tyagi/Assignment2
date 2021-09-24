@@ -15,7 +15,7 @@
       {{ dateWithTime(editSelectedClient.attributes.created) }}
     </div>
 
-    <q-card class="q-ma-xs form-card q-pa-md">
+    <q-card class="q-ma-xs  q-pa-md">
       <div class="client-list q-pa-sm">
         <div class="row">
           <div class="heading-light q-ml-sm q-mt-md col-xs-4 ">
@@ -141,7 +141,7 @@
             Address Details
           </div>
           <div
-            class="column q-ml-md"
+            class="col-7 q-ml-md"
             v-if="editSelectedClient.attributes.insuredInfo.mailingAddress"
           >
             <div>
@@ -227,7 +227,7 @@
         </div>
 
         <div class="q-mt-md row">
-          <div class="q-mt-none q-ml-sm col-xs-4 heading-light">
+          <div class="q-mt-none  col-xs-4 heading-light">
             Tenant Details
           </div>
           <div
@@ -287,7 +287,7 @@
 
         <div class="mobile-container-page-without-search form-height">
           <q-form ref="clientForm">
-            <q-card class="q-ma-xs form-card q-pa-md">
+            <q-card class="q-ma-xs q-pa-md">
               <q-select
                 dense
                 borderless
@@ -355,7 +355,7 @@
                 label="Last Name"
               />
             </q-card>
-            <q-card class="q-ma-xs form-card q-pa-md">
+            <q-card class="q-ma-xs q-pa-md">
               <div class="row">
                 <p class="q-mx-none q-my-auto">
                   Is Policy Holder An Organization ?
@@ -383,7 +383,7 @@
                 />
               </div>
             </q-card>
-            <q-card class="q-ma-xs form-card q-pa-md">
+            <q-card class="q-ma-xs q-pa-md">
               <div class="row justify-between">
                 <q-select
                   dense
@@ -430,7 +430,7 @@
                 ]"
               />
             </q-card>
-            <q-card class="q-ma-xs form-card q-pa-md">
+            <q-card class="q-ma-xs  q-pa-md">
               <div class="row">
                 <p class="q-mx-none q-ml-xs q-my-auto">
                   Is there a Co-insured?
@@ -528,7 +528,7 @@
                 />
               </div>
             </q-card>
-            <q-card class="q-ma-xs form-card q-pa-md">
+            <q-card class="q-ma-xs  q-pa-md">
               <div class="row">
                 <p class="q-mx-none q-ml-xs q-my-auto">
                   Add aditional phone number(s)
@@ -599,7 +599,7 @@
                 </div>
               </div>
             </q-card>
-            <q-card class="q-ma-xs form-card q-pa-md">
+            <q-card class="q-ma-xs q-pa-md">
               <span class="form-heading">Address Details</span>
 
               <AutoCompleteAddress
@@ -611,7 +611,7 @@
                 :value="false"
               />
             </q-card>
-            <q-card class="q-ma-xs form-card q-pa-md">
+            <q-card class="q-ma-xs q-pa-md">
               <div class="row">
                 <p class="q-mx-none q-ml-xs q-my-auto">Tenant Occupied</p>
                 <q-toggle

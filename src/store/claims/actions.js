@@ -1665,3 +1665,26 @@ export async function getSignedDocument({ commit, dispatch }, claimID) {
     });
   }
 }
+//API for Generating photoID assignment
+export async function generatePhotoIdAssignment({ dispatch, state }, id) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      `/claims/${id}/generate-photoid-assignment
+`
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Assignment push initiated successfully'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].detail
+    });
+    return false;
+  }
+}

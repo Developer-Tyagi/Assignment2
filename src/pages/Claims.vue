@@ -108,6 +108,37 @@
                       </div>
                     </div>
                   </div>
+
+                  <div v-if="photoIdKey.photoIdKeyPresent">
+                    <q-badge
+                      color="red"
+                      v-if="
+                        claim.uScopeAssignmentID === '' &&
+                          claim.isPhotoIDGenerated === false
+                      "
+                    >
+                      Assignment not generated, push it manually
+                      <q-icon
+                        name="warning"
+                        color="white"
+                        class="q-ml-xs"
+                      ></q-icon>
+                    </q-badge>
+                    <q-badge
+                      color="red"
+                      v-if="
+                        claim.uScopeAssignmentID === '' &&
+                          claim.isPhotoIDGenerated === null
+                      "
+                    >
+                      Assignment not generated, PLEASE WAIT
+                      <q-icon
+                        name="warning"
+                        color="white"
+                        class="q-ml-xs"
+                      ></q-icon>
+                    </q-badge>
+                  </div>
                 </div>
               </div>
             </div>
@@ -145,7 +176,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['claims', 'selectedClaimId']),
+    ...mapGetters(['claims', 'selectedClaimId', 'photoIdKey']),
     formatDate(value) {
       if (value) {
         return moment(String(value)).format('MM/DD/YYYY');
@@ -153,8 +184,9 @@ export default {
     }
   },
 
-  created() {
-    this.getClaims();
+  async created() {
+    await this.getPhotoIdKeys();
+    await this.getClaims();
     this.userRole = getCurrentUser().attributes.roles[0].machineValue;
   },
   methods: {
@@ -162,7 +194,8 @@ export default {
       'getClaims',
       'markClaimFavourite',
       'getSelectedClaim',
-      'markClaimUnFavourite'
+      'markClaimUnFavourite',
+      'getPhotoIdKeys'
     ]),
     ...mapMutations(['setSelectedClaimId']),
     dateToShow,

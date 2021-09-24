@@ -3,7 +3,7 @@
     <div class="q-pa-lg">
       <div class="flex column" style="height: 50vh">
         <img
-          v-if="$q.screen.width < 624"
+          v-if="$q.screen.width < 2733"
           alt="Claimguru"
           src="~assets/claimguru_icon.png"
           class="q-mt-auto q-mx-auto"
@@ -19,7 +19,7 @@
           height="95"
         />
         <img
-          v-if="$q.screen.width < 624"
+          v-if="$q.screen.width < 2733"
           alt="Claimguru"
           src="~assets/claimguru_text.png"
           class="q-mx-auto q-mb-auto"
@@ -53,8 +53,8 @@
       </q-form>
       <div>
         <q-btn
-          :color="$q.screen.width < 624 ? 'secondary' : 'white'"
-          :outline="$q.screen.width > 624 ? true : false"
+          :color="$q.screen.width < 2733 ? 'secondary' : 'white'"
+          :outline="$q.screen.width > 2733 ? true : false"
           label="Reset Password"
           class="rounded full-width q-my-md"
           @click="onSubmitClick"
@@ -63,7 +63,7 @@
       <div class="row justify-center">
         <a
           href
-          :class="$q.screen.width < 624 ? 'text-primary' : 'text-white'"
+          :class="$q.screen.width < 2733 ? 'text-primary' : 'text-white'"
           style="text-decoration: none"
           >LOGIN</a
         >

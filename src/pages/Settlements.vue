@@ -181,10 +181,12 @@
         />
         <div class="q-ma-sm mobile-container-page-without-search">
           <q-form ref="AddSettlementForm" class="form-height">
-            <q-card flat bordered>
+            <q-card flat bordered class="q-pa-sm">
               <q-select
                 v-model="description.id"
-                class="q-pa-md required"
+                class="full-width required input-style input-overlay"
+                borderless
+                dense
                 option-label="value"
                 option-value="id"
                 :options="settlementType"
@@ -235,7 +237,8 @@
                   type="number"
                   style="margin-left: auto; width: 50%"
                   prefix="$"
-                  class="input-extra-padding"
+                  borderless
+                  class="input-extra-padding input-style input-overlay"
                   @input="onChangeValueCalculation()"
                 />
               </div>
@@ -251,7 +254,8 @@
                   placeholder=""
                   style="margin-left: auto; width: 50%"
                   prefix="$"
-                  class="input-extra-padding"
+                  borderless
+                  class="input-extra-padding input-style input-overlay"
                   @input="onChangeValueCalculation(amounts.replacementCost)"
                 />
               </div>
@@ -266,7 +270,8 @@
                   placeholder=""
                   style="margin-left: auto; width: 50%"
                   prefix="$"
-                  class="input-extra-padding"
+                  borderless
+                  class="input-extra-padding input-style input-overlay"
                   @input="onChangeValueCalculation(amounts.replacementCost)"
                 />
               </div>
@@ -282,7 +287,7 @@
                   style="margin-left: auto; width: 50%; font-size: 19px"
                   prefix="$"
                   borderless
-                  class="q-py-sm"
+                  class="q-py-sm input-style input-overlay"
                   @input="onChangeValueCalculation()"
                 />
               </div>
@@ -297,7 +302,8 @@
                   type="number"
                   style="margin-left: auto; width: 50%"
                   prefix="$"
-                  class="input-extra-padding"
+                  borderless
+                  class="input-extra-padding input-style input-overlay"
                   @input="onChangeValueCalculation()"
                 />
               </div>
@@ -311,7 +317,8 @@
                   type="number"
                   style="margin-left: auto; width: 50%"
                   prefix="$"
-                  class="input-extra-padding"
+                  borderless
+                  class="input-extra-padding input-style input-overlay"
                   @input="onChangeValueCalculation()"
                 />
               </div>
@@ -327,7 +334,7 @@
                   type="number"
                   style="margin-left: auto; width: 50%; font-size: 19px"
                   prefix="$"
-                  class="q-py-sm"
+                  class="q-py-sm input-style input-overlay"
                   @input="onChangeValueCalculation()"
                 />
               </div>
@@ -342,7 +349,8 @@
                   type="number"
                   style="margin-left: auto; width: 50%"
                   prefix="$"
-                  class="input-extra-padding"
+                  borderless
+                  class="input-extra-padding input-style input-overlay"
                   @input="onChangeValueCalculation()"
                 />
               </div>
@@ -356,7 +364,8 @@
                   type="number"
                   style="margin-left: auto; width: 50%"
                   prefix="$"
-                  class="input-extra-padding"
+                  borderless
+                  class="input-extra-padding input-style input-overlay"
                   @input="onChangeValueCalculation()"
                 />
               </div>
@@ -371,16 +380,17 @@
                   type="number"
                   style="margin-left: auto; width: 50%; font-size: 19px"
                   prefix="$"
-                  class="q-py-sm"
+                  class="q-py-sm input-style input-overlay"
                   borderless
                 />
               </div>
             </q-card>
-            <q-card flat bordered class="q-mt-md">
+            <q-card flat bordered class="q-mt-md q-pa-sm">
               <q-input
                 v-model="offeredDate"
-                class="q-px-lg q-my-sm"
+                class=" input-style full-width input-overlay"
                 mask="##/##/####"
+                borderless
                 label="Date Offered"
                 lazy-rules
                 @input="closeTimeDialog()"
@@ -408,7 +418,8 @@
               </q-input>
               <q-input
                 v-model="paymentExpDate"
-                class="q-px-lg q-my-sm"
+                class="input-style input-overlay full-width"
+                borderless
                 mask="##/##/####"
                 label="Payment Expected Date"
                 lazy-rules
@@ -436,22 +447,25 @@
                 </template>
               </q-input>
 
-              <div class="row q-px-lg q-py-sm justify-between">
-                <div class="q-mt-sm text-bold">Pol required</div>
-                <div>
+              <div class="row justify-between">
+                <div class="q-mt-sm q-ml-xs text-bold">Pol required</div>
+                <div class="q-pl-auto">
                   <q-toggle v-model="isProofOfLossReq" />
                 </div>
               </div>
               <div v-if="isProofOfLossReq">
-                <div class="row q-mt-md q-px-lg justify-between">
+                <div class="row q-mt-md q-px-xs justify-between">
                   <div class="col-5">Pol Date requested</div>
                   <div class="col-5">Pol Date Due</div>
                 </div>
-                <div class="row q-px-lg justify-between">
+                <div class="row q-px-xs justify-between">
                   <div class="col-5">
                     <q-input
                       v-model="proofOfLossInfo.reqDate"
                       mask="##/##/####"
+                      class="input-style input-overlay"
+                      dense
+                      borderless
                       label="Pol Date requested"
                       lazy-rules
                       @input="closeTimeDialog"
@@ -483,6 +497,9 @@
                     <q-input
                       v-model="proofOfLossInfo.dueDate"
                       mask="##/##/####"
+                      class="input-style input-overlay"
+                      borderless
+                      dense
                       label="Pol Date Due"
                       lazy-rules
                       @input="closeTimeDialog"
@@ -510,17 +527,20 @@
                     </q-input>
                   </div>
                 </div>
-                <div class="row q-px-lg q-mt-sm justify-between">
+                <div class="row q-px-xs q-mt-sm justify-between">
                   <div class="col-5">Date send to client</div>
                   <div class="col-5">Date Rec'd from Client</div>
                 </div>
-                <div class="row q-px-lg justify-between">
+                <div class="row q-px-xs justify-between">
                   <div class="col-5">
                     <q-input
                       v-model="proofOfLossInfo.sentClientDate"
                       mask="##/##/####"
                       label="Date send to client"
                       lazy-rules
+                      class="input-style input-overlay"
+                      borderless
+                      dense
                       @input="closeTimeDialog"
                     >
                       <template v-slot:append>
@@ -552,6 +572,9 @@
                       mask="##/##/####"
                       label="Date Rec'd from Client"
                       lazy-rules
+                      class="input-style input-overlay"
+                      borderless
+                      dense
                       @input="closeTimeDialog"
                     >
                       <template v-slot:append>
@@ -577,17 +600,20 @@
                     </q-input>
                   </div>
                 </div>
-                <div class="row q-px-lg q-mt-sm justify-between">
+                <div class="row q-px-xs q-mt-sm justify-between">
                   <div class="col-5">Pol Date Send to Carrier</div>
                   <div class="col-5">Date Responce Rec'd</div>
                 </div>
-                <div class="row q-px-lg justify-between">
+                <div class="row q-px-xs justify-between">
                   <div class="col-5">
                     <q-input
                       v-model="proofOfLossInfo.sentCarrierDate"
                       mask="##/##/####"
                       label="Pol Date Send to Carrier"
                       lazy-rules
+                      class="input-style input-overlay"
+                      borderless
+                      dense
                       @input="closeTimeDialog"
                     >
                       <template v-slot:append>
@@ -618,6 +644,9 @@
                       mask="##/##/####"
                       label="Date Responce Rec'd"
                       lazy-rules
+                      class="input-style input-overlay"
+                      borderless
+                      dense
                       @input="closeTimeDialog"
                     >
                       <template v-slot:append>
@@ -645,12 +674,14 @@
                 </div>
               </div>
 
-              <div class="floating-label q-px-md">
-                <textarea
+              <div class="floating-label q-px-xs">
+                <q-input
+                  type="textarea"
                   v-model="notes"
                   rows="5"
                   placeholder=" Additional Notes"
-                  class="full-width"
+                  class="input-style input-overlay"
+                  borderless
                   style="resize: none"
                 />
               </div>

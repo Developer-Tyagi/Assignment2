@@ -72,22 +72,27 @@
           <q-form ref="activityLogForm" class="form-height">
             <q-input
               v-model="title"
-              class="full-width required"
+              class="full-width required input-style input-overlay"
               label="Title"
+              dense
+              borderless
               :rules="[
                 val => (val && val.length > 0) || 'Please fill the title    '
               ]"
             />
             <q-input
               v-model="details"
-              class="full-width"
+              class="full-width input-style input-overlay"
+              borderless
               label="Details"
             /><br />
-            <span class="form-heading">Notes</span>
+            <span class="form-heading q-ml-xs">Notes</span>
             <div class="floating-label">
-              <textarea
+              <q-input
+                type="textarea"
                 rows="5"
-                class="full-width"
+                borderless
+                class="full-width input-style input-overlay"
                 v-model="notes"
                 style="resize: none"
               />
@@ -146,10 +151,12 @@
               :disable="isFieldDisable"
             /><br />
             <span class="heading-light q-pt-sm"> Additional Notes</span>
-            <div class="floating-label">
-              <textarea
+            <div class="floating-label q-pa-sm">
+              <q-input
                 rows="5"
-                class="full-width"
+                type="textarea"
+                class="input-style input-overlay"
+                borderless
                 v-model="edit.notes"
                 style="resize: none"
               />

@@ -479,3 +479,21 @@ export async function editUserProfile({ dispatch, state }, user) {
     });
   }
 }
+
+// API for getting Photo Id Keys
+export async function getPhotoIdKeys({ commit, dispatch }) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get('/organizations/photoid');
+    commit('setPhotoIdKeys', data);
+    dispatch('setLoading', false);
+    return data;
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+  }
+}
