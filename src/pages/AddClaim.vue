@@ -723,6 +723,7 @@ export default {
 
   data() {
     return {
+      // currentLocation:'',
       finalOfficeTask: [],
       mortgageInfo: [
         {
@@ -1084,6 +1085,9 @@ export default {
   },
 
   created() {
+    // this.currentLocation=window.location.pathname.substring(11)
+    // this.alreadyExistClient();
+    // console.log(this.alreadyExistClient(this.currentLocation))
     this.propertyId = this.$route.params.clientId;
     this.getVendorIndustries();
     //TODO
@@ -1169,7 +1173,8 @@ export default {
     ...mapMutations([
       'setSelectedLeadOffline',
       'setSelectedLeadOnline',
-      'isLastRouteEdit'
+      'isLastRouteEdit',
+      'alreadyExistClient'
     ]),
     onDamageOsToggleButtonOff() {
       if (!this.lossInfo.isDamageOSToggle) {
@@ -1649,7 +1654,7 @@ export default {
         }
       }
       var response = await this.addClaim(payload);
-
+      console.log(response, 222);
       if (response && response.id) {
         if (
           this.officeTask.officeActionRequired &&

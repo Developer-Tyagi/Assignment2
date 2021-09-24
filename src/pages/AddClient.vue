@@ -348,8 +348,7 @@
                       lazy-rules
                       :rules="[
                         val =>
-                          (val && val.length == 14) ||
-                          'Please enter the phone number'
+                          toCheckLength(val) || 'Please enter the phone number'
                       ]"
                       :disable="isOfflineClientEdit"
                     />
@@ -364,7 +363,7 @@
                     lazy-rules
                     :rules="[
                       val =>
-                        validateEmail(val) ||
+                        toCheckEmailLength(val) ||
                         'You have entered an invalid email address!'
                     ]"
                     label="Email"
@@ -2330,7 +2329,20 @@ export default {
       'setSelectedEditClient',
       'setEditOfflineClientIcon'
     ]),
-
+    toCheckLength(val) {
+      if (val.length == 0) return true;
+      else {
+        if (sendPhoneNumber(val).length == 10) return true;
+        else return false;
+      }
+    },
+    toCheckEmailLength(val) {
+      if (val.length == 0) return true;
+      else {
+        if (validateEmail(val)) return true;
+        else return false;
+      }
+    },
     successMessage,
     dateToShow,
     dateToShowWithTime,
