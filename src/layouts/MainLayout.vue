@@ -86,7 +86,7 @@ export default {
       this.userRole = getCurrentUser().attributes.roles[0].machineValue;
       const route = this.$router.currentRoute.fullPath.split('/')[1];
       if (
-        route == 'leads-dashboard' ||
+        route == 'leads' ||
         route == 'clients' ||
         route == 'vendors' ||
         route == 'admin' ||
