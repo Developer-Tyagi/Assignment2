@@ -1213,7 +1213,8 @@ import {
   validateEmail,
   validateDate,
   validateTime,
-  successMessage
+  successMessage,
+  errorMessage
 } from '@utils/validation';
 import { constants } from '@utils/constant';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
@@ -2344,6 +2345,7 @@ export default {
       }
     },
     successMessage,
+    errorMessage,
     dateToShow,
     dateToShowWithTime,
     sendPhoneNumber,
@@ -2693,8 +2695,15 @@ export default {
 
       if (!this.editSelectedClient.id) {
         var response = await this.addClient(payload.data);
+        if (response.id)
+          this.successMessage(constants.successMessages.CLIENT_CLAIM_CREATED);
+        else this.errorMessage(constants.successMessages.CLIENT_CLAIM_FAILED);
       } else {
         var response = await this.editClientLocal(payload);
+        if (response.id) {
+          this.successMessage(constants.successMessages.CLIENT_INFO);
+        } else
+          this.successMessage(constants.successMessages.CLIENT_INFO_FAILED);
       }
 
       this.clientResponse = response;

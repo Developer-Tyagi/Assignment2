@@ -689,7 +689,8 @@ import {
   validateEmail,
   validateDate,
   validateTime,
-  successMessage
+  successMessage,
+  errorMessage
 } from '@utils/validation';
 import { constants } from '@utils/constant';
 import { dateToSend, dateToShow } from '@utils/date';
@@ -1654,7 +1655,7 @@ export default {
         }
       }
       var response = await this.addClaim(payload);
-      console.log(response, 222);
+
       if (response && response.id) {
         if (
           this.officeTask.officeActionRequired &&
@@ -1671,7 +1672,11 @@ export default {
       } else {
         this.setSelectedLeadOffline();
       }
-      this.successMessage(constants.successMessages.CLAIM);
+      if (response.id) {
+        this.successMessage(constants.successMessages.CLAIM);
+      } else {
+        this.errorMessage(constants.successMessages.CLAIM_FAILED);
+      }
       this.isLastRouteEdit(true);
       this.$router.push('/view-client/' + this.selectedClientId);
     },
@@ -1739,7 +1744,8 @@ export default {
     },
 
     validateEmail,
-    successMessage
+    successMessage,
+    errorMessage
   }
 };
 </script>
