@@ -365,14 +365,19 @@ export default {
   },
   created() {
     this.getClaims();
+    this.getTemplates();
+    this.getAllTemplate();
   },
   methods: {
     ...mapActions([
       'getClients',
       'getActiveLeadsList',
       'getClaims',
-      'getArchivedLeadsList'
+      'getArchivedLeadsList',
+      'getTemplates',
+      'getAllTemplate'
     ]),
+    ...mapMutations(['setSelectedClaimId']),
     onClickAddUpIcon() {
       this.openDialog = true;
     },

@@ -21,6 +21,7 @@
         lazy-rules
         :rules="[val => (val && val.length > 0) || 'Please fill the template']"
       />
+
       <div class="full-width column items-center q-mb-md ">
         <q-btn
           v-if="templatetype.value"
@@ -678,7 +679,8 @@ export default {
       'claimRoles',
       'allUsers',
       'templateOptions',
-      'actors'
+      'actors',
+      'templates'
     ])
   },
 
@@ -1161,36 +1163,57 @@ export default {
       this.templatetype.machineValue = obj.machineValue;
     },
     async onClickGenerateDocument() {
-      const payload = {
-        claimID: this.selectedClaimId,
-        data: {
-          template: this.templatetype.machineValue
+      if (this.isOnline) {
+        const payload = {
+          claimID: this.selectedClaimId,
+          data: {
+            template: this.templatetype.machineValue
+          }
+        };
+        const response = await this.generateClaimDoc(payload);
+
+        const { data } = await request.get(
+          `/documents?parent_id=${response.attributes.parentID}`
+        );
+
+        this.setLoading(true);
+        if (this.allFolder) {
+          this.allFolderId = document.id;
         }
-      };
-      const response = await this.generateClaimDoc(payload);
+        this.documents = data.map(document => ({
+          name: document.attributes.name,
+          id: document.id,
+          type: document.attributes.mimeType,
+          link: document.attributes.webViewLink,
+          properties: document.attributes.properties
+        }));
 
-      const { data } = await request.get(
-        `/documents?parent_id=${response.attributes.parentID}`
-      );
+        this.depth.push({ name: document.name, id: document.id });
+        const length = this.depth.length;
 
-      this.setLoading(true);
-      if (this.allFolder) {
-        this.allFolderId = document.id;
+        this.currentPath = length;
+        this.depth[this.currentPath - 1].name =
+          response.attributes.directoryName;
+        this.setLoading(false);
+      } else {
+        this.convertHtmlToPdf(this.templates[0].name.value);
       }
-      this.documents = data.map(document => ({
-        name: document.attributes.name,
-        id: document.id,
-        type: document.attributes.mimeType,
-        link: document.attributes.webViewLink,
-        properties: document.attributes.properties
-      }));
+    },
+    convertHtmlToPdf(value) {
+      console.log(this.templates[0].name.value, 'ss');
+      var demo = this.templates[0].name.value;
+      var doc = new jsPDF();
 
-      this.depth.push({ name: document.name, id: document.id });
-      const length = this.depth.length;
-
-      this.currentPath = length;
-      this.depth[this.currentPath - 1].name = response.attributes.directoryName;
-      this.setLoading(false);
+      // doc.html(demo, 15, 15);
+      doc.html(demo, {
+        callback: function(doc) {
+          const respone = doc.save();
+          console.log(respone, 'res');
+        },
+        x: 10,
+        y: 10
+      });
+      // doc.save('sample-page.pdf');
     },
     onClickAddEmail() {
       this.emails.push({ email: '', type: 'external', name: '' });
