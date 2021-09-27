@@ -362,9 +362,17 @@ export default {
   },
   created() {
     this.getClaims();
+    this.getTemplates();
+    this.getAllTemplate();
   },
   methods: {
-    ...mapActions(['getClients', 'getActiveLeadsList', 'getClaims']),
+    ...mapActions([
+      'getClients',
+      'getActiveLeadsList',
+      'getClaims',
+      'getTemplates',
+      'getAllTemplate'
+    ]),
     ...mapMutations(['setSelectedClaimId']),
     onClickAddUpIcon() {
       this.openDialog = true;

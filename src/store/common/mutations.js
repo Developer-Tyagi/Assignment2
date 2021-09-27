@@ -122,9 +122,9 @@ export function setPermissions(state, permission) {
 }
 
 export function setAllTemplate(state, templates) {
+  console.log(templates);
   state.templates = templates.map(type => ({
     name: type.attributes,
-
     id: type.id
   }));
 }

@@ -405,6 +405,12 @@ const routes = [
         component: () => import('src/pages/mortgage/MortgageDetails.vue')
       },
       {
+        path: 'offline-claim',
+        name: 'offline-claim',
+        caseSensitive: true,
+        component: () => import('src/pages/OfflineClaimTemplate.vue')
+      },
+      {
         path: 'mortgage-company-info/:id',
         name: 'mortgage info',
         caseSensitive: true,
