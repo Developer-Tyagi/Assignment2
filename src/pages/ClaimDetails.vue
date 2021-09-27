@@ -299,8 +299,8 @@
           </div>
           <div
             v-if="
-              !getSelectedClaim.uScopeAssignmentID &&
-                !getSelectedClaim.isPhotoIDGenerated
+              getSelectedClaim.uScopeAssignmentID === '' &&
+                getSelectedClaim.isPhotoIDGenerated === false
             "
             class="q-pa-md heading-light"
             @click="onManuallyPushAssignmentClick"
