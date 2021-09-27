@@ -337,50 +337,54 @@
             <q-card>
               <div class="text-center q-mt-lg text-bold">Users</div>
               <q-separator class="bg-primary" />
-              <div
-                v-for="user in allUsers"
-                :key="user.id"
-                class="q-ml-xs q-pt-sm"
-              >
-                <div class="row">
-                  <q-radio
-                    @input="setUsersName(user.name)"
-                    v-model="assignFilter"
-                    :val="user.name"
-                    dense
-                    size="xs"
-                    class="q-mb-xs"
-                  />
-                  <div class="q-pt-none">
-                    <span class="q-ml-sm q-mt-xs"> {{ user.name }}</span>
+              <q-scroll-area style="height:30vh">
+                <div
+                  v-for="user in allUsers"
+                  :key="user.id"
+                  class="q-ml-xs q-pt-sm"
+                >
+                  <div class="row">
+                    <q-radio
+                      @input="setUsersName(user.name)"
+                      v-model="assignFilter"
+                      :val="user.name"
+                      dense
+                      size="xs"
+                      class="q-mb-xs"
+                    />
+                    <div class="q-pt-none">
+                      <span class="q-ml-sm q-mt-xs"> {{ user.name }}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </q-scroll-area>
             </q-card>
           </div>
           <div class="q-ma-lg">
             <q-card>
               <div class="text-center q-mt-lg text-bold">Roles</div>
               <q-separator class="bg-primary" />
-              <div
-                v-for="filter in claimRoles"
-                :key="filter.id"
-                class="q-ml-xs q-pt-sm"
-              >
-                <div class="row">
-                  <q-radio
-                    @input="setFilterName(filter.name)"
-                    v-model="assignFilter"
-                    :val="filter.name"
-                    dense
-                    size="xs"
-                    class="q-mb-xs"
-                  />
-                  <div class="q-pt-none">
-                    <span class="q-ml-sm q-mt-xs"> {{ filter.name }}</span>
+              <q-scroll-area style="height:30vh">
+                <div
+                  v-for="filter in claimRoles"
+                  :key="filter.id"
+                  class="q-ml-xs q-pt-sm"
+                >
+                  <div class="row">
+                    <q-radio
+                      @input="setFilterName(filter.name)"
+                      v-model="assignFilter"
+                      :val="filter.name"
+                      dense
+                      size="xs"
+                      class="q-mb-xs"
+                    />
+                    <div class="q-pt-none">
+                      <span class="q-ml-sm q-mt-xs"> {{ filter.name }}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </q-scroll-area>
             </q-card>
           </div>
           <q-footer class="bg-white q-mb-md">
