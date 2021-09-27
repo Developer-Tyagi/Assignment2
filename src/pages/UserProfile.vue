@@ -385,6 +385,7 @@ export default {
         this.users.email = this.user.email;
         this.users.mailingAddress = this.user.mailingAddress;
       }
+      window.location.reload();
     }
   }
 };

@@ -73,24 +73,24 @@ spec:
     project: claimguru
 ---
 # Virtual Service
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: ui
-  labels:
-    name: ui
-    project: claimguru
-    version: 'IMAGE_TAG'
-    gitlab-job-id: 'CI_JOB_ID'
-spec:
-  hosts:
-    - app.claimguru.com
-  gateways:
-    - istio-system/claimguru-gateway
-  http:
-    - match:
-        - uri:
-            prefix: '/'
-      route:
-        - destination:
-            host: ui
+# apiVersion: networking.istio.io/v1alpha3
+# kind: VirtualService
+# metadata:
+#   name: ui
+#   labels:
+#     name: ui
+#     project: claimguru
+#     version: 'IMAGE_TAG'
+#     gitlab-job-id: 'CI_JOB_ID'
+# spec:
+#   hosts:
+#     - app.claimguru.com
+#   gateways:
+#     - istio-system/claimguru-gateway
+#   http:
+#     - match:
+#         - uri:
+#             prefix: '/'
+#       route:
+#         - destination:
+#             host: ui
