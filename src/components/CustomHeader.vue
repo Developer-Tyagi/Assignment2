@@ -212,7 +212,7 @@ export default {
       user: {
         name: ''
       },
-      isLeftSidePanelOpen: true,
+      isLeftSidePanelOpen: false,
       intViewportWidth: 0,
       linksData: [
         {
@@ -428,8 +428,8 @@ export default {
       await this.getAccess();
       this.createSidebarMenuItems();
     }
-    if (this.$q.screen.width < 2733) {
-      this.isLeftSidePanelOpen = false;
+    if (this.$q.screen.width > 1600) {
+      this.isLeftSidePanelOpen = true;
     }
   }
 };
