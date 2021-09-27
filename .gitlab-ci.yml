@@ -14,7 +14,8 @@ build_review_image:
   stage: build
   image: us-west1-docker.pkg.dev/pre-prod-286801/cilalabs/common-utils/git-sops
   services:
-    - docker:18.09.9-dind
+    - name: docker:18.09.9-dind
+      command: ["--mtu=1460"]
   variables:
     GOOGLE_APPLICATION_CREDENTIALS: /tmp/key.json
     SOPS_KMS: projects/pre-prod-286801/locations/global/keyRings/sops/cryptoKeys/sops-key
@@ -28,7 +29,7 @@ build_review_image:
     - docker login -u _json_key --password-stdin https://${DOCKER_REGISTRY} < /tmp/key.json
     - docker push ${DOCKER_IMAGE}
   tags:
-    - pre-production-tls
+    - pre-production
   only:
     - merge_requests
 
@@ -87,7 +88,8 @@ build_master_image:
   stage: build
   image: us-west1-docker.pkg.dev/pre-prod-286801/cilalabs/common-utils/git-sops
   services:
-    - docker:18.09.9-dind
+    - name: docker:18.09.9-dind
+      command: ["--mtu=1460"]
   variables:
     GOOGLE_APPLICATION_CREDENTIALS: /tmp/key.json
     SOPS_KMS: projects/pre-prod-286801/locations/global/keyRings/sops/cryptoKeys/sops-key
@@ -101,7 +103,7 @@ build_master_image:
     - docker login -u _json_key --password-stdin https://${DOCKER_REGISTRY} < /tmp/key.json
     - docker push ${DOCKER_IMAGE}
   tags:
-    - pre-production-tls
+    - pre-production
   only:
     - master
 
@@ -136,7 +138,8 @@ build_demo_image:
   stage: build
   image: us-west1-docker.pkg.dev/pre-prod-286801/cilalabs/common-utils/git-sops
   services:
-    - docker:18.09.9-dind
+    - name: docker:18.09.9-dind
+      command: ["--mtu=1460"]
   variables:
     GOOGLE_APPLICATION_CREDENTIALS: /tmp/key.json
     SOPS_KMS: projects/pre-prod-286801/locations/global/keyRings/sops/cryptoKeys/sops-key
@@ -187,7 +190,8 @@ build_tag_image:
   stage: build
   image: us-west1-docker.pkg.dev/claimguru-97138/claimguru/common-utils/git-sops
   services:
-    - docker:18.09.9-dind
+    - name: docker:18.09.9-dind
+      command: ["--mtu=1460"]
   variables:
     GOOGLE_APPLICATION_CREDENTIALS: /tmp/key.json
     SOPS_KMS: projects/claimguru-97138/locations/global/keyRings/sops/cryptoKeys/sops-key
