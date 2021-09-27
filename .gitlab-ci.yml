@@ -15,7 +15,7 @@ build_review_image:
   image: us-west1-docker.pkg.dev/pre-prod-286801/cilalabs/common-utils/git-sops
   services:
     - name: docker:18.09.9-dind
-      command: ["--mtu=1460"]
+      command: ['--mtu=1460']
   variables:
     GOOGLE_APPLICATION_CREDENTIALS: /tmp/key.json
     SOPS_KMS: projects/pre-prod-286801/locations/global/keyRings/sops/cryptoKeys/sops-key
@@ -89,7 +89,7 @@ build_master_image:
   image: us-west1-docker.pkg.dev/pre-prod-286801/cilalabs/common-utils/git-sops
   services:
     - name: docker:18.09.9-dind
-      command: ["--mtu=1460"]
+      command: ['--mtu=1460']
   variables:
     GOOGLE_APPLICATION_CREDENTIALS: /tmp/key.json
     SOPS_KMS: projects/pre-prod-286801/locations/global/keyRings/sops/cryptoKeys/sops-key
@@ -139,7 +139,7 @@ build_demo_image:
   image: us-west1-docker.pkg.dev/pre-prod-286801/cilalabs/common-utils/git-sops
   services:
     - name: docker:18.09.9-dind
-      command: ["--mtu=1460"]
+      command: ['--mtu=1460']
   variables:
     GOOGLE_APPLICATION_CREDENTIALS: /tmp/key.json
     SOPS_KMS: projects/pre-prod-286801/locations/global/keyRings/sops/cryptoKeys/sops-key
@@ -191,7 +191,7 @@ build_tag_image:
   image: us-west1-docker.pkg.dev/claimguru-97138/claimguru/common-utils/git-sops
   services:
     - name: docker:18.09.9-dind
-      command: ["--mtu=1460"]
+      command: ['--mtu=1460']
   variables:
     GOOGLE_APPLICATION_CREDENTIALS: /tmp/key.json
     SOPS_KMS: projects/claimguru-97138/locations/global/keyRings/sops/cryptoKeys/sops-key
