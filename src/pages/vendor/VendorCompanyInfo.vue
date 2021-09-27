@@ -101,7 +101,7 @@
         >{{ showPhoneNumber(selectedVendor.phoneNumber.number) }}</span
       >
     </div>
-    <div class="q-mt-sm row">
+    <div class="q-mt-sm row" v-if="selectedVendor.contact">
       <div class="heading-light q-mt-none col-xs-4 ">
         Contact Info
       </div>
