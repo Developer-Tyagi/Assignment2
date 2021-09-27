@@ -269,15 +269,7 @@
         <div class="text-center text-white">ADD</div>
       </div>
     </div>
-    <q-dialog
-      v-model="openDialog"
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-      :position="'bottom'"
-    >
-      <AddOptions />
-    </q-dialog>
+
     <!-- Select Claim Dialog -->
     <q-dialog
       v-model="selectClaimDialog"
@@ -338,18 +330,18 @@
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { dateToShow } from '@utils/date';
-import AddOptions from 'components/AddOptions';
+
 import CustomBar from 'components/CustomBar';
 import { getAuth, generateEmailVerificationLink } from 'firebase/auth';
 import 'firebase/auth';
 import firebase from 'firebase/app';
 export default {
-  components: { CustomBar, AddOptions },
+  components: { CustomBar },
   data() {
     return {
       selectClaimDialog: false,
       isClickable: false,
-      openDialog: false,
+
       params: {
         favourite: ''
       }
