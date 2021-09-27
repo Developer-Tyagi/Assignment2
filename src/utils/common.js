@@ -25,13 +25,3 @@ export function toCheckAddressData(address) {
     return false;
   } else return true;
 }
-export function toCheckPhoneNumber(phoneData) {
-  var phoneNumberRepetation = phoneData.length;
-  for (let i = 0; i < phoneData.length; i++) {
-    if (!phoneData[i].number) {
-      phoneNumberRepetation--;
-    }
-  }
-  if (phoneNumberRepetation == 0) return false;
-  else return true;
-}

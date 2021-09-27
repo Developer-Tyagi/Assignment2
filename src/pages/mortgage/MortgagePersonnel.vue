@@ -91,7 +91,8 @@
                 {{ personnel.email ? personnel.email : '-' }}</span
               >
             </div>
-            <div class="row" v-if="toCheckPhoneNumber(personnel.phoneNumber)">
+
+            <div class="row" v-if="personnel.phoneNumber[0].number">
               <div class="heading-light col-3">Phone Number</div>
               <div class="q-mt-xs col-6 q-ml-none">
                 <div class="row" v-for="phone in personnel.phoneNumber">
@@ -199,7 +200,6 @@
                 ]"
               />
               <q-input
-                dense
                 v-model="personnel.departmentName"
                 class="required input-style input-overlay"
                 borderless
@@ -236,7 +236,6 @@
                   v-if="index >= 0"
                 >
                   <q-select
-                    dense
                     v-model="personnel.phoneNumber[index].type"
                     class="col-5  input-style input-overlay"
                     borderless
@@ -249,7 +248,6 @@
                     emit-value
                   />
                   <q-input
-                    dense
                     v-model.number="personnel.phoneNumber[index].number"
                     label="Phone"
                     class="col-6  input-style input-overlay"
@@ -395,7 +393,6 @@
                   v-if="index >= 0"
                 >
                   <q-select
-                    dense
                     v-model="personnel.phoneNumber[index].type"
                     label="Type"
                     class="col-5 input-style input-overlay"
@@ -408,7 +405,6 @@
                     emit-value
                   />
                   <q-input
-                    dense
                     v-model.number="personnel.phoneNumber[index].number"
                     class="col-6 input-style input-overlay"
                     borderless
@@ -476,11 +472,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import CustomBar from 'components/CustomBar';
-import {
-  toGetStateShortName,
-  toCheckAddressData,
-  toCheckPhoneNumber
-} from '@utils/common';
+import { toGetStateShortName, toCheckAddressData } from '@utils/common';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import {
   onEmailClick,
@@ -565,7 +557,6 @@ export default {
     ]),
     toGetStateShortName,
     toCheckAddressData,
-    toCheckPhoneNumber,
 
     onEdit(index) {
       this.editPersonnelDialog = true;

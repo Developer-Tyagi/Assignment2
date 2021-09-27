@@ -85,7 +85,7 @@
                 {{ personnel.email ? personnel.email : '-' }}</span
               >
             </div>
-            <div class="row" v-if="toCheckPhoneNumber(personnel.phoneNumber)">
+            <div class="row" v-if="personnel.phoneNumber[0].number">
               <div class="heading-light col-3">Phone Number</div>
               <div class=" col-6 q-ml-none">
                 <div class="row" v-for="phone in personnel.phoneNumber">
@@ -340,11 +340,7 @@
 import { mapGetters, mapActions } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
-import {
-  toGetStateShortName,
-  toCheckAddressData,
-  toCheckPhoneNumber
-} from '@utils/common';
+import { toGetStateShortName, toCheckAddressData } from '@utils/common';
 import AddCarrierPersonnel from 'components/AddCarrierPersonnel';
 import {
   onEmailClick,
@@ -437,7 +433,6 @@ export default {
     ]),
     toGetStateShortName,
     toCheckAddressData,
-    toCheckPhoneNumber,
     onEdit(index) {
       this.editPersonnelDialog = true;
       this.getContactTypes();
