@@ -19,6 +19,7 @@
             q-pt-sm
             justify-between
           "
+          @click="onClickNewLead"
           style="
             border-top-left-radius: 16px;
             border-top-right-radius: 16px;
@@ -29,7 +30,7 @@
         >
           <div class="col-6 self-center q-mb-md">
             <q-icon class="gridIcon">
-              <q-img src="~assets/LEADS.svg" @click="$router.push('/leads')" />
+              <q-img src="~assets/LEADS.svg" />
             </q-icon>
           </div>
 
@@ -54,6 +55,7 @@
             q-pt-sm
             justify-between
           "
+          @click="$router.push('/clients')"
           style="
             border-top-left-radius: 16px;
             border-top-right-radius: 16px;
@@ -64,10 +66,7 @@
         >
           <div class="col-6 self-center q-mb-md">
             <q-icon class="gridIcon">
-              <q-img
-                src="~assets/Clients_dashboard.svg"
-                @click="$router.push('/clients')"
-              />
+              <q-img src="~assets/Clients_dashboard.svg" />
             </q-icon>
           </div>
 
@@ -94,6 +93,7 @@
             q-pt-sm
             justify-between
           "
+          @click="$router.push('/vendors')"
           style="
             border-top-left-radius: 16px;
             border-top-right-radius: 16px;
@@ -104,10 +104,7 @@
         >
           <div class="col-6 self-center q-mb-md">
             <q-icon class="gridIcon">
-              <q-img
-                src="~assets/VENDOR.svg"
-                @click="$router.push('/vendors')"
-              />
+              <q-img src="~assets/VENDOR.svg" />
             </q-icon>
           </div>
           <div
@@ -131,6 +128,7 @@
             q-pt-sm
             justify-between
           "
+          @click="$router.push('/claims')"
           style="
             border-top-left-radius: 16px;
             border-top-right-radius: 16px;
@@ -141,10 +139,7 @@
         >
           <div class="col-6 self-center q-mb-md">
             <q-icon class="gridIcon">
-              <q-img
-                src="~assets/CLAIMS.svg"
-                @click="$router.push('/claims')"
-              />
+              <q-img src="~assets/CLAIMS.svg" />
             </q-icon>
           </div>
           <div
@@ -170,6 +165,7 @@
             q-pt-sm
             justify-between
           "
+          @click="selectClaimDialog = true"
           style="
             border-top-left-radius: 16px;
             border-top-right-radius: 16px;
@@ -180,10 +176,7 @@
         >
           <div class="col-6 self-center q-mb-md">
             <q-icon class="gridIcon">
-              <q-img
-                src="~assets/scan_dashboard.svg"
-                @click="selectClaimDialog = true"
-              />
+              <q-img src="~assets/scan_dashboard.svg" />
             </q-icon>
           </div>
           <div
@@ -209,6 +202,7 @@
             q-pt-sm
             justify-between
           "
+          @click="$router.push('/clients')"
           style="
             border-top-left-radius: 16px;
             border-top-right-radius: 16px;
@@ -217,12 +211,17 @@
             box-shadow: 0px 3px 5px rgba(0, 0, 0, 1);
           "
         >
-          <div class="col-5 self-center q-mb-md q-pa-sm">
-            <q-icon class="gridIcon">
-              <q-img
-                src="~assets/camera_dashboard.svg"
-                @click="$router.push('/clients')"
-              />
+          <div
+            :class="[
+              'col-5',
+              'self-center',
+              'q-mb-md',
+              'q-pa-sm',
+              $q.screen.gt.md ? 'q-mt-xs' : 'q-mt-sm'
+            ]"
+          >
+            <q-icon class="gridIcon" size="7vh">
+              <q-img src="~assets/camera_dashboard.svg" />
             </q-icon>
           </div>
           <div
@@ -266,23 +265,11 @@
         <div class="text-center text-white">CLAIMS STATS</div>
       </div>
       <div class="column">
-        <img
-          src="~assets/dashboardAdd.svg"
-          style="width: 100%"
-          @click="onClickAddUpIcon()"
-        />
+        <img src="~assets/dashboardAdd.svg" style="width: 100%" />
         <div class="text-center text-white">ADD</div>
       </div>
     </div>
-    <q-dialog
-      v-model="openDialog"
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-      :position="'bottom'"
-    >
-      <AddOptions />
-    </q-dialog>
+
     <!-- Select Claim Dialog -->
     <q-dialog
       v-model="selectClaimDialog"
@@ -343,18 +330,18 @@
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { dateToShow } from '@utils/date';
-import AddOptions from 'components/AddOptions';
+
 import CustomBar from 'components/CustomBar';
 import { getAuth, generateEmailVerificationLink } from 'firebase/auth';
 import 'firebase/auth';
 import firebase from 'firebase/app';
 export default {
-  components: { CustomBar, AddOptions },
+  components: { CustomBar },
   data() {
     return {
       selectClaimDialog: false,
       isClickable: false,
-      openDialog: false,
+
       params: {
         favourite: ''
       }
@@ -364,10 +351,24 @@ export default {
     this.getClaims();
   },
   methods: {
-    ...mapActions(['getClients', 'getActiveLeadsList', 'getClaims']),
-    ...mapMutations(['setSelectedClaimId']),
-    onClickAddUpIcon() {
-      this.openDialog = true;
+    ...mapActions([
+      'getClients',
+      'getActiveLeadsList',
+      'getClaims',
+      'getArchivedLeadsList'
+    ]),
+    ...mapMutations(['setSelectedClaimId', 'setConvertedLead']),
+
+    onClickNewLead() {
+      this.$store.commit('setShowConvertButton', true);
+      this.$router.push('/leads');
+      const payload = {
+        new: '',
+        status: ''
+      };
+      this.setConvertedLead('Active');
+      this.getActiveLeadsList(payload);
+      this.getArchivedLeadsList();
     },
 
     dateToShow,
