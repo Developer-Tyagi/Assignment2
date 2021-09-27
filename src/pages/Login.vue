@@ -221,7 +221,7 @@ export default {
   margin-right: 10%;
 }
 
-@media screen and (max-width: 2048px) {
+@media screen and (max-width: 1600px) {
   .bg-login {
     background-color: #ededed;
     width: 100%;
