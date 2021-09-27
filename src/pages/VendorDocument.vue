@@ -3,26 +3,26 @@
     <div class="stepper-heading q-ma-md q-ml-sm">
       Please Upload Vendor Documents
     </div>
-    <q-card class="q-pa-md q-ma-md q-mt-sm">
+    <q-card class="q-pa-md q-ma-md">
       <div v-for="(doc, index) in vendorDocument.documents" class="row-div">
-        <div class="vertical-center q-px-sm q-py-sm">
-          <div class="row">
+        <div class="vertical-center q-px-sm">
+          <div class="row justify-between">
             <q-icon :name="iconType(doc.mimeType)" size="sm" color="primary" />
-            <span class="q-pl-md" @click="onDocClick(doc)">
-              {{ doc.name }}</span
-            >
+            <div class="col-7" @click="onDocClick(doc)">
+              {{ doc.name }}
+            </div>
             <q-btn
-              class="q-ml-xl"
+              class="q-mb-lg"
               icon="delete"
               size="sm"
               text-color="primary"
               @click="onDeleteDocument(index)"
               flat
+              dense
             />
           </div>
         </div>
       </div>
-
       <div class="row justify-center">
         <div class="column q-mr-md">
           <img
@@ -40,14 +40,14 @@
             @change="onVendorFileInputClick"
           />
         </div>
-        <div>
+        <div class="column">
           <img
-            class="q-ml-lg q-my-xs  "
-            src="~assets/scan.svg"
+            class="q-ml-lg "
+            src="~assets/scanFile.svg"
             style="width:50%;"
             @click="onClickUploadButton"
           />
-          <div class="form-heading text-center">Scan</div>
+          <div class="form-heading text-center q-mt-xs q-mr-xs">Scan</div>
         </div>
       </div>
     </q-card>
@@ -59,7 +59,6 @@
     </q-dialog>
   </div>
 </template>
-
 <script>
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import { Plugins, CameraResultType, CameraDirection } from '@capacitor/core';
@@ -81,11 +80,9 @@ export default {
       ]
     };
   },
-
   computed: {
     ...mapGetters(['vendorDocument', 'selectedClaimId'])
   },
-
   created() {
     this.getVendorDocument(this.selectedClaimId);
   },
@@ -100,7 +97,6 @@ export default {
         claimID: this.selectedClaimId,
         driveID: this.driveId
       };
-
       await this.deleteClaimDocument(payload);
       this.driveId = '';
       this.getVendorDocument(this.selectedClaimId);
@@ -129,24 +125,20 @@ export default {
       if (dataURI.split(',')[0].indexOf('base64') >= 0)
         byteString = atob(dataURI.split(',')[1]);
       else byteString = unescape(dataURI.split(',')[1]);
-
       // separate out the mime component
       var mimeString = dataURI
         .split(',')[0]
         .split(':')[1]
         .split(';')[0];
-
       // write the bytes of the string to a typed array
       var ia = new Uint8Array(byteString.length);
       for (var i = 0; i < byteString.length; i++) {
         ia[i] = byteString.charCodeAt(i);
       }
-
       return new Blob([ia], { type: mimeString });
     },
     async uploadPdfToServer() {
       const formData = new FormData();
-
       formData.append('file', this.dataURItoBlob(this.dataURl));
       formData.append('type', 'vendor');
       const payload = {
@@ -186,7 +178,6 @@ export default {
     async addPdfFileToServer(value) {
       this.setLoading(true);
       const formData = new FormData();
-
       formData.append('file', this.dataURItoBlob(this.pdfImage));
       formData.append('type', 'vendor');
       const payload = {
