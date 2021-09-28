@@ -87,9 +87,7 @@
             </div>
             <div
               class="row"
-              v-if="
-                personnel.phoneNumber ? personnel.phoneNumber[0].number : ''
-              "
+              v-if="personnel.phoneNumber && personnel.phoneNumber[0].number"
             >
               <div class="heading-light col-3">Phone Number</div>
               <div class=" col-6 q-ml-none">

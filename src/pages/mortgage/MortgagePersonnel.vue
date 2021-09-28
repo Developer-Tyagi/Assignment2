@@ -92,7 +92,10 @@
               >
             </div>
 
-            <div class="row" v-if="personnel.phoneNumber[0].number">
+            <div
+              class="row"
+              v-if="personnel.phoneNumber && personnel.phoneNumber[0].number"
+            >
               <div class="heading-light col-3">Phone Number</div>
               <div class="q-mt-xs col-6 q-ml-none">
                 <div class="row" v-for="phone in personnel.phoneNumber">
@@ -562,10 +565,21 @@ export default {
       this.editPersonnelDialog = true;
       this.getContactTypes();
       this.getTitles();
+      console.log(this.mortgagePersonnel.personnel, 1122);
       this.personnel.fname = this.mortgagePersonnel.personnel[index].fname;
       this.personnel.lname = this.mortgagePersonnel.personnel[index].lname;
       this.personnel.email = this.mortgagePersonnel.personnel[index].email;
-      this.personnel.address = this.mortgagePersonnel.personnel[index].address;
+
+      if (this.mortgagePersonnel.personnel[index].address) {
+        this.personnel.address.dropBox = this.mortgagePersonnel.personnel[index]
+          .address.dropBox
+          ? this.mortgagePersonnel.personnel[index].address.dropBox
+          : { info: '', isPresent: false };
+        this.personnel.address = this.mortgagePersonnel.personnel[
+          index
+        ].address;
+      }
+
       this.personnel.notes = this.mortgagePersonnel.personnel[index].note;
       this.personnel.phoneNumber = this.mortgagePersonnel.personnel[
         index
