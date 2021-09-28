@@ -1086,9 +1086,6 @@ export default {
   },
 
   created() {
-    // this.currentLocation=window.location.pathname.substring(11)
-    // this.alreadyExistClient();
-    // console.log(this.alreadyExistClient(this.currentLocation))
     this.propertyId = this.$route.params.clientId;
     this.getVendorIndustries();
     //TODO
@@ -1672,6 +1669,7 @@ export default {
       } else {
         this.setSelectedLeadOffline();
       }
+      //this is used to check if  claim is added successfully inside the existing client
       if (response.id) {
         this.successMessage(constants.successMessages.CLAIM);
       } else {
