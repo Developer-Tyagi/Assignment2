@@ -5,7 +5,9 @@
       v-if="generateClaimDocument"
     >
       <div class="text-bold q-mt-sm q-ml-sm">Template Type</div>
-
+      <div class="bg-red">
+        <a :href="link" download="file.pdf">SOnali{{ link }}</a>
+      </div>
       <q-select
         dense
         v-model="templatetype.value"
@@ -615,6 +617,7 @@ export default {
 
   data() {
     return {
+      link: '',
       document: '',
       sendToRadio: '',
       emails: [{ email: '', type: 'external', name: '' }],
@@ -1206,20 +1209,36 @@ export default {
       var demo = this.templates[0].name.value;
       var doc = new jsPDF();
 
-      // doc.html(demo, 15, 15);
-      doc.html(demo, {
+      await doc.html(demo, {
         callback: function(doc) {
-          this.document = doc.save();
-          // console.log(response, 'res');
+          this.document = doc.save('test.pdf');
+          console.log(this.document, 'document');
         },
         x: 10,
         y: 10
       });
+      if (
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+          navigator.userAgent
+        )
+      ) {
+        var blob = doc.output('datauri');
+        console.log(blob, 'blob');
+        this.link = blob;
+        console.log(this.link);
+        window.open(URL.createObjectURL(blob));
+      } else {
+        doc.save('filename.pdf');
+      }
 
-      await this.addTemplateLocal(this.document);
-
-      // doc.save('sample-page.pdf');
+      const payload = {
+        document: this.document
+      };
+      console.log(payload, 'payload');
+      // await this.addTemplateLocal(payload);
+      this.document = '';
     },
+
     onClickAddEmail() {
       this.emails.push({ email: '', type: 'external', name: '' });
     },
