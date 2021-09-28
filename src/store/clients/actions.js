@@ -619,7 +619,7 @@ export async function getSeverityClaim({
   if (isOnline) {
     dispatch('setLoading', true);
     try {
-      const { data } = await request.get('/claimseverities');
+      const { data } = await request.get('/severities');
       commit('setClaimSeverities', data);
       dispatch('setLoading', false);
     } catch (e) {
