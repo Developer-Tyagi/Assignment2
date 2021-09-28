@@ -5,15 +5,15 @@
       <q-card class="q-pa-sm">
         <span class="text-bold   q-mb-sm q-mt-sm">Carrier Info</span>
 
-        <div
+        <q-btn
           v-if="!insuranceDetails.carrierName && !policyInfo"
-          class="select-text custom-select q-mt-sm "
-          size="md"
+          class="select-text custom-select input-style q-mt-sm "
+          borderless
+          label=" Click for choosing a carrier"
           :disabled="isOfflineClientEdit"
           @click="carriersListDialog = true"
         >
-          Click for choosing a carrier
-        </div>
+        </q-btn>
 
         <div>
           <q-card

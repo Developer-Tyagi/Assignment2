@@ -175,26 +175,26 @@
       </div>
     </q-card>
     <q-card class="q-ma-xs q-pa-md">
-      <div class="row">
-        <div class="form-heading">Is the Home Habitable?</div>
+      <div class="row justify-between">
+        <div class="form-heading q-mt-sm">Is the Home Habitable?</div>
         <q-toggle
-          class="q-ml-auto"
+          size="sm"
           v-model="lossInfo.isTheHomeHabitable"
           :disable="isOfflineClientEdit"
         />
       </div>
-      <div class="row">
-        <p class="q-mx-none form-heading">FEMA Claim</p>
+      <div class="row justify-between">
+        <div class="form-heading q-mt-sm">FEMA Claim</div>
         <q-toggle
-          class="q-ml-auto"
+          size="sm"
           v-model="lossInfo.femaClaimToggle"
           :disable="isOfflineClientEdit"
         />
       </div>
-      <div class="row">
-        <p class="form-heading">State of Emergency</p>
+      <div class="row justify-between">
+        <p class="form-heading q-mt-sm">State of Emergency</p>
         <q-toggle
-          class="q-ml-auto"
+          size="sm"
           v-model="lossInfo.isStateOfEmergencyToggle"
           :disable="isOfflineClientEdit"
         />
