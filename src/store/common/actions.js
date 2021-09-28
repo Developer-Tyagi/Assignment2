@@ -373,8 +373,28 @@ export async function deleteTemplate({ dispatch, state }, payload) {
     return false;
   }
 }
+/////////////////////////////
 
-export async function addTemplateType({ dispatch, state }, payload) {
+export async function addTemplateType(
+  {
+    rootState: {
+      common: { isOnline }
+    },
+    dispatch
+  },
+  payload
+) {
+  dispatch('setLoading', true);
+  if (isOnline) {
+    return await dispatch('addTemplateRemote', payload);
+    return;
+  } else {
+    return await dispatch('addTemplateLocal', payload);
+  }
+}
+
+//////////////////////////////
+export async function addTemplateRemote({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.post(
@@ -394,7 +414,27 @@ export async function addTemplateType({ dispatch, state }, payload) {
     return false;
   }
 }
+//////////////////////////////////
 
+export async function addTemplateLocal({ dispatch }, payload) {
+  try {
+    let template = {
+      ...payload,
+      offline: true,
+      isCreate: true,
+      id: makeId(),
+      created: date.formatDate(Date.now(), constants.UTCFORMAT),
+      updated: date.formatDate(Date.now(), constants.UTCFORMAT)
+    };
+    console.log(template, 'template in action');
+    await localDB.contractDocument.add(template);
+
+    return template;
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+}
 export async function getAllTemplate({ commit, dispatch }) {
   dispatch('setLoading', true);
   try {
