@@ -187,14 +187,3 @@ export function setSelectedClientOffline(state, client) {
     };
   }
 }
-
-// export function alreadyExistClient(state, clientID) {
-//   console.log(state.clients.length);
-//   console.log(state.clients);
-//   console.log(clientID);
-//   for (let i = 0; i < state.clients.length; i++) {
-//     if (state.clients[i].id == clientID) {
-//       return 'yes';
-//     } else return 'no';
-//   }
-// }
