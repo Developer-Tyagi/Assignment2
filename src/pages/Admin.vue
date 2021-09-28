@@ -357,7 +357,7 @@
               </div>
             </q-tab-panel>
             <q-tab-panel name="actionItems">
-              <q-card class="q-pa-lg" flat bordered>
+              <q-card class="q-pa-lg card-style" flat bordered>
                 <div class="text-h6 text-bold">Claim Action Item</div>
                 <div class="row">
                   <q-btn
@@ -424,7 +424,7 @@
                     />
                   </div>
                   <div class="">
-                    <q-scroll-area class=" claim-list-scrollable">
+                    <q-scroll-area class="claim-list-scrollable">
                       <div v-for="index in allAction" class="row q-pb-md">
                         <div class="col-11">
                           <div class="text-blue">
@@ -1754,10 +1754,5 @@ table {
 td {
   padding: 8px 16px;
   border: 1px solid #ccc;
-}
-
-.claim-list-scrollable {
-  padding: 4px;
-  height: calc(100vh - 290px);
 }
 </style>

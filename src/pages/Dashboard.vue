@@ -193,6 +193,7 @@
             <div class="col text-weight-bolder">UPLOAD</div>
           </div>
         </div>
+        <!--we are stoping routing for this camera card for sometime , once we get feedback from client we will implement this-->
         <div
           class="
             col-5
@@ -202,7 +203,6 @@
             q-pt-sm
             justify-between
           "
-          @click="$router.push('/clients')"
           style="
             border-top-left-radius: 16px;
             border-top-right-radius: 16px;

@@ -1,6 +1,12 @@
 <template>
   <q-page>
     <div>
+      <div class="q-mt-sm row justify-center">
+        <q-badge color="red " v-if="!organization.photoIDAPIKey">
+          PhotoId Key has not been added in the system
+          <q-icon name="warning" color="white" class="q-ml-xs"></q-icon>
+        </q-badge>
+      </div>
       <div class="actions-div">
         <q-input
           dense
@@ -74,16 +80,6 @@
                   <div>
                     {{ dateWithTime(client.created) }}
                   </div>
-                </div>
-                <div class="row">
-                  <q-badge color="red" v-if="!organization.photoIDAPIKey">
-                    PhotoId Key has not been added in the system
-                    <q-icon
-                      name="warning"
-                      color="white"
-                      class="q-ml-xs"
-                    ></q-icon>
-                  </q-badge>
                 </div>
               </div>
             </q-item-section>

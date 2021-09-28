@@ -1,5 +1,11 @@
 <template>
   <q-page>
+    <div class="row justify-center q-mt-sm">
+      <q-badge color="red" v-if="!organization.photoIDAPIKey">
+        PhotoId Key has not been added in the system
+        <q-icon name="warning" color="white" class="q-ml-xs"></q-icon>
+      </q-badge>
+    </div>
     <div class="actions-div">
       <q-input
         dense
@@ -117,16 +123,6 @@
                         <span class="q-ml-auto">
                           <q-icon name="restore_page"></q-icon>
                         </span>
-                      </div>
-                      <div class="row">
-                        <q-badge color="red" v-if="!organization.photoIDAPIKey">
-                          PhotoId Key has not been added in the system
-                          <q-icon
-                            name="warning"
-                            color="white"
-                            class="q-ml-xs"
-                          ></q-icon>
-                        </q-badge>
                       </div>
                     </q-item-section>
                   </q-item>
