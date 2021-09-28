@@ -565,7 +565,6 @@ export default {
       this.editPersonnelDialog = true;
       this.getContactTypes();
       this.getTitles();
-      console.log(this.mortgagePersonnel.personnel, 1122);
       this.personnel.fname = this.mortgagePersonnel.personnel[index].fname;
       this.personnel.lname = this.mortgagePersonnel.personnel[index].lname;
       this.personnel.email = this.mortgagePersonnel.personnel[index].email;
