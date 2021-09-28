@@ -8,6 +8,7 @@
               <div class="col-10">
                 {{ personnel.fname }} {{ personnel.lname }}
               </div>
+
               <q-icon
                 size="xs"
                 :style="
@@ -30,8 +31,8 @@
                 @click="onClickDelete(index)"
               />
             </div>
-            <div class="row ">
-              <div class="heading-light col-3">Address Details</div>
+            <div v-if="toCheckAddressData(personnel.address)" class="row ">
+              <div class="heading-light col-3 ">Address Details</div>
               <div class="col-7" v-if="personnel.address">
                 {{
                   personnel.address.houseNumber
@@ -84,7 +85,10 @@
                 {{ personnel.email ? personnel.email : '-' }}</span
               >
             </div>
-            <div class="row">
+            <div
+              class="row"
+              v-if="personnel.phoneNumber && personnel.phoneNumber[0].number"
+            >
               <div class="heading-light col-3">Phone Number</div>
               <div class=" col-6 q-ml-none">
                 <div class="row" v-for="phone in personnel.phoneNumber">
@@ -101,7 +105,7 @@
               </div>
             </div>
 
-            <div class="row">
+            <div class="row" v-if="personnel.note">
               <span class="heading-light col-3"> Notes: </span>
               <span class="q-ml-none col" v-if="personnel.note">
                 {{ personnel.note ? personnel.note : '-' }}</span
@@ -339,7 +343,7 @@
 import { mapGetters, mapActions } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
-import { toGetStateShortName } from '@utils/common';
+import { toGetStateShortName, toCheckAddressData } from '@utils/common';
 import AddCarrierPersonnel from 'components/AddCarrierPersonnel';
 import {
   onEmailClick,
@@ -431,7 +435,7 @@ export default {
       'deleteCarrierPersonnel'
     ]),
     toGetStateShortName,
-
+    toCheckAddressData,
     onEdit(index) {
       this.editPersonnelDialog = true;
       this.getContactTypes();
@@ -448,6 +452,7 @@ export default {
         ].dropBox;
       }
       this.personnel.address = this.carrierPersonnel.personnel[index].address;
+
       this.personnel.notes = this.carrierPersonnel.personnel[index].note;
       this.personnel.phoneNumber = this.carrierPersonnel.personnel[
         index
