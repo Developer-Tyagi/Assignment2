@@ -349,8 +349,8 @@ export async function addClaimSeverity({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.post(
-      '/claimseverities',
-      buildApiData('claimseverities', payload)
+      '/severities',
+      buildApiData('severities', payload)
     );
     dispatch('setLoading', false);
     dispatch('setNotification', {
