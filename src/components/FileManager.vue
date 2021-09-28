@@ -611,6 +611,7 @@ export default {
 
   data() {
     return {
+      document: '',
       sendToRadio: '',
       emails: [{ email: '', type: 'external', name: '' }],
       signedDocuments: '',
@@ -694,7 +695,8 @@ export default {
       'getTemplates',
       'getAllActorToClaim',
       'signDocuments',
-      'getSignedDocument'
+      'getSignedDocument',
+      'addTemplateLocal'
     ]),
     ...mapMutations(['setLoading', 'setNotification']),
     validateEmail,
@@ -1195,7 +1197,7 @@ export default {
         this.convertHtmlToPdf(this.templates[0].name.value);
       }
     },
-    convertHtmlToPdf(value) {
+    async convertHtmlToPdf(value) {
       console.log(this.templates[0].name.value, 'ss');
       var demo = this.templates[0].name.value;
       var doc = new jsPDF();
@@ -1203,12 +1205,15 @@ export default {
       // doc.html(demo, 15, 15);
       doc.html(demo, {
         callback: function(doc) {
-          const respone = doc.save();
-          console.log(respone, 'res');
+          this.document = doc.save();
+          // console.log(response, 'res');
         },
         x: 10,
         y: 10
       });
+
+      await this.addTemplateLocal(this.document);
+
       // doc.save('sample-page.pdf');
     },
     onClickAddEmail() {
