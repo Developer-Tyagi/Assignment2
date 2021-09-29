@@ -1,12 +1,11 @@
 <template>
   <!-- mobile-container-page listing-height -->
 
-  <div class="" style="background-color: #8f8f8f">
+  <div style="background-color: #8f8f8f">
     <div
-      class="bg-white q-px-sm cardHeight"
+      class="bg-white dashboard-shadow q-px-sm cardHeight"
       style="
         border-radius: 0 0 90px 90px;
-        box-shadow: 0px 0px 10px 10px #000000;
       "
     >
       <div class="gridRow row justify-between q-px-lg">
@@ -239,9 +238,10 @@
       </div>
     </div>
     <!-- footer -->
+    <div class="row justify-center footer-shadow "></div>
     <div
       class="row justify-between q-py-sm q-px-md"
-      style="background-color: #8f8f8f"
+      style="background-color: #8f8f8f;"
     >
       <div col-3 class="column">
         <img
@@ -265,7 +265,11 @@
         <div class="text-center text-white">CLAIMS STATS</div>
       </div>
       <div class="column">
-        <img src="~assets/dashboardAdd.svg" style="width: 100%" />
+        <img
+          src="~assets/dashboardAdd.svg"
+          style="width: 100%"
+          @click="onClickAddUpIcon()"
+        />
         <div class="text-center text-white">ADD</div>
       </div>
     </div>
@@ -325,6 +329,16 @@
         </div>
       </q-card>
     </q-dialog>
+    <!-- dialog box for add button-->
+    <q-dialog
+      v-model="openDialog"
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+      :position="'bottom'"
+    >
+      <AddOptions />
+    </q-dialog>
   </div>
 </template>
 <script>
@@ -334,14 +348,15 @@ import { dateToShow } from '@utils/date';
 import CustomBar from 'components/CustomBar';
 import { getAuth, generateEmailVerificationLink } from 'firebase/auth';
 import 'firebase/auth';
+import AddOptions from 'components/AddOptions';
 import firebase from 'firebase/app';
 export default {
-  components: { CustomBar },
+  components: { CustomBar, AddOptions },
   data() {
     return {
       selectClaimDialog: false,
       isClickable: false,
-
+      openDialog: false,
       params: {
         favourite: ''
       }
@@ -357,6 +372,9 @@ export default {
       'getClaims',
       'getArchivedLeadsList'
     ]),
+    onClickAddUpIcon() {
+      this.openDialog = true;
+    },
     ...mapMutations(['setSelectedClaimId', 'setConvertedLead']),
 
     onClickNewLead() {
@@ -436,6 +454,13 @@ export default {
   /* border-radius: 10px; */
   border-radius: 20px 20px 20px 20px;
 }
+.footer-shadow {
+  border: 0.1em solid #000000;
+  width: 60%;
+  margin-left: 20%;
+  box-shadow: 0 -4px 6px 0.02em #000000, 0 -5px 7px 0.02em #000000;
+}
+
 .card-text {
   color: #ffffff;
   font-size: 1rem;

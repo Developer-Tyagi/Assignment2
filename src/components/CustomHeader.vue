@@ -77,7 +77,6 @@
           v-else
           class="button-50"
         />
-
         <div class="text-uppercase text-bold  q-mx-auto">
           <span v-if="$route.name == 'Leads'">{{ converted }}</span>
           <span class="text-white"> {{ $route.name }} </span>
@@ -470,8 +469,7 @@ export default {
   box-shadow: 1px 3px 2px 1px #e0e0e0;
 }
 .toolbar-shadow {
-  box-shadow: 0 52px 28px -27px rgb(0 0 0 / 20%),
-    0 76px 100px 3px rgb(0 0 0 / 14%), 0 9px 46px 8px rgb(0 0 0 / 12%);
+  box-shadow: 0 52px 28px -40px #000000;
 }
 ::-webkit-scrollbar {
   width: 0px;
