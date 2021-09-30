@@ -351,7 +351,7 @@ export default {
         };
         this.getActiveLeadsList(payload);
         this.getArchivedLeadsList();
-      } else if ((name = 'Clients')) {
+      } else if (name == 'Clients') {
         const payload = {
           name: '',
           status: ''
