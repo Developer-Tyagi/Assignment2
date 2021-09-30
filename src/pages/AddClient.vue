@@ -515,7 +515,7 @@
               <AutoCompleteAddress
                 :id="'ClientMailing'"
                 :address="mailingAddressDetails"
-                :isDropBoxEnable="true"
+                :isDropBoxEnable="false"
                 :isChecksEnable="true"
                 :isFieldsDisable="isMailingAddressSameToggle"
                 :isAsteriskMark="true"

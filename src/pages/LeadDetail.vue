@@ -147,12 +147,8 @@
                         : '-'
                     }}
                   </div>
-                  <div>
-                    {{
-                      selectedLead.lossLocation.address2
-                        ? selectedLead.lossLocation.address2
-                        : '-'
-                    }}
+                  <div v-if="selectedLead.lossLocation.address2">
+                    {{ selectedLead.lossLocation.address2 }}
                   </div>
                   <div>
                     {{

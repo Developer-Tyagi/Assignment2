@@ -34,12 +34,8 @@
             ? selectedCarrier.address.address1
             : '-'
         }}
-        <div>
-          {{
-            selectedCarrier.address.address2
-              ? selectedCarrier.address.address2
-              : '-'
-          }}
+        <div v-if="selectedCarrier.address.address2">
+          {{ selectedCarrier.address.address2 }}
         </div>
         <div>
           {{
@@ -89,7 +85,7 @@
         ></span
       >
     </div>
-    <div class="q-mt-sm row" v-if="selectedCarrier.contact">
+    <div class="q-mt-sm row" v-if="selectedCarrier.contact.honorific.id">
       <div class="heading-light q-mt-none col-xs-4 ">
         Contact Info
       </div>
@@ -120,15 +116,17 @@
         </div>
       </div>
     </div>
-    <div class="row q-mt-sm" v-if="selectedCarrier.info">
+    <div
+      class="row q-mt-sm"
+      v-if="selectedCarrier.info && selectedCarrier.info.website"
+    >
       <span class="heading-light col-4"> Website: </span>
-      <span class="q-ml-md col">
-        {{
-          selectedCarrier.info.website ? selectedCarrier.info.website : '-'
-        }}</span
-      >
+      <span class="q-ml-md col"> {{ selectedCarrier.info.website }}</span>
     </div>
-    <div class="row q-mt-sm" v-if="selectedCarrier.info">
+    <div
+      class="row q-mt-sm"
+      v-if="selectedCarrier.info && selectedCarrier.info.notes"
+    >
       <span class="heading-light col-4"> Notes: </span>
       <span class="q-ml-md col">
         {{

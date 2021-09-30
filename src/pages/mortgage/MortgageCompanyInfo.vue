@@ -39,12 +39,8 @@
             ? selectedMortgage.address.address1
             : '-'
         }}
-        <div>
-          {{
-            selectedMortgage.address.address2
-              ? selectedMortgage.address.address2
-              : '-'
-          }}
+        <div v-if="selectedMortgage.address.address2">
+          {{ selectedMortgage.address.address2 }}
         </div>
         <div>
           {{

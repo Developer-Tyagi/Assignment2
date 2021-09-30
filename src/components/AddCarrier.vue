@@ -58,14 +58,14 @@
               <q-input
                 dense
                 borderless
-                class="input-style input-overlay required"
+                class="input-style input-overlay"
                 v-model="carrier.email"
                 type="email"
                 label="Email"
                 lazy-rules
                 :rules="[
                   val =>
-                    validateEmail(val) ||
+                    validateNonRequiredEmail(val) ||
                     'You have entered an invalid email address!'
                 ]"
               />

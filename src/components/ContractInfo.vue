@@ -267,12 +267,8 @@
                     : '-'
                 }}
               </div>
-              <div>
-                {{
-                  contractInfo.sourceDetails.mailingAddress.address2
-                    ? contractInfo.sourceDetails.mailingAddress.address2
-                    : '-'
-                }}
+              <div v-if="contractInfo.sourceDetails.mailingAddress.address2">
+                {{ contractInfo.sourceDetails.mailingAddress.address2 }}
               </div>
               <div class="row">
                 {{

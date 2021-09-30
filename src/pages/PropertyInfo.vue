@@ -52,12 +52,8 @@
                         : '-'
                     }}
                   </div>
-                  <div>
-                    {{
-                      setClientProperty[i - 1].attributes.address2
-                        ? setClientProperty[i - 1].attributes.address2
-                        : '-'
-                    }}
+                  <div v-if="setClientProperty[i - 1].attributes.address2">
+                    {{ setClientProperty[i - 1].attributes.address2 }}
                   </div>
                   <div>
                     {{

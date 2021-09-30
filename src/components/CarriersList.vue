@@ -37,8 +37,8 @@
               {{ carrier.address ? carrier.address.houseNumber : '-' }}
               {{ carrier.address.address1 ? carrier.address.address1 : '-' }}
             </div>
-            <div>
-              {{ carrier.address.address2 ? carrier.address.address2 : '-' }}
+            <div v-if="carrier.address.address2">
+              {{ carrier.address.address2 }}
             </div>
             <div class="row">
               {{

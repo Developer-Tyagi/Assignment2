@@ -16,10 +16,8 @@
               mortgage[0].address.address1 ? mortgage[0].address.address1 : '-'
             }}
           </div>
-          <div>
-            {{
-              mortgage[0].address.address2 ? mortgage[0].address.address2 : '-'
-            }}
+          <div v-if="mortgage[0].address.address2">
+            {{ mortgage[0].address.address2 }}
           </div>
           <div class="row">
             {{
@@ -136,12 +134,8 @@
                   : '-'
               }}
             </div>
-            <div>
-              {{
-                mortgage[1].address.address2
-                  ? mortgage[1].address.address2
-                  : '-'
-              }}
+            <div v-if="mortgage[1].address.address2">
+              {{ mortgage[1].address.address2 }}
             </div>
             <div class="row">
               {{

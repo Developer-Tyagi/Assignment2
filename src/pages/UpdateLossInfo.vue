@@ -68,12 +68,8 @@
             ? lossInfo.attributes.lossInfo.property.address1
             : '-'
         }}
-        <div>
-          {{
-            lossInfo.attributes.lossInfo.property.address2
-              ? lossInfo.attributes.lossInfo.property.address2
-              : '-'
-          }}
+        <div v-if="lossInfo.attributes.lossInfo.property.address2">
+          {{ lossInfo.attributes.lossInfo.property.address2 }}
         </div>
         <div>
           {{

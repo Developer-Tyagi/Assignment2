@@ -156,12 +156,8 @@
                     : '-'
                 }}
               </div>
-              <div>
-                {{
-                  item.vendor.mailingAddress.address2
-                    ? item.vendor.mailingAddress.address2
-                    : '-'
-                }}
+              <div v-if="item.vendor.mailingAddress.address2">
+                {{ item.vendor.mailingAddress.address2 }}
               </div>
               <div class="row">
                 {{
@@ -304,12 +300,8 @@
                     : '-'
                 }}
               </div>
-              <div>
-                {{
-                  item.vendor.mailingAddress.address2
-                    ? item.vendor.mailingAddress.address2
-                    : '-'
-                }}
+              <div v-if="item.vendor.mailingAddress.address2">
+                {{ item.vendor.mailingAddress.address2 }}
               </div>
               <div class="row">
                 {{
