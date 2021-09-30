@@ -29,7 +29,10 @@
         />
       </div>
 
-      <div class="q-pa-sm" v-if="selectedClaimCarrier.carrier.id">
+      <div
+        class="q-pa-sm"
+        v-if="selectedClaimCarrier.carrier && selectedClaimCarrier.carrier.id"
+      >
         <div class="form-heading  row" v-model="carrierName">
           {{ selectedClaimCarrier.carrier.name }}
         </div>

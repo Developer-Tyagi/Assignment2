@@ -50,7 +50,12 @@
       ></q-icon>
     </div>
 
-    <div class="row" v-if="lossInfo.attributes.lossInfo.property">
+    <div
+      class="row"
+      v-if="
+        lossInfo.attributes.lossInfo && lossInfo.attributes.lossInfo.property
+      "
+    >
       <div class="heading-light q-mt-none col-4 ">
         Address Details
       </div>
