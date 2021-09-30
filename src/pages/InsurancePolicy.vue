@@ -29,7 +29,10 @@
         />
       </div>
 
-      <div class="q-pa-sm" v-if="selectedClaimCarrier.carrier.id">
+      <div
+        class="q-pa-sm"
+        v-if="selectedClaimCarrier.carrier && selectedClaimCarrier.carrier.id"
+      >
         <div class="form-heading  row" v-model="carrierName">
           {{ selectedClaimCarrier.carrier.name }}
         </div>
@@ -52,12 +55,13 @@
                   : '-'
               }}
             </div>
-            <div>
-              {{
-                selectedClaimCarrier.carrier.address.address2
-                  ? selectedClaimCarrier.carrier.address.address2
-                  : '-'
-              }}
+            <div
+              v-if="
+                selectedClaimCarrier.carrier.address &&
+                  selectedClaimCarrier.carrier.address.address2
+              "
+            >
+              {{ selectedClaimCarrier.carrier.address.address2 }}
             </div>
             <div>
               {{
@@ -172,10 +176,11 @@
                 personnel.address.address1 ? personnel.address.address1 : '-'
               }}
             </div>
-            <div class="q-ml-sm" v-if="personnel.address.address2">
-              {{
-                personnel.address.address2 ? personnel.address.address2 : '-'
-              }}
+            <div
+              class="q-ml-sm"
+              v-if="personnel.address && personnel.address.address2"
+            >
+              {{ personnel.address.address2 }}
             </div>
             <div class="row q-ml-sm" v-if="personnel.address.addressLocality">
               {{
@@ -560,12 +565,8 @@
                           : '-'
                       }}
                     </div>
-                    <div>
-                      {{
-                        personnel.address.address2
-                          ? personnel.address.address2
-                          : '-'
-                      }}
+                    <div v-if="personnel.address && personnel.address.address2">
+                      {{ personnel.address.address2 }}
                     </div>
                     <div class="row">
                       {{

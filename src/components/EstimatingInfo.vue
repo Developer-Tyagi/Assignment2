@@ -68,13 +68,12 @@
               </div>
               <div
                 class="q-ml-sm"
-                v-if="estimatingInfo.mailingAddress.address2"
+                v-if="
+                  estimatingInfo.mailingAddress &&
+                    estimatingInfo.mailingAddress.address2
+                "
               >
-                {{
-                  estimatingInfo.mailingAddress.address2
-                    ? estimatingInfo.mailingAddress.address2
-                    : '-'
-                }}
+                {{ estimatingInfo.mailingAddress.address2 }}
               </div>
               <div
                 class="row q-ml-sm"
@@ -238,12 +237,13 @@
                         : '-'
                     }}
                   </div>
-                  <div>
-                    {{
-                      estimator.mailingAddress.address2
-                        ? estimator.mailingAddress.address2
-                        : '-'
-                    }}
+                  <div
+                    v-if="
+                      estimator.mailingAddress &&
+                        estimator.mailingAddress.address2
+                    "
+                  >
+                    {{ estimator.mailingAddress.address2 }}
                   </div>
                   <div class="row">
                     {{

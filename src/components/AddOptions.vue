@@ -38,7 +38,7 @@
             />
           </div>
         </div>
-        <div class="q-pt-sm" @click="$router.push('/mortgages/' + true)">
+        <div class="q-pt-sm" @click="$router.push('/mortgages')">
           <div class="row bg-white" style="border-radius: 10px; height: 40px">
             <q-icon size="sm" class="q-ml-md q-my-sm">
               <img src="~assets/add_mortgage.svg" />
@@ -56,7 +56,7 @@
             />
           </div>
         </div>
-        <div class="q-pt-sm" @click="$router.push('/carriers/' + true)">
+        <div class="q-pt-sm" @click="$router.push('/carriers')">
           <div class="row bg-white" style="border-radius: 10px; height: 40px">
             <q-icon size="sm" class="q-ml-md q-my-sm">
               <img src="~assets/add_carriers.svg" />

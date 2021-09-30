@@ -195,7 +195,14 @@ export default {
             );
             PushNotifications.addListener('registrationError', any => {});
           }
-          this.$router.push('/dashboard');
+
+          //below function is use for checking login routing for mobile and web screen,
+          //if screen width is greater than 1600(default inner browser width) then open claim stats page otherwise open main dashboard page.
+          if (window.screen.availWidth > 1600) {
+            this.$router.push('/claimstats');
+          } else {
+            this.$router.push('/dashboard');
+          }
         }
       }
     }

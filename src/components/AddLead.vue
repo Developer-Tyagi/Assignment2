@@ -141,7 +141,6 @@
                 <q-toggle
                   v-model="primaryDetails.isOrganization"
                   left-label
-                  color="orange"
                   class="q-ml-auto"
                 />
               </div>
@@ -317,12 +316,13 @@
                           : '-'
                       }}
                     </div>
-                    <div>
-                      {{
-                        insuranceDetails.address.address2
-                          ? insuranceDetails.address.address2
-                          : '-'
-                      }}
+                    <div
+                      v-if="
+                        insuranceDetails.address &&
+                          insuranceDetails.address.address2
+                      "
+                    >
+                      {{ insuranceDetails.address.address2 }}
                     </div>
                     <div class="row">
                       {{
@@ -479,12 +479,13 @@
                             : '-'
                         }}
                       </div>
-                      <div>
-                        {{
-                          sourceDetails.mailingAddress.address2
-                            ? sourceDetails.mailingAddress.address2
-                            : '-'
-                        }}
+                      <div
+                        v-if="
+                          sourceDetails.mailingAddress &&
+                            sourceDetails.mailingAddress.address2
+                        "
+                      >
+                        {{ sourceDetails.mailingAddress.address2 }}
                       </div>
                       <div class="row">
                         {{

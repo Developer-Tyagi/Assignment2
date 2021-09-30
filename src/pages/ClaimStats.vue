@@ -5,7 +5,7 @@
         <div class="col-3" @click="onOpenClaimsClick">
           <div class="my-card ">
             <p class="text-primary card-text">
-              {{ claimStatic.open ? claimStatic.open : '-' }}
+              {{ claimStatic.open ? claimStatic.open : '0' }}
             </p>
           </div>
 
@@ -13,10 +13,11 @@
             <small>Open Claims</small>
           </p>
         </div>
+
         <div class="col-3" @click="onClickClaimRecentActivity">
           <div class="my-card">
             <p class="card-text text-primary">
-              {{ claimStatic.recentUpdated ? claimStatic.recentUpdated : '-' }}
+              {{ claimStatic.recentUpdated ? claimStatic.recentUpdated : '0' }}
             </p>
           </div>
           <p class="text"><small>Claims with recent activity</small></p>
@@ -24,32 +25,40 @@
         <div v-if="isClickable" class="col-3" @click="onClientsClick">
           <div class="my-card">
             <p class="card-text text-primary">
-              {{ clientStatic.active ? clientStatic.active : '-' }}
-            </p>
-          </div>
-          <p class="text"><small>Clients</small></p>
-        </div>
-        <div v-else class="col-3">
-          <div class="my-card">
-            <p class="card-text text-primary">
-              {{ clientStatic.active ? clientStatic.active : '-' }}
+              {{ clientStatic.active ? clientStatic.active : '0' }}
             </p>
           </div>
           <p class="text"><small>Clients</small></p>
         </div>
 
+        <div v-else class="col-3">
+          <div class="my-card">
+            <p class="card-text text-primary">
+              {{ clientStatic.active ? clientStatic.active : '0' }}
+            </p>
+          </div>
+          <p class="text"><small>Clients</small></p>
+        </div>
         <div v-if="isClickable" class="col-3" @click="onOpenClientsClick">
           <div class="my-card">
             <p class="card-text text-primary">
-              {{ clientStatic.openClaims ? clientStatic.openClaims : '-' }}
+              {{
+                clientStatic && clientStatic.openClaims
+                  ? clientStatic.openClaims
+                  : '0'
+              }}
             </p>
           </div>
           <p class="text"><small>Clients with Open Claims</small></p>
         </div>
         <div v-else class="col-3">
           <div class="my-card">
-            <p class="card-text">
-              {{ clientStatic.openClaims ? clientStatic.openClaims : '-' }}
+            <p class="card-text text-primary">
+              {{
+                clientStatic && clientStatic.openClaims
+                  ? clientStatic.openClaims
+                  : '0'
+              }}
             </p>
           </div>
           <p class="text"><small>Clients with Open Claims</small></p>
@@ -68,17 +77,17 @@
               ><small>New Claims</small></span
             >
             <span class="text-center col-5 text-bold q-pl-sm rounded bg-white">
-              {{ claimStatic.new ? claimStatic.new : '-' }}</span
+              {{ claimStatic.new ? claimStatic.new : '0' }}</span
             >
           </div>
         </q-card>
         <q-card class="col-5 bg-primary rounded ">
-          <div class="q-pa-md row" @click="onClickNewClaims">
+          <div class="q-pa-md row" @click="onClickNewLead">
             <span class="text-white text-bold col-7"
               ><small>New Leads</small></span
             >
             <span class="col-5 text-bold q-pl-sm text-center rounded bg-white">
-              {{ leadStatic.new ? leadStatic.new : '-' }}</span
+              {{ leadStatic.new ? leadStatic.new : '0' }}</span
             >
           </div>
         </q-card>
@@ -203,10 +212,22 @@ export default {
       'getClientStatistics',
       'getClaims',
       'getClients',
-      'getActiveLeadsList'
+      'getActiveLeadsList',
+      'getArchivedLeadsList'
     ]),
-    ...mapMutations(['setSelectedClaimId']),
+    ...mapMutations(['setSelectedClaimId', 'setConvertedLead']),
     dateToShow,
+    onClickNewLead() {
+      this.$store.commit('setShowConvertButton', true);
+      this.$router.push('/leads');
+      const payload = {
+        new: '',
+        status: ''
+      };
+      this.setConvertedLead('Active');
+      this.getActiveLeadsList(payload);
+      this.getArchivedLeadsList();
+    },
     openClaimDetail(value) {
       this.setSelectedClaimId(value.id);
       this.$router.push('/claim-details');
