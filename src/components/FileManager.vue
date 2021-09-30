@@ -6,7 +6,7 @@
     >
       <div class="text-bold q-mt-sm q-ml-sm">Template Type</div>
       <div class="bg-red">
-        <a :href="link" download="file.pdf">SOnali{{ link }}</a>
+        <a download="file.pdf" id="linkId">SOnali</a>
       </div>
       <q-select
         dense
@@ -613,7 +613,7 @@ export default {
 
   data() {
     return {
-      link: '',
+      tokenArray: [],
       document: '',
       sendToRadio: '',
       emails: [{ email: '', type: 'external', name: '' }],
@@ -656,6 +656,27 @@ export default {
     };
   },
   async created() {
+    // key value pair for tokens
+    this.tokens = [
+      { key: '.Claim.Number', value: this.claim.number },
+      { key: '.Claim.Client.Name', value: this.claim.client.fname },
+      { key: '.Claim.PolicyInfo.Number', value: this.claim.policyInfo.number },
+      { key: '.Claim.Status.Value', value: this.claim.status.value },
+      { key: '.Carrier.Name', value: this.claim.policyInfo.carrier.name },
+      { key: '.Carrier.Email', value: this.claim.policyInfo.carrier.email },
+      { key: '.Claim.LossInfo.Cause.Value', value: '' },
+      { key: '.Claim.PolicyInfo.Number', value: '' },
+      { key: '.Claim.LossInfo.Date', value: '' },
+      { key: '.Claim.LossInfo.Cause.Desc', value: '' },
+      { key: '.Claim.LossInfo.Cause.Value', value: '' },
+      { key: 'localTZ .Claim.PolicyInfo.EffectiveDate', value: '' },
+      { key: 'localTZ .Claim.PolicyInfo.ExpirationDate', value: '' },
+      { key: '.Claim.Client.Name', value: '' },
+      { key: '.Claim.FileNumber}', value: '' },
+      { key: '.Claim.Client.Name', value: '' },
+      { key: '.Claim.PolicyInfo.Number', value: '' }
+    ];
+    console.log(this.claim);
     const { data } = await request.get(
       `/documents?parent_id=${this.directoryId}`
     );
@@ -680,7 +701,8 @@ export default {
       'allUsers',
       'templateOptions',
       'actors',
-      'templates'
+      'templates',
+      'claim'
     ])
   },
 
@@ -1162,6 +1184,24 @@ export default {
         return item.name === value;
       });
       this.templatetype.machineValue = obj.machineValue;
+
+      const result = this.templates.find(template => {
+        return template.name.machineValue === this.templatetype.machineValue;
+      });
+
+      var regex = /\{{(.*?)\}}/g;
+
+      var match;
+      while ((match = regex.exec(result.name.value)) != null) {
+        this.tokenArray.push(match[1]);
+      }
+
+      this.tokenArray.forEach(token => {
+        let result = this.tokens.find(o => o.key === token);
+        token = token.replace(token, result.value);
+        console.log(token, 'token');
+      });
+      console.log(this.tokenArray, 'token updated');
     },
     async onClickGenerateDocument() {
       if (this.isOnline) {
@@ -1200,19 +1240,27 @@ export default {
         this.convertHtmlToPdf(this.templates[0].name.value);
       }
     },
-    async convertHtmlToPdf(value) {
-      console.log(this.templates[0].name.value, 'ss');
-      var demo = this.templates[0].name.value;
-      var doc = new jsPDF();
 
-      await doc.html(demo, {
+    //function for converting HTML  to PDF with the token replacement
+    async convertHtmlToPdf(tokenValue) {
+      var regExp = /\{{([^)]+)\}}/;
+      var matches = regExp.exec(this.apiTokens);
+
+      if (matches[1] == '.Claim.Status.Value') {
+        var result = tokenValue.replace(
+          '.Claim.Status.Value',
+          this.claim.status.value
+        );
+      }
+      var doc = new jsPDF();
+      await doc.html(result, {
         callback: function(doc) {
-          this.document = doc.save('test.pdf');
-          console.log(this.document, 'document');
+          this.document = doc.save('contract.pdf');
         },
         x: 10,
         y: 10
       });
+
       if (
         /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
           navigator.userAgent
@@ -1220,9 +1268,6 @@ export default {
       ) {
         var blob = doc.output('datauri');
         console.log(blob, 'blob');
-        this.link = blob;
-        console.log(this.link);
-        window.open(URL.createObjectURL(blob));
       } else {
         doc.save('filename.pdf');
       }
