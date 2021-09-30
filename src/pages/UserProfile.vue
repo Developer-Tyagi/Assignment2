@@ -45,7 +45,7 @@
                     : '-'
                 }}
               </div>
-              <div v-if="user.mailingAddress.address2">
+              <div v-if="user.mailingAddress && user.mailingAddress.address2">
                 {{ user.mailingAddress.address2 }}
               </div>
               <div>

@@ -42,7 +42,7 @@
                 {{
                   personnel.address.address1 ? personnel.address.address1 : '-'
                 }}
-                <div v-if="personnel.address.address2">
+                <div v-if="personnel.address && personnel.address.address2">
                   {{ personnel.address.address2 }}
                 </div>
                 <div>

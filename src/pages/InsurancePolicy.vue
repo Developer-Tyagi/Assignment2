@@ -52,7 +52,12 @@
                   : '-'
               }}
             </div>
-            <div v-if="selectedClaimCarrier.carrier.address.address2">
+            <div
+              v-if="
+                selectedClaimCarrier.carrier.address &&
+                  selectedClaimCarrier.carrier.address.address2
+              "
+            >
               {{ selectedClaimCarrier.carrier.address.address2 }}
             </div>
             <div>
@@ -168,7 +173,10 @@
                 personnel.address.address1 ? personnel.address.address1 : '-'
               }}
             </div>
-            <div class="q-ml-sm" v-if="personnel.address.address2">
+            <div
+              class="q-ml-sm"
+              v-if="personnel.address && personnel.address.address2"
+            >
               {{ personnel.address.address2 }}
             </div>
             <div class="row q-ml-sm" v-if="personnel.address.addressLocality">
@@ -554,7 +562,7 @@
                           : '-'
                       }}
                     </div>
-                    <div v-if="personnel.address.address2">
+                    <div v-if="personnel.address && personnel.address.address2">
                       {{ personnel.address.address2 }}
                     </div>
                     <div class="row">

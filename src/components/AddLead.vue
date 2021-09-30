@@ -316,7 +316,12 @@
                           : '-'
                       }}
                     </div>
-                    <div v-if="insuranceDetails.address.address2">
+                    <div
+                      v-if="
+                        insuranceDetails.address &&
+                          insuranceDetails.address.address2
+                      "
+                    >
                       {{ insuranceDetails.address.address2 }}
                     </div>
                     <div class="row">
@@ -474,7 +479,12 @@
                             : '-'
                         }}
                       </div>
-                      <div v-if="sourceDetails.mailingAddress.address2">
+                      <div
+                        v-if="
+                          sourceDetails.mailingAddress &&
+                            sourceDetails.mailingAddress.address2
+                        "
+                      >
                         {{ sourceDetails.mailingAddress.address2 }}
                       </div>
                       <div class="row">

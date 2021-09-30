@@ -34,7 +34,7 @@
             ? selectedCarrier.address.address1
             : '-'
         }}
-        <div v-if="selectedCarrier.address.address2">
+        <div v-if="selectedCarrier.address && selectedCarrier.address.address2">
           {{ selectedCarrier.address.address2 }}
         </div>
         <div>

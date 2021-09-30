@@ -22,8 +22,8 @@
                 vendor.address.houseNumber ? vendor.address.houseNumber : '-'
               }}
               {{ vendor.address.address1 ? vendor.address.address1 : '-' }}
-              <div class="">
-                {{ vendor.address.address2 ? vendor.address.address2 : '-' }}
+              <div v-if="vendor.address && vendor.address.address2">
+                {{ vendor.address.address2 }}
               </div>
               <div>
                 {{

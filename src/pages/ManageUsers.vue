@@ -320,7 +320,12 @@
                   }}
                 </div>
 
-                <div v-if="singleUserData.mailingAddress.address2">
+                <div
+                  v-if="
+                    singleUserData.mailingAddress &&
+                      singleUserData.mailingAddress.address2
+                  "
+                >
                   {{ singleUserData.mailingAddress.address2 }}
                 </div>
                 <div>

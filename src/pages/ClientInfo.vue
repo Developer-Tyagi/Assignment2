@@ -163,8 +163,9 @@
 
             <div
               v-if="
-                editSelectedClient.attributes.insuredInfo.mailingAddress
-                  .address2
+                editSelectedClient.attributes.insuredInfo.mailingAddress &&
+                  editSelectedClient.attributes.insuredInfo.mailingAddress
+                    .address2
               "
             >
               {{
