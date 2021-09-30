@@ -86,7 +86,6 @@ export default {
       this.userRole = getCurrentUser().attributes.roles[0].machineValue;
       const route = this.$router.currentRoute.fullPath.split('/')[1];
       if (
-        route == 'leads' ||
         route == 'clients' ||
         route == 'vendors' ||
         route == 'admin' ||
@@ -96,9 +95,9 @@ export default {
       ) {
         this.$router.push('/dashboard');
       } else if (route == 'leads') {
-        this.$router.push('/leads-dashboard');
+        this.$router.go(-1);
       } else if (route == 'add-lead') {
-        this.$router.push('/leads');
+        this.$router.go(-1);
       } else if (
         (route == 'claim-summary' && this.userRole == 'estimator') ||
         this.userRole == 'vendor'

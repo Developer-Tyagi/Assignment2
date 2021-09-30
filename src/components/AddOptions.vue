@@ -1,5 +1,5 @@
 <template>
-  <q-card class="bg-grey-4 " style="width: 550px; height: 245px">
+  <q-card class="bg-grey-4 " style="width:100%; height: 245px">
     <div>
       <div class="q-mx-md q-mt-sm">
         <div @click="$router.push('/add-lead')">
