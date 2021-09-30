@@ -85,7 +85,16 @@
         ></span
       >
     </div>
-    <div class="q-mt-sm row" v-if="selectedCarrier.contact.honorific.id">
+    <!--here is any one field like fname,email,lname,phone is present then only we display contact info row, otherwise hide this contact info row-->
+    <div
+      class="q-mt-sm row"
+      v-if="
+        selectedCarrier.contact &&
+          (selectedCarrier.contact.fname ||
+            selectedCarrier.contact.email ||
+            selectedCarrier.contact.phoneNumber[0].number)
+      "
+    >
       <div class="heading-light q-mt-none col-xs-4 ">
         Contact Info
       </div>
