@@ -1044,7 +1044,8 @@ export default {
         estimatorsListDialog: false,
 
         estimatorToBeAssigned: '',
-        scopeTimeNeeded: '',
+        scopeTimeNeededInHours: '',
+        scopeTimeNeededInMinutes: '',
         notesToTheEstimator: '',
         doesAnEstimatorNeedToBeAssignedToggle: false
       },
@@ -1613,7 +1614,9 @@ export default {
       ) {
         payload.estimatingInfo = {
           estimatorID: this.estimatingInfo.estimatorID,
-          scopeTimeNeeded: this.estimatingInfo.scopeTimeNeeded,
+          scopeTimeNeeded:
+            this.estimatingInfo.scopeTimeNeededInHours +
+            this.estimatingInfo.scopeTimeNeededInMinutes,
           notesToTheEstimator: this.estimatingInfo.notesToTheEstimator
         };
       }
@@ -1623,7 +1626,9 @@ export default {
       ) {
         payload.estimatingInfo = {
           estimatorID: this.estimatingInfo.estimatorID,
-          scopeTimeNeeded: this.estimatingInfo.scopeTimeNeeded,
+          scopeTimeNeeded:
+            this.estimatingInfo.scopeTimeNeededInHours +
+            this.estimatingInfo.scopeTimeNeededInMinutes,
           notesToTheEstimator: this.estimatingInfo.notesToTheEstimator
         };
       }

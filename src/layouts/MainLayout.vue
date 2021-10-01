@@ -1,6 +1,13 @@
 <template>
   <q-layout view="lhr lpR lfr">
     <CustomHeader @backButton="onBackButtonClick" />
+    <div
+      class="text-black
+    "
+    >
+      {{ $route.name }}
+    </div>
+
     <q-page-container>
       <router-view />
       <div id="navbar">
@@ -9,7 +16,6 @@
           :offset="[30, 18]"
           v-if="
             $route.name != 'add new leads' &&
-              $route.name != 'Add Claim' &&
               $route.name != 'create client' &&
               $route.name != 'edit  lead' &&
               $route.name != 'vendors' &&
@@ -29,7 +35,8 @@
               $route.name != 'lead details' &&
               $route.name != 'Leads' &&
               $route.name != 'claim details' &&
-              $route.name != 'dashboard'
+              $route.name != 'dashboard' &&
+              $route.name != 'Add Claim'
           "
         >
           <div class="dot" v-if="checkUserRoleType() == false">
@@ -71,7 +78,6 @@ export default {
   },
   methods: {
     ...mapMutations(['isLastRouteEdit']),
-
     checkUserRoleType() {
       if (
         getCurrentUser().attributes.roles[0].machineValue == 'estimator' ||
@@ -98,6 +104,10 @@ export default {
         this.$router.go(-1);
       } else if (route == 'add-lead') {
         this.$router.go(-1);
+      } else if (route == 'mortgage-details') {
+        this.$router.push('/mortgages');
+      } else if (route == 'add-client' || 'mortgages' || 'carriers') {
+        this.$router.push('/dashboard');
       } else if (
         (route == 'claim-summary' && this.userRole == 'estimator') ||
         this.userRole == 'vendor'

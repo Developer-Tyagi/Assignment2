@@ -135,12 +135,12 @@
         </div>
       </div>
       <p
-        class="form-heading q-mb-none"
+        class="q-mt-sm form-heading q-mb-none"
         v-if="estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle"
       >
         Scope time
       </p>
-      <q-input
+      <!-- <q-input
         v-if="estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle"
         dense
         v-model="estimatingInfo.scopeTimeNeeded"
@@ -149,8 +149,30 @@
         class="input-style input-field time-input"
         type="time"
         style="outline: none"
-      />
+      /> -->
+      <div class="row q-py-sm">
+        <q-input
+          v-if="estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle"
+          class="input-style hours-input-style input-field"
+          borderless
+          type="number"
+          v-model="estimatingInfo.scopeTimeNeededInHours"
+          min="0"
+          max="24"
+          style="width:85px;"
+          placeholder="HH"
+        />
 
+        <q-select
+          borderless
+          label="MM"
+          style="width:91px;"
+          class="input-style text-center minute-select input-field q-ml-md q-mt-sm"
+          v-if="estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle"
+          :options="options"
+          v-model="estimatingInfo.scopeTimeNeededInMinutes"
+        />
+      </div>
       <q-input
         v-if="estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle"
         dense
@@ -429,7 +451,7 @@ export default {
   data() {
     return {
       searchText: '',
-
+      options: ['0', '15', '30', '45'],
       addEstimatorDialog: false,
       estimatorsListDialog: false,
       addEstimatorDialogInfo: {

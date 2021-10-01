@@ -205,3 +205,18 @@
 .q-toggle__inner--truthy {
   color: $primary;
 }
+.minute-select {
+  .q-field__after,
+  .q-field__append {
+    padding-right: 0px;
+  }
+}
+
+.hours-input-style {
+  .q-field__native,
+  .q-field__prefix,
+  .q-field__suffix,
+  .q-field__input {
+    padding: 0px 15px;
+  }
+}
