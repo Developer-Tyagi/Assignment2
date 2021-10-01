@@ -4,9 +4,7 @@
     <div
       class="text-black
     "
-    >
-      {{ $route.name }}
-    </div>
+    ></div>
 
     <q-page-container>
       <router-view />

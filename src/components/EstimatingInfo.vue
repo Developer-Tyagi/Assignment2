@@ -140,16 +140,7 @@
       >
         Scope time
       </p>
-      <!-- <q-input
-        v-if="estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle"
-        dense
-        v-model="estimatingInfo.scopeTimeNeeded"
-        placeholder="Scope time needed"
-        borderless
-        class="input-style input-field time-input"
-        type="time"
-        style="outline: none"
-      /> -->
+
       <div class="row q-py-sm">
         <q-input
           v-if="estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle"
