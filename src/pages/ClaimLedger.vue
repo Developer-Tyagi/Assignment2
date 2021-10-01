@@ -916,14 +916,20 @@
                     { label: ' %', value: 'percentage' },
                     { value: 'update', icon: 'update' }
                   ]"
+                  @click="
+                    (partialCompanyValue = ''),
+                      (addDisbursement.companyFee = '')
+                  "
                 ></q-btn-toggle>
               </div>
 
               <div v-if="feesType == 'percentage'" class="row justify-between">
-                <span class="q-mt-sm  heading-light">Company Fee</span>
+                <span class="q-mt-sm  heading-light"
+                  >Company Fee {{ partialCompanyValue }}</span
+                >
                 <q-input
                   dense
-                  v-model="partialCompanyValue"
+                  v-model.number="partialCompanyValue"
                   mask="#.#"
                   type="number"
                   @input="CalculationOfCompanyFee(partialCompanyValue)"
@@ -939,7 +945,7 @@
                   <span class="q-mt-md  heading-light">Company Fee</span>
                   <q-input
                     dense
-                    v-model="companyPerHour"
+                    v-model.number="companyPerHour"
                     type="number"
                     @blur="hourToFeeCalculation"
                     @input="CalculationOfCompanyFee(partialCompanyValue)"
@@ -954,7 +960,7 @@
 
                   <q-input
                     dense
-                    v-model="partialCompanyValue"
+                    v-model.number="partialCompanyValue"
                     mask="#.#"
                     type="number"
                     prefix="$"
@@ -971,9 +977,10 @@
 
               <div v-else class="row justify-between">
                 <span class="q-mt-sm  heading-light">Company Fee</span>
+
                 <q-input
                   dense
-                  v-model="addDisbursement.companyFee"
+                  v-model.number="addDisbursement.companyFee"
                   @input="setCompanyTotalAmount(addDisbursement.companyFee)"
                   mask="#.#"
                   type="number"
@@ -1419,7 +1426,8 @@ export default {
       'deleteSinglePayment',
       'editPayment',
       'editExpenses',
-      'deleteSingleDisbursement'
+      'deleteSingleDisbursement',
+      'editClaimInfo'
     ]),
     onPhoneNumberClick,
     onEmailClick,
@@ -1523,6 +1531,11 @@ export default {
       this.companyPerHour = 0;
       this.totalExpensesOfClient = this.totalExpensesOfClientAndCompany = this.totalExpensesOfCompany = 0;
       this.addDisbursement.amountToDisbuse = this.account.pendingDisbursement;
+
+      if (this.addDisbursement.amountToDisbuse === 0) {
+        this.addDisbursement.companyFee = this.partialCompanyValue = this.account.fees.rate = 0;
+      }
+
       this.addDisbursement.companyFee = this.partialCompanyValue = this.account.fees.rate;
       this.netExpenseToPayByClient =
         this.addDisbursement.amountToDisbuse - this.addDisbursement.companyFee;
@@ -1894,6 +1907,23 @@ export default {
         }
       };
       const success = await this.createDisbursement(payload);
+      // Calling the info API for updating the Company fee on Save
+      const updatePayload = {
+        id: this.selectedClaimId,
+        data: {
+          contractInfo: {
+            fees: {
+              type: this.feesType,
+              rate:
+                this.feesType == 'percentage' && this.feesType == 'updated'
+                  ? this.partialCompanyValue
+                  : this.addDisbursement.companyFee
+            }
+          }
+        }
+      };
+
+      await this.editClaimInfo(updatePayload);
       if (success) {
         await this.getAllDisbursements(this.selectedClaimId);
         await this.getAccountDetails(this.selectedClaimId);
