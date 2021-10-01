@@ -159,14 +159,14 @@
           v-model="estimatingInfo.scopeTimeNeededInHours"
           min="0"
           max="24"
-          style="width:85px;"
+          style="width:90px;"
           placeholder="HH"
         />
 
         <q-select
           borderless
           label="MM"
-          style="width:91px;"
+          style="width:93px;"
           class="input-style text-center minute-select input-field q-ml-md q-mt-sm"
           v-if="estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle"
           :options="options"
