@@ -185,7 +185,7 @@
         />
         <q-separator class="q-my-md bg-primary" />
         <p class="text-black q-ml-md" style="opacity: 50%; font-size: 12px">
-          Claimguru Version 1.0
+          Claimguru Version {{ this.version }}
         </p>
       </div>
     </q-drawer>
@@ -202,12 +202,14 @@ import {
 import { Capacitor } from '@capacitor/core';
 import { removeFirebaseToken } from '@utils/firebase';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
+import { appVersion } from '../Version';
 
 export default {
   name: 'CustomHeader',
 
   data() {
     return {
+      version: appVersion,
       user: {
         name: ''
       },
