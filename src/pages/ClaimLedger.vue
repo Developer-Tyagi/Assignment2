@@ -1535,6 +1535,7 @@ export default {
       if (this.addDisbursement.amountToDisbuse === 0) {
         this.addDisbursement.companyFee = this.partialCompanyValue = this.account.fees.rate = 0;
       }
+
       this.addDisbursement.companyFee = this.partialCompanyValue = this.account.fees.rate;
       this.netExpenseToPayByClient =
         this.addDisbursement.amountToDisbuse - this.addDisbursement.companyFee;
@@ -1913,11 +1914,15 @@ export default {
           contractInfo: {
             fees: {
               type: this.feesType,
-              rate: this.partialCompanyValue
+              rate:
+                this.feesType == 'percentage' && this.feesType == 'updated'
+                  ? this.partialCompanyValue
+                  : this.addDisbursement.companyFee
             }
           }
         }
       };
+
       await this.editClaimInfo(updatePayload);
       if (success) {
         await this.getAllDisbursements(this.selectedClaimId);
