@@ -945,7 +945,7 @@
                   <span class="q-mt-md  heading-light">Company Fee</span>
                   <q-input
                     dense
-                    v-model="companyPerHour"
+                    v-model.number="companyPerHour"
                     type="number"
                     @blur="hourToFeeCalculation"
                     @input="CalculationOfCompanyFee(partialCompanyValue)"
@@ -960,7 +960,7 @@
 
                   <q-input
                     dense
-                    v-model="partialCompanyValue"
+                    v-model.number="partialCompanyValue"
                     mask="#.#"
                     type="number"
                     prefix="$"
@@ -980,7 +980,7 @@
 
                 <q-input
                   dense
-                  v-model="addDisbursement.companyFee"
+                  v-model.number="addDisbursement.companyFee"
                   @input="setCompanyTotalAmount(addDisbursement.companyFee)"
                   mask="#.#"
                   type="number"
