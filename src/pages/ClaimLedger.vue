@@ -1031,7 +1031,7 @@
                 <span class="heading-light col-8"
                   >Expenses Payable by Client</span
                 >
-                $ {{ totalExpensesOfClient - alreadyPaidByClient }}
+                $ {{ clientAmount[0] ? clientAmount[0] : 0 }}
               </div>
               <div>
                 <q-card
@@ -1108,7 +1108,8 @@
                 <span class="heading-light col-8"
                   >Expenses Payable by Company</span
                 >
-                $ {{ totalExpensesOfCompany - alreadyPaidByCompany }}
+
+                $ {{ companyAmounts[0] ? companyAmounts[0] : 0 }}
               </div>
               <div>
                 <q-card
