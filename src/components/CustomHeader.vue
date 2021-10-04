@@ -385,15 +385,17 @@ export default {
     },
 
     createSidebarMenuItems() {
-      this.pageAccess.forEach(item => {
-        let obj = this.linksData.find(link => link.key === item);
-        if (!this.isEmpty(obj)) {
-          let index = this.sidebarItems.findIndex(x => x.key === obj.key);
-          if (index < 0) {
-            this.sidebarItems.push(obj);
-          }
+      const PageAccessItems = new Set();
+      //function use to reshuffle the order of the menubar items.
+      for (let i = 0; i < this.pageAccess.length; i++) {
+        PageAccessItems.add(this.pageAccess[i]);
+      }
+
+      for (let i = 0; i < this.linksData.length; i++) {
+        if (PageAccessItems.has(this.linksData[i].key)) {
+          this.sidebarItems.push(this.linksData[i]);
         }
-      });
+      }
     }
   },
 
