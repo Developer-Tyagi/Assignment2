@@ -1616,22 +1616,12 @@ export default {
           estimatorID: this.estimatingInfo.estimatorID,
           scopeTimeNeeded:
             this.estimatingInfo.scopeTimeNeededInHours +
+            '.' +
             this.estimatingInfo.scopeTimeNeededInMinutes,
           notesToTheEstimator: this.estimatingInfo.notesToTheEstimator
         };
       }
-      if (
-        this.estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle &&
-        this.estimatingInfo.estimatorID
-      ) {
-        payload.estimatingInfo = {
-          estimatorID: this.estimatingInfo.estimatorID,
-          scopeTimeNeeded:
-            this.estimatingInfo.scopeTimeNeededInHours +
-            this.estimatingInfo.scopeTimeNeededInMinutes,
-          notesToTheEstimator: this.estimatingInfo.notesToTheEstimator
-        };
-      }
+
       if (
         this.expertVendorInfo.isAlreadyHiredVendor.length ||
         this.expertVendorInfo.isHiredByClaimguru.length

@@ -161,6 +161,10 @@
           class="input-style text-center minute-select input-field q-ml-md q-mt-sm"
           v-if="estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle"
           :options="options"
+          option-value="value"
+          option-label="key"
+          emit-value
+          map-options
           v-model="estimatingInfo.scopeTimeNeededInMinutes"
         />
       </div>
@@ -442,7 +446,13 @@ export default {
   data() {
     return {
       searchText: '',
-      options: ['0', '15', '30', '45'],
+      // this key-value pair is used for the Minutes entry in scope time field.
+      options: [
+        { key: '0', value: '0' },
+        { key: '15', value: '25' },
+        { key: '30', value: '50' },
+        { key: '45', value: '75' }
+      ],
       addEstimatorDialog: false,
       estimatorsListDialog: false,
       addEstimatorDialogInfo: {
