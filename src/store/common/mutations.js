@@ -153,3 +153,7 @@ export async function setOfflineUsers(state) {
 export async function setNotificationRouteTo(state, route) {
   state.notificationRouteTo = route;
 }
+
+export async function setCameraIcon(state, toShowCamera) {
+  state.toShowCamera = toShowCamera;
+}

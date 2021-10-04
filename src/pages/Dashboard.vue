@@ -209,6 +209,7 @@
             border-bottom-right-radius: 25px;
             box-shadow: 0px 3px 5px rgba(0, 0, 0, 1);
           "
+          @click="toCameraDialogBox()"
         >
           <div
             :class="[
@@ -339,6 +340,27 @@
     >
       <AddOptions />
     </q-dialog>
+    <q-dialog v-model="CameraDialogBox">
+      <q-card class="no-margin col-12" style="width: 100%">
+        <q-card-section>
+          <div class="row justify-center">
+            <div class="q-mr-lg column items-center">
+              <q-icon name="filter_center_focus" size="xl"></q-icon>
+              <div class=" text-black">Photo ID App</div>
+            </div>
+            <div
+              @click="toOpenCameraClaimListing"
+              class="q-ml-lg column items-center"
+            >
+              <q-icon name="photo_camera" size="xl"></q-icon>
+              <div class="text-balck">Camera</div>
+            </div>
+          </div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none"> </q-card-section>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 <script>
@@ -357,6 +379,7 @@ export default {
       selectClaimDialog: false,
       isClickable: false,
       openDialog: false,
+      CameraDialogBox: false,
       params: {
         favourite: ''
       }
@@ -372,10 +395,21 @@ export default {
       'getClaims',
       'getArchivedLeadsList'
     ]),
+    toCameraDialogBox() {
+      this.CameraDialogBox = !this.CameraDialogBox;
+    },
+    toOpenCameraClaimListing() {
+      this.selectClaimDialog = true;
+      this.setCameraIcon('true');
+    },
     onClickAddUpIcon() {
       this.openDialog = true;
     },
-    ...mapMutations(['setSelectedClaimId', 'setConvertedLead']),
+    ...mapMutations([
+      'setSelectedClaimId',
+      'setConvertedLead',
+      'setCameraIcon'
+    ]),
 
     onClickNewLead() {
       this.$store.commit('setShowConvertButton', true);

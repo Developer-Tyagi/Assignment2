@@ -70,7 +70,7 @@ export default {
     ...mapGetters(['isEdit'])
   },
   methods: {
-    ...mapMutations(['isLastRouteEdit']),
+    ...mapMutations(['isLastRouteEdit', 'setCameraIcon']),
 
     checkUserRoleType() {
       if (
@@ -105,6 +105,9 @@ export default {
         this.$router.push('/claims');
       } else if (route == 'claims') {
         this.$store.commit('setClaims');
+      } else if (route == 'vendor-document') {
+        this.setCameraIcon(''); //here we pass blank value means to hide camera option in vendorDocument page.
+        this.$router.push('/dashboard');
       } else {
         if (this.isEdit) {
           this.isLastRouteEdit(false);

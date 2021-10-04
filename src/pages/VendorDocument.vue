@@ -1,5 +1,10 @@
 <template>
   <div>
+    <div class="row q-mt-sm justify-center" v-if="toShowCamera != 'true'">
+      <q-badge color="primary">
+        OCR coming soon
+      </q-badge>
+    </div>
     <div class="stepper-heading q-ma-md q-ml-sm">
       Please Upload Vendor Documents
     </div>
@@ -40,14 +45,14 @@
             @change="onVendorFileInputClick"
           />
         </div>
-        <div class="column">
-          <img
-            class="q-ml-lg "
-            src="~assets/scanFile.svg"
-            style="width:50%;"
-            @click="onClickUploadButton"
-          />
-          <div class="form-heading text-center q-mt-xs q-mr-xs">Scan</div>
+        <!--toShowCamera is True only when we route from Camera Option in dashboard page and it will false when we route from Scan & Upload option in dashboard page-->
+        <div
+          @click="onClickUploadButton"
+          class="column"
+          v-if="toShowCamera == 'true'"
+        >
+          <img class="q-ml-lg " src="~assets/scanFile.svg" style="width:50%;" />
+          <div class="form-heading text-center q-mt-xs q-mr-xs">Camera</div>
         </div>
       </div>
     </q-card>
@@ -81,7 +86,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['vendorDocument', 'selectedClaimId'])
+    ...mapGetters(['vendorDocument', 'selectedClaimId', 'toShowCamera'])
   },
   created() {
     this.getVendorDocument(this.selectedClaimId);

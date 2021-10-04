@@ -10,6 +10,7 @@ export default function() {
     lossCauses: [],
     roleTypes: [],
     permissions: [],
+    toShowCamera: false,
     templates: [],
     fileRoleOptions: [
       { value: 'View Access', name: 'reader' },
