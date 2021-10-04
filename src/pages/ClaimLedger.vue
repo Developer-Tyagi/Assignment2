@@ -1190,30 +1190,30 @@
               </div>
               <div>
                 <q-card class="q-ma-xs q-pa-sm" v-if="personnel" flat bordered>
-                  <!-- <div class="flex column">
-                    <div class="col-6 row">
-                      <div class="col-4 q-pa-md bg-red"></div>
-                      <div class="col-4 q-pa-md bg-green"></div>
-                      <div class="col-4 q-pa-md bg-yellow"></div>
-                    </div>
-                    <div class="col-6 row">
-                      <div class="col-4 q-pa-md bg-pink"></div>
-                      <div class="col-4 q-pa-md bg-purple"></div>
-                      <div class="col-4 q-pa-md bg-green"></div>
-                    </div>
-                  </div> -->
                   <table class="full-width">
                     <tr>
                       <td style="width:15%;">
-                        Personnel
+                        P
                       </td>
-                      <!-- <td style="width:15%;">
-                        Role/Reason
-                      </td> -->
+
                       <td style="width:15%;">
                         Rate
                       </td>
-                      <td style="width:15%;"></td>
+                      <td style="width:10%;">
+                        <q-btn-toggle
+                          v-model="rateType"
+                          push
+                          glossy
+                          size="sm"
+                          toggle-color="primary"
+                          :options="[
+                            { label: ' $', value: 'dollar' },
+                            { label: ' %', value: 'percentage' },
+                            { value: 'update', icon: 'update' }
+                          ]"
+                        ></q-btn-toggle>
+                      </td>
+
                       <td style="width:15%;">
                         Due
                       </td>
@@ -1230,45 +1230,51 @@
                       class="heading-light"
                       v-for="(person, index) in personnel.personnel"
                     >
-                      <td>
+                      <td class="name-ellipsis">
                         {{ person.name }}
                       </td>
-                      <!-- <td>
-                        {{ person.role.value }}
-                      </td> -->
+
                       <td>
                         {{
                           person.fees && person.fees.rate ? person.fees.rate : 0
                         }}
                       </td>
-                      <td>
-                        <q-select
-                          v-model="person.fees.type"
-                          dense
-                          label="Type"
-                          borderless
-                          :options="rateTypes"
-                          map-options
-                          options-dense
-                          behavior="menu"
-                          emit-value
-                        />
+
+                      <td v-if="rateType === 'update'">
+                        <div style="width:50px">
+                          <q-input v-model.number="hourCal" dense outlined />
+                        </div>
                       </td>
-                      <td>
+                      *
+                      <td v-if="rateType === 'dollar'">
+                        {{ person.fees.rate }}
+                      </td>
+                      <td v-if="rateType === 'percentage'">
                         {{
-                          person.fees.type === 'dollar'
-                            ? person.fees.rate
-                            : (person.fees.rate * 100) /
-                              (totalExpensesOfCompany - alreadyPaidByCompany)
+                          (addDisbursement.companyFee -
+                            totalExpensesOfCompany -
+                            alreadyPaidByCompany) *
+                            (person.fees.rate / 1000)
                         }}
                       </td>
+                      <td v-if="rateType === 'update'">
+                        {{ person.fees.rate * hourCal }}
+                      </td>
+
                       <td>
                         <q-toggle
                           class="q-pt-sm"
                           size="xs"
                           v-model="personnelPayToggle[index].value"
                           @input="
-                            onPersonnelPaidToggleClick(index, person.fees.rate)
+                            onPersonnelPaidToggleClick(
+                              index,
+                              person.fees,
+                              (addDisbursement.companyFee -
+                                totalExpensesOfCompany -
+                                alreadyPaidByCompany) *
+                                (person.fees.rate / 1000)
+                            )
                           "
                         />
                       </td>
@@ -1411,10 +1417,11 @@ export default {
   },
   data() {
     return {
+      hourCal: '',
       commissions: [],
       personnelPaidAmount: [],
       personnelRateType: '',
-      rateTypes: ['dollar', 'percentage', 'hour'],
+      rateType: 'dollar',
       personnelPayToggle: [{ value: false }],
       currenPaymentID: '',
       currentDisbursementID: '',
@@ -1593,12 +1600,19 @@ export default {
     },
 
     // Toggle Button Function for Personnel
-    onPersonnelPaidToggleClick(index, rate) {
+    onPersonnelPaidToggleClick(index, fees, percentageValue) {
       if (this.personnelPayToggle[index].value) {
-        this.personnelPaidAmount[index] = rate;
+        if (this.rateType == 'percentage') {
+          this.personnelPaidAmount[index] = percentageValue;
+        } else if (this.rateType == 'dollar')
+          this.personnelPaidAmount[index] = fees.rate;
+      } else if (this.rateType == 'update') {
+        this.personnelPaidAmount[index] = fees.rate * this.hourCal;
       } else {
         this.personnelPaidAmount[index] = 0;
       }
+      this.netExpenseToPayByCompany =
+        this.netExpenseToPayByCompany - this.personnelPaidAmount[index];
     },
 
     /* Hour To Fees Calculation     */
@@ -1856,6 +1870,7 @@ export default {
     },
 
     onFillingCompany() {
+      console.log('son');
       let total = 0;
       for (var i in this.companyAmounts) {
         this.companyOnly[i].paid = parseInt(this.companyAmounts[i]);
@@ -2094,3 +2109,11 @@ export default {
   }
 };
 </script>
+<style lang="css">
+.name-ellipsis {
+  white-space: nowrap;
+  max-width: 50px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+</style>
