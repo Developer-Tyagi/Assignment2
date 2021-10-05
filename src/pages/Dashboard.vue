@@ -382,7 +382,7 @@ export default {
       selectClaimDialog: false,
       isClickable: false,
       openDialog: false,
-      CameraDialogBox: false,
+      cameraDialogBox: false,
       params: {
         favourite: ''
       }
