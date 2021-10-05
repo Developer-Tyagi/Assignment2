@@ -11,6 +11,7 @@ export default function() {
     roleTypes: [],
     permissions: [],
     templates: [],
+    paidUsers: [],
     fileRoleOptions: [
       { value: 'View Access', name: 'reader' },
       { value: 'Edit Access', name: 'writer' }

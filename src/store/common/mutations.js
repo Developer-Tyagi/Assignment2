@@ -153,3 +153,11 @@ export async function setOfflineUsers(state) {
 export async function setNotificationRouteTo(state, route) {
   state.notificationRouteTo = route;
 }
+
+export function setPaidUsers(state, data = []) {
+  state.paidUsers = data.map(allUser => ({
+    attributes: allUser.attributes,
+    name: allUser.attributes.name,
+    id: allUser.id
+  }));
+}
