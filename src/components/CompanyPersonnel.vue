@@ -214,7 +214,7 @@ export default {
     ])
   },
   mounted() {
-    this.getPairUsers();
+    this.getPaidUsers();
   },
 
   methods: {
@@ -223,7 +223,7 @@ export default {
       'addCompanyPersonnel',
       'getAllUsers',
       'getClaimRoles',
-      'getPairUsers'
+      'getPaidUsers'
     ]),
     validateDate,
 

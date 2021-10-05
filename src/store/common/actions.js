@@ -879,7 +879,7 @@ export async function syncLocalDataBase({ dispatch, state }) {
   await clearLocalStorage();
 }
 
-export async function getPairUsers({ commit, dispatch }) {
+export async function getPaidUsers({ commit, dispatch }) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.get('/users?isPaid=true');
