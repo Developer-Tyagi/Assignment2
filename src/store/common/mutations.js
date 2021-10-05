@@ -154,6 +154,8 @@ export async function setNotificationRouteTo(state, route) {
   state.notificationRouteTo = route;
 }
 
+// this function will take the value 'true' if we redirect from the camera option in dashboard page ,and will false when we press back button ,
+//this helps us to check weather the user rediect from the camera option  or scan and upload option from the dashboard page.
 export async function setCameraIcon(state, toShowCamera) {
   state.toShowCamera = toShowCamera;
 }

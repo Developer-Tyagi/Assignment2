@@ -344,7 +344,10 @@
       <q-card class="no-margin col-12" style="width: 100%">
         <q-card-section>
           <div class="row justify-center">
-            <div class="q-mr-lg column items-center">
+            <div
+              class="q-mr-lg column items-center"
+              @click="toRedirectTOPhotoIdApp()"
+            >
               <q-icon name="filter_center_focus" size="xl"></q-icon>
               <div class=" text-black">Photo ID App</div>
             </div>
@@ -395,6 +398,7 @@ export default {
       'getClaims',
       'getArchivedLeadsList'
     ]),
+    // this function is use for the opening and closing of dialog box that show photoId App and Camera option feature.
     toCameraDialogBox() {
       this.CameraDialogBox = !this.CameraDialogBox;
     },
@@ -410,6 +414,11 @@ export default {
       'setConvertedLead',
       'setCameraIcon'
     ]),
+    //this function is used to redirect to the photoID App .
+    toRedirectTOPhotoIdApp() {
+      window.location =
+        'https://play.google.com/store/apps/details?id=com.uscope.photoid&hl=en_IN&gl=US';
+    },
 
     onClickNewLead() {
       this.$store.commit('setShowConvertButton', true);

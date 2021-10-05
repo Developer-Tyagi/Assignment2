@@ -70,7 +70,8 @@ export default {
     ...mapGetters(['isEdit'])
   },
   methods: {
-    ...mapMutations(['isLastRouteEdit', 'setCameraIcon']),
+    ...mapMutations(['isLastRouteEdit', 'setCameraIcon']), //'setCameraIcon' is a function which check weather we need to show the camera Icon on Vendor Document Page  or Not , It return True when we redirect from the
+    //the camera option  in dashboard page and it is false when we redirect from scan and upload option
 
     checkUserRoleType() {
       if (
