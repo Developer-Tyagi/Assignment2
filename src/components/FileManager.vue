@@ -662,34 +662,6 @@ export default {
     };
   },
   async created() {
-    // key value pair for tokens
-    this.tokens = [
-      { key: '{{.Claim.Number}}', value: this.claim.number },
-      { key: '{{.Claim.Client.Name}}', value: this.claim.client.fname },
-      { key: '{{.Client.Email}}', value: this.claim.client.email },
-      {
-        key: '{{.Claim.PolicyInfo.Number}}',
-        value: this.claim.policyInfo.number
-      },
-      { key: '{{.Claim.Status.Value}}', value: this.claim.status.value },
-      { key: '{{.Carrier.Name}}', value: this.claim.policyInfo.carrier.value },
-      { key: '{{.Carrier.Email}}', value: this.claim.policyInfo.carrier.email },
-      {
-        key: '{{.Claim.LossInfo.Cause.Value}}',
-        value: this.claim.lossInfo.cause.value
-      },
-
-      { key: '{{.Claim.LossInfo.Date}}', value: this.claim.lossInfo.date },
-      {
-        key: '{{.Claim.LossInfo.Cause.Desc}}',
-        value: this.claim.lossInfo.cause.desc
-      },
-
-      { key: '{{localTZ .Claim.PolicyInfo.EffectiveDate}}', value: '' },
-      { key: '{{localTZ .Claim.PolicyInfo.ExpirationDate}}', value: '' },
-
-      { key: '{{.Claim.FileNumber}}', value: this.claim.fileNumber }
-    ];
     // console.log(this.claim, 'claim');
     const { data } = await request.get(
       `/documents?parent_id=${this.directoryId}`
@@ -706,6 +678,70 @@ export default {
     }));
     this.getTemplates();
     await this.getAllActorToClaim(this.selectedClaimId);
+    // key value pair for tokens
+    this.tokens = [
+      //Carrier Tokens
+      { key: '{{.Carrier.Name}}', value: this.claim.policyInfo.carrier.value },
+      { key: '{{.Carrier.Email}}', value: this.claim.policyInfo.carrier.email },
+
+      //Client Tokens
+      { key: '{{.Client.Email}}', value: this.claim.client.email },
+      { key: '{{.Client.Name}}', value: this.claim.client.fname },
+      { key: '{{.Client.PhoneNumber.Number}}', value: '' },
+      { key: '{{.Client.Fax.Number}}', value: '' },
+      { key: '{{.Client.Cell.Number}}', value: '' },
+      { key: '{{.Client.Address.Address1}}', value: '' },
+      { key: '{{.Client.Address.Address2}}', value: '' },
+      { key: '{{.Client.Address.AddressRegion}}', value: '' },
+      { key: '{{.Client.Address.PostalCode}}', value: '' },
+      { key: '{{.Client.Address.AddressCountry}}', value: '' },
+      { key: '{{.Client.Address.AddressLocality}}', value: '' },
+
+      // Claim Tokens
+
+      { key: '{{.Claim.Number}}', value: this.claim.number },
+      { key: '{{.Claim.Client.Name}}', value: this.claim.client.fname },
+      { key: '{{.Claim.FileNumber}}', value: this.claim.fileNumber },
+      { key: '{{.Claim.Status.Value}}', value: this.claim.status.value },
+      {
+        key: '{{.Claim.PolicyInfo.Number}}',
+        value: this.claim.policyInfo.number
+      },
+      { key: '{{localTZ .Claim.PolicyInfo.EffectiveDate}}', value: '' },
+      { key: '{{localTZ .Claim.PolicyInfo.ExpirationDate}}', value: '' },
+      { key: '{{.Claim.LossInfo.Date}}', value: this.claim.lossInfo.date },
+      {
+        key: '{{.Claim.LossInfo.Cause.Value}}',
+        value: this.claim.lossInfo.cause.value
+      },
+      {
+        key: '{{.Claim.LossInfo.Cause.Desc}}',
+        value: this.claim.lossInfo.cause.desc
+      },
+      // Adjuster Tokens
+
+      { key: '{{.Adjuster.Name}}', value: '' },
+      { key: '{{.Adjuster.Email}}', value: '' },
+      { key: '{{.Adjuster.LicenseNo}}', value: '' },
+      { key: '{{.Adjuster.PhoneNumber.Number}}', value: '' },
+      { key: '{{.Adjuster.Fax.Number}}', value: '' },
+      { key: '{{.Adjuster.Cell.Number}}', value: '' },
+      { key: '{{.Adjuster.Address.Address1}}', value: '' },
+      { key: '{{.Adjuster.Address.Address2}}', value: '' },
+      { key: '{{.Adjuster.Address.AddressRegion}}', value: '' },
+      { key: '{{.Adjuster.Address.PostalCode}}', value: '' },
+      { key: '{{.Adjuster.Address.AddressCountry}}', value: '' },
+      { key: '{{.Adjuster.Address.AddressLocality}}', value: '' },
+
+      // Claim Property Tokens
+
+      { key: '{{.Claim.LossInfo.Property.Address1}}', value: '' },
+      { key: '{{.Claim.LossInfo.Property.Address2}}', value: '' },
+      { key: '{{.Claim.LossInfo.Property.AddressRegion}}', value: '' },
+      { key: '{{.Claim.LossInfo.Property.PostalCode}}', value: '' },
+      { key: '{{.Claim.LossInfo.Property.AddressCountry}}', value: '' },
+      { key: '{{.Claim.LossInfo.Property.AddressLocality}}', value: '' }
+    ];
   },
   computed: {
     ...mapGetters([
@@ -1210,21 +1246,21 @@ export default {
       var regex = /\{{(.*?)\}}/g;
       var match;
       while ((match = regex.exec(result.name.value)) != null) {
-        this.tokenArray.push(match[0]);
+        if (!this.tokenArray.includes(match[0])) {
+          this.tokenArray.push(match[0]);
+        }
       }
-      console.log(this.tokenArray, 'tt');
+
+      var testString = resultString;
       this.tokenArray.forEach(token => {
         let result = this.tokens.find(o => o.key === token);
-        // console.log(result, 'result');
+
         if (result && result.value !== undefined) {
-          console.log(token, result.value);
-          this.finalDocumentString += resultString.replaceAll(
-            token,
-            result.value
-          );
-          // console.log(this.finalDocumentString, 'ff');
+          testString = testString.replaceAll(token, result.value);
         }
       });
+
+      this.finalDocumentString = testString;
     },
     async onClickGenerateDocument() {
       if (this.isOnline) {
@@ -1269,6 +1305,7 @@ export default {
       const id = makeId();
 
       var doc = new jsPDF();
+
       await doc.html(documentString, {
         callback: function(doc) {
           doc.save('contract_' + id + '.pdf');
