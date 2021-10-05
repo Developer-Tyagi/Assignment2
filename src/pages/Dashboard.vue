@@ -340,7 +340,7 @@
     >
       <AddOptions />
     </q-dialog>
-    <q-dialog v-model="CameraDialogBox">
+    <q-dialog v-model="cameraDialogBox">
       <q-card class="no-margin col-12" style="width: 100%">
         <q-card-section>
           <div class="row justify-center">
@@ -400,7 +400,7 @@ export default {
     ]),
     // this function is use for the opening and closing of dialog box that show photoId App and Camera option feature.
     toCameraDialogBox() {
-      this.CameraDialogBox = !this.CameraDialogBox;
+      this.cameraDialogBox = !this.cameraDialogBox;
     },
     toOpenCameraClaimListing() {
       this.selectClaimDialog = true;
