@@ -252,9 +252,10 @@
         />
         <div class="text-center text-white">PROFILE</div>
       </div>
-      <div class="column">
-        <img src="~assets/SETTINGS.svg" style="width: 100%" />
-        <div class="text-center text-white">SETTINGS</div>
+      <div @click="$router.push('/reports')" class="column items-center">
+        <img src="~assets/report_dashboard_icon.svg" style="width: 80%;" />
+
+        <div class="text-center text-white">REPORTS</div>
       </div>
       <div class="column">
         <img
