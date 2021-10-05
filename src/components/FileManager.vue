@@ -5,9 +5,9 @@
       v-if="generateClaimDocument"
     >
       <div class="text-bold q-mt-sm q-ml-sm">Template Type</div>
-      <div class="bg-red">
+      <!-- <div class="bg-red">
         <a download="file.pdf" id="linkId">SOnali</a>
-      </div>
+      </div> -->
       <q-select
         dense
         v-model="templatetype.value"
@@ -609,6 +609,7 @@ const { Camera } = Plugins;
 import CustomBar from 'components/CustomBar';
 import { setNotification } from 'src/store/common/mutations';
 import { validateEmail } from '@utils/validation';
+import { makeId } from 'src/store/leads/actions';
 
 export default {
   name: 'FileManager',
@@ -617,6 +618,7 @@ export default {
 
   data() {
     return {
+      finalDocumentString: '',
       tokenArray: [],
       document: '',
       sendToRadio: '',
@@ -662,25 +664,26 @@ export default {
   async created() {
     // key value pair for tokens
     this.tokens = [
-      { key: '.Claim.Number', value: this.claim.number },
-      { key: '.Claim.Client.Name', value: this.claim.client.fname },
-      { key: '.Claim.PolicyInfo.Number', value: this.claim.policyInfo.number },
-      { key: '.Claim.Status.Value', value: this.claim.status.value },
-      { key: '.Carrier.Name', value: this.claim.policyInfo.carrier.name },
-      { key: '.Carrier.Email', value: this.claim.policyInfo.carrier.email },
-      { key: '.Claim.LossInfo.Cause.Value', value: '' },
-      { key: '.Claim.PolicyInfo.Number', value: '' },
-      { key: '.Claim.LossInfo.Date', value: '' },
-      { key: '.Claim.LossInfo.Cause.Desc', value: '' },
-      { key: '.Claim.LossInfo.Cause.Value', value: '' },
-      { key: 'localTZ .Claim.PolicyInfo.EffectiveDate', value: '' },
-      { key: 'localTZ .Claim.PolicyInfo.ExpirationDate', value: '' },
-      { key: '.Claim.Client.Name', value: '' },
-      { key: '.Claim.FileNumber}', value: '' },
-      { key: '.Claim.Client.Name', value: '' },
-      { key: '.Claim.PolicyInfo.Number', value: '' }
+      { key: '{{.Claim.Number}}', value: this.claim.number },
+      { key: '{{.Claim.Client.Name}}', value: this.claim.client.fname },
+      {
+        key: '{{.Claim.PolicyInfo.Number}}',
+        value: this.claim.policyInfo.number
+      },
+      { key: '{{.Claim.Status.Value}}', value: this.claim.status.value },
+      { key: '{{.Carrier.Name}}', value: this.claim.policyInfo.carrier.name },
+      { key: '{{.Carrier.Email}}', value: this.claim.policyInfo.carrier.email },
+      { key: '{{.Claim.LossInfo.Cause.Value}}', value: '' },
+      { key: '{{.Claim.PolicyInfo.Number}}', value: '' },
+      { key: '{{.Claim.LossInfo.Date}}', value: '' },
+      { key: '{{.Claim.LossInfo.Cause.Desc}}', value: '' },
+      { key: '{{.Claim.LossInfo.Cause.Value}}', value: '' },
+      { key: '{{localTZ .Claim.PolicyInfo.EffectiveDate}}', value: '' },
+      { key: '{{localTZ .Claim.PolicyInfo.ExpirationDate}}', value: '' },
+      { key: '{{.Claim.Client.Name}}', value: '' },
+      { key: '{{.Claim.FileNumber}}', value: this.claim.fileNumber }
     ];
-    console.log(this.claim);
+    console.log(this.claim, 'claim');
     const { data } = await request.get(
       `/documents?parent_id=${this.directoryId}`
     );
@@ -1183,7 +1186,7 @@ export default {
       this.depth.splice(index + 1);
       this.setLoading(false);
     },
-    setTypes(value) {
+    async setTypes(value) {
       const obj = this.templateOptions.find(item => {
         return item.name === value;
       });
@@ -1193,19 +1196,25 @@ export default {
         return template.name.machineValue === this.templatetype.machineValue;
       });
 
+      var resultString = result.name.value;
+
       var regex = /\{{(.*?)\}}/g;
 
       var match;
       while ((match = regex.exec(result.name.value)) != null) {
-        this.tokenArray.push(match[1]);
+        this.tokenArray.push(match[0]);
       }
-
+      // var ss;
       this.tokenArray.forEach(token => {
         let result = this.tokens.find(o => o.key === token);
-        token = token.replace(token, result.value);
-        console.log(token, 'token');
+
+        if (result && result.value !== 'undefined') {
+          this.finalDocumentString += resultString.replaceAll(
+            token,
+            result.value
+          );
+        }
       });
-      console.log(this.tokenArray, 'token updated');
     },
     async onClickGenerateDocument() {
       if (this.isOnline) {
@@ -1241,25 +1250,19 @@ export default {
           response.attributes.directoryName;
         this.setLoading(false);
       } else {
-        this.convertHtmlToPdf(this.templates[0].name.value);
+        this.convertHtmlToPdf(this.finalDocumentString);
       }
     },
 
     //function for converting HTML  to PDF with the token replacement
-    async convertHtmlToPdf(tokenValue) {
-      var regExp = /\{{([^)]+)\}}/;
-      var matches = regExp.exec(this.apiTokens);
-
-      if (matches[1] == '.Claim.Status.Value') {
-        var result = tokenValue.replace(
-          '.Claim.Status.Value',
-          this.claim.status.value
-        );
-      }
+    async convertHtmlToPdf(documentString) {
+      const id = makeId();
+      console.log(id, 'id');
       var doc = new jsPDF();
-      await doc.html(result, {
+      await doc.html(documentString, {
         callback: function(doc) {
-          this.document = doc.save('contract.pdf');
+          console.log(id, 'id is in callback');
+          this.document = doc.save('contract_' + id + '.pdf');
         },
         x: 10,
         y: 10
@@ -1271,7 +1274,6 @@ export default {
         )
       ) {
         var blob = doc.output('datauri');
-        console.log(blob, 'blob');
       } else {
         doc.save('filename.pdf');
       }
@@ -1279,7 +1281,7 @@ export default {
       const payload = {
         document: this.document
       };
-      console.log(payload, 'payload');
+
       // await this.addTemplateLocal(payload);
       this.document = '';
     },
