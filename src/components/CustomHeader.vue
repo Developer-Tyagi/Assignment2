@@ -55,7 +55,7 @@
           aria-label="Menu"
           @click="onMenuButtonClick"
           v-if="
-            ($q.screen.width > 2733 &&
+            ($q.screen.width > 1600 &&
               ($route.name === 'dashboard' ||
                 $route.name === 'clients' ||
                 $route.name === 'leads dashboard' ||
@@ -67,7 +67,7 @@
                 $route.name === 'admin' ||
                 $route.name === 'claims' ||
                 $route.name === 'configuration')) ||
-              ($q.screen.width < 2733 && $route.name === 'dashboard')
+              ($q.screen.width < 1600 && $route.name === 'dashboard')
           "
         ></q-btn>
         <q-icon
@@ -77,7 +77,6 @@
           v-else
           class="button-50"
         />
-
         <div class="text-uppercase text-bold  q-mx-auto">
           <span v-if="$route.name == 'Leads'">{{ converted }}</span>
           <span class="text-white"> {{ $route.name }} </span>
@@ -153,9 +152,9 @@
               v-bind="link"
               class="q-mt-md bg-white rounded-sidebar q-px-none"
               v-if="
-                (link.title != 'Admin' || $q.screen.width > 2733) &&
-                  (link.title != 'Manage Users' || $q.screen.width > 2733) &&
-                  (link.title != 'Configuration' || $q.screen.width > 2733)
+                (link.title != 'Admin' || $q.screen.width > 1600) &&
+                  (link.title != 'Manage Users' || $q.screen.width > 1600) &&
+                  (link.title != 'Configuration' || $q.screen.width > 1600)
               "
             >
               <q-item-section @click="onClickMenuItem(link.title)">
@@ -186,7 +185,7 @@
         />
         <q-separator class="q-my-md bg-primary" />
         <p class="text-black q-ml-md" style="opacity: 50%; font-size: 12px">
-          Claimguru Version 1.0
+          Claimguru Version {{ this.version }}
         </p>
       </div>
     </q-drawer>
@@ -203,16 +202,18 @@ import {
 import { Capacitor } from '@capacitor/core';
 import { removeFirebaseToken } from '@utils/firebase';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
+import { appVersion } from '../Version';
 
 export default {
   name: 'CustomHeader',
 
   data() {
     return {
+      version: appVersion,
       user: {
         name: ''
       },
-      isLeftSidePanelOpen: true,
+      isLeftSidePanelOpen: false,
       intViewportWidth: 0,
       linksData: [
         {
@@ -223,11 +224,11 @@ export default {
           description: 'View Dashboard and details'
         },
         {
-          title: 'Leads',
-          key: 'leads',
-          link: '/leads-dashboard',
-          icon: 'LEADS_menu.svg',
-          description: 'View Lead Dashboard, Add New Lead and Manage Leads.'
+          title: 'Claims',
+          key: 'claims',
+          link: '/claims',
+          icon: 'claim_menu.svg',
+          description: 'View, Add and Manage Claims.'
         },
         {
           title: 'Clients',
@@ -237,18 +238,13 @@ export default {
           description: 'View, Add and Manage Clients.'
         },
         {
-          title: 'Claims',
-          key: 'claims',
-          link: '/claims',
-          icon: 'claim_menu.svg',
-          description: 'View, Add and Manage Claims.'
+          title: 'Leads',
+          key: 'leads',
+          link: '/leads-dashboard',
+          icon: 'LEADS_menu.svg',
+          description: 'View Lead Dashboard, Add New Lead and Manage Leads.'
         },
-        // {
-        //   title: "Companies",
-        //   link: "/companies",
-        //   description:
-        //     "View Insurance and Mortgage Companies, Add and Manage New Companies."
-        // },
+
         {
           title: 'Vendors',
           key: 'vendors',
@@ -263,17 +259,20 @@ export default {
           icon: 'carriers_menu.svg',
           description: 'View, Add and Manage all types of Carriers.'
         },
-        // {
-        //   title: 'Settings',
-        //   link: '/settings',
-        //   description: 'Setup My Schedule, Type of Inspection etc.'
-        // },
+
         {
           title: 'Mortgages',
           key: 'mortgages',
           link: '/mortgages',
           icon: 'mortgage_menu.svg',
           description: 'View, Add and Manage all types of Mortgages.'
+        },
+        {
+          title: 'Configuration',
+          key: 'configuration',
+          link: '/configuration',
+          icon: 'configuration_big.svg',
+          description: 'View, Add and Manage all types of configuration.'
         },
         {
           title: 'Reports',
@@ -296,13 +295,7 @@ export default {
           icon: 'manage_users_big.svg',
           description: 'View, Add and Manage all types of Vendors.'
         },
-        {
-          title: 'Configuration',
-          key: 'configuration',
-          link: '/configuration',
-          icon: 'configuration_big.svg',
-          description: 'View, Add and Manage all types of configuration.'
-        },
+
         {
           title: 'Profile',
           key: 'profile',
@@ -352,7 +345,7 @@ export default {
         };
         this.getActiveLeadsList(payload);
         this.getArchivedLeadsList();
-      } else if ((name = 'Clients')) {
+      } else if (name == 'Clients') {
         const payload = {
           name: '',
           status: ''
@@ -392,15 +385,17 @@ export default {
     },
 
     createSidebarMenuItems() {
-      this.pageAccess.forEach(item => {
-        let obj = this.linksData.find(link => link.key === item);
-        if (!this.isEmpty(obj)) {
-          let index = this.sidebarItems.findIndex(x => x.key === obj.key);
-          if (index < 0) {
-            this.sidebarItems.push(obj);
-          }
+      const PageAccessItems = new Set();
+      //function use to reshuffle the order of the menubar items.
+      for (let i = 0; i < this.pageAccess.length; i++) {
+        PageAccessItems.add(this.pageAccess[i]);
+      }
+
+      for (let i = 0; i < this.linksData.length; i++) {
+        if (PageAccessItems.has(this.linksData[i].key)) {
+          this.sidebarItems.push(this.linksData[i]);
         }
-      });
+      }
     }
   },
 
@@ -428,8 +423,8 @@ export default {
       await this.getAccess();
       this.createSidebarMenuItems();
     }
-    if (this.$q.screen.width < 2733) {
-      this.isLeftSidePanelOpen = false;
+    if (this.$q.screen.width > 1600) {
+      this.isLeftSidePanelOpen = true;
     }
   }
 };
@@ -470,8 +465,7 @@ export default {
   box-shadow: 1px 3px 2px 1px #e0e0e0;
 }
 .toolbar-shadow {
-  box-shadow: 0 52px 28px -27px rgb(0 0 0 / 20%),
-    0 76px 100px 3px rgb(0 0 0 / 14%), 0 9px 46px 8px rgb(0 0 0 / 12%);
+  box-shadow: 0 52px 28px -40px #000000;
 }
 ::-webkit-scrollbar {
   width: 0px;

@@ -50,7 +50,12 @@
       ></q-icon>
     </div>
 
-    <div class="row" v-if="lossInfo.attributes.lossInfo.property">
+    <div
+      class="row"
+      v-if="
+        lossInfo.attributes.lossInfo && lossInfo.attributes.lossInfo.property
+      "
+    >
       <div class="heading-light q-mt-none col-4 ">
         Address Details
       </div>
@@ -68,12 +73,13 @@
             ? lossInfo.attributes.lossInfo.property.address1
             : '-'
         }}
-        <div>
-          {{
-            lossInfo.attributes.lossInfo.property.address2
-              ? lossInfo.attributes.lossInfo.property.address2
-              : '-'
-          }}
+        <div
+          v-if="
+            lossInfo.attributes.lossInfo.property &&
+              lossInfo.attributes.lossInfo.property.address2
+          "
+        >
+          {{ lossInfo.attributes.lossInfo.property.address2 }}
         </div>
         <div>
           {{

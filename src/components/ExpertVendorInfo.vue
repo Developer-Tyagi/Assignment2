@@ -156,12 +156,13 @@
                     : '-'
                 }}
               </div>
-              <div>
-                {{
-                  item.vendor.mailingAddress.address2
-                    ? item.vendor.mailingAddress.address2
-                    : '-'
-                }}
+              <div
+                v-if="
+                  item.vendor.mailingAddress &&
+                    item.vendor.mailingAddress.address2
+                "
+              >
+                {{ item.vendor.mailingAddress.address2 }}
               </div>
               <div class="row">
                 {{
@@ -304,12 +305,13 @@
                     : '-'
                 }}
               </div>
-              <div>
-                {{
-                  item.vendor.mailingAddress.address2
-                    ? item.vendor.mailingAddress.address2
-                    : '-'
-                }}
+              <div
+                v-if="
+                  item.vendor.mailingAddress &&
+                    item.vendor.mailingAddress.address2
+                "
+              >
+                {{ item.vendor.mailingAddress.address2 }}
               </div>
               <div class="row">
                 {{
@@ -338,7 +340,7 @@
                 class="clickLink"
                 @click="onPhoneNumberClick(item.vendor.phone, $event)"
               >
-                {{ item.vendor.phone }}</span
+                {{ showPhoneNumber(item.vendor.phone) }}</span
               >
             </div>
             <div>
@@ -432,7 +434,11 @@ import CustomBar from 'components/CustomBar';
 import VendorsList from 'components/VendorsList';
 import { mapGetters, mapActions } from 'vuex';
 import AddVendor from 'components/AddVendor';
-import { onPhoneNumberClick, onEmailClick } from '@utils/clickable';
+import {
+  onPhoneNumberClick,
+  onEmailClick,
+  showPhoneNumber
+} from '@utils/clickable';
 import { toGetStateShortName } from '@utils/common';
 
 export default {
@@ -490,6 +496,7 @@ export default {
     onPhoneNumberClick,
     onEmailClick,
     toGetStateShortName,
+    showPhoneNumber, // it is used for adding phone number format style
     //This function is user for searching Industries and  add others option at the last
 
     async onAddVendorDialogClick(name, index) {

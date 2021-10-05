@@ -1,5 +1,5 @@
 <template>
-  <q-card class="bg-grey-4 " style="width: 550px; height: 245px">
+  <q-card class="bg-grey-4 " style="width:100%; height: 245px">
     <div>
       <div class="q-mx-md q-mt-sm">
         <div @click="$router.push('/add-lead')">
@@ -38,7 +38,7 @@
             />
           </div>
         </div>
-        <div class="q-pt-sm" @click="$router.push('/mortgages/' + true)">
+        <div class="q-pt-sm" @click="$router.push('/mortgages')">
           <div class="row bg-white" style="border-radius: 10px; height: 40px">
             <q-icon size="sm" class="q-ml-md q-my-sm">
               <img src="~assets/add_mortgage.svg" />
@@ -56,7 +56,7 @@
             />
           </div>
         </div>
-        <div class="q-pt-sm" @click="$router.push('/carriers/' + true)">
+        <div class="q-pt-sm" @click="$router.push('/carriers')">
           <div class="row bg-white" style="border-radius: 10px; height: 40px">
             <q-icon size="sm" class="q-ml-md q-my-sm">
               <img src="~assets/add_carriers.svg" />

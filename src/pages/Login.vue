@@ -3,7 +3,7 @@
     <div class="q-pa-lg">
       <div class="flex column" style="height: 50vh">
         <img
-          v-if="$q.screen.width < 2733"
+          v-if="$q.screen.width < 1600"
           alt="Claimguru"
           src="~assets/claimguru_icon.png"
           class="q-mt-auto q-mx-auto"
@@ -19,7 +19,7 @@
           height="95"
         />
         <img
-          v-if="$q.screen.width < 2733"
+          v-if="$q.screen.width < 1600"
           alt="Claimguru"
           src="~assets/claimguru_text.png"
           class="q-mx-auto q-mb-auto "
@@ -77,8 +77,8 @@
         </q-card>
         <div>
           <q-btn
-            :color="$q.screen.width < 2733 ? 'secondary' : 'white'"
-            :outline="$q.screen.width > 2733 ? true : false"
+            :color="$q.screen.width < 1600 ? 'secondary' : 'white'"
+            :outline="$q.screen.width > 1600 ? true : false"
             label="Login"
             type="submit"
             class="rounded full-width q-my-md"
@@ -86,7 +86,7 @@
         </div>
 
         <div
-          v-if="$q.screen.width > 2733"
+          v-if="$q.screen.width > 1600"
           class="row justify-center  cursor-pointer"
           @click="$router.push('/signup?plan=office')"
         >
@@ -97,7 +97,7 @@
           @click="$router.push('/forget-password')"
         >
           <a
-            :class="$q.screen.width < 2733 ? 'text-primary' : 'text-white'"
+            :class="$q.screen.width < 1600 ? 'text-primary' : 'text-white'"
             style="text-decoration: none"
             >Forgot Password</a
           >
@@ -195,7 +195,14 @@ export default {
             );
             PushNotifications.addListener('registrationError', any => {});
           }
-          this.$router.push('/dashboard');
+
+          //below function is use for checking login routing for mobile and web screen,
+          //if screen width is greater than 1600(default inner browser width) then open claim stats page otherwise open main dashboard page.
+          if (window.screen.availWidth > 1600) {
+            this.$router.push('/claimstats');
+          } else {
+            this.$router.push('/dashboard');
+          }
         }
       }
     }
@@ -221,7 +228,7 @@ export default {
   margin-right: 10%;
 }
 
-@media screen and (max-width: 2048px) {
+@media screen and (max-width: 1600px) {
   .bg-login {
     background-color: #ededed;
     width: 100%;

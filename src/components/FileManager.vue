@@ -340,50 +340,54 @@
             <q-card>
               <div class="text-center q-mt-lg text-bold">Users</div>
               <q-separator class="bg-primary" />
-              <div
-                v-for="user in allUsers"
-                :key="user.id"
-                class="q-ml-xs q-pt-sm"
-              >
-                <div class="row">
-                  <q-radio
-                    @input="setUsersName(user.name)"
-                    v-model="assignFilter"
-                    :val="user.name"
-                    dense
-                    size="xs"
-                    class="q-mb-xs"
-                  />
-                  <div class="q-pt-none">
-                    <span class="q-ml-sm q-mt-xs"> {{ user.name }}</span>
+              <q-scroll-area style="height:30vh">
+                <div
+                  v-for="user in allUsers"
+                  :key="user.id"
+                  class="q-ml-xs q-pt-sm"
+                >
+                  <div class="row">
+                    <q-radio
+                      @input="setUsersName(user.name)"
+                      v-model="assignFilter"
+                      :val="user.name"
+                      dense
+                      size="xs"
+                      class="q-mb-xs"
+                    />
+                    <div class="q-pt-none">
+                      <span class="q-ml-sm q-mt-xs"> {{ user.name }}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </q-scroll-area>
             </q-card>
           </div>
           <div class="q-ma-lg">
             <q-card>
               <div class="text-center q-mt-lg text-bold">Roles</div>
               <q-separator class="bg-primary" />
-              <div
-                v-for="filter in claimRoles"
-                :key="filter.id"
-                class="q-ml-xs q-pt-sm"
-              >
-                <div class="row">
-                  <q-radio
-                    @input="setFilterName(filter.name)"
-                    v-model="assignFilter"
-                    :val="filter.name"
-                    dense
-                    size="xs"
-                    class="q-mb-xs"
-                  />
-                  <div class="q-pt-none">
-                    <span class="q-ml-sm q-mt-xs"> {{ filter.name }}</span>
+              <q-scroll-area style="height:30vh">
+                <div
+                  v-for="filter in claimRoles"
+                  :key="filter.id"
+                  class="q-ml-xs q-pt-sm"
+                >
+                  <div class="row">
+                    <q-radio
+                      @input="setFilterName(filter.name)"
+                      v-model="assignFilter"
+                      :val="filter.name"
+                      dense
+                      size="xs"
+                      class="q-mb-xs"
+                    />
+                    <div class="q-pt-none">
+                      <span class="q-ml-sm q-mt-xs"> {{ filter.name }}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </q-scroll-area>
             </q-card>
           </div>
           <q-footer class="bg-white q-mb-md">
@@ -662,24 +666,31 @@ export default {
     this.tokens = [
       { key: '{{.Claim.Number}}', value: this.claim.number },
       { key: '{{.Claim.Client.Name}}', value: this.claim.client.fname },
+      { key: '{{.Client.Email}}', value: this.claim.client.email },
       {
         key: '{{.Claim.PolicyInfo.Number}}',
         value: this.claim.policyInfo.number
       },
       { key: '{{.Claim.Status.Value}}', value: this.claim.status.value },
-      { key: '{{.Carrier.Name}}', value: this.claim.policyInfo.carrier.name },
+      { key: '{{.Carrier.Name}}', value: this.claim.policyInfo.carrier.value },
       { key: '{{.Carrier.Email}}', value: this.claim.policyInfo.carrier.email },
-      { key: '{{.Claim.LossInfo.Cause.Value}}', value: '' },
-      { key: '{{.Claim.PolicyInfo.Number}}', value: '' },
-      { key: '{{.Claim.LossInfo.Date}}', value: '' },
-      { key: '{{.Claim.LossInfo.Cause.Desc}}', value: '' },
-      { key: '{{.Claim.LossInfo.Cause.Value}}', value: '' },
+      {
+        key: '{{.Claim.LossInfo.Cause.Value}}',
+        value: this.claim.lossInfo.cause.value
+      },
+
+      { key: '{{.Claim.LossInfo.Date}}', value: this.claim.lossInfo.date },
+      {
+        key: '{{.Claim.LossInfo.Cause.Desc}}',
+        value: this.claim.lossInfo.cause.desc
+      },
+
       { key: '{{localTZ .Claim.PolicyInfo.EffectiveDate}}', value: '' },
       { key: '{{localTZ .Claim.PolicyInfo.ExpirationDate}}', value: '' },
-      { key: '{{.Claim.Client.Name}}', value: '' },
+
       { key: '{{.Claim.FileNumber}}', value: this.claim.fileNumber }
     ];
-    console.log(this.claim, 'claim');
+    // console.log(this.claim, 'claim');
     const { data } = await request.get(
       `/documents?parent_id=${this.directoryId}`
     );
@@ -1194,21 +1205,24 @@ export default {
 
       var resultString = result.name.value;
 
-      var regex = /\{{(.*?)\}}/g;
+      //Regex for getting the all tokens from the String
 
+      var regex = /\{{(.*?)\}}/g;
       var match;
       while ((match = regex.exec(result.name.value)) != null) {
         this.tokenArray.push(match[0]);
       }
-      // var ss;
+      console.log(this.tokenArray, 'tt');
       this.tokenArray.forEach(token => {
         let result = this.tokens.find(o => o.key === token);
-
-        if (result && result.value !== 'undefined') {
+        // console.log(result, 'result');
+        if (result && result.value !== undefined) {
+          console.log(token, result.value);
           this.finalDocumentString += resultString.replaceAll(
             token,
             result.value
           );
+          // console.log(this.finalDocumentString, 'ff');
         }
       });
     },
@@ -1253,32 +1267,23 @@ export default {
     //function for converting HTML  to PDF with the token replacement
     async convertHtmlToPdf(documentString) {
       const id = makeId();
-      console.log(id, 'id');
+
       var doc = new jsPDF();
       await doc.html(documentString, {
         callback: function(doc) {
-          console.log(id, 'id is in callback');
-          this.document = doc.save('contract_' + id + '.pdf');
+          doc.save('contract_' + id + '.pdf');
         },
         x: 10,
         y: 10
       });
 
-      if (
-        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-          navigator.userAgent
-        )
-      ) {
-        var blob = doc.output('datauri');
-      } else {
-        doc.save('filename.pdf');
-      }
+      this.document = doc.output('datauri');
 
       const payload = {
         document: this.document
       };
 
-      // await this.addTemplateLocal(payload);
+      await this.addTemplateLocal(payload);
       this.document = '';
     },
 

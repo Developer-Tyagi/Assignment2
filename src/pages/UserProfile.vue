@@ -45,12 +45,8 @@
                     : '-'
                 }}
               </div>
-              <div>
-                {{
-                  user.mailingAddress.address2
-                    ? user.mailingAddress.address2
-                    : '-'
-                }}
+              <div v-if="user.mailingAddress && user.mailingAddress.address2">
+                {{ user.mailingAddress.address2 }}
               </div>
               <div>
                 {{
@@ -385,6 +381,7 @@ export default {
         this.users.email = this.user.email;
         this.users.mailingAddress = this.user.mailingAddress;
       }
+      window.location.reload();
     }
   }
 };

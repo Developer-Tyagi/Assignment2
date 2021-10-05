@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <div class="q-pa-md height-without-header">
-      <div class="row justify-between">
+      <div class="row  justify-between">
         <div class="row justify-between text-bold q-ml-auto">
           <q-card flat bordered class="q-pa-sm q-ml-md q-mt-sm"
             >Licenses available- {{ '5' }}</q-card
@@ -320,12 +320,13 @@
                   }}
                 </div>
 
-                <div>
-                  {{
-                    singleUserData.mailingAddress.address2
-                      ? singleUserData.mailingAddress.address2
-                      : '-'
-                  }}
+                <div
+                  v-if="
+                    singleUserData.mailingAddress &&
+                      singleUserData.mailingAddress.address2
+                  "
+                >
+                  {{ singleUserData.mailingAddress.address2 }}
                 </div>
                 <div>
                   {{
@@ -873,7 +874,7 @@ table {
   width: 99.9%;
 }
 th {
-  background: red;
+  background: $primary;
 }
 td {
   padding: 8px 16px;

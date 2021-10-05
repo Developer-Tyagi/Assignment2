@@ -1,5 +1,10 @@
 <template>
   <div>
+    <div class="row q-mt-sm justify-center">
+      <q-badge color="red ">
+        OCR coming soon
+      </q-badge>
+    </div>
     <div class="stepper-heading q-ma-md q-ml-sm">
       Please Upload Vendor Documents
     </div>
@@ -40,7 +45,9 @@
             @change="onVendorFileInputClick"
           />
         </div>
-        <div class="column">
+        <!-- we hide this SCAN feature and show once the OCR feature is use-->
+
+        <!-- <div class="column">
           <img
             class="q-ml-lg "
             src="~assets/scanFile.svg"
@@ -48,7 +55,7 @@
             @click="onClickUploadButton"
           />
           <div class="form-heading text-center q-mt-xs q-mr-xs">Scan</div>
-        </div>
+        </div> -->
       </div>
     </q-card>
     <!-- Alert delete Box -->

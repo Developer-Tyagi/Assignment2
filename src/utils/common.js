@@ -15,3 +15,13 @@ export function toGetStateShortName(state) {
     if (state == states[i].name) return states[i].shortCode;
   }
 }
+export function toCheckAddressData(address) {
+  if (
+    !address.houseNumber &&
+    !address.addressLocality &&
+    !address.addressRegion &&
+    !address.address1
+  ) {
+    return false;
+  } else return true;
+}

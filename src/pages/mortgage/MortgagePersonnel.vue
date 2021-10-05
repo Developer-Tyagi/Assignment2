@@ -33,7 +33,10 @@
               />
             </div>
 
-            <div class="row q-mt-sm">
+            <div
+              class="row q-mt-sm"
+              v-if="toCheckAddressData(personnel.address)"
+            >
               <div class="heading-light col-3">Address Details</div>
               <div class="col-7" v-if="personnel.address">
                 {{
@@ -45,12 +48,8 @@
                   personnel.address.address1 ? personnel.address.address1 : '-'
                 }}
 
-                <div class="">
-                  {{
-                    personnel.address.address2
-                      ? personnel.address.address2
-                      : '-'
-                  }}
+                <div v-if="personnel.address && personnel.address.address2">
+                  {{ personnel.address.address2 }}
                 </div>
                 <div>
                   {{
@@ -88,7 +87,11 @@
                 {{ personnel.email ? personnel.email : '-' }}</span
               >
             </div>
-            <div class="row">
+
+            <div
+              class="row"
+              v-if="personnel.phoneNumber && personnel.phoneNumber[0].number"
+            >
               <div class="heading-light col-3">Phone Number</div>
               <div class="q-mt-xs col-6 q-ml-none">
                 <div class="row" v-for="phone in personnel.phoneNumber">
@@ -104,8 +107,7 @@
                 </div>
               </div>
             </div>
-
-            <div class="row q-mt-sm q-mb-sm">
+            <div class="row q-mt-sm q-mb-sm" v-if="personnel.note">
               <span class="heading-light col-3"> Notes: </span>
               <span class="q-ml-none col" v-if="personnel.note">
                 {{ personnel.note ? personnel.note : '-' }}</span
@@ -197,7 +199,6 @@
                 ]"
               />
               <q-input
-                dense
                 v-model="personnel.departmentName"
                 class="required input-style input-overlay"
                 borderless
@@ -234,7 +235,6 @@
                   v-if="index >= 0"
                 >
                   <q-select
-                    dense
                     v-model="personnel.phoneNumber[index].type"
                     class="col-5  input-style input-overlay"
                     borderless
@@ -247,7 +247,6 @@
                     emit-value
                   />
                   <q-input
-                    dense
                     v-model.number="personnel.phoneNumber[index].number"
                     label="Phone"
                     class="col-6  input-style input-overlay"
@@ -393,7 +392,6 @@
                   v-if="index >= 0"
                 >
                   <q-select
-                    dense
                     v-model="personnel.phoneNumber[index].type"
                     label="Type"
                     class="col-5 input-style input-overlay"
@@ -406,7 +404,6 @@
                     emit-value
                   />
                   <q-input
-                    dense
                     v-model.number="personnel.phoneNumber[index].number"
                     class="col-6 input-style input-overlay"
                     borderless
@@ -474,7 +471,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import CustomBar from 'components/CustomBar';
-import { toGetStateShortName } from '@utils/common';
+import { toGetStateShortName, toCheckAddressData } from '@utils/common';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import {
   onEmailClick,
@@ -558,6 +555,7 @@ export default {
       'deleteMortgagePersonnel'
     ]),
     toGetStateShortName,
+    toCheckAddressData,
 
     onEdit(index) {
       this.editPersonnelDialog = true;
@@ -566,7 +564,17 @@ export default {
       this.personnel.fname = this.mortgagePersonnel.personnel[index].fname;
       this.personnel.lname = this.mortgagePersonnel.personnel[index].lname;
       this.personnel.email = this.mortgagePersonnel.personnel[index].email;
-      this.personnel.address = this.mortgagePersonnel.personnel[index].address;
+
+      if (this.mortgagePersonnel.personnel[index].address) {
+        this.personnel.address.dropBox = this.mortgagePersonnel.personnel[index]
+          .address.dropBox
+          ? this.mortgagePersonnel.personnel[index].address.dropBox
+          : { info: '', isPresent: false };
+        this.personnel.address = this.mortgagePersonnel.personnel[
+          index
+        ].address;
+      }
+
       this.personnel.notes = this.mortgagePersonnel.personnel[index].note;
       this.personnel.phoneNumber = this.mortgagePersonnel.personnel[
         index

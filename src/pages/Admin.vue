@@ -54,12 +54,12 @@
                             : '-'
                         }}
                       </div>
-                      <div>
-                        {{
-                          user.mailingAddress.address2
-                            ? user.mailingAddress.address2
-                            : '-'
-                        }}
+                      <div
+                        v-if="
+                          user.mailingAddress && user.mailingAddress.address2
+                        "
+                      >
+                        {{ user.mailingAddress.address2 }}
                       </div>
                       <div>
                         {{
@@ -153,12 +153,13 @@
                             : '-'
                         }}
                       </div>
-                      <div>
-                        {{
-                          organization.billingInfo.address.address2
-                            ? organization.billingInfo.address.address2
-                            : '-'
-                        }}
+                      <div
+                        v-if="
+                          organization.billingInfo.address &&
+                            organization.billingInfo.address.address2
+                        "
+                      >
+                        {{ organization.billingInfo.address.address2 }}
                       </div>
                       <div>
                         {{
@@ -357,7 +358,7 @@
               </div>
             </q-tab-panel>
             <q-tab-panel name="actionItems">
-              <q-card class="q-pa-lg" flat bordered>
+              <q-card class="q-pa-lg card-style" flat bordered>
                 <div class="text-h6 text-bold">Claim Action Item</div>
                 <div class="row">
                   <q-btn
@@ -396,7 +397,7 @@
                   /> -->
                 </div>
 
-                <q-card class="q-my-md" scroll flat bordered>
+                <q-card class="q-mt-md ">
                   <div
                     class="row bg-grey-3 q-px-md"
                     style="align-items: center"
@@ -423,7 +424,7 @@
                       emit-value
                     />
                   </div>
-                  <div class="q-pa-lg">
+                  <div class="">
                     <q-scroll-area class="claim-list-scrollable">
                       <div v-for="index in allAction" class="row q-pb-md">
                         <div class="col-11">
@@ -1754,11 +1755,5 @@ table {
 td {
   padding: 8px 16px;
   border: 1px solid #ccc;
-}
-
-.claim-list-scrollable {
-  margin: 4px, 4px;
-  padding: 4px;
-  height: calc(100vh - 350px);
 }
 </style>

@@ -141,7 +141,6 @@
                 <q-toggle
                   v-model="primaryDetails.isOrganization"
                   left-label
-                  color="orange"
                   class="q-ml-auto"
                 />
               </div>
@@ -279,7 +278,7 @@
               <span class="stepper-heading">Insurance Details (Optional)</span>
 
               <div
-                class=""
+                class
                 @click="carriersListDialog = true"
                 v-if="!insuranceDetails.carrierName"
               >
@@ -311,19 +310,19 @@
                           ? insuranceDetails.address.houseNumber
                           : '-'
                       }}
-
                       {{
                         insuranceDetails.address.address1
                           ? insuranceDetails.address.address1
                           : '-'
                       }}
                     </div>
-                    <div>
-                      {{
-                        insuranceDetails.address.address2
-                          ? insuranceDetails.address.address2
-                          : '-'
-                      }}
+                    <div
+                      v-if="
+                        insuranceDetails.address &&
+                          insuranceDetails.address.address2
+                      "
+                    >
+                      {{ insuranceDetails.address.address2 }}
                     </div>
                     <div class="row">
                       {{
@@ -346,6 +345,7 @@
                       }}
                     </div>
                   </div>
+
                   <div>
                     Phone:
                     <span
@@ -353,16 +353,15 @@
                       @click="
                         onPhoneNumberClick(insuranceDetails.phone, $event)
                       "
-                    >
-                      {{ insuranceDetails.phone }}</span
+                      >{{ showPhoneNumber(insuranceDetails.phone) }}</span
                     >
                   </div>
                   <div>
-                    Email:<span
+                    Email:
+                    <span
                       class="clickLink"
                       @click="onEmailClick(insuranceDetails.email, $event)"
-                    >
-                      {{ insuranceDetails.email }}</span
+                      >{{ insuranceDetails.email }}</span
                     >
                   </div>
                 </q-card>
@@ -446,11 +445,11 @@
                     @click="vendorsListDialog = true"
                     v-if="!sourceDetails.email"
                   >
-                    <div class="input-style">
-                      <div class="text-center">
-                        Click for choosing a vendor
-                      </div>
-                    </div>
+                    <q-btn
+                      rounded
+                      class="text-center full-width"
+                      label="Click for choosing a vendor"
+                    ></q-btn>
                   </div>
                   <q-card
                     bordered
@@ -458,12 +457,8 @@
                     @click="vendorsListDialog = true"
                     class="q-my-md q-pa-md"
                   >
-                    <div class="text-bold">
-                      {{ sourceDetails.companyName }}
-                    </div>
-                    <div>
-                      {{ sourceDetails.details }}
-                    </div>
+                    <div class="text-bold">{{ sourceDetails.companyName }}</div>
+                    <div>{{ sourceDetails.details }}</div>
 
                     <div
                       v-if="
@@ -484,12 +479,13 @@
                             : '-'
                         }}
                       </div>
-                      <div>
-                        {{
-                          sourceDetails.mailingAddress.address2
-                            ? sourceDetails.mailingAddress.address2
-                            : '-'
-                        }}
+                      <div
+                        v-if="
+                          sourceDetails.mailingAddress &&
+                            sourceDetails.mailingAddress.address2
+                        "
+                      >
+                        {{ sourceDetails.mailingAddress.address2 }}
                       </div>
                       <div class="row">
                         {{
@@ -516,19 +512,16 @@
                       Phone:
                       <span
                         class="clickLink"
-                        @click="
-                          onPhoneNumberClick(sourceDetails.phone.number, $event)
-                        "
-                      >
-                        {{ sourceDetails.phone.number }}</span
+                        @click="onPhoneNumberClick(sourceDetails.phone, $event)"
+                        >{{ showPhoneNumber(sourceDetails.phone) }}</span
                       >
                     </div>
                     <div>
-                      Email:<span
+                      Email:
+                      <span
                         class="clickLink"
                         @click="onEmailClick(sourceDetails.email, $event)"
-                      >
-                        {{ sourceDetails.email }}</span
+                        >{{ sourceDetails.email }}</span
                       >
                     </div>
                   </q-card>
@@ -557,9 +550,9 @@
                   >
                     <template v-slot:no-option>
                       <q-item>
-                        <q-item-section class="text-black">
-                          No results
-                        </q-item-section>
+                        <q-item-section class="text-black"
+                          >No results</q-item-section
+                        >
                       </q-item>
                     </template>
                   </q-select>
@@ -590,7 +583,7 @@
             ref="note"
           >
             <q-card class="q-pa-md form-card">
-              <span class="stepper-heading"> Notes</span>
+              <span class="stepper-heading">Notes</span>
               <q-input
                 class="input-style"
                 borderless
@@ -797,7 +790,8 @@ import { toGetStateShortName } from '@utils/common';
 import {
   onPhoneNumberClick,
   onEmailClick,
-  sendPhoneNumber
+  sendPhoneNumber,
+  showPhoneNumber
 } from '@utils/clickable';
 
 import { dateToSend } from '@utils/date';
@@ -952,6 +946,7 @@ export default {
     onEmailClick,
     dateToShow,
     sendPhoneNumber,
+    showPhoneNumber,
     setTypes(types, data) {
       const obj = types.find(item => {
         return item.name === data.value;

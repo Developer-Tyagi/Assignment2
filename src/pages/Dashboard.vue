@@ -1,12 +1,11 @@
 <template>
   <!-- mobile-container-page listing-height -->
 
-  <div class="" style="background-color: #8f8f8f">
+  <div style="background-color: #8f8f8f">
     <div
-      class="bg-white q-px-sm cardHeight"
+      class="bg-white dashboard-shadow q-px-sm cardHeight"
       style="
         border-radius: 0 0 90px 90px;
-        box-shadow: 0px 0px 10px 10px #000000;
       "
     >
       <div class="gridRow row justify-between q-px-lg">
@@ -19,6 +18,7 @@
             q-pt-sm
             justify-between
           "
+          @click="onClickNewLead"
           style="
             border-top-left-radius: 16px;
             border-top-right-radius: 16px;
@@ -29,7 +29,7 @@
         >
           <div class="col-6 self-center q-mb-md">
             <q-icon class="gridIcon">
-              <q-img src="~assets/LEADS.svg" @click="$router.push('/leads')" />
+              <q-img src="~assets/LEADS.svg" />
             </q-icon>
           </div>
 
@@ -54,6 +54,7 @@
             q-pt-sm
             justify-between
           "
+          @click="$router.push('/clients')"
           style="
             border-top-left-radius: 16px;
             border-top-right-radius: 16px;
@@ -64,10 +65,7 @@
         >
           <div class="col-6 self-center q-mb-md">
             <q-icon class="gridIcon">
-              <q-img
-                src="~assets/Clients_dashboard.svg"
-                @click="$router.push('/clients')"
-              />
+              <q-img src="~assets/Clients_dashboard.svg" />
             </q-icon>
           </div>
 
@@ -94,6 +92,7 @@
             q-pt-sm
             justify-between
           "
+          @click="$router.push('/vendors')"
           style="
             border-top-left-radius: 16px;
             border-top-right-radius: 16px;
@@ -104,10 +103,7 @@
         >
           <div class="col-6 self-center q-mb-md">
             <q-icon class="gridIcon">
-              <q-img
-                src="~assets/VENDOR.svg"
-                @click="$router.push('/vendors')"
-              />
+              <q-img src="~assets/VENDOR.svg" />
             </q-icon>
           </div>
           <div
@@ -131,6 +127,7 @@
             q-pt-sm
             justify-between
           "
+          @click="$router.push('/claims')"
           style="
             border-top-left-radius: 16px;
             border-top-right-radius: 16px;
@@ -141,10 +138,7 @@
         >
           <div class="col-6 self-center q-mb-md">
             <q-icon class="gridIcon">
-              <q-img
-                src="~assets/CLAIMS.svg"
-                @click="$router.push('/claims')"
-              />
+              <q-img src="~assets/CLAIMS.svg" />
             </q-icon>
           </div>
           <div
@@ -170,6 +164,7 @@
             q-pt-sm
             justify-between
           "
+          @click="selectClaimDialog = true"
           style="
             border-top-left-radius: 16px;
             border-top-right-radius: 16px;
@@ -180,10 +175,7 @@
         >
           <div class="col-6 self-center q-mb-md">
             <q-icon class="gridIcon">
-              <q-img
-                src="~assets/scan_dashboard.svg"
-                @click="selectClaimDialog = true"
-              />
+              <q-img src="~assets/scan_dashboard.svg" />
             </q-icon>
           </div>
           <div
@@ -200,6 +192,7 @@
             <div class="col text-weight-bolder">UPLOAD</div>
           </div>
         </div>
+        <!--we are stoping routing for this camera card for sometime , once we get feedback from client we will implement this-->
         <div
           class="
             col-5
@@ -217,12 +210,17 @@
             box-shadow: 0px 3px 5px rgba(0, 0, 0, 1);
           "
         >
-          <div class="col-5 self-center q-mb-md q-pa-sm">
-            <q-icon class="gridIcon">
-              <q-img
-                src="~assets/camera_dashboard.svg"
-                @click="$router.push('/clients')"
-              />
+          <div
+            :class="[
+              'col-5',
+              'self-center',
+              'q-mb-md',
+              'q-pa-sm',
+              $q.screen.gt.md ? 'q-mt-xs' : 'q-mt-sm'
+            ]"
+          >
+            <q-icon class="gridIcon" size="7vh">
+              <q-img src="~assets/camera_dashboard.svg" />
             </q-icon>
           </div>
           <div
@@ -240,9 +238,10 @@
       </div>
     </div>
     <!-- footer -->
+    <div class="row justify-center footer-shadow "></div>
     <div
       class="row justify-between q-py-sm q-px-md"
-      style="background-color: #8f8f8f"
+      style="background-color: #8f8f8f;"
     >
       <div col-3 class="column">
         <img
@@ -252,9 +251,10 @@
         />
         <div class="text-center text-white">PROFILE</div>
       </div>
-      <div class="column">
-        <img src="~assets/SETTINGS.svg" style="width: 100%" />
-        <div class="text-center text-white">SETTINGS</div>
+      <div @click="$router.push('/reports')" class="column items-center">
+        <img src="~assets/report_dashboard_icon.svg" style="width: 80%;" />
+
+        <div class="text-center text-white">REPORTS</div>
       </div>
       <div class="column">
         <img
@@ -274,15 +274,7 @@
         <div class="text-center text-white">ADD</div>
       </div>
     </div>
-    <q-dialog
-      v-model="openDialog"
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-      :position="'bottom'"
-    >
-      <AddOptions />
-    </q-dialog>
+
     <!-- Select Claim Dialog -->
     <q-dialog
       v-model="selectClaimDialog"
@@ -338,15 +330,26 @@
         </div>
       </q-card>
     </q-dialog>
+    <!-- dialog box for add button-->
+    <q-dialog
+      v-model="openDialog"
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+      :position="'bottom'"
+    >
+      <AddOptions />
+    </q-dialog>
   </div>
 </template>
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { dateToShow } from '@utils/date';
-import AddOptions from 'components/AddOptions';
+
 import CustomBar from 'components/CustomBar';
 import { getAuth, generateEmailVerificationLink } from 'firebase/auth';
 import 'firebase/auth';
+import AddOptions from 'components/AddOptions';
 import firebase from 'firebase/app';
 export default {
   components: { CustomBar, AddOptions },
@@ -370,12 +373,26 @@ export default {
       'getClients',
       'getActiveLeadsList',
       'getClaims',
+      'getArchivedLeadsList',
       'getTemplates',
       'getAllTemplate'
     ]),
     ...mapMutations(['setSelectedClaimId']),
     onClickAddUpIcon() {
       this.openDialog = true;
+    },
+    ...mapMutations(['setSelectedClaimId', 'setConvertedLead']),
+
+    onClickNewLead() {
+      this.$store.commit('setShowConvertButton', true);
+      this.$router.push('/leads');
+      const payload = {
+        new: '',
+        status: ''
+      };
+      this.setConvertedLead('Active');
+      this.getActiveLeadsList(payload);
+      this.getArchivedLeadsList();
     },
 
     dateToShow,
@@ -443,6 +460,13 @@ export default {
   /* border-radius: 10px; */
   border-radius: 20px 20px 20px 20px;
 }
+.footer-shadow {
+  border: 0.1em solid #000000;
+  width: 60%;
+  margin-left: 20%;
+  box-shadow: 0 -4px 6px 0.02em #000000, 0 -5px 7px 0.02em #000000;
+}
+
 .card-text {
   color: #ffffff;
   font-size: 1rem;

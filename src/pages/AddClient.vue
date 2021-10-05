@@ -306,14 +306,14 @@
                     v-model="coInsuredDetails.fname"
                     label="First Name"
                     borderless
-                    class="required input-style input-field"
+                    class=" input-style input-field"
                     :disable="isOfflineClientEdit"
                   />
                   <q-input
                     dense
                     v-model="coInsuredDetails.lname"
                     borderless
-                    class="required input-style input-field"
+                    class="input-style input-field"
                     label="Last Name"
                     :disable="isOfflineClientEdit"
                   />
@@ -343,13 +343,12 @@
                       v-model.number="coInsuredDetails.phone"
                       label="Phone"
                       borderless
-                      class="required input-style col-6 input-field"
+                      class="input-style col-6 input-field"
                       mask="(###) ###-####"
                       lazy-rules
                       :rules="[
                         val =>
-                          (val && val.length == 14) ||
-                          'Please enter the phone number'
+                          toCheckLength(val) || 'Please enter the phone number'
                       ]"
                       :disable="isOfflineClientEdit"
                     />
@@ -360,11 +359,11 @@
                     input
                     type="email"
                     borderless
-                    class="required input-style input-field"
+                    class="input-style input-field"
                     lazy-rules
                     :rules="[
                       val =>
-                        validateEmail(val) ||
+                        toCheckEmailLength(val) ||
                         'You have entered an invalid email address!'
                     ]"
                     label="Email"
@@ -516,7 +515,7 @@
               <AutoCompleteAddress
                 :id="'ClientMailing'"
                 :address="mailingAddressDetails"
-                :isDropBoxEnable="true"
+                :isDropBoxEnable="false"
                 :isChecksEnable="true"
                 :isFieldsDisable="isMailingAddressSameToggle"
                 :isAsteriskMark="true"
@@ -1214,7 +1213,8 @@ import {
   validateEmail,
   validateDate,
   validateTime,
-  successMessage
+  successMessage,
+  errorMessage
 } from '@utils/validation';
 import { constants } from '@utils/constant';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
@@ -1550,7 +1550,8 @@ export default {
       estimatingInfo: {
         doesAnEstimatorNeedToBeAssignedToggle: false,
         estimatorID: '',
-        scopeTimeNeeded: '',
+        scopeTimeNeededInHours: '',
+        scopeTimeNeededInMinutes: '',
         notesToTheEstimator: '',
         email: '',
         mailingAddress: {},
@@ -2330,8 +2331,22 @@ export default {
       'setSelectedEditClient',
       'setEditOfflineClientIcon'
     ]),
-
+    toCheckLength(val) {
+      if (val.length == 0) return true;
+      else {
+        if (sendPhoneNumber(val).length == 10) return true;
+        else return false;
+      }
+    },
+    toCheckEmailLength(val) {
+      if (val.length == 0) return true;
+      else {
+        if (validateEmail(val)) return true;
+        else return false;
+      }
+    },
     successMessage,
+    errorMessage,
     dateToShow,
     dateToShowWithTime,
     sendPhoneNumber,
@@ -2681,8 +2696,15 @@ export default {
 
       if (!this.editSelectedClient.id) {
         var response = await this.addClient(payload.data);
+        if (response.id)
+          this.successMessage(constants.successMessages.CLIENT_CLAIM_CREATED);
+        else this.errorMessage(constants.successMessages.CLIENT_CLAIM_FAILED);
       } else {
         var response = await this.editClientLocal(payload);
+        if (response.id) {
+          this.successMessage(constants.successMessages.CLIENT_INFO);
+        } else
+          this.successMessage(constants.successMessages.CLIENT_INFO_FAILED);
       }
 
       this.clientResponse = response;
@@ -2899,7 +2921,10 @@ export default {
       ) {
         payload.data.estimatingInfo = {
           estimatorID: this.estimatingInfo.estimatorID,
-          scopeTimeNeeded: this.estimatingInfo.scopeTimeNeeded,
+          scopeTimeNeeded:
+            this.estimatingInfo.scopeTimeNeededInHours +
+            '.' +
+            this.estimatingInfo.scopeTimeNeededInMinutes,
           notesToTheEstimator: this.estimatingInfo.notesToTheEstimator
         };
       }

@@ -191,3 +191,34 @@
   margin: 0px -6px 0px -6px;
   margin-top: 6px;
 }
+
+//this style is for the table which we are using in admin action items.
+.card-style {
+  padding: 20px;
+  height: calc(100vh-400px);
+}
+.claim-list-scrollable {
+  padding: 4px;
+  height: calc(100vh - 300px);
+}
+
+.q-toggle__inner--truthy {
+  color: $primary;
+}
+
+// this below design is use for input field style of scope time in estimating info page.
+.minute-select {
+  .q-field__after,
+  .q-field__append {
+    padding-right: 0px;
+  }
+}
+
+.hours-input-style {
+  .q-field__native,
+  .q-field__prefix,
+  .q-field__suffix,
+  .q-field__input {
+    padding: 0px 15px;
+  }
+}

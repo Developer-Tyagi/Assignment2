@@ -446,10 +446,7 @@ export async function addClaimRemote({ dispatch, commit }, payload) {
       buildApiData('claims', payload)
     );
     dispatch('setLoading', false);
-    dispatch('setNotification', {
-      type: 'positive',
-      message: 'Client and Claim Created Successfully !'
-    });
+
     return data;
   } catch (e) {
     console.log(e);
@@ -619,7 +616,7 @@ export async function getSeverityClaim({
   if (isOnline) {
     dispatch('setLoading', true);
     try {
-      const { data } = await request.get('/claimseverities');
+      const { data } = await request.get('/severities');
       commit('setClaimSeverities', data);
       dispatch('setLoading', false);
     } catch (e) {

@@ -68,13 +68,12 @@
               </div>
               <div
                 class="q-ml-sm"
-                v-if="estimatingInfo.mailingAddress.address2"
+                v-if="
+                  estimatingInfo.mailingAddress &&
+                    estimatingInfo.mailingAddress.address2
+                "
               >
-                {{
-                  estimatingInfo.mailingAddress.address2
-                    ? estimatingInfo.mailingAddress.address2
-                    : '-'
-                }}
+                {{ estimatingInfo.mailingAddress.address2 }}
               </div>
               <div
                 class="row q-ml-sm"
@@ -136,22 +135,39 @@
         </div>
       </div>
       <p
-        class="form-heading q-mb-none"
+        class="q-mt-sm form-heading q-mb-none"
         v-if="estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle"
       >
         Scope time
       </p>
-      <q-input
-        v-if="estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle"
-        dense
-        v-model="estimatingInfo.scopeTimeNeeded"
-        placeholder="Scope time needed"
-        borderless
-        class="input-style input-field time-input"
-        type="time"
-        style="outline: none"
-      />
 
+      <div class="row q-py-sm">
+        <q-input
+          v-if="estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle"
+          class="input-style hours-input-style input-field"
+          borderless
+          type="number"
+          v-model="estimatingInfo.scopeTimeNeededInHours"
+          min="0"
+          max="24"
+          style="width:90px;"
+          placeholder="HH"
+        />
+
+        <q-select
+          borderless
+          label="MM"
+          style="width:93px;"
+          class="input-style text-center minute-select input-field q-ml-md q-mt-sm"
+          v-if="estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle"
+          :options="options"
+          option-value="value"
+          option-label="key"
+          emit-value
+          map-options
+          v-model="estimatingInfo.scopeTimeNeededInMinutes"
+        />
+      </div>
       <q-input
         v-if="estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle"
         dense
@@ -238,12 +254,13 @@
                         : '-'
                     }}
                   </div>
-                  <div>
-                    {{
-                      estimator.mailingAddress.address2
-                        ? estimator.mailingAddress.address2
-                        : '-'
-                    }}
+                  <div
+                    v-if="
+                      estimator.mailingAddress &&
+                        estimator.mailingAddress.address2
+                    "
+                  >
+                    {{ estimator.mailingAddress.address2 }}
                   </div>
                   <div class="row">
                     {{
@@ -429,7 +446,13 @@ export default {
   data() {
     return {
       searchText: '',
-
+      // this key-value pair is used for the Minutes entry in scope time field.
+      options: [
+        { key: '0', value: '0' },
+        { key: '15', value: '25' },
+        { key: '30', value: '50' },
+        { key: '45', value: '75' }
+      ],
       addEstimatorDialog: false,
       estimatorsListDialog: false,
       addEstimatorDialogInfo: {

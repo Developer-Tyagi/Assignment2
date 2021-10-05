@@ -689,7 +689,8 @@ import {
   validateEmail,
   validateDate,
   validateTime,
-  successMessage
+  successMessage,
+  errorMessage
 } from '@utils/validation';
 import { constants } from '@utils/constant';
 import { dateToSend, dateToShow } from '@utils/date';
@@ -723,6 +724,7 @@ export default {
 
   data() {
     return {
+      // currentLocation:'',
       finalOfficeTask: [],
       mortgageInfo: [
         {
@@ -1042,7 +1044,8 @@ export default {
         estimatorsListDialog: false,
 
         estimatorToBeAssigned: '',
-        scopeTimeNeeded: '',
+        scopeTimeNeededInHours: '',
+        scopeTimeNeededInMinutes: '',
         notesToTheEstimator: '',
         doesAnEstimatorNeedToBeAssignedToggle: false
       },
@@ -1169,7 +1172,8 @@ export default {
     ...mapMutations([
       'setSelectedLeadOffline',
       'setSelectedLeadOnline',
-      'isLastRouteEdit'
+      'isLastRouteEdit',
+      'alreadyExistClient'
     ]),
     onDamageOsToggleButtonOff() {
       if (!this.lossInfo.isDamageOSToggle) {
@@ -1610,20 +1614,14 @@ export default {
       ) {
         payload.estimatingInfo = {
           estimatorID: this.estimatingInfo.estimatorID,
-          scopeTimeNeeded: this.estimatingInfo.scopeTimeNeeded,
+          scopeTimeNeeded:
+            this.estimatingInfo.scopeTimeNeededInHours +
+            '.' +
+            this.estimatingInfo.scopeTimeNeededInMinutes,
           notesToTheEstimator: this.estimatingInfo.notesToTheEstimator
         };
       }
-      if (
-        this.estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle &&
-        this.estimatingInfo.estimatorID
-      ) {
-        payload.estimatingInfo = {
-          estimatorID: this.estimatingInfo.estimatorID,
-          scopeTimeNeeded: this.estimatingInfo.scopeTimeNeeded,
-          notesToTheEstimator: this.estimatingInfo.notesToTheEstimator
-        };
-      }
+
       if (
         this.expertVendorInfo.isAlreadyHiredVendor.length ||
         this.expertVendorInfo.isHiredByClaimguru.length
@@ -1666,7 +1664,12 @@ export default {
       } else {
         this.setSelectedLeadOffline();
       }
-      this.successMessage(constants.successMessages.CLAIM);
+      //this is used to check if  claim is added successfully inside the existing client
+      if (response.id) {
+        this.successMessage(constants.successMessages.CLAIM);
+      } else {
+        this.errorMessage(constants.successMessages.CLAIM_FAILED);
+      }
       this.isLastRouteEdit(true);
       this.$router.push('/view-client/' + this.selectedClientId);
     },
@@ -1734,7 +1737,8 @@ export default {
     },
 
     validateEmail,
-    successMessage
+    successMessage,
+    errorMessage
   }
 };
 </script>

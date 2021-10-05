@@ -7,7 +7,6 @@
           <q-toggle
             v-model="isNewLead"
             left-label
-            color="orange"
             class="q-ml-auto"
             @input="onNewLeadButtonToggle"
           />
