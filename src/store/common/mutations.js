@@ -154,6 +154,7 @@ export async function setNotificationRouteTo(state, route) {
   state.notificationRouteTo = route;
 }
 
+// this function is used for getting a paid user data.
 export function setPaidUsers(state, data = []) {
   state.paidUsers = data.map(allUser => ({
     attributes: allUser.attributes,
