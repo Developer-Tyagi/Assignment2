@@ -665,14 +665,14 @@ export default {
     // key value pair for tokens
     this.tokens = [
       { key: '{{.Claim.Number}}', value: this.claim.number },
-      { key: '{{.Claim.Client.Name}}', value: this.claim.client.fname },
+      { key: '{{.Client.Name}}', value: this.claim.client.fname },
       {
         key: '{{.Claim.PolicyInfo.Number}}',
         value: this.claim.policyInfo.number
       },
       { key: '{{.Claim.Status.Value}}', value: this.claim.status.value },
-      { key: '{{.Carrier.Name}}', value: this.claim.policyInfo.carrier.name },
-      { key: '{{.Carrier.Email}}', value: this.claim.policyInfo.carrier.email },
+      { key: '{{.Carrier.Name}}', value: this.claim.policyInfo.carrier.value },
+      { key: '{{.Carrier.Email}}', value: 'test@gmail.com' },
       { key: '{{.Claim.LossInfo.Cause.Value}}', value: '' },
       { key: '{{.Claim.PolicyInfo.Number}}', value: '' },
       { key: '{{.Claim.LossInfo.Date}}', value: '' },
@@ -681,9 +681,10 @@ export default {
       { key: '{{localTZ .Claim.PolicyInfo.EffectiveDate}}', value: '' },
       { key: '{{localTZ .Claim.PolicyInfo.ExpirationDate}}', value: '' },
       { key: '{{.Claim.Client.Name}}', value: '' },
-      { key: '{{.Claim.FileNumber}}', value: this.claim.fileNumber }
+      { key: '{{.Claim.FileNumber}}', value: this.claim.fileNumber },
+      { key: '{{.Adjuster.Name}}', value: '~assets/sign.png' }
     ];
-    console.log(this.claim, 'claim');
+
     const { data } = await request.get(
       `/documents?parent_id=${this.directoryId}`
     );
@@ -1197,24 +1198,27 @@ export default {
       });
 
       var resultString = result.name.value;
+      //console.log(resultString,"resultString")
 
       var regex = /\{{(.*?)\}}/g;
-
+      // {{client.name}}
       var match;
       while ((match = regex.exec(result.name.value)) != null) {
-        this.tokenArray.push(match[0]);
+        if (!this.tokenArray.includes(match[0])) {
+          this.tokenArray.push(match[0]);
+        }
       }
-      // var ss;
+      //console.log(this.tokenArray,'this.tokenArray')
+      var testString = resultString;
       this.tokenArray.forEach(token => {
         let result = this.tokens.find(o => o.key === token);
-
-        if (result && result.value !== 'undefined') {
-          this.finalDocumentString += resultString.replaceAll(
-            token,
-            result.value
-          );
+        // signature test
+        if (result && result.value !== undefined) {
+          testString = testString.replaceAll(token, result.value);
         }
       });
+
+      this.finalDocumentString = testString;
     },
     async onClickGenerateDocument() {
       if (this.isOnline) {
@@ -1257,11 +1261,11 @@ export default {
     //function for converting HTML  to PDF with the token replacement
     async convertHtmlToPdf(documentString) {
       const id = makeId();
-      console.log(id, 'id');
+      //console.log(id, 'id');
       var doc = new jsPDF();
       await doc.html(documentString, {
         callback: function(doc) {
-          console.log(id, 'id is in callback');
+          //console.log(id, 'id is in callback');
           this.document = doc.save('contract_' + id + '.pdf');
         },
         x: 10,
