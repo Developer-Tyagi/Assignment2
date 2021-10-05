@@ -224,11 +224,11 @@ export default {
           description: 'View Dashboard and details'
         },
         {
-          title: 'Leads',
-          key: 'leads',
-          link: '/leads-dashboard',
-          icon: 'LEADS_menu.svg',
-          description: 'View Lead Dashboard, Add New Lead and Manage Leads.'
+          title: 'Claims',
+          key: 'claims',
+          link: '/claims',
+          icon: 'claim_menu.svg',
+          description: 'View, Add and Manage Claims.'
         },
         {
           title: 'Clients',
@@ -238,18 +238,13 @@ export default {
           description: 'View, Add and Manage Clients.'
         },
         {
-          title: 'Claims',
-          key: 'claims',
-          link: '/claims',
-          icon: 'claim_menu.svg',
-          description: 'View, Add and Manage Claims.'
+          title: 'Leads',
+          key: 'leads',
+          link: '/leads-dashboard',
+          icon: 'LEADS_menu.svg',
+          description: 'View Lead Dashboard, Add New Lead and Manage Leads.'
         },
-        // {
-        //   title: "Companies",
-        //   link: "/companies",
-        //   description:
-        //     "View Insurance and Mortgage Companies, Add and Manage New Companies."
-        // },
+
         {
           title: 'Vendors',
           key: 'vendors',
@@ -264,17 +259,20 @@ export default {
           icon: 'carriers_menu.svg',
           description: 'View, Add and Manage all types of Carriers.'
         },
-        // {
-        //   title: 'Settings',
-        //   link: '/settings',
-        //   description: 'Setup My Schedule, Type of Inspection etc.'
-        // },
+
         {
           title: 'Mortgages',
           key: 'mortgages',
           link: '/mortgages',
           icon: 'mortgage_menu.svg',
           description: 'View, Add and Manage all types of Mortgages.'
+        },
+        {
+          title: 'Configuration',
+          key: 'configuration',
+          link: '/configuration',
+          icon: 'configuration_big.svg',
+          description: 'View, Add and Manage all types of configuration.'
         },
         {
           title: 'Reports',
@@ -297,13 +295,7 @@ export default {
           icon: 'manage_users_big.svg',
           description: 'View, Add and Manage all types of Vendors.'
         },
-        {
-          title: 'Configuration',
-          key: 'configuration',
-          link: '/configuration',
-          icon: 'configuration_big.svg',
-          description: 'View, Add and Manage all types of configuration.'
-        },
+
         {
           title: 'Profile',
           key: 'profile',
@@ -393,15 +385,17 @@ export default {
     },
 
     createSidebarMenuItems() {
-      this.pageAccess.forEach(item => {
-        let obj = this.linksData.find(link => link.key === item);
-        if (!this.isEmpty(obj)) {
-          let index = this.sidebarItems.findIndex(x => x.key === obj.key);
-          if (index < 0) {
-            this.sidebarItems.push(obj);
-          }
+      const PageAccessItems = new Set();
+      //function use to reshuffle the order of the menubar items.
+      for (let i = 0; i < this.pageAccess.length; i++) {
+        PageAccessItems.add(this.pageAccess[i]);
+      }
+
+      for (let i = 0; i < this.linksData.length; i++) {
+        if (PageAccessItems.has(this.linksData[i].key)) {
+          this.sidebarItems.push(this.linksData[i]);
         }
-      });
+      }
     }
   },
 
