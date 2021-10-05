@@ -1,5 +1,5 @@
 <template>
-  <q-page> <ClaimFiles />{{ templates[0] }} </q-page>
+  <q-page> <ClaimFiles /> </q-page>
 </template>
 <script>
 import ClaimFiles from 'src/pages/ClaimFiles';
