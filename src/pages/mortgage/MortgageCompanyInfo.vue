@@ -89,7 +89,16 @@
         >
       </span>
     </div>
-    <div class="q-mt-sm row" v-if="selectedMortgage.contact">
+
+    <div
+      class="q-mt-sm row"
+      v-if="
+        selectedMortgage.contact &&
+          (selectedMortgage.contact.fname ||
+            selectedMortgage.contact.email ||
+            selectedMortgage.contact.phoneNumber[0].number)
+      "
+    >
       <div class="heading-light q-mt-none col-xs-4">Contact Info</div>
       <div class="column q-ml-md">
         {{ selectedMortgage ? selectedMortgage.contact.fname : '-' }}
@@ -118,7 +127,10 @@
         </div>
       </div>
     </div>
-    <div class="row q-mt-sm" v-if="selectedMortgage.info">
+    <div
+      class="row q-mt-sm"
+      v-if="selectedMortgage.info && selectedMortgage.info.website"
+    >
       <span class="heading-light col-4">Website</span>
       <span class="q-ml-md col">
         {{
@@ -127,7 +139,10 @@
       </span>
     </div>
 
-    <div class="row q-mt-sm" v-if="selectedMortgage.info">
+    <div
+      class="row q-mt-sm"
+      v-if="selectedMortgage.info && selectedMortgage.info.notes"
+    >
       <span class="heading-light col-4">Notes</span>
       <span class="q-ml-md col">
         {{ selectedMortgage.info.notes ? selectedMortgage.info.notes : '-' }}

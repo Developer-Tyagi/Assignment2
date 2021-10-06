@@ -140,6 +140,7 @@
             label="Add Personnel"
             class="q-ml-auto q-mt-sm"
             color="primary"
+            rounded
           ></q-btn>
         </div>
       </div>
@@ -296,6 +297,7 @@
           @click="onSave"
           label="Add Personnel"
           color="primary"
+          rounded
           class="button-width-90 q-mt-lg"
           size="'xl'"
         />
@@ -330,7 +332,6 @@
                 @input="setTitleName(honorific)"
                 emit-value
                 label="Title"
-                options-dense
               />
               <q-input
                 dense
@@ -355,7 +356,6 @@
                 ]"
               />
               <q-input
-                dense
                 class=" input-style input-overlay"
                 borderless
                 v-model="personnel.departmentName"
@@ -396,6 +396,7 @@
                     label="Type"
                     class="col-5 input-style input-overlay"
                     borderless
+                    dense
                     :options="contactTypes"
                     option-value="machineValue"
                     option-label="name"
@@ -407,8 +408,15 @@
                     v-model.number="personnel.phoneNumber[index].number"
                     class="col-6 input-style input-overlay"
                     borderless
+                    dense
                     label="Phone"
                     mask="(###) ###-####"
+                    lazy-rules
+                    :rules="[
+                      val =>
+                        nonRequiredPhoneNumber(val) ||
+                        'Please enter the phone number'
+                    ]"
                   />
                 </div>
                 <div class="row">
@@ -472,6 +480,7 @@
 import { mapGetters, mapActions } from 'vuex';
 import CustomBar from 'components/CustomBar';
 import { toGetStateShortName, toCheckAddressData } from '@utils/common';
+import { nonRequiredPhoneNumber } from '@utils/validation';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 import {
   onEmailClick,
@@ -556,6 +565,7 @@ export default {
     ]),
     toGetStateShortName,
     toCheckAddressData,
+    nonRequiredPhoneNumber,
 
     onEdit(index) {
       this.editPersonnelDialog = true;

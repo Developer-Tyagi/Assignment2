@@ -348,7 +348,8 @@
                       lazy-rules
                       :rules="[
                         val =>
-                          toCheckLength(val) || 'Please enter the phone number'
+                          nonRequiredPhoneNumber(val) ||
+                          'Please enter the phone number'
                       ]"
                       :disable="isOfflineClientEdit"
                     />
@@ -363,7 +364,7 @@
                     lazy-rules
                     :rules="[
                       val =>
-                        toCheckEmailLength(val) ||
+                        validateNonRequiredEmail(val) ||
                         'You have entered an invalid email address!'
                     ]"
                     label="Email"
@@ -1214,7 +1215,9 @@ import {
   validateDate,
   validateTime,
   successMessage,
-  errorMessage
+  errorMessage,
+  nonRequiredPhoneNumber,
+  validateNonRequiredEmail
 } from '@utils/validation';
 import { constants } from '@utils/constant';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
@@ -2331,26 +2334,14 @@ export default {
       'setSelectedEditClient',
       'setEditOfflineClientIcon'
     ]),
-    toCheckLength(val) {
-      if (val.length == 0) return true;
-      else {
-        if (sendPhoneNumber(val).length == 10) return true;
-        else return false;
-      }
-    },
-    toCheckEmailLength(val) {
-      if (val.length == 0) return true;
-      else {
-        if (validateEmail(val)) return true;
-        else return false;
-      }
-    },
     successMessage,
     errorMessage,
     dateToShow,
     dateToShowWithTime,
     sendPhoneNumber,
     showPhoneNumber,
+    nonRequiredPhoneNumber,
+    validateNonRequiredEmail,
     onDamageOsToggleButtonOff() {
       if (!this.lossInfo.isDamageOSToggle) {
         this.lossInfo.osDamagedItems.length = 0;

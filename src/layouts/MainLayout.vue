@@ -97,8 +97,7 @@ export default {
         route == 'admin' ||
         route == 'settings' ||
         route == 'claims' ||
-        route == 'mortgage' ||
-        route == 'add-client' ||
+        route == 'mortgages' ||
         route == 'carriers'
       ) {
         this.$router.push('/dashboard');
@@ -110,6 +109,9 @@ export default {
         this.$router.push('/mortgages');
       } else if (route == 'vendor-document') {
         this.setCameraIcon('false'); // the camera icon become Disappeared when we press back button
+      } else if (route == 'carrier-details') {
+        this.$router.push('/carriers');
+      } else if (route == 'add-client') {
         this.$router.push('/dashboard');
       } else if (
         (route == 'claim-summary' && this.userRole == 'estimator') ||

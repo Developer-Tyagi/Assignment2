@@ -116,6 +116,7 @@
                   />
                   <div class="row justify-between">
                     <q-select
+                      borderless
                       class="input-style input-overlay  col-5"
                       v-model="mortgage.contact.phoneNumber[0].type"
                       :options="contactTypes"
@@ -124,7 +125,6 @@
                       label="Type"
                       behavior="menu"
                       emit-value
-                      borderless
                       map-options
                       options-dense
                     />
@@ -164,9 +164,9 @@
                 :rules="[val => validateUrl(val) || 'Please fill your website']"
               />
               <q-input
+                type="textarea"
                 borderless
                 class="input-style input-overlay  q-mb-sm"
-                type="textarea"
                 v-model="mortgage.info.notes"
                 label="Notes"
               />

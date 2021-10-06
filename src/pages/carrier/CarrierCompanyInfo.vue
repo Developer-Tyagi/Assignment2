@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="q-my-auto row ">
+    <div class="q-my-auto row">
       <q-icon
         :style="selectedCarrier.isEditable == false ? 'visibility:hidden;' : ''"
         size="xs"
