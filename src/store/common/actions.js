@@ -416,7 +416,6 @@ export async function addTemplateRemote({ dispatch, state }, payload) {
     return false;
   }
 }
-//////////////////////////////////
 
 export async function addTemplateLocal({ dispatch }, payload) {
   console.log(payload, 'pay');
@@ -424,7 +423,6 @@ export async function addTemplateLocal({ dispatch }, payload) {
     let template = {
       ...payload,
       offline: true,
-      isCreate: true,
       id: makeId(),
       created: date.formatDate(Date.now(), constants.UTCFORMAT),
       updated: date.formatDate(Date.now(), constants.UTCFORMAT)

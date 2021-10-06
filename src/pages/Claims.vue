@@ -176,7 +176,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['claims', 'selectedClaimId', 'photoIdKey']),
+    ...mapGetters(['claims', 'selectedClaimId', 'photoIdKey', 'isOnline']),
     formatDate(value) {
       if (value) {
         return moment(String(value)).format('MM/DD/YYYY');
@@ -219,7 +219,7 @@ export default {
     },
     onClickingOnClaim(claim) {
       this.setSelectedClaimId(claim.id);
-      if (this.isOnline) {
+      if (!this.isOnline) {
         this.$router.push('/claim-details');
         if (this.userRole == 'estimator' || this.userRole == 'vendor') {
           this.setSelectedClaimId(claim.id);
