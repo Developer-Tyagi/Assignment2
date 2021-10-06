@@ -878,3 +878,18 @@ export async function syncLocalDataBase({ dispatch, state }) {
   await dispatch('syncOfficeTasks');
   await clearLocalStorage();
 }
+
+export async function getPaidUsers({ commit, dispatch }) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get('/users?isPaid=true');
+    commit('setPaidUsers', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+  }
+}

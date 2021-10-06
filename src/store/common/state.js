@@ -12,6 +12,7 @@ export default function() {
     permissions: [],
     toShowCamera: false,
     templates: [],
+    paidUsers: [],
     fileRoleOptions: [
       { value: 'View Access', name: 'reader' },
       { value: 'Edit Access', name: 'writer' }
