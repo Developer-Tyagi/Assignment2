@@ -65,7 +65,6 @@
           </template>
         </q-input>
       </div>
-
       <q-select
         dense
         borderless
@@ -86,8 +85,9 @@
         :disable="isOfflineClientEdit"
       />
 
+      <!--adding condition if any cause of value is selected then only we will show cause of description field and if user change the cause of loss then this description field will not get disappeared-->
       <q-input
-        v-if="lossInfo.causeOfLoss.id"
+        v-if="lossInfo.causeOfLoss.value"
         borderless
         class="required input-style input-field"
         label="Cause of loss description"
