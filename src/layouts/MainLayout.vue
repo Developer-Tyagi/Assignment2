@@ -97,7 +97,9 @@ export default {
         route == 'admin' ||
         route == 'settings' ||
         route == 'claims' ||
-        route == 'mortgage'
+        route == 'mortgage' ||
+        route == 'add-client' ||
+        route == 'carriers'
       ) {
         this.$router.push('/dashboard');
       } else if (route == 'leads') {
@@ -106,7 +108,8 @@ export default {
         this.$router.go(-1);
       } else if (route == 'mortgage-details') {
         this.$router.push('/mortgages');
-      } else if (route == 'add-client' || 'mortgages' || 'carriers') {
+      } else if (route == 'vendor-document') {
+        this.setCameraIcon('false'); // the camera icon become Disappeared when we press back button
         this.$router.push('/dashboard');
       } else if (
         (route == 'claim-summary' && this.userRole == 'estimator') ||
@@ -115,9 +118,6 @@ export default {
         this.$router.push('/claims');
       } else if (route == 'claims') {
         this.$store.commit('setClaims');
-      } else if (route == 'vendor-document') {
-        this.setCameraIcon(''); //here we pass blank value means to hide camera option in vendorDocument page.
-        this.$router.push('/dashboard');
       } else {
         if (this.isEdit) {
           this.isLastRouteEdit(false);
