@@ -106,7 +106,7 @@ export default {
       this.driveId = '';
       this.getVendorDocument(this.selectedClaimId);
     },
-    ...mapMutations(['setLoading']),
+    ...mapMutations(['setLoading', 'setCameraIcon']),
     onDeleteDocument(index) {
       this.alertDailog = true;
       this.driveId = this.vendorDocument.documents[index].driveID;
