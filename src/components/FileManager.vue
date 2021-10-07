@@ -5,9 +5,7 @@
       v-if="generateClaimDocument"
     >
       <div class="text-bold q-mt-sm q-ml-sm">Template Type</div>
-      <!-- <div class="bg-red">
-        <a download="file.pdf" id="linkId">SOnali</a>
-      </div> -->
+
       <q-select
         dense
         v-model="templatetype.value"
@@ -35,78 +33,85 @@
         />
       </div>
     </q-card>
-    <div class="actions-div justify-between q-px-md" v-if="depth.length > 0">
-      <q-breadcrumbs class="text-primary" active-color="grey" gutter="none">
-        <template v-slot:separator> </template>
-        <div
-          v-if="depth.length > 0"
-          class="row-div vertical-center q-px-sm q-py-xs"
-          @click="onBackButtonClick"
-        >
-          <q-icon name="reply" size="sm" color="primary" />
-        </div>
-        <q-breadcrumbs-el @click="onBreadCrumbClick(depth[currentPath], index)"
-          >{{ depth[currentPath - 1] ? depth[currentPath - 1].name : '-' }}
-        </q-breadcrumbs-el>
-      </q-breadcrumbs>
-      <div>
-        <q-icon
-          v-if="depth.length > 1"
-          @click="onClickTopMenu"
-          name="more_vert"
-          size="sm"
-          class="q-ml-auto"
-        />
-      </div>
-    </div>
-    <div>
-      <div v-for="(doc, index) in documents" class="row-div">
-        <div
-          v-if="doc.type == 'folder'"
-          class="vertical-center q-px-md q-py-xs"
-        >
-          <q-icon name="folder" size="sm" color="primary" />
-          <div class="q-pl-md" @click="onClickOnFile(doc)">
-            {{ doc.name }}
-          </div>
-          <q-icon
-            @click="onShareClick(index)"
-            name="more_vert"
-            size="sm"
-            class="q-ml-auto"
-          />
-        </div>
-        <div
-          v-if="doc.type != 'folder'"
-          class="vertical-center q-px-md q-py-sm"
-        >
-          <q-icon :name="iconType(doc.type)" size="sm" color="primary" />
-          <span class="q-pl-md" @click="onDocumentClick(doc.link)">{{
-            doc.name
-          }}</span>
-          <q-icon
-            @click="onShareClick(index)"
-            name="more_vert"
-            size="sm"
-            class="q-ml-auto"
-          />
-        </div>
-      </div>
-      <div v-if="!documents.length" class=" heading-light row justify-center ">
-        <div>This folder is empty</div>
-      </div>
-    </div>
-    <div class="row">
-      <q-btn
-        class="q-ml-auto"
-        @click="uploadFilesOptions = true"
-        size="sm"
-        label="Add"
-        color="primary"
-        v-if="!assignDialog"
-      ></q-btn>
-    </div>
+    <!-- This section is  visible when the system is online -->
 
+    <div v-if="isOnline">
+      <div class="actions-div justify-between q-px-md" v-if="depth.length > 0">
+        <q-breadcrumbs class="text-primary" active-color="grey" gutter="none">
+          <template v-slot:separator> </template>
+          <div
+            v-if="depth.length > 0"
+            class="row-div vertical-center q-px-sm q-py-xs"
+            @click="onBackButtonClick"
+          >
+            <q-icon name="reply" size="sm" color="primary" />
+          </div>
+          <q-breadcrumbs-el
+            @click="onBreadCrumbClick(depth[currentPath], index)"
+            >{{ depth[currentPath - 1] ? depth[currentPath - 1].name : '-' }}
+          </q-breadcrumbs-el>
+        </q-breadcrumbs>
+        <div>
+          <q-icon
+            v-if="depth.length > 1"
+            @click="onClickTopMenu"
+            name="more_vert"
+            size="sm"
+            class="q-ml-auto"
+          />
+        </div>
+      </div>
+      <div>
+        <div v-for="(doc, index) in documents" class="row-div">
+          <div
+            v-if="doc.type == 'folder'"
+            class="vertical-center q-px-md q-py-xs"
+          >
+            <q-icon name="folder" size="sm" color="primary" />
+            <div class="q-pl-md" @click="onClickOnFile(doc)">
+              {{ doc.name }}
+            </div>
+            <q-icon
+              @click="onShareClick(index)"
+              name="more_vert"
+              size="sm"
+              class="q-ml-auto"
+            />
+          </div>
+          <div
+            v-if="doc.type != 'folder'"
+            class="vertical-center q-px-md q-py-sm"
+          >
+            <q-icon :name="iconType(doc.type)" size="sm" color="primary" />
+            <span class="q-pl-md" @click="onDocumentClick(doc.link)">{{
+              doc.name
+            }}</span>
+            <q-icon
+              @click="onShareClick(index)"
+              name="more_vert"
+              size="sm"
+              class="q-ml-auto"
+            />
+          </div>
+        </div>
+        <div
+          v-if="!documents.length"
+          class=" heading-light row justify-center "
+        >
+          <div>This folder is empty</div>
+        </div>
+      </div>
+      <div class="row">
+        <q-btn
+          class="q-ml-auto"
+          @click="uploadFilesOptions = true"
+          size="sm"
+          label="Add"
+          color="primary"
+          v-if="!assignDialog"
+        ></q-btn>
+      </div>
+    </div>
     <!-- Add Folder Dialog -->
 
     <q-dialog v-model="addFolderDialog">
@@ -596,6 +601,77 @@
         />
       </q-card>
     </q-dialog>
+
+    <!-- Generate Document in Offline Mode Dialog  -->
+    <q-dialog
+      v-model="contractDocumentDialog"
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <CustomBar
+          dialogName="Contract Document"
+          @closeDialog="contractDocumentDialog = false"
+        />
+        <q-card class="q-pa-md">
+          <div v-if="contractDocument">
+            <q-icon
+              name="picture_as_pdf"
+              size="sm"
+              color="primary"
+              class="q-ml-md"
+            />{{ contractDocument }}
+            <span class="q-pl-md">
+              <a download="contractDocument" src="contractDocument">
+                ContractDocument</a
+              >
+            </span>
+          </div>
+          <q-btn
+            v-if="contractDocument"
+            class="q-ma-md"
+            size="sm"
+            label="PA Sign"
+            color="primary"
+            @click="onSignButtonClick('pa_sign')"
+          />
+          <q-btn
+            v-if="contractDocument"
+            class="q-ma-md"
+            size="sm"
+            label="Insured Sign"
+            color="primary"
+            @click="onSignButtonClick('insured_sign')"
+          />
+          <q-btn
+            v-if="contractDocument"
+            class="q-ma-md"
+            size="sm"
+            label="Co-Insured Sign"
+            color="primary"
+            @click="onSignButtonClick('co-insured_sign')"
+          />
+        </q-card>
+      </q-card>
+    </q-dialog>
+
+    <!-- Signature Pad Dialog  -->
+    <q-dialog
+      v-model="signaturePadDialog"
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <CustomBar
+          dialogName="Claim Guru Signature Pad"
+          @closeDialog="signaturePadDialog = false"
+        />
+
+        <VueSignaturePad @signData="signData" />
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -605,20 +681,27 @@ import request from '@api';
 import { jsPDF } from 'jspdf';
 import { Plugins, CameraResultType, CameraDirection } from '@capacitor/core';
 import DeleteAlert from 'components/DeleteAlert';
+import VueSignaturePad from 'components/VueSignaturePad';
 const { Camera } = Plugins;
 import CustomBar from 'components/CustomBar';
 import { setNotification } from 'src/store/common/mutations';
 import { validateEmail } from '@utils/validation';
 import { makeId } from 'src/store/leads/actions';
+import localDB, { getCollection } from '@services/dexie';
 
 export default {
   name: 'FileManager',
-  components: { DeleteAlert, CustomBar },
+  components: { DeleteAlert, CustomBar, VueSignaturePad },
   props: ['directoryId', 'generateClaimDocument'],
 
   data() {
     return {
+      documentId: '',
+      signImage: '',
+      contractDocumentDialog: false,
+      signaturePadDialog: false,
       finalDocumentString: '',
+      contractDocument: '',
       tokenArray: [],
       document: '',
       sendToRadio: '',
@@ -662,7 +745,6 @@ export default {
     };
   },
   async created() {
-    // console.log(this.claim, 'claim');
     const { data } = await request.get(
       `/documents?parent_id=${this.directoryId}`
     );
@@ -677,6 +759,11 @@ export default {
       properties: document.attributes.properties
     }));
     this.getTemplates();
+    this.getPersonnelInfo(this.selectedClaimId);
+    this.getSingleClientDetails(this.claim.client.id);
+    console.log(this.claim, 'cllaim');
+    // console.log(this.personnel.personnel[0], 'pero');
+    console.log(this.editSelectedClient, 'client details');
     await this.getAllActorToClaim(this.selectedClaimId);
     // key value pair for tokens
     this.tokens = [
@@ -687,15 +774,43 @@ export default {
       //Client Tokens
       { key: '{{.Client.Email}}', value: this.claim.client.email },
       { key: '{{.Client.Name}}', value: this.claim.client.fname },
-      { key: '{{.Client.PhoneNumber.Number}}', value: '' },
+      {
+        key: '{{.Client.PhoneNumber.Number}}',
+        value: this.editSelectedClient.attributes.insuredInfo.primary
+          .phoneNumber[0].number
+      },
       { key: '{{.Client.Fax.Number}}', value: '' },
       { key: '{{.Client.Cell.Number}}', value: '' },
-      { key: '{{.Client.Address.Address1}}', value: '' },
-      { key: '{{.Client.Address.Address2}}', value: '' },
-      { key: '{{.Client.Address.AddressRegion}}', value: '' },
-      { key: '{{.Client.Address.PostalCode}}', value: '' },
-      { key: '{{.Client.Address.AddressCountry}}', value: '' },
-      { key: '{{.Client.Address.AddressLocality}}', value: '' },
+      {
+        key: '{{.Client.Address.Address1}}',
+        value: this.editSelectedClient.attributes.insuredInfo.mailingAddress
+          .address1
+      },
+      {
+        key: '{{.Client.Address.Address2}}',
+        value: this.editSelectedClient.attributes.insuredInfo.mailingAddress
+          .address2
+      },
+      {
+        key: '{{.Client.Address.AddressRegion}}',
+        value: this.editSelectedClient.attributes.insuredInfo.mailingAddress
+          .addressRegion
+      },
+      {
+        key: '{{.Client.Address.PostalCode}}',
+        value: this.editSelectedClient.attributes.insuredInfo.mailingAddress
+          .postalCode
+      },
+      {
+        key: '{{.Client.Address.AddressCountry}}',
+        value: this.editSelectedClient.attributes.insuredInfo.mailingAddress
+          .addressCountry
+      },
+      {
+        key: '{{.Client.Address.AddressLocality}}',
+        value: this.editSelectedClient.attributes.insuredInfo.mailingAddress
+          .addressLocality
+      },
 
       // Claim Tokens
 
@@ -712,15 +827,15 @@ export default {
       { key: '{{.Claim.LossInfo.Date}}', value: this.claim.lossInfo.date },
       {
         key: '{{.Claim.LossInfo.Cause.Value}}',
-        value: this.claim.lossInfo.cause.value
+        value: this.claim.lossInfo.cause?.value
       },
       {
         key: '{{.Claim.LossInfo.Cause.Desc}}',
-        value: this.claim.lossInfo.cause.desc
+        value: this.claim.lossInfo.cause?.desc
       },
       // Adjuster Tokens
 
-      { key: '{{.Adjuster.Name}}', value: '' },
+      { key: '{{.Adjuster.Name}}', value: this.personnel.personnel[0].name },
       { key: '{{.Adjuster.Email}}', value: '' },
       { key: '{{.Adjuster.LicenseNo}}', value: '' },
       { key: '{{.Adjuster.PhoneNumber.Number}}', value: '' },
@@ -735,12 +850,30 @@ export default {
 
       // Claim Property Tokens
 
-      { key: '{{.Claim.LossInfo.Property.Address1}}', value: '' },
-      { key: '{{.Claim.LossInfo.Property.Address2}}', value: '' },
-      { key: '{{.Claim.LossInfo.Property.AddressRegion}}', value: '' },
-      { key: '{{.Claim.LossInfo.Property.PostalCode}}', value: '' },
-      { key: '{{.Claim.LossInfo.Property.AddressCountry}}', value: '' },
-      { key: '{{.Claim.LossInfo.Property.AddressLocality}}', value: '' }
+      {
+        key: '{{.Claim.LossInfo.Property.Address1}}',
+        value: this.claim.lossInfo.property.address1
+      },
+      {
+        key: '{{.Claim.LossInfo.Property.Address2}}',
+        value: this.claim.lossInfo.property.address2
+      },
+      {
+        key: '{{.Claim.LossInfo.Property.AddressRegion}}',
+        value: this.claim.lossInfo.property.addressRegion
+      },
+      {
+        key: '{{.Claim.LossInfo.Property.PostalCode}}',
+        value: this.claim.lossInfo.property.postalCode
+      },
+      {
+        key: '{{.Claim.LossInfo.Property.AddressCountry}}',
+        value: this.claim.lossInfo.property.addressCountry
+      },
+      {
+        key: '{{.Claim.LossInfo.Property.AddressLocality}}',
+        value: this.claim.lossInfo.property.addressLocality
+      }
     ];
   },
   computed: {
@@ -752,7 +885,10 @@ export default {
       'templateOptions',
       'actors',
       'templates',
-      'claim'
+      'claim',
+      'isOnline',
+      'personnel',
+      'editSelectedClient'
     ])
   },
 
@@ -771,10 +907,35 @@ export default {
       'getAllActorToClaim',
       'signDocuments',
       'getSignedDocument',
-      'addTemplateLocal'
+      'addTemplateLocal',
+      'getPersonnelInfo',
+      'getSingleClientDetails'
     ]),
     ...mapMutations(['setLoading', 'setNotification']),
+    onSignButtonClick(tokenValue) {
+      this.signTokenValue = tokenValue;
+      this.signaturePadDialog = true;
+    },
     validateEmail,
+    async signData(data) {
+      this.signaturePadDialog = false;
+
+      if (this.signTokenValue == 'pa_sign') {
+        var payload = {
+          pa_sign: data
+        };
+      } else if (this.signTokenValue == 'insured_sign') {
+        var payload = {
+          insured_sign: data
+        };
+      } else {
+        var payload = {
+          co_insured_sign: data
+        };
+      }
+      await localDB.contractDocument.update(this.documentId, payload);
+    },
+
     removeEmail() {
       this.emails.pop();
     },
@@ -1263,7 +1424,7 @@ export default {
       this.finalDocumentString = testString;
     },
     async onClickGenerateDocument() {
-      if (this.isOnline) {
+      if (!this.isOnline) {
         const payload = {
           claimID: this.selectedClaimId,
           data: {
@@ -1315,12 +1476,16 @@ export default {
       });
 
       this.document = doc.output('datauri');
-
+      this.contractDocument = '';
       const payload = {
         document: this.document
       };
 
-      await this.addTemplateLocal(payload);
+      const response = await this.addTemplateLocal(payload);
+
+      this.contractDocument = response.document;
+      this.contractDocumentDialog = true;
+      this.documentId = response.id;
       this.document = '';
     },
 

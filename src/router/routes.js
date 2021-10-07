@@ -123,6 +123,7 @@ const routes = [
         caseSensitive: true,
         component: () => import('pages/LeadsDashboard.vue')
       },
+
       {
         path: 'leads',
         name: 'Leads',

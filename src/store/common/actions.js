@@ -440,38 +440,6 @@ export async function getAllTemplate({ commit, dispatch }) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.get('/templates');
-    // const data = [
-    //   {
-    //     id: '60a09a385b82ce899a38fa98',
-    //     type: 'templates',
-    //     attributes: {
-    //       created: '2021-05-16T04:06:16.265Z',
-    //       updated: '2021-05-16T04:06:16.265Z',
-    //       value:
-    //         '<p>Pharetra egestas cursus etiam ac maecenas rhoncus facilisis accumsan metus. Eget cubilia scelerisque malesuada tristique pellentesque odio libero donec blandit porta urna donec. Molestie sed fames ullamcorper. Ad pretium euismod urna commodo sit proin semper pharetra vivamus tincidunt. Senectus molestie, nisi ac metus proin torquent. Suscipit est facilisis taciti sollicitudin nam. Sit, orci augue.</p><p>Ultrices neque scelerisque semper ac cras ligula lacus aenean dolor fusce ac convallis. Adipiscing cursus maecenas, mus justo suspendisse semper mi dolor torquent nunc augue. Quisque proin fringilla mi. Facilisi conubia feugiat nisi potenti suscipit. Potenti gravida convallis augue per nec litora ullamcorper. Enim eros metus hendrerit. Cursus aliquet condimentum ante cras orci. Mattis velit diam ultricies sit donec molestie quisque blandit imperdiet etiam condimentum integer. Donec?</p>',
-    //       machineValue: 'letter_of_contract',
-    //       type: {
-    //         machineValue: 'letter_of_contract',
-    //         value: 'Letter of Contract'
-    //       }
-    //     }
-    //   }
-    //   // {
-    //   //   id: '60a09a395b82ce899a38fa99',
-    //   //   type: 'templates',
-    //   //   attributes: {
-    //   //     created: '2021-05-16T04:06:17.542Z',
-    //   //     updated: '2021-05-16T04:06:17.542Z',
-    //   //     value:
-    //   //       '<p>Pharetra egestas cursus etiam ac maecenas rhoncus facilisis accumsan metus. Eget cubilia scelerisque malesuada tristique pellentesque odio libero donec blandit porta urna donec. Molestie sed fames ullamcorper. Ad pretium euismod urna commodo sit proin semper pharetra vivamus tincidunt. Senectus molestie, nisi ac metus proin torquent. Suscipit est facilisis taciti sollicitudin nam. Sit, orci augue.</p><p>Ultrices neque scelerisque semper ac cras ligula lacus aenean dolor fusce ac convallis. Adipiscing cursus maecenas, mus justo suspendisse semper mi dolor torquent nunc augue. Quisque proin fringilla mi. Facilisi conubia feugiat nisi potenti suscipit. Potenti gravida convallis augue per nec litora ullamcorper. Enim eros metus hendrerit. Cursus aliquet condimentum ante cras orci. Mattis velit diam ultricies sit donec molestie quisque blandit imperdiet etiam condimentum integer. Donec?</p>',
-    //   //     machineValue: 'letter_of_contract',
-    //   //     type: {
-    //   //       machineValue: 'letter_of_contract',
-    //   //       value: 'Letter of Contract'
-    //   //     }
-    //   //   }
-    //   // }
-    // ];
 
     commit('setAllTemplate', data);
     dispatch('setLoading', false);
