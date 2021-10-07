@@ -34,7 +34,8 @@
               $route.name != 'Leads' &&
               $route.name != 'claim details' &&
               $route.name != 'dashboard' &&
-              $route.name != 'Add Claim'
+              $route.name != 'Add Claim' &&
+              $route.name != 'offline-claim'
           "
         >
           <div class="dot" v-if="checkUserRoleType() == false">
