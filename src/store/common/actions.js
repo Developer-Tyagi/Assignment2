@@ -395,7 +395,6 @@ export async function addTemplateType(
   }
 }
 
-//////////////////////////////
 export async function addTemplateRemote({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
@@ -436,23 +435,52 @@ export async function addTemplateLocal({ dispatch }, payload) {
     return false;
   }
 }
-export async function getAllTemplate({ commit, dispatch }) {
-  dispatch('setLoading', true);
-  try {
-    const { data } = await request.get('/templates');
 
-    commit('setAllTemplate', data);
+/////////////////////////////////////////////////////////////////////////////
+// export async function getAllTemplate({ commit, dispatch }) {
+//   dispatch('setLoading', true);
+//   try {
+//     const { data } = await request.get('/templates');
+
+//     commit('setAllTemplate', data);
+//     dispatch('setLoading', false);
+//   } catch (e) {
+//     console.log(e);
+//     dispatch('setLoading', false);
+//     dispatch('setNotification', {
+//       type: 'negative',
+//       message: e.response[0].title
+//     });
+//   }
+// }
+export async function getAllTemplate({
+  rootState: {
+    common: { isOnline }
+  },
+  commit,
+  dispatch
+}) {
+  if (isOnline) {
+    dispatch('setLoading', true);
+    try {
+      const { data } = await request.get('/templates');
+
+      commit('setAllTemplate', data);
+      dispatch('setLoading', false);
+    } catch (e) {
+      console.log(e);
+      dispatch('setLoading', false);
+      dispatch('setNotification', {
+        type: 'negative',
+        message: e.response[0].title
+      });
+    }
+  } else {
+    commit('setOfflineTemplates');
     dispatch('setLoading', false);
-  } catch (e) {
-    console.log(e);
-    dispatch('setLoading', false);
-    dispatch('setNotification', {
-      type: 'negative',
-      message: e.response[0].title
-    });
   }
 }
-
+////////////////////////////////
 export function changeNetworkStatus({ commit, dispatch }, isOnline) {
   commit('setNetworkStatus', isOnline);
   if (isOnline) {
@@ -493,6 +521,50 @@ export async function syncCarriers({ dispatch }) {
     );
   }
 }
+
+// export async function syncContractDocument({ dispatch }) {
+//   let offlineDocuments = await getCollection('contractDocument').toArray();
+//   var payload;
+//   offlineDocuments = offlineDocuments.filter(document => document.offline);
+
+//   if (offlineDocuments.length > 0) {
+//     console.log(offlineDocuments, 'offline');
+//     const formData = new FormData();
+
+//     const createDocument = offlineDocuments.map(
+//       ({ id: localId, offline, ...document }) =>
+//         formData.append('file', document.signedDocument),
+//       formData.append('type', document.template_type),
+//       formData.append('pa_sign', document.pa_sign),
+//       formData.append('insured_sign', document.insured_sign),
+//       formData.append('coinsured_sign', document.co_insured_sign),
+//       (payload = {
+//         id: document.claimId,
+//         formData: formData
+//       }),
+//       dispatch('uploadClaimDocument', payload).then(res => ({
+//         ...res,
+//         localId
+//       }))
+//     );
+//     return new Promise((resolve, reject) =>
+//       Promise.allSettled(createDocument).then(documents => {
+//         const createdDocument = documents
+//           .filter(({ status }) => status === 'fulfilled')
+//           .map(({ value }) => {
+//             storeIdsToLocalStorage('document', value.localId, value.id);
+//             return localDB.contractDocument
+//               .where('id')
+//               .equals(value.localId)
+//               .modify({ id: value.id, offline: false });
+//           });
+//         return Promise.allSettled(createdDocument).then(results => {
+//           resolve('All');
+//         });
+//       })
+//     );
+//   }
+// }
 
 export async function syncVendors({ dispatch }) {
   let offlineVendors = await getCollection('vendors').toArray();
@@ -918,5 +990,6 @@ export async function syncLocalDataBase({ dispatch, state }) {
   await dispatch('syncClients');
   await dispatch('syncClaims');
   await dispatch('syncOfficeTasks');
+  // await dispatch('syncContractDocument');
   await clearLocalStorage();
 }

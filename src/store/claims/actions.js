@@ -624,11 +624,50 @@ export async function deleteClaimSettelment({ commit, dispatch }, payload) {
     });
   }
 }
-export async function getSingleClaims({ commit, dispatch }, id) {
+// export async function getSingleClaims({ commit, dispatch }, id) {
+//   dispatch('setLoading', true);
+//   try {
+//     const { data } = await request.get(`/claims/${id}/info`);
+//     commit('setClaim', data);
+//     dispatch('setLoading', false);
+//   } catch (e) {
+//     console.log(e);
+//     dispatch('setLoading', false);
+//     dispatch('setNotification', {
+//       type: 'negative',
+//       message: e.response[0].title
+//     });
+//   }
+// }
+
+export async function getSingleClaims(
+  {
+    rootState: {
+      claims: { claims },
+      common: { isOnline }
+    },
+    commit,
+    dispatch
+  },
+  id
+) {
   dispatch('setLoading', true);
   try {
-    const { data } = await request.get(`/claims/${id}/info`);
-    commit('setClaim', data);
+    if (!isOnline) {
+      console.log('in fi');
+      const { data } = await request.get(`/claims/${id}/info`);
+      commit('setClaim', data);
+    } else {
+      const data = await localDB.claims.toArray();
+      console.log(data, 'daat');
+      for (var i = 0, len = data.length; i < len; i++) {
+        if (data[i].id == id) {
+          var demo = data[i];
+          break;
+        }
+      }
+      return demo;
+    }
     dispatch('setLoading', false);
   } catch (e) {
     console.log(e);
@@ -1055,22 +1094,53 @@ export async function deleteDirectory({ dispatch }, id) {
 }
 
 // API is for View list of template types for estimator account only
-export async function getTemplates({ commit, dispatch }) {
-  dispatch('setLoading', true);
-  try {
-    const { data } = await request.get('/templatetypes');
 
-    commit('setTemplateTypes', data);
+/////////////////test
+export async function getTemplates({
+  rootState: {
+    common: { isOnline }
+  },
+  commit,
+  dispatch
+}) {
+  if (isOnline) {
+    dispatch('setLoading', true);
+    try {
+      const { data } = await request.get('/templatetypes');
+
+      commit('setTemplateTypes', data);
+      dispatch('setLoading', false);
+    } catch (e) {
+      console.log(e);
+      dispatch('setLoading', false);
+      dispatch('setNotification', {
+        type: 'negative',
+        message: e.response[0].title
+      });
+    }
+  } else {
+    commit('setOfflineTemplatesTypes');
     dispatch('setLoading', false);
-  } catch (e) {
-    console.log(e);
-    dispatch('setLoading', false);
-    dispatch('setNotification', {
-      type: 'negative',
-      message: e.response[0].title
-    });
   }
 }
+/////////////////////
+
+// export async function getTemplates({ commit, dispatch }) {
+//   dispatch('setLoading', true);
+//   try {
+//     const { data } = await request.get('/templatetypes');
+
+//     commit('setTemplateTypes', data);
+//     dispatch('setLoading', false);
+//   } catch (e) {
+//     console.log(e);
+//     dispatch('setLoading', false);
+//     dispatch('setNotification', {
+//       type: 'negative',
+//       message: e.response[0].title
+//     });
+//   }
+// }
 // API for Get document for claim.
 export async function getClaimEstimateDoc({ commit, dispatch }, claimID) {
   dispatch('setLoading', true);

@@ -390,8 +390,8 @@ export default {
     };
   },
   created() {
-    this.getClaims();
-    this.getTemplates();
+    // this.getClaims();
+    // this.getTemplates();
     this.getAllTemplate();
   },
   methods: {

@@ -32,87 +32,81 @@
           @click="onClickGenerateDocument"
         />
       </div>
-      <q-btn label="Save Document" size="xl" @click="onSavingDocument" />
     </q-card>
     <!-- This section is  visible when the system is online -->
 
-    <div v-if="isOnline">
-      <div class="actions-div justify-between q-px-md" v-if="depth.length > 0">
-        <q-breadcrumbs class="text-primary" active-color="grey" gutter="none">
-          <template v-slot:separator> </template>
-          <div
-            v-if="depth.length > 0"
-            class="row-div vertical-center q-px-sm q-py-xs"
-            @click="onBackButtonClick"
-          >
-            <q-icon name="reply" size="sm" color="primary" />
+    <div class="actions-div justify-between q-px-md" v-if="depth.length > 0">
+      <q-breadcrumbs class="text-primary" active-color="grey" gutter="none">
+        <template v-slot:separator> </template>
+        <div
+          v-if="depth.length > 0"
+          class="row-div vertical-center q-px-sm q-py-xs"
+          @click="onBackButtonClick"
+        >
+          <q-icon name="reply" size="sm" color="primary" />
+        </div>
+        <q-breadcrumbs-el @click="onBreadCrumbClick(depth[currentPath], index)"
+          >{{ depth[currentPath - 1] ? depth[currentPath - 1].name : '-' }}
+        </q-breadcrumbs-el>
+      </q-breadcrumbs>
+      <div>
+        <q-icon
+          v-if="depth.length > 1"
+          @click="onClickTopMenu"
+          name="more_vert"
+          size="sm"
+          class="q-ml-auto"
+        />
+      </div>
+    </div>
+    <div>
+      <div v-for="(doc, index) in documents" class="row-div">
+        <div
+          v-if="doc.type == 'folder'"
+          class="vertical-center q-px-md q-py-xs"
+        >
+          <q-icon name="folder" size="sm" color="primary" />
+          <div class="q-pl-md" @click="onClickOnFile(doc)">
+            {{ doc.name }}
           </div>
-          <q-breadcrumbs-el
-            @click="onBreadCrumbClick(depth[currentPath], index)"
-            >{{ depth[currentPath - 1] ? depth[currentPath - 1].name : '-' }}
-          </q-breadcrumbs-el>
-        </q-breadcrumbs>
-        <div>
           <q-icon
-            v-if="depth.length > 1"
-            @click="onClickTopMenu"
+            @click="onShareClick(index)"
+            name="more_vert"
+            size="sm"
+            class="q-ml-auto"
+          />
+        </div>
+        <div
+          v-if="doc.type != 'folder'"
+          class="vertical-center q-px-md q-py-sm"
+        >
+          <q-icon :name="iconType(doc.type)" size="sm" color="primary" />
+          <span class="q-pl-md" @click="onDocumentClick(doc.link)">{{
+            doc.name
+          }}</span>
+          <q-icon
+            @click="onShareClick(index)"
             name="more_vert"
             size="sm"
             class="q-ml-auto"
           />
         </div>
       </div>
-      <div>
-        <div v-for="(doc, index) in documents" class="row-div">
-          <div
-            v-if="doc.type == 'folder'"
-            class="vertical-center q-px-md q-py-xs"
-          >
-            <q-icon name="folder" size="sm" color="primary" />
-            <div class="q-pl-md" @click="onClickOnFile(doc)">
-              {{ doc.name }}
-            </div>
-            <q-icon
-              @click="onShareClick(index)"
-              name="more_vert"
-              size="sm"
-              class="q-ml-auto"
-            />
-          </div>
-          <div
-            v-if="doc.type != 'folder'"
-            class="vertical-center q-px-md q-py-sm"
-          >
-            <q-icon :name="iconType(doc.type)" size="sm" color="primary" />
-            <span class="q-pl-md" @click="onDocumentClick(doc.link)">{{
-              doc.name
-            }}</span>
-            <q-icon
-              @click="onShareClick(index)"
-              name="more_vert"
-              size="sm"
-              class="q-ml-auto"
-            />
-          </div>
-        </div>
-        <div
-          v-if="!documents.length"
-          class=" heading-light row justify-center "
-        >
-          <div>This folder is empty</div>
-        </div>
-      </div>
-      <div class="row">
-        <q-btn
-          class="q-ml-auto"
-          @click="uploadFilesOptions = true"
-          size="sm"
-          label="Add"
-          color="primary"
-          v-if="!assignDialog"
-        ></q-btn>
+      <div v-if="!documents.length" class=" heading-light row justify-center ">
+        <div>This folder is empty</div>
       </div>
     </div>
+    <div class="row">
+      <q-btn
+        class="q-ml-auto"
+        @click="uploadFilesOptions = true"
+        size="sm"
+        label="Add"
+        color="primary"
+        v-if="!assignDialog"
+      ></q-btn>
+    </div>
+
     <!-- Add Folder Dialog -->
 
     <q-dialog v-model="addFolderDialog">
@@ -602,77 +596,6 @@
         />
       </q-card>
     </q-dialog>
-
-    <!-- Generate Document in Offline Mode Dialog  -->
-    <q-dialog
-      v-model="contractDocumentDialog"
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <CustomBar
-          dialogName="Contract Document"
-          @closeDialog="contractDocumentDialog = false"
-        />
-        <q-card class="q-pa-md">
-          <div v-if="contractDocument">
-            <q-icon
-              name="picture_as_pdf"
-              size="sm"
-              color="primary"
-              class="q-ml-md"
-            />{{ contractDocument }}
-            <span class="q-pl-md">
-              <a download="contractDocument" src="contractDocument">
-                ContractDocument</a
-              >
-            </span>
-          </div>
-          <q-btn
-            v-if="contractDocument"
-            class="q-ma-md"
-            size="sm"
-            label="PA Sign"
-            color="primary"
-            @click="onSignButtonClick('pa_sign')"
-          />
-          <q-btn
-            v-if="contractDocument"
-            class="q-ma-md"
-            size="sm"
-            label="Insured Sign"
-            color="primary"
-            @click="onSignButtonClick('insured_sign')"
-          />
-          <q-btn
-            v-if="contractDocument"
-            class="q-ma-md"
-            size="sm"
-            label="Co-Insured Sign"
-            color="primary"
-            @click="onSignButtonClick('co-insured_sign')"
-          />
-        </q-card>
-      </q-card>
-    </q-dialog>
-
-    <!-- Signature Pad Dialog  -->
-    <q-dialog
-      v-model="signaturePadDialog"
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <CustomBar
-          dialogName="Claim Guru Signature Pad"
-          @closeDialog="signaturePadDialog = false"
-        />
-
-        <VueSignaturePad @signData="signData" />
-      </q-card>
-    </q-dialog>
   </div>
 </template>
 
@@ -682,7 +605,7 @@ import request from '@api';
 import { jsPDF } from 'jspdf';
 import { Plugins, CameraResultType, CameraDirection } from '@capacitor/core';
 import DeleteAlert from 'components/DeleteAlert';
-import VueSignaturePad from 'components/VueSignaturePad';
+
 const { Camera } = Plugins;
 import CustomBar from 'components/CustomBar';
 import { setNotification } from 'src/store/common/mutations';
@@ -692,21 +615,11 @@ import localDB, { getCollection } from '@services/dexie';
 
 export default {
   name: 'FileManager',
-  components: { DeleteAlert, CustomBar, VueSignaturePad },
+  components: { DeleteAlert, CustomBar },
   props: ['directoryId', 'generateClaimDocument'],
 
   data() {
     return {
-      pa_signature: '',
-      insured_signature: '',
-      co_insured_signature: '',
-      documentId: '',
-      signImage: '',
-      contractDocumentDialog: false,
-      signaturePadDialog: false,
-      finalDocumentString: '',
-      contractDocument: '',
-      tokenArray: [],
       document: '',
       sendToRadio: '',
       emails: [{ email: '', type: 'external', name: '' }],
@@ -763,127 +676,8 @@ export default {
       properties: document.attributes.properties
     }));
     this.getTemplates();
-    this.getPersonnelInfo(this.selectedClaimId);
-    this.getSingleClientDetails(this.claim.client.id);
-    console.log(this.claim, 'cllaim');
-    // console.log(this.personnel.personnel[0], 'pero');
-    console.log(this.editSelectedClient, 'client details');
+
     await this.getAllActorToClaim(this.selectedClaimId);
-    // key value pair for tokens
-    this.tokens = [
-      //Carrier Tokens
-      { key: '{{.Carrier.Name}}', value: this.claim.policyInfo.carrier?.value },
-      {
-        key: '{{.Carrier.Email}}',
-        value: this.claim.policyInfo.carrier?.email
-      },
-
-      //Client Tokens
-      { key: '{{.Client.Email}}', value: this.claim.client.email },
-      { key: '{{.Client.Name}}', value: this.claim.client.fname },
-      {
-        key: '{{.Client.PhoneNumber.Number}}',
-        value: this.editSelectedClient.attributes.insuredInfo?.primary
-          .phoneNumber[0].number
-      },
-      { key: '{{.Client.Fax.Number}}', value: '' },
-      { key: '{{.Client.Cell.Number}}', value: '' },
-      {
-        key: '{{.Client.Address.Address1}}',
-        value: this.editSelectedClient.attributes.insuredInfo.mailingAddress
-          .address1
-      },
-      {
-        key: '{{.Client.Address.Address2}}',
-        value: this.editSelectedClient.attributes.insuredInfo.mailingAddress
-          .address2
-      },
-      {
-        key: '{{.Client.Address.AddressRegion}}',
-        value: this.editSelectedClient.attributes.insuredInfo.mailingAddress
-          .addressRegion
-      },
-      {
-        key: '{{.Client.Address.PostalCode}}',
-        value: this.editSelectedClient.attributes.insuredInfo.mailingAddress
-          .postalCode
-      },
-      {
-        key: '{{.Client.Address.AddressCountry}}',
-        value: this.editSelectedClient.attributes.insuredInfo.mailingAddress
-          .addressCountry
-      },
-      {
-        key: '{{.Client.Address.AddressLocality}}',
-        value: this.editSelectedClient.attributes.insuredInfo.mailingAddress
-          .addressLocality
-      },
-
-      // Claim Tokens
-
-      { key: '{{.Claim.Number}}', value: this.claim.number },
-      { key: '{{.Claim.Client.Name}}', value: this.claim.client.fname },
-      { key: '{{.Claim.FileNumber}}', value: this.claim.fileNumber },
-      { key: '{{.Claim.Status.Value}}', value: this.claim.status.value },
-      {
-        key: '{{.Claim.PolicyInfo.Number}}',
-        value: this.claim.policyInfo.number
-      },
-      { key: '{{localTZ .Claim.PolicyInfo.EffectiveDate}}', value: '' },
-      { key: '{{localTZ .Claim.PolicyInfo.ExpirationDate}}', value: '' },
-      { key: '{{.Claim.LossInfo.Date}}', value: this.claim.lossInfo.date },
-      {
-        key: '{{.Claim.LossInfo.Cause.Value}}',
-        value: this.claim.lossInfo.cause?.value
-      },
-      {
-        key: '{{.Claim.LossInfo.Cause.Desc}}',
-        value: this.claim.lossInfo.cause?.desc
-      },
-      // Adjuster Tokens
-
-      { key: '{{.Adjuster.Name}}', value: this.personnel.personnel[0].name },
-      { key: '{{.Adjuster.Email}}', value: '' },
-      { key: '{{.Adjuster.LicenseNo}}', value: '' },
-      { key: '{{.Adjuster.PhoneNumber.Number}}', value: '' },
-      { key: '{{.Adjuster.Fax.Number}}', value: '' },
-      { key: '{{.Adjuster.Cell.Number}}', value: '' },
-      { key: '{{.Adjuster.Address.Address1}}', value: '' },
-      { key: '{{.Adjuster.Address.Address2}}', value: '' },
-      { key: '{{.Adjuster.Address.AddressRegion}}', value: '' },
-      { key: '{{.Adjuster.Address.PostalCode}}', value: '' },
-      { key: '{{.Adjuster.Address.AddressCountry}}', value: '' },
-      { key: '{{.Adjuster.Address.AddressLocality}}', value: '' },
-
-      // Claim Property Tokens
-
-      {
-        key: '{{.Claim.LossInfo.Property.Address1}}',
-        value: this.claim.lossInfo.property.address1
-      },
-      {
-        key: '{{.Claim.LossInfo.Property.Address2}}',
-        value: this.claim.lossInfo.property.address2
-      },
-      {
-        key: '{{.Claim.LossInfo.Property.AddressRegion}}',
-        value: this.claim.lossInfo.property.addressRegion
-      },
-      {
-        key: '{{.Claim.LossInfo.Property.PostalCode}}',
-        value: this.claim.lossInfo.property.postalCode
-      },
-      {
-        key: '{{.Claim.LossInfo.Property.AddressCountry}}',
-        value: this.claim.lossInfo.property.addressCountry
-      },
-      {
-        key: '{{.Claim.LossInfo.Property.AddressLocality}}',
-        value: this.claim.lossInfo.property.addressLocality
-      }
-    ];
-
-    console.log(this.tokens, 'token');
   },
   computed: {
     ...mapGetters([
@@ -893,11 +687,7 @@ export default {
       'allUsers',
       'templateOptions',
       'actors',
-      'templates',
-      'claim',
-      'isOnline',
-      'personnel',
-      'editSelectedClient'
+      'templates'
     ])
   },
 
@@ -915,61 +705,9 @@ export default {
       'getTemplates',
       'getAllActorToClaim',
       'signDocuments',
-      'getSignedDocument',
-      'addTemplateLocal',
-      'getPersonnelInfo',
-      'getSingleClientDetails'
+      'getSignedDocument'
     ]),
     ...mapMutations(['setLoading', 'setNotification']),
-    async onSavingDocument() {
-      const contractDocument = await localDB.contractDocument
-        .where({ id: this.documentId })
-        .toArray();
-
-      this.pa_signature = contractDocument[0].pa_sign.trim();
-      this.insured_signature = contractDocument[0].insured_sign;
-      this.co_insured_signature = contractDocument[0].co_insured_sign;
-      console.log(this.pa_signature, 'pa sign');
-      this.tokens.push(
-        // {
-        //   key: '{{.insured_signature}}',
-        //   value: contractDocument[0].insured_sign
-        // }
-        // {
-        //   key: '{{.coinsured_signature}}',
-        //   value: contractDocument[0].co_insured_sign
-        // },
-        { key: '{{pa_signature}}', value: this.pa_signature }
-      );
-
-      console.log(this.tokens, 'tokens');
-      this.tokenReplacement(this.finalDocumentString);
-      this.convertHtmlToPdf(this.finalDocumentString);
-    },
-
-    onSignButtonClick(tokenValue) {
-      this.signTokenValue = tokenValue;
-      this.signaturePadDialog = true;
-    },
-    validateEmail,
-    async signData(data) {
-      this.signaturePadDialog = false;
-
-      if (this.signTokenValue == 'pa_sign') {
-        var payload = {
-          pa_sign: data
-        };
-      } else if (this.signTokenValue == 'insured_sign') {
-        var payload = {
-          insured_sign: data
-        };
-      } else {
-        var payload = {
-          co_insured_sign: data
-        };
-      }
-      await localDB.contractDocument.update(this.documentId, payload);
-    },
 
     removeEmail() {
       this.emails.pop();
@@ -1217,6 +955,7 @@ export default {
         direction: CameraDirection.Rear
       });
       this.setLoading(true);
+      // This code is  for converting a image into PDF, Will use in future
       // const jsPDFObj = new jsPDF('p', 'mm');
       // jsPDFObj.addImage(imageData.dataUrl, 10, 10);
       // this.pdfImage = jsPDFObj.output('datauristring');
@@ -1434,99 +1173,38 @@ export default {
       const result = this.templates.find(template => {
         return template.name.machineValue === this.templatetype.machineValue;
       });
-      this.tokenReplacement(result.name.value);
     },
     async onClickGenerateDocument() {
-      if (!this.isOnline) {
-        const payload = {
-          claimID: this.selectedClaimId,
-          data: {
-            template: this.templatetype.machineValue
-          }
-        };
-        const response = await this.generateClaimDoc(payload);
-
-        const { data } = await request.get(
-          `/documents?parent_id=${response.attributes.parentID}`
-        );
-
-        this.setLoading(true);
-        if (this.allFolder) {
-          this.allFolderId = document.id;
-        }
-        this.documents = data.map(document => ({
-          name: document.attributes.name,
-          id: document.id,
-          type: document.attributes.mimeType,
-          link: document.attributes.webViewLink,
-          properties: document.attributes.properties
-        }));
-
-        this.depth.push({ name: document.name, id: document.id });
-        const length = this.depth.length;
-
-        this.currentPath = length;
-        this.depth[this.currentPath - 1].name =
-          response.attributes.directoryName;
-        this.setLoading(false);
-      } else {
-        this.convertHtmlToPdf(this.finalDocumentString);
-      }
-    },
-    tokenReplacement(tokenString) {
-      console.log('1');
-      // var resultString = tokenString;
-
-      //Regex for getting the all tokens from the String
-
-      var regex = /\{{(.*?)\}}/g;
-      var match;
-      console.log(this.tokenArray, 'token arary');
-      while ((match = regex.exec(tokenString)) != null) {
-        if (!this.tokenArray.includes(match[0])) {
-          this.tokenArray.push(match[0]);
-        }
-      }
-
-      var testString = tokenString;
-      this.tokenArray.forEach(token => {
-        let result = this.tokens.find(o => o.key === token);
-
-        if (result && result.value !== undefined) {
-          testString = testString.replaceAll(token, result.value);
-        }
-      });
-
-      this.finalDocumentString = testString;
-    },
-    //function for converting HTML  to PDF with the token replacement
-    async convertHtmlToPdf(documentString) {
-      console.log('2', documentString);
-      const id = makeId();
-
-      var doc = new jsPDF();
-
-      await doc.html(documentString, {
-        callback: function(doc) {
-          doc.save('contract_' + id + '.pdf');
-        },
-        x: 10,
-        y: 10
-      });
-
-      this.document = doc.output('datauri');
-      this.contractDocument = '';
-
       const payload = {
-        document: this.document
+        claimID: this.selectedClaimId,
+        data: {
+          template: this.templatetype.machineValue
+        }
       };
+      const response = await this.generateClaimDoc(payload);
 
-      const response = await this.addTemplateLocal(payload);
+      const { data } = await request.get(
+        `/documents?parent_id=${response.attributes.parentID}`
+      );
 
-      this.contractDocument = response.document;
-      this.contractDocumentDialog = true;
-      this.documentId = response.id;
-      this.document = '';
+      this.setLoading(true);
+      if (this.allFolder) {
+        this.allFolderId = document.id;
+      }
+      this.documents = data.map(document => ({
+        name: document.attributes.name,
+        id: document.id,
+        type: document.attributes.mimeType,
+        link: document.attributes.webViewLink,
+        properties: document.attributes.properties
+      }));
+
+      this.depth.push({ name: document.name, id: document.id });
+      const length = this.depth.length;
+
+      this.currentPath = length;
+      this.depth[this.currentPath - 1].name = response.attributes.directoryName;
+      this.setLoading(false);
     },
 
     onClickAddEmail() {

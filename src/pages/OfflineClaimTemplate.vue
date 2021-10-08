@@ -1,19 +1,429 @@
 <template>
-  <q-page> <ClaimFiles /> </q-page>
+  <div>
+    <q-card class="q-pa-sm input-style input-overlay  col-5">
+      <div class="text-bold q-mt-sm q-ml-sm">Template Type</div>
+
+      <q-select
+        dense
+        v-model="templatetype.value"
+        option-value="name"
+        option-label="name"
+        map-options
+        options-dense
+        behavior="menu"
+        emit-value
+        :options="templateOptions"
+        @input="setTypes(templatetype.value)"
+        label="List of Templates"
+        lazy-rules
+        :rules="[val => (val && val.length > 0) || 'Please fill the template']"
+      />
+
+      <div class="full-width column items-center q-mb-md ">
+        <q-btn
+          v-if="templatetype.value"
+          color="primary"
+          size="'xl'"
+          class="button-width-90 text-capitalize"
+          label="Generate Claim Document"
+          @click="onClickGenerateDocument"
+        />
+      </div>
+    </q-card>
+    <!-- Generate Document in Offline Mode Dialog  -->
+    <q-dialog
+      v-model="contractDocumentDialog"
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <CustomBar
+          dialogName="Contract Document"
+          @closeDialog="contractDocumentDialog = false"
+        />
+        <q-card class="q-pa-md">
+          <div v-if="contractDocument">
+            <q-icon
+              name="picture_as_pdf"
+              size="sm"
+              color="primary"
+              class="q-ml-md"
+            />
+            <span class="q-pl-md">
+              <a download="contractDocument" src="contractDocument">
+                ContractDocument</a
+              >
+            </span>
+          </div>
+          <q-btn
+            v-if="contractDocument"
+            class="q-ma-md"
+            size="sm"
+            label="PA Sign"
+            color="primary"
+            @click="onSignButtonClick('pa_sign')"
+          />
+          <q-btn
+            v-if="contractDocument"
+            class="q-ma-md"
+            size="sm"
+            label="Insured Sign"
+            color="primary"
+            @click="onSignButtonClick('insured_sign')"
+          />
+          <q-btn
+            v-if="contractDocument"
+            class="q-ma-md"
+            size="sm"
+            label="Co-Insured Sign"
+            color="primary"
+            @click="onSignButtonClick('co-insured_sign')"
+          />
+
+          <q-btn
+            label="Save Signed Document"
+            size="sm"
+            @click="onSavingDocument"
+            class="q-ml-xl q-mt-md"
+            color="primary"
+          />
+        </q-card>
+      </q-card>
+    </q-dialog>
+
+    <!-- Signature Pad Dialog  -->
+    <q-dialog
+      v-model="signaturePadDialog"
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <CustomBar
+          dialogName="Claim Guru Signature Pad"
+          @closeDialog="signaturePadDialog = false"
+        />
+
+        <VueSignaturePad @signData="signData" />
+      </q-card>
+    </q-dialog>
+  </div>
 </template>
 <script>
-import ClaimFiles from 'src/pages/ClaimFiles';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
+import VueSignaturePad from 'components/VueSignaturePad';
+import CustomBar from 'components/CustomBar';
+
+import { jsPDF } from 'jspdf';
+import { makeId } from 'src/store/leads/actions';
+import localDB, { getCollection } from '@services/dexie';
 export default {
-  components: {
-    ClaimFiles
-  },
+  components: { CustomBar, VueSignaturePad },
   data() {
-    return {};
+    return {
+      claim: '',
+      pa_signature: '',
+      insured_signature: '',
+      co_insured_signature: '',
+      documentId: '',
+      signImage: '',
+      contractDocumentDialog: false,
+      signaturePadDialog: false,
+      finalDocumentString: '',
+      contractDocument: '',
+      tokenArray: [],
+      document: '',
+
+      templatetype: { value: '', machineValue: '' }
+    };
   },
-  methods: {},
+  async created() {
+    this.claim = await this.getSingleClaims(this.selectedClaimId);
+    console.log(this.claim, 'helllo');
+    await this.getTemplates();
+    // await this.getPersonnelInfo(this.selectedClaimId);
+    await this.getSingleClientDetails(this.claim.client.id);
+
+    // Tokens Mappings
+
+    this.tokens = [
+      //Carrier Tokens
+      // { key: '{{.Carrier.Name}}', value: this.claim.policyInfo.carrier?.value },
+      // {
+      //   key: '{{.Carrier.Email}}',
+      //   value: this.claim.policyInfo.carrier?.email
+      // },
+
+      //Client Tokens
+      // { key: '{{.Client.Email}}', value: this.claim.client.email },
+      // { key: '{{.Client.Name}}', value: this.claim.client.fname }
+      { key: '{{.Client.Email}}', value: '' },
+      { key: '{{.Client.Name}}', value: '' }
+      // {
+      //   key: '{{.Client.PhoneNumber.Number}}',
+      //   value: this.editSelectedClient.attributes.insuredInfo?.primary
+      //     .phoneNumber[0]?.number
+      // },
+      // { key: '{{.Client.Fax.Number}}', value: '' },
+      // { key: '{{.Client.Cell.Number}}', value: '' },
+      // {
+      //   key: '{{.Client.Address.Address1}}',
+      //   value: this.editSelectedClient.attributes.insuredInfo.mailingAddress
+      //     .address1
+      // },
+      // {
+      //   key: '{{.Client.Address.Address2}}',
+      //   value: this.editSelectedClient.attributes.insuredInfo.mailingAddress
+      //     .address2
+      // },
+      // {
+      //   key: '{{.Client.Address.AddressRegion}}',
+      //   value: this.editSelectedClient.attributes.insuredInfo.mailingAddress
+      //     .addressRegion
+      // },
+      // {
+      //   key: '{{.Client.Address.PostalCode}}',
+      //   value: this.editSelectedClient.attributes.insuredInfo.mailingAddress
+      //     .postalCode
+      // },
+      // {
+      //   key: '{{.Client.Address.AddressCountry}}',
+      //   value: this.editSelectedClient.attributes.insuredInfo.mailingAddress
+      //     .addressCountry
+      // },
+      // {
+      //   key: '{{.Client.Address.AddressLocality}}',
+      //   value: this.editSelectedClient.attributes.insuredInfo.mailingAddress
+      //     .addressLocality
+      // },
+
+      // Claim Tokens
+
+      // { key: '{{.Claim.Number}}', value: this.claim.number },
+      // { key: '{{.Claim.Client.Name}}', value: this.claim.client.fname },
+      // { key: '{{.Claim.FileNumber}}', value: this.claim.fileNumber },
+      // { key: '{{.Claim.Status.Value}}', value: this.claim.status.value },
+      // {
+      //   key: '{{.Claim.PolicyInfo.Number}}',
+      //   value: this.claim.policyInfo.number
+      // },
+      // { key: '{{localTZ .Claim.PolicyInfo.EffectiveDate}}', value: '' },
+      // { key: '{{localTZ .Claim.PolicyInfo.ExpirationDate}}', value: '' },
+      // { key: '{{.Claim.LossInfo.Date}}', value: this.claim.lossInfo.date },
+      // {
+      //   key: '{{.Claim.LossInfo.Cause.Value}}',
+      //   value: this.claim.lossInfo.cause?.value
+      // },
+      // {
+      //   key: '{{.Claim.LossInfo.Cause.Desc}}',
+      //   value: this.claim.lossInfo.cause?.desc
+      // },
+      // Adjuster Tokens
+
+      // { key: '{{.Adjuster.Name}}', value: this.personnel.personnel[0].name },
+      // { key: '{{.Adjuster.Email}}', value: '' },
+      // { key: '{{.Adjuster.LicenseNo}}', value: '' },
+      // { key: '{{.Adjuster.PhoneNumber.Number}}', value: '' },
+      // { key: '{{.Adjuster.Fax.Number}}', value: '' },
+      // { key: '{{.Adjuster.Cell.Number}}', value: '' },
+      // { key: '{{.Adjuster.Address.Address1}}', value: '' },
+      // { key: '{{.Adjuster.Address.Address2}}', value: '' },
+      // { key: '{{.Adjuster.Address.AddressRegion}}', value: '' },
+      // { key: '{{.Adjuster.Address.PostalCode}}', value: '' },
+      // { key: '{{.Adjuster.Address.AddressCountry}}', value: '' },
+      // { key: '{{.Adjuster.Address.AddressLocality}}', value: '' },
+
+      // Claim Property Tokens
+
+      // {
+      //   key: '{{.Claim.LossInfo.Property.Address1}}',
+      //   value: this.claim.lossInfo.property.address1
+      // },
+      // {
+      //   key: '{{.Claim.LossInfo.Property.Address2}}',
+      //   value: this.claim.lossInfo.property.address2
+      // },
+      // {
+      //   key: '{{.Claim.LossInfo.Property.AddressRegion}}',
+      //   value: this.claim.lossInfo.property.addressRegion
+      // },
+      // {
+      //   key: '{{.Claim.LossInfo.Property.PostalCode}}',
+      //   value: this.claim.lossInfo.property.postalCode
+      // },
+      // {
+      //   key: '{{.Claim.LossInfo.Property.AddressCountry}}',
+      //   value: this.claim.lossInfo.property.addressCountry
+      // },
+      // {
+      //   key: '{{.Claim.LossInfo.Property.AddressLocality}}',
+      //   value: this.claim.lossInfo.property.addressLocality
+      // }
+    ];
+  },
+  methods: {
+    ...mapActions([
+      'getTemplates',
+      'addTemplateLocal',
+      'getPersonnelInfo',
+      'getSingleClientDetails',
+      'getSingleClaims'
+    ]),
+    async setTypes(value) {
+      console.log(this.templateOptions, 'templ');
+      const obj = this.templateOptions.find(item => {
+        return item.name === value;
+      });
+
+      this.templatetype.machineValue = obj.machineValue;
+
+      const result = this.templates.find(template => {
+        return template.name.machineValue === this.templatetype.machineValue;
+      });
+      console.log(result);
+      this.tokenReplacement(result.name.value);
+    },
+    tokenReplacement(tokenString) {
+      //Regex for getting the all tokens from the String
+
+      var regex = /\{{(.*?)\}}/g;
+      var match;
+
+      while ((match = regex.exec(tokenString)) != null) {
+        if (!this.tokenArray.includes(match[0])) {
+          console.log(match[0]);
+          this.tokenArray.push(match[0]);
+          console.log('string push');
+        }
+      }
+
+      var testString = tokenString;
+      console.log(this.tokens, 'sonali');
+      this.tokenArray.forEach(token => {
+        let result = this.tokens.find(o => o.key === token);
+
+        if (result && result.value !== undefined) {
+          testString = testString.replaceAll(token, result.value);
+        }
+      });
+
+      this.finalDocumentString = testString;
+    },
+    //function for converting HTML  to PDF with the token replacement
+    async convertHtmlToPdf(documentString, documentType) {
+      alert('convert', documentType);
+      // documentString = documentString.replace(/\u200B/g, '');
+      console.log('23333', documentString, documentType);
+      const id = makeId();
+
+      var doc = new jsPDF();
+
+      await doc.html(documentString, {
+        callback: function(doc) {
+          doc.save('contract_' + id + '.pdf');
+        },
+        x: 10,
+        y: 10
+      });
+
+      this.document = doc.output('datauri');
+      this.contractDocument = '';
+
+      if (documentType == 'signedDocument') {
+        alert('in if');
+        const signedContract = {
+          signed_document: this.document
+        };
+        console.log(this.document, 'signed payload');
+        console.log(this.documentId);
+
+        await localDB.contractDocument.update(this.documentId, signedContract);
+
+        // this.contractDocumentDialog = false;
+      } else {
+        const intialContract = {
+          claimId: this.selectedClaimId,
+          document: this.document,
+          template_type: this.templatetype.value
+        };
+        var response = await this.addTemplateLocal(intialContract);
+        this.contractDocumentDialog = true;
+        this.contractDocument = response.document;
+
+        this.documentId = response.id;
+        this.document = '';
+      }
+      alert('end function');
+    },
+    onClickGenerateDocument() {
+      this.convertHtmlToPdf(this.finalDocumentString);
+    },
+    async onSavingDocument() {
+      alert('alert');
+      const contractDocument = await localDB.contractDocument
+        .where({ id: this.documentId })
+        .toArray();
+
+      this.pa_signature = contractDocument[0].pa_sign.trim();
+      this.insured_signature = contractDocument[0].insured_sign;
+      this.co_insured_signature = contractDocument[0].co_insured_sign;
+
+      // Adding  Sign Tokens with the Value
+      if (this.pa_signature) {
+        this.tokens.push({ key: '{{pa_signature}}', value: this.pa_signature });
+        console.log('push later');
+      }
+
+      // this.tokens.push({
+      //   key: '{{.coinsured_signature}}',
+      //   value: this.co_insured_signature
+      // });
+      // this.tokens.push({
+      //   key: '{{.insured_signature}}',
+      //   value: this.insured_signature
+      // });
+
+      this.tokenReplacement(this.finalDocumentString);
+      this.convertHtmlToPdf(this.finalDocumentString, 'signedDocument');
+    },
+
+    onSignButtonClick(tokenValue) {
+      this.signTokenValue = tokenValue;
+      this.signaturePadDialog = true;
+    },
+    //This function is used for accepting the values that are coming from signature pad component
+
+    async signData(data) {
+      this.signaturePadDialog = false;
+
+      if (this.signTokenValue == 'pa_sign') {
+        var payload = {
+          pa_sign: data
+        };
+      } else if (this.signTokenValue == 'insured_sign') {
+        var payload = {
+          insured_sign: data
+        };
+      } else {
+        var payload = {
+          co_insured_sign: data
+        };
+      }
+
+      await localDB.contractDocument.update(this.documentId, payload);
+    }
+  },
+
   computed: {
-    ...mapGetters(['templates'])
+    ...mapGetters([
+      'templates',
+      'templateOptions',
+
+      'personnel',
+      'editSelectedClient',
+      'selectedClaimId'
+    ])
   }
 };
 </script>
