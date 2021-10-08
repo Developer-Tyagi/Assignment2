@@ -349,7 +349,10 @@
               class="q-mr-lg column items-center"
               @click="toRedirectTOPhotoIdApp()"
             >
-              <q-icon name="filter_center_focus" size="xl"></q-icon>
+              <!-- PhotoId App Icon used here-->
+              <q-icon size="xl">
+                <q-img src="../assets/photoIdApp.png" color="primary" />
+              </q-icon>
               <div class=" text-black">Photo ID App</div>
             </div>
             <div
