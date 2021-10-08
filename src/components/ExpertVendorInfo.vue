@@ -37,6 +37,7 @@
         <AddVendor
           @onCloseAddVendor="onCloseAddVendorDialogBox"
           @closeDialog="addVendorDialog = false"
+          :componentName="'Add Vendor'"
           :industryValue="industryValue"
         />
       </q-card>
@@ -265,7 +266,7 @@
           ]"
         >
         </q-select>
-        <div>
+        <div v-if="item.industry">
           <q-btn
             outline
             rounded
@@ -354,7 +355,7 @@
           </q-card>
         </div>
       </div>
-      <div class="row justify-between">
+      <div class="row q-mt-md justify-between">
         <div>
           <q-btn
             v-if="expertVendorInfo.vendorExpertHiredToggle"

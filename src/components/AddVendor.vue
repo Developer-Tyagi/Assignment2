@@ -7,7 +7,7 @@
       />
       <div class="mobile-container-page form-color ">
         <q-form
-          class="q-px-lg "
+          class="q-px-lg"
           style="height: calc(100vh - 51px)"
           ref="vendorForm"
         >
@@ -44,7 +44,6 @@
                   emit-value
                   :disable="!industryFilterDisabled"
                   lazy-rules
-                  options-dense
                   :rules="[
                     val =>
                       (val && val.length > 0) ||
@@ -125,7 +124,6 @@
                 <div class="q-mt-sm">
                   <q-select
                     borderless
-                    dense
                     v-model="vendor.contact.honorific.value"
                     :options="titles"
                     option-label="value"
@@ -141,12 +139,10 @@
                   <q-input
                     borderless
                     class="input-overlay input-style"
-                    dense
                     v-model="vendor.contact.fname"
                     label="First Name"
                   />
                   <q-input
-                    dense
                     borderless
                     class="input-style input-overlay"
                     v-model="vendor.contact.lname"
@@ -155,7 +151,6 @@
                   <div class="row justify-between">
                     <q-select
                       borderless
-                      dense
                       class="input-style input-overlay col-5"
                       v-model="vendor.contact.phoneNumber[0].type"
                       :options="contactTypes"
@@ -168,7 +163,6 @@
                       options-dense
                     />
                     <q-input
-                      dense
                       borderless
                       class="input-style input-overlay col-6"
                       v-model.number="vendor.contact.phoneNumber[0].number"
@@ -206,7 +200,7 @@
               <q-input
                 borderless
                 class="input-style q-mb-sm input-overlay"
-                dense
+                type="textarea"
                 v-model="vendor.notes"
                 label="Notes"
               />
