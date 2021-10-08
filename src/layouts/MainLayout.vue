@@ -91,42 +91,49 @@ export default {
     onBackButtonClick() {
       this.userRole = getCurrentUser().attributes.roles[0].machineValue;
       const route = this.$router.currentRoute.fullPath.split('/')[1];
-      if (
-        route == 'clients' ||
-        route == 'vendors' ||
-        route == 'admin' ||
-        route == 'settings' ||
-        route == 'claims' ||
-        route == 'mortgages' ||
-        route == 'carriers'
-      ) {
-        this.$router.push('/dashboard');
-      } else if (route == 'leads') {
-        this.$router.go(-1);
-      } else if (route == 'add-lead') {
-        this.$router.go(-1);
-      } else if (route == 'mortgage-details') {
-        this.$router.push('/mortgages');
-      } else if (route == 'vendor-document') {
-        this.setCameraIcon('false'); // the camera icon become Disappeared when we press back button
-      } else if (route == 'carrier-details') {
-        this.$router.push('/carriers');
-      } else if (route == 'add-client') {
-        this.$router.push('/dashboard');
-      } else if (
-        (route == 'claim-summary' && this.userRole == 'estimator') ||
-        this.userRole == 'vendor'
-      ) {
-        this.$router.push('/claims');
-      } else if (route == 'claims') {
-        this.$store.commit('setClaims');
-      } else {
-        if (this.isEdit) {
-          this.isLastRouteEdit(false);
-          this.$router.go(-3);
-        } else {
+      switch (route) {
+        case route == 'clients' ||
+          route == 'vendors' ||
+          route == 'admin' ||
+          route == 'settings' ||
+          route == 'claims' ||
+          route == 'mortgages' ||
+          route == 'add-client' ||
+          route == 'carriers':
+          this.$router.push('/dashboard');
+          break;
+        case route == 'leads' || route == 'add-lead':
           this.$router.go(-1);
-        }
+          break;
+        case route == 'mortgage-details':
+          this.$router.push('/mortgages');
+          break;
+        case route == 'carrier-details':
+          this.$router.push('/carriers');
+          break;
+        case route == 'view-client':
+          this.$router.push('/clients');
+          break;
+        case route == 'claim-details':
+          this.$router.push('/claims');
+          break;
+        case (route == 'claim-summary' && this.userRole == 'estimator') ||
+          this.userRole == 'vendor':
+          this.$router.push('/claims');
+          break;
+        case route == 'claims':
+          this.$store.commit('setClaims');
+          break;
+        default:
+          if (this.isEdit) {
+            this.isLastRouteEdit(false);
+            this.$router.go(-3);
+          } else if (route == 'vendor-document') {
+            this.setCameraIcon('false'); // the camera icon become Disappeared when we press back button
+            this.$router.push('/dashboard');
+          } else {
+            this.$router.go(-1);
+          }
       }
     },
     onClickAddUpIcon() {
