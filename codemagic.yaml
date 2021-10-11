@@ -1,87 +1,83 @@
 workflows:
-  claimguru-android-workflow:
-    name: Claimguru Android Workflow
-    max_build_duration: 120
-    instance_type: mac_mini
-    environment:
-      groups:
-        - android
-        - claimguru-env
-      vars:
-        KEYSTORE_PATH: /tmp/.keystore
-      node: 12.22.1
-    triggering:
-      events:
-        - pull_request
-      cancel_previous_builds: true
-    scripts:
-      - &setup_env_vars
-        name: Setup environment variables
-        script: |
-          cat > $FCI_BUILD_DIR/.env <<EOF
-          CLAIMGURU_ENV_API_URL='$CLAIMGURU_ENV_API_URL'
-          CLAIMGURU_ENV_API_KEY="$CLAIMGURU_ENV_API_KEY"
-          CLAIMGURU_ENV_AUTH_DOMAIN="$CLAIMGURU_ENV_AUTH_DOMAIN"
-          CLAIMGURU_ENV_PROJECT_ID="$CLAIMGURU_ENV_PROJECT_ID"
-          CLAIMGURU_ENV_STORAGE_BUCKET="$CLAIMGURU_ENV_STORAGE_BUCKET"
-          CLAIMGURU_ENV_MESSAGING_SENDER_ID="$CLAIMGURU_ENV_MESSAGING_SENDER_ID"
-          CLAIMGURU_ENV_APP_ID="$CLAIMGURU_ENV_APP_ID"
-          CLAIMGURU_ENV_STRIPE_PUBLISHABLE_KEY="$CLAIMGURU_ENV_STRIPE_PUBLISHABLE_KEY"
-          EOF
-      - &install_node_modules
-        name: Install dependencies and quasar cli
-        script: |
-          yarn
-          yarn global add @quasar/cli
-      - &copy_web_assets
-        name: Build and Copy web assets to native project
-        script: |
-          quasar build -m capacitor -T android --skip-pkg
-          cd src-capacitor && npx cap sync
-      - name: Set Android SDK location
-        script: |
-          echo "sdk.dir=$ANDROID_SDK_ROOT" > "$FCI_BUILD_DIR/src-capacitor/android/local.properties"
-      - name: Set up debug key.properties
-        script: |
-          keytool -genkeypair \
-            -alias androiddebugkey \
-            -keypass android \
-            -keystore ~/.android/debug.keystore \
-            -storepass android \
-            -dname 'CN=Android Debug,O=Android,C=US' \
-            -keyalg 'RSA' \
-            -keysize 2048 \
-            -validity 10000
-      - name: Setup keystore
-        script: |
-          echo $KEYSTORE | base64 --decode > $KEYSTORE_PATH
-          cat > $FCI_BUILD_DIR/src-capacitor/android/key.properties <<EOF
-          storePassword=$KEYSTORE_PASSWORD
-          keyPassword=$KEY_PASSWORD
-          keyAlias=$KEY_ALIAS
-          storeFile=$KEYSTORE_PATH
-          EOF
-      - name: Build Android release
-        script: |
-          cd $FCI_BUILD_DIR/src-capacitor/android
-          cp ../build.gradle app/build.gradle
-          ./gradlew bundleRelease
-    artifacts:
-      - $FCI_BUILD_DIR/src-capacitor/android/app/build/**/outputs/**/*.aab
-    publishing:
-      google_play:
-        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
-        track: internal
-      email:
-        recipients:
-          - abhay.yadav@cilalabs.com
-          # - akash@cilalabs.com
-          # - sai.dinesh@cilalabs.com
-          # - varun.gurjar@cilalabs.com
-          # - jay.kate@cilalabs.com
-        notify:
-          success: true
-          failure: true
+  # claimguru-android-workflow:
+  #   name: Claimguru Android Workflow
+  #   max_build_duration: 120
+  #   instance_type: mac_mini
+  #   environment:
+  #     groups:
+  #       - android
+  #       - claimguru-env
+  #     vars:
+  #       KEYSTORE_PATH: /tmp/.keystore
+  #     node: 12.22.1
+  #   triggering:
+  #     events:
+  #       - pull_request
+  #     cancel_previous_builds: true
+  #   scripts:
+  #     - &setup_env_vars
+  #       name: Setup environment variables
+  #       script: |
+  #         cat > $FCI_BUILD_DIR/.env <<EOF
+  #         CLAIMGURU_ENV_API_URL='$CLAIMGURU_ENV_API_URL'
+  #         CLAIMGURU_ENV_API_KEY="$CLAIMGURU_ENV_API_KEY"
+  #         CLAIMGURU_ENV_AUTH_DOMAIN="$CLAIMGURU_ENV_AUTH_DOMAIN"
+  #         CLAIMGURU_ENV_PROJECT_ID="$CLAIMGURU_ENV_PROJECT_ID"
+  #         CLAIMGURU_ENV_STORAGE_BUCKET="$CLAIMGURU_ENV_STORAGE_BUCKET"
+  #         CLAIMGURU_ENV_MESSAGING_SENDER_ID="$CLAIMGURU_ENV_MESSAGING_SENDER_ID"
+  #         CLAIMGURU_ENV_APP_ID="$CLAIMGURU_ENV_APP_ID"
+  #         CLAIMGURU_ENV_STRIPE_PUBLISHABLE_KEY="$CLAIMGURU_ENV_STRIPE_PUBLISHABLE_KEY"
+  #         EOF
+  #     - &install_node_modules
+  #       name: Install dependencies and quasar cli
+  #       script: |
+  #         yarn
+  #         yarn global add @quasar/cli
+  #     - &copy_web_assets
+  #       name: Build and Copy web assets to native project
+  #       script: |
+  #         quasar build -m capacitor -T android --skip-pkg
+  #         cd src-capacitor && npx cap sync
+  #     - name: Set Android SDK location
+  #       script: |
+  #         echo "sdk.dir=$ANDROID_SDK_ROOT" > "$FCI_BUILD_DIR/src-capacitor/android/local.properties"
+  #     - name: Set up debug key.properties
+  #       script: |
+  #         keytool -genkeypair \
+  #           -alias androiddebugkey \
+  #           -keypass android \
+  #           -keystore ~/.android/debug.keystore \
+  #           -storepass android \
+  #           -dname 'CN=Android Debug,O=Android,C=US' \
+  #           -keyalg 'RSA' \
+  #           -keysize 2048 \
+  #           -validity 10000
+  #     - name: Setup keystore
+  #       script: |
+  #         echo $KEYSTORE | base64 --decode > $KEYSTORE_PATH
+  #         cat > $FCI_BUILD_DIR/src-capacitor/android/key.properties <<EOF
+  #         storePassword=$KEYSTORE_PASSWORD
+  #         keyPassword=$KEY_PASSWORD
+  #         keyAlias=$KEY_ALIAS
+  #         storeFile=$KEYSTORE_PATH
+  #         EOF
+  #     - name: Build Android release
+  #       script: |
+  #         cd $FCI_BUILD_DIR/src-capacitor/android
+  #         cp ../build.gradle app/build.gradle
+  #         ./gradlew bundleRelease
+  #   artifacts:
+  #     - $FCI_BUILD_DIR/src-capacitor/android/app/build/**/outputs/**/*.aab
+  #   publishing:
+  #     google_play:
+  #       credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+  #       track: internal
+  #     email:
+  #       recipients:
+  #         - abhay.yadav@cilalabs.com
+  #       notify:
+  #         success: true
+  #         failure: true
 
   claimguru-ios-workflow:
     name: claimguru iOS Workflow
