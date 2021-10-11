@@ -10,9 +10,9 @@ workflows:
       vars:
         KEYSTORE_PATH: /tmp/.keystore
       node: 12.22.1
-    triggering:
-      events:
-        - pull_request
+    # triggering:
+    #   events:
+    #     - pull_request
       cancel_previous_builds: true
     scripts:
       - &setup_env_vars
