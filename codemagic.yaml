@@ -5,7 +5,7 @@ workflows:
     instance_type: mac_mini
     environment:
       groups:
-        - android
+        # - android
         - claimguru-env
       vars:
         KEYSTORE_PATH: /tmp/.keystore
