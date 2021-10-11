@@ -172,7 +172,6 @@
                 @input="setTitleName(honorific)"
                 emit-value
                 label="Title"
-                options-dense
               />
               <q-input
                 dense
@@ -229,7 +228,6 @@
                   behavior="menu"
                   options-dense
                   emit-value
-                  options-dense
                 >
                   <template v-slot:no-option>
                     <q-item>
@@ -349,7 +347,6 @@
                 @input="setTitleName(honorific)"
                 emit-value
                 label="Title"
-                options-dense
               />
               <q-input
                 dense
@@ -405,7 +402,6 @@
                   behavior="menu"
                   options-dense
                   emit-value
-                  options-dense
                 >
                   <template v-slot:no-option>
                     <q-item>
