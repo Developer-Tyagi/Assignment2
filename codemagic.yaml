@@ -5,15 +5,15 @@ workflows:
     instance_type: mac_mini
     environment:
       groups:
-        # - android
+        - android
         - claimguru-env
       vars:
         KEYSTORE_PATH: /tmp/.keystore
       node: 12.22.1
-    # triggering:
-    #   events:
-    #     - pull_request
-    #   cancel_previous_builds: true
+    triggering:
+      events:
+        - pull_request
+      cancel_previous_builds: true
     scripts:
       - &setup_env_vars
         name: Setup environment variables
