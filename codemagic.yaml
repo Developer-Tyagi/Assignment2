@@ -72,9 +72,9 @@ workflows:
     artifacts:
       - $FCI_BUILD_DIR/src-capacitor/android/app/build/**/outputs/**/*.aab
     publishing:
-      # google_play:
-      #   credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
-      #   track: internal
+      google_play:
+        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+        track: internal
       email:
         recipients:
           - abhay.yadav@cilalabs.com
