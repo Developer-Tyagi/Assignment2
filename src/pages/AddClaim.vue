@@ -1585,7 +1585,7 @@ export default {
         personnel: [
           {
             personnelID: this.companyPersonnel.personParty.id,
-            name: this.companyPersonnel.personParty.value,
+            name: this.companyPersonnel.personParty.name,
             role: {
               value: this.companyPersonnel.personnel.value.name,
               machineValue: this.companyPersonnel.personnel.value.machineValue

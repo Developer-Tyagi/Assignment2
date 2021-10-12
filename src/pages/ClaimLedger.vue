@@ -1291,6 +1291,7 @@
                               v-model.number="personnelPaidAmount[index]"
                               @input="onFIllingPersonnelPaid(index)"
                             />
+
                             <q-input
                               v-if="person.fees.type == 'percentage'"
                               :disable="

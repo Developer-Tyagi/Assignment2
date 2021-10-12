@@ -281,7 +281,7 @@ export default {
           companyData: {
             personnel: {
               personnelID: this.companyPersonnelPost.personParty.id,
-              name: this.companyPersonnelPost.personParty.value,
+              name: this.companyPersonnelPost.personParty.name,
               role: {
                 value: this.companyPersonnelPost.personnel.value.name,
                 machineValue: this.companyPersonnelPost.personnel.value
