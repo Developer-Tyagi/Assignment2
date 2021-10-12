@@ -1,3 +1,4 @@
+import { sendPhoneNumber } from '@utils/clickable';
 export function validateEmail(mail) {
   const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   if (regex.test(mail)) {
@@ -67,4 +68,13 @@ export function errorMessage(message) {
     message,
     position: 'top'
   });
+}
+
+//non required phone Number field
+export function nonRequiredPhoneNumber(val) {
+  if (!val || val.length == 0) return true;
+  else {
+    if (sendPhoneNumber(val).length == 10) return true;
+    else return false;
+  }
 }
