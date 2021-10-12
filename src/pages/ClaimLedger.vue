@@ -1285,6 +1285,7 @@
                                 personnelPayToggle[index].value == false
                               "
                               prefix="$"
+                              type="number"
                               dense
                               outlined
                               v-model.number="personnelPaidAmount[index]"
