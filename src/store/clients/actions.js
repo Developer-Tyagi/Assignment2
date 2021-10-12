@@ -51,7 +51,7 @@ export async function getSingleClientDetails(
   },
   id
 ) {
-  dispatch('setLoading', true);
+  // dispatch('setLoading', true);
   try {
     if (isOnline) {
       const { data } = await request.get(`/clients/${id}`);

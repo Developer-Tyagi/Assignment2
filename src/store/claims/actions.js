@@ -651,12 +651,14 @@ export async function getSingleClaims(
   },
   id
 ) {
-  dispatch('setLoading', true);
+  // dispatch('setLoading', true);
   try {
     if (isOnline) {
+      console.log('in if');
       const { data } = await request.get(`/claims/${id}/info`);
       commit('setClaim', data);
     } else {
+      console.log('else');
       const data = await localDB.claims.toArray();
 
       for (var i = 0, len = data.length; i < len; i++) {
@@ -665,6 +667,9 @@ export async function getSingleClaims(
           break;
         }
       }
+      console.log('dispatch before');
+      dispatch('setLoading', false);
+      console.log('After displatch');
       return demo;
     }
     dispatch('setLoading', false);

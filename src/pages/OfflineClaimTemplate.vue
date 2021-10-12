@@ -37,7 +37,9 @@
           class="q-ml-md"
         />
         <span class="q-pl-md cursor-pointer">
-          <a download="signedDocument" src="signedDocument"> SignedDocument</a>
+          <a id="dwnldLnk" @click="downloadPDF('SignedDocument')">
+            SignedDocument</a
+          >
         </span>
       </div>
     </q-card>
@@ -62,7 +64,10 @@
               class="q-ml-md"
             />
             <span class="q-pl-md cursor-pointer">
-              <a download="contractDocument" src="contractDocument">
+              <a
+                download="contractDocument"
+                @click="downloadPDF('ContractDocument')"
+              >
                 ContractDocument</a
               >
             </span>
@@ -296,6 +301,17 @@ export default {
 
       this.tokenReplacement(result.name.value);
     },
+
+    downloadPDF(fileName) {
+      const source =
+        fileName == 'SignedDocument'
+          ? this.signedDocument
+          : this.contractDocument;
+      const link = document.createElement('a');
+      link.href = source;
+      link.download = `${fileName}.pdf`;
+      link.click();
+    },
     tokenReplacement(tokenString) {
       //Regex for getting the all tokens from the String
 
@@ -307,14 +323,19 @@ export default {
           this.tokenArray.push(match[0]);
         }
       }
+      console.log(this.tokenArray, 'token array');
 
       var testString = tokenString;
-
+      console.log(this.tokens, 'tokens');
       this.tokenArray.forEach(token => {
         let result = this.tokens.find(o => o.key === token);
-
-        if (result && result.value !== undefined) {
+        console.log(result, 'result');
+        console.log(token, 'token key');
+        console.log(typeof token, 'token key type');
+        if (result && result.value) {
+          console.log(testString, 'testString before');
           testString = testString.replaceAll(token, result.value);
+          console.log(testString, 'testString');
         }
       });
 
@@ -331,7 +352,7 @@ export default {
         .from(documentString)
         .set(opt)
         .save()
-        .outputPdf('blob')
+        .outputPdf('datauri')
         .then(async data => {
           this.document = data;
 
@@ -437,21 +458,21 @@ export default {
       this.pa_signature = contractDocument[0].pa_sign;
       this.insured_signature = contractDocument[0].insured_sign;
       this.co_insured_signature = contractDocument[0].co_insured_sign;
-
+      console.log(this.pa_signature, '11');
       // Adding  Sign Tokens with the Value
       if (this.pa_signature) {
         this.tokens.push({
-          key: '{{/*.pa_signature*/}}',
-          value: this.pa_signature
+          key: '​{{.Adjuster.Sign}}​',
+          value: 'sonali'
         });
       }
 
       this.tokens.push({
-        key: '{{.coinsured_signature}}',
+        key: '{{.Client.InsuredSign}}',
         value: this.co_insured_signature
       });
       this.tokens.push({
-        key: '{{.insured_signature}}',
+        key: '{{.Client.CoInsuredSign}}',
         value: this.insured_signature
       });
 
@@ -466,20 +487,19 @@ export default {
     //This function is used for accepting the values that are coming from signature pad component
 
     async signData(data) {
-      var blobData = this.dataURItoBlob(data);
       this.signaturePadDialog = false;
 
       if (this.signTokenValue == 'pa_sign') {
         var payload = {
-          pa_sign: blobData
+          pa_sign: data
         };
       } else if (this.signTokenValue == 'insured_sign') {
         var payload = {
-          insured_sign: blobData
+          insured_sign: data
         };
       } else {
         var payload = {
-          co_insured_sign: blobData
+          co_insured_sign: data
         };
       }
       this.saveButtonEnable = true;

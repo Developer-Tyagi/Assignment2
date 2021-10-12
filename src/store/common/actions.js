@@ -576,7 +576,9 @@ export async function syncContractDocument({ dispatch }) {
         }));
         if (document.pa_sign) {
           let formData1 = new FormData();
-          formData1.append('file', document.pa_sign);
+          let blobData = await dataURItoBlob(document.pa_sign);
+
+          formData1.append('file', blobData);
           formData1.append('type', 'pa-sign');
           let payload = {
             id: document.claimId,
@@ -590,8 +592,8 @@ export async function syncContractDocument({ dispatch }) {
 
         if (document.co_insured_sign) {
           let formData2 = new FormData();
-
-          formData2.append('file', document.co_insured_sign);
+          let blobData = await dataURItoBlob(document.co_insured_sign);
+          formData2.append('file', blobData);
           formData2.append('type', 'coinsured-sign');
           let payload = {
             id: document.claimId,
@@ -604,7 +606,8 @@ export async function syncContractDocument({ dispatch }) {
         }
         if (document.insured_sign) {
           let formData3 = new FormData();
-          formData3.append('file', document.insured_sign);
+          let blobData = await dataURItoBlob(document.insured_sign);
+          formData3.append('file', blobData);
           formData3.append('type', 'insured-sign');
           let payload = {
             id: document.claimId,
@@ -615,7 +618,11 @@ export async function syncContractDocument({ dispatch }) {
             localId
           }));
         }
-        console.log(payload, 'pay');
+        console.log(document.claimId, 'dc');
+        await localDB.contractDocument
+          .where({ claimId: document.claimId })
+          .delete();
+
         // await dispatch('uploadClaimDocument', payload).then(res => ({
         //   ...res,
         //   localId
@@ -623,22 +630,24 @@ export async function syncContractDocument({ dispatch }) {
       })
     );
 
-    return new Promise((resolve, reject) =>
-      Promise.allSettled(createDocument).then(documents => {
-        const createdDocument = documents
-          .filter(({ status }) => status === 'fulfilled')
-          .map(({ value }) => {
-            storeIdsToLocalStorage('document', value.localId, value.id);
-            return localDB.contractDocument
-              .where('id')
-              .equals(value.localId)
-              .modify({ id: value.id, offline: false });
-          });
-        return Promise.allSettled(createdDocument).then(results => {
-          resolve('All');
-        });
-      })
-    );
+    // return new Promise((resolve, reject) =>
+    //   Promise.allSettled(createDocument).then(documents => {
+    //     const createdDocument = documents
+    //       .filter(({ status }) => status === 'fulfilled')
+    //       .map(({ value }) => {
+    //         console.log(value, 'check');
+    //         storeIdsToLocalStorage('document', value.localId, value.id);
+
+    //         return localDB.contractDocument
+    //           .where('id')
+    //           .equals(value.localId)
+    //           .modify({ id: value.id, offline: false });
+    //       });
+    //     return Promise.allSettled(createdDocument).then(results => {
+    //       resolve('All');
+    //     });
+    //   })
+    // );
   }
 }
 

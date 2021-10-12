@@ -390,6 +390,12 @@ export default {
     };
   },
   created() {
+    //this API is for offline clients
+    const payload = {
+      status: '',
+      name: ''
+    };
+    this.getClients(payload);
     this.getClaims();
     this.getTemplates();
     this.getAllTemplate();
