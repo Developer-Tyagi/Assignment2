@@ -92,45 +92,47 @@ export default {
       this.userRole = getCurrentUser().attributes.roles[0].machineValue;
       const route = this.$router.currentRoute.fullPath.split('/')[1];
       switch (route) {
-        case route == 'clients' ||
-          route == 'vendors' ||
-          route == 'admin' ||
-          route == 'settings' ||
-          route == 'claims' ||
-          route == 'mortgages' ||
-          route == 'add-client' ||
-          route == 'carriers':
+        case 'clients':
+        case 'vendors':
+        case 'admin':
+        case 'settings':
+        case 'claims':
+        case 'mortgages':
+        case 'add-client':
+        case 'carriers':
           this.$router.push('/dashboard');
           break;
-        case route == 'leads' || route == 'add-lead':
+        case 'leads':
+        case 'add-lead':
           this.$router.go(-1);
           break;
-        case route == 'mortgage-details':
+        case 'mortgage-details':
           this.$router.push('/mortgages');
           break;
-        case route == 'carrier-details':
+        case 'carrier-details':
           this.$router.push('/carriers');
           break;
-        case route == 'view-client':
+        case 'view-client':
           this.$router.push('/clients');
           break;
-        case route == 'claim-details':
+        case 'claim-details':
           this.$router.push('/claims');
           break;
-        case (route == 'claim-summary' && this.userRole == 'estimator') ||
+        case ('claim-summary' && this.userRole == 'estimator') ||
           this.userRole == 'vendor':
           this.$router.push('/claims');
           break;
-        case route == 'claims':
+        case 'claims':
           this.$store.commit('setClaims');
+          break;
+        case 'vendor-document':
+          this.setCameraIcon('false'); // the camera icon become Disappeared when we press back button
+          this.$router.push('/dashboard');
           break;
         default:
           if (this.isEdit) {
             this.isLastRouteEdit(false);
             this.$router.go(-3);
-          } else if (route == 'vendor-document') {
-            this.setCameraIcon('false'); // the camera icon become Disappeared when we press back button
-            this.$router.push('/dashboard');
           } else {
             this.$router.go(-1);
           }
