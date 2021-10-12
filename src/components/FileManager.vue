@@ -801,6 +801,7 @@ export default {
     },
     async onFileInputClick(event) {
       this.dataURl = await this.getBase64(event.target.files[0]);
+
       const file = document.getElementById('uploadFile').value;
       this.selectFile = file.split('\\').pop();
       this.selectFile = this.selectFile.split('.');

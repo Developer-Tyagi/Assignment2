@@ -180,7 +180,7 @@ export function setClientStatistics(state, clientStatic) {
 export function setSelectedEditClient(state, client) {
   state.editSelectedClient = client;
 }
-export function setSelectedClientOffline(state, client) {
+export async function setSelectedClientOffline(state, client) {
   if (client && client.id) {
     state.editSelectedClient = {
       ...client

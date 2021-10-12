@@ -92,7 +92,7 @@
             q-pt-sm
             justify-between
           "
-          @click="$router.push('/vendors')"
+          @click="$router.push('/offline-claim')"
           style="
             border-top-left-radius: 16px;
             border-top-right-radius: 16px;
@@ -390,8 +390,8 @@ export default {
     };
   },
   created() {
-    // this.getClaims();
-    // this.getTemplates();
+    this.getClaims();
+    this.getTemplates();
     this.getAllTemplate();
   },
   methods: {

@@ -149,7 +149,6 @@ export async function setTemplateTypes(state, types) {
 
 export async function setOfflineTemplatesTypes(state) {
   state.templateOptions = await getCollection('templateTypes').toArray();
-  console.log(state.templateOptions, 'in mutation');
 }
 
 export function setClaimDocument(state, claimDocument) {

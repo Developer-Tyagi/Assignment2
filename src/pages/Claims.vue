@@ -215,7 +215,7 @@ export default {
     onClickingOnClaim(claim) {
       this.setSelectedClaimId(claim.id);
 
-      if (!this.isOnline) {
+      if (this.isOnline) {
         this.$router.push('/claim-details');
         if (this.userRole == 'estimator' || this.userRole == 'vendor') {
           this.setSelectedClaimId(claim.id);

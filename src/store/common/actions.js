@@ -417,7 +417,6 @@ export async function addTemplateRemote({ dispatch, state }, payload) {
 }
 
 export async function addTemplateLocal({ dispatch }, payload) {
-  console.log(payload, 'pay');
   try {
     let template = {
       ...payload,
@@ -522,53 +521,129 @@ export async function syncCarriers({ dispatch }) {
   }
 }
 
-// export async function syncContractDocument({ dispatch }) {
-//   let offlineDocuments = await getCollection('contractDocument').toArray();
-//   var payload;
-//   offlineDocuments = offlineDocuments.filter(document => document.offline);
+export async function dataURItoBlob(dataURI) {
+  console.log(typeof dataURI, 'data uri');
+  // convert base64/URLEncoded data component to raw binary data held in a string
+  var byteString;
+  if (dataURI.split(',')[0].indexOf('base64') >= 0)
+    byteString = atob(dataURI.split(',')[1]);
+  else byteString = unescape(dataURI.split(',')[1]);
 
-//   if (offlineDocuments.length > 0) {
-//     console.log(offlineDocuments, 'offline');
-//     const formData = new FormData();
+  // separate out the mime component
+  var mimeString = dataURI
+    .split(',')[0]
+    .split(':')[1]
+    .split(';')[0];
 
-//     const createDocument = offlineDocuments.map(
-//       ({ id: localId, offline, ...document }) =>
-//         formData.append('file', document.signedDocument),
-//       formData.append('type', document.template_type),
-//       formData.append('pa_sign', document.pa_sign),
-//       formData.append('insured_sign', document.insured_sign),
-//       formData.append('coinsured_sign', document.co_insured_sign),
-//       (payload = {
-//         id: document.claimId,
-//         formData: formData
-//       }),
-//       dispatch('uploadClaimDocument', payload).then(res => ({
-//         ...res,
-//         localId
-//       }))
-//     );
-//     return new Promise((resolve, reject) =>
-//       Promise.allSettled(createDocument).then(documents => {
-//         const createdDocument = documents
-//           .filter(({ status }) => status === 'fulfilled')
-//           .map(({ value }) => {
-//             storeIdsToLocalStorage('document', value.localId, value.id);
-//             return localDB.contractDocument
-//               .where('id')
-//               .equals(value.localId)
-//               .modify({ id: value.id, offline: false });
-//           });
-//         return Promise.allSettled(createdDocument).then(results => {
-//           resolve('All');
-//         });
-//       })
-//     );
-//   }
-// }
+  // write the bytes of the string to a typed array
+  var ia = new Uint8Array(byteString.length);
+  for (var i = 0; i < byteString.length; i++) {
+    ia[i] = byteString.charCodeAt(i);
+  }
+
+  return new Blob([ia], { type: mimeString });
+}
+export function getBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+  });
+}
+export async function syncContractDocument({ dispatch }) {
+  let offlineDocuments = await getCollection('contractDocument').toArray();
+
+  offlineDocuments = await offlineDocuments.filter(
+    document => document.offline
+  );
+
+  if (offlineDocuments.length > 0) {
+    let formData = new FormData();
+
+    const createDocument = await Promise.all(
+      offlineDocuments.map(async ({ id: localId, offline, ...document }) => {
+        formData.append('file', document.signed_document);
+        formData.append('type', document.template_type);
+
+        let payload = {
+          id: document.claimId,
+          formData: formData
+        };
+        await dispatch('uploadClaimDocument', payload).then(res => ({
+          ...res,
+          localId
+        }));
+        if (document.pa_sign) {
+          let formData1 = new FormData();
+          formData1.append('file', document.pa_sign);
+          formData1.append('type', 'pa-sign');
+          let payload = {
+            id: document.claimId,
+            formData: formData1
+          };
+          await dispatch('uploadClaimDocument', payload).then(res => ({
+            ...res,
+            localId
+          }));
+        }
+
+        if (document.co_insured_sign) {
+          let formData2 = new FormData();
+
+          formData2.append('file', document.co_insured_sign);
+          formData2.append('type', 'coinsured-sign');
+          let payload = {
+            id: document.claimId,
+            formData: formData2
+          };
+          await dispatch('uploadClaimDocument', payload).then(res => ({
+            ...res,
+            localId
+          }));
+        }
+        if (document.insured_sign) {
+          let formData3 = new FormData();
+          formData3.append('file', document.insured_sign);
+          formData3.append('type', 'insured-sign');
+          let payload = {
+            id: document.claimId,
+            formData: formData3
+          };
+          await dispatch('uploadClaimDocument', payload).then(res => ({
+            ...res,
+            localId
+          }));
+        }
+        console.log(payload, 'pay');
+        // await dispatch('uploadClaimDocument', payload).then(res => ({
+        //   ...res,
+        //   localId
+        // }));
+      })
+    );
+
+    return new Promise((resolve, reject) =>
+      Promise.allSettled(createDocument).then(documents => {
+        const createdDocument = documents
+          .filter(({ status }) => status === 'fulfilled')
+          .map(({ value }) => {
+            storeIdsToLocalStorage('document', value.localId, value.id);
+            return localDB.contractDocument
+              .where('id')
+              .equals(value.localId)
+              .modify({ id: value.id, offline: false });
+          });
+        return Promise.allSettled(createdDocument).then(results => {
+          resolve('All');
+        });
+      })
+    );
+  }
+}
 
 export async function syncVendors({ dispatch }) {
   let offlineVendors = await getCollection('vendors').toArray();
-  console.log(offlineVendors, 123);
   offlineVendors = offlineVendors.filter(vendor => vendor.offline);
   if (offlineVendors.length > 0) {
     const createVendors = offlineVendors.map(
@@ -978,6 +1053,7 @@ export async function clearLocalStorage() {
   LocalStorage.remove('mortgage');
   LocalStorage.remove('estimator');
   LocalStorage.remove('claim');
+  LocalStorage.remove('syncContractDocument');
 }
 
 export async function syncLocalDataBase({ dispatch, state }) {
@@ -990,6 +1066,6 @@ export async function syncLocalDataBase({ dispatch, state }) {
   await dispatch('syncClients');
   await dispatch('syncClaims');
   await dispatch('syncOfficeTasks');
-  // await dispatch('syncContractDocument');
+  await dispatch('syncContractDocument');
   await clearLocalStorage();
 }

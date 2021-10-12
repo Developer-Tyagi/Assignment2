@@ -57,11 +57,14 @@ export async function getSingleClientDetails(
       const { data } = await request.get(`/clients/${id}`);
       commit('setSelectedEditClient', data);
     } else {
-      const data = clients.find(client => {
+      const offlineClients = await getCollection('clients').toArray();
+      console.log(offlineClients, 'client');
+      const data = offlineClients.find(client => {
         return client.id === id;
       });
-
+      console.log(data, 'data in mutation');
       commit('setSelectedClientOffline', data);
+      return data;
     }
 
     dispatch('setLoading', false);

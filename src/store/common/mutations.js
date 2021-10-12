@@ -133,21 +133,19 @@ export async function setAllTemplate(state, templates) {
     id: types.id
   }));
   state.templates = types;
-  console.log('one two');
 
   const temp = await templateTypesCollection.count();
-  console.log(temp, 'temp i');
+
   if ((await templateTypesCollection.count()) > 0) {
     await templateTypesCollection.delete([]);
   }
 
-  // await localDB.allTemplates.bulkAdd(types);
+  await localDB.allTemplates.bulkAdd(types);
   /////////////
 }
 // setOfflineTemplates;
 export async function setOfflineTemplates(state) {
   state.templates = await getCollection('allTemplates').toArray();
-  console.log(state.templates, 'in tamplates muta');
 }
 
 export function setTemplateToken(state, token) {

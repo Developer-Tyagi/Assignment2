@@ -17,38 +17,8 @@
       <div class="row q-gutter-md justify-center">
         <q-btn class="col-2" label="clear" @click="undo" color="primary" />
         <q-btn class="col-2" label="Save" @click="save" color="primary" />
-        <q-btn
-          class="col-2"
-          label="Color picker"
-          icon="color_lens"
-          color="primary"
-        >
-          <q-menu>
-            <q-color v-model="hex" />
-          </q-menu>
-        </q-btn>
-        <!-- <q-btn
-          class="col-2"
-          text-color="red"
-          unelevated
-          icon="delete"
-          label="Delete all"
-          @click="imgs = []"
-        /> -->
       </div>
     </div>
-    <!-- <div class="q-mt-md">
-      <div
-        class="row q-gutter-md justify-center"
-        v-for="(img, key) in imgs"
-        :key="key"
-      >
-        <img
-          style="border: thin silver solid; width:200px;width:200px"
-          :src="img"
-        />
-      </div>
-    </div> -->
   </div>
 </template>
 
@@ -77,9 +47,9 @@ export default {
     save() {
       const { isEmpty, data } = this.$refs.signaturePad.saveSignature();
       this.$refs.signaturePad.clearSignature();
-      console.log(isEmpty);
+
       this.$emit('signData', data);
-      console.log(data);
+
       this.imgs.push(data);
     }
   }

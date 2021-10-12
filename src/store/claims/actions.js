@@ -653,13 +653,12 @@ export async function getSingleClaims(
 ) {
   dispatch('setLoading', true);
   try {
-    if (!isOnline) {
-      console.log('in fi');
+    if (isOnline) {
       const { data } = await request.get(`/claims/${id}/info`);
       commit('setClaim', data);
     } else {
       const data = await localDB.claims.toArray();
-      console.log(data, 'daat');
+
       for (var i = 0, len = data.length; i < len; i++) {
         if (data[i].id == id) {
           var demo = data[i];
@@ -1103,8 +1102,8 @@ export async function getTemplates({
   commit,
   dispatch
 }) {
+  dispatch('setLoading', true);
   if (isOnline) {
-    dispatch('setLoading', true);
     try {
       const { data } = await request.get('/templatetypes');
 
@@ -1120,8 +1119,8 @@ export async function getTemplates({
     }
   } else {
     commit('setOfflineTemplatesTypes');
-    dispatch('setLoading', false);
   }
+  dispatch('setLoading', false);
 }
 /////////////////////
 
