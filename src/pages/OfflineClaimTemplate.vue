@@ -162,12 +162,11 @@ export default {
     this.claim = await this.getSingleClaims(this.selectedClaimId);
     await this.getTemplates();
     // await this.getPersonnelInfo(this.selectedClaimId);
-    console.log(this.claim, 'claim');
+
     const offlineClientData = await this.getSingleClientDetails(
       this.claim.client.id
     );
-    console.log(this.editSelectedClient, 'hhhhhhhhhhhhhh');
-    console.log(offlineClientData, 'cccccccccc');
+
     // Token Mappings
 
     this.tokens = [
@@ -278,7 +277,6 @@ export default {
         value: this.claim.lossInfo.property?.addressLocality
       }
     ];
-    console.log(this.tokens, 'token');
   },
   methods: {
     ...mapActions([
@@ -323,19 +321,15 @@ export default {
           this.tokenArray.push(match[0]);
         }
       }
-      console.log(this.tokenArray, 'token array');
 
-      var testString = tokenString;
-      console.log(this.tokens, 'tokens');
+      var testString = tokenString.replace(/\u200B/g, '');
       this.tokenArray.forEach(token => {
         let result = this.tokens.find(o => o.key === token);
-        console.log(result, 'result');
-        console.log(token, 'token key');
-        console.log(typeof token, 'token key type');
+
         if (result && result.value) {
-          console.log(testString, 'testString before');
           testString = testString.replaceAll(token, result.value);
-          console.log(testString, 'testString');
+        } else {
+          testString = testString.replaceAll(token, '');
         }
       });
 
@@ -343,7 +337,6 @@ export default {
     },
 
     async convertHtmlToPdf(documentString, documentType) {
-      //documentString = documentString.replace(/\u200B/g, '');
       var opt = {
         margin: [10, 5],
         filename: 'contract.pdf'
@@ -385,47 +378,6 @@ export default {
         });
     },
 
-    //function for converting HTML  to PDF with the token replacement
-
-    // async convertHtmlToPdf(documentString, documentType) {
-    //   console.log('convert function');
-    //   const id = makeId();
-
-    //   var doc = new jsPDF();
-
-    //   await doc.html(documentString, {
-    //     callback: function(doc) {
-    //       doc.save('contract_' + id + '.pdf');
-    //     },
-    //     x: 10,
-    //     y: 10
-    //   });
-
-    //   this.document = doc.output('datauri');
-    //   this.contractDocument = '';
-
-    //   if (documentType == 'signedDocument') {
-    //     const signedContract = {
-    //       signed_document: this.document
-    //     };
-
-    //     await localDB.contractDocument.update(this.documentId, signedContract);
-
-    //     // this.contractDocumentDialog = false;
-    //   } else {
-    //     const intialContract = {
-    //       claimId: this.selectedClaimId,
-    //       document: this.document,
-    //       template_type: this.templatetype.value
-    //     };
-    //     var response = await this.addTemplateLocal(intialContract);
-    //     this.contractDocumentDialog = true;
-    //     this.contractDocument = response.document;
-
-    //     this.documentId = response.id;
-    //     this.document = '';
-    //   }
-    // },
     onClickGenerateDocument() {
       this.convertHtmlToPdf(this.finalDocumentString);
     },
@@ -458,12 +410,12 @@ export default {
       this.pa_signature = contractDocument[0].pa_sign;
       this.insured_signature = contractDocument[0].insured_sign;
       this.co_insured_signature = contractDocument[0].co_insured_sign;
-      console.log(this.pa_signature, '11');
+
       // Adding  Sign Tokens with the Value
       if (this.pa_signature) {
         this.tokens.push({
-          key: '​{{.Adjuster.Sign}}​',
-          value: 'sonali'
+          key: '{{.Adjuster.Sign}}',
+          value: this.pa_signature
         });
       }
 

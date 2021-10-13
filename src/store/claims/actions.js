@@ -1,6 +1,7 @@
 import request from '@api';
 import { buildApiData } from '@utils/api';
 import localDB, { getCollection } from '@services/dexie';
+import { dataURItoBlob } from '../common/actions';
 //API for Getting All Personnel Info
 export async function getPersonnelInfo({ commit, dispatch }, id) {
   dispatch('setLoading', true);
@@ -654,11 +655,9 @@ export async function getSingleClaims(
   // dispatch('setLoading', true);
   try {
     if (isOnline) {
-      console.log('in if');
       const { data } = await request.get(`/claims/${id}/info`);
       commit('setClaim', data);
     } else {
-      console.log('else');
       const data = await localDB.claims.toArray();
 
       for (var i = 0, len = data.length; i < len; i++) {
@@ -667,9 +666,9 @@ export async function getSingleClaims(
           break;
         }
       }
-      console.log('dispatch before');
+
       dispatch('setLoading', false);
-      console.log('After displatch');
+
       return demo;
     }
     dispatch('setLoading', false);
@@ -1099,7 +1098,6 @@ export async function deleteDirectory({ dispatch }, id) {
 
 // API is for View list of template types for estimator account only
 
-/////////////////test
 export async function getTemplates({
   rootState: {
     common: { isOnline }
@@ -1127,24 +1125,7 @@ export async function getTemplates({
   }
   dispatch('setLoading', false);
 }
-/////////////////////
 
-// export async function getTemplates({ commit, dispatch }) {
-//   dispatch('setLoading', true);
-//   try {
-//     const { data } = await request.get('/templatetypes');
-
-//     commit('setTemplateTypes', data);
-//     dispatch('setLoading', false);
-//   } catch (e) {
-//     console.log(e);
-//     dispatch('setLoading', false);
-//     dispatch('setNotification', {
-//       type: 'negative',
-//       message: e.response[0].title
-//     });
-//   }
-// }
 // API for Get document for claim.
 export async function getClaimEstimateDoc({ commit, dispatch }, claimID) {
   dispatch('setLoading', true);
@@ -1254,6 +1235,89 @@ export async function getEsxDocs({ commit, dispatch }, claimID) {
 }
 
 // API for Upload document to claim
+export async function uploadOfflineDocument({ dispatch, state }, document) {
+  if (document.signed_document) {
+    let formData = new FormData();
+    let blob = await dataURItoBlob(document.signed_document);
+
+    formData.append('file', blob);
+    formData.append('type', document.template_type);
+
+    let payload = {
+      id: document.claimId,
+      formData: formData
+    };
+
+    await dispatch('uploadMultipleDocument', payload).then(res => {});
+  }
+
+  if (document.pa_sign) {
+    let formData1 = new FormData();
+    let blobData = await dataURItoBlob(document.pa_sign);
+
+    formData1.append('file', blobData);
+    formData1.append('type', 'pa-signature');
+    let payload = {
+      id: document.claimId,
+      formData: formData1
+    };
+    await dispatch('uploadMultipleDocument', payload);
+  }
+
+  if (document.insured_sign) {
+    let formData1 = new FormData();
+    let blobData = await dataURItoBlob(document.pa_sign);
+
+    formData1.append('file', blobData);
+    formData1.append('type', 'insured_signature');
+    let payload = {
+      id: document.claimId,
+      formData: formData1
+    };
+    await dispatch('uploadMultipleDocument', payload);
+  }
+  if (document.co_insured_sign) {
+    let formData1 = new FormData();
+    let blobData = await dataURItoBlob(document.pa_sign);
+
+    formData1.append('file', blobData);
+    formData1.append('type', 'coinsured_signature');
+    let payload = {
+      id: document.claimId,
+      formData: formData1
+    };
+    await dispatch('uploadMultipleDocument', payload);
+  }
+
+  await localDB.contractDocument.delete(document.id);
+
+  dispatch('setNotification', {
+    type: 'positive',
+    message: 'File Uploaded Successfully!'
+  });
+}
+export async function uploadMultipleDocument({ dispatch }, payload) {
+  try {
+    dispatch('setLoading', true);
+    const { data } = await request.post(
+      `/claims/${payload.id}/documents`,
+      payload.formData
+    );
+    dispatch('setLoading', false);
+
+    return data;
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+    return false;
+  }
+}
+//API for upload document in offline mode
+
 export async function uploadClaimDocument({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {

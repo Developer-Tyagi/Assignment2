@@ -407,7 +407,7 @@ const routes = [
       },
       {
         path: 'offline-claim',
-        name: 'offline-claim',
+        name: 'claim details',
         caseSensitive: true,
         component: () => import('src/pages/OfflineClaimTemplate.vue')
       },

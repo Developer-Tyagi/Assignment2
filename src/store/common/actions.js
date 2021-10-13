@@ -425,7 +425,7 @@ export async function addTemplateLocal({ dispatch }, payload) {
       created: date.formatDate(Date.now(), constants.UTCFORMAT),
       updated: date.formatDate(Date.now(), constants.UTCFORMAT)
     };
-    console.log(template, 'template in action');
+
     await localDB.contractDocument.add(template);
 
     return template;
@@ -435,23 +435,6 @@ export async function addTemplateLocal({ dispatch }, payload) {
   }
 }
 
-/////////////////////////////////////////////////////////////////////////////
-// export async function getAllTemplate({ commit, dispatch }) {
-//   dispatch('setLoading', true);
-//   try {
-//     const { data } = await request.get('/templates');
-
-//     commit('setAllTemplate', data);
-//     dispatch('setLoading', false);
-//   } catch (e) {
-//     console.log(e);
-//     dispatch('setLoading', false);
-//     dispatch('setNotification', {
-//       type: 'negative',
-//       message: e.response[0].title
-//     });
-//   }
-// }
 export async function getAllTemplate({
   rootState: {
     common: { isOnline }
@@ -479,7 +462,7 @@ export async function getAllTemplate({
     dispatch('setLoading', false);
   }
 }
-////////////////////////////////
+
 export function changeNetworkStatus({ commit, dispatch }, isOnline) {
   commit('setNetworkStatus', isOnline);
   if (isOnline) {
@@ -522,7 +505,6 @@ export async function syncCarriers({ dispatch }) {
 }
 
 export async function dataURItoBlob(dataURI) {
-  console.log(typeof dataURI, 'data uri');
   // convert base64/URLEncoded data component to raw binary data held in a string
   var byteString;
   if (dataURI.split(',')[0].indexOf('base64') >= 0)
@@ -559,95 +541,9 @@ export async function syncContractDocument({ dispatch }) {
   );
 
   if (offlineDocuments.length > 0) {
-    let formData = new FormData();
-
-    const createDocument = await Promise.all(
-      offlineDocuments.map(async ({ id: localId, offline, ...document }) => {
-        formData.append('file', document.signed_document);
-        formData.append('type', document.template_type);
-
-        let payload = {
-          id: document.claimId,
-          formData: formData
-        };
-        await dispatch('uploadClaimDocument', payload).then(res => ({
-          ...res,
-          localId
-        }));
-        if (document.pa_sign) {
-          let formData1 = new FormData();
-          let blobData = await dataURItoBlob(document.pa_sign);
-
-          formData1.append('file', blobData);
-          formData1.append('type', 'pa-sign');
-          let payload = {
-            id: document.claimId,
-            formData: formData1
-          };
-          await dispatch('uploadClaimDocument', payload).then(res => ({
-            ...res,
-            localId
-          }));
-        }
-
-        if (document.co_insured_sign) {
-          let formData2 = new FormData();
-          let blobData = await dataURItoBlob(document.co_insured_sign);
-          formData2.append('file', blobData);
-          formData2.append('type', 'coinsured-sign');
-          let payload = {
-            id: document.claimId,
-            formData: formData2
-          };
-          await dispatch('uploadClaimDocument', payload).then(res => ({
-            ...res,
-            localId
-          }));
-        }
-        if (document.insured_sign) {
-          let formData3 = new FormData();
-          let blobData = await dataURItoBlob(document.insured_sign);
-          formData3.append('file', blobData);
-          formData3.append('type', 'insured-sign');
-          let payload = {
-            id: document.claimId,
-            formData: formData3
-          };
-          await dispatch('uploadClaimDocument', payload).then(res => ({
-            ...res,
-            localId
-          }));
-        }
-        console.log(document.claimId, 'dc');
-        await localDB.contractDocument
-          .where({ claimId: document.claimId })
-          .delete();
-
-        // await dispatch('uploadClaimDocument', payload).then(res => ({
-        //   ...res,
-        //   localId
-        // }));
-      })
+    const createDocument = offlineDocuments.map(({ offline, ...document }) =>
+      dispatch('uploadOfflineDocument', document)
     );
-
-    // return new Promise((resolve, reject) =>
-    //   Promise.allSettled(createDocument).then(documents => {
-    //     const createdDocument = documents
-    //       .filter(({ status }) => status === 'fulfilled')
-    //       .map(({ value }) => {
-    //         console.log(value, 'check');
-    //         storeIdsToLocalStorage('document', value.localId, value.id);
-
-    //         return localDB.contractDocument
-    //           .where('id')
-    //           .equals(value.localId)
-    //           .modify({ id: value.id, offline: false });
-    //       });
-    //     return Promise.allSettled(createdDocument).then(results => {
-    //       resolve('All');
-    //     });
-    //   })
-    // );
   }
 }
 
@@ -656,8 +552,12 @@ export async function syncVendors({ dispatch }) {
   offlineVendors = offlineVendors.filter(vendor => vendor.offline);
   if (offlineVendors.length > 0) {
     const createVendors = offlineVendors.map(
-      ({ id: localId, offline, ...vendor }) =>
-        dispatch('addVendorRemote', vendor).then(res => ({ ...res, localId }))
+      ({ id: localId, offline, ...vendor }) => {
+        dispatch('addVendorRemote', vendor).then(res => ({
+          ...res,
+          localId
+        }));
+      }
     );
     return new Promise((resolve, reject) =>
       Promise.allSettled(createVendors).then(vendors => {
