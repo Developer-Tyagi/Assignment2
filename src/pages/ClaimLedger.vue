@@ -961,9 +961,6 @@
                     class=" col-3"
                     outlined
                   >
-                    <!-- <template v-slot:append>
-                      <span class="text-bold" style="font-size:20px;">/hr</span>
-                    </template> -->
                   </q-input>
                   <div class="q-mt-sm text-h6">*</div>
 
@@ -1211,12 +1208,13 @@
                       <q-separator v-if="index >= 1" class="q-my-sm" />
                       <div class="row q-mr-xs" style="width: 100%">
                         <div class="col">
-                          <div>P</div>
+                          <div>Payee</div>
                           <div class="name-ellipsis ">{{ person.name }}</div>
                         </div>
-                        <div class="col q-mx-md">
+                        <div class="col column items-center">
                           <div>Due</div>
                           <div v-if="person.fees.type === 'dollar'">
+                            $
                             {{
                               person.fees && person.fees.rate
                                 ? person.fees.rate
@@ -1228,6 +1226,7 @@
                               person.fees.type === 'percentage' && person.fees
                             "
                           >
+                            $
                             {{
                               (amountAvailableForCommissions *
                                 person.fees.rate) /
@@ -1236,16 +1235,19 @@
                           </div>
 
                           <div v-if="person.fees.type === 'update'">
+                            $
+
                             {{
                               person.fees && person.fees.rate
-                                ? person.fees.rate * hourCal[index]
+                                ? person.fees.rate *
+                                  parseInt(hourCal[index] ? hourCal[index] : 0)
                                 : ''
                             }}
                           </div>
                         </div>
 
-                        <div class="col q-mx-md">
-                          <div>Pay?</div>
+                        <div class="col column items-center">
+                          <div>Pay</div>
                           <div class="q-mr-sm">
                             <q-toggle
                               size="xs"
@@ -1254,6 +1256,7 @@
                                 onPersonnelPaidToggleClick(
                                   index,
                                   person.fees,
+                                  hourCal,
                                   personnelPayToggle[index].value,
                                   (addDisbursement.companyFee -
                                     totalExpensesOfCompany -
@@ -1264,9 +1267,10 @@
                             />
                           </div>
                         </div>
-                        <div class="col">
-                          <div>Rate</div>
+                        <div class="col column items-center">
+                          <div>Paid</div>
                           <div>
+                            $
                             {{
                               person.fees && person.fees.rate
                                 ? person.fees.rate
@@ -1275,59 +1279,63 @@
                           </div>
                         </div>
                       </div>
+
                       <div class="row " style="width:100%">
                         <div>Rate</div>
-                        <div class="row" width="100%">
-                          <div style="width:50%">
+                        <div class="row full-width">
+                          <q-input
+                            v-if="person.fees.type == 'dollar'"
+                            :disable="personnelPayToggle[index].value == false"
+                            prefix="$"
+                            type="number"
+                            dense
+                            outlined
+                            style="width:20%;"
+                            v-model.number="personnelPaidAmount[index]"
+                            @input="onFIllingPersonnelPaid(index, person.fees)"
+                          />
+
+                          <q-input
+                            v-if="person.fees.type == 'percentage'"
+                            :disable="personnelPayToggle[index].value == false"
+                            suffix="%"
+                            dense
+                            outlined
+                            style="width:20%"
+                            v-model.number="personnelPaidAmount[index]"
+                            @blur="onFIllingPersonnelPaid(index, person.fees)"
+                          />
+                          <div
+                            class="row"
+                            style="width:36%"
+                            v-if="person.fees.type == 'update'"
+                          >
                             <q-input
-                              v-if="person.fees.type == 'dollar'"
                               :disable="
                                 personnelPayToggle[index].value == false
                               "
-                              prefix="$"
-                              type="number"
+                              suffix="/hr"
+                              style="width:50%"
                               dense
                               outlined
                               v-model.number="personnelPaidAmount[index]"
-                              @input="onFIllingPersonnelPaid(index)"
+                              @blur="onFIllingPersonnelPaid(index, person.fees)"
                             />
 
+                            <div class="text-primary q-px-xs q-my-sm">X</div>
                             <q-input
-                              v-if="person.fees.type == 'percentage'"
+                              placeholder="1"
                               :disable="
                                 personnelPayToggle[index].value == false
                               "
-                              suffix="%"
+                              v-model.number="hourCal[index]"
                               dense
+                              style="width:34% ;"
                               outlined
-                              v-model.number="personnelPaidAmount[index]"
-                              @input="onFIllingPersonnelPaid(index)"
+                              @blur="onFIllingPersonnelPaid(index, person.fees)"
                             />
-                            <div
-                              class="row"
-                              v-if="person.fees.type == 'update'"
-                            >
-                              <q-input
-                                :disable="
-                                  personnelPayToggle[index].value == false
-                                "
-                                suffix="/hr"
-                                style="width:45%"
-                                dense
-                                outlined
-                                v-model.number="personnelPaidAmount[index]"
-                                @input="onFIllingPersonnelPaid(index)"
-                              />
-                              <div class="text-primary q-px-sm q-my-sm">X</div>
-                              <q-input
-                                v-model.number="hourCal[index]"
-                                dense
-                                style="width:40%"
-                                outlined
-                                suffix="*"
-                              />
-                            </div>
                           </div>
+
                           <div>
                             <td>
                               <div>
@@ -1634,9 +1642,19 @@ export default {
     onButtonToggleClick() {
       this.onFillingCompany();
     },
-    onFIllingPersonnelPaid(index) {
+    onFIllingPersonnelPaid(index, person) {
+      var totalRate = 0;
+      for (let i = 0; i < this.personnelPaidAmount.length; i++) {
+        if (person.type == 'dollar' || person.type == 'percentage')
+          totalRate += this.personnelPaidAmount[i];
+        else if (person.type == 'update')
+          totalRate +=
+            this.personnelPaidAmount[i] *
+            parseInt(this.hourCal[i] ? this.hourCal[i] : 1);
+      }
+
       this.netExpenseToPayByCompany =
-        this.amountAvailableForCommissions - this.personnelPaidAmount[index];
+        this.amountAvailableForCommissions - totalRate;
       this.personnel.personnel[index].fees.rate = this.personnelPaidAmount[
         index
       ];
@@ -1674,22 +1692,26 @@ export default {
     },
 
     // Toggle Button Function for Personnel
-    onPersonnelPaidToggleClick(index, fees, toggleState, percentageValue) {
+    onPersonnelPaidToggleClick(
+      index,
+      fees,
+      hourCal,
+      toggleState,
+      percentageValue
+    ) {
       if (toggleState == 'true') {
-        if (this.personnelPayToggle[index].value) {
-          if (fees.type == 'percentage') {
-            this.personnelPaidAmount[index] = percentageValue;
-          } else if (fees.type == 'dollar')
-            this.personnelPaidAmount[index] = fees.rate;
+        if (fees.type == 'percentage') {
+          this.personnelPaidAmount[index] = percentageValue;
+        } else if (fees.type == 'dollar') {
+          this.personnelPaidAmount[index] = fees.rate;
         } else if (fees.type == 'update') {
-          this.personnelPaidAmount[index] = fees.rate * this.hourCal[index];
-        } else {
-          this.personnelPaidAmount[index] = 0;
+          this.personnelPaidAmount[index] =
+            parseInt(fees.rate) * parseInt(hourCal[index]);
         }
-
         this.netExpenseToPayByCompany =
-          this.netExpenseToPayByCompany - this.personnelPaidAmount[index];
+          this.amountAvailableForCommissions - this.personnelPaidAmount[index];
       }
+      this.personnelPaidAmount[index] = fees.rate;
     },
 
     /* Hour To Fees Calculation     */
@@ -1953,7 +1975,7 @@ export default {
         this.companyOnly[i].paid = parseInt(this.companyAmounts[i]);
         total += parseInt(this.companyAmounts[i]);
       }
-      this.netExpenseToPayByCompany = this.addDisbursement.companyFee - total;
+      this.netExpenseToPayByCompany = this.netExpenseToPayByCompany - total;
       this.amountAvailableForCommissions =
         this.addDisbursement.companyFee - total;
     },
