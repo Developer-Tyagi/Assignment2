@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="row q-mt-sm justify-center">
-      <q-badge color="red ">
+    <div class="row q-mt-sm justify-center" v-if="toShowCamera != 'true'">
+      <q-badge color="primary">
         OCR coming soon
       </q-badge>
     </div>
@@ -45,17 +45,15 @@
             @change="onVendorFileInputClick"
           />
         </div>
-        <!-- we hide this SCAN feature and show once the OCR feature is use-->
-
-        <!-- <div class="column">
-          <img
-            class="q-ml-lg "
-            src="~assets/scanFile.svg"
-            style="width:50%;"
-            @click="onClickUploadButton"
-          />
-          <div class="form-heading text-center q-mt-xs q-mr-xs">Scan</div>
-        </div> -->
+        <!--toShowCamera is True only when we route from Camera Option in dashboard page and it will false when we route from Scan & Upload option in dashboard page-->
+        <div
+          @click="onClickUploadButton"
+          class="column"
+          v-if="toShowCamera == 'true'"
+        >
+          <img class="q-ml-lg " src="~assets/scanFile.svg" style="width:50%;" />
+          <div class="form-heading text-center q-mt-xs q-mr-xs">Camera</div>
+        </div>
       </div>
     </q-card>
     <!-- Alert delete Box -->
@@ -88,7 +86,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['vendorDocument', 'selectedClaimId'])
+    ...mapGetters(['vendorDocument', 'selectedClaimId', 'toShowCamera'])
   },
   created() {
     this.getVendorDocument(this.selectedClaimId);
@@ -108,7 +106,7 @@ export default {
       this.driveId = '';
       this.getVendorDocument(this.selectedClaimId);
     },
-    ...mapMutations(['setLoading']),
+    ...mapMutations(['setLoading', 'setCameraIcon']),
     onDeleteDocument(index) {
       this.alertDailog = true;
       this.driveId = this.vendorDocument.documents[index].driveID;

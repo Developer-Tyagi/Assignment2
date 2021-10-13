@@ -89,7 +89,6 @@
 
                 <div class="q-mt-sm ">
                   <q-select
-                    dense
                     borderless
                     v-model="mortgage.contact.honorific.value"
                     :options="titles"
@@ -104,14 +103,12 @@
                     class="input-style input-overlay input-extra-padding"
                   />
                   <q-input
-                    dense
                     class="input-style input-overlay "
                     borderless
                     v-model="mortgage.contact.fname"
                     label="First Name"
                   />
                   <q-input
-                    dense
                     borderless
                     class="input-style input-overlay "
                     v-model="mortgage.contact.lname"
@@ -119,7 +116,7 @@
                   />
                   <div class="row justify-between">
                     <q-select
-                      dense
+                      borderless
                       class="input-style input-overlay  col-5"
                       v-model="mortgage.contact.phoneNumber[0].type"
                       :options="contactTypes"
@@ -132,7 +129,6 @@
                       options-dense
                     />
                     <q-input
-                      dense
                       borderless
                       class="input-style input-overlay  col-6"
                       v-model.number="mortgage.contact.phoneNumber[0].number"
@@ -168,9 +164,9 @@
                 :rules="[val => validateUrl(val) || 'Please fill your website']"
               />
               <q-input
+                type="textarea"
                 borderless
                 class="input-style input-overlay  q-mb-sm"
-                dense
                 v-model="mortgage.info.notes"
                 label="Notes"
               />

@@ -92,7 +92,7 @@
             q-pt-sm
             justify-between
           "
-          @click="$router.push('/offline-claim')"
+          @click="$router.push('/vendors')"
           style="
             border-top-left-radius: 16px;
             border-top-right-radius: 16px;
@@ -349,7 +349,10 @@
               class="q-mr-lg column items-center"
               @click="toRedirectTOPhotoIdApp()"
             >
-              <q-icon name="filter_center_focus" size="xl"></q-icon>
+              <!-- PhotoId App Icon used here-->
+              <q-icon size="xl">
+                <q-img src="../assets/photoIdApp.png" color="primary" />
+              </q-icon>
               <div class=" text-black">Photo ID App</div>
             </div>
             <div

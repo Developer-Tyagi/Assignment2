@@ -36,6 +36,7 @@
         <AddVendor
           @onCloseAddVendor="onCloseAddVendorDialogBox"
           @closeDialog="contractInfo.addVendorDialog = false"
+          :componentName="'Add Vendor'"
         />
       </q-card>
     </q-dialog>
@@ -222,12 +223,14 @@
           "
         >
           <div
-            class="custom-select"
+            class="custom-select q-mt-md"
             @click="contractInfo.vendorsListDialog = true"
             v-if="!contractInfo.sourceDetails.id"
           >
-            <q-btn outline class="full-width">
-              Click for choosing a vendor
+            <q-btn
+              class="full-width custom-select input-style"
+              label="Click for choosing a vendor"
+            >
               <span style="color: red">*</span>
             </q-btn>
           </div>

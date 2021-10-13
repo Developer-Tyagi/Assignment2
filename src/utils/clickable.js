@@ -16,8 +16,8 @@ export function sendMap(address) {
   window.open(`https://www.google.com/maps/search/?api=1&query=${addressURI}`);
 }
 export function sendPhoneNumber(value) {
+  if (!value || value.length == 0) return value;
   let specialChars = '!()-[ ]/{}|:<>?,.';
-
   for (let i = 0; i < specialChars.length; i++) {
     value = value.replace(new RegExp('\\' + specialChars[i], 'gi'), '');
   }

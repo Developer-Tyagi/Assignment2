@@ -762,6 +762,7 @@
     >
       <q-card>
         <AddVendor
+          :componentName="'Add Vendor'"
           @onCloseAddVendor="onCloseAddVendorDialogBox"
           @closeDialog="addVendorDialog = false"
         />

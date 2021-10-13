@@ -22,12 +22,10 @@
         :disable="isOfflineClientEdit"
       />
       <div class="form-heading q-mt-lg">Person Party</div>
-
       <q-select
-        v-if="allUsers.length"
+        v-if="paidUsers.length"
         v-model="companyPersonnel.personParty.id"
-        :options="allUsers"
-        @input="setPersonTypes(allUsers, companyPersonnel.personParty)"
+        :options="paidUsers"
         option-label="name"
         option-value="id"
         label="Select Person"
@@ -39,7 +37,6 @@
         map-options
         :disable="isOfflineClientEdit"
       />
-
       <div v-else>No user exist for this role.</div>
     </q-card>
     <q-card class="q-mt-sm q-pa-sm">
@@ -212,8 +209,12 @@ export default {
       'claimRoles',
       'userRoles',
       'allUsers',
-      'isOfflineClientEdit'
+      'isOfflineClientEdit',
+      'paidUsers'
     ])
+  },
+  mounted() {
+    this.getPaidUsers();
   },
 
   methods: {
@@ -221,9 +222,9 @@ export default {
       'getPersonnelInfo',
       'addCompanyPersonnel',
       'getAllUsers',
-      'getClaimRoles'
+      'getClaimRoles',
+      'getPaidUsers'
     ]),
-
     validateDate,
 
     async setTypes(types, data) {
@@ -233,14 +234,6 @@ export default {
 
       data.machineValue = obj.machineValue;
       data.id = obj.id;
-    },
-    async setPersonTypes(types, data) {
-      const obj = types.find(item => {
-        return item.id === data.id;
-      });
-      data.machineValue = obj.machineValue;
-      data.value = obj.name;
-      data.name = obj.name;
     },
 
     dateGreaterThan(val) {

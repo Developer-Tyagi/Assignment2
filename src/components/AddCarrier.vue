@@ -288,7 +288,7 @@ export default {
       this.carrier.email = this.selectedCarrier.email;
       this.carrier.phoneNumber[0].number = this.selectedCarrier.phoneNumber[0].number;
       this.carrier.phoneNumber[0].type = this.selectedCarrier.phoneNumber[0].type;
-
+      this.carrier.meta.claimFiledByEmail = this.selectedCarrier.meta.claimFiledByEmail;
       if (this.selectedCarrier.address) {
         if (
           this.selectedCarrier.address.dropBox &&
