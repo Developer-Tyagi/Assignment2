@@ -1190,7 +1190,6 @@
                               @input="
                                 onPersonnelPaidToggleClick(
                                   index,
-                                  toggleType[index],
                                   addDisbursement.companyFee,
                                   person.fees,
                                   hourCal,
@@ -1701,27 +1700,15 @@ export default {
     // Toggle Button Function for Personnel
     onPersonnelPaidToggleClick(
       index,
-      paidType,
       totalAvailableCommission,
       fees,
       hourCal,
       toggleState
     ) {
       if (toggleState) {
-        if (paidType == 'percentage') {
-          this.personnelPaidAmount[index] = parseInt(
-            fees && fees.rate ? fees.rate : 0
-          ); //parseInt((totalAvailableCommission*fees.rate)/100);
-        } else if (paidType == 'dollar') {
-          this.personnelPaidAmount[index] = parseInt(
-            fees && fees.rate ? fees.rate : 0
-          );
-        } else if (paidType == 'update') {
-          this.personnelPaidAmount[index] = parseInt(
-            fees && fees.rate ? fees.rate : 0
-          );
-          //parseInt(fees.rate) * parseInt(hourCal[index] ? hourCal[index] : 1);
-        }
+        this.personnelPaidAmount[index] = parseInt(
+          fees && fees.rate ? fees.rate : 0
+        );
       }
       var totalRate = 0;
       for (let i = 0; i < this.toggleType.length; i++) {
