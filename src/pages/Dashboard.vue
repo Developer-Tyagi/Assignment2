@@ -8,13 +8,13 @@
         border-radius: 0 0 90px 90px;
       "
     >
-      <div class="row col-4  justify-between">
+      <div class="row col-4  justify-around ">
         <div
-          class="column col-5 iconBackground  items-center"
+          class="column col iconBackground  items-center"
           @click="onClickNewLead"
           style=""
         >
-          <q-icon class="col self-center" size="5rem" style="margin-top:-15px;">
+          <q-icon class="col self-center gridIcon">
             <q-img src="~assets/LEADS.svg" />
           </q-icon>
 
@@ -23,7 +23,7 @@
               column
               justify-end
               text-white text-center text-weight-medium text-subtitle1
-              q-mb-md
+              IconText
             "
           >
             LEADS
@@ -31,10 +31,10 @@
         </div>
 
         <div
-          class="column col-5 iconBackground  items-center"
+          class="column col  iconBackground  items-center"
           @click="$router.push('/clients')"
         >
-          <q-icon class="col self-center" size="5rem" style="margin-top:-15px;">
+          <q-icon class="col self-center gridIcon">
             <q-img src="~assets/Clients_dashboard.svg" />
           </q-icon>
 
@@ -43,56 +43,19 @@
               column
               justify-end
               text-white text-center text-weight-medium text-subtitle1
-              q-mb-md
+              IconText
             "
           >
             CLIENTS
           </div>
         </div>
-
-        <!-- <div
-          class="
-            col-5
-            gridRowContainer
-            column
-            bg-primary
-            q-pt-sm
-            justify-between
-          "
-          @click="$router.push('/clients')"
-          style="
-            border-top-left-radius: 16px;
-            border-top-right-radius: 16px;
-            border-bottom-left-radius: 25px;
-            border-bottom-right-radius: 25px;
-            box-shadow: 0px 3px 5px rgba(0, 0, 0, 1);
-          "
-        >
-          <div class="col-5 self-center q-mb-md">
-            <q-icon class="gridIcon">
-              <q-img src="~assets/Clients_dashboard.svg" />
-            </q-icon>
-          </div>
-
-          <div
-            class="
-              col-4
-              column
-              justify-end
-              text-white text-center text-weight-medium text-subtitle1
-              all
-            "
-          >
-            CLIENTS
-          </div>
-        </div> -->
       </div>
-      <div class="row col-4   justify-between">
+      <div class="row col-4   justify-around">
         <div
-          class="column col-5 iconBackground  items-center"
+          class="column col iconBackground  items-center"
           @click="$router.push('/vendors')"
         >
-          <q-icon class="col self-center" size="5rem" style="margin-top:-15px;">
+          <q-icon class="col self-center gridIcon">
             <q-img src="~assets/VENDOR.svg" />
           </q-icon>
 
@@ -101,7 +64,7 @@
               column
               justify-end
               text-white text-center text-weight-medium text-subtitle1
-              q-mb-md
+              IconText
             "
           >
             VENDORS
@@ -109,10 +72,10 @@
         </div>
 
         <div
-          class="column col-5 iconBackground  items-center"
+          class="column col iconBackground  items-center"
           @click="$router.push('/claims')"
         >
-          <q-icon class="col self-center" size="5rem" style="margin-top:-15px;">
+          <q-icon class="col self-center gridIcon">
             <q-img src="~assets/CLAIMS.svg" />
           </q-icon>
 
@@ -121,19 +84,19 @@
               column
               justify-end
               text-white text-center text-weight-medium text-subtitle1
-              q-mb-md
+              IconText
             "
           >
             CLAIMS
           </div>
         </div>
       </div>
-      <div class="row col-4  justify-between">
+      <div class="row col-4  justify-around">
         <div
-          class="column col-5 iconBackground  items-center"
+          class="column col iconBackground  items-center"
           @click="selectClaimDialog = true"
         >
-          <q-icon class="col self-center" size="5rem" style="margin-top:-15px;">
+          <q-icon class="col self-center gridIcon">
             <q-img src="~assets/scan_dashboard.svg" />
           </q-icon>
 
@@ -142,20 +105,20 @@
               column
               justify-end
               text-white text-center text-weight-medium text-subtitle1
-              q-mb-md
+              scanIconText
             "
           >
-            <div class="col">SCAN</div>
+            <div class="col scanText">SCAN</div>
 
             <div class="col text-weight-bolder">UPLOAD</div>
           </div>
         </div>
 
         <div
-          class="column col-5 iconBackground  items-center"
+          class="column col iconBackground  items-center"
           @click="onClickNewLead"
         >
-          <q-icon class="col self-center" size="5rem" style="margin-top:-15px;">
+          <q-icon class="col self-center mobileIcon">
             <q-img src="~assets/camera_dashboard.svg" />
           </q-icon>
 
@@ -164,168 +127,13 @@
               column
               justify-end
               text-white text-center text-weight-medium text-subtitle1
-              q-mb-md
+              IconText
             "
           >
             CAMERA
           </div>
         </div>
       </div>
-      <!-- <div class="gridRow row justify-between q-px-lg">
-        <div
-          class="
-            col-5
-            gridRowContainer
-            column
-            bg-primary
-            q-pt-sm
-            justify-between
-          "
-          @click="$router.push('/vendors')"
-          style="
-            border-top-left-radius: 16px;
-            border-top-right-radius: 16px;
-            border-bottom-left-radius: 25px;
-            border-bottom-right-radius: 25px;
-            box-shadow: 0px 3px 5px rgba(0, 0, 0, 1);
-          "
-        >
-          <div class="col-5 self-center q-mb-md">
-            <q-icon class="gridIcon">
-              <q-img src="~assets/VENDOR.svg" />
-            </q-icon>
-          </div>
-          <div
-            class="
-              col-4
-              column
-              justify-end
-              text-white text-center text-weight-medium text-subtitle1
-              all
-            "
-          >
-            VENDORS
-          </div>
-        </div>
-        <div
-          class="
-            col-5
-            gridRowContainer
-            column
-            bg-primary
-            q-pt-sm
-            justify-between
-          "
-          @click="$router.push('/claims')"
-          style="
-            border-top-left-radius: 16px;
-            border-top-right-radius: 16px;
-            border-bottom-left-radius: 25px;
-            border-bottom-right-radius: 25px;
-            box-shadow: 0px 3px 5px rgba(0, 0, 0, 1);
-          "
-        >
-          <div class="col-5 self-center q-mb-md">
-            <q-icon class="gridIcon">
-              <q-img src="~assets/CLAIMS.svg" />
-            </q-icon>
-          </div>
-          <div
-            class="
-              col-4
-              column
-              justify-end
-              text-white text-center text-weight-medium text-subtitle1
-              all
-            "
-          >
-            CLAIMS
-          </div>
-        </div>
-      </div> -->
-      <!-- <div class=" row justify-between q-px-lg"> 
-        <div
-          class="
-            col-5
-            gridRowContainer
-            column
-            bg-primary
-            q-pt-sm
-            justify-between
-          "
-          @click="selectClaimDialog = true"
-          style="
-            border-top-left-radius: 16px;
-            border-top-right-radius: 16px;
-            border-bottom-left-radius: 25px;
-            border-bottom-right-radius: 25px;
-            box-shadow: 0px 3px 5px rgba(0, 0, 0, 1);
-          "
-        >
-          <div class="col-5 self-center q-mb-md">
-            <q-icon class="gridIcon">
-              <q-img src="~assets/scan_dashboard.svg" />
-            </q-icon>
-          </div>
-          <div
-            class="
-              col-4
-              column
-              justify-end
-              text-white text-center text-weight-medium text-caption
-              all
-            "
-          >
-            <div class="col">SCAN</div>
-
-            <div class="col text-weight-bolder">UPLOAD</div>
-          </div>
-        </div>
-        we are stoping routing for this camera card for sometime , once we get feedback from client we will implement this
-        <div
-          class="
-            col-5
-            gridRowContainer
-            column
-            bg-primary
-            q-pt-sm
-            justify-between
-          "
-          style="
-            border-top-left-radius: 16px;
-            border-top-right-radius: 16px;
-            border-bottom-left-radius: 25px;
-            border-bottom-right-radius: 25px;
-            box-shadow: 0px 3px 5px rgba(0, 0, 0, 1);
-          "
-          @click="toCameraDialogBox()"
-        >
-          <div
-            :class="[
-              'col-5',
-              'self-center',
-              'q-mb-md',
-              'q-pa-sm',
-              $q.screen.gt.md ? 'q-mt-xs' : 'q-mt-sm'
-            ]"
-          >
-            <q-icon class="gridIcon" size="7vh">
-              <q-img src="~assets/camera_dashboard.svg" />
-            </q-icon>
-          </div>
-          <div
-            class="
-              col-4
-              column
-              justify-end
-              text-white text-center text-weight-medium text-subtitle1
-              all
-            "
-          >
-            CAMERA
-          </div>
-        </div>
-      </div>-->
     </div>
     <!-- footer -->
     <div class="row justify-center footer-shadow "></div>
@@ -462,12 +270,10 @@
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { dateToShow } from '@utils/date';
-
 import CustomBar from 'components/CustomBar';
-import { getAuth, generateEmailVerificationLink } from 'firebase/auth';
 import 'firebase/auth';
 import AddOptions from 'components/AddOptions';
-import firebase from 'firebase/app';
+
 export default {
   components: { CustomBar, AddOptions },
   data() {
@@ -580,28 +386,11 @@ export default {
 };
 </script>
 <style lang="scss">
-.my-card {
-  display: flex;
-  /* background-color: #1B2854; */
-  background-color: #ffffff;
-  height: 3rem;
-  width: 4rem;
-  margin: auto;
-  /* border-radius: 10px; */
-  border-radius: 20px 20px 20px 20px;
-}
 .footer-shadow {
   border: 0.1em solid #000000;
   width: 60%;
   margin-left: 20%;
   box-shadow: 0 -4px 6px 0.02em #000000, 0 -5px 7px 0.02em #000000;
-}
-
-.card-text {
-  color: #ffffff;
-  font-size: 1rem;
-  font-weight: bold;
-  margin: auto;
 }
 .text {
   text-align: center;
@@ -611,30 +400,7 @@ export default {
   color: white;
   font-weight: bold;
 }
-.menu-card {
-  background: red;
-  margin: 10px;
-  margin-left: 20px;
-  margin-right: 20px;
-  width: 36%;
-  height: 21vh;
-  border-radius: 20px 20px 60px 60px;
-  overflow: hidden;
-}
-.menu-card-inside {
-  border-radius: 100% 100% 55% 55% !important;
-  height: 10vh;
-  margin-left: 10px;
-  margin-right: 10px;
-  background-color: black;
-  position: relative;
-}
-.menu-right-icons {
-  margin-right: 8%;
-}
-.menu-left-icons {
-  margin-left: 8%;
-}
+
 .box {
   height: calc(20vh);
   width: 150px;
@@ -662,44 +428,35 @@ export default {
 }
 
 .iconBackground {
-  background-size: cover;
-  // border:1px solid black;
+  background-size: 100% 100%;
   background-repeat: no-repeat;
-  background-image: url('~assets/background.svg');
-}
-
-.image-style {
-  height: 13vh;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 5px;
-  margin-bottom: 10px;
-}
-.scan-text-style {
-  text-align: center;
-  font-size: 14px;
-  margin-top: 15px;
-  font-weight: bold;
-  margin-left: 10px;
-}
-.imageStyle {
-  height: 85%;
+  background-image: url('~assets/DashboardIconBackground.svg');
 }
 .cardHeight {
   height: 69vh;
-  //padding-top: 14px;
 }
 .gridRow {
   margin-bottom: 20px;
 }
 .gridIcon {
-  font-size: 4rem;
+  font-size: 5rem;
 }
+.mobileIcon {
+  font-size: 3rem;
+}
+.IconText {
+  margin-bottom: 20px;
+}
+.scanIconText {
+  margin-bottom: 10px;
+}
+.scanText {
+  margin-bottom: -10px;
+}
+
 @media only screen and (min-height: 700px) {
   .cardHeight {
     height: 72vh;
-    //padding-top: 24px;
   }
   .gridRow {
     margin-bottom: 24px;
@@ -707,32 +464,93 @@ export default {
   .gridIcon {
     font-size: 5rem;
   }
+  .mobileIcon {
+    font-size: 4rem;
+  }
+  .scanIconText {
+    margin-bottom: 15px;
+  }
 }
 @media only screen and (min-height: 800px) {
   .cardHeight {
     height: 75vh;
-    //padding-top: 45px;
   }
   .gridRow {
     margin-bottom: 45px;
   }
   .gridIcon {
+    font-size: 6rem;
+  }
+  .mobileIcon {
     font-size: 5rem;
+  }
+  .IconText {
+    margin-bottom: 30px;
+  }
+  .scanIconText {
+    margin-bottom: 25px;
   }
 }
 @media only screen and (min-height: 1000px) {
   .cardHeight {
     height: 80vh;
-    //padding-top: 65px;
   }
   .gridRow {
     margin-bottom: 65px;
   }
   .gridIcon {
-    font-size: 3rem;
+    font-size: 8rem;
+    margin-bottom: 10px;
   }
+  .mobileIcon {
+    font-size: 6rem;
+    margin-bottom: 20px;
+  }
+
   .gridRowContainer {
     height: 180px !important;
+  }
+  .IconText {
+    margin-bottom: 40px;
+    font-size: 25px;
+  }
+  .scanIconText {
+    margin-bottom: 35px;
+    font-size: 25px;
+  }
+  .scanText {
+    margin-bottom: 0;
+  }
+}
+@media only screen and (min-height: 1300px) {
+  .cardHeight {
+    height: 85vh;
+  }
+  .gridRow {
+    margin-bottom: 65px;
+  }
+  .gridIcon {
+    font-size: 12rem;
+    margin-bottom: 20px;
+  }
+  .mobileIcon {
+    font-size: 8rem;
+    margin-bottom: 20px;
+  }
+
+  .gridRowContainer {
+    height: 180px !important;
+  }
+  .IconText {
+    margin-bottom: 60px;
+    font-size: 35px;
+  }
+  .scanIconText {
+    margin-bottom: 50px;
+    font-size: 35px;
+  }
+  .scanText {
+    margin-bottom: 10px;
   }
 }
 </style>
