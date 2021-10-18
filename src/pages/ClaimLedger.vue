@@ -1173,6 +1173,125 @@
                   </table>
                 </q-card>
               </div>
+              <!--  Commissions  Payments Calculation-->
+              <div class="q-my-sm row">
+                <span class="heading-light col-8">
+                  Amount Available for Commission Payments</span
+                >
+                $
+                {{
+                  addDisbursement.companyFee -
+                    (totalExpensesOfCompany - alreadyPaidByCompany)
+                }}
+              </div>
+              <div class="q-my-sm row">
+                <span class="heading-light col-8">Commission Payments</span>
+                <!-- $ Value of Commission Payments {{ personnelPaid }} -->
+              </div>
+              <div>
+                <q-card class="q-ma-xs q-pa-sm" v-if="personnel" flat bordered>
+                  <table class="full-width">
+                    <tr>
+                      <td style="width:15%;">
+                        P
+                      </td>
+
+                      <td style="width:15%;">
+                        Rate
+                      </td>
+                      <td style="width:10%;">
+                        <q-btn-toggle
+                          v-model="rateType"
+                          push
+                          glossy
+                          size="sm"
+                          toggle-color="primary"
+                          :options="[
+                            { label: ' $', value: 'dollar' },
+                            { label: ' %', value: 'percentage' },
+                            { value: 'update', icon: 'update' }
+                          ]"
+                        ></q-btn-toggle>
+                      </td>
+
+                      <td style="width:15%;">
+                        Due
+                      </td>
+                      <td style="width:15%;">
+                        Pay ?
+                      </td>
+
+                      <td style="width:15%;">
+                        Paid
+                      </td>
+                    </tr>
+
+                    <tr
+                      class="heading-light"
+                      v-for="(person, index) in personnel.personnel"
+                    >
+                      <td class="name-ellipsis">
+                        {{ person.name }}
+                      </td>
+
+                      <td>
+                        {{
+                          person.fees && person.fees.rate ? person.fees.rate : 0
+                        }}
+                      </td>
+
+                      <td v-if="rateType === 'update'">
+                        <div style="width:50px">
+                          <q-input v-model.number="hourCal" dense outlined />
+                        </div>
+                      </td>
+                      *
+                      <td v-if="rateType === 'dollar'">
+                        {{ person.fees.rate }}
+                      </td>
+                      <td v-if="rateType === 'percentage'">
+                        {{
+                          (addDisbursement.companyFee -
+                            totalExpensesOfCompany -
+                            alreadyPaidByCompany) *
+                            (person.fees.rate / 1000)
+                        }}
+                      </td>
+                      <td v-if="rateType === 'update'">
+                        {{ person.fees.rate * hourCal }}
+                      </td>
+
+                      <td>
+                        <q-toggle
+                          class="q-pt-sm"
+                          size="xs"
+                          v-model="personnelPayToggle[index].value"
+                          @input="
+                            onPersonnelPaidToggleClick(
+                              index,
+                              person.fees,
+                              (addDisbursement.companyFee -
+                                totalExpensesOfCompany -
+                                alreadyPaidByCompany) *
+                                (person.fees.rate / 1000)
+                            )
+                          "
+                        />
+                      </td>
+                      <td>
+                        <q-input
+                          :disable="personnelPayToggle[index].value == false"
+                          prefix="$"
+                          dense
+                          v-model="personnelPaidAmount[index]"
+                          class=" col-2 "
+                          @blur="onFillingCompany()"
+                        />
+                      </td>
+                    </tr>
+                  </table>
+                </q-card>
+              </div>
 
               <div class="row  q-my-md   ">
                 <span class=" col-8">Total Amount to Company</span>
@@ -1298,6 +1417,12 @@ export default {
   },
   data() {
     return {
+      hourCal: '',
+      commissions: [],
+      personnelPaidAmount: [],
+      personnelRateType: '',
+      rateType: 'dollar',
+      personnelPayToggle: [{ value: false }],
       currenPaymentID: '',
       currentDisbursementID: '',
       expenseID: '',
@@ -1389,16 +1514,21 @@ export default {
       'account',
       'payment',
       'expenses',
-      'disbursements'
+      'disbursements',
+      'personnel'
     ])
   },
   async created() {
+    this.personnelPayToggle.push({
+      value: false
+    });
     this.getEstimateInfo(this.selectedClaimId);
     this.getAllPayment(this.selectedClaimId);
     this.getAllDisbursements(this.selectedClaimId);
     this.getAllExpenses(this.selectedClaimId);
+    this.getPersonnelInfo(this.selectedClaimId);
     await this.getAccountDetails(this.selectedClaimId);
-
+    this.addDisbursementDialog = true;
     await this.getAccountDetails(this.selectedClaimId).then(async () => {
       if (this.account.settlements) {
         this.account.settlements.forEach(val => {
@@ -1428,13 +1558,15 @@ export default {
       'editPayment',
       'editExpenses',
       'deleteSingleDisbursement',
-      'editClaimInfo'
+      'editClaimInfo',
+      'getPersonnelInfo'
     ]),
     onPhoneNumberClick,
     onEmailClick,
     validateDate,
     dateToShow,
     dateToSend,
+
     /* Toggle button Function  for company   */
     setValueToPayCompany(i, value) {
       if (this.wantToPayCompany[i].value) {
@@ -1466,6 +1598,23 @@ export default {
       // this.clientAndCompanyAmount[i] = value;
       this.onFillingValue();
     },
+
+    // Toggle Button Function for Personnel
+    onPersonnelPaidToggleClick(index, fees, percentageValue) {
+      if (this.personnelPayToggle[index].value) {
+        if (this.rateType == 'percentage') {
+          this.personnelPaidAmount[index] = percentageValue;
+        } else if (this.rateType == 'dollar')
+          this.personnelPaidAmount[index] = fees.rate;
+      } else if (this.rateType == 'update') {
+        this.personnelPaidAmount[index] = fees.rate * this.hourCal;
+      } else {
+        this.personnelPaidAmount[index] = 0;
+      }
+      this.netExpenseToPayByCompany =
+        this.netExpenseToPayByCompany - this.personnelPaidAmount[index];
+    },
+
     /* Hour To Fees Calculation     */
     hourToFeeCalculation() {
       this.addDisbursement.companyFee =
@@ -1528,6 +1677,7 @@ export default {
       this.alreadyPaidByCompany = 0;
       this.clientAndCompanyAmount = [];
       this.companyAmounts = [];
+      this.personnelPaidAmount = [];
       this.clientAmount = [];
       this.companyPerHour = 0;
       this.totalExpensesOfClient = this.totalExpensesOfClientAndCompany = this.totalExpensesOfCompany = 0;
@@ -1720,6 +1870,7 @@ export default {
     },
 
     onFillingCompany() {
+      console.log('son');
       let total = 0;
       for (var i in this.companyAmounts) {
         this.companyOnly[i].paid = parseInt(this.companyAmounts[i]);
@@ -1905,6 +2056,7 @@ export default {
           paidToClient: this.netExpenseToPayByClient,
           paidToCompany: this.netExpenseToPayByCompany,
           expenses: this.finalExpenses
+          // commissions: this.commissions
         }
       };
       const success = await this.createDisbursement(payload);
@@ -1937,6 +2089,7 @@ export default {
         this.wantToPayClient = [];
         this.clientAndCompanyAmount = [];
         this.companyAmounts = [];
+        this.personnelPaidAmount = [];
         this.clientAmount = [];
         this.netExpenseToPayByBoth = 0;
         this.addDisbursementDialog = false;
@@ -1956,3 +2109,11 @@ export default {
   }
 };
 </script>
+<style lang="css">
+.name-ellipsis {
+  white-space: nowrap;
+  max-width: 50px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+</style>
