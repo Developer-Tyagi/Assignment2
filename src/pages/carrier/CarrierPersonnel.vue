@@ -152,18 +152,19 @@
         <div class="mobile-container-page form-color">
           <q-form
             ref="carrierForm"
-            class="q-px-lg "
+            class="q-px-lg"
             style="height: calc(100vh - 51px)"
           >
             <AddCarrierPersonnel :carrierPersonnel="personnel" />
           </q-form>
         </div>
-        <q-btn
-          @click="onSave"
-          label="Add Personnel"
-          class="single-next-button-style q-mt-lg rounded"
-          size="'xl'"
-        />
+        <div class="row justify-center">
+          <q-btn
+            @click="onSave"
+            label="Add Personnel"
+            class="single-next-button-style q-mt-lg "
+          />
+        </div>
       </q-card>
     </q-dialog>
     <!-- Edit Personnel Dialog -->

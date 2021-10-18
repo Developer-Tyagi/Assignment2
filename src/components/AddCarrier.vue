@@ -181,11 +181,8 @@
       </div>
       <div class="row justify-center">
         <q-btn
-          color="primary"
-          style="width:90%"
           class=" q-mt-md single-next-button-style text-capitalize"
           @click="onAddCarrierButtonClick"
-          size="'xl'"
           :label="isEdit ? 'SAVE' : 'Add Carrier'"
         >
         </q-btn>

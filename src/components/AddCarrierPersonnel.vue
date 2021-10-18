@@ -4,7 +4,6 @@
       <div>
         <q-select
           class=" input-style input-overlay"
-          dense
           borderless
           v-model="carrierPersonnel.honorific.value"
           :options="titles"
@@ -16,7 +15,6 @@
           @input="setTitleName(carrierPersonnel.honorific)"
           emit-value
           label="Title"
-          options-dense
         />
         <q-input
           dense
@@ -43,7 +41,6 @@
         <q-input
           borderless
           class="input-style input-overlay"
-          dense
           v-model="carrierPersonnel.departmentName"
           label="Organization / Department Name"
         />
@@ -76,7 +73,6 @@
             v-if="index >= 0"
           >
             <q-select
-              dense
               borderless
               v-model="carrierPersonnel.phoneNumber[index].type"
               class="col-5 input-style input-overlay"
@@ -89,7 +85,6 @@
               emit-value
             />
             <q-input
-              dense
               borderless
               v-model.number="carrierPersonnel.phoneNumber[index].number"
               label="Phone"
@@ -119,14 +114,16 @@
       </div>
       <div class="q-mt-xs">
         <div class="form-heading  q-my-sm">Notes</div>
-        <textarea
+        <q-input
+          type="textarea"
+          borderless
           rows="3"
           required
           class="full-width input-style input-overlay"
           v-model="carrierPersonnel.notes"
           style="resize: none; padding-left:10px;"
           placeholder="Take notes here..."
-        ></textarea>
+        ></q-input>
       </div>
     </div>
   </q-page>
