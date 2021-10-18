@@ -179,7 +179,7 @@
           "
           :dialogName="'Settlements'"
         />
-        <div class="q-ma-sm mobile-container-page-without-search">
+        <div class="mobile-container-page-without-search">
           <q-form ref="AddSettlementForm" class="form-height">
             <q-card flat bordered class="q-pa-sm">
               <q-select
