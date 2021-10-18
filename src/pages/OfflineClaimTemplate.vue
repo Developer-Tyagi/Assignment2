@@ -379,7 +379,7 @@ export default {
               path:
                 documentType == 'signedDocument'
                   ? 'signed_contract_' + pdfId + '.pdf'
-                  : 'contract_' + id + '.pdf',
+                  : 'contract_' + pdfId + '.pdf',
               data: this.document,
               directory: FilesystemDirectory.Documents
               // encoding: FilesystemEncoding.UTF8
