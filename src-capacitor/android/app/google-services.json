@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "979616122643",
+    "project_id": "claimguru-pre-prod",
+    "storage_bucket": "claimguru-pre-prod.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:979616122643:android:907c553bc7c940f7f2bce6",
+        "android_client_info": {
+          "package_name": "com.claimguru.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "979616122643-m3u0lb6q4p9g90npnhtdk0b6dj3j3hbi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1Dy_2TCeymptM-i3q6KlVBPUMOPUGKvg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "979616122643-m3u0lb6q4p9g90npnhtdk0b6dj3j3hbi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
