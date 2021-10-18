@@ -181,8 +181,10 @@
                   header-class="text-weight-bold"
                   :label="scope.opt.label"
                 >
+                  <!--As per requirement we need to hide  VENDOR role-->
                   <template v-for="child in scope.opt.children">
                     <q-item
+                      v-if="child.label != 'Vendor'"
                       :key="child.label"
                       clickable
                       v-ripple
