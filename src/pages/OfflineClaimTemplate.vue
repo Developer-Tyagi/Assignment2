@@ -318,7 +318,8 @@ export default {
       link.click();
       try {
         const result = await Filesystem.writeFile({
-          path: 'contract.pdf',
+          path:
+            fileName == 'SignedDocument' ? 'signed_contract' : 'contract.pdf',
           data:
             fileName == 'SignedDocument'
               ? this.signedDocument
@@ -358,6 +359,8 @@ export default {
     },
 
     async convertHtmlToPdf(documentString, documentType) {
+      if (documentType == 'signedDocument') {
+      }
       let id = makeId();
       var opt = {
         margin: [10, 5],
@@ -373,7 +376,10 @@ export default {
           let pdfId = makeId();
           try {
             const result = await Filesystem.writeFile({
-              path: 'contract_' + pdfId + '.pdf',
+              path:
+                documentType == 'signedDocument'
+                  ? 'signed_contract_' + pdfId + '.pdf'
+                  : 'contract_' + id + '.pdf',
               data: this.document,
               directory: FilesystemDirectory.Documents
               // encoding: FilesystemEncoding.UTF8
