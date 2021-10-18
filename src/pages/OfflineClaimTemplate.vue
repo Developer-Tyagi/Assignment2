@@ -1,6 +1,6 @@
 <template>
   <div>
-    <q-card class="q-pa-sm input-style input-overlay  col-5">
+    <q-card class="q-pa-sm input-style input-overlay col-5">
       <div class="text-bold q-mt-sm q-ml-sm">Template Type</div>
 
       <q-select
@@ -19,7 +19,7 @@
         :rules="[val => (val && val.length > 0) || 'Please fill the template']"
       />
 
-      <div class="full-width column items-center q-mb-md ">
+      <div class="full-width column items-center q-mb-md">
         <q-btn
           v-if="templatetype.value"
           color="primary"
@@ -136,6 +136,13 @@ import html2pdf from 'html2pdf.js';
 import { jsPDF } from 'jspdf';
 import { makeId } from 'src/store/leads/actions';
 import localDB, { getCollection } from '@services/dexie';
+import {
+  Plugins,
+  FilesystemDirectory,
+  FilesystemEncoding
+} from '@capacitor/core';
+
+const { Filesystem } = Plugins;
 export default {
   components: { CustomBar, VueSignaturePad },
   data() {
@@ -300,7 +307,7 @@ export default {
       this.tokenReplacement(result.name.value);
     },
 
-    downloadPDF(fileName) {
+    async downloadPDF(fileName) {
       const source =
         fileName == 'SignedDocument'
           ? this.signedDocument
@@ -309,6 +316,20 @@ export default {
       link.href = source;
       link.download = `${fileName}.pdf`;
       link.click();
+      try {
+        const result = await Filesystem.writeFile({
+          path: 'contract.pdf',
+          data:
+            fileName == 'SignedDocument'
+              ? this.signedDocument
+              : this.contractDocument,
+          directory: FilesystemDirectory.Download
+          // encoding: FilesystemEncoding.UTF8
+        });
+        console.log('Wrote file', result);
+      } catch (e) {
+        console.error('Unable to write file', e);
+      }
     },
     tokenReplacement(tokenString) {
       //Regex for getting the all tokens from the String
@@ -348,7 +369,17 @@ export default {
         .outputPdf('datauri')
         .then(async data => {
           this.document = data;
-
+          try {
+            const result = await Filesystem.writeFile({
+              path: 'contract.pdf',
+              data: this.document,
+              directory: FilesystemDirectory.Documents
+              // encoding: FilesystemEncoding.UTF8
+            });
+            console.log('Wrote file', result);
+          } catch (e) {
+            console.error('Unable to write file', e);
+          }
           this.contractDocument = '';
           if (documentType == 'signedDocument') {
             const signedContract = {
@@ -378,7 +409,7 @@ export default {
         });
     },
 
-    onClickGenerateDocument() {
+    async onClickGenerateDocument() {
       this.convertHtmlToPdf(this.finalDocumentString);
     },
     dataURItoBlob(dataURI) {
