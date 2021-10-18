@@ -24,10 +24,10 @@
       <div class="form-heading q-mt-lg">Person Party</div>
       <q-select
         v-if="paidUsers.length"
-        v-model="companyPersonnel.personParty.id"
+        v-model="companyPersonnel.personParty"
         :options="paidUsers"
         option-label="name"
-        option-value="id"
+        option-value="paidUsers"
         label="Select Person"
         borderless
         class="input-style input-field"
@@ -235,7 +235,6 @@ export default {
       data.machineValue = obj.machineValue;
       data.id = obj.id;
     },
-
     dateGreaterThan(val) {
       if (validateDate(val)) {
         if (Date.parse(val) >= Date.parse(this.companyPersonnel.startDate)) {

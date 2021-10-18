@@ -160,7 +160,7 @@ export async function setCameraIcon(state, toShowCamera) {
   state.toShowCamera = toShowCamera;
 }
 // this function is used for getting a paid user data.
-export function setPaidUsers(state, data = []) {
+export function setPaidUsers(state, data) {
   state.paidUsers = data.map(allUser => ({
     attributes: allUser.attributes,
     name: allUser.attributes.name,
