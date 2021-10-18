@@ -121,12 +121,31 @@ export function setPermissions(state, permission) {
   }));
 }
 
-export function setAllTemplate(state, templates) {
-  state.templates = templates.map(type => ({
-    name: type.attributes,
-
-    id: type.id
+export async function setAllTemplate(state, templates) {
+  // state.templates = templates.map(type => ({
+  //   name: type.attributes,
+  //   id: type.id
+  // }));
+  ////////////////
+  const templateTypesCollection = await getCollection('allTemplates');
+  const types = templates.map(types => ({
+    name: types.attributes,
+    id: types.id
   }));
+  state.templates = types;
+
+  const temp = await templateTypesCollection.count();
+
+  if ((await templateTypesCollection.count()) > 0) {
+    await templateTypesCollection.delete([]);
+  }
+
+  await localDB.allTemplates.bulkAdd(types);
+  /////////////
+}
+// setOfflineTemplates;
+export async function setOfflineTemplates(state) {
+  state.templates = await getCollection('allTemplates').toArray();
 }
 
 export function setTemplateToken(state, token) {

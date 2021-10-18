@@ -477,7 +477,7 @@ export default {
       'getClaimReasons',
       'getLossCauses',
       'getTemplates',
-      'addTemplate',
+      'addTemplateRemote',
       'getTemplateToken',
       'getAllTemplate',
       'editTemplate',
@@ -525,7 +525,7 @@ export default {
             value: this.templatetype.value
           }
         };
-        const success = await this.addTemplate(payload);
+        const success = await this.addTemplateRemote(payload);
         if (success) {
           this.addTemplateDialogBox = false;
           await this.getAllTemplate();

@@ -124,12 +124,31 @@ export function setPhases(state, phases) {
     id: type.id
   }));
 }
-export function setTemplateTypes(state, types) {
-  state.templateOptions = types.map(type => ({
+export async function setTemplateTypes(state, types) {
+  // state.templateOptions = types.map(type => ({
+  //   name: type.attributes.value,
+  //   machineValue: type.attributes.machineValue,
+  //   id: type.id
+  // }));
+
+  const templateTypeCollection = await getCollection('templateTypes');
+  const templateType = types.map(type => ({
     name: type.attributes.value,
     machineValue: type.attributes.machineValue,
     id: type.id
   }));
+  state.templateOptions = templateType;
+
+  if ((await templateTypeCollection.count()) > 0) {
+    await templateTypeCollection.delete([]);
+  }
+
+  await localDB.templateTypes.bulkAdd(templateType);
+}
+// setOfflineTemplatesTypes;
+
+export async function setOfflineTemplatesTypes(state) {
+  state.templateOptions = await getCollection('templateTypes').toArray();
 }
 
 export function setClaimDocument(state, claimDocument) {

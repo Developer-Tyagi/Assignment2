@@ -5,7 +5,10 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import Vue from 'vue';
+import VueSignaturePad from 'vue-signature-pad';
 
+Vue.use(VueSignaturePad);
 export default {
   name: 'App',
   methods: { ...mapActions(['changeNetworkStatus']) },

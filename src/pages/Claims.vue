@@ -176,12 +176,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['claims', 'selectedClaimId', 'photoIdKey']),
-    formatDate(value) {
-      if (value) {
-        return moment(String(value)).format('MM/DD/YYYY');
-      }
-    }
+    ...mapGetters(['claims', 'selectedClaimId', 'photoIdKey', 'isOnline'])
   },
 
   async created() {
@@ -219,10 +214,15 @@ export default {
     },
     onClickingOnClaim(claim) {
       this.setSelectedClaimId(claim.id);
-      this.$router.push('/claim-details');
-      if (this.userRole == 'estimator' || this.userRole == 'vendor') {
-        this.setSelectedClaimId(claim.id);
-        this.$router.push('/claim-summary');
+
+      if (this.isOnline) {
+        this.$router.push('/claim-details');
+        if (this.userRole == 'estimator' || this.userRole == 'vendor') {
+          this.setSelectedClaimId(claim.id);
+          this.$router.push('/claim-summary');
+        }
+      } else {
+        this.$router.push('/offline-claim');
       }
     }
   }

@@ -51,17 +51,20 @@ export async function getSingleClientDetails(
   },
   id
 ) {
-  dispatch('setLoading', true);
+  // dispatch('setLoading', true);
   try {
     if (isOnline) {
       const { data } = await request.get(`/clients/${id}`);
       commit('setSelectedEditClient', data);
     } else {
-      const data = clients.find(client => {
+      const offlineClients = await getCollection('clients').toArray();
+
+      const data = offlineClients.find(client => {
         return client.id === id;
       });
 
       commit('setSelectedClientOffline', data);
+      return data;
     }
 
     dispatch('setLoading', false);

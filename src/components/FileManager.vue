@@ -21,6 +21,7 @@
         lazy-rules
         :rules="[val => (val && val.length > 0) || 'Please fill the template']"
       />
+
       <div class="full-width column items-center q-mb-md ">
         <q-btn
           v-if="templatetype.value"
@@ -32,6 +33,8 @@
         />
       </div>
     </q-card>
+    <!-- This section is  visible when the system is online -->
+
     <div class="actions-div justify-between q-px-md" v-if="depth.length > 0">
       <q-breadcrumbs class="text-primary" active-color="grey" gutter="none">
         <template v-slot:separator> </template>
@@ -602,10 +605,13 @@ import request from '@api';
 import { jsPDF } from 'jspdf';
 import { Plugins, CameraResultType, CameraDirection } from '@capacitor/core';
 import DeleteAlert from 'components/DeleteAlert';
+
 const { Camera } = Plugins;
 import CustomBar from 'components/CustomBar';
 import { setNotification } from 'src/store/common/mutations';
 import { validateEmail } from '@utils/validation';
+import { makeId } from 'src/store/leads/actions';
+import localDB, { getCollection } from '@services/dexie';
 
 export default {
   name: 'FileManager',
@@ -614,6 +620,7 @@ export default {
 
   data() {
     return {
+      document: '',
       sendToRadio: '',
       emails: [{ email: '', type: 'external', name: '' }],
       signedDocuments: '',
@@ -669,6 +676,7 @@ export default {
       properties: document.attributes.properties
     }));
     this.getTemplates();
+
     await this.getAllActorToClaim(this.selectedClaimId);
   },
   computed: {
@@ -678,7 +686,8 @@ export default {
       'claimRoles',
       'allUsers',
       'templateOptions',
-      'actors'
+      'actors',
+      'templates'
     ])
   },
 
@@ -699,7 +708,7 @@ export default {
       'getSignedDocument'
     ]),
     ...mapMutations(['setLoading', 'setNotification']),
-    validateEmail,
+
     removeEmail() {
       this.emails.pop();
     },
@@ -792,6 +801,7 @@ export default {
     },
     async onFileInputClick(event) {
       this.dataURl = await this.getBase64(event.target.files[0]);
+
       const file = document.getElementById('uploadFile').value;
       this.selectFile = file.split('\\').pop();
       this.selectFile = this.selectFile.split('.');
@@ -946,6 +956,7 @@ export default {
         direction: CameraDirection.Rear
       });
       this.setLoading(true);
+      // This code is  for converting a image into PDF, Will use in future
       // const jsPDFObj = new jsPDF('p', 'mm');
       // jsPDFObj.addImage(imageData.dataUrl, 10, 10);
       // this.pdfImage = jsPDFObj.output('datauristring');
@@ -1154,11 +1165,15 @@ export default {
       this.depth.splice(index + 1);
       this.setLoading(false);
     },
-    setTypes(value) {
+    async setTypes(value) {
       const obj = this.templateOptions.find(item => {
         return item.name === value;
       });
       this.templatetype.machineValue = obj.machineValue;
+
+      const result = this.templates.find(template => {
+        return template.name.machineValue === this.templatetype.machineValue;
+      });
     },
     async onClickGenerateDocument() {
       const payload = {
@@ -1192,6 +1207,7 @@ export default {
       this.depth[this.currentPath - 1].name = response.attributes.directoryName;
       this.setLoading(false);
     },
+
     onClickAddEmail() {
       this.emails.push({ email: '', type: 'external', name: '' });
     },

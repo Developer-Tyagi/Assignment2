@@ -123,6 +123,7 @@ const routes = [
         caseSensitive: true,
         component: () => import('pages/LeadsDashboard.vue')
       },
+
       {
         path: 'leads',
         name: 'Leads',
@@ -403,6 +404,12 @@ const routes = [
         name: 'mortgage details',
         caseSensitive: true,
         component: () => import('src/pages/mortgage/MortgageDetails.vue')
+      },
+      {
+        path: 'offline-claim',
+        name: 'claim details',
+        caseSensitive: true,
+        component: () => import('src/pages/OfflineClaimTemplate.vue')
       },
       {
         path: 'mortgage-company-info/:id',

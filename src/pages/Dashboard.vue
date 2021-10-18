@@ -288,14 +288,24 @@ export default {
     };
   },
   created() {
+    //this API is for offline clients
+    const payload = {
+      status: '',
+      name: ''
+    };
+    this.getClients(payload);
     this.getClaims();
+    this.getTemplates();
+    this.getAllTemplate();
   },
   methods: {
     ...mapActions([
       'getClients',
       'getActiveLeadsList',
       'getClaims',
-      'getArchivedLeadsList'
+      'getArchivedLeadsList',
+      'getTemplates',
+      'getAllTemplate'
     ]),
     // this function is use for the opening and closing of dialog box that show photoId App and Camera option feature.
     toCameraDialogBox() {

@@ -18,11 +18,13 @@
     "country-region-data": "^1.6.0",
     "dexie": "^3.0.3",
     "firebase": "^8.2.5",
+    "html2pdf.js": "^0.10.1",
     "jspdf": "^2.3.1",
     "mongodb-stitch-browser-sdk": "^4.8.0",
     "node-fetch": "^2.6.1",
     "quasar": "^1.15.0",
-    "vue-chartjs": "^3.5.1"
+    "vue-chartjs": "^3.5.1",
+    "vue-signature-pad": "2.0.4"
   },
   "devDependencies": {
     "@quasar/app": "^2.0.0",

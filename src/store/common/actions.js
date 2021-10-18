@@ -3,7 +3,9 @@ import { buildApiData } from 'src/utils/api';
 import localDB, { getCollection } from '@services/dexie';
 import { LocalStorage } from 'quasar';
 import { claim, estimator } from '../claims/getters';
-
+import { makeId } from '../leads/actions';
+import { date } from 'quasar';
+import { constants } from '@utils/constant';
 export function setLoading({ commit }, value) {
   commit('setLoading', value);
 }
@@ -373,13 +375,32 @@ export async function deleteTemplate({ dispatch, state }, payload) {
     return false;
   }
 }
+/////////////////////////////
 
-export async function addTemplateType({ dispatch, state }, payload) {
+export async function addTemplateType(
+  {
+    rootState: {
+      common: { isOnline }
+    },
+    dispatch
+  },
+  payload
+) {
+  dispatch('setLoading', true);
+  if (isOnline) {
+    return await dispatch('addTemplateRemote', payload);
+    return;
+  } else {
+    return await dispatch('addTemplateLocal', payload);
+  }
+}
+
+export async function addTemplateRemote({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.post(
-      '/templatetypes',
-      buildApiData('templatetypes', payload)
+      '/templates',
+      buildApiData('templates', payload)
     );
 
     dispatch('setLoading', false);
@@ -395,19 +416,50 @@ export async function addTemplateType({ dispatch, state }, payload) {
   }
 }
 
-export async function getAllTemplate({ commit, dispatch }) {
-  dispatch('setLoading', true);
+export async function addTemplateLocal({ dispatch }, payload) {
   try {
-    const { data } = await request.get('/templates');
-    commit('setAllTemplate', data);
-    dispatch('setLoading', false);
+    let template = {
+      ...payload,
+      offline: true,
+      id: makeId(),
+      created: date.formatDate(Date.now(), constants.UTCFORMAT),
+      updated: date.formatDate(Date.now(), constants.UTCFORMAT)
+    };
+
+    await localDB.contractDocument.add(template);
+
+    return template;
   } catch (e) {
     console.log(e);
+    return false;
+  }
+}
+
+export async function getAllTemplate({
+  rootState: {
+    common: { isOnline }
+  },
+  commit,
+  dispatch
+}) {
+  if (isOnline) {
+    dispatch('setLoading', true);
+    try {
+      const { data } = await request.get('/templates');
+
+      commit('setAllTemplate', data);
+      dispatch('setLoading', false);
+    } catch (e) {
+      console.log(e);
+      dispatch('setLoading', false);
+      dispatch('setNotification', {
+        type: 'negative',
+        message: e.response[0].title
+      });
+    }
+  } else {
+    commit('setOfflineTemplates');
     dispatch('setLoading', false);
-    dispatch('setNotification', {
-      type: 'negative',
-      message: e.response[0].title
-    });
   }
 }
 
@@ -452,14 +504,60 @@ export async function syncCarriers({ dispatch }) {
   }
 }
 
+export async function dataURItoBlob(dataURI) {
+  // convert base64/URLEncoded data component to raw binary data held in a string
+  var byteString;
+  if (dataURI.split(',')[0].indexOf('base64') >= 0)
+    byteString = atob(dataURI.split(',')[1]);
+  else byteString = unescape(dataURI.split(',')[1]);
+
+  // separate out the mime component
+  var mimeString = dataURI
+    .split(',')[0]
+    .split(':')[1]
+    .split(';')[0];
+
+  // write the bytes of the string to a typed array
+  var ia = new Uint8Array(byteString.length);
+  for (var i = 0; i < byteString.length; i++) {
+    ia[i] = byteString.charCodeAt(i);
+  }
+
+  return new Blob([ia], { type: mimeString });
+}
+export function getBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+  });
+}
+export async function syncContractDocument({ dispatch }) {
+  let offlineDocuments = await getCollection('contractDocument').toArray();
+
+  offlineDocuments = await offlineDocuments.filter(
+    document => document.offline
+  );
+
+  if (offlineDocuments.length > 0) {
+    const createDocument = offlineDocuments.map(({ offline, ...document }) =>
+      dispatch('uploadOfflineDocument', document)
+    );
+  }
+}
+
 export async function syncVendors({ dispatch }) {
   let offlineVendors = await getCollection('vendors').toArray();
-  console.log(offlineVendors, 123);
   offlineVendors = offlineVendors.filter(vendor => vendor.offline);
   if (offlineVendors.length > 0) {
     const createVendors = offlineVendors.map(
-      ({ id: localId, offline, ...vendor }) =>
-        dispatch('addVendorRemote', vendor).then(res => ({ ...res, localId }))
+      ({ id: localId, offline, ...vendor }) => {
+        dispatch('addVendorRemote', vendor).then(res => ({
+          ...res,
+          localId
+        }));
+      }
     );
     return new Promise((resolve, reject) =>
       Promise.allSettled(createVendors).then(vendors => {
@@ -864,6 +962,7 @@ export async function clearLocalStorage() {
   LocalStorage.remove('mortgage');
   LocalStorage.remove('estimator');
   LocalStorage.remove('claim');
+  LocalStorage.remove('syncContractDocument');
 }
 
 export async function syncLocalDataBase({ dispatch, state }) {
@@ -876,6 +975,7 @@ export async function syncLocalDataBase({ dispatch, state }) {
   await dispatch('syncClients');
   await dispatch('syncClaims');
   await dispatch('syncOfficeTasks');
+  await dispatch('syncContractDocument');
   await clearLocalStorage();
 }
 
