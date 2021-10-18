@@ -1571,7 +1571,7 @@ export default {
     this.getAllExpenses(this.selectedClaimId);
     this.getPersonnelInfo(this.selectedClaimId);
     await this.getAccountDetails(this.selectedClaimId);
-
+    this.addDisbursementDialog = true;
     await this.getAccountDetails(this.selectedClaimId).then(async () => {
       if (this.account.settlements) {
         this.account.settlements.forEach(val => {

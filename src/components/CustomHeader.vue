@@ -15,19 +15,10 @@
           @click="onMenuButtonClick"
         ></q-btn>
         <div class="row">
-          <div class="column justify-center">
-            <div
-              class="overlay"
-              style="width:25%;height:10vh;margin-left:5%; background: radial-gradient(closest-side,  #F6d365,#F19733,#F190);"
-            >
-              <img
-                class="overlay q-ml-lg q-my-xl  "
-                src="~assets/claimLogoDashboard.png"
-                style="margin-top:8px;height:10vh;width:80%;margin-left:15%;"
-              />
-            </div>
+          <div class="column justify-center" style="margin-left:-30px">
+            <img src="~assets/logo2.png" />
           </div>
-          <div class="col-5 column justify-center">
+          <!-- <div class="col-5 column justify-center">
             <div
               class=" overlay"
               style="width:30%;height:10vh;margin-left:39%; background: radial-gradient(closest-side,  #F6d365,#F19733,#F191);"
@@ -43,7 +34,7 @@
                 style="width:100%; height:10vh;margin-left:-15%;"
               />
             </div>
-          </div>
+          </div> -->
         </div>
       </q-toolbar>
       <q-toolbar class="row bg-primary rounded-header" v-else>
@@ -451,15 +442,15 @@ export default {
   margin-bottom: 0;
   margin-top: 5px;
 }
-.overlay {
-  position: absolute;
-  bottom: 10;
-  color: #f1f1f1;
-  width: 100%;
+// .overlay {
+//   position: absolute;
+//   bottom: 10;
+//   color: #f1f1f1;
+//   width: 100%;
 
-  opacity: 4;
-  color: white;
-}
+//   opacity: 4;
+//   color: white;
+// }
 .rounded-sidebar {
   border-radius: 0px 20px 20px 0px;
   box-shadow: 1px 3px 2px 1px #e0e0e0;

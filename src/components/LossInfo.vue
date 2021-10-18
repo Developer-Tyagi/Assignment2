@@ -87,7 +87,9 @@
 
       <!--adding condition if any cause of value is selected then only we will show cause of description field and if user change the cause of loss then this description field will not get disappeared-->
       <q-input
-        v-if="lossInfo.causeOfLoss.value"
+        v-if="
+          lossInfo.causeOfLoss.value && lossInfo.causeOfLoss.value != 'None'
+        "
         borderless
         class="required input-style input-field"
         label="Cause of loss description"
