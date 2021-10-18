@@ -318,7 +318,8 @@ export default {
       link.click();
       try {
         const result = await Filesystem.writeFile({
-          path: 'contract.pdf',
+          path:
+            fileName == 'SignedDocument' ? 'signed_contract' : 'contract.pdf',
           data:
             fileName == 'SignedDocument'
               ? this.signedDocument
@@ -358,9 +359,12 @@ export default {
     },
 
     async convertHtmlToPdf(documentString, documentType) {
+      if (documentType == 'signedDocument') {
+      }
+      let id = makeId();
       var opt = {
         margin: [10, 5],
-        filename: 'contract.pdf'
+        filename: 'contract_' + id + '.pdf'
       };
       await html2pdf()
         .from(documentString)
@@ -369,9 +373,13 @@ export default {
         .outputPdf('datauri')
         .then(async data => {
           this.document = data;
+          let pdfId = makeId();
           try {
             const result = await Filesystem.writeFile({
-              path: 'contract.pdf',
+              path:
+                documentType == 'signedDocument'
+                  ? 'signed_contract_' + pdfId + '.pdf'
+                  : 'contract_' + pdfId + '.pdf',
               data: this.document,
               directory: FilesystemDirectory.Documents
               // encoding: FilesystemEncoding.UTF8
