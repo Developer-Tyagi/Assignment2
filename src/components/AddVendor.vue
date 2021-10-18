@@ -213,8 +213,6 @@
           color="primary"
           class=" q-mt-md single-next-button-style text-capitalize"
           @click="onAddVendorButtonClick"
-          size="'xl'"
-          style="z-index:20000; width:90%"
           :label="isEdit ? 'SAVE' : 'Add Vendor'"
         >
         </q-btn>

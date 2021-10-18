@@ -164,7 +164,6 @@
               <q-select
                 class="required input-style input-overlay"
                 borderless
-                dense
                 v-model="honorific.value"
                 :options="titles"
                 option-value="value"
@@ -175,7 +174,6 @@
                 @input="setTitleName(honorific)"
                 emit-value
                 label="Title"
-                options-dense
               />
               <q-input
                 dense
@@ -293,14 +291,13 @@
             </q-card>
           </q-form>
         </div>
-        <q-btn
-          @click="onSave"
-          label="Add Personnel"
-          color="primary"
-          rounded
-          class="button-width-90 q-mt-lg"
-          size="'xl'"
-        />
+        <div class="row  justify-center">
+          <q-btn
+            @click="onSave"
+            label="Add Personnel"
+            class="single-next-button-style q-mt-lg"
+          />
+        </div>
       </q-card>
     </q-dialog>
     <!-- Edit Personnel Dialog -->
