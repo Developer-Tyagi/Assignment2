@@ -376,7 +376,6 @@ export default {
               directory: FilesystemDirectory.Documents
               // encoding: FilesystemEncoding.UTF8
             });
-            console.log('Wrote file', result);
           } catch (e) {
             console.error('Unable to write file', e);
           }
@@ -446,20 +445,33 @@ export default {
       if (this.pa_signature) {
         this.tokens.push({
           key: '{{.Adjuster.Sign}}',
-          value: this.pa_signature
+          value:
+            "<img src=' " + this.pa_signature + " ' width='200' height='70'/> "
         });
       }
-
-      this.tokens.push({
-        key: '{{.Client.InsuredSign}}',
-        value: this.co_insured_signature
+      if (this.co_insured_signature) {
+        this.tokens.push({
+          key: '{{.Client.InsuredSign}}',
+          value:
+            "<img src=' " +
+            this.co_insured_signature +
+            " ' width='200' height='70'/> "
+        });
+      }
+      if (this.insured_signature) {
+        this.tokens.push({
+          key: '{{.Client.CoInsuredSign}}',
+          value:
+            "<img src=' " +
+            this.insured_signature +
+            " ' width='200' height='70'/> "
+        });
+      }
+      const result = this.templates.find(template => {
+        return template.name.machineValue === this.templatetype.machineValue;
       });
-      this.tokens.push({
-        key: '{{.Client.CoInsuredSign}}',
-        value: this.insured_signature
-      });
 
-      this.tokenReplacement(this.finalDocumentString);
+      this.tokenReplacement(result.name.value);
       this.convertHtmlToPdf(this.finalDocumentString, 'signedDocument');
     },
 
