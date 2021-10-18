@@ -115,9 +115,6 @@ export default {
         case 'view-client':
           this.$router.push('/clients');
           break;
-        case 'claim-details':
-          this.$router.push('/claims');
-          break;
         case ('claim-summary' && this.userRole == 'estimator') ||
           this.userRole == 'vendor':
           this.$router.push('/claims');
