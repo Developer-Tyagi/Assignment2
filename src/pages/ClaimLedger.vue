@@ -207,6 +207,7 @@
               group="Ledger"
               label="Disbursement"
               header-class="text-primary"
+              @click="toDisbursement()"
             >
               <div v-if="disbursements.disbursements != null">
                 <q-card
@@ -1154,7 +1155,7 @@
                             {{
                               person.fees && person.fees.rate
                                 ? person.fees.rate
-                                : ''
+                                : '0'
                             }}
                           </div>
 
@@ -1169,7 +1170,13 @@
                                 ? amountAvailableForCommissions
                                 : addDisbursement.companyFee) *
                                 person.fees.rate) /
-                                100
+                              100
+                                ? ((amountAvailableForCommissions
+                                    ? amountAvailableForCommissions
+                                    : addDisbursement.companyFee) *
+                                    person.fees.rate) /
+                                  100
+                                : '0'
                             }}
                           </div>
                           <div v-if="toggleType[index] === 'update'">
@@ -1177,16 +1184,17 @@
                               person.fees && person.fees.rate
                                 ? person.fees.rate *
                                   parseInt(hourCal[index] ? hourCal[index] : 0)
-                                : ''
+                                : '0'
                             }}
                           </div>
                         </div>
+                        {{ personnelPayToggle }}
                         <div class="col column items-center">
                           <div>Pay</div>
                           <div class="q-mr-sm">
                             <q-toggle
                               size="xs"
-                              v-model.number="personnelPayToggle[index].value"
+                              v-model="personnelPayToggle[index].value"
                               @input="
                                 onPersonnelPaidToggleClick(
                                   index,
@@ -1205,7 +1213,7 @@
                             {{
                               person.fees && person.fees.rate
                                 ? person.fees.rate
-                                : ''
+                                : '0'
                             }}
                           </div>
 
@@ -1220,7 +1228,13 @@
                                 ? amountAvailableForCommissions
                                 : addDisbursement.companyFee) *
                                 person.fees.rate) /
-                                100
+                              100
+                                ? ((amountAvailableForCommissions
+                                    ? amountAvailableForCommissions
+                                    : addDisbursement.companyFee) *
+                                    person.fees.rate) /
+                                  100
+                                : '0'
                             }}
                           </div>
                           <div v-if="toggleType[index] === 'update'">
@@ -1228,7 +1242,7 @@
                               person.fees && person.fees.rate
                                 ? person.fees.rate *
                                   parseInt(hourCal[index] ? hourCal[index] : 0)
-                                : ''
+                                : '0'
                             }}
                           </div>
                         </div>
@@ -1540,36 +1554,12 @@ export default {
     ])
   },
   async created() {
-    if (this.personnel.personnel && this.personnel.personnel.length) {
-      for (let i = 0; i < this.personnel.personnel.length; i++) {
-        this.hourCal[i] = 1;
-
-        this.personnelPaidAmount.push(
-          parseInt(
-            this.personnel.personnel[i].fees &&
-              this.personnel.personnel[i].fees.rate
-              ? this.personnel.personnel[i].fees.rate
-              : 0
-          )
-        );
-        this.toggleType.push(
-          this.personnel.personnel[i].fees &&
-            this.personnel.personnel[i].fees.type
-            ? this.personnel.personnel[i].fees.type
-            : 'dollar'
-        );
-      }
-    }
-    this.personnelPayToggle.push({
-      value: false
-    });
     this.getEstimateInfo(this.selectedClaimId);
     this.getAllPayment(this.selectedClaimId);
     this.getAllDisbursements(this.selectedClaimId);
     this.getAllExpenses(this.selectedClaimId);
     this.getPersonnelInfo(this.selectedClaimId);
     await this.getAccountDetails(this.selectedClaimId);
-    //this.addDisbursementDialog = true;
     await this.getAccountDetails(this.selectedClaimId).then(async () => {
       if (this.account.settlements) {
         this.account.settlements.forEach(val => {
@@ -1609,9 +1599,32 @@ export default {
     validateDate,
     dateToShow,
     dateToSend,
-    // onButtonToggleClick() {
-    //   this.onFillingCompany();
-    // },
+    toDisbursement() {
+      this.getPersonnelInfo(this.selectedClaimId);
+
+      if (this.personnel.personnel && this.personnel.personnel.length) {
+        for (let i = 0; i < this.personnel.personnel.length; i++) {
+          this.personnelPayToggle.push({
+            value: false
+          });
+          this.hourCal[i] = 1;
+          this.personnelPaidAmount.push(
+            parseInt(
+              this.personnel.personnel[i].fees &&
+                this.personnel.personnel[i].fees.rate
+                ? this.personnel.personnel[i].fees.rate
+                : 0
+            )
+          );
+          this.toggleType.push(
+            this.personnel.personnel[i].fees &&
+              this.personnel.personnel[i].fees.type
+              ? this.personnel.personnel[i].fees.type
+              : 'dollar'
+          );
+        }
+      }
+    },
     onFillingCompany() {
       let total = 0;
       for (var i in this.companyAmounts) {
@@ -1802,7 +1815,10 @@ export default {
         this.addDisbursement.companyFee = this.partialCompanyValue = this.account.fees.rate = 0;
       }
 
-      this.addDisbursement.companyFee = this.partialCompanyValue = this.account.fees.rate;
+      this.addDisbursement.companyFee = this.partialCompanyValue =
+        this.account.fees && this.account.fees.rate
+          ? this.account.fees.rate
+          : 0;
       this.netExpenseToPayByClient =
         this.addDisbursement.amountToDisbuse - this.addDisbursement.companyFee;
       this.clientAndCompany = [];
@@ -1860,7 +1876,10 @@ export default {
         });
       }
 
-      this.netExpenseToPayByCompany = this.account.fees.rate;
+      this.netExpenseToPayByCompany =
+        this.account.fees && this.account.fees.rate
+          ? this.account.fees.rate
+          : 0;
       this.feesType = this.account.fees.type;
       if (this.account.fees.type == 'update') {
         this.hourToFeeCalculation();
@@ -1869,6 +1888,8 @@ export default {
       }
 
       this.addDisbursementDialog = true;
+      this.getAccountDetails(this.selectedClaimId);
+      this.getPersonnelInfo(this.selectedClaimId);
     },
 
     /* delete Api's   */

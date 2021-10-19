@@ -289,7 +289,11 @@ export default {
               },
               note: this.companyPersonnelPost.notes,
               fees: {
-                type: this.companyPersonnelPost.buttonGroup,
+                type:
+                  this.companyPersonnelPost &&
+                  this.companyPersonnelPost.buttonGroup
+                    ? this.companyPersonnelPost.buttonGroup
+                    : 'dollar',
                 rate: this.companyPersonnelPost.claimFeeRate
                   ? this.companyPersonnelPost.claimFeeRate
                   : 0
@@ -341,9 +345,10 @@ export default {
       this.companyPersonnel.personParty.name = this.personnel.personnel[
         index
       ].name;
-      this.companyPersonnel.buttonGroup = this.personnel.personnel[
-        index
-      ].fees.type;
+      this.companyPersonnel.buttonGroup =
+        this.personnel.personnel && this.personnel.personnel[index].fees.type
+          ? this.personnel.personnel[index].fees.type
+          : 'dollar';
       this.companyPersonnel.claimFeeRate = this.personnel.personnel[
         index
       ].fees.rate;
@@ -377,7 +382,9 @@ export default {
               },
               note: this.companyPersonnel.notes,
               fees: {
-                type: this.companyPersonnel.buttonGroup,
+                type: this.companyPersonnel.buttonGroup
+                  ? this.companyPersonnel.buttonGroup
+                  : 'dollar',
                 rate: this.companyPersonnel.claimFeeRate
                   ? this.companyPersonnel.claimFeeRate
                   : 0
