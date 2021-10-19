@@ -1543,7 +1543,7 @@ export default {
     if (this.personnel.personnel && this.personnel.personnel.length) {
       for (let i = 0; i < this.personnel.personnel.length; i++) {
         this.hourCal[i] = 1;
-        // this.personnelPaidAmount[i]= parseInt(this.personnel.personnel[i].fees.rate);
+
         this.personnelPaidAmount.push(
           parseInt(
             this.personnel.personnel[i].fees &&
@@ -1556,7 +1556,7 @@ export default {
           this.personnel.personnel[i].fees &&
             this.personnel.personnel[i].fees.type
             ? this.personnel.personnel[i].fees.type
-            : ''
+            : 'dollar'
         );
       }
     }
@@ -1695,6 +1695,7 @@ export default {
 
     // Toggle Button Function for Personnel
     onPersonnelPaidToggleClick(index, fees, hourCal, toggleState) {
+      this.onFillingCompany();
       if (toggleState) {
         this.personnelPaidAmount[index] = parseInt(
           fees && fees.rate ? fees.rate : 0
