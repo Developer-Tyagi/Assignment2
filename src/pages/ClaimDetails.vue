@@ -377,7 +377,6 @@
                       map-options
                       options-dense
                       label="Claim Phases"
-                      options-dense
                       emit-value
                       @filter="searchFilterBy"
                       @input="setTypes(claimPhase.value)"
@@ -736,6 +735,7 @@ export default {
         case 'Time Tracking':
           break;
         case 'Claim Ledger':
+          break;
       }
     }
   }

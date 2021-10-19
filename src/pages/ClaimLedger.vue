@@ -1190,7 +1190,6 @@
                               @input="
                                 onPersonnelPaidToggleClick(
                                   index,
-                                  addDisbursement.companyFee,
                                   person.fees,
                                   hourCal,
                                   personnelPayToggle[index].value
@@ -1293,7 +1292,6 @@
                             <td>
                               <div>
                                 <q-btn-toggle
-                                  @click="onButtonToggleClick()"
                                   @input="onTotalCommission(index)"
                                   class="q-ml-xs"
                                   v-model="toggleType[index]"
@@ -1571,7 +1569,7 @@ export default {
     this.getAllExpenses(this.selectedClaimId);
     this.getPersonnelInfo(this.selectedClaimId);
     await this.getAccountDetails(this.selectedClaimId);
-    this.addDisbursementDialog = true;
+    //this.addDisbursementDialog = true;
     await this.getAccountDetails(this.selectedClaimId).then(async () => {
       if (this.account.settlements) {
         this.account.settlements.forEach(val => {
@@ -1611,18 +1609,18 @@ export default {
     validateDate,
     dateToShow,
     dateToSend,
-    onButtonToggleClick() {
-      this.onFillingCompany();
-    },
+    // onButtonToggleClick() {
+    //   this.onFillingCompany();
+    // },
     onFillingCompany() {
       let total = 0;
       for (var i in this.companyAmounts) {
         this.companyOnly[i].paid = parseInt(this.companyAmounts[i]);
         total += parseInt(this.companyAmounts[i]);
       }
-      this.netExpenseToPayByCompany = this.netExpenseToPayByCompany - total;
       this.amountAvailableForCommissions =
         this.addDisbursement.companyFee - total;
+      this.netExpenseToPayByCompany = this.amountAvailableForCommissions;
     },
     //this function is used to calculate the final commision. here we add only those filled data whose toggle is ON
     onTotalCommission(index) {
@@ -1633,28 +1631,26 @@ export default {
           this.toggleType[i] == 'dollar' &&
           this.personnelPayToggle[i].value
         ) {
-          totalRate += parseInt(
-            this.personnelPaidAmount[i] ? this.personnelPaidAmount[i] : 0
-          );
+          totalRate += this.personnelPaidAmount[i]
+            ? this.personnelPaidAmount[i]
+            : 0;
         } else if (
           this.toggleType[i] == 'percentage' &&
           this.personnelPayToggle[i].value
         ) {
           totalRate +=
-            parseInt(
-              this.amountAvailableForCommissions *
-                parseInt(
-                  this.personnelPaidAmount[i] ? this.personnelPaidAmount[i] : 0
-                )
-            ) / 100;
+            (this.amountAvailableForCommissions *
+              parseInt(
+                this.personnelPaidAmount[i] ? this.personnelPaidAmount[i] : 0
+              )) /
+            100;
         } else if (
           this.toggleType[i] == 'update' &&
           this.personnelPayToggle[i].value
         ) {
           totalRate +=
-            parseInt(
-              this.personnelPaidAmount[i] ? this.personnelPaidAmount[i] : 0
-            ) * parseInt(this.hourCal[i] ? this.hourCal[i] : 0);
+            (this.personnelPaidAmount[i] ? this.personnelPaidAmount[i] : 0) *
+            parseInt(this.hourCal[i] ? this.hourCal[i] : 0);
         }
       }
 
@@ -1698,13 +1694,7 @@ export default {
     },
 
     // Toggle Button Function for Personnel
-    onPersonnelPaidToggleClick(
-      index,
-      totalAvailableCommission,
-      fees,
-      hourCal,
-      toggleState
-    ) {
+    onPersonnelPaidToggleClick(index, fees, hourCal, toggleState) {
       if (toggleState) {
         this.personnelPaidAmount[index] = parseInt(
           fees && fees.rate ? fees.rate : 0
@@ -1716,26 +1706,26 @@ export default {
           this.personnelPayToggle[i].value &&
           this.toggleType[i] == 'dollar'
         ) {
-          totalRate += parseInt(
-            this.personnelPaidAmount[i] ? this.personnelPaidAmount[i] : 0
-          );
+          totalRate += this.personnelPaidAmount[i]
+            ? this.personnelPaidAmount[i]
+            : 0;
         } else if (
           this.personnelPayToggle[i].value &&
           this.toggleType[i] == 'percentage'
         ) {
-          totalRate += parseInt(
-            (totalAvailableCommission * this.personnelPaidAmount[i]) / 100
-          );
+          totalRate +=
+            (this.amountAvailableForCommissions * this.personnelPaidAmount[i]) /
+            100;
         } else if (
           this.personnelPayToggle[i].value &&
           this.toggleType[i] == 'update'
         ) {
           totalRate +=
-            parseInt(this.personnelPaidAmount[i]) *
-            parseInt(hourCal[i] ? hourCal[i] : 1);
+            this.personnelPaidAmount[i] * parseInt(hourCal[i] ? hourCal[i] : 1);
         }
       }
-      this.netExpenseToPayByCompany = totalAvailableCommission - totalRate;
+      this.netExpenseToPayByCompany =
+        this.amountAvailableForCommissions - totalRate;
     },
 
     /* Hour To Fees Calculation     */
