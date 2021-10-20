@@ -22,69 +22,77 @@
       <q-separator vertical></q-separator>
       <q-btn @click="onAddButtonClick" flat><img src="~assets/add.svg"/></q-btn>
     </div>
-
     <div class="mobile-container-page" v-if="carriers.length">
-      <div
-        v-for="carrier in carriers"
-        :key="carrier.id"
-        class="listing-item clients-list"
-        style="overflow-y: auto"
+      <q-infinite-scroll
+        @load="onLoad"
+        :offset="carriersPagination.offset"
+        ref="infiniteScroll"
       >
-        <q-item-section @click="onSelectCarrier(carrier, $event)">
-          <span class="form-heading  fit-content">{{ carrier.name }}</span>
-          <div v-if="carrier.address">
-            <div>
-              {{ carrier.address ? carrier.address.houseNumber : '-' }}
-              {{ carrier.address.address1 ? carrier.address.address1 : '-' }}
+        <div
+          v-for="carrier in carriers"
+          :key="carrier.id"
+          class="listing-item clients-list"
+          style="overflow-y: auto"
+        >
+          <q-item-section @click="onSelectCarrier(carrier, $event)">
+            <span class="form-heading  fit-content">{{ carrier.name }}</span>
+            <div v-if="carrier.address">
+              <div>
+                {{ carrier.address ? carrier.address.houseNumber : '-' }}
+                {{ carrier.address.address1 ? carrier.address.address1 : '-' }}
+              </div>
+              <div v-if="carrier.address && carrier.address.address2">
+                {{ carrier.address.address2 }}
+              </div>
+              <div class="row">
+                {{
+                  carrier.address.addressLocality
+                    ? carrier.address.addressLocality
+                    : '-'
+                }}
+                ,
+                {{
+                  carrier.address.addressRegion
+                    ? toGetStateShortName(carrier.address.addressRegion)
+                    : '-'
+                }}
+                {{
+                  carrier.address.postalCode ? carrier.address.postalCode : '-'
+                }}
+                <q-icon
+                  name="place"
+                  class="q-ml-auto"
+                  color="primary"
+                  size="sm"
+                  @click="sendMap(carrier.address, $event)"
+                ></q-icon>
+              </div>
             </div>
-            <div v-if="carrier.address && carrier.address.address2">
-              {{ carrier.address.address2 }}
-            </div>
-            <div class="row">
-              {{
-                carrier.address.addressLocality
-                  ? carrier.address.addressLocality
-                  : '-'
-              }}
-              ,
-              {{
-                carrier.address.addressRegion
-                  ? toGetStateShortName(carrier.address.addressRegion)
-                  : '-'
-              }}
-              {{
-                carrier.address.postalCode ? carrier.address.postalCode : '-'
-              }}
-              <q-icon
-                name="place"
-                class="q-ml-auto"
-                color="primary"
-                size="sm"
-                @click="sendMap(carrier.address, $event)"
-              ></q-icon>
-            </div>
-          </div>
-          <div class="q-mt-xs fit-content" v-for="phone in carrier.phoneNumber">
-            <span v-if="phone.type">{{ phone.type }} : </span>
-            <span
-              class="clickLink"
-              @click="onPhoneNumberClick(phone.number, $event)"
-              >{{ showPhoneNumber(phone.number) }}</span
+            <div
+              class="q-mt-xs fit-content"
+              v-for="phone in carrier.phoneNumber"
             >
-          </div>
-          <span
-            class="click-link fit-content"
-            @click="onEmailClick(carrier.email, $event)"
-            >{{ carrier.email }}</span
-          >
-        </q-item-section>
-        <q-icon
-          v-if="carrier.name === selectedCarrierName"
-          name="done"
-          size="xs"
-          class="q-ml-auto"
-        />
-      </div>
+              <span v-if="phone.type">{{ phone.type }} : </span>
+              <span
+                class="clickLink"
+                @click="onPhoneNumberClick(phone.number, $event)"
+                >{{ showPhoneNumber(phone.number) }}</span
+              >
+            </div>
+            <span
+              class="click-link fit-content"
+              @click="onEmailClick(carrier.email, $event)"
+              >{{ carrier.email }}</span
+            >
+          </q-item-section>
+          <q-icon
+            v-if="carrier.name === selectedCarrierName"
+            name="done"
+            size="xs"
+            class="q-ml-auto"
+          />
+        </div>
+      </q-infinite-scroll>
     </div>
   </div>
 </template>
@@ -116,7 +124,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['carriers', 'selectedClaimId'])
+    ...mapGetters(['carriers', 'selectedClaimId', 'carriersPagination'])
   },
 
   mounted() {
@@ -124,8 +132,33 @@ export default {
   },
 
   methods: {
-    ...mapActions(['getCarriers', 'addClaimCarrier', 'getSelectedClaim']),
+    ...mapActions([
+      'getCarriers',
+      'addClaimCarrier',
+      'getSelectedClaim',
+      'carrierPagination'
+    ]),
     toGetStateShortName,
+
+    onLoad(index, done) {
+      let carrierListBeforeLoad = this.carriersPagination.count;
+      let params = {
+        limit: this.carriersPagination.limit,
+        offset: index * this.carriersPagination.offset
+      };
+      if (carrierListBeforeLoad > this.carriersPagination.limit) {
+        let data = this.carrierPagination(params);
+
+        if (data['data'].length > 0) {
+          this.carriers = this.carriers.concat(data['data']);
+        }
+        let carrierListAfterLoad = this.carriersPagination.count;
+        if (carrierListBeforeLoad < carrierListAfterLoad) {
+          this.$refs.infiniteScroll.stop();
+        }
+        done();
+      }
+    },
 
     onSearchBackButtonClick() {
       this.searchText = '';
