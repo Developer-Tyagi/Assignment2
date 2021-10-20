@@ -46,20 +46,23 @@
         <q-card-section>
           <div class="mobile-container-page">
             <div class="q-py-xs">Notes</div>
-            <textarea
+            <q-input
+              type="textarea"
               rows="4"
+              class="input-style"
+              borderless
               placeholder="Take Notes here..."
               style="width: 100%; border-radius: 8px"
               v-model="note"
             />
           </div>
-          <q-btn
-            @click="onSave"
-            label="Save"
-            color="primary"
-            class="single-next-button-style"
-            size="'xl'"
-          />
+          <div class="row justify-center">
+            <q-btn
+              @click="onSave"
+              label="Save"
+              class="single-next-button-style"
+            />
+          </div>
         </q-card-section>
       </q-card>
     </q-dialog>

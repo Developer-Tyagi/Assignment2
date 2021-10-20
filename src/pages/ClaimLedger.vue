@@ -207,7 +207,6 @@
               group="Ledger"
               label="Disbursement"
               header-class="text-primary"
-              @click="toDisbursement()"
             >
               <div v-if="disbursements.disbursements != null">
                 <q-card
@@ -387,12 +386,12 @@
                     <span class="heading-light">Net Settlement</span>
                     <span class>$ {{ settlement.netSettlement }}</span>
                   </div>
-                  <div class="q-mx-md row justify-between" style>
+                  <div class="q-mx-md row justify-between">
                     <span class="heading-light">Paid To Date</span>
 
                     <span class>$ {{ settlement.totalPaid }}</span>
                   </div>
-                  <div class="q-mx-md row justify-between" style>
+                  <div class="q-mx-md row justify-between">
                     <span class="heading-light">Outstanding</span>
 
                     <span class>$ {{ settlement.outstanding }}</span>
@@ -535,15 +534,15 @@
                   <div class="row q-mt-md justify-center">
                     <div>{{ settlement.desc }}</div>
                   </div>
-                  <div class="q-mx-md row justify-between" style>
+                  <div class="q-mx-md row justify-between">
                     <span class="heading-light">Net Settlement</span>
                     <span>$ {{ settlement.netSettlement }}</span>
                   </div>
-                  <div class="q-mx-md row justify-between" style>
+                  <div class="q-mx-md row justify-between">
                     <span class="heading-light">Paid To Date</span>
                     <span>$ {{ settlement.totalPaid }}</span>
                   </div>
-                  <div class="q-mx-md row justify-between" style>
+                  <div class="q-mx-md row justify-between">
                     <span class="heading-light">Outstanding</span>
                     <span class>$ {{ settlement.outstanding }}</span>
                   </div>
@@ -586,14 +585,14 @@
             />
           </q-form>
         </div>
-        <q-btn
-          label="Save"
-          :disable="payments.remainingAmount < 0"
-          color="primary"
-          class="single-next-button-style"
-          @click="onClickSavePayment"
-          size="'xl'"
-        />
+        <div class="row justify-center">
+          <q-btn
+            label="Save"
+            :disable="payments.remainingAmount < 0"
+            class="single-next-button-style"
+            @click="onClickSavePayment"
+          />
+        </div>
       </q-card>
     </q-dialog>
 
@@ -729,13 +728,13 @@
             />
           </q-form>
         </div>
-        <q-btn
-          label="Save"
-          color="primary"
-          class="single-next-button-style"
-          size="'xl'"
-          @click="addExpensesSaveClick"
-        />
+        <div class="row justify-center">
+          <q-btn
+            label="Save"
+            class="single-next-button-style"
+            @click="addExpensesSaveClick"
+          />
+        </div>
       </q-card>
     </q-dialog>
     <!-- Disbursement Dialog Box -->
@@ -1188,19 +1187,18 @@
                             }}
                           </div>
                         </div>
-                        {{ personnelPayToggle }}
                         <div class="col column items-center">
                           <div>Pay</div>
                           <div class="q-mr-sm">
                             <q-toggle
                               size="xs"
-                              v-model="personnelPayToggle[index].value"
+                              v-model="personnelPayToggle[index]"
                               @input="
                                 onPersonnelPaidToggleClick(
                                   index,
                                   person.fees,
                                   hourCal,
-                                  personnelPayToggle[index].value
+                                  personnelPayToggle[index]
                                 )
                               "
                             />
@@ -1253,7 +1251,7 @@
                         <div class="row full-width">
                           <q-input
                             v-if="toggleType[index] == 'dollar'"
-                            :disable="personnelPayToggle[index].value == false"
+                            :disable="personnelPayToggle[index] == false"
                             prefix="$"
                             type="number"
                             dense
@@ -1265,7 +1263,7 @@
 
                           <q-input
                             v-if="toggleType[index] == 'percentage'"
-                            :disable="personnelPayToggle[index].value == false"
+                            :disable="personnelPayToggle[index] == false"
                             suffix="%"
                             dense
                             outlined
@@ -1279,9 +1277,7 @@
                             v-if="toggleType[index] == 'update'"
                           >
                             <q-input
-                              :disable="
-                                personnelPayToggle[index].value == false
-                              "
+                              :disable="personnelPayToggle[index] == false"
                               suffix="/hr"
                               style="width:50%"
                               dense
@@ -1292,9 +1288,7 @@
 
                             <div class="text-primary q-px-xs q-my-sm">X</div>
                             <q-input
-                              :disable="
-                                personnelPayToggle[index].value == false
-                              "
+                              :disable="personnelPayToggle[index] == false"
                               v-model.number="hourCal[index]"
                               dense
                               style="width:34% ;"
@@ -1338,13 +1332,13 @@
             </q-card>
           </q-form>
         </div>
-        <q-btn
-          label="Save"
-          color="primary"
-          class="single-next-button-style"
-          size="'xl'"
-          @click="onSaveDisbursement"
-        />
+        <div class="row justify-center">
+          <q-btn
+            label="Save"
+            class="single-next-button-style"
+            @click="onSaveDisbursement"
+          />
+        </div>
       </q-card>
     </q-dialog>
     <q-dialog v-model="alert">
@@ -1456,7 +1450,7 @@ export default {
       personnelPaidAmount: [],
       personnelRateType: '',
       rateType: [],
-      personnelPayToggle: [{ value: false }],
+      personnelPayToggle: [false],
       currenPaymentID: '',
       currentDisbursementID: '',
       expenseID: '',
@@ -1558,7 +1552,31 @@ export default {
     this.getAllPayment(this.selectedClaimId);
     this.getAllDisbursements(this.selectedClaimId);
     this.getAllExpenses(this.selectedClaimId);
+    await this.getPersonnelInfo(this.selectedClaimId);
     this.getPersonnelInfo(this.selectedClaimId);
+    this.personnelPaidAmount = [];
+    this.toggleType = [];
+    this.personnelPayToggle = [];
+    if (this.personnel.personnel && this.personnel.personnel.length) {
+      for (let i = 0; i < this.personnel.personnel.length; i++) {
+        this.personnelPayToggle.push(false);
+        this.hourCal[i] = 1;
+        this.personnelPaidAmount.push(
+          parseInt(
+            this.personnel.personnel[i].fees &&
+              this.personnel.personnel[i].fees.rate
+              ? this.personnel.personnel[i].fees.rate
+              : 0
+          )
+        );
+        this.toggleType.push(
+          this.personnel.personnel[i].fees &&
+            this.personnel.personnel[i].fees.type
+            ? this.personnel.personnel[i].fees.type
+            : 'dollar'
+        );
+      }
+    }
     await this.getAccountDetails(this.selectedClaimId);
     await this.getAccountDetails(this.selectedClaimId).then(async () => {
       if (this.account.settlements) {
@@ -1599,14 +1617,13 @@ export default {
     validateDate,
     dateToShow,
     dateToSend,
-    toDisbursement() {
+    async toDisbursement() {
       this.getPersonnelInfo(this.selectedClaimId);
-
+      (this.personnelPaidAmount = []), (this.toggleType = []);
+      this.personnelPayToggle = [];
       if (this.personnel.personnel && this.personnel.personnel.length) {
         for (let i = 0; i < this.personnel.personnel.length; i++) {
-          this.personnelPayToggle.push({
-            value: false
-          });
+          this.personnelPayToggle.push(false);
           this.hourCal[i] = 1;
           this.personnelPaidAmount.push(
             parseInt(
@@ -1640,16 +1657,13 @@ export default {
       this.onFillingCompany();
       var totalRate = 0;
       for (let i = 0; i < this.toggleType.length; i++) {
-        if (
-          this.toggleType[i] == 'dollar' &&
-          this.personnelPayToggle[i].value
-        ) {
+        if (this.toggleType[i] == 'dollar' && this.personnelPayToggle[i]) {
           totalRate += this.personnelPaidAmount[i]
             ? this.personnelPaidAmount[i]
             : 0;
         } else if (
           this.toggleType[i] == 'percentage' &&
-          this.personnelPayToggle[i].value
+          this.personnelPayToggle[i]
         ) {
           totalRate +=
             (this.amountAvailableForCommissions *
@@ -1659,7 +1673,7 @@ export default {
             100;
         } else if (
           this.toggleType[i] == 'update' &&
-          this.personnelPayToggle[i].value
+          this.personnelPayToggle[i]
         ) {
           totalRate +=
             (this.personnelPaidAmount[i] ? this.personnelPaidAmount[i] : 0) *
@@ -1716,22 +1730,19 @@ export default {
       }
       var totalRate = 0;
       for (let i = 0; i < this.toggleType.length; i++) {
-        if (
-          this.personnelPayToggle[i].value &&
-          this.toggleType[i] == 'dollar'
-        ) {
+        if (this.personnelPayToggle[i] && this.toggleType[i] == 'dollar') {
           totalRate += this.personnelPaidAmount[i]
             ? this.personnelPaidAmount[i]
             : 0;
         } else if (
-          this.personnelPayToggle[i].value &&
+          this.personnelPayToggle[i] &&
           this.toggleType[i] == 'percentage'
         ) {
           totalRate +=
             (this.amountAvailableForCommissions * this.personnelPaidAmount[i]) /
             100;
         } else if (
-          this.personnelPayToggle[i].value &&
+          this.personnelPayToggle[i] &&
           this.toggleType[i] == 'update'
         ) {
           totalRate +=
@@ -1795,6 +1806,8 @@ export default {
     /* Open Disbursement Dialog Box     */
 
     openDisbursementBox() {
+      this.toDisbursement();
+      this.addDisbursementDialog = true;
       this.commissions = [];
       this.totalExpensesOfClientAndCompany = 0;
       this.totalExpensesOfCompany = 0;
@@ -1805,7 +1818,6 @@ export default {
       this.alreadyPaidByCompany = 0;
       this.clientAndCompanyAmount = [];
       this.companyAmounts = [];
-      this.personnelPaidAmount = [];
       this.clientAmount = [];
       this.companyPerHour = 0;
       this.totalExpensesOfClient = this.totalExpensesOfClientAndCompany = this.totalExpensesOfCompany = 0;
@@ -1886,10 +1898,6 @@ export default {
       } else if (this.account.fees.type == 'percentage') {
         this.CalculationOfCompanyFee(this.partialCompanyValue);
       }
-
-      this.addDisbursementDialog = true;
-      this.getAccountDetails(this.selectedClaimId);
-      this.getPersonnelInfo(this.selectedClaimId);
     },
 
     /* delete Api's   */
@@ -2247,6 +2255,7 @@ export default {
         this.clientAndCompanyAmount = [];
         this.companyAmounts = [];
         this.personnelPaidAmount = [];
+        this.personnelPayToggle = [false];
         this.clientAmount = [];
         this.netExpenseToPayByBoth = 0;
         this.addDisbursementDialog = false;

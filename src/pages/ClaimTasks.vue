@@ -67,13 +67,15 @@
             <AddOfficeTaskDailog :newTask="newTask" />
           </q-form>
         </div>
-        <q-btn
-          label="Save"
-          color="primary"
-          class="single-next-button-style"
-          size="'xl'"
-          @click="addTask()"
-        />
+        <div class="row justify-center">
+          <q-btn
+            label="Save"
+            color="primary"
+            class="single-next-button-style"
+            size="'xl'"
+            @click="addTask()"
+          />
+        </div>
       </q-card>
     </q-dialog>
   </div>

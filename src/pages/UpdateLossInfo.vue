@@ -28,12 +28,11 @@
               />
             </q-form>
           </div>
-          <div class="q-mx-md">
+          <div class="row justify-center q-mx-md">
             <q-btn
               label="Save"
               class="single-next-button-style"
               @click="onSaveButtonClick"
-              size="'xl'"
             ></q-btn>
           </div>
         </q-card>

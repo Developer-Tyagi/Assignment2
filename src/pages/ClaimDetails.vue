@@ -735,7 +735,6 @@ export default {
         case 'Time Tracking':
           break;
         case 'Claim Ledger':
-          break;
       }
     }
   }
