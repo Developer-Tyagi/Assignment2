@@ -143,12 +143,14 @@
   width: 50%;
   background-color: white;
   color: $primary;
+  padding: 5px;
   border-radius: 50px 0px 0px 50px;
   border: 2px solid $primary;
 }
 .next-button-style {
   width: 50%;
   color: white;
+  padding: 5px;
   background-color: $primary;
   border-radius: 0px 50px 50px 0px;
   border: 2px solid $primary;
@@ -157,6 +159,7 @@
   width: 90%;
   background-color: $primary;
   color: white;
+  padding: 5px;
   border-radius: 50px 50px 50px 50px;
 }
 .rounded-header {

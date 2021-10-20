@@ -49,14 +49,14 @@
             </q-select>
           </q-form>
         </div>
-        <q-btn
-          label="Continue"
-          color="primary"
-          class="full-width q-mt-auto text-capitalize rounded"
-          @click="onContinue"
-          icon-right="arrow_right_alt"
-          size="'xl'"
-        ></q-btn>
+        <q-footer class="row bg-white justify-center">
+          <q-btn
+            label="Continue"
+            class="single-next-button-style q-mt-auto text-capitalize"
+            @click="onContinue"
+            icon-right="arrow_right_alt"
+          ></q-btn>
+        </q-footer>
       </div>
     </div>
   </q-page>

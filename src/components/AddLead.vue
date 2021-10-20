@@ -160,11 +160,10 @@
                 />
               </div>
             </q-card>
-            <div class="row q-mt-xl q-pt-xl">
+            <div class="row q-mt-md justify-center">
               <q-btn
                 class="single-next-button-style"
                 label="Next"
-                padding="md"
                 type="submit"
               />
             </div>
@@ -253,18 +252,8 @@
             </q-card>
             <div class="row q-pt-md">
               <div style="width:100%;">
-                <q-btn
-                  class="back-button-style"
-                  padding="md"
-                  type="reset"
-                  label="Back"
-                />
-                <q-btn
-                  class="next-button-style"
-                  padding="md"
-                  type="submit"
-                  label="Next"
-                />
+                <q-btn class="back-button-style" type="reset" label="Back" />
+                <q-btn class="next-button-style" type="submit" label="Next" />
               </div>
             </div>
           </q-form>
@@ -376,18 +365,8 @@
             </q-card>
             <div class="row q-pt-md">
               <div style="width:100%;">
-                <q-btn
-                  class="back-button-style"
-                  padding="md"
-                  type="reset"
-                  label="Back"
-                />
-                <q-btn
-                  class="next-button-style"
-                  padding="md"
-                  type="submit"
-                  label="Next"
-                />
+                <q-btn class="back-button-style" type="reset" label="Back" />
+                <q-btn class="next-button-style" type="submit" label="Next" />
               </div>
             </div>
           </q-form>
@@ -561,18 +540,8 @@
             </q-card>
             <div class="row q-pt-md">
               <div style="width:100%;">
-                <q-btn
-                  class="back-button-style"
-                  padding="md"
-                  type="reset"
-                  label="Back"
-                />
-                <q-btn
-                  class="next-button-style"
-                  padding="md"
-                  type="submit"
-                  label="Next"
-                />
+                <q-btn class="back-button-style" type="reset" label="Back" />
+                <q-btn class="next-button-style" type="submit" label="Next" />
               </div>
             </div>
           </q-form>
@@ -595,18 +564,8 @@
             </q-card>
             <div class="row q-pt-md">
               <div style="width:100%;">
-                <q-btn
-                  class="back-button-style"
-                  padding="md"
-                  type="reset"
-                  label="Back"
-                />
-                <q-btn
-                  class="next-button-style"
-                  padding="md"
-                  type="submit"
-                  label="Next"
-                />
+                <q-btn class="back-button-style" type="reset" label="Back" />
+                <q-btn class="next-button-style" type="submit" label="Next" />
               </div>
             </div>
           </q-form>
@@ -684,18 +643,8 @@
             </q-card>
             <div class="row q-pt-md">
               <div style="width:100%;">
-                <q-btn
-                  class="back-button-style"
-                  padding="md"
-                  type="reset"
-                  label="Back"
-                />
-                <q-btn
-                  class="next-button-style"
-                  padding="md"
-                  type="submit"
-                  label="Next"
-                />
+                <q-btn class="back-button-style" type="reset" label="Back" />
+                <q-btn class="next-button-style" type="submit" label="Next" />
               </div>
             </div>
           </q-form>
