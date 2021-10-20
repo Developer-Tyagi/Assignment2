@@ -132,7 +132,7 @@ import { mapGetters, mapActions } from 'vuex';
 import VueSignaturePad from 'components/VueSignaturePad';
 import CustomBar from 'components/CustomBar';
 import html2pdf from 'html2pdf.js';
-
+import { dateToShow } from '@utils/date';
 import { jsPDF } from 'jspdf';
 import { makeId } from 'src/store/leads/actions';
 import localDB, { getCollection } from '@services/dexie';
@@ -168,6 +168,7 @@ export default {
   async created() {
     this.claim = await this.getSingleClaims(this.selectedClaimId);
     await this.getTemplates();
+
     // await this.getPersonnelInfo(this.selectedClaimId);
 
     const offlineClientData = await this.getSingleClientDetails(
@@ -222,66 +223,608 @@ export default {
       },
 
       // Claim Tokens
-
-      { key: '{{.Claim.Number}}', value: this.claim.number },
-      { key: '{{.Claim.Client.Name}}', value: this.claim.client.fname },
-      { key: '{{.Claim.FileNumber}}', value: this.claim.fileNumber },
-      { key: '{{.Claim.Status.Value}}', value: this.claim.status.value },
+      { key: '{{.Claim.Notes}}', value: '' },
       {
-        key: '{{.Claim.PolicyInfo.Number}}',
-        value: this.claim.policyInfo?.number
+        key: '{{.Claim.Number}}',
+        value: this.claim.number ? this.claim.number : ''
       },
-      { key: '{{localTZ .Claim.PolicyInfo.EffectiveDate}}', value: '' },
-      { key: '{{localTZ .Claim.PolicyInfo.ExpirationDate}}', value: '' },
-      { key: '{{.Claim.LossInfo.Date}}', value: this.claim.lossInfo?.date },
+      {
+        key: '{{.Claim.Client.Name}}',
+        value: this.claim.client?.fname ? this.claim.client?.fname : ''
+      },
+      {
+        key: '{{.Claim.FileNumber}}',
+        value: this.claim.fileNumber ? this.claim.fileNumber : ''
+      },
+      {
+        key: '{{.Claim.Status.Value}}',
+        value: this.claim.status?.value ? this.claim.status?.value : ''
+      },
+      { key: '{{.Claim.CurrentPhase.Value}}', value: '' },
+      { key: '{{.Claim.NetClaimed}}', value: '' },
+      { key: '{{.Claim.TotalReplCost}}', value: '' },
+      { key: '{{.Claim.InitialOffer}}', value: '' },
+      { key: '{{.Claim.TotalPayment}}', value: '' },
+      { key: '{{.Claim.ClientExpense}}', value: '' },
+      { key: '{{.Claim.CompanyExpense}}', value: '' },
+      { key: '{{.Claim.CombinedExpense}}', value: '' },
+
+      // Adjuster Tokens
+
+      {
+        key: '{{.Adjuster.Name}}',
+        value:
+          this.claim.personnel &&
+          this.claim.personnel[0] &&
+          this.claim.personnel[0].name
+            ? this.claim.personnel[0].name
+            : ''
+      },
+      { key: '{{.Adjuster.Email}}', value: '' },
+      { key: '{{.Adjuster.LicenseNo}}', value: '' },
+      { key: '{{.Adjuster.PhoneNumber.Number}}', value: '' },
+      { key: '{{.Adjuster.Fax.Number}}', value: '' },
+      { key: '{{.Adjuster.Cell.Number}}', value: '' },
+      { key: '{{.Adjuster.Address.Address1}}', value: '' },
+      { key: '{{.Adjuster.Address.Address2}}', value: '' },
+      { key: '{{.Adjuster.Address.AddressRegion}}', value: '' },
+      { key: '{{.Adjuster.Address.PostalCode}}', value: '' },
+      { key: '{{.Adjuster.Address.AddressCountry}}', value: '' },
+      { key: '{{.Adjuster.Address.AddressLocality}}', value: '' },
+
+      // Claim Property Tokens
+      { key: '{{.Claim.LossInfo.Property.Name}}', value: '' },
+      { key: '{{.Claim.LossInfo.Property.PropertyType.Value}}', value: '' },
+      { key: '{{.Claim.LossInfo.Property.PropertyDesc}}', value: '' },
+      {
+        key: '{{.Claim.LossInfo.ClaimReason.Value}}',
+        value: this.claim.lossInfo?.claimReason?.value
+          ? this.claim.lossInfo?.claimReason?.value
+          : ''
+      },
+      { key: '{{localTZ .Claim.LossInfo.Date}}', value: '' },
+
+      {
+        key: '{{.Claim.LossInfo.Date}}',
+        value: this.claim.lossInfo?.date
+          ? dateToShow(this.claim.lossInfo?.date)
+          : ''
+      },
       {
         key: '{{.Claim.LossInfo.Cause.Value}}',
         value: this.claim.lossInfo.cause?.value
+          ? this.claim.lossInfo.cause?.value
+          : ''
       },
       {
         key: '{{.Claim.LossInfo.Cause.Desc}}',
         value: this.claim.lossInfo.cause?.desc
+          ? this.claim.lossInfo.cause?.desc
+          : ''
       },
-      // Adjuster Tokens
-
-      // { key: '{{.Adjuster.Name}}', value: this.personnel.personnel[0].name },
-      // { key: '{{.Adjuster.Email}}', value: '' },
-      // { key: '{{.Adjuster.LicenseNo}}', value: '' },
-      // { key: '{{.Adjuster.PhoneNumber.Number}}', value: '' },
-      // { key: '{{.Adjuster.Fax.Number}}', value: '' },
-      // { key: '{{.Adjuster.Cell.Number}}', value: '' },
-      // { key: '{{.Adjuster.Address.Address1}}', value: '' },
-      // { key: '{{.Adjuster.Address.Address2}}', value: '' },
-      // { key: '{{.Adjuster.Address.AddressRegion}}', value: '' },
-      // { key: '{{.Adjuster.Address.PostalCode}}', value: '' },
-      // { key: '{{.Adjuster.Address.AddressCountry}}', value: '' },
-      // { key: '{{.Adjuster.Address.AddressLocality}}', value: '' },
-
-      // Claim Property Tokens
+      {
+        key: '{{localTZ .Claim.LossInfo.DeadlineDate}}',
+        value: this.claim.lossInfo?.deadlineDate
+          ? dateToShow(this.claim.lossInfo?.deadlineDate)
+          : ''
+      },
+      {
+        key: '{{localTZ .Claim.LossInfo.RecovDDDate}}',
+        value: this.claim.lossInfo?.recovDDDate
+          ? dateToShow(this.claim.lossInfo.recovDDDate)
+          : ''
+      },
+      {
+        key: '{{.Claim.LossInfo.IsFEMA}}',
+        value: this.claim.lossInfo.isFEMA ? this.claim.lossInfo.isFEMA : ''
+      },
+      {
+        key: '{{.Claim.LossInfo.EmergencyName}}',
+        value: this.claim.lossInfo.emergencyName
+          ? this.claim.lossInfo.emergencyName
+          : ''
+      },
+      {
+        key: '{{.Claim.LossInfo.Desc}}',
+        value: this.claim.lossInfo.desc ? this.claim.lossInfo.desc : ''
+      },
+      {
+        key: '{{.Claim.LossInfo.IsHabitable}}',
+        value: this.claim.lossInfo.isHabitable
+          ? this.claim.lossInfo.isHabitable
+          : ''
+      },
+      {
+        key: '{{.Claim.LossInfo.Serverity.Value}}',
+        value: this.claim.lossInfo.serverity?.value
+          ? this.claim.lossInfo.serverity?.value
+          : ''
+      },
+      {
+        key: '{{.Claim.LossInfo.IsPPIF}}',
+        value: this.claim.lossInfo?.isPPIF ? this.claim.lossInfo?.isPPIF : ''
+      },
+      {
+        key: '{{.Claim.LossInfo.IsNeedPPIF}}',
+        value: this.claim.lossInfo.isNeedPPIF
+          ? this.claim.lossInfo.isNeedPPIF
+          : ''
+      },
+      {
+        key: '{{.Claim.LossInfo.HasHomeMortgage}}',
+        value: this.claim.lossInfo.hasHomeMortgage
+          ? this.claim.lossInfo.hasHomeMortgage
+          : ''
+      },
+      {
+        key: '{{.Claim.LossInfo.IsEmergency}}',
+        value: this.claim.lossInfo.isEmergency
+          ? this.claim.lossInfo.isEmergency
+          : ''
+      },
+      { key: '{{.Claim.LossInfo.EstimatedLossAmt}}', value: '' },
+      { key: '{{.Claim.LossInfo.PropertyValue}}', value: '' },
 
       {
         key: '{{.Claim.LossInfo.Property.Address1}}',
         value: this.claim.lossInfo.property?.address1
+          ? this.claim.lossInfo.property?.address1
+          : ''
       },
       {
         key: '{{.Claim.LossInfo.Property.Address2}}',
         value: this.claim.lossInfo.property?.address2
+          ? this.claim.lossInfo.property?.address2
+          : ''
       },
       {
         key: '{{.Claim.LossInfo.Property.AddressRegion}}',
         value: this.claim.lossInfo.property?.addressRegion
+          ? this.claim.lossInfo.property?.addressRegion
+          : ''
       },
       {
         key: '{{.Claim.LossInfo.Property.PostalCode}}',
         value: this.claim.lossInfo.property?.postalCode
+          ? this.claim.lossInfo.property?.postalCode
+          : ''
       },
       {
         key: '{{.Claim.LossInfo.Property.AddressCountry}}',
         value: this.claim.lossInfo.property?.addressCountry
+          ? this.claim.lossInfo.property?.addressCountry
+          : ''
       },
       {
         key: '{{.Claim.LossInfo.Property.AddressLocality}}',
         value: this.claim.lossInfo.property?.addressLocality
+          ? this.claim.lossInfo.property?.addressLocality
+          : ''
+      },
+
+      // Policy Info Tokens
+      {
+        key: '{{.Claim.PolicyInfo.Number}}',
+        value: this.claim.policyInfo.number ? this.claim.policyInfo.number : ''
+      },
+      {
+        key: '{{.Claim.PolicyInfo.IsClaimFiled}}',
+        value: this.claim.policyInfo.isClaimFiled
+          ? this.claim.policyInfo.isClaimFiled
+          : ''
+      },
+      {
+        key: '{{.Claim.PolicyInfo.IsForcedPlaced}}',
+        value: this.claim.policyInfo.isForcedPlaced
+          ? this.claim.policyInfo.isForcedPlaced
+          : ''
+      },
+      {
+        key: '{{.Claim.PolicyInfo.Category.Value}}',
+        value: this.claim.policyInfo.category?.value
+          ? this.claim.policyInfo.category.value
+          : ''
+      },
+      {
+        key: '{{.Claim.PolicyInfo.Type.Value}}',
+        value: this.claim.policyInfo.type?.value
+          ? this.claim.policyInfo.type.value
+          : ''
+      },
+      {
+        key: '{{.Claim.PolicyInfo.LimitCoverage.Dwelling}}',
+        value: this.claim.policyInfo.limitCoverage.dwelling
+      },
+      {
+        key: '{{.Claim.PolicyInfo.LimitCoverage.OtherStructure}}',
+        value: this.claim.policyInfo.limitCoverage?.otherStructure
+          ? this.claim.policyInfo.limitCoverage?.otherStructure
+          : ''
+      },
+      {
+        key: '{{.Claim.PolicyInfo.LimitCoverage.Content}}',
+        value: this.claim.policyInfo.limitCoverage?.content
+          ? this.claim.policyInfo.limitCoverage?.content
+          : ''
+      },
+      {
+        key: '{{.Claim.PolicyInfo.LimitCoverage.LossOfUse}}',
+        value: this.claim.policyInfo.limitCoverage?.lossOfUse
+          ? this.claim.policyInfo.limitCoverage?.lossOfUse
+          : ''
+      },
+      {
+        key: '{{.Claim.PolicyInfo.DeductibleAmount}}',
+        value: this.claim.policyInfo.deductibleAmount
+          ? this.claim.policyInfo.deductibleAmount
+          : ''
+      },
+      {
+        key: '{{.Claim.PolicyInfo.Depreciation}}',
+        value: this.claim.policyInfo.depreciation
+          ? this.claim.policyInfo.depreciation
+          : ''
+      },
+
+      {
+        key: '{{.Claim.PolicyInfo.Declaration.IsDeclared}}',
+        value: this.claim.policyInfo.declaration?.isDeclared
+          ? this.claim.policyInfo.declaration.isDeclared
+          : ''
+      },
+      {
+        key: '{{.Claim.PolicyInfo.Declaration.FileInfo.ID}}',
+        value: this.claim.policyInfo.declaration?.fileInfo?.id
+          ? this.claim.policyInfo.declaration?.fileInfo.id
+          : ''
+      },
+      {
+        key: '{{.Claim.PolicyInfo.Declaration.FileInfo.Value}}',
+        value: this.claim.policyInfo.declaration?.fileInfo?.value
+          ? this.claim.policyInfo.declaration?.fileInfo?.value
+          : ''
+      },
+      {
+        key: '{{.Claim.PolicyInfo.PriorPayment}}',
+        value: this.claim.policyInfo.priorPayment
+          ? this.claim.policyInfo.priorPayment
+          : ''
+      },
+
+      {
+        key: '{{.Claim.PolicyInfo.LimitReason}}',
+        value: this.claim.policyInfo.limitReason
+          ? this.claim.policyInfo.limitReason
+          : ''
+      },
+
+      {
+        key: '{{.Claim.PolicyInfo.HasAppraisalClause}}',
+        value: ''
+      },
+
+      {
+        key: '{{.Claim.PolicyInfo.TotalAmount}}',
+        value: ''
+      },
+
+      {
+        key: '{{.Claim.PolicyInfo.Ordinance}}',
+        value: ''
+      },
+
+      {
+        key: '{{.Claim.PolicyInfo.DebrisRemoval}}',
+        value: ''
+      },
+
+      {
+        key: '{{.Claim.PolicyInfo.Mold}}',
+        value: ''
+      },
+
+      {
+        key: '{{localTZ .Claim.PolicyInfo.EffectiveDate}}',
+        value: this.claim.policyInfo.effectiveDate
+          ? dateToShow(this.claim.policyInfo.effectiveDate)
+          : ''
+      },
+      {
+        key: '{{localTZ .Claim.PolicyInfo.ExpirationDate}}',
+        value: this.claim.policyInfo.expirationDate
+          ? dateToShow(this.claim.policyInfo.expirationDate)
+          : ''
+      },
+
+      //  Claim Mortgage tokens
+
+      {
+        key: '{{.ClaimMortgage.Name}}',
+        value: this.claim.mortgageInfo[0]?.value
+          ? this.claim.mortgageInfo[0]?.value
+          : ''
+      },
+      {
+        key: '{{.ClaimMortgage.Email}}',
+        value: this.claim.mortgageInfo[0]?.email
+          ? this.claim.mortgageInfo[0].email
+          : ''
+      },
+      {
+        key: '{{.ClaimMortgage.Phone.Number}}',
+        value: this.claim.mortgageInfo[0]?.phone
+          ? this.claim.mortgageInfo[0]?.phone
+          : ''
+      },
+      {
+        key: '{{.ClaimMortgage.Address.AddressCountry}}',
+        value: this.claim.mortgageInfo[0]?.address?.addressCountry
+          ? this.claim.mortgageInfo[0]?.address?.addressCountry
+          : ''
+      },
+      {
+        key: '{{.ClaimMortgage.Address.AddressLocality}}',
+        value: ''
+      },
+      {
+        key: '{{.ClaimMortgage.Address.AddressRegion}}',
+        value: this.claim.mortgageInfo[0]?.address?.addressLocality
+          ? this.claim.mortgageInfo[0]?.address?.addressLocality
+          : ''
+      },
+      {
+        key: '{{.ClaimMortgage.Address.PostalCode}}',
+        value: this.claim.mortgageInfo[0]?.address?.postalCode
+          ? this.claim.mortgageInfo[0]?.address?.postalCode
+          : ''
+      },
+      {
+        key: '{{.ClaimMortgage.Address.Address1}}',
+        value: this.claim.mortgageInfo[0]?.address?.address1
+          ? this.claim.mortgageInfo[0]?.address?.address1
+          : ''
+      },
+      {
+        key: '{{.ClaimMortgage.Address.Address2}}',
+        value: this.claim.mortgageInfo[0]?.address?.address2
+          ? this.claim.mortgageInfo[0]?.address?.address2
+          : ''
+      },
+      {
+        key: '{{.ClaimMortgage.Address.HouseNumber}}',
+        value: this.claim.mortgageInfo[0]?.address?.houseNumber
+          ? this.claim.mortgageInfo[0]?.address?.houseNumber
+          : ''
+      },
+      {
+        key: '{{.ClaimMortgage.LoanNumber}}',
+        value: this.claim.mortgageInfo[0]?.loanNumber
+          ? this.claim.mortgageInfo[0]?.loanNumber
+          : ''
+      },
+      {
+        key: '{{.ClaimMortgage.AccountNumber}}',
+        value: this.claim.mortgageInfo[0]?.accountNumber
+          ? this.claim.mortgageInfo[0]?.accountNumber
+          : ''
+      },
+      {
+        key: '{{.ClaimMortgage.Note}}',
+        value: this.claim.mortgageInfo[0]?.notes
+          ? this.claim.mortgageInfo[0]?.notes
+          : ''
+      },
+
+      // Claim Estimator tokens
+      {
+        key: '{{.ClaimEstimator.Name}}',
+        value: this.claim.estimatingInformation?.name
+          ? this.claim.estimatingInformation?.name
+          : ''
+      },
+      {
+        key: '{{.ClaimEstimator.Fname}}',
+        value: ''
+      },
+      { key: '{{.ClaimEstimator.Lname}}', value: '' },
+      {
+        key: '{{.ClaimEstimator.Phone.Number}}',
+        value: this.claim.estimatingInformation?.phone?.number
+          ? this.claim.estimatingInformation.phone.number
+          : ''
+      },
+      { key: '{{.ClaimEstimator.Fax.Number}}', value: '' },
+      { key: '{{.ClaimEstimator.Cell.Number}}', value: '' },
+      {
+        key: '{{.ClaimEstimator.Email}}',
+        value: this.claim.estimatingInformation?.email
+          ? this.claim.estimatingInformation?.email
+          : ''
+      },
+      {
+        key: '{{.ClaimEstimator.ScopeTimeNeeded}}',
+        value: this.claim.estimatingInformation?.scopeTimeNeededInHours
+          ? this.claim.estimatingInformation.scopeTimeNeededInHours
+          : ''
+      },
+      {
+        key: '{{.ClaimEstimator.NotesToEstimator}}',
+        value: this.claim.estimatingInformation?.notesToTheEstimator
+          ? this.claim.estimatingInformation?.notesToTheEstimator
+          : ''
+      },
+
+      //Claim Vednor Tokens
+
+      {
+        key: '{{.ClaimVendor.Name}}',
+        value: this.claim.expertVendorInformation?.isHiredVendor[0]?.vendor
+          ?.value
+          ? this.claim.expertVendorInformation.isHiredVendor[0].vendor.value
+          : ''
+      },
+      {
+        key: '{{.ClaimVendor.IsAlreadyHired}}',
+        value: this.claim.expertVendorInformation?.alreadyHired
+          ? this.claim.expertVendorInformation.alreadyHired
+          : ''
+      },
+      { key: '{{.ClaimVendor.ExpertNotes}}', value: '' },
+      {
+        key: '{{.ClaimVendor.Email}}',
+        value: this.claim.expertVendorInformation?.isHiredVendor[0]?.vendor
+          ?.email
+          ? this.claim.expertVendorInformation.isHiredVendor[0].vendor.email
+          : ''
+      },
+      {
+        key: '{{.ClaimVendor.Phone.Number}}',
+        value: this.claim.expertVendorInformation?.isHiredVendor[0]?.vendor
+          ?.phone
+          ? this.claim.expertVendorInformation.isHiredVendor[0].vendor.phone
+          : ''
+      },
+      { key: '{{.ClaimVendor.Fax.Number}}', value: '' },
+      { key: '{{.ClaimVendor.Cell.Number}}', value: '' },
+      {
+        key: '{{.ClaimVendor.Address.AddressCountry}}',
+        value: this.claim.expertVendorInformation?.isHiredVendor[0]?.vendor
+          .mailingAddress?.addressCountry
+          ? this.claim.expertVendorInformation.isHiredVendor[0].vendor
+              .mailingAddress.addressCountry
+          : ''
+      },
+      {
+        key: '{{.ClaimVendor.Address.AddressLocality}}',
+        value: this.claim.expertVendorInformation?.isHiredVendor[0]?.vendor
+          .mailingAddress?.AddressLocality
+          ? this.claim.expertVendorInformation.isHiredVendor[0].vendor
+              .mailingAddress.AddressLocality
+          : ''
+      },
+      {
+        key: '{{.ClaimVendor.Address.AddressRegion}}',
+        value: this.claim.expertVendorInformation?.isHiredVendor[0]?.vendor
+          .mailingAddress?.AddressRegion
+          ? this.claim.expertVendorInformation.isHiredVendor[0].vendor
+              .mailingAddress.AddressRegion
+          : ''
+      },
+      {
+        key: '{{.ClaimVendor.Address.PostalCode}}',
+        value: this.claim.expertVendorInformation?.isHiredVendor[0]?.vendor
+          .mailingAddress?.PostalCode
+          ? this.claim.expertVendorInformation.isHiredVendor[0].vendor
+              .mailingAddress.PostalCode
+          : ''
+      },
+      { key: '{{.ClaimVendor.Address.Address1}}', value: '' },
+      { key: '{{.ClaimVendor.Address.Address2}}', value: '' },
+      {
+        key: '{{.ClaimVendor.Address.HouseNumber}}',
+        value: this.claim.expertVendorInformation?.isHiredVendor[0]?.vendor
+          .mailingAddress?.HouseNumber
+          ? this.claim.expertVendorInformation.isHiredVendor[0].vendor
+              .mailingAddress.HouseNumber
+          : ''
+      },
+
+      // Claim Contarct Info Tokens
+      {
+        key: '{{localTZ .Claim.ContractInfo.Date}}',
+        value: this.claim.contractInfo?.date
+          ? dateToShow(this.claim.contractInfo.date)
+          : ''
+      },
+      {
+        key: '{{.Claim.ContractInfo.Fees.Type}}',
+        value: this.claim.contractInfo?.fees?.type
+          ? this.claim.contractInfo.fees.type
+          : ''
+      },
+      {
+        key: '{{.Claim.ContractInfo.Fees.Rate}}',
+        value: this.claim.contractInfo?.fees?.rate
+          ? this.claim.contractInfo.fees.rate
+          : ''
+      },
+      {
+        key: '{{localTZ .Claim.ContractInfo.DateOfFirstContact}}',
+        value: this.claim.contractInfo?.dateOfFirstContact
+          ? dateToShow(this.claim.contractInfo.dateOfFirstContact)
+          : ''
+      },
+      {
+        key: '{{.Claim.ContractInfo.Source.Type}}',
+        value: this.claim.contractInfo?.source?.type
+          ? this.claim.contractInfo.source.type
+          : ''
+      },
+      {
+        key: '{{.Claim.ContractInfo.Source.Detail}}',
+        value: this.claim.contractInfo?.source?.detail
+          ? this.claim.contractInfo.source.detail
+          : ''
+      },
+
+      //  Claim Carrier Tokens
+
+      { key: '{{.ClaimCarrier.NAICCode}}', value: '' },
+      {
+        key: '{{.ClaimCarrier.Name}}',
+        value: this.claim.policyInfo?.carrier?.value
+          ? this.claim.policyInfo.carrier.value
+          : ''
+      },
+      {
+        key: '{{.ClaimCarrier.Phone.Number}}',
+        value: this.claim.policyInfo?.carrier?.phone
+          ? this.claim.policyInfo.carrier.phone
+          : ''
+      },
+      { key: '{{.ClaimCarrier.Fax.Number}}', value: '' },
+      { key: '{{.ClaimCarrier.Cell.Number}}', value: '' },
+      {
+        key: '{{.ClaimCarrier.Address.AddressCountry}}',
+        value: this.claim.policyInfo.carrier?.address?.addressCountry
+          ? this.claim.policyInfo.carrier.address.addressCountry
+          : ''
+      },
+      {
+        key: '{{.ClaimCarrier.Address.AddressLocality}}',
+        value: this.claim.policyInfo.carrier?.address?.addressLocality
+          ? this.claim.policyInfo.carrier.address.addressLocality
+          : ''
+      },
+      {
+        key: '{{.ClaimCarrier.Address.AddressRegion}}',
+        value: this.claim.policyInfo.carrier?.address?.addressRegion
+          ? this.claim.policyInfo.carrier.address.addressRegion
+          : ''
+      },
+      {
+        key: '{{.ClaimCarrier.Address.PostalCode}}',
+        value: this.claim.policyInfo.carrier?.address?.postalCode
+          ? this.claim.policyInfo.carrier.address.postalCode
+          : ''
+      },
+      {
+        key: '{{.ClaimCarrier.Address.Address1}}',
+        value: this.claim.policyInfo.carrier?.address?.address1
+          ? this.claim.policyInfo.carrier.address.address1
+          : ''
+      },
+      {
+        key: '{{.ClaimCarrier.Address.Address2}}',
+        value: this.claim.policyInfo.carrier?.address?.address2
+          ? this.claim.policyInfo.carrier.address.address2
+          : ''
+      },
+      {
+        key: '{{.ClaimCarrier.Address.HouseNumber}}',
+        value: this.claim.policyInfo.carrier?.address?.houseNumber
+          ? this.claim.policyInfo.carrier.address.houseNumber
+          : ''
       }
     ];
   },
@@ -293,6 +836,7 @@ export default {
       'getSingleClientDetails',
       'getSingleClaims'
     ]),
+    dateToShow,
     async setTypes(value) {
       const obj = this.templateOptions.find(item => {
         return item.name === value;
