@@ -510,7 +510,7 @@ export default {
         this.errorMessage(constants.successMessages.TEMPLATE_TYPE_NOT_SELECTED);
       } else if (this.post.body == '') {
         this.errorMessage(constants.successMessages.CKEDITOR_BODY_EMPTY);
-      } else if (this.post.body != '' && this.templatetype.value != '') {
+      } else {
         if (this.isEdit) {
           const payload = {
             value: this.post.body,
