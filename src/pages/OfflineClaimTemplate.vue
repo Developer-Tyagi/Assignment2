@@ -30,19 +30,17 @@
         />
       </div>
       <!-- This is for showing generated signed document -->
-      <!-- <div v-if="signedDocument" class="q-pa-md">
-       <q-icon
+      <div v-if="signedDocument" class="q-pa-md">
+        <q-icon
           name="picture_as_pdf"
           size="sm"
           color="primary"
           class="q-ml-md"
-        /> 
-      <span class="q-pl-md cursor-pointer">
-          <a id="dwnldLnk" @click="downloadPDF('SignedDocument')">
-            SignedDocument</a
-          >
-        </span> 
-      </div> -->
+        />
+        <span class="q-pl-md cursor-pointer">
+          <a @click="signedPdfDailog = true"> Signed Document</a>
+        </span>
+      </div>
       <q-dialog
         v-model="signedPdfDailog"
         :maximized="true"
@@ -74,22 +72,17 @@
         />
         <q-card class="q-pa-md">
           <!-- This is for showing the generated contract document -->
-          <!-- <q-card v-if="contractDocument" class="q-pa-md">
+          <q-card v-if="contractDocument" class="q-pa-md">
             <q-icon
               name="picture_as_pdf"
               size="sm"
               color="primary"
               class="q-ml-md"
-            /> 
-       <span class="q-pl-md cursor-pointer">
-              <a
-                download="contractDocument"
-                @click="downloadPDF('ContractDocument')"
-              >
-                ContractDocument</a
-              >
+            />
+            <span class="q-pl-md cursor-pointer">
+              <a @click="pdfDailog = true"> Contract Document</a>
             </span>
-          </q-card> -->
+          </q-card>
           <q-btn
             v-if="contractDocument"
             class="q-ma-md"
@@ -886,31 +879,6 @@ export default {
       this.tokenReplacement(result.name.value);
     },
 
-    async downloadPDF(fileName) {
-      const source =
-        fileName == 'SignedDocument'
-          ? this.signedDocument
-          : this.contractDocument;
-      const link = document.createElement('a');
-      link.href = source;
-      link.download = `${fileName}.pdf`;
-      link.click();
-      try {
-        const result = await Filesystem.writeFile({
-          path:
-            fileName == 'SignedDocument' ? 'signed_contract' : 'contract.pdf',
-          data:
-            fileName == 'SignedDocument'
-              ? this.signedDocument
-              : this.contractDocument,
-          directory: FilesystemDirectory.Download
-          // encoding: FilesystemEncoding.UTF8
-        });
-        console.log('Wrote file', result);
-      } catch (e) {
-        console.error('Unable to write file', e);
-      }
-    },
     tokenReplacement(tokenString) {
       //Regex for getting the all tokens from the String
 
