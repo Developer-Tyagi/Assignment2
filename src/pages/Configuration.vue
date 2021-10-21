@@ -500,7 +500,7 @@ export default {
           this.templateTokens.push(arr);
         });
       });
-      this.templatetype.value = [];
+      this.templatetype.value = '';
       this.post.body = '';
       this.addTemplateDialogBox = true;
     },
