@@ -35,6 +35,8 @@ export const constants = {
     CLAIM_EDITED: 'Claim  Number Edited  Successfully !',
     CLAIM_PHASE_EDITED: 'Claim Phase Edited  Successfully !',
     EDIT_PROPERTY_ADDRESS: 'Property Address Edited Successfully !',
-    FORGOT_PASSWORD: 'email has been sent, please check your email and verify'
+    FORGOT_PASSWORD: 'email has been sent, please check your email and verify',
+    TEMPLATE_TYPE_NOT_SELECTED: 'Please Select Template Type!',
+    CKEDITOR_BODY_EMPTY: 'Please Enter Details in Body!'
   }
 };
