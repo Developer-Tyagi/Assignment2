@@ -957,7 +957,6 @@ export default {
             this.contractDocumentDialog = true;
             this.contractDocument = response.document;
             this.pdfDailog = true;
-            console.log(this.contractDocument);
 
             this.documentId = response.id;
 
