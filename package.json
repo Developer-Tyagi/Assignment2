@@ -24,6 +24,7 @@
     "node-fetch": "^2.6.1",
     "quasar": "^1.15.0",
     "vue-chartjs": "^3.5.1",
+    "vue-pdf-app": "^2.1.0",
     "vue-signature-pad": "2.0.4"
   },
   "devDependencies": {
