@@ -406,7 +406,6 @@ export async function addTemplateRemote({ dispatch, state }, payload) {
     dispatch('setLoading', false);
     return true;
   } catch (e) {
-    console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',

@@ -320,12 +320,11 @@
               @updateMarkup="updateMarkup"
             ></Ckeditor>
           </div>
-          <div class="row justify-center">
+          <div class="row q-mt-xl justify-center">
             <q-btn
               class="single-next-button-style"
               label="Save"
               @click="onSaveTemplate"
-              style="width:20%"
             />
           </div>
         </div>
@@ -364,7 +363,8 @@
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import { validateEmail } from '@utils/validation';
+import { constants } from '@utils/constant';
+import { validateEmail, errorMessage } from '@utils/validation';
 import SubSideBar from 'components/SubSideBar';
 import CustomBar from 'components/CustomBar';
 import Ckeditor from 'components/Ckeditor';
@@ -500,42 +500,50 @@ export default {
           this.templateTokens.push(arr);
         });
       });
+      this.templatetype.value = '';
+      this.post.body = '';
       this.addTemplateDialogBox = true;
     },
 
     async onSaveTemplate() {
-      if (this.isEdit) {
-        const payload = {
-          value: this.post.body,
-          type: {
-            machineValue: this.templatetype.machineValue,
-            value: this.templatetype.value
-          }
-        };
-        const success = await this.editTemplate(payload);
-        if (success) {
-          this.addTemplateDialogBox = false;
-          await this.getAllTemplate();
-        }
+      if (this.templatetype.value == '') {
+        this.errorMessage(constants.successMessages.TEMPLATE_TYPE_NOT_SELECTED);
+      } else if (this.post.body == '') {
+        this.errorMessage(constants.successMessages.CKEDITOR_BODY_EMPTY);
       } else {
-        const payload = {
-          value: this.post.body,
-          type: {
-            machineValue: this.templatetype.machineValue,
-            value: this.templatetype.value
+        if (this.isEdit) {
+          const payload = {
+            value: this.post.body,
+            type: {
+              machineValue: this.templatetype.machineValue,
+              value: this.templatetype.value
+            }
+          };
+          const success = await this.editTemplate(payload);
+          if (success) {
+            this.addTemplateDialogBox = false;
+            await this.getAllTemplate();
           }
-        };
-        const success = await this.addTemplateRemote(payload);
-        if (success) {
-          this.addTemplateDialogBox = false;
-          await this.getAllTemplate();
+        } else {
+          const payload = {
+            value: this.post.body,
+            type: {
+              machineValue: this.templatetype.machineValue,
+              value: this.templatetype.value
+            }
+          };
+          const success = await this.addTemplateRemote(payload);
+          if (success) {
+            this.addTemplateDialogBox = false;
+            await this.getAllTemplate();
+          }
         }
-      }
 
-      this.post.body = '';
-      this.templatetype.value = '';
-      this.templatetype.machineValue = '';
-      this.isEdit = false;
+        this.post.body = '';
+        this.templatetype.value = '';
+        this.templatetype.machineValue = '';
+        this.isEdit = false;
+      }
     },
 
     async onDeleteConfirmation(val) {
@@ -663,6 +671,7 @@ export default {
     },
 
     validateEmail,
+    errorMessage,
 
     async onSubmit(tab) {
       var vald = await this.$refs.form.validate();
