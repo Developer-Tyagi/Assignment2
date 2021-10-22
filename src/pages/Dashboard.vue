@@ -116,7 +116,7 @@
 
         <div
           class="column col iconBackground  items-center"
-          @click="onClickNewLead"
+          @click="toCameraDialogBox()"
         >
           <q-icon class="col self-center mobileIcon">
             <q-img src="~assets/camera_dashboard.svg" />
