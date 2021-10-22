@@ -52,7 +52,7 @@
             :dialogName="'Document'"
             @closeDialog="signedPdfDailog = false"
           />
-          <div class="mobile-container-page-without-search">
+          <div class="mobile-container-page">
             <PdfViewer :pdfSrc="signedDocument" />
           </div>
         </q-card>
@@ -83,57 +83,85 @@
               <a @click="pdfDailog = true"> Contract Document</a>
             </span>
           </q-card>
-          <q-btn
-            v-if="contractDocument"
-            class="q-ma-md"
-            size="sm"
-            label="PA Sign"
-            color="primary"
-            @click="onSignButtonClick('pa_sign')"
-          />
-          <q-btn
-            v-if="contractDocument"
-            class="q-ma-md"
-            size="sm"
-            label="Insured Sign"
-            color="primary"
-            @click="onSignButtonClick('insured_sign')"
-          />
-          <q-btn
-            v-if="contractDocument"
-            class="q-ma-md"
-            size="sm"
-            label="Co-Insured Sign"
-            color="primary"
-            @click="onSignButtonClick('co-insured_sign')"
-          />
-
-          <q-btn
-            :disabled="!saveButtonEnable"
-            label="Save Signed Document"
-            size="sm"
-            @click="onSavingDocument"
-            class="q-ml-xl q-mt-md"
-            color="primary"
-          />
         </q-card>
       </q-card>
     </q-dialog>
 
-    <!-- Signature Pad Dialog  -->
+    <!-- PA Signature Pad Dialog  -->
     <q-dialog
-      v-model="signaturePadDialog"
+      v-model="paSignaturePadDialog"
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
     >
       <q-card>
         <CustomBar
-          dialogName="Claim Guru Signature Pad"
-          @closeDialog="signaturePadDialog = false"
+          dialogName="Public Adjuster Signature"
+          @closeDialog="paSignaturePadDialog = false"
         />
 
-        <VueSignaturePad @signData="signData" />
+        <VueSignaturePad
+          @signData="paSignData"
+          :finalSignature="finalSignature"
+          @skipSignature="
+            (paSignaturePadDialog = false), (insuredSignaturePadDialog = true)
+          "
+        />
+      </q-card>
+    </q-dialog>
+
+    <!-- Insured Signature Pad Dialog -->
+    <q-dialog
+      v-model="insuredSignaturePadDialog"
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <CustomBar
+          dialogName="Insured Signature"
+          @closeDialog="insuredSignaturePadDialog = false"
+        />
+
+        <VueSignaturePad
+          @signData="insuredSignData"
+          :finalSignature="finalSignature"
+          @skipSignature="
+            (insuredSignaturePadDialog = false),
+              (coInsuredSignatureDialog = true),
+              (finalSignature = false)
+          "
+        />
+      </q-card>
+    </q-dialog>
+
+    <!-- Co Insured Signature Pad Dialog -->
+
+    <q-dialog
+      v-model="coInsuredSignatureDialog"
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <CustomBar
+          dialogName=" Co Insured Signature"
+          @closeDialog="coInsuredSignatureDialog = false"
+        />
+
+        <VueSignaturePad
+          @signData="coInsuredSignData"
+          :finalSignature="finalSignature"
+          @skipSignature="coInsuredSignatureDialog = false"
+        />
+        <q-btn
+          label="Finish"
+          size="sm"
+          @click="onSavingDocument"
+          class="q-ml-xl q-mt-md"
+          style="margin-left:170px"
+          color="primary"
+        />
       </q-card>
     </q-dialog>
 
@@ -145,8 +173,18 @@
     >
       <q-card>
         <CustomBar :dialogName="'Document'" @closeDialog="pdfDailog = false" />
-        <div class="mobile-container-page-without-search">
+        <div class="mobile-container-page">
           <PdfViewer :pdfSrc="contractDocument" />
+        </div>
+        <div>
+          <q-btn
+            v-if="contractDocument"
+            class="q-ma-md"
+            size="sm"
+            label="Sign Document"
+            color="primary"
+            @click="onSignButtonClick('pa_sign')"
+          />
         </div>
       </q-card>
     </q-dialog>
@@ -173,10 +211,13 @@ export default {
   components: { CustomBar, VueSignaturePad, PdfViewer },
   data() {
     return {
+      finalSignature: true,
+      insuredSignaturePadDialog: false,
+      coInsuredSignatureDialog: false,
       pdfDailog: false,
       signedPdfDailog: false,
       signedDocument: '',
-      saveButtonEnable: false,
+
       claim: '',
       pa_signature: '',
       insured_signature: '',
@@ -184,7 +225,7 @@ export default {
       documentId: '',
       signImage: '',
       contractDocumentDialog: false,
-      signaturePadDialog: false,
+      paSignaturePadDialog: false,
       finalDocumentString: '',
       contractDocument: '',
       tokenArray: [],
@@ -864,6 +905,7 @@ export default {
       'getSingleClientDetails',
       'getSingleClaims'
     ]),
+
     dateToShow,
     async setTypes(value) {
       const obj = this.templateOptions.find(item => {
@@ -945,6 +987,7 @@ export default {
               signedContract
             );
             this.signedDocument = this.document;
+            this.finalSignature = true;
             this.signedPdfDailog = true;
             this.contractDocumentDialog = false;
           } else {
@@ -990,6 +1033,10 @@ export default {
       return new Blob([ia], { type: mimeString });
     },
     async onSavingDocument() {
+      this.pdfDailog = false;
+      this.contractDocumentDialog = false;
+      this.coInsuredSignatureDialog = false;
+
       const contractDocument = await localDB.contractDocument
         .where({ id: this.documentId })
         .toArray();
@@ -1001,14 +1048,14 @@ export default {
       // Adding  Sign Tokens with the Value
       if (this.pa_signature) {
         this.tokens.push({
-          key: '{{.Adjuster.Sign}}',
+          key: '{{.Signature.PA}}',
           value:
             "<img src=' " + this.pa_signature + " ' width='200' height='70'/> "
         });
       }
       if (this.co_insured_signature) {
         this.tokens.push({
-          key: '{{.Client.InsuredSign}}',
+          key: '{{.Signature.Coinsured}}',
           value:
             "<img src=' " +
             this.co_insured_signature +
@@ -1017,7 +1064,7 @@ export default {
       }
       if (this.insured_signature) {
         this.tokens.push({
-          key: '{{.Client.CoInsuredSign}}',
+          key: '{{.Signature.Insured}}',
           value:
             "<img src=' " +
             this.insured_signature +
@@ -1034,27 +1081,36 @@ export default {
 
     onSignButtonClick(tokenValue) {
       this.signTokenValue = tokenValue;
-      this.signaturePadDialog = true;
+      this.paSignaturePadDialog = true;
     },
     //This function is used for accepting the values that are coming from signature pad component
 
-    async signData(data) {
-      this.signaturePadDialog = false;
+    async paSignData(data) {
+      this.paSignaturePadDialog = false;
+      this.insuredSignaturePadDialog = true;
 
-      if (this.signTokenValue == 'pa_sign') {
-        var payload = {
-          pa_sign: data
-        };
-      } else if (this.signTokenValue == 'insured_sign') {
-        var payload = {
-          insured_sign: data
-        };
-      } else {
-        var payload = {
-          co_insured_sign: data
-        };
-      }
-      this.saveButtonEnable = true;
+      const payload = {
+        pa_sign: data
+      };
+
+      await localDB.contractDocument.update(this.documentId, payload);
+    },
+    async insuredSignData(data) {
+      this.insuredSignaturePadDialog = false;
+
+      this.coInsuredSignatureDialog = true;
+      this.finalSignature = false;
+      const payload = {
+        insured_sign: data
+      };
+      await localDB.contractDocument.update(this.documentId, payload);
+    },
+    async coInsuredSignData(data) {
+      this.coInsuredSignatureDialog = false;
+
+      const payload = {
+        co_insured_sign: data
+      };
       await localDB.contractDocument.update(this.documentId, payload);
     }
   },
