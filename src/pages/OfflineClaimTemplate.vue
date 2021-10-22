@@ -29,6 +29,7 @@
           @click="onClickGenerateDocument"
         />
       </div>
+      <!-- This is for showing generated signed document -->
       <div v-if="signedDocument" class="q-pa-md">
         <q-icon
           name="picture_as_pdf"
@@ -37,11 +38,25 @@
           class="q-ml-md"
         />
         <span class="q-pl-md cursor-pointer">
-          <a id="dwnldLnk" @click="downloadPDF('SignedDocument')">
-            SignedDocument</a
-          >
+          <a @click="signedPdfDailog = true"> Signed Document</a>
         </span>
       </div>
+      <q-dialog
+        v-model="signedPdfDailog"
+        :maximized="true"
+        transition-show="slide-up"
+        transition-hide="slide-down"
+      >
+        <q-card>
+          <CustomBar
+            :dialogName="'Document'"
+            @closeDialog="signedPdfDailog = false"
+          />
+          <div class="mobile-container-page-without-search">
+            <PdfViewer :pdfSrc="signedDocument" />
+          </div>
+        </q-card>
+      </q-dialog>
     </q-card>
     <!-- Generate Document in Offline Mode Dialog  -->
     <q-dialog
@@ -56,6 +71,7 @@
           @closeDialog="contractDocumentDialog = false"
         />
         <q-card class="q-pa-md">
+          <!-- This is for showing the generated contract document -->
           <q-card v-if="contractDocument" class="q-pa-md">
             <q-icon
               name="picture_as_pdf"
@@ -64,12 +80,7 @@
               class="q-ml-md"
             />
             <span class="q-pl-md cursor-pointer">
-              <a
-                download="contractDocument"
-                @click="downloadPDF('ContractDocument')"
-              >
-                ContractDocument</a
-              >
+              <a @click="pdfDailog = true"> Contract Document</a>
             </span>
           </q-card>
           <q-btn
@@ -125,6 +136,20 @@
         <VueSignaturePad @signData="signData" />
       </q-card>
     </q-dialog>
+
+    <q-dialog
+      v-model="pdfDailog"
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <CustomBar :dialogName="'Document'" @closeDialog="pdfDailog = false" />
+        <div class="mobile-container-page-without-search">
+          <PdfViewer :pdfSrc="contractDocument" />
+        </div>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 <script>
@@ -141,12 +166,15 @@ import {
   FilesystemDirectory,
   FilesystemEncoding
 } from '@capacitor/core';
+import PdfViewer from 'components/PdfViewer';
 
 const { Filesystem } = Plugins;
 export default {
-  components: { CustomBar, VueSignaturePad },
+  components: { CustomBar, VueSignaturePad, PdfViewer },
   data() {
     return {
+      pdfDailog: false,
+      signedPdfDailog: false,
       signedDocument: '',
       saveButtonEnable: false,
       claim: '',
@@ -249,7 +277,7 @@ export default {
       { key: '{{.Claim.CompanyExpense}}', value: '' },
       { key: '{{.Claim.CombinedExpense}}', value: '' },
 
-      // Adjuster Tokens
+      // // Adjuster Tokens
 
       {
         key: '{{.Adjuster.Name}}',
@@ -536,7 +564,7 @@ export default {
           : ''
       },
 
-      //  Claim Mortgage tokens
+      //   Claim Mortgage tokens
 
       {
         key: '{{.ClaimMortgage.Name}}',
@@ -851,31 +879,6 @@ export default {
       this.tokenReplacement(result.name.value);
     },
 
-    async downloadPDF(fileName) {
-      const source =
-        fileName == 'SignedDocument'
-          ? this.signedDocument
-          : this.contractDocument;
-      const link = document.createElement('a');
-      link.href = source;
-      link.download = `${fileName}.pdf`;
-      link.click();
-      try {
-        const result = await Filesystem.writeFile({
-          path:
-            fileName == 'SignedDocument' ? 'signed_contract' : 'contract.pdf',
-          data:
-            fileName == 'SignedDocument'
-              ? this.signedDocument
-              : this.contractDocument,
-          directory: FilesystemDirectory.Download
-          // encoding: FilesystemEncoding.UTF8
-        });
-        console.log('Wrote file', result);
-      } catch (e) {
-        console.error('Unable to write file', e);
-      }
-    },
     tokenReplacement(tokenString) {
       //Regex for getting the all tokens from the String
 
@@ -913,7 +916,7 @@ export default {
       await html2pdf()
         .from(documentString)
         .set(opt)
-        .save()
+
         .outputPdf('datauri')
         .then(async data => {
           this.document = data;
@@ -942,6 +945,7 @@ export default {
               signedContract
             );
             this.signedDocument = this.document;
+            this.signedPdfDailog = true;
             this.contractDocumentDialog = false;
           } else {
             const intialContract = {
@@ -952,6 +956,7 @@ export default {
             var response = await this.addTemplateLocal(intialContract);
             this.contractDocumentDialog = true;
             this.contractDocument = response.document;
+            this.pdfDailog = true;
 
             this.documentId = response.id;
 
