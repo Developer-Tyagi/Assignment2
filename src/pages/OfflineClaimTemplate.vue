@@ -1048,14 +1048,14 @@ export default {
       // Adding  Sign Tokens with the Value
       if (this.pa_signature) {
         this.tokens.push({
-          key: '{{.Adjuster.Sign}}',
+          key: '{{.Signature.PA}}',
           value:
             "<img src=' " + this.pa_signature + " ' width='200' height='70'/> "
         });
       }
       if (this.co_insured_signature) {
         this.tokens.push({
-          key: '{{.Client.InsuredSign}}',
+          key: '{{.Signature.Coinsured}}',
           value:
             "<img src=' " +
             this.co_insured_signature +
@@ -1064,7 +1064,7 @@ export default {
       }
       if (this.insured_signature) {
         this.tokens.push({
-          key: '{{.Client.CoInsuredSign}}',
+          key: '{{.Signature.Insured}}',
           value:
             "<img src=' " +
             this.insured_signature +
