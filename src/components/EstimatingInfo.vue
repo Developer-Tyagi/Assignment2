@@ -172,7 +172,7 @@
         v-if="estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle"
         dense
         type="textarea"
-        v-model="estimatingInfo.notesToTheEstimator"
+        v-model="estimatingInfo.notesToEstimator"
         label="Notes to the estimator"
         borderless
         class=" input-style input-extra-padding"

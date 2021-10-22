@@ -109,7 +109,7 @@ export default {
         doesAnEstimatorNeedToBeAssignedToggle: true,
         estimatorID: '',
         scopeTimeNeeded: '',
-        notesToTheEstimator: ''
+        notesToEstimator: ''
       }
     };
   },
@@ -134,7 +134,7 @@ export default {
               estimator: {
                 estimatorID: this.estimatorInfo.estimatorID,
                 scopeTimeNeeded: this.estimatorInfo.scopeTimeNeeded,
-                notesToTheEstimator: this.estimatorInfo.notesToTheEstimator
+                notesToEstimator: this.estimatorInfo.notesToEstimator
               }
             }
           };
