@@ -209,13 +209,13 @@
             </q-card>
             <br />
           </div>
-          <q-btn
-            label="Save"
-            color="primary"
-            class="single-next-button-style text-capitalize"
-            @click="addPPDamagedItems()"
-            size="'xl'"
-          ></q-btn>
+          <div class="row justify-center">
+            <q-btn
+              label="Save"
+              class="single-next-button-style text-capitalize"
+              @click="addPPDamagedItems()"
+            ></q-btn>
+          </div>
         </div>
       </q-card>
     </q-dialog>
