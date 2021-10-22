@@ -19,7 +19,7 @@ export default {
 <style lang="scss" scoped>
 @media only screen and (min-width: $breakpoint-sm) {
   .pdf-view-container {
-    height: 100vh;
+    height: 60vh;
     width: 100%;
   }
 }

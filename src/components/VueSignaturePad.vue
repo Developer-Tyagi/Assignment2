@@ -15,8 +15,21 @@
 
     <div class="q-mt-md">
       <div class="row q-gutter-md justify-center">
-        <q-btn class="col-2" label="clear" @click="undo" color="primary" />
-        <q-btn class="col-2" label="Save" @click="save" color="primary" />
+        <q-btn
+          v-if="finalSignature != false"
+          class="col-2"
+          label="Skip"
+          @click="skip"
+          color="primary"
+        />
+
+        <q-btn
+          v-if="finalSignature != false"
+          class="col-2"
+          label="Submit"
+          @click="save"
+          color="primary"
+        />
       </div>
     </div>
   </div>
@@ -25,6 +38,11 @@
 <script>
 export default {
   name: 'MySignaturePad',
+  props: {
+    finalSignature: {
+      type: Boolean
+    }
+  },
 
   computed: {
     options: function() {
@@ -41,8 +59,8 @@ export default {
   },
 
   methods: {
-    undo() {
-      this.$refs.signaturePad.undoSignature();
+    skip() {
+      this.$emit('skipSignature');
     },
     save() {
       const { isEmpty, data } = this.$refs.signaturePad.saveSignature();
