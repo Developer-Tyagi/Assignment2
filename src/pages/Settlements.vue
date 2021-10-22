@@ -687,12 +687,13 @@
               </div>
             </q-card>
           </q-form>
-          <q-btn
-            label="Save"
-            class="single-next-button-style"
-            @click="onSaveButtonClick()"
-            size="'xl'"
-          />
+          <div class="row justify-center">
+            <q-btn
+              label="Save"
+              class="single-next-button-style"
+              @click="onSaveButtonClick()"
+            />
+          </div>
         </div>
       </q-card>
     </q-dialog>

@@ -433,13 +433,13 @@
               :showAppraisal="true"
             />
           </q-form>
-
-          <q-btn
-            label="Save"
-            class="single-next-button-style"
-            @click="onSaveButtonClick('insuranceInfoDialog')"
-            size="'xl'"
-          />
+          <div class="row justify-center">
+            <q-btn
+              label="Save"
+              class="single-next-button-style"
+              @click="onSaveButtonClick('insuranceInfoDialog')"
+            />
+          </div>
         </div>
       </q-card>
     </q-dialog>

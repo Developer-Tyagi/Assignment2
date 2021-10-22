@@ -147,13 +147,15 @@
               />
             </q-form>
           </div>
-          <q-btn
-            label="Save"
-            color="primary"
-            class="single-next-button-style"
-            @click="onSaveButtonClick"
-            size="'xl'"
-          />
+          <div class="row justify-center">
+            <q-btn
+              label="Save"
+              color="primary"
+              class="single-next-button-style"
+              @click="onSaveButtonClick"
+              size="'xl'"
+            />
+          </div>
         </q-card>
       </q-dialog>
     </div>

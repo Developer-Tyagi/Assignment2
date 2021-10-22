@@ -22,13 +22,13 @@
         </div>
 
         <br />
-
-        <q-btn
-          @click="onSaveButtonClick"
-          label="Save"
-          class="single-next-button-style"
-          size="'xl'"
-        ></q-btn>
+        <div class="row justify-center">
+          <q-btn
+            @click="onSaveButtonClick"
+            label="Save"
+            class="single-next-button-style"
+          ></q-btn>
+        </div>
       </q-card>
     </q-dialog>
     <!-- Company Personnel Dialog Box for Editing Info -->
@@ -53,13 +53,13 @@
         </div>
 
         <br />
-
-        <q-btn
-          @click="onEditSaveButtonClick"
-          label="Save"
-          class="single-next-button-style"
-          size="'xl'"
-        ></q-btn>
+        <div class="row justify-center">
+          <q-btn
+            @click="onEditSaveButtonClick"
+            label="Save"
+            class="single-next-button-style"
+          ></q-btn>
+        </div>
       </q-card>
     </q-dialog>
 
@@ -289,7 +289,11 @@ export default {
               },
               note: this.companyPersonnelPost.notes,
               fees: {
-                type: this.companyPersonnelPost.buttonGroup,
+                type:
+                  this.companyPersonnelPost &&
+                  this.companyPersonnelPost.buttonGroup
+                    ? this.companyPersonnelPost.buttonGroup
+                    : 'dollar',
                 rate: this.companyPersonnelPost.claimFeeRate
                   ? this.companyPersonnelPost.claimFeeRate
                   : 0
@@ -310,7 +314,7 @@ export default {
         this.companyPersonnelPost.personnel.value = '';
         this.companyPersonnelPost.personnel.machineValue = '';
         this.companyPersonnelPost.notes = '';
-        this.companyPersonnelPost.buttonGroup = '';
+        this.companyPersonnelPost.buttonGroup = 'dollar';
         this.companyPersonnelPost.claimFeeRate = '';
         this.companyPersonnel.startDate = this.companyPersonnelPost.startDate = this.companyPersonnelPost.endDate = this.companyPersonnel.endDate = date.formatDate(
           Date.now(),
@@ -377,7 +381,9 @@ export default {
               },
               note: this.companyPersonnel.notes,
               fees: {
-                type: this.companyPersonnel.buttonGroup,
+                type: this.companyPersonnel.buttonGroup
+                  ? this.companyPersonnel.buttonGroup
+                  : 'dollar',
                 rate: this.companyPersonnel.claimFeeRate
                   ? this.companyPersonnel.claimFeeRate
                   : 0

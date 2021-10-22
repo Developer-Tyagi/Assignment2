@@ -98,13 +98,13 @@
               />
             </div>
           </q-form>
-          <q-btn
-            label="Save"
-            color="primary"
-            class="single-next-button-style"
-            @click="onSaveButtonClick"
-            size="'xl'"
-          />
+          <div class="row justify-center">
+            <q-btn
+              label="Save"
+              class="single-next-button-style"
+              @click="onSaveButtonClick"
+            />
+          </div>
         </div>
       </q-card>
     </q-dialog>
@@ -162,13 +162,13 @@
               />
             </div>
           </q-form>
-          <q-btn
-            label="Save"
-            color="primary"
-            class="button-width-90"
-            @click="onEditSaveButtonClick"
-            size="'xl'"
-          />
+          <div class="row justify-center">
+            <q-btn
+              label="Save"
+              class="single-next-button-style"
+              @click="onEditSaveButtonClick"
+            />
+          </div>
         </div>
       </q-card>
     </q-dialog>
