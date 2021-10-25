@@ -17,8 +17,7 @@ export async function getCarriers(
   if (isOnline) {
     try {
       const { data } = await request.get('/carriers', params);
-      const { meta } = await request.get('carriers', params);
-      const payload = { data: data, params: params, meta: meta };
+      const payload = { data: data, params: params };
       commit('setCarriers', payload);
       dispatch('setLoading', false);
     } catch (e) {
@@ -36,23 +35,19 @@ export async function getCarriers(
 }
 export async function carrierPagination({ dispatch, commit }, params) {
   let carrierList = [];
-  await request
-    .get(`/carriers?limit=${params.limit}&offset=${params.offset}`)
-    .then(result => {
-      carrierList = result['data'];
-    })
-    .catch(error => {
-      dispatch('redirectTo404Page', error);
-      if (error.response) {
-        dispatch('setToastMessage', {
-          type: 'negative',
-          caption: 'Status ' + error.response.data.status,
-          message: error.response.data.title
-        });
-      } else {
-        commit('No Data Found');
-      }
-    });
+  try {
+    let result = await request.get(`/carriers`, params);
+    carrierList = result['data'];
+  } catch (error) {
+    dispatch('redirectTo404Page', error);
+    if (error.response) {
+      dispatch('setToastMessage', {
+        type: 'negative',
+        caption: 'Status ' + error.response.data.status,
+        message: error.response.data.title
+      });
+    }
+  }
   return carrierList;
 }
 

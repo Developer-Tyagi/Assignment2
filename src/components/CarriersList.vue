@@ -1,5 +1,5 @@
 <template>
-  <div class="mobile-container-page-without-search">
+  <div>
     <div class="actions-div">
       <q-input
         dense
@@ -22,77 +22,106 @@
       <q-separator vertical></q-separator>
       <q-btn @click="onAddButtonClick" flat><img src="~assets/add.svg"/></q-btn>
     </div>
-    <div class="mobile-container-page" v-if="carriers.length">
-      <q-infinite-scroll
-        @load="onLoad"
-        :offset="carriersPagination.offset"
-        ref="infiniteScroll"
-      >
-        <div
-          v-for="carrier in carriers"
-          :key="carrier.id"
-          class="listing-item clients-list"
-          style="overflow-y: auto"
-        >
-          <q-item-section @click="onSelectCarrier(carrier, $event)">
-            <span class="form-heading  fit-content">{{ carrier.name }}</span>
-            <div v-if="carrier.address">
-              <div>
-                {{ carrier.address ? carrier.address.houseNumber : '-' }}
-                {{ carrier.address.address1 ? carrier.address.address1 : '-' }}
-              </div>
-              <div v-if="carrier.address && carrier.address.address2">
-                {{ carrier.address.address2 }}
-              </div>
-              <div class="row">
-                {{
-                  carrier.address.addressLocality
-                    ? carrier.address.addressLocality
-                    : '-'
-                }}
-                ,
-                {{
-                  carrier.address.addressRegion
-                    ? toGetStateShortName(carrier.address.addressRegion)
-                    : '-'
-                }}
-                {{
-                  carrier.address.postalCode ? carrier.address.postalCode : '-'
-                }}
-                <q-icon
-                  name="place"
-                  class="q-ml-auto"
-                  color="primary"
-                  size="sm"
-                  @click="sendMap(carrier.address, $event)"
-                ></q-icon>
-              </div>
+    <div v-if="!loading">
+      <q-scroll-area style="height:90vh">
+        <q-infinite-scroll @load="onLoad" :offset="250" ref="infiniteScroll">
+          <template v-slot:loading>
+            <div class="row justify-center q-my-md">
+              <q-spinner-dots color="primary" size="40px" />
             </div>
-            <div
-              class="q-mt-xs fit-content"
-              v-for="phone in carrier.phoneNumber"
-            >
-              <span v-if="phone.type">{{ phone.type }} : </span>
-              <span
-                class="clickLink"
-                @click="onPhoneNumberClick(phone.number, $event)"
-                >{{ showPhoneNumber(phone.number) }}</span
+          </template>
+          <div
+            v-for="carrier in carrierList"
+            :key="carrier.id"
+            class="listing-item clients-list"
+            style="overflow-y: auto"
+          >
+            <q-item-section @click="onSelectCarrier(carrier, $event)">
+              <span class="form-heading  fit-content">{{
+                carrier.attributes.name
+              }}</span>
+              <div v-if="carrier.attributes.address">
+                <div>
+                  {{
+                    carrier.attributes.address
+                      ? carrier.attributes.address.houseNumber
+                      : '-'
+                  }}
+                  {{
+                    carrier.attributes.address.address1
+                      ? carrier.attributes.address.address1
+                      : '-'
+                  }}
+                </div>
+                <div
+                  v-if="
+                    carrier.attributes.address &&
+                      carrier.attributes.address.address2
+                  "
+                >
+                  {{ carrier.attributes.address.address2 }}
+                </div>
+                <div class="row">
+                  {{
+                    carrier.attributes.address.addressLocality
+                      ? carrier.attributes.address.addressLocality
+                      : '-'
+                  }}
+                  ,
+                  {{
+                    carrier.attributes.address.addressRegion
+                      ? toGetStateShortName(
+                          carrier.attributes.address.addressRegion
+                        )
+                      : '-'
+                  }}
+                  {{
+                    carrier.attributes.address.postalCode
+                      ? carrier.attributes.address.postalCode
+                      : '-'
+                  }}
+                  <q-icon
+                    name="place"
+                    class="q-ml-auto"
+                    color="primary"
+                    size="sm"
+                    @click="sendMap(carrier.attributes.address, $event)"
+                  ></q-icon>
+                </div>
+              </div>
+              <div
+                class="q-mt-xs fit-content"
+                v-for="phone in carrier.attributes.phoneNumber"
+                :key="phone.number"
               >
-            </div>
-            <span
-              class="click-link fit-content"
-              @click="onEmailClick(carrier.email, $event)"
-              >{{ carrier.email }}</span
-            >
-          </q-item-section>
-          <q-icon
-            v-if="carrier.name === selectedCarrierName"
-            name="done"
-            size="xs"
-            class="q-ml-auto"
-          />
-        </div>
-      </q-infinite-scroll>
+                <span v-if="phone.type">{{ phone.type }} : </span>
+                <span
+                  class="clickLink"
+                  @click="onPhoneNumberClick(phone.number, $event)"
+                  >{{ showPhoneNumber(phone.number) }}</span
+                >
+              </div>
+              <span
+                class="click-link fit-content"
+                @click="onEmailClick(carrier.attributes.email, $event)"
+                >{{ carrier.attributes.email }}</span
+              >
+            </q-item-section>
+            <q-icon
+              v-if="carrier.attributes.name === selectedCarrierName"
+              name="done"
+              size="xs"
+              class="q-ml-auto"
+            />
+          </div>
+          <div
+            class="no-more-results-msg border-bottom-secondary text-body1 text-h5 text-center text-manatee"
+            v-if="noMoreResults && carrierList.length != 0"
+          >
+            <span class="bg-whiteSmoke q-px-sm">No more results</span>
+          </div>
+        </q-infinite-scroll>
+      </q-scroll-area>
     </div>
   </div>
 </template>
@@ -105,6 +134,7 @@ import {
   sendMap,
   showPhoneNumber
 } from '@utils/clickable';
+const CARRIER_LIST_LIMIT = 20;
 export default {
   name: 'CarriersList',
   props: [
@@ -118,6 +148,9 @@ export default {
   data() {
     return {
       searchText: '',
+      carrierList: [],
+      loading: true,
+      noMoreResults: false,
       params: {
         name: ''
       }
@@ -129,6 +162,7 @@ export default {
 
   mounted() {
     this.getCarriers();
+    this.getCarrierListData();
   },
 
   methods: {
@@ -139,25 +173,41 @@ export default {
       'carrierPagination'
     ]),
     toGetStateShortName,
-
-    onLoad(index, done) {
-      let carrierListBeforeLoad = this.carriersPagination.count;
+    async getCarrierListData() {
       let params = {
-        limit: this.carriersPagination.limit,
-        offset: index * this.carriersPagination.offset
+        limit: CARRIER_LIST_LIMIT,
+        offset: 0
       };
-      if (carrierListBeforeLoad > this.carriersPagination.limit) {
-        let data = this.carrierPagination(params);
+      this.loading = true;
+      let data = await this.carrierPagination(params);
+      this.carrierList = data;
+      this.loading = false;
+    },
 
-        if (data['data'].length > 0) {
-          this.carriers = this.carriers.concat(data['data']);
+    async onLoad(index, done) {
+      console.log(index);
+      let carrierListBeforeLoad = this.carrierList.length;
+      let params = {
+        limit: CARRIER_LIST_LIMIT,
+        offset: index * CARRIER_LIST_LIMIT
+      };
+      if (carrierListBeforeLoad >= CARRIER_LIST_LIMIT) {
+        let data = await this.carrierPagination(params);
+        if (data.length > 0) {
+          this.carrierList = this.carrierList.concat(data);
         }
-        let carrierListAfterLoad = this.carriersPagination.count;
-        if (carrierListBeforeLoad < carrierListAfterLoad) {
-          this.$refs.infiniteScroll.stop();
-        }
-        done();
       }
+      let carrierListAfterLoad = this.carrierList.length;
+      if (
+        carrierListBeforeLoad == carrierListAfterLoad ||
+        carrierListAfterLoad - carrierListBeforeLoad < CARRIER_LIST_LIMIT
+      ) {
+        if (carrierListBeforeLoad > 0) {
+          this.noMoreResults = true;
+        }
+        this.$refs.infiniteScroll.stop();
+      }
+      done();
     },
 
     onSearchBackButtonClick() {

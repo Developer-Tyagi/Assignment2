@@ -1,5 +1,5 @@
 <template>
-  <div class="mobile-container-page-without-search">
+  <div>
     <CarriersList @addCarrier="openAddCarrierDialog" :carrierDetails="true" />
     <q-dialog
       v-model="addCarrierDialog"

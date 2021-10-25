@@ -6,8 +6,6 @@ export async function setCarriers(state, carriersData) {
     ...carrier.attributes,
     id: carrier.id
   }));
-  const carriersPagination = carriersData.meta;
-  state.carriersPagination = carriersPagination;
   state.carriers = carriers;
 
   if ((await carriersCollection.count()) > 0 && !carriersData.params) {
