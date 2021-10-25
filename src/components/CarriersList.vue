@@ -237,10 +237,11 @@ export default {
     sendMap,
     showPhoneNumber,
 
-    search(event) {
+    //this function is used for searching Carriers.
+    async search(event) {
       this.params.name = event;
-      this.getCarriers(this.params);
-      console.log(this.carriers, 123);
+      let Data = await this.carrierPagination(this.params);
+      this.carrierList = Data;
     },
 
     onAddButtonClick() {
