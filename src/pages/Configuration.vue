@@ -317,6 +317,7 @@
             <Ckeditor
               :markup="post.body"
               :templateTokens="templateTokens"
+              :groupedTokens="groupedTokens"
               @updateMarkup="updateMarkup"
             ></Ckeditor>
           </div>
@@ -385,6 +386,7 @@ export default {
       addTemplateDialogBox: false,
       tokenDialogBox: false,
       templateTokens: [],
+      groupedTokens: [],
       templatetype: { value: '', machineValue: '' },
       definitions: {
         insert_img: {
@@ -492,13 +494,19 @@ export default {
     openAddTemplateBox() {
       this.isEdit = false;
       this.templateTokens = [];
+      this.groupedTokens = [];
       this.tokens.forEach(val => {
+        var grpName = val.attributes.group;
+        var tokenArr = [];
+
         val.attributes.tokens.forEach(token => {
           let arr = [];
           arr[0] = token.name;
           arr[1] = token.value;
           this.templateTokens.push(arr);
+          tokenArr.push(arr);
         });
+        this.groupedTokens.push({ groupName: grpName, tokens: tokenArr });
       });
       this.addTemplateDialogBox = true;
     },
@@ -554,13 +562,21 @@ export default {
     onEditTemplate(value) {
       this.isEdit = true;
       this.templateTokens = [];
+      this.groupedTokens = [];
       this.tokens.forEach(val => {
+        // grp token code goes here
+        var grpName = val.attributes.group;
+        var tokenArr = [];
+
+        // ends here
         val.attributes.tokens.forEach(token => {
           let arr = [];
           arr[0] = token.name;
           arr[1] = token.value;
           this.templateTokens.push(arr);
+          tokenArr.push(arr);
         });
+        this.groupedTokens.push({ groupName: grpName, tokens: tokenArr });
       });
       this.post.body = value.name.value;
       this.templatetype.value = value.name.type.value;
