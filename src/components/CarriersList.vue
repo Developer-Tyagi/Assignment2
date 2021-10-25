@@ -23,7 +23,7 @@
       <q-btn @click="onAddButtonClick" flat><img src="~assets/add.svg"/></q-btn>
     </div>
     <div v-if="!loading">
-      <q-scroll-area style="height:90vh">
+      <q-scroll-area style="height:85vh">
         <q-infinite-scroll @load="onLoad" :offset="250" ref="infiniteScroll">
           <template v-slot:loading>
             <div class="row justify-center q-my-md">
@@ -34,7 +34,6 @@
             v-for="carrier in carrierList"
             :key="carrier.id"
             class="listing-item clients-list"
-            style="overflow-y: auto"
           >
             <q-item-section @click="onSelectCarrier(carrier, $event)">
               <span class="form-heading  fit-content">{{
@@ -241,6 +240,7 @@ export default {
     search(event) {
       this.params.name = event;
       this.getCarriers(this.params);
+      console.log(this.carriers, 123);
     },
 
     onAddButtonClick() {
