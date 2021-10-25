@@ -718,8 +718,8 @@ export default {
       },
       {
         key: '{{.ClaimEstimator.NotesToEstimator}}',
-        value: this.claim.estimatingInformation?.notesToTheEstimator
-          ? this.claim.estimatingInformation?.notesToTheEstimator
+        value: this.claim.estimatingInformation?.notesToEstimator
+          ? this.claim.estimatingInformation?.notesToEstimator
           : ''
       },
 

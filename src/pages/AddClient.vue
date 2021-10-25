@@ -1448,7 +1448,7 @@ export default {
         estimatorID: '',
         scopeTimeNeededInHours: '',
         scopeTimeNeededInMinutes: '',
-        notesToTheEstimator: '',
+        notesToEstimator: '',
         email: '',
         mailingAddress: {},
         name: '',
@@ -1970,7 +1970,7 @@ export default {
           : '';
         this.estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle = true;
         this.estimatingInfo.estimatorID = this.selectedClaim.estimatingInfo.estimatorID;
-        this.estimatingInfo.notesToTheEstimator = this.selectedClaim.estimatingInfo.notesToTheEstimator;
+        this.estimatingInfo.notesToEstimator = this.selectedClaim.estimatingInfo.notesToEstimator;
         this.estimatingInfo.scopeTimeNeeded = this.selectedClaim.estimatingInfo.scopeTimeNeeded;
       }
 
@@ -2809,7 +2809,7 @@ export default {
             this.estimatingInfo.scopeTimeNeededInHours +
             '.' +
             this.estimatingInfo.scopeTimeNeededInMinutes,
-          notesToTheEstimator: this.estimatingInfo.notesToTheEstimator
+          notesToEstimator: this.estimatingInfo.notesToEstimator
         };
       }
       if (

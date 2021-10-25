@@ -1046,7 +1046,7 @@ export default {
         estimatorToBeAssigned: '',
         scopeTimeNeededInHours: '',
         scopeTimeNeededInMinutes: '',
-        notesToTheEstimator: '',
+        notesToEstimator: '',
         doesAnEstimatorNeedToBeAssignedToggle: false
       },
 
@@ -1618,7 +1618,7 @@ export default {
             this.estimatingInfo.scopeTimeNeededInHours +
             '.' +
             this.estimatingInfo.scopeTimeNeededInMinutes,
-          notesToTheEstimator: this.estimatingInfo.notesToTheEstimator
+          notesToEstimator: this.estimatingInfo.notesToEstimator
         };
       }
 
