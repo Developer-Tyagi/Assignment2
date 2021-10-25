@@ -157,7 +157,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['carriers', 'selectedClaimId', 'carriersPagination'])
+    ...mapGetters(['carriers', 'selectedClaimId'])
   },
 
   mounted() {
@@ -185,7 +185,6 @@ export default {
     },
 
     async onLoad(index, done) {
-      console.log(index);
       let carrierListBeforeLoad = this.carrierList.length;
       let params = {
         limit: CARRIER_LIST_LIMIT,
