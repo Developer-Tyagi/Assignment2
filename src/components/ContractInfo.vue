@@ -134,6 +134,7 @@
         <q-btn-toggle
           v-model="contractInfo.buttonGroup"
           push
+          @click="reset"
           glossy
           toggle-color="primary"
           :options="[
@@ -147,6 +148,7 @@
 
       <div class="row q-mt-md" style="align-items: center">
         <q-input
+          ref="inputRef"
           mask="#.#"
           type="number"
           borderless
@@ -168,7 +170,7 @@
             <q-icon name="%" color="primary"></q-icon>
           </template>
           <template v-slot:append v-else>
-            <span class="form-heading">/hour</span>
+            <span class="form-heading q-mt-md">/hour</span>
           </template></q-input
         >
       </div>
@@ -410,7 +412,6 @@
 </template>
 <script>
 import CustomBar from 'components/CustomBar';
-
 import AddVendor from 'components/AddVendor';
 import { successMessage } from '@utils/validation';
 import { validateDate, validateTime } from '@utils/validation';
@@ -456,6 +457,11 @@ export default {
     //This function is for closing the time popup
     closeTimeDialog() {
       this.$refs.qTimeProxy.hide();
+    },
+
+    // this function is used to reset the validation of input field of Claim rate Fee
+    reset() {
+      this.$refs.inputRef.resetValidation();
     },
     toGetStateShortName,
     successMessage,
