@@ -27,7 +27,7 @@
         <q-infinite-scroll @load="onLoad" :offset="250" ref="infiniteScroll">
           <template v-slot:loading>
             <div class="row justify-center q-my-md">
-              <q-spinner-dots color="primary" size="40px" />
+              <q-spinner-dots color="primary" size="md" />
             </div>
           </template>
           <div
