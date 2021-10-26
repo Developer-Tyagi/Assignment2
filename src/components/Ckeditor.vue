@@ -17,7 +17,7 @@ export default {
     ckeditor: CKEditor.component
   },
 
-  props: ['markup', 'templateTokens'],
+  props: ['markup', 'templateTokens', 'groupedTokens'],
 
   data: () => ({
     editorData: '',
@@ -49,6 +49,7 @@ export default {
       extraPlugins: 'token,addsign',
       clipboard_defaultContentType: 'text',
       availableTokens: [],
+      groupTokens: [],
       tabSpaces: 4,
       removeButtons:
         'Save,NewPage,ExportPdf,Preview,Print,Templates,Cut,Copy,Paste,PasteText,PasteFromWord,Undo,Redo,SelectAll,Scayt,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Source,CreateDiv,Blockquote,About,Maximize,ShowBlocks,Flash,Smiley,SpecialChar,Iframe,PageBreak,Anchor,Unlink,Link,BidiLtr,BidiRtl,Language',
@@ -87,6 +88,7 @@ export default {
 
   mounted() {
     this.config.availableTokens = this.templateTokens;
+    this.config.groupTokens = this.groupedTokens;
     this.showEditor = true;
   },
 
