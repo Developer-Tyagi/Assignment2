@@ -1444,6 +1444,7 @@ export default {
     return {
       amountAvailableForCommissions: 0,
       hourCal: [],
+      commissionData: [{ id: '', paid: '', payee: '', type: '' }],
       toggleType: [],
       commissions: [],
       personnelPaidAmount: [],
@@ -2183,6 +2184,21 @@ export default {
         });
       });
       console.log(this.personnel.personnel, 654);
+      for (let i = 0; i < this.personnel.personnel.length; i++) {
+        var totalRate = 0;
+        if (this.personnel.personnel[i].fees.type == 'dollar') {
+          totalRate = this.personnel.personnel[i].fees.rate;
+          this.commissions.push({
+            id: this.personnel.personnel[i].id,
+            paid: totalRate,
+            payee: this.personnel.personnel[i].name,
+            type: this.personnel.personnel[i].fees.type
+          });
+        } else if (this.personnel.personnel[i].fees.type == 'percentage') {
+        } else if (this.personnel.personnel[i].fees.type == 'update') {
+        }
+      }
+
       this.personnel.personnel.forEach(val => {
         this.commissions.push({
           id: val.id,
