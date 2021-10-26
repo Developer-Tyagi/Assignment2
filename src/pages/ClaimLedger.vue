@@ -919,12 +919,11 @@
                     v-model.number="companyPerHour"
                     type="number"
                     @blur="hourToFeeCalculation"
-                    @input="CalculationOfCompanyFee(partialCompanyValue)"
+                    @input="hourToFeeCalculation()"
                     class="col-3"
                     outlined
                   ></q-input>
                   <div class="q-mt-sm text-h6">*</div>
-
                   <q-input
                     dense
                     v-model.number="partialCompanyValue"
@@ -932,7 +931,7 @@
                     type="number"
                     prefix="$"
                     @blur="hourToFeeCalculation"
-                    @input="CalculationOfCompanyFee(partialCompanyValue)"
+                    @input="hourToFeeCalculation()"
                     class="col-4"
                   >
                     <template v-slot:append>
@@ -1756,7 +1755,8 @@ export default {
     /* Hour To Fees Calculation     */
     hourToFeeCalculation() {
       this.addDisbursement.companyFee =
-        this.companyPerHour * this.partialCompanyValue;
+        (this.companyPerHour ? this.companyPerHour : 0) *
+        (this.partialCompanyValue ? this.partialCompanyValue : 0);
 
       this.netExpenseToPayByClient =
         this.addDisbursement.amountToDisbuse -
@@ -2182,6 +2182,7 @@ export default {
           paid: parseInt(val.paid)
         });
       });
+      console.log(this.personnel.personnel, 654);
       this.personnel.personnel.forEach(val => {
         this.commissions.push({
           id: val.id,
