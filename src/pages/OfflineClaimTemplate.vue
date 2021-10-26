@@ -194,7 +194,13 @@
 import { mapGetters, mapActions } from 'vuex';
 import VueSignaturePad from 'components/VueSignaturePad';
 import CustomBar from 'components/CustomBar';
-import html2pdf from 'html2pdf.js';
+
+import pdfMake from 'pdfmake/build/pdfmake';
+import { getBase64 } from '@utils/common';
+
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+import htmlToPdfmake from 'html-to-pdfmake';
 import { dateToShow } from '@utils/date';
 import { jsPDF } from 'jspdf';
 import { makeId } from 'src/store/leads/actions';
@@ -234,6 +240,7 @@ export default {
       templatetype: { value: '', machineValue: '' }
     };
   },
+
   async created() {
     this.claim = await this.getSingleClaims(this.selectedClaimId);
     await this.getTemplates();
@@ -897,6 +904,7 @@ export default {
       }
     ];
   },
+
   methods: {
     ...mapActions([
       'getTemplates',
@@ -905,7 +913,7 @@ export default {
       'getSingleClientDetails',
       'getSingleClaims'
     ]),
-
+    getBase64,
     dateToShow,
     async setTypes(value) {
       const obj = this.templateOptions.find(item => {
@@ -951,61 +959,42 @@ export default {
       if (documentType == 'signedDocument') {
       }
       let id = makeId();
-      var opt = {
-        margin: [10, 5],
-        filename: 'contract_' + id + '.pdf'
-      };
-      await html2pdf()
-        .from(documentString)
-        .set(opt)
 
-        .outputPdf('datauri')
-        .then(async data => {
-          this.document = data;
-          let pdfId = makeId();
-          try {
-            const result = await Filesystem.writeFile({
-              path:
-                documentType == 'signedDocument'
-                  ? 'signed_contract_' + pdfId + '.pdf'
-                  : 'contract_' + pdfId + '.pdf',
-              data: this.document,
-              directory: FilesystemDirectory.Documents
-              // encoding: FilesystemEncoding.UTF8
-            });
-          } catch (e) {
-            console.error('Unable to write file', e);
-          }
-          this.contractDocument = '';
-          if (documentType == 'signedDocument') {
-            const signedContract = {
-              signed_document: this.document
-            };
+      const contractDocumentHtml = htmlToPdfmake(documentString, {
+        imagesByReference: true
+      });
 
-            await localDB.contractDocument.update(
-              this.documentId,
-              signedContract
-            );
-            this.signedDocument = this.document;
-            this.finalSignature = true;
-            this.signedPdfDailog = true;
-            this.contractDocumentDialog = false;
-          } else {
-            const intialContract = {
-              claimId: this.selectedClaimId,
-              document: this.document,
-              template_type: this.templatetype.machineValue
-            };
-            var response = await this.addTemplateLocal(intialContract);
-            this.contractDocumentDialog = true;
-            this.contractDocument = response.document;
-            this.pdfDailog = true;
+      pdfMake.createPdf(contractDocumentHtml).getDataUrl(async dataURL => {
+        this.document = dataURL;
 
-            this.documentId = response.id;
+        if (documentType == 'signedDocument') {
+          const signedContract = {
+            signed_document: this.document
+          };
 
-            this.document = '';
-          }
-        });
+          await localDB.contractDocument.update(
+            this.documentId,
+            signedContract
+          );
+          this.signedDocument = this.document;
+          this.finalSignature = true;
+          this.signedPdfDailog = true;
+          this.contractDocumentDialog = false;
+        } else {
+          const intialContract = {
+            claimId: this.selectedClaimId,
+            document: this.document,
+            template_type: this.templatetype.machineValue
+          };
+          var response = await this.addTemplateLocal(intialContract);
+          this.contractDocumentDialog = true;
+          this.contractDocument = response.document;
+          this.pdfDailog = true;
+
+          this.documentId = response.id;
+          this.document = '';
+        }
+      });
     },
 
     async onClickGenerateDocument() {
