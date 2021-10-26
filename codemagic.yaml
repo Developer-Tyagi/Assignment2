@@ -99,7 +99,7 @@ workflows:
     # triggering:
     #   events:
     #     - tag
-      cancel_previous_builds: true
+    # cancel_previous_builds: true
     scripts:
       - *setup_env_vars
       - *install_node_modules
