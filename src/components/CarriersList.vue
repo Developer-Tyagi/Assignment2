@@ -23,7 +23,7 @@
       <q-btn @click="onAddButtonClick" flat><img src="~assets/add.svg"/></q-btn>
     </div>
     <div v-if="!loading">
-      <q-scroll-area style="height:85vh">
+      <q-scroll-area class="scroll-area">
         <q-infinite-scroll @load="onLoad" :offset="250" ref="infiniteScroll">
           <template v-slot:loading>
             <div class="row justify-center q-my-md">
