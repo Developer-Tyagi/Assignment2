@@ -33,6 +33,23 @@ export async function getCarriers(
     dispatch('setLoading', false);
   }
 }
+export async function carrierPagination({ dispatch, commit }, params) {
+  let carrierList = [];
+  try {
+    let result = await request.get(`/carriers`, params);
+    carrierList = result['data'];
+  } catch (error) {
+    dispatch('redirectTo404Page', error);
+    if (error.response) {
+      dispatch('setToastMessage', {
+        type: 'negative',
+        caption: 'Status ' + error.response.data.status,
+        message: error.response.data.title
+      });
+    }
+  }
+  return carrierList;
+}
 
 export async function addCarrier(
   {
