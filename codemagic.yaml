@@ -13,7 +13,7 @@ workflows:
     # triggering:
     #   events:
     #     - pull_request
-      cancel_previous_builds: true
+    # cancel_previous_builds: true
     scripts:
       - &setup_env_vars
         name: Setup environment variables
