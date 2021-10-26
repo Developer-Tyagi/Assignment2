@@ -18,23 +18,6 @@
           <div class="column justify-center" style="margin-left:-30px">
             <img src="~assets/logo2.png" />
           </div>
-          <!-- <div class="col-5 column justify-center">
-            <div
-              class=" overlay"
-              style="width:30%;height:10vh;margin-left:39%; background: radial-gradient(closest-side,  #F6d365,#F19733,#F191);"
-            >
-              <img
-                class="overlay  "
-                src="~assets/Black.svg"
-                style="width:100%;height:10vh; margin-left:-10%;"
-              />
-              <img
-                class="overlay  "
-                src="~assets/White.svg"
-                style="width:100%; height:10vh;margin-left:-15%;"
-              />
-            </div>
-          </div> -->
         </div>
       </q-toolbar>
       <q-toolbar class="row bg-primary rounded-header" v-else>
@@ -47,27 +30,18 @@
           @click="onMenuButtonClick"
           v-if="
             ($q.screen.width > 1600 &&
-              ($route.name === 'dashboard' ||
-                $route.name === 'clients' ||
-                $route.name === 'leads dashboard' ||
-                $route.name === 'vendors' ||
-                $route.name === 'settings' ||
-                $route.name === 'carriers' ||
-                $route.name === 'mortgages' ||
-                $route.name === 'manage users' ||
-                $route.name === 'admin' ||
-                $route.name === 'claims' ||
-                $route.name === 'configuration')) ||
+              ($route.name === 'dashboard' || $route.name === 'settings')) ||
               ($q.screen.width < 1600 && $route.name === 'dashboard')
           "
         ></q-btn>
-        <q-icon
-          @click="onBackClick"
-          name="arrow_back"
-          size="sm"
-          v-else
-          class="button-50"
-        />
+        <div class="cursor-pointer" v-if="toBackButtonVisibility()">
+          <q-icon
+            @click="onBackClick"
+            name="arrow_back"
+            size="sm"
+            class="button-50"
+          />
+        </div>
         <div class="text-uppercase text-bold  q-mx-auto">
           <span v-if="$route.name == 'Leads'">{{ converted }}</span>
           <span class="text-white"> {{ $route.name }} </span>
@@ -309,6 +283,28 @@ export default {
       'getClients',
       'getAccess'
     ]),
+    // this function is used to hide the back button for the pages which are there in the humberger menubar
+    toBackButtonVisibility() {
+      const screenWidth = window.screen.width;
+      const route = this.$router.currentRoute.fullPath.split('/')[1];
+      if (
+        (route == 'claimstats' ||
+          route == 'claims' ||
+          route == 'clients' ||
+          route == 'leads-dashboard' ||
+          route == 'vendors' ||
+          route == 'carriers' ||
+          route == 'mortgages' ||
+          route == 'configuration' ||
+          route == 'reports' ||
+          route == 'admin' ||
+          route == 'manage-users' ||
+          route == 'edit-profile') &&
+        screenWidth > 1600
+      )
+        return false;
+      else return true;
+    },
     ...mapMutations(['setConvertedLead', 'setEditOfflineClientIcon']),
     isMobile,
     getImage(icon) {

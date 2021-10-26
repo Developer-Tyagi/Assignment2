@@ -72,7 +72,7 @@
       </div>
       <div class="row justify-between">
         <q-card class="col-5 bg-primary rounded">
-          <div class="q-pa-md row" @click="onClickNewClaims">
+          <div class="q-pa-md row cursor-pointer" @click="onClickNewClaims">
             <span class="text-white text-bold col-7"
               ><small>New Claims</small></span
             >
@@ -82,7 +82,7 @@
           </div>
         </q-card>
         <q-card class="col-5 bg-primary rounded ">
-          <div class="q-pa-md row" @click="onClickNewLead">
+          <div class="cursor-pointer q-pa-md row" @click="onClickNewLead">
             <span class="text-white text-bold col-7"
               ><small>New Leads</small></span
             >
@@ -100,12 +100,12 @@
       </div>
       <div class="claim-list-scrollable" v-if="claims.length > 0">
         <q-card
-          class="q-mt-sm"
+          class="q-mt-sm cursor-pointer"
           v-for="claim in claims"
           @click="openClaimDetail(claim)"
         >
           <q-card-section>
-            <div class="row">
+            <div class="row ">
               <span class="heading-light"
                 >{{ claim.client.fname ? claim.client.fname : '-' }}
                 {{ claim.client.lname ? claim.client.lname : '-' }}</span
