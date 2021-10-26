@@ -143,9 +143,9 @@
               v-bind="link"
               class="q-mt-md bg-white rounded-sidebar q-px-none"
               v-if="
-                (link.title != 'Admin' || !isMobile()) &&
-                  (link.title != 'Manage Users' || !isMobile()) &&
-                  (link.title != 'Configuration' || !isMobile())
+                (link.title != 'Admin' || isMobile() == false) &&
+                  (link.title != 'Manage Users' || isMobile() == false) &&
+                  (link.title != 'Configuration' || isMobile() == false)
               "
             >
               <q-item-section @click="onClickMenuItem(link.title)">
