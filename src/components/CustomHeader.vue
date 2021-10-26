@@ -143,9 +143,9 @@
               v-bind="link"
               class="q-mt-md bg-white rounded-sidebar q-px-none"
               v-if="
-                (link.title != 'Admin' || $q.screen.width > 1600) &&
-                  (link.title != 'Manage Users' || $q.screen.width > 1600) &&
-                  (link.title != 'Configuration' || $q.screen.width > 1600)
+                (link.title != 'Admin' || !isMobile()) &&
+                  (link.title != 'Manage Users' || !isMobile()) &&
+                  (link.title != 'Configuration' || !isMobile())
               "
             >
               <q-item-section @click="onClickMenuItem(link.title)">
@@ -190,6 +190,7 @@ import {
   getCurrentUser,
   getFCMToken
 } from '@utils/auth';
+import { isMobile } from '@utils/common';
 import { Capacitor } from '@capacitor/core';
 import { removeFirebaseToken } from '@utils/firebase';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
@@ -309,9 +310,11 @@ export default {
       'getAccess'
     ]),
     ...mapMutations(['setConvertedLead', 'setEditOfflineClientIcon']),
+    isMobile,
     getImage(icon) {
       return require('../assets/' + icon);
     },
+
     async logout() {
       if (this.getFCMToken()) {
         await this.deletePushNotificationToken(this.getFCMToken());
