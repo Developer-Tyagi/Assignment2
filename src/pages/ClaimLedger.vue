@@ -231,13 +231,13 @@
 
                   <div class="row justify-between">
                     <div class="col-3">Payee</div>
-                    <div class="col-2">Amount</div>
+                    <div class="col-3">Amount</div>
                     <div class="col-2">Type</div>
                   </div>
                   <div class="q-my-sm row justify-between">
                     <div class="col-3 heading-light">Company</div>
 
-                    <div class="col-2 heading-light">
+                    <div class="col-3 heading-light">
                       $ {{ pay.paidToCompany ? pay.paidToCompany : 0 }}
                     </div>
                     <div class="col-2 heading-light">Company</div>
@@ -245,7 +245,7 @@
                   <div class="row justify-between">
                     <div class="col-3 heading-light">Client</div>
 
-                    <div class="col-2 heading-light">
+                    <div class="col-3 heading-light">
                       $ {{ pay.paidToClient ? pay.paidToClient : 0 }}
                     </div>
                     <div class="col-2 heading-light">Client</div>
@@ -259,7 +259,7 @@
                       {{ exp.payee ? exp.payee : '-' }}
                     </div>
 
-                    <div class="col-2 heading-light">
+                    <div class="col-3 heading-light">
                       $ {{ exp.paid ? exp.paid : 0 }}
                     </div>
                     <div class="col-2 heading-light">Vendor</div>
@@ -274,7 +274,7 @@
                       {{ commission.payee ? commission.payee : '' }}
                     </div>
 
-                    <div class="col-2 heading-light">
+                    <div class="col-3 heading-light">
                       $ {{ commission.paid ? commission.paid : 0 }}
                     </div>
                     <div class="col-2 heading-light">Personnel</div>
@@ -318,13 +318,13 @@
               <span class="heading-light">Recieved Date</span>
 
               <q-input
-                dense
                 v-model="payments.date"
                 mask="##/##/####"
                 label="MM/DD/YYYY"
                 style="margin-left: auto; width: 50%"
                 lazy-rules
-                class="required"
+                borderless
+                class="required input-style"
               >
                 <template v-slot:append>
                   <q-icon
@@ -355,9 +355,11 @@
                 dense
                 v-model.number="payments.amountsOfPayment"
                 type="number"
+                size="sm"
                 style="margin-left: auto; width: 50%"
                 prefix="$"
-                class="input-extra-padding"
+                borderless
+                class=" input-style"
                 lazy-rules
                 :rules="[val => val > 0 || 'Please fill Amount of payment']"
               />
@@ -366,10 +368,10 @@
               <span class="heading-light">Check Reference #</span>
 
               <q-input
-                dense
+                borderless
                 v-model="payments.checkReference"
                 style="margin-left: auto; width: 50%"
-                class="input-extra-padding"
+                class="input-style"
               />
             </div>
             <div>
@@ -427,17 +429,25 @@
             </div>
 
             <div class="heading-light">Notes</div>
-            <textarea v-model="payments.notes" rows="3" class="full-width" />
+            <q-input
+              type="textarea"
+              v-model="payments.notes"
+              rows="3"
+              class="input-style"
+              borderless
+            />
           </q-form>
         </div>
-        <q-btn
-          :disable="payments.remainingAmount < 0"
-          label="Save"
-          color="primary"
-          class="single-next-button-style"
-          @click="onClickSaveEditPayment"
-          size="'xl'"
-        />
+        <div class="row justify-center">
+          <q-btn
+            :disable="payments.remainingAmount < 0"
+            label="Save"
+            color="primary"
+            class="single-next-button-style"
+            @click="onClickSaveEditPayment"
+            size="'xl'"
+          />
+        </div>
       </q-card>
     </q-dialog>
     <!-- edit Payment Dialog  -->
@@ -1145,6 +1155,7 @@
                           <div>Payee</div>
                           <div class="name-ellipsis">{{ person.name }}</div>
                         </div>
+                        {{ expenses.expenses }}
                         <div class="col column items-center">
                           <div>Due</div>
 
@@ -1272,7 +1283,7 @@
                           />
                           <div
                             class="row"
-                            style="width:36%"
+                            style="width:40%"
                             v-if="toggleType[index] == 'update'"
                           >
                             <q-input
@@ -1684,9 +1695,10 @@ export default {
       this.netExpenseToPayByCompany =
         this.amountAvailableForCommissions - totalRate;
       if (this.personnel.personnel[index].fees)
-        this.personnel.personnel[index].fees.rate = this.personnelPaidAmount[
-          index
-        ];
+        this.personnel.personnel[index].fees.type = this.toggleType[index];
+      this.personnel.personnel[index].fees.rate = this.personnelPaidAmount[
+        index
+      ];
     },
     /* Toggle button Function  for company   */
     setValueToPayCompany(i, value) {
@@ -2164,26 +2176,28 @@ export default {
         });
         return;
       }
-
       this.clientAndCompany.forEach(val => {
-        this.finalExpenses.push({
-          id: val.id,
-          paid: parseInt(val.paid)
-        });
+        if (val.paid != 0)
+          this.finalExpenses.push({
+            id: val.id,
+            paid: parseInt(val.paid)
+          });
       });
       this.clientOnly.forEach(val => {
-        this.finalExpenses.push({
-          id: val.id,
-          paid: parseInt(val.paid)
-        });
+        if (val.paid != 0)
+          this.finalExpenses.push({
+            id: val.id,
+            paid: parseInt(val.paid)
+          });
       });
       this.companyOnly.forEach(val => {
-        this.finalExpenses.push({
-          id: val.id,
-          paid: parseInt(val.paid)
-        });
+        if (val.paid != 0)
+          this.finalExpenses.push({
+            id: val.id,
+            paid: parseInt(val.paid)
+          });
       });
-      console.log(this.personnel.personnel, 654);
+
       for (let i = 0; i < this.personnel.personnel.length; i++) {
         var totalRate = 0;
         if (this.personnel.personnel[i].fees.type == 'dollar') {
@@ -2195,19 +2209,28 @@ export default {
             type: this.personnel.personnel[i].fees.type
           });
         } else if (this.personnel.personnel[i].fees.type == 'percentage') {
+          totalRate =
+            (this.amountAvailableForCommissions *
+              this.personnel.personnel[i].fees.rate) /
+            100;
+          this.commissions.push({
+            id: this.personnel.personnel[i].id,
+            paid: totalRate,
+            payee: this.personnel.personnel[i].name,
+            type: this.personnel.personnel[i].fees.type
+          });
         } else if (this.personnel.personnel[i].fees.type == 'update') {
+          totalRate =
+            this.personnel.personnel[i].fees.rate *
+            parseInt(this.hourCal[i] ? this.hourCal[i] : 1);
+          this.commissions.push({
+            id: this.personnel.personnel[i].id,
+            paid: totalRate,
+            payee: this.personnel.personnel[i].name,
+            type: this.personnel.personnel[i].fees.type
+          });
         }
       }
-
-      this.personnel.personnel.forEach(val => {
-        this.commissions.push({
-          id: val.id,
-          paid: val.fees.rate,
-          payee: val.name,
-          type: val.fees.type
-        });
-      });
-
       const payload = {
         id: this.selectedClaimId,
         data: {
