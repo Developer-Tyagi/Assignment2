@@ -25,3 +25,8 @@ export function toCheckAddressData(address) {
     return false;
   } else return true;
 }
+export function isMobile() {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent
+  );
+}
