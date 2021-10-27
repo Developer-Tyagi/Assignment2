@@ -236,6 +236,7 @@ import { mapGetters, mapActions, mapMutations } from 'vuex';
 import moment from 'moment';
 import { dateToShow } from '@utils/date';
 import { onPhoneNumberClick, showPhoneNumber } from '@utils/clickable';
+import { getCurrentUser } from 'src/utils/auth';
 
 export default {
   name: 'Leads',
@@ -257,7 +258,11 @@ export default {
   },
 
   async created() {
-    await this.getOrganization();
+    //only owner have the permission to view the organization info
+    const userRole = getCurrentUser().attributes.roles[0].machineValue;
+    if (userRole == 'owner') {
+      await this.getOrganization();
+    }
   },
 
   methods: {
