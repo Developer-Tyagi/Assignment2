@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="q-ma-sm">
     <q-card class="q-pa-sm">
       <div class="form-heading q-mt-lg">Personnel Role</div>
 

@@ -231,13 +231,13 @@
 
                   <div class="row justify-between">
                     <div class="col-3">Payee</div>
-                    <div class="col-2">Amount</div>
+                    <div class="col-3">Amount</div>
                     <div class="col-2">Type</div>
                   </div>
                   <div class="q-my-sm row justify-between">
                     <div class="col-3 heading-light">Company</div>
 
-                    <div class="col-2 heading-light">
+                    <div class="col-3 heading-light">
                       $ {{ pay.paidToCompany ? pay.paidToCompany : 0 }}
                     </div>
                     <div class="col-2 heading-light">Company</div>
@@ -245,7 +245,7 @@
                   <div class="row justify-between">
                     <div class="col-3 heading-light">Client</div>
 
-                    <div class="col-2 heading-light">
+                    <div class="col-3 heading-light">
                       $ {{ pay.paidToClient ? pay.paidToClient : 0 }}
                     </div>
                     <div class="col-2 heading-light">Client</div>
@@ -259,7 +259,7 @@
                       {{ exp.payee ? exp.payee : '-' }}
                     </div>
 
-                    <div class="col-2 heading-light">
+                    <div class="col-3 heading-light">
                       $ {{ exp.paid ? exp.paid : 0 }}
                     </div>
                     <div class="col-2 heading-light">Vendor</div>
@@ -274,7 +274,7 @@
                       {{ commission.payee ? commission.payee : '' }}
                     </div>
 
-                    <div class="col-2 heading-light">
+                    <div class="col-3 heading-light">
                       $ {{ commission.paid ? commission.paid : 0 }}
                     </div>
                     <div class="col-2 heading-light">Personnel</div>
@@ -318,13 +318,13 @@
               <span class="heading-light">Recieved Date</span>
 
               <q-input
-                dense
                 v-model="payments.date"
                 mask="##/##/####"
                 label="MM/DD/YYYY"
                 style="margin-left: auto; width: 50%"
                 lazy-rules
-                class="required"
+                borderless
+                class="required input-style"
               >
                 <template v-slot:append>
                   <q-icon
@@ -355,9 +355,11 @@
                 dense
                 v-model.number="payments.amountsOfPayment"
                 type="number"
+                size="sm"
                 style="margin-left: auto; width: 50%"
                 prefix="$"
-                class="input-extra-padding"
+                borderless
+                class="input-style"
                 lazy-rules
                 :rules="[val => val > 0 || 'Please fill Amount of payment']"
               />
@@ -366,10 +368,10 @@
               <span class="heading-light">Check Reference #</span>
 
               <q-input
-                dense
+                borderless
                 v-model="payments.checkReference"
                 style="margin-left: auto; width: 50%"
-                class="input-extra-padding"
+                class="input-style"
               />
             </div>
             <div>
@@ -427,17 +429,25 @@
             </div>
 
             <div class="heading-light">Notes</div>
-            <textarea v-model="payments.notes" rows="3" class="full-width" />
+            <q-input
+              type="textarea"
+              v-model="payments.notes"
+              rows="3"
+              class="input-style"
+              borderless
+            />
           </q-form>
         </div>
-        <q-btn
-          :disable="payments.remainingAmount < 0"
-          label="Save"
-          color="primary"
-          class="single-next-button-style"
-          @click="onClickSaveEditPayment"
-          size="'xl'"
-        />
+        <div class="row justify-center">
+          <q-btn
+            :disable="payments.remainingAmount < 0"
+            label="Save"
+            color="primary"
+            class="single-next-button-style"
+            @click="onClickSaveEditPayment"
+            size="'xl'"
+          />
+        </div>
       </q-card>
     </q-dialog>
     <!-- edit Payment Dialog  -->
@@ -791,7 +801,7 @@
                   $
                   {{
                     totalExpensesOfClientAndCompany -
-                      alreadyPaidByClientAndCompany
+                    alreadyPaidByClientAndCompany
                   }}
                 </span>
               </div>
@@ -804,11 +814,11 @@
                 >
                   <table class="full-width">
                     <tr>
-                      <td style="width:30%;">Payee</td>
-                      <td style="width:30%;">Due</td>
-                      <td style="width:20%;">Pay ?</td>
+                      <td style="width: 30%">Payee</td>
+                      <td style="width: 30%">Due</td>
+                      <td style="width: 20%">Pay ?</td>
 
-                      <td style="width:30%;">Paid</td>
+                      <td style="width: 30%">Paid</td>
                     </tr>
 
                     <tr
@@ -878,7 +888,6 @@
               </div>
               <div class="q-mt-md row">
                 <div class="col-7 q-my-sm heading-light">Company Fee Type</div>
-
                 <q-btn-toggle
                   v-model="feesType"
                   push
@@ -907,7 +916,7 @@
                   class="col-4"
                 >
                   <template v-slot:append>
-                    <span class="text-bold" style="font-size:20px;">%</span>
+                    <span class="text-bold" style="font-size: 20px">%</span>
                   </template>
                 </q-input>
               </div>
@@ -919,12 +928,11 @@
                     v-model.number="companyPerHour"
                     type="number"
                     @blur="hourToFeeCalculation"
-                    @input="CalculationOfCompanyFee(partialCompanyValue)"
+                    @input="hourToFeeCalculation()"
                     class="col-3"
                     outlined
                   ></q-input>
                   <div class="q-mt-sm text-h6">*</div>
-
                   <q-input
                     dense
                     v-model.number="partialCompanyValue"
@@ -932,11 +940,11 @@
                     type="number"
                     prefix="$"
                     @blur="hourToFeeCalculation"
-                    @input="CalculationOfCompanyFee(partialCompanyValue)"
+                    @input="hourToFeeCalculation()"
                     class="col-4"
                   >
                     <template v-slot:append>
-                      <span class="text-bold" style="font-size:20px;">/hr</span>
+                      <span class="text-bold" style="font-size: 20px">/hr</span>
                     </template>
                   </q-input>
                 </div>
@@ -977,8 +985,8 @@
                 $
                 {{
                   addDisbursement.amountToDisbuse -
-                    netExpenseToPayByBoth -
-                    addDisbursement.companyFee
+                  netExpenseToPayByBoth -
+                  addDisbursement.companyFee
                 }}
               </div>
             </q-card>
@@ -989,8 +997,8 @@
                 $
                 {{
                   addDisbursement.amountToDisbuse -
-                    netExpenseToPayByBoth -
-                    addDisbursement.companyFee
+                  netExpenseToPayByBoth -
+                  addDisbursement.companyFee
                 }}
               </div>
 
@@ -1009,11 +1017,11 @@
                 >
                   <table class="full-width">
                     <tr>
-                      <td style="width:30%;">Payee</td>
-                      <td style="width:30%;">Due</td>
+                      <td style="width: 30%">Payee</td>
+                      <td style="width: 30%">Due</td>
 
-                      <td style="width:20%;">Pay ?</td>
-                      <td style="width:30%;">Paid</td>
+                      <td style="width: 20%">Pay ?</td>
+                      <td style="width: 30%">Paid</td>
                     </tr>
 
                     <tr
@@ -1076,11 +1084,11 @@
                 >
                   <table class="full-width">
                     <tr>
-                      <td style="width:30%;">Payee</td>
-                      <td style="width:30%;">Due</td>
-                      <td style="width:20%;">Pay ?</td>
+                      <td style="width: 30%">Payee</td>
+                      <td style="width: 30%">Due</td>
+                      <td style="width: 20%">Pay ?</td>
 
-                      <td style="width:30%;">Paid</td>
+                      <td style="width: 30%">Paid</td>
                     </tr>
 
                     <tr
@@ -1246,7 +1254,7 @@
                         </div>
                       </div>
 
-                      <div class="row" style="width:100%">
+                      <div class="row" style="width: 100%">
                         <div>Rate</div>
                         <div class="row full-width">
                           <q-input
@@ -1256,7 +1264,7 @@
                             type="number"
                             dense
                             outlined
-                            style="width:20%;"
+                            style="width: 20%"
                             v-model.number="personnelPaidAmount[index]"
                             @input="onTotalCommission(index)"
                           />
@@ -1267,19 +1275,19 @@
                             suffix="%"
                             dense
                             outlined
-                            style="width:20%"
+                            style="width: 20%"
                             v-model.number="personnelPaidAmount[index]"
                             @input="onTotalCommission(index)"
                           />
                           <div
                             class="row"
-                            style="width:36%"
+                            style="width: 40%"
                             v-if="toggleType[index] == 'update'"
                           >
                             <q-input
                               :disable="personnelPayToggle[index] == false"
                               suffix="/hr"
-                              style="width:50%"
+                              style="width: 50%"
                               dense
                               outlined
                               v-model.number="personnelPaidAmount[index]"
@@ -1291,7 +1299,7 @@
                               :disable="personnelPayToggle[index] == false"
                               v-model.number="hourCal[index]"
                               dense
-                              style="width:34% ;"
+                              style="width: 34%"
                               outlined
                               @input="onTotalCommission(index)"
                             />
@@ -1445,6 +1453,7 @@ export default {
     return {
       amountAvailableForCommissions: 0,
       hourCal: [],
+      commissionData: [{ id: '', paid: '', payee: '', type: '' }],
       toggleType: [],
       commissions: [],
       personnelPaidAmount: [],
@@ -1684,9 +1693,9 @@ export default {
       this.netExpenseToPayByCompany =
         this.amountAvailableForCommissions - totalRate;
       if (this.personnel.personnel[index].fees)
-        this.personnel.personnel[index].fees.rate = this.personnelPaidAmount[
-          index
-        ];
+        this.personnel.personnel[index].fees.type = this.toggleType[index];
+      this.personnel.personnel[index].fees.rate =
+        this.personnelPaidAmount[index];
     },
     /* Toggle button Function  for company   */
     setValueToPayCompany(i, value) {
@@ -1756,7 +1765,8 @@ export default {
     /* Hour To Fees Calculation     */
     hourToFeeCalculation() {
       this.addDisbursement.companyFee =
-        this.companyPerHour * this.partialCompanyValue;
+        (this.companyPerHour ? this.companyPerHour : 0) *
+        (this.partialCompanyValue ? this.partialCompanyValue : 0);
 
       this.netExpenseToPayByClient =
         this.addDisbursement.amountToDisbuse -
@@ -1820,12 +1830,11 @@ export default {
       this.companyAmounts = [];
       this.clientAmount = [];
       this.companyPerHour = 0;
-      this.totalExpensesOfClient = this.totalExpensesOfClientAndCompany = this.totalExpensesOfCompany = 0;
+      this.totalExpensesOfClient =
+        this.totalExpensesOfClientAndCompany =
+        this.totalExpensesOfCompany =
+          0;
       this.addDisbursement.amountToDisbuse = this.account.pendingDisbursement;
-
-      if (this.addDisbursement.amountToDisbuse === 0) {
-        this.addDisbursement.companyFee = this.partialCompanyValue = this.account.fees.rate = 0;
-      }
 
       this.addDisbursement.companyFee = this.partialCompanyValue =
         this.account.fees && this.account.fees.rate
@@ -2078,7 +2087,6 @@ export default {
     },
     closeDisbursmentBox() {
       this.addDisbursement.amountToDisbuse = 0;
-      this.partialCompanyValue = 0;
       this.addDisbursement.companyFee = 0;
       this.clientAndCompany = [];
       this.clientOnly = [];
@@ -2163,34 +2171,61 @@ export default {
         });
         return;
       }
-
       this.clientAndCompany.forEach(val => {
-        this.finalExpenses.push({
-          id: val.id,
-          paid: parseInt(val.paid)
-        });
+        if (val.paid != 0)
+          this.finalExpenses.push({
+            id: val.id,
+            paid: parseInt(val.paid)
+          });
       });
       this.clientOnly.forEach(val => {
-        this.finalExpenses.push({
-          id: val.id,
-          paid: parseInt(val.paid)
-        });
+        if (val.paid != 0)
+          this.finalExpenses.push({
+            id: val.id,
+            paid: parseInt(val.paid)
+          });
       });
       this.companyOnly.forEach(val => {
-        this.finalExpenses.push({
-          id: val.id,
-          paid: parseInt(val.paid)
-        });
-      });
-      this.personnel.personnel.forEach(val => {
-        this.commissions.push({
-          id: val.id,
-          paid: val.fees.rate,
-          payee: val.name,
-          type: val.fees.type
-        });
+        if (val.paid != 0)
+          this.finalExpenses.push({
+            id: val.id,
+            paid: parseInt(val.paid)
+          });
       });
 
+      for (let i = 0; i < this.personnel.personnel.length; i++) {
+        var totalRate = 0;
+        if (this.personnel.personnel[i].fees.type == 'dollar') {
+          totalRate = this.personnel.personnel[i].fees.rate;
+          this.commissions.push({
+            id: this.personnel.personnel[i].id,
+            paid: totalRate,
+            payee: this.personnel.personnel[i].name,
+            type: this.personnel.personnel[i].fees.type
+          });
+        } else if (this.personnel.personnel[i].fees.type == 'percentage') {
+          totalRate =
+            (this.amountAvailableForCommissions *
+              this.personnel.personnel[i].fees.rate) /
+            100;
+          this.commissions.push({
+            id: this.personnel.personnel[i].id,
+            paid: totalRate,
+            payee: this.personnel.personnel[i].name,
+            type: this.personnel.personnel[i].fees.type
+          });
+        } else if (this.personnel.personnel[i].fees.type == 'update') {
+          totalRate =
+            this.personnel.personnel[i].fees.rate *
+            parseInt(this.hourCal[i] ? this.hourCal[i] : 1);
+          this.commissions.push({
+            id: this.personnel.personnel[i].id,
+            paid: totalRate,
+            payee: this.personnel.personnel[i].name,
+            type: this.personnel.personnel[i].fees.type
+          });
+        }
+      }
       const payload = {
         id: this.selectedClaimId,
         data: {
@@ -2220,19 +2255,18 @@ export default {
       };
 
       await this.editClaimInfo(updatePayload);
-
       //Calling the Update Personnel Info API for updating the fees object
-      for (let index = 0; index < this.commissions.length; index++) {
+      for (let index = 0; index < this.personnel.personnel.length; index++) {
         var personnelPayload = {
           id: this.selectedClaimId,
-          personnelId: this.commissions[index].id,
+          personnelId: this.personnel.personnel[index].id,
           companyData: {
             personnel: {
-              personnelID: this.commissions[index].id,
+              personnelID: this.personnel.personnel[index].id,
               fees: {
-                type: this.commissions[index].type,
-                rate: this.commissions[index].paid
-                  ? this.commissions[index].paid
+                type: this.personnel.personnel[index].fees.type,
+                rate: this.personnel.personnel[index].fees.rate
+                  ? this.personnel.personnel[index].fees.rate
                   : 0
               }
             }
@@ -2261,7 +2295,6 @@ export default {
         this.addDisbursementDialog = false;
 
         this.addDisbursement.amountToDisbuse = 0;
-        this.partialCompanyValue = 0;
         this.addDisbursement.companyFee = 0;
       }
     },
