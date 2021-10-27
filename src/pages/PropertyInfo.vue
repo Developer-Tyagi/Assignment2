@@ -55,7 +55,7 @@
                   <div
                     v-if="
                       setClientProperty[i - 1].attributes &&
-                        setClientProperty[i - 1].attributes.address2
+                      setClientProperty[i - 1].attributes.address2
                     "
                   >
                     {{ setClientProperty[i - 1].attributes.address2 }}
@@ -263,12 +263,13 @@
               />
             </div>
           </q-form>
-          <q-btn
-            label="Save"
-            class="single-next-button-style"
-            @click="onSaveButtonClick"
-            size="'xl'"
-          />
+          <div class="row q-mt-lg justify-center">
+            <q-btn
+              label="Save"
+              class="single-next-button-style"
+              @click="onSaveButtonClick"
+            />
+          </div>
         </div>
       </q-card>
     </q-dialog>
@@ -407,9 +408,8 @@ export default {
       this.propertyName = this.setClientProperty[index].attributes.name
         ? this.setClientProperty[index].attributes.name
         : '';
-      this.propertyDescription = this.setClientProperty[
-        index
-      ].attributes.propertyDesc;
+      this.propertyDescription =
+        this.setClientProperty[index].attributes.propertyDesc;
       this.property = this.setClientProperty[index].attributes.propertyType
         ? this.setClientProperty[index].attributes.propertyType
         : '';

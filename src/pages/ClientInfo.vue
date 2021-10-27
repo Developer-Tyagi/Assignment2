@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="q-ml-md  row">
+    <div class="q-ml-md row">
       Date & Time of First Contact
       <q-icon
         name="create"
@@ -15,10 +15,10 @@
       {{ dateWithTime(editSelectedClient.attributes.created) }}
     </div>
 
-    <q-card class="q-ma-xs  q-pa-md">
+    <q-card class="q-ma-xs q-pa-md">
       <div class="client-list q-pa-sm">
         <div class="row">
-          <div class="heading-light q-ml-sm q-mt-md col-xs-4 ">
+          <div class="heading-light q-ml-sm q-mt-md col-xs-4">
             Insured Details
           </div>
           <div class="q-ml-md column">
@@ -62,7 +62,7 @@
         </div>
 
         <div class="q-mt-md row">
-          <div class="heading-light q-ml-xs q-mt-none col-xs-4 ">
+          <div class="heading-light q-ml-xs q-mt-none col-xs-4">
             Co-Insured Details
           </div>
           <div class="column q-ml-md">
@@ -86,8 +86,8 @@
                 <span
                   v-if="
                     editSelectedClient.attributes.insuredInfo.secondary &&
-                      editSelectedClient.attributes.insuredInfo.secondary
-                        .phoneNumber
+                    editSelectedClient.attributes.insuredInfo.secondary
+                      .phoneNumber
                   "
                   class="clickLink"
                   @click="
@@ -137,7 +137,7 @@
         </div>
 
         <div class="q-mt-md row">
-          <div class="heading-light q-ml-xs q-mt-none col-xs-4 ">
+          <div class="heading-light q-ml-xs q-mt-none col-xs-4">
             Address Details
           </div>
           <div
@@ -164,8 +164,8 @@
             <div
               v-if="
                 editSelectedClient.attributes.insuredInfo.mailingAddress &&
-                  editSelectedClient.attributes.insuredInfo.mailingAddress
-                    .address2
+                editSelectedClient.attributes.insuredInfo.mailingAddress
+                  .address2
               "
             >
               {{
@@ -211,7 +211,7 @@
           </div>
         </div>
         <div class="q-mt-md row">
-          <div class="heading-light q-mt-none col-xs-4 ">
+          <div class="heading-light q-mt-none col-xs-4">
             Additional Phone Numbers
           </div>
           <div class="column q-ml-md">
@@ -230,9 +230,7 @@
         </div>
 
         <div class="q-mt-md row">
-          <div class="q-mt-none  col-xs-4 heading-light">
-            Tenant Details
-          </div>
+          <div class="q-mt-none col-xs-4 heading-light">Tenant Details</div>
           <div
             class="column q-ml-md"
             v-if="editSelectedClient.attributes.insuredInfo.tenantInfo"
@@ -339,7 +337,7 @@
                 borderless
                 class="required input-style input-field"
                 v-model="insuredDetails.fname"
-                style="height:55px"
+                style="height: 55px"
                 lazy-rules
                 :rules="[
                   val => (val && val.length > 0) || 'Please fill the First name'
@@ -433,7 +431,7 @@
                 ]"
               />
             </q-card>
-            <q-card class="q-ma-xs  q-pa-md">
+            <q-card class="q-ma-xs q-pa-md">
               <div class="row">
                 <p class="q-mx-none q-ml-xs q-my-auto">
                   Is there a Co-insured?
@@ -468,7 +466,7 @@
                 <q-input
                   dense
                   borderless
-                  class=" input-style input-field"
+                  class="input-style input-field"
                   v-model="coInsuredDetails.fname"
                   label="First Name"
                 />
@@ -530,7 +528,7 @@
                 />
               </div>
             </q-card>
-            <q-card class="q-ma-xs  q-pa-md">
+            <q-card class="q-ma-xs q-pa-md">
               <div class="row">
                 <p class="q-mx-none q-ml-xs q-my-auto">
                   Add aditional phone number(s)
@@ -671,13 +669,15 @@
           </q-form>
           <br />
         </div>
-        <q-btn
-          @click="onSaveButtonClick"
-          label="Save"
-          color="primary"
-          class="single-next-button-style"
-          size="'xl'"
-        ></q-btn>
+        <div class="row justify-center q-mt-lg">
+          <q-btn
+            @click="onSaveButtonClick"
+            label="Save"
+            color="primary"
+            class="single-next-button-style"
+            size="'xl'"
+          ></q-btn>
+        </div>
       </q-card>
     </q-dialog>
   </div>
@@ -839,7 +839,8 @@ export default {
         this.client = this.editSelectedClient.attributes.type;
       }
       if (this.editSelectedClient.attributes.insuredInfo.primary.honorific) {
-        this.honorific1 = this.editSelectedClient.attributes.insuredInfo.primary.honorific;
+        this.honorific1 =
+          this.editSelectedClient.attributes.insuredInfo.primary.honorific;
       }
 
       this.insuredDetails.fname = this.editSelectedClient.attributes.insuredInfo
@@ -883,7 +884,8 @@ export default {
           : '';
       }
       if (this.editSelectedClient.attributes.insuredInfo.primary.email) {
-        this.insuredDetails.email = this.editSelectedClient.attributes.insuredInfo.primary.email;
+        this.insuredDetails.email =
+          this.editSelectedClient.attributes.insuredInfo.primary.email;
       }
 
       if (this.editSelectedClient.attributes.insuredInfo.secondary) {
@@ -891,7 +893,8 @@ export default {
         if (
           this.editSelectedClient.attributes.insuredInfo.secondary.honorific
         ) {
-          this.honorific2 = this.editSelectedClient.attributes.insuredInfo.secondary.honorific;
+          this.honorific2 =
+            this.editSelectedClient.attributes.insuredInfo.secondary.honorific;
         }
 
         this.coInsuredDetails.fname = this.editSelectedClient.attributes
@@ -968,7 +971,8 @@ export default {
           ? this.editSelectedClient.attributes.insuredInfo.mailingAddress
               .addressCountry
           : null;
-        this.clientAddressDetails.addressLocality = this.editSelectedClient.attributes.insuredInfo.mailingAddress.addressLocality;
+        this.clientAddressDetails.addressLocality =
+          this.editSelectedClient.attributes.insuredInfo.mailingAddress.addressLocality;
         this.clientAddressDetails.addressRegion = this.editSelectedClient
           .attributes.insuredInfo.mailingAddress.addressRegion
           ? this.editSelectedClient.attributes.insuredInfo.mailingAddress
@@ -1000,11 +1004,14 @@ export default {
           this.editSelectedClient.attributes.insuredInfo.mailingAddress.dropBox
             .isPresent
         ) {
-          this.clientAddressDetails.dropBox.isPresent = this.editSelectedClient.attributes.insuredInfo.mailingAddress.dropBox.isPresent;
-          this.clientAddressDetails.dropBox.info = this.editSelectedClient.attributes.insuredInfo.mailingAddress.dropBox.info;
+          this.clientAddressDetails.dropBox.isPresent =
+            this.editSelectedClient.attributes.insuredInfo.mailingAddress.dropBox.isPresent;
+          this.clientAddressDetails.dropBox.info =
+            this.editSelectedClient.attributes.insuredInfo.mailingAddress.dropBox.info;
         }
 
-        this.mailingAddressDetails = this.editSelectedClient.attributes.insuredInfo.mailingAddress;
+        this.mailingAddressDetails =
+          this.editSelectedClient.attributes.insuredInfo.mailingAddress;
       }
     },
     // For adding multiple Contact Numbers in ClientInfo

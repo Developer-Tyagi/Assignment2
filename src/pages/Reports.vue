@@ -1,7 +1,7 @@
 <template>
   <q-page>
-    <div class="">
-      <q-card class="q-ma-xl ">
+    <div class="mobile-container-page-without-search">
+      <q-card class="q-ma-xl">
         <div class="q-pa-xl">
           <q-select
             outlined
@@ -29,12 +29,11 @@
             color="red"
           ></q-radio>
         </div>
-        <div class="row justify-center">
+        <div class="row q-pb-md justify-center">
           <q-btn
-            color="primary"
             label="Download"
             @click="onDownload"
-            class="align-content-center q-my-lg"
+            class="single-next-button-style"
           />
         </div>
       </q-card>
