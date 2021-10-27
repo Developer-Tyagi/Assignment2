@@ -59,10 +59,11 @@
         />
       </div>
     </div>
+
     <div>
-      <div v-for="(doc, index) in documents" class="row-div">
+      <div v-for="(doc, index) in documents" class="row-div" :key="index">
         <div
-          v-if="doc.type == 'folder'"
+          v-if="doc.type == 'folder' && doc.properties.isVisible == 'true'"
           class="vertical-center q-px-md q-py-xs"
         >
           <q-icon name="folder" size="sm" color="primary" />
@@ -77,7 +78,7 @@
           />
         </div>
         <div
-          v-if="doc.type != 'folder'"
+          v-if="doc.type != 'folder' && doc.properties.isVisible == 'true'"
           class="vertical-center q-px-md q-py-sm"
         >
           <q-icon :name="iconType(doc.type)" size="sm" color="primary" />
