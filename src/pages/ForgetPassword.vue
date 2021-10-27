@@ -1,9 +1,9 @@
 <template>
-  <q-page class="bg-login">
+  <q-page :class="isMobile() ? 'bg-login-mobile' : 'bg-login'">
     <div class="q-pa-lg">
       <div class="flex column" style="height: 50vh">
         <img
-          v-if="$q.screen.width < 1600"
+          v-if="isMobile()"
           alt="Claimguru"
           src="~assets/claimguru_icon.png"
           class="q-mt-auto q-mx-auto"
@@ -19,7 +19,7 @@
           height="95"
         />
         <img
-          v-if="$q.screen.width < 1600"
+          v-if="isMobile()"
           alt="Claimguru"
           src="~assets/claimguru_text.png"
           class="q-mx-auto q-mb-auto"
@@ -53,8 +53,8 @@
       </q-form>
       <div>
         <q-btn
-          :color="$q.screen.width < 1600 ? 'secondary' : 'white'"
-          :outline="$q.screen.width > 1600 ? true : false"
+          :color="isMobile() ? 'secondary' : 'white'"
+          :outline="!isMobile() ? true : false"
           label="Reset Password"
           class="rounded full-width q-my-md"
           @click="onSubmitClick"
@@ -63,7 +63,7 @@
       <div class="row justify-center">
         <a
           href
-          :class="$q.screen.width < 1600 ? 'text-primary' : 'text-white'"
+          :class="isMobile() ? 'text-primary' : 'text-white'"
           style="text-decoration: none"
           >LOGIN</a
         >
@@ -76,6 +76,7 @@ import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
 import { successMessage } from '@utils/validation';
 import { errorMessage } from '@utils/validation';
 import { constants } from '@utils/constant';
+import { isMobile } from '@utils/common';
 import 'firebase/auth';
 import firebase from 'firebase/app';
 export default {
@@ -85,6 +86,7 @@ export default {
   },
   methods: {
     successMessage,
+    isMobile,
     errorMessage,
     async onSubmitClick() {
       const success = await this.$refs.forgetPasswordForm.validate();
@@ -116,21 +118,11 @@ export default {
   margin-left: auto;
   margin-right: 10%;
 }
-
-@media screen and (max-width: 624px) {
-  .bg-login {
-    background-color: #ededed;
-    width: 100%;
-  }
-
-  .login-input {
-    font-size: 14px;
-    width: 80%;
-  }
-  .rounded {
-    border-radius: 15px 15px 15px 15px;
-  }
+.bg-login-mobile {
+  background-color: #ededed;
+  width: 100%;
 }
+
 .rounded {
   border-radius: 15px 15px 15px 15px;
 }
