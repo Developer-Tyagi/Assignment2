@@ -1,9 +1,9 @@
 <template>
-  <q-page class="bg-login">
+  <q-page :class="isMobile() ? 'bg-login-mobile' : 'bg-login'">
     <div class="q-pa-lg">
       <div class="flex column" style="height: 50vh">
         <img
-          v-if="$q.screen.width < 1600"
+          v-if="isMobile()"
           alt="Claimguru"
           src="~assets/claimguru_icon.png"
           class="q-mt-auto q-mx-auto"
@@ -19,7 +19,7 @@
           height="95"
         />
         <img
-          v-if="$q.screen.width < 1600"
+          v-if="isMobile()"
           alt="Claimguru"
           src="~assets/claimguru_text.png"
           class="q-mx-auto q-mb-auto "
@@ -77,8 +77,8 @@
         </q-card>
         <div>
           <q-btn
-            :color="$q.screen.width < 1600 ? 'secondary' : 'white'"
-            :outline="$q.screen.width > 1600 ? true : false"
+            :color="isMobile() ? 'secondary' : 'white'"
+            :outline="!isMobile() ? true : false"
             label="Login"
             type="submit"
             class="rounded full-width q-my-md"
@@ -86,7 +86,7 @@
         </div>
 
         <div
-          v-if="$q.screen.width > 1600"
+          v-if="!isMobile()"
           class="row justify-center  cursor-pointer"
           @click="$router.push('/signup?plan=office')"
         >
@@ -97,7 +97,7 @@
           @click="$router.push('/forget-password')"
         >
           <a
-            :class="$q.screen.width < 1600 ? 'text-primary' : 'text-white'"
+            :class="isMobile() ? 'text-primary' : 'text-white'"
             style="text-decoration: none"
             >Forgot Password</a
           >
@@ -108,6 +108,7 @@
 </template>
 <script>
 import { mapActions, mapMutations } from 'vuex';
+import { isMobile } from '@utils/common';
 import { getToken, getCurrentUser } from '@utils/auth';
 import {
   Capacitor,
@@ -139,7 +140,7 @@ export default {
   methods: {
     ...mapActions(['userLogin', 'getUserInfo', 'sendPushNotificationToken']),
     ...mapMutations(['setSelectedClaimId', 'setNotificationRouteTo']),
-
+    isMobile,
     async onUserLogin() {
       const loginData = {
         data: {
@@ -197,11 +198,11 @@ export default {
           }
 
           //below function is use for checking login routing for mobile and web screen,
-          //if screen width is greater than 1600(default inner browser width) then open claim stats page otherwise open main dashboard page.
-          if (window.screen.availWidth > 1600) {
-            this.$router.push('/claimstats');
-          } else {
+
+          if (isMobile()) {
             this.$router.push('/dashboard');
+          } else {
+            this.$router.push('/claimstats');
           }
         }
       }
@@ -227,20 +228,9 @@ export default {
   margin-left: auto;
   margin-right: 10%;
 }
-
-@media screen and (max-width: 1600px) {
-  .bg-login {
-    background-color: #ededed;
-    width: 100%;
-  }
-
-  .login-input {
-    font-size: 14px;
-    width: 80%;
-  }
-  .rounded {
-    border-radius: 15px 15px 15px 15px;
-  }
+.bg-login-mobile {
+  background-color: #ededed;
+  width: 100%;
 }
 .rounded {
   border-radius: 15px 15px 15px 15px;

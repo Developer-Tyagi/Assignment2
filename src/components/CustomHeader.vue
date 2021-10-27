@@ -29,9 +29,19 @@
           aria-label="Menu"
           @click="onMenuButtonClick"
           v-if="
-            ($q.screen.width > 1600 &&
-              ($route.name === 'dashboard' || $route.name === 'settings')) ||
-              ($q.screen.width < 1600 && $route.name === 'dashboard')
+            (!isMobile() &&
+              ($route.name === 'dashboard' ||
+                $route.name === 'clients' ||
+                $route.name === 'leads dashboard' ||
+                $route.name === 'vendors' ||
+                $route.name === 'settings' ||
+                $route.name === 'carriers' ||
+                $route.name === 'mortgages' ||
+                $route.name === 'manage users' ||
+                $route.name === 'admin' ||
+                $route.name === 'claims' ||
+                $route.name === 'configuration')) ||
+              (isMobile() && $route.name === 'dashboard')
           "
         ></q-btn>
         <div class="cursor-pointer" v-if="toBackButtonVisibility()">
@@ -117,9 +127,9 @@
               v-bind="link"
               class="q-mt-md bg-white rounded-sidebar q-px-none"
               v-if="
-                (link.title != 'Admin' || isMobile() == false) &&
-                  (link.title != 'Manage Users' || isMobile() == false) &&
-                  (link.title != 'Configuration' || isMobile() == false)
+                (link.title != 'Admin' || !isMobile()) &&
+                  (link.title != 'Manage Users' || !isMobile()) &&
+                  (link.title != 'Configuration' || !isMobile())
               "
             >
               <q-item-section @click="onClickMenuItem(link.title)">
@@ -413,7 +423,7 @@ export default {
       await this.getAccess();
       this.createSidebarMenuItems();
     }
-    if (this.$q.screen.width > 1600) {
+    if (!isMobile()) {
       this.isLeftSidePanelOpen = true;
     }
   }
