@@ -12,20 +12,20 @@ CKEDITOR.dialog.add('token', function(editor) {
   if (typeof editor.config.availableTokens != 'undefined') {
     tokens = editor.config.availableTokens;
   }
-  var selectString = '<div id="selectedToken"> </div>';
-
+  var selectString =
+    '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">  <style>ul::-webkit-scrollbar { width: 10px; }  ul::-webkit-scrollbar-track {background-color: #9993 !important; } ul::-webkit-scrollbar-thumb {background-color: #9999 !important; } </style> <div id="selectedToken"> </div>';
   editor.config.groupTokens.forEach(tokenGroup => {
     var optGrp =
-      "<button class='collapsible' style='color: black; width:90%; font-weight: bold;  padding: 5px 15px; cursor: pointer; border-bottom:1px solid black ;text-align: left; outline: none;font-size: 18px; margin-bottom:10px;'> " +
+      "<button class='collapsible' style='color: black; width:90%; font-weight: bold;  padding: 10px 15px; cursor: pointer; border-bottom:1px solid #d8d8d8 ;text-align: left; outline: none;font-size: 16px; '><i class='fa fa-plus' style='margin-right:10px'></i>" +
       tokenGroup.groupName +
       '</button>';
     var tokenOption =
-      "<ul class='content' style='list-style-type:none; overflow: scroll; max-height: 250px; display:none;  transition: max-height 0.2s ease-out;'>";
+      "<ul class='content' style='list-style-type:none; overflow-y: scroll; max-height: 250px; display:none;  transition: max-height 0.2s ease-out; height: 110%; margin-bottom: 0.01em;' >";
     tokenGroup.tokens.forEach(tokenArr => {
       tokenOption +=
-        "<li class='tokenElement'  style='padding:5px 25px;border-bottom:1px solid black; width:88%;  margin-bottom: 10px;'   value=" +
+        "<li class='tokenElement' style='padding:10px 25px;border-bottom:1px solid #d8d8d8; width:88%'   value=" +
         tokenArr[1] +
-        ' ><p>' +
+        ' ><p style="margin-left:10px;font-size: 14px;">' +
         tokenArr[0] +
         '</p></li>';
     });
@@ -37,7 +37,7 @@ CKEDITOR.dialog.add('token', function(editor) {
 
   return {
     title: lang.title,
-    minWidth: 1050,
+    minWidth: 900,
     minHeight: 400,
 
     contents: [
@@ -59,8 +59,21 @@ CKEDITOR.dialog.add('token', function(editor) {
 
               for (var i = 0; i < coll.length; i++) {
                 coll[i].addEventListener('click', function() {
+                  // remove all active class
+                  for (var j = 0; j < coll.length; j++) {
+                    var content1 = coll[j].nextElementSibling;
+                    if (content1.style.display == 'block' && this !== coll[j]) {
+                      content1.style.display = 'none';
+                      coll[j].classList.toggle('active');
+                      var iconEle = coll[j].childNodes[0];
+                      iconEle.classList.toggle('fa-minus');
+                    }
+                  }
+                  // open selected item
                   this.classList.toggle('active');
                   var content = this.nextElementSibling;
+                  var iconElement = this.childNodes[0];
+                  iconElement.classList.toggle('fa-minus');
 
                   if (content.style.display == 'block') {
                     content.style.display = 'none';
@@ -87,12 +100,13 @@ CKEDITOR.dialog.add('token', function(editor) {
             },
             onHide: function() {
               let coll = document.getElementsByClassName('collapsible');
-
               for (var i = 0; i < coll.length; i++) {
                 var content = coll[i].nextElementSibling;
                 if (content.style.display == 'block') {
                   content.style.display = 'none';
                   coll[i].classList.toggle('active');
+                  let iconEle = coll[i].childNodes[0];
+                  iconEle.classList.toggle('fa-minus');
                 }
               }
             },
