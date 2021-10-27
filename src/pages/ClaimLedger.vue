@@ -359,7 +359,7 @@
                 style="margin-left: auto; width: 50%"
                 prefix="$"
                 borderless
-                class=" input-style"
+                class="input-style"
                 lazy-rules
                 :rules="[val => val > 0 || 'Please fill Amount of payment']"
               />
@@ -801,7 +801,7 @@
                   $
                   {{
                     totalExpensesOfClientAndCompany -
-                      alreadyPaidByClientAndCompany
+                    alreadyPaidByClientAndCompany
                   }}
                 </span>
               </div>
@@ -814,11 +814,11 @@
                 >
                   <table class="full-width">
                     <tr>
-                      <td style="width:30%;">Payee</td>
-                      <td style="width:30%;">Due</td>
-                      <td style="width:20%;">Pay ?</td>
+                      <td style="width: 30%">Payee</td>
+                      <td style="width: 30%">Due</td>
+                      <td style="width: 20%">Pay ?</td>
 
-                      <td style="width:30%;">Paid</td>
+                      <td style="width: 30%">Paid</td>
                     </tr>
 
                     <tr
@@ -888,7 +888,6 @@
               </div>
               <div class="q-mt-md row">
                 <div class="col-7 q-my-sm heading-light">Company Fee Type</div>
-
                 <q-btn-toggle
                   v-model="feesType"
                   push
@@ -917,7 +916,7 @@
                   class="col-4"
                 >
                   <template v-slot:append>
-                    <span class="text-bold" style="font-size:20px;">%</span>
+                    <span class="text-bold" style="font-size: 20px">%</span>
                   </template>
                 </q-input>
               </div>
@@ -945,7 +944,7 @@
                     class="col-4"
                   >
                     <template v-slot:append>
-                      <span class="text-bold" style="font-size:20px;">/hr</span>
+                      <span class="text-bold" style="font-size: 20px">/hr</span>
                     </template>
                   </q-input>
                 </div>
@@ -986,8 +985,8 @@
                 $
                 {{
                   addDisbursement.amountToDisbuse -
-                    netExpenseToPayByBoth -
-                    addDisbursement.companyFee
+                  netExpenseToPayByBoth -
+                  addDisbursement.companyFee
                 }}
               </div>
             </q-card>
@@ -998,8 +997,8 @@
                 $
                 {{
                   addDisbursement.amountToDisbuse -
-                    netExpenseToPayByBoth -
-                    addDisbursement.companyFee
+                  netExpenseToPayByBoth -
+                  addDisbursement.companyFee
                 }}
               </div>
 
@@ -1018,11 +1017,11 @@
                 >
                   <table class="full-width">
                     <tr>
-                      <td style="width:30%;">Payee</td>
-                      <td style="width:30%;">Due</td>
+                      <td style="width: 30%">Payee</td>
+                      <td style="width: 30%">Due</td>
 
-                      <td style="width:20%;">Pay ?</td>
-                      <td style="width:30%;">Paid</td>
+                      <td style="width: 20%">Pay ?</td>
+                      <td style="width: 30%">Paid</td>
                     </tr>
 
                     <tr
@@ -1085,11 +1084,11 @@
                 >
                   <table class="full-width">
                     <tr>
-                      <td style="width:30%;">Payee</td>
-                      <td style="width:30%;">Due</td>
-                      <td style="width:20%;">Pay ?</td>
+                      <td style="width: 30%">Payee</td>
+                      <td style="width: 30%">Due</td>
+                      <td style="width: 20%">Pay ?</td>
 
-                      <td style="width:30%;">Paid</td>
+                      <td style="width: 30%">Paid</td>
                     </tr>
 
                     <tr
@@ -1255,7 +1254,7 @@
                         </div>
                       </div>
 
-                      <div class="row" style="width:100%">
+                      <div class="row" style="width: 100%">
                         <div>Rate</div>
                         <div class="row full-width">
                           <q-input
@@ -1265,7 +1264,7 @@
                             type="number"
                             dense
                             outlined
-                            style="width:20%;"
+                            style="width: 20%"
                             v-model.number="personnelPaidAmount[index]"
                             @input="onTotalCommission(index)"
                           />
@@ -1276,19 +1275,19 @@
                             suffix="%"
                             dense
                             outlined
-                            style="width:20%"
+                            style="width: 20%"
                             v-model.number="personnelPaidAmount[index]"
                             @input="onTotalCommission(index)"
                           />
                           <div
                             class="row"
-                            style="width:40%"
+                            style="width: 40%"
                             v-if="toggleType[index] == 'update'"
                           >
                             <q-input
                               :disable="personnelPayToggle[index] == false"
                               suffix="/hr"
-                              style="width:50%"
+                              style="width: 50%"
                               dense
                               outlined
                               v-model.number="personnelPaidAmount[index]"
@@ -1300,7 +1299,7 @@
                               :disable="personnelPayToggle[index] == false"
                               v-model.number="hourCal[index]"
                               dense
-                              style="width:34% ;"
+                              style="width: 34%"
                               outlined
                               @input="onTotalCommission(index)"
                             />
@@ -1695,9 +1694,8 @@ export default {
         this.amountAvailableForCommissions - totalRate;
       if (this.personnel.personnel[index].fees)
         this.personnel.personnel[index].fees.type = this.toggleType[index];
-      this.personnel.personnel[index].fees.rate = this.personnelPaidAmount[
-        index
-      ];
+      this.personnel.personnel[index].fees.rate =
+        this.personnelPaidAmount[index];
     },
     /* Toggle button Function  for company   */
     setValueToPayCompany(i, value) {
@@ -1832,12 +1830,11 @@ export default {
       this.companyAmounts = [];
       this.clientAmount = [];
       this.companyPerHour = 0;
-      this.totalExpensesOfClient = this.totalExpensesOfClientAndCompany = this.totalExpensesOfCompany = 0;
+      this.totalExpensesOfClient =
+        this.totalExpensesOfClientAndCompany =
+        this.totalExpensesOfCompany =
+          0;
       this.addDisbursement.amountToDisbuse = this.account.pendingDisbursement;
-
-      if (this.addDisbursement.amountToDisbuse === 0) {
-        this.addDisbursement.companyFee = this.partialCompanyValue = this.account.fees.rate = 0;
-      }
 
       this.addDisbursement.companyFee = this.partialCompanyValue =
         this.account.fees && this.account.fees.rate
@@ -2090,7 +2087,6 @@ export default {
     },
     closeDisbursmentBox() {
       this.addDisbursement.amountToDisbuse = 0;
-      this.partialCompanyValue = 0;
       this.addDisbursement.companyFee = 0;
       this.clientAndCompany = [];
       this.clientOnly = [];
@@ -2299,7 +2295,6 @@ export default {
         this.addDisbursementDialog = false;
 
         this.addDisbursement.amountToDisbuse = 0;
-        this.partialCompanyValue = 0;
         this.addDisbursement.companyFee = 0;
       }
     },
