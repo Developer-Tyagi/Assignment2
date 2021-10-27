@@ -154,14 +154,6 @@
           :finalSignature="finalSignature"
           @skipSignature="coInsuredSignatureDialog = false"
         />
-        <q-btn
-          label="Finish"
-          size="sm"
-          @click="onSavingDocument"
-          class="q-ml-xl q-mt-md"
-          style="margin-left:170px"
-          color="primary"
-        />
       </q-card>
     </q-dialog>
 
@@ -481,95 +473,95 @@ export default {
       // Policy Info Tokens
       {
         key: '{{.Claim.PolicyInfo.Number}}',
-        value: this.claim.policyInfo.number ? this.claim.policyInfo.number : ''
+        value: this.claim.policyInfo?.number ? this.claim.policyInfo.number : ''
       },
       {
         key: '{{.Claim.PolicyInfo.IsClaimFiled}}',
-        value: this.claim.policyInfo.isClaimFiled
+        value: this.claim.policyInfo?.isClaimFiled
           ? this.claim.policyInfo.isClaimFiled
           : ''
       },
       {
         key: '{{.Claim.PolicyInfo.IsForcedPlaced}}',
-        value: this.claim.policyInfo.isForcedPlaced
+        value: this.claim.policyInfo?.isForcedPlaced
           ? this.claim.policyInfo.isForcedPlaced
           : ''
       },
       {
         key: '{{.Claim.PolicyInfo.Category.Value}}',
-        value: this.claim.policyInfo.category?.value
+        value: this.claim.policyInfo?.category?.value
           ? this.claim.policyInfo.category.value
           : ''
       },
       {
         key: '{{.Claim.PolicyInfo.Type.Value}}',
-        value: this.claim.policyInfo.type?.value
+        value: this.claim.policyInfo?.type?.value
           ? this.claim.policyInfo.type.value
           : ''
       },
       {
         key: '{{.Claim.PolicyInfo.LimitCoverage.Dwelling}}',
-        value: this.claim.policyInfo.limitCoverage.dwelling
+        value: this.claim.policyInfo?.limitCoverage.dwelling
       },
       {
         key: '{{.Claim.PolicyInfo.LimitCoverage.OtherStructure}}',
-        value: this.claim.policyInfo.limitCoverage?.otherStructure
+        value: this.claim.policyInfo?.limitCoverage?.otherStructure
           ? this.claim.policyInfo.limitCoverage?.otherStructure
           : ''
       },
       {
         key: '{{.Claim.PolicyInfo.LimitCoverage.Content}}',
-        value: this.claim.policyInfo.limitCoverage?.content
+        value: this.claim.policyInfo?.limitCoverage?.content
           ? this.claim.policyInfo.limitCoverage?.content
           : ''
       },
       {
         key: '{{.Claim.PolicyInfo.LimitCoverage.LossOfUse}}',
-        value: this.claim.policyInfo.limitCoverage?.lossOfUse
+        value: this.claim.policyInfo?.limitCoverage?.lossOfUse
           ? this.claim.policyInfo.limitCoverage?.lossOfUse
           : ''
       },
       {
         key: '{{.Claim.PolicyInfo.DeductibleAmount}}',
-        value: this.claim.policyInfo.deductibleAmount
+        value: this.claim.policyInfo?.deductibleAmount
           ? this.claim.policyInfo.deductibleAmount
           : ''
       },
       {
         key: '{{.Claim.PolicyInfo.Depreciation}}',
-        value: this.claim.policyInfo.depreciation
+        value: this.claim.policyInfo?.depreciation
           ? this.claim.policyInfo.depreciation
           : ''
       },
 
       {
         key: '{{.Claim.PolicyInfo.Declaration.IsDeclared}}',
-        value: this.claim.policyInfo.declaration?.isDeclared
+        value: this.claim.policyInfo?.declaration?.isDeclared
           ? this.claim.policyInfo.declaration.isDeclared
           : ''
       },
       {
         key: '{{.Claim.PolicyInfo.Declaration.FileInfo.ID}}',
-        value: this.claim.policyInfo.declaration?.fileInfo?.id
+        value: this.claim.policyInfo?.declaration?.fileInfo?.id
           ? this.claim.policyInfo.declaration?.fileInfo.id
           : ''
       },
       {
         key: '{{.Claim.PolicyInfo.Declaration.FileInfo.Value}}',
-        value: this.claim.policyInfo.declaration?.fileInfo?.value
+        value: this.claim.policyInfo?.declaration?.fileInfo?.value
           ? this.claim.policyInfo.declaration?.fileInfo?.value
           : ''
       },
       {
         key: '{{.Claim.PolicyInfo.PriorPayment}}',
-        value: this.claim.policyInfo.priorPayment
+        value: this.claim.policyInfo?.priorPayment
           ? this.claim.policyInfo.priorPayment
           : ''
       },
 
       {
         key: '{{.Claim.PolicyInfo.LimitReason}}',
-        value: this.claim.policyInfo.limitReason
+        value: this.claim.policyInfo?.limitReason
           ? this.claim.policyInfo.limitReason
           : ''
       },
@@ -601,13 +593,13 @@ export default {
 
       {
         key: '{{localTZ .Claim.PolicyInfo.EffectiveDate}}',
-        value: this.claim.policyInfo.effectiveDate
+        value: this.claim.policyInfo?.effectiveDate
           ? dateToShow(this.claim.policyInfo.effectiveDate)
           : ''
       },
       {
         key: '{{localTZ .Claim.PolicyInfo.ExpirationDate}}',
-        value: this.claim.policyInfo.expirationDate
+        value: this.claim.policyInfo?.expirationDate
           ? dateToShow(this.claim.policyInfo.expirationDate)
           : ''
       },
@@ -616,27 +608,32 @@ export default {
 
       {
         key: '{{.ClaimMortgage.Name}}',
-        value: this.claim.mortgageInfo[0]?.value
-          ? this.claim.mortgageInfo[0]?.value
-          : ''
+        value:
+          this.claim.mortgageInfo && this.claim.mortgageInfo[0]?.value
+            ? this.claim.mortgageInfo[0]?.value
+            : ''
       },
       {
         key: '{{.ClaimMortgage.Email}}',
-        value: this.claim.mortgageInfo[0]?.email
-          ? this.claim.mortgageInfo[0].email
-          : ''
+        value:
+          this.claim.mortgageInfo && this.claim.mortgageInfo[0]?.email
+            ? this.claim.mortgageInfo[0].email
+            : ''
       },
       {
         key: '{{.ClaimMortgage.Phone.Number}}',
-        value: this.claim.mortgageInfo[0]?.phone
-          ? this.claim.mortgageInfo[0]?.phone
-          : ''
+        value:
+          this.claim.mortgageInfo && this.claim.mortgageInfo[0]?.phone
+            ? this.claim.mortgageInfo[0]?.phone
+            : ''
       },
       {
         key: '{{.ClaimMortgage.Address.AddressCountry}}',
-        value: this.claim.mortgageInfo[0]?.address?.addressCountry
-          ? this.claim.mortgageInfo[0]?.address?.addressCountry
-          : ''
+        value:
+          this.claim.mortgageInfo &&
+          this.claim.mortgageInfo[0]?.address?.addressCountry
+            ? this.claim.mortgageInfo[0]?.address?.addressCountry
+            : ''
       },
       {
         key: '{{.ClaimMortgage.Address.AddressLocality}}',
@@ -644,51 +641,64 @@ export default {
       },
       {
         key: '{{.ClaimMortgage.Address.AddressRegion}}',
-        value: this.claim.mortgageInfo[0]?.address?.addressLocality
-          ? this.claim.mortgageInfo[0]?.address?.addressLocality
-          : ''
+        value:
+          this.claim.mortgageInfo &&
+          this.claim.mortgageInfo[0]?.address?.addressLocality
+            ? this.claim.mortgageInfo[0]?.address?.addressLocality
+            : ''
       },
       {
         key: '{{.ClaimMortgage.Address.PostalCode}}',
-        value: this.claim.mortgageInfo[0]?.address?.postalCode
-          ? this.claim.mortgageInfo[0]?.address?.postalCode
-          : ''
+        value:
+          this.claim.mortgageInfo &&
+          this.claim.mortgageInfo[0]?.address?.postalCode
+            ? this.claim.mortgageInfo[0]?.address?.postalCode
+            : ''
       },
       {
         key: '{{.ClaimMortgage.Address.Address1}}',
-        value: this.claim.mortgageInfo[0]?.address?.address1
-          ? this.claim.mortgageInfo[0]?.address?.address1
-          : ''
+        value:
+          this.claim.mortgageInfo &&
+          this.claim.mortgageInfo[0]?.address?.address1
+            ? this.claim.mortgageInfo[0]?.address?.address1
+            : ''
       },
       {
         key: '{{.ClaimMortgage.Address.Address2}}',
-        value: this.claim.mortgageInfo[0]?.address?.address2
-          ? this.claim.mortgageInfo[0]?.address?.address2
-          : ''
+        value:
+          this.claim.mortgageInfo &&
+          this.claim.mortgageInfo[0]?.address?.address2
+            ? this.claim.mortgageInfo[0]?.address?.address2
+            : ''
       },
       {
         key: '{{.ClaimMortgage.Address.HouseNumber}}',
-        value: this.claim.mortgageInfo[0]?.address?.houseNumber
-          ? this.claim.mortgageInfo[0]?.address?.houseNumber
-          : ''
+        value:
+          this.claim.mortgageInfo &&
+          this.claim.mortgageInfo[0]?.address?.houseNumber
+            ? this.claim.mortgageInfo[0]?.address?.houseNumber
+            : ''
       },
       {
         key: '{{.ClaimMortgage.LoanNumber}}',
-        value: this.claim.mortgageInfo[0]?.loanNumber
-          ? this.claim.mortgageInfo[0]?.loanNumber
-          : ''
+        value:
+          this.claim.mortgageInfo && this.claim.mortgageInfo[0]?.loanNumber
+            ? this.claim.mortgageInfo[0]?.loanNumber
+            : ''
       },
       {
         key: '{{.ClaimMortgage.AccountNumber}}',
-        value: this.claim.mortgageInfo[0]?.accountNumber
-          ? this.claim.mortgageInfo[0]?.accountNumber
-          : ''
+        value:
+          this.claim.mortgageInfo && this.claim.mortgageInfo[0]?.accountNumber
+            ? this.claim.mortgageInfo[0]?.accountNumber
+            : ''
       },
       {
         key: '{{.ClaimMortgage.Note}}',
-        value: this.claim.mortgageInfo[0]?.notes
-          ? this.claim.mortgageInfo[0]?.notes
-          : ''
+        value:
+          this.claim.mortgageInfo && this.claim.mortgageInfo[0]?.notes
+            ? this.claim.mortgageInfo[0]?.notes
+            : ''
       },
 
       // Claim Estimator tokens
@@ -862,43 +872,43 @@ export default {
       { key: '{{.ClaimCarrier.Cell.Number}}', value: '' },
       {
         key: '{{.ClaimCarrier.Address.AddressCountry}}',
-        value: this.claim.policyInfo.carrier?.address?.addressCountry
+        value: this.claim.policyInfo?.carrier?.address?.addressCountry
           ? this.claim.policyInfo.carrier.address.addressCountry
           : ''
       },
       {
         key: '{{.ClaimCarrier.Address.AddressLocality}}',
-        value: this.claim.policyInfo.carrier?.address?.addressLocality
+        value: this.claim.policyInfo?.carrier?.address?.addressLocality
           ? this.claim.policyInfo.carrier.address.addressLocality
           : ''
       },
       {
         key: '{{.ClaimCarrier.Address.AddressRegion}}',
-        value: this.claim.policyInfo.carrier?.address?.addressRegion
+        value: this.claim.policyInfo?.carrier?.address?.addressRegion
           ? this.claim.policyInfo.carrier.address.addressRegion
           : ''
       },
       {
         key: '{{.ClaimCarrier.Address.PostalCode}}',
-        value: this.claim.policyInfo.carrier?.address?.postalCode
+        value: this.claim.policyInfo?.carrier?.address?.postalCode
           ? this.claim.policyInfo.carrier.address.postalCode
           : ''
       },
       {
         key: '{{.ClaimCarrier.Address.Address1}}',
-        value: this.claim.policyInfo.carrier?.address?.address1
+        value: this.claim.policyInfo?.carrier?.address?.address1
           ? this.claim.policyInfo.carrier.address.address1
           : ''
       },
       {
         key: '{{.ClaimCarrier.Address.Address2}}',
-        value: this.claim.policyInfo.carrier?.address?.address2
+        value: this.claim.policyInfo?.carrier?.address?.address2
           ? this.claim.policyInfo.carrier.address.address2
           : ''
       },
       {
         key: '{{.ClaimCarrier.Address.HouseNumber}}',
-        value: this.claim.policyInfo.carrier?.address?.houseNumber
+        value: this.claim.policyInfo?.carrier?.address?.houseNumber
           ? this.claim.policyInfo.carrier.address.houseNumber
           : ''
       }
@@ -1024,6 +1034,7 @@ export default {
     async onSavingDocument() {
       this.pdfDailog = false;
       this.contractDocumentDialog = false;
+
       this.coInsuredSignatureDialog = false;
 
       const contractDocument = await localDB.contractDocument
@@ -1100,7 +1111,9 @@ export default {
       const payload = {
         co_insured_sign: data
       };
+
       await localDB.contractDocument.update(this.documentId, payload);
+      this.onSavingDocument();
     }
   },
 
