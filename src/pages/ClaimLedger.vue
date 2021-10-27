@@ -1155,7 +1155,6 @@
                           <div>Payee</div>
                           <div class="name-ellipsis">{{ person.name }}</div>
                         </div>
-                        {{ expenses.expenses }}
                         <div class="col column items-center">
                           <div>Due</div>
 
@@ -2260,19 +2259,18 @@ export default {
       };
 
       await this.editClaimInfo(updatePayload);
-
       //Calling the Update Personnel Info API for updating the fees object
-      for (let index = 0; index < this.commissions.length; index++) {
+      for (let index = 0; index < this.personnel.personnel.length; index++) {
         var personnelPayload = {
           id: this.selectedClaimId,
-          personnelId: this.commissions[index].id,
+          personnelId: this.personnel.personnel[index].id,
           companyData: {
             personnel: {
-              personnelID: this.commissions[index].id,
+              personnelID: this.personnel.personnel[index].id,
               fees: {
-                type: this.commissions[index].type,
-                rate: this.commissions[index].paid
-                  ? this.commissions[index].paid
+                type: this.personnel.personnel[index].fees.type,
+                rate: this.personnel.personnel[index].fees.rate
+                  ? this.personnel.personnel[index].fees.rate
                   : 0
               }
             }
