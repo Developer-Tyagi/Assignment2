@@ -24,9 +24,8 @@
         />
 
         <q-btn
-          v-if="finalSignature != false"
           class="col-2"
-          label="Submit"
+          :label="finalSignature == false ? 'Finish' : 'Submit'"
           @click="save"
           color="primary"
         />
