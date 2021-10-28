@@ -273,6 +273,7 @@ import { dateToShow } from '@utils/date';
 import CustomBar from 'components/CustomBar';
 import 'firebase/auth';
 import AddOptions from 'components/AddOptions';
+import { Device } from '@capacitor/core';
 
 export default {
   components: { CustomBar, AddOptions },
@@ -324,9 +325,20 @@ export default {
       'setCameraIcon'
     ]),
     //this function is used to redirect to the photoID App .
-    toRedirectTOPhotoIdApp() {
-      window.location =
-        'https://play.google.com/store/apps/details?id=com.uscope.photoid&hl=en_IN&gl=US';
+    async toRedirectTOPhotoIdApp() {
+      const info = await Device.getInfo();
+
+      const devicePlatform = info.platform;
+      // routing to different locations based on the devices
+      if (devicePlatform == 'android') {
+        window.location =
+          'https://play.google.com/store/apps/details?id=com.uscope.photoid&hl=en_IN&gl=US';
+      } else if (devicePlatform == 'web') {
+        window.location = 'https://photoidapp.net/';
+      } else {
+        window.location =
+          'https://apps.apple.com/us/app/photo-id/id1277608552?ls=1';
+      }
     },
 
     onClickNewLead() {
