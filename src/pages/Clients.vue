@@ -2,7 +2,10 @@
   <q-page>
     <div>
       <div class="q-mt-sm row justify-center">
-        <q-badge color="red " v-if="!organization.photoIDAPIKey">
+        <q-badge
+          color="red "
+          v-if="!organization.photoIDAPIKey && this.userRole == 'owner'"
+        >
           PhotoId Key has not been added in the system
           <q-icon name="warning" color="white" class="q-ml-xs"></q-icon>
         </q-badge>
@@ -27,14 +30,14 @@
           style="margin: 0 20px"
         />
         <q-separator vertical></q-separator>
-        <q-btn @click="addClient" flat><img src="~assets/add.svg"/></q-btn>
+        <q-btn @click="addClient" flat><img src="~assets/add.svg" /></q-btn>
       </div>
       <div class="mobile-container-page">
         <div class="clients-list" v-if="clients.length">
           <div class="clients-list" v-for="client in clients" :key="client.id">
             <q-item-section @click="onClientsListClick(client)">
               <div class="client-list-item">
-                <div class="row form-heading  q-pb-md">
+                <div class="row form-heading q-pb-md">
                   <span>
                     {{ client['insuredInfo']['primary']['fname'] }}
 
@@ -114,6 +117,7 @@ export default {
   name: 'Clients',
   data() {
     return {
+      userRole: '',
       searchText: '',
       openSearchInput: false
     };
@@ -138,8 +142,8 @@ export default {
     };
     this.getClients(payload);
     //only owner have the permission to view the organization info
-    const userRole = getCurrentUser().attributes.roles[0].machineValue;
-    if (userRole == 'owner') {
+    this.userRole = getCurrentUser().attributes.roles[0].machineValue;
+    if (this.userRole == 'owner') {
       await this.getOrganization();
     }
   },
