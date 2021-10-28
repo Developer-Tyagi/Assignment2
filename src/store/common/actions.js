@@ -319,7 +319,7 @@ export async function addTemplate({ dispatch, state }, payload) {
   try {
     const { data } = await request.post(
       '/templates',
-      buildApiData('templatets', payload)
+      buildApiData('templatetypes', payload)
     );
 
     dispatch('setLoading', false);
@@ -399,8 +399,8 @@ export async function addTemplateRemote({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.post(
-      '/templates',
-      buildApiData('templates', payload)
+      '/templatetypes',
+      buildApiData('templatetypes', payload)
     );
 
     dispatch('setLoading', false);
