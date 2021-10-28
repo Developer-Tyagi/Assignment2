@@ -711,6 +711,7 @@ export default {
     removeEmail() {
       this.emails.pop();
     },
+    // this function is used to check if the visibility property of a folder is present or not , if it is present then we check if the isVisible key is true or false ,based on this we show the folder other by default we show the folder.
     toFolderVisibility(doc, index) {
       if (doc.properties) {
         if (doc.properties.isVisible == 'false') return false;
