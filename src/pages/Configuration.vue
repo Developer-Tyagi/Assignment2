@@ -494,7 +494,8 @@ export default {
       'getAllTemplate',
       'editTemplate',
       'deleteTemplate',
-      'addTemplateType'
+      'addTemplateType',
+      'addTemplate'
     ]),
 
     updateMarkup(val) {
@@ -550,7 +551,7 @@ export default {
               value: this.templatetype.value
             }
           };
-          const success = await this.addTemplateRemote(payload);
+          const success = await this.addTemplate(payload);
           if (success) {
             this.addTemplateDialogBox = false;
             await this.getAllTemplate();
