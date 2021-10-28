@@ -13,7 +13,7 @@
           "
           :dialogName="'Loss Info'"
         />
-        <q-card class="q-ma-sm q-pa-sm">
+        <q-card class="q-pa-sm">
           <div class="mobile-container-page">
             <q-form ref="lossInfoForm">
               <LossInfo
@@ -28,7 +28,7 @@
               />
             </q-form>
           </div>
-          <div class="row justify-center q-mx-md">
+          <div class="row justify-center">
             <q-btn
               label="Save"
               class="single-next-button-style"
@@ -55,9 +55,7 @@
         lossInfo.attributes.lossInfo && lossInfo.attributes.lossInfo.property
       "
     >
-      <div class="heading-light q-mt-none col-4 ">
-        Address Details
-      </div>
+      <div class="heading-light q-mt-none col-4">Address Details</div>
       <div
         class="col-6 q-ml-md"
         v-if="lossInfo.attributes.lossInfo.property.address1"
@@ -75,7 +73,7 @@
         <div
           v-if="
             lossInfo.attributes.lossInfo.property &&
-              lossInfo.attributes.lossInfo.property.address2
+            lossInfo.attributes.lossInfo.property.address2
           "
         >
           {{ lossInfo.attributes.lossInfo.property.address2 }}
@@ -114,12 +112,10 @@
       class="q-mt-md row"
       v-if="
         lossInfo.attributes.lossInfo.property &&
-          lossInfo.attributes.lossInfo.property.propertyType
+        lossInfo.attributes.lossInfo.property.propertyType
       "
     >
-      <div class="heading-light q-mt-none col-xs-4 ">
-        Property Type
-      </div>
+      <div class="heading-light q-mt-none col-xs-4">Property Type</div>
       <div class="column q-ml-md">
         {{ lossInfo.attributes.lossInfo.property.propertyType.value }}
       </div>
@@ -128,12 +124,10 @@
       class="q-mt-md row"
       v-if="
         lossInfo.attributes.lossInfo &&
-          lossInfo.attributes.lossInfo.propertyDesc
+        lossInfo.attributes.lossInfo.propertyDesc
       "
     >
-      <div class="heading-light q-mt-none col-xs-4 ">
-        Property Description :
-      </div>
+      <div class="heading-light q-mt-none col-xs-4">Property Description :</div>
       <div class="column q-ml-md">
         {{
           lossInfo.attributes.lossInfo.propertyDesc
@@ -148,9 +142,7 @@
         lossInfo.attributes.lossInfo && lossInfo.attributes.lossInfo.claimReason
       "
     >
-      <div class="heading-light q-mt-none col-xs-4 ">
-        Claim Reason:
-      </div>
+      <div class="heading-light q-mt-none col-xs-4">Claim Reason:</div>
       <div class="column q-ml-md">
         {{
           lossInfo.attributes.lossInfo.claimReason.value
@@ -165,9 +157,7 @@
         lossInfo.attributes.lossInfo && lossInfo.attributes.lossInfo.serverity
       "
     >
-      <div class="heading-light q-mt-none col-xs-4 ">
-        Serverity:
-      </div>
+      <div class="heading-light q-mt-none col-xs-4">Serverity:</div>
       <div class="column q-ml-md">
         {{
           lossInfo.attributes.lossInfo.serverity.value
@@ -180,10 +170,8 @@
       class="q-mt-md row"
       v-if="lossInfo.attributes.lossInfo && lossInfo.attributes.lossInfo.cause"
     >
-      <div class="heading-light q-mt-none col-xs-4 ">
-        Cause of Loss:
-      </div>
-      <div class="column  col-7 q-ml-md">
+      <div class="heading-light q-mt-none col-xs-4">Cause of Loss:</div>
+      <div class="column col-7 q-ml-md">
         {{
           lossInfo.attributes.lossInfo.cause
             ? lossInfo.attributes.lossInfo.cause.value
@@ -201,9 +189,7 @@
       class="q-mt-md row"
       v-if="lossInfo.attributes.lossInfo && lossInfo.attributes.lossInfo.date"
     >
-      <div class="heading-light q-mt-none col-xs-4 ">
-        Date of Loss:
-      </div>
+      <div class="heading-light q-mt-none col-xs-4">Date of Loss:</div>
       <div class="column q-ml-md">
         {{ dateToShow(lossInfo.attributes.lossInfo.date) }}
       </div>
@@ -213,12 +199,10 @@
       class="q-mt-md row"
       v-if="
         lossInfo.attributes.lossInfo &&
-          lossInfo.attributes.lossInfo.deadlineDate
+        lossInfo.attributes.lossInfo.deadlineDate
       "
     >
-      <div class="heading-light q-mt-none col-xs-4 ">
-        Deadline Date:
-      </div>
+      <div class="heading-light q-mt-none col-xs-4">Deadline Date:</div>
       <div class="column q-ml-md">
         {{ dateToShow(lossInfo.attributes.lossInfo.deadlineDate) }}
       </div>
@@ -230,9 +214,7 @@
         lossInfo.attributes.lossInfo && lossInfo.attributes.lossInfo.recovDDDate
       "
     >
-      <div class="heading-light q-mt-none col-xs-4 ">
-        Recovery Date:
-      </div>
+      <div class="heading-light q-mt-none col-xs-4">Recovery Date:</div>
       <div class="column q-ml-md">
         {{ dateToShow(lossInfo.attributes.lossInfo.recovDDDate) }}
       </div>
@@ -243,9 +225,7 @@
         lossInfo.attributes.lossInfo && lossInfo.attributes.lossInfo.claimReason
       "
     >
-      <div class="heading-light q-mt-none col-xs-4 ">
-        Reason For Claim:
-      </div>
+      <div class="heading-light q-mt-none col-xs-4">Reason For Claim:</div>
       <div class="column q-ml-md">
         {{
           lossInfo.attributes.lossInfo.claimReason.value
@@ -258,9 +238,7 @@
       class="q-mt-md row"
       v-if="lossInfo.attributes.lossInfo && lossInfo.attributes.lossInfo.desc"
     >
-      <div class="heading-light q-mt-none col-xs-4 ">
-        Loss Description:
-      </div>
+      <div class="heading-light q-mt-none col-xs-4">Loss Description:</div>
       <div class="column col-7 q-ml-md">
         {{
           lossInfo.attributes.lossInfo.desc
@@ -390,7 +368,8 @@ export default {
     this.getLossInfo(this.selectedClaimId);
     this.setSelectedClaimId(this.selectedClaimId);
     await this.getSingleClaims(this.selectedClaimId).then(() => {
-      this.lossDetails.policyEffectiveDate = this.claim.policyInfo.effectiveDate;
+      this.lossDetails.policyEffectiveDate =
+        this.claim.policyInfo.effectiveDate;
       this.lossDetails.policyExpireDate = this.claim.policyInfo.expirationDate;
     });
   },
@@ -452,18 +431,23 @@ export default {
       this.$emit('editLossInoDialog', true);
       //This is For Prefilling Values in Loss Info Form
       if (this.lossInfo.attributes.lossInfo.desc) {
-        this.lossDetails.descriptionDwelling = this.lossInfo.attributes.lossInfo.desc;
+        this.lossDetails.descriptionDwelling =
+          this.lossInfo.attributes.lossInfo.desc;
       }
 
-      this.lossDetails.lossAddressName = this.lossInfo.attributes.lossInfo.lossAddressName;
+      this.lossDetails.lossAddressName =
+        this.lossInfo.attributes.lossInfo.lossAddressName;
       this.lossDetails.addressID = this.lossInfo.attributes.lossInfo.addressID;
-      this.lossDetails.property = this.lossInfo.attributes.lossInfo.propertyType;
+      this.lossDetails.property =
+        this.lossInfo.attributes.lossInfo.propertyType;
       if (this.lossInfo.attributes.lossInfo.serverity) {
-        this.lossDetails.severityOfClaimType = this.lossInfo.attributes.lossInfo.serverity;
+        this.lossDetails.severityOfClaimType =
+          this.lossInfo.attributes.lossInfo.serverity;
       }
 
       if (this.lossInfo.attributes.lossInfo.claimReason) {
-        this.lossDetails.reasonClaim = this.lossInfo.attributes.lossInfo.claimReason;
+        this.lossDetails.reasonClaim =
+          this.lossInfo.attributes.lossInfo.claimReason;
       }
       if (this.lossInfo.attributes.lossInfo.deadlineDate) {
         this.lossDetails.deadlineDate = dateToShow(

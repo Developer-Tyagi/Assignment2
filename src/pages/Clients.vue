@@ -24,10 +24,10 @@
           </template>
         </q-input>
         <img
+          class="q-ma-sm"
           src="~assets/close.svg"
           v-if="searchText"
           @click="onSearchBackButtonClick"
-          style="margin: 0 20px"
         />
         <q-separator vertical></q-separator>
         <q-btn @click="addClient" flat><img src="~assets/add.svg" /></q-btn>
