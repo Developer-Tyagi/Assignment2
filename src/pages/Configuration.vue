@@ -386,13 +386,7 @@
           </q-btn>
         </div>
         <div class="q-mx-lg">
-          <div
-            style="
-              height: calc(100% - 100px);
-              overflow-y: auto;
-              margin-bottom: 10px;
-            "
-          >
+          <div>
             <div class="text-bold q-mt-xl">Template Type</div>
             <q-form ref="uploadTemplateForm">
               <div>
@@ -416,22 +410,23 @@
                 />
               </div>
 
-              <div class="column q-py-sm text-center">
+              <div class="column items-center">
                 <q-img
-                  class="q-ml-lg q-my-xs"
                   src="~assets/upload.svg"
-                  style="width:10%;  margin-left:550px"
+                  style="width:10%; "
                   @click="onClickUploadButton"
                 />
-                <div class="form-heading q-ml-md">Upload</div>
-                <input
-                  id="uploadFile"
-                  type="file"
-                  accept=".doc,.docx,"
-                  hidden
-                  @change="onFileInputClick"
-                />
               </div>
+              <div class="form-heading text-center q-mt-lg">
+                Upload
+              </div>
+              <input
+                id="uploadFile"
+                type="file"
+                accept=".doc,.docx,"
+                hidden
+                @change="onFileInputClick"
+              />
             </q-form>
           </div>
         </div>
