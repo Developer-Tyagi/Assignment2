@@ -144,7 +144,7 @@
                     dense
                     v-model="users.lname"
                     borderless
-                    class="col-5 input-extra-padding  input-style input-field"
+                    class="col-5 input-extra-padding input-style input-field"
                     label="Last name"
                   />
                 </div>
@@ -152,7 +152,7 @@
                   <q-select
                     dense
                     v-model="users.contact.type"
-                    class=" col-4 input-extra-padding input-style input-field"
+                    class="col-4 input-extra-padding input-style input-field"
                     :options="contactTypes"
                     borderless
                     option-value="machineValue"
@@ -171,7 +171,7 @@
                   <q-input
                     dense
                     v-model="users.contact.number"
-                    class="required  col-5 input-style input-field"
+                    class="required col-5 input-style input-field"
                     label="Phone"
                     mask="(###) ###-####"
                     lazy-rules
@@ -220,10 +220,9 @@
             </div>
           </q-form>
         </div>
-        <div>
+        <div class="row justify-center">
           <q-btn
             label="Save"
-            size="md"
             class="single-next-button-style q-mt-lg"
             @click="onSaveEditedButton"
           />

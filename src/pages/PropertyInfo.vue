@@ -263,12 +263,13 @@
               />
             </div>
           </q-form>
-          <q-btn
-            label="Save"
-            class="single-next-button-style"
-            @click="onSaveButtonClick"
-            size="'xl'"
-          />
+          <div class="row q-mt-lg justify-center">
+            <q-btn
+              label="Save"
+              class="single-next-button-style"
+              @click="onSaveButtonClick"
+            />
+          </div>
         </div>
       </q-card>
     </q-dialog>

@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <div class="mobile-container-page-without-search">
+    <div>
       <div class="q-pa-lg column full-height">
         <div class="row input-style q-px-xs">
           <p class="q-mx-none q-my-auto q-ml-sm">Is this a new lead</p>
@@ -22,7 +22,7 @@
             <q-select
               dense
               borderless
-              class=" input-style full-width input-extra-padding"
+              class="input-style full-width input-extra-padding"
               v-model="clientSelected"
               use-input
               input-debounce="0"
@@ -49,7 +49,7 @@
             </q-select>
           </q-form>
         </div>
-        <q-footer class="row bg-white justify-center">
+        <q-footer class="row q-mt-md bg-white justify-center">
           <q-btn
             label="Continue"
             class="single-next-button-style q-mt-auto text-capitalize"

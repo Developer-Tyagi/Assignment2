@@ -27,7 +27,7 @@
       <div
         :class="{ 'q-ml-lg': userRole == 'estimator' || userRole == 'vendor' }"
       >
-        <div class="form-heading   row">
+        <div class="form-heading row">
           Claim Summary
           <q-icon
             v-if="userRole != 'estimator' && userRole != 'vendor'"
@@ -38,10 +38,8 @@
             @click="onEditClaimSummary"
           />
         </div>
-        <div class="q-mt-md  row">
-          <div class="heading-light q-mt-none col-xs-4 ">
-            File Number
-          </div>
+        <div class="q-mt-md row">
+          <div class="heading-light q-mt-none col-xs-4">File Number</div>
           <div class="column q-ml-lg">
             {{
               getSelectedClaim.fileNumber ? getSelectedClaim.fileNumber : '-'
@@ -49,19 +47,15 @@
           </div>
         </div>
 
-        <div class="q-mt-md  row">
-          <div class="heading-light q-mt-none col-xs-4 ">
-            Claim Number
-          </div>
+        <div class="q-mt-md row">
+          <div class="heading-light q-mt-none col-xs-4">Claim Number</div>
           <div class="column q-ml-lg">
             {{ getSelectedClaim.number ? getSelectedClaim.number : '-' }}
           </div>
         </div>
 
-        <div class="q-mt-md  row">
-          <div class="heading-light q-mt-none col-xs-4 ">
-            Claim Reason
-          </div>
+        <div class="q-mt-md row">
+          <div class="heading-light q-mt-none col-xs-4">Claim Reason</div>
           <div class="column q-ml-lg" v-if="getSelectedClaim.lossInfo">
             {{
               getSelectedClaim.lossInfo.claimReason
@@ -70,10 +64,8 @@
             }}
           </div>
         </div>
-        <div class="q-mt-md  row" v-if="userRole != 'vendor'">
-          <div class="heading-light q-mt-none col-xs-4 ">
-            Claim Fees
-          </div>
+        <div class="q-mt-md row" v-if="userRole != 'vendor'">
+          <div class="heading-light q-mt-none col-xs-4">Claim Fees</div>
           <div class="column q-ml-lg" v-if="getSelectedClaim.contractInfo">
             <div
               class="col"
@@ -105,36 +97,28 @@
           </div>
         </div>
 
-        <div class="q-mt-md row " v-if="userRole != 'vendor'">
-          <div class="heading-light q-mt-none col-xs-4 ">
-            Date of Contract
-          </div>
+        <div class="q-mt-md row" v-if="userRole != 'vendor'">
+          <div class="heading-light q-mt-none col-xs-4">Date of Contract</div>
           <div class="column q-ml-lg" v-if="getSelectedClaim.contractInfo">
             {{ dateToShow(getSelectedClaim.contractInfo.date) }}
           </div>
           <div v-else class="q-ml-md">MM/DD/YYYY</div>
         </div>
         <div class="q-mt-md row" v-if="userRole != 'vendor'">
-          <div class="heading-light q-mt-none col-xs-4 ">
-            Date of Notified
-          </div>
+          <div class="heading-light q-mt-none col-xs-4">Date of Notified</div>
           <div class="column q-ml-lg" v-if="getSelectedClaim.created">
             {{ dateToShow(getSelectedClaim.created) }}
           </div>
           <div v-else class="q-ml-md">MM/DD/YYYY</div>
         </div>
         <div class="q-mt-md row" v-if="userRole != 'vendor'">
-          <div class="heading-light q-mt-none col-xs-4 ">
-            Open Since
-          </div>
+          <div class="heading-light q-mt-none col-xs-4">Open Since</div>
           <div class="column q-ml-lg">
             {{ getSelectedClaim.sinceOpen ? getSelectedClaim.sinceOpen : '-' }}
           </div>
         </div>
         <div class="q-mt-md row" v-if="userRole != 'vendor'">
-          <div class="heading-light q-mt-none col-xs-4 ">
-            Loss Since
-          </div>
+          <div class="heading-light q-mt-none col-xs-4">Loss Since</div>
           <div class="column q-ml-lg">
             {{ getSelectedClaim.sinceLoss ? getSelectedClaim.sinceLoss : '-' }}
           </div>
@@ -149,7 +133,7 @@
           }"
         >
           <div class="row justify-between">
-            <div class=" q-mt-sm form-heading ">Claim Deadlines</div>
+            <div class="q-mt-sm form-heading">Claim Deadlines</div>
             <q-icon
               v-if="userRole != 'estimator'"
               class="q-mr-xs"
@@ -162,7 +146,7 @@
 
           <div class="">
             <div class="q-mt-md row">
-              <div class="heading-light  q-mt-none col-xs-4 ">
+              <div class="heading-light q-mt-none col-xs-4">
                 Tolling Date / Statute Deadline
               </div>
               <div class="column q-ml-lg" v-if="getSelectedClaim.lossInfo">
@@ -171,7 +155,7 @@
               <div class="column q-ml-lg" v-else>-</div>
             </div>
             <div class="q-mt-md row">
-              <div class="heading-light q-mt-none col-xs-4 ">
+              <div class="heading-light q-mt-none col-xs-4">
                 Recoverable Depreciation Due
               </div>
               <div class="column q-ml-lg" v-if="getSelectedClaim.lossInfo">
@@ -198,7 +182,7 @@
             :dialogName="'Edit Claim Deadlines'"
           />
           <div class="q-ma-sm mobile-container-page">
-            <q-card class="q-ma-sm q-px-sm ">
+            <q-card class="q-ma-sm q-px-sm">
               <div class="q-pa-sm">
                 <q-input
                   class="input-style input-overlay"
@@ -273,7 +257,7 @@
       <div v-if="userRole != 'vendor'">
         <div :class="{ 'q-ml-lg': userRole == 'estimator' }">
           <div class="row justify-between">
-            <div class="form-heading  q-mt-xs ">Loss Details</div>
+            <div class="form-heading q-mt-xs">Loss Details</div>
             <div>
               <q-icon
                 name="create"
@@ -297,7 +281,7 @@
             </div>
 
             <div class="q-mt-md row">
-              <div class="heading-light q-mt-none col-xs-4 ">
+              <div class="heading-light q-mt-none col-xs-4">
                 Estimated Loss Amount
               </div>
               <div class="column q-ml-lg">
@@ -343,8 +327,8 @@
           }"
         >
           <div v-for="(phase, index) in getSelectedClaim.phases" :key="index">
-            <div class="row  justify-between">
-              <div class=" q-mt-sm form-heading">Claim Timeline</div>
+            <div class="row justify-between">
+              <div class="q-mt-sm form-heading">Claim Timeline</div>
               <q-icon
                 v-if="userRole != 'estimator'"
                 name="create"
@@ -356,7 +340,7 @@
             </div>
 
             <div>
-              <div class="row ">
+              <div class="row">
                 <div class="col-2">
                   <q-avatar
                     class="q-ma-sm"
@@ -443,7 +427,7 @@
               </div>
               <div class="row" style="align-items: center">
                 <q-input
-                  class="full-width  input-style"
+                  class="full-width input-style"
                   borderless
                   mask="#.#"
                   type="number"
@@ -478,7 +462,7 @@
               />
 
               <q-select
-                class="input-style full-width "
+                class="input-style full-width"
                 behavior="menu"
                 borderless
                 v-model="lossInfo.reasonClaim.value"
@@ -495,10 +479,10 @@
               />
             </div>
           </q-card>
-          <q-card class="q-pa-sm  q-mt-md q-mx-sm">
+          <q-card class="q-pa-sm q-mt-md q-mx-sm">
             <div class="q-px-sm">
               <q-input
-                class=" input-style full-width "
+                class="input-style full-width"
                 borderless
                 v-model="policyInfo.dateOfFirstContact"
                 label="Date of First Contact"
@@ -507,13 +491,13 @@
             </div>
           </q-card>
         </div>
-        <q-btn
-          label="Save"
-          color="primary"
-          class="button-width-90"
-          @click="onSaveButtonClick('claimSummary')"
-          size="'xl'"
-        />
+        <div class="row justify-center">
+          <q-btn
+            label="Save"
+            class="single-next-button-style"
+            @click="onSaveButtonClick('claimSummary')"
+          />
+        </div>
       </q-card>
     </q-dialog>
 
@@ -701,7 +685,7 @@
                 </template>
               </q-input>
               <div class="q-mt-md">Notes</div>
-              <div class="q-pb-md ">
+              <div class="q-pb-md">
                 <q-input
                   type="textarea"
                   rows="6"

@@ -13,21 +13,25 @@
           @closeDialog="addNoteDialog = false"
         />
         <q-card-section>
-          <div class="mobile-container-page-without-search form-height">
+          <div class="form-height">
             <div class="q-py-xs">Notes<small style="color: red">*</small></div>
-            <textarea
+            <q-input
+              type="textarea"
+              borderless
+              class="input-style"
               v-model="note"
               rows="4"
               placeholder="Take Notes here..."
               style="width: 100%"
             />
           </div>
-          <q-btn
-            @click="onSave"
-            label="Save"
-            class="single-next-button-style"
-            size="'xl'"
-          />
+          <div class="row justify-center">
+            <q-btn
+              @click="onSave"
+              label="Save"
+              class="single-next-button-style"
+            />
+          </div>
         </q-card-section>
       </q-card>
     </q-dialog>
@@ -46,19 +50,23 @@
         <q-card-section>
           <div class="mobile-container-page-without-search form-height">
             <div class="q-py-xs">Notes</div>
-            <textarea
+            <q-input
+              type="textarea"
+              class="input-style"
+              borderless
               v-model="editNote"
               rows="4"
               placeholder="Take Notes here..."
               style="width: 100%"
             />
           </div>
-          <q-btn
-            @click="onEditSave"
-            label="Save"
-            class="single-next-button-style"
-            size="'xl'"
-          />
+          <div class="row justify-center">
+            <q-btn
+              @click="onEditSave"
+              label="Save"
+              class="single-next-button-style"
+            />
+          </div>
         </q-card-section>
       </q-card>
     </q-dialog>
@@ -111,9 +119,7 @@
         </div>
         <div v-else class="full-width text-center">
           <div class="q-mt-xs">
-            <div style="color: #666666">
-              You haven't added a Note yet.
-            </div>
+            <div style="color: #666666">You haven't added a Note yet.</div>
             <div class="text-center">
               <img
                 src="~assets/add.svg"
@@ -130,7 +136,7 @@
             @click="addNote"
             color="primary"
             label="Add Note"
-            class="q-ml-auto "
+            class="q-ml-auto"
           ></q-btn>
         </div>
       </div>
