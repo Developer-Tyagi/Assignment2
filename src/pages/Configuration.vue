@@ -112,12 +112,7 @@
           </div>
           <div
             class="bg-grey-3 q-mt-md"
-            style="
-              position: relative;
-              height: calc(100vh - 170px);
-              overflow: auto;
-              display: flex;
-            "
+            style="position: relative; overflow: auto; display: flex"
           >
             <table class="table" v-if="table.length">
               <thead>
@@ -133,7 +128,7 @@
                   <td class="table-td">{{ list.name.type.value }}</td>
 
                   <td class="table-td">
-                    <span>
+                    <span class="cursor-pointer">
                       <q-icon
                         size="sm"
                         color="primary"
@@ -141,7 +136,7 @@
                         @click="onEditTemplate(list)"
                       />
                     </span>
-                    <span>
+                    <span class="cursor-pointer">
                       <q-icon
                         class="q-ml-xs"
                         size="sm"
@@ -278,9 +273,23 @@
       transition-hide="slide-down"
     >
       <q-card style="height: 85%; width: 60%">
-        <div class="row justify-between bg-primary" style="height: 50px">
-          <div class="text-white text-h6 q-pa-sm">Add Template</div>
-          <q-btn dense flat icon="close" color="white" v-close-popup>
+        <div class="row bg-primary" style="height: 5%">
+          <div
+            v-if="!this.isEdit"
+            class="text-white text-center text-h6 q-pa-sm"
+          >
+            Add Template
+          </div>
+          <div v-else class="text-white text-h6 q-pa-sm">Edit Template</div>
+          <q-space />
+          <q-btn
+            class="q-mr-md"
+            dense
+            flat
+            icon="close"
+            color="white"
+            v-close-popup
+          >
             <q-tooltip>Close</q-tooltip>
           </q-btn>
         </div>
@@ -295,6 +304,7 @@
             <div class="text-bold q-mt-xl">Template Type</div>
             <div>
               <q-select
+                :disable="isEdit"
                 dense
                 class="input-extra-padding q-ma-sm required"
                 v-model="templatetype.value"
@@ -696,9 +706,8 @@ export default {
           case 'inspectionType':
             for (var i = 0; i <= this.inspectionType.subtypes.length - 1; i++) {
               if (this.inspectionType.subtypes[i].value == '') {
-                this.inspectionType.subtypes[
-                  i
-                ].value = this.inspectionType.value;
+                this.inspectionType.subtypes[i].value =
+                  this.inspectionType.value;
               }
             }
             var response = await this.addInspectionType(this.inspectionType);
@@ -800,7 +809,6 @@ export default {
 </script>
 <style lang="scss">
 .table {
-  border-collapse: collapse;
   width: 100%;
   overflow: auto;
 }
@@ -828,14 +836,12 @@ export default {
 .table-tr:nth-child(odd) {
   background-color: white;
 }
-
 .table-tr:nth-child(even) {
   background-color: $grey-3;
 }
 .table-data {
   width: 33.33%;
   text-align: center;
-  padding: 12px;
 }
 
 ::-webkit-scrollbar {
