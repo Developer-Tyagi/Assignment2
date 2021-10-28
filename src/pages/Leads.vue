@@ -1,7 +1,10 @@
 <template>
   <q-page>
     <div class="row justify-center q-mt-sm">
-      <q-badge color="red" v-if="!organization.photoIDAPIKey">
+      <q-badge
+        color="red"
+        v-if="!organization.photoIDAPIKey && this.userRole == 'owner'"
+      >
         PhotoId Key has not been added in the system
         <q-icon name="warning" color="white" class="q-ml-xs"></q-icon>
       </q-badge>
@@ -26,7 +29,7 @@
         style="margin: 0 20px"
       />
       <q-separator vertical></q-separator>
-      <q-btn @click="addLead" flat><img src="~assets/add.svg"/></q-btn>
+      <q-btn @click="addLead" flat><img src="~assets/add.svg" /></q-btn>
     </div>
     <div class="mobile-container-page">
       <div class="row">
@@ -89,7 +92,7 @@
                           <span
                             v-if="
                               lead.primaryContact.phoneNumber &&
-                                lead.primaryContact.phoneNumber.length
+                              lead.primaryContact.phoneNumber.length
                             "
                             class="click-link"
                             @click="
@@ -135,7 +138,11 @@
 
                     <div class="button-orange">
                       <q-btn
-                        class="text-white q-my-auto q-mx-auto full-width full-height"
+                        class="
+                          text-white
+                          q-my-auto q-mx-auto
+                          full-width full-height
+                        "
                         label="Create Client"
                         @click="onCreateClientButtonClick(lead)"
                       ></q-btn>
@@ -187,7 +194,7 @@
                         <span
                           v-if="
                             lead.primaryContact.phoneNumber &&
-                              lead.primaryContact.phoneNumber.length
+                            lead.primaryContact.phoneNumber.length
                           "
                         >
                           {{
@@ -259,8 +266,8 @@ export default {
 
   async created() {
     //only owner have the permission to view the organization info
-    const userRole = getCurrentUser().attributes.roles[0].machineValue;
-    if (userRole == 'owner') {
+    this.userRole = getCurrentUser().attributes.roles[0].machineValue;
+    if (this.userRole == 'owner') {
       await this.getOrganization();
     }
   },
