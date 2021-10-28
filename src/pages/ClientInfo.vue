@@ -337,7 +337,6 @@
                 borderless
                 class="required input-style input-field"
                 v-model="insuredDetails.fname"
-                style="height: 55px"
                 lazy-rules
                 :rules="[
                   val => (val && val.length > 0) || 'Please fill the First name'
@@ -673,9 +672,7 @@
           <q-btn
             @click="onSaveButtonClick"
             label="Save"
-            color="primary"
             class="single-next-button-style"
-            size="'xl'"
           ></q-btn>
         </div>
       </q-card>
