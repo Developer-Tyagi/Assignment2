@@ -417,7 +417,7 @@
               </div>
 
               <div class="column q-py-sm text-center">
-                <img
+                <q-img
                   class="q-ml-lg q-my-xs"
                   src="~assets/upload.svg"
                   style="width:10%;  margin-left:550px"
