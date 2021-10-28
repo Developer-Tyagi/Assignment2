@@ -110,10 +110,7 @@
               Add Template
             </q-btn>
           </div>
-          <div
-            class="bg-grey-3 q-mt-md"
-            style="position: relative; overflow: auto; display: flex"
-          >
+          <div class="bg-grey-3 q-mt-md">
             <table class="table" v-if="table.length">
               <thead>
                 <tr class="table-tr">
@@ -124,7 +121,11 @@
               </thead>
 
               <tbody>
-                <tr class="table-tr" v-for="list in templates">
+                <tr
+                  class="table-tr"
+                  v-for="(list, index) in templates"
+                  :key="index"
+                >
                   <td class="table-td">{{ list.name.type.value }}</td>
 
                   <td class="table-td">
