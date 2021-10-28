@@ -73,7 +73,7 @@
         <div
           v-if="
             lossInfo.attributes.lossInfo.property &&
-            lossInfo.attributes.lossInfo.property.address2
+              lossInfo.attributes.lossInfo.property.address2
           "
         >
           {{ lossInfo.attributes.lossInfo.property.address2 }}
@@ -112,7 +112,7 @@
       class="q-mt-md row"
       v-if="
         lossInfo.attributes.lossInfo.property &&
-        lossInfo.attributes.lossInfo.property.propertyType
+          lossInfo.attributes.lossInfo.property.propertyType
       "
     >
       <div class="heading-light q-mt-none col-xs-4">Property Type</div>
@@ -124,7 +124,7 @@
       class="q-mt-md row"
       v-if="
         lossInfo.attributes.lossInfo &&
-        lossInfo.attributes.lossInfo.propertyDesc
+          lossInfo.attributes.lossInfo.propertyDesc
       "
     >
       <div class="heading-light q-mt-none col-xs-4">Property Description :</div>
@@ -199,7 +199,7 @@
       class="q-mt-md row"
       v-if="
         lossInfo.attributes.lossInfo &&
-        lossInfo.attributes.lossInfo.deadlineDate
+          lossInfo.attributes.lossInfo.deadlineDate
       "
     >
       <div class="heading-light q-mt-none col-xs-4">Deadline Date:</div>
@@ -368,8 +368,7 @@ export default {
     this.getLossInfo(this.selectedClaimId);
     this.setSelectedClaimId(this.selectedClaimId);
     await this.getSingleClaims(this.selectedClaimId).then(() => {
-      this.lossDetails.policyEffectiveDate =
-        this.claim.policyInfo.effectiveDate;
+      this.lossDetails.policyEffectiveDate = this.claim.policyInfo.effectiveDate;
       this.lossDetails.policyExpireDate = this.claim.policyInfo.expirationDate;
     });
   },
@@ -431,23 +430,18 @@ export default {
       this.$emit('editLossInoDialog', true);
       //This is For Prefilling Values in Loss Info Form
       if (this.lossInfo.attributes.lossInfo.desc) {
-        this.lossDetails.descriptionDwelling =
-          this.lossInfo.attributes.lossInfo.desc;
+        this.lossDetails.descriptionDwelling = this.lossInfo.attributes.lossInfo.desc;
       }
 
-      this.lossDetails.lossAddressName =
-        this.lossInfo.attributes.lossInfo.lossAddressName;
+      this.lossDetails.lossAddressName = this.lossInfo.attributes.lossInfo.lossAddressName;
       this.lossDetails.addressID = this.lossInfo.attributes.lossInfo.addressID;
-      this.lossDetails.property =
-        this.lossInfo.attributes.lossInfo.propertyType;
+      this.lossDetails.property = this.lossInfo.attributes.lossInfo.propertyType;
       if (this.lossInfo.attributes.lossInfo.serverity) {
-        this.lossDetails.severityOfClaimType =
-          this.lossInfo.attributes.lossInfo.serverity;
+        this.lossDetails.severityOfClaimType = this.lossInfo.attributes.lossInfo.serverity;
       }
 
       if (this.lossInfo.attributes.lossInfo.claimReason) {
-        this.lossDetails.reasonClaim =
-          this.lossInfo.attributes.lossInfo.claimReason;
+        this.lossDetails.reasonClaim = this.lossInfo.attributes.lossInfo.claimReason;
       }
       if (this.lossInfo.attributes.lossInfo.deadlineDate) {
         this.lossDetails.deadlineDate = dateToShow(

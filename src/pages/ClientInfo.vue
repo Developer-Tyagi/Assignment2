@@ -86,8 +86,8 @@
                 <span
                   v-if="
                     editSelectedClient.attributes.insuredInfo.secondary &&
-                    editSelectedClient.attributes.insuredInfo.secondary
-                      .phoneNumber
+                      editSelectedClient.attributes.insuredInfo.secondary
+                        .phoneNumber
                   "
                   class="clickLink"
                   @click="
@@ -164,8 +164,8 @@
             <div
               v-if="
                 editSelectedClient.attributes.insuredInfo.mailingAddress &&
-                editSelectedClient.attributes.insuredInfo.mailingAddress
-                  .address2
+                  editSelectedClient.attributes.insuredInfo.mailingAddress
+                    .address2
               "
             >
               {{
@@ -836,8 +836,7 @@ export default {
         this.client = this.editSelectedClient.attributes.type;
       }
       if (this.editSelectedClient.attributes.insuredInfo.primary.honorific) {
-        this.honorific1 =
-          this.editSelectedClient.attributes.insuredInfo.primary.honorific;
+        this.honorific1 = this.editSelectedClient.attributes.insuredInfo.primary.honorific;
       }
 
       this.insuredDetails.fname = this.editSelectedClient.attributes.insuredInfo
@@ -881,8 +880,7 @@ export default {
           : '';
       }
       if (this.editSelectedClient.attributes.insuredInfo.primary.email) {
-        this.insuredDetails.email =
-          this.editSelectedClient.attributes.insuredInfo.primary.email;
+        this.insuredDetails.email = this.editSelectedClient.attributes.insuredInfo.primary.email;
       }
 
       if (this.editSelectedClient.attributes.insuredInfo.secondary) {
@@ -890,8 +888,7 @@ export default {
         if (
           this.editSelectedClient.attributes.insuredInfo.secondary.honorific
         ) {
-          this.honorific2 =
-            this.editSelectedClient.attributes.insuredInfo.secondary.honorific;
+          this.honorific2 = this.editSelectedClient.attributes.insuredInfo.secondary.honorific;
         }
 
         this.coInsuredDetails.fname = this.editSelectedClient.attributes
@@ -968,8 +965,7 @@ export default {
           ? this.editSelectedClient.attributes.insuredInfo.mailingAddress
               .addressCountry
           : null;
-        this.clientAddressDetails.addressLocality =
-          this.editSelectedClient.attributes.insuredInfo.mailingAddress.addressLocality;
+        this.clientAddressDetails.addressLocality = this.editSelectedClient.attributes.insuredInfo.mailingAddress.addressLocality;
         this.clientAddressDetails.addressRegion = this.editSelectedClient
           .attributes.insuredInfo.mailingAddress.addressRegion
           ? this.editSelectedClient.attributes.insuredInfo.mailingAddress
@@ -1001,14 +997,11 @@ export default {
           this.editSelectedClient.attributes.insuredInfo.mailingAddress.dropBox
             .isPresent
         ) {
-          this.clientAddressDetails.dropBox.isPresent =
-            this.editSelectedClient.attributes.insuredInfo.mailingAddress.dropBox.isPresent;
-          this.clientAddressDetails.dropBox.info =
-            this.editSelectedClient.attributes.insuredInfo.mailingAddress.dropBox.info;
+          this.clientAddressDetails.dropBox.isPresent = this.editSelectedClient.attributes.insuredInfo.mailingAddress.dropBox.isPresent;
+          this.clientAddressDetails.dropBox.info = this.editSelectedClient.attributes.insuredInfo.mailingAddress.dropBox.info;
         }
 
-        this.mailingAddressDetails =
-          this.editSelectedClient.attributes.insuredInfo.mailingAddress;
+        this.mailingAddressDetails = this.editSelectedClient.attributes.insuredInfo.mailingAddress;
       }
     },
     // For adding multiple Contact Numbers in ClientInfo

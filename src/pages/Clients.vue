@@ -30,7 +30,7 @@
           @click="onSearchBackButtonClick"
         />
         <q-separator vertical></q-separator>
-        <q-btn @click="addClient" flat><img src="~assets/add.svg" /></q-btn>
+        <q-btn @click="addClient" flat><img src="~assets/add.svg"/></q-btn>
       </div>
       <div class="mobile-container-page">
         <div class="clients-list" v-if="clients.length">

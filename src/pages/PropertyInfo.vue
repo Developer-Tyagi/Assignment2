@@ -55,7 +55,7 @@
                   <div
                     v-if="
                       setClientProperty[i - 1].attributes &&
-                      setClientProperty[i - 1].attributes.address2
+                        setClientProperty[i - 1].attributes.address2
                     "
                   >
                     {{ setClientProperty[i - 1].attributes.address2 }}
@@ -408,8 +408,9 @@ export default {
       this.propertyName = this.setClientProperty[index].attributes.name
         ? this.setClientProperty[index].attributes.name
         : '';
-      this.propertyDescription =
-        this.setClientProperty[index].attributes.propertyDesc;
+      this.propertyDescription = this.setClientProperty[
+        index
+      ].attributes.propertyDesc;
       this.property = this.setClientProperty[index].attributes.propertyType
         ? this.setClientProperty[index].attributes.propertyType
         : '';
