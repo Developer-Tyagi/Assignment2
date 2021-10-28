@@ -258,6 +258,32 @@ export async function createDocuments({ dispatch, state }, formData) {
     return false;
   }
 }
+// API for uploading doc or docx file to server
+export async function uploadDocFileToServer({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  console.log(payload, 'payload');
+  try {
+    const { data } = await request.post(
+      `/templates/${payload.templateId}`,
+      payload.formData
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: '  template has been uploaded'
+    });
+    return data;
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+    return false;
+  }
+}
+
 export async function setSingleRole({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {

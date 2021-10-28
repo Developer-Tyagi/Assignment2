@@ -106,9 +106,18 @@
             <span class="text-bold" style="line-height: 36px">{{
               tab.name
             }}</span>
-            <q-btn @click="openAddTemplateBox" color="primary">
-              Add Template
-            </q-btn>
+            <div class="row">
+              <q-btn @click="openAddTemplateBox" color="primary">
+                Add Template
+              </q-btn>
+              <q-btn
+                class="q-ml-lg"
+                @click="uploadTemplateDialogBox = true"
+                color="primary"
+              >
+                Upload Template
+              </q-btn>
+            </div>
           </div>
           <div
             class="bg-grey-3 q-mt-md"
@@ -360,15 +369,84 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+
+    <!-- Upload Template Dialog Box -->
+
+    <q-dialog
+      v-model="uploadTemplateDialogBox"
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card style="height: 85%; width: 60%">
+        <div class="row justify-between bg-primary" style="height: 50px">
+          <div class="text-white text-h6 q-pa-sm">Upload Template</div>
+          <q-btn dense flat icon="close" color="white" v-close-popup>
+            <q-tooltip>Close</q-tooltip>
+          </q-btn>
+        </div>
+        <div class="q-mx-lg">
+          <div
+            style="
+              height: calc(100% - 100px);
+              overflow-y: auto;
+              margin-bottom: 10px;
+            "
+          >
+            <div class="text-bold q-mt-xl">Template Type</div>
+            <q-form ref="uploadTemplateForm">
+              <div>
+                <q-select
+                  dense
+                  class="input-extra-padding q-ma-sm required"
+                  v-model="uploadTemplatetype.value"
+                  option-value="name"
+                  option-label="name"
+                  map-options
+                  options-dense
+                  behavior="menu"
+                  emit-value
+                  :options="templateOptions"
+                  @input="setTypes(uploadTemplatetype.value)"
+                  label="List of Templates"
+                  lazy-rules
+                  :rules="[
+                    val => (val && val.length > 0) || 'Please fill the template'
+                  ]"
+                />
+              </div>
+
+              <div class="column q-py-sm text-center">
+                <img
+                  class="q-ml-lg q-my-xs"
+                  src="~assets/upload.svg"
+                  style="width:10%;  margin-left:550px"
+                  @click="onClickUploadButton"
+                />
+                <div class="form-heading q-ml-md">Upload</div>
+                <input
+                  id="uploadFile"
+                  type="file"
+                  accept=".doc,.docx,"
+                  hidden
+                  @change="onFileInputClick"
+                />
+              </div>
+            </q-form>
+          </div>
+        </div>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 import { constants } from '@utils/constant';
 import { validateEmail, errorMessage } from '@utils/validation';
 import SubSideBar from 'components/SubSideBar';
 import CustomBar from 'components/CustomBar';
 import Ckeditor from 'components/Ckeditor';
+import { getBase64 } from '@utils/common';
 
 export default {
   name: 'SetConfiguration',
@@ -380,6 +458,8 @@ export default {
 
   data() {
     return {
+      uploadTemplateDialogBox: false,
+      dataURl: '',
       indexValue: '',
       isEdit: false,
       alert: false,
@@ -388,6 +468,7 @@ export default {
       templateTokens: [],
       groupedTokens: [],
       templatetype: { value: '', machineValue: '' },
+      uploadTemplatetype: { value: '', machineValue: '', id: '' },
       definitions: {
         insert_img: {
           tip: 'Insertar Imagen',
@@ -484,9 +565,63 @@ export default {
       'getAllTemplate',
       'editTemplate',
       'deleteTemplate',
-      'addTemplateType'
+      'addTemplateType',
+      'uploadDocFileToServer'
     ]),
+    ...mapMutations(['setLoading', 'setNotification']),
+    dataURItoBlob(dataURI) {
+      // convert base64/URLEncoded data component to raw binary data held in a string
+      var byteString;
+      if (dataURI.split(',')[0].indexOf('base64') >= 0)
+        byteString = atob(dataURI.split(',')[1]);
+      else byteString = unescape(dataURI.split(',')[1]);
 
+      // separate out the mime component
+      var mimeString = dataURI
+        .split(',')[0]
+        .split(':')[1]
+        .split(';')[0];
+
+      // write the bytes of the string to a typed array
+      var ia = new Uint8Array(byteString.length);
+      for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+      }
+
+      return new Blob([ia], { type: mimeString });
+    },
+
+    getBase64,
+    async onClickUploadButton() {
+      var success = await this.$refs.uploadTemplateForm.validate();
+      if (success) {
+        document.getElementById('uploadFile').click();
+      }
+    },
+    async onFileInputClick(event) {
+      this.dataURI = await this.getBase64(event.target.files[0]);
+
+      document.getElementById('uploadFile').value;
+
+      await this.uploadFileToServer();
+    },
+    async uploadFileToServer() {
+      this.setLoading(true);
+
+      const formData = new FormData();
+      formData.append('templateValue', this.uploadTemplatetype.value);
+      formData.append('file', this.dataURItoBlob(this.dataURI));
+
+      const payload = {
+        templateId: this.uploadTemplatetype.id,
+        formData: formData
+      };
+      await this.uploadDocFileToServer(payload);
+
+      this.setLoading(false);
+      this.uploadTemplateDialogBox = false;
+      this.uploadTemplatetype = {};
+    },
     updateMarkup(val) {
       this.post.body = val;
     },
@@ -598,6 +733,8 @@ export default {
         return item.name === value;
       });
       this.templatetype.machineValue = obj.machineValue;
+      this.uploadTemplatetype.machineValue = obj.machineValue;
+      this.uploadTemplatetype.id = obj.id;
     },
 
     saveWork() {
