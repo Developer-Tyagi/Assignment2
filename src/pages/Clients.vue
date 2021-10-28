@@ -108,6 +108,8 @@ import { mapGetters, mapActions, mapMutations } from 'vuex';
 import { dateWithTime } from '@utils/date';
 import { onPhoneNumberClick, showPhoneNumber } from '@utils/clickable';
 import localDB, { getCollection } from '@services/dexie';
+import { getCurrentUser } from 'src/utils/auth';
+
 export default {
   name: 'Clients',
   data() {
@@ -135,7 +137,11 @@ export default {
       name: ''
     };
     this.getClients(payload);
-    await this.getOrganization();
+    //only owner have the permission to view the organization info
+    const userRole = getCurrentUser().attributes.roles[0].machineValue;
+    if (userRole == 'owner') {
+      await this.getOrganization();
+    }
   },
   methods: {
     ...mapActions(['getClients', 'getSingleClientDetails', 'getOrganization']),
