@@ -1,7 +1,7 @@
 <template>
   <div>
     <q-card
-      class="q-pa-sm input-style input-overlay  col-5"
+      class="q-pa-sm input-style input-overlay col-5"
       v-if="generateClaimDocument"
     >
       <div class="text-bold q-mt-sm q-ml-sm">Template Type</div>
@@ -22,7 +22,7 @@
         :rules="[val => (val && val.length > 0) || 'Please fill the template']"
       />
 
-      <div class="full-width column items-center q-mb-md ">
+      <div class="full-width column items-center q-mb-md">
         <q-btn
           v-if="templatetype.value"
           color="primary"
@@ -63,7 +63,7 @@
     <div>
       <div v-for="(doc, index) in documents" class="row-div" :key="index">
         <div
-          v-if="doc.type == 'folder' && doc.properties.isVisible == 'true'"
+          v-if="doc.type == 'folder' && toFolderVisibility(doc, index)"
           class="vertical-center q-px-md q-py-xs"
         >
           <q-icon name="folder" size="sm" color="primary" />
@@ -78,7 +78,7 @@
           />
         </div>
         <div
-          v-if="doc.type != 'folder' && doc.properties.isVisible == 'true'"
+          v-if="doc.type != 'folder' && toFolderVisibility(doc, index)"
           class="vertical-center q-px-md q-py-sm"
         >
           <q-icon :name="iconType(doc.type)" size="sm" color="primary" />
@@ -93,7 +93,7 @@
           />
         </div>
       </div>
-      <div v-if="!documents.length" class=" heading-light row justify-center ">
+      <div v-if="!documents.length" class="heading-light row justify-center">
         <div>This folder is empty</div>
       </div>
     </div>
@@ -341,7 +341,7 @@
             <q-card>
               <div class="text-center q-mt-lg text-bold">Users</div>
               <q-separator class="bg-primary" />
-              <q-scroll-area style="height:30vh">
+              <q-scroll-area style="height: 30vh">
                 <div
                   v-for="user in allUsers"
                   :key="user.id"
@@ -368,7 +368,7 @@
             <q-card>
               <div class="text-center q-mt-lg text-bold">Roles</div>
               <q-separator class="bg-primary" />
-              <q-scroll-area style="height:30vh">
+              <q-scroll-area style="height: 30vh">
                 <div
                   v-for="filter in claimRoles"
                   :key="filter.id"
@@ -467,7 +467,7 @@
           dialogName="Send Document"
           @closeDialog="onClickCloseDialog"
         />
-        <div class="mobile-container-page q-pa-sm form-height ">
+        <div class="mobile-container-page q-pa-sm form-height">
           <span>Send To</span>
           <div>
             <q-radio v-model="sendToRadio" val="Email" label="Email"></q-radio>
@@ -479,10 +479,10 @@
             ></q-radio>
           </div>
           <div v-if="sendToRadio == 'User'">
-            <div class="column " v-for="(actor, index) in claimActors">
+            <div class="column" v-for="(actor, index) in claimActors">
               <div class="row q-pa-sm">
                 <div class="column q-mt-sm">
-                  <span style="font-weight:normal ">{{ actor.name }} </span>
+                  <span style="font-weight: normal">{{ actor.name }} </span>
                   <div v-for="(role, index) in actor.role">
                     <q-badge rounded>
                       <span>{{ role.value ? role.value : '' }}</span>
@@ -492,7 +492,7 @@
                     <span>{{ actor.type ? actor.type : '' }}</span>
                   </q-badge>
                 </div>
-                <div class="flex q-ml-auto ">
+                <div class="flex q-ml-auto">
                   <q-checkbox
                     v-model="actor.isEnabled"
                     color="$primary"
@@ -560,12 +560,10 @@
         />
 
         <div class="q-mt-md q-ml-xl row">
-          <div class="q-mt-none text-bold text-capitalize col-xs-4 ">
+          <div class="q-mt-none text-bold text-capitalize col-xs-4">
             Recipients
           </div>
-          <div class="column q-ml-md text-bold text-capitalize">
-            Status
-          </div>
+          <div class="column q-ml-md text-bold text-capitalize">Status</div>
         </div>
 
         <q-separator />
@@ -573,14 +571,14 @@
           class="q-mt-md q-ml-xl row"
           v-for="doc in signedDocuments.recipients"
         >
-          <div class="q-mt-none row col-xs-4 ">
+          <div class="q-mt-none row col-xs-4">
             {{ doc.name }}
           </div>
           <div class="column q-ml-md">
             {{ doc.status }}
           </div>
           <div
-            class="q-ml-auto  q-ml-xl q-mb-xs q-mr-md"
+            class="q-ml-auto q-ml-xl q-mb-xs q-mr-md"
             v-if="doc && doc.status == 'completed'"
           >
             <q-icon name="check" size="md" color="primary" />
@@ -713,7 +711,14 @@ export default {
     removeEmail() {
       this.emails.pop();
     },
-
+    toFolderVisibility(doc, index) {
+      if (doc.properties) {
+        if (doc.properties.isVisible == 'false') return false;
+        else return true;
+      } else {
+        return true;
+      }
+    },
     setClaimActors(actor) {
       this.signActor.push({
         id: actor.id,
@@ -1046,10 +1051,7 @@ export default {
       else byteString = unescape(dataURI.split(',')[1]);
 
       // separate out the mime component
-      var mimeString = dataURI
-        .split(',')[0]
-        .split(':')[1]
-        .split(';')[0];
+      var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
 
       // write the bytes of the string to a typed array
       var ia = new Uint8Array(byteString.length);
