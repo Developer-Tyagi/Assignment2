@@ -51,8 +51,6 @@
             <CompanyPersonnel :companyPersonnel="companyPersonnel" />
           </q-form>
         </div>
-
-        <br />
         <div class="row justify-center">
           <q-btn
             @click="onEditSaveButtonClick"

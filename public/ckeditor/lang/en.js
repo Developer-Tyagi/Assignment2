@@ -34,7 +34,7 @@ CKEDITOR.lang['en'] = {
     cssClass: 'Stylesheet Classes',
     advisoryTitle: 'Advisory Title',
     cssStyle: 'Style',
-    ok: 'OK',
+    ok: 'Insert',
     cancel: 'Cancel',
     close: 'Close',
     preview: 'Preview',

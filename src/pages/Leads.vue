@@ -1,7 +1,10 @@
 <template>
   <q-page>
-    <div class="row justify-center q-mt-sm" v-if="!organization.photoIDAPIKey">
-      <q-badge color="red">
+    <div class="row justify-center q-mt-sm">
+      <q-badge
+        color="red"
+        v-if="!organization.photoIDAPIKey && this.userRole == 'owner'"
+      >
         PhotoId Key has not been added in the system
         <q-icon name="warning" color="white" class="q-ml-xs"></q-icon>
       </q-badge>
@@ -240,6 +243,7 @@ import { mapGetters, mapActions, mapMutations } from 'vuex';
 import moment from 'moment';
 import { dateToShow } from '@utils/date';
 import { onPhoneNumberClick, showPhoneNumber } from '@utils/clickable';
+import { getCurrentUser } from 'src/utils/auth';
 
 export default {
   name: 'Leads',
@@ -261,7 +265,11 @@ export default {
   },
 
   async created() {
-    await this.getOrganization();
+    //only owner have the permission to view the organization info
+    this.userRole = getCurrentUser().attributes.roles[0].machineValue;
+    if (this.userRole == 'owner') {
+      await this.getOrganization();
+    }
   },
 
   methods: {

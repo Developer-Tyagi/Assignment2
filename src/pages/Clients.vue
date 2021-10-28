@@ -1,11 +1,11 @@
 <template>
   <q-page>
-    <div class="mobile-container-page-without-search">
-      <div
-        v-if="!organization.photoIDAPIKey"
-        class="q-mt-sm row justify-center"
-      >
-        <q-badge color="red ">
+    <div>
+      <div class="q-mt-sm row justify-center">
+        <q-badge
+          color="red "
+          v-if="!organization.photoIDAPIKey && this.userRole == 'owner'"
+        >
           PhotoId Key has not been added in the system
           <q-icon name="warning" color="white" class="q-ml-xs"></q-icon>
         </q-badge>
@@ -111,10 +111,13 @@ import { mapGetters, mapActions, mapMutations } from 'vuex';
 import { dateWithTime } from '@utils/date';
 import { onPhoneNumberClick, showPhoneNumber } from '@utils/clickable';
 import localDB, { getCollection } from '@services/dexie';
+import { getCurrentUser } from 'src/utils/auth';
+
 export default {
   name: 'Clients',
   data() {
     return {
+      userRole: '',
       searchText: '',
       openSearchInput: false
     };
@@ -138,7 +141,11 @@ export default {
       name: ''
     };
     this.getClients(payload);
-    await this.getOrganization();
+    //only owner have the permission to view the organization info
+    this.userRole = getCurrentUser().attributes.roles[0].machineValue;
+    if (this.userRole == 'owner') {
+      await this.getOrganization();
+    }
   },
   methods: {
     ...mapActions(['getClients', 'getSingleClientDetails', 'getOrganization']),
