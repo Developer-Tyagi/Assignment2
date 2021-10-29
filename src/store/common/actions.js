@@ -263,7 +263,7 @@ export async function uploadDocFileToServer({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.post(
-      `/templates/${payload.templateId}`,
+      `/templates/${payload.templateId}/upload`,
       payload.formData
     );
     dispatch('setLoading', false);
