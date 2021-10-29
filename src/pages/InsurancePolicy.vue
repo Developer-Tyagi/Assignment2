@@ -1247,25 +1247,25 @@ export default {
       this.getClaimCarrier(this.selectedClaimId);
     },
     onAddAdjustorClick() {
-      this.isAssignDisabled = true;
       if (this.selectedClaimCarrier.id) {
+        this.isAssignDisabled = true;
         this.adjustorListDialog = true;
+
+        this.$emit('editCarrierDialog', true);
+        const paramsObject = {
+          id: this.selectedClaimCarrier.carrier.carrierID,
+          params: ''
+        };
+        this.getCarrierPersonnel(paramsObject);
       } else {
         this.errorMessage(constants.successMessages.CARRIER_INFO_EMPTY);
       }
-
-      this.$emit('editCarrierDialog', true);
-      const paramsObject = {
-        id: this.selectedClaimId,
-        params: ''
-      };
-      this.getCarrierPersonnel(paramsObject);
     },
     //This Function is for when create a new personnel
 
     async onSaveCarrierPersonnel() {
       const payload = {
-        id: this.selectedClaimId,
+        id: this.selectedClaimCarrier.carrier.carrierID,
         data: {
           personnel: {
             honorific: {
@@ -1289,7 +1289,7 @@ export default {
       const response = await this.addCarrierPersonnel(payload);
       this.addPersonnelDialog = false;
       const getCarrierPersonalParams = {
-        id: this.selectedClaimId
+        id: this.selectedClaimCarrier.carrier.carrierID
       };
       this.getCarrierPersonnel(getCarrierPersonalParams);
       this.onSelectPersonnel(response.attributes.personnel);
