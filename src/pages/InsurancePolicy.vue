@@ -1,10 +1,10 @@
 <template>
   <div>
     <q-card class="q-pa-md">
-      <div class="form-heading  row q-ml-sm">
+      <div class="form-heading row q-ml-sm">
         Carrier Info
         <q-icon
-          v-if="selectedClaimCarrier.carrier.id"
+          v-if="selectedClaimCarrier && selectedClaimCarrier.id"
           size="xs"
           name="create "
           color="primary"
@@ -12,15 +12,15 @@
           class="q-ml-auto"
         ></q-icon>
         <q-icon
-          v-if="selectedClaimCarrier.carrier.id"
+          v-if="selectedClaimCarrier && selectedClaimCarrier.id"
           class="q-my-auto q-ml-sm"
           name="delete"
           size="xs"
           color="primary"
-          @click="onClickDelete(selectedClaimCarrier.carrier.id)"
+          @click="onClickDelete(selectedClaimCarrier.id)"
         />
         <img
-          v-if="!selectedClaimCarrier.carrier.id"
+          v-if="!selectedClaimCarrier.id"
           class="q-ml-auto"
           src="~assets/add.svg"
           alt="add_icon"
@@ -33,7 +33,7 @@
         class="q-pa-sm"
         v-if="selectedClaimCarrier.carrier && selectedClaimCarrier.carrier.id"
       >
-        <div class="form-heading  row" v-model="carrierName">
+        <div class="form-heading row">
           {{ selectedClaimCarrier.carrier.name }}
         </div>
 
@@ -58,7 +58,7 @@
             <div
               v-if="
                 selectedClaimCarrier.carrier.address &&
-                  selectedClaimCarrier.carrier.address.address2
+                selectedClaimCarrier.carrier.address.address2
               "
             >
               {{ selectedClaimCarrier.carrier.address.address2 }}
@@ -98,6 +98,7 @@
         <div
           class="q-mt-xs"
           v-for="phone in selectedClaimCarrier.carrier.phoneNumber"
+          :key="phone.number"
         >
           <span v-if="phone.type">{{ phone.type ? phone.type : '-' }} : </span>
           <span
@@ -121,7 +122,7 @@
         Carrier info not added yet.
       </div>
     </q-card>
-    <q-card class="q-mt-sm  q-pa-md">
+    <q-card class="q-mt-sm q-pa-md">
       <div class="row">
         <span class="form-heading col q-ma-xs"> Carrier Personnel Info</span>
         <img
@@ -132,9 +133,14 @@
           @click="onAddAdjustorClick"
         />
       </div>
-      <div v-if="selectedClaimCarrier.carrier.personnel">
+      <div
+        v-if="
+          selectedClaimCarrier.carrier && selectedClaimCarrier.carrier.personnel
+        "
+      >
         <div
           v-for="(personnel, index) in selectedClaimCarrier.carrier.personnel"
+          :key="index"
         >
           <div class="q-pa-sm text-bold row">
             <span v-if="personnel.name">
@@ -225,9 +231,9 @@
         no personnel has been added.
       </div>
     </q-card>
-    <q-card class="q-mt-sm  q-pa-md" v-if="policy.policyInfo">
+    <q-card class="q-mt-sm q-pa-md" v-if="policy.policyInfo">
       <div class="row q-mt-xs">
-        <span class="form-heading "> Policy Info</span>
+        <span class="form-heading"> Policy Info</span>
         <q-icon
           name="edit"
           size="xs"
@@ -545,7 +551,7 @@
           <div v-if="carrierPersonnel.personnel">
             <div
               v-for="personnel in carrierPersonnel.personnel"
-              :key="carrierPersonnel.personnel.id"
+              :key="personnel.id"
               class="listing-item clients-list"
               style="overflow-y: auto"
             >
@@ -585,7 +591,11 @@
                       }}
                     </div>
                   </div>
-                  <div class="q-mt-xs" v-for="phone in personnel.phoneNumber">
+                  <div
+                    class="q-mt-xs"
+                    v-for="(phone, index) in personnel.phoneNumber"
+                    :key="index"
+                  >
                     <span v-if="phone.type"
                       >{{ phone.type ? phone.type : '' }} :
                     </span>
@@ -642,15 +652,16 @@
           :dialogName="'Add Personnel'"
           @closeDialog="addPersonnelDialog = false"
         />
-        <div class="mobile-container-page">
+        <div class="mobile-container-page q-px-md q-mx-sm">
           <AddCarrierPersonnel :carrierPersonnel="personnel" />
         </div>
-        <q-btn
-          @click="onSaveCarrierPersonnel"
-          label="Save"
-          class="single-next-button-style"
-          size="'xl'"
-        />
+        <div class="row justify-center q-mt-md">
+          <q-btn
+            @click="onSaveCarrierPersonnel"
+            label="Save"
+            class="single-next-button-style"
+          />
+        </div>
       </q-card>
     </q-dialog>
 
@@ -668,16 +679,17 @@
           @closeDialog="editPersonnelDialog = false"
         />
         <q-form ref="editPersonnel">
-          <div class="mobile-container-page">
+          <div class="mobile-container-page q-px-md q-py-sm">
             <AddCarrierPersonnel :carrierPersonnel="editPersonnel" />
           </div>
         </q-form>
-        <q-btn
-          @click="onEditSaveCarrierPersonnel"
-          label="Save"
-          class="single-next-button-style"
-          size="'xl'"
-        />
+        <div class="row justify-center q-mt-md">
+          <q-btn
+            @click="onEditSaveCarrierPersonnel"
+            label="Save"
+            class="single-next-button-style"
+          />
+        </div>
       </q-card>
     </q-dialog>
 
@@ -731,10 +743,8 @@
     <q-dialog v-model="assignDialog">
       <q-layout view="Lhh lpR fff" container class="bg-white">
         <div class="mobile-container-page">
-          <div class="form-heading q-ml-sm text-h5">
-            Assign to Claim as
-          </div>
-          <div class=" q-ma-lg">
+          <div class="form-heading q-ml-sm text-h5">Assign to Claim as</div>
+          <div class="q-ma-lg">
             <div v-for="filter in claimRoles" :key="filter.id" class="q-mt-xs">
               <div class="row">
                 <q-radio
@@ -751,7 +761,7 @@
             </div>
           </div>
 
-          <div class="bg-white q-mb-md  ">
+          <div class="bg-white q-mb-md">
             <div class="row">
               <div class="q-ml-auto">
                 <q-btn
@@ -803,7 +813,7 @@ import InsuranceInfo from 'components/InsuranceInfo';
 import AddCarrier from 'components/AddCarrier';
 import DeleteAlert from 'components/DeleteAlert';
 import CarriersList from 'components/CarriersList';
-import { validateDate } from '@utils/validation';
+import { validateDate, errorMessage } from '@utils/validation';
 import { onEmailClick, onPhoneNumberClick, sendMap } from '@utils/clickable';
 import AddCarrierPersonnel from 'components/AddCarrierPersonnel';
 import { dateToShow } from '@utils/date';
@@ -989,13 +999,14 @@ export default {
     }
   },
 
-  created() {
-    this.getClaimCarrier(this.selectedClaimId);
+  async created() {
+    await this.getClaimCarrier(this.selectedClaimId);
     this.getPolicy(this.selectedClaimId);
-    this.insuranceDetails.policyEffectiveDate = this.insuranceDetails.policyExpireDate = date.formatDate(
-      Date.now(),
-      'MM/DD/YYYY'
-    );
+    this.insuranceDetails.policyEffectiveDate =
+      this.insuranceDetails.policyExpireDate = date.formatDate(
+        Date.now(),
+        'MM/DD/YYYY'
+      );
   },
   methods: {
     ...mapActions([
@@ -1018,6 +1029,7 @@ export default {
     ]),
     sendMap,
     toGetStateShortName,
+    errorMessage,
     async applyFilter() {
       if (this.filterName) {
         this.params.role = this.filterName;
@@ -1093,12 +1105,10 @@ export default {
 
     onEditAdjustorPersonnel(index) {
       this.id = this.selectedClaimCarrier.carrier.personnel[index].id;
-      this.personnelID = this.selectedClaimCarrier.carrier.personnel[
-        index
-      ].personnelID;
-      const name = this.selectedClaimCarrier.carrier.personnel[
-        index
-      ].name.split(' ');
+      this.personnelID =
+        this.selectedClaimCarrier.carrier.personnel[index].personnelID;
+      const name =
+        this.selectedClaimCarrier.carrier.personnel[index].name.split(' ');
 
       this.editPersonnelDialog = true;
       this.$emit('editCarrierDialog', true);
@@ -1116,14 +1126,12 @@ export default {
         ? this.selectedClaimCarrier.carrier.personnel[index].phoneNumber
         : '';
       if (this.selectedClaimCarrier.carrier.personnel[index].address) {
-        this.editPersonnel.address = this.selectedClaimCarrier.carrier.personnel[
-          index
-        ].address;
+        this.editPersonnel.address =
+          this.selectedClaimCarrier.carrier.personnel[index].address;
       }
 
-      this.editPersonnel.notes = this.selectedClaimCarrier.carrier.personnel[
-        index
-      ].note;
+      this.editPersonnel.notes =
+        this.selectedClaimCarrier.carrier.personnel[index].note;
     },
 
     validateDate,
@@ -1139,10 +1147,12 @@ export default {
         .policyInfo.isForcedPlaced
         ? this.policy.policyInfo.isForcedPlaced
         : false;
-      this.insuranceDetails.hasAppraisalClause = this.policy.policyInfo.hasAppraisalClause;
+      this.insuranceDetails.hasAppraisalClause =
+        this.policy.policyInfo.hasAppraisalClause;
       this.insuranceDetails.totalAmount = this.policy.policyInfo.totalAmount;
       this.insuranceDetails.ordinance = this.policy.policyInfo.ordinance;
-      this.insuranceDetails.debrisRemoval = this.policy.policyInfo.debrisRemoval;
+      this.insuranceDetails.debrisRemoval =
+        this.policy.policyInfo.debrisRemoval;
       this.insuranceDetails.mold = this.policy.policyInfo.mold;
 
       this.insuranceDetails.businessInt = this.policy.policyInfo.businessInt;
@@ -1188,12 +1198,17 @@ export default {
         );
       }
 
-      this.insuranceDetails.dwellingLimitA = this.policy.policyInfo.limitCoverage.dwelling;
-      this.insuranceDetails.contentsLimit = this.policy.policyInfo.limitCoverage.content;
-      this.insuranceDetails.otherStructureB = this.policy.policyInfo.limitCoverage.otherStructure;
-      this.insuranceDetails.lossOfUSD = this.policy.policyInfo.limitCoverage.lossOfUse;
+      this.insuranceDetails.dwellingLimitA =
+        this.policy.policyInfo.limitCoverage.dwelling;
+      this.insuranceDetails.contentsLimit =
+        this.policy.policyInfo.limitCoverage.content;
+      this.insuranceDetails.otherStructureB =
+        this.policy.policyInfo.limitCoverage.otherStructure;
+      this.insuranceDetails.lossOfUSD =
+        this.policy.policyInfo.limitCoverage.lossOfUse;
       this.insuranceDetails.deprecation = this.policy.policyInfo.depreciation;
-      this.insuranceDetails.deductible = this.policy.policyInfo.deductibleAmount;
+      this.insuranceDetails.deductible =
+        this.policy.policyInfo.deductibleAmount;
       this.insuranceDetails.priorPayment = this.policy.policyInfo.priorPayment;
       this.insuranceDetails.reasonsOfLD = this.policy.policyInfo.limitReason;
     },
@@ -1233,10 +1248,15 @@ export default {
     },
     onAddAdjustorClick() {
       this.isAssignDisabled = true;
-      this.adjustorListDialog = true;
+      if (this.selectedClaimCarrier.id) {
+        this.adjustorListDialog = true;
+      } else {
+        this.errorMessage(constants.successMessages.CARRIER_INFO_EMPTY);
+      }
+
       this.$emit('editCarrierDialog', true);
       const paramsObject = {
-        id: this.selectedClaimCarrier.carrier.carrierID,
+        id: this.selectedClaimId,
         params: ''
       };
       this.getCarrierPersonnel(paramsObject);
@@ -1245,7 +1265,7 @@ export default {
 
     async onSaveCarrierPersonnel() {
       const payload = {
-        id: this.selectedClaimCarrier.carrier.carrierID,
+        id: this.selectedClaimId,
         data: {
           personnel: {
             honorific: {
@@ -1268,7 +1288,10 @@ export default {
 
       const response = await this.addCarrierPersonnel(payload);
       this.addPersonnelDialog = false;
-      this.getCarrierPersonnel(this.selectedClaimCarrier.carrier.carrierID);
+      const getCarrierPersonalParams = {
+        id: this.selectedClaimId
+      };
+      this.getCarrierPersonnel(getCarrierPersonalParams);
       this.onSelectPersonnel(response.attributes.personnel);
 
       this.personnel.fname = '';
@@ -1360,8 +1383,8 @@ export default {
             policyInfo: {
               number: this.insuranceDetails.policyNumber,
               isClaimFiled: this.insuranceDetails.hasClaimBeenFilledToggle,
-              isForcedPlaced: this.insuranceDetails
-                .isThisIsForcedPlacedPolicyToggle,
+              isForcedPlaced:
+                this.insuranceDetails.isThisIsForcedPlacedPolicyToggle,
               hasAppraisalClause: this.insuranceDetails.hasAppraisalClause,
               category: {
                 id: this.insuranceDetails.policyCategory.id,
@@ -1381,8 +1404,8 @@ export default {
                 this.insuranceDetails.policyExpireDate
               ),
               isClaimFiled: this.insuranceDetails.hasClaimBeenFilledToggle,
-              isForcedPlaced: this.insuranceDetails
-                .isThisIsForcedPlacedPolicyToggle,
+              isForcedPlaced:
+                this.insuranceDetails.isThisIsForcedPlacedPolicyToggle,
               limitCoverage: {
                 dwelling: this.insuranceDetails.dwellingLimitA
                   ? this.insuranceDetails.dwellingLimitA
