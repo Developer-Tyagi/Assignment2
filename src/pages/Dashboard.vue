@@ -328,7 +328,8 @@ export default {
     async toRedirectTOPhotoIdApp() {
       const info = await Device.getInfo();
 
-      const devicePlatform = info.platform;
+      const devicePlatform = info.operatingSystem;
+
       // routing to different locations based on the devices
       if (devicePlatform == 'android') {
         window.location =
