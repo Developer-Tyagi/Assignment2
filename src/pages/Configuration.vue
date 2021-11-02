@@ -18,15 +18,7 @@
             Add {{ tab.name }}
           </q-btn>
         </div>
-        <div
-          class="bg-grey-3 q-mt-md"
-          style="
-            position: relative;
-            height: calc(100vh - 170px);
-            overflow: auto;
-            display: flex;
-          "
-        >
+        <div class="bg-grey-3 q-mt-md">
           <table class="table" v-if="table.length">
             <thead>
               <tr class="table-tr" v-if="tab.key !== 'inspectionType'">
@@ -424,13 +416,11 @@
               <div class="column items-center">
                 <q-img
                   src="~assets/upload.svg"
-                  style="width:10%; "
+                  style="width: 10%"
                   @click="onClickUploadButton"
                 />
               </div>
-              <div class="form-heading text-center q-mt-lg">
-                Upload
-              </div>
+              <div class="form-heading text-center q-mt-lg">Upload</div>
               <input
                 id="uploadFile"
                 type="file"
@@ -584,10 +574,7 @@ export default {
       else byteString = unescape(dataURI.split(',')[1]);
 
       // separate out the mime component
-      var mimeString = dataURI
-        .split(',')[0]
-        .split(':')[1]
-        .split(';')[0];
+      var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
 
       // write the bytes of the string to a typed array
       var ia = new Uint8Array(byteString.length);
@@ -840,9 +827,8 @@ export default {
           case 'inspectionType':
             for (var i = 0; i <= this.inspectionType.subtypes.length - 1; i++) {
               if (this.inspectionType.subtypes[i].value == '') {
-                this.inspectionType.subtypes[
-                  i
-                ].value = this.inspectionType.value;
+                this.inspectionType.subtypes[i].value =
+                  this.inspectionType.value;
               }
             }
             var response = await this.addInspectionType(this.inspectionType);
