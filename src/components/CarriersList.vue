@@ -149,6 +149,7 @@ export default {
     ...mapGetters(['carriers', 'selectedClaimId'])
   },
   created() {
+    this.getCarriers();
     this.getCarrierListData();
   },
 

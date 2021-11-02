@@ -15,7 +15,6 @@ export async function getCarriers(
 ) {
   if (isOnline) {
     try {
-      console.log(params, 222);
       let result = await request.get(`/carriers`, params);
       commit('setCarriers', result);
     } catch (error) {
@@ -29,7 +28,6 @@ export async function getCarriers(
       }
     }
   } else {
-    console.log('this is offline mode');
     commit('setOfflineCarriers', params);
     dispatch('setLoading', false);
   }

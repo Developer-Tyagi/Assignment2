@@ -6,12 +6,21 @@ export async function setCarriers(state, carriersData) {
     ...carrier.attributes,
     id: carrier.id
   }));
-  if (carriersData.meta.count < 20) {
+  if (carriersData.meta.limit == 20 && carriersData.meta.offset == 0) {
+    //this condition is used to check if the network is Online then  first we need to clear the store data and fetch it in a limit.
+    state.carriers = [];
+  }
+  if (carriersData.meta.limit == 0 && carriersData.meta.offset == 0) {
+    // this condition is used to check if the network is offline then we need to store the entire data in local DB.
     state.carriers = carriers;
-  } else if (carriersData.meta.count == 20) {
-    state.carriers = state.carriers.concat(carriers);
-  } else if (carriersData.meta.count > 20) {
-    state.carriers = carriers;
+  } else {
+    if (carriersData.meta.limit == 20 && carriersData.meta.offset == 0) {
+      // this condition is used for the searching of searching of carrier
+      state.carriers = carriers;
+    } else {
+      // this condition is used to concat the fetching data.
+      state.carriers = state.carriers.concat(carriers);
+    }
   }
   if ((await carriersCollection.count()) > 0 && !carriersData.params) {
     await carriersCollection.delete([]);
