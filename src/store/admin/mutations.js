@@ -34,9 +34,17 @@ export function setWorkflowAction(state, workflowAction) {
 
 export function setAllWorkFlow(state, allActions) {
   state.allAction = allActions.map(workaction => ({
+    id: workaction.id,
     name: workaction.attributes.name,
-    createdDesc: workaction.attributes.createdDesc
+    createdDesc: workaction.attributes.createdDesc,
+    ...workaction.attributes
   }));
+}
+
+//function for  Deleting Admin Action item
+export function deleteActionItem(state, itemId) {
+  const index = state.allAction.findIndex(item => item.id === itemId);
+  state.allAction.splice(index, 1);
 }
 
 export async function setOfficeTaskActions(state, actionsData) {

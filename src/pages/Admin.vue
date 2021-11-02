@@ -143,7 +143,7 @@
                       class="q-mr-md"
                       v-if="
                         organization.billingInfo &&
-                          organization.billingInfo.address
+                        organization.billingInfo.address
                       "
                     >
                       <div>
@@ -156,7 +156,7 @@
                       <div
                         v-if="
                           organization.billingInfo.address &&
-                            organization.billingInfo.address.address2
+                          organization.billingInfo.address.address2
                         "
                       >
                         {{ organization.billingInfo.address.address2 }}
@@ -182,7 +182,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col ">
+                  <div class="col">
                     {{ organization.website ? organization.website : '-' }}
                   </div>
                   <div class="col">
@@ -225,8 +225,8 @@
                 </div>
               </q-card>
               <q-card class="q-pa-lg q-mt-lg" flat bordered>
-                <div class="row ">
-                  <div class=" text-h5">
+                <div class="row">
+                  <div class="text-h5">
                     Plan:
                     {{
                       toUpperCase(
@@ -237,18 +237,14 @@
                     }}
                   </div>
                 </div>
-                <div
-                  class="row 
-                  q-mt-md
-                 "
-                >
+                <div class="row q-mt-md">
                   <div class="text-body1 text-weight-bold">Paid Users-</div>
-                  <div class="text-body1 ">{{ organization.paidUsers }}</div>
+                  <div class="text-body1">{{ organization.paidUsers }}</div>
 
-                  <div class="text-body1 text-weight-bold  q-pl-xl">
+                  <div class="text-body1 text-weight-bold q-pl-xl">
                     Unpaid Users-
                   </div>
-                  <div class="text-body1 ">{{ organization.nonPaidUsers }}</div>
+                  <div class="text-body1">{{ organization.nonPaidUsers }}</div>
                 </div>
 
                 <!--table for paid /unpaid users-->
@@ -292,27 +288,26 @@
                       <tr>
                         <div
                           style="
-                          height: 50px;
-                         border: 1px solid #ccc;
-                          font-size: 15px;
-                         overflow: auto;
-                        position: sticky;
-                        top: 0;
-                     z-index: 10;
-      
-                        "
+                            height: 50px;
+                            border: 1px solid #ccc;
+                            font-size: 15px;
+                            overflow: auto;
+                            position: sticky;
+                            top: 0;
+                            z-index: 10;
+                          "
                           class="text-center bg-white"
                         >
-                          <div class="q-mt-sm text-bold" style="height: 30px;">
+                          <div class="q-mt-sm text-bold" style="height: 30px">
                             Permission/Role
                           </div>
                         </div>
 
                         <th
                           v-for="(user, index) in arrOfRoles"
-                          style="height: 30px;"
+                          style="height: 30px"
                         >
-                          <div style="height:45px;width:100px;">
+                          <div style="height: 45px; width: 100px">
                             {{ user.value.name }}
                           </div>
                         </th>
@@ -320,20 +315,25 @@
                     </thead>
                     <tr v-for="(us, ind) in permissions">
                       <th
-                        style="height: 40px; font-size: 10px;font-weight:normal;text-align: left;"
+                        style="
+                          height: 40px;
+                          font-size: 10px;
+                          font-weight: normal;
+                          text-align: left;
+                        "
                       >
                         <span class="q-ml-sm">{{ us.name }}</span>
                       </th>
                       <td align="center" v-for="(user, index) in arrOfRoles">
                         <div
-                          style="height: 40px;"
+                          style="height: 40px"
                           v-if="
                             user.value.permission != null &&
-                              checkPermission(
-                                permissions[ind].machineValue,
-                                user.machineValue,
-                                index
-                              )
+                            checkPermission(
+                              permissions[ind].machineValue,
+                              user.machineValue,
+                              index
+                            )
                           "
                         >
                           <q-icon
@@ -343,7 +343,7 @@
                             @click="rolePermission(ind, index, 'selected')"
                           />
                         </div>
-                        <div v-else style="height: 40px;">
+                        <div v-else style="height: 40px">
                           <q-icon
                             color="primary q-mt-sm"
                             name=" radio_button_unchecked"
@@ -367,37 +367,9 @@
                     @click="addDefaultActionDialogBox = true"
                     :disable="claimType == ''"
                   />
-                  <!-- <q-btn
-                    class="q-ml-sm"
-                    color="primary"
-                    label="Refresh "
-                    @click=""
-                    :disable="claimType == ''"
-                  />
-                  <q-btn
-                    class="q-ml-sm"
-                    color="primary"
-                    label="Clone Workflow "
-                    @click=""
-                    :disable="claimType == ''"
-                  />
-                  <q-btn
-                    class="q-ml-sm"
-                    color="primary"
-                    label="Delete Workflow "
-                    @click=""
-                    :disable="claimType == ''"
-                  />
-                  <q-btn
-                    class="q-ml-sm"
-                    color="primary"
-                    label="Planning Sheet "
-                    @click=""
-                    :disable="claimType == ''"
-                  /> -->
                 </div>
 
-                <q-card class="q-mt-md ">
+                <q-card class="q-mt-md">
                   <div
                     class="row bg-grey-3 q-px-md"
                     style="align-items: center"
@@ -408,7 +380,6 @@
                     <div class="" v-else>Please Select Action Items</div>
 
                     <div class="text-h6 q-ml-auto q-mr-lg">Workflow</div>
-
                     <q-select
                       dense
                       class="q-py-sm input-extra-padding"
@@ -426,18 +397,33 @@
                   </div>
                   <div class="">
                     <q-scroll-area class="claim-list-scrollable">
-                      <div v-for="index in allAction" class="row q-pb-md">
+                      <div
+                        v-for="(item, index) in allAction"
+                        :key="index"
+                        class="row q-pb-md"
+                      >
                         <div class="col-11">
                           <div class="text-blue">
-                            {{ index.name ? index.name : '-' }}
+                            {{ item.name ? item.name : '-' }}
                           </div>
                           <div>
-                            {{ index.createdDesc ? index.createdDesc : '-' }}
+                            {{ item.createdDesc ? item.createdDesc : '-' }}
                           </div>
                         </div>
-
-                        <div class="col-1 cursor-pointer row text-h6">
-                          <q-icon size="sm" color="primary" name="create" />
+                        <!--this is for edit and delete -->
+                        <div class="row justify-between">
+                          <div
+                            class="col-1 cursor-pointer text-h6"
+                            @click="toEditActionItem(item)"
+                          >
+                            <q-icon size="md" color="primary" name="create" />
+                          </div>
+                          <div
+                            class="col-1 cursor-pointer text-h6"
+                            @click="toDeleteActionItem(item)"
+                          >
+                            <q-icon size="md" color="primary" name="delete" />
+                          </div>
                         </div>
                       </div>
                     </q-scroll-area>
@@ -602,7 +588,7 @@
                     dense
                     v-model="organizations.users.email"
                     label="PhotoId  Email"
-                    class="q-mx-md col-5 "
+                    class="q-mx-md col-5"
                     outlined
                     lazy-rules
                   />
@@ -625,7 +611,7 @@
           <q-btn
             color="primary"
             label="Save"
-            class=" single-next-button-style col-6 q-my-lg"
+            class="single-next-button-style col-6 q-my-lg"
             @click="onSaveEditedButtonOrganization"
           />
         </div>
@@ -678,7 +664,7 @@
                 class="q-ml-xs"
                 v-if="
                   actions.createWhen.type &&
-                    actionReason[indexOfActionReason].additionalReasons
+                  actionReason[indexOfActionReason].additionalReasons
                 "
               >
                 <q-select
@@ -694,7 +680,7 @@
                   emit-value
                   :options="actionReason[indexOfActionReason].additionalReasons"
                   label="Sub-option"
-                  style="width:220px"
+                  style="width: 220px"
                 >
                   <template v-slot:no-option>
                     <q-item>
@@ -707,7 +693,7 @@
               </div>
             </div>
             <div class="row q-pa-sm">
-              <div class="q-py-md  text-bold">Enabled :</div>
+              <div class="q-py-md text-bold">Enabled :</div>
               <q-toggle v-model="actions.isEnabled" left-label class="" />
               <q-badge color="primary" dense style="margin: auto 10px">{{
                 actions.isEnabled ? 'Enable' : 'Disable'
@@ -728,9 +714,9 @@
 
             <!-- 3 -->
             <div class="row q-mt-md full-width">
-              <div class=" row q-pa-xs">
+              <div class="row q-pa-xs">
                 <div class="q-py-sm text-bold">Assign To :</div>
-                <div class="q-ml-sm  row   text-bold">
+                <div class="q-ml-sm row text-bold">
                   <q-select
                     dense
                     outlined
@@ -765,7 +751,7 @@
                     @input="setAssignTo(actions.assignedTo[0].name)"
                     map-options
                     emit-value
-                    class=" q-ml-sm input-extra-padding"
+                    class="q-ml-sm input-extra-padding"
                     style="width: 200px"
                     :rules="[
                       val =>
@@ -775,8 +761,8 @@
                 </div>
               </div>
             </div>
-            <div class="q-py-sm  q-pl-xs text-bold">Due Date :</div>
-            <div class="row q-pl-xs   full-width">
+            <div class="q-py-sm q-pl-xs text-bold">Due Date :</div>
+            <div class="row q-pl-xs full-width">
               <!-- <div class="q-pa-sm text-bold">Due Date :</div> -->
               <div class="text-grey-9 text-bold q-py-sm">Task will be Due</div>
 
@@ -786,7 +772,7 @@
                 class="q-mx-sm"
                 outlined
                 placeholder="Day"
-                style="width: 20%;"
+                style="width: 20%"
               />
 
               <q-select
@@ -862,7 +848,7 @@
                 class="q-ml-xs"
                 v-if="
                   actions.actions.onComplete[index].type &&
-                    actionCompletion[indexOfSubTypeOfCompletion].subOptions
+                  actionCompletion[indexOfSubTypeOfCompletion].subOptions
                 "
               >
                 <q-select
@@ -1013,7 +999,7 @@
                 class="q-ml-xs"
                 v-if="
                   actions.actions.onOverdue[index].type &&
-                    actionOverDues[indexOfSubType].subOptions
+                  actionOverDues[indexOfSubType].subOptions
                 "
               >
                 <q-select
@@ -1144,6 +1130,519 @@
         </div>
       </q-card>
     </q-dialog>
+
+    <!--Edit Action item Dialog Box-->
+    <q-dialog v-model="editDefaultActionDialogBox">
+      <q-card style="width: 60%; height: 80%">
+        <q-bar class="row justify-between bg-primary" style="height: 50px">
+          <div class="q-px-xs text-bold text-white">Edit Action Item</div>
+          <q-btn dense flat icon="close" color="white" v-close-popup>
+            <q-tooltip>Close</q-tooltip>
+          </q-btn>
+        </q-bar>
+        <div style="height: calc(100% - 140px)" class="q-pa-md">
+          <q-form ref="editActionForm">
+            <div class="row full-width">
+              <div class="q-pa-sm text-bold">Action Item :</div>
+              <q-input
+                dense
+                v-model="editActions.name"
+                class="q-mx-md"
+                style="width: 200px"
+                outlined
+              />
+            </div>
+
+            <!-- second -->
+            <div class="row q-mt-md full-width">
+              <div class="q-pa-sm text-bold">Created When :</div>
+              <q-select
+                dense
+                outlined
+                options-dense
+                behavior="menu"
+                v-model="editActions.createWhen.type"
+                option-label="value"
+                :options="actionReason"
+                option-value="machineValue"
+                @input="createdWhenSubType(editActions.createWhen.type)"
+                map-options
+                emit-value
+                label="Created when"
+                class="input-extra-padding"
+              />
+
+              <div
+                class="q-ml-xs"
+                v-if="
+                  editActions.createWhen.type &&
+                  actionReason[indexOfActionReason].additionalReasons
+                "
+              >
+                <q-select
+                  dense
+                  class="input-extra-padding"
+                  outlined
+                  options-dense
+                  behavior="menu"
+                  v-model="editActions.createWhen.task"
+                  option-label="value"
+                  option-value="machineValue"
+                  map-options
+                  emit-value
+                  :options="actionReason[indexOfActionReason].additionalReasons"
+                  label="Sub-option"
+                >
+                  <template v-slot:no-option>
+                    <q-item>
+                      <q-item-section class="text-grey">
+                        No data present
+                      </q-item-section>
+                    </q-item>
+                  </template>
+                </q-select>
+              </div>
+            </div>
+            <div class="row q-pa-sm">
+              <div class="q-py-md text-bold">Enabled :</div>
+              <q-toggle v-model="editActions.isEnabled" left-label class="" />
+              <q-badge color="primary" dense style="margin: auto 10px">{{
+                editActions.isEnabled ? 'Enable' : 'Disable'
+              }}</q-badge>
+              <div class="q-pa-md text-bold">
+                Default Priority <span class="text-red">*</span> :
+              </div>
+              <div class="col-2 q-mt-xs">
+                <q-toggle
+                  v-model="editTogglePriorityKey"
+                  left-label
+                  @input="editTogglePriority()"
+                />
+                <q-badge color="primary" v-if="editTogglePriorityKey == true"
+                  >High</q-badge
+                >
+                <q-badge v-else color="primary">Low</q-badge>
+              </div>
+            </div>
+
+            <!-- 3 -->
+            <div class="row q-mt-md full-width">
+              <div class="row q-pa-xs">
+                <div class="q-py-sm text-bold">Assign To :</div>
+                <div class="q-ml-sm row text-bold">
+                  <q-select
+                    dense
+                    outlined
+                    v-model="editActions.assignedTo[0].type"
+                    options-dense
+                    behavior="menu"
+                    option-label="value"
+                    :options="assignTo"
+                    @input="callAssignApi(actions.assignedTo[0].type)"
+                    option-value="machineValue"
+                    map-options
+                    emit-value
+                    label="Assign To"
+                    class="input-extra-padding"
+                    style="width: 200px"
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) || 'Please select any category'
+                    ]"
+                  />
+
+                  <q-select
+                    v-if="editActions.assignedTo[0].type"
+                    v-model="editActions.assignedTo[0].name"
+                    dense
+                    outlined
+                    options-dense
+                    behavior="menu"
+                    option-label="name"
+                    :options="assignToSubOption"
+                    option-value="machineValue"
+                    @input="setAssignTo(editActions.assignedTo[0].name)"
+                    map-options
+                    emit-value
+                    class="q-ml-sm input-extra-padding"
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) || 'Please select any user '
+                    ]"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="q-py-sm q-pl-xs text-bold">Due Date :</div>
+            <div class="row q-pl-xs full-width">
+              <!-- <div class="q-pa-sm text-bold">Due Date :</div> -->
+              <div class="text-grey-9 text-bold q-py-sm">Task will be Due</div>
+
+              <q-input
+                dense
+                v-model.number="editActions.due.interval"
+                class="q-mx-sm"
+                outlined
+                placeholder="Day"
+                style="width: 20%"
+              />
+
+              <q-select
+                dense
+                class="q-mx-sm"
+                outlined
+                options-dense
+                v-model="editActions.due.type"
+                behavior="menu"
+                option-value="options"
+                :options="dueDays"
+                label="Type"
+                style="width: 200px"
+              />
+
+              <div class="q-pa-sm text-grey-9 text-bold">
+                days after it is created
+              </div>
+            </div>
+
+            <div class="row q-mt-md full-width">
+              <q-card
+                class="q-pa-sm q-pl-sm text-bold"
+                style="letter-spacing: 1px; width: 100%"
+                flat
+                bordered
+              >
+                Note : Actions are executed in the order specified
+              </q-card>
+            </div>
+            <div
+              v-if="editActions.actions.onComplete.length > 0"
+              v-for="(val, index) in editActions.actions.onComplete"
+              :key="index"
+              class="row q-mt-md full-width"
+            >
+              <div>
+                <div class="q-pa-sm text-bold" v-if="index == 0">
+                  Completion Action :
+                </div>
+                <div
+                  class="q-pa-sm text-bold"
+                  v-else
+                  style="visibility: hidden"
+                >
+                  Completion Action :
+                </div>
+              </div>
+              <div>
+                <q-select
+                  dense
+                  outlined
+                  options-dense
+                  behavior="menu"
+                  v-model="editActions.actions.onComplete[index].type"
+                  option-label="value"
+                  option-value="machineValue"
+                  map-options
+                  emit-value
+                  :options="actionCompletion"
+                  @input="
+                    setSubTypeOfAction(
+                      editActions.actions.onComplete[index].type,
+                      index
+                    )
+                  "
+                  label="Completion Action"
+                  class="input-extra-padding"
+                  style="width: 200px"
+                />
+              </div>
+
+              <div
+                class="q-ml-xs"
+                v-if="
+                  editActions.actions.onComplete[index].type &&
+                  actionCompletion[indexOfSubTypeOfCompletion].subOptions
+                "
+              >
+                <q-select
+                  dense
+                  class="col-3 input-extra-padding"
+                  outlined
+                  v-model="editActions.actions.onComplete[index].task[0]"
+                  behavior="menu"
+                  option-value="machineValue"
+                  option-label="value"
+                  :options="
+                    actionCompletion[indexOfSubTypeOfCompletion].subOptions
+                  "
+                  label="Sub-option"
+                  @input="
+                    setSubTypeForAction(
+                      editActions.actions.onComplete[index].task[0],
+                      indexOfSubTypeOfCompletion,
+                      index
+                    )
+                  "
+                  map-options
+                  emit-value
+                  options-dense
+                  style="width: 200px"
+                />
+              </div>
+              <div
+                class="q-ml-xs"
+                v-if="
+                  editActions.actions.onComplete[index].task[0] &&
+                  actionCompletion[indexOfSubTypeOfCompletion].subOptions
+                    ? actionCompletion[indexOfSubTypeOfCompletion].subOptions[
+                        indexOfSubOfSubTypeOfCompletion
+                      ]
+                      ? actionCompletion[indexOfSubTypeOfCompletion].subOptions[
+                          indexOfSubOfSubTypeOfCompletion
+                        ].subTypes.length > 0
+                      : false
+                    : false
+                "
+              >
+                <q-select
+                  v-if="editActions.actions.onComplete[index].task[0] == 'user'"
+                  dense
+                  class="input-extra-padding"
+                  outlined
+                  v-model="editActions.actions.onComplete[index].task[1]"
+                  behavior="menu"
+                  option-value="id"
+                  option-label="value"
+                  :options="
+                    actionCompletion[indexOfSubTypeOfCompletion].subOptions[
+                      indexOfSubOfSubTypeOfCompletion
+                    ].subTypes
+                  "
+                  label="Sub-option"
+                  map-options
+                  emit-value
+                  options-dense
+                  style="width: 200px"
+                />
+                <q-select
+                  v-else
+                  dense
+                  class="input-extra-padding"
+                  outlined
+                  v-model="editActions.actions.onComplete[index].task[1]"
+                  behavior="menu"
+                  option-value="machineValue"
+                  option-label="value"
+                  :options="
+                    actionCompletion[indexOfSubTypeOfCompletion].subOptions[
+                      indexOfSubOfSubTypeOfCompletion
+                    ].subTypes
+                  "
+                  label="Sub-option"
+                  map-options
+                  emit-value
+                  options-dense
+                  style="width: 200px"
+                />
+              </div>
+              <div class="q-ml-md q-mt-sm">
+                <q-icon
+                  class="clickable"
+                  size="md"
+                  color="primary"
+                  name="add"
+                  @click="addAnotherOnClick"
+                />
+              </div>
+              <div
+                class="q-ml-sm q-pt-sm text-bold"
+                v-if="editActions.actions.onComplete.length > 1"
+              >
+                <q-icon
+                  class="clickable"
+                  size="md"
+                  color="primary"
+                  name="clear"
+                  @click="removeCompletionAction(index)"
+                />
+              </div>
+            </div>
+            <!-- OverDue -->
+
+            <div
+              v-for="(Overdue, index) in editActions.actions.onOverdue"
+              v-if="editActions.actions.onOverdue.length > 0"
+              class="row q-mt-md full-width"
+            >
+              <div>
+                <div class="q-pa-sm text-bold" v-if="index == 0">
+                  OverDue Action:
+                </div>
+                <div
+                  class="q-pa-sm text-bold"
+                  v-else
+                  style="visibility: hidden"
+                >
+                  OverDue Action:
+                </div>
+              </div>
+
+              <div class="q-ml-lg">
+                <q-select
+                  dense
+                  outlined
+                  v-model="editActions.actions.onOverdue[index].type"
+                  behavior="menu"
+                  option-value="machineValue"
+                  option-label="value"
+                  :options="actionOverDues"
+                  map-options
+                  emit-value
+                  @input="
+                    setSubType(editActions.actions.onOverdue[index].type, index)
+                  "
+                  label="OverDue"
+                  options-dense
+                  class="input-extra-padding"
+                  style="width: 200px"
+                />
+              </div>
+
+              <div
+                class="q-ml-xs"
+                v-if="
+                  editActions.actions.onOverdue[index].type &&
+                  actionOverDues[indexOfSubType].subOptions
+                "
+              >
+                <q-select
+                  class="input-extra-padding"
+                  outlined
+                  dense
+                  options-dense
+                  v-model="editActions.actions.onOverdue[index].task[0]"
+                  behavior="menu"
+                  option-value="machineValue"
+                  option-label="value"
+                  map-options
+                  :options="actionOverDues[indexOfSubType].subOptions"
+                  @input="
+                    setSubOfSubType(
+                      editActions.actions.onOverdue[index].task[0],
+                      indexOfSubType,
+                      index
+                    )
+                  "
+                  emit-value
+                  label="Sub-option"
+                  style="width: 200px"
+                />
+              </div>
+
+              <div
+                class="q-ml-xs"
+                v-if="
+                  editActions.actions.onOverdue[index].task[0] &&
+                  actionOverDues[indexOfSubType].subOptions
+                    ? actionOverDues[indexOfSubType].subOptions[
+                        indexOfSubOfSubType
+                      ]
+                      ? actionOverDues[indexOfSubType].subOptions[
+                          indexOfSubOfSubType
+                        ].subTypes.length > 0
+                      : false
+                    : false
+                "
+              >
+                <q-select
+                  v-if="editActions.actions.onOverdue[index].task[0] == 'user'"
+                  dense
+                  class="col-3 input-extra-padding"
+                  outlined
+                  options-dense
+                  v-model="editActions.actions.onOverdue[index].task[1]"
+                  behavior="menu"
+                  option-value="id"
+                  option-label="value"
+                  map-options
+                  emit-value
+                  :options="
+                    actionOverDues[indexOfSubType].subOptions[
+                      indexOfSubOfSubType
+                    ].subTypes
+                  "
+                  label="Sub-option"
+                  style="width: 200px"
+                />
+                <q-select
+                  v-else
+                  dense
+                  class="col-3 input-extra-padding"
+                  outlined
+                  options-dense
+                  v-model="editActions.actions.onOverdue[index].task[1]"
+                  behavior="menu"
+                  option-value="machineValue"
+                  option-label="value"
+                  map-options
+                  emit-value
+                  :options="
+                    actionOverDues[indexOfSubType].subOptions[
+                      indexOfSubOfSubType
+                    ].subTypes
+                  "
+                  label="Sub-options"
+                  style="width: 200px"
+                />
+              </div>
+
+              <div class="q-ml-md q-pt-sm text-bold">
+                <q-icon
+                  class="clickable"
+                  size="md"
+                  color="primary"
+                  name="add"
+                  @click="addMoreOverDue"
+                />
+              </div>
+              <div
+                class="q-ml-sm q-pt-sm text-bold"
+                v-if="editActions.actions.onOverdue.length > 1"
+              >
+                <q-icon
+                  class="clickable"
+                  size="md"
+                  color="primary"
+                  name="clear"
+                  @click="RemoveOverDue(index)"
+                />
+              </div>
+            </div>
+
+            <div class="row q-mt-md full-width">
+              <div class="">
+                <div class="q-pa-sm text-bold">Notes/Instruction:</div>
+              </div>
+              <div class="q-ml-md col-5">
+                <textarea
+                  v-model="editActions.notes"
+                  rows="4"
+                  style="width: 100%"
+                />
+              </div>
+            </div>
+          </q-form>
+        </div>
+        <div class="row justify-center">
+          <q-btn
+            color="primary"
+            label="Save"
+            class="single-next-button-style col-6 q-my-lg"
+            @click="onClickEditSaveButton"
+          />
+        </div>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 <script>
@@ -1166,6 +1665,9 @@ export default {
 
   data() {
     return {
+      selectedWorkflowID: '',
+      editTogglePriorityKey: false,
+      editDefaultActionDialogBox: false,
       assignTo: [
         { value: 'User', machineValue: 'user' },
         { value: 'Role', machineValue: 'role' }
@@ -1279,6 +1781,45 @@ export default {
         },
         notes: ''
       },
+      editActions: {
+        id: '',
+
+        name: '',
+        isEnabled: false,
+        createWhen: {
+          type: '',
+          task: []
+        },
+
+        priority: 'low',
+        assignedTo: [
+          {
+            type: '',
+            name: '',
+            id: ''
+          }
+        ],
+        actions: {
+          onComplete: [
+            {
+              type: '',
+              task: []
+            }
+          ],
+          onOverdue: [
+            {
+              type: '',
+              task: []
+            }
+          ]
+        },
+        due: {
+          type: '',
+          interval: '',
+          unit: 'days'
+        },
+        notes: ''
+      },
 
       claimType: '',
 
@@ -1327,6 +1868,7 @@ export default {
       return plan[0].toUpperCase() + plan.slice(1);
     },
     ...mapActions([
+      'editAdminActionItem',
       'getActionOverDues',
       'getActionCompletion',
       'getActionReasons',
@@ -1342,10 +1884,42 @@ export default {
       'getPermissions',
       'setMultiplePermission',
       'getOrganization',
+      'adminActionItemDelete',
       'updateUserForOrganization'
     ]),
     validateEmail,
 
+    //to Delete Admin Action item
+    toDeleteActionItem(item) {
+      const payload = {
+        itemID: item.id,
+        workFlowID: this.selectedWorkflowID
+      };
+      this.adminActionItemDelete(payload);
+    },
+    toEditActionItem(item) {
+      this.editDefaultActionDialogBox = !this.editDefaultActionDialogBox;
+      this.editActions.id = item.id;
+      this.editActions.name = item.name;
+      this.editActions.isEnabled = item.isEnabled;
+      this.editActions.createWhen.type = item.createWhen.type;
+      this.editActions.createWhen.task = item.createWhen.task;
+      this.editActions.priority = item.priority;
+      this.editActions.assignedTo[0].type = item.assignedTo[0].type;
+      this.editActions.assignedTo[0].name = item.assignedTo[0].name;
+      this.editActions.assignedTo[0].id = item.assignedTo[0].id;
+      this.editActions.actions.onComplete.type = item.actions.onComplete.type;
+      this.editActions.actions.onComplete.task = item.actions.onComplete.task;
+      this.editActions.actions.onOverdue.type = item.actions.onOverdue.type;
+      this.editActions.actions.onOverdue.task = item.actions.onOverdue.task;
+
+      this.editActions.due.type = item.due.type;
+      this.editActions.due.interval = item.due.interval;
+      this.editActions.due.unit = item.due.unit;
+
+      this.editActions.notes = item.notes;
+      this.createdWhenSubType(this.editActions.createWhen.type);
+    },
     async callAssignApi(val) {
       this.assignToSubOption = [];
       this.actions.assignedTo[0].name = '';
@@ -1517,17 +2091,29 @@ export default {
     },
     // For Api Calling
     async claimActionItem(mValue) {
-      this.claimType = mValue;
       await this.getAllWorkFlow(this.claimType);
       await this.getActionReasons(this.claimType);
       await this.getActionOverDues(this.claimType);
       await this.getActionCompletion(this.claimType);
+      this.claimType = mValue ? mValue : 'claim_new_claim';
+      for (let i = 0; i < this.workflowAction.length; i++) {
+        if (this.claimType == this.workflowAction[i].machineValue) {
+          this.selectedWorkflowID = this.workflowAction[i].id;
+        }
+      }
     },
     // Toggle Priority Set
     TogglePriority() {
       if (this.priority == true) {
         this.actions.priority = 'critical';
       }
+    },
+
+    //this is used for edit toggle priority
+    editTogglePriority() {
+      if (this.editTogglePriorityKey) {
+        this.editActions.priority = 'critical';
+      } else this.editTogglePriorityKey = false;
     },
     //  Finding and Clearing the Other Sub data while changing the main DRopdown data
     createdWhenSubType(value) {
@@ -1546,12 +2132,16 @@ export default {
       this.users.contact.type = this.user.phoneNumber.type;
       this.users.contact.number = showPhoneNumber(this.user.phoneNumber.number);
       this.users.email = this.user.email;
-      this.users.mailingAddress.addressRegion = this.user.mailingAddress.addressRegion;
-      this.users.mailingAddress.addressLocality = this.user.mailingAddress.addressLocality;
-      this.users.mailingAddress.houseNumber = this.user.mailingAddress.houseNumber;
+      this.users.mailingAddress.addressRegion =
+        this.user.mailingAddress.addressRegion;
+      this.users.mailingAddress.addressLocality =
+        this.user.mailingAddress.addressLocality;
+      this.users.mailingAddress.houseNumber =
+        this.user.mailingAddress.houseNumber;
       this.users.mailingAddress.address1 = this.user.mailingAddress.address1;
       this.users.mailingAddress.address2 = this.user.mailingAddress.address2;
-      this.users.mailingAddress.postalCode = this.user.mailingAddress.postalCode;
+      this.users.mailingAddress.postalCode =
+        this.user.mailingAddress.postalCode;
       this.editUserInfoDialog = true;
     },
     onEditClickOrganization() {
@@ -1560,21 +2150,26 @@ export default {
 
       // this.organizations.users.contact.number = this.organization.website;
       this.organizations.users.email = this.organization.photoIDEmail;
-      this.organizations.users.mailingAddress.addressRegion = this.organization.billingInfo.address.addressRegion;
-      this.organizations.users.mailingAddress.addressLocality = this.organization.billingInfo.address.addressLocality;
-      this.organizations.users.mailingAddress.houseNumber = this.organization.billingInfo.address.houseNumber;
-      this.organizations.users.mailingAddress.address1 = this.organization.billingInfo.address.address1;
-      this.organizations.users.mailingAddress.address2 = this.organization.billingInfo.address.address2;
-      this.organizations.users.mailingAddress.postalCode = this.organization.billingInfo.address.postalCode;
+      this.organizations.users.mailingAddress.addressRegion =
+        this.organization.billingInfo.address.addressRegion;
+      this.organizations.users.mailingAddress.addressLocality =
+        this.organization.billingInfo.address.addressLocality;
+      this.organizations.users.mailingAddress.houseNumber =
+        this.organization.billingInfo.address.houseNumber;
+      this.organizations.users.mailingAddress.address1 =
+        this.organization.billingInfo.address.address1;
+      this.organizations.users.mailingAddress.address2 =
+        this.organization.billingInfo.address.address2;
+      this.organizations.users.mailingAddress.postalCode =
+        this.organization.billingInfo.address.postalCode;
 
       this.editOrganizsationInfoDialog = true;
     },
     // Action OverDue Sub Dropdown Index set
 
     setSubType(val, index) {
-      this.actions.actions.onOverdue[
-        index
-      ].task[0] = this.actions.actions.onOverdue[index].task[1] = '';
+      this.actions.actions.onOverdue[index].task[0] =
+        this.actions.actions.onOverdue[index].task[1] = '';
 
       var index = this.actionOverDues.findIndex(
         std => std.machineValue === val
@@ -1616,19 +2211,19 @@ export default {
       if (success) {
         /* This Filter function is used for elimination the null and empty values from the array     */
         this.actions.actions.onComplete.forEach(val => {
-          val.task = val.task.filter(function(el) {
+          val.task = val.task.filter(function (el) {
             return el != '';
           });
         });
 
         this.actions.actions.onOverdue.forEach(val => {
-          val.task = val.task.filter(function(el) {
+          val.task = val.task.filter(function (el) {
             return el != '';
           });
         });
 
         this.actions.createWhen.task = this.actions.createWhen.task.filter(
-          function(el) {
+          function (el) {
             return el != '';
           }
         );
@@ -1677,6 +2272,94 @@ export default {
       }
     },
 
+    //on Edit Button For Action Item
+    async onClickEditSaveButton() {
+      const success = await this.$refs.editActionForm.validate();
+      if (success) {
+        const payload = {
+          id: this.editActions.id,
+          workflowID: this.selectedWorkflowID,
+          attributes: {
+            name: this.editActions.name,
+            isEnabled: this.editActions.isEnabled,
+            createdWhen: {
+              type: this.editActions.createWhen.type,
+              task: this.editActions.createWhen.task
+            },
+            priority: this.editActions.priority,
+            assignedTo: [
+              {
+                type: this.editActions.assignedTo[0].type,
+                name: this.editActions.assignedTo[0].name,
+                id: this.editActions.assignedTo[0].id
+              }
+            ],
+            actions: {
+              onComplete: [
+                {
+                  type: this.editActions.actions.onComplete.type,
+                  task: this.editActions.actions.onComplete.task
+                }
+              ],
+              onOverdue: [
+                {
+                  type: this.editActions.actions.onOverdue.type,
+                  task: this.editActions.actions.onOverdue.task
+                }
+              ]
+            },
+            dueDay: {
+              type: this.editActions.due.type,
+              interval: this.editActions.due.interval,
+              unit: this.editActions.due.unit
+            },
+            notes: this.editActions.notes
+          }
+        };
+
+        const response = await this.editAdminActionItem(payload);
+        /*  Clearing the form     */
+        if (response)
+          this.editActions = {
+            id: '',
+            name: '',
+            isEnabled: false,
+            createWhen: {
+              type: '',
+              task: []
+            },
+            priority: 'low',
+            assignedTo: [
+              {
+                type: '',
+                name: '',
+                id: ''
+              }
+            ],
+            actions: {
+              onComplete: [
+                {
+                  type: '',
+                  task: []
+                }
+              ],
+              onOverdue: [
+                {
+                  type: '',
+                  task: []
+                }
+              ]
+            },
+            due: {
+              type: '',
+              interval: null,
+              unit: 'days'
+            },
+            notes: ''
+          };
+      }
+    },
+
     // Remove Completion Multiple Values
     removeCompletionAction(val) {
       this.actions.actions.onComplete.splice(val, 1);
@@ -1696,9 +2379,8 @@ export default {
     },
 
     setSubTypeOfAction(val, index) {
-      this.actions.actions.onComplete[
-        index
-      ].task[0] = this.actions.actions.onComplete[index].task[1] = '';
+      this.actions.actions.onComplete[index].task[0] =
+        this.actions.actions.onComplete[index].task[1] = '';
       var indexOfCompletionAction = this.actionCompletion.findIndex(
         std => std.machineValue === val
       );

@@ -93,13 +93,56 @@ export async function addWorkflowAction({ dispatch, state }, payload) {
   }
 }
 
+// function is used for Edit Action Item
+
+export async function editAdminActionItem({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.patch(
+      `workflows/${payload.workflowID}/actions/${payload.id}`,
+      buildApiData('actions', payload.attributes)
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Action Item  Updated !'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'failed to update Action Item'
+    });
+  }
+}
+
+// to Delete Admin Action Items
+export async function adminActionItemDelete({ commit, dispatch }, payload) {
+  dispatch('setLoading', true);
+  try {
+    await request.del(
+      `workflows/${payload.workFlowID}/actions/${payload.itemID}`
+    );
+    commit('deleteActionItem', payload.itemID);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'Error in archiving lead.'
+    });
+  }
+}
+
 export async function getWorkflowAction({ commit, dispatch }) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.get('/workflows ');
 
     commit('setWorkflowAction', data);
-    dispatch('setLoading', false);
+    dispaaddWorkflowActiontch('setLoading', false);
   } catch (e) {
     console.log(e);
     dispatch('setLoading', false);
