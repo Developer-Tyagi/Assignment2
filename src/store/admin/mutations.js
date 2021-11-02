@@ -34,11 +34,12 @@ export function setWorkflowAction(state, workflowAction) {
 
 export function setAllWorkFlow(state, allActions) {
   state.allAction = allActions.map(workaction => ({
+    id: workaction.id,
     name: workaction.attributes.name,
-    createdDesc: workaction.attributes.createdDesc
+    createdDesc: workaction.attributes.createdDesc,
+    ...workaction.attributes
   }));
 }
-
 export async function setOfficeTaskActions(state, actionsData) {
   const officeTaskActionsCollection = await getCollection('officeTasks');
   const officeTaskActions = actionsData.map(action => ({
