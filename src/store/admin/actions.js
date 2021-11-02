@@ -124,11 +124,15 @@ export async function adminActionItemDelete({ commit, dispatch }, payload) {
       `workflows/${payload.workFlowID}/actions/${payload.itemID}`
     );
     dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'postive',
+      message: 'Item deleted successfully!'
+    });
   } catch (e) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: 'Error in archiving lead.'
+      message: 'Error in deleting Item.'
     });
   }
 }
