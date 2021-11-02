@@ -6,8 +6,13 @@ export async function setCarriers(state, carriersData) {
     ...carrier.attributes,
     id: carrier.id
   }));
-  state.carriers = carriers;
-
+  if (carriersData.meta.count < 20) {
+    state.carriers = carriers;
+  } else if (carriersData.meta.count == 20) {
+    state.carriers = state.carriers.concat(carriers);
+  } else if (carriersData.meta.count > 20) {
+    state.carriers = carriers;
+  }
   if ((await carriersCollection.count()) > 0 && !carriersData.params) {
     await carriersCollection.delete([]);
   }
@@ -18,7 +23,7 @@ export async function setCarriers(state, carriersData) {
 
 export async function setOfflineCarriers(state) {
   state.carriers = await getCollection('carriers').toArray();
-  state.carriers.sort(function(a, b) {
+  state.carriers.sort(function (a, b) {
     return new Date(b.updated).getTime() - new Date(a.updated).getTime();
   });
 }

@@ -13,42 +13,26 @@ export async function getCarriers(
   },
   params
 ) {
-  dispatch('setLoading', true);
   if (isOnline) {
     try {
-      const { data } = await request.get('/carriers', params);
-      const payload = { data: data, params: params };
-      commit('setCarriers', payload);
-      dispatch('setLoading', false);
-    } catch (e) {
-      console.log(e);
-      dispatch('setLoading', false);
-      dispatch('setNotification', {
-        type: 'negative',
-        message: e.response[0].title
-      });
+      console.log(params, 222);
+      let result = await request.get(`/carriers`, params);
+      commit('setCarriers', result);
+    } catch (error) {
+      dispatch('redirectTo404Page', error);
+      if (error.response) {
+        dispatch('setToastMessage', {
+          type: 'negative',
+          caption: 'Status ' + error.response.data.status,
+          message: error.response.data.title
+        });
+      }
     }
   } else {
+    console.log('this is offline mode');
     commit('setOfflineCarriers', params);
     dispatch('setLoading', false);
   }
-}
-export async function carrierPagination({ dispatch, commit }, params) {
-  let carrierList = [];
-  try {
-    let result = await request.get(`/carriers`, params);
-    carrierList = result['data'];
-  } catch (error) {
-    dispatch('redirectTo404Page', error);
-    if (error.response) {
-      dispatch('setToastMessage', {
-        type: 'negative',
-        caption: 'Status ' + error.response.data.status,
-        message: error.response.data.title
-      });
-    }
-  }
-  return carrierList;
 }
 
 export async function addCarrier(
