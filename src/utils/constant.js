@@ -37,6 +37,7 @@ export const constants = {
     EDIT_PROPERTY_ADDRESS: 'Property Address Edited Successfully !',
     FORGOT_PASSWORD: 'email has been sent, please check your email and verify',
     TEMPLATE_TYPE_NOT_SELECTED: 'Please Select Template Type!',
-    CKEDITOR_BODY_EMPTY: 'Please Enter Details in Body!'
+    CKEDITOR_BODY_EMPTY: 'Please Enter Details in Body!',
+    CARRIER_INFO_EMPTY: 'Carrier info not present'
   }
 };
