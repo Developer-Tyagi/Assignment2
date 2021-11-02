@@ -1,5 +1,5 @@
 <template>
-  <q-page>
+  <div>
     <q-icon
       v-if="
         !claimSummaryDialog &&
@@ -19,7 +19,7 @@
       color="white"
     />
     <div class="listing-height " id="scroll-bottom">
-      <div class="q-ml-md">
+      <div>
         <ClaimDetail />
       </div>
       <q-list
@@ -411,7 +411,7 @@
         </q-card-section>
       </q-card>
     </q-dialog>
-  </q-page>
+  </div>
 </template>
 
 <script>

@@ -1,148 +1,157 @@
 <template>
-  <div class="q-mt-md" style="width:380px">
-    <q-badge
+  <div class="q-mt-md">
+    <div
       color="red"
+      class="row justify-between"
       v-if="
         !getSelectedClaim.meta ||
           (getSelectedClaim.meta &&
             getSelectedClaim.meta.isEstimateDone != true)
       "
     >
-      Claim has been submitted for uploading estimation documents
-      <q-icon name="warning" color="white" class="q-ml-xs"></q-icon>
-    </q-badge>
+      <div class="col-12 text-red">
+        Claim has been submitted for uploading estimation documents
 
-    <div class="row">
-      <span class="text-primary" v-if="getSelectedClaim.client">
-        {{ getSelectedClaim.client.fname }}
-        {{ getSelectedClaim.client.lname }}</span
-      >
-      <q-icon
-        class="q-ml-auto q-ml-xl"
-        size="1em"
-        :name="getSelectedClaim.isFavourite ? 'star' : 'star_border'"
-        @click="onClickFavourite"
-        color="primary"
-      >
-        <q-tooltip anchor="center right" self="center left" :offset="[10, 10]">
-          Mark claim as favourite
-        </q-tooltip>
-      </q-icon>
-    </div>
-    <div class="row">
-      <div class="heading-light col-4 q-mt-none">Name of the property</div>
-      <div class="column q-ml-lg">
-        <span v-if="getSelectedClaim.lossInfo">
-          <span
-            v-if="
-              getSelectedClaim.lossInfo.property &&
-                getSelectedClaim.lossInfo.property.name
-            "
-          >
-            {{
-              getSelectedClaim.lossInfo
-                ? getSelectedClaim.lossInfo.property
-                  ? getSelectedClaim.lossInfo.property.name
-                  : ''
-                : '-'
-            }}
-          </span>
-        </span>
+        <q-icon name="warning" color="red" class="q-ml-xs"></q-icon>
       </div>
     </div>
-    <div class="row q-mt-sm">
-      <div class="heading-light col-4 q-mt-none">Loss Address:</div>
-      <div class="col  q-ml-lg">
-        <span v-if="getSelectedClaim.lossInfo">
-          {{
-            getSelectedClaim.lossInfo.property
-              ? getSelectedClaim.lossInfo.property
-                ? getSelectedClaim.lossInfo.property.address1
-                : ''
-              : '-'
-          }}
-          {{
-            getSelectedClaim.lossInfo.property
-              ? getSelectedClaim.lossInfo.property
-                ? getSelectedClaim.lossInfo.property.address2
-                : ''
-              : '-'
-          }}
-          {{
-            getSelectedClaim.lossInfo.property
-              ? getSelectedClaim.lossInfo.property
-                ? getSelectedClaim.lossInfo.property.addressLocality
-                : ''
-              : '-'
-          }}
-
-          {{
-            getSelectedClaim.lossInfo.property
-              ? getSelectedClaim.lossInfo.property
-                ? getSelectedClaim.lossInfo.property.postalCode
-                : ''
-              : '-'
-          }}
-
-          <div>
+    <div class="q-ml-md">
+      <div class="row">
+        <span class="text-primary" v-if="getSelectedClaim.client">
+          {{ getSelectedClaim.client.fname }}
+          {{ getSelectedClaim.client.lname }}</span
+        >
+        <q-icon
+          class="q-ml-auto q-ml-xl"
+          size="1em"
+          :name="getSelectedClaim.isFavourite ? 'star' : 'star_border'"
+          @click="onClickFavourite"
+          color="primary"
+        >
+          <q-tooltip
+            anchor="center right"
+            self="center left"
+            :offset="[10, 10]"
+          >
+            Mark claim as favourite
+          </q-tooltip>
+        </q-icon>
+      </div>
+      <div class="row">
+        <div class="heading-light col-4 q-mt-none">Name of the property</div>
+        <div class="column q-ml-lg">
+          <span v-if="getSelectedClaim.lossInfo">
+            <span
+              v-if="
+                getSelectedClaim.lossInfo.property &&
+                  getSelectedClaim.lossInfo.property.name
+              "
+            >
+              {{
+                getSelectedClaim.lossInfo
+                  ? getSelectedClaim.lossInfo.property
+                    ? getSelectedClaim.lossInfo.property.name
+                    : ''
+                  : '-'
+              }}
+            </span>
+          </span>
+        </div>
+      </div>
+      <div class="row q-mt-sm">
+        <div class="heading-light col-4 q-mt-none">Loss Address:</div>
+        <div class="col  q-ml-lg">
+          <span v-if="getSelectedClaim.lossInfo">
             {{
               getSelectedClaim.lossInfo.property
                 ? getSelectedClaim.lossInfo.property
-                  ? toGetStateShortName(
-                      getSelectedClaim.lossInfo.property.addressRegion
-                    )
+                  ? getSelectedClaim.lossInfo.property.address1
                   : ''
                 : '-'
             }}
-          </div></span
+            {{
+              getSelectedClaim.lossInfo.property
+                ? getSelectedClaim.lossInfo.property
+                  ? getSelectedClaim.lossInfo.property.address2
+                  : ''
+                : '-'
+            }}
+            {{
+              getSelectedClaim.lossInfo.property
+                ? getSelectedClaim.lossInfo.property
+                  ? getSelectedClaim.lossInfo.property.addressLocality
+                  : ''
+                : '-'
+            }}
+
+            {{
+              getSelectedClaim.lossInfo.property
+                ? getSelectedClaim.lossInfo.property
+                  ? getSelectedClaim.lossInfo.property.postalCode
+                  : ''
+                : '-'
+            }}
+
+            <div>
+              {{
+                getSelectedClaim.lossInfo.property
+                  ? getSelectedClaim.lossInfo.property
+                    ? toGetStateShortName(
+                        getSelectedClaim.lossInfo.property.addressRegion
+                      )
+                    : ''
+                  : '-'
+              }}
+            </div></span
+          >
+        </div>
+      </div>
+      <div class="row q-mt-sm" v-if="userRole != 'vendor'">
+        <div class="heading-light col-4 q-mt-none">Claim Email</div>
+        <div
+          class="col  q-ml-lg clickLink"
+          @click="onEmailClick(getSelectedClaim.claimEmail, $event)"
         >
+          {{ getSelectedClaim.claimEmail ? getSelectedClaim.claimEmail : '-' }}
+        </div>
       </div>
-    </div>
-    <div class="row q-mt-sm" v-if="userRole != 'vendor'">
-      <div class="heading-light col-4 q-mt-none">Claim Email</div>
-      <div
-        class="col  q-ml-lg clickLink"
-        @click="onEmailClick(getSelectedClaim.claimEmail, $event)"
-      >
-        {{ getSelectedClaim.claimEmail ? getSelectedClaim.claimEmail : '-' }}
+      <div class="row q-mt-sm">
+        <div class="heading-light col-4 q-mt-none">Claim Number</div>
+        <div class="col  q-ml-lg ">
+          {{ getSelectedClaim.number ? getSelectedClaim.number : '- - -' }}
+        </div>
       </div>
-    </div>
-    <div class="row q-mt-sm">
-      <div class="heading-light col-4 q-mt-none">Claim Number</div>
-      <div class="col  q-ml-lg ">
-        {{ getSelectedClaim.number ? getSelectedClaim.number : '- - -' }}
+      <div class="row q-mt-sm" v-if="userRole != 'vendor'">
+        <div class="heading-light col-4 q-mt-none">Current Phase</div>
+        <div class="col  q-ml-lg">
+          {{
+            getSelectedClaim.currentPhase
+              ? getSelectedClaim.currentPhase.value
+              : '-'
+          }}
+        </div>
       </div>
-    </div>
-    <div class="row q-mt-sm" v-if="userRole != 'vendor'">
-      <div class="heading-light col-4 q-mt-none">Current Phase</div>
-      <div class="col  q-ml-lg">
-        {{
-          getSelectedClaim.currentPhase
-            ? getSelectedClaim.currentPhase.value
-            : '-'
-        }}
+      <div class="row q-mt-sm">
+        <div class="heading-light col-4 q-mt-none">Loss Date</div>
+        <div class="col  q-ml-lg" v-if="getSelectedClaim.lossInfo">
+          {{ dateToShow(getSelectedClaim.lossInfo.date) }}
+        </div>
       </div>
-    </div>
-    <div class="row q-mt-sm">
-      <div class="heading-light col-4 q-mt-none">Loss Date</div>
-      <div class="col  q-ml-lg" v-if="getSelectedClaim.lossInfo">
-        {{ dateToShow(getSelectedClaim.lossInfo.date) }}
-      </div>
-    </div>
-    <div class="row q-mt-sm">
-      <div class="heading-light col-4 q-mt-none">Loss Cause</div>
-      <div class="col q-ml-lg" v-if="getSelectedClaim.lossInfo">
-        {{
-          getSelectedClaim.lossInfo.cause
-            ? getSelectedClaim.lossInfo.cause.value
-            : '-'
-        }}
-        -
-        {{
-          getSelectedClaim.lossInfo.cause
-            ? getSelectedClaim.lossInfo.cause.desc
-            : '-'
-        }}
+      <div class="row q-mt-sm">
+        <div class="heading-light col-4 q-mt-none">Loss Cause</div>
+        <div class="col q-ml-lg" v-if="getSelectedClaim.lossInfo">
+          {{
+            getSelectedClaim.lossInfo.cause
+              ? getSelectedClaim.lossInfo.cause.value
+              : '-'
+          }}
+          -
+          {{
+            getSelectedClaim.lossInfo.cause
+              ? getSelectedClaim.lossInfo.cause.desc
+              : '-'
+          }}
+        </div>
       </div>
     </div>
   </div>
