@@ -143,7 +143,7 @@ export async function getWorkflowAction({ commit, dispatch }) {
     const { data } = await request.get('/workflows ');
 
     commit('setWorkflowAction', data);
-    dispaaddWorkflowActiontch('setLoading', false);
+    dispatch('setLoading', false);
   } catch (e) {
     console.log(e);
     dispatch('setLoading', false);
