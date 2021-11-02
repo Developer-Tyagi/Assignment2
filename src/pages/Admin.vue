@@ -1896,6 +1896,7 @@ export default {
         workFlowID: this.selectedWorkflowID
       };
       this.adminActionItemDelete(payload);
+      this.getWorkflowAction();
     },
     toEditActionItem(item) {
       this.editDefaultActionDialogBox = !this.editDefaultActionDialogBox;
@@ -2095,12 +2096,8 @@ export default {
       await this.getActionReasons(this.claimType);
       await this.getActionOverDues(this.claimType);
       await this.getActionCompletion(this.claimType);
-      this.claimType = mValue ? mValue : 'claim_new_claim';
-      for (let i = 0; i < this.workflowAction.length; i++) {
-        if (this.claimType == this.workflowAction[i].machineValue) {
-          this.selectedWorkflowID = this.workflowAction[i].id;
-        }
-      }
+      this.claimType = mValue;
+      this.selectedWorkflowID = mValue;
     },
     // Toggle Priority Set
     TogglePriority() {

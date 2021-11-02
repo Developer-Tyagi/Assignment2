@@ -108,7 +108,6 @@ export async function editAdminActionItem({ dispatch, state }, payload) {
       message: 'Action Item  Updated !'
     });
   } catch (e) {
-    console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
@@ -124,10 +123,8 @@ export async function adminActionItemDelete({ commit, dispatch }, payload) {
     await request.del(
       `workflows/${payload.workFlowID}/actions/${payload.itemID}`
     );
-    commit('deleteActionItem', payload.itemID);
     dispatch('setLoading', false);
   } catch (e) {
-    console.log(e);
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
