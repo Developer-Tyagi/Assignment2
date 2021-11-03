@@ -21,14 +21,14 @@
                 size="14px"
                 name="create"
                 color="white"
-                style="margin: auto;"
+                style="margin: auto"
               />
               <q-icon
                 v-if="index < stepClickValidTill && index != step"
                 size="14px"
                 name="done"
                 color="white"
-                style="margin: auto;"
+                style="margin: auto"
               />
             </div>
             <div class="label">{{ arr.name }}</div>
@@ -251,7 +251,7 @@
               />
             </q-card>
             <div class="row q-pt-md">
-              <div style="width:100%;">
+              <div style="width: 100%">
                 <q-btn class="back-button-style" type="reset" label="Back" />
                 <q-btn class="next-button-style" type="submit" label="Next" />
               </div>
@@ -290,7 +290,7 @@
                   <div
                     v-if="
                       insuranceDetails.address &&
-                        insuranceDetails.address.address1
+                      insuranceDetails.address.address1
                     "
                   >
                     <div>
@@ -308,7 +308,7 @@
                     <div
                       v-if="
                         insuranceDetails.address &&
-                          insuranceDetails.address.address2
+                        insuranceDetails.address.address2
                       "
                     >
                       {{ insuranceDetails.address.address2 }}
@@ -357,14 +357,13 @@
               </div>
               <q-input
                 class="input-style"
-                dense
                 borderless
                 v-model="insuranceDetails.policyNumber"
                 label="Policy Number"
               />
             </q-card>
             <div class="row q-pt-md">
-              <div style="width:100%;">
+              <div style="width: 100%">
                 <q-btn class="back-button-style" type="reset" label="Back" />
                 <q-btn class="next-button-style" type="submit" label="Next" />
               </div>
@@ -402,10 +401,10 @@
                   dense
                   v-if="
                     sourceDetails.type != constants.industries.VENDOR &&
-                      sourceDetails.type != '' &&
-                      sourceDetails.type != 'google' &&
-                      sourceDetails.type != 'client' &&
-                      sourceDetails.type != 'none'
+                    sourceDetails.type != '' &&
+                    sourceDetails.type != 'google' &&
+                    sourceDetails.type != 'client' &&
+                    sourceDetails.type != 'none'
                   "
                   type="text"
                   placeholder="Enter Source details"
@@ -442,7 +441,7 @@
                     <div
                       v-if="
                         sourceDetails.mailingAddress &&
-                          sourceDetails.mailingAddress.address1
+                        sourceDetails.mailingAddress.address1
                       "
                     >
                       <div>
@@ -461,7 +460,7 @@
                       <div
                         v-if="
                           sourceDetails.mailingAddress &&
-                            sourceDetails.mailingAddress.address2
+                          sourceDetails.mailingAddress.address2
                         "
                       >
                         {{ sourceDetails.mailingAddress.address2 }}
@@ -539,7 +538,7 @@
               </div>
             </q-card>
             <div class="row q-pt-md">
-              <div style="width:100%;">
+              <div style="width: 100%">
                 <q-btn class="back-button-style" type="reset" label="Back" />
                 <q-btn class="next-button-style" type="submit" label="Next" />
               </div>
@@ -563,7 +562,7 @@
               />
             </q-card>
             <div class="row q-pt-md">
-              <div style="width:100%;">
+              <div style="width: 100%">
                 <q-btn class="back-button-style" type="reset" label="Back" />
                 <q-btn class="next-button-style" type="submit" label="Next" />
               </div>
@@ -610,7 +609,7 @@
                 borderless
                 v-if="
                   schedulingDetails.isAutomaticScheduling &&
-                    showSubInspectionType
+                  showSubInspectionType
                 "
                 class="input-style required input-extra-padding"
                 v-model="schedulingDetails.subInspectionType"
@@ -633,7 +632,7 @@
                 v-if="schedulingDetails.isAutomaticScheduling"
                 dense
                 borderless
-                style="height: 58px;"
+                style="height: 58px"
                 type="number"
                 mask="#.#"
                 step="0.5"
@@ -642,7 +641,7 @@
               />
             </q-card>
             <div class="row q-pt-md">
-              <div style="width:100%;">
+              <div style="width: 100%">
                 <q-btn class="back-button-style" type="reset" label="Back" />
                 <q-btn class="next-button-style" type="submit" label="Next" />
               </div>
@@ -872,6 +871,7 @@ export default {
 
   methods: {
     ...mapActions([
+      'getCarriers',
       'getVendorDetails',
       'getVendors',
       'getVendorIndustries',
@@ -982,15 +982,12 @@ export default {
       const index = this.subInspectionTypes.findIndex(
         val => val.id === this.schedulingDetails.subInspectionType
       );
-      this.schedulingDetails.inspectionDuration = this.subInspectionTypes[
-        index
-      ].duration;
-      this.schedulingDetails.subInspectionTypeValue = this.subInspectionTypes[
-        index
-      ].value;
-      this.schedulingDetails.subInspectionMachineValue = this.subInspectionTypes[
-        index
-      ].machineValue;
+      this.schedulingDetails.inspectionDuration =
+        this.subInspectionTypes[index].duration;
+      this.schedulingDetails.subInspectionTypeValue =
+        this.subInspectionTypes[index].value;
+      this.schedulingDetails.subInspectionMachineValue =
+        this.subInspectionTypes[index].machineValue;
     },
 
     async onSubmit() {
@@ -1225,6 +1222,11 @@ export default {
   async created() {
     await this.getContactTypes();
     await this.getTitles();
+    let params = {
+      limit: 0,
+      offset: 0
+    };
+    this.getCarriers(params);
 
     if (this.isEdit) {
       if (
@@ -1234,11 +1236,14 @@ export default {
         this.getVendorDetails(this.selectedLead.leadSource.id);
       }
 
-      this.primaryDetails.honorific = this.selectedLead.primaryContact.honorific;
+      this.primaryDetails.honorific =
+        this.selectedLead.primaryContact.honorific;
       this.primaryDetails.firstName = this.selectedLead.primaryContact.fname;
       this.primaryDetails.lastName = this.selectedLead.primaryContact.lname;
-      this.primaryDetails.selectedContactType = this.selectedLead.primaryContact.phoneNumber[0].type;
-      this.primaryDetails.phoneNumber = this.selectedLead.primaryContact.phoneNumber[0].number;
+      this.primaryDetails.selectedContactType =
+        this.selectedLead.primaryContact.phoneNumber[0].type;
+      this.primaryDetails.phoneNumber =
+        this.selectedLead.primaryContact.phoneNumber[0].number;
       this.primaryDetails.email = this.selectedLead.primaryContact.email;
       this.lossAddress = this.selectedLead.lossLocation;
       this.primaryDetails.isOrganization = this.selectedLead.isOrganization
@@ -1262,7 +1267,8 @@ export default {
         ? this.selectedLead.lossCause.machineValue
         : '';
       this.insuranceDetails.policyNumber = this.selectedLead.policyNumber;
-      this.schedulingDetails.isAutomaticScheduling = this.selectedLead.isAutomaticScheduling;
+      this.schedulingDetails.isAutomaticScheduling =
+        this.selectedLead.isAutomaticScheduling;
       this.notes = this.selectedLead.notes;
 
       if (this.selectedLead.leadSource.type == 'vendor') {
@@ -1311,10 +1317,14 @@ export default {
       this.onInspectionTypesSelect();
       if (this.selectedLead.inspectionInfo.id) {
         this.showSubInspectionType = true;
-        this.schedulingDetails.subInspectionType = this.selectedLead.inspectionInfo.id;
-        this.schedulingDetails.subInspectionTypeValue = this.selectedLead.inspectionInfo.value;
-        this.schedulingDetails.subInspectionMachineValue = this.selectedLead.inspectionInfo.machineValue;
-        this.schedulingDetails.inspectionDuration = this.selectedLead.inspectionInfo.duration;
+        this.schedulingDetails.subInspectionType =
+          this.selectedLead.inspectionInfo.id;
+        this.schedulingDetails.subInspectionTypeValue =
+          this.selectedLead.inspectionInfo.value;
+        this.schedulingDetails.subInspectionMachineValue =
+          this.selectedLead.inspectionInfo.machineValue;
+        this.schedulingDetails.inspectionDuration =
+          this.selectedLead.inspectionInfo.duration;
       }
     }
 

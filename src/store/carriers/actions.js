@@ -15,8 +15,9 @@ export async function getCarriers(
 ) {
   if (isOnline) {
     try {
-      let result = await request.get(`/carriers`, params);
-      commit('setCarriers', result);
+      const { data } = await request.get('/carriers', params);
+      const payload = { data: data, params: params };
+      commit('setCarriers', payload);
     } catch (error) {
       dispatch('redirectTo404Page', error);
       if (error.response) {

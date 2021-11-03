@@ -6,28 +6,28 @@ export async function setCarriers(state, carriersData) {
     ...carrier.attributes,
     id: carrier.id
   }));
-  if (carriersData.meta.limit == 20 && carriersData.meta.offset == 0) {
-    //this condition is used to check if the network is Online then  first we need to clear the store data and fetch it in a limit.
-    state.carriers = [];
-  }
-  if (carriersData.meta.limit == 0 && carriersData.meta.offset == 0) {
-    // this condition is used to check if the network is offline then we need to store the entire data in local DB.
+
+  if (carriersData.params.limit == 0 && carriersData.params.offset == 0) {
+    // this condition is used to store the entire data in local DB which is used for the offline mode.
+    await localDB.carriers.bulkAdd(carriers);
+  } else if (carriersData.params.name) {
+    // this condition is use for searching carrier item.
     state.carriers = carriers;
+  } else if (
+    carriersData.params.limit == 20 && // this condition is use when the user first time open  the carrier list page, in that case we fetch the data set of given limit , but first we need to clear our variable
+    carriersData.params.offset == 0
+  ) {
+    state.carriers = [];
+    state.carriers = state.carriers.concat(carriers);
   } else {
-    if (carriersData.meta.limit == 20 && carriersData.meta.offset == 0) {
-      // this condition is used for the searching of searching of carrier
-      state.carriers = carriers;
-    } else {
-      // this condition is used to concat the fetching data.
-      state.carriers = state.carriers.concat(carriers);
-    }
+    state.carriers = state.carriers.concat(carriers);
   }
   if ((await carriersCollection.count()) > 0 && !carriersData.params) {
     await carriersCollection.delete([]);
   }
-  if (!carriersData.params) {
-    await localDB.carriers.bulkAdd(carriers);
-  }
+  // if (!carriersData.params) {
+  //   await localDB.carriers.bulkAdd(carriers);
+  // }
 }
 
 export async function setOfflineCarriers(state) {
