@@ -26,9 +26,6 @@ export async function setCarriers(state, carriersData) {
   if ((await carriersCollection.count()) > 0 && !carriersData.params) {
     await carriersCollection.delete([]);
   }
-  // if (!carriersData.params) {
-  //   await localDB.carriers.bulkAdd(carriers);
-  // }
 }
 
 export async function setOfflineCarriers(state) {
