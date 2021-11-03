@@ -4,7 +4,7 @@
       <q-toolbar
         class="row bg-primary rounded-header toolbar-shadow"
         v-if="$route.name === 'dashboard'"
-        style="height: 100px;"
+        style="height: 100px"
       >
         <q-btn
           flat
@@ -15,7 +15,7 @@
           @click="onMenuButtonClick"
         ></q-btn>
         <div class="row">
-          <div class="column justify-center" style="margin-left:-30px">
+          <div class="column justify-center" style="margin-left: -30px">
             <img src="~assets/logo2.png" />
           </div>
         </div>
@@ -28,21 +28,7 @@
           icon="menu"
           aria-label="Menu"
           @click="onMenuButtonClick"
-          v-if="
-            (!isMobile() &&
-              ($route.name === 'dashboard' ||
-                $route.name === 'clients' ||
-                $route.name === 'leads dashboard' ||
-                $route.name === 'vendors' ||
-                $route.name === 'settings' ||
-                $route.name === 'carriers' ||
-                $route.name === 'mortgages' ||
-                $route.name === 'manage users' ||
-                $route.name === 'admin' ||
-                $route.name === 'claims' ||
-                $route.name === 'configuration')) ||
-              (isMobile() && $route.name === 'dashboard')
-          "
+          v-if="isMobile() && $route.name === 'dashboard'"
         ></q-btn>
         <div class="cursor-pointer" v-if="toBackButtonVisibility()">
           <q-icon
@@ -52,15 +38,15 @@
             class="button-50"
           />
         </div>
-        <div class="text-uppercase text-bold  q-mx-auto">
+        <div class="text-uppercase text-bold q-mx-auto">
           <span v-if="$route.name == 'Leads'">{{ converted }}</span>
           <span class="text-white"> {{ $route.name }} </span>
           <q-icon
             v-if="
               $route.name == 'create client' &&
-                !isOnline &&
-                editSelectedClient.id &&
-                isOfflineClientEdit
+              !isOnline &&
+              editSelectedClient.id &&
+              isOfflineClientEdit
             "
             name="edit"
             @click="onClickEditIcon"
@@ -128,8 +114,8 @@
               class="q-mt-md bg-white rounded-sidebar q-px-none"
               v-if="
                 (link.title != 'Admin' || !isMobile()) &&
-                  (link.title != 'Manage Users' || !isMobile()) &&
-                  (link.title != 'Configuration' || !isMobile())
+                (link.title != 'Manage Users' || !isMobile()) &&
+                (link.title != 'Configuration' || !isMobile())
               "
             >
               <q-item-section @click="onClickMenuItem(link.title)">
