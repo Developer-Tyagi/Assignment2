@@ -1,11 +1,12 @@
 <template>
   <q-page>
-    <div class="mobile-container-page-without-search">
+    <div>
       <div class="stepper">
         <div class="step justify-between" id="step">
           <div
-            class="column align-center q-px-md"
+            class="column align-center q-px-xs"
             v-for="(arr, index) in stepArr"
+            :key="index"
             @click="onStepClick(index)"
           >
             <div

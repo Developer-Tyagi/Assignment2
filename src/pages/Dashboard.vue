@@ -190,7 +190,10 @@
           :dialogName="'Select Claim'"
           @closeDialog="selectClaimDialog = false"
         />
-        <div class="clients-list listing-height q-mt-md" v-if="claims.length">
+        <div
+          class="mobile-container-page-without-search q-pt-sm q-mt-xs"
+          v-if="claims.length"
+        >
           <div>
             <div class="clients-list" v-for="claim in claims" :key="claim.id">
               <div class="client-list-item">

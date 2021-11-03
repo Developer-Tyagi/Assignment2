@@ -1,10 +1,10 @@
 <template>
   <q-page>
-    <div class="row justify-center q-mt-sm">
-      <q-badge
-        color="red"
-        v-if="!organization.photoIDAPIKey && this.userRole == 'owner'"
-      >
+    <div
+      v-if="!organization.photoIDAPIKey && this.userRole == 'owner'"
+      class="row justify-center q-mt-sm"
+    >
+      <q-badge color="red">
         PhotoId Key has not been added in the system
         <q-icon name="warning" color="white" class="q-ml-xs"></q-icon>
       </q-badge>
@@ -29,7 +29,7 @@
         style="margin: 0 20px"
       />
       <q-separator vertical></q-separator>
-      <q-btn @click="addLead" flat><img src="~assets/add.svg"/></q-btn>
+      <q-btn @click="addLead" flat><img src="~assets/add.svg" /></q-btn>
     </div>
     <div class="mobile-container-page">
       <div class="row">
@@ -43,11 +43,7 @@
             narrow-indicator
           >
           </q-tabs>
-          <q-tab-panels
-            v-model="panel"
-            animated
-            style="height: calc(100vh - 156px); overflow: auto"
-          >
+          <q-tab-panels v-model="panel">
             <q-tab-panel name="newLeads" class="q-pa-none">
               <q-list style="overflow-x: hidden" v-if="activeLeads.length">
                 <div
@@ -92,7 +88,7 @@
                           <span
                             v-if="
                               lead.primaryContact.phoneNumber &&
-                                lead.primaryContact.phoneNumber.length
+                              lead.primaryContact.phoneNumber.length
                             "
                             class="click-link"
                             @click="
@@ -194,7 +190,7 @@
                         <span
                           v-if="
                             lead.primaryContact.phoneNumber &&
-                              lead.primaryContact.phoneNumber.length
+                            lead.primaryContact.phoneNumber.length
                           "
                         >
                           {{

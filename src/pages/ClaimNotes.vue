@@ -15,17 +15,22 @@
           "
         />
         <q-card-section>
-          <div class="mobile-container-page-without-search form-height">
+          <div class="q-ma-sm responsive-page">
             <div class="q-py-xs">Notes</div>
-            <textarea class="full-width" v-model="editNote" />
+            <q-input
+              type="textarea"
+              borderless
+              class="input-style"
+              v-model="editNote"
+            />
           </div>
-          <q-btn
-            @click="onEditSaveButtonClick"
-            label="Save"
-            color="primary"
-            class="single-next-button-style"
-            size="'xl'"
-          />
+          <div class="row justify-center">
+            <q-btn
+              @click="onEditSaveButtonClick"
+              label="Save"
+              class="single-next-button-style"
+            />
+          </div>
         </q-card-section>
       </q-card>
     </q-dialog>
@@ -44,7 +49,7 @@
           "
         />
         <q-card-section>
-          <div class="mobile-container-page">
+          <div class="q-ma-sm responsive-page">
             <div class="q-py-xs">Notes</div>
             <q-input
               type="textarea"
@@ -111,9 +116,7 @@
       </div>
       <div v-else class="full-width text-center">
         <div class="q-mt-xs">
-          <div style="color: #666666">
-            You haven't added a Note yet.
-          </div>
+          <div style="color: #666666">You haven't added a Note yet.</div>
           <div class="text-center">
             <img
               src="~assets/add.svg"
@@ -138,7 +141,7 @@
           @click="addNote"
           color="primary"
           label="Add Note"
-          class="q-ml-auto q-mt-sm "
+          class="q-ml-auto q-mt-sm"
         ></q-btn>
       </div>
     </div>
