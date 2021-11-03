@@ -46,7 +46,7 @@
           group="claimGroup"
           label="Loss Info"
           header-class="text-primary"
-          @show="lossInfo = true"
+          @show="onShowLossInfo"
         >
           <q-card v-if="lossInfo">
             <q-card-section>
@@ -561,6 +561,10 @@ export default {
     ]),
     ...mapMutations(['setNotificationRouteTo']),
     onEmailClick,
+    onShowLossInfo() {
+      this.lossInfo = true;
+      document.getElementById('scroll-bottom').scrollTo(0, 300);
+    },
     successMessage,
     async onManuallyPushAssignmentClick() {
       await this.generatePhotoIdAssignment(this.selectedClaimId);
