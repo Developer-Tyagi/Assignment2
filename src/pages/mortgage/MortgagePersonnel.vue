@@ -7,7 +7,7 @@
           v-for="(personnel, index) in mortgagePersonnel.personnel"
         >
           <q-card class="q-pa-sm">
-            <div class="form-heading text-capitalize  row">
+            <div class="form-heading text-capitalize row">
               <div class="col-10">
                 {{ personnel.fname }} {{ personnel.lname }}
               </div>
@@ -120,9 +120,7 @@
 
       <div v-else class="full-height text-center">
         <div class="q-mt-xs">
-          <div style="color: #666666">
-            You haven't added a Personnel yet.
-          </div>
+          <div style="color: #666666">You haven't added a Personnel yet.</div>
           <img
             class="text-center"
             src="~assets/add.svg"
@@ -235,7 +233,7 @@
                 >
                   <q-select
                     v-model="personnel.phoneNumber[index].type"
-                    class="col-5  input-style input-overlay"
+                    class="col-5 input-style input-overlay"
                     borderless
                     label="Type"
                     :options="contactTypes"
@@ -248,7 +246,7 @@
                   <q-input
                     v-model.number="personnel.phoneNumber[index].number"
                     label="Phone"
-                    class="col-6  input-style input-overlay"
+                    class="col-6 input-style input-overlay"
                     borderless
                     mask="(###) ###-####"
                   />
@@ -284,18 +282,18 @@
                   class="col-6 q-pt-md input-style input-overlay full-width"
                   borderless
                   v-model="personnel.notes"
-                  style="resize: none ;padding-left:10px;"
+                  style="resize: none; padding-left: 10px"
                   placeholder="Take notes here..."
                 ></q-input>
               </div>
             </q-card>
           </q-form>
         </div>
-        <div class="row  justify-center">
+        <div class="row justify-center q-mt-md">
           <q-btn
             @click="onSave"
             label="Add Personnel"
-            class="single-next-button-style q-mt-lg"
+            class="single-next-button-style"
           />
         </div>
       </q-card>
@@ -353,7 +351,7 @@
                 ]"
               />
               <q-input
-                class=" input-style input-overlay"
+                class="input-style input-overlay"
                 borderless
                 v-model="personnel.departmentName"
                 label="Organization / Department Name"
@@ -447,7 +445,7 @@
                   class="col-6 q-pt-md input-style input-overlay full-width"
                   borderless
                   v-model="personnel.notes"
-                  style="resize: none  ;padding-left:10px;"
+                  style="resize: none; padding-left: 10px"
                   placeholder="Take notes here..."
                 ></q-input>
               </div>
@@ -577,15 +575,13 @@ export default {
           .address.dropBox
           ? this.mortgagePersonnel.personnel[index].address.dropBox
           : { info: '', isPresent: false };
-        this.personnel.address = this.mortgagePersonnel.personnel[
-          index
-        ].address;
+        this.personnel.address =
+          this.mortgagePersonnel.personnel[index].address;
       }
 
       this.personnel.notes = this.mortgagePersonnel.personnel[index].note;
-      this.personnel.phoneNumber = this.mortgagePersonnel.personnel[
-        index
-      ].phoneNumber;
+      this.personnel.phoneNumber =
+        this.mortgagePersonnel.personnel[index].phoneNumber;
       this.id = this.mortgagePersonnel.personnel[index].id;
     },
     async onEditSave() {

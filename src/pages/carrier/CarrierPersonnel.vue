@@ -3,7 +3,7 @@
     <div class="q-pa-sm">
       <div v-if="carrierPersonnel.personnel">
         <div v-for="(personnel, index) in carrierPersonnel.personnel">
-          <q-card class="q-pa-sm q-mb-sm ">
+          <q-card class="q-pa-sm q-mb-sm">
             <div class="form-heading text-capitalize row">
               <div class="col-10">
                 {{ personnel.fname }} {{ personnel.lname }}
@@ -16,7 +16,7 @@
                 "
                 name="create "
                 color="primary"
-                class="q-ml-auto "
+                class="q-ml-auto"
                 @click="onEdit(index)"
               ></q-icon>
 
@@ -31,8 +31,8 @@
                 @click="onClickDelete(index)"
               />
             </div>
-            <div v-if="toCheckAddressData(personnel.address)" class="row ">
-              <div class="heading-light col-3 ">Address Details</div>
+            <div v-if="toCheckAddressData(personnel.address)" class="row">
+              <div class="heading-light col-3">Address Details</div>
               <div class="col-7" v-if="personnel.address">
                 {{
                   personnel.address.houseNumber
@@ -72,7 +72,7 @@
                 </div>
               </div>
             </div>
-            <div class="row " v-if="personnel.email">
+            <div class="row" v-if="personnel.email">
               <span class="heading-light col-3"> Email </span>
               <span
                 class="q-ml-none col clickLink"
@@ -86,7 +86,7 @@
               v-if="personnel.phoneNumber && personnel.phoneNumber[0].number"
             >
               <div class="heading-light col-3">Phone Number</div>
-              <div class=" col-6 q-ml-none">
+              <div class="col-6 q-ml-none">
                 <div class="row" v-for="phone in personnel.phoneNumber">
                   <div class="col-3">
                     {{ phone.type ? phone.type : '-' }}
@@ -113,9 +113,7 @@
       </div>
       <div v-else class="full-height text-center">
         <div class="q-mt-xs">
-          <div style="color: #666666">
-            You haven't added a Personnel yet.
-          </div>
+          <div style="color: #666666">You haven't added a Personnel yet.</div>
           <img
             class="text-center"
             src="~assets/add.svg"
@@ -158,11 +156,11 @@
             <AddCarrierPersonnel :carrierPersonnel="personnel" />
           </q-form>
         </div>
-        <div class="row justify-center">
+        <div class="row justify-center q-mt-sm">
           <q-btn
             @click="onSave"
             label="Add Personnel"
-            class="single-next-button-style q-mt-lg "
+            class="single-next-button-style"
           />
         </div>
       </q-card>
@@ -180,7 +178,7 @@
           @closeDialog="editPersonnelDialog = false"
         />
         <div class="mobile-container-page form-color">
-          <q-form ref="editPersonnelForm" class="q-pa-md ">
+          <q-form ref="editPersonnelForm" class="q-pa-md">
             <q-card class="full-width q-pa-md bg-white">
               <div class="q-mt-sm">
                 <q-select
@@ -250,7 +248,7 @@
                   :isChecksEnable="false"
                 />
               </div>
-              <div class=" q-mt-sm">
+              <div class="q-mt-sm">
                 <div>
                   <div
                     class="row justify-between"
@@ -316,12 +314,13 @@
             </q-card>
           </q-form>
         </div>
-        <q-btn
-          @click="onEditSave"
-          label="Save"
-          class="single-next-button-style q-mt-lg"
-          size="'xl'"
-        />
+        <div class="row justify-center q-mt-md">
+          <q-btn
+            @click="onEditSave"
+            label="Save"
+            class="single-next-button-style"
+          />
+        </div>
       </div>
     </q-dialog>
 
@@ -444,16 +443,14 @@ export default {
         this.carrierPersonnel.personnel[index].dropBox &&
         this.carrierPersonnel.personnel[index].dropBox.isPresent
       ) {
-        this.personnel.address.dropBox = this.carrierPersonnel.personnel[
-          index
-        ].dropBox;
+        this.personnel.address.dropBox =
+          this.carrierPersonnel.personnel[index].dropBox;
       }
       this.personnel.address = this.carrierPersonnel.personnel[index].address;
 
       this.personnel.notes = this.carrierPersonnel.personnel[index].note;
-      this.personnel.phoneNumber = this.carrierPersonnel.personnel[
-        index
-      ].phoneNumber;
+      this.personnel.phoneNumber =
+        this.carrierPersonnel.personnel[index].phoneNumber;
       this.id = this.carrierPersonnel.personnel[index].id;
     },
     async onEditSave() {

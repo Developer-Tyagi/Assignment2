@@ -44,7 +44,7 @@
           "
         />
         <q-card-section>
-          <div class="mobile-container-page">
+          <div>
             <div class="q-py-xs">Notes</div>
             <q-input
               type="textarea"
@@ -56,7 +56,7 @@
               v-model="note"
             />
           </div>
-          <div class="row justify-center">
+          <div class="row q-mt-xl justify-center">
             <q-btn
               @click="onSave"
               label="Save"
@@ -111,9 +111,7 @@
       </div>
       <div v-else class="full-width text-center">
         <div class="q-mt-xs">
-          <div style="color: #666666">
-            You haven't added a Note yet.
-          </div>
+          <div style="color: #666666">You haven't added a Note yet.</div>
           <div class="text-center">
             <img
               src="~assets/add.svg"
@@ -138,7 +136,7 @@
           @click="addNote"
           color="primary"
           label="Add Note"
-          class="q-ml-auto q-mt-sm "
+          class="q-ml-auto q-mt-sm"
         ></q-btn>
       </div>
     </div>

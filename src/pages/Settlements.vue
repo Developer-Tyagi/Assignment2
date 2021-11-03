@@ -133,7 +133,7 @@
           ><img src="~assets/add.svg"
         /></q-btn>
       </div>
-      <div class="full-width  text-center">
+      <div class="full-width text-center">
         You Dont Have Any Settlements !
         <img
           class="text-center"
@@ -388,7 +388,7 @@
             <q-card flat bordered class="q-mt-md q-pa-sm">
               <q-input
                 v-model="offeredDate"
-                class=" input-style full-width input-overlay"
+                class="input-style full-width input-overlay"
                 mask="##/##/####"
                 borderless
                 label="Date Offered"
@@ -737,7 +737,7 @@
           @closeDialog="settlementShowDialog = false"
           :dialogName="'Settlements'"
         />
-        <div class="q-ma-sm mobile-container-page-without-search">
+        <div class="mobile-container-page-without-search">
           <q-form ref="settlementForm" class="form-height">
             <!-- 2nd Card -->
             <q-card class="q-pa-md q-mt-sm" flat bordered>
@@ -1364,10 +1364,15 @@ export default {
       this.notes = '';
       this.isProofOfLossReq = false;
       this.actualValue = '';
-      this.offeredDate = this.paymentExpDate = this.proofOfLossInfo.reqDate = this.proofOfLossInfo.dueDate = this.proofOfLossInfo.resRecvDate = this.proofOfLossInfo.sentClientDate = this.proofOfLossInfo.recvClientDate = this.proofOfLossInfo.sentCarrierDate = date.formatDate(
-        Date.now(),
-        'MM/DD/YYYY'
-      );
+      this.offeredDate =
+        this.paymentExpDate =
+        this.proofOfLossInfo.reqDate =
+        this.proofOfLossInfo.dueDate =
+        this.proofOfLossInfo.resRecvDate =
+        this.proofOfLossInfo.sentClientDate =
+        this.proofOfLossInfo.recvClientDate =
+        this.proofOfLossInfo.sentCarrierDate =
+          date.formatDate(Date.now(), 'MM/DD/YYYY');
       this.settlementDialog = true;
       this.getPolicyCategory();
       this.getPolicyTypes();
@@ -1379,19 +1384,15 @@ export default {
       this.setId = this.settlement.attributes.settlements[val].id;
       // this.settlementDialog = true;
       this.status = this.settlement.attributes.settlements[val].status;
-      this.description = this.settlement.attributes.settlements[
-        val
-      ].description;
+      this.description =
+        this.settlement.attributes.settlements[val].description;
       this.amounts = this.settlement.attributes.settlements[val].amount;
-      this.totalSettlement = this.settlement.attributes.settlements[
-        val
-      ].amount.netSettlement;
-      this.actualValue = this.settlement.attributes.settlements[
-        val
-      ].amount.actualCash;
-      this.netSettlement = this.settlement.attributes.settlements[
-        val
-      ].amount.grossSettlement;
+      this.totalSettlement =
+        this.settlement.attributes.settlements[val].amount.netSettlement;
+      this.actualValue =
+        this.settlement.attributes.settlements[val].amount.actualCash;
+      this.netSettlement =
+        this.settlement.attributes.settlements[val].amount.grossSettlement;
       this.buttonGroup = this.settlement.attributes.settlements[val].isAccepted;
 
       this.isFinal = this.settlement.attributes.settlements[val].isFinal;
@@ -1402,9 +1403,8 @@ export default {
         this.settlement.attributes.settlements[val].paymentExpDate
       );
       this.notes = this.settlement.attributes.settlements[val].notes;
-      this.isProofOfLossReq = this.settlement.attributes.settlements[
-        val
-      ].isProofOfLossReq;
+      this.isProofOfLossReq =
+        this.settlement.attributes.settlements[val].isProofOfLossReq;
       if (this.isProofOfLossReq) {
         this.proofOfLossInfo.reqDate = dateToShow(
           this.settlement.attributes.settlements[val].proofOfLossInfo.reqDate

@@ -13,7 +13,7 @@
           @closeDialog="addNoteDialog = false"
         />
         <q-card-section>
-          <div class="form-height">
+          <div>
             <div class="q-py-xs">Notes<small style="color: red">*</small></div>
             <q-input
               type="textarea"
@@ -25,7 +25,7 @@
               style="width: 100%"
             />
           </div>
-          <div class="row justify-center">
+          <div class="row q-mt-xl justify-center">
             <q-btn
               @click="onSave"
               label="Save"

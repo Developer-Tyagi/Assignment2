@@ -30,7 +30,7 @@
           </div>
           <div>{{ logItem.title }}</div>
 
-          <p class="heading-light q-my-sm text-caption " v-if="logItem.detail">
+          <p class="heading-light q-my-sm text-caption" v-if="logItem.detail">
             {{ logItem.detail ? logItem.detail : '-' }}
           </p>
           <p class="heading-light q-my-sm text-caption" v-if="logItem.note">
@@ -123,7 +123,7 @@
           :dialogName="'Edit Log'"
         />
 
-        <div class="mobile-container-page-without-search q-ma-sm">
+        <div class="mobile-container-page-without-search q-pa-sm">
           <q-form ref="activityEditLogForm" class="form-height">
             <div v-if="isFieldDisable == false">
               <q-input
