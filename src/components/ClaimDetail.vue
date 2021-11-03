@@ -9,10 +9,11 @@
             getSelectedClaim.meta.isEstimateDone != true)
       "
     >
-      <div class="col-12 text-red">
-        Claim has been submitted for uploading estimation documents
-
-        <q-icon name="warning" color="red" class="q-ml-xs"></q-icon>
+      <div class="col-12 text-red text-center">
+        Claim has been submitted for uploading estimation
+        <div class="text-center">
+          documents <q-icon name="warning" color="red" class="q-ml-xs"></q-icon>
+        </div>
       </div>
     </div>
     <div class="q-ml-md">
