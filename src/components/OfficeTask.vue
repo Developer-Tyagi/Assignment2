@@ -22,8 +22,8 @@
                 @input="changeEnableField(action, index)"
               />
             </div>
-            <div class="column">
-              <span class="text-bold text-capitalize">{{ action.name }}</span>
+            <div class="col-9">
+              <div class="text-bold text-capitalize">{{ action.name }}</div>
               <span>{{ action.createdDesc }}</span>
               <span>{{ action.dueDesc }}</span>
             </div>
