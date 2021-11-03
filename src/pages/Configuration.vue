@@ -390,7 +390,7 @@
         </div>
         <div class="q-mx-lg">
           <div>
-            <div class="text-bold q-mt-xl">Template Type</div>
+            <div class="text-bold q-mt-xl q-ml-xs">Template Type</div>
             <q-form ref="uploadTemplateForm">
               <div>
                 <q-select
@@ -413,21 +413,18 @@
                 />
               </div>
 
-              <div class="column items-center">
-                <q-img
-                  src="~assets/upload.svg"
-                  style="width: 10%"
-                  @click="onClickUploadButton"
-                />
-              </div>
-              <div class="form-heading text-center q-mt-lg">Upload</div>
+              <!-- <div class="column items-center"> -->
               <input
                 id="uploadFile"
                 type="file"
+                style="width: 250px"
                 accept=".doc,.docx,"
-                hidden
                 @change="onFileInputClick"
               />
+              <span class="form-heading q-mt-lg text-capitalize q-pa-sm">
+                only doc and docx files are allowed
+              </span>
+              <!-- </div> -->
             </q-form>
           </div>
         </div>
@@ -505,6 +502,7 @@ export default {
   },
 
   async created() {
+    this.uploadTemplateDialogBox = true;
     this.getInspectionTypes().then(async () => {
       this.table = this.inspectionTypes;
     });
@@ -574,7 +572,10 @@ export default {
       else byteString = unescape(dataURI.split(',')[1]);
 
       // separate out the mime component
-      var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+      var mimeString = dataURI
+        .split(',')[0]
+        .split(':')[1]
+        .split(';')[0];
 
       // write the bytes of the string to a typed array
       var ia = new Uint8Array(byteString.length);
@@ -586,18 +587,17 @@ export default {
     },
 
     getBase64,
-    async onClickUploadButton() {
+
+    async onFileInputClick(event) {
       var success = await this.$refs.uploadTemplateForm.validate();
       if (success) {
         document.getElementById('uploadFile').click();
+        this.dataURI = await this.getBase64(event.target.files[0]);
+
+        document.getElementById('uploadFile').value;
+
+        await this.uploadFileToServer();
       }
-    },
-    async onFileInputClick(event) {
-      this.dataURI = await this.getBase64(event.target.files[0]);
-
-      document.getElementById('uploadFile').value;
-
-      await this.uploadFileToServer();
     },
     async uploadFileToServer() {
       this.setLoading(true);
@@ -827,8 +827,9 @@ export default {
           case 'inspectionType':
             for (var i = 0; i <= this.inspectionType.subtypes.length - 1; i++) {
               if (this.inspectionType.subtypes[i].value == '') {
-                this.inspectionType.subtypes[i].value =
-                  this.inspectionType.value;
+                this.inspectionType.subtypes[
+                  i
+                ].value = this.inspectionType.value;
               }
             }
             var response = await this.addInspectionType(this.inspectionType);
