@@ -3,14 +3,19 @@
 
   <div style="background-color: #8f8f8f">
     <div
-      class="column bg-white dashboard-shadow q-px-sm q-pt-sm justify-between cardHeight"
-      style="
-        border-radius: 0 0 90px 90px;
+      class="
+        column
+        bg-white
+        dashboard-shadow
+        q-px-sm q-pt-sm
+        justify-between
+        cardHeight
       "
+      style="border-radius: 0 0 90px 90px"
     >
-      <div class="row col-4  justify-around ">
+      <div class="row col-4 justify-around">
         <div
-          class="column col iconBackground  items-center"
+          class="column col iconBackground items-center"
           @click="onClickNewLead"
           style=""
         >
@@ -31,7 +36,7 @@
         </div>
 
         <div
-          class="column col  iconBackground  items-center"
+          class="column col iconBackground items-center"
           @click="$router.push('/clients')"
         >
           <q-icon class="col self-center gridIcon">
@@ -50,9 +55,9 @@
           </div>
         </div>
       </div>
-      <div class="row col-4   justify-around">
+      <div class="row col-4 justify-around">
         <div
-          class="column col iconBackground  items-center"
+          class="column col iconBackground items-center"
           @click="$router.push('/vendors')"
         >
           <q-icon class="col self-center gridIcon">
@@ -72,7 +77,7 @@
         </div>
 
         <div
-          class="column col iconBackground  items-center"
+          class="column col iconBackground items-center"
           @click="$router.push('/claims')"
         >
           <q-icon class="col self-center gridIcon">
@@ -91,9 +96,9 @@
           </div>
         </div>
       </div>
-      <div class="row col-4  justify-around">
+      <div class="row col-4 justify-around">
         <div
-          class="column col iconBackground  items-center"
+          class="column col iconBackground items-center"
           @click="selectClaimDialog = true"
         >
           <q-icon class="col self-center gridIcon">
@@ -115,7 +120,7 @@
         </div>
 
         <div
-          class="column col iconBackground  items-center"
+          class="column col iconBackground items-center"
           @click="toCameraDialogBox()"
         >
           <q-icon class="col self-center mobileIcon">
@@ -136,10 +141,10 @@
       </div>
     </div>
     <!-- footer -->
-    <div class="row justify-center footer-shadow "></div>
+    <div class="row justify-center footer-shadow"></div>
     <div
       class="row justify-between q-py-sm q-px-md"
-      style="background-color: #8f8f8f;"
+      style="background-color: #8f8f8f"
     >
       <div col-3 class="column">
         <img
@@ -150,7 +155,7 @@
         <div class="text-center text-white">PROFILE</div>
       </div>
       <div @click="$router.push('/reports')" class="column items-center">
-        <img src="~assets/report_dashboard_icon.svg" style="width: 80%;" />
+        <img src="~assets/report_dashboard_icon.svg" style="width: 80%" />
 
         <div class="text-center text-white">REPORTS</div>
       </div>
@@ -250,7 +255,7 @@
               <q-icon size="xl">
                 <q-img src="../assets/photoIdApp.png" color="primary" />
               </q-icon>
-              <div class=" text-black">Photo ID App</div>
+              <div class="text-black">Photo ID App</div>
             </div>
             <div
               @click="toOpenCameraClaimListing"
@@ -289,6 +294,11 @@ export default {
     };
   },
   created() {
+    let params = {
+      limit: 0,
+      offset: 0
+    };
+    this.getCarriers(params);
     //this API is for offline clients
     const payload = {
       status: '',
@@ -306,7 +316,8 @@ export default {
       'getClaims',
       'getArchivedLeadsList',
       'getTemplates',
-      'getAllTemplate'
+      'getAllTemplate',
+      'getCarriers'
     ]),
     // this function is use for the opening and closing of dialog box that show photoId App and Camera option feature.
     toCameraDialogBox() {

@@ -20,7 +20,9 @@
         style="margin: 0 20px"
       />
       <q-separator vertical></q-separator>
-      <q-btn @click="onAddButtonClick" flat><img src="~assets/add.svg"/></q-btn>
+      <q-btn @click="onAddButtonClick" flat
+        ><img src="~assets/add.svg"
+      /></q-btn>
     </div>
     <div v-if="!loading">
       <q-scroll-area class="scroll-area">
@@ -31,52 +33,37 @@
             </div>
           </template>
           <div
-            v-for="carrier in carrierList"
-            :key="carrier.id"
+            v-for="(carrier, index) in carriers"
+            :key="index"
             class="listing-item clients-list"
           >
             <q-item-section @click="onSelectCarrier(carrier, $event)">
-              <span class="form-heading  fit-content">{{
-                carrier.attributes.name
-              }}</span>
-              <div v-if="carrier.attributes.address">
+              <span class="form-heading fit-content">{{ carrier.name }}</span>
+              <div v-if="carrier.address">
                 <div>
+                  {{ carrier.address ? carrier.address.houseNumber : '-' }}
                   {{
-                    carrier.attributes.address
-                      ? carrier.attributes.address.houseNumber
-                      : '-'
-                  }}
-                  {{
-                    carrier.attributes.address.address1
-                      ? carrier.attributes.address.address1
-                      : '-'
+                    carrier.address.address1 ? carrier.address.address1 : '-'
                   }}
                 </div>
-                <div
-                  v-if="
-                    carrier.attributes.address &&
-                      carrier.attributes.address.address2
-                  "
-                >
-                  {{ carrier.attributes.address.address2 }}
+                <div v-if="carrier.address && carrier.address.address2">
+                  {{ carrier.address.address2 }}
                 </div>
                 <div class="row">
                   {{
-                    carrier.attributes.address.addressLocality
-                      ? carrier.attributes.address.addressLocality
+                    carrier.address.addressLocality
+                      ? carrier.address.addressLocality
                       : '-'
                   }}
                   ,
                   {{
-                    carrier.attributes.address.addressRegion
-                      ? toGetStateShortName(
-                          carrier.attributes.address.addressRegion
-                        )
+                    carrier.address.addressRegion
+                      ? toGetStateShortName(carrier.address.addressRegion)
                       : '-'
                   }}
                   {{
-                    carrier.attributes.address.postalCode
-                      ? carrier.attributes.address.postalCode
+                    carrier.address.postalCode
+                      ? carrier.address.postalCode
                       : '-'
                   }}
                   <q-icon
@@ -84,14 +71,14 @@
                     class="q-ml-auto"
                     color="primary"
                     size="sm"
-                    @click="sendMap(carrier.attributes.address, $event)"
+                    @click="sendMap(carrier.address, $event)"
                   ></q-icon>
                 </div>
               </div>
               <div
                 class="q-mt-xs fit-content"
-                v-for="phone in carrier.attributes.phoneNumber"
-                :key="phone.number"
+                v-for="(phone, index) in carrier.phoneNumber"
+                :key="index"
               >
                 <span v-if="phone.type">{{ phone.type }} : </span>
                 <span
@@ -102,20 +89,24 @@
               </div>
               <span
                 class="click-link fit-content"
-                @click="onEmailClick(carrier.attributes.email, $event)"
-                >{{ carrier.attributes.email }}</span
+                @click="onEmailClick(carrier.email, $event)"
+                >{{ carrier.email }}</span
               >
             </q-item-section>
             <q-icon
-              v-if="carrier.attributes.name === selectedCarrierName"
+              v-if="carrier.name === selectedCarrierName"
               name="done"
               size="xs"
               class="q-ml-auto"
             />
           </div>
           <div
-            class="no-more-results-msg border-bottom-secondary text-body1 text-h5 text-center text-manatee"
-            v-if="noMoreResults && carrierList.length != 0"
+            class="
+              no-more-results-msg
+              border-bottom-secondary
+              text-body1 text-h5 text-center text-manatee
+            "
+            v-if="noMoreResults"
           >
             <span class="bg-whiteSmoke q-px-sm">No more results</span>
           </div>
@@ -147,7 +138,6 @@ export default {
   data() {
     return {
       searchText: '',
-      carrierList: [],
       loading: true,
       noMoreResults: false,
       params: {
@@ -158,19 +148,12 @@ export default {
   computed: {
     ...mapGetters(['carriers', 'selectedClaimId'])
   },
-
-  mounted() {
-    this.getCarriers();
+  created() {
     this.getCarrierListData();
   },
 
   methods: {
-    ...mapActions([
-      'getCarriers',
-      'addClaimCarrier',
-      'getSelectedClaim',
-      'carrierPagination'
-    ]),
+    ...mapActions(['getCarriers', 'addClaimCarrier', 'getSelectedClaim']),
     toGetStateShortName,
     async getCarrierListData() {
       let params = {
@@ -178,24 +161,20 @@ export default {
         offset: 0
       };
       this.loading = true;
-      let data = await this.carrierPagination(params);
-      this.carrierList = data;
+      await this.getCarriers(params);
       this.loading = false;
     },
 
     async onLoad(index, done) {
-      let carrierListBeforeLoad = this.carrierList.length;
+      let carrierListBeforeLoad = this.carriers.length;
       let params = {
         limit: CARRIER_LIST_LIMIT,
         offset: index * CARRIER_LIST_LIMIT
       };
       if (carrierListBeforeLoad >= CARRIER_LIST_LIMIT) {
-        let data = await this.carrierPagination(params);
-        if (data.length > 0) {
-          this.carrierList = this.carrierList.concat(data);
-        }
+        await this.getCarriers(params);
       }
-      let carrierListAfterLoad = this.carrierList.length;
+      let carrierListAfterLoad = this.carriers.length;
       if (
         carrierListBeforeLoad == carrierListAfterLoad ||
         carrierListAfterLoad - carrierListBeforeLoad < CARRIER_LIST_LIMIT
@@ -210,7 +189,8 @@ export default {
 
     onSearchBackButtonClick() {
       this.searchText = '';
-      this.search();
+      this.getCarrierListData();
+      this.noMoreResults = false;
     },
 
     async onSelectCarrier(carrier, e) {
@@ -240,8 +220,10 @@ export default {
     //this function is used for searching Carriers.
     async search(event) {
       this.params.name = event;
-      let Data = await this.carrierPagination(this.params);
-      this.carrierList = Data;
+      if (this.params.name == '') {
+        this.getCarrierListData();
+        this.noMoreResults = false;
+      } else await this.getCarriers(this.params);
     },
 
     onAddButtonClick() {
