@@ -20,6 +20,7 @@ export async function setCarriers(state, carriersData) {
     state.carriers = [];
     state.carriers = state.carriers.concat(carriers);
   } else {
+    // this condition is for when we user start scrolling down for more than more time.
     state.carriers = state.carriers.concat(carriers);
   }
   if ((await carriersCollection.count()) > 0 && !carriersData.params) {
