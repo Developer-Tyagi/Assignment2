@@ -502,7 +502,6 @@ export default {
   },
 
   async created() {
-    this.uploadTemplateDialogBox = true;
     this.getInspectionTypes().then(async () => {
       this.table = this.inspectionTypes;
     });
