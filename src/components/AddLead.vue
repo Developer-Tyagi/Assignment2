@@ -4,7 +4,7 @@
       <div class="stepper">
         <div class="step justify-between" id="step">
           <div
-            class="column align-center q-px-sm"
+            class="column align-center q-px-xs"
             v-for="(arr, index) in stepArr"
             :key="index"
             @click="onStepClick(index)"

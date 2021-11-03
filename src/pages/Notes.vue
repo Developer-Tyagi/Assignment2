@@ -12,7 +12,7 @@
           :dialogName="'Add New Note'"
           @closeDialog="addNoteDialog = false"
         />
-        <q-card-section>
+        <div class="q-ma-sm responsive-page">
           <div>
             <div class="q-py-xs">Notes<small style="color: red">*</small></div>
             <q-input
@@ -25,14 +25,14 @@
               style="width: 100%"
             />
           </div>
-          <div class="row q-mt-xl justify-center">
-            <q-btn
-              @click="onSave"
-              label="Save"
-              class="single-next-button-style"
-            />
-          </div>
-        </q-card-section>
+        </div>
+        <div class="row justify-center">
+          <q-btn
+            @click="onSave"
+            label="Save"
+            class="single-next-button-style"
+          />
+        </div>
       </q-card>
     </q-dialog>
     <!-- Edit Note Dialog  -->
@@ -48,7 +48,7 @@
           @closeDialog="editNoteDialog = false"
         />
         <q-card-section>
-          <div class="mobile-container-page-without-search form-height">
+          <div class="responsive-page q-ma-sm">
             <div class="q-py-xs">Notes</div>
             <q-input
               type="textarea"
