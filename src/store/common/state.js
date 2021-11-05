@@ -1,4 +1,4 @@
-export default function() {
+export default function () {
   return {
     notificationRouteTo: '',
     showLoading: false,
@@ -11,6 +11,7 @@ export default function() {
     roleTypes: [],
     permissions: [],
     toShowCamera: false,
+    routeFromLeadDashboad: false,
     templates: [],
     paidUsers: [],
     fileRoleOptions: [

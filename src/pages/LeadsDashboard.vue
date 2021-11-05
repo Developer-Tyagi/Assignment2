@@ -121,7 +121,7 @@ export default {
       'getActiveLeadsList',
       'getArchivedLeadsList'
     ]),
-    ...mapMutations(['setConvertedLead']),
+    ...mapMutations(['setConvertedLead', 'leadDashboardRoute']),
     fillData() {
       this.datacollection = {
         labels: ['New Lead', 'Scheduled', 'Leads Converted', 'Dead Leads'],
@@ -149,6 +149,7 @@ export default {
       this.setConvertedLead('Active');
       this.getActiveLeadsList(payload);
       this.getArchivedLeadsList();
+      this.leadDashboardRoute('true');
     },
     onDeadLeadClick() {
       this.$router.push('/leads');
@@ -159,6 +160,7 @@ export default {
       };
       this.setConvertedLead('Dead');
       this.getActiveLeadsList(payload);
+      this.leadDashboardRoute('true');
     },
     onConvertedLeadClick() {
       this.$store.commit('setShowConvertButton', false);
@@ -171,6 +173,7 @@ export default {
       };
       this.setConvertedLead('Converted');
       this.getActiveLeadsList(payload);
+      this.leadDashboardRoute('true');
     }
   },
 

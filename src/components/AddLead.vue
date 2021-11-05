@@ -748,7 +748,6 @@ import {
 import { dateToSend } from '@utils/date';
 import { constants } from '@utils/constant';
 import { date } from 'quasar';
-import AddLead from 'components/AddLead';
 import VendorsList from 'components/VendorsList';
 import CarriersList from 'components/CarriersList';
 import AddVendor from 'components/AddVendor';
@@ -764,8 +763,7 @@ export default {
     CarriersList,
     AddCarrier,
     AutoCompleteAddress,
-    CustomBar,
-    AddLead
+    CustomBar
   },
   props: {
     isEdit: {
@@ -873,6 +871,7 @@ export default {
 
   methods: {
     ...mapActions([
+      'getArchivedLeadsList',
       'getVendorDetails',
       'getVendors',
       'getVendorIndustries',
@@ -889,7 +888,11 @@ export default {
       'getActiveLeadsList'
     ]),
 
-    ...mapMutations(['setSelectedClient', 'isLastRouteEdit']),
+    ...mapMutations([
+      'setSelectedClient',
+      'isLastRouteEdit',
+      'setConvertedLead'
+    ]),
 
     successMessage,
     toGetStateShortName,
@@ -1073,13 +1076,16 @@ export default {
         this.getActiveLeadsList();
         this.isLastRouteEdit(true);
       } else {
+        // this condition is used to redirect the page to Active Lead on successful creation of New Lead
         this.addLeads(payload).then(() => {
+          this.$store.commit('setShowConvertButton', true);
           const payload = {
             new: '',
             status: ''
           };
+          this.setConvertedLead('Active');
           this.getActiveLeadsList(payload);
-          this.setSelectedClient();
+          this.getArchivedLeadsList();
           this.$router.push('/leads');
         });
       }
