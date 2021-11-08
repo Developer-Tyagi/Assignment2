@@ -19,7 +19,7 @@
       color="white"
     />
     <div class="listing-height " id="scroll-bottom">
-      <div class="q-ml-md">
+      <div>
         <ClaimDetail />
       </div>
       <q-list
