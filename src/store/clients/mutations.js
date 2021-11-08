@@ -147,7 +147,7 @@ export async function setClaimSeverities(state, types) {
 }
 
 export async function setOfflineClaimSeverities(state) {
-  state.claimSeverities = await getCollection('claimSeverities').toArray();
+  state.claimSeverity = await getCollection('claimSeverities').toArray();
 }
 
 export async function setPolicyCategories(state, types) {

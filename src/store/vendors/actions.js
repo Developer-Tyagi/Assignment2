@@ -12,7 +12,6 @@ export async function getVendors(
   },
   params
 ) {
-  dispatch('setLoading', true);
   if (isOnline) {
     try {
       const { data } = await request.get('/vendors', params);
@@ -189,7 +188,6 @@ export async function getVendorIndustries({
   commit,
   dispatch
 }) {
-  dispatch('setLoading', true);
   if (isOnline) {
     try {
       const { data } = await request.get('/industries');

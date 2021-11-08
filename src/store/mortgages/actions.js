@@ -14,7 +14,6 @@ export async function getMortgages(
   params
 ) {
   if (isOnline) {
-    dispatch('setLoading', true);
     try {
       const { data } = await request.get('/mortgages', params);
       commit('setMortgages', data);

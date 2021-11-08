@@ -145,7 +145,6 @@ export async function getEstimators(
   },
   params
 ) {
-  dispatch('setLoading', true);
   if (isOnline) {
     try {
       const { data } = await request.get('/users', params);
@@ -537,7 +536,6 @@ export async function getPropertyTypes({
   dispatch
 }) {
   if (isOnline) {
-    dispatch('setLoading', true);
     try {
       const { data } = await request.get('/prtypes');
       commit('setPropertyTypes', data);
@@ -563,7 +561,6 @@ export async function getPolicyTypes({
   dispatch
 }) {
   if (isOnline) {
-    dispatch('setLoading', true);
     try {
       const { data } = await request.get('/ptypes');
       commit('setPolicyTypes', data);
@@ -590,7 +587,6 @@ export async function getClaimReasons({
   dispatch
 }) {
   if (isOnline) {
-    dispatch('setLoading', true);
     try {
       const { data } = await request.get('/claimreasons');
       commit('setClaimReasons', data);
@@ -617,7 +613,6 @@ export async function getSeverityClaim({
   dispatch
 }) {
   if (isOnline) {
-    dispatch('setLoading', true);
     try {
       const { data } = await request.get('/severities');
       commit('setClaimSeverities', data);
@@ -644,7 +639,6 @@ export async function getPolicyCategory({
   dispatch
 }) {
   if (isOnline) {
-    dispatch('setLoading', true);
     try {
       const { data } = await request.get('/pcategories');
       commit('setPolicyCategories', data);

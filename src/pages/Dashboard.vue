@@ -293,27 +293,68 @@ export default {
       cameraDialogBox: false,
       params: {
         favourite: ''
+      },
+      searchText: '',
+      estimatorParams: {
+        role: 'estimator'
       }
     };
   },
-  created() {
+  async created() {
+    // if user login first time  we are calling all the APIs so that we can save data in Local Database which we are needed while creating client,lead and claim
+
+    await this.getClientTypes();
+    await this.getContactTypes();
+    await this.getTitles();
+    await this.getLossCauses();
+    await this.getInspectionTypes();
+    await this.getVendorIndustries();
+    await this.getVendors();
+    await this.getPropertyTypes();
+    await this.getPolicyTypes();
+    await this.getPolicyCategory();
+    await this.getClaimReasons();
+    await this.getSeverityClaim();
+    await this.getClaimRoles();
+    await this.getAllUsers();
+    await this.getPaidUsers();
+    await this.getMortgages();
+
+    await this.getEstimators(this.estimatorParams);
     let params = {
       limit: 0,
       offset: 0
     };
-    this.getCarriers(params);
+    await this.getCarriers(params);
     //this API is for offline clients
     const payload = {
       status: '',
       name: ''
     };
-    this.getClients(payload);
-    this.getClaims();
-    this.getTemplates();
-    this.getAllTemplate();
+    await this.getClients(payload);
+    await this.getClaims();
+    await this.getTemplates();
+    await this.getAllTemplate();
   },
   methods: {
     ...mapActions([
+      'getEstimators',
+      'getMortgages',
+      'getPropertyTypes',
+      'getClientTypes',
+      'getPaidUsers',
+      'getClaimRoles',
+      'getAllUsers',
+      'getClaimReasons',
+      'getSeverityClaim',
+      'getPolicyTypes',
+      'getPolicyCategory',
+      'getInspectionTypes',
+      'getVendorIndustries',
+      'getVendors',
+      'getContactTypes',
+      'getTitles',
+      'getLossCauses',
       'getClients',
       'getActiveLeadsList',
       'getClaims',

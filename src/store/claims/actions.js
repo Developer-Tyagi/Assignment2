@@ -1105,7 +1105,6 @@ export async function getTemplates({
   commit,
   dispatch
 }) {
-  dispatch('setLoading', true);
   if (isOnline) {
     try {
       const { data } = await request.get('/templatetypes');

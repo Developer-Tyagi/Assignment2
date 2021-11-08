@@ -17,7 +17,6 @@ export async function getClientTypes({
   dispatch
 }) {
   if (isOnline) {
-    dispatch('setLoading', true);
     try {
       const { data } = await request.get('/ctypes');
       commit('setClientTypes', data);
@@ -46,7 +45,6 @@ export async function getAllUsers(
   },
   params
 ) {
-  dispatch('setLoading', true);
   if (isOnline) {
     try {
       const { data } = await request.get('/users', params);
@@ -78,7 +76,6 @@ export async function getLossCauses({
   dispatch
 }) {
   if (isOnline) {
-    dispatch('setLoading', true);
     try {
       const { data } = await request.get('/losscauses');
       commit('setLossCause', data);
@@ -130,7 +127,6 @@ export async function getTitles({
   commit,
   dispatch
 }) {
-  dispatch('setLoading', true);
   if (isOnline) {
     try {
       const { data } = await request.get('/honorifics');
@@ -467,7 +463,6 @@ export async function getAllTemplate({
   dispatch
 }) {
   if (isOnline) {
-    dispatch('setLoading', true);
     try {
       const { data } = await request.get('/templates');
 
@@ -1004,7 +999,6 @@ export async function syncLocalDataBase({ dispatch, state }) {
 }
 
 export async function getPaidUsers({ commit, dispatch }) {
-  dispatch('setLoading', true);
   try {
     const { data } = await request.get('/users?isPaid=true');
     commit('setPaidUsers', data);

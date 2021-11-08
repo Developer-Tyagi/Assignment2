@@ -8,7 +8,6 @@ export async function getInspectionTypes({
   commit,
   dispatch
 }) {
-  dispatch('setLoading', true);
   if (isOnline) {
     try {
       const { data } = await request.get('/inspections');
