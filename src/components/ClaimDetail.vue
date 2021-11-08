@@ -23,7 +23,7 @@
           {{ getSelectedClaim.client.lname }}</span
         >
         <q-icon
-          class="q-ml-auto q-ml-xl"
+          class="q-ml-auto q-mr-md"
           size="1em"
           :name="getSelectedClaim.isFavourite ? 'star' : 'star_border'"
           @click="onClickFavourite"
