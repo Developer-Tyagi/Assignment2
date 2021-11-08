@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <q-page>
     <q-icon
       v-if="
         !claimSummaryDialog &&
@@ -411,7 +411,7 @@
         </q-card-section>
       </q-card>
     </q-dialog>
-  </div>
+  </q-page>
 </template>
 
 <script>
