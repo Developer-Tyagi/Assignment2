@@ -145,6 +145,7 @@ export async function getEstimators(
   },
   params
 ) {
+  params.hideLoader == false ? '' : dispatch('setLoading', true);
   if (isOnline) {
     try {
       const { data } = await request.get('/users', params);
@@ -528,14 +529,18 @@ export async function addEstimatorLocal({ dispatch }, payload) {
   }
 }
 
-export async function getPropertyTypes({
-  rootState: {
-    common: { isOnline }
+export async function getPropertyTypes(
+  {
+    rootState: {
+      common: { isOnline }
+    },
+    commit,
+    dispatch
   },
-  commit,
-  dispatch
-}) {
+  params
+) {
   if (isOnline) {
+    params == 'hideLoader' ? ' ' : dispatch('setLoading', true);
     try {
       const { data } = await request.get('/prtypes');
       commit('setPropertyTypes', data);
@@ -553,14 +558,18 @@ export async function getPropertyTypes({
     dispatch('setLoading', false);
   }
 }
-export async function getPolicyTypes({
-  rootState: {
-    common: { isOnline }
+export async function getPolicyTypes(
+  {
+    rootState: {
+      common: { isOnline }
+    },
+    commit,
+    dispatch
   },
-  commit,
-  dispatch
-}) {
+  params
+) {
   if (isOnline) {
+    params == 'hideLoader' ? ' ' : dispatch('setLoading', true);
     try {
       const { data } = await request.get('/ptypes');
       commit('setPolicyTypes', data);
@@ -579,14 +588,18 @@ export async function getPolicyTypes({
   }
 }
 
-export async function getClaimReasons({
-  rootState: {
-    common: { isOnline }
+export async function getClaimReasons(
+  {
+    rootState: {
+      common: { isOnline }
+    },
+    commit,
+    dispatch
   },
-  commit,
-  dispatch
-}) {
+  params
+) {
   if (isOnline) {
+    params == 'hideLoader' ? ' ' : dispatch('setLoading', true);
     try {
       const { data } = await request.get('/claimreasons');
       commit('setClaimReasons', data);
@@ -605,14 +618,18 @@ export async function getClaimReasons({
   }
 }
 
-export async function getSeverityClaim({
-  rootState: {
-    common: { isOnline }
+export async function getSeverityClaim(
+  {
+    rootState: {
+      common: { isOnline }
+    },
+    commit,
+    dispatch
   },
-  commit,
-  dispatch
-}) {
+  params
+) {
   if (isOnline) {
+    params == 'hideLoader' ? ' ' : dispatch('setLoading', true);
     try {
       const { data } = await request.get('/severities');
       commit('setClaimSeverities', data);
@@ -631,14 +648,18 @@ export async function getSeverityClaim({
   }
 }
 
-export async function getPolicyCategory({
-  rootState: {
-    common: { isOnline }
+export async function getPolicyCategory(
+  {
+    rootState: {
+      common: { isOnline }
+    },
+    commit,
+    dispatch
   },
-  commit,
-  dispatch
-}) {
+  params
+) {
   if (isOnline) {
+    params == 'hideLoader' ? ' ' : dispatch('setLoading', true);
     try {
       const { data } = await request.get('/pcategories');
       commit('setPolicyCategories', data);

@@ -14,7 +14,9 @@ export async function getCarriers(
 
   params
 ) {
-  dispatch('setLoading', true);
+  if (params.hideLoader == false) {
+    dispatch('setLoading', true);
+  }
 
   if (isOnline) {
     try {
@@ -364,8 +366,9 @@ export async function editCarrierPersonnelToClaim({ dispatch }, payload) {
 
 //View List of Claim Roles
 
-export async function getClaimRoles({ commit, dispatch }) {
+export async function getClaimRoles({ commit, dispatch }, params) {
   try {
+    params == 'hideLoader' ? ' ' : dispatch('setLoading', true);
     const { data } = await request.get('/claimroles');
     commit('setClaimRoles', data);
     dispatch('setLoading', false);

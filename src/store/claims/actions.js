@@ -239,7 +239,8 @@ export async function getClaims(
   },
   params
 ) {
-  dispatch('setLoading', true);
+  params == 'hideLoader' ? '' : dispatch('setLoading', true);
+
   if (isOnline) {
     try {
       const { data } = await request.get('/claims', params);
@@ -1098,14 +1099,18 @@ export async function deleteDirectory({ dispatch }, id) {
 
 // API is for View list of template types for estimator account only
 
-export async function getTemplates({
-  rootState: {
-    common: { isOnline }
+export async function getTemplates(
+  {
+    rootState: {
+      common: { isOnline }
+    },
+    commit,
+    dispatch
   },
-  commit,
-  dispatch
-}) {
+  params
+) {
   if (isOnline) {
+    params == 'hideLoader' ? '' : dispatch('setLoading', true);
     try {
       const { data } = await request.get('/templatetypes');
 

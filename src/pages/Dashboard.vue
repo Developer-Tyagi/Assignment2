@@ -292,49 +292,51 @@ export default {
       openDialog: false,
       cameraDialogBox: false,
       params: {
-        favourite: ''
+        favourite: '',
+        hideLoader: false
       },
       searchText: '',
       estimatorParams: {
-        role: 'estimator'
+        role: 'estimator',
+        hideLoader: false
       }
     };
   },
-  async created() {
+  created() {
     // if user login first time  we are calling all the APIs so that we can save data in Local Database which we are needed while creating client,lead and claim
 
-    await this.getClientTypes();
-    await this.getContactTypes();
-    await this.getTitles();
-    await this.getLossCauses();
-    await this.getInspectionTypes();
-    await this.getVendorIndustries();
-    await this.getVendors();
-    await this.getPropertyTypes();
-    await this.getPolicyTypes();
-    await this.getPolicyCategory();
-    await this.getClaimReasons();
-    await this.getSeverityClaim();
-    await this.getClaimRoles();
-    await this.getAllUsers();
-    await this.getPaidUsers();
-    await this.getMortgages();
+    this.getClientTypes('hideLoader');
+    this.getContactTypes('hideLoader');
+    this.getTitles('hideLoader');
+    this.getLossCauses('hideLoader');
+    this.getInspectionTypes('hideLoader');
+    this.getVendorIndustries('hideLoader');
+    this.getVendors('hideLoader');
+    this.getPropertyTypes('hideLoader');
+    this.getPolicyTypes('hideLoader');
+    this.getPolicyCategory('hideLoader');
+    this.getClaimReasons('hideLoader');
+    this.getSeverityClaim('hideLoader');
+    this.getClaimRoles('hideLoader');
+    this.getAllUsers('hideLoader');
+    this.getPaidUsers('hideLoader');
+    this.getMortgages('hideLoader');
 
-    await this.getEstimators(this.estimatorParams);
+    this.getEstimators(this.estimatorParams);
     let params = {
       limit: 0,
       offset: 0
     };
-    await this.getCarriers(params);
+    this.getCarriers(params);
     //this API is for offline clients
     const payload = {
       status: '',
       name: ''
     };
-    await this.getClients(payload);
-    await this.getClaims();
-    await this.getTemplates();
-    await this.getAllTemplate();
+    this.getClients(payload);
+    this.getClaims();
+    this.getTemplates();
+    this.getAllTemplate();
   },
   methods: {
     ...mapActions([
