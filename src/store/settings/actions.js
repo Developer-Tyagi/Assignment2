@@ -11,8 +11,8 @@ export async function getInspectionTypes(
   },
   params
 ) {
+  params == 'hideLoader' ? ' ' : dispatch('setLoading', true);
   if (isOnline) {
-    params == 'hideLoader' ? ' ' : dispatch('setLoading', true);
     try {
       const { data } = await request.get('/inspections');
       commit('setInspectionTypes', data);

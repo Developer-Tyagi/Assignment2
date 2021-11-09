@@ -13,8 +13,8 @@ export async function getMortgages(
   },
   params
 ) {
+  params == 'hideLoader' ? ' ' : dispatch('setLoading', true);
   if (isOnline) {
-    params == 'hideLoader' ? ' ' : dispatch('setLoading', true);
     try {
       const { data } = await request.get('/mortgages', params);
       commit('setMortgages', data);

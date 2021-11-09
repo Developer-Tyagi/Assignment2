@@ -191,8 +191,8 @@ export async function getVendorIndustries(
   },
   params
 ) {
+  params == 'hideLoader' ? ' ' : dispatch('setLoading', true);
   if (isOnline) {
-    params == 'hideLoader' ? ' ' : dispatch('setLoading', true);
     try {
       const { data } = await request.get('/industries');
       commit('setvendorsIndustries', data);

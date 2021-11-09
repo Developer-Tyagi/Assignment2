@@ -367,8 +367,8 @@ export async function editCarrierPersonnelToClaim({ dispatch }, payload) {
 //View List of Claim Roles
 
 export async function getClaimRoles({ commit, dispatch }, params) {
+  params == 'hideLoader' ? ' ' : dispatch('setLoading', true);
   try {
-    params == 'hideLoader' ? ' ' : dispatch('setLoading', true);
     const { data } = await request.get('/claimroles');
     commit('setClaimRoles', data);
     dispatch('setLoading', false);
