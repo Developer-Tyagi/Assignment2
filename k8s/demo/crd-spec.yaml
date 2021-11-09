@@ -79,7 +79,7 @@ metadata:
     gitlab-job-id: 'CI_JOB_ID'
 spec:
   hosts:
-    - demo.claimguru.cilalabs.dev
+    - demo.app.claimguru.cilalabs.dev
   gateways:
     - istio-system/claimguru-gateway
   http:
