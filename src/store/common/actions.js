@@ -9,15 +9,19 @@ import { constants } from '@utils/constant';
 export function setLoading({ commit }, value) {
   commit('setLoading', value);
 }
-export async function getClientTypes({
-  rootState: {
-    common: { isOnline }
+export async function getClientTypes(
+  {
+    rootState: {
+      common: { isOnline }
+    },
+    commit,
+    dispatch
   },
-  commit,
-  dispatch
-}) {
+  params
+) {
+  params == 'hideLoader' ? '' : dispatch('setLoading', true);
+
   if (isOnline) {
-    dispatch('setLoading', true);
     try {
       const { data } = await request.get('/ctypes');
       commit('setClientTypes', data);
@@ -46,8 +50,8 @@ export async function getAllUsers(
   },
   params
 ) {
-  dispatch('setLoading', true);
   if (isOnline) {
+    params == 'hideLoader' ? ' ' : dispatch('setLoading', true);
     try {
       const { data } = await request.get('/users', params);
       commit('setAllUsers', data);
@@ -70,15 +74,18 @@ export function setNotification({ commit }, notification) {
   commit('setNotification', notification);
 }
 
-export async function getLossCauses({
-  rootState: {
-    common: { isOnline }
+export async function getLossCauses(
+  {
+    rootState: {
+      common: { isOnline }
+    },
+    commit,
+    dispatch
   },
-  commit,
-  dispatch
-}) {
+  params
+) {
   if (isOnline) {
-    dispatch('setLoading', true);
+    params == 'hideLoader' ? ' ' : dispatch('setLoading', true);
     try {
       const { data } = await request.get('/losscauses');
       commit('setLossCause', data);
@@ -96,15 +103,19 @@ export async function getLossCauses({
     dispatch('setLoading', false);
   }
 }
-export async function getContactTypes({
-  rootState: {
-    common: { isOnline }
+export async function getContactTypes(
+  {
+    rootState: {
+      common: { isOnline }
+    },
+    commit,
+    dispatch
   },
-  commit,
-  dispatch
-}) {
+  params
+) {
   if (isOnline) {
-    dispatch('setLoading', true);
+    params == 'hideLoader' ? ' ' : dispatch('setLoading', true);
+
     try {
       const { data } = await request.get('/phonetypes');
       commit('setContactTypes', data);
@@ -123,16 +134,19 @@ export async function getContactTypes({
   }
 }
 
-export async function getTitles({
-  rootState: {
-    common: { isOnline }
+export async function getTitles(
+  {
+    rootState: {
+      common: { isOnline }
+    },
+    commit,
+    dispatch
   },
-  commit,
-  dispatch
-}) {
-  dispatch('setLoading', true);
+  params
+) {
   if (isOnline) {
     try {
+      params == 'hideLoader' ? ' ' : dispatch('setLoading', true);
       const { data } = await request.get('/honorifics');
       commit('setTitles', data);
       dispatch('setLoading', false);
@@ -459,15 +473,18 @@ export async function addTemplateLocal({ dispatch }, payload) {
   }
 }
 
-export async function getAllTemplate({
-  rootState: {
-    common: { isOnline }
+export async function getAllTemplate(
+  {
+    rootState: {
+      common: { isOnline }
+    },
+    commit,
+    dispatch
   },
-  commit,
-  dispatch
-}) {
+  params
+) {
   if (isOnline) {
-    dispatch('setLoading', true);
+    params == 'hideLoader' ? ' ' : dispatch('setLoading', true);
     try {
       const { data } = await request.get('/templates');
 
@@ -1003,10 +1020,11 @@ export async function syncLocalDataBase({ dispatch, state }) {
   await clearLocalStorage();
 }
 
-export async function getPaidUsers({ commit, dispatch }) {
-  dispatch('setLoading', true);
+export async function getPaidUsers({ commit, dispatch }, params) {
   try {
+    params == 'hideLoader' ? ' ' : dispatch('setLoading', true);
     const { data } = await request.get('/users?isPaid=true');
+
     commit('setPaidUsers', data);
     dispatch('setLoading', false);
   } catch (e) {

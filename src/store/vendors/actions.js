@@ -12,7 +12,6 @@ export async function getVendors(
   },
   params
 ) {
-  dispatch('setLoading', true);
   if (isOnline) {
     try {
       const { data } = await request.get('/vendors', params);
@@ -182,14 +181,17 @@ export async function deleteVendorPersonnel({ commit, dispatch }, vendor) {
   }
 }
 
-export async function getVendorIndustries({
-  rootState: {
-    common: { isOnline }
+export async function getVendorIndustries(
+  {
+    rootState: {
+      common: { isOnline }
+    },
+    commit,
+    dispatch
   },
-  commit,
-  dispatch
-}) {
-  dispatch('setLoading', true);
+  params
+) {
+  params == 'hideLoader' ? ' ' : dispatch('setLoading', true);
   if (isOnline) {
     try {
       const { data } = await request.get('/industries');

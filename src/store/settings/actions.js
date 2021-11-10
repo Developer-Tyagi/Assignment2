@@ -1,14 +1,17 @@
 import request from '@api';
 import { buildApiData } from '@utils/api';
 
-export async function getInspectionTypes({
-  rootState: {
-    common: { isOnline }
+export async function getInspectionTypes(
+  {
+    rootState: {
+      common: { isOnline }
+    },
+    commit,
+    dispatch
   },
-  commit,
-  dispatch
-}) {
-  dispatch('setLoading', true);
+  params
+) {
+  params == 'hideLoader' ? ' ' : dispatch('setLoading', true);
   if (isOnline) {
     try {
       const { data } = await request.get('/inspections');

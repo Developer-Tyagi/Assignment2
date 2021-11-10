@@ -292,11 +292,37 @@ export default {
       openDialog: false,
       cameraDialogBox: false,
       params: {
-        favourite: ''
+        favourite: '',
+        hideLoader: false
+      },
+      searchText: '',
+      estimatorParams: {
+        role: 'estimator',
+        hideLoader: false
       }
     };
   },
   created() {
+    // if user login first time  we are calling all the APIs so that we can save data in Local Database which we are needed while creating client,lead and claim
+
+    this.getClientTypes('hideLoader');
+    this.getContactTypes('hideLoader');
+    this.getTitles('hideLoader');
+    this.getLossCauses('hideLoader');
+    this.getInspectionTypes('hideLoader');
+    this.getVendorIndustries('hideLoader');
+    this.getVendors('hideLoader');
+    this.getPropertyTypes('hideLoader');
+    this.getPolicyTypes('hideLoader');
+    this.getPolicyCategory('hideLoader');
+    this.getClaimReasons('hideLoader');
+    this.getSeverityClaim('hideLoader');
+    this.getClaimRoles('hideLoader');
+    this.getAllUsers('hideLoader');
+    this.getPaidUsers('hideLoader');
+    this.getMortgages('hideLoader');
+
+    this.getEstimators(this.estimatorParams);
     let params = {
       limit: 0,
       offset: 0
@@ -314,6 +340,23 @@ export default {
   },
   methods: {
     ...mapActions([
+      'getEstimators',
+      'getMortgages',
+      'getPropertyTypes',
+      'getClientTypes',
+      'getPaidUsers',
+      'getClaimRoles',
+      'getAllUsers',
+      'getClaimReasons',
+      'getSeverityClaim',
+      'getPolicyTypes',
+      'getPolicyCategory',
+      'getInspectionTypes',
+      'getVendorIndustries',
+      'getVendors',
+      'getContactTypes',
+      'getTitles',
+      'getLossCauses',
       'getClients',
       'getActiveLeadsList',
       'getClaims',
