@@ -810,14 +810,14 @@ export default {
     ]),
     ...mapMutations(['setLoading', 'setNotification']),
     onClickNextButton() {
-      if (this.index < this.claimActors.length) {
+      if (this.index < this.signActor.length) {
         this.signaturePadDialog = true;
 
-        if (this.claimActors[this.signatureArrayIndex].role == undefined) {
+        if (this.signActor[this.signatureArrayIndex].type == 'client') {
           this.userName = 'Client Signature';
         } else {
           this.userName =
-            this.claimActors[this.signatureArrayIndex].role[this.userRoleIndex]
+            this.signActor[this.signatureArrayIndex].role[this.userRoleIndex]
               .value +
             ' ' +
             'Signature';
@@ -827,12 +827,17 @@ export default {
     async signatureSubmit(data) {
       const formData = new FormData();
       formData.append('file', this.dataURItoBlob(data));
-      formData.append(
-        'type',
-        this.claimActors[this.signatureArrayIndex].role &&
-          this.claimActors[this.signatureArrayIndex].role[this.userRoleIndex]
-            .value
-      );
+      if (this.claimActors[this.signatureArrayIndex].type == 'client') {
+        formData.append('type', 'client');
+      } else {
+        formData.append(
+          'type',
+          this.claimActors[this.signatureArrayIndex].role &&
+            this.claimActors[this.signatureArrayIndex].role[this.userRoleIndex]
+              .value
+        );
+      }
+
       const payload = {
         id: this.selectedClaimId,
         formData: formData
@@ -843,14 +848,15 @@ export default {
 
       this.signatureArrayIndex++;
 
-      if (this.signatureArrayIndex < this.claimActors.length) {
+      if (this.signatureArrayIndex < this.signActor.length) {
         this.onClickNextButton();
       }
       // in last signature we will close all the popups
-      if (this.signatureArrayIndex == this.claimActors.length) {
+      if (this.signatureArrayIndex == this.signActor.length) {
         this.signDocumentDialog = false;
         this.appSignDocumentDailog = false;
         this.foldersAndFilesOptions = false;
+        this.claimActors = [];
       }
     },
     removeEmail() {
