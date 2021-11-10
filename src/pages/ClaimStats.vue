@@ -2,8 +2,8 @@
   <q-page class="q-px-md q-py-md mobile-container-page listing-height">
     <q-card style="border-radius: 20px 20px 20px 20px;">
       <q-card-section class="row bg-primary ">
-        <div class="col-3" @click="onOpenClaimsClick">
-          <div class="my-card ">
+        <div class="col-3 q-px-sm" @click="onOpenClaimsClick">
+          <div class="my-card q-py-xs">
             <p class="text-primary card-text">
               {{ claimStatic.open ? claimStatic.open : '0' }}
             </p>
@@ -14,16 +14,16 @@
           </p>
         </div>
 
-        <div class="col-3" @click="onClickClaimRecentActivity">
-          <div class="my-card">
+        <div class="col-3 q-px-sm" @click="onClickClaimRecentActivity">
+          <div class="my-card q-py-xs">
             <p class="card-text text-primary">
               {{ claimStatic.recentUpdated ? claimStatic.recentUpdated : '0' }}
             </p>
           </div>
           <p class="text"><small>Claims with recent activity</small></p>
         </div>
-        <div v-if="isClickable" class="col-3" @click="onClientsClick">
-          <div class="my-card">
+        <div v-if="isClickable" class="q-px-sm col-3" @click="onClientsClick">
+          <div class="my-card q-py-xs">
             <p class="card-text text-primary">
               {{ clientStatic.active ? clientStatic.active : '0' }}
             </p>
@@ -31,16 +31,16 @@
           <p class="text"><small>Clients</small></p>
         </div>
 
-        <div v-else class="col-3">
-          <div class="my-card">
+        <div v-else class="col-3 q-px-sm">
+          <div class="my-card q-py-xs">
             <p class="card-text text-primary">
               {{ clientStatic.active ? clientStatic.active : '0' }}
             </p>
           </div>
           <p class="text"><small>Clients</small></p>
         </div>
-        <div v-if="isClickable" class="col-3" @click="onOpenClientsClick">
-          <div class="my-card">
+        <div v-if="isClickable" class="col-3 q-px-sm" @click="onOpenClientsClick">
+          <div class="my-card q-py-xs">
             <p class="card-text text-primary">
               {{
                 clientStatic && clientStatic.openClaims
@@ -51,8 +51,8 @@
           </div>
           <p class="text"><small>Clients with Open Claims</small></p>
         </div>
-        <div v-else class="col-3">
-          <div class="my-card">
+        <div v-else class="col-3 q-px-sm">
+          <div class="my-card q-py-xs">
             <p class="card-text text-primary">
               {{
                 clientStatic && clientStatic.openClaims
@@ -66,27 +66,27 @@
       </q-card-section>
     </q-card>
     <div class="q-mt-sm">
-      <div class="q-pa-sm">
-        <span>New Claims/Clients & Leads</span>
-        <span class="float-right">Last 7 days</span>
+      <div class="q-px-sm q-pt-sm">
+        <span class='text-caption'>New Claims/Clients & Leads</span>
+        <span class="float-right text-caption">Last 7 days</span>
       </div>
       <div class="row justify-between">
-        <q-card class="col-5 bg-primary rounded">
-          <div class="q-pa-md row cursor-pointer" @click="onClickNewClaims">
-            <span class="text-white text-bold col-7"
+        <q-card class="col bg-primary rounded q-mr-sm">
+          <div class="q-pa-sm row cursor-pointer" @click="onClickNewClaims">
+            <span class="text-white text-bold text-subtitle1 col-8 q-pl-xs"
               ><small>New Claims</small></span
             >
-            <span class="text-center col-5 text-bold q-pl-sm rounded bg-white">
+            <span class="text-center text-primary col-4 text-bold rounded bg-white q-pa-xs">
               {{ claimStatic.new ? claimStatic.new : '0' }}</span
             >
           </div>
         </q-card>
-        <q-card class="col-5 bg-primary rounded ">
-          <div class="cursor-pointer q-pa-md row" @click="onClickNewLead">
-            <span class="text-white text-bold col-7"
+        <q-card class="col bg-primary rounded ">
+          <div class="cursor-pointer q-pa-sm row" @click="onClickNewLead">
+            <span class="text-white text-bold text-subtitle1 col-8 q-pl-xs"
               ><small>New Leads</small></span
             >
-            <span class="col-5 text-bold q-pl-sm text-center rounded bg-white">
+            <span class="col-4 text-bold text-primary q-pa-xs q-pl-sm text-center rounded bg-white">
               {{ leadStatic.new ? leadStatic.new : '0' }}</span
             >
           </div>
@@ -94,13 +94,13 @@
       </div>
     </div>
     <div class=" q-mt-sm">
-      <div class="q-pa-sm">
-        <span>Claims Watch List</span>
-        <span class="float-right">See all</span>
+      <div class="q-px-sm q-pt-sm ">
+        <span class='text-caption'>Claims Watch List</span>
+        <span class="text-caption float-right">See all</span>
       </div>
-      <div class="claim-list-scrollable" v-if="claims.length > 0">
+      <div class="claim-list-scrollable q-mx-xs q-mb-xs" v-if="claims.length > 0">
         <q-card
-          class="q-mt-sm cursor-pointer"
+          class="q-mt-xs cursor-pointer"
           v-for="claim in claims"
           @click="openClaimDetail(claim)"
         >
@@ -282,13 +282,8 @@ export default {
 <style>
 .my-card {
   display: flex;
-  /* background-color: #1b2854; */
   background-color: #ffffff;
-  height: 3rem;
-  width: 4rem;
-  margin: auto;
-  /* border-radius: 10px; */
-  border-radius: 20px 20px 20px 20px;
+  border-radius: 13px 13px 13px 13px;
 }
 .card-text {
   color: #ffffff;
@@ -301,13 +296,10 @@ export default {
   text-align: center;
   margin: 5px auto 0 auto;
   line-height: 10px;
-  max-width: 80%;
   color: white;
   font-weight: bold;
 }
 .claim-list-scrollable {
-  margin: 4px, 4px;
-  padding: 4px;
   height: calc(100vh - 350px);
   overflow-x: hidden;
   overflow-y: auto;

@@ -38,15 +38,7 @@
               $route.name != 'offline-claim'
           "
         >
-          <div class="dot" v-if="checkUserRoleType() == false">
-            <q-icon
-              class="q-pa-md"
-              name="add"
-              size="sm"
-              color="white"
-              @click="onClickAddUpIcon"
-            />
-          </div>
+        <q-btn unelevated round color="primary" icon="add" size="1.2em" v-if="checkUserRoleType() == false"  @click="onClickAddUpIcon" />
         </q-page-sticky>
       </div>
       <q-dialog
@@ -146,13 +138,7 @@ export default {
 .icon-width {
   width: 100px;
 }
-.dot {
-  height: 55px;
-  width: 55px;
-  background-color: $primary;
-  border-radius: 50%;
-  display: inline-block;
-}
+
 .card {
   max-width: 100%;
   height: 40px;
