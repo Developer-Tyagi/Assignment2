@@ -810,19 +810,12 @@ export default {
     ]),
     ...mapMutations(['setLoading', 'setNotification']),
     onClickNextButton() {
-      console.log(this.claimActors, '65');
-      console.log(
-        this.claimActors[this.signatureArrayIndex].role == undefined,
-        'ss'
-      );
       if (this.index < this.claimActors.length) {
         this.signaturePadDialog = true;
-        console.log('abhishek');
+
         if (this.claimActors[this.signatureArrayIndex].role == undefined) {
-          console.log('if');
           this.userName = 'Client Signature';
         } else {
-          console.log('else');
           this.userName =
             this.claimActors[this.signatureArrayIndex].role[this.userRoleIndex]
               .value +
@@ -844,14 +837,20 @@ export default {
         id: this.selectedClaimId,
         formData: formData
       };
-      console.log(payload, 'in page');
+
       await this.uploadClaimDocument(payload);
       this.signaturePadDialog = false;
 
       this.signatureArrayIndex++;
 
-      if (this.index < this.claimActors.length) {
+      if (this.signatureArrayIndex < this.claimActors.length) {
         this.onClickNextButton();
+      }
+      // in last signature we will close all the popups
+      if (this.signatureArrayIndex == this.claimActors.length) {
+        this.signDocumentDialog = false;
+        this.appSignDocumentDailog = false;
+        this.foldersAndFilesOptions = false;
       }
     },
     removeEmail() {
