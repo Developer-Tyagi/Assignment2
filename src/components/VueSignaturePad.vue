@@ -16,7 +16,7 @@
     <div class="q-mt-md">
       <div class="row q-gutter-md justify-center">
         <q-btn
-          v-if="finalSignature != false"
+          v-if="finalSignature != false && skipButton == false"
           class="col-2"
           label="Skip"
           @click="skip"
@@ -39,6 +39,9 @@ export default {
   name: 'MySignaturePad',
   props: {
     finalSignature: {
+      type: Boolean
+    },
+    skipButton: {
       type: Boolean
     }
   },

@@ -640,13 +640,13 @@
             <div class="column q-mt-sm">
               <span style="font-weight: normal">{{ actor.name }} </span>
               <div v-for="(role, index) in actor.role">
-                <q-badge rounded>
+                <div class="text-bold">
                   <span>{{ role.value ? role.value : '' }}</span>
-                </q-badge>
+                </div>
               </div>
-              <q-badge color="primary" v-if="!actor.role" rounded>
+              <div color="primary" v-if="!actor.role" class="text-bold">
                 <span>{{ actor.type ? actor.type : '' }}</span>
-              </q-badge>
+              </div>
             </div>
             <div class="flex q-ml-auto">
               <q-checkbox
@@ -658,14 +658,14 @@
             </div>
           </div>
         </div>
-
-        <q-btn
-          label="Next"
-          class="column items-center"
-          color="primary"
-          size="sm"
-          @click="onClickNextButton"
-        />
+        <div class="column items-center">
+          <q-btn
+            label="Next"
+            color="primary"
+            size="sm"
+            @click="onClickNextButton"
+          />
+        </div>
       </q-card>
     </q-dialog>
 
@@ -685,6 +685,7 @@
         <VueSignaturePad
           @signData="signatureSubmit"
           :finalSignature="finalSignature"
+          :skipButton="true"
         />
       </q-card>
     </q-dialog>
@@ -810,16 +811,24 @@ export default {
     ...mapMutations(['setLoading', 'setNotification']),
     onClickNextButton() {
       console.log(this.claimActors, '65');
+      console.log(
+        this.claimActors[this.signatureArrayIndex].role == undefined,
+        'ss'
+      );
       if (this.index < this.claimActors.length) {
-        console.log(this.userName, 'uss');
-
-        // this.userName =
-        //   this.claimActors[this.signatureArrayIndex]?.role[this.userRoleIndex]
-        //     .value +
-        //   ' ' +
-        //   'Signature';
-        this.userName = 'SIgn';
         this.signaturePadDialog = true;
+        console.log('abhishek');
+        if (this.claimActors[this.signatureArrayIndex].role == undefined) {
+          console.log('if');
+          this.userName = 'Client Signature';
+        } else {
+          console.log('else');
+          this.userName =
+            this.claimActors[this.signatureArrayIndex].role[this.userRoleIndex]
+              .value +
+            ' ' +
+            'Signature';
+        }
       }
     },
     async signatureSubmit(data) {
@@ -838,21 +847,12 @@ export default {
       console.log(payload, 'in page');
       await this.uploadClaimDocument(payload);
       this.signaturePadDialog = false;
-      // this.claimActors.splice(0, 1);
 
       this.signatureArrayIndex++;
-      //
 
       if (this.index < this.claimActors.length) {
         this.onClickNextButton();
-        console.log('hello');
       }
-
-      // this.userName = this.claimActors[1].type + '' + 'Signature';
-      // this.signaturePadDialog = true;
-      // this.signaturePadDialog = false;
-      // this.userName = this.claimActors[2].type + '' + 'Signature';
-      // this.signaturePadDialog = true;
     },
     removeEmail() {
       this.emails.pop();
