@@ -658,12 +658,13 @@
             </div>
           </div>
         </div>
+
         <q-btn
           label="Next"
-          class="q-ma-sm"
+          class="column items-center"
           color="primary"
           size="sm"
-          @click="signaturePadDialog = true"
+          @click="onClickNextButton"
         />
       </q-card>
     </q-dialog>
@@ -681,7 +682,10 @@
           @closeDialog="signaturePadDialog = false"
         />
 
-        <VueSignaturePad @signData="signatureData" />
+        <VueSignaturePad
+          @signData="signatureSubmit"
+          :finalSignature="finalSignature"
+        />
       </q-card>
     </q-dialog>
   </div>
@@ -693,7 +697,7 @@ import request from '@api';
 import { jsPDF } from 'jspdf';
 import { Plugins, CameraResultType, CameraDirection } from '@capacitor/core';
 import DeleteAlert from 'components/DeleteAlert';
-
+import VueSignaturePad from 'components/VueSignaturePad';
 const { Camera } = Plugins;
 import CustomBar from 'components/CustomBar';
 import { setNotification } from 'src/store/common/mutations';
@@ -703,11 +707,14 @@ import localDB, { getCollection } from '@services/dexie';
 
 export default {
   name: 'FileManager',
-  components: { DeleteAlert, CustomBar },
+  components: { DeleteAlert, CustomBar, VueSignaturePad },
   props: ['directoryId', 'generateClaimDocument'],
 
   data() {
     return {
+      signatureArrayIndex: 0,
+      userRoleIndex: 0,
+      finalSignature: true,
       userName: '',
       appSignDocumentDailog: false,
       signaturePadDialog: false,
@@ -797,11 +804,55 @@ export default {
       'getTemplates',
       'getAllActorToClaim',
       'signDocuments',
-      'getSignedDocument'
+      'getSignedDocument',
+      'uploadClaimDocument'
     ]),
     ...mapMutations(['setLoading', 'setNotification']),
-    async signatureData(data) {
-      console.log(data);
+    onClickNextButton() {
+      console.log(this.claimActors, '65');
+      if (this.index < this.claimActors.length) {
+        console.log(this.userName, 'uss');
+
+        // this.userName =
+        //   this.claimActors[this.signatureArrayIndex]?.role[this.userRoleIndex]
+        //     .value +
+        //   ' ' +
+        //   'Signature';
+        this.userName = 'SIgn';
+        this.signaturePadDialog = true;
+      }
+    },
+    async signatureSubmit(data) {
+      const formData = new FormData();
+      formData.append('file', this.dataURItoBlob(data));
+      formData.append(
+        'type',
+        this.claimActors[this.signatureArrayIndex].role &&
+          this.claimActors[this.signatureArrayIndex].role[this.userRoleIndex]
+            .value
+      );
+      const payload = {
+        id: this.selectedClaimId,
+        formData: formData
+      };
+      console.log(payload, 'in page');
+      await this.uploadClaimDocument(payload);
+      this.signaturePadDialog = false;
+      // this.claimActors.splice(0, 1);
+
+      this.signatureArrayIndex++;
+      //
+
+      if (this.index < this.claimActors.length) {
+        this.onClickNextButton();
+        console.log('hello');
+      }
+
+      // this.userName = this.claimActors[1].type + '' + 'Signature';
+      // this.signaturePadDialog = true;
+      // this.signaturePadDialog = false;
+      // this.userName = this.claimActors[2].type + '' + 'Signature';
+      // this.signaturePadDialog = true;
     },
     removeEmail() {
       this.emails.pop();
@@ -840,6 +891,7 @@ export default {
           role: this.actors[index].roles
         });
       }
+
       if (
         !response.attributes.status ||
         response.attributes.status == 'completed'
