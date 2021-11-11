@@ -55,7 +55,7 @@ review_deploy:
     - kubectl apply -f k8s/dev/crd-spec.yaml --namespace ${KUBE_NAMESPACE}
   environment:
     name: review/$CI_COMMIT_REF_NAME
-    url: https://claimguru-ui-${CI_MERGE_REQUEST_IID}.app.claimguru.cilalabs.dev
+    url: https://app-${CI_MERGE_REQUEST_IID}.claimguru.cilalabs.dev
     on_stop: review_cleanup
   tags:
     - pre-production
@@ -178,7 +178,7 @@ demo_deploy:
     - kubectl apply -f k8s/demo/crd-spec.yaml --namespace ${KUBE_NAMESPACE}
   environment:
     name: demo
-    url: https://demo.app.claimguru.cilalabs.dev
+    url: https://app-demo.claimguru.cilalabs.dev
   tags:
     - pre-production
   only:
