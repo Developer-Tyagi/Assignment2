@@ -810,17 +810,22 @@ export default {
     ]),
     ...mapMutations(['setLoading', 'setNotification']),
     onClickNextButton() {
+      console.log(this.signActor, 'ggg');
       if (this.index < this.signActor.length) {
         this.signaturePadDialog = true;
 
         if (this.signActor[this.signatureArrayIndex].type == 'client') {
           this.userName = 'Client Signature';
+          console.log(this.userName, 'aaaa');
         } else {
+          console.log(this.signActor[this.signatureArrayIndex], 'sign else');
+
           this.userName =
+            this.signActor[this.signatureArrayIndex].role &&
             this.signActor[this.signatureArrayIndex].role[this.userRoleIndex]
               .value +
-            ' ' +
-            'Signature';
+              ' ' +
+              'Signature';
         }
       }
     },
@@ -872,10 +877,12 @@ export default {
       }
     },
     setClaimActors(actor) {
+      console.log(actor, 'actor');
       this.signActor.push({
         id: actor.id,
         name: actor.name,
-        type: actor.type
+        type: actor.type,
+        role: actor.role && actor.role[0] ? actor.role[0] : ''
       });
     },
 
