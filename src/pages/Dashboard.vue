@@ -321,7 +321,8 @@ export default {
     this.getAllUsers('hideLoader');
     this.getPaidUsers('hideLoader');
     this.getMortgages('hideLoader');
-
+    this.getOfficeTaskActions('hideLoader');
+    this.getRoles('hideLoader');
     this.getEstimators(this.estimatorParams);
     let params = {
       limit: 0,
@@ -340,6 +341,8 @@ export default {
   },
   methods: {
     ...mapActions([
+      'getRoles',
+      'getOfficeTaskActions',
       'getEstimators',
       'getMortgages',
       'getPropertyTypes',

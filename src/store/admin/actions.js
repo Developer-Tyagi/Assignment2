@@ -154,13 +154,17 @@ export async function getWorkflowAction({ commit, dispatch }) {
   }
 }
 
-export async function getOfficeTaskActions({
-  rootState: {
-    common: { isOnline }
+export async function getOfficeTaskActions(
+  {
+    rootState: {
+      common: { isOnline }
+    },
+    commit,
+    dispatch
   },
-  commit,
-  dispatch
-}) {
+  params
+) {
+  params == 'hideLoader' ? ' ' : dispatch('setLoading', true);
   if (isOnline) {
     dispatch('setLoading', true);
     try {
