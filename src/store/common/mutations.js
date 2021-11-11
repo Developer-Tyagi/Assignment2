@@ -178,6 +178,11 @@ export async function setNotificationRouteTo(state, route) {
 export async function setCameraIcon(state, toShowCamera) {
   state.toShowCamera = toShowCamera;
 }
+
+//this function is used to check if the routing is done from Lead-Dashboard page of Main Dashboard page. If this is routing from Lead-Dashboard Page then we update `routeFromLeadDashboard` as true, and it become false again when we move back to Main-dashboard page
+export async function leadDashboardRoute(state, isLeadDashboard) {
+  state.routeFromLeadDashboad = isLeadDashboard;
+}
 // this function is used for getting a paid user data.
 export function setPaidUsers(state, data) {
   state.paidUsers = data.map(allUser => ({

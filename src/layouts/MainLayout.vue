@@ -1,10 +1,7 @@
 <template>
   <q-layout view="lhr lpR lfr">
     <CustomHeader @backButton="onBackButtonClick" />
-    <div
-      class="text-black
-    "
-    ></div>
+    <div class="text-black"></div>
 
     <q-page-container>
       <router-view />
@@ -14,28 +11,28 @@
           :offset="[30, 18]"
           v-if="
             $route.name != 'add new leads' &&
-              $route.name != 'create client' &&
-              $route.name != 'edit  lead' &&
-              $route.name != 'vendors' &&
-              $route.name != 'configuration  ' &&
-              $route.name != 'manage users' &&
-              $route.name != 'admin' &&
-              $route.name != 'reports' &&
-              $route.name != 'signup' &&
-              $route.name != 'set-password' &&
-              $route.name != 'payment' &&
-              $route.name != 'loss info' &&
-              $route.name != 'Documents' &&
-              $route.name != 'properties and claims ' &&
-              $route.name != 'notes' &&
-              $route.name != 'Company Personnel' &&
-              $route.name != 'add new lead' &&
-              $route.name != 'lead details' &&
-              $route.name != 'Leads' &&
-              $route.name != 'claim details' &&
-              $route.name != 'dashboard' &&
-              $route.name != 'Add Claim' &&
-              $route.name != 'offline-claim'
+            $route.name != 'create client' &&
+            $route.name != 'edit  lead' &&
+            $route.name != 'vendors' &&
+            $route.name != 'configuration  ' &&
+            $route.name != 'manage users' &&
+            $route.name != 'admin' &&
+            $route.name != 'reports' &&
+            $route.name != 'signup' &&
+            $route.name != 'set-password' &&
+            $route.name != 'payment' &&
+            $route.name != 'loss info' &&
+            $route.name != 'Documents' &&
+            $route.name != 'properties and claims ' &&
+            $route.name != 'notes' &&
+            $route.name != 'Company Personnel' &&
+            $route.name != 'add new lead' &&
+            $route.name != 'lead details' &&
+            $route.name != 'Leads' &&
+            $route.name != 'claim details' &&
+            $route.name != 'dashboard' &&
+            $route.name != 'Add Claim' &&
+            $route.name != 'offline-claim'
           "
         >
         <q-btn unelevated round color="primary" icon="add" size="1.2em" v-if="checkUserRoleType() == false"  @click="onClickAddUpIcon" />
@@ -56,7 +53,7 @@
 <script>
 import CustomHeader from 'components/CustomHeader';
 import { getCurrentUser } from '@utils/auth';
-import { mapGetters, mapMutations } from 'vuex';
+import { mapGetters, mapMutations, mapActions } from 'vuex';
 import AddOptions from 'components/AddOptions';
 export default {
   name: 'MainLayout',
@@ -65,10 +62,16 @@ export default {
     return { openDialog: false };
   },
   computed: {
-    ...mapGetters(['isEdit'])
+    ...mapGetters(['isEdit', 'routeFromLeadDashboad'])
   },
   methods: {
-    ...mapMutations(['isLastRouteEdit', 'setCameraIcon']), //'setCameraIcon' is a function which check weather we need to show the camera Icon on Vendor Document Page  or Not , It return True when we redirect from the
+    ...mapActions(['getActiveLeadsList', 'getArchivedLeadsList']),
+    ...mapMutations([
+      'isLastRouteEdit',
+      'setCameraIcon',
+      'leadDashboardRoute',
+      'setConvertedLead'
+    ]), //'setCameraIcon' is a function which check weather we need to show the camera Icon on Vendor Document Page  or Not , It return True when we redirect from the
     //the camera option  in dashboard page and it is false when we redirect from scan and upload option
 
     checkUserRoleType() {
@@ -92,11 +95,24 @@ export default {
         case 'claims':
         case 'mortgages':
         case 'add-client':
+        case 'leads-dashboard':
         case 'carriers':
           this.$router.push('/dashboard');
           break;
         case 'leads':
+          if (this.routeFromLeadDashboad == 'true') {
+            this.$router.push('/leads-dashboard');
+            this.leadDashboardRoute('false');
+            break;
+          } else {
+            this.$router.push('/dashboard');
+            break;
+          }
+          break;
         case 'add-lead':
+          this.$router.go(-1);
+          break;
+        case 'lead-details':
           this.$router.go(-1);
           break;
         case 'mortgage-details':

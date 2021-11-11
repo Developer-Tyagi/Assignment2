@@ -20,3 +20,4 @@ export const isOfflineClientEdit = state => state.isOfflineClientEdit;
 export const notificationRouteTo = state => state.notificationRouteTo;
 export const toShowCamera = state => state.toShowCamera;
 export const paidUsers = state => state.paidUsers;
+export const routeFromLeadDashboad = state => state.routeFromLeadDashboad;
