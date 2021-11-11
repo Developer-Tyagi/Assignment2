@@ -355,44 +355,6 @@
         </div>
       </div>
     </div>
-
-    <q-card class="q-pa-sm q-mt-sm">
-      <div class="full-width">
-        <q-select
-          borderless
-          class="input-style input-field  "
-          v-model="contractInfo.reasonForCancellation"
-          :options="reasonForCancellation"
-          label="Reason For Cancellation"
-          options-dense
-          :disable="isOfflineClientEdit"
-        ></q-select>
-      </div>
-      <div class="q-mt-md">
-        <span class="form-heading">Reason For Cancellation</span>
-      </div>
-      <div class="floating-label">
-        <q-input
-          type="textarea"
-          v-if="!isOfflineClientEdit"
-          rows="5"
-          borderless
-          class="required input-style  full-width"
-          v-model="contractInfo.reasonForCancellationText"
-          style="resize: none"
-        />
-        <q-input
-          type="textarea"
-          v-if="isOfflineClientEdit"
-          rows="5"
-          disabled
-          borderless
-          class="required input-style full-width"
-          v-model="contractInfo.reasonForCancellationText"
-          style="resize: none"
-        />
-      </div>
-    </q-card>
   </div>
 </template>
 <script>
@@ -423,14 +385,7 @@ export default {
     return {
       clientOptions: [],
       sourceOfClaim: [],
-      constants: constants,
-      reasonForCancellation: [
-        'Client Cancelled',
-        'Insufficient Coverage',
-        'Loss to small',
-        'No coverage',
-        'Other'
-      ]
+      constants: constants
     };
   },
 

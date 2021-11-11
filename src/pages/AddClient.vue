@@ -1183,7 +1183,7 @@ export default {
         vendorDialogFilterByIndustry: '',
         showVendorDialogFilters: false,
         addVendorDialog: false,
-        reasonForCancellation: '',
+
         vendorDialogName: '',
 
         sourceDetails: {
@@ -1201,7 +1201,7 @@ export default {
         claimFeeRate: '',
         time: '',
         cancelledToggle: false,
-        reasonForCancellationText: '',
+
         buttonGroup: 'dollar'
       },
       companyPersonnel: {
@@ -1987,14 +1987,6 @@ export default {
           .isCancelled
           ? this.selectedClaim.status.isCancelled
           : false;
-        this.contractInfo.reasonForCancellation = this.selectedClaim.status
-          .reason.type
-          ? this.selectedClaim.status.reason.type
-          : '';
-        this.contractInfo.reasonForCancellationText = this.selectedClaim.status
-          .reason.value
-          ? this.selectedClaim.status.reason.value
-          : '';
       }
 
       //Company Personnal stepper data pre-filling
@@ -2733,11 +2725,7 @@ export default {
             }
           },
           status: {
-            isCancelled: this.contractInfo.cancelledToggle,
-            reason: {
-              type: this.contractInfo.reasonForCancellation,
-              value: this.contractInfo.reasonForCancellationText
-            }
+            isCancelled: this.contractInfo.cancelledToggle
           },
           expertVendorInformation: {
             isHiredVendor: this.expertVendorInfo.isAlreadyHiredVendor,
