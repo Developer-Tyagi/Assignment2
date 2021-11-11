@@ -634,6 +634,12 @@ export default {
         this.user.plan.id = this.plans[index].id;
         this.user.plan.name = this.plans[index].name;
         this.user.plan.machineValue = this.plans[index].machineValue;
+        if (this.$route.query.coupon) {
+          this.user.plan.coupon = this.$route.query.coupon;
+        }
+        if (this.$route.query.trial) {
+          this.user.plan.trial = this.$route.query.trial;
+        }
       }
     },
 
@@ -651,6 +657,12 @@ export default {
         this.user.plan.id = this.plans[index].id;
         this.user.plan.name = this.plans[index].name;
         this.user.plan.machineValue = this.plans[index].machineValue;
+        if (this.$route.query.coupon) {
+          this.user.plan.coupon = this.$route.query.coupon;
+        }
+        if (this.$route.query.trial) {
+          this.user.plan.trial = this.$route.query.trial;
+        }
       }
     },
 
@@ -735,7 +747,6 @@ export default {
 
     onSubmit() {
       this.$refs.billingInfo.validate();
-
       this.createUserForOrganization(this.user).then(res => {
         if (!res) {
           this.$refs.card.clearCard();
@@ -771,11 +782,18 @@ export default {
       const index = this.plans.findIndex(
         o => o.machineValue === this.$route.query.plan
       );
+
       if (index > -1) {
         this.plan = index + 1;
         this.user.plan.id = this.plans[index].id;
         this.user.plan.name = this.plans[index].name;
         this.user.plan.machineValue = this.plans[index].machineValue;
+        if (this.$route.query.coupon) {
+          this.user.plan.coupon = this.$route.query.coupon;
+        }
+        if (this.$route.query.trial) {
+          this.user.plan.trial = this.$route.query.trial;
+        }
       } else {
         this.isValidPlan = false;
       }
