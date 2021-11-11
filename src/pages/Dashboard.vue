@@ -10,8 +10,9 @@
         q-px-sm q-pt-sm
         justify-between
         cardHeight
+        q-pb-lg
       "
-      style="border-radius: 0 0 90px 90px"
+      style="border-radius: 0 0 40px 40px"
     >
       <div class="row col-4 justify-around">
         <div
@@ -143,38 +144,37 @@
     <!-- footer -->
     <div class="row justify-center footer-shadow"></div>
     <div
-      class="row justify-between q-py-sm q-px-md"
+      class="row justify-between q-px-md q-pt-xs"
       style="background-color: #8f8f8f"
     >
-      <div col-3 class="column">
+      <div class="col-3 column">
         <img
+          class="col"
           src="~assets/Profile.svg"
-          style="width: 100%"
           @click="$router.push('/edit-profile')"
         />
-        <div class="text-center text-white">PROFILE</div>
+        <div class="col text-center text-white text-caption">PROFILE</div>
       </div>
-      <div @click="$router.push('/reports')" class="column items-center">
-        <img src="~assets/report_dashboard_icon.svg" style="width: 80%" />
+      <div @click="$router.push('/reports')" class="col-3 column ">
+        <img class="col" src="~assets/report_dashboard_icon.svg" />
 
-        <div class="text-center text-white">REPORTS</div>
+        <div class="col text-center text-white text-caption">REPORTS</div>
       </div>
-      <div class="column">
+      <div class="col-3 column">
         <img
-          class="q-mx-md"
+          class="col "
           src="~assets/STATS.svg"
-          style="width: 68%"
           @click="$router.push('/claimstats')"
         />
-        <div class="text-center text-white">CLAIMS STATS</div>
+        <div class="col text-center  text-white text-caption">CLAIMS STATS</div>
       </div>
-      <div class="column">
+      <div class="col-3 column">
         <img
+          class="col"
           src="~assets/dashboardAdd.svg"
-          style="width: 100%"
           @click="onClickAddUpIcon()"
         />
-        <div class="text-center text-white">ADD</div>
+        <div class="col text-center text-white text-caption">ADD</div>
       </div>
     </div>
 
@@ -539,7 +539,7 @@ export default {
 
 @media only screen and (min-height: 700px) {
   .cardHeight {
-    height: 72vh;
+    height: 74.2vh;
   }
   .gridRow {
     margin-bottom: 24px;
