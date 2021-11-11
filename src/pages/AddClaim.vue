@@ -964,8 +964,7 @@ export default {
           id: '',
           machineValue: ''
         },
-        deadlineDate: '',
-        recovDeadline: '',
+
         nameOfEmergency: '',
         descriptionDwelling: '',
         damageDescription: '',
@@ -1023,8 +1022,7 @@ export default {
         lossOfUSD: '',
         deprecation: '',
         deductible: '',
-        priorPayment: '',
-        reasonsOfLD: ''
+        priorPayment: ''
       },
 
       estimatingInfo: {
@@ -1093,7 +1091,7 @@ export default {
     // this.getSingleClientDetails(this.selectedClientId);
     // this.getSingleClientProperty(this.selectedClientId);
     this.contractInfo.time = date.formatDate(Date.now(), 'HH:mm:ss:aa');
-    this.companyPersonnel.startDate = this.companyPersonnel.endDate = this.contractInfo.firstContractDate = this.contractInfo.contractDate = this.insuranceDetails.policyEffectiveDate = this.insuranceDetails.policyExpireDate = this.lossInfo.dateOfLoss = this.lossInfo.deadlineDate = this.lossInfo.recovDeadline = date.formatDate(
+    this.companyPersonnel.startDate = this.companyPersonnel.endDate = this.contractInfo.firstContractDate = this.contractInfo.contractDate = this.insuranceDetails.policyEffectiveDate = this.insuranceDetails.policyExpireDate = this.lossInfo.dateOfLoss = date.formatDate(
       Date.now(),
       'MM/DD/YYYY'
     );
@@ -1496,7 +1494,7 @@ export default {
           priorPayment: this.insuranceDetails.priorPayment
             ? this.insuranceDetails.priorPayment
             : 0,
-          limitReason: this.insuranceDetails.reasonsOfLD,
+
           declaration: {
             isDeclared: true,
             fileInfo: {
@@ -1521,8 +1519,7 @@ export default {
           cause: this.lossInfo.causeOfLoss.value
             ? this.lossInfo.causeOfLoss
             : null,
-          deadlineDate: dateToSend(this.lossInfo.deadlineDate),
-          recovDDDate: dateToSend(this.lossInfo.recovDeadline),
+
           isFEMA: this.lossInfo.femaClaimToggle,
           isEmergency: this.lossInfo.isStateOfEmergencyToggle,
           emergencyName: this.lossInfo.nameOfEmergency,

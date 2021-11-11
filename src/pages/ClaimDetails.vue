@@ -227,17 +227,8 @@
           </q-card>
         </q-expansion-item>
 
-        <q-separator></q-separator>
-        <q-expansion-item
-          group="claimGroup"
-          label="MatterPort"
-          header-class="text-primary"
-        >
-          <q-card>
-            <!-- <q-card-section> <ClaimEstimatingInfo /> </q-card-section> -->
-            <!-- <q-card-section> <PropertyInfo /> </q-card-section> -->
-          </q-card>
-        </q-expansion-item>
+        <!-- <q-card-section> <ClaimEstimatingInfo /> </q-card-section> -->
+        <!-- <q-card-section> <PropertyInfo /> </q-card-section> -->
 
         <q-separator></q-separator>
         <q-expansion-item

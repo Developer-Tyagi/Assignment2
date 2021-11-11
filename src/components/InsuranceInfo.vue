@@ -476,28 +476,6 @@
           </div>
         </div>
       </q-card>
-      <q-card class="q-pa-md q-mt-sm">
-        <span class="form-heading q-ml-xs">Reason for Limits/Denial</span>
-        <div class="floating-label">
-          <q-input
-            type="textarea"
-            borderless
-            class="required input-style full-width"
-            v-if="!isOfflineClientEdit"
-            rows="5"
-            v-model="insuranceDetails.reasonsOfLD"
-            style="resize: none"
-          ></q-input>
-          <textarea
-            v-if="isOfflineClientEdit"
-            disabled
-            rows="5"
-            class="full-width"
-            v-model="insuranceDetails.reasonsOfLD"
-            style="resize: none"
-          ></textarea>
-        </div>
-      </q-card>
     </div>
 
     <!-- Carrier List Dialog -->

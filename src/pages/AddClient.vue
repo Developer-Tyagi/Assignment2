@@ -1377,8 +1377,7 @@ export default {
           id: '',
           machineValue: ''
         },
-        deadlineDate: '',
-        recovDeadline: '',
+
         nameOfEmergency: '',
         descriptionDwelling: '',
         damageDescription: '',
@@ -1439,8 +1438,7 @@ export default {
         lossOfUSD: '',
         deprecation: '',
         deductible: '',
-        priorPayment: '',
-        reasonsOfLD: ''
+        priorPayment: ''
       },
 
       estimatingInfo: {
@@ -1778,10 +1776,6 @@ export default {
           .priorPayment
           ? this.selectedClaim.policyInfo.priorPayment
           : null;
-        this.insuranceDetails.reasonsOfLD = this.selectedClaim.policyInfo
-          .limitReason
-          ? this.selectedClaim.policyInfo.limitReason
-          : null;
       }
       // Loss Info Stepper pre-filling
       if (this.selectedClaim.lossInfo) {
@@ -1805,17 +1799,6 @@ export default {
             : null;
         }
 
-        this.lossInfo.deadlineDate = dateToShow(
-          this.selectedClaim.lossInfo.deadlineDate
-        )
-          ? dateToShow(this.selectedClaim.lossInfo.deadlineDate)
-          : '';
-
-        this.lossInfo.recovDeadline = dateToShow(
-          this.selectedClaim.lossInfo.recovDDDate
-        )
-          ? dateToShow(this.selectedClaim.lossInfo.recovDDDate)
-          : '';
         this.lossInfo.femaClaimToggle = this.selectedClaim.lossInfo.isFEMA
           ? this.selectedClaim.lossInfo.isFEMA
           : false;
@@ -2060,7 +2043,7 @@ export default {
     await this.getContactTypes();
     await this.getPropertyTypes();
 
-    this.companyPersonnel.startDate = this.companyPersonnel.endDate = this.contractInfo.contractDate = this.insuranceDetails.policyEffectiveDate = this.lossInfo.dateOfLoss = this.lossInfo.deadlineDate = this.lossInfo.recovDeadline = date.formatDate(
+    this.companyPersonnel.startDate = this.companyPersonnel.endDate = this.contractInfo.contractDate = this.insuranceDetails.policyEffectiveDate = this.lossInfo.dateOfLoss = date.formatDate(
       Date.now(),
       'MM/DD/YYYY'
     );
@@ -2668,7 +2651,6 @@ export default {
             priorPayment: this.insuranceDetails.priorPayment
               ? this.insuranceDetails.priorPayment
               : 0,
-            limitReason: this.insuranceDetails.reasonsOfLD,
             declaration: {
               isDeclared: true,
               fileInfo: {
@@ -2693,8 +2675,7 @@ export default {
             cause: this.lossInfo.causeOfLoss.value
               ? this.lossInfo.causeOfLoss
               : null,
-            deadlineDate: dateToSend(this.lossInfo.deadlineDate),
-            recovDDDate: dateToSend(this.lossInfo.recovDeadline),
+
             isFEMA: this.lossInfo.femaClaimToggle,
             isEmergency: this.lossInfo.isStateOfEmergencyToggle,
             emergencyName: this.lossInfo.nameOfEmergency,

@@ -27,7 +27,7 @@
       />
     </q-card>
 
-    <q-card class="q-ma-xs form-card q-pa-md">
+    <q-card class="q-ma-xs q-pa-md">
       <span class="form-heading q-ml-xs">Date of Loss</span>
 
       <div class="full-width">
@@ -68,7 +68,7 @@
       <q-select
         dense
         borderless
-        class="input-extra-padding input-style input-field"
+        class="input-style input-field"
         behavior="menu"
         v-model="lossInfo.causeOfLoss.value"
         option-value="name"
@@ -103,78 +103,6 @@
         :disable="isOfflineClientEdit"
       >
       </q-input>
-      <div class="q-mt-md">
-        <span class="form-heading q-ml-xs">Deadline Date</span>
-      </div>
-      <div class="full-width">
-        <q-input
-          dense
-          borderless
-          class="input-style input-field"
-          v-model="lossInfo.deadlineDate"
-          mask="##/##/####"
-          label="MM/DD/YYYY"
-          :disable="isOfflineClientEdit"
-        >
-          <template v-slot:append>
-            <q-icon
-              name="event"
-              size="sm"
-              color="primary"
-              class="cursor-pointer"
-            >
-              <q-popup-proxy
-                ref="qDateProxy3"
-                transition-show="scale"
-                transition-hide="scale"
-              >
-                <q-date
-                  v-model="lossInfo.deadlineDate"
-                  @input="() => $refs.qDateProxy3.hide()"
-                  mask="MM/DD/YYYY"
-                  :disable="isOfflineClientEdit"
-                ></q-date>
-              </q-popup-proxy>
-            </q-icon>
-          </template>
-        </q-input>
-      </div>
-      <br />
-      <span class="form-heading q-ml-xs">Recov. Deprec. Deadline</span>
-
-      <div class="full-width">
-        <q-input
-          dense
-          borderless
-          class="input-style input-field"
-          v-model="lossInfo.recovDeadline"
-          mask="##/##/####"
-          label="MM/DD/YYYY"
-          :disable="isOfflineClientEdit"
-        >
-          <template v-slot:append>
-            <q-icon
-              name="event"
-              size="sm"
-              color="primary"
-              class="cursor-pointer"
-            >
-              <q-popup-proxy
-                ref="qDateProxy4"
-                transition-show="scale"
-                transition-hide="scale"
-              >
-                <q-date
-                  v-model="lossInfo.recovDeadline"
-                  @input="() => $refs.qDateProxy4.hide()"
-                  mask="MM/DD/YYYY"
-                  :disable="isOfflineClientEdit"
-                ></q-date>
-              </q-popup-proxy>
-            </q-icon>
-          </template>
-        </q-input>
-      </div>
     </q-card>
     <q-card class="q-ma-xs q-pa-md">
       <div class="row justify-between">
