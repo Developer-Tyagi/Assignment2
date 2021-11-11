@@ -768,9 +768,9 @@ export default {
         vendorDialogFilterByIndustry: '',
         showVendorDialogFilters: false,
         addVendorDialog: false,
-        reasonForCancellation: '',
+
         vendorDialogName: '',
-        reasonForCancellation: [],
+
         sourceDetails: {
           id: '',
           type: '',
@@ -781,8 +781,6 @@ export default {
         claimFeeRate: '',
         time: '',
         cancelledToggle: false,
-
-        reasonForCancellationText: '',
 
         buttonGroup: 'dollar'
       },
