@@ -357,21 +357,6 @@
     </div>
 
     <q-card class="q-pa-sm q-mt-sm">
-      <span class="form-heading">Accept or Cancel Claim ?</span>
-      <p>
-        If this claim will not be accepted, you can mark the claim as being
-        "Cancelled",which will close the claim upon creation. This allows you to
-        record the client and property information in Claim Guru for historical
-        purposes.
-      </p>
-      <div class="row">
-        <p class="q-mx-none q-my-auto form-heading">Cancelled?</p>
-        <q-toggle
-          class="q-ml-auto"
-          v-model="contractInfo.cancelledToggle"
-          :disable="isOfflineClientEdit"
-        />
-      </div>
       <div class="full-width">
         <q-select
           borderless

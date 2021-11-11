@@ -198,30 +198,6 @@
     <div
       class="q-mt-md row"
       v-if="
-        lossInfo.attributes.lossInfo &&
-          lossInfo.attributes.lossInfo.deadlineDate
-      "
-    >
-      <div class="heading-light q-mt-none col-xs-4">Deadline Date:</div>
-      <div class="column q-ml-md">
-        {{ dateToShow(lossInfo.attributes.lossInfo.deadlineDate) }}
-      </div>
-    </div>
-
-    <div
-      class="q-mt-md row"
-      v-if="
-        lossInfo.attributes.lossInfo && lossInfo.attributes.lossInfo.recovDDDate
-      "
-    >
-      <div class="heading-light q-mt-none col-xs-4">Recovery Date:</div>
-      <div class="column q-ml-md">
-        {{ dateToShow(lossInfo.attributes.lossInfo.recovDDDate) }}
-      </div>
-    </div>
-    <div
-      class="q-mt-md row"
-      v-if="
         lossInfo.attributes.lossInfo && lossInfo.attributes.lossInfo.claimReason
       "
     >
@@ -310,8 +286,7 @@ export default {
           id: '',
           machineValue: ''
         },
-        deadlineDate: '',
-        recovDeadline: '',
+
         nameOfEmergency: '',
         descriptionDwelling: '',
         damageDescription: '',
@@ -404,8 +379,7 @@ export default {
             cause: this.lossDetails.causeOfLoss.value
               ? this.lossDetails.causeOfLoss
               : null,
-            deadlineDate: dateToSend(this.lossDetails.deadlineDate),
-            recovDDDate: dateToSend(this.lossDetails.recovDeadline),
+
             isFEMA: this.lossDetails.femaClaimToggle,
             isHabitable: this.lossDetails.isTheHomeHabitable,
             emergencyName: this.lossDetails.nameOfEmergency,
@@ -443,20 +417,10 @@ export default {
       if (this.lossInfo.attributes.lossInfo.claimReason) {
         this.lossDetails.reasonClaim = this.lossInfo.attributes.lossInfo.claimReason;
       }
-      if (this.lossInfo.attributes.lossInfo.deadlineDate) {
-        this.lossDetails.deadlineDate = dateToShow(
-          this.lossInfo.attributes.lossInfo.deadlineDate
-        );
-      }
 
       if (this.lossInfo.attributes.lossInfo.date) {
         this.lossDetails.dateOfLoss = dateToShow(
           this.lossInfo.attributes.lossInfo.date
-        );
-      }
-      if (this.lossInfo.attributes.lossInfo.recovDDDate) {
-        this.lossDetails.recovDeadline = dateToShow(
-          this.lossInfo.attributes.lossInfo.recovDDDate
         );
       }
 

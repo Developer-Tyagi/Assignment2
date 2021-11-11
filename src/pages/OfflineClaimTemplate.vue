@@ -370,18 +370,7 @@ export default {
           ? this.claim.lossInfo.cause?.desc
           : ''
       },
-      {
-        key: '{{localTZ .Claim.LossInfo.DeadlineDate}}',
-        value: this.claim.lossInfo?.deadlineDate
-          ? dateToShow(this.claim.lossInfo?.deadlineDate)
-          : ''
-      },
-      {
-        key: '{{localTZ .Claim.LossInfo.RecovDDDate}}',
-        value: this.claim.lossInfo?.recovDDDate
-          ? dateToShow(this.claim.lossInfo.recovDDDate)
-          : ''
-      },
+
       {
         key: '{{.Claim.LossInfo.IsFEMA}}',
         value: this.claim.lossInfo.isFEMA ? this.claim.lossInfo.isFEMA : ''

@@ -58,7 +58,7 @@
             <div
               v-if="
                 selectedClaimCarrier.carrier.address &&
-                selectedClaimCarrier.carrier.address.address2
+                  selectedClaimCarrier.carrier.address.address2
               "
             >
               {{ selectedClaimCarrier.carrier.address.address2 }}
@@ -973,8 +973,7 @@ export default {
         lossOfUSD: '',
         deprecation: '',
         deductible: '',
-        priorPayment: '',
-        reasonsOfLD: ''
+        priorPayment: ''
       }
     };
   },
@@ -1002,11 +1001,10 @@ export default {
   async created() {
     await this.getClaimCarrier(this.selectedClaimId);
     this.getPolicy(this.selectedClaimId);
-    this.insuranceDetails.policyEffectiveDate =
-      this.insuranceDetails.policyExpireDate = date.formatDate(
-        Date.now(),
-        'MM/DD/YYYY'
-      );
+    this.insuranceDetails.policyEffectiveDate = this.insuranceDetails.policyExpireDate = date.formatDate(
+      Date.now(),
+      'MM/DD/YYYY'
+    );
   },
   methods: {
     ...mapActions([
@@ -1105,10 +1103,12 @@ export default {
 
     onEditAdjustorPersonnel(index) {
       this.id = this.selectedClaimCarrier.carrier.personnel[index].id;
-      this.personnelID =
-        this.selectedClaimCarrier.carrier.personnel[index].personnelID;
-      const name =
-        this.selectedClaimCarrier.carrier.personnel[index].name.split(' ');
+      this.personnelID = this.selectedClaimCarrier.carrier.personnel[
+        index
+      ].personnelID;
+      const name = this.selectedClaimCarrier.carrier.personnel[
+        index
+      ].name.split(' ');
 
       this.editPersonnelDialog = true;
       this.$emit('editCarrierDialog', true);
@@ -1126,12 +1126,14 @@ export default {
         ? this.selectedClaimCarrier.carrier.personnel[index].phoneNumber
         : '';
       if (this.selectedClaimCarrier.carrier.personnel[index].address) {
-        this.editPersonnel.address =
-          this.selectedClaimCarrier.carrier.personnel[index].address;
+        this.editPersonnel.address = this.selectedClaimCarrier.carrier.personnel[
+          index
+        ].address;
       }
 
-      this.editPersonnel.notes =
-        this.selectedClaimCarrier.carrier.personnel[index].note;
+      this.editPersonnel.notes = this.selectedClaimCarrier.carrier.personnel[
+        index
+      ].note;
     },
 
     validateDate,
@@ -1147,12 +1149,10 @@ export default {
         .policyInfo.isForcedPlaced
         ? this.policy.policyInfo.isForcedPlaced
         : false;
-      this.insuranceDetails.hasAppraisalClause =
-        this.policy.policyInfo.hasAppraisalClause;
+      this.insuranceDetails.hasAppraisalClause = this.policy.policyInfo.hasAppraisalClause;
       this.insuranceDetails.totalAmount = this.policy.policyInfo.totalAmount;
       this.insuranceDetails.ordinance = this.policy.policyInfo.ordinance;
-      this.insuranceDetails.debrisRemoval =
-        this.policy.policyInfo.debrisRemoval;
+      this.insuranceDetails.debrisRemoval = this.policy.policyInfo.debrisRemoval;
       this.insuranceDetails.mold = this.policy.policyInfo.mold;
 
       this.insuranceDetails.businessInt = this.policy.policyInfo.businessInt;
@@ -1198,19 +1198,13 @@ export default {
         );
       }
 
-      this.insuranceDetails.dwellingLimitA =
-        this.policy.policyInfo.limitCoverage.dwelling;
-      this.insuranceDetails.contentsLimit =
-        this.policy.policyInfo.limitCoverage.content;
-      this.insuranceDetails.otherStructureB =
-        this.policy.policyInfo.limitCoverage.otherStructure;
-      this.insuranceDetails.lossOfUSD =
-        this.policy.policyInfo.limitCoverage.lossOfUse;
+      this.insuranceDetails.dwellingLimitA = this.policy.policyInfo.limitCoverage.dwelling;
+      this.insuranceDetails.contentsLimit = this.policy.policyInfo.limitCoverage.content;
+      this.insuranceDetails.otherStructureB = this.policy.policyInfo.limitCoverage.otherStructure;
+      this.insuranceDetails.lossOfUSD = this.policy.policyInfo.limitCoverage.lossOfUse;
       this.insuranceDetails.deprecation = this.policy.policyInfo.depreciation;
-      this.insuranceDetails.deductible =
-        this.policy.policyInfo.deductibleAmount;
+      this.insuranceDetails.deductible = this.policy.policyInfo.deductibleAmount;
       this.insuranceDetails.priorPayment = this.policy.policyInfo.priorPayment;
-      this.insuranceDetails.reasonsOfLD = this.policy.policyInfo.limitReason;
     },
     async onCloseCarrierList() {
       this.carriersListDialog = false;
@@ -1383,8 +1377,8 @@ export default {
             policyInfo: {
               number: this.insuranceDetails.policyNumber,
               isClaimFiled: this.insuranceDetails.hasClaimBeenFilledToggle,
-              isForcedPlaced:
-                this.insuranceDetails.isThisIsForcedPlacedPolicyToggle,
+              isForcedPlaced: this.insuranceDetails
+                .isThisIsForcedPlacedPolicyToggle,
               hasAppraisalClause: this.insuranceDetails.hasAppraisalClause,
               category: {
                 id: this.insuranceDetails.policyCategory.id,
@@ -1404,8 +1398,8 @@ export default {
                 this.insuranceDetails.policyExpireDate
               ),
               isClaimFiled: this.insuranceDetails.hasClaimBeenFilledToggle,
-              isForcedPlaced:
-                this.insuranceDetails.isThisIsForcedPlacedPolicyToggle,
+              isForcedPlaced: this.insuranceDetails
+                .isThisIsForcedPlacedPolicyToggle,
               limitCoverage: {
                 dwelling: this.insuranceDetails.dwellingLimitA
                   ? this.insuranceDetails.dwellingLimitA
@@ -1442,7 +1436,7 @@ export default {
               priorPayment: this.insuranceDetails.priorPayment
                 ? this.insuranceDetails.priorPayment
                 : 0,
-              limitReason: this.insuranceDetails.reasonsOfLD,
+
               declaration: {
                 isDeclared: true,
                 fileInfo: {
