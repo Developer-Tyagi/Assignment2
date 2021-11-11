@@ -180,13 +180,17 @@ export async function getPlansInfo({ commit, dispatch }) {
   }
 }
 
-export async function getRoles({
-  rootState: {
-    common: { isOnline }
+export async function getRoles(
+  {
+    rootState: {
+      common: { isOnline }
+    },
+    commit,
+    dispatch
   },
-  commit,
-  dispatch
-}) {
+  params
+) {
+  params == 'hideLoader' ? ' ' : dispatch('setLoading', true);
   if (isOnline) {
     dispatch('setLoading', true);
     try {
