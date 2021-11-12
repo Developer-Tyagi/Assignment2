@@ -606,7 +606,7 @@ export default {
       formData.append('file', this.dataURItoBlob(this.dataURI));
 
       const payload = {
-        templateId: this.uploadTemplatetype.id,
+        templateMachineValue: this.uploadTemplatetype.machineValue,
         formData: formData
       };
       await this.uploadDocFileToServer(payload);
