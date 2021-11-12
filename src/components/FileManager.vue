@@ -685,7 +685,7 @@
         <VueSignaturePad
           @signData="signatureSubmit"
           :finalSignature="finalSignature"
-          :skipButton="true"
+          @skipSignature="onSkipSignature"
         />
       </q-card>
     </q-dialog>
@@ -809,38 +809,62 @@ export default {
       'uploadClaimDocument'
     ]),
     ...mapMutations(['setLoading', 'setNotification']),
+    onSkipSignature() {
+      this.userRoleIndex++;
+
+      if (
+        this.userRoleIndex <
+        this.signActor[this.signatureArrayIndex].role.length
+      ) {
+        this.onClickNextButton();
+      } else if (
+        this.signatureArrayIndex == this.signActor.length - 1 &&
+        this.userRoleIndex ==
+          this.signActor[this.signatureArrayIndex].role.length
+      ) {
+        this.signaturePadDialog = false;
+      } else {
+        this.signatureArrayIndex++;
+        this.userRoleIndex = 0;
+        this.onClickNextButton();
+      }
+    },
     onClickNextButton() {
-      console.log(this.signActor, 'ggg');
-      if (this.index < this.signActor.length) {
+      if (this.signatureArrayIndex < this.signActor.length) {
         this.signaturePadDialog = true;
 
-        if (this.signActor[this.signatureArrayIndex].type == 'client') {
-          this.userName = 'Client Signature';
-          console.log(this.userName, 'aaaa');
-        } else {
-          console.log(this.signActor[this.signatureArrayIndex], 'sign else');
-
-          this.userName =
-            this.signActor[this.signatureArrayIndex].role &&
-            this.signActor[this.signatureArrayIndex].role[this.userRoleIndex]
-              .value +
-              ' ' +
-              'Signature';
-        }
+        this.userName =
+          this.signActor[this.signatureArrayIndex].role &&
+          this.signActor[this.signatureArrayIndex].role[this.userRoleIndex]
+            .value +
+            ' ' +
+            'Signature';
       }
     },
     async signatureSubmit(data) {
       const formData = new FormData();
       formData.append('file', this.dataURItoBlob(data));
-      if (this.claimActors[this.signatureArrayIndex].type == 'client') {
-        formData.append('type', 'client');
-      } else {
-        formData.append(
-          'type',
-          this.claimActors[this.signatureArrayIndex].role &&
-            this.claimActors[this.signatureArrayIndex].role[this.userRoleIndex]
-              .value
-        );
+
+      switch (
+        this.claimActors[this.signatureArrayIndex].role &&
+        this.claimActors[this.signatureArrayIndex].role[this.userRoleIndex]
+          .value
+      ) {
+        case 'Insured':
+          formData.append('type', 'insured_signature');
+          break;
+        case 'Vendor':
+          formData.append('type', 'vendor_signature');
+          break;
+        case 'Estimator':
+          formData.append('type', 'esti_signature');
+          break;
+        case 'Public Adjuster':
+          formData.append('type', ' pa_signature');
+          break;
+        case 'Creator':
+          formData.append('type', 'coinsured_signature');
+          break;
       }
 
       const payload = {
@@ -851,11 +875,18 @@ export default {
       await this.uploadClaimDocument(payload);
       this.signaturePadDialog = false;
 
-      this.signatureArrayIndex++;
-
-      if (this.signatureArrayIndex < this.signActor.length) {
+      this.userRoleIndex++;
+      if (
+        this.userRoleIndex <
+        this.signActor[this.signatureArrayIndex].role.length
+      ) {
+        this.onClickNextButton();
+      } else {
+        this.signatureArrayIndex++;
+        this.userRoleIndex = 0;
         this.onClickNextButton();
       }
+
       // in last signature we will close all the popups
       if (this.signatureArrayIndex == this.signActor.length) {
         this.signDocumentDialog = false;
@@ -882,7 +913,7 @@ export default {
         id: actor.id,
         name: actor.name,
         type: actor.type,
-        role: actor.role && actor.role[0] ? actor.role[0] : ''
+        role: actor.role ? actor.role : ''
       });
     },
 
