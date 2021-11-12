@@ -863,6 +863,9 @@ export default {
           formData.append('type', ' pa_signature');
           break;
         case 'Creator':
+          formData.append('type', 'creator');
+          break;
+        case 'Co-Insured':
           formData.append('type', 'coinsured_signature');
           break;
       }
