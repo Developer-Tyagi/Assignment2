@@ -823,6 +823,11 @@ export default {
           this.signActor[this.signatureArrayIndex].role.length
       ) {
         this.signaturePadDialog = false;
+        this.signDocumentDialog = false;
+        this.appSignDocumentDailog = false;
+        this.foldersAndFilesOptions = false;
+
+        this.claimActors = [];
       } else {
         this.signatureArrayIndex++;
         this.userRoleIndex = 0;
@@ -891,6 +896,7 @@ export default {
         this.signDocumentDialog = false;
         this.appSignDocumentDailog = false;
         this.foldersAndFilesOptions = false;
+
         this.claimActors = [];
       }
     },
