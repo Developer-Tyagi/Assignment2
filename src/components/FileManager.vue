@@ -845,27 +845,23 @@ export default {
       const formData = new FormData();
       formData.append('file', this.dataURItoBlob(data));
 
-      switch (
-        this.claimActors[this.signatureArrayIndex].role &&
-        this.claimActors[this.signatureArrayIndex].role[this.userRoleIndex]
-          .value
-      ) {
-        case 'Insured':
+      switch (this.userName) {
+        case 'Insured Signature':
           formData.append('type', 'insured_signature');
           break;
-        case 'Vendor':
+        case 'Vendor Signature':
           formData.append('type', 'vendor_signature');
           break;
-        case 'Estimator':
+        case 'Estimator Signature':
           formData.append('type', 'esti_signature');
           break;
-        case 'Public Adjuster':
-          formData.append('type', ' pa_signature');
+        case 'Public Adjuster Signature':
+          formData.append('type', 'pa_signature');
           break;
-        case 'Creator':
+        case 'Creator Signature':
           formData.append('type', 'creator');
           break;
-        case 'Co-Insured':
+        case 'Co-Insured Signature':
           formData.append('type', 'coinsured_signature');
           break;
       }
@@ -911,7 +907,6 @@ export default {
       }
     },
     setClaimActors(actor) {
-      console.log(actor, 'actor');
       this.signActor.push({
         id: actor.id,
         name: actor.name,
