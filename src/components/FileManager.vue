@@ -468,78 +468,105 @@
           @closeDialog="onClickCloseDialog"
         />
         <div class="mobile-container-page q-pa-sm form-height">
-          <span>Send To</span>
-          <div>
-            <q-radio v-model="sendToRadio" val="Email" label="Email"></q-radio>
-            <q-radio
-              class="q-ml-none"
-              v-model="sendToRadio"
-              val="User"
-              label="User"
-            ></q-radio>
-          </div>
-          <div v-if="sendToRadio == 'User'">
-            <div class="column" v-for="(actor, index) in claimActors">
-              <div class="row q-pa-sm">
-                <div class="column q-mt-sm">
-                  <span style="font-weight: normal">{{ actor.name }} </span>
-                  <div v-for="(role, index) in actor.role">
-                    <q-badge rounded>
-                      <span>{{ role.value ? role.value : '' }}</span>
+          <div>Please select signature mode</div>
+
+          <q-radio
+            v-model="selectModelRadio"
+            val="App"
+            label="In App"
+          ></q-radio>
+          <q-radio
+            class="q-ml-none"
+            v-model="selectModelRadio"
+            val="Email"
+            label="Via Email"
+          ></q-radio>
+          <div v-if="selectModelRadio == 'Email'">
+            <span>Send To</span>
+            <div>
+              <q-radio
+                v-model="sendToRadio"
+                val="Email"
+                label="Email"
+              ></q-radio>
+              <q-radio
+                class="q-ml-none"
+                v-model="sendToRadio"
+                val="User"
+                label="User"
+              ></q-radio>
+            </div>
+            <div v-if="sendToRadio == 'User'">
+              <div class="column" v-for="(actor, index) in claimActors">
+                <div class="row q-pa-sm">
+                  <div class="column q-mt-sm">
+                    <span style="font-weight: normal">{{ actor.name }} </span>
+                    <div v-for="(role, index) in actor.role">
+                      <q-badge rounded>
+                        <span>{{ role.value ? role.value : '' }}</span>
+                      </q-badge>
+                    </div>
+                    <q-badge color="primary" v-if="!actor.role" rounded>
+                      <span>{{ actor.type ? actor.type : '' }}</span>
                     </q-badge>
                   </div>
-                  <q-badge color="primary" v-if="!actor.role" rounded>
-                    <span>{{ actor.type ? actor.type : '' }}</span>
-                  </q-badge>
-                </div>
-                <div class="flex q-ml-auto">
-                  <q-checkbox
-                    v-model="actor.isEnabled"
-                    color="$primary"
-                    size="xs"
-                    @input="setClaimActors(actor)"
-                  />
+                  <div class="flex q-ml-auto">
+                    <q-checkbox
+                      v-model="actor.isEnabled"
+                      color="$primary"
+                      size="xs"
+                      @input="setClaimActors(actor)"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div v-if="sendToRadio == 'Email'">
-            <div v-for="(email, index) in emails" class="row q-mt-sm">
-              <q-input
-                outlined
-                dense
-                v-model="email.email"
-                class="col-7"
-                label="Email"
-                type="email"
-                lazy-rules
-                :rules="[
-                  val =>
-                    validateEmail(val) ||
-                    'You have entered an invalid email address!'
-                ]"
-              />
-              <q-icon
-                name="delete"
-                class="col-1 cursor-pointer"
-                color="primary"
-                @click="removeEmail()"
+            <div v-if="sendToRadio == 'Email'">
+              <div v-for="(email, index) in emails" class="row q-mt-sm">
+                <q-input
+                  outlined
+                  dense
+                  v-model="email.email"
+                  class="col-7"
+                  label="Email"
+                  type="email"
+                  lazy-rules
+                  :rules="[
+                    val =>
+                      validateEmail(val) ||
+                      'You have entered an invalid email address!'
+                  ]"
+                />
+                <q-icon
+                  name="delete"
+                  class="col-1 cursor-pointer"
+                  color="primary"
+                  @click="removeEmail()"
+                />
+              </div>
+              <q-btn
+                class="cursor-pointer q-mb-md text-primary q-mt-xs"
+                @click="onClickAddEmail()"
+                label="Enter Another Email"
               />
             </div>
             <q-btn
-              class="cursor-pointer q-mb-md text-primary q-mt-xs"
-              @click="onClickAddEmail()"
-              label="Enter Another Email"
+              label="Send"
+              color="primary"
+              class="button-width-90 fixed-bottom q-mb-xl"
+              size="'xl'"
+              @click="onClickSendDocument()"
+            />
+          </div>
+          <div v-if="selectModelRadio == 'App'">
+            <q-btn
+              size="sm"
+              label="Sign Document"
+              @click="appSignDocumentDailog = true"
+              color="primary"
             />
           </div>
         </div>
-        <q-btn
-          label="Send"
-          color="primary"
-          class="button-width-90 fixed-bottom q-mb-xl"
-          size="'xl'"
-          @click="onClickSendDocument()"
-        />
       </q-card>
     </q-dialog>
 
@@ -595,6 +622,73 @@
         />
       </q-card>
     </q-dialog>
+
+    <!-- Users Lisr Dialog for choosing users who can sign -->
+    <q-dialog
+      v-model="appSignDocumentDailog"
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <CustomBar
+          dialogName="Choose User for Sign"
+          @closeDialog="appSignDocumentDailog = false"
+        />
+        <div class="column" v-for="(actor, index) in claimActors">
+          <div class="row q-pa-sm">
+            <div class="column q-mt-sm">
+              <span style="font-weight: normal">{{ actor.name }} </span>
+              <div v-for="(role, index) in actor.role">
+                <div class="text-bold">
+                  <span>{{ role.value ? role.value : '' }}</span>
+                </div>
+              </div>
+              <div color="primary" v-if="!actor.role" class="text-bold">
+                <span>{{ actor.type ? actor.type : '' }}</span>
+              </div>
+            </div>
+            <div class="flex q-ml-auto">
+              <q-checkbox
+                v-model="actor.isEnabled"
+                color="$primary"
+                size="xs"
+                @input="setClaimActors(actor)"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="column items-center">
+          <q-btn
+            label="Next"
+            color="primary"
+            size="sm"
+            @click="onClickNextButton"
+          />
+        </div>
+      </q-card>
+    </q-dialog>
+
+    <!-- Online Signature Pad Dialog -->
+    <q-dialog
+      v-model="signaturePadDialog"
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <q-card>
+        <CustomBar
+          :dialogName="userName"
+          @closeDialog="signaturePadDialog = false"
+        />
+
+        <VueSignaturePad
+          @signData="signatureSubmit"
+          :finalSignature="finalSignature"
+          @skipSignature="onSkipSignature"
+        />
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -604,7 +698,7 @@ import request from '@api';
 import { jsPDF } from 'jspdf';
 import { Plugins, CameraResultType, CameraDirection } from '@capacitor/core';
 import DeleteAlert from 'components/DeleteAlert';
-
+import VueSignaturePad from 'components/VueSignaturePad';
 const { Camera } = Plugins;
 import CustomBar from 'components/CustomBar';
 import { setNotification } from 'src/store/common/mutations';
@@ -614,11 +708,18 @@ import localDB, { getCollection } from '@services/dexie';
 
 export default {
   name: 'FileManager',
-  components: { DeleteAlert, CustomBar },
+  components: { DeleteAlert, CustomBar, VueSignaturePad },
   props: ['directoryId', 'generateClaimDocument'],
 
   data() {
     return {
+      signatureArrayIndex: 0,
+      userRoleIndex: 0,
+      finalSignature: true,
+      userName: '',
+      appSignDocumentDailog: false,
+      signaturePadDialog: false,
+      selectModelRadio: 'App',
       document: '',
       sendToRadio: '',
       emails: [{ email: '', type: 'external', name: '' }],
@@ -704,10 +805,101 @@ export default {
       'getTemplates',
       'getAllActorToClaim',
       'signDocuments',
-      'getSignedDocument'
+      'getSignedDocument',
+      'uploadClaimDocument'
     ]),
     ...mapMutations(['setLoading', 'setNotification']),
+    onSkipSignature() {
+      this.userRoleIndex++;
 
+      if (
+        this.userRoleIndex <
+        this.signActor[this.signatureArrayIndex].role.length
+      ) {
+        this.onClickNextButton();
+      } else if (
+        this.signatureArrayIndex == this.signActor.length - 1 &&
+        this.userRoleIndex ==
+          this.signActor[this.signatureArrayIndex].role.length
+      ) {
+        this.signaturePadDialog = false;
+        this.signDocumentDialog = false;
+        this.appSignDocumentDailog = false;
+        this.foldersAndFilesOptions = false;
+
+        this.claimActors = [];
+      } else {
+        this.signatureArrayIndex++;
+        this.userRoleIndex = 0;
+        this.onClickNextButton();
+      }
+    },
+    onClickNextButton() {
+      if (this.signatureArrayIndex < this.signActor.length) {
+        this.signaturePadDialog = true;
+
+        this.userName =
+          this.signActor[this.signatureArrayIndex].role &&
+          this.signActor[this.signatureArrayIndex].role[this.userRoleIndex]
+            .value +
+            ' ' +
+            'Signature';
+      }
+    },
+    async signatureSubmit(data) {
+      const formData = new FormData();
+      formData.append('file', this.dataURItoBlob(data));
+
+      switch (this.userName) {
+        case 'Insured Signature':
+          formData.append('type', 'insured_signature');
+          break;
+        case 'Vendor Signature':
+          formData.append('type', 'vendor_signature');
+          break;
+        case 'Estimator Signature':
+          formData.append('type', 'esti_signature');
+          break;
+        case 'Public Adjuster Signature':
+          formData.append('type', 'pa_signature');
+          break;
+        case 'Creator Signature':
+          formData.append('type', 'creator');
+          break;
+        case 'Co-Insured Signature':
+          formData.append('type', 'coinsured_signature');
+          break;
+      }
+
+      const payload = {
+        id: this.selectedClaimId,
+        formData: formData
+      };
+
+      await this.uploadClaimDocument(payload);
+      this.signaturePadDialog = false;
+
+      this.userRoleIndex++;
+      if (
+        this.userRoleIndex <
+        this.signActor[this.signatureArrayIndex].role.length
+      ) {
+        this.onClickNextButton();
+      } else {
+        this.signatureArrayIndex++;
+        this.userRoleIndex = 0;
+        this.onClickNextButton();
+      }
+
+      // in last signature we will close all the popups
+      if (this.signatureArrayIndex == this.signActor.length) {
+        this.signDocumentDialog = false;
+        this.appSignDocumentDailog = false;
+        this.foldersAndFilesOptions = false;
+
+        this.claimActors = [];
+      }
+    },
     removeEmail() {
       this.emails.pop();
     },
@@ -724,7 +916,8 @@ export default {
       this.signActor.push({
         id: actor.id,
         name: actor.name,
-        type: actor.type
+        type: actor.type,
+        role: actor.role ? actor.role : ''
       });
     },
 
@@ -745,6 +938,7 @@ export default {
           role: this.actors[index].roles
         });
       }
+
       if (
         !response.attributes.status ||
         response.attributes.status == 'completed'
@@ -1052,7 +1246,10 @@ export default {
       else byteString = unescape(dataURI.split(',')[1]);
 
       // separate out the mime component
-      var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+      var mimeString = dataURI
+        .split(',')[0]
+        .split(':')[1]
+        .split(';')[0];
 
       // write the bytes of the string to a typed array
       var ia = new Uint8Array(byteString.length);
