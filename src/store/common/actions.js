@@ -418,7 +418,6 @@ export async function deleteTemplate({ dispatch, state }, payload) {
     return false;
   }
 }
-/////////////////////////////
 
 export async function addTemplateType(
   {
@@ -469,10 +468,17 @@ export async function addTemplateLocal({ dispatch }, payload) {
     };
 
     await localDB.contractDocument.add(template);
-
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Document has been generated successfully !'
+    });
     return template;
   } catch (e) {
     console.log(e);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'there is some error occurred while generating the document'
+    });
     return false;
   }
 }

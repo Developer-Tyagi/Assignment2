@@ -30,7 +30,7 @@
         />
       </div>
       <!-- This is for showing generated signed document -->
-      <div v-if="signedDocument" class="q-pa-md">
+      <div v-if="signedContractDocument" class="q-pa-md">
         <q-icon
           name="picture_as_pdf"
           size="sm"
@@ -53,7 +53,7 @@
             @closeDialog="signedPdfDailog = false"
           />
           <div class="mobile-container-page">
-            <PdfViewer :pdfSrc="signedDocument" />
+            <PdfViewer :pdfSrc="signedContractDocument" />
           </div>
         </q-card>
       </q-dialog>
@@ -183,7 +183,7 @@
   </div>
 </template>
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 import VueSignaturePad from 'components/VueSignaturePad';
 import CustomBar from 'components/CustomBar';
 
@@ -912,6 +912,7 @@ export default {
       'getSingleClientDetails',
       'getSingleClaims'
     ]),
+    ...mapMutations(['setContractDocument']),
     getBase64,
     dateToShow,
     async setTypes(value) {
@@ -975,6 +976,7 @@ export default {
             this.documentId,
             signedContract
           );
+          this.setContractDocument(this.document);
           this.signedDocument = this.document;
           this.finalSignature = true;
           this.signedPdfDailog = true;
@@ -1110,7 +1112,7 @@ export default {
     ...mapGetters([
       'templates',
       'templateOptions',
-
+      'signedContractDocument',
       'personnel',
       'editSelectedClient',
       'selectedClaimId'
