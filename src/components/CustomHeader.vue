@@ -66,7 +66,7 @@
           <img src="~assets/left-arrow.svg" alt="back-arrow" />
         </q-btn>
       </q-toolbar>
-      <div class="text-center">
+      <div class="text-center" v-if="$route.name === 'dashboard'">
         <img
           src="~assets/header_shadow.png"
           class="relative-position"
