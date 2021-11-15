@@ -521,7 +521,7 @@ export default {
 .iconBackground {
   background-size: 100% 100%;
   background-repeat: no-repeat;
-  background-image: url('~assets/DashboardIconBackground.svg');
+  background-image: url('~assets/dashboard_tile.png');
 }
 .cardHeight {
   height: 69vh;
