@@ -499,11 +499,12 @@ export async function getPhotoIdKeys({ commit, dispatch }) {
 }
 
 // redirect to google authentication
-export async function toRedirectGoogleAuth({ dispatch, state }) {
+export async function toRedirectGoogleAuth({ commit, dispatch }) {
+  dispatch('setLoading', true);
   try {
-    await request.get('users/google-oauth2');
+    const result = await request.get('users/google-oauth2');
+    window.location = result.oauth2URL;
     dispatch('setLoading', false);
-    this.$router.push('/claimstats');
   } catch (e) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
