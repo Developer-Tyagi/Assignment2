@@ -106,7 +106,16 @@
           </div>
         </div>
       </q-card>
+
+      <div class="row justify-center q-mt-md">
+        <q-btn
+          label="Redirect to Google Auth"
+          class="single-next-button-style q-mt-lg"
+          @click="onRedirectToGoogleAuth()"
+        />
+      </div>
     </div>
+
     <!-- Dialog For user Data -->
     <q-dialog
       v-model="editUserInfoDialog"
@@ -298,11 +307,16 @@ export default {
     sendPhoneNumber,
     toGetStateShortName,
     ...mapActions([
+      'toRedirectGoogleAuth',
       'getContactTypes',
       'editUserInfo',
       'getUserInfo',
       'editUserProfile'
     ]),
+    // this function is for redirecting to google auth page.
+    onRedirectToGoogleAuth() {
+      this.toRedirectGoogleAuth();
+    },
     onEditClick() {
       this.users.companyName = this.user.companyName;
       this.users.fname = this.user.contact.fname;
