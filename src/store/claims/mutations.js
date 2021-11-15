@@ -28,7 +28,9 @@ export function setMortgage(state, mortgage) {
     ...mortgage.attributes
   };
 }
-
+export function setContractDocument(state, signedContractDocument) {
+  state.signedContractDocument = signedContractDocument;
+}
 export function setClaimVendors(state, vendorLists) {
   state.vendorLists = {
     ...vendorLists.attributes
