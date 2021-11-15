@@ -12,7 +12,7 @@
         cardHeight
         q-pb-lg
       "
-      style="border-radius: 0 0 40px 40px; margin-top: -25px;"
+      style="border-radius: 0 0 40px 40px; margin-top: -30px;"
     >
       <div class="row col-4 justify-around">
         <div
