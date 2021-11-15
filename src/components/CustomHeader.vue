@@ -1,10 +1,10 @@
 <template>
   <div>
-    <q-header class="bg-white">
+    <q-header class="bg-transparent">
       <q-toolbar
-        class="row bg-primary rounded-header toolbar-shadow"
+        class="row bg-primary rounded-header toolbar-shadow "
         v-if="$route.name === 'dashboard'"
-        style="height: 100px"
+        style="max-height: 130px"
       >
         <q-btn
           flat
@@ -12,13 +12,14 @@
           class="q-ml-sm color-white col-2"
           icon="menu"
           aria-label="Menu"
-          style="z-index: 1"
+          style="z-index: 1; margin-top: -20px"
           @click="onMenuButtonClick"
-        ></q-btn>
-        <div class="row col-9">
-          <div class="column col self-center" style="margin-left: -30px">
-            <img src="~assets/logo2.png" height="80%" width="100%" />
-          </div>
+        />
+        <div
+          class="self-center"
+          style="margin-top: -20px; text-align: center; margin-right: 52px; width:100%; "
+        >
+          <img src="~assets/logo2.png" height="130" />
         </div>
       </q-toolbar>
       <q-toolbar class="row bg-primary rounded-header" v-else>
@@ -65,6 +66,13 @@
           <img src="~assets/left-arrow.svg" alt="back-arrow" />
         </q-btn>
       </q-toolbar>
+      <div class="text-center" v-if="$route.name === 'dashboard'">
+        <img
+          src="~assets/header_shadow.png"
+          class="relative-position"
+          style="width: 90%; height: 50px; margin-top: -27px"
+        />
+      </div>
     </q-header>
     <q-drawer
       v-model="isLeftSidePanelOpen"
@@ -460,7 +468,7 @@ export default {
   box-shadow: 1px 3px 2px 1px #e0e0e0;
 }
 .toolbar-shadow {
-  box-shadow: 0 52px 28px -40px #000000;
+  // box-shadow: 0 52px 28px -40px #000000;
 }
 ::-webkit-scrollbar {
   width: 0px;

@@ -12,7 +12,7 @@
         cardHeight
         q-pb-lg
       "
-      style="border-radius: 0 0 40px 40px"
+      style="border-radius: 0 0 40px 40px; margin-top: -30px;"
     >
       <div class="row col-4 justify-around">
         <div
@@ -142,15 +142,23 @@
       </div>
     </div>
     <!-- footer -->
-    <div class="row justify-center footer-shadow"></div>
+    <!-- <div class="row justify-center footer-shadow"></div> -->
+    <div class="text-center">
+      <img
+        src="~assets/header_shadow.png"
+        class="relative-position"
+        style="width: 90%; height: 50px; margin-top: -22px"
+      />
+    </div>
     <div
       class="row justify-between q-px-md q-pt-xs"
-      style="background-color: #8f8f8f"
+      style="background-color: #8f8f8f; margin-top: -30px;"
     >
       <div class="col-3 column">
         <img
           class="col"
           src="~assets/Profile.svg"
+          height=" 50px"
           @click="$router.push('/edit-profile')"
         />
         <div class="col text-center text-white text-caption">PROFILE</div>
@@ -513,7 +521,7 @@ export default {
 .iconBackground {
   background-size: 100% 100%;
   background-repeat: no-repeat;
-  background-image: url('~assets/DashboardIconBackground.svg');
+  background-image: url('~assets/dashboard_tile.png');
 }
 .cardHeight {
   height: 69vh;
