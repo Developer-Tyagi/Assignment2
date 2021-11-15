@@ -497,3 +497,18 @@ export async function getPhotoIdKeys({ commit, dispatch }) {
     });
   }
 }
+
+// redirect to google authentication
+export async function toRedirectGoogleAuth({ dispatch, state }) {
+  try {
+    await request.get('users/google-oauth2');
+    dispatch('setLoading', false);
+    this.$router.push('/claimstats');
+  } catch (e) {
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response
+    });
+  }
+}
