@@ -635,6 +635,7 @@
           dialogName="Choose User for Sign"
           @closeDialog="appSignDocumentDailog = false"
         />
+
         <div class="column" v-for="(actor, index) in claimActors">
           <div class="row q-pa-sm">
             <div class="column q-mt-sm">
@@ -648,6 +649,7 @@
                 <span>{{ actor.type ? actor.type : '' }}</span>
               </div>
             </div>
+
             <div class="flex q-ml-auto">
               <q-checkbox
                 v-model="actor.isEnabled"
@@ -658,6 +660,7 @@
             </div>
           </div>
         </div>
+
         <div class="column items-center">
           <q-btn
             label="Next"
@@ -686,6 +689,8 @@
           @signData="signatureSubmit"
           :finalSignature="finalSignature"
           @skipSignature="onSkipSignature"
+          :finshButtonOnlineSign="finshButtonOnlineSign"
+          @finishSignature="finishSign"
         />
       </q-card>
     </q-dialog>
@@ -713,6 +718,7 @@ export default {
 
   data() {
     return {
+      finshButtonOnlineSign: false,
       signatureArrayIndex: 0,
       userRoleIndex: 0,
       finalSignature: true,
@@ -811,7 +817,14 @@ export default {
     ...mapMutations(['setLoading', 'setNotification']),
     onSkipSignature() {
       this.userRoleIndex++;
-
+      // Show Finish Button in last Sign
+      if (
+        this.signatureArrayIndex == this.signActor.length - 1 &&
+        this.userRoleIndex ==
+          this.signActor[this.signatureArrayIndex].role.length - 1
+      ) {
+        this.finshButtonOnlineSign = true;
+      }
       if (
         this.userRoleIndex <
         this.signActor[this.signatureArrayIndex].role.length
@@ -834,16 +847,32 @@ export default {
         this.onClickNextButton();
       }
     },
-    onClickNextButton() {
-      if (this.signatureArrayIndex < this.signActor.length) {
-        this.signaturePadDialog = true;
+    finishSign() {
+      this.signaturePadDialog = false;
+      this.signDocumentDialog = false;
+      this.appSignDocumentDailog = false;
+      this.foldersAndFilesOptions = false;
 
-        this.userName =
-          this.signActor[this.signatureArrayIndex].role &&
-          this.signActor[this.signatureArrayIndex].role[this.userRoleIndex]
-            .value +
-            ' ' +
-            'Signature';
+      this.claimActors = [];
+    },
+    onClickNextButton() {
+      if (this.signActor.length > 0) {
+        if (this.signatureArrayIndex < this.signActor.length) {
+          this.signaturePadDialog = true;
+
+          this.userName =
+            this.signActor[this.signatureArrayIndex].role &&
+            this.signActor[this.signatureArrayIndex].role[this.userRoleIndex]
+              .value +
+              ' ' +
+              'Signature';
+        }
+      } else {
+        this.$q.notify({
+          message: 'Please select atleast one user',
+          position: 'top',
+          type: 'negative'
+        });
       }
     },
     async signatureSubmit(data) {
@@ -890,7 +919,14 @@ export default {
         this.userRoleIndex = 0;
         this.onClickNextButton();
       }
-
+      // Show Finish Button in last Sign
+      if (
+        this.signatureArrayIndex == this.signActor.length - 1 &&
+        this.userRoleIndex ==
+          this.signActor[this.signatureArrayIndex].role.length - 1
+      ) {
+        this.finshButtonOnlineSign = true;
+      }
       // in last signature we will close all the popups
       if (this.signatureArrayIndex == this.signActor.length) {
         this.signDocumentDialog = false;
