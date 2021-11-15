@@ -521,8 +521,8 @@
                 :isAsteriskMark="true"
               />
             </q-card>
-            <div class="row q-pt-md">
-              <div style="width: 100%">
+            <div class="row q-mt-lg justify-center">
+              <div style="width: 90%">
                 <q-btn class="back-button-style" type="reset" label="Back" />
                 <q-btn class="next-button-style" type="submit" label="Next" />
               </div>
@@ -541,8 +541,8 @@
                 :showAppraisal="false"
               />
             </div>
-            <div class="row q-pt-md">
-              <div style="width: 100%">
+            <div class="row q-mt-lg justify-center">
+              <div style="width: 90%">
                 <q-btn class="back-button-style" type="reset" label="Back" />
                 <q-btn class="next-button-style" type="submit" label="Next" />
               </div>
@@ -569,8 +569,8 @@
                 }"
               />
             </div>
-            <div class="row q-pt-md">
-              <div style="width: 100%">
+            <div class="row q-mt-lg justify-center">
+              <div style="width: 90%">
                 <q-btn class="back-button-style" type="reset" label="Back" />
                 <q-btn class="next-button-style" type="submit" label="Next" />
               </div>
@@ -813,8 +813,8 @@
                 }"
               />
             </q-card>
-            <div class="row q-pt-md">
-              <div style="width: 100%">
+            <div class="row q-mt-lg justify-center">
+              <div style="width: 90%">
                 <q-btn class="back-button-style" type="reset" label="Back" />
                 <q-btn class="next-button-style" type="submit" label="Next" />
               </div>
@@ -961,8 +961,8 @@
                 }"
               />
             </q-card>
-            <div class="row q-pt-md">
-              <div style="width: 100%">
+            <div class="row q-mt-lg justify-center">
+              <div style="width: 90%">
                 <q-btn class="back-button-style" type="reset" label="Back" />
                 <q-btn class="next-button-style" type="submit" label="Next" />
               </div>
@@ -981,9 +981,8 @@
                 :isThereSecondMortgage="true"
               />
             </q-card>
-
-            <div class="row q-pt-md">
-              <div style="width: 100%">
+            <div class="row q-mt-lg justify-center">
+              <div style="width: 90%">
                 <q-btn class="back-button-style" type="reset" label="Back" />
                 <q-btn class="next-button-style" type="submit" label="Next" />
               </div>
@@ -999,8 +998,8 @@
             <q-card class="q-pa-md form-card">
               <ExpertVendorInfo :expertVendorInfo="expertVendorInfo" />
             </q-card>
-            <div class="row q-pt-md">
-              <div style="width: 100%">
+            <div class="row q-mt-lg justify-center">
+              <div style="width: 90%">
                 <q-btn class="back-button-style" type="reset" label="Back" />
                 <q-btn class="next-button-style" type="submit" label="Next" />
               </div>
@@ -1019,8 +1018,8 @@
                 :estimatorAssignToggle="true"
               />
             </q-card>
-            <div class="row q-pt-md">
-              <div style="width: 100%">
+            <div class="row q-mt-lg justify-center">
+              <div style="width: 90%">
                 <q-btn class="back-button-style" type="reset" label="Back" />
                 <q-btn class="next-button-style" type="submit" label="Next" />
               </div>
@@ -1036,8 +1035,8 @@
             <q-card class="q-pa-md form-card">
               <ContractInfo :contractInfo="contractInfo" />
             </q-card>
-            <div class="row q-pt-md">
-              <div style="width: 100%">
+            <div class="row q-mt-lg justify-center">
+              <div style="width: 90%">
                 <q-btn class="back-button-style" type="reset" label="Back" />
                 <q-btn class="next-button-style" type="submit" label="Next" />
               </div>
@@ -1053,8 +1052,8 @@
             <q-card class="q-pa-md form-card">
               <CompanyPersonnel :companyPersonnel="companyPersonnel" />
             </q-card>
-            <div class="row q-pt-md">
-              <div style="width: 100%">
+            <div class="row q-mt-lg justify-center">
+              <div style="width: 90%">
                 <q-btn class="back-button-style" type="reset" label="Back" />
                 <q-btn class="next-button-style" type="submit" label="Next" />
               </div>
@@ -1071,8 +1070,8 @@
               <OfficeTask :officeTask="officeTask" />
             </div>
 
-            <div class="row q-pt-md">
-              <div style="width: 100%">
+            <div class="row q-mt-lg justify-center">
+              <div style="width: 90%">
                 <q-btn class="back-button-style" type="reset" label="Back" />
                 <q-btn
                   class="next-button-style"

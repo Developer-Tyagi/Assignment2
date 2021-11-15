@@ -251,8 +251,8 @@
                 :isAsteriskMark="true"
               />
             </q-card>
-            <div class="row q-pt-md">
-              <div style="width: 100%">
+            <div class="row q-mt-lg justify-center">
+              <div style="width: 90%">
                 <q-btn class="back-button-style" type="reset" label="Back" />
                 <q-btn class="next-button-style" type="submit" label="Next" />
               </div>
@@ -364,8 +364,8 @@
                 label="Policy Number"
               />
             </q-card>
-            <div class="row q-pt-md">
-              <div style="width: 100%">
+            <div class="row q-mt-lg justify-center">
+              <div style="width: 90%">
                 <q-btn class="back-button-style" type="reset" label="Back" />
                 <q-btn class="next-button-style" type="submit" label="Next" />
               </div>
@@ -539,8 +539,8 @@
                 </div>
               </div>
             </q-card>
-            <div class="row q-pt-md">
-              <div style="width: 100%">
+            <div class="row q-mt-lg justify-center">
+              <div style="width: 90%">
                 <q-btn class="back-button-style" type="reset" label="Back" />
                 <q-btn class="next-button-style" type="submit" label="Next" />
               </div>
@@ -560,11 +560,11 @@
                 dense
                 label="Notes"
                 v-model="notes"
-                type="input"
+                type="textarea"
               />
             </q-card>
-            <div class="row q-pt-md">
-              <div style="width: 100%">
+            <div class="row q-mt-lg justify-center">
+              <div style="width: 90%">
                 <q-btn class="back-button-style" type="reset" label="Back" />
                 <q-btn class="next-button-style" type="submit" label="Next" />
               </div>
@@ -642,8 +642,8 @@
                 label="Duration of Inspection (in hours)"
               />
             </q-card>
-            <div class="row q-pt-md">
-              <div style="width: 100%">
+            <div class="row q-mt-lg justify-center">
+              <div style="width: 90%">
                 <q-btn class="back-button-style" type="reset" label="Back" />
                 <q-btn class="next-button-style" type="submit" label="Next" />
               </div>

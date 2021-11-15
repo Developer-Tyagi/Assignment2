@@ -1,11 +1,12 @@
 <template>
   <q-page>
-    <div class="mobile-container-page-without-search">
+    <div class="responsive-page">
       <div class="stepper">
         <div class="step justify-between" id="step">
           <div
             class="column align-center q-px-md"
             v-for="(arr, index) in stepArr"
+            :key="index"
             @click="onStepClick(index)"
           >
             <div
@@ -46,11 +47,10 @@
                 :showAppraisal="false"
               />
             </div>
-            <div class="row q-pt-md">
+            <div class="row justify-center">
               <q-btn
-                class="single-next-button-style"
+                class="single-next-button-style q-mt-lg"
                 label="Next"
-                padding="md"
                 type="submit"
               />
             </div>
@@ -76,20 +76,10 @@
                 }"
               />
             </div>
-            <div class="row q-pt-md">
-              <div style="width:100%;">
-                <q-btn
-                  class="back-button-style"
-                  padding="md"
-                  type="reset"
-                  label="Back"
-                />
-                <q-btn
-                  class="next-button-style"
-                  padding="md"
-                  type="submit"
-                  label="Next"
-                />
+            <div class="row q-mt-lg justify-center">
+              <div style="width: 90%">
+                <q-btn class="back-button-style" type="reset" label="Back" />
+                <q-btn class="next-button-style" type="submit" label="Next" />
               </div>
             </div>
           </q-form>
@@ -127,7 +117,7 @@
               <div
                 v-if="
                   lossInfo.isThereDamageToPersonalPropertyToggle &&
-                    lossInfo.isPAFillingOutToggle
+                  lossInfo.isPAFillingOutToggle
                 "
               >
                 <br />
@@ -243,7 +233,7 @@
                 class="row"
                 v-if="
                   !lossInfo.isPAFillingOutToggle &&
-                    lossInfo.isThereDamageToPersonalPropertyToggle
+                  lossInfo.isThereDamageToPersonalPropertyToggle
                 "
               >
                 <div class="col-8 q-mx-none q-my-auto form-heading">
@@ -259,9 +249,9 @@
                 class="row"
                 v-if="
                   !lossInfo.isAdjustorFillOutLaterDate &&
-                    lossInfo.isThereDamageToPersonalPropertyToggle &&
-                    !lossInfo.isAdjustorFillOutLaterDate &&
-                    !lossInfo.isPAFillingOutToggle
+                  lossInfo.isThereDamageToPersonalPropertyToggle &&
+                  !lossInfo.isAdjustorFillOutLaterDate &&
+                  !lossInfo.isPAFillingOutToggle
                 "
               >
                 <div class="col-8 q-mx-none q-my-auto form-heading">
@@ -277,7 +267,7 @@
                 class="row"
                 v-if="
                   lossInfo.isClientGoingToPreparePPIF &&
-                    lossInfo.isPAFillingOutToggle == false
+                  lossInfo.isPAFillingOutToggle == false
                 "
               >
                 <div class="col-8 q-mx-none q-my-auto form-heading">
@@ -302,7 +292,7 @@
                 class="row"
                 v-if="
                   lossInfo.isPAFillingOutToggle == false &&
-                    lossInfo.wasAppifProvidedToTheInsuredToggle == false
+                  lossInfo.wasAppifProvidedToTheInsuredToggle == false
                 "
               >
                 <div class="col-9 q-mx-none q-my-auto form-heading">
@@ -323,20 +313,10 @@
                 }"
               />
             </q-card>
-            <div class="row q-pt-md">
-              <div style="width:100%;">
-                <q-btn
-                  class="back-button-style"
-                  padding="md"
-                  type="reset"
-                  label="Back"
-                />
-                <q-btn
-                  class="next-button-style"
-                  padding="md"
-                  type="submit"
-                  label="Next"
-                />
+            <div class="row q-mt-lg justify-center">
+              <div style="width: 90%">
+                <q-btn class="back-button-style" type="reset" label="Back" />
+                <q-btn class="next-button-style" type="submit" label="Next" />
               </div>
             </div>
           </q-form>
@@ -476,20 +456,10 @@
                 }"
               />
             </q-card>
-            <div class="row q-pt-md">
-              <div style="width:100%;">
-                <q-btn
-                  class="back-button-style"
-                  padding="md"
-                  type="reset"
-                  label="Back"
-                />
-                <q-btn
-                  class="next-button-style"
-                  padding="md"
-                  type="submit"
-                  label="Next"
-                />
+            <div class="row q-mt-lg justify-center">
+              <div style="width: 90%">
+                <q-btn class="back-button-style" type="reset" label="Back" />
+                <q-btn class="next-button-style" type="submit" label="Next" />
               </div>
             </div>
           </q-form>
@@ -507,20 +477,10 @@
               />
             </div>
 
-            <div class="row q-pt-md">
-              <div style="width:100%;">
-                <q-btn
-                  class="back-button-style"
-                  padding="md"
-                  type="reset"
-                  label="Back"
-                />
-                <q-btn
-                  class="next-button-style"
-                  padding="md"
-                  type="submit"
-                  label="Next"
-                />
+            <div class="row q-mt-lg justify-center">
+              <div style="width: 90%">
+                <q-btn class="back-button-style" type="reset" label="Back" />
+                <q-btn class="next-button-style" type="submit" label="Next" />
               </div>
             </div>
           </q-form>
@@ -536,20 +496,10 @@
                 @addAnotherVendor="addAnotherVendor"
               />
             </div>
-            <div class="row q-pt-md">
-              <div style="width:100%;">
-                <q-btn
-                  class="back-button-style"
-                  padding="md"
-                  type="reset"
-                  label="Back"
-                />
-                <q-btn
-                  class="next-button-style"
-                  padding="md"
-                  type="submit"
-                  label="Next"
-                />
+            <div class="row q-mt-lg justify-center">
+              <div style="width: 90%">
+                <q-btn class="back-button-style" type="reset" label="Back" />
+                <q-btn class="next-button-style" type="submit" label="Next" />
               </div>
             </div>
           </q-form>
@@ -565,20 +515,10 @@
                 :estimatorAssignToggle="true"
               />
             </div>
-            <div class="row q-pt-md">
-              <div style="width:100%;">
-                <q-btn
-                  class="back-button-style"
-                  padding="md"
-                  type="reset"
-                  label="Back"
-                />
-                <q-btn
-                  class="next-button-style"
-                  padding="md"
-                  type="submit"
-                  label="Next"
-                />
+            <div class="row q-mt-lg justify-center">
+              <div style="width: 90%">
+                <q-btn class="back-button-style" type="reset" label="Back" />
+                <q-btn class="next-button-style" type="submit" label="Next" />
               </div>
             </div>
           </q-form>
@@ -592,20 +532,10 @@
             <div class="q-pa-md form-card">
               <ContractInfo :contractInfo="contractInfo" />
             </div>
-            <div class="row q-pt-md">
-              <div style="width:100%;">
-                <q-btn
-                  class="back-button-style"
-                  padding="md"
-                  type="reset"
-                  label="Back"
-                />
-                <q-btn
-                  class="next-button-style"
-                  padding="md"
-                  type="submit"
-                  label="Next"
-                />
+            <div class="row q-mt-lg justify-center">
+              <div style="width: 90%">
+                <q-btn class="back-button-style" type="reset" label="Back" />
+                <q-btn class="next-button-style" type="submit" label="Next" />
               </div>
             </div>
           </q-form>
@@ -618,20 +548,10 @@
             <div class="q-pa-md form-card">
               <CompanyPersonnel :companyPersonnel="companyPersonnel" />
             </div>
-            <div class="row q-pt-md">
-              <div style="width:100%;">
-                <q-btn
-                  class="back-button-style"
-                  padding="md"
-                  type="reset"
-                  label="Back"
-                />
-                <q-btn
-                  class="next-button-style"
-                  padding="md"
-                  type="submit"
-                  label="Next"
-                />
+            <div class="row q-mt-lg justify-center">
+              <div style="width: 90%">
+                <q-btn class="back-button-style" type="reset" label="Back" />
+                <q-btn class="next-button-style" type="submit" label="Next" />
               </div>
             </div>
           </q-form>
@@ -1089,10 +1009,14 @@ export default {
     // this.getSingleClientDetails(this.selectedClientId);
     // this.getSingleClientProperty(this.selectedClientId);
     this.contractInfo.time = date.formatDate(Date.now(), 'HH:mm:ss:aa');
-    this.companyPersonnel.startDate = this.companyPersonnel.endDate = this.contractInfo.firstContractDate = this.contractInfo.contractDate = this.insuranceDetails.policyEffectiveDate = this.insuranceDetails.policyExpireDate = this.lossInfo.dateOfLoss = date.formatDate(
-      Date.now(),
-      'MM/DD/YYYY'
-    );
+    this.companyPersonnel.startDate =
+      this.companyPersonnel.endDate =
+      this.contractInfo.firstContractDate =
+      this.contractInfo.contractDate =
+      this.insuranceDetails.policyEffectiveDate =
+      this.insuranceDetails.policyExpireDate =
+      this.lossInfo.dateOfLoss =
+        date.formatDate(Date.now(), 'MM/DD/YYYY');
     this.getPolicyTypes();
     this.getPolicyCategory();
     if (this.propertyId) {
@@ -1267,28 +1191,21 @@ export default {
         this.lossInfo.currentIndex = index;
         this.lossInfo.quantity = this.lossInfo.ppDamagedItems[index].quantity;
         this.lossInfo.PPDamageName = this.lossInfo.ppDamagedItems[index].name;
-        this.lossInfo.PPDamageDescription = this.lossInfo.ppDamagedItems[
-          index
-        ].desc;
-        this.lossInfo.serialNumber = this.lossInfo.ppDamagedItems[
-          index
-        ].serialNumber;
-        this.lossInfo.purchasePrice = this.lossInfo.ppDamagedItems[
-          index
-        ].purchasePrice;
+        this.lossInfo.PPDamageDescription =
+          this.lossInfo.ppDamagedItems[index].desc;
+        this.lossInfo.serialNumber =
+          this.lossInfo.ppDamagedItems[index].serialNumber;
+        this.lossInfo.purchasePrice =
+          this.lossInfo.ppDamagedItems[index].purchasePrice;
         this.purchaseDate = this.lossInfo.ppDamagedItems[index].purchaseDate;
-        this.lossInfo.repairReplaceRadio = this.lossInfo.ppDamagedItems[
-          index
-        ].radio;
-        this.lossInfo.PPDamageItemDescription = this.lossInfo.ppDamagedItems[
-          index
-        ].itemDesc;
-        this.lossInfo.repairCost = this.lossInfo.ppDamagedItems[
-          index
-        ].repairCost;
-        this.lossInfo.replaceCost = this.lossInfo.ppDamagedItems[
-          index
-        ].replaceCost;
+        this.lossInfo.repairReplaceRadio =
+          this.lossInfo.ppDamagedItems[index].radio;
+        this.lossInfo.PPDamageItemDescription =
+          this.lossInfo.ppDamagedItems[index].itemDesc;
+        this.lossInfo.repairCost =
+          this.lossInfo.ppDamagedItems[index].repairCost;
+        this.lossInfo.replaceCost =
+          this.lossInfo.ppDamagedItems[index].replaceCost;
 
         this.lossInfo.PPdamagedItemsDailog = true;
       } else {
@@ -1296,28 +1213,21 @@ export default {
         this.lossInfo.currentIndex = index;
         this.lossInfo.quantity = this.lossInfo.osDamagedItems[index].quantity;
         this.lossInfo.PPDamageName = this.lossInfo.osDamagedItems[index].name;
-        this.lossInfo.PPDamageDescription = this.lossInfo.osDamagedItems[
-          index
-        ].desc;
-        this.lossInfo.serialNumber = this.lossInfo.osDamagedItems[
-          index
-        ].serialNumber;
-        this.lossInfo.purchasePrice = this.lossInfo.osDamagedItems[
-          index
-        ].purchasePrice;
+        this.lossInfo.PPDamageDescription =
+          this.lossInfo.osDamagedItems[index].desc;
+        this.lossInfo.serialNumber =
+          this.lossInfo.osDamagedItems[index].serialNumber;
+        this.lossInfo.purchasePrice =
+          this.lossInfo.osDamagedItems[index].purchasePrice;
         this.purchaseDate = this.lossInfo.osDamagedItems[index].purchaseDate;
-        this.lossInfo.repairReplaceRadio = this.lossInfo.osDamagedItems[
-          index
-        ].radio;
-        this.lossInfo.PPDamageItemDescription = this.lossInfo.osDamagedItems[
-          index
-        ].itemDesc;
-        this.lossInfo.repairCost = this.lossInfo.osDamagedItems[
-          index
-        ].repairCost;
-        this.lossInfo.replaceCost = this.lossInfo.osDamagedItems[
-          index
-        ].replaceCost;
+        this.lossInfo.repairReplaceRadio =
+          this.lossInfo.osDamagedItems[index].radio;
+        this.lossInfo.PPDamageItemDescription =
+          this.lossInfo.osDamagedItems[index].itemDesc;
+        this.lossInfo.repairCost =
+          this.lossInfo.osDamagedItems[index].repairCost;
+        this.lossInfo.replaceCost =
+          this.lossInfo.osDamagedItems[index].replaceCost;
 
         this.lossInfo.PPdamagedItemsDailog = true;
       }
@@ -1454,8 +1364,8 @@ export default {
           },
           number: this.insuranceDetails.policyNumber,
           isClaimFiled: this.insuranceDetails.hasClaimBeenFilledToggle,
-          isForcedPlaced: this.insuranceDetails
-            .isThisIsForcedPlacedPolicyToggle,
+          isForcedPlaced:
+            this.insuranceDetails.isThisIsForcedPlacedPolicyToggle,
           claimNumber: this.insuranceDetails.insuranceClaimNumber,
           category: {
             id: this.insuranceDetails.policyCategory.id,
@@ -1529,8 +1439,8 @@ export default {
           OSDamageItems: this.lossInfo.osDamagedItems,
           PPDamageItems: this.lossInfo.ppDamagedItems,
           isPPIF: this.lossInfo.wasAppifProvidedToTheInsuredToggle,
-          isNeedPPIF: this.lossInfo
-            .doesTheOfficeNeedToProvidePpifToTheInsuredToggle,
+          isNeedPPIF:
+            this.lossInfo.doesTheOfficeNeedToProvidePpifToTheInsuredToggle,
 
           hasHomeMortgage: this.lossInfo.isMortgageHomeToggle,
           isSecondClaim: false
@@ -1621,13 +1531,12 @@ export default {
         this.expertVendorInfo.isAlreadyHiredVendor.length ||
         this.expertVendorInfo.isHiredByClaimguru.length
       ) {
-        let vendorsAlreadyExist = this.expertVendorInfo.isAlreadyHiredVendor.map(
-          val => ({
+        let vendorsAlreadyExist =
+          this.expertVendorInfo.isAlreadyHiredVendor.map(val => ({
             id: val.vendor.id,
             value: val.vendor.value,
             isAlreadyHired: true
-          })
-        );
+          }));
         let vendorsHired = this.expertVendorInfo.isHiredByClaimguru.map(
           val => ({
             id: val.vendor.id,
