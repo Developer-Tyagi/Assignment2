@@ -652,6 +652,7 @@ export default {
       const index = this.plans.findIndex(
         o => o.machineValue === this.$route.query.plan
       );
+
       if (index > -1) {
         this.plan = index + 1;
         this.user.plan.id = this.plans[index].id;

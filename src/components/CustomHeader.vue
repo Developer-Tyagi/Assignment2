@@ -8,15 +8,16 @@
       >
         <q-btn
           flat
-          class="q-ml-sm color-white button-50"
+          size="lg"
+          class="q-ml-sm color-white col-2"
           icon="menu"
           aria-label="Menu"
           style="z-index: 1"
           @click="onMenuButtonClick"
         ></q-btn>
-        <div class="row">
-          <div class="column justify-center" style="margin-left: -30px">
-            <img src="~assets/logo2.png" />
+        <div class="row col-9">
+          <div class="column col self-center" style="margin-left: -30px">
+            <img src="~assets/logo2.png" height="80%" width="100%" />
           </div>
         </div>
       </q-toolbar>
@@ -44,9 +45,9 @@
           <q-icon
             v-if="
               $route.name == 'create client' &&
-              !isOnline &&
-              editSelectedClient.id &&
-              isOfflineClientEdit
+                !isOnline &&
+                editSelectedClient.id &&
+                isOfflineClientEdit
             "
             name="edit"
             @click="onClickEditIcon"
@@ -72,22 +73,22 @@
       content-class="bg-side-panel"
       @hide="onMenuHide()"
     >
-      <div style="height: calc(100px)" class="q-px-md q-pt-lg menu-bar-style">
-        <div class="row no-wrap">
-          <div>
+      <div class="q-px-sm q-pt-lg menu-bar-style q-pb-sm">
+        <div class="row q-pl-lg q-pr-md">
+          <div class="q-pt-sm  col-3">
             <q-avatar
-              size="54px"
-              font-size="42px"
+              size="4.5em"
               color="white"
-              text-color="white"
-              icon="user"
+              text-color="primary"
+              font-size="2.5rem"
+              icon="person"
             />
           </div>
           <div
-            class="column text-white q-pa-sm q-ml-sm"
+            class="col column text-weight-bold text-white q-pa-sm q-ml-md text-h6 "
             style="width: calc(100% - 54px)"
           >
-            <div class="text-capitalize">
+            <div class="text-capitalize ellipsis-2-lines">
               {{
                 user.roles[0].machineValue == 'vendor'
                   ? user.companyName
@@ -95,14 +96,14 @@
               }}
             </div>
 
-            <div style="font-size: 11px; opacity: 80%">
+            <div class="text-weight-medium text-subtitle2">
               {{ user.contact.fname ? user.contact.fname : '' }}
             </div>
           </div>
         </div>
       </div>
-      <q-scroll-area style="height: calc(100% - 220px)">
-        <div class="q-pr-md">
+      <q-scroll-area style="height: calc(100% - 265px)">
+        <div class="q-pr-sm">
           <q-list separator dark>
             <q-item
               clickable
@@ -111,24 +112,30 @@
               :key="link.title"
               @click="routeTo(link)"
               v-bind="link"
-              class="q-mt-md bg-white rounded-sidebar q-px-none"
+              class="q-mt-lg bg-white rounded-sidebar q-pa-none q-pb-xs"
               v-if="
                 (link.title != 'Admin' || !isMobile()) &&
-                (link.title != 'Manage Users' || !isMobile()) &&
-                (link.title != 'Configuration' || !isMobile())
+                  (link.title != 'Manage Users' || !isMobile()) &&
+                  (link.title != 'Configuration' || !isMobile())
               "
             >
               <q-item-section @click="onClickMenuItem(link.title)">
-                <div class="row text-primary">
-                  <div class="q-ml-md col-3 q-mb-md column justify-center">
-                    <q-icon size="md">
+                <div class="row text-primary q-mb-sm" style="max-height:68px">
+                  <div class="q-ml-lg col-2 q-mr-sm q-pt-xs ">
+                    <q-icon
+                      :size="link.title == 'Reports' ? '2rem' : '2.5rem'"
+                      :style="link.title == 'Reports' ? 'padding-top:10px' : ''"
+                      class="q-mt-sm q-mb-sm"
+                    >
                       <q-img :src="getImage(link.icon)" color="primary" />
                     </q-icon>
                   </div>
-                  <div class="column col-7">
-                    <div class="title text-primary col-4">{{ link.title }}</div>
+                  <div class="col-8 ">
+                    <div class=" text-subtitle1 text-bold q-pt-sm">
+                      {{ link.title }}
+                    </div>
 
-                    <div class="description text-primary">
+                    <div style="font-size:10px;">
                       {{ link.description }}
                     </div>
                   </div>
@@ -138,17 +145,19 @@
           </q-list>
         </div>
       </q-scroll-area>
-      <div style="height: 100px" class="q-px-md q-mt-sm">
+      <div class="q-px-lg q-mt-sm">
         <q-btn
-          class="button-width-90 q-mt-md rounded text-capitalize menu-bar-style"
+          class="full-width q-mt-md menu-bar-style"
           label="LOGOUT"
+          size="lg"
+          style="border-radius:25px"
           @click="logout()"
         />
-        <q-separator class="q-my-md bg-primary" />
-        <p class="text-black q-ml-md" style="opacity: 50%; font-size: 12px">
-          Claimguru Version {{ this.version }}
-        </p>
       </div>
+      <q-separator class="q-mt-md q-mb-sm bg-primary " style="padding:none" />
+      <p class="text-black q-ml-md" style="opacity: 50%; font-size: 12px">
+        Claimguru Version {{ this.version }}
+      </p>
     </q-drawer>
   </div>
 </template>
