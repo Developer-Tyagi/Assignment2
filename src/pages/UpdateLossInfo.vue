@@ -120,10 +120,7 @@
     </div>
     <div
       class="q-mt-md row"
-      v-if="
-        lossInfo.attributes.lossInfo &&
-        lossInfo.attributes.lossInfo.propertyDesc
-      "
+      v-if="lossInfo.attributes && lossInfo.attributes.lossInfo.propertyDesc"
     >
       <div class="heading-light q-mt-none col-xs-4">Property Description :</div>
       <div class="column q-ml-md">

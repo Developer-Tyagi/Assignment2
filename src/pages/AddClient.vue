@@ -1,11 +1,12 @@
 <template>
   <q-page>
-    <div>
+    <div class="responsive-page">
       <div class="stepper">
         <div class="step justify-between" id="step">
           <div
             class="column align-center q-px-md"
             v-for="(arr, index) in stepArr"
+            :key="index"
             @click="onStepClick(index)"
           >
             <div
@@ -212,7 +213,6 @@
                       v-model="phoneNumber[index].type"
                       borderless
                       dense
-                      style="height: 55px"
                       class="required input-style col-5"
                       label="Type"
                       :options="contactTypes"
