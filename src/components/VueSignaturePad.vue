@@ -16,7 +16,7 @@
     <div class="q-mt-md">
       <div class="row q-gutter-md justify-center">
         <q-btn
-          v-if="finalSignature != false"
+          v-if="finalSignature != false && finshButtonOnlineSign == false"
           class="col-2"
           label="Skip"
           @click="skip"
@@ -29,6 +29,13 @@
           @click="save"
           color="primary"
         />
+        <q-btn
+          v-if="finshButtonOnlineSign"
+          class="col-2"
+          label="Finish"
+          @click="onFinishButtonClick"
+          color="primary"
+        />
       </div>
     </div>
   </div>
@@ -39,6 +46,9 @@ export default {
   name: 'MySignaturePad',
   props: {
     finalSignature: {
+      type: Boolean
+    },
+    finshButtonOnlineSign: {
       type: Boolean
     }
   },
@@ -60,6 +70,9 @@ export default {
   methods: {
     skip() {
       this.$emit('skipSignature');
+    },
+    onFinishButtonClick() {
+      this.$emit('finishSignature');
     },
     save() {
       const { isEmpty, data } = this.$refs.signaturePad.saveSignature();
