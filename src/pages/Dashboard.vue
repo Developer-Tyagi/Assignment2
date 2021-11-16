@@ -290,7 +290,7 @@ import CustomBar from 'components/CustomBar';
 import 'firebase/auth';
 import AddOptions from 'components/AddOptions';
 import { Device } from '@capacitor/core';
-
+import { getCurrentUser } from '@utils/auth';
 export default {
   components: { CustomBar, AddOptions },
   data() {
@@ -319,7 +319,19 @@ export default {
     this.getLossCauses('hideLoader');
     this.getInspectionTypes('hideLoader');
     this.getVendorIndustries('hideLoader');
-    this.getVendors('hideLoader');
+    //estimator  have no permission to these APIs
+    const userRole = getCurrentUser().attributes.roles[0].machineValue;
+
+    if (userRole != 'estimator') {
+      this.getVendors('hideLoader');
+      this.getMortgages('hideLoader');
+      let params = {
+        limit: 0,
+        offset: 0
+      };
+      this.getCarriers(params);
+    }
+
     this.getPropertyTypes('hideLoader');
     this.getPolicyTypes('hideLoader');
     this.getPolicyCategory('hideLoader');
@@ -328,15 +340,11 @@ export default {
     this.getClaimRoles('hideLoader');
     this.getAllUsers('hideLoader');
     this.getPaidUsers('hideLoader');
-    this.getMortgages('hideLoader');
+
     this.getOfficeTaskActions('hideLoader');
     this.getRoles('hideLoader');
     this.getEstimators(this.estimatorParams);
-    let params = {
-      limit: 0,
-      offset: 0
-    };
-    this.getCarriers(params);
+
     //this API is for offline clients
     const payload = {
       status: '',
