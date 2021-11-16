@@ -321,7 +321,7 @@ export default {
     this.getVendorIndustries('hideLoader');
     //estimator  have no permission to these APIs
     const userRole = getCurrentUser().attributes.roles[0].machineValue;
-    console.log(userRole, 'userRole');
+
     if (userRole != 'estimator') {
       this.getVendors('hideLoader');
       this.getMortgages('hideLoader');
