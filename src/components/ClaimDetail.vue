@@ -64,6 +64,12 @@
         <div class="col  q-ml-lg">
           <span v-if="getSelectedClaim.lossInfo">
             {{
+              getSelectedClaim.lossInfo.property &&
+              getSelectedClaim.lossInfo.property.houseNumber
+                ? getSelectedClaim.lossInfo.property.houseNumber
+                : ''
+            }},
+            {{
               getSelectedClaim.lossInfo.property
                 ? getSelectedClaim.lossInfo.property
                   ? getSelectedClaim.lossInfo.property.address1
