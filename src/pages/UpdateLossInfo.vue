@@ -51,9 +51,7 @@
 
     <div
       class="row"
-      v-if="
-        lossInfo.attributes.lossInfo && lossInfo.attributes.lossInfo.property
-      "
+      v-if="lossInfo.attributes && lossInfo.attributes.lossInfo.property"
     >
       <div class="heading-light q-mt-none col-4">Address Details</div>
       <div
@@ -73,7 +71,7 @@
         <div
           v-if="
             lossInfo.attributes.lossInfo.property &&
-              lossInfo.attributes.lossInfo.property.address2
+            lossInfo.attributes.lossInfo.property.address2
           "
         >
           {{ lossInfo.attributes.lossInfo.property.address2 }}
@@ -111,8 +109,8 @@
     <div
       class="q-mt-md row"
       v-if="
-        lossInfo.attributes.lossInfo.property &&
-          lossInfo.attributes.lossInfo.property.propertyType
+        lossInfo.attributes &&
+        lossInfo.attributes.lossInfo.property.propertyType
       "
     >
       <div class="heading-light q-mt-none col-xs-4">Property Type</div>
@@ -122,10 +120,7 @@
     </div>
     <div
       class="q-mt-md row"
-      v-if="
-        lossInfo.attributes.lossInfo &&
-          lossInfo.attributes.lossInfo.propertyDesc
-      "
+      v-if="lossInfo.attributes && lossInfo.attributes.lossInfo.propertyDesc"
     >
       <div class="heading-light q-mt-none col-xs-4">Property Description :</div>
       <div class="column q-ml-md">
@@ -138,9 +133,7 @@
     </div>
     <div
       class="q-mt-md row"
-      v-if="
-        lossInfo.attributes.lossInfo && lossInfo.attributes.lossInfo.claimReason
-      "
+      v-if="lossInfo.attributes && lossInfo.attributes.lossInfo.claimReason"
     >
       <div class="heading-light q-mt-none col-xs-4">Claim Reason:</div>
       <div class="column q-ml-md">
@@ -153,9 +146,7 @@
     </div>
     <div
       class="q-mt-md row"
-      v-if="
-        lossInfo.attributes.lossInfo && lossInfo.attributes.lossInfo.serverity
-      "
+      v-if="lossInfo.attributes && lossInfo.attributes.lossInfo.serverity"
     >
       <div class="heading-light q-mt-none col-xs-4">Serverity:</div>
       <div class="column q-ml-md">
@@ -168,7 +159,7 @@
     </div>
     <div
       class="q-mt-md row"
-      v-if="lossInfo.attributes.lossInfo && lossInfo.attributes.lossInfo.cause"
+      v-if="lossInfo.attributes && lossInfo.attributes.lossInfo.cause"
     >
       <div class="heading-light q-mt-none col-xs-4">Cause of Loss:</div>
       <div class="column col-7 q-ml-md">
@@ -187,7 +178,7 @@
     </div>
     <div
       class="q-mt-md row"
-      v-if="lossInfo.attributes.lossInfo && lossInfo.attributes.lossInfo.date"
+      v-if="lossInfo.attributes && lossInfo.attributes.lossInfo.date"
     >
       <div class="heading-light q-mt-none col-xs-4">Date of Loss:</div>
       <div class="column q-ml-md">
@@ -197,9 +188,7 @@
 
     <div
       class="q-mt-md row"
-      v-if="
-        lossInfo.attributes.lossInfo && lossInfo.attributes.lossInfo.claimReason
-      "
+      v-if="lossInfo.attributes && lossInfo.attributes.lossInfo.claimReason"
     >
       <div class="heading-light q-mt-none col-xs-4">Reason For Claim:</div>
       <div class="column q-ml-md">
@@ -212,7 +201,7 @@
     </div>
     <div
       class="q-mt-md row"
-      v-if="lossInfo.attributes.lossInfo && lossInfo.attributes.lossInfo.desc"
+      v-if="lossInfo.attribute && lossInfo.attributes.lossInfo.desc"
     >
       <div class="heading-light q-mt-none col-xs-4">Loss Description:</div>
       <div class="column col-7 q-ml-md">
@@ -343,7 +332,8 @@ export default {
     this.getLossInfo(this.selectedClaimId);
     this.setSelectedClaimId(this.selectedClaimId);
     await this.getSingleClaims(this.selectedClaimId).then(() => {
-      this.lossDetails.policyEffectiveDate = this.claim.policyInfo.effectiveDate;
+      this.lossDetails.policyEffectiveDate =
+        this.claim.policyInfo.effectiveDate;
       this.lossDetails.policyExpireDate = this.claim.policyInfo.expirationDate;
     });
   },
@@ -404,18 +394,23 @@ export default {
       this.$emit('editLossInoDialog', true);
       //This is For Prefilling Values in Loss Info Form
       if (this.lossInfo.attributes.lossInfo.desc) {
-        this.lossDetails.descriptionDwelling = this.lossInfo.attributes.lossInfo.desc;
+        this.lossDetails.descriptionDwelling =
+          this.lossInfo.attributes.lossInfo.desc;
       }
 
-      this.lossDetails.lossAddressName = this.lossInfo.attributes.lossInfo.lossAddressName;
+      this.lossDetails.lossAddressName =
+        this.lossInfo.attributes.lossInfo.lossAddressName;
       this.lossDetails.addressID = this.lossInfo.attributes.lossInfo.addressID;
-      this.lossDetails.property = this.lossInfo.attributes.lossInfo.propertyType;
+      this.lossDetails.property =
+        this.lossInfo.attributes.lossInfo.propertyType;
       if (this.lossInfo.attributes.lossInfo.serverity) {
-        this.lossDetails.severityOfClaimType = this.lossInfo.attributes.lossInfo.serverity;
+        this.lossDetails.severityOfClaimType =
+          this.lossInfo.attributes.lossInfo.serverity;
       }
 
       if (this.lossInfo.attributes.lossInfo.claimReason) {
-        this.lossDetails.reasonClaim = this.lossInfo.attributes.lossInfo.claimReason;
+        this.lossDetails.reasonClaim =
+          this.lossInfo.attributes.lossInfo.claimReason;
       }
 
       if (this.lossInfo.attributes.lossInfo.date) {

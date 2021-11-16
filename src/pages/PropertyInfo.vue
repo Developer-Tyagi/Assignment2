@@ -55,7 +55,7 @@
                   <div
                     v-if="
                       setClientProperty[i - 1].attributes &&
-                        setClientProperty[i - 1].attributes.address2
+                      setClientProperty[i - 1].attributes.address2
                     "
                   >
                     {{ setClientProperty[i - 1].attributes.address2 }}
@@ -153,7 +153,7 @@
                 </div>
                 <div class="row q-ma-md">
                   <div class="col-5 heading-light">Cause Of Loss</div>
-                  <div class="q-ml-xs">
+                  <div class="col-6 q-ml-xs">
                     {{ claim.lossCause ? claim.lossCause.value : '' }} -
                     {{ claim.lossCause ? claim.lossCause.desc : '' }}
                   </div>
@@ -408,9 +408,8 @@ export default {
       this.propertyName = this.setClientProperty[index].attributes.name
         ? this.setClientProperty[index].attributes.name
         : '';
-      this.propertyDescription = this.setClientProperty[
-        index
-      ].attributes.propertyDesc;
+      this.propertyDescription =
+        this.setClientProperty[index].attributes.propertyDesc;
       this.property = this.setClientProperty[index].attributes.propertyType
         ? this.setClientProperty[index].attributes.propertyType
         : '';

@@ -314,7 +314,6 @@
           <q-form ref="editPersonnelForm">
             <q-card class="q-ma-md q-pa-md q-mt-sm">
               <q-select
-                dense
                 v-model="honorific.value"
                 :options="titles"
                 option-value="value"
@@ -452,12 +451,13 @@
             </q-card>
           </q-form>
         </div>
-        <q-btn
-          @click="onEditSave"
-          label="Save"
-          class="single-next-button-style q-mt-lg"
-          size="'xl'"
-        />
+        <div class="row q-mt-md justify-center">
+          <q-btn
+            @click="onEditSave"
+            label="Save"
+            class="single-next-button-style"
+          />
+        </div>
       </q-card>
     </q-dialog>
     <q-dialog v-model="deleteAlertDialog">
