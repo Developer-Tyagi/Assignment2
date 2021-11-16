@@ -287,7 +287,7 @@ export async function uploadDocFileToServer({ dispatch, state }, payload) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'positive',
-      message: '  template has been uploaded'
+      message: 'template has been uploaded successfully !'
     });
     return data;
   } catch (e) {
@@ -364,7 +364,10 @@ export async function addTemplate({ dispatch, state }, payload) {
       '/templates',
       buildApiData('templatetypes', payload)
     );
-
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Template has been generated successfully !'
+    });
     dispatch('setLoading', false);
     return true;
   } catch (e) {

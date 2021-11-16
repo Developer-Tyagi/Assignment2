@@ -98,6 +98,11 @@
             <span class="text-bold" style="line-height: 36px">{{
               tab.name
             }}</span>
+            <q-badge color="green" rounded class="column items-center">
+              <span class="q-mt-sm text-bold text-capitalize text-black">
+                please wait for sometime if document is not visible</span
+              >
+            </q-badge>
             <div class="row">
               <q-btn @click="openAddTemplateBox" color="primary">
                 Add Template
@@ -412,19 +417,25 @@
                   ]"
                 />
               </div>
-
-              <!-- <div class="column items-center"> -->
-              <input
-                id="uploadFile"
-                type="file"
-                style="width: 250px"
-                accept=".doc,.docx,"
-                @change="onFileInputClick"
+              <div>
+                <input
+                  id="uploadFile"
+                  type="file"
+                  style="width: 250px"
+                  accept=".doc,.docx,"
+                  @change="onFileInputClick"
+                />
+                <span class="form-heading q-mt-lg text-capitalize q-pa-sm">
+                  only doc and docx files are allowed
+                </span>
+              </div>
+              <q-btn
+                class="q-mt-md"
+                size="md"
+                color="primary"
+                label="upload"
+                @click="uploadFileToServer()"
               />
-              <span class="form-heading q-mt-lg text-capitalize q-pa-sm">
-                only doc and docx files are allowed
-              </span>
-              <!-- </div> -->
             </q-form>
           </div>
         </div>
@@ -588,32 +599,36 @@ export default {
     getBase64,
 
     async onFileInputClick(event) {
-      var success = await this.$refs.uploadTemplateForm.validate();
-      if (success) {
-        document.getElementById('uploadFile').click();
-        this.dataURI = await this.getBase64(event.target.files[0]);
+      document.getElementById('uploadFile').click();
+      this.dataURI = await this.getBase64(event.target.files[0]);
 
-        document.getElementById('uploadFile').value;
-
-        await this.uploadFileToServer();
-      }
+      document.getElementById('uploadFile').value;
     },
     async uploadFileToServer() {
-      this.setLoading(true);
+      var success = await this.$refs.uploadTemplateForm.validate();
+      if (success && this.dataURI) {
+        this.setLoading(true);
 
-      const formData = new FormData();
-      formData.append('templateValue', this.uploadTemplatetype.value);
-      formData.append('file', this.dataURItoBlob(this.dataURI));
+        const formData = new FormData();
+        formData.append('templateValue', this.uploadTemplatetype.value);
+        formData.append('file', this.dataURItoBlob(this.dataURI));
 
-      const payload = {
-        templateMachineValue: this.uploadTemplatetype.machineValue,
-        formData: formData
-      };
-      await this.uploadDocFileToServer(payload);
-
-      this.setLoading(false);
-      this.uploadTemplateDialogBox = false;
-      this.uploadTemplatetype = {};
+        const payload = {
+          templateMachineValue: this.uploadTemplatetype.machineValue,
+          formData: formData
+        };
+        await this.uploadDocFileToServer(payload);
+        await this.getAllTemplate();
+        this.setLoading(false);
+        this.uploadTemplateDialogBox = false;
+        this.uploadTemplatetype = {};
+      } else {
+        this.$q.notify({
+          message: 'Please fill the above details first',
+          position: 'top',
+          type: 'negative'
+        });
+      }
     },
     updateMarkup(val) {
       this.post.body = val;
@@ -669,6 +684,7 @@ export default {
             }
           };
           const success = await this.addTemplate(payload);
+
           if (success) {
             this.addTemplateDialogBox = false;
             await this.getAllTemplate();
