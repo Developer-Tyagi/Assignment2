@@ -375,7 +375,11 @@ export default {
             delete payload.address;
           }
           const response = await this.addCarrier(payload);
-          this.getCarriers();
+          const params = {
+            hideLoader: false
+          };
+          this.getCarriers(params);
+
           if (response.id) {
             this.carrier.id = response.id;
             payload.id = response.id;
