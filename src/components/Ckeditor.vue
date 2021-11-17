@@ -23,6 +23,7 @@ export default {
     editorData: '',
     showEditor: false,
     config: {
+      allowedContent: true,
       height: 150,
       toolbarGroups: [
         { name: 'document', groups: ['mode', 'document', 'doctools'] },
