@@ -98,11 +98,7 @@
             <span class="text-bold" style="line-height: 36px">{{
               tab.name
             }}</span>
-            <q-badge color="green" rounded class="column items-center">
-              <span class="q-mt-sm text-bold text-capitalize text-black">
-                please wait for sometime if document is not visible</span
-              >
-            </q-badge>
+
             <div class="row">
               <q-btn @click="openAddTemplateBox" color="primary">
                 Add Template
@@ -619,8 +615,15 @@ export default {
         };
         await this.uploadDocFileToServer(payload);
         await this.getAllTemplate();
+
         this.setLoading(false);
         this.uploadTemplateDialogBox = false;
+        this.$q.notify({
+          message: ' please wait for sometime if document is not visible',
+          position: 'top',
+          type: 'positive',
+          timeout: 7500
+        });
         this.uploadTemplatetype = {};
       } else {
         this.$q.notify({
