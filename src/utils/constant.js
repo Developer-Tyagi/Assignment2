@@ -39,5 +39,11 @@ export const constants = {
     TEMPLATE_TYPE_NOT_SELECTED: 'Please Select Template Type!',
     CKEDITOR_BODY_EMPTY: 'Please Enter Details in Body!',
     CARRIER_INFO_EMPTY: 'Carrier info not present'
+  },
+  RoutingUrls: {
+    CLAIM_GURU_LIVE_SERVER: 'https://app.claimguru.com/',
+    CLAIM_GURU_DEV_SERVER: 'https://api.claimguru.cilalabs.dev',
+    SIGNUP_LIVE_SERVER_ROUTING: 'www.claimguru.com',
+    SIGNUP_DEV_SERVER_ROUTING: 'https://claimguru.cilalabs.dev/'
   }
 };

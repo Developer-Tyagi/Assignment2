@@ -88,7 +88,7 @@
         <div
           v-if="!isMobile()"
           class="row justify-center  cursor-pointer"
-          @click="$router.push('/signup?plan=office')"
+          @click="onClickSignupButton"
         >
           <a class="text-white" style="text-decoration: none">Sign Up</a>
         </div>
@@ -205,6 +205,15 @@ export default {
             this.$router.push('/claimstats');
           }
         }
+      }
+    },
+    onClickSignupButton() {
+      if (process.env.API == constants.RoutingUrls.CLAIM_GURU_DEV_SERVER) {
+        window.location = constants.RoutingUrls.SIGNUP_DEV_SERVER_ROUTING;
+      } else if (
+        process.env.API == constants.RoutingUrls.CLAIM_GURU_LIVE_SERVER
+      ) {
+        window.location = constants.RoutingUrls.SIGNUP_LIVE_SERVER_ROUTING;
       }
     }
   },
