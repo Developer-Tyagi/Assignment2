@@ -208,13 +208,7 @@ export default {
       }
     },
     onClickSignupButton() {
-      if (process.env.API == constants.RoutingUrls.CLAIM_GURU_DEV_SERVER) {
-        window.location = constants.RoutingUrls.SIGNUP_DEV_SERVER_ROUTING;
-      } else if (
-        process.env.API == constants.RoutingUrls.CLAIM_GURU_LIVE_SERVER
-      ) {
-        window.location = constants.RoutingUrls.SIGNUP_LIVE_SERVER_ROUTING;
-      }
+        window.location = process.env.LP_APP_URL
     }
   },
 
