@@ -107,7 +107,10 @@
         </div>
       </q-card>
 
-      <div class="row justify-center q-mt-md">
+      <div
+        v-if="user.roles[0].value == 'Owner'"
+        class="row justify-center q-mt-md"
+      >
         <q-btn
           label="Redirect to Google Auth"
           class="single-next-button-style q-mt-lg"
