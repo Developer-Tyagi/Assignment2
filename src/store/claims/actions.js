@@ -1242,16 +1242,16 @@ export async function getEsxDocs({ commit, dispatch }, claimID) {
 export async function uploadOfflineDocument({ dispatch, state }, document) {
   if (document.signed_document) {
     let formData = new FormData();
-    let blob = await dataURItoBlob(document.signed_document);
-
+    const str2blob = txt => new Blob([txt]);
+    let blob = str2blob(document.signed_document);
     formData.append('file', blob);
     formData.append('type', document.template_type);
+    formData.append('convertToPDF', true);
 
     let payload = {
       id: document.claimId,
       formData: formData
     };
-
     await dispatch('uploadMultipleDocument', payload).then(res => {});
   }
 
@@ -1261,6 +1261,7 @@ export async function uploadOfflineDocument({ dispatch, state }, document) {
 
     formData1.append('file', blobData);
     formData1.append('type', 'pa-signature');
+    formData1.append('convertToPDF', true);
     let payload = {
       id: document.claimId,
       formData: formData1
@@ -1274,6 +1275,7 @@ export async function uploadOfflineDocument({ dispatch, state }, document) {
 
     formData1.append('file', blobData);
     formData1.append('type', 'insured_signature');
+    formData1.append('convertToPDF', true);
     let payload = {
       id: document.claimId,
       formData: formData1
@@ -1286,6 +1288,7 @@ export async function uploadOfflineDocument({ dispatch, state }, document) {
 
     formData1.append('file', blobData);
     formData1.append('type', 'coinsured_signature');
+    formData1.append('convertToPDF', true);
     let payload = {
       id: document.claimId,
       formData: formData1

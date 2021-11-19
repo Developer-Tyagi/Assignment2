@@ -31,6 +31,6 @@ export default function() {
     estimator: {},
     claimPOLDocument: {},
     actors: [],
-    signedContractDocument: ''
+    signedContractDocument: []
   };
 }
