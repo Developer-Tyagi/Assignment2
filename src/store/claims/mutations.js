@@ -29,7 +29,7 @@ export function setMortgage(state, mortgage) {
   };
 }
 export function setContractDocument(state, signedContractDocument) {
-  state.signedContractDocument = signedContractDocument;
+  state.signedContractDocument.push(signedContractDocument);
 }
 export function setClaimVendors(state, vendorLists) {
   state.vendorLists = {

@@ -16,7 +16,7 @@
     <div class="q-mt-md">
       <div class="row q-gutter-md justify-center">
         <q-btn
-          v-if="finalSignature != false && finshButtonOnlineSign == false"
+          v-if="finalSignature != true && finshButtonOnlineSign == false"
           class="col-2"
           label="Skip"
           @click="skip"
@@ -25,7 +25,7 @@
 
         <q-btn
           class="col-2"
-          :label="finalSignature == false ? 'Finish' : 'Submit'"
+          :label="finalSignature == true ? 'Finish' : 'Submit'"
           @click="save"
           color="primary"
         />
