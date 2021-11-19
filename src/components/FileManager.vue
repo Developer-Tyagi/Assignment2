@@ -349,7 +349,7 @@
                 >
                   <div class="row">
                     <q-radio
-                      @input="setUsersName(user.name)"
+                      @input="setUsersName(user, 'user')"
                       v-model="assignFilter"
                       :val="user.name"
                       dense
@@ -376,7 +376,7 @@
                 >
                   <div class="row">
                     <q-radio
-                      @input="setFilterName(filter.name)"
+                      @input="setFilterName(filter, 'role')"
                       v-model="assignFilter"
                       :val="filter.name"
                       dense
@@ -718,6 +718,9 @@ export default {
 
   data() {
     return {
+      selectedRoleMachineValue: '',
+      type: '',
+      userId: '',
       finshButtonOnlineSign: false,
       signatureArrayIndex: 0,
       userRoleIndex: 0,
@@ -1164,10 +1167,10 @@ export default {
       const payload = {
         id: this.documentID,
         shareData: {
-          type: this.assignFilter,
+          type: this.type,
           role: this.role.value,
 
-          id: this.documentID
+          id: this.type == 'role' ? this.selectedRoleMachineValue : this.userId
         }
       };
 
@@ -1178,11 +1181,15 @@ export default {
       this.role.value = '';
       this.assignFilter = '';
     },
-    setFilterName(name) {
-      this.filterName = name;
+    setFilterName(filter, role) {
+      this.filterName = filter.name;
+      this.selectedRoleMachineValue = filter.machineValue;
+      this.type = role;
     },
-    setUsersName(name) {
-      this.userRole = name;
+    setUsersName(user, userType) {
+      this.userRole = user.name;
+      this.type = userType;
+      this.userId = user.id;
     },
 
     async addFile() {
