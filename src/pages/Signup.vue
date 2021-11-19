@@ -49,11 +49,13 @@
                     <span
                       class="q-ml-auto text-capitalize"
                       v-if="
-                        planInfo.attributes &&
-                        planInfo.attributes.coupons[0] &&
-                        planInfo.attributes.coupons[0].amtAfterDicount
-                          ? planInfo.attributes.coupons[0].amtAfterDicount
-                          : ''
+                        (planInfo.attributes &&
+                          planInfo.attributes.coupons[0] &&
+                          planInfo.attributes.coupons[0].amtAfterDicount &&
+                          planInfo.attributes.coupons[0].amtAfterDicount) ||
+                          (planInfo.attributes &&
+                            planInfo.attributes.coupons[1] &&
+                            planInfo.attributes.coupons[1].amtAfterDicount)
                       "
                       >Amount to Pay after Discount</span
                     >
@@ -64,14 +66,25 @@
                     <span
                       class="q-ml-auto"
                       v-if="
+                        (planInfo.attributes &&
+                          planInfo.attributes.coupons[0] &&
+                          planInfo.attributes.coupons[0].amtAfterDicount &&
+                          planInfo.attributes.coupons[0].amtAfterDicount) ||
+                          (planInfo.attributes &&
+                            planInfo.attributes.coupons[1] &&
+                            planInfo.attributes.coupons[1].amtAfterDicount)
+                      "
+                    >
+                      $
+                      {{
                         planInfo.attributes &&
                         planInfo.attributes.coupons[0] &&
                         planInfo.attributes.coupons[0].amtAfterDicount
                           ? planInfo.attributes.coupons[0].amtAfterDicount
-                          : ''
-                      "
-                    >
-                      $ {{ planInfo.attributes.coupons[0].amtAfterDicount }}
+                          : planInfo.attributes &&
+                            planInfo.attributes.coupons[1] &&
+                            planInfo.attributes.coupons[1].amtAfterDicount
+                      }}
                     </span>
                   </div>
                 </div>
