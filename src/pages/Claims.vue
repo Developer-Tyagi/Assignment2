@@ -1,7 +1,13 @@
 <template>
-  <q-page>
+  <q-page
+    class="mobile-container-page"
+    :style-fn="offset => ({ paddingTop: `${offset - 40}px` })"
+  >
     <div>
-      <div class="actions-div">
+      <div
+        class="actions-div fixed-top"
+        style="top: calc(50px + env(safe-area-inset-top)); z-index:1;"
+      >
         <q-input
           v-model="searchText"
           placeholder="Search"
