@@ -6,11 +6,15 @@
           class=" q-mb-md text-capitalize"
           style="margin-left:60%;"
           v-if="
-            planInfo.attributes &&
-            planInfo.attributes.coupons[0] &&
-            planInfo.attributes.coupons[0].amtAfterDicount
-              ? planInfo.attributes.coupons[0].amtAfterDicount
-              : ''
+            (planInfo.attributes &&
+              planInfo.attributes.coupons[0] &&
+              planInfo.attributes.coupons[0].amtAfterDicount) ||
+              (planInfo.attributes &&
+                planInfo.attributes.coupons &&
+                planInfo.attributes.coupons[1]) ||
+              (planInfo.attributes &&
+                planInfo.attributes.coupons &&
+                planInfo.attributes.coupons[0].trial)
           "
         >
           <q-badge color="green">
