@@ -1007,10 +1007,15 @@ export async function getAccess({ commit, dispatch }) {
   }
 }
 // API for getting Plan Info
-export async function getPlanInfo({ commit, dispatch }, params) {
+export async function getPlanInfo({ commit, dispatch }, payload) {
   dispatch('setLoading', true);
   try {
-    const { data } = await request.get('/plans/office', params);
+    // const plan = payload.plan;
+    const params = {
+      coupon: payload.coupon,
+      trial: payload.trial
+    };
+    const { data } = await request.get('plans/' + payload.plan, params);
     commit('setPlanInfo', data);
     dispatch('setLoading', false);
   } catch (e) {

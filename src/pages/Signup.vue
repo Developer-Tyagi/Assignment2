@@ -3,12 +3,15 @@
     <div class="signup-container q-px-md q-py-lg">
       <div v-if="isValidPlan">
         <div
+          class=" q-mb-md text-capitalize"
+          style="margin-left:60%;"
           v-if="
-            planInfo.attributes && planInfo.attributes.amount
-              ? planInfo.attributes.amount
+            planInfo.attributes &&
+            planInfo.attributes.coupons[0] &&
+            planInfo.attributes.coupons[0].amtAfterDicount
+              ? planInfo.attributes.coupons[0].amtAfterDicount
               : ''
           "
-          class="text-center q-mb-md text-capitalize"
         >
           <q-badge color="green">
             Coupon Applied Successfully
@@ -42,8 +45,10 @@
                     <span
                       class="q-ml-auto text-capitalize"
                       v-if="
-                        planInfo.attributes && planInfo.attributes.amount
-                          ? planInfo.attributes.amount
+                        planInfo.attributes &&
+                        planInfo.attributes.coupons[0] &&
+                        planInfo.attributes.coupons[0].amtAfterDicount
+                          ? planInfo.attributes.coupons[0].amtAfterDicount
                           : ''
                       "
                       >Amount to Pay after Discount</span
@@ -55,16 +60,15 @@
                     <span
                       class="q-ml-auto"
                       v-if="
-                        planInfo.attributes && planInfo.attributes.amount
-                          ? planInfo.attributes.amount
+                        planInfo.attributes &&
+                        planInfo.attributes.coupons[0] &&
+                        planInfo.attributes.coupons[0].amtAfterDicount
+                          ? planInfo.attributes.coupons[0].amtAfterDicount
                           : ''
                       "
-                      >${{
-                        planInfo.attributes && planInfo.attributes.amount
-                          ? planInfo.attributes.amount
-                          : ''
-                      }}</span
                     >
+                      $ {{ planInfo.attributes.coupons[0].amtAfterDicount }}
+                    </span>
                   </div>
                 </div>
               </q-carousel-slide>
@@ -836,11 +840,13 @@ export default {
       if (this.$route.query.trial) {
         this.user.plan.trial = this.$route.query.trial;
       }
-      const params = {
+
+      const payload = {
+        plan: this.$route.query.plan,
         coupon: this.user.plan.coupon,
         trial: this.user.plan.trial
       };
-      this.getPlanInfo(params);
+      this.getPlanInfo(payload);
     }
 
     if (getToken()) {
