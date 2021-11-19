@@ -106,7 +106,7 @@
           </div>
         </div>
       </q-card>
-
+      <!--Redirect Button is only need to show to the owner-->
       <div
         v-if="user.roles[0].value == 'Owner'"
         class="row justify-center q-mt-md"
