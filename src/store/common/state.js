@@ -1,4 +1,4 @@
-export default function () {
+export default function() {
   return {
     notificationRouteTo: '',
     showLoading: false,
@@ -34,6 +34,7 @@ export default function () {
     pageAccess: [],
     organization: [],
     isOnline: navigator.onLine,
-    isOfflineClientEdit: false
+    isOfflineClientEdit: false,
+    planInfo: []
   };
 }
