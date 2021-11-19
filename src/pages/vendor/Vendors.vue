@@ -1,5 +1,8 @@
 <template>
-  <div class="mobile-container-page-without-search">
+  <q-page
+    class="mobile-container-page"
+    :style-fn="offset => ({ paddingTop: `${offset - 40}px` })"
+  >
     <VendorsList
       ref="list"
       :selective="false"
@@ -23,7 +26,7 @@
         />
       </q-card>
     </q-dialog>
-  </div>
+  </q-page>
 </template>
 
 <script>

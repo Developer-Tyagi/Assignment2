@@ -1,6 +1,9 @@
 <template>
-  <div class="mobile-container-page-without-search">
-    <div class="actions-div">
+  <div>
+    <div
+      class="fixed-top actions-div bg-white"
+      style="top: calc(50px + env(safe-area-inset-top)); z-index:1;"
+    >
       <q-input
         dense
         v-model="searchText"
