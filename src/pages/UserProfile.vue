@@ -106,8 +106,11 @@
           </div>
         </div>
       </q-card>
-
-      <div class="row justify-center q-mt-md">
+      <!--Redirect Button is only need to show to the owner-->
+      <div
+        v-if="user.roles[0].value == 'Owner'"
+        class="row justify-center q-mt-md"
+      >
         <q-btn
           label="Redirect to Google Auth"
           class="single-next-button-style q-mt-lg"
