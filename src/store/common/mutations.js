@@ -141,7 +141,6 @@ export async function setAllTemplate(state, templates) {
   }
 
   await localDB.allTemplates.bulkAdd(types);
-  /////////////
 }
 // setOfflineTemplates;
 export async function setOfflineTemplates(state) {
@@ -190,4 +189,8 @@ export function setPaidUsers(state, data) {
     name: allUser.attributes.name,
     id: allUser.id
   }));
+}
+
+export async function setPlanInfo(state, planInfo) {
+  state.planInfo = planInfo;
 }
