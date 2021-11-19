@@ -42,7 +42,6 @@
           class="q-ml-md"
         />
         <span class="q-pl-md cursor-pointer">
-          <!-- {Client Full name}_claim_{template_name}_signged -->
           <a @click="showSignedDocument()">
             {{ this.claim.client.fname }}_claim_{{
               templatetype.value
@@ -120,6 +119,34 @@
         />
       </q-card>
     </q-dialog>
+
+    <!-- Display contract document -->
+    <q-dialog
+      v-model="displayContractDocument"
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <CustomBar
+        dialogName="Document"
+        @closeDialog="displayContractDocument = false"
+      />
+      <q-card class="">
+        <q-card-section
+          class="q-pa-sm"
+          style="width:2480px; overflow: scroll; height:88%"
+        >
+          <div v-html="finalDocumentString"></div>
+        </q-card-section>
+        <q-card-actions class="" v-if="showSignBtn">
+          <q-btn
+            color="primary"
+            label="Sign Document"
+            @click="onSignButtonClick('pa_sign')"
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 <script>
@@ -134,7 +161,6 @@ import {
   FilesystemDirectory,
   FilesystemEncoding
 } from '@capacitor/core';
-// import PdfViewer from 'components/PdfViewer';
 
 const { Filesystem } = Plugins;
 export default {
@@ -159,8 +185,9 @@ export default {
       contractDocument: '',
       tokenArray: [],
       document: '',
-
-      templatetype: { value: '', machineValue: '' }
+      displayContractDocument: false,
+      templatetype: { value: '', machineValue: '' },
+      showSignBtn: false
     };
   },
 
@@ -246,7 +273,7 @@ export default {
       { key: '{{.Claim.CompanyExpense}}', value: '' },
       { key: '{{.Claim.CombinedExpense}}', value: '' },
 
-      // // Adjuster Tokens
+      // Adjuster Tokens
 
       {
         key: '{{.Adjuster.Name}}',
@@ -898,29 +925,8 @@ export default {
         var response = await this.addTemplateLocal(intialContract);
         this.documentId = response.id;
         this.document = '';
-        this.$q
-          .dialog({
-            message: documentString,
-            ok: {
-              push: true,
-              label: 'Sign Document'
-            },
-            cancel: {
-              push: true,
-              label: 'close'
-            },
-
-            html: true
-          })
-          .onOk(() => {
-            this.onSignButtonClick('pa_sign');
-          })
-          .onCancel(() => {
-            // console.log('Cancel')
-          })
-          .onDismiss(() => {
-            // console.log('I am triggered on both OK and Cancel')
-          });
+        this.showSignBtn = true;
+        this.displayContractDocument = true;
       } else {
         const signedContract = {
           signed_document: documentString
@@ -937,86 +943,14 @@ export default {
         };
 
         this.signedDocument = documentString;
-        this.$q
-          .dialog({
-            message: documentString,
-            cancel: {
-              push: true,
-              label: 'close'
-            },
-            html: true
-          })
-          .onOk(() => {})
-          .onCancel(() => {
-            // console.log('Cancel')
-          })
-          .onDismiss(() => {
-            // console.log('I am triggered on both OK and Cancel')
-          });
+        this.showSignBtn = false;
+        this.displayContractDocument = true;
       }
-
-      // const contractDocumentHtml = htmlToPdfmake(documentString, {
-      //   imagesByReference: true
-      // });
-
-      // pdfMake.createPdf(contractDocumentHtml).getDataUrl(async dataURL => {
-      //   this.document = dataURL;
-
-      //   if (documentType == 'signedDocument') {
-      //     const signedContract = {
-      //       signed_document: this.document
-      //     };
-
-      //     await localDB.contractDocument.update(
-      //       this.documentId,
-      //       signedContract
-      //     );
-      //     this.setContractDocument(this.document);
-      //     this.signedDocument = this.document;
-      //     this.finalSignature = true;
-      //     this.signedPdfDailog = true;
-      //     this.contractDocumentDialog = false;
-      //   } else {
-      //     const intialContract = {
-      //       claimId: this.selectedClaimId,
-      //       document: this.document,
-      //       template_type: this.templatetype.machineValue
-      //     };
-      //     var response = await this.addTemplateLocal(intialContract);
-      //     this.contractDocumentDialog = true;
-      //     this.contractDocument = response.document;
-      //     this.pdfDailog = true;
-
-      //     this.documentId = response.id;
-      //     this.document = '';
-      //   }
-      // });
     },
 
     async onClickGenerateDocument() {
       this.convertHtmlToPdf(this.finalDocumentString);
     },
-    // dataURItoBlob(dataURI) {
-    //   // convert base64/URLEncoded data component to raw binary data held in a string
-    //   var byteString;
-    //   if (dataURI.split(',')[0].indexOf('base64') >= 0)
-    //     byteString = atob(dataURI.split(',')[1]);
-    //   else byteString = unescape(dataURI.split(',')[1]);
-
-    //   // separate out the mime component
-    //   var mimeString = dataURI
-    //     .split(',')[0]
-    //     .split(':')[1]
-    //     .split(';')[0];
-
-    //   // write the bytes of the string to a typed array
-    //   var ia = new Uint8Array(byteString.length);
-    //   for (var i = 0; i < byteString.length; i++) {
-    //     ia[i] = byteString.charCodeAt(i);
-    //   }
-
-    //   return new Blob([ia], { type: mimeString });
-    // },
     async onSavingDocument() {
       this.pdfDailog = false;
       this.contractDocumentDialog = false;
@@ -1067,6 +1001,7 @@ export default {
 
     onSignButtonClick(tokenValue) {
       this.signTokenValue = tokenValue;
+      this.displayContractDocument = false;
       this.paSignaturePadDialog = true;
     },
     //This function is used for accepting the values that are coming from signature pad component
@@ -1102,20 +1037,9 @@ export default {
       this.onSavingDocument();
     },
     showSignedDocument() {
-      this.$q
-        .dialog({
-          message: this.FinalDocumentObject.document,
-          html: true
-        })
-        .onOk(() => {
-          // console.log('OK')
-        })
-        .onCancel(() => {
-          // console.log('Cancel')
-        })
-        .onDismiss(() => {
-          // console.log('I am triggered on both OK and Cancel')
-        });
+      this.finalDocumentString = this.FinalDocumentObject.document;
+      this.showSignBtn = false;
+      this.displayContractDocument = true;
     }
   },
 
