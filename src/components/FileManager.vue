@@ -724,7 +724,7 @@ export default {
       finshButtonOnlineSign: false,
       signatureArrayIndex: 0,
       userRoleIndex: 0,
-      finalSignature: true,
+      finalSignature: false,
       userName: '',
       appSignDocumentDailog: false,
       signaturePadDialog: false,
