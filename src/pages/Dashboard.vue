@@ -2,7 +2,7 @@
   <!-- mobile-container-page listing-height -->
   <div>
     <q-page
-      class="q-pt-lg bg-white"
+      class="q-pt-lg bg-white "
       style=" border-radius: 0 0 40px 40px; "
       padding
     >
@@ -11,16 +11,16 @@
         column
         justify-around
       "
-        style="`border-radius: 0 0 40px 40px; ` "
+        style="border-radius: 0 0 40px 40px; min-height: 450px"
       >
-        <div class="row col-4  justify-around">
+        <div class="row col-4  justify-around dashboard-row">
           <div
             class="column col iconBackground items-center"
             @click="onClickNewLead"
             style=""
           >
             <q-icon class="col self-center gridIcon">
-              <q-img src="~assets/LEADS.svg" />
+              <q-img src="~assets/LEADS.svg" height="80px" contain />
             </q-icon>
 
             <div
@@ -40,7 +40,11 @@
             @click="$router.push('/clients')"
           >
             <q-icon class="col self-center gridIcon">
-              <q-img src="~assets/Clients_dashboard.svg" />
+              <q-img
+                src="~assets/Clients_dashboard.svg"
+                height="80px"
+                contain
+              />
             </q-icon>
 
             <div
@@ -55,13 +59,13 @@
             </div>
           </div>
         </div>
-        <div class="row  col-4  justify-around">
+        <div class="row  col-4  justify-around dashboard-row">
           <div
             class="column col iconBackground items-center"
             @click="$router.push('/vendors')"
           >
             <q-icon class="col self-center gridIcon">
-              <q-img src="~assets/VENDOR.svg" />
+              <q-img src="~assets/VENDOR.svg" height="80px" contain />
             </q-icon>
 
             <div
@@ -81,7 +85,7 @@
             @click="$router.push('/claims')"
           >
             <q-icon class="col self-center gridIcon">
-              <q-img src="~assets/CLAIMS.svg" />
+              <q-img src="~assets/CLAIMS.svg" height="80px" contain />
             </q-icon>
 
             <div
@@ -96,13 +100,13 @@
             </div>
           </div>
         </div>
-        <div class="row col-4  justify-around">
+        <div class="row col-4  justify-around dashboard-row">
           <div
             class="column col iconBackground items-center"
             @click="selectClaimDialog = true"
           >
             <q-icon class="col self-center gridIcon">
-              <q-img src="~assets/scan_dashboard.svg" />
+              <q-img src="~assets/scan_dashboard.svg" height="80px" contain />
             </q-icon>
 
             <div
@@ -124,7 +128,7 @@
             @click="toCameraDialogBox()"
           >
             <q-icon class="col self-center mobileIcon">
-              <q-img src="~assets/camera_dashboard.svg" height="80%" contain />
+              <q-img src="~assets/camera_dashboard.svg" height="80px" contain />
             </q-icon>
 
             <div
@@ -551,6 +555,9 @@ export default {
   @media only screen and (max-width: 767px) {
     max-width: 150px !important;
     height: 175px;
+  }
+  @media only screen and (max-height: 736px) {
+    height: 150px;
   }
 }
 .cardHeight {
