@@ -1276,7 +1276,7 @@ export default {
           task: []
         },
 
-        priority: 'low',
+        priority: false,
         assignedTo: [
           {
             type: '',
@@ -1375,13 +1375,13 @@ export default {
     validateEmail,
 
     //to Delete Admin Action item
-    toDeleteActionItem(item) {
+    async toDeleteActionItem(item) {
       const payload = {
         itemID: item.id,
         workFlowID: this.selectedWorkflowID
       };
       this.adminActionItemDelete(payload);
-      this.getAllWorkFlow(this.claimType);
+      await this.getAllWorkFlow(this.claimType);
     },
     addDefaultActionItem() {
       this.addDefaultActionDialogBox = true;
@@ -1394,7 +1394,7 @@ export default {
           task: []
         },
 
-        priority: 'low',
+        priority: false,
         assignedTo: [
           {
             type: '',
@@ -1447,20 +1447,20 @@ export default {
           : '';
 
       this.actions.actions.onComplete[0].task =
-        item.actions.onComplete[0] && item.actions.onComplete[0].task
+        item.actions.onComplete && item.actions.onComplete[0].task
           ? item.actions.onComplete[0].task
           : [];
       this.actions.actions.onComplete[0].type =
-        item.actions.onComplete[0] && item.actions.onComplete[0].type
+        item.actions.onComplete && item.actions.onComplete[0].type
           ? item.actions.onComplete[0].type
           : '';
 
       this.actions.actions.onOverdue[0].type =
-        item.actions.onOverdue[0] && item.actions.onOverdue[0].type
+        item.actions.onOverdue && item.actions.onOverdue[0].type
           ? item.actions.onOverdue[0].type
           : '';
       this.actions.actions.onOverdue[0].task =
-        item.actions.onOverdue[0] && item.actions.onOverdue[0].task
+        item.actions.onOverdue && item.actions.onOverdue[0].task
           ? item.actions.onOverdue[0].task
           : [];
 
@@ -1706,12 +1706,6 @@ export default {
       }
     },
 
-    //this is used for edit toggle priority
-    editTogglePriority() {
-      if (this.editTogglePriorityKey) {
-        this.editActions.priority = 'critical';
-      } else this.editTogglePriorityKey = false;
-    },
     //  Finding and Clearing the Other Sub data while changing the main DRopdown data
     createdWhenSubType(value, isEditable) {
       if (isEditable) {
@@ -1865,7 +1859,7 @@ export default {
             type: '',
             task: []
           },
-          priority: 'low',
+          priority: false,
           assignedTo: [
             {
               type: '',
@@ -1907,7 +1901,7 @@ export default {
           attributes: {
             name: this.actions.name,
             isEnabled: this.actions.isEnabled,
-            createdWhen: {
+            createWhen: {
               type: this.actions.createWhen.type,
               task: this.actions.createWhen.task
             },
@@ -1955,7 +1949,7 @@ export default {
             type: '',
             task: []
           },
-          priority: 'low',
+          priority: false,
           assignedTo: [
             {
               type: '',
