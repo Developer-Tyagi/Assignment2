@@ -714,11 +714,13 @@
               </div>
               <div class="col-2 q-mt-xs">
                 <q-toggle
-                  v-model="priority"
+                  v-model="defaultPriority"
                   left-label
                   @input="TogglePriority"
                 />
-                <q-badge color="primary" v-if="priority == true">High</q-badge>
+                <q-badge color="primary" v-if="defaultPriority == true"
+                  >High</q-badge
+                >
                 <q-badge v-else color="primary">Low</q-badge>
               </div>
             </div>
@@ -1221,7 +1223,7 @@ export default {
       userId: '',
       editOrganizsationInfoDialog: false,
       editUserInfoDialog: false,
-      priority: false,
+      defaultPriority: false,
       selectedRole: '',
       organizations: {
         users: {
@@ -1276,7 +1278,7 @@ export default {
           task: []
         },
 
-        priority: false,
+        priority: '',
         assignedTo: [
           {
             type: '',
@@ -1386,6 +1388,7 @@ export default {
     addDefaultActionItem() {
       this.addDefaultActionDialogBox = true;
       this.editDefaultActionItem = false;
+      this.defaultPriority = false;
       this.actions = {
         name: '',
         isEnabled: false,
@@ -1394,7 +1397,7 @@ export default {
           task: []
         },
 
-        priority: false,
+        priority: '',
         assignedTo: [
           {
             type: '',
@@ -1435,6 +1438,7 @@ export default {
       this.actions.createWhen.task =
         item.createWhen && item.createWhen.task ? item.createWhen.task : [];
       this.actions.priority = item.priority;
+      this.editedDefaultPriority(this.actions.priority);
       this.actions.assignedTo[0].id =
         item.assignedTo && item.assignedTo[0].id ? item.assignedTo[0].id : '';
       this.actions.assignedTo[0].name =
@@ -1513,6 +1517,12 @@ export default {
             false
           );
       }
+    },
+    //this function is used for resetting the Dafault Priority toggle
+    editedDefaultPriority(val) {
+      if (val == 'critical') {
+        this.defaultPriority = true;
+      } else this.defaultPriority = false;
     },
     // this function is used to update the subcolumn of AssignTo data.
     async callAssignApi(val, isEditable) {
@@ -1701,9 +1711,9 @@ export default {
     },
     // Toggle Priority Set
     TogglePriority() {
-      if (this.priority == true) {
+      if (this.defaultPriority) {
         this.actions.priority = 'critical';
-      }
+      } else this.actions.priority = 'low';
     },
 
     //  Finding and Clearing the Other Sub data while changing the main DRopdown data
@@ -1852,6 +1862,7 @@ export default {
         this.addDefaultActionDialogBox = false;
         this.getAllWorkFlow(this.claimType);
         /*  Clearing the form     */
+        this.defaultPriority = false;
         this.actions = {
           name: '',
           isEnabled: false,
@@ -1859,7 +1870,7 @@ export default {
             type: '',
             task: []
           },
-          priority: false,
+          priority: '',
           assignedTo: [
             {
               type: '',
@@ -1942,6 +1953,7 @@ export default {
 
         this.getAllWorkFlow(this.claimType);
         /*  Clearing the form     */
+        this.defaultPriority = false;
         this.actions = {
           name: '',
           isEnabled: false,
@@ -1949,7 +1961,7 @@ export default {
             type: '',
             task: []
           },
-          priority: false,
+          priority: '',
           assignedTo: [
             {
               type: '',
