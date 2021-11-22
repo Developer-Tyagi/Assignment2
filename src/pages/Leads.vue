@@ -1,43 +1,35 @@
 <template>
-  <q-page
-    class="mobile-container-page"
-    :style-fn="offset => ({ paddingTop: `${offset - 10}px` })"
-  >
+  <q-page>
     <div
-      class="fixed-top bg-white"
-      style="top: calc(50px + env(safe-area-inset-top)); z-index:1;"
+      v-if="!organization.photoIDAPIKey && this.userRole == 'owner'"
+      class="row justify-center q-mt-sm"
     >
-      <div
-        v-if="!organization.photoIDAPIKey && this.userRole === 'owner'"
-        class="row justify-center q-mt-md "
+      <q-badge color="red">
+        PhotoId Key has not been added in the system
+        <q-icon name="warning" color="white" class="q-ml-xs"></q-icon>
+      </q-badge>
+    </div>
+    <div class="actions-div">
+      <q-input
+        dense
+        v-model="searchText"
+        placeholder="Search"
+        borderless
+        style="width: 100%"
+        @input="search($event)"
       >
-        <q-badge color="red">
-          PhotoId Key has not been added in the system
-          <q-icon name="warning" color="white" class="q-ml-xs"></q-icon>
-        </q-badge>
-      </div>
-      <div class="actions-div">
-        <q-input
-          dense
-          v-model="searchText"
-          placeholder="Search"
-          borderless
-          style="width: 100%"
-          @input="search($event)"
-        >
-          <template v-slot:prepend>
-            <q-icon name="search" />
-          </template>
-        </q-input>
-        <img
-          src="~assets/close.svg"
-          v-if="searchText"
-          @click="onSearchBackButtonClick"
-          style="margin: 0 20px"
-        />
-        <q-separator vertical></q-separator>
-        <q-btn @click="addLead" flat><img src="~assets/add.svg"/></q-btn>
-      </div>
+        <template v-slot:prepend>
+          <q-icon name="search" />
+        </template>
+      </q-input>
+      <img
+        src="~assets/close.svg"
+        v-if="searchText"
+        @click="onSearchBackButtonClick"
+        style="margin: 0 20px"
+      />
+      <q-separator vertical></q-separator>
+      <q-btn @click="addLead" flat><img src="~assets/add.svg" /></q-btn>
     </div>
     <div class="mobile-container-page">
       <div class="row">
@@ -96,7 +88,7 @@
                           <span
                             v-if="
                               lead.primaryContact.phoneNumber &&
-                                lead.primaryContact.phoneNumber.length
+                              lead.primaryContact.phoneNumber.length
                             "
                             class="click-link"
                             @click="
@@ -198,7 +190,7 @@
                         <span
                           v-if="
                             lead.primaryContact.phoneNumber &&
-                              lead.primaryContact.phoneNumber.length
+                            lead.primaryContact.phoneNumber.length
                           "
                         >
                           {{

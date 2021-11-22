@@ -1,10 +1,10 @@
 <template>
   <div>
-    <q-header class="bg-white ">
+    <q-header class="bg-transparent">
       <q-toolbar
         class="row bg-primary rounded-header toolbar-shadow "
         v-if="$route.name === 'dashboard'"
-        style="max-height: 130px;"
+        style="max-height: 130px"
       >
         <q-btn
           flat
@@ -69,8 +69,8 @@
       <div class="text-center" v-if="$route.name === 'dashboard'">
         <img
           src="~assets/header_shadow.png"
-          class="absolute"
-          style="width: 90%; height: 50px; left: 50%; transform: translateX(-50%); bottom: -25px;"
+          class="relative-position"
+          style="width: 90%; height: 50px; margin-top: -27px"
         />
       </div>
     </q-header>

@@ -1,12 +1,9 @@
 <template>
   <q-layout view="lhr lpR lfr">
     <CustomHeader @backButton="onBackButtonClick" />
+    <div class="text-black"></div>
 
-    <q-page-container
-      :style="
-        `${$route.name === 'dashboard' ? 'background-color: #8f8f8f;' : ''}`
-      "
-    >
+    <q-page-container>
       <router-view />
       <div id="navbar">
         <q-page-sticky
@@ -14,39 +11,31 @@
           :offset="[30, 18]"
           v-if="
             $route.name != 'add new leads' &&
-              $route.name != 'create client' &&
-              $route.name != 'edit  lead' &&
-              $route.name != 'vendors' &&
-              $route.name != 'configuration  ' &&
-              $route.name != 'manage users' &&
-              $route.name != 'admin' &&
-              $route.name != 'reports' &&
-              $route.name != 'signup' &&
-              $route.name != 'set-password' &&
-              $route.name != 'payment' &&
-              $route.name != 'loss info' &&
-              $route.name != 'Documents' &&
-              $route.name != 'properties and claims ' &&
-              $route.name != 'notes' &&
-              $route.name != 'Company Personnel' &&
-              $route.name != 'add new lead' &&
-              $route.name != 'lead details' &&
-              $route.name != 'Leads' &&
-              $route.name != 'claim details' &&
-              $route.name != 'dashboard' &&
-              $route.name != 'Add Claim' &&
-              $route.name != 'offline-claim'
+            $route.name != 'create client' &&
+            $route.name != 'edit  lead' &&
+            $route.name != 'vendors' &&
+            $route.name != 'configuration  ' &&
+            $route.name != 'manage users' &&
+            $route.name != 'admin' &&
+            $route.name != 'reports' &&
+            $route.name != 'signup' &&
+            $route.name != 'set-password' &&
+            $route.name != 'payment' &&
+            $route.name != 'loss info' &&
+            $route.name != 'Documents' &&
+            $route.name != 'properties and claims ' &&
+            $route.name != 'notes' &&
+            $route.name != 'Company Personnel' &&
+            $route.name != 'add new lead' &&
+            $route.name != 'lead details' &&
+            $route.name != 'Leads' &&
+            $route.name != 'claim details' &&
+            $route.name != 'dashboard' &&
+            $route.name != 'Add Claim' &&
+            $route.name != 'offline-claim'
           "
         >
-          <q-btn
-            unelevated
-            round
-            color="primary"
-            icon="add"
-            size="1.2em"
-            v-if="checkUserRoleType() == false"
-            @click="onClickAddUpIcon"
-          />
+        <q-btn unelevated round color="primary" icon="add" size="1.2em" v-if="checkUserRoleType() == false"  @click="onClickAddUpIcon" />
         </q-page-sticky>
       </div>
       <q-dialog
