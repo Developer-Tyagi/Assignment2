@@ -364,7 +364,7 @@
                   <q-btn
                     color="primary"
                     label="+ Add Default Action "
-                    @click="addDefaultActionDialogBox = true"
+                    @click="addDefaultActionItem()"
                     :disable="claimType == ''"
                   />
                 </div>
@@ -622,7 +622,13 @@
     <q-dialog v-model="addDefaultActionDialogBox">
       <q-card style="width: 60%; height: 88vh">
         <q-bar class="row justify-between bg-primary" style="height: 50px">
-          <div class="q-px-xs text-bold text-white">Add Action Item</div>
+          <div
+            v-if="editDefaultActionItem"
+            class="q-px-xs text-bold text-white"
+          >
+            Edit Action Item
+          </div>
+          <div v-else class="q-px-xs text-bold text-white">Add Action Item</div>
           <q-btn dense flat icon="close" color="white" v-close-popup>
             <q-tooltip>Close</q-tooltip>
           </q-btn>
@@ -652,7 +658,12 @@
                 option-label="value"
                 :options="actionReason"
                 option-value="machineValue"
-                @input="createdWhenSubType(actions.createWhen.type)"
+                @input="
+                  createdWhenSubType(
+                    actions.createWhen.type,
+                    (isEditable = true)
+                  )
+                "
                 map-options
                 emit-value
                 label="Created when"
@@ -725,7 +736,12 @@
                     behavior="menu"
                     option-label="value"
                     :options="assignTo"
-                    @input="callAssignApi(actions.assignedTo[0].type)"
+                    @input="
+                      callAssignApi(
+                        actions.assignedTo[0].type,
+                        (isEditable = true)
+                      )
+                    "
                     option-value="machineValue"
                     map-options
                     emit-value
@@ -835,7 +851,8 @@
                   @input="
                     setSubTypeOfAction(
                       actions.actions.onComplete[index].type,
-                      index
+                      index,
+                      (isEditable = true)
                     )
                   "
                   label="Completion Action"
@@ -867,7 +884,8 @@
                     setSubTypeForAction(
                       actions.actions.onComplete[index].task[0],
                       indexOfSubTypeOfCompletion,
-                      index
+                      index,
+                      (isEditable = true)
                     )
                   "
                   map-options
@@ -879,6 +897,7 @@
               <div
                 class="q-ml-xs"
                 v-if="
+                  actions.actions.onComplete[index].task &&
                   actions.actions.onComplete[index].task[0] &&
                   actionCompletion[indexOfSubTypeOfCompletion].subOptions
                     ? actionCompletion[indexOfSubTypeOfCompletion].subOptions[
@@ -986,7 +1005,11 @@
                   map-options
                   emit-value
                   @input="
-                    setSubType(actions.actions.onOverdue[index].type, index)
+                    setSubType(
+                      actions.actions.onOverdue[index].type,
+                      index,
+                      (isEditable = true)
+                    )
                   "
                   label="OverDue"
                   options-dense
@@ -1017,7 +1040,8 @@
                     setSubOfSubType(
                       actions.actions.onOverdue[index].task[0],
                       indexOfSubType,
-                      index
+                      index,
+                      true
                     )
                   "
                   emit-value
@@ -1029,6 +1053,7 @@
               <div
                 class="q-ml-xs"
                 v-if="
+                  actions.actions.onOverdue[index].task &&
                   actions.actions.onOverdue[index].task[0] &&
                   actionOverDues[indexOfSubType].subOptions
                     ? actionOverDues[indexOfSubType].subOptions[
@@ -1120,7 +1145,17 @@
             </div>
           </q-form>
         </div>
-        <div class="row justify-center">
+        <!--button for edited action item-->
+        <div v-if="editDefaultActionItem" class="row justify-center">
+          <q-btn
+            color="primary"
+            label="Save"
+            class="single-next-button-style col-6 q-my-lg"
+            @click="onClickEditSaveButton"
+          />
+        </div>
+        <!--button action for adding new action item-->
+        <div v-else class="row justify-center">
           <q-btn
             color="primary"
             label="Save"
@@ -1130,8 +1165,6 @@
         </div>
       </q-card>
     </q-dialog>
-
-    <!--Edit Action item Dialog Box-->
   </q-page>
 </template>
 <script>
@@ -1154,9 +1187,11 @@ export default {
 
   data() {
     return {
+      isEditable: false,
+      editedActionItemID: '',
       selectedWorkflowID: '',
       editTogglePriorityKey: false,
-      editDefaultActionDialogBox: false,
+      editDefaultActionItem: false,
       assignTo: [
         { value: 'User', machineValue: 'user' },
         { value: 'Role', machineValue: 'role' }
@@ -1346,53 +1381,147 @@ export default {
         workFlowID: this.selectedWorkflowID
       };
       this.adminActionItemDelete(payload);
-      this.getWorkflowAction();
+      this.getAllWorkFlow(this.claimType);
+    },
+    addDefaultActionItem() {
+      this.addDefaultActionDialogBox = true;
+      this.editDefaultActionItem = false;
+      this.actions = {
+        name: '',
+        isEnabled: false,
+        createWhen: {
+          type: '',
+          task: []
+        },
+
+        priority: 'low',
+        assignedTo: [
+          {
+            type: '',
+            name: '',
+            id: ''
+          }
+        ],
+        actions: {
+          onComplete: [
+            {
+              type: '',
+              task: []
+            }
+          ],
+          onOverdue: [
+            {
+              type: '',
+              task: []
+            }
+          ]
+        },
+        due: {
+          type: '',
+          interval: '',
+          unit: 'days'
+        },
+        notes: ''
+      };
     },
     toEditActionItem(item) {
       this.addDefaultActionDialogBox = !this.addDefaultActionDialogBox;
-
+      this.editDefaultActionItem = true;
+      this.editedActionItemID = item.id;
       this.actions.name = item.name;
       this.actions.isEnabled = item.isEnabled;
-      this.actions.createWhen.type = item.createWhen.type;
-      this.actions.createWhen.task = item.createWhen.task;
+      this.actions.createWhen.type =
+        item.createWhen && item.createWhen.type ? item.createWhen.type : '';
+      this.actions.createWhen.task =
+        item.createWhen && item.createWhen.task ? item.createWhen.task : [];
       this.actions.priority = item.priority;
-      this.actions.assignedTo = item.assignedTo;
+      this.actions.assignedTo[0].id =
+        item.assignedTo && item.assignedTo[0].id ? item.assignedTo[0].id : '';
+      this.actions.assignedTo[0].name =
+        item.assignedTo && item.assignedTo[0].name
+          ? item.assignedTo[0].name
+          : '';
+      this.actions.assignedTo[0].type =
+        item.assignedTo && item.assignedTo[0].type
+          ? item.assignedTo[0].type
+          : '';
 
-      this.actions.actions.onComplete = item.actions.onComplete;
+      this.actions.actions.onComplete[0].task =
+        item.actions.onComplete[0] && item.actions.onComplete[0].task
+          ? item.actions.onComplete[0].task
+          : [];
+      this.actions.actions.onComplete[0].type =
+        item.actions.onComplete[0] && item.actions.onComplete[0].type
+          ? item.actions.onComplete[0].type
+          : '';
 
-      this.actions.actions.onOverdue = item.actions.onOverdue;
+      this.actions.actions.onOverdue[0].type =
+        item.actions.onOverdue[0] && item.actions.onOverdue[0].type
+          ? item.actions.onOverdue[0].type
+          : '';
+      this.actions.actions.onOverdue[0].task =
+        item.actions.onOverdue[0] && item.actions.onOverdue[0].task
+          ? item.actions.onOverdue[0].task
+          : [];
 
-      this.actions.due.type = item.due.type;
-      this.actions.due.interval = item.due.interval;
-      this.actions.due.unit = item.due.unit;
-      this.actions.notes = item.notes;
-      console.log(this.actions, 222);
+      this.actions.due.type = item.due && item.due.type ? item.due.type : '';
+      this.actions.due.interval =
+        item.due && item.due.interval ? item.due.interval : '';
+      this.actions.due.unit = item.due && item.due.unit ? item.due.unit : '';
+      this.actions.notes = item.notes ? item.notes : '';
 
-      this.createdWhenSubType(this.actions.createWhen.type);
-      this.callAssignApi(this.actions.assignedTo[0].type);
-      this.setAssignTo(this.actions.assignedTo[0].name);
+      this.createdWhenSubType(
+        this.actions.createWhen.type,
+        (this.isEditable = false)
+      );
+      if (this.actions.assignedTo[0].type != '')
+        this.callAssignApi(
+          this.actions.assignedTo[0].type,
+          (this.isEditable = false)
+        );
+      if (this.actions.assignedTo[0].name != '')
+        this.setAssignTo(this.actions.assignedTo[0].name);
+
       for (let i = 0; i < this.actions.actions.onComplete.length; i++) {
-        this.setSubTypeOfAction(this.actions.actions.onComplete[i].type, i);
-        if (this.actions.actions.onComplete[i].task)
+        if (this.actions.actions.onComplete[i].type != '')
+          this.setSubTypeOfAction(
+            this.actions.actions.onComplete[i].type,
+            i,
+            (this.isEditable = false)
+          );
+
+        if (this.actions.actions.onComplete[i].task.length != 0)
           this.setSubTypeForAction(
             this.actions.actions.onComplete[i].task[0],
             this.indexOfSubTypeOfCompletion,
-            i
+            i,
+            (this.isEditable = false)
           );
       }
       for (let i = 0; i < this.actions.actions.onOverdue.length; i++) {
-        this.setSubType(this.actions.actions.onOverdue[i].type, i);
-        if (this.actions.actions.onOverdue[i].task)
+        if (this.actions.actions.onOverdue[i].type != '')
+          this.setSubType(
+            this.actions.actions.onOverdue[i].type,
+            i,
+            (this.isEditable = false)
+          );
+        if (this.actions.actions.onOverdue[i].task.length != 0)
           this.setSubOfSubType(
             this.actions.actions.onOverdue[i].task[0],
             this.indexOfSubType,
-            i
+            i,
+            false
           );
       }
     },
-    async callAssignApi(val) {
+    // this function is used to update the subcolumn of AssignTo data.
+    async callAssignApi(val, isEditable) {
       this.assignToSubOption = [];
-      this.actions.assignedTo[0].name = '';
+      if (isEditable) {
+        if (this.actions.assignedTo && this.actions.assignedTo[0].name)
+          this.actions.assignedTo[0].name = '';
+      }
+
       this.assignee = val;
       if (val == 'user') {
         await this.getAllUsers();
@@ -1414,6 +1543,8 @@ export default {
         });
       }
     },
+
+    // this function is used to get the detail of sub options of selected AssignedTo.
     setAssignTo(val) {
       if (this.assignee == 'user') {
         const obj = this.allUsers.find(item => {
@@ -1582,12 +1713,14 @@ export default {
       } else this.editTogglePriorityKey = false;
     },
     //  Finding and Clearing the Other Sub data while changing the main DRopdown data
-    createdWhenSubType(value) {
-      this.actions.createWhen.task[0] = '';
+    createdWhenSubType(value, isEditable) {
+      if (isEditable) {
+        if (this.actions.createWhen.task && this.actions.createWhen.task[0])
+          this.actions.createWhen.task[0] = '';
+      }
       var index = this.actionReason.findIndex(
         std => std.machineValue === value
       );
-
       this.indexOfActionReason = index;
     },
 
@@ -1630,38 +1763,65 @@ export default {
 
       this.editOrganizsationInfoDialog = true;
     },
-    // Action OverDue Sub Dropdown Index set
 
-    setSubType(val, index) {
-      this.actions.actions.onOverdue[index].task[0] =
-        this.actions.actions.onOverdue[index].task[1] = '';
-
-      var index = this.actionOverDues.findIndex(
-        std => std.machineValue === val
-      );
-
-      this.indexOfSubType = index;
+    // Action OverDue Sub Dropdown Index set and also used to find the index of selected onOverdue.
+    setSubType(val, index, isEditable) {
+      if (isEditable) {
+        if (
+          this.actions.actions.onOverdue[index].task &&
+          this.actions.actions.onOverdue[index].task[0]
+        )
+          this.actions.actions.onOverdue[index].task[0] = '';
+        if (
+          this.actions.actions.onOverdue[index].task &&
+          this.actions.actions.onOverdue[index].task[1]
+        )
+          this.actions.actions.onOverdue[index].task[1] = '';
+      }
+      if (val) {
+        var index = this.actionOverDues.findIndex(
+          std => std.machineValue === val
+        );
+        this.indexOfSubType = index;
+      }
     },
 
-    setSubOfSubType(subValue, indexOfSubType, index) {
-      this.actions.actions.onOverdue[index].task[1] = '';
+    // this function is used to update the selected subOption of onOverdue, and also used to find the index of selected subtoption index.
+    setSubOfSubType(subValue, indexOfSubType, index, isEditable) {
+      if (isEditable) {
+        if (
+          this.actions.actions.onOverdue[index].task &&
+          this.actions.actions.onOverdue[index].task[1]
+        )
+          this.actions.actions.onOverdue[index].task[1] = '';
+      }
 
-      const obj = this.actionOverDues[indexOfSubType].subOptions.findIndex(
-        item => {
-          return item.machineValue === subValue;
-        }
-      );
+      if (subValue) {
+        const obj = this.actionOverDues[indexOfSubType].subOptions.findIndex(
+          item => {
+            return item.machineValue === subValue;
+          }
+        );
 
-      this.indexOfSubOfSubType = obj;
+        this.indexOfSubOfSubType = obj;
+      }
     },
 
-    setSubTypeForAction(SubOptionValue, sValue, index) {
-      this.actions.actions.onComplete[index].task[1] = '';
-
-      const ob = this.actionCompletion[sValue].subOptions.findIndex(item => {
-        return item.machineValue === SubOptionValue;
-      });
-      this.indexOfSubOfSubTypeOfCompletion = ob;
+    // this function is used to update the subOption of onComplete row and use to find the index value of selected onComplete subOption, which we used further to display subOption of Selected SubOption.
+    setSubTypeForAction(SubOptionValue, sValue, index, isEditable) {
+      if (isEditable) {
+        if (
+          this.actions.actions.onComplete[index].task &&
+          this.actions.actions.onComplete[index].task[1]
+        )
+          this.actions.actions.onComplete[index].task[1] = '';
+      }
+      if (SubOptionValue) {
+        const ob = this.actionCompletion[sValue].subOptions.findIndex(item => {
+          return item.machineValue === SubOptionValue;
+        });
+        this.indexOfSubOfSubTypeOfCompletion = ob;
+      }
     },
 
     setSelectedTab(e) {
@@ -1739,89 +1899,91 @@ export default {
 
     //on Edit Button For Action Item
     async onClickEditSaveButton() {
-      const success = await this.$refs.editActionForm.validate();
+      const success = await this.$refs.addActionForm.validate();
       if (success) {
         const payload = {
-          id: this.editActions.id,
+          id: this.editedActionItemID,
           workflowID: this.selectedWorkflowID,
           attributes: {
-            name: this.editActions.name,
-            isEnabled: this.editActions.isEnabled,
+            name: this.actions.name,
+            isEnabled: this.actions.isEnabled,
             createdWhen: {
-              type: this.editActions.createWhen.type,
-              task: this.editActions.createWhen.task
+              type: this.actions.createWhen.type,
+              task: this.actions.createWhen.task
             },
-            priority: this.editActions.priority,
+            priority: this.actions.priority,
             assignedTo: [
               {
-                type: this.editActions.assignedTo[0].type,
-                name: this.editActions.assignedTo[0].name,
-                id: this.editActions.assignedTo[0].id
+                type: this.actions.assignedTo[0].type,
+                name: this.actions.assignedTo[0].name,
+                id: this.actions.assignedTo[0].id
               }
             ],
             actions: {
               onComplete: [
                 {
-                  type: this.editActions.actions.onComplete.type,
-                  task: this.editActions.actions.onComplete.task
+                  type: this.actions.actions.onComplete[0].type,
+                  task: this.actions.actions.onComplete[0].task
                 }
               ],
               onOverdue: [
                 {
-                  type: this.editActions.actions.onOverdue.type,
-                  task: this.editActions.actions.onOverdue.task
+                  type: this.actions.actions.onOverdue[0].type,
+                  task: this.actions.actions.onOverdue[0].task
                 }
               ]
             },
             due: {
-              type: this.editActions.due.type,
-              interval: this.editActions.due.interval,
-              unit: this.editActions.due.unit
+              type: this.actions.due.type,
+              interval: this.actions.due.interval,
+              unit: this.actions.due.unit
             },
-            notes: this.editActions.notes
+            notes: this.actions.notes
           }
         };
+        this.editDefaultActionItem = false;
+        (this.editedActionItemID = ''),
+          (this.addDefaultActionDialogBox = false);
+        await this.editAdminActionItem(payload);
 
-        const response = await this.editAdminActionItem(payload);
+        this.getAllWorkFlow(this.claimType);
         /*  Clearing the form     */
-        if (response)
-          this.editActions = {
-            id: '',
-            name: '',
-            isEnabled: false,
-            createWhen: {
+        this.actions = {
+          name: '',
+          isEnabled: false,
+          createWhen: {
+            type: '',
+            task: []
+          },
+          priority: 'low',
+          assignedTo: [
+            {
               type: '',
-              task: []
-            },
-            priority: 'low',
-            assignedTo: [
+              name: '',
+              id: ''
+            }
+          ],
+          actions: {
+            onComplete: [
               {
                 type: '',
-                name: '',
-                id: ''
+                task: []
               }
             ],
-            actions: {
-              onComplete: [
-                {
-                  type: '',
-                  task: []
-                }
-              ],
-              onOverdue: [
-                {
-                  type: '',
-                  task: []
-                }
-              ]
-            },
-            due: {
-              type: '',
-              interval: null,
-              unit: 'days'
-            },
-            notes: ''
-          };
+            onOverdue: [
+              {
+                type: '',
+                task: []
+              }
+            ]
+          },
+          due: {
+            type: '',
+            interval: null,
+            unit: 'days'
+          },
+          notes: ''
+        };
       }
     },
 
@@ -1843,13 +2005,26 @@ export default {
       });
     },
 
-    setSubTypeOfAction(val, index) {
-      this.actions.actions.onComplete[index].task[0] =
-        this.actions.actions.onComplete[index].task[1] = '';
-      var indexOfCompletionAction = this.actionCompletion.findIndex(
-        std => std.machineValue === val
-      );
-      this.indexOfSubTypeOfCompletion = indexOfCompletionAction;
+    // this function is used to update the subOptions of onComplete option and also used to get the index of seleted onComplete action.
+    setSubTypeOfAction(val, index, isEditable) {
+      if (isEditable) {
+        if (
+          this.actions.actions.onComplete[index].task &&
+          this.actions.actions.onComplete[index].task[0]
+        )
+          this.actions.actions.onComplete[index].task[0] = '';
+        if (
+          this.actions.actions.onComplete[index].task &&
+          this.actions.actions.onComplete[index].task[1]
+        )
+          this.actions.actions.onComplete[index].task[1] = '';
+      }
+      if (val) {
+        var indexOfCompletionAction = this.actionCompletion.findIndex(
+          std => std.machineValue === val
+        );
+        this.indexOfSubTypeOfCompletion = indexOfCompletionAction;
+      }
     }
   },
   async created() {
