@@ -1,286 +1,295 @@
 <template>
   <!-- mobile-container-page listing-height -->
-
-  <div style="background-color: #8f8f8f">
-    <div
-      class="
-        column
-        bg-white
-        dashboard-shadow
-        q-px-sm q-pt-sm
-        justify-between
-        cardHeight
-        q-pb-lg
-      "
-      style="border-radius: 0 0 40px 40px; margin-top: -30px;"
+  <div>
+    <q-page
+      class="q-pt-lg bg-white "
+      style=" border-radius: 0 0 40px 40px; "
+      padding
     >
-      <div class="row col-4 justify-around">
-        <div
-          class="column col iconBackground items-center"
-          @click="onClickNewLead"
-          style=""
-        >
-          <q-icon class="col self-center gridIcon">
-            <q-img src="~assets/LEADS.svg" />
-          </q-icon>
-
+      <div
+        class=" column justify-around cardHeight"
+        style="border-radius: 0 0 40px 40px; "
+      >
+        <div class="row col-4  justify-around dashboard-row">
           <div
-            class="
+            class="column col iconBackground items-center"
+            @click="onClickNewLead"
+            style=""
+          >
+            <q-icon class="col self-center gridIcon">
+              <q-img src="~assets/LEADS.svg" height="80px" contain />
+            </q-icon>
+
+            <div
+              class="
               column
               justify-end
               text-white text-center text-weight-medium text-subtitle1
               IconText
             "
-          >
-            LEADS
+            >
+              LEADS
+            </div>
           </div>
-        </div>
-
-        <div
-          class="column col iconBackground items-center"
-          @click="$router.push('/clients')"
-        >
-          <q-icon class="col self-center gridIcon">
-            <q-img src="~assets/Clients_dashboard.svg" />
-          </q-icon>
 
           <div
-            class="
+            class="column col iconBackground items-center"
+            @click="$router.push('/clients')"
+          >
+            <q-icon class="col self-center gridIcon">
+              <q-img
+                src="~assets/Clients_dashboard.svg"
+                height="80px"
+                contain
+              />
+            </q-icon>
+
+            <div
+              class="
               column
               justify-end
               text-white text-center text-weight-medium text-subtitle1
               IconText
             "
-          >
-            CLIENTS
+            >
+              CLIENTS
+            </div>
           </div>
         </div>
-      </div>
-      <div class="row col-4 justify-around">
-        <div
-          class="column col iconBackground items-center"
-          @click="$router.push('/vendors')"
-        >
-          <q-icon class="col self-center gridIcon">
-            <q-img src="~assets/VENDOR.svg" />
-          </q-icon>
-
+        <div class="row  col-4  justify-around dashboard-row">
           <div
-            class="
+            class="column col iconBackground items-center"
+            @click="$router.push('/vendors')"
+          >
+            <q-icon class="col self-center gridIcon">
+              <q-img src="~assets/VENDOR.svg" height="80px" contain />
+            </q-icon>
+
+            <div
+              class="
               column
               justify-end
               text-white text-center text-weight-medium text-subtitle1
               IconText
             "
-          >
-            VENDORS
+            >
+              VENDORS
+            </div>
           </div>
-        </div>
-
-        <div
-          class="column col iconBackground items-center"
-          @click="$router.push('/claims')"
-        >
-          <q-icon class="col self-center gridIcon">
-            <q-img src="~assets/CLAIMS.svg" />
-          </q-icon>
 
           <div
-            class="
+            class="column col iconBackground items-center"
+            @click="$router.push('/claims')"
+          >
+            <q-icon class="col self-center gridIcon">
+              <q-img src="~assets/CLAIMS.svg" height="80px" contain />
+            </q-icon>
+
+            <div
+              class="
               column
               justify-end
               text-white text-center text-weight-medium text-subtitle1
               IconText
             "
-          >
-            CLAIMS
+            >
+              CLAIMS
+            </div>
           </div>
         </div>
-      </div>
-      <div class="row col-4 justify-around">
-        <div
-          class="column col iconBackground items-center"
-          @click="selectClaimDialog = true"
-        >
-          <q-icon class="col self-center gridIcon">
-            <q-img src="~assets/scan_dashboard.svg" />
-          </q-icon>
-
+        <div class="row col-4  justify-around dashboard-row">
           <div
-            class="
+            class="column col iconBackground items-center"
+            @click="selectClaimDialog = true"
+          >
+            <q-icon class="col self-center gridIcon">
+              <q-img src="~assets/scan_dashboard.svg" height="80px" contain />
+            </q-icon>
+
+            <div
+              class="
               column
               justify-end
               text-white text-center text-weight-medium text-subtitle1
               scanIconText
             "
-          >
-            <div class="col scanText">SCAN</div>
+            >
+              <div class="col scanText text-subtitle2">SCAN</div>
 
-            <div class="col text-weight-bolder">UPLOAD</div>
+              <div class="col ">UPLOAD</div>
+            </div>
           </div>
-        </div>
-
-        <div
-          class="column col iconBackground items-center"
-          @click="toCameraDialogBox()"
-        >
-          <q-icon class="col self-center mobileIcon">
-            <q-img src="~assets/camera_dashboard.svg" />
-          </q-icon>
 
           <div
-            class="
+            class="column col iconBackground items-center"
+            @click="toCameraDialogBox()"
+          >
+            <q-icon class="col self-center mobileIcon">
+              <q-img src="~assets/camera_dashboard.svg" height="80px" contain />
+            </q-icon>
+
+            <div
+              class="
               column
               justify-end
               text-white text-center text-weight-medium text-subtitle1
               IconText
             "
-          >
-            CAMERA
+            >
+              CAMERA
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <!-- footer -->
-    <!-- <div class="row justify-center footer-shadow"></div> -->
-    <div class="text-center">
-      <img
-        src="~assets/header_shadow.png"
-        class="relative-position"
-        style="width: 90%; height: 50px; margin-top: -22px"
-      />
-    </div>
-    <div
-      class="row justify-between q-px-md q-pt-xs"
-      style="background-color: #8f8f8f; margin-top: -30px;"
-    >
-      <div class="col-3 column">
-        <img
-          class="col"
-          src="~assets/Profile.svg"
-          height=" 50px"
-          @click="$router.push('/edit-profile')"
-        />
-        <div class="col text-center text-white text-caption">PROFILE</div>
-      </div>
-      <div @click="$router.push('/reports')" class="col-3 column ">
-        <img class="col" src="~assets/report_dashboard_icon.svg" />
+      <!-- footer -->
+      <!-- <div class="row justify-center footer-shadow"></div> -->
 
-        <div class="col text-center text-white text-caption">REPORTS</div>
-      </div>
-      <div class="col-3 column">
-        <img
-          class="col "
-          src="~assets/STATS.svg"
-          @click="$router.push('/claimstats')"
-        />
-        <div class="col text-center  text-white text-caption">CLAIMS STATS</div>
-      </div>
-      <div class="col-3 column">
-        <img
-          class="col"
-          src="~assets/dashboardAdd.svg"
-          @click="onClickAddUpIcon()"
-        />
-        <div class="col text-center text-white text-caption">ADD</div>
-      </div>
-    </div>
-
-    <!-- Select Claim Dialog -->
-    <q-dialog
-      v-model="selectClaimDialog"
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card>
-        <CustomBar
-          :dialogName="'Select Claim'"
-          @closeDialog="selectClaimDialog = false"
-        />
-        <div
-          class="mobile-container-page-without-search q-pt-sm q-mt-xs"
-          v-if="claims.length"
-        >
-          <div>
-            <div class="clients-list" v-for="claim in claims" :key="claim.id">
-              <div class="client-list-item">
-                <div class="row form-heading q-pb-md">
-                  <div class="col-10" @click="onClickingOnClaim(claim)">
-                    {{ claim.client.fname }}
-                    {{ claim.client.lname }}
-                  </div>
-                </div>
-                <div @click="onClickingOnClaim(claim)">
-                  <div class="row">
-                    <div class="col-3">Carrier</div>
-                    <div>
-                      {{
-                        claim.carrier
-                          ? claim.carrier.value
-                            ? claim.carrier.value
-                            : ''
-                          : '-'
-                      }}
+      <!-- Select Claim Dialog -->
+      <q-dialog
+        v-model="selectClaimDialog"
+        :maximized="true"
+        transition-show="slide-up"
+        transition-hide="slide-down"
+      >
+        <q-card>
+          <CustomBar
+            :dialogName="'Select Claim'"
+            @closeDialog="selectClaimDialog = false"
+          />
+          <div
+            class="mobile-container-page-without-search q-pt-sm q-mt-xs"
+            v-if="claims.length"
+          >
+            <div>
+              <div class="clients-list" v-for="claim in claims" :key="claim.id">
+                <div class="client-list-item">
+                  <div class="row form-heading q-pb-md">
+                    <div class="col-10" @click="onClickingOnClaim(claim)">
+                      {{ claim.client.fname }}
+                      {{ claim.client.lname }}
                     </div>
                   </div>
-                  <div class="row">
-                    <div class="col-3">Claim No.</div>
-                    <div>
-                      {{ claim.number ? claim.number : '-' }}
+                  <div @click="onClickingOnClaim(claim)">
+                    <div class="row">
+                      <div class="col-3">Carrier</div>
+                      <div>
+                        {{
+                          claim.carrier
+                            ? claim.carrier.value
+                              ? claim.carrier.value
+                              : ''
+                            : '-'
+                        }}
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-3">Claim No.</div>
+                      <div>
+                        {{ claim.number ? claim.number : '-' }}
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div v-else class="full-height full-width column">
-          <div class="column absolute-center">
-            <div style="color: #666666,align-items: center">
-              You haven't added a Claim yet.
+          <div v-else class="full-height full-width column">
+            <div class="column absolute-center">
+              <div style="color: #666666,align-items: center">
+                You haven't added a Claim yet.
+              </div>
             </div>
           </div>
-        </div>
-      </q-card>
-    </q-dialog>
-    <!-- dialog box for add button-->
-    <q-dialog
-      v-model="openDialog"
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-      :position="'bottom'"
-    >
-      <AddOptions />
-    </q-dialog>
-    <q-dialog v-model="cameraDialogBox">
-      <q-card class="no-margin col-12" style="width: 100%">
-        <q-card-section>
-          <div class="row justify-center">
-            <div
-              class="q-mr-lg column items-center"
-              @click="toRedirectTOPhotoIdApp()"
-            >
-              <!-- PhotoId App Icon used here-->
-              <q-icon size="xl">
-                <q-img src="../assets/photoIdApp.png" color="primary" />
-              </q-icon>
-              <div class="text-black">Photo ID App</div>
+        </q-card>
+      </q-dialog>
+      <!-- dialog box for add button-->
+      <q-dialog
+        v-model="openDialog"
+        :maximized="true"
+        transition-show="slide-up"
+        transition-hide="slide-down"
+        :position="'bottom'"
+      >
+        <AddOptions />
+      </q-dialog>
+      <q-dialog v-model="cameraDialogBox">
+        <q-card class="no-margin col-12" style="width: 100%">
+          <q-card-section>
+            <div class="row justify-center">
+              <div
+                class="q-mr-lg column items-center"
+                @click="toRedirectTOPhotoIdApp()"
+              >
+                <!-- PhotoId App Icon used here-->
+                <q-icon size="xl">
+                  <q-img src="../assets/photoIdApp.png" color="primary" />
+                </q-icon>
+                <div class="text-black">Photo ID App</div>
+              </div>
+              <div
+                @click="toOpenCameraClaimListing"
+                class="q-ml-lg column items-center"
+              >
+                <q-icon name="photo_camera" size="xl"></q-icon>
+                <div class="text-balck">Camera</div>
+              </div>
             </div>
-            <div
-              @click="toOpenCameraClaimListing"
-              class="q-ml-lg column items-center"
-            >
-              <q-icon name="photo_camera" size="xl"></q-icon>
-              <div class="text-balck">Camera</div>
-            </div>
-          </div>
-        </q-card-section>
+          </q-card-section>
 
-        <q-card-section class="q-pt-none"> </q-card-section>
-      </q-card>
-    </q-dialog>
+          <q-card-section class="q-pt-none"> </q-card-section>
+        </q-card>
+      </q-dialog>
+    </q-page>
+    <q-footer
+      style="background-color: #8f8f8f; padding-top: 8px; padding-bottom: env(safe-area-inset-bottom);  "
+    >
+      <img
+        src="~assets/header_shadow.png"
+        class="absolute"
+        style="width: 90%; height: 50px; margin-top: -22px; top: 0; left: 50%; transform: translateX(-50%)"
+      />
+      <div
+        class="row justify-between  q-pt-xs"
+        style="max-width: 95%; margin: 0 auto;"
+      >
+        <div class="col-3 text-center column align-top">
+          <img
+            src="~assets/Profile.svg"
+            height=" 50px"
+            @click="$router.push('/edit-profile')"
+          />
+          <div class=" text-center text-white text-caption">PROFILE</div>
+        </div>
+        <div
+          @click="$router.push('/reports')"
+          class="col-3 text-center column align-top"
+        >
+          <img src="~assets/report_dashboard_icon.svg" height=" 50px" />
+
+          <div class="text-center text-white text-caption">REPORTS</div>
+        </div>
+        <div class="col-3 text-center column align-top">
+          <img
+            class=" "
+            src="~assets/STATS.svg"
+            height=" 50px"
+            @click="$router.push('/claimstats')"
+          />
+          <div class=" text-center  text-white text-caption">
+            CLAIMS STATS
+          </div>
+        </div>
+        <div class="col-3 text-center column align-top">
+          <img
+            class=""
+            src="~assets/dashboardAdd.svg"
+            height=" 50px"
+            @click="onClickAddUpIcon()"
+          />
+          <div class=" text-center text-white text-caption">ADD</div>
+        </div>
+      </div>
+    </q-footer>
   </div>
 </template>
 <script>
@@ -477,6 +486,15 @@ export default {
     onClickingOnClaim(claim) {
       this.setSelectedClaimId(claim.id);
       this.$router.push('/vendor-document');
+    },
+    pageStyle(offset) {
+      // "offset" is a Number (pixels) that refers to the total
+      // height of header + footer that occupies on screen,
+      // based on the QLayout "view" prop configuration
+
+      // this is actually what the default style-fn does in Quasar
+      console.log(offset);
+      return { minHeight: offset ? `calc(100vh - ${offset}px)` : '100vh' };
     }
   },
   computed: {
@@ -530,10 +548,16 @@ export default {
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-image: url('~assets/dashboard_tile.png');
+
+  @media only screen and (max-width: 767px) {
+    max-width: 150px !important;
+    height: 175px;
+  }
+  @media only screen and (max-height: 736px) {
+    height: 150px;
+  }
 }
-.cardHeight {
-  height: 69vh;
-}
+
 .gridRow {
   margin-bottom: 20px;
 }
@@ -650,6 +674,13 @@ export default {
   }
   .scanText {
     margin-bottom: 10px;
+  }
+}
+.cardHeight {
+  min-height: 450px;
+  height: 100%;
+  @media only screen and (min-width: 768px) {
+    height: 75vh;
   }
 }
 </style>
