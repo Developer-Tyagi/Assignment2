@@ -1,7 +1,7 @@
 <template>
-  <q-page class="mobile-container-page">
+  <q-page>
     <div class="mobile-container-page-without-search">
-      <q-card class="q-ma-xl ">
+      <q-card class="q-ma-xl">
         <div class="q-pa-xl">
           <q-select
             outlined
