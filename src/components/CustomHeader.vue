@@ -96,7 +96,7 @@
             class="col column text-weight-bold text-white q-pa-sm q-ml-md text-h6 "
             style="width: calc(100% - 54px)"
           >
-            <div class="text-capitalize ellipsis-2-lines">
+            <div class="text-capitalize ellipsis" style="width: 100%;">
               {{
                 user.roles[0].machineValue == 'vendor'
                   ? user.companyName
@@ -155,10 +155,9 @@
       </q-scroll-area>
       <div class="q-px-lg q-mt-sm">
         <q-btn
-          class="full-width q-mt-md menu-bar-style"
+          class="full-width q-mt-md menu-bar-style text-subtitle1 text-bold"
           label="LOGOUT"
-          size="lg"
-          style="border-radius:25px"
+          style="border-radius:25px; width: 100%; height: 50px;"
           @click="logout()"
         />
       </div>
