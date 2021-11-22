@@ -103,7 +103,7 @@
             @click="selectClaimDialog = true"
           >
             <q-icon class="col self-center gridIcon">
-              <q-img src="~assets/scan_dashboard.svg" height="80px" contain />
+              <q-img src="~assets/scan_dashboard.svg" height="95px" contain />
             </q-icon>
 
             <div
@@ -125,7 +125,7 @@
             @click="toCameraDialogBox()"
           >
             <q-icon class="col self-center mobileIcon">
-              <q-img src="~assets/camera_dashboard.svg" height="80px" contain />
+              <q-img src="~assets/camera_dashboard.svg" height="95px" contain />
             </q-icon>
 
             <div
@@ -558,8 +558,9 @@ export default {
 }
 
 .iconBackground {
-  background-size: 100% 100%;
+  background-size: cover;
   background-repeat: no-repeat;
+  background-position: center;
   background-image: url('~assets/dashboard_tile.png');
 
   @media only screen and (max-width: 767px) {

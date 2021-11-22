@@ -117,7 +117,10 @@
             "
             style="width: calc(100% - 54px)"
           >
-            <div class="text-capitalize ellipsis" style="width: 100%">
+            <div
+              class="text-capitalize ellipsis-2-lines"
+              style="width: 100%; line-height: 1.2;"
+            >
               {{
                 user.roles[0].machineValue == 'vendor'
                   ? user.companyName
