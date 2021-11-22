@@ -7,11 +7,8 @@
       padding
     >
       <div
-        class="
-        column
-        justify-around
-      "
-        style="border-radius: 0 0 40px 40px; min-height: 450px"
+        class=" column justify-around cardHeight"
+        style="border-radius: 0 0 40px 40px; "
       >
         <div class="row col-4  justify-around dashboard-row">
           <div
@@ -117,9 +114,9 @@
               scanIconText
             "
             >
-              <div class="col scanText">SCAN</div>
+              <div class="col scanText text-subtitle2">SCAN</div>
 
-              <div class="col text-weight-bolder">UPLOAD</div>
+              <div class="col ">UPLOAD</div>
             </div>
           </div>
 
@@ -560,9 +557,7 @@ export default {
     height: 150px;
   }
 }
-.cardHeight {
-  height: 69vh;
-}
+
 .gridRow {
   margin-bottom: 20px;
 }
@@ -679,6 +674,13 @@ export default {
   }
   .scanText {
     margin-bottom: 10px;
+  }
+}
+.cardHeight {
+  min-height: 450px;
+  height: 100%;
+  @media only screen and (min-width: 768px) {
+    height: 75vh;
   }
 }
 </style>
