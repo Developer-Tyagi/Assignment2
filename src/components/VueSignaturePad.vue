@@ -48,6 +48,7 @@ export default {
     finalSignature: {
       type: Boolean
     },
+    // this prop is being used in online mode signature only
     finshButtonOnlineSign: {
       type: Boolean
     }
