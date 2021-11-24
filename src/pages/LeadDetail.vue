@@ -72,7 +72,7 @@
             <span class="heading-light col-3"> Lead Source </span>
             <span class="q-ml-md col">
               {{
-                selectedLead.leadSource.type
+                selectedLead.leadSource && selectedLead.leadSource.type
                   ? selectedLead.leadSource.type
                   : '-'
               }}</span
