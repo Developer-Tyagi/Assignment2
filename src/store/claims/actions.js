@@ -656,6 +656,7 @@ export async function getSingleClaims(
   // dispatch('setLoading', true);
   try {
     if (isOnline) {
+      commit('setClaim', {});
       const { data } = await request.get(`/claims/${id}/info`);
       commit('setClaim', data);
     } else {
