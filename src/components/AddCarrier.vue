@@ -209,6 +209,7 @@ export default {
   name: 'AddCarrier',
 
   props: {
+    //this prop is being used when we edit a lead
     isEdit: {
       type: Boolean
     },
@@ -280,6 +281,7 @@ export default {
   },
 
   mounted() {
+    //pre-filling all the data when we edit a lead
     if (this.isEdit) {
       this.carrier.name = this.selectedCarrier.name;
       this.carrier.email = this.selectedCarrier.email;
