@@ -2,17 +2,6 @@
   <div>
     <div v-if="settlement.attributes">
       <div class="q-mx-md">
-        <!-- <div class="row">
-          <div class="q-ml-auto">
-            <q-btn
-              @click="onClickAddButton"
-              flat
-              class="q-ml-auto"
-              v-if="settlementShowDialog == false"
-              ><img src="~assets/addSettlement.svg" height="24" width="20"
-            /></q-btn>
-          </div>
-        </div> -->
         <q-separator class="q-my-sm" />
 
         <div class="row q-py-sm">
@@ -22,15 +11,6 @@
             <div class="heading-light">$</div>
             {{ settlement.attributes.totalReplCost }}
           </div>
-
-          <!-- <div class="row q-py-sm">
-              <div class="heading-light">Total Net Claimed</div>
-
-              <div class="q-ml-auto text-bold">
-                <span class=" heading-light">$</span>
-                {{ settlement.attributes.netClaimed }}
-              </div>
-            </div> -->
         </div>
         <div class="row q-py-sm">
           <div class="col-6 heading-light">Total Net Claimed</div>

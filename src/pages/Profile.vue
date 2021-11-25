@@ -45,7 +45,7 @@
                 <template v-slot:header>
                   <q-item-section avatar>
                     <q-img
-                      src="~assets/visa-logo.svg"
+                      src="~assets/visa_logo.svg"
                       style="height: 24px; width: 24px"
                     />
                   </q-item-section>

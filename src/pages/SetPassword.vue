@@ -54,7 +54,7 @@
       </div>
     </div>
     <div v-else class="column justify-between">
-      <img src="~assets/link-expired.svg" width="50%" class="q-mx-auto" />
+      <img src="~assets/link_expired.svg" width="50%" class="q-mx-auto" />
       <h3 class="q-mx-auto">This link is expired.</h3>
     </div>
   </q-page>
@@ -72,9 +72,8 @@ import {
 import { Screen } from 'quasar';
 import { setNotification } from 'src/store/common/mutations';
 
-const isPushNotificationsAvailable = Capacitor.isPluginAvailable(
-  'PushNotifications'
-);
+const isPushNotificationsAvailable =
+  Capacitor.isPluginAvailable('PushNotifications');
 const { PushNotifications } = Plugins;
 export default {
   name: 'SetPassword',
