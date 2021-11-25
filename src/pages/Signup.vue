@@ -3,25 +3,23 @@
     <div class="signup-container q-px-md q-py-lg">
       <div v-if="isValidPlan">
         <div
-          class=" q-mb-md text-capitalize"
-          style="margin-left:60%;"
+          class="q-mb-md text-capitalize"
+          style="margin-left: 60%"
           v-if="
             (planInfo.attributes &&
               planInfo.attributes.coupons[0] &&
               planInfo.attributes.coupons[0].amtAfterDicount) ||
-              (planInfo.attributes &&
-                planInfo.attributes.coupons &&
-                planInfo.attributes.coupons[1]) ||
-              (planInfo.attributes &&
-                planInfo.attributes.coupons &&
-                planInfo.attributes.coupons[0].trial)
+            (planInfo.attributes &&
+              planInfo.attributes.coupons &&
+              planInfo.attributes.coupons[1]) ||
+            (planInfo.attributes &&
+              planInfo.attributes.coupons &&
+              planInfo.attributes.coupons[0].trial)
           "
         >
-          <q-badge color="green">
-            Coupon Applied Successfully
-          </q-badge>
+          <q-badge color="green"> Coupon Applied Successfully </q-badge>
         </div>
-        <div class="row justify-between ">
+        <div class="row justify-between">
           <div class="col-3">
             <q-carousel
               v-model="plan"
@@ -53,9 +51,9 @@
                           planInfo.attributes.coupons[0] &&
                           planInfo.attributes.coupons[0].amtAfterDicount &&
                           planInfo.attributes.coupons[0].amtAfterDicount) ||
-                          (planInfo.attributes &&
-                            planInfo.attributes.coupons[1] &&
-                            planInfo.attributes.coupons[1].amtAfterDicount)
+                        (planInfo.attributes &&
+                          planInfo.attributes.coupons[1] &&
+                          planInfo.attributes.coupons[1].amtAfterDicount)
                       "
                       >Amount to Pay after Discount</span
                     >
@@ -70,9 +68,9 @@
                           planInfo.attributes.coupons[0] &&
                           planInfo.attributes.coupons[0].amtAfterDicount &&
                           planInfo.attributes.coupons[0].amtAfterDicount) ||
-                          (planInfo.attributes &&
-                            planInfo.attributes.coupons[1] &&
-                            planInfo.attributes.coupons[1].amtAfterDicount)
+                        (planInfo.attributes &&
+                          planInfo.attributes.coupons[1] &&
+                          planInfo.attributes.coupons[1].amtAfterDicount)
                       "
                     >
                       $
@@ -596,7 +594,7 @@
       </div>
 
       <div v-else class="column justify-between">
-        <img src="~assets/404-error.jpg" width="60%" class="q-mx-auto" />
+        <img src="~assets/404_error.jpg" width="60%" class="q-mx-auto" />
         <h3 class="q-mx-auto">Plan Not Found</h3>
         <q-btn
           color="primary"

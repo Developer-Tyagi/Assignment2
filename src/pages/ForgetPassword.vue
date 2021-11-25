@@ -29,7 +29,7 @@
         <img
           v-else
           alt="Claimguru"
-          src="~assets/CG_Text_White.png"
+          src="~assets/cg_text_white.png"
           class="q-mx-auto q-mb-auto"
           width="190"
           height="90"

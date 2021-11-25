@@ -1,9 +1,7 @@
 <template>
   <div>
     <div class="row q-mt-sm justify-center" v-if="toShowCamera != 'true'">
-      <q-badge color="primary">
-        OCR coming soon
-      </q-badge>
+      <q-badge color="primary"> OCR coming soon </q-badge>
     </div>
     <div class="stepper-heading q-ma-md q-ml-sm">
       Please Upload Vendor Documents
@@ -31,9 +29,9 @@
       <div class="row justify-center">
         <div class="column q-mr-md">
           <img
-            class="q-ml-lg q-my-xs  "
+            class="q-ml-lg q-my-xs"
             src="~assets/upload.svg"
-            style="width:50%;"
+            style="width: 50%"
             @click="onClickUploadButton"
           />
           <div class="form-heading q-ml-lg">Upload</div>
@@ -51,7 +49,7 @@
           class="column"
           v-if="toShowCamera == 'true'"
         >
-          <img class="q-ml-lg " src="~assets/scanFile.svg" style="width:50%;" />
+          <img class="q-ml-lg" src="~assets/scan_file.svg" style="width: 50%" />
           <div class="form-heading text-center q-mt-xs q-mr-xs">Camera</div>
         </div>
       </div>
@@ -131,10 +129,7 @@ export default {
         byteString = atob(dataURI.split(',')[1]);
       else byteString = unescape(dataURI.split(',')[1]);
       // separate out the mime component
-      var mimeString = dataURI
-        .split(',')[0]
-        .split(':')[1]
-        .split(';')[0];
+      var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
       // write the bytes of the string to a typed array
       var ia = new Uint8Array(byteString.length);
       for (var i = 0; i < byteString.length; i++) {

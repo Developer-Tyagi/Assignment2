@@ -2,31 +2,31 @@
   <!-- mobile-container-page listing-height -->
   <div>
     <q-page
-      class="q-pt-lg bg-white "
-      style=" border-radius: 0 0 40px 40px; "
+      class="q-pt-lg bg-white"
+      style="border-radius: 0 0 40px 40px"
       padding
     >
       <div
-        class=" column justify-around cardHeight"
-        style="border-radius: 0 0 40px 40px; "
+        class="column justify-around cardHeight"
+        style="border-radius: 0 0 40px 40px"
       >
-        <div class="row col-4  justify-around dashboard-row">
+        <div class="row col-4 justify-around dashboard-row">
           <div
             class="column col iconBackground items-center"
             @click="onClickNewLead"
             style=""
           >
             <q-icon class="col self-center gridIcon">
-              <q-img src="~assets/LEADS.svg" height="80px" contain />
+              <q-img src="~assets/leads.svg" height="80px" contain />
             </q-icon>
 
             <div
               class="
-              column
-              justify-end
-              text-white text-center text-weight-medium text-subtitle1
-              IconText
-            "
+                column
+                justify-end
+                text-white text-center text-weight-medium text-subtitle1
+                IconText
+              "
             >
               LEADS
             </div>
@@ -38,7 +38,7 @@
           >
             <q-icon class="col self-center gridIcon">
               <q-img
-                src="~assets/Clients_dashboard.svg"
+                src="~assets/clients_dashboard.svg"
                 height="80px"
                 contain
               />
@@ -46,32 +46,32 @@
 
             <div
               class="
-              column
-              justify-end
-              text-white text-center text-weight-medium text-subtitle1
-              IconText
-            "
+                column
+                justify-end
+                text-white text-center text-weight-medium text-subtitle1
+                IconText
+              "
             >
               CLIENTS
             </div>
           </div>
         </div>
-        <div class="row  col-4  justify-around dashboard-row">
+        <div class="row col-4 justify-around dashboard-row">
           <div
             class="column col iconBackground items-center"
             @click="$router.push('/vendors')"
           >
             <q-icon class="col self-center gridIcon">
-              <q-img src="~assets/VENDOR.svg" height="80px" contain />
+              <q-img src="~assets/vendor.svg" height="80px" contain />
             </q-icon>
 
             <div
               class="
-              column
-              justify-end
-              text-white text-center text-weight-medium text-subtitle1
-              IconText
-            "
+                column
+                justify-end
+                text-white text-center text-weight-medium text-subtitle1
+                IconText
+              "
             >
               VENDORS
             </div>
@@ -82,22 +82,22 @@
             @click="$router.push('/claims')"
           >
             <q-icon class="col self-center gridIcon">
-              <q-img src="~assets/CLAIMS.svg" height="80px" contain />
+              <q-img src="~assets/claims.svg" height="80px" contain />
             </q-icon>
 
             <div
               class="
-              column
-              justify-end
-              text-white text-center text-weight-medium text-subtitle1
-              IconText
-            "
+                column
+                justify-end
+                text-white text-center text-weight-medium text-subtitle1
+                IconText
+              "
             >
               CLAIMS
             </div>
           </div>
         </div>
-        <div class="row col-4  justify-around dashboard-row">
+        <div class="row col-4 justify-around dashboard-row">
           <div
             class="column col iconBackground items-center"
             @click="selectClaimDialog = true"
@@ -108,15 +108,15 @@
 
             <div
               class="
-              column
-              justify-end
-              text-white text-center text-weight-medium text-subtitle1
-              scanIconText
-            "
+                column
+                justify-end
+                text-white text-center text-weight-medium text-subtitle1
+                scanIconText
+              "
             >
               <div class="col scanText text-subtitle2">SCAN</div>
 
-              <div class="col ">UPLOAD</div>
+              <div class="col">UPLOAD</div>
             </div>
           </div>
 
@@ -130,11 +130,11 @@
 
             <div
               class="
-              column
-              justify-end
-              text-white text-center text-weight-medium text-subtitle1
-              IconText
-            "
+                column
+                justify-end
+                text-white text-center text-weight-medium text-subtitle1
+                IconText
+              "
             >
               CAMERA
             </div>
@@ -222,7 +222,7 @@
               >
                 <!-- PhotoId App Icon used here-->
                 <q-icon size="xl">
-                  <q-img src="../assets/photoIdApp.png" color="primary" />
+                  <q-img src="../assets/photo_ID_app.png" color="primary" />
                 </q-icon>
                 <div class="text-black">Photo ID App</div>
               </div>
@@ -241,24 +241,35 @@
       </q-dialog>
     </q-page>
     <q-footer
-      style="background-color: #8f8f8f; padding-top: 8px; padding-bottom: env(safe-area-inset-bottom);  "
+      style="
+        background-color: #8f8f8f;
+        padding-top: 8px;
+        padding-bottom: env(safe-area-inset-bottom);
+      "
     >
       <img
         src="~assets/header_shadow.png"
         class="absolute"
-        style="width: 90%; height: 50px; margin-top: -22px; top: 0; left: 50%; transform: translateX(-50%)"
+        style="
+          width: 90%;
+          height: 50px;
+          margin-top: -22px;
+          top: 0;
+          left: 50%;
+          transform: translateX(-50%);
+        "
       />
       <div
-        class="row justify-between  q-pt-xs"
-        style="max-width: 95%; margin: 0 auto;"
+        class="row justify-between q-pt-xs"
+        style="max-width: 95%; margin: 0 auto"
       >
         <div class="col-3 text-center column align-top">
           <img
-            src="~assets/Profile.svg"
+            src="~assets/profile.svg"
             height=" 50px"
             @click="$router.push('/edit-profile')"
           />
-          <div class=" text-center text-white text-caption">PROFILE</div>
+          <div class="text-center text-white text-caption">PROFILE</div>
         </div>
         <div
           @click="$router.push('/reports')"
@@ -270,23 +281,21 @@
         </div>
         <div class="col-3 text-center column align-top">
           <img
-            class=" "
-            src="~assets/STATS.svg"
+            class=""
+            src="~assets/stats.svg"
             height=" 50px"
             @click="$router.push('/claimstats')"
           />
-          <div class=" text-center  text-white text-caption">
-            CLAIMS STATS
-          </div>
+          <div class="text-center text-white text-caption">CLAIMS STATS</div>
         </div>
         <div class="col-3 text-center column align-top">
           <img
             class=""
-            src="~assets/dashboardAdd.svg"
+            src="~assets/dashboard_add.svg"
             height=" 50px"
             @click="onClickAddUpIcon()"
           />
-          <div class=" text-center text-white text-caption">ADD</div>
+          <div class="text-center text-white text-caption">ADD</div>
         </div>
       </div>
     </q-footer>

@@ -22,14 +22,14 @@
           v-if="isMobile()"
           alt="Claimguru"
           src="~assets/claimguru_text.png"
-          class="q-mx-auto q-mb-auto "
+          class="q-mx-auto q-mb-auto"
           width="190"
           height="90"
         />
         <img
           v-else
           alt="Claimguru"
-          src="~assets/CG_Text_White.png"
+          src="~assets/cg_text_white.png"
           class="q-mx-auto q-mb-auto"
           width="190"
           height="90"
@@ -87,7 +87,7 @@
 
         <div
           v-if="!isMobile()"
-          class="row justify-center  cursor-pointer"
+          class="row justify-center cursor-pointer"
           @click="onClickSignupButton"
         >
           <a class="text-white" style="text-decoration: none">Sign Up</a>
@@ -121,9 +121,8 @@ import { Screen } from 'quasar';
 import { constants } from '@utils/constant';
 import { notification } from 'src/store/common/getters';
 
-const isPushNotificationsAvailable = Capacitor.isPluginAvailable(
-  'PushNotifications'
-);
+const isPushNotificationsAvailable =
+  Capacitor.isPluginAvailable('PushNotifications');
 const { PushNotifications } = Plugins;
 
 export default {
@@ -208,7 +207,7 @@ export default {
       }
     },
     onClickSignupButton() {
-        window.location = process.env.LP_APP_URL
+      window.location = process.env.LP_APP_URL;
     }
   },
 

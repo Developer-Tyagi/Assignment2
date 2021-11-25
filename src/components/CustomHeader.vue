@@ -1,10 +1,10 @@
 <template>
   <div>
-    <q-header class="bg-white ">
+    <q-header class="bg-white">
       <q-toolbar
-        class="row bg-primary rounded-header toolbar-shadow "
+        class="row bg-primary rounded-header toolbar-shadow"
         v-if="$route.name === 'dashboard'"
-        style="max-height: 130px;"
+        style="max-height: 130px"
       >
         <q-btn
           flat
@@ -17,9 +17,14 @@
         />
         <div
           class="self-center"
-          style="margin-top: -20px; text-align: center; margin-right: 52px; width:100%; "
+          style="
+            margin-top: -20px;
+            text-align: center;
+            margin-right: 52px;
+            width: 100%;
+          "
         >
-          <img src="~assets/logo2.png" height="130" />
+          <img src="~assets/logo_complete.png" height="130" />
         </div>
       </q-toolbar>
       <q-toolbar class="row bg-primary rounded-header" v-else>
@@ -46,9 +51,9 @@
           <q-icon
             v-if="
               $route.name == 'create client' &&
-                !isOnline &&
-                editSelectedClient.id &&
-                isOfflineClientEdit
+              !isOnline &&
+              editSelectedClient.id &&
+              isOfflineClientEdit
             "
             name="edit"
             @click="onClickEditIcon"
@@ -63,14 +68,20 @@
         </div>
 
         <q-btn class="no-visibility button-50" flat>
-          <img src="~assets/left-arrow.svg" alt="back-arrow" />
+          <img src="~assets/left_arrow.svg" alt="back-arrow" />
         </q-btn>
       </q-toolbar>
       <div class="text-center" v-if="$route.name === 'dashboard'">
         <img
           src="~assets/header_shadow.png"
           class="absolute"
-          style="width: 90%; height: 50px; left: 50%; transform: translateX(-50%); bottom: -25px;"
+          style="
+            width: 90%;
+            height: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: -25px;
+          "
         />
       </div>
     </q-header>
@@ -83,7 +94,7 @@
     >
       <div class="q-px-sm q-pt-lg menu-bar-style q-pb-sm">
         <div class="row q-pl-lg q-pr-md">
-          <div class="q-pt-sm  col-3">
+          <div class="q-pt-sm col-3">
             <q-avatar
               size="4.5em"
               color="white"
@@ -93,10 +104,16 @@
             />
           </div>
           <div
-            class="col column text-weight-bold text-white q-pa-sm q-ml-md text-h6 "
+            class="
+              col
+              column
+              text-weight-bold text-white
+              q-pa-sm q-ml-md
+              text-h6
+            "
             style="width: calc(100% - 54px)"
           >
-            <div class="text-capitalize ellipsis" style="width: 100%;">
+            <div class="text-capitalize ellipsis" style="width: 100%">
               {{
                 user.roles[0].machineValue == 'vendor'
                   ? user.companyName
@@ -123,13 +140,13 @@
               class="q-mt-lg bg-white rounded-sidebar q-pa-none q-pb-xs"
               v-if="
                 (link.title != 'Admin' || !isMobile()) &&
-                  (link.title != 'Manage Users' || !isMobile()) &&
-                  (link.title != 'Configuration' || !isMobile())
+                (link.title != 'Manage Users' || !isMobile()) &&
+                (link.title != 'Configuration' || !isMobile())
               "
             >
               <q-item-section @click="onClickMenuItem(link.title)">
-                <div class="row text-primary q-mb-sm" style="max-height:68px">
-                  <div class="q-ml-lg col-2 q-mr-sm q-pt-xs ">
+                <div class="row text-primary q-mb-sm" style="max-height: 68px">
+                  <div class="q-ml-lg col-2 q-mr-sm q-pt-xs">
                     <q-icon
                       :size="link.title == 'Reports' ? '2rem' : '2.5rem'"
                       :style="link.title == 'Reports' ? 'padding-top:10px' : ''"
@@ -138,12 +155,12 @@
                       <q-img :src="getImage(link.icon)" color="primary" />
                     </q-icon>
                   </div>
-                  <div class="col-8 ">
-                    <div class=" text-subtitle1 text-bold q-pt-sm">
+                  <div class="col-8">
+                    <div class="text-subtitle1 text-bold q-pt-sm">
                       {{ link.title }}
                     </div>
 
-                    <div style="font-size:10px;">
+                    <div style="font-size: 10px">
                       {{ link.description }}
                     </div>
                   </div>
@@ -157,11 +174,11 @@
         <q-btn
           class="full-width q-mt-md menu-bar-style text-subtitle1 text-bold"
           label="LOGOUT"
-          style="border-radius:25px; width: 100%; height: 50px;"
+          style="border-radius: 25px; width: 100%; height: 50px"
           @click="logout()"
         />
       </div>
-      <q-separator class="q-mt-md q-mb-sm bg-primary " style="padding:none" />
+      <q-separator class="q-mt-md q-mb-sm bg-primary" style="padding: none" />
       <p class="text-black q-ml-md" style="opacity: 50%; font-size: 12px">
         Claimguru Version {{ this.version }}
       </p>
@@ -197,7 +214,7 @@ export default {
         {
           title: 'Dashboard',
           key: 'dashboard',
-          icon: 'Dashboard_menu.svg',
+          icon: 'dashboard_menu.svg',
           link: '/claimstats',
           description: 'View Dashboard and details'
         },
@@ -212,14 +229,14 @@ export default {
           title: 'Clients',
           key: 'clients',
           link: '/clients',
-          icon: 'CLIENTS_menu.svg',
+          icon: 'clients_menu.svg',
           description: 'View, Add and Manage Clients.'
         },
         {
           title: 'Leads',
           key: 'leads',
           link: '/leads-dashboard',
-          icon: 'LEADS_menu.svg',
+          icon: 'leads_menu.svg',
           description: 'View Lead Dashboard, Add New Lead and Manage Leads.'
         },
 
