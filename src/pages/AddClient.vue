@@ -2051,15 +2051,10 @@ export default {
       }),
       'MM/DD/YYYY'
     );
-    // here we are pre-filling the data when we convert a lead into client
+
     if (this.selectedLead.id) {
       await this.getLeadDetails(this.selectedLead.id);
-
-      if (
-        this.selectedLead.leadSource &&
-        this.selectedLead.leadSource.id &&
-        this.selectedLead.leadSource.type == 'vendor'
-      ) {
+      if (this.selectedLead.leadSource && this.selectedLead.leadSource.id) {
         this.getVendorDetails(this.selectedLead.leadSource.id);
       }
 
@@ -2085,7 +2080,6 @@ export default {
       this.clientAddressDetails.address1 = this.selectedLead.lossLocation.address1;
       this.clientAddressDetails.address2 = this.selectedLead.lossLocation.address2;
       this.lossInfo.descriptionDwelling = this.selectedLead.lossDesc;
-
       if (this.selectedLead.leadSource) {
         this.contractInfo.sourceDetails.id = this.selectedLead.leadSource.id
           ? this.selectedLead.leadSource.id
