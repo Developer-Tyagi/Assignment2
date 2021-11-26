@@ -5,7 +5,7 @@
         <div class="q-mx-lg q-mt-md">
           <div class="q-ml-none text-primary">
             <div class="row">
-              {{ selectedLead['primaryContact']['fname'] }}
+              {{ selectedLead.primaryContact.fname }}
               {{ selectedLead.primaryContact.lname }}
             </div>
             <q-icon
