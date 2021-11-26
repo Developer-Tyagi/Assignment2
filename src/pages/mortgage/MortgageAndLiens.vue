@@ -4,6 +4,7 @@
       <div v-if="mortgage.mortgages">
         <q-card
           class=" q-pa-sm q-mt-md"
+          :key="index"
           v-for="(mortgage, index) in mortgage.mortgages"
         >
           <div class="form-heading  text-capitalize q-mt-xs row">

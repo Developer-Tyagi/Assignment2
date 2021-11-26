@@ -2,7 +2,7 @@
   <div>
     <div>
       <div v-if="vendorLists.Vendors">
-        <q-card class="q-pa-md" v-for="(vendor, index) in vendorLists.Vendors">
+        <q-card class="q-pa-md"  :key="index" v-for="(vendor, index) in vendorLists.Vendors">
           <div
             class="form-heading  text-capitalize q-mt-xs row justify-between"
           >
