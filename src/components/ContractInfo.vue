@@ -301,7 +301,7 @@
                 }}
               </div>
             </div>
-            <div>
+            <div v-if="contractInfo.sourceDetails.phone">
               Phone:
               <span
                 class="clickLink"

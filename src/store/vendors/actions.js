@@ -38,6 +38,7 @@ export async function getVendorDetails({ commit, dispatch }, id) {
     const { data } = await request.get(`/vendors/${id}`);
     commit('setSelectedVendor', data);
     dispatch('setLoading', false);
+    return data;
   } catch (e) {
     console.log(e);
     dispatch('setLoading', false);
