@@ -21,15 +21,15 @@
         />
       </div>
       <div class="mobile-container-page">
-        <div class="clients-list " v-if="claims.length">
+        <div class="clients-list" v-if="claims.length">
           <div>
             <div
-              class="clients-list "
+              class="clients-list"
               v-for="(claim, index) in claims"
               :key="claim.id"
             >
               <div class="client-list-item">
-                <div class="row  form-heading q-pb-md  ">
+                <div class="row form-heading q-pb-md">
                   <div class="col-10" @click="onClickingOnClaim(claim)">
                     {{ claim.client.fname }}
                     {{ claim.client.lname }}
@@ -114,7 +114,7 @@
                       color="red"
                       v-if="
                         claim.uScopeAssignmentID === '' &&
-                          claim.isPhotoIDGenerated === false
+                        claim.isPhotoIDGenerated === false
                       "
                     >
                       Assignment not generated, push it manually
@@ -128,7 +128,8 @@
                       color="red"
                       v-if="
                         claim.uScopeAssignmentID === '' &&
-                          claim.isPhotoIDGenerated === null
+                        !claim.isPhotoIDGenerated &&
+                        claim.isPhotoIDGenerated != false
                       "
                     >
                       Assignment not generated, PLEASE WAIT

@@ -3,22 +3,22 @@
     <q-icon
       v-if="
         !claimSummaryDialog &&
-          !lossInfoDialog &&
-          !activityLogDialog &&
-          !carrierDialog &&
-          !editTask &&
-          !addSettlement &&
-          !addPersonnel &&
-          !addMortgageDialog &&
-          !addClaimNotes &&
-          !claimExpertVendor
+        !lossInfoDialog &&
+        !activityLogDialog &&
+        !carrierDialog &&
+        !editTask &&
+        !addSettlement &&
+        !addPersonnel &&
+        !addMortgageDialog &&
+        !addClaimNotes &&
+        !claimExpertVendor
       "
       class="icon-top"
       @click="onTopMenuClick"
       name="more_vert"
       color="white"
     />
-    <div class="listing-height " id="scroll-bottom">
+    <div class="listing-height" id="scroll-bottom">
       <div>
         <ClaimDetail />
       </div>
@@ -291,7 +291,7 @@
           <div
             v-if="
               getSelectedClaim.uScopeAssignmentID === '' &&
-                getSelectedClaim.isPhotoIDGenerated === false
+              !getSelectedClaim.isPhotoIDGenerated
             "
             class="q-pa-md heading-light"
             @click="onManuallyPushAssignmentClick"
