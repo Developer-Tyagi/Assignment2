@@ -1144,7 +1144,7 @@ export default {
       propertyID: '',
       onlineClientResponse: '',
       selectedClaim: {},
-      step: 10,
+      step: 0,
       finalOfficeTask: [],
       stepClickValidTill: 0,
       tenantOccupiedToggle: false,
