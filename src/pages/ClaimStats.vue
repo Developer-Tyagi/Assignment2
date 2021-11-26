@@ -99,10 +99,12 @@
         <span class="text-caption float-right">See all</span>
       </div>
       <div class="claim-list-scrollable q-mx-xs q-mb-xs" v-if="claims.length > 0">
+       
         <q-card
           class="q-mt-xs cursor-pointer"
           v-for="claim in claims"
           @click="openClaimDetail(claim)"
+          :key="claim.id"
         >
           <q-card-section>
             <div class="row ">

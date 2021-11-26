@@ -8,6 +8,7 @@
       <q-card
         class="q-pa-md q-mb-sm"
         v-for="(damage, index) in damageInfo.damageInfo.personal.items"
+        :key="index"
       >
         <div class="row justify-between">
           <div>

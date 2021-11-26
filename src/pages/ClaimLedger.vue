@@ -38,7 +38,8 @@
             Accepted Settlements
           </div>
 
-          <q-card class="q-my-sm" v-for="settlement in account.settlements">
+          <q-card class="q-my-sm" :key="settlement.id" v-for="settlement in account.settlements">
+            
             <div class="row q-px-md q-pt-xs justify-center">
               <div>{{ settlement.desc }}</div>
             </div>
@@ -78,6 +79,7 @@
                 <div v-if="payment.payments != null">
                   <q-card
                     class="q-pa-sm q-ma-sm"
+                    :key="pay.id"
                     v-for="pay in payment.payments"
                   >
                     <div class="row justify-end">
@@ -132,7 +134,7 @@
               header-class="text-primary"
             >
               <div v-if="expenses.expenses != null">
-                <q-card class="q-ma-xs" v-for="expense in expenses.expenses">
+                <q-card class="q-ma-xs" :key="expense.id" v-for="expense in expenses.expenses">
                   <div class="row justify-between">
                     <div class="q-pl-sm q-pt-xs">
                       <q-badge color="primary">{{
@@ -211,6 +213,7 @@
               <div v-if="disbursements.disbursements != null">
                 <q-card
                   class="q-pa-lg q-ma-sm"
+                  :key="pay.id"
                   v-for="pay in disbursements.disbursements"
                 >
                   <div class="q-my-sm row justify-between">
@@ -253,6 +256,7 @@
                   <!-- {{ finalExpenses }} -->
                   <div
                     class="q-mt-sm row justify-between"
+                    :key="exp.id"
                     v-for="exp in pay.expenses"
                   >
                     <div class="col-3 heading-light">
@@ -378,6 +382,7 @@
               <div class="q-pa-sm" v-if="showValue">
                 <q-card
                   class="q-ma-sm justify-between"
+                  :key="index"
                   v-for="(settlement, index) in account.settlements"
                 >
                   <div class="q-pt-sm row justify-center">
@@ -539,6 +544,7 @@
               <div class="q-pa-sm" v-if="showValue">
                 <q-card
                   class="q-my-sm q-pa-xs"
+                  :key="index"
                   v-for="(settlement, index) in account.settlements"
                 >
                   <div class="row q-mt-md justify-center">
@@ -824,6 +830,7 @@
                     <tr
                       v-if="exp.amount - exp.dilivered != 0"
                       class="heading-light"
+                      :key="index"
                       v-for="(exp, index) in clientAndCompany"
                     >
                       <td>{{ exp.payee ? exp.payee : '-' }}</td>
@@ -1027,6 +1034,7 @@
                     <tr
                       v-if="exp.amount - exp.dilivered != 0"
                       class="heading-light"
+                      :key="index"
                       v-for="(exp, index) in clientOnly"
                     >
                       <td>{{ exp.payee }}</td>
@@ -1095,6 +1103,7 @@
                       class="heading-light"
                       v-if="exp.amount - exp.dilivered"
                       v-for="(exp, index) in companyOnly"
+                      :key="index"
                     >
                       <td>{{ exp.payee }}</td>
                       <td>{{ exp.amount - exp.dilivered }}</td>
