@@ -1,7 +1,7 @@
 import localDB, { getCollection } from '@services/dexie';
 
 export async function setMortgages(state, mortgagesData) {
-  const mortgagesCollection = await getCollection('activeLeads');
+  const mortgagesCollection = await getCollection('mortgages');
   const mortgages = mortgagesData.map(mortgage => ({
     ...mortgage.attributes,
     id: mortgage.id
