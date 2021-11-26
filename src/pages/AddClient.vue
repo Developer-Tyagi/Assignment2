@@ -613,7 +613,7 @@
               <div
                 v-if="
                   lossInfo.isThereDamageToPersonalPropertyToggle &&
-                  lossInfo.isPAFillingOutToggle
+                    lossInfo.isPAFillingOutToggle
                 "
               >
                 <br />
@@ -732,7 +732,7 @@
                 class="row"
                 v-if="
                   !lossInfo.isPAFillingOutToggle &&
-                  lossInfo.isThereDamageToPersonalPropertyToggle
+                    lossInfo.isThereDamageToPersonalPropertyToggle
                 "
               >
                 <div class="col-8 q-mx-none q-my-auto form-heading">
@@ -748,9 +748,9 @@
                 class="row"
                 v-if="
                   !lossInfo.isAdjustorFillOutLaterDate &&
-                  lossInfo.isThereDamageToPersonalPropertyToggle &&
-                  !lossInfo.isAdjustorFillOutLaterDate &&
-                  !lossInfo.isPAFillingOutToggle
+                    lossInfo.isThereDamageToPersonalPropertyToggle &&
+                    !lossInfo.isAdjustorFillOutLaterDate &&
+                    !lossInfo.isPAFillingOutToggle
                 "
               >
                 <div class="col-8 q-mx-none q-my-auto form-heading">
@@ -766,8 +766,8 @@
                 class="row"
                 v-if="
                   lossInfo.isClientGoingToPreparePPIF &&
-                  lossInfo.isPAFillingOutToggle == false &&
-                  lossInfo.isAdjustorFillOutLaterDate == false
+                    lossInfo.isPAFillingOutToggle == false &&
+                    lossInfo.isAdjustorFillOutLaterDate == false
                 "
               >
                 <div class="col-8 q-mx-none q-my-auto form-heading">
@@ -792,7 +792,7 @@
                 class="row"
                 v-if="
                   lossInfo.isPAFillingOutToggle == false &&
-                  lossInfo.wasAppifProvidedToTheInsuredToggle == false
+                    lossInfo.wasAppifProvidedToTheInsuredToggle == false
                 "
               >
                 <div class="col-9 q-mx-none q-my-auto form-heading">
@@ -1504,8 +1504,7 @@ export default {
           this.client = this.editSelectedClient.type;
         }
         if (this.editSelectedClient.insuredInfo.primary.honorific) {
-          this.honorific1 =
-            this.editSelectedClient.insuredInfo.primary.honorific;
+          this.honorific1 = this.editSelectedClient.insuredInfo.primary.honorific;
         }
         this.insuredDetails.fname = this.editSelectedClient.insuredInfo.primary
           .fname
@@ -1544,8 +1543,7 @@ export default {
             : '';
         }
         if (this.editSelectedClient.insuredInfo.primary.email) {
-          this.insuredDetails.email =
-            this.editSelectedClient.insuredInfo.primary.email;
+          this.insuredDetails.email = this.editSelectedClient.insuredInfo.primary.email;
         }
         if (this.editSelectedClient.property) {
           this.property = this.editSelectedClient.property.propertyType
@@ -1566,11 +1564,10 @@ export default {
           if (this.editSelectedClient.insuredInfo.secondary.honorific) {
             this.honorific2 = {
               id: this.editSelectedClient.insuredInfo.secondary.honorific.id,
-              value:
-                this.editSelectedClient.insuredInfo.secondary.honorific.value,
-              machineValue:
-                this.editSelectedClient.insuredInfo.secondary.honorific
-                  .machineValue
+              value: this.editSelectedClient.insuredInfo.secondary.honorific
+                .value,
+              machineValue: this.editSelectedClient.insuredInfo.secondary
+                .honorific.machineValue
             };
           }
 
@@ -1642,8 +1639,7 @@ export default {
             .insuredInfo.mailingAddress.addressCountry
             ? this.editSelectedClient.insuredInfo.mailingAddress.addressCountry
             : null;
-          this.clientAddressDetails.addressLocality =
-            this.editSelectedClient.insuredInfo.mailingAddress.addressLocality;
+          this.clientAddressDetails.addressLocality = this.editSelectedClient.insuredInfo.mailingAddress.addressLocality;
           this.clientAddressDetails.addressRegion = this.editSelectedClient
             .insuredInfo.mailingAddress.addressRegion
             ? this.editSelectedClient.insuredInfo.mailingAddress.addressRegion
@@ -1669,14 +1665,11 @@ export default {
             this.editSelectedClient.insuredInfo.mailingAddress.dropBox &&
             this.editSelectedClient.insuredInfo.mailingAddress.dropBox.isPresent
           ) {
-            this.clientAddressDetails.dropBox.isPresent =
-              this.editSelectedClient.insuredInfo.mailingAddress.dropBox.isPresent;
-            this.clientAddressDetails.dropBox.info =
-              this.editSelectedClient.insuredInfo.mailingAddress.dropBox.info;
+            this.clientAddressDetails.dropBox.isPresent = this.editSelectedClient.insuredInfo.mailingAddress.dropBox.isPresent;
+            this.clientAddressDetails.dropBox.info = this.editSelectedClient.insuredInfo.mailingAddress.dropBox.info;
           }
 
-          this.mailingAddressDetails =
-            this.editSelectedClient.insuredInfo.mailingAddress;
+          this.mailingAddressDetails = this.editSelectedClient.insuredInfo.mailingAddress;
         }
       }
 
@@ -1688,12 +1681,9 @@ export default {
         this.selectedClaim.policyInfo &&
         this.selectedClaim.policyInfo.carrier
       ) {
-        this.insuranceDetails.carrierName =
-          this.selectedClaim.policyInfo.carrier.value;
-        this.insuranceDetails.carrierId =
-          this.selectedClaim.policyInfo.carrier.id;
-        this.insuranceDetails.address =
-          this.selectedClaim.policyInfo.carrier.address;
+        this.insuranceDetails.carrierName = this.selectedClaim.policyInfo.carrier.value;
+        this.insuranceDetails.carrierId = this.selectedClaim.policyInfo.carrier.id;
+        this.insuranceDetails.address = this.selectedClaim.policyInfo.carrier.address;
         this.insuranceDetails.email = this.selectedClaim.policyInfo.carrier
           .email
           ? this.selectedClaim.policyInfo.carrier.email
@@ -1710,8 +1700,7 @@ export default {
           : false;
 
         if (this.selectedClaim.policyInfo.isClaimFiled) {
-          this.insuranceDetails.insuranceClaimNumber =
-            this.selectedClaim.policyInfo.claimNumber;
+          this.insuranceDetails.insuranceClaimNumber = this.selectedClaim.policyInfo.claimNumber;
         }
 
         this.insuranceDetails.isThisIsForcedPlacedPolicyToggle = this
@@ -1854,8 +1843,9 @@ export default {
             index < this.selectedClaim.damageInfo.personal.items.length;
             index++
           ) {
-            this.lossInfo.ppDamagedItems[index] =
-              this.selectedClaim.damageInfo.personal.items[index];
+            this.lossInfo.ppDamagedItems[
+              index
+            ] = this.selectedClaim.damageInfo.personal.items[index];
           }
         }
       }
@@ -1872,8 +1862,9 @@ export default {
             index < this.selectedClaim.damageInfo.otherStructure.items.length;
             index++
           ) {
-            this.lossInfo.osDamagedItems[index] =
-              this.selectedClaim.damageInfo.otherStructure.items[index];
+            this.lossInfo.osDamagedItems[
+              index
+            ] = this.selectedClaim.damageInfo.otherStructure.items[index];
           }
         }
       }
@@ -1913,8 +1904,9 @@ export default {
             this.selectedClaim.expertVendorInformation.isHiredVendor.length;
             index++
           ) {
-            this.expertVendorInfo.isAlreadyHiredVendor[index] =
-              this.selectedClaim.expertVendorInformation.isHiredVendor[index];
+            this.expertVendorInfo.isAlreadyHiredVendor[
+              index
+            ] = this.selectedClaim.expertVendorInformation.isHiredVendor[index];
           }
 
           for (
@@ -1924,10 +1916,11 @@ export default {
               .length;
             index++
           ) {
-            this.expertVendorInfo.isHiredByClaimguru[index] =
-              this.selectedClaim.expertVendorInformation.alreadyHiredVendor[
-                index
-              ];
+            this.expertVendorInfo.isHiredByClaimguru[
+              index
+            ] = this.selectedClaim.expertVendorInformation.alreadyHiredVendor[
+              index
+            ];
           }
         }
         this.expertVendorInfo.notes = this.selectedClaim.expertInfo.notes
@@ -1958,12 +1951,9 @@ export default {
           ? this.selectedClaim.estimatingInformation.phone
           : '';
         this.estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle = true;
-        this.estimatingInfo.estimatorID =
-          this.selectedClaim.estimatingInfo.estimatorID;
-        this.estimatingInfo.notesToEstimator =
-          this.selectedClaim.estimatingInfo.notesToEstimator;
-        this.estimatingInfo.scopeTimeNeeded =
-          this.selectedClaim.estimatingInfo.scopeTimeNeeded;
+        this.estimatingInfo.estimatorID = this.selectedClaim.estimatingInfo.estimatorID;
+        this.estimatingInfo.notesToEstimator = this.selectedClaim.estimatingInfo.notesToEstimator;
+        this.estimatingInfo.scopeTimeNeeded = this.selectedClaim.estimatingInfo.scopeTimeNeeded;
       }
 
       // Contract Info stepper pre-filling
@@ -1987,11 +1977,9 @@ export default {
         this.contractInfo.contractDate = dateToShow(
           this.selectedClaim.contractInfo.date
         );
-        this.contractInfo.buttonGroup =
-          this.selectedClaim.contractInfo.fees.type;
+        this.contractInfo.buttonGroup = this.selectedClaim.contractInfo.fees.type;
 
-        this.contractInfo.claimFeeRate =
-          this.selectedClaim.contractInfo.fees.rate;
+        this.contractInfo.claimFeeRate = this.selectedClaim.contractInfo.fees.rate;
       }
       if (this.selectedClaim.status) {
         this.contractInfo.cancelledToggle = this.selectedClaim.status
@@ -2019,10 +2007,8 @@ export default {
           .name
           ? this.selectedClaim.personnel[0].name
           : '';
-        this.companyPersonnel.buttonGroup =
-          this.selectedClaim.personnel[0].fees.type;
-        this.companyPersonnel.claimFeeRate =
-          this.selectedClaim.personnel[0].fees.rate;
+        this.companyPersonnel.buttonGroup = this.selectedClaim.personnel[0].fees.type;
+        this.companyPersonnel.claimFeeRate = this.selectedClaim.personnel[0].fees.rate;
         this.companyPersonnel.startDate = dateToShow(
           this.selectedClaim.personnel[0].startDate
         );
@@ -2048,12 +2034,10 @@ export default {
     await this.getContactTypes();
     await this.getPropertyTypes();
 
-    this.companyPersonnel.startDate =
-      this.companyPersonnel.endDate =
-      this.contractInfo.contractDate =
-      this.insuranceDetails.policyEffectiveDate =
-      this.lossInfo.dateOfLoss =
-        date.formatDate(Date.now(), 'MM/DD/YYYY');
+    this.companyPersonnel.startDate = this.companyPersonnel.endDate = this.contractInfo.contractDate = this.insuranceDetails.policyEffectiveDate = this.lossInfo.dateOfLoss = date.formatDate(
+      Date.now(),
+      'MM/DD/YYYY'
+    );
     if (this.isOnline) {
       this.contractInfo.firstContractDate = date.formatDate(
         Date.now(),
@@ -2071,7 +2055,7 @@ export default {
     if (this.selectedLead.id) {
       await this.getLeadDetails(this.selectedLead.id);
       if (this.selectedLead.leadSource && this.selectedLead.leadSource.id) {
-        this.getVendorDetails(this.selectedLead.leadSource.id);
+        await this.getVendorDetails(this.selectedLead.leadSource.id);
       }
 
       this.honorific1 = {
@@ -2081,30 +2065,20 @@ export default {
       };
       this.primaryDetails.isOrganization = this.selectedLead.isOrganization;
       if (this.primaryDetails.isOrganization) {
-        this.primaryDetails.organizationName =
-          this.selectedLead.organizationName;
+        this.primaryDetails.organizationName = this.selectedLead.organizationName;
       }
       this.insuredDetails.fname = this.selectedLead.primaryContact.fname;
       this.insuredDetails.lname = this.selectedLead.primaryContact.lname;
       this.insuredDetails.email = this.selectedLead.primaryContact.email;
-      this.insuredDetails.phone =
-        this.selectedLead.primaryContact.phoneNumber[0].number;
-      this.insuredDetails.type =
-        this.selectedLead.primaryContact.phoneNumber[0].type;
-      this.clientAddressDetails.houseNumber =
-        this.selectedLead.lossLocation.houseNumber;
-      this.clientAddressDetails.addressCountry =
-        this.selectedLead.lossLocation.addressCountry;
-      this.clientAddressDetails.addressLocality =
-        this.selectedLead.lossLocation.addressLocality;
-      this.clientAddressDetails.addressRegion =
-        this.selectedLead.lossLocation.addressRegion;
-      this.clientAddressDetails.postalCode =
-        this.selectedLead.lossLocation.postalCode;
-      this.clientAddressDetails.address1 =
-        this.selectedLead.lossLocation.address1;
-      this.clientAddressDetails.address2 =
-        this.selectedLead.lossLocation.address2;
+      this.insuredDetails.phone = this.selectedLead.primaryContact.phoneNumber[0].number;
+      this.insuredDetails.type = this.selectedLead.primaryContact.phoneNumber[0].type;
+      this.clientAddressDetails.houseNumber = this.selectedLead.lossLocation.houseNumber;
+      this.clientAddressDetails.addressCountry = this.selectedLead.lossLocation.addressCountry;
+      this.clientAddressDetails.addressLocality = this.selectedLead.lossLocation.addressLocality;
+      this.clientAddressDetails.addressRegion = this.selectedLead.lossLocation.addressRegion;
+      this.clientAddressDetails.postalCode = this.selectedLead.lossLocation.postalCode;
+      this.clientAddressDetails.address1 = this.selectedLead.lossLocation.address1;
+      this.clientAddressDetails.address2 = this.selectedLead.lossLocation.address2;
       this.lossInfo.descriptionDwelling = this.selectedLead.lossDesc;
       if (this.selectedLead.leadSource) {
         this.contractInfo.sourceDetails.id = this.selectedLead.leadSource.id
@@ -2116,14 +2090,12 @@ export default {
         this.contractInfo.sourceDetails.details = this.selectedVendor.name
           ? this.selectedVendor.name
           : '';
-        this.contractInfo.sourceDetails.mailingAddress =
-          this.selectedVendor.mailingAddress;
+        this.contractInfo.sourceDetails.mailingAddress = this.selectedVendor.mailingAddress;
         this.contractInfo.sourceDetails.email == this.selectedVendor.email;
         this.contractInfo.sourceDetails.phone = this.selectedVendor.phoneNumber;
-        this.contractInfo.sourceDetails.companyName =
-          this.selectedVendor.companyName;
+        this.contractInfo.sourceDetails.companyName = this.selectedVendor.companyName;
       }
-
+      console.log(this.selectedVendor, ' this.selectedLead.leadSource');
       this.insuranceDetails.carrierName = this.selectedLead.carrier
         ? this.selectedLead.carrier.value
         : '';
@@ -2307,21 +2279,28 @@ export default {
         this.lossInfo.currentIndex = index;
         this.lossInfo.quantity = this.lossInfo.ppDamagedItems[index].quantity;
         this.lossInfo.PPDamageName = this.lossInfo.ppDamagedItems[index].name;
-        this.lossInfo.PPDamageDescription =
-          this.lossInfo.ppDamagedItems[index].desc;
-        this.lossInfo.serialNumber =
-          this.lossInfo.ppDamagedItems[index].serialNumber;
-        this.lossInfo.purchasePrice =
-          this.lossInfo.ppDamagedItems[index].purchasePrice;
+        this.lossInfo.PPDamageDescription = this.lossInfo.ppDamagedItems[
+          index
+        ].desc;
+        this.lossInfo.serialNumber = this.lossInfo.ppDamagedItems[
+          index
+        ].serialNumber;
+        this.lossInfo.purchasePrice = this.lossInfo.ppDamagedItems[
+          index
+        ].purchasePrice;
         this.purchaseDate = this.lossInfo.ppDamagedItems[index].purchaseDate;
-        this.lossInfo.repairReplaceRadio =
-          this.lossInfo.ppDamagedItems[index].radio;
-        this.lossInfo.PPDamageItemDescription =
-          this.lossInfo.ppDamagedItems[index].itemDesc;
-        this.lossInfo.repairCost =
-          this.lossInfo.ppDamagedItems[index].repairCost;
-        this.lossInfo.replaceCost =
-          this.lossInfo.ppDamagedItems[index].replaceCost;
+        this.lossInfo.repairReplaceRadio = this.lossInfo.ppDamagedItems[
+          index
+        ].radio;
+        this.lossInfo.PPDamageItemDescription = this.lossInfo.ppDamagedItems[
+          index
+        ].itemDesc;
+        this.lossInfo.repairCost = this.lossInfo.ppDamagedItems[
+          index
+        ].repairCost;
+        this.lossInfo.replaceCost = this.lossInfo.ppDamagedItems[
+          index
+        ].replaceCost;
 
         this.lossInfo.PPdamagedItemsDailog = true;
       } else {
@@ -2329,21 +2308,28 @@ export default {
         this.lossInfo.currentIndex = index;
         this.lossInfo.quantity = this.lossInfo.osDamagedItems[index].quantity;
         this.lossInfo.PPDamageName = this.lossInfo.osDamagedItems[index].name;
-        this.lossInfo.PPDamageDescription =
-          this.lossInfo.osDamagedItems[index].desc;
-        this.lossInfo.serialNumber =
-          this.lossInfo.osDamagedItems[index].serialNumber;
-        this.lossInfo.purchasePrice =
-          this.lossInfo.osDamagedItems[index].purchasePrice;
+        this.lossInfo.PPDamageDescription = this.lossInfo.osDamagedItems[
+          index
+        ].desc;
+        this.lossInfo.serialNumber = this.lossInfo.osDamagedItems[
+          index
+        ].serialNumber;
+        this.lossInfo.purchasePrice = this.lossInfo.osDamagedItems[
+          index
+        ].purchasePrice;
         this.purchaseDate = this.lossInfo.osDamagedItems[index].purchaseDate;
-        this.lossInfo.repairReplaceRadio =
-          this.lossInfo.osDamagedItems[index].radio;
-        this.lossInfo.PPDamageItemDescription =
-          this.lossInfo.osDamagedItems[index].itemDesc;
-        this.lossInfo.repairCost =
-          this.lossInfo.osDamagedItems[index].repairCost;
-        this.lossInfo.replaceCost =
-          this.lossInfo.osDamagedItems[index].replaceCost;
+        this.lossInfo.repairReplaceRadio = this.lossInfo.osDamagedItems[
+          index
+        ].radio;
+        this.lossInfo.PPDamageItemDescription = this.lossInfo.osDamagedItems[
+          index
+        ].itemDesc;
+        this.lossInfo.repairCost = this.lossInfo.osDamagedItems[
+          index
+        ].repairCost;
+        this.lossInfo.replaceCost = this.lossInfo.osDamagedItems[
+          index
+        ].replaceCost;
 
         this.lossInfo.PPdamagedItemsDailog = true;
       }
@@ -2616,8 +2602,8 @@ export default {
             },
             number: this.insuranceDetails.policyNumber,
             isClaimFiled: this.insuranceDetails.hasClaimBeenFilledToggle,
-            isForcedPlaced:
-              this.insuranceDetails.isThisIsForcedPlacedPolicyToggle,
+            isForcedPlaced: this.insuranceDetails
+              .isThisIsForcedPlacedPolicyToggle,
             claimNumber: this.insuranceDetails.insuranceClaimNumber,
             category: {
               id: this.insuranceDetails.policyCategory.id,
@@ -2691,8 +2677,8 @@ export default {
             },
             OSDamageItems: this.lossInfo.osDamagedItems,
             isPPIF: this.lossInfo.wasAppifProvidedToTheInsuredToggle,
-            isNeedPPIF:
-              this.lossInfo.doesTheOfficeNeedToProvidePpifToTheInsuredToggle,
+            isNeedPPIF: this.lossInfo
+              .doesTheOfficeNeedToProvidePpifToTheInsuredToggle,
             hasHomeMortgage: this.lossInfo.isMortgageHomeToggle,
             isSecondClaim: false
           },
@@ -2798,12 +2784,13 @@ export default {
         this.expertVendorInfo.isAlreadyHiredVendor.length ||
         this.expertVendorInfo.isHiredByClaimguru.length
       ) {
-        let vendorsAlreadyExist =
-          this.expertVendorInfo.isAlreadyHiredVendor.map(val => ({
+        let vendorsAlreadyExist = this.expertVendorInfo.isAlreadyHiredVendor.map(
+          val => ({
             id: val.vendor.id,
             value: val.vendor.value,
             isAlreadyHired: true
-          }));
+          })
+        );
         let vendorsHired = this.expertVendorInfo.isHiredByClaimguru.map(
           val => ({
             id: val.vendor.id,
@@ -2812,8 +2799,9 @@ export default {
           })
         );
         if (vendorsAlreadyExist[0].id) {
-          payload.data.expertInfo.vendors =
-            vendorsAlreadyExist.concat(vendorsHired);
+          payload.data.expertInfo.vendors = vendorsAlreadyExist.concat(
+            vendorsHired
+          );
         } else {
           payload.data.expertInfo.vendors = vendorsHired;
         }

@@ -35,9 +35,13 @@ export async function getVendors(
 export async function getVendorDetails({ commit, dispatch }, id) {
   dispatch('setLoading', true);
   try {
+    commit('setSelectedVendor', '');
     const { data } = await request.get(`/vendors/${id}`);
+
     commit('setSelectedVendor', data);
+
     dispatch('setLoading', false);
+    return data;
   } catch (e) {
     console.log(e);
     dispatch('setLoading', false);

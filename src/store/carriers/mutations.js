@@ -2,12 +2,17 @@ import localDB, { getCollection } from '@services/dexie';
 
 export async function setCarriers(state, carriersData) {
   const carriersCollection = await getCollection('carriers');
+
   const carriers = carriersData.data.map(carrier => ({
     ...carrier.attributes,
     id: carrier.id
   }));
+  if ((await carriersCollection.count()) > 0 && !carriersData.params) {
+    await carriersCollection.delete([]);
+  }
 
   if (carriersData.params.limit == 0 && carriersData.params.offset == 0) {
+    await carriersCollection.delete([]);
     // this condition is used to store the entire data in local DB which is used for the offline mode.
     await localDB.carriers.bulkAdd(carriers);
   } else if (carriersData.params.name) {
@@ -23,14 +28,11 @@ export async function setCarriers(state, carriersData) {
     // this condition is for when we user start scrolling down for more than more time.
     state.carriers = state.carriers.concat(carriers);
   }
-  if ((await carriersCollection.count()) > 0 && !carriersData.params) {
-    await carriersCollection.delete([]);
-  }
 }
 
 export async function setOfflineCarriers(state) {
   state.carriers = await getCollection('carriers').toArray();
-  state.carriers.sort(function (a, b) {
+  state.carriers.sort(function(a, b) {
     return new Date(b.updated).getTime() - new Date(a.updated).getTime();
   });
 }
