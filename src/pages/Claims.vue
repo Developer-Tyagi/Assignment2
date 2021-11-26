@@ -128,7 +128,8 @@
                       color="red"
                       v-if="
                         claim.uScopeAssignmentID === '' &&
-                        !claim.isPhotoIDGenerated
+                        !claim.isPhotoIDGenerated &&
+                        claim.isPhotoIDGenerated != false
                       "
                     >
                       Assignment not generated, PLEASE WAIT
