@@ -2055,7 +2055,7 @@ export default {
     if (this.selectedLead.id) {
       await this.getLeadDetails(this.selectedLead.id);
       if (this.selectedLead.leadSource && this.selectedLead.leadSource.id) {
-        this.getVendorDetails(this.selectedLead.leadSource.id);
+        await this.getVendorDetails(this.selectedLead.leadSource.id);
       }
 
       this.honorific1 = {
@@ -2095,7 +2095,7 @@ export default {
         this.contractInfo.sourceDetails.phone = this.selectedVendor.phoneNumber;
         this.contractInfo.sourceDetails.companyName = this.selectedVendor.companyName;
       }
-
+      console.log(this.selectedVendor, ' this.selectedLead.leadSource');
       this.insuranceDetails.carrierName = this.selectedLead.carrier
         ? this.selectedLead.carrier.value
         : '';
