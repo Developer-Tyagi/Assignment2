@@ -231,6 +231,7 @@
               />
 
               <q-input
+                v-if="lossDetails.causeOfLoss.value != 'None'"
                 class="input-style required"
                 borderless
                 dense
