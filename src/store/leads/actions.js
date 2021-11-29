@@ -30,7 +30,8 @@ export async function getActiveLeadsList(
         name: payload.searchString
       });
 
-      commit('setActiveLeads', data);
+      const payloadData = { data: data, params: payload.searchString };
+      commit('setActiveLeads', payloadData);
       dispatch('setLoading', false);
     } catch (e) {
       console.log(e);

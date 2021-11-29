@@ -1083,7 +1083,11 @@ export default {
       if (this.isEdit) {
         await this.editLeadDetails(payload);
         this.$router.push('/lead-details/' + this.selectedLead.id);
-        this.getActiveLeadsList();
+        const payloadData = {
+          new: '',
+          status: ''
+        };
+        this.getActiveLeadsList(payloadData);
         this.isLastRouteEdit(true);
       } else {
         // this condition is used to redirect the page to Active Lead on successful creation of New Lead
