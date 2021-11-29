@@ -46,7 +46,7 @@
           />
         </div>
         <div class="text-uppercase text-bold q-mx-auto">
-          <span v-if="$route.name == 'Leads'">{{ converted }}</span>
+          <span v-if="$route.name == 'Leads'">Active</span>
           <span class="text-white"> {{ $route.name }} </span>
           <q-icon
             v-if="
@@ -423,7 +423,6 @@ export default {
       return this.$router.history.current.path.substring(1);
     },
     ...mapGetters([
-      'converted',
       'pageAccess',
       'isOnline',
       'editSelectedClient',
