@@ -1126,22 +1126,30 @@ export default {
     },
 
     onNextButtonClick() {
-      this.step++;
-      switch (this.stepArr[this.step].ref) {
-        case 'loss':
-          this.getLossCauses();
-          break;
-        case 'schedule':
-          this.getInspectionTypes();
-          break;
-        case 'source':
-          this.getVendorIndustries();
-          this.getVendors(this.params);
+      if (this.sourceDetails.type == 'vendor' && !this.sourceDetails.email) {
+        this.$q.notify({
+          type: 'negative',
+          message: `Please Select Vendor`,
+          position: 'top'
+        });
+      } else {
+        this.step++;
+        switch (this.stepArr[this.step].ref) {
+          case 'loss':
+            this.getLossCauses();
+            break;
+          case 'schedule':
+            this.getInspectionTypes();
+            break;
+          case 'source':
+            this.getVendorIndustries();
+            this.getVendors(this.params);
+        }
+        if (this.stepClickValidTill < this.step) {
+          this.stepClickValidTill = this.step;
+        }
+        document.getElementById('step').scrollLeft += 50;
       }
-      if (this.stepClickValidTill < this.step) {
-        this.stepClickValidTill = this.step;
-      }
-      document.getElementById('step').scrollLeft += 50;
     },
 
     onBackButtonClick() {
