@@ -1261,7 +1261,7 @@ export async function uploadOfflineDocument({ dispatch, state }, document) {
     let blobData = await dataURItoBlob(document.pa_sign);
 
     formData1.append('file', blobData);
-    formData1.append('type', 'pa-signature');
+    formData1.append('type', 'pa_signature');
     formData1.append('convertToPDF', true);
     let payload = {
       id: document.claimId,

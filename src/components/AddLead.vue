@@ -292,7 +292,7 @@
                   <div
                     v-if="
                       insuranceDetails.address &&
-                      insuranceDetails.address.address1
+                        insuranceDetails.address.address1
                     "
                   >
                     <div>
@@ -310,7 +310,7 @@
                     <div
                       v-if="
                         insuranceDetails.address &&
-                        insuranceDetails.address.address2
+                          insuranceDetails.address.address2
                       "
                     >
                       {{ insuranceDetails.address.address2 }}
@@ -404,10 +404,10 @@
                   dense
                   v-if="
                     sourceDetails.type != constants.industries.VENDOR &&
-                    sourceDetails.type != '' &&
-                    sourceDetails.type != 'google' &&
-                    sourceDetails.type != 'client' &&
-                    sourceDetails.type != 'none'
+                      sourceDetails.type != '' &&
+                      sourceDetails.type != 'google' &&
+                      sourceDetails.type != 'client' &&
+                      sourceDetails.type != 'none'
                   "
                   type="text"
                   placeholder="Enter Source details"
@@ -444,7 +444,7 @@
                     <div
                       v-if="
                         sourceDetails.mailingAddress &&
-                        sourceDetails.mailingAddress.address1
+                          sourceDetails.mailingAddress.address1
                       "
                     >
                       <div>
@@ -463,7 +463,7 @@
                       <div
                         v-if="
                           sourceDetails.mailingAddress &&
-                          sourceDetails.mailingAddress.address2
+                            sourceDetails.mailingAddress.address2
                         "
                       >
                         {{ sourceDetails.mailingAddress.address2 }}
@@ -612,7 +612,7 @@
                 borderless
                 v-if="
                   schedulingDetails.isAutomaticScheduling &&
-                  showSubInspectionType
+                    showSubInspectionType
                 "
                 class="input-style required input-extra-padding"
                 v-model="schedulingDetails.subInspectionType"
@@ -987,12 +987,15 @@ export default {
       const index = this.subInspectionTypes.findIndex(
         val => val.id === this.schedulingDetails.subInspectionType
       );
-      this.schedulingDetails.inspectionDuration =
-        this.subInspectionTypes[index].duration;
-      this.schedulingDetails.subInspectionTypeValue =
-        this.subInspectionTypes[index].value;
-      this.schedulingDetails.subInspectionMachineValue =
-        this.subInspectionTypes[index].machineValue;
+      this.schedulingDetails.inspectionDuration = this.subInspectionTypes[
+        index
+      ].duration;
+      this.schedulingDetails.subInspectionTypeValue = this.subInspectionTypes[
+        index
+      ].value;
+      this.schedulingDetails.subInspectionMachineValue = this.subInspectionTypes[
+        index
+      ].machineValue;
     },
 
     async onSubmit() {
@@ -1236,17 +1239,14 @@ export default {
         this.selectedLead.leadSource &&
         this.selectedLead.leadSource.type == 'vendor'
       ) {
-        this.getVendorDetails(this.selectedLead.leadSource.id);
+        await this.getVendorDetails(this.selectedLead.leadSource.id);
       }
 
-      this.primaryDetails.honorific =
-        this.selectedLead.primaryContact.honorific;
+      this.primaryDetails.honorific = this.selectedLead.primaryContact.honorific;
       this.primaryDetails.firstName = this.selectedLead.primaryContact.fname;
       this.primaryDetails.lastName = this.selectedLead.primaryContact.lname;
-      this.primaryDetails.selectedContactType =
-        this.selectedLead.primaryContact.phoneNumber[0].type;
-      this.primaryDetails.phoneNumber =
-        this.selectedLead.primaryContact.phoneNumber[0].number;
+      this.primaryDetails.selectedContactType = this.selectedLead.primaryContact.phoneNumber[0].type;
+      this.primaryDetails.phoneNumber = this.selectedLead.primaryContact.phoneNumber[0].number;
       this.primaryDetails.email = this.selectedLead.primaryContact.email;
       this.lossAddress = this.selectedLead.lossLocation;
       this.primaryDetails.isOrganization = this.selectedLead.isOrganization
@@ -1270,8 +1270,7 @@ export default {
         ? this.selectedLead.lossCause.machineValue
         : '';
       this.insuranceDetails.policyNumber = this.selectedLead.policyNumber;
-      this.schedulingDetails.isAutomaticScheduling =
-        this.selectedLead.isAutomaticScheduling;
+      this.schedulingDetails.isAutomaticScheduling = this.selectedLead.isAutomaticScheduling;
       this.notes = this.selectedLead.notes;
 
       if (this.selectedLead.leadSource.type == 'vendor') {
@@ -1320,14 +1319,10 @@ export default {
       this.onInspectionTypesSelect();
       if (this.selectedLead.inspectionInfo.id) {
         this.showSubInspectionType = true;
-        this.schedulingDetails.subInspectionType =
-          this.selectedLead.inspectionInfo.id;
-        this.schedulingDetails.subInspectionTypeValue =
-          this.selectedLead.inspectionInfo.value;
-        this.schedulingDetails.subInspectionMachineValue =
-          this.selectedLead.inspectionInfo.machineValue;
-        this.schedulingDetails.inspectionDuration =
-          this.selectedLead.inspectionInfo.duration;
+        this.schedulingDetails.subInspectionType = this.selectedLead.inspectionInfo.id;
+        this.schedulingDetails.subInspectionTypeValue = this.selectedLead.inspectionInfo.value;
+        this.schedulingDetails.subInspectionMachineValue = this.selectedLead.inspectionInfo.machineValue;
+        this.schedulingDetails.inspectionDuration = this.selectedLead.inspectionInfo.duration;
       }
     }
 
