@@ -9,10 +9,14 @@ export async function setVendors(state, vendorsData) {
     selected: false
   }));
   state.vendors = vendors;
+
   if ((await vendorsCollection.count()) > 0 && !vendorsData.params) {
     await vendorsCollection.delete([]);
   }
   if (!vendorsData.params) {
+    await localDB.vendors.bulkAdd(vendors);
+  }
+  if (vendorsData.params == 'hideLoader') {
     await localDB.vendors.bulkAdd(vendors);
   }
 }
