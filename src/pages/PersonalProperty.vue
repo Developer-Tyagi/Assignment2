@@ -2,7 +2,9 @@
   <div>
     <div
       v-if="
-        damageInfo.damageInfo.personal && damageInfo.damageInfo.personal.items
+        damageInfo.damageInfo &&
+        damageInfo.damageInfo.personal &&
+        damageInfo.damageInfo.personal.items
       "
     >
       <q-card
@@ -37,25 +39,19 @@
         </div>
 
         <div class="q-mt-md row">
-          <div class="heading-light q-mt-none col-6 ">
-            Quantity
-          </div>
+          <div class="heading-light q-mt-none col-6">Quantity</div>
           <div class="column">
             {{ damage.quantity }}
           </div>
         </div>
         <div class="q-mt-md row">
-          <div class="heading-light q-mt-none col-6 ">
-            Serial Number
-          </div>
+          <div class="heading-light q-mt-none col-6">Serial Number</div>
           <div class="column">
             {{ damage.serialNumber }}
           </div>
         </div>
         <div class="q-mt-md row">
-          <div class="heading-light q-mt-none col-6 ">
-            Purchase Date
-          </div>
+          <div class="heading-light q-mt-none col-6">Purchase Date</div>
           <div class="column">
             {{ dateToShow(damage.purchaseDate) }}
           </div>
@@ -63,9 +59,7 @@
 
         <q-separator class="q-mt-sm q-mb-sm" />
         <div class="q-mt-md row">
-          <div class="heading-light q-mt-none col-6 ">
-            Purchase Price
-          </div>
+          <div class="heading-light q-mt-none col-6">Purchase Price</div>
           <div class="column">
             <div>
               <span class="heading-light">$</span> {{ damage.purchasePrice }}
@@ -73,7 +67,7 @@
           </div>
         </div>
         <div class="q-mt-md row">
-          <div class="heading-light q-mt-none col-6 ">
+          <div class="heading-light q-mt-none col-6">
             {{ damage.replaceCost == null ? 'Repair' : 'Replace' }} Cost
           </div>
           <div class="column">
@@ -105,15 +99,16 @@
           :dialogName="'Add Items'"
         />
 
-        <q-card class="q-ma-sm q-pa-sm">
-          <div class="mobile-container-page overflow-y listing-height">
+        <q-card class="q-px-sm">
+          <div class="mobile-container-page">
             <q-form ref="PropertyInfo">
               <div class="row justify-between">
-                <div class="q-ml-sm q-mt-sm">Quantity</div>
+                <div class="q-ml-sm q-mt-md">Quantity</div>
                 <div>
                   <q-input
-                    class="required"
+                    class="required input-style"
                     dense
+                    borderless
                     v-model.number="lossInfo.quantity"
                     label="Quantity"
                     type="number"
@@ -122,11 +117,12 @@
                 </div>
               </div>
               <div class="row justify-between">
-                <div class="q-ml-sm q-mt-sm">Name of item</div>
+                <div class="q-ml-sm q-mt-md">Name of item</div>
                 <div>
                   <q-input
-                    class="required"
+                    class="required input-style"
                     dense
+                    borderless
                     v-model="lossInfo.PPDamageName"
                     label="Name of item"
                     :rules="[
@@ -136,10 +132,11 @@
                 </div>
               </div>
               <div class="row justify-between">
-                <div class="q-ml-sm q-mt-sm">Serial Number</div>
+                <div class="q-ml-sm q-mt-md">Serial Number</div>
                 <div>
                   <q-input
-                    dense
+                    class="input-style"
+                    borderless
                     v-model="lossInfo.serialNumber"
                     label="Serial Number"
                   />
@@ -147,11 +144,11 @@
               </div>
               <div class="q-ml-sm q-mt-sm">Description of Damages</div>
               <div class="q-ma-sm">
-                <textarea
-                  class="required full-width"
-                  dense
+                <q-input
+                  class="required input-style"
+                  borderless
+                  type="textarea"
                   v-model="lossInfo.PPDamageDescription"
-                  label="Description of Damages"
                   rows="3"
                   :rules="[
                     val =>
@@ -162,8 +159,10 @@
               </div>
               <div class="q-ml-sm q-mt-sm">Description of Items</div>
               <div class="q-ma-sm">
-                <textarea
-                  class="required full-width"
+                <q-input
+                  type="textarea"
+                  class="required input-style"
+                  borderless
                   v-model="lossInfo.PPDamageItemDescription"
                   label="Description of Item"
                   rows="3"
@@ -175,11 +174,12 @@
                 />
               </div>
               <div class="row justify-between q-ml-sm">
-                <div class="q-mt-sm">Purchase Price</div>
+                <div class="q-mt-md">Purchase Price</div>
                 <div>
                   <q-input
-                    class="required"
+                    class="required input-style"
                     dense
+                    borderless
                     type="number"
                     v-model.number="lossInfo.purchasePrice"
                     label="Purchase Price"
@@ -210,8 +210,9 @@
                 <div class="q-mt-sm q-ml-sm">Repair Cost</div>
                 <div>
                   <q-input
-                    class="required"
+                    class="required input-style"
                     dense
+                    borderless
                     type="number"
                     v-model.number="lossInfo.PPDamagedItemCost"
                     label="Repair Cost"
@@ -233,8 +234,9 @@
                 <div class="q-mt-sm q-ml-sm">Replace Cost</div>
                 <div>
                   <q-input
-                    class="required"
+                    class="required input-style"
                     dense
+                    borderless
                     type="number"
                     v-model.number="lossInfo.PPDamagedItemCost"
                     label="Replace Cost"
@@ -253,7 +255,9 @@
               <div class="text-bold q-mt-md">Purchase date</div>
               <div class="full-width">
                 <q-input
-                  class="required"
+                  class="required input-style"
+                  borderless
+                  dense
                   v-model="lossInfo.purchaseDate"
                   mask="##/##/####"
                   label="MM/DD/YYYY"
@@ -288,12 +292,13 @@
               </div>
             </q-form>
           </div>
-          <q-btn
-            label="Save"
-            class="single-next-button-style text-capitalize"
-            size="'xl'"
-            @click="onClickSave"
-          ></q-btn>
+          <div class="row q-mt-sm justify-center">
+            <q-btn
+              label="Save"
+              class="single-next-button-style text-capitalize"
+              @click="onClickSave"
+            ></q-btn>
+          </div>
         </q-card>
       </q-card>
     </q-dialog>
@@ -365,24 +370,18 @@ export default {
       this.isEdit = true;
       this.itemId = this.damageInfo.damageInfo.personal.items[index].id;
       this.currentIndex = index;
-      this.lossInfo.quantity = this.damageInfo.damageInfo.personal.items[
-        index
-      ].quantity;
-      this.lossInfo.PPDamageName = this.damageInfo.damageInfo.personal.items[
-        index
-      ].name;
-      this.lossInfo.PPDamageDescription = this.damageInfo.damageInfo.personal.items[
-        index
-      ].desc;
-      this.lossInfo.PPDamageItemDescription = this.damageInfo.damageInfo.personal.items[
-        index
-      ].damageDesc;
-      this.lossInfo.serialNumber = this.damageInfo.damageInfo.personal.items[
-        index
-      ].serialNumber;
-      this.lossInfo.purchasePrice = this.damageInfo.damageInfo.personal.items[
-        index
-      ].purchasePrice;
+      this.lossInfo.quantity =
+        this.damageInfo.damageInfo.personal.items[index].quantity;
+      this.lossInfo.PPDamageName =
+        this.damageInfo.damageInfo.personal.items[index].name;
+      this.lossInfo.PPDamageDescription =
+        this.damageInfo.damageInfo.personal.items[index].desc;
+      this.lossInfo.PPDamageItemDescription =
+        this.damageInfo.damageInfo.personal.items[index].damageDesc;
+      this.lossInfo.serialNumber =
+        this.damageInfo.damageInfo.personal.items[index].serialNumber;
+      this.lossInfo.purchasePrice =
+        this.damageInfo.damageInfo.personal.items[index].purchasePrice;
       this.lossInfo.purchaseDate = dateToShow(
         this.damageInfo.damageInfo.personal.items[index].purchaseDate
       );
