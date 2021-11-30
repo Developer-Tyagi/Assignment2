@@ -50,7 +50,7 @@
           @closeDialog="addNewTaskDialog = false"
         />
 
-        <div class="mobile-container-page q-pa-sm form-height">
+        <div class="mobile-container-page q-pa-md">
           <q-form ref="addTask">
             <AddOfficeTaskDailog :newTask="newTask" />
           </q-form>
@@ -58,10 +58,7 @@
         <div class="row justify-center">
           <q-btn
             label="Save"
-            style="width:90%"
-            color="primary"
             class="single-next-button-style"
-            size="'xl'"
             @click="addTask()"
           />
         </div>

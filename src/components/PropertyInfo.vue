@@ -13,7 +13,7 @@
           :dialogName="'Add Items'"
         />
         <div class="mobile-container-page-without-search">
-          <div class="form-height">
+          <div>
             <q-card class="q-ma-sm q-pa-sm">
               <q-form ref="PropertyInfo">
                 <div class="row justify-between">
@@ -172,7 +172,7 @@
                 <div class="full-width">
                   <q-input
                     borderless
-                    class="required col-5  input-style input-field"
+                    class="required col-5 input-style input-field"
                     v-model="lossInfo.purchaseDate"
                     mask="##/##/####"
                     label="MM/DD/YYYY"
@@ -207,9 +207,8 @@
                 </div>
               </q-form>
             </q-card>
-            <br />
           </div>
-          <div class="row justify-center">
+          <div class="row q-mt-lg justify-center">
             <q-btn
               label="Save"
               class="single-next-button-style text-capitalize"
