@@ -208,7 +208,7 @@
               </q-form>
             </q-card>
           </div>
-          <div class="row q-mt-lg justify-center">
+          <div class="row q-mt-lg q-pt-md justify-center">
             <q-btn
               label="Save"
               class="single-next-button-style text-capitalize"
