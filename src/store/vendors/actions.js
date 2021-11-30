@@ -12,6 +12,7 @@ export async function getVendors(
   },
   params
 ) {
+  params == 'hideLoader' ? ' ' : dispatch('setLoading', true);
   if (isOnline) {
     try {
       const { data } = await request.get('/vendors', params);

@@ -9,10 +9,16 @@ export async function setVendors(state, vendorsData) {
     selected: false
   }));
   state.vendors = vendors;
+  // if count is greater than zero, and  we are not searching anything in this case only we will delete previous data from local database
   if ((await vendorsCollection.count()) > 0 && !vendorsData.params) {
     await vendorsCollection.delete([]);
   }
+  //when we are searching anything, in that case we will not save searched data into local database
   if (!vendorsData.params) {
+    await localDB.vendors.bulkAdd(vendors);
+  }
+  // this condition is for if we are on dashboard i am passing param as hideLoader in that case i am saving the data into localDB so that we can use when we go offline
+  if (vendorsData.params == 'hideLoader') {
     await localDB.vendors.bulkAdd(vendors);
   }
 }
