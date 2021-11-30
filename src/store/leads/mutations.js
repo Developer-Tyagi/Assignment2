@@ -2,19 +2,22 @@ import localDB, { getCollection } from '@services/dexie';
 
 export async function setActiveLeads(state, leads) {
   const activeLeadsCollection = await getCollection('activeLeads');
-  const activeLeads = leads.map(lead => ({ ...lead.attributes, id: lead.id }));
+  const activeLeads = leads.data.map(lead => ({
+    ...lead.attributes,
+    id: lead.id
+  }));
   state.activeLeads = activeLeads;
-
-  if ((await activeLeadsCollection.count()) > 0) {
+  // this consdition is added to stop the data filliing again in local db ,after searching the leads.
+  if ((await activeLeadsCollection.count()) > 0 && !leads.params) {
     await activeLeadsCollection.delete([]);
   }
-  await localDB.activeLeads.bulkAdd(activeLeads);
+  if (!leads.params) await localDB.activeLeads.bulkAdd(activeLeads);
 }
 
 export async function setOfflineActiveLeads(state) {
   state.activeLeads = await getCollection('activeLeads').toArray();
 
-  state.activeLeads.sort(function(a, b) {
+  state.activeLeads.sort(function (a, b) {
     return new Date(b.updated).getTime() - new Date(a.updated).getTime();
   });
 }

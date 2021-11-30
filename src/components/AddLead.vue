@@ -956,7 +956,6 @@ export default {
       const selectedInspectionType = this.inspectionTypes.find(
         type => type.id === this.schedulingDetails.inspectionTypeId
       );
-
       if (
         selectedInspectionType &&
         selectedInspectionType.subtypes &&
@@ -968,18 +967,28 @@ export default {
         this.schedulingDetails.subInspectionTypeValue = '';
         this.showSubInspectionType = true;
         this.schedulingDetails.inspectionTypeValue =
-          selectedInspectionType.value;
+          selectedInspectionType && selectedInspectionType.value
+            ? selectedInspectionType.value
+            : '';
         this.schedulingDetails.inspectionTypeMachineValue =
-          selectedInspectionType.machineValue;
+          selectedInspectionType && selectedInspectionType.machineValue
+            ? selectedInspectionType.machineValue
+            : '';
       } else {
         this.schedulingDetails.inspectionTypeValue =
-          selectedInspectionType.value;
+          selectedInspectionType && selectedInspectionType.value
+            ? selectedInspectionType.value
+            : '';
         this.schedulingDetails.inspectionTypeMachineValue =
-          selectedInspectionType.machineValue;
+          selectedInspectionType && selectedInspectionType.machineValue
+            ? selectedInspectionType.machineValue
+            : '';
         this.showSubInspectionType = false;
 
         this.schedulingDetails.inspectionDuration =
-          selectedInspectionType.subtypes[0].duration;
+          selectedInspectionType && selectedInspectionType.subtypes[0].duration
+            ? selectedInspectionType.subtypes[0].duration
+            : '';
       }
     },
 
@@ -1077,7 +1086,11 @@ export default {
       if (this.isEdit) {
         await this.editLeadDetails(payload);
         this.$router.push('/lead-details/' + this.selectedLead.id);
-        this.getActiveLeadsList();
+        const payloadData = {
+          new: '',
+          status: ''
+        };
+        this.getActiveLeadsList(payloadData);
         this.isLastRouteEdit(true);
       } else {
         // this condition is used to redirect the page to Active Lead on successful creation of New Lead
@@ -1325,7 +1338,10 @@ export default {
         : '';
 
       this.onInspectionTypesSelect();
-      if (this.selectedLead.inspectionInfo.id) {
+      if (
+        this.selectedLead.inspectionInfo &&
+        this.selectedLead.inspectionInfo.id
+      ) {
         this.showSubInspectionType = true;
         this.schedulingDetails.subInspectionType = this.selectedLead.inspectionInfo.id;
         this.schedulingDetails.subInspectionTypeValue = this.selectedLead.inspectionInfo.value;
@@ -1347,27 +1363,30 @@ export default {
         let selectedClient = this.clients.find(
           client => client.id === this.$route.params.id
         );
-        this.primaryDetails.honorific.id =
-          selectedClient.insuredInfo.primary.honorific.id;
-        this.primaryDetails.honorific.value =
-          selectedClient.insuredInfo.primary.honorific.value;
-        this.primaryDetails.honorific.machineValue =
-          selectedClient.insuredInfo.primary.honorific.machineValue;
+        if (selectedClient) {
+          this.primaryDetails.honorific.id =
+            selectedClient.insuredInfo.primary.honorific.id;
+          this.primaryDetails.honorific.value =
+            selectedClient.insuredInfo.primary.honorific.value;
+          this.primaryDetails.honorific.machineValue =
+            selectedClient.insuredInfo.primary.honorific.machineValue;
 
-        this.primaryDetails.firstName =
-          selectedClient.insuredInfo.primary.fname;
-        this.primaryDetails.lastName = selectedClient.insuredInfo.primary.lname;
-        this.primaryDetails.email = selectedClient.insuredInfo.primary.email;
-        this.primaryDetails.phoneNumber =
-          selectedClient.insuredInfo.primary.phoneNumber[0].number;
-        this.primaryDetails.selectedContactType =
-          selectedClient.insuredInfo.primary.phoneNumber[0].type;
-        this.primaryDetails.isOrganization = selectedClient.isOrganization
-          ? true
-          : false;
-        if (this.primaryDetails.isOrganization) {
-          this.primaryDetails.organizationName =
-            selectedClient.organizationName;
+          this.primaryDetails.firstName =
+            selectedClient.insuredInfo.primary.fname;
+          this.primaryDetails.lastName =
+            selectedClient.insuredInfo.primary.lname;
+          this.primaryDetails.email = selectedClient.insuredInfo.primary.email;
+          this.primaryDetails.phoneNumber =
+            selectedClient.insuredInfo.primary.phoneNumber[0].number;
+          this.primaryDetails.selectedContactType =
+            selectedClient.insuredInfo.primary.phoneNumber[0].type;
+          this.primaryDetails.isOrganization = selectedClient.isOrganization
+            ? true
+            : false;
+          if (this.primaryDetails.isOrganization) {
+            this.primaryDetails.organizationName =
+              selectedClient.organizationName;
+          }
         }
       }
     });

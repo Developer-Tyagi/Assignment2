@@ -54,12 +54,10 @@
             class="row q-mt-sm"
             v-if="
               selectedLead.leadSource &&
-                selectedLead.leadSource.type != 'google'
+              selectedLead.leadSource.type != 'google'
             "
           >
-            <span class="heading-light col-3">
-              Lead Source
-            </span>
+            <span class="heading-light col-3"> Lead Source </span>
             <span class="q-ml-md col">
               {{
                 selectedLead.leadSource.detail
@@ -90,7 +88,7 @@
               class="row q-mt-sm"
               v-if="
                 selectedLead.inspectionInfo &&
-                  selectedLead.inspectionInfo.pValue
+                selectedLead.inspectionInfo.pValue
               "
             >
               <span class="heading-light col-3"> Inspection Type </span>
@@ -130,9 +128,7 @@
           <q-card>
             <q-card-section>
               <div class="q-mt-md row">
-                <div class="heading-light q-mt-none col-4 ">
-                  Loss Address
-                </div>
+                <div class="heading-light q-mt-none col-4">Loss Address</div>
                 <div class="col-6 q-ml-md">
                   <div>
                     {{
@@ -150,7 +146,7 @@
                   <div
                     v-if="
                       selectedLead.lossLocation &&
-                        selectedLead.lossLocation.address2
+                      selectedLead.lossLocation.address2
                     "
                   >
                     {{ selectedLead.lossLocation.address2 }}
@@ -179,15 +175,13 @@
                 </div>
               </div>
               <div class="q-mt-md row">
-                <div class="heading-light q-mt-none col-xs-4 ">
-                  Date of Loss
-                </div>
+                <div class="heading-light q-mt-none col-xs-4">Date of Loss</div>
                 <div class="column q-ml-md">
                   {{ dateToShow(selectedLead.dateofLoss) }}
                 </div>
               </div>
               <div class="q-mt-md row">
-                <div class="heading-light q-mt-none col-xs-4 ">
+                <div class="heading-light q-mt-none col-xs-4">
                   Loss Description
                 </div>
                 <div class="column q-ml-md">
@@ -195,9 +189,7 @@
                 </div>
               </div>
               <div class="q-mt-md row">
-                <div class="heading-light q-mt-none col-xs-4 ">
-                  Loss Cause
-                </div>
+                <div class="heading-light q-mt-none col-xs-4">Loss Cause</div>
                 <div class="column q-ml-md" v-if="selectedLead.lossCause">
                   {{
                     selectedLead.lossCause.value
@@ -220,7 +212,7 @@
           <q-card>
             <q-card-section>
               <div class="q-mt-md row">
-                <div class="heading-light q-mt-none col-xs-4 ">
+                <div class="heading-light q-mt-none col-xs-4">
                   Policy Number
                 </div>
                 <div class="column q-ml-md">
@@ -230,7 +222,7 @@
                 </div>
               </div>
               <div class="q-mt-md row">
-                <div class="heading-light q-mt-none col-xs-4 ">
+                <div class="heading-light q-mt-none col-xs-4">
                   Carrier Details
                 </div>
                 <div class="column q-ml-md" v-if="selectedLead.carrier">
@@ -255,9 +247,7 @@
           <q-card>
             <q-card-section>
               <div class="q-mt-md row">
-                <div class="heading-light q-mt-none col-xs-4 ">
-                  Notes
-                </div>
+                <div class="heading-light q-mt-none col-xs-4">Notes</div>
                 <div class="column q-ml-md" v-if="selectedLead.notes">
                   {{ selectedLead.notes }}
                 </div>
@@ -283,7 +273,6 @@
 </template>
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex';
-import CustomBar from 'components/CustomBar';
 import { toGetStateShortName } from '@utils/common';
 import { dateToShow } from '@utils/date';
 import {
@@ -297,7 +286,6 @@ export default {
     return {};
   },
 
-  components: { CustomBar },
   created() {
     this.getLeadDetails(this.$route.params.id);
   },
