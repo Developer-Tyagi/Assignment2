@@ -12,211 +12,207 @@
           @closeDialog="lossInfo.PPdamagedItemsDailog = false"
           :dialogName="'Add Items'"
         />
-        <div class="mobile-container-page-without-search">
-          <div class="form-height">
-            <q-card class="q-ma-sm q-pa-sm">
-              <q-form ref="PropertyInfo">
-                <div class="row justify-between">
-                  <div class="q-ml-sm q-mt-sm">Quantity</div>
-                  <div>
-                    <q-input
-                      dense
-                      v-model.number="lossInfo.quantity"
-                      borderless
-                      class="required col-5 input-style input-field"
-                      label="Quantity"
-                      type="number"
-                      :rules="[val => val || 'Please fill the Quantity']"
-                    />
-                  </div>
-                </div>
-                <div class="row justify-between">
-                  <div class="q-ml-sm q-mt-sm">Name of item</div>
-                  <div>
-                    <q-input
-                      borderless
-                      class="required col-5 input-style input-field"
-                      dense
-                      v-model="lossInfo.PPDamageName"
-                      label="Name of item"
-                      :rules="[
-                        val =>
-                          (val && val.length > 0) || 'Please fill Item Name'
-                      ]"
-                    />
-                  </div>
-                </div>
-                <div class="row justify-between">
-                  <div class="q-ml-sm q-mt-sm">Serial Number</div>
-                  <div>
-                    <q-input
-                      dense
-                      v-model="lossInfo.serialNumber"
-                      borderless
-                      class="col-5 input-style input-field"
-                      label="Serial Number"
-                    />
-                  </div>
-                </div>
-                <div class="q-ml-sm q-mt-sm">Description of Damages</div>
-                <div class="q-ma-sm">
+        <q-card class="q-px-sm">
+          <div class="mobile-container-page">
+            <q-form ref="PropertyInfo">
+              <div class="row justify-between">
+                <div class="q-ml-sm q-mt-sm">Quantity</div>
+                <div>
                   <q-input
-                    type="textarea"
                     dense
-                    v-model="lossInfo.PPDamageDescription"
+                    v-model.number="lossInfo.quantity"
                     borderless
-                    class="col-5 input-style input-field full-width"
-                    rows="3"
+                    class="required col-5 input-style input-field"
+                    label="Quantity"
+                    type="number"
+                    :rules="[val => val || 'Please fill the Quantity']"
+                  />
+                </div>
+              </div>
+              <div class="row justify-between">
+                <div class="q-ml-sm q-mt-sm">Name of item</div>
+                <div>
+                  <q-input
+                    borderless
+                    class="required col-5 input-style input-field"
+                    dense
+                    v-model="lossInfo.PPDamageName"
+                    label="Name of item"
                     :rules="[
-                      val =>
-                        (val && val.length > 0) ||
-                        'Please fill Description of Damages'
+                      val => (val && val.length > 0) || 'Please fill Item Name'
                     ]"
                   />
                 </div>
-                <div class="q-ml-sm q-mt-sm">Description of Items</div>
-                <div class="q-ma-sm">
+              </div>
+              <div class="row justify-between">
+                <div class="q-ml-sm q-mt-sm">Serial Number</div>
+                <div>
                   <q-input
-                    type="textarea"
+                    dense
+                    v-model="lossInfo.serialNumber"
                     borderless
-                    class="col-5 input-style input-field full-width"
-                    v-model="lossInfo.PPDamageItemDescription"
-                    rows="3"
-                    :rules="[
-                      val =>
-                        (val && val.length > 0) ||
-                        'Please fill Description of Item'
-                    ]"
+                    class="col-5 input-style input-field"
+                    label="Serial Number"
                   />
                 </div>
-                <div class="row justify-between q-ml-sm">
-                  <div class="q-mt-sm">Purchase Price</div>
-                  <div>
-                    <q-input
-                      dense
-                      borderless
-                      class="required col-5 input-style input-field"
-                      type="number"
-                      v-model.number="lossInfo.purchasePrice"
-                      label="Purchase Price"
-                      :rules="[val => val || 'Please fill  Purchase Price']"
-                    >
-                      <template v-slot:prepend>
-                        <q-icon name="$" color="primary"></q-icon> </template
-                    ></q-input>
-                  </div>
-                </div>
-
-                <q-radio
-                  v-model="lossInfo.repairReplaceRadio"
-                  val="Repair"
-                  label="Repair"
-                  :rules="[val => val || 'Please fill Replace Cost']"
-                ></q-radio>
-                <q-radio
-                  class="q-ml-none"
-                  v-model="lossInfo.repairReplaceRadio"
-                  val="Replace"
-                  label="Replace"
-                ></q-radio>
-                <div
-                  class="row justify-between q-my-sm"
-                  v-if="lossInfo.repairReplaceRadio == 'Repair'"
-                >
-                  <div class="q-mt-sm q-ml-sm">Repair Cost</div>
-                  <div>
-                    <q-input
-                      borderless
-                      class="required col-5 input-style input-field"
-                      dense
-                      type="number"
-                      v-model.number="lossInfo.repairCost"
-                      label="Repair Cost"
-                      :rules="[val => val || 'Please fill repair cost']"
-                    >
-                      <template v-slot:prepend>
-                        <q-icon
-                          name="$"
-                          color="primary"
-                          class="q-mb-sm"
-                        ></q-icon> </template
-                    ></q-input>
-                  </div>
-                </div>
-                <div
-                  class="row justify-between q-my-sm"
-                  v-if="lossInfo.repairReplaceRadio == 'Replace'"
-                >
-                  <div class="q-mt-sm q-ml-sm">Replace Cost</div>
-                  <div>
-                    <q-input
-                      borderless
-                      class="required col-5 input-style input-field"
-                      dense
-                      type="number"
-                      v-model.number="lossInfo.replaceCost"
-                      label="Replace Cost"
-                      :rules="[val => val || 'Please fill Replace Cost']"
-                    >
-                      <template v-slot:prepend>
-                        <q-icon
-                          name="$"
-                          color="primary"
-                          class="q-mb-sm"
-                        ></q-icon> </template
-                    ></q-input>
-                  </div>
-                </div>
-
-                <div class="text-bold q-mt-md">Purchase date</div>
-                <div class="full-width">
+              </div>
+              <div class="q-ml-sm q-mt-sm">Description of Damages</div>
+              <div class="q-ma-sm">
+                <q-input
+                  type="textarea"
+                  dense
+                  v-model="lossInfo.PPDamageDescription"
+                  borderless
+                  class="col-5 input-style input-field full-width"
+                  rows="3"
+                  :rules="[
+                    val =>
+                      (val && val.length > 0) ||
+                      'Please fill Description of Damages'
+                  ]"
+                />
+              </div>
+              <div class="q-ml-sm q-mt-sm">Description of Items</div>
+              <div class="q-ma-sm">
+                <q-input
+                  type="textarea"
+                  borderless
+                  class="col-5 input-style input-field full-width"
+                  v-model="lossInfo.PPDamageItemDescription"
+                  rows="3"
+                  :rules="[
+                    val =>
+                      (val && val.length > 0) ||
+                      'Please fill Description of Item'
+                  ]"
+                />
+              </div>
+              <div class="row justify-between q-ml-sm">
+                <div class="q-mt-sm">Purchase Price</div>
+                <div>
                   <q-input
+                    dense
                     borderless
-                    class="required col-5  input-style input-field"
-                    v-model="lossInfo.purchaseDate"
-                    mask="##/##/####"
-                    label="MM/DD/YYYY"
-                    lazy-rules
-                    :rules="[
-                      val =>
-                        (validateDate(val) && val && val.length > 0) ||
-                        'Invalid date!'
-                    ]"
+                    class="required col-5 input-style input-field"
+                    type="number"
+                    v-model.number="lossInfo.purchasePrice"
+                    label="Purchase Price"
+                    :rules="[val => val || 'Please fill  Purchase Price']"
                   >
-                    <template v-slot:append>
-                      <q-icon
-                        name="event"
-                        size="sm"
-                        color="primary"
-                        class="cursor-pointer"
-                      >
-                        <q-popup-proxy
-                          ref="qDateProxy"
-                          transition-show="scale"
-                          transition-hide="scale"
-                        >
-                          <q-date
-                            v-model="lossInfo.purchaseDate"
-                            @input="() => $refs.qDateProxy.hide()"
-                            mask="MM/DD/YYYY"
-                          ></q-date>
-                        </q-popup-proxy>
-                      </q-icon>
-                    </template>
-                  </q-input>
+                    <template v-slot:prepend>
+                      <q-icon name="$" color="primary"></q-icon> </template
+                  ></q-input>
                 </div>
-              </q-form>
-            </q-card>
-            <br />
+              </div>
+
+              <q-radio
+                v-model="lossInfo.repairReplaceRadio"
+                val="Repair"
+                label="Repair"
+                :rules="[val => val || 'Please fill Replace Cost']"
+              ></q-radio>
+              <q-radio
+                class="q-ml-none"
+                v-model="lossInfo.repairReplaceRadio"
+                val="Replace"
+                label="Replace"
+              ></q-radio>
+              <div
+                class="row justify-between q-my-sm"
+                v-if="lossInfo.repairReplaceRadio == 'Repair'"
+              >
+                <div class="q-mt-sm q-ml-sm">Repair Cost</div>
+                <div>
+                  <q-input
+                    borderless
+                    class="required col-5 input-style input-field"
+                    dense
+                    type="number"
+                    v-model.number="lossInfo.repairCost"
+                    label="Repair Cost"
+                    :rules="[val => val || 'Please fill repair cost']"
+                  >
+                    <template v-slot:prepend>
+                      <q-icon
+                        name="$"
+                        color="primary"
+                        class="q-mb-sm"
+                      ></q-icon> </template
+                  ></q-input>
+                </div>
+              </div>
+              <div
+                class="row justify-between q-my-sm"
+                v-if="lossInfo.repairReplaceRadio == 'Replace'"
+              >
+                <div class="q-mt-sm q-ml-sm">Replace Cost</div>
+                <div>
+                  <q-input
+                    borderless
+                    class="required col-5 input-style input-field"
+                    dense
+                    type="number"
+                    v-model.number="lossInfo.replaceCost"
+                    label="Replace Cost"
+                    :rules="[val => val || 'Please fill Replace Cost']"
+                  >
+                    <template v-slot:prepend>
+                      <q-icon
+                        name="$"
+                        color="primary"
+                        class="q-mb-sm"
+                      ></q-icon> </template
+                  ></q-input>
+                </div>
+              </div>
+
+              <div class="text-bold">Purchase date</div>
+              <div class="full-width">
+                <q-input
+                  borderless
+                  class="required col-5 input-style input-field"
+                  v-model="lossInfo.purchaseDate"
+                  mask="##/##/####"
+                  label="MM/DD/YYYY"
+                  lazy-rules
+                  :rules="[
+                    val =>
+                      (validateDate(val) && val && val.length > 0) ||
+                      'Invalid date!'
+                  ]"
+                >
+                  <template v-slot:append>
+                    <q-icon
+                      name="event"
+                      size="sm"
+                      color="primary"
+                      class="cursor-pointer"
+                    >
+                      <q-popup-proxy
+                        ref="qDateProxy"
+                        transition-show="scale"
+                        transition-hide="scale"
+                      >
+                        <q-date
+                          v-model="lossInfo.purchaseDate"
+                          @input="() => $refs.qDateProxy.hide()"
+                          mask="MM/DD/YYYY"
+                        ></q-date>
+                      </q-popup-proxy>
+                    </q-icon>
+                  </template>
+                </q-input>
+              </div>
+            </q-form>
           </div>
-          <div class="row justify-center">
+          <div class="row q-mt-sm justify-center">
             <q-btn
               label="Save"
               class="single-next-button-style text-capitalize"
               @click="addPPDamagedItems()"
             ></q-btn>
           </div>
-        </div>
+        </q-card>
       </q-card>
     </q-dialog>
   </div>
