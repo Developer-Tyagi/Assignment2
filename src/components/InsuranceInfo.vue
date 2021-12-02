@@ -19,7 +19,7 @@
           <q-card
             bordered
             v-if="insuranceDetails.carrierName && !policyInfo"
-            @click="carriersListDialog = true"
+            @click="isOfflineClientEdit ? '' : (carriersListDialog = true)"
             class="q-my-md q-pa-md"
           >
             <div class="text-bold">

@@ -127,11 +127,13 @@
             bordered
             v-if="item.vendor.email"
             @click="
-              openVendorSelect(
-                item,
-                index,
-                expertVendorInfo.isAlreadyHiredVendor
-              )
+              isOfflineClientEdit
+                ? ''
+                : openVendorSelect(
+                    item,
+                    index,
+                    expertVendorInfo.isAlreadyHiredVendor
+                  )
             "
             class="q-my-md q-pa-md"
           >
@@ -283,7 +285,13 @@
             bordered
             v-if="item.vendor.email"
             @click="
-              openVendorSelect(item, index, expertVendorInfo.isHiredByClaimguru)
+              isOfflineClientEdit
+                ? ''
+                : openVendorSelect(
+                    item,
+                    index,
+                    expertVendorInfo.isHiredByClaimguru
+                  )
             "
             class="q-my-md q-pa-md"
           >

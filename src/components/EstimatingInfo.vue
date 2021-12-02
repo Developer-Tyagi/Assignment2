@@ -40,7 +40,7 @@
           <q-card
             bordered
             v-if="estimatingInfo.estimatorID"
-            @click="onClickEstimatorOpen"
+            @click="isOfflineClientEdit ? '' : onClickEstimatorOpen"
             class="q-my-md q-pa-md"
           >
             <div class="text-bold q-ml-sm">
@@ -169,6 +169,7 @@
         />
       </div>
       <q-input
+        :disable="isOfflineClientEdit"
         v-if="estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle"
         dense
         type="textarea"

@@ -5,7 +5,7 @@
     <div v-if="mortgage[0].value">
       <q-card
         bordered
-        @click="onChooseMortgageClick(0)"
+        @click="isOfflineClientEdit ? '' : onChooseMortgageClick"
         class="q-my-md q-pa-md"
       >
         <div class="text-bold">{{ mortgage[0].value }}</div>
