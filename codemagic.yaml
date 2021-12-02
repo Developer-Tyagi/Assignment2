@@ -6,31 +6,20 @@ workflows:
     environment:
       groups:
         - android
-        - claimguru-env
       vars:
         KEYSTORE_PATH: /tmp/.keystore
       node: 12.22.1
-    # triggering:
-    #   events:
-    #     - pull_request
-    # cancel_previous_builds: true
     scripts:
+      - &setup_sops_and_svc_acct
+        name: setup sops and service account
+        script: |
+          brew install sops
+          echo $SERVICE_ACCOUNT > /tmp/svc-acct.json
       - &setup_env_vars
         name: Setup environment variables
         script: |
-          cat > $FCI_BUILD_DIR/.env <<EOF
-          API=$API
-          DOMAIN=$DOMAIN
-          FIREBASE_API_KEY=$FIREBASE_API_KEY
-          AUTH_DOMAIN=$AUTH_DOMAIN
-          DATABASE_URL=$DATABASE_URL
-          PROJECT_ID=$PROJECT_ID
-          STORAGE_BUCKET=$STORAGE_BUCKET
-          MESSAGING_SENDER_ID=$MESSAGING_SENDER_ID
-          APP_ID=$APP_ID
-          MEASUREMENT_ID=$MEASUREMENT_ID
-          STRIPE_API_KEY=$STRIPE_API_KEY
-          EOF
+          export GOOGLE_APPLICATION_CREDENTIALS=/tmp/svc-acct.json
+          sops -d $FCI_BUILD_DIR/docker/env.production > $FCI_BUILD_DIR/.env
       - &install_node_modules
         name: Install dependencies and quasar cli
         script: |
@@ -77,7 +66,7 @@ workflows:
         track: internal
       email:
         recipients:
-          - abhay.yadav@cilalabs.com
+          -  sajid.qureshi@cilalabs.com
         notify:
           success: true
           failure: true
@@ -88,7 +77,8 @@ workflows:
     instance_type: mac_mini
     environment:
       groups:
-        - claimguru-env
+        - ios-appstore
+        - android
       vars:
         # Ionic Xcode worskspace and scheme
         XCODE_WORKSPACE: 'src-capacitor/ios/App/App.xcworkspace'
@@ -96,11 +86,8 @@ workflows:
       node: 12.22.1
       xcode: latest
       cocoapods: default
-    # triggering:
-    #   events:
-    #     - tag
-    # cancel_previous_builds: true
     scripts:
+      - *setup_sops_and_svc_acct
       - *setup_env_vars
       - *install_node_modules
       - name: Build and Copy web assets to ios project
@@ -125,7 +112,7 @@ workflows:
           set -e
           set -x
           cd $FCI_BUILD_DIR/src-capacitor/ios/App
-          agvtool new-version -all $(($BUILD_NUMBER +1))
+          agvtool new-version -all $(($BUILD_NUMBER +18))
       - name: Set up code signing settings on Xcode project
         script: |
           xcode-project use-profiles
