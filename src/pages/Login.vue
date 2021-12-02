@@ -102,9 +102,8 @@
             >Forgot Password</a
           >
         </div>
-        <div class="q-mt-xl text-center">
-          Claimguru Version {{ this.version }}
-        </div>
+
+        <div class=" text-center footer-style">Version {{ this.version }}</div>
       </q-form>
     </div>
   </q-page>
@@ -241,5 +240,8 @@ export default {
 }
 .rounded {
   border-radius: 15px 15px 15px 15px;
+}
+.footer-style {
+  margin-top: 80px;
 }
 </style>
