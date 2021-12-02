@@ -162,8 +162,7 @@
     </q-card>
     <q-card class="q-ma-xs q-pa-md">
       <span class="form-heading"
-        >Loss Description to Dwelling {{ isOfflineClientEdit
-        }}<small style="color: red">*</small></span
+        >Loss Description to Dwelling <small style="color: red">*</small></span
       >
       <q-input
         type="textarea"
