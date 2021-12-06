@@ -1951,6 +1951,7 @@ export default {
           ? this.selectedClaim.estimatingInformation.phone
           : '';
         this.estimatingInfo.doesAnEstimatorNeedToBeAssignedToggle = true;
+
         this.estimatingInfo.estimatorID = this.selectedClaim.estimatingInfo.estimatorID;
         this.estimatingInfo.notesToEstimator = this.selectedClaim.estimatingInfo.notesToEstimator;
         this.estimatingInfo.scopeTimeNeeded = this.selectedClaim.estimatingInfo.scopeTimeNeeded;
@@ -2095,7 +2096,7 @@ export default {
         this.contractInfo.sourceDetails.phone = this.selectedVendor.phoneNumber;
         this.contractInfo.sourceDetails.companyName = this.selectedVendor.companyName;
       }
-      console.log(this.selectedVendor, ' this.selectedLead.leadSource');
+
       this.insuranceDetails.carrierName = this.selectedLead.carrier
         ? this.selectedLead.carrier.value
         : '';

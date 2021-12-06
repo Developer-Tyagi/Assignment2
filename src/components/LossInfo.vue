@@ -167,19 +167,8 @@
       <q-input
         type="textarea"
         borderless
+        :disable="isOfflineClientEdit"
         class="required input-style full-width"
-        v-if="!isOfflineClientEdit"
-        rows="5"
-        required
-        v-model="lossInfo.descriptionDwelling"
-        style="resize: none"
-      />
-      <q-input
-        type="textarea"
-        borderless
-        class="required input-style full-width"
-        disabled
-        v-if="isOfflineClientEdit"
         rows="5"
         required
         v-model="lossInfo.descriptionDwelling"
