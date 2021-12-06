@@ -102,6 +102,8 @@
             >Forgot Password</a
           >
         </div>
+
+        <div class=" text-center footer-style">Version {{ this.version }}</div>
       </q-form>
     </div>
   </q-page>
@@ -120,15 +122,17 @@ import {
 import { Screen } from 'quasar';
 import { constants } from '@utils/constant';
 import { notification } from 'src/store/common/getters';
-
-const isPushNotificationsAvailable =
-  Capacitor.isPluginAvailable('PushNotifications');
+import { appVersion } from '../Version';
+const isPushNotificationsAvailable = Capacitor.isPluginAvailable(
+  'PushNotifications'
+);
 const { PushNotifications } = Plugins;
 
 export default {
   name: 'Login',
   data() {
     return {
+      version: appVersion,
       isPasswordVisible: false,
       login: {
         email: '',
@@ -236,5 +240,8 @@ export default {
 }
 .rounded {
   border-radius: 15px 15px 15px 15px;
+}
+.footer-style {
+  margin-top: 80px;
 }
 </style>
