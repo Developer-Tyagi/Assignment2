@@ -1262,7 +1262,7 @@ export async function uploadOfflineDocument({ dispatch, state }, document) {
 
     formData1.append('file', blobData);
     formData1.append('type', 'pa_signature');
-    formData1.append('convertToPDF', true);
+    formData1.append('convertToPDF', false);
     let payload = {
       id: document.claimId,
       formData: formData1
@@ -1276,7 +1276,7 @@ export async function uploadOfflineDocument({ dispatch, state }, document) {
 
     formData1.append('file', blobData);
     formData1.append('type', 'insured_signature');
-    formData1.append('convertToPDF', true);
+    formData1.append('convertToPDF', false);
     let payload = {
       id: document.claimId,
       formData: formData1
@@ -1289,7 +1289,7 @@ export async function uploadOfflineDocument({ dispatch, state }, document) {
 
     formData1.append('file', blobData);
     formData1.append('type', 'coinsured_signature');
-    formData1.append('convertToPDF', true);
+    formData1.append('convertToPDF', false);
     let payload = {
       id: document.claimId,
       formData: formData1
