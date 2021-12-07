@@ -1,6 +1,6 @@
 workflows:
-  claimguru-android-workflow:
-    name: Claimguru Android Workflow
+  Build-android-apk-pre-prod:
+    name: Build android apk pre prod
     max_build_duration: 120
     instance_type: mac_mini
     environment:
@@ -9,6 +9,88 @@ workflows:
       vars:
         KEYSTORE_PATH: /tmp/.keystore
       node: 12.22.1
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: 'master'
+          include: true
+    scripts:
+      - &setup_sops_and_svc_acct_pre_prod
+        name: setup sops and service account
+        script: |
+          brew install sops
+          echo $SERVICE_ACCOUNT_PRE_PROD > /tmp/svc-acct.json
+      - &setup_env_var_pre_prod
+        name: Setup environment variables
+        script: |
+          export GOOGLE_APPLICATION_CREDENTIALS=/tmp/svc-acct.json
+          sops -d $FCI_BUILD_DIR/docker/env.pre-production > $FCI_BUILD_DIR/.env
+      - name: Install dependencies and quasar cli
+        script: |
+          yarn
+          yarn global add @quasar/cli
+      - name: Build and Copy web assets to native project
+        script: |
+          quasar build -m capacitor -T android --skip-pkg
+          cd src-capacitor && npx cap sync
+      - name: Set Android SDK location
+        script: |
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > "$FCI_BUILD_DIR/src-capacitor/android/local.properties"
+      - name: Set up debug key.properties
+        script: |
+          keytool -genkeypair \
+            -alias androiddebugkey \
+            -keypass android \
+            -keystore ~/.android/debug.keystore \
+            -storepass android \
+            -dname 'CN=Android Debug,O=Android,C=US' \
+            -keyalg 'RSA' \
+            -keysize 2048 \
+            -validity 10000
+      - name: Setup keystore
+        script: |
+          echo $KEYSTORE | base64 --decode > $KEYSTORE_PATH
+          cat > $FCI_BUILD_DIR/src-capacitor/android/key.properties <<EOF
+          storePassword=$KEYSTORE_PASSWORD
+          keyPassword=$KEY_PASSWORD
+          keyAlias=$KEY_ALIAS
+          storeFile=$KEYSTORE_PATH
+          EOF
+      - name: Build Android apk
+        script: |
+          cd $FCI_BUILD_DIR/src-capacitor/android
+          cp ../build.gradle app/build.gradle
+          ./gradlew assembleDebug
+    artifacts:
+      - $FCI_BUILD_DIR/src-capacitor/android/app/build/**/outputs/**/*.apk
+    publishing:
+      email:
+        recipients:
+          -  sajid.qureshi@cilalabs.com
+        notify:
+          success: true
+          failure: true
+      slack:
+        channel: '#p-claimguru'
+        notify:
+          success: true
+          failure: true
+
+  Build-publish-android-app-prod:
+    name: Build publish android app prod
+    max_build_duration: 120
+    instance_type: mac_mini
+    environment:
+      groups:
+        - android
+      vars:
+        KEYSTORE_PATH: /tmp/.keystore
+      node: 12.22.1
+    triggering:
+      events:
+        - tag
+      cancel_previous_builds: true
     scripts:
       - &setup_sops_and_svc_acct
         name: setup sops and service account
@@ -53,12 +135,17 @@ workflows:
           keyAlias=$KEY_ALIAS
           storeFile=$KEYSTORE_PATH
           EOF
-      - name: Build Android release
+      - name: Build Android apk
         script: |
           cd $FCI_BUILD_DIR/src-capacitor/android
           cp ../build.gradle app/build.gradle
+          ./gradlew assembleRelease
+      - name: Build Android app bundle
+        script: |
+          cd $FCI_BUILD_DIR/src-capacitor/android
           ./gradlew bundleRelease
     artifacts:
+      - $FCI_BUILD_DIR/src-capacitor/android/app/build/**/outputs/**/*.apk
       - $FCI_BUILD_DIR/src-capacitor/android/app/build/**/outputs/**/*.aab
     publishing:
       google_play:
@@ -70,60 +157,147 @@ workflows:
         notify:
           success: true
           failure: true
+      slack:
+        channel: '#p-claimguru'
+        notify:
+          success: true
+          failure: true
 
-  claimguru-ios-workflow:
-    name: claimguru iOS Workflow
-    max_build_duration: 120
-    instance_type: mac_mini
-    environment:
-      groups:
-        - ios-appstore
-        - android
-      vars:
-        # Ionic Xcode worskspace and scheme
-        XCODE_WORKSPACE: 'src-capacitor/ios/App/App.xcworkspace'
-        XCODE_SCHEME: 'App'
-      node: 12.22.1
-      xcode: latest
-      cocoapods: default
-    scripts:
-      - *setup_sops_and_svc_acct
-      - *setup_env_vars
-      - *install_node_modules
-      - name: Build and Copy web assets to ios project
-        script: |
-          quasar build -m capacitor -T ios --skip-pkg
-          cd src-capacitor && npx cap sync
-      - name: Cocoapods installation
-        script: |
-          cd $FCI_BUILD_DIR/src-capacitor/ios/App && pod install
-      - name: Set up keychain to be used for codesigning
-        script: |
-          keychain initialize
-      - name: Fetch signing files
-        script: |
-          app-store-connect fetch-signing-files com.claimguru.appclaimguru --type IOS_APP_STORE --create
-      - name: Add certificates to keychain
-        script: |
-          keychain add-certificates
-      - name: Increment build number
-        script: |
-          #!/bin/sh
-          set -e
-          set -x
-          cd $FCI_BUILD_DIR/src-capacitor/ios/App
-          agvtool new-version -all $(($BUILD_NUMBER +18))
-      - name: Set up code signing settings on Xcode project
-        script: |
-          xcode-project use-profiles
-      - name: Build ipa for distribution
-        script: |
-          xcode-project build-ipa --workspace "$XCODE_WORKSPACE" --scheme "$XCODE_SCHEME"
-    artifacts:
-      - build/ios/ipa/*.ipa
-    publishing:
-      app_store_connect:
-        api_key: $APP_STORE_CONNECT_PRIVATE_KEY
-        key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
-        issuer_id: $APP_STORE_CONNECT_ISSUER_ID
-        submit_to_testflight: true
+
+  # Build-ios-ipa-pre-prod:
+  #   name: Build ios ipa pre-prod
+  #   max_build_duration: 120
+  #   instance_type: mac_mini
+  #   environment:
+  #     groups:
+  #       - ios-appstore
+  #       - android
+  #     vars:
+  #       # Ionic Xcode worskspace and scheme
+  #       XCODE_WORKSPACE: 'src-capacitor/ios/App/App.xcworkspace'
+  #       XCODE_SCHEME: 'App'
+  #     node: 12.22.1
+  #     xcode: latest
+  #     cocoapods: default
+  #   triggering:
+  #     events:
+  #       - push
+  #     branch_patterns:
+  #       - pattern: 'master'
+  #         include: true
+  #     cancel_previous_builds: true
+  #   scripts:
+  #     - *setup_sops_and_svc_acct_pre_prod
+  #     - *setup_env_var_pre_prod
+  #     - *install_node_modules
+  #     - name: Build and Copy web assets to ios project
+  #       script: |
+  #         quasar build -m capacitor -T ios --skip-pkg
+  #         cd src-capacitor && npx cap sync
+  #     - name: Cocoapods installation
+  #       script: |
+  #         cd $FCI_BUILD_DIR/src-capacitor/ios/App && pod install
+  #     - name: Set up keychain to be used for codesigning
+  #       script: |
+  #         keychain initialize
+  #     - name: Fetch signing files
+  #       script: |
+  #         app-store-connect fetch-signing-files com.claimguru.appclaimguru --type IOS_APP_STORE --create
+  #     - name: Add certificates to keychain
+  #       script: |
+  #         keychain add-certificates
+  #     - name: Increment build number
+  #       script: |
+  #         #!/bin/sh
+  #         set -e
+  #         set -x
+  #         cd $FCI_BUILD_DIR/src-capacitor/ios/App
+  #         agvtool new-version -all $(($BUILD_NUMBER +18))
+  #     - name: Set up code signing settings on Xcode project
+  #       script: |
+  #         xcode-project use-profiles
+  #     - name: Build ipa for distribution
+  #       script: |
+  #         xcode-project build-ipa --workspace "$XCODE_WORKSPACE" --scheme "$XCODE_SCHEME"
+  #   artifacts:
+  #     - build/ios/ipa/*.ipa
+  #   publishing:
+  #     email:
+  #       recipients:
+  #         -  sajid.qureshi@cilalabs.com
+  #       notify:
+  #         success: true
+  #         failure: true
+  #     slack:
+  #       channel: '#p-claimguru'
+  #       notify:
+  #         success: true
+  #         failure: true
+
+  # Build-publish-ios-ipa-prod:
+  #   name: Build publish ios ipa prod
+  #   max_build_duration: 120
+  #   instance_type: mac_mini
+  #   environment:
+  #     groups:
+  #       - ios-appstore
+  #       - android
+  #     vars:
+  #       # Ionic Xcode worskspace and scheme
+  #       XCODE_WORKSPACE: 'src-capacitor/ios/App/App.xcworkspace'
+  #       XCODE_SCHEME: 'App'
+  #     node: 12.22.1
+  #     xcode: latest
+  #     cocoapods: default
+  #   triggering:
+  #     events:
+  #       - tag
+  #     cancel_previous_builds: true
+  #   scripts:
+  #     - *setup_sops_and_svc_acct
+  #     - *setup_env_vars
+  #     - *install_node_modules
+  #     - name: Build and Copy web assets to ios project
+  #       script: |
+  #         quasar build -m capacitor -T ios --skip-pkg
+  #         cd src-capacitor && npx cap sync
+  #     - name: Cocoapods installation
+  #       script: |
+  #         cd $FCI_BUILD_DIR/src-capacitor/ios/App && pod install
+  #     - name: Set up keychain to be used for codesigning
+  #       script: |
+  #         keychain initialize
+  #     - name: Fetch signing files
+  #       script: |
+  #         app-store-connect fetch-signing-files com.claimguru.appclaimguru --type IOS_APP_STORE --create
+  #     - name: Add certificates to keychain
+  #       script: |
+  #         keychain add-certificates
+  #     - name: Increment build number
+  #       script: |
+  #         #!/bin/sh
+  #         set -e
+  #         set -x
+  #         cd $FCI_BUILD_DIR/src-capacitor/ios/App
+  #         agvtool new-version -all $(($BUILD_NUMBER +18))
+  #     - name: Set up code signing settings on Xcode project
+  #       script: |
+  #         xcode-project use-profiles
+  #     - name: Build ipa for distribution
+  #       script: |
+  #         xcode-project build-ipa --workspace "$XCODE_WORKSPACE" --scheme "$XCODE_SCHEME"
+  #   artifacts:
+  #     - build/ios/ipa/*.ipa
+  #   publishing:
+  #     app_store_connect:
+  #       api_key: $APP_STORE_CONNECT_PRIVATE_KEY
+  #       key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
+  #       issuer_id: $APP_STORE_CONNECT_ISSUER_ID
+  #       submit_to_testflight: true
+
+  #     slack:
+  #       channel: '#p-claimguru'
+  #       notify:
+  #         success: true
+  #         failure: true
+
