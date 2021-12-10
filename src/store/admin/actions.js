@@ -1,6 +1,8 @@
 import request from '@api';
 import { buildApiData } from '@utils/api';
 import localDB, { getCollection } from '@services/dexie';
+
+// this function is used to get  the list of tasks available after an action has crossed its due date.
 export async function getActionOverDues({ commit, dispatch }, params) {
   dispatch('setLoading', true);
   try {
@@ -18,6 +20,7 @@ export async function getActionOverDues({ commit, dispatch }, params) {
   }
 }
 
+// this function is used to get the  list of tasks available after an action is completed
 export async function getActionCompletion({ commit, dispatch }, params) {
   dispatch('setLoading', true);
 
@@ -37,6 +40,8 @@ export async function getActionCompletion({ commit, dispatch }, params) {
     });
   }
 }
+
+// we used this function to get  the list of reasons for creating an action in admin pannel.
 export async function getActionReasons({ commit, dispatch }, params) {
   dispatch('setLoading', true);
   try {
@@ -54,6 +59,7 @@ export async function getActionReasons({ commit, dispatch }, params) {
   }
 }
 
+// this function is used to get the list of workflow in the admin action item pannel.
 export async function getAllWorkFlow({ commit, dispatch }, params) {
   dispatch('setLoading', true);
   try {
@@ -69,6 +75,8 @@ export async function getAllWorkFlow({ commit, dispatch }, params) {
     });
   }
 }
+
+// function is used to add the new workflow action in admin pannel.
 export async function addWorkflowAction({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
@@ -93,7 +101,7 @@ export async function addWorkflowAction({ dispatch, state }, payload) {
   }
 }
 
-// function is used for Edit Action Item
+// function is used for Edit Action Item.
 
 export async function editAdminActionItem({ dispatch, state }, payload) {
   dispatch('setLoading', true);
@@ -116,7 +124,7 @@ export async function editAdminActionItem({ dispatch, state }, payload) {
   }
 }
 
-// to Delete Admin Action Items
+// to Delete Admin Action Items.
 export async function adminActionItemDelete({ commit, dispatch }, payload) {
   dispatch('setLoading', true);
   try {
@@ -137,6 +145,7 @@ export async function adminActionItemDelete({ commit, dispatch }, payload) {
   }
 }
 
+// function is used to get the list of workflows, which we used to add in the admin action item pannel.
 export async function getWorkflowAction({ commit, dispatch }) {
   dispatch('setLoading', true);
   try {
@@ -154,6 +163,7 @@ export async function getWorkflowAction({ commit, dispatch }) {
   }
 }
 
+// this function is used to get the list of action item for the first time we used to store it for the offline mode also.
 export async function getOfficeTaskActions(
   {
     rootState: {
@@ -180,7 +190,7 @@ export async function getOfficeTaskActions(
       });
     }
   } else {
-    commit('setOfflineOfficeTaskActions');
+    commit('setOfflineOfficeTaskActions'); // this method is used to used to the action task for the offline mode.
     dispatch('setLoading', false);
   }
 }

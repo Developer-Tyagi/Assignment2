@@ -20,6 +20,7 @@ export async function getPersonnelInfo({ commit, dispatch }, id) {
   }
 }
 
+// function is used to get claim account details.
 export async function getAccountDetails({ commit, dispatch }, id) {
   dispatch('setLoading', true);
   try {
@@ -37,6 +38,7 @@ export async function getAccountDetails({ commit, dispatch }, id) {
   }
 }
 
+// function is used to get the list of all payment.
 export async function getAllPayment({ commit, dispatch }, id) {
   dispatch('setLoading', true);
   try {
@@ -53,6 +55,7 @@ export async function getAllPayment({ commit, dispatch }, id) {
     });
   }
 }
+// function is used to get the list of all expenses.
 export async function getAllExpenses({ commit, dispatch }, id) {
   dispatch('setLoading', true);
   try {
@@ -69,6 +72,7 @@ export async function getAllExpenses({ commit, dispatch }, id) {
     });
   }
 }
+// function is used to get the list of all Disbursements.
 export async function getAllDisbursements({ commit, dispatch }, id) {
   dispatch('setLoading', true);
   try {
@@ -111,6 +115,7 @@ export async function editLog({ dispatch, state }, payload) {
   }
 }
 
+// function is used to add new Disbursement.
 export async function createDisbursement({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
@@ -135,6 +140,7 @@ export async function createDisbursement({ dispatch, state }, payload) {
   }
 }
 
+// function is used to create new payment.
 export async function addPayment({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
@@ -158,6 +164,8 @@ export async function addPayment({ dispatch, state }, payload) {
     return false;
   }
 }
+
+// function is used for adding the expenses for the claim.
 export async function addExpenses({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
@@ -262,6 +270,7 @@ export async function getClaims(
   }
 }
 
+// function is used to get the list of all policy for the selected claim.
 export async function getPolicy({ commit, dispatch }, id) {
   dispatch('setLoading', true);
   try {
@@ -358,6 +367,7 @@ export async function getLossInfo({ commit, dispatch }, id) {
   }
 }
 
+// function is used to edit the selected claim policy details.
 export async function editInsurancePolicy({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
@@ -408,6 +418,8 @@ export async function updateLossInfo({ dispatch, state }, payload) {
     return false;
   }
 }
+
+// function is used to get the list of logs for selected claims.
 export async function getLog({ commit, dispatch }, id) {
   dispatch('setLoading', true);
   try {
@@ -424,6 +436,7 @@ export async function getLog({ commit, dispatch }, id) {
   }
 }
 
+// function is used to update the damage info of the selected claim.
 export async function updateDamageItem({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
@@ -449,6 +462,7 @@ export async function updateDamageItem({ dispatch, state }, payload) {
   }
 }
 
+//  function is used to get the list of all the damage item of the selected claim.
 export async function getDamageInfo({ commit, dispatch }, id) {
   dispatch('setLoading', true);
   try {
@@ -465,6 +479,7 @@ export async function getDamageInfo({ commit, dispatch }, id) {
   }
 }
 
+// function is used to get the list of selected claim task , this service is both for online and offline.
 export async function getClaimTasks(
   {
     rootState: {
@@ -481,6 +496,7 @@ export async function getClaimTasks(
       const { data } = await request.get(`claims/${id}/tasks`);
       commit('setClaimTasks', data);
     } else {
+      // here the offline mode is used to store the task details in the local database.
       const data = await localDB.tasks.toArray();
       const demo = data.find(task => {
         return task.id === id;
@@ -499,6 +515,7 @@ export async function getClaimTasks(
   }
 }
 
+// function is used for adding the claim logs.
 export async function addLog({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
@@ -518,6 +535,7 @@ export async function addLog({ dispatch, state }, payload) {
   }
 }
 
+// this function is used to add the selected claim task as "Completed"  or "Uncompleted".
 export async function changeSelectedTaskMark({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
@@ -536,6 +554,7 @@ export async function changeSelectedTaskMark({ dispatch, state }, payload) {
   }
 }
 
+// function is used to get the list of cliam settlements.
 export async function getSettlements({ commit, dispatch }, id) {
   dispatch('setLoading', true);
   try {
@@ -551,6 +570,7 @@ export async function getSettlements({ commit, dispatch }, id) {
     });
   }
 }
+// function is used to get the settlements type.
 export async function getSettlementTypes({ commit, dispatch }) {
   dispatch('setLoading', true);
   try {
@@ -566,6 +586,8 @@ export async function getSettlementTypes({ commit, dispatch }) {
     });
   }
 }
+
+// function is used to add the new settlement.
 export async function addSettlement({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
@@ -586,6 +608,7 @@ export async function addSettlement({ dispatch, state }, payload) {
   }
 }
 
+// this function is used for updating the details of selected settlements.
 export async function editSettlement({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
@@ -606,6 +629,7 @@ export async function editSettlement({ dispatch, state }, payload) {
   }
 }
 
+//this function is used to delete the settlements of selected claim.
 export async function deleteClaimSettelment({ commit, dispatch }, payload) {
   dispatch('setLoading', true);
   try {
@@ -626,22 +650,7 @@ export async function deleteClaimSettelment({ commit, dispatch }, payload) {
     });
   }
 }
-// export async function getSingleClaims({ commit, dispatch }, id) {
-//   dispatch('setLoading', true);
-//   try {
-//     const { data } = await request.get(`/claims/${id}/info`);
-//     commit('setClaim', data);
-//     dispatch('setLoading', false);
-//   } catch (e) {
-//     console.log(e);
-//     dispatch('setLoading', false);
-//     dispatch('setNotification', {
-//       type: 'negative',
-//       message: e.response[0].title
-//     });
-//   }
-// }
-
+// this function is used to get the details of the selected claim , this service is used for both the online and offline mode.
 export async function getSingleClaims(
   {
     rootState: {
@@ -653,13 +662,13 @@ export async function getSingleClaims(
   },
   id
 ) {
-  // dispatch('setLoading', true);
   try {
     if (isOnline) {
       commit('setClaim', {});
       const { data } = await request.get(`/claims/${id}/info`);
       commit('setClaim', data);
     } else {
+      // for the offline mode we used to store all the claim details in local db.
       const data = await localDB.claims.toArray();
 
       for (var i = 0, len = data.length; i < len; i++) {
@@ -684,6 +693,7 @@ export async function getSingleClaims(
   }
 }
 
+// function is used to get the list of vendors of the selected claim.
 export async function getClaimVendors({ commit, dispatch }, id) {
   dispatch('setLoading', true);
   try {
@@ -739,6 +749,7 @@ export async function addMortgage({ dispatch, state }, payload) {
   }
 }
 
+// function is use to add the vendor in the claim .
 export async function addSingleVendor({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
@@ -757,6 +768,8 @@ export async function addSingleVendor({ dispatch, state }, payload) {
     });
   }
 }
+
+// function is used for the edit the claim number.
 export async function editClaimNumber({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
@@ -775,6 +788,8 @@ export async function editClaimNumber({ dispatch, state }, payload) {
     });
   }
 }
+
+// function is used for the updating the claim phase.
 export async function editClaimPhase({ dispatch, state }, payload) {
   dispatch('setLoading', true);
 
@@ -794,6 +809,8 @@ export async function editClaimPhase({ dispatch, state }, payload) {
     });
   }
 }
+
+// function is used to get the list of claim phase.
 export async function getPhases({ commit, dispatch }) {
   dispatch('setLoading', true);
   try {
@@ -809,6 +826,7 @@ export async function getPhases({ commit, dispatch }) {
     });
   }
 }
+// function is used to delete the claim notes.
 export async function deleteClaimNotes({ commit, dispatch }, payload) {
   dispatch('setLoading', true);
   try {
@@ -827,6 +845,8 @@ export async function deleteClaimNotes({ commit, dispatch }, payload) {
     });
   }
 }
+
+// function is used to update the claim info details.
 export async function editClaimInfo({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
@@ -849,6 +869,8 @@ export async function editClaimInfo({ dispatch, state }, payload) {
     });
   }
 }
+
+// function is used to add the office task.
 export async function addOfficeTask({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
@@ -871,6 +893,8 @@ export async function addOfficeTask({ dispatch, state }, payload) {
     });
   }
 }
+
+// function is used to get the list of office task of the selected claim.
 export async function getOfficeTasks({ commit, dispatch }, id) {
   dispatch('setLoading', true);
   try {
@@ -910,6 +934,7 @@ export async function deleteClaimPersonnel({ dispatch }, payload) {
   }
 }
 
+// function is used to delete the expense of the selected claim .
 export async function deleteExpenses({ dispatch }, payload) {
   dispatch('setLoading', true);
   try {
@@ -931,6 +956,7 @@ export async function deleteExpenses({ dispatch }, payload) {
     });
   }
 }
+// function is used to edit the expense detail of the selected claim.
 export async function editExpenses({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
@@ -954,6 +980,7 @@ export async function editExpenses({ dispatch, state }, payload) {
     return false;
   }
 }
+// function is used to update the payment detail of the selected claim.
 export async function editPayment({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
@@ -976,6 +1003,7 @@ export async function editPayment({ dispatch, state }, payload) {
     });
   }
 }
+// function is used to delete the selected Disbursement.
 export async function deleteSingleDisbursement({ dispatch }, payload) {
   dispatch('setLoading', true);
   try {
@@ -996,6 +1024,7 @@ export async function deleteSingleDisbursement({ dispatch }, payload) {
     });
   }
 }
+// function is used to delete the single payment.
 export async function deleteSinglePayment({ dispatch }, payload) {
   dispatch('setLoading', true);
   try {
@@ -1016,6 +1045,7 @@ export async function deleteSinglePayment({ dispatch }, payload) {
     });
   }
 }
+// function is used to delete the selected vendor in the claim .
 export async function deleteClaimVendor({ commit, dispatch }, vendor) {
   dispatch('setLoading', true);
   try {
@@ -1304,6 +1334,8 @@ export async function uploadOfflineDocument({ dispatch, state }, document) {
     message: 'File Uploaded Successfully!'
   });
 }
+
+// function is used for adding document in the claim .
 export async function uploadMultipleDocument({ dispatch }, payload) {
   try {
     dispatch('setLoading', true);
@@ -1349,6 +1381,7 @@ export async function uploadClaimDocument({ dispatch, state }, payload) {
   }
 }
 
+// function is used to adding vendor documents.
 export async function uploadVendorDocument({ dispatch }, payload) {
   dispatch('setLoading', true);
   try {
@@ -1463,6 +1496,7 @@ export async function completeEstimate({ dispatch, state }, payload) {
   }
 }
 
+// function is used for the  deleting the selected claim document.
 export async function deleteClaimDocument({ commit, dispatch }, payload) {
   dispatch('setLoading', true);
   try {
@@ -1568,6 +1602,7 @@ export async function getEstimateInfo({ commit, dispatch }, claimID) {
   }
 }
 
+// function is used to add rhe claim estimator details inside the selected claim .
 export async function addClaimEstimator({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
@@ -1658,6 +1693,7 @@ export async function generatePhotoReport({ dispatch, state }, payload) {
   }
 }
 
+// function is used to delete the activity log.
 export async function deleteActivityLogt({ commit, dispatch }, payload) {
   dispatch('setLoading', true);
   try {
@@ -1677,6 +1713,7 @@ export async function deleteActivityLogt({ commit, dispatch }, payload) {
   }
 }
 
+// function is used to mark a task as completed in a selected claim.
 export async function taskComplete({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
@@ -1701,6 +1738,7 @@ export async function taskComplete({ dispatch, state }, payload) {
   }
 }
 
+// function is used to mark task as uncompleted.
 export async function taskUncomplete({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {

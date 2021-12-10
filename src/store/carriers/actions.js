@@ -3,6 +3,7 @@ import { buildApiData } from '@utils/api';
 import localDB, { getCollection } from '@services/dexie';
 import { makeId } from '../leads/actions';
 
+// this function is used to get the list of carriers , for the online mode we used pagination and for thie offline mode we store it in the local db.
 export async function getCarriers(
   {
     rootState: {
@@ -18,6 +19,7 @@ export async function getCarriers(
     dispatch('setLoading', true);
   }
 
+  // this is call when the device is online .
   if (isOnline) {
     try {
       const { data } = await request.get('/carriers', params);
@@ -33,12 +35,15 @@ export async function getCarriers(
         });
       }
     }
-  } else {
+  }
+  //this is call when the device is offline, in this case we used to store all the carrier data in the local database and then fetch the data from it.
+  else {
     commit('setOfflineCarriers', params);
     dispatch('setLoading', false);
   }
 }
 
+// this function is used to add the new carrier data, this service is used for both online and offline mode.
 export async function addCarrier(
   {
     rootState: {
@@ -56,6 +61,7 @@ export async function addCarrier(
   }
 }
 
+//this function is used when the new carrier is added in online mode.
 export async function addCarrierRemote({ commit, dispatch }, payload) {
   try {
     const { data } = await request.post(
@@ -79,6 +85,7 @@ export async function addCarrierRemote({ commit, dispatch }, payload) {
   }
 }
 
+// this function is used when the new carrier is added in offline mode , for that we used to store the data in the localDB and then once we get online we send the data to server.
 export async function addCarrierLocal({ dispatch }, payload) {
   try {
     let carrier = { ...payload, offline: true, id: makeId() };
@@ -109,6 +116,8 @@ export async function getCarrierDetails({ commit, dispatch }, id) {
     });
   }
 }
+
+// this function is used to add the personnel in the carrier.
 export async function addCarrierPersonnel({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
@@ -133,6 +142,7 @@ export async function addCarrierPersonnel({ dispatch, state }, payload) {
   }
 }
 
+//this function is used to get the carrier personnel details.
 export async function getCarrierPersonnel({ commit, dispatch }, paramsObject) {
   dispatch('setLoading', true);
   try {
@@ -152,6 +162,7 @@ export async function getCarrierPersonnel({ commit, dispatch }, paramsObject) {
   }
 }
 
+// function is used to edit the carrier personnel.
 export async function editCarrierPersonnel({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
@@ -173,6 +184,8 @@ export async function editCarrierPersonnel({ dispatch, state }, payload) {
     });
   }
 }
+
+// this function is used to delete the selected personnel.
 export async function deleteCarrierPersonnel({ commit, dispatch }, vendor) {
   dispatch('setLoading', true);
   try {
@@ -191,6 +204,7 @@ export async function deleteCarrierPersonnel({ commit, dispatch }, vendor) {
     });
   }
 }
+// this function is used to delete the selected carrier.
 export async function deleteCarrierInfo({ commit, dispatch }, carrier) {
   dispatch('setLoading', true);
   try {
@@ -209,6 +223,8 @@ export async function deleteCarrierInfo({ commit, dispatch }, carrier) {
     });
   }
 }
+
+// this function is used to edit the carrier info data.
 export async function editCarrierInfo({ dispatch, state }, carrier) {
   dispatch('setLoading', true);
   try {
@@ -230,6 +246,8 @@ export async function editCarrierInfo({ dispatch, state }, carrier) {
     });
   }
 }
+
+// this function is used for adding the new claim in the carrier.
 export async function addClaimCarrier({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
@@ -253,6 +271,7 @@ export async function addClaimCarrier({ dispatch, state }, payload) {
     return false;
   }
 }
+//  this function is used to get the carrier info for the claim
 export async function getClaimCarrier({ commit, dispatch }, id) {
   dispatch('setLoading', true);
   try {
@@ -268,6 +287,7 @@ export async function getClaimCarrier({ commit, dispatch }, id) {
     });
   }
 }
+// this function is used to delete the carrier info from the claim.
 export async function deleteClaimCarrier({ commit, dispatch }, carrier) {
   dispatch('setLoading', true);
   try {
@@ -290,6 +310,7 @@ export async function deleteClaimCarrier({ commit, dispatch }, carrier) {
   }
 }
 
+// this function is used for adding carrier personnel to claim.
 export async function addClaimPersonnel({ dispatch, state }, payload1) {
   dispatch('setLoading', true);
   try {
@@ -314,6 +335,8 @@ export async function addClaimPersonnel({ dispatch, state }, payload1) {
     return false;
   }
 }
+
+// function is used to remove carrier personnel from claim.
 export async function deleteClaimCarrierPersonnel(
   { commit, dispatch },
   adjustor

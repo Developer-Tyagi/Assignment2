@@ -5,6 +5,7 @@ import { makeId } from '../leads/actions';
 import { constants } from '@utils/constant';
 import { date } from 'quasar';
 
+// function is used to get the list of clients , this is used for both the offline and online mode.
 export async function getClients(
   {
     rootState: {
@@ -35,11 +36,13 @@ export async function getClients(
       });
     }
   } else {
+    // for the offline mode we used to store the data in the local database.
     commit('setOfflineClients', payload);
     dispatch('setLoading', false);
   }
 }
 
+// function is used to get the details of the selected claim.
 export async function getSingleClientDetails(
   {
     rootState: {
@@ -51,7 +54,6 @@ export async function getSingleClientDetails(
   },
   id
 ) {
-  // dispatch('setLoading', true);
   try {
     if (isOnline) {
       const { data } = await request.get(`/clients/${id}`);
@@ -118,6 +120,7 @@ export async function getSingleClaimDetails(
   }
 }
 
+// function is used to append the property addess to client.
 export async function getSingleClientProperty({ commit, dispatch }, id) {
   dispatch('setLoading', true);
   try {
@@ -135,6 +138,7 @@ export async function getSingleClientProperty({ commit, dispatch }, id) {
   }
 }
 
+// function is used to get the list of estimators.
 export async function getEstimators(
   {
     rootState: {
@@ -165,6 +169,7 @@ export async function getEstimators(
   }
 }
 
+// function is used to add the new client , this is used in both the offline and online mode.
 export async function addClient(
   {
     rootState: {
@@ -181,7 +186,7 @@ export async function addClient(
     return await dispatch('addClientLocal', payload);
   }
 }
-
+//function is used to add the new client in the online mode.
 export async function addClientRemote({ commit }, payload) {
   try {
     delete payload.meta;
@@ -196,6 +201,7 @@ export async function addClientRemote({ commit }, payload) {
   }
 }
 
+// function is used add the new client in the offline mode.
 export async function addClientLocal({ dispatch }, payload) {
   try {
     let client = {
@@ -221,6 +227,7 @@ export async function addClientLocal({ dispatch }, payload) {
   }
 }
 
+// function is used to update the client info in the offline mode.
 export async function editClientLocal({ dispatch }, payload) {
   try {
     await localDB.clients
@@ -239,6 +246,7 @@ export async function editClientLocal({ dispatch }, payload) {
   }
 }
 
+// function is used to edit the claim in the offline mode.
 export async function editClaimLocal({ dispatch }, payload) {
   try {
     await localDB.claims
@@ -262,6 +270,8 @@ export async function editClaimLocal({ dispatch }, payload) {
     console.log(e);
   }
 }
+
+// this function is used to add the task fot the claim , this function is used in both the offline and online mode.
 export async function addMultipleTaskToClaim(
   {
     rootState: {
@@ -280,6 +290,7 @@ export async function addMultipleTaskToClaim(
   }
 }
 
+// this function is used to update the task details in the offline mode.
 export async function editMultipleTaskToClaim({ dispatch }, payload) {
   try {
     await localDB.tasks
@@ -298,6 +309,7 @@ export async function editMultipleTaskToClaim({ dispatch }, payload) {
   }
 }
 
+// this function is used to add the multiple task in the online mode.
 export async function addMultipleTaskRemote({ dispatch }, payload) {
   try {
     const { data } = await request.post(
@@ -312,6 +324,7 @@ export async function addMultipleTaskRemote({ dispatch }, payload) {
   }
 }
 
+// this function is used to add the multiple task in the offline mode.
 export async function addMultipleTaskLocal({ dispatch }, payload) {
   try {
     let task = { ...payload, offline: true };
@@ -323,6 +336,7 @@ export async function addMultipleTaskLocal({ dispatch }, payload) {
   }
 }
 
+// this function is used to add the notes.
 export async function addNotes({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
@@ -346,6 +360,7 @@ export async function addNotes({ dispatch, state }, payload) {
   }
 }
 
+// function is used to add the address for the client.
 export async function addPropertyAddress({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
@@ -364,6 +379,8 @@ export async function addPropertyAddress({ dispatch, state }, payload) {
     });
   }
 }
+
+// function is used to update the address of the client.
 export async function editedPropertyAddress({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
@@ -382,6 +399,8 @@ export async function editedPropertyAddress({ dispatch, state }, payload) {
     });
   }
 }
+
+// function is used to delete the address  property of the client.
 export async function deletedPropertyAddress({ commit, dispatch }, payload) {
   dispatch('setLoading', true);
   try {
@@ -401,6 +420,7 @@ export async function deletedPropertyAddress({ commit, dispatch }, payload) {
   }
 }
 
+// function is used to update the client details.
 export async function editClient({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
@@ -424,6 +444,7 @@ export async function editClient({ dispatch, state }, payload) {
   }
 }
 
+// function is used to add the new claim, this is used both in offline and online mode.
 export async function addClaim(
   {
     rootState: {
@@ -442,6 +463,7 @@ export async function addClaim(
   }
 }
 
+// function is used to add the new claim in online mode.
 export async function addClaimRemote({ dispatch, commit }, payload) {
   try {
     const { data } = await request.post(
@@ -457,6 +479,7 @@ export async function addClaimRemote({ dispatch, commit }, payload) {
   }
 }
 
+// function is used to add the new claim in offline mode
 export async function addClaimLocal({ dispatch }, payload) {
   try {
     let claim = {
@@ -475,6 +498,7 @@ export async function addClaimLocal({ dispatch }, payload) {
   }
 }
 
+// function is used to add new estimator, this is used in both online and offline mode.
 export async function addEstimator(
   {
     rootState: {
@@ -492,6 +516,7 @@ export async function addEstimator(
   }
 }
 
+// this function is used to add the new estimator in the online mode.
 export async function addEstimatorRemote({ commit, dispatch }, payload) {
   try {
     const { data } = await request.post(
@@ -515,6 +540,7 @@ export async function addEstimatorRemote({ commit, dispatch }, payload) {
   }
 }
 
+// this function is used to add the new estimator in the offline mode.
 export async function addEstimatorLocal({ dispatch }, payload) {
   try {
     let estimator = { ...payload, offline: true, id: makeId() };
@@ -529,6 +555,7 @@ export async function addEstimatorLocal({ dispatch }, payload) {
   }
 }
 
+// this function is used to get the property type, this function is used in both online and offline mode.
 export async function getPropertyTypes(
   {
     rootState: {
@@ -554,10 +581,13 @@ export async function getPropertyTypes(
       });
     }
   } else {
+    // this method is called in the offline mode to get the property type of the client.
     commit('setOfflinePropertyTypes');
     dispatch('setLoading', false);
   }
 }
+
+// this function is used to get the policy type in the online mode.
 export async function getPolicyTypes(
   {
     rootState: {
@@ -583,11 +613,13 @@ export async function getPolicyTypes(
       });
     }
   } else {
+    // this function is used to get the policy type in the offline mode.
     commit('setOfflinePolicyTypes');
     dispatch('setLoading', false);
   }
 }
 
+// function is used to get the claim reason, this function is used to call both in offline and online mode.
 export async function getClaimReasons(
   {
     rootState: {
@@ -613,11 +645,12 @@ export async function getClaimReasons(
       });
     }
   } else {
+    // for the offline mode we fetch the claim reason from the local storage.
     commit('setOfflineClaimReasons');
     dispatch('setLoading', false);
   }
 }
-
+// function is used to get the list of severity for both in offline and online mode.
 export async function getSeverityClaim(
   {
     rootState: {
@@ -648,6 +681,7 @@ export async function getSeverityClaim(
   }
 }
 
+// function is used to get the list of policy category.
 export async function getPolicyCategory(
   {
     rootState: {
@@ -677,6 +711,8 @@ export async function getPolicyCategory(
     dispatch('setLoading', false);
   }
 }
+
+// function is used to delete the claim notes.
 export async function deletedClientNote({ commit, dispatch }, payload) {
   dispatch('setLoading', true);
   try {
@@ -695,6 +731,7 @@ export async function deletedClientNote({ commit, dispatch }, payload) {
     });
   }
 }
+// function is used for editing the claim notes.
 export async function editClientNotes({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
@@ -718,6 +755,7 @@ export async function editClientNotes({ dispatch, state }, payload) {
   }
 }
 
+// function is used for updating the claim timeline.
 export async function updateClaimTimeline({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {

@@ -2,6 +2,8 @@ import request from '@api';
 import { buildApiData } from '@utils/api';
 import localDB, { getCollection } from '@services/dexie';
 import { makeId } from '../leads/actions';
+
+// function is used for getting the list of vendor details,this function is called both in online and offline mode.
 export async function getVendors(
   {
     rootState: {
@@ -53,6 +55,7 @@ export async function getVendorDetails({ commit, dispatch }, id) {
   }
 }
 
+// function is used for adding the vendor data, this function is called both in online and offline mode.
 export async function addVendor(
   {
     rootState: {
@@ -70,6 +73,7 @@ export async function addVendor(
   }
 }
 
+// function is used for adding the vendor data in the online mode.
 export async function addVendorRemote({ commit, dispatch }, payload) {
   try {
     const { data } = await request.post(
@@ -95,6 +99,7 @@ export async function addVendorRemote({ commit, dispatch }, payload) {
   }
 }
 
+// function is used for adding the vendor data in the offline mode.
 export async function addVendorLocal({ dispatch }, payload) {
   try {
     let vendor = { ...payload, offline: true, id: makeId() };
@@ -109,6 +114,7 @@ export async function addVendorLocal({ dispatch }, payload) {
   }
 }
 
+// function is used for adding the vendor personnel.
 export async function addVendorPersonnel({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
@@ -131,6 +137,7 @@ export async function addVendorPersonnel({ dispatch, state }, payload) {
   }
 }
 
+// function is used for getting the vendor personnel.
 export async function getVendorPersonnel({ commit, dispatch }, id) {
   dispatch('setLoading', true);
   try {
@@ -146,6 +153,8 @@ export async function getVendorPersonnel({ commit, dispatch }, id) {
     });
   }
 }
+
+// function is used for updating  the vendor personnel details.
 export async function editVendorPersonnel({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
@@ -167,6 +176,8 @@ export async function editVendorPersonnel({ dispatch, state }, payload) {
     });
   }
 }
+
+// function is used for deleting the vendor personnel.
 export async function deleteVendorPersonnel({ commit, dispatch }, vendor) {
   dispatch('setLoading', true);
   try {
@@ -186,6 +197,7 @@ export async function deleteVendorPersonnel({ commit, dispatch }, vendor) {
   }
 }
 
+// function is used for getting the list of vendor industries,this function is called both in online and offline mode.
 export async function getVendorIndustries(
   {
     rootState: {
@@ -216,6 +228,7 @@ export async function getVendorIndustries(
   }
 }
 
+// function is used for deleting the vendor info.
 export async function deleteVendorInfo({ commit, dispatch }, vendor) {
   dispatch('setLoading', true);
   try {
@@ -234,6 +247,8 @@ export async function deleteVendorInfo({ commit, dispatch }, vendor) {
     });
   }
 }
+
+// function is used for updating the vendor info.
 export async function editVendorInfo({ dispatch, state }, vendor) {
   dispatch('setLoading', true);
   try {
