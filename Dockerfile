@@ -1,5 +1,5 @@
 # develop stage
-FROM node:13.14-alpine as develop-stage
+FROM node:16-alpine3.11 as develop-stage
 RUN apk add libc6-compat
 WORKDIR /app
 COPY package*.json ./
