@@ -644,7 +644,7 @@
                 style="width: 200px"
                 outlined
                 :rules="[
-                  val => (val && val.length > 0) || 'Please select any category'
+                  val => (val && val.length > 0) || 'Please enter action'
                 ]"
               />
             </div>
