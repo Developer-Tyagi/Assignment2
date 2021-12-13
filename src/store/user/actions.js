@@ -3,6 +3,7 @@ import { buildApiData } from '@utils/api';
 import { setToken, setCurrentUser, setFCMToken } from '@utils/auth';
 import firebaseAuthorization from '@utils/firebase';
 
+// function is used for user login .
 export async function userLogin({ commit, dispatch }, formData) {
   const { data } = formData;
   dispatch('setLoading', true);
@@ -29,6 +30,7 @@ export async function userLogin({ commit, dispatch }, formData) {
   }
 }
 
+// function is used for getting the login user details.
 export async function getUserInfo({ dispatch, state }) {
   dispatch('setLoading', true);
   try {
@@ -45,6 +47,7 @@ export async function getUserInfo({ dispatch, state }) {
   }
 }
 
+// function is used for adding the organisation details.
 export async function createUserForOrganization({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
@@ -67,6 +70,8 @@ export async function createUserForOrganization({ dispatch, state }, payload) {
     return false;
   }
 }
+
+// function is used for updating the organisation details.
 export async function updateUserForOrganization({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
@@ -87,6 +92,7 @@ export async function updateUserForOrganization({ dispatch, state }, payload) {
   }
 }
 
+// function is used for adding the new user.
 export async function addUser({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
@@ -108,6 +114,7 @@ export async function addUser({ dispatch, state }, payload) {
   }
 }
 
+// function is used for Verifying the Oob Code.
 export async function verifyOobCode({ commit, dispatch }, params) {
   dispatch('setLoading', true);
   try {
@@ -121,6 +128,8 @@ export async function verifyOobCode({ commit, dispatch }, params) {
     return false;
   }
 }
+
+// function is used for reseting the password.
 export async function setPassword({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
@@ -205,6 +214,7 @@ export async function addIndustry({ dispatch, state }, payload) {
   }
 }
 
+// function is used adding the phone number.
 export async function addPhone({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
@@ -345,6 +355,8 @@ export async function addLoss({ dispatch, state }, payload) {
     return false;
   }
 }
+
+// function is used for adding the claim severity.
 export async function addClaimSeverity({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
@@ -404,6 +416,7 @@ export async function setOnboard({ dispatch, state }, payload) {
   }
 }
 
+// function is used for adding the notification token
 export async function sendPushNotificationToken({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
@@ -427,6 +440,7 @@ export async function sendPushNotificationToken({ dispatch, state }, payload) {
   }
 }
 
+// function is used for deleting the notification token.
 export async function deletePushNotificationToken({ commit, dispatch }, token) {
   dispatch('setLoading', true);
   try {
@@ -458,6 +472,8 @@ export async function editUserInfo({ dispatch, state }, user) {
     });
   }
 }
+
+// function is used for updating the user profile.
 export async function editUserProfile({ dispatch, state }, user) {
   dispatch('setLoading', true);
   try {

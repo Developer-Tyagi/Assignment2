@@ -3,6 +3,7 @@ import { buildApiData } from '@utils/api';
 import localDB, { getCollection } from '@services/dexie';
 import { makeId } from '../leads/actions';
 
+// function is used for getting the list of mortgages, this function is called both in online and offline mode.
 export async function getMortgages(
   {
     rootState: {
@@ -33,6 +34,7 @@ export async function getMortgages(
   }
 }
 
+// function is used for creating new mortgage, this function is called both in online and offline mode.
 export async function addClaimMortgage(
   {
     rootState: {
@@ -50,6 +52,7 @@ export async function addClaimMortgage(
   }
 }
 
+// function is used for creating new  mortgage in the online mode.
 export async function addMortgageRemote({ commit, dispatch }, payload) {
   try {
     const { data } = await request.post(
@@ -73,6 +76,7 @@ export async function addMortgageRemote({ commit, dispatch }, payload) {
   }
 }
 
+// function is used for creating new mortgage in the offline mode.
 export async function addMortgageLocal({ dispatch }, payload) {
   try {
     let mortgage = { ...payload, offline: true, id: makeId() };
@@ -103,6 +107,8 @@ export async function getMortgageDetails({ commit, dispatch }, id) {
     });
   }
 }
+
+// function is used for getting the mortgage personnel details.
 export async function getMortgagePersonnel({ commit, dispatch }, id) {
   dispatch('setLoading', true);
   try {
@@ -118,6 +124,8 @@ export async function getMortgagePersonnel({ commit, dispatch }, id) {
     });
   }
 }
+
+// function is used for adding the mortgage personnel details.
 export async function addMortgagePersonnel({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
@@ -139,6 +147,8 @@ export async function addMortgagePersonnel({ dispatch, state }, payload) {
     });
   }
 }
+
+// function is used for editing the mortgage personnel details.
 export async function editMortgagePersonnel({ dispatch }, payload) {
   dispatch('setLoading', true);
   try {
@@ -160,6 +170,8 @@ export async function editMortgagePersonnel({ dispatch }, payload) {
     });
   }
 }
+
+// function is used for deleting the mortgage personnel details.
 export async function deleteMortgagePersonnel({ commit, dispatch }, vendor) {
   dispatch('setLoading', true);
   try {
@@ -180,6 +192,8 @@ export async function deleteMortgagePersonnel({ commit, dispatch }, vendor) {
     });
   }
 }
+
+// function is used for deleting the mortgage.
 export async function deleteMortgageInfo({ commit, dispatch }, mortgage) {
   dispatch('setLoading', true);
   try {
@@ -198,6 +212,8 @@ export async function deleteMortgageInfo({ commit, dispatch }, mortgage) {
     });
   }
 }
+
+// function is used for updating  the mortgage  details.
 export async function editMortgageInfo({ dispatch, state }, mortgage) {
   dispatch('setLoading', true);
   try {

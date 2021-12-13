@@ -1,6 +1,8 @@
 import request from '@api';
 import { buildApiData } from '@utils/api';
 
+// function is used for getting the list of Inspection Type, this function is called both in online and offline mode.
+
 export async function getInspectionTypes(
   {
     rootState: {
@@ -26,11 +28,13 @@ export async function getInspectionTypes(
       });
     }
   } else {
+    // for offline mode we fetch the inspection details from the local storage.
     commit('setOfflineInspectionTypes');
     dispatch('setLoading', false);
   }
 }
 
+// function is used for adding the new Inspection type.
 export async function addInspectionTypes({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {

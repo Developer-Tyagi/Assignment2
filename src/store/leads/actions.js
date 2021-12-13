@@ -4,6 +4,7 @@ import localDB from '@services/dexie';
 import { date } from 'quasar';
 import { constants } from '@utils/constant';
 
+// function is used for getting the list of active leads , this function is called both in online and offline mode.
 export async function getActiveLeadsList(
   {
     rootState: {
@@ -42,11 +43,13 @@ export async function getActiveLeadsList(
       });
     }
   } else {
+    // this function is called in the offline mode to fetch the active leads details.
     commit('setOfflineActiveLeads', payload);
     dispatch('setLoading', false);
   }
 }
 
+// function is used for getting the list of Archived leads , this function is called both in online and offline mode.
 export async function getArchivedLeadsList(
   {
     rootState: {
@@ -80,6 +83,7 @@ export async function getArchivedLeadsList(
   }
 }
 
+// function is used for adding the leads in the Archive List.
 export async function addLeadToArchiveList({ commit, dispatch }, leadId) {
   dispatch('setLoading', true);
   try {
@@ -96,6 +100,7 @@ export async function addLeadToArchiveList({ commit, dispatch }, leadId) {
   }
 }
 
+// function is used for adding the Leads in online mode.
 export async function addLeadRemote({ commit, dispatch }, payload) {
   try {
     const { data } = await request.post(
@@ -119,6 +124,7 @@ export async function addLeadRemote({ commit, dispatch }, payload) {
   }
 }
 
+// function is used for adding the Leads in offline mode.
 export async function addLeadLocal({ dispatch }, payload) {
   try {
     await localDB.activeLeads.add({
@@ -140,6 +146,7 @@ export async function addLeadLocal({ dispatch }, payload) {
   }
 }
 
+// function is used for adding the leads , this function is called both in online and offline mode.
 export async function addLeads(
   {
     rootState: {
@@ -158,6 +165,7 @@ export async function addLeads(
   }
 }
 
+// function is used for updating the leads details, this function is called both in online and offline mode.
 export async function editLeadDetails(
   {
     rootState: {
@@ -177,6 +185,7 @@ export async function editLeadDetails(
   }
 }
 
+// function is used for updating the Leads details in offline mode.
 export async function editLeadLocal({ dispatch }, payload) {
   try {
     await localDB.activeLeads
@@ -201,6 +210,7 @@ export async function editLeadLocal({ dispatch }, payload) {
   }
 }
 
+// function is used for updating the Leads details in online mode.
 export async function editLeadRemote({ commit, dispatch }, payload) {
   try {
     const { data } = await request.put(
@@ -226,6 +236,7 @@ export async function editLeadRemote({ commit, dispatch }, payload) {
   }
 }
 
+// function is used for getting the selected Leads Details.
 export async function getLeadDetails(
   {
     rootState: {
@@ -260,6 +271,7 @@ export async function getLeadDetails(
   }
 }
 
+// function is used for creating the random id's..
 export function makeId() {
   var result = [];
   var characters =
