@@ -340,7 +340,7 @@ export default {
     //estimator  have no permission to these APIs
     const userRole = getCurrentUser().attributes.roles[0].machineValue;
 
-    if (userRole != 'estimator') {
+    if (userRole != 'estimator' && userRole != 'vendor') {
       this.getVendors('hideLoader');
       this.getMortgages('hideLoader');
       let params = {
@@ -453,6 +453,8 @@ export default {
       this.setSelectedClaimId(value.id);
       this.$router.push('/claim-details');
     },
+    /* ******************This Function is not used anywhere anymore********************* */
+
     onOpenClaimsClick() {
       this.$router.push('/claims');
       const params = {
