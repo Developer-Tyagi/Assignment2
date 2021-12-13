@@ -87,7 +87,7 @@ export async function addWorkflowAction({ dispatch, state }, payload) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'negative',
-      message: e.response[0].title
+      message: 'Action update failed'
     });
     return false;
   }

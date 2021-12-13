@@ -636,19 +636,26 @@
         <div style="height: calc(100% - 140px); overflow: auto" class="q-pa-md">
           <q-form ref="addActionForm">
             <div class="row full-width">
-              <div class="q-pa-sm text-bold">Action Item :</div>
+              <div class="q-pa-sm text-bold">
+                Action Item <span class="text-red">*</span> :
+              </div>
               <q-input
                 dense
                 v-model="actions.name"
                 class="q-mx-md"
                 style="width: 200px"
                 outlined
+                :rules="[
+                  val => (val && val.length > 0) || 'Please enter action'
+                ]"
               />
             </div>
 
             <!-- second -->
             <div class="row q-mt-md full-width">
-              <div class="q-pa-sm text-bold">Created When :</div>
+              <div class="q-pa-sm text-bold">
+                Created When <span class="text-red">*</span> :
+              </div>
               <q-select
                 dense
                 outlined
@@ -669,6 +676,9 @@
                 label="Created when"
                 class="input-extra-padding"
                 style="width: 26%"
+                :rules="[
+                  val => (val && val.length > 0) || 'Please select any category'
+                ]"
               />
 
               <div
@@ -692,6 +702,10 @@
                   :options="actionReason[indexOfActionReason].additionalReasons"
                   label="Sub-option"
                   style="width: 220px"
+                  :rules="[
+                    val =>
+                      (val && val.length > 0) || 'Please select any category'
+                  ]"
                 >
                   <template v-slot:no-option>
                     <q-item>
@@ -704,7 +718,9 @@
               </div>
             </div>
             <div class="row q-pa-sm">
-              <div class="q-py-md text-bold">Enabled :</div>
+              <div class="q-py-md text-bold">
+                Enabled <span class="text-red">*</span> :
+              </div>
               <q-toggle v-model="actions.isEnabled" left-label class="" />
               <q-badge color="primary" dense style="margin: auto 10px">{{
                 actions.isEnabled ? 'Enable' : 'Disable'
@@ -728,7 +744,9 @@
             <!-- 3 -->
             <div class="row q-mt-md full-width">
               <div class="row q-pa-xs">
-                <div class="q-py-sm text-bold">Assign To :</div>
+                <div class="q-py-sm text-bold">
+                  Assign To <span class="text-red">*</span> :
+                </div>
                 <div class="q-ml-sm row text-bold">
                   <q-select
                     dense
@@ -779,7 +797,9 @@
                 </div>
               </div>
             </div>
-            <div class="q-py-sm q-pl-xs text-bold">Due Date :</div>
+            <div class="q-py-sm q-pl-xs text-bold">
+              Due Date <span class="text-red">*</span> :
+            </div>
             <div class="row q-pl-xs full-width">
               <!-- <div class="q-pa-sm text-bold">Due Date :</div> -->
               <div class="text-grey-9 text-bold q-py-sm">Task will be Due</div>
@@ -804,6 +824,9 @@
                 :options="dueDays"
                 label="Type"
                 style="width: 200px"
+                :rules="[
+                  val => (val && val.length > 0) || 'Please select any category'
+                ]"
               />
 
               <div class="q-pa-sm text-grey-9 text-bold">
@@ -828,7 +851,7 @@
             >
               <div>
                 <div class="q-pa-sm text-bold" v-if="index == 0">
-                  Completion Action :
+                  Completion Action <span class="text-red">*</span> :
                 </div>
                 <div
                   class="q-pa-sm text-bold"
@@ -860,6 +883,10 @@
                   label="Completion Action"
                   class="input-extra-padding"
                   style="width: 200px"
+                  :rules="[
+                    val =>
+                      (val && val.length > 0) || 'Please select any category'
+                  ]"
                 />
               </div>
 
@@ -894,6 +921,10 @@
                   emit-value
                   options-dense
                   style="width: 200px"
+                  :rules="[
+                    val =>
+                      (val && val.length > 0) || 'Please select any category'
+                  ]"
                 />
               </div>
               <div
@@ -931,6 +962,10 @@
                   emit-value
                   options-dense
                   style="width: 200px"
+                  :rules="[
+                    val =>
+                      (val && val.length > 0) || 'Please select any category'
+                  ]"
                 />
                 <q-select
                   v-else
@@ -951,6 +986,10 @@
                   emit-value
                   options-dense
                   style="width: 200px"
+                  :rules="[
+                    val =>
+                      (val && val.length > 0) || 'Please select any category'
+                  ]"
                 />
               </div>
               <div class="q-ml-md q-mt-sm">
@@ -1278,7 +1317,7 @@ export default {
           task: []
         },
 
-        priority: '',
+        priority: 'low',
         assignedTo: [
           {
             type: '',
@@ -1302,7 +1341,7 @@ export default {
         },
         due: {
           type: '',
-          interval: '',
+          interval: 0,
           unit: 'days'
         },
         notes: ''
@@ -1397,7 +1436,7 @@ export default {
           task: []
         },
 
-        priority: '',
+        priority: 'low',
         assignedTo: [
           {
             type: '',
@@ -1421,7 +1460,7 @@ export default {
         },
         due: {
           type: '',
-          interval: '',
+          interval: 0,
           unit: 'days'
         },
         notes: ''
@@ -1870,7 +1909,7 @@ export default {
             type: '',
             task: []
           },
-          priority: '',
+          priority: 'low',
           assignedTo: [
             {
               type: '',
@@ -1894,7 +1933,7 @@ export default {
           },
           due: {
             type: '',
-            interval: null,
+            interval: 0,
             unit: 'days'
           },
           notes: ''
@@ -1961,7 +2000,7 @@ export default {
             type: '',
             task: []
           },
-          priority: '',
+          priority: 'low',
           assignedTo: [
             {
               type: '',
@@ -1985,7 +2024,7 @@ export default {
           },
           due: {
             type: '',
-            interval: null,
+            interval: 0,
             unit: 'days'
           },
           notes: ''
