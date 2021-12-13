@@ -27,10 +27,12 @@ export async function getActiveLeadsList(
       const { data } = await request.get('/leads', {
         new: payload.new,
         phase: payload.phase,
-        name: payload.searchString
+        name: payload.searchString,
+        limit: payload.limit,
+        offset: payload.offset
       });
 
-      const payloadData = { data: data, params: payload.searchString };
+      const payloadData = { data: data, params: payload };
       commit('setActiveLeads', payloadData);
       dispatch('setLoading', false);
     } catch (e) {
