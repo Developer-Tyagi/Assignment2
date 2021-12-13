@@ -103,7 +103,7 @@
           >
         </div>
 
-        <div class=" text-center footer-style">Version {{ this.version }}</div>
+        <div class="text-center footer-style">Version {{ this.version }}</div>
       </q-form>
     </div>
   </q-page>
@@ -123,9 +123,8 @@ import { Screen } from 'quasar';
 import { constants } from '@utils/constant';
 import { notification } from 'src/store/common/getters';
 import { appVersion } from '../Version';
-const isPushNotificationsAvailable = Capacitor.isPluginAvailable(
-  'PushNotifications'
-);
+const isPushNotificationsAvailable =
+  Capacitor.isPluginAvailable('PushNotifications');
 const { PushNotifications } = Plugins;
 
 export default {
@@ -217,7 +216,11 @@ export default {
 
   created() {
     if (getToken() && getCurrentUser()) {
-      this.$router.push('/dashboard');
+      if (isMobile()) {
+        this.$router.push('/dashboard');
+      } else {
+        this.$router.push('/claimstats');
+      }
     }
   }
 };
