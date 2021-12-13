@@ -282,7 +282,14 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['activeLeads', 'archivedLeads', 'isOnline', 'organization']),
+    ...mapGetters([
+      'routeFromLeadDashboad',
+      'converted',
+      'activeLeads',
+      'archivedLeads',
+      'isOnline',
+      'organization'
+    ]),
     formatDate(value) {
       if (value) {
         return moment(String(value)).format('MM/DD/YYYY');
@@ -312,36 +319,115 @@ export default {
 
     // this is for lead pagination
     async getLeadListData() {
-      let params = {
-        limit: LEAD_LIST_LIMIT,
-        offset: 0
-      };
-      this.loading = true;
-      await this.getActiveLeadsList(params);
-      this.loading = false;
+      // this condition is use to check if the user want to land on converted lead page, so for that we show Converted Lead data.
+      if (this.routeFromLeadDashboad && this.converted == 'Converted') {
+        let params = {
+          limit: LEAD_LIST_LIMIT,
+          offset: 0,
+          phase: this.converted
+        };
+        this.loading = true;
+        await this.getActiveLeadsList(params);
+        this.loading = false;
+      }
+      // this condition is use to check if the user want to land on Dead lead page, so for that we show Dead Lead data.
+      else if (this.routeFromLeadDashboad && this.converted == 'Dead') {
+        let params = {
+          limit: LEAD_LIST_LIMIT,
+          offset: 0,
+          phase: this.converted
+        };
+        this.loading = true;
+        await this.getActiveLeadsList(params);
+        this.loading = false;
+      }
+
+      // this condition is use to check if the user want to land on Active lead page, so for that we show Active Lead data.
+      else {
+        let params = {
+          limit: LEAD_LIST_LIMIT,
+          offset: 0
+        };
+        this.loading = true;
+        await this.getActiveLeadsList(params);
+        this.loading = false;
+      }
     },
     async onLoad(index, done) {
-      let leadListBeforeLoad = this.activeLeads.length;
-      let params = {
-        limit: LEAD_LIST_LIMIT,
-        offset: index * LEAD_LIST_LIMIT
-      };
-      if (leadListBeforeLoad >= LEAD_LIST_LIMIT) {
-        await this.getActiveLeadsList(params);
-      }
-
-      let leadListAfterLoad = this.activeLeads.length;
-      if (
-        leadListBeforeLoad == leadListAfterLoad ||
-        leadListAfterLoad - leadListBeforeLoad < LEAD_LIST_LIMIT
-      ) {
-        if (leadListBeforeLoad > 0) {
-          this.noMoreResults = true;
+      if (this.routeFromLeadDashboad && this.converted == 'Converted') {
+        // condition for Converted Lead
+        let leadListBeforeLoad = this.activeLeads.length;
+        let params = {
+          limit: LEAD_LIST_LIMIT,
+          offset: index * LEAD_LIST_LIMIT,
+          phase: this.converted
+        };
+        if (leadListBeforeLoad >= LEAD_LIST_LIMIT) {
+          await this.getActiveLeadsList(params);
         }
-        this.$refs.infiniteScroll.stop();
-      }
 
-      done();
+        let leadListAfterLoad = this.activeLeads.length;
+        if (
+          leadListBeforeLoad == leadListAfterLoad ||
+          leadListAfterLoad - leadListBeforeLoad < LEAD_LIST_LIMIT
+        ) {
+          if (leadListBeforeLoad > 0) {
+            this.noMoreResults = true;
+          }
+          this.$refs.infiniteScroll.stop();
+        }
+
+        done();
+      }
+      // condition for Dead Lead
+      else if (this.routeFromLeadDashboad && this.converted == 'Dead') {
+        let leadListBeforeLoad = this.activeLeads.length;
+        let params = {
+          limit: LEAD_LIST_LIMIT,
+          offset: index * LEAD_LIST_LIMIT,
+          phase: this.converted
+        };
+        if (leadListBeforeLoad >= LEAD_LIST_LIMIT) {
+          await this.getActiveLeadsList(params);
+        }
+
+        let leadListAfterLoad = this.activeLeads.length;
+        if (
+          leadListBeforeLoad == leadListAfterLoad ||
+          leadListAfterLoad - leadListBeforeLoad < LEAD_LIST_LIMIT
+        ) {
+          if (leadListBeforeLoad > 0) {
+            this.noMoreResults = true;
+          }
+          this.$refs.infiniteScroll.stop();
+        }
+
+        done();
+      }
+      // condition for Active Lead
+      else {
+        let leadListBeforeLoad = this.activeLeads.length;
+        let params = {
+          limit: LEAD_LIST_LIMIT,
+          offset: index * LEAD_LIST_LIMIT
+        };
+        if (leadListBeforeLoad >= LEAD_LIST_LIMIT) {
+          await this.getActiveLeadsList(params);
+        }
+
+        let leadListAfterLoad = this.activeLeads.length;
+        if (
+          leadListBeforeLoad == leadListAfterLoad ||
+          leadListAfterLoad - leadListBeforeLoad < LEAD_LIST_LIMIT
+        ) {
+          if (leadListBeforeLoad > 0) {
+            this.noMoreResults = true;
+          }
+          this.$refs.infiniteScroll.stop();
+        }
+
+        done();
+      }
     },
 
     onCreateClientButtonClick(lead) {

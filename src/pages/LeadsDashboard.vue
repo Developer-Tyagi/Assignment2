@@ -153,26 +153,13 @@ export default {
     },
     onDeadLeadClick() {
       this.$router.push('/leads');
-      const payload = {
-        searchString: '',
-        name: '',
-        phase: 'archived'
-      };
       this.setConvertedLead('Dead');
-      this.getActiveLeadsList(payload);
       this.leadDashboardRoute('true');
     },
     onConvertedLeadClick() {
       this.$store.commit('setShowConvertButton', false);
       this.$router.push({ path: '/leads' });
-
-      const payload = {
-        searchString: '',
-        name: '',
-        phase: 'Converted'
-      };
       this.setConvertedLead('Converted');
-      this.getActiveLeadsList(payload);
       this.leadDashboardRoute('true');
     }
   },
