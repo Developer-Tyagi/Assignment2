@@ -12,7 +12,7 @@
           <div class="my-font q-mx-xl q-mt-lg">Password</div>
           <q-input
             dense
-            type="password"
+            :type="isPasswordVisible ? 'text' : 'password'"
             class="q-mx-xl"
             filled
             v-model="password.password"
@@ -21,11 +21,18 @@
               val =>
                 (val && val.length > 8) || 'Password should be more than 8 char'
             ]"
-          />
+          >
+            <q-icon
+              :name="isPasswordVisible ? 'visibility' : 'visibility_off'"
+              class="cursor-pointer q-mt-md"
+              @click="isPasswordVisible = !isPasswordVisible"
+            ></q-icon>
+          </q-input>
+
           <div class="my-font q-mx-xl q-mt-lg">Confirm Password</div>
           <q-input
             dense
-            type="password"
+            :type="isPasswordVisible ? 'text' : 'password'"
             class="q-mx-xl"
             filled
             v-model="password.confirm"
@@ -38,7 +45,13 @@
                 'Password should be same'
             ]"
             @input="checkConfirmPassword"
-          />
+          >
+            <q-icon
+              :name="isPasswordVisible ? 'visibility' : 'visibility_off'"
+              class="cursor-pointer q-mt-md"
+              @click="isPasswordVisible = !isPasswordVisible"
+            ></q-icon
+          ></q-input>
           <q-separator class="q-mt-lg" />
           <center>
             <q-btn
@@ -79,6 +92,7 @@ export default {
   name: 'SetPassword',
   data() {
     return {
+      isPasswordVisible: false,
       userId: '',
       userEmail: '',
       isSubmitDisabled: true,
