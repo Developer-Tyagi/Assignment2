@@ -164,140 +164,138 @@ workflows:
           failure: true
 
 
-  # Build-ios-ipa-pre-prod:
-  #   name: Build ios ipa pre-prod
-  #   max_build_duration: 120
-  #   instance_type: mac_mini
-  #   environment:
-  #     groups:
-  #       - ios-appstore
-  #       - android
-  #     vars:
-  #       # Ionic Xcode worskspace and scheme
-  #       XCODE_WORKSPACE: 'src-capacitor/ios/App/App.xcworkspace'
-  #       XCODE_SCHEME: 'App'
-  #     node: 12.22.1
-  #     xcode: latest
-  #     cocoapods: default
-  #   triggering:
-  #     events:
-  #       - push
-  #     branch_patterns:
-  #       - pattern: 'master'
-  #         include: true
-  #     cancel_previous_builds: true
-  #   scripts:
-  #     - *setup_sops_and_svc_acct_pre_prod
-  #     - *setup_env_var_pre_prod
-  #     - *install_node_modules
-  #     - name: Build and Copy web assets to ios project
-  #       script: |
-  #         quasar build -m capacitor -T ios --skip-pkg
-  #         cd src-capacitor && npx cap sync
-  #     - name: Cocoapods installation
-  #       script: |
-  #         cd $FCI_BUILD_DIR/src-capacitor/ios/App && pod install
-  #     - name: Set up keychain to be used for codesigning
-  #       script: |
-  #         keychain initialize
-  #     - name: Fetch signing files
-  #       script: |
-  #         app-store-connect fetch-signing-files com.claimguru.appclaimguru --type IOS_APP_STORE --create
-  #     - name: Add certificates to keychain
-  #       script: |
-  #         keychain add-certificates
-  #     - name: Increment build number
-  #       script: |
-  #         #!/bin/sh
-  #         set -e
-  #         set -x
-  #         cd $FCI_BUILD_DIR/src-capacitor/ios/App
-  #         agvtool new-version -all $(($BUILD_NUMBER +18))
-  #     - name: Set up code signing settings on Xcode project
-  #       script: |
-  #         xcode-project use-profiles
-  #     - name: Build ipa for distribution
-  #       script: |
-  #         xcode-project build-ipa --workspace "$XCODE_WORKSPACE" --scheme "$XCODE_SCHEME"
-  #   artifacts:
-  #     - build/ios/ipa/*.ipa
-  #   publishing:
-  #     email:
-  #       recipients:
-  #         -  sajid.qureshi@cilalabs.com
-  #       notify:
-  #         success: true
-  #         failure: true
-  #     slack:
-  #       channel: '#p-claimguru'
-  #       notify:
-  #         success: true
-  #         failure: true
+  Build-ios-ipa-pre-prod:
+    name: Build ios ipa pre-prod
+    max_build_duration: 120
+    instance_type: mac_mini
+    environment:
+      groups:
+        - ios-appstore
+        - android
+      vars:
+        # Ionic Xcode worskspace and scheme
+        XCODE_WORKSPACE: 'src-capacitor/ios/App/App.xcworkspace'
+        XCODE_SCHEME: 'App'
+      node: 12.22.1
+      xcode: latest
+      cocoapods: default
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: 'master'
+          include: true
+      cancel_previous_builds: true
+    scripts:
+      - *setup_sops_and_svc_acct_pre_prod
+      - *setup_env_var_pre_prod
+      - *install_node_modules
+      - name: Build and Copy web assets to ios project
+        script: |
+          quasar build -m capacitor -T ios --skip-pkg
+          cd src-capacitor && npx cap sync
+      - name: Cocoapods installation
+        script: |
+          cd $FCI_BUILD_DIR/src-capacitor/ios/App && pod install
+      - name: Set up keychain to be used for codesigning
+        script: |
+          keychain initialize
+      - name: Fetch signing files
+        script: |
+          app-store-connect fetch-signing-files com.claimguru.appclaimguru --type IOS_APP_ADHOC --create
+      - name: Add certificates to keychain
+        script: |
+          keychain add-certificates
+      - name: Increment build number
+        script: |
+          #!/bin/sh
+          set -e
+          set -x
+          cd $FCI_BUILD_DIR/src-capacitor/ios/App
+          agvtool new-version -all $(($BUILD_NUMBER +18))
+      - name: Set up code signing settings on Xcode project
+        script: |
+          xcode-project use-profiles
+      - name: Build ipa for distribution
+        script: |
+          xcode-project build-ipa --workspace "$XCODE_WORKSPACE" --scheme "$XCODE_SCHEME"
+    artifacts:
+      - build/ios/ipa/*.ipa
+    publishing:
+      email:
+        recipients:
+          -  sajid.qureshi@cilalabs.com
+        notify:
+          success: true
+          failure: true
+      slack:
+        channel: '#p-claimguru'
+        notify:
+          success: true
+          failure: true
 
-  # Build-publish-ios-ipa-prod:
-  #   name: Build publish ios ipa prod
-  #   max_build_duration: 120
-  #   instance_type: mac_mini
-  #   environment:
-  #     groups:
-  #       - ios-appstore
-  #       - android
-  #     vars:
-  #       # Ionic Xcode worskspace and scheme
-  #       XCODE_WORKSPACE: 'src-capacitor/ios/App/App.xcworkspace'
-  #       XCODE_SCHEME: 'App'
-  #     node: 12.22.1
-  #     xcode: latest
-  #     cocoapods: default
-  #   triggering:
-  #     events:
-  #       - tag
-  #     cancel_previous_builds: true
-  #   scripts:
-  #     - *setup_sops_and_svc_acct
-  #     - *setup_env_vars
-  #     - *install_node_modules
-  #     - name: Build and Copy web assets to ios project
-  #       script: |
-  #         quasar build -m capacitor -T ios --skip-pkg
-  #         cd src-capacitor && npx cap sync
-  #     - name: Cocoapods installation
-  #       script: |
-  #         cd $FCI_BUILD_DIR/src-capacitor/ios/App && pod install
-  #     - name: Set up keychain to be used for codesigning
-  #       script: |
-  #         keychain initialize
-  #     - name: Fetch signing files
-  #       script: |
-  #         app-store-connect fetch-signing-files com.claimguru.appclaimguru --type IOS_APP_STORE --create
-  #     - name: Add certificates to keychain
-  #       script: |
-  #         keychain add-certificates
-  #     - name: Increment build number
-  #       script: |
-  #         #!/bin/sh
-  #         set -e
-  #         set -x
-  #         cd $FCI_BUILD_DIR/src-capacitor/ios/App
-  #         agvtool new-version -all $(($BUILD_NUMBER +18))
-  #     - name: Set up code signing settings on Xcode project
-  #       script: |
-  #         xcode-project use-profiles
-  #     - name: Build ipa for distribution
-  #       script: |
-  #         xcode-project build-ipa --workspace "$XCODE_WORKSPACE" --scheme "$XCODE_SCHEME"
-  #   artifacts:
-  #     - build/ios/ipa/*.ipa
-  #   publishing:
-  #     app_store_connect:
-  #       api_key: $APP_STORE_CONNECT_PRIVATE_KEY
-  #       key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
-  #       issuer_id: $APP_STORE_CONNECT_ISSUER_ID
-  #       submit_to_testflight: true
-
-  #     slack:
-  #       channel: '#p-claimguru'
-  #       notify:
-  #         success: true
-  #         failure: true
-
+  Build-publish-ios-ipa-prod:
+    name: Build publish ios ipa prod
+    max_build_duration: 120
+    instance_type: mac_mini
+    environment:
+      groups:
+        - ios-appstore
+        - android
+      vars:
+        # Ionic Xcode worskspace and scheme
+        XCODE_WORKSPACE: 'src-capacitor/ios/App/App.xcworkspace'
+        XCODE_SCHEME: 'App'
+      node: 12.22.1
+      xcode: latest
+      cocoapods: default
+    triggering:
+      events:
+        - tag
+      cancel_previous_builds: true
+    scripts:
+      - *setup_sops_and_svc_acct
+      - *setup_env_vars
+      - *install_node_modules
+      - name: Build and Copy web assets to ios project
+        script: |
+          quasar build -m capacitor -T ios --skip-pkg
+          cd src-capacitor && npx cap sync
+      - name: Cocoapods installation
+        script: |
+          cd $FCI_BUILD_DIR/src-capacitor/ios/App && pod install
+      - name: Set up keychain to be used for codesigning
+        script: |
+          keychain initialize
+      - name: Fetch signing files
+        script: |
+          app-store-connect fetch-signing-files com.claimguru.appclaimguru --type IOS_APP_STORE --create
+      - name: Add certificates to keychain
+        script: |
+          keychain add-certificates
+      - name: Increment build number
+        script: |
+          #!/bin/sh
+          set -e
+          set -x
+          cd $FCI_BUILD_DIR/src-capacitor/ios/App
+          agvtool new-version -all $(($BUILD_NUMBER +18))
+      - name: Set up code signing settings on Xcode project
+        script: |
+          xcode-project use-profiles
+      - name: Build ipa for distribution
+        script: |
+          xcode-project build-ipa --workspace "$XCODE_WORKSPACE" --scheme "$XCODE_SCHEME"
+    artifacts:
+      - build/ios/ipa/*.ipa
+    publishing:
+      app_store_connect:
+        api_key: $APP_STORE_CONNECT_PRIVATE_KEY
+        key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
+        issuer_id: $APP_STORE_CONNECT_ISSUER_ID
+        submit_to_testflight: true
+      slack:
+        channel: '#p-claimguru'
+        notify:
+          success: true
+          failure: true
