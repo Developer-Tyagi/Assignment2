@@ -46,7 +46,11 @@
           />
         </div>
         <div class="text-uppercase text-bold q-mx-auto">
-          <span v-if="$route.name == 'Leads'">Active</span>
+          <!--Here By default the Page should be Active Lead, we change the header name based on the user routing, if user click on converted Lead then we land it to converted lead page and show the converted lead data, if user click on
+          Dead lead then we land on Dead Lead page and show Dead Lead Datamfrom lead Dashboard page-->
+          <span v-if="$route.name == 'Leads'">{{
+            converted ? converted : 'Active'
+          }}</span>
           <span class="text-white"> {{ $route.name }} </span>
           <q-icon
             v-if="
@@ -423,6 +427,7 @@ export default {
       return this.$router.history.current.path.substring(1);
     },
     ...mapGetters([
+      'converted',
       'pageAccess',
       'isOnline',
       'editSelectedClient',

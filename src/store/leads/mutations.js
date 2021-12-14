@@ -6,8 +6,14 @@ export async function setActiveLeads(state, leads) {
     ...lead.attributes,
     id: lead.id
   }));
-  state.activeLeads = activeLeads;
-  // this consdition is added to stop the data filliing again in local db ,after searching the leads.
+
+  if (leads.params.offset == 0) state.activeLeads = []; // Initially we make to blank the data of active leads otherwise it we create the duplication error.
+  if (leads.params.searchString) {
+    // this condition is use for searching leads item.
+    state.activeLeads = activeLeads;
+  } // this condition is used to store the fetching data.
+  else state.activeLeads = state.activeLeads.concat(activeLeads);
+
   if ((await activeLeadsCollection.count()) > 0 && !leads.params) {
     await activeLeadsCollection.delete([]);
   }

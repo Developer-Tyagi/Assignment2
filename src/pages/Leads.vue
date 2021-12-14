@@ -45,105 +45,133 @@
           </q-tabs>
           <q-tab-panels v-model="panel">
             <q-tab-panel name="newLeads" class="q-pa-none">
-              <q-list style="overflow-x: hidden" v-if="activeLeads.length">
-                <div
-                  class="lead-list-item"
-                  v-for="lead in activeLeads"
-                  :key="lead.id"
-                >
-                  <div
-                    class="button-left"
-                    @click="onArchiveButtonClick(lead.id)"
-                  >
-                    <div class="button-yellow">
-                      <span class="text-white q-my-auto q-mx-auto"
-                        >Archive</span
+              <!--Code for Pagination of Active Leads Page-->
+              <q-list v-if="activeLeads.length">
+                <div v-if="!loading">
+                  <q-scroll-area class="scroll-area">
+                    <q-infinite-scroll
+                      @load="onLoad"
+                      :offset="250"
+                      ref="infiniteScroll"
+                    >
+                      <template v-slot:loading>
+                        <div class="row justify-center q-my-md">
+                          <q-spinner-dots color="primary" size="md" />
+                        </div>
+                      </template>
+                      <div
+                        class="lead-list-item"
+                        v-for="lead in activeLeads"
+                        :key="lead.id"
                       >
-                    </div>
-                  </div>
-                  <q-item
-                    @click="onLeadListClick(lead)"
-                    clickable
-                    v-ripple
-                    class="lead-list-details"
-                    v-touch-swipe.horizontal.scroll="
-                      data => onListSwipe(data, lead)
-                    "
-                    :class="{
-                      swipeRight: lead.isLeftOptionOpen,
-                      swipeLeft: lead.isRightOptionOpen
-                    }"
-                  >
-                    <q-item-section>
-                      <div class="row">
-                        <span
-                          >{{ lead.primaryContact.fname }}
-                          {{ lead.primaryContact.lname }}</span
+                        <div
+                          class="button-left"
+                          @click="onArchiveButtonClick(lead.id)"
                         >
-                        <span class="q-ml-auto">Visting On</span>
-                      </div>
-                      <div class="row">
-                        <span
-                          >Mob:
-                          <span
-                            v-if="
-                              lead.primaryContact.phoneNumber &&
-                              lead.primaryContact.phoneNumber.length
-                            "
-                            class="click-link"
-                            @click="
-                              onPhoneNumberClick(
-                                lead.primaryContact.phoneNumber[0].number,
-                                $event
-                              )
-                            "
-                          >
-                            {{
-                              showPhoneNumber(
-                                lead.primaryContact.phoneNumber[0].number
-                              )
-                            }}
-                          </span>
-                        </span>
-                        <span class="q-ml-auto" v-if="lead.lastVisted">
-                          {{ dateToShow(lead.lastVisted) }}
-                        </span>
-                        <span v-else class="q-ml-auto"> - </span>
-                      </div>
-                      <div>
-                        Date of Loss:
-                        <span v-if="lead.dateofLoss">{{
-                          dateToShow(lead.dateofLoss)
-                        }}</span>
-                        <span v-else> - </span>
-                      </div>
-                      <div class="q-mt-md row">
-                        <span>New Lead in Inspection</span>
-                        <span class="q-ml-auto">
-                          <q-icon name="restore_page"></q-icon>
-                        </span>
-                      </div>
-                    </q-item-section>
-                  </q-item>
-                  <div class="button-right">
-                    <div class="button-yellow">
-                      <span class="text-white q-my-auto q-mx-auto"
-                        >Schedule Visit</span
-                      >
-                    </div>
+                          <div class="button-yellow">
+                            <span class="text-white q-my-auto q-mx-auto"
+                              >Archive</span
+                            >
+                          </div>
+                        </div>
+                        <q-item
+                          @click="onLeadListClick(lead)"
+                          clickable
+                          v-ripple
+                          class="lead-list-details"
+                          v-touch-swipe.horizontal.scroll="
+                            data => onListSwipe(data, lead)
+                          "
+                          :class="{
+                            swipeRight: lead.isLeftOptionOpen,
+                            swipeLeft: lead.isRightOptionOpen
+                          }"
+                        >
+                          <q-item-section>
+                            <div class="row">
+                              <span
+                                >{{ lead.primaryContact.fname }}
+                                {{ lead.primaryContact.lname }}</span
+                              >
+                              <span class="q-ml-auto">Visting On</span>
+                            </div>
+                            <div class="row">
+                              <span
+                                >Mob:
+                                <span
+                                  v-if="
+                                    lead.primaryContact.phoneNumber &&
+                                    lead.primaryContact.phoneNumber.length
+                                  "
+                                  class="click-link"
+                                  @click="
+                                    onPhoneNumberClick(
+                                      lead.primaryContact.phoneNumber[0].number,
+                                      $event
+                                    )
+                                  "
+                                >
+                                  {{
+                                    showPhoneNumber(
+                                      lead.primaryContact.phoneNumber[0].number
+                                    )
+                                  }}
+                                </span>
+                              </span>
+                              <span class="q-ml-auto" v-if="lead.lastVisted">
+                                {{ dateToShow(lead.lastVisted) }}
+                              </span>
+                              <span v-else class="q-ml-auto"> - </span>
+                            </div>
+                            <div>
+                              Date of Loss:
+                              <span v-if="lead.dateofLoss">{{
+                                dateToShow(lead.dateofLoss)
+                              }}</span>
+                              <span v-else> - </span>
+                            </div>
+                            <div class="q-mt-md row">
+                              <span>New Lead in Inspection</span>
+                              <span class="q-ml-auto">
+                                <q-icon name="restore_page"></q-icon>
+                              </span>
+                            </div>
+                          </q-item-section>
+                        </q-item>
+                        <div class="button-right">
+                          <div class="button-yellow">
+                            <span class="text-white q-my-auto q-mx-auto"
+                              >Schedule Visit</span
+                            >
+                          </div>
 
-                    <div class="button-orange">
-                      <q-btn
+                          <div class="button-orange">
+                            <q-btn
+                              class="
+                                text-white
+                                q-my-auto q-mx-auto
+                                full-width full-height
+                              "
+                              label="Create Client"
+                              @click="onCreateClientButtonClick(lead)"
+                            ></q-btn>
+                          </div>
+                        </div>
+                      </div>
+                      <div
                         class="
-                          text-white
-                          q-my-auto q-mx-auto
-                          full-width full-height
+                          no-more-results-msg
+                          border-bottom-secondary
+                          text-body1 text-h5 text-center text-manatee
                         "
-                        label="Create Client"
-                        @click="onCreateClientButtonClick(lead)"
-                      ></q-btn>
-                    </div>
-                  </div>
+                        v-if="noMoreResults"
+                      >
+                        <span class="bg-whiteSmoke q-px-sm"
+                          >No more results</span
+                        >
+                      </div>
+                    </q-infinite-scroll>
+                  </q-scroll-area>
                 </div>
               </q-list>
               <div v-else class="full-height full-width column">
@@ -240,19 +268,28 @@ import moment from 'moment';
 import { dateToShow } from '@utils/date';
 import { onPhoneNumberClick, showPhoneNumber } from '@utils/clickable';
 import { getCurrentUser } from 'src/utils/auth';
-
+const LEAD_LIST_LIMIT = 20;
 export default {
   name: 'Leads',
   data() {
     return {
       payload: '',
       searchText: '',
+      loading: true,
+      noMoreResults: false,
       panel: 'newLeads'
     };
   },
 
   computed: {
-    ...mapGetters(['activeLeads', 'archivedLeads', 'isOnline', 'organization']),
+    ...mapGetters([
+      'routeFromLeadDashboad',
+      'converted',
+      'activeLeads',
+      'archivedLeads',
+      'isOnline',
+      'organization'
+    ]),
     formatDate(value) {
       if (value) {
         return moment(String(value)).format('MM/DD/YYYY');
@@ -266,6 +303,7 @@ export default {
     if (this.userRole == 'owner') {
       await this.getOrganization();
     }
+    this.getLeadListData();
   },
 
   methods: {
@@ -278,6 +316,119 @@ export default {
     dateToShow,
     ...mapMutations(['setSelectedLeadOnline', 'setSelectedLeadOffline']),
     showPhoneNumber,
+
+    // this is for lead pagination
+    async getLeadListData() {
+      // this condition is use to check if the user want to land on converted lead page, so for that we show Converted Lead data.
+      if (this.routeFromLeadDashboad && this.converted == 'Converted') {
+        let params = {
+          limit: LEAD_LIST_LIMIT,
+          offset: 0,
+          phase: this.converted
+        };
+        this.loading = true;
+        await this.getActiveLeadsList(params);
+        this.loading = false;
+      }
+      // this condition is use to check if the user want to land on Dead lead page, so for that we show Dead Lead data.
+      else if (this.routeFromLeadDashboad && this.converted == 'Dead') {
+        let params = {
+          limit: LEAD_LIST_LIMIT,
+          offset: 0,
+          phase: this.converted
+        };
+        this.loading = true;
+        await this.getActiveLeadsList(params);
+        this.loading = false;
+      }
+
+      // this condition is use to check if the user want to land on Active lead page, so for that we show Active Lead data.
+      else {
+        let params = {
+          limit: LEAD_LIST_LIMIT,
+          offset: 0
+        };
+        this.loading = true;
+        await this.getActiveLeadsList(params);
+        this.loading = false;
+      }
+    },
+    async onLoad(index, done) {
+      if (this.routeFromLeadDashboad && this.converted == 'Converted') {
+        // condition for Converted Lead
+        let leadListBeforeLoad = this.activeLeads.length;
+        let params = {
+          limit: LEAD_LIST_LIMIT,
+          offset: index * LEAD_LIST_LIMIT,
+          phase: this.converted
+        };
+        if (leadListBeforeLoad >= LEAD_LIST_LIMIT) {
+          await this.getActiveLeadsList(params);
+        }
+
+        let leadListAfterLoad = this.activeLeads.length;
+        if (
+          leadListBeforeLoad == leadListAfterLoad ||
+          leadListAfterLoad - leadListBeforeLoad < LEAD_LIST_LIMIT
+        ) {
+          if (leadListBeforeLoad > 0) {
+            this.noMoreResults = true;
+          }
+          this.$refs.infiniteScroll.stop();
+        }
+
+        done();
+      }
+      // condition for Dead Lead
+      else if (this.routeFromLeadDashboad && this.converted == 'Dead') {
+        let leadListBeforeLoad = this.activeLeads.length;
+        let params = {
+          limit: LEAD_LIST_LIMIT,
+          offset: index * LEAD_LIST_LIMIT,
+          phase: this.converted
+        };
+        if (leadListBeforeLoad >= LEAD_LIST_LIMIT) {
+          await this.getActiveLeadsList(params);
+        }
+
+        let leadListAfterLoad = this.activeLeads.length;
+        if (
+          leadListBeforeLoad == leadListAfterLoad ||
+          leadListAfterLoad - leadListBeforeLoad < LEAD_LIST_LIMIT
+        ) {
+          if (leadListBeforeLoad > 0) {
+            this.noMoreResults = true;
+          }
+          this.$refs.infiniteScroll.stop();
+        }
+
+        done();
+      }
+      // condition for Active Lead
+      else {
+        let leadListBeforeLoad = this.activeLeads.length;
+        let params = {
+          limit: LEAD_LIST_LIMIT,
+          offset: index * LEAD_LIST_LIMIT
+        };
+        if (leadListBeforeLoad >= LEAD_LIST_LIMIT) {
+          await this.getActiveLeadsList(params);
+        }
+
+        let leadListAfterLoad = this.activeLeads.length;
+        if (
+          leadListBeforeLoad == leadListAfterLoad ||
+          leadListAfterLoad - leadListBeforeLoad < LEAD_LIST_LIMIT
+        ) {
+          if (leadListBeforeLoad > 0) {
+            this.noMoreResults = true;
+          }
+          this.$refs.infiniteScroll.stop();
+        }
+
+        done();
+      }
+    },
 
     onCreateClientButtonClick(lead) {
       if (this.isOnline) {
@@ -306,8 +457,11 @@ export default {
           searchString: this.searchText ? this.searchText : '',
           new: ''
         };
-
-        this.getActiveLeadsList(this.payload);
+        if (this.payload.searchString == '') {
+          // this condition is true when the search bar is empty, this happens when user write something then make it black .
+          this.getLeadListData();
+          this.noMoreResults = false;
+        } else this.getActiveLeadsList(this.payload); // this condition is true when started tying something.
       } else {
         this.getArchivedLeadsList();
       }
