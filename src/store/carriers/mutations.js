@@ -7,7 +7,7 @@ export async function setCarriers(state, carriersData) {
     ...carrier.attributes,
     id: carrier.id
   }));
-  //Initially we Blank the Carrier data blank otherwise this will create duplication of carriers and give an error , this scenario is happens when a user is toggle from online to offline mode and vice versa.
+  //Initially we Clear the Carrier data  otherwise this will create duplications of carriers and give an error , this scenario is happens when a user is switched from online to offline mode and vice versa.
   if (carriersData.params.offset == 0) state.carriers = [];
   if (carriersData.params.limit == 0 && carriersData.params.offset == 0) {
     // this condition is used to store the entire data in local DB which is used for the offline mode.
@@ -21,7 +21,7 @@ export async function setCarriers(state, carriersData) {
   // this condition is for when we user start scrolling down for more than one time.
   else state.carriers = state.carriers.concat(carriers);
 
-  //this condition is used for the clearing of data, so that no duplication is happens.
+  //this condition is used for the clearing of local DB data, so that no duplication is happens.
   if ((await carriersCollection.count()) > 0 && !carriersData.params) {
     await carriersCollection.delete([]);
   }
