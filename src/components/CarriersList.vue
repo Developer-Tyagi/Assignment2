@@ -153,8 +153,9 @@ export default {
   },
 
   methods: {
-    ...mapActions(['getCarriers', 'addClaimCarrier', 'getSelectedClaim']),
+    ...mapActions(['getCarriers', 'addClaimCarrier']),
     toGetStateShortName,
+    //code for pagination.
     async getCarrierListData() {
       let params = {
         limit: CARRIER_LIST_LIMIT,
@@ -164,7 +165,7 @@ export default {
       await this.getCarriers(params);
       this.loading = false;
     },
-
+    // this function is for pagination and this is get called when the user start scrolling down.
     async onLoad(index, done) {
       let carrierListBeforeLoad = this.carriers.length;
       let params = {
@@ -186,7 +187,7 @@ export default {
       }
       done();
     },
-
+    // this function is get called when user write something in text box and then erase it.
     onSearchBackButtonClick() {
       this.searchText = '';
       this.getCarrierListData();
@@ -226,6 +227,7 @@ export default {
       } else await this.getCarriers(this.params);
     },
 
+    // function is get called when we click on add button to add a new carrier.
     onAddButtonClick() {
       this.$emit('addCarrier', true);
     }
