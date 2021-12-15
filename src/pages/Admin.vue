@@ -811,6 +811,7 @@
                 outlined
                 placeholder="Day"
                 style="width: 20%"
+                :rules="[val => !!val || 'Please enter days']"
               />
 
               <q-select
