@@ -58,13 +58,16 @@
             "
           >
             <span class="heading-light col-3"> Lead Source </span>
-            <span class="q-ml-md col">
+            <span class="q-ml-md">
               {{
                 selectedLead.leadSource.detail
                   ? selectedLead.leadSource.detail
                   : '-'
               }}</span
             >
+            <div v-if="selectedLead.leadSource.type != 'none'" class="q-ml-sm">
+              ({{ selectedLead.leadSource.type }})
+            </div>
           </div>
           <div v-else class="row q-mt-sm">
             <span class="heading-light col-3"> Lead Source </span>
