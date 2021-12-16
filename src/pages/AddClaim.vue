@@ -166,12 +166,7 @@
                           </div>
                         </div>
                         <div
-                          class="
-                            text-capitalize
-                            q-pt-xs
-                            text-caption
-                            q-mr-xl q-my-xs q-pr-xs
-                          "
+                          class="text-capitalize q-pt-xs text-caption q-mr-xl q-my-xs q-pr-xs"
                         >
                           <p>{{ item.desc }}</p>
 
@@ -386,12 +381,7 @@
                           </div>
                         </div>
                         <div
-                          class="
-                            text-capitalize
-                            q-pt-xs
-                            text-caption
-                            q-mr-xl q-my-xs q-px-xs
-                          "
+                          class="text-capitalize q-pt-xs text-caption q-mr-xl q-my-xs q-px-xs"
                         >
                           <p>{{ item.desc }}</p>
 
@@ -653,7 +643,7 @@ export default {
           loanNumber: '',
           accountNumber: '',
           isPrimary: true,
-          notes: '',
+          note: '',
           isSecondMortgageHome: false
         }
       ],
@@ -675,7 +665,7 @@ export default {
             loanNumber: '',
             accountNumber: '',
             isPrimary: true,
-            notes: ''
+            note: ''
           }
         ]
       },
