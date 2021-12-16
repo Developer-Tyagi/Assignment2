@@ -2,7 +2,7 @@
   <div>
     <q-header class="bg-white">
       <q-toolbar
-        class="row bg-primary rounded-header toolbar-shadow"
+        class="row bg-primary rounded-header"
         v-if="$route.name === 'dashboard'"
         style="max-height: 130px"
       >
@@ -143,9 +143,19 @@
               v-bind="link"
               class="q-mt-lg bg-white rounded-sidebar q-pa-none q-pb-xs"
               v-if="
-                (link.title != 'Admin' || !isMobile()) &&
+                (link.title != 'Dashboard' || isMobile()) &&
+                (link.title != 'Claims' || isMobile()) &&
+                (link.title != 'Clients' || isMobile()) &&
+                (link.title != 'Leads' || isMobile()) &&
+                (link.title != 'Vendors' || isMobile()) &&
+                (link.title != 'Carriers' || isMobile()) &&
+                (link.title != 'Mortgages' || isMobile()) &&
+                (link.title != 'Vendors' || isMobile()) &&
+                (link.title != 'Carriers' || isMobile()) &&
+                (link.title != 'Mortgages' || isMobile()) &&
                 (link.title != 'Manage Users' || !isMobile()) &&
-                (link.title != 'Configuration' || !isMobile())
+                (link.title != 'Configuration' || !isMobile()) &&
+                (link.title != 'Admin' || !isMobile())
               "
             >
               <q-item-section @click="onClickMenuItem(link.title)">
@@ -267,20 +277,6 @@ export default {
           description: 'View, Add and Manage all types of Mortgages.'
         },
         {
-          title: 'Configuration',
-          key: 'configuration',
-          link: '/configuration',
-          icon: 'configuration_big.svg',
-          description: 'View, Add and Manage all types of configuration.'
-        },
-        {
-          title: 'Reports',
-          key: 'reports',
-          link: '/reports',
-          icon: 'reports_menu.svg',
-          description: 'Download files.'
-        },
-        {
           title: 'Admin',
           key: 'admin',
           link: '/admin',
@@ -288,11 +284,26 @@ export default {
           description: 'Setup Company , account, email, actions etc.'
         },
         {
+          title: 'Configuration',
+          key: 'configuration',
+          link: '/configuration',
+          icon: 'configuration_big.svg',
+          description: 'View, Add and Manage all types of configuration.'
+        },
+
+        {
           title: 'Manage Users',
           key: 'manage-users',
           link: '/manage-users',
           icon: 'manage_users_big.svg',
           description: 'View, Add and Manage all types of Vendors.'
+        },
+        {
+          title: 'Reports',
+          key: 'reports',
+          link: '/reports',
+          icon: 'reports_menu.svg',
+          description: 'Download files.'
         },
 
         {
@@ -474,21 +485,9 @@ export default {
   margin-bottom: 0;
   margin-top: 5px;
 }
-// .overlay {
-//   position: absolute;
-//   bottom: 10;
-//   color: #f1f1f1;
-//   width: 100%;
-
-//   opacity: 4;
-//   color: white;
-// }
 .rounded-sidebar {
   border-radius: 0px 20px 20px 0px;
   box-shadow: 1px 3px 2px 1px #e0e0e0;
-}
-.toolbar-shadow {
-  // box-shadow: 0 52px 28px -40px #000000;
 }
 ::-webkit-scrollbar {
   width: 0px;
