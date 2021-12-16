@@ -23,122 +23,236 @@
       <div class="mobile-container-page">
         <div class="clients-list" v-if="claims.length">
           <div>
-            <div
-              class="clients-list"
-              v-for="(claim, index) in claims"
-              :key="claim.id"
-            >
-              <div class="client-list-item">
-                <div class="row form-heading q-pb-md">
-                  <div class="col-10" @click="onClickingOnClaim(claim)">
-                    {{ claim.client.fname }}
-                    {{ claim.client.lname }}
-                  </div>
+            <div class="clients-list" v-for="claim in claims" :key="claim.id">
+              <div v-if="isOnline">
+                <div class="client-list-item">
+                  <div class="row form-heading q-pb-md">
+                    <div class="col-10" @click="onClickingOnClaim(claim)">
+                      {{ claim.client.fname }}
+                      {{ claim.client.lname }}
+                    </div>
 
-                  <q-icon
-                    class="q-ml-auto"
-                    size="1em"
-                    :name="claim.isFavourite ? 'star' : 'star_border'"
-                    @click="onClickFavourite(claim)"
-                    color="primary"
-                  >
-                    <q-tooltip
-                      anchor="center right"
-                      self="center left"
-                      :offset="[10, 10]"
+                    <q-icon
+                      class="q-ml-auto"
+                      size="1em"
+                      :name="claim.isFavourite ? 'star' : 'star_border'"
+                      @click="onClickFavourite(claim)"
+                      color="primary"
                     >
-                      Mark claim as favourite
-                    </q-tooltip>
-                  </q-icon>
-                </div>
-                <div @click="onClickingOnClaim(claim)">
-                  <div class="row">
-                    <div class="col-3">Carrier</div>
-
-                    <div>
-                      {{
-                        claim.carrier
-                          ? claim.carrier.value
-                            ? claim.carrier.value
-                            : ''
-                          : '-'
-                      }}
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-3">Claim No.</div>
-
-                    <div>
-                      {{ claim.number ? claim.number : '-' }}
-                    </div>
-                  </div>
-
-                  <div class="row justify-between q-pt-xs">
-                    <div v-if="claim.status">
-                      <q-badge
-                        class="q-px-md q-py-sm"
-                        :style="
-                          claim.status.isCancelled == false
-                            ? 'background-color:#ECA74C;'
-                            : 'background-color:#EF9A9A;'
-                        "
+                      <q-tooltip
+                        anchor="center right"
+                        self="center left"
+                        :offset="[10, 10]"
                       >
-                        {{
-                          claim.status
-                            ? claim.status.isCancelled == false
-                              ? 'OPEN'
-                              : 'CANCELLED'
-                            : ''
-                        }}</q-badge
-                      >
-                    </div>
+                        Mark claim as favourite
+                      </q-tooltip>
+                    </q-icon>
+                  </div>
+                  <div @click="onClickingOnClaim(claim)">
+                    <div class="row">
+                      <div class="col-3">Carrier</div>
 
-                    <div column>
                       <div>
                         {{
-                          claim.lossInfo.cause
-                            ? claim.lossInfo.cause
-                              ? claim.lossInfo.cause.value
+                          claim.carrier
+                            ? claim.carrier.value
+                              ? claim.carrier.value
                               : ''
                             : '-'
                         }}
                       </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-3">Claim No.</div>
+
                       <div>
-                        {{ dateToShow(claim.created) }}
+                        {{ claim.number ? claim.number : '-' }}
                       </div>
                     </div>
-                  </div>
 
-                  <div v-if="photoIdKey.photoIdKeyPresent">
-                    <q-badge
-                      color="red"
-                      v-if="
-                        claim.uScopeAssignmentID === '' &&
-                        claim.isPhotoIDGenerated === false
-                      "
+                    <div class="row justify-between q-pt-xs">
+                      <div v-if="claim.status">
+                        <q-badge
+                          class="q-px-md q-py-sm"
+                          :style="
+                            claim.status.isCancelled == false
+                              ? 'background-color:#ECA74C;'
+                              : 'background-color:#EF9A9A;'
+                          "
+                        >
+                          {{
+                            claim.status
+                              ? claim.status.isCancelled == false
+                                ? 'OPEN'
+                                : 'CANCELLED'
+                              : ''
+                          }}</q-badge
+                        >
+                      </div>
+
+                      <div column>
+                        <div>
+                          {{
+                            claim.lossInfo.cause
+                              ? claim.lossInfo.cause
+                                ? claim.lossInfo.cause.value
+                                : ''
+                              : '-'
+                          }}
+                        </div>
+                        <div>
+                          {{ dateToShow(claim.created) }}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div v-if="photoIdKey.photoIdKeyPresent">
+                      <q-badge
+                        color="red"
+                        v-if="
+                          claim.uScopeAssignmentID === '' &&
+                            claim.isPhotoIDGenerated === false
+                        "
+                      >
+                        Assignment not generated, push it manually
+                        <q-icon
+                          name="warning"
+                          color="white"
+                          class="q-ml-xs"
+                        ></q-icon>
+                      </q-badge>
+                      <q-badge
+                        color="red"
+                        v-if="
+                          claim.uScopeAssignmentID === '' &&
+                            !claim.isPhotoIDGenerated &&
+                            claim.isPhotoIDGenerated != false
+                        "
+                      >
+                        Assignment not generated, PLEASE WAIT
+                        <q-icon
+                          name="warning"
+                          color="white"
+                          class="q-ml-xs"
+                        ></q-icon>
+                      </q-badge>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div v-else>
+                <div v-if="claim.offline" class="client-list-item">
+                  <div class="row form-heading q-pb-md">
+                    <div class="col-10" @click="onClickingOnClaim(claim)">
+                      {{ claim.client.fname }}
+                      {{ claim.client.lname }}
+                    </div>
+
+                    <q-icon
+                      class="q-ml-auto"
+                      size="1em"
+                      :name="claim.isFavourite ? 'star' : 'star_border'"
+                      @click="onClickFavourite(claim)"
+                      color="primary"
                     >
-                      Assignment not generated, push it manually
-                      <q-icon
-                        name="warning"
-                        color="white"
-                        class="q-ml-xs"
-                      ></q-icon>
-                    </q-badge>
-                    <q-badge
-                      color="red"
-                      v-if="
-                        claim.uScopeAssignmentID === '' &&
-                        !claim.isPhotoIDGenerated &&
-                        claim.isPhotoIDGenerated != false
-                      "
-                    >
-                      Assignment not generated, PLEASE WAIT
-                      <q-icon
-                        name="warning"
-                        color="white"
-                        class="q-ml-xs"
-                      ></q-icon>
-                    </q-badge>
+                      <q-tooltip
+                        anchor="center right"
+                        self="center left"
+                        :offset="[10, 10]"
+                      >
+                        Mark claim as favourite
+                      </q-tooltip>
+                    </q-icon>
+                  </div>
+                  <div @click="onClickingOnClaim(claim)">
+                    <div class="row">
+                      <div class="col-3">Carrier</div>
+
+                      <div>
+                        {{
+                          claim.carrier
+                            ? claim.carrier.value
+                              ? claim.carrier.value
+                              : ''
+                            : '-'
+                        }}
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-3">Claim No.</div>
+
+                      <div>
+                        {{ claim.number ? claim.number : '-' }}
+                      </div>
+                    </div>
+
+                    <div class="row justify-between q-pt-xs">
+                      <div v-if="claim.status">
+                        <q-badge
+                          class="q-px-md q-py-sm"
+                          :style="
+                            claim.status.isCancelled == false
+                              ? 'background-color:#ECA74C;'
+                              : 'background-color:#EF9A9A;'
+                          "
+                        >
+                          {{
+                            claim.status
+                              ? claim.status.isCancelled == false
+                                ? 'OPEN'
+                                : 'CANCELLED'
+                              : ''
+                          }}</q-badge
+                        >
+                      </div>
+
+                      <div column>
+                        <div>
+                          {{
+                            claim.lossInfo.cause
+                              ? claim.lossInfo.cause
+                                ? claim.lossInfo.cause.value
+                                : ''
+                              : '-'
+                          }}
+                        </div>
+                        <div>
+                          {{ dateToShow(claim.created) }}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div v-if="photoIdKey.photoIdKeyPresent">
+                      <q-badge
+                        color="red"
+                        v-if="
+                          claim.uScopeAssignmentID === '' &&
+                            claim.isPhotoIDGenerated === false
+                        "
+                      >
+                        Assignment not generated, push it manually
+                        <q-icon
+                          name="warning"
+                          color="white"
+                          class="q-ml-xs"
+                        ></q-icon>
+                      </q-badge>
+                      <q-badge
+                        color="red"
+                        v-if="
+                          claim.uScopeAssignmentID === '' &&
+                            !claim.isPhotoIDGenerated &&
+                            claim.isPhotoIDGenerated != false
+                        "
+                      >
+                        Assignment not generated, PLEASE WAIT
+                        <q-icon
+                          name="warning"
+                          color="white"
+                          class="q-ml-xs"
+                        ></q-icon>
+                      </q-badge>
+                    </div>
                   </div>
                 </div>
               </div>

@@ -85,8 +85,9 @@ import {
 import { Screen } from 'quasar';
 import { setNotification } from 'src/store/common/mutations';
 
-const isPushNotificationsAvailable =
-  Capacitor.isPluginAvailable('PushNotifications');
+const isPushNotificationsAvailable = Capacitor.isPluginAvailable(
+  'PushNotifications'
+);
 const { PushNotifications } = Plugins;
 export default {
   name: 'SetPassword',
@@ -114,7 +115,7 @@ export default {
 
     async onSubmitPassword() {
       const payload = {
-        uid: this.userId,
+        oobCode: this.$route.query.oobCode,
         password: this.password.password
       };
       const setPass = await this.setPassword(payload);
@@ -179,7 +180,6 @@ export default {
   },
 
   created() {
-    console.log(this.$route.query, 11);
     this.verifyOobCode(this.$route.query).then(response => {
       if (response && response.data.id && response.data.attributes.email) {
         this.userId = response.data.id;
