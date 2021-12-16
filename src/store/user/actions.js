@@ -129,12 +129,34 @@ export async function verifyOobCode({ commit, dispatch }, params) {
   }
 }
 
-// function is used for reseting the password.
+// function is used for setting new password.
 export async function setPassword({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.post(
       `/users/setpassword`,
+      buildApiData('users', payload)
+    );
+    dispatch('setLoading', false);
+    return true;
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+    return false;
+  }
+}
+
+// function is used for resetting the password.
+
+export async function resetPassword({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      `/users/resetpassword`,
       buildApiData('users', payload)
     );
     dispatch('setLoading', false);

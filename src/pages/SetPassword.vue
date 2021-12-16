@@ -102,7 +102,13 @@ export default {
     };
   },
   methods: {
-    ...mapActions(['verifyOobCode', 'setPassword', 'userLogin', 'getUserInfo']),
+    ...mapActions([
+      'verifyOobCode',
+      'setPassword',
+      'resetPassword',
+      'userLogin',
+      'getUserInfo'
+    ]),
     ...mapMutations(['setSelectedClaimId', 'setNotificationRouteTo']),
 
     checkConfirmPassword() {
@@ -114,66 +120,131 @@ export default {
     },
 
     async onSubmitPassword() {
-      const payload = {
-        oobCode: this.$route.query.oobCode,
-        password: this.password.password
-      };
-      const setPass = await this.setPassword(payload);
-      if (setPass) {
-        const loginData = {
-          data: {
-            type: 'users',
-            attributes: {
-              email: this.userEmail,
-              password: this.password.password
-            }
-          }
+      if (this.$route.query.mode == 'resetPassword') {
+        const payload = {
+          oobCode: this.$route.query.oobCode,
+          password: this.password.password
         };
-        const res = await this.userLogin(loginData);
-        if (res) {
-          await this.getUserInfo();
-          if (isPushNotificationsAvailable) {
-            PushNotifications.requestPermission().then(result => {
-              if (result.granted) {
-                PushNotifications.register();
+        const setPass = await this.resetPassword(payload);
+        if (setPass) {
+          const loginData = {
+            data: {
+              type: 'users',
+              attributes: {
+                email: this.userEmail,
+                password: this.password.password
               }
-            });
-            PushNotifications.addListener(
-              'registration',
-              PushNotificationToken => {
-                this.sendPushNotificationToken({
-                  token: PushNotificationToken.value
-                });
-              }
-            );
-            PushNotifications.addListener(
-              'pushNotificationActionPerformed',
-              PushNotificationActionPerformed => {
-                if (
-                  PushNotificationActionPerformed.notification.data.action ===
-                  constants.Notification.VIEW_CLAIM_TASKS
-                ) {
-                  this.setSelectedClaimId(
-                    PushNotificationActionPerformed.notification.data.claimID
-                  );
-                  this.setNotificationRouteTo('task');
-                  this.$router.push('/claim-details');
+            }
+          };
+          const res = await this.userLogin(loginData);
+          if (res) {
+            await this.getUserInfo();
+            if (isPushNotificationsAvailable) {
+              PushNotifications.requestPermission().then(result => {
+                if (result.granted) {
+                  PushNotifications.register();
                 }
-                if (
-                  PushNotificationActionPerformed.notification.data.action ===
-                  constants.Notification.VIEW_CLAIM
-                ) {
-                  this.setSelectedClaimId(
-                    PushNotificationActionPerformed.notification.data.claimID
-                  );
-                  this.setNotificationRouteTo('summary');
-                  this.$router.push('/claim-details');
+              });
+              PushNotifications.addListener(
+                'registration',
+                PushNotificationToken => {
+                  this.sendPushNotificationToken({
+                    token: PushNotificationToken.value
+                  });
                 }
-              }
-            );
-            PushNotifications.addListener('registrationError', any => {});
+              );
+              PushNotifications.addListener(
+                'pushNotificationActionPerformed',
+                PushNotificationActionPerformed => {
+                  if (
+                    PushNotificationActionPerformed.notification.data.action ===
+                    constants.Notification.VIEW_CLAIM_TASKS
+                  ) {
+                    this.setSelectedClaimId(
+                      PushNotificationActionPerformed.notification.data.claimID
+                    );
+                    this.setNotificationRouteTo('task');
+                    this.$router.push('/claim-details');
+                  }
+                  if (
+                    PushNotificationActionPerformed.notification.data.action ===
+                    constants.Notification.VIEW_CLAIM
+                  ) {
+                    this.setSelectedClaimId(
+                      PushNotificationActionPerformed.notification.data.claimID
+                    );
+                    this.setNotificationRouteTo('summary');
+                    this.$router.push('/claim-details');
+                  }
+                }
+              );
+              PushNotifications.addListener('registrationError', any => {});
+            }
+            this.$router.push('/dashboard');
           }
-          this.$router.push('/dashboard');
+        }
+      } else {
+        const payload = {
+          uid: this.userId,
+          password: this.password.password
+        };
+        const setPass = await this.setPassword(payload);
+        if (setPass) {
+          const loginData = {
+            data: {
+              type: 'users',
+              attributes: {
+                email: this.userEmail,
+                password: this.password.password
+              }
+            }
+          };
+          const res = await this.userLogin(loginData);
+          if (res) {
+            await this.getUserInfo();
+            if (isPushNotificationsAvailable) {
+              PushNotifications.requestPermission().then(result => {
+                if (result.granted) {
+                  PushNotifications.register();
+                }
+              });
+              PushNotifications.addListener(
+                'registration',
+                PushNotificationToken => {
+                  this.sendPushNotificationToken({
+                    token: PushNotificationToken.value
+                  });
+                }
+              );
+              PushNotifications.addListener(
+                'pushNotificationActionPerformed',
+                PushNotificationActionPerformed => {
+                  if (
+                    PushNotificationActionPerformed.notification.data.action ===
+                    constants.Notification.VIEW_CLAIM_TASKS
+                  ) {
+                    this.setSelectedClaimId(
+                      PushNotificationActionPerformed.notification.data.claimID
+                    );
+                    this.setNotificationRouteTo('task');
+                    this.$router.push('/claim-details');
+                  }
+                  if (
+                    PushNotificationActionPerformed.notification.data.action ===
+                    constants.Notification.VIEW_CLAIM
+                  ) {
+                    this.setSelectedClaimId(
+                      PushNotificationActionPerformed.notification.data.claimID
+                    );
+                    this.setNotificationRouteTo('summary');
+                    this.$router.push('/claim-details');
+                  }
+                }
+              );
+              PushNotifications.addListener('registrationError', any => {});
+            }
+            this.$router.push('/dashboard');
+          }
         }
       }
     }
