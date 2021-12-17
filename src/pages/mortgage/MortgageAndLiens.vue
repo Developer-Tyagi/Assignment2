@@ -3,11 +3,11 @@
     <div>
       <div v-if="mortgage.mortgages">
         <q-card
-          class=" q-pa-sm q-mt-md"
+          class="q-pa-sm q-mt-md"
           :key="index"
           v-for="(mortgage, index) in mortgage.mortgages"
         >
-          <div class="form-heading  text-capitalize q-mt-xs row">
+          <div class="form-heading text-capitalize q-mt-xs row">
             <span class="q-my-auto"> {{ mortgage.name }}</span>
             <q-icon
               size="xs"
@@ -110,11 +110,9 @@
           </div>
         </q-card>
       </div>
-      <div v-else class="full-height  text-center">
+      <div v-else class="full-height text-center">
         <div class="q-mt-xs">
-          <div style="color: #666666;">
-            You haven't added a Mortgage yet.
-          </div>
+          <div style="color: #666666">You haven't added a Mortgage yet.</div>
           <img
             class="text-center"
             src="~assets/add.svg"
@@ -124,9 +122,9 @@
           />
         </div>
       </div>
-      <div class="row ">
+      <div class="row">
         <div
-          class="q-ml-auto q-mt-sm "
+          class="q-ml-auto q-mt-sm"
           v-if="!mortgageInfoDialog && mortgage.mortgages"
         >
           <q-btn
@@ -287,21 +285,17 @@ export default {
       this.editMortgageInfo[0].id = this.mortgage.mortgages[index].id;
       this.editMortgageInfo[0].value = this.mortgage.mortgages[index].name;
       this.editMortgageInfo[0].address = this.mortgage.mortgages[index].address;
-      this.editMortgageInfo[0].phoneNumber = this.mortgage.mortgages[
-        index
-      ].phoneNumber;
+      this.editMortgageInfo[0].phoneNumber =
+        this.mortgage.mortgages[index].phoneNumber;
       this.editMortgageInfo[0].email = this.mortgage.mortgages[index].email;
 
-      this.editMortgageInfo[0].loanNumber = this.mortgage.mortgages[
-        index
-      ].loanNumber;
-      this.editMortgageInfo[0].accountNumber = this.mortgage.mortgages[
-        index
-      ].accountNumber;
-      this.editMortgageInfo[0].isPrimary = this.mortgage.mortgages[
-        index
-      ].isPrimary;
-      this.editMortgageInfo[0].notes = this.mortgage.mortgages[index].note;
+      this.editMortgageInfo[0].loanNumber =
+        this.mortgage.mortgages[index].loanNumber;
+      this.editMortgageInfo[0].accountNumber =
+        this.mortgage.mortgages[index].accountNumber;
+      this.editMortgageInfo[0].isPrimary =
+        this.mortgage.mortgages[index].isPrimary;
+      this.editMortgageInfo[0].note = this.mortgage.mortgages[index].note;
       this.id = this.mortgage.mortgages[index].id;
       this.mortgageID = this.mortgage.mortgages[index].mortgageID;
     },
@@ -315,7 +309,7 @@ export default {
             loanNumber: this.editMortgageInfo[0].loanNumber,
             accountNumber: this.editMortgageInfo[0].accountNumber,
             isPrimary: this.editMortgageInfo[0].isPrimary,
-            note: this.editMortgageInfo[0].notes
+            note: this.editMortgageInfo[0].note
           }
         }
       };
@@ -356,7 +350,7 @@ export default {
             loanNumber: this.mortgageInfo[0].loanNumber,
             accountNumber: this.mortgageInfo[0].accountNumber,
             isPrimary: this.mortgageInfo[0].isPrimary,
-            note: this.mortgageInfo[0].notes
+            note: this.mortgageInfo[0].note
           }
         }
       };

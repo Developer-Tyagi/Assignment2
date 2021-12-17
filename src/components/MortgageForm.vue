@@ -61,7 +61,7 @@
     </div>
     <div v-else>
       <q-btn
-        style="width:100%"
+        style="width: 100%"
         no-caps
         outline
         class="custom-select"
@@ -93,7 +93,7 @@
       rows="3"
       class="q-pt-md required input-style input-overlay full-width"
       borderless
-      v-model="mortgage[0].notes"
+      v-model="mortgage[0].note"
       style="resize: none"
       :disable="isOfflineClientEdit"
     />
@@ -112,7 +112,7 @@
         v-if="!mortgage[1].value"
         rounded
         outline
-        style="width:100%"
+        style="width: 100%"
         class="q-mt-md"
         label="Click for choosing a Second Mortgage"
       />
@@ -199,7 +199,7 @@
         rows="3"
         class="q-pt-md required input-style input-overlay full-width"
         borderless
-        v-model="mortgage[1].notes"
+        v-model="mortgage[1].note"
         style="resize: none"
         :disable="isOfflineClientEdit"
       />
@@ -308,7 +308,7 @@ export default {
           loanNumber: '',
           accountNumber: '',
           isPrimary: false,
-          notes: ''
+          note: ''
         });
       } else {
         this.mortgage.pop();
