@@ -347,7 +347,9 @@ export default {
         limit: 0,
         offset: 0
       };
+      //here we are calling this api to store data in local db.
       this.getCarriers(params);
+      this.getMortgages(params);
     }
 
     this.getPropertyTypes('hideLoader');
