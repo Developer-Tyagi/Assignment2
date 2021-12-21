@@ -1,4 +1,5 @@
 import localDB, { getCollection } from '@services/dexie';
+import { startState } from 'app/public/ckeditor/samples/toolbarconfigurator/lib/codemirror/codemirror';
 
 export function setLoading(state, value) {
   state.showLoading = value;
@@ -193,4 +194,10 @@ export function setPaidUsers(state, data) {
 
 export async function setPlanInfo(state, planInfo) {
   state.planInfo = planInfo;
+}
+
+// this function is used to open the tab of suboption of web menu bar
+export function webMenuSubOptionTab(state, key) {
+  startState.webSubOptionMenuTab = '';
+  state.webSubOptionMenuTab = key;
 }

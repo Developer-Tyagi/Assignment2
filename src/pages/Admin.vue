@@ -1,19 +1,12 @@
 <template>
   <q-page>
     <div class="row height-without-header">
-      <SubSideBar
-        class="col-2"
-        :list="adminSettings"
-        @onListClick="setSelectedTab"
-        :selectedItem="tab"
-      />
-
       <div class="col-10">
         <div class="row" flat bordered>
           <!-- Main Template -->
           <q-tab-panels
             class="q-ml-xl mobile-container-page-without-search full-width"
-            v-model="tab"
+            v-model="webSubOptionMenuTab.key"
             animated
             vertical
             swipeable
@@ -271,12 +264,6 @@
                       </tr>
                     </tbody>
                   </table>
-
-                  <!-- <q-table
-                    :data="data"
-                    :columns="columns"
-                    row-key="name"
-                  /> -->
                 </div>
               </q-card>
             </q-tab-panel>
@@ -1211,7 +1198,7 @@
 </template>
 <script>
 import SubSideBar from 'components/SubSideBar';
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 import { getCurrentUser } from 'src/utils/auth';
 import { toGetStateShortName } from '@utils/common';
 import {
@@ -1360,17 +1347,12 @@ export default {
 
       addDefaultActionDialogBox: false,
       model: null,
-      dueDays: ['Bussiness', 'Calendar'],
-      tab: '',
-      adminSettings: [
-        { name: 'Account Summary', key: 'accountSummary' },
-        { name: 'Group Permission ', key: 'groupPermission' },
-        { name: ' Action items', key: 'actionItems' }
-      ]
+      dueDays: ['Bussiness', 'Calendar']
     };
   },
   computed: {
     ...mapGetters([
+      'webSubOptionMenuTab',
       'actionOverDues',
       'actionCompletion',
       'actionReason',
@@ -1414,6 +1396,7 @@ export default {
       'adminActionItemDelete',
       'updateUserForOrganization'
     ]),
+    ...mapMutations(['webMenuSubOptionTab']),
     validateEmail,
 
     //to Delete Admin Action item
@@ -1671,8 +1654,6 @@ export default {
           });
         });
       }
-
-      this.tab = 'groupPermission';
     },
     checkPermission(val, role, index) {
       if (this.roleTypes[index].permission.includes(val)) {
@@ -1868,9 +1849,6 @@ export default {
       }
     },
 
-    setSelectedTab(e) {
-      this.tab = e.key;
-    },
     RemoveOverDue(val) {
       this.actions.actions.onOverdue.splice(val, 1);
     },
@@ -2079,7 +2057,6 @@ export default {
     this.getOrganization();
 
     this.getContactTypes();
-    this.tab = 'accountSummary';
     if (getCurrentUser().attributes) {
       this.user = getCurrentUser().attributes;
       this.userId = getCurrentUser().id;

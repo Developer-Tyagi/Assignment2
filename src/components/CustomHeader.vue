@@ -1,95 +1,139 @@
 <template>
   <div>
-    <q-header class="bg-white">
-      <q-toolbar
-        class="row bg-primary rounded-header"
-        v-if="$route.name === 'dashboard'"
-        style="max-height: 130px"
-      >
-        <q-btn
-          flat
-          size="lg"
-          class="q-ml-sm color-white col-2"
-          icon="menu"
-          aria-label="Menu"
-          style="z-index: 1; margin-top: -20px"
-          @click="onMenuButtonClick"
-        />
-        <div
-          class="self-center"
-          style="
-            margin-top: -20px;
-            text-align: center;
-            margin-right: 52px;
-            width: 100%;
-          "
+    <div v-if="isMobile()">
+      <q-header class="bg-white">
+        <q-toolbar
+          class="row bg-primary rounded-header"
+          v-if="$route.name === 'dashboard'"
+          style="max-height: 130px"
         >
-          <img src="~assets/logo_complete.png" height="130" />
-        </div>
-      </q-toolbar>
-      <q-toolbar class="row bg-primary rounded-header" v-else>
-        <q-btn
-          flat
-          dense
-          class="q-ml-sm color-white button-50"
-          icon="menu"
-          aria-label="Menu"
-          @click="onMenuButtonClick"
-          v-if="isMobile() && $route.name === 'dashboard'"
-        ></q-btn>
-        <div class="cursor-pointer" v-if="toBackButtonVisibility()">
-          <q-icon
-            @click="onBackClick"
-            name="arrow_back"
-            size="sm"
-            class="button-50"
+          <q-btn
+            flat
+            size="lg"
+            class="q-ml-sm color-white col-2"
+            icon="menu"
+            aria-label="Menu"
+            style="z-index: 1; margin-top: -20px"
+            @click="onMenuButtonClick"
           />
-        </div>
-        <div class="text-uppercase text-bold q-mx-auto">
-          <!--Here By default the Page should be Active Lead, we change the header name based on the user routing, if user click on converted Lead then we land it to converted lead page and show the converted lead data, if user click on
-          Dead lead then we land on Dead Lead page and show Dead Lead Datamfrom lead Dashboard page-->
-          <span v-if="$route.name == 'Leads'">{{
-            converted ? converted : 'Active'
-          }}</span>
-          <span class="text-white"> {{ $route.name }} </span>
-          <q-icon
-            v-if="
-              $route.name == 'create client' &&
-              !isOnline &&
-              editSelectedClient.id &&
-              isOfflineClientEdit
+          <div
+            class="self-center"
+            style="
+              margin-top: -20px;
+              text-align: center;
+              margin-right: 52px;
+              width: 100%;
             "
-            name="edit"
-            @click="onClickEditIcon"
-            size="xs"
-            class="edit-icon"
-            color="white"
+          >
+            <img src="~assets/logo_complete.png" height="130" />
+          </div>
+        </q-toolbar>
+        <q-toolbar class="row bg-primary rounded-header" v-else>
+          <q-btn
+            flat
+            dense
+            class="q-ml-sm color-white button-50"
+            icon="menu"
+            aria-label="Menu"
+            @click="onMenuButtonClick"
+            v-if="isMobile() && $route.name === 'dashboard'"
+          ></q-btn>
+          <div class="cursor-pointer" v-if="toBackButtonVisibility()">
+            <q-icon
+              @click="onBackClick"
+              name="arrow_back"
+              size="sm"
+              class="button-50"
+            />
+          </div>
+          <div class="text-uppercase text-bold q-mx-auto">
+            <!--Here By default the Page should be Active Lead, we change the header name based on the user routing, if user click on converted Lead then we land it to converted lead page and show the converted lead data, if user click on
+          Dead lead then we land on Dead Lead page and show Dead Lead Datamfrom lead Dashboard page-->
+            <span v-if="$route.name == 'Leads'">{{
+              converted ? converted : 'Active'
+            }}</span>
+            <span class="text-white"> {{ $route.name }} </span>
+            <q-icon
+              v-if="
+                $route.name == 'create client' &&
+                !isOnline &&
+                editSelectedClient.id &&
+                isOfflineClientEdit
+              "
+              name="edit"
+              @click="onClickEditIcon"
+              size="xs"
+              class="edit-icon"
+              color="white"
+            />
+          </div>
+
+          <div v-if="$route.name == 'Dashboard'">
+            <q-icon name="notifications" size="sm" color="white" />
+          </div>
+
+          <q-btn class="no-visibility button-50" flat>
+            <img src="~assets/left_arrow.svg" alt="back-arrow" />
+          </q-btn>
+        </q-toolbar>
+        <div class="text-center" v-if="$route.name === 'dashboard'">
+          <img
+            src="~assets/header_shadow.png"
+            class="absolute"
+            style="
+              width: 90%;
+              height: 50px;
+              left: 50%;
+              transform: translateX(-50%);
+              bottom: -25px;
+            "
           />
         </div>
-
-        <div v-if="$route.name == 'Dashboard'">
-          <q-icon name="notifications" size="sm" color="white" />
-        </div>
-
-        <q-btn class="no-visibility button-50" flat>
-          <img src="~assets/left_arrow.svg" alt="back-arrow" />
+      </q-header>
+    </div>
+    <q-header v-if="!isMobile()" class="bg-white q-py-lg">
+      <div
+        class="q-gutter clickable justify-end q-px-md row items-center no-wrap"
+      >
+        <q-btn round flat>
+          <q-avatar size="40px">
+            <img :src="getImage('web_account_holder_profile_image.svg')" />
+          </q-avatar>
         </q-btn>
-      </q-toolbar>
-      <div class="text-center" v-if="$route.name === 'dashboard'">
-        <img
-          src="~assets/header_shadow.png"
-          class="absolute"
-          style="
-            width: 90%;
-            height: 50px;
-            left: 50%;
-            transform: translateX(-50%);
-            bottom: -25px;
-          "
-        />
+        <div class="text-capitalize text-weight-bold text-black text-subtitle1">
+          Account Holder
+        </div>
+        <q-icon color="primary" size="lg" name="expand_more"></q-icon>
+      </div>
+      <div v-if="!isMobile()" class="q-ml-md">
+        <q-breadcrumbs style="color: #667085" active-color="#667085">
+          <template v-slot:separator>
+            <q-icon size="15px" name="chevron_right" color="#D0D5DD" />
+          </template>
+          <q-breadcrumbs-el
+            class="cursor-pointer"
+            @click="onClickBreadcrumbsHome()"
+          >
+            <q-icon class="">
+              <q-img :src="getImage('breadcrumbs-home.svg')" color="primary" />
+            </q-icon>
+          </q-breadcrumbs-el>
+          <q-breadcrumbs-el
+            class="cursor-pointer"
+            :label="breadcrumbsData.menuItemTitle"
+            @click="onClickBreadcrumbsItem(breadcrumbsData.menuItem)"
+          />
+          <q-breadcrumbs-el
+            v-if="breadcrumbsData.subItemTitle"
+            :label="breadcrumbsData.subItemTitle"
+          />
+        </q-breadcrumbs>
       </div>
     </q-header>
+
+    <!-- Menu Drawer for Mobile application-->
     <q-drawer
+      v-if="isMobile()"
       v-model="isLeftSidePanelOpen"
       :width="intViewportWidth"
       :breakpoint="992"
@@ -197,6 +241,108 @@
         Claimguru Version {{ this.version }}
       </p>
     </q-drawer>
+
+    <!--Menu Drawer for Web Applicaiton-->
+    <q-drawer show-if-above style="width: 295px" bordered v-else>
+      <q-scroll-area class="web-menu-bar-style fit">
+        <div class="row justify-center">
+          <q-img
+            class="web-menu-claim-guru-logo"
+            :src="getImage('claimguru_new_logo.png')"
+          />
+        </div>
+        <q-list>
+          <q-item
+            v-for="(menuItem, index) in linksDataForWebDrawer"
+            :key="index"
+          >
+            <q-item-section
+              v-if="menuItem.subOption"
+              @click="changeParentColor(menuItem.title)"
+              :class="
+                parentColorMenuItem == menuItem.title
+                  ? 'menu-item-styling'
+                  : null
+              "
+            >
+              <q-expansion-item group="somegroup">
+                <template v-slot:header>
+                  <q-item-section avatar>
+                    <q-icon class="q-mt-sm q-mb-sm">
+                      <q-img :src="getImage(menuItem.icon)" color="primary" />
+                    </q-icon>
+                  </q-item-section>
+
+                  <q-item-section class="text-subtitle2">
+                    {{ menuItem.title }}
+                  </q-item-section>
+                </template>
+
+                <q-item
+                  v-for="(subMenuOption, index) in menuItem.subOption"
+                  :key="index"
+                >
+                  <q-item-section
+                    class="q-ml-xl q-pl-sm col-11 cursor-pointer text-subtitle2"
+                    :class="
+                      subOptionSelected.key == subMenuOption.key
+                        ? 'web-sub-menu-items-style'
+                        : null
+                    "
+                    clickable
+                    @click="
+                      openSubOptionMenuItem(
+                        subMenuOption,
+                        menuItem.link,
+                        menuItem
+                      )
+                    "
+                  >
+                    {{ subMenuOption.name }}
+                  </q-item-section>
+                </q-item>
+              </q-expansion-item>
+            </q-item-section>
+            <q-item-section
+              @click="changeParentColor(menuItem.title)"
+              :class="
+                parentColorMenuItem == menuItem.title
+                  ? 'menu-item-styling'
+                  : null
+              "
+              v-else
+              class="col-12"
+              clickable
+            >
+              <q-expansion-item
+                group="somegroup"
+                expand-icon="disabled"
+                @click="toRouteMenuBarPage(menuItem)"
+              >
+                <template v-slot:header>
+                  <q-item-section avatar>
+                    <q-icon class="q-mt-sm q-mb-sm">
+                      <q-img :src="getImage(menuItem.icon)" color="grey-4" />
+                    </q-icon>
+                  </q-item-section>
+                  <q-item-section class="text-subtitle2">
+                    {{ menuItem.title }}
+                  </q-item-section>
+                </template>
+              </q-expansion-item>
+            </q-item-section>
+          </q-item>
+        </q-list>
+        <div class="q-mt-xl q-ml-xl q-pt-xl">
+          <div class="row cursor-pointer" @click="logout()">
+            <div class="q-mt-xs text-subtitle2">Logout</div>
+            <q-icon size="2rem" class="q-ml-xl">
+              <q-img :src="getImage('log_out.svg')" color="grey-4" />
+            </q-icon>
+          </div>
+        </div>
+      </q-scroll-area>
+    </q-drawer>
   </div>
 </template>
 <script>
@@ -222,9 +368,17 @@ export default {
       user: {
         name: ''
       },
+      breadcrumbsData: {
+        menuItemTitle: '',
+        menuItemLink: '',
+        subItemTitle: '',
+        menuItem: {}
+      },
+      subOptionSelected: {},
+      parentColorMenuItem: '',
       isLeftSidePanelOpen: false,
       intViewportWidth: 0,
-      linksData: [
+      linksDataForMobileDrawer: [
         {
           title: 'Dashboard',
           key: 'dashboard',
@@ -277,9 +431,31 @@ export default {
           description: 'View, Add and Manage all types of Mortgages.'
         },
         {
+          title: 'Reports',
+          key: 'reports',
+          link: '/reports',
+          icon: 'reports_mobile_menu.svg',
+          description: 'Download files.'
+        },
+
+        {
+          title: 'Profile',
+          key: 'profile',
+          link: '/edit-profile',
+          icon: 'profile_mobile_menu.svg',
+          description: 'Edit profile '
+        }
+      ],
+      linksDataForWebDrawer: [
+        {
           title: 'Admin',
           key: 'admin',
           link: '/admin',
+          subOption: [
+            { name: 'Account Summary', key: 'accountSummary' },
+            { name: 'Group Permission ', key: 'groupPermission' },
+            { name: ' Action items', key: 'actionItems' }
+          ],
           icon: 'admin_big.svg',
           description: 'Setup Company , account, email, actions etc.'
         },
@@ -287,6 +463,21 @@ export default {
           title: 'Configuration',
           key: 'configuration',
           link: '/configuration',
+          subOption: [
+            { name: 'Inspection Type', key: 'inspectionType' },
+            { name: ' Industry Type', key: 'industryType' },
+            { name: 'Honorific', key: 'honorific' },
+            { name: 'Phone Type', key: 'phoneType' },
+            { name: 'Client Type', key: 'clientType' },
+            { name: 'Policy Categories', key: 'policyCategories' },
+            { name: 'Policy Type', key: 'policyType' },
+            { name: 'Property Type', key: 'propertyType' },
+            { name: 'Claim Reason', key: 'claimReason' },
+            { name: 'Loss Cause', key: 'lossCause' },
+            { name: 'Claim Severity', key: 'claimSeverity' },
+            { name: 'Template Type', key: 'templateType' },
+            { name: 'Template', key: 'template' }
+          ],
           icon: 'configuration_big.svg',
           description: 'View, Add and Manage all types of configuration.'
         },
@@ -314,8 +505,17 @@ export default {
           description: 'Edit profile '
         }
       ],
+
       sidebarItems: []
     };
+  },
+  mounted() {
+    this.webMenuSubOptionTab(this.linksDataForWebDrawer[0].subOption[0]);
+    this.breadcrumbsData.menuItemTitle = this.linksDataForWebDrawer[0].title;
+    this.breadcrumbsData.menuItemLink = this.linksDataForWebDrawer[0].link;
+    this.breadcrumbsData.subItemTitle =
+      this.linksDataForWebDrawer[0].subOption[0].name;
+    this.breadcrumbsData.menuItem = this.linksDataForWebDrawer[0];
   },
 
   methods: {
@@ -327,6 +527,62 @@ export default {
       'getClients',
       'getAccess'
     ]),
+    //used to change the parent color of menu item
+    changeParentColor(item) {
+      this.parentColorMenuItem = item;
+    },
+    //function is used to route to the home page when click from the icon of Home in breadCrumbs
+    onClickBreadcrumbsHome() {
+      this.breadcrumbsData.menuItemTitle = this.linksDataForWebDrawer[0].title;
+      this.breadcrumbsData.menuItemLink = this.linksDataForWebDrawer[0].link;
+      this.breadcrumbsData.subItemTitle =
+        this.linksDataForWebDrawer[0].subOption[0].name;
+      this.breadcrumbsData.menuItem = this.linksDataForWebDrawer[0];
+      const route = this.$router.currentRoute.fullPath.split('/')[1];
+      if (route != this.breadcrumbsData.menuItemLink.slice(1)) {
+        this.$router.push(this.breadcrumbsData.menuItemLink);
+      }
+      this.webMenuSubOptionTab(this.linksDataForWebDrawer[0].subOption[0]);
+    },
+    //function is used for routing through breadcrumbs item.
+    onClickBreadcrumbsItem(item) {
+      this.subOptionSelected = item.subOption[0];
+      this.breadcrumbsData.menuItemTitle = item.title;
+      this.breadcrumbsData.subItemTitle = item.subOption[0].name;
+      const route = this.$router.currentRoute.fullPath.split('/')[1];
+      if (route != item.link.slice(1)) {
+        this.$router.push(item.link);
+      }
+      this.webMenuSubOptionTab(item.subOption[0]);
+    },
+    // function is used to open the suboption menu item for web.
+    openSubOptionMenuItem(key, link, menuItem) {
+      this.breadcrumbsData.menuItemTitle = menuItem.title;
+      this.breadcrumbsData.menuItemLink = menuItem.link;
+      this.breadcrumbsData.subItemTitle = key.name;
+      this.breadcrumbsData.menuItem = menuItem;
+      this.subOptionSelected = key;
+      const route = this.$router.currentRoute.fullPath.split('/')[1];
+      if (route != link.slice(1)) {
+        this.$router.push(link);
+      }
+      this.webMenuSubOptionTab(key);
+    },
+
+    //this function is used to route the pages of menubar.
+    toRouteMenuBarPage(menuItem) {
+      (this.breadcrumbsData = {
+        menuItemTitle: '',
+        menuItemLink: '',
+        subItemTitle: ''
+      }),
+        (this.breadcrumbsData.menuItemTitle = menuItem.title);
+      this.breadcrumbsData.menuItemLink = menuItem.link;
+      const route = this.$router.currentRoute.fullPath.split('/')[1];
+      if (route != menuItem.link.slice(1)) {
+        this.$router.push(menuItem.link);
+      }
+    },
     // this function is used to hide the back button for the pages which are there in the humberger menubar
     toBackButtonVisibility() {
       const screenWidth = window.screen.width;
@@ -349,7 +605,11 @@ export default {
         return false;
       else return true;
     },
-    ...mapMutations(['setConvertedLead', 'setEditOfflineClientIcon']),
+    ...mapMutations([
+      'setConvertedLead',
+      'setEditOfflineClientIcon',
+      'webMenuSubOptionTab'
+    ]),
     isMobile,
     getImage(icon) {
       return require('../assets/' + icon);
@@ -425,9 +685,9 @@ export default {
         PageAccessItems.add(this.pageAccess[i]);
       }
 
-      for (let i = 0; i < this.linksData.length; i++) {
-        if (PageAccessItems.has(this.linksData[i].key)) {
-          this.sidebarItems.push(this.linksData[i]);
+      for (let i = 0; i < this.linksDataForMobileDrawer.length; i++) {
+        if (PageAccessItems.has(this.linksDataForMobileDrawer[i].key)) {
+          this.sidebarItems.push(this.linksDataForMobileDrawer[i]);
         }
       }
     }
@@ -492,5 +752,36 @@ export default {
 ::-webkit-scrollbar {
   width: 0px;
   background: transparent; /* make scrollbar transparent */
+}
+.web-menu-bar-style {
+  background: #f9e7d8;
+}
+.menu-item-styling {
+  background: #ffffff;
+  color: #000000;
+  border-radius: 0 32px 32px 0;
+  border-left: 4px solid #ef5926;
+  left: 50%;
+  padding-left: 11px;
+  margin-left: -16px;
+  top: 0;
+}
+
+.web-sub-menu-items-style {
+  text-decoration-color: #be0505;
+  text-decoration: underline;
+}
+
+//style for web menu top claimguru logo
+.web-menu-claim-guru-logo {
+  width: 151px;
+  height: 51px;
+  margin-top: 16px;
+}
+//this style is used to hide the hover.
+.q-expansion-item {
+  .q-focus-helper {
+    visibility: hidden;
+  }
 }
 </style>
