@@ -185,8 +185,57 @@ demo_deploy:
     - master
   when: manual
 
-# This task creates image associated with tag
-build_tag_image:
+# This task creates image associated with tag for staging env
+build_tag_image_stage:
+  stage: build
+  image: us-west1-docker.pkg.dev/claimguru-97138/claimguru/common-utils/git-sops
+  services:
+    - name: docker:18.09.9-dind
+      command: ['--mtu=1460']
+  variables:
+    GOOGLE_APPLICATION_CREDENTIALS: /tmp/key.json
+    SOPS_KMS: projects/claimguru-97138/locations/global/keyRings/sops/cryptoKeys/sops-key
+    APP_ENV: stage
+    DOCKER_HOST: tcp://127.0.0.1:2375
+    DOCKER_IMAGE: us-west1-docker.pkg.dev/claimguru-97138/claimguru/claimguru-ui-stage:${CI_COMMIT_TAG}
+  script:
+    - echo "$PROD_SERVICE_ACCOUNT_KEY"  > /tmp/key.json
+    - sops --kms ${SOPS_KMS} -d docker/env.$APP_ENV > .env
+    - docker build -t ${DOCKER_IMAGE} .
+    - docker login -u _json_key --password-stdin https://${DOCKER_REGISTRY} < /tmp/key.json
+    - docker push ${DOCKER_IMAGE}
+  tags:
+    - staging
+  only:
+    - tags
+
+
+# This task deploy set up to staging env.
+stage_deploy:
+  stage: deploy
+  image:
+    name: cilalabs/kubeninja
+  variables:
+    KUBE_NAMESPACE: claimguru
+    DOCKER_IMAGE: us-west1-docker.pkg.dev/claimguru-97138/claimguru/claimguru-ui-stage:${CI_COMMIT_TAG}
+  script:
+    - kubectl version
+    - kubectl create namespace ${KUBE_NAMESPACE} --dry-run -o yaml | kubectl apply -f -
+    - kubectl label --overwrite namespace ${KUBE_NAMESPACE} istio-injection=enabled
+    - sed -i "s/IMAGE_TAG/${CI_COMMIT_TAG}/g" k8s/stage/crd-spec.yaml
+    - sed -i "s~DOCKER_IMAGE~${DOCKER_IMAGE}~g" k8s/stage/crd-spec.yaml
+    - sed -i "s/CI_JOB_ID/${CI_JOB_ID}/g" k8s/stage/crd-spec.yaml
+    - kubectl apply -f k8s/stage/crd-spec.yaml --namespace ${KUBE_NAMESPACE}
+  environment:
+    name: staging
+    url: https://app.stage.claimguru.com
+  tags:
+    - staging
+  only:
+    - tags
+
+# This task creates image associated with tag for prod env
+build_tag_image_prod:
   stage: build
   image: us-west1-docker.pkg.dev/claimguru-97138/claimguru/common-utils/git-sops
   services:
@@ -208,6 +257,7 @@ build_tag_image:
     - production
   only:
     - tags
+  when: manual
 
 # This task deploy production set up.
 prod_deploy:
@@ -216,10 +266,8 @@ prod_deploy:
     name: cilalabs/kubeninja
   variables:
     KUBE_NAMESPACE: claimguru
-    GOOGLE_APPLICATION_CREDENTIALS: /tmp/key.json
     DOCKER_IMAGE: us-west1-docker.pkg.dev/claimguru-97138/claimguru/claimguru-ui:${CI_COMMIT_TAG}
   script:
-    - echo "$PROD_SERVICE_ACCOUNT_KEY" > /tmp/key.json
     - kubectl version
     - kubectl create namespace ${KUBE_NAMESPACE} --dry-run -o yaml | kubectl apply -f -
     - kubectl label --overwrite namespace ${KUBE_NAMESPACE} istio-injection=enabled
@@ -234,3 +282,4 @@ prod_deploy:
     - production
   only:
     - tags
+  when: manual
