@@ -9,12 +9,12 @@ workflows:
       vars:
         KEYSTORE_PATH: /tmp/.keystore
       node: 12.22.1
-    triggering:
-      events:
-        - push
-      branch_patterns:
-        - pattern: 'master'
-          include: true
+    # triggering:
+    #   events:
+    #     - push
+    #   branch_patterns:
+    #     - pattern: 'master'
+    #       include: true
     scripts:
       - &setup_sops_and_svc_acct_pre_prod
         name: setup sops and service account
@@ -87,10 +87,10 @@ workflows:
       vars:
         KEYSTORE_PATH: /tmp/.keystore
       node: 12.22.1
-    triggering:
-      events:
-        - tag
-      cancel_previous_builds: true
+    # triggering:
+    #   events:
+    #     - tag
+    #   cancel_previous_builds: true
     scripts:
       - &setup_sops_and_svc_acct
         name: setup sops and service account
@@ -179,13 +179,13 @@ workflows:
       node: 12.22.1
       xcode: latest
       cocoapods: default
-    triggering:
-      events:
-        - push
-      branch_patterns:
-        - pattern: 'master'
-          include: true
-      cancel_previous_builds: true
+    # triggering:
+    #   events:
+    #     - push
+    #   branch_patterns:
+    #     - pattern: 'master'
+    #       include: true
+    #   cancel_previous_builds: true
     scripts:
       - *setup_sops_and_svc_acct_pre_prod
       - *setup_env_var_pre_prod
@@ -249,10 +249,10 @@ workflows:
       node: 12.22.1
       xcode: latest
       cocoapods: default
-    triggering:
-      events:
-        - tag
-      cancel_previous_builds: true
+    # triggering:
+    #   events:
+    #     - tag
+    #   cancel_previous_builds: true
     scripts:
       - *setup_sops_and_svc_acct
       - *setup_env_vars
