@@ -92,20 +92,25 @@
       </q-header>
     </div>
     <q-header v-if="!isMobile()" class="bg-white q-py-lg">
-      <div
-        class="q-gutter clickable justify-end q-px-md row items-center no-wrap"
-      >
+      <div class="justify-end row items-center q-mr-lg">
         <q-btn round flat>
-          <q-avatar size="40px">
+          <q-avatar size="50px" class="q-mr-md">
             <img :src="getImage('web_account_holder_profile_image.svg')" />
           </q-avatar>
         </q-btn>
         <div class="text-capitalize text-weight-bold text-black text-subtitle1">
           Account Holder
         </div>
-        <q-icon color="primary" size="lg" name="expand_more"></q-icon>
+        <q-icon
+          class="q-ml-sm"
+          color="primary"
+          size="12px"
+          name="expand_more"
+        ></q-icon>
       </div>
-      <div v-if="!isMobile()" class="q-ml-md">
+      <q-separator class="q-mt-lg" v-if="!isMobile()" />
+
+      <div v-if="!isMobile()" class="q-ml-lg q-mt-lg q-pt-sm">
         <q-breadcrumbs style="color: #667085" active-color="#667085">
           <template v-slot:separator>
             <q-icon size="15px" name="chevron_right" color="#D0D5DD" />
@@ -243,14 +248,48 @@
     </q-drawer>
 
     <!--Menu Drawer for Web Applicaiton-->
-    <q-drawer show-if-above style="width: 295px" bordered v-else>
-      <q-scroll-area class="web-menu-bar-style fit">
-        <div class="row justify-center">
-          <q-img
-            class="web-menu-claim-guru-logo"
-            :src="getImage('claimguru_new_logo.png')"
-          />
-        </div>
+    <q-drawer
+      v-model="webDrawer"
+      :mini="!webDrawer || miniState"
+      show-if-above
+      :width="290"
+      :breakpoint="400"
+      bordered
+      v-else
+    >
+      <template v-slot:mini>
+        <q-scroll-area class="fit web-menu-bar-style">
+          <div v-if="miniState" class="q-ml-md q-mt-lg">
+            <q-btn
+              dense
+              round
+              unelevated
+              color="primary"
+              :icon="miniState ? 'chevron_right' : 'chevron_left'"
+              @click="webDrawerCollapse()"
+            />
+          </div>
+          <div class="q-mt-xl q-pt-sm">
+            <div
+              class="column items-center web-menu-bar-style"
+              v-for="(menuItem, index) in linksDataForWebDrawer"
+              :key="index"
+            >
+              <q-item>
+                <q-item-section avatar>
+                  <q-icon size="sm" class="q-mt-sm q-mb-sm">
+                    <q-img :src="getImage(menuItem.icon)" color="grey-4" />
+                  </q-icon>
+                </q-item-section>
+              </q-item>
+            </div>
+          </div>
+        </q-scroll-area>
+      </template>
+      <q-scroll-area
+        class="web-menu-bar-style"
+        style="height: calc(100% - 115px); margin-top: 100px"
+      >
         <q-list>
           <q-item
             v-for="(menuItem, index) in linksDataForWebDrawer"
@@ -268,7 +307,7 @@
               <q-expansion-item group="somegroup">
                 <template v-slot:header>
                   <q-item-section avatar>
-                    <q-icon class="q-mt-sm q-mb-sm">
+                    <q-icon size="sm" class="q-mt-sm q-mb-sm">
                       <q-img :src="getImage(menuItem.icon)" color="primary" />
                     </q-icon>
                   </q-item-section>
@@ -321,7 +360,7 @@
               >
                 <template v-slot:header>
                   <q-item-section avatar>
-                    <q-icon class="q-mt-sm q-mb-sm">
+                    <q-icon size="sm" class="q-mt-sm q-mb-sm">
                       <q-img :src="getImage(menuItem.icon)" color="grey-4" />
                     </q-icon>
                   </q-item-section>
@@ -336,12 +375,31 @@
         <div class="q-mt-xl q-ml-xl q-pt-xl">
           <div class="row cursor-pointer" @click="logout()">
             <div class="q-mt-xs text-subtitle2">Logout</div>
-            <q-icon size="2rem" class="q-ml-xl">
+            <q-icon size="sm" class="q-ml-xl">
               <q-img :src="getImage('log_out.svg')" color="grey-4" />
             </q-icon>
           </div>
         </div>
       </q-scroll-area>
+      <div
+        class="row absolute-top web-menu-bar-style justify-center"
+        style="height: 100px"
+      >
+        <div v-if="!miniState" class="absolute" style="top: 25px; right: 3px">
+          <q-btn
+            dense
+            round
+            unelevated
+            color="primary"
+            :icon="miniState ? 'chevron_right' : 'chevron_left'"
+            @click="webDrawerCollapse()"
+          />
+        </div>
+        <q-img
+          class="web-menu-claim-guru-logo"
+          :src="getImage('claimguru_new_logo.png')"
+        />
+      </div>
     </q-drawer>
   </div>
 </template>
@@ -365,6 +423,8 @@ export default {
   data() {
     return {
       version: appVersion,
+      webDrawer: true,
+      miniState: false,
       user: {
         name: ''
       },
@@ -527,6 +587,12 @@ export default {
       'getClients',
       'getAccess'
     ]),
+    //function is used to collapse the web-drawer in the
+
+    webDrawerCollapse() {
+      if (!this.miniState) this.miniState = true;
+      else if (this.miniState) this.miniState = false;
+    },
     //used to change the parent color of menu item
     changeParentColor(item) {
       this.parentColorMenuItem = item;
@@ -757,13 +823,14 @@ export default {
   background: #f9e7d8;
 }
 .menu-item-styling {
+  width: 275px;
   background: #ffffff;
   color: #000000;
   border-radius: 0 32px 32px 0;
   border-left: 4px solid #ef5926;
   left: 50%;
-  padding-left: 11px;
-  margin-left: -16px;
+  padding-left: 10px;
+  margin-left: -15px;
   top: 0;
 }
 
