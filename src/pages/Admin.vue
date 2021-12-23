@@ -21,212 +21,371 @@
             transition-next="jump-up"
           >
             <q-tab-panel name="accountSummary">
-              <q-card class="q-pa-lg" flat bordered>
+              <q-card
+                class="q-pa-xl "
+                style="border-radius:20px;box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);"
+              >
                 <div class="row justify-between">
-                  <div class="text-h5">Account Summary</div>
-                  <div class="text-h5">
-                    <q-icon
-                      name="create"
-                      color="primary"
+                  <div class="text-h5 text-weight-bold">
+                    Account Summary
+                  </div>
+                  <div>
+                    <a
                       @click="onEditClick"
-                    />
-                  </div>
-                </div>
-
-                <div class="row q-mt-lg text-bold">
-                  <div class="col">Name</div>
-                  <div class="col">Address</div>
-                  <div class="col">Mobile</div>
-                  <div class="col">Postal Code</div>
-                </div>
-                <q-separator />
-                <div class="row q-mt-xs">
-                  <!-- {{ user }} -->
-                  <div class="col-3 column">
-                    {{ user.name }}
-                  </div>
-                  <div class="col-3">
-                    <div class="q-mr-md" v-if="user.mailingAddress">
-                      <div>
-                        {{
-                          user.mailingAddress.address1
-                            ? user.mailingAddress.address1
-                            : '-'
-                        }}
-                      </div>
-                      <div
-                        v-if="
-                          user.mailingAddress && user.mailingAddress.address2
-                        "
-                      >
-                        {{ user.mailingAddress.address2 }}
-                      </div>
-                      <div>
-                        {{
-                          user.mailingAddress.addressLocality
-                            ? user.mailingAddress.addressLocality
-                            : '-'
-                        }}{{
-                          user.mailingAddress.addressRegion
-                            ? toGetStateShortName(
-                                user.mailingAddress.addressRegion
-                              )
-                            : '-'
-                        }}
-                        {{
-                          user.mailingAddress.postalCode
-                            ? user.mailingAddress.postalCode
-                            : '-'
-                        }}
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    class="col clickable text-primary"
-                    @click="onPhoneNumberClick(user.phoneNumber.number, $event)"
-                  >
-                    {{
-                      user.phoneNumber.number
-                        ? showPhoneNumber(user.phoneNumber.number)
-                        : '-'
-                    }}
-                  </div>
-                  <div class="col">
-                    {{
-                      user.mailingAddress.postalCode
-                        ? user.mailingAddress.postalCode
-                        : '-'
-                    }}
-                  </div>
-                </div>
-
-                <div class="row q-mt-xl text-bold">
-                  <div class="col">Administrator Email</div>
-                </div>
-                <q-separator />
-                <div class="row q-mt-xs">
-                  <div
-                    class="col clickable text-primary"
-                    @click="onEmailClick(user.email, $event)"
-                  >
-                    {{ user.email }}
-                  </div>
-                </div>
-              </q-card>
-              <q-card class="q-pa-lg q-mt-lg" flat bordered>
-                <div class="row justify-between">
-                  <div class="text-h5">Company Details</div>
-                  <div class="text-h5">
-                    <q-icon
-                      name="create"
-                      color="primary"
-                      @click="onEditClickOrganization"
-                    />
-                  </div>
-                </div>
-
-                <div class="row q-mt-lg text-bold">
-                  <div class="col">Company Name</div>
-                  <div class="col">Company Address</div>
-                  <div class="col">Company website</div>
-
-                  <div class="col">Postal Company Code</div>
-                </div>
-                <q-separator />
-
-                <div class="row q-mt-xs">
-                  <div class="col-3 column">
-                    {{ organization.name }}
-                  </div>
-                  <div class="col-3">
-                    <div
-                      class="q-mr-md"
-                      v-if="
-                        organization.billingInfo &&
-                        organization.billingInfo.address
-                      "
+                      class="text-subtitle1 text-weight-bold q-mr-xs"
+                      style="color: #EF5926; font-size:16px; text-decoration:underline"
+                      >Edit</a
                     >
-                      <div>
-                        {{
-                          organization.billingInfo.address.address1
-                            ? organization.billingInfo.address.address1
-                            : '-'
-                        }}
+                    <i style="color: #EF5926;" class="fas fa-edit"></i>
+                  </div>
+                </div>
+                <q-form ref="accountSummaryForm">
+                  <div class=" q-mt-xl ">
+                    <!-- Name -->
+                    <div class="row">
+                      <div class="col q-mr-md">
+                        <div class="row text-subtitle1 text-weight-bold">
+                          First Name<span class="text-red">*</span>
+                        </div>
+                        <!-- {{users}} -->
+                        <div class="row">
+                          <q-input
+                            dense
+                            class=" full-width"
+                            input-class="text-subtitle1"
+                            outlined
+                            v-model="users.fname"
+                            :disable="!editAccountSummary"
+                            lazy-rules
+                            maxlength="25"
+                            :rules="[
+                              val => val.length > 0 || 'Please add first name'
+                            ]"
+                          />
+                        </div>
                       </div>
-                      <div
-                        v-if="
-                          organization.billingInfo.address &&
-                          organization.billingInfo.address.address2
-                        "
-                      >
-                        {{ organization.billingInfo.address.address2 }}
+                      <div class="col">
+                        <div class="row text-subtitle1 text-weight-bold">
+                          Last Name<span class="text-red">*</span>
+                        </div>
+                        <div class="row">
+                          <q-input
+                            dense
+                            class="full-width"
+                            input-class="text-subtitle1"
+                            outlined
+                            v-model="users.lname"
+                            :disable="!editAccountSummary"
+                            lazy-rules
+                            maxlength="25"
+                            :rules="[
+                              val => val.length > 0 || 'Please add last name'
+                            ]"
+                          />
+                        </div>
                       </div>
-                      <div>
-                        {{
-                          organization.billingInfo.address.addressLocality
-                            ? organization.billingInfo.address.addressLocality
-                            : '-'
-                        }},{{
-                          organization.billingInfo.address.addressRegion
-                            ? toGetStateShortName(
-                                organization.billingInfo.address.addressRegion
-                              )
-                            : '-'
-                        }}
+                    </div>
+                    <!-- address -->
+                    <div class="q-mt-sm full-width">
+                      <div class="col ">
+                        <div class="row text-subtitle1 text-weight-bold">
+                          Address<span class="text-red">*</span>
+                        </div>
 
-                        {{
-                          organization.billingInfo.address.postalCode
-                            ? organization.billingInfo.address.postalCode
-                            : '-'
-                        }}
+                        <div v-if="user.mailingAddress">
+                          <AutoCompleteAddress
+                            :id="'AddVendor'"
+                            :address="users.mailingAddress"
+                            :isDropBoxEnable="false"
+                            :isChecksEnable="false"
+                            :value="true"
+                            :view="'custom'"
+                            :readOnly="!editAccountSummary"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row q-mt-sm full-width">
+                      <div class="col q-mr-md">
+                        <div class="text-subtitle1 text-weight-bold">
+                          Mobile<span class="text-red">*</span>
+                        </div>
+                        <div class="col clickable text-primary">
+                          <q-input
+                            dense
+                            class="full-width"
+                            input-class="text-subtitle1"
+                            outlined
+                            v-model="users.contact.number"
+                            :disable="!editAccountSummary"
+                            lazy-rules
+                            maxlength="10"
+                            :rules="[
+                              val =>
+                                val.length > 0 || 'Please add contact number'
+                            ]"
+                          />
+                        </div>
+                      </div>
+                      <div class="col">
+                        <div class="text-bold">
+                          <div class="row text-subtitle1 text-weight-bold">
+                            Email Address<span class="text-red">*</span>
+                          </div>
+                        </div>
+
+                        <div class="row ">
+                          <div
+                            class="col clickable text-primary"
+                            @click="onEmailClick(user.email, $event)"
+                          >
+                            <q-input
+                              dense
+                              class="full-width"
+                              input-class="text-subtitle1"
+                              outlined
+                              v-model="user.email"
+                              readonly
+                              disable
+                            />
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <div class="col">
-                    {{ organization.website ? organization.website : '-' }}
+                  <div
+                    class="q-mt-lg row justify-end"
+                    v-if="editAccountSummary"
+                  >
+                    <q-btn
+                      class="col-1 q-mr-sm"
+                      size="md"
+                      color="red"
+                      label="Cancel"
+                      @click="cancelAccountSummaryUpdate"
+                    />
+                    <q-btn
+                      class="col-1 "
+                      size="md"
+                      color="primary"
+                      label="Save"
+                      @click="onSaveEditedButton"
+                    />
                   </div>
-                  <div class="col">
-                    {{
-                      organization.billingInfo &&
-                      organization.billingInfo.address.postalCode
-                        ? organization.billingInfo.address.postalCode
-                        : '-'
-                    }}
+                </q-form>
+              </q-card>
+              <q-card
+                class="q-pa-xl q-mt-xl"
+                style="border-radius:20px;box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);"
+              >
+                <div class="row justify-between">
+                  <div class="text-h5 text-weight-bold">Company Details</div>
+                  <div>
+                    <a
+                      @click="onEditClickOrganization"
+                      class="text-subtitle1 text-weight-bold q-mr-xs"
+                      style="color: #EF5926; font-size:16px; text-decoration:underline"
+                      >Edit </a
+                    ><i style="color: #EF5926;" class="fas fa-edit"></i>
                   </div>
                 </div>
+                <q-form ref="companyDetailsForm">
+                  <div style="margin-top:30px;">
+                    <div class="row text-subtitle1 text-weight-bold">
+                      Company Name<span class="text-red">*</span>
+                    </div>
 
-                <div class="row q-mt-xl text-bold">
-                  <div class="col">Company Administrator</div>
-                  <div class="col">Photo ID Email</div>
-                  <div class="col">Photo ID Api Key</div>
+                    <div class="row">
+                      <q-input
+                        dense
+                        class="full-width"
+                        input-class="text-subtitle1"
+                        outlined
+                        v-model="organizations.users.fname"
+                        :disable="!editCompanyDetails"
+                        maxlength="50"
+                        :rules="[
+                          val => val.length > 0 || 'Please add company name'
+                        ]"
+                      />
+                    </div>
+
+                    <div class="col q-mt-sm q-mr-md full-width">
+                      <div class="row justify-between">
+                        <div class="col text-subtitle1 text-weight-bold">
+                          Address<span class="text-red">*</span>
+                        </div>
+                        <div
+                          v-if="editCompanyDetails"
+                          class="col row items-center justify-end"
+                        >
+                          <a
+                            @click="copyUserAddress"
+                            style="color: black; font-size:16px; text-decoration:underline"
+                            >Copy from above
+                          </a>
+                          <q-icon name="content_copy" />
+                        </div>
+                      </div>
+                      <div v-if="organizations.users.mailingAddress">
+                        <AutoCompleteAddress
+                          :id="'AddVendor'"
+                          :address="organizations.users.mailingAddress"
+                          :isDropBoxEnable="false"
+                          :isChecksEnable="false"
+                          :value="true"
+                          :view="'custom'"
+                          :readOnly="!editCompanyDetails"
+                        />
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="row"></div>
+                    </div>
+
+                    <div class="row q-mt-sm full-width">
+                      <div class="col ">
+                        <div class="row text-subtitle1 text-weight-bold">
+                          Company website
+                        </div>
+                        <q-input
+                          dense
+                          class="full-width"
+                          input-class="text-subtitle1"
+                          outlined
+                          v-model="organizations.website"
+                          :disable="!editCompanyDetails"
+                        />
+                      </div>
+                    </div>
+                    <div class="row q-mt-sm full-width">
+                      <div class="col q-mr-md">
+                        <!-- company adminstrator changed to contact name -->
+                        <div class="row text-subtitle1 text-weight-bold">
+                          Contact Name
+                        </div>
+                        <q-input
+                          dense
+                          class="full-width"
+                          input-class="text-subtitle1"
+                          outlined
+                          :disable="!editCompanyDetails"
+                        />
+                      </div>
+                      <div class="col">
+                        <!-- company adminstrator changed to contact name -->
+                        <div class="row text-subtitle1 text-weight-bold">
+                          Contact Email
+                        </div>
+                        <q-input
+                          dense
+                          class="full-width"
+                          input-class="text-subtitle1"
+                          outlined
+                          :disable="!editCompanyDetails"
+                        />
+                      </div>
+                    </div>
+                    <div
+                      class="q-mt-lg row justify-end"
+                      v-if="editCompanyDetails"
+                    >
+                      <q-btn
+                        class="col-1 q-mr-sm"
+                        size="md"
+                        color="red"
+                        label="Cancel"
+                        @click="cancelCompanyDetailsUpdate"
+                      />
+                      <q-btn
+                        class="col-1 "
+                        size="md"
+                        color="primary"
+                        label="Save"
+                        @click="onSaveEditedButtonOrganization"
+                      />
+                    </div>
+                  </div>
+                </q-form>
+              </q-card>
+              <q-card
+                class="q-pa-xl q-my-xl"
+                style="border-radius:20px;box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);"
+              >
+                <div class="row justify-between">
+                  <div class="text-h5 text-weight-bold">
+                    Photo ID Account Information (<a
+                      style="color:#18a0fb"
+                      href=""
+                      >signup</a
+                    >)
+                  </div>
+                  <div>
+                    <a
+                      @click="onEditClickOrganization('PHOTOIDFORM')"
+                      class="text-subtitle1 text-weight-bold q-mr-xs"
+                      style="color: #EF5926; font-size:16px; text-decoration:underline"
+                      >Edit </a
+                    ><i style="color: #EF5926;" class="fas fa-edit"></i>
+                  </div>
                 </div>
-                <q-separator />
-                <div class="row q-mt-xs">
-                  <div class="col">
-                    {{ organization.name }}
+                <q-form ref="editPhotoIDForm">
+                  <div class="row q-mt-lg full-width">
+                    <div class="col q-mr-md">
+                      <div class="row text-subtitle1 text-weight-bold">
+                        Account Email
+                      </div>
+                      <q-input
+                        dense
+                        class="full-width"
+                        input-class="text-subtitle1"
+                        outlined
+                        @click="onEmailClick(user.email, $event)"
+                        v-model="organizations.users.email"
+                        :disable="!editPhotoIDDetails"
+                      />
+                    </div>
+                    <div class="col">
+                      <div class="row text-subtitle1 text-weight-bold">
+                        Account Api Key
+                      </div>
+                      <q-input
+                        dense
+                        class="full-width"
+                        input-class="text-subtitle1"
+                        outlined
+                        v-model="organizations.users.lname"
+                        :disable="!editPhotoIDDetails"
+                      />
+                    </div>
                   </div>
                   <div
-                    class="col clickable text-primary"
-                    @click="onEmailClick(user.email, $event)"
+                    v-if="this.editPhotoIDDetails"
+                    class="q-mt-lg row justify-end"
                   >
-                    {{
-                      organization.photoIDEmail
-                        ? organization.photoIDEmail
-                        : '-'
-                    }}
+                    <q-btn
+                      class="col-1 q-mr-sm"
+                      size="md"
+                      color="red"
+                      label="Cancel"
+                      @click="cancelPhotoIDUpdate"
+                    />
+                    <q-btn
+                      class="col-1 "
+                      size="md"
+                      color="primary"
+                      label="Save"
+                      @click="onSaveEditedButtonOrganization"
+                    />
                   </div>
-                  <div class="col text-primary">
-                    {{
-                      organization.photoIDAPIKey
-                        ? organization.photoIDAPIKey
-                        : '-'
-                    }}
-                  </div>
-                </div>
+                </q-form>
               </q-card>
-              <q-card class="q-pa-lg q-mt-lg" flat bordered>
+              <q-card
+                class="q-pa-xl q-my-xl"
+                style="border-radius:20px;box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);"
+              >
                 <div class="row">
-                  <div class="text-h5">
+                  <div class="text-h5 text-weight-bold">
                     Plan:
                     {{
                       toUpperCase(
@@ -238,45 +397,48 @@
                   </div>
                 </div>
                 <div class="row q-mt-md">
-                  <div class="text-body1 text-weight-bold">Paid Users-</div>
-                  <div class="text-body1">{{ organization.paidUsers }}</div>
+                  <div class="text-subtitle1 text-weight-bold">Paid Users-</div>
+                  <div class="text-subtitle1">{{ organization.paidUsers }}</div>
 
-                  <div class="text-body1 text-weight-bold q-pl-xl">
+                  <div class="text-subtitle1 text-weight-bold q-pl-xl">
                     Unpaid Users-
                   </div>
-                  <div class="text-body1">{{ organization.nonPaidUsers }}</div>
+                  <div class="text-subtitle1">
+                    {{ organization.nonPaidUsers }}
+                  </div>
                 </div>
 
                 <!--table for paid /unpaid users-->
                 <div class="q-mt-md">
                   <table>
                     <thead>
-                      <tr class="text-bold text-h6 text-white">
-                        <th class="bg-primary text-white" style="width: 650px">
+                      <tr class="row text-bold text-h6 text-white">
+                        <th class="bg-primary text-white col">
                           Paid Users
                         </th>
-                        <th class="bg-primary text-white" style="width: 600px">
+                        <th class="col bg-primary text-white">
                           UnPaid Users
                         </th>
                       </tr>
                     </thead>
-                    <tbody>
-                      <tr v-for="paidUnpaid in paidUnpaidUserDetails">
-                        <td class="text-center">
+                    <tbody
+                      class="full-width"
+                      style="height: 400px;display: inline-block;overflow: scroll;"
+                    >
+                      <tr
+                        class="row"
+                        v-for="(paidUnpaid, index) in paidUnpaidUserDetails"
+                        :key="index"
+                      >
+                        <td class="col text-center">
                           {{ paidUnpaid.paidUserName }}
                         </td>
-                        <td class="text-center">
+                        <td class="col text-center">
                           {{ paidUnpaid.unPaidUserName }}
                         </td>
                       </tr>
                     </tbody>
                   </table>
-
-                  <!-- <q-table
-                    :data="data"
-                    :columns="columns"
-                    row-key="name"
-                  /> -->
                 </div>
               </q-card>
             </q-tab-panel>
@@ -306,6 +468,7 @@
                         <th
                           v-for="(user, index) in arrOfRoles"
                           style="height: 30px"
+                          :key="index"
                         >
                           <div style="height: 45px; width: 100px">
                             {{ user.value.name }}
@@ -313,7 +476,7 @@
                         </th>
                       </tr>
                     </thead>
-                    <tr v-for="(us, ind) in permissions">
+                    <tr v-for="(us, ind) in permissions" :key="ind">
                       <th
                         style="
                           height: 40px;
@@ -324,16 +487,20 @@
                       >
                         <span class="q-ml-sm">{{ us.name }}</span>
                       </th>
-                      <td align="center" v-for="(user, index) in arrOfRoles">
+                      <td
+                        align="center"
+                        v-for="(user, index) in arrOfRoles"
+                        :key="index"
+                      >
                         <div
                           style="height: 40px"
                           v-if="
                             user.value.permission != null &&
-                            checkPermission(
-                              permissions[ind].machineValue,
-                              user.machineValue,
-                              index
-                            )
+                              checkPermission(
+                                permissions[ind].machineValue,
+                                user.machineValue,
+                                index
+                              )
                           "
                         >
                           <q-icon
@@ -435,188 +602,6 @@
         </div>
       </div>
     </div>
-    <!-- Dialog For user Data -->
-    <q-dialog
-      v-model="editUserInfoDialog"
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card style="width: 40%; height: 75vh">
-        <q-bar class="row justify-between bg-primary" style="height: 50px">
-          <div class="q-px-xs text-bold text-white">Edit Account Summary</div>
-          <q-btn dense flat icon="close" color="white" v-close-popup>
-            <q-tooltip>Close</q-tooltip>
-          </q-btn>
-        </q-bar>
-        <div style="height: calc(100% - 140px); overflow: auto" class="q-pa-md">
-          <q-form ref="addUserForm" class="q-pa-md">
-            <div class="q-mt-xs">
-              <q-card class="q-mx-md q-pa-sm q-mb-sm">
-                <div class="row full-width">
-                  <q-input
-                    v-model="users.fname"
-                    dense
-                    class="q-mx-md col-5 input-extra-padding"
-                    outlined
-                    label="First name"
-                  />
-
-                  <q-input
-                    dense
-                    v-model="users.lname"
-                    class="q-mx-md col-5 input-extra-padding"
-                    outlined
-                    label="Last name"
-                  />
-                </div>
-                <div class="row">
-                  <q-select
-                    dense
-                    v-model="users.contact.type"
-                    class="q-mx-md col-5 input-extra-padding"
-                    :options="contactTypes"
-                    option-value="machineValue"
-                    option-label="name"
-                    map-options
-                    outlined
-                    options-dense
-                    behavior="menu"
-                    label="Type"
-                    emit-value
-                    lazy-rules
-                    :rules="[
-                      val =>
-                        (val && val.length > 0) || 'Please select phone type'
-                    ]"
-                  />
-                  <q-input
-                    dense
-                    v-model="users.contact.number"
-                    outlined
-                    class="q-mx-md required col-5 input-extra-padding"
-                    label="Phone"
-                    mask="(###) ###-####"
-                    lazy-rules
-                    :rules="[
-                      val =>
-                        (val && val.length == 14) ||
-                        'Please enter phhone number'
-                    ]"
-                  />
-                </div>
-                <div class="row">
-                  <q-input
-                    dense
-                    disable
-                    v-model="users.email"
-                    style=""
-                    label="Email"
-                    class="q-mx-md col-5 required"
-                    outlined
-                    lazy-rules
-                    :rules="[
-                      val =>
-                        validateEmail(val) ||
-                        'You have entered an invalid email address!'
-                    ]"
-                  />
-                </div>
-              </q-card>
-              <q-card class="q-mx-md q-pa-sm">
-                <AutoCompleteAddress
-                  :id="'AddVendor'"
-                  :address="users.mailingAddress"
-                  :isDropBoxEnable="false"
-                  :isChecksEnable="false"
-                  :value="true"
-                  :view="'web'"
-                />
-              </q-card>
-            </div>
-          </q-form>
-        </div>
-        <div class="row justify-center">
-          <q-btn
-            color="primary"
-            label="Save"
-            class="single-next-button-style col-6 q-my-lg"
-            @click="onSaveEditedButton"
-          />
-        </div>
-      </q-card>
-    </q-dialog>
-    <!-- editing organization info dialog -->
-    <q-dialog
-      v-model="editOrganizsationInfoDialog"
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card style="width: 40%; height: 75vh">
-        <q-bar class="row justify-between bg-primary" style="height: 50px">
-          <div class="q-px-xs text-bold text-white">
-            Edit Organization Summary
-          </div>
-          <q-btn dense flat icon="close" color="white" v-close-popup>
-            <q-tooltip>Close</q-tooltip>
-          </q-btn>
-        </q-bar>
-        <div style="height: calc(100% - 140px); overflow: auto" class="q-pa-md">
-          <q-form ref="addUserFormOrganization" class="q-pa-md">
-            <div class="q-mt-xs">
-              <q-card class="q-mx-md q-pa-sm q-mb-sm">
-                <div class="row full-width">
-                  <q-input
-                    v-model="organizations.users.fname"
-                    dense
-                    class="q-mx-md col-5 input-extra-padding"
-                    outlined
-                    label="First name"
-                  />
-
-                  <q-input
-                    dense
-                    v-model="organizations.users.lname"
-                    class="q-mx-md col-5 input-extra-padding"
-                    outlined
-                    label="PhotoId Api key"
-                  />
-                </div>
-                <div class="row">
-                  <q-input
-                    dense
-                    v-model="organizations.users.email"
-                    label="PhotoId  Email"
-                    class="q-mx-md col-5"
-                    outlined
-                    lazy-rules
-                  />
-                </div>
-              </q-card>
-              <q-card class="q-mx-md q-pa-sm">
-                <AutoCompleteAddress
-                  :id="'AddVendor'"
-                  :address="organizations.users.mailingAddress"
-                  :isDropBoxEnable="false"
-                  :isChecksEnable="false"
-                  :value="true"
-                  :view="'web'"
-                />
-              </q-card>
-            </div>
-          </q-form>
-        </div>
-        <div class="row justify-center">
-          <q-btn
-            color="primary"
-            label="Save"
-            class="single-next-button-style col-6 q-my-lg"
-            @click="onSaveEditedButtonOrganization"
-          />
-        </div>
-      </q-card>
-    </q-dialog>
 
     <!-- Dialog Box for Adding Action Items -->
     <q-dialog v-model="addDefaultActionDialogBox">
@@ -685,7 +670,7 @@
                 class="q-ml-xs"
                 v-if="
                   actions.createWhen.type &&
-                  actionReason[indexOfActionReason].additionalReasons
+                    actionReason[indexOfActionReason].additionalReasons
                 "
               >
                 <q-select
@@ -895,7 +880,7 @@
                 class="q-ml-xs"
                 v-if="
                   actions.actions.onComplete[index].type &&
-                  actionCompletion[indexOfSubTypeOfCompletion].subOptions
+                    actionCompletion[indexOfSubTypeOfCompletion].subOptions
                 "
               >
                 <q-select
@@ -1064,7 +1049,7 @@
                 class="q-ml-xs"
                 v-if="
                   actions.actions.onOverdue[index].type &&
-                  actionOverDues[indexOfSubType].subOptions
+                    actionOverDues[indexOfSubType].subOptions
                 "
               >
                 <q-select
@@ -1229,6 +1214,9 @@ export default {
 
   data() {
     return {
+      editAccountSummary: false,
+      editCompanyDetails: false,
+      editPhotoIDDetails: false,
       isEditable: false,
       editedActionItemID: '',
       selectedWorkflowID: '',
@@ -1261,11 +1249,10 @@ export default {
       arrOfRoles: [],
       value: {},
       userId: '',
-      editOrganizsationInfoDialog: false,
-      editUserInfoDialog: false,
       defaultPriority: false,
       selectedRole: '',
       organizations: {
+        name: '',
         users: {
           fname: '',
           lname: '',
@@ -1682,14 +1669,12 @@ export default {
       return false;
     },
     async onSaveEditedButtonOrganization() {
-      const success = await this.$refs.addUserFormOrganization.validate();
+      const success = await this.$refs.companyDetailsForm.validate();
       if (success) {
-        this.editUserInfoDialog = false;
         const payload = {
           data: {
             name: this.organizations.users.fname,
             photoIDAPIKey: this.organizations.users.lname,
-
             photoIDEmail: this.organizations.users.email,
             billingInfo: {
               address: this.organizations.users.mailingAddress
@@ -1698,14 +1683,14 @@ export default {
         };
         await this.updateUserForOrganization(payload);
         await this.getOrganization();
-        this.editOrganizsationInfoDialog = false;
+        this.editCompanyDetails = false;
+        this.editPhotoIDDetails = false;
       }
     },
 
     async onSaveEditedButton() {
-      const success = await this.$refs.addUserForm.validate();
+      const success = await this.$refs.accountSummaryForm.validate();
       if (success) {
-        this.editUserInfoDialog = false;
         const payload = {
           id: this.userId,
           data: {
@@ -1723,7 +1708,8 @@ export default {
             }
           }
         };
-        // await this.editUserInfo(payload);
+        console.log('payload', payload);
+        console.log('this.user', this.user);
         await this.editUserProfile(payload);
         await this.getUserInfo();
         this.user = getCurrentUser().attributes;
@@ -1735,6 +1721,7 @@ export default {
         );
         this.users.email = this.user.email;
         this.users.mailingAddress = this.user.mailingAddress;
+        this.editAccountSummary = false;
       }
     },
     hasChild(scope) {
@@ -1769,43 +1756,14 @@ export default {
     },
 
     onEditClick() {
-      this.users.fname = this.user.contact.fname;
-      this.users.lname = this.user.contact.lname;
-      this.users.contact.type = this.user.phoneNumber.type;
-      this.users.contact.number = showPhoneNumber(this.user.phoneNumber.number);
-      this.users.email = this.user.email;
-      this.users.mailingAddress.addressRegion =
-        this.user.mailingAddress.addressRegion;
-      this.users.mailingAddress.addressLocality =
-        this.user.mailingAddress.addressLocality;
-      this.users.mailingAddress.houseNumber =
-        this.user.mailingAddress.houseNumber;
-      this.users.mailingAddress.address1 = this.user.mailingAddress.address1;
-      this.users.mailingAddress.address2 = this.user.mailingAddress.address2;
-      this.users.mailingAddress.postalCode =
-        this.user.mailingAddress.postalCode;
-      this.editUserInfoDialog = true;
+      this.editAccountSummary = true;
     },
-    onEditClickOrganization() {
-      this.organizations.users.fname = this.organization.name;
-      this.organizations.users.lname = this.organization.photoIDAPIKey;
-
-      // this.organizations.users.contact.number = this.organization.website;
-      this.organizations.users.email = this.organization.photoIDEmail;
-      this.organizations.users.mailingAddress.addressRegion =
-        this.organization.billingInfo.address.addressRegion;
-      this.organizations.users.mailingAddress.addressLocality =
-        this.organization.billingInfo.address.addressLocality;
-      this.organizations.users.mailingAddress.houseNumber =
-        this.organization.billingInfo.address.houseNumber;
-      this.organizations.users.mailingAddress.address1 =
-        this.organization.billingInfo.address.address1;
-      this.organizations.users.mailingAddress.address2 =
-        this.organization.billingInfo.address.address2;
-      this.organizations.users.mailingAddress.postalCode =
-        this.organization.billingInfo.address.postalCode;
-
-      this.editOrganizsationInfoDialog = true;
+    onEditClickOrganization(val) {
+      if (val == 'PHOTOIDFORM') {
+        this.editPhotoIDDetails = true;
+      } else {
+        this.editCompanyDetails = true;
+      }
     },
 
     // Action OverDue Sub Dropdown Index set and also used to find the index of selected onOverdue.
@@ -1880,19 +1838,19 @@ export default {
       if (success) {
         /* This Filter function is used for elimination the null and empty values from the array     */
         this.actions.actions.onComplete.forEach(val => {
-          val.task = val.task.filter(function (el) {
+          val.task = val.task.filter(function(el) {
             return el != '';
           });
         });
 
         this.actions.actions.onOverdue.forEach(val => {
-          val.task = val.task.filter(function (el) {
+          val.task = val.task.filter(function(el) {
             return el != '';
           });
         });
 
         this.actions.createWhen.task = this.actions.createWhen.task.filter(
-          function (el) {
+          function(el) {
             return el != '';
           }
         );
@@ -2037,7 +1995,21 @@ export default {
     removeCompletionAction(val) {
       this.actions.actions.onComplete.splice(val, 1);
     },
-
+    cancelAccountSummaryUpdate() {
+      this.editAccountSummary = false;
+      // update data to previous state
+    },
+    cancelCompanyDetailsUpdate() {
+      this.editCompanyDetails = false;
+      // update data to previous state
+    },
+    cancelPhotoIDUpdate() {
+      this.editPhotoIDDetails = false;
+      // update data to previous state
+    },
+    copyUserAddress() {
+      this.organizations.users.mailingAddress = this.user.mailingAddress;
+    },
     addAnotherOnClick() {
       this.actions.actions.onComplete.push({
         type: '',
@@ -2073,6 +2045,7 @@ export default {
       }
     }
   },
+
   async created() {
     this.getAllUsers();
     this.paidUnpaidUserDetails;
@@ -2096,6 +2069,32 @@ export default {
       });
     });
     this.getPermissions();
+
+    // assign values to this.users
+    this.users.fname = this.user.contact.fname;
+    this.users.lname = this.user.contact.lname;
+    this.users.contact.type = this.user.phoneNumber.type;
+    this.users.contact.number = showPhoneNumber(this.user.phoneNumber.number);
+    this.users.email = this.user.email;
+    this.users.mailingAddress.addressRegion = this.user.mailingAddress.addressRegion;
+    this.users.mailingAddress.addressLocality = this.user.mailingAddress.addressLocality;
+    this.users.mailingAddress.houseNumber = this.user.mailingAddress.houseNumber;
+    this.users.mailingAddress.address1 = this.user.mailingAddress.address1;
+    this.users.mailingAddress.address2 = this.user.mailingAddress.address2;
+    this.users.mailingAddress.postalCode = this.user.mailingAddress.postalCode;
+    // assign org values
+
+    this.organizations.users.fname = this.organization.name;
+    this.organizations.users.lname = this.organization.photoIDAPIKey;
+
+    // this.organizations.users.contact.number = this.organization.website;
+    this.organizations.users.email = this.organization.photoIDEmail;
+    this.organizations.users.mailingAddress.addressRegion = this.organization.billingInfo.address.addressRegion;
+    this.organizations.users.mailingAddress.addressLocality = this.organization.billingInfo.address.addressLocality;
+    this.organizations.users.mailingAddress.houseNumber = this.organization.billingInfo.address.houseNumber;
+    this.organizations.users.mailingAddress.address1 = this.organization.billingInfo.address.address1;
+    this.organizations.users.mailingAddress.address2 = this.organization.billingInfo.address.address2;
+    this.organizations.users.mailingAddress.postalCode = this.organization.billingInfo.address.postalCode;
   }
 };
 </script>
