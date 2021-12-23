@@ -109,6 +109,99 @@
       :rules="[val => checkValidations(val) || 'Please fill the dropbox info']"
     />
   </div>
+  <div class="" v-else-if="view == 'custom'">
+    <div
+      :class="{
+        'no-visibility': isFieldsDisable,
+        visibility: !isFieldsDisable
+      }"
+    >
+      <input
+        required
+        type="text"
+        borderless
+        :id="'id' + id"
+        class="full-width input-autocomplete"
+        v-model="address.address1"
+        v-bind:disabled="this.readOnly"
+        style="border: 1px solid #d3d3d3; border-radius: 4px; height: 46px"
+      />
+      <q-input
+        type="text"
+        outlined
+        class="q-mt-sm"
+        dense
+        :disable="this.readOnly"
+        style=" border-radius: 4px; height: 46px"
+        v-model="address.address2"
+      />
+    </div>
+    <div class="row q-mt-sm">
+      <div class="col q-mr-md">
+        <div class="row text-subtitle1 text-weight-bold">
+          City<span class="text-red">*</span>
+        </div>
+        <q-input
+          dense
+          outlined
+          :class="{ required: isAsteriskMark }"
+          v-model="address.addressLocality"
+          :disable="this.readOnly"
+          lazy-rules
+          :rules="[val => val.length > 0 || 'Please fill the city']"
+        />
+      </div>
+      <div class="col q-mr-md">
+        <div class="row text-subtitle1 text-weight-bold">
+          State<span class="text-red">*</span>
+        </div>
+        <q-select
+          dense
+          outlined
+          :disable="this.readOnly"
+          :class="{ required: isAsteriskMark }"
+          v-model="address.addressRegion"
+          :options="states"
+          behavior="menu"
+          lazy-rules
+          :rules="[val => val.length > 0 || 'Please fill the state']"
+        />
+      </div>
+      <div class="col q-mr-sm">
+        <div class="row text-subtitle1 text-weight-bold">
+          ZIP Code<span class="text-red">*</span>
+        </div>
+        <q-input
+          outlined
+          dense
+          :disable="this.readOnly"
+          :class="{ required: isAsteriskMark }"
+          v-model="address.postalCode"
+          lazy-rules
+          :rules="[val => val.length > 0 || 'Please fill the zip code']"
+        />
+      </div>
+    </div>
+
+    <div class="row justify-between"></div>
+    <div class="row" v-if="isDropBoxEnable">
+      <p class="q-mx-none q-my-auto">Gate / Dropbox</p>
+      <q-toggle
+        class="q-ml-auto"
+        v-model="address.dropBox.isPresent"
+        @input="onToggleButtonOff"
+        :disable="isOfflineClientEdit"
+      />
+    </div>
+    <q-input
+      dense
+      v-if="address.dropBox.isPresent && isDropBoxEnable"
+      v-model="address.dropBox.info"
+      class="required"
+      label="Gate/ Dropbox"
+      :rules="[val => checkValidations(val) || 'Please fill the dropbox info']"
+    />
+  </div>
   <div class="q-pa-sm" v-else>
     <div
       :class="{
@@ -260,6 +353,9 @@ export default {
     },
     view: {
       type: String
+    },
+    readOnly: {
+      type: Boolean
     }
   },
 
