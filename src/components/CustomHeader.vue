@@ -93,11 +93,10 @@
     </div>
     <q-header v-if="!isMobile()" class="bg-white q-py-lg">
       <div class="justify-end row items-center q-mr-lg q-px-xl">
-        <q-btn round flat>
-          <q-avatar size="xl" class="q-mr-md">
-            <img :src="getImage('web_account_holder_profile_image.svg')" />
-          </q-avatar>
-        </q-btn>
+        <q-avatar size="xl" class="q-mr-md">
+          <img :src="getImage('profile_mobile_menu.svg')" />
+        </q-avatar>
+
         <div class="text-capitalize text-weight-bold text-black text-subtitle1">
           {{ user.name }}
         </div>
