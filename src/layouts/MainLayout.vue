@@ -1,5 +1,6 @@
 <template>
-  <q-layout view="lhr lpR lfr">
+  <q-layout :view="!isMobile ? 'lhr lpR lfr' : 'lHh Lpr lFf'">
+    <!--this is used because the theming of web and mob is different-->
     <CustomHeader @backButton="onBackButtonClick" />
 
     <q-page-container
@@ -64,6 +65,7 @@
 <script>
 import CustomHeader from 'components/CustomHeader';
 import { getCurrentUser } from '@utils/auth';
+import { isMobile } from '@utils/common';
 import { mapGetters, mapMutations, mapActions } from 'vuex';
 import AddOptions from 'components/AddOptions';
 export default {
@@ -84,7 +86,7 @@ export default {
       'setConvertedLead'
     ]), //'setCameraIcon' is a function which check weather we need to show the camera Icon on Vendor Document Page  or Not , It return True when we redirect from the
     //the camera option  in dashboard page and it is false when we redirect from scan and upload option
-
+    isMobile,
     checkUserRoleType() {
       if (
         getCurrentUser().attributes.roles[0].machineValue == 'estimator' ||

@@ -1,14 +1,7 @@
 <template>
   <q-page class="row height-without-header">
-    <SubSideBar
-      class="col-2"
-      :list="configurationType"
-      @onListClick="setSelectedTab"
-      :selectedItem="tab.key"
-    />
     <div class="col-10">
       <div class="my-font text-bold row q-ma-md">Setup Company Account</div>
-
       <div class="q-mx-md" flat bordered v-if="tab.key != 'template'">
         <div class="row full-width justify-between">
           <span class="text-bold" style="line-height: 36px">{{
@@ -458,6 +451,7 @@ export default {
 
   data() {
     return {
+      newTab: '',
       uploadTemplateDialogBox: false,
       dataURl: '',
       indexValue: '',
@@ -507,8 +501,13 @@ export default {
       ]
     };
   },
-
+  watch: {
+    webSubOptionMenuTab() {
+      (this.tab = this.webSubOptionMenuTab), this.setSelectedTab(this.tab);
+    }
+  },
   async created() {
+    (this.tab = this.webSubOptionMenuTab), this.setSelectedTab(this.tab);
     this.getInspectionTypes().then(async () => {
       this.table = this.inspectionTypes;
     });
@@ -516,6 +515,7 @@ export default {
 
   computed: {
     ...mapGetters([
+      'webSubOptionMenuTab',
       'contactTypes',
       'titles',
       'inspectionTypes',
@@ -569,7 +569,7 @@ export default {
       'uploadDocFileToServer',
       'addTemplate'
     ]),
-    ...mapMutations(['setLoading', 'setNotification']),
+    ...mapMutations(['setLoading', 'setNotification', 'webMenuSubOptionTab']),
     dataURItoBlob(dataURI) {
       // convert base64/URLEncoded data component to raw binary data held in a string
       var byteString;
@@ -578,10 +578,7 @@ export default {
       else byteString = unescape(dataURI.split(',')[1]);
 
       // separate out the mime component
-      var mimeString = dataURI
-        .split(',')[0]
-        .split(':')[1]
-        .split(';')[0];
+      var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
 
       // write the bytes of the string to a typed array
       var ia = new Uint8Array(byteString.length);
@@ -845,9 +842,8 @@ export default {
           case 'inspectionType':
             for (var i = 0; i <= this.inspectionType.subtypes.length - 1; i++) {
               if (this.inspectionType.subtypes[i].value == '') {
-                this.inspectionType.subtypes[
-                  i
-                ].value = this.inspectionType.value;
+                this.inspectionType.subtypes[i].value =
+                  this.inspectionType.value;
               }
             }
             var response = await this.addInspectionType(this.inspectionType);

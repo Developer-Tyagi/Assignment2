@@ -1,4 +1,4 @@
-export default function() {
+export default function () {
   return {
     notificationRouteTo: '',
     showLoading: false,
@@ -35,6 +35,7 @@ export default function() {
     organization: [],
     isOnline: navigator.onLine,
     isOfflineClientEdit: false,
-    planInfo: []
+    planInfo: [],
+    webSubOptionMenuTab: '' // by default we open the Account Summary page when login the page first  time.
   };
 }

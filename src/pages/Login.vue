@@ -200,11 +200,10 @@ export default {
           }
 
           //below function is use for checking login routing for mobile and web screen,
-
           if (isMobile()) {
             this.$router.push('/dashboard');
           } else {
-            this.$router.push('/claimstats');
+            this.$router.push('/admin');
           }
         }
       }
