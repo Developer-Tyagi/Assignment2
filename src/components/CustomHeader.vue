@@ -91,13 +91,16 @@
         </div>
       </q-header>
     </div>
-    <q-header v-if="!isMobile()" class="bg-white q-py-lg ">
+    <q-header v-if="!isMobile()" class="bg-white q-py-lg">
       <div class="justify-end row items-center q-mr-lg q-px-xl">
-        <q-btn round flat>
-          <q-avatar size="xl" class="q-mr-md">
-            <img :src="getImage('web_account_holder_profile_image.svg')" />
-          </q-avatar>
-        </q-btn>
+        <q-avatar
+          size="4em"
+          font-size="2.5rem"
+          icon="person"
+          class="text-white  bg-grey q-mr-md"
+        >
+        </q-avatar>
+
         <div class="text-capitalize text-weight-bold text-black text-subtitle1">
           {{ user.name }}
         </div>
@@ -108,7 +111,7 @@
           name="expand_more"
         ></q-icon>
       </div>
-      <q-separator class=" q-my-lg" v-if="!isMobile()" />
+      <q-separator class="q-my-lg" v-if="!isMobile()" />
 
       <div v-if="!isMobile()" class="q-px-xl q-ml-lg q-mt-sm q-pt-xs">
         <q-breadcrumbs style="color: #667085" active-color="#667085">
@@ -168,7 +171,7 @@
           >
             <div
               class="text-capitalize ellipsis-2-lines"
-              style="width: 100%; line-height: 1.2;"
+              style="width: 100%; line-height: 1.2"
             >
               {{
                 user.roles[0].machineValue == 'vendor'
@@ -260,8 +263,8 @@
       bordered
       v-else
     >
-      <div class=" full-height" style="background-color:#F9E7D8">
-        <div class="col-2 q-mb-lg ">
+      <div class="full-height" style="background-color: #f9e7d8">
+        <div class="col-2 q-mb-lg">
           <div v-if="miniState" class="row items-center">
             <div class="col q-ml-md q-py-md">
               <q-btn
@@ -296,12 +299,15 @@
         <div class="col">
           <div v-if="miniState">
             <div
-              class="column items-center "
+              class="column items-center"
               v-for="(menuItem, index) in linksDataForWebDrawer"
               :key="index"
             >
               <q-item>
                 <q-item-section avatar>
+                  <q-tooltip>
+                    {{ menuItem.title }}
+                  </q-tooltip>
                   <q-icon size="sm" class="q-mt-sm q-mb-sm">
                     <q-img :src="getImage(menuItem.icon)" color="grey-4" />
                   </q-icon>
@@ -319,26 +325,29 @@
                   <q-item-section
                     v-if="menuItem.subOption"
                     @click="changeParentColor(menuItem.title)"
-                    :class="
-                      parentColorMenuItem == menuItem.title
-                        ? 'menu-item-styling'
-                        : null
-                    "
+                    class="q-mr-md"
                   >
                     <q-expansion-item group="somegroup">
                       <template v-slot:header>
-                        <q-item-section avatar>
-                          <q-icon size="sm" class="q-mt-sm q-mb-sm">
-                            <q-img
-                              :src="getImage(menuItem.icon)"
-                              color="primary"
-                            />
-                          </q-icon>
-                        </q-item-section>
-
-                        <q-item-section class="text-subtitle2">
-                          {{ menuItem.title }}
-                        </q-item-section>
+                        <q-item
+                          :class="
+                            parentColorMenuItem == menuItem.title
+                              ? 'menu-item-styling'
+                              : null
+                          "
+                        >
+                          <q-item-section avatar>
+                            <q-icon size="sm" class="q-mt-sm q-mb-sm">
+                              <q-img
+                                :src="getImage(menuItem.icon)"
+                                color="primary"
+                              />
+                            </q-icon>
+                          </q-item-section>
+                          <q-item-section class="text-subtitle2">
+                            {{ menuItem.title }}
+                          </q-item-section>
+                        </q-item>
                       </template>
 
                       <q-item
@@ -346,12 +355,7 @@
                         :key="index"
                       >
                         <q-item-section
-                          class="q-ml-xl q-pl-sm col-11 cursor-pointer text-subtitle2"
-                          :class="
-                            subOptionSelected.key == subMenuOption.key
-                              ? 'web-sub-menu-items-style'
-                              : null
-                          "
+                          class="q-ml-xl col-11 cursor-pointer text-subtitle2"
                           clickable
                           @click="
                             openSubOptionMenuItem(
@@ -362,19 +366,26 @@
                           "
                         >
                           {{ subMenuOption.name }}
+                          <div
+                            class="q-mr-xl q-pr-lg q-mt-xs"
+                            v-if="subOptionSelected.key == subMenuOption.key"
+                          >
+                            <q-separator style="background: #ef5926" />
+                          </div>
                         </q-item-section>
                       </q-item>
                     </q-expansion-item>
                   </q-item-section>
+
                   <q-item-section
                     @click="changeParentColor(menuItem.title)"
                     :class="
                       parentColorMenuItem == menuItem.title
-                        ? 'menu-item-styling'
+                        ? 'menu-item-styling-non-component'
                         : null
                     "
                     v-else
-                    class="col-12"
+                    class="col-12 q-ml-md"
                     clickable
                   >
                     <q-expansion-item
@@ -399,6 +410,7 @@
                   </q-item-section>
                 </q-item>
               </q-list>
+
               <div class="q-mt-xl q-ml-xl q-pt-xl">
                 <div class="row cursor-pointer" @click="logout()">
                   <div class="q-mt-xs text-subtitle2">Logout</div>
@@ -827,23 +839,26 @@ export default {
   width: 0px;
   background: transparent; /* make scrollbar transparent */
 }
-.web-menu-bar-style {
-  background: #f9e7d8;
-  height: calc(100% - 1px);
-}
+
 .menu-item-styling {
+  width: 270px;
+  background: #ffffff;
+  color: #000000;
+  border-radius: 0 32px 32px 0;
+  border-left: 4px solid #ef5926;
+  left: 41%;
+  padding-left: 35px;
+  margin-left: -118px;
+}
+.menu-item-styling-non-component {
   width: 275px;
   background: #ffffff;
   color: #000000;
   border-radius: 0 32px 32px 0;
   border-left: 4px solid #ef5926;
   left: 50%;
-  padding-left: 10px;
+  padding-left: 28px;
   margin-left: -16px;
-}
-.web-sub-menu-items-style {
-  text-decoration-color: #be0505;
-  text-decoration: underline;
 }
 
 //style for web menu top claimguru logo
