@@ -1401,7 +1401,8 @@ export default {
       'setMultiplePermission',
       'getOrganization',
       'adminActionItemDelete',
-      'updateUserForOrganization'
+      'updateUserForOrganization',
+      'updateAccessToken'
     ]),
     ...mapMutations(['webMenuSubOptionTab']),
     validateEmail,
@@ -1709,6 +1710,7 @@ export default {
             }
           }
         };
+        await this.updateAccessToken(this.users.email);
         await this.editUserProfile(payload);
         await this.getUserInfo();
         this.user = getCurrentUser().attributes;

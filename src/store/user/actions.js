@@ -1,6 +1,11 @@
 import request from '@api';
 import { buildApiData } from '@utils/api';
-import { setToken, setCurrentUser, setFCMToken } from '@utils/auth';
+import {
+  setToken,
+  setCurrentUser,
+  setFCMToken,
+  getCurrentUser
+} from '@utils/auth';
 import firebaseAuthorization from '@utils/firebase';
 
 // function is used for user login .
@@ -503,6 +508,37 @@ export async function editUserProfile({ dispatch, state }, user) {
       '/users/me',
       buildApiData('users', user.data)
     );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'User info  Updated !'
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'failed to update User'
+    });
+  }
+}
+
+// Update Access token after email update
+export async function updateAccessToken({ dispatch, state }, email) {
+  let current_user = getCurrentUser();
+  let payload = {
+    email: email
+  };
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.patch(
+      `/users/${current_user.id}/setemail`,
+      buildApiData('users', payload)
+    );
+    if (data && data.attributes.idToken) {
+      setToken(data.attributes.idToken);
+      return true;
+    }
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'positive',
