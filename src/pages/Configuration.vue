@@ -1,11 +1,5 @@
 <template>
   <q-page class="row height-without-header">
-    <!-- <SubSideBar
-      class="col-2"
-      :list="configurationType"
-      @onListClick="setSelectedTab"
-      :selectedItem="tab.key"
-    /> -->
     <div class="col-10">
       <div class="my-font text-bold row q-ma-md">Setup Company Account</div>
       <div class="q-mx-md" flat bordered v-if="tab.key != 'template'">

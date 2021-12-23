@@ -94,26 +94,26 @@
     <q-header v-if="!isMobile()" class="bg-white q-py-lg">
       <div class="justify-end row items-center q-mr-lg">
         <q-btn round flat>
-          <q-avatar size="50px" class="q-mr-md">
+          <q-avatar size="xl" class="q-mr-md">
             <img :src="getImage('web_account_holder_profile_image.svg')" />
           </q-avatar>
         </q-btn>
         <div class="text-capitalize text-weight-bold text-black text-subtitle1">
-          Account Holder
+          {{ user.name }}
         </div>
         <q-icon
           class="q-ml-sm"
           color="primary"
-          size="12px"
+          size="md"
           name="expand_more"
         ></q-icon>
       </div>
-      <q-separator class="q-mt-lg" v-if="!isMobile()" />
+      <q-separator class="q-my-lg" v-if="!isMobile()" />
 
-      <div v-if="!isMobile()" class="q-ml-lg q-mt-lg q-pt-sm">
+      <div v-if="!isMobile()" class="q-ml-lg q-mt-sm q-pt-xs">
         <q-breadcrumbs style="color: #667085" active-color="#667085">
           <template v-slot:separator>
-            <q-icon size="15px" name="chevron_right" color="#D0D5DD" />
+            <q-icon size="sm" name="chevron_right" color="#D0D5DD" />
           </template>
           <q-breadcrumbs-el
             class="cursor-pointer"
@@ -259,13 +259,13 @@
     >
       <template v-slot:mini>
         <q-scroll-area class="fit web-menu-bar-style">
-          <div v-if="miniState" class="q-ml-md q-mt-lg">
+          <div v-if="miniState" class="q-ml-sm q-pl-xs q-mt-lg">
             <q-btn
               dense
               round
               unelevated
               color="primary"
-              :icon="miniState ? 'chevron_right' : 'chevron_left'"
+              icon="chevron_right"
               @click="webDrawerCollapse()"
             />
           </div>
@@ -286,10 +286,7 @@
           </div>
         </q-scroll-area>
       </template>
-      <q-scroll-area
-        class="web-menu-bar-style"
-        style="height: calc(100% - 115px); margin-top: 100px"
-      >
+      <q-scroll-area class="web-menu-bar-style q-pt-xl q-mt-xl">
         <q-list>
           <q-item
             v-for="(menuItem, index) in linksDataForWebDrawer"
@@ -381,17 +378,14 @@
           </div>
         </div>
       </q-scroll-area>
-      <div
-        class="row absolute-top web-menu-bar-style justify-center"
-        style="height: 100px"
-      >
-        <div v-if="!miniState" class="absolute" style="top: 25px; right: 3px">
+      <div class="row absolute-top justify-center web-collapse-menu-style">
+        <div v-if="!miniState" class="absolute-left fixed-left q-mt-lg q-ml-md">
           <q-btn
             dense
             round
             unelevated
             color="primary"
-            :icon="miniState ? 'chevron_right' : 'chevron_left'"
+            icon="chevron_left"
             @click="webDrawerCollapse()"
           />
         </div>
@@ -793,7 +787,6 @@ export default {
 .q-toolbar {
   padding: 0;
 }
-
 .button-50 {
   width: 50px;
 }
@@ -821,6 +814,7 @@ export default {
 }
 .web-menu-bar-style {
   background: #f9e7d8;
+  height: calc(100% - 1px);
 }
 .menu-item-styling {
   width: 275px;
@@ -830,10 +824,8 @@ export default {
   border-left: 4px solid #ef5926;
   left: 50%;
   padding-left: 10px;
-  margin-left: -15px;
-  top: 0;
+  margin-left: -16px;
 }
-
 .web-sub-menu-items-style {
   text-decoration-color: #be0505;
   text-decoration: underline;
@@ -850,5 +842,13 @@ export default {
   .q-focus-helper {
     visibility: hidden;
   }
+}
+.web-collapse-menu-style {
+  background: #f9e7d8;
+  height: 50px;
+}
+
+.breadcrumbs-style {
+  color: #667085;
 }
 </style>
