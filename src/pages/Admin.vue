@@ -1,11 +1,11 @@
 <template>
   <q-page>
-    <div class="row height-without-header">
-      <div class="col-10">
+    <div class="row  q-px-xl">
+      <div class="col">
         <div class="row" flat bordered>
           <!-- Main Template -->
           <q-tab-panels
-            class="q-ml-xl mobile-container-page-without-search full-width"
+            class="q-ml-xl full-height mobile-container-page-without-search full-width"
             v-model="webSubOptionMenuTab.key"
             animated
             vertical
@@ -25,11 +25,11 @@
                   <div>
                     <a
                       @click="onEditClick"
-                      class="text-subtitle1 text-weight-bold q-mr-xs"
-                      style="color: #EF5926; font-size:16px; text-decoration:underline"
+                      class="text-primary text-subtitle1 text-weight-bold q-mr-xs"
+                      style="cursor: pointer;font-size:16px; text-decoration:underline"
                       >Edit</a
                     >
-                    <i style="color: #EF5926;" class="fas fa-edit"></i>
+                    <i class="text-primary fas fa-edit"></i>
                   </div>
                 </div>
                 <q-form ref="accountSummaryForm">
@@ -153,7 +153,8 @@
                     <q-btn
                       class="col-1 q-mr-sm"
                       size="md"
-                      color="red"
+                      text-color="black"
+                      color="white"
                       label="Cancel"
                       @click="cancelAccountSummaryUpdate"
                     />
@@ -176,10 +177,10 @@
                   <div>
                     <a
                       @click="onEditClickOrganization"
-                      class="text-subtitle1 text-weight-bold q-mr-xs"
-                      style="color: #EF5926; font-size:16px; text-decoration:underline"
+                      class="text-primary text-subtitle1 text-weight-bold q-mr-xs"
+                      style="cursor: pointer;font-size:16px; text-decoration:underline"
                       >Edit </a
-                    ><i style="color: #EF5926;" class="fas fa-edit"></i>
+                    ><i class="text-primary fas fa-edit"></i>
                   </div>
                 </div>
                 <q-form ref="companyDetailsForm">
@@ -214,10 +215,11 @@
                         >
                           <a
                             @click="copyUserAddress"
-                            style="color: black; font-size:16px; text-decoration:underline"
+                            class="text-primary"
+                            style="cursor: pointer; font-size:16px; text-decoration:underline"
                             >Copy from above
                           </a>
-                          <q-icon name="content_copy" />
+                          <q-icon color="primary" name="content_copy" />
                         </div>
                       </div>
                       <div v-if="organizations.users.mailingAddress">
@@ -286,7 +288,8 @@
                       <q-btn
                         class="col-1 q-mr-sm"
                         size="md"
-                        color="red"
+                        text-color="black"
+                        color="white"
                         label="Cancel"
                         @click="cancelCompanyDetailsUpdate"
                       />
@@ -302,24 +305,31 @@
                 </q-form>
               </q-card>
               <q-card
-                class="q-pa-xl q-my-xl"
+                class="q-pa-xl q-mt-xl"
                 style="border-radius:20px;box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);"
               >
                 <div class="row justify-between">
                   <div class="text-h5 text-weight-bold">
-                    Photo ID Account Information (<a
-                      style="color:#18a0fb"
-                      href=""
+                    <img
+                      class="vertical-middle	"
+                      height="30px;"
+                      width="30px;"
+                      src="~assets/photo_ID_app.png"
+                    />
+                    ID Account Information (<a
+                      class="text-primary"
+                      href="https://photoidapp.net/"
+                      target="_blank"
                       >signup</a
                     >)
                   </div>
                   <div>
                     <a
                       @click="onEditClickOrganization('PHOTOIDFORM')"
-                      class="text-subtitle1 text-weight-bold q-mr-xs"
-                      style="color: #EF5926; font-size:16px; text-decoration:underline"
+                      class="text-primary text-subtitle1 text-weight-bold q-mr-xs"
+                      style="cursor: pointer;font-size:16px; text-decoration:underline"
                       >Edit </a
-                    ><i style="color: #EF5926;" class="fas fa-edit"></i>
+                    ><i class="text-primary fas fa-edit"></i>
                   </div>
                 </div>
                 <q-form ref="editPhotoIDForm">
@@ -359,8 +369,9 @@
                     <q-btn
                       class="col-1 q-mr-sm"
                       size="md"
-                      color="red"
                       label="Cancel"
+                      text-color="black"
+                      color="white"
                       @click="cancelPhotoIDUpdate"
                     />
                     <q-btn
@@ -373,7 +384,7 @@
                   </div>
                 </q-form>
               </q-card>
-              <q-card
+              <!-- <q-card
                 class="q-pa-xl q-my-xl"
                 style="border-radius:20px;box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);"
               >
@@ -400,8 +411,6 @@
                     {{ organization.nonPaidUsers }}
                   </div>
                 </div>
-
-                <!--table for paid /unpaid users-->
                 <div class="q-mt-md">
                   <table>
                     <thead>
@@ -433,7 +442,7 @@
                     </tbody>
                   </table>
                 </div>
-              </q-card>
+              </q-card> -->
             </q-tab-panel>
             <q-tab-panel name="groupPermission" class="q-pa-none">
               <div class="row">
@@ -827,6 +836,7 @@
               v-for="(val, index) in actions.actions.onComplete"
               v-if="actions.actions.onComplete.length > 0"
               class="row q-mt-md full-width"
+              :key="index"
             >
               <div>
                 <div class="q-pa-sm text-bold" v-if="index == 0">
@@ -997,6 +1007,7 @@
 
             <div
               v-for="(Overdue, index) in actions.actions.onOverdue"
+              :key="index"
               v-if="actions.actions.onOverdue.length > 0"
               class="row q-mt-md full-width"
             >
@@ -1203,7 +1214,7 @@ import AutoCompleteAddress from 'components/AutoCompleteAddress';
 
 export default {
   name: 'Admin',
-  components: { SubSideBar, AutoCompleteAddress },
+  components: { AutoCompleteAddress },
 
   data() {
     return {
