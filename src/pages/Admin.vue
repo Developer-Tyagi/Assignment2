@@ -227,7 +227,7 @@
                       </div>
                       <div v-if="organizations.users.mailingAddress">
                         <AutoCompleteAddress
-                          :id="'AddVendor'"
+                          :id="'AddVendor1'"
                           :address="organizations.users.mailingAddress"
                           :isDropBoxEnable="false"
                           :isChecksEnable="false"
@@ -1401,7 +1401,8 @@ export default {
       'setMultiplePermission',
       'getOrganization',
       'adminActionItemDelete',
-      'updateUserForOrganization'
+      'updateUserForOrganization',
+      'updateAccessToken'
     ]),
     ...mapMutations(['webMenuSubOptionTab']),
     validateEmail,
@@ -1672,6 +1673,12 @@ export default {
     async onSaveEditedButtonOrganization() {
       const success = await this.$refs.companyDetailsForm.validate();
       if (success) {
+        if (this.organizations.users.mailingAddress.houseNumber) {
+          this.organizations.users.mailingAddress.address1 =
+            this.organizations.users.mailingAddress.houseNumber +
+            ', ' +
+            this.organizations.users.mailingAddress.address1;
+        }
         const payload = {
           data: {
             name: this.organizations.users.fname,
@@ -1692,6 +1699,13 @@ export default {
     async onSaveEditedButton() {
       const success = await this.$refs.accountSummaryForm.validate();
       if (success) {
+        if (this.users.mailingAddress.houseNumber) {
+          this.users.mailingAddress.address1 =
+            this.users.mailingAddress.houseNumber +
+            ', ' +
+            this.users.mailingAddress.address1;
+        }
+
         const payload = {
           id: this.userId,
           data: {
@@ -1709,6 +1723,7 @@ export default {
             }
           }
         };
+        await this.updateAccessToken(this.users.email);
         await this.editUserProfile(payload);
         await this.getUserInfo();
         this.user = getCurrentUser().attributes;
