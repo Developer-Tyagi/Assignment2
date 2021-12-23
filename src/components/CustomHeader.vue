@@ -56,9 +56,9 @@
             <q-icon
               v-if="
                 $route.name == 'create client' &&
-                !isOnline &&
-                editSelectedClient.id &&
-                isOfflineClientEdit
+                  !isOnline &&
+                  editSelectedClient.id &&
+                  isOfflineClientEdit
               "
               name="edit"
               @click="onClickEditIcon"
@@ -93,8 +93,12 @@
     </div>
     <q-header v-if="!isMobile()" class="bg-white q-py-lg">
       <div class="justify-end row items-center q-mr-lg q-px-xl">
-        <q-avatar size="xl" class="q-mr-md">
-          <img :src="getImage('profile_mobile_menu.svg')" />
+        <q-avatar
+          size="4em"
+          font-size="2.5rem"
+          icon="person"
+          class="text-white  bg-grey q-mr-md"
+        >
         </q-avatar>
 
         <div class="text-capitalize text-weight-bold text-black text-subtitle1">
@@ -195,18 +199,18 @@
               class="q-mt-lg bg-white rounded-sidebar q-pa-none q-pb-xs"
               v-if="
                 (link.title != 'Dashboard' || isMobile()) &&
-                (link.title != 'Claims' || isMobile()) &&
-                (link.title != 'Clients' || isMobile()) &&
-                (link.title != 'Leads' || isMobile()) &&
-                (link.title != 'Vendors' || isMobile()) &&
-                (link.title != 'Carriers' || isMobile()) &&
-                (link.title != 'Mortgages' || isMobile()) &&
-                (link.title != 'Vendors' || isMobile()) &&
-                (link.title != 'Carriers' || isMobile()) &&
-                (link.title != 'Mortgages' || isMobile()) &&
-                (link.title != 'Manage Users' || !isMobile()) &&
-                (link.title != 'Configuration' || !isMobile()) &&
-                (link.title != 'Admin' || !isMobile())
+                  (link.title != 'Claims' || isMobile()) &&
+                  (link.title != 'Clients' || isMobile()) &&
+                  (link.title != 'Leads' || isMobile()) &&
+                  (link.title != 'Vendors' || isMobile()) &&
+                  (link.title != 'Carriers' || isMobile()) &&
+                  (link.title != 'Mortgages' || isMobile()) &&
+                  (link.title != 'Vendors' || isMobile()) &&
+                  (link.title != 'Carriers' || isMobile()) &&
+                  (link.title != 'Mortgages' || isMobile()) &&
+                  (link.title != 'Manage Users' || !isMobile()) &&
+                  (link.title != 'Configuration' || !isMobile()) &&
+                  (link.title != 'Admin' || !isMobile())
               "
             >
               <q-item-section @click="onClickMenuItem(link.title)">
@@ -592,8 +596,7 @@ export default {
     this.webMenuSubOptionTab(this.linksDataForWebDrawer[0].subOption[0]);
     this.breadcrumbsData.menuItemTitle = this.linksDataForWebDrawer[0].title;
     this.breadcrumbsData.menuItemLink = this.linksDataForWebDrawer[0].link;
-    this.breadcrumbsData.subItemTitle =
-      this.linksDataForWebDrawer[0].subOption[0].name;
+    this.breadcrumbsData.subItemTitle = this.linksDataForWebDrawer[0].subOption[0].name;
     this.breadcrumbsData.menuItem = this.linksDataForWebDrawer[0];
   },
 
@@ -620,8 +623,7 @@ export default {
     onClickBreadcrumbsHome() {
       this.breadcrumbsData.menuItemTitle = this.linksDataForWebDrawer[0].title;
       this.breadcrumbsData.menuItemLink = this.linksDataForWebDrawer[0].link;
-      this.breadcrumbsData.subItemTitle =
-        this.linksDataForWebDrawer[0].subOption[0].name;
+      this.breadcrumbsData.subItemTitle = this.linksDataForWebDrawer[0].subOption[0].name;
       this.breadcrumbsData.menuItem = this.linksDataForWebDrawer[0];
       const route = this.$router.currentRoute.fullPath.split('/')[1];
       if (route != this.breadcrumbsData.menuItemLink.slice(1)) {
