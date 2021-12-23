@@ -1,11 +1,11 @@
 <template>
   <q-page>
-    <div class="row height-without-header">
-      <div class="col-10">
+    <div class="row  q-px-xl">
+      <div class="col">
         <div class="row" flat bordered>
           <!-- Main Template -->
           <q-tab-panels
-            class="q-ml-xl mobile-container-page-without-search full-width"
+            class="q-ml-xl full-height mobile-container-page-without-search full-width"
             v-model="webSubOptionMenuTab.key"
             animated
             vertical
@@ -302,7 +302,7 @@
                 </q-form>
               </q-card>
               <q-card
-                class="q-pa-xl q-my-xl"
+                class="q-pa-xl q-mt-xl"
                 style="border-radius:20px;box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);"
               >
                 <div class="row justify-between">
@@ -373,7 +373,7 @@
                   </div>
                 </q-form>
               </q-card>
-              <q-card
+              <!-- <q-card
                 class="q-pa-xl q-my-xl"
                 style="border-radius:20px;box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);"
               >
@@ -400,8 +400,6 @@
                     {{ organization.nonPaidUsers }}
                   </div>
                 </div>
-
-                <!--table for paid /unpaid users-->
                 <div class="q-mt-md">
                   <table>
                     <thead>
@@ -433,7 +431,7 @@
                     </tbody>
                   </table>
                 </div>
-              </q-card>
+              </q-card> -->
             </q-tab-panel>
             <q-tab-panel name="groupPermission" class="q-pa-none">
               <div class="row">
@@ -827,6 +825,7 @@
               v-for="(val, index) in actions.actions.onComplete"
               v-if="actions.actions.onComplete.length > 0"
               class="row q-mt-md full-width"
+              :key="index"
             >
               <div>
                 <div class="q-pa-sm text-bold" v-if="index == 0">
@@ -997,6 +996,7 @@
 
             <div
               v-for="(Overdue, index) in actions.actions.onOverdue"
+              :key="index"
               v-if="actions.actions.onOverdue.length > 0"
               class="row q-mt-md full-width"
             >
@@ -1203,7 +1203,7 @@ import AutoCompleteAddress from 'components/AutoCompleteAddress';
 
 export default {
   name: 'Admin',
-  components: { SubSideBar, AutoCompleteAddress },
+  components: { AutoCompleteAddress },
 
   data() {
     return {
