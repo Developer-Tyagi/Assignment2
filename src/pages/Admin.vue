@@ -137,9 +137,12 @@
                               class="full-width"
                               input-class="text-subtitle1"
                               outlined
-                              v-model="user.email"
-                              readonly
-                              disable
+                              v-model="users.email"
+                              :rules="[
+                                val =>
+                                  val.length > 0 || 'Please add email address'
+                              ]"
+                              :disable="!editAccountSummary"
                             />
                           </div>
                         </div>
@@ -1706,8 +1709,6 @@ export default {
             }
           }
         };
-        console.log('payload', payload);
-        console.log('this.user', this.user);
         await this.editUserProfile(payload);
         await this.getUserInfo();
         this.user = getCurrentUser().attributes;
