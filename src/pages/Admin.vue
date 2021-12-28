@@ -592,62 +592,72 @@
                       option-label="value"
                       option-value="machineValue"
                       v-model="selectedRole"
-                      :options="arrOfRoles"
+                      :options="roles"
                       map-options
                       emit-value
                       label="Select Role"
-                      style="width: 26%"
+                      style="width: 30%"
                     />
-                    {{ selectedRole }}
                   </div>
                 </div>
-                <div class="col--6">
+                <div class="col-3">
                   <q-checkbox v-model="paid">Paid</q-checkbox>
                 </div>
               </div>
-
               <div
+                class="q-my-md"
                 v-if="selectedRole"
-                v-for="(us, ind) in sortedPermissions"
-                :key="ind"
+                v-for="priv in privileges"
               >
-                <div v-for="(user, index) in arrOfRoles" :key="index">
-                  <div
-                    class="row items-center"
-                    v-if="user.value.name === selectedRole.value.name"
-                  >
-                    <div
-                      style="height: 40px"
-                      v-if="
-                        user.value.permission != null &&
-                        checkPermission(
-                          permissions[ind].machineValue,
-                          user.machineValue,
-                          index
-                        )
-                      "
-                    >
-                      <q-icon
-                        color="primary  q-mt-sm"
-                        name="check_circle"
-                        size="sm"
-                        @click="rolePermission(ind, index, 'selected')"
-                      />
-                    </div>
+                <div>
+                  <div class="text-uppercase text-h6">
+                    {{ priv }} privileges
+                  </div>
+                  <hr />
+                  <div v-for="(us, ind) in sortedPermissions" :key="ind">
+                    <div v-if="us.category.includes(priv)">
+                      <div
+                        class="q-ml-md"
+                        v-for="(user, index) in arrOfRoles"
+                        :key="index"
+                      >
+                        <div
+                          class="row items-center no-wrap"
+                          v-if="user.value.name === selectedRole"
+                        >
+                          <div
+                            style="height: 40px"
+                            v-if="
+                              user.value.permission != null &&
+                              checkPermission(
+                                permissions[ind].machineValue,
+                                user.machineValue,
+                                index
+                              )
+                            "
+                          >
+                            <q-icon
+                              color="primary  q-mt-sm"
+                              name="check_circle"
+                              size="sm"
+                              @click="rolePermission(ind, index, 'selected')"
+                            />
+                          </div>
 
-                    <div v-else style="height: 40px">
-                      <q-icon
-                        color="primary q-mt-sm"
-                        name=" radio_button_unchecked"
-                        size="sm"
-                        @click="rolePermission(ind, index, 'unselected')"
-                      />
+                          <div v-else style="height: 40px">
+                            <q-icon
+                              color="primary q-mt-sm"
+                              name=" radio_button_unchecked"
+                              size="sm"
+                              @click="rolePermission(ind, index, 'unselected')"
+                            />
+                          </div>
+                          <span class="q-ml-sm">{{ us.name }}</span>
+                        </div>
+                      </div>
                     </div>
-                    <span class="q-ml-sm">{{ us.name }}</span>
                   </div>
                 </div>
-
-                <!-- <span class="q-ml-sm">{{ us.name }}</span> -->
               </div>
             </q-tab-panel>
             <q-tab-panel name="actionItems">
@@ -1344,6 +1354,17 @@ export default {
     return {
       paid: false,
       roles: [],
+      privileges: [
+        'CLAIMS',
+        'CLIENTS',
+        'CARRIERS',
+        'LEAD',
+        'MORTGAGEES',
+        'VENDOR',
+        'Configuration',
+        'TASKS',
+        'ADMIN'
+      ],
       editAccountSummary: false,
       editCompanyDetails: false,
       editPhotoIDDetails: false,
@@ -2210,11 +2231,6 @@ export default {
     this.getAllUsers();
     this.paidUnpaidUserDetails;
     this.getOrganization();
-    console.log('arr of roles', this.arrOfRoles);
-    console.log(this.arrOfRoles.length);
-    for (var i = 0; i <= this.arrOfRoles.length; i++) {
-      console.log(this.arrOfRoles[i]);
-    }
 
     this.getContactTypes();
     if (getCurrentUser().attributes) {
@@ -2231,6 +2247,9 @@ export default {
           value: val
         });
       });
+      for (var i = 0; i < this.roleTypes.length; i++) {
+        this.roles.push(this.roleTypes[i].name);
+      }
     });
     this.getPermissions();
 
