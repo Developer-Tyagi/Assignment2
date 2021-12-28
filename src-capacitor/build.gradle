@@ -5,7 +5,9 @@ def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 def appVersionCode = Integer.valueOf(System.env.BUILD_NUMBER ?: 0)
-def appVersionName = System.env.FCI_TAG ?: System.env.BUILD_NUMBER
+def appVersionName = System.env.GIT_TAG_VERSION ?: System.env.BUILD_NUMBER
+def appENV = System.env.APP_ENV ?: "dev"
+
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -38,11 +40,12 @@ android {
         }
         applicationVariants.all { variant ->
         variant.outputs.all { output ->
-        if (variant.buildType.name.equals("release")) {
+        if (appENV.equals("stage")) {
+                outputFileName = ("claimguru-android-stage-" + appVersionName + ".apk")
+        } else if(appENV.equals("dev")) {
+                outputFileName = ("claimguru-android-dev-" + appVersionName + ".apk")
+        } else if(appENV.equals("prod")) {
                 outputFileName = ("claimguru-android-prod-" + appVersionName + ".apk")
-        } else if(variant.buildType.name.equals("debug")) {
-                outputFileName = ("claimguru-android-pre-prod-" + appVersionName + ".apk")
-
         }
     }}
     }
