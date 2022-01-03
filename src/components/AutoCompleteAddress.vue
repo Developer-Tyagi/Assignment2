@@ -124,8 +124,13 @@
         class="full-width input-autocomplete"
         v-model="address.address1"
         v-bind:disabled="this.readOnly"
-        style="border: 1px solid #d3d3d3; border-radius: 4px; height: 46px"
+        style="border: 1px solid #d3d3d3; border-radius: 4px; height: 40px"
+        @keydown="validateAddress(address.address1)"
+        @blur="validateAddress(address.address1)"
       />
+      <span class="q-pl-sm" style="color:#C10015 !important; font-size:11px;">
+        {{ errorMSG }}
+      </span>
       <q-input
         type="text"
         outlined
@@ -148,7 +153,10 @@
           v-model="address.addressLocality"
           :disable="this.readOnly"
           lazy-rules
-          :rules="[val => val.length > 0 || 'Please fill the city']"
+          :rules="[
+            val => val.length > 0 || 'Please fill the city',
+            val => validateText(val) || 'Please enter valid city'
+          ]"
         />
       </div>
       <div class="col q-mr-md">
@@ -178,7 +186,11 @@
           :class="{ required: isAsteriskMark }"
           v-model="address.postalCode"
           lazy-rules
-          :rules="[val => val.length > 0 || 'Please fill the zip code']"
+          :rules="[
+            val => val.length > 0 || 'Please fill the zip code',
+            val =>
+              validateAlphaNumericText(val) || 'Please enter valid ZIP code'
+          ]"
         />
       </div>
     </div>
@@ -318,6 +330,11 @@
 <script>
 import AddressService from '@utils/country';
 const addressService = new AddressService();
+import {
+  validateEmail,
+  validateText,
+  validateAlphaNumericText
+} from '@utils/validation';
 import { mapGetters } from 'vuex';
 export default {
   name: 'AutoCompleteAddress',
@@ -366,7 +383,8 @@ export default {
       autocomplete: {},
       autocomplete2: {},
       countries: [],
-      states: []
+      states: [],
+      errorMSG: ''
     };
   },
   computed: {
@@ -386,6 +404,17 @@ export default {
   },
 
   methods: {
+    validateText,
+    validateAlphaNumericText,
+    validateAddress(val) {
+      if (val.length < 2) {
+        this.errorMSG = 'Please enter the valid address';
+        return false;
+      } else {
+        this.errorMSG = '';
+        return true;
+      }
+    },
     checkValidations(val) {
       if (this.isChecksEnable) {
         if (val && val.length > 0) {

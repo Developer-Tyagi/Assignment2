@@ -78,3 +78,19 @@ export function nonRequiredPhoneNumber(val) {
     else return false;
   }
 }
+// validate text doesnot contain number and special char
+export function validateText(text) {
+  const regex = /^[a-zA-Z ]*$/;
+  if (regex.test(text)) {
+    return true;
+  }
+  return false;
+}
+// Validate alphanumeric field
+export function validateAlphaNumericText(text) {
+  const regex = /^[a-zA-Z0-9 ]*$/;
+  if (regex.test(text)) {
+    return true;
+  }
+  return false;
+}

@@ -50,9 +50,11 @@
                             v-model="users.fname"
                             :disable="!editAccountSummary"
                             lazy-rules
-                            maxlength="25"
+                            maxlength="128"
                             :rules="[
-                              val => val.length > 0 || 'Please add first name'
+                              val => val.length > 0 || 'Please add first name',
+                              val =>
+                                validateText(val) || 'Please enter valid name'
                             ]"
                           />
                         </div>
@@ -70,9 +72,12 @@
                             v-model="users.lname"
                             :disable="!editAccountSummary"
                             lazy-rules
-                            maxlength="25"
+                            maxlength="128"
                             :rules="[
-                              val => val.length > 0 || 'Please add last name'
+                              val => val.length > 0 || 'Please add last name',
+                              val =>
+                                validateText(val) ||
+                                'Please enter valid last name'
                             ]"
                           />
                         </div>
@@ -112,10 +117,14 @@
                             v-model="users.contact.number"
                             :disable="!editAccountSummary"
                             lazy-rules
-                            maxlength="10"
+                            mask="(###) ### - ####"
+                            unmasked-value
                             :rules="[
                               val =>
-                                val.length > 0 || 'Please add contact number'
+                                val.length > 0 || 'Please add contact number',
+                              val =>
+                                val.length > 9 ||
+                                'Mobile number must contain 10 digit'
                             ]"
                           />
                         </div>
@@ -126,12 +135,9 @@
                             Email Address<span class="text-red">*</span>
                           </div>
                         </div>
-
+                        <!-- @click="onEmailClick(user.email, $event)" -->
                         <div class="row ">
-                          <div
-                            class="col clickable text-primary"
-                            @click="onEmailClick(user.email, $event)"
-                          >
+                          <div class="col clickable text-primary">
                             <q-input
                               dense
                               class="full-width"
@@ -140,7 +146,10 @@
                               v-model="users.email"
                               :rules="[
                                 val =>
-                                  val.length > 0 || 'Please add email address'
+                                  val.length > 0 || 'Please add email address',
+                                val =>
+                                  validateEmail(val) ||
+                                  'You have entered an invalid email address!'
                               ]"
                               :disable="!editAccountSummary"
                             />
@@ -200,7 +209,7 @@
                         outlined
                         v-model="organizations.users.fname"
                         :disable="!editCompanyDetails"
-                        maxlength="50"
+                        maxlength="128"
                         :rules="[
                           val => val.length > 0 || 'Please add company name'
                         ]"
@@ -253,6 +262,11 @@
                           outlined
                           v-model="organizations.website"
                           :disable="!editCompanyDetails"
+                          :rules="[
+                            val =>
+                              validateUrl(val) ||
+                              'You have entered an invalid URL!'
+                          ]"
                         />
                       </div>
                     </div>
@@ -1212,7 +1226,7 @@ import {
   showPhoneNumber,
   sendPhoneNumber
 } from '@utils/clickable';
-import { validateEmail } from '@utils/validation';
+import { validateEmail, validateText, validateUrl } from '@utils/validation';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 
 export default {
@@ -1406,6 +1420,8 @@ export default {
     ]),
     ...mapMutations(['webMenuSubOptionTab']),
     validateEmail,
+    validateText,
+    validateUrl,
 
     //to Delete Admin Action item
     async toDeleteActionItem(item) {
@@ -1672,7 +1688,10 @@ export default {
     },
     async onSaveEditedButtonOrganization() {
       const success = await this.$refs.companyDetailsForm.validate();
-      if (success) {
+      if (
+        success &&
+        this.organizations.users.mailingAddress.address1.length > 0
+      ) {
         if (this.organizations.users.mailingAddress.houseNumber) {
           this.organizations.users.mailingAddress.address1 =
             this.organizations.users.mailingAddress.houseNumber +
@@ -1698,7 +1717,8 @@ export default {
 
     async onSaveEditedButton() {
       const success = await this.$refs.accountSummaryForm.validate();
-      if (success) {
+
+      if (success && this.users.mailingAddress.address1.length > 0) {
         if (this.users.mailingAddress.houseNumber) {
           this.users.mailingAddress.address1 =
             this.users.mailingAddress.houseNumber +
@@ -1716,7 +1736,6 @@ export default {
             email: this.users.email,
             role: this.users.roles,
             mailingAddress: this.users.mailingAddress,
-            /**TODo */
             phoneNumber: {
               type: this.users.contact.type,
               number: sendPhoneNumber(this.users.contact.number)
@@ -2007,16 +2026,37 @@ export default {
       this.actions.actions.onComplete.splice(val, 1);
     },
     cancelAccountSummaryUpdate() {
+      this.users.fname = this.user.contact.fname;
+      this.users.lname = this.user.contact.lname;
+      this.users.contact.type = this.user.phoneNumber.type;
+      this.users.contact.number = this.user.phoneNumber.number;
+      this.users.email = this.user.email;
+      this.users.mailingAddress.addressRegion = this.user.mailingAddress.addressRegion;
+      this.users.mailingAddress.addressLocality = this.user.mailingAddress.addressLocality;
+      this.users.mailingAddress.houseNumber = this.user.mailingAddress.houseNumber;
+      this.users.mailingAddress.address1 = this.user.mailingAddress.address1;
+      this.users.mailingAddress.address2 = this.user.mailingAddress.address2;
+      this.users.mailingAddress.postalCode = this.user.mailingAddress.postalCode;
       this.editAccountSummary = false;
-      // update data to previous state
     },
     cancelCompanyDetailsUpdate() {
       this.editCompanyDetails = false;
-      // update data to previous state
+      this.organizations.users.fname = this.organization.name;
+      // this.organizations.users.lname = this.organization.photoIDAPIKey;
+
+      // this.organizations.users.contact.number = this.organization.website;
+      //this.organizations.users.email = this.organization.photoIDEmail;
+      this.organizations.users.mailingAddress.addressRegion = this.organization.billingInfo.address.addressRegion;
+      this.organizations.users.mailingAddress.addressLocality = this.organization.billingInfo.address.addressLocality;
+      this.organizations.users.mailingAddress.houseNumber = this.organization.billingInfo.address.houseNumber;
+      this.organizations.users.mailingAddress.address1 = this.organization.billingInfo.address.address1;
+      this.organizations.users.mailingAddress.address2 = this.organization.billingInfo.address.address2;
+      this.organizations.users.mailingAddress.postalCode = this.organization.billingInfo.address.postalCode;
     },
     cancelPhotoIDUpdate() {
       this.editPhotoIDDetails = false;
-      // update data to previous state
+      this.organizations.users.lname = this.organization.photoIDAPIKey;
+      this.organizations.users.email = this.organization.photoIDEmail;
     },
     copyUserAddress() {
       this.organizations.users.mailingAddress = this.user.mailingAddress;
@@ -2084,7 +2124,7 @@ export default {
     this.users.fname = this.user.contact.fname;
     this.users.lname = this.user.contact.lname;
     this.users.contact.type = this.user.phoneNumber.type;
-    this.users.contact.number = showPhoneNumber(this.user.phoneNumber.number);
+    this.users.contact.number = this.user.phoneNumber.number;
     this.users.email = this.user.email;
     this.users.mailingAddress.addressRegion = this.user.mailingAddress.addressRegion;
     this.users.mailingAddress.addressLocality = this.user.mailingAddress.addressLocality;
