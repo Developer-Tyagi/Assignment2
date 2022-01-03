@@ -610,12 +610,15 @@
                 v-for="priv in privileges"
               >
                 <div>
-                  <div class="text-uppercase text-h6">
+                  <div class="text-capitalize text-h6">
                     {{ priv }} privileges
                   </div>
                   <hr />
                   <div v-for="(us, ind) in sortedPermissions" :key="ind">
-                    <div v-if="us.category.includes(priv)">
+                    <!-- {{us.category}} -->
+                    <div v-if="privCategory(us.category, priv)">
+                      <!-- us.category.includes(priv) -->
+
                       <div
                         class="q-ml-md"
                         v-for="(user, index) in arrOfRoles"
@@ -1355,15 +1358,15 @@ export default {
       paid: false,
       roles: [],
       privileges: [
-        'CLAIMS',
-        'CLIENTS',
-        'CARRIERS',
-        'LEAD',
-        'MORTGAGEES',
-        'VENDOR',
-        'Configuration',
-        'TASKS',
-        'ADMIN'
+        'claims',
+        'clients',
+        'carriers',
+        'leads',
+        'mortgagees',
+        'vendors',
+        'configuration',
+        'tasks',
+        'admin'
       ],
       editAccountSummary: false,
       editCompanyDetails: false,
@@ -2223,6 +2226,13 @@ export default {
           std => std.machineValue === val
         );
         this.indexOfSubTypeOfCompletion = indexOfCompletionAction;
+      }
+    },
+    privCategory(category, priv) {
+      if (category.toLowerCase().includes(priv.toLowerCase())) {
+        return true;
+      } else {
+        return false;
       }
     }
   },
