@@ -84,6 +84,7 @@ import {
 } from '@capacitor/core';
 import { Screen } from 'quasar';
 import { setNotification } from 'src/store/common/mutations';
+import { isMobile } from 'src/utils/common';
 
 const isPushNotificationsAvailable = Capacitor.isPluginAvailable(
   'PushNotifications'
@@ -180,7 +181,11 @@ export default {
               );
               PushNotifications.addListener('registrationError', any => {});
             }
-            this.$router.push('/dashboard');
+            if (isMobile()) {
+              this.$router.push('/dashboard');
+            } else {
+              this.$router.push('/admin');
+            }
           }
         }
       } else {
@@ -243,7 +248,11 @@ export default {
               );
               PushNotifications.addListener('registrationError', any => {});
             }
-            this.$router.push('/dashboard');
+            if (isMobile()) {
+              this.$router.push('/dashboard');
+            } else {
+              this.$router.push('/admin');
+            }
           }
         }
       }

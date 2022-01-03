@@ -1692,12 +1692,6 @@ export default {
         success &&
         this.organizations.users.mailingAddress.address1.length > 0
       ) {
-        if (this.organizations.users.mailingAddress.houseNumber) {
-          this.organizations.users.mailingAddress.address1 =
-            this.organizations.users.mailingAddress.houseNumber +
-            ', ' +
-            this.organizations.users.mailingAddress.address1;
-        }
         const payload = {
           data: {
             name: this.organizations.users.fname,
@@ -1719,13 +1713,6 @@ export default {
       const success = await this.$refs.accountSummaryForm.validate();
 
       if (success && this.users.mailingAddress.address1.length > 0) {
-        if (this.users.mailingAddress.houseNumber) {
-          this.users.mailingAddress.address1 =
-            this.users.mailingAddress.houseNumber +
-            ', ' +
-            this.users.mailingAddress.address1;
-        }
-
         const payload = {
           id: this.userId,
           data: {

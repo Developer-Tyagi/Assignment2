@@ -436,8 +436,11 @@ export default {
 
       this.address.address1 =
         this.getPlaceName('route', place) >= 0
-          ? place[this.getPlaceName('route', place)].long_name
+          ? place[this.getPlaceName('street_number', place)].long_name +
+            ', ' +
+            place[this.getPlaceName('route', place)].long_name
           : '';
+
       this.address.addressLocality = this.getPlaceName('locality', place)
         ? place[this.getPlaceName('locality', place)].long_name
         : place[this.getPlaceName('administrative_area_level_2', place)]
