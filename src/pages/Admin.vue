@@ -26,15 +26,11 @@
                   <div>
                     <a
                       @click="onEditClick"
-                      class="text-primary text-subtitle1 text-weight-bold q-mr-xs"
-                      style="
-                        cursor: pointer;
-                        font-size: 16px;
-                        text-decoration: underline;
-                      "
-                      >Edit</a
+                      class="text-primary cursor-pointer text-subtitle1 text-weight-bold q-mr-xs"
                     >
-                    <i class="text-primary fas fa-edit"></i>
+                      Edit
+                      <i class="text-primary fas fa-edit"></i>
+                    </a>
                   </div>
                 </div>
                 <q-form ref="accountSummaryForm">
@@ -197,18 +193,15 @@
                   <div>
                     <a
                       @click="onEditClickOrganization"
-                      class="text-primary text-subtitle1 text-weight-bold q-mr-xs"
-                      style="
-                        cursor: pointer;
-                        font-size: 16px;
-                        text-decoration: underline;
-                      "
-                      >Edit </a
-                    ><i class="text-primary fas fa-edit"></i>
+                      class="text-primary cursor-pointer text-subtitle1 text-weight-bold q-mr-xs"
+                    >
+                      Edit
+                      <i class="text-primary fas fa-edit"></i>
+                    </a>
                   </div>
                 </div>
                 <q-form ref="companyDetailsForm">
-                  <div style="margin-top: 30px">
+                  <div class="q-mt-xl">
                     <div class="row text-subtitle1 text-weight-bold">
                       Company Name<span class="text-red">*</span>
                     </div>
@@ -239,12 +232,7 @@
                         >
                           <a
                             @click="copyUserAddress"
-                            class="text-primary"
-                            style="
-                              cursor: pointer;
-                              font-size: 16px;
-                              text-decoration: underline;
-                            "
+                            class="text-primary text-subtitle cursor-pointer"
                             >Copy from above
                           </a>
                           <q-icon color="primary" name="content_copy" />
@@ -362,14 +350,10 @@
                   <div>
                     <a
                       @click="onEditClickOrganization('PHOTOIDFORM')"
-                      class="text-primary text-subtitle1 text-weight-bold q-mr-xs"
-                      style="
-                        cursor: pointer;
-                        font-size: 16px;
-                        text-decoration: underline;
-                      "
-                      >Edit </a
-                    ><i class="text-primary fas fa-edit"></i>
+                      class="text-primary cursor-pointer text-subtitle1 text-weight-bold q-mr-xs"
+                      >Edit
+                      <i class="text-primary fas fa-edit"></i>
+                    </a>
                   </div>
                 </div>
                 <q-form ref="editPhotoIDForm">
@@ -484,7 +468,7 @@
                 </div>
               </q-card> -->
             </q-tab-panel>
-            <q-tab-panel name="groupPermission" class="q-pa-none">
+            <q-tab-panel name="groupPermission" class="q-pa-lg">
               <!-- <div class="row">
                 <div class="col">
                   <table>
@@ -566,6 +550,7 @@
                 </div>
               </div> -->
               <!-- group permission -->
+
               <div>
                 <p>
                   Please select the role you wish to configure from the selector
@@ -604,64 +589,72 @@
                   <q-checkbox v-model="paid">Paid</q-checkbox>
                 </div>
               </div>
-              <div
-                class="q-my-md"
-                v-if="selectedRole"
-                v-for="priv in privileges"
-              >
-                <div>
-                  <div class="text-capitalize text-h6">
-                    {{ priv }} privileges
-                  </div>
-                  <hr />
-                  <div v-for="(us, ind) in sortedPermissions" :key="ind">
-                    <!-- {{us.category}} -->
-                    <div v-if="privCategory(us.category, priv)">
-                      <!-- us.category.includes(priv) -->
-
-                      <div
-                        class="q-ml-md"
-                        v-for="(user, index) in arrOfRoles"
-                        :key="index"
-                      >
+              <q-scroll-area class="claim-list-scrollable">
+                <div
+                  class="q-my-md"
+                  v-if="selectedRole"
+                  v-for="priv in privileges"
+                >
+                  <div>
+                    <div class="text-capitalize text-h6">
+                      {{ priv }} privileges
+                    </div>
+                    <hr />
+                    <div v-for="(us, ind) in sortedPermissions" :key="ind">
+                      <div v-if="privCategory(us.category, priv)">
                         <div
-                          class="row items-center no-wrap"
-                          v-if="user.value.name === selectedRole"
+                          class="q-ml-md"
+                          v-for="(user, index) in arrOfRoles"
+                          :key="index"
                         >
                           <div
-                            style="height: 40px"
+                            class="row items-center q-my-md no-wrap"
                             v-if="
-                              user.value.permission != null &&
-                              checkPermission(
-                                permissions[ind].machineValue,
-                                user.machineValue,
-                                index
+                              roleSelection(
+                                user.value.name,
+                                selectedRole,
+                                user.value.isPaid
                               )
                             "
                           >
-                            <q-icon
-                              color="primary  q-mt-sm"
-                              name="check_circle"
-                              size="sm"
-                              @click="rolePermission(ind, index, 'selected')"
-                            />
-                          </div>
+                            <div
+                              v-if="
+                                user.value.permission != null &&
+                                checkPermission(
+                                  permissions[ind].machineValue,
+                                  user.machineValue,
+                                  index
+                                )
+                              "
+                            >
+                              <q-icon
+                                color="primary"
+                                name="check_box"
+                                size="sm"
+                                @click="rolePermission(ind, index, 'selected')"
+                              />
+                            </div>
 
-                          <div v-else style="height: 40px">
-                            <q-icon
-                              color="primary q-mt-sm"
-                              name=" radio_button_unchecked"
-                              size="sm"
-                              @click="rolePermission(ind, index, 'unselected')"
-                            />
+                            <div v-else>
+                              <q-icon
+                                color="primary"
+                                name=" check_box_outline_blank"
+                                size="sm"
+                                @click="
+                                  rolePermission(ind, index, 'unselected')
+                                "
+                              />
+                            </div>
+                            <div>
+                              <span class="q-ml-sm">{{ us.name }}</span>
+                            </div>
                           </div>
-                          <span class="q-ml-sm">{{ us.name }}</span>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </q-scroll-area>
             </q-tab-panel>
             <q-tab-panel name="actionItems">
               <q-card class="q-pa-lg card-style" flat bordered>
@@ -676,10 +669,7 @@
                 </div>
 
                 <q-card class="q-mt-md">
-                  <div
-                    class="row bg-grey-3 q-px-md"
-                    style="align-items: center"
-                  >
+                  <div class="row bg-grey-3 items-center q-px-md">
                     <div class="q-pa-lg" v-if="claimType">
                       {{ allAction.length }} Action Items
                     </div>
@@ -2233,6 +2223,12 @@ export default {
         return true;
       } else {
         return false;
+      }
+    },
+    roleSelection(name, selectedRole, isPaid) {
+      if (name === selectedRole) {
+        this.paid = isPaid;
+        return true;
       }
     }
   },
