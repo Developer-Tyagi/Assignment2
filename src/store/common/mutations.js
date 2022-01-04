@@ -118,7 +118,8 @@ export function setPermissions(state, permission) {
   state.permissions = permission.map(type => ({
     name: type.attributes.desc,
     machineValue: type.attributes.machineValue,
-    id: type.id
+    id: type.id,
+    category: type.attributes.category
   }));
 }
 

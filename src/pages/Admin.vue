@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <div class="row  q-px-xl">
+    <div class="row q-px-xl">
       <div class="col">
         <div class="row" flat bordered>
           <!-- Main Template -->
@@ -15,25 +15,26 @@
           >
             <q-tab-panel name="accountSummary">
               <q-card
-                class="q-pa-xl "
-                style="border-radius:20px;box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);"
+                class="q-pa-xl"
+                style="
+                  border-radius: 20px;
+                  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+                "
               >
                 <div class="row justify-between">
-                  <div class="text-h5 text-weight-bold">
-                    Account Summary
-                  </div>
+                  <div class="text-h5 text-weight-bold">Account Summary</div>
                   <div>
                     <a
                       @click="onEditClick"
-                      class="text-primary text-subtitle1 text-weight-bold q-mr-xs"
-                      style="cursor: pointer;font-size:16px; text-decoration:underline"
-                      >Edit</a
+                      class="text-primary cursor-pointer text-subtitle1 text-weight-bold q-mr-xs"
                     >
-                    <i class="text-primary fas fa-edit"></i>
+                      Edit
+                      <i class="text-primary fas fa-edit"></i>
+                    </a>
                   </div>
                 </div>
                 <q-form ref="accountSummaryForm">
-                  <div class=" q-mt-xl ">
+                  <div class="q-mt-xl">
                     <!-- Name -->
                     <div class="row">
                       <div class="col q-mr-md">
@@ -44,7 +45,7 @@
                         <div class="row">
                           <q-input
                             dense
-                            class=" full-width"
+                            class="full-width"
                             input-class="text-subtitle1"
                             outlined
                             v-model="users.fname"
@@ -85,7 +86,7 @@
                     </div>
                     <!-- address -->
                     <div class="q-mt-sm full-width">
-                      <div class="col ">
+                      <div class="col">
                         <div class="row text-subtitle1 text-weight-bold">
                           Address<span class="text-red">*</span>
                         </div>
@@ -171,7 +172,7 @@
                       @click="cancelAccountSummaryUpdate"
                     />
                     <q-btn
-                      class="col-1 "
+                      class="col-1"
                       size="md"
                       color="primary"
                       label="Save"
@@ -182,21 +183,25 @@
               </q-card>
               <q-card
                 class="q-pa-xl q-mt-xl"
-                style="border-radius:20px;box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);"
+                style="
+                  border-radius: 20px;
+                  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+                "
               >
                 <div class="row justify-between">
                   <div class="text-h5 text-weight-bold">Company Details</div>
                   <div>
                     <a
                       @click="onEditClickOrganization"
-                      class="text-primary text-subtitle1 text-weight-bold q-mr-xs"
-                      style="cursor: pointer;font-size:16px; text-decoration:underline"
-                      >Edit </a
-                    ><i class="text-primary fas fa-edit"></i>
+                      class="text-primary cursor-pointer text-subtitle1 text-weight-bold q-mr-xs"
+                    >
+                      Edit
+                      <i class="text-primary fas fa-edit"></i>
+                    </a>
                   </div>
                 </div>
                 <q-form ref="companyDetailsForm">
-                  <div style="margin-top:30px;">
+                  <div class="q-mt-xl">
                     <div class="row text-subtitle1 text-weight-bold">
                       Company Name<span class="text-red">*</span>
                     </div>
@@ -227,8 +232,7 @@
                         >
                           <a
                             @click="copyUserAddress"
-                            class="text-primary"
-                            style="cursor: pointer; font-size:16px; text-decoration:underline"
+                            class="text-primary text-subtitle cursor-pointer"
                             >Copy from above
                           </a>
                           <q-icon color="primary" name="content_copy" />
@@ -251,7 +255,7 @@
                     </div>
 
                     <div class="row q-mt-sm full-width">
-                      <div class="col ">
+                      <div class="col">
                         <div class="row text-subtitle1 text-weight-bold">
                           Company website
                         </div>
@@ -311,7 +315,7 @@
                         @click="cancelCompanyDetailsUpdate"
                       />
                       <q-btn
-                        class="col-1 "
+                        class="col-1"
                         size="md"
                         color="primary"
                         label="Save"
@@ -323,12 +327,15 @@
               </q-card>
               <q-card
                 class="q-pa-xl q-mt-xl"
-                style="border-radius:20px;box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);"
+                style="
+                  border-radius: 20px;
+                  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+                "
               >
                 <div class="row justify-between">
                   <div class="text-h5 text-weight-bold">
                     <img
-                      class="vertical-middle	"
+                      class="vertical-middle"
                       height="30px;"
                       width="30px;"
                       src="~assets/photo_ID_app.png"
@@ -343,10 +350,10 @@
                   <div>
                     <a
                       @click="onEditClickOrganization('PHOTOIDFORM')"
-                      class="text-primary text-subtitle1 text-weight-bold q-mr-xs"
-                      style="cursor: pointer;font-size:16px; text-decoration:underline"
-                      >Edit </a
-                    ><i class="text-primary fas fa-edit"></i>
+                      class="text-primary cursor-pointer text-subtitle1 text-weight-bold q-mr-xs"
+                      >Edit
+                      <i class="text-primary fas fa-edit"></i>
+                    </a>
                   </div>
                 </div>
                 <q-form ref="editPhotoIDForm">
@@ -392,7 +399,7 @@
                       @click="cancelPhotoIDUpdate"
                     />
                     <q-btn
-                      class="col-1 "
+                      class="col-1"
                       size="md"
                       color="primary"
                       label="Save"
@@ -461,8 +468,8 @@
                 </div>
               </q-card> -->
             </q-tab-panel>
-            <q-tab-panel name="groupPermission" class="q-pa-none">
-              <div class="row">
+            <q-tab-panel name="groupPermission" class="q-pa-lg">
+              <!-- <div class="row">
                 <div class="col">
                   <table>
                     <thead>
@@ -541,7 +548,113 @@
                     </tr>
                   </table>
                 </div>
+              </div> -->
+              <!-- group permission -->
+
+              <div>
+                <p>
+                  Please select the role you wish to configure from the selector
+                  below and then set privileges by checking the associated box.
+                  Checking the box will turn the privilege on. Changes to these
+                  settings will be saved automatically.
+                </p>
+                <div class="text-brown-7 text-weight-bold text-italic">
+                  Note: the user will need to log out and then in again to
+                  activate the privilege
+                </div>
               </div>
+
+              <div class="row q-mt-md items-center">
+                <div class="col">
+                  <div class="row items-center">
+                    <div class="q-mr-md">Role</div>
+
+                    <q-select
+                      dense
+                      outlined
+                      options-dense
+                      behavior="menu"
+                      option-label="value"
+                      option-value="machineValue"
+                      v-model="selectedRole"
+                      :options="roles"
+                      map-options
+                      emit-value
+                      label="Select Role"
+                      style="width: 30%"
+                    />
+                  </div>
+                </div>
+                <div class="col-3">
+                  <q-checkbox v-model="paid">Paid</q-checkbox>
+                </div>
+              </div>
+              <q-scroll-area class="claim-list-scrollable">
+                <div
+                  class="q-my-md"
+                  v-if="selectedRole"
+                  v-for="priv in privileges"
+                >
+                  <div>
+                    <div class="text-capitalize text-h6">
+                      {{ priv }} privileges
+                    </div>
+                    <hr />
+                    <div v-for="(us, ind) in sortedPermissions" :key="ind">
+                      <div v-if="privCategory(us.category, priv)">
+                        <div
+                          class="q-ml-md"
+                          v-for="(user, index) in arrOfRoles"
+                          :key="index"
+                        >
+                          <div
+                            class="row items-center q-my-md no-wrap"
+                            v-if="
+                              roleSelection(
+                                user.value.name,
+                                selectedRole,
+                                user.value.isPaid
+                              )
+                            "
+                          >
+                            <div
+                              v-if="
+                                user.value.permission != null &&
+                                checkPermission(
+                                  permissions[ind].machineValue,
+                                  user.machineValue,
+                                  index
+                                )
+                              "
+                            >
+                              <q-icon
+                                color="primary"
+                                name="check_box"
+                                size="sm"
+                                @click="rolePermission(ind, index, 'selected')"
+                              />
+                            </div>
+
+                            <div v-else>
+                              <q-icon
+                                color="primary"
+                                name=" check_box_outline_blank"
+                                size="sm"
+                                @click="
+                                  rolePermission(ind, index, 'unselected')
+                                "
+                              />
+                            </div>
+                            <div>
+                              <span class="q-ml-sm">{{ us.name }}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </q-scroll-area>
             </q-tab-panel>
             <q-tab-panel name="actionItems">
               <q-card class="q-pa-lg card-style" flat bordered>
@@ -556,10 +669,7 @@
                 </div>
 
                 <q-card class="q-mt-md">
-                  <div
-                    class="row bg-grey-3 q-px-md"
-                    style="align-items: center"
-                  >
+                  <div class="row bg-grey-3 items-center q-px-md">
                     <div class="q-pa-lg" v-if="claimType">
                       {{ allAction.length }} Action Items
                     </div>
@@ -689,7 +799,7 @@
                 class="q-ml-xs"
                 v-if="
                   actions.createWhen.type &&
-                    actionReason[indexOfActionReason].additionalReasons
+                  actionReason[indexOfActionReason].additionalReasons
                 "
               >
                 <q-select
@@ -900,7 +1010,7 @@
                 class="q-ml-xs"
                 v-if="
                   actions.actions.onComplete[index].type &&
-                    actionCompletion[indexOfSubTypeOfCompletion].subOptions
+                  actionCompletion[indexOfSubTypeOfCompletion].subOptions
                 "
               >
                 <q-select
@@ -1070,7 +1180,7 @@
                 class="q-ml-xs"
                 v-if="
                   actions.actions.onOverdue[index].type &&
-                    actionOverDues[indexOfSubType].subOptions
+                  actionOverDues[indexOfSubType].subOptions
                 "
               >
                 <q-select
@@ -1235,6 +1345,19 @@ export default {
 
   data() {
     return {
+      paid: false,
+      roles: [],
+      privileges: [
+        'claims',
+        'clients',
+        'carriers',
+        'leads',
+        'mortgagees',
+        'vendors',
+        'configuration',
+        'tasks',
+        'admin'
+      ],
       editAccountSummary: false,
       editCompanyDetails: false,
       editPhotoIDDetails: false,
@@ -1386,7 +1509,20 @@ export default {
       'organization',
       'allUsers',
       'paidUnpaidUserDetails'
-    ])
+    ]),
+
+    sortedPermissions: function () {
+      function compare(a, b) {
+        if (a.name < b.name) {
+          return -1;
+        }
+        if (a.name > b.name) {
+          return 1;
+        }
+        return 0;
+      }
+      return this.permissions.sort(compare);
+    }
   },
 
   methods: {
@@ -1855,19 +1991,19 @@ export default {
       if (success) {
         /* This Filter function is used for elimination the null and empty values from the array     */
         this.actions.actions.onComplete.forEach(val => {
-          val.task = val.task.filter(function(el) {
+          val.task = val.task.filter(function (el) {
             return el != '';
           });
         });
 
         this.actions.actions.onOverdue.forEach(val => {
-          val.task = val.task.filter(function(el) {
+          val.task = val.task.filter(function (el) {
             return el != '';
           });
         });
 
         this.actions.createWhen.task = this.actions.createWhen.task.filter(
-          function(el) {
+          function (el) {
             return el != '';
           }
         );
@@ -2081,6 +2217,19 @@ export default {
         );
         this.indexOfSubTypeOfCompletion = indexOfCompletionAction;
       }
+    },
+    privCategory(category, priv) {
+      if (category.toLowerCase().includes(priv.toLowerCase())) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    roleSelection(name, selectedRole, isPaid) {
+      if (name === selectedRole) {
+        this.paid = isPaid;
+        return true;
+      }
     }
   },
 
@@ -2104,6 +2253,9 @@ export default {
           value: val
         });
       });
+      for (var i = 0; i < this.roleTypes.length; i++) {
+        this.roles.push(this.roleTypes[i].name);
+      }
     });
     this.getPermissions();
 
@@ -2113,9 +2265,12 @@ export default {
     this.users.contact.type = this.user.phoneNumber.type;
     this.users.contact.number = this.user.phoneNumber.number;
     this.users.email = this.user.email;
-    this.users.mailingAddress.addressRegion = this.user.mailingAddress.addressRegion;
-    this.users.mailingAddress.addressLocality = this.user.mailingAddress.addressLocality;
-    this.users.mailingAddress.houseNumber = this.user.mailingAddress.houseNumber;
+    this.users.mailingAddress.addressRegion =
+      this.user.mailingAddress.addressRegion;
+    this.users.mailingAddress.addressLocality =
+      this.user.mailingAddress.addressLocality;
+    this.users.mailingAddress.houseNumber =
+      this.user.mailingAddress.houseNumber;
     this.users.mailingAddress.address1 = this.user.mailingAddress.address1;
     this.users.mailingAddress.address2 = this.user.mailingAddress.address2;
     this.users.mailingAddress.postalCode = this.user.mailingAddress.postalCode;
@@ -2126,12 +2281,18 @@ export default {
 
     // this.organizations.users.contact.number = this.organization.website;
     this.organizations.users.email = this.organization.photoIDEmail;
-    this.organizations.users.mailingAddress.addressRegion = this.organization.billingInfo.address.addressRegion;
-    this.organizations.users.mailingAddress.addressLocality = this.organization.billingInfo.address.addressLocality;
-    this.organizations.users.mailingAddress.houseNumber = this.organization.billingInfo.address.houseNumber;
-    this.organizations.users.mailingAddress.address1 = this.organization.billingInfo.address.address1;
-    this.organizations.users.mailingAddress.address2 = this.organization.billingInfo.address.address2;
-    this.organizations.users.mailingAddress.postalCode = this.organization.billingInfo.address.postalCode;
+    this.organizations.users.mailingAddress.addressRegion =
+      this.organization.billingInfo.address.addressRegion;
+    this.organizations.users.mailingAddress.addressLocality =
+      this.organization.billingInfo.address.addressLocality;
+    this.organizations.users.mailingAddress.houseNumber =
+      this.organization.billingInfo.address.houseNumber;
+    this.organizations.users.mailingAddress.address1 =
+      this.organization.billingInfo.address.address1;
+    this.organizations.users.mailingAddress.address2 =
+      this.organization.billingInfo.address.address2;
+    this.organizations.users.mailingAddress.postalCode =
+      this.organization.billingInfo.address.postalCode;
   }
 };
 </script>
