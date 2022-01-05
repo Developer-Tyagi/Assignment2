@@ -6,9 +6,16 @@ import localDB, { getCollection } from '@services/dexie';
 export async function getActionOverDues({ commit, dispatch }, params) {
   dispatch('setLoading', true);
   try {
-    const { data } = await request.get(`/overduerules?workflowID=${params}`);
+    let combinedData = [];
 
-    commit('setActionOverDues', data);
+    for (const workflow of params) {
+      const { data } = await request.get(
+        `/overduerules?workflowID=${workflow}`
+      );
+
+      combinedData.push(...data);
+    }
+    commit('setActionOverDues', combinedData);
     dispatch('setLoading', false);
   } catch (e) {
     console.log(e);
@@ -25,9 +32,16 @@ export async function getActionCompletion({ commit, dispatch }, params) {
   dispatch('setLoading', true);
 
   try {
-    const { data } = await request.get(`/completionrules?workflowID=${params}`);
+    let combinedData = [];
 
-    commit('setActionCompletion', data);
+    for (const workflow of params) {
+      const { data } = await request.get(
+        `/completionrules?workflowID=${workflow}`
+      );
+
+      combinedData.push(...data);
+    }
+    commit('setActionCompletion', combinedData);
     dispatch('setLoading', false);
   } catch (e) {
     console.log(e);
@@ -43,9 +57,17 @@ export async function getActionCompletion({ commit, dispatch }, params) {
 export async function getActionReasons({ commit, dispatch }, params) {
   dispatch('setLoading', true);
   try {
-    const { data } = await request.get(`/ruletriggers?workflowID=${params}`);
+    let combinedData = [];
 
-    commit('setActionReasons', data);
+    for (const workflow of params) {
+      const { data } = await request.get(
+        `/ruletriggers?workflowID=${workflow}`
+      );
+
+      combinedData.push(...data);
+    }
+
+    commit('setActionReasons', combinedData);
     dispatch('setLoading', false);
   } catch (e) {
     console.log(e);
@@ -57,12 +79,17 @@ export async function getActionReasons({ commit, dispatch }, params) {
   }
 }
 
-// this function is used to get the list of workflow in the admin action item pannel.
+// this function is used to get the list of rules in the admin action item pannel.
 export async function getAllWorkFlow({ commit, dispatch }, params) {
   dispatch('setLoading', true);
   try {
-    const { data } = await request.get(`/workflows/${params}/rules`);
-    commit('setAllWorkFlow', data);
+    let combinedData = [];
+
+    for (const workflow of params) {
+      const { data } = await request.get(`/workflows/${workflow}/rules`);
+      combinedData.push(...data);
+    }
+    commit('setAllWorkFlow', combinedData);
     dispatch('setLoading', false);
   } catch (e) {
     console.log(e);

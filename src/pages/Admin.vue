@@ -625,11 +625,11 @@
                             <div
                               v-if="
                                 user.value.permission != null &&
-                                checkPermission(
-                                  permissions[ind].machineValue,
-                                  user.machineValue,
-                                  index
-                                )
+                                  checkPermission(
+                                    permissions[ind].machineValue,
+                                    user.machineValue,
+                                    index
+                                  )
                               "
                             >
                               <q-icon
@@ -678,21 +678,6 @@
 
                 <!-- Dialog Box for Adding Action Items -->
                 <div class="column" v-if="addDefaultActionDialogBox">
-                  <div class="row text-subtitle1 text-weight-bold">
-                    <q-input
-                      :prefix="copyRule ? 'Copy-' : ''"
-                      class="full-width"
-                      v-model="actions.name"
-                      maxlength="128"
-                      :label="
-                        editDefaultActionItem
-                          ? copyRule
-                            ? 'Copy-Rule '
-                            : 'Edit Rule'
-                          : 'Create New Rule'
-                      "
-                    />
-                  </div>
                   <q-separator />
                   <div class="row q-mt-lg">
                     <div class="col-3">
@@ -703,24 +688,57 @@
                         </div>
                       </div>
                       <q-timeline color="secondary">
-                        <q-timeline-entry
-                          icon="chevron_right"
-                          :subtitle="actions.triggerEvent.type"
-                        >
+                        <q-timeline-entry icon="warning">
+                          <template v-slot:subtitle>
+                            When: {{ actions.triggerEvent.type }}
+                          </template>
                         </q-timeline-entry>
                         <q-timeline-entry
                           v-for="(item, index) in actions.actions
                             .completionRule"
                           :key="index"
                           icon="chevron_right"
-                          :subtitle="actions.actions.completionRule[index].type"
                         >
+                          <template v-slot:subtitle>
+                            Then:
+                            {{ actions.actions.completionRule[index].type }}
+                          </template>
                         </q-timeline-entry>
                       </q-timeline>
                     </div>
                     <div class="col q-ml-xl">
+                      <!--  rule name -->
+                      <div class="row q-mb-sm">
+                        <div class="col-2">
+                          Rule Name <span class="text-red"> *</span>
+                        </div>
+                        <div class="col-3 q-ml-xs">
+                          <q-input
+                            outlined
+                            dense
+                            :prefix="copyRule ? 'Copy-' : ''"
+                            class="full-width"
+                            v-model="actions.name"
+                            maxlength="128"
+                            :label="
+                              editDefaultActionItem
+                                ? copyRule
+                                  ? 'Copy-Rule '
+                                  : 'Edit Rule'
+                                : 'Create New Rule'
+                            "
+                            :rules="[
+                              val =>
+                                (val && val.length > 0) ||
+                                'Please add rule name'
+                            ]"
+                          />
+                        </div>
+                      </div>
                       <div class="row">
-                        <div class="col-2">Workflow</div>
+                        <div class="col-2">
+                          Workflow <span class="text-red"> *</span>
+                        </div>
                         <div class="col-3 q-ml-xs">
                           <q-select
                             dense
@@ -735,11 +753,18 @@
                             emit-value
                             label="Create a claim"
                             class="input-extra-padding"
+                            :rules="[
+                              val =>
+                                (val && val.length > 0) ||
+                                'Please select any workflow'
+                            ]"
                           />
                         </div>
                       </div>
                       <div class="row">
-                        <div class="col-2">Trigger event</div>
+                        <div class="col-2">
+                          Trigger event<span class="text-red"> *</span>
+                        </div>
                         <div class="col-3 q-ml-xs">
                           <q-select
                             dense
@@ -760,13 +785,18 @@
                             emit-value
                             label="Created when"
                             class="input-extra-padding"
+                            :rules="[
+                              val =>
+                                (val && val.length > 0) ||
+                                'Please select any event'
+                            ]"
                           />
                           <div
                             class="q-ml-xs"
                             v-if="
                               actions.triggerEvent.type &&
-                              actionReason[indexOfActionReason]
-                                .additionalReasons
+                                actionReason[indexOfActionReason]
+                                  .additionalReasons
                             "
                           >
                             <q-select
@@ -788,7 +818,7 @@
                               :rules="[
                                 val =>
                                   (val && val.length > 0) ||
-                                  'Please select any category'
+                                  'Please select any action'
                               ]"
                             >
                               <template v-slot:no-option>
@@ -808,7 +838,9 @@
                         />
                       </div>
                       <div class="row">
-                        <div class="col-2">Actions</div>
+                        <div class="col-2">
+                          Actions <span class="text-red"> *</span>
+                        </div>
                         <div class="col-9 q-ml-xs">
                           <div
                             class="row"
@@ -853,8 +885,8 @@
                                 class="q-ml-md col-1"
                                 v-if="
                                   actions.actions.completionRule[index].type &&
-                                  actionCompletion[indexOfSubTypeOfCompletion]
-                                    .subOptions
+                                    actionCompletion[indexOfSubTypeOfCompletion]
+                                      .subOptions
                                 "
                               >
                                 <q-select
@@ -992,7 +1024,7 @@
                               <div
                                 v-if="
                                   actions.actions.completionRule.length ==
-                                  index + 1
+                                    index + 1
                                 "
                               >
                                 <q-icon
@@ -1009,7 +1041,9 @@
                       </div>
 
                       <div class="row">
-                        <div class="col-2">Assign To</div>
+                        <div class="col-2">
+                          Assign To<span class="text-red"> *</span>
+                        </div>
                         <div class="col-3 q-ml-xs">
                           <div class="">
                             <q-select
@@ -1118,7 +1152,7 @@
                               class="q-ml-lg"
                               v-if="
                                 actions.actions.overdueRule[index].type &&
-                                actionOverDues[indexOfSubType].subOptions
+                                  actionOverDues[indexOfSubType].subOptions
                               "
                             >
                               <q-select
@@ -1168,7 +1202,7 @@
                               <q-select
                                 v-if="
                                   actions.actions.overdueRule[index].task[0] ==
-                                  'user'
+                                    'user'
                                 "
                                 dense
                                 class="col-3 input-extra-padding"
@@ -1532,7 +1566,7 @@ export default {
       'paidUnpaidUserDetails'
     ]),
 
-    sortedPermissions: function () {
+    sortedPermissions: function() {
       function compare(a, b) {
         if (a.name < b.name) {
           return -1;
@@ -2038,19 +2072,19 @@ export default {
     async onClickSaveButton() {
       /* This Filter function is used for elimination the null and empty values from the array     */
       this.actions.actions.completionRule.forEach(val => {
-        val.task = val.task.filter(function (el) {
+        val.task = val.task.filter(function(el) {
           return el != '';
         });
       });
 
       this.actions.actions.overdueRule.forEach(val => {
-        val.task = val.task.filter(function (el) {
+        val.task = val.task.filter(function(el) {
           return el != '';
         });
       });
 
       this.actions.triggerEvent.task = this.actions.triggerEvent.task.filter(
-        function (el) {
+        function(el) {
           return el != '';
         }
       );
@@ -2060,7 +2094,7 @@ export default {
       };
       await this.addWorkflowAction(param);
       this.addDefaultActionDialogBox = false;
-      this.getAllWorkFlow(this.workflowActionItem);
+      this.getAllWorkFlow(this.claimType);
       /*  Clearing the form     */
       (this.workflowActionItem = ''),
         (this.actions = {
@@ -2285,7 +2319,7 @@ export default {
       this.userId = getCurrentUser().id;
     }
     this.getWorkflowAction();
-    this.claimType = 'claim_new_claim';
+    this.claimType = ['claim_new_claim', 'claim_estimation'];
     await this.claimActionItem(this.claimType);
     this.getRoles().then(async () => {
       this.roleTypes.forEach(val => {
@@ -2306,12 +2340,9 @@ export default {
     this.users.contact.type = this.user.phoneNumber.type;
     this.users.contact.number = this.user.phoneNumber.number;
     this.users.email = this.user.email;
-    this.users.mailingAddress.addressRegion =
-      this.user.mailingAddress.addressRegion;
-    this.users.mailingAddress.addressLocality =
-      this.user.mailingAddress.addressLocality;
-    this.users.mailingAddress.houseNumber =
-      this.user.mailingAddress.houseNumber;
+    this.users.mailingAddress.addressRegion = this.user.mailingAddress.addressRegion;
+    this.users.mailingAddress.addressLocality = this.user.mailingAddress.addressLocality;
+    this.users.mailingAddress.houseNumber = this.user.mailingAddress.houseNumber;
     this.users.mailingAddress.address1 = this.user.mailingAddress.address1;
     this.users.mailingAddress.address2 = this.user.mailingAddress.address2;
     this.users.mailingAddress.postalCode = this.user.mailingAddress.postalCode;
@@ -2322,18 +2353,12 @@ export default {
 
     // this.organizations.users.contact.number = this.organization.website;
     this.organizations.users.email = this.organization.photoIDEmail;
-    this.organizations.users.mailingAddress.addressRegion =
-      this.organization.billingInfo.address.addressRegion;
-    this.organizations.users.mailingAddress.addressLocality =
-      this.organization.billingInfo.address.addressLocality;
-    this.organizations.users.mailingAddress.houseNumber =
-      this.organization.billingInfo.address.houseNumber;
-    this.organizations.users.mailingAddress.address1 =
-      this.organization.billingInfo.address.address1;
-    this.organizations.users.mailingAddress.address2 =
-      this.organization.billingInfo.address.address2;
-    this.organizations.users.mailingAddress.postalCode =
-      this.organization.billingInfo.address.postalCode;
+    this.organizations.users.mailingAddress.addressRegion = this.organization.billingInfo.address.addressRegion;
+    this.organizations.users.mailingAddress.addressLocality = this.organization.billingInfo.address.addressLocality;
+    this.organizations.users.mailingAddress.houseNumber = this.organization.billingInfo.address.houseNumber;
+    this.organizations.users.mailingAddress.address1 = this.organization.billingInfo.address.address1;
+    this.organizations.users.mailingAddress.address2 = this.organization.billingInfo.address.address2;
+    this.organizations.users.mailingAddress.postalCode = this.organization.billingInfo.address.postalCode;
   }
 };
 </script>
