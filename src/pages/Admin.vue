@@ -32,17 +32,15 @@
                     <a
                       @click="onEditClick"
                       class="
-                        text-primary text-subtitle1 text-weight-bold
+                        text-primary
+                        cursor-pointer
+                        text-subtitle1 text-weight-bold
                         q-mr-xs
                       "
-                      style="
-                        cursor: pointer;
-                        font-size: 16px;
-                        text-decoration: underline;
-                      "
-                      >Edit</a
                     >
-                    <i class="text-primary fas fa-edit"></i>
+                      Edit
+                      <i class="text-primary fas fa-edit"></i>
+                    </a>
                   </div>
                 </div>
                 <q-form ref="accountSummaryForm">
@@ -63,9 +61,11 @@
                             v-model="users.fname"
                             :disable="!editAccountSummary"
                             lazy-rules
-                            maxlength="25"
+                            maxlength="128"
                             :rules="[
-                              val => val.length > 0 || 'Please add first name'
+                              val => val.length > 0 || 'Please add first name',
+                              val =>
+                                validateText(val) || 'Please enter valid name'
                             ]"
                           />
                         </div>
@@ -83,9 +83,12 @@
                             v-model="users.lname"
                             :disable="!editAccountSummary"
                             lazy-rules
-                            maxlength="25"
+                            maxlength="128"
                             :rules="[
-                              val => val.length > 0 || 'Please add last name'
+                              val => val.length > 0 || 'Please add last name',
+                              val =>
+                                validateText(val) ||
+                                'Please enter valid last name'
                             ]"
                           />
                         </div>
@@ -125,10 +128,14 @@
                             v-model="users.contact.number"
                             :disable="!editAccountSummary"
                             lazy-rules
-                            maxlength="10"
+                            mask="(###) ### - ####"
+                            unmasked-value
                             :rules="[
                               val =>
-                                val.length > 0 || 'Please add contact number'
+                                val.length > 0 || 'Please add contact number',
+                              val =>
+                                val.length > 9 ||
+                                'Mobile number must contain 10 digit'
                             ]"
                           />
                         </div>
@@ -139,12 +146,9 @@
                             Email Address<span class="text-red">*</span>
                           </div>
                         </div>
-
+                        <!-- @click="onEmailClick(user.email, $event)" -->
                         <div class="row">
-                          <div
-                            class="col clickable text-primary"
-                            @click="onEmailClick(user.email, $event)"
-                          >
+                          <div class="col clickable text-primary">
                             <q-input
                               dense
                               class="full-width"
@@ -153,7 +157,10 @@
                               v-model="users.email"
                               :rules="[
                                 val =>
-                                  val.length > 0 || 'Please add email address'
+                                  val.length > 0 || 'Please add email address',
+                                val =>
+                                  validateEmail(val) ||
+                                  'You have entered an invalid email address!'
                               ]"
                               :disable="!editAccountSummary"
                             />
@@ -197,20 +204,19 @@
                     <a
                       @click="onEditClickOrganization"
                       class="
-                        text-primary text-subtitle1 text-weight-bold
+                        text-primary
+                        cursor-pointer
+                        text-subtitle1 text-weight-bold
                         q-mr-xs
                       "
-                      style="
-                        cursor: pointer;
-                        font-size: 16px;
-                        text-decoration: underline;
-                      "
-                      >Edit </a
-                    ><i class="text-primary fas fa-edit"></i>
+                    >
+                      Edit
+                      <i class="text-primary fas fa-edit"></i>
+                    </a>
                   </div>
                 </div>
                 <q-form ref="companyDetailsForm">
-                  <div style="margin-top: 30px">
+                  <div class="q-mt-xl">
                     <div class="row text-subtitle1 text-weight-bold">
                       Company Name<span class="text-red">*</span>
                     </div>
@@ -223,7 +229,7 @@
                         outlined
                         v-model="organizations.users.fname"
                         :disable="!editCompanyDetails"
-                        maxlength="50"
+                        maxlength="128"
                         :rules="[
                           val => val.length > 0 || 'Please add company name'
                         ]"
@@ -241,12 +247,7 @@
                         >
                           <a
                             @click="copyUserAddress"
-                            class="text-primary"
-                            style="
-                              cursor: pointer;
-                              font-size: 16px;
-                              text-decoration: underline;
-                            "
+                            class="text-primary text-subtitle cursor-pointer"
                             >Copy from above
                           </a>
                           <q-icon color="primary" name="content_copy" />
@@ -280,6 +281,11 @@
                           outlined
                           v-model="organizations.website"
                           :disable="!editCompanyDetails"
+                          :rules="[
+                            val =>
+                              validateUrl(val) ||
+                              'You have entered an invalid URL!'
+                          ]"
                         />
                       </div>
                     </div>
@@ -360,16 +366,14 @@
                     <a
                       @click="onEditClickOrganization('PHOTOIDFORM')"
                       class="
-                        text-primary text-subtitle1 text-weight-bold
+                        text-primary
+                        cursor-pointer
+                        text-subtitle1 text-weight-bold
                         q-mr-xs
                       "
-                      style="
-                        cursor: pointer;
-                        font-size: 16px;
-                        text-decoration: underline;
-                      "
-                      >Edit </a
-                    ><i class="text-primary fas fa-edit"></i>
+                      >Edit
+                      <i class="text-primary fas fa-edit"></i>
+                    </a>
                   </div>
                 </div>
                 <q-form ref="editPhotoIDForm">
@@ -424,9 +428,68 @@
                   </div>
                 </q-form>
               </q-card>
+              <!-- <q-card
+                class="q-pa-xl q-my-xl"
+                style="border-radius:20px;box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);"
+              >
+                <div class="row">
+                  <div class="text-h5 text-weight-bold">
+                    Plan:
+                    {{
+                      toUpperCase(
+                        organization.plan && organization.plan.machineValue
+                          ? organization.plan.machineValue
+                          : '-'
+                      )
+                    }}
+                  </div>
+                </div>
+                <div class="row q-mt-md">
+                  <div class="text-subtitle1 text-weight-bold">Paid Users-</div>
+                  <div class="text-subtitle1">{{ organization.paidUsers }}</div>
+
+                  <div class="text-subtitle1 text-weight-bold q-pl-xl">
+                    Unpaid Users-
+                  </div>
+                  <div class="text-subtitle1">
+                    {{ organization.nonPaidUsers }}
+                  </div>
+                </div>
+                <div class="q-mt-md">
+                  <table>
+                    <thead>
+                      <tr class="row text-bold text-h6 text-white">
+                        <th class="bg-primary text-white col">
+                          Paid Users
+                        </th>
+                        <th class="col bg-primary text-white">
+                          UnPaid Users
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody
+                      class="full-width"
+                      style="height: 400px;display: inline-block;overflow: scroll;"
+                    >
+                      <tr
+                        class="row"
+                        v-for="(paidUnpaid, index) in paidUnpaidUserDetails"
+                        :key="index"
+                      >
+                        <td class="col text-center">
+                          {{ paidUnpaid.paidUserName }}
+                        </td>
+                        <td class="col text-center">
+                          {{ paidUnpaid.unPaidUserName }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </q-card> -->
             </q-tab-panel>
-            <q-tab-panel name="groupPermission" class="q-pa-none">
-              <div class="row">
+            <q-tab-panel name="groupPermission" class="q-pa-lg">
+              <!-- <div class="row">
                 <div class="col">
                   <table>
                     <thead>
@@ -479,11 +542,11 @@
                           style="height: 40px"
                           v-if="
                             user.value.permission != null &&
-                            checkPermission(
-                              permissions[ind].machineValue,
-                              user.machineValue,
-                              index
-                            )
+                              checkPermission(
+                                permissions[ind].machineValue,
+                                user.machineValue,
+                                index
+                              )
                           "
                         >
                           <q-icon
@@ -505,7 +568,113 @@
                     </tr>
                   </table>
                 </div>
+              </div> -->
+              <!-- group permission -->
+
+              <div>
+                <p>
+                  Please select the role you wish to configure from the selector
+                  below and then set privileges by checking the associated box.
+                  Checking the box will turn the privilege on. Changes to these
+                  settings will be saved automatically.
+                </p>
+                <div class="text-brown-7 text-weight-bold text-italic">
+                  Note: the user will need to log out and then in again to
+                  activate the privilege
+                </div>
               </div>
+
+              <div class="row q-mt-md items-center">
+                <div class="col">
+                  <div class="row items-center">
+                    <div class="q-mr-md">Role</div>
+
+                    <q-select
+                      dense
+                      outlined
+                      options-dense
+                      behavior="menu"
+                      option-label="value"
+                      option-value="machineValue"
+                      v-model="selectedRole"
+                      :options="roles"
+                      map-options
+                      emit-value
+                      label="Select Role"
+                      style="width: 30%"
+                    />
+                  </div>
+                </div>
+                <div class="col-3">
+                  <q-checkbox v-model="paid">Paid</q-checkbox>
+                </div>
+              </div>
+              <q-scroll-area class="claim-list-scrollable">
+                <div
+                  class="q-my-md"
+                  v-if="selectedRole"
+                  v-for="priv in privileges"
+                >
+                  <div>
+                    <div class="text-capitalize text-h6">
+                      {{ priv }} privileges
+                    </div>
+                    <hr />
+                    <div v-for="(us, ind) in sortedPermissions" :key="ind">
+                      <div v-if="privCategory(us.category, priv)">
+                        <div
+                          class="q-ml-md"
+                          v-for="(user, index) in arrOfRoles"
+                          :key="index"
+                        >
+                          <div
+                            class="row items-center q-my-md no-wrap"
+                            v-if="
+                              roleSelection(
+                                user.value.name,
+                                selectedRole,
+                                user.value.isPaid
+                              )
+                            "
+                          >
+                            <div
+                              v-if="
+                                user.value.permission != null &&
+                                checkPermission(
+                                  permissions[ind].machineValue,
+                                  user.machineValue,
+                                  index
+                                )
+                              "
+                            >
+                              <q-icon
+                                color="primary"
+                                name="check_box"
+                                size="sm"
+                                @click="rolePermission(ind, index, 'selected')"
+                              />
+                            </div>
+
+                            <div v-else>
+                              <q-icon
+                                color="primary"
+                                name=" check_box_outline_blank"
+                                size="sm"
+                                @click="
+                                  rolePermission(ind, index, 'unselected')
+                                "
+                              />
+                            </div>
+                            <div>
+                              <span class="q-ml-sm">{{ us.name }}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </q-scroll-area>
             </q-tab-panel>
             <q-tab-panel name="actionItems">
               <div class="col">
@@ -1204,7 +1373,7 @@ import {
   showPhoneNumber,
   sendPhoneNumber
 } from '@utils/clickable';
-import { validateEmail } from '@utils/validation';
+import { validateEmail, validateText, validateUrl } from '@utils/validation';
 import AutoCompleteAddress from 'components/AutoCompleteAddress';
 
 export default {
@@ -1213,15 +1382,29 @@ export default {
 
   data() {
     return {
+      paid: false,
+      roles: [],
+      privileges: [
+        'claims',
+        'clients',
+        'carriers',
+        'leads',
+        'mortgagees',
+        'vendors',
+        'configuration',
+        'tasks',
+        'admin'
+      ],
       copyRule: false,
       workflowActionItem: '',
+      ActionItemKebabMenu: false,
       editAccountSummary: false,
       editCompanyDetails: false,
       editPhotoIDDetails: false,
       isEditable: false,
-      ActionItemKebabMenu: false,
       editedActionItemID: '',
       selectedWorkflowID: '',
+      editTogglePriorityKey: false,
       editDefaultActionItem: false,
       assignTo: [
         { value: 'User', machineValue: 'user' },
@@ -1344,8 +1527,7 @@ export default {
       indexOfSubOfSubType: 0,
 
       addDefaultActionDialogBox: false,
-      model: null,
-      dueDays: ['Bussiness', 'Calendar']
+      model: null
     };
   },
   computed: {
@@ -1363,7 +1545,20 @@ export default {
       'organization',
       'allUsers',
       'paidUnpaidUserDetails'
-    ])
+    ]),
+
+    sortedPermissions: function () {
+      function compare(a, b) {
+        if (a.name < b.name) {
+          return -1;
+        }
+        if (a.name > b.name) {
+          return 1;
+        }
+        return 0;
+      }
+      return this.permissions.sort(compare);
+    }
   },
 
   methods: {
@@ -1374,17 +1569,13 @@ export default {
     toUpperCase(plan) {
       return plan[0].toUpperCase() + plan.slice(1);
     },
-    toActionItemCancel() {
-      this.copyRule = false;
-      this.addDefaultActionDialogBox = false;
-    },
     ...mapActions([
+      'actionItemToggleSwitch',
       'editAdminActionItem',
       'getActionOverDues',
       'getActionCompletion',
       'getActionReasons',
       'getWorkflowAction',
-      'actionItemToggleSwitch',
       'getAllWorkFlow',
       'addWorkflowAction',
       'getContactTypes',
@@ -1402,12 +1593,18 @@ export default {
     ]),
     ...mapMutations(['webMenuSubOptionTab']),
     validateEmail,
+    validateText,
+    validateUrl,
+    toActionItemCancel() {
+      this.copyRule = false;
+      this.addDefaultActionDialogBox = false;
+    },
 
     //to Delete Admin Action item
     async toDeleteActionItem(item) {
       const payload = {
         itemID: item.id,
-        workFlowID: item.workflowId
+        workFlowID: this.selectedWorkflowID
       };
       this.adminActionItemDelete(payload);
       await this.getAllWorkFlow(this.claimType);
@@ -1567,6 +1764,7 @@ export default {
           );
       }
     },
+
     //this is for action item kebeb menu item
     toActionItemKebabMenu(item) {
       if (this.ActionItemKebabMenu == item.name) this.ActionItemKebabMenu = '';
@@ -1696,13 +1894,10 @@ export default {
     },
     async onSaveEditedButtonOrganization() {
       const success = await this.$refs.companyDetailsForm.validate();
-      if (success) {
-        if (this.organizations.users.mailingAddress.houseNumber) {
-          this.organizations.users.mailingAddress.address1 =
-            this.organizations.users.mailingAddress.houseNumber +
-            ', ' +
-            this.organizations.users.mailingAddress.address1;
-        }
+      if (
+        success &&
+        this.organizations.users.mailingAddress.address1.length > 0
+      ) {
         const payload = {
           data: {
             name: this.organizations.users.fname,
@@ -1722,14 +1917,8 @@ export default {
 
     async onSaveEditedButton() {
       const success = await this.$refs.accountSummaryForm.validate();
-      if (success) {
-        if (this.users.mailingAddress.houseNumber) {
-          this.users.mailingAddress.address1 =
-            this.users.mailingAddress.houseNumber +
-            ', ' +
-            this.users.mailingAddress.address1;
-        }
 
+      if (success && this.users.mailingAddress.address1.length > 0) {
         const payload = {
           id: this.userId,
           data: {
@@ -1740,7 +1929,6 @@ export default {
             email: this.users.email,
             role: this.users.roles,
             mailingAddress: this.users.mailingAddress,
-            /**TODo */
             phoneNumber: {
               type: this.users.contact.type,
               number: sendPhoneNumber(this.users.contact.number)
@@ -1798,7 +1986,7 @@ export default {
       }
     },
 
-    // Action OverDue Sub Dropdown Index set and also used to find the index of selected overdueRule.
+    // Action OverDue Sub Dropdown Index set and also used to find the index of selected onOverdue.
     setSubType(val, index, isEditable) {
       if (isEditable) {
         if (
@@ -1820,7 +2008,7 @@ export default {
       }
     },
 
-    // this function is used to update the selected subOption of overdueRule, and also used to find the index of selected subtoption index.
+    // this function is used to update the selected subOption of onOverdue, and also used to find the index of selected subtoption index.
     setSubOfSubType(subValue, indexOfSubType, index, isEditable) {
       if (isEditable) {
         if (
@@ -1841,7 +2029,7 @@ export default {
       }
     },
 
-    // this function is used to update the subOption of completionRule row and use to find the index value of selected completionRule subOption, which we used further to display subOption of Selected SubOption.
+    // this function is used to update the subOption of onComplete row and use to find the index value of selected onComplete subOption, which we used further to display subOption of Selected SubOption.
     setSubTypeForAction(SubOptionValue, sValue, index, isEditable) {
       if (isEditable) {
         if (
@@ -2017,16 +2205,47 @@ export default {
       this.actions.actions.completionRule.splice(val, 1);
     },
     cancelAccountSummaryUpdate() {
+      this.users.fname = this.user.contact.fname;
+      this.users.lname = this.user.contact.lname;
+      this.users.contact.type = this.user.phoneNumber.type;
+      this.users.contact.number = this.user.phoneNumber.number;
+      this.users.email = this.user.email;
+      this.users.mailingAddress.addressRegion =
+        this.user.mailingAddress.addressRegion;
+      this.users.mailingAddress.addressLocality =
+        this.user.mailingAddress.addressLocality;
+      this.users.mailingAddress.houseNumber =
+        this.user.mailingAddress.houseNumber;
+      this.users.mailingAddress.address1 = this.user.mailingAddress.address1;
+      this.users.mailingAddress.address2 = this.user.mailingAddress.address2;
+      this.users.mailingAddress.postalCode =
+        this.user.mailingAddress.postalCode;
       this.editAccountSummary = false;
-      // update data to previous state
     },
     cancelCompanyDetailsUpdate() {
       this.editCompanyDetails = false;
-      // update data to previous state
+      this.organizations.users.fname = this.organization.name;
+      // this.organizations.users.lname = this.organization.photoIDAPIKey;
+
+      // this.organizations.users.contact.number = this.organization.website;
+      //this.organizations.users.email = this.organization.photoIDEmail;
+      this.organizations.users.mailingAddress.addressRegion =
+        this.organization.billingInfo.address.addressRegion;
+      this.organizations.users.mailingAddress.addressLocality =
+        this.organization.billingInfo.address.addressLocality;
+      this.organizations.users.mailingAddress.houseNumber =
+        this.organization.billingInfo.address.houseNumber;
+      this.organizations.users.mailingAddress.address1 =
+        this.organization.billingInfo.address.address1;
+      this.organizations.users.mailingAddress.address2 =
+        this.organization.billingInfo.address.address2;
+      this.organizations.users.mailingAddress.postalCode =
+        this.organization.billingInfo.address.postalCode;
     },
     cancelPhotoIDUpdate() {
       this.editPhotoIDDetails = false;
-      // update data to previous state
+      this.organizations.users.lname = this.organization.photoIDAPIKey;
+      this.organizations.users.email = this.organization.photoIDEmail;
     },
     copyUserAddress() {
       this.organizations.users.mailingAddress = this.user.mailingAddress;
@@ -2044,7 +2263,7 @@ export default {
       });
     },
 
-    // this function is used to update the subOptions of completionRule option and also used to get the index of seleted completionRule action.
+    // this function is used to update the subOptions of onComplete option and also used to get the index of seleted onComplete action.
     setSubTypeOfAction(val, index, isEditable) {
       if (isEditable) {
         if (
@@ -2063,6 +2282,19 @@ export default {
           std => std.machineValue === val
         );
         this.indexOfSubTypeOfCompletion = indexOfCompletionAction;
+      }
+    },
+    privCategory(category, priv) {
+      if (category.toLowerCase().includes(priv.toLowerCase())) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    roleSelection(name, selectedRole, isPaid) {
+      if (name === selectedRole) {
+        this.paid = isPaid;
+        return true;
       }
     }
   },
@@ -2087,6 +2319,9 @@ export default {
           value: val
         });
       });
+      for (var i = 0; i < this.roleTypes.length; i++) {
+        this.roles.push(this.roleTypes[i].name);
+      }
     });
     this.getPermissions();
 
@@ -2094,7 +2329,7 @@ export default {
     this.users.fname = this.user.contact.fname;
     this.users.lname = this.user.contact.lname;
     this.users.contact.type = this.user.phoneNumber.type;
-    this.users.contact.number = showPhoneNumber(this.user.phoneNumber.number);
+    this.users.contact.number = this.user.phoneNumber.number;
     this.users.email = this.user.email;
     this.users.mailingAddress.addressRegion =
       this.user.mailingAddress.addressRegion;
@@ -2131,6 +2366,7 @@ export default {
 .q-dialog__inner--minimized > div {
   max-width: 80%;
 }
+
 tr:nth-child(even) {
   background-color: $grey-3 !important;
 }

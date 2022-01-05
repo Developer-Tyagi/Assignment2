@@ -79,7 +79,7 @@ export async function actionItemToggleSwitch({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.post(
-      `workflows/${payload.workflowId}/rules/${payload.ruleId}/${toggleStatus}`,
+      `workflows/${payload.workflowId}/rules/${payload.ruleId}/${payload.toggleStatus}`,
       buildApiData('actions', payload.data)
     );
     dispatch('setLoading', false);
