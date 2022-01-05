@@ -5,14 +5,14 @@
         :dialogName="'Add Carrier'"
         @closeDialog="$emit('closeDialog', false)"
       />
-      <div class="mobile-container-page ">
+      <div class="mobile-container-page">
         <q-form class="q-pa-md" ref="carrierForm">
           <q-card class="bg-white q-pa-sm q-px-md">
             <div class="rounded">
               <q-input
                 dense
                 borderless
-                class="required input-style input-overlay "
+                class="required input-style input-overlay"
                 v-model="carrier.name"
                 label="Carrier Name"
                 lazy-rules
@@ -70,9 +70,7 @@
                 ]"
               />
               <div class="row q-mt-sm justify-between">
-                <div class="q-my-auto ">
-                  Can Claim be Filed by email
-                </div>
+                <div class="q-my-auto">Can Claim be Filed by email</div>
                 <q-toggle v-model="carrier.meta.claimFiledByEmail" />
               </div>
             </div>
@@ -80,11 +78,19 @@
               <div class="form-heading">Carrier's Address</div>
               <div class="q-mt-xs">
                 <AutoCompleteAddress
+                  :id="'CarrierAddress'"
                   :address="carrier.address"
                   :isDropBoxEnable="false"
                   :isChecksEnable="false"
                   :value="true"
+                  :view="'mobile'"
                 />
+                <!-- <AutoCompleteAddress
+                  :address="carrier.address"
+                  :isDropBoxEnable="false"
+                  :isChecksEnable="false"
+                  :value="true"
+                /> -->
               </div>
             </div>
             <div>
@@ -156,7 +162,7 @@
                 </div>
               </div>
             </div>
-            <div class=" q-mt-md">
+            <div class="q-mt-md">
               <p class="form-heading">Other Info</p>
               <q-input
                 dense
@@ -181,7 +187,7 @@
       </div>
       <div class="row justify-center">
         <q-btn
-          class=" q-mt-md single-next-button-style text-capitalize"
+          class="q-mt-md single-next-button-style text-capitalize"
           @click="onAddCarrierButtonClick"
           :label="isEdit ? 'SAVE' : 'Add Carrier'"
         >
@@ -285,22 +291,27 @@ export default {
     if (this.isEdit) {
       this.carrier.name = this.selectedCarrier.name;
       this.carrier.email = this.selectedCarrier.email;
-      this.carrier.phoneNumber[0].number = this.selectedCarrier.phoneNumber[0].number;
-      this.carrier.phoneNumber[0].type = this.selectedCarrier.phoneNumber[0].type;
-      this.carrier.meta.claimFiledByEmail = this.selectedCarrier.meta.claimFiledByEmail;
+      this.carrier.phoneNumber[0].number =
+        this.selectedCarrier.phoneNumber[0].number;
+      this.carrier.phoneNumber[0].type =
+        this.selectedCarrier.phoneNumber[0].type;
+      this.carrier.meta.claimFiledByEmail =
+        this.selectedCarrier.meta.claimFiledByEmail;
       if (this.selectedCarrier.address) {
         if (
           this.selectedCarrier.address.dropBox &&
           this.selectedCarrier.address.dropBox.isPresent
         ) {
-          this.carrier.address.dropBox.isPresent = this.selectedCarrier.address.dropBox.isPresent;
+          this.carrier.address.dropBox.isPresent =
+            this.selectedCarrier.address.dropBox.isPresent;
         }
         this.carrier.address = this.selectedCarrier.address;
       }
 
       this.carrier.contact.fname = this.selectedCarrier.contact.fname;
       this.carrier.contact.lname = this.selectedCarrier.contact.lname;
-      this.carrier.contact.phoneNumber = this.selectedCarrier.contact.phoneNumber;
+      this.carrier.contact.phoneNumber =
+        this.selectedCarrier.contact.phoneNumber;
       this.carrier.contact.email = this.selectedCarrier.contact.email;
       this.carrier.info.website = this.selectedCarrier.info.website;
       this.carrier.info.notes = this.selectedCarrier.info.notes;

@@ -218,10 +218,18 @@
             </q-card>
             <q-card class="q-ma-md q-pa-md q-mt-sm"
               ><span class="text-bold">Address Details</span>
-              <AutoCompleteAddress
+              <!-- <AutoCompleteAddress
                 :address="personnel.address"
                 :isDropBoxEnable="false"
                 :isChecksEnable="false"
+              /> -->
+              <AutoCompleteAddress
+                :id="'PersonelAddress'"
+                :address="personnel.address"
+                :isDropBoxEnable="false"
+                :isChecksEnable="false"
+                :value="true"
+                :view="'mobile'"
               />
             </q-card>
             <q-card class="q-ma-md q-pa-md q-mt-sm">
@@ -372,10 +380,18 @@
             </q-card>
             <q-card class="q-ma-md q-pa-md q-mt-sm"
               ><span class="text-bold">Address Details</span>
-              <AutoCompleteAddress
+              <!-- <AutoCompleteAddress
                 :address="personnel.address"
                 :isDropBoxEnable="false"
                 :isChecksEnable="false"
+              /> -->
+              <AutoCompleteAddress
+                :id="'PersonelAddress'"
+                :address="personnel.address"
+                :isDropBoxEnable="false"
+                :isChecksEnable="false"
+                :value="true"
+                :view="'mobile'"
               />
             </q-card>
             <q-card class="q-ma-md q-pa-md q-mt-sm">

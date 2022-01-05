@@ -1,9 +1,9 @@
 <template>
   <q-page>
-    <div class=" q-mt-sm rounded bg-white">
+    <div class="q-mt-sm rounded bg-white">
       <div>
         <q-select
-          class=" input-style input-overlay"
+          class="input-style input-overlay"
           borderless
           v-model="carrierPersonnel.honorific.value"
           :options="titles"
@@ -60,10 +60,18 @@
       <div class="q-mt-sm">
         <span class="text-bold">Address Details</span>
         <AutoCompleteAddress
+          :id="'CarrierPersonelAddress'"
           :address="carrierPersonnel.address"
           :isDropBoxEnable="false"
           :isChecksEnable="false"
+          :value="true"
+          :view="'mobile'"
         />
+        <!-- <AutoCompleteAddress
+          :address="carrierPersonnel.address"
+          :isDropBoxEnable="false"
+          :isChecksEnable="false"
+        /> -->
       </div>
       <div class="q-mt-sm">
         <div v-if="carrierPersonnel.phoneNumber">
@@ -113,7 +121,7 @@
         </div>
       </div>
       <div class="q-mt-xs">
-        <div class="form-heading  q-my-sm">Notes</div>
+        <div class="form-heading q-my-sm">Notes</div>
         <q-input
           type="textarea"
           borderless
@@ -121,7 +129,7 @@
           required
           class="full-width input-style input-overlay"
           v-model="carrierPersonnel.notes"
-          style="resize: none; padding-left:10px;"
+          style="resize: none; padding-left: 10px"
           placeholder="Take notes here..."
         ></q-input>
       </div>

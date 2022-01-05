@@ -221,12 +221,20 @@
                 </div>
               </q-card>
               <q-card class="q-pa-sm">
+                <!-- <AutoCompleteAddress
+                  :id="'AddVendor'"
+                  :address="users.mailingAddress"
+                  :isDropBoxEnable="false"
+                  :isChecksEnable="false"
+                  :value="false"
+                /> -->
                 <AutoCompleteAddress
                   :id="'AddVendor'"
                   :address="users.mailingAddress"
                   :isDropBoxEnable="false"
                   :isChecksEnable="false"
                   :value="false"
+                  :view="'mobile'"
                 />
               </q-card>
             </div>

@@ -249,8 +249,17 @@
                 :address="lossAddress"
                 :isDropBoxEnable="false"
                 :isChecksEnable="true"
+                :value="true"
+                :view="'mobile'"
                 :isAsteriskMark="true"
               />
+              <!-- <AutoCompleteAddress
+                :id="'LeadLoss'"
+                :address="lossAddress"
+                :isDropBoxEnable="false"
+                :isChecksEnable="true"
+                :isAsteriskMark="true"
+              /> -->
             </q-card>
             <div class="row q-mt-lg justify-center">
               <div style="width: 90%">

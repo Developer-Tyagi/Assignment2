@@ -254,12 +254,21 @@
               ]"
             />
             <div class="q-mx-sm">
+              <!-- <AutoCompleteAddress
+                :id="'PropertyInfo'"
+                :address="propertyAddressDetails"
+                :isDropBoxEnable="false"
+                :isChecksEnable="true"
+                :isAsteriskMark="true"
+              /> -->
               <AutoCompleteAddress
                 :id="'PropertyInfo'"
                 :address="propertyAddressDetails"
                 :isDropBoxEnable="false"
                 :isChecksEnable="true"
                 :isAsteriskMark="true"
+                :value="true"
+                :view="'mobile'"
               />
             </div>
           </q-form>

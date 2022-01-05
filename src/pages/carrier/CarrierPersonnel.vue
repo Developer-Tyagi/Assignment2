@@ -242,10 +242,18 @@
               </div>
               <div class="q-mt-sm">
                 <span class="text-bold">Address Details</span>
-                <AutoCompleteAddress
+                <!-- <AutoCompleteAddress
                   :address="personnel.address"
                   :isDropBoxEnable="false"
                   :isChecksEnable="false"
+                /> -->
+                <AutoCompleteAddress
+                  :id="'PersonelAddress'"
+                  :address="personnel.address"
+                  :isDropBoxEnable="false"
+                  :isChecksEnable="false"
+                  :value="true"
+                  :view="'mobile'"
                 />
               </div>
               <div class="q-mt-sm">

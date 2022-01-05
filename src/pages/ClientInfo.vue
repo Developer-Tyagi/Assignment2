@@ -596,7 +596,6 @@
             </q-card>
             <q-card class="q-ma-xs q-pa-md">
               <span class="form-heading">Address Details</span>
-
               <AutoCompleteAddress
                 :id="'ClientInfoEdit'"
                 :address="clientAddressDetails"
@@ -604,7 +603,17 @@
                 :isChecksEnable="true"
                 :isAsteriskMark="true"
                 :value="false"
+                :view="'mobile'"
               />
+
+              <!-- <AutoCompleteAddress
+                :id="'ClientInfoEdit'"
+                :address="clientAddressDetails"
+                :isDropBoxEnable="true"
+                :isChecksEnable="true"
+                :isAsteriskMark="true"
+                :value="false"
+              /> -->
             </q-card>
             <q-card class="q-ma-xs q-pa-md">
               <div class="row">
