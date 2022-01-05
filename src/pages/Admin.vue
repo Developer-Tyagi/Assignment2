@@ -367,7 +367,6 @@
                         class="full-width"
                         input-class="text-subtitle1"
                         outlined
-                        @click="onEmailClick(user.email, $event)"
                         v-model="organizations.users.email"
                         :disable="!editPhotoIDDetails"
                       />
