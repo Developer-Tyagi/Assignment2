@@ -6,7 +6,7 @@ import localDB, { getCollection } from '@services/dexie';
 export async function getActionOverDues({ commit, dispatch }, params) {
   dispatch('setLoading', true);
   try {
-    const { data } = await request.get(`/actionoverdues?workflowID=${params}`);
+    const { data } = await request.get(`/overduerules?workflowID=${params}`);
 
     commit('setActionOverDues', data);
     dispatch('setLoading', false);
@@ -25,9 +25,7 @@ export async function getActionCompletion({ commit, dispatch }, params) {
   dispatch('setLoading', true);
 
   try {
-    const { data } = await request.get(
-      `/actioncompletions?workflowID=${params}`
-    );
+    const { data } = await request.get(`/completionrules?workflowID=${params}`);
 
     commit('setActionCompletion', data);
     dispatch('setLoading', false);
@@ -45,7 +43,7 @@ export async function getActionCompletion({ commit, dispatch }, params) {
 export async function getActionReasons({ commit, dispatch }, params) {
   dispatch('setLoading', true);
   try {
-    const { data } = await request.get(`/actionreasons?workflowID=${params}`);
+    const { data } = await request.get(`/ruletriggers?workflowID=${params}`);
 
     commit('setActionReasons', data);
     dispatch('setLoading', false);
@@ -63,7 +61,7 @@ export async function getActionReasons({ commit, dispatch }, params) {
 export async function getAllWorkFlow({ commit, dispatch }, params) {
   dispatch('setLoading', true);
   try {
-    const { data } = await request.get(`/workflows/${params}/actions`);
+    const { data } = await request.get(`/workflows/${params}/rules`);
     commit('setAllWorkFlow', data);
     dispatch('setLoading', false);
   } catch (e) {
@@ -76,12 +74,37 @@ export async function getAllWorkFlow({ commit, dispatch }, params) {
   }
 }
 
+// function is used to toggle the action item enable/disable switch.
+export async function actionItemToggleSwitch({ dispatch, state }, payload) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.post(
+      `workflows/${payload.workflowId}/rules/${payload.ruleId}/${toggleStatus}`,
+      buildApiData('actions', payload.data)
+    );
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Toggle Status Updated'
+    });
+    return true;
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: 'Toggle Status Update Failed!'
+    });
+    return false;
+  }
+}
+
 // function is used to add the new workflow action in admin pannel.
 export async function addWorkflowAction({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.post(
-      `workflows/${payload.machineValue}/actions`,
+      `workflows/${payload.machineValue}/rules`,
       buildApiData('actions', payload.data)
     );
     dispatch('setLoading', false);
@@ -107,7 +130,7 @@ export async function editAdminActionItem({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.patch(
-      `workflows/${payload.workflowID}/actions/${payload.id}`,
+      `workflows/${payload.workflowID}/rules/${payload.id}`,
       buildApiData('actions', payload.attributes)
     );
     dispatch('setLoading', false);
@@ -129,7 +152,7 @@ export async function adminActionItemDelete({ commit, dispatch }, payload) {
   dispatch('setLoading', true);
   try {
     await request.del(
-      `workflows/${payload.workFlowID}/actions/${payload.itemID}`
+      `workflows/${payload.workFlowID}/rules/${payload.itemID}`
     );
     dispatch('setLoading', false);
     dispatch('setNotification', {
@@ -149,7 +172,7 @@ export async function adminActionItemDelete({ commit, dispatch }, payload) {
 export async function getWorkflowAction({ commit, dispatch }) {
   dispatch('setLoading', true);
   try {
-    const { data } = await request.get('/workflows ');
+    const { data } = await request.get('/workflows');
 
     commit('setWorkflowAction', data);
     dispatch('setLoading', false);
