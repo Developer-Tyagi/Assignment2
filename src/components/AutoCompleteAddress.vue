@@ -235,17 +235,18 @@
       <span class="q-pl-sm" style="color: #c10015 !important; font-size: 11px">
         {{ errorMSG }}
       </span>
-      <input
+      <q-input
         type="text"
         borderless
-        class="full-width input-autocomplete input-style input-overlay"
+        class="full-width input-style input-overlay"
         dense
+        label="Address 2"
         :disable="this.readOnly"
         v-model="address.address2"
       />
     </div>
-    <div class="row q-ml-sm">
-      <div class="col q-mr-md">
+    <div class="col q-mx-sm">
+      <div class=" ">
         <!-- <div class="row text-subtitle1 text-weight-bold">
           City<span class="text-red">*</span>
         </div> -->
@@ -264,7 +265,7 @@
           ]"
         />
       </div>
-      <div class="col q-mr-md">
+      <div class=" ">
         <!-- <div class="row text-subtitle1 text-weight-bold">
           State<span class="text-red">*</span>
         </div> -->
@@ -282,7 +283,7 @@
           :rules="[val => val.length > 0 || 'Please fill the state']"
         />
       </div>
-      <div class="col q-mr-sm">
+      <div class=" ">
         <!-- <div class="row text-subtitle1 text-weight-bold">
           ZIP Code<span class="text-red">*</span>
         </div> -->
