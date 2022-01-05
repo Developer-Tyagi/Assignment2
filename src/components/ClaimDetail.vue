@@ -5,8 +5,7 @@
       class="row justify-between"
       v-if="
         !getSelectedClaim.meta ||
-          (getSelectedClaim.meta &&
-            getSelectedClaim.meta.isEstimateDone != true)
+        (getSelectedClaim.meta && getSelectedClaim.meta.isEstimateDone != true)
       "
     >
       <div class="col-12 text-red text-center">
@@ -45,7 +44,7 @@
             <span
               v-if="
                 getSelectedClaim.lossInfo.property &&
-                  getSelectedClaim.lossInfo.property.name
+                getSelectedClaim.lossInfo.property.name
               "
             >
               {{
@@ -61,14 +60,8 @@
       </div>
       <div class="row q-mt-sm">
         <div class="heading-light col-4 q-mt-none">Loss Address:</div>
-        <div class="col  q-ml-lg">
+        <div class="col q-ml-lg">
           <span v-if="getSelectedClaim.lossInfo">
-            {{
-              getSelectedClaim.lossInfo.property &&
-              getSelectedClaim.lossInfo.property.houseNumber
-                ? getSelectedClaim.lossInfo.property.houseNumber
-                : ''
-            }},
             {{
               getSelectedClaim.lossInfo.property
                 ? getSelectedClaim.lossInfo.property
@@ -116,7 +109,7 @@
       <div class="row q-mt-sm" v-if="userRole != 'vendor'">
         <div class="heading-light col-4 q-mt-none">Claim Email</div>
         <div
-          class="col  q-ml-lg clickLink"
+          class="col q-ml-lg clickLink"
           @click="onEmailClick(getSelectedClaim.claimEmail, $event)"
         >
           {{ getSelectedClaim.claimEmail ? getSelectedClaim.claimEmail : '-' }}
@@ -124,13 +117,13 @@
       </div>
       <div class="row q-mt-sm">
         <div class="heading-light col-4 q-mt-none">Claim Number</div>
-        <div class="col  q-ml-lg ">
+        <div class="col q-ml-lg">
           {{ getSelectedClaim.number ? getSelectedClaim.number : '- - -' }}
         </div>
       </div>
       <div class="row q-mt-sm" v-if="userRole != 'vendor'">
         <div class="heading-light col-4 q-mt-none">Current Phase</div>
-        <div class="col  q-ml-lg">
+        <div class="col q-ml-lg">
           {{
             getSelectedClaim.currentPhase
               ? getSelectedClaim.currentPhase.value
@@ -140,7 +133,7 @@
       </div>
       <div class="row q-mt-sm">
         <div class="heading-light col-4 q-mt-none">Loss Date</div>
-        <div class="col  q-ml-lg" v-if="getSelectedClaim.lossInfo">
+        <div class="col q-ml-lg" v-if="getSelectedClaim.lossInfo">
           {{ dateToShow(getSelectedClaim.lossInfo.date) }}
         </div>
       </div>

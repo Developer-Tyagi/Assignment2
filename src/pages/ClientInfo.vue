@@ -145,13 +145,6 @@
             <div>
               {{
                 editSelectedClient.attributes.insuredInfo.mailingAddress
-                  .houseNumber
-                  ? editSelectedClient.attributes.insuredInfo.mailingAddress
-                      .houseNumber
-                  : ''
-              }}
-              {{
-                editSelectedClient.attributes.insuredInfo.mailingAddress
                   .address1
                   ? editSelectedClient.attributes.insuredInfo.mailingAddress
                       .address1

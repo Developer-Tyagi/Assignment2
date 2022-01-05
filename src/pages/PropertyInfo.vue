@@ -42,11 +42,6 @@
                   </div>
                   <div>
                     {{
-                      setClientProperty[i - 1].attributes.houseNumber
-                        ? setClientProperty[i - 1].attributes.houseNumber
-                        : '-'
-                    }}
-                    {{
                       setClientProperty[i - 1].attributes.address1
                         ? setClientProperty[i - 1].attributes.address1
                         : '-'

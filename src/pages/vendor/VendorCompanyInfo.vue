@@ -1,10 +1,10 @@
 <template>
   <div class="">
-    <div class="form-heading ">
+    <div class="form-heading">
       {{ selectedVendor.name ? selectedVendor.companyName : '-' }}
     </div>
 
-    <div class=" row">
+    <div class="row">
       <q-icon
         size="xs"
         name="create "
@@ -22,16 +22,11 @@
       />
     </div>
     <div class="row">
-      <span class="heading-light col-4 " v-if="selectedVendor.mailingAddress"
+      <span class="heading-light col-4" v-if="selectedVendor.mailingAddress"
         >Address Details</span
       >
       <span class="col-7 q-ml-md" v-if="selectedVendor.mailingAddress">
         <div class="row">
-          {{
-            selectedVendor.mailingAddress.houseNumber
-              ? selectedVendor.mailingAddress.houseNumber
-              : '-'
-          }}
           {{
             selectedVendor.mailingAddress.address1
               ? selectedVendor.mailingAddress.address1
@@ -41,7 +36,7 @@
         <div
           v-if="
             selectedVendor.mailingAddress &&
-              selectedVendor.mailingAddress.address2
+            selectedVendor.mailingAddress.address2
           "
         >
           {{ selectedVendor.mailingAddress.address2 }}
@@ -74,9 +69,7 @@
     </div>
 
     <div class="q-mt-sm row" v-if="selectedVendor.email">
-      <div class="heading-light q-mt-none col-xs-4 ">
-        Company Email
-      </div>
+      <div class="heading-light q-mt-none col-xs-4">Company Email</div>
       <div
         class="column q-ml-md clickLink"
         @click="onEmailClick(selectedVendor.email, $event)"
@@ -86,12 +79,10 @@
     </div>
 
     <div class="q-mt-sm row" v-if="selectedVendor.phoneNumber">
-      <div class="heading-light q-mt-none col-xs-4 ">
-        Company Number
-      </div>
+      <div class="heading-light q-mt-none col-xs-4">Company Number</div>
       <div
         v-if="selectedVendor.phoneNumber.type"
-        class="column q-ml-md "
+        class="column q-ml-md"
         @click="onEmailClick(selectedVendor.email, $event)"
       >
         {{ selectedVendor.phoneNumber.type }} :
@@ -103,10 +94,8 @@
       >
     </div>
     <div class="q-mt-sm row" v-if="selectedVendor.contact">
-      <div class="heading-light q-mt-none col-xs-4 ">
-        Contact Info
-      </div>
-      <div class="column q-ml-md ">
+      <div class="heading-light q-mt-none col-xs-4">Contact Info</div>
+      <div class="column q-ml-md">
         {{ selectedVendor ? selectedVendor.contact.fname : '-' }}
         {{ selectedVendor ? selectedVendor.contact.lname : '-' }}
         <div

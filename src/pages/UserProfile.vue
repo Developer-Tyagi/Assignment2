@@ -35,11 +35,6 @@
             <div class="column col-6" v-if="user.mailingAddress">
               <div>
                 {{
-                  user.mailingAddress.houseNumber
-                    ? user.mailingAddress.houseNumber
-                    : '-'
-                }}
-                {{
                   user.mailingAddress.address1
                     ? user.mailingAddress.address1
                     : '-'
