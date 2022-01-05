@@ -311,11 +311,6 @@
               <div class="q-mr-md" v-if="singleUserData.mailingAddress">
                 <div>
                   {{
-                    singleUserData.mailingAddress.houseNumber
-                      ? singleUserData.mailingAddress.houseNumber
-                      : '-'
-                  }}
-                  {{
                     singleUserData.mailingAddress.address1
                       ? singleUserData.mailingAddress.address1
                       : '-'
