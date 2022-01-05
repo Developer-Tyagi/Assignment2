@@ -367,7 +367,6 @@
                         class="full-width"
                         input-class="text-subtitle1"
                         outlined
-                        @click="onEmailClick(user.email, $event)"
                         v-model="organizations.users.email"
                         :disable="!editPhotoIDDetails"
                       />
@@ -2176,7 +2175,7 @@ export default {
     });
     this.getPermissions();
 
-    this.claimActionItem(this.claimType);
+    //this.claimActionItem(this.claimType);
     // assign values to this.users
     this.users.fname = this.user.contact.fname;
     this.users.lname = this.user.contact.lname;
@@ -2202,6 +2201,7 @@ export default {
     this.organizations.users.mailingAddress.address1 = this.organization.billingInfo.address.address1;
     this.organizations.users.mailingAddress.address2 = this.organization.billingInfo.address.address2;
     this.organizations.users.mailingAddress.postalCode = this.organization.billingInfo.address.postalCode;
+    this.claimActionItem(this.claimType);
   }
 };
 </script>
