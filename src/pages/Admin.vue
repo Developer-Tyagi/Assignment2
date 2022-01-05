@@ -31,12 +31,7 @@
                   <div>
                     <a
                       @click="onEditClick"
-                      class="
-                        text-primary
-                        cursor-pointer
-                        text-subtitle1 text-weight-bold
-                        q-mr-xs
-                      "
+                      class="text-primary cursor-pointer text-subtitle1 text-weight-bold q-mr-xs"
                     >
                       Edit
                       <i class="text-primary fas fa-edit"></i>
@@ -147,7 +142,7 @@
                           </div>
                         </div>
                         <!-- @click="onEmailClick(user.email, $event)" -->
-                        <div class="row">
+                        <div class="row ">
                           <div class="col clickable text-primary">
                             <q-input
                               dense
@@ -203,12 +198,7 @@
                   <div>
                     <a
                       @click="onEditClickOrganization"
-                      class="
-                        text-primary
-                        cursor-pointer
-                        text-subtitle1 text-weight-bold
-                        q-mr-xs
-                      "
+                      class="text-primary cursor-pointer text-subtitle1 text-weight-bold q-mr-xs"
                     >
                       Edit
                       <i class="text-primary fas fa-edit"></i>
@@ -365,12 +355,7 @@
                   <div>
                     <a
                       @click="onEditClickOrganization('PHOTOIDFORM')"
-                      class="
-                        text-primary
-                        cursor-pointer
-                        text-subtitle1 text-weight-bold
-                        q-mr-xs
-                      "
+                      class="text-primary cursor-pointer text-subtitle1 text-weight-bold q-mr-xs"
                       >Edit
                       <i class="text-primary fas fa-edit"></i>
                     </a>
@@ -581,6 +566,111 @@
                 <div class="text-brown-7 text-weight-bold text-italic">
                   Note: the user will need to log out and then in again to
                   activate the privilege
+                </div>
+              </div>
+
+              <div class="row q-mt-md items-center">
+                <div class="col">
+                  <div class="row items-center">
+                    <div class="q-mr-md">Role</div>
+
+                    <q-select
+                      dense
+                      outlined
+                      options-dense
+                      behavior="menu"
+                      option-label="value"
+                      option-value="machineValue"
+                      v-model="selectedRole"
+                      :options="roles"
+                      map-options
+                      emit-value
+                      label="Select Role"
+                      style="width: 30%"
+                    />
+                  </div>
+                </div>
+                <div class="col-3">
+                  <q-checkbox v-model="paid">Paid</q-checkbox>
+                </div>
+              </div>
+              <q-scroll-area class="claim-list-scrollable">
+                <div
+                  class="q-my-md"
+                  v-if="selectedRole"
+                  v-for="priv in privileges"
+                >
+                  <div>
+                    <div class="text-capitalize text-h6">
+                      {{ priv }} privileges
+                    </div>
+                    <hr />
+                    <div v-for="(us, ind) in sortedPermissions" :key="ind">
+                      <div v-if="privCategory(us.category, priv)">
+                        <div
+                          class="q-ml-md"
+                          v-for="(user, index) in arrOfRoles"
+                          :key="index"
+                        >
+                          <div
+                            class="row items-center q-my-md no-wrap"
+                            v-if="
+                              roleSelection(
+                                user.value.name,
+                                selectedRole,
+                                user.value.isPaid
+                              )
+                            "
+                          >
+                            <div
+                              v-if="
+                                user.value.permission != null &&
+                                checkPermission(
+                                  permissions[ind].machineValue,
+                                  user.machineValue,
+                                  index
+                                )
+                              "
+                            >
+                              <q-icon
+                                color="primary"
+                                name="check_box"
+                                size="sm"
+                                @click="rolePermission(ind, index, 'selected')"
+                              />
+                            </div>
+
+                            <div v-else>
+                              <q-icon
+                                color="primary"
+                                name=" check_box_outline_blank"
+                                size="sm"
+                                @click="
+                                  rolePermission(ind, index, 'unselected')
+                                "
+                              />
+                            </div>
+                            <div>
+                              <span class="q-ml-sm">{{ us.name }}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </q-scroll-area>
+            </q-tab-panel>
+            <q-tab-panel name="actionItems">
+              <q-card class="q-pa-lg card-style" flat bordered>
+                <div class="text-h6 text-bold">Claim Action Item</div>
+                <div class="row">
+                  <q-btn
+                    color="primary"
+                    label="+ Add Default Action "
+                    @click="addDefaultActionItem()"
+                    :disable="claimType == ''"
+                  />
                 </div>
               </div>
 
@@ -2210,16 +2300,12 @@ export default {
       this.users.contact.type = this.user.phoneNumber.type;
       this.users.contact.number = this.user.phoneNumber.number;
       this.users.email = this.user.email;
-      this.users.mailingAddress.addressRegion =
-        this.user.mailingAddress.addressRegion;
-      this.users.mailingAddress.addressLocality =
-        this.user.mailingAddress.addressLocality;
-      this.users.mailingAddress.houseNumber =
-        this.user.mailingAddress.houseNumber;
+      this.users.mailingAddress.addressRegion = this.user.mailingAddress.addressRegion;
+      this.users.mailingAddress.addressLocality = this.user.mailingAddress.addressLocality;
+      this.users.mailingAddress.houseNumber = this.user.mailingAddress.houseNumber;
       this.users.mailingAddress.address1 = this.user.mailingAddress.address1;
       this.users.mailingAddress.address2 = this.user.mailingAddress.address2;
-      this.users.mailingAddress.postalCode =
-        this.user.mailingAddress.postalCode;
+      this.users.mailingAddress.postalCode = this.user.mailingAddress.postalCode;
       this.editAccountSummary = false;
     },
     cancelCompanyDetailsUpdate() {
@@ -2229,18 +2315,12 @@ export default {
 
       // this.organizations.users.contact.number = this.organization.website;
       //this.organizations.users.email = this.organization.photoIDEmail;
-      this.organizations.users.mailingAddress.addressRegion =
-        this.organization.billingInfo.address.addressRegion;
-      this.organizations.users.mailingAddress.addressLocality =
-        this.organization.billingInfo.address.addressLocality;
-      this.organizations.users.mailingAddress.houseNumber =
-        this.organization.billingInfo.address.houseNumber;
-      this.organizations.users.mailingAddress.address1 =
-        this.organization.billingInfo.address.address1;
-      this.organizations.users.mailingAddress.address2 =
-        this.organization.billingInfo.address.address2;
-      this.organizations.users.mailingAddress.postalCode =
-        this.organization.billingInfo.address.postalCode;
+      this.organizations.users.mailingAddress.addressRegion = this.organization.billingInfo.address.addressRegion;
+      this.organizations.users.mailingAddress.addressLocality = this.organization.billingInfo.address.addressLocality;
+      this.organizations.users.mailingAddress.houseNumber = this.organization.billingInfo.address.houseNumber;
+      this.organizations.users.mailingAddress.address1 = this.organization.billingInfo.address.address1;
+      this.organizations.users.mailingAddress.address2 = this.organization.billingInfo.address.address2;
+      this.organizations.users.mailingAddress.postalCode = this.organization.billingInfo.address.postalCode;
     },
     cancelPhotoIDUpdate() {
       this.editPhotoIDDetails = false;

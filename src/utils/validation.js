@@ -20,7 +20,7 @@ export function validateNonRequiredEmail(mail) {
   return true;
 }
 export function validateUrl(url) {
-  const regex = /^((https?|ftp|smtp):\/\/)?(www.)?[a-z0-9]+\.[a-z]+(\/[a-zA-Z0-9#]+\/?)*$/;
+  const regex = /^((https?|ftp|smtp):\/\/)?(www.)?[a-z0-9 .]+\.[a-z]+(\/[a-zA-Z0-9#]+\/?)*\.[a-z]+(\/[a-zA-Z0-9#]+\/?)*$/;
 
   if (url) {
     if (regex.test(url)) {
@@ -77,4 +77,20 @@ export function nonRequiredPhoneNumber(val) {
     if (sendPhoneNumber(val).length == 10) return true;
     else return false;
   }
+}
+// validate text doesnot contain number and special char
+export function validateText(text) {
+  const regex = /^[a-zA-Z ]*$/;
+  if (regex.test(text)) {
+    return true;
+  }
+  return false;
+}
+// Validate alphanumeric field
+export function validateAlphaNumericText(text) {
+  const regex = /^[a-zA-Z0-9]{5}(-[a-zA-Z0-9]{4})?$/;
+  if (regex.test(text)) {
+    return true;
+  }
+  return false;
 }
