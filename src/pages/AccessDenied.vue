@@ -22,10 +22,15 @@
   </q-page>
 </template>
 <script>
+import { isMobile } from 'src/utils/common';
 export default {
   methods: {
     goToDashboard() {
-      this.$router.push('/dashboard');
+      if (isMobile()) {
+        this.$router.push('/dashboard');
+      } else {
+        this.$router.push('/admin');
+      }
     }
   }
 };
