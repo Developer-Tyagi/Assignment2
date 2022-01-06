@@ -35,11 +35,6 @@
               <div class="heading-light col-3">Address Details</div>
               <div class="col-7" v-if="personnel.address">
                 {{
-                  personnel.address.houseNumber
-                    ? personnel.address.houseNumber
-                    : '-'
-                }}
-                {{
                   personnel.address.address1 ? personnel.address.address1 : '-'
                 }}
                 <div v-if="personnel.address && personnel.address.address2">
