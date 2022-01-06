@@ -367,7 +367,6 @@
                         class="full-width"
                         input-class="text-subtitle1"
                         outlined
-                        @click="onEmailClick(user.email, $event)"
                         v-model="organizations.users.email"
                         :disable="!editPhotoIDDetails"
                       />
@@ -469,88 +468,6 @@
               </q-card> -->
             </q-tab-panel>
             <q-tab-panel name="groupPermission" class="q-pa-lg">
-              <!-- <div class="row">
-                <div class="col">
-                  <table>
-                    <thead>
-                      <tr>
-                        <div
-                          style="
-                            height: 50px;
-                            border: 1px solid #ccc;
-                            font-size: 15px;
-                            overflow: auto;
-                            position: sticky;
-                            top: 0;
-                            z-index: 10;
-                          "
-                          class="text-center bg-white"
-                        >
-                          <div class="q-mt-sm text-bold" style="height: 30px">
-                            Permission/Role
-                          </div>
-                        </div>
-
-                        <th
-                          v-for="(user, index) in arrOfRoles"
-                          style="height: 30px"
-                          :key="index"
-                        >
-                          <div style="height: 45px; width: 100px">
-                            {{ user.value.name }}
-                          </div>
-                        </th>
-                      </tr>
-                    </thead>
-                    <tr v-for="(us, ind) in permissions" :key="ind">
-                      <th
-                        style="
-                          height: 40px;
-                          font-size: 10px;
-                          font-weight: normal;
-                          text-align: left;
-                        "
-                      >
-                        <span class="q-ml-sm">{{ us.name }}</span>
-                      </th>
-                      <td
-                        align="center"
-                        v-for="(user, index) in arrOfRoles"
-                        :key="index"
-                      >
-                        <div
-                          style="height: 40px"
-                          v-if="
-                            user.value.permission != null &&
-                              checkPermission(
-                                permissions[ind].machineValue,
-                                user.machineValue,
-                                index
-                              )
-                          "
-                        >
-                          <q-icon
-                            color="primary  q-mt-sm"
-                            name="check_circle"
-                            size="sm"
-                            @click="rolePermission(ind, index, 'selected')"
-                          />
-                        </div>
-                        <div v-else style="height: 40px">
-                          <q-icon
-                            color="primary q-mt-sm"
-                            name=" radio_button_unchecked"
-                            size="sm"
-                            @click="rolePermission(ind, index, 'unselected')"
-                          />
-                        </div>
-                      </td>
-                    </tr>
-                  </table>
-                </div>
-              </div> -->
-              <!-- group permission -->
-
               <div>
                 <p>
                   Please select the role you wish to configure from the selector
@@ -620,11 +537,11 @@
                             <div
                               v-if="
                                 user.value.permission != null &&
-                                checkPermission(
-                                  permissions[ind].machineValue,
-                                  user.machineValue,
-                                  index
-                                )
+                                  checkPermission(
+                                    permissions[ind].machineValue,
+                                    user.machineValue,
+                                    index
+                                  )
                               "
                             >
                               <q-icon
@@ -799,7 +716,7 @@
                 class="q-ml-xs"
                 v-if="
                   actions.createWhen.type &&
-                  actionReason[indexOfActionReason].additionalReasons
+                    actionReason[indexOfActionReason].additionalReasons
                 "
               >
                 <q-select
@@ -1010,7 +927,7 @@
                 class="q-ml-xs"
                 v-if="
                   actions.actions.onComplete[index].type &&
-                  actionCompletion[indexOfSubTypeOfCompletion].subOptions
+                    actionCompletion[indexOfSubTypeOfCompletion].subOptions
                 "
               >
                 <q-select
@@ -1180,7 +1097,7 @@
                 class="q-ml-xs"
                 v-if="
                   actions.actions.onOverdue[index].type &&
-                  actionOverDues[indexOfSubType].subOptions
+                    actionOverDues[indexOfSubType].subOptions
                 "
               >
                 <q-select
@@ -1511,7 +1428,7 @@ export default {
       'paidUnpaidUserDetails'
     ]),
 
-    sortedPermissions: function () {
+    sortedPermissions: function() {
       function compare(a, b) {
         if (a.name < b.name) {
           return -1;
@@ -1991,19 +1908,19 @@ export default {
       if (success) {
         /* This Filter function is used for elimination the null and empty values from the array     */
         this.actions.actions.onComplete.forEach(val => {
-          val.task = val.task.filter(function (el) {
+          val.task = val.task.filter(function(el) {
             return el != '';
           });
         });
 
         this.actions.actions.onOverdue.forEach(val => {
-          val.task = val.task.filter(function (el) {
+          val.task = val.task.filter(function(el) {
             return el != '';
           });
         });
 
         this.actions.createWhen.task = this.actions.createWhen.task.filter(
-          function (el) {
+          function(el) {
             return el != '';
           }
         );
@@ -2245,7 +2162,6 @@ export default {
     }
     this.getWorkflowAction();
     this.claimType = 'claim_new_claim';
-    await this.claimActionItem(this.claimType);
     this.getRoles().then(async () => {
       this.roleTypes.forEach(val => {
         this.arrOfRoles.push({
@@ -2259,18 +2175,16 @@ export default {
     });
     this.getPermissions();
 
+    //this.claimActionItem(this.claimType);
     // assign values to this.users
     this.users.fname = this.user.contact.fname;
     this.users.lname = this.user.contact.lname;
     this.users.contact.type = this.user.phoneNumber.type;
     this.users.contact.number = this.user.phoneNumber.number;
     this.users.email = this.user.email;
-    this.users.mailingAddress.addressRegion =
-      this.user.mailingAddress.addressRegion;
-    this.users.mailingAddress.addressLocality =
-      this.user.mailingAddress.addressLocality;
-    this.users.mailingAddress.houseNumber =
-      this.user.mailingAddress.houseNumber;
+    this.users.mailingAddress.addressRegion = this.user.mailingAddress.addressRegion;
+    this.users.mailingAddress.addressLocality = this.user.mailingAddress.addressLocality;
+    this.users.mailingAddress.houseNumber = this.user.mailingAddress.houseNumber;
     this.users.mailingAddress.address1 = this.user.mailingAddress.address1;
     this.users.mailingAddress.address2 = this.user.mailingAddress.address2;
     this.users.mailingAddress.postalCode = this.user.mailingAddress.postalCode;
@@ -2281,18 +2195,13 @@ export default {
 
     // this.organizations.users.contact.number = this.organization.website;
     this.organizations.users.email = this.organization.photoIDEmail;
-    this.organizations.users.mailingAddress.addressRegion =
-      this.organization.billingInfo.address.addressRegion;
-    this.organizations.users.mailingAddress.addressLocality =
-      this.organization.billingInfo.address.addressLocality;
-    this.organizations.users.mailingAddress.houseNumber =
-      this.organization.billingInfo.address.houseNumber;
-    this.organizations.users.mailingAddress.address1 =
-      this.organization.billingInfo.address.address1;
-    this.organizations.users.mailingAddress.address2 =
-      this.organization.billingInfo.address.address2;
-    this.organizations.users.mailingAddress.postalCode =
-      this.organization.billingInfo.address.postalCode;
+    this.organizations.users.mailingAddress.addressRegion = this.organization.billingInfo.address.addressRegion;
+    this.organizations.users.mailingAddress.addressLocality = this.organization.billingInfo.address.addressLocality;
+    this.organizations.users.mailingAddress.houseNumber = this.organization.billingInfo.address.houseNumber;
+    this.organizations.users.mailingAddress.address1 = this.organization.billingInfo.address.address1;
+    this.organizations.users.mailingAddress.address2 = this.organization.billingInfo.address.address2;
+    this.organizations.users.mailingAddress.postalCode = this.organization.billingInfo.address.postalCode;
+    this.claimActionItem(this.claimType);
   }
 };
 </script>
