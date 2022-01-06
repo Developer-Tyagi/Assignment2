@@ -6,7 +6,7 @@ import localDB, { getCollection } from '@services/dexie';
 export async function getActionOverDues({ commit, dispatch }, params) {
   dispatch('setLoading', true);
   try {
-    const { data } = await request.get(`/actionoverdues?workflowID=${params}`);
+    const { data } = await request.get(`/overduerules?workflowID=${params}`);
 
     commit('setActionOverDues', data);
     dispatch('setLoading', false);
@@ -25,9 +25,7 @@ export async function getActionCompletion({ commit, dispatch }, params) {
   dispatch('setLoading', true);
 
   try {
-    const { data } = await request.get(
-      `/actioncompletions?workflowID=${params}`
-    );
+    const { data } = await request.get(`/completionrules?workflowID=${params}`);
 
     commit('setActionCompletion', data);
     dispatch('setLoading', false);
@@ -45,7 +43,7 @@ export async function getActionCompletion({ commit, dispatch }, params) {
 export async function getActionReasons({ commit, dispatch }, params) {
   dispatch('setLoading', true);
   try {
-    const { data } = await request.get(`/actionreasons?workflowID=${params}`);
+    const { data } = await request.get(`/ruletriggers?workflowID=${params}`);
 
     commit('setActionReasons', data);
     dispatch('setLoading', false);
@@ -63,7 +61,7 @@ export async function getActionReasons({ commit, dispatch }, params) {
 export async function getAllWorkFlow({ commit, dispatch }, params) {
   dispatch('setLoading', true);
   try {
-    const { data } = await request.get(`/workflows/${params}/actions`);
+    const { data } = await request.get(`/workflows/${params}/rules`);
     commit('setAllWorkFlow', data);
     dispatch('setLoading', false);
   } catch (e) {
