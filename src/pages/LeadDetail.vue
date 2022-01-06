@@ -66,7 +66,7 @@
               }}</span
             >
             <div v-if="selectedLead.leadSource.type != 'none'" class="q-ml-sm">
-              ({{ selectedLead.leadSource.type }})
+              {{ selectedLead.leadSource.type }}
             </div>
           </div>
           <div v-else class="row q-mt-sm">
@@ -134,12 +134,6 @@
                 <div class="heading-light q-mt-none col-4">Loss Address</div>
                 <div class="col-6 q-ml-md">
                   <div>
-                    {{
-                      selectedLead.lossLocation.houseNumber
-                        ? selectedLead.lossLocation.houseNumber
-                        : '-'
-                    }}
-
                     {{
                       selectedLead.lossLocation.address1
                         ? selectedLead.lossLocation.address1

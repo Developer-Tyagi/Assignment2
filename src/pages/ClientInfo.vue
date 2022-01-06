@@ -145,13 +145,6 @@
             <div>
               {{
                 editSelectedClient.attributes.insuredInfo.mailingAddress
-                  .houseNumber
-                  ? editSelectedClient.attributes.insuredInfo.mailingAddress
-                      .houseNumber
-                  : ''
-              }}
-              {{
-                editSelectedClient.attributes.insuredInfo.mailingAddress
                   .address1
                   ? editSelectedClient.attributes.insuredInfo.mailingAddress
                       .address1
@@ -596,7 +589,6 @@
             </q-card>
             <q-card class="q-ma-xs q-pa-md">
               <span class="form-heading">Address Details</span>
-
               <AutoCompleteAddress
                 :id="'ClientInfoEdit'"
                 :address="clientAddressDetails"
@@ -604,6 +596,7 @@
                 :isChecksEnable="true"
                 :isAsteriskMark="true"
                 :value="false"
+                :view="'mobile'"
               />
             </q-card>
             <q-card class="q-ma-xs q-pa-md">

@@ -35,11 +35,6 @@
               <div class="heading-light col-3">Address Details</div>
               <div class="col-7" v-if="personnel.address">
                 {{
-                  personnel.address.houseNumber
-                    ? personnel.address.houseNumber
-                    : '-'
-                }}
-                {{
                   personnel.address.address1 ? personnel.address.address1 : '-'
                 }}
                 <div v-if="personnel.address && personnel.address.address2">
@@ -242,10 +237,14 @@
               </div>
               <div class="q-mt-sm">
                 <span class="text-bold">Address Details</span>
+
                 <AutoCompleteAddress
+                  :id="'PersonelAddress'"
                   :address="personnel.address"
                   :isDropBoxEnable="false"
                   :isChecksEnable="false"
+                  :value="true"
+                  :view="'mobile'"
                 />
               </div>
               <div class="q-mt-sm">

@@ -56,9 +56,9 @@
             <q-icon
               v-if="
                 $route.name == 'create client' &&
-                  !isOnline &&
-                  editSelectedClient.id &&
-                  isOfflineClientEdit
+                !isOnline &&
+                editSelectedClient.id &&
+                isOfflineClientEdit
               "
               name="edit"
               @click="onClickEditIcon"
@@ -97,7 +97,7 @@
           size="4em"
           font-size="2.5rem"
           icon="person"
-          class="text-white  bg-grey q-mr-md"
+          class="text-white bg-grey q-mr-md"
         >
         </q-avatar>
 
@@ -160,13 +160,7 @@
             />
           </div>
           <div
-            class="
-              col
-              column
-              text-weight-bold text-white
-              q-pa-sm q-ml-md
-              text-h6
-            "
+            class="col column text-weight-bold text-white q-pa-sm q-ml-md text-h6"
             style="width: calc(100% - 54px)"
           >
             <div
@@ -199,18 +193,18 @@
               class="q-mt-lg bg-white rounded-sidebar q-pa-none q-pb-xs"
               v-if="
                 (link.title != 'Dashboard' || isMobile()) &&
-                  (link.title != 'Claims' || isMobile()) &&
-                  (link.title != 'Clients' || isMobile()) &&
-                  (link.title != 'Leads' || isMobile()) &&
-                  (link.title != 'Vendors' || isMobile()) &&
-                  (link.title != 'Carriers' || isMobile()) &&
-                  (link.title != 'Mortgages' || isMobile()) &&
-                  (link.title != 'Vendors' || isMobile()) &&
-                  (link.title != 'Carriers' || isMobile()) &&
-                  (link.title != 'Mortgages' || isMobile()) &&
-                  (link.title != 'Manage Users' || !isMobile()) &&
-                  (link.title != 'Configuration' || !isMobile()) &&
-                  (link.title != 'Admin' || !isMobile())
+                (link.title != 'Claims' || isMobile()) &&
+                (link.title != 'Clients' || isMobile()) &&
+                (link.title != 'Leads' || isMobile()) &&
+                (link.title != 'Vendors' || isMobile()) &&
+                (link.title != 'Carriers' || isMobile()) &&
+                (link.title != 'Mortgages' || isMobile()) &&
+                (link.title != 'Vendors' || isMobile()) &&
+                (link.title != 'Carriers' || isMobile()) &&
+                (link.title != 'Mortgages' || isMobile()) &&
+                (link.title != 'Manage Users' || !isMobile()) &&
+                (link.title != 'Configuration' || !isMobile()) &&
+                (link.title != 'Admin' || !isMobile())
               "
             >
               <q-item-section @click="onClickMenuItem(link.title)">
@@ -325,7 +319,6 @@
                   <q-item-section
                     v-if="menuItem.subOption"
                     @click="changeParentColor(menuItem.title)"
-                    class="q-mr-md"
                   >
                     <q-expansion-item group="somegroup">
                       <template v-slot:header>
@@ -337,7 +330,7 @@
                           "
                         >
                           <q-item-section avatar>
-                            <q-icon size="sm" class="q-mt-sm q-mb-sm">
+                            <q-icon size="sm" class="q-my-sm">
                               <q-img
                                 :src="getImage(menuItem.icon)"
                                 color="primary"
@@ -351,6 +344,7 @@
                       </template>
 
                       <q-item
+                        class="q-ml-sm"
                         v-for="(subMenuOption, index) in menuItem.subOption"
                         :key="index"
                       >
@@ -367,7 +361,7 @@
                         >
                           {{ subMenuOption.name }}
                           <div
-                            class="q-mr-xl q-pr-lg q-mt-xs"
+                            class="q-mr-xl q-pr-lg"
                             v-if="subOptionSelected.key == subMenuOption.key"
                           >
                             <q-separator style="background: #ef5926" />
@@ -596,7 +590,8 @@ export default {
     this.webMenuSubOptionTab(this.linksDataForWebDrawer[0].subOption[0]);
     this.breadcrumbsData.menuItemTitle = this.linksDataForWebDrawer[0].title;
     this.breadcrumbsData.menuItemLink = this.linksDataForWebDrawer[0].link;
-    this.breadcrumbsData.subItemTitle = this.linksDataForWebDrawer[0].subOption[0].name;
+    this.breadcrumbsData.subItemTitle =
+      this.linksDataForWebDrawer[0].subOption[0].name;
     this.breadcrumbsData.menuItem = this.linksDataForWebDrawer[0];
   },
 
@@ -623,7 +618,8 @@ export default {
     onClickBreadcrumbsHome() {
       this.breadcrumbsData.menuItemTitle = this.linksDataForWebDrawer[0].title;
       this.breadcrumbsData.menuItemLink = this.linksDataForWebDrawer[0].link;
-      this.breadcrumbsData.subItemTitle = this.linksDataForWebDrawer[0].subOption[0].name;
+      this.breadcrumbsData.subItemTitle =
+        this.linksDataForWebDrawer[0].subOption[0].name;
       this.breadcrumbsData.menuItem = this.linksDataForWebDrawer[0];
       const route = this.$router.currentRoute.fullPath.split('/')[1];
       if (route != this.breadcrumbsData.menuItemLink.slice(1)) {
@@ -846,8 +842,8 @@ export default {
   color: #000000;
   border-radius: 0 32px 32px 0;
   border-left: 4px solid #ef5926;
-  left: 41%;
-  padding-left: 35px;
+  left: 38%;
+  padding-left: 45px;
   margin-left: -118px;
 }
 .menu-item-styling-non-component {
@@ -880,5 +876,8 @@ export default {
 
 .breadcrumbs-style {
   color: #667085;
+}
+.q-item__section--avatar {
+  min-width: 0px;
 }
 </style>

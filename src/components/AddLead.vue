@@ -250,6 +250,8 @@
                 :isDropBoxEnable="false"
                 :isChecksEnable="true"
                 :isAsteriskMark="true"
+                :value="true"
+                :view="'mobile'"
               />
             </q-card>
             <div class="row q-mt-lg justify-center">

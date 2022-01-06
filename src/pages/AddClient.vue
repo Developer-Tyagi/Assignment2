@@ -421,7 +421,10 @@
                   :isDropBoxEnable="true"
                   :isChecksEnable="true"
                   :isAsteriskMark="true"
+                  :value="true"
+                  :view="'mobile'"
                 />
+
                 <div class="row">
                   <p class="q-mx-none q-my-auto">Tenant Occupied</p>
                   <q-toggle
@@ -517,8 +520,9 @@
                 :address="mailingAddressDetails"
                 :isDropBoxEnable="false"
                 :isChecksEnable="true"
-                :isFieldsDisable="isMailingAddressSameToggle"
                 :isAsteriskMark="true"
+                :value="true"
+                :view="'mobile'"
               />
             </q-card>
             <div class="row q-mt-lg justify-center">

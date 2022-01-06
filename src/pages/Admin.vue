@@ -13,7 +13,6 @@
             "
             v-model="webSubOptionMenuTab.key"
             animated
-            vertical
             swipeable
             transition-prev="jump-up"
             transition-next="jump-up"
@@ -387,7 +386,6 @@
                         class="full-width"
                         input-class="text-subtitle1"
                         outlined
-                        @click="onEmailClick(user.email, $event)"
                         v-model="organizations.users.email"
                         :disable="!editPhotoIDDetails"
                       />
@@ -489,88 +487,6 @@
               </q-card> -->
             </q-tab-panel>
             <q-tab-panel name="groupPermission" class="q-pa-lg">
-              <!-- <div class="row">
-                <div class="col">
-                  <table>
-                    <thead>
-                      <tr>
-                        <div
-                          style="
-                            height: 50px;
-                            border: 1px solid #ccc;
-                            font-size: 15px;
-                            overflow: auto;
-                            position: sticky;
-                            top: 0;
-                            z-index: 10;
-                          "
-                          class="text-center bg-white"
-                        >
-                          <div class="q-mt-sm text-bold" style="height: 30px">
-                            Permission/Role
-                          </div>
-                        </div>
-
-                        <th
-                          v-for="(user, index) in arrOfRoles"
-                          style="height: 30px"
-                          :key="index"
-                        >
-                          <div style="height: 45px; width: 100px">
-                            {{ user.value.name }}
-                          </div>
-                        </th>
-                      </tr>
-                    </thead>
-                    <tr v-for="(us, ind) in permissions" :key="ind">
-                      <th
-                        style="
-                          height: 40px;
-                          font-size: 10px;
-                          font-weight: normal;
-                          text-align: left;
-                        "
-                      >
-                        <span class="q-ml-sm">{{ us.name }}</span>
-                      </th>
-                      <td
-                        align="center"
-                        v-for="(user, index) in arrOfRoles"
-                        :key="index"
-                      >
-                        <div
-                          style="height: 40px"
-                          v-if="
-                            user.value.permission != null &&
-                              checkPermission(
-                                permissions[ind].machineValue,
-                                user.machineValue,
-                                index
-                              )
-                          "
-                        >
-                          <q-icon
-                            color="primary  q-mt-sm"
-                            name="check_circle"
-                            size="sm"
-                            @click="rolePermission(ind, index, 'selected')"
-                          />
-                        </div>
-                        <div v-else style="height: 40px">
-                          <q-icon
-                            color="primary q-mt-sm"
-                            name=" radio_button_unchecked"
-                            size="sm"
-                            @click="rolePermission(ind, index, 'unselected')"
-                          />
-                        </div>
-                      </td>
-                    </tr>
-                  </table>
-                </div>
-              </div> -->
-              <!-- group permission -->
-
               <div>
                 <p>
                   Please select the role you wish to configure from the selector
@@ -2400,7 +2316,7 @@ export default {
   async created() {
     this.getAllUsers();
     this.paidUnpaidUserDetails;
-    this.getOrganization();
+    await this.getOrganization();
 
     this.getContactTypes();
     if (getCurrentUser().attributes) {
@@ -2423,6 +2339,7 @@ export default {
     });
     this.getPermissions();
 
+    await this.claimActionItem(this.claimType);
     // assign values to this.users
     this.users.fname = this.user.contact.fname;
     this.users.lname = this.user.contact.lname;

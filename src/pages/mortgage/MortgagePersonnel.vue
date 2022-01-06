@@ -40,11 +40,6 @@
               <div class="heading-light col-3">Address Details</div>
               <div class="col-7" v-if="personnel.address">
                 {{
-                  personnel.address.houseNumber
-                    ? personnel.address.houseNumber
-                    : '-'
-                }}
-                {{
                   personnel.address.address1 ? personnel.address.address1 : '-'
                 }}
 
@@ -218,10 +213,14 @@
             </q-card>
             <q-card class="q-ma-md q-pa-md q-mt-sm"
               ><span class="text-bold">Address Details</span>
+
               <AutoCompleteAddress
+                :id="'PersonelAddress'"
                 :address="personnel.address"
                 :isDropBoxEnable="false"
                 :isChecksEnable="false"
+                :value="true"
+                :view="'mobile'"
               />
             </q-card>
             <q-card class="q-ma-md q-pa-md q-mt-sm">
@@ -372,10 +371,14 @@
             </q-card>
             <q-card class="q-ma-md q-pa-md q-mt-sm"
               ><span class="text-bold">Address Details</span>
+
               <AutoCompleteAddress
+                :id="'PersonelAddress'"
                 :address="personnel.address"
                 :isDropBoxEnable="false"
                 :isChecksEnable="false"
+                :value="true"
+                :view="'mobile'"
               />
             </q-card>
             <q-card class="q-ma-md q-pa-md q-mt-sm">

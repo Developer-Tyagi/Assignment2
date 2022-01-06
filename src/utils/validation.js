@@ -88,7 +88,7 @@ export function validateText(text) {
 }
 // Validate alphanumeric field
 export function validateAlphaNumericText(text) {
-  const regex = /^[a-zA-Z0-9]{5}(-[a-zA-Z0-9]{4})?$/;
+  const regex = /^[a-zA-Z0-9]*$/;
   if (regex.test(text)) {
     return true;
   }

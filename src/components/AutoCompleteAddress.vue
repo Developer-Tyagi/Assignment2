@@ -10,8 +10,8 @@
       <input
         type="text"
         :id="'id' + id"
-        class=" input-style  input-overlay input-autocomplete"
-        style=" margin-left: -1%;"
+        class="input-style input-overlay input-autocomplete"
+        style="margin-left: -1%"
         :v-model="'model' + id"
         placeholder="AutoComplete address"
         :disabled="isFieldsDisable"
@@ -128,7 +128,7 @@
         @keydown="validateAddress(address.address1)"
         @blur="validateAddress(address.address1)"
       />
-      <span class="q-pl-sm" style="color:#C10015 !important; font-size:11px;">
+      <span class="q-pl-sm" style="color: #c10015 !important; font-size: 11px">
         {{ errorMSG }}
       </span>
       <q-input
@@ -137,7 +137,7 @@
         class="q-mt-sm"
         dense
         :disable="this.readOnly"
-        style=" border-radius: 4px; height: 46px"
+        style="border-radius: 4px; height: 46px"
         v-model="address.address2"
       />
     </div>
@@ -214,6 +214,116 @@
       :rules="[val => checkValidations(val) || 'Please fill the dropbox info']"
     />
   </div>
+  <div class="" v-else-if="view == 'mobile'">
+    <div
+      :class="{
+        'no-visibility': isFieldsDisable,
+        visibility: !isFieldsDisable
+      }"
+    >
+      <input
+        type="text"
+        borderless
+        :id="'id' + id"
+        class="full-width input-autocomplete input-style input-overlay"
+        v-model="address.address1"
+        v-bind:disabled="this.readOnly"
+        @keydown="validateAddress(address.address1)"
+        @blur="validateAddress(address.address1)"
+      />
+      <span class="q-pl-sm" style="color: #c10015 !important; font-size: 11px">
+        {{ errorMSG }}
+      </span>
+      <q-input
+        type="text"
+        borderless
+        class="full-width input-style input-overlay"
+        dense
+        label="Address 2"
+        :disable="this.readOnly"
+        v-model="address.address2"
+      />
+    </div>
+    <div class="col q-mx-sm">
+      <div class=" ">
+        <!-- <div class="row text-subtitle1 text-weight-bold">
+          City<span class="text-red">*</span>
+        </div> -->
+        <q-input
+          dense
+          borderless
+          :class="{ required: isAsteriskMark }"
+          class="input-style input-overlay"
+          v-model="address.addressLocality"
+          :disable="this.readOnly"
+          lazy-rules
+          label="City"
+          :rules="[
+            val => checkValidations(val) || 'Please fill the city',
+            val => validateText(val) || 'Please enter valid city'
+          ]"
+        />
+      </div>
+      <div class=" ">
+        <!-- <div class="row text-subtitle1 text-weight-bold">
+          State<span class="text-red">*</span>
+        </div> -->
+        <q-select
+          dense
+          borderless
+          :disable="this.readOnly"
+          :class="{ required: isAsteriskMark }"
+          class="input-style input-overlay"
+          v-model="address.addressRegion"
+          :options="states"
+          behavior="menu"
+          label="State"
+          lazy-rules
+          :rules="[val => checkValidations(val) || 'Please fill the state']"
+        />
+      </div>
+      <div class=" ">
+        <!-- <div class="row text-subtitle1 text-weight-bold">
+          ZIP Code<span class="text-red">*</span>
+        </div> -->
+        <q-input
+          borderless
+          dense
+          :disable="this.readOnly"
+          :class="{ required: isAsteriskMark }"
+          class="input-style input-overlay"
+          v-model="address.postalCode"
+          lazy-rules
+          label="Zip code"
+          :rules="[
+            val => checkValidations(val) || 'Please fill the zip code',
+            val =>
+              validateAlphaNumericText(val) || 'Please enter valid ZIP code'
+          ]"
+        />
+      </div>
+    </div>
+
+    <div class="row justify-between"></div>
+    <div class="row" v-if="isDropBoxEnable">
+      <p class="q-mx-none q-my-auto">Gate / Dropbox</p>
+      <q-toggle
+        class="q-ml-auto"
+        v-model="address.dropBox.isPresent"
+        @input="onToggleButtonOff"
+        :disable="isOfflineClientEdit"
+      />
+    </div>
+    <q-input
+      dense
+      v-if="address.dropBox.isPresent && isDropBoxEnable"
+      v-model="address.dropBox.info"
+      class="required"
+      label="Gate/ Dropbox"
+      :rules="[val => checkValidations(val) || 'Please fill the dropbox info']"
+    />
+  </div>
+
   <div class="q-pa-sm" v-else>
     <div
       :class="{
