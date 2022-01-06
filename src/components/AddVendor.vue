@@ -5,14 +5,14 @@
         :dialogName="componentName"
         @closeDialog="$emit('closeDialog', false)"
       />
-      <div class="mobile-container-page form-color ">
+      <div class="mobile-container-page form-color">
         <q-form
           class="q-px-lg"
           style="height: calc(100vh - 51px)"
           ref="vendorForm"
         >
-          <div class="full-width  rounded bg-white">
-            <div class="rounded ">
+          <div class="full-width rounded bg-white">
+            <div class="rounded">
               <q-input
                 dense
                 class="input-style input-overlay required"
@@ -29,7 +29,7 @@
                 <q-select
                   dense
                   borderless
-                  class="input-style input-overlay  required"
+                  class="input-style input-overlay required"
                   v-model="vendor.industry.value"
                   use-input
                   input-debounce="0"
@@ -81,7 +81,7 @@
                 <q-input
                   borderless
                   dense
-                  class=" input-style input-overlay required col-6"
+                  class="input-style input-overlay required col-6"
                   v-model.number="vendor.phoneNumber.number"
                   label="Phone"
                   mask="(###) ###-####"
@@ -107,7 +107,7 @@
                 ]"
               />
             </div>
-            <div class=" q-mt-md">
+            <div class="q-mt-md">
               <p class="q-px-sm form-heading">Company's Address</p>
               <AutoCompleteAddress
                 :id="'AddVendor'"
@@ -115,10 +115,11 @@
                 :isDropBoxEnable="false"
                 :isChecksEnable="false"
                 :value="true"
+                :view="'mobile'"
               />
             </div>
             <div>
-              <div class=" q-py-sm q-mt-md">
+              <div class="q-py-sm q-mt-md">
                 <p class="form-heading q-mx-sm">Contact Info</p>
 
                 <div class="q-mt-sm">
@@ -186,7 +187,7 @@
                 </div>
               </div>
             </div>
-            <div class=" q-py-sm  q-mt-md">
+            <div class="q-py-sm q-mt-md">
               <p class="form-heading q-mx-sm">Other Info</p>
               <q-input
                 dense
@@ -211,7 +212,7 @@
       <div class="row justify-center">
         <q-btn
           color="primary"
-          class=" q-mt-md single-next-button-style text-capitalize"
+          class="q-mt-md single-next-button-style text-capitalize"
           @click="onAddVendorButtonClick"
           :label="isEdit ? 'SAVE' : 'Add Vendor'"
         >

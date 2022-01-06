@@ -25,11 +25,6 @@
       >
       <span class="col-7 q-ml-md" v-if="selectedCarrier.address">
         {{
-          selectedCarrier.address.houseNumber
-            ? selectedCarrier.address.houseNumber
-            : '-'
-        }}
-        {{
           selectedCarrier.address.address1
             ? selectedCarrier.address.address1
             : '-'
@@ -64,7 +59,7 @@
     </div>
 
     <div class="row q-mt-sm" v-if="selectedCarrier.email">
-      <span class="heading-light q-mt-none col-xs-4 ">Company Email </span>
+      <span class="heading-light q-mt-none col-xs-4">Company Email </span>
       <span
         class="q-ml-md col clickLink"
         @click="onEmailClick(selectedCarrier.email, $event)"
@@ -73,9 +68,7 @@
       >
     </div>
     <div class="row q-mt-sm" v-for="phone in selectedCarrier.phoneNumber">
-      <span class="heading-light q-mt-none col-xs-4 ">
-        Company Number
-      </span>
+      <span class="heading-light q-mt-none col-xs-4"> Company Number </span>
       <span class="col q-ml-md" v-if="phone.type">
         {{ phone.type }} :
         <span
@@ -90,15 +83,13 @@
       class="q-mt-sm row"
       v-if="
         selectedCarrier.contact &&
-          (selectedCarrier.contact.fname ||
-            selectedCarrier.contact.email ||
-            selectedCarrier.contact.phoneNumber[0].number)
+        (selectedCarrier.contact.fname ||
+          selectedCarrier.contact.email ||
+          selectedCarrier.contact.phoneNumber[0].number)
       "
     >
-      <div class="heading-light q-mt-none col-xs-4 ">
-        Contact Info
-      </div>
-      <div class="column q-ml-md ">
+      <div class="heading-light q-mt-none col-xs-4">Contact Info</div>
+      <div class="column q-ml-md">
         {{ selectedCarrier ? selectedCarrier.contact.fname : '-' }}
         {{ selectedCarrier ? selectedCarrier.contact.lname : '-' }}
         <div

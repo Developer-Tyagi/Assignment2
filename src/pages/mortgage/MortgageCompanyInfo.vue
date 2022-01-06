@@ -30,11 +30,6 @@
 
       <span class="col-7 q-ml-md" v-if="selectedMortgage.address">
         {{
-          selectedMortgage.address.houseNumber
-            ? selectedMortgage.address.houseNumber
-            : '-'
-        }}
-        {{
           selectedMortgage.address.address1
             ? selectedMortgage.address.address1
             : '-'
@@ -94,9 +89,9 @@
       class="q-mt-sm row"
       v-if="
         selectedMortgage.contact &&
-          (selectedMortgage.contact.fname ||
-            selectedMortgage.contact.email ||
-            selectedMortgage.contact.phoneNumber[0].number)
+        (selectedMortgage.contact.fname ||
+          selectedMortgage.contact.email ||
+          selectedMortgage.contact.phoneNumber[0].number)
       "
     >
       <div class="heading-light q-mt-none col-xs-4">Contact Info</div>

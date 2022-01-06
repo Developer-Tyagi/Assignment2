@@ -59,11 +59,6 @@
         v-if="lossInfo.attributes.lossInfo.property.address1"
       >
         {{
-          lossInfo.attributes.lossInfo.property.houseNumber
-            ? lossInfo.attributes.lossInfo.property.houseNumber
-            : '-'
-        }}
-        {{
           lossInfo.attributes.lossInfo.property.address1
             ? lossInfo.attributes.lossInfo.property.address1
             : '-'

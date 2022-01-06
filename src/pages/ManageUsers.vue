@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <div class="q-pa-md height-without-header">
-      <div class="row  justify-between">
+      <div class="row justify-between">
         <div class="row justify-between text-bold q-ml-auto">
           <q-card flat bordered class="q-pa-sm q-ml-md q-mt-sm"
             >Licenses available- {{ '5' }}</q-card
@@ -55,7 +55,7 @@
                   class="clickable"
                   v-if="
                     user.attributes.contact.phoneNumber &&
-                      user.attributes.contact.phoneNumber[0].number
+                    user.attributes.contact.phoneNumber[0].number
                   "
                   @click="
                     onPhoneNumberClick(
@@ -311,11 +311,6 @@
               <div class="q-mr-md" v-if="singleUserData.mailingAddress">
                 <div>
                   {{
-                    singleUserData.mailingAddress.houseNumber
-                      ? singleUserData.mailingAddress.houseNumber
-                      : '-'
-                  }}
-                  {{
                     singleUserData.mailingAddress.address1
                       ? singleUserData.mailingAddress.address1
                       : '-'
@@ -325,7 +320,7 @@
                 <div
                   v-if="
                     singleUserData.mailingAddress &&
-                      singleUserData.mailingAddress.address2
+                    singleUserData.mailingAddress.address2
                   "
                 >
                   {{ singleUserData.mailingAddress.address2 }}
@@ -354,7 +349,7 @@
               class="col clickLink"
               v-if="
                 singleUserData.contact.phoneNumber &&
-                  singleUserData.contact.phoneNumber.length
+                singleUserData.contact.phoneNumber.length
               "
               @click="
                 onPhoneNumberClick(
@@ -495,7 +490,7 @@
                   <div
                     v-if="
                       singleUserData.roles &&
-                        singleUserData.roles[0].value == 'Estimator'
+                      singleUserData.roles[0].value == 'Estimator'
                     "
                   >
                     <q-input
@@ -522,7 +517,7 @@
                   :isDropBoxEnable="false"
                   :isChecksEnable="false"
                   :value="true"
-                  :view="'web'"
+                  :view="'custom'"
                 />
               </q-card>
             </div>
@@ -532,7 +527,7 @@
           <q-btn
             label="Save"
             size="md"
-            style="width:50%"
+            style="width: 50%"
             class="single-next-button-style q-my-lg"
             @click="onSaveEditedButton"
           />

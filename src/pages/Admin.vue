@@ -8,7 +8,6 @@
             class="q-ml-xl full-height mobile-container-page-without-search full-width"
             v-model="webSubOptionMenuTab.key"
             animated
-            vertical
             swipeable
             transition-prev="jump-up"
             transition-next="jump-up"
@@ -137,7 +136,7 @@
                           </div>
                         </div>
                         <!-- @click="onEmailClick(user.email, $event)" -->
-                        <div class="row ">
+                        <div class="row">
                           <div class="col clickable text-primary">
                             <q-input
                               dense
@@ -537,11 +536,11 @@
                             <div
                               v-if="
                                 user.value.permission != null &&
-                                  checkPermission(
-                                    permissions[ind].machineValue,
-                                    user.machineValue,
-                                    index
-                                  )
+                                checkPermission(
+                                  permissions[ind].machineValue,
+                                  user.machineValue,
+                                  index
+                                )
                               "
                             >
                               <q-icon
@@ -716,7 +715,7 @@
                 class="q-ml-xs"
                 v-if="
                   actions.createWhen.type &&
-                    actionReason[indexOfActionReason].additionalReasons
+                  actionReason[indexOfActionReason].additionalReasons
                 "
               >
                 <q-select
@@ -927,7 +926,7 @@
                 class="q-ml-xs"
                 v-if="
                   actions.actions.onComplete[index].type &&
-                    actionCompletion[indexOfSubTypeOfCompletion].subOptions
+                  actionCompletion[indexOfSubTypeOfCompletion].subOptions
                 "
               >
                 <q-select
@@ -1097,7 +1096,7 @@
                 class="q-ml-xs"
                 v-if="
                   actions.actions.onOverdue[index].type &&
-                    actionOverDues[indexOfSubType].subOptions
+                  actionOverDues[indexOfSubType].subOptions
                 "
               >
                 <q-select
@@ -1428,7 +1427,7 @@ export default {
       'paidUnpaidUserDetails'
     ]),
 
-    sortedPermissions: function() {
+    sortedPermissions: function () {
       function compare(a, b) {
         if (a.name < b.name) {
           return -1;
@@ -1908,19 +1907,19 @@ export default {
       if (success) {
         /* This Filter function is used for elimination the null and empty values from the array     */
         this.actions.actions.onComplete.forEach(val => {
-          val.task = val.task.filter(function(el) {
+          val.task = val.task.filter(function (el) {
             return el != '';
           });
         });
 
         this.actions.actions.onOverdue.forEach(val => {
-          val.task = val.task.filter(function(el) {
+          val.task = val.task.filter(function (el) {
             return el != '';
           });
         });
 
         this.actions.createWhen.task = this.actions.createWhen.task.filter(
-          function(el) {
+          function (el) {
             return el != '';
           }
         );
@@ -2071,12 +2070,16 @@ export default {
       this.users.contact.type = this.user.phoneNumber.type;
       this.users.contact.number = this.user.phoneNumber.number;
       this.users.email = this.user.email;
-      this.users.mailingAddress.addressRegion = this.user.mailingAddress.addressRegion;
-      this.users.mailingAddress.addressLocality = this.user.mailingAddress.addressLocality;
-      this.users.mailingAddress.houseNumber = this.user.mailingAddress.houseNumber;
+      this.users.mailingAddress.addressRegion =
+        this.user.mailingAddress.addressRegion;
+      this.users.mailingAddress.addressLocality =
+        this.user.mailingAddress.addressLocality;
+      this.users.mailingAddress.houseNumber =
+        this.user.mailingAddress.houseNumber;
       this.users.mailingAddress.address1 = this.user.mailingAddress.address1;
       this.users.mailingAddress.address2 = this.user.mailingAddress.address2;
-      this.users.mailingAddress.postalCode = this.user.mailingAddress.postalCode;
+      this.users.mailingAddress.postalCode =
+        this.user.mailingAddress.postalCode;
       this.editAccountSummary = false;
     },
     cancelCompanyDetailsUpdate() {
@@ -2086,12 +2089,18 @@ export default {
 
       // this.organizations.users.contact.number = this.organization.website;
       //this.organizations.users.email = this.organization.photoIDEmail;
-      this.organizations.users.mailingAddress.addressRegion = this.organization.billingInfo.address.addressRegion;
-      this.organizations.users.mailingAddress.addressLocality = this.organization.billingInfo.address.addressLocality;
-      this.organizations.users.mailingAddress.houseNumber = this.organization.billingInfo.address.houseNumber;
-      this.organizations.users.mailingAddress.address1 = this.organization.billingInfo.address.address1;
-      this.organizations.users.mailingAddress.address2 = this.organization.billingInfo.address.address2;
-      this.organizations.users.mailingAddress.postalCode = this.organization.billingInfo.address.postalCode;
+      this.organizations.users.mailingAddress.addressRegion =
+        this.organization.billingInfo.address.addressRegion;
+      this.organizations.users.mailingAddress.addressLocality =
+        this.organization.billingInfo.address.addressLocality;
+      this.organizations.users.mailingAddress.houseNumber =
+        this.organization.billingInfo.address.houseNumber;
+      this.organizations.users.mailingAddress.address1 =
+        this.organization.billingInfo.address.address1;
+      this.organizations.users.mailingAddress.address2 =
+        this.organization.billingInfo.address.address2;
+      this.organizations.users.mailingAddress.postalCode =
+        this.organization.billingInfo.address.postalCode;
     },
     cancelPhotoIDUpdate() {
       this.editPhotoIDDetails = false;
@@ -2182,9 +2191,12 @@ export default {
     this.users.contact.type = this.user.phoneNumber.type;
     this.users.contact.number = this.user.phoneNumber.number;
     this.users.email = this.user.email;
-    this.users.mailingAddress.addressRegion = this.user.mailingAddress.addressRegion;
-    this.users.mailingAddress.addressLocality = this.user.mailingAddress.addressLocality;
-    this.users.mailingAddress.houseNumber = this.user.mailingAddress.houseNumber;
+    this.users.mailingAddress.addressRegion =
+      this.user.mailingAddress.addressRegion;
+    this.users.mailingAddress.addressLocality =
+      this.user.mailingAddress.addressLocality;
+    this.users.mailingAddress.houseNumber =
+      this.user.mailingAddress.houseNumber;
     this.users.mailingAddress.address1 = this.user.mailingAddress.address1;
     this.users.mailingAddress.address2 = this.user.mailingAddress.address2;
     this.users.mailingAddress.postalCode = this.user.mailingAddress.postalCode;
@@ -2195,12 +2207,18 @@ export default {
 
     // this.organizations.users.contact.number = this.organization.website;
     this.organizations.users.email = this.organization.photoIDEmail;
-    this.organizations.users.mailingAddress.addressRegion = this.organization.billingInfo.address.addressRegion;
-    this.organizations.users.mailingAddress.addressLocality = this.organization.billingInfo.address.addressLocality;
-    this.organizations.users.mailingAddress.houseNumber = this.organization.billingInfo.address.houseNumber;
-    this.organizations.users.mailingAddress.address1 = this.organization.billingInfo.address.address1;
-    this.organizations.users.mailingAddress.address2 = this.organization.billingInfo.address.address2;
-    this.organizations.users.mailingAddress.postalCode = this.organization.billingInfo.address.postalCode;
+    this.organizations.users.mailingAddress.addressRegion =
+      this.organization.billingInfo.address.addressRegion;
+    this.organizations.users.mailingAddress.addressLocality =
+      this.organization.billingInfo.address.addressLocality;
+    this.organizations.users.mailingAddress.houseNumber =
+      this.organization.billingInfo.address.houseNumber;
+    this.organizations.users.mailingAddress.address1 =
+      this.organization.billingInfo.address.address1;
+    this.organizations.users.mailingAddress.address2 =
+      this.organization.billingInfo.address.address2;
+    this.organizations.users.mailingAddress.postalCode =
+      this.organization.billingInfo.address.postalCode;
   }
 };
 </script>

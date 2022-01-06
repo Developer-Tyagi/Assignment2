@@ -11,12 +11,12 @@
           style="height: calc(100vh - 51px)"
           ref="mortgageForm"
         >
-          <div class="full-width  rounded bg-white">
-            <div class=" rounded">
+          <div class="full-width rounded bg-white">
+            <div class="rounded">
               <q-input
                 dense
                 borderless
-                class="input-style input-overlay  required"
+                class="input-style input-overlay required"
                 v-model="mortgage.name"
                 label=" Mortgage Name"
                 lazy-rules
@@ -30,7 +30,7 @@
                 <q-select
                   dense
                   borderless
-                  class=" input-style input-overlay  col-5"
+                  class="input-style input-overlay col-5"
                   v-model="mortgage.phoneNumber[0].type"
                   :options="contactTypes"
                   option-value="machineValue"
@@ -48,7 +48,7 @@
                 <q-input
                   dense
                   borderless
-                  class="input-style input-overlay  required col-6"
+                  class="input-style input-overlay required col-6"
                   v-model.number="mortgage.phoneNumber[0].number"
                   label="Phone"
                   mask="(###) ###-####"
@@ -77,17 +77,19 @@
             <div class="q-mt-md">
               <p class="form-heading q-mx-sm">Mortgage Address</p>
               <AutoCompleteAddress
+                :id="'MortgageAddress'"
                 :address="mortgage.address"
                 :isDropBoxEnable="false"
                 :isChecksEnable="false"
                 :value="true"
+                :view="'mobile'"
               />
             </div>
             <div>
-              <div class=" q-mt-md">
+              <div class="q-mt-md">
                 <p class="q-mx-sm form-heading">Contact Info</p>
 
-                <div class="q-mt-sm ">
+                <div class="q-mt-sm">
                   <q-select
                     borderless
                     v-model="mortgage.contact.honorific.value"
@@ -103,21 +105,21 @@
                     class="input-style input-overlay input-extra-padding"
                   />
                   <q-input
-                    class="input-style input-overlay "
+                    class="input-style input-overlay"
                     borderless
                     v-model="mortgage.contact.fname"
                     label="First Name"
                   />
                   <q-input
                     borderless
-                    class="input-style input-overlay "
+                    class="input-style input-overlay"
                     v-model="mortgage.contact.lname"
                     label="Last Name"
                   />
                   <div class="row justify-between">
                     <q-select
                       borderless
-                      class="input-style input-overlay  col-5"
+                      class="input-style input-overlay col-5"
                       v-model="mortgage.contact.phoneNumber[0].type"
                       :options="contactTypes"
                       option-value="machineValue"
@@ -130,7 +132,7 @@
                     />
                     <q-input
                       borderless
-                      class="input-style input-overlay  col-6"
+                      class="input-style input-overlay col-6"
                       v-model.number="mortgage.contact.phoneNumber[0].number"
                       label="Phone1"
                       mask="(###) ###-####"
@@ -152,7 +154,7 @@
                 </div>
               </div>
             </div>
-            <div class=" q-py-sm  q-mt-md">
+            <div class="q-py-sm q-mt-md">
               <p class="form-heading q-mx-sm">Other Info</p>
               <q-input
                 dense
@@ -166,7 +168,7 @@
               <q-input
                 type="textarea"
                 borderless
-                class="input-style input-overlay  q-mb-sm"
+                class="input-style input-overlay q-mb-sm"
                 v-model="mortgage.info.notes"
                 label="Notes"
               />
@@ -177,7 +179,7 @@
       </div>
       <div class="row justify-center">
         <q-btn
-          class=" q-mt-md single-next-button-style  text-capitalize"
+          class="q-mt-md single-next-button-style text-capitalize"
           @click="onAddMortgageButtonClick"
           :label="isEdit ? 'SAVE' : 'Add Mortgage'"
         >
@@ -275,14 +277,17 @@ export default {
     if (this.isEdit) {
       this.mortgage.name = this.selectedMortgage.name;
       this.mortgage.email = this.selectedMortgage.email;
-      this.mortgage.phoneNumber[0].number = this.selectedMortgage.phoneNumber[0].number;
-      this.mortgage.phoneNumber[0].type = this.selectedMortgage.phoneNumber[0].type;
+      this.mortgage.phoneNumber[0].number =
+        this.selectedMortgage.phoneNumber[0].number;
+      this.mortgage.phoneNumber[0].type =
+        this.selectedMortgage.phoneNumber[0].type;
       if (this.selectedMortgage.address) {
         this.mortgage.address = this.selectedMortgage.address;
       }
       this.mortgage.contact.fname = this.selectedMortgage.contact.fname;
       this.mortgage.contact.lname = this.selectedMortgage.contact.lname;
-      this.mortgage.contact.phoneNumber = this.selectedMortgage.contact.phoneNumber;
+      this.mortgage.contact.phoneNumber =
+        this.selectedMortgage.contact.phoneNumber;
       this.mortgage.contact.email = this.selectedMortgage.contact.email;
       this.mortgage.info.website = this.selectedMortgage.info.website;
       this.mortgage.info.notes = this.selectedMortgage.info.notes;

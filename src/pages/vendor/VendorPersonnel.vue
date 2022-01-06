@@ -241,11 +241,15 @@
             </q-card>
             <q-card class="q-ma-md q-pa-md q-mt-sm"
               ><span class="text-bold">Address Details</span>
+              <!-- code is not currently implemented -->
+
               <AutoCompleteAddress
                 :id="'PersonnelInfo'"
                 :address="personnel.address"
                 :isDropBoxEnable="false"
                 :isChecksEnable="false"
+                :value="true"
+                :view="'mobile'"
               />
             </q-card>
             <q-card class="q-ma-md q-pa-md q-mt-sm">
@@ -415,11 +419,15 @@
             </q-card>
             <q-card class="q-ma-md q-pa-md q-mt-sm"
               ><span class="text-bold">Address Details</span>
+              <!-- code is not currently implemented -->
+
               <AutoCompleteAddress
                 :id="'PersonnelInfoEdit'"
                 :address="personnel.address"
                 :isDropBoxEnable="false"
                 :isChecksEnable="false"
+                :value="true"
+                :view="'mobile'"
               />
             </q-card>
             <q-card class="q-ma-md q-pa-md q-mt-sm">
@@ -622,15 +630,12 @@ export default {
       this.personnel.email = this.vendorPersonnel.personnel[index].email;
       this.personnel.address = this.vendorPersonnel.personnel[index].address;
       this.personnel.notes = this.vendorPersonnel.personnel[index].note;
-      this.personnel.phoneNumber = this.vendorPersonnel.personnel[
-        index
-      ].phoneNumber;
-      this.personnel.role.value = this.vendorPersonnel.personnel[
-        index
-      ].role.value;
-      this.personnel.role.machineValue = this.vendorPersonnel.personnel[
-        index
-      ].role.machineValue;
+      this.personnel.phoneNumber =
+        this.vendorPersonnel.personnel[index].phoneNumber;
+      this.personnel.role.value =
+        this.vendorPersonnel.personnel[index].role.value;
+      this.personnel.role.machineValue =
+        this.vendorPersonnel.personnel[index].role.machineValue;
       this.id = this.vendorPersonnel.personnel[index].id;
     },
     async onEditSave() {
