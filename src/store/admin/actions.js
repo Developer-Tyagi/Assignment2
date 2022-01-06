@@ -27,6 +27,25 @@ export async function getActionOverDues({ commit, dispatch }, params) {
   }
 }
 
+//assignedTO search role/user
+
+export async function assignedToSearch({ commit, dispatch }, params) {
+  dispatch('setLoading', true);
+  try {
+    const { data } = await request.get(`/users/autocomplete?q=${params}`);
+
+    commit('assignedTOSearchData', data);
+    dispatch('setLoading', false);
+  } catch (e) {
+    console.log(e);
+    dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'negative',
+      message: e.response[0].title
+    });
+  }
+}
+
 // this function is used to get the  list of tasks available after an action is completed
 export async function getActionCompletion({ commit, dispatch }, params) {
   dispatch('setLoading', true);
@@ -106,8 +125,7 @@ export async function actionItemToggleSwitch({ dispatch, state }, payload) {
   dispatch('setLoading', true);
   try {
     const { data } = await request.post(
-      `workflows/${payload.workflowId}/rules/${payload.ruleId}/${payload.toggleStatus}`,
-      buildApiData('actions', payload.data)
+      `workflows/${payload.workflowId}/rules/${payload.ruleId}/${payload.toggleStatus}`
     );
     dispatch('setLoading', false);
     dispatch('setNotification', {

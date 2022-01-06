@@ -56,3 +56,22 @@ export async function setOfficeTaskActions(state, actionsData) {
 export async function setOfflineOfficeTaskActions(state) {
   state.officeTaskActions = await getCollection('officeTasks').toArray();
 }
+
+//assignedTO search data
+
+export async function assignedTOSearchData(state, data) {
+  state.assignedToData = [];
+  if (data.attributes.users && data.attributes.users.length > 0) {
+    state.assignedToData = data.attributes.users.map(item => ({
+      name: item.name + '[User]',
+      id: item.id,
+      type: 'users'
+    }));
+  }
+  if (data.attributes.roles && data.attributes.roles.length > 0)
+    state.assignedToData = data.attributes.roles.map(item => ({
+      name: item.value + '[Roles]',
+      id: item.machineValue,
+      type: 'roles'
+    }));
+}
