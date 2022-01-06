@@ -83,14 +83,7 @@
                 :isChecksEnable="false"
                 :value="true"
                 :view="'mobile'"
-                :isAsteriskMark="true"
               />
-              <!-- <AutoCompleteAddress
-                :address="mortgage.address"
-                :isDropBoxEnable="false"
-                :isChecksEnable="false"
-                :value="true"
-              /> -->
             </div>
             <div>
               <div class="q-mt-md">

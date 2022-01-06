@@ -67,11 +67,6 @@
           :value="true"
           :view="'mobile'"
         />
-        <!-- <AutoCompleteAddress
-          :address="carrierPersonnel.address"
-          :isDropBoxEnable="false"
-          :isChecksEnable="false"
-        /> -->
       </div>
       <div class="q-mt-sm">
         <div v-if="carrierPersonnel.phoneNumber">

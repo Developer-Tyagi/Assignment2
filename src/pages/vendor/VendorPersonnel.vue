@@ -242,12 +242,7 @@
             <q-card class="q-ma-md q-pa-md q-mt-sm"
               ><span class="text-bold">Address Details</span>
               <!-- code is not currently implemented -->
-              <!-- <AutoCompleteAddress
-                :id="'PersonnelInfo'"
-                :address="personnel.address"
-                :isDropBoxEnable="false"
-                :isChecksEnable="false"
-              /> -->
+
               <AutoCompleteAddress
                 :id="'PersonnelInfo'"
                 :address="personnel.address"
@@ -425,12 +420,7 @@
             <q-card class="q-ma-md q-pa-md q-mt-sm"
               ><span class="text-bold">Address Details</span>
               <!-- code is not currently implemented -->
-              <!-- <AutoCompleteAddress
-                :id="'PersonnelInfoEdit'"
-                :address="personnel.address"
-                :isDropBoxEnable="false"
-                :isChecksEnable="false"
-              /> -->
+
               <AutoCompleteAddress
                 :id="'PersonnelInfoEdit'"
                 :address="personnel.address"

@@ -424,13 +424,7 @@
                   :value="true"
                   :view="'mobile'"
                 />
-                <!-- <AutoCompleteAddress
-                  :id="'ClientInfo'"
-                  :address="clientAddressDetails"
-                  :isDropBoxEnable="true"
-                  :isChecksEnable="true"
-                  :isAsteriskMark="true"
-                /> -->
+
                 <div class="row">
                   <p class="q-mx-none q-my-auto">Tenant Occupied</p>
                   <q-toggle
@@ -529,16 +523,7 @@
                 :isAsteriskMark="true"
                 :value="true"
                 :view="'mobile'"
-                class="q-mt-sm"
               />
-              <!-- <AutoCompleteAddress
-                :id="'ClientMailing'"
-                :address="mailingAddressDetails"
-                :isDropBoxEnable="false"
-                :isChecksEnable="true"
-                :isFieldsDisable="isMailingAddressSameToggle"
-                :isAsteriskMark="true"
-              /> -->
             </q-card>
             <div class="row q-mt-lg justify-center">
               <div style="width: 90%">

@@ -117,13 +117,6 @@
                 :value="true"
                 :view="'mobile'"
               />
-              <!-- <AutoCompleteAddress
-                :id="'AddVendor'"
-                :address="vendor.mailingAddress"
-                :isDropBoxEnable="false"
-                :isChecksEnable="false"
-                :value="true"
-              /> -->
             </div>
             <div>
               <div class="q-py-sm q-mt-md">

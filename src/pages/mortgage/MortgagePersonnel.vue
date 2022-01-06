@@ -213,11 +213,7 @@
             </q-card>
             <q-card class="q-ma-md q-pa-md q-mt-sm"
               ><span class="text-bold">Address Details</span>
-              <!-- <AutoCompleteAddress
-                :address="personnel.address"
-                :isDropBoxEnable="false"
-                :isChecksEnable="false"
-              /> -->
+
               <AutoCompleteAddress
                 :id="'PersonelAddress'"
                 :address="personnel.address"
@@ -375,11 +371,7 @@
             </q-card>
             <q-card class="q-ma-md q-pa-md q-mt-sm"
               ><span class="text-bold">Address Details</span>
-              <!-- <AutoCompleteAddress
-                :address="personnel.address"
-                :isDropBoxEnable="false"
-                :isChecksEnable="false"
-              /> -->
+
               <AutoCompleteAddress
                 :id="'PersonelAddress'"
                 :address="personnel.address"

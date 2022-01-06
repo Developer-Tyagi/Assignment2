@@ -85,12 +85,6 @@
                   :value="true"
                   :view="'mobile'"
                 />
-                <!-- <AutoCompleteAddress
-                  :address="carrier.address"
-                  :isDropBoxEnable="false"
-                  :isChecksEnable="false"
-                  :value="true"
-                /> -->
               </div>
             </div>
             <div>
