@@ -202,6 +202,7 @@ export async function adminActionItemDelete({ commit, dispatch }, payload) {
     dispatch('setLoading', false);
     dispatch('setNotification', {
       type: 'postive',
+      color: 'green',
       message: 'Item deleted successfully!'
     });
   } catch (e) {

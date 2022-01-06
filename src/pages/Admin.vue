@@ -685,7 +685,7 @@
                       class="
                         text-underline text-body1 text-bold
                         cursor-pointer
-                        create-rule-text-style
+                        text-primary
                       "
                       @click="addDefaultActionItem()"
                     >
@@ -723,7 +723,9 @@
                             When: {{ actions.triggerEvent.type }}
                           </template>
                         </q-timeline-entry>
+
                         <q-timeline-entry
+                          v-if="actions.actions.completionRule[0].type != ''"
                           v-for="(item, index) in actions.actions
                             .completionRule"
                           :key="index"
@@ -1350,7 +1352,7 @@
                       :key="index"
                     >
                       <td class="table-td">{{ item.name }}</td>
-                      <td class="table-td">{{ item.workflowID }}</td>
+                      <td class="table-td">{{ item.workflow.value }}</td>
                       <td class="table-td">{{ item.assignedTo[0].type }}</td>
                       <td class="table-td">{{ item.assignedTo[0].name }}</td>
                       <td class="table-td">
@@ -1368,7 +1370,11 @@
                             name="fas fa-power-off"
                             :color="item.isEnabled ? 'primary' : 'grey'"
                             @click="toActionItemToggleSwitch(item)"
-                          />
+                          >
+                            <q-tooltip>
+                              {{ item.isEnabled ? 'Enabled' : 'Disabled' }}
+                            </q-tooltip>
+                          </q-icon>
                           <q-icon
                             class="cursor-pointer"
                             name="fas fa-ellipsis-v"
@@ -1672,7 +1678,7 @@ export default {
     async toDeleteActionItem(item) {
       const payload = {
         itemID: item.machineValue,
-        workFlowID: item.workflowID
+        workFlowID: item.workflow.machineValue
       };
       this.adminActionItemDelete(payload);
       this.getAllWorkFlow(this.claimType);
@@ -1741,14 +1747,14 @@ export default {
           var toggleDetail = {
             toggleStatus: 'disable',
             ruleId: item.machineValue,
-            workflowId: item.workflowID
+            workflowId: item.workflow.machineValue
           };
           await this.actionItemToggleSwitch(toggleDetail);
         } else {
           var toggleDetail = {
             toggleStatus: 'enable',
             ruleId: item.machineValue,
-            workflowId: item.workflowID
+            workflowId: item.workflow.machineValue
           };
           await this.actionItemToggleSwitch(toggleDetail);
         }
@@ -1764,7 +1770,7 @@ export default {
     //function is used to edit the rule item
     toEditActionItem(item) {
       this.editedRule = item;
-      this.workflowActionItem = item.workflowID;
+      this.workflowActionItem = item.workflow.machineValue;
       this.addDefaultActionDialogBox = true;
       this.editDefaultActionItem = true;
       this.editedActionItemID = item.machineValue;
@@ -2241,7 +2247,7 @@ export default {
         this.enabledDisabledByEditCopy = {
           isEnabled: this.actions.isEnabled,
           machineValue: this.editedRule.machineValue,
-          workflowID: this.editedRule.workflowID
+          workflowID: this.editedRule.workflow.machineValue
         };
         this.toActionItemToggleSwitch(this.enabledDisabledByEditCopy);
         await this.editAdminActionItem(payload);
@@ -2514,8 +2520,5 @@ td {
 .table-data {
   width: 33.33%;
   text-align: center;
-}
-.create-rule-text-style {
-  color: #f9e7d8;
 }
 </style>
