@@ -2162,7 +2162,7 @@ export default {
   async created() {
     this.getAllUsers();
     this.paidUnpaidUserDetails;
-    this.getOrganization();
+    await this.getOrganization();
 
     this.getContactTypes();
     if (getCurrentUser().attributes) {
@@ -2184,7 +2184,7 @@ export default {
     });
     this.getPermissions();
 
-    //this.claimActionItem(this.claimType);
+    await this.claimActionItem(this.claimType);
     // assign values to this.users
     this.users.fname = this.user.contact.fname;
     this.users.lname = this.user.contact.lname;
@@ -2219,7 +2219,6 @@ export default {
       this.organization.billingInfo.address.address2;
     this.organizations.users.mailingAddress.postalCode =
       this.organization.billingInfo.address.postalCode;
-    this.claimActionItem(this.claimType);
   }
 };
 </script>
