@@ -222,7 +222,6 @@
       }"
     >
       <input
-        required
         type="text"
         borderless
         :id="'id' + id"
@@ -260,7 +259,7 @@
           lazy-rules
           label="City"
           :rules="[
-            val => val.length > 0 || 'Please fill the city',
+            val => checkValidations(val) || 'Please fill the city',
             val => validateText(val) || 'Please enter valid city'
           ]"
         />
@@ -280,7 +279,7 @@
           behavior="menu"
           label="State"
           lazy-rules
-          :rules="[val => val.length > 0 || 'Please fill the state']"
+          :rules="[val => checkValidations(val) || 'Please fill the state']"
         />
       </div>
       <div class=" ">
@@ -297,7 +296,7 @@
           lazy-rules
           label="Zip code"
           :rules="[
-            val => val.length > 0 || 'Please fill the zip code',
+            val => checkValidations(val) || 'Please fill the zip code',
             val =>
               validateAlphaNumericText(val) || 'Please enter valid ZIP code'
           ]"
