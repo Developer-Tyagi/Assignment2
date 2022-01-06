@@ -319,7 +319,6 @@
                   <q-item-section
                     v-if="menuItem.subOption"
                     @click="changeParentColor(menuItem.title)"
-                    class="q-mr-md"
                   >
                     <q-expansion-item group="somegroup">
                       <template v-slot:header>
@@ -345,6 +344,7 @@
                       </template>
 
                       <q-item
+                        class="q-ml-sm"
                         v-for="(subMenuOption, index) in menuItem.subOption"
                         :key="index"
                       >
@@ -361,7 +361,7 @@
                         >
                           {{ subMenuOption.name }}
                           <div
-                            class="q-mr-xl q-pr-lg q-mt-xs"
+                            class="q-mr-xl q-pr-lg"
                             v-if="subOptionSelected.key == subMenuOption.key"
                           >
                             <q-separator style="background: #ef5926" />
@@ -842,8 +842,8 @@ export default {
   color: #000000;
   border-radius: 0 32px 32px 0;
   border-left: 4px solid #ef5926;
-  left: 41%;
-  padding-left: 35px;
+  left: 38%;
+  padding-left: 45px;
   margin-left: -118px;
 }
 .menu-item-styling-non-component {

@@ -85,6 +85,10 @@ export async function updateUserForOrganization({ dispatch, state }, payload) {
       buildApiData('organizations', payload.data)
     );
     dispatch('setLoading', false);
+    dispatch('setNotification', {
+      type: 'positive',
+      message: 'Company details  Updated !'
+    });
     return true;
   } catch (e) {
     console.log(e);
